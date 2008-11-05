@@ -1,0 +1,401 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_APP                 ICON                    "..\\Resources\\Tortoise.ico"
+IDI_CHECKOUT            ICON                    "..\\Resources\\menucheckout.ico"
+IDI_UPDATE              ICON                    "..\\Resources\\menuupdate.ico"
+IDI_COMMIT              ICON                    "..\\Resources\\menucommit.ico"
+IDI_ADD                 ICON                    "..\\Resources\\menuadd.ico"
+IDI_REVERT              ICON                    "..\\Resources\\menurevert.ico"
+IDI_CLEANUP             ICON                    "..\\Resources\\menucleanup.ico"
+IDI_RESOLVE             ICON                    "..\\Resources\\menuresolve.ico"
+IDI_SWITCH              ICON                    "..\\Resources\\menuswitch.ico"
+IDI_MERGE               ICON                    "..\\Resources\\menumerge.ico"
+IDI_IMPORT              ICON                    "..\\Resources\\menuimport.ico"
+IDI_EXPORT              ICON                    "..\\Resources\\menuexport.ico"
+IDI_COPY                ICON                    "..\\Resources\\menucopy.ico"
+IDI_DELETE              ICON                    "..\\Resources\\menudelete.ico"
+IDI_RENAME              ICON                    "..\\Resources\\menurename.ico"
+IDI_DIFF                ICON                    "..\\Resources\\menucompare.ico"
+IDI_LOG                 ICON                    "..\\Resources\\menulog.ico"
+IDI_ABOUT               ICON                    "..\\Resources\\menuabout.ico"
+IDI_SETTINGS            ICON                    "..\\Resources\\menusettings.ico"
+IDI_CREATEREPOS         ICON                    "..\\Resources\\menucreaterepos.ico"
+IDI_CONFLICT            ICON                    "..\\Resources\\menuconflict.ico"
+IDI_RELOCATE            ICON                    "..\\Resources\\menurelocate.ico"
+IDI_HELP                ICON                    "..\\Resources\\menuhelp.ico"
+IDI_SHOWCHANGED         ICON                    "..\\Resources\\menushowchanged.ico"
+IDI_IGNORE              ICON                    "..\\Resources\\menuignore.ico"
+IDI_REPOBROWSE          ICON                    "..\\Resources\\menurepobrowse.ico"
+IDI_BLAME               ICON                    "..\\Resources\\menublame.ico"
+IDI_PATCH               ICON                    "..\\Resources\\menupatch.ico"
+IDI_CREATEPATCH         ICON                    "..\\Resources\\menudiff.ico"
+IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
+IDI_LOCK                ICON                    "..\\Resources\\menulock.ico"
+IDI_UNLOCK              ICON                    "..\\Resources\\menuunlock.ico"
+IDI_MENUFILE            ICON                    "..\\Resources\\tsvnmenufile.ico"
+IDI_MENUFOLDER          ICON                    "..\\Resources\\tsvnmenufolder.ico"
+IDI_MENULINK            ICON                    "..\\Resources\\tsvnmenulink.ico"
+IDI_MENUMULTIPLE        ICON                    "..\\Resources\\tsvnmenumultiple.ico"
+IDI_PROPERTIES          ICON                    "..\\Resources\\menuproperties.ico"
+IDI_DELUNVERSIONED      ICON                    "..\\Resources\\menudelunversioned.ico"
+IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ico"
+IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPPAGE DIALOGEX 0, 0, 247, 277
+STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "URL:",IDC_STATIC,4,5,26,8
+    EDITTEXT        IDC_REPOURL,30,5,213,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    LTEXT           "URL:",IDC_ESCAPEDURLLABEL,4,17,26,8
+    EDITTEXT        IDC_REPOURLUNESCAPED,29,17,214,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Revision / Author:",IDC_STATIC,4,31,76,8
+    EDITTEXT        IDC_REVISION,80,31,40,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_AUTHOR,120,31,94,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    LTEXT           "Last commit revision:",IDC_STATIC,4,43,76,8
+    EDITTEXT        IDC_CREVISION,80,43,40,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_CDATE,120,43,123,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    LTEXT           "Text Status:",IDC_STATIC,4,55,76,8
+    EDITTEXT        IDC_TEXTSTATUS,80,55,40,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_TEXTDATE,120,55,123,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    LTEXT           "Property Status:",IDC_STATIC,4,67,76,8
+    EDITTEXT        IDC_PROPSTATUS,80,67,40,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_PROPDATE,120,67,123,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_TRANSPARENT
+    LTEXT           "Lock owner:",IDC_STATIC,4,79,76,8
+    EDITTEXT        IDC_LOCKOWNER,80,79,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Lock creation date:",IDC_STATIC,4,91,76,8
+    EDITTEXT        IDC_LOCKDATE,80,90,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Repository UUID:",IDC_STATIC,4,103,76,8
+    EDITTEXT        IDC_REPOUUID,80,102,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Changelist:",IDC_STATIC,4,115,76,8
+    EDITTEXT        IDC_CHANGELIST,80,114,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Depth:",IDC_STATIC,4,127,76,8
+    EDITTEXT        IDC_DEPTHEDIT,80,126,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Checksum:",IDC_STATIC,4,139,76,8
+    EDITTEXT        IDC_CHECKSUM,80,138,163,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "locked:",IDC_STATIC,4,151,76,8
+    LTEXT           "yes",IDC_LOCKED,80,150,163,8
+    LTEXT           "switched:",IDC_STATIC,4,163,76,8
+    LTEXT           "yes",IDC_SWITCHED,80,162,163,8
+    LTEXT           "copied:",IDC_STATIC,4,175,76,8
+    LTEXT           "yes",IDC_COPIED,80,174,163,8
+    PUSHBUTTON      "&Properties...",IDC_EDITPROPERTIES,4,191,107,14
+    PUSHBUTTON      "Show &log",IDC_SHOWLOG,120,191,123,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""resource.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PROPPAGE, DIALOG
+    BEGIN
+        VERTGUIDE, 4
+        VERTGUIDE, 30
+        VERTGUIDE, 80
+        VERTGUIDE, 120
+        VERTGUIDE, 243
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUCHECKOUT        "Chec&kout..."
+    IDS_MENUUPDATE          "&Update"
+    IDS_MENUCOMMIT          "&Commit..."
+    IDS_MENUCREATEREPOS     "Create repositor&y here"
+    IDS_MENUADD             "&Add..."
+    IDS_MENUREVERT          "Re&vert..."
+    IDS_MENUCLEANUP         "&Clean up"
+    IDS_MENURESOLVE         "Res&olved..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUSWITCH          "S&witch..."
+    IDS_MENUMERGE           "&Merge..."
+    IDS_MENUBRANCH          "Branch/&tag..."
+    IDS_MENUIMPORT          "&Import..."
+    IDS_MENUEXPORT          "E&xport..."
+    IDS_MENUSETTINGS        "&Settings"
+    IDS_MENUABOUT           "A&bout"
+    IDS_MENUSUBMENU         "&TortoiseSVN"
+    IDS_MENUDESCCHECKOUT    "Check out a working copy from a repository"
+    IDS_MENUDESCUPDATE      "Updates the working copy to the current revision"
+    IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
+    IDS_MENUDESCADD         "Adds file(s) to Subversion control"
+    IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
+    IDS_MENUDESCCLEANUP     "Cleanup interrupted operations, locked files, ..."
+    IDS_MENUDESCRESOLVE     "Resolves conflicted files"
+    IDS_MENUDESCSWITCH      "Switch working copy to another branch / tag"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUDESCIMPORT      "Imports the directory to a repository"
+    IDS_MENUDESCEXPORT      "Exports a repository to a clean working copy without the svn administrative folders"
+    IDS_MENUDESCABOUT       "Shows information about TortoiseSVN"
+    IDS_MENUDESCCREATEREPOS "Creates a repository database at the current location"
+    IDS_MENUDESCCOPY        "Creates a 'cheap' copy inside the repository used for branches or tagging"
+    IDS_MENUDESCMERGE       "Merges a branch into the main trunk"
+    IDS_MENUDESCSETTINGS    "Tweak TortoiseSVN"
+    IDS_MENUDESCDEFAULT     "no description for this command is available"
+    IDS_STATUSNONE          " "
+    IDS_STATUSUNVERSIONED   "non-versioned"
+    IDS_STATUSNORMAL        "normal"
+    IDS_STATUSADDED         "added"
+    IDS_STATUSABSENT        "missing"
+    IDS_STATUSDELETED       "deleted"
+    IDS_STATUSREPLACED      "replaced"
+    IDS_STATUSMODIFIED      "modified"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUSMERGED        "merged"
+    IDS_STATUSCONFLICTED    "conflicted"
+    IDS_STATUSOBSTRUCTED    "obstructed"
+    IDS_PROPLOCKED          "locked"
+    IDS_PROPPROPERTY        "Property"
+    IDS_PROPVALUE           "Value"
+    IDS_MENURENAME          "Re&name..."
+    IDS_MENUDESCRENAME      "Renames files / folders inside version control"
+    IDS_MENUREMOVE          "&Delete"
+    IDS_MENUDESCREMOVE      "Deletes files / folders from version control"
+    IDS_MENUUPDATEEXT       "&Update to revision..."
+    IDS_MENUDESCUPDATEEXT   "Updates the working copy to a specific revision"
+    IDS_COLTITLESTATUS      "SVN Status"
+    IDS_COLDESCSTATUS       "Status of item in SVN"
+    IDS_COLTITLEREV         "SVN Revision"
+    IDS_COLDESCREV          "Last saved revision of item"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUSHOWCHANGED     "Check for modi&fications"
+    IDS_MENUDESCSHOWCHANGED "Shows all files which were changed since the last update, locally and in the repository"
+    IDS_MENUIGNORE          "Add to &ignore list"
+    IDS_MENUDESCIGNORE      "Adds the selected file(s) or the filemask to the 'ignore' list"
+    IDS_STATUSINCOMPLETE    "incomplete"
+    IDS_STATUSIGNORED       "ignored"
+    IDS_DROPCOPYMENU        "SVN Copy versioned item(s) here"
+    IDS_PROPWAITCANCEL      "Please wait while cancelling..."
+    IDS_SETPROPTITLE        "Setting properties..."
+    IDS_MENUREPOBROWSE      "&Repo-browser"
+    IDS_MENUDESCREPOBROWSE  "Opens the repository browser to tweak the repository online"
+    IDS_MENUBLAME           "&Blame..."
+    IDS_STATUSEXTERNAL      "external"
+    IDS_MENUDESCBLAME       "Blames each line of a file on an author"
+    IDS_MENUCREATEPATCH     "Create &patch..."
+    IDS_MENUAPPLYPATCH      "Apply &patch..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUDIFF            "&Diff"
+    IDS_MENUDESCDIFF        "Compares the file with the last committed revision to show you the changes you made"
+    IDS_DROPCOPYADDMENU     "SVN Copy and add files to this WC"
+    IDS_DROPMOVEMENU        "SVN Move versioned item(s) here"
+    IDS_MENULOG             "Show &log"
+    IDS_MENUDESCLOG         "Shows the log for the selected file / folder"
+    IDS_COLTITLEURL         "SVN URL"
+    IDS_COLDESCURL          "URL of Subversion items"
+    IDS_COLTITLESHORTURL    "SVN short URL"
+    IDS_COLDESCSHORTURL     "Short URL of Subversion items"
+    IDS_MENUCONFLICT        "&Edit conflicts"
+    IDS_MENUDESCCONFLICT    "Launches the external diff / merge program to solve the conflicts"
+    IDS_MENURELOCATE        "Relo&cate..."
+    IDS_MENUDESCRELOCATE    "Use this if the URL of the repository has changed"
+    IDS_MENUHELP            "&Help"
+    IDS_MENUDESCHELP        "Read the 'Daily Use Guide' before you are stuck..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
+    IDS_MENUDESCAPPLYPATCH  "Applies a unified diff file to the working copy"
+    IDS_MENUMERGEALL        "Merge reintegrate..."
+    IDS_MENUDESCMERGEALL    "Merges all missing revisions back into the working copy using merge-tracking information"
+    IDS_MENUUNDOADD         "Undo Add.."
+    IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
+    IDS_MENUPREVDIFF        "&Diff with previous version"
+    IDS_MENUDESCPREVDIFF    "Diffs the working copy file with the one before the last commit."
+    IDS_COLTITLEMIMETYPE    "SVN mime-type"
+    IDS_COLDESCMIMETYPE     "Shows the mime type of the versioned file"
+    IDS_DROPEXPORTMENU      "SVN Export versioned items here"
+    IDS_DROPEXPORTEXTENDEDMENU "SVN Export all items here"
+    IDS_MENUIGNOREMULTIPLEMASK "Ignore items by &extension"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUCLIPPASTE       "&Paste"
+    IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
+    IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
+    IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
+    IDS_ERR_PROPNOMULTILINE "This property must not have multiple lines. Only one line is allowed."
+    IDS_MENUREVISIONGRAPH   "Revision &graph"
+    IDS_MENUDESCREVISIONGRAPH 
+                            "Shows a graphical representation of copies/tags/branches"
+    IDS_MENUUNIGNORE        "Remove from &ignore list"
+    IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DROPMOVERENAMEMENU  "SVN Move and rename versioned item here"
+    IDS_MENUPROPERTIES      "Properties"
+    IDS_MENUDESCPROPERTIES  "Manage Subversion properties"
+    IDS_COLTITLEEOLSTYLE    "SVN eol-style"
+    IDS_COLDESCEOLSTYLE     "Shows the eol-style property value"
+    IDS_MENUURLDIFF         "&Diff with URL"
+    IDS_MENUDESCURLDIFF     "Compares the selected file with a file in the repository"
+    IDS_PROPBIN             "(binary value)"
+    IDS_MENUDELUNVERSIONED  "Delete unversioned items..."
+    IDS_MENUDESCDELUNVERSIONED "Removes all unversioned and ignored items"
+    IDS_MENUREMOVEKEEP      "&Delete (keep local)"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENU_LOCK           "Get loc&k..."
+    IDS_MENU_UNLOCK         "Release loc&k"
+    IDS_MENUDESC_LOCK       "Locks a file for other users and makes it editable by you."
+    IDS_MENUDESC_UNLOCK     "Releases locks on files so other users can edit them again."
+    IDS_MENU_UNLOCKFORCE    "Break loc&k"
+    IDS_MENUDESC_UNLOCKFORCE 
+                            "Releases locks even if you're not the owner of the locks (breaks them)."
+    IDS_MENU_LOCKFORCE      "Steal loc&k"
+    IDS_COLTITLEOWNER       "SVN Local lock owner"
+    IDS_COLDESCOWNER        "The user who owns the lock of the file"
+    IDS_DROPCOPYRENAMEMENU  "SVN Copy and rename versioned item here"
+    IDS_COLTITLEAUTHOR      "SVN Author"
+    IDS_COLDESCAUTHOR       "The user who did the last commit"
+    IDS_FILEPROPONFOLDER    "You can't set this property on folders, only on files!\nIf you want to set it on all files within that folder,\nyou must activate the 'recursive' checkbox."
+    IDS_PROPSNOTSAVED       "You have modified properties without saving them first.\nDo you want to save them now?"
+    IDS_MENUADDASREPLACEMENT "Add (as replacement)..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUDESCREMOVEKEEP  "Deletes files / folders from version control but keeps the file"
+    IDS_YES                 "yes"
+    IDS_NO                  "no"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SVN_DEPTH_INFINITE  "Fully recursive"
+    IDS_SVN_DEPTH_IMMEDIATE "Immediate children, including folders"
+    IDS_SVN_DEPTH_FILES     "Only file children"
+    IDS_SVN_DEPTH_EMPTY     "Only this item"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SVN_DEPTH_UNKNOWN   "Unknown depth"
+    IDS_SVN_DEPTH_WORKING   "Working copy"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "resource.rc2"  // non-Microsoft Visual C++ edited resources
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

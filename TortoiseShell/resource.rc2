@@ -1,0 +1,9 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+#ifdef TSVNSHELL
+
+#include "..\\Resources\\TortoiseShell.rc2"  // non-Microsoft Visual C++ edited resources
+
+#endif
