@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   id="svg2183"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   version="1.0"
+   sodipodi:docbase="D:\Development\SVN\TortoiseSVN\src\Resources\svg\Overlays"
+   sodipodi:docname="UnversionedIcon.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="D:\Development\SVN\TortoiseSVN\src\Resources\svg\Overlays\UnversionedIcon.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs2185">
+    <linearGradient
+       id="linearGradient4154">
+      <stop
+         style="stop-color:#c8c8c8;stop-opacity:0.56470591;"
+         offset="0"
+         id="stop4156" />
+      <stop
+         style="stop-color:#646464;stop-opacity:1;"
+         offset="1"
+         id="stop4158" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4154"
+       id="radialGradient4162"
+       cx="47.119026"
+       cy="208.49529"
+       fx="47.119026"
+       fy="208.49529"
+       r="47.490459"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       id="filter3459">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2651633"
+         id="feGaussianBlur3461" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.375"
+     inkscape:cx="143.83462"
+     inkscape:cy="39.748835"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     width="256px"
+     height="256px"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1191"
+     inkscape:window-height="1067"
+     inkscape:window-x="523"
+     inkscape:window-y="29" />
+  <metadata
+     id="metadata2188">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <path
+       style="fill:#070d8b;fill-opacity:1;stroke:none;stroke-width:24.11530304;stroke-opacity:1;filter:url(#filter3459)"
+       d="M 48.055168,228.47128 L 87.079906,228.47128 L 87.079906,254.85144 L 48.055168,254.85144 L 48.055168,228.47128 z M 85.926476,213.20416 L 49.208601,213.20416 L 49.208601,197.20977 C 49.208535,190.21662 51.00276,184.46991 54.591308,179.96929 C 58.179725,175.46867 65.741145,170.24114 77.275668,164.28651 L 94.577256,155.04314 C 101.88227,151.37348 107.16885,147.91156 110.43708,144.6572 C 113.70502,141.40302 115.33907,138.07953 115.33921,134.68674 C 115.33907,128.52455 111.14182,123.53932 102.74748,119.73105 C 94.352876,115.92295 83.234996,114.01891 69.393802,114.01873 C 59.269082,114.01891 48.471613,115.23061 37.001363,117.65383 C 25.530982,120.0774 13.580048,123.60863 1.1485604,128.24751 L 1.1485604,108.72189 C 13.195559,104.77554 25.402797,101.83279 37.770307,99.894 C 50.137686,97.955388 62.92164,96.985993 76.122203,96.985816 C 99.703556,96.985993 118.63917,100.34422 132.92918,107.06015 C 147.21884,113.7766 154.36375,122.63923 154.36395,133.64804 C 154.36375,138.91049 152.05689,143.91292 147.44332,148.65567 C 142.82936,153.39877 134.7553,158.74754 123.22104,164.70199 L 106.30391,173.63375 C 100.28028,176.88811 96.018946,179.43275 93.519946,181.26749 C 91.020696,183.10241 89.258486,184.88522 88.233346,186.61627 C 87.464266,188.07027 86.887546,189.83588 86.503196,191.91293 C 86.118576,193.99015 85.926346,196.82903 85.926476,200.42939 L 85.926476,213.20416 z "
+       id="flowRoot2163" />
+  </g>
+</svg>
