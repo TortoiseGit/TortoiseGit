@@ -20,11 +20,11 @@
 #include "ShellExt.h"
 #include "guids.h"
 #include "PreserveChdir.h"
-#include "SVNProperties.h"
+//#include "SVNProperties.h"
 #include "UnicodeUtils.h"
-#include "SVNStatus.h"
+#include "GitStatus.h"
 #include "PathUtils.h"
-#include "..\TSVNCache\CacheInterface.h"
+//#include "..\TSVNCache\CacheInterface.h"
 
 
 const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
@@ -57,7 +57,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 0:	// SVN Status
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -72,7 +72,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 1:	// SVN Revision
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_I4;
 			psci->fmt = LVCFMT_RIGHT;
@@ -87,7 +87,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 2:	// SVN Url
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -102,7 +102,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 3:	// SVN Short Url
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -127,7 +127,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 5:	// SVN mime-type
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -142,7 +142,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 6:	// SVN Lock Owner
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -157,7 +157,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 7:	// SVN eol-style
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -172,7 +172,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 8:	// SVN Author
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
-			psci->scid.fmtid = CLSID_TortoiseSVN_UPTODATE;
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
 			psci->vt = VT_BSTR;
 			psci->fmt = LVCFMT_LEFT;
@@ -198,7 +198,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 	}
 	LoadLangDll();
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
-	if (pscid->fmtid == CLSID_TortoiseSVN_UPTODATE && pscid->pid < 8) 
+	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE && pscid->pid < 8) 
 	{
 		stdstring szInfo;
 		const TCHAR * path = (TCHAR *)pscd->wszFile;
@@ -211,16 +211,18 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 		{
 			case 0:	// SVN Status
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
-				SVNStatus::GetStatusString(g_hResInst, filestatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
+				GitStatus::GetStatusString(g_hResInst, filestatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
 				szInfo = buf;
 				break;
 			case 1:	// SVN Revision
+#if 0
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				if (columnrev >= 0)
 				{
 					V_VT(pvarData) = VT_I4;
 					V_I4(pvarData) = columnrev;
 				}
+#endif
 				return S_OK;
 				break;
 			case 2:	// SVN Url
@@ -232,6 +234,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 				szInfo = itemshorturl;
 				break;
 			case 5:	// SVN mime-type
+#if 0
 				if (cachetype == ShellCache::none)
 					return S_FALSE;
 				if (g_ShellCache.IsPathAllowed(path))
@@ -245,12 +248,14 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 						}
 					}
 				}
+#endif
 				break;
 			case 6:	// SVN Lock Owner
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				szInfo = owner;
 				break;
 			case 7:	// SVN eol-style
+#if 0
 				if (cachetype == ShellCache::none)
 					return S_FALSE;
 				if (g_ShellCache.IsPathAllowed(path))
@@ -264,6 +269,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 						}
 					}
 				}
+#endif
 				break;
 			default:
 				return S_FALSE;
@@ -319,6 +325,7 @@ STDMETHODIMP CShellExt::Initialize(LPCSHCOLUMNINIT psci)
 
 void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 {
+#if 0
 	PreserveChdir preserveChdir;
 	if (_tcscmp(path, columnfilepath.c_str())==0)
 		return;
@@ -341,7 +348,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			}
 			else
 			{
-				filestatus = svn_wc_status_none;
+				filestatus = git_wc_status_none;
 				columnauthor.clear();
 				columnrev = 0;
 				itemurl.clear();
@@ -361,9 +368,9 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 	case ShellCache::none:
 		{
 			if (g_ShellCache.HasSVNAdminDir(path, bIsDir))
-				filestatus = svn_wc_status_normal;
+				filestatus = git_wc_status_normal;
 			else
-				filestatus = svn_wc_status_none;
+				filestatus = git_wc_status_none;
 			columnauthor.clear();
 			columnrev = 0;
 			itemurl.clear();
@@ -457,5 +464,6 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 		CPathUtils::Unescape(url);
 		itemurl = UTF8ToWide(url);
 	}
+#endif
 }
 

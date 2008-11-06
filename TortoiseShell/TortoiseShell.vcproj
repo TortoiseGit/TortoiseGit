@@ -445,15 +445,15 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath="..\TSVNCache\CacheInterface.cpp"
-				>
-			</File>
-			<File
 				RelativePath="ColumnProvider.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\ContextMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GitAdminDir.cpp"
 				>
 			</File>
 			<File
@@ -478,10 +478,6 @@
 			</File>
 			<File
 				RelativePath="..\Utils\Registry.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RemoteCacheLink.cpp"
 				>
 			</File>
 			<File
@@ -533,43 +529,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Svn\SVNAdminDir.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNFolderStatus.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNGlobal.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\SVNHelpers.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNProperties.cpp"
-				>
-			</File>
-			<File
-				RelativePath="SVNPropertyPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNRev.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNStatus.cpp"
+				RelativePath=".\TGitPath.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\TortoiseSVN.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\TSVNPath.cpp"
 				>
 			</File>
 			<File
@@ -581,6 +545,14 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
+			<File
+				RelativePath=".\GitAdminDir.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GitStatus.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Globals.h"
 				>
@@ -638,39 +610,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Svn\SVNAdminDir.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNFolderStatus.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNGlobal.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\SVNHelpers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNProperties.h"
-				>
-			</File>
-			<File
-				RelativePath="SVNPropertyPage.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNRev.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNStatus.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\TSVNPath.h"
+				RelativePath=".\TGitPath.h"
 				>
 			</File>
 			<File
@@ -859,6 +799,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

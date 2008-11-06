@@ -23,7 +23,8 @@
 #include "resource.h"
 #include "ShellCache.h"
 #include "RemoteCacheLink.h"
-#include "SVNFolderStatus.h"
+#include "GitStatus.h"
+//#include "SVNFolderStatus.h"
 #include "uxtheme.h"
 
 extern	UINT				g_cRefThisDll;			// Reference count of this DLL.
@@ -33,7 +34,7 @@ extern	DWORD				g_langid;
 extern	DWORD				g_langTimeout;
 extern	HINSTANCE			g_hResInst;
 extern	stdstring			g_filepath;
-extern	svn_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
+extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
 extern  bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
 extern	bool				g_lockedoverlay;		///< whether to show the locked overlay or not
 
@@ -82,7 +83,7 @@ class CShellExt : public IContextMenu3,
 {
 protected:
 
-	enum SVNCommands
+	enum GitCommands
 	{
 		ShellSeparator = 0,
 		ShellSubMenu = 1,
@@ -152,7 +153,7 @@ protected:
 	// helper struct for context menu entries
 	typedef struct MenuInfo
 	{
-		SVNCommands			command;		///< the command which gets executed for this menu entry
+		GitCommands			command;		///< the command which gets executed for this menu entry
 		unsigned __int64	menuID;			///< the menu ID to recognize the entry. NULL if it shouldn't be added to the context menu automatically
 		UINT				iconID;			///< the icon to show for the menu entry
 		UINT				menuTextID;		///< the text of the menu entry
@@ -194,11 +195,11 @@ protected:
 	stdstring itemshorturl;
 	stdstring ignoredprops;
 	stdstring owner;
-	svn_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
-	svn_wc_status_kind	filestatus;
+//	git_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
+	git_wc_status_kind	filestatus;
 	std::map<UINT, HBITMAP> bitmaps;
 
-	SVNFolderStatus		m_CachedStatus;		// status cache
+//	SVNFolderStatus		m_CachedStatus;		// status cache
 	CRemoteCacheLink	m_remoteCacheLink;
 
 	FN_GetBufferedPaintBits pfnGetBufferedPaintBits;
@@ -207,7 +208,7 @@ protected:
 
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, sizeof(stringtablebuffer)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
 private:
-	void			InsertSVNMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, SVNCommands com, UINT uFlags);
+	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
 	void			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons);
 	stdstring		WriteFileListToTempFile();
 	bool			WriteClipboardPathsToTempFile(stdstring& tempfile);

@@ -19,18 +19,20 @@
 #include "StdAfx.h"
 #include "Remotecachelink.h"
 #include "ShellExt.h"
-#include "..\TSVNCache\CacheInterface.h"
-#include "TSVNPath.h"
+//#include "..\TSVNCache\CacheInterface.h"
+//#include "TSVNPath.h"
+#define GetCachePipeName() _T("HH")
+#define GetCacheCommandPipeName() _T("CC")
 
 CRemoteCacheLink::CRemoteCacheLink(void) 
 	: m_hPipe(INVALID_HANDLE_VALUE)
 	, m_hCommandPipe(INVALID_HANDLE_VALUE)
 {
-	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));
-	m_dummyStatus.text_status = svn_wc_status_none;
-	m_dummyStatus.prop_status = svn_wc_status_none;
-	m_dummyStatus.repos_text_status = svn_wc_status_none;
-	m_dummyStatus.repos_prop_status = svn_wc_status_none;
+//	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));
+//	m_dummyStatus.text_status = svn_wc_status_none;
+//	m_dummyStatus.prop_status = svn_wc_status_none;
+//	m_dummyStatus.repos_text_status = svn_wc_status_none;
+//	m_dummyStatus.repos_prop_status = svn_wc_status_none;
 	m_lastTimeout = 0;
 	m_critSec.Init();
 }
@@ -191,7 +193,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 	{
 		// now tell the cache we don't need it's command thread anymore
 		DWORD cbWritten; 
-		TSVNCacheCommand cmd;
+/*		TSVNCacheCommand cmd;
 		SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
 		cmd.command = TSVNCACHECOMMAND_END;
 		WriteFile( 
@@ -203,6 +205,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 		DisconnectNamedPipe(m_hCommandPipe); 
 		CloseHandle(m_hCommandPipe); 
 		m_hCommandPipe = INVALID_HANDLE_VALUE;
+*/
 	}
 }
 

@@ -49,14 +49,14 @@
 #pragma warning(pop)
 
 #pragma warning(push)
-#include "apr_general.h"
-#include "svn_pools.h"
-#include "svn_client.h"
-#include "svn_path.h"
-#include "svn_wc.h"
-#include "svn_utf.h"
-#include "svn_config.h"
-#include "svn_subst.h"
+//#include "apr_general.h"
+//#include "git_pools.h"
+//#include "git_client.h"
+//#include "git_path.h"
+//#include "git_wc.h"
+//#include "git_utf.h"
+//#include "git_config.h"
+//#include "git_subst.h"
 #pragma warning(pop)
 
 #define CSTRING_AVAILABLE

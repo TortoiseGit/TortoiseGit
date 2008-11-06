@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// ToroiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - Stefan Kueng
 
@@ -19,7 +19,7 @@
 #pragma once
 #include "registry.h"
 #include "Globals.h"
-#include "SVNAdminDir.h"
+#include "GitAdminDir.h"
 
 #define REGISTRYTIMEOUT 2000
 #define EXCLUDELISTTIMEOUT 5000
@@ -46,24 +46,24 @@ public:
 	};
 	ShellCache()
 	{
-		cachetype = CRegStdWORD(_T("Software\\TortoiseSVN\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
-		showrecursive = CRegStdWORD(_T("Software\\TortoiseSVN\\RecursiveOverlay"), TRUE);
-		folderoverlay = CRegStdWORD(_T("Software\\TortoiseSVN\\FolderOverlay"), TRUE);
-		driveremote = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskRemote"));
-		drivefixed = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskFixed"), TRUE);
-		drivecdrom = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskCDROM"));
-		driveremove = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskRemovable"));
-		drivefloppy = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskFloppy"));
-		driveram = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskRAM"));
-		driveunknown = CRegStdWORD(_T("Software\\TortoiseSVN\\DriveMaskUnknown"));
-		excludelist = CRegStdString(_T("Software\\TortoiseSVN\\OverlayExcludeList"));
-		includelist = CRegStdString(_T("Software\\TortoiseSVN\\OverlayIncludeList"));
-		simplecontext = CRegStdWORD(_T("Software\\TortoiseSVN\\SimpleContext"), FALSE);
-		unversionedasmodified = CRegStdWORD(_T("Software\\TortoiseSVN\\UnversionedAsModified"), FALSE);
-		showunversionedoverlay = CRegStdWORD(_T("Software\\TortoiseSVN\\ShowUnversionedOverlay"), TRUE);
-		showignoredoverlay = CRegStdWORD(_T("Software\\TortoiseSVN\\ShowIgnoredOverlay"), TRUE);
-		getlocktop = CRegStdWORD(_T("Software\\TortoiseSVN\\GetLockTop"), TRUE);
-		excludedasnormal = CRegStdWORD(_T("Software\\TortoiseSVN\\ShowExcludedAsNormal"), TRUE);
+		cachetype = CRegStdWORD(_T("Software\\ToroiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
+		showrecursive = CRegStdWORD(_T("Software\\ToroiseGit\\RecursiveOverlay"), TRUE);
+		folderoverlay = CRegStdWORD(_T("Software\\ToroiseGit\\FolderOverlay"), TRUE);
+		driveremote = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskRemote"));
+		drivefixed = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskFixed"), TRUE);
+		drivecdrom = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskCDROM"));
+		driveremove = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskRemovable"));
+		drivefloppy = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskFloppy"));
+		driveram = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskRAM"));
+		driveunknown = CRegStdWORD(_T("Software\\ToroiseGit\\DriveMaskUnknown"));
+		excludelist = CRegStdString(_T("Software\\ToroiseGit\\OverlayExcludeList"));
+		includelist = CRegStdString(_T("Software\\ToroiseGit\\OverlayIncludeList"));
+		simplecontext = CRegStdWORD(_T("Software\\ToroiseGit\\SimpleContext"), FALSE);
+		unversionedasmodified = CRegStdWORD(_T("Software\\ToroiseGit\\UnversionedAsModified"), FALSE);
+		showunversionedoverlay = CRegStdWORD(_T("Software\\ToroiseGit\\ShowUnversionedOverlay"), TRUE);
+		showignoredoverlay = CRegStdWORD(_T("Software\\ToroiseGit\\ShowIgnoredOverlay"), TRUE);
+		getlocktop = CRegStdWORD(_T("Software\\ToroiseGit\\GetLockTop"), TRUE);
+		excludedasnormal = CRegStdWORD(_T("Software\\ToroiseGit\\ShowExcludedAsNormal"), TRUE);
 		cachetypeticker = GetTickCount();
 		recursiveticker = cachetypeticker;
 		folderoverlayticker = cachetypeticker;
@@ -82,15 +82,15 @@ public:
 		getlocktopticker = cachetypeticker;
 		excludedasnormalticker = cachetypeticker;
 		excontextticker = cachetypeticker;
-		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseSVN\\ContextMenuEntries"), MENUCHECKOUT | MENUUPDATE | MENUCOMMIT);
-		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseSVN\\ContextMenuEntrieshigh"), 0);
-		menumasklow_lm = CRegStdWORD(_T("Software\\TortoiseSVN\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumaskhigh_lm = CRegStdWORD(_T("Software\\TortoiseSVN\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumasklow_cu = CRegStdWORD(_T("Software\\TortoiseSVN\\ContextMenuEntriesMaskLow"), 0);
-		menumaskhigh_cu = CRegStdWORD(_T("Software\\TortoiseSVN\\ContextMenuEntriesMaskHigh"), 0);
-		langid = CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), 1033);
-		blockstatus = CRegStdWORD(_T("Software\\TortoiseSVN\\BlockStatus"), 0);
-		columnseverywhere = CRegStdWORD(_T("Software\\TortoiseSVN\\ColumnsEveryWhere"), FALSE);
+		menulayoutlow = CRegStdWORD(_T("Software\\ToroiseGit\\ContextMenuEntries"), MENUCHECKOUT | MENUUPDATE | MENUCOMMIT);
+		menulayouthigh = CRegStdWORD(_T("Software\\ToroiseGit\\ContextMenuEntrieshigh"), 0);
+		menumasklow_lm = CRegStdWORD(_T("Software\\ToroiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
+		menumaskhigh_lm = CRegStdWORD(_T("Software\\ToroiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
+		menumasklow_cu = CRegStdWORD(_T("Software\\ToroiseGit\\ContextMenuEntriesMaskLow"), 0);
+		menumaskhigh_cu = CRegStdWORD(_T("Software\\ToroiseGit\\ContextMenuEntriesMaskHigh"), 0);
+		langid = CRegStdWORD(_T("Software\\ToroiseGit\\LanguageID"), 1033);
+		blockstatus = CRegStdWORD(_T("Software\\ToroiseGit\\BlockStatus"), 0);
+		columnseverywhere = CRegStdWORD(_T("Software\\ToroiseGit\\ColumnsEveryWhere"), FALSE);
 		for (int i=0; i<27; i++)
 		{
 			drivetypecache[i] = (UINT)-1;
@@ -110,7 +110,7 @@ public:
 		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_INEGNUMBER, &szBuffer[0], sizeof(szBuffer));
 		columnrevformat.NegativeOrder = _ttoi(szBuffer);
 		sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
-		nocontextpaths = CRegStdString(_T("Software\\TortoiseSVN\\NoContextPaths"), _T(""));
+		nocontextpaths = CRegStdString(_T("Software\\ToroiseGit\\NoContextPaths"), _T(""));
 		m_critSec.Init();
 	}
 	void ForceRefresh()
@@ -458,7 +458,7 @@ public:
 				return iter->second;
 			}
 		}
-		BOOL hasAdminDir = g_SVNAdminDir.HasAdminDir(buf, true);
+		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf, true);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
 		admindircache[buf] = hasAdminDir;

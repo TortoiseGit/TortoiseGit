@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,8 +21,9 @@
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
-#include "SVNProperties.h"
-#include "SVNStatus.h"
+//#include "GitProperties.h"
+#include "GitStatus.h"
+#include "TGitPath.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
 #define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
@@ -192,6 +193,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
                                    LPDATAOBJECT pDataObj,
                                    HKEY /* hRegKey */)
 {
+#if 0
 	ATLTRACE("Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
 	files_.clear();
@@ -201,7 +203,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	itemStates = 0;
 	itemStatesFolder = 0;
 	stdstring statuspath;
-	svn_wc_status_kind fetchedstatus = svn_wc_status_none;
+	git_wc_status_kind fetchedstatus = git_wc_status_none;
 	// get selected files/folders
 	if (pDataObj)
 	{
@@ -255,7 +257,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					{
 						if (itemStates & ITEMIS_ONLYONE)
 						{
-							CTSVNPath strpath;
+							CTGitPath strpath;
 							strpath.SetFromWin(str.c_str());
 							itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".diff"))==0) ? ITEMIS_PATCHFILE : 0;
 							itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".patch"))==0) ? ITEMIS_PATCHFILE : 0;
@@ -264,25 +266,25 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 						if (i == 0)
 						{
 							//get the Subversion status of the item
-							svn_wc_status_kind status = svn_wc_status_none;
-							CTSVNPath askedpath;
+							git_wc_status_kind status = git_wc_status_none;
+							CTGitPath askedpath;
 							askedpath.SetFromWin(str.c_str());
 							try
 							{
-								SVNStatus stat;
-								stat.GetStatus(CTSVNPath(str.c_str()), false, true, true);
+								GitStatus stat;
+								//stat.GetStatus(CTGitPath(str.c_str()), false, true, true);
 								if (stat.status)
 								{
 									statuspath = str;
-									status = SVNStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+									status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 									fetchedstatus = status;
 									if ((stat.status->entry)&&(stat.status->entry->lock_token))
 										itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-									if ((stat.status->entry)&&(stat.status->entry->kind == svn_node_dir))
+									if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 									{
 										itemStates |= ITEMIS_FOLDER;
-										if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
-											itemStates |= ITEMIS_FOLDERINSVN;
+										if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+											itemStates |= ITEMIS_FOLDERINGit;
 									}
 									if ((stat.status->entry)&&(stat.status->entry->present_props))
 									{
@@ -294,28 +296,28 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 								else
 								{
-									// sometimes, svn_client_status() returns with an error.
+									// sometimes, git_client_status() returns with an error.
 									// in that case, we have to check if the working copy is versioned
 									// anyway to show the 'correct' context menu
 									if (askedpath.HasAdminDir())
-										status = svn_wc_status_normal;
+										status = git_wc_status_normal;
 								}
 							}
 							catch ( ... )
 							{
-								ATLTRACE2(_T("Exception in SVNStatus::GetAllStatus()\n"));
+								ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
 							}
-							if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
-								itemStates |= ITEMIS_INSVN;
-							if (status == svn_wc_status_ignored)
+							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+								itemStates |= ITEMIS_INGit;
+							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
-							if (status == svn_wc_status_normal)
+							if (status == git_wc_status_normal)
 								itemStates |= ITEMIS_NORMAL;
-							if (status == svn_wc_status_conflicted)
+							if (status == git_wc_status_conflicted)
 								itemStates |= ITEMIS_CONFLICTED;
-							if (status == svn_wc_status_added)
+							if (status == git_wc_status_added)
 								itemStates |= ITEMIS_ADDED;
-							if (status == svn_wc_status_deleted)
+							if (status == git_wc_status_deleted)
 								itemStates |= ITEMIS_DELETED;
 						}
 					}
@@ -338,42 +340,42 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(str.c_str())))
 					{
 						//check if our menu is requested for a subversion admin directory
-						if (g_SVNAdminDir.IsAdminDirPath(str.c_str()))
+						if (g_GitAdminDir.IsAdminDirPath(str.c_str()))
 							continue;
 
 						files_.push_back(str);
-						CTSVNPath strpath;
+						CTGitPath strpath;
 						strpath.SetFromWin(str.c_str());
 						itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".diff"))==0) ? ITEMIS_PATCHFILE : 0;
 						itemStates |= (strpath.GetFileExtension().CompareNoCase(_T(".patch"))==0) ? ITEMIS_PATCHFILE : 0;
 						if (!statfetched)
 						{
 							//get the Subversion status of the item
-							svn_wc_status_kind status = svn_wc_status_none;
+							git_wc_status_kind status = git_wc_status_none;
 							if ((g_ShellCache.IsSimpleContext())&&(strpath.IsDirectory()))
 							{
 								if (strpath.HasAdminDir())
-									status = svn_wc_status_normal;
+									status = git_wc_status_normal;
 							}
 							else
 							{
 								try
 								{
-									SVNStatus stat;
+									GitStatus stat;
 									if (strpath.HasAdminDir())
 										stat.GetStatus(strpath, false, true, true);
 									statuspath = str;
 									if (stat.status)
 									{
-										status = SVNStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+										status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 										fetchedstatus = status;
 										if ((stat.status->entry)&&(stat.status->entry->lock_token))
 											itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-										if ((stat.status->entry)&&(stat.status->entry->kind == svn_node_dir))
+										if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 										{
 											itemStates |= ITEMIS_FOLDER;
-											if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
-												itemStates |= ITEMIS_FOLDERINSVN;
+											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+												itemStates |= ITEMIS_FOLDERINGit;
 										}
 										if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
 											itemStates |= ITEMIS_CONFLICTED;
@@ -387,12 +389,12 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									}	
 									else
 									{
-										// sometimes, svn_client_status() returns with an error.
+										// sometimes, git_client_status() returns with an error.
 										// in that case, we have to check if the working copy is versioned
 										// anyway to show the 'correct' context menu
 										if (strpath.HasAdminDir())
 										{
-											status = svn_wc_status_normal;
+											status = git_wc_status_normal;
 											fetchedstatus = status;
 										}
 									}
@@ -400,17 +402,17 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 								catch ( ... )
 								{
-									ATLTRACE2(_T("Exception in SVNStatus::GetAllStatus()\n"));
+									ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
 								}
 							}
-							if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
-								itemStates |= ITEMIS_INSVN;
-							if (status == svn_wc_status_ignored)
+							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+								itemStates |= ITEMIS_INGit;
+							if (status == git_wc_status_ignored)
 							{
 								itemStates |= ITEMIS_IGNORED;
 								// the item is ignored. Get the svn:ignored properties so we can (maybe) later
 								// offer a 'remove from ignored list' entry
-								SVNProperties props(strpath.GetContainingDirectory(), false);
+								GitProperties props(strpath.GetContainingDirectory(), false);
 								ignoredprops.empty();
 								for (int p=0; p<props.GetCount(); ++p)
 								{
@@ -424,25 +426,25 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									}
 								}
 							}
-							if (status == svn_wc_status_normal)
+							if (status == git_wc_status_normal)
 								itemStates |= ITEMIS_NORMAL;
-							if (status == svn_wc_status_conflicted)
+							if (status == git_wc_status_conflicted)
 								itemStates |= ITEMIS_CONFLICTED;
-							if (status == svn_wc_status_added)
+							if (status == git_wc_status_added)
 								itemStates |= ITEMIS_ADDED;
-							if (status == svn_wc_status_deleted)
+							if (status == git_wc_status_deleted)
 								itemStates |= ITEMIS_DELETED;
 						}
 					}
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-				if (g_ShellCache.HasSVNAdminDir(child.toString().c_str(), FALSE))
+				if (g_ShellCache.HasGitAdminDir(child.toString().c_str(), FALSE))
 					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 				GlobalUnlock(medium.hGlobal);
 
 				// if the item is a versioned folder, check if there's a patch file
 				// in the clipboard to be used in "Apply Patch"
-				UINT cFormatDiff = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+				UINT cFormatDiff = RegisterClipboardFormat(_T("Tgit_UNIFIEDDIFF"));
 				if (cFormatDiff)
 				{
 					if (IsClipboardFormatAvailable(cFormatDiff)) 
@@ -466,20 +468,20 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	{
 		ItemIDList list(pIDFolder);
 		folder_ = list.toString();
-		svn_wc_status_kind status = svn_wc_status_none;
+		git_wc_status_kind status = git_wc_status_none;
 		if (IsClipboardFormatAvailable(CF_HDROP)) 
 			itemStatesFolder |= ITEMIS_PATHINCLIPBOARD;
 		if ((folder_.compare(statuspath)!=0)&&(g_ShellCache.IsContextPathAllowed(folder_.c_str())))
 		{
-			CTSVNPath askedpath;
+			CTGitPath askedpath;
 			askedpath.SetFromWin(folder_.c_str());
 			try
 			{
-				SVNStatus stat;
-				stat.GetStatus(CTSVNPath(folder_.c_str()), false, true, true);
+				GitStatus stat;
+				stat.GetStatus(CTGitPath(folder_.c_str()), false, true, true);
 				if (stat.status)
 				{
-					status = SVNStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+					status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 					if ((stat.status->entry)&&(stat.status->entry->lock_token))
 						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
 					if ((stat.status->entry)&&(stat.status->entry->present_props))
@@ -489,40 +491,40 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 					if ((stat.status->entry)&&(stat.status->entry->uuid))
 						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-					if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
-						itemStatesFolder |= ITEMIS_INSVN;
-					if (status == svn_wc_status_normal)
+					if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+						itemStatesFolder |= ITEMIS_INGit;
+					if (status == git_wc_status_normal)
 						itemStatesFolder |= ITEMIS_NORMAL;
-					if (status == svn_wc_status_conflicted)
+					if (status == git_wc_status_conflicted)
 						itemStatesFolder |= ITEMIS_CONFLICTED;
-					if (status == svn_wc_status_added)
+					if (status == git_wc_status_added)
 						itemStatesFolder |= ITEMIS_ADDED;
-					if (status == svn_wc_status_deleted)
+					if (status == git_wc_status_deleted)
 						itemStatesFolder |= ITEMIS_DELETED;
 				}
 				else
 				{
-					// sometimes, svn_client_status() returns with an error.
+					// sometimes, git_client_status() returns with an error.
 					// in that case, we have to check if the working copy is versioned
 					// anyway to show the 'correct' context menu
 					if (askedpath.HasAdminDir())
-						status = svn_wc_status_normal;
+						status = git_wc_status_normal;
 				}
 			}
 			catch ( ... )
 			{
-				ATLTRACE2(_T("Exception in SVNStatus::GetAllStatus()\n"));
+				ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
 			}
 		}
 		else
 		{
 			status = fetchedstatus;
 		}
-		if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
+		if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 		{
-			itemStatesFolder |= ITEMIS_FOLDERINSVN;
+			itemStatesFolder |= ITEMIS_FOLDERINGit;
 		}
-		if (status == svn_wc_status_ignored)
+		if (status == git_wc_status_ignored)
 			itemStatesFolder |= ITEMIS_IGNORED;
 		itemStatesFolder |= ITEMIS_FOLDER;
 		if (files_.size() == 0)
@@ -540,18 +542,18 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			if (PathIsDirectory(files_.front().c_str()))
 			{
 				folder_ = files_.front();
-				svn_wc_status_kind status = svn_wc_status_none;
+				git_wc_status_kind status = git_wc_status_none;
 				if (folder_.compare(statuspath)!=0)
 				{
-					CTSVNPath askedpath;
+					CTGitPath askedpath;
 					askedpath.SetFromWin(folder_.c_str());
 					try
 					{
-						SVNStatus stat;
-						stat.GetStatus(CTSVNPath(folder_.c_str()), false, true, true);
+						GitStatus stat;
+						stat.GetStatus(CTGitPath(folder_.c_str()), false, true, true);
 						if (stat.status)
 						{
-							status = SVNStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 							if ((stat.status->entry)&&(stat.status->entry->lock_token))
 								itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
 							if ((stat.status->entry)&&(stat.status->entry->present_props))
@@ -565,30 +567,30 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 					catch ( ... )
 					{
-						ATLTRACE2(_T("Exception in SVNStatus::GetAllStatus()\n"));
+						ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
 					}
 				}
 				else
 				{
 					status = fetchedstatus;
 				}
-				if ((status != svn_wc_status_unversioned)&&(status != svn_wc_status_ignored)&&(status != svn_wc_status_none))
-					itemStates |= ITEMIS_FOLDERINSVN;
-				if (status == svn_wc_status_ignored)
+				if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+					itemStates |= ITEMIS_FOLDERINGit;
+				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
 				itemStates |= ITEMIS_FOLDER;
-				if (status == svn_wc_status_added)
+				if (status == git_wc_status_added)
 					itemStates |= ITEMIS_ADDED;
-				if (status == svn_wc_status_deleted)
+				if (status == git_wc_status_deleted)
 					itemStates |= ITEMIS_DELETED;
 			}
 		}
 	}
-		
+#endif		
 	return NOERROR;
 }
 
-void CShellExt::InsertSVNMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, SVNCommands com, UINT uFlags)
+void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags)
 {
 	TCHAR menutextbuffer[255] = {0};
 	TCHAR verbsbuffer[255] = {0};
@@ -596,9 +598,9 @@ void CShellExt::InsertSVNMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 	if (istop)
 	{
-		//menu entry for the top context menu, so append an "SVN " before
+		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
-		_tcscpy_s(menutextbuffer, 255, _T("SVN "));
+		_tcscpy_s(menutextbuffer, 255, _T("Git "));
 	}
 	_tcscat_s(menutextbuffer, 255, stringtablebuffer);
 	if ((fullver < 0x500)||(fullver == 0x500 && !uFlags))
@@ -628,9 +630,9 @@ void CShellExt::InsertSVNMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 	if (istop)
 	{
-		//menu entry for the top context menu, so append an "SVN " before
+		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
-		_tcscpy_s(menutextbuffer, 255, _T("SVN "));
+		_tcscpy_s(menutextbuffer, 255, _T("Git "));
 	}
 	LoadString(g_hResInst, stringid, verbsbuffer, sizeof(verbsbuffer));
 	_tcscat_s(menutextbuffer, 255, verbsbuffer);
@@ -847,45 +849,45 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	//if they are versioned, they also can be exported to an unversioned location
 	UINT idCmd = idCmdFirst;
 
-	// SVN move here
+	// Git move here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
 	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&((itemStates & ITEMIS_INSVN)&&((~itemStates) & ITEMIS_ADDED)))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVEMENU, 0, idCmdFirst, ShellMenuDropMove, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVEMENU, 0, idCmdFirst, ShellMenuDropMove, uFlags);
 
-	// SVN move and rename here
+	// Git move and rename here
 	// available if source is a single, versioned but not added item, target is versioned, source and target from same repository or target folder is added
 	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&(itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVERENAMEMENU, 0, idCmdFirst, ShellMenuDropMoveRename, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVERENAMEMENU, 0, idCmdFirst, ShellMenuDropMoveRename, uFlags);
 
-	// SVN copy here
+	// Git copy here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
 	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&(itemStates & ITEMIS_INSVN)&&((~itemStates) & ITEMIS_ADDED))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYMENU, 0, idCmdFirst, ShellMenuDropCopy, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYMENU, 0, idCmdFirst, ShellMenuDropCopy, uFlags);
 
-	// SVN copy and rename here, source and target from same repository
+	// Git copy and rename here, source and target from same repository
 	// available if source is a single, versioned but not added item, target is versioned or target folder is added
 	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&(itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYRENAMEMENU, 0, idCmdFirst, ShellMenuDropCopyRename, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYRENAMEMENU, 0, idCmdFirst, ShellMenuDropCopyRename, uFlags);
 
-	// SVN add here
+	// Git add here
 	// available if target is versioned and source is either unversioned or from another repository
 	if ((itemStatesFolder & ITEMIS_FOLDERINSVN)&&(((~itemStates) & ITEMIS_INSVN)||!bSourceAndTargetFromSameRepository))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
 
-	// SVN export here
+	// Git export here
 	// available if source is versioned and a folder
 	if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTMENU, 0, idCmdFirst, ShellMenuDropExport, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTMENU, 0, idCmdFirst, ShellMenuDropExport, uFlags);
 
-	// SVN export all here
+	// Git export all here
 	// available if source is versioned and a folder
 	if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTEXTENDEDMENU, 0, idCmdFirst, ShellMenuDropExportExtended, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTEXTENDEDMENU, 0, idCmdFirst, ShellMenuDropExportExtended, uFlags);
 
 	// apply patch
 	// available if source is a patchfile
 	if (itemStates & ITEMIS_PATCHFILE)
-		InsertSVNMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUAPPLYPATCH, 0, idCmdFirst, ShellMenuApplyPatch, uFlags);
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUAPPLYPATCH, 0, idCmdFirst, ShellMenuApplyPatch, uFlags);
 
 	// separator
 	if (idCmd != idCmdFirst)
@@ -962,7 +964,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	}
 
 	//check if our menu is requested for a subversion admin directory
-	if (g_SVNAdminDir.IsAdminDirPath(folder_.c_str()))
+	if (g_GitAdminDir.IsAdminDirPath(folder_.c_str()))
 		return NOERROR;
 
 	if (uFlags & CMF_EXTENDEDVERBS)
@@ -976,7 +978,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 		// It would only show the standard menu items
 		// which are already shown for the lnk-file.
 		CString path = files_.front().c_str();
-		if ( !g_SVNAdminDir.HasAdminDir(path) )
+		if ( !g_GitAdminDir.HasAdminDir(path) )
 		{
 			return NOERROR;
 		}
@@ -1016,7 +1018,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	bool bMenuEntryAdded = false;
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
-	bool bShowIcons = !!DWORD(CRegStdWORD(_T("Software\\TortoiseSVN\\ShowContextMenuIcons"), TRUE));
+	bool bShowIcons = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
 	if (fullver <= 0x0500)
 		bShowIcons = false;
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
@@ -1111,7 +1113,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 								bIsTop = true;
 						}
 						// insert the menu entry
-						InsertSVNMenu(	bIsTop,
+						InsertGitMenu(	bIsTop,
 										bIsTop ? hMenu : subMenu,
 										bIsTop ? indexMenu++ : indexSubMenu++,
 										idCmd++,
@@ -1231,8 +1233,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			memset(&startup, 0, sizeof(startup));
 			startup.cb = sizeof(startup);
 			memset(&process, 0, sizeof(process));
-			CRegStdString tortoiseProcPath(_T("Software\\TortoiseSVN\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-			CRegStdString tortoiseMergePath(_T("Software\\TortoiseSVN\\TMergePath"), _T("TortoiseMerge.exe"), false, HKEY_LOCAL_MACHINE);
+			CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+			CRegStdString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T("TortoiseMerge.exe"), false, HKEY_LOCAL_MACHINE);
 
 			//TortoiseProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
@@ -1594,7 +1596,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					// if there's a patch file in the clipboard, we save it
 					// to a temporary file and tell TortoiseMerge to use that one
-					UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+					UINT cFormat = RegisterClipboardFormat(_T("Tgit_UNIFIEDDIFF"));
 					if ((cFormat)&&(OpenClipboard(NULL)))
 					{ 
 						HGLOBAL hglb = GetClipboardData(cFormat); 
@@ -1807,7 +1809,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 	int menuIndex = 0;
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
-		if (menuInfo[menuIndex].command == (SVNCommands)id_it->second)
+		if (menuInfo[menuIndex].command == (GitCommands)id_it->second)
 		{
 			MAKESTRING(menuInfo[menuIndex].menuDescID);
 			break;
@@ -2008,7 +2010,7 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 				space = ((layout & MENULOCK) || ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop())) ? 0 : 6;
 				if ((layout & MENULOCK) || ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop()))
 				{
-					_tcscpy_s(textbuf, 255, _T("SVN "));
+					_tcscpy_s(textbuf, 255, _T("Git "));
 					_tcscat_s(textbuf, 255, stringtablebuffer);
 					_tcscpy_s(stringtablebuffer, 255, textbuf);
 				}
@@ -2025,7 +2027,7 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 				space = layout & menuInfo[menuIndex].menuID ? 0 : 6;
 				if (layout & (menuInfo[menuIndex].menuID)) 
 				{
-					_tcscpy_s(textbuf, 255, _T("SVN "));
+					_tcscpy_s(textbuf, 255, _T("Git "));
 					_tcscat_s(textbuf, 255, stringtablebuffer);
 					_tcscpy_s(stringtablebuffer, 255, textbuf);
 				}

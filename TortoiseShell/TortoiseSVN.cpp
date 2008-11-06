@@ -20,7 +20,7 @@
 #include "ShellExt.h"
 #include "Guids.h"
 #include "ShellExtClassFactory.h"
-#include "svn_dso.h"
+//#include "git_dso.h"
 
 UINT				g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = NULL;			///< handle to this DLL itself.
@@ -30,7 +30,7 @@ DWORD				g_langid;
 DWORD				g_langTimeout = 0;
 HINSTANCE			g_hResInst = NULL;
 stdstring			g_filepath;
-svn_wc_status_kind	g_filestatus = svn_wc_status_none;	///< holds the corresponding status to the file/dir above
+//git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above
 bool				g_readonlyoverlay = false;
 bool				g_lockedoverlay = false;
 
@@ -109,8 +109,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 			}
 			while (g_cAprInit--)
 			{
-				g_SVNAdminDir.Close();
-				apr_terminate();
+				g_GitAdminDir.Close();
+//				apr_terminate();
 			}
 		}
 		g_csGlobalCOMGuard.Term();
@@ -128,34 +128,34 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
     *ppvOut = NULL;
 	
     FileState state = FileStateInvalid;
-    if (IsEqualIID(rclsid, CLSID_TortoiseSVN_UPTODATE))
+    if (IsEqualIID(rclsid, CLSID_Tortoisegit_UPTODATE))
         state = FileStateVersioned;
-    else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_MODIFIED))
+    else if (IsEqualIID(rclsid, CLSID_Tortoisegit_MODIFIED))
         state = FileStateModified;
-    else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_CONFLICTING))
+    else if (IsEqualIID(rclsid, CLSID_Tortoisegit_CONFLICTING))
         state = FileStateConflict;
-    else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_UNCONTROLLED))
+    else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNCONTROLLED))
         state = FileStateUncontrolled;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_DROPHANDLER))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_DROPHANDLER))
 		state = FileStateDropHandler;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_DELETED))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_DELETED))
 		state = FileStateDeleted;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_READONLY))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_READONLY))
 		state = FileStateReadOnly;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_LOCKED))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_LOCKED))
 		state = FileStateLockedOverlay;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_ADDED))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_ADDED))
 		state = FileStateAddedOverlay;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_IGNORED))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_IGNORED))
 		state = FileStateIgnoredOverlay;
-	else if (IsEqualIID(rclsid, CLSID_TortoiseSVN_UNVERSIONED))
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNVERSIONED))
 		state = FileStateUnversionedOverlay;
 	
     if (state != FileStateInvalid)
     {
-		apr_initialize();
-		svn_dso_initialize2();
-		g_SVNAdminDir.Init();
+//		apr_initialize();
+//		git_dso_initialize2();
+//		g_SVNAdminDir.Init();
 		g_cAprInit++;
 		
 		CShellExtClassFactory *pcf = new CShellExtClassFactory(state);

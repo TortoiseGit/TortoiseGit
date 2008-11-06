@@ -25,8 +25,8 @@
 #include "Guids.h"
 
 #include "ShellExt.h"
-#include "..\version.h"
-#include "libintl.h"
+//#include "..\version.h"
+//#include "libintl.h"
 #undef swprintf
 
 std::set<CShellExt *> g_exts;
@@ -104,7 +104,7 @@ void LoadLangDll()
 		if (dirpointA)
 			*dirpointA = 0;
 		strcat_s(langdirA, MAX_PATH, "\\Languages");
-		bindtextdomain ("subversion", langdirA);
+//		bindtextdomain ("subversion", langdirA);
 
 		do
 		{
@@ -154,7 +154,7 @@ void LoadLangDll()
 								(LPVOID *)&lpVersion,
 								&nInfoSize))
 							{
-								versionmatch = (_tcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
+//								versionmatch = (_tcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
 							}
 
 						}
@@ -268,7 +268,7 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 // IPersistFile members
 STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid) 
 {
-    *pclsid = CLSID_TortoiseSVN_UNCONTROLLED;
+    *pclsid = CLSID_Tortoisegit_UNCONTROLLED;
     return S_OK;
 }
 
@@ -283,7 +283,7 @@ UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*
 	if (wFunc == FO_COPY)
 		return IDYES;	// copying is not a problem for us
 
-	m_remoteCacheLink.ReleaseLockForPath(CTSVNPath(pszSrcFile));
+//	m_remoteCacheLink.ReleaseLockForPath(CTSVNPath(pszSrcFile));
 	// we could now wait a little bit to give the cache time to release the handles.
 	// but the explorer/shell already retries any action for about two seconds
 	// if it first fails. So if the cache hasn't released the handle yet, the explorer

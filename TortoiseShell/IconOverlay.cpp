@@ -21,8 +21,8 @@
 #include "Guids.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
-#include "SVNStatus.h"
-#include "..\TSVNCache\CacheInterface.h"
+#include "GitStatus.h"
+//#include "..\TSVNCache\CacheInterface.h"
 
 // "The Shell calls IShellIconOverlayIdentifier::GetOverlayInfo to request the
 //  location of the handler's icon overlay. The icon overlay handler returns
@@ -97,7 +97,7 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 {
 	PreserveChdir preserveChdir;
-	svn_wc_status_kind status = svn_wc_status_none;
+	git_wc_status_kind status = git_wc_status_none;
 	bool readonlyoverlay = false;
 	bool lockedoverlay = false;
 	if (pwszPath == NULL)
@@ -137,21 +137,24 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		{
 		case ShellCache::exe:
 			{
+#if 0
 				TSVNCacheResponse itemStatus;
 				SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 				if (m_remoteCacheLink.GetStatusFromRemoteCache(CTSVNPath(pPath), &itemStatus, true))
 				{
 					status = SVNStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
-					if ((itemStatus.m_kind == svn_node_file)&&(status == svn_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))
+					if ((itemStatus.m_kind == git_node_file)&&(status == git_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))
 						readonlyoverlay = true;
 					if (itemStatus.m_owner[0]!=0)
 						lockedoverlay = true;
 				}
+#endif 
 			}
 			break;
 		case ShellCache::dll:
 			{
 				// Look in our caches for this item 
+#if 0
 				const FileStatusCacheEntry * s = m_CachedStatus.GetCachedItem(CTSVNPath(pPath));
 				if (s)
 				{
@@ -170,18 +173,18 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						{
 							if ((!g_ShellCache.IsRecursive()) && (!g_ShellCache.IsFolderOverlay()))
 							{
-								status = svn_wc_status_normal;
+								status = git_wc_status_normal;
 							}
 							else
 							{
 								const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTSVNPath(pPath), TRUE);
 								status = s->status;
-								status = SVNStatus::GetMoreImportant(svn_wc_status_normal, status);
+								status = SVNStatus::GetMoreImportant(git_wc_status_normal, status);
 							}
 						}
 						else
 						{
-							status = svn_wc_status_none;
+							status = git_wc_status_none;
 						}
 					}
 					else
@@ -190,12 +193,13 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						status = s->status;
 					}
 				}
-				if ((s)&&(status == svn_wc_status_normal)&&(s->needslock)&&(s->owner[0]==0))
+				if ((s)&&(status == git_wc_status_normal)&&(s->needslock)&&(s->owner[0]==0))
 					readonlyoverlay = true;
 				if ((s)&&(s->owner[0]!=0))
 					lockedoverlay = true;
-
+#endif
 			}
+
 			break;
 		default:
 		case ShellCache::none:
@@ -206,16 +210,16 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				{
 					if (g_ShellCache.HasSVNAdminDir(pPath, TRUE))
 					{
-						status = svn_wc_status_normal;
+						status = git_wc_status_normal;
 					}
 					else
 					{
-						status = svn_wc_status_none;
+						status = git_wc_status_none;
 					}
 				}
 				else
 				{
-					status = svn_wc_status_none;
+					status = git_wc_status_none;
 				}
 			}
 			break;
@@ -237,25 +241,25 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		// note: we can show other overlays if due to lack of enough free overlay
 		// slots some of our overlays aren't loaded. But we assume that
 		// at least the 'normal' and 'modified' overlay are available.
-		case svn_wc_status_none:
+		case git_wc_status_none:
 			return S_FALSE;
-		case svn_wc_status_unversioned:
+		case git_wc_status_unversioned:
 			if (g_ShellCache.ShowUnversionedOverlay() && g_unversionedovlloaded && (m_State == FileStateUnversionedOverlay))
 			{
 				g_filepath.clear();
 				return S_OK;
 			}
 			return S_FALSE;
-		case svn_wc_status_ignored:
+		case git_wc_status_ignored:
 			if (g_ShellCache.ShowIgnoredOverlay() && g_ignoredovlloaded && (m_State == FileStateIgnoredOverlay))
 			{
 				g_filepath.clear();
 				return S_OK;
 			}
 			return S_FALSE;
-		case svn_wc_status_normal:
-		case svn_wc_status_external:
-		case svn_wc_status_incomplete:
+		case git_wc_status_normal:
+		case git_wc_status_external:
+		case git_wc_status_incomplete:
 			if ((readonlyoverlay)&&(g_readonlyovlloaded))
 			{
 				if (m_State == FileStateReadOnly)
@@ -283,8 +287,8 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			else
 				return S_FALSE;
-		case svn_wc_status_missing:
-		case svn_wc_status_deleted:
+		case git_wc_status_missing:
+		case git_wc_status_deleted:
 			if (g_deletedovlloaded)
 			{
 				if (m_State == FileStateDeleted)
@@ -307,9 +311,9 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				else
 					return S_FALSE;
 			}
-		case svn_wc_status_replaced:
-		case svn_wc_status_modified:
-		case svn_wc_status_merged:
+		case git_wc_status_replaced:
+		case git_wc_status_modified:
+		case git_wc_status_merged:
 			if (m_State == FileStateModified)
 			{
 				g_filepath.clear();
@@ -317,7 +321,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			else
 				return S_FALSE;
-		case svn_wc_status_added:
+		case git_wc_status_added:
 			if (g_addedovlloaded)
 			{
 				if (m_State== FileStateAddedOverlay)
@@ -340,8 +344,8 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				else
 					return S_FALSE;
 			}
-		case svn_wc_status_conflicted:
-		case svn_wc_status_obstructed:
+		case git_wc_status_conflicted:
+		case git_wc_status_obstructed:
 			if (g_conflictedovlloaded)
 			{
 				if (m_State == FileStateConflict)

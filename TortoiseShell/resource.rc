@@ -370,16 +370,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_SVN_DEPTH_INFINITE  "Fully recursive"
-    IDS_SVN_DEPTH_IMMEDIATE "Immediate children, including folders"
-    IDS_SVN_DEPTH_FILES     "Only file children"
-    IDS_SVN_DEPTH_EMPTY     "Only this item"
+    IDS_git_DEPTH_INFINITE  "Fully recursive"
+    IDS_git_DEPTH_IMMEDIATE "Immediate children, including folders"
+    IDS_git_DEPTH_FILES     "Only file children"
+    IDS_git_DEPTH_EMPTY     "Only this item"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_SVN_DEPTH_UNKNOWN   "Unknown depth"
-    IDS_SVN_DEPTH_WORKING   "Working copy"
+    IDS_git_DEPTH_UNKNOWN   "Unknown depth"
+    IDS_git_DEPTH_WORKING   "Working copy"
 END
 
 #endif    // English (U.S.) resources
