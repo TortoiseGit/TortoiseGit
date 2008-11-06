@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
 
@@ -18,12 +18,12 @@
 //
 #pragma once
 
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 /**
 * \ingroup Utils
 * This singleton class contains a list of items which require a shell-update notification
-* This update is done lazily at the end of a run of SVN operations
+* This update is done lazily at the end of a run of Git operations
 */
 class CShellUpdater
 {
@@ -38,12 +38,12 @@ public:
 	 * Add a single path for updating.
 	 * The update will happen at some suitable time in the future
 	 */
-	void AddPathForUpdate(const CTSVNPath& path);
+	void AddPathForUpdate(const CTGitPath& path);
 	/** 
 	 * Add a list of paths for updating.
 	 * The update will happen at some suitable time in the future
 	 */
-	void AddPathsForUpdate(const CTSVNPathList& pathList);
+	void AddPathsForUpdate(const CTGitPathList& pathList);
 	/**
 	 * Do the update, and clear the list of items waiting
 	 */
@@ -56,7 +56,7 @@ private:
 
 private:
 	// The list of paths which will need updating
-	CTSVNPathList m_pathsForUpdating;
+	CTGitPathList m_pathsForUpdating;
 	// A handle to an event which, when set, tells the ShellExtension to purge its status cache
 	HANDLE			m_hInvalidationEvent;
 };

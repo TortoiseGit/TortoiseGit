@@ -82,8 +82,8 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib ../../ext/Subversion\debug_win32\libsvn_diff-nonet.lib ../../ext/Subversion\debug_win32\libsvn_ra-nonet.lib ../../ext/Subversion\debug_win32\libsvn_wc-nonet.lib ../../ext/Subversion\debug_win32\\libsvn_subr-nonet.lib ../../ext/Subversion\debug_win32\libsvn_client-nonet.lib ../../ext/Subversion\debug_win32\libsvn_delta-nonet.lib ../../ext/apr\debug_win32\libapr_tsvn.lib ../../ext/apr-util\debug_win32\libaprutil_tsvn.lib ../../ext/apr-util\xml\expat\lib\debug_win32\xml.lib ../../ext/libintl/libintl3-win32/lib/intl3_tsvn.lib"
-				OutputFile="$(OutDir)/TortoiseSVN.dll"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				IgnoreAllDefaultLibraries="false"
@@ -457,6 +457,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GitStatus.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\IconOverlay.cpp"
 				>
 			</File>
@@ -607,6 +611,10 @@
 			</File>
 			<File
 				RelativePath="stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SVNPropertyPage.h"
 				>
 			</File>
 			<File

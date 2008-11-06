@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
 
@@ -55,11 +55,11 @@
  * Displays and updates all controls on the property page. The property
  * page itself is shown by explorer.
  */
-class CSVNPropertyPage
+class CGitPropertyPage
 {
 public:
-	CSVNPropertyPage(const std::vector<stdstring> &filenames);
-	virtual ~CSVNPropertyPage();
+	CGitPropertyPage(const std::vector<stdstring> &filenames);
+	virtual ~CGitPropertyPage();
 
 	/**
 	 * Sets the window handle.

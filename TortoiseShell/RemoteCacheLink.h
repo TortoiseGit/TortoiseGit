@@ -28,8 +28,8 @@ class CTSVNPath;
 class CRemoteCacheLink
 {
 public:
-	CRemoteCacheLink(void);
-	~CRemoteCacheLink(void);
+	CRemoteCacheLink(void){};
+	~CRemoteCacheLink(void){};
 
 public:
 	bool GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive);

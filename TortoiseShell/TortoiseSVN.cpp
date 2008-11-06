@@ -30,7 +30,7 @@ DWORD				g_langid;
 DWORD				g_langTimeout = 0;
 HINSTANCE			g_hResInst = NULL;
 stdstring			g_filepath;
-//git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above
+git_wc_status_kind	g_filestatus = git_wc_status_none;	///< holds the corresponding status to the file/dir above
 bool				g_readonlyoverlay = false;
 bool				g_lockedoverlay = false;
 
