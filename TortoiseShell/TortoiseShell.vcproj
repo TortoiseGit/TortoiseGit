@@ -20,8 +20,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\Debug\bin"
-			IntermediateDirectory="..\..\obj\TortoiseShell\Debug"
+			OutputDirectory="..\bin\Debug\bin"
+			IntermediateDirectory="..\obj\TortoiseShell\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			UseOfATL="1"
@@ -91,7 +91,7 @@
 				ModuleDefinitionFile=".\ShellExt.def"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TortoiseSVN.pdb"
+				ProgramDatabaseFile="$(OutDir)/TortoiseGit.pdb"
 				BaseAddress="0x5960000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
