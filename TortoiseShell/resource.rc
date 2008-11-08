@@ -28,6 +28,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
+IDI_PULL                ICON                    "..\\resources\\update1.ico"
 IDI_APP                 ICON                    "..\\Resources\\Tortoise.ico"
 IDI_CHECKOUT            ICON                    "..\\Resources\\menucheckout.ico"
 IDI_UPDATE              ICON                    "..\\Resources\\menuupdate.ico"
@@ -68,6 +69,8 @@ IDI_PROPERTIES          ICON                    "..\\Resources\\menuproperties.i
 IDI_DELUNVERSIONED      ICON                    "..\\Resources\\menudelunversioned.ico"
 IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ico"
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
+IDI_PUSH                ICON                    "..\\resources\\pull1.ico"
+IDI_CLONE               ICON                    "..\\resources\\checkout.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -80,6 +83,15 @@ IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "..\\resources\\icon1.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -204,7 +216,7 @@ BEGIN
     IDS_MENUEXPORT          "E&xport..."
     IDS_MENUSETTINGS        "&Settings"
     IDS_MENUABOUT           "A&bout"
-    IDS_MENUSUBMENU         "&TortoiseSVN"
+    IDS_MENUSUBMENU         "&TortoiseGit"
     IDS_MENUDESCCHECKOUT    "Check out a working copy from a repository"
     IDS_MENUDESCUPDATE      "Updates the working copy to the current revision"
     IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
@@ -219,11 +231,11 @@ STRINGTABLE
 BEGIN
     IDS_MENUDESCIMPORT      "Imports the directory to a repository"
     IDS_MENUDESCEXPORT      "Exports a repository to a clean working copy without the svn administrative folders"
-    IDS_MENUDESCABOUT       "Shows information about TortoiseSVN"
+    IDS_MENUDESCABOUT       "Shows information about TortoiseGit"
     IDS_MENUDESCCREATEREPOS "Creates a repository database at the current location"
     IDS_MENUDESCCOPY        "Creates a 'cheap' copy inside the repository used for branches or tagging"
     IDS_MENUDESCMERGE       "Merges a branch into the main trunk"
-    IDS_MENUDESCSETTINGS    "Tweak TortoiseSVN"
+    IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
     IDS_MENUDESCDEFAULT     "no description for this command is available"
     IDS_STATUSNONE          " "
     IDS_STATUSUNVERSIONED   "non-versioned"
@@ -310,6 +322,9 @@ BEGIN
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore items by &extension"
+    IDS_MENUPULL            "Pull"
+    IDS_MENUPUSH            "Push"
+    IDS_MENUCLONE           "Clone"
 END
 
 STRINGTABLE 

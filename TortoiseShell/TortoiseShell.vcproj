@@ -631,6 +631,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
+				RelativePath="..\Resources\checkout.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\clipcopy.ico"
 				>
 			</File>
@@ -640,6 +644,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\clippaste.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\icon1.ico"
 				>
 			</File>
 			<File
@@ -775,6 +783,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\pull1.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.rc"
 				>
 			</File>
@@ -804,6 +816,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\tsvnmenumultiple.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\update1.ico"
 				>
 			</File>
 		</Filter>

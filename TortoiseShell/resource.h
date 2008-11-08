@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by resource.rc
 //
+#define IDI_PULL                        5
 #define IDD_PROPPAGE                    107
 #define IDI_APP                         108
 #define IDS_MENUCHECKOUT                120
@@ -129,6 +130,9 @@
 #define IDS_DROPEXPORTMENU              218
 #define IDS_DROPEXPORTEXTENDEDMENU      219
 #define IDS_MENUIGNOREMULTIPLEMASK      220
+#define IDS_MENUPULL                    221
+#define IDS_MENUPUSH                    222
+#define IDS_MENUCLONE                   223
 #define IDS_MENUCLIPPASTE               225
 #define IDS_MENUDESCCLIPPASTE           226
 #define IDS_ERR_PROPNOTONFILE           230
@@ -209,6 +213,9 @@
 #define IDI_DELUNVERSIONED              5159
 #define IDI_APPSMALL                    5160
 #define IDI_CLIPPASTE                   5164
+#define IDI_ICON1                       5165
+#define IDI_PUSH                        5166
+#define IDI_CLONE                       5167
 #define IDC_LOCKOWNER                   11019
 #define IDC_LOCKDATE                    11020
 #define IDC_EDITPROPERTIES              11021
@@ -223,7 +230,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5165
+#define _APS_NEXT_RESOURCE_VALUE        5166
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11026
 #define _APS_NEXT_SYMED_VALUE           5101
