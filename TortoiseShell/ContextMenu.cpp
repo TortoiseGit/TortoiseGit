@@ -49,14 +49,14 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuPrevDiff,					MENUPREVDIFF,			IDI_DIFF,				IDS_MENUPREVDIFF,			IDS_MENUDESCPREVDIFF,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuUrlDiff,						MENUURLDIFF,		IDI_DIFF,				IDS_MENUURLDIFF,			IDS_MENUDESCURLDIFF,
-	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, 0, ITEMIS_FOLDERINSVN|ITEMIS_EXTENDED|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
+//	{ ShellMenuUrlDiff,						MENUURLDIFF,		IDI_DIFF,				IDS_MENUURLDIFF,			IDS_MENUDESCURLDIFF,
+//	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, 0, ITEMIS_FOLDERINSVN|ITEMIS_EXTENDED|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuLog,							MENULOG,			IDI_LOG,				IDS_MENULOG,				IDS_MENUDESCLOG,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, 0, 0 },
 
-	{ ShellMenuRepoBrowse,					MENUREPOBROWSE,		IDI_REPOBROWSE,			IDS_MENUREPOBROWSE,			IDS_MENUDESCREPOBROWSE,
-	ITEMIS_ONLYONE, 0, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
+//	{ ShellMenuRepoBrowse,					MENUREPOBROWSE,		IDI_REPOBROWSE,			IDS_MENUREPOBROWSE,			IDS_MENUDESCREPOBROWSE,
+//	ITEMIS_ONLYONE, 0, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuShowChanged,					MENUSHOWCHANGED,	IDI_SHOWCHANGED,		IDS_MENUSHOWCHANGED,		IDS_MENUDESCSHOWCHANGED,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0},
@@ -72,8 +72,8 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuResolve,						MENURESOLVE,		IDI_RESOLVE,			IDS_MENURESOLVE,			IDS_MENUDESCRESOLVE,
 	ITEMIS_INSVN|ITEMIS_CONFLICTED, 0, ITEMIS_INSVN|ITEMIS_FOLDER, 0, ITEMIS_FOLDERINSVN, 0, 0, 0 },
 
-	{ ShellMenuUpdateExt,					MENUUPDATEEXT,		IDI_UPDATE,				IDS_MENUUPDATEEXT,			IDS_MENUDESCUPDATEEXT,
-	ITEMIS_INSVN, ITEMIS_ADDED, ITEMIS_FOLDERINSVN, ITEMIS_ADDED, 0, 0, 0, 0 },
+//	{ ShellMenuUpdateExt,					MENUUPDATEEXT,		IDI_UPDATE,				IDS_MENUUPDATEEXT,			IDS_MENUDESCUPDATEEXT,
+//	ITEMIS_INSVN, ITEMIS_ADDED, ITEMIS_FOLDERINSVN, ITEMIS_ADDED, 0, 0, 0, 0 },
 
 	{ ShellMenuRename,						MENURENAME,			IDI_RENAME,				IDS_MENURENAME,				IDS_MENUDESCRENAME,
 	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_INVERSIONEDFOLDER, 0, 0, 0, 0, 0, 0, 0 },
@@ -96,22 +96,22 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuCleanup,						MENUCLEANUP,		IDI_CLEANUP,			IDS_MENUCLEANUP,			IDS_MENUDESCCLEANUP,
 	ITEMIS_INSVN|ITEMIS_FOLDER, 0, ITEMIS_FOLDERINSVN|ITEMIS_FOLDER, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuLock,						MENULOCK,			IDI_LOCK,				IDS_MENU_LOCK,				IDS_MENUDESC_LOCK,
-	ITEMIS_INSVN, ITEMIS_LOCKED|ITEMIS_ADDED, ITEMIS_FOLDERINSVN, ITEMIS_LOCKED|ITEMIS_ADDED, 0, 0, 0, 0 },
+//	{ ShellMenuLock,						MENULOCK,			IDI_LOCK,				IDS_MENU_LOCK,				IDS_MENUDESC_LOCK,
+//	ITEMIS_INSVN, ITEMIS_LOCKED|ITEMIS_ADDED, ITEMIS_FOLDERINSVN, ITEMIS_LOCKED|ITEMIS_ADDED, 0, 0, 0, 0 },
 
-	{ ShellMenuUnlock,						MENUUNLOCK,			IDI_UNLOCK,				IDS_MENU_UNLOCK,			IDS_MENUDESC_UNLOCK,
-	ITEMIS_INSVN|ITEMIS_LOCKED, 0, ITEMIS_FOLDER|ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0 },
+//	{ ShellMenuUnlock,						MENUUNLOCK,			IDI_UNLOCK,				IDS_MENU_UNLOCK,			IDS_MENUDESC_UNLOCK,
+//	ITEMIS_INSVN|ITEMIS_LOCKED, 0, ITEMIS_FOLDER|ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0 },
 
-	{ ShellMenuUnlockForce,					MENUUNLOCK,			IDI_UNLOCK,				IDS_MENU_UNLOCKFORCE,		IDS_MENUDESC_UNLOCKFORCE,
-	ITEMIS_INSVN|ITEMIS_LOCKED, 0, ITEMIS_FOLDER|ITEMIS_INSVN|ITEMIS_EXTENDED, 0, 0, 0, 0, 0 },
+//	{ ShellMenuUnlockForce,					MENUUNLOCK,			IDI_UNLOCK,				IDS_MENU_UNLOCKFORCE,		IDS_MENUDESC_UNLOCKFORCE,
+//	ITEMIS_INSVN|ITEMIS_LOCKED, 0, ITEMIS_FOLDER|ITEMIS_INSVN|ITEMIS_EXTENDED, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
-	{ ShellMenuCopy,						MENUCOPY,			IDI_COPY,				IDS_MENUBRANCH,				IDS_MENUDESCCOPY,
-	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
+//	{ ShellMenuCopy,						MENUCOPY,			IDI_COPY,				IDS_MENUBRANCH,				IDS_MENUDESCCOPY,
+//	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuSwitch,						MENUSWITCH,			IDI_SWITCH,				IDS_MENUSWITCH,				IDS_MENUDESCSWITCH,
-	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
+//	{ ShellMenuSwitch,						MENUSWITCH,			IDI_SWITCH,				IDS_MENUSWITCH,				IDS_MENUDESCSWITCH,
+//	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuMerge,						MENUMERGE,			IDI_MERGE,				IDS_MENUMERGE,				IDS_MENUDESCMERGE,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
@@ -135,17 +135,17 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuAddAsReplacement,			MENUADD,			IDI_ADD,				IDS_MENUADDASREPLACEMENT,	IDS_MENUADDASREPLACEMENT,
 	ITEMIS_DELETED|ITEMIS_ONLYONE, ITEMIS_FOLDER, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuImport,						MENUIMPORT,			IDI_IMPORT,				IDS_MENUIMPORT,				IDS_MENUDESCIMPORT,
-	ITEMIS_FOLDER, ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
+//	{ ShellMenuImport,						MENUIMPORT,			IDI_IMPORT,				IDS_MENUIMPORT,				IDS_MENUDESCIMPORT,
+//	ITEMIS_FOLDER, ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
-	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
+//	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
+//	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
-	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
+//	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
+//	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
-	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
+//	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
+//	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
@@ -193,7 +193,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
                                    LPDATAOBJECT pDataObj,
                                    HKEY /* hRegKey */)
 {
-#if 0
+
 	ATLTRACE("Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
 	files_.clear();
@@ -219,6 +219,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		{
 			if (m_State == FileStateDropHandler)
 			{
+
 				FORMATETC etc = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
 				STGMEDIUM stg = { TYMED_HGLOBAL };
 				if ( FAILED( pDataObj->GetData ( &etc, &stg )))
@@ -272,27 +273,27 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							try
 							{
 								GitStatus stat;
-								//stat.GetStatus(CTGitPath(str.c_str()), false, true, true);
+								stat.GetStatus(CTGitPath(str.c_str()), false, true, true);
 								if (stat.status)
 								{
 									statuspath = str;
 									status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 									fetchedstatus = status;
-									if ((stat.status->entry)&&(stat.status->entry->lock_token))
-										itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-									if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-									{
-										itemStates |= ITEMIS_FOLDER;
-										if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-											itemStates |= ITEMIS_FOLDERINGit;
-									}
-									if ((stat.status->entry)&&(stat.status->entry->present_props))
-									{
-										if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-											itemStates |= ITEMIS_NEEDSLOCK;
-									}
-									if ((stat.status->entry)&&(stat.status->entry->uuid))
-										uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+									//if ((stat.status->entry)&&(stat.status->entry->lock_token))
+									//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+									//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+									//{
+									//	itemStates |= ITEMIS_FOLDER;
+									//	if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+									//		itemStates |= ITEMIS_FOLDERINGit;
+									//}
+									//if ((stat.status->entry)&&(stat.status->entry->present_props))
+									//{
+									//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+									//		itemStates |= ITEMIS_NEEDSLOCK;
+									//}
+									//if ((stat.status->entry)&&(stat.status->entry->uuid))
+									//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 								}
 								else
 								{
@@ -308,7 +309,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-								itemStates |= ITEMIS_INGit;
+								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
 							if (status == git_wc_status_normal)
@@ -324,9 +325,11 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				} // for (int i = 0; i < count; i++)
 				GlobalUnlock ( drop );
 				ReleaseStgMedium ( &stg );
+
 			} // if (m_State == FileStateDropHandler) 
 			else
 			{
+
 				//Enumerate PIDLs which the user has selected
 				CIDA* cida = (CIDA*)GlobalLock(medium.hGlobal);
 				ItemIDList parent( GetPIDLFolder (cida));
@@ -369,23 +372,23 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									{
 										status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 										fetchedstatus = status;
-										if ((stat.status->entry)&&(stat.status->entry->lock_token))
-											itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-										if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-										{
-											itemStates |= ITEMIS_FOLDER;
-											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-												itemStates |= ITEMIS_FOLDERINGit;
-										}
-										if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
-											itemStates |= ITEMIS_CONFLICTED;
-										if ((stat.status->entry)&&(stat.status->entry->present_props))
-										{
-											if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-												itemStates |= ITEMIS_NEEDSLOCK;
-										}
-										if ((stat.status->entry)&&(stat.status->entry->uuid))
-											uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+										//if ((stat.status->entry)&&(stat.status->entry->lock_token))
+										//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+										//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+										//{
+										//	itemStates |= ITEMIS_FOLDER;
+										//	if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+										//		itemStates |= ITEMIS_FOLDERINGit;
+										//}
+										//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
+										//	itemStates |= ITEMIS_CONFLICTED;
+										//if ((stat.status->entry)&&(stat.status->entry->present_props))
+										//{
+										//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+										//		itemStates |= ITEMIS_NEEDSLOCK;
+										//}
+										//if ((stat.status->entry)&&(stat.status->entry->uuid))
+										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 									}	
 									else
 									{
@@ -406,25 +409,25 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-								itemStates |= ITEMIS_INGit;
+								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{
 								itemStates |= ITEMIS_IGNORED;
 								// the item is ignored. Get the svn:ignored properties so we can (maybe) later
 								// offer a 'remove from ignored list' entry
-								GitProperties props(strpath.GetContainingDirectory(), false);
-								ignoredprops.empty();
-								for (int p=0; p<props.GetCount(); ++p)
-								{
-									if (props.GetItemName(p).compare(stdstring(_T("svn:ignore")))==0)
-									{
-										std::string st = props.GetItemValue(p);
-										ignoredprops = MultibyteToWide(st.c_str());
-										// remove all escape chars ('\\')
-										std::remove(ignoredprops.begin(), ignoredprops.end(), '\\');
-										break;
-									}
-								}
+//								GitProperties props(strpath.GetContainingDirectory(), false);
+//								ignoredprops.empty();
+//								for (int p=0; p<props.GetCount(); ++p)
+//								{
+//									if (props.GetItemName(p).compare(stdstring(_T("svn:ignore")))==0)
+//									{
+//										std::string st = props.GetItemValue(p);
+//										ignoredprops = MultibyteToWide(st.c_str());
+//										// remove all escape chars ('\\')
+//										std::remove(ignoredprops.begin(), ignoredprops.end(), '\\');
+//										break;
+//									}
+//								}
 							}
 							if (status == git_wc_status_normal)
 								itemStates |= ITEMIS_NORMAL;
@@ -438,8 +441,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-				if (g_ShellCache.HasGitAdminDir(child.toString().c_str(), FALSE))
-					itemStates |= ITEMIS_INVERSIONEDFOLDER;
+//				if (g_ShellCache.HasGitAdminDir(child.toString().c_str(), FALSE))
+//					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 				GlobalUnlock(medium.hGlobal);
 
 				// if the item is a versioned folder, check if there's a patch file
@@ -452,6 +455,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				}
 				if (IsClipboardFormatAvailable(CF_HDROP)) 
 					itemStates |= ITEMIS_PATHINCLIPBOARD;
+
 			}
 
 			ReleaseStgMedium ( &medium );
@@ -466,6 +470,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	// get folder background
 	if (pIDFolder)
 	{
+
 		ItemIDList list(pIDFolder);
 		folder_ = list.toString();
 		git_wc_status_kind status = git_wc_status_none;
@@ -482,17 +487,17 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				if (stat.status)
 				{
 					status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-					if ((stat.status->entry)&&(stat.status->entry->lock_token))
-						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-					if ((stat.status->entry)&&(stat.status->entry->present_props))
-					{
-						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-							itemStatesFolder |= ITEMIS_NEEDSLOCK;
-					}
-					if ((stat.status->entry)&&(stat.status->entry->uuid))
-						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+//					if ((stat.status->entry)&&(stat.status->entry->lock_token))
+//						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+//					if ((stat.status->entry)&&(stat.status->entry->present_props))
+//					{
+//						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+//							itemStatesFolder |= ITEMIS_NEEDSLOCK;
+//					}
+//					if ((stat.status->entry)&&(stat.status->entry->uuid))
+//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 					if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-						itemStatesFolder |= ITEMIS_INGit;
+						itemStatesFolder |= ITEMIS_INSVN;
 					if (status == git_wc_status_normal)
 						itemStatesFolder |= ITEMIS_NORMAL;
 					if (status == git_wc_status_conflicted)
@@ -522,7 +527,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		}
 		if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 		{
-			itemStatesFolder |= ITEMIS_FOLDERINGit;
+			itemStatesFolder |= ITEMIS_FOLDERINSVN;
 		}
 		if (status == git_wc_status_ignored)
 			itemStatesFolder |= ITEMIS_IGNORED;
@@ -531,11 +536,13 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			itemStates |= ITEMIS_ONLYONE;
 		if (m_State != FileStateDropHandler)
 			itemStates |= itemStatesFolder;
+
 	}
 	if (files_.size() == 2)
 		itemStates |= ITEMIS_TWO;
 	if ((files_.size() == 1)&&(g_ShellCache.IsContextPathAllowed(files_.front().c_str())))
 	{
+
 		itemStates |= ITEMIS_ONLYONE;
 		if (m_State != FileStateDropHandler)
 		{
@@ -554,15 +561,15 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 						if (stat.status)
 						{
 							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-							if ((stat.status->entry)&&(stat.status->entry->lock_token))
-								itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-							if ((stat.status->entry)&&(stat.status->entry->present_props))
-							{
-								if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-									itemStates |= ITEMIS_NEEDSLOCK;
-							}
-							if ((stat.status->entry)&&(stat.status->entry->uuid))
-								uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+//							if ((stat.status->entry)&&(stat.status->entry->lock_token))
+//								itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+//							if ((stat.status->entry)&&(stat.status->entry->present_props))
+//							{
+//								if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+//									itemStates |= ITEMIS_NEEDSLOCK;
+//							}
+//							if ((stat.status->entry)&&(stat.status->entry->uuid))
+//								uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 						}
 					}
 					catch ( ... )
@@ -575,7 +582,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					status = fetchedstatus;
 				}
 				if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-					itemStates |= ITEMIS_FOLDERINGit;
+					itemStates |= ITEMIS_FOLDERINSVN;
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
 				itemStates |= ITEMIS_FOLDER;
@@ -585,8 +592,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					itemStates |= ITEMIS_DELETED;
 			}
 		}
+	
 	}
-#endif		
+	
 	return NOERROR;
 }
 

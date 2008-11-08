@@ -155,7 +155,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
     {
 //		apr_initialize();
 //		git_dso_initialize2();
-//		g_SVNAdminDir.Init();
+		g_GitAdminDir.Init();
 		g_cAprInit++;
 		
 		CShellExtClassFactory *pcf = new CShellExtClassFactory(state);

@@ -5,7 +5,8 @@ class CTGitPath
 public:
 	CTGitPath(void);
 	~CTGitPath(void);
-	public:
+explicit CTGitPath(const CString& sUnknownPath);
+public:
 	/**
 	 * Set the path as an UTF8 string with forward slashes
 	 */
