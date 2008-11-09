@@ -1046,7 +1046,7 @@
 		/>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="\Development\SVN\TortoiseSVN\src\Resources\TortoiseProcENG.rc"
+			Value="\Profiles\b20596\tortoisegit\Resources\TortoiseProcENG.rc"
 		/>
 	</Globals>
 </VisualStudioProject>
