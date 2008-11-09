@@ -18,9 +18,9 @@
 //
 #pragma once
 #include "HistoryCombo.h"
-#include "SVNRev.h"
+//#include "SVNRev.h"
 
-class CTSVNPath;
+class CTGitPath;
 
 /**
  * \ingroup TortoiseProc
@@ -129,7 +129,7 @@ public:
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
 	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
 
-	static bool BrowseRepository(CHistoryCombo& combo, CWnd * pParent, SVNRev& rev);
+	static bool BrowseRepository(CHistoryCombo& combo, CWnd * pParent, GitRev& rev);
 
 	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
 
@@ -143,22 +143,22 @@ public:
 	/**
 	 * Replacement for SVNDiff::ShowUnifiedDiff(), but started as a separate process.
 	 */
-	static bool StartShowUnifiedDiff(HWND hWnd, const CTSVNPath& url1, const SVNRev& rev1, 
-									const CTSVNPath& url2, const SVNRev& rev2, 
-									const SVNRev& peg = SVNRev(), const SVNRev& headpeg = SVNRev(),
+	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
+									const CTGitPath& url2, const GitRev& rev2, 
+									const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
 									bool bAlternateDiff = false,
 									bool bIgnoreAncestry = false,
                                     bool /* blame */ = false);
 
 	/**
-	 * Replacement for SVNDiff::ShowCompare(), but started as a separate process.
+	 * Replacement for GitDiff::ShowCompare(), but started as a separate process.
 	 */
-	static bool StartShowCompare(HWND hWnd, const CTSVNPath& url1, const SVNRev& rev1, 
-								const CTSVNPath& url2, const SVNRev& rev2, 
-								const SVNRev& peg = SVNRev(), const SVNRev& headpeg = SVNRev(),
+	static bool StartShowCompare(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
+								const CTGitPath& url2, const GitRev& rev2, 
+								const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
 								bool bAlternateDiff = false, bool ignoreancestry = false,
 								bool blame = false);
 private:
-	static CString PickDiffTool(const CTSVNPath& file1, const CTSVNPath& file2);
-	static bool GetMimeType(const CTSVNPath& file, CString& mimetype);
+	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
+	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
 };

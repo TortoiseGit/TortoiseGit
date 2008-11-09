@@ -20,6 +20,7 @@
 #include "Command.h"
 
 #include "AboutCommand.h"
+#if 0
 #include "AddCommand.h"
 #include "BlameCommand.h"
 #include "CatCommand.h"
@@ -67,7 +68,7 @@
 #include "UpdateCheckCommand.h"
 #include "UpdateCommand.h"
 #include "UrlDiffCommand.h"
-
+#endif
 typedef enum
 {
 	cmdAbout,
@@ -118,11 +119,11 @@ typedef enum
 	cmdUpdate,
 	cmdUpdateCheck,
 	cmdUrlDiff,
-} TSVNCommand;
+} TGitCommand;
 
 static const struct CommandInfo
 {
-	TSVNCommand command;
+	TGitCommand command;
 	LPCTSTR pCommandName;
 } commandInfo[] = 
 {
@@ -182,7 +183,7 @@ static const struct CommandInfo
 Command * CommandServer::GetCommand(const CString& sCmd)
 {
 	// Look up the command
-	TSVNCommand command = cmdAbout;		// Something harmless as a default
+	TGitCommand command = cmdAbout;		// Something harmless as a default
 	for (int nCommand = 0; nCommand < (sizeof(commandInfo)/sizeof(commandInfo[0])); nCommand++)
 	{
 		if (sCmd.Compare(commandInfo[nCommand].pCommandName) == 0)
@@ -201,6 +202,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	{
 	case cmdAbout:
 		return new AboutCommand;
+#if 0
 	case cmdAdd:
 		return new AddCommand;
 	case cmdBlame:
@@ -295,7 +297,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new UpdateCheckCommand;
 	case cmdUrlDiff:
 		return new UrlDiffCommand;
-
+#endif
 	default:
 		return new AboutCommand;
 	}

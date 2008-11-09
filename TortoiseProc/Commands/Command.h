@@ -19,7 +19,7 @@
 #pragma once
 #include "TortoiseProc.h"
 #include "CmdLineParser.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 
 
@@ -37,12 +37,12 @@ public:
 	virtual bool			Execute() = 0;
 
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
-	void					SetPaths(const CTSVNPathList& plist, const CTSVNPath path) {pathList = plist; cmdLinePath = path;}
+	void					SetPaths(const CTGitPathList& plist, const CTGitPath path) {pathList = plist; cmdLinePath = path;}
 	void					SetExplorerHwnd(HWND hWnd) {hwndExplorer = hWnd;}
 protected:
 	CCmdLineParser			parser;
-	CTSVNPathList			pathList;
-	CTSVNPath				cmdLinePath;
+	CTGitPathList			pathList;
+	CTGitPath				cmdLinePath;
 	HWND					hwndExplorer;
 };
 

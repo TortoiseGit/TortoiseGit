@@ -19,7 +19,7 @@
 #pragma once
 #include "Command.h"
 
-#include "SVNDiff.h"
+//#include "SVNDiff.h"
 
 /**
  * \ingroup TortoiseProc
@@ -33,7 +33,7 @@ public:
 	 */
 	virtual bool			Execute()
 	{
-		return SVNDiff::StartConflictEditor(cmdLinePath);
+//		return SVNDiff::StartConflictEditor(cmdLinePath);
 	}
 };
 

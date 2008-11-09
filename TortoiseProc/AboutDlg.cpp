@@ -20,9 +20,9 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "AboutDlg.h"
-#include "svn_version.h"
+//#include "svn_version.h"
 #include "..\version.h"
-#include "AppUtils.h"
+//#include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
@@ -53,6 +53,8 @@ BOOL CAboutDlg::OnInitDialog()
 
 	// set the version string
 	CString temp;
+
+#if 0
 	const svn_version_t * svnver = svn_client_version();
 
 	temp.Format(IDS_ABOUTVERSION, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD, _T(TSVN_PLATFORM), _T(TSVN_VERDATE), 
@@ -63,6 +65,7 @@ BOOL CAboutDlg::OnInitDialog()
 		_T(OPENSSL_VERSION_TEXT),
 		_T(ZLIB_VERSION));
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
+#endif
 	this->SetWindowText(_T("TortoiseSVN"));
 
 	CPictureHolder tmpPic;
@@ -134,5 +137,5 @@ void CAboutDlg::OnBnClickedUpdate()
 	GetModuleFileName(NULL, com, MAX_PATH);
 	_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck /visible"));
 
-	CAppUtils::LaunchApplication(com, 0, false);
+//	CAppUtils::LaunchApplication(com, 0, false);
 }

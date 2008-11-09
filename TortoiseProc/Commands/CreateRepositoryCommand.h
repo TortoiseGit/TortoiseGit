@@ -33,6 +33,7 @@ public:
 	 */
 	virtual bool			Execute()
 	{
+#if 0
 		if (!SVN::CreateRepository(cmdLinePath))
 		{
 			CMessageBox::Show(hwndExplorer, IDS_PROC_REPOCREATEERR, IDS_APPNAME, MB_ICONERROR);
@@ -42,6 +43,7 @@ public:
 		{
 			CMessageBox::Show(hwndExplorer, IDS_PROC_REPOCREATEFINISHED, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
 		}
+#endif
 		return true;
 	}
 };

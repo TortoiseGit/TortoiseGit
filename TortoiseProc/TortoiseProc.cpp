@@ -20,29 +20,29 @@
 //#include "vld.h"
 #include "TortoiseProc.h"
 #include "SysImageList.h"
-#include "CrashReport.h"
+//#include "CrashReport.h"
 #include "CmdLineParser.h"
 #include "Hooks.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "UnicodeUtils.h"
 #include "MessageBox.h"
-#include "libintl.h"
+//#include "libintl.h"
 #include "DirFileEnum.h"
-#include "SoundUtils.h"
-#include "SVN.h"
-#include "SVNAdminDir.h"
-#include "SVNGlobal.h"
-#include "svn_types.h"
-#include "svn_dso.h"
-#include <openssl/ssl.h>
-#include <openssl/err.h>
+//#include "SoundUtils.h"
+//#include "SVN.h"
+#include "GitAdminDir.h"
+//#include "SVNGlobal.h"
+//#include "svn_types.h"
+//#include "svn_dso.h"
+//#include <openssl/ssl.h>
+//#include <openssl/err.h>
 
 #include "Commands\Command.h"
 
 #include "..\version.h"
 #define STRUCT_IOVEC_DEFINED
-#include "sasl.h"
+//#include "sasl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,7 +55,7 @@ BEGIN_MESSAGE_MAP(CTortoiseProcApp, CWinAppEx)
 	ON_COMMAND(ID_HELP, CWinAppEx::OnHelp)
 END_MESSAGE_MAP()
 
-
+CString g_version;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -63,12 +63,13 @@ CTortoiseProcApp::CTortoiseProcApp()
 {
 	EnableHtmlHelp();
 	int argc = 0;
+	g_version=_T("abc");
 	const char* const * argv = NULL;
-	apr_app_initialize(&argc, &argv, NULL);
-	svn_dso_initialize2();
+//	apr_app_initialize(&argc, &argv, NULL);
+//	svn_dso_initialize2();
 	SYS_IMAGE_LIST();
-	CHooks::Create();
-	g_SVNAdminDir.Init();
+//	CHooks::Create();
+	g_GitAdminDir.Init();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
@@ -76,22 +77,22 @@ CTortoiseProcApp::CTortoiseProcApp()
 
 CTortoiseProcApp::~CTortoiseProcApp()
 {
-	sasl_done();
+//	sasl_done();
 
 	// global application exit cleanup (after all SSL activity is shutdown)
 	// we have to clean up SSL ourselves, since neon doesn't do that (can't do it)
 	// because those cleanup functions work globally per process.
-	ERR_free_strings();
-	EVP_cleanup();
-	CRYPTO_cleanup_all_ex_data();
+	//ERR_free_strings();
+	//EVP_cleanup();
+	//CRYPTO_cleanup_all_ex_data();
 
 	// since it is undefined *when* the global object SVNAdminDir is
 	// destroyed, we tell it to destroy the memory pools and terminate apr
 	// *now* instead of later when the object itself is destroyed.
-	g_SVNAdminDir.Close();
-	CHooks::Destroy();
+	g_GitAdminDir.Close();
+//	CHooks::Destroy();
 	SYS_IMAGE_LIST().Cleanup();
-	apr_terminate();
+	//apr_terminate();
 }
 
 // The one and only CTortoiseProcApp object
@@ -99,7 +100,7 @@ CTortoiseProcApp theApp;
 HWND hWndExplorer;
 CString sOrigCWD;
 
-CCrashReport crasher("crashreports@tortoisesvn.tigris.org", "Crash Report for TortoiseSVN " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
+//CCrashReport crasher("crashreports@tortoisesvn.tigris.org", "Crash Report for TortoiseSVN " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
 // CTortoiseProcApp initialization
 
@@ -115,8 +116,8 @@ BOOL CTortoiseProcApp::InitInstance()
 	CString langDll;
 	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
 	langpath += "Languages";
-	bindtextdomain("subversion", (LPCSTR)langpath);
-	bind_textdomain_codeset("subversion", "UTF-8");
+//	bindtextdomain("subversion", (LPCSTR)langpath);
+//	bind_textdomain_codeset("subversion", "UTF-8");
 	HINSTANCE hInst = NULL;
 	do
 	{
@@ -231,10 +232,11 @@ BOOL CTortoiseProcApp::InitInstance()
 		return FALSE;
 	}
 
-	CTSVNPath cmdLinePath;
-	CTSVNPathList pathList;
+	CTGitPath cmdLinePath;
+	CTGitPathList pathList;
 	if ( parser.HasKey(_T("pathfile")) )
 	{
+#if 0
 		CString sPathfileArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("pathfile")));
 		cmdLinePath.SetFromUnknown(sPathfileArgument);
 		if (pathList.LoadFromFile(cmdLinePath)==false)
@@ -247,13 +249,16 @@ BOOL CTortoiseProcApp::InitInstance()
 		// This was a path to a temporary file - it's got no meaning now, and
 		// anybody who uses it again is in for a problem...
 		cmdLinePath.Reset();
+#endif
 	}
 	else
 	{
+#if 0
 		CString sPathArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("path")));
 		int asterisk = sPathArgument.Find('*');
 		cmdLinePath.SetFromUnknown(asterisk >= 0 ? sPathArgument.Left(asterisk) : sPathArgument);
-		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
+		//pathList.LoadFromAsteriskSeparatedString(sPathArgument);
+#endif
 	}
 	
 	hWndExplorer = NULL;
@@ -317,7 +322,7 @@ BOOL CTortoiseProcApp::InitInstance()
 					GetModuleFileName(NULL, com, MAX_PATH);
 					_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck"));
 
-					CAppUtils::LaunchApplication(com, 0, false);
+					//CAppUtils::LaunchApplication(com, 0, false);
 				}
 			}
 		}
@@ -327,19 +332,20 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		// the user can override the location of the Subversion config directory here
 		CString sConfigDir = parser.GetVal(_T("configdir"));
-		g_SVNGlobal.SetConfigDir(sConfigDir);
+//		g_GitGlobal.SetConfigDir(sConfigDir);
 	}
 	// to avoid that SASL will look for and load its plugin dlls all around the
 	// system, we set the path here.
 	// Note that SASL doesn't have to be initialized yet for this to work
-	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
+//	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
-	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseProc.exe"));	
+	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));	
 	{
-		CString err = SVN::CheckConfigFile();
+#if 0
+		CString err = Git::CheckConfigFile();
 		if (!err.IsEmpty())
 		{
-			CMessageBox::Show(hWndExplorer, err, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit"), MB_ICONERROR);
 			// Normally, we give-up and exit at this point, but there is a trap here
 			// in that the user might need to use the settings dialog to edit the config file.
 			if (CString(parser.GetVal(_T("command"))).Compare(_T("settings"))==0)
@@ -348,11 +354,12 @@ BOOL CTortoiseProcApp::InitInstance()
 				TCHAR buf[MAX_PATH];
 				SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
 				CString path = buf;
-				path += _T("\\Subversion\\config");
+				path += _T("\\Git\\config");
 				CAppUtils::StartTextViewer(path);
 				return FALSE;
 			}
 		}
+#endif
 	}
 
 	// execute the requested command
@@ -442,7 +449,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		newregval = !regval;
 		regval.removeValue();
 	}
-
+#if 0
 	if (lVersion <= 0x01010300)
 	{
 		CSoundUtils::RegisterTSVNSounds();
@@ -452,7 +459,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		// remove the external cache key
 		CRegDWORD(_T("Software\\TortoiseSVN\\ExternalCache")).removeValue();
 	}
-	
+#endif	
 	if (lVersion <= 0x01020200)
 	{
 		// upgrade to > 1.2.3 means the doc diff scripts changed from vbs to js
@@ -551,7 +558,7 @@ void CTortoiseProcApp::EnableCrashHandler()
 	CTimeSpan timediff = now-compiletime;
 	if (timediff.GetDays() > 3*31)
 	{
-		crasher.Enable(FALSE);
+//		crasher.Enable(FALSE);
 	}
 }
 

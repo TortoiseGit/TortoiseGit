@@ -22,6 +22,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
+			UseOfATL="1"
 			CharacterSet="1"
 			>
 			<Tool
@@ -168,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PathUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PathWatcher.cpp"
 				>
 			</File>
@@ -305,6 +310,10 @@
 			</File>
 			<File
 				RelativePath=".\MiscUI\MenuButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MiscUI\MessageBox.cpp"
 				>
 			</File>
 			<File

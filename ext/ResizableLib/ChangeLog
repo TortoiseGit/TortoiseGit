@@ -1,0 +1,475 @@
+2002-10-16  ppescher
+	* ResizableLayout.cpp 1.26:
+		fixed BS_TYPEMASK collision with Platform SDK
+
+	* ResizableFormView.cpp 1.14:
+		adjusted a commented code part
+
+	* ResizableDialog.cpp 1.18:
+		fixed border/grip issue with child dialogs
+
+2002-10-13  ppescher
+	* ResizableLib.dsp 1.10:
+		initial support for custom windows
+
+	* ResizableSheet.cpp 1.22:
+	* ResizableSheetEx.cpp 1.19:
+		updated callback item, now using GetAnchorPosition
+
+	* ResizableLayout.cpp 1.25:
+	* ResizableLayout.h 1.15:
+		added initial support for custom windows
+		unified repositioning of all windows (callback and non), now made all at once
+
+2002-10-12  ppescher
+	* ResizableMsgSupport.h 1.1:
+	* ResizableMsgSupport.inl 1.1:
+		initial support for custom windows
+
+2002-10-07  ppescher
+	* ResizableLayout.cpp 1.24:
+		fixed groupbox
+		(adding WS_CLIPSIBLINGS leads to uncorrect results when overlapping other controls)
+
+2002-10-06  ppescher
+	* ResizableFrame.cpp 1.2:
+	* ResizableFrame.h 1.2:
+	* ResizableMDIChild.cpp 1.2:
+	* ResizableMDIChild.h 1.2:
+	* ResizableMDIFrame.cpp 1.2:
+	* ResizableMDIFrame.h 1.2:
+		added support for state saving/restoring
+		min track size not fully working with splitters
+
+	* ResizableDialog.cpp 1.17:
+	* ResizableSheet.cpp 1.21:
+	* ResizableSheetEx.cpp 1.18:
+		updated grip creation
+
+	* ResizableGrip.cpp 1.11:
+	* ResizableGrip.h 1.12:
+		added shape customization
+		added listening for system parameters changes (to update grip size)
+
+	* ResizableFormView.cpp 1.13:
+	* ResizableFormView.h 1.8:
+		added OnDestroy handler
+		updated grip creation
+
+2002-09-28  ppescher
+	* ResizableFormView.cpp 1.12:
+	* ResizableFormView.h 1.7:
+		changed grip handling
+		finished support for minmax handling
+
+	* ResizableGrip.cpp 1.10:
+	* ResizableGrip.h 1.11:
+		changed hide/show functions
+
+	* ResizableDialog.cpp 1.16:
+	* ResizableDialog.h 1.10:
+	* ResizableSheet.cpp 1.20:
+	* ResizableSheet.h 1.12:
+	* ResizableSheetEx.cpp 1.17:
+	* ResizableSheetEx.h 1.9:
+		updated grip handling when maximized according to latest grip implementation
+
+	* ResizableLib.dsp 1.9:
+		added new classes
+
+	* ResizableFrame.cpp 1.1:
+	* ResizableFrame.h 1.1:
+	* ResizableMDIChild.cpp 1.1:
+	* ResizableMDIChild.h 1.1:
+	* ResizableMDIFrame.cpp 1.1:
+	* ResizableMDIFrame.h 1.1:
+		added minmax implementation for Frame windows
+
+2002-09-23  ppescher
+	* ResizableGrip.cpp 1.9:
+	* ResizableGrip.h 1.10:
+		added transparency support
+
+	* ResizableLayout.cpp 1.23:
+		fix for ownerdraw buttons
+		fixed duplicate additions to the layout (now ASSERTs)
+
+	* ResizableFormView.cpp 1.11:
+	* ResizableFormView.h 1.6:
+		fixed the grip
+
+2002-09-21  ppescher
+	* ResizableLayout.cpp 1.22:
+		complete fix for scrolled parent
+
+	* ResizableGrip.cpp 1.8:
+	* ResizableGrip.h 1.9:
+		enhanced grip: added support for temporarily hide/show the grip
+
+	* ResizableFormView.cpp 1.10:
+	* ResizableFormView.h 1.5:
+		added grip support
+
+	* ResizableDialog.cpp 1.15:
+	* ResizableSheet.cpp 1.19:
+	* ResizableSheetEx.cpp 1.16:
+		updated for the enhanced grip
+
+2002-09-19  ppescher
+	* ResizableFormView.cpp 1.9:
+	* ResizableLayout.cpp 1.21:
+		fixed FormView scroll problem
+
+2002-09-14  ppescher
+	* ResizableLayout.cpp 1.20:
+		cleaned up the code
+		updated copyright
+
+2002-08-23  ppescher
+	* ResizableDialog.cpp 1.14:
+	* ResizableDialog.h 1.9:
+	* ResizableFormView.cpp 1.8:
+	* ResizableFormView.h 1.4:
+	* ResizableGrip.cpp 1.7:
+	* ResizableGrip.h 1.8:
+	* ResizableLayout.cpp 1.19:
+	* ResizableLayout.h 1.14:
+	* ResizableMinMax.cpp 1.3:
+	* ResizableMinMax.h 1.3:
+	* ResizablePage.cpp 1.8:
+	* ResizablePage.h 1.7:
+	* ResizablePageEx.cpp 1.10:
+	* ResizablePageEx.h 1.7:
+	* ResizableSheet.cpp 1.18:
+	* ResizableSheet.h 1.11:
+	* ResizableSheetEx.cpp 1.15:
+	* ResizableSheetEx.h 1.8:
+	* ResizableState.cpp 1.5:
+	* ResizableState.h 1.5:
+		fixed copyright msg
+
+2002-07-11  ppescher
+	* ResizablePageEx.cpp 1.9:
+	* ResizablePageEx.h 1.6:
+		changes for new NeedsRefresh function
+
+	* ResizableLayout.cpp 1.18:
+	* ResizableLayout.h 1.13:
+		many improvements for anti-flickering
+		changes in internal layout implementation
+		changes in clipping and refresh functions
+
+2002-07-01  ppescher
+	* ResizableDialog.cpp 1.13:
+	* ResizableDialog.h 1.8:
+	* ResizablePage.cpp 1.7:
+	* ResizablePage.h 1.6:
+	* ResizablePageEx.cpp 1.8:
+	* ResizablePageEx.h 1.5:
+	* ResizableSheet.cpp 1.17:
+	* ResizableSheet.h 1.10:
+	* ResizableSheetEx.cpp 1.14:
+	* ResizableSheetEx.h 1.7:
+		cleaned up the code
+		removed m_bInitDone (not needed)
+
+	* ResizableGrip.cpp 1.6:
+	* ResizableGrip.h 1.7:
+		changed grip implementation (using MFC derived class)
+
+2002-06-27  ppescher
+	* ResizableLayout.cpp 1.17:
+	* ResizableLayout.h 1.12:
+		added remove anchor and get layout info functions
+		changed layout implementation
+
+2002-05-26  ppescher
+	* ResizableLayout.cpp 1.16:
+		fix for  type of static control
+
+2002-05-16  ppescher
+	* ResizableSheet.cpp 1.16:
+	* ResizableSheet.h 1.9:
+	* ResizableSheetEx.cpp 1.13:
+	* ResizableSheetEx.h 1.6:
+		added refresh function for dynamic page changes
+
+2002-05-15  ppescher
+	* ResizableSheet.cpp 1.15:
+	* ResizableSheetEx.cpp 1.12:
+		partial fix for dynamic page changes (Add/RemovePage)
+
+2002-03-27  ppescher
+	* ResizableLayout.cpp 1.15:
+	* ResizableLib.dsp 1.8:
+		fix callbacks and project precompiled headers
+
+2002-03-12  ppescher
+	* ResizableLayout.h 1.11:
+	* ResizableLib.dsp 1.7:
+	* ResizablePageEx.cpp 1.7:
+	* ResizableSheetEx.cpp 1.11:
+	* StdAfx.h 1.4:
+		fix for VS.NET and commctls
+
+2002-02-27  ppescher
+	* ResizableComboBox.cpp [RCombo_NewList] 1.4.2.1:
+	* ResizableComboBox.h [RCombo_NewList] 1.4.2.1:
+	* ResizableComboLBox.cpp [RCombo_NewList] 1.6.2.1:
+	* ResizableComboLBox.h [RCombo_NewList] 1.6.2.1:
+		first attempt at a new list class
+
+2002-02-26  ppescher
+	* ResizableComboBox.cpp 1.4:
+	* ResizableComboBox.h 1.4:
+	* ResizableComboLBox.cpp 1.6:
+	* ResizableComboLBox.h 1.6:
+		moved some functions, fixed vscroll
+
+2002-02-25  ppescher
+	* ResizableComboBox.cpp 1.3:
+	* ResizableComboBox.h 1.3:
+	* ResizableComboLBox.cpp 1.5:
+	* ResizableComboLBox.h 1.5:
+		moved hscroll functions
+
+2002-02-24  ppescher
+	* ResizableComboLBox.cpp 1.4:
+	* ResizableComboLBox.h 1.4:
+	* ResizableGrip.cpp 1.5:
+	* ResizableGrip.h 1.6:
+	* ResizableLayout.cpp 1.14:
+	* StdAfx.h 1.3:
+		fixed RTL defines and functions and include files
+
+2002-02-23  ppescher
+	* ResizableDialog.cpp 1.12:
+	* ResizableFormView.cpp 1.7:
+	* ResizableLayout.cpp 1.13:
+	* ResizableLayout.h 1.10:
+	* ResizablePage.cpp 1.6:
+	* ResizablePageEx.cpp 1.6:
+	* ResizableSheet.cpp 1.14:
+	* ResizableSheetEx.cpp 1.10:
+		fixed background painting for RTL layouts
+
+	* ResizableComboBox.cpp 1.2:
+	* ResizableComboBox.h 1.2:
+	* ResizableComboLBox.cpp 1.3:
+	* ResizableComboLBox.h 1.3:
+		added support for auto-hscroll
+
+2002-02-22  ppescher
+	* StdAfx.h 1.2:
+		fix WINVER with latest SDK, for Wizard97 to work properly
+
+	* ResizableDialog.cpp 1.11:
+	* ResizableFormView.cpp 1.6:
+	* ResizablePage.cpp 1.5:
+	* ResizablePageEx.cpp 1.5:
+	* ResizableSheet.cpp 1.13:
+	* ResizableSheetEx.cpp 1.9:
+		fix for WinXP clipping region
+
+2002-02-21  ppescher
+	* ResizableDialog.cpp 1.10:
+	* ResizableDialog.h 1.7:
+	* ResizableFormView.cpp 1.5:
+	* ResizableFormView.h 1.3:
+	* ResizablePage.cpp 1.4:
+	* ResizablePage.h 1.5:
+	* ResizablePageEx.cpp 1.4:
+	* ResizablePageEx.h 1.4:
+	* ResizableSheet.cpp 1.12:
+	* ResizableSheet.h 1.8:
+	* ResizableSheetEx.cpp 1.8:
+	* ResizableSheetEx.h 1.5:
+		changed common constructor name
+
+2002-02-19  ppescher
+	* ResizableComboLBox.cpp 1.2:
+	* ResizableComboLBox.h 1.2:
+		second attempt (slightly better)
+
+2002-02-18  ppescher
+	* ResizableGrip.h 1.5:
+		fixed a define for compatibility with latest SDK
+
+	* ResizableComboBox.cpp 1.1:
+	* ResizableComboBox.h 1.1:
+	* ResizableComboLBox.cpp 1.1:
+	* ResizableComboLBox.h 1.1:
+	* ResizableLib.dsp 1.6:
+		added resizable combobox classes
+
+2002-02-09  ppescher
+	* ResizableDialog.cpp 1.9:
+		possible fix for WinXP clipping region (commented)
+
+	* ResizableLayout.cpp 1.12:
+	* ResizableLayout.h 1.9:
+		changed clipping method, working on a stand-alone region
+
+2002-02-04  ppescher
+	* ResizableLayout.cpp 1.11:
+	* ResizableSheet.cpp 1.11:
+	* ResizableSheetEx.cpp 1.7:
+		fix for RTL layouts
+		fix for maximum size clipping problem
+
+2001-10-06  ppescher
+	* ResizableFormView.cpp 1.4:
+		re-ordered GetTotalClientRect() code
+
+2001-10-05  ppescher
+	* ResizableLayout.cpp 1.10:
+	* ResizableLayout.h 1.8:
+		cosmetic stuff (variable names)
+
+	* ResizableSheet.cpp 1.10:
+	* ResizableSheet.h 1.7:
+	* ResizableSheetEx.cpp 1.6:
+	* ResizableSheetEx.h 1.4:
+		fix for [CTRL+Tab] when switching pages
+
+2001-08-22  ppescher
+	* ResizableDialog.cpp 1.8:
+	* ResizableSheet.cpp 1.9:
+	* ResizableSheetEx.cpp 1.5:
+		fixed initialization for windows with menu bar
+
+2001-08-17  ppescher
+	* .cvsignore 1.2:
+		added static build configurations
+
+2001-08-16  ppescher
+	* ResizableLib.dsp 1.5:
+		added static build configurations
+
+2001-08-10  ppescher
+	* ResizableDialog.cpp 1.7:
+	* ResizableSheet.cpp 1.8:
+	* ResizableSheetEx.cpp 1.4:
+		fixed sizing border bug (client area preserved now)
+
+2001-08-05  Administrator
+	* Docs/DoDoxygen.bat 1.1:
+	* Docs/doxyfile.txt 1.1:
+	* ResizableDialog.cpp 1.6:
+	* ResizableDialog.h 1.6:
+	* ResizableFormView.cpp 1.3:
+	* ResizableFormView.h 1.2:
+	* ResizableGrip.cpp 1.4:
+	* ResizableGrip.h 1.4:
+	* ResizableLayout.cpp 1.9:
+	* ResizableLayout.h 1.7:
+	* ResizableLib.dsp 1.4:
+	* ResizableMinMax.cpp 1.2:
+	* ResizableMinMax.h 1.2:
+	* ResizablePage.cpp 1.3:
+	* ResizablePage.h 1.4:
+	* ResizablePageEx.cpp 1.3:
+	* ResizablePageEx.h 1.3:
+	* ResizableSheet.cpp 1.7:
+	* ResizableSheet.h 1.6:
+	* ResizableSheetEx.cpp 1.3:
+	* ResizableSheetEx.h 1.3:
+	* ResizableState.cpp 1.4:
+	* ResizableState.h 1.4:
+		added doc
+
+	* Artistic-License.txt 1.1:
+		changed license to AL
+
+	* ResizableFormView.cpp 1.2:
+		now uses documented function to calc total client area
+		fix for non-scrollable forms
+
+2001-08-01  Administrator
+	* ResizableLayout.cpp 1.8:
+		fixed transparent toolbars
+
+2001-07-21  Administrator
+	* ResizableLayout.cpp 1.7:
+	* ResizableLayout.h 1.6:
+		fixed problems with clipping overlapped controls
+		now you must add anchors in order of inclusion
+		fixed problem with transparent toolbars (I was clipping device units)
+
+2001-07-06  paolo
+	* ResizableDialog.cpp 1.5:
+	* ResizableDialog.h 1.5:
+	* ResizableGrip.cpp 1.3:
+	* ResizableGrip.h 1.3:
+	* ResizableLayout.cpp 1.6:
+	* ResizableLayout.h 1.5:
+	* ResizableLib.dsp 1.3:
+	* ResizablePageEx.cpp 1.2:
+	* ResizablePageEx.h 1.2:
+	* ResizableSheet.cpp 1.6:
+	* ResizableSheet.h 1.5:
+	* ResizableSheetEx.cpp 1.2:
+	* ResizableSheetEx.h 1.2:
+		global updates
+
+2001-06-18  paolo
+	* ResizableFormView.cpp 1.1:
+	* ResizableFormView.h 1.1:
+	* ResizableLayout.cpp 1.5:
+	* ResizableLayout.h 1.4:
+	* ResizableLib.dsp 1.2:
+	* ResizablePageEx.cpp 1.1:
+	* ResizablePageEx.h 1.1:
+	* ResizableSheet.cpp 1.5:
+	* ResizableSheet.h 1.4:
+	* ResizableSheetEx.cpp 1.1:
+	* ResizableSheetEx.h 1.1:
+		added wizard97 dialogs
+		added formviews
+		integration of property sheets
+
+2001-06-08  paolo
+	* ResizableDialog.cpp 1.4:
+	* ResizableDialog.h 1.4:
+	* ResizableLayout.cpp 1.3:
+	* ResizableLayout.h 1.3:
+	* ResizablePage.cpp 1.2:
+	* ResizablePage.h 1.3:
+		anti-flickering added
+
+	* ResizableLayout.cpp 1.4:
+	* ResizableSheet.cpp 1.4:
+		corrections to DeferWindowPos (returned value incorrectly
+		discarded)
+
+2001-05-23  paolo
+	* ResizableDialog.cpp 1.3:
+	* ResizableDialog.h 1.3:
+	* ResizableSheet.cpp 1.3:
+	* ResizableSheet.h 1.3:
+	* ResizableState.cpp 1.3:
+	* ResizableState.h 1.3:
+		new save/restore version - if bRectOnly, uses screen coords
+
+	* ResizableDialog.cpp 1.2:
+	* ResizableDialog.h 1.2:
+	* ResizableGrip.cpp 1.2:
+	* ResizableGrip.h 1.2:
+	* ResizableLayout.cpp 1.2:
+	* ResizableLayout.h 1.2:
+	* ResizablePage.h 1.2:
+	* ResizableSheet.cpp 1.2:
+	* ResizableSheet.h 1.2:
+	* ResizableState.cpp 1.2:
+	* ResizableState.h 1.2:
+		changed save/restore allowing to be performed on window rect only
+		changed GetLayoutParent to GetResizableWnd
+		added GetResizableWnd to CResizableState
+
+2001-05-18  paolo
+	* ResizableLib.dsp 1.1:
+	* ResizableLib.dsw 1.1:
+	* StdAfx.cpp 1.1:
+	* StdAfx.h 1.1:
+		new ResizableLib with project settings working
+

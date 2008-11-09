@@ -52,7 +52,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="0"
-				AdditionalIncludeDirectories="&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SVN_DEBUG"
 				BasicRuntimeChecks="1"
 				RuntimeLibrary="3"
@@ -453,11 +453,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GitAdminDir.cpp"
+				RelativePath="..\Git\GitAdminDir.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GitStatus.cpp"
+				RelativePath="..\Git\GitRev.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitStatus.cpp"
 				>
 			</File>
 			<File
@@ -533,7 +537,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TGitPath.cpp"
+				RelativePath="..\Git\TGitPath.cpp"
 				>
 			</File>
 			<File
@@ -549,14 +553,6 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
-			<File
-				RelativePath=".\GitAdminDir.h"
-				>
-			</File>
-			<File
-				RelativePath=".\GitStatus.h"
-				>
-			</File>
 			<File
 				RelativePath=".\Globals.h"
 				>
@@ -615,10 +611,6 @@
 			</File>
 			<File
 				RelativePath=".\SVNPropertyPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TGitPath.h"
 				>
 			</File>
 			<File
