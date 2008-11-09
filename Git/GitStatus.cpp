@@ -18,7 +18,7 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
+//#include "resource.h"
 #include "..\TortoiseShell\resource.h"
 //#include "git_config.h"
 #include "GitStatus.h"
@@ -26,11 +26,11 @@
 //#include "GitGlobal.h"
 //#include "GitHelpers.h"
 #ifdef _MFC_VER
-#	include "Git.h"
-#	include "MessageBox.h"
-#	include "registry.h"
-#	include "TGitPath.h"
-#	include "PathUtils.h"
+//#	include "Git.h"
+//#	include "MessageBox.h"
+//#	include "registry.h"
+//#	include "TGitPath.h"
+//#	include "PathUtils.h"
 #endif
 
 GitStatus::GitStatus(bool * pbCanceled)
@@ -103,7 +103,8 @@ void GitStatus::ClearPool()
 #ifdef _MFC_VER
 CString GitStatus::GetLastErrorMsg() const
 {
-	return Git::GetErrorString(m_err);
+//	return Git::GetErrorString(m_err);
+	return CString("");
 }
 #else
 stdstring GitStatus::GetLastErrorMsg() const
@@ -336,7 +337,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 	
 	return youngest;
 #endif
-	return "";
+	return CString("");
 }
 git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& path, CTGitPath& retPath, bool update, git_depth_t depth, bool bNoIgnore /* = true */, bool bNoExternals /* = false */)
 {
@@ -566,6 +567,7 @@ void GitStatus::GetStatusString(HINSTANCE hInst, git_wc_status_kind status, TCHA
 #ifdef _MFC_VER
 CString GitStatus::GetDepthString(git_depth_t depth)
 {
+#if 0
 	CString sDepth;
 	switch (depth)
 	{
@@ -586,6 +588,8 @@ CString GitStatus::GetDepthString(git_depth_t depth)
 		break;
 	}
 	return sDepth;
+#endif
+	return CString("");
 }
 #endif
 
@@ -759,7 +763,7 @@ void GitStatus::SetFilter(const CTGitPathList& fileList)
 	m_filterFileList.clear();
 	for(int fileIndex = 0; fileIndex < fileList.GetCount(); fileIndex++)
 	{
-		m_filterFileList.push_back(fileList[fileIndex].GetGitApiPath(m_pool));
+//		m_filterFileList.push_back(fileList[fileIndex].GetGitApiPath(m_pool));
 	}
 	// Sort the list so that we can do binary searches
 	std::sort(m_filterFileList.begin(), m_filterFileList.end());

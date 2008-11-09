@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "HistoryCombo.h"
-#include "registry.h"
+#include "../registry.h"
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 #include "SysImageList.h"

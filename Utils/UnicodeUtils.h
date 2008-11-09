@@ -19,7 +19,7 @@
 #pragma once
 
 #include <string>
-
+#include <WinDef.h>
 #pragma warning (push,1)
 #ifndef stdstring
 	typedef std::wstring wide_string;

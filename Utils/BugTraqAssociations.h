@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 struct CBugTraqProvider
 {

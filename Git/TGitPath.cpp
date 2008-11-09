@@ -24,8 +24,8 @@
 #include <regex>
 
 #if defined(_MFC_VER)
-#include "MessageBox.h"
-#include "AppUtils.h"
+//#include "MessageBox.h"
+//#include "AppUtils.h"
 #endif
 
 using namespace std;
@@ -835,7 +835,7 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 		TRACE("CFileException loading target file list\n");
 		TCHAR error[10000] = {0};
 		pE->GetErrorMessage(error, 10000);
-		CMessageBox::Show(NULL, error, _T("TortoiseGit"), MB_ICONERROR);
+//		CMessageBox::Show(NULL, error, _T("TortoiseGit"), MB_ICONERROR);
 		pE->Delete();
 		return false;
 	}

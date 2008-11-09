@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "SysImageList.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 
 // Singleton constructor and destructor (private)
@@ -119,7 +119,7 @@ int CSysImageList::GetFileIconIndex(const CString& file) const
 	return sfi.iIcon;
 }
 
-int CSysImageList::GetPathIconIndex(const CTSVNPath& filePath) const
+int CSysImageList::GetPathIconIndex(const CTGitPath& filePath) const
 {
 	CString strExtension = filePath.GetFileExtension();
 	strExtension.MakeUpper();

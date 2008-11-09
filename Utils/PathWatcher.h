@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2007-2008 - TortoiseSVN
 
@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 #define READ_DIR_CHANGE_BUFFER_SIZE 4096
 
@@ -46,11 +46,11 @@ public:
 	 * watched recursively, then the new path is just ignored and the method
 	 * returns false.
 	 */
-	bool AddPath(const CTSVNPath& path);
+	bool AddPath(const CTGitPath& path);
 	/**
 	 * Removes a path and all its children from the watched list.
 	 */
-	bool RemovePathAndChildren(const CTSVNPath& path);
+	bool RemovePathAndChildren(const CTGitPath& path);
 	
 	/**
 	 * Returns the number of recursively watched paths.
@@ -71,7 +71,7 @@ public:
 	 * Returns the list of paths which maybe got changed, i.e., for which
 	 * a change notification was received.
 	 */
-	CTSVNPathList GetChangedPaths() {return m_changedPaths;}
+	CTGitPathList GetChangedPaths() {return m_changedPaths;}
 
 	/**
 	 * Clears the list of changed paths
@@ -90,8 +90,8 @@ private:
 	HANDLE					m_hCompPort;
 	volatile LONG			m_bRunning;
 	
-	CTSVNPathList			watchedPaths;	///< list of watched paths.
-	CTSVNPathList			m_changedPaths;	///< list of paths which got changed
+	CTGitPathList			watchedPaths;	///< list of watched paths.
+	CTGitPathList			m_changedPaths;	///< list of paths which got changed
 
 	/**
 	 * Helper class: provides information about watched directories.
@@ -102,7 +102,7 @@ private:
 		CDirWatchInfo();	// private & not implemented
 		CDirWatchInfo & operator=(const CDirWatchInfo & rhs);//so that they're aren't accidentally used. -- you'll get a linker error
 	public:
-		CDirWatchInfo(HANDLE hDir, const CTSVNPath& DirectoryName);
+		CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName);
 		~CDirWatchInfo();
 
 	protected:
@@ -110,7 +110,7 @@ private:
 		bool		CloseDirectoryHandle();
 
 		HANDLE		m_hDir;			///< handle to the directory that we're watching
-		CTSVNPath	m_DirName;		///< the directory that we're watching
+		CTGitPath	m_DirName;		///< the directory that we're watching
 		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
 		DWORD		m_dwBufLength;	///< length or returned data from ReadDirectoryChangesW -- ignored?...
 		OVERLAPPED  m_Overlapped;

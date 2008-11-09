@@ -18,8 +18,8 @@
 //
 #pragma once
 
-#include "TSVNPath.h"
-#include "SVNRev.h"
+#include "TGitPath.h"
+#include "GitRev.h"
 
 /**
 * \ingroup Utils

@@ -18,8 +18,8 @@
 //
 #pragma once
 
-#include "DragDropImpl.h"
-#include "UnicodeUtils.h"
+#include "../DragDropImpl.h"
+#include "../UnicodeUtils.h"
 
 /**
  * \ingroup Utils

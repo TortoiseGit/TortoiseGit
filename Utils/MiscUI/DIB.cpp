@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "stdex_vector.h"
+#include "../stdex_vector.h"
 #include "DIB.h"
 
 CDib::CDib()

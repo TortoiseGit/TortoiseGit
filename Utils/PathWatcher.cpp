@@ -77,7 +77,7 @@ void CPathWatcher::Stop()
 	m_hCompPort = INVALID_HANDLE_VALUE;
 }
 
-bool CPathWatcher::RemovePathAndChildren(const CTSVNPath& path)
+bool CPathWatcher::RemovePathAndChildren(const CTGitPath& path)
 {
 	bool bRemoved = false;
 	AutoLocker lock(m_critSec);
@@ -94,7 +94,7 @@ repeat:
 	return bRemoved;
 }
 
-bool CPathWatcher::AddPath(const CTSVNPath& path)
+bool CPathWatcher::AddPath(const CTGitPath& path)
 {
 	AutoLocker lock(m_critSec);
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
@@ -104,7 +104,7 @@ bool CPathWatcher::AddPath(const CTSVNPath& path)
 	}
 	
 	// now check if with the new path we might have a new root
-	CTSVNPath newroot;
+	CTGitPath newroot;
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
 	{
 		const CString& watched = watchedPaths[i].GetWinPathString();
@@ -119,11 +119,11 @@ bool CPathWatcher::AddPath(const CTSVNPath& path)
 				{
 					if (sPath.GetAt(len)=='\\')
 					{
-						newroot = CTSVNPath(sPath.Left(len));
+						newroot = CTGitPath(sPath.Left(len));
 					}
 					else if (watched.GetAt(len)=='\\')
 					{
-						newroot = CTSVNPath(watched.Left(len));
+						newroot = CTGitPath(watched.Left(len));
 					}
 				}
 				break;
@@ -151,11 +151,11 @@ bool CPathWatcher::AddPath(const CTSVNPath& path)
 				{
 					if (sPath.GetAt(len)=='\\')
 					{
-						newroot = CTSVNPath(watched);
+						newroot = CTGitPath(watched);
 					}
 					else if (watched.GetLength() == 3 && watched[1] == ':')
 					{
-						newroot = CTSVNPath(watched);
+						newroot = CTGitPath(watched);
 					}
 				}
 			}
@@ -302,7 +302,7 @@ void CPathWatcher::WorkerThread()
 						buf[min(MAX_PATH*4-1, pdi->m_DirPath.GetLength()+(pnotify->FileNameLength/sizeof(WCHAR)))] = 0;
 						pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 						ATLTRACE(_T("change notification: %s\n"), buf);
-						m_changedPaths.AddPath(CTSVNPath(buf));
+						m_changedPaths.AddPath(CTGitPath(buf));
 						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 							break;
 					} while (nOffset);
@@ -350,7 +350,7 @@ void CPathWatcher::ClearInfoMap()
 	m_hCompPort = INVALID_HANDLE_VALUE;
 }
 
-CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTSVNPath& DirectoryName) :
+CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName) :
 	m_hDir(hDir),
 	m_DirName(DirectoryName)
 {

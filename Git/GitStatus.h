@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _MFC_VER
-#	include "SVNPrompt.h"
+//#	include "SVNPrompt.h"
 #endif
 #include "TGitPath.h"
 
@@ -128,7 +128,7 @@ public:
 	 * Returns the string representation of a depth.
 	 */
 #ifdef _MFC_VER
-	static CString GetDepthString(Git_depth_t depth);
+	static CString GetDepthString(git_depth_t depth);
 #endif
 	static void GetDepthString(HINSTANCE hInst, git_depth_t depth, TCHAR * string, int size, WORD lang);
 
@@ -220,7 +220,7 @@ private:
 	git_error_t *				m_err;			///< Subversion error baton
 
 #ifdef _MFC_VER
-	GitPrompt					m_prompt;
+//	GitPrompt					m_prompt;
 #endif
 
 	/**

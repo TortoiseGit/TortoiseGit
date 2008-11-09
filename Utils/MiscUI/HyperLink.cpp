@@ -45,7 +45,6 @@ CHyperLink::~CHyperLink()
     m_UnderlineFont.DeleteObject();
 }
 
-
 BOOL CHyperLink::DestroyWindow() 
 {
     KillTimer(m_nTimerID);

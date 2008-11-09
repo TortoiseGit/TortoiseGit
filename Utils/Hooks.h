@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,8 +19,9 @@
 #pragma once
 #include <map>
 #include "registry.h"
-#include "TSVNPath.h"
-#include "SVNRev.h"
+#include "TGitPath.h"
+#include "GitRev.h"
+#include "GitStatus.h"
 
 /**
  * \ingroup TortoiseProc
@@ -47,7 +48,7 @@ class hookkey
 {
 public:
 	hooktype		htype;
-	CTSVNPath		path;
+	CTGitPath		path;
 
 	bool operator < (const hookkey& hk) const 
 	{
@@ -81,12 +82,12 @@ class CHooks : public std::map<hookkey, hookcmd>
 private:
 	CHooks();
 	~CHooks();
-	void AddPathParam(CString& sCmd, const CTSVNPathList& pathList);
-	void AddDepthParam(CString& sCmd, svn_depth_t depth);
-	void AddCWDParam(CString& sCmd, const CTSVNPathList& pathList);
+	void AddPathParam(CString& sCmd, const CTGitPathList& pathList);
+	void AddDepthParam(CString& sCmd, git_depth_t depth);
+	void AddCWDParam(CString& sCmd, const CTGitPathList& pathList);
 	void AddErrorParam(CString& sCmd, const CString& error);
 	void AddParam(CString& sCmd, const CString& param);
-	CTSVNPath AddMessageFileParam(CString& sCmd, const CString& message);
+	CTGitPath AddMessageFileParam(CString& sCmd, const CString& message);
 public:
 	/// Create the singleton. Call this at the start of the program.
 	static bool			Create();
@@ -106,7 +107,7 @@ public:
 	/**
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */
-	void				Add(hooktype ht, const CTSVNPath& Path, LPCTSTR szCmd, 
+	void				Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, 
 							bool bWait, bool bShow);
 
 	/// returns the string representation of the hook type.
@@ -125,7 +126,7 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
 	 */
-	bool				StartUpdate(const CTSVNPathList& pathList, DWORD& exitcode, 
+	bool				StartUpdate(const CTGitPathList& pathList, DWORD& exitcode, 
 									CString& error);
 	/**
 	 * Executes the Pre-Update-Hook that first matches one of the paths in
@@ -143,8 +144,8 @@ public:
 	 * to the \c bRecursive parameter. And the string "%REVISION%" is replaced with
 	 * the string representation of \c rev.
 	 */
-	bool				PreUpdate(const CTSVNPathList& pathList, svn_depth_t depth, 
-									SVNRev rev, DWORD& exitcode, CString& error);
+	bool				PreUpdate(const CTGitPathList& pathList, git_depth_t depth, 
+									GitRev rev, DWORD& exitcode, CString& error);
 	/**
 	 * Executes the Post-Update-Hook that first matches one of the paths in
 	 * \c pathList.
@@ -161,8 +162,8 @@ public:
 	 * to the \c bRecursive parameter. And the string "%REVISION%" is replaced with
 	 * the string representation of \c rev.
 	 */
-	bool				PostUpdate(const CTSVNPathList& pathList, svn_depth_t depth, 
-									SVNRev rev, DWORD& exitcode, CString& error);
+	bool				PostUpdate(const CTGitPathList& pathList, git_depth_t depth, 
+									GitRev rev, DWORD& exitcode, CString& error);
 
 	/**
 	 * Executes the Start-Commit-Hook that first matches one of the paths in
@@ -179,7 +180,7 @@ public:
 	 * \c message. If the script finishes successfully, contents of this file
 	 * is read back into \c message parameter.
 	 */
-	bool				StartCommit(const CTSVNPathList& pathList, CString& message,
+	bool				StartCommit(const CTGitPathList& pathList, CString& message,
 									DWORD& exitcode, CString& error);
 	/**
 	 * Executes the Pre-Commit-Hook that first matches one of the paths in
@@ -194,10 +195,10 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
 	 * The string "%DEPTH%" is replaced with the numerical value (string) of the
-	 * svn_depth_t parameter. See the Subversion source documentation about the
+	 * Git_depth_t parameter. See the Subversion source documentation about the
 	 * values.
 	 */
-	bool				PreCommit(const CTSVNPathList& pathList, svn_depth_t depth, 
+	bool				PreCommit(const CTGitPathList& pathList, git_depth_t depth, 
 									const CString& message, DWORD& exitcode, 
 									CString& error);
 	/**
@@ -214,11 +215,11 @@ public:
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the commit is about to be done on.
 	 * The string "%DEPTH%" is replaced with the numerical value (string) of the
-	 * svn_depth_t parameter. See the Subversion source documentation about the
+	 * Git_depth_t parameter. See the Subversion source documentation about the
 	 * values.
 	 */
-	bool				PostCommit(const CTSVNPathList& pathList, svn_depth_t depth, 
-									SVNRev rev, const CString& message, 
+	bool				PostCommit(const CTGitPathList& pathList, git_depth_t depth, 
+									GitRev rev, const CString& message, 
 									DWORD& exitcode, CString& error);
 
 private:
@@ -235,6 +236,6 @@ private:
 	 * Find the hook script information for the hook type \c t which matches a
 	 * path in \c pathList.
 	 */
-	hookiterator		FindItem(hooktype t, const CTSVNPathList& pathList);
+	hookiterator		FindItem(hooktype t, const CTGitPathList& pathList);
 	static CHooks *		m_pInstance;
 };
