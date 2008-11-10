@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "SVNStatusListCtrl.h"
+#include "GitStatusListCtrl.h"
 #include "ProjectProperties.h"
 #include "RegHistory.h"
 #include "Registry.h"
@@ -28,7 +28,7 @@
 #include "PathWatcher.h"
 #include "BugTraqAssociations.h"
 #include "Tooltip.h"
-#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
+//#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 
 #include <regex>
 using namespace std;
@@ -76,9 +76,9 @@ protected:
 	afx_msg void OnBnClickedBugtraqbutton();
 	afx_msg void OnEnChangeLogmessage();
 	afx_msg void OnStnClickedExternalwarning();
-	afx_msg LRESULT OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM);
-	afx_msg LRESULT OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
-	afx_msg LRESULT OnSVNStatusListCtrlCheckChanged(WPARAM, LPARAM);
+	afx_msg LRESULT OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM);
+	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
+	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -95,10 +95,10 @@ protected:
 
 
 public:
-	CTSVNPathList		m_pathList;
-	CTSVNPathList		m_updatedPathList;
-	CTSVNPathList		m_selectedPathList;
-	CTSVNPathList		m_checkedPathList;
+	CTGitPathList		m_pathList;
+	CTGitPathList		m_updatedPathList;
+	CTGitPathList		m_selectedPathList;
+	CTGitPathList		m_checkedPathList;
 	BOOL				m_bRecursive;
 	CSciEdit			m_cLogMessage;
 	CString				m_sLogMessage;
@@ -108,12 +108,12 @@ public:
 	BOOL				m_bKeepChangeList;
 	INT_PTR				m_itemsCount;
 	bool				m_bSelectFilesForCommit;
-	CComPtr<IBugTraqProvider> m_BugTraqProvider;
+//	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 
 private:
 	CWinThread*			m_pThread;
 	std::set<CString>	m_autolist;
-	CSVNStatusListCtrl	m_ListCtrl;
+	CGitStatusListCtrl	m_ListCtrl;
 	BOOL				m_bShowUnversioned;
 	volatile LONG		m_bBlock;
 	volatile LONG		m_bThreadRunning;
@@ -133,6 +133,6 @@ private:
 	CRect				m_LogMsgOrigRect;
 	CPathWatcher		m_pathwatcher;
 
-	CBugTraqAssociation m_bugtraq_association;
+//	CBugTraqAssociation m_bugtraq_association;
 
 };

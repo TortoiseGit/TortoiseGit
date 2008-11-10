@@ -20,13 +20,14 @@
 #include "Command.h"
 
 #include "AboutCommand.h"
+#include "CommitCommand.h"
 #if 0
 #include "AddCommand.h"
 #include "BlameCommand.h"
 #include "CatCommand.h"
 #include "CheckoutCommand.h"
 #include "CleanupCommand.h"
-#include "CommitCommand.h"
+
 #include "ConflictEditorCommand.h"
 #include "CopyCommand.h"
 #include "CrashCommand.h"
@@ -201,7 +202,9 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	switch (command)
 	{
 	case cmdAbout:
-		return new AboutCommand;
+		return new AboutCommand;	
+	case cmdCommit:
+		return new CommitCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -213,8 +216,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CheckoutCommand;
 	case cmdCleanup:
 		return new CleanupCommand;
-	case cmdCommit:
-		return new CommitCommand;
+
 	case cmdConflictEditor:
 		return new ConflictEditorCommand;
 	case cmdCopy:

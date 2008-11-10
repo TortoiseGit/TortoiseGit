@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;../ext/ResizableLib&quot;,&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;..\TortoiseShell;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
+				AdditionalIncludeDirectories="../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;..\TortoiseShell;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\ext\hunspell;..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -76,7 +76,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="2"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMTD;"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -392,6 +392,14 @@
 			Name="Utils"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;h;hpp;hxx;hm;inl;inc"
 			>
+			<File
+				RelativePath=".\ProjectProperties.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ProjectProperties.h"
+				>
+			</File>
 			<Filter
 				Name="General"
 				>
@@ -399,6 +407,22 @@
 			<Filter
 				Name="UI"
 				>
+				<File
+					RelativePath="..\Utils\MiscUI\SciEdit.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\MiscUI\SciEdit.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\MiscUI\StandAloneDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\MiscUI\StandAloneDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="3rd Party"
@@ -961,6 +985,26 @@
 				RelativePath=".\Commands\Command.h"
 				>
 			</File>
+			<Filter
+				Name="Commit"
+				>
+				<File
+					RelativePath=".\Commands\CommitCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CommitCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CommitDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CommitDlg.h"
+					>
+				</File>
+			</Filter>
 			<Filter
 				Name="About"
 				>

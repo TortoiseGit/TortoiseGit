@@ -20,7 +20,7 @@
 #include "CommitCommand.h"
 
 #include "CommitDlg.h"
-#include "SVNProgressDlg.h"
+//#include "SVNProgressDlg.h"
 #include "StringUtils.h"
 #include "Hooks.h"
 #include "MessageBox.h"
@@ -44,26 +44,28 @@ bool CommitCommand::Execute()
 {
 	bool bRet = false;
 	bool bFailed = true;
-	CTSVNPathList selectedList;
+	CTGitPathList selectedList;
 	if (parser.HasKey(_T("logmsg")) && (parser.HasKey(_T("logmsgfile"))))
 	{
 		CMessageBox::Show(hwndExplorer, IDS_ERR_TWOLOGPARAMS, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
 	CString sLogMsg = LoadLogMessage();
-	bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseSVN\\SelectFilesForCommit"), TRUE));
+	bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
 	DWORD exitcode = 0;
 	CString error;
+#if 0
 	if (CHooks::Instance().StartCommit(pathList, sLogMsg, exitcode, error))
 	{
 		if (exitcode)
 		{
 			CString temp;
 			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-			CMessageBox::Show(hwndExplorer, temp, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONERROR);
 			return false;
 		}
 	}
+#endif
 	while (bFailed)
 	{
 		bFailed = false;
@@ -92,26 +94,26 @@ bool CommitCommand::Execute()
 			pathList = dlg.m_updatedPathList;
 			sLogMsg = dlg.m_sLogMessage;
 			bSelectFilesForCommit = true;
-			CSVNProgressDlg progDlg;
-			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);
-			if (parser.HasVal(_T("closeonend")))
-				progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
-			progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Commit);
-			progDlg.SetOptions(dlg.m_bKeepLocks ? ProgOptKeeplocks : ProgOptNone);
-			progDlg.SetPathList(dlg.m_pathList);
-			progDlg.SetCommitMessage(dlg.m_sLogMessage);
-			progDlg.SetDepth(dlg.m_bRecursive ? svn_depth_infinity : svn_depth_empty);
-			progDlg.SetSelectedList(dlg.m_selectedPathList);
-			progDlg.SetItemCount(dlg.m_itemsCount);
-			progDlg.SetBugTraqProvider(dlg.m_BugTraqProvider);
-			progDlg.DoModal();
-			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseSVN\\ErrorOccurred"), FALSE);
-			err = (DWORD)progDlg.DidErrorsOccur();
-			bFailed = progDlg.DidErrorsOccur();
-			bRet = progDlg.DidErrorsOccur();
-			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseSVN\\CommitReopen"), FALSE);
-			if (DWORD(bFailRepeat)==0)
-				bFailed = false;		// do not repeat if the user chose not to in the settings.
+//			CGitProgressDlg progDlg;
+//			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);
+//			if (parser.HasVal(_T("closeonend")))
+//				progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
+//			progDlg.SetCommand(CGitProgressDlg::GitProgress_Commit);
+//			progDlg.SetOptions(dlg.m_bKeepLocks ? ProgOptKeeplocks : ProgOptNone);
+//			progDlg.SetPathList(dlg.m_pathList);
+//			progDlg.SetCommitMessage(dlg.m_sLogMessage);
+//			progDlg.SetDepth(dlg.m_bRecursive ? Git_depth_infinity : svn_depth_empty);
+//			progDlg.SetSelectedList(dlg.m_selectedPathList);
+//			progDlg.SetItemCount(dlg.m_itemsCount);
+//			progDlg.SetBugTraqProvider(dlg.m_BugTraqProvider);
+//			progDlg.DoModal();
+//			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseSVN\\ErrorOccurred"), FALSE);
+//			err = (DWORD)progDlg.DidErrorsOccur();
+//			bFailed = progDlg.DidErrorsOccur();
+//			bRet = progDlg.DidErrorsOccur();
+//			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseSVN\\CommitReopen"), FALSE);
+//			if (DWORD(bFailRepeat)==0)
+//				bFailed = false;		// do not repeat if the user chose not to in the settings.
 		}
 	}
 	return bRet;

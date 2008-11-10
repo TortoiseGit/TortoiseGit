@@ -21,7 +21,7 @@
 #include "StandAloneDlg.h"
 #include "TSVNPath.h"
 #include "ProjectProperties.h"
-#include "SVN.h"
+#include "Git.h"
 #include "Colors.h"
 #include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "afxwin.h"
@@ -71,7 +71,7 @@ typedef enum
  * in a listbox. Since several Subversion commands have similar notify
  * messages they are grouped together in this single class.
  */
-class CSVNProgressDlg : public CResizableStandAloneDialog, public SVN
+class CsProgressDlg : public CResizableStandAloneDialog, public SVN
 {
 public:
 	typedef enum

@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,8 +20,8 @@
 #include "TortoiseProc.h"
 #include "UnicodeUtils.h"
 #include "ProjectProperties.h"
-#include "SVNProperties.h"
-#include "TSVNPath.h"
+//#include "GitProperties.h"
+#include "TGitPath.h"
 #include <regex>
 
 using namespace std;
@@ -44,7 +44,7 @@ ProjectProperties::~ProjectProperties(void)
 }
 
 
-BOOL ProjectProperties::ReadPropsPathList(const CTSVNPathList& pathList)
+BOOL ProjectProperties::ReadPropsPathList(const CTGitPathList& pathList)
 {
 	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
 	{
@@ -56,7 +56,7 @@ BOOL ProjectProperties::ReadPropsPathList(const CTSVNPathList& pathList)
 	return FALSE;
 }
 
-BOOL ProjectProperties::ReadProps(CTSVNPath path)
+BOOL ProjectProperties::ReadProps(CTGitPath path)
 {
 	BOOL bFoundBugtraqLabel = FALSE;
 	BOOL bFoundBugtraqMessage = FALSE;
@@ -80,10 +80,10 @@ BOOL ProjectProperties::ReadProps(CTSVNPath path)
 
 	if (!path.IsDirectory())
 		path = path.GetContainingDirectory();
-		
+#if 0		
 	for (;;)
 	{
-		SVNProperties props(path, SVNRev::REV_WC, false);
+		GitProperties props(path, GitRev::REV_WC, false);
 		for (int i=0; i<props.GetCount(); ++i)
 		{
 			CString sPropName = props.GetItemName(i).c_str();
@@ -261,7 +261,8 @@ BOOL ProjectProperties::ReadProps(CTSVNPath path)
 			return FALSE;
 		}
 	}
-	//return FALSE;		//never reached
+#endif
+	return FALSE;		//never reached
 }
 
 CString ProjectProperties::GetBugIDFromLog(CString& msg)
@@ -677,8 +678,8 @@ BOOL ProjectProperties::HasBugID(const CString& sMessage)
 	}
 	return FALSE;
 }
-
-void ProjectProperties::InsertAutoProps(svn_config_t *cfg)
+#if 0
+void ProjectProperties::InsertAutoProps(Git_config_t *cfg)
 {
 	// every line is an autoprop
 	CString sPropsData = sAutoProps;
@@ -699,7 +700,7 @@ void ProjectProperties::InsertAutoProps(svn_config_t *cfg)
 				CString value = sLine.Mid(equalpos);
 				key.Trim(_T(" ="));
 				value.Trim(_T(" ="));
-				svn_config_set(cfg, SVN_CONFIG_SECTION_AUTO_PROPS, (LPCSTR)CUnicodeUtils::GetUTF8(key), (LPCSTR)CUnicodeUtils::GetUTF8(value));
+				Git_config_set(cfg, Git_CONFIG_SECTION_AUTO_PROPS, (LPCSTR)CUnicodeUtils::GetUTF8(key), (LPCSTR)CUnicodeUtils::GetUTF8(value));
 				bEnableAutoProps = true;
 			}
 		}
@@ -709,10 +710,11 @@ void ProjectProperties::InsertAutoProps(svn_config_t *cfg)
 			sPropsData.Empty();
 	}
 	if (bEnableAutoProps)
-		svn_config_set(cfg, SVN_CONFIG_SECTION_MISCELLANY, SVN_CONFIG_OPTION_ENABLE_AUTO_PROPS, "yes");
+		Git_config_set(cfg, Git_CONFIG_SECTION_MISCELLANY, Git_CONFIG_OPTION_ENABLE_AUTO_PROPS, "yes");
 }
+#endif
 
-bool ProjectProperties::AddAutoProps(const CTSVNPath& path)
+bool ProjectProperties::AddAutoProps(const CTGitPath& path)
 {
 	if (!path.IsDirectory())
 		return true;	// no error, but nothing to do
@@ -720,7 +722,8 @@ bool ProjectProperties::AddAutoProps(const CTSVNPath& path)
 	bool bRet = true;
 
 	char buf[1024] = {0};
-	SVNProperties props(path, SVNRev::REV_WC, false);
+#if 0
+	GitProperties props(path, GitRev::REV_WC, false);
 	if (!sLabel.IsEmpty())
 		bRet = props.Add(BUGTRAQPROPNAME_LABEL, WideToMultibyte((LPCTSTR)sLabel)) && bRet;
 	if (!sMessage.IsEmpty())
@@ -769,6 +772,7 @@ bool ProjectProperties::AddAutoProps(const CTSVNPath& path)
 		bRet = props.Add(PROJECTPROPNAME_WEBVIEWER_PATHREV, WideToMultibyte((LPCTSTR)sWebViewerPathRev)) && bRet;
 	if (!sAutoProps.IsEmpty())
 		bRet = props.Add(PROJECTPROPNAME_AUTOPROPS, WideToMultibyte((LPCTSTR)sAutoProps)) && bRet;
+#endif
 	return bRet;
 }
 
@@ -808,12 +812,12 @@ public:
 	PropTest()
 	{
 		CString msg = _T("this is a test logmessage: issue 222\nIssue #456, #678, 901  #456");
-		CString sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		CString sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		CString sCheckRe = _T("[Ii]ssue #?(\\d+)(,? ?#?(\\d+))+");
 		CString sBugIDRe = _T("(\\d+)");
 		ProjectProperties props;
 		props.sCheckRe = _T("PAF-[0-9]+");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		CString sRet = props.FindBugID(_T("This is a test for PAF-88"));
 		ATLASSERT(sRet.IsEmpty());
 		props.sCheckRe = _T("[Ii]ssue #?(\\d+)");
@@ -822,19 +826,19 @@ public:
 		ATLASSERT(sRet.Compare(_T("99"))==0);
 		props.sCheckRe = _T("[Ii]ssues?:?(\\s*(,|and)?\\s*#\\d+)+");
 		props.sBugIDRe = _T("(\\d+)");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		sRet = props.FindBugID(_T("This is a test for Issue #7463,#666"));
 		ATLASSERT(props.HasBugID(_T("This is a test for Issue #7463,#666")));
 		ATLASSERT(!props.HasBugID(_T("This is a test for Issue 7463,666")));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("666 7463"))==0);
 		props.sCheckRe = _T("^\\[(\\d+)\\].*");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		sRet = props.FindBugID(_T("[000815] some stupid programming error fixed"));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("000815"))==0);
 		props.sCheckRe = _T("\\[\\[(\\d+)\\]\\]\\]");
-		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		sRet = props.FindBugID(_T("test test [[000815]]] some stupid programming error fixed"));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("000815"))==0);

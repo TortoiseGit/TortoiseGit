@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "HistoryCombo.h"
-//#include "SVNRev.h"
+#include "GitRev.h"
 
 class CTGitPath;
 

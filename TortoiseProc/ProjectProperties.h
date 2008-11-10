@@ -19,7 +19,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "TSVNPath.h"
+#include "TGitPath.h"
 using namespace std;
 
 #define BUGTRAQPROPNAME_LABEL             _T("bugtraq:label")
@@ -64,13 +64,13 @@ public:
 	 * then the properties are read from the parent folder of that file.
 	 * \param path path to a file or a folder
 	 */
-	BOOL ReadProps(CTSVNPath path);
+	BOOL ReadProps(CTGitPath path);
 	/**
 	 * Reads the properties from all paths found in a path list.
 	 * This method calls ReadProps() for each path .
 	 * \param list of paths
 	 */
-	BOOL ReadPropsPathList(const CTSVNPathList& pathList);
+	BOOL ReadPropsPathList(const CTGitPathList& pathList);
 
 	/**
 	 * Searches for the BugID inside a log message. If one is found,
@@ -109,18 +109,18 @@ public:
 	CString GetBugIDUrl(const CString& sBugID);
 
 	/**
-	 * Inserts the tsvn:autoprops into the Subversion config section.
+	 * Inserts the tGit:autoprops into the Subversion config section.
 	 * Call this before an import or an add operation.
 	 */
-	void InsertAutoProps(svn_config_t *cfg);
+	//void InsertAutoProps(git_config_t *cfg);
 
 	/**
 	 * Adds all the project properties to the specified entry
 	 */
-	bool AddAutoProps(const CTSVNPath& path);
+	bool AddAutoProps(const CTGitPath& path);
 
 	/**
-	 * Returns the log message summary if the tsvn:logsummaryregex property is
+	 * Returns the log message summary if the tGit:logsummaryregex property is
 	 * set and there are actually some matches.
 	 * Otherwise, an empty string is returned.
 	 */
@@ -129,7 +129,7 @@ public:
 	/**
 	 * Returns the path from which the properties were read.
 	 */
-	CTSVNPath GetPropsPath() {return propsPath;}
+	CTGitPath GetPropsPath() {return propsPath;}
 public:
 	/** The label to show in the commit dialog where the issue number/bug id
 	 * is entered. Example: "Bug-ID: " or "Issue-No.:". Default is "Bug-ID :" */
@@ -205,7 +205,7 @@ public:
 	CString		sLogSummaryRe;
 private:
 	CString		sAutoProps;
-	CTSVNPath	propsPath;
+	CTGitPath	propsPath;
 #ifdef DEBUG
 	friend class PropTest;
 #endif

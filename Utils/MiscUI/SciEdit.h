@@ -19,8 +19,8 @@
 #pragma once
 #include "scintilla.h"
 #include "SciLexer.h"
-#include "..\..\..\ext\hunspell\\hunspell.hxx"
-#include "..\..\..\ext\hunspell\\mythes.hxx"
+#include "hunspell.hxx"
+#include "mythes.hxx"
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
 #include <regex>

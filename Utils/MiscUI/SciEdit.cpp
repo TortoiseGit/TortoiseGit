@@ -18,11 +18,11 @@
 //
 #include "StdAfx.h"
 #include "resource.h"
-#include "AppUtils.h"
-#include "PathUtils.h"
-#include "UnicodeUtils.h"
+//#include "AppUtils.h"
+#include "..\PathUtils.h"
+#include "..\UnicodeUtils.h"
 #include <string>
-#include "registry.h"
+#include "..\registry.h"
 #include ".\sciedit.h"
 
 using namespace std;
@@ -150,6 +150,7 @@ void CSciEdit::Init(LONG lLanguage)
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME, SCI_HOMEWRAP);
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME + (SCMOD_SHIFT << 16), SCI_HOMEWRAPEXTEND);
 }
+
 
 void CSciEdit::Init(const ProjectProperties& props)
 {

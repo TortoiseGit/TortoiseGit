@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,14 +20,14 @@
 #include "TortoiseProc.h"
 #include "CommitDlg.h"
 #include "DirFileEnum.h"
-#include "SVNConfig.h"
-#include "SVNProperties.h"
+//#include "GitConfig.h"
+//#include "GitProperties.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
-#include "SVN.h"
+//#include "Git.h"
 #include "Registry.h"
-#include "SVNStatus.h"
+#include "GitStatus.h"
 #include "HistoryDlg.h"
 #include "Hooks.h"
 
@@ -37,7 +37,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-UINT CCommitDlg::WM_AUTOLISTREADY = RegisterWindowMessage(_T("TORTOISESVN_AUTOLISTREADY_MSG"));
+UINT CCommitDlg::WM_AUTOLISTREADY = RegisterWindowMessage(_T("TORTOISEGIT_AUTOLISTREADY_MSG"));
 
 IMPLEMENT_DYNAMIC(CCommitDlg, CResizableStandAloneDialog)
 CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
@@ -80,13 +80,13 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
-	ON_BN_CLICKED(IDC_HISTORY, OnBnClickedHistory)
+//	ON_BN_CLICKED(IDC_HISTORY, OnBnClickedHistory)
 	ON_BN_CLICKED(IDC_BUGTRAQBUTTON, OnBnClickedBugtraqbutton)
 	ON_EN_CHANGE(IDC_LOGMESSAGE, OnEnChangeLogmessage)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_CHECKCHANGED, &CCommitDlg::OnSVNStatusListCtrlCheckChanged)
+//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnGitStatusListCtrlItemCountChanged)
+//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
+//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
+//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_CHECKCHANGED, &CCommitDlg::OnGitStatusListCtrlCheckChanged)
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady) 
 	ON_WM_TIMER()
     ON_WM_SIZE()
@@ -97,40 +97,41 @@ BOOL CCommitDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	
-	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseSVN\\AddBeforeCommit"), TRUE);
+	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseSVN\\MaxHistoryItems"), 25));
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
 
-	m_regKeepChangelists = CRegDWORD(_T("Software\\TortoiseSVN\\KeepChangeLists"), FALSE);
+	m_regKeepChangelists = CRegDWORD(_T("Software\\TortoiseGit\\KeepChangeLists"), FALSE);
 	m_bKeepChangeList = m_regKeepChangelists;
 
-	SVNConfig config;
-	m_bKeepLocks = config.KeepLocks();
+//	GitConfig config;
+//	m_bKeepLocks = config.KeepLocks();
 
 	UpdateData(FALSE);
 	
-	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLTEXTSTATUS | SVNSLC_COLPROPSTATUS | SVNSLC_COLLOCK, _T("CommitDlg"));
-	m_ListCtrl.SetSelectButton(&m_SelectAll);
-	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
-	m_ListCtrl.SetCancelBool(&m_bCancelled);
-	m_ListCtrl.SetEmptyString(IDS_COMMITDLG_NOTHINGTOCOMMIT);
-	m_ListCtrl.EnableFileDrop();
-	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
+//	m_ListCtrl.Init(GitSLC_COLEXT | GitSLC_COLTEXTSTATUS | GitSLC_COLPROPSTATUS | GitSLC_COLLOCK, _T("CommitDlg"));
+//	m_ListCtrl.SetSelectButton(&m_SelectAll);
+//	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
+//	m_ListCtrl.SetCancelBool(&m_bCancelled);
+//	m_ListCtrl.SetEmptyString(IDS_COMMITDLG_NOTHINGTOCOMMIT);
+//	m_ListCtrl.EnableFileDrop();
+//	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
 	
-	m_ProjectProperties.ReadPropsPathList(m_pathList);
+//	m_ProjectProperties.ReadPropsPathList(m_pathList);
 	m_cLogMessage.Init(m_ProjectProperties);
-	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8));
+	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.RegisterContextMenuHandler(this);
 
 	OnEnChangeLogmessage();
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXTERNALWARNING, IDS_COMMITDLG_EXTERNALS);
-	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
+//	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 	
 	m_SelectAll.SetCheck(BST_INDETERMINATE);
-	
+
+#if 0
 	CBugTraqAssociations bugtraq_associations;
 	bugtraq_associations.Load();
 
@@ -180,7 +181,7 @@ BOOL CCommitDlg::OnInitDialog()
 		GetDlgItem(IDC_BUGTRAQBUTTON)->EnableWindow(FALSE);
 		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	}
-
+#endif
 	if (!m_sLogMessage.IsEmpty())
 		m_cLogMessage.SetText(m_sLogMessage);
 		
@@ -199,7 +200,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_BUGTRAQBUTTON, TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_TO, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_HISTORY, TOP_LEFT);
+//	AddAnchor(IDC_HISTORY, TOP_LEFT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
@@ -217,7 +218,7 @@ BOOL CCommitDlg::OnInitDialog()
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("CommitDlg"));
-	DWORD yPos = CRegDWORD(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
+	DWORD yPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
 	GetClientRect(&rcDlg);
 	m_cLogMessage.GetWindowRect(&rcLogMsg);
@@ -260,12 +261,12 @@ BOOL CCommitDlg::OnInitDialog()
 		m_pThread->m_bAutoDelete = FALSE;
 		m_pThread->ResumeThread();
 	}
-	CRegDWORD err = CRegDWORD(_T("Software\\TortoiseSVN\\ErrorOccurred"), FALSE);
-	CRegDWORD historyhint = CRegDWORD(_T("Software\\TortoiseSVN\\HistoryHintShown"), FALSE);
+	CRegDWORD err = CRegDWORD(_T("Software\\TortoiseGit\\ErrorOccurred"), FALSE);
+	CRegDWORD historyhint = CRegDWORD(_T("Software\\TortoiseGit\\HistoryHintShown"), FALSE);
 	if ((((DWORD)err)!=FALSE)&&((((DWORD)historyhint)==FALSE)))
 	{
 		historyhint = TRUE;
-		ShowBalloon(IDC_HISTORY, IDS_COMMITDLG_HISTORYHINT_TT, IDI_INFORMATION);
+//		ShowBalloon(IDC_HISTORY, IDS_COMMITDLG_HISTORYHINT_TT, IDI_INFORMATION);
 	}
 	err = FALSE;
 
@@ -305,7 +306,8 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
-	CRegDWORD regUnversionedRecurse (_T("Software\\TortoiseSVN\\UnversionedRecurse"), TRUE);
+#if 0
+	CRegDWORD regUnversionedRecurse (_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
 	if (!(DWORD)regUnversionedRecurse)
 	{
 		// Find unversioned directories which are marked for commit. The user might expect them
@@ -314,15 +316,15 @@ void CCommitDlg::OnOK()
 		int nListItems = m_ListCtrl.GetItemCount();
 		for (int j=0; j<nListItems; j++)
 		{
-			const CSVNStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
-			if (entry->IsChecked() && (entry->status == svn_wc_status_unversioned) && entry->IsFolder() )
+			const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
+			if (entry->IsChecked() && (entry->status == Git_wc_status_unversioned) && entry->IsFolder() )
 			{
 				if (CMessageBox::Show(this->m_hWnd, IDS_COMMITDLG_UNVERSIONEDFOLDERWARNING, IDS_APPNAME, MB_YESNO | MB_ICONWARNING)!=IDYES)
 					return;
 			}
 		}
 	}
-
+#endif
 	m_pathwatcher.Stop();
 	InterlockedExchange(&m_bBlock, TRUE);
 	CDWordArray arDeleted;
@@ -332,30 +334,31 @@ void CCommitDlg::OnOK()
 	m_bRecursive = true;
 	int nListItems = m_ListCtrl.GetItemCount();
 
-	CTSVNPathList itemsToAdd;
-	CTSVNPathList itemsToRemove;
+	CTGitPathList itemsToAdd;
+	CTGitPathList itemsToRemove;
 	bool bCheckedInExternal = false;
 	bool bHasConflicted = false;
 	std::set<CString> checkedLists;
 	std::set<CString> uncheckedLists;
+#if 0
 	for (int j=0; j<nListItems; j++)
 	{
-		const CSVNStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
+		const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
 		if (entry->IsChecked())
 		{
-			if (entry->status == svn_wc_status_unversioned)
+			if (entry->status == Git_wc_status_unversioned)
 			{
 				itemsToAdd.AddPath(entry->GetPath());
 			}
-			if (entry->status == svn_wc_status_conflicted)
+			if (entry->status == Git_wc_status_conflicted)
 			{
 				bHasConflicted = true;
 			}
-			if (entry->status == svn_wc_status_missing)
+			if (entry->status == Git_wc_status_missing)
 			{
 				itemsToRemove.AddPath(entry->GetPath());
 			}
-			if (entry->status == svn_wc_status_deleted)
+			if (entry->status == Git_wc_status_deleted)
 			{
 				arDeleted.Add(j);
 			}
@@ -367,17 +370,17 @@ void CCommitDlg::OnOK()
 		}
 		else
 		{
-			if ((entry->status != svn_wc_status_unversioned)	&&
-				(entry->status != svn_wc_status_ignored))
+			if ((entry->status != Git_wc_status_unversioned)	&&
+				(entry->status != Git_wc_status_ignored))
 			{
 				nUnchecked++;
 				uncheckedLists.insert(entry->GetChangeList());
 				if (m_bRecursive)
 				{
-					// This algorithm is for the sake of simplicity of the complexity O(N²)
+					// This algorithm is for the sake of simplicity of the complexity O(N?
 					for (int k=0; k<nListItems; k++)
 					{
-						const CSVNStatusListCtrl::FileEntry * entryK = m_ListCtrl.GetListEntry(k);
+						const CGitStatusListCtrl::FileEntry * entryK = m_ListCtrl.GetListEntry(k);
 						if (entryK->IsChecked() && entryK->GetPath().IsAncestorOf(entry->GetPath())  )
 						{
 							// Fall back to a non-recursive commit to prevent items being
@@ -391,12 +394,15 @@ void CCommitDlg::OnOK()
 			}
 		}
 	}
+#endif
+
+#if 0
 	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
 	{
 		// There are paths which got changed (touched at least).
 		// We have to find out if this affects the selection in the commit dialog
 		// If it could affect the selection, revert back to a non-recursive commit
-		CTSVNPathList changedList = m_pathwatcher.GetChangedPaths();
+		CTGitPathList changedList = m_pathwatcher.GetChangedPaths();
 		changedList.RemoveDuplicates();
 		for (int i=0; i<changedList.GetCount(); ++i)
 		{
@@ -415,7 +421,7 @@ void CCommitDlg::OnOK()
 			else if (!m_ListCtrl.IsPathShown(changedList[i]))
 			{
 				// a path which is not shown in the list has changed
-				CSVNStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(changedList[i]);
+				CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(changedList[i]);
 				if (entry)
 				{
 					// check if the changed path would get committed by a recursive commit
@@ -436,10 +442,10 @@ void CCommitDlg::OnOK()
 	// Now, do all the adds - make sure that the list is sorted so that parents 
 	// are added before their children
 	itemsToAdd.SortByPathname();
-	SVN svn;
-	if (!svn.Add(itemsToAdd, &m_ProjectProperties, svn_depth_empty, FALSE, FALSE, TRUE))
+	Git Git;
+	if (!Git.Add(itemsToAdd, &m_ProjectProperties, Git_depth_empty, FALSE, FALSE, TRUE))
 	{
-		CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+		CMessageBox::Show(m_hWnd, Git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 		InterlockedExchange(&m_bBlock, FALSE);
 		Refresh();
 		return;
@@ -448,7 +454,7 @@ void CCommitDlg::OnOK()
 	// Remove any missing items
 	// Not sure that this sort is really necessary - indeed, it might be better to do a reverse sort at this point
 	itemsToRemove.SortByPathname();
-	svn.Remove(itemsToRemove, TRUE);
+	Git.Remove(itemsToRemove, TRUE);
 
 	//the next step: find all deleted files and check if they're 
 	//inside a deleted folder. If that's the case, then remove those
@@ -460,7 +466,7 @@ void CCommitDlg::OnOK()
 	{
 		if (m_ListCtrl.GetCheck(arDeleted.GetAt(i)))
 		{
-			const CTSVNPath& path = m_ListCtrl.GetListEntry(arDeleted.GetAt(i))->GetPath();
+			const CTGitPath& path = m_ListCtrl.GetListEntry(arDeleted.GetAt(i))->GetPath();
 			if (path.IsDirectory())
 			{
 				//now find all children of this directory
@@ -468,7 +474,7 @@ void CCommitDlg::OnOK()
 				{
 					if (i!=j)
 					{
-						CSVNStatusListCtrl::FileEntry* childEntry = m_ListCtrl.GetListEntry(arDeleted.GetAt(j));
+						CGitStatusListCtrl::FileEntry* childEntry = m_ListCtrl.GetListEntry(arDeleted.GetAt(j));
 						if (childEntry->IsChecked())
 						{
 							if (path.IsAncestorOf(childEntry->GetPath()))
@@ -502,6 +508,7 @@ void CCommitDlg::OnOK()
 		if (uncheckedLists.find(*checkedLists.begin()) == uncheckedLists.end())
 			m_sChangeList = *checkedLists.begin();
 	}
+#endif
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
 	if (!GetDlgItem(IDC_KEEPLOCK)->IsWindowEnabled())
@@ -534,7 +541,7 @@ void CCommitDlg::SaveSplitterPos()
 {
 	if (!IsIconic())
 	{
-		CRegDWORD regPos = CRegDWORD(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
+		CRegDWORD regPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
@@ -565,16 +572,17 @@ UINT CCommitDlg::StatusThread()
 
     // read the list of recent log entries before querying the WC for status
     // -> the user may select one and modify / update it while we are crawling the WC
+#if 0
 	if (m_History.GetCount()==0)
 	{
 		CString reg;
 		if (m_ListCtrl.m_sUUID.IsEmpty() && m_pathList.GetCount()>0)
 		{
-			SVN svn;
-			reg.Format(_T("Software\\TortoiseSVN\\History\\commit%s"), (LPCTSTR)svn.GetUUIDFromPath(m_pathList[0]));
+			Git Git;
+			reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)Git.GetUUIDFromPath(m_pathList[0]));
 		}
 		else
-			reg.Format(_T("Software\\TortoiseSVN\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
+			reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
 		m_History.Load(reg, _T("logmsgs"));
 	}
 
@@ -582,15 +590,15 @@ UINT CCommitDlg::StatusThread()
 	BOOL success = m_ListCtrl.GetStatus(m_pathList);
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
-	DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWINCHANGELIST;
-	dwShow |= DWORD(m_regAddBeforeCommit) ? SVNSLC_SHOWUNVERSIONED : 0;
+	DWORD dwShow = GitSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | GitSLC_SHOWLOCKS | GitSLC_SHOWINCHANGELIST;
+	dwShow |= DWORD(m_regAddBeforeCommit) ? GitSLC_SHOWUNVERSIONED : 0;
 	if (success)
 	{
 		if (m_checkedPathList.GetCount())
 			m_ListCtrl.Show(dwShow, m_checkedPathList);
 		else
 		{
-			DWORD dwCheck = m_bSelectFilesForCommit ? SVNSLC_SHOWDIRECTS|SVNSLC_SHOWMODIFIED|SVNSLC_SHOWADDED|SVNSLC_SHOWREMOVED|SVNSLC_SHOWREPLACED|SVNSLC_SHOWMERGED|SVNSLC_SHOWLOCKS : 0;
+			DWORD dwCheck = m_bSelectFilesForCommit ? GitSLC_SHOWDIRECTS|GitSLC_SHOWMODIFIED|GitSLC_SHOWADDED|GitSLC_SHOWREMOVED|GitSLC_SHOWREPLACED|GitSLC_SHOWMERGED|GitSLC_SHOWLOCKS : 0;
 			m_ListCtrl.Show(dwShow, dwCheck);
 			m_bSelectFilesForCommit = true;
 		}
@@ -618,12 +626,12 @@ UINT CCommitDlg::StatusThread()
 		{
 			m_bShowUnversioned = TRUE;
 			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
-			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
+			DWORD dwShow = GitSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | GitSLC_SHOWUNVERSIONED | GitSLC_SHOWLOCKS;
 			m_ListCtrl.Show(dwShow);
 		}
 	}
 
-	CTSVNPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
 	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	m_autolist.clear();
@@ -631,7 +639,7 @@ UINT CCommitDlg::StatusThread()
 	// auto completion list.
 	m_pathwatcher.ClearChangedPaths();
 	InterlockedExchange(&m_bBlock, FALSE);
-	if ((DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\Autocompletion"), TRUE)==TRUE)
+	if ((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\Autocompletion"), TRUE)==TRUE)
 	{
 		m_ListCtrl.Block(TRUE, TRUE);
 		GetAutocompletionList();
@@ -652,6 +660,7 @@ UINT CCommitDlg::StatusThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	// force the cursor to normal
 	RefreshCursor();
+#endif
 	return 0;
 }
 
@@ -705,7 +714,7 @@ void CCommitDlg::OnBnClickedSelectall()
 		state = BST_UNCHECKED;
 		m_SelectAll.SetCheck(state);
 	}
-	m_ListCtrl.SelectAll(state == BST_CHECKED);
+//	m_ListCtrl.SelectAll(state == BST_CHECKED);
 }
 
 BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
@@ -774,6 +783,7 @@ void CCommitDlg::OnBnClickedHelp()
 
 void CCommitDlg::OnBnClickedShowunversioned()
 {
+#if 0
 	m_tooltips.Pop();	// hide the tooltips
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
@@ -781,11 +791,12 @@ void CCommitDlg::OnBnClickedShowunversioned()
 	{
 		DWORD dwShow = m_ListCtrl.GetShowFlags();
 		if (DWORD(m_regAddBeforeCommit))
-			dwShow |= SVNSLC_SHOWUNVERSIONED;
+			dwShow |= GitSLC_SHOWUNVERSIONED;
 		else
-			dwShow &= ~SVNSLC_SHOWUNVERSIONED;
+			dwShow &= ~GitSLC_SHOWUNVERSIONED;
 		m_ListCtrl.Show(dwShow);
 	}
+#endif
 }
 
 void CCommitDlg::OnStnClickedExternalwarning()
@@ -798,22 +809,24 @@ void CCommitDlg::OnEnChangeLogmessage()
 	UpdateOKButton();
 }
 
-LRESULT CCommitDlg::OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM)
+LRESULT CCommitDlg::OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM)
 {
+#if 0
 	if ((m_ListCtrl.GetItemCount() == 0)&&(m_ListCtrl.HasUnversionedItems())&&(!m_bShowUnversioned))
 	{
 		if (CMessageBox::Show(*this, IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED, IDS_APPNAME, MB_ICONINFORMATION | MB_YESNO)==IDYES)
 		{
 			m_bShowUnversioned = TRUE;
-			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
+			DWORD dwShow = GitSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | GitSLC_SHOWUNVERSIONED | GitSLC_SHOWLOCKS;
 			m_ListCtrl.Show(dwShow);
 			UpdateData(FALSE);
 		}
 	}
+#endif
 	return 0;
 }
 
-LRESULT CCommitDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
+LRESULT CCommitDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 {
 	Refresh();
 	return 0;
@@ -821,6 +834,7 @@ LRESULT CCommitDlg::OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 
 LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 {
+#if 0
 	BringWindowToTop();
 	SetForegroundWindow();
 	SetActiveWindow();
@@ -833,14 +847,14 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// When the timer expires, we start the refresh thread,
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
-	CTSVNPath path;
+	CTGitPath path;
 	path.SetFromWin((LPCTSTR)lParam);
 
 	// just add all the items we get here.
 	// if the item is versioned, the add will fail but nothing
 	// more will happen.
-	SVN svn;
-	svn.Add(CTSVNPathList(path), &m_ProjectProperties, svn_depth_empty, false, true, true);
+	Git Git;
+	Git.Add(CTGitPathList(path), &m_ProjectProperties, Git_depth_empty, false, true, true);
 
 	if (!m_ListCtrl.HasPath(path))
 	{
@@ -879,6 +893,7 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, NULL);
 	ATLTRACE(_T("Item %s dropped, timer started\n"), path.GetWinPath());
+#endif
 	return 0;
 }
 
@@ -934,7 +949,7 @@ void CCommitDlg::GetAutocompletionList()
 	
 	std::map<CString, CString> mapRegex;
 	CString sRegexFile = CPathUtils::GetAppDirectory();
-	CRegDWORD regtimeout = CRegDWORD(_T("Software\\TortoiseSVN\\AutocompleteParseTimeout"), 5);
+	CRegDWORD regtimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
 	DWORD timeoutvalue = regtimeout*1000;
 	sRegexFile += _T("autolist.txt");
 	if (!m_bRunThread)
@@ -942,7 +957,7 @@ void CCommitDlg::GetAutocompletionList()
 	ParseRegexFile(sRegexFile, mapRegex);
 	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, sRegexFile.GetBuffer(MAX_PATH+1));
 	sRegexFile.ReleaseBuffer();
-	sRegexFile += _T("\\TortoiseSVN\\autolist.txt");
+	sRegexFile += _T("\\TortoiseGit\\autolist.txt");
 	if (PathFileExists(sRegexFile))
 	{
 		ParseRegexFile(sRegexFile, mapRegex);
@@ -962,14 +977,16 @@ void CCommitDlg::GetAutocompletionList()
 		// stop parsing after timeout
 		if ((!m_bRunThread) || (GetTickCount() - starttime > timeoutvalue))
 			return;
-		const CSVNStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
-		if (!entry)
-			continue;
+
+//		const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
+//		if (!entry)
+//			continue;
 		
 		// add the path parts to the auto completion list too
-		CString sPartPath = entry->GetRelativeSVNPath();
-		m_autolist.insert(sPartPath);
+//		CString sPartPath = entry->GetRelativeGitPath();
+//		m_autolist.insert(sPartPath);
 
+#if 0
 		int pos = 0;
 		int lastPos = 0;
 		while ((pos = sPartPath.Find('/', pos)) >= 0)
@@ -981,14 +998,14 @@ void CCommitDlg::GetAutocompletionList()
 
 		// Last inserted entry is a file name.
 		// Some users prefer to also list file name without extension.
-		if (CRegDWORD(_T("Software\\TortoiseSVN\\AutocompleteRemovesExtensions"), FALSE))
+		if (CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteRemovesExtensions"), FALSE))
 		{
 			int dotPos = sPartPath.ReverseFind('.');
 			if ((dotPos >= 0) && (dotPos > lastPos))
 				m_autolist.insert(sPartPath.Mid(lastPos, dotPos - lastPos));
 		}
 
-		if ((entry->status <= svn_wc_status_normal)||(entry->status == svn_wc_status_ignored))
+		if ((entry->status <= Git_wc_status_normal)||(entry->status == Git_wc_status_ignored))
 			continue;
 
 		CString sExt = entry->GetPath().GetFileExtension();
@@ -999,16 +1016,17 @@ void CCommitDlg::GetAutocompletionList()
 			continue;
 
 		ScanFile(entry->GetPath().GetWinPathString(), rdata);
-		if ((entry->textstatus != svn_wc_status_unversioned) &&
-			(entry->textstatus != svn_wc_status_none) &&
-			(entry->textstatus != svn_wc_status_ignored) &&
-			(entry->textstatus != svn_wc_status_added) &&
-			(entry->textstatus != svn_wc_status_normal))
+		if ((entry->textstatus != Git_wc_status_unversioned) &&
+			(entry->textstatus != Git_wc_status_none) &&
+			(entry->textstatus != Git_wc_status_ignored) &&
+			(entry->textstatus != Git_wc_status_added) &&
+			(entry->textstatus != Git_wc_status_normal))
 		{
-			CTSVNPath basePath = SVN::GetPristinePath(entry->GetPath());
+			CTGitPath basePath = Git::GetPristinePath(entry->GetPath());
 			if (!basePath.IsEmpty())
 				ScanFile(basePath.GetWinPathString(), rdata);
 		}
+#endif
 	}
 	ATLTRACE(_T("Auto completion list loaded in %d msec\n"), GetTickCount() - starttime);
 }
@@ -1089,6 +1107,7 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 
 bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 {
+#if 0
 	if (m_bBlock)
 		return false;
 	if (cmd == m_nPopupPasteListCmd)
@@ -1098,19 +1117,19 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		int nListItems = m_ListCtrl.GetItemCount();
 		for (int i=0; i<nListItems; ++i)
 		{
-			CSVNStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
+			CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
 			if (entry->IsChecked())
 			{
 				CString line;
-				svn_wc_status_kind status = entry->status;
-				if (status == svn_wc_status_unversioned)
-					status = svn_wc_status_added;
-				if (status == svn_wc_status_missing)
-					status = svn_wc_status_deleted;
-				WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
+				Git_wc_status_kind status = entry->status;
+				if (status == Git_wc_status_unversioned)
+					status = Git_wc_status_added;
+				if (status == Git_wc_status_missing)
+					status = Git_wc_status_deleted;
+				WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 				if (m_ProjectProperties.bFileListInEnglish)
 					langID = 1033;
-				SVNStatus::GetStatusString(AfxGetResourceHandle(), status, buf, sizeof(buf)/sizeof(TCHAR), langID);
+				GitStatus::GetStatusString(AfxGetResourceHandle(), status, buf, sizeof(buf)/sizeof(TCHAR), langID);
 				line.Format(_T("%-10s %s\r\n"), buf, (LPCTSTR)m_ListCtrl.GetItemText(i,0));
 				logmsg += line;
 			}
@@ -1118,6 +1137,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		pSciEdit->InsertText(logmsg);
 		return true;
 	}
+#endif
 	return false;
 }
 
@@ -1151,6 +1171,7 @@ void CCommitDlg::OnBnClickedHistory()
 	m_tooltips.Pop();	// hide the tooltips
 	if (m_pathList.GetCount() == 0)
 		return;
+#if 0
 	CHistoryDlg historyDlg;
 	historyDlg.SetHistory(m_History);
 	if (historyDlg.DoModal() != IDOK)
@@ -1172,10 +1193,12 @@ void CCommitDlg::OnBnClickedHistory()
 
 	UpdateOKButton();
 	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
+#endif
 }
 
 void CCommitDlg::OnBnClickedBugtraqbutton()
 {
+#if 0
 	m_tooltips.Pop();	// hide the tooltips
 	CString sMsg = m_cLogMessage.GetText();
 
@@ -1187,7 +1210,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	SAFEARRAY *pathList = SafeArrayCreateVector(VT_BSTR, 0, m_pathList.GetCount());
 
 	for (LONG index = 0; index < m_pathList.GetCount(); ++index)
-		SafeArrayPutElement(pathList, &index, m_pathList[index].GetSVNPathString().AllocSysString());
+		SafeArrayPutElement(pathList, &index, m_pathList[index].GetGitPathString().AllocSysString());
 
 	BSTR originalMessage = sMsg.AllocSysString();
 	BSTR temp = NULL;
@@ -1197,13 +1220,13 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
 	if (SUCCEEDED(hr))
 	{
-		CString common = m_ListCtrl.GetCommonURL(false).GetSVNPathString();
+		CString common = m_ListCtrl.GetCommonURL(false).GetGitPathString();
 		BSTR repositoryRoot = common.AllocSysString();
 		if (FAILED(hr = pProvider2->GetCommitMessage2(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, originalMessage, &temp)))
 		{
 			CString sErr;
 			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
-			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
 		}
 		else
 			m_cLogMessage.SetText(temp);
@@ -1217,7 +1240,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		{
 			CString sErr;
 			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
-			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 
@@ -1225,7 +1248,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		{
 			CString sErr;
 			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
-			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
 		}
 		else
 			m_cLogMessage.SetText(temp);
@@ -1234,9 +1257,10 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	m_cLogMessage.SetFocus();
 
 	SysFreeString(temp);
+#endif
 }
 
-LRESULT CCommitDlg::OnSVNStatusListCtrlCheckChanged(WPARAM, LPARAM)
+LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 {
 	UpdateOKButton();
 	return 0;
@@ -1244,6 +1268,7 @@ LRESULT CCommitDlg::OnSVNStatusListCtrlCheckChanged(WPARAM, LPARAM)
 
 void CCommitDlg::UpdateOKButton()
 {
+#if 0
 	BOOL bValidLogSize = FALSE;
 
     if (m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize)
@@ -1251,6 +1276,7 @@ void CCommitDlg::UpdateOKButton()
 
 	LONG nSelectedItems = m_ListCtrl.GetSelected();
 	DialogEnableWindow(IDOK, bValidLogSize && nSelectedItems>0);
+#endif
 }
 
 

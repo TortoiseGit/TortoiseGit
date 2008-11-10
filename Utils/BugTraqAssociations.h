@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008 - TortoiseSVN
+// Copyright (C) 2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ struct CBugTraqProvider
  */
 class CBugTraqAssociation
 {
-	CTSVNPath m_path;
+	CTGitPath m_path;
 	CBugTraqProvider m_provider;
 	CString m_parameters;
 
@@ -46,7 +46,7 @@ public:
 		m_provider.name = szProviderName;
 	}
 
-	const CTSVNPath &GetPath() const { return m_path; }
+	const CTGitPath &GetPath() const { return m_path; }
 	CString GetProviderName() const { return m_provider.name; }
 	CLSID GetProviderClass() const { return m_provider.clsid; }
 	CString GetProviderClassAsString() const;
@@ -65,9 +65,9 @@ public:
 	void Save() const;
 
 	void Add(const CBugTraqAssociation &assoc);
-	void RemoveByPath(const CTSVNPath &path);
+	void RemoveByPath(const CTGitPath &path);
 
-	bool FindProvider(const CTSVNPathList &pathList, CBugTraqAssociation *assoc) const;
+	bool FindProvider(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const;
 
 	typedef inner_t::const_iterator const_iterator;
 	const_iterator begin() const { return m_inner.begin(); }
@@ -77,14 +77,14 @@ public:
 	static CString LookupProviderName(const CLSID &provider_clsid);
 
 private:
-	bool FindProviderForPathList(const CTSVNPathList &pathList, CBugTraqAssociation *assoc) const;
-	bool FindProviderForPath(CTSVNPath path, CBugTraqAssociation *assoc) const;
+	bool FindProviderForPathList(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const;
+	bool FindProviderForPath(CTGitPath path, CBugTraqAssociation *assoc) const;
 
 	struct FindByPathPred
 	{
-		const CTSVNPath &m_path;
+		const CTGitPath &m_path;
 
-		FindByPathPred(const CTSVNPath &path)
+		FindByPathPred(const CTGitPath &path)
 			: m_path(path) { }
 
 		bool operator() (const CBugTraqAssociation *assoc) const

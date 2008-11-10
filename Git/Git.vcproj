@@ -165,6 +165,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GitStatusListCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -208,6 +212,10 @@
 			</File>
 			<File
 				RelativePath=".\GitStatus.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GitStatusListCtrl.h"
 				>
 			</File>
 			<File
