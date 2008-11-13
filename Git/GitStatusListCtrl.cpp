@@ -4564,7 +4564,7 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 				{
 					// copy all selected paths to the clipboard
 					if (GetAsyncKeyState(VK_SHIFT)&0x8000)
-						CopySelectedEntriesToClipboard(SVNSLC_COLSTATUS|SVNSLC_COLURL);
+						CopySelectedEntriesToClipboard(SVNSLC_COLSTATUS);
 					else
 						CopySelectedEntriesToClipboard(0);
 					return TRUE;

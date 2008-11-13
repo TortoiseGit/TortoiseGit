@@ -111,13 +111,13 @@ BOOL CCommitDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 	
-//	m_ListCtrl.Init(GitSLC_COLEXT | GitSLC_COLTEXTSTATUS | GitSLC_COLPROPSTATUS | GitSLC_COLLOCK, _T("CommitDlg"));
-//	m_ListCtrl.SetSelectButton(&m_SelectAll);
-//	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
-//	m_ListCtrl.SetCancelBool(&m_bCancelled);
-//	m_ListCtrl.SetEmptyString(IDS_COMMITDLG_NOTHINGTOCOMMIT);
-//	m_ListCtrl.EnableFileDrop();
-//	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
+	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLTEXTSTATUS , _T("CommitDlg"));
+	m_ListCtrl.SetSelectButton(&m_SelectAll);
+	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
+	m_ListCtrl.SetCancelBool(&m_bCancelled);
+	m_ListCtrl.SetEmptyString(IDS_COMMITDLG_NOTHINGTOCOMMIT);
+	m_ListCtrl.EnableFileDrop();
+	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
 	
 //	m_ProjectProperties.ReadPropsPathList(m_pathList);
 	m_cLogMessage.Init(m_ProjectProperties);
