@@ -1022,7 +1022,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 
 void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */)
 {
-#if 0
+
 	Locker lock(m_critSec);
 	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
 
@@ -1057,6 +1057,8 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			continue;
 		if (entry->IsFolder() && (!bShowFolders))
 			continue;	// don't show folders if they're not wanted.
+
+#if 0
 		git_wc_status_kind status = GitStatus::GetMoreImportant(entry->status, entry->remotestatus);
 		DWORD showFlags = GetShowFlagsFromGitStatus(status);
 		if (entry->IsLocked())
@@ -1065,10 +1067,12 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			showFlags |= SVNSLC_SHOWSWITCHED;
 		if (!entry->changelist.IsEmpty())
 			showFlags |= SVNSLC_SHOWINCHANGELIST;
-
-		bool bAllowCheck = ((entry->changelist.Compare(SVNSLC_IGNORECHANGELIST) != 0) && (m_bCheckIfGroupsExist || (m_changelists.size()==0 || (m_changelists.size()==1 && m_bHasIgnoreGroup))));
+#endif
+		bool bAllowCheck = ((entry->changelist.Compare(SVNSLC_IGNORECHANGELIST) != 0) 
+			&& (m_bCheckIfGroupsExist || (m_changelists.size()==0 || (m_changelists.size()==1 && m_bHasIgnoreGroup))));
 
 		// status_ignored is a special case - we must have the 'direct' flag set to add a status_ignored item
+#if 0
 		if (status != Git_wc_status_ignored || (entry->direct) || (dwShow & GitSLC_SHOWIGNORED))
 		{
 			if ((!entry->IsFolder()) && (status == Git_wc_status_deleted) && (dwShow & SVNSLC_SHOWREMOVEDANDPRESENT))
@@ -1105,6 +1109,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 				AddEntry(entry, langID, listIndex++);
 			}
 		}
+#endif
 	}
 
 	SetItemCount(listIndex);
@@ -1156,12 +1161,12 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
-#endif
+
 }
 
 void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bool bShowFolders /* = true */)
 {
-#if 0
+
 	Locker lock(m_critSec);
 	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
 
@@ -1196,6 +1201,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bo
 			continue;
 		if (entry->IsFolder() && (!bShowFolders))
 			continue;	// don't show folders if they're not wanted.
+#if 0
 		git_wc_status_kind status = SVNStatus::GetMoreImportant(entry->status, entry->remotestatus);
 		DWORD showFlags = GetShowFlagsFromSVNStatus(status);
 		if (entry->IsLocked())
@@ -1238,6 +1244,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bo
 				AddEntry(entry, langID, listIndex++);
 			}
 		}
+#endif
 	}
 
 	SetItemCount(listIndex);
@@ -1287,7 +1294,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bo
 
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
-#endif
+
 }
 
 void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)

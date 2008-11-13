@@ -586,20 +586,21 @@ UINT CCommitDlg::StatusThread()
 			reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
 		m_History.Load(reg, _T("logmsgs"));
 	}
-
+#endif
     // Initialise the list control with the status of the files/folders below us
 	BOOL success = m_ListCtrl.GetStatus(m_pathList);
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
-	DWORD dwShow = GitSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | GitSLC_SHOWLOCKS | GitSLC_SHOWINCHANGELIST;
-	dwShow |= DWORD(m_regAddBeforeCommit) ? GitSLC_SHOWUNVERSIONED : 0;
+	DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWINCHANGELIST;
+	dwShow |= DWORD(m_regAddBeforeCommit) ? SVNSLC_SHOWUNVERSIONED : 0;
 	if (success)
 	{
 		if (m_checkedPathList.GetCount())
 			m_ListCtrl.Show(dwShow, m_checkedPathList);
 		else
 		{
-			DWORD dwCheck = m_bSelectFilesForCommit ? GitSLC_SHOWDIRECTS|GitSLC_SHOWMODIFIED|GitSLC_SHOWADDED|GitSLC_SHOWREMOVED|GitSLC_SHOWREPLACED|GitSLC_SHOWMERGED|GitSLC_SHOWLOCKS : 0;
+			DWORD dwCheck = m_bSelectFilesForCommit ?SVNSLC_SHOWDIRECTS|SVNSLC_SHOWMODIFIED|SVNSLC_SHOWADDED|SVNSLC_SHOWREMOVED
+				|SVNSLC_SHOWREPLACED|SVNSLC_SHOWMERGED|SVNSLC_SHOWLOCKS : 0;
 			m_ListCtrl.Show(dwShow, dwCheck);
 			m_bSelectFilesForCommit = true;
 		}
@@ -627,7 +628,7 @@ UINT CCommitDlg::StatusThread()
 		{
 			m_bShowUnversioned = TRUE;
 			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
-			DWORD dwShow = GitSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | GitSLC_SHOWUNVERSIONED | GitSLC_SHOWLOCKS;
+			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
 			m_ListCtrl.Show(dwShow);
 		}
 	}
@@ -657,11 +658,12 @@ UINT CCommitDlg::StatusThread()
 		// we have the list, now signal the main thread about it
 		SendMessage(WM_AUTOLISTREADY);	// only send the message if the thread wasn't told to quit!
 	}
+
 	InterlockedExchange(&m_bRunThread, FALSE);
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	// force the cursor to normal
 	RefreshCursor();
-#endif
+
 	return 0;
 }
 
