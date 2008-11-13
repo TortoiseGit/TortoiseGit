@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "SVN.h"
+#include "Git.h"
 
 class CLogDlg;
 
@@ -42,7 +42,7 @@ protected:
  */
 typedef struct LogEntryData
 {   
-	svn_revnum_t Rev;
+	git_revnum_t Rev;
 	__time64_t tmDate;
 	CString sDate;
 	CString sAuthor;

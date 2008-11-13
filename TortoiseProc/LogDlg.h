@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,17 +19,17 @@
 #pragma once
 
 #include "resource.h"
-#include "svn.h"
+#include "Git.h"
 #include "ProjectProperties.h"
 #include "StandAloneDlg.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "registry.h"
 #include "SplitterControl.h"
 #include "Colors.h"
 #include "MenuButton.h"
 #include "LogDlgHelper.h"
 #include "FilterEdit.h"
-#include "SVNRev.h"
+#include "GitRev.h"
 #include "Tooltip.h"
 #include "HintListCtrl.h"
 
@@ -59,7 +59,7 @@ typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
  * \ingroup TortoiseProc
  * Shows log messages of a single file or folder in a listbox. 
  */
-class CLogDlg : public CResizableStandAloneDialog, public SVN, IFilterEditValidator
+class CLogDlg : public CResizableStandAloneDialog, public Git, IFilterEditValidator
 {
 	DECLARE_DYNAMIC(CLogDlg)
 	
@@ -70,23 +70,23 @@ public:
 	virtual ~CLogDlg();
 
 
-	void SetParams(const CTSVNPath& path, SVNRev pegrev, SVNRev startrev, SVNRev endrev, int limit, 
-		BOOL bStrict = CRegDWORD(_T("Software\\TortoiseSVN\\LastLogStrict"), FALSE), BOOL bSaveStrict = TRUE);
+	void SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit, 
+		BOOL bStrict = CRegDWORD(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE), BOOL bSaveStrict = TRUE);
 	void SetIncludeMerge(bool bInclude = true) {m_bIncludeMerges = bInclude;}
-	void SetProjectPropertiesPath(const CTSVNPath& path) {m_ProjectProperties.ReadProps(path);}
+	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 	bool IsThreadRunning() {return !!m_bThreadRunning;}
 	void SetDialogTitle(const CString& sTitle) {m_sTitle = sTitle;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
-	void SetMergePath(const CTSVNPath& mergepath) {m_mergePath = mergepath;}
+	void SetMergePath(const CTGitPath& mergepath) {m_mergePath = mergepath;}
 
-	const SVNRevRangeArray&	GetSelectedRevRanges() {return m_selectedRevs;}
+	const GitRevRangeArray&	GetSelectedRevRanges() {return m_selectedRevs;}
 
 // Dialog Data
 	enum { IDD = IDD_LOGMESSAGE };
 
 protected:
-	//implement the virtual methods from SVN base class
+	//implement the virtual methods from Git base class
 	virtual BOOL Log(svn_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
 	virtual BOOL Cancel();
 	virtual bool Validate(LPCTSTR string);
@@ -155,7 +155,7 @@ private:
 	BOOL IsEntryInDateRange(int i);
 	void CopySelectionToClipBoard();
 	void CopyChangedSelectionToClipBoard();
-	CTSVNPathList GetChangedPathsFromSelectedRevisions(bool bRelativePaths = false, bool bUseFilter = true);
+	CTGitPathList GetChangedPathsFromSelectedRevisions(bool bRelativePaths = false, bool bUseFilter = true);
     void SortShownListArray();
 	void RecalculateShownList(CPtrArray * pShownlist);
     void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending);
@@ -203,15 +203,15 @@ private:
 	CFilterEdit			m_cFilter;
 	CProgressCtrl		m_LogProgress;
 	CMenuButton			m_btnShow;
-	CTSVNPath			m_path;
-	CTSVNPath			m_mergePath;
-	SVNRev				m_pegrev;
-	SVNRev				m_startrev;
-	SVNRev				m_LogRevision;
-	SVNRev				m_endrev;
-	SVNRev				m_wcRev;
-	SVNRevRangeArray	m_selectedRevs;
-	SVNRevRangeArray	m_selectedRevsOneRange;
+	CTGitPath			m_path;
+	CTGitPath			m_mergePath;
+	GitRev				m_pegrev;
+	GitRev				m_startrev;
+	GitRev				m_LogRevision;
+	GitRev				m_endrev;
+	GitRev				m_wcRev;
+	GitRevRangeArray	m_selectedRevs;
+	GitRevRangeArray	m_selectedRevsOneRange;
 	bool				m_bSelectionMustBeContinuous;
 	long				m_logcounter;
 	bool				m_bCancelled;
@@ -223,7 +223,7 @@ private:
 	BOOL				m_bSaveStrict;
 	LogChangedPathArray * m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
-	CTSVNPathList		m_currentChangedPathList;
+	CTGitPathList		m_currentChangedPathList;
 	CPtrArray			m_arShownList;
 	bool				m_hasWC;
 	int					m_nSearchIndex;
@@ -282,6 +282,6 @@ private:
 	CXPTheme			theme;
 	bool				m_bVista;
 };
-static UINT WM_REVSELECTED = RegisterWindowMessage(_T("TORTOISESVN_REVSELECTED_MSG"));
-static UINT WM_REVLIST = RegisterWindowMessage(_T("TORTOISESVN_REVLIST_MSG"));
-static UINT WM_REVLISTONERANGE = RegisterWindowMessage(_T("TORTOISESVN_REVLISTONERANGE_MSG"));
+static UINT WM_REVSELECTED = RegisterWindowMessage(_T("TORTOISEGit_REVSELECTED_MSG"));
+static UINT WM_REVLIST = RegisterWindowMessage(_T("TORTOISEGit_REVLIST_MSG"));
+static UINT WM_REVLISTONERANGE = RegisterWindowMessage(_T("TORTOISEGit_REVLISTONERANGE_MSG"));

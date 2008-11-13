@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "SVNRev.h"
+#include "GitRev.h"
 #include "HistoryCombo.h"
 #include "Tooltip.h"
 #include "XPImageButton.h"
@@ -32,7 +32,7 @@ class CRepositoryTree;
 class IRepo
 {
 public:
-	virtual bool ChangeToUrl(CString& url, SVNRev& rev, bool bAlreadyChecked) = 0;
+	virtual bool ChangeToUrl(CString& url, GitRev& rev, bool bAlreadyChecked) = 0;
 	virtual CString GetRepoRoot() = 0;
 };
 
@@ -63,7 +63,7 @@ public:
 	/**
 	 * Show the given \a svn_url in the URL combo and the revision button.
 	 */
-	void ShowUrl(const CString& url, SVNRev rev);
+	void ShowUrl(const CString& url, GitRev rev);
 
 	/**
 	 * Show the given \a svn_url in the URL combo and the revision button,
@@ -71,7 +71,7 @@ public:
 	 * is given, the current values are used (which effectively refreshes
 	 * the tree).
 	 */
-	void GotoUrl(const CString& url = CString(), SVNRev rev = SVNRev(), bool bAlreadyChecked = false);
+	void GotoUrl(const CString& url = CString(), GitRev rev = GitRev(), bool bAlreadyChecked = false);
 
 	/**
 	 * Returns the current URL.
@@ -81,7 +81,7 @@ public:
 	/**
 	 * Returns the current revision
 	 */
-	SVNRev GetCurrentRev() const;
+	GitRev GetCurrentRev() const;
 
 	/**
 	 * Saves the URL history of the HistoryCombo.
@@ -91,13 +91,13 @@ public:
 	/**
 	 * Set the revision
 	 */
-	void SetRevision(SVNRev rev);
+	void SetRevision(GitRev rev);
 
 	void SetFocusToURL();
 
 	void SetIRepo(IRepo * pRepo) {m_pRepo = pRepo;}
 
-	void SetHeadRevision(const SVNRev& rev) {m_headRev = rev;}
+	void SetHeadRevision(const GitRev& rev) {m_headRev = rev;}
 	afx_msg void OnGoUp();
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -109,7 +109,7 @@ protected:
 
 private:
 	CString m_url;
-	SVNRev m_rev;
+	GitRev m_rev;
 
 	IRepo * m_pRepo;
 
@@ -124,7 +124,7 @@ private:
 	CButton m_btnRevision;
 	CXPImageButton m_btnUp;
 
-	SVNRev	m_headRev;
+	GitRev	m_headRev;
 	CToolTips m_tooltips;
 	HICON	m_UpIcon;
 };

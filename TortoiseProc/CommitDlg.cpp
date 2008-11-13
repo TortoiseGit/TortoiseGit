@@ -25,7 +25,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
-//#include "Git.h"
+#include "Git.h"
 #include "Registry.h"
 #include "GitStatus.h"
 #include "HistoryDlg.h"
@@ -91,6 +91,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
     ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
+	ON_BN_CLICKED(IDC_SIGN_OFF, &CCommitDlg::OnBnClickedSignOff)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -1347,3 +1348,12 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
     SetSplitterRange();
 }
 
+
+void CCommitDlg::OnBnClickedSignOff()
+{
+	// TODO: Add your control notification handler code here
+	CGit git;
+	CString str;
+	str.Format(_T("Signed-off-by: %s <%s>\n"),git.GetUserName(), git.GetUserEmail());
+	m_cLogMessage.InsertText(str,true);
+}

@@ -41,10 +41,10 @@ public:
 	 * \param path         if set, the temp file will have the same file extension
 	 *                     as this path.
 	 */
-	CTSVNPath		GetTempFilePath(bool bRemoveAtEnd, const CTSVNPath& path = CTSVNPath(), const SVNRev revision = SVNRev());
+	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const GitRev revision = GitRev());
 
 private:
 
 private:
-	CTSVNPathList m_TempFileList;
+	CTGitPathList m_TempFileList;
 };

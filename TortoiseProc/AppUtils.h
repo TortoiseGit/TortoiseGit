@@ -54,14 +54,14 @@ public:
 	 * \return TRUE if the program could be started
 	 */
 	static BOOL StartExtMerge(
-		const CTSVNPath& basefile, const CTSVNPath& theirfile, const CTSVNPath& yourfile, const CTSVNPath& mergedfile,
+		const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 		const CString& basename = CString(), const CString& theirname = CString(), const CString& yourname = CString(),
 		const CString& mergedname = CString(), bool bReadOnly = false);
 
 	/**
 	 * Starts the external patch program (currently always TortoiseMerge)
 	 */
-	static BOOL StartExtPatch(const CTSVNPath& patchfile, const CTSVNPath& dir, 
+	static BOOL StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 			const CString& sOriginalDescription = CString(), const CString& sPatchedDescription = CString(), 
 			BOOL bReversed = FALSE, BOOL bWait = FALSE);
 
@@ -69,19 +69,19 @@ public:
 	 * Starts the external unified diff viewer (the app associated with *.diff or *.patch files).
 	 * If no app is associated with those file types, the default text editor is used.
 	 */
-	static BOOL StartUnifiedDiffViewer(const CTSVNPath& patchfile, const CString& title, BOOL bWait = FALSE);
+	static BOOL StartUnifiedDiffViewer(const CTGitPath& patchfile, const CString& title, BOOL bWait = FALSE);
 
 	/**
 	 * Starts the external diff application
 	 */
 	static bool StartExtDiff(
-		const CTSVNPath& file1, const CTSVNPath& file2, 
+		const CTGitPath& file1, const CTGitPath& file2, 
 		const CString& sName1, const CString& sName2, const DiffFlags& flags);
 
 	/**
 	 * Starts the external diff application for properties
 	 */
-	static BOOL StartExtDiffProps(const CTSVNPath& file1, const CTSVNPath& file2, 
+	static BOOL StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2, 
 			const CString& sName1 = CString(), const CString& sName2 = CString(),
 			BOOL bWait = FALSE, BOOL bReadOnly = FALSE);
 
@@ -96,7 +96,7 @@ public:
 	 * Checks if the given file has a size of less than four, which means
 	 * an 'empty' file or just newlines, i.e. an empty diff.
 	 */
-	static BOOL CheckForEmptyDiff(const CTSVNPath& sDiffPath);
+	static BOOL CheckForEmptyDiff(const CTGitPath& sDiffPath);
 
 	/**
 	 * Create a font which can is used for log messages, etc
@@ -141,7 +141,7 @@ public:
 	static 	CString	GetProjectNameFromURL(CString url);
 
 	/**
-	 * Replacement for SVNDiff::ShowUnifiedDiff(), but started as a separate process.
+	 * Replacement for GitDiff::ShowUnifiedDiff(), but started as a separate process.
 	 */
 	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
 									const CTGitPath& url2, const GitRev& rev2, 

@@ -32,6 +32,7 @@
 //#include "SoundUtils.h"
 //#include "SVN.h"
 #include "GitAdminDir.h"
+#include "Git.h"
 //#include "SVNGlobal.h"
 //#include "svn_types.h"
 //#include "svn_dso.h"
@@ -73,6 +74,8 @@ CTortoiseProcApp::CTortoiseProcApp()
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
+	CGit git;
+	git.GetUserName();
 }
 
 CTortoiseProcApp::~CTortoiseProcApp()

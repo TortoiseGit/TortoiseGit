@@ -45,7 +45,7 @@ typedef enum
 }git_depth_t;
 
 
-
+#define GIT_REV_ZERO _T("0000000000000000000000000000000000000000")
 typedef CString git_revnum_t;
 typedef int git_error_t;
 

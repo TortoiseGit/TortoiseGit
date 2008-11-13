@@ -1,6 +1,6 @@
-﻿// TortoiseSVN - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,15 +21,15 @@
 #include "TortoiseProc.h"
 #include "PathUtils.h"
 #include "AppUtils.h"
-#include "SVNProperties.h"
+//#include "GitProperties.h"
 #include "StringUtils.h"
 #include "MessageBox.h"
 #include "Registry.h"
-#include "TSVNPath.h"
-#include "SVN.h"
-#include "RepositoryBrowser.h"
-#include "BrowseFolder.h"
-
+#include "TGitPath.h"
+#include "Git.h"
+//#include "RepositoryBrowser.h"
+//#include "BrowseFolder.h"
+#include "UnicodeUtils.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -39,9 +39,10 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
-bool CAppUtils::GetMimeType(const CTSVNPath& file, CString& mimetype)
+bool CAppUtils::GetMimeType(const CTGitPath& file, CString& mimetype)
 {
-	SVNProperties props(file, SVNRev::REV_WC, false);
+#if 0
+	GitProperties props(file, GitRev::REV_WC, false);
 	for (int i = 0; i < props.GetCount(); ++i)
 	{
 		if (props.GetItemName(i).compare(_T("svn:mime-type"))==0)
@@ -50,15 +51,16 @@ bool CAppUtils::GetMimeType(const CTSVNPath& file, CString& mimetype)
 			return true;
 		}
 	}
+#endif
 	return false;
 }
 
 BOOL CAppUtils::StartExtMerge(
-	const CTSVNPath& basefile, const CTSVNPath& theirfile, const CTSVNPath& yourfile, const CTSVNPath& mergedfile,
+	const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly)
 {
 
-	CRegString regCom = CRegString(_T("Software\\TortoiseSVN\\Merge"));
+	CRegString regCom = CRegString(_T("Software\\TortoiseGit\\Merge"));
 	CString ext = mergedfile.GetFileExtension();
 	CString com = regCom;
 	bool bInternal = false;
@@ -67,7 +69,7 @@ BOOL CAppUtils::StartExtMerge(
 	if (ext != "")
 	{
 		// is there an extension specific merge tool?
-		CRegString mergetool(_T("Software\\TortoiseSVN\\MergeTools\\") + ext.MakeLower());
+		CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\") + ext.MakeLower());
 		if (CString(mergetool) != "")
 		{
 			com = mergetool;
@@ -76,7 +78,7 @@ BOOL CAppUtils::StartExtMerge(
 	if (GetMimeType(yourfile, mimetype) || GetMimeType(theirfile, mimetype) || GetMimeType(basefile, mimetype))
 	{
 		// is there a mime type specific merge tool?
-		CRegString mergetool(_T("Software\\TortoiseSVN\\MergeTools\\") + mimetype);
+		CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\") + mimetype);
 		if (CString(mergetool) != "")
 		{
 			com = mergetool;
@@ -87,7 +89,7 @@ BOOL CAppUtils::StartExtMerge(
 	{
 		// use TortoiseMerge
 		bInternal = true;
-		CRegString tortoiseMergePath(_T("Software\\TortoiseSVN\\TMergePath"), _T(""), false, HKEY_LOCAL_MACHINE);
+		CRegString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T(""), false, HKEY_LOCAL_MACHINE);
 		com = tortoiseMergePath;
 		if (com.IsEmpty())
 		{
@@ -202,7 +204,7 @@ BOOL CAppUtils::StartExtMerge(
 	return TRUE;
 }
 
-BOOL CAppUtils::StartExtPatch(const CTSVNPath& patchfile, const CTSVNPath& dir, const CString& sOriginalDescription, const CString& sPatchedDescription, BOOL bReversed, BOOL bWait)
+BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, const CString& sOriginalDescription, const CString& sPatchedDescription, BOOL bReversed, BOOL bWait)
 {
 	CString viewer;
 	// use TortoiseMerge
@@ -225,13 +227,13 @@ BOOL CAppUtils::StartExtPatch(const CTSVNPath& patchfile, const CTSVNPath& dir, 
 	return TRUE;
 }
 
-CString CAppUtils::PickDiffTool(const CTSVNPath& file1, const CTSVNPath& file2)
+CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 {
 	// Is there a mime type specific diff tool?
 	CString mimetype;
 	if (GetMimeType(file1, mimetype) ||  GetMimeType(file2, mimetype))
 	{
-		CString difftool = CRegString(_T("Software\\TortoiseSVN\\DiffTools\\") + mimetype);
+		CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + mimetype);
 		if (!difftool.IsEmpty())
 			return difftool;
 	}
@@ -240,7 +242,7 @@ CString CAppUtils::PickDiffTool(const CTSVNPath& file1, const CTSVNPath& file2)
 	CString ext = file2.GetFileExtension().MakeLower();
 	if (!ext.IsEmpty())
 	{
-		CString difftool = CRegString(_T("Software\\TortoiseSVN\\DiffTools\\") + ext);
+		CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + ext);
 		if (!difftool.IsEmpty())
 			return difftool;
 		// Maybe we should use TortoiseIDiff?
@@ -256,17 +258,17 @@ CString CAppUtils::PickDiffTool(const CTSVNPath& file1, const CTSVNPath& file2)
 	}
 	
 	// Finally, pick a generic external diff tool
-	CString difftool = CRegString(_T("Software\\TortoiseSVN\\Diff"));
+	CString difftool = CRegString(_T("Software\\TortoiseGit\\Diff"));
 	return difftool;
 }
 
 bool CAppUtils::StartExtDiff(
-	const CTSVNPath& file1, const CTSVNPath& file2,
+	const CTGitPath& file1, const CTGitPath& file2,
 	const CString& sName1, const CString& sName2, const DiffFlags& flags)
 {
 	CString viewer;
 
-	CRegDWORD blamediff(_T("Software\\TortoiseSVN\\DiffBlamesWithTortoiseMerge"), FALSE);
+	CRegDWORD blamediff(_T("Software\\TortoiseGit\\DiffBlamesWithTortoiseMerge"), FALSE);
 	if (!flags.bBlame || !(DWORD)blamediff)
 	{
 		viewer = PickDiffTool(file1, file2);
@@ -324,9 +326,9 @@ bool CAppUtils::StartExtDiff(
 	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
 }
 
-BOOL CAppUtils::StartExtDiffProps(const CTSVNPath& file1, const CTSVNPath& file2, const CString& sName1, const CString& sName2, BOOL bWait, BOOL bReadOnly)
+BOOL CAppUtils::StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2, const CString& sName1, const CString& sName2, BOOL bWait, BOOL bReadOnly)
 {
-	CRegString diffpropsexe(_T("Software\\TortoiseSVN\\DiffProps"));
+	CRegString diffpropsexe(_T("Software\\TortoiseGit\\DiffProps"));
 	CString viewer = diffpropsexe;
 	bool bInternal = false;
 	if (viewer.IsEmpty()||(viewer.Left(1).Compare(_T("#"))==0))
@@ -374,10 +376,10 @@ BOOL CAppUtils::StartExtDiffProps(const CTSVNPath& file1, const CTSVNPath& file2
 	return TRUE;
 }
 
-BOOL CAppUtils::StartUnifiedDiffViewer(const CTSVNPath& patchfile, const CString& title, BOOL bWait)
+BOOL CAppUtils::StartUnifiedDiffViewer(const CTGitPath& patchfile, const CString& title, BOOL bWait)
 {
 	CString viewer;
-	CRegString v = CRegString(_T("Software\\TortoiseSVN\\DiffViewer"));
+	CRegString v = CRegString(_T("Software\\TortoiseGit\\DiffViewer"));
 	viewer = v;
 	if (viewer.IsEmpty() || (viewer.Left(1).Compare(_T("#"))==0))
 	{
@@ -497,7 +499,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	return TRUE;
 }
 
-BOOL CAppUtils::CheckForEmptyDiff(const CTSVNPath& sDiffPath)
+BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 {
 	DWORD length = 0;
 	HANDLE hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
@@ -515,7 +517,7 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 {
 	LOGFONT logFont;
 	HDC hScreenDC = ::GetDC(NULL);
-	logFont.lfHeight         = -MulDiv((DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8), GetDeviceCaps(hScreenDC, LOGPIXELSY), 72);
+	logFont.lfHeight         = -MulDiv((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8), GetDeviceCaps(hScreenDC, LOGPIXELSY), 72);
 	::ReleaseDC(NULL, hScreenDC);
 	logFont.lfWidth          = 0;
 	logFont.lfEscapement     = 0;
@@ -529,7 +531,7 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 	logFont.lfClipPrecision  = CLIP_DEFAULT_PRECIS;
 	logFont.lfQuality        = DRAFT_QUALITY;
 	logFont.lfPitchAndFamily = FF_DONTCARE | FIXED_PITCH;
-	_tcscpy_s(logFont.lfFaceName, 32, (LPCTSTR)(CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")));
+	_tcscpy_s(logFont.lfFaceName, 32, (LPCTSTR)(CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")));
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }
 
@@ -560,7 +562,7 @@ bool CAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessage
 				);
 			CString temp;
 			temp.Format(idErrMessageFormat, lpMsgBuf);
-			CMessageBox::Show(NULL, temp, _T("TortoiseSVN"), MB_OK | MB_ICONINFORMATION);
+			CMessageBox::Show(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			LocalFree( lpMsgBuf );
 		}
 		return false;
@@ -744,8 +746,9 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 	return bFoundMarker;
 }
 
-bool CAppUtils::BrowseRepository(CHistoryCombo& combo, CWnd * pParent, SVNRev& rev)
+bool CAppUtils::BrowseRepository(CHistoryCombo& combo, CWnd * pParent, GitRev& rev)
 {
+#if 0
 	CString strUrl;
 	combo.GetWindowText(strUrl);
 	strUrl.Replace('\\', '/');
@@ -754,13 +757,13 @@ bool CAppUtils::BrowseRepository(CHistoryCombo& combo, CWnd * pParent, SVNRev& r
 	if (strUrl.Left(7) == _T("file://"))
 	{
 		CString strFile(strUrl);
-		SVN::UrlToPath(strFile);
+		Git::UrlToPath(strFile);
 
-		SVN svn;
-		if (svn.IsRepository(CTSVNPath(strFile)))
+		Git svn;
+		if (svn.IsRepository(CTGitPath(strFile)))
 		{
 			// browse repository - show repository browser
-			SVN::preparePath(strUrl);
+			Git::preparePath(strUrl);
 			CRepositoryBrowser browser(strUrl, rev, pParent);
 			if (browser.DoModal() == IDOK)
 			{
@@ -776,10 +779,10 @@ bool CAppUtils::BrowseRepository(CHistoryCombo& combo, CWnd * pParent, SVNRev& r
 			CBrowseFolder folderBrowser;
 			folderBrowser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 			// remove the 'file:///' so the shell can recognize the local path
-			SVN::UrlToPath(strUrl);
+			Git::UrlToPath(strUrl);
 			if (folderBrowser.Show(pParent->GetSafeHwnd(), strUrl) == CBrowseFolder::OK)
 			{
-				SVN::PathToUrl(strUrl);
+				Git::PathToUrl(strUrl);
 
 				combo.SetCurSel(-1);
 				combo.SetWindowText(strUrl);
@@ -809,13 +812,14 @@ bool CAppUtils::BrowseRepository(CHistoryCombo& combo, CWnd * pParent, SVNRev& r
 		folderBrowser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 		if (folderBrowser.Show(pParent->GetSafeHwnd(), strUrl) == CBrowseFolder::OK)
 		{
-			SVN::PathToUrl(strUrl);
+			Git::PathToUrl(strUrl);
 
 			combo.SetCurSel(-1);
 			combo.SetWindowText(strUrl);
 			return true;
 		}
 	}
+#endif
 	return false;
 }
 
@@ -970,18 +974,19 @@ CString CAppUtils::GetProjectNameFromURL(CString url)
 	return name;
 }
 
-bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTSVNPath& url1, const SVNRev& rev1, 
-									 const CTSVNPath& url2, const SVNRev& rev2, 
-									 const SVNRev& peg /* = SVNRev */, const SVNRev& headpeg /* = SVNRev */,  
+bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
+									 const CTGitPath& url2, const GitRev& rev2, 
+									 const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,  
 									 bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool /* blame = false */)
 {
+#if 0
 	CString sCmd;
 	sCmd.Format(_T("%s /command:showcompare /unified"),
 		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")));
-	sCmd += _T(" /url1:\"") + url1.GetSVNPathString() + _T("\"");
+	sCmd += _T(" /url1:\"") + url1.GetGitPathString() + _T("\"");
 	if (rev1.IsValid())
 		sCmd += _T(" /revision1:") + rev1.ToString();
-	sCmd += _T(" /url2:\"") + url2.GetSVNPathString() + _T("\"");
+	sCmd += _T(" /url2:\"") + url2.GetGitPathString() + _T("\"");
 	if (rev2.IsValid())
 		sCmd += _T(" /revision2:") + rev2.ToString();
 	if (peg.IsValid())
@@ -1004,20 +1009,23 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTSVNPath& url1, const SVN
 	}
 
 	return CAppUtils::LaunchApplication(sCmd, NULL, false);
+#endif
+	return TRUE;
 }
 
-bool CAppUtils::StartShowCompare(HWND hWnd, const CTSVNPath& url1, const SVNRev& rev1, 
-								 const CTSVNPath& url2, const SVNRev& rev2, 
-								 const SVNRev& peg /* = SVNRev */, const SVNRev& headpeg /* = SVNRev */, 
+bool CAppUtils::StartShowCompare(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
+								 const CTGitPath& url2, const GitRev& rev2, 
+								 const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */, 
 								 bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool blame /* = false */)
 {
+#if 0
 	CString sCmd;
 	sCmd.Format(_T("%s /command:showcompare"),
 		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")));
-	sCmd += _T(" /url1:\"") + url1.GetSVNPathString() + _T("\"");
+	sCmd += _T(" /url1:\"") + url1.GetGitPathString() + _T("\"");
 	if (rev1.IsValid())
 		sCmd += _T(" /revision1:") + rev1.ToString();
-	sCmd += _T(" /url2:\"") + url2.GetSVNPathString() + _T("\"");
+	sCmd += _T(" /url2:\"") + url2.GetGitPathString() + _T("\"");
 	if (rev2.IsValid())
 		sCmd += _T(" /revision2:") + rev2.ToString();
 	if (peg.IsValid())
@@ -1040,4 +1048,6 @@ bool CAppUtils::StartShowCompare(HWND hWnd, const CTSVNPath& url1, const SVNRev&
 	}
 
 	return CAppUtils::LaunchApplication(sCmd, NULL, false);
+#endif
+	return true;
 }

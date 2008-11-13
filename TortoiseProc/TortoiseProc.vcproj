@@ -403,6 +403,14 @@
 			<Filter
 				Name="General"
 				>
+				<File
+					RelativePath=".\AppUtils.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Colors.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="UI"
@@ -510,11 +518,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\copy.ico"
+				RelativePath=".\copy.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\copy.ico"
+				RelativePath="..\Resources\copy.ico"
 				>
 			</File>
 			<File
@@ -542,11 +550,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -754,19 +762,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\open.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -786,11 +794,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\refresh.ico"
+				RelativePath=".\refresh.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\refresh.ico"
+				RelativePath="..\Resources\refresh.ico"
 				>
 			</File>
 			<File
@@ -866,11 +874,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
@@ -958,11 +966,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
@@ -1029,6 +1037,22 @@
 		<Filter
 			Name="Utility Dialogs"
 			>
+		</Filter>
+		<Filter
+			Name="Git"
+			>
+			<File
+				RelativePath="..\Git\GitStatusListCtrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitStatusListCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GitStatusListCtrlHelpers.cpp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="Resource.h"

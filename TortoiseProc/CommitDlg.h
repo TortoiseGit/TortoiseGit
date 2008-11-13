@@ -135,4 +135,6 @@ private:
 
 //	CBugTraqAssociation m_bugtraq_association;
 
+public:
+	afx_msg void OnBnClickedSignOff();
 };

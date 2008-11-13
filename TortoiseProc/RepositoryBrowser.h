@@ -22,7 +22,7 @@
 #include <deque>
 
 #include "resource.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "RepositoryBar.h"
 #include "StandAloneDlg.h"
 #include "ProjectProperties.h"
