@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,11 +19,12 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "ProjectProperties.h"
 #include "Git.h"
+#include "GitStatus.h"
 #include "Colors.h"
-#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
+//#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "afxwin.h"
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
@@ -71,57 +72,57 @@ typedef enum
  * in a listbox. Since several Subversion commands have similar notify
  * messages they are grouped together in this single class.
  */
-class CsProgressDlg : public CResizableStandAloneDialog, public SVN
+class CGitProgressDlg : public CResizableStandAloneDialog
 {
 public:
 	typedef enum
 	{
-		SVNProgress_Add,
-		SVNProgress_Checkout,
-		SVNProgress_Commit,
-		SVNProgress_Copy,
-		SVNProgress_Export,
-		SVNProgress_Import,
-		SVNProgress_Lock,
-		SVNProgress_Merge,
-		SVNProgress_MergeReintegrate,
-		SVNProgress_MergeAll,
-		SVNProgress_Rename,
-		SVNProgress_Resolve,
-		SVNProgress_Revert,
-		SVNProgress_Switch,
-		SVNProgress_Unlock,
-		SVNProgress_Update,
+		GitProgress_Add,
+		GitProgress_Checkout,
+		GitProgress_Commit,
+		GitProgress_Copy,
+		GitProgress_Export,
+		GitProgress_Import,
+		GitProgress_Lock,
+		GitProgress_Merge,
+		GitProgress_MergeReintegrate,
+		GitProgress_MergeAll,
+		GitProgress_Rename,
+		GitProgress_Resolve,
+		GitProgress_Revert,
+		GitProgress_Switch,
+		GitProgress_Unlock,
+		GitProgress_Update,
 	} Command;
 
 
-	DECLARE_DYNAMIC(CSVNProgressDlg)
+	DECLARE_DYNAMIC(CGitProgressDlg)
 
 public:
 
-	CSVNProgressDlg(CWnd* pParent = NULL);
-	virtual ~CSVNProgressDlg();
+	CGitProgressDlg(CWnd* pParent = NULL);
+	virtual ~CGitProgressDlg();
 
 
 	void SetCommand(Command cmd) {m_Command = cmd;}
 	void SetAutoClose(DWORD ac) {m_dwCloseOnEnd = ac;}
 	void SetOptions(DWORD opts) {m_options = opts;}
-	void SetPathList(const CTSVNPathList& pathList) {m_targetPathList = pathList;}
+	void SetPathList(const CTGitPathList& pathList) {m_targetPathList = pathList;}
 	void SetUrl(const CString& url) {m_url.SetFromUnknown(url);}
 	void SetSecondUrl(const CString& url) {m_url2.SetFromUnknown(url);}
 	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
 	
-	void SetRevision(const SVNRev& rev) {m_Revision = rev;}
-	void SetRevisionEnd(const SVNRev& rev) {m_RevisionEnd = rev;}
+	void SetRevision(const GitRev& rev) {m_Revision = rev;}
+	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 	
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
-	void SetDepth(svn_depth_t depth = svn_depth_unknown) {m_depth = depth;}
-	void SetPegRevision(SVNRev pegrev = SVNRev()) {m_pegRev = pegrev;}
+	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
+	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
 	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
 	void SetChangeList(const CString& changelist, bool keepchangelist) {m_changelist = changelist; m_keepchangelist = keepchangelist;}
-	void SetSelectedList(const CTSVNPathList& selPaths);
-	void SetRevisionRanges(const SVNRevRangeArray& revArray) {m_revisionArray = revArray;}
-	void SetBugTraqProvider(const CComPtr<IBugTraqProvider> pBugtraqProvider) { m_BugTraqProvider = pBugtraqProvider;}
+	void SetSelectedList(const CTGitPathList& selPaths);
+//	void SetRevisionRanges(const GitRevRangeArray& revArray) {m_revisionArray = revArray;}
+//	void SetBugTraqProvider(const CComPtr<IBugTraqProvider> pBugtraqProvider) { m_BugTraqProvider = pBugtraqProvider;}
 	/**
 	 * If the number of items for which the operation is done on is known
 	 * beforehand, that number can be set here. It is then used to show a more
@@ -140,52 +141,57 @@ private:
 	{
 	public:
 		NotificationData() :
-		  action((svn_wc_notify_action_t)-1),
-			  kind(svn_node_none),
-			  content_state(svn_wc_notify_state_inapplicable),
-			  prop_state(svn_wc_notify_state_inapplicable),
+#if 0
+		  action((git_wc_notify_action_t)-1),
+			  kind(git_node_none),
+			  content_state(git_wc_notify_state_inapplicable),
+			  prop_state(git_wc_notify_state_inapplicable),
 			  rev(0),
+#endif
 			  color(::GetSysColor(COLOR_WINDOWTEXT)),
 			  bConflictedActionItem(false),
-			  bAuxItem(false),
-			  lock_state(svn_wc_notify_lock_state_unchanged)
+			  bAuxItem(false)
+			  //,
+//			  lock_state(git_wc_notify_lock_state_unchanged)
 		  {
-			  merge_range.end = 0;
-			  merge_range.start = 0;
+//			  merge_range.end = 0;
+//			  merge_range.start = 0;
 		  }
 	public:
-		// The text we put into the first column (the SVN action for normal items, just text for aux items)
+		// The text we put into the first column (the Git action for normal items, just text for aux items)
 		CString					sActionColumnText;	
-		CTSVNPath				path;
-		CTSVNPath				basepath;
+		CTGitPath				path;
+		CTGitPath				basepath;
 		CString					changelistname;
 
-		svn_wc_notify_action_t	action;
-		svn_node_kind_t			kind;
+///		git_wc_notify_action_t	action;
+//		git_node_kind_t			kind;
 		CString					mime_type;
-		svn_wc_notify_state_t	content_state;
-		svn_wc_notify_state_t	prop_state;
-		svn_wc_notify_lock_state_t lock_state;
-		svn_merge_range_t		merge_range;
-		svn_revnum_t			rev;
+//		git_wc_notify_state_t	content_state;
+//		git_wc_notify_state_t	prop_state;
+//		git_wc_notify_lock_state_t lock_state;
+//		git_merge_range_t		merge_range;
+		git_revnum_t			rev;
 		COLORREF				color;
 		CString					owner;						///< lock owner
 		bool					bConflictedActionItem;		// Is this item a conflict?
-		bool					bAuxItem;					// Set if this item is not a true 'SVN action' 
+		bool					bAuxItem;					// Set if this item is not a true 'Git action' 
 		CString					sPathColumnText;	
 
 	};
 protected:
-	//implement the virtual methods from SVN base class
-	virtual BOOL Notify(const CTSVNPath& path, svn_wc_notify_action_t action, 
-		svn_node_kind_t kind, const CString& mime_type, 
-		svn_wc_notify_state_t content_state, 
-		svn_wc_notify_state_t prop_state, LONG rev,
-		const svn_lock_t * lock, svn_wc_notify_lock_state_t lock_state,
+
+#if 0	//implement the virtual methods from Git base class
+	virtual BOOL Notify(const CTGitPath& path, git_wc_notify_action_t action, 
+		git_node_kind_t kind, const CString& mime_type, 
+		git_wc_notify_state_t content_state, 
+		git_wc_notify_state_t prop_state, LONG rev,
+		const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
 		const CString& changelistname,
-		svn_merge_range_t * range,
-		svn_error_t * err, apr_pool_t * pool);
-	virtual svn_wc_conflict_choice_t	ConflictResolveCallback(const svn_wc_conflict_description_t *description, CString& mergedfile);
+		git_merge_range_t * range,
+		git_error_t * err, apr_pool_t * pool);
+#endif
+//	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 	virtual BOOL						OnInitDialog();
 	virtual BOOL						Cancel();
 	virtual void						OnCancel();
@@ -202,7 +208,7 @@ protected:
 	afx_msg BOOL	OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void	OnClose();
 	afx_msg void	OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg LRESULT OnSVNProgress(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnGitProgress(WPARAM wParam, LPARAM lParam);
 	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 	afx_msg void	OnEnSetfocusInfotext();
 	afx_msg void	OnLvnBegindragSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
@@ -222,7 +228,7 @@ private:
 	static UINT ProgressThreadEntry(LPVOID pVoid);
 	UINT		ProgressThread();
 	virtual void OnOK();
-	void		ReportSVNError();
+	void		ReportGitError();
 	void		ReportError(const CString& sError);
 	void		ReportWarning(const CString& sWarning);
 	void		ReportNotification(const CString& sNotification);
@@ -259,7 +265,7 @@ private:
 	bool		CmdUpdate(CString& sWindowTitle, bool& localoperation);
 
 private:
-	typedef std::map<CStringA, svn_revnum_t> StringRevMap;
+	typedef std::map<CStringA, git_revnum_t> StringRevMap;
 	typedef std::vector<NotificationData *> NotificationDataVect;
 
 
@@ -273,23 +279,23 @@ private:
 	CListCtrl				m_ProgList;
 	Command					m_Command;
 	int						m_options;	// Use values from the ProgressOptions enum
-	svn_depth_t				m_depth;
-	CTSVNPathList			m_targetPathList;
-	CTSVNPathList			m_selectedPaths;
-	CTSVNPath				m_url;
-	CTSVNPath				m_url2;
+	git_depth_t				m_depth;
+	CTGitPathList			m_targetPathList;
+	CTGitPathList			m_selectedPaths;
+	CTGitPath				m_url;
+	CTGitPath				m_url2;
 	CString					m_sMessage;
 	CString					m_diffoptions;
-	SVNRev					m_Revision;
-	SVNRev					m_RevisionEnd;
-	SVNRev					m_pegRev;
-	SVNRevRangeArray		m_revisionArray;
+	GitRev					m_Revision;
+	GitRev					m_RevisionEnd;
+	GitRev					m_pegRev;
+//	GitRevRangeArray		m_revisionArray;
 	CString					m_changelist;
 	bool					m_keepchangelist;
 
 	DWORD					m_dwCloseOnEnd;
 
-	CTSVNPath				m_basePath;
+	CTGitPath				m_basePath;
 	StringRevMap			m_UpdateStartRevMap;
 	StringRevMap			m_FinishedRevMap;
 
@@ -318,7 +324,7 @@ private:
 
 	bool					m_AlwaysConflicted;
 
-	CComPtr<IBugTraqProvider> m_BugTraqProvider;
+///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 
 	// some strings different methods can use
 	CString					sIgnoredIncluded;

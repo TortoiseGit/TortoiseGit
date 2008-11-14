@@ -18,6 +18,8 @@
 //
 #pragma once
 #include "Git.h"
+#include "GitStatus.h"
+#include "ILogReceiver.h"
 
 class CLogDlg;
 

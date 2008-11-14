@@ -25,6 +25,7 @@ bool LogCommand::Execute()
 {
 	//the log command line looks like this:
 	//command:log path:<path_to_file_or_directory_to_show_the_log_messages> [startrev:<startrevision>] [endrev:<endrevision>]
+#if 0 
 	CString val = parser.GetVal(_T("startrev"));
 	if ( val.IsEmpty() )
 	{
@@ -63,13 +64,14 @@ bool LogCommand::Execute()
 	{
 		bStrict = TRUE;
 	}
+#endif
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
-	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit, bStrict);
-	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
-	val = parser.GetVal(_T("propspath"));
-	if (!val.IsEmpty())
-		dlg.SetProjectPropertiesPath(CTSVNPath(val));
+//	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit, bStrict);
+//	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
+//	val = parser.GetVal(_T("propspath"));
+//	if (!val.IsEmpty())
+//		dlg.SetProjectPropertiesPath(CTSVNPath(val));
 	dlg.DoModal();			
 	return true;
 }

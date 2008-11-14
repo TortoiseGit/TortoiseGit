@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,9 +23,9 @@
 #include "PropDlg.h"
 #include "SVNProgressDlg.h"
 #include "ProgressDlg.h"
-#include "RepositoryBrowser.h"
-#include "CopyDlg.h"
-#include "StatGraphDlg.h"
+//#include "RepositoryBrowser.h"
+//#include "CopyDlg.h"
+//#include "StatGraphDlg.h"
 #include "Logdlg.h"
 #include "MessageBox.h"
 #include "Registry.h"
@@ -34,19 +34,19 @@
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"
-#include "SVNInfo.h"
-#include "SVNDiff.h"
+//#include "GitInfo.h"
+//#include "GitDiff.h"
 #include "IconMenu.h"
-#include "RevisionRangeDlg.h"
-#include "BrowseFolder.h"
-#include "BlameDlg.h"
-#include "Blame.h"
-#include "SVNHelpers.h"
-#include "SVNStatus.h"
-#include "LogDlgHelper.h"
-#include "CachedLogInfo.h"
-#include "RepositoryInfo.h"
-#include "EditPropertiesDlg.h"
+//#include "RevisionRangeDlg.h"
+//#include "BrowseFolder.h"
+//#include "BlameDlg.h"
+//#include "Blame.h"
+//#include "GitHelpers.h"
+#include "GitStatus.h"
+//#include "LogDlgHelper.h"
+//#include "CachedLogInfo.h"
+//#include "RepositoryInfo.h"
+//#include "EditPropertiesDlg.h"
 
 
 #if (NTDDI_VERSION < NTDDI_LONGHORN)
@@ -123,11 +123,11 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_nSortColumn(0)
 	, m_bShowedAll(false)
 	, m_bSelect(false)
-	, m_regLastStrict(_T("Software\\TortoiseSVN\\LastLogStrict"), FALSE)
-	, m_regMaxBugIDColWidth(_T("Software\\TortoiseSVN\\MaxBugIDColWidth"), 200)
+	, m_regLastStrict(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE)
+	, m_regMaxBugIDColWidth(_T("Software\\TortoiseGit\\MaxBugIDColWidth"), 200)
 	, m_bSelectionMustBeContinuous(false)
 	, m_bShowBugtraqColumn(false)
-	, m_lowestRev(-1)
+	, m_lowestRev(_T(""))
 	, m_bStrictStopped(false)
 	, m_sLogInfo(_T(""))
 	, m_pFindDialog(NULL)
@@ -143,7 +143,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_hAccel(NULL)
 	, m_bVista(false)
 {
-	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseSVN\\UseRegexFilter"), TRUE);
+	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
 	// the same)
@@ -229,7 +229,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
 END_MESSAGE_MAP()
 
-void CLogDlg::SetParams(const CTSVNPath& path, SVNRev pegrev, SVNRev startrev, SVNRev endrev, int limit, BOOL bStrict /* = FALSE */, BOOL bSaveStrict /* = TRUE */)
+void CLogDlg::SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit, BOOL bStrict /* = FALSE */, BOOL bSaveStrict /* = TRUE */)
 {
 	m_path = path;
 	m_pegrev = pegrev;
@@ -265,7 +265,7 @@ BOOL CLogDlg::OnInitDialog()
 	if (m_limit)
 		temp.Format(IDS_LOG_SHOWNEXT, m_limit);
 	else
-		temp.Format(IDS_LOG_SHOWNEXT, (int)(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100));
+		temp.Format(IDS_LOG_SHOWNEXT, (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100));
 
 	SetDlgItemText(IDC_NEXTHUNDRED, temp);
 
@@ -407,13 +407,15 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	SetPromptParentWindow(m_hWnd);
+
+//	SetPromptParentWindow(m_hWnd);
+
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("LogDlg"));
 
-	DWORD yPos1 = CRegDWORD(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
-	DWORD yPos2 = CRegDWORD(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
+	DWORD yPos1 = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
+	DWORD yPos2 = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
 	RECT rcDlg, rcLogList, rcChgMsg;
 	GetClientRect(&rcDlg);
 	m_LogList.GetWindowRect(&rcLogList);
@@ -469,7 +471,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_btnShow.AddEntry(temp);
 	temp.LoadString(IDS_LOG_SHOWRANGE);
 	m_btnShow.AddEntry(temp);
-	m_btnShow.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseSVN\\ShowAllEntry")));
+	m_btnShow.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry")));
 
 	m_mergedRevs.clear();
 
@@ -668,22 +670,27 @@ void CLogDlg::OnBnClickedGetall()
 
 void CLogDlg::GetAll(bool bForceAll /* = false */)
 {
+#if 0
 	// fetch all requested log messages, either the specified range or
 	// really *all* available log messages.
 	UpdateData();
 	INT_PTR entry = m_btnShow.GetCurrentEntry();
 	if (bForceAll)
 		entry = 0;
+
 	switch (entry)
 	{
 	case 0:	// show all
+	
 		m_endrev = 0;
 		m_startrev = m_LogRevision;
 		if (m_bStrict)
 			m_bShowedAll = true;
+
 		break;
 	case 1: // show range
 		{
+
 			// ask for a revision range
 			CRevisionRangeDlg dlg;
 			dlg.SetStartRevision(m_startrev);
@@ -700,13 +707,14 @@ void CLogDlg::GetAll(bool bForceAll /* = false */)
 				if (((LONG)m_startrev < (LONG)m_endrev)||
 					(m_endrev.IsHead()))
 				{
-					svn_revnum_t temp = m_startrev;
+					git_revnum_t temp = m_startrev;
 					m_startrev = m_endrev;
 					m_endrev = temp;
 				}
 			}
 			m_bShowedAll = false;
 		}
+
 		break;
 	}
 	m_ChangedFileListCtrl.SetItemCountEx(0);
@@ -742,6 +750,7 @@ void CLogDlg::GetAll(bool bForceAll /* = false */)
 	}
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+#endif
 }
 
 void CLogDlg::OnBnClickedRefresh()
@@ -752,6 +761,7 @@ void CLogDlg::OnBnClickedRefresh()
 
 void CLogDlg::Refresh (bool autoGoOnline)
 {
+#if 0
 	// refreshing means re-downloading the already shown log messages
 	UpdateData();
 	m_maxChild = 0;
@@ -802,10 +812,12 @@ void CLogDlg::Refresh (bool autoGoOnline)
 	}
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+#endif
 }
 
 void CLogDlg::OnBnClickedNexthundred()
 {
+#if 0
 	UpdateData();
 	// we have to fetch the next X log messages.
 	if (m_logEntries.size() < 1)
@@ -815,10 +827,11 @@ void CLogDlg::OnBnClickedNexthundred()
 		// messages from.
 		return GetAll(true);
 	}
-	svn_revnum_t rev = m_logEntries[m_logEntries.size()-1]->Rev;
+	git_revnum_t rev = m_logEntries[m_logEntries.size()-1]->Rev;
 
 	if (rev < 1)
 		return;		// do nothing! No more revisions to get
+
 	m_startrev = rev;
 	m_endrev = 0;
 	m_bCancelled = FALSE;
@@ -826,7 +839,7 @@ void CLogDlg::OnBnClickedNexthundred()
     // rev is is revision we already have and we will receive it again
     // -> fetch one extra revision to get NumberOfLogs *new* revisions
 
-	m_limit = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100) +1;
+	m_limit = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100) +1;
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	SetSortArrow(&m_LogList, -1, true);
 	InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -846,6 +859,7 @@ void CLogDlg::OnBnClickedNexthundred()
 	}
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
+#endif
 }
 
 BOOL CLogDlg::Cancel()
@@ -857,8 +871,8 @@ void CLogDlg::SaveSplitterPos()
 {
 	if (!IsIconic())
 	{
-		CRegDWORD regPos1 = CRegDWORD(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
-		CRegDWORD regPos2 = CRegDWORD(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
+		CRegDWORD regPos1 = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
+		CRegDWORD regPos2 = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
@@ -886,7 +900,7 @@ void CLogDlg::OnCancel()
 	UpdateData();
 	if (m_bSaveStrict)
 		m_regLastStrict = m_bStrict;
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowAllEntry"));
+	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	reg = m_btnShow.GetCurrentEntry();
 	SaveSplitterPos();
 	__super::OnCancel();
@@ -918,13 +932,15 @@ CString CLogDlg::MakeShortMessage(const CString& message)
 	return sShortMessage;
 }
 
-BOOL CLogDlg::Log(svn_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren)
+BOOL CLogDlg::Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths,  int filechanges, BOOL copies, DWORD actions, BOOL haschildren)
 {
+#if 0
 	if (rev == SVN_INVALID_REVNUM)
 	{
 		m_childCounter--;
 		return TRUE;
 	}
+
 	// this is the callback function which receives the data for every revision we ask the log for
 	// we store this information here one by one.
 	m_logcounter += 1;
@@ -936,7 +952,7 @@ BOOL CLogDlg::Log(svn_revnum_t rev, const CString& author, const CString& date, 
 		m_LogProgress.SetPos(m_limit - m_limitcounter);
 	}
 	else if (m_startrev.IsNumber() && m_startrev.IsNumber())
-		m_LogProgress.SetPos((svn_revnum_t)m_startrev-rev+(svn_revnum_t)m_endrev);
+		m_LogProgress.SetPos((git_revnum_t)m_startrev-rev+(git_revnum_t)m_endrev);
 	__time64_t ttime = time/1000000L;
 	if (m_tTo < (DWORD)ttime)
 		m_tTo = (DWORD)ttime;
@@ -1004,13 +1020,13 @@ BOOL CLogDlg::Log(svn_revnum_t rev, const CString& author, const CString& date, 
 	}
 	catch (CException * e)
 	{
-		::MessageBox(NULL, _T("not enough memory!"), _T("TortoiseSVN"), MB_ICONERROR);
+		::MessageBox(NULL, _T("not enough memory!"), _T("TortoiseGit"), MB_ICONERROR);
 		e->Delete();
 		m_bCancelled = TRUE;
 	}
 	m_logEntries.push_back(pLogItem);
 	m_arShownList.Add(pLogItem);
-	
+#endif
 	return TRUE;
 }
 
@@ -1024,6 +1040,7 @@ UINT CLogDlg::LogThreadEntry(LPVOID pVoid)
 //this is the thread function which calls the subversion function
 UINT CLogDlg::LogThread()
 {
+#if 0
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 
     //does the user force the cache to refresh (shift or control key down)?
@@ -1053,15 +1070,15 @@ UINT CLogDlg::LogThread()
 	m_LogProgress.SetRange32(0, 100);
 	m_LogProgress.SetPos(0);
 	GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
-	svn_revnum_t r = -1;
+	git_revnum_t r = -1;
 	
 	// get the repository root url, because the changed-files-list has the
 	// paths shown there relative to the repository root.
-	CTSVNPath rootpath;
+	CTGitPath rootpath;
     BOOL succeeded = GetRootAndHead(m_path, rootpath, r);
 
-    m_sRepositoryRoot = rootpath.GetSVNPathString();
-    m_sURL = m_path.GetSVNPathString();
+    m_sRepositoryRoot = rootpath.GetGitPathString();
+    m_sURL = m_path.GetGitPathString();
 
     // we need the UUID to unambigously identify the log cache
     if (logCachePool.IsEnabled())
@@ -1075,7 +1092,7 @@ UINT CLogDlg::LogThread()
         {
 	        m_sURL = GetURLFromPath(m_path);
 
-	        // The URL is escaped because SVN::logReceiver
+	        // The URL is escaped because Git::logReceiver
 	        // returns the path in a native format
 	        m_sURL = CPathUtils::PathUnescape(m_sURL);
         }
@@ -1088,10 +1105,10 @@ UINT CLogDlg::LogThread()
 	    // in case we got a merge path set, retrieve the merge info
 	    // of that path and check whether one of the merge URLs
 	    // match the URL we show the log for.
-	    SVNPool localpool(pool);
-	    svn_error_clear(Err);
+	    GitPool localpool(pool);
+	    git_error_clear(Err);
 	    apr_hash_t * mergeinfo = NULL;
-	    if (svn_client_mergeinfo_get_merged (&mergeinfo, m_mergePath.GetSVNApiPath(localpool), SVNRev(SVNRev::REV_WC), m_pctx, localpool) == NULL)
+	    if (git_client_mergeinfo_get_merged (&mergeinfo, m_mergePath.GetGitApiPath(localpool), GitRev(GitRev::REV_WC), m_pctx, localpool) == NULL)
 	    {
 		    // now check the relative paths
 		    apr_hash_index_t *hi;
@@ -1110,10 +1127,10 @@ UINT CLogDlg::LogThread()
 					    {
 						    for (long i=0; i<arr->nelts; ++i)
 						    {
-							    svn_merge_range_t * pRange = APR_ARRAY_IDX(arr, i, svn_merge_range_t*);
+							    git_merge_range_t * pRange = APR_ARRAY_IDX(arr, i, git_merge_range_t*);
 							    if (pRange)
 							    {
-								    for (svn_revnum_t r=pRange->start+1; r<=pRange->end; ++r)
+								    for (git_revnum_t r=pRange->start+1; r<=pRange->end; ++r)
 								    {
 									    m_mergedRevs.insert(r);
 								    }
@@ -1128,11 +1145,11 @@ UINT CLogDlg::LogThread()
     }
 
     m_LogProgress.SetPos(1);
-    if (m_startrev == SVNRev::REV_HEAD)
+    if (m_startrev == GitRev::REV_HEAD)
     {
 	    m_startrev = r;
     }
-    if (m_endrev == SVNRev::REV_HEAD)
+    if (m_endrev == GitRev::REV_HEAD)
     {
 	    m_endrev = r;
     }
@@ -1153,12 +1170,12 @@ UINT CLogDlg::LogThread()
 
     if (succeeded)
     {
-        succeeded = ReceiveLog (CTSVNPathList(m_path), m_pegrev, m_startrev, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
+        succeeded = ReceiveLog (CTGitPathList(m_path), m_pegrev, m_startrev, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
         if ((!succeeded)&&(!m_path.IsUrl()))
         {
 	        // try again with REV_WC as the start revision, just in case the path doesn't
 	        // exist anymore in HEAD
-	        succeeded = ReceiveLog(CTSVNPathList(m_path), SVNRev(), SVNRev::REV_WC, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
+	        succeeded = ReceiveLog(CTGitPathList(m_path), GitRev(), GitRev::REV_WC, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
         }
     }
 	m_LogList.ClearText();
@@ -1171,12 +1188,12 @@ UINT CLogDlg::LogThread()
 		if (!m_wcRev.IsValid())
 		{
 			// fetch the revision the wc path is on so we can mark it
-			CTSVNPath revWCPath = m_ProjectProperties.GetPropsPath();
+			CTGitPath revWCPath = m_ProjectProperties.GetPropsPath();
 			if (!m_path.IsUrl())
 				revWCPath = m_path;
-			if (DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\RecursiveLogRev"), FALSE)))
+			if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RecursiveLogRev"), FALSE)))
 			{
-				svn_revnum_t minrev, maxrev;
+				git_revnum_t minrev, maxrev;
 				bool switched, modified, sparse;
 				GetWCRevisionStatus(revWCPath, true, minrev, maxrev, switched, modified, sparse);
 				if (maxrev)
@@ -1184,12 +1201,12 @@ UINT CLogDlg::LogThread()
 			}
 			else
 			{
-				CTSVNPath dummypath;
-				SVNStatus status;
-				svn_wc_status2_t * stat = status.GetFirstFileStatus(revWCPath, dummypath, false, svn_depth_empty);
+				CTGitPath dummypath;
+				GitStatus status;
+				git_wc_status2_t * stat = status.GetFirstFileStatus(revWCPath, dummypath, false, git_depth_empty);
 				if (stat && stat->entry && stat->entry->cmt_rev)
 					m_wcRev = stat->entry->cmt_rev;
-				if (stat && stat->entry && (stat->entry->kind == svn_node_dir))
+				if (stat && stat->entry && (stat->entry->kind == git_node_dir))
 					m_wcRev = stat->entry->revision;
 			}
 		}
@@ -1250,11 +1267,13 @@ UINT CLogDlg::LogThread()
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
 	PostMessage(WM_TIMER, LOGFILTER_TIMER);
+#endif
 	return 0;
 }
 
 void CLogDlg::CopySelectionToClipBoard()
 {
+#if 0
 	CString sClipdata;
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	if (pos != NULL)
@@ -1300,10 +1319,12 @@ void CLogDlg::CopySelectionToClipBoard()
 		}
 		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
 	}
+#endif
 }
 
 void CLogDlg::CopyChangedSelectionToClipBoard()
 {
+#if 0
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	if (pos == NULL)
 		return;	// nothing is selected, get out of here
@@ -1317,7 +1338,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 		while (pos)
 		{
 			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			sPaths += m_currentChangedPathList[nItem].GetSVNPathString();
+			sPaths += m_currentChangedPathList[nItem].GetGitPathString();
 			sPaths += _T("\r\n");
 		}
 	}
@@ -1355,10 +1376,12 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 	}
 	sPaths.Trim();
 	CStringUtils::WriteAsciiStringToClipboard(sPaths, GetSafeHwnd());
+#endif
 }
 
-BOOL CLogDlg::IsDiffPossible(LogChangedPath * changedpath, svn_revnum_t rev)
+BOOL CLogDlg::IsDiffPossible(LogChangedPath * changedpath, git_revnum_t rev)
 {
+#if 0
 	CString added, deleted;
 	if (changedpath == NULL)
 		return false;
@@ -1372,6 +1395,7 @@ BOOL CLogDlg::IsDiffPossible(LogChangedPath * changedpath, svn_revnum_t rev)
 		}
 		return TRUE;
 	}
+#endif
 	return FALSE;
 }
 
@@ -1466,6 +1490,7 @@ bool CLogDlg::IsSelectionContinuous()
 
 LRESULT CLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
+#if 0
     ASSERT(m_pFindDialog != NULL);
 
     if (m_pFindDialog->IsTerminating())
@@ -1594,11 +1619,13 @@ LRESULT CLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		}
     } // if(m_pFindDialog->FindNext()) 
 	UpdateLogInfoLabel();
+#endif
     return 0;
 }
 
 void CLogDlg::OnOK()
 {
+#if 0 
 	// since the log dialog is also used to select revisions for other
 	// dialogs, we have to do some work before closing this dialog
 	if (GetFocus() != GetDlgItem(IDOK))
@@ -1624,12 +1651,12 @@ void CLogDlg::OnOK()
 			POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
 			m_selectedRevs.AddRevision(pLogEntry->Rev);
-			svn_revnum_t lowerRev = pLogEntry->Rev;
-			svn_revnum_t higherRev = lowerRev;
+			git_revnum_t lowerRev = pLogEntry->Rev;
+			git_revnum_t higherRev = lowerRev;
 			while (pos)
 			{
 			    pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
-				svn_revnum_t rev = pLogEntry->Rev;
+				git_revnum_t rev = pLogEntry->Rev;
 				m_selectedRevs.AddRevision(pLogEntry->Rev);
 				if (lowerRev > rev)
 					lowerRev = rev;
@@ -1648,7 +1675,7 @@ void CLogDlg::OnOK()
 				// if it was copied, use the copy from revision as lowerRev
 				if ((pLogEntry)&&(pLogEntry->pArChangedPaths)&&(lowerRev == higherRev))
 				{
-					CString sUrl = m_path.GetSVNPathString();
+					CString sUrl = m_path.GetGitPathString();
 					if (!m_path.IsUrl())
 					{
 						sUrl = GetURLFromPath(m_path);
@@ -1687,9 +1714,10 @@ void CLogDlg::OnOK()
 	UpdateData();
 	if (m_bSaveStrict)
 		m_regLastStrict = m_bStrict;
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowAllEntry"));
+	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	reg = m_btnShow.GetCurrentEntry();
 	SaveSplitterPos();
+#endif 
 }
 
 void CLogDlg::OnNMDblclkChangedFileList(NMHDR * /*pNMHDR*/, LRESULT *pResult)
@@ -1702,6 +1730,7 @@ void CLogDlg::OnNMDblclkChangedFileList(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 void CLogDlg::DiffSelectedFile()
 {
+#if 0
 	if (m_bThreadRunning)
 		return;
 	UpdateLogInfoLabel();
@@ -1713,8 +1742,8 @@ void CLogDlg::DiffSelectedFile()
 	// find out if there's an entry selected in the log list
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
-	svn_revnum_t rev1 = pLogEntry->Rev;
-	svn_revnum_t rev2 = rev1;
+	git_revnum_t rev1 = pLogEntry->Rev;
+	git_revnum_t rev2 = rev1;
 	if (pos)
 	{
 		while (pos)
@@ -1764,10 +1793,10 @@ void CLogDlg::DiffSelectedFile()
 			{
 				// if the path was modified but the parent path was 'added with history'
 				// then we have to use the copy from revision of the parent path
-				CTSVNPath cpath = CTSVNPath(changedpath->sPath);
+				CTGitPath cpath = CTGitPath(changedpath->sPath);
 				for (int flist = 0; flist < pLogEntry->pArChangedPaths->GetCount(); ++flist)
 				{
-					CTSVNPath p = CTSVNPath(pLogEntry->pArChangedPaths->GetAt(flist)->sPath);
+					CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->GetAt(flist)->sPath);
 					if (p.IsAncestorOf(cpath))
 					{
 						if (!pLogEntry->pArChangedPaths->GetAt(flist)->sCopyFromPath.IsEmpty())
@@ -1779,9 +1808,9 @@ void CLogDlg::DiffSelectedFile()
 		}
 		else 
 		{
-			CTSVNPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTSVNPath(changedpath->sPath));
-			CTSVNPath tempfile2 = CTempFiles::Instance().GetTempFilePath(false, CTSVNPath(changedpath->sPath));
-			SVNRev r = rev1;
+			CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(changedpath->sPath));
+			CTGitPath tempfile2 = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(changedpath->sPath));
+			GitRev r = rev1;
 			// deleted files must be opened from the revision before the deletion
 			if (changedpath->action == LOGACTIONS_DELETED)
 				r = rev1-1;
@@ -1796,14 +1825,14 @@ void CLogDlg::DiffSelectedFile()
 			SetAndClearProgressInfo(&progDlg);
 			progDlg.ShowModeless(m_hWnd);
 
-			if (!Cat(CTSVNPath(m_sRepositoryRoot + changedpath->sPath), r, r, tempfile))
+			if (!Cat(CTGitPath(m_sRepositoryRoot + changedpath->sPath), r, r, tempfile))
 			{
 				m_bCancelled = false;
-				if (!Cat(CTSVNPath(m_sRepositoryRoot + changedpath->sPath), SVNRev::REV_HEAD, r, tempfile))
+				if (!Cat(CTGitPath(m_sRepositoryRoot + changedpath->sPath), GitRev::REV_HEAD, r, tempfile))
 				{
 					progDlg.Stop();
 					SetAndClearProgressInfo((HWND)NULL);
-					CMessageBox::Show(m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					return;
 				}
 			}
@@ -1811,8 +1840,8 @@ void CLogDlg::DiffSelectedFile()
 			SetAndClearProgressInfo((HWND)NULL);
 
 			CString sName1, sName2;
-			sName1.Format(_T("%s - Revision %ld"), (LPCTSTR)CPathUtils::GetFileNameFromPath(changedpath->sPath), (svn_revnum_t)rev1);
-			sName2.Format(_T("%s - Revision %ld"), (LPCTSTR)CPathUtils::GetFileNameFromPath(changedpath->sPath), (svn_revnum_t)rev1-1);
+			sName1.Format(_T("%s - Revision %ld"), (LPCTSTR)CPathUtils::GetFileNameFromPath(changedpath->sPath), (git_revnum_t)rev1);
+			sName2.Format(_T("%s - Revision %ld"), (LPCTSTR)CPathUtils::GetFileNameFromPath(changedpath->sPath), (git_revnum_t)rev1-1);
 			CAppUtils::DiffFlags flags;
 			flags.AlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			if (changedpath->action == LOGACTIONS_DELETED)
@@ -1821,6 +1850,7 @@ void CLogDlg::DiffSelectedFile()
 				CAppUtils::StartExtDiff(tempfile2, tempfile, sName2, sName1, flags);
 		}
 	}
+#endif 
 }
 
 
@@ -1829,12 +1859,13 @@ void CLogDlg::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	// a double click on an entry in the revision list has happened
 	*pResult = 0;
 
-  if (CRegDWORD(_T("Software\\TortoiseSVN\\DiffByDoubleClickInLog"), FALSE))
+  if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 	  DiffSelectedRevWithPrevious();
 }
 
 void CLogDlg::DiffSelectedRevWithPrevious()
 {
+#if 0
 	if (m_bThreadRunning)
 		return;
 	UpdateLogInfoLabel();
@@ -1850,7 +1881,7 @@ void CLogDlg::DiffSelectedRevWithPrevious()
 	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
 	long rev1 = pLogEntry->Rev;
 	long rev2 = rev1-1;
-	CTSVNPath path = m_path;
+	CTGitPath path = m_path;
 
 	// See how many files under the relative root were changed in selected revision
 	int nChanged = 0;
@@ -1879,30 +1910,32 @@ void CLogDlg::DiffSelectedRevWithPrevious()
 
 	if (PromptShown())
 	{
-		SVNDiff diff(this, m_hWnd, true);
+		GitDiff diff(this, m_hWnd, true);
 		diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		diff.SetHEADPeg(m_LogRevision);
 		diff.ShowCompare(path, rev2, path, rev1);
 	}
 	else
 	{
-		CAppUtils::StartShowCompare(m_hWnd, path, rev2, path, rev1, SVNRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CAppUtils::StartShowCompare(m_hWnd, path, rev2, path, rev1, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	}
 
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
+#endif
 }
 
-void CLogDlg::DoDiffFromLog(INT_PTR selIndex, svn_revnum_t rev1, svn_revnum_t rev2, bool blame, bool unified)
+void CLogDlg::DoDiffFromLog(INT_PTR selIndex, git_revnum_t rev1, git_revnum_t rev2, bool blame, bool unified)
 {
+#if 0
 	DialogEnableWindow(IDOK, FALSE);
 	SetPromptApp(&theApp);
 	theApp.DoWaitCursor(1);
 	//get the filename
 	CString filepath;
-	if (SVN::PathIsURL(m_path))
+	if (Git::PathIsURL(m_path))
 	{
-		filepath = m_path.GetSVNPathString();
+		filepath = m_path.GetGitPathString();
 	}
 	else
 	{
@@ -1912,7 +1945,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, svn_revnum_t rev1, svn_revnum_t re
 			theApp.DoWaitCursor(-1);
 			CString temp;
 			temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-			CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 			TRACE(_T("could not retrieve the URL of the file!\n"));
 			EnableOKButton();
 			theApp.DoWaitCursor(-11);
@@ -1920,7 +1953,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, svn_revnum_t rev1, svn_revnum_t re
 		}
 	}
 	m_bCancelled = FALSE;
-	filepath = GetRepositoryRoot(CTSVNPath(filepath));
+	filepath = GetRepositoryRoot(CTGitPath(filepath));
 
 	CString firstfile, secondfile;
 	if (m_LogList.GetSelectedCount()==1)
@@ -1938,47 +1971,49 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, svn_revnum_t rev1, svn_revnum_t re
 	}
 	else
 	{
-		firstfile = m_currentChangedPathList[selIndex].GetSVNPathString();
+		firstfile = m_currentChangedPathList[selIndex].GetGitPathString();
 		secondfile = firstfile;
 	}
 
 	firstfile = filepath + firstfile.Trim();
 	secondfile = filepath + secondfile.Trim();
 
-	SVNDiff diff(this, this->m_hWnd, true);
+	GitDiff diff(this, this->m_hWnd, true);
 	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	diff.SetHEADPeg(m_LogRevision);
 	if (unified)
 	{
 		if (PromptShown())
-			diff.ShowUnifiedDiff(CTSVNPath(secondfile), rev2, CTSVNPath(firstfile), rev1);
+			diff.ShowUnifiedDiff(CTGitPath(secondfile), rev2, CTGitPath(firstfile), rev1);
 		else
-			CAppUtils::StartShowUnifiedDiff(m_hWnd, CTSVNPath(secondfile), rev2, CTSVNPath(firstfile), rev1, SVNRev(), m_LogRevision);
+			CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(secondfile), rev2, CTGitPath(firstfile), rev1, GitRev(), m_LogRevision);
 	}
 	else
 	{
-		if (diff.ShowCompare(CTSVNPath(secondfile), rev2, CTSVNPath(firstfile), rev1, SVNRev(), false, blame))
+		if (diff.ShowCompare(CTGitPath(secondfile), rev2, CTGitPath(firstfile), rev1, GitRev(), false, blame))
 		{
 			if (firstfile.Compare(secondfile)==0)
 			{
-				svn_revnum_t baseRev = 0;
-				diff.DiffProps(CTSVNPath(firstfile), rev2, rev1, baseRev);
+				git_revnum_t baseRev = 0;
+				diff.DiffProps(CTGitPath(firstfile), rev2, rev1, baseRev);
 			}
 		}
 	}
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
+#endif
 }
 
-BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, svn_revnum_t rev)
+BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, git_revnum_t rev)
 {
+#if 0
 	DialogEnableWindow(IDOK, FALSE);
 	SetPromptApp(&theApp);
 	theApp.DoWaitCursor(1);
 	CString filepath;
-	if (SVN::PathIsURL(m_path))
+	if (Git::PathIsURL(m_path))
 	{
-		filepath = m_path.GetSVNPathString();
+		filepath = m_path.GetGitPathString();
 	}
 	else
 	{
@@ -1988,32 +2023,32 @@ BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, svn_revnum_t rev)
 			theApp.DoWaitCursor(-1);
 			CString temp;
 			temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-			CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 			TRACE(_T("could not retrieve the URL of the file!\n"));
 			EnableOKButton();
 			return FALSE;
 		}
 	}
 	m_bCancelled = false;
-	filepath = GetRepositoryRoot(CTSVNPath(filepath));
+	filepath = GetRepositoryRoot(CTGitPath(filepath));
 	filepath += changedpath;
 
 	CProgressDlg progDlg;
 	progDlg.SetTitle(IDS_APPNAME);
 	progDlg.SetAnimation(IDR_DOWNLOAD);
 	CString sInfoLine;
-	sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, (LPCTSTR)filepath, (LPCTSTR)SVNRev(rev).ToString());
+	sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, (LPCTSTR)filepath, (LPCTSTR)GitRev(rev).ToString());
 	progDlg.SetLine(1, sInfoLine, true);
 	SetAndClearProgressInfo(&progDlg);
 	progDlg.ShowModeless(m_hWnd);
 
-	CTSVNPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTSVNPath(filepath), rev);
+	CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(filepath), rev);
 	m_bCancelled = false;
-	if (!Cat(CTSVNPath(filepath), SVNRev(rev), rev, tempfile))
+	if (!Cat(CTGitPath(filepath), GitRev(rev), rev, tempfile))
 	{
 		progDlg.Stop();
 		SetAndClearProgressInfo((HWND)NULL);
-		CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+		CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 		EnableOKButton();
 		theApp.DoWaitCursor(-1);
 		return FALSE;
@@ -2035,11 +2070,13 @@ BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, svn_revnum_t rev)
 	}
 	EnableOKButton();
 	theApp.DoWaitCursor(-1);
+#endif
 	return TRUE;
 }
 
 void CLogDlg::EditAuthor(const CLogDataVector& logs)
 {
+#if 0
 	CString url;
 	CString name;
 	if (logs.size() == 0)
@@ -2047,15 +2084,15 @@ void CLogDlg::EditAuthor(const CLogDataVector& logs)
 	DialogEnableWindow(IDOK, FALSE);
 	SetPromptApp(&theApp);
 	theApp.DoWaitCursor(1);
-	if (SVN::PathIsURL(m_path))
-		url = m_path.GetSVNPathString();
+	if (Git::PathIsURL(m_path))
+		url = m_path.GetGitPathString();
 	else
 	{
 		url = GetURLFromPath(m_path);
 	}
-	name = SVN_PROP_REVISION_AUTHOR;
+	name = Git_PROP_REVISION_AUTHOR;
 
-	CString value = RevPropertyGet(name, CTSVNPath(url), logs[0]->Rev);
+	CString value = RevPropertyGet(name, CTGitPath(url), logs[0]->Rev);
 	CString sOldValue = value;
 	value.Replace(_T("\n"), _T("\r\n"));
 	CInputDlg dlg(this);
@@ -2069,7 +2106,7 @@ void CLogDlg::EditAuthor(const CLogDataVector& logs)
 		dlg.m_sInputText.Replace(_T("\r"), _T(""));
 
 		LogCache::CCachedLogInfo* toUpdate 
-			= GetLogCache (CTSVNPath (m_sRepositoryRoot));
+			= GetLogCache (CTGitPath (m_sRepositoryRoot));
 
 		CProgressDlg progDlg;
 		progDlg.SetTitle(IDS_APPNAME);
@@ -2079,10 +2116,10 @@ void CLogDlg::EditAuthor(const CLogDataVector& logs)
 		progDlg.ShowModeless(m_hWnd);
 		for (DWORD i=0; i<logs.size(); ++i)
 		{
-			if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTSVNPath(url), logs[i]->Rev))
+			if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTGitPath(url), logs[i]->Rev))
 			{
 				progDlg.Stop();
-				CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+				CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 				break;
 			}
 			else
@@ -2113,26 +2150,28 @@ void CLogDlg::EditAuthor(const CLogDataVector& logs)
 	}
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
+#endif
 }
 
 void CLogDlg::EditLogMessage(int index)
 {
+#if 0
 	CString url;
 	CString name;
 	DialogEnableWindow(IDOK, FALSE);
 	SetPromptApp(&theApp);
 	theApp.DoWaitCursor(1);
-	if (SVN::PathIsURL(m_path))
-		url = m_path.GetSVNPathString();
+	if (Git::PathIsURL(m_path))
+		url = m_path.GetGitPathString();
 	else
 	{
 		url = GetURLFromPath(m_path);
 	}
-	name = SVN_PROP_REVISION_LOG;
+	name = Git_PROP_REVISION_LOG;
 
 	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(index));
 	m_bCancelled = FALSE;
-	CString value = RevPropertyGet(name, CTSVNPath(url), pLogEntry->Rev);
+	CString value = RevPropertyGet(name, CTGitPath(url), pLogEntry->Rev);
 	CString sOldValue = value;
 	value.Replace(_T("\n"), _T("\r\n"));
 	CInputDlg dlg(this);
@@ -2144,9 +2183,9 @@ void CLogDlg::EditLogMessage(int index)
 	if (dlg.DoModal() == IDOK)
 	{
 		dlg.m_sInputText.Replace(_T("\r"), _T(""));
-		if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTSVNPath(url), pLogEntry->Rev))
+		if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTGitPath(url), pLogEntry->Rev))
 		{
-			CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 		}
 		else
 		{
@@ -2175,7 +2214,7 @@ void CLogDlg::EditLogMessage(int index)
             // update the log cache 
 
             LogCache::CCachedLogInfo* toUpdate 
-                = GetLogCache (CTSVNPath (m_sRepositoryRoot));
+                = GetLogCache (CTGitPath (m_sRepositoryRoot));
             if (toUpdate != NULL)
             {
                 // log caching is active
@@ -2193,6 +2232,7 @@ void CLogDlg::EditLogMessage(int index)
 	}
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
+#endif
 }
 
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
@@ -2203,7 +2243,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		if (GetFocus()==GetDlgItem(IDC_LOGLIST))
 		{
-			if (CRegDWORD(_T("Software\\TortoiseSVN\\DiffByDoubleClickInLog"), FALSE))
+			if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 			{
 				DiffSelectedRevWithPrevious();
 				return TRUE;
@@ -2314,6 +2354,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnBnClickedStatbutton()
 {
+#if 0
 	if (m_bThreadRunning)
 		return;
 	if (m_arShownList.IsEmpty())
@@ -2347,10 +2388,12 @@ void CLogDlg::OnBnClickedStatbutton()
 	// restore the previous sorting
 	SortByColumn(m_nSortColumn, m_bAscending);
 	OnTimer(LOGFILTER_TIMER);
+#endif
 }
 
 void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
+#if 0
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
@@ -2526,9 +2569,11 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	}
 	*pResult = CDRF_DODEFAULT;
+#endif
 }
 void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
+#if 0
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
@@ -2566,7 +2611,7 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 			else if (m_currentChangedPathList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 			{
-				if (m_currentChangedPathList[pLVCD->nmcd.dwItemSpec].GetSVNPathString().Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
+				if (m_currentChangedPathList[pLVCD->nmcd.dwItemSpec].GetGitPathString().Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
 				{
 					crText = GetSysColor(COLOR_GRAYTEXT);
 					bGrayed = true;
@@ -2590,10 +2635,12 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 		// Store the color back in the NMLVCUSTOMDRAW struct.
 		pLVCD->clrText = crText;
 	}
+#endif
 }
 
 void CLogDlg::DoSizeV1(int delta)
 {
+
 	RemoveAnchor(IDC_LOGLIST);
 	RemoveAnchor(IDC_SPLITTERTOP);
 	RemoveAnchor(IDC_MSGVIEW);
@@ -2611,10 +2658,12 @@ void CLogDlg::DoSizeV1(int delta)
 	SetSplitterRange();
 	m_LogList.Invalidate();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
+
 }
 
 void CLogDlg::DoSizeV2(int delta)
 {
+
 	RemoveAnchor(IDC_LOGLIST);
 	RemoveAnchor(IDC_SPLITTERTOP);
 	RemoveAnchor(IDC_MSGVIEW);
@@ -2632,6 +2681,7 @@ void CLogDlg::DoSizeV2(int delta)
 	SetSplitterRange();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
 	m_ChangedFileListCtrl.Invalidate();
+
 }
 
 void CLogDlg::AdjustMinSize()
@@ -2725,7 +2775,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			if (selection == LOGFILTER_REGEX)
 			{
 				m_bFilterWithRegex = !m_bFilterWithRegex;
-				CRegDWORD b = CRegDWORD(_T("Software\\TortoiseSVN\\UseRegexFilter"), TRUE);
+				CRegDWORD b = CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 				b = m_bFilterWithRegex;
 				CheckRegexpTooltip();
 			}
@@ -2899,6 +2949,7 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
+#if 0
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 
 	//Create a pointer to the item
@@ -2942,7 +2993,7 @@ void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 			if (lcpath)
 				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->sPath, pItem->cchTextMax);
 			else
-				lstrcpyn(pItem->pszText, (LPCTSTR)m_currentChangedPathList[pItem->iItem].GetSVNPathString(), pItem->cchTextMax);
+				lstrcpyn(pItem->pszText, (LPCTSTR)m_currentChangedPathList[pItem->iItem].GetGitPathString(), pItem->cchTextMax);
 			break;
 		case 2: //copyfrom path
 			if (lcpath)
@@ -2960,6 +3011,7 @@ void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
+#endif
 }
 
 void CLogDlg::OnEnChangeSearchedit()
@@ -3023,6 +3075,7 @@ bool CLogDlg::Validate(LPCTSTR string)
 
 void CLogDlg::RecalculateShownList(CPtrArray * pShownlist)
 {
+#if 0
 	pShownlist->RemoveAll();
 	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
 	bool bRegex = false;
@@ -3182,7 +3235,7 @@ void CLogDlg::RecalculateShownList(CPtrArray * pShownlist)
 			}
 		} // else (from if (bRegex))	
 	} // for (DWORD i=0; i<m_logEntries.size(); ++i) 
-
+#endif
 }
 
 void CLogDlg::OnTimer(UINT_PTR nIDEvent)
@@ -3288,9 +3341,11 @@ BOOL CLogDlg::IsEntryInDateRange(int i)
 	return FALSE;
 }
 
-CTSVNPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths /* = false */, bool bUseFilter /* = true */)
+CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths /* = false */, bool bUseFilter /* = true */)
 {
-	CTSVNPathList pathList;
+	CTGitPathList pathList;
+#if 0
+	
 	if (m_sRepositoryRoot.IsEmpty() && (bRelativePaths == false))
 	{
 		m_sRepositoryRoot = GetRepositoryRoot(m_path);
@@ -3313,9 +3368,9 @@ CTSVNPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths 
 				LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
 				if (cpath == NULL)
 					continue;
-				CTSVNPath path;
+				CTGitPath path;
 				if (!bRelativePaths)
-					path.SetFromSVN(m_sRepositoryRoot);
+					path.SetFromGit(m_sRepositoryRoot);
 				path.AppendPathString(cpath->sPath);
 				if ((!bUseFilter)||
 					((m_cHidePaths.GetState() & 0x0003)!=BST_CHECKED)||
@@ -3326,6 +3381,7 @@ CTSVNPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths 
 		}
 	}
 	pathList.RemoveDuplicates();
+#endif
 	return pathList;
 }
 
@@ -3471,6 +3527,7 @@ bool CLogDlg::m_bAscendingPathList = false;
 
 int CLogDlg::SortCompare(const void * pElem1, const void * pElem2)
 {
+#if 0
 	LogChangedPath * cpath1 = *((LogChangedPath**)pElem1);
 	LogChangedPath * cpath2 = *((LogChangedPath**)pElem2);
 
@@ -3498,11 +3555,13 @@ int CLogDlg::SortCompare(const void * pElem1, const void * pElem2)
 	case 3:	// copy from revision
 			return cpath2->lCopyFromRev > cpath1->lCopyFromRev;
 	}
+#endif
 	return 0;
 }
 
 void CLogDlg::ResizeAllListCtrlCols()
 {
+#if 0
 	const int nMinimumWidth = ICONITEMBORDER+16*4;
 	int maxcol = ((CHeaderCtrl*)(m_LogList.GetDlgItem(0)))->GetItemCount()-1;
 	int nItemCount = m_LogList.GetItemCount();
@@ -3570,6 +3629,7 @@ void CLogDlg::ResizeAllListCtrlCols()
 			m_LogList.SetColumnWidth(col, cx);
 		}
 	}
+#endif
 }
 
 void CLogDlg::OnBnClickedHidepaths()
@@ -3644,6 +3704,7 @@ void CLogDlg::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnBnClickedCheckStoponcopy()
 {
+#if 0
 	if (!GetDlgItem(IDC_GETALL)->IsWindowEnabled())
 		return;
 
@@ -3656,22 +3717,24 @@ void CLogDlg::OnBnClickedCheckStoponcopy()
 	m_endrev = 0;
 
 	// now, restart the query
-
+#endif
 	Refresh();
 }
 
 void CLogDlg::OnBnClickedIncludemerge()
 {
+#if 0
 	m_endrev = 0;
 
 	m_limit = 0;
+#endif
 	Refresh();
 }
 
 void CLogDlg::UpdateLogInfoLabel()
 {
-	svn_revnum_t rev1 = 0;
-	svn_revnum_t rev2 = 0;
+	git_revnum_t rev1 = 0;
+	git_revnum_t rev2 = 0;
 	long selectedrevs = 0;
 	if (m_arShownList.GetCount())
 	{
@@ -3689,6 +3752,7 @@ void CLogDlg::UpdateLogInfoLabel()
 
 void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 {
+#if 0
 	int selIndex = m_LogList.GetSelectionMark();
 	if (selIndex < 0)
 		return;	// nothing selected, nothing to do with a context menu
@@ -3717,8 +3781,8 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 	if (indexNext < 0)
 		return;
 	PLOGENTRYDATA pSelLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(indexNext));
-	SVNRev revSelected = pSelLogEntry->Rev;
-	SVNRev revPrevious = svn_revnum_t(revSelected)-1;
+	GitRev revSelected = pSelLogEntry->Rev;
+	GitRev revPrevious = git_revnum_t(revSelected)-1;
 	if ((pSelLogEntry->pArChangedPaths)&&(pSelLogEntry->pArChangedPaths->GetCount() <= 2))
 	{
 		for (int i=0; i<pSelLogEntry->pArChangedPaths->GetCount(); ++i)
@@ -3728,7 +3792,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				revPrevious = changedpath->lCopyFromRev;
 		}
 	}
-	SVNRev revSelected2;
+	GitRev revSelected2;
 	if (pos)
 	{
 		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
@@ -3737,8 +3801,8 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 	bool bAllFromTheSameAuthor = true;
 	CString firstAuthor;
 	CLogDataVector selEntries;
-	SVNRev revLowest, revHighest;
-	SVNRevRangeArray revisionRanges;
+	GitRev revLowest, revHighest;
+	GitRevRangeArray revisionRanges;
 	{
 		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
@@ -3754,8 +3818,8 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 			selEntries.push_back(pLogEntry);
 			if (firstAuthor.Compare(pLogEntry->sAuthor))
 				bAllFromTheSameAuthor = false;
-			revLowest = (svn_revnum_t(pLogEntry->Rev) > svn_revnum_t(revLowest) ? revLowest : pLogEntry->Rev);
-			revHighest = (svn_revnum_t(pLogEntry->Rev) < svn_revnum_t(revHighest) ? revHighest : pLogEntry->Rev);
+			revLowest = (git_revnum_t(pLogEntry->Rev) > git_revnum_t(revLowest) ? revLowest : pLogEntry->Rev);
+			revHighest = (git_revnum_t(pLogEntry->Rev) < git_revnum_t(revHighest) ? revHighest : pLogEntry->Rev);
 		}
 	}
 
@@ -3880,24 +3944,24 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 			{
 				if (PromptShown())
 				{
-					SVNDiff diff(this, this->m_hWnd, true);
+					GitDiff diff(this, this->m_hWnd, true);
 					diff.SetHEADPeg(m_LogRevision);
 					diff.ShowUnifiedDiff(m_path, revPrevious, m_path, revSelected);
 				}
 				else
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revPrevious, m_path, revSelected, SVNRev(), m_LogRevision);
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revPrevious, m_path, revSelected, GitRev(), m_LogRevision);
 			}
 			break;
 		case ID_GNUDIFF2:
 			{
 				if (PromptShown())
 				{
-					SVNDiff diff(this, this->m_hWnd, true);
+					GitDiff diff(this, this->m_hWnd, true);
 					diff.SetHEADPeg(m_LogRevision);
 					diff.ShowUnifiedDiff(m_path, revSelected2, m_path, revSelected);
 				}
 				else
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revSelected2, m_path, revSelected, SVNRev(), m_LogRevision);
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revSelected2, m_path, revSelected, GitRev(), m_LogRevision);
 			}
 			break;
 		case ID_REVERTREV:
@@ -3907,17 +3971,17 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				{
 					CString strMessage;
 					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
 					TRACE(_T("could not retrieve the URL of the folder!\n"));
 					break;		//exit
 				}
 				CString msg;
 				msg.Format(IDS_LOG_REVERT_CONFIRM, m_path.GetWinPath());
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseSVN"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 				{
-					CSVNProgressDlg dlg;
-					dlg.SetCommand(CSVNProgressDlg::SVNProgress_Merge);
-					dlg.SetPathList(CTSVNPathList(m_path));
+					CGitProgressDlg dlg;
+					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
+					dlg.SetPathList(CTGitPathList(m_path));
 					dlg.SetUrl(pathURL);
 					dlg.SetSecondUrl(pathURL);
 					revisionRanges.AdjustForMerge(true);
@@ -3934,7 +3998,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				{
 					CString strMessage;
 					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
 					TRACE(_T("could not retrieve the URL of the folder!\n"));
 					break;		//exit
 				}
@@ -3953,9 +4017,9 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				}
 				if (bGotSavePath)
 				{
-					CSVNProgressDlg dlg;
-					dlg.SetCommand(CSVNProgressDlg::SVNProgress_Merge);
-					dlg.SetPathList(CTSVNPathList(CTSVNPath(path)));
+					CGitProgressDlg dlg;
+					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
+					dlg.SetPathList(CTGitPathList(CTGitPath(path)));
 					dlg.SetUrl(pathURL);
 					dlg.SetSecondUrl(pathURL);
 					revisionRanges.AdjustForMerge(false);
@@ -3972,22 +4036,22 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				{
 					CString strMessage;
 					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
 					TRACE(_T("could not retrieve the URL of the folder!\n"));
 					break;		//exit
 				}
 
 				CString msg;
 				msg.Format(IDS_LOG_REVERTTOREV_CONFIRM, m_path.GetWinPath());
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseSVN"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 				{
-					CSVNProgressDlg dlg;
-					dlg.SetCommand(CSVNProgressDlg::SVNProgress_Merge);
-					dlg.SetPathList(CTSVNPathList(m_path));
+					CGitProgressDlg dlg;
+					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
+					dlg.SetPathList(CTGitPathList(m_path));
 					dlg.SetUrl(pathURL);
 					dlg.SetSecondUrl(pathURL);
-					SVNRevRangeArray revarray;
-					revarray.AddRevRange(SVNRev::REV_HEAD, revSelected);
+					GitRevRangeArray revarray;
+					revarray.AddRevRange(GitRev::REV_HEAD, revSelected);
 					dlg.SetRevisionRanges(revarray);
 					dlg.SetPegRevision(m_LogRevision);
 					dlg.DoModal();
@@ -4001,7 +4065,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				{
 					CString strMessage;
 					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
 					TRACE(_T("could not retrieve the URL of the folder!\n"));
 					break;		//exit
 				}
@@ -4014,8 +4078,8 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				{
 					// should we show a progress dialog here? Copies are done really fast
 					// and without much network traffic.
-					if (!Copy(CTSVNPathList(CTSVNPath(pathURL)), CTSVNPath(dlg.m_URL), dlg.m_CopyRev, dlg.m_CopyRev, dlg.m_sLogMessage))
-						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					if (!Copy(CTGitPathList(CTGitPath(pathURL)), CTGitPath(dlg.m_URL), dlg.m_CopyRev, dlg.m_CopyRev, dlg.m_sLogMessage))
+						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					else
 						CMessageBox::Show(this->m_hWnd, IDS_LOG_COPY_SUCCESS, IDS_APPNAME, MB_ICONINFORMATION);
 				}
@@ -4026,19 +4090,19 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				//user clicked on the menu item "compare with working copy"
 				if (PromptShown())
 				{
-					SVNDiff diff(this, m_hWnd, true);
+					GitDiff diff(this, m_hWnd, true);
 					diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(m_path, SVNRev::REV_WC, m_path, revSelected);
+					diff.ShowCompare(m_path, GitRev::REV_WC, m_path, revSelected);
 				}
 				else
-					CAppUtils::StartShowCompare(m_hWnd, m_path, SVNRev::REV_WC, m_path, revSelected, SVNRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+					CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_WC, m_path, revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
 		case ID_COMPARETWO:
 			{
-				SVNRev r1 = revSelected;
-				SVNRev r2 = revSelected2;
+				GitRev r1 = revSelected;
+				GitRev r2 = revSelected2;
 				if (m_LogList.GetSelectedCount() > 2)
 				{
 					r1 = revHighest;
@@ -4047,26 +4111,26 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				//user clicked on the menu item "compare revisions"
 				if (PromptShown())
 				{
-					SVNDiff diff(this, m_hWnd, true);
+					GitDiff diff(this, m_hWnd, true);
 					diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTSVNPath(pathURL), r2, CTSVNPath(pathURL), r1);
+					diff.ShowCompare(CTGitPath(pathURL), r2, CTGitPath(pathURL), r1);
 				}
 				else
-					CAppUtils::StartShowCompare(m_hWnd, CTSVNPath(pathURL), r2, CTSVNPath(pathURL), r1, SVNRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), r2, CTGitPath(pathURL), r1, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
 		case ID_COMPAREWITHPREVIOUS:
 			{
 				if (PromptShown())
 				{
-					SVNDiff diff(this, m_hWnd, true);
+					GitDiff diff(this, m_hWnd, true);
 					diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTSVNPath(pathURL), revPrevious, CTSVNPath(pathURL), revSelected);
+					diff.ShowCompare(CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected);
 				}
 				else
-					CAppUtils::StartShowCompare(m_hWnd, CTSVNPath(pathURL), revPrevious, CTSVNPath(pathURL), revSelected, SVNRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
 		case ID_BLAMECOMPARE:
@@ -4075,12 +4139,12 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				//now first get the revision which is selected
 				if (PromptShown())
 				{
-					SVNDiff diff(this, this->m_hWnd, true);
+					GitDiff diff(this, this->m_hWnd, true);
 					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(m_path, SVNRev::REV_BASE, m_path, revSelected, SVNRev(), false, true);
+					diff.ShowCompare(m_path, GitRev::REV_BASE, m_path, revSelected, GitRev(), false, true);
 				}
 				else
-					CAppUtils::StartShowCompare(m_hWnd, m_path, SVNRev::REV_BASE, m_path, revSelected, SVNRev(), m_LogRevision, false, false, true);
+					CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_BASE, m_path, revSelected, GitRev(), m_LogRevision, false, false, true);
 			}
 			break;
 		case ID_BLAMETWO:
@@ -4088,12 +4152,12 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				//user clicked on the menu item "compare and blame revisions"
 				if (PromptShown())
 				{
-					SVNDiff diff(this, this->m_hWnd, true);
+					GitDiff diff(this, this->m_hWnd, true);
 					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTSVNPath(pathURL), revSelected2, CTSVNPath(pathURL), revSelected, SVNRev(), false, true);
+					diff.ShowCompare(CTGitPath(pathURL), revSelected2, CTGitPath(pathURL), revSelected, GitRev(), false, true);
 				}
 				else
-					CAppUtils::StartShowCompare(m_hWnd, CTSVNPath(pathURL), revSelected2, CTSVNPath(pathURL), revSelected, SVNRev(), m_LogRevision, false, false, true);
+					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revSelected2, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
 			}
 			break;
 		case ID_BLAMEWITHPREVIOUS:
@@ -4101,12 +4165,12 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				//user clicked on the menu item "Compare and Blame with previous revision"
 				if (PromptShown())
 				{
-					SVNDiff diff(this, this->m_hWnd, true);
+					GitDiff diff(this, this->m_hWnd, true);
 					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTSVNPath(pathURL), revPrevious, CTSVNPath(pathURL), revSelected, SVNRev(), false, true);
+					diff.ShowCompare(CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), false, true);
 				}
 				else
-					CAppUtils::StartShowCompare(m_hWnd, CTSVNPath(pathURL), revPrevious, CTSVNPath(pathURL), revSelected, SVNRev(), m_LogRevision, false, false, true);
+					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
 			}
 			break;
 		case ID_SAVEAS:
@@ -4124,7 +4188,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				}
 				if (CAppUtils::FileOpenSave(revFilename, NULL, IDS_LOG_POPUP_SAVE, IDS_COMMONFILEFILTER, false, m_hWnd))
 				{
-					CTSVNPath tempfile;
+					CTGitPath tempfile;
 					tempfile.SetFromWin(revFilename);
 					CProgressDlg progDlg;
 					progDlg.SetTitle(IDS_APPNAME);
@@ -4134,14 +4198,14 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 					progDlg.SetLine(1, sInfoLine, true);
 					SetAndClearProgressInfo(&progDlg);
 					progDlg.ShowModeless(m_hWnd);
-					if (!Cat(m_path, SVNRev(SVNRev::REV_HEAD), revSelected, tempfile))
+					if (!Cat(m_path, GitRev(GitRev::REV_HEAD), revSelected, tempfile))
 					{
 						// try again with another peg revision
 						if (!Cat(m_path, revSelected, revSelected, tempfile))
 						{
 							progDlg.Stop();
 							SetAndClearProgressInfo((HWND)NULL);
-							CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 							EnableOKButton();
 							break;
 						}
@@ -4163,9 +4227,9 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				progDlg.SetLine(1, sInfoLine, true);
 				SetAndClearProgressInfo(&progDlg);
 				progDlg.ShowModeless(m_hWnd);
-				CTSVNPath tempfile = CTempFiles::Instance().GetTempFilePath(false, m_path, revSelected);
+				CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, m_path, revSelected);
 				bool bSuccess = true;
-				if (!Cat(m_path, SVNRev(SVNRev::REV_HEAD), revSelected, tempfile))
+				if (!Cat(m_path, GitRev(GitRev::REV_HEAD), revSelected, tempfile))
 				{
 					bSuccess = false;
 					// try again, but with the selected revision as the peg revision
@@ -4173,7 +4237,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 					{
 						progDlg.Stop();
 						SetAndClearProgressInfo((HWND)NULL);
-						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 						EnableOKButton();
 						break;
 					}
@@ -4215,7 +4279,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 						}
 						else
 						{
-							CString sParams = _T("/path:\"") + m_path.GetSVNPathString() + _T("\" ");
+							CString sParams = _T("/path:\"") + m_path.GetGitPathString() + _T("\" ");
 							if(!CAppUtils::LaunchTortoiseBlame(tempfile, logfile, CPathUtils::GetFileNameFromPath(m_path.GetFileOrDirectoryName()),sParams))
 							{
 								break;
@@ -4224,7 +4288,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 					}
 					else
 					{
-						CMessageBox::Show(this->m_hWnd, blame.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, blame.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 				}
 			}
@@ -4232,7 +4296,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 		case ID_UPDATE:
 			{
 				CString sCmd;
-				CString url = _T("tsvn:")+pathURL;
+				CString url = _T("tgit:")+pathURL;
 				sCmd.Format(_T("%s /command:update /path:\"%s\" /rev:%ld"),
 					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
 					(LPCTSTR)m_path.GetWinPath(), (LONG)revSelected);
@@ -4279,8 +4343,8 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 			{
 				CEditPropertiesDlg dlg;
 				dlg.SetProjectProperties(&m_ProjectProperties);
-				CTSVNPathList escapedlist;
-				dlg.SetPathList(CTSVNPathList(CTSVNPath(pathURL)));
+				CTGitPathList escapedlist;
+				dlg.SetPathList(CTGitPathList(CTGitPath(pathURL)));
 				dlg.SetRevision(revSelected);
 				dlg.RevProps(true);
 				dlg.DoModal();
@@ -4303,7 +4367,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 		case ID_CHECKOUT:
 			{
 				CString sCmd;
-				CString url = _T("tsvn:")+pathURL;
+				CString url = _T("tgit:")+pathURL;
 				sCmd.Format(_T("%s /command:checkout /url:\"%s\" /revision:%ld"),
 					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
 					(LPCTSTR)url, (LONG)revSelected);
@@ -4322,7 +4386,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 		case ID_VIEWPATHREV:
 			{
 				CString relurl = pathURL;
-				CString sRoot = GetRepositoryRoot(CTSVNPath(relurl));
+				CString sRoot = GetRepositoryRoot(CTGitPath(relurl));
 				relurl = relurl.Mid(sRoot.GetLength());
 				CString url = m_ProjectProperties.sWebViewerPathRev;
 				url = GetAbsoluteUrlFromRelativeUrl(url);
@@ -4338,10 +4402,12 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 		theApp.DoWaitCursor(-1);
 		EnableOKButton();
 	} // if (popup.CreatePopupMenu())
+#endif
 }
 
 void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 {
+#if 0
 	int selIndex = m_ChangedFileListCtrl.GetSelectionMark();
 	if ((point.x == -1) && (point.y == -1))
 	{
@@ -4362,8 +4428,8 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		return;	// nothing is selected, get out of here
 
 	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
-	svn_revnum_t rev1 = pLogEntry->Rev;
-	svn_revnum_t rev2 = rev1;
+	git_revnum_t rev1 = pLogEntry->Rev;
+	git_revnum_t rev2 = rev1;
 	bool bOneRev = true;
 	if (pos)
 	{
@@ -4372,8 +4438,8 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
 			if (pLogEntry)
 			{
-				rev1 = max(rev1,(svn_revnum_t)pLogEntry->Rev);
-				rev2 = min(rev2,(svn_revnum_t)pLogEntry->Rev);
+				rev1 = max(rev1,(git_revnum_t)pLogEntry->Rev);
+				rev2 = min(rev2,(git_revnum_t)pLogEntry->Rev);
 				bOneRev = false;
 			}				
 		}
@@ -4383,7 +4449,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		while (pos)
 		{
 			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			changedpaths.push_back(m_currentChangedPathList[nItem].GetSVNPathString());
+			changedpaths.push_back(m_currentChangedPathList[nItem].GetGitPathString());
 		}
 	}
 	else
@@ -4406,10 +4472,10 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				{
 					// if the path was modified but the parent path was 'added with history'
 					// then we have to use the copy from revision of the parent path
-					CTSVNPath cpath = CTSVNPath(changedlogpath->sPath);
+					CTGitPath cpath = CTGitPath(changedlogpath->sPath);
 					for (int flist = 0; flist < pLogEntry->pArChangedPaths->GetCount(); ++flist)
 					{
-						CTSVNPath p = CTSVNPath(pLogEntry->pArChangedPaths->GetAt(flist)->sPath);
+						CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->GetAt(flist)->sPath);
 						if (p.IsAncestorOf(cpath))
 						{
 							if (!pLogEntry->pArChangedPaths->GetAt(flist)->sCopyFromPath.IsEmpty())
@@ -4516,9 +4582,9 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				SetPromptApp(&theApp);
 				theApp.DoWaitCursor(1);
 				CString sUrl;
-				if (SVN::PathIsURL(m_path))
+				if (Git::PathIsURL(m_path))
 				{
-					sUrl = m_path.GetSVNPathString();
+					sUrl = m_path.GetGitPathString();
 				}
 				else
 				{
@@ -4528,7 +4594,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						theApp.DoWaitCursor(-1);
 						CString temp;
 						temp.Format(IDS_ERR_NOURLOFFILE, m_path.GetWinPath());
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 						EnableOKButton();
 						theApp.DoWaitCursor(-1);
 						break;		//exit
@@ -4536,7 +4602,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				}
 				// find the working copy path of the selected item from the URL
 				m_bCancelled = false;
-				CString sUrlRoot = GetRepositoryRoot(CTSVNPath(sUrl));
+				CString sUrlRoot = GetRepositoryRoot(CTGitPath(sUrl));
 
 				CString fileURL = changedpaths[0];
 				fileURL = sUrlRoot + fileURL.Trim();
@@ -4551,13 +4617,13 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				CString wcPath = m_path.GetWinPathString().Left(leftcount);
 				wcPath += fileURL.Mid(i);
 				wcPath.Replace('/', '\\');
-				CSVNProgressDlg dlg;
+				CGitProgressDlg dlg;
 				if (changedlogpaths[0]->action == LOGACTIONS_DELETED)
 				{
 					// a deleted path! Since the path isn't there anymore, merge
 					// won't work. So just do a copy url->wc
-					dlg.SetCommand(CSVNProgressDlg::SVNProgress_Copy);
-					dlg.SetPathList(CTSVNPathList(CTSVNPath(fileURL)));
+					dlg.SetCommand(CGitProgressDlg::GitProgress_Copy);
+					dlg.SetPathList(CTGitPathList(CTGitPath(fileURL)));
 					dlg.SetUrl(wcPath);
 					dlg.SetRevision(rev2);
 				}
@@ -4572,17 +4638,17 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						theApp.DoWaitCursor(-1);
 						break;		//exit
 					}
-					dlg.SetCommand(CSVNProgressDlg::SVNProgress_Merge);
-					dlg.SetPathList(CTSVNPathList(CTSVNPath(wcPath)));
+					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
+					dlg.SetPathList(CTGitPathList(CTGitPath(wcPath)));
 					dlg.SetUrl(fileURL);
 					dlg.SetSecondUrl(fileURL);
-					SVNRevRangeArray revarray;
+					GitRevRangeArray revarray;
 					revarray.AddRevRange(rev1, rev2);
 					dlg.SetRevisionRanges(revarray);
 				}
 				CString msg;
 				msg.Format(IDS_LOG_REVERT_CONFIRM, (LPCTSTR)wcPath);
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseSVN"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 				{
 					dlg.DoModal();
 				}
@@ -4595,9 +4661,9 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				SetPromptApp(&theApp);
 				theApp.DoWaitCursor(1);
 				CString filepath;
-				if (SVN::PathIsURL(m_path))
+				if (Git::PathIsURL(m_path))
 				{
-					filepath = m_path.GetSVNPathString();
+					filepath = m_path.GetGitPathString();
 				}
 				else
 				{
@@ -4607,17 +4673,17 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						theApp.DoWaitCursor(-1);
 						CString temp;
 						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 						TRACE(_T("could not retrieve the URL of the file!\n"));
 						EnableOKButton();
 						break;
 					}
 				}
-				filepath = GetRepositoryRoot(CTSVNPath(filepath));
+				filepath = GetRepositoryRoot(CTGitPath(filepath));
 				filepath += changedpaths[0];
 				CPropDlg dlg;
 				dlg.m_rev = rev1;
-				dlg.m_Path = CTSVNPath(filepath);
+				dlg.m_Path = CTGitPath(filepath);
 				dlg.DoModal();
 				EnableOKButton();
 				theApp.DoWaitCursor(-1);
@@ -4629,9 +4695,9 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				SetPromptApp(&theApp);
 				theApp.DoWaitCursor(1);
 				CString filepath;
-				if (SVN::PathIsURL(m_path))
+				if (Git::PathIsURL(m_path))
 				{
-					filepath = m_path.GetSVNPathString();
+					filepath = m_path.GetGitPathString();
 				}
 				else
 				{
@@ -4641,18 +4707,18 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						theApp.DoWaitCursor(-1);
 						CString temp;
 						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 						TRACE(_T("could not retrieve the URL of the file!\n"));
 						EnableOKButton();
 						break;
 					}
 				}
 				m_bCancelled = false;
-				CString sRoot = GetRepositoryRoot(CTSVNPath(filepath));
+				CString sRoot = GetRepositoryRoot(CTGitPath(filepath));
 				// if more than one entry is selected, we save them
 				// one by one into a folder the user has selected
 				bool bTargetSelected = false;
-				CTSVNPath TargetPath;
+				CTGitPath TargetPath;
 				if (m_ChangedFileListCtrl.GetSelectedCount() > 1)
 				{
 					CBrowseFolder browseFolder;
@@ -4661,7 +4727,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					CString strSaveAsDirectory;
 					if (browseFolder.Show(GetSafeHwnd(), strSaveAsDirectory) == CBrowseFolder::OK) 
 					{
-						TargetPath = CTSVNPath(strSaveAsDirectory);
+						TargetPath = CTGitPath(strSaveAsDirectory);
 						bTargetSelected = true;
 					}
 				}
@@ -4686,7 +4752,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					progDlg.SetAnimation(IDR_DOWNLOAD);
 					for (std::vector<LogChangedPath*>::iterator it = changedlogpaths.begin(); it!= changedlogpaths.end(); ++it)
 					{
-						SVNRev getrev = ((*it)->action == LOGACTIONS_DELETED) ? rev2 : rev1;
+						GitRev getrev = ((*it)->action == LOGACTIONS_DELETED) ? rev2 : rev1;
 
 						CString sInfoLine;
 						sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, (LPCTSTR)filepath, (LPCTSTR)getrev.ToString());
@@ -4694,7 +4760,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						SetAndClearProgressInfo(&progDlg);
 						progDlg.ShowModeless(m_hWnd);
 
-						CTSVNPath tempfile = TargetPath;
+						CTGitPath tempfile = TargetPath;
 						if (changedpaths.size() > 1)
 						{
 							// if multiple items are selected, then the TargetPath
@@ -4722,11 +4788,11 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 							// use the export command from the top pane of the log dialog.
 						}
 						filepath = sRoot + (*it)->sPath;
-						if (!Cat(CTSVNPath(filepath), getrev, getrev, tempfile))
+						if (!Cat(CTGitPath(filepath), getrev, getrev, tempfile))
 						{
 							progDlg.Stop();
 							SetAndClearProgressInfo((HWND)NULL);
-							CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 							EnableOKButton();
 							theApp.DoWaitCursor(-1);
 							break;
@@ -4743,16 +4809,16 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 			bOpenWith = true;
 		case ID_OPEN:
 			{
-				SVNRev getrev = pLogEntry->pArChangedPaths->GetAt(selIndex)->action == LOGACTIONS_DELETED ? rev2 : rev1;
+				GitRev getrev = pLogEntry->pArChangedPaths->GetAt(selIndex)->action == LOGACTIONS_DELETED ? rev2 : rev1;
 				Open(bOpenWith,changedpaths[0],getrev);
 			}
 			break;
 		case ID_BLAME:
 			{
 				CString filepath;
-				if (SVN::PathIsURL(m_path))
+				if (Git::PathIsURL(m_path))
 				{
-					filepath = m_path.GetSVNPathString();
+					filepath = m_path.GetGitPathString();
 				}
 				else
 				{
@@ -4762,13 +4828,13 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						theApp.DoWaitCursor(-1);
 						CString temp;
 						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 						TRACE(_T("could not retrieve the URL of the file!\n"));
 						EnableOKButton();
 						break;
 					}
 				}
-				filepath = GetRepositoryRoot(CTSVNPath(filepath));
+				filepath = GetRepositoryRoot(CTGitPath(filepath));
 				filepath += changedpaths[0];
 				CBlameDlg dlg;
 				dlg.EndRev = rev1;
@@ -4777,7 +4843,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					CBlame blame;
 					CString tempfile;
 					CString logfile;
-					tempfile = blame.BlameToTempFile(CTSVNPath(filepath), dlg.StartRev, dlg.EndRev, dlg.EndRev, logfile, _T(""), dlg.m_bIncludeMerge, TRUE, TRUE);
+					tempfile = blame.BlameToTempFile(CTGitPath(filepath), dlg.StartRev, dlg.EndRev, dlg.EndRev, logfile, _T(""), dlg.m_bIncludeMerge, TRUE, TRUE);
 					if (!tempfile.IsEmpty())
 					{
 						if (dlg.m_bTextView)
@@ -4796,7 +4862,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					}
 					else
 					{
-						CMessageBox::Show(this->m_hWnd, blame.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, blame.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 				}
 			}
@@ -4810,9 +4876,9 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				SetPromptApp(&theApp);
 				theApp.DoWaitCursor(1);
 				CString filepath;
-				if (SVN::PathIsURL(m_path))
+				if (Git::PathIsURL(m_path))
 				{
-					filepath = m_path.GetSVNPathString();
+					filepath = m_path.GetGitPathString();
 				}
 				else
 				{
@@ -4822,16 +4888,16 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 						theApp.DoWaitCursor(-1);
 						CString temp;
 						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 						TRACE(_T("could not retrieve the URL of the file!\n"));
 						EnableOKButton();
 						break;
 					}
 				}
 				m_bCancelled = false;
-				filepath = GetRepositoryRoot(CTSVNPath(filepath));
+				filepath = GetRepositoryRoot(CTGitPath(filepath));
 				filepath += changedpaths[0];
-				svn_revnum_t logrev = rev1;
+				git_revnum_t logrev = rev1;
 				if (changedlogpaths[0]->action == LOGACTIONS_DELETED)
 				{
 					// if the item got deleted in this revision,
@@ -4851,7 +4917,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		case ID_VIEWPATHREV:
 			{
 				PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetSelectionMark()));
-				SVNRev rev = pLogEntry->Rev;
+				GitRev rev = pLogEntry->Rev;
 				CString relurl = changedpaths[0];
 				CString url = m_ProjectProperties.sWebViewerPathRev;
 				url.Replace(_T("%REVISION%"), rev.ToString());
@@ -4866,6 +4932,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 			break;
 		} // switch (cmd)
 	} // if (popup.CreatePopupMenu())
+#endif
 }
 
 void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)

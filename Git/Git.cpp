@@ -3,8 +3,11 @@
 #include "atlconv.h"
 #include "afx.h"
 
+#define MAX_DIRBUFFER 1000
+CGit g_Git;
 CGit::CGit(void)
 {
+	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
 }
 
 CGit::~CGit(void)
@@ -37,7 +40,7 @@ int CGit::Run(CString cmd, CString* output)
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
 	
-	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,NULL,NULL,NULL,&si,&pi))
+	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,NULL,NULL,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;
 		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
@@ -76,4 +79,17 @@ CString CGit::GetUserEmail(void)
 	CString UserName;
 	Run(_T("git.cmd config user.email"),&UserName);
 	return UserName;
+}
+
+CString CGit::GetCurrentBranch(void)
+{
+	CString branch;
+	Run(_T("git.cmd branch"),&branch);
+	if(branch.GetLength()>0)
+	{
+		branch.Replace(_T('*'),_T(' '));
+		branch.TrimLeft();
+		return branch;
+	}
+	return CString("");
 }

@@ -19,7 +19,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "SVNRev.h"
+#include "GitRev.h"
 
 /**
  * \ingroup TortoiseProc
@@ -49,8 +49,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CTSVNPath	m_Path;
-	SVNRev		m_rev;
+	CTGitPath	m_Path;
+	GitRev		m_rev;
 private:
 	HANDLE		m_hThread;
 	CListCtrl	m_proplist;

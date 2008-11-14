@@ -59,7 +59,7 @@ typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
  * \ingroup TortoiseProc
  * Shows log messages of a single file or folder in a listbox. 
  */
-class CLogDlg : public CResizableStandAloneDialog, public Git, IFilterEditValidator
+class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator
 {
 	DECLARE_DYNAMIC(CLogDlg)
 	
@@ -80,14 +80,14 @@ public:
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SetMergePath(const CTGitPath& mergepath) {m_mergePath = mergepath;}
 
-	const GitRevRangeArray&	GetSelectedRevRanges() {return m_selectedRevs;}
+//	const GitRevRangeArray&	GetSelectedRevRanges() {return m_selectedRevs;}
 
 // Dialog Data
 	enum { IDD = IDD_LOGMESSAGE };
 
 protected:
 	//implement the virtual methods from Git base class
-	virtual BOOL Log(svn_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
+	virtual BOOL Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths,  int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
 	virtual BOOL Cancel();
 	virtual bool Validate(LPCTSTR string);
 
@@ -135,7 +135,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	void	FillLogMessageCtrl(bool bShow = true);
-	void	DoDiffFromLog(INT_PTR selIndex, svn_revnum_t rev1, svn_revnum_t rev2, bool blame, bool unified);
+	void	DoDiffFromLog(INT_PTR selIndex, git_revnum_t rev1, git_revnum_t rev2, bool blame, bool unified);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -143,8 +143,8 @@ private:
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
 	void Refresh (bool autoGoOnline = false);
-	BOOL IsDiffPossible(LogChangedPath * changedpath, svn_revnum_t rev);
-	BOOL Open(bool bOpenWith, CString changedpath, svn_revnum_t rev);
+	BOOL IsDiffPossible(LogChangedPath * changedpath, git_revnum_t rev);
+	BOOL Open(bool bOpenWith, CString changedpath, git_revnum_t rev);
 	void EditAuthor(const CLogDataVector& logs);
 	void EditLogMessage(int index);
 	void DoSizeV1(int delta);
@@ -210,8 +210,8 @@ private:
 	GitRev				m_LogRevision;
 	GitRev				m_endrev;
 	GitRev				m_wcRev;
-	GitRevRangeArray	m_selectedRevs;
-	GitRevRangeArray	m_selectedRevsOneRange;
+//	GitRevRangeArray	m_selectedRevs;
+//	GitRevRangeArray	m_selectedRevsOneRange;
 	bool				m_bSelectionMustBeContinuous;
 	long				m_logcounter;
 	bool				m_bCancelled;
@@ -219,7 +219,7 @@ private:
 	BOOL				m_bStrict;
 	bool				m_bStrictStopped;
 	BOOL				m_bIncludeMerges;
-	svn_revnum_t		m_lowestRev;
+	git_revnum_t		m_lowestRev;
 	BOOL				m_bSaveStrict;
 	LogChangedPathArray * m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
@@ -259,7 +259,7 @@ private:
 	bool				m_bSelect;
 	bool				m_bShowBugtraqColumn;
 	CString				m_sLogInfo;
-	std::set<svn_revnum_t> m_mergedRevs;
+	std::set<git_revnum_t> m_mergedRevs;
 
 	CToolTips			m_tooltips;
 

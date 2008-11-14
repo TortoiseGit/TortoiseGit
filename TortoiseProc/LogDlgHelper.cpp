@@ -22,6 +22,7 @@
 
 CStoreSelection::CStoreSelection(CLogDlg* dlg)
 {
+#if 0
 	m_logdlg = dlg;
 
 	int selIndex = m_logdlg->m_LogList.GetSelectionMark();
@@ -44,10 +45,12 @@ CStoreSelection::CStoreSelection(CLogDlg* dlg)
 			}
 		}
 	}
+#endif
 }
 
 CStoreSelection::~CStoreSelection()
 {
+#if 0
 	if ( m_SetSelectedRevisions.size()>0 )
 	{
 		for (int i=0; i<m_logdlg->m_arShownList.GetCount(); ++i)
@@ -61,6 +64,7 @@ CStoreSelection::~CStoreSelection()
 			}
 		}
 	}
+#endif
 }
 
 void CLogDataVector::ClearAll()

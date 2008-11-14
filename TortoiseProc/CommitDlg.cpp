@@ -92,6 +92,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
     ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
 	ON_BN_CLICKED(IDC_SIGN_OFF, &CCommitDlg::OnBnClickedSignOff)
+	ON_STN_CLICKED(IDC_COMMITLABEL, &CCommitDlg::OnStnClickedCommitlabel)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -175,6 +176,7 @@ BOOL CCommitDlg::OnInitDialog()
 		}
 	}
 	else
+#endif
 	{
 		GetDlgItem(IDC_BUGID)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_BUGIDLABEL)->ShowWindow(SW_HIDE);
@@ -182,7 +184,7 @@ BOOL CCommitDlg::OnInitDialog()
 		GetDlgItem(IDC_BUGTRAQBUTTON)->EnableWindow(FALSE);
 		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	}
-#endif
+
 	if (!m_sLogMessage.IsEmpty())
 		m_cLogMessage.SetText(m_sLogMessage);
 		
@@ -610,7 +612,8 @@ UINT CCommitDlg::StatusThread()
 			GetDlgItem(IDC_EXTERNALWARNING)->ShowWindow(SW_SHOW);
 			DialogEnableWindow(IDC_EXTERNALWARNING, TRUE);
 		}
-		SetDlgItemText(IDC_COMMIT_TO, m_ListCtrl.m_sURL);
+		
+		SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch());
 		m_tooltips.AddTool(GetDlgItem(IDC_STATISTICS), m_ListCtrl.GetStatisticsString());
 	}
 	CString logmsg;
@@ -1358,4 +1361,9 @@ void CCommitDlg::OnBnClickedSignOff()
 	CString str;
 	str.Format(_T("Signed-off-by: %s <%s>\n"),git.GetUserName(), git.GetUserEmail());
 	m_cLogMessage.InsertText(str,true);
+}
+
+void CCommitDlg::OnStnClickedCommitlabel()
+{
+	// TODO: Add your control notification handler code here
 }

@@ -15,4 +15,8 @@ public:
 	int Run(CString cmd, CString* output);
 	CString GetUserName(void);
 	CString GetUserEmail(void);
+	CString GetCurrentBranch(void);
+	CString m_CurrentDir;
 };
+
+extern CGit g_Git;

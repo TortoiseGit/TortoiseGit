@@ -29,6 +29,7 @@
 #include "BugTraqAssociations.h"
 #include "Tooltip.h"
 //#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
+#include "Git.h"
 
 #include <regex>
 using namespace std;
@@ -137,4 +138,5 @@ private:
 
 public:
 	afx_msg void OnBnClickedSignOff();
+	afx_msg void OnStnClickedCommitlabel();
 };

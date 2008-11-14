@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,21 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
+//	
 
 #pragma once
-#include "SVN.h"
+#include "Git.h"
 #include "ProgressDlg.h"
-#include "SVNRev.h"
+#include "GitRev.h"
 #include "StdioFileT.h"
+#include "GitStatus.h"
 
-class CTSVNPath;
+class CTGitPath;
 
 /**
  * \ingroup TortoiseProc
  * Helper class to get the blame information for a file.
  */
-class CBlame : public SVN
+class CBlame : public CGit
 {
 public:
 	CBlame();
@@ -45,21 +46,21 @@ public:
 	 * \param path the path to the file to determine the required information
 	 * \return The path to the temporary file or an empty string in case of an error.
 	 */
-	CString		BlameToTempFile(const CTSVNPath& path, SVNRev startrev, SVNRev endrev, SVNRev pegrev, CString& logfile, const CString& options, BOOL includemerge, BOOL showprogress, BOOL ignoremimetype);
+	CString		BlameToTempFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev pegrev, CString& logfile, const CString& options, BOOL includemerge, BOOL showprogress, BOOL ignoremimetype);
 
-	bool		BlameToFile(const CTSVNPath& path, SVNRev startrev, SVNRev endrev, SVNRev peg, const CTSVNPath& tofile, const CString& options, BOOL ignoremimetype, BOOL includemerge);
+	bool		BlameToFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev peg, const CTGitPath& tofile, const CString& options, BOOL ignoremimetype, BOOL includemerge);
 private:
-	BOOL		BlameCallback(LONG linenumber, svn_revnum_t revision, const CString& author, const CString& date,
-								svn_revnum_t merged_revision, const CString& merged_author, const CString& merged_date, const CString& merged_path,
+	BOOL		BlameCallback(LONG linenumber, git_revnum_t revision, const CString& author, const CString& date,
+								git_revnum_t merged_revision, const CString& merged_author, const CString& merged_date, const CString& merged_path,
 								const CStringA& line);
 	BOOL		Cancel();
-	BOOL		Notify(const CTSVNPath& path, svn_wc_notify_action_t action, 
-						svn_node_kind_t kind, const CString& mime_type, 
-						svn_wc_notify_state_t content_state, 
-						svn_wc_notify_state_t prop_state, LONG rev,
-						const svn_lock_t * lock, svn_wc_notify_lock_state_t lock_state,
-						svn_error_t * err, apr_pool_t * pool);
-	BOOL		Log(svn_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
+	BOOL		Notify(const CTGitPath& path, git_wc_notify_action_t action, 
+						git_node_kind_t kind, const CString& mime_type, 
+						git_wc_notify_state_t content_state, 
+						git_wc_notify_state_t prop_state, LONG rev,
+						const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
+						git_error_t * err, apr_pool_t * pool);
+	BOOL		Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
 private:
 	BOOL		m_bCancelled;			///< TRUE if the operation should be canceled
 	LONG		m_nCounter;				///< Counts the number of calls to the Cancel() callback (revisions?)
