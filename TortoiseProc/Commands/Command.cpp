@@ -21,6 +21,7 @@
 
 #include "AboutCommand.h"
 #include "CommitCommand.h"
+#include "LogCommand.h"
 #if 0
 #include "AddCommand.h"
 #include "BlameCommand.h"
@@ -44,7 +45,7 @@
 #include "IgnoreCommand.h"
 #include "ImportCommand.h"
 #include "LockCommand.h"
-#include "LogCommand.h"
+
 #include "MergeCommand.h"
 #include "MergeAllCommand.h"
 #include "PasteCopyCommand.h"
@@ -205,6 +206,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new AboutCommand;	
 	case cmdCommit:
 		return new CommitCommand;
+	case cmdLog:
+		return new LogCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -247,8 +250,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ImportCommand;
 	case cmdLock:
 		return new LockCommand;
-	case cmdLog:
-		return new LogCommand;
+
 	case cmdMerge:
 		return new MergeCommand;
 	case cmdMergeAll:

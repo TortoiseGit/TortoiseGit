@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "Git.h"
+#include "GitRev.h"
 #include "GitStatus.h"
 #include "ILogReceiver.h"
 
@@ -42,6 +43,7 @@ protected:
  * \ingroup TortoiseProc
  * Contains the data of one log entry, used in the log dialog
  */
+#if 0
 typedef struct LogEntryData
 {   
 	git_revnum_t Rev;
@@ -59,22 +61,23 @@ typedef struct LogEntryData
 	BOOL haschildren;
 	DWORD childStackDepth;
 } LOGENTRYDATA, *PLOGENTRYDATA;
-
+#endif
 /**
  * \ingroup TortoiseProc
  * Helper class for the log dialog, handles all the log entries, including
  * sorting.
  */
-class CLogDataVector : 	public std::vector<PLOGENTRYDATA>
+class CLogDataVector : 	public std::vector<GitRev>
 {
 public:
 	/// De-allocates log items.
 	void ClearAll();
-
+	int  ParserFromLog();
+#if 0
 	/// Ascending date sorting.
 	struct AscDateSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			return pStart->tmDate < pEnd->tmDate;
 		}
@@ -82,7 +85,7 @@ public:
 	/// Descending date sorting.
 	struct DescDateSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			return pStart->tmDate > pEnd->tmDate;
 		}
@@ -90,7 +93,7 @@ public:
 	/// Ascending revision sorting.
 	struct AscRevSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			return pStart->Rev < pEnd->Rev;
 		}
@@ -98,7 +101,7 @@ public:
 	/// Descending revision sorting.
 	struct DescRevSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			return pStart->Rev > pEnd->Rev;
 		}
@@ -106,7 +109,7 @@ public:
 	/// Ascending author sorting.
 	struct AscAuthorSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			int ret = pStart->sAuthor.CompareNoCase(pEnd->sAuthor);
 			if (ret == 0)
@@ -117,7 +120,7 @@ public:
 	/// Descending author sorting.
 	struct DescAuthorSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			int ret = pStart->sAuthor.CompareNoCase(pEnd->sAuthor);
 			if (ret == 0)
@@ -128,7 +131,7 @@ public:
 	/// Ascending bugID sorting.
 	struct AscBugIDSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			int ret = pStart->sBugIDs.CompareNoCase(pEnd->sBugIDs);
 			if (ret == 0)
@@ -139,7 +142,7 @@ public:
 	/// Descending bugID sorting.
 	struct DescBugIDSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			int ret = pStart->sBugIDs.CompareNoCase(pEnd->sBugIDs);
 			if (ret == 0)
@@ -150,7 +153,7 @@ public:
 	/// Ascending message sorting.
 	struct AscMessageSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			return pStart->sShortMessage.CompareNoCase(pEnd->sShortMessage)<0;
 		}
@@ -158,7 +161,7 @@ public:
 	/// Descending message sorting.
 	struct DescMessageSort
 	{
-		bool operator()(PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator()(GitRev& pStart, GitRev& pEnd)
 		{
 			return pStart->sShortMessage.CompareNoCase(pEnd->sShortMessage)>0;
 		}
@@ -166,7 +169,7 @@ public:
 	/// Ascending action sorting
 	struct AscActionSort
 	{
-		bool operator() (PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator() (GitRev& pStart, GitRev& pEnd)
 		{
 			if (pStart->actions == pEnd->actions)
 				return pStart->Rev < pEnd->Rev;
@@ -176,11 +179,12 @@ public:
 	/// Descending action sorting
 	struct DescActionSort
 	{
-		bool operator() (PLOGENTRYDATA& pStart, PLOGENTRYDATA& pEnd)
+		bool operator() (GitRev& pStart, GitRev& pEnd)
 		{
 			if (pStart->actions == pEnd->actions)
 				return pStart->Rev > pEnd->Rev;
 			return pStart->actions > pEnd->actions;
 		}
 	};
+#endif
 };

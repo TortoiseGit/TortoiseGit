@@ -7,6 +7,9 @@ public:
 	~CTGitPath(void);
  CTGitPath(const CString& sUnknownPath);
 public:
+	int m_StatAdd;
+	int m_StatDel;
+
 	/**
 	 * Set the path as an UTF8 string with forward slashes
 	 */
@@ -218,6 +221,8 @@ private:
 	void SanitizeRootPath(CString& sPath, bool bIsForwardPath) const;
 
 	void UpdateAttributes() const;
+	
+
 
 private:
 	mutable CString m_sBackslashPath;

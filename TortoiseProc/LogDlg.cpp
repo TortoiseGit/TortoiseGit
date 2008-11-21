@@ -313,6 +313,9 @@ BOOL CLogDlg::OnInitDialog()
 	Column.fmt = LVCFMT_RIGHT;
 	m_LogList.SetColumn(0, &Column); 
 	
+//	CString log;
+//	g_Git.GetLog(log);
+
 	temp.LoadString(IDS_LOG_ACTIONS);
 	m_LogList.InsertColumn(1, temp);
 	temp.LoadString(IDS_LOG_AUTHOR);
@@ -549,7 +552,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	// we fill here the log message rich edit control,
 	// and also populate the changed files list control
 	// according to the selected revision(s).
-
+#if 0
 	CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
 	// empty the log message view
 	pMsgView->SetWindowText(_T(" "));
@@ -661,6 +664,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	else
 		SetSortArrow(&m_ChangedFileListCtrl, -1, false);
 	m_ChangedFileListCtrl.SetRedraw(TRUE);
+#endif
 }
 
 void CLogDlg::OnBnClickedGetall()
@@ -1036,11 +1040,11 @@ UINT CLogDlg::LogThreadEntry(LPVOID pVoid)
 	return ((CLogDlg*)pVoid)->LogThread();
 }
 
-
+GitRev g_rev;
 //this is the thread function which calls the subversion function
 UINT CLogDlg::LogThread()
 {
-#if 0
+
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 
     //does the user force the cache to refresh (shift or control key down)?
@@ -1070,36 +1074,36 @@ UINT CLogDlg::LogThread()
 	m_LogProgress.SetRange32(0, 100);
 	m_LogProgress.SetPos(0);
 	GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
-	git_revnum_t r = -1;
+//	git_revnum_t r = -1;
 	
 	// get the repository root url, because the changed-files-list has the
 	// paths shown there relative to the repository root.
-	CTGitPath rootpath;
-    BOOL succeeded = GetRootAndHead(m_path, rootpath, r);
+//	CTGitPath rootpath;
+//  BOOL succeeded = GetRootAndHead(m_path, rootpath, r);
 
-    m_sRepositoryRoot = rootpath.GetGitPathString();
-    m_sURL = m_path.GetGitPathString();
+//    m_sRepositoryRoot = rootpath.GetGitPathString();
+//    m_sURL = m_path.GetGitPathString();
 
     // we need the UUID to unambigously identify the log cache
-    if (logCachePool.IsEnabled())
-        m_sUUID = logCachePool.GetRepositoryInfo().GetRepositoryUUID (rootpath);
+//    if (logCachePool.IsEnabled())
+//        m_sUUID = logCachePool.GetRepositoryInfo().GetRepositoryUUID (rootpath);
 
     // if the log dialog is started from a working copy, we need to turn that
     // local path into an url here
-    if (succeeded)
-    {
-        if (!m_path.IsUrl())
-        {
-	        m_sURL = GetURLFromPath(m_path);
+//    if (succeeded)
+//    {
+//        if (!m_path.IsUrl())
+//        {
+//	        m_sURL = GetURLFromPath(m_path);
 
 	        // The URL is escaped because Git::logReceiver
 	        // returns the path in a native format
-	        m_sURL = CPathUtils::PathUnescape(m_sURL);
-        }
-        m_sRelativeRoot = m_sURL.Mid(CPathUtils::PathUnescape(m_sRepositoryRoot).GetLength());
-		m_sSelfRelativeURL = m_sRelativeRoot;
-    }
-
+//	        m_sURL = CPathUtils::PathUnescape(m_sURL);
+  //      }
+//        m_sRelativeRoot = m_sURL.Mid(CPathUtils::PathUnescape(m_sRepositoryRoot).GetLength());
+//		m_sSelfRelativeURL = m_sRelativeRoot;
+  //  }
+#if 0
     if (succeeded && !m_mergePath.IsEmpty() && m_mergedRevs.empty())
     {
 	    // in case we got a merge path set, retrieve the merge info
@@ -1221,21 +1225,33 @@ UINT CLogDlg::LogThread()
 	m_DateTo.SetRange(&m_timFrom, &m_timTo);
 	m_DateFrom.SetTime(&m_timFrom);
 	m_DateTo.SetTime(&m_timTo);
-
+#endif
 	DialogEnableWindow(IDC_GETALL, TRUE);
+	m_LogList.ClearText();
+
+	this->m_logEntries.ClearAll();
+	this->m_logEntries.ParserFromLog();
+	m_LogList.SetItemCountEx(this->m_logEntries.size());
 	
+	this->m_arShownList.Add(&g_rev);
+	g_rev.m_AuthorName.Append(_T("Frank Li"));
+	
+#if 0	
 	if (!m_bShowedAll)
 		DialogEnableWindow(IDC_NEXTHUNDRED, TRUE);
+#endif
 	DialogEnableWindow(IDC_CHECK_STOPONCOPY, TRUE);
 	DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
 	DialogEnableWindow(IDC_STATBUTTON, TRUE);
 	DialogEnableWindow(IDC_REFRESH, TRUE);
 
+#if 0
 	LogCache::CRepositoryInfo& cachedProperties = logCachePool.GetRepositoryInfo();
 	SetDlgTitle(cachedProperties.IsOffline (m_sUUID, m_sRepositoryRoot, false));
 
 	GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 	m_bCancelled = true;
+#endif
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	m_LogList.RedrawItems(0, m_arShownList.GetCount());
 	m_LogList.SetRedraw(false);
@@ -1258,16 +1274,18 @@ UINT CLogDlg::LogThread()
 			m_LogList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 		}
 	}
+
 	if (!GetDlgItem(IDOK)->IsWindowVisible())
 	{
 		temp.LoadString(IDS_MSGBOX_OK);
 		SetDlgItemText(IDCANCEL, temp);
 	}
+
 	RefreshCursor();
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
 	PostMessage(WM_TIMER, LOGFILTER_TIMER);
-#endif
+
 	return 0;
 }
 
@@ -2393,7 +2411,7 @@ void CLogDlg::OnBnClickedStatbutton()
 
 void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-#if 0
+
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
@@ -2421,26 +2439,29 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 			{
-				PLOGENTRYDATA data = (PLOGENTRYDATA)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
+				GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
 				if (data)
 				{
+#if 0
 					if (data->bCopiedSelf)
 					{
 						// only change the background color if the item is not 'hot' (on vista with themes enabled)
 						if (!theme.IsAppThemed() || !m_bVista || ((pLVCD->nmcd.uItemState & CDIS_HOT)==0))
 							pLVCD->clrTextBk = GetSysColor(COLOR_MENU);
 					}
+
 					if (data->bCopies)
 						crText = m_Colors.GetColor(CColors::Modified);
-					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
-						crText = GetSysColor(COLOR_GRAYTEXT);
-					if (data->Rev == m_wcRev)
-					{
-						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+#endif
+//					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
+//						crText = GetSysColor(COLOR_GRAYTEXT);
+//					if (data->Rev == m_wcRev)
+//					{
+//						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						// We changed the font, so we're returning CDRF_NEWFONT. This
 						// tells the control to recalculate the extent of the text.
-						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
-					}
+//						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+//					}
 				}
 			}
 			if (m_arShownList.GetCount() == (INT_PTR)pLVCD->nmcd.dwItemSpec)
@@ -2470,7 +2491,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				int		iconwidth = ::GetSystemMetrics(SM_CXSMICON);
 				int		iconheight = ::GetSystemMetrics(SM_CYSMICON);
 
-				PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec));
+				GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec));
 
 				// Get the selected state of the
 				// item being drawn.
@@ -2498,6 +2519,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					}
 					else
 					{
+#if 0
 						if (pLogEntry->bCopiedSelf)
 						{
 							// unfortunately, the pLVCD->nmcd.uItemState does not contain valid
@@ -2514,6 +2536,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								}
 							}
 						}
+#endif
 					}
 
 					if (theme.IsBackgroundPartiallyTransparent(LVP_LISTDETAIL, state))
@@ -2533,9 +2556,9 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					}
 					else
 					{
-						if (pLogEntry->bCopiedSelf)
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-						else
+						//if (pLogEntry->bCopiedSelf)
+						//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
+						//else
 							brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
 					}
 					if (brush == NULL)
@@ -2544,7 +2567,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					::FillRect(pLVCD->nmcd.hdc, &rect, brush);
 					::DeleteObject(brush);
 				}
-
+#if 0
 				// Draw the icon(s) into the compatible DC
 				if (pLogEntry->actions & LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
@@ -2561,7 +2584,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (pLogEntry->actions & LOGACTIONS_REPLACED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
-
+#endif
 				*pResult = CDRF_SKIPDEFAULT;
 				return;
 			}
@@ -2569,7 +2592,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	}
 	*pResult = CDRF_DODEFAULT;
-#endif
+
 }
 void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
@@ -2792,6 +2815,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 
 LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
+#if 0
 	KillTimer(LOGFILTER_TIMER);
 
 	m_sFilterText.Empty();
@@ -2826,6 +2850,7 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 	UpdateLogInfoLabel();
+#endif
 	return 0L;	
 }
 
@@ -2878,9 +2903,9 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 	// Which item number?
 	int itemid = pItem->iItem;
-	PLOGENTRYDATA pLogEntry = NULL;
+	GitRev * pLogEntry = NULL;
 	if (itemid < m_arShownList.GetCount())
-		pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(pItem->iItem));
+		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
     
 	// Which column?
 	switch (pItem->iSubItem)
@@ -2888,6 +2913,7 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case 0:	//revision
 		if (pLogEntry)
 		{
+#if 0
 			_stprintf_s(pItem->pszText, pItem->cchTextMax, _T("%ld"), pLogEntry->Rev);
 			// to make the child entries indented, add spaces
 			size_t len = _tcslen(pItem->pszText);
@@ -2900,27 +2926,33 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				nSpaces--;
 			}
 			*pBuf = 0;
+#endif
 		}
 		break;
 	case 1: //action -- no text in the column
 		break;
 	case 2: //author
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sAuthor, pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorName, pItem->cchTextMax);
 		break;
 	case 3: //date
+#if 0
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sDate, pItem->cchTextMax);
 		break;
+#endif
 	case 4: //message or bug id
+#if 0
 		if (m_bShowBugtraqColumn)
 		{
 			if (pLogEntry)
 				lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sBugIDs, pItem->cchTextMax);
 			break;
 		}
+#endif
 		// fall through here!
 	case 5:
+#if 0
 		if (pLogEntry)
 		{
 			// Add as many characters as possible from the short log message
@@ -2941,6 +2973,7 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			sTemp.LoadString(IDS_LOG_STOPONCOPY_HINT);
 			lstrcpyn(pItem->pszText, sTemp, pItem->cchTextMax);
 		}
+#endif
 		break;
 	default:
 		ASSERT(false);
@@ -3016,6 +3049,7 @@ void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnEnChangeSearchedit()
 {
+#if 0
 	UpdateData();
 	if (m_sFilterText.IsEmpty())
 	{
@@ -3049,6 +3083,7 @@ void CLogDlg::OnEnChangeSearchedit()
 		SetTimer(LOGFILTER_TIMER, 1000, NULL);
 	else
 		KillTimer(LOGFILTER_TIMER);
+#endif
 }
 
 bool CLogDlg::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
@@ -3335,10 +3370,13 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 BOOL CLogDlg::IsEntryInDateRange(int i)
 {
+#if 0
 	__time64_t time = m_logEntries[i]->tmDate;
 	if ((time >= m_tFrom)&&(time <= m_tTo))
 		return TRUE;
+#endif
 	return FALSE;
+
 }
 
 CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths /* = false */, bool bUseFilter /* = true */)
@@ -3387,6 +3425,7 @@ CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths 
 
 void CLogDlg::SortByColumn(int nSortColumn, bool bAscending)
 {
+#if 0
 	switch(nSortColumn)
 	{
 	case 0: // Revision
@@ -3443,6 +3482,7 @@ void CLogDlg::SortByColumn(int nSortColumn, bool bAscending)
 		ATLASSERT(0);
 		break;
 	}
+#endif
 }
 
 void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
@@ -3650,12 +3690,12 @@ void CLogDlg::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (pFindInfo->lvfi.psz == 0)
 		return;
-		
+#if 0
 	CString sCmp = pFindInfo->lvfi.psz;
 	CString sRev;	
 	for (int i=pFindInfo->iStart; i<m_arShownList.GetCount(); ++i)
 	{
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(i));
+		GitRev * pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
 		sRev.Format(_T("%ld"), pLogEntry->Rev);
 		if (pFindInfo->lvfi.flags & LVFI_PARTIAL)
 		{
@@ -3698,7 +3738,7 @@ void CLogDlg::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 		}
 	}
-
+#endif
 	*pResult = -1;
 }
 
@@ -3733,6 +3773,7 @@ void CLogDlg::OnBnClickedIncludemerge()
 
 void CLogDlg::UpdateLogInfoLabel()
 {
+#if 0
 	git_revnum_t rev1 = 0;
 	git_revnum_t rev2 = 0;
 	long selectedrevs = 0;
@@ -3747,6 +3788,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.Format(IDS_LOG_LOGINFOSTRING, m_arShownList.GetCount(), rev2, rev1, selectedrevs);
 	m_sLogInfo = sTemp;
+#endif
 	UpdateData(FALSE);
 }
 
@@ -5022,4 +5064,38 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 		}
 	}
 	return url;
+}
+
+
+int CLogDataVector::ParserFromLog()
+{
+	CString log;
+	GitRev rev;
+	g_Git.GetLog(log);
+
+	CString begin;
+	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
+	
+	if(log.GetLength()==0)
+		return 0;
+	
+	int start=4;
+	int length;
+	int next =1;
+	while( next>0 )
+	{
+		next=log.Find(begin,start);
+		if(next >0 )
+			length = next - start+4;
+		else
+			length = log.GetLength()-start+4;
+
+		CString onelog =log;
+		onelog=log.Mid(start -4,length);
+		rev.ParserFromLog(onelog);
+		this->push_back(rev);
+		start = next +4;
+	}
+
+	return 0;
 }

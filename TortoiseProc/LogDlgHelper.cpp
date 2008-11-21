@@ -69,6 +69,7 @@ CStoreSelection::~CStoreSelection()
 
 void CLogDataVector::ClearAll()
 {
+#if 0
 	if(size() > 0)
 	{
 		for(iterator it=begin(); it!=end(); ++it)
@@ -78,4 +79,5 @@ void CLogDataVector::ClearAll()
 		}     
 		clear();
 	}
+#endif
 }

@@ -17,6 +17,7 @@ public:
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);
 	CString m_CurrentDir;
+	int GetLog(CString& logOut);
 };
 
 extern CGit g_Git;

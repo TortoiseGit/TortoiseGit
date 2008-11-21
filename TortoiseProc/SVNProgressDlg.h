@@ -112,8 +112,8 @@ public:
 	void SetSecondUrl(const CString& url) {m_url2.SetFromUnknown(url);}
 	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
 	
-	void SetRevision(const GitRev& rev) {m_Revision = rev;}
-	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
+//	void SetRevision(const GitRev& rev) {m_Revision = rev;}
+//	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 	
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
 	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}

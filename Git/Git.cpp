@@ -2,6 +2,7 @@
 #include "Git.h"
 #include "atlconv.h"
 #include "afx.h"
+#include "GitRev.h"
 
 #define MAX_DIRBUFFER 1000
 CGit g_Git;
@@ -50,20 +51,20 @@ int CGit::Run(CString cmd, CString* output)
 		return GIT_ERROR_CREATE_PROCESS;
 	}
 	
+	CloseHandle(hWrite);
+
 	DWORD readnumber;
 	while(ReadFile(hRead,buffer,4090,&readnumber,NULL))
 	{
 		buffer[readnumber]=0;
 		USES_CONVERSION;
 		output->Append(A2W(buffer));
-		if(readnumber<4090)
-			break;
 	}
 
 	
 	CloseHandle(pi.hThread);
 	CloseHandle(pi.hProcess);
-	CloseHandle(hWrite);
+
 	CloseHandle(hRead);
 	return GIT_SUCCESS;
 }
@@ -92,4 +93,39 @@ CString CGit::GetCurrentBranch(void)
 		return branch;
 	}
 	return CString("");
+}
+
+int CGit::GetLog(CString& logOut)
+{
+
+	CString cmd;
+	CString log;
+	cmd=("git.cmd log -C --numstat --pretty=format:\"");
+	log.Format(_T("#<%c>%%n"),LOG_REV_ITEM_BEGIN);
+	cmd += log;
+	log.Format(_T("#<%c>%%an%%n"),LOG_REV_AUTHOR_NAME);
+	cmd += log;
+	log.Format(_T("#<%c>%%ae%%n"),LOG_REV_AUTHOR_EMAIL);
+	cmd += log;
+	log.Format(_T("#<%c>%%ai%%n"),LOG_REV_AUTHOR_DATE);
+	cmd += log;
+	log.Format(_T("#<%c>%%cn%%n"),LOG_REV_COMMIT_NAME);
+	cmd += log;
+	log.Format(_T("#<%c>%%ce%%n"),LOG_REV_COMMIT_EMAIL);
+	cmd += log;
+	log.Format(_T("#<%c>%%ci%%n"),LOG_REV_COMMIT_DATE);
+	cmd += log;
+	log.Format(_T("#<%c>%%s%%n"),LOG_REV_COMMIT_SUBJECT);
+	cmd += log;
+	log.Format(_T("#<%c>%%b%%n"),LOG_REV_COMMIT_BODY);
+	cmd += log;
+	log.Format(_T("#<%c>%%H%%n"),LOG_REV_COMMIT_HASH);
+	cmd += log;
+	log.Format(_T("#<%c>%%P%%n"),LOG_REV_COMMIT_PARENT);
+	cmd += log;
+	log.Format(_T("#<%c>%%n"),LOG_REV_COMMIT_FILE);
+	cmd += log;
+	cmd += CString(_T("\""));
+	Run(cmd,&logOut);
+	return 0;
 }
