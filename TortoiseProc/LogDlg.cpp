@@ -302,35 +302,45 @@ BOOL CLogDlg::OnInitDialog()
 	// set up the columns
 	m_LogList.DeleteAllItems();
 	int c = ((CHeaderCtrl*)(m_LogList.GetDlgItem(0)))->GetItemCount()-1;
+	
 	while (c>=0)
 		m_LogList.DeleteColumn(c--);
-	temp.LoadString(IDS_LOG_REVISION);
-	m_LogList.InsertColumn(0, temp);
+	temp.LoadString(IDS_LOG_GRAPH);
+
+	m_LogList.InsertColumn(this->LOGLIST_GRAPH, temp);
 	
+#if 0	
 	// make the revision column right aligned
 	LVCOLUMN Column;
 	Column.mask = LVCF_FMT;
 	Column.fmt = LVCFMT_RIGHT;
 	m_LogList.SetColumn(0, &Column); 
-	
+#endif	
 //	CString log;
 //	g_Git.GetLog(log);
 
 	temp.LoadString(IDS_LOG_ACTIONS);
-	m_LogList.InsertColumn(1, temp);
+	m_LogList.InsertColumn(this->LOGLIST_ACTION, temp);
+	
+	temp.LoadString(IDS_LOG_MESSAGE);
+	m_LogList.InsertColumn(this->LOGLIST_MESSAGE, temp);
+	
 	temp.LoadString(IDS_LOG_AUTHOR);
-	m_LogList.InsertColumn(2, temp);
+	m_LogList.InsertColumn(this->LOGLIST_AUTHOR, temp);
+	
 	temp.LoadString(IDS_LOG_DATE);
-	m_LogList.InsertColumn(3, temp);
+	m_LogList.InsertColumn(this->LOGLIST_DATE, temp);
+	
+
 	if (m_bShowBugtraqColumn)
 	{
 		temp = m_ProjectProperties.sLabel;
 		if (temp.IsEmpty())
 			temp.LoadString(IDS_LOG_BUGIDS);
-		m_LogList.InsertColumn(4, temp);
+		m_LogList.InsertColumn(this->LOGLIST_BUG, temp);
+
 	}
-	temp.LoadString(IDS_LOG_MESSAGE);
-	m_LogList.InsertColumn(m_bShowBugtraqColumn ? 5 : 4, temp);
+	
 	m_LogList.SetRedraw(false);
 	ResizeAllListCtrlCols();
 	m_LogList.SetRedraw(true);
@@ -341,13 +351,14 @@ BOOL CLogDlg::OnInitDialog()
 	while (c>=0)
 		m_ChangedFileListCtrl.DeleteColumn(c--);
 	temp.LoadString(IDS_PROGRS_ACTION);
-	m_ChangedFileListCtrl.InsertColumn(0, temp);
+	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_ACTION, temp);
+	temp.LoadString(IDS_LOG_FILE_LINE_ADD);
+	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_ADD, temp);
+	temp.LoadString(IDS_LOG_FILE_LINE_DEL);
+	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_DEL, temp);
 	temp.LoadString(IDS_PROGRS_PATH);
-	m_ChangedFileListCtrl.InsertColumn(1, temp);
-	temp.LoadString(IDS_LOG_COPYFROM);
-	m_ChangedFileListCtrl.InsertColumn(2, temp);
-	temp.LoadString(IDS_LOG_REVISION);
-	m_ChangedFileListCtrl.InsertColumn(3, temp);
+	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_PATH, temp);
+	
 	m_ChangedFileListCtrl.SetRedraw(false);
 	CAppUtils::ResizeAllListCtrlCols(&m_ChangedFileListCtrl);
 	m_ChangedFileListCtrl.SetRedraw(true);
@@ -552,7 +563,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	// we fill here the log message rich edit control,
 	// and also populate the changed files list control
 	// according to the selected revision(s).
-#if 0
+
 	CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
 	// empty the log message view
 	pMsgView->SetWindowText(_T(" "));
@@ -599,21 +610,22 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(selIndex));
+		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(selIndex));
 
 		// set the log message text
-		pMsgView->SetWindowText(pLogEntry->sMessage);
+		pMsgView->SetWindowText(_T("*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
 		// turn bug ID's into links if the bugtraq: properties have been set
 		// and we can find a match of those in the log message
-		m_ProjectProperties.FindBugID(pLogEntry->sMessage, pMsgView);
+		m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
 		CAppUtils::FormatTextInRichEditControl(pMsgView);
-		m_currentChangedArray = pLogEntry->pArChangedPaths;
+		m_currentChangedArray = &(pLogEntry->m_Files);
 		if (m_currentChangedArray == NULL)
 		{
 			InterlockedExchange(&m_bNoDispUpdates, FALSE);
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
+#if 0
 		// fill in the changed files list control
 		if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
 		{
@@ -630,6 +642,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			}
 			m_currentChangedArray = &m_CurrentFilteredChangedArray;
 		}
+#endif
 	}
 	else
 	{
@@ -664,7 +677,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	else
 		SetSortArrow(&m_ChangedFileListCtrl, -1, false);
 	m_ChangedFileListCtrl.SetRedraw(TRUE);
-#endif
+
 }
 
 void CLogDlg::OnBnClickedGetall()
@@ -1232,9 +1245,11 @@ UINT CLogDlg::LogThread()
 	this->m_logEntries.ClearAll();
 	this->m_logEntries.ParserFromLog();
 	m_LogList.SetItemCountEx(this->m_logEntries.size());
-	
-	this->m_arShownList.Add(&g_rev);
-	g_rev.m_AuthorName.Append(_T("Frank Li"));
+
+	this->m_arShownList.RemoveAll();
+
+	for(int i=0;i<m_logEntries.size();i++)
+		this->m_arShownList.Add(&m_logEntries[i]);
 	
 #if 0	
 	if (!m_bShowedAll)
@@ -2567,24 +2582,23 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					::FillRect(pLVCD->nmcd.hdc, &rect, brush);
 					::DeleteObject(brush);
 				}
-#if 0
+
 				// Draw the icon(s) into the compatible DC
-				if (pLogEntry->actions & LOGACTIONS_MODIFIED)
+				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->actions & LOGACTIONS_ADDED)
+				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_ADDED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->actions & LOGACTIONS_DELETED)
+				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->actions & LOGACTIONS_REPLACED)
+				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
-#endif
 				*pResult = CDRF_SKIPDEFAULT;
 				return;
 			}
@@ -2596,7 +2610,7 @@ void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 }
 void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
-#if 0
+
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
@@ -2622,11 +2636,12 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 
 		COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
 		bool bGrayed = false;
+#if 0
 		if ((m_cHidePaths.GetState() & 0x0003)==BST_INDETERMINATE)
 		{
 			if ((m_currentChangedArray)&&((m_currentChangedArray->GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)))
 			{
-				if (m_currentChangedArray->GetAt(pLVCD->nmcd.dwItemSpec)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
+				//if ((*m_currentChangedArray)[(pLVCD->nmcd.dwItemSpec)]sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
 				{
 					crText = GetSysColor(COLOR_GRAYTEXT);
 					bGrayed = true;
@@ -2634,7 +2649,7 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 			else if (m_currentChangedPathList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 			{
-				if (m_currentChangedPathList[pLVCD->nmcd.dwItemSpec].GetGitPathString().Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
+				//if (m_currentChangedPathList[pLVCD->nmcd.dwItemSpec].GetGitPathString().Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
 				{
 					crText = GetSysColor(COLOR_GRAYTEXT);
 					bGrayed = true;
@@ -2642,23 +2657,23 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 		}
 
+#endif
 		if ((!bGrayed)&&(m_currentChangedArray)&&(m_currentChangedArray->GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec))
 		{
-			DWORD action = m_currentChangedArray->GetAt(pLVCD->nmcd.dwItemSpec)->action;
-			if (action == LOGACTIONS_MODIFIED)
+			DWORD action = ((*m_currentChangedArray)[pLVCD->nmcd.dwItemSpec]).m_Action;
+			if (action == CTGitPath::LOGACTIONS_MODIFIED)
 				crText = m_Colors.GetColor(CColors::Modified);
-			if (action == LOGACTIONS_REPLACED)
+			if (action == CTGitPath::LOGACTIONS_REPLACED)
 				crText = m_Colors.GetColor(CColors::Deleted);
-			if (action == LOGACTIONS_ADDED)
+			if (action == CTGitPath::LOGACTIONS_ADDED)
 				crText = m_Colors.GetColor(CColors::Added);
-			if (action == LOGACTIONS_DELETED)
+			if (action == CTGitPath::LOGACTIONS_DELETED)
 				crText = m_Colors.GetColor(CColors::Deleted);
 		}
 
 		// Store the color back in the NMLVCUSTOMDRAW struct.
 		pLVCD->clrText = crText;
 	}
-#endif
 }
 
 void CLogDlg::DoSizeV1(int delta)
@@ -2910,70 +2925,28 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// Which column?
 	switch (pItem->iSubItem)
 	{
-	case 0:	//revision
+	case this->LOGLIST_GRAPH:	//Graphic
 		if (pLogEntry)
 		{
-#if 0
-			_stprintf_s(pItem->pszText, pItem->cchTextMax, _T("%ld"), pLogEntry->Rev);
-			// to make the child entries indented, add spaces
-			size_t len = _tcslen(pItem->pszText);
-			TCHAR * pBuf = pItem->pszText + len;
-			DWORD nSpaces = m_maxChild-pLogEntry->childStackDepth;
-			while ((pItem->cchTextMax >= (int)len)&&(nSpaces))
-			{
-				*pBuf = ' ';
-				pBuf++;
-				nSpaces--;
-			}
-			*pBuf = 0;
-#endif
 		}
 		break;
-	case 1: //action -- no text in the column
+	case this->LOGLIST_ACTION: //action -- no text in the column
 		break;
-	case 2: //author
+	case this->LOGLIST_MESSAGE: //Message
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_Subject, pItem->cchTextMax);
+		break;
+	case this->LOGLIST_AUTHOR: //Author
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorName, pItem->cchTextMax);
 		break;
-	case 3: //date
-#if 0
+	case this->LOGLIST_DATE: //Date
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sDate, pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")), pItem->cchTextMax);
 		break;
-#endif
-	case 4: //message or bug id
-#if 0
-		if (m_bShowBugtraqColumn)
-		{
-			if (pLogEntry)
-				lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sBugIDs, pItem->cchTextMax);
-			break;
-		}
-#endif
-		// fall through here!
+		
 	case 5:
-#if 0
-		if (pLogEntry)
-		{
-			// Add as many characters as possible from the short log message
-			// to the list control. If the message is longer than
-			// allowed width, add "..." as an indication.
-			const int dots_len = 3;
-			if (pLogEntry->sShortMessage.GetLength() >= pItem->cchTextMax && pItem->cchTextMax > dots_len)
-			{
-				lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sShortMessage, pItem->cchTextMax - dots_len);
-				lstrcpyn(pItem->pszText + pItem->cchTextMax - dots_len - 1, _T("..."), dots_len + 1);
-			}
-			else
-				lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->sShortMessage, pItem->cchTextMax);
-		}
-		else if ((itemid == m_arShownList.GetCount()) && m_bStrict && m_bStrictStopped)
-		{
-			CString sTemp;
-			sTemp.LoadString(IDS_LOG_STOPONCOPY_HINT);
-			lstrcpyn(pItem->pszText, sTemp, pItem->cchTextMax);
-		}
-#endif
+
 		break;
 	default:
 		ASSERT(false);
@@ -2982,7 +2955,7 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
-#if 0
+
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 
 	//Create a pointer to the item
@@ -3007,44 +2980,58 @@ void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 			lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
 		return;
 	}
-	LogChangedPath * lcpath = NULL;
+	CTGitPath lcpath = NULL;
 	if (m_currentChangedArray)
-		lcpath = m_currentChangedArray->GetAt(pItem->iItem);
+		lcpath = (*m_currentChangedArray)[pItem->iItem];
 	//Does the list need text information?
 	if (pItem->mask & LVIF_TEXT)
 	{
 		//Which column?
 		switch (pItem->iSubItem)
 		{
-		case 0:	//Action
+		case this->FILELIST_ACTION:	//Action
+#if 0
 			if (lcpath)
 				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->GetAction(), pItem->cchTextMax);
 			else
 				lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);				
+#endif
+			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.GetActionName(), pItem->cchTextMax);
+
 			break;
-		case 1: //path
+
+		case this->FILELIST_ADD: //add
+#if 0
 			if (lcpath)
 				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->sPath, pItem->cchTextMax);
 			else
 				lstrcpyn(pItem->pszText, (LPCTSTR)m_currentChangedPathList[pItem->iItem].GetGitPathString(), pItem->cchTextMax);
+#endif
+			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.m_StatAdd, pItem->cchTextMax);
 			break;
-		case 2: //copyfrom path
+
+		case this->FILELIST_DEL: //del
+#if 0
 			if (lcpath)
 				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->sCopyFromPath, pItem->cchTextMax);
 			else
 				lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
+#endif
+			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.m_StatDel, pItem->cchTextMax);
 			break;
-		case 3: //revision
+		case this->FILELIST_PATH: //path
+#if 0
 			if ((lcpath==NULL)||(lcpath->sCopyFromPath.IsEmpty()))
 				lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
 			else
 				_stprintf_s(pItem->pszText, pItem->cchTextMax, _T("%ld"), lcpath->lCopyFromRev);
+#endif
+			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.GetGitPathString(), pItem->cchTextMax);
 			break;
 		}
 	}
 
 	*pResult = 0;
-#endif
 }
 
 void CLogDlg::OnEnChangeSearchedit()
@@ -3555,7 +3542,7 @@ void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 	const int nColumn = pNMLV->iSubItem;
 	m_bAscendingPathList = nColumn == m_nSortColumnPathList ? !m_bAscendingPathList : TRUE;
 	m_nSortColumnPathList = nColumn;
-	qsort(m_currentChangedArray->GetData(), m_currentChangedArray->GetSize(), sizeof(LogChangedPath*), (GENERICCOMPAREFN)SortCompare);
+//	qsort(m_currentChangedArray->GetData(), m_currentChangedArray->GetSize(), sizeof(LogChangedPath*), (GENERICCOMPAREFN)SortCompare);
 
 	SetSortArrow(&m_ChangedFileListCtrl, m_nSortColumnPathList, m_bAscendingPathList);
 	m_ChangedFileListCtrl.Invalidate();
@@ -3601,7 +3588,7 @@ int CLogDlg::SortCompare(const void * pElem1, const void * pElem2)
 
 void CLogDlg::ResizeAllListCtrlCols()
 {
-#if 0
+
 	const int nMinimumWidth = ICONITEMBORDER+16*4;
 	int maxcol = ((CHeaderCtrl*)(m_LogList.GetDlgItem(0)))->GetItemCount()-1;
 	int nItemCount = m_LogList.GetItemCount();
@@ -3623,8 +3610,8 @@ void CLogDlg::ResizeAllListCtrlCols()
 				int linewidth = m_LogList.GetStringWidth(m_LogList.GetItemText(index, col)) + 14;
 				if (index < m_arShownList.GetCount())
 				{
-					PLOGENTRYDATA pCurLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(index));
-					if ((pCurLogEntry)&&(pCurLogEntry->Rev == m_wcRev))
+					GitRev * pCurLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(index));
+					if ((pCurLogEntry)&&(pCurLogEntry->m_CommitHash == m_wcRev.m_CommitHash))
 					{
 						// set the bold font and ask for the string width again
 						m_LogList.SendMessage(WM_SETFONT, (WPARAM)m_boldFont, NULL);
@@ -3649,7 +3636,7 @@ void CLogDlg::ResizeAllListCtrlCols()
 					cx = linewidth;
 			}
 			// Adjust columns "Actions" containing icons
-			if (col == 1)
+			if (col == this->LOGLIST_ACTION)
 			{
 				if (cx < nMinimumWidth)
 				{
@@ -3657,6 +3644,14 @@ void CLogDlg::ResizeAllListCtrlCols()
 				}
 			}
 			
+			if (col == this->LOGLIST_MESSAGE)
+			{
+				if (cx > LOGLIST_MESSAGE_MAX)
+				{
+					cx = LOGLIST_MESSAGE_MAX;
+				}
+
+			}
 			// keep the bug id column small
 			if ((col == 4)&&(m_bShowBugtraqColumn))
 			{
@@ -3669,7 +3664,7 @@ void CLogDlg::ResizeAllListCtrlCols()
 			m_LogList.SetColumnWidth(col, cx);
 		}
 	}
-#endif
+
 }
 
 void CLogDlg::OnBnClickedHidepaths()

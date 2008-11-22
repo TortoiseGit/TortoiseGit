@@ -4,6 +4,7 @@
 
 GitRev::GitRev(void)
 {
+	m_Action=0;
 }
 
 GitRev::~GitRev(void)
@@ -28,6 +29,7 @@ int GitRev::ParserFromLog(CString &log)
 	TCHAR mode;
 	CTGitPath  path;
 	this->m_Files.Clear();
+    m_Action=0;
 
 	while( pos>=0 )
 	{
@@ -60,7 +62,7 @@ int GitRev::ParserFromLog(CString &log)
 				this->m_Subject = text;
 				break;
 			case LOG_REV_COMMIT_BODY:
-				this->m_Body = text;
+				this->m_Body = text +_T("\n");
 				break;
 			case LOG_REV_COMMIT_HASH:
 				this->m_CommitHash = text;
@@ -76,25 +78,66 @@ int GitRev::ParserFromLog(CString &log)
 			switch(mode)
 			{
 			case LOG_REV_COMMIT_BODY:
-				this->m_Subject += one;
+				this->m_Body += one+_T("\n");
 				break;
 			case LOG_REV_COMMIT_FILE:
 				if(one[0]==_T(':'))
 				{
+					int tabstart=0;
+					int actionstart=0;
+					CString pathname;
+					CString action;
+					one.Tokenize(_T("\t"),tabstart);
+					if(tabstart >0)
+					{
+						action=one.Left(tabstart);
+						actionstart=action.ReverseFind(_T(' '));
+						if(actionstart>0)
+						{
+							action=action.Right(action.GetLength()-actionstart);
+						}
+						pathname=one.Right(one.GetLength()-tabstart);
+						
+						CTGitPath *GitPath=m_Files.LookForGitPath(pathname);
+						
+						if(GitPath)
+						{
+							this->m_Action|=GitPath->ParserAction(action);	
+							
+						}else
+						{	
+							path.SetFromGit(pathname);
+							//action must be set after setfromgit. SetFromGit will clear all status. 
+							this->m_Action|=path.ParserAction(action);
+							this->m_Files.AddPath(path);
+						}
+					}
 					
 				}else
 				{
 					int tabstart=0;
-					
-					path.m_StatAdd=_wtoi(one.Tokenize(_T("\t"),tabstart));
+					path.Reset();
+					CString StatAdd=(one.Tokenize(_T("\t"),tabstart));
 					if( tabstart< 0)
 						break;
-//					tabstart+=1;
-					path.m_StatDel=_wtoi(one.Tokenize(_T("\t"),tabstart));
-//					tabstart++;
+					CString StatDel=(one.Tokenize(_T("\t"),tabstart));
+
+					//SetFromGit will reset all context of GitRev
 					path.SetFromGit(one.Right(one.GetLength()-tabstart));
 				
-					this->m_Files.AddPath(path);
+					CTGitPath *GitPath=m_Files.LookForGitPath(path.GetGitPathString());
+					if(GitPath)
+					{
+						GitPath->m_StatAdd=StatAdd;
+						GitPath->m_StatDel=StatDel;
+
+					}else
+					{
+						//path.SetFromGit(pathname);
+						path.m_StatAdd=StatAdd;
+						path.m_StatDel=StatDel;
+						this->m_Files.AddPath(path);
+					}
 				}
 				break;
 			}

@@ -19,6 +19,7 @@ typedef std::vector<git_revnum_t> GIT_REV_LIST;
 #define LOG_REV_ITEM_END		_T('C')
 
 
+
 class GitRev
 {
 public:
@@ -45,7 +46,7 @@ public:
 	git_revnum_t m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
 	CTGitPathList m_Files;
-
+	int	m_Action;
 	int ParserFromLog(CString &log);
 	CTime ConverFromString(CString input);
 };

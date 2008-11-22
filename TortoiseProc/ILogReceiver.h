@@ -52,13 +52,7 @@ private:
 	mutable CString actionAsString;
 };
 
-enum
-{
-	LOGACTIONS_ADDED	= 0x00000001,
-	LOGACTIONS_MODIFIED	= 0x00000002,
-	LOGACTIONS_REPLACED	= 0x00000004,
-	LOGACTIONS_DELETED	= 0x00000008
-};
+
 
 /// auto-deleting extension of MFC Arrays for pointer arrays
 

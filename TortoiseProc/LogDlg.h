@@ -69,6 +69,24 @@ public:
 	CLogDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CLogDlg();
 
+	enum
+	{
+		LOGLIST_GRAPH,
+		LOGLIST_ACTION,
+		LOGLIST_MESSAGE,
+		LOGLIST_AUTHOR,
+		LOGLIST_DATE,
+		LOGLIST_BUG,
+		LOGLIST_MESSAGE_MAX=250
+	};
+
+	enum
+	{
+		FILELIST_ACTION,
+		FILELIST_ADD,
+		FILELIST_DEL,
+		FILELIST_PATH
+	};
 
 	void SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit, 
 		BOOL bStrict = CRegDWORD(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE), BOOL bSaveStrict = TRUE);
@@ -221,7 +239,7 @@ private:
 	BOOL				m_bIncludeMerges;
 	git_revnum_t		m_lowestRev;
 	BOOL				m_bSaveStrict;
-	LogChangedPathArray * m_currentChangedArray;
+	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
 	CTGitPathList		m_currentChangedPathList;
 	CPtrArray			m_arShownList;

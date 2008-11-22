@@ -1,5 +1,6 @@
 #pragma once
 
+
 class CTGitPath
 {
 public:
@@ -7,9 +8,19 @@ public:
 	~CTGitPath(void);
  CTGitPath(const CString& sUnknownPath);
 public:
-	int m_StatAdd;
-	int m_StatDel;
+	enum
+	{	
+		LOGACTIONS_ADDED	= 0x00000001,
+		LOGACTIONS_MODIFIED	= 0x00000002,
+		LOGACTIONS_REPLACED	= 0x00000004,
+		LOGACTIONS_DELETED	= 0x00000008
+	};
 
+	CString m_StatAdd;
+	CString m_StatDel;
+	int		m_Action;
+	int	ParserAction(CString action);
+	CString GetActionName();
 	/**
 	 * Set the path as an UTF8 string with forward slashes
 	 */
@@ -276,6 +287,7 @@ public:
 	void AddPath(const CTGitPath& newPath);
 	bool LoadFromFile(const CTGitPath& filename);
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
+	CTGitPath * LookForGitPath(CString path);
 
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used

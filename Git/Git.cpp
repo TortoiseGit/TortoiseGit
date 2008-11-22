@@ -100,7 +100,7 @@ int CGit::GetLog(CString& logOut)
 
 	CString cmd;
 	CString log;
-	cmd=("git.cmd log -C --numstat --pretty=format:\"");
+	cmd=("git.cmd log -C --numstat --raw --pretty=format:\"");
 	log.Format(_T("#<%c>%%n"),LOG_REV_ITEM_BEGIN);
 	cmd += log;
 	log.Format(_T("#<%c>%%an%%n"),LOG_REV_AUTHOR_NAME);

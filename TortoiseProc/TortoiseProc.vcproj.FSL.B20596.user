@@ -10,7 +10,7 @@
 			>
 			<DebugSettings
 				Command="$(TargetPath)"
-				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
+				WorkingDirectory="D:\Profiles\b20596\qgit4"
 				CommandArguments="/command:log"
 				Attach="false"
 				DebuggerType="3"

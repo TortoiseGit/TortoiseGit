@@ -50,6 +50,7 @@ CTGitPath::CTGitPath(void) :
 	m_bIsSpecialDirectoryKnown(false),
 	m_bIsSpecialDirectory(false)
 {
+	m_Action=0;
 }
 
 CTGitPath::~CTGitPath(void)
@@ -76,8 +77,24 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	m_bIsSpecialDirectory(false)
 {
 	SetFromUnknown(sUnknownPath);
+	m_Action=0;
 }
 
+int CTGitPath::ParserAction(CString action)
+{
+	action=action.TrimLeft();
+	TCHAR c=action.GetAt(0);
+	if(c == _T('M'))
+		m_Action|= LOGACTIONS_MODIFIED;
+	if(c == _T('R'))
+		m_Action|= LOGACTIONS_REPLACED;
+	if(c == _T('A'))
+		m_Action|= LOGACTIONS_ADDED;
+	if(c == _T('D'))
+		m_Action|= LOGACTIONS_DELETED;
+
+	return m_Action;
+}
 void CTGitPath::SetFromGit(const char* pPath)
 {
 	Reset();
@@ -411,6 +428,9 @@ void CTGitPath::Reset()
 	m_sBackslashPath.Empty();
 	m_sFwdslashPath.Empty();
 	m_sUTF8FwdslashPath.Empty();
+	this->m_Action=0;
+	this->m_StatAdd=_T("");
+	this->m_StatDel=_T("");
 	ATLASSERT(IsEmpty());
 }
 
@@ -1544,3 +1564,26 @@ private:
 #endif
 #endif
 
+CTGitPath * CTGitPathList::LookForGitPath(CString path)
+{
+	int i=0;
+	for(i=0;i<this->GetCount();i++)
+	{
+		if((*this)[i].GetGitPathString() == path )
+			return (CTGitPath*)&(*this)[i];
+	}
+	return NULL;
+}
+
+CString CTGitPath::GetActionName()
+{
+	if(m_Action  & CTGitPath::LOGACTIONS_ADDED)
+		return _T("Added");
+	if(m_Action  & CTGitPath::LOGACTIONS_DELETED)
+		return _T("Deleted");
+	if(m_Action  & CTGitPath::LOGACTIONS_MODIFIED)
+		return _T("Modified");
+	if(m_Action  & CTGitPath::LOGACTIONS_REPLACED)
+		return _T("Rename");
+	return _T("Unknown");
+}
