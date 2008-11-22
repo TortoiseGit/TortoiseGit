@@ -3789,7 +3789,7 @@ void CLogDlg::UpdateLogInfoLabel()
 
 void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 {
-#if 0
+
 	int selIndex = m_LogList.GetSelectionMark();
 	if (selIndex < 0)
 		return;	// nothing selected, nothing to do with a context menu
@@ -3812,12 +3812,15 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 	m_bCancelled = FALSE;
 
 	// calculate some information the context menu commands can use
-	CString pathURL = GetURLFromPath(m_path);
+//	CString pathURL = GetURLFromPath(m_path);
+
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	int indexNext = m_LogList.GetNextSelectedItem(pos);
 	if (indexNext < 0)
 		return;
-	PLOGENTRYDATA pSelLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(indexNext));
+
+	GitRev* pSelLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(indexNext));
+#if 0
 	GitRev revSelected = pSelLogEntry->Rev;
 	GitRev revPrevious = git_revnum_t(revSelected)-1;
 	if ((pSelLogEntry->pArChangedPaths)&&(pSelLogEntry->pArChangedPaths->GetCount() <= 2))
@@ -3860,14 +3863,22 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 		}
 	}
 
+#endif
 
-
+	int FirstSelect=-1, LastSelect=-1;
+	pos = m_LogList.GetFirstSelectedItemPosition();
+	FirstSelect = m_LogList.GetNextSelectedItem(pos);
+	while(pos)
+	{
+		LastSelect = m_LogList.GetNextSelectedItem(pos);
+	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())
 	{
 		if (m_LogList.GetSelectedCount() == 1)
 		{
+#if 0
 			if (!m_path.IsDirectory())
 			{
 				if (m_hasWC)
@@ -3885,6 +3896,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
 			else
+#endif 
 			{
 				if (m_hasWC)
 				{
@@ -3902,30 +3914,31 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 				popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
-			if (!m_ProjectProperties.sWebViewerRev.IsEmpty())
-			{
-				popup.AppendMenuIcon(ID_VIEWREV, IDS_LOG_POPUP_VIEWREV);
-			}
-			if (!m_ProjectProperties.sWebViewerPathRev.IsEmpty())
-			{
-				popup.AppendMenuIcon(ID_VIEWPATHREV, IDS_LOG_POPUP_VIEWPATHREV);
-			}
-			if ((!m_ProjectProperties.sWebViewerPathRev.IsEmpty())||
-				(!m_ProjectProperties.sWebViewerRev.IsEmpty()))
-			{
-				popup.AppendMenu(MF_SEPARATOR, NULL);
-			}
 
-			popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
-			popup.AppendMenuIcon(ID_COPY, IDS_LOG_POPUP_COPY);
-			if (m_hasWC)
-				popup.AppendMenuIcon(ID_UPDATE, IDS_LOG_POPUP_UPDATE, IDI_UPDATE);
+//			if (!m_ProjectProperties.sWebViewerRev.IsEmpty())
+//			{
+//				popup.AppendMenuIcon(ID_VIEWREV, IDS_LOG_POPUP_VIEWREV);
+//			}
+//			if (!m_ProjectProperties.sWebViewerPathRev.IsEmpty())
+//			{
+//				popup.AppendMenuIcon(ID_VIEWPATHREV, IDS_LOG_POPUP_VIEWPATHREV);
+//			}
+//			if ((!m_ProjectProperties.sWebViewerPathRev.IsEmpty())||
+//				(!m_ProjectProperties.sWebViewerRev.IsEmpty()))
+//			{
+//				popup.AppendMenu(MF_SEPARATOR, NULL);
+//			}
+
+//			popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
+//			popup.AppendMenuIcon(ID_COPY, IDS_LOG_POPUP_COPY);
+//			if (m_hasWC)
+//				popup.AppendMenuIcon(ID_UPDATE, IDS_LOG_POPUP_UPDATE, IDI_UPDATE);
 			if (m_hasWC)
 				popup.AppendMenuIcon(ID_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 			if (m_hasWC)
 				popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-			if (m_hasWC)
-				popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREV, IDI_MERGE);
+//			if (m_hasWC)
+//				popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREV, IDI_MERGE);
 			popup.AppendMenuIcon(ID_CHECKOUT, IDS_MENUCHECKOUT, IDI_CHECKOUT);
 			popup.AppendMenuIcon(ID_EXPORT, IDS_MENUEXPORT, IDI_EXPORT);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -3946,24 +3959,25 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 			if (m_hasWC)
 			{
 				popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
-				if (m_hasWC)
-					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
+//				if (m_hasWC)
+//					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
 				bAddSeparator = true;
 			}
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
-
-		if ((selEntries.size() > 0)&&(bAllFromTheSameAuthor))
-		{
-			popup.AppendMenuIcon(ID_EDITAUTHOR, IDS_LOG_POPUP_EDITAUTHOR);
-		}
-		if (m_LogList.GetSelectedCount() == 1)
-		{
-			popup.AppendMenuIcon(ID_EDITLOG, IDS_LOG_POPUP_EDITLOG);
-			popup.AppendMenuIcon(ID_REVPROPS, IDS_REPOBROWSE_SHOWREVPROP, IDI_PROPERTIES); // "Show Revision Properties"
-			popup.AppendMenu(MF_SEPARATOR, NULL);
-		}
+#if 0
+//		if ((selEntries.size() > 0)&&(bAllFromTheSameAuthor))
+//		{
+//			popup.AppendMenuIcon(ID_EDITAUTHOR, IDS_LOG_POPUP_EDITAUTHOR);
+//		}
+//		if (m_LogList.GetSelectedCount() == 1)
+//		{
+//			popup.AppendMenuIcon(ID_EDITLOG, IDS_LOG_POPUP_EDITLOG);
+//			popup.AppendMenuIcon(ID_REVPROPS, IDS_REPOBROWSE_SHOWREVPROP, IDI_PROPERTIES); // "Show Revision Properties"
+//			popup.AppendMenu(MF_SEPARATOR, NULL);
+//		}
+#endif
 		if (m_LogList.GetSelectedCount() != 0)
 		{
 			popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
@@ -3972,11 +3986,61 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		DialogEnableWindow(IDOK, FALSE);
-		SetPromptApp(&theApp);
+//		SetPromptApp(&theApp);
 		theApp.DoWaitCursor(1);
 		bool bOpenWith = false;
+
 		switch (cmd)
 		{
+			case ID_GNUDIFF1:
+			{
+//				if (PromptShown())
+//				{
+//					GitDiff diff(this, this->m_hWnd, true);
+//					diff.SetHEADPeg(m_LogRevision);
+//					diff.ShowUnifiedDiff(m_path, revPrevious, m_path, revSelected);
+//				}
+//				else
+//					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revPrevious, m_path, revSelected, GitRev(), m_LogRevision);
+			}
+			break;
+
+			case ID_GNUDIFF2:
+			{
+//				if (PromptShown())
+//				{
+//					GitDiff diff(this, this->m_hWnd, true);
+//					diff.SetHEADPeg(m_LogRevision);
+//					diff.ShowUnifiedDiff(m_path, revSelected2, m_path, revSelected);
+//				}
+//				else
+//					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revSelected2, m_path, revSelected, GitRev(), m_LogRevision);
+			}
+			break;
+
+		case ID_COMPARETWO:
+			{
+				//GitRev * r1 = reinterpret_cast<GitRev*>((*m_arShownList)[FirstSelect]);
+				//GitRev * r2 = reinterpret_cast<GitRev*>((*m_arShownList)[LastSelect]);
+				//if (m_LogList.GetSelectedCount() > 2)
+				//{
+				//	r1 = revHighest;
+				//	r2 = revLowest;
+				//}
+				//user clicked on the menu item "compare revisions"
+				//if (PromptShown())
+				//{
+				//	GitDiff diff(this, m_hWnd, true);
+				//	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+				//	diff.SetHEADPeg(m_LogRevision);
+				//	diff.ShowCompare(CTGitPath(pathURL), r2, CTGitPath(pathURL), r1);
+				//}
+				//else
+				//	CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), r2, CTGitPath(pathURL), r1, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			}
+			break;
+
+#if 0
 		case ID_GNUDIFF1:
 			{
 				if (PromptShown())
@@ -3989,6 +4053,7 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revPrevious, m_path, revSelected, GitRev(), m_LogRevision);
 			}
 			break;
+
 		case ID_GNUDIFF2:
 			{
 				if (PromptShown())
@@ -4433,18 +4498,18 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
 			}
 			break;
+#endif
 		default:
 			break;
 		} // switch (cmd)
 		theApp.DoWaitCursor(-1);
 		EnableOKButton();
 	} // if (popup.CreatePopupMenu())
-#endif
 }
 
 void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 {
-#if 0
+
 	int selIndex = m_ChangedFileListCtrl.GetSelectionMark();
 	if ((point.x == -1) && (point.y == -1))
 	{
@@ -4464,8 +4529,10 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 	if (pos == NULL)
 		return;	// nothing is selected, get out of here
 
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
-	git_revnum_t rev1 = pLogEntry->Rev;
+	bool bOneRev = true;
+#if 0
+	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+	git_revnum_t rev1 = pLogEntry;
 	git_revnum_t rev2 = rev1;
 	bool bOneRev = true;
 	if (pos)
@@ -4544,7 +4611,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 			}
 		}
 	}
-
+#endif
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())
@@ -4552,7 +4619,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		bool bEntryAdded = false;
 		if (m_ChangedFileListCtrl.GetSelectedCount() == 1)
 		{
-			if ((!bOneRev)||(IsDiffPossible(changedlogpaths[0], rev1)))
+//			if ((!bOneRev)||(IsDiffPossible(changedlogpaths[0], rev1)))
 			{
 				popup.AppendMenuIcon(ID_DIFF, IDS_LOG_POPUP_DIFF, IDI_DIFF);
 				popup.AppendMenuIcon(ID_BLAMEDIFF, IDS_LOG_POPUP_BLAMEDIFF, IDI_BLAME);
@@ -4560,7 +4627,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
 				bEntryAdded = true;
 			}
-			if (rev2 == rev1-1)
+//			if (rev2 == rev1-1)
 			{
 				if (bEntryAdded)
 					popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -4597,6 +4664,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		bool bOpenWith = false;
 		bool bMergeLog = false;
 		m_bCancelled = false;
+#if 0
 		switch (cmd)
 		{
 		case ID_DIFF:
@@ -4968,8 +5036,8 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		default:
 			break;
 		} // switch (cmd)
-	} // if (popup.CreatePopupMenu())
 #endif
+	} // if (popup.CreatePopupMenu())
 }
 
 void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)

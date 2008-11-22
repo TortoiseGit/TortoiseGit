@@ -18,11 +18,12 @@
 //
 #include "StdAfx.h"
 #include "ShowCompareCommand.h"
-#include "SVNDiff.h"
+//#include "SVNDiff.h"
 
 
 bool ShowCompareCommand::Execute()
 {
+#if 0
 	bool		bRet = false;
 	SVNDiff		diff(NULL, hwndExplorer);
 
@@ -53,4 +54,6 @@ bool ShowCompareCommand::Execute()
 		bRet = diff.ShowCompare(url1, rev1, url2, rev2, pegrev, ignoreancestry, blame);
 
 	return bRet;
+#endif 
+	return 0;
 }
