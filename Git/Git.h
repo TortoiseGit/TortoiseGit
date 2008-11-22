@@ -13,11 +13,15 @@ public:
 	CGit(void);
 	~CGit(void);
 	int Run(CString cmd, CString* output);
+	int RunLogFile(CString cmd, CString &filename);
 	CString GetUserName(void);
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);
 	CString m_CurrentDir;
 	int GetLog(CString& logOut);
+	
 };
+
+extern CString GetTempFile();
 
 extern CGit g_Git;

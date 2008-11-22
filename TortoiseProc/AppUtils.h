@@ -69,7 +69,7 @@ public:
 	 * Starts the external unified diff viewer (the app associated with *.diff or *.patch files).
 	 * If no app is associated with those file types, the default text editor is used.
 	 */
-	static BOOL StartUnifiedDiffViewer(const CTGitPath& patchfile, const CString& title, BOOL bWait = FALSE);
+	static BOOL StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait = FALSE);
 
 	/**
 	 * Starts the external diff application

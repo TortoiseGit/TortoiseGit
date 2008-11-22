@@ -3994,27 +3994,25 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 		{
 			case ID_GNUDIFF1:
 			{
-//				if (PromptShown())
-//				{
-//					GitDiff diff(this, this->m_hWnd, true);
-//					diff.SetHEADPeg(m_LogRevision);
-//					diff.ShowUnifiedDiff(m_path, revPrevious, m_path, revSelected);
-//				}
-//				else
-//					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revPrevious, m_path, revSelected, GitRev(), m_LogRevision);
+				CString tempfile=GetTempFile();
+				CString cmd;
+				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				cmd.Format(_T("git.cmd diff-tree -r -p --stat %s"),r1->m_CommitHash);
+				g_Git.RunLogFile(cmd,tempfile);
+				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r1->m_Subject);
 			}
 			break;
 
 			case ID_GNUDIFF2:
 			{
-//				if (PromptShown())
-//				{
-//					GitDiff diff(this, this->m_hWnd, true);
-//					diff.SetHEADPeg(m_LogRevision);
-//					diff.ShowUnifiedDiff(m_path, revSelected2, m_path, revSelected);
-//				}
-//				else
-//					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revSelected2, m_path, revSelected, GitRev(), m_LogRevision);
+				CString tempfile=GetTempFile();
+				CString cmd;
+				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+				cmd.Format(_T("git.cmd diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
+				g_Git.RunLogFile(cmd,tempfile);
+				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r2->m_CommitHash.Left(6));
+
 			}
 			break;
 

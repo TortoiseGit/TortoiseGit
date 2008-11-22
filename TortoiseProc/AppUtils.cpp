@@ -376,7 +376,7 @@ BOOL CAppUtils::StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2
 	return TRUE;
 }
 
-BOOL CAppUtils::StartUnifiedDiffViewer(const CTGitPath& patchfile, const CString& title, BOOL bWait)
+BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait)
 {
 	CString viewer;
 	CRegString v = CRegString(_T("Software\\TortoiseGit\\DiffViewer"));
@@ -395,12 +395,12 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CTGitPath& patchfile, const CString
 	if (viewer.Find(_T("%1"))>=0)
 	{
 		if (viewer.Find(_T("\"%1\"")) >= 0)
-			viewer.Replace(_T("%1"), patchfile.GetWinPathString());
+			viewer.Replace(_T("%1"), patchfile);
 		else
-			viewer.Replace(_T("%1"), _T("\"") + patchfile.GetWinPathString() + _T("\""));
+			viewer.Replace(_T("%1"), _T("\"") + patchfile + _T("\""));
 	}
 	else
-		viewer += _T(" \"") + patchfile.GetWinPathString() + _T("\"");
+		viewer += _T(" \"") + patchfile + _T("\"");
 	if (viewer.Find(_T("%title")) >= 0)
 	{
 		viewer.Replace(_T("%title"), title);

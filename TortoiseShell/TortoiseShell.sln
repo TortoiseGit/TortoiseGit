@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "..\ext\scintill
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hunspell", "..\ext\hunspell\hunspell.vcproj", "{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseUDiff", "..\TortoiseUDiff\TortoiseUDiff.vcproj", "{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -56,6 +58,10 @@ Global
 		{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}.Debug|Win32.Build.0 = Debug|Win32
 		{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}.Release|Win32.ActiveCfg = Release|Win32
 		{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}.Release|Win32.Build.0 = Release|Win32
+		{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}.Debug|Win32.Build.0 = Debug|Win32
+		{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}.Release|Win32.ActiveCfg = Release|Win32
+		{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

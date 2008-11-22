@@ -129,3 +129,73 @@ int CGit::GetLog(CString& logOut)
 	Run(cmd,&logOut);
 	return 0;
 }
+
+#define BUFSIZE 512
+CString GetTempFile()
+{
+	TCHAR lpPathBuffer[BUFSIZE];
+	DWORD dwRetVal;
+    DWORD dwBufSize=BUFSIZE;
+	TCHAR szTempName[BUFSIZE];  
+	UINT uRetVal;
+
+	dwRetVal = GetTempPath(dwBufSize,     // length of the buffer
+                           lpPathBuffer); // buffer for path 
+    if (dwRetVal > dwBufSize || (dwRetVal == 0))
+    {
+        return _T("");
+    }
+	 // Create a temporary file. 
+    uRetVal = GetTempFileName(lpPathBuffer, // directory for tmp files
+                              TEXT("Patch"),  // temp file name prefix 
+                              0,            // create unique name 
+                              szTempName);  // buffer for name 
+
+
+    if (uRetVal == 0)
+    {
+        return _T("");
+    }
+
+	return CString(szTempName);
+
+}
+
+int CGit::RunLogFile(CString cmd,CString &filename)
+{
+	HANDLE hRead, hWrite;
+
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	si.cb=sizeof(STARTUPINFO);
+	GetStartupInfo(&si);
+
+	SECURITY_ATTRIBUTES   psa={sizeof(psa),NULL,TRUE};;   
+	psa.bInheritHandle=TRUE;   
+    
+	HANDLE   houtfile=CreateFile(filename,GENERIC_WRITE,FILE_SHARE_READ   |   FILE_SHARE_WRITE,   
+			&psa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);   
+
+
+	si.wShowWindow=SW_HIDE;
+	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
+	si.hStdOutput   =   houtfile; 
+	
+	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,NULL,NULL,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
+	{
+		LPVOID lpMsgBuf;
+		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+			NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			(LPTSTR)&lpMsgBuf,
+			0,NULL);
+		return GIT_ERROR_CREATE_PROCESS;
+	}
+	
+	WaitForSingleObject(pi.hProcess,INFINITE);   
+  	
+	CloseHandle(pi.hThread);
+	CloseHandle(pi.hProcess);
+	CloseHandle(houtfile);
+	return GIT_SUCCESS;
+	return 0;
+}
