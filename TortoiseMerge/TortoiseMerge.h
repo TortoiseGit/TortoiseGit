@@ -23,7 +23,7 @@
 #endif
 
 #include "resource.h"       // main symbols
-#include "CrashReport.h"
+//#include "CrashReport.h"
 
 
 /**
@@ -53,4 +53,4 @@ private:
 };
 
 extern CTortoiseMergeApp theApp;
-extern CCrashReport g_crasher;
+//extern CCrashReport g_crasher;

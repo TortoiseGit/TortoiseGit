@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 #include "TempFile.h"
 #include "ProgressDlg.h"
 #include "SysImageList.h"
-#include "SVNProperties.h"
+//#include "GitProperties.h"
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
@@ -84,19 +84,20 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 END_MESSAGE_MAP()
 
 
-void CFileDiffDlg::SetDiff(const CTSVNPath& path, SVNRev peg, SVNRev rev1, SVNRev rev2, svn_depth_t depth, bool ignoreancestry)
+void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 {
-	m_bDoPegDiff = true;
-	m_path1 = path;
-	m_path2 = path;
-	m_peg = peg;
+	if(path!=NULL)
+	{
+		m_path1 = *path;
+		m_path2 = *path;
+	}
 	m_rev1 = rev1;
 	m_rev2 = rev2;
-	m_depth = depth;
-	m_bIgnoreancestry = ignoreancestry;
+	
 }
 
-void CFileDiffDlg::SetDiff(const CTSVNPath& path1, SVNRev rev1, const CTSVNPath& path2, SVNRev rev2, svn_depth_t depth, bool ignoreancestry)
+#if 0
+void CFileDiffDlg::SetDiff(const CTGitPath& path1, GitRev rev1, const CTGitPath& path2, GitRev rev2, svn_depth_t depth, bool ignoreancestry)
 {
 	m_bDoPegDiff = false;
 	m_path1 = path1;
@@ -106,6 +107,7 @@ void CFileDiffDlg::SetDiff(const CTSVNPath& path1, SVNRev rev1, const CTSVNPath&
 	m_depth = depth;
 	m_bIgnoreancestry = ignoreancestry;
 }
+#endif
 
 BOOL CFileDiffDlg::OnInitDialog()
 {
@@ -135,11 +137,18 @@ BOOL CFileDiffDlg::OnInitDialog()
 	int c = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	while (c>=0)
 		m_cFileList.DeleteColumn(c--);
+
+	
 	temp.LoadString(IDS_FILEDIFF_FILE);
 	m_cFileList.InsertColumn(0, temp);
 	temp.LoadString(IDS_FILEDIFF_ACTION);
 	m_cFileList.InsertColumn(1, temp);
 
+	temp.LoadString(IDS_FILEDIFF_STATADD);
+	m_cFileList.InsertColumn(2, temp);
+	temp.LoadString(IDS_FILEDIFF_STATDEL);
+	m_cFileList.InsertColumn(3, temp);
+	
 	int mincol = 0;
 	int maxcol = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	int col;
@@ -176,18 +185,20 @@ BOOL CFileDiffDlg::OnInitDialog()
 	return FALSE;
 }
 
-svn_error_t* CFileDiffDlg::DiffSummarizeCallback(const CTSVNPath& path, 
+#if 0
+svn_error_t* CFileDiffDlg::DiffSummarizeCallback(const CTGitPath& path, 
 												 svn_client_diff_summarize_kind_t kind, 
 												 bool propchanged, svn_node_kind_t node)
 {
-	FileDiff fd;
+	CTGitPath* fd;
 	fd.path = path;
 	fd.kind = kind;
 	fd.node = node;
 	fd.propchanged = propchanged;
 	m_arFileList.push_back(fd);
-	return SVN_NO_ERROR;
+	return Git_NO_ERROR;
 }
+#endif
 
 UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
 {
@@ -199,27 +210,39 @@ UINT CFileDiffDlg::DiffThread()
 	bool bSuccess = true;
 	RefreshCursor();
 	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
-	m_arFileList.clear();
+	m_arFileList.Clear();
+#if 0
 	if (m_bDoPegDiff)
 	{
-		bSuccess = DiffSummarizePeg(m_path1, m_peg, m_rev1, m_rev2, m_depth, m_bIgnoreancestry);
+//		bSuccess = DiffSummarizePeg(m_path1, m_peg, m_rev1, m_rev2, m_depth, m_bIgnoreancestry);
 	}
 	else
 	{
-		bSuccess = DiffSummarize(m_path1, m_rev1, m_path2, m_rev2, m_depth, m_bIgnoreancestry);
+//		bSuccess = DiffSummarize(m_path1, m_rev1, m_path2, m_rev2, m_depth, m_bIgnoreancestry);
 	}
-	if (!bSuccess)
+//	if (!bSuccess)
+//	{
+//		m_cFileList.ShowText(GetLastErrorMessage());
+//		InterlockedExchange(&m_bThreadRunning, FALSE);
+//		return 0;
+//	}
+#endif
+	CString cmd;
+	CString rev1=m_rev1.m_CommitHash;
+	if(this->m_rev1.m_CommitHash == GIT_REV_ZERO )
 	{
-		m_cFileList.ShowText(GetLastErrorMessage());
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		return 0;
+		rev1=+_T("");
 	}
-
+	cmd.Format(_T("git.cmd diff-tree -r --raw -C -M --numstat %s %s"),rev1,m_rev2.m_CommitHash);
+	CString out;
+	g_Git.Run(cmd,&out);
+	this->m_arFileList.ParserFromLog(out);
+	
 	CString sFilterText;
 	m_cFilter.GetWindowText(sFilterText);
 	m_cFileList.SetRedraw(false);
 	Filter(sFilterText);
-	if (! m_arFileList.empty())
+	if (m_arFileList.GetCount()>0)
 	{
 		// Highlight first entry in file list
 		m_cFileList.SetSelectionMark(0);
@@ -243,7 +266,7 @@ UINT CFileDiffDlg::DiffThread()
 	return 0;
 }
 
-int CFileDiffDlg::AddEntry(const FileDiff * fd)
+int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 {
 	int ret = -1;
 	if (fd)
@@ -251,32 +274,35 @@ int CFileDiffDlg::AddEntry(const FileDiff * fd)
 		int index = m_cFileList.GetItemCount();
 
 		int icon_idx = 0;
-		if (fd->node == svn_node_dir)
-				icon_idx = m_nIconFolder;
-		else
+//		if (fd->node == svn_node_dir)
+//				icon_idx = m_nIconFolder;
+//		else
 		{
-			icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(fd->path);
+			icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(fd->GetGitPathString());
 		}
 
-		ret = m_cFileList.InsertItem(index, fd->path.GetSVNPathString(), icon_idx);
-		m_cFileList.SetItemText(index, 1, GetSummarizeActionText(fd->kind));
+		ret = m_cFileList.InsertItem(index, fd->GetGitPathString(), icon_idx);
+		m_cFileList.SetItemText(index, 1, ((CTGitPath*)fd)->GetActionName());
+		m_cFileList.SetItemText(index, 2, ((CTGitPath*)fd)->m_StatAdd);
+		m_cFileList.SetItemText(index, 3, ((CTGitPath*)fd)->m_StatDel);
 	}
 	return ret;
 }
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 {
-	CFileDiffDlg::FileDiff fd = m_arFilteredList[selIndex];
+#if 0
+	CFileDiffDlg::CTGitPath* fd = m_arFilteredList[selIndex];
 
-	CTSVNPath url1 = CTSVNPath(m_path1.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString());
-	CTSVNPath url2 = m_bDoPegDiff ? url1 : CTSVNPath(m_path2.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString());
+	CTGitPath url1 = CTGitPath(m_path1.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
+	CTGitPath url2 = m_bDoPegDiff ? url1 : CTGitPath(m_path2.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
 
 	if (fd.kind == svn_client_diff_summarize_kind_deleted)
 	{
 		if (!PathIsURL(url1))
-			url1 = CTSVNPath(GetURLFromPath(m_path1) + _T("/") + fd.path.GetSVNPathString());
+			url1 = CTGitPath(GetURLFromPath(m_path1) + _T("/") + fd.path.GetGitPathString());
 		if (!PathIsURL(url2))
-			url2 = m_bDoPegDiff ? url1 : CTSVNPath(GetURLFromPath(m_path2) + _T("/") + fd.path.GetSVNPathString());
+			url2 = m_bDoPegDiff ? url1 : CTGitPath(GetURLFromPath(m_path2) + _T("/") + fd.path.GetGitPathString());
 	}
 
 	if (fd.propchanged)
@@ -286,7 +312,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	if (fd.node == svn_node_dir)
 		return;
 
-	CTSVNPath tempfile = CTempFiles::Instance().GetTempFilePath(false, m_path1, m_rev1);
+	CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, m_path1, m_rev1);
 	CString sTemp;
 	CProgressDlg progDlg;
 	progDlg.SetTitle(IDS_PROGRESSWAIT);
@@ -299,7 +325,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	{
 		if ((!m_bDoPegDiff)||(!Cat(url1, m_rev1, m_rev1, tempfile)))
 		{
-			CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 	}
@@ -307,7 +333,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	{
 		if ((!m_bDoPegDiff)||(!m_blamer.BlameToFile(url1, 1, m_rev1, m_rev1, tempfile, _T(""), TRUE, TRUE)))
 		{
-			CMessageBox::Show(NULL, m_blamer.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(NULL, m_blamer.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 	}
@@ -315,12 +341,12 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	progDlg.SetProgress(1, 2);
 	progDlg.FormatPathLine(1, IDS_PROGRESSGETFILE, (LPCTSTR)url2.GetUIPathString());
 	progDlg.FormatNonPathLine(2, IDS_PROGRESSREVISIONTEXT, (LPCTSTR)m_rev2.ToString());
-	CTSVNPath tempfile2 = CTempFiles::Instance().GetTempFilePath(false, url2, m_rev2);
+	CTGitPath tempfile2 = CTempFiles::Instance().GetTempFilePath(false, url2, m_rev2);
 	if ((fd.kind != svn_client_diff_summarize_kind_deleted)&&(!blame)&&(!Cat(url2, m_bDoPegDiff ? m_peg : m_rev2, m_rev2, tempfile2)))
 	{
 		if ((!m_bDoPegDiff)||(!Cat(url2, m_rev2, m_rev2, tempfile2)))
 		{
-			CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 	}
@@ -328,7 +354,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	{
 		if ((!m_bDoPegDiff)||(!m_blamer.BlameToFile(url2, 1, m_rev2, m_rev2, tempfile2, _T(""), TRUE, TRUE)))
 		{
-			CMessageBox::Show(NULL, m_blamer.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(NULL, m_blamer.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 			return;
 		}
 	}
@@ -339,30 +365,32 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	CString rev1name, rev2name;
 	if (m_bDoPegDiff)
 	{
-		rev1name.Format(_T("%s Revision %ld"), (LPCTSTR)fd.path.GetSVNPathString(), (LONG)m_rev1);
-		rev2name.Format(_T("%s Revision %ld"), (LPCTSTR)fd.path.GetSVNPathString(), (LONG)m_rev2);
+		rev1name.Format(_T("%s Revision %ld"), (LPCTSTR)fd.path.GetGitPathString(), (LONG)m_rev1);
+		rev2name.Format(_T("%s Revision %ld"), (LPCTSTR)fd.path.GetGitPathString(), (LONG)m_rev2);
 	}
 	else
 	{
-		rev1name = m_path1.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString();
-		rev2name = m_path2.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString();
+		rev1name = m_path1.GetGitPathString() + _T("/") + fd.path.GetGitPathString();
+		rev2name = m_path2.GetGitPathString() + _T("/") + fd.path.GetGitPathString();
 	}
 	CAppUtils::DiffFlags flags;
 	flags.AlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	flags.Blame(blame);
 	CAppUtils::StartExtDiff(
 		tempfile, tempfile2, rev1name, rev2name, flags);
+#endif
 }
 
+#if 0
 void CFileDiffDlg::DiffProps(int selIndex)
 {
-	CFileDiffDlg::FileDiff fd = m_arFilteredList[selIndex];
+	CFileDiffDlg::CTGitPath* fd = m_arFilteredList[selIndex];
 
-	CTSVNPath url1 = CTSVNPath(m_path1.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString());
-	CTSVNPath url2 = m_bDoPegDiff ? url1 : CTSVNPath(m_path2.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString());
+	CTGitPath url1 = CTGitPath(m_path1.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
+	CTGitPath url2 = m_bDoPegDiff ? url1 : CTGitPath(m_path2.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
 
-	SVNProperties propsurl1(url1, m_rev1, false);
-	SVNProperties propsurl2(url2, m_rev2, false);
+	GitProperties propsurl1(url1, m_rev1, false);
+	GitProperties propsurl2(url2, m_rev2, false);
 	
 	// collect the properties of both revisions in a set
 	std::set<stdstring> properties;
@@ -409,8 +437,8 @@ void CFileDiffDlg::DiffProps(int selIndex)
 		if (url2value.compare(url1value)!=0)
 		{
 			// write both property values to temporary files
-			CTSVNPath url1propfile = CTempFiles::Instance().GetTempFilePath(false);
-			CTSVNPath url2propfile = CTempFiles::Instance().GetTempFilePath(false);
+			CTGitPath url1propfile = CTempFiles::Instance().GetTempFilePath(false);
+			CTGitPath url2propfile = CTempFiles::Instance().GetTempFilePath(false);
 			FILE * pFile;
 			_tfopen_s(&pFile, url1propfile.GetWinPath(), _T("wb"));
 			if (pFile)
@@ -440,13 +468,13 @@ void CFileDiffDlg::DiffProps(int selIndex)
 			{
 				if (m_bDoPegDiff)
 				{
-					n1.Format(_T("%s : %s Revision %ld"), url1name.c_str(), (LPCTSTR)fd.path.GetSVNPathString(), (LONG)m_rev1);
+					n1.Format(_T("%s : %s Revision %ld"), url1name.c_str(), (LPCTSTR)fd.path.GetGitPathString(), (LONG)m_rev1);
 				}
 				else
 				{
 					CString sTemp = url1name.c_str();
 					sTemp += _T(" : ");
-					n1 = sTemp + m_path1.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString();
+					n1 = sTemp + m_path1.GetGitPathString() + _T("/") + fd.path.GetGitPathString();
 				}
 			}
 			if (m_rev2.IsWorking())
@@ -457,20 +485,20 @@ void CFileDiffDlg::DiffProps(int selIndex)
 			{
 				if (m_bDoPegDiff)
 				{
-					n2.Format(_T("%s : %s Revision %ld"), url1name.c_str(),  (LPCTSTR)fd.path.GetSVNPathString(), (LONG)m_rev2);
+					n2.Format(_T("%s : %s Revision %ld"), url1name.c_str(),  (LPCTSTR)fd.path.GetGitPathString(), (LONG)m_rev2);
 				}
 				else
 				{
 					CString sTemp = url1name.c_str();
 					sTemp += _T(" : ");
-					n2 = sTemp + m_path2.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString();
+					n2 = sTemp + m_path2.GetGitPathString() + _T("/") + fd.path.GetGitPathString();
 				}
 			}
 			CAppUtils::StartExtDiffProps(url1propfile, url2propfile, n1, n2, TRUE);
 		}
 	}
 }
-
+#endif
 void CFileDiffDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	*pResult = 0;
@@ -486,13 +514,15 @@ void CFileDiffDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
+#if 0
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	if (pGetInfoTip->iItem >= (int)m_arFilteredList.size())
 		return;
 
-	CString path = m_path1.GetSVNPathString() + _T("/") + m_arFilteredList[pGetInfoTip->iItem].path.GetSVNPathString();
+	CString path = m_path1.GetGitPathString() + _T("/") + m_arFilteredList[pGetInfoTip->iItem].path.GetGitPathString();
 	if (pGetInfoTip->cchTextMax > path.GetLength())
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax);
+#endif
 	*pResult = 0;
 }
 
@@ -522,22 +552,22 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 		if (m_arFilteredList.size() > pLVCD->nmcd.dwItemSpec)
 		{
-			FileDiff fd = m_arFilteredList[pLVCD->nmcd.dwItemSpec];
-			switch (fd.kind)
+			CTGitPath * fd = m_arFilteredList[pLVCD->nmcd.dwItemSpec];
+			switch (fd->m_Action)
 			{
-			case svn_client_diff_summarize_kind_added:
+			case CTGitPath::LOGACTIONS_ADDED:
 				crText = m_colors.GetColor(CColors::Added);
 				break;
-			case svn_client_diff_summarize_kind_deleted:
+			case CTGitPath::LOGACTIONS_DELETED:
 				crText = m_colors.GetColor(CColors::Deleted);
 				break;
-			case svn_client_diff_summarize_kind_modified:
+			case CTGitPath::LOGACTIONS_MODIFIED:
 				crText = m_colors.GetColor(CColors::Modified);
 				break;
-			case svn_client_diff_summarize_kind_normal:
+			//case svn_client_diff_summarize_kind_normal:
 			default:
-				if (fd.propchanged)
-					crText = m_colors.GetColor(CColors::PropertyChanged);
+			//if (fd.propchanged)
+				crText = m_colors.GetColor(CColors::PropertyChanged);
 				break;
 			}
 		}
@@ -605,26 +635,26 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_cFileList.GetSelectedCount() > 0)
 				{
 					CString temp;
-					CTSVNPath savePath;
+					CTGitPath savePath;
 					CString pathSave;
 					if (!CAppUtils::FileOpenSave(pathSave, NULL, IDS_REPOBROWSE_SAVEAS, IDS_COMMONFILEFILTER, false, m_hWnd))
 					{
 						break;
 					}
-					savePath = CTSVNPath(pathSave);
+					savePath = CTGitPath(pathSave);
 
 					// now open the selected file for writing
 					try
 					{
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
-						temp.Format(IDS_FILEDIFF_CHANGEDLISTINTRO, (LPCTSTR)m_path1.GetSVNPathString(), (LPCTSTR)m_rev1.ToString(), (LPCTSTR)m_path2.GetSVNPathString(), (LPCTSTR)m_rev2.ToString());
+//						temp.Format(IDS_FILEDIFF_CHANGEDLISTINTRO, (LPCTSTR)m_path1.GetGitPathString(), (LPCTSTR)m_rev1.ToString(), (LPCTSTR)m_path2.GetGitPathString(), (LPCTSTR)m_rev2.ToString());
 						file.WriteString(temp + _T("\n"));
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
 						{
 							int index = m_cFileList.GetNextSelectedItem(pos);
-							FileDiff fd = m_arFilteredList[index];
-							file.WriteString(fd.path.GetSVNPathString());
+							CTGitPath* fd = m_arFilteredList[index];
+							file.WriteString(fd->GetGitPathString());
 							file.WriteString(_T("\n"));
 						}
 						file.Close();
@@ -653,7 +683,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					while (pos)
 					{
 						int index = m_cFileList.GetNextSelectedItem(pos);
-						CFileDiffDlg::FileDiff fd = m_arFilteredList[index];
+						CTGitPath* fd = m_arFilteredList[index];
 						m_arSelectedFileList.Add(fd);
 					}
 					m_pProgDlg = new CProgressDlg();
@@ -677,35 +707,36 @@ UINT CFileDiffDlg::ExportThreadEntry(LPVOID pVoid)
 
 UINT CFileDiffDlg::ExportThread()
 {
+#if 0
 	RefreshCursor();
-	if (m_pProgDlg == NULL)
-		return 1;
+//	if (m_pProgDlg == NULL)
+//		return 1;
 	long count = 0;
-	SetAndClearProgressInfo(m_pProgDlg, false);
+//	SetAndClearProgressInfo(m_pProgDlg, false);
 	m_pProgDlg->SetTitle(IDS_PROGRESSWAIT);
 	m_pProgDlg->SetAnimation(AfxGetResourceHandle(), IDR_DOWNLOAD);
 	m_pProgDlg->ShowModeless(this);
 	for (INT_PTR i=0; (i<m_arSelectedFileList.GetCount())&&(!m_pProgDlg->HasUserCancelled()); ++i)
 	{
-		CFileDiffDlg::FileDiff fd = m_arSelectedFileList[i];
-		CTSVNPath url1 = CTSVNPath(m_path1.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString());
-		CTSVNPath url2 = m_bDoPegDiff ? url1 : CTSVNPath(m_path2.GetSVNPathString() + _T("/") + fd.path.GetSVNPathString());
-		if ((fd.node == svn_node_dir)&&(fd.kind != svn_client_diff_summarize_kind_added))
-		{
+		CTGitPath* fd = m_arSelectedFileList[i];
+//		CTGitPath url1 = CTGitPath(m_path1.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
+//		CTGitPath url2 = m_bDoPegDiff ? url1 : CTGitPath(m_path2.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
+//		if ((fd.node == svn_node_dir)&&(fd.kind != svn_client_diff_summarize_kind_added))
+//		{
 			// just create the directory
-			CreateDirectoryEx(NULL, m_strExportDir+_T("\\")+CPathUtils::PathUnescape(fd.path.GetWinPathString()), NULL);
-			continue;
-		}
+//			CreateDirectoryEx(NULL, m_strExportDir+_T("\\")+CPathUtils::PathUnescape(fd.path.GetWinPathString()), NULL);
+//			continue;
+//		}
 
 		CString sTemp;
-		m_pProgDlg->FormatPathLine(1, IDS_PROGRESSGETFILE, (LPCTSTR)url1.GetSVNPathString());
+		m_pProgDlg->FormatPathLine(1, IDS_PROGRESSGETFILE, (LPCTSTR)url1.GetGitPathString());
 
-		CTSVNPath savepath = CTSVNPath(m_strExportDir);
+		CTGitPath savepath = CTGitPath(m_strExportDir);
 		savepath.AppendPathString(_T("\\") + CPathUtils::PathUnescape(fd.path.GetWinPathString()));
 		CPathUtils::MakeSureDirectoryPathExists(fd.node == svn_node_file ? savepath.GetContainingDirectory().GetWinPath() : savepath.GetDirectory().GetWinPath());
 		if (fd.node == svn_node_dir)
 		{
-			// exporting a folder requires calling SVN::Export() so we also export all
+			// exporting a folder requires calling Git::Export() so we also export all
 			// children of that added folder.
 			if ((fd.kind == svn_client_diff_summarize_kind_added)&&(!Export(url2, savepath, m_bDoPegDiff ? m_peg : m_rev2, m_rev2, true, true)))
 			{
@@ -713,7 +744,7 @@ UINT CFileDiffDlg::ExportThread()
 				{
 					delete m_pProgDlg;
 					m_pProgDlg = NULL;
-					CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					InterlockedExchange(&m_bThreadRunning, FALSE);
 					RefreshCursor();
 					return 1;
@@ -722,7 +753,7 @@ UINT CFileDiffDlg::ExportThread()
 		}
 		else
 		{
-			// exporting a file requires calling SVN::Cat(), since SVN::Export() only works
+			// exporting a file requires calling Git::Cat(), since Git::Export() only works
 			// with folders.
 			if ((fd.kind != svn_client_diff_summarize_kind_deleted)&&(!Cat(url2, m_bDoPegDiff ? m_peg : m_rev2, m_rev2, savepath)))
 			{
@@ -730,7 +761,7 @@ UINT CFileDiffDlg::ExportThread()
 				{
 					delete m_pProgDlg;
 					m_pProgDlg = NULL;
-					CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					InterlockedExchange(&m_bThreadRunning, FALSE);
 					RefreshCursor();
 					return 1;
@@ -746,6 +777,7 @@ UINT CFileDiffDlg::ExportThread()
 	m_pProgDlg = NULL;
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	RefreshCursor();
+#endif
 	return 0;
 }
 
@@ -777,6 +809,7 @@ void CFileDiffDlg::OnEnSetfocusSecondurl()
 
 void CFileDiffDlg::OnBnClickedSwitchleftright()
 {
+#if 0
 	if (m_bThreadRunning)
 		return;
 	CString sFilterString;
@@ -786,7 +819,7 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 	m_cFileList.DeleteAllItems();
 	for (int i=0; i<(int)m_arFileList.size(); ++i)
 	{
-		FileDiff fd = m_arFileList[i];
+		CTGitPath fd = m_arFileList[i];
 		if (fd.kind == svn_client_diff_summarize_kind_added)
 			fd.kind = svn_client_diff_summarize_kind_deleted;
 		else if (fd.kind == svn_client_diff_summarize_kind_deleted)
@@ -796,24 +829,27 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 	Filter(sFilterString);
 
 	m_cFileList.SetRedraw(true);
-	CTSVNPath path = m_path1;
+	CTGitPath path = m_path1;
 	m_path1 = m_path2;
 	m_path2 = path;
-	SVNRev rev = m_rev1;
+	GitRev rev = m_rev1;
 	m_rev1 = m_rev2;
 	m_rev2 = rev;
 	SetURLLabels();
+#endif
 }
 
 void CFileDiffDlg::SetURLLabels()
 {
+#if 0
 	m_cRev1Btn.SetWindowText(m_rev1.ToString());
 	m_cRev2Btn.SetWindowText(m_rev2.ToString());
 
-	SetDlgItemText(IDC_FIRSTURL, m_path1.GetSVNPathString());
-	SetDlgItemText(IDC_SECONDURL, m_bDoPegDiff ? m_path1.GetSVNPathString() : m_path2.GetSVNPathString());
-	m_tooltips.AddTool(IDC_FIRSTURL, m_path1.GetSVNPathString());
-	m_tooltips.AddTool(IDC_SECONDURL, m_bDoPegDiff ? m_path1.GetSVNPathString() : m_path2.GetSVNPathString());
+	SetDlgItemText(IDC_FIRSTURL, m_path1.GetGitPathString());
+	SetDlgItemText(IDC_SECONDURL, m_bDoPegDiff ? m_path1.GetGitPathString() : m_path2.GetGitPathString());
+	m_tooltips.AddTool(IDC_FIRSTURL, m_path1.GetGitPathString());
+	m_tooltips.AddTool(IDC_SECONDURL, m_bDoPegDiff ? m_path1.GetGitPathString() : m_path2.GetGitPathString());
+#endif
 }
 
 BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
@@ -852,7 +888,7 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 				{
 					// Return pressed in file list. Show diff, as for double click
 					int selIndex = m_cFileList.GetSelectionMark();
-					if ((selIndex >= 0) && (selIndex < (int)m_arFileList.size()))
+					if ((selIndex >= 0) && (selIndex < (int)m_arFileList.GetCount()))
 						DoDiff(selIndex, m_bBlame);
 					return TRUE;
 				}
@@ -913,15 +949,15 @@ void CFileDiffDlg::OnHdnItemclickFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFileDiffDlg::Sort()
 {
-	if(m_arFileList.size() < 2)
+	if(m_arFileList.GetCount() < 2)
 	{
 		return;
 	}
 
-	std::sort(m_arFileList.begin(), m_arFileList.end(), &CFileDiffDlg::SortCompare);
+//	std::sort(m_arFileList.begin(), m_arFileList.end(), &CFileDiffDlg::SortCompare);
 }
-
-bool CFileDiffDlg::SortCompare(const FileDiff& Data1, const FileDiff& Data2)
+#if 0
+bool CFileDiffDlg::SortCompare(const CTGitPath*& Data1, const CTGitPath*& Data2)
 {
 	int result = 0;
 	switch (m_nSortedColumn)
@@ -940,16 +976,18 @@ bool CFileDiffDlg::SortCompare(const FileDiff& Data1, const FileDiff& Data2)
 		result = -result;
 	return result < 0;
 }
+#endif
 
 void CFileDiffDlg::OnBnClickedRev1btn()
 {
+#if 0
 	if (m_bThreadRunning)
 		return;	// do nothing as long as the thread is still running
 
 	// show a dialog where the user can enter a revision
 	CRevisionDlg dlg(this);
 	dlg.AllowWCRevs(false);
-	*((SVNRev*)&dlg) = m_rev1;
+	*((GitRev*)&dlg) = m_rev1;
 
 	if (dlg.DoModal() == IDOK)
 	{
@@ -964,17 +1002,19 @@ void CFileDiffDlg::OnBnClickedRev1btn()
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 	}
+#endif
 }
 
 void CFileDiffDlg::OnBnClickedRev2btn()
 {
+#if 0
 	if (m_bThreadRunning)
 		return;	// do nothing as long as the thread is still running
 
 	// show a dialog where the user can enter a revision
 	CRevisionDlg dlg(this);
 	dlg.AllowWCRevs(false);
-	*((SVNRev*)&dlg) = m_rev2;
+	*((GitRev*)&dlg) = m_rev2;
 
 	if (dlg.DoModal() == IDOK)
 	{
@@ -989,6 +1029,7 @@ void CFileDiffDlg::OnBnClickedRev2btn()
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 	}
+#endif
 }
 
 LRESULT CFileDiffDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
@@ -1037,22 +1078,25 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CFileDiffDlg::Filter(CString sFilterText)
 {
+
 	sFilterText.MakeLower();
 
 	m_arFilteredList.clear();
-	for (std::vector<FileDiff>::const_iterator it = m_arFileList.begin(); it != m_arFileList.end(); ++it)
+	
+	for (int i=0;i<m_arFileList.GetCount();i++)
 	{
-		CString sPath = it->path.GetSVNPathString();
+		CString sPath = m_arFileList[i].GetGitPathString();
 		sPath.MakeLower();
 		if (sPath.Find(sFilterText) >= 0)
 		{
-			m_arFilteredList.push_back(*it);
+			m_arFilteredList.push_back((CTGitPath*)&(m_arFileList[i]));
 		}
 	}
-	for (std::vector<FileDiff>::const_iterator it = m_arFilteredList.begin(); it != m_arFilteredList.end(); ++it)
+	for (std::vector<CTGitPath*>::const_iterator it = m_arFilteredList.begin(); it != m_arFilteredList.end(); ++it)
 	{
-		AddEntry(&(*it));
+		AddEntry(*it);
 	}
+
 }
 
 void CFileDiffDlg::CopySelectionToClipboard()

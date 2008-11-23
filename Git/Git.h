@@ -21,7 +21,8 @@ public:
 	int GetLog(CString& logOut);
 	
 };
-
+extern void GetTempPath(CString &path);
 extern CString GetTempFile();
+
 
 extern CGit g_Git;

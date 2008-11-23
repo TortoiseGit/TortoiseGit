@@ -47,7 +47,7 @@
 //#include "CachedLogInfo.h"
 //#include "RepositoryInfo.h"
 //#include "EditPropertiesDlg.h"
-
+#include "FileDiffDlg.h"
 
 #if (NTDDI_VERSION < NTDDI_LONGHORN)
 
@@ -1958,12 +1958,40 @@ void CLogDlg::DiffSelectedRevWithPrevious()
 #endif
 }
 
-void CLogDlg::DoDiffFromLog(INT_PTR selIndex, git_revnum_t rev1, git_revnum_t rev2, bool blame, bool unified)
+void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool blame, bool unified)
 {
-#if 0
 	DialogEnableWindow(IDOK, FALSE);
-	SetPromptApp(&theApp);
+//	SetPromptApp(&theApp);
 	theApp.DoWaitCursor(1);
+
+	CString temppath;
+	GetTempPath(temppath);
+	
+	CString file1;
+	file1.Format(_T("%s%s_%s%s"),
+				temppath,						
+				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
+				rev1->m_CommitHash.Left(6),
+				(*m_currentChangedArray)[selIndex].GetFileExtension());
+
+	CString file2;
+	file2.Format(_T("%s\\%s_%s%s"),
+				temppath,						
+				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
+				rev2->m_CommitHash.Left(6),
+				(*m_currentChangedArray)[selIndex].GetFileExtension());
+
+	CString cmd;
+
+	cmd.Format(_T("git.cmd cat-file -p %s:%s"),rev1->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
+	g_Git.RunLogFile(cmd,file1);
+	cmd.Format(_T("git.cmd cat-file -p %s:%s"),rev2->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
+	g_Git.RunLogFile(cmd,file2);
+
+	CAppUtils::DiffFlags flags;
+	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),flags);
+
+#if 0
 	//get the filename
 	CString filepath;
 	if (Git::PathIsURL(m_path))
@@ -2032,9 +2060,11 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, git_revnum_t rev1, git_revnum_t re
 			}
 		}
 	}
+
+#endif
+
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
-#endif
 }
 
 BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, git_revnum_t rev)
@@ -4018,23 +4048,12 @@ void CLogDlg::ShowContextMenuForRevisions(CWnd* /*pWnd*/, CPoint point)
 
 		case ID_COMPARETWO:
 			{
-				//GitRev * r1 = reinterpret_cast<GitRev*>((*m_arShownList)[FirstSelect]);
-				//GitRev * r2 = reinterpret_cast<GitRev*>((*m_arShownList)[LastSelect]);
-				//if (m_LogList.GetSelectedCount() > 2)
-				//{
-				//	r1 = revHighest;
-				//	r2 = revLowest;
-				//}
-				//user clicked on the menu item "compare revisions"
-				//if (PromptShown())
-				//{
-				//	GitDiff diff(this, m_hWnd, true);
-				//	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-				//	diff.SetHEADPeg(m_LogRevision);
-				//	diff.ShowCompare(CTGitPath(pathURL), r2, CTGitPath(pathURL), r1);
-				//}
-				//else
-				//	CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), r2, CTGitPath(pathURL), r1, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+				CFileDiffDlg dlg;
+				dlg.SetDiff(NULL,*r1,*r2);
+				dlg.DoModal();
+				
 			}
 			break;
 
@@ -4528,10 +4547,11 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		return;	// nothing is selected, get out of here
 
 	bool bOneRev = true;
+	int sel=m_LogList.GetNextSelectedItem(pos);
+	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(sel));
+	GitRev * rev1 = pLogEntry;
+	GitRev * rev2 = reinterpret_cast<GitRev *>(m_arShownList.GetAt(sel+1));
 #if 0
-	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
-	git_revnum_t rev1 = pLogEntry;
-	git_revnum_t rev2 = rev1;
 	bool bOneRev = true;
 	if (pos)
 	{
@@ -4662,7 +4682,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		bool bOpenWith = false;
 		bool bMergeLog = false;
 		m_bCancelled = false;
-#if 0
+		
 		switch (cmd)
 		{
 		case ID_DIFF:
@@ -4670,6 +4690,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				DoDiffFromLog(selIndex, rev1, rev2, false, false);
 			}
 			break;
+#if 0
 		case ID_BLAMEDIFF:
 			{
 				DoDiffFromLog(selIndex, rev1, rev2, true, false);
@@ -5031,10 +5052,11 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
 			}
 			break;
+#endif
 		default:
 			break;
 		} // switch (cmd)
-#endif
+
 	} // if (popup.CreatePopupMenu())
 }
 

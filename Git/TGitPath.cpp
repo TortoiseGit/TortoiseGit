@@ -509,7 +509,16 @@ CString CTGitPath::GetFileExtension() const
 	}
 	return CString();
 }
-
+CString CTGitPath::GetBaseFilename() const
+{
+	int dot;
+	CString filename=GetFilename();
+	dot = filename.ReverseFind(_T('.'));
+	if(dot>0)
+		return filename.Left(dot-1);
+	else
+		return filename;
+}
 
 bool CTGitPath::ArePathStringsEqual(const CString& sP1, const CString& sP2)
 {
@@ -801,6 +810,76 @@ CTGitPathList::CTGitPathList()
 CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
 	AddPath(firstEntry);
+}
+
+int CTGitPathList::ParserFromLog(CString &log)
+{
+	this->Clear();
+	int pos=0;
+	CString one;
+	CTGitPath path;
+	m_Action=0;
+	while( pos>=0 )
+	{
+		one=log.Tokenize(_T("\n"),pos);
+		if(one[0]==_T(':'))
+		{
+			int tabstart=0;
+			int actionstart=0;
+			CString pathname;
+			CString action;
+			one.Tokenize(_T("\t"),tabstart);
+			if(tabstart >0)
+			{
+				action=one.Left(tabstart);
+				actionstart=action.ReverseFind(_T(' '));
+				if(actionstart>0)
+				{
+					action=action.Right(action.GetLength()-actionstart);
+				}
+				pathname=one.Right(one.GetLength()-tabstart);
+						
+				CTGitPath *GitPath=LookForGitPath(pathname);
+						
+				if(GitPath)
+				{
+					this->m_Action|=GitPath->ParserAction(action);	
+							
+				}else
+				{	
+					path.SetFromGit(pathname);
+					//action must be set after setfromgit. SetFromGit will clear all status. 
+					this->m_Action|=path.ParserAction(action);
+					AddPath(path);
+				}
+			}
+					
+		}else
+		{
+			int tabstart=0;
+			path.Reset();
+			CString StatAdd=(one.Tokenize(_T("\t"),tabstart));
+			if( tabstart< 0)
+				break;
+			CString StatDel=(one.Tokenize(_T("\t"),tabstart));
+			//SetFromGit will reset all context of GitRev
+			path.SetFromGit(one.Right(one.GetLength()-tabstart));
+				
+			CTGitPath *GitPath=LookForGitPath(path.GetGitPathString());
+			if(GitPath)
+			{
+				GitPath->m_StatAdd=StatAdd;
+				GitPath->m_StatDel=StatDel;
+			}else
+			{
+				//path.SetFromGit(pathname);
+				path.m_StatAdd=StatAdd;
+				path.m_StatDel=StatDel;
+				AddPath(path);
+			}
+		}
+	}
+	return pos;
 }
 
 void CTGitPathList::AddPath(const CTGitPath& newPath)
@@ -1586,4 +1665,9 @@ CString CTGitPath::GetActionName()
 	if(m_Action  & CTGitPath::LOGACTIONS_REPLACED)
 		return _T("Rename");
 	return _T("Unknown");
+}
+
+int CTGitPathList::GetAction()
+{
+	return m_Action;
 }

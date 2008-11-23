@@ -75,7 +75,7 @@ public:
 	 * Starts the external diff application
 	 */
 	static bool StartExtDiff(
-		const CTGitPath& file1, const CTGitPath& file2, 
+		const CString& file1, const CString& file2, 
 		const CString& sName1, const CString& sName2, const DiffFlags& flags);
 
 	/**

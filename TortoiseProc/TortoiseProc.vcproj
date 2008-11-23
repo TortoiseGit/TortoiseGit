@@ -1081,6 +1081,14 @@
 		<Filter
 			Name="Utility Dialogs"
 			>
+			<File
+				RelativePath=".\FileDiffDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FileDiffDlg.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Git"

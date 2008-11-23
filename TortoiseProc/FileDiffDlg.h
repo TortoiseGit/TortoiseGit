@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,10 +19,10 @@
 #pragma once
 #include "afxcmn.h"
 #include "StandAloneDlg.h"
-#include "SVN.h"
-#include "TSVNPath.h"
-#include "Blame.h"
-#include "SVN.h"
+#include "Git.h"
+#include "TGitPath.h"
+//#include "Blame.h"
+#include "Git.h"
 #include "HintListCtrl.h"
 #include "Colors.h"
 #include "XPImageButton.h"
@@ -38,24 +38,27 @@
  * repository. It shows a list of files/folders which were changed in those
  * two revisions.
  */
-class CFileDiffDlg : public CResizableStandAloneDialog, public SVN
+class CFileDiffDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CFileDiffDlg)
 public:
-	class FileDiff
-	{
-	public:
-		CTSVNPath path;
-		svn_client_diff_summarize_kind_t kind; 
+//	class FileDiff
+//	{
+//	public:
+//		CTGitPath path;
+//		svn_client_diff_summarize_kind_t kind; 
 		bool propchanged;
-		svn_node_kind_t node;
-	};
+//		svn_node_kind_t node;
+//	};
+
 public:
 	CFileDiffDlg(CWnd* pParent = NULL);
 	virtual ~CFileDiffDlg();
 
-	void SetDiff(const CTSVNPath& path1, SVNRev rev1, const CTSVNPath& path2, SVNRev rev2, svn_depth_t depth, bool ignoreancestry);
-	void SetDiff(const CTSVNPath& path, SVNRev peg, SVNRev rev1, SVNRev rev2, svn_depth_t depth, bool ignoreancestry);
+//	void SetDiff(const CTGitPath& path1, GitRev rev1, const CTGitPath& path2, GitRev rev2, svn_depth_t depth, bool ignoreancestry);
+//	void SetDiff(const CTGitPath& path, GitRev peg, GitRev rev1, GitRev rev2, svn_depth_t depth, bool ignoreancestry);
+
+	void SetDiff(CTGitPath * path, GitRev rev1,GitRev rev2);
 
 	void	DoBlame(bool blame = true) {m_bBlame = blame;}
 
@@ -83,12 +86,12 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	virtual svn_error_t* DiffSummarizeCallback(const CTSVNPath& path, 
-											svn_client_diff_summarize_kind_t kind, 
-											bool propchanged, 
-											svn_node_kind_t node);
+//	virtual svn_error_t* DiffSummarizeCallback(const CTGitPath& path, 
+//											svn_client_diff_summarize_kind_t kind, 
+//											bool propchanged, 
+//											svn_node_kind_t node);
 
-	int					AddEntry(const FileDiff * fd);
+	int					AddEntry(const CTGitPath * fd);
 	void				DoDiff(int selIndex, bool blame);
 	void				DiffProps(int selIndex);
 	void				SetURLLabels();
@@ -113,22 +116,22 @@ private:
 	CColors				m_colors;
 	CHintListCtrl		m_cFileList;
 	bool				m_bBlame;
-	CBlame				m_blamer;
-	std::vector<FileDiff> m_arFileList;
-	std::vector<FileDiff> m_arFilteredList;
-	CArray<FileDiff, FileDiff> m_arSelectedFileList;
+//	CBlame				m_blamer;
+	CTGitPathList		m_arFileList;
+	std::vector<CTGitPath*> m_arFilteredList;
+	CArray<CTGitPath*, CTGitPath*> m_arSelectedFileList;
 
 	CString				m_strExportDir;
 	CProgressDlg *		m_pProgDlg;
 
 	int					m_nIconFolder;
 
-	CTSVNPath			m_path1;
-	SVNRev				m_peg;
-	SVNRev				m_rev1;
-	CTSVNPath			m_path2;
-	SVNRev				m_rev2;
-	svn_depth_t			m_depth;
+	CTGitPath			m_path1;
+	GitRev				m_peg;
+	GitRev				m_rev1;
+	CTGitPath			m_path2;
+	GitRev				m_rev2;
+
 	bool				m_bIgnoreancestry;
 	bool				m_bDoPegDiff;
 	volatile LONG		m_bThreadRunning;
@@ -136,7 +139,7 @@ private:
 	bool				m_bCancelled;
 
 	void				Sort();
-	static bool			SortCompare(const FileDiff& Data1, const FileDiff& Data2);
+//	static bool			SortCompare(const FileDiff& Data1, const FileDiff& Data2);
 
 	static BOOL			m_bAscending;
 	static int			m_nSortedColumn;

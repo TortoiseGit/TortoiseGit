@@ -263,8 +263,9 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 }
 
 bool CAppUtils::StartExtDiff(
-	const CTGitPath& file1, const CTGitPath& file2,
-	const CString& sName1, const CString& sName2, const DiffFlags& flags)
+	const CString& file1,  const CString& file2,
+	const CString& sName1, const CString& sName2, 
+	const DiffFlags& flags)
 {
 	CString viewer;
 
@@ -298,18 +299,18 @@ bool CAppUtils::StartExtDiff(
 	// check if the params are set. If not, just add the files to the command line
 	if ((viewer.Find(_T("%base"))<0)&&(viewer.Find(_T("%mine"))<0))
 	{
-		viewer += _T(" \"")+file1.GetWinPathString()+_T("\"");
-		viewer += _T(" \"")+file2.GetWinPathString()+_T("\"");
+		viewer += _T(" \"")+file1+_T("\"");
+		viewer += _T(" \"")+file2+_T("\"");
 	}
 	if (viewer.Find(_T("%base")) >= 0)
 	{
-		viewer.Replace(_T("%base"),  _T("\"")+file1.GetWinPathString()+_T("\""));
+		viewer.Replace(_T("%base"),  _T("\"")+file1+_T("\""));
 	}
 	if (viewer.Find(_T("%mine")) >= 0)
 	{
-		viewer.Replace(_T("%mine"),  _T("\"")+file2.GetWinPathString()+_T("\""));
+		viewer.Replace(_T("%mine"),  _T("\"")+file2+_T("\""));
 	}
-
+#if 0
 	if (sName1.IsEmpty())
 		viewer.Replace(_T("%bname"), _T("\"") + file1.GetUIFileOrDirectoryName() + _T("\""));
 	else
@@ -319,6 +320,7 @@ bool CAppUtils::StartExtDiff(
 		viewer.Replace(_T("%yname"), _T("\"") + file2.GetUIFileOrDirectoryName() + _T("\""));
 	else
 		viewer.Replace(_T("%yname"), _T("\"") + sName2 + _T("\""));
+#endif
 
 	if (flags.bReadOnly && bInternal)
 		viewer += _T(" /readonly");

@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
 
@@ -20,13 +20,13 @@
 
 
 // For base class
-#include "SVNRev.h"
+#include "GitRev.h"
 
 /**
  * \ingroup TortoiseProc
  * A simple dialog box asking the user for a revision number.
  */
-class CRevisionDlg : public CDialog, public SVNRev
+class CRevisionDlg : public CDialog, public GitRev
 {
 	DECLARE_DYNAMIC(CRevisionDlg)
 

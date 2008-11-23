@@ -131,6 +131,19 @@ int CGit::GetLog(CString& logOut)
 }
 
 #define BUFSIZE 512
+void GetTempPath(CString &path)
+{
+	TCHAR lpPathBuffer[BUFSIZE];
+	DWORD dwRetVal;
+	DWORD dwBufSize=BUFSIZE;
+	dwRetVal = GetTempPath(dwBufSize,     // length of the buffer
+                           lpPathBuffer); // buffer for path 
+    if (dwRetVal > dwBufSize || (dwRetVal == 0))
+    {
+        path=_T("");
+    }
+	path.Format(_T("%s"),lpPathBuffer);
+}
 CString GetTempFile()
 {
 	TCHAR lpPathBuffer[BUFSIZE];

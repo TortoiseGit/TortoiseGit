@@ -91,6 +91,7 @@ public:
 	 * \remark don't call this for directories.
 	 */
 	CString GetFilename() const;
+	CString GetBaseFilename() const;
 	/**
 	 * Returns the item's name without the full path.
 	 */
@@ -282,13 +283,14 @@ public:
 	CTGitPathList();
 	// A constructor which allows a path list to be easily built with one initial entry in
 	explicit CTGitPathList(const CTGitPath& firstEntry);
-
+	int m_Action;
 public:
 	void AddPath(const CTGitPath& newPath);
 	bool LoadFromFile(const CTGitPath& filename);
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
 	CTGitPath * LookForGitPath(CString path);
-
+	int	ParserFromLog(CString &log);
+	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used
 	 * This is a list of paths, with '*' between them

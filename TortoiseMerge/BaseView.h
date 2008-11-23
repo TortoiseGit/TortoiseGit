@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "DiffData.h"
-#include "SVNLineDiff.h"
+//#include "SVNLineDiff.h"
 #include "ScrollTool.h"
 #include "Undo.h"
 #include "LocatorBar.h"
@@ -232,7 +232,7 @@ protected:
 	COLORREF		m_WhiteSpaceFg;
 	UINT			m_nStatusBarID;		///< The ID of the status bar pane used by this view. Must be set by the parent class.
 
-	SVNLineDiff		m_svnlinediff;
+//	SVNLineDiff		m_svnlinediff;
 	BOOL			m_bOtherDiffChecked;
 	BOOL			m_bModified;
 	BOOL			m_bFocused;

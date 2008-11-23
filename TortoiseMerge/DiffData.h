@@ -18,8 +18,8 @@
 //
 #pragma once
 
-#include "svn_diff.h"
-#include "apr_pools.h"
+//#include "svn_diff.h"
+//#include "apr_pools.h"
 #include "FileTextLines.h"
 #include "Registry.h"
 #include "WorkingFile.h"
@@ -51,8 +51,8 @@ public:
 	bool	IsYourFileInUse() const		{ return m_yourFile.InUse(); }
 
 private:
-	bool DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, apr_pool_t * pool);
-	bool DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFilename, const CString& sTheirFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, bool bIgnoreCase, apr_pool_t * pool);
+	bool DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilename, DWORD dwIgnoreWS, bool bIgnoreEOL);
+	bool DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFilename, const CString& sTheirFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, bool bIgnoreCase);
 
 
 public:
