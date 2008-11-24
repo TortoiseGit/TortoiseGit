@@ -113,7 +113,7 @@ void CGitStatusListCtrl::ColumnManager::ReadSettings
         columns[i].relevant = true;
     }
 
-    userProps.clear();
+//    userProps.clear();
 
     // where the settings are stored within the registry
 
@@ -295,8 +295,8 @@ CString CGitStatusListCtrl::ColumnManager::GetName (int column) const
 
     // user-prop columns
 
-    if (index < columns.size())
-        return userProps[columns[index].index - SVNSLC_USERPROPCOLOFFSET].name;
+//    if (index < columns.size())
+//        return userProps[columns[index].index - SVNSLC_USERPROPCOLOFFSET].name;
 
     // default: empty
 
@@ -904,8 +904,8 @@ CGitStatusListCtrl::CSorter::CSorter ( ColumnManager* columnManager
 }
 
 bool CGitStatusListCtrl::CSorter::operator()
-( const FileEntry* entry1
- , const FileEntry* entry2) const
+( const CTGitPath* entry1
+ , const CTGitPath* entry2) const
 {
 #define SGN(x) ((x)==0?0:((x)>0?1:-1))
 
@@ -916,8 +916,8 @@ bool CGitStatusListCtrl::CSorter::operator()
 		{
 			if (result == 0)
 			{
-				__int64 writetime1 = entry1->GetPath().GetLastWriteTime();
-				__int64 writetime2 = entry2->GetPath().GetLastWriteTime();
+				__int64 writetime1 = entry1->GetLastWriteTime();
+				__int64 writetime2 = entry2->GetLastWriteTime();
 
 				FILETIME* filetime1 = (FILETIME*)(__int64*)&writetime1;
 				FILETIME* filetime2 = (FILETIME*)(__int64*)&writetime2;
@@ -936,35 +936,35 @@ bool CGitStatusListCtrl::CSorter::operator()
 		{
 			if (result == 0)
 			{
-				result = SGN(entry1->needslock - entry2->needslock);
+//				result = SGN(entry1->needslock - entry2->needslock);
 			}
 		}
 	case 15:
 		{
 			if (result == 0)
 			{
-				result = SGN(entry1->last_commit_date - entry2->last_commit_date);
+//				result = SGN(entry1->last_commit_date - entry2->last_commit_date);
 			}
 		}
 	case 14:
 		{
 			if (result == 0)
 			{
-				result = entry1->remoterev - entry2->remoterev;
+//				result = entry1->remoterev - entry2->remoterev;
 			}
 		}
 	case 13:
 		{
 			if (result == 0)
 			{
-				result = entry1->last_commit_rev - entry2->last_commit_rev;
+//				result = entry1->last_commit_rev - entry2->last_commit_rev;
 			}
 		}
 	case 12:
 		{
 			if (result == 0)
 			{
-				result = entry1->last_commit_author.CompareNoCase(entry2->last_commit_author);
+//				result = entry1->last_commit_author.CompareNoCase(entry2->last_commit_author);
 			}
 		}
 	case 11:
@@ -1027,28 +1027,28 @@ bool CGitStatusListCtrl::CSorter::operator()
 		{
 			if (result == 0)
 			{
-				result = entry1->status - entry2->status;
+	//			result = entry1->status - entry2->status;
 			}
 		}
 	case 2:
 		{
 			if (result == 0)
 			{
-				result = entry1->path.GetFileExtension().CompareNoCase(entry2->path.GetFileExtension());
+				result = entry1->GetFileExtension().CompareNoCase(entry2->GetFileExtension());
 			}
 		}
 	case 1:
 		{
 			if (result == 0)
 			{
-				result = entry1->path.GetFileOrDirectoryName().CompareNoCase(entry2->path.GetFileOrDirectoryName());
+				result = entry1->GetFileOrDirectoryName().CompareNoCase(entry2->GetFileOrDirectoryName());
 			}
 		}
 	case 0:		// path column
 		{
 			if (result == 0)
 			{
-				result = CTGitPath::Compare(entry1->path, entry2->path);
+				result = CTGitPath::Compare(entry1->GetGitPathString(), entry2->GetGitPathString());
 			}
 		}
 	default:

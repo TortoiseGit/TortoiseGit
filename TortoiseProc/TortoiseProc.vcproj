@@ -393,6 +393,10 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;h;hpp;hxx;hm;inl;inc"
 			>
 			<File
+				RelativePath=".\gitstatuslistctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ProjectProperties.cpp"
 				>
 			</File>

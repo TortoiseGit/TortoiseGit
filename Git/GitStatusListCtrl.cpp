@@ -168,21 +168,26 @@ CGitStatusListCtrl::~CGitStatusListCtrl()
 
 void CGitStatusListCtrl::ClearStatusArray()
 {
+#if 0
 	Locker lock(m_critSec);
 	for (size_t i=0; i < m_arStatusArray.size(); i++)
 	{
 		delete m_arStatusArray[i];
 	}
 	m_arStatusArray.clear();
+#endif
 }
 
 CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetListEntry(UINT_PTR index)
 {
+#if 0
 	if (index >= (UINT_PTR)m_arListArray.size())
 		return NULL;
 	if (m_arListArray[index] >= m_arStatusArray.size())
 		return NULL;
 	return m_arStatusArray[m_arListArray[index]];
+#endif
+	return NULL;
 }
 
 CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetVisibleListEntry(const CTGitPath& path)
@@ -199,12 +204,14 @@ CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetVisibleListEntry(const CT
 
 CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetListEntry(const CTGitPath& path)
 {
+#if 0
 	for (size_t i=0; i < m_arStatusArray.size(); i++)
 	{
 		FileEntry * entry = m_arStatusArray[i];
 		if (entry->GetPath().IsEquivalentTo(path))
 			return entry;
 	}
+#endif
 	return NULL;
 }
 
@@ -277,6 +284,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
                                    , bool bShowIgnores /* = false */
                                    , bool bShowUserProps /* = false */)
 {
+#if 0
 	Locker lock(m_critSec);
 	int refetchcounter = 0;
 	BOOL bRet = TRUE;
@@ -287,7 +295,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
 	SetCursorPos(pt.x, pt.y);
 
 	m_mapFilenameToChecked.clear();
-	m_StatusUrlList.Clear();
+	//m_StatusUrlList.Clear();
 	bool bHasChangelists = (m_changelists.size()>1 || (m_changelists.size()>0 && !m_bHasIgnoreGroup));
 	m_changelists.clear();
 	for (size_t i=0; i < m_arStatusArray.size(); i++)
@@ -439,6 +447,8 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
 	GetCursorPos(&pt);
 	SetCursorPos(pt.x, pt.y);
 	return bRet;
+#endif 
+	return TRUE;
 }
 
 //
@@ -1022,9 +1032,68 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 
 void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */)
 {
+	CWinApp * pApp = AfxGetApp();
+	if (pApp)
+		pApp->DoWaitCursor(1);
 
 	Locker lock(m_critSec);
 	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
+	
+	//SetItemCount(listIndex);
+	SetRedraw(FALSE);
+	DeleteAllItems();
+
+	for(int i=0;i<this->m_arStatusArray.size();i++)
+	{
+		AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
+	}
+	
+	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
+	for (int col = 0; col <= maxcol; col++)
+        SetColumnWidth (col, m_ColumnManager.GetWidth (col, true));
+
+    SetRedraw(TRUE);
+	GetStatisticsString();
+
+	CHeaderCtrl * pHeader = GetHeaderCtrl();
+	HDITEM HeaderItem = {0};
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i=0; i<pHeader->GetItemCount(); ++i)
+	{
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
+	}
+	if (m_nSortedColumn)
+	{
+		pHeader->GetItem(m_nSortedColumn, &HeaderItem);
+		HeaderItem.fmt |= (m_bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(m_nSortedColumn, &HeaderItem);
+	}
+
+#if 0
+	if (nSelectedEntry)
+	{
+		SetItemState(nSelectedEntry, LVIS_SELECTED, LVIS_SELECTED);
+		EnsureVisible(nSelectedEntry, false);
+	}
+	else
+	{
+		// Restore the item at the top of the list.
+		for (int i=0;GetTopIndex() != nTopIndex;i++)
+		{
+			if ( !EnsureVisible(nTopIndex+i,false) )
+			{
+				break;
+			}
+		}
+	}
+#endif
+	if (pApp)
+		pApp->DoWaitCursor(-1);
+
+	Invalidate();
+#if 0
 
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -1161,11 +1230,14 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
+#endif
 
 }
 
 void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bool bShowFolders /* = true */)
 {
+	return ;
+#if 0
 
 	Locker lock(m_critSec);
 	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
@@ -1294,9 +1366,232 @@ void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bo
 
 	m_bEmpty = (GetItemCount() == 0);
 	Invalidate();
+#endif
 
 }
+void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listIndex)
+{
+	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
+	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 
+	CString path = GitPath->GetGitPathString();
+
+	m_bBlock = TRUE;
+	TCHAR buf[100];
+	int index = listIndex;
+	int nCol = 1;
+	CString entryname = GitPath->GetGitPathString();
+	int icon_idx = 0;
+//	if (entry->isfolder)
+//		icon_idx = m_nIconFolder;
+//	else
+	{
+		icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(*GitPath);
+	}
+	// relative path
+	InsertItem(index, entryname, icon_idx);
+
+	this->SetItemData(index, (DWORD_PTR)GitPath);
+	// SVNSLC_COLFILENAME
+	SetItemText(index, nCol++, GitPath->GetFileOrDirectoryName());
+	// SVNSLC_COLEXT
+	SetItemText(index, nCol++, GitPath->GetFileExtension());
+	// SVNSLC_COLSTATUS
+//	if (entry->isNested)
+//	{
+//		CString sTemp(MAKEINTRESOURCE(IDS_STATUSLIST_NESTED));
+//		SetItemText(index, nCol++, sTemp);
+//	}
+//	else
+	{
+		SetItemText(index, nCol++, GitPath->GetActionName());
+	}
+	// SVNSLC_COLREMOTESTATUS
+//	if (entry->isNested)
+//	{
+//		CString sTemp(MAKEINTRESOURCE(IDS_STATUSLIST_NESTED));
+//		SetItemText(index, nCol++, sTemp);
+//	}
+//	else
+	{
+		//SetItemText(index, nCol++, buf);
+	}
+	// SVNSLC_COLTEXTSTATUS
+//	if (entry->isNested)
+//	{
+//		CString sTemp(MAKEINTRESOURCE(IDS_STATUSLIST_NESTED));
+//		SetItemText(index, nCol++, sTemp);
+//	}
+//	else
+//	{
+#if 0
+		SVNStatus::GetStatusString(hResourceHandle, entry->textstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		if ((entry->copied)&&(_tcslen(buf)>1))
+			_tcscat_s(buf, 100, _T(" (+)"));
+		if ((entry->switched)&&(_tcslen(buf)>1))
+			_tcscat_s(buf, 100, _T(" (s)"));
+#endif
+//		SetItemText(index, nCol++, buf);
+//	}
+	// SVNSLC_COLPROPSTATUS
+//	if (entry->isNested)
+//	{
+//		SetItemText(index, nCol++, _T(""));
+//	}
+//	else
+//	{
+#if 0
+		SVNStatus::GetStatusString(hResourceHandle, entry->propstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		if ((entry->copied)&&(_tcslen(buf)>1))
+			_tcscat_s(buf, 100, _T(" (+)"));
+		if ((entry->switched)&&(_tcslen(buf)>1))
+			_tcscat_s(buf, 100, _T(" (s)"));
+#endif
+//		SetItemText(index, nCol++, buf);
+//	}
+	// SVNSLC_COLREMOTETEXT
+//	if (entry->isNested)
+//	{
+//		SetItemText(index, nCol++, _T(""));
+//	}
+//	else
+//	{
+#if 0
+		SVNStatus::GetStatusString(hResourceHandle, entry->remotetextstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		SetItemText(index, nCol++, buf);
+#endif
+//	}
+	// SVNSLC_COLREMOTEPROP
+//	if (entry->isNested)
+//	{
+//		SetItemText(index, nCol++, _T(""));
+//	}
+//	else
+//	{
+//		SVNStatus::GetStatusString(hResourceHandle, entry->remotepropstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+//		SetItemText(index, nCol++, buf);
+//	}
+	// SVNSLC_COLURL
+//	SetItemText(index, nCol++, entry->url);
+	// SVNSLC_COLLOCK
+#if 0
+	if (!m_HeadRev.IsHead())
+	{
+		// we have contacted the repository
+
+		// decision-matrix
+		// wc		repository		text
+		// ""		""				""
+		// ""		UID1			owner
+		// UID1		UID1			owner
+		// UID1		""				lock has been broken
+		// UID1		UID2			lock has been stolen
+		if (entry->lock_token.IsEmpty() || (entry->lock_token.Compare(entry->lock_remotetoken)==0))
+		{
+			if (entry->lock_owner.IsEmpty())
+				SetItemText(index, nCol++, entry->lock_remoteowner);
+			else
+				SetItemText(index, nCol++, entry->lock_owner);
+		}
+		else if (entry->lock_remotetoken.IsEmpty())
+		{
+			// broken lock
+			CString temp(MAKEINTRESOURCE(IDS_STATUSLIST_LOCKBROKEN));
+			SetItemText(index, nCol++, temp);
+		}
+		else
+		{
+			// stolen lock
+			CString temp;
+			temp.Format(IDS_STATUSLIST_LOCKSTOLEN, (LPCTSTR)entry->lock_remoteowner);
+			SetItemText(index, nCol++, temp);
+		}
+	}
+	else
+		SetItemText(index, nCol++, entry->lock_owner);
+	// SVNSLC_COLLOCKCOMMENT
+	SetItemText(index, nCol++, entry->lock_comment);
+	// SVNSLC_COLAUTHOR
+	SetItemText(index, nCol++, entry->last_commit_author);
+	// SVNSLC_COLREVISION
+	CString temp;
+	temp.Format(_T("%ld"), entry->last_commit_rev);
+	if (entry->last_commit_rev > 0)
+		SetItemText(index, nCol++, temp);
+	else
+		SetItemText(index, nCol++, _T(""));
+	// SVNSLC_COLREMOTEREVISION
+	temp.Format(_T("%ld"), entry->remoterev);
+	if (entry->remoterev > 0)
+		SetItemText(index, nCol++, temp);
+	else
+		SetItemText(index, nCol++, _T(""));
+	// SVNSLC_COLDATE
+	TCHAR datebuf[SVN_DATE_BUFFER];
+	apr_time_t date = entry->last_commit_date;
+	SVN::formatDate(datebuf, date, true);
+	if (date)
+		SetItemText(index, nCol++, datebuf);
+	else
+		SetItemText(index, nCol++, _T(""));
+	// SVNSLC_COLSVNNEEDSLOCK
+    BOOL bFoundSVNNeedsLock = entry->present_props.IsNeedsLockSet();
+	CString strSVNNeedsLock = (bFoundSVNNeedsLock) ? _T("*") : _T("");
+	SetItemText(index, nCol++, strSVNNeedsLock);
+	// SVNSLC_COLCOPYFROM
+	if (m_sURL.Compare(entry->copyfrom_url.Left(m_sURL.GetLength()))==0)
+		temp = entry->copyfrom_url.Mid(m_sURL.GetLength());
+	else
+		temp = entry->copyfrom_url;
+	SetItemText(index, nCol++, temp);
+	// SVNSLC_COLMODIFICATIONDATE
+	__int64 filetime = entry->GetPath().GetLastWriteTime();
+	if ( (filetime) && (entry->status!=git_wc_status_deleted) )
+	{
+		FILETIME* f = (FILETIME*)(__int64*)&filetime;
+		TCHAR datebuf[SVN_DATE_BUFFER];
+		SVN::formatDate(datebuf,*f,true);
+		SetItemText(index, nCol++, datebuf);
+	}
+	else
+	{
+		SetItemText(index, nCol++, _T(""));
+	}
+
+    // user-defined properties
+    for ( int i = SVNSLC_NUMCOLUMNS, count = m_ColumnManager.GetColumnCount()
+        ; i < count
+        ; ++i)
+    {
+        assert (i == nCol++);
+        assert (m_ColumnManager.IsUserProp (i));
+
+        CString name = m_ColumnManager.GetName(i);
+        if (entry->present_props.HasProperty (name))
+		{
+			const CString& propVal = entry->present_props [name];
+			if (propVal.IsEmpty())
+				SetItemText(index, i, m_sNoPropValueText);
+			else
+				SetItemText(index, i, propVal);
+		}
+		else
+            SetItemText(index, i, _T(""));
+    }
+#endif
+	SetCheck(index, GitPath->m_Checked);
+	if (GitPath->m_Checked)
+		m_nSelected++;
+#if 0
+	if (m_changelists.find(entry->changelist) != m_changelists.end())
+		SetItemGroup(index, m_changelists[entry->changelist]);
+	else
+		SetItemGroup(index, 0);
+	m_bBlock = FALSE;
+#endif
+
+}
+#if 0
 void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 {
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
@@ -1546,7 +1841,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	m_bBlock = FALSE;
 #endif
 }
-
+#endif
 bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)
 {
 	if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS) == NULL)
@@ -1571,6 +1866,7 @@ void CGitStatusListCtrl::Sort()
 	std::sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
 	SaveColumnWidths();
 	Show(m_dwShow, 0, m_bShowFolders);
+
 }
 
 void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1602,10 +1898,11 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 	pHeader->SetItem(m_nSortedColumn, &HeaderItem);
 
 	// the checked state of the list control items must be restored
+
 	for (int i=0; i<GetItemCount(); ++i)
 	{
-		FileEntry * entry = GetListEntry(i);
-		SetCheck(i, entry->IsChecked());
+		CTGitPath * entry = (CTGitPath*)GetItemData(i);
+		SetCheck(i, entry->m_Checked);
 	}
 
 	m_bBlock = FALSE;
@@ -1641,6 +1938,10 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 
 	m_bBlock = TRUE;
 	// was the item checked?
+	
+	CTGitPath *gitpath=(CTGitPath*)GetItemData(pNMLV->iItem);
+	gitpath->m_Checked=GetCheck(pNMLV->iItem);
+#if 0
 	if (GetCheck(pNMLV->iItem))
 	{
 		CheckEntry(pNMLV->iItem, nListItems);
@@ -1669,6 +1970,7 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 		}
 	}
+#endif
 	GetStatisticsString();
 	m_bBlock = FALSE;
 	NotifyCheck();
@@ -1846,6 +2148,7 @@ bool CGitStatusListCtrl::IsEntryVersioned(const FileEntry* pEntry1)
 
 bool CGitStatusListCtrl::BuildStatistics()
 {
+#if 0
 	bool bRefetchStatus = false;
 	FileEntryVector::iterator itFirstUnversionedEntry;
 	itFirstUnversionedEntry = std::partition(m_arStatusArray.begin(), m_arStatusArray.end(), IsEntryVersioned);
@@ -1948,6 +2251,8 @@ bool CGitStatusListCtrl::BuildStatistics()
 		} // if (entry)
 	} // for (int i=0; i < (int)m_arStatusArray.size(); ++i)
 	return !bRefetchStatus;
+#endif 
+	return FALSE;
 }
 
 void CGitStatusListCtrl::GetMinMaxRevisions(git_revnum_t& rMin, git_revnum_t& rMax, bool bShownOnly, bool bCheckedOnly)
@@ -4102,6 +4407,7 @@ BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void CGitStatusListCtrl::RemoveListEntry(int index)
 {
+#if 0
 	Locker lock(m_critSec);
 	DeleteItem(index);
 	delete m_arStatusArray[m_arListArray[index]];
@@ -4111,6 +4417,7 @@ void CGitStatusListCtrl::RemoveListEntry(int index)
 	{
 		m_arListArray[i]--;
 	}
+#endif
 }
 
 ///< Set a checkbox on an entry in the listbox
@@ -4524,12 +4831,14 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
+#if 0
 	for (size_t i=0; i < m_arStatusArray.size(); i++)
 	{
 		FileEntry * entry = m_arStatusArray[i];
 		if (entry->GetPath().IsEquivalentTo(path))
 			return true;
 	}
+#endif
 	return false;
 }
 
@@ -4915,7 +5224,23 @@ void CGitStatusListCtrl::NotifyCheck()
 	}
 }
 
-
+int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash)
+{
+	CString out;
+	if(hash == GIT_REV_ZERO)
+	{
+		CString cmd(_T("git.cmd diff-index --raw HEAD --numstat -C -M"));
+		g_Git.Run(cmd,&out);
+		this->m_StatusFileList.ParserFromLog(out);
+	}
+	for(int i=0;i<m_StatusFileList.GetCount();i++)
+	{
+		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
+		gitpatch->m_Checked = TRUE;
+		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
+	}
+	return 0;
+}
 //////////////////////////////////////////////////////////////////////////
 #if 0
 bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD * /*pdwEffect*/, POINTL pt)
@@ -5049,6 +5374,6 @@ HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeySta
 		}
 	}
 	return S_OK;
-}
+}f
 
 #endif

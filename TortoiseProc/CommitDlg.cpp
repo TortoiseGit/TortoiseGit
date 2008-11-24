@@ -591,6 +591,9 @@ UINT CCommitDlg::StatusThread()
 #endif
     // Initialise the list control with the status of the files/folders below us
 	BOOL success = m_ListCtrl.GetStatus(m_pathList);
+
+	m_ListCtrl.UpdateFileList(GIT_REV_ZERO);
+	
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
 	DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWINCHANGELIST;
@@ -627,17 +630,17 @@ UINT CCommitDlg::StatusThread()
 	}
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems()))
 	{
-		if (CMessageBox::Show(m_hWnd, IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED, IDS_APPNAME, MB_ICONINFORMATION | MB_YESNO)==IDYES)
-		{
-			m_bShowUnversioned = TRUE;
-			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
-			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
-			m_ListCtrl.Show(dwShow);
-		}
+//		if (CMessageBox::Show(m_hWnd, IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED, IDS_APPNAME, MB_ICONINFORMATION | MB_YESNO)==IDYES)
+//		{
+//			m_bShowUnversioned = TRUE;
+//			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
+//			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
+//			m_ListCtrl.Show(dwShow);
+//		}
 	}
 
-	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
-	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+//	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+//	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	m_autolist.clear();
 	// we don't have to block the commit dialog while we fetch the
@@ -1357,10 +1360,16 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 void CCommitDlg::OnBnClickedSignOff()
 {
 	// TODO: Add your control notification handler code here
-	CGit git;
 	CString str;
-	str.Format(_T("Signed-off-by: %s <%s>\n"),git.GetUserName(), git.GetUserEmail());
-	m_cLogMessage.InsertText(str,true);
+	CString username;
+	CString email;
+	username=g_Git.GetUserName();
+	email=g_Git.GetUserEmail();
+	username.Remove(_T('\n'));
+	email.Remove(_T('\n'));
+	str.Format(_T("Signed-off-by: %s <%s>\n"),username,email);
+
+	m_cLogMessage.SetText(m_cLogMessage.GetText()+_T("\r\n\r\n")+str);
 }
 
 void CCommitDlg::OnStnClickedCommitlabel()

@@ -841,15 +841,16 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 
 void CFileDiffDlg::SetURLLabels()
 {
-#if 0
-	m_cRev1Btn.SetWindowText(m_rev1.ToString());
-	m_cRev2Btn.SetWindowText(m_rev2.ToString());
 
-	SetDlgItemText(IDC_FIRSTURL, m_path1.GetGitPathString());
-	SetDlgItemText(IDC_SECONDURL, m_bDoPegDiff ? m_path1.GetGitPathString() : m_path2.GetGitPathString());
-	m_tooltips.AddTool(IDC_FIRSTURL, m_path1.GetGitPathString());
-	m_tooltips.AddTool(IDC_SECONDURL, m_bDoPegDiff ? m_path1.GetGitPathString() : m_path2.GetGitPathString());
-#endif
+	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.Left(6));
+	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.Left(6));
+
+	SetDlgItemText(IDC_FIRSTURL, m_rev1.m_Subject+CString(_T("\r\n"))+m_rev1.m_CommitHash);
+	SetDlgItemText(IDC_SECONDURL,m_rev2.m_Subject+CString(_T("\r\n"))+m_rev2.m_CommitHash);
+
+	m_tooltips.AddTool(IDC_FIRSTURL,  m_rev1.m_AuthorDate.Format(_T("%Y-%m-%d  "))+m_rev1.m_AuthorName);
+	m_tooltips.AddTool(IDC_SECONDURL, m_rev2.m_AuthorDate.Format(_T("%Y-%m-%d  "))+m_rev2.m_AuthorName);
+
 }
 
 BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)

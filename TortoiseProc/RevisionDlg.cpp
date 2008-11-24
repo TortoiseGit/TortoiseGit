@@ -25,7 +25,7 @@
 IMPLEMENT_DYNAMIC(CRevisionDlg, CDialog)
 CRevisionDlg::CRevisionDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CRevisionDlg::IDD, pParent)
-	, SVNRev(_T("HEAD"))
+	//, GitRev(_T("HEAD"))
 	, m_bAllowWCRevs(true)
 {
 }

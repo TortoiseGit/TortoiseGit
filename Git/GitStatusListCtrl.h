@@ -445,6 +445,7 @@ public:
         /// global column ordering including unused user props
 
         std::vector<int> columnOrder;
+
     };/**
 	 * \ingroup TortoiseProc
 	 * Simple utility class that defines the sort column order.
@@ -457,8 +458,8 @@ public:
                 , int sortedColumn
                 , bool ascending);
 
-        bool operator() ( const FileEntry* entry1
-                        , const FileEntry* entry2) const;
+        bool operator() ( const CTGitPath* entry1
+                        , const CTGitPath* entry2) const;
 
     private:
 
@@ -830,14 +831,15 @@ private:
 	BOOL						m_bHasUnversionedItems;
 	bool						m_bHasLocks;
 	bool						m_bHasChangeLists;
-	typedef std::vector<FileEntry*> FileEntryVector;
-	FileEntryVector				m_arStatusArray;
+	//typedef std::vector<FileEntry*> FileEntryVector;
+	//FileEntryVector				m_arStatusArray;
+	std::vector<CTGitPath*>		m_arStatusArray;
 	std::vector<size_t>			m_arListArray;
 	std::map<CString, int>	    m_changelists;
 	bool						m_bHasIgnoreGroup;
-	CTGitPathList				m_ConflictFileList;
+	//CTGitPathList				m_ConflictFileList;
 	CTGitPathList				m_StatusFileList;
-	CTGitPathList				m_StatusUrlList;
+	//CTGitPathList				m_StatusUrlList;
 	CString						m_sLastError;
 
 	LONG						m_nUnversioned;
@@ -886,6 +888,9 @@ private:
 	CComCriticalSection			m_critSec;
 
 	friend class CGitStatusListCtrlDropTarget;
+public:
+	int UpdateFileList(git_revnum_t hash);
+	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
 };
 
 #if 0

@@ -13,12 +13,15 @@ public:
 		LOGACTIONS_ADDED	= 0x00000001,
 		LOGACTIONS_MODIFIED	= 0x00000002,
 		LOGACTIONS_REPLACED	= 0x00000004,
-		LOGACTIONS_DELETED	= 0x00000008
+		LOGACTIONS_DELETED	= 0x00000008,
+		LOGACTIONS_UNVER	= 0x80000000,
+		LOGACTIONS_IGNORE	= 0x40000000
 	};
 
 	CString m_StatAdd;
 	CString m_StatDel;
 	int		m_Action;
+	bool    m_Checked;
 	int	ParserAction(CString action);
 	CString GetActionName();
 	/**
