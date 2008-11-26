@@ -409,7 +409,7 @@ END
 //
 LANGUAGE 9, 1
 #pragma code_page(1252)
-#include "resource.rc2"  // non-Microsoft Visual C++ edited resources
+#include "resourceshell.rc2"  // non-Microsoft Visual C++ edited resources
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

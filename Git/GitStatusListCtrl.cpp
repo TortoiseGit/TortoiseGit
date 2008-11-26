@@ -22,6 +22,7 @@
 #include "StdAfx.h"
 #include "GitStatusListCtrl.h"
 #include "resource.h"
+#include "..\\TortoiseShell\resource.h"
 #include "MessageBox.h"
 #include "MyMemDC.h"
 #include "UnicodeUtils.h"
@@ -1042,6 +1043,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
 	DeleteAllItems();
+	m_nSelected = 0;
 
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
@@ -1093,6 +1095,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 		pApp->DoWaitCursor(-1);
 
 	Invalidate();
+
 #if 0
 
 	CWinApp * pApp = AfxGetApp();
@@ -1100,7 +1103,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 		pApp->DoWaitCursor(1);
 	m_dwShow = dwShow;
 	m_bShowFolders = bShowFolders;
-	m_nSelected = 0;
+	
 	int nTopIndex = GetTopIndex();
 	POSITION posSelectedEntry = GetFirstSelectedItemPosition();
 	int nSelectedEntry = 0;
@@ -1939,9 +1942,9 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	m_bBlock = TRUE;
 	// was the item checked?
 	
-	CTGitPath *gitpath=(CTGitPath*)GetItemData(pNMLV->iItem);
-	gitpath->m_Checked=GetCheck(pNMLV->iItem);
-#if 0
+	//CTGitPath *gitpath=(CTGitPath*)GetItemData(pNMLV->iItem);
+	//gitpath->m_Checked=GetCheck(pNMLV->iItem);
+
 	if (GetCheck(pNMLV->iItem))
 	{
 		CheckEntry(pNMLV->iItem, nListItems);
@@ -1970,7 +1973,7 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 		}
 	}
-#endif
+
 	GetStatisticsString();
 	m_bBlock = FALSE;
 	NotifyCheck();
@@ -2014,15 +2017,17 @@ void CGitStatusListCtrl::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
 void CGitStatusListCtrl::CheckEntry(int index, int nListItems)
 {
 	Locker lock(m_critSec);
-	FileEntry * entry = GetListEntry(index);
-	ASSERT(entry != NULL);
-	if (entry == NULL)
+	//FileEntry * entry = GetListEntry(index);
+	CTGitPath *path=(CTGitPath*)GetItemData(index);
+	ASSERT(path != NULL);
+	if (path == NULL)
 		return;
 	SetCheck(index, TRUE);
-	entry = GetListEntry(index);
+	//entry = GetListEntry(index);
 	// if an unversioned item was checked, then we need to check if
 	// the parent folders are unversioned too. If the parent folders actually
 	// are unversioned, then check those too.
+#if 0
 	if (entry->status == git_wc_status_unversioned)
 	{
 		// we need to check the parent folder too
@@ -2076,10 +2081,10 @@ void CGitStatusListCtrl::CheckEntry(int index, int nListItems)
 			}
 		}
 	}
-
-	if ( !entry->checked )
+#endif
+	if ( !path->m_Checked )
 	{
-		entry->checked = TRUE;
+		path->m_Checked = TRUE;
 		m_nSelected++;
 	}
 }
@@ -2087,13 +2092,14 @@ void CGitStatusListCtrl::CheckEntry(int index, int nListItems)
 void CGitStatusListCtrl::UncheckEntry(int index, int nListItems)
 {
 	Locker lock(m_critSec);
-	FileEntry * entry = GetListEntry(index);
-	ASSERT(entry != NULL);
-	if (entry == NULL)
+	CTGitPath *path=(CTGitPath*)GetItemData(index);
+	ASSERT(path != NULL);
+	if (path == NULL)
 		return;
 	SetCheck(index, FALSE);
-	entry = GetListEntry(index);
+	//entry = GetListEntry(index);
 	// item was unchecked
+#if 0
 	if (entry->path.IsDirectory())
 	{
 		// disable all files within an unselected folder, except when unchecking a folder with property changes
@@ -2128,10 +2134,10 @@ void CGitStatusListCtrl::UncheckEntry(int index, int nListItems)
 			}
 		}
 	}
-
-	if ( entry->checked )
+#endif
+	if ( path->m_Checked )
 	{
-		entry->checked = FALSE;
+		path->m_Checked  = FALSE;
 		m_nSelected--;
 	}
 }
@@ -2404,7 +2410,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 							if (entry)
 							{
 								bool bOldCheck = !!GetCheck(i);
-								SetEntryCheck(entry, i, bCheck);
+								//SetEntryCheck(entry, i, bCheck);
 								if (bCheck != bOldCheck)
 								{
 									if (bCheck)
@@ -2427,7 +2433,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 
 void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 {
-#if 0
+
 	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	bool XPorLater = false;
@@ -2456,12 +2462,16 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	}
 	else if (selIndex >= 0)
 	{
-		FileEntry * entry = GetListEntry(selIndex);
-		ASSERT(entry != NULL);
-		if (entry == NULL)
+		//FileEntry * entry = GetListEntry(selIndex);
+
+		CTGitPath * filepath = (CTGitPath * )GetItemData(selIndex);
+
+		ASSERT(filepath != NULL);
+		if (filepath == NULL)
 			return;
-		const CTGitPath& filepath = entry->path;
-		git_wc_status_kind wcStatus = entry->status;
+
+		//const CTGitPath& filepath = entry->path;
+		int wcStatus = filepath->m_Action;
 		// entry is selected, now show the popup menu
 		Locker lock(m_critSec);
 		CIconMenu popup;
@@ -2469,123 +2479,118 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		CMenu ignoreSubMenu;
 		if (popup.CreatePopupMenu())
 		{
-			if (wcStatus >= git_wc_status_normal)
+			//Add Menu for verion controled file
+			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
 			{
 				if (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE)
 				{
 					popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
 					popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
 				}
-
+				//Select one items
 				if (GetSelectedCount() == 1)
 				{
 					bool bEntryAdded = false;
-					if (entry->remotestatus <= git_wc_status_normal)
-					{
-						if (wcStatus > git_wc_status_normal)
-						{
-							if ((m_dwContextMenus & SVNSLC_POPGNUDIFF)&&(wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing))
-							{
-								popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
-								bEntryAdded = true;
-							}
-						}
-						if (wcStatus > git_wc_status_normal)
-						{
-							if (m_dwContextMenus & SVNSLC_POPCOMMIT)
-							{
-								popup.AppendMenuIcon(IDSVNLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
-								popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
-								bEntryAdded = true;
-							}
-						}
-					}
-					else if (wcStatus != git_wc_status_deleted)
-					{
-						if (m_dwContextMenus & SVNSLC_POPCOMPARE)
-						{
-							popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
-							popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
-							bEntryAdded = true;
-						}
-						if (m_dwContextMenus & SVNSLC_POPGNUDIFF)
-						{
-							popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
-							bEntryAdded = true;
-						}
-					}
+					//if (entry->remotestatus <= git_wc_status_normal)
+					//{
+					//	if (wcStatus > git_wc_status_normal)
+					//	{
+					//		if ((m_dwContextMenus & SVNSLC_POPGNUDIFF)&&(wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing))
+					//		{
+					popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					bEntryAdded = true;
+					//		}
+					//	}
+					//
+					//}
+					//else if (wcStatus != git_wc_status_deleted)
+					//{
+					//	if (m_dwContextMenus & SVNSLC_POPCOMPARE)
+					//	{
+					//		popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+					//		popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
+					//		bEntryAdded = true;
+					//	}
+					//	if (m_dwContextMenus & SVNSLC_POPGNUDIFF)
+					//	{
+					//		popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					//		bEntryAdded = true;
+					//	}
+					//}
 					if (bEntryAdded)
 						popup.AppendMenu(MF_SEPARATOR);
 				}
-				else if (GetSelectedCount() > 1)
-				{
-					if (m_dwContextMenus & SVNSLC_POPCOMMIT)
-					{
-						popup.AppendMenuIcon(IDSVNLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
-						popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
-					}
-				}
+				//else if (GetSelectedCount() > 1)  
+				//{
+				//	if (m_dwContextMenus & SVNSLC_POPCOMMIT)
+				//	{
+				//		popup.AppendMenuIcon(IDSVNLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
+				//		popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
+				//	}
+				//}
 			}
-			if (GetSelectedCount() > 0)
-			{
-				if ((GetSelectedCount() == 2)&&(m_dwContextMenus & SVNSLC_POPREPAIRMOVE))
-				{
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index = GetNextSelectedItem(pos);
-					if (index >= 0)
-					{
-						FileEntry * entry = GetListEntry(index);
-						git_wc_status_kind status1 = git_wc_status_none;
-						git_wc_status_kind status2 = git_wc_status_none;
-						if (entry)
-							status1 = entry->status;
-						index = GetNextSelectedItem(pos);
-						if (index >= 0)
-						{
-							entry = GetListEntry(index);
-							if (entry)
-								status2 = entry->status;
-							if ((status1 == git_wc_status_missing && status2 == git_wc_status_unversioned) ||
-								(status2 == git_wc_status_missing && status1 == git_wc_status_unversioned))
-							{
-								popup.AppendMenuIcon(IDSVNLC_REPAIRMOVE, IDS_STATUSLIST_CONTEXT_REPAIRMOVE);
-							}
-						}
-					}
-				}
-				if (wcStatus > git_wc_status_normal)
-				{
-					if (m_dwContextMenus & SVNSLC_POPREVERT)
-					{
-						// reverting missing folders is not possible
-						if (!entry->IsFolder() || (wcStatus != git_wc_status_missing))
-						{
-							popup.AppendMenuIcon(IDSVNLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
-						}
-					}
-				}
-				if (entry->remotestatus > git_wc_status_normal)
-				{
-					if (m_dwContextMenus & SVNSLC_POPUPDATE)
-					{
-						popup.AppendMenuIcon(IDSVNLC_UPDATE, IDS_MENUUPDATE, IDI_UPDATE);
-					}
-				}
-			}
-			if ((GetSelectedCount() == 1)&&(wcStatus >= git_wc_status_normal)
-				&&(wcStatus != git_wc_status_ignored))
+			
+			///Select Multi item
+			//if (GetSelectedCount() > 0)
+			//{
+			//	if ((GetSelectedCount() == 2)&&(m_dwContextMenus & SVNSLC_POPREPAIRMOVE))
+			//	{
+			//		POSITION pos = GetFirstSelectedItemPosition();
+			//		int index = GetNextSelectedItem(pos);
+			//		if (index >= 0)
+			//		{
+			//			FileEntry * entry = GetListEntry(index);
+			//			git_wc_status_kind status1 = git_wc_status_none;
+			//			git_wc_status_kind status2 = git_wc_status_none;
+			//			if (entry)
+			//				status1 = entry->status;
+			//			index = GetNextSelectedItem(pos);
+			//			if (index >= 0)
+			//			{
+			//				entry = GetListEntry(index);
+			//				if (entry)
+			//					status2 = entry->status;
+			//				if ((status1 == git_wc_status_missing && status2 == git_wc_status_unversioned) ||
+			//					(status2 == git_wc_status_missing && status1 == git_wc_status_unversioned))
+			//				{
+			//					popup.AppendMenuIcon(IDSVNLC_REPAIRMOVE, IDS_STATUSLIST_CONTEXT_REPAIRMOVE);
+			//				}
+			//			}
+			//		}
+			//	}
+			//	if (wcStatus > git_wc_status_normal)
+			//	{
+			//		if (m_dwContextMenus & SVNSLC_POPREVERT)
+			//		{
+			//			// reverting missing folders is not possible
+			//			if (!entry->IsFolder() || (wcStatus != git_wc_status_missing))
+			//			{
+			//				popup.AppendMenuIcon(IDSVNLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
+			//			}
+			//		}
+			//	}
+			//	if (entry->remotestatus > git_wc_status_normal)
+			//	{
+			//		if (m_dwContextMenus & SVNSLC_POPUPDATE)
+			//		{
+			//			popup.AppendMenuIcon(IDSVNLC_UPDATE, IDS_MENUUPDATE, IDI_UPDATE);
+			//		}
+			//	}
+			//}
+			if ((GetSelectedCount() == 1)&&(!wcStatus & CTGitPath::LOGACTIONS_UNVER)
+				&&(!wcStatus & CTGitPath::LOGACTIONS_IGNORE))
 			{
 				if (m_dwContextMenus & SVNSLC_POPSHOWLOG)
 				{
 					popup.AppendMenuIcon(IDSVNLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
-				if (m_dwContextMenus & SVNSLC_POPBLAME)
-				{
-					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
-				}
+//				if (m_dwContextMenus & SVNSLC_POPBLAME)
+//				{
+//					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
+//				}
 			}
-			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
-			{
+//			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
+//			{
 				if (m_dwContextMenus & SVNSLC_POPOPEN)
 				{
 					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
@@ -2595,41 +2600,42 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDSVNLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 				}
-			}
+//			}
 			if (GetSelectedCount() > 0)
 			{
-				if (((wcStatus == git_wc_status_unversioned)||(wcStatus == git_wc_status_ignored))&&(m_dwContextMenus & SVNSLC_POPDELETE))
-				{
-					popup.AppendMenuIcon(IDGitLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
-				}
-				if ((wcStatus != Git_wc_status_unversioned)&&(wcStatus != git_wc_status_ignored)&&(wcStatus != Git_wc_status_deleted)&&(wcStatus != Git_wc_status_added)&&(m_dwContextMenus & GitSLC_POPDELETE))
-				{
-					if (bShift)
-						popup.AppendMenuIcon(IDGitLC_REMOVE, IDS_MENUREMOVEKEEP, IDI_DELETE);
-					else
-						popup.AppendMenuIcon(IDGitLC_REMOVE, IDS_MENUREMOVE, IDI_DELETE);
-				}
-				if ((wcStatus == git_wc_status_unversioned)||(wcStatus == git_wc_status_deleted))
+//				if (((wcStatus == git_wc_status_unversioned)||(wcStatus == git_wc_status_ignored))&&(m_dwContextMenus & SVNSLC_POPDELETE))
+//				{
+//					popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
+//				}
+//				if ((wcStatus != Git_wc_status_unversioned)&&(wcStatus != git_wc_status_ignored)&&(wcStatus != Git_wc_status_deleted)&&(wcStatus != Git_wc_status_added)&&(m_dwContextMenus & GitSLC_POPDELETE))
+//				{
+//					if (bShift)
+//						popup.AppendMenuIcon(IDGitLC_REMOVE, IDS_MENUREMOVEKEEP, IDI_DELETE);
+//					else
+//						popup.AppendMenuIcon(IDGitLC_REMOVE, IDS_MENUREMOVE, IDI_DELETE);
+//				}
+				if ((wcStatus & CTGitPath::LOGACTIONS_UNVER)/*||(wcStatus == git_wc_status_deleted)*/)
 				{
 					if (m_dwContextMenus & SVNSLC_POPADD)
 					{
-						if ( entry->IsFolder() )
-						{
-							popup.AppendMenuIcon(IDSVNLC_ADD_RECURSIVE, IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE, IDI_ADD);
-						}
-						else
+						//if ( entry->IsFolder() )
+						//{
+						//	popup.AppendMenuIcon(IDSVNLC_ADD_RECURSIVE, IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE, IDI_ADD);
+						//}
+						//else
 						{
 							popup.AppendMenuIcon(IDSVNLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
 						}
 					}
-				}
-				if ( (wcStatus == git_wc_status_unversioned) || (wcStatus == git_wc_status_deleted) )
-				{
+				//}
+				//if ( (wcStatus == git_wc_status_unversioned) || (wcStatus == git_wc_status_deleted) )
+				//{
 					if (m_dwContextMenus & SVNSLC_POPIGNORE)
 					{
+#if 0
 						CTSVNPathList ignorelist;
 						FillListOfSelectedItemPaths(ignorelist);
-						// check if all selected entries have the same extension
+						//check if all selected entries have the same extension
 						bool bSameExt = true;
 						CString sExt;
 						for (int i=0; i<ignorelist.GetCount(); ++i)
@@ -2669,9 +2675,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 							popup.AppendMenuIcon(IDSVNLC_IGNORE, temp, IDI_IGNORE);
 						}
+#endif
 					}
 				}
 			}
+#if 0
 			if (((wcStatus == git_wc_status_conflicted)||(entry->isConflicted)))
 			{
 				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)||(m_dwContextMenus & SVNSLC_POPRESOLVE))
@@ -2691,8 +2699,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
 				}
 			}
+#endif
+#if 0			
 			if (GetSelectedCount() > 0)
 			{
+
 				if ((!entry->IsFolder())&&(wcStatus >= git_wc_status_normal)
 					&&(wcStatus!=git_wc_status_missing)&&(wcStatus!=git_wc_status_deleted)
 					&&(wcStatus!=git_wc_status_added))
@@ -2713,6 +2724,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 					}
 				}
+
 				if ((!entry->IsFolder())&&((!entry->lock_token.IsEmpty())||(!entry->lock_remotetoken.IsEmpty())))
 				{
 					if (m_dwContextMenus & SVNSLC_POPUNLOCKFORCE)
@@ -2775,14 +2787,50 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 			}
-
+#endif
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+
 			m_bBlock = TRUE;
 			AfxGetApp()->DoWaitCursor(1);
 			int iItemCountBeforeMenuCmd = GetItemCount();
 			bool bForce = false;
 			switch (cmd)
 			{
+			case IDSVNLC_OPEN:
+				{
+					int ret = (int)ShellExecute(this->m_hWnd, NULL, filepath->GetWinPath(), NULL, NULL, SW_SHOW);
+					if (ret <= HINSTANCE_ERROR)
+					{
+						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
+						cmd += filepath->GetWinPath();
+						CAppUtils::LaunchApplication(cmd, NULL, false);
+					}
+				}
+				break;
+			case IDSVNLC_OPENWITH:
+				{
+					CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
+					cmd += filepath->GetWinPathString() + _T(" ");
+					CAppUtils::LaunchApplication(cmd, NULL, false);
+				}
+				break;
+			case IDSVNLC_EXPLORE:
+				{
+					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetWinPath(), NULL, NULL, SW_SHOW);
+				}
+				break;
+			case IDSVNLC_COMPARE:
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					while ( pos )
+					{
+						int index = GetNextSelectedItem(pos);
+						StartDiff(index);
+					}
+				}
+				break;
+
+#if 0
 			case IDSVNLC_COPY:
 				CopySelectedEntriesToClipboard(0);
 				break;
@@ -3843,22 +3891,24 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					SetRedraw(TRUE);
 				}
 				break;
+#endif
+
 			} // switch (cmd)
 			m_bBlock = FALSE;
 			AfxGetApp()->DoWaitCursor(-1);
 			GetStatisticsString();
 			int iItemCountAfterMenuCmd = GetItemCount();
-			if (iItemCountAfterMenuCmd != iItemCountBeforeMenuCmd)
-			{
-				CWnd* pParent = GetParent();
-				if (NULL != pParent && NULL != pParent->GetSafeHwnd())
-				{
-					pParent->SendMessage(SVNSLNM_ITEMCOUNTCHANGED);
-				}
-			}
+			//if (iItemCountAfterMenuCmd != iItemCountBeforeMenuCmd)
+			//{
+			//	CWnd* pParent = GetParent();
+			//	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+			//	{
+			//		pParent->SendMessage(SVNSLNM_ITEMCOUNTCHANGED);
+			//	}
+			//}
 		} // if (popup.CreatePopupMenu())
 	} // if (selIndex >= 0)
-#endif
+
 }
 
 void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)
@@ -4132,7 +4182,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 CString CGitStatusListCtrl::GetStatisticsString()
 {
-#if 0
+
 	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned;
 	WORD langID = (WORD)(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR buf[MAX_STATUS_STRING_LENGTH];
@@ -4180,8 +4230,8 @@ CString CGitStatusListCtrl::GetStatisticsString()
 	}
 
 	return sToolTip;
-#endif
-	return _T("");
+
+
 }
 
 CTGitPath CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
@@ -4263,15 +4313,18 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool bIncludeNoCommits)
 		m_nSelected = nListItems;
 	else
 		m_nSelected = 0;
+
 	for (int i=0; i<nListItems; ++i)
 	{
-		FileEntry * entry = GetListEntry(i);
-		ASSERT(entry != NULL);
-		if (entry == NULL)
+		//FileEntry * entry = GetListEntry(i);
+		//ASSERT(entry != NULL);
+		CTGitPath *path = (CTGitPath *) GetItemData(i);
+		if (path == NULL)
 			continue;
-		if ((bIncludeNoCommits)||(entry->GetChangeList().Compare(SVNSLC_IGNORECHANGELIST)))
-			SetEntryCheck(entry,i,bSelect);
+		//if ((bIncludeNoCommits)||(entry->GetChangeList().Compare(SVNSLC_IGNORECHANGELIST)))
+		SetEntryCheck(path,i,bSelect);
 	}
+
 	// unblock before redrawing
 	m_bBlock = FALSE;
 	SetRedraw(TRUE);
@@ -4422,15 +4475,16 @@ void CGitStatusListCtrl::RemoveListEntry(int index)
 
 ///< Set a checkbox on an entry in the listbox
 // NEVER, EVER call SetCheck directly, because you'll end-up with the checkboxes and the 'checked' flag getting out of sync
-void CGitStatusListCtrl::SetEntryCheck(FileEntry* pEntry, int listboxIndex, bool bCheck)
+void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool bCheck)
 {
-	pEntry->checked = bCheck;
+	pEntry->m_Checked = bCheck;
 	SetCheck(listboxIndex, bCheck);
 }
 
 
 void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck)
 {
+#if 0
 	int nListItems = GetItemCount();
 	for (int j=0; j< nListItems ; ++j)
 	{
@@ -4454,6 +4508,7 @@ void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry
 			}
 		}
 	}
+#endif
 }
 
 void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)

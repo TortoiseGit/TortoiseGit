@@ -83,10 +83,10 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 //	ON_BN_CLICKED(IDC_HISTORY, OnBnClickedHistory)
 	ON_BN_CLICKED(IDC_BUGTRAQBUTTON, OnBnClickedBugtraqbutton)
 	ON_EN_CHANGE(IDC_LOGMESSAGE, OnEnChangeLogmessage)
-//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnGitStatusListCtrlItemCountChanged)
-//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
-//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
-//	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_CHECKCHANGED, &CCommitDlg::OnGitStatusListCtrlCheckChanged)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnGitStatusListCtrlItemCountChanged)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_CHECKCHANGED, &CCommitDlg::OnGitStatusListCtrlCheckChanged)
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady) 
 	ON_WM_TIMER()
     ON_WM_SIZE()
@@ -341,14 +341,19 @@ void CCommitDlg::OnOK()
 	CTGitPathList itemsToRemove;
 	bool bCheckedInExternal = false;
 	bool bHasConflicted = false;
-	std::set<CString> checkedLists;
-	std::set<CString> uncheckedLists;
-#if 0
+	//std::set<CString> checkedLists;
+	//std::set<CString> uncheckedLists;
+
+	CString checkedfiles;
+	CString uncheckedfiles;
+
 	for (int j=0; j<nListItems; j++)
 	{
-		const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
-		if (entry->IsChecked())
+		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
+		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
+		if (entry->m_Checked)
 		{
+#if 0
 			if (entry->status == Git_wc_status_unversioned)
 			{
 				itemsToAdd.AddPath(entry->GetPath());
@@ -369,10 +374,15 @@ void CCommitDlg::OnOK()
 			{
 				bCheckedInExternal = true;
 			}
-			checkedLists.insert(entry->GetChangeList());
+#endif
+			//checkedLists.insert(entry->GetGitPathString());
+			checkedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
 		}
 		else
 		{
+			//uncheckedLists.insert(entry->GetGitPathString());
+			uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
+#if 0
 			if ((entry->status != Git_wc_status_unversioned)	&&
 				(entry->status != Git_wc_status_ignored))
 			{
@@ -395,9 +405,26 @@ void CCommitDlg::OnOK()
 					}
 				}
 			}
+#endif
 		}
 	}
-#endif
+
+	CString cmd;
+	CString out;
+	if(uncheckedfiles.GetLength()>0)
+	{
+		cmd.Format(_T("git.cmd reset -- %s"),uncheckedfiles);
+		g_Git.Run(cmd,&out);
+	}
+
+	if(checkedfiles.GetLength()>0)
+	{
+		cmd.Format(_T("git.cmd update-index -- %s"),checkedfiles);
+		g_Git.Run(cmd,&out);
+	}
+
+	cmd.Format(_T("git.cmd commit -m \"%s\""), m_sLogMessage);
+	g_Git.Run(cmd,&out);
 
 #if 0
 	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
@@ -723,7 +750,7 @@ void CCommitDlg::OnBnClickedSelectall()
 		state = BST_UNCHECKED;
 		m_SelectAll.SetCheck(state);
 	}
-//	m_ListCtrl.SelectAll(state == BST_CHECKED);
+	m_ListCtrl.SelectAll(state == BST_CHECKED);
 }
 
 BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
@@ -987,6 +1014,11 @@ void CCommitDlg::GetAutocompletionList()
 		if ((!m_bRunThread) || (GetTickCount() - starttime > timeoutvalue))
 			return;
 
+		CTGitPath *path = (CTGitPath*)m_ListCtrl.GetItemData(i);
+
+		CString sPartPath =path->GetGitPathString();
+		m_autolist.insert(sPartPath);
+
 //		const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
 //		if (!entry)
 //			continue;
@@ -995,7 +1027,7 @@ void CCommitDlg::GetAutocompletionList()
 //		CString sPartPath = entry->GetRelativeGitPath();
 //		m_autolist.insert(sPartPath);
 
-#if 0
+
 		int pos = 0;
 		int lastPos = 0;
 		while ((pos = sPartPath.Find('/', pos)) >= 0)
@@ -1013,7 +1045,7 @@ void CCommitDlg::GetAutocompletionList()
 			if ((dotPos >= 0) && (dotPos > lastPos))
 				m_autolist.insert(sPartPath.Mid(lastPos, dotPos - lastPos));
 		}
-
+#if 0
 		if ((entry->status <= Git_wc_status_normal)||(entry->status == Git_wc_status_ignored))
 			continue;
 

@@ -609,7 +609,7 @@ public:
 	/** Set a checkbox on an entry in the listbox
 	 * Keeps the listctrl checked state and the FileEntry's checked flag in sync
 	 */
-	void SetEntryCheck(FileEntry* pEntry, int listboxIndex, bool bCheck);
+	void SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool bCheck);
 
 	/** Write a list of the checked items' paths into a path list
 	 */

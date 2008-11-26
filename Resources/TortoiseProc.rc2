@@ -47,5 +47,5 @@ BEGIN
     END
 END
 
-#include "..\\TortoiseShell\\resource.rc"
+#include "..\\TortoiseShell\\resourceshell.rc"
 /////////////////////////////////////////////////////////////////////////////

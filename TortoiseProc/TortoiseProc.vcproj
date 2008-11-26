@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;..\TortoiseShell;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\ext\hunspell;..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
+				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\ext\hunspell;..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -404,6 +404,10 @@
 				RelativePath=".\ProjectProperties.h"
 				>
 			</File>
+			<File
+				RelativePath="..\TortoiseShell\resource.h"
+				>
+			</File>
 			<Filter
 				Name="General"
 				>
@@ -506,11 +510,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\checkout.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\CheckoutBackground.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\cleananim.avi"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\clippaste.ico"
 				>
 			</File>
 			<File
@@ -602,6 +614,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\icon1.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\iconset.ico"
 				>
 			</File>
@@ -682,6 +698,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menudelunversioned.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menudiff.ico"
 				>
 			</File>
@@ -702,6 +722,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menulock.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menulog.ico"
 				>
 			</File>
@@ -711,6 +735,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\menupatch.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\menuproperties.ico"
 				>
 			</File>
 			<File
@@ -734,6 +762,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menurevisiongraph.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menusettings.ico"
 				>
 			</File>
@@ -743,6 +775,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\menuswitch.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\menuunlock.ico"
 				>
 			</File>
 			<File
@@ -774,11 +810,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -795,6 +831,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\proxy.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\pull1.ico"
 				>
 			</File>
 			<File
@@ -946,19 +986,31 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\TortoiseProc.rc2"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\TortoiseProcENG.rc"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\TortoiseShell.rc2"
+				RelativePath="..\Resources\TortoiseSmall.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\tortoisesvn_logoflipped.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tsvnmenufile.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tsvnmenufolder.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tsvnmenulink.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tsvnmenumultiple.ico"
 				>
 			</File>
 			<File
@@ -975,6 +1027,10 @@
 			</File>
 			<File
 				RelativePath=".\up.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\update1.ico"
 				>
 			</File>
 			<File

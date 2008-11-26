@@ -779,11 +779,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.rc"
+				RelativePath=".\resourceshell.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\resource.rc2"
+				RelativePath=".\resourceshell.rc2"
 				>
 			</File>
 			<File
