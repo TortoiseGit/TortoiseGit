@@ -425,6 +425,8 @@ void CCommitDlg::OnOK()
 
 	cmd.Format(_T("git.cmd commit -m \"%s\""), m_sLogMessage);
 	g_Git.Run(cmd,&out);
+	
+	CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
 
 #if 0
 	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
