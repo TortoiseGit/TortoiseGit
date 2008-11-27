@@ -434,17 +434,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 	memset(&ncm,0,sizeof(NONCLIENTMETRICS));
 	ncm.cbSize = sizeof(NONCLIENTMETRICS);
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
-	DWORD nErrorNo = GetLastError ( ); // 得到错误代码
-    LPSTR lpBuffer;    
-      FormatMessage ( FORMAT_MESSAGE_ALLOCATE_BUFFER  | 
-          FORMAT_MESSAGE_IGNORE_INSERTS  | 
-         FORMAT_MESSAGE_FROM_SYSTEM,
-         NULL,
-         nErrorNo, // 此乃错误代码，通常在程序中可由 GetLastError()得之
-         LANG_NEUTRAL,
-         (LPTSTR) & lpBuffer,
-          0 ,
-         NULL );
+	
     memcpy(&m_LogFont, &(ncm.lfMessageFont), sizeof(LOGFONT));
 
 	//the problem with the LOGFONT lfHeight is that it is not in pixels,

@@ -433,9 +433,9 @@ void CCommitDlg::OnOK()
 	
 		CFile::Remove(tempfile);
 
-		CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
+		CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_OK | MB_ICONINFORMATION);
 	}else
-		CMessageBox::Show(this->m_hWnd, _T("Nothing Commit"), _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
+		CMessageBox::Show(this->m_hWnd, _T("Nothing Commit"), _T("Commit Finish"), MB_OK | MB_ICONINFORMATION);
 #if 0
 	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
 	{
