@@ -5282,6 +5282,7 @@ void CGitStatusListCtrl::NotifyCheck()
 int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash)
 {
 	CString out;
+	this->m_bBusy=TRUE;
 	if(hash == GIT_REV_ZERO)
 	{
 		CString cmd(_T("git.cmd diff-index --raw HEAD --numstat -C -M"));
@@ -5294,6 +5295,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash)
 		gitpatch->m_Checked = TRUE;
 		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 	}
+	this->m_bBusy=FALSE;
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////
