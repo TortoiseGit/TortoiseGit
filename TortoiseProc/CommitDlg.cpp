@@ -423,8 +423,16 @@ void CCommitDlg::OnOK()
 		g_Git.Run(cmd,&out);
 	}
 
-	cmd.Format(_T("git.cmd commit -m \"%s\""), m_sLogMessage);
+	CString tempfile=::GetTempFile();
+	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
+	file.WriteString(m_sLogMessage);
+	file.Close();
+
+	out =_T("");
+	cmd.Format(_T("git.cmd commit -F \"%s\""), tempfile);
 	g_Git.Run(cmd,&out);
+
+	
 	
 	CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
 
