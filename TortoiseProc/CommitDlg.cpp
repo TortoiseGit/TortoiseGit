@@ -427,13 +427,13 @@ void CCommitDlg::OnOK()
 	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
 	file.WriteString(m_sLogMessage);
 	file.Close();
-
+	
 	out =_T("");
 	cmd.Format(_T("git.cmd commit -F \"%s\""), tempfile);
 	g_Git.Run(cmd,&out);
+	
+	CFile::Remove(tempfile);
 
-	
-	
 	CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
 
 #if 0
