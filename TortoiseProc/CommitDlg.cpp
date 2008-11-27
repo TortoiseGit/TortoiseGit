@@ -421,21 +421,21 @@ void CCommitDlg::OnOK()
 	{
 		cmd.Format(_T("git.cmd update-index -- %s"),checkedfiles);
 		g_Git.Run(cmd,&out);
-	}
 
-	CString tempfile=::GetTempFile();
-	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
-	file.WriteString(m_sLogMessage);
-	file.Close();
+		CString tempfile=::GetTempFile();
+		CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
+		file.WriteString(m_sLogMessage);
+		file.Close();
 	
-	out =_T("");
-	cmd.Format(_T("git.cmd commit -F \"%s\""), tempfile);
-	g_Git.Run(cmd,&out);
+		out =_T("");
+		cmd.Format(_T("git.cmd commit -F \"%s\""), tempfile);
+		g_Git.Run(cmd,&out);
 	
-	CFile::Remove(tempfile);
+		CFile::Remove(tempfile);
 
-	CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
-
+		CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
+	}else
+		CMessageBox::Show(this->m_hWnd, _T("Nothing Commit"), _T("Commit Finish"), MB_YESNO | MB_ICONINFORMATION);
 #if 0
 	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
 	{
