@@ -91,7 +91,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
     ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
-	ON_BN_CLICKED(IDC_SIGN_OFF, &CCommitDlg::OnBnClickedSignOff)
+	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
 	ON_STN_CLICKED(IDC_COMMITLABEL, &CCommitDlg::OnStnClickedCommitlabel)
 END_MESSAGE_MAP()
 
@@ -205,7 +205,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 //	AddAnchor(IDC_HISTORY, TOP_LEFT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
-	
+	AddAnchor(IDC_SIGNOFF,   TOP_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
@@ -218,6 +218,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("CommitDlg"));
@@ -1365,17 +1366,20 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_MESSAGEGROUP);
 	RemoveAnchor(IDC_LOGMESSAGE);
 	RemoveAnchor(IDC_SPLITTER);
+	RemoveAnchor(IDC_SIGNOFF);
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	CSplitterControl::ChangeHeight(&m_cLogMessage, delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MESSAGEGROUP), delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(&m_ListCtrl, -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LISTGROUP), -delta, CW_BOTTOMALIGN);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
 	ArrangeLayout();
 	// adjust the minimum size of the dialog to prevent the resizing from
 	// moving the list control too far down.
