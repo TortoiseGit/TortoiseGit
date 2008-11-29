@@ -112,7 +112,7 @@ BOOL CCommitDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 	
-	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLTEXTSTATUS , _T("CommitDlg"));
+	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS , _T("CommitDlg"));
 	m_ListCtrl.SetSelectButton(&m_SelectAll);
 	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
 	m_ListCtrl.SetCancelBool(&m_bCancelled);
@@ -629,6 +629,8 @@ UINT CCommitDlg::StatusThread()
 	BOOL success = m_ListCtrl.GetStatus(m_pathList);
 
 	m_ListCtrl.UpdateFileList(GIT_REV_ZERO);
+	if(this->m_bShowUnversioned)
+		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER);
 	
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
@@ -828,7 +830,6 @@ void CCommitDlg::OnBnClickedHelp()
 
 void CCommitDlg::OnBnClickedShowunversioned()
 {
-#if 0
 	m_tooltips.Pop();	// hide the tooltips
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
@@ -836,12 +837,11 @@ void CCommitDlg::OnBnClickedShowunversioned()
 	{
 		DWORD dwShow = m_ListCtrl.GetShowFlags();
 		if (DWORD(m_regAddBeforeCommit))
-			dwShow |= GitSLC_SHOWUNVERSIONED;
+			dwShow |= SVNSLC_SHOWUNVERSIONED;
 		else
-			dwShow &= ~GitSLC_SHOWUNVERSIONED;
+			dwShow &= ~SVNSLC_SHOWUNVERSIONED;
 		m_ListCtrl.Show(dwShow);
 	}
-#endif
 }
 
 void CCommitDlg::OnStnClickedExternalwarning()

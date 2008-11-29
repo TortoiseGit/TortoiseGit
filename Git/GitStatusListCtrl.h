@@ -839,6 +839,8 @@ private:
 	bool						m_bHasIgnoreGroup;
 	//CTGitPathList				m_ConflictFileList;
 	CTGitPathList				m_StatusFileList;
+	CTGitPathList				m_UnRevFileList;
+	CTGitPathList				m_IgnoreFileList;
 	//CTGitPathList				m_StatusUrlList;
 	CString						m_sLastError;
 
@@ -889,8 +891,19 @@ private:
 
 	friend class CGitStatusListCtrlDropTarget;
 public:
+	enum
+	{
+		FILELIST_MODIFY= 0x1,
+		FILELIST_UNVER = 0x2,
+		FILELIST_IGNORE =0x4
+	};
+public:
 	int UpdateFileList(git_revnum_t hash);
+	int UpdateFileList(int mask, bool once=true);
+	int UpdateUnRevFileList();
+	int UpdateIgnoreFileList();
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
+	int m_FileLoaded;
 };
 
 #if 0

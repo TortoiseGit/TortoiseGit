@@ -1043,6 +1043,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
 	DeleteAllItems();
+	PrepareGroups();
 	m_nSelected = 0;
 
 	for(int i=0;i<this->m_arStatusArray.size();i++)
@@ -1585,13 +1586,19 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	SetCheck(index, GitPath->m_Checked);
 	if (GitPath->m_Checked)
 		m_nSelected++;
-#if 0
-	if (m_changelists.find(entry->changelist) != m_changelists.end())
-		SetItemGroup(index, m_changelists[entry->changelist]);
+
+//#if 0
+//	if (m_changelists.find(entry->changelist) != m_changelists.end())
+//		SetItemGroup(index, m_changelists[entry->changelist]);
+//	else
+	if( GitPath->m_Action & CTGitPath::LOGACTIONS_IGNORE)
+		SetItemGroup(index, 2);
+	else if( GitPath->m_Action & CTGitPath::LOGACTIONS_UNVER)
+		SetItemGroup(index,1);
 	else
-		SetItemGroup(index, 0);
+		SetItemGroup(index,0);
 	m_bBlock = FALSE;
-#endif
+//#endif
 
 }
 #if 0
@@ -5209,19 +5216,54 @@ size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
 
 bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 {
-	if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS) == NULL)
-		return false;	// don't show groups
 
-	bool bHasGroups = (m_changelists.size() > 0)||(bForce);
+	bool bHasGroups=false;
+	if ( this->m_UnRevFileList.GetCount()>0 || 
+		this->m_IgnoreFileList.GetCount()>0 || bForce)
+	{
+		bHasGroups = true;
+	}
+
 	RemoveAllGroups();
 	EnableGroupView(bHasGroups);
-
+	
 	TCHAR groupname[1024];
+	int groupindex = 0;
+
+	if(bHasGroups);
+	{
+		LVGROUP grp = {0};
+		grp.cbSize = sizeof(LVGROUP);
+		grp.mask = LVGF_ALIGN | LVGF_GROUPID | LVGF_HEADER;
+		CString sUnassignedName(_T("Modified File"));
+		_tcsncpy_s(groupname, 1024, (LPCTSTR)sUnassignedName, 1023);
+		grp.pszHeader = groupname;
+		grp.iGroupId = groupindex;
+		grp.uAlign = LVGA_HEADER_LEFT;
+		InsertGroup(groupindex++, &grp);
+
+		//if(m_UnRevFileList.GetCount()>0)
+		{
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("No Version Control"), 1023);
+			grp.pszHeader = groupname;
+			grp.iGroupId = groupindex;
+			grp.uAlign = LVGA_HEADER_LEFT;
+			InsertGroup(groupindex++, &grp);
+		}
+
+		//if(m_IgnoreFileList.GetCount()>0)
+		{
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Ignored File"), 1023);
+			grp.pszHeader = groupname;
+			grp.iGroupId = groupindex;
+			grp.uAlign = LVGA_HEADER_LEFT;
+			InsertGroup(groupindex++, &grp);
+		}
+
+	}
+
 
 	m_bHasIgnoreGroup = false;
-
-	// add a new group for each changelist
-	int groupindex = 0;
 
 	// now add the items which don't belong to a group
 	LVGROUP grp = {0};
@@ -5296,6 +5338,49 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash)
 		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 	}
 	this->m_bBusy=FALSE;
+	return 0;
+}
+int CGitStatusListCtrl::UpdateUnRevFileList()
+{
+	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER);
+	for(int i=0;i<m_UnRevFileList.GetCount();i++)
+	{
+		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
+		gitpatch->m_Checked = FALSE;
+		m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
+	}
+	return 0;
+}
+
+int CGitStatusListCtrl::UpdateIgnoreFileList()
+{
+	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER|CTGitPath::LOGACTIONS_IGNORE);
+	for(int i=0;i<m_IgnoreFileList.GetCount();i++)
+	{
+		CTGitPath * gitpatch=(CTGitPath*)&m_IgnoreFileList[i];
+		gitpatch->m_Checked = FALSE;
+		m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
+	}
+	return 0;
+}
+int CGitStatusListCtrl::UpdateFileList(int mask,bool once)
+{
+	if(mask&CGitStatusListCtrl::FILELIST_MODIFY)
+	{
+		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_MODIFY)))
+		{
+			UpdateFileList(GIT_REV_ZERO);
+			m_FileLoaded|=CGitStatusListCtrl::FILELIST_MODIFY;
+		}
+	}
+	if(mask&CGitStatusListCtrl::FILELIST_UNVER)
+	{
+		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_UNVER)))
+		{
+			UpdateUnRevFileList();
+			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
+		}
+	}
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////

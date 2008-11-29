@@ -22,14 +22,14 @@
 #include "GitAdminDir.h"
 #include "PathUtils.h"
 #include <regex>
-
+#include "git.h"
 #if defined(_MFC_VER)
 //#include "MessageBox.h"
 //#include "AppUtils.h"
 #endif
 
 using namespace std;
-
+extern CGit g_Git;
 
 CTGitPath::CTGitPath(void) :
 	m_bDirectoryKnown(false),
@@ -811,7 +811,30 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
 	AddPath(firstEntry);
 }
+int CTGitPathList::FillUnRev(int action)
+{
+	int pos=0;
+	this->Clear();
+	CTGitPath path;
+	
+	CString cmd(_T("git.cmd ls-files --exclude-standard --full-name --others"));
+	if(action & CTGitPath::LOGACTIONS_IGNORE)
+		cmd += _T(" --ignored");
+	CString out;
+	g_Git.Run(cmd,&out);
 
+	CString one;
+	while( pos>=0 )
+	{
+		one=out.Tokenize(_T("\n"),pos);
+
+		//SetFromGit will clear all status
+		path.SetFromGit(one);
+		path.m_Action=action;
+		AddPath(path);
+	}
+	return 0;
+}
 int CTGitPathList::ParserFromLog(CString &log)
 {
 	this->Clear();

@@ -1369,10 +1369,10 @@ bool CBaseView::DrawInlineDiff(CDC *pDC, const CRect &rc, int nLineIndex, const 
 
 	CString diffline;
 	ExpandChars(pszDiffChars, 0, nDiffLength, diffline);
-	svn_diff_t * diff = NULL;
-	m_svnlinediff.Diff(&diff, line, line.GetLength(), diffline, diffline.GetLength(), m_bInlineWordDiff);
-	if (!diff || !SVNLineDiff::ShowInlineDiff(diff))
-		return false;
+//	svn_diff_t * diff = NULL;
+//	m_svnlinediff.Diff(&diff, line, line.GetLength(), diffline, diffline.GetLength(), m_bInlineWordDiff);
+//	if (!diff || !SVNLineDiff::ShowInlineDiff(diff))
+//		return false;
 
 	int lineoffset = 0;
 	std::deque<int> removedPositions;

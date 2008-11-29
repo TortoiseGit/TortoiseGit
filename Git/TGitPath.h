@@ -293,6 +293,7 @@ public:
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
 	CTGitPath * LookForGitPath(CString path);
 	int	ParserFromLog(CString &log);
+	int FillUnRev(int Action);
 	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used
