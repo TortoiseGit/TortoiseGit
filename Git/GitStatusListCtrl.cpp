@@ -2640,8 +2640,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//{
 					if (m_dwContextMenus & SVNSLC_POPIGNORE)
 					{
-#if 0
-						CTSVNPathList ignorelist;
+
+						CTGitPathList ignorelist;
 						FillListOfSelectedItemPaths(ignorelist);
 						//check if all selected entries have the same extension
 						bool bSameExt = true;
@@ -2683,7 +2683,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 							popup.AppendMenuIcon(IDSVNLC_IGNORE, temp, IDI_IGNORE);
 						}
-#endif
 					}
 				}
 			}
@@ -4586,10 +4585,10 @@ void CGitStatusListCtrl::FillListOfSelectedItemPaths(CTGitPathList& pathList, bo
 	int index;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
-		FileEntry * entry = GetListEntry(index);
-		if ((bNoIgnored)&&(entry->status == git_wc_status_ignored))
-			continue;
-		pathList.AddPath(GetListEntry(index)->path);
+		CTGitPath * entry = (CTGitPath*)GetItemData(index);
+		//if ((bNoIgnored)&&(entry->status == git_wc_status_ignored))
+		//	continue;
+		pathList.AddPath(*entry);
 	}
 }
 
