@@ -310,17 +310,16 @@ bool CAppUtils::StartExtDiff(
 	{
 		viewer.Replace(_T("%mine"),  _T("\"")+file2+_T("\""));
 	}
-#if 0
+
 	if (sName1.IsEmpty())
-		viewer.Replace(_T("%bname"), _T("\"") + file1.GetUIFileOrDirectoryName() + _T("\""));
+		viewer.Replace(_T("%bname"), _T("\"") + file1 + _T("\""));
 	else
 		viewer.Replace(_T("%bname"), _T("\"") + sName1 + _T("\""));
 
 	if (sName2.IsEmpty())
-		viewer.Replace(_T("%yname"), _T("\"") + file2.GetUIFileOrDirectoryName() + _T("\""));
+		viewer.Replace(_T("%yname"), _T("\"") + file2 + _T("\""));
 	else
 		viewer.Replace(_T("%yname"), _T("\"") + sName2 + _T("\""));
-#endif
 
 	if (flags.bReadOnly && bInternal)
 		viewer += _T(" /readonly");
@@ -976,11 +975,25 @@ CString CAppUtils::GetProjectNameFromURL(CString url)
 	return name;
 }
 
-bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
-									 const CTGitPath& url2, const GitRev& rev2, 
-									 const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,  
-									 bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool /* blame = false */)
+bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git_revnum_t& rev1, 
+												const CTGitPath& url2, const git_revnum_t& rev2, 
+									 //const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,  
+												bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool /* blame = false */)
 {
+
+	CString tempfile=GetTempFile();
+	CString cmd;
+	if(rev1 == GitRev::GetWorkingCopy())
+	{
+		cmd.Format(_T("git.cmd diff --stat -p %s"),rev2);
+	}else
+	{	
+		cmd.Format(_T("git.cmd diff-tree -r -p --stat %s %s"),rev1,rev2);
+	}
+	g_Git.RunLogFile(cmd,tempfile);
+	CAppUtils::StartUnifiedDiffViewer(tempfile,rev1.Left(6)+_T(":")+rev2.Left(6));
+
+
 #if 0
 	CString sCmd;
 	sCmd.Format(_T("%s /command:showcompare /unified"),

@@ -1142,6 +1142,14 @@
 			Name="Git"
 			>
 			<File
+				RelativePath=".\GitDiff.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GitDiff.h"
+				>
+			</File>
+			<File
 				RelativePath="..\Git\GitStatusListCtrl.cpp"
 				>
 			</File>

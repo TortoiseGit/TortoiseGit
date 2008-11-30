@@ -212,3 +212,15 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 	return GIT_SUCCESS;
 	return 0;
 }
+
+git_revnum_t CGit::GetHash(CString &friendname)
+{
+	CString cmd;
+	CString out;
+	cmd.Format(_T("git.cmd rev-parse %s" ),friendname);
+	Run(cmd,&out);
+	int pos=out.ReverseFind(_T('\n'));
+	if(pos>0)
+		return out.Left(pos);
+	return out;
+}

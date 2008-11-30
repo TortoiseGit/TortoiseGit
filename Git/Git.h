@@ -1,4 +1,6 @@
 #pragma once
+#include "GitRev.h"
+#include "GitStatus.h"
 
 enum
 {
@@ -19,6 +21,7 @@ public:
 	CString GetCurrentBranch(void);
 	CString m_CurrentDir;
 	int GetLog(CString& logOut);
+	git_revnum_t GetHash(CString &friendname);
 	
 };
 extern void GetTempPath(CString &path);

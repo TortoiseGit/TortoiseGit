@@ -143,12 +143,13 @@ public:
 	/**
 	 * Replacement for GitDiff::ShowUnifiedDiff(), but started as a separate process.
 	 */
-	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
-									const CTGitPath& url2, const GitRev& rev2, 
-									const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
-									bool bAlternateDiff = false,
-									bool bIgnoreAncestry = false,
-                                    bool /* blame */ = false);
+	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1,  const git_revnum_t& rev1, 
+												const CTGitPath & url2, const git_revnum_t& rev2, 
+
+												//const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
+												bool bAlternateDiff = false,
+												bool bIgnoreAncestry = false,
+												bool /* blame */ = false);
 
 	/**
 	 * Replacement for GitDiff::ShowCompare(), but started as a separate process.

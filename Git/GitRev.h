@@ -34,7 +34,8 @@ public:
 		REV_WC = -3,			///< revision of the working copy
 		REV_UNSPECIFIED = -4,	///< unspecified revision
 	};
-
+	static CString GetHead(){return CString(_T("HEAD"));};
+	static CString GetWorkingCopy(){return CString(GIT_REV_ZERO);};
 	CString m_AuthorName;
 	CString m_AuthorEmail;
 	CTime	m_AuthorDate;

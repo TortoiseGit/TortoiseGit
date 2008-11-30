@@ -34,7 +34,7 @@
 #include "GitConfig.h"
 //#include "SVNProperties.h"
 #include "Git.h"
-//#include "SVNDiff.h"
+#include "GitDiff.h"
 //#include "LogDlg.h"
 //#include "SVNProgressDlg.h"
 #include "SysImageList.h"
@@ -2452,6 +2452,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	if (fullver >= 0x0501)
 		XPorLater = true;
 	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	CTGitPath * filepath;
 
 	int selIndex = GetSelectionMark();
 	if ((point.x == -1) && (point.y == -1))
@@ -2471,7 +2472,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	{
 		//FileEntry * entry = GetListEntry(selIndex);
 
-		CTGitPath * filepath = (CTGitPath * )GetItemData(selIndex);
+		filepath = (CTGitPath * )GetItemData(selIndex);
 
 		ASSERT(filepath != NULL);
 		if (filepath == NULL)
@@ -2834,6 +2835,18 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						int index = GetNextSelectedItem(pos);
 						StartDiff(index);
 					}
+				}
+				break;
+			case IDSVNLC_GNUDIFF1:
+				{
+				//	SVNDiff diff(NULL, this->m_hWnd, true);
+				//
+				//	if (entry->remotestatus <= git_wc_status_normal)
+				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_BASE, entry->path, SVNRev::REV_WC);
+				//	else
+				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_WC, entry->path, SVNRev::REV_HEAD);
+					CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetWorkingCopy(),
+															*filepath,GitRev::GetHead());
 				}
 				break;
 
@@ -4085,12 +4098,13 @@ void CGitStatusListCtrl::CreateChangeList(const CString& name)
 
 void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
-#if 0
+
 	Locker lock(m_critSec);
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 	if (m_bBlock)
 		return;
+#if 0
 	if (pNMLV->iItem < 0)
 	{
 		if (!IsGroupViewEnabled())
@@ -4142,23 +4156,28 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		NotifyCheck();
 		return;
 	}
-	FileEntry * entry = GetListEntry(pNMLV->iItem);
-	if (entry)
+#endif
+//	FileEntry * entry = GetListEntry(pNMLV->iItem);
+//	if (entry)
 	{
-		if (entry->isConflicted)
-		{
-			gitDiff::StartConflictEditor(entry->GetPath());
-		}
-		else
+//		if (entry->isConflicted)
+//		{
+//			gitDiff::StartConflictEditor(entry->GetPath());
+//		}
+//		else
 		{
 			StartDiff(pNMLV->iItem);
 		}
 	}
-#endif
+
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
 {
+	CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
+			        CString(GIT_REV_ZERO),
+					GitRev::GetHead());
+	
 #if 0
 	if (fileindex < 0)
 		return;
