@@ -1229,6 +1229,18 @@ void CTGitPathList::RemovePath(const CTGitPath& path)
 	}
 }
 
+void CTGitPathList::RemoveItem(CTGitPath & path)
+{
+	PathVector::iterator it;
+	for(it = m_paths.begin(); it != m_paths.end(); ++it)
+	{
+		if (it->GetGitPathString()==path.GetGitPathString())
+		{
+			m_paths.erase(it);
+			return;
+		}
+	}
+}
 void CTGitPathList::RemoveChildren()
 {
 	SortByPathname();

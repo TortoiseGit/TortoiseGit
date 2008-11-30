@@ -2849,7 +2849,28 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 															*filepath,GitRev::GetHead());
 				}
 				break;
-
+			case IDSVNLC_ADD:
+				{	// The add went ok, but we now need to run through the selected items again
+					// and update their status
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+					{
+						CTGitPath * path=(CTGitPath*)GetItemData(index);
+						CString cmd;
+						cmd.Format(_T("git.cmd add %s"),path->GetGitPathString());
+						CString output;
+						g_Git.Run(cmd,&output);
+						path->m_Action = CTGitPath::LOGACTIONS_ADDED;
+						SetEntryCheck(path,index,true);
+						SetItemGroup(index,0);
+						this->m_StatusFileList.AddPath(*path);
+						this->m_UnRevFileList.RemoveItem(*path);
+						this->m_IgnoreFileList.RemoveItem(*path);
+					}
+					
+				}
+				break;
 #if 0
 			case IDSVNLC_COPY:
 				CopySelectedEntriesToClipboard(0);
@@ -4174,6 +4195,8 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
 {
+	if(fileindex<0)
+		return;
 	CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
 			        CString(GIT_REV_ZERO),
 					GitRev::GetHead());
