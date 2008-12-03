@@ -22,6 +22,10 @@
 #include "AboutCommand.h"
 #include "CommitCommand.h"
 #include "LogCommand.h"
+
+#include "CreateRepositoryCommand.h"
+#include "CloneCommand.h"
+
 #if 0
 #include "AddCommand.h"
 #include "BlameCommand.h"
@@ -33,7 +37,7 @@
 #include "CopyCommand.h"
 #include "CrashCommand.h"
 #include "CreatePatchCommand.h"
-#include "CreateRepositoryCommand.h"
+
 #include "DelUnversionedCommand.h"
 #include "DiffCommand.h"
 #include "DropCopyAddCommand.h"
@@ -79,6 +83,7 @@ typedef enum
 	cmdCat,
 	cmdCheckout,
 	cmdCleanup,
+	cmdClone,
 	cmdCommit,
 	cmdConflictEditor,
 	cmdCopy,
@@ -121,6 +126,7 @@ typedef enum
 	cmdUpdate,
 	cmdUpdateCheck,
 	cmdUrlDiff,
+	
 } TGitCommand;
 
 static const struct CommandInfo
@@ -135,6 +141,7 @@ static const struct CommandInfo
 	{	cmdCat,				_T("cat")				},
 	{	cmdCheckout,		_T("checkout")			},
 	{	cmdCleanup,			_T("cleanup")			},
+	{	cmdClone,			_T("clone")				},
 	{	cmdCommit,			_T("commit")			},
 	{	cmdConflictEditor,	_T("conflicteditor")	},
 	{	cmdCopy,			_T("copy")				},
@@ -208,6 +215,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CommitCommand;
 	case cmdLog:
 		return new LogCommand;
+	case cmdRepoCreate:
+		return new CreateRepositoryCommand;
+	case cmdClone:
+		return new CloneCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -275,8 +286,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RenameCommand;
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;
-	case cmdRepoCreate:
-		return new CreateRepositoryCommand;
+
 	case cmdRepoStatus:
 		return new RepoStatusCommand;
 	case cmdResolve:

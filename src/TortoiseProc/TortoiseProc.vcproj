@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\Debug\bin"
-			IntermediateDirectory="..\obj\TortoiseProc\Debug"
+			OutputDirectory="..\..\bin\Debug\bin"
+			IntermediateDirectory="..\..\obj\TortoiseProc\Debug"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			UseOfATL="1"
@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\ext\hunspell;..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
+				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -393,6 +393,14 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;h;hpp;hxx;hm;inl;inc"
 			>
 			<File
+				RelativePath=".\CloneDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CloneDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gitstatuslistctrl.cpp"
 				>
 			</File>
@@ -482,6 +490,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\bitmap2.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\bugtraq.ico"
 				>
 			</File>
@@ -534,11 +546,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\copy.ico"
+				RelativePath=".\copy.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\copy.ico"
+				RelativePath="..\Resources\copy.ico"
 				>
 			</File>
 			<File
@@ -587,6 +599,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\general.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\git.bmp"
 				>
 			</File>
 			<File
@@ -802,11 +818,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
@@ -1022,11 +1038,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
@@ -1057,6 +1073,14 @@
 				Name="Commit"
 				>
 				<File
+					RelativePath=".\Commands\CloneCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CloneCommand.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\CommitCommand.cpp"
 					>
 				</File>
@@ -1070,6 +1094,10 @@
 				</File>
 				<File
 					RelativePath=".\CommitDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CreateRepositoryCommand.h"
 					>
 				</File>
 			</Filter>
@@ -1175,6 +1203,11 @@
 			</Filter>
 		</Filter>
 		<File
+			RelativePath=".\CloneDlg.htm"
+			DeploymentContent="true"
+			>
+		</File>
+		<File
 			RelativePath="Resource.h"
 			>
 		</File>
@@ -1234,7 +1267,7 @@
 		/>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="\Profiles\b20596\tortoisegit\Resources\TortoiseProcENG.rc"
+			Value="\Profiles\b20596\tortoisegit\src\Resources\TortoiseProcENG.rc"
 		/>
 	</Globals>
 </VisualStudioProject>

@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2007 - TortoiseSVN
+// Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,43 +17,22 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "TortoiseProc.h"
-#include "CmdLineParser.h"
-#include "TGitPath.h"
+#include "Command.h"
+
+#include "MessageBox.h"
+
 #include "git.h"
-
-
-
 /**
  * \ingroup TortoiseProc
- * Interface for all command line commands TortoiseProc can execute.
+ * Creates a repository
  */
-class Command
+class CloneCommand : public Command
 {
 public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() = 0;
-
-	void					SetParser(const CCmdLineParser& p) {parser = p;}
-	void					SetPaths(const CTGitPathList& plist, const CTGitPath path) {pathList = plist; cmdLinePath = path;}
-	void					SetExplorerHwnd(HWND hWnd) {hwndExplorer = hWnd;}
-protected:
-	CCmdLineParser			parser;
-	CTGitPathList			pathList;
-	CTGitPath				cmdLinePath;
-	HWND					hwndExplorer;
+	virtual bool			Execute();
 };
 
-/**
- * \ingroup TortoiseProc
- * Factory for the different commands which TortoiseProc executes from the
- * command line.
- */
-class CommandServer
-{
-public:
 
-	Command *				GetCommand(const CString& sCmd);
-};

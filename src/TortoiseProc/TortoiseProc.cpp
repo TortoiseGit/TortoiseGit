@@ -256,12 +256,12 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 	else
 	{
-#if 0
+
 		CString sPathArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("path")));
 		int asterisk = sPathArgument.Find('*');
 		cmdLinePath.SetFromUnknown(asterisk >= 0 ? sPathArgument.Left(asterisk) : sPathArgument);
-		//pathList.LoadFromAsteriskSeparatedString(sPathArgument);
-#endif
+		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
+
 	}
 	
 	hWndExplorer = NULL;

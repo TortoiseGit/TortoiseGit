@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\ext\scintilla\include;..\Utils;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

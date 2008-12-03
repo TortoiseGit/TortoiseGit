@@ -84,6 +84,7 @@
 #define HISTORYCOMBO_WITH_SYSIMAGELIST
 
 #include "ProfilingInfo.h"
+#include <afxdhtml.h>
 
 #ifdef _WIN64
 #	define APP_X64_STRING	"x64"

@@ -1,0 +1,9 @@
+; CustomActions.def
+;
+; defines the exported functions which will be available to the MSI engine
+;
+LIBRARY    "CustomActions"
+EXPORTS
+    TerminateCache
+    OpenDonatePage
+	MsgBox

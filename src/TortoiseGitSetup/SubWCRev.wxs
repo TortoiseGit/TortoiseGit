@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include Includes.wxi?>
+  <Product
+  UpgradeCode="E973E6F7-CB9B-4f9e-9C04-52FE03F19BF2"
+  Name='SubWCRev standalone app'
+  Id='*'
+  Language='1033'
+  Codepage='1252'
+  Version='$(var.VersionNumberInternal)'
+  Manufacturer='TortoiseSVN'>
+
+    <Package Id='*'
+			Keywords="Sourcecontrol;Subversion;TortoiseSVN"
+			Description="Subversion revision tool"
+			Comments="Tool to find the global revision of a Subversion working copy"
+			Manufacturer="$(var.PackageManufacturer)"
+			InstallerVersion="100"
+			Platform="$(var.PackagePlatforms)"
+			Languages="1033"
+			Compressed="yes"
+			SummaryCodepage="1252"/>
+
+    <Upgrade Id="E973E6F7-CB9B-4f9e-9C04-52FE03F19BF2" >
+      <!-- flag is set if the install will trigger an upgrade of an existing install -->
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" />
+    </Upgrade>
+
+	<Property Id="TSVN">
+		<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw"/>
+	</Property>
+
+	<Property Id="ALLUSERS">1</Property>
+
+	<Condition Message="TortoiseSVN is installed on this machine. [ProductName] is already part of TortoiseSVN!">TSVN=""</Condition>
+
+    <Media Id='1' Cabinet='SubWCRev.cab' EmbedCab='yes' CompressionLevel="high" />
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+        <Directory Id='INSTALLDIR' Name='SubWCRev' >
+          <Component Id='Main' Guid='EEE2185B-817B-4482-9D57-2D17291DCAEF'>
+
+            <File Id='SUBWCREV' Name='SubWCRev.exe' DiskId='1' Source='..\..\bin\releasestatic\bin\SubWCRev.exe' Vital='yes'></File>
+            <File Id="SUBWCREVCOM" Name="SubWCRevCOM.exe" DiskId="1" Source="..\..\bin\releasestatic\bin\SubWCRevCOM.exe" />
+
+            <!-- register the SubWCRev COM-Object -->
+            <RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}" Action="createAndRemoveOnUninstall" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}\LocalServer32" Value="[INSTALLDIR]\SubWCRevCOM.exe /automation" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}\ProgID" Value="SubWCRev.object.1" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}\VersionIndependentProgID" Value="SubWCRev.object" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}\TypeLib" Value="{$(var.GuidSubWCRevTypeLib)}" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}" Value="SubWCRev Server Object" Type="string" />
+
+            <RegistryKey Root="HKLM" Key="Software\Classes\SubWCRev.object" Action="createAndRemoveOnUninstall" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\SubWCRev.object" Value="SubWCRev Server Object" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\SubWCRev.object\CLSID" Value="{$(var.GuidSubWCRev)}" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\SubWCRev.object\CurVer" Value="SubWCRev.object.1" Type="string" />
+
+            <RegistryKey Root="HKLM" Key="Software\Classes\SubWCRev.object.1" Action="createAndRemoveOnUninstall" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\SubWCRev.object.1" Value="SubWCRev Server Object" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\SubWCRev.object.1\CLSID" Value="{$(var.GuidSubWCRev)}" Type="string" />
+
+            <RegistryKey Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidSubWCRevTypeLib)}" Action="createAndRemoveOnUninstall" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidSubWCRevTypeLib)}\1.0" Value="LibSubWCRev" Type="string" />
+            <RegistryKey Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidSubWCRevTypeLib)}\1.0\0" Action="createAndRemoveOnUninstall" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidSubWCRevTypeLib)}\1.0\0\win32" Value="[INSTALLDIR]\SubWCRevCOM.exe" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidSubWCRevTypeLib)}\1.0\FLAGS" Value="0" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\TypeLib\{$(var.GuidSubWCRevTypeLib)}\1.0\HELPDIR" Value="[INSTALLDIR]" Type="string" />
+
+            <RegistryKey Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidSubWCRevInterface)}" Action="createAndRemoveOnUninstall" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidSubWCRevInterface)}" Value="ISubWCRev" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidSubWCRevInterface)}\ProxyStubClsid" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidSubWCRevInterface)}\ProxyStubClsid32" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidSubWCRevInterface)}\TypeLib" Value="{$(var.GuidSubWCRevTypeLib)}" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Classes\Interface\{$(var.GuidSubWCRevInterface)}\TypeLib" Name="Version" Value="1.0" Type="string" />
+
+            <Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]" Action="set" />
+          </Component>
+        </Directory>
+      </Directory>
+
+    </Directory>
+
+	<WixVariable Id="WixUILicenseRtf" Value="include\TSVN_eula.rtf" />
+	<WixVariable Id="WixUIBannerBmp" Value="include\BannerStatic.jpg" />
+	<WixVariable Id="WixUIDialogBmp" Value="include\DialogStatic.jpg" />
+	<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+	<UIRef Id="WixUI_InstallDir" />
+
+    <Feature Id='Complete' Title='SubWCRev' Description='SubWCRev, the main component'
+      Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
+      <Feature Id='Main' Title='Program' Description='SubWCRev, the main component.' Level='1'>
+        <ComponentRef Id='Main' />
+      </Feature>
+    </Feature>
+
+    <InstallExecuteSequence>
+      <!-- AppSearch must be done before RemoveExistingProducts and before FindRelatedProducts -->
+      <AppSearch Sequence="1"></AppSearch>
+      <LaunchConditions After="AppSearch" />
+      <RemoveExistingProducts After="InstallValidate"><![CDATA[PREVIOUSVERSIONSINSTALLED]]></RemoveExistingProducts>
+    </InstallExecuteSequence>
+
+  </Product>
+</Wix>

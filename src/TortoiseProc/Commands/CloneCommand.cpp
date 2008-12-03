@@ -16,39 +16,11 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#pragma once
-#include "Command.h"
+#include "StdAfx.h"
+#include "CloneCommand.h"
 
+//#include "SVNProgressDlg.h"
+#include "StringUtils.h"
+#include "Hooks.h"
 #include "MessageBox.h"
-
-#include "git.h"
-/**
- * \ingroup TortoiseProc
- * Creates a repository
- */
-class CreateRepositoryCommand : public Command
-{
-public:
-	/**
-	 * Executes the command.
-	 */
-	virtual bool			Execute()
-	{
-		CGit git;
-		git.m_CurrentDir=cmdLinePath.GetWinPath();
-		CString output;
-
-		if (git.Run(_T("git.cmd init-db"),&output))
-		{
-			CMessageBox::Show(hwndExplorer, IDS_PROC_REPOCREATEERR, IDS_APPNAME, MB_ICONERROR);
-			return false;
-		}
-		else
-		{
-			CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-		}
-		return true;
-	}
-};
-
 

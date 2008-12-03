@@ -1768,11 +1768,9 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				else return NOERROR;
 				break;
 			case ShellMenuClone:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("clone /pathfile:\"");
-				svnCmd += tempfile;
+				svnCmd += _T("clone /path:\"");
+				svnCmd += folder_;
 				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuPull:
 				tempfile = WriteFileListToTempFile();

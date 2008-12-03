@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project name="Setup" default="setup" basedir=".">
+
+	<target name="versioninfo">
+		<nant target="versioninfo">
+			<buildfiles>
+				<include name="..\..\versioninfo.build" />
+			</buildfiles>
+		</nant>
+		<loadfile file="VersionNumberInclude.in.wxi" property="versionwixfile">
+			<filterchain>
+				<replacetokens begintoken="$" endtoken="$">
+					<token key="MajorVersion" value="${environment::get-variable('MajorVersion')}" />
+					<token key="MinorVersion" value="${environment::get-variable('MinorVersion')}" />
+					<token key="MicroVersion" value="${environment::get-variable('Microversion')}" />
+					<token key="WCREV" value="${environment::get-variable('WCREV')}" />
+				</replacetokens>
+			</filterchain>
+		</loadfile>
+		<echo file="VersionNumberInclude.wxi" message="${versionwixfile}" />
+		<property name="verstring" value="${environment::get-variable('MajorVersion')}.${environment::get-variable('MinorVersion')}.${environment::get-variable('MicroVersion')}.${environment::get-variable('WCREV')}" />
+	</target>
+
+	<target name="setup" depends="versioninfo">
+		<if test="${configuration == 'debug'}">
+			<echo message="Cannot create an installer from debug binaries." />
+		</if>
+		<if test="${configuration == 'release'}">
+		  <setenv>
+			  <variable name="Platform" value="win32" />
+		  </setenv>
+		  <exec program="candle">
+			  <arg value="-nologo" />
+			  <arg value="-out" />
+			  <arg value="..\..\bin\" />
+			  <arg value="SubWCRev.wxs" />
+		  </exec>
+		  <exec program="light">
+			  <arg value="-nologo" />
+			  <arg value="-out" />
+			  <arg value="..\..\bin\SubWCRev-${verstring}.msi" />
+			  <arg value="..\..\bin\SubWCRev.wixobj" />
+			<arg value="-ext" />
+			<arg value="WixUIExtension" />
+			<arg value="-cultures:en-us" />
+		  </exec>
+		  <delete>
+			  <fileset>
+				  <include name="..\..\bin\*.wixobj" />
+			  </fileset>
+		  </delete>
+  		
+		  <if test="${devrelease == ''}">
+			  <exec program="gpg.exe">
+				  <arg value="-sba" />
+				  <arg value="--yes" />
+				  <arg value="--batch" />
+				  <arg value="--passphrase" />
+				  <arg value="${gpgpassphrase}" />
+				  <arg value="..\..\bin\SubWCRev-${verstring}.msi" />
+			  </exec>
+		  </if>
+		</if>
+	</target>
+
+</project>
+

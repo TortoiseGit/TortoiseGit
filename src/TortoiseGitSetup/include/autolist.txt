@@ -1,0 +1,14 @@
+.h, .hpp, .hxx = ^\s*(?:class|struct)\s+([\w_]+)|\W([\w_]+)\(
+.cpp, .c, .cxx = \W(([\w_]+)::([\w_]+))|\W([\w_]+)\(
+.js = (?:(?:prototype\.|this\.)(\w+)\s*=\s*)?function\s*(?:(\w*)\s*)\(
+.pas = (\w+)\s+=\s+(?:class|record|interface)|(?:procedure|function|property|constructor)\s+(\w+)
+.py, .pyw, .rb = ^\s*(?:class|def)\s+(\w+)
+.pl, .pm, .cgi = ^\s*sub\s+(\w+)|\s*(?:package|use)\s+([\w\:]+)
+.php = ^\s*class\s+(\w+)|^\s*(?:(?:public|private|)\s+function)\s+(\w+)|::(\w+)|->(\w+)
+.vb, .vb6 = (?:class|function|sub)\s+(\w+)(?:\s*(?:[\(\']|$))
+.bas, .frm, .cls = ^\s*(?:(?:Public (?:Default )?|Private )?(?:Sub|Function|Property Get|Property Set|Property Let) ?)(\w+)\(|^Attribute VB_Name = "(\w+)"
+.cs, .asp, .aspx = (?:public|protected|private|internal)\s+(?:[\w\d_\.]+\s+)*([\w\d_\.]+)
+.java = (?:public|protected|private|internal)\s+(?:[\w\d_\.]+\s+)*([\w\d_\.]+)|class\s+([\w_]+)(?:(?:\s+)?(?:extends|implements)(?:\s+)?([\w_]+)?)
+.cbl, .cpy = ^.{6} ([A-Z][A-Z0-9-]*)(?: SECTION)?\.
+.au3, .auh = Func\s+([\w_]+)|\$([\w_]+)
+.asm = ^([\w]+) *
