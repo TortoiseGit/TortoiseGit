@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "Git.h"
 #include "atlconv.h"
-#include "afx.h"
 #include "GitRev.h"
 
 #define MAX_DIRBUFFER 1000

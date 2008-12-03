@@ -81,6 +81,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				UseLibraryDependencyInputs="false"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				OutputFile="$(OutDir)/TortoiseGit.dll"
@@ -92,11 +93,14 @@
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/TortoiseGit.pdb"
+				OptimizeReferences="1"
+				EnableCOMDATFolding="2"
 				BaseAddress="0x5960000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseShell\Debug/TortoiseSVN.lib"
+				ImportLibrary=""
 				TargetMachine="1"
+				CLRUnmanagedCodeCheck="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -450,6 +454,10 @@
 			</File>
 			<File
 				RelativePath=".\ContextMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\Git.cpp"
 				>
 			</File>
 			<File
@@ -815,10 +823,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ClassDiagram1.cd"
-			>
-		</File>
 	</Files>
 	<Globals>
 		<Global

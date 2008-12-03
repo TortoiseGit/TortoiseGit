@@ -23,14 +23,13 @@
 // Initialize GUIDs (should be done only and at-least once per DLL/EXE)
 #include <initguid.h>
 #include "Guids.h"
-
+#include "git.h"
 #include "ShellExt.h"
 //#include "..\version.h"
 //#include "libintl.h"
 #undef swprintf
 
 std::set<CShellExt *> g_exts;
-
 
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)

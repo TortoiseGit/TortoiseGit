@@ -132,7 +132,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			return S_FALSE;
 		}
-
+#if 0
 		switch (g_ShellCache.GetCacheType())
 		{
 		case ShellCache::exe:
@@ -150,7 +150,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				}
 #endif 
 			}
-			break;
+//			break;
 		case ShellCache::dll:
 			{
 				// Look in our caches for this item 
@@ -225,6 +225,18 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			break;
 		}
 		ATLTRACE(_T("Status %d for file %s\n"), status, pwszPath);
+#endif 
+	}
+
+	if (PathIsDirectory(pPath))
+	{
+		if (g_ShellCache.HasSVNAdminDir(pPath, TRUE))
+		{
+			status = git_wc_status_normal;		
+		}else
+		{
+			status = git_wc_status_none;
+		}
 	}
 	g_filepath.clear();
 	g_filepath = pPath;
