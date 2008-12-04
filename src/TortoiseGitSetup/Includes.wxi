@@ -16,7 +16,7 @@
 
 	<!-- Platform specifics ........................................................... -->
 
-	<?if $(var.Platform) = "x64" ?>
+	<?if $(env.Platform) = "x64" ?>
 	<?define Win64YesNo="yes" ?>
 	<?define ReleasePath="Release64" ?>
 	<?define PlatformPathExtension="x64" ?>
@@ -26,7 +26,7 @@
 	<?define Win64YesNo="no" ?>
 	<?define ReleasePath="Release" ?>
 	<?define PlatformPathExtension="win32" ?>
-	<?define PackagePlatforms="x86" ?>
+	<?define PackagePlatforms="Intel" ?>
 	<?define PlatformUserVisible="(32 bit)" ?>
 	<?endif?>
 
