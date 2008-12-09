@@ -1,0 +1,369 @@
+<?php
+//
+// TortoiseSVN specific module that creates download and translation information pages
+//
+// Copyright (C) 2004-2008 the TortoiseSVN team
+// This file is distributed under the same license as TortoiseSVN
+//
+// $Author: luebbe $
+// $Date: 2008-10-31 18:05:08 +0800 (Fri, 31 Oct 2008) $
+// $Rev: 14458 $
+//
+
+/**
+ * @file
+ * TortoiseSVN specific module that creates download and translation information pages.
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function tortoisesvn_help($section) {
+  switch ($section) {
+    case 'admin/modules#description':
+      return t('TortoiseSVN specific module that creates download and translation information pages.');
+    case 'admin/settings/tortoisesvn':
+      return t('The settings on this page define the parameters for the latest official release. These change with every release of TortoiseSVN.<br /> In the bottom section some general parameters for sourceforge are requested. These parameters change rarely.<br/>Both sets of settings are used to create information pages and download urls.');
+  }
+}
+
+/**
+ * Implementation of hook_settings().
+ */
+
+function tortoisesvn_settings() {
+
+  $form['tsvn'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('TortoiseSVN release information'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+  
+  $form['tsvn']['version'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Version'),
+    '#default_value' => variable_get('tsvn_version',0),
+    '#size' => 20,
+    '#maxlength' => 10,
+    '#description' => t('The version number of the latest official TortoiseSVN release (e.g. 1.3.0).'),
+  );
+  $form['tsvn']['date'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Release date'),
+    '#default_value' => variable_get('tsvn_date','01-01-1970'),
+    '#size' => 20,
+    '#maxlength' => 10,
+    '#description' => t('The date on which the above version of TortoiseSVN was released.'),
+  );
+  $form['tsvn']['tsvn_build'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Build number (w32)'),
+    '#default_value' => variable_get('tsvn_build',0),
+    '#size' => 20,
+    '#maxlength' => 5,
+    '#description' => t('The TortoiseSVN build number for 32 bit processors.'),
+  );
+  $form['tsvn']['tsvn_build_x64'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Build number (x64)'),
+    '#default_value' => variable_get('tsvn_build_x64',0),
+    '#size' => 20,
+    '#maxlength' => 5,
+    '#description' => t('The TortoiseSVN build number for 64 bit processors.'),
+  );
+  $form['tsvn']['svnlib'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subversion library version'),
+    '#default_value' => variable_get('tsvn_svnlib',0),
+    '#size' => 20,
+    '#maxlength' => 5,
+    '#description' => t('The version number of the Subversion libraries against which TortoiseSVN is linked.'),
+  );
+  $form['tsvn']['sf_release_binary'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sourceforge binaries release ID'),
+    '#default_value' => variable_get('tsvn_sf_release_binary',0),
+    '#size' => 20,
+    '#maxlength' => 6,
+    '#description' => t('The Sourceforge release id for the binaries.'),
+  );
+  $form['tsvn']['sf_release_language'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sourceforge language pack release ID'),
+    '#default_value' => variable_get('tsvn_sf_release_language',0),
+    '#size' => 20,
+    '#maxlength' => 6,
+    '#description' => t('The Sourceforge release id for the language packs.'),
+  );
+
+  $form['repos'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('TortoiseSVN repository URLs'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+
+  $form['repos']['trunk'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Trunk'),
+    '#default_value' => variable_get('tsvn_repos_trunk',''),
+    '#size' => 100,
+    '#maxlength' => 100,
+    '#description' => t('The TortoiseSVN trunk URL).'),
+  );
+
+  $form['repos']['branch'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Branch'),
+    '#default_value' => variable_get('tsvn_repos_branch',''),
+    '#size' => 100,
+    '#maxlength' => 100,
+    '#description' => t('The URL of the latest TortoiseSVN release branch (e.g. 1.3.x).'),
+  );
+
+  $form['sf'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Sourceforge download settings information'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+
+  $form['sf']['project'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sourceforge project ID'),
+    '#default_value' => variable_get('tsvn_sf_project',0),
+    '#size' => 20,
+    '#maxlength' => 6,
+    '#description' => t('The Sourceforge project ID of TortoiseSVN.'),
+  );
+  $form['sf']['prefix'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Prefix of download URL'),
+    '#default_value' => variable_get('tsvn_sf_prefix',0),
+    '#size' => 100,
+    '#maxlength' => 100,
+    '#description' => t('The part of the Sourceforge download URL that is placed <b>before</b> the filename.'),
+  );
+  $form['sf']['append'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Appendix of download URL'),
+    '#default_value' => variable_get('tsvn_sf_append',0),
+    '#size' => 100,
+    '#maxlength' => 100,
+    '#description' => t('The part of the Sourceforge download URL that is placed <b>after</b> the filename.'),
+  );
+
+  return $form;
+}
+
+
+/**
+ * functions which are used to print the Doc & GUI translation statistics
+ */
+
+function print_footer($vars)
+{
+?>
+<p>
+<img src="/siteicons/translated.png" alt="translated" title="translated" width="32" height="16"/> Translated <img src="/siteicons/missingaccelerator.png" alt="missing accelerator keys" title="missing accelerator keys" width="32" height="16"/> Missing accelerator keys <img src="/siteicons/fuzzy.png" alt="fuzzy" title="fuzzy" width="32" height="16"/> Fuzzy <img src="/siteicons/untranslated.png" alt="untranslated" title="untranslated" width="32" height="16" /> Untranslated
+</p>
+<p>
+Translations were made by many people, you find them on the <a href="translator_credits">translator credits page</a>.
+</p>
+
+</div>
+
+<?php
+}
+
+function print_table_header($name, $summary, $postat, $vars)
+{
+?>
+<h2><a name="<?php echo $name ?>"></a><?php echo $summary ?></h2>
+<div class="table">
+<table class="translations" summary="<?php echo $summary ?>">
+<tr>
+<th class="lang">Nr.</th>
+<th class="download">Language</th>
+<th class="lang">ISO code</th>
+<th class="trans">Total= <?php echo $postat[6] ?></th>
+<th class="graph">Graph</th>
+<th colspan="2" class="download">Last update</th>
+</tr>
+<?php
+}
+
+function print_table_footer()
+{
+?>
+</table>
+</div>
+<div style="clear:both">&nbsp;<br/></div>
+<?php
+}
+
+function print_blank_stat($i, $postat, $vars)
+{
+  $tl = $postat[6];
+  $wc=$vars['wc'];
+  $reposurl = $vars['reposurl'].$postat[11];
+  $fdate=date("Y-m-d",$postat[12]);
+  $flagimg=$vars['flagpath'].$postat[2].".png";
+  $flagtag="<img src=\"$flagimg\" height=\"12\" width=\"18\" alt=\"$postat[3] flag\"/>";
+  $flagtag="<a href=\"$reposurl\">$flagtag&nbsp;$postat[3]</a>";
+
+  if ($postat[5] > 0) {
+    // Error while running msgfmt on existing .po file
+    $graphtag="Error in po file";
+  } else {
+    // .pot File
+    $graphtag="<img src=\"/siteicons/transparent.png\" alt=\"blank\" width=\"$wc\" height=\"16\"/>";
+  }
+
+  echo "<td>$i</td>";
+  echo "<td class=\"lang\">$flagtag</td>";
+  echo "<td class=\"lang\">&nbsp;</td>";
+  echo "<td class=\"trans\">&nbsp;</td>";
+  echo "<td class=\"graph\">$graphtag</td>";
+  echo "<td class=\"lang\">$fdate</td>";
+  echo "<td>&nbsp;</td>";
+}
+
+function print_content_stat($i, $postat, $vars)
+{
+  $release=$vars['release'];
+  $build=$vars['build'];
+  $wc=120;         // Fixed width for graph
+
+  $lang_cc=$postat[2];
+  $lang_name=$postat[3];
+  $total=$postat[6];
+  $tra=$postat[7];
+  $fuz=$postat[8];
+  $unt=$postat[9];
+  $acc=$postat[10];
+  $reposfile=$postat[11].'.po';
+  $reposurl=$vars['reposurl'].$reposfile;
+  $fdate=$postat[12];
+  $age=(strtotime("now") - strtotime($fdate)) / 86400;
+
+  $dlfile=$vars['downloadurl1']."LanguagePack-".$release.".".$build."-win32-".$lang_cc.".exe".$vars['downloadurl2'];
+  $flagimg=$vars['flagpath'].$lang_cc.".png";
+  $flagtag="<img src=\"$flagimg\" height=\"12\" width=\"18\" alt=\"$lang_name flag\"/>";
+  $flagtag="<a href=\"$reposurl\">$flagtag&nbsp;$lang_name</a>";
+
+
+  // Calculate width of bars
+  $wt=round($wc*$tra/$total);
+  $wa=round($wc*$acc/$total);
+  $wf=round($wc*$fuz/$total);
+  $wu=round($wc*$unt/$total);
+
+  // Adjustments
+  // make sure that each bar is at least 2px wide if its value is > 0
+  if (($wt<2) && ($tra>0)) $wt=2;
+  if (($wa<2) && ($acc>0)) $wa=2;
+  if (($wf<2) && ($fuz>0)) $wf=2;
+  if (($wu<2) && ($unt>0)) $wu=2;
+
+  // Make sure total width stays constant by determining the widest bar
+  // and subtracting the width of the shorter bars from it.
+  if ($wt+$wa+$wf+$wu!=$wc){
+    if ($wt>=wa && $wt>=$wf && $wt>=$wu){
+      $wt = $wc-$wa-$wf-$wu;
+    } else if ($wa>=$wt && $wa>=$wf && $wa>=$wu){
+      $wa = $wc-$wt-$wf-$wu;
+    } else if ($wf>=$wt && $wf>=$wa && $wf>=$wu){
+      $wf = $wc-$wt-$wa-$wu;
+    } else{
+      $wu = $wc-$wt-$wa-$wf;
+    }
+  }
+
+  // Calculate percentage done. 
+  $pt=number_format(100*$tra/$total, 1)."%";
+
+  // If completeness was rounded up to 100% and 
+  // anything is missing, set completeness down to 99.9%
+  if ( ($pt=="100.0%") && (($total>$tra) || ($acc>0)) )
+    $pt="99.9%";
+
+  if ($pt=="100.0%") {
+    $title="Perfect :-)";
+  } else {
+    $title="tr:$tra&nbsp;fu:$fuz&nbsp;ut:$unt;&nbsp;$acc&nbsp;missing&nbsp;hotkeys";
+  }
+
+  // Put Debug info into title
+  //  $title="$wc&nbsp;tr:$wt&nbsp;fu:$wf&nbsp;ut:$wu;&nbsp;$wa&nbsp;missing&nbsp;hotkeys";
+
+  // count fuzzies as translated, only for the display
+  $tra=$tra+$fuz;
+
+  echo "<td>$i</td>";
+  echo "<td class=\"lang\"><nobr>$flagtag</nobr></td>";
+  echo "<td class=\"lang\">$lang_cc</td>";
+  echo "<td class=\"trans\" align=\"right\">$pt</td>";
+  echo "<td class=\"graph\">";
+  if ($wt > 0) 
+    echo "<img src=\"/siteicons/translated.png\" alt=\"tr\" title=\"$title\" width=\"$wt\" height=\"16\"/>";
+  if ($wa > 0) 
+    echo "<img src=\"/siteicons/missingaccelerator.png\" alt=\"mh\" title=\"$title\" width=\"$wa\" height=\"16\"/>";
+  if ($wf > 0) 
+    echo "<img src=\"/siteicons/fuzzy.png\" alt=\"fu\" title=\"$title\" width=\"$wf\" height=\"16\"/>";
+  if ($wu > 0) 
+    echo "<img src=\"/siteicons/untranslated.png\" alt=\"un\" title=\"$title\" width=\"$wu\" height=\"16\" />";
+  echo "</td>";
+  echo "<td class=\"lang\">$fdate</td>";
+  if ( ($pt<>"100.0%") && ($age>90) && ($vars['showold']==TRUE) ) {
+    $title = "Old translation. Last update on: ".$fdate." We need a maintainer!!";
+    echo "<td><img src=\"/siteicons/exclamation.png\" alt=\"!!OLD!!\" title=\"$title\" width=\"16\" height=\"16\"/></td>";
+  } else {
+    echo "<td>&nbsp;</td>";
+  }
+}
+
+function print_single_stat($i, $postat, $vars)
+{
+
+/*
+  Debugging code:
+  echo "<tr class=\"stat_ok\">\n";
+  echo "<td>$i</td> <td><pre>";
+	print_r($postat);
+	echo"</pre></td>";
+*/
+
+  if ($postat[0] == 0) {
+    // $postat[0] == 0 
+    // -> It's the .pot file
+    echo "<tr class=\"stat_ok\">\n";
+    print_blank_stat($i, $postat, $vars);
+
+  } elseif ($postat[5] > 0) {
+    // $postat[5] > 0 
+    // -> Error while running msgfmt on existing .po file
+    echo "<tr class=\"error\">\n";
+    print_blank_stat($i, $postat, $vars);
+
+  } else {
+    echo "<tr class=\"stat_ok\">\n";
+    print_content_stat($i, $postat, $vars);
+  }
+  echo "</tr>\n";
+}
+
+function print_all_stats($data, $vars)
+{
+  $i=0;
+  foreach ($data as $key => $postat)
+    // $postat[5] == '' 
+    // -> Non existant .po file. Only country information, no stats
+    if (isset($postat[5])) {
+      $i++;
+      print_single_stat($i, $postat, $vars);
+    }
+}
+
+?>

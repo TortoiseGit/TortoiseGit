@@ -1,0 +1,27 @@
+// ExampleAtlPlugin.idl : IDL source for ExampleAtlPlugin
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ExampleAtlPlugin.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(FF484CE5-A2FA-44E1-85C0-45B56A83CC02),
+	version(1.0),
+	helpstring("ExampleAtlPlugin 1.0 Type Library")
+]
+library ExampleAtlPluginLib
+{
+	importlib("stdole2.tlb");
+
+	[
+		uuid(EF796C90-149E-4F27-BF4E-2B9C9B5EA646),
+		helpstring("Provider Class")
+	]
+	coclass Provider
+	{
+		[default] interface IUnknown;
+	};
+};

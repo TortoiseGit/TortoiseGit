@@ -1,0 +1,55 @@
+Windows Registry Editor Version 5.00
+
+
+;this reg file moves the TortoiseSVN icon overlay handler keys from being
+;registered with explorer to being registered with the TortoiseOverlays handler.
+;it should only be used with version that do not already use the new handler
+;(currently (Monday, January 28, 2008) only recent nightlies use the new handler)
+;tested with 1.4.7
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers]
+
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\1TortoiseSVN]
+@="{30351346-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\2TortoiseSVN]
+@="{30351347-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\3TortoiseSVN]
+@="{30351348-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\4TortoiseSVN]
+@="{3035134B-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\5TortoiseSVN]
+@="{3035134C-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\6TortoiseSVN]
+@="{3035134D-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\7TortoiseSVN]
+@="{3035134E-7B7D-4FCC-81B4-1E394CA267EB}"
+
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\Normal]
+"SVN"="{30351346-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\Modified]
+"SVN"="{30351347-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\Conflict]
+"SVN"="{30351348-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\Locked]
+"SVN"="{3035134D-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\ReadOnly]
+"SVN"="{3035134B-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\Deleted]
+"SVN"="{3035134C-7B7D-4FCC-81B4-1E394CA267EB}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TortoiseOverlays\Added]
+"SVN"="{3035134E-7B7D-4FCC-81B4-1E394CA267EB}"
+

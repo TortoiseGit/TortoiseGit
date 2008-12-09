@@ -1,0 +1,404 @@
+<?xml version="1.0"?>
+<!--
+============================================================ 
+ $Date: 2008-09-12 22:45:33 +0800 (Fri, 12 Sep 2008) $
+ $Author: steveking $
+ $Rev: 13935 $
+============================================================ 
+
+NAnt build script for the TortoiseSVN language pack installers
+
+-->
+
+<project name="LanguagePack" default="all" basepath=".">
+	<description>
+		Builds the Language pack installers
+	</description>
+	
+	<include buildfile="../default.build.user" if="${file::exists('../default.build.user')}"/>
+
+	<property name="SpellCheckDir" 
+		value="..\..\Common\Spell\"
+		unless="${property::exists('SpellCheckDir')}"
+	/>
+
+	<target name="clean">
+		<description>
+			Removes all previously built language pack installers.
+		</description>
+		<if test="${cleanup == 'yes'}">
+			<delete>
+				<fileset>
+					<include name="..\bin\Tortoise*.dll" />
+					<include name="..\bin\LanguagePack_*-${platform}-*.msi" />
+				</fileset>
+			</delete>
+		</if>
+	</target>
+
+	<target name="createecho2">
+		<script language="C#" prefix="tsvn">
+			<imports>
+				<import namespace="System.Globalization" />
+				<import namespace="System.Xml" />
+				<import namespace="NAnt.Core.Attributes" />
+				<import namespace="NAnt.Core.Util" />
+				<import namespace="NAnt.Core.Tasks" />
+			</imports>
+			<code>
+				<![CDATA[
+					/* Based on EchoTask.cs NAnt 0.85-rc4 */
+					/* Includes support for different Encoding, if none is set, it uses ANSI (Default) */
+
+					[TaskName("echo2")]
+					public class Echo2Task : Task 
+					{
+						#region Private Instance Fields
+
+						private string _message;
+						private string _contents;
+						private FileInfo _file;
+						private bool _append = false;
+						private Level _messageLevel = Level.Info;
+						private Encoding _encoding;
+
+						#endregion Private Instance Fields
+
+						#region Public Instance Properties
+
+						[TaskAttribute("message")]
+						public string Message 
+						{
+							get { return _message; }
+							set 
+							{
+								if (!StringUtils.IsNullOrEmpty(value)) 
+								{
+									if (!StringUtils.IsNullOrEmpty(Contents)) 
+									{
+										throw new ValidationException("Inline content and the message attribute are mutually exclusive in the <echo> task.", Location);
+									} 
+									else 
+									{
+										_message = value;
+									}
+								} 
+								else 
+								{
+									_message = null; 
+								}
+							}
+						}
+
+						public string Contents 
+						{
+							get { return _contents; }
+							set 
+							{ 
+								if (!StringUtils.IsNullOrEmpty(value)) 
+								{
+									if (!StringUtils.IsNullOrEmpty(Message)) 
+									{
+										throw new ValidationException("Inline content and the message attribute are mutually exclusive in the <echo> task.", Location);
+									} 
+									else 
+									{
+										_contents = value;
+									}
+								} 
+								else 
+								{
+									_contents = null;
+								}
+							}
+						}
+
+						[TaskAttribute("file")]
+						public FileInfo File 
+						{
+							get { return _file; }
+							set { _file = value; }
+						}
+
+						[TaskAttribute("append")]
+						public bool Append 
+						{
+							get { return _append; }
+							set { _append = value; }
+						}
+
+						[TaskAttribute("level")]
+						public Level MessageLevel 
+						{
+							get { return _messageLevel; }
+							set 
+							{
+								if (!Enum.IsDefined(typeof(Level), value)) 
+								{
+									throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "An invalid level {0} was specified.", value)); 
+								} 
+								else 
+								{
+									this._messageLevel = value;
+								}
+							}
+						}
+
+						[TaskAttribute("encoding")]
+						public Encoding Encoding 
+						{
+							get { return _encoding; }
+							set { _encoding = value; }
+						}
+
+						#endregion Public Instance Properties
+
+						#region Override implementation of Task
+
+						protected override void ExecuteTask() 
+						{
+							if (File != null) 
+							{ // output to file
+								try 
+								{
+									// ensure the output directory exists
+									if (!File.Directory.Exists) 
+									{
+										File.Directory.Create();
+										File.Directory.Refresh();
+									}
+
+									// determine character encoding to use
+									Encoding encoding = (Encoding != null) ? Encoding : Encoding.Default;
+									// write the message to the file
+									using (StreamWriter writer = new StreamWriter(File.FullName, Append, encoding)) 
+									{
+										if (!StringUtils.IsNullOrEmpty(Message)) 
+										{
+											writer.WriteLine(Message);
+										} 
+										else if (!StringUtils.IsNullOrEmpty(Contents)) 
+										{
+											writer.WriteLine(Contents);
+										} 
+										else 
+										{
+											writer.WriteLine();
+										}
+									}
+								} 
+								catch (Exception ex) 
+								{
+									throw new BuildException(string.Format(CultureInfo.InvariantCulture,
+										"Failed to write message to file '{0}'.", File.FullName), 
+										Location, ex);
+								}
+							} 
+							else 
+							{ // output to build log
+								if (!StringUtils.IsNullOrEmpty(Message)) 
+								{
+									Log(MessageLevel, Message);
+								} 
+								else if (!StringUtils.IsNullOrEmpty(Contents)) 
+								{
+									Log(MessageLevel, Contents);
+								} 
+								else 
+								{
+									Log(MessageLevel, string.Empty);
+								}
+							}
+						}
+
+						protected override void InitializeTask(XmlNode taskNode) 
+						{
+							Contents = Project.ExpandProperties(taskNode.InnerText, Location);
+						}
+
+						#endregion Override implementation of Task
+					}
+				]]>
+			</code>
+		</script>
+	</target>
+	
+	<target name="all" depends="clean">
+		<description>
+			Builds the installers.
+		</description>
+		<call target="createecho2" />
+
+		<if test="${platform == 'x64'}">
+			<setenv>
+				<variable name="Platform" value="x64" />
+			</setenv>
+		</if>
+		<if test="${platform != 'x64'}">
+			<setenv>
+				<variable name="Platform" value="win32" />
+			</setenv>
+		</if>
+
+		<loadfile file="Languages.txt" property="languagelines" encoding="utf-8"/>
+		<!-- the next line is split in two because we need the newline in the string -->
+		<foreach item="String" in="${languagelines}" delim="
+" property="langline">
+			<call target="doit" unless="${string::starts-with(langline, '#') or string::get-length(langline)==0}" failonerror="false"/>
+		</foreach>
+	</target>
+	
+	<target name="doit">
+		<property name="platformfolder" value="${configuration}${bindirextension}" />
+
+		<property name="ResTextFileName" value="..\bin\release${bindirextension}\bin\restext.exe" />
+		<property name="ResTextFileName" value="..\bin\release\bin\restext.exe" if="${crosscompile == 'yes'}" />
+
+		<regex 
+			pattern="^(?'langISO'[A-z_]+);[ \t]+(?'langCC'\d+);[ \t]+(?'langhelpfile'\d+);[ \t]+(?'langUI'.+);[ \t]+(?'langweb'.+);[ \t]+(?'langnative'.+)" 
+			input="${langline}"
+		/>
+		<echo message="Building ${langweb} dlls and installer" />
+
+		<!-- create the dlls -->
+		<exec program="${ResTextFileName}" failonerror="false">
+			<arg value="apply" />
+			<arg value="..\bin\${platformfolder}\bin\TortoiseProcLang.dll" />
+			<arg value="..\bin\TortoiseProc${langCC}.dll" />
+			<arg value="Tortoise_${langISO}.po" />
+		</exec>
+		<exec program="${ResTextFileName}" failonerror="false">
+			<arg value="apply" />
+			<arg value="..\bin\${platformfolder}\bin\TortoiseMergeLang.dll" />
+			<arg value="..\bin\TortoiseMerge${langCC}.dll" />
+			<arg value="Tortoise_${langISO}.po" />
+		</exec>
+		<exec program="${ResTextFileName}" failonerror="false">
+			<arg value="apply" />
+			<arg value="..\bin\${platformfolder}\bin\TortoiseBlameLang.dll" />
+			<arg value="..\bin\TortoiseBlame${langCC}.dll" />
+			<arg value="Tortoise_${langISO}.po" />
+		</exec>
+		<exec program="${ResTextFileName}" failonerror="false">
+			<arg value="apply" />
+			<arg value="..\bin\${platformfolder}\bin\TortoiseIDiffLang.dll" />
+			<arg value="..\bin\TortoiseIDiff${langCC}.dll" />
+			<arg value="Tortoise_${langISO}.po" />
+		</exec>
+
+		<!-- create the mo files -->
+		<property name="PoFileName" value="..\ext\Subversion\Subversion\po\${langISO}.po" />
+		<exec program="msgfmt" if="${file::exists(PoFileName)}" failonerror="false" >
+			<arg value="..\ext\Subversion\Subversion\po\${langISO}.po" />
+			<arg value="-o" />
+			<arg value="subversion.mo" />
+		</exec>
+		
+		<!--
+		Build the <Files></Files> parts for the spell checker files and thesauri.
+		-->
+		<property name="SpellCheckFiles" value="" />
+		<foreach item="File" property="filename">
+			<in>
+				<items>
+					<include name="${SpellCheckDir}${langISO}*.*" />
+				</items>
+			</in>
+			<do>
+				<property name="SpellCheckFiles" value="&lt;File Id='${path::get-file-name(filename)}' Name='${path::get-file-name(filename)}' LongName='${path::get-file-name(filename)}' DiskId='1' Source='${filename}' Vital='no'&gt;&lt;/File&gt;${SpellCheckFiles}" />
+				<echo message="${filename}" />
+			</do>
+		</foreach> 
+		
+		<!-- create the files for the installer -->		
+		<if test="${environment::variable-exists('MajorVersion')}">
+			<loadfile file="LanguagePack.wxs" property="versionwxsfile" encoding="utf-8" >
+				<filterchain>
+					<replacetokens begintoken="$" endtoken="$">
+						<token key="MajorVersion" value="${environment::get-variable('MajorVersion')}" />
+						<token key="MinorVersion" value="${environment::get-variable('MinorVersion')}" />
+						<token key="MicroVersion" value="${environment::get-variable('Microversion')}" />
+						<token key="WCREV" value="${environment::get-variable('WCREV')}" />
+						<token key="DEVRELEASE" value="${devrelease}" />
+						<token key="PLATFORM" value="${platform}" />
+						<token key="LANGUI" value="${langUI}" />
+						<token key="COUNTRYCODE" value="${langISO}" />
+						<token key="COUNTRYID" value="${langCC}" />
+						<token key="LANGNATIVE" value="${langnative}" />
+						<token key="SPELLCHECKFILES" value="${SpellCheckFiles}" />
+					</replacetokens>
+				</filterchain>
+			</loadfile>
+			<echo2 file="LanguagePack_${langISO}.wxs" message="${versionwxsfile}" encoding="utf-8" />
+		</if>
+		
+		<setenv>
+			<variable name="TSVNHelpFile" value=" " />
+			<variable name="TMergeHelpFile" value=" " />
+			<variable name="TSVNMoFile" value=" " />
+		</setenv>
+
+		<if test="${file::exists('subversion.mo')}">
+			<setenv>
+				<variable name="TSVNMoFile" value="${langISO}" />
+			</setenv>
+		</if>
+
+		<property name="chmFileName" value="..\doc\output\TortoiseSVN_${langISO}.chm" />
+		<setenv if="${file::exists(chmFileName)}">
+			<variable name="TSVNHelpFile" value="${langISO}" />
+		</setenv>
+
+		<property name="chmFileName" value="..\doc\output\TortoiseMerge_${langISO}.chm" />
+		<setenv if="${file::exists(chmFileName)}">
+			<variable name="TMergeHelpFile" value="${langISO}" />
+		</setenv>
+
+		<property name="verstring" value="${environment::get-variable('MajorVersion')}.${environment::get-variable('MinorVersion')}.${environment::get-variable('MicroVersion')}.${environment::get-variable('WCREV')}" />
+		
+		<exec program="candle">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="..\bin\" />
+			<arg value="LanguagePack_${langISO}.wxs" />
+			<arg value="WixUI_LanguagePacks.wxs" />
+		</exec>
+		<exec program="light">
+			<arg value="-nologo" />
+			<arg value="-out" />
+			<arg value="..\bin\LanguagePack_${verstring}${devrelease}-${platform}-${langISO}.msi" />
+			<arg value="..\bin\LanguagePack_${langISO}.wixobj" />
+			<arg value="..\bin\WixUI_LanguagePacks.wixobj" />
+			<arg value="${environment::get-variable('WIXUI')}\WixUI.wixlib" />
+			<arg value="-loc" />
+			<arg value="${environment::get-variable('WIXUI')}\WixUI_en-us.wxl" />
+		</exec>
+		<delete>
+			<fileset>
+				<include name="..\bin\*.wixobj" />
+			</fileset>
+		</delete>
+
+		<delete file="LanguagePack_${langISO}.wxs" failonerror="false" />
+		<delete file="..\bin\TortoiseProc${langCC}.dll" failonerror="false" />
+		<delete file="..\bin\TortoiseMerge${langCC}.dll" failonerror="false" />
+		<delete file="..\bin\TortoiseBlame${langCC}.dll" failonerror="false" />
+		<delete file="..\bin\TortoiseIDiff${langCC}.dll" failonerror="false" />
+		<delete file="subversion.mo" failonerror="false" />
+	</target>
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

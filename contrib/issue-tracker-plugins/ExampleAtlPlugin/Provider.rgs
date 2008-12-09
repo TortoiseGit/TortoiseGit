@@ -1,0 +1,33 @@
+HKCR
+{
+	ExampleAtlPlugin.Provider.1 = s 'Run issue tracker command'
+	{
+		CLSID = s '{EF796C90-149E-4F27-BF4E-2B9C9B5EA646}'
+	}
+	ExampleAtlPlugin.Provider = s 'Run issue tracker command'
+	{
+		CLSID = s '{EF796C90-149E-4F27-BF4E-2B9C9B5EA646}'
+		CurVer = s 'ExampleAtlPlugin.Provider.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {EF796C90-149E-4F27-BF4E-2B9C9B5EA646} = s 'Run issue tracker command'
+		{
+			ProgID = s 'ExampleAtlPlugin.Provider.1'
+			VersionIndependentProgID = s 'ExampleAtlPlugin.Provider'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{FF484CE5-A2FA-44E1-85C0-45B56A83CC02}'
+			
+			'Implemented Categories'
+			{
+				'{3494FA92-B139-4730-9591-01135D5E7831}'
+				{
+				}
+			}
+		}
+	}
+}

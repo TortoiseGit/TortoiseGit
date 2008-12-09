@@ -1,0 +1,7871 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 1900-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+
+#. Resource IDs: (10, 126)
+msgid " "
+msgstr ""
+
+#. Resource IDs: (188)
+#, c-format
+msgid "! %d"
+msgstr ""
+
+#. Resource IDs: (1262)
+msgid "# authors shown individually:"
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "%.2f MBytes transferred"
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "%.2f kBytes/s"
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "%1 contained an unexpected object."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "%1 contains an incorrect path."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "%1 contains an incorrect schema."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "%1 has a bad format."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "%1 was not found."
+msgstr ""
+
+#. Resource IDs: (3860)
+#, c-format
+msgid "%1: %2\nContinue running script?"
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "%I64d Bytes transferred"
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "%I64d kBytes transferred"
+msgstr ""
+
+#. Resource IDs: (169)
+#, c-format
+msgid "%d files selected, %d files total"
+msgstr ""
+
+#. Resource IDs: (246)
+#, c-format
+msgid "%d most active author(s) with at least %d commits each (%d %%)"
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "%ld Bytes/s"
+msgstr ""
+
+#. Resource IDs: (226)
+#, c-format
+msgid "%ld minute(s) and %ld second(s)"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "%ld of %ld"
+msgstr ""
+
+#. Resource IDs: (563)
+#, c-format
+msgid "%ld paths"
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "%s"
+msgstr ""
+
+#. Resource IDs: (93)
+#, c-format
+msgid "%s (offline)"
+msgstr ""
+
+#. Resource IDs: (115)
+#, c-format
+msgid "%s (offline) - %s"
+msgstr ""
+
+#. Resource IDs: (226)
+#, c-format
+msgid "%s - at revision: %d"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "%s : Remote file"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "%s : Working Base"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "%s : Working Copy"
+msgstr ""
+
+#. Resource IDs: (226)
+#, c-format
+msgid "%s in %s"
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "%s, at %s"
+msgstr ""
+
+#. Resource IDs: (145)
+#, c-format
+msgid "%s\\Export (%d) of %s"
+msgstr ""
+
+#. Resource IDs: (145)
+#, c-format
+msgid "%s\\Export of %s"
+msgstr ""
+
+#. Resource IDs: (3850)
+#, c-format
+msgid "%s\n%s"
+msgstr ""
+
+#. Resource IDs: (145)
+#, c-format
+msgid "%s\nDo you want to remove it anyway?"
+msgstr ""
+
+#. Resource IDs: (69)
+#, c-format
+msgid "%s\nis a directory, not a file!\nTortoiseMerge can't diff directories."
+msgstr ""
+
+#. Resource IDs: (286)
+#, c-format
+msgid "%s\nr%s | %s\n\n%s\n"
+msgstr ""
+
+#. Resource IDs: (16923)
+msgid "&..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&?"
+msgstr ""
+
+#. Resource IDs: (57664)
+msgid "&About TortoiseMerge..."
+msgstr ""
+
+#. Resource IDs: (16920)
+msgid "&Activate"
+msgstr ""
+
+#. Resource IDs: (17075)
+msgid "&Add >>"
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "&Add or Remove Buttons"
+msgstr ""
+
+#. Resource IDs: (8, 1098, 1310)
+msgid "&Add..."
+msgstr ""
+
+#. Resource IDs: (1090, 1093)
+msgid "&Advanced..."
+msgstr ""
+
+#. Resource IDs: (1471)
+msgid "&Allow ambiguous URLs"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Application Look"
+msgstr ""
+
+#. Resource IDs: (1013)
+msgid "&Apply unified diff"
+msgstr ""
+
+#. Resource IDs: (32852)
+msgid "&Aqua Style"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Arguments:"
+msgstr ""
+
+#. Resource IDs: (16645)
+msgid "&Assign"
+msgstr ""
+
+#. Resource IDs: (16633)
+msgid "&Associate double-click event with:"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "&Auto Hide"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Autoclose:"
+msgstr ""
+
+#. Resource IDs: (1015)
+msgid "&Backup original file"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "&Blame changes"
+msgstr ""
+
+#. Resource IDs: (32782)
+msgid "&Blame previous revision"
+msgstr ""
+
+#. Resource IDs: (114, 322)
+msgid "&Blame revisions"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "&Blame..."
+msgstr ""
+
+#. Resource IDs: (32849)
+msgid "&Blue Style"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Blue:"
+msgstr ""
+
+#. Resource IDs: (138)
+msgid "&Browse repository"
+msgstr ""
+
+#. Resource IDs: (1011)
+msgid "&Browse..."
+msgstr ""
+
+#. Resource IDs: (16913)
+msgid "&Button Appearance..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Button text:"
+msgstr ""
+
+#. Resource IDs: (1051)
+msgid "&CD-ROM"
+msgstr ""
+
+#. Resource IDs: (2, 332)
+msgid "&Cancel"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Categories:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Category:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Choose commands from:"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "&Clean up"
+msgstr ""
+
+#. Resource IDs: (58112)
+msgid "&Close"
+msgstr ""
+
+#. Resource IDs: (16922)
+msgid "&Close Window(s)"
+msgstr ""
+
+#. Resource IDs: (32785)
+msgid "&Color age of lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Command:"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "&Commit..."
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "&Compare URLs"
+msgstr ""
+
+#. Resource IDs: (76, 274, 32783)
+msgid "&Compare revisions"
+msgstr ""
+
+#. Resource IDs: (1019)
+msgid "&Compare whitespaces"
+msgstr ""
+
+#. Resource IDs: (1239)
+msgid "&Configure"
+msgstr ""
+
+#. Resource IDs: (1227)
+msgid "&Contact the repository on startup"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "&Convert files when diffing against BASE"
+msgstr ""
+
+#. Resource IDs: (501, 1367, 57634)
+msgid "&Copy"
+msgstr ""
+
+#. Resource IDs: (16911)
+msgid "&Copy Button Image"
+msgstr ""
+
+#. Resource IDs: (32776)
+msgid "&Copy log message to clipboard"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Copy to clipboard"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "&Copy to..."
+msgstr ""
+
+#. Resource IDs: (1097)
+msgid "&Custom"
+msgstr ""
+
+#. Resource IDs: (1096, 1269)
+msgid "&Default"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "&Delete"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "&Delete (keep local)"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "&Delete..."
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "&Diff"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "&Diff with URL"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "&Diff with previous version"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "&Docking"
+msgstr ""
+
+#. Resource IDs: (2)
+msgid "&Don't go offline"
+msgstr ""
+
+#. Resource IDs: (1031, 65535)
+msgid "&Edit"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "&Edit conflicts"
+msgstr ""
+
+#. Resource IDs: (1099, 1282)
+msgid "&Edit..."
+msgstr ""
+
+#. Resource IDs: (1023)
+msgid "&Enable Proxy Server"
+msgstr ""
+
+#. Resource IDs: (1434)
+msgid "&Enable log caching"
+msgstr ""
+
+#. Resource IDs: (1213)
+msgid "&Enter a message describing why you are locking the file(s)."
+msgstr ""
+
+#. Resource IDs: (32782)
+msgid "&Exit"
+msgstr ""
+
+#. Resource IDs: (323)
+msgid "&Export selection to..."
+msgstr ""
+
+#. Resource IDs: (1092, 1094, 1095)
+msgid "&External"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&File"
+msgstr ""
+
+#. Resource IDs: (32809)
+msgid "&Filter"
+msgstr ""
+
+#. Resource IDs: (1, 57636)
+msgid "&Find"
+msgstr ""
+
+#. Resource IDs: (32771)
+msgid "&Find..."
+msgstr ""
+
+#. Resource IDs: (32778)
+msgid "&Fit Images in window"
+msgstr ""
+
+#. Resource IDs: (1050)
+msgid "&Fixed drives"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "&Floating"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Font for log messages:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Font:"
+msgstr ""
+
+#. Resource IDs: (501, 65535)
+msgid "&From URL:"
+msgstr ""
+
+#. Resource IDs: (1259)
+msgid "&From WC at URL:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&From revision"
+msgstr ""
+
+#. Resource IDs: (32779)
+msgid "&Go To Line..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Green:"
+msgstr ""
+
+#. Resource IDs: (32799)
+msgid "&Group by branch"
+msgstr ""
+
+#. Resource IDs: (1032, 1115)
+msgid "&HEAD Revision"
+msgstr ""
+
+#. Resource IDs: (1019, 1032, 1034)
+msgid "&HEAD revision"
+msgstr ""
+
+#. Resource IDs: (1182)
+msgid "&HEAD revision in the repository"
+msgstr ""
+
+#. Resource IDs: (9, 12, 332, 32781, 57670, 65535)
+msgid "&Help"
+msgstr ""
+
+#. Resource IDs: (57670)
+msgid "&Help Topics"
+msgstr ""
+
+#. Resource IDs: (3842)
+msgid "&Hide"
+msgstr ""
+
+#. Resource IDs: (1170)
+msgid "&Icon Set:"
+msgstr ""
+
+#. Resource IDs: (15)
+#, c-format
+msgid "&Ignore %d items"
+msgstr ""
+
+#. Resource IDs: (1021)
+msgid "&Ignore whitespace changes"
+msgstr ""
+
+#. Resource IDs: (16914)
+msgid "&Image"
+msgstr ""
+
+#. Resource IDs: (32790)
+msgid "&Image Info"
+msgstr ""
+
+#. Resource IDs: (16505)
+msgid "&Image only"
+msgstr ""
+
+#. Resource IDs: (9, 1461)
+msgid "&Import..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Initial directory:"
+msgstr ""
+
+#. Resource IDs: (32825)
+msgid "&Inline diff word-wise"
+msgstr ""
+
+#. Resource IDs: (1016)
+msgid "&Jump to first difference when loading"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Language:"
+msgstr ""
+
+#. Resource IDs: (16653)
+msgid "&Large Icons"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "&Limit search to modified lines"
+msgstr ""
+
+#. Resource IDs: (32797)
+msgid "&Link image positions"
+msgstr ""
+
+#. Resource IDs: (1172)
+msgid "&List View"
+msgstr ""
+
+#. Resource IDs: (1309)
+msgid "&Load..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Lum:"
+msgstr ""
+
+#. Resource IDs: (16543)
+msgid "&Menu animations:"
+msgstr ""
+
+#. Resource IDs: (16921)
+msgid "&Menu contents:"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "&Merge"
+msgstr ""
+
+#. Resource IDs: (32786)
+msgid "&Merge paths"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "&Merge..."
+msgstr ""
+
+#. Resource IDs: (1012)
+msgid "&Merging"
+msgstr ""
+
+#. Resource IDs: (16925)
+msgid "&Minimize"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Navigate"
+msgstr ""
+
+#. Resource IDs: (1049)
+msgid "&Network drives"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&New "
+msgstr ""
+
+#. Resource IDs: (16509, 16615)
+msgid "&New..."
+msgstr ""
+
+#. Resource IDs: (115, 1208)
+#, c-format
+msgid "&Next %ld"
+msgstr ""
+
+#. Resource IDs: (332)
+msgid "&Next >"
+msgstr ""
+
+#. Resource IDs: (32779)
+msgid "&Next Difference"
+msgstr ""
+
+#. Resource IDs: (58114)
+msgid "&Next Page"
+msgstr ""
+
+#. Resource IDs: (16632)
+msgid "&No double-click event"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "&OK"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "&Offline for now"
+msgstr ""
+
+#. Resource IDs: (3845)
+msgid "&One Page"
+msgstr ""
+
+#. Resource IDs: (101, 113, 32773)
+msgid "&Open"
+msgstr ""
+
+#. Resource IDs: (32772)
+msgid "&Overlap images"
+msgstr ""
+
+#. Resource IDs: (1411, 65535)
+msgid "&Password:"
+msgstr ""
+
+#. Resource IDs: (376, 501)
+msgid "&Paste"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "&Permanently offline"
+msgstr ""
+
+#. Resource IDs: (1414)
+msgid "&Port:"
+msgstr ""
+
+#. Resource IDs: (32780)
+msgid "&Previous Difference"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "&Print Preview"
+msgstr ""
+
+#. Resource IDs: (58116)
+msgid "&Print..."
+msgstr ""
+
+#. Resource IDs: (11021)
+msgid "&Properties..."
+msgstr ""
+
+#. Resource IDs: (1246)
+msgid "&Recent messages"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Red:"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "&Redo"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "&Refresh"
+msgstr ""
+
+#. Resource IDs: (1100, 1285)
+msgid "&Remove"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "&Rename"
+msgstr ""
+
+#. Resource IDs: (1316)
+msgid "&Reopen commit and branch/tag dialog after a commit failed"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "&Repo-browser"
+msgstr ""
+
+#. Resource IDs: (16613, 16624)
+msgid "&Reset"
+msgstr ""
+
+#. Resource IDs: (1019)
+msgid "&Reset Toolbar"
+msgstr ""
+
+#. Resource IDs: (16657)
+msgid "&Reset my usage data"
+msgstr ""
+
+#. Resource IDs: (16910)
+msgid "&Reset to Default"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "&Revert changes from these revisions"
+msgstr ""
+
+#. Resource IDs: (113)
+msgid "&Revert changes from this revision"
+msgstr ""
+
+#. Resource IDs: (1033, 1035, 1116)
+msgid "&Revision"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&SSH client:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Sat:"
+msgstr ""
+
+#. Resource IDs: (57603)
+msgid "&Save"
+msgstr ""
+
+#. Resource IDs: (1023)
+msgid "&Save authentication"
+msgstr ""
+
+#. Resource IDs: (272, 32771, 32806)
+msgid "&Save graph as..."
+msgstr ""
+
+#. Resource IDs: (322)
+msgid "&Save list of selected files to..."
+msgstr ""
+
+#. Resource IDs: (1308)
+msgid "&Save..."
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "&Settings"
+msgstr ""
+
+#. Resource IDs: (32815)
+msgid "&Show HEAD revisions"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Show Menus for:"
+msgstr ""
+
+#. Resource IDs: (16612)
+msgid "&Show text labels"
+msgstr ""
+
+#. Resource IDs: (32851)
+msgid "&Silver Style"
+msgstr ""
+
+#. Resource IDs: (1185)
+msgid "&Specific revision in repository"
+msgstr ""
+
+#. Resource IDs: (16917)
+msgid "&Start Group"
+msgstr ""
+
+#. Resource IDs: (59393)
+msgid "&Status Bar"
+msgstr ""
+
+#. Resource IDs: (1211)
+msgid "&Steal the locks"
+msgstr ""
+
+#. Resource IDs: (1130)
+msgid "&Stop on copy/rename"
+msgstr ""
+
+#. Resource IDs: (1173)
+msgid "&Symbol View"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Tab size:"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "&Tabbed Document"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "&Test merge"
+msgstr ""
+
+#. Resource IDs: (16915)
+msgid "&Text"
+msgstr ""
+
+#. Resource IDs: (16506)
+msgid "&Text only"
+msgstr ""
+
+#. Resource IDs: (1438)
+msgid "&Timeout in seconds before updating the HEAD revision"
+msgstr ""
+
+#. Resource IDs: (1222)
+msgid "&Timeout in seconds to stop the auto-completion parsing"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&To Revision"
+msgstr ""
+
+#. Resource IDs: (1384, 65535)
+msgid "&To URL:"
+msgstr ""
+
+#. Resource IDs: (1305)
+msgid "&To URL: "
+msgstr ""
+
+#. Resource IDs: (59392)
+msgid "&Toolbar"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Toolbar Name:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Toolbars:"
+msgstr ""
+
+#. Resource IDs: (1091, 1093, 1094)
+msgid "&TortoiseMerge"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "&TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (1096)
+msgid "&TortoiseUDiff"
+msgstr ""
+
+#. Resource IDs: (3845)
+msgid "&Two Page"
+msgstr ""
+
+#. Resource IDs: (1058, 1376, 1394)
+msgid "&URL of repository:"
+msgstr ""
+
+#. Resource IDs: (1076)
+msgid "&URL:"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "&Undo"
+msgstr ""
+
+#. Resource IDs: (274, 32785)
+msgid "&Unified diff"
+msgstr ""
+
+#. Resource IDs: (1061)
+msgid "&Unknown drives"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "&Update"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "&Update item to revision"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "&Update to revision..."
+msgstr ""
+
+#. Resource IDs: (1184)
+msgid "&Use auto-completion of file paths and keywords"
+msgstr ""
+
+#. Resource IDs: (1005, 1410, 65535)
+msgid "&Username:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&View"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&View:"
+msgstr ""
+
+#. Resource IDs: (32774)
+msgid "&Whitespaces"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "&Whole word"
+msgstr ""
+
+#. Resource IDs: (32846)
+msgid "&Windows XP"
+msgstr ""
+
+#. Resource IDs: (1183)
+msgid "&Working copy"
+msgstr ""
+
+#. Resource IDs: (17, 564)
+msgid "(binary value)"
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "(deleted) %s"
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "(multiple targets selected)"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "(no changelist)"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid "(no line number)"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "(no value)"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid "(not found)"
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "(property change only)"
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "(unknown)"
+msgstr ""
+
+#. Resource IDs: (188)
+#, c-format
+msgid "+ %d"
+msgstr ""
+
+#. Resource IDs: (188)
+#, c-format
+msgid "- %d"
+msgstr ""
+
+#. Resource IDs: (1007)
+msgid "-------------------------------------------------------------------------------------------"
+msgstr ""
+
+#. Resource IDs: (1002, 1003, 1021, 1022, 1035, 1036, 1089, 1104, 1187, 1324, 1333, 1362)
+msgid "..."
+msgstr ""
+
+#. Resource IDs: (16527)
+msgid "....."
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid ": Revision %d"
+msgstr ""
+
+#. Resource IDs: (151)
+msgid ": working base"
+msgstr ""
+
+#. Resource IDs: (151)
+msgid ": working copy"
+msgstr ""
+
+#. Resource IDs: (332)
+msgid "< &Back"
+msgstr ""
+
+#. Resource IDs: (16506)
+msgid "<.....>"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "<Separator>"
+msgstr ""
+
+#. Resource IDs: (1007)
+msgid "<Untitled>"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "<b>TortoiseSVN</b> is a shell extension.\nThat means it is integrated into the Windows explorer.\nTo use <b>TortoiseSVN</b> please open the explorer and right-click on any folder you like\nto bring up the context menu where you will find all <b>TortoiseSVN</b> commands.\nAnd <u>read the manual!</u>"
+msgstr ""
+
+#. Resource IDs: (16603)
+msgid "<descr>"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "<new changelist>"
+msgstr ""
+
+#. Resource IDs: (32814)
+msgid "?"
+msgstr ""
+
+#. Resource IDs: (579)
+msgid "A list of user defined properties for files to show in the combo box"
+msgstr ""
+
+#. Resource IDs: (579)
+msgid "A list of user defined properties for folders to show in the combo box"
+msgstr ""
+
+#. Resource IDs: (201)
+msgid "A newer version is available. Please go to http://tortoisesvn.tigris.org and download the current version! Click _here_ to go directly to our website."
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "A newline separated list of paths for which icon overlays are shown.\nIf you add an \"*\" char at the end of a path, then all files and subdirs inside that path are included too."
+msgstr ""
+
+#. Resource IDs: (194)
+msgid "A newline separated list of paths for which no icon overlays are shown.\nIf you add an \"*\" char at the end of a path, then all files and subdirs inside that path are excluded too.\nAn empty list will allow overlays on all paths."
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "A required resource was unavailable."
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "A viewer program for GNU diff files (patch files).\nIf you don't have one use NotePad."
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "A&bout"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "A&dd folder..."
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Abort"
+msgstr ""
+
+#. Resource IDs: (1465)
+msgid "Abort &Merge"
+msgstr ""
+
+#. Resource IDs: (136)
+msgid "About TortoiseMerge"
+msgstr ""
+
+#. Resource IDs: (129)
+msgid "About TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Accept once"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Accept permanently"
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Access to %1 was denied."
+msgstr ""
+
+#. Resource IDs: (77, 319)
+msgid "Action"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Action log"
+msgstr ""
+
+#. Resource IDs: (117)
+msgid "Actions"
+msgstr ""
+
+#. Resource IDs: (3826)
+msgid "Activate Task List"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "Active Files"
+msgstr ""
+
+#. Resource IDs: (3865)
+#, c-format
+msgid "ActiveX objects cannot be saved while exiting Windows!\nDiscard all changes to %1?"
+msgstr ""
+
+#. Resource IDs: (155, 209, 229)
+msgid "Add"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Add &file..."
+msgstr ""
+
+#. Resource IDs: (376)
+#, c-format
+msgid "Add '%s' to dictionary"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Add (as replacement)..."
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Add - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (563)
+msgid "Add Properties"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "Add extension specific diff program"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "Add extension specific merge program"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Add to &ignore list"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Add to Quick Access Toolbar"
+msgstr ""
+
+#. Resource IDs: (209, 1279)
+msgid "Add..."
+msgstr ""
+
+#. Resource IDs: (171)
+msgid "Add/Edit Extension Specific Diff/Merge Program"
+msgstr ""
+
+#. Resource IDs: (73, 264, 65535)
+msgid "Added"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Added a file remotely"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Added a folder remotely"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Added items remotely"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Added node"
+msgstr ""
+
+#. Resource IDs: (145)
+#, c-format
+msgid "Added the file pattern(s)\n%s\nto the ignore list."
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Adding"
+msgstr ""
+
+#. Resource IDs: (582)
+msgid "Adds a new property"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Adds file(s) to Subversion control"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Adds the selected file(s) or the filemask to the 'ignore' list"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Adjust the settings\nSettings"
+msgstr ""
+
+#. Resource IDs: (170)
+msgid "Advanced Diff/Merge Settings"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "Advanced diff settings"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "Advanced merge settings"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Age"
+msgstr ""
+
+#. Resource IDs: (1007)
+msgid "All Commands"
+msgstr ""
+
+#. Resource IDs: (3841)
+msgid "All Files (*.*)"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "All Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (1008)
+msgid "All your changes will be lost! Do you really want to reset all toolbars and menus?"
+msgstr ""
+
+#. Resource IDs: (1008)
+msgid "All your changes will be lost! Do you really want to reset the keyboard assignments?"
+msgstr ""
+
+#. Resource IDs: (1008)
+#, c-format
+msgid "All your changes will be lost! Do you really want to reset the menu '%s'?"
+msgstr ""
+
+#. Resource IDs: (1007)
+#, c-format
+msgid "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "Allow different repositories to use the same URL, e.g. http://localhost/myrepos/\nNote: This will disable offline log access."
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "Always use the system locale settings to show times and dates"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Amount of memory required to load the cache"
+msgstr ""
+
+#. Resource IDs: (78)
+#, c-format
+msgid "An external diff program used\nfor comparing different revisions of files\n<hr=100%>\nYou can specify the following parameters to the path:\n%base\tthe base file\n%mine\tthe modified file"
+msgstr ""
+
+#. Resource IDs: (79)
+#, c-format
+msgid "An external merge program used\nto resolve conflicted files.\n<hr=100%>\nYou can specify the following parameters to the path:\n%merged\tthe conflicted file, where to save\n%theirs\t\tthe file as it is in the repository\n%mine\t\tyour own file, with your changes\n%base\t\tthe original file without your changes"
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "An incorrect file handle was associated with %1."
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "An unknown error has occurred."
+msgstr ""
+
+#. Resource IDs: (3867, 3868)
+#, c-format
+msgid "An unknown error occurred while accessing %1."
+msgstr ""
+
+#. Resource IDs: (63)
+#, c-format
+msgid "An unknown line type was found in line %d !"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Application Frame Menus: "
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Applies a unified diff file to the working copy"
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "Applies the properties recursively to all files/folders.\nbugtraq: and tsvn: properties are only applied to folders."
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Apply &patch..."
+msgstr ""
+
+#. Resource IDs: (1294)
+msgid "Apply property recursively"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Apply unified diff"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
+msgstr ""
+
+#. Resource IDs: (199)
+#, c-format
+msgid "Are you sure you want to remove the cache of the selected %d items?"
+msgstr ""
+
+#. Resource IDs: (79)
+#, c-format
+msgid "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes since the last update!"
+msgstr ""
+
+#. Resource IDs: (32793)
+msgid "Arrange &Vertical"
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Ask user"
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Assigned to changelist \"%s\""
+msgstr ""
+
+#. Resource IDs: (16528)
+msgid "Assigned to:"
+msgstr ""
+
+#. Resource IDs: (77)
+#, c-format
+msgid "At revision: %d"
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "Attempted an unsupported operation."
+msgstr ""
+
+#. Resource IDs: (3867, 3868)
+#, c-format
+msgid "Attempted to access %1 past its end."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "Attempted to read from the writing %1."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "Attempted to write to the reading %1."
+msgstr ""
+
+#. Resource IDs: (131, 160)
+msgid "Authentication"
+msgstr ""
+
+#. Resource IDs: (1278)
+msgid "Authentication data"
+msgstr ""
+
+#. Resource IDs: (19, 76, 207)
+msgid "Author"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Author:                                    Stefan Kueng"
+msgstr ""
+
+#. Resource IDs: (116)
+msgid "Authors"
+msgstr ""
+
+#. Resource IDs: (1265)
+msgid "Authors case sensitive"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Authors:"
+msgstr ""
+
+#. Resource IDs: (1003)
+msgid "Auto Hide"
+msgstr ""
+
+#. Resource IDs: (1003)
+msgid "Auto Hide All"
+msgstr ""
+
+#. Resource IDs: (99)
+msgid "Auto Rename"
+msgstr ""
+
+#. Resource IDs: (222)
+msgid "Auto-close for local operations"
+msgstr ""
+
+#. Resource IDs: (222)
+msgid "Auto-close if no conflicts"
+msgstr ""
+
+#. Resource IDs: (222)
+msgid "Auto-close if no errors"
+msgstr ""
+
+#. Resource IDs: (222)
+msgid "Auto-close if no merges, adds or deletes"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "Auto-complete suggests words (usually class or member names)\nfrom the files that you have changed as you type a log message."
+msgstr ""
+
+#. Resource IDs: (438)
+msgid "Automatic"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "Automatically check for &newer versions every week"
+msgstr ""
+
+#. Resource IDs: (1157)
+msgid "Average"
+msgstr ""
+
+#. Resource IDs: (32850)
+msgid "B&lack Style"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "B&rowse..."
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Back"
+msgstr ""
+
+#. Resource IDs: (246)
+msgid "Bar Graph"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Base file:"
+msgstr ""
+
+#. Resource IDs: (3850)
+msgid "Bitmap\na bitmap"
+msgstr ""
+
+#. Resource IDs: (114, 162)
+msgid "Blame"
+msgstr ""
+
+#. Resource IDs: (132)
+msgid "Blame - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Blames each line of a file on an author"
+msgstr ""
+
+#. Resource IDs: (32812)
+msgid "Blend Alpha"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Both /logmsg and /logmsgfile were specified!\nOnly one of those can be specified."
+msgstr ""
+
+#. Resource IDs: (1003)
+msgid "Br&owse..."
+msgstr ""
+
+#. Resource IDs: (115)
+msgid "Branch / tag created successfully!"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Branch at copy-from-rev even if there was no change in that revision"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Branch/&tag..."
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Break loc&k"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Browse for the external diff program"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Browse..."
+msgstr ""
+
+#. Resource IDs: (1119)
+msgid "Bug-&ID / Issue-Nr:"
+msgstr ""
+
+#. Resource IDs: (116)
+msgid "Bug-ID"
+msgstr ""
+
+#. Resource IDs: (1119)
+msgid "Bug-ID / Issue-Nr:"
+msgstr ""
+
+#. Resource IDs: (16132)
+msgid "Button Appearance"
+msgstr ""
+
+#. Resource IDs: (1215)
+msgid "C&heck now"
+msgstr ""
+
+#. Resource IDs: (1132)
+msgid "C&heck repository"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "C&ommands:"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "C&reate branch/tag from revision"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "C&reate folder..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "C&urrent Keys:"
+msgstr ""
+
+#. Resource IDs: (501)
+msgid "C&ut"
+msgstr ""
+
+#. Resource IDs: (3697)
+msgid "CAP"
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Cache size [kB]"
+msgstr ""
+
+#. Resource IDs: (1440)
+msgid "Cached Repositories"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "Caches the log messages to speed up log fetching"
+msgstr ""
+
+#. Resource IDs: (1127)
+msgid "Can double-click in log list to compare with previous revision"
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Can not activate a static ActiveX object."
+msgstr ""
+
+#. Resource IDs: (82)
+#, c-format
+msgid "Can't copy \n%s\nto\n%s"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Can't copy bitmap image into the clipboard!"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Can't create a new image!"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Can't customize menues!"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Can't paste bitmap image from the clipboard!"
+msgstr ""
+
+#. Resource IDs: (2, 73, 99, 563, 1069)
+msgid "Cancel"
+msgstr ""
+
+#. Resource IDs: (132)
+msgid "Cancelling TortoiseSVN Blame..."
+msgstr ""
+
+#. Resource IDs: (270)
+msgid "Cancelling operation..."
+msgstr ""
+
+#. Resource IDs: (68)
+msgid "Cannot show diff because of inconsistent newlines in the file."
+msgstr ""
+
+#. Resource IDs: (16926)
+msgid "Cascade"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Cascaded context menu"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Cate&gories:"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Certificate expired or not yet valid"
+msgstr ""
+
+#. Resource IDs: (82)
+#, c-format
+msgid "Certificate expired. Valid until: %s"
+msgstr ""
+
+#. Resource IDs: (82)
+#, c-format
+msgid "Certificate not yet valid. Valid from: %s"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "Certificates|*.p12;*.pkcs12;*.pfx|All|*.*||"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Change the window position"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Change the window size"
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Changed Files"
+msgstr ""
+
+#. Resource IDs: (324)
+#, c-format
+msgid "Changed files between %s, %s and %s, %s"
+msgstr ""
+
+#. Resource IDs: (163)
+#, c-format
+msgid "Changed files: %d"
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Changelist %s moved"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Changelist:"
+msgstr ""
+
+#. Resource IDs: (1242)
+msgid "Changes made (double-click on file for diff):"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "Chec&kout..."
+msgstr ""
+
+#. Resource IDs: (3887)
+msgid "Check"
+msgstr ""
+
+#. Resource IDs: (174)
+msgid "Check For Updates"
+msgstr ""
+
+#. Resource IDs: (1031)
+msgid "Check For Updates..."
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Check for modi&fications"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Check for modifications"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Check out a working copy from a repository"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Check the files which you want to\ndelete before importing."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Check the path and/or URL you've entered."
+msgstr ""
+
+#. Resource IDs: (194)
+msgid "Check those menu entries you want to appear in the top context menu instead of the TortoiseSVN submenu"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "Check to use a less verbose date and time format in log messages"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Checking if a newer version of TortoiseSVN is available..."
+msgstr ""
+
+#. Resource IDs: (133, 65535)
+msgid "Checkout"
+msgstr ""
+
+#. Resource IDs: (1074)
+msgid "Checkout &directory:"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Checkout - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (1377)
+msgid "Checkout Depth"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Checkout from %s, revision %s, %s, %s"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Checksum:"
+msgstr ""
+
+#. Resource IDs: (1402)
+msgid "Choose item:"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Cleaning up"
+msgstr ""
+
+#. Resource IDs: (146)
+msgid "Cleaning up."
+msgstr ""
+
+#. Resource IDs: (83)
+#, c-format
+msgid "Cleanup failed to process the following paths:\n%s"
+msgstr ""
+
+#. Resource IDs: (79)
+#, c-format
+msgid "Cleanup has successfully processed the following paths:\n%s"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Cleanup interrupted operations, locked files, ..."
+msgstr ""
+
+#. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
+msgid "Clear"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Clear Tool\nClear"
+msgstr ""
+
+#. Resource IDs: (196)
+#, c-format
+msgid "Clears %ld URLs stored for %ld working copies"
+msgstr ""
+
+#. Resource IDs: (196)
+#, c-format
+msgid "Clears %ld log messages stored for %ld working copies"
+msgstr ""
+
+#. Resource IDs: (196)
+#, c-format
+msgid "Clears %ld username/password pairs, %ld ssl certificates and %ld usernames"
+msgstr ""
+
+#. Resource IDs: (197)
+#, c-format
+msgid "Clears cached logs from %ld repositories"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "Clears the stored authentication.\nYou will have to enter your username/password again for all repositories."
+msgstr ""
+
+#. Resource IDs: (196)
+#, c-format
+msgid "Clears the stored sizes and positions of %ld dialogs"
+msgstr ""
+
+#. Resource IDs: (1466)
+msgid "Click here to go to the website"
+msgstr ""
+
+#. Resource IDs: (170)
+msgid "Click here to select a recently typed message"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Click on \"Advanced\" to specify alternate diff programs based on file extension"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Click on \"Advanced\" to specify alternate merge programs based on file extension"
+msgstr ""
+
+#. Resource IDs: (257)
+msgid "Clipboard"
+msgstr ""
+
+#. Resource IDs: (2, 1003, 1007, 1064)
+msgid "Close"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Close Full Screen"
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Close Print Preview\n&Close"
+msgstr ""
+
+#. Resource IDs: (222)
+msgid "Close manually"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Close the active window and prompts to save the documents"
+msgstr ""
+
+#. Resource IDs: (16662)
+msgid "Color"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Color co&de in-line changes"
+msgstr ""
+
+#. Resource IDs: (138, 16961, 65535)
+msgid "Colors"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Colors:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Comman&ds:"
+msgstr ""
+
+#. Resource IDs: (220, 1002)
+msgid "Command"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "Command Line"
+msgstr ""
+
+#. Resource IDs: (1336)
+msgid "Command Line To Execute:"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Command failed."
+msgstr ""
+
+#. Resource IDs: (16104)
+msgid "Commands"
+msgstr ""
+
+#. Resource IDs: (135, 209, 229, 1083)
+msgid "Commit"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Commit - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (1110)
+msgid "Commit to:"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Commit..."
+msgstr ""
+
+#. Resource IDs: (244)
+msgid "Commits by author"
+msgstr ""
+
+#. Resource IDs: (244)
+msgid "Commits by date"
+msgstr ""
+
+#. Resource IDs: (1135)
+msgid "Commits each week:"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Commits your changes to the repository"
+msgstr ""
+
+#. Resource IDs: (170)
+msgid "Committing an unversioned folder will not recursively add its child items!\nYou might want to add these folders recursively by using the \"Add...\" context menu item.\n\nAre you sure that you want to continue the commit?"
+msgstr ""
+
+#. Resource IDs: (274, 32784)
+msgid "Compare &HEAD revisions"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Compare and &blame with working BASE"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Compare and blame with previous revision"
+msgstr ""
+
+#. Resource IDs: (1390)
+msgid "Compare whitespaces"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Compare with &working copy"
+msgstr ""
+
+#. Resource IDs: (138)
+msgid "Compare with b&ase"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Compare with previous revision"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Compares the file with the last committed revision to show you the changes you made"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "Compares the selected file with a file in the repository"
+msgstr ""
+
+#. Resource IDs: (120)
+#, c-format
+msgid "Comparing %s to %s"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Completed"
+msgstr ""
+
+#. Resource IDs: (236, 284)
+msgid "Configure Hook Scripts"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Configure the program used for comparing different revisions of files"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Configure the program used for comparing different revisions of properties"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Configure the program used to resolve conflicted files."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Configure viewer program for GNU diff files (patch files)."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Conflict resolved"
+msgstr ""
+
+#. Resource IDs: (263, 65535)
+msgid "Conflicted"
+msgstr ""
+
+#. Resource IDs: (188)
+#, c-format
+msgid "Conflicts: %d"
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "Connect to the repository server and download missing log data"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Container sizes"
+msgstr ""
+
+#. Resource IDs: (16520)
+msgid "Context Menus: "
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Continue"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Contract docked window"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Cop&y"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Copied"
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "Copied from URL"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Copied remotely"
+msgstr ""
+
+#. Resource IDs: (16991)
+msgid "Copy"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Copy %ld items to\r\n%s"
+msgstr ""
+
+#. Resource IDs: (103)
+#, c-format
+msgid "Copy %s"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Copy %s to %s, Revision %s"
+msgstr ""
+
+#. Resource IDs: (126)
+#, c-format
+msgid "Copy %s\r\nto %s"
+msgstr ""
+
+#. Resource IDs: (142)
+msgid "Copy (Branch / Tag)"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Copy - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Copy Tool\nCopy"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Copy URL to clipboard"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Copy all information to clipboard"
+msgstr ""
+
+#. Resource IDs: (104)
+msgid "Copy and rename item to here"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Copy error message to clipboard"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Copy from path"
+msgstr ""
+
+#. Resource IDs: (103)
+msgid "Copy items to here"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Copy paths to clipboard"
+msgstr ""
+
+#. Resource IDs: (323)
+msgid "Copy selection to cli&pboard"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Copy the selection and put it on the Clipboard\nCopy"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Copy to clipboard"
+msgstr ""
+
+#. Resource IDs: (103)
+msgid "Copy to working copy"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Copy to working copy..."
+msgstr ""
+
+#. Resource IDs: (98)
+#, c-format
+msgid "Copy: New name for %s"
+msgstr ""
+
+#. Resource IDs: (80)
+#, c-format
+msgid "Copying %s"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "Copying..."
+msgstr ""
+
+#. Resource IDs: (188)
+msgid "Corrections"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Could not add %s to the ignore list!"
+msgstr ""
+
+#. Resource IDs: (582)
+#, c-format
+msgid "Could not add \"%s\" because"
+msgstr ""
+
+#. Resource IDs: (582)
+#, c-format
+msgid "Could not add property \"%s\" on %s because"
+msgstr ""
+
+#. Resource IDs: (201)
+msgid "Could not check for a newer version!"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Could not copy the files!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not create %1 because the directory is full."
+msgstr ""
+
+#. Resource IDs: (582)
+#, c-format
+msgid "Could not delete \"%s\" because"
+msgstr ""
+
+#. Resource IDs: (582)
+#, c-format
+msgid "Could not delete property \"%s\" on %s because"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Could not determine the last committed revision!"
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "Could not get the status!"
+msgstr ""
+
+#. Resource IDs: (582)
+#, c-format
+msgid "Could not merge \"%s\" because"
+msgstr ""
+
+#. Resource IDs: (582)
+#, c-format
+msgid "Could not merge property \"%s\" on %s because"
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not open %1 because there are too many open files."
+msgstr ""
+
+#. Resource IDs: (69)
+#, c-format
+msgid "Could not open the file\n%s"
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not remove %1 because it is the current directory."
+msgstr ""
+
+#. Resource IDs: (82)
+#, c-format
+msgid "Could not remove %s from the ignore list"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Could not retrieve URL of the file!\n%s"
+msgstr ""
+
+#. Resource IDs: (66)
+#, c-format
+msgid "Could not retrieve revision %s of the file %s.\nPatching is not possible!"
+msgstr ""
+
+#. Resource IDs: (64)
+#, c-format
+msgid "Could not save the file %s!"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Could not start diff viewer!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Could not start external diff program!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Could not start external merge program!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Could not start print job."
+msgstr ""
+
+#. Resource IDs: (83)
+#, c-format
+msgid "Could not start text viewer!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "Could not start thread!"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Create &patch..."
+msgstr ""
+
+#. Resource IDs: (243)
+msgid "Create Changelist"
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "Create Patch"
+msgstr ""
+
+#. Resource IDs: (1385)
+msgid "Create copy in the repository from:"
+msgstr ""
+
+#. Resource IDs: (126)
+#, c-format
+msgid "Create new directory:\r\n%s"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "Create repositor&y here"
+msgstr ""
+
+#. Resource IDs: (32828)
+msgid "Create unified diff file"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Created folder remotely"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Creates a 'cheap' copy inside the repository used for branches or tagging"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Creates a patch file from the differences of the two files\nCreate patch file"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Creates a repository database at the current location"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Creates a unified diff file with all changes you made"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Credits:"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Cu&t"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Current"
+msgstr ""
+
+#. Resource IDs: (1113)
+msgid "Current version is:"
+msgstr ""
+
+#. Resource IDs: (201)
+#, c-format
+msgid "Current version is: %s"
+msgstr ""
+
+#. Resource IDs: (17079)
+msgid "Cus&tomize..."
+msgstr ""
+
+#. Resource IDs: (16963)
+msgid "Custom"
+msgstr ""
+
+#. Resource IDs: (1007, 17074)
+msgid "Customize"
+msgstr ""
+
+#. Resource IDs: (17076)
+msgid "Customize Keyboard"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Customize Quick Access Toolbar"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Customize Quick Access Toolbar..."
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Cut the selection and put it on the Clipboard\nCut"
+msgstr ""
+
+#. Resource IDs: (19, 76, 208)
+msgid "Date"
+msgstr ""
+
+#. Resource IDs: (1008)
+msgid "Default"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Default &number of log messages"
+msgstr ""
+
+#. Resource IDs: (1007)
+msgid "Default Menu"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Default URL:"
+msgstr ""
+
+#. Resource IDs: (1007)
+msgid "Default application menu. Appears when no documents are open."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Default path:"
+msgstr ""
+
+#. Resource IDs: (1002, 1382)
+msgid "Delete"
+msgstr ""
+
+#. Resource IDs: (240)
+msgid "Delete Unversioned Items"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "Delete unversioned items..."
+msgstr ""
+
+#. Resource IDs: (73, 264)
+msgid "Deleted"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Deleted node"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Deletes files / folders from version control"
+msgstr ""
+
+#. Resource IDs: (18)
+msgid "Deletes files / folders from version control but keeps the file"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "Deletes the action log file"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Deleting"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Depth:"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Description"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "Deselect changelist"
+msgstr ""
+
+#. Resource IDs: (3859)
+msgid "Destination disk drive is full."
+msgstr ""
+
+#. Resource IDs: (1279)
+msgid "Details"
+msgstr ""
+
+#. Resource IDs: (3849)
+msgid "Device Independent Bitmap\na device independent bitmap"
+msgstr ""
+
+#. Resource IDs: (1277)
+msgid "Dialog sizes and positions"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff file:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Diff options"
+msgstr ""
+
+#. Resource IDs: (146, 279)
+msgid "Diff with URL"
+msgstr ""
+
+#. Resource IDs: (1302)
+msgid "Difference between"
+msgstr ""
+
+#. Resource IDs: (1022)
+msgid "Diffing"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Diffs the working copy file with the one before the last commit."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Directory:"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "Disable this option if you have really big working copies and experience\ntoo much disk access when browsing the working copy."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Disk full while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3860)
+#, c-format
+msgid "Dispatch exception: %1"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Display &buttons in this order"
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "Display help for clicked on buttons, menus and windows\nHelp"
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "Display help for current task or command\nHelp"
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "Display instructions about how to use help\nHelp"
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "Display program information, version number and copyright\nAbout"
+msgstr ""
+
+#. Resource IDs: (1007)
+#, c-format
+msgid "Do you really want to delete the toolbar '%s'?"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Do you really want to move this file or folder?"
+msgstr ""
+
+#. Resource IDs: (119)
+#, c-format
+msgid "Do you really want to revert all changes in\n%s\nand go back to this revision? These changes will be reverted by reverse-merging the revisions into your working copy."
+msgstr ""
+
+#. Resource IDs: (76)
+#, c-format
+msgid "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working copy."
+msgstr ""
+
+#. Resource IDs: (99)
+#, c-format
+msgid "Do you want to make this working copy unversioned?\nThis will remove all Subversion admin directories from\n%s!"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Do you want to proceed?"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Do you want to reload the documents to reflect the settings changes?\nNote: you will lose all changes you've made!"
+msgstr ""
+
+#. Resource IDs: (563)
+#, c-format
+msgid "Do you want to remove the property %s recursively?"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Do you want to save your changes?"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Document :"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Documentation : Simon Large\nCode : Tobias Schäfer, Stefan Fuhrmann"
+msgstr ""
+
+#. Resource IDs: (73, 80)
+msgid "Don't show this message again"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Drag to make this menu float"
+msgstr ""
+
+#. Resource IDs: (16513)
+msgid "Draw"
+msgstr ""
+
+#. Resource IDs: (1079)
+msgid "Drive Types"
+msgstr ""
+
+#. Resource IDs: (32816)
+msgid "E&xact copy sources"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "E&xclude paths:"
+msgstr ""
+
+#. Resource IDs: (105, 57665)
+msgid "E&xit"
+msgstr ""
+
+#. Resource IDs: (9, 1382)
+msgid "E&xport..."
+msgstr ""
+
+#. Resource IDs: (3697)
+msgid "EXT"
+msgstr ""
+
+#. Resource IDs: (1237)
+msgid "Edit"
+msgstr ""
+
+#. Resource IDs: (16133)
+msgid "Edit Button Image"
+msgstr ""
+
+#. Resource IDs: (227, 564)
+msgid "Edit Properties"
+msgstr ""
+
+#. Resource IDs: (113)
+msgid "Edit author"
+msgstr ""
+
+#. Resource IDs: (115)
+msgid "Edit author name"
+msgstr ""
+
+#. Resource IDs: (1399)
+msgid "Edit conflict"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "Edit extension specific diff program"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "Edit extension specific merge program"
+msgstr ""
+
+#. Resource IDs: (113, 115)
+msgid "Edit log message"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Edit property \"%s\" on\r\n%s"
+msgstr ""
+
+#. Resource IDs: (1331, 1382)
+msgid "Edit..."
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "Edits the selected property value"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Either the name or IP of the proxy server"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Ellipse Tools\nEllipse"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Empty"
+msgstr ""
+
+#. Resource IDs: (344)
+msgid "Enable log caching to speed up log and revision graph dialogs"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "Enable this only if you're working with web projects on VS.NET2003!\nYou must restart the system for this setting to take effect."
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "Enables the spellchecker only if the\ntsvn:projectlanguage property is set."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a hardware I/O error while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a locking violation while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a sharing violation while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "Encountered an improper argument."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Encountered an unexpected error while reading %1."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Encountered an unexpected error while writing %1."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "End Revision"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Enlarge the window to full size"
+msgstr ""
+
+#. Resource IDs: (241)
+msgid "Enter Log Message"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "Enter URL"
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a GUID."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a currency."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a date and/or time."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a date."
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Enter a lock message (optional):"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Enter a name for the changelist:"
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter a number between %1 and %2."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a number."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a positive integer."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a time."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter an integer between %1 and %2."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter an integer between 0 and 255."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter an integer."
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Enter log &message:"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Enter log message:"
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter no more than %1 characters."
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Erase everything\nErase All"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Erase the selection\nErase"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Error"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Error rebuilding Shell Icon Cache!"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Error validating server certificate for %s:"
+msgstr ""
+
+#. Resource IDs: (70)
+#, c-format
+msgid "Error while reading/writing the registry key %s\n%s"
+msgstr ""
+
+#. Resource IDs: (1413)
+msgid "Exceptions:"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Executable (*.exe)|*.exe|Command (*.com)|*.com|Information (*.pdf)|*.pdf|Batch (*.bat)|*.bat|All Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Existing"
+msgstr ""
+
+#. Resource IDs: (1002)
+#, c-format
+msgid "Expand (%s)"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Expand docked window"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Explore to"
+msgstr ""
+
+#. Resource IDs: (229, 238, 1437)
+msgid "Export"
+msgstr ""
+
+#. Resource IDs: (1074)
+msgid "Export &directory:"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Export - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Export directory:"
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "Export the selected cache as a set of Comma Separated Value (CSV) files"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Export unversioned files too"
+msgstr ""
+
+#. Resource IDs: (284)
+#, c-format
+msgid "Exporting %s"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Exporting..."
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Exports a repository to a clean working copy without the svn administrative folders"
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "Exports a set of properties to a file"
+msgstr ""
+
+#. Resource IDs: (74, 207)
+msgid "Extension"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Extension or mime-type:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Extension/mime-type specific programs"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "External"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "External Program:"
+msgstr ""
+
+#. Resource IDs: (192)
+msgid "External Programs::Diff Viewer"
+msgstr ""
+
+#. Resource IDs: (193)
+msgid "External Programs::Merge Tool"
+msgstr ""
+
+#. Resource IDs: (194)
+msgid "External Programs::Unified Diff Viewer"
+msgstr ""
+
+#. Resource IDs: (226)
+msgid "Externals excluded"
+msgstr ""
+
+#. Resource IDs: (226)
+msgid "Externals included"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Failed revert"
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Failed to connect.\nLink may be broken."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Failed to convert ActiveX object."
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Failed to create empty document."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Failed to create object.  Make sure the application is entered in the system registry."
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Failed to launch help."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Failed to launch server application."
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Failed to open document."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Failed to perform server operation."
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Failed to save document."
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Failed to set/remove changelist \"%s\""
+msgstr ""
+
+#. Resource IDs: (83)
+#, c-format
+msgid "Failed to start the issue tracker COM provider \"%s\".\n%s"
+msgstr ""
+
+#. Resource IDs: (220)
+msgid "Failed!"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Fetching file..."
+msgstr ""
+
+#. Resource IDs: (313)
+#, c-format
+msgid "Fetching revision %s of file:"
+msgstr ""
+
+#. Resource IDs: (63, 74, 77, 319, 1001)
+msgid "File"
+msgstr ""
+
+#. Resource IDs: (1138)
+msgid "File changes each week:"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "File diffs"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "File list is empty"
+msgstr ""
+
+#. Resource IDs: (135, 376)
+msgid "File patches"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "File size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (8)
+#, c-format
+msgid "File size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%\n\nFile size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "File size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "File size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%\n\nFile size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "Filename"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Fill Tool\nFill"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Filter out the following paths (separate multiple paths with the '*' char):"
+msgstr ""
+
+#. Resource IDs: (321)
+msgid "Filter paths"
+msgstr ""
+
+#. Resource IDs: (139)
+msgid "Find"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Find the specified text\nFind"
+msgstr ""
+
+#. Resource IDs: (77, 219)
+msgid "Finished!"
+msgstr ""
+
+#. Resource IDs: (32810)
+msgid "Fit image &sizes"
+msgstr ""
+
+#. Resource IDs: (1315)
+msgid "Floppy drives (A: B:)"
+msgstr ""
+
+#. Resource IDs: (32818)
+msgid "Fold &tags"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Folder"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Font"
+msgstr ""
+
+#. Resource IDs: (3585)
+msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
+msgstr ""
+
+#. Resource IDs: (119)
+msgid "For complete history deselect \"Stop on copy/rename\""
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Forward"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "From URL:"
+msgstr ""
+
+#. Resource IDs: (1200, 65535)
+msgid "From:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "From: (start URL and revision of the range to merge)"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Full Screen"
+msgstr ""
+
+#. Resource IDs: (19)
+msgid "Fully recursive"
+msgstr ""
+
+#. Resource IDs: (273)
+msgid "GDI+ couldn't be initialized!"
+msgstr ""
+
+#. Resource IDs: (273)
+msgid "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "GDI+ is required to save the revision graph as a picture.\nYou can get GDI+ from\n<u><a=http://www.microsoft.com/downloads/details.aspx?FamilyID=6a63ab9c-df12-4d41-933c-be590feaa05a&DisplayLang=en>http://www.microsoft.com/downloads/details.aspx?FamilyID=6a63ab9c-df12-4d41-933c-be590feaa05a&DisplayLang=en</a></u>"
+msgstr ""
+
+#. Resource IDs: (284)
+msgid "Gathering information. Please wait..."
+msgstr ""
+
+#. Resource IDs: (107, 143)
+msgid "General"
+msgstr ""
+
+#. Resource IDs: (212)
+msgid "General::Colors"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "General::Context Menu"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "General::Dialogs 1"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "General::Dialogs 2"
+msgstr ""
+
+#. Resource IDs: (144)
+msgid "Generating patchfile..."
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Get loc&k..."
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Get merge logs"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Getting a lock for files without the 'svn:needs-lock' property will <b>not</b> prevent others from editing them in their working copies.\nTo enable strict locking please add the 'svn:needs-lock' property to all files that need locking, and commit those files.\nEach file will have the file-system read-only flag set, and getting a lock will make the file writable.\nNote that other users will need to update their working copies before they see the files as read-only."
+msgstr ""
+
+#. Resource IDs: (119)
+#, c-format
+msgid "Getting file %s"
+msgstr ""
+
+#. Resource IDs: (120)
+#, c-format
+msgid "Getting file %s, revision %s"
+msgstr ""
+
+#. Resource IDs: (132)
+msgid "Getting file info..."
+msgstr ""
+
+#. Resource IDs: (269)
+msgid "Getting information from repository..."
+msgstr ""
+
+#. Resource IDs: (120)
+msgid "Getting information..."
+msgstr ""
+
+#. Resource IDs: (132)
+msgid "Getting log info..."
+msgstr ""
+
+#. Resource IDs: (220)
+msgid "Getting required information..."
+msgstr ""
+
+#. Resource IDs: (119)
+msgid "Getting unified diff"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Global ignore &pattern:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Global settings"
+msgstr ""
+
+#. Resource IDs: (280)
+msgid "Go offline?"
+msgstr ""
+
+#. Resource IDs: (130)
+msgid "Go to line"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Go to the next conflict\nNext conflict"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Go to the next difference\nNext difference"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Go to the previous conflict\nPrevious conflict"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Go to the previous difference\nPrevious difference"
+msgstr ""
+
+#. Resource IDs: (1134)
+msgid "Graph type:"
+msgstr ""
+
+#. Resource IDs: (16972)
+msgid "Gray"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Group by branch"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "Group changelists"
+msgstr ""
+
+#. Resource IDs: (1229)
+msgid "H&ide unrelated changed paths"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "H&ue:"
+msgstr ""
+
+#. Resource IDs: (1353, 1354)
+msgid "HEAD"
+msgstr ""
+
+#. Resource IDs: (106)
+#, c-format
+msgid "Head revision is %s"
+msgstr ""
+
+#. Resource IDs: (73, 1004)
+msgid "Help"
+msgstr ""
+
+#. Resource IDs: (16982)
+msgid "Help Keyboard"
+msgstr ""
+
+#. Resource IDs: (16974)
+msgid "Hex"
+msgstr ""
+
+#. Resource IDs: (32820)
+msgid "Hide &deleted paths"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Hide docked window"
+msgstr ""
+
+#. Resource IDs: (1326)
+msgid "Hide the script while running"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Hide/Show the patch file list\nHides or shows the patch file list"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Highest revision number in the cache"
+msgstr ""
+
+#. Resource IDs: (1127)
+msgid "Hint: Press F5 to refresh the selected subtree and Ctrl-F5 to load all children too"
+msgstr ""
+
+#. Resource IDs: (16519)
+msgid "Hint: select the context menu, change the page to 'Commands' and drag the toolbar buttons into the menu window."
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Home"
+msgstr ""
+
+#. Resource IDs: (103)
+msgid "Hook Scripts"
+msgstr ""
+
+#. Resource IDs: (283)
+msgid "Hook Scripts::Issue Tracker Integration"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "Hook Type"
+msgstr ""
+
+#. Resource IDs: (1334)
+msgid "Hook Type:"
+msgstr ""
+
+#. Resource IDs: (82)
+#, c-format
+msgid "Hostname mismatch (%s)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "I&nclude paths:"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32771; '&Find...'
+msgid "ID:32771:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32772; '&Overlap images'
+msgid "ID:32772:V   +O"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32773; '&Open'
+msgid "ID:32773:V C +O"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32774; '&Whitespaces'
+msgid "ID:32774:V C +T"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32775; 'Single/&double-pane view'
+msgid "ID:32775:V C +D"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32778; '&Fit Images in window'
+msgid "ID:32778:V   +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
+msgid "ID:32779:V   +S"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32779; '&Go To Line...'
+msgid "ID:32779:V C +G"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32785; '&Color age of lines'
+msgid "ID:32785:V C +O"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32793; 'Arrange &Vertical'
+msgid "ID:32793:V C +V"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32794; 'Reload'
+msgid "ID:32794:V C +R"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32796; 'Show &all revisions'
+msgid "ID:32796:V C +A"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32809; '&Filter'
+msgid "ID:32809:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
+msgid "ID:32810:V   +T"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32814; 'Oldest on to&p'
+msgid "ID:32814:V C +L"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32814; 'Oldest on to&p'
+msgid "ID:32814:VA  +D"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32822; ''
+msgid "ID:32822:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32825; ''
+msgid "ID:32825:V C +L"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32825; ''
+msgid "ID:32825:VA  +D"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57601; '&Open'
+msgid "ID:57601:V C +O"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57603; '&Save'
+msgid "ID:57603:V C +S"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57604; 'Save &As...'
+msgid "ID:57604:V CS+S"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57634; ''
+#. Accelerator Entry for Menu ID:57634; ''
+#. Accelerator Entry for Menu ID:57634; '&Copy'
+msgid "ID:57634:V C +C"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57635; ''
+msgid "ID:57635:V C +X"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57636; '&Find'
+msgid "ID:57636:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57637; ''
+msgid "ID:57637:V C +V"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57643; '&Undo'
+msgid "ID:57643:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:57665; 'E&xit'
+msgid "ID:57665:V C +Q"
+msgstr ""
+
+#. Resource IDs: (106)
+msgid "Icon Overlays"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Icon Overlays / Status Columns"
+msgstr ""
+
+#. Resource IDs: (184)
+msgid "Icon Overlays::Icon Set"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Icons/Design/Code:                 Luebbe Onken"
+msgstr ""
+
+#. Resource IDs: (194)
+msgid "If activated, prevents the overlays and the context menu from showing in \"save as...\" or \"open\" dialogs"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "If activated, the menu entry \"Get Lock\" is always shown in the top level menu\nif the selected file has the svn:needs-lock property set"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "If checked then a new folder is created in the repository.\nIf not checked then the import goes directly to the specified URL."
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "If checked, TortoiseSVN creates a temporary file of the BASE to do the diff\nwith the keywords expanded and the line endings adjusted."
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "If checked, double-clicking on a revision in the log list compares it with the previous revision"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "If checked, the commit dialog will be started again automatically after an error,\nwhile preserving your last selection and log message."
+msgstr ""
+
+#. Resource IDs: (194)
+msgid "If enabled, TortoiseSVN checks once a week if a newer version is available"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "If enabled, the Merge dialog initializes the \"From:\" URL with the URL of the selected working copy\ninstead of the last used URL."
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "If enabled, the repository is contacted when the dialog starts up.\nYou don't have to click on \"Check Repository\" anymore."
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "If enabled, working copy folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "If set, TortoiseSVN will set the filetimes to the time they\nwere last committed. If not set, TortoiseSVN uses the current time."
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "If set, files inside unversioned folders can be shown in the status control.\nThe status control is used for example in the commit dialog."
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "If set, then unversioned files will mark the status of the parent directory as modified\ni.e. they get the modified overlay icon."
+msgstr ""
+
+#. Resource IDs: (1439)
+msgid "If the repository can not be contacted"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "If you change this value, your existing working copies won't be recognized anymore!\nYou must check out your working copies again.\nIf you're not sure about this, then please read the docs.\nAre you absolutely sure you want to do this?"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "If you want to break the lock, use the \"Check For Modifications\" dialog."
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Ignore"
+msgstr ""
+
+#. Resource IDs: (1020)
+msgid "Ignore &all whitespaces"
+msgstr ""
+
+#. Resource IDs: (1067)
+msgid "Ignore &case changes"
+msgstr ""
+
+#. Resource IDs: (1392)
+msgid "Ignore all whitespaces"
+msgstr ""
+
+#. Resource IDs: (1267)
+msgid "Ignore ancestry"
+msgstr ""
+
+#. Resource IDs: (1018)
+msgid "Ignore line &endings (recommended)"
+msgstr ""
+
+#. Resource IDs: (1126, 1127)
+msgid "Ignore line endings"
+msgstr ""
+
+#. Resource IDs: (1391)
+msgid "Ignore whitespace changes"
+msgstr ""
+
+#. Resource IDs: (226)
+msgid "Ignored items included"
+msgstr ""
+
+#. Resource IDs: (16916)
+msgid "Image &and Text"
+msgstr ""
+
+#. Resource IDs: (16507)
+msgid "Image &and text"
+msgstr ""
+
+#. Resource IDs: (16508)
+msgid "Images"
+msgstr ""
+
+#. Resource IDs: (19)
+msgid "Immediate children, including folders"
+msgstr ""
+
+#. Resource IDs: (139)
+msgid "Import"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Import %ld items"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Import %s to %s%s"
+msgstr ""
+
+#. Resource IDs: (1056)
+msgid "Import &message"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Import - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "Import a previously saved set of properties from a file"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Import file %s\r\nto %s"
+msgstr ""
+
+#. Resource IDs: (126)
+#, c-format
+msgid "Import file to\r\n%s"
+msgstr ""
+
+#. Resource IDs: (126)
+#, c-format
+msgid "Import folder %s\r\nto %s"
+msgstr ""
+
+#. Resource IDs: (120)
+#, c-format
+msgid "Importing file %s"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Imports the directory to a repository"
+msgstr ""
+
+#. Resource IDs: (1266)
+msgid "Include ignored files"
+msgstr ""
+
+#. Resource IDs: (1126)
+msgid "Include merged revisions"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Include only the following revision range:"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Incorrect filename."
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Initial import"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Inline differences"
+msgstr ""
+
+#. Resource IDs: (161)
+msgid "Input"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Insert Clipboard contents\nPaste"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Insufficient memory to perform operation."
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Internal application error."
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Internal value indicating compression quality"
+msgstr ""
+
+#. Resource IDs: (3850)
+msgid "Invalid Currency."
+msgstr ""
+
+#. Resource IDs: (102)
+msgid "Invalid data object dropped!"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Invalid revision number! Valid revisions are:\nHEAD, BASE, PREV, COMMITTED, WC,\npositive decimal numbers,\ndates in one of the following example forms:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{\"2002-02-17 15:30\"}\n{\"2002-02-17 15:30 +0230\"}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Invalid revision number! Valid revisions are:\nHEAD\npositive decimal numbers,\ndates in one of the following example forms:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{\"2002-02-17 15:30\"}\n{\"2002-02-17 15:30 +0230\"}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Invalid revision range!\nValid revisions are numbers and HEAD, separated by commas.\nA range can be specified with a dash.\nExample: 2-5,7,10,44-70,300-HEAD"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "It is not possible to rename a file by changing the case of its name alone.\nFor example, you can't make MyFile.txt become MYFILE.txt.\nPlease consult the documentation for a way to work around this limitation."
+msgstr ""
+
+#. Resource IDs: (88)
+#, c-format
+msgid "It seems you are trying to <b>relocate</b> your working copy to a different path inside the same repository.\n\nFrom:\t%s\nTo:\t\t%s\n\nA relocate is only needed if the path <b>to</b> a repository has changed.\nChanging to a different path <b>inside</b> a repository is done by a switch operation.\n\nImproper use of relocate <b>will corrupt your working copy!</b>\nIf you are not sure what to do, please refer to our docs on <i>relocate</i>.\nDo you really want to relocate?"
+msgstr ""
+
+#. Resource IDs: (1203)
+msgid "Keep &locks"
+msgstr ""
+
+#. Resource IDs: (1126)
+msgid "Keep changelists"
+msgstr ""
+
+#. Resource IDs: (16136)
+msgid "Keyboard"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Keyboard shortcuts:"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Keys"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Last commit revision:"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Last saved revision of item"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Last time the cache content was changed"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Last time the cache was accessed"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Last time the repository was asked for the HEAD revision number"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Launches the external diff / merge program to solve the conflicts"
+msgstr ""
+
+#. Resource IDs: (1137)
+msgid "Least active author:"
+msgstr ""
+
+#. Resource IDs: (1404)
+msgid "Leave conflicted:"
+msgstr ""
+
+#. Resource IDs: (188)
+msgid "Left View: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Left image"
+msgstr ""
+
+#. Resource IDs: (19)
+msgid "Line"
+msgstr ""
+
+#. Resource IDs: (246)
+msgid "Line Graph"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Line Tool\nLine"
+msgstr ""
+
+#. Resource IDs: (32853)
+msgid "Line diff bar"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Line differences"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Line:"
+msgstr ""
+
+#. Resource IDs: (269)
+#, c-format
+msgid "Line: %*ld"
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "List Help topics\nHelp Topics"
+msgstr ""
+
+#. Resource IDs: (344)
+msgid "List of repositories for which log information has been cached"
+msgstr ""
+
+#. Resource IDs: (16631, 16992)
+msgid "List1"
+msgstr ""
+
+#. Resource IDs: (130)
+msgid "Load Images"
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "Local status"
+msgstr ""
+
+#. Resource IDs: (94)
+msgid "Location where the contents of the\nrepository URL will be saved to."
+msgstr ""
+
+#. Resource IDs: (32854)
+msgid "Locator Bar"
+msgstr ""
+
+#. Resource IDs: (207, 221, 229, 65535)
+msgid "Lock"
+msgstr ""
+
+#. Resource IDs: (191)
+msgid "Lock Files"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "Lock broken!"
+msgstr ""
+
+#. Resource IDs: (207)
+msgid "Lock comment"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Lock creation date:"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Lock failed"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Lock owner:"
+msgstr ""
+
+#. Resource IDs: (213)
+#, c-format
+msgid "Lock stolen by %s"
+msgstr ""
+
+#. Resource IDs: (263)
+#, c-format
+msgid "Locked by %s"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Locking failed because a newer version exists!\nDo you want to update and try again?"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Locks a file for other users and makes it editable by you."
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Log"
+msgstr ""
+
+#. Resource IDs: (282)
+msgid "Log Cache Statistics"
+msgstr ""
+
+#. Resource IDs: (281)
+msgid "Log Caching"
+msgstr ""
+
+#. Resource IDs: (211)
+msgid "Log History"
+msgstr ""
+
+#. Resource IDs: (130)
+msgid "Log Messages"
+msgstr ""
+
+#. Resource IDs: (1386)
+msgid "Log message"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Log messages"
+msgstr ""
+
+#. Resource IDs: (1274)
+msgid "Log messages (Input dialog)"
+msgstr ""
+
+#. Resource IDs: (1280)
+msgid "Log messages (Show log dialog)"
+msgstr ""
+
+#. Resource IDs: (238)
+#, c-format
+msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
+msgstr ""
+
+#. Resource IDs: (238)
+#, c-format
+msgid "Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: %ld"
+msgstr ""
+
+#. Resource IDs: (16973)
+msgid "Lum"
+msgstr ""
+
+#. Resource IDs: (3866)
+msgid "Mail system DLL is invalid."
+msgstr ""
+
+#. Resource IDs: (1431)
+msgid "Make this the default"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "Manage Subversion properties"
+msgstr ""
+
+#. Resource IDs: (32808)
+msgid "Mark as &resolved"
+msgstr ""
+
+#. Resource IDs: (282)
+msgid "Mark as resolved"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Mark current revision of your working copy"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Mark for comparison"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Marks a file as resolved in Subversion\nMark as resolved"
+msgstr ""
+
+#. Resource IDs: (596)
+msgid "Marks the revisions as merged, without actually doing the merge"
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Match &case"
+msgstr ""
+
+#. Resource IDs: (1159)
+msgid "Max"
+msgstr ""
+
+#. Resource IDs: (1317)
+msgid "Max. items to keep in the log message history"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Max. lines in action log"
+msgstr ""
+
+#. Resource IDs: (16655)
+msgid "Me&nus show recently used commands first"
+msgstr ""
+
+#. Resource IDs: (16134)
+msgid "Menu"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Menu Bar"
+msgstr ""
+
+#. Resource IDs: (16626)
+msgid "Menu s&hadows"
+msgstr ""
+
+#. Resource IDs: (109, 110, 111, 112, 276, 278, 65535)
+msgid "Merge"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Merge - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (221)
+msgid "Merge Reintegrate"
+msgstr ""
+
+#. Resource IDs: (1468)
+msgid "Merge a range of revisions"
+msgstr ""
+
+#. Resource IDs: (277)
+msgid "Merge all"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Merge depth:"
+msgstr ""
+
+#. Resource IDs: (1432)
+msgid "Merge non-interactive"
+msgstr ""
+
+#. Resource IDs: (595, 65535)
+msgid "Merge options"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Merge reintegrate..."
+msgstr ""
+
+#. Resource IDs: (595)
+msgid "Merge revision range"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Merge revision to..."
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Merge revisions to..."
+msgstr ""
+
+#. Resource IDs: (1470)
+msgid "Merge two different trees"
+msgstr ""
+
+#. Resource IDs: (595, 65535)
+msgid "Merge type"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Merged"
+msgstr ""
+
+#. Resource IDs: (286)
+#, c-format
+msgid "Merged revision(s) %s from %s:\n"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Merges a branch into the main trunk"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Merges all missing revisions back into the working copy using merge-tracking information"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Merging"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Merging %s into %s, %s"
+msgstr ""
+
+#. Resource IDs: (264)
+msgid "Merging differences between repository urls"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Merging r%ld"
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Merging r%ld through r%ld"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Merging requires different revisions or different URLs in 'From:' and 'To:'"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Merging revisions %s of %s into %s, %s%s"
+msgstr ""
+
+#. Resource IDs: (76, 1359)
+msgid "Message"
+msgstr ""
+
+#. Resource IDs: (1241)
+msgid "Message:"
+msgstr ""
+
+#. Resource IDs: (116)
+msgid "Messages"
+msgstr ""
+
+#. Resource IDs: (116)
+msgid "Messages, authors and paths"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Mime type"
+msgstr ""
+
+#. Resource IDs: (1158)
+msgid "Min"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Mine"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Minimize the Ribbon"
+msgstr ""
+
+#. Resource IDs: (1023)
+msgid "Misc"
+msgstr ""
+
+#. Resource IDs: (3887)
+msgid "Mixed"
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "Modification date"
+msgstr ""
+
+#. Resource IDs: (74, 264, 65535)
+msgid "Modified"
+msgstr ""
+
+#. Resource IDs: (1070)
+msgid "More"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "More Buttons"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "More Commands..."
+msgstr ""
+
+#. Resource IDs: (438)
+msgid "More colors..."
+msgstr ""
+
+#. Resource IDs: (438)
+msgid "More..."
+msgstr ""
+
+#. Resource IDs: (1136)
+msgid "Most active author:"
+msgstr ""
+
+#. Resource IDs: (16135)
+msgid "Mouse"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Move %ld items to\r\n%s"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Move %s\r\nto %s"
+msgstr ""
+
+#. Resource IDs: (17026)
+msgid "Move &Down"
+msgstr ""
+
+#. Resource IDs: (17025)
+msgid "Move &Up"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Move Item Down"
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Move Item Up"
+msgstr ""
+
+#. Resource IDs: (104)
+msgid "Move and rename item to here"
+msgstr ""
+
+#. Resource IDs: (103)
+msgid "Move items to here"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Move to changelist"
+msgstr ""
+
+#. Resource IDs: (229)
+msgid "Move/Rename"
+msgstr ""
+
+#. Resource IDs: (98)
+#, c-format
+msgid "Move: New name for %s"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Moved remotely"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "Moves the modified files to the recycle bin first before reverting"
+msgstr ""
+
+#. Resource IDs: (80)
+#, c-format
+msgid "Moving %s"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "Moving..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "My file:"
+msgstr ""
+
+#. Resource IDs: (32804)
+msgid "N&ext Conflict"
+msgstr ""
+
+#. Resource IDs: (3697)
+msgid "NUM"
+msgstr ""
+
+#. Resource IDs: (17004)
+msgid "Navigation Pane Options"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Navigation Pane Options..."
+msgstr ""
+
+#. Resource IDs: (208)
+msgid "Needs lock"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "Nested"
+msgstr ""
+
+#. Resource IDs: (102)
+msgid "Network"
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Never try to contact the repository again"
+msgstr ""
+
+#. Resource IDs: (1002, 30721, 65535)
+msgid "New"
+msgstr ""
+
+#. Resource IDs: (1076)
+msgid "New &name:"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "New Menu"
+msgstr ""
+
+#. Resource IDs: (97)
+#, c-format
+msgid "New name for %s"
+msgstr ""
+
+#. Resource IDs: (98)
+msgid "New name:"
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Next Page\nNext Page"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "No"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "No command specified!\n<hr=100%>\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "No command value specified!"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "No differences found!"
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "No error message is available."
+msgstr ""
+
+#. Resource IDs: (3867, 3868)
+msgid "No error occurred."
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "No files or folders were modified. There is nothing for TortoiseSVN to revert!"
+msgstr ""
+
+#. Resource IDs: (239)
+msgid "No files to show with the current setting.\nCheck one or more settings below to see unversioned, ignored and/or unmodified files.\nTo see remote changes, click on \"Check Repository\""
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseSVN to do here..."
+msgstr ""
+
+#. Resource IDs: (170)
+msgid "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseSVN to do here...\nDo you want to see the unversioned files?"
+msgstr ""
+
+#. Resource IDs: (273)
+msgid "No graph available"
+msgstr ""
+
+#. Resource IDs: (273)
+#, c-format
+msgid "No image encoder found for %s."
+msgstr ""
+
+#. Resource IDs: (188)
+msgid "No spell corrections"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "No status cache. Only versioned folders get an overlay, files don't get an overlay"
+msgstr ""
+
+#. Resource IDs: (188)
+msgid "No thesaurus suggestions"
+msgstr ""
+
+#. Resource IDs: (1271)
+msgid "None"
+msgstr ""
+
+#. Resource IDs: (264, 65535)
+msgid "Normal"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "Not all of the system registry entries (or INI file) were removed."
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Not enough memory to complete operation."
+msgstr ""
+
+#. Resource IDs: (563)
+msgid "Not recursive"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Note: the font settings also affect the TortoiseUDiff viewer"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "Notice"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Number of authors in the cache"
+msgstr ""
+
+#. Resource IDs: (1161)
+msgid "Number of authors:"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of cached merged revisions"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of cached revisions"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of cached revisions that have a non-empty change list"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of cached revisions that have user revision properties"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of cached revisions whose change list is not cached yet"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of cached revisions whose user revision properties are not cached yet"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Number of different paths shown in the log dialog, including parent paths"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Number of different words used in log messages"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Number of merged revisions that are not cached yet"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "Number of path elements. A path element is a folder or file name like 'foo.txt' or 'mybranch'."
+msgstr ""
+
+#. Resource IDs: (1160)
+msgid "Number of weeks:"
+msgstr ""
+
+#. Resource IDs: (1, 73)
+msgid "OK"
+msgstr ""
+
+#. Resource IDs: (3697)
+msgid "OVR"
+msgstr ""
+
+#. Resource IDs: (32845)
+msgid "Office &XP"
+msgstr ""
+
+#. Resource IDs: (32847)
+msgid "Office 200&3"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Office 200&7"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Older lines"
+msgstr ""
+
+#. Resource IDs: (32814)
+msgid "Oldest on to&p"
+msgstr ""
+
+#. Resource IDs: (99, 1202)
+msgid "Omit e&xternals"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Omit externals"
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "One of the paths you are attempting to move appears to be a special path\n(one of 'branches', 'tags' or 'trunk').\n\nAre you sure you want to move the selected paths?"
+msgstr ""
+
+#. Resource IDs: (219)
+msgid "One or more files are in a conflicted state."
+msgstr ""
+
+#. Resource IDs: (99)
+msgid "Only check out the &top folder"
+msgstr ""
+
+#. Resource IDs: (19)
+msgid "Only file children"
+msgstr ""
+
+#. Resource IDs: (169)
+msgid "Only numbers (optionally separated by commas)\nare allowed!"
+msgstr ""
+
+#. Resource IDs: (1424)
+msgid "Only record the merge"
+msgstr ""
+
+#. Resource IDs: (19)
+msgid "Only this item"
+msgstr ""
+
+#. Resource IDs: (1224)
+msgid "Only use s&pellchecker when tsvn:projectlanguage is set"
+msgstr ""
+
+#. Resource IDs: (3841)
+msgid "Open"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Open client certificate file"
+msgstr ""
+
+#. Resource IDs: (3601)
+msgid "Open file"
+msgstr ""
+
+#. Resource IDs: (1132)
+msgid "Open from clipboard"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Open image file..."
+msgstr ""
+
+#. Resource IDs: (282)
+msgid "Open parent folder"
+msgstr ""
+
+#. Resource IDs: (113)
+msgid "Open with..."
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "Opens Help\nHelp Topics"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Opens the repository browser to tweak the repository online"
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Operate from log cache for now only"
+msgstr ""
+
+#. Resource IDs: (16137)
+msgid "Options"
+msgstr ""
+
+#. Resource IDs: (32779)
+msgid "Ori&ginal size"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Other Task Panes"
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "Others"
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "Out of memory."
+msgstr ""
+
+#. Resource IDs: (3845)
+msgid "Output.prn"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Override the svn:eol-style property setting.\nFiles which don't have this property set are not affected."
+msgstr ""
+
+#. Resource IDs: (99)
+msgid "Overwrite"
+msgstr ""
+
+#. Resource IDs: (32802)
+msgid "P&revious Conflict"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "PEM"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "PKCS12"
+msgstr ""
+
+#. Resource IDs: (3845)
+#, c-format
+msgid "Page %u"
+msgstr ""
+
+#. Resource IDs: (3845)
+#, c-format
+msgid "Page %u\nPages %u-%u\n"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Page :"
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "Parameters"
+msgstr ""
+
+#. Resource IDs: (1477)
+msgid "Parameters:"
+msgstr ""
+
+#. Resource IDs: (69)
+msgid "Password:"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Paste Tool\nPaste"
+msgstr ""
+
+#. Resource IDs: (172)
+msgid "Paste filename list"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Patch all"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Patch selected"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (20, 63, 77, 198, 207)
+msgid "Path"
+msgstr ""
+
+#. Resource IDs: (116)
+msgid "Paths"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Pencil Tool\nPencil"
+msgstr ""
+
+#. Resource IDs: (16538)
+msgid "Personalized Menus and Toolbars"
+msgstr ""
+
+#. Resource IDs: (3849)
+msgid "Picture (Metafile)\na picture"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Picture:"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (246)
+msgid "Pie Graph"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Please enter a hook script to execute."
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Please enter a path where to apply the hook script to."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Please execute the \"Cleanup\" command."
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
+msgstr ""
+
+#. Resource IDs: (1287)
+msgid "Please resolve the conflict by choosing one of the following options:"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Please select a hook type"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Please specify the certificate type"
+msgstr ""
+
+#. Resource IDs: (132)
+msgid "Please wait - this can take several minutes. Seriously!"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Please wait while cancelling..."
+msgstr ""
+
+#. Resource IDs: (319)
+msgid "Please wait while differences are obtained..."
+msgstr ""
+
+#. Resource IDs: (104)
+msgid "Please wait while the repository browser is initializing..."
+msgstr ""
+
+#. Resource IDs: (104, 119, 146, 213)
+msgid "Please wait..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Port :"
+msgstr ""
+
+#. Resource IDs: (569)
+msgid "Post-Commit Hook"
+msgstr ""
+
+#. Resource IDs: (570)
+msgid "Post-Update Hook"
+msgstr ""
+
+#. Resource IDs: (58115)
+msgid "Pre&v Page"
+msgstr ""
+
+#. Resource IDs: (569)
+msgid "Pre-Commit Hook"
+msgstr ""
+
+#. Resource IDs: (570)
+msgid "Pre-Update Hook"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Press &New Shortcut Key:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Press &new shortcut key:"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Prevents most cases in which connection lines cross revision nodes"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Preview"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Preview patched file"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Preview: "
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Previous Page\nPrevious Page"
+msgstr ""
+
+#. Resource IDs: (1069, 16990)
+msgid "Print"
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Print Document\n&Print"
+msgstr ""
+
+#. Resource IDs: (3845)
+msgid "Print to File"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Printer :"
+msgstr ""
+
+#. Resource IDs: (3845)
+msgid "Printer Files (*.prn)|*.prn|All Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Printing"
+msgstr ""
+
+#. Resource IDs: (132)
+#, c-format
+msgid "Processing revision %d of %d..."
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Program"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "Programs (*.exe)|*.exe|All Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (134, 65535)
+msgid "Progress"
+msgstr ""
+
+#. Resource IDs: (17, 177, 226)
+msgid "Properties"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "Properties (*.svnprops)|*.svnprops|All Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (1287)
+msgid "Properties for"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Properties..."
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Property"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "Property %s : Revision %s"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "Property %s : remote"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "Property %s : working base"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "Property %s : working copy"
+msgstr ""
+
+#. Resource IDs: (107)
+msgid "Property Page"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Property Status:"
+msgstr ""
+
+#. Resource IDs: (1292)
+msgid "Property name:"
+msgstr ""
+
+#. Resource IDs: (207)
+msgid "Property status"
+msgstr ""
+
+#. Resource IDs: (1293)
+msgid "Property value:"
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "Provider"
+msgstr ""
+
+#. Resource IDs: (1475)
+msgid "Provider:"
+msgstr ""
+
+#. Resource IDs: (1412)
+msgid "Proxy &timeout in seconds:"
+msgstr ""
+
+#. Resource IDs: (1080)
+msgid "Proxy Settings"
+msgstr ""
+
+#. Resource IDs: (1338)
+msgid "Put \"Get Lock\" on top menu when svn:needs-lock is set"
+msgstr ""
+
+#. Resource IDs: (246)
+#, c-format
+msgid "Q%d/%.2d"
+msgstr ""
+
+#. Resource IDs: (3605)
+msgid "Quit the application; prompts to save documents\nExit"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "R&AM drives"
+msgstr ""
+
+#. Resource IDs: (16623)
+msgid "R&eset"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "R&evert to this revision"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "RAM [kB]: "
+msgstr ""
+
+#. Resource IDs: (3697)
+msgid "REC"
+msgstr ""
+
+#. Resource IDs: (1048)
+msgid "Re&movable drives"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Re&name..."
+msgstr ""
+
+#. Resource IDs: (16613)
+msgid "Re&set"
+msgstr ""
+
+#. Resource IDs: (16647)
+msgid "Re&set All"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "Re&vert..."
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Read the 'Daily Use Guide' before you are stuck..."
+msgstr ""
+
+#. Resource IDs: (1002)
+msgid "Recent"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Recently modified lines"
+msgstr ""
+
+#. Resource IDs: (276)
+msgid "Record Only"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Rectangle Tool\nRectangle"
+msgstr ""
+
+#. Resource IDs: (1260)
+msgid "Recurse into unversioned folders"
+msgstr ""
+
+#. Resource IDs: (563)
+msgid "Recursive"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Redo the previously undone action\nRedo"
+msgstr ""
+
+#. Resource IDs: (32819)
+msgid "Reduce cross-&lines"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Reduce the window to an icon"
+msgstr ""
+
+#. Resource IDs: (101, 135, 1382)
+msgid "Refresh"
+msgstr ""
+
+#. Resource IDs: (117)
+#, c-format
+msgid "Regular expressions filter:\n.\t\t\tany character\nc+\t\t\tmatch character c one or more times\nc*\t\t\tmatch character c zero or more times\n^\t\t\tstart of line\n$\t\t\tend of line\n(string){n}\tmatch string n times\n(abcd)\t\tsubexpression\n[aei0-9]\t\tmatch a,e,i and 0..9\n[^aei0-9]\tanything but a,e,i and 0..9\n<hr=100%>\n\\w\t\t\tmatches a-z,A-Z,0-9 and _\n\\W\t\t\tany non-alphanumeric character\n\\d\t\t\tdigits 0-9\n\\s\t\t\twhitespaces"
+msgstr ""
+
+#. Resource IDs: (1469)
+msgid "Reintegrate a branch"
+msgstr ""
+
+#. Resource IDs: (230)
+#, c-format
+msgid "Reintegrate merge %s into %s"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Reject"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Release loc&k"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Releases locks even if you're not the owner of the locks (breaks them)."
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Releases locks on files so other users can edit them again."
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Relo&cate..."
+msgstr ""
+
+#. Resource IDs: (32794)
+msgid "Reload"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Reloads the opened files and reverts all changes.\nReload"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid "Relocate"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Relocate Warning"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "Relocating..."
+msgstr ""
+
+#. Resource IDs: (207)
+msgid "Remote property status"
+msgstr ""
+
+#. Resource IDs: (63, 207)
+msgid "Remote status"
+msgstr ""
+
+#. Resource IDs: (207)
+msgid "Remote text status"
+msgstr ""
+
+#. Resource IDs: (1332, 1470)
+msgid "Remove"
+msgstr ""
+
+#. Resource IDs: (126)
+#, c-format
+msgid "Remove %ld items"
+msgstr ""
+
+#. Resource IDs: (126)
+#, c-format
+msgid "Remove %s"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Remove deleted branches and tags"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Remove from &ignore list"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Remove from Quick Access Toolbar"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Remove from changelist"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Remove property \"%s\" from\r\n%s"
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "Remove the selected cache(s) from disk"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Removed"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Removed file/folder"
+msgstr ""
+
+#. Resource IDs: (264)
+msgid "Removed from changelist"
+msgstr ""
+
+#. Resource IDs: (145)
+#, c-format
+msgid "Removed the file pattern(s)\n%s\nfrom the ignore list."
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "Removes all unversioned and ignored items"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Removes the file or filemask from the list of ignored items"
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "Removes the selected properties"
+msgstr ""
+
+#. Resource IDs: (16616)
+msgid "Rena&me..."
+msgstr ""
+
+#. Resource IDs: (151)
+msgid "Rename"
+msgstr ""
+
+#. Resource IDs: (97)
+#, c-format
+msgid "Rename %s"
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Rename item from %s\r\nto %s"
+msgstr ""
+
+#. Resource IDs: (221)
+msgid "Rename/move - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Renamed node"
+msgstr ""
+
+#. Resource IDs: (126)
+msgid "Renamed remotely"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Renames files / folders inside version control"
+msgstr ""
+
+#. Resource IDs: (209)
+msgid "Repair move"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Repeat the last action\nRepeat"
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Replace specific text with different text\nReplace"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Replaced node"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Replacing"
+msgstr ""
+
+#. Resource IDs: (1055, 1374, 1383)
+msgid "Repository"
+msgstr ""
+
+#. Resource IDs: (153)
+msgid "Repository Browser"
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Repository URL"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Repository UUID:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Requests a username and a password"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "Res&olved..."
+msgstr ""
+
+#. Resource IDs: (16614)
+msgid "Reset &All"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "Reset columns"
+msgstr ""
+
+#. Resource IDs: (207, 229)
+msgid "Resolve"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Resolve - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (268)
+msgid "Resolve Conflict"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "Resolve all later"
+msgstr ""
+
+#. Resource IDs: (282)
+msgid "Resolve conflict using \"mine\""
+msgstr ""
+
+#. Resource IDs: (282)
+msgid "Resolve conflict using \"theirs\""
+msgstr ""
+
+#. Resource IDs: (1403)
+msgid "Resolve conflict:"
+msgstr ""
+
+#. Resource IDs: (2)
+msgid "Resolve later"
+msgstr ""
+
+#. Resource IDs: (74, 209, 1400)
+msgid "Resolved"
+msgstr ""
+
+#. Resource IDs: (282)
+#, c-format
+msgid "Resolved:\n%s"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Resolves conflicted files"
+msgstr ""
+
+#. Resource IDs: (1254)
+msgid "Restore Default"
+msgstr ""
+
+#. Resource IDs: (3826)
+msgid "Restore the window to normal size"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Restored"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Retry"
+msgstr ""
+
+#. Resource IDs: (1423)
+msgid "Reverse merge"
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Reverse merging %ld"
+msgstr ""
+
+#. Resource IDs: (264)
+#, c-format
+msgid "Reverse merging %ld through %ld"
+msgstr ""
+
+#. Resource IDs: (175, 229)
+msgid "Revert"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Revert - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Reverted"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Reverts all changes you made since the last update"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Reverts an addition to version control"
+msgstr ""
+
+#. Resource IDs: (19, 76, 208, 1306, 1375, 1393, 65535)
+msgid "Revision"
+msgstr ""
+
+#. Resource IDs: (119)
+#, c-format
+msgid "Revision %d"
+msgstr ""
+
+#. Resource IDs: (269, 272)
+#, c-format
+msgid "Revision %ld"
+msgstr ""
+
+#. Resource IDs: (120)
+#, c-format
+msgid "Revision %s"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Revision &graph"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Revision / Author:"
+msgstr ""
+
+#. Resource IDs: (182)
+msgid "Revision Graph"
+msgstr ""
+
+#. Resource IDs: (239)
+msgid "Revision Graph Filter"
+msgstr ""
+
+#. Resource IDs: (228)
+msgid "Revision Range"
+msgstr ""
+
+#. Resource IDs: (269, 65535)
+msgid "Revision graph"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Revision range to merge"
+msgstr ""
+
+#. Resource IDs: (75)
+msgid "Revision: "
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "Revision: %ld\r\nURL: %s\r\nAuthor: %s\r\nDate: %s\r\n\r\nLogmessage:\r\n%s"
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "Revision: %ld\r\nURL: %s\r\nAuthor: %s\r\nDate: %s\r\n\r\nTags:%s\r\n\r\nLogmessage:\r\n%s"
+msgstr ""
+
+#. Resource IDs: (116, 65535)
+msgid "Revisions"
+msgstr ""
+
+#. Resource IDs: (3850)
+msgid "Rich Text (RTF)\ntext with font and paragraph formatting"
+msgstr ""
+
+#. Resource IDs: (188)
+msgid "Right View: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Right image"
+msgstr ""
+
+#. Resource IDs: (1070)
+#, c-format
+msgid "Row %d of %d"
+msgstr ""
+
+#. Resource IDs: (1070)
+#, c-format
+msgid "Row %d-%d of %d"
+msgstr ""
+
+#. Resource IDs: (17045)
+msgid "S&elect..."
+msgstr ""
+
+#. Resource IDs: (32782)
+msgid "S&ettings"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "S&how Buttons on One Row"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "S&how Buttons on Two Rows"
+msgstr ""
+
+#. Resource IDs: (17078)
+msgid "S&how Quick Access Toolbar below the Ribbon"
+msgstr ""
+
+#. Resource IDs: (1132)
+msgid "S&tatistics"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "S&witch..."
+msgstr ""
+
+#. Resource IDs: (3697)
+msgid "SCRL"
+msgstr ""
+
+#. Resource IDs: (1081)
+msgid "SSH"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "SVN Author"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "SVN Copy and add files to this WC"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "SVN Copy and rename versioned file here"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "SVN Copy versioned files here"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "SVN Export all to here"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "SVN Export to here"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "SVN Local lock owner"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "SVN Move and rename versioned files here"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "SVN Move versioned files here"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "SVN Revision"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "SVN Status"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "SVN URL"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "SVN eol-style"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "SVN mime-type"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "SVN short URL"
+msgstr ""
+
+#. Resource IDs: (57604)
+msgid "Save &As..."
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Save &as..."
+msgstr ""
+
+#. Resource IDs: (3841)
+msgid "Save As"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Save as..."
+msgstr ""
+
+#. Resource IDs: (3857)
+#, c-format
+msgid "Save changes to %1?"
+msgstr ""
+
+#. Resource IDs: (232)
+msgid "Save client certificate path"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Save revision &to..."
+msgstr ""
+
+#. Resource IDs: (3601)
+msgid "Save the modified file\nSave file"
+msgstr ""
+
+#. Resource IDs: (1132)
+msgid "Save to clipboard"
+msgstr ""
+
+#. Resource IDs: (108)
+msgid "Saved Data"
+msgstr ""
+
+#. Resource IDs: (344)
+msgid "Saves expensive server roundtrips when set to longer than 0 seconds"
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "Saves the selected property value to a file"
+msgstr ""
+
+#. Resource IDs: (103)
+#, c-format
+msgid "Saving file %s"
+msgstr ""
+
+#. Resource IDs: (103)
+msgid "Saving files"
+msgstr ""
+
+#. Resource IDs: (144)
+msgid "Saving patchfile to:"
+msgstr ""
+
+#. Resource IDs: (1014, 1017, 1064, 1212)
+msgid "Scintilla"
+msgstr ""
+
+#. Resource IDs: (1003)
+msgid "Scroll Left"
+msgstr ""
+
+#. Resource IDs: (1003)
+msgid "Scroll Right"
+msgstr ""
+
+#. Resource IDs: (113)
+msgid "Search &log messages..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Search for:"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "Search string not found!"
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Seek failed on %1"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Select &All"
+msgstr ""
+
+#. Resource IDs: (16529)
+msgid "Select &User-defined Image: "
+msgstr ""
+
+#. Resource IDs: (16508)
+msgid "Select &context menu:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Select &window:"
+msgstr ""
+
+#. Resource IDs: (1067)
+msgid "Select / deselect &all"
+msgstr ""
+
+#. Resource IDs: (1057)
+msgid "Select Color Tool\nSelect Color"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Select File..."
+msgstr ""
+
+#. Resource IDs: (173)
+msgid "Select Revision"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Select SSH client"
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Select a button."
+msgstr ""
+
+#. Resource IDs: (3585)
+msgid "Select an object on which to get Help"
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "Select changelist"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Select diff application"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Select diff file..."
+msgstr ""
+
+#. Resource IDs: (99)
+msgid "Select directory to check out to"
+msgstr ""
+
+#. Resource IDs: (276)
+msgid "Select end revision"
+msgstr ""
+
+#. Resource IDs: (64)
+msgid "Select folder to associate with this issue tracker"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Select folder to export to.\nYou might need to create a new folder before performing this export."
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "Select folder to run script for"
+msgstr ""
+
+#. Resource IDs: (119)
+msgid "Select folder to save the selected files to"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "Select hook script file"
+msgstr ""
+
+#. Resource IDs: (1405)
+msgid "Select items automatically"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Select merge application"
+msgstr ""
+
+#. Resource IDs: (119)
+msgid "Select merge target"
+msgstr ""
+
+#. Resource IDs: (276)
+msgid "Select revision range"
+msgstr ""
+
+#. Resource IDs: (276)
+msgid "Select start revision"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Select text editor application"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Select the behaviour of the progress dialog at the end of the operation."
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Select the entire document\nSelect All"
+msgstr ""
+
+#. Resource IDs: (595)
+msgid "Select the merge options"
+msgstr ""
+
+#. Resource IDs: (595)
+msgid "Select the revisions to merge"
+msgstr ""
+
+#. Resource IDs: (595)
+msgid "Select the type of merge"
+msgstr ""
+
+#. Resource IDs: (595)
+msgid "Select the urls for the tree merge"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Select viewer for diff-files"
+msgstr ""
+
+#. Resource IDs: (3866)
+msgid "Send Mail failed to send message."
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Sending content"
+msgstr ""
+
+#. Resource IDs: (1409)
+msgid "Server &address:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Set Accelerator &for:"
+msgstr ""
+
+#. Resource IDs: (1088)
+msgid "Set file dates to the \"last commit &time\""
+msgstr ""
+
+#. Resource IDs: (127)
+#, c-format
+msgid "Set property \"%s\" on\r\n%s"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Setting properties..."
+msgstr ""
+
+#. Resource IDs: (107)
+msgid "Settings"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "Settings - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (1270)
+msgid "Shell"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Shell Icon Cache was rebuilt!"
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Sho&w properties"
+msgstr ""
+
+#. Resource IDs: (1105)
+msgid "Short &date/time format in log messages"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Short URL of Subversion items"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "Shorten property list"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "Show"
+msgstr ""
+
+#. Resource IDs: (16996)
+msgid "Show &Accelerator for:"
+msgstr ""
+
+#. Resource IDs: (115, 1031)
+msgid "Show &All"
+msgstr ""
+
+#. Resource IDs: (115)
+msgid "Show &Range..."
+msgstr ""
+
+#. Resource IDs: (32826)
+msgid "Show &WC revision"
+msgstr ""
+
+#. Resource IDs: (32796)
+msgid "Show &all revisions"
+msgstr ""
+
+#. Resource IDs: (113, 32783)
+msgid "Show &changes"
+msgstr ""
+
+#. Resource IDs: (12, 101, 1016, 1031, 1034, 1037, 1132, 1228, 1420, 1467, 32784)
+msgid "Show &log"
+msgstr ""
+
+#. Resource IDs: (1031)
+msgid "Show &log..."
+msgstr ""
+
+#. Resource IDs: (1088)
+msgid "Show &overlays and context menu only in explorer"
+msgstr ""
+
+#. Resource IDs: (1265)
+msgid "Show &properties"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "Show &unversioned files"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Show Above the Ribbon"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Show Below the Ribbon"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Show Fewer Buttons"
+msgstr ""
+
+#. Resource IDs: (32817)
+msgid "Show File List"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Show HEAD revision nodes"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Show Inline-Diff word by word\nInline diff word-wise"
+msgstr ""
+
+#. Resource IDs: (1126)
+msgid "Show Lock dialog before locking files"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Show More Buttons"
+msgstr ""
+
+#. Resource IDs: (32813)
+msgid "Show Ove&rview"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Show Quick Access Toolbar Above the Ribbon"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Show Quick Access Toolbar Below the Ribbon"
+msgstr ""
+
+#. Resource IDs: (16651)
+msgid "Show Screen&Tips on toolbars"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Show an overview of the whole graph"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "Show changes as &unified diff"
+msgstr ""
+
+#. Resource IDs: (113)
+msgid "Show differences as &unified diff"
+msgstr ""
+
+#. Resource IDs: (1126)
+msgid "Show excluded folders as normal"
+msgstr ""
+
+#. Resource IDs: (16656)
+msgid "Show f&ull menus after a short delay"
+msgstr ""
+
+#. Resource IDs: (1264)
+msgid "Show i&gnored files"
+msgstr ""
+
+#. Resource IDs: (1063)
+msgid "Show linenumber&s"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Show oldest node at top"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Show or hide the line diff bar\nToggle LineDiffBar"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Show or hide the locator bar\nToggle LocatorBar"
+msgstr ""
+
+#. Resource IDs: (3713)
+msgid "Show or hide the status bar\nToggle StatusBar"
+msgstr ""
+
+#. Resource IDs: (3713)
+msgid "Show or hide the toolbar\nToggle ToolBar"
+msgstr ""
+
+#. Resource IDs: (1432)
+msgid "Show overlay for ignored items"
+msgstr ""
+
+#. Resource IDs: (1462)
+msgid "Show overlay for unversioned items"
+msgstr ""
+
+#. Resource IDs: (102)
+msgid "Show revision properties"
+msgstr ""
+
+#. Resource IDs: (16652)
+msgid "Show shortcut &keys in ScreenTips"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Show special characters for whitespaces\nShow Whitespaces"
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "Show statistics for the selected log cache"
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Show tags on the copy source, not as separate nodes"
+msgstr ""
+
+#. Resource IDs: (1209)
+msgid "Show un&modified files"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "Show un&versioned files"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "Show/Hide"
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "Showing %ld nodes"
+msgstr ""
+
+#. Resource IDs: (115)
+#, c-format
+msgid "Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s) selected."
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "Showing graph for %s"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Shows a graphical representation of copies/tags/branches"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "Shows all files which were changed since the last update, locally and in the repository"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Shows all revisions where changes were made to this item"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Shows information about TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "Shows the action log file in the default text editor"
+msgstr ""
+
+#. Resource IDs: (17)
+msgid "Shows the eol-style property value"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Shows the log for the selected file / folder"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Shows the mime type of the versioned file"
+msgstr ""
+
+#. Resource IDs: (32775)
+msgid "Single/&double-pane view"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Size"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Size and status"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Size of all cached text information"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Size of the cache file on disk"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Size of the cache if it were not compressed"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Skipped"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Skipped missing target"
+msgstr ""
+
+#. Resource IDs: (1126)
+msgid "Sort by commit count"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "Specifies how many items you want to keep in the most recent log messages dialog."
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Specify the files or folders which TortoiseSVN\nshould ignore in <b>all</b> working copies.\nSeparate the patterns with a space."
+msgstr ""
+
+#. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
+msgid "Spin1"
+msgstr ""
+
+#. Resource IDs: (376)
+msgid "Split lines"
+msgstr ""
+
+#. Resource IDs: (3604)
+msgid "Split the active window into panes\nSplit"
+msgstr ""
+
+#. Resource IDs: (246)
+msgid "Stacked Bar Graph"
+msgstr ""
+
+#. Resource IDs: (246)
+msgid "Stacked Line Graph"
+msgstr ""
+
+#. Resource IDs: (16962)
+msgid "Standard"
+msgstr ""
+
+#. Resource IDs: (569)
+msgid "Start Commit Hook"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Start Revision"
+msgstr ""
+
+#. Resource IDs: (569)
+msgid "Start Update Hook"
+msgstr ""
+
+#. Resource IDs: (16514)
+msgid "Static"
+msgstr ""
+
+#. Resource IDs: (179, 245)
+msgid "Statistics"
+msgstr ""
+
+#. Resource IDs: (74, 77, 207, 65535)
+msgid "Status"
+msgstr ""
+
+#. Resource IDs: (1068)
+msgid "Status Bar Configuration"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Status and action colors"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Status cache"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "Status cache kept in an external process, can show the overlay recursively"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "Status cache only for one folder, no recursive overlays"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Status of item in SVN"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "Steal loc&k"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Steal the lock"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Stefan Küng, Lübbe Onken"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Subversion"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Subversion configuration &file:"
+msgstr ""
+
+#. Resource IDs: (79)
+msgid "Subversion reported an error while creating a repository!\nMake sure the folder is empty and not write protected."
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Subversion reported an error while doing a cleanup!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Subversion server file:"
+msgstr ""
+
+#. Resource IDs: (1232)
+msgid "Sw&itch working copy to new branch/tag"
+msgstr ""
+
+#. Resource IDs: (229)
+#, c-format
+msgid "Switch %s to %s, Revision %s"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Switch - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (32811)
+msgid "Switch Left<->Right"
+msgstr ""
+
+#. Resource IDs: (140)
+msgid "Switch To Branch / Tag"
+msgstr ""
+
+#. Resource IDs: (3606)
+msgid "Switch back to the previous window pane\nPrevious Pane"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Switch between single and double pane view\nSwitch between single and double pane view"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Switch the contents of the left and right view\nSwitch left and right view"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Switch to the next document window"
+msgstr ""
+
+#. Resource IDs: (3606)
+msgid "Switch to the next window pane\nNext Pane"
+msgstr ""
+
+#. Resource IDs: (3825)
+msgid "Switch to the previous document window"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Switch working copy to another branch / tag"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Switch:"
+msgstr ""
+
+#. Resource IDs: (325)
+msgid "Switches the comparison left<<->right"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "System &sounds"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "System registry entries have been removed and the INI file (if any) was deleted."
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "TORTOISEBLAME"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "TORTOISEIDIFF"
+msgstr ""
+
+#. Resource IDs: (16970)
+msgid "Tab Placeholder"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Tab size:"
+msgstr ""
+
+#. Resource IDs: (79)
+#, c-format
+msgid "Tagged the working copy to %s"
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Tasks Pane"
+msgstr ""
+
+#. Resource IDs: (219)
+msgid "Test Only"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Text Status:"
+msgstr ""
+
+#. Resource IDs: (207)
+msgid "Text status"
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "The chunk size did not match the number of added/removed lines!"
+msgstr ""
+
+#. Resource IDs: (63)
+#, c-format
+msgid "The chunk start \"@@\" was expected in line %d !"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "The default URL to checkout from if nothing else is specified"
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "The default path to checkout to if nothing else is specified"
+msgstr ""
+
+#. Resource IDs: (68)
+#, c-format
+msgid "The diffing engine aborted because of an error:\n%s"
+msgstr ""
+
+#. Resource IDs: (64)
+#, c-format
+msgid "The file %s does not exist!"
+msgstr ""
+
+#. Resource IDs: (64)
+#, c-format
+msgid "The file %s was not found in the patch file!"
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "The file \n%s\nis empty.\nDo you want to remove the file?"
+msgstr ""
+
+#. Resource IDs: (69)
+msgid "The file is too big"
+msgstr ""
+
+#. Resource IDs: (3857)
+msgid "The file is too large to open."
+msgstr ""
+
+#. Resource IDs: (80)
+#, c-format
+msgid "The file\n%s\nalready exists! Do you want to overwrite it?"
+msgstr ""
+
+#. Resource IDs: (69)
+#, c-format
+msgid "The file\n%s\nis not a valid text file!\nNote that UTF32 files are treated as binary too."
+msgstr ""
+
+#. Resource IDs: (145)
+#, c-format
+msgid "The folder %s\ncontains unversioned and/or modified file(s). Do you want to remove it anyway?"
+msgstr ""
+
+#. Resource IDs: (88)
+#, c-format
+msgid "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
+msgstr ""
+
+#. Resource IDs: (99)
+#, c-format
+msgid "The folder\n%s\nalready exists!"
+msgstr ""
+
+#. Resource IDs: (83)
+#, c-format
+msgid "The hook script returned an error:\n%s"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "The image can not be shown."
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "The issue-tracker provider could not be created. Please check that it is installed correctly."
+msgstr ""
+
+#. Resource IDs: (64)
+msgid "The issue-tracker provider was unable to validate the parameter string"
+msgstr ""
+
+#. Resource IDs: (63)
+#, c-format
+msgid "The line \"====\" was expected in line %d !"
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "The line \"Index: \" was not found!\nEither this is not a diff file or the diff is empty."
+msgstr ""
+
+#. Resource IDs: (63)
+#, c-format
+msgid "The line indicating the new file was expected in line %d !"
+msgstr ""
+
+#. Resource IDs: (63)
+#, c-format
+msgid "The line indicating the old file was expected in line %d !"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "The lock has already been broken from another working copy"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "The maximum number of action log lines to keep.\nAny lines added over this limit will remove the oldest lines from the file."
+msgstr ""
+
+#. Resource IDs: (63)
+msgid "The old file does not match the new file.\nRenaming of files is not (yet) supported!"
+msgstr ""
+
+#. Resource IDs: (220)
+msgid "The operation failed."
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "The parameters '/path' and '/pathfile' are mutually exclusive.\nYou must only specify one of them."
+msgstr ""
+
+#. Resource IDs: (64)
+#, c-format
+msgid "The patch seems outdated! The file line\n%s\nand the patchline\n%s\ndo not match!"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "The path/URL you've entered seems to be illegal on Windows!\nYou can try it anyway, but you might get an error later.\n\nA valid path on windows must not contain '<<>|\"?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\nDo you want to proceed anyway?"
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseMerge found the relative path\n<i>%s</i>\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseMerge."
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseMerge tried to apply the patch by stripping prefixes but no matching path could be found."
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "The path\n<i>%s</i>\nseems not to match the paths in the patchfile.\nBut TortoiseMerge found the path\n<i>%s</i>\nmatches it better. Do you want to use the suggested path instead?"
+msgstr ""
+
+#. Resource IDs: (80)
+msgid "The repository was successfully created."
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "The selected file appears to still have one or more conflict markers in it.\nAre you sure you want to mark the file resolved?"
+msgstr ""
+
+#. Resource IDs: (102)
+#, c-format
+msgid "The target URL\n%s\nalready exists!"
+msgstr ""
+
+#. Resource IDs: (88)
+#, c-format
+msgid "The target folder \n%s\nis not empty!\nAre you sure you want to checkout/export into that folder?"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "The time in seconds after which the parsing of the selected files stops.\nA lower value will make the auto-completion list available sooner,\nbut maybe not scan all files."
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "The two selected URL's are not created from the same root.\nIt's not possible to show the log messages between them!"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "The user who did the last commit"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "The user who owns the lock of the file"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "The working copy has changed!\n<hr=100%>\nPlease commit your changes first or revert."
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "The working copy is not up to date!\nPlease Update first."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Their file:"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Theirs"
+msgstr ""
+
+#. Resource IDs: (169)
+msgid "There are changes or unversioned items inside one or more directories which you have included with svn:externals.\nThose files are <b>not</b> listed for commit. You need to commit those files separately."
+msgstr ""
+
+#. Resource IDs: (64)
+msgid "There are no issue-tracker providers available."
+msgstr ""
+
+#. Resource IDs: (66)
+#, c-format
+msgid "There are still unresolved conflicts in line %d!\nYou should resolve those conflicts first before saving.\nDo you want to save the file with the conflicts still there?\nIf you click YES, then you have to manually resolve the conflicts in another editor!"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "There are unsaved modifications!\nDo you want to save your changes?"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "There has been a problem connecting the server.\nDo you want to see the cached data instead?\n\nPlease understand that the cached data may be outdated,\nincomplete or even misleading due to incomplete history."
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "There is nothing to add. All the files and folders are either under version control or have been ignored using the svn:ignore property or the global ignore configuration setting."
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "There's nothing to unlock. No file has a lock in this working copy."
+msgstr ""
+
+#. Resource IDs: (188)
+msgid "Thesaurus"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "This is not a valid URL.\nPlease enter an URL here."
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "This is not a valid path!\nA valid path must not contain '<<>|\"?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
+msgstr ""
+
+#. Resource IDs: (594)
+msgid "This method covers the case when you have made a feature branch as discussed in the Subversion book. Use this to merge all changes of a branch back to trunk."
+msgstr ""
+
+#. Resource IDs: (594)
+msgid "This method covers the case when you have made one or more revisions to a branch (or to the trunk) and you want to port those changes across to a different branch."
+msgstr ""
+
+#. Resource IDs: (594)
+msgid "This method covers the case when you want to merge the differences of two different branches into your working copy."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "This product includes software developed by CollabNet (http://www.Collab.Net/)"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)"
+msgstr ""
+
+#. Resource IDs: (3857)
+#, c-format
+msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
+msgstr ""
+
+#. Resource IDs: (3857)
+#, c-format
+msgid "This program requires the file %s, which was not found on this system."
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "This property is only allowed on folders, not files."
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "This property must not have multiple lines. Only one line is allowed."
+msgstr ""
+
+#. Resource IDs: (1016)
+msgid "This will delete the record of commands you've used in this application and restore the default set of visible commands to the menus and toolbars. It will not undo any explicit customizations. Are you sure you want to do this?"
+msgstr ""
+
+#. Resource IDs: (16924)
+msgid "Tile &Horizontally"
+msgstr ""
+
+#. Resource IDs: (16928)
+msgid "Tile &Vertically"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Timeouts"
+msgstr ""
+
+#. Resource IDs: (224)
+msgid "To commit recursively and work around this error,\nmake sure that all child items of a checked folder\nare also checked in the commit dialog.\nOtherwise, TortoiseSVN must do a non-recursive commit\nwhich does not allow directory deletion."
+msgstr ""
+
+#. Resource IDs: (284)
+msgid "To steal the lock, right-click on the parent folder of this item and select \"Get Lock\" from the context menu.\nThis will bring up the locking dialog where you can enforce the lock, i.e., 'steal' it from the one currently holding it."
+msgstr ""
+
+#. Resource IDs: (1201, 65535)
+msgid "To:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "To: (end URL and revision of the range to merge)"
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Toggle One/Two Pages display\nToggle One/Two Pages display"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Toolbar"
+msgstr ""
+
+#. Resource IDs: (16130)
+msgid "Toolbar Name"
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Toolbar Options"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "Toolbar internal error. Please contact your application vendor."
+msgstr ""
+
+#. Resource IDs: (16105)
+msgid "Toolbars"
+msgstr ""
+
+#. Resource IDs: (16928)
+msgid "Tools"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Tools:"
+msgstr ""
+
+#. Resource IDs: (7, 244)
+msgid "TortoiseBlame"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "TortoiseBlame should not be started directly! Use\nTortoiseProc.exe /command:blame /path:\"path\\to\\file\"\ninstead.\n\nTortoiseBlame.exe blamefile [logfile [viewtitle]] [/line:linenumber] [/path:originalpath] [/ignoreeol] [/ignorespaces] [/ignoreallspaces]"
+msgstr ""
+
+#. Resource IDs: (7, 153)
+msgid "TortoiseIDiff"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "TortoiseIDiff - An image diff tool, part of TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "TortoiseIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:\"path to left picture\"\n/lefttitle:\"title to show for the left picture\"\n/right:\"path to right picture\"\n/righttitle:\"title to show for the right picture\"\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
+msgstr ""
+
+#. Resource IDs: (7, 130, 3585)
+msgid "TortoiseMerge"
+msgstr ""
+
+#. Resource IDs: (107)
+#, c-format
+msgid "TortoiseMerge %d.%d.%d, Build %d - %s, %s"
+msgstr ""
+
+#. Resource IDs: (107)
+#, c-format
+msgid "TortoiseMerge %d.%d.%d, Build %d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+msgstr ""
+
+#. Resource IDs: (80, 65535)
+msgid "TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (107)
+#, c-format
+msgid "TortoiseSVN %d.%d.%d, Build %d - %s, %s"
+msgstr ""
+
+#. Resource IDs: (107)
+#, c-format
+msgid "TortoiseSVN %d.%d.%d, Build %d - %s, %s\r\nSubversion %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d\r\nberkeley db %d.%d.%d\r\nneon %s\r\n%s\r\nzlib %s"
+msgstr ""
+
+#. Resource IDs: (98)
+#, c-format
+msgid "TortoiseSVN has detected similar filenames. Do you want the files:%s\nto be renamed too?"
+msgstr ""
+
+#. Resource IDs: (1162)
+msgid "Total commits analyzed:"
+msgstr ""
+
+#. Resource IDs: (1163)
+msgid "Total file changes:"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Total number of changes over all cached revisions"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Total number of merged revisions"
+msgstr ""
+
+#. Resource IDs: (339)
+msgid "Total number of user revision properties"
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Transferring at %s"
+msgstr ""
+
+#. Resource IDs: (32816)
+msgid "Transparent &color..."
+msgstr ""
+
+#. Resource IDs: (595)
+msgid "Tree merge"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Try a \"Cleanup\". If that doesn't work you need to do a fresh checkout."
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Try again"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "Tweak TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (164, 207)
+msgid "URL"
+msgstr ""
+
+#. Resource IDs: (1272)
+msgid "URL history"
+msgstr ""
+
+#. Resource IDs: (199)
+#, c-format
+msgid "URL not known (UUID: %s)"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "URL of Subversion items"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "URL to merge from"
+msgstr ""
+
+#. Resource IDs: (144, 11023, 65535)
+msgid "URL:"
+msgstr ""
+
+#. Resource IDs: (75)
+msgid "URL: "
+msgstr ""
+
+#. Resource IDs: (220)
+#, c-format
+msgid "Unable to determine merge source for\n%s\nPlease use the main merge dialog."
+msgstr ""
+
+#. Resource IDs: (3866)
+msgid "Unable to load mail system support."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Unable to process command, server busy."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Unable to read from %1, it is opened by someone else."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Unable to read write-only property."
+msgstr ""
+
+#. Resource IDs: (119)
+msgid "Unable to reconstruct working copy path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
+msgstr ""
+
+#. Resource IDs: (3865)
+msgid "Unable to write read-only property."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Unable to write to %1, it is read-only or opened by someone else."
+msgstr ""
+
+#. Resource IDs: (3887)
+msgid "Uncheck"
+msgstr ""
+
+#. Resource IDs: (1069)
+#, c-format
+msgid "Undo %d Actions"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Undo 1 Action"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Undo Add.."
+msgstr ""
+
+#. Resource IDs: (3603)
+msgid "Undo the last action\nUndo"
+msgstr ""
+
+#. Resource IDs: (3859)
+msgid "Unexpected file format."
+msgstr ""
+
+#. Resource IDs: (3850)
+msgid "Unformatted Text\ntext without any formatting"
+msgstr ""
+
+#. Resource IDs: (274, 32786)
+msgid "Unified &diff of HEAD revisions"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Unknown certificate issuer.\n  Fingerprint: %s\n  Distinguished name: %s"
+msgstr ""
+
+#. Resource IDs: (20)
+msgid "Unknown depth"
+msgstr ""
+
+#. Resource IDs: (221, 230, 242)
+msgid "Unlock"
+msgstr ""
+
+#. Resource IDs: (264)
+msgid "Unlock failed"
+msgstr ""
+
+#. Resource IDs: (263)
+msgid "Unlocked"
+msgstr ""
+
+#. Resource IDs: (565)
+msgid "Unrecognized or invalid property file format!"
+msgstr ""
+
+#. Resource IDs: (3841)
+msgid "Untitled"
+msgstr ""
+
+#. Resource IDs: (146)
+msgid "Unversion"
+msgstr ""
+
+#. Resource IDs: (1313)
+msgid "Unversioned files mark parent folder as modified"
+msgstr ""
+
+#. Resource IDs: (286)
+#, c-format
+msgid "Unversioning %s"
+msgstr ""
+
+#. Resource IDs: (152, 230, 1436)
+msgid "Update"
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "Update - TortoiseSVN"
+msgstr ""
+
+#. Resource IDs: (1377)
+msgid "Update Depth"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "Updated"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Updates the working copy to a specific revision"
+msgstr ""
+
+#. Resource IDs: (9)
+msgid "Updates the working copy to the current revision"
+msgstr ""
+
+#. Resource IDs: (226)
+#, c-format
+msgid "Updating %s"
+msgstr ""
+
+#. Resource IDs: (3849)
+msgid "Updating ActiveX objects"
+msgstr ""
+
+#. Resource IDs: (283)
+msgid "Updating and retrying the lock..."
+msgstr ""
+
+#. Resource IDs: (199)
+msgid "Updating log cache"
+msgstr ""
+
+#. Resource IDs: (16530)
+msgid "Use &Default Image: "
+msgstr ""
+
+#. Resource IDs: (32855)
+msgid "Use &left block"
+msgstr ""
+
+#. Resource IDs: (1024)
+msgid "Use &one-pane view as default for 2-file diff"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use &other text block"
+msgstr ""
+
+#. Resource IDs: (1126)
+msgid "Use &text viewer to view blames"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "Use '*' as a wildcard character when specifying an exception.\nTo separate multiple exceptions, use commas (',').\nExample: *.mylan.com, *.company.com"
+msgstr ""
+
+#. Resource IDs: (1230)
+msgid "Use URL of &WC as the default \"From:\" URL"
+msgstr ""
+
+#. Resource IDs: (1064)
+msgid "Use Unified Diff from &clipboard"
+msgstr ""
+
+#. Resource IDs: (1296)
+msgid "Use \"_svn\" instead of \".svn\" directories"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Use all content from the left view\nUse left file"
+msgstr ""
+
+#. Resource IDs: (32857)
+msgid "Use block from left before right"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Use block from left view before block from right view\nUse block from left before right"
+msgstr ""
+
+#. Resource IDs: (32859)
+msgid "Use block from right before left"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Use block from right view before block from left view\nUse block from right before left"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use both text blocks (this one first)"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use both text blocks (this one last)"
+msgstr ""
+
+#. Resource IDs: (32856)
+msgid "Use left file"
+msgstr ""
+
+#. Resource IDs: (3)
+msgid "Use local"
+msgstr ""
+
+#. Resource IDs: (1432)
+msgid "Use recycle bin when reverting"
+msgstr ""
+
+#. Resource IDs: (116)
+msgid "Use regular expression"
+msgstr ""
+
+#. Resource IDs: (4)
+msgid "Use repository"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "Use stri&keout for removed lines"
+msgstr ""
+
+#. Resource IDs: (1426)
+msgid "Use system locale for date/time"
+msgstr ""
+
+#. Resource IDs: (251, 32820)
+msgid "Use text block from \"&mine\""
+msgstr ""
+
+#. Resource IDs: (251, 32819)
+msgid "Use text block from \"&theirs\""
+msgstr ""
+
+#. Resource IDs: (251, 32822)
+msgid "Use text block from \"m&ine\" before \"theirs\""
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Use text block from \"mine\" before \"theirs\"\nUse \"mine\" text block then \"theirs\""
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Use text block from \"mine\"\nUse \"mine\" text block"
+msgstr ""
+
+#. Resource IDs: (251, 32821)
+msgid "Use text block from \"t&heirs\" before \"mine\""
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Use text block from \"theirs\" before \"mine\"\nUse \"theirs\" text block then \"mine\""
+msgstr ""
+
+#. Resource IDs: (2052)
+msgid "Use text block from \"theirs\"\nUse \"theirs\" text block"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Use text block from the left view\nUse left block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use th&is text block"
+msgstr ""
+
+#. Resource IDs: (594)
+msgid "Use the log dialog to select the revisions you want to merge, or enter the revisions to merge, separated by commas. A revision range can be specified by a dash.\r\n\r\nExample: 4-7,9,11,15-HEAD\r\n\r\nTo merge all revisions, leave the box empty."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use this &whole file"
+msgstr ""
+
+#. Resource IDs: (12)
+msgid "Use this if the URL of the repository has changed"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use whole other &file"
+msgstr ""
+
+#. Resource IDs: (74)
+msgid "User cancelled"
+msgstr ""
+
+#. Resource IDs: (69)
+msgid "Username:"
+msgstr ""
+
+#. Resource IDs: (313)
+msgid "Valid command line options are:\n/base:<path to base file>\n/theirs:<path to their file>\n/mine:<path to your file>\n/merged:<path to resulting merged file>\n/diff:<path to unified diff file>\n/patchpath:<path to folder>"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "Value"
+msgstr ""
+
+#. Resource IDs: (1004, 1075)
+msgid "Version"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "Version %d.%d.%d.%d"
+msgstr ""
+
+#. Resource IDs: (1075)
+msgid "Version Information"
+msgstr ""
+
+#. Resource IDs: (264)
+msgid "Versioned"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "View"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "View revision for path in &webviewer"
+msgstr ""
+
+#. Resource IDs: (114)
+msgid "View revision in &webviewer"
+msgstr ""
+
+#. Resource IDs: (1084)
+msgid "Visit our website"
+msgstr ""
+
+#. Resource IDs: (32848)
+msgid "Visual Studio.NET 200&5"
+msgstr ""
+
+#. Resource IDs: (198)
+msgid "Wait"
+msgstr ""
+
+#. Resource IDs: (1327)
+msgid "Wait for the script to finish"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "Warning"
+msgstr ""
+
+#. Resource IDs: (219)
+msgid "Warning!"
+msgstr ""
+
+#. Resource IDs: (344)
+msgid "When connecting to the respository server is not possible,\nTSVN can switch to using cached data only.\nSelect the default beviour here."
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "When enabled, the versioned items listed in the commit dialog are automatically selected"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "When locking one or more selected files, shows a dialog\nasking for a descriptive message about the locking"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Whitespaces"
+msgstr ""
+
+#. Resource IDs: (1065)
+msgid "Window Position"
+msgstr ""
+
+#. Resource IDs: (16927)
+msgid "Windows"
+msgstr ""
+
+#. Resource IDs: (32844)
+msgid "Windows &2000"
+msgstr ""
+
+#. Resource IDs: (146)
+msgid "With URL:"
+msgstr ""
+
+#. Resource IDs: (158, 65535)
+msgid "Working Copy"
+msgstr ""
+
+#. Resource IDs: (1335, 1472)
+msgid "Working Copy Path:"
+msgstr ""
+
+#. Resource IDs: (20)
+msgid "Working copy"
+msgstr ""
+
+#. Resource IDs: (80)
+#, c-format
+msgid "Working copy relocated to\n%s"
+msgstr ""
+
+#. Resource IDs: (73)
+msgid "Yes"
+msgstr ""
+
+#. Resource IDs: (145)
+msgid "Yes to all"
+msgstr ""
+
+#. Resource IDs: (201)
+msgid "You already have the latest version installed."
+msgstr ""
+
+#. Resource IDs: (144)
+msgid "You are creating a repository on a network share.\nThis is safe, but once the repository is created you must access it by some other means.\nAccessing a repository via file:// on a network share may corrupt your data!\nCreate the repository anyway?"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "You are trying to access a repository via file:// on\na shared network drive.\nThis could lead to severe repository corruption!\nDo you really want to do that?"
+msgstr ""
+
+#. Resource IDs: (105)
+msgid "You are trying to move the trunk folder!\nAre you absolutely sure that you want to move\nthe trunk folder?"
+msgstr ""
+
+#. Resource IDs: (1001)
+#, c-format
+msgid "You can paste bitmap with the size (%d x %d) only!"
+msgstr ""
+
+#. Resource IDs: (1016)
+#, c-format
+msgid "You can't create more than %d user-defined toolbars!"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "You can't set this property on folders, only on files!\nIf you want to set it on all files within that folder,\nyou must activate the 'recursive' checkbox."
+msgstr ""
+
+#. Resource IDs: (105)
+msgid "You dropped more than one file or folder to add to the repository.\nIt's not possible to do that in one step, so TortoiseSVN will add each file/folder\nindividually, creating a new revision for every added item.\n\nDo you still want to do this?"
+msgstr ""
+
+#. Resource IDs: (16)
+msgid "You have modified properties without saving them first.\nDo you want to save them now?"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "You have to update your working copy first."
+msgstr ""
+
+#. Resource IDs: (169)
+msgid "You haven't entered an issue number!\nAre you sure you want to commit without an issue number?"
+msgstr ""
+
+#. Resource IDs: (1002)
+#, c-format
+msgid "You may define up to %d tools."
+msgstr ""
+
+#. Resource IDs: (196)
+msgid "You must restart your system for the changes to take effect."
+msgstr ""
+
+#. Resource IDs: (77)
+msgid "You selected an unversioned file.\nThe file will be added to version control when you commit."
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "You should enter a text!"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "You should select an image!"
+msgstr ""
+
+#. Resource IDs: (195)
+#, c-format
+msgid "You've changed the icon set from <i>%s</i> to <i>%s</i>.\nThat change won't take effect until you restart your computer or logoff and logon again!"
+msgstr ""
+
+#. Resource IDs: (170)
+msgid "Your previously entered log messages have been saved.\nClick here to read and insert them again."
+msgstr ""
+
+#. Resource IDs: (1112)
+msgid "Your version is:"
+msgstr ""
+
+#. Resource IDs: (201)
+#, c-format
+msgid "Your version is: %d.%d.%d.%d"
+msgstr ""
+
+#. Resource IDs: (78)
+msgid "Your working copy appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "Your working copy has local modifications!\nNote: updating to another revision won't lose those modifications so the working copy\nwon't look exactly as it was in the revision you're updating to!"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Your working copy has local modifications.\nIf you branch/tag from the HEAD revision, your local changes won't\nshow up in the branch/tag!"
+msgstr ""
+
+#. Resource IDs: (32783)
+msgid "Zoo&m out"
+msgstr ""
+
+#. Resource IDs: (1069)
+msgid "Zoom"
+msgstr ""
+
+#. Resource IDs: (58117)
+msgid "Zoom &In"
+msgstr ""
+
+#. Resource IDs: (58118)
+msgid "Zoom &Out"
+msgstr ""
+
+#. Resource IDs: (32772)
+msgid "Zoom &in\tCtrl-+"
+msgstr ""
+
+#. Resource IDs: (32773)
+msgid "Zoom &out\tCtrl--"
+msgstr ""
+
+#. Resource IDs: (2051)
+#, c-format
+msgid "Zoom 100%"
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Zoom In\nZoom In"
+msgstr ""
+
+#. Resource IDs: (3633)
+msgid "Zoom Out\nZoom Out"
+msgstr ""
+
+#. Resource IDs: (32784)
+msgid "Zoom i&n"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Zoom in"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Zoom out"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Zoom to fit"
+msgstr ""
+
+#. Resource IDs: (1001)
+msgid "[Unassigned]"
+msgstr ""
+
+#. Resource IDs: (338)
+msgid "\"skip ranges\" are used to mark revision ranges that have not been cached yet"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "_POPUP_"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "added"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "added files"
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "alias (deleted): %s"
+msgstr ""
+
+#. Resource IDs: (272)
+#, c-format
+msgid "alias: %s"
+msgstr ""
+
+#. Resource IDs: (3841)
+msgid "an unnamed file"
+msgstr ""
+
+#. Resource IDs: (1304)
+msgid "and"
+msgstr ""
+
+#. Resource IDs: (1085)
+msgid "and support the developers"
+msgstr ""
+
+#. Resource IDs: (583)
+msgid "another item already exists in its place."
+msgstr ""
+
+#. Resource IDs: (340)
+msgid "ask repository first if 'online' -\nwork entirely from cache if 'offline'"
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "author"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "authors: "
+msgstr ""
+
+#. Resource IDs: (577)
+msgid "bugtraq:append\nSet to \"false\" if you want the bugtracking ID to be inserted at the top of the\nlog message. The default is \"true\" which means the bugtracking ID\nis appended to the log message."
+msgstr ""
+
+#. Resource IDs: (577)
+msgid "bugtraq:label\nLabel text to show for the edit box where the user enters the issue number."
+msgstr ""
+
+#. Resource IDs: (577)
+msgid "bugtraq:logregex\ntwo regular expressions separated by a newline.\nThe first expression is used to find a string referring to an issue,\nthe second expression is used to extract the bare bug ID from that string."
+msgstr ""
+
+#. Resource IDs: (577)
+#, c-format
+msgid "bugtraq:message\nString which is appended to a log message when an issue number is entered.\nThe string must contain \"%BUGID%\" which gets replaced with the issue number."
+msgstr ""
+
+#. Resource IDs: (577)
+msgid "bugtraq:number\nSet to \"false\" if your bugtracking system has issues which are referenced not by numbers."
+msgstr ""
+
+#. Resource IDs: (577)
+#, c-format
+msgid "bugtraq:url\nURL pointing to the issue tracker. It must contain \"%BUGID%\" which\ngets replaced with the issue number."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "changes total: "
+msgstr ""
+
+#. Resource IDs: (244, 245)
+msgid "commits"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "conflicted"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "connection: "
+msgstr ""
+
+#. Resource IDs: (208)
+#, c-format
+msgid "copied from\r\n%s - revision %ld"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "copied:"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "deleted"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "disk [kB]: "
+msgstr ""
+
+#. Resource IDs: (58116)
+msgid "dummy"
+msgstr ""
+
+#. Resource IDs: (1342)
+msgid "eol style"
+msgstr ""
+
+#. Resource IDs: (79)
+#, c-format
+msgid "exported\n%s\nto\n%s"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "external"
+msgstr ""
+
+#. Resource IDs: (1005)
+msgid "http://tortoisesvn.net"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "ignored"
+msgstr ""
+
+#. Resource IDs: (220)
+msgid "ignoring ancestry"
+msgstr ""
+
+#. Resource IDs: (13)
+msgid "incomplete"
+msgstr ""
+
+#. Resource IDs: (583)
+msgid "it does not exist."
+msgstr ""
+
+#. Resource IDs: (583)
+msgid "it is already deleted."
+msgstr ""
+
+#. Resource IDs: (583)
+msgid "it is unversioned."
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "item kept locally"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "last head update: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "last read: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "last update: "
+msgstr ""
+
+#. Resource IDs: (11, 195)
+msgid "locked"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "locked:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "max revision: "
+msgstr ""
+
+#. Resource IDs: (11, 65535)
+msgid "merged"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "merges total: "
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "missing"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "missing / deleted / replaced"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "missing in: "
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "modified"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "modified / copied"
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "month"
+msgstr ""
+
+#. Resource IDs: (199)
+#, c-format
+msgid "multiple URLs (e.g. %s)"
+msgstr ""
+
+#. Resource IDs: (18)
+msgid "no"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "no description for this command is available"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "non-versioned"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "normal"
+msgstr ""
+
+#. Resource IDs: (11)
+msgid "obstructed"
+msgstr ""
+
+#. Resource IDs: (601)
+msgid "offline"
+msgstr ""
+
+#. Resource IDs: (3845)
+#, c-format
+msgid "on %1"
+msgstr ""
+
+#. Resource IDs: (601)
+msgid "online"
+msgstr ""
+
+#. Resource IDs: (1406, 1407)
+msgid "or"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "pair tokens: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "path elements: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "paths: "
+msgstr ""
+
+#. Resource IDs: (3869)
+msgid "pixels"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "possible or real conflict / obstructed"
+msgstr ""
+
+#. Resource IDs: (3845)
+msgid "prn"
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "quarter of year"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "readonly"
+msgstr ""
+
+#. Resource IDs: (10)
+msgid "replaced"
+msgstr ""
+
+#. Resource IDs: (220)
+msgid "respecting ancestry"
+msgstr ""
+
+#. Resource IDs: (326)
+#, c-format
+msgid "revision %s-%s, revision %s-%s"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "revision count: "
+msgstr ""
+
+#. Resource IDs: (326)
+#, c-format
+msgid "revisions %s-%s, %s"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "revisions: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "skip ranges: "
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:eol-style\nOne of 'native', 'LF', 'CR', 'CRLF'."
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:executable\nIf present, make the file executable. This property cannot be set on a directory.\nA non-recursive attempt will fail, and a recursive attempt will set the property only on the file children of the directory."
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:externals\nA newline separated list of module specifiers, each of which consists of\nan optional revision, an URL and a relative directory path. For example\nhttp://example.com/repos/zig\tfoo\n-r 1234\thttp://example.com/repos/zag\tfoo/bar\n\nThe URLs can either be full URLs or relative. The format for\nthe relative URLs is:\n../\trelative to the parent directory of the external\n^/\trelative to the repository root\n//\trelative to the URL scheme\n/\trelative to the server's hostname"
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:ignore\nA newline separated list of file patterns to ignore."
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:keywords\nKeywords to be expanded. Valid keywords are:\nURL, HeadURL\t\t\tThe URL for the head revision of the object.\nAuthor, LastChangedBy\t\tThe last person to modify the file.\nDate, LastChangedDate\t\tThe date/time the object was last modified.\nRev, LastChangedRevision\tThe last revision the object changed.\nId\t\t\t\tA compressed summary of the previous 4 keywords."
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:mergeinfo\nA newline separated list of merge tracking info. Each line consists of an absolute\npath followed by a colon and a list of comma separated revision numbers.\nFor example\n/trunk:123-125,129"
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:mime-type\nThe mime type of the file. Used to determine whether to merge the file, and how to serve it from Apache.\nA mime type beginning with 'text/' (or an absent mime type) is treated as text.\nAnything else is treated as binary."
+msgstr ""
+
+#. Resource IDs: (576)
+msgid "svn:needs-lock\nSet this to any value (e.g. '*') to enforce locking for this file.\nThe file will be set to read-only when checked out or updated,\nindicating that a user must acquire a lock on the file\nbefore they can edit it and commit changes."
+msgstr ""
+
+#. Resource IDs: (208)
+#, c-format
+msgid "switched to\r\n%s"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "switched:"
+msgstr ""
+
+#. Resource IDs: (601)
+msgid "temp. offline"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "text [token count]: "
+msgstr ""
+
+#. Resource IDs: (583)
+msgid "there are conflicting modifications."
+msgstr ""
+
+#. Resource IDs: (3845)
+#, c-format
+msgid "to %1"
+msgstr ""
+
+#. Resource IDs: (80, 103, 284)
+#, c-format
+msgid "to %s"
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:autoprops\nA list of properties separated by newlines which get applied automatically when adding/importing files.\nFormat: <filemask> = property=value;property=value\nExample: *.xml = svn:eol-style=native;svn:mime-type=text/xml"
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:lockmsgminsize\nMinimum size in chars a lock message must have before a lock is allowed."
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:logfilelistenglish\nSet to \"false\" if you don't want the list of changed files to be pasted in english\nin the commit dialog."
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:logminsize\nMinimum size in chars a log message must have before a commit is allowed."
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:logsummary\nA regex string which extracts a summary from a log message in its first group."
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:logtemplate\nString which is inserted in the log message boxes in the commit dialogs.\nUse this as a log message templates for users to fill in."
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:logwidthmarker\nSet this to the number of chars the log message should not exceed its width.\nA faded line is shown in the commit dialogs at that position. The default is 80 chars."
+msgstr ""
+
+#. Resource IDs: (578)
+msgid "tsvn:projectlanguage\nSet this to the language number you want your log messages written in.\nTortoiseSVN will then load the appropriate spell checker module if available."
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "tsvn:userfileproperties\nNewline separated list of user defined properties for files which will\nbe shown in the property dialog to choose from."
+msgstr ""
+
+#. Resource IDs: (581)
+msgid "tsvn:userfolderproperties\nNewline separated list of user defined properties for folders which will\nbe shown in the property dialog to choose from."
+msgstr ""
+
+#. Resource IDs: (577)
+msgid "tsvn:warnifnoissue\nSet to \"yes\" if a warning shall be shown when no issue is entered in the commit dialog."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "user revprops total: "
+msgstr ""
+
+#. Resource IDs: (563)
+msgid "values are different"
+msgstr ""
+
+#. Resource IDs: (579)
+#, c-format
+msgid "webviewer:pathrevision\nURL pointing to the web viewer for the repository for a specific file and revision.\nThe string %REVISION% in the URL is replaced with the revision number,\nthe string %PATH% is replaced with the path to the file relative to the repository root."
+msgstr ""
+
+#. Resource IDs: (579)
+#, c-format
+msgid "webviewer:revision\nURL pointing to the web viewer for the repository for a specific revision.\nThe string %REVISION% in that URL is replaced with the revision number."
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "week"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "word tokens: "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "words [uncompressed]: "
+msgstr ""
+
+#. Resource IDs: (245)
+msgid "year"
+msgstr ""
+
+#. Resource IDs: (18, 1002, 1011, 1012)
+msgid "yes"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "{BugTraq}"
+msgstr ""
+
