@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <?include Includes.wxi?>
-  <Fragment Id="UIFragment">
+<Include>
     <UI>
       <!-- Add/Remove Programs (ARP) related properties ................................ -->
       <Property Id="ARPCOMMENTS">$(var.PackageComments)</Property>
@@ -364,9 +362,11 @@
 		  <Control Id="DonateText" Type="Text" X="135" Y="150" Width="200" Height="40" Transparent="yes" NoPrefix="yes">
 			  <Text>Thanks for using TortoiseSVN. You can show your appreciation and support future development by donating!</Text>
 		  </Control>
+        <!--
 		  <Control Id="DonateButton" Type="PushButton" X="279" Y="190" Width="56" Height="17" Disabled="no" Text="Donate!">
 			  <Publish Event="DoAction" Value="ShowDonatePage">1</Publish>
 		  </Control>
+      -->
 		  <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
       </Dialog>
 
@@ -635,10 +635,11 @@
 		  <Control Id="DonateText" Type="Text" X="35" Y="150" Width="300" Height="40" Transparent="yes" NoPrefix="yes">
 			  <Text>Thanks for using TortoiseSVN. You can show your appreciation and support future development by donating!</Text>
 		  </Control>
+        <!--
 		  <Control Id="DonateButton" Type="PushButton" X="279" Y="190" Width="56" Height="17" Disabled="no" Text="Donate!">
 			  <Publish Event="DoAction" Value="ShowDonatePage">1</Publish>
 		  </Control>
-
+-->
         <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="[BannerBitmap]" />
         <Control Id="Title" Type="Text" X="155" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
           <Text>[DlgTitleFont][Progress1] [ProductName]</Text>
@@ -1107,5 +1108,4 @@
       <Error Id="1934">User installations are disabled via policy on the machine.</Error>
       <Error Id="1935">An error occured during the installation of assembly component [2]. HRESULT: [3]. {{assembly interface: [4], function: [5], assembly name: [6]}}</Error>
     </UI>
-  </Fragment>
-</Wix>
+</Include>

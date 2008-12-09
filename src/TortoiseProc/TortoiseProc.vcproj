@@ -137,7 +137,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;..\TortoiseShell;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
+				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -165,7 +165,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="delayimp.lib Crypt32.lib Secur32.lib wininet.lib shfolder.lib shell32.lib comctl32.lib mswsock.lib ws2_32.lib rpcrt4.lib shlwapi.lib Version.lib gdiplus.lib ../../obj/ResizableLib/Release/ResizableLib.Lib ../../obj\LogCacheLib\Release\LogCacheLib.lib ../../ext/Subversion\release_win32\libsvn_repos.lib ../../ext/Subversion\release_win32\libsvn_diff.lib ../../ext/Subversion\release_win32\libsvn_fs.lib ../../ext/Subversion\release_win32\libsvn_fs_fs.lib ../../ext/Subversion\release_win32\libsvn_fs_util.lib ../../ext/Subversion\release_win32\libsvn_ra_neon.lib ../../ext/Subversion\release_win32\libsvn_ra_serf.lib ../../ext/Subversion\release_win32\libsvn_ra_local.lib ../../ext/Subversion\release_win32\libsvn_ra.lib ../../ext/Subversion\release_win32\libsvn_ra_svn.lib ../../ext/neon\release_win32\libneon.lib ../../ext/serf\release_win32\libserf.lib ../../ext/Subversion\release_win32\libsvn_wc.lib ../../ext/Subversion\release_win32\libsvn_subr.lib ../../ext/Subversion\release_win32\libsvn_client.lib ../../ext/Subversion\release_win32\libsvn_delta.lib ../../ext/apr\release_win32\libapr_tsvn.lib ../../ext/apr-util\release_win32\libaprutil_tsvn.lib ../../ext/apr-util\xml\expat\lib\release_win32\xml.lib ../../ext/libintl/libintl3-win32/lib/intl3_tsvn.lib ../../ext/cyrus-SASL\release_win32\libsasl.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;"
 				DelayLoadDLLs="gdiplus.dll"
@@ -401,10 +401,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\gitstatuslistctrl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ProjectProperties.cpp"
 				>
 			</File>
@@ -578,11 +574,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -818,19 +814,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\open.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -934,19 +930,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File
@@ -1038,11 +1034,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File

@@ -1,8 +1,7 @@
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<?include Includes.wxi?>
-	<Fragment Id="FeaturesFragment">
-		<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseSVN" Absent="disallow"
-		TypicalDefault="install" Description="The TortoiseSVN package and dependencies." Display="expand" InstallDefault="local" >
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+		<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow"
+		TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local" >
 			<ComponentRef Id="C__infofiles" />
 			<ComponentRef Id="C__apr" />
 			<ComponentRef Id="C__sasl" />
@@ -80,5 +79,4 @@ DO NOT INSTALL THIS FEATURE if you don't use VS.NET with Web Projects!!!"
 			<?endif ?>
 
 		</Feature>
-	</Fragment>
-</Wix>
+</Include>

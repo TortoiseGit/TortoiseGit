@@ -4,18 +4,18 @@
 	<Product
 	UpgradeCode="$(var.UpgradeGuid)"
 	Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)"
-	Id="????????-????-????-????-????????????"
+	Id="EB66C774-5CFC-41f6-9C03-CE4F9037150A"
 	Version="$(var.VersionNumberInternal)"
-	Manufacturer="TortoiseSVN"
+	Manufacturer="TortoiseGit"
 	Language="1033">
 		<Package
-		Id="????????-????-????-????-????????????"
+		Id="82B77BC3-0ACD-4a53-A34F-3F203E59D51A"
 		Keywords="$(var.PackageKeywords)"
 		Description="$(var.PackageDescription)"
 		Comments="$(var.PackageComments)"
 		Manufacturer="$(var.PackageManufacturer)"
 		InstallerVersion="300"
-		Platforms="$(var.PackagePlatforms)"
+		Platform="$(var.PackagePlatforms)"
 		Languages="1033"
 		Compressed="yes"
 		SummaryCodepage="1252"/>
@@ -25,12 +25,13 @@
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
 
 			<!-- flag is set if the install will trigger an upgrade of an existing install -->
+      <!--
 			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" />
-		</Upgrade>
+		--></Upgrade>
 
 		<Media Id="1" Cabinet="TSVN.cab" EmbedCab="yes" CompressionLevel="high" />
 
-		<Icon Id="TSVNIcon" src="..\Resources\Tortoise.ico" />
+		<Icon Id="TSVNIcon" SourceFile="..\Resources\Tortoise.ico" />
 
 		<!-- Launch Condition related properties ................................................................................. -->
 		<Property Id="VERSIONIE">
@@ -38,7 +39,7 @@
 		</Property>
 		<Condition Message="[ProductName] needs at least Internet Explorer 5">NOT ((VERSIONIE&lt;&lt;"1") OR (VERSIONIE&lt;&lt;"2") OR (VERSIONIE&lt;&lt;"3") OR (VERSIONIE&lt;&lt;"4"))</Condition>
 
-		<?if $(env.Platform) = "win32" ?>
+		<?if $(var.Platform) = "win32" ?>
 		<Property Id="GDIPLUSINSTALLED">
 			<DirectorySearch Id="WND" Path="[SystemFolder]">
 				<FileSearch LongName="GDIPlus.dll" />
@@ -61,16 +62,19 @@
 		</Property>
 		<CustomAction Id="Set_ShowChangelog" Property="ShowChangelog" Value="Yes" Return="check" />
 		<CustomAction Id="ShowChangelogAction" Property="TEXTEDITOR" ExeCommand="[INSTALLDIR]changelog.txt" Return="asyncNoWait" />
-		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
-		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
-		<Binary Id="CustomActionsDLL" src="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
+ <!--		
+    <CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
+		
 
+    <CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
+		<Binary Id="CustomActionsDLL" src="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
+-->
 		<!-- Unsafe-check properties and custom actions .......................................................................... -->
 		<Property Id="VSDUIANDADVERTISED">This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic.</Property>
 		<CustomAction Id="ERRCA_UIANDADVERTISED" Error="[VSDUIANDADVERTISED]" />
 
 		<!-- Figure out where a previous installation was, if any ................................................................ -->
-		<?if $(env.Platform) = "x64" ?>
+		<?if $(var.Platform) = "x64" ?>
 		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFiles64Folder]$(var.ProductName)" Execute="immediate" />
 		<Property Id="INSTALLDIR">
 			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)"/>
@@ -81,13 +85,18 @@
 			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)"/>
 		</Property>
 		<?endif ?>
-
+    
+    <?include FeaturesFragment.wxi?>
+    <?include StructureFragment.wxi?>
+    <?include UIFragment.wxi?>
+    
+    <!--
 		<FragmentRef Id="StructureFragment"/>
 
 		<FragmentRef Id="FeaturesFragment" />
 
 		<FragmentRef Id="UIFragment" />
-
+    -->
 		<!-- Execute Sequencing ................................................................................................. -->
 		<AdminExecuteSequence />
 		<InstallExecuteSequence>
@@ -95,8 +104,12 @@
 			<AppSearch Sequence="1"></AppSearch>
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
+      <!--
 			<RemoveExistingProducts After="FindRelatedProducts"><![CDATA[PREVIOUSVERSIONSINSTALLED OR (NOT NEWERVERSIONDETECTED AND OKTODOWNGRADE = 1)]]></RemoveExistingProducts>
-			<Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
+      -->
+      <!--
+      <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
+      -->
 			<ScheduleReboot After="RegisterProduct" />
 		</InstallExecuteSequence>
 

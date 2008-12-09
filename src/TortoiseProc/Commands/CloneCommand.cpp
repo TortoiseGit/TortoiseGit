@@ -24,3 +24,7 @@
 #include "Hooks.h"
 #include "MessageBox.h"
 
+bool CloneCommand::Execute()
+{
+	return TRUE;
+}

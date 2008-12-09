@@ -1,44 +1,48 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<VisualStudioProject>
-    <WindowsInstallerXML
-        ProductVersion="2.0.3116.0"
-        ProjectGuid="{E6749100-E168-457A-B680-BAADAF573D75}"
-        SchemaVersion="1.0"
-    >
-        <BuildSettings
-            OutputName="Setup"
-            OutputType="MSI"
-        />
-        <Configurations>
-            <Configuration
-                Name="Debug"
-                RelativeOutputDirectory="..\..\bin"
-            />
-            <Configuration
-                Name="Release"
-                RelativeOutputDirectory="..\..\bin"
-            />
-        </Configurations>
-        <WixlibReferences />
-        <Files>
-            <File
-                RelativePath="FeaturesFragment.wxs"
-            />
-            <File
-                RelativePath="Includes.wxi"
-            />
-            <File
-                RelativePath="StructureFragment.wxs"
-            />
-            <File
-                RelativePath="TortoiseSVN.wxs"
-            />
-            <File
-                RelativePath="UIFragment.wxs"
-            />
-            <File
-                RelativePath="VersionNumberInclude.in.wxi"
-            />
-        </Files>
-    </WindowsInstallerXML>
-</VisualStudioProject>
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.0</ProductVersion>
+    <ProjectGuid>{150172a5-8d02-4c00-abb5-bd99d4b16b4c}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>WixProject1</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\..\bin\setup\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <WixVariables>
+    </WixVariables>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\..\bin\setup\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+  </PropertyGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+  <ItemGroup>
+    <Compile Include="TortoiseSVN.wxs" />
+    <Compile Include="WixUI_Simplest.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FeaturesFragment.wxi" />
+    <Content Include="Includes.wxi" />
+    <Content Include="StructureFragment.wxi" />
+    <Content Include="UIFragment.wxi" />
+    <Content Include="VersionNumberInclude.wxi" />
+  </ItemGroup>
+</Project>
