@@ -220,23 +220,26 @@
             <?endif ?>
 
             <Component Id="C__help_en" Guid="$(var.GuidHelpEN)" Win64="$(var.Win64YesNo)">
-              <File Id="F_TortoiseSVN_en" ShortName="TSVNHELP.CHM" Name="TortoiseSVN_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseSVN_en.chm" KeyPath="yes" />
+<!--             <File Id="F_TortoiseSVN_en" ShortName="TSVNHELP.CHM" Name="TortoiseSVN_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseSVN_en.chm" KeyPath="yes" />
               <File Id="F__TortoiseMerge_en" ShortName="TMEHELP.CHM" Name="TortoiseMerge_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseMerge_en.chm" />
-              <RemoveFile Id="F__Tortoise_lang"  Name="*.chm" On="uninstall" />
+-->               <RemoveFile Id="F__Tortoise_lang"  Name="*.chm" On="uninstall" />
             </Component>
 
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
               <File Id="F__TortoiseShell" ShortName="TORTSVN.DLL" Name="TortoiseSVN.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseSVN.dll" />
-              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
-              <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
-              <File Id="F__TSVNCache" ShortName="TSVNCACH.EXE" Name="TSVNCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TSVNCache.exe" />
+<!--              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
+-->
+<!--              <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
+-->
+<!--              <File Id="F__TSVNCache" ShortName="TSVNCACH.EXE" Name="TSVNCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TSVNCache.exe" />
+-->
               <File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
               <File Id="F__websiteurl" ShortName="WEBSITE.URL" Name="Website.url" Source="include\Website.url" DiskId="1" />
-
+<!--
               <File Id="F__SubWCRev" ShortName="SUBWCREV.EXE" Name="SubWCRev.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SubWCRev.exe" />
               <File Id="F__SubWCRevCOM" ShortName="SUBWCOM.EXE" Name="SubWCRevCOM.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SubWCRevCOM.exe" />
-              <!-- register the SubWCRev COM-Object -->
+-->
               <Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
               <!--
               <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidSubWCRev)}" Action="createKeyAndRemoveKeyOnUninstall" />
@@ -282,8 +285,8 @@
             </Component>
 
             <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
-              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
-            </Component>
+<!--              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
+-->            </Component>
 
             <Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
               <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseMerge" Type="string" />
@@ -298,13 +301,17 @@
             </Component>
 
             <Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
-              <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseBlame.exe" KeyPath="yes" />
+<!--              <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseBlame.exe" KeyPath="yes" />
               <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
-            </Component>
+-->            </Component>
+
 
             <Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
+<!--
               <File Id="F__TortoiseIDiff" ShortName="TIDIFF.EXE" Name="TortoiseIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseIDiff.exe" KeyPath="yes" />
-            </Component>
+-->
+
+              </Component>
 
             <Component Id="C__TortoiseIDiffShortcuts" Guid="$(var.GuidTortoiseIDiffShortcuts)" Win64="$(var.Win64YesNo)">
               <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseIDiff" Type="string" />
