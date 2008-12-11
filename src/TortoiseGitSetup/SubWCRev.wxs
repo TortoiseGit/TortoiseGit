@@ -8,10 +8,10 @@
   Language='1033'
   Codepage='1252'
   Version='$(var.VersionNumberInternal)'
-  Manufacturer='TortoiseSVN'>
+  Manufacturer='TortoiseGit'>
 
     <Package Id='????????-????-????-????-????????????'
-			Keywords="Sourcecontrol;Subversion;TortoiseSVN"
+			Keywords="Sourcecontrol;Git;TortoiseGit"
 			Description="Subversion revision tool"
 			Comments="Tool to find the global revision of a Subversion working copy"
 			Manufacturer="$(var.PackageManufacturer)"
@@ -32,7 +32,7 @@
 
 	<Property Id="ALLUSERS">1</Property>
 
-	<Condition Message="TortoiseSVN is installed on this machine. [ProductName] is already part of TortoiseSVN!">TSVN=""</Condition>
+	<Condition Message="TortoiseGit is installed on this machine. [ProductName] is already part of TortoiseSVN!">TSVN=""</Condition>
 
     <Media Id='1' Cabinet='SubWCRev.cab' EmbedCab='yes' CompressionLevel="high" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />

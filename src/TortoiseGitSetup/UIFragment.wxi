@@ -360,7 +360,7 @@
         </Control>
 
 		  <Control Id="DonateText" Type="Text" X="135" Y="150" Width="200" Height="40" Transparent="yes" NoPrefix="yes">
-			  <Text>Thanks for using TortoiseSVN. You can show your appreciation and support future development by donating!</Text>
+			  <Text>Thanks for using TortoiseGit. You can show your appreciation and support future development by donating!</Text>
 		  </Control>
         <!--
 		  <Control Id="DonateButton" Type="PushButton" X="279" Y="190" Width="56" Height="17" Disabled="no" Text="Donate!">
@@ -633,7 +633,7 @@
         <Control Id="StatusLabel" Type="Text" X="35" Y="105" Width="35" Height="10" Text="Status:" />
 
 		  <Control Id="DonateText" Type="Text" X="35" Y="150" Width="300" Height="40" Transparent="yes" NoPrefix="yes">
-			  <Text>Thanks for using TortoiseSVN. You can show your appreciation and support future development by donating!</Text>
+			  <Text>Thanks for using TortoiseGit. You can show your appreciation and support future development by donating!</Text>
 		  </Control>
         <!--
 		  <Control Id="DonateButton" Type="PushButton" X="279" Y="190" Width="56" Height="17" Disabled="no" Text="Donate!">

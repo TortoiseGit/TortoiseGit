@@ -37,8 +37,8 @@
           <?endif ?>
 
           <?if $(var.Platform) = "x86" ?>
-          <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.0.4.11886-win32.msm' DiskId='1' />
-          <?endif ?>
+<!--          <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.0.4.11886-win32.msm' DiskId='1' />
+ -->         <?endif ?>
 
           <?if $(var.Platform) = "x64" ?>
           <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.0.4.11886-x64.msm' DiskId='1' />
@@ -46,11 +46,11 @@
 
           <Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
             <File Id="F__changelog" ShortName="CHANGELG.TXT" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
-            <File Id="F__subversionlicense" ShortName="LICENSES.TXT" Name="Subversion license.txt" DiskId="1" Source="..\..\ext\Subversion\subversion\LICENSE" />
-            <File Id="F__tortoisesvnlicense" ShortName="LICENSE.TXT" Name="TortoiseSVN License.txt" DiskId="1" Source="..\gpl.txt" />
+<!--            <File Id="F__subversionlicense" ShortName="LICENSES.TXT" Name="Subversion license.txt" DiskId="1" Source="..\..\ext\Subversion\subversion\LICENSE" />
+-->            <File Id="F__tortoisesvnlicense" ShortName="LICENSE.TXT" Name="TortoiseGit License.txt" DiskId="1" Source="..\gpl.txt" />
             <File Id="F__openssllicense" ShortName="OSSL_LIC.TXT" Name="OpenSSL License.txt" DiskId="1" Source="include\OpenSSL_License.txt" />
-            <File Id="F__aprlicense" ShortName="APR_LIC.TXT" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
-            <File Id="F__sasllicense" ShortName="CYRUSSAS.TXT" Name="CyrusSASL License.txt" DiskId="1" Source="include\CyrusSASL_License.txt" />
+<!--            <File Id="F__aprlicense" ShortName="APR_LIC.TXT" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
+ -->           <File Id="F__sasllicense" ShortName="CYRUSSAS.TXT" Name="CyrusSASL License.txt" DiskId="1" Source="include\CyrusSASL_License.txt" />
           </Component>
 
           <Component Id="C__ProgramMenuFolder" Guid="$(var.GuidProgramMenuFolder)" Win64="$(var.Win64YesNo)">
@@ -59,72 +59,72 @@
           </Component>
 
           <Component Id="C__shellregistry" Guid="$(var.GuidShellRegistry)" Win64="$(var.Win64YesNo)">
-            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseSVN" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseSVN" Value="{$(var.GuidDropHandler)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\ColumnHandlers\{$(var.GuidUncontrolled)}" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSVN" Action="createKeyAndRemoveKeyOnUninstall" />
-            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseSVN" Value="{$(var.GuidDropHandler)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
+            <Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
-            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseSVN" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+            <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
           </Component>
 
           <Component Id="C__machineregistry" Guid="$(var.GuidMachineRegistry)" Win64="$(var.Win64YesNo)">
@@ -138,37 +138,37 @@
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\SubWCRev.exe" Value="[INSTALLDIR]bin\SubWCRev.exe" Type="string" />
 
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="SVN" Value="{$(var.GuidNormal)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Modified" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="SVN" Value="{$(var.GuidModified)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="Git" Value="{$(var.GuidModified)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="SVN" Value="{$(var.GuidConflict)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="Git" Value="{$(var.GuidConflict)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="SVN" Value="{$(var.GuidDeleted)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="Git" Value="{$(var.GuidDeleted)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="SVN" Value="{$(var.GuidReadonly)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="Git" Value="{$(var.GuidReadonly)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Locked" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="SVN" Value="{$(var.GuidLocked)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="Git" Value="{$(var.GuidLocked)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Added" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="SVN" Value="{$(var.GuidAdded)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="Git" Value="{$(var.GuidAdded)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="SVN" Value="{$(var.GuidIgnored)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="Git" Value="{$(var.GuidIgnored)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Action="createKey" />
-            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="SVN" Value="{$(var.GuidUnversioned)}" Type="string" />
+            <Registry Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="Git" Value="{$(var.GuidUnversioned)}" Type="string" />
           </Component>
 
           <Component Id="C__approveshellcomponents" Guid="$(var.GuidApproveShellComponents)" Win64="$(var.Win64YesNo)">
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseSVN" KeyPath="yes" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidReadonly)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidLocked)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidAdded)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseSVN" Type="string" />
-            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseSVN" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidConflict)}" Value="TortoiseGit" KeyPath="yes" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+            <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
           </Component>
 
           <Component Id="C__svnprotocoll" Guid="$(var.GuidSvnProtocol)" Win64="$(var.Win64YesNo)">
@@ -189,30 +189,31 @@
           </Component>
 
           <Component Id="C__ASPDOTNETHACK" Guid="$(var.GuidASPNETHack)" Win64="$(var.Win64YesNo)">
-            <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="ASP.NET KeyPath" Value="ASP.NET" Type="string" />
+            <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="ASP.NET KeyPath" Value="ASP.NET" Type="string" />
             <!-- only used because this component needs a key path! -->
             <Environment Id="E__ASPDOTNETHACK" Action="create" Name="SVN_ASP_DOT_NET_HACK" Value="1" Permanent="yes" System="yes" />
           </Component>
           <Directory Id="D__Bin" ShortName="BIN" Name="bin" >
+<!--            
             <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
               <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\apr\release_$(var.PlatformPathExtension)\libapr_tsvn.dll" KeyPath="yes" />
               <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\apr-util\release_$(var.PlatformPathExtension)\libaprutil_tsvn.dll" />
-            </Component>
-
-            <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
-              <File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
+           </Component>
+--> 
+<!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
+             <File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
               <File Id="F__saslANONYMOUS" ShortName="saslANON.DLL" Name="saslANONYMOUS.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslANONYMOUS.dll" />
               <File Id="F__saslCRAMMD5" ShortName="saslCRAM.DLL" Name="saslCRAMMD5.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslCRAMMD5.dll" />
               <File Id="F__saslDIGESTMD5" ShortName="saslDIGE.DLL" Name="saslDIGESTMD5.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslDIGESTMD5.dll" />
               <File Id="F__saslLOGIN" ShortName="saslLOGI.DLL" Name="saslLOGIN.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslLOGIN.dll" />
               <File Id="F__saslNTLM" ShortName="saslNTLM.DLL" Name="saslNTLM.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslNTLM.dll" />
               <File Id="F__saslPLAIN" ShortName="saslPLAI.DLL" Name="saslPLAIN.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslPLAIN.dll" />
-            </Component>
-
-            <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
+           </Component>
+--> 
+<!--            <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
               <File Id="F__intl" ShortName="INTL3_TS.DLL" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn.dll" KeyPath="yes" />
             </Component>
-
+-->
             <?if $(var.IncludeCrashReportDll) = 1 ?>
             <Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
               <File Id="F__crashrpt" ShortName="CRASHRPT.DLL" Name="CrashRpt.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\CrashRpt.dll" KeyPath="yes" />
@@ -227,7 +228,7 @@
 
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
-              <File Id="F__TortoiseShell" ShortName="TORTSVN.DLL" Name="TortoiseSVN.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseSVN.dll" />
+              <File Id="F__TortoiseShell" ShortName="TORTSVN.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
 <!--              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
 -->
 <!--              <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
@@ -275,50 +276,50 @@
             </Component>
 
             <Component Id="C__TortoiseSVNShortcuts" Guid="$(var.GuidTortoiseSVNShortcuts)" Win64="$(var.Win64YesNo)">
-              <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseSVN" Value="TortoiseSVN" Type="string" />
+              <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
               <Shortcut Id="S__Website" Directory="D_TortoisePrgMenu"  Name="Website" Advertise="no"
-              Target="[INSTALLDIR]bin\website.url" Description="TortoiseSVN Website" />
-              <Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TSVN" Name="TortoiseSVN" Advertise="no"
-              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseSVN" Arguments="/command:rtfm" Show="normal" />
+              Target="[INSTALLDIR]bin\website.url" Description="TortoiseGit Website" />
+              <Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TSVN" Name="TortoiseGit" Advertise="no"
+              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
               <Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no"
-              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="Documentation about TortoiseSVN" Arguments="/command:help" Show="normal" />
+              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
+            </Component>
+<!--
+            <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
+              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
             </Component>
 
-            <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
-<!--              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
--->            </Component>
-
             <Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
-              <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseMerge" Type="string" />
+              <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseMerge" Type="string" />
               <Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" ShortName="TMERGE" Name="TortoiseMerge" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
             </Component>
-
+-->
             <Component Id="C__Sounds" Guid="$(var.GuidSounds)" Win64="$(var.Win64YesNo)">
               <File Id="F__sounderror" ShortName="TERROR.WAV" Name="TortoiseSVN_error.wav" DiskId="1" Source="..\Resources\TortoiseSVN_error.wav" KeyPath="yes" />
               <File Id="F__soundwarning" ShortName="TWARN.WAV" Name="TortoiseSVN_Warning.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Warning.wav" />
               <File Id="F__soundnotification" ShortName="TNOTIFY.WAV" Name="TortoiseSVN_Notification.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Notification.wav" />
             </Component>
-
-            <Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
-<!--              <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseBlame.exe" KeyPath="yes" />
-              <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
--->            </Component>
-
-
-            <Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
 <!--
+            <Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
+              <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseBlame.exe" KeyPath="yes" />
+              <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
+           </Component>
+--> 
+<!--
+            <Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
+
               <File Id="F__TortoiseIDiff" ShortName="TIDIFF.EXE" Name="TortoiseIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseIDiff.exe" KeyPath="yes" />
--->
+
 
               </Component>
 
             <Component Id="C__TortoiseIDiffShortcuts" Guid="$(var.GuidTortoiseIDiffShortcuts)" Win64="$(var.Win64YesNo)">
-              <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseIDiff" Type="string" />
+              <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseIDiff" Type="string" />
               <Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" ShortName="TIDIFF" Name="TortoiseIDiff" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseIDiff.exe" Description="View Diff's of image files" Show="normal" />
             </Component>
-
+-->
             <Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseUDiff" ShortName="TUDIFF.EXE" Name="TortoiseUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseUDiff.exe" KeyPath="yes" />
             </Component>
@@ -333,17 +334,17 @@
             </Component>
 
             <Component Id="C__PlainSettingsShortcuts" Guid="$(var.GuidPlainSettingsShortcuts)" Win64="$(var.Win64YesNo)">
-              <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseSVN" Value="TortoiseSVN" Type="string" />
+              <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
               <Condition><![CDATA[NOT VersionNT64]]></Condition>
               <Shortcut Id="S__PlainConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no"
-              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseSVN" Arguments="/command:settings" Show="normal" />
+              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
             </Component>
 
             <Component Id="C__PlatformSettingsShortcuts" Guid="$(var.GuidPlatformSettingsShortcuts)" Win64="$(var.Win64YesNo)">
-              <Registry Root="HKCU" Key="Software\TortoiseSVN" KeyPath="yes" Name="TortoiseSVN" Value="TortoiseSVN" Type="string" />
+              <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
               <Condition>VersionNT64</Condition>
               <Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" ShortName="SETTINGS" Name="Settings $(var.PlatformUserVisible)" Advertise="no"
-              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseSVN" Arguments="/command:settings" Show="normal" />
+              Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
             </Component>
 
           </Directory>
@@ -359,8 +360,8 @@
 
             <?if $(var.DictionaryENUS) = 1 ?>
             <Component Id="C__DictionaryENUS" Guid="$(var.GuidDictionaryENUS)" Win64="$(var.Win64YesNo)">
-              <File Id="F__ENSPELLAFF" ShortName="en_US.aff" Name="en_US.aff" Source="..\..\..\Common\Spell\en_US.aff" DiskId="1" />
-              <File Id="F__ENSPELLDIC" ShortName="en_US.dic" Name="en_US.dic" Source="..\..\..\Common\Spell\en_US.dic" DiskId="1" />
+              <File Id="F__ENSPELLAFF" ShortName="en_US.aff" Name="en_US.aff" Source="..\..\Common\Spell\en_US.aff" DiskId="1" />
+              <File Id="F__ENSPELLDIC" ShortName="en_US.dic" Name="en_US.dic" Source="..\..\Common\Spell\en_US.dic" DiskId="1" />
             </Component>
             <?endif ?>
 
@@ -388,7 +389,7 @@
           </Directory>
 
           <Directory Id="ProgramMenuFolder" Name="." SourceName="USER'S" LongSource="User's Programs Menu">
-            <Directory Id="D_TortoisePrgMenu" ShortName="TORTOISE" Name="TortoiseSVN" />
+            <Directory Id="D_TortoisePrgMenu" ShortName="TORTOISE" Name="TortoiseGit" />
           </Directory>
 
           <Directory Id='$(var.cf)' ShortName='Common'>
