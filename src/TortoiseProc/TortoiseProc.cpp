@@ -239,7 +239,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	CTGitPathList pathList;
 	if ( parser.HasKey(_T("pathfile")) )
 	{
-#if 0
+
 		CString sPathfileArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("pathfile")));
 		cmdLinePath.SetFromUnknown(sPathfileArgument);
 		if (pathList.LoadFromFile(cmdLinePath)==false)
@@ -252,7 +252,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		// This was a path to a temporary file - it's got no meaning now, and
 		// anybody who uses it again is in for a problem...
 		cmdLinePath.Reset();
-#endif
+
 	}
 	else
 	{

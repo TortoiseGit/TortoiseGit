@@ -64,7 +64,11 @@ bool LogCommand::Execute()
 	{
 		bStrict = TRUE;
 	}
-#endif
+#endif	
+	
+	if(pathList.GetCount()>0)
+		g_Git.m_CurrentDir=pathList[0].GetWinPathString();
+	
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 //	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit, bStrict);
