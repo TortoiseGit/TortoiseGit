@@ -5,7 +5,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{150172a5-8d02-4c00-abb5-bd99d4b16b4c}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>WixProject1</OutputName>
+    <OutputName>TortoiseGit</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets</WixTargetsPath>
   </PropertyGroup>
