@@ -1,0 +1,76 @@
+// To build this file, execute "nant APIDocs"
+// After that, you can read the compiled version at TortoiseSVN\doc\output\TortoiseSVNAPI.chm
+
+/** 
+\page build Build instructions
+
+\section Introduction Introduction
+Compiling TortoiseGit is not very difficult, but it requires several steps
+to finish, at least the first time.
+
+Unlike other big open source projects, once you have built all the libraries
+TortoiseGit depends on, you can use the familiar VisualStudio IDE to build
+and debug the binaries. No need to run the build script for every little change.
+
+So don't give up if you read through the next section and all the requirements.
+You only have to do this once.
+
+\section Requirements Requirements
+
+\subsection Requirements1 First, you need to install the compiler package.
+
+-# You need VS2008 with SP1 (or at least Visual C++ 2008) to allow
+   building of the full TortoiseGitpackage. 
+   If you don't have the SP1 installed for VS2008, you will also need the
+   MFC feature pack for VS2008 which is available from here: 
+   http://www.microsoft.com/downloads/details.aspx?FamilyId=D466226B-8DAB-445F-A7B4-448B326C48E7&displaylang=en
+   This is the recommended option, but it is not free :-(
+   If you want to build the msi make sure the "Tools for Redistributing
+   Applications" are installed.
+-# If you do not have access to VS.NET you can download the free
+   Visual C++ 2008 Express Edition.
+   This will allow you to build the subversion libraries and the
+   SubWCRev, TortoiseBlame, TortoiseUDiff, TortoiseIDiff, CrashRpt
+   and ResText projects only. You can not build the main parts of
+   TortoiseGit(shell extension, TortoiseProc, TSVNCache, TortoiseMerge)
+   with the Express Edition!
+   - Install Visual C++ 2008 Express Edition.
+     Download it from http://msdn.microsoft.com/vstudio/express/visualc/
+   - Install MASM 6.15 from: http://win32assembly.online.fr/files/masm615.zip
+     and add it to the PATH environment variable
+   \note Do not bother to install WiX and Votive as you cannot build very much.
+-# If you plan to build 64 bit packages, install the package 
+   - "Language Tools" -> "Visual C++" -> "X64 Compilers and Tools" 
+     available in the VS.NET2008 Professional and higher. 
+     This will provide you with a cross-compiler and a suitable 
+     command shell. On XP64, there will also be a native compiler.
+-# \b Optional but recommended: Install Microsoft SDK for Windows Vista (February 2007 Update)
+   - http://www.microsoft.com/downloads/details.aspx?FamilyID=FF6467E6-5BBA-4BF5-B562-9199BE864D29 .
+     Make sure you install the x64 compiler, header and libraries if you want to build in x64.
+   - Open "Microsoft Windows SDK", "Visual Studio Registration", "Integrate Windows SDK with Visual Studio 2008"
+     to make sure Visual Studio uses the latest SDK headers and libraries.
+-# \b Optional: Install the MSDN Library (documentation) from
+   http://www.microsoft.com/downloads/details.aspx?familyid=B8704100-0127-4D88-9B5D-896B9B388313
+   You can always access it online at http://msdn2.microsoft.com/en-us/Library
+
+\subsection Requirements2 Next you need to install some utilities/programs.
+- WiX(\b 1)                   http://wix.sourceforge.net
+.
+(\b 1) Above 3.0 version
+
+\section build32 Building 32 bit packages
+
+Open TortoiseGit.sln
+Build TortoiseProc
+BUild TortoiseShell
+Build TortoiseUDiff
+
+\section Create MSI Package
+
+Before create MSI Package, you need build tortoisegit release version.
+
+Then
+Build WixSetup
+
+
+*/

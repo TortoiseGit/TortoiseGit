@@ -1,0 +1,74 @@
+Debugging hints
+
+Since TortoiseSVN is a shell extension it's not
+as easy to debug as normal applications. The
+TortoiseShell part is only a dll which is 
+loaded by the windows explorer. So the first
+thing you need to do is:
+
+- add the following value to the registry:
+  HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\DesktopProcess
+  (REG_DWORD) = 1
+  This will tell windows to start each explorer
+  in a separate process instead of one single
+  process.
+- register the TortoiseShell dll so that
+  the windows explorer loads it. There are
+  three files in the folder src\TortoiseShell
+  with extension *.registry. Make a copy of
+  those files and change the extension to
+  *.reg. Then you have to edit those three
+  files so that the paths in it reflects
+  your source paths exactly.
+  Now if you doubleclick on register.reg 
+  the debug version of the TortoiseSVN.dll
+  get's registered. registerrelease.reg 
+  registers the release version of the
+  TortoiseSVN.dll. Don't do it right now!
+- Start VS.NET and load the TortoiseSVN
+  solution file. Set the TortoiseShell
+  project as "startup project".
+- Close all running instances of windows
+  explorer.
+- Now execute the register.reg file. Since
+  you already closed all explorer windows
+  you'll have to use the windows start
+  button, then execute, enter the location
+  of the reg file and hit enter.
+  Since this is a lot of clicking I made
+  a shortcut of those files in the quickstart
+  on the taskbar.
+- Hit F5 in the VS.NET IDE (or start
+  debugging via menu). The first time
+  you do that VS.NET will ask you to
+  enter an application to use with the
+  TortoiseSVN.dll - enter c:\windows\explorer.exe
+  (or whatever path it is on your system).
+- Now you can set breakpoints and debug
+  as you like.
+- Don't stop debugging by closing the
+  explorer window - this sometimes leads
+  to a locked dll and you can't compile/link
+  the dll again until you have restarted.
+  Always stop debugging with the command
+  in the VS.NET IDE (Shift-F5).
+- After debugging, execute the file
+  deregister.reg. Do this always _immediately_
+  after debugging or you might get a locked
+  dll.
+- while debugging, _never_ start another
+  explorer instance or internet explorer
+  or any other application which uses
+  explorer - this includes already running
+  applications to open dialogs like "save as"!
+
+To debug the TortoiseProc part of TortoiseSVN
+proceed as with any normal application.
+
+To debug the TSVNCache exit the TSVNCache.exe
+process and proceed as with any normal
+application. Exiting TSVNCache.exe is necessary
+because only one instance of TSVNCache may run
+at a time. To exit the TSVNCache process set
+HKCU\Software\TortoiseSVN\CacheTrayIcon to 1 and
+call "Exit" in the context menu of the tray icon.
