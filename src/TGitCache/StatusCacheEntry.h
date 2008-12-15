@@ -22,6 +22,8 @@ struct TSVNCacheResponse;
 #define CACHETIMEOUT	0x7FFFFFFF
 extern DWORD cachetimeout;
 
+#include "GitStatus.h"
+
 /**
  * \ingroup TSVNCache
  * Holds all the status data of one file or folder.
@@ -30,31 +32,31 @@ class CStatusCacheEntry
 {
 public:
 	CStatusCacheEntry();
-	CStatusCacheEntry(const svn_wc_status2_t* pSVNStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil = 0);
+	CStatusCacheEntry(const git_wc_status2_t* pSVNStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil = 0);
 	bool HasExpired(long now) const;
 	void BuildCacheResponse(TSVNCacheResponse& response, DWORD& responseLength) const;
 	bool IsVersioned() const;
 	bool DoesFileTimeMatch(__int64 testTime) const;
-	bool ForceStatus(svn_wc_status_kind forcedStatus);
-	svn_wc_status_kind GetEffectiveStatus() const { return m_highestPriorityLocalStatus; }
-	bool IsKindKnown() const { return ((m_kind != svn_node_none)&&(m_kind != svn_node_unknown)); }
-	void SetStatus(const svn_wc_status2_t* pSVNStatus);
+	bool ForceStatus(git_wc_status_kind forcedStatus);
+	git_wc_status_kind GetEffectiveStatus() const { return m_highestPriorityLocalStatus; }
+	bool IsKindKnown() const { return ((m_kind != git_node_none)&&(m_kind != git_node_unknown)); }
+	void SetStatus(const git_wc_status2_t* pSVNStatus);
 	bool HasBeenSet() const;
 	void Invalidate();
-	bool IsDirectory() const {return ((m_kind == svn_node_dir)&&(m_highestPriorityLocalStatus != svn_wc_status_ignored));}
+	bool IsDirectory() const {return ((m_kind == git_node_dir)&&(m_highestPriorityLocalStatus != git_wc_status_ignored));}
 	bool SaveToDisk(FILE * pFile);
 	bool LoadFromDisk(FILE * pFile);
-	void SetKind(svn_node_kind_t kind) {m_kind = kind;}
+	void SetKind(git_node_kind_t kind) {m_kind = kind;}
 private:
 	void SetAsUnversioned();
 
 private:
 	long				m_discardAtTime;
-	svn_wc_status_kind	m_highestPriorityLocalStatus;
-	svn_wc_status2_t	m_svnStatus;
+	git_wc_status_kind	m_highestPriorityLocalStatus;
+	git_wc_status2_t	m_svnStatus;
 	__int64				m_lastWriteTime;
 	bool				m_bSet;
-	svn_node_kind_t		m_kind;
+	git_node_kind_t		m_kind;
 	bool				m_bReadOnly;
 
 	// Values copied from the 'entries' structure
@@ -63,7 +65,7 @@ private:
 	CStringA			m_sOwner;
 	CStringA			m_sAuthor;
 	CStringA			m_sPresentProps;
-	svn_revnum_t		m_commitRevision;
+	git_revnum_t		m_commitRevision;
 
 //	friend class CSVNStatusCache;
 };

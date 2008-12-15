@@ -1376,6 +1376,7 @@ bool CBaseView::DrawInlineDiff(CDC *pDC, const CRect &rc, int nLineIndex, const 
 
 	int lineoffset = 0;
 	std::deque<int> removedPositions;
+#if 0
 	while (diff)
 	{
 		apr_off_t len = diff->original_length;
@@ -1398,6 +1399,7 @@ bool CBaseView::DrawInlineDiff(CDC *pDC, const CRect &rc, int nLineIndex, const 
 	// Draw vertical bars at removed chunks' positions.
 	for (std::deque<int>::iterator it = removedPositions.begin(); it != removedPositions.end(); ++it)
 		pDC->FillSolidRect(*it, rc.top, 1, rc.Height(), m_InlineRemovedBk);
+#endif
 	return true;
 }
 

@@ -17,7 +17,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "svn_types.h"
+//#include "svn_types.h"
+#include "GitStatus.h"
 
 class CProgressDlg;
 
@@ -48,6 +49,6 @@ public:
 	static bool CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError);
 
 	static bool HasClipboardFormat(UINT format);
-	static CString GetErrorString(svn_error_t * Err);
+	static CString GetErrorString(git_error_t * Err);
 
 };

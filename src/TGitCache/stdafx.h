@@ -34,14 +34,6 @@ using namespace ATL;
 #include <deque>
 #pragma warning(pop)
 
-#pragma warning(push)
-#include "svn_wc.h"
-#include "svn_client.h"
-#include "svn_path.h"
-#include "svn_pools.h"
-#include "svn_utf.h"
-#pragma warning(pop)
-
 
 typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;
 

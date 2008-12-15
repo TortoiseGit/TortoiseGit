@@ -17,14 +17,14 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "StdAfx.h"
-#include "diff.h"
+//#include "diff.h"
 #include "TempFiles.h"
 #include "registry.h"
 #include "Resource.h"
 #include "Diffdata.h"
 #include "UnicodeUtils.h"
-#include "SVNAdminDir.h"
-#include "svn_dso.h"
+#include "GitAdminDir.h"
+
 
 #pragma warning(push)
 #pragma warning(disable: 4702) // unreachable code

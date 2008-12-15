@@ -21,8 +21,8 @@
 #include "UnicodeUtils.h"
 #include "DirFileEnum.h"
 #include "TortoiseMerge.h"
-#include "svn_wc.h"
-#include "SVNAdminDir.h"
+//#include "svn_wc.h"
+#include "GitAdminDir.h"
 #include "Patch.h"
 
 #ifdef _DEBUG

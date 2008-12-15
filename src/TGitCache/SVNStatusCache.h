@@ -18,8 +18,8 @@
 //
 #pragma once
 
-#include "TSVNPath.h"
-#include "SVNHelpers.h"
+#include "TGitPath.h"
+//#include "SVNHelpers.h"
 #include "StatusCacheEntry.h"
 #include "CachedDirectory.h"
 #include "FolderCrawler.h"
