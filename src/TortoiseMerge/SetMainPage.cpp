@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "TortoiseMerge.h"
 #include "DirFileEnum.h"
-#include "version.h"
+#include "..\\version.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "SetMainPage.h"

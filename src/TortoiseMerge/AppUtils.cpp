@@ -22,12 +22,12 @@
 #include "UnicodeUtils.h"
 #include "ProgressDlg.h"
 
-#include "svn_pools.h"
-#include "svn_io.h"
-#include "svn_path.h"
-#include "svn_diff.h"
-#include "svn_string.h"
-#include "svn_utf.h"
+//#include "svn_pools.h"
+//#include "svn_io.h"
+//#include "svn_path.h"
+//#include "svn_diff.h"
+//#include "svn_string.h"
+//#include "svn_utf.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -101,6 +101,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 
 bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError)
 {
+#if 0
 	apr_file_t * outfile = NULL;
 	apr_pool_t * pool = svn_pool_create(NULL);
 
@@ -137,11 +138,13 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 		return false;
 	}
 	svn_pool_destroy(pool);
+#endif
 	return true;
 }
 
-CString CAppUtils::GetErrorString(svn_error_t * Err)
+CString CAppUtils::GetErrorString(git_error_t * Err)
 {
+#if 0
 	CString msg;
 	CString temp;
 	char errbuf[256];
@@ -207,6 +210,7 @@ CString CAppUtils::GetErrorString(svn_error_t * Err)
 		}
 		return msg;
 	}
+#endif
 	return _T("");
 }
 

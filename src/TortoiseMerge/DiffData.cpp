@@ -37,9 +37,9 @@ int CDiffData::abort_on_pool_failure (int /*retcode*/)
 
 CDiffData::CDiffData(void)
 {
-	apr_initialize();
-	svn_dso_initialize();
-	g_SVNAdminDir.Init();
+//	apr_initialize();
+//	svn_dso_initialize();
+//	g_SVNAdminDir.Init();
 
 	m_bBlame = false;
 
@@ -49,8 +49,8 @@ CDiffData::CDiffData(void)
 
 CDiffData::~CDiffData(void)
 {
-	g_SVNAdminDir.Close();
-	apr_terminate();
+////	g_SVNAdminDir.Close();
+//	apr_terminate();
 }
 
 int CDiffData::GetLineCount()
@@ -87,6 +87,7 @@ LPCTSTR CDiffData::GetLineChars(int index)
 
 BOOL CDiffData::Load()
 {
+#if 0
 	CString sConvertedBaseFilename, sConvertedTheirFilename, sConvertedYourFilename;
 	apr_pool_t * pool;
 
@@ -218,17 +219,20 @@ BOOL CDiffData::Load()
 	}
 
 	apr_pool_destroy (pool);					// free the allocated memory
+
+#endif
 	return TRUE;
 }
 
 
 bool
-CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, apr_pool_t * pool)
+CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilename, DWORD dwIgnoreWS, bool bIgnoreEOL)
 {
 	// convert CString filenames (UTF-16 or ANSI) to UTF-8
 	CStringA sBaseFilenameUtf8 = CUnicodeUtils::GetUTF8(sBaseFilename);
 	CStringA sYourFilenameUtf8 = CUnicodeUtils::GetUTF8(sYourFilename);
 
+#if 0
 	svn_diff_t * diffYourBase = NULL;
 	svn_error_t * svnerr = NULL;
 	svn_diff_file_options_t * options = svn_diff_file_options_create(pool);
@@ -453,17 +457,18 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 		tempdiff = tempdiff->next;
 	}
 	TRACE(_T("done with 2-way diff\n"));
-
+#endif
 	return true;
 }
 
 bool
-CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFilename, const CString& sTheirFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, bool bIgnoreCase, apr_pool_t * pool)
+CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFilename, const CString& sTheirFilename, DWORD dwIgnoreWS, bool bIgnoreEOL, bool bIgnoreCase)
 {
 	// convert CString filenames (UTF-16 or ANSI) to UTF-8
 	CStringA sBaseFilenameUtf8  = CUnicodeUtils::GetUTF8(sBaseFilename);
 	CStringA sYourFilenameUtf8  = CUnicodeUtils::GetUTF8(sYourFilename);
 	CStringA sTheirFilenameUtf8 = CUnicodeUtils::GetUTF8(sTheirFilename);
+#if 0
 	svn_diff_t * diffTheirYourBase = NULL;
 	svn_diff_file_options_t * options = svn_diff_file_options_create(pool);
 	options->ignore_eol_style = bIgnoreEOL;
@@ -866,7 +871,7 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	}
 	ASSERT(m_Diff3.GetCount() == m_YourBaseBoth.GetCount());
 	ASSERT(m_TheirBaseBoth.GetCount() == m_YourBaseBoth.GetCount());
-
+#endif
 	TRACE(_T("done with 3-way diff\n"));
 	return true;
 }
