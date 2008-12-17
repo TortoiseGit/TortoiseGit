@@ -39,6 +39,7 @@ public:
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
 	void					SetPaths(const CTGitPathList& plist, const CTGitPath path) 
 							{	
+								orgCmdLinePath = path;
 								CString WinPath=path.GetWinPath();
 								if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
 									cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
@@ -50,6 +51,7 @@ protected:
 	CCmdLineParser			parser;
 	CTGitPathList			pathList;
 	CTGitPath				cmdLinePath;
+	CTGitPath				orgCmdLinePath;
 	HWND					hwndExplorer;
 };
 

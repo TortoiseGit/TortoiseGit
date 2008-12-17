@@ -58,7 +58,7 @@ bool DiffCommand::Execute()
 	} 
 	else
 		bRet = CAppUtils::StartExtDiff(
-			path2, cmdLinePath.GetWinPathString(), CString(), CString(),
+			path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
 			CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
 	return bRet;
 }
