@@ -114,7 +114,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
 	//set the resource dll for the required language
-	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseSVN\\LanguageID"), 1033);
+	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;
 	CString langDll;
 	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
@@ -162,7 +162,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	sHelppath.Replace(_T("tortoiseproc.chm"), _T("TortoiseSVN_en.chm"));
 	free((void*)m_pszHelpFilePath);
 	m_pszHelpFilePath=_tcsdup(sHelppath);
-	sHelppath = CPathUtils::GetAppParentDirectory() + _T("Languages\\TortoiseSVN_en.chm");
+	sHelppath = CPathUtils::GetAppParentDirectory() + _T("Languages\\TortoiseGit_en.chm");
 	do
 	{
 		CString sLang = _T("_");
@@ -220,13 +220,13 @@ BOOL CTortoiseProcApp::InitInstance()
 	AfxEnableControlContainer();
 	AfxInitRichEdit2();
 	CWinAppEx::InitInstance();
-	SetRegistryKey(_T("TortoiseSVN"));
+	SetRegistryKey(_T("TortoiseGit"));
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 
 	// if HKCU\Software\TortoiseSVN\Debug is not 0, show our command line
 	// in a message box
-	if (CRegDWORD(_T("Software\\TortoiseSVN\\Debug"), FALSE)==TRUE)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\Debug"), FALSE)==TRUE)
 		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
 
 	if ( parser.HasKey(_T("path")) && parser.HasKey(_T("pathfile")))
@@ -241,6 +241,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 
 		CString sPathfileArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("pathfile")));
+
 		cmdLinePath.SetFromUnknown(sPathfileArgument);
 		if (pathList.LoadFromFile(cmdLinePath)==false)
 			return FALSE;		// no path specified!
@@ -371,8 +372,18 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (cmd)
 	{
 		cmd->SetExplorerHwnd(hWndExplorer);
+		
+		if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
+		{
+			int i=0;
+			for(i=0;i<pathList.GetCount();i++)
+				if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
+					break;
+		}
+
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
+
 		retSuccess = cmd->Execute();
 		delete cmd;
 	}

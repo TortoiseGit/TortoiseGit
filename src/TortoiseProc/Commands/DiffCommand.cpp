@@ -20,9 +20,9 @@
 #include "DiffCommand.h"
 #include "PathUtils.h"
 #include "AppUtils.h"
-#include "ChangedDlg.h"
-#include "SVNDiff.h"
-#include "SVNStatus.h"
+//#include "ChangedDlg.h"
+#include "GitDiff.h"
+#include "GitStatus.h"
 
 bool DiffCommand::Execute()
 {
@@ -34,31 +34,31 @@ bool DiffCommand::Execute()
 	{
 		if (cmdLinePath.IsDirectory())
 		{
-			CChangedDlg dlg;
-			dlg.m_pathList = CTSVNPathList(cmdLinePath);
-			dlg.DoModal();
-			bRet = true;
+			//CChangedDlg dlg;
+			//dlg.m_pathList = CTSVNPathList(cmdLinePath);
+			//dlg.DoModal();
+			//bRet = true;
 		}
 		else
 		{
-			SVNDiff diff(NULL, hwndExplorer);
-			diff.SetAlternativeTool(bAlternativeTool);
+			CGitDiff diff;
+			//diff.SetAlternativeTool(bAlternativeTool);
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
 			{
-				SVNRev StartRevision = SVNRev(parser.GetLongVal(_T("startrev")));
-				SVNRev EndRevision = SVNRev(parser.GetLongVal(_T("endrev")));
-				bRet = diff.ShowCompare(cmdLinePath, StartRevision, cmdLinePath, EndRevision, SVNRev(), false, bBlame);
+				//SVNRev StartRevision = SVNRev(parser.GetLongVal(_T("startrev")));
+				//SVNRev EndRevision = SVNRev(parser.GetLongVal(_T("endrev")));
+				//bRet = diff.ShowCompare(cmdLinePath, StartRevision, cmdLinePath, EndRevision, SVNRev(), false, bBlame);
 			}
 			else
 			{
-				svn_revnum_t baseRev = 0;
-				bRet = diff.DiffFileAgainstBase(cmdLinePath, baseRev);
+				//svn_revnum_t baseRev = 0;
+				bRet = diff.Diff(&cmdLinePath,git_revnum_t(_T("HEAD")),git_revnum_t(GIT_REV_ZERO));
 			}
 		}
 	} 
 	else
 		bRet = CAppUtils::StartExtDiff(
-			CTSVNPath(path2), cmdLinePath, CString(), CString(),
+			path2, cmdLinePath.GetWinPathString(), CString(), CString(),
 			CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
 	return bRet;
 }

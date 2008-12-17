@@ -148,7 +148,12 @@ void CTGitPath::SetFromUnknown(const CString& sPath)
 {
 	Reset();
 	// Just set whichever path we think is most likely to be used
-	SetFwdslashPath(sPath);
+//	GitAdminDir admin;
+//	CString p;
+//	if(admin.HasAdminDir(sPath,&p))
+//		SetFwdslashPath(sPath.Right(sPath.GetLength()-p.GetLength()));
+//	else
+		SetFwdslashPath(sPath);
 }
 
 LPCTSTR CTGitPath::GetWinPath() const

@@ -25,6 +25,8 @@
 
 #include "CreateRepositoryCommand.h"
 #include "CloneCommand.h"
+#include "PrevDiffCommand.h"
+#include "DiffCommand.h"
 
 #if 0
 #include "AddCommand.h"
@@ -39,7 +41,7 @@
 #include "CreatePatchCommand.h"
 
 #include "DelUnversionedCommand.h"
-#include "DiffCommand.h"
+
 #include "DropCopyAddCommand.h"
 #include "DropCopyCommand.h"
 #include "DropExportCommand.h"
@@ -54,7 +56,7 @@
 #include "MergeAllCommand.h"
 #include "PasteCopyCommand.h"
 #include "PasteMoveCommand.h"
-#include "PrevDiffCommand.h"
+
 #include "PropertiesCommand.h"
 #include "RebuildIconCacheCommand.h"
 #include "RelocateCommand.h"
@@ -219,6 +221,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CreateRepositoryCommand;
 	case cmdClone:
 		return new CloneCommand;
+	case cmdPrevDiff:
+		return new PrevDiffCommand;
+	case cmdDiff:
+		return new DiffCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -241,8 +247,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CreatePatchCommand;
 	case cmdDelUnversioned:
 		return new DelUnversionedCommand;
-	case cmdDiff:
-		return new DiffCommand;
+
 	case cmdDropCopy:
 		return new DropCopyCommand;
 	case cmdDropCopyAdd:
@@ -313,6 +318,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new UrlDiffCommand;
 #endif
 	default:
+		CMessageBox::Show(hWndExplorer, _T("Have not implemented"), _T("TortoiseGit"), MB_ICONERROR);
 		return new AboutCommand;
 	}
 }

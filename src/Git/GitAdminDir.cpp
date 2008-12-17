@@ -73,13 +73,25 @@ bool GitAdminDir::IsAdminDirName(const CString& name) const
 #endif
 	return name == ".git";
 }
+CString GitAdminDir::GetGitTopDir(const CString& path) 
+{
+	CString str;
+	str=_T("");
+	HasAdminDir(path,!!PathIsDirectory(path),&str);
+	return str;
+}
 
 bool GitAdminDir::HasAdminDir(const CString& path) const
 {
 	return HasAdminDir(path, !!PathIsDirectory(path));
 }
 
-bool GitAdminDir::HasAdminDir(const CString& path, bool bDir) const
+bool GitAdminDir::HasAdminDir(const CString& path,CString *ProjectTopDir) const
+{
+	return HasAdminDir(path, !!PathIsDirectory(path),ProjectTopDir);
+}
+
+bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTopDir) const
 {
 	if (path.IsEmpty())
 		return false;
@@ -93,7 +105,11 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir) const
 	do
 	{
 		if(PathFileExists(sDirName + _T("\\.git")))
+		{
+			if(ProjectTopDir)
+				*ProjectTopDir=sDirName;
 			return true;
+		}
 		sDirName = sDirName.Left(sDirName.ReverseFind('\\'));
 
 	}while(sDirName.ReverseFind('\\')>0);

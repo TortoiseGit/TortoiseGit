@@ -18,9 +18,8 @@
 //
 #include "StdAfx.h"
 #include "PrevDiffCommand.h"
-#include "ChangedDlg.h"
-#include "SVNDiff.h"
-#include "SVNStatus.h"
+#include "GitDiff.h"
+#include "GitStatus.h"
 #include "MessageBox.h"
 
 bool PrevDiffCommand::Execute()
@@ -29,32 +28,33 @@ bool PrevDiffCommand::Execute()
 	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
 	if (cmdLinePath.IsDirectory())
 	{
-		CChangedDlg dlg;
-		dlg.m_pathList = CTSVNPathList(cmdLinePath);
-		dlg.DoModal();
-		bRet = true;
+//		CChangedDlg dlg;
+//		dlg.m_pathList = CTSVNPathList(cmdLinePath);
+//		dlg.DoModal();
+//		bRet = true;
 	}
 	else
 	{
-		SVNDiff diff;
-		diff.SetAlternativeTool(bAlternativeTool);
-		SVNStatus st;
+		CGitDiff diff;
+//		diff.SetAlternativeTool(bAlternativeTool);
+		GitStatus st;
 		st.GetStatus(cmdLinePath);
-		if (st.status && st.status->entry && st.status->entry->cmt_rev)
+
+		if (1)
 		{
-			SVNDiff diff(NULL, hWndExplorer);
-			bRet = diff.ShowCompare(cmdLinePath, SVNRev::REV_WC, cmdLinePath, st.status->entry->cmt_rev - 1, st.status->entry->cmt_rev);
+			CGitDiff diff;
+			bRet = diff.Diff(&cmdLinePath, git_revnum_t(_T("HEAD")), git_revnum_t(_T("HEAD~1")), false);
 		}
 		else
 		{
-			if (st.GetLastErrorMsg().IsEmpty())
+			//if (st.GetLastErrorMsg().IsEmpty())
 			{
 				CMessageBox::Show(hWndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
 			}
-			else
-			{
-				CMessageBox::Show(hWndExplorer, IDS_ERR_NOSTATUS, IDS_APPNAME, MB_ICONERROR);
-			}
+			//else
+			//{
+			//	CMessageBox::Show(hWndExplorer, IDS_ERR_NOSTATUS, IDS_APPNAME, MB_ICONERROR);
+			//s}
 		}
 	}
 	return bRet;

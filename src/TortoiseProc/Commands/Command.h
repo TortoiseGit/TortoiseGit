@@ -37,7 +37,14 @@ public:
 	virtual bool			Execute() = 0;
 
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
-	void					SetPaths(const CTGitPathList& plist, const CTGitPath path) {pathList = plist; cmdLinePath = path;}
+	void					SetPaths(const CTGitPathList& plist, const CTGitPath path) 
+							{	
+								CString WinPath=path.GetWinPath();
+								if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
+									cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
+
+								pathList = plist; 
+							}
 	void					SetExplorerHwnd(HWND hWnd) {hwndExplorer = hWnd;}
 protected:
 	CCmdLineParser			parser;

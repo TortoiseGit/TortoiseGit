@@ -28,7 +28,7 @@ int CGitDiff::Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, 
 				g_Git.RunLogFile(cmd,file1);
 	}else
 	{
-		file1=pPath->GetWinPathString();
+		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 	}
 
 	CString file2;
@@ -44,7 +44,7 @@ int CGitDiff::Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, 
 		g_Git.RunLogFile(cmd,file2);
 	}else
 	{
-		file2=pPath->GetWinPathString();
+		file2=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 	}
 	
 	CAppUtils::DiffFlags flags;

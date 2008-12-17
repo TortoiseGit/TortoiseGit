@@ -154,8 +154,8 @@
           <Publish Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
-          <Publish Event="SetTargetPath" Value="TARGETDIR">1</Publish>
-          <Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+          <Publish Event="SetTargetPath" Value="MSYSGITDIR">1</Publish>
+          <Publish Event="NewDialog" Value="CustomizeDlg">1</Publish>
         </Control>
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
           <Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -458,7 +458,7 @@
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
           <Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
-          <Publish Event="NewDialog" Value="MSysGitLocation">"Yes"</Publish>
+          <Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
           <Publish Property="InstallMode" Value="Custom">1</Publish>
           <Condition Action="disable"><![CDATA[IAgree <> "Yes"]]></Condition>
           <Condition Action="enable">IAgree = "Yes"</Condition>
