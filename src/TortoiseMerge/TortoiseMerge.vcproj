@@ -47,7 +47,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="svninclude;..\Utils;..\Git;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="libsvn_diff;svninclude;..\Utils;..\Git;..\Utils\MiscUI;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../ext/Subversion\debug_win32\libsvn_diff-nonet.lib ../../ext/Subversion\debug_win32\libsvn_subr-nonet.lib ../../ext/Subversion\debug_win32\libsvn_client-nonet.lib ../../ext/apr\debug_win32\libapr_tsvn.lib ../../ext/apr-util\debug_win32\libaprutil_tsvn.lib ../../ext/libintl/libintl3-win32/lib/intl3_tsvn.lib ../../ext/Subversion\debug_win32\libsvn_wc-nonet.lib ../../ext/Subversion\debug_win32\libsvn_delta-nonet.lib ../../ext/apr-util\xml\expat\lib\debug_win32\xml.lib"
+				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -134,7 +134,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="svninclude;..\Utils;..\Git;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="libsvn_diff;svninclude;..\Utils;..\Git;..\Utils\MiscUI;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -222,7 +222,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="svninclude;..\Utils;..\Git;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="libsvn_diff;svninclude;..\Utils;..\Git;..\Utils\MiscUI;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -309,7 +309,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="svninclude;..\Utils;..\Git;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="libsvn_diff;svninclude;..\Utils;..\Git;..\Utils\MiscUI;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="false"
 				RuntimeLibrary="1"
@@ -1013,84 +1013,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
-			<File
-				RelativePath="..\Resources\download.avi"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\lineadded.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\lineconflicted.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\lineconflictedignored.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\lineedited.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\LineEndingCR.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\LineEndingCRLF.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\LineEndingLF.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\lineequal.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\lineremoved.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\linewhitespace.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\Toolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\TortoiseMerge.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\TortoiseMerge.rc2"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\tortoisemerge_logoflipped.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\TortoiseMergeENG.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\tortoisesvn_logoflipped.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\ttf_glyph.bmp"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Utils"
 			>
 			<Filter
@@ -1314,6 +1236,62 @@
 			Name="libsvndiff"
 			>
 			<File
+				RelativePath=".\svninclude\apr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_errno.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_file_info.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_file_io.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_general.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_getopt.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_hash.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_mmap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_pools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_sha1.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_strings.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_tables.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_time.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\apr_want.h"
+				>
+			</File>
+			<File
 				RelativePath=".\libsvn_diff\diff.c"
 				>
 				<FileConfiguration
@@ -1462,7 +1440,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\libsvn_diff\diff_memory.c"
+				RelativePath=".\libsvn_diff\lcs.c"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1498,7 +1476,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\libsvn_diff\lcs.c"
+				RelativePath=".\libsvn_diff\porting.c"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1532,6 +1510,26 @@
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\svninclude\svn_error.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\svn_error_codes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\svn_pools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\svn_string.h"
+				>
+			</File>
+			<File
+				RelativePath=".\svninclude\svn_types.h"
+				>
 			</File>
 			<File
 				RelativePath=".\libsvn_diff\token.c"
@@ -1569,41 +1567,83 @@
 					/>
 				</FileConfiguration>
 			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
 			<File
-				RelativePath=".\libsvn_diff\util.c"
+				RelativePath="..\Resources\download.avi"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release_static|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug_static|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Resources\lineadded.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\lineconflicted.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\lineconflictedignored.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\lineedited.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\LineEndingCR.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\LineEndingCRLF.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\LineEndingLF.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\lineequal.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\lineremoved.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\linewhitespace.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\Toolbar.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\TortoiseMerge.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\TortoiseMerge.rc2"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tortoisemerge_logoflipped.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\TortoiseMergeENG.rc"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tortoisesvn_logoflipped.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\ttf_glyph.bmp"
+				>
 			</File>
 		</Filter>
 	</Files>

@@ -31,11 +31,14 @@
 #include <apr_tables.h>
 #include <apr_time.h>
 #include <apr_sha1.h>
+#include <apr_errno.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+//porting
+typedef int svn_version_t;
 
 
 /** Macro used to mark deprecated functions.
@@ -75,7 +78,7 @@ typedef struct svn_error_t
   struct svn_error_t *child;
 
   /** The pool holding this error and any child errors it wraps */
-  apr_pool_t *pool;
+  //apr_pool_t *pool;
 
   /** Source file where the error originated.  Only used iff @c SVN_DEBUG. */
   const char *file;
@@ -410,7 +413,7 @@ typedef struct svn_dirent_t
   svn_revnum_t created_rev;
 
   /** time of created_rev (mod-time) */
-  apr_time_t time;
+  //apr_time_t time;
 
   /** author of created_rev */
   const char *last_author;
@@ -427,7 +430,6 @@ svn_dirent_t *
 svn_dirent_dup(const svn_dirent_t *dirent,
                apr_pool_t *pool);
 
-
 
 /** Keyword substitution.
  *
@@ -596,14 +598,14 @@ typedef struct svn_log_entry_t
    * they're not, it might be nice to change apr_hash_first() so
    * read-only uses of hashes can be protected via the type system.
    */
-  apr_hash_t *changed_paths;
+  //apr_hash_t *changed_paths;
 
   /** The revision of the commit. */
   svn_revnum_t revision;
 
   /** The hash of requested revision properties, which may be NULL if it
    * would contain no revprops. */
-  apr_hash_t *revprops;
+//  apr_hash_t *revprops;
 
   /**
    * Whether or not this message has children.

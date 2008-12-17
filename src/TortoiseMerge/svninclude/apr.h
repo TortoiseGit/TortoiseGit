@@ -304,7 +304,7 @@ extern "C" {
 /*  APR Feature Macros */
 #define APR_HAS_SHARED_MEMORY     1
 #define APR_HAS_THREADS           1
-#define APR_HAS_MMAP              1
+#define APR_HAS_MMAP              0
 #define APR_HAS_FORK              0
 #define APR_HAS_RANDOM            1
 #define APR_HAS_OTHER_CHILD       1

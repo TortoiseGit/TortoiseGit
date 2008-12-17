@@ -27,18 +27,21 @@
 #include <apr_getopt.h>
 
 #include "svn_error.h"
-#include "svn_diff.h"
 #include "svn_types.h"
+
 #include "svn_string.h"
-#include "svn_io.h"
-#include "svn_utf.h"
+//#include "svn_io.h"
+//#include "svn_utf.h"
 #include "svn_pools.h"
 #include "diff.h"
-#include "svn_private_config.h"
-#include "svn_path.h"
-#include "svn_ctype.h"
+//#include "svn_private_config.h"
+//#include "svn_path.h"
+//#include "svn_ctype.h"
+#include "svn_diff.h"
 
-/* A token, i.e. a line read from a file. */
+
+/* A token, i.e. a line read from a
+file. */
 typedef struct svn_diff__file_token_t
 {
   /* Next token in free list. */
@@ -555,6 +558,7 @@ svn_diff_file_options_create(apr_pool_t *pool)
   return apr_pcalloc(pool, sizeof(svn_diff_file_options_t));
 }
 
+#if 0
 svn_error_t *
 svn_diff_file_options_parse(svn_diff_file_options_t *options,
                             const apr_array_header_t *args,
@@ -611,7 +615,7 @@ svn_diff_file_options_parse(svn_diff_file_options_t *options,
 
   return SVN_NO_ERROR;
 }
-
+#endif
 svn_error_t *
 svn_diff_file_diff_2(svn_diff_t **diff,
                      const char *original,
@@ -1107,6 +1111,7 @@ output_unified_diff_modified(void *baton,
   return SVN_NO_ERROR;
 }
 
+#if 0
 /* Set *HEADER to a new string consisting of PATH, a tab, and PATH's mtime. */
 static svn_error_t *
 output_unified_default_hdr(const char **header, const char *path,
@@ -1127,6 +1132,7 @@ output_unified_default_hdr(const char **header, const char *path,
 
   return SVN_NO_ERROR;
 }
+#endif
 
 static const svn_diff_output_fns_t svn_diff__file_output_unified_vtable =
 {
