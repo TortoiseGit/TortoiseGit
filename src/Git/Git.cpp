@@ -62,10 +62,19 @@ int CGit::Run(CString cmd, CString* output)
 
 	
 	CloseHandle(pi.hThread);
+
+	WaitForSingleObject(pi.hProcess, INFINITE);
+	DWORD exitcode =0;
+
+	if(!GetExitCodeProcess(pi.hProcess,&exitcode))
+	{
+		return GIT_ERROR_GET_EXIT_CODE;
+	}
+
 	CloseHandle(pi.hProcess);
 
 	CloseHandle(hRead);
-	return GIT_SUCCESS;
+	return exitcode;
 }
 
 CString CGit::GetUserName(void)

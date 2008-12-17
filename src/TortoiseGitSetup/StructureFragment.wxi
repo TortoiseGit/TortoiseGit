@@ -194,12 +194,12 @@
             <Environment Id="E__ASPDOTNETHACK" Action="create" Name="SVN_ASP_DOT_NET_HACK" Value="1" Permanent="yes" System="yes" />
           </Component>
           <Directory Id="D__Bin" ShortName="BIN" Name="bin" >
-<!--            
-            <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
-              <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\apr\release_$(var.PlatformPathExtension)\libapr_tsvn.dll" KeyPath="yes" />
-              <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\apr-util\release_$(var.PlatformPathExtension)\libaprutil_tsvn.dll" />
-           </Component>
---> 
+           
+          <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
+             <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libapr_tsvn.dll" KeyPath="yes" />
+             <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libaprutil_tsvn.dll" />
+          </Component>
+
 <!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
              <File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
               <File Id="F__saslANONYMOUS" ShortName="saslANON.DLL" Name="saslANONYMOUS.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslANONYMOUS.dll" />
@@ -210,10 +210,10 @@
               <File Id="F__saslPLAIN" ShortName="saslPLAI.DLL" Name="saslPLAIN.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslPLAIN.dll" />
            </Component>
 --> 
-<!--            <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
-              <File Id="F__intl" ShortName="INTL3_TS.DLL" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn.dll" KeyPath="yes" />
+            <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
+              <File Id="F__intl" ShortName="INTL3_TS.DLL" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\intl3_tsvn.dll" KeyPath="yes" />
             </Component>
--->
+            
             <?if $(var.IncludeCrashReportDll) = 1 ?>
             <Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
               <File Id="F__crashrpt" ShortName="CRASHRPT.DLL" Name="CrashRpt.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\CrashRpt.dll" KeyPath="yes" />
@@ -283,12 +283,12 @@
               <Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TSVN" Name="TortoiseGit" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
 -->
-              <Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no"
+            <Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
             </Component>
-<!--
+
             <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
-              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
+              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\ext\svnbin\TortoiseMerge.exe" KeyPath="yes" />
             </Component>
 
             <Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
@@ -296,7 +296,7 @@
               <Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" ShortName="TMERGE" Name="TortoiseMerge" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
             </Component>
--->
+
             <Component Id="C__Sounds" Guid="$(var.GuidSounds)" Win64="$(var.Win64YesNo)">
               <File Id="F__sounderror" ShortName="TERROR.WAV" Name="TortoiseSVN_error.wav" DiskId="1" Source="..\Resources\TortoiseSVN_error.wav" KeyPath="yes" />
               <File Id="F__soundwarning" ShortName="TWARN.WAV" Name="TortoiseSVN_Warning.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Warning.wav" />
