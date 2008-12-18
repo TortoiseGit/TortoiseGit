@@ -39,7 +39,6 @@ int CGit::Run(CString cmd, CString* output)
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
-	
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,NULL,NULL,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;

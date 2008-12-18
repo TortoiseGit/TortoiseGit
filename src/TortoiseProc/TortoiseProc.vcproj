@@ -1154,18 +1154,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Diff"
-				>
-				<File
-					RelativePath=".\Commands\DiffCommand.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\DiffCommand.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Rename"
 				>
 				<File
@@ -1333,6 +1321,18 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Diff"
+			>
+			<File
+				RelativePath=".\Commands\DiffCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Commands\DiffCommand.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="Resource.h"

@@ -57,7 +57,7 @@ BEGIN_MESSAGE_MAP(CTortoiseProcApp, CWinAppEx)
 END_MESSAGE_MAP()
 
 CString g_version;
-
+CString CGit::m_MsysGitPath;
 //////////////////////////////////////////////////////////////////////////
 
 CTortoiseProcApp::CTortoiseProcApp()
@@ -103,6 +103,42 @@ CTortoiseProcApp theApp;
 HWND hWndExplorer;
 CString sOrigCWD;
 
+BOOL CTortoiseProcApp::CheckMsysGitDir()
+{
+	CRegString msysdir=CRegString(_T("Software\\TortoiseGit\\MSysGit"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
+	CString str=msysdir;
+	if(str.IsEmpty())
+	{
+		CRegString msysinstalldir=CRegString(_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1\\InstallLocation"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
+		str=msysinstalldir;
+		str+="\\bin";
+		msysdir=str;
+		msysdir.write();
+
+	}
+	CGit::m_MsysGitPath=str;
+
+	TCHAR *oldpath;
+	size_t size;
+	
+	_tdupenv_s(&oldpath,&size,_T("PATH")); 
+
+	CString path;
+	path.Format(_T("%s;"),str);
+	path+=oldpath;
+
+	_tputenv_s(_T("PATH"),path);
+
+	CString cmd,out;
+	cmd=_T("git.exe --version");
+	if(g_Git.Run(cmd,&out))
+	{
+		return false;
+	}
+	else
+		return true;
+	
+}
 //CCrashReport crasher("crashreports@tortoisesvn.tigris.org", "Crash Report for TortoiseSVN " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
 // CTortoiseProcApp initialization
@@ -113,6 +149,19 @@ BOOL CTortoiseProcApp::InitInstance()
 	CheckUpgrade();
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
+
+	if(!CheckMsysGitDir())
+	{
+		if(CMessageBox::Show(NULL,_T("MSysGit(http://code.google.com/p/msysgit) have not installed Correctly\n\
+or MSysGit Path setting error\n\
+Click Yes to open setting dialog to setup MSysGit Path"),
+							_T("TortoiseGit"),MB_YESNO|MB_ICONERROR)==IDYES);
+		{
+			//todo open setting
+		}
+		return FALSE;	
+	}
+
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;

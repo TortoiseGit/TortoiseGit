@@ -14,7 +14,7 @@ class CGit
 private:
 	GitAdminDir m_GitDir;
 public:
-
+	static CString m_MsysGitPath;
 	CGit(void);
 	~CGit(void);
 	int Run(CString cmd, CString* output);

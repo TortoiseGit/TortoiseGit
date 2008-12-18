@@ -55,6 +55,8 @@ public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 
+	BOOL CheckMsysGitDir();
+
 	void CheckUpgrade();
 	void EnableCrashHandler();
 
