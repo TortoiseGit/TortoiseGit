@@ -19,17 +19,17 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "SVN.h"
-#include "SVNStatusListCtrl.h"
+#include "Git.h"
 #include "Registry.h"
 #include "Tooltip.h"
 
+#include "GitStatusListCtrl.h"
 
 /**
  * \ingroup TortoiseProc
  * Shows the "check for modifications" dialog.
  */
-class CChangedDlg : public CResizableStandAloneDialog, public SVN
+class CChangedDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CChangedDlg)
 
@@ -65,11 +65,11 @@ private:
 	DWORD					UpdateShowFlags();
 
 public: 
-	CTSVNPathList			m_pathList;
+	CTGitPathList			m_pathList;
 
 private:
 	CRegDWORD				m_regAddBeforeCommit;
-	CSVNStatusListCtrl		m_FileListCtrl;
+	CGitStatusListCtrl		m_FileListCtrl;
 	bool					m_bRemote;
 	BOOL					m_bShowUnversioned;
 	int						m_iShowUnmodified;

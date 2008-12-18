@@ -19,16 +19,16 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SwitchDlg.h"
-#include "RepositoryBrowser.h"
+//#include "RepositoryBrowser.h"
 #include "BrowseFolder.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CSwitchDlg, CResizableStandAloneDialog)
 CSwitchDlg::CSwitchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSwitchDlg::IDD, pParent)
 	, m_URL(_T(""))
-	, Revision(_T("HEAD"))
+//	, Revision(_T("HEAD"))
 	, m_pLogDlg(NULL)
 {
 }
@@ -70,23 +70,23 @@ BOOL CSwitchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	CTSVNPath svnPath(m_path);
+	CTGitPath GitPath(m_path);
 	SetDlgItemText(IDC_SWITCHPATH, m_path);
-	m_bFolder = svnPath.IsDirectory();
-	SVN svn;
-	CString url = svn.GetURLFromPath(svnPath);
-	CString sUUID = svn.GetUUIDFromPath(svnPath);
-	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sUUID, _T("url"));
-	m_URLCombo.SetCurSel(0);
+	m_bFolder = GitPath.IsDirectory();
+	//Git Git;
+	//CString url = Git.GetURLFromPath(GitPath);
+	//CString sUUID = Git.GetUUIDFromPath(GitPath);
+	//m_URLCombo.SetURLHistory(TRUE);
+	//m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sUUID, _T("url"));
+	//m_URLCombo.SetCurSel(0);
 
-	if (!url.IsEmpty())
-	{
-		m_path = url;
-		m_URLCombo.AddString(CTSVNPath(url).GetUIPathString(), 0);
-		m_URLCombo.SelectString(-1, CTSVNPath(url).GetUIPathString());
-		m_URL = m_path;
-	}
+//	if (!url.IsEmpty())
+//	{
+//		m_path = url;
+//		m_URLCombo.AddString(CTGitPath(url).GetUIPathString(), 0);
+//		m_URLCombo.SelectString(-1, CTGitPath(url).GetUIPathString());
+//		m_URL = m_path;
+//	}
 
 	if (m_sTitle.IsEmpty())
 		GetWindowText(m_sTitle);
@@ -96,7 +96,7 @@ BOOL CSwitchDlg::OnInitDialog()
 	SetDlgItemText(IDC_URLLABEL, m_sLabel);
 
 	// set head revision as default revision
-	SetRevision(SVNRev::REV_HEAD);
+//	SetRevision(GitRev::REV_HEAD);
 
 	RECT rect;
 	GetWindowRect(&rect);
@@ -125,17 +125,17 @@ BOOL CSwitchDlg::OnInitDialog()
 void CSwitchDlg::OnBnClickedBrowse()
 {
 	UpdateData();
-	SVNRev rev;
+	GitRev rev;
 	if (GetCheckedRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N) == IDC_REVISION_HEAD)
 	{
-		rev = SVNRev::REV_HEAD;
+//		rev = GitRev::REV_HEAD;
 	}
-	else
-		rev = SVNRev(m_rev);
-	if (!rev.IsValid())
-		rev = SVNRev::REV_HEAD;
-	CAppUtils::BrowseRepository(m_URLCombo, this, rev);
-	SetRevision(rev);
+//	else
+//		rev = GitRev(m_rev);
+//	if (!rev.IsValid())
+//		rev = GitRev::REV_HEAD;
+//	CAppUtils::BrowseRepository(m_URLCombo, this, rev);
+//	SetRevision(rev);
 }
 
 void CSwitchDlg::OnOK()
@@ -148,12 +148,12 @@ void CSwitchDlg::OnOK()
 	{
 		m_rev = _T("HEAD");
 	}
-	Revision = SVNRev(m_rev);
-	if (!Revision.IsValid())
-	{
-		ShowBalloon(IDC_REVISION_NUM, IDS_ERR_INVALIDREV);
-		return;
-	}
+//	Revision = GitRev(m_rev);
+//	if (!Revision.IsValid())
+//	{
+//		ShowBalloon(IDC_REVISION_NUM, IDS_ERR_INVALIDREV);
+//		return;
+//	}
 
 	m_URLCombo.SaveHistory();
 	m_URL = m_URLCombo.GetString();
@@ -176,16 +176,16 @@ void CSwitchDlg::OnEnChangeRevisionNum()
 		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
 }
 
-void CSwitchDlg::SetRevision(const SVNRev& rev)
+void CSwitchDlg::SetRevision(const GitRev& rev)
 {
-	if (rev.IsHead())
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_HEAD);
-	else
-	{
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
-		m_rev = rev.ToString();
-		UpdateData(FALSE);
-	}
+//	if (rev.IsHead())
+//		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_HEAD);
+//	else
+//	{
+//		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
+//		m_rev = rev.ToString();
+//		UpdateData(FALSE);
+//	}
 }
 
 void CSwitchDlg::OnBnClickedLog()
@@ -198,14 +198,14 @@ void CSwitchDlg::OnBnClickedLog()
 	{
 		delete m_pLogDlg;
 		m_pLogDlg = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		int limit = (int)(LONG)reg;
 		m_pLogDlg->SetSelect(true);
 		m_pLogDlg->m_pNotifyWindow = this;
 		m_pLogDlg->m_wParam = 0;
-		m_pLogDlg->SetParams(CTSVNPath(m_URL), SVNRev::REV_HEAD, SVNRev::REV_HEAD, 1, limit, TRUE);
+//		m_pLogDlg->SetParams(CTGitPath(m_URL), GitRev::REV_HEAD, GitRev::REV_HEAD, 1, limit, TRUE);
 		m_pLogDlg->ContinuousSelection(true);
-		m_pLogDlg->SetProjectPropertiesPath(CTSVNPath(m_path));
+		m_pLogDlg->SetProjectPropertiesPath(CTGitPath(m_path));
 		m_pLogDlg->Create(IDD_LOGMESSAGE, this);
 		m_pLogDlg->ShowWindow(SW_SHOW);
 	}

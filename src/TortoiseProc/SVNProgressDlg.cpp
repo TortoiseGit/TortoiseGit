@@ -21,29 +21,29 @@
 #include "messagebox.h"
 #include "SVNProgressDlg.h"
 #include "LogDlg.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "Registry.h"
-#include "SVNStatus.h"
+#include "GitStatus.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
 #include "TempFile.h"
 #include "UnicodeUtils.h"
 #include "SoundUtils.h"
-#include "SVNDiff.h"
+#include "GitDiff.h"
 #include "Hooks.h"
 #include "DropFiles.h"
-#include "SVNLogHelper.h"
+//#include "GitLogHelper.h"
 #include "RegHistory.h"
-#include "ConflictResolveDlg.h"
+//#include "ConflictResolveDlg.h"
 #include "LogFile.h"
 #include "ShellUpdater.h"
 #include "IconMenu.h"
 #include "BugTraqAssociations.h"
 
 
-BOOL	CSVNProgressDlg::m_bAscending = FALSE;
-int		CSVNProgressDlg::m_nSortedColumn = -1;
+BOOL	CGitProgressDlg::m_bAscending = FALSE;
+int		CGitProgressDlg::m_nSortedColumn = -1;
 
 #define TRANSFERTIMER	100
 #define VISIBLETIMER	101
@@ -63,11 +63,12 @@ enum SVNProgressDlgContextMenuCommands
 	ID_COPY
 };
 
-IMPLEMENT_DYNAMIC(CSVNProgressDlg, CResizableStandAloneDialog)
-CSVNProgressDlg::CSVNProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CSVNProgressDlg::IDD, pParent)
+IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
+CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
+	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
+#if 0
 	, m_Revision(_T("HEAD"))
-	, m_RevisionEnd(0)
+	//, m_RevisionEnd(0)
 	, m_bLockWarning(false)
 	, m_bLockExists(false)
 	, m_bCancelled(FALSE)
@@ -80,7 +81,7 @@ CSVNProgressDlg::CSVNProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_dwCloseOnEnd((DWORD)-1)
 	, m_bFinishedItemAdded(false)
 	, m_bLastVisible(false)
-	, m_depth(svn_depth_unknown)
+//	, m_depth(svn_depth_unknown)
 	, m_itemCount(-1)
 	, m_itemCountTotal(-1)
 	, m_AlwaysConflicted(false)
@@ -92,10 +93,11 @@ CSVNProgressDlg::CSVNProgressDlg(CWnd* pParent /*=NULL*/)
 	, sRespectAncestry(MAKEINTRESOURCE(IDS_PROGRS_RESPECTANCESTRY))
 	, sDryRun(MAKEINTRESOURCE(IDS_PROGRS_DRYRUN))
 	, sRecordOnly(MAKEINTRESOURCE(IDS_MERGE_RECORDONLY))
+#endif
 {
 }
 
-CSVNProgressDlg::~CSVNProgressDlg()
+CGitProgressDlg::~CGitProgressDlg()
 {
 	for (size_t i=0; i<m_arData.size(); i++)
 	{
@@ -107,13 +109,13 @@ CSVNProgressDlg::~CSVNProgressDlg()
 	}
 }
 
-void CSVNProgressDlg::DoDataExchange(CDataExchange* pDX)
+void CGitProgressDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SVNPROGRESS, m_ProgList);
 }
 
-BEGIN_MESSAGE_MAP(CSVNProgressDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_LOGBUTTON, OnBnClickedLogbutton)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SVNPROGRESS, OnNMCustomdrawSvnprogress)
 	ON_WM_CLOSE()
@@ -123,20 +125,20 @@ BEGIN_MESSAGE_MAP(CSVNProgressDlg, CResizableStandAloneDialog)
 	ON_WM_CONTEXTMENU()
 	ON_REGISTERED_MESSAGE(WM_SVNPROGRESS, OnSVNProgress)
 	ON_WM_TIMER()
-	ON_EN_SETFOCUS(IDC_INFOTEXT, &CSVNProgressDlg::OnEnSetfocusInfotext)
-	ON_NOTIFY(LVN_BEGINDRAG, IDC_SVNPROGRESS, &CSVNProgressDlg::OnLvnBegindragSvnprogress)
+	ON_EN_SETFOCUS(IDC_INFOTEXT, &CGitProgressDlg::OnEnSetfocusInfotext)
+	ON_NOTIFY(LVN_BEGINDRAG, IDC_SVNPROGRESS, &CGitProgressDlg::OnLvnBegindragSvnprogress)
 	ON_WM_SIZE()
-	ON_NOTIFY(LVN_GETDISPINFO, IDC_SVNPROGRESS, &CSVNProgressDlg::OnLvnGetdispinfoSvnprogress)
-	ON_BN_CLICKED(IDC_NONINTERACTIVE, &CSVNProgressDlg::OnBnClickedNoninteractive)
+	ON_NOTIFY(LVN_GETDISPINFO, IDC_SVNPROGRESS, &CGitProgressDlg::OnLvnGetdispinfoSvnprogress)
+	ON_BN_CLICKED(IDC_NONINTERACTIVE, &CGitProgressDlg::OnBnClickedNoninteractive)
 	ON_MESSAGE(WM_SHOWCONFLICTRESOLVER, OnShowConflictResolver)
 END_MESSAGE_MAP()
 
-BOOL CSVNProgressDlg::Cancel()
+BOOL CGitProgressDlg::Cancel()
 {
 	return m_bCancelled;
 }
 
-LRESULT CSVNProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM lParam)
+LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM lParam)
 {
 	CConflictResolveDlg dlg(this);
 	const svn_wc_conflict_description_t *description = (svn_wc_conflict_description_t *)lParam;
@@ -160,7 +162,7 @@ LRESULT CSVNProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM lParam
 	return svn_wc_conflict_choose_postpone;
 }
 
-svn_wc_conflict_choice_t CSVNProgressDlg::ConflictResolveCallback(const svn_wc_conflict_description_t *description, CString& mergedfile)
+svn_wc_conflict_choice_t CGitProgressDlg::ConflictResolveCallback(const svn_wc_conflict_description_t *description, CString& mergedfile)
 {
 	// we only bother the user when merging
 	if (((m_Command == SVNProgress_Merge)||(m_Command == SVNProgress_MergeAll)||(m_Command == SVNProgress_MergeReintegrate))&&(!m_AlwaysConflicted)&&(description))
@@ -176,7 +178,7 @@ svn_wc_conflict_choice_t CSVNProgressDlg::ConflictResolveCallback(const svn_wc_c
 	return svn_wc_conflict_choose_postpone;
 }
 
-void CSVNProgressDlg::AddItemToList()
+void CGitProgressDlg::AddItemToList()
 {
 	int totalcount = m_ProgList.GetItemCount();
 
@@ -208,7 +210,7 @@ void CSVNProgressDlg::AddItemToList()
 	}
 }
 
-BOOL CSVNProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t action, 
+BOOL CGitProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t action, 
 							 svn_node_kind_t kind, const CString& mime_type, 
 							 svn_wc_notify_state_t content_state, 
 							 svn_wc_notify_state_t prop_state, LONG rev,
@@ -491,7 +493,7 @@ BOOL CSVNProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t actio
 	return TRUE;
 }
 
-CString CSVNProgressDlg::BuildInfoString()
+CString CGitProgressDlg::BuildInfoString()
 {
 	CString infotext;
 	CString temp;
@@ -633,12 +635,12 @@ CString CSVNProgressDlg::BuildInfoString()
 	return infotext;
 }
 
-void CSVNProgressDlg::SetSelectedList(const CTSVNPathList& selPaths)
+void CGitProgressDlg::SetSelectedList(const CTSVNPathList& selPaths)
 {
 	m_selectedPaths = selPaths;
 }
 
-void CSVNProgressDlg::ResizeColumns()
+void CGitProgressDlg::ResizeColumns()
 {
 	m_ProgList.SetRedraw(FALSE);
 
@@ -681,7 +683,7 @@ void CSVNProgressDlg::ResizeColumns()
 	m_ProgList.SetRedraw(TRUE);	
 }
 
-BOOL CSVNProgressDlg::OnInitDialog()
+BOOL CGitProgressDlg::OnInitDialog()
 {
 	__super::OnInitDialog();
 
@@ -733,41 +735,41 @@ BOOL CSVNProgressDlg::OnInitDialog()
 	return TRUE;
 }
 
-bool CSVNProgressDlg::SetBackgroundImage(UINT nID)
+bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 {
 	return CAppUtils::SetListCtrlBackgroundImage(m_ProgList.GetSafeHwnd(), nID);
 }
 
-void CSVNProgressDlg::ReportSVNError()
+void CGitProgressDlg::ReportSVNError()
 {
 	ReportError(GetLastErrorMessage());
 }
 
-void CSVNProgressDlg::ReportError(const CString& sError)
+void CGitProgressDlg::ReportError(const CString& sError)
 {
 	CSoundUtils::PlayTSVNError();
 	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), m_Colors.GetColor(CColors::Conflict));
 	m_bErrorsOccurred = true;
 }
 
-void CSVNProgressDlg::ReportWarning(const CString& sWarning)
+void CGitProgressDlg::ReportWarning(const CString& sWarning)
 {
 	CSoundUtils::PlayTSVNWarning();
 	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), m_Colors.GetColor(CColors::Conflict));
 }
 
-void CSVNProgressDlg::ReportNotification(const CString& sNotification)
+void CGitProgressDlg::ReportNotification(const CString& sNotification)
 {
 	CSoundUtils::PlayTSVNNotification();
 	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
 }
 
-void CSVNProgressDlg::ReportCmd(const CString& sCmd)
+void CGitProgressDlg::ReportCmd(const CString& sCmd)
 {
 	ReportString(sCmd, CString(MAKEINTRESOURCE(IDS_PROGRS_CMDINFO)), m_Colors.GetColor(CColors::Cmd));
 }
 
-void CSVNProgressDlg::ReportString(CString sMessage, const CString& sMsgKind, COLORREF color)
+void CGitProgressDlg::ReportString(CString sMessage, const CString& sMsgKind, COLORREF color)
 {
 	// instead of showing a dialog box with the error message or notification,
 	// just insert the error text into the list control.
@@ -798,12 +800,12 @@ void CSVNProgressDlg::ReportString(CString sMessage, const CString& sMsgKind, CO
 	}
 }
 
-UINT CSVNProgressDlg::ProgressThreadEntry(LPVOID pVoid)
+UINT CGitProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 {
-	return ((CSVNProgressDlg*)pVoid)->ProgressThread();
+	return ((CGitProgressDlg*)pVoid)->ProgressThread();
 }
 
-UINT CSVNProgressDlg::ProgressThread()
+UINT CGitProgressDlg::ProgressThread()
 {
 	// The SetParams function should have loaded something for us
 
@@ -963,7 +965,7 @@ UINT CSVNProgressDlg::ProgressThread()
 	return 0;
 }
 
-void CSVNProgressDlg::OnBnClickedLogbutton()
+void CGitProgressDlg::OnBnClickedLogbutton()
 {
 	if (m_targetPathList.GetCount() != 1)
 		return;
@@ -979,7 +981,7 @@ void CSVNProgressDlg::OnBnClickedLogbutton()
 }
 
 
-void CSVNProgressDlg::OnClose()
+void CGitProgressDlg::OnClose()
 {
 	if (m_bCancelled)
 	{
@@ -995,7 +997,7 @@ void CSVNProgressDlg::OnClose()
 	__super::OnClose();
 }
 
-void CSVNProgressDlg::OnOK()
+void CGitProgressDlg::OnOK()
 {
 	if ((m_bCancelled)&&(!m_bThreadRunning))
 	{
@@ -1010,14 +1012,14 @@ void CSVNProgressDlg::OnOK()
 	m_bCancelled = TRUE;
 }
 
-void CSVNProgressDlg::OnCancel()
+void CGitProgressDlg::OnCancel()
 {
 	if ((m_bCancelled)&&(!m_bThreadRunning))
 		__super::OnCancel();
 	m_bCancelled = TRUE;
 }
 
-void CSVNProgressDlg::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitProgressDlg::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 
@@ -1062,7 +1064,7 @@ void CSVNProgressDlg::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResul
 	*pResult = 0;
 }
 
-void CSVNProgressDlg::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitProgressDlg::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 
@@ -1100,7 +1102,7 @@ void CSVNProgressDlg::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 }
 
-void CSVNProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
@@ -1142,7 +1144,7 @@ void CSVNProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 }
 
-void CSVNProgressDlg::OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitProgressDlg::OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 	if (m_bThreadRunning)
@@ -1164,12 +1166,12 @@ void CSVNProgressDlg::OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-bool CSVNProgressDlg::NotificationDataIsAux(const NotificationData* pData)
+bool CGitProgressDlg::NotificationDataIsAux(const NotificationData* pData)
 {
 	return pData->bAuxItem;
 }
 
-LRESULT CSVNProgressDlg::OnSVNProgress(WPARAM /*wParam*/, LPARAM lParam)
+LRESULT CGitProgressDlg::OnSVNProgress(WPARAM /*wParam*/, LPARAM lParam)
 {
 	SVNProgress * pProgressData = (SVNProgress *)lParam;
 	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
@@ -1201,7 +1203,7 @@ LRESULT CSVNProgressDlg::OnSVNProgress(WPARAM /*wParam*/, LPARAM lParam)
 	return 0;
 }
 
-void CSVNProgressDlg::OnTimer(UINT_PTR nIDEvent)
+void CGitProgressDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == TRANSFERTIMER)
 	{
@@ -1220,7 +1222,7 @@ void CSVNProgressDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
-void CSVNProgressDlg::Sort()
+void CGitProgressDlg::Sort()
 {
 	if(m_arData.size() < 2)
 	{
@@ -1235,20 +1237,20 @@ void CSVNProgressDlg::Sort()
 	for(;;)
 	{
 		// Search to the start of the non-aux entry in the next block
-		actionBlockBegin = std::find_if(actionBlockEnd, m_arData.end(), std::not1(std::ptr_fun(&CSVNProgressDlg::NotificationDataIsAux)));
+		actionBlockBegin = std::find_if(actionBlockEnd, m_arData.end(), std::not1(std::ptr_fun(&CGitProgressDlg::NotificationDataIsAux)));
 		if(actionBlockBegin == m_arData.end())
 		{
 			// There are no more actions
 			break;
 		}
 		// Now search to find the end of the block
-		actionBlockEnd = std::find_if(actionBlockBegin+1, m_arData.end(), std::ptr_fun(&CSVNProgressDlg::NotificationDataIsAux));
+		actionBlockEnd = std::find_if(actionBlockBegin+1, m_arData.end(), std::ptr_fun(&CGitProgressDlg::NotificationDataIsAux));
 		// Now sort the block
-		std::sort(actionBlockBegin, actionBlockEnd, &CSVNProgressDlg::SortCompare);
+		std::sort(actionBlockBegin, actionBlockEnd, &CGitProgressDlg::SortCompare);
 	}
 }
 
-bool CSVNProgressDlg::SortCompare(const NotificationData * pData1, const NotificationData * pData2)
+bool CGitProgressDlg::SortCompare(const NotificationData * pData1, const NotificationData * pData2)
 {
 	int result = 0;
 	switch (m_nSortedColumn)
@@ -1277,7 +1279,7 @@ bool CSVNProgressDlg::SortCompare(const NotificationData * pData1, const Notific
 	return result < 0;
 }
 
-BOOL CSVNProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+BOOL CGitProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (!GetDlgItem(IDOK)->IsWindowEnabled())
 	{
@@ -1294,7 +1296,7 @@ BOOL CSVNProgressDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
 }
 
-BOOL CSVNProgressDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
@@ -1357,7 +1359,7 @@ BOOL CSVNProgressDlg::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-void CSVNProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
+void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	if (m_options & ProgOptDryRun)
 		return;	// don't do anything in a dry-run.
@@ -1677,7 +1679,7 @@ void CSVNProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 }
 
-void CSVNProgressDlg::OnEnSetfocusInfotext()
+void CGitProgressDlg::OnEnSetfocusInfotext()
 {
 	CString sTemp;
 	GetDlgItemText(IDC_INFOTEXT, sTemp);
@@ -1685,7 +1687,7 @@ void CSVNProgressDlg::OnEnSetfocusInfotext()
 		GetDlgItem(IDC_INFOTEXT)->HideCaret();
 }
 
-void CSVNProgressDlg::OnLvnBegindragSvnprogress(NMHDR* , LRESULT *pResult)
+void CGitProgressDlg::OnLvnBegindragSvnprogress(NMHDR* , LRESULT *pResult)
 {
 	//LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
@@ -1717,7 +1719,7 @@ void CSVNProgressDlg::OnLvnBegindragSvnprogress(NMHDR* , LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CSVNProgressDlg::OnSize(UINT nType, int cx, int cy)
+void CGitProgressDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CResizableStandAloneDialog::OnSize(nType, cx, cy);
 	if ((nType == SIZE_RESTORED)&&(m_bLastVisible))
@@ -1731,7 +1733,7 @@ void CSVNProgressDlg::OnSize(UINT nType, int cx, int cy)
 //////////////////////////////////////////////////////////////////////////
 /// commands
 //////////////////////////////////////////////////////////////////////////
-bool CSVNProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
+bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 {
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_ADD);
@@ -1747,7 +1749,7 @@ bool CSVNProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_CHECKOUT);
@@ -1795,7 +1797,7 @@ bool CSVNProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*
 	return true;
 }
 
-bool CSVNProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COMMIT);
 	SetWindowText(sWindowTitle);
@@ -1925,7 +1927,7 @@ bool CSVNProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COPY);
@@ -1969,7 +1971,7 @@ bool CSVNProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_EXPORT);
@@ -1992,7 +1994,7 @@ bool CSVNProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_IMPORT);
@@ -2012,7 +2014,7 @@ bool CSVNProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_LOCK);
 	SetWindowText(sWindowTitle);
@@ -2058,7 +2060,7 @@ bool CSVNProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	bool bFailed = false;
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2139,7 +2141,7 @@ bool CSVNProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 	return !bFailed;
 }
 
-bool CSVNProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGE);
@@ -2193,7 +2195,7 @@ bool CSVNProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*
 	return true;
 }
 
-bool CSVNProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGEREINTEGRATE);
@@ -2225,7 +2227,7 @@ bool CSVNProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localop
 	return true;
 }
 
-bool CSVNProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
+bool CGitProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	if ((!m_targetPathList[0].IsUrl())&&(!m_url.IsUrl()))
@@ -2242,7 +2244,7 @@ bool CSVNProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
+bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 {
 	localoperation = true;
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2302,7 +2304,7 @@ bool CSVNProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
+bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 {
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_REVERT);
@@ -2323,7 +2325,7 @@ bool CSVNProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	ASSERT(m_targetPathList.GetCount() == 1);
 	SVNStatus st;
@@ -2362,7 +2364,7 @@ bool CSVNProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UNLOCK);
 	SetWindowText(sWindowTitle);
@@ -2377,7 +2379,7 @@ bool CSVNProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CSVNProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UPDATE);
 	SetWindowText(sWindowTitle);
@@ -2530,7 +2532,7 @@ bool CSVNProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-void CSVNProgressDlg::OnBnClickedNoninteractive()
+void CGitProgressDlg::OnBnClickedNoninteractive()
 {
 	LRESULT res = ::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_GETCHECK, 0, 0);
 	m_AlwaysConflicted = (res == BST_CHECKED);
@@ -2538,7 +2540,7 @@ void CSVNProgressDlg::OnBnClickedNoninteractive()
 	nonint = m_AlwaysConflicted;
 }
 
-CString CSVNProgressDlg::GetPathFromColumnText(const CString& sColumnText)
+CString CGitProgressDlg::GetPathFromColumnText(const CString& sColumnText)
 {
 	CString sPath = CPathUtils::ParsePathInString(sColumnText);
 	if (sPath.Find(':')<0)

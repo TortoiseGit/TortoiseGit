@@ -381,6 +381,9 @@ BOOL CTortoiseProcApp::InitInstance()
 					break;
 		}
 
+		if(g_Git.m_CurrentDir)
+			SetCurrentDirectory(g_Git.m_CurrentDir);
+
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
 

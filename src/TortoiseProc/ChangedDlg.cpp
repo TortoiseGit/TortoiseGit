@@ -23,6 +23,7 @@
 #include "cursor.h"
 #include ".\changeddlg.h"
 
+#include "GitStatusListCtrl.h"
 
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
 CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
@@ -49,8 +50,8 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_SHOWUNMODIFIED, m_iShowUnmodified);
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
-	DDX_Check(pDX, IDC_SHOWEXTERNALS, m_bShowExternals);
-	DDX_Check(pDX, IDC_SHOWUSERPROPS, m_bShowUserProps);
+//	DDX_Check(pDX, IDC_SHOWEXTERNALS, m_bShowExternals);
+//	DDX_Check(pDX, IDC_SHOWUSERPROPS, m_bShowUserProps);
 }
 
 
@@ -58,12 +59,12 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECKREPO, OnBnClickedCheckrepo)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
 	ON_BN_CLICKED(IDC_SHOWUNMODIFIED, OnBnClickedShowUnmodified)
-    ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
+//    ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
 	ON_BN_CLICKED(IDC_SHOWIGNORED, &CChangedDlg::OnBnClickedShowignored)
 	ON_BN_CLICKED(IDC_REFRESH, &CChangedDlg::OnBnClickedRefresh)
-	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
+//	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -74,15 +75,11 @@ BOOL CChangedDlg::OnInitDialog()
 
 	m_tooltips.Create(this);
 
-	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseSVN\\AddBeforeCommit"), TRUE);
+	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 	UpdateData(FALSE);
 
-	m_FileListCtrl.Init(SVNSLC_COLTEXTSTATUS | SVNSLC_COLPROPSTATUS | 
-						SVNSLC_COLREMOTETEXT | SVNSLC_COLREMOTEPROP | 
-						SVNSLC_COLLOCK | SVNSLC_COLLOCKCOMMENT |
-						SVNSLC_COLAUTHOR | SVNSLC_COLAUTHOR |
-						SVNSLC_COLREVISION | SVNSLC_COLDATE, _T("ChangedDlg"),
+	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS, _T("ChangedDlg"),
 						SVNSLC_POPALL, false);
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
@@ -91,26 +88,26 @@ BOOL CChangedDlg::OnInitDialog()
 	AdjustControlSize(IDC_SHOWUNVERSIONED);
 	AdjustControlSize(IDC_SHOWUNMODIFIED);
 	AdjustControlSize(IDC_SHOWIGNORED);
-	AdjustControlSize(IDC_SHOWEXTERNALS);
-    AdjustControlSize(IDC_SHOWUSERPROPS);
+//	AdjustControlSize(IDC_SHOWEXTERNALS);
+//    AdjustControlSize(IDC_SHOWUSERPROPS);
 
 	AddAnchor(IDC_CHANGEDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SUMMARYTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SHOWUNVERSIONED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWUNMODIFIED, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWIGNORED, BOTTOM_LEFT);
-	AddAnchor(IDC_SHOWEXTERNALS, BOTTOM_LEFT);
-	AddAnchor(IDC_SHOWUSERPROPS, BOTTOM_LEFT);
+//	AddAnchor(IDC_SHOWEXTERNALS, BOTTOM_LEFT);
+//	AddAnchor(IDC_SHOWUSERPROPS, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
 	AddAnchor(IDC_REFRESH, BOTTOM_RIGHT);
 	AddAnchor(IDC_CHECKREPO, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
-	SetPromptParentWindow(m_hWnd);
+//	SetPromptParentWindow(m_hWnd);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("ChangedDlg"));
 
-	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\CheckRepo"), FALSE);
+	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
 	
 	// first start a thread to obtain the status without
 	// blocking the dialog
@@ -139,7 +136,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
     DialogEnableWindow(IDC_SHOWUSERPROPS, FALSE);
 	CString temp;
-	if (!m_FileListCtrl.GetStatus(m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUserProps != FALSE))
+	if (!m_FileListCtrl.GetStatus(m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned,m_bShowUserProps != FALSE))
 	{
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());
@@ -152,12 +149,14 @@ UINT CChangedDlg::ChangedStatusThread()
 	m_FileListCtrl.Show(dwShow);
 	UpdateStatistics();
 
-	CTSVNPath commonDir = m_FileListCtrl.GetCommonDirectory(false);
+
+	CTGitPath commonDir = m_FileListCtrl.GetCommonDirectory(false);
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		SetWindowText(m_sTitle + _T(" - ") + m_pathList[0].GetWinPathString());
 	else
 		SetWindowText(m_sTitle + _T(" - ") + commonDir.GetWinPathString());
+
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)));
 	DialogEnableWindow(IDC_REFRESH, TRUE);
 	DialogEnableWindow(IDC_CHECKREPO, TRUE);
@@ -167,7 +166,7 @@ UINT CChangedDlg::ChangedStatusThread()
     DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
-	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\CheckRepo"), FALSE);
+	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
 	RefreshCursor();
 	return 0;
 }
@@ -316,8 +315,10 @@ void CChangedDlg::OnBnClickedRefresh()
 
 void CChangedDlg::UpdateStatistics()
 {
-	LONG lMin, lMax;
 	CString temp;
+#if 0
+	LONG lMin, lMax;
+	
 	m_FileListCtrl.GetMinMaxRevisions(lMin, lMax, true, false);
 	if (LONG(m_FileListCtrl.m_HeadRev) >= 0)
 	{
@@ -329,10 +330,12 @@ void CChangedDlg::UpdateStatistics()
 		temp.Format(IDS_REPOSTATUS_WCINFO, lMin, lMax);
 		SetDlgItemText(IDC_SUMMARYTEXT, temp);
 	}
+#endif
 	temp = m_FileListCtrl.GetStatisticsString();
 	temp.Replace(_T(" = "), _T("="));
 	temp.Replace(_T("\n"), _T(", "));
 	SetDlgItemText(IDC_INFOLABEL, temp);
+
 }
 
 

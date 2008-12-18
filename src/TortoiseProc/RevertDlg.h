@@ -19,7 +19,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "SVNStatusListCtrl.h"
+#include "GitStatusListCtrl.h"
 
 
 /**
@@ -58,15 +58,15 @@ private:
 	UINT		RevertThread();
 
 public:
-	CTSVNPathList 		m_pathList;
-	CTSVNPathList 		m_selectedPathList;
+	CTGitPathList 		m_pathList;
+	CTGitPathList 		m_selectedPathList;
 	BOOL				m_bRecursive;
 
 private:
 	BOOL				m_bSelectAll;
 	CString				m_sWindowTitle;
 	volatile LONG		m_bThreadRunning;
-	CSVNStatusListCtrl	m_RevertList;
+	CGitStatusListCtrl	m_RevertList;
 	CButton				m_SelectAll;
 	bool				m_bCancelled;
 };

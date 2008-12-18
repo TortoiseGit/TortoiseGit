@@ -20,8 +20,8 @@
 #include "RemoveCommand.h"
 
 #include "MessageBox.h"
-#include "ProgressDlg.h"
-#include "SVN.h"
+//#include "ProgressDlg.h"
+#include "Git.h"
 #include "InputLogDlg.h"
 #include "ShellUpdater.h"
 
@@ -33,6 +33,7 @@ bool RemoveCommand::Execute()
 	//
 	// removing items from an URL in the repository requires that we
 	// ask the user for a log message.
+#if 0
 	BOOL bForce = FALSE;
 	SVN svn;
 	if ((pathList.GetCount())&&(SVN::PathIsURL(pathList[0])))
@@ -114,5 +115,6 @@ bool RemoveCommand::Execute()
 	}
 	if (bRet)
 		CShellUpdater::Instance().AddPathsForUpdate(pathList);
+#endif
 	return bRet;
 }

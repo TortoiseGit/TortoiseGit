@@ -20,7 +20,7 @@
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
 #include "LogDlg.h"
-#include "SVNRev.h"
+#include "GitRev.h"
 
 /**
  * \ingroup TortoiseProc
@@ -64,7 +64,7 @@ protected:
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg LRESULT OnRevSelected(WPARAM wParam, LPARAM lParam);
 
-	void		SetRevision(const SVNRev& rev);
+	void		SetRevision(const GitRev& rev);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -79,5 +79,5 @@ protected:
 public:
 	CString			m_path;
 	CString			m_URL;
-	SVNRev			Revision;
+	GitRev			Revision;
 };

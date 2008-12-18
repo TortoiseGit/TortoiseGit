@@ -20,7 +20,7 @@
 #include "SwitchCommand.h"
 
 #include "SwitchDlg.h"
-#include "SVNProgressDlg.h"
+//#include "SVNProgressDlg.h"
 #include "MessageBox.h"
 
 bool SwitchCommand::Execute()
@@ -30,6 +30,7 @@ bool SwitchCommand::Execute()
 
 	if (dlg.DoModal() == IDOK)
 	{
+#if 0
 		CSVNProgressDlg progDlg;
 		theApp.m_pMainWnd = &progDlg;
 		progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Switch);
@@ -40,6 +41,8 @@ bool SwitchCommand::Execute()
 		progDlg.SetRevision(dlg.Revision);
 		progDlg.DoModal();
 		return !progDlg.DidErrorsOccur();
+#endif;
+		return true;
 	}
 	return false;
 }

@@ -20,7 +20,7 @@
 #include "TortoiseProc.h"
 #include "messagebox.h"
 #include "Revertdlg.h"
-#include "SVN.h"
+#include "Git.h"
 #include "Registry.h"
 #include ".\revertdlg.h"
 
@@ -51,8 +51,8 @@ void CRevertDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRevertDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -115,12 +115,12 @@ UINT CRevertDlg::RevertThread()
 						// do not select all files, only the ones the user has selected directly
 						SVNSLC_SHOWDIRECTFILES|SVNSLC_SHOWADDED);
 
-	CTSVNPath commonDir = m_RevertList.GetCommonDirectory(false);
+	CTGitPath commonDir = m_RevertList.GetCommonDirectory(false);
 	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	if (m_RevertList.HasUnversionedItems())
 	{
-		if (DWORD(CRegStdWORD(_T("Software\\TortoiseSVN\\UnversionedAsModified"), FALSE)))
+		if (DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE)))
 		{
 			GetDlgItem(IDC_UNVERSIONEDITEMS)->ShowWindow(SW_SHOW);
 		}
@@ -150,7 +150,9 @@ void CRevertDlg::OnOK()
 		}
 		else 
 		{
-			CSVNStatusListCtrl::FileEntry * entry = m_RevertList.GetListEntry(i);
+			m_selectedPathList.AddPath(*(CTGitPath*)m_RevertList.GetItemData(i));
+#if 0
+			CGitStatusListCtrl::FileEntry * entry = m_RevertList.GetListEntry(i);
 			// add all selected entries to the list, except the ones with 'added'
 			// status: we later *delete* all the entries in the list before
 			// the actual revert is done (so the user has the reverted files
@@ -163,6 +165,7 @@ void CRevertDlg::OnOK()
 			// external boundaries.
 			if (entry->IsInExternal())
 				m_bRecursive = FALSE;
+#endif
 		}
 	}
 	if (!m_bRecursive)
@@ -263,7 +266,7 @@ LRESULT CRevertDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// When the timer expires, we start the refresh thread,
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
-	CTSVNPath path;
+	CTGitPath path;
 	path.SetFromWin((LPCTSTR)lParam);
 
 	if (!m_RevertList.HasPath(path))

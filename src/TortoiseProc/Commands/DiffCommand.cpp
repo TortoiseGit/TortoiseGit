@@ -20,7 +20,7 @@
 #include "DiffCommand.h"
 #include "PathUtils.h"
 #include "AppUtils.h"
-//#include "ChangedDlg.h"
+#include "ChangedDlg.h"
 #include "GitDiff.h"
 #include "GitStatus.h"
 
@@ -34,15 +34,16 @@ bool DiffCommand::Execute()
 	{
 		if (cmdLinePath.IsDirectory())
 		{
-			//CChangedDlg dlg;
-			//dlg.m_pathList = CTSVNPathList(cmdLinePath);
-			//dlg.DoModal();
-			//bRet = true;
+			CChangedDlg dlg;
+			dlg.m_pathList = CTGitPathList(cmdLinePath);
+			dlg.DoModal();
+			bRet = true;
 		}
 		else
 		{
 			CGitDiff diff;
 			//diff.SetAlternativeTool(bAlternativeTool);
+#if 0
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
 			{
 				//SVNRev StartRevision = SVNRev(parser.GetLongVal(_T("startrev")));
@@ -50,6 +51,7 @@ bool DiffCommand::Execute()
 				//bRet = diff.ShowCompare(cmdLinePath, StartRevision, cmdLinePath, EndRevision, SVNRev(), false, bBlame);
 			}
 			else
+#endif
 			{
 				//svn_revnum_t baseRev = 0;
 				bRet = diff.Diff(&cmdLinePath,git_revnum_t(_T("HEAD")),git_revnum_t(GIT_REV_ZERO));

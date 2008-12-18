@@ -27,7 +27,7 @@ public:
 	/// Returns true if the path (file or folder) has an admin directory 
 	/// associated, i.e. if the path is in a working copy.
 	bool HasAdminDir(const CString& path) const;
-	bool HasAdminDir(const CString& path,CString * ProjectTopDir=NULL) const;
+	bool HasAdminDir(const CString& path,CString * ProjectTopDir) const;
 	bool HasAdminDir(const CString& path, bool bDir,CString * ProjectTopDir=NULL) const;
 	CString GetGitTopDir(const CString& path);
 	

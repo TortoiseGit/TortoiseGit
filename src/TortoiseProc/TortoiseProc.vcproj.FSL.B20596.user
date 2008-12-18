@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
-				CommandArguments="/command:diff /path:&quot;D:\Profiles\b20596\qgit4\src\cache.cpp&quot;"
+				CommandArguments="/command:revert /path:&quot;D:\Profiles\b20596\qgit4\src&quot;"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

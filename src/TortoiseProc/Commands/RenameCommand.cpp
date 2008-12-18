@@ -20,11 +20,11 @@
 #include "RenameCommand.h"
 
 #include "MessageBox.h"
-#include "SVNProgressDlg.h"
-#include "ProgressDlg.h"
+//#include "SVNProgressDlg.h"
+//#include "ProgressDlg.h"
 #include "RenameDlg.h"
 #include "InputLogDlg.h"
-#include "SVN.h"
+#include "Git.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 
@@ -32,8 +32,8 @@ bool RenameCommand::Execute()
 {
 	bool bRet = false;
 	CString filename = cmdLinePath.GetFileOrDirectoryName();
-	CString basePath = cmdLinePath.GetContainingDirectory().GetWinPathString();
-	::SetCurrentDirectory(basePath);
+	CString basePath = cmdLinePath.GetContainingDirectory().GetGitPathString();
+	//::SetCurrentDirectory(basePath);
 
 	// show the rename dialog until the user either cancels or enters a new
 	// name (one that's different to the original name
@@ -47,6 +47,21 @@ bool RenameCommand::Execute()
 		sNewName = dlg.m_name;
 	} while(PathIsRelative(sNewName) && !PathIsURL(sNewName) && (sNewName.IsEmpty() || (sNewName.Compare(filename)==0)));
 
+	if(!basePath.IsEmpty())
+		sNewName=basePath+"/"+sNewName;
+
+	CString cmd;
+	CString output;
+	cmd.Format(_T("git.cmd mv \"%s\" \"%s\""),
+					cmdLinePath.GetGitPathString(),
+					sNewName);
+									
+	if(g_Git.Run(cmd,&output))
+	{
+		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK);
+	}
+
+#if 0
 	TRACE(_T("rename file %s to %s\n"), (LPCTSTR)cmdLinePath.GetWinPathString(), (LPCTSTR)sNewName);
 	CTSVNPath destinationPath(basePath);
 	if (PathIsRelative(sNewName) && !PathIsURL(sNewName))
@@ -232,5 +247,6 @@ bool RenameCommand::Execute()
 			}
 		}
 	}
+#endif
 	return bRet;
 }

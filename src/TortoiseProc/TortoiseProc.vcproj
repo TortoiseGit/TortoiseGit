@@ -1069,14 +1069,6 @@
 				Name="Commit"
 				>
 				<File
-					RelativePath=".\Commands\CloneCommand.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\CloneCommand.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Commands\CommitCommand.cpp"
 					>
 				</File>
@@ -1173,16 +1165,128 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Rename"
+				>
+				<File
+					RelativePath=".\Commands\RenameCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RenameCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ReposStatus"
+				>
+				<File
+					RelativePath=".\Commands\RepoStatusCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RepoStatusCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Remove"
+				>
+				<File
+					RelativePath=".\Commands\RemoveCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RemoveCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Revert"
+				>
+				<File
+					RelativePath=".\Commands\RevertCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RevertCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Clean"
+				>
+				<File
+					RelativePath=".\Commands\CleanupCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CleanupCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Switch"
+				>
+				<File
+					RelativePath=".\Commands\SwitchCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\SwitchCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Clone"
+				>
+				<File
+					RelativePath=".\Commands\CloneCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CloneCommand.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
 			>
+			<File
+				RelativePath=".\ChangedDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangedDlg.h"
+				>
+			</File>
 			<File
 				RelativePath=".\FileDiffDlg.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\FileDiffDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RenameDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RenameDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RevertDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RevertDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SVNProgressDlg.h"
 				>
 			</File>
 		</Filter>
@@ -1209,6 +1313,14 @@
 				RelativePath=".\GitStatusListCtrlHelpers.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\SwitchDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchDlg.h"
+				>
+			</File>
 			<Filter
 				Name="Compare"
 				>
@@ -1222,11 +1334,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\CloneDlg.htm"
-			DeploymentContent="true"
-			>
-		</File>
 		<File
 			RelativePath="Resource.h"
 			>

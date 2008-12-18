@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "MessageBox.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "RenameDlg.h"
 #include ".\renamedlg.h"
 
@@ -72,7 +72,7 @@ void CRenameDlg::OnOK()
 {
 	UpdateData();
 	m_name.Trim();
-	CTSVNPath path(m_name);
+	CTGitPath path(m_name);
 	if (!path.IsValidOnWindows())
 	{
 		if (CMessageBox::Show(GetSafeHwnd(), IDS_WARN_NOVALIDPATH, IDS_APPNAME, MB_ICONWARNING | MB_OKCANCEL)==IDCANCEL)

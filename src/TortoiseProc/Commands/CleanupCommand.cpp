@@ -21,15 +21,16 @@
 
 #include "MessageBox.h"
 #include "ProgressDlg.h"
-#include "SVN.h"
-#include "SVNGlobal.h"
-#include "SVNAdminDir.h"
+#include "Git.h"
+//#include "GitGlobal.h"
+#include "GitAdminDir.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 
 bool CleanupCommand::Execute()
 {
 	bool bRet = false;
+#if 0
 	CProgressDlg progress;
 	progress.SetTitle(IDS_PROC_CLEANUP);
 	progress.SetAnimation(IDR_CLEANUPANI);
@@ -96,6 +97,6 @@ bool CleanupCommand::Execute()
 		bRet = false;
 	}
 	CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseSVN"), MB_OK | (strFailedPaths.IsEmpty()?MB_ICONINFORMATION:MB_ICONERROR));
-
+#endif
 	return bRet;
 }

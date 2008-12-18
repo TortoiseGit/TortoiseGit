@@ -28,6 +28,12 @@
 #include "PrevDiffCommand.h"
 #include "DiffCommand.h"
 
+#include "RenameCommand.h"
+#include "RepoStatusCommand.h"
+
+#include "RevertCommand.h"
+#include "RemoveCommand.h"
+
 #if 0
 #include "AddCommand.h"
 #include "BlameCommand.h"
@@ -61,9 +67,9 @@
 #include "RebuildIconCacheCommand.h"
 #include "RelocateCommand.h"
 #include "RemoveCommand.h"
-#include "RenameCommand.h"
+
 #include "RepositoryBrowserCommand.h"
-#include "RepoStatusCommand.h"
+
 #include "ResolveCommand.h"
 #include "RevertCommand.h"
 #include "RevisiongraphCommand.h"
@@ -225,6 +231,14 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new PrevDiffCommand;
 	case cmdDiff:
 		return new DiffCommand;
+	case cmdRename:
+		return new RenameCommand;
+	case cmdRepoStatus:
+		return new RepoStatusCommand;
+	case cmdRemove:
+		return new RemoveCommand;
+	case cmdRevert:
+		return new RevertCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -287,13 +301,11 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RelocateCommand;
 	case cmdRemove:
 		return new RemoveCommand;
-	case cmdRename:
-		return new RenameCommand;
+
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;
 
-	case cmdRepoStatus:
-		return new RepoStatusCommand;
+
 	case cmdResolve:
 		return new ResolveCommand;
 	case cmdRevert:

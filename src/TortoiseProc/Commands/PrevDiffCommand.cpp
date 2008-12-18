@@ -21,6 +21,7 @@
 #include "GitDiff.h"
 #include "GitStatus.h"
 #include "MessageBox.h"
+#include "ChangedDlg.h"
 
 bool PrevDiffCommand::Execute()
 {
@@ -28,10 +29,10 @@ bool PrevDiffCommand::Execute()
 	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
 	if (cmdLinePath.IsDirectory())
 	{
-//		CChangedDlg dlg;
-//		dlg.m_pathList = CTSVNPathList(cmdLinePath);
-//		dlg.DoModal();
-//		bRet = true;
+		CChangedDlg dlg;
+		dlg.m_pathList = CTGitPathList(cmdLinePath);
+		dlg.DoModal();
+		bRet = true;
 	}
 	else
 	{

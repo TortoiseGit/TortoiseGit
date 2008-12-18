@@ -816,27 +816,50 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
 	AddPath(firstEntry);
 }
-int CTGitPathList::FillUnRev(int action)
+int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 {
 	int pos=0;
 	this->Clear();
 	CTGitPath path;
-	
-	CString cmd(_T("git.cmd ls-files --exclude-standard --full-name --others"));
-	if(action & CTGitPath::LOGACTIONS_IGNORE)
-		cmd += _T(" --ignored");
-	CString out;
-	g_Git.Run(cmd,&out);
 
-	CString one;
-	while( pos>=0 )
-	{
-		one=out.Tokenize(_T("\n"),pos);
+	int count;
+	if(list==NULL)
+		count=1;
+	else
+		count=list->GetCount();
+	for(int i=0;i<count;i++)
+	{	
+		CString cmd;
+		
+		CString ignored;
+		if(action & CTGitPath::LOGACTIONS_IGNORE)
+			ignored= _T(" --ignored");
+		
+		if(list==NULL)
+		{
+			cmd=_T("git.cmd ls-files --exclude-standard --full-name --others");
+			cmd+=ignored;
+			
+		}
+		else
+		{	cmd.Format(_T("git.cmd ls-files --exclude-standard --full-name --others %s-- \"%s\""),
+					ignored,
+					(*list)[i].GetWinPathString());
+		}
+		
+		CString out;
+		g_Git.Run(cmd,&out);
 
-		//SetFromGit will clear all status
-		path.SetFromGit(one);
-		path.m_Action=action;
-		AddPath(path);
+		CString one;
+		while( pos>=0 )
+		{
+			one=out.Tokenize(_T("\n"),pos);
+
+			//SetFromGit will clear all status
+			path.SetFromGit(one);
+			path.m_Action=action;
+			AddPath(path);
+		}
 	}
 	return 0;
 }

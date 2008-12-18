@@ -157,6 +157,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
     , m_nSortedColumn(-1)
 	, m_sNoPropValueText(MAKEINTRESOURCE(IDS_STATUSLIST_NOPROPVALUE))
 {
+	m_FileLoaded=0;
 	m_critSec.Init();
 }
 
@@ -283,10 +284,19 @@ bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)
 BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
                                    , bool bUpdate /* = FALSE */
                                    , bool bShowIgnores /* = false */
+								   , bool bShowUnRev
                                    , bool bShowUserProps /* = false */)
 {
-#if 0
 	Locker lock(m_critSec);
+	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
+	if(bShowIgnores)
+		mask|= CGitStatusListCtrl::FILELIST_IGNORE;
+	if(bShowUnRev)
+		mask|= CGitStatusListCtrl::FILELIST_UNVER;
+	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)&pathList);
+
+#if 0
+	
 	int refetchcounter = 0;
 	BOOL bRet = TRUE;
 	Invalidate();
@@ -4295,7 +4305,7 @@ CTGitPath CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 	int nListItems = GetItemCount();
 	for (int i=0; i<nListItems; ++i)
 	{
-		const CTGitPath& baseDirectory = GetListEntry(i)->GetPath().GetDirectory();
+		CTGitPath& baseDirectory = *(CTGitPath*)this->GetItemData(i);
 		if(commonBaseDirectory.IsEmpty())
 		{
 			commonBaseDirectory = baseDirectory;
@@ -5362,14 +5372,33 @@ void CGitStatusListCtrl::NotifyCheck()
 	}
 }
 
-int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash)
+int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 {
 	CString out;
 	this->m_bBusy=TRUE;
 	if(hash == GIT_REV_ZERO)
 	{
-		CString cmd(_T("git.cmd diff-index --raw HEAD --numstat -C -M"));
-		g_Git.Run(cmd,&out);
+		int count = 0;
+		if(list == NULL)
+			count = 1;
+		else
+			count = list->GetCount();
+
+		for(int i=0;i<count;i++)
+		{	
+			CString cmdout;
+			CString cmd;
+			if(list == NULL)
+				cmd=(_T("git.cmd diff-index --raw HEAD --numstat -C -M"));
+			else
+				cmd.Format(_T("git.cmd diff-index --raw HEAD --numstat -C -M -- \"%s\""),(*list)[i].GetGitPathString());
+
+			g_Git.Run(cmd,&cmdout);
+
+			out+=cmdout;
+		}
+
+
 		this->m_StatusFileList.ParserFromLog(out);
 	}
 	for(int i=0;i<m_StatusFileList.GetCount();i++)
@@ -5381,9 +5410,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash)
 	this->m_bBusy=FALSE;
 	return 0;
 }
-int CGitStatusListCtrl::UpdateUnRevFileList()
+int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 {
-	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER);
+	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER,List);
 	for(int i=0;i<m_UnRevFileList.GetCount();i++)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
@@ -5393,9 +5422,9 @@ int CGitStatusListCtrl::UpdateUnRevFileList()
 	return 0;
 }
 
-int CGitStatusListCtrl::UpdateIgnoreFileList()
+int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 {
-	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER|CTGitPath::LOGACTIONS_IGNORE);
+	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER|CTGitPath::LOGACTIONS_IGNORE,List);
 	for(int i=0;i<m_IgnoreFileList.GetCount();i++)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_IgnoreFileList[i];
@@ -5404,13 +5433,13 @@ int CGitStatusListCtrl::UpdateIgnoreFileList()
 	}
 	return 0;
 }
-int CGitStatusListCtrl::UpdateFileList(int mask,bool once)
+int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 {
 	if(mask&CGitStatusListCtrl::FILELIST_MODIFY)
 	{
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_MODIFY)))
 		{
-			UpdateFileList(GIT_REV_ZERO);
+			UpdateFileList(git_revnum_t(GIT_REV_ZERO),List);
 			m_FileLoaded|=CGitStatusListCtrl::FILELIST_MODIFY;
 		}
 	}
@@ -5418,7 +5447,7 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once)
 	{
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_UNVER)))
 		{
-			UpdateUnRevFileList();
+			UpdateUnRevFileList(List);
 			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
 		}
 	}

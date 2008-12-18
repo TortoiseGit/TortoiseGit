@@ -20,7 +20,7 @@
 #include "RevertCommand.h"
 
 #include "RevertDlg.h"
-#include "SVNProgressDlg.h"
+//#include "SVNProgressDlg.h"
 #include "MessageBox.h"
 
 bool RevertCommand::Execute()
@@ -29,8 +29,17 @@ bool RevertCommand::Execute()
 	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)
 	{
+
 		if (dlg.m_pathList.GetCount() == 0)
 			return FALSE;
+		CString cmd;
+		CString out;
+		for(int i=0;i< dlg.m_pathList.GetCount() ;i++)
+		{
+			cmd.Format(_T("git.cmd reset --hard -- \"%s\""),dlg.m_pathList[i].GetGitPathString());
+			g_Git.Run(cmd,&out);
+		}
+#if 0
 		CSVNProgressDlg progDlg;
 		theApp.m_pMainWnd = &progDlg;
 		progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Revert);
@@ -41,7 +50,8 @@ bool RevertCommand::Execute()
 		progDlg.SetItemCount(dlg.m_selectedPathList.GetCount());
 		progDlg.SetSelectedList(dlg.m_selectedPathList);
 		progDlg.DoModal();
-		return !progDlg.DidErrorsOccur();
+#endif
+		return true;
 	}
 	return false;
 }

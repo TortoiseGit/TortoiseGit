@@ -629,7 +629,7 @@ UINT CCommitDlg::StatusThread()
     // Initialise the list control with the status of the files/folders below us
 	BOOL success = m_ListCtrl.GetStatus(m_pathList);
 
-	m_ListCtrl.UpdateFileList(GIT_REV_ZERO);
+	m_ListCtrl.UpdateFileList(git_revnum_t(GIT_REV_ZERO));
 	if(this->m_bShowUnversioned)
 		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER);
 	

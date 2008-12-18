@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "registry.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include <list>
 
 /**
@@ -60,6 +60,6 @@ protected:
 
 private:
 	CRegStdWORD				m_maxlines;
-	CTSVNPath				m_logfile;
+	CTGitPath				m_logfile;
 	std::list<CString>		m_lines;
 };

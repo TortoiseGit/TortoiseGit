@@ -43,13 +43,26 @@ public:
 								CString WinPath=path.GetWinPath();
 								if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
 									cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
+								
+								orgPathList = plist; 
+								for(int i=0;i<plist.GetCount();i++)
+								{
+									WinPath=plist[i].GetWinPath();
+									CTGitPath p;
+									if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
+									{
+										p.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
+									}else
+										p=plist[i];
+									pathList.AddPath(p);
 
-								pathList = plist; 
+								}
 							}
 	void					SetExplorerHwnd(HWND hWnd) {hwndExplorer = hWnd;}
 protected:
 	CCmdLineParser			parser;
 	CTGitPathList			pathList;
+	CTGitPathList			orgPathList;
 	CTGitPath				cmdLinePath;
 	CTGitPath				orgCmdLinePath;
 	HWND					hwndExplorer;

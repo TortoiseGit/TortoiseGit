@@ -510,6 +510,7 @@ public:
 	BOOL GetStatus ( const CTGitPathList& pathList
                    , bool bUpdate = false
                    , bool bShowIgnores = false
+				   , bool bShowUnRev=false
                    , bool bShowUserProps = false);
 
 	/**
@@ -898,10 +899,10 @@ public:
 		FILELIST_IGNORE =0x4
 	};
 public:
-	int UpdateFileList(git_revnum_t hash);
-	int UpdateFileList(int mask, bool once=true);
-	int UpdateUnRevFileList();
-	int UpdateIgnoreFileList();
+	int UpdateFileList(git_revnum_t hash,CTGitPathList *List=NULL);
+	int UpdateFileList(int mask, bool once=true,CTGitPathList *List=NULL);
+	int UpdateUnRevFileList(CTGitPathList *List=NULL);
+	int UpdateIgnoreFileList(CTGitPathList *List=NULL);
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
 	int m_FileLoaded;
 };
