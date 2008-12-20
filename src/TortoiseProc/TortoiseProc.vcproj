@@ -393,14 +393,6 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;h;hpp;hxx;hm;inl;inc"
 			>
 			<File
-				RelativePath=".\CloneDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CloneDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ProjectProperties.cpp"
 				>
 			</File>
@@ -1250,11 +1242,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CloneDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CloneDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FileDiffDlg.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\FileDiffDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ProgressDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ProgressDlg.h"
 				>
 			</File>
 			<File
@@ -1334,6 +1342,15 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\tortoisegit\src\TortoiseProc\CloneDlg.htm"
+			DeploymentContent="true"
+			>
+		</File>
 		<File
 			RelativePath="Resource.h"
 			>

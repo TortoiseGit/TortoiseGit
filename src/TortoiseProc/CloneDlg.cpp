@@ -4,14 +4,16 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "CloneDlg.h"
-
+#include "BrowseFolder.h"
+#include "MessageBox.h"
 
 // CCloneDlg dialog
 
-IMPLEMENT_DYNCREATE(CCloneDlg, CDHtmlDialog)
+IMPLEMENT_DYNCREATE(CCloneDlg, CResizableStandAloneDialog)
 
 CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
-	: CDHtmlDialog(CCloneDlg::IDD, CCloneDlg::IDH, pParent)
+	: CResizableStandAloneDialog(CCloneDlg::IDD, pParent)
+	, m_Directory(_T(""))
 {
 
 }
@@ -22,47 +24,97 @@ CCloneDlg::~CCloneDlg()
 
 void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDHtmlDialog::DoDataExchange(pDX);
+	CResizableStandAloneDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_URLCOMBO, m_URLCombo);
+	DDX_Text(pDX, IDC_CLONE_DIR, m_Directory);
 }
 
 BOOL CCloneDlg::OnInitDialog()
 {
-	CDHtmlDialog::OnInitDialog();
+	CResizableStandAloneDialog::OnInitDialog();
+	AddAnchor(IDC_URLCOMBO, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_CLONE_BROWSE_URL, TOP_RIGHT);
+	AddAnchor(IDC_CLONE_DIR, TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_CLONE_DIR_BROWSE, TOP_RIGHT);
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+
+	m_URLCombo.SetURLHistory(TRUE);
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
+	if(m_URL.IsEmpty())
+		m_URLCombo.SetCurSel(0);
+	else
+		m_URLCombo.SetWindowTextW(m_URL);
+
+	CWnd *window=this->GetDlgItem(IDC_CLONE_DIR);
+	if(window)
+		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
+	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-BEGIN_MESSAGE_MAP(CCloneDlg, CDHtmlDialog)
+BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CLONE_BROWSE_URL, &CCloneDlg::OnBnClickedCloneBrowseUrl)
 	ON_BN_CLICKED(IDC_CLONE_DIR_BROWSE, &CCloneDlg::OnBnClickedCloneDirBrowse)
 END_MESSAGE_MAP()
-
-BEGIN_DHTML_EVENT_MAP(CCloneDlg)
-	DHTML_EVENT_ONCLICK(_T("ButtonOK"), OnButtonOK)
-	DHTML_EVENT_ONCLICK(_T("ButtonCancel"), OnButtonCancel)
-END_DHTML_EVENT_MAP()
 
 
 
 // CCloneDlg message handlers
 
-HRESULT CCloneDlg::OnButtonOK(IHTMLElement* /*pElement*/)
+void CCloneDlg::OnOK()
 {
-	OnOK();
-	return S_OK;
+	this->m_URLCombo.GetWindowTextW(m_URL);
+	m_URL.Trim();
+	UpdateData(TRUE);
+	if(m_URL.IsEmpty()||m_Directory.IsEmpty())
+	{
+		CMessageBox::Show(NULL,_T("URL or Dir can't empty"),_T("TortiseGit"),MB_OK);
+		return;
+	}
+	m_URLCombo.SaveHistory();
+	CResizableDialog::OnOK();
+
 }
 
-HRESULT CCloneDlg::OnButtonCancel(IHTMLElement* /*pElement*/)
+void CCloneDlg::OnCancel()
 {
-	OnCancel();
-	return S_OK;
+	CResizableDialog::OnCancel();
 }
 
 void CCloneDlg::OnBnClickedCloneBrowseUrl()
 {
 	// TODO: Add your control notification handler code here
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	CString strCloneDirectory;
+	this->m_URLCombo.GetWindowTextW(strCloneDirectory);
+	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK) 
+	{
+		this->m_URLCombo.SetWindowTextW(strCloneDirectory);
+	}
 }
 
 void CCloneDlg::OnBnClickedCloneDirBrowse()
 {
 	// TODO: Add your control notification handler code here
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	CString strCloneDirectory = this->m_Directory;
+	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK) 
+	{
+		UpdateData(TRUE);
+		m_Directory = strCloneDirectory;
+		UpdateData(FALSE);
+	}
+}
+
+void CCloneDlg::OnEnChangeCloneDir()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDHtmlDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }

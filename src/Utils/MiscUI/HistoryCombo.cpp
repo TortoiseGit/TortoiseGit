@@ -21,7 +21,7 @@
 #include "../registry.h"
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
-#include "SysImageList.h"
+#include "../SysImageList.h"
 #endif
 
 #define MAX_HISTORY_ITEMS 25
@@ -117,9 +117,11 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos)
 				cbei.iImage = SYS_IMAGE_LIST().GetFileIconIndex(_T(".shtml"));
 			else if (str.Left(5) == _T("file:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
-			else if (str.Left(4) == _T("svn:"))
+			else if (str.Left(4) == _T("git:"))
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
-			else if (str.Left(8) == _T("svn+ssh:"))
+			else if (str.Left(4) == _T("ssh:"))
+				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
+			else
 				cbei.iImage = SYS_IMAGE_LIST().GetDirIconIndex();
 		}
 		cbei.iSelectedImage = cbei.iImage;
@@ -190,7 +192,7 @@ CString CHistoryCombo::LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
 	CRect rect;
 	GetWindowRect(rect);
 	GetParent()->ScreenToClient(rect);
-	MoveWindow(rect.left, rect.top, rect.Width(), 100);
+	MoveWindow(rect.left, rect.top, rect.Width(),100);
 
 	return sText;
 }

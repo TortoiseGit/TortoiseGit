@@ -24,7 +24,18 @@
 #include "Hooks.h"
 #include "MessageBox.h"
 
+#include "CloneDlg.h"
+
 bool CloneCommand::Execute()
 {
-	return TRUE;
+	CCloneDlg dlg;
+	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
+	if(dlg.DoModal()==IDOK)
+	{
+		CString dir=dlg.m_Directory;
+		CString url=dlg.m_URL;
+		CString cmd;
+
+	}
+	return FALSE;
 }

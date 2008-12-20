@@ -21,6 +21,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hunspell", "..\ext\hunspell\hunspell.vcproj", "{12E5B4AE-D7EF-4A57-A22D-6F9F9D8CE1FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D2432E38-DE08-45B0-95B0-8EA06AFCBF26}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		TortoiseGit.vsmdi = TortoiseGit.vsmdi
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResizableLib", "..\ext\ResizableLib\ResizableLib.vcproj", "{4BE529FB-C2F2-49F7-A897-054B955564CF}"
 EndProject
@@ -31,6 +35,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TSVNCache", "TGitCache\TSVNCache.vcproj", "{A00D2EDC-B4F5-4B41-94BA-13961DE5D296}"
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = TortoiseGit.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		debug_static|Mixed Platforms = debug_static|Mixed Platforms
 		debug_static|Win32 = debug_static|Win32

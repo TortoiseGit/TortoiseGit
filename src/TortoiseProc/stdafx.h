@@ -3,7 +3,7 @@
 // but are changed infrequently
 
 #pragma once
-#define XMESSAGEBOX_APPREGPATH "Software\\TortoiseSVN\\"
+#define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGit\\"
 
 // Modify the following defines if you have to target a platform prior to the ones specified below.
 // Refer to MSDN for the latest info on corresponding values for different platforms.
@@ -40,7 +40,7 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 #include <afxdlgs.h>
 #include <afxctl.h>
-#include <afxtempl.h>a
+#include <afxtempl.h>
 #include <afxmt.h>
 #include <afxext.h>         // MFC extensions
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
