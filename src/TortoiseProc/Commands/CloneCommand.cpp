@@ -25,6 +25,7 @@
 #include "MessageBox.h"
 
 #include "CloneDlg.h"
+#include "ProgressDlg.h"
 
 bool CloneCommand::Execute()
 {
@@ -35,7 +36,14 @@ bool CloneCommand::Execute()
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
 		CString cmd;
-
+		cmd.Format(_T("git.exe clone %s %s"),
+						url,
+						dir);
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		if(progress.DoModal()==IDOK)
+			return TRUE;
+		
 	}
 	return FALSE;
 }

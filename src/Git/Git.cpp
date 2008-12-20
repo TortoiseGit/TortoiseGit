@@ -15,8 +15,7 @@ CGit::~CGit(void)
 }
 
 char buffer[4096];
-
-int CGit::Run(CString cmd, CString* output)
+int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut)
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hRead, hWrite;
@@ -50,6 +49,20 @@ int CGit::Run(CString cmd, CString* output)
 	}
 	
 	CloseHandle(hWrite);
+	if(piOut)
+		*piOut=pi;
+	if(hReadOut)
+		*hReadOut=hRead;
+	
+	return 0;
+
+}
+int CGit::Run(CString cmd, CString* output)
+{
+	PROCESS_INFORMATION pi;
+	HANDLE hRead;
+	if(RunAsync(cmd,&pi,&hRead))
+		return GIT_ERROR_CREATE_PROCESS;
 
 	DWORD readnumber;
 	while(ReadFile(hRead,buffer,4090,&readnumber,NULL))
