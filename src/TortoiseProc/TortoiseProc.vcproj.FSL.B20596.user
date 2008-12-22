@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
-				CommandArguments="/command:clone /path:&quot;D:\test4&quot;"
+				CommandArguments="/command:clone /path:&quot;D:\profile\b20596\qgit4&quot;"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"
