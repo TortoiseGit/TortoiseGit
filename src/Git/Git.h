@@ -29,6 +29,10 @@ public:
 		return m_GitDir.HasAdminDir(path,&m_CurrentDir);
 	}
 	CString m_CurrentDir;
+
+
+	int GetRemoteList(CStringList &list);
+	int GetBranchList(CStringList &list, int *Current);
 	
 	int GetLog(CString& logOut);
 	git_revnum_t GetHash(CString &friendname);

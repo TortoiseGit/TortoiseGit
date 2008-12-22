@@ -33,6 +33,9 @@
 
 #include "RevertCommand.h"
 #include "RemoveCommand.h"
+#include "PullCommand.h"
+#include "FetchCommand.h"
+#include "PushCommand.h"
 
 #if 0
 #include "AddCommand.h"
@@ -103,6 +106,7 @@ typedef enum
 	cmdDropCopyAdd,
 	cmdDropExport,
 	cmdDropMove,
+	cmdFetch,
 	cmdExport,
 	cmdHelp,
 	cmdIgnore,
@@ -115,6 +119,8 @@ typedef enum
 	cmdPasteMove,
 	cmdPrevDiff,
 	cmdProperties,
+	cmdPull,
+	cmdPush,
 	cmdRTFM,
 	cmdRebuildIconCache,
 	cmdRelocate,
@@ -161,6 +167,7 @@ static const struct CommandInfo
 	{	cmdDropCopyAdd,		_T("dropcopyadd")		},
 	{	cmdDropExport,		_T("dropexport")		},
 	{	cmdDropMove,		_T("dropmove")			},
+	{	cmdFetch,			_T("fetch")				},
 	{	cmdExport,			_T("export")			},
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
@@ -173,6 +180,8 @@ static const struct CommandInfo
 	{	cmdPasteMove,		_T("pastemove")			},
 	{	cmdPrevDiff,		_T("prevdiff")			},
 	{	cmdProperties,		_T("properties")		},
+	{	cmdPull,			_T("pull")				},
+	{	cmdPush,			_T("push")				},
 	{	cmdRTFM,			_T("rtfm")				},
 	{	cmdRebuildIconCache,_T("rebuildiconcache")	},
 	{	cmdRelocate,		_T("relocate")			},
@@ -239,6 +248,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RemoveCommand;
 	case cmdRevert:
 		return new RevertCommand;
+	case cmdPull:
+		return new PullCommand;
+	case cmdFetch:
+		return new FetchCommand;
+	case cmdPush:
+		return new PushCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;

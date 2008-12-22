@@ -566,11 +566,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
@@ -806,19 +806,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\open.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -922,19 +922,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\saveas.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\saveas.ico"
 				>
 			</File>
 			<File
@@ -1026,11 +1026,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
@@ -1229,6 +1229,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="PullFetch"
+				>
+				<File
+					RelativePath=".\Commands\FetchCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\FetchCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\PullCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\PullCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="push"
+				>
+				<File
+					RelativePath=".\Commands\PushCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\PushCommand.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
@@ -1263,6 +1295,22 @@
 			</File>
 			<File
 				RelativePath=".\ProgressDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PullFetchDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PullFetchDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PushDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PushDlg.h"
 				>
 			</File>
 			<File

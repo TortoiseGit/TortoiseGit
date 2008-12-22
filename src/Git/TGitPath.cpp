@@ -830,6 +830,7 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 	for(int i=0;i<count;i++)
 	{	
 		CString cmd;
+		pos=0;
 		
 		CString ignored;
 		if(action & CTGitPath::LOGACTIONS_IGNORE)

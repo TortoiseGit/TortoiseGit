@@ -244,3 +244,54 @@ git_revnum_t CGit::GetHash(CString &friendname)
 		return out.Left(pos);
 	return out;
 }
+
+int CGit::GetBranchList(CStringList &list,int *current)
+{
+	int ret;
+	CString cmd,output;
+	cmd=_T("git.exe branch");
+	int i=0;
+	ret=g_Git.Run(cmd,&output);
+	if(!ret)
+	{		
+		int pos=0;
+		CString one;
+		while( pos>=0 )
+		{
+			i++;
+			one=output.Tokenize(_T("\n"),pos);
+			list.AddTail(one.Right(one.GetLength()-2));
+			if(one[0] == _T('*'))
+				if(current)
+					*current=i;
+		}
+	}
+	return ret;
+}
+
+int CGit::GetRemoteList(CStringList &list)
+{
+	int ret;
+	CString cmd,output;
+	cmd=_T("git.exe config  --get-regexp remote.*.url");
+	ret=g_Git.Run(cmd,&output);
+	if(!ret)
+	{
+		int pos=0;
+		CString one;
+		while( pos>=0 )
+		{
+			one=output.Tokenize(_T("\n"),pos);
+			int start=one.Find(_T("."),0);
+			if(start>0)
+			{
+				CString url;
+				url=one.Right(one.GetLength()-start-1);
+				one=url;
+				one=one.Left(one.Find(_T("."),0));
+				list.AddTail(one);
+			}
+		}
+	}
+	return ret;
+}
