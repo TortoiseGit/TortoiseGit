@@ -566,11 +566,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -806,19 +806,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\open.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -922,19 +922,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File
@@ -1026,11 +1026,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
@@ -1261,6 +1261,10 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="branch"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
@@ -1282,11 +1286,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CreateBranchTagDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CreateBranchTagDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FileDiffDlg.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\FileDiffDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GitSwitch.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GitSwitch.h"
 				>
 			</File>
 			<File
@@ -1331,6 +1351,38 @@
 			</File>
 			<File
 				RelativePath=".\SVNProgressDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchLocalBranchPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchLocalBranchPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchTagPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchTagPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchVersionPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SwitchVersionPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SwtichRemoteBranchPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SwtichRemoteBranchPage.h"
 				>
 			</File>
 		</Filter>
