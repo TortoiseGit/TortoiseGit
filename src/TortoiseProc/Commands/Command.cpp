@@ -39,6 +39,7 @@
 #include "BranchCommand.h"
 #include "TagCommand.h"
 #include "MergeCommand.h"
+#include "SwitchCommand.h"
 
 #if 0
 #include "AddCommand.h"
@@ -82,7 +83,7 @@
 #include "RTFMCommand.h"
 #include "SettingsCommand.h"
 #include "ShowCompareCommand.h"
-#include "SwitchCommand.h"
+
 #include "UnIgnoreCommand.h"
 #include "UnLockCommand.h"
 #include "UpdateCheckCommand.h"
@@ -267,6 +268,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new TagCommand;
 	case cmdMerge:
 		return new MergeCommand;
+	case cmdSwitch:
+		return new SwitchCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -344,8 +347,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SettingsCommand;
 	case cmdShowCompare:
 		return new ShowCompareCommand;
-	case cmdSwitch:
-		return new SwitchCommand;
+
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
 	case cmdUnlock:

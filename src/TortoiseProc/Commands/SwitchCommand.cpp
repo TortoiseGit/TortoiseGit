@@ -19,30 +19,40 @@
 #include "StdAfx.h"
 #include "SwitchCommand.h"
 
-#include "SwitchDlg.h"
-//#include "SVNProgressDlg.h"
+#include "GitSwitchDlg.h"
+#include "ProgressDlg.h"
 #include "MessageBox.h"
 
 bool SwitchCommand::Execute()
 {
-	CSwitchDlg dlg;
-	dlg.m_path = cmdLinePath.GetWinPathString();
-
+	CGitSwitchDlg dlg;
+	
 	if (dlg.DoModal() == IDOK)
 	{
-#if 0
-		CSVNProgressDlg progDlg;
-		theApp.m_pMainWnd = &progDlg;
-		progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Switch);
-		if (parser.HasVal(_T("closeonend")))
-			progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
-		progDlg.SetPathList(CTSVNPathList(cmdLinePath));
-		progDlg.SetUrl(dlg.m_URL);
-		progDlg.SetRevision(dlg.Revision);
-		progDlg.DoModal();
-		return !progDlg.DidErrorsOccur();
-#endif;
-		return true;
+		CString cmd;
+		CString track;
+		CString base;
+		CString force;
+		CString branch;
+
+		if(dlg.m_bBranch)
+			branch.Format(_T("-b %s"),dlg.m_NewBranch);
+		if(dlg.m_bForce)
+			force=_T("-f");
+		if(dlg.m_bTrack)
+			track=_T("--track");
+
+		cmd.Format(_T("git.exe checkout %s %s %s %s"),
+			 force,
+			 track,
+			 branch,
+			 dlg.m_Base);
+
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		if(progress.DoModal()==IDOK)
+			return TRUE;
+
 	}
 	return false;
 }

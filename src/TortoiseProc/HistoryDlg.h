@@ -20,6 +20,7 @@
 #include "StandAloneDlg.h"
 #include "RegHistory.h"
 
+#include "HistoryCombo.h"
 /**
  * \ingroup TortoiseProc
  * Dialog showing the log message history.
@@ -38,6 +39,9 @@ public:
 	// Dialog Data
 	enum { IDD = IDD_HISTORYDLG };
 
+	CString m_Version;
+	CString m_Title;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
@@ -50,4 +54,5 @@ private:
 	CListBox		m_List;
 	CString			m_SelectedText;
 	CRegHistory*	m_history;
+	CHistoryCombo	m_VersionCombo;
 };
