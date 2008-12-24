@@ -245,11 +245,38 @@ git_revnum_t CGit::GetHash(CString &friendname)
 	return out;
 }
 
-int CGit::GetBranchList(CStringList &list,int *current)
+int CGit::GetTagList(CStringList &list)
+{
+	int ret;
+	CString cmd,output;
+	cmd=_T("git.exe tag -l");
+	int i=0;
+	ret=g_Git.Run(cmd,&output);
+	if(!ret)
+	{		
+		int pos=0;
+		CString one;
+		while( pos>=0 )
+		{
+			i++;
+			one=output.Tokenize(_T("\n"),pos);
+			list.AddTail(one);
+		}
+	}
+	return ret;
+}
+
+int CGit::GetBranchList(CStringList &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
 	CString cmd,output;
 	cmd=_T("git.exe branch");
+
+	if(type==(BRANCH_LOCAL|BRANCH_REMOTE))
+		cmd+=_T(" -a");
+	else if(type==BRANCH_REMOTE)
+		cmd+=_T(" -r");
+
 	int i=0;
 	ret=g_Git.Run(cmd,&output);
 	if(!ret)

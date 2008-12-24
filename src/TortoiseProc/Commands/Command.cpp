@@ -36,6 +36,9 @@
 #include "PullCommand.h"
 #include "FetchCommand.h"
 #include "PushCommand.h"
+#include "BranchCommand.h"
+#include "TagCommand.h"
+#include "MergeCommand.h"
 
 #if 0
 #include "AddCommand.h"
@@ -61,7 +64,7 @@
 #include "ImportCommand.h"
 #include "LockCommand.h"
 
-#include "MergeCommand.h"
+
 #include "MergeAllCommand.h"
 #include "PasteCopyCommand.h"
 #include "PasteMoveCommand.h"
@@ -91,6 +94,7 @@ typedef enum
 	cmdAbout,
 	cmdAdd,
 	cmdBlame,
+	cmdBranch,
 	cmdCat,
 	cmdCheckout,
 	cmdCleanup,
@@ -135,6 +139,7 @@ typedef enum
 	cmdSettings,
 	cmdShowCompare,
 	cmdSwitch,
+	cmdTag,
 	cmdUnIgnore,
 	cmdUnlock,
 	cmdUpdate,
@@ -152,6 +157,7 @@ static const struct CommandInfo
 	{	cmdAbout,			_T("about")				},
 	{	cmdAdd,				_T("add")				},
 	{	cmdBlame,			_T("blame")				},
+	{	cmdBranch,			_T("branch")			},
 	{	cmdCat,				_T("cat")				},
 	{	cmdCheckout,		_T("checkout")			},
 	{	cmdCleanup,			_T("cleanup")			},
@@ -196,6 +202,7 @@ static const struct CommandInfo
 	{	cmdSettings,		_T("settings")			},
 	{	cmdShowCompare,		_T("showcompare")		},
 	{	cmdSwitch,			_T("switch")			},
+	{	cmdTag,				_T("tag")				},
 	{	cmdUnIgnore,		_T("unignore")			},
 	{	cmdUnlock,			_T("unlock")			},
 	{	cmdUpdate,			_T("update")			},
@@ -254,6 +261,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new FetchCommand;
 	case cmdPush:
 		return new PushCommand;
+	case cmdBranch:
+		return new BranchCommand;
+	case cmdTag:
+		return new TagCommand;
+	case cmdMerge:
+		return new MergeCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;

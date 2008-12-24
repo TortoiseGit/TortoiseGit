@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,36 +16,20 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "StdAfx.h"
-#include "MergeCommand.h"
-#include "git.h"
-#include "MergeDlg.h"
-#include "MessageBox.h"
+#pragma once
+#include "Command.h"
 
-bool MergeCommand::Execute()
+/**
+ * \ingroup TortoiseProc
+ * Renames files and folders.
+ */
+class BranchCommand : public Command
 {
-	CMergeDlg dlg;
-	if(dlg.DoModal()==IDOK)
-	{
-		CString cmd;
-		CString noff;
-		CString squash;
+public:
+	/**
+	 * Executes the command.
+	 */
+	virtual bool			Execute();
+};
 
-		if(dlg.m_bNoFF)
-			noff=_T("--no-ff");
 
-		if(dlg.m_bSquash)
-			squash=_T("--squash");
-
-		cmd.Format(_T("git.exe merge %s %s %s"),
-			noff,
-			squash,
-			dlg.m_Base);
-
-		CString output;
-		g_Git.Run(cmd,&output);
-
-		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
-	}
-	return false;
-}

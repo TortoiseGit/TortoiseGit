@@ -1262,8 +1262,36 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="branch"
+				Name="branch\tag"
 				>
+				<File
+					RelativePath=".\Commands\BranchCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\BranchCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\TagCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\TagCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="merge"
+				>
+				<File
+					RelativePath=".\Commands\MergeCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\MergeCommand.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1307,6 +1335,14 @@
 			</File>
 			<File
 				RelativePath=".\GitSwitch.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MergeDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MergeDlg.h"
 				>
 			</File>
 			<File

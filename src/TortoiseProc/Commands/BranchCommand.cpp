@@ -17,35 +17,46 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "StdAfx.h"
-#include "MergeCommand.h"
-#include "git.h"
-#include "MergeDlg.h"
-#include "MessageBox.h"
+#include "BranchCommand.h"
 
-bool MergeCommand::Execute()
+#include "MessageBox.h"
+//#include "SVNProgressDlg.h"
+//#include "ProgressDlg.h"
+#include "InputLogDlg.h"
+#include "Git.h"
+#include "DirFileEnum.h"
+#include "ShellUpdater.h"
+#include "CreateBranchTagDlg.h"
+
+bool BranchCommand::Execute()
 {
-	CMergeDlg dlg;
+	CCreateBranchTagDlg dlg;
+	dlg.m_bIsTag=FALSE;
+	
 	if(dlg.DoModal()==IDOK)
 	{
 		CString cmd;
-		CString noff;
-		CString squash;
+		CString force;
+		CString track;
+		if(dlg.m_bTrack)
+			track=_T("--track");
 
-		if(dlg.m_bNoFF)
-			noff=_T("--no-ff");
+		if(dlg.m_bForce)
+			force=_T("-f");
 
-		if(dlg.m_bSquash)
-			squash=_T("--squash");
-
-		cmd.Format(_T("git.exe merge %s %s %s"),
-			noff,
-			squash,
-			dlg.m_Base);
-
-		CString output;
-		g_Git.Run(cmd,&output);
-
-		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
+		cmd.Format(_T("git.exe branch %s %s %s %s"),
+			track,
+			force,
+			dlg.m_BranchTagName,
+			dlg.m_Base
+			);
+		CString out;
+		if(g_Git.Run(cmd,&out))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+		}
+		return TRUE;
+		
 	}
-	return false;
+	return FALSE;
 }

@@ -315,7 +315,15 @@ void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
 		DeleteString(m_nMaxHistoryItems);
 }
-
+void CHistoryCombo::AddString(CStringList &list)
+{
+	POSITION pos;
+	pos=list.GetHeadPosition();
+	while(pos)
+	{
+		AddString(list.GetNext(pos));
+	}
+}
 CString CHistoryCombo::GetString() const
 {
 	CString str;

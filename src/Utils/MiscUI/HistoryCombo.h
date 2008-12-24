@@ -111,6 +111,8 @@ public:
 	 */
 	CString GetString() const;
 
+	void AddString(CStringList &list);
+
 protected:
 	/**
 	 * Will be called whenever the return key is pressed while the

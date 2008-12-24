@@ -30,9 +30,16 @@ public:
 	}
 	CString m_CurrentDir;
 
+	typedef enum
+	{
+		BRANCH_LOCAL=0x1,
+		BRANCH_REMOTE=0x2,
+		BRANCH_ALL=BRANCH_LOCAL|BRANCH_REMOTE,
+	}BRANCH_TYPE;
 
 	int GetRemoteList(CStringList &list);
-	int GetBranchList(CStringList &list, int *Current);
+	int GetBranchList(CStringList &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
+	int GetTagList(CStringList &list);
 	
 	int GetLog(CString& logOut);
 	git_revnum_t GetHash(CString &friendname);
