@@ -7,6 +7,7 @@
 **************************************************************************/
 // IDataObjectImpl.cpp: implementation of the CIDataObjectImpl class.
 //////////////////////////////////////////////////////////////////////
+#include <stdafx.h>
 #include <shlobj.h>
 #include <atlbase.h>
 #include "DragDropImpl.h"

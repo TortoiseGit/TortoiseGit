@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "SVNRev.h"
+#include "GitRev.h"
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
 #include "FileDropEdit.h"
@@ -58,7 +58,7 @@ protected:
 	afx_msg void OnCbnSelchangeEolcombo();
 	afx_msg void OnCbnEditchangeUrlcombo();
 
-	void		SetRevision(const SVNRev& rev);
+	void		SetRevision(const CString& rev);
 
 	DECLARE_MESSAGE_MAP()
 protected:
@@ -72,12 +72,12 @@ public:
 	CHistoryCombo	m_URLCombo;
 	CString			m_URL;
 	CString			m_eolStyle;
-	SVNRev			Revision;
+	CString			Revision;
 	BOOL			m_bNoExternals;
 	CButton			m_butBrowse;
 	CEdit			m_editRevision;
 	CString			m_strExportDirectory;
 	CFileDropEdit	m_cCheckoutEdit;
 	CLogDlg	*		m_pLogDlg;
-	svn_depth_t		m_depth;
+	//svn_depth_t		m_depth;
 };

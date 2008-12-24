@@ -1293,6 +1293,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Export"
+				>
+				<File
+					RelativePath=".\Commands\ExportCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\ExportCommand.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
@@ -1319,6 +1331,14 @@
 			</File>
 			<File
 				RelativePath=".\CreateBranchTagDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ExportDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ExportDlg.h"
 				>
 			</File>
 			<File
@@ -1387,38 +1407,6 @@
 			</File>
 			<File
 				RelativePath=".\SVNProgressDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchLocalBranchPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchLocalBranchPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchTagPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchTagPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchVersionPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchVersionPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwtichRemoteBranchPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwtichRemoteBranchPage.h"
 				>
 			</File>
 		</Filter>

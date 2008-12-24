@@ -40,6 +40,7 @@
 #include "TagCommand.h"
 #include "MergeCommand.h"
 #include "SwitchCommand.h"
+#include "ExportCommand.h"
 
 #if 0
 #include "AddCommand.h"
@@ -59,7 +60,7 @@
 #include "DropCopyCommand.h"
 #include "DropExportCommand.h"
 #include "DropMoveCommand.h"
-#include "ExportCommand.h"
+
 #include "HelpCommand.h"
 #include "IgnoreCommand.h"
 #include "ImportCommand.h"
@@ -270,6 +271,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new MergeCommand;
 	case cmdSwitch:
 		return new SwitchCommand;
+	case cmdExport:
+		return new ExportCommand;
 #if 0
 	case cmdAdd:
 		return new AddCommand;
@@ -301,8 +304,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DropExportCommand;
 	case cmdDropMove:
 		return new DropMoveCommand;
-	case cmdExport:
-		return new ExportCommand;
+
 	case cmdHelp:
 		return new HelpCommand;
 	case cmdIgnore:

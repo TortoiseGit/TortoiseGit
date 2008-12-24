@@ -166,6 +166,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DragDropImpl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DropFiles.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LangDll.cpp"
 				>
 			</File>
