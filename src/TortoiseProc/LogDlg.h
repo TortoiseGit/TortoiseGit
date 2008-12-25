@@ -32,6 +32,7 @@
 #include "GitRev.h"
 #include "Tooltip.h"
 #include "HintListCtrl.h"
+#include "GitLogList.h"
 
 #include <regex>
 using namespace std;
@@ -68,7 +69,7 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator
 public:
 	CLogDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CLogDlg();
-
+#if 0
 	enum
 	{
 		LOGLIST_GRAPH,
@@ -79,7 +80,7 @@ public:
 		LOGLIST_BUG,
 		LOGLIST_MESSAGE_MAX=250
 	};
-
+#endif
 	enum
 	{
 		FILELIST_ACTION,
@@ -136,7 +137,7 @@ protected:
 	afx_msg void OnBnClickedNexthundred();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedCheckStoponcopy();
-	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -178,7 +179,7 @@ private:
 	void RecalculateShownList(CPtrArray * pShownlist);
     void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending);
 	void SortByColumn(int nSortColumn, bool bAscending);
-	bool IsSelectionContinuous();
+	
 	void EnableOKButton();
 	void GetAll(bool bForceAll = false);
 	void UpdateLogInfoLabel();
@@ -195,7 +196,7 @@ private:
 	 * Extracts part of commit message suitable for displaying in revision list.
 	 */
 	CString MakeShortMessage(const CString& message);
-	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
+//	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 
 
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -210,13 +211,13 @@ public:
 	ProjectProperties	m_ProjectProperties;
 	WORD				m_wParam;
 private:
-	HFONT				m_boldFont;
+	//HFONT				m_boldFont;
 	CString				m_sRelativeRoot;
 	CString				m_sRepositoryRoot;
 	CString				m_sSelfRelativeURL;
 	CString				m_sURL;
 	CString				m_sUUID;    ///< empty if the log cache is not used
-	CHintListCtrl		m_LogList;
+	CGitLogList			m_LogList;
 	CListCtrl			m_ChangedFileListCtrl;
 	CFilterEdit			m_cFilter;
 	CProgressCtrl		m_LogProgress;
@@ -227,7 +228,7 @@ private:
 	GitRev				m_startrev;
 	GitRev				m_LogRevision;
 	GitRev				m_endrev;
-	GitRev				m_wcRev;
+	//GitRev				m_wcRev;
 //	GitRevRangeArray	m_selectedRevs;
 //	GitRevRangeArray	m_selectedRevsOneRange;
 	bool				m_bSelectionMustBeContinuous;
@@ -270,7 +271,7 @@ private:
 	static int			m_nSortColumnPathList;
 	static bool			m_bAscendingPathList;
 	CRegDWORD			m_regLastStrict;
-	CRegDWORD			m_regMaxBugIDColWidth;
+	//CRegDWORD			m_regMaxBugIDColWidth;
 	CButton				m_cHidePaths;
 	bool				m_bShowedAll;
 	CString				m_sTitle;
@@ -285,17 +286,19 @@ private:
 	CTime				m_timTo;
 	CColors				m_Colors;
 	CImageList			m_imgList;
+#if 0
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;
 	HICON				m_hAddedIcon;
 	HICON				m_hDeletedIcon;
+#endif
 
 	DWORD				m_childCounter;
 	DWORD				m_maxChild;
 	HACCEL				m_hAccel;
 
 	CStoreSelection*	m_pStoreSelection;
-    CLogDataVector		m_logEntries;
+    
 	
 	CXPTheme			theme;
 	bool				m_bVista;

@@ -566,11 +566,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -806,19 +806,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\open.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -922,19 +922,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File
@@ -1026,11 +1026,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
@@ -1109,6 +1109,14 @@
 				Name="Log"
 				>
 				<File
+					RelativePath=".\GitLogList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GitLogList.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\LogCommand.cpp"
 					>
 				</File>
@@ -1156,6 +1164,14 @@
 					RelativePath=".\Commands\RenameCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\RenameDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RenameDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="ReposStatus"
@@ -1192,6 +1208,14 @@
 					RelativePath=".\Commands\RevertCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\RevertDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevertDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Clean"
@@ -1208,6 +1232,14 @@
 			<Filter
 				Name="Switch"
 				>
+				<File
+					RelativePath=".\GitSwitchDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GitSwitchDlg.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Commands\SwitchCommand.cpp"
 					>
@@ -1226,6 +1258,14 @@
 				</File>
 				<File
 					RelativePath=".\Commands\CloneCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CloneDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CloneDlg.h"
 					>
 				</File>
 			</Filter>
@@ -1248,6 +1288,14 @@
 					RelativePath=".\Commands\PullCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\PullFetchDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PullFetchDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="push"
@@ -1260,6 +1308,14 @@
 					RelativePath=".\Commands\PushCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\PushDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PushDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="branch\tag"
@@ -1270,6 +1326,14 @@
 				</File>
 				<File
 					RelativePath=".\Commands\BranchCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CreateBranchTagDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CreateBranchTagDlg.h"
 					>
 				</File>
 				<File
@@ -1292,6 +1356,14 @@
 					RelativePath=".\Commands\MergeCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\MergeDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\MergeDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Export"
@@ -1304,6 +1376,14 @@
 					RelativePath=".\Commands\ExportCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\ExportDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ExportDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Add"
@@ -1314,6 +1394,14 @@
 				</File>
 				<File
 					RelativePath=".\Commands\AddCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\AddDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\AddDlg.h"
 					>
 				</File>
 			</Filter>
@@ -1341,6 +1429,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\FormatPatchDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FormatPatchDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\ImportPatchCommand.cpp"
 					>
 				</File>
@@ -1348,19 +1444,19 @@
 					RelativePath=".\Commands\ImportPatchCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\ImportPatchDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ImportPatchDlg.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
 			>
-			<File
-				RelativePath=".\AddDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AddDlg.h"
-				>
-			</File>
 			<File
 				RelativePath=".\ChangedDlg.cpp"
 				>
@@ -1374,30 +1470,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CloneDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CloneDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CreateBranchTagDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CreateBranchTagDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ExportDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ExportDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\FileDiffDlg.cpp"
 				>
 			</File>
@@ -1406,91 +1478,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FormatPatchDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FormatPatchDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\GitSwitchDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GitSwitchDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ImportPatchDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ImportPatchDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MergeDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MergeDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ProgressDlg.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\ProgressDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PullFetchDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PullFetchDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PushDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PushDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RenameDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RenameDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RevertDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RevertDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SVNProgressDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchLocalBranchPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchTagPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchTagPage.h"
 				>
 			</File>
 		</Filter>
@@ -1550,11 +1542,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\..\..\..\tortoisegit\src\TortoiseProc\CloneDlg.htm"
-			DeploymentContent="true"
-			>
-		</File>
 		<File
 			RelativePath="Resource.h"
 			>
