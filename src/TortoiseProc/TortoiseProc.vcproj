@@ -1340,6 +1340,14 @@
 					RelativePath=".\Commands\FormatPatchCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Commands\ImportPatchCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\ImportPatchCommand.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1411,6 +1419,14 @@
 			</File>
 			<File
 				RelativePath=".\GitSwitchDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ImportPatchDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ImportPatchDlg.h"
 				>
 			</File>
 			<File

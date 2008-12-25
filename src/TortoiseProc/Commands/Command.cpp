@@ -44,6 +44,8 @@
 #include "AddCommand.h"
 #include "IgnoreCommand.h"
 #include "FormatPatchCommand.h"
+#include "ImportPatchCommand.h"
+
 
 #if 0
 
@@ -121,6 +123,7 @@ typedef enum
 	cmdHelp,
 	cmdIgnore,
 	cmdImport,
+	cmdImportPatch,
 	cmdLock,
 	cmdLog,
 	cmdMerge,
@@ -185,6 +188,7 @@ static const struct CommandInfo
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
 	{	cmdImport,			_T("import")			},
+	{	cmdImportPatch,		_T("importpatch")		},
 	{	cmdLock,			_T("lock")				},
 	{	cmdLog,				_T("log")				},
 	{	cmdMerge,			_T("merge")				},
@@ -284,6 +288,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new IgnoreCommand;
 	case cmdFormatPatch:
 		return new FormatPatchCommand;
+	case cmdImportPatch:
+		return new ImportPatchCommand;
 
 #if 0
 
