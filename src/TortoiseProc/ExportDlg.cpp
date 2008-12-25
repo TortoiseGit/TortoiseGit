@@ -111,8 +111,8 @@ void CExportDlg::OnOK()
 	bool bAutoCreateTargetName = m_bAutoCreateTargetName;
 	m_bAutoCreateTargetName = false;
 
-	m_URLCombo.SaveHistory();
-	m_URL = m_URLCombo.GetString();
+//	m_URLCombo.SaveHistory();
+//	m_URL = m_URLCombo.GetString();
 
 
 	UpdateData(FALSE);
@@ -134,15 +134,14 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 	// directory from the browse folder, then restore the local values into the
 	// dialog controls.
 	//
-	CBrowseFolder browseFolder;
-	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-	CString strCheckoutDirectory = m_strExportDirectory;
-	if (browseFolder.Show(GetSafeHwnd(), strCheckoutDirectory) == CBrowseFolder::OK) 
+	this->UpdateRevsionName();
+	CFileDialog dlg(FALSE,_T("Zip"),this->m_VersionName,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+						_T("*.Zip"));
+	
+	if(dlg.DoModal()==IDOK)
 	{
 		UpdateData(TRUE);
-		m_strExportDirectory = strCheckoutDirectory;
-		m_sExportDirOrig = m_strExportDirectory;
-		m_bAutoCreateTargetName = !PathIsDirectoryEmpty(m_sExportDirOrig);
+		m_strExportDirectory = dlg.GetPathName();
 		UpdateData(FALSE);
 	}
 }

@@ -37,6 +37,14 @@ bool ExportCommand::Execute()
 	
 	if (dlg.DoModal() == IDOK)
 	{
+		CString cmd;
+		cmd.Format(_T("git.exe archive --format=zip --verbose %s >\"%s\""),
+					dlg.m_VersionName,
+					dlg.m_strExportDirectory);
+		CProgressDlg pro;
+		pro.m_GitCmd=cmd;
+		pro.DoModal();
+		return TRUE;
 	}
 	return bRet;
 }
