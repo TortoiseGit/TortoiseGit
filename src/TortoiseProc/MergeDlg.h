@@ -2,10 +2,10 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
-
+#include "ChooseVersion.h"
 // CMergeDlg dialog
 
-class CMergeDlg : public CResizableStandAloneDialog
+class CMergeDlg : public CResizableStandAloneDialog,CChooseVersion
 {
 	DECLARE_DYNAMIC(CMergeDlg)
 
@@ -26,12 +26,9 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 
-	CHistoryCombo m_Branch;
-	CHistoryCombo m_Tags;
-	CHistoryCombo m_Version;
-
 	DECLARE_MESSAGE_MAP()
+	CHOOSE_EVENT_RADIO() ;
 public:
-	afx_msg void OnBnClickedRadio();
+
 	afx_msg void OnBnClickedOk();
 };

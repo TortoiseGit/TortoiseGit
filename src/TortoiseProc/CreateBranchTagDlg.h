@@ -2,10 +2,10 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
-
+#include "ChooseVersion.h"
 // CCreateBranchTagDlg dialog
 
-class CCreateBranchTagDlg : public CResizableStandAloneDialog
+class CCreateBranchTagDlg : public CResizableStandAloneDialog,public CChooseVersion
 {
 	DECLARE_DYNAMIC(CCreateBranchTagDlg)
 
@@ -26,9 +26,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	
-	CHistoryCombo m_Branch;
-	CHistoryCombo m_Tags;
-	CHistoryCombo m_Version;
+	CHOOSE_EVENT_RADIO();
 	
 	DECLARE_MESSAGE_MAP()
 public:
