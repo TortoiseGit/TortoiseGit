@@ -41,9 +41,12 @@
 #include "MergeCommand.h"
 #include "SwitchCommand.h"
 #include "ExportCommand.h"
+#include "AddCommand.h"
+#include "IgnoreCommand.h"
+#include "FormatPatchCommand.h"
 
 #if 0
-#include "AddCommand.h"
+
 #include "BlameCommand.h"
 #include "CatCommand.h"
 #include "CheckoutCommand.h"
@@ -62,7 +65,7 @@
 #include "DropMoveCommand.h"
 
 #include "HelpCommand.h"
-#include "IgnoreCommand.h"
+
 #include "ImportCommand.h"
 #include "LockCommand.h"
 
@@ -113,6 +116,7 @@ typedef enum
 	cmdDropExport,
 	cmdDropMove,
 	cmdFetch,
+	cmdFormatPatch,
 	cmdExport,
 	cmdHelp,
 	cmdIgnore,
@@ -176,6 +180,7 @@ static const struct CommandInfo
 	{	cmdDropExport,		_T("dropexport")		},
 	{	cmdDropMove,		_T("dropmove")			},
 	{	cmdFetch,			_T("fetch")				},
+	{	cmdFormatPatch,		_T("formatpatch")		},
 	{	cmdExport,			_T("export")			},
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
@@ -273,9 +278,15 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SwitchCommand;
 	case cmdExport:
 		return new ExportCommand;
-#if 0
 	case cmdAdd:
 		return new AddCommand;
+	case cmdIgnore:
+		return new IgnoreCommand;
+	case cmdFormatPatch:
+		return new FormatPatchCommand;
+
+#if 0
+
 	case cmdBlame:
 		return new BlameCommand;
 	case cmdCat:
@@ -307,8 +318,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 	case cmdHelp:
 		return new HelpCommand;
-	case cmdIgnore:
-		return new IgnoreCommand;
+
 	case cmdImport:
 		return new ImportCommand;
 	case cmdLock:
@@ -341,8 +351,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 	case cmdResolve:
 		return new ResolveCommand;
-	case cmdRevert:
-		return new RevertCommand;
+
 	case cmdRevisionGraph:
 		return new RevisionGraphCommand;
 	case cmdSettings:

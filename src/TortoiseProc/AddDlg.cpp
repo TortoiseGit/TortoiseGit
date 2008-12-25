@@ -21,7 +21,7 @@
 #include "messagebox.h"
 #include "DirFileEnum.h"
 #include "AddDlg.h"
-#include "SVNConfig.h"
+//#include "SVNConfig.h"
 #include "Registry.h"
 
 #define REFRESHTIMER   100
@@ -48,8 +48,8 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
-	ON_REGISTERED_MESSAGE(CSVNStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -213,7 +213,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// When the timer expires, we start the refresh thread,
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
-	CTSVNPath path;
+	CTGitPath path;
 	path.SetFromWin((LPCTSTR)lParam);
 
 	if (!m_addListCtrl.HasPath(path))

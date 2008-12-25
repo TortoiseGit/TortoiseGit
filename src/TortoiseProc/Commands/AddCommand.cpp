@@ -28,14 +28,17 @@ bool AddCommand::Execute()
 	bool bRet = false;
 	if (parser.HasKey(_T("noui")))
 	{
+#if 0
 		SVN svn;
 		ProjectProperties props;
 		props.ReadPropsPathList(pathList);
 		bRet = !!svn.Add(pathList, &props, svn_depth_empty, FALSE, FALSE, TRUE);
 		CShellUpdater::Instance().AddPathsForUpdate(pathList);
+#endif
 	}
 	else
 	{
+#if 0
 		if (pathList.AreAllPathsFiles())
 		{
 			SVN svn;
@@ -46,10 +49,12 @@ bool AddCommand::Execute()
 		}
 		else
 		{
+#endif
 			CAddDlg dlg;
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
 			{
+#if 0
 				if (dlg.m_pathList.GetCount() == 0)
 					return FALSE;
 				CSVNProgressDlg progDlg;
@@ -64,8 +69,9 @@ bool AddCommand::Execute()
 				progDlg.SetItemCount(dlg.m_pathList.GetCount());
 				progDlg.DoModal();
 				bRet = !progDlg.DidErrorsOccur();
+#endif
 			}
-		}
+	//	}
 	}
 	return bRet;
 }

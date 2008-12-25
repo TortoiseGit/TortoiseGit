@@ -21,10 +21,11 @@
 
 #include "MessageBox.h"
 #include "PathUtils.h"
-#include "SVNProperties.h"
+//#include "SVNProperties.h"
 
 bool IgnoreCommand::Execute()
 {
+#if 0
 	CString filelist;
 	BOOL err = FALSE;
 	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
@@ -88,5 +89,6 @@ bool IgnoreCommand::Execute()
 		CMessageBox::Show(hwndExplorer, temp, _T("TortoiseSVN"), MB_ICONINFORMATION);
 		return true;
 	}
+#endif
 	return false;
 }

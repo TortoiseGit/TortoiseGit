@@ -19,7 +19,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "SVNStatusListCtrl.h"
+#include "GitStatusListCtrl.h"
 
 /**
  * \ingroup TortoiseProc
@@ -58,10 +58,10 @@ private:
 public:
 	/** holds all the selected files/folders the user wants to add to version 
 	 * control on exit */
-	CTSVNPathList	m_pathList;
+	CTGitPathList	m_pathList;
 
 private:
-	CSVNStatusListCtrl	m_addListCtrl;
+	CGitStatusListCtrl	m_addListCtrl;
 	volatile LONG	m_bThreadRunning;
 	CButton			m_SelectAll;
 	bool			m_bCancelled;
