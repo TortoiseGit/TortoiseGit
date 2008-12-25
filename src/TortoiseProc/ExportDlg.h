@@ -17,21 +17,21 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "afxwin.h"
 #include "GitRev.h"
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
 #include "FileDropEdit.h"
 #include "LogDlg.h"
 #include "Tooltip.h"
-#include "afxwin.h"
-
+#include "ChooseVersion.h"
 
 /**
  * \ingroup TortoiseProc
  * Prompts the user for required information for an export command. The information
  * is the module name and the repository url. 
  */
-class CExportDlg : public CResizableStandAloneDialog
+class CExportDlg : public CResizableStandAloneDialog, public CChooseVersion
 {
 	DECLARE_DYNAMIC(CExportDlg)
 
@@ -68,11 +68,14 @@ protected:
 	CString			m_sExportDirOrig;
 	bool			m_bAutoCreateTargetName;
 	CComboBox		m_depthCombo;
+
+	CHOOSE_EVENT_RADIO()	;
+
 public:
 	CHistoryCombo	m_URLCombo;
 	CString			m_URL;
 	CString			m_eolStyle;
-	CString			Revision;
+	CString			m_Revision;
 	BOOL			m_bNoExternals;
 	CButton			m_butBrowse;
 	CEdit			m_editRevision;

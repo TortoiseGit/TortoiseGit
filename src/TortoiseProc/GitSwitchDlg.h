@@ -3,9 +3,10 @@
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
 
+#include "ChooseVersion.h"
 // CGitSwitchDlg dialog
 
-class CGitSwitchDlg : public CResizableStandAloneDialog
+class CGitSwitchDlg : public CResizableStandAloneDialog,public CChooseVersion
 {
 	DECLARE_DYNAMIC(CGitSwitchDlg)
 
@@ -25,12 +26,9 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	void OnBnClickedRadio();
 	void OnBnClickedOk();
 
-	CHistoryCombo m_Branch;
-	CHistoryCombo m_Tags;
-	CHistoryCombo m_Version;
+	afx_msg void OnBnClickedChooseRadioHost();
 
 	DECLARE_MESSAGE_MAP()
 public:
