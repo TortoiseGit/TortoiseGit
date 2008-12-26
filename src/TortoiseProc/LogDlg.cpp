@@ -68,7 +68,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bShowedAll(false)
 	, m_bSelect(false)
 	, m_regLastStrict(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE)
-	, m_regMaxBugIDColWidth(_T("Software\\TortoiseGit\\MaxBugIDColWidth"), 200)
+	
 	, m_bSelectionMustBeContinuous(false)
 	, m_bShowBugtraqColumn(false)
 	, m_lowestRev(_T(""))
@@ -88,29 +88,21 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bVista(false)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
-	// use the default GUI font, create a copy of it and
-	// change the copy to BOLD (leave the rest of the font
-	// the same)
-	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-	LOGFONT lf = {0};
-	GetObject(hFont, sizeof(LOGFONT), &lf);
-	lf.lfWeight = FW_BOLD;
-	m_boldFont = CreateFontIndirect(&lf);
+	
 }
 
 CLogDlg::~CLogDlg()
 {
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
     m_CurrentFilteredChangedArray.RemoveAll();
-	m_logEntries.ClearAll();
+	
 
 	if ( m_pStoreSelection )
 	{
 		delete m_pStoreSelection;
 		m_pStoreSelection = NULL;
 	}
-	if (m_boldFont)
-		DeleteObject(m_boldFont);
+	
 }
 
 void CLogDlg::DoDataExchange(CDataExchange* pDX)
@@ -236,54 +228,10 @@ BOOL CLogDlg::OnInitDialog()
 
 	// set up the columns
 	m_LogList.DeleteAllItems();
-#if 0
-	int c = ((CHeaderCtrl*)(m_LogList.GetDlgItem(0)))->GetItemCount()-1;
-	
-	while (c>=0)
-		m_LogList.DeleteColumn(c--);
-	temp.LoadString(IDS_LOG_GRAPH);
 
-	m_LogList.InsertColumn(this->LOGLIST_GRAPH, temp);
-	
-#if 0	
-	// make the revision column right aligned
-	LVCOLUMN Column;
-	Column.mask = LVCF_FMT;
-	Column.fmt = LVCFMT_RIGHT;
-	m_LogList.SetColumn(0, &Column); 
-#endif	
-//	CString log;
-//	g_Git.GetLog(log);
-
-	temp.LoadString(IDS_LOG_ACTIONS);
-	m_LogList.InsertColumn(this->LOGLIST_ACTION, temp);
-	
-	temp.LoadString(IDS_LOG_MESSAGE);
-	m_LogList.InsertColumn(this->LOGLIST_MESSAGE, temp);
-	
-	temp.LoadString(IDS_LOG_AUTHOR);
-	m_LogList.InsertColumn(this->LOGLIST_AUTHOR, temp);
-	
-	temp.LoadString(IDS_LOG_DATE);
-	m_LogList.InsertColumn(this->LOGLIST_DATE, temp);
-	
-
-	if (m_bShowBugtraqColumn)
-	{
-		temp = m_ProjectProperties.sLabel;
-		if (temp.IsEmpty())
-			temp.LoadString(IDS_LOG_BUGIDS);
-		m_LogList.InsertColumn(this->LOGLIST_BUG, temp);
-
-	}
-	
-	m_LogList.SetRedraw(false);
-	ResizeAllListCtrlCols();
-	m_LogList.SetRedraw(true);
-#endif
 	m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
 	m_ChangedFileListCtrl.DeleteAllItems();
-	c = ((CHeaderCtrl*)(m_ChangedFileListCtrl.GetDlgItem(0)))->GetItemCount()-1;
+	int c = ((CHeaderCtrl*)(m_ChangedFileListCtrl.GetDlgItem(0)))->GetItemCount()-1;
 	while (c>=0)
 		m_ChangedFileListCtrl.DeleteColumn(c--);
 	temp.LoadString(IDS_PROGRS_ACTION);
@@ -404,7 +352,7 @@ BOOL CLogDlg::OnInitDialog()
 	{
 		// the dialog is used to select revisions
 		if (m_bSelectionMustBeContinuous)
-			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()!=0)&&(IsSelectionContinuous()));
+			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()!=0)&&(m_LogList.IsSelectionContinuous()));
 		else
 			DialogEnableWindow(IDOK, m_LogList.GetSelectedCount()!=0);
 	}
@@ -486,7 +434,7 @@ void CLogDlg::EnableOKButton()
 	{
 		// the dialog is used to select revisions
 		if (m_bSelectionMustBeContinuous)
-			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()!=0)&&(IsSelectionContinuous()));
+			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()!=0)&&(m_LogList.IsSelectionContinuous()));
 		else
 			DialogEnableWindow(IDOK, m_LogList.GetSelectedCount()!=0);
 	}
@@ -1176,16 +1124,7 @@ UINT CLogDlg::LogThread()
 	m_DateTo.SetTime(&m_timTo);
 #endif
 	DialogEnableWindow(IDC_GETALL, TRUE);
-	m_LogList.ClearText();
-
-	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserFromLog();
-	m_LogList.SetItemCountEx(this->m_logEntries.size());
-
-	this->m_arShownList.RemoveAll();
-
-	for(int i=0;i<m_logEntries.size();i++)
-		this->m_arShownList.Add(&m_logEntries[i]);
+	m_LogList.FillGitLog();
 	
 #if 0	
 	if (!m_bShowedAll)
@@ -1206,7 +1145,7 @@ UINT CLogDlg::LogThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	m_LogList.RedrawItems(0, m_arShownList.GetCount());
 	m_LogList.SetRedraw(false);
-	ResizeAllListCtrlCols();
+	m_LogList.ResizeAllListCtrlCols();
 	m_LogList.SetRedraw(true);
 	if ( m_pStoreSelection )
 	{
@@ -1327,7 +1266,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	int selCount = m_LogList.GetSelectedCount();
 	if (pWnd == &m_LogList)
 	{
-		ShowContextMenuForRevisions(pWnd, point);
+		//ShowContextMenuForRevisions(pWnd, point);
 	}
 	else if (pWnd == &m_ChangedFileListCtrl)
 	{
@@ -1360,7 +1299,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				popup.AppendMenu(MF_SEPARATOR);
 				sMenuItemText.LoadString(IDS_LOG_POPUP_EDITLOG);
-				popup.AppendMenu(MF_STRING | MF_ENABLED, ID_EDITAUTHOR, sMenuItemText);
+				popup.AppendMenu(MF_STRING | MF_ENABLED, CGitLogList::ID_EDITAUTHOR, sMenuItemText);
 			}
 
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
@@ -1372,7 +1311,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			case WM_COPY:
 				::SendMessage(GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), cmd, 0, -1);
 				break;
-			case ID_EDITAUTHOR:
+			case CGitLogList::ID_EDITAUTHOR:
 				EditLogMessage(selIndex);
 				break;
 			}
@@ -2086,7 +2025,7 @@ void CLogDlg::EditLogMessage(int index)
 	EnableOKButton();
 #endif
 }
-
+#if 0
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
@@ -2117,6 +2056,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
+#endif
 
 BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
@@ -3115,10 +3055,10 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 
 
 		m_LogList.DeleteAllItems();
-		m_LogList.SetItemCountEx(ShownCountWithStopped());
-		m_LogList.RedrawItems(0, ShownCountWithStopped());
+		m_LogList.SetItemCountEx(m_LogList.ShownCountWithStopped());
+		m_LogList.RedrawItems(0, m_LogList.ShownCountWithStopped());
 		m_LogList.SetRedraw(false);
-		ResizeAllListCtrlCols();
+		m_LogList.ResizeAllListCtrlCols();
 		m_LogList.SetRedraw(true);
 		m_LogList.Invalidate();
 		if ( m_LogList.GetItemCount()==1 )
@@ -3664,40 +3604,40 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		{
 //			if ((!bOneRev)||(IsDiffPossible(changedlogpaths[0], rev1)))
 			{
-				popup.AppendMenuIcon(ID_DIFF, IDS_LOG_POPUP_DIFF, IDI_DIFF);
-				popup.AppendMenuIcon(ID_BLAMEDIFF, IDS_LOG_POPUP_BLAMEDIFF, IDI_BLAME);
-				popup.SetDefaultItem(ID_DIFF, FALSE);
-				popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
+				popup.AppendMenuIcon(CGitLogList::ID_DIFF, IDS_LOG_POPUP_DIFF, IDI_DIFF);
+				popup.AppendMenuIcon(CGitLogList::ID_BLAMEDIFF, IDS_LOG_POPUP_BLAMEDIFF, IDI_BLAME);
+				popup.SetDefaultItem(CGitLogList::ID_DIFF, FALSE);
+				popup.AppendMenuIcon(CGitLogList::ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
 				bEntryAdded = true;
 			}
 //			if (rev2 == rev1-1)
 			{
 				if (bEntryAdded)
 					popup.AppendMenu(MF_SEPARATOR, NULL);
-				popup.AppendMenuIcon(ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
-				popup.AppendMenuIcon(ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-				popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
+				popup.AppendMenuIcon(CGitLogList::ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
+				popup.AppendMenuIcon(CGitLogList::ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+				popup.AppendMenuIcon(CGitLogList::ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 				if (m_hasWC)
-					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-				popup.AppendMenuIcon(ID_POPPROPS, IDS_REPOBROWSE_SHOWPROP, IDI_PROPERTIES);			// "Show Properties"
-				popup.AppendMenuIcon(ID_LOG, IDS_MENULOG, IDI_LOG);						// "Show Log"				
-				popup.AppendMenuIcon(ID_GETMERGELOGS, IDS_LOG_POPUP_GETMERGELOGS, IDI_LOG);		// "Show merge log"
-				popup.AppendMenuIcon(ID_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
+					popup.AppendMenuIcon(CGitLogList::ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
+				popup.AppendMenuIcon(CGitLogList::ID_POPPROPS, IDS_REPOBROWSE_SHOWPROP, IDI_PROPERTIES);			// "Show Properties"
+				popup.AppendMenuIcon(CGitLogList::ID_LOG, IDS_MENULOG, IDI_LOG);						// "Show Log"				
+				popup.AppendMenuIcon(CGitLogList::ID_GETMERGELOGS, IDS_LOG_POPUP_GETMERGELOGS, IDI_LOG);		// "Show merge log"
+				popup.AppendMenuIcon(CGitLogList::ID_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				bEntryAdded = true;
 				if (!m_ProjectProperties.sWebViewerPathRev.IsEmpty())
 				{
 					popup.AppendMenu(MF_SEPARATOR, NULL);
-					popup.AppendMenuIcon(ID_VIEWPATHREV, IDS_LOG_POPUP_VIEWPATHREV);
+					popup.AppendMenuIcon(CGitLogList::ID_VIEWPATHREV, IDS_LOG_POPUP_VIEWPATHREV);
 				}
 				if (popup.GetDefaultItem(0,FALSE)==-1)
-					popup.SetDefaultItem(ID_OPEN, FALSE);
+					popup.SetDefaultItem(CGitLogList::ID_OPEN, FALSE);
 			}
 		}
 		else if (changedlogpaths.size())
 		{
 			// more than one entry is selected
-			popup.AppendMenuIcon(ID_SAVEAS, IDS_LOG_POPUP_SAVE);
+			popup.AppendMenuIcon(CGitLogList::ID_SAVEAS, IDS_LOG_POPUP_SAVE);
 			bEntryAdded = true;
 		}
 
@@ -3710,7 +3650,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		
 		switch (cmd)
 		{
-		case ID_DIFF:
+		case CGitLogList::ID_DIFF:
 			{
 				DoDiffFromLog(selIndex, rev1, rev2, false, false);
 			}
@@ -4138,7 +4078,7 @@ void CLogDlg::OnEditCopy()
 	if (GetFocus() == &m_ChangedFileListCtrl)
 		CopyChangedSelectionToClipBoard();
 	else
-		CopySelectionToClipBoard();
+		m_LogList.CopySelectionToClipBoard();
 }
 
 CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)

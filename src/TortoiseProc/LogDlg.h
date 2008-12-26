@@ -32,9 +32,9 @@
 #include "GitRev.h"
 #include "Tooltip.h"
 #include "HintListCtrl.h"
+#include <regex>
 #include "GitLogList.h"
 
-#include <regex>
 using namespace std;
 
 
@@ -151,7 +151,7 @@ protected:
 	virtual void OnCancel();
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	void	FillLogMessageCtrl(bool bShow = true);
 	void	DoDiffFromLog(INT_PTR selIndex, GitRev *rev1, GitRev *rev2, bool blame, bool unified);
