@@ -41,6 +41,11 @@ enum LISTITEMSTATES_MINE {
 
 #define ICONITEMBORDER 5
 
+#define GITLOG_START 0
+#define GITLOG_END   100
+
+typedef void CALLBACK_PROCESS(void * data, int progress);
+
 class CGitLogList : public CHintListCtrl
 {
 	DECLARE_DYNAMIC(CGitLogList)
@@ -48,13 +53,14 @@ class CGitLogList : public CHintListCtrl
 public:
 	CGitLogList();
 	virtual ~CGitLogList();
-	BOOL m_bNoDispUpdates;
+	volatile LONG		m_bNoDispUpdates;
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
 	BOOL m_bCancelled;
 	bool				m_hasWC;
 	GitRev				m_wcRev;
+	volatile LONG 		m_bThreadRunning;
 
 	enum
 	{
@@ -110,6 +116,8 @@ public:
 	bool IsSelectionContinuous();
 	int  FillGitLog();
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
+	int FetchLogAsync(CALLBACK_PROCESS *proc=NULL, void * data=NULL);
+	CPtrArray			m_arShownList;
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -119,12 +127,14 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	static UINT LogThreadEntry(LPVOID pVoid);
+	UINT LogThread();
 
-	CPtrArray			m_arShownList;
+	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;
-	BOOL				m_bThreadRunning;
 	
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;
@@ -134,11 +144,11 @@ protected:
 	HFONT				m_boldFont;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
-
-
 	int					m_nSearchIndex;
 	CLogDataVector		m_logEntries;
-
+	CALLBACK_PROCESS    *m_ProcCallBack;
+	void				*m_ProcData;
+	CStoreSelection*	m_pStoreSelection;
 };
 
 

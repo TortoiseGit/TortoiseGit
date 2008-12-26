@@ -47,6 +47,10 @@ IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 CGitLogList::CGitLogList():CHintListCtrl()
 	,m_regMaxBugIDColWidth(_T("Software\\TortoiseGit\\MaxBugIDColWidth"), 200)
 	,m_nSearchIndex(0)
+	,m_bNoDispUpdates(FALSE)
+	, m_bThreadRunning(FALSE)
+	, m_bStrictStopped(false)
+	, m_pStoreSelection(NULL)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -57,10 +61,18 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
 
+	m_hModifiedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+
+
 }
 
 CGitLogList::~CGitLogList()
 {
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+
 	DestroyIcon(m_hModifiedIcon);
 	DestroyIcon(m_hReplacedIcon);
 	DestroyIcon(m_hAddedIcon);
@@ -70,27 +82,35 @@ CGitLogList::~CGitLogList()
 	if (m_boldFont)
 		DeleteObject(m_boldFont);
 
+	if ( m_pStoreSelection )
+	{
+		delete m_pStoreSelection;
+		m_pStoreSelection = NULL;
+	}
 }
 
 
 BEGIN_MESSAGE_MAP(CGitLogList, CHintListCtrl)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
-	ON_NOTIFY(LVN_GETDISPINFO, 0, OnLvnGetdispinfoLoglist)
+	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoLoglist)
 	ON_WM_CONTEXTMENU()
-	ON_NOTIFY(NM_DBLCLK, 0, OnNMDblclkLoglist)
-	ON_NOTIFY(LVN_ODFINDITEM, IDC_LOGLIST, OnLvnOdfinditemLoglist)
+	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclkLoglist)
+	ON_NOTIFY_REFLECT(LVN_ODFINDITEM,OnLvnOdfinditemLoglist)
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 int CGitLogList:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
+	PreSubclassWindow();
+	return CHintListCtrl::OnCreate(lpCreateStruct);
+}
+
+void CGitLogList::PreSubclassWindow()
+{
 	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
-	m_hModifiedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-
-	return CHintListCtrl::OnCreate(lpCreateStruct);
+	m_Theme.SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
+	CHintListCtrl::PreSubclassWindow();
 }
 
 void CGitLogList::InsertGitColumn()
@@ -1440,4 +1460,239 @@ void CGitLogList::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
   if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 	  DiffSelectedRevWithPrevious();
+}
+
+int CGitLogList::FetchLogAsync(CALLBACK_PROCESS *proc,void * data)
+{
+	m_ProcCallBack=proc;
+	m_ProcData=data;
+
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+	if (AfxBeginThread(LogThreadEntry, this)==NULL)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return -1;
+	}
+	return 0;
+}
+
+//this is the thread function which calls the subversion function
+UINT CGitLogList::LogThreadEntry(LPVOID pVoid)
+{
+	return ((CGitLogList*)pVoid)->LogThread();
+}
+
+
+UINT CGitLogList::LogThread()
+{
+
+	if(m_ProcCallBack)
+		m_ProcCallBack(m_ProcData,GITLOG_START);
+
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+
+    //does the user force the cache to refresh (shift or control key down)?
+    bool refresh =    (GetKeyState (VK_CONTROL) < 0) 
+                   || (GetKeyState (VK_SHIFT) < 0);
+
+	//disable the "Get All" button while we're receiving
+	//log messages.
+
+	CString temp;
+	temp.LoadString(IDS_PROGRESSWAIT);
+	ShowText(temp, true);
+
+//	git_revnum_t r = -1;
+	
+	// get the repository root url, because the changed-files-list has the
+	// paths shown there relative to the repository root.
+//	CTGitPath rootpath;
+//  BOOL succeeded = GetRootAndHead(m_path, rootpath, r);
+
+//    m_sRepositoryRoot = rootpath.GetGitPathString();
+//    m_sURL = m_path.GetGitPathString();
+
+    // we need the UUID to unambigously identify the log cache
+//    if (logCachePool.IsEnabled())
+//        m_sUUID = logCachePool.GetRepositoryInfo().GetRepositoryUUID (rootpath);
+
+    // if the log dialog is started from a working copy, we need to turn that
+    // local path into an url here
+//    if (succeeded)
+//    {
+//        if (!m_path.IsUrl())
+//        {
+//	        m_sURL = GetURLFromPath(m_path);
+
+	        // The URL is escaped because Git::logReceiver
+	        // returns the path in a native format
+//	        m_sURL = CPathUtils::PathUnescape(m_sURL);
+  //      }
+//        m_sRelativeRoot = m_sURL.Mid(CPathUtils::PathUnescape(m_sRepositoryRoot).GetLength());
+//		m_sSelfRelativeURL = m_sRelativeRoot;
+  //  }
+#if 0
+    if (succeeded && !m_mergePath.IsEmpty() && m_mergedRevs.empty())
+    {
+	    // in case we got a merge path set, retrieve the merge info
+	    // of that path and check whether one of the merge URLs
+	    // match the URL we show the log for.
+	    GitPool localpool(pool);
+	    git_error_clear(Err);
+	    apr_hash_t * mergeinfo = NULL;
+	    if (git_client_mergeinfo_get_merged (&mergeinfo, m_mergePath.GetGitApiPath(localpool), GitRev(GitRev::REV_WC), m_pctx, localpool) == NULL)
+	    {
+		    // now check the relative paths
+		    apr_hash_index_t *hi;
+		    const void *key;
+		    void *val;
+
+		    if (mergeinfo)
+		    {
+			    for (hi = apr_hash_first(localpool, mergeinfo); hi; hi = apr_hash_next(hi))
+			    {
+				    apr_hash_this(hi, &key, NULL, &val);
+				    if (m_sURL.Compare(CUnicodeUtils::GetUnicode((char*)key)) == 0)
+				    {
+					    apr_array_header_t * arr = (apr_array_header_t*)val;
+					    if (val)
+					    {
+						    for (long i=0; i<arr->nelts; ++i)
+						    {
+							    git_merge_range_t * pRange = APR_ARRAY_IDX(arr, i, git_merge_range_t*);
+							    if (pRange)
+							    {
+								    for (git_revnum_t r=pRange->start+1; r<=pRange->end; ++r)
+								    {
+									    m_mergedRevs.insert(r);
+								    }
+							    }
+						    }
+					    }
+					    break;
+				    }
+			    }
+		    }
+	    }
+    }
+
+    m_LogProgress.SetPos(1);
+    if (m_startrev == GitRev::REV_HEAD)
+    {
+	    m_startrev = r;
+    }
+    if (m_endrev == GitRev::REV_HEAD)
+    {
+	    m_endrev = r;
+    }
+
+    if (m_limit != 0)
+    {
+	    m_limitcounter = m_limit;
+	    m_LogProgress.SetRange32(0, m_limit);
+    }
+    else
+	    m_LogProgress.SetRange32(m_endrev, m_startrev);
+	
+    if (!m_pegrev.IsValid())
+	    m_pegrev = m_startrev;
+    size_t startcount = m_logEntries.size();
+    m_lowestRev = -1;
+    m_bStrictStopped = false;
+
+    if (succeeded)
+    {
+        succeeded = ReceiveLog (CTGitPathList(m_path), m_pegrev, m_startrev, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
+        if ((!succeeded)&&(!m_path.IsUrl()))
+        {
+	        // try again with REV_WC as the start revision, just in case the path doesn't
+	        // exist anymore in HEAD
+	        succeeded = ReceiveLog(CTGitPathList(m_path), GitRev(), GitRev::REV_WC, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
+        }
+    }
+	m_LogList.ClearText();
+    if (!succeeded)
+	{
+		m_LogList.ShowText(GetLastErrorMessage(), true);
+	}
+	else
+	{
+		if (!m_wcRev.IsValid())
+		{
+			// fetch the revision the wc path is on so we can mark it
+			CTGitPath revWCPath = m_ProjectProperties.GetPropsPath();
+			if (!m_path.IsUrl())
+				revWCPath = m_path;
+			if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RecursiveLogRev"), FALSE)))
+			{
+				git_revnum_t minrev, maxrev;
+				bool switched, modified, sparse;
+				GetWCRevisionStatus(revWCPath, true, minrev, maxrev, switched, modified, sparse);
+				if (maxrev)
+					m_wcRev = maxrev;
+			}
+			else
+			{
+				CTGitPath dummypath;
+				GitStatus status;
+				git_wc_status2_t * stat = status.GetFirstFileStatus(revWCPath, dummypath, false, git_depth_empty);
+				if (stat && stat->entry && stat->entry->cmt_rev)
+					m_wcRev = stat->entry->cmt_rev;
+				if (stat && stat->entry && (stat->entry->kind == git_node_dir))
+					m_wcRev = stat->entry->revision;
+			}
+		}
+	}
+    if (m_bStrict && (m_lowestRev>1) && ((m_limit>0) ? ((startcount + m_limit)>m_logEntries.size()) : (m_endrev<m_lowestRev)))
+		m_bStrictStopped = true;
+	m_LogList.SetItemCountEx(ShownCountWithStopped());
+
+	m_timFrom = (__time64_t(m_tFrom));
+	m_timTo = (__time64_t(m_tTo));
+	m_DateFrom.SetRange(&m_timFrom, &m_timTo);
+	m_DateTo.SetRange(&m_timFrom, &m_timTo);
+	m_DateFrom.SetTime(&m_timFrom);
+	m_DateTo.SetTime(&m_timTo);
+#endif
+	//DialogEnableWindow(IDC_GETALL, TRUE);
+	FillGitLog();
+	
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+
+	RedrawItems(0, m_arShownList.GetCount());
+	SetRedraw(false);
+	ResizeAllListCtrlCols();
+	SetRedraw(true);
+
+	if ( m_pStoreSelection )
+	{
+		// Deleting the instance will restore the
+		// selection of the CLogDlg.
+		delete m_pStoreSelection;
+		m_pStoreSelection = NULL;
+	}
+	else
+	{
+		// If no selection has been set then this must be the first time
+		// the revisions are shown. Let's preselect the topmost revision.
+		if ( GetItemCount()>0 )
+		{
+			SetSelectionMark(0);
+			SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+		}
+	}
+
+	//RefreshCursor();
+	// make sure the filter is applied (if any) now, after we refreshed/fetched
+	// the log messages
+
+	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+
+	if(m_ProcCallBack)
+		m_ProcCallBack(m_ProcData,GITLOG_END);
+
+	return 0;
 }

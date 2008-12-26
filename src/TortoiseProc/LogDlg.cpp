@@ -62,7 +62,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_nSearchIndex(0)
 	, m_wParam(0)
 	, m_nSelectedFilter(LOGFILTER_ALL)
-	, m_bNoDispUpdates(FALSE)
 	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
 	, m_bShowedAll(false)
@@ -72,14 +71,14 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelectionMustBeContinuous(false)
 	, m_bShowBugtraqColumn(false)
 	, m_lowestRev(_T(""))
-	, m_bStrictStopped(false)
+	
 	, m_sLogInfo(_T(""))
 	, m_pFindDialog(NULL)
 	, m_bCancelled(FALSE)
 	, m_pNotifyWindow(NULL)
-	, m_bThreadRunning(FALSE)
+	
 	, m_bAscending(FALSE)
-	, m_pStoreSelection(NULL)
+
 	, m_limit(0)
 	, m_childCounter(0)
 	, m_maxChild(0)
@@ -93,15 +92,11 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 CLogDlg::~CLogDlg()
 {
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+	
     m_CurrentFilteredChangedArray.RemoveAll();
 	
 
-	if ( m_pStoreSelection )
-	{
-		delete m_pStoreSelection;
-		m_pStoreSelection = NULL;
-	}
+
 	
 }
 
@@ -134,10 +129,10 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
-	//ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGLIST, OnNMCustomdrawLoglist)
+	
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
-	//ON_NOTIFY(LVN_GETDISPINFO, IDC_LOGLIST, OnLvnGetdispinfoLoglist)
+	
 	ON_EN_CHANGE(IDC_SEARCHEDIT, OnEnChangeSearchedit)
 	ON_WM_TIMER()
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETO, OnDtnDatetimechangeDateto)
@@ -223,11 +218,12 @@ BOOL CLogDlg::OnInitDialog()
 	if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
 		m_bShowBugtraqColumn = true;
 
-	theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
+	//theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
 	// set up the columns
 	m_LogList.DeleteAllItems();
+	m_LogList.InsertGitColumn();
 
 	m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
 	m_ChangedFileListCtrl.DeleteAllItems();
@@ -377,18 +373,57 @@ BOOL CLogDlg::OnInitDialog()
 	// blocking the dialog
 	m_tTo = 0;
 	m_tFrom = (DWORD)-1;
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	if (AfxBeginThread(LogThreadEntry, this)==NULL)
-	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
+
+	m_LogList.FetchLogAsync(LogCallBack,this);
+
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
 	return FALSE;
 }
 
+void CLogDlg::LogRunStatus(int cur)
+{
+	if( cur == GITLOG_START )
+	{
+		CString temp;
+		temp.LoadString(IDS_PROGRESSWAIT);
+
+		// change the text of the close button to "Cancel" since now the thread
+		// is running, and simply closing the dialog doesn't work.
+		if (!GetDlgItem(IDOK)->IsWindowVisible())
+		{
+			temp.LoadString(IDS_MSGBOX_CANCEL);
+			SetDlgItemText(IDCANCEL, temp);
+		}
+
+		// We use a progress bar while getting the logs	
+		//m_LogProgress.SetRange32(0, 100);
+		//m_LogProgress.SetPos(0);
+
+		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
+
+		DialogEnableWindow(IDC_GETALL, FALSE);
+		DialogEnableWindow(IDC_NEXTHUNDRED, FALSE);
+		DialogEnableWindow(IDC_CHECK_STOPONCOPY, FALSE);
+		DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
+		DialogEnableWindow(IDC_STATBUTTON, FALSE);
+		DialogEnableWindow(IDC_REFRESH, FALSE);
+	}
+
+	if( cur == GITLOG_END)
+	{
+		
+		if (!m_bShowedAll)
+			DialogEnableWindow(IDC_NEXTHUNDRED, TRUE);
+
+		DialogEnableWindow(IDC_CHECK_STOPONCOPY, TRUE);
+		DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
+		DialogEnableWindow(IDC_STATBUTTON, TRUE);
+		DialogEnableWindow(IDC_REFRESH, TRUE);
+
+		PostMessage(WM_TIMER, LOGFILTER_TIMER);
+
+	}
+}
 void CLogDlg::SetDlgTitle(bool bOffline)
 {
 	if (m_sTitle.IsEmpty())
@@ -453,7 +488,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	pMsgView->SetWindowText(_T(" "));
 	// empty the changed files list
 	m_ChangedFileListCtrl.SetRedraw(FALSE);
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+//	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	m_currentChangedArray = NULL;
 	m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
 	m_ChangedFileListCtrl.DeleteAllItems();
@@ -466,7 +501,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	{
 		// force a redraw
 		m_ChangedFileListCtrl.Invalidate();
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+//		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		m_ChangedFileListCtrl.SetRedraw(TRUE);
 		return;
 	}
@@ -477,7 +512,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	if (selCount == 0)
 	{
 		// if nothing is selected, we have nothing more to do
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+//		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		m_ChangedFileListCtrl.SetRedraw(TRUE);
 		return;
 	}
@@ -488,13 +523,13 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		// list fully.
 		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 		int selIndex = m_LogList.GetNextSelectedItem(pos);
-		if (selIndex >= m_arShownList.GetCount())
+		if (selIndex >= m_LogList.m_arShownList.GetCount())
 		{
-			InterlockedExchange(&m_bNoDispUpdates, FALSE);
+//			InterlockedExchange(&m_bNoDispUpdates, FALSE);
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
-		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(selIndex));
+		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
 
 		// set the log message text
 		pMsgView->SetWindowText(_T("*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
@@ -505,7 +540,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		m_currentChangedArray = &(pLogEntry->m_Files);
 		if (m_currentChangedArray == NULL)
 		{
-			InterlockedExchange(&m_bNoDispUpdates, FALSE);
+//			InterlockedExchange(&m_bNoDispUpdates, FALSE);
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
@@ -538,7 +573,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	}
 	
 	// redraw the views
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+//	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 	if (m_currentChangedArray)
 	{
 		m_ChangedFileListCtrl.SetItemCountEx(m_currentChangedArray->GetCount());
@@ -793,7 +828,7 @@ void CLogDlg::OnCancel()
 	CString temp, temp2;
 	GetDlgItemText(IDOK, temp);
 	temp2.LoadString(IDS_MSGBOX_CANCEL);
-	if ((temp.Compare(temp2)==0)||(m_bThreadRunning))
+	if ((temp.Compare(temp2)==0)||(this->IsThreadRunning()))
 	{
 		m_bCancelled = true;
 		return;
@@ -931,253 +966,9 @@ BOOL CLogDlg::Log(git_revnum_t rev, const CString& author, const CString& date, 
 	return TRUE;
 }
 
-//this is the thread function which calls the subversion function
-UINT CLogDlg::LogThreadEntry(LPVOID pVoid)
-{
-	return ((CLogDlg*)pVoid)->LogThread();
-}
-
 GitRev g_rev;
 //this is the thread function which calls the subversion function
-UINT CLogDlg::LogThread()
-{
 
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-
-    //does the user force the cache to refresh (shift or control key down)?
-    bool refresh =    (GetKeyState (VK_CONTROL) < 0) 
-                   || (GetKeyState (VK_SHIFT) < 0);
-
-	//disable the "Get All" button while we're receiving
-	//log messages.
-	DialogEnableWindow(IDC_GETALL, FALSE);
-	DialogEnableWindow(IDC_NEXTHUNDRED, FALSE);
-	DialogEnableWindow(IDC_CHECK_STOPONCOPY, FALSE);
-	DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
-	DialogEnableWindow(IDC_STATBUTTON, FALSE);
-	DialogEnableWindow(IDC_REFRESH, FALSE);
-	
-	CString temp;
-	temp.LoadString(IDS_PROGRESSWAIT);
-	m_LogList.ShowText(temp, true);
-	// change the text of the close button to "Cancel" since now the thread
-	// is running, and simply closing the dialog doesn't work.
-	if (!GetDlgItem(IDOK)->IsWindowVisible())
-	{
-		temp.LoadString(IDS_MSGBOX_CANCEL);
-		SetDlgItemText(IDCANCEL, temp);
-	}
-	// We use a progress bar while getting the logs
-	m_LogProgress.SetRange32(0, 100);
-	m_LogProgress.SetPos(0);
-	GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
-//	git_revnum_t r = -1;
-	
-	// get the repository root url, because the changed-files-list has the
-	// paths shown there relative to the repository root.
-//	CTGitPath rootpath;
-//  BOOL succeeded = GetRootAndHead(m_path, rootpath, r);
-
-//    m_sRepositoryRoot = rootpath.GetGitPathString();
-//    m_sURL = m_path.GetGitPathString();
-
-    // we need the UUID to unambigously identify the log cache
-//    if (logCachePool.IsEnabled())
-//        m_sUUID = logCachePool.GetRepositoryInfo().GetRepositoryUUID (rootpath);
-
-    // if the log dialog is started from a working copy, we need to turn that
-    // local path into an url here
-//    if (succeeded)
-//    {
-//        if (!m_path.IsUrl())
-//        {
-//	        m_sURL = GetURLFromPath(m_path);
-
-	        // The URL is escaped because Git::logReceiver
-	        // returns the path in a native format
-//	        m_sURL = CPathUtils::PathUnescape(m_sURL);
-  //      }
-//        m_sRelativeRoot = m_sURL.Mid(CPathUtils::PathUnescape(m_sRepositoryRoot).GetLength());
-//		m_sSelfRelativeURL = m_sRelativeRoot;
-  //  }
-#if 0
-    if (succeeded && !m_mergePath.IsEmpty() && m_mergedRevs.empty())
-    {
-	    // in case we got a merge path set, retrieve the merge info
-	    // of that path and check whether one of the merge URLs
-	    // match the URL we show the log for.
-	    GitPool localpool(pool);
-	    git_error_clear(Err);
-	    apr_hash_t * mergeinfo = NULL;
-	    if (git_client_mergeinfo_get_merged (&mergeinfo, m_mergePath.GetGitApiPath(localpool), GitRev(GitRev::REV_WC), m_pctx, localpool) == NULL)
-	    {
-		    // now check the relative paths
-		    apr_hash_index_t *hi;
-		    const void *key;
-		    void *val;
-
-		    if (mergeinfo)
-		    {
-			    for (hi = apr_hash_first(localpool, mergeinfo); hi; hi = apr_hash_next(hi))
-			    {
-				    apr_hash_this(hi, &key, NULL, &val);
-				    if (m_sURL.Compare(CUnicodeUtils::GetUnicode((char*)key)) == 0)
-				    {
-					    apr_array_header_t * arr = (apr_array_header_t*)val;
-					    if (val)
-					    {
-						    for (long i=0; i<arr->nelts; ++i)
-						    {
-							    git_merge_range_t * pRange = APR_ARRAY_IDX(arr, i, git_merge_range_t*);
-							    if (pRange)
-							    {
-								    for (git_revnum_t r=pRange->start+1; r<=pRange->end; ++r)
-								    {
-									    m_mergedRevs.insert(r);
-								    }
-							    }
-						    }
-					    }
-					    break;
-				    }
-			    }
-		    }
-	    }
-    }
-
-    m_LogProgress.SetPos(1);
-    if (m_startrev == GitRev::REV_HEAD)
-    {
-	    m_startrev = r;
-    }
-    if (m_endrev == GitRev::REV_HEAD)
-    {
-	    m_endrev = r;
-    }
-
-    if (m_limit != 0)
-    {
-	    m_limitcounter = m_limit;
-	    m_LogProgress.SetRange32(0, m_limit);
-    }
-    else
-	    m_LogProgress.SetRange32(m_endrev, m_startrev);
-	
-    if (!m_pegrev.IsValid())
-	    m_pegrev = m_startrev;
-    size_t startcount = m_logEntries.size();
-    m_lowestRev = -1;
-    m_bStrictStopped = false;
-
-    if (succeeded)
-    {
-        succeeded = ReceiveLog (CTGitPathList(m_path), m_pegrev, m_startrev, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
-        if ((!succeeded)&&(!m_path.IsUrl()))
-        {
-	        // try again with REV_WC as the start revision, just in case the path doesn't
-	        // exist anymore in HEAD
-	        succeeded = ReceiveLog(CTGitPathList(m_path), GitRev(), GitRev::REV_WC, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
-        }
-    }
-	m_LogList.ClearText();
-    if (!succeeded)
-	{
-		m_LogList.ShowText(GetLastErrorMessage(), true);
-	}
-	else
-	{
-		if (!m_wcRev.IsValid())
-		{
-			// fetch the revision the wc path is on so we can mark it
-			CTGitPath revWCPath = m_ProjectProperties.GetPropsPath();
-			if (!m_path.IsUrl())
-				revWCPath = m_path;
-			if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RecursiveLogRev"), FALSE)))
-			{
-				git_revnum_t minrev, maxrev;
-				bool switched, modified, sparse;
-				GetWCRevisionStatus(revWCPath, true, minrev, maxrev, switched, modified, sparse);
-				if (maxrev)
-					m_wcRev = maxrev;
-			}
-			else
-			{
-				CTGitPath dummypath;
-				GitStatus status;
-				git_wc_status2_t * stat = status.GetFirstFileStatus(revWCPath, dummypath, false, git_depth_empty);
-				if (stat && stat->entry && stat->entry->cmt_rev)
-					m_wcRev = stat->entry->cmt_rev;
-				if (stat && stat->entry && (stat->entry->kind == git_node_dir))
-					m_wcRev = stat->entry->revision;
-			}
-		}
-	}
-    if (m_bStrict && (m_lowestRev>1) && ((m_limit>0) ? ((startcount + m_limit)>m_logEntries.size()) : (m_endrev<m_lowestRev)))
-		m_bStrictStopped = true;
-	m_LogList.SetItemCountEx(ShownCountWithStopped());
-
-	m_timFrom = (__time64_t(m_tFrom));
-	m_timTo = (__time64_t(m_tTo));
-	m_DateFrom.SetRange(&m_timFrom, &m_timTo);
-	m_DateTo.SetRange(&m_timFrom, &m_timTo);
-	m_DateFrom.SetTime(&m_timFrom);
-	m_DateTo.SetTime(&m_timTo);
-#endif
-	DialogEnableWindow(IDC_GETALL, TRUE);
-	m_LogList.FillGitLog();
-	
-#if 0	
-	if (!m_bShowedAll)
-		DialogEnableWindow(IDC_NEXTHUNDRED, TRUE);
-#endif
-	DialogEnableWindow(IDC_CHECK_STOPONCOPY, TRUE);
-	DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
-	DialogEnableWindow(IDC_STATBUTTON, TRUE);
-	DialogEnableWindow(IDC_REFRESH, TRUE);
-
-#if 0
-	LogCache::CRepositoryInfo& cachedProperties = logCachePool.GetRepositoryInfo();
-	SetDlgTitle(cachedProperties.IsOffline (m_sUUID, m_sRepositoryRoot, false));
-
-	GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
-	m_bCancelled = true;
-#endif
-	InterlockedExchange(&m_bThreadRunning, FALSE);
-	m_LogList.RedrawItems(0, m_arShownList.GetCount());
-	m_LogList.SetRedraw(false);
-	m_LogList.ResizeAllListCtrlCols();
-	m_LogList.SetRedraw(true);
-	if ( m_pStoreSelection )
-	{
-		// Deleting the instance will restore the
-		// selection of the CLogDlg.
-		delete m_pStoreSelection;
-		m_pStoreSelection = NULL;
-	}
-	else
-	{
-		// If no selection has been set then this must be the first time
-		// the revisions are shown. Let's preselect the topmost revision.
-		if ( m_LogList.GetItemCount()>0 )
-		{
-			m_LogList.SetSelectionMark(0);
-			m_LogList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
-		}
-	}
-
-	if (!GetDlgItem(IDOK)->IsWindowVisible())
-	{
-		temp.LoadString(IDS_MSGBOX_OK);
-		SetDlgItemText(IDCANCEL, temp);
-	}
-
-	RefreshCursor();
-	// make sure the filter is applied (if any) now, after we refreshed/fetched
-	// the log messages
-	PostMessage(WM_TIMER, LOGFILTER_TIMER);
-
-	return 0;
-}
 
 
 
@@ -2060,7 +1851,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 
 BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	if (m_bThreadRunning)
+	if (this->IsThreadRunning())
 	{
 		// only show the wait cursor over the list control
 		if ((pWnd)&&
@@ -2090,14 +1881,14 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
-	if (m_bThreadRunning)
+	if (this->IsThreadRunning())
 		return;
 	if (pNMLV->iItem >= 0)
 	{
 		m_nSearchIndex = pNMLV->iItem;
 		if (pNMLV->iSubItem != 0)
 			return;
-		if ((pNMLV->iItem == m_arShownList.GetCount())&&(m_bStrict)&&(m_bStrictStopped))
+		if ((pNMLV->iItem == m_LogList.m_arShownList.GetCount())&&(m_bStrict)&&(1/*m_bStrictStopped*/))
 		{
 			// remove the selected state
 			if (pNMLV->uChanged & LVIF_STATE)
@@ -2377,8 +2168,8 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
 
-	if (m_bNoDispUpdates)
-		return;
+//	if (m_bNoDispUpdates)
+//		return;
 
 	// First thing - check the draw stage. If it's the control's prepaint
 	// stage, then tell Windows we want messages for every item.
@@ -2718,6 +2509,7 @@ void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
 
+#if 0
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 
 	//Create a pointer to the item
@@ -2792,7 +2584,7 @@ void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 			break;
 		}
 	}
-
+#endif
 	*pResult = 0;
 }
 
@@ -3026,7 +2818,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == LOGFILTER_TIMER)
 	{
-		if (m_bThreadRunning)
+		if (this->IsThreadRunning())
 		{
 			// thread still running! So just restart the timer.
 			SetTimer(LOGFILTER_TIMER, 1000, NULL);
@@ -3037,7 +2829,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 			&& (focusWnd != GetDlgItem(IDC_LOGLIST)));
 		if (m_sFilterText.IsEmpty())
 		{
-			DialogEnableWindow(IDC_STATBUTTON, !(((m_bThreadRunning)||(m_arShownList.IsEmpty()))));
+			DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
 			// do not return here!
 			// we also need to run the filter if the filter text is empty:
 			// 1. to clear an existing filter
@@ -3049,9 +2841,9 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		FillLogMessageCtrl(false);
 
 		// now start filter the log list
-		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-		RecalculateShownList(&m_arShownList);
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+//		InterlockedExchange(&m_bNoDispUpdates, TRUE);
+		RecalculateShownList(&m_LogList.m_arShownList);
+//		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 
 		m_LogList.DeleteAllItems();
@@ -3073,7 +2865,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 			GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 		UpdateLogInfoLabel();
 	} // if (nIDEvent == LOGFILTER_TIMER)
-	DialogEnableWindow(IDC_STATBUTTON, !(((m_bThreadRunning)||(m_arShownList.IsEmpty()))));
+	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
 	__super::OnTimer(nIDEvent);
 }
 
@@ -3236,7 +3028,7 @@ void CLogDlg::SortByColumn(int nSortColumn, bool bAscending)
 
 void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	if (m_bThreadRunning)
+	if (this->IsThreadRunning())
 		return;		//no sorting while the arrays are filled
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	const int nColumn = pNMLV->iSubItem;
@@ -3296,7 +3088,7 @@ void CLogDlg::SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 }
 void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	if (m_bThreadRunning)
+	if (this->IsThreadRunning())
 		return;		//no sorting while the arrays are filled
 	if (m_currentChangedArray == NULL)
 		return;
@@ -3513,9 +3305,9 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 
 	bool bOneRev = true;
 	int sel=m_LogList.GetNextSelectedItem(pos);
-	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(sel));
+	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(sel));
 	GitRev * rev1 = pLogEntry;
-	GitRev * rev2 = reinterpret_cast<GitRev *>(m_arShownList.GetAt(sel+1));
+	GitRev * rev2 = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(sel+1));
 #if 0
 	bool bOneRev = true;
 	if (pos)

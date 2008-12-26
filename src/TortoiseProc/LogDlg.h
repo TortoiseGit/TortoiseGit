@@ -93,7 +93,7 @@ public:
 		BOOL bStrict = CRegDWORD(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE), BOOL bSaveStrict = TRUE);
 	void SetIncludeMerge(bool bInclude = true) {m_bIncludeMerges = bInclude;}
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
-	bool IsThreadRunning() {return !!m_bThreadRunning;}
+	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetDialogTitle(const CString& sTitle) {m_sTitle = sTitle;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
@@ -124,9 +124,8 @@ protected:
 	afx_msg void OnBnClickedHelp();
 	afx_msg void OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedStatbutton();
-	afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+
 	afx_msg void OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeSearchedit();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -156,11 +155,14 @@ protected:
 	void	FillLogMessageCtrl(bool bShow = true);
 	void	DoDiffFromLog(INT_PTR selIndex, GitRev *rev1, GitRev *rev2, bool blame, bool unified);
 
+	static  void LogCallBack(void *data, int cur){((CLogDlg*)data)->LogRunStatus(cur);}
+	void	LogRunStatus(int cur);
+
 	DECLARE_MESSAGE_MAP()
 
 private:
-	static UINT LogThreadEntry(LPVOID pVoid);
-	UINT LogThread();
+	
+
 	void Refresh (bool autoGoOnline = false);
 	BOOL IsDiffPossible(LogChangedPath * changedpath, git_revnum_t rev);
 	BOOL Open(bool bOpenWith, CString changedpath, git_revnum_t rev);
@@ -234,16 +236,16 @@ private:
 	bool				m_bSelectionMustBeContinuous;
 	long				m_logcounter;
 	bool				m_bCancelled;
-	volatile LONG 		m_bThreadRunning;
+	
 	BOOL				m_bStrict;
-	bool				m_bStrictStopped;
+
 	BOOL				m_bIncludeMerges;
 	git_revnum_t		m_lowestRev;
 	BOOL				m_bSaveStrict;
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
 	CTGitPathList		m_currentChangedPathList;
-	CPtrArray			m_arShownList;
+	//CPtrArray			m_arShownList;
 	bool				m_hasWC;
 	int					m_nSearchIndex;
 	bool				m_bFilterWithRegex;
@@ -259,7 +261,7 @@ private:
 	CRect				m_ChgOrigRect;
 	CString				m_sFilterText;
 	int					m_nSelectedFilter;
-	volatile LONG		m_bNoDispUpdates;
+	//volatile LONG		m_bNoDispUpdates;
 	CDateTimeCtrl		m_DateFrom;
 	CDateTimeCtrl		m_DateTo;
 	DWORD				m_tFrom;
@@ -297,7 +299,7 @@ private:
 	DWORD				m_maxChild;
 	HACCEL				m_hAccel;
 
-	CStoreSelection*	m_pStoreSelection;
+
     
 	
 	CXPTheme			theme;
