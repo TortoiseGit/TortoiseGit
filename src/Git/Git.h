@@ -9,6 +9,10 @@ enum
 	GIT_ERROR_CREATE_PROCESS,
 	GIT_ERROR_GET_EXIT_CODE
 };
+
+typedef std::vector<CString> STRING_VECTOR;
+typedef std::map<CString, STRING_VECTOR> MAP_HASH_NAME;
+
 class CGit
 {
 private:
@@ -40,6 +44,7 @@ public:
 	int GetRemoteList(CStringList &list);
 	int GetBranchList(CStringList &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(CStringList &list);
+	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
 	int GetLog(CString& logOut);
 	git_revnum_t GetHash(CString &friendname);

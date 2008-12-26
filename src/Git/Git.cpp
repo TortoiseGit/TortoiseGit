@@ -145,7 +145,7 @@ int CGit::GetLog(CString& logOut)
 	cmd += log;
 	log.Format(_T("#<%c>%%n"),LOG_REV_COMMIT_FILE);
 	cmd += log;
-	cmd += CString(_T("\""));
+	cmd += CString(_T("\" HEAD~4..HEAD"));
 	Run(cmd,&logOut);
 	return 0;
 }
@@ -317,6 +317,35 @@ int CGit::GetRemoteList(CStringList &list)
 				one=url;
 				one=one.Left(one.Find(_T("."),0));
 				list.AddTail(one);
+			}
+		}
+	}
+	return ret;
+}
+
+int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
+{
+	int ret;
+	CString cmd,output;
+	cmd=_T("git show-ref");
+	ret=g_Git.Run(cmd,&output);
+	if(!ret)
+	{
+		int pos=0;
+		CString one;
+		while( pos>=0 )
+		{
+			one=output.Tokenize(_T("\n"),pos);
+			int start=one.Find(_T(" "),0);
+			if(start>0)
+			{
+				CString name;
+				name=one.Right(one.GetLength()-start-1);
+
+				CString hash;
+				hash=one.Left(start);
+
+				map[hash].push_back(name);
 			}
 		}
 	}

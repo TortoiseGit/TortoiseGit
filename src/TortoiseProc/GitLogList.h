@@ -131,7 +131,9 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
-
+	void FillBackGround(HDC hdc, int Index,CRect &rect);
+	void DrawTagBranch(HDC,CRect &rect,INT_PTR index);
+	BOOL GetShortName(CString ref, CString &shortname,CString prefix);
 	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;
@@ -149,6 +151,7 @@ protected:
 	CALLBACK_PROCESS    *m_ProcCallBack;
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;
+	MAP_HASH_NAME		m_HashMap;
 };
 
 

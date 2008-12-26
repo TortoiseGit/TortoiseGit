@@ -66,7 +66,7 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 
-
+	g_Git.GetMapHashToFriendName(m_HashMap);
 }
 
 CGitLogList::~CGitLogList()
@@ -243,7 +243,133 @@ void CGitLogList::ResizeAllListCtrlCols()
 	}
 
 }
+BOOL CGitLogList::GetShortName(CString ref, CString &shortname,CString prefix)
+{
+	if(ref.Left(prefix.GetLength()) ==  prefix)
+	{
+		shortname = ref.Right(ref.GetLength()-prefix.GetLength());
+		return TRUE;
+	}
+	return FALSE;
+}
+void CGitLogList::FillBackGround(HDC hdc, int Index,CRect &rect)
+{	
+	HBRUSH brush;
+	LVITEM   rItem;
+	SecureZeroMemory(&rItem, sizeof(LVITEM));
+	rItem.mask  = LVIF_STATE;
+	rItem.iItem = Index;
+	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
+	GetItem(&rItem);
 
+	if (m_Theme.IsAppThemed() && m_bVista)
+	{
+		m_Theme.Open(m_hWnd, L"Explorer");
+		int state = LISS_NORMAL;
+		if (rItem.state & LVIS_SELECTED)
+		{
+			if (::GetFocus() == m_hWnd)
+				state |= LISS_SELECTED;
+			else
+				state |= LISS_SELECTEDNOTFOCUS;
+		}
+		else
+		{
+#if 0
+			if (pLogEntry->bCopiedSelf)
+			{
+				// unfortunately, the pLVCD->nmcd.uItemState does not contain valid
+				// information at this drawing stage. But we can check the whether the
+				// previous stage changed the background color of the item
+				if (pLVCD->clrTextBk == GetSysColor(COLOR_MENU))
+				{
+					HBRUSH brush;
+					brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
+					if (brush)
+					{
+						::FillRect(pLVCD->nmcd.hdc, &rect, brush);
+						::DeleteObject(brush);
+					}
+				}
+			}
+#endif
+		}
+
+		if (m_Theme.IsBackgroundPartiallyTransparent(LVP_LISTDETAIL, state))
+			m_Theme.DrawParentBackground(m_hWnd, hdc, &rect);
+
+			m_Theme.DrawBackground(hdc, LVP_LISTDETAIL, state, &rect, NULL);
+	}
+	else
+	{
+		HBRUSH brush;
+		if (rItem.state & LVIS_SELECTED)
+		{
+			if (::GetFocus() == m_hWnd)
+				brush = ::CreateSolidBrush(::GetSysColor(COLOR_HIGHLIGHT));
+			else
+				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
+		}
+		else
+		{
+			//if (pLogEntry->bCopiedSelf)
+			//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
+			//else
+				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
+		}
+		if (brush == NULL)
+			return;
+
+		::FillRect(hdc, &rect, brush);
+		::DeleteObject(brush);
+		
+	}
+}
+
+void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
+{
+	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
+	CRect rt=rect;
+	for(int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
+	{
+		CString str;
+		str=m_HashMap[data->m_CommitHash][i];
+		
+		CString shortname;
+		HBRUSH brush=0;
+		shortname=_T("");
+		if(GetShortName(str,shortname,_T("refs/heads/")))
+		{
+			brush = ::CreateSolidBrush(RGB(0xff, 0, 0));
+		}else if(GetShortName(str,shortname,_T("refs/remotes/")))
+		{
+			brush = ::CreateSolidBrush(RGB(0xff, 0xff, 0));
+		}
+		else if(GetShortName(str,shortname,_T("refs/tags/")))
+		{
+			brush = ::CreateSolidBrush(RGB(0, 0, 0xff));
+		}
+
+		if(!shortname.IsEmpty())
+		{
+			SIZE size;
+			memset(&size,0,sizeof(SIZE));
+			GetTextExtentPoint32(hdc, shortname,shortname.GetLength(),&size);
+		
+			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
+		
+			::FillRect(hdc, &rt, brush);
+			::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER);
+				
+			rt.left=rt.right+3;
+		}
+		if(brush)
+			::DeleteObject(brush);
+	}		
+	rt.right=rect.right;
+	::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT);
+	
+}
 
 void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
@@ -316,6 +442,25 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			{
 				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
 			}
+			if (pLVCD->iSubItem == LOGLIST_MESSAGE)
+			{
+				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
+				{
+					GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
+					if(m_HashMap[data->m_CommitHash].size()!=0)
+					{
+						CRect rect;
+						GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+					
+						FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
+						DrawTagBranch(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
+
+						*pResult = CDRF_SKIPDEFAULT;
+						return;
+
+					}
+				}
+			}
 			if (pLVCD->iSubItem == 1)
 			{
 				*pResult = CDRF_DODEFAULT;
@@ -328,82 +473,14 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				int		iconheight = ::GetSystemMetrics(SM_CYSMICON);
 
 				GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec));
-
-				// Get the selected state of the
-				// item being drawn.
-				LVITEM   rItem;
-				SecureZeroMemory(&rItem, sizeof(LVITEM));
-				rItem.mask  = LVIF_STATE;
-				rItem.iItem = pLVCD->nmcd.dwItemSpec;
-				rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
-				GetItem(&rItem);
-
 				CRect rect;
 				GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+				// Get the selected state of the
+				// item being drawn.							
 
 				// Fill the background
-				if (m_Theme.IsAppThemed() && m_bVista)
-				{
-					m_Theme.Open(m_hWnd, L"Explorer");
-					int state = LISS_NORMAL;
-					if (rItem.state & LVIS_SELECTED)
-					{
-						if (::GetFocus() == m_hWnd)
-							state |= LISS_SELECTED;
-						else
-							state |= LISS_SELECTEDNOTFOCUS;
-					}
-					else
-					{
-#if 0
-						if (pLogEntry->bCopiedSelf)
-						{
-							// unfortunately, the pLVCD->nmcd.uItemState does not contain valid
-							// information at this drawing stage. But we can check the whether the
-							// previous stage changed the background color of the item
-							if (pLVCD->clrTextBk == GetSysColor(COLOR_MENU))
-							{
-								HBRUSH brush;
-								brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-								if (brush)
-								{
-									::FillRect(pLVCD->nmcd.hdc, &rect, brush);
-									::DeleteObject(brush);
-								}
-							}
-						}
-#endif
-					}
-
-					if (m_Theme.IsBackgroundPartiallyTransparent(LVP_LISTDETAIL, state))
-						m_Theme.DrawParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
-
-					m_Theme.DrawBackground(pLVCD->nmcd.hdc, LVP_LISTDETAIL, state, &rect, NULL);
-				}
-				else
-				{
-					HBRUSH brush;
-					if (rItem.state & LVIS_SELECTED)
-					{
-						if (::GetFocus() == m_hWnd)
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_HIGHLIGHT));
-						else
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
-					}
-					else
-					{
-						//if (pLogEntry->bCopiedSelf)
-						//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-						//else
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
-					}
-					if (brush == NULL)
-						return;
-
-					::FillRect(pLVCD->nmcd.hdc, &rect, brush);
-					::DeleteObject(brush);
-				}
-
+				FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
+				
 				// Draw the icon(s) into the compatible DC
 				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
