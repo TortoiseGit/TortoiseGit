@@ -330,6 +330,13 @@ void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 {
 	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
 	CRect rt=rect;
+	LVITEM   rItem;
+	SecureZeroMemory(&rItem, sizeof(LVITEM));
+	rItem.mask  = LVIF_STATE;
+	rItem.iItem = index;
+	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
+	GetItem(&rItem);
+
 	for(int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
 	{
 		CString str;
@@ -357,9 +364,24 @@ void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			GetTextExtentPoint32(hdc, shortname,shortname.GetLength(),&size);
 		
 			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
-		
+			rt.right+=4;
 			::FillRect(hdc, &rt, brush);
-			::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER);
+			if (rItem.state & LVIS_SELECTED)
+			{
+				COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
+				::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER);
+				::SetTextColor(hdc,clrOld);   
+			}else
+			{
+				::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER);
+			}
+
+			
+			::MoveToEx(hdc,rt.left,rt.top,NULL);
+			::LineTo(hdc,rt.right,rt.top);
+			::LineTo(hdc,rt.right,rt.bottom);
+			::LineTo(hdc,rt.left,rt.bottom);
+			::LineTo(hdc,rt.left,rt.top);
 				
 			rt.left=rt.right+3;
 		}
@@ -367,7 +389,16 @@ void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			::DeleteObject(brush);
 	}		
 	rt.right=rect.right;
-	::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT);
+
+	if (rItem.state & LVIS_SELECTED)
+	{
+		COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
+		::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT);
+		::SetTextColor(hdc,clrOld);   
+	}else
+	{
+		::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT);
+	}
 	
 }
 
