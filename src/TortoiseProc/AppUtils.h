@@ -162,6 +162,7 @@ public:
 	
 	static bool Export(CString *BashHash=NULL);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL);
+	static bool Switch(CString *CommitHash);
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);

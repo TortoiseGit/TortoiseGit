@@ -22,37 +22,9 @@
 #include "GitSwitchDlg.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
+#include "AppUtils.h"
 
 bool SwitchCommand::Execute()
 {
-	CGitSwitchDlg dlg;
-	
-	if (dlg.DoModal() == IDOK)
-	{
-		CString cmd;
-		CString track;
-		CString base;
-		CString force;
-		CString branch;
-
-		if(dlg.m_bBranch)
-			branch.Format(_T("-b %s"),dlg.m_NewBranch);
-		if(dlg.m_bForce)
-			force=_T("-f");
-		if(dlg.m_bTrack)
-			track=_T("--track");
-
-		cmd.Format(_T("git.exe checkout %s %s %s %s"),
-			 force,
-			 track,
-			 branch,
-			 dlg.m_Base);
-
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-			return TRUE;
-
-	}
-	return false;
+	return CAppUtils::CreateBranchTag(NULL);
 }

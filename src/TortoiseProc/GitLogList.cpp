@@ -68,6 +68,9 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
 
+	m_wcRev.m_CommitHash=GIT_REV_ZERO;
+	m_wcRev.m_Subject=_T("Working Copy");
+
 	m_hModifiedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
@@ -1083,7 +1086,26 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				
 			}
 			break;
-		
+		case ID_COMPARE:
+			{
+				GitRev * r1 = &m_wcRev;
+				GitRev * r2 = pSelLogEntry;
+				CFileDiffDlg dlg;
+				dlg.SetDiff(NULL,*r1,*r2);
+				dlg.DoModal();
+
+				//user clicked on the menu item "compare with working copy"
+				//if (PromptShown())
+				//{
+				//	GitDiff diff(this, m_hWnd, true);
+				//	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+				//	diff.SetHEADPeg(m_LogRevision);
+				//	diff.ShowCompare(m_path, GitRev::REV_WC, m_path, revSelected);
+				//}
+				//else
+				//	CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_WC, m_path, revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			}
+			break;
 		case ID_COPYCLIPBOARD:
 			{
 				CopySelectionToClipBoard();
@@ -1109,6 +1131,10 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 			g_Git.GetMapHashToFriendName(m_HashMap);
 			Invalidate();
 			break;
+		case ID_SWITCHTOREV:
+			CAppUtils::Switch(&pSelLogEntry->m_CommitHash);
+			break;
+		
 
 		default:
 			CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
@@ -1260,20 +1286,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 			} 
 			break;
-		case ID_COMPARE:
-			{
-				//user clicked on the menu item "compare with working copy"
-				if (PromptShown())
-				{
-					GitDiff diff(this, m_hWnd, true);
-					diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(m_path, GitRev::REV_WC, m_path, revSelected);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_WC, m_path, revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-			}
-			break;
+
 		case ID_COMPARETWO:
 			{
 				GitRev r1 = revSelected;

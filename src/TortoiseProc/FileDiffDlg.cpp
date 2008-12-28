@@ -30,6 +30,7 @@
 #include "BrowseFolder.h"
 #include "RevisionDlg.h"
 #include ".\filediffdlg.h"
+#include "gitdiff.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -95,19 +96,6 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	m_rev2 = rev2;
 	
 }
-
-#if 0
-void CFileDiffDlg::SetDiff(const CTGitPath& path1, GitRev rev1, const CTGitPath& path2, GitRev rev2, svn_depth_t depth, bool ignoreancestry)
-{
-	m_bDoPegDiff = false;
-	m_path1 = path1;
-	m_path2 = path2;
-	m_rev1 = rev1;
-	m_rev2 = rev2;
-	m_depth = depth;
-	m_bIgnoreancestry = ignoreancestry;
-}
-#endif
 
 BOOL CFileDiffDlg::OnInitDialog()
 {
@@ -229,11 +217,17 @@ UINT CFileDiffDlg::DiffThread()
 #endif
 	CString cmd;
 	CString rev1=m_rev1.m_CommitHash;
-	if(this->m_rev1.m_CommitHash == GIT_REV_ZERO )
+	if(this->m_rev1.m_CommitHash == GIT_REV_ZERO || this->m_rev2.m_CommitHash == GIT_REV_ZERO)
 	{
 		rev1=+_T("");
+		if(this->m_rev1.m_CommitHash == GIT_REV_ZERO)
+			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat  %s"),m_rev2.m_CommitHash);
+		else
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat  %s"),m_rev1.m_CommitHash);
+	}else
+	{
+		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat %s %s"),rev1,m_rev2.m_CommitHash);
 	}
-	cmd.Format(_T("git.cmd diff-tree -r --raw -C -M --numstat %s %s"),rev1,m_rev2.m_CommitHash);
 	CString out;
 	g_Git.Run(cmd,&out);
 	this->m_arFileList.ParserFromLog(out);
@@ -291,6 +285,11 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 {
+
+	CGitDiff diff;
+	CTGitPath* fd = m_arFilteredList[selIndex];
+	diff.Diff(fd, this->m_rev1.m_CommitHash, this->m_rev2.m_CommitHash, blame, FALSE);
+
 #if 0
 	CFileDiffDlg::CTGitPath* fd = m_arFilteredList[selIndex];
 
@@ -514,15 +513,15 @@ void CFileDiffDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-#if 0
+
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	if (pGetInfoTip->iItem >= (int)m_arFilteredList.size())
 		return;
 
-	CString path = m_path1.GetGitPathString() + _T("/") + m_arFilteredList[pGetInfoTip->iItem].path.GetGitPathString();
+	CString path = m_path1.GetGitPathString() + _T("/") + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
 	if (pGetInfoTip->cchTextMax > path.GetLength())
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax);
-#endif
+
 	*pResult = 0;
 }
 
@@ -598,14 +597,14 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		temp.LoadString(IDS_LOG_POPUP_COMPARETWO);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_COMPARE, temp);
 		temp.LoadString(IDS_FILEDIFF_POPBLAME);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_BLAME, temp);
+		//popup.AppendMenu(MF_STRING | MF_ENABLED, ID_BLAME, temp);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		temp.LoadString(IDS_FILEDIFF_POPSAVELIST);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_SAVEAS, temp);
 		temp.LoadString(IDS_FILEDIFF_POPCLIPBOARD);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_CLIPBOARD, temp);
 		temp.LoadString(IDS_FILEDIFF_POPEXPORT);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_EXPORT, temp);
+		//popup.AppendMenu(MF_STRING | MF_ENABLED, ID_EXPORT, temp);
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		m_bCancelled = false;
 		switch (cmd)
@@ -673,6 +672,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			break;
 		case ID_EXPORT:
 			{
+#if 0 //this funcation seem no useful
 				// export all changed files to a folder
 				CBrowseFolder browseFolder;
 				browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
@@ -694,8 +694,11 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
+#endif;				
 			}
+
 			break;
+
 		}
 	}
 }
@@ -809,7 +812,7 @@ void CFileDiffDlg::OnEnSetfocusSecondurl()
 
 void CFileDiffDlg::OnBnClickedSwitchleftright()
 {
-#if 0
+
 	if (m_bThreadRunning)
 		return;
 	CString sFilterString;
@@ -817,14 +820,14 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 
 	m_cFileList.SetRedraw(false);
 	m_cFileList.DeleteAllItems();
-	for (int i=0; i<(int)m_arFileList.size(); ++i)
+	for (int i=0; i<(int)m_arFileList.GetCount(); ++i)
 	{
 		CTGitPath fd = m_arFileList[i];
-		if (fd.kind == svn_client_diff_summarize_kind_added)
-			fd.kind = svn_client_diff_summarize_kind_deleted;
-		else if (fd.kind == svn_client_diff_summarize_kind_deleted)
-			fd.kind = svn_client_diff_summarize_kind_added;
-		m_arFileList[i] = fd;
+		if (fd.m_Action == CTGitPath::LOGACTIONS_ADDED)
+			fd.m_Action = CTGitPath::LOGACTIONS_DELETED;
+		else if (fd.m_Action == CTGitPath::LOGACTIONS_DELETED)
+			fd.m_Action = CTGitPath::LOGACTIONS_ADDED;
+		( CTGitPath)m_arFileList[i] = ( CTGitPath)fd;
 	}
 	Filter(sFilterString);
 
@@ -836,7 +839,7 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 	m_rev1 = m_rev2;
 	m_rev2 = rev;
 	SetURLLabels();
-#endif
+
 }
 
 void CFileDiffDlg::SetURLLabels()
