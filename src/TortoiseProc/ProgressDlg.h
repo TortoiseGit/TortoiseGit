@@ -15,6 +15,8 @@ public:
 // Dialog Data
 	enum { IDD = IDD_GITPROGRESS };
 	CString m_GitCmd;
+	CString m_LogFile;
+
 	CProgressCtrl m_Progress;
 	
 	CEdit		  m_Log;

@@ -15,10 +15,11 @@ CGit::~CGit(void)
 }
 
 char buffer[4096];
-int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut)
+int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CString *StdioFile)
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hRead, hWrite;
+	HANDLE hStdioFile;
 
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
 	sa.lpSecurityDescriptor=NULL;
@@ -28,13 +29,23 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut)
 		return GIT_ERROR_OPEN_PIP;
 	}
 	
+	if(StdioFile)
+	{
+		hStdioFile=CreateFile(*StdioFile,GENERIC_WRITE,FILE_SHARE_READ   |   FILE_SHARE_WRITE,   
+			&sa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);  
+	}
+
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	si.cb=sizeof(STARTUPINFO);
 	GetStartupInfo(&si);
 
 	si.hStdError=hWrite;
-	si.hStdOutput=hWrite;
+	if(StdioFile)
+		si.hStdOutput=hStdioFile;
+	else
+		si.hStdOutput=hWrite;
+
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 

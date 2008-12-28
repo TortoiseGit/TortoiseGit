@@ -78,7 +78,13 @@ UINT CProgressDlg::ProgressThread()
 
 	m_Animate.Play(0,-1,-1);
 
-	g_Git.RunAsync(this->m_GitCmd,&pi, &hRead);
+	CString *pfilename;
+	if(m_LogFile.IsEmpty())
+		pfilename=NULL;
+	else
+		pfilename=&m_LogFile;
+
+	g_Git.RunAsync(this->m_GitCmd,&pi, &hRead,pfilename);
 	this->DialogEnableWindow(IDOK,FALSE);
 
 	DWORD readnumber;
@@ -145,6 +151,8 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 		text+=_T("\r\n")+m_LogText;
 		m_Log.SetWindowTextW(text);
 		
+		m_Log.LineScroll(m_Log.GetLineCount());
+
 		int s1=m_LogText.Find(_T(':'));
 		int s2=m_LogText.Find(_T('%'));
 		if(s1>0 && s2>0)

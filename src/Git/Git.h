@@ -22,7 +22,7 @@ public:
 	CGit(void);
 	~CGit(void);
 	int Run(CString cmd, CString* output);
-	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead);
+	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, CString &filename);
 	CString GetUserName(void);
 	CString GetUserEmail(void);
