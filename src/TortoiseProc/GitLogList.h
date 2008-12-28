@@ -17,6 +17,7 @@
 #include "Tooltip.h"
 #include "HintListCtrl.h"
 #include "GitLogList.h"
+#include "lanes.h"
 
 #include <regex>
 // CGitLogList
@@ -133,7 +134,12 @@ protected:
 	UINT LogThread();
 	void FillBackGround(HDC hdc, int Index,CRect &rect);
 	void DrawTagBranch(HDC,CRect &rect,INT_PTR index);
+	void DrawGraph(HDC,CRect &rect,INT_PTR index);
+
 	BOOL GetShortName(CString ref, CString &shortname,CString prefix);
+	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
+                                      const COLORREF& col,int top) ; 
+	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){::MoveToEx(hdc,x1,y1,NULL);::LineTo(hdc,x2,y2);}
 	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;

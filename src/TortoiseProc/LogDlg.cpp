@@ -3907,35 +3907,3 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 }
 
 
-int CLogDataVector::ParserFromLog()
-{
-	CString log;
-	GitRev rev;
-	g_Git.GetLog(log);
-
-	CString begin;
-	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
-	
-	if(log.GetLength()==0)
-		return 0;
-	
-	int start=4;
-	int length;
-	int next =1;
-	while( next>0 )
-	{
-		next=log.Find(begin,start);
-		if(next >0 )
-			length = next - start+4;
-		else
-			length = log.GetLength()-start+4;
-
-		CString onelog =log;
-		onelog=log.Mid(start -4,length);
-		rev.ParserFromLog(onelog);
-		this->push_back(rev);
-		start = next +4;
-	}
-
-	return 0;
-}

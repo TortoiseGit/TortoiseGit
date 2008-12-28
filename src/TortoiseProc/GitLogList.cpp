@@ -1,6 +1,13 @@
 // GitLogList.cpp : implementation file
 //
+/*
+	Description: qgit revision list view
 
+	Author: Marco Costalba (C) 2005-2007
+
+	Copyright: See COPYING file that comes with this distribution
+
+*/
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "GitLogList.h"
@@ -254,7 +261,7 @@ BOOL CGitLogList::GetShortName(CString ref, CString &shortname,CString prefix)
 }
 void CGitLogList::FillBackGround(HDC hdc, int Index,CRect &rect)
 {	
-	HBRUSH brush;
+//	HBRUSH brush;
 	LVITEM   rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
@@ -402,6 +409,220 @@ void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	
 }
 
+void CGitLogList::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
+                                      const COLORREF& col,int top
+									  )  
+{
+	int h = laneHeight / 2;
+	int m = (x1 + x2) / 2;
+	int r = (x2 - x1) / 3;
+	int d =  2 * r;
+
+	#define P_CENTER m , h+top
+	#define P_0      x2, h+top
+	#define P_90     m , 0+top
+	#define P_180    x1, h+top
+	#define P_270    m , 2 * h+top
+	#define R_CENTER m - r, h - r+top, m - r+d, h - r+top+d
+
+	//static QPen myPen(Qt::black, 2); // fast path here
+	CPen pen;
+	pen.CreatePen(PS_SOLID,2,col);
+	//myPen.setColor(col);
+	HPEN oldpen=(HPEN)::SelectObject(hdc,(HPEN)pen);
+
+	//p->setPen(myPen);
+
+	// vertical line
+	switch (type) {
+	case Lanes::ACTIVE:
+	case Lanes::NOT_ACTIVE:
+	case Lanes::MERGE_FORK:
+	case Lanes::MERGE_FORK_R:
+	case Lanes::MERGE_FORK_L:
+	case Lanes::JOIN:
+	case Lanes::JOIN_R:
+	case Lanes::JOIN_L:
+		DrawLine(hdc,P_90,P_270);
+		//p->drawLine(P_90, P_270);
+		break;
+	case Lanes::HEAD:
+	case Lanes::HEAD_R:
+	case Lanes::HEAD_L:
+	case Lanes::BRANCH:
+		DrawLine(hdc,P_CENTER,P_270);
+		//p->drawLine(P_CENTER, P_270);
+		break;
+	case Lanes::TAIL:
+	case Lanes::TAIL_R:
+	case Lanes::TAIL_L:
+	case Lanes::INITIAL:
+	case Lanes::BOUNDARY:
+	case Lanes::BOUNDARY_C:
+	case Lanes::BOUNDARY_R:
+	case Lanes::BOUNDARY_L:
+		DrawLine(hdc,P_90, P_CENTER);
+		//p->drawLine(P_90, P_CENTER);
+		break;
+	default:
+		break;
+	}
+
+	// horizontal line
+	switch (type) {
+	case Lanes::MERGE_FORK:
+	case Lanes::JOIN:
+	case Lanes::HEAD:
+	case Lanes::TAIL:
+	case Lanes::CROSS:
+	case Lanes::CROSS_EMPTY:
+	case Lanes::BOUNDARY_C:
+		DrawLine(hdc,P_180,P_0);
+		//p->drawLine(P_180, P_0);
+		break;
+	case Lanes::MERGE_FORK_R:
+	case Lanes::JOIN_R:
+	case Lanes::HEAD_R:
+	case Lanes::TAIL_R:
+	case Lanes::BOUNDARY_R:
+		DrawLine(hdc,P_180,P_CENTER);
+		//p->drawLine(P_180, P_CENTER);
+		break;
+	case Lanes::MERGE_FORK_L:
+	case Lanes::JOIN_L:
+	case Lanes::HEAD_L:
+	case Lanes::TAIL_L:
+	case Lanes::BOUNDARY_L:
+		DrawLine(hdc,P_CENTER,P_0);
+		//p->drawLine(P_CENTER, P_0);
+		break;
+	default:
+		break;
+	}
+
+	CBrush brush;
+	brush.CreateSolidBrush(col);
+	HBRUSH oldbrush=(HBRUSH)::SelectObject(hdc,(HBRUSH)brush);
+	// center symbol, e.g. rect or ellipse
+	switch (type) {
+	case Lanes::ACTIVE:
+	case Lanes::INITIAL:
+	case Lanes::BRANCH:
+
+		//p->setPen(Qt::NoPen);
+		//p->setBrush(col);
+		::Ellipse(hdc, R_CENTER);
+		//p->drawEllipse(R_CENTER);
+		break;
+	case Lanes::MERGE_FORK:
+	case Lanes::MERGE_FORK_R:
+	case Lanes::MERGE_FORK_L:
+		//p->setPen(Qt::NoPen);
+		//p->setBrush(col);
+		//p->drawRect(R_CENTER);
+		Rectangle(hdc,R_CENTER);
+		break;
+	case Lanes::UNAPPLIED:
+		// Red minus sign
+		//p->setPen(Qt::NoPen);
+		//p->setBrush(Qt::red);
+		//p->drawRect(m - r, h - 1, d, 2);
+		::Rectangle(hdc,m-r,h-1,d,2);
+		break;
+	case Lanes::APPLIED:
+		// Green plus sign
+		//p->setPen(Qt::NoPen);
+		//p->setBrush(DARK_GREEN);
+		//p->drawRect(m - r, h - 1, d, 2);
+		//p->drawRect(m - 1, h - r, 2, d);
+		::Rectangle(hdc,m-r,h-1,d,2);
+		::Rectangle(hdc,m-1,h-r,2,d);
+		break;
+	case Lanes::BOUNDARY:
+		//p->setBrush(back);
+		//p->drawEllipse(R_CENTER);
+		::Ellipse(hdc, R_CENTER);
+		break;
+	case Lanes::BOUNDARY_C:
+	case Lanes::BOUNDARY_R:
+	case Lanes::BOUNDARY_L:
+		//p->setBrush(back);
+		//p->drawRect(R_CENTER);
+		::Rectangle(hdc,R_CENTER);
+		break;
+	default:
+		break;
+	}
+
+	::SelectObject(hdc,oldpen);
+	::SelectObject(hdc,oldbrush);
+	#undef P_CENTER
+	#undef P_0
+	#undef P_90
+	#undef P_180
+	#undef P_270
+	#undef R_CENTER
+}
+
+void CGitLogList::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
+{
+	//todo unfinished
+	return;
+	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
+	CRect rt=rect;
+	LVITEM   rItem;
+	SecureZeroMemory(&rItem, sizeof(LVITEM));
+	rItem.mask  = LVIF_STATE;
+	rItem.iItem = index;
+	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
+	GetItem(&rItem);
+
+	static const COLORREF colors[Lanes::COLORS_NUM] = { RGB(0,0,0), RGB(0xFF,0,0), RGB(0,0x1F,0),
+	                                           RGB(0,0,0xFF), RGB(128,128,128), RGB(128,128,0),
+	                                           RGB(0,128,128), RGB(128,0,128) };
+
+
+//	p->translate(QPoint(opt.rect.left(), opt.rect.top()));
+
+
+
+	if (data->m_Lanes.size() == 0)
+		m_logEntries.setLane(data->m_CommitHash);
+
+	std::vector<int>& lanes=data->m_Lanes;
+	UINT laneNum = lanes.size();
+	UINT mergeLane = 0;
+	for (UINT i = 0; i < laneNum; i++)
+		if (Lanes::isMerge(lanes[i])) {
+			mergeLane = i;
+			break;
+		}
+
+	int x1 = 0, x2 = 0;
+	int maxWidth = rect.Width();
+	int lw = 3 * rect.Height() / 4; //laneWidth() 
+	for (UINT i = 0; i < laneNum && x2 < maxWidth; i++) {
+
+		x1 = x2;
+		x2 += lw;
+
+		int ln = lanes[i];
+		if (ln == Lanes::EMPTY)
+			continue;
+
+		UINT col = (  Lanes:: isHead(ln) ||Lanes:: isTail(ln) || Lanes::isJoin(ln)
+		            || ln ==Lanes:: CROSS_EMPTY) ? mergeLane : i;
+
+		if (ln == Lanes::CROSS) {
+			paintGraphLane(hdc, rect.Height(),Lanes::NOT_ACTIVE, x1, x2, colors[col % Lanes::COLORS_NUM],rect.top);
+			paintGraphLane(hdc, rect.Height(),Lanes::CROSS, x1, x2, colors[mergeLane % Lanes::COLORS_NUM],rect.top);
+		} else
+			paintGraphLane(hdc, rect.Height(),ln, x1, x2, colors[col % Lanes::COLORS_NUM],rect.top);
+	}
+
+	TRACE(_T("index %d %d\r\n"),index,data->m_Lanes.size());
+}
+
 void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 
@@ -473,6 +694,23 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			{
 				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
 			}
+
+			if (pLVCD->iSubItem == LOGLIST_GRAPH)
+			{
+				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
+				{
+					CRect rect;
+					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+					
+					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
+					DrawGraph(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
+
+					*pResult = CDRF_SKIPDEFAULT;
+					return;
+				
+				}
+			}
+
 			if (pLVCD->iSubItem == LOGLIST_MESSAGE)
 			{
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
@@ -492,6 +730,7 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					}
 				}
 			}
+			
 			if (pLVCD->iSubItem == 1)
 			{
 				*pResult = CDRF_DODEFAULT;
@@ -1804,3 +2043,4 @@ UINT CGitLogList::LogThread()
 
 	return 0;
 }
+

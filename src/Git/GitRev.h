@@ -50,4 +50,8 @@ public:
 	int	m_Action;
 	int ParserFromLog(CString &log);
 	CTime ConverFromString(CString input);
+	inline int ParentsCount(){return m_ParentHash.size();}
+	
+	//Show version tree Graphic
+	std::vector<int> m_Lanes;
 };

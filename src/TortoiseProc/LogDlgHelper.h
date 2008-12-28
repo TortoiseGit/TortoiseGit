@@ -21,6 +21,7 @@
 #include "GitRev.h"
 #include "GitStatus.h"
 #include "ILogReceiver.h"
+#include "lanes.h"
 
 class CLogDlg;
 
@@ -29,6 +30,8 @@ class CLogDlg;
  * Instances of CStoreSelection save the selection of the CLogDlg. When the instance
  * is deleted the destructor restores the selection.
  */
+typedef std::map<CString, GitRev*> MAP_HASH_REV;
+
 class CStoreSelection
 {
 public:
@@ -71,8 +74,19 @@ class CLogDataVector : 	public std::vector<GitRev>
 {
 public:
 	/// De-allocates log items.
+	CLogDataVector()
+	{
+		m_FirstFreeLane=0;
+	}
 	void ClearAll();
 	int  ParserFromLog();
+	Lanes m_Lanes;
+	int	 m_FirstFreeLane;
+	MAP_HASH_REV m_HashMap;
+	void updateLanes(GitRev& c, Lanes& lns, CString &sha) ;
+	void setLane(CString& sha) ;
+
+
 #if 0
 	/// Ascending date sorting.
 	struct AscDateSort

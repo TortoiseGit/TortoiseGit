@@ -145,7 +145,7 @@ int CGit::GetLog(CString& logOut)
 	cmd += log;
 	log.Format(_T("#<%c>%%n"),LOG_REV_COMMIT_FILE);
 	cmd += log;
-	cmd += CString(_T("\" HEAD~4..HEAD"));
+	cmd += CString(_T("\" HEAD~40..HEAD"));
 	Run(cmd,&logOut);
 	return 0;
 }
