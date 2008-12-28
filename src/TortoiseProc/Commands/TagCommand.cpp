@@ -25,36 +25,9 @@
 #include "Git.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
+#include "AppUtils.h"
 
 bool TagCommand::Execute()
 {
-	CCreateBranchTagDlg dlg;
-	dlg.m_bIsTag=TRUE;
-	
-	if(dlg.DoModal()==IDOK)
-	{
-		CString cmd;
-		CString force;
-		CString track;
-		if(dlg.m_bTrack)
-			track=_T("--track");
-
-		if(dlg.m_bForce)
-			force=_T("-f");
-
-		cmd.Format(_T("git.exe tag %s %s %s %s"),
-			track,
-			force,
-			dlg.m_BranchTagName,
-			dlg.m_Base
-			);
-		CString out;
-		if(g_Git.Run(cmd,&out))
-		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-		}
-		return TRUE;
-		
-	}
-	return FALSE;
+	return CAppUtils::CreateBranchTag(TRUE);
 }

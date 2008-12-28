@@ -30,6 +30,15 @@
 //#include "RepositoryBrowser.h"
 //#include "BrowseFolder.h"
 #include "UnicodeUtils.h"
+#include "ExportDlg.h"
+#include "ProgressDlg.h"
+#include "GitAdminDir.h"
+#include "ProgressDlg.h"
+#include "BrowseFolder.h"
+#include "DirFileEnum.h"
+#include "MessageBox.h"
+#include "GitStatus.h"
+#include "CreateBranchTagDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -1065,4 +1074,76 @@ bool CAppUtils::StartShowCompare(HWND hWnd, const CTGitPath& url1, const GitRev&
 	return CAppUtils::LaunchApplication(sCmd, NULL, false);
 #endif
 	return true;
+}
+
+bool CAppUtils::Export(CString *BashHash)
+{
+	bool bRet = false;
+
+		// ask from where the export has to be done
+	CExportDlg dlg;
+	if(BashHash)
+		dlg.m_Revision=*BashHash;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		CString cmd;
+		cmd.Format(_T("git.exe archive --format=zip %s"),
+					dlg.m_VersionName);
+
+		g_Git.RunLogFile(cmd,dlg.m_strExportDirectory);
+		//CProgressDlg pro;
+		//pro.m_GitCmd=cmd;
+		//pro.DoModal();
+		return TRUE;
+	}
+	return bRet;
+}
+
+bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
+{
+	CCreateBranchTagDlg dlg;
+	dlg.m_bIsTag=IsTag;
+	if(CommitHash)
+		dlg.m_Base = *CommitHash;
+
+	if(dlg.DoModal()==IDOK)
+	{
+		CString cmd;
+		CString force;
+		CString track;
+		if(dlg.m_bTrack)
+			track=_T("--track");
+
+		if(dlg.m_bForce)
+			force=_T("-f");
+
+		if(IsTag)
+		{
+			cmd.Format(_T("git.exe tag %s %s %s %s"),
+				track,
+				force,
+				dlg.m_BranchTagName,
+				dlg.m_Base
+				);
+
+	
+		}else
+		{
+			cmd.Format(_T("git.exe branch %s %s %s %s"),
+				track,
+				force,
+				dlg.m_BranchTagName,
+				dlg.m_Base
+				);
+		}
+		CString out;
+		if(g_Git.Run(cmd,&out))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+		}
+		return TRUE;
+		
+	}
+	return FALSE;
 }

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\Debug\bin"
-			IntermediateDirectory="..\obj\TortoiseUDiff\Debug"
+			OutputDirectory="..\..\bin\Debug\bin"
+			IntermediateDirectory="..\..\obj\TortoiseUDiff\Debug"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>

@@ -159,6 +159,10 @@ public:
 								const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
 								bool bAlternateDiff = false, bool ignoreancestry = false,
 								bool blame = false);
+	
+	static bool Export(CString *BashHash=NULL);
+	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

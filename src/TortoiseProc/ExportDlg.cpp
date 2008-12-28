@@ -81,7 +81,15 @@ BOOL CExportDlg::OnInitDialog()
 
 	CHOOSE_VERSION_ADDANCHOR;
 	Init();
-	SetDefaultChoose(IDC_RADIO_HEAD);
+	if(this->m_Revision.IsEmpty())
+	{
+		SetDefaultChoose(IDC_RADIO_HEAD);
+	}
+	else
+	{
+		SetDefaultChoose(IDC_RADIO_VERSION);
+		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Revision);
+	}
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_CHECKOUTDIRECTORY, IDS_CHECKOUT_TT_DIR);

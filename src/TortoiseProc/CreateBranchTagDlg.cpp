@@ -55,8 +55,16 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
+	if(m_Base.IsEmpty())
+	{
+		this->SetDefaultChoose(IDC_RADIO_HEAD);
+	
+	}else
+	{
+		this->SetDefaultChoose(IDC_RADIO_VERSION);
+		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Base);
+	}
 
-	this->SetDefaultChoose(IDC_RADIO_HEAD);
 	Init();
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);

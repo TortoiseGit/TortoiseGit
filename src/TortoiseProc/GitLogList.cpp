@@ -960,7 +960,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 				popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
 				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
-				popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
+				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
 
@@ -978,18 +978,20 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 //				popup.AppendMenu(MF_SEPARATOR, NULL);
 //			}
 
-//			popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
-//			popup.AppendMenuIcon(ID_COPY, IDS_LOG_POPUP_COPY);
-//			if (m_hasWC)
-//				popup.AppendMenuIcon(ID_UPDATE, IDS_LOG_POPUP_UPDATE, IDI_UPDATE);
-			if (m_hasWC)
-				popup.AppendMenuIcon(ID_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
-			if (m_hasWC)
-				popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-//			if (m_hasWC)
-//				popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREV, IDI_MERGE);
-			popup.AppendMenuIcon(ID_CHECKOUT, IDS_MENUCHECKOUT, IDI_CHECKOUT);
-			popup.AppendMenuIcon(ID_EXPORT, IDS_MENUEXPORT, IDI_EXPORT);
+			//if (m_hasWC)
+			//	popup.AppendMenuIcon(ID_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
+			//if (m_hasWC)
+			//	popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
+			//if (m_hasWC)
+			//	popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREV, IDI_MERGE);
+			
+			popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
+			popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
+			popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
+			popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+			popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);
+			
+
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 		else if (GetSelectedCount() >= 2)
@@ -1001,13 +1003,13 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			if (GetSelectedCount() == 2)
 			{
-				popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
+				//popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
 				popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 				bAddSeparator = true;
 			}
 			if (m_hasWC)
 			{
-				popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
+				//popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
 //				if (m_hasWC)
 //					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
 				bAddSeparator = true;
@@ -1027,6 +1029,12 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 //			popup.AppendMenu(MF_SEPARATOR, NULL);
 //		}
 #endif
+
+		
+		if (GetSelectedCount() == 1)
+		{
+			popup.AppendMenuIcon(ID_COPYHASH, _T("Copy Commit Hash"));
+		}
 		if (GetSelectedCount() != 0)
 		{
 			popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
@@ -1075,7 +1083,36 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				
 			}
 			break;
+		
+		case ID_COPYCLIPBOARD:
+			{
+				CopySelectionToClipBoard();
+			}
+			break;
+		case ID_COPYHASH:
+			{
+				CopySelectionToClipBoard(TRUE);
+			}
+			break;
+		case ID_EXPORT:
+			CAppUtils::Export(&pSelLogEntry->m_CommitHash);
+			break;
+		case ID_CREATE_BRANCH:
+			CAppUtils::CreateBranchTag(FALSE,&pSelLogEntry->m_CommitHash);
+			m_HashMap.clear();
+			g_Git.GetMapHashToFriendName(m_HashMap);
+			Invalidate();			
+			break;
+		case ID_CREATE_TAG:
+			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash);
+			m_HashMap.clear();
+			g_Git.GetMapHashToFriendName(m_HashMap);
+			Invalidate();
+			break;
 
+		default:
+			CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
+			break;
 #if 0
 		case ID_GNUDIFF1:
 			{
@@ -1488,11 +1525,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				dlg.DoModal();
 			}
 			break;
-		case ID_COPYCLIPBOARD:
-			{
-				CopySelectionToClipBoard();
-			}
-			break;
+		
 		case ID_EXPORT:
 			{
 				CString sCmd;
@@ -1535,8 +1568,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			break;
 #endif
-		default:
-			break;
+		
 		} // switch (cmd)
 		theApp.DoWaitCursor(-1);
 //		EnableOKButton();
@@ -1572,9 +1604,9 @@ bool CGitLogList::IsSelectionContinuous()
 	return bContinuous;
 }
 
-void CGitLogList::CopySelectionToClipBoard()
+void CGitLogList::CopySelectionToClipBoard(bool HashOnly)
 {
-#if 0
+
 	CString sClipdata;
 	POSITION pos = GetFirstSelectedItemPosition();
 	if (pos != NULL)
@@ -1591,36 +1623,36 @@ void CGitLogList::CopySelectionToClipBoard()
 		{
 			CString sLogCopyText;
 			CString sPaths;
-			PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(GetNextSelectedItem(pos)));
-			LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-			for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount(); ++cpPathIndex)
+			GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(GetNextSelectedItem(pos)));
+
+			if(!HashOnly)
 			{
-				LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-				sPaths += cpath->GetAction() + _T(" : ") + cpath->sPath;
-				if (cpath->sCopyFromPath.IsEmpty())
-					sPaths += _T("\r\n");
-				else
+				//pLogEntry->m_Files
+				//LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
+			
+				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->m_Files.GetCount(); ++cpPathIndex)
 				{
-					CString sCopyFrom;
-					sCopyFrom.Format(_T(" (%s: %s, %s, %ld)\r\n"), CString(MAKEINTRESOURCE(IDS_LOG_COPYFROM)), 
-						(LPCTSTR)cpath->sCopyFromPath, 
-						(LPCTSTR)CString(MAKEINTRESOURCE(IDS_LOG_REVISION)), 
-						(LPCTSTR)cpath->lCopyFromRev);
-					sPaths += sCopyFrom;
+					sPaths += ((CTGitPath&)pLogEntry->m_Files[cpPathIndex]).GetActionName() + _T(" : ") + pLogEntry->m_Files[cpPathIndex].GetGitPathString();
+					sPaths += _T("\r\n");
 				}
+				sPaths.Trim();
+				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
+					(LPCTSTR)sRev, pLogEntry->m_CommitHash,
+					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->m_AuthorName,
+					(LPCTSTR)sDate, (LPCTSTR)pLogEntry->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")),
+					(LPCTSTR)sMessage, pLogEntry->m_Subject+_T("\r\n")+pLogEntry->m_Body,
+					(LPCTSTR)sPaths);
+				sClipdata +=  sLogCopyText;
+			}else
+			{
+				sClipdata += pLogEntry->m_CommitHash;
+				break;
 			}
-			sPaths.Trim();
-			sLogCopyText.Format(_T("%s: %d\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
-				(LPCTSTR)sRev, pLogEntry->Rev,
-				(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->sAuthor,
-				(LPCTSTR)sDate, (LPCTSTR)pLogEntry->sDate,
-				(LPCTSTR)sMessage, (LPCTSTR)pLogEntry->sMessage,
-				(LPCTSTR)sPaths);
-			sClipdata +=  sLogCopyText;
+
 		}
 		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
 	}
-#endif
+
 }
 
 void CGitLogList::DiffSelectedRevWithPrevious()

@@ -97,6 +97,7 @@ public:
 	ID_DIFF,
 	ID_OPENWITH,
 	ID_COPYCLIPBOARD,
+	ID_COPYHASH,
 	ID_CHECKOUT,
 	ID_REVERTTOREV,
 	ID_BLAMECOMPARE,
@@ -108,11 +109,15 @@ public:
 	ID_COMPAREWITHPREVIOUS,
 	ID_BLAMEWITHPREVIOUS,
 	ID_GETMERGELOGS,
-	ID_REVPROPS
+	ID_REVPROPS,
+	ID_CHERRY_PICK,
+	ID_CREATE_BRANCH,
+	ID_CREATE_TAG,
+	ID_SWITCHTOREV
 	};
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
-	void CopySelectionToClipBoard();
+	void CopySelectionToClipBoard(bool hashonly=FALSE);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  FillGitLog();

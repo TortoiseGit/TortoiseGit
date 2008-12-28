@@ -197,7 +197,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENUCHECKOUT        "Chec&kout..."
+    IDS_MENUCHECKOUT        "Switch/Chec&kout..."
     IDS_MENUUPDATE          "&Update"
     IDS_MENUCOMMIT          "&Commit..."
     IDS_MENUCREATEREPOS     "Create repositor&y here"
@@ -205,15 +205,23 @@ BEGIN
     IDS_MENUREVERT          "Re&vert..."
     IDS_MENUCLEANUP         "&Clean up"
     IDS_MENURESOLVE         "Res&olved..."
+	IDS_MENUSWITCH_HERE		"Switch/Checkout to here"
+	IDS_MENUSWITCH			"Switch/Checkout"
+	IDS_MENUCHERRYPICK_HERE	"Cherry Pick This Version"			
+	IDS_MENUCHERRYPICK		"Cherry Pick"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_MENUSWITCH          "S&witch..."
     IDS_MENUMERGE           "&Merge..."
-    IDS_MENUBRANCH          "Branch/&tag..."
+    IDS_MENUBRANCH          "Create Branch"
+	IDS_MENUBRANCH_HERE		"Create Branch at here"
+	IDS_MENUTAG				"Create Tag"
+	IDS_MENUTAG_HERE		"Create Tag at here"
     IDS_MENUIMPORT          "&Import..."
     IDS_MENUEXPORT          "E&xport..."
+	IDS_MENUEXPORT_HERE		"Export at here"
     IDS_MENUSETTINGS        "&Settings"
     IDS_MENUABOUT           "A&bout"
     IDS_MENUSUBMENU         "&TortoiseGit"
