@@ -4275,10 +4275,11 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
 
-			if (m_arListArray.size() > (DWORD_PTR)pLVCD->nmcd.dwItemSpec)
+			if (m_arStatusArray.size() > (DWORD_PTR)pLVCD->nmcd.dwItemSpec)
 			{
-#if 0
-				FileEntry * entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
+
+				//FileEntry * entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
+				CTGitPath *entry=(CTGitPath *)GetItemData((int)pLVCD->nmcd.dwItemSpec);
 				if (entry == NULL)
 					return;
 
@@ -4290,51 +4291,29 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				// brown  : missing, deleted, replaced
 				// green  : merged (or potential merges)
 				// red    : conflicts or sure conflicts
-				switch (entry->status)
+				if(entry->m_Action & CTGitPath::LOGACTIONS_CONFLICT)
 				{
-				case git_wc_status_added:
-//					if (entry->remotestatus > git_wc_status_unversioned)
-						// locally added file, but file already exists in repository!
-//						crText = m_Colors.GetColor(CColors::Conflict);
-//					else
-						crText = m_Colors.GetColor(CColors::Added);
-					break;
-				case git_wc_status_missing:
-				case git_wc_status_deleted:
-				case git_wc_status_replaced:
-					crText = m_Colors.GetColor(CColors::Deleted);
-					break;
-				case git_wc_status_modified:
-//					if (entry->remotestatus == git_wc_status_modified)
-						// indicate a merge (both local and remote changes will require a merge)
-//						crText = m_Colors.GetColor(CColors::Merged);
-//					else if (entry->remotestatus == git_wc_status_deleted)
-//						// locally modified, but already deleted in the repository
-//						crText = m_Colors.GetColor(CColors::Conflict);
-//					else
-						crText = m_Colors.GetColor(CColors::Modified);
-					break;
-				case git_wc_status_merged:
-					crText = m_Colors.GetColor(CColors::Merged);
-					break;
-				case git_wc_status_conflicted:
-				case git_wc_status_obstructed:
 					crText = m_Colors.GetColor(CColors::Conflict);
-					break;
-				case git_wc_status_none:
-				case git_wc_status_unversioned:
-				case git_wc_status_ignored:
-				case git_wc_status_incomplete:
-				case git_wc_status_normal:
-				case git_wc_status_external:
-				default:
-					crText = GetSysColor(COLOR_WINDOWTEXT);
-					break;
-				}
 
-				if (entry->isConflicted)
-					crText = m_Colors.GetColor(CColors::Conflict);
-#endif
+				}else if(entry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
+				{
+					crText = m_Colors.GetColor(CColors::Modified);
+
+				}else if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
+				{
+					crText = m_Colors.GetColor(CColors::Added);
+				}
+				else if(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+				{
+					crText = m_Colors.GetColor(CColors::DeletedNode);
+				}
+				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				{
+					crText = m_Colors.GetColor(CColors::RenamedNode);
+				}else
+				{
+					crText = GetSysColor(COLOR_WINDOWTEXT);
+				}
 				// Store the color back in the NMLVCUSTOMDRAW struct.
 				pLVCD->clrText = crText;
 			}
