@@ -22,6 +22,7 @@
 #include "GitRev.h"
 #include "GitConfig.h"
 #include "Colors.h"
+#include "XPTheme.h"
 
 #define SVN_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -35,7 +36,9 @@
 #define	SVNSLC_COLREVISION			0x000000080
 #define	SVNSLC_COLDATE				0x000000100
 #define	SVNSLC_COLMODIFICATIONDATE	0x000000200
-#define SVNSLC_NUMCOLUMNS		10
+#define SVNSLC_COLADD				0x000000400
+#define SVNSLC_COLDEL				0x000000600
+#define SVNSLC_NUMCOLUMNS			12
 
 //#define SVNSLC_COLREMOTESTATUS		0x000000010
 //#define SVNSLC_COLREMOTETEXT		0x000000080
@@ -155,6 +158,7 @@ class CGitStatusListCtrl :
 	public CListCtrl
 {
 public:
+	int GetColumnIndex(int colmask);
 	/**
 	 * Sent to the parent window (using ::SendMessage) after a context menu
 	 * command has finished if the item count has changed.
@@ -189,6 +193,7 @@ public:
 	 * Helper class for CGitStatusListCtrl which represents
 	 * the data for each file shown.
 	 */
+
 	class FileEntry
 	{
 	public:
@@ -903,8 +908,14 @@ public:
 	int UpdateFileList(int mask, bool once=true,CTGitPathList *List=NULL);
 	int UpdateUnRevFileList(CTGitPathList *List=NULL);
 	int UpdateIgnoreFileList(CTGitPathList *List=NULL);
+	
+	int UpdateWithGitPathList(CTGitPathList &list);
+
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
 	int m_FileLoaded;
+
+public:
+	CXPTheme	m_Theme;
 };
 
 #if 0

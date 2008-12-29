@@ -281,6 +281,8 @@ CString CGitStatusListCtrl::ColumnManager::GetName (int column) const
 
 //		  , IDS_STATUSLIST_COLCOPYFROM
           , IDS_STATUSLIST_COLMODIFICATIONDATE
+		  , IDS_STATUSLIST_COLADD
+		  , IDS_STATUSLIST_COLDEL
 		};
 
     // standard columns
@@ -295,8 +297,8 @@ CString CGitStatusListCtrl::ColumnManager::GetName (int column) const
 
     // user-prop columns
 
-//    if (index < columns.size())
-//        return userProps[columns[index].index - SVNSLC_USERPROPCOLOFFSET].name;
+	//    if (index < columns.size())
+	//        return userProps[columns[index].index - SVNSLC_USERPROPCOLOFFSET].name;
 
     // default: empty
 

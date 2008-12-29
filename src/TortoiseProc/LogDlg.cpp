@@ -122,7 +122,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
 	ON_BN_CLICKED(IDC_GETALL, OnBnClickedGetall)
-	ON_NOTIFY(NM_DBLCLK, IDC_LOGMSG, OnNMDblclkChangedFileList)
+	//ON_NOTIFY(NM_DBLCLK, IDC_LOGMSG, OnNMDblclkChangedFileList)
 	ON_WM_CONTEXTMENU()
 	ON_WM_SETCURSOR()
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
@@ -138,10 +138,10 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETO, OnDtnDatetimechangeDateto)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEFROM, OnDtnDatetimechangeDatefrom)
 	ON_BN_CLICKED(IDC_NEXTHUNDRED, OnBnClickedNexthundred)
-	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGMSG, OnNMCustomdrawChangedFileList)
-	ON_NOTIFY(LVN_GETDISPINFO, IDC_LOGMSG, OnLvnGetdispinfoChangedFileList)
+	//ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGMSG, OnNMCustomdrawChangedFileList)
+	//ON_NOTIFY(LVN_GETDISPINFO, IDC_LOGMSG, OnLvnGetdispinfoChangedFileList)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST	, OnLvnColumnclick)
-	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
+	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	
 	ON_BN_CLICKED(IDC_CHECK_STOPONCOPY, &CLogDlg::OnBnClickedCheckStoponcopy)
@@ -219,30 +219,13 @@ BOOL CLogDlg::OnInitDialog()
 		m_bShowBugtraqColumn = true;
 
 	//theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
-	theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
+	//theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
 	// set up the columns
 	m_LogList.DeleteAllItems();
 	m_LogList.InsertGitColumn();
 
-	m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
-	m_ChangedFileListCtrl.DeleteAllItems();
-	int c = ((CHeaderCtrl*)(m_ChangedFileListCtrl.GetDlgItem(0)))->GetItemCount()-1;
-	while (c>=0)
-		m_ChangedFileListCtrl.DeleteColumn(c--);
-	temp.LoadString(IDS_PROGRS_ACTION);
-	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_ACTION, temp);
-	temp.LoadString(IDS_LOG_FILE_LINE_ADD);
-	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_ADD, temp);
-	temp.LoadString(IDS_LOG_FILE_LINE_DEL);
-	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_DEL, temp);
-	temp.LoadString(IDS_PROGRS_PATH);
-	m_ChangedFileListCtrl.InsertColumn(this->FILELIST_PATH, temp);
-	
-	m_ChangedFileListCtrl.SetRedraw(false);
-	CAppUtils::ResizeAllListCtrlCols(&m_ChangedFileListCtrl);
-	m_ChangedFileListCtrl.SetRedraw(true);
-
+	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |IDS_STATUSLIST_COLADD|IDS_STATUSLIST_COLDEL , _T("LogDlg"));
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 
@@ -492,10 +475,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	m_ChangedFileListCtrl.SetRedraw(FALSE);
 //	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	m_currentChangedArray = NULL;
-	m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
+	//m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
 	m_ChangedFileListCtrl.DeleteAllItems();
-	m_ChangedFileListCtrl.SetItemCountEx(0);
-
+	
 	// if we're not here to really show a selected revision, just
 	// get out of here after clearing the views, which is what is intended
 	// if that flag is not set.
@@ -539,13 +521,12 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		// and we can find a match of those in the log message
 		m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
 		CAppUtils::FormatTextInRichEditControl(pMsgView);
-		m_currentChangedArray = &(pLogEntry->m_Files);
-		if (m_currentChangedArray == NULL)
-		{
-//			InterlockedExchange(&m_bNoDispUpdates, FALSE);
-			m_ChangedFileListCtrl.SetRedraw(TRUE);
-			return;
-		}
+
+		m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
+		m_ChangedFileListCtrl.Show(0);
+
+		m_ChangedFileListCtrl.SetRedraw(TRUE);
+		return;
 #if 0
 		// fill in the changed files list control
 		if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
@@ -700,59 +681,6 @@ void CLogDlg::OnBnClickedRefresh()
 void CLogDlg::Refresh (bool autoGoOnline)
 {
 	m_LogList.Refresh();
-
-#if 0
-	// refreshing means re-downloading the already shown log messages
-	UpdateData();
-	m_maxChild = 0;
-	m_childCounter = 0;
-
-	if ((m_limit == 0)||(m_bStrict)||(int(m_logEntries.size()-1) > m_limit))
-	{
-		if (m_logEntries.size() != 0)
-		{
-			m_endrev = m_logEntries[m_logEntries.size()-1]->Rev;
-		}
-	}
-	m_startrev = -1;
-	m_bCancelled = FALSE;
-
-	// We need to create CStoreSelection on the heap or else
-	// the variable will run out of the scope before the
-	// thread ends. Therefore we let the thread delete
-	// the instance.
-	m_pStoreSelection = new CStoreSelection(this);
-	m_ChangedFileListCtrl.SetItemCountEx(0);
-	m_ChangedFileListCtrl.Invalidate();
-	m_LogList.SetItemCountEx(0);
-	m_LogList.Invalidate();
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
-	pMsgView->SetWindowText(_T(""));
-
-	SetSortArrow(&m_LogList, -1, true);
-
-	m_LogList.DeleteAllItems();
-	m_arShownList.RemoveAll();
-	m_logEntries.ClearAll();
-
-    // reset the cached HEAD property & go on-line
-
-    if (autoGoOnline)
-    {
-	    SetDlgTitle (false);
-        logCachePool.GetRepositoryInfo().ResetHeadRevision (m_sUUID, m_sRepositoryRoot);
-    }
-
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	if (AfxBeginThread(LogThreadEntry, this)==NULL)
-	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
-	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
-#endif
 }
 
 void CLogDlg::OnBnClickedNexthundred()
@@ -1065,7 +993,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	else if (pWnd == &m_ChangedFileListCtrl)
 	{
-		ShowContextMenuForChangedpaths(pWnd, point);
+		//ShowContextMenuForChangedpaths(pWnd, point);
 	}
 	else if ((selCount == 1)&&(pWnd == GetDlgItem(IDC_MSGVIEW)))
 	{
@@ -1090,12 +1018,12 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
 
-			if (selIndex >= 0)
-			{
-				popup.AppendMenu(MF_SEPARATOR);
-				sMenuItemText.LoadString(IDS_LOG_POPUP_EDITLOG);
-				popup.AppendMenu(MF_STRING | MF_ENABLED, CGitLogList::ID_EDITAUTHOR, sMenuItemText);
-			}
+			//if (selIndex >= 0)
+			//{
+			//	popup.AppendMenu(MF_SEPARATOR);
+			//	sMenuItemText.LoadString(IDS_LOG_POPUP_EDITLOG);
+			//	popup.AppendMenu(MF_STRING | MF_ENABLED, CGitLogList::ID_EDITAUTHOR, sMenuItemText);
+			//}
 
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 			switch (cmd)
@@ -3094,6 +3022,7 @@ void CLogDlg::SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 }
 void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 {
+#if 0
 	if (this->IsThreadRunning())
 		return;		//no sorting while the arrays are filled
 	if (m_currentChangedArray == NULL)
@@ -3107,6 +3036,7 @@ void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 	SetSortArrow(&m_ChangedFileListCtrl, m_nSortColumnPathList, m_bAscendingPathList);
 	m_ChangedFileListCtrl.Invalidate();
 	*pResult = 0;
+#endif
 }
 
 int CLogDlg::m_nSortColumnPathList = 0;
@@ -3287,6 +3217,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	UpdateData(FALSE);
 }
 
+#if 0
 void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 {
 
@@ -3822,6 +3753,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 
 	} // if (popup.CreatePopupMenu())
 }
+#endif
 
 void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {

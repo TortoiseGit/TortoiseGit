@@ -1383,6 +1383,16 @@ void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bo
 #endif
 
 }
+int CGitStatusListCtrl::GetColumnIndex(int mask)
+{
+	int i=0;
+	for(i=0;i<32;i++)
+		if(mask&0x1)
+			return i;
+		else
+			mask=mask>>1;
+	return -1;
+}
 void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listIndex)
 {
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
@@ -1411,196 +1421,17 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	// SVNSLC_COLEXT
 	SetItemText(index, nCol++, GitPath->GetFileExtension());
 	// SVNSLC_COLSTATUS
-//	if (entry->isNested)
-//	{
-//		CString sTemp(MAKEINTRESOURCE(IDS_STATUSLIST_NESTED));
-//		SetItemText(index, nCol++, sTemp);
-//	}
-//	else
-	{
-		SetItemText(index, nCol++, GitPath->GetActionName());
-	}
-	// SVNSLC_COLREMOTESTATUS
-//	if (entry->isNested)
-//	{
-//		CString sTemp(MAKEINTRESOURCE(IDS_STATUSLIST_NESTED));
-//		SetItemText(index, nCol++, sTemp);
-//	}
-//	else
-	{
-		//SetItemText(index, nCol++, buf);
-	}
-	// SVNSLC_COLTEXTSTATUS
-//	if (entry->isNested)
-//	{
-//		CString sTemp(MAKEINTRESOURCE(IDS_STATUSLIST_NESTED));
-//		SetItemText(index, nCol++, sTemp);
-//	}
-//	else
-//	{
-#if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->textstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
-		if ((entry->copied)&&(_tcslen(buf)>1))
-			_tcscat_s(buf, 100, _T(" (+)"));
-		if ((entry->switched)&&(_tcslen(buf)>1))
-			_tcscat_s(buf, 100, _T(" (s)"));
-#endif
-//		SetItemText(index, nCol++, buf);
-//	}
-	// SVNSLC_COLPROPSTATUS
-//	if (entry->isNested)
-//	{
-//		SetItemText(index, nCol++, _T(""));
-//	}
-//	else
-//	{
-#if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->propstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
-		if ((entry->copied)&&(_tcslen(buf)>1))
-			_tcscat_s(buf, 100, _T(" (+)"));
-		if ((entry->switched)&&(_tcslen(buf)>1))
-			_tcscat_s(buf, 100, _T(" (s)"));
-#endif
-//		SetItemText(index, nCol++, buf);
-//	}
-	// SVNSLC_COLREMOTETEXT
-//	if (entry->isNested)
-//	{
-//		SetItemText(index, nCol++, _T(""));
-//	}
-//	else
-//	{
-#if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->remotetextstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
-		SetItemText(index, nCol++, buf);
-#endif
-//	}
-	// SVNSLC_COLREMOTEPROP
-//	if (entry->isNested)
-//	{
-//		SetItemText(index, nCol++, _T(""));
-//	}
-//	else
-//	{
-//		SVNStatus::GetStatusString(hResourceHandle, entry->remotepropstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
-//		SetItemText(index, nCol++, buf);
-//	}
-	// SVNSLC_COLURL
-//	SetItemText(index, nCol++, entry->url);
-	// SVNSLC_COLLOCK
-#if 0
-	if (!m_HeadRev.IsHead())
-	{
-		// we have contacted the repository
+	SetItemText(index, nCol++, GitPath->GetActionName());
 
-		// decision-matrix
-		// wc		repository		text
-		// ""		""				""
-		// ""		UID1			owner
-		// UID1		UID1			owner
-		// UID1		""				lock has been broken
-		// UID1		UID2			lock has been stolen
-		if (entry->lock_token.IsEmpty() || (entry->lock_token.Compare(entry->lock_remotetoken)==0))
-		{
-			if (entry->lock_owner.IsEmpty())
-				SetItemText(index, nCol++, entry->lock_remoteowner);
-			else
-				SetItemText(index, nCol++, entry->lock_owner);
-		}
-		else if (entry->lock_remotetoken.IsEmpty())
-		{
-			// broken lock
-			CString temp(MAKEINTRESOURCE(IDS_STATUSLIST_LOCKBROKEN));
-			SetItemText(index, nCol++, temp);
-		}
-		else
-		{
-			// stolen lock
-			CString temp;
-			temp.Format(IDS_STATUSLIST_LOCKSTOLEN, (LPCTSTR)entry->lock_remoteowner);
-			SetItemText(index, nCol++, temp);
-		}
-	}
-	else
-		SetItemText(index, nCol++, entry->lock_owner);
-	// SVNSLC_COLLOCKCOMMENT
-	SetItemText(index, nCol++, entry->lock_comment);
-	// SVNSLC_COLAUTHOR
-	SetItemText(index, nCol++, entry->last_commit_author);
-	// SVNSLC_COLREVISION
-	CString temp;
-	temp.Format(_T("%ld"), entry->last_commit_rev);
-	if (entry->last_commit_rev > 0)
-		SetItemText(index, nCol++, temp);
-	else
-		SetItemText(index, nCol++, _T(""));
-	// SVNSLC_COLREMOTEREVISION
-	temp.Format(_T("%ld"), entry->remoterev);
-	if (entry->remoterev > 0)
-		SetItemText(index, nCol++, temp);
-	else
-		SetItemText(index, nCol++, _T(""));
-	// SVNSLC_COLDATE
-	TCHAR datebuf[SVN_DATE_BUFFER];
-	apr_time_t date = entry->last_commit_date;
-	SVN::formatDate(datebuf, date, true);
-	if (date)
-		SetItemText(index, nCol++, datebuf);
-	else
-		SetItemText(index, nCol++, _T(""));
-	// SVNSLC_COLSVNNEEDSLOCK
-    BOOL bFoundSVNNeedsLock = entry->present_props.IsNeedsLockSet();
-	CString strSVNNeedsLock = (bFoundSVNNeedsLock) ? _T("*") : _T("");
-	SetItemText(index, nCol++, strSVNNeedsLock);
-	// SVNSLC_COLCOPYFROM
-	if (m_sURL.Compare(entry->copyfrom_url.Left(m_sURL.GetLength()))==0)
-		temp = entry->copyfrom_url.Mid(m_sURL.GetLength());
-	else
-		temp = entry->copyfrom_url;
-	SetItemText(index, nCol++, temp);
-	// SVNSLC_COLMODIFICATIONDATE
-	__int64 filetime = entry->GetPath().GetLastWriteTime();
-	if ( (filetime) && (entry->status!=git_wc_status_deleted) )
-	{
-		FILETIME* f = (FILETIME*)(__int64*)&filetime;
-		TCHAR datebuf[SVN_DATE_BUFFER];
-		SVN::formatDate(datebuf,*f,true);
-		SetItemText(index, nCol++, datebuf);
-	}
-	else
-	{
-		SetItemText(index, nCol++, _T(""));
-	}
+	SetItemText(index, GetColumnIndex(SVNSLC_COLADD),GitPath->m_StatAdd);
+	SetItemText(index, GetColumnIndex(SVNSLC_COLDEL),GitPath->m_StatDel);
 
-    // user-defined properties
-    for ( int i = SVNSLC_NUMCOLUMNS, count = m_ColumnManager.GetColumnCount()
-        ; i < count
-        ; ++i)
-    {
-        assert (i == nCol++);
-        assert (m_ColumnManager.IsUserProp (i));
 
-        CString name = m_ColumnManager.GetName(i);
-        if (entry->present_props.HasProperty (name))
-		{
-			const CString& propVal = entry->present_props [name];
-			if (propVal.IsEmpty())
-				SetItemText(index, i, m_sNoPropValueText);
-			else
-				SetItemText(index, i, propVal);
-		}
-		else
-            SetItemText(index, i, _T(""));
-    }
-#endif
 	SetCheck(index, GitPath->m_Checked);
 	if (GitPath->m_Checked)
 		m_nSelected++;
 
-//#if 0
-//	if (m_changelists.find(entry->changelist) != m_changelists.end())
-//		SetItemGroup(index, m_changelists[entry->changelist]);
-//	else
+
 	if( GitPath->m_Action & CTGitPath::LOGACTIONS_IGNORE)
 		SetItemGroup(index, 2);
 	else if( GitPath->m_Action & CTGitPath::LOGACTIONS_UNVER)
@@ -1608,7 +1439,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	else
 		SetItemGroup(index,0);
 	m_bBlock = FALSE;
-//#endif
+
 
 }
 #if 0
@@ -4651,6 +4482,7 @@ void CGitStatusListCtrl::PreSubclassWindow()
 {
 	CListCtrl::PreSubclassWindow();
 	EnableToolTips(TRUE);
+	m_Theme.SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
 }
 
 INT_PTR CGitStatusListCtrl::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
@@ -5400,6 +5232,29 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 
 		this->m_StatusFileList.ParserFromLog(out);
+	}else
+	{
+		int count = 0;
+		if(list == NULL)
+			count = 1;
+		else
+			count = list->GetCount();
+
+		for(int i=0;i<count;i++)
+		{	
+			CString cmdout;
+			CString cmd;
+			if(list == NULL)
+				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M %s"),hash);
+			else
+				cmd.Format(_T("git.exe diff-tree --raw  --numstat -C -M %s -- \"%s\""),hash,(*list)[i].GetGitPathString());
+
+			g_Git.Run(cmd,&cmdout);
+
+			out+=cmdout;
+		}
+		this->m_StatusFileList.ParserFromLog(out);
+
 	}
 	for(int i=0;i<m_StatusFileList.GetCount();i++)
 	{
@@ -5410,6 +5265,19 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 	this->m_bBusy=FALSE;
 	return 0;
 }
+
+int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
+{
+	m_arStatusArray.clear();
+	for(int i=0;i<list.GetCount();i++)
+	{
+		CTGitPath * gitpatch=(CTGitPath*)&list[i];
+		gitpatch->m_Checked = TRUE;
+		m_arStatusArray.push_back((CTGitPath*)&list[i]);
+	}
+	return 0;
+}
+
 int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 {
 	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER,List);

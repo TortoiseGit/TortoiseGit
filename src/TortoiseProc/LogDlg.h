@@ -34,7 +34,7 @@
 #include "HintListCtrl.h"
 #include <regex>
 #include "GitLogList.h"
-
+#include "GitStatusListCtrl.h"
 using namespace std;
 
 
@@ -220,7 +220,10 @@ private:
 	CString				m_sURL;
 	CString				m_sUUID;    ///< empty if the log cache is not used
 	CGitLogList			m_LogList;
-	CListCtrl			m_ChangedFileListCtrl;
+	//CListCtrl			m_ChangedFileListCtrl;
+	
+	CGitStatusListCtrl  m_ChangedFileListCtrl;
+
 	CFilterEdit			m_cFilter;
 	CProgressCtrl		m_LogProgress;
 	CMenuButton			m_btnShow;
@@ -302,7 +305,7 @@ private:
 
     
 	
-	CXPTheme			theme;
+	//CXPTheme			theme;
 	bool				m_bVista;
 };
 static UINT WM_REVSELECTED = RegisterWindowMessage(_T("TORTOISEGit_REVSELECTED_MSG"));
