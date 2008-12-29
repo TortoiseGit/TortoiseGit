@@ -20,6 +20,19 @@ GitRev& GitRev::operator=(GitRev &rev)
 	return *this;
 }
 #endif
+void GitRev::Clear()
+{
+	this->m_Action=0;
+	this->m_Files.Clear();
+	this->m_Action=0;
+	this->m_ParentHash.clear();
+	m_CommitterName.Empty();
+	m_CommitterEmail.Empty();
+	m_Body.Empty();
+	m_Subject.Empty();
+	m_CommitHash.Empty();
+
+}
 int GitRev::ParserFromLog(CString &log)
 {
 	int pos=0;
@@ -41,6 +54,9 @@ int GitRev::ParserFromLog(CString &log)
 			mode = one[2];
 			switch(mode)
 			{
+			case LOG_REV_ITEM_BEGIN:
+				this->Clear();
+
 			case LOG_REV_AUTHOR_NAME:
 				this->m_AuthorName = text;
 				break;

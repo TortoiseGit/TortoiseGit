@@ -1086,6 +1086,8 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				
 			}
 			break;
+		
+
 		case ID_COMPARE:
 			{
 				GitRev * r1 = &m_wcRev;
@@ -1104,6 +1106,32 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				//}
 				//else
 				//	CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_WC, m_path, revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			}
+			break;
+
+		case ID_COMPAREWITHPREVIOUS:
+			{
+
+				CFileDiffDlg dlg;
+				
+				if(pSelLogEntry->m_ParentHash.size()>0)
+				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
+				{
+					dlg.SetDiff(NULL,pSelLogEntry->m_CommitHash,pSelLogEntry->m_ParentHash[0]);
+					dlg.DoModal();
+				}else
+				{
+					CMessageBox::Show(NULL,_T("No previous version"),_T("TortoiseGit"),MB_OK);	
+				}
+				//if (PromptShown())
+				//{
+				//	GitDiff diff(this, m_hWnd, true);
+				//	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+				//	diff.SetHEADPeg(m_LogRevision);
+				//	diff.ShowCompare(CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected);
+				//}
+				//else
+				//	CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
 		case ID_COPYCLIPBOARD:
@@ -1134,37 +1162,12 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 		case ID_SWITCHTOREV:
 			CAppUtils::Switch(&pSelLogEntry->m_CommitHash);
 			break;
-		
 
 		default:
-			CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
+			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;
 #if 0
-		case ID_GNUDIFF1:
-			{
-				if (PromptShown())
-				{
-					GitDiff diff(this, this->m_hWnd, true);
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowUnifiedDiff(m_path, revPrevious, m_path, revSelected);
-				}
-				else
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revPrevious, m_path, revSelected, GitRev(), m_LogRevision);
-			}
-			break;
-
-		case ID_GNUDIFF2:
-			{
-				if (PromptShown())
-				{
-					GitDiff diff(this, this->m_hWnd, true);
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowUnifiedDiff(m_path, revSelected2, m_path, revSelected);
-				}
-				else
-					CAppUtils::StartShowUnifiedDiff(m_hWnd, m_path, revSelected2, m_path, revSelected, GitRev(), m_LogRevision);
-			}
-			break;
+	
 		case ID_REVERTREV:
 			{
 				// we need an URL to complete this command, so error out if we can't get an URL
@@ -1259,68 +1262,9 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 			}
 			break;
-		case ID_COPY:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
+	
 
-				CCopyDlg dlg;
-				dlg.m_URL = pathURL;
-				dlg.m_path = m_path;
-				dlg.m_CopyRev = revSelected;
-				if (dlg.DoModal() == IDOK)
-				{
-					// should we show a progress dialog here? Copies are done really fast
-					// and without much network traffic.
-					if (!Copy(CTGitPathList(CTGitPath(pathURL)), CTGitPath(dlg.m_URL), dlg.m_CopyRev, dlg.m_CopyRev, dlg.m_sLogMessage))
-						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					else
-						CMessageBox::Show(this->m_hWnd, IDS_LOG_COPY_SUCCESS, IDS_APPNAME, MB_ICONINFORMATION);
-				}
-			} 
-			break;
-
-		case ID_COMPARETWO:
-			{
-				GitRev r1 = revSelected;
-				GitRev r2 = revSelected2;
-				if (GetSelectedCount() > 2)
-				{
-					r1 = revHighest;
-					r2 = revLowest;
-				}
-				//user clicked on the menu item "compare revisions"
-				if (PromptShown())
-				{
-					GitDiff diff(this, m_hWnd, true);
-					diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTGitPath(pathURL), r2, CTGitPath(pathURL), r1);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), r2, CTGitPath(pathURL), r1, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-			}
-			break;
-		case ID_COMPAREWITHPREVIOUS:
-			{
-				if (PromptShown())
-				{
-					GitDiff diff(this, m_hWnd, true);
-					diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-			}
-			break;
+	
 		case ID_BLAMECOMPARE:
 			{
 				//user clicked on the menu item "compare with working copy"
@@ -1361,48 +1305,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
 			}
 			break;
-		case ID_SAVEAS:
-			{
-				//now first get the revision which is selected
-				CString revFilename;
-				if (m_hasWC)
-				{
-					CString strWinPath = m_path.GetWinPathString();
-					int rfind = strWinPath.ReverseFind('.');
-					if (rfind > 0)
-						revFilename.Format(_T("%s-%ld%s"), (LPCTSTR)strWinPath.Left(rfind), (LONG)revSelected, (LPCTSTR)strWinPath.Mid(rfind));
-					else
-						revFilename.Format(_T("%s-%ld"), (LPCTSTR)strWinPath, revSelected);
-				}
-				if (CAppUtils::FileOpenSave(revFilename, NULL, IDS_LOG_POPUP_SAVE, IDS_COMMONFILEFILTER, false, m_hWnd))
-				{
-					CTGitPath tempfile;
-					tempfile.SetFromWin(revFilename);
-					CProgressDlg progDlg;
-					progDlg.SetTitle(IDS_APPNAME);
-					progDlg.SetAnimation(IDR_DOWNLOAD);
-					CString sInfoLine;
-					sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, m_path.GetWinPath(), (LPCTSTR)revSelected.ToString());
-					progDlg.SetLine(1, sInfoLine, true);
-					SetAndClearProgressInfo(&progDlg);
-					progDlg.ShowModeless(m_hWnd);
-					if (!Cat(m_path, GitRev(GitRev::REV_HEAD), revSelected, tempfile))
-					{
-						// try again with another peg revision
-						if (!Cat(m_path, revSelected, revSelected, tempfile))
-						{
-							progDlg.Stop();
-							SetAndClearProgressInfo((HWND)NULL);
-							CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-							EnableOKButton();
-							break;
-						}
-					}
-					progDlg.Stop();
-					SetAndClearProgressInfo((HWND)NULL);
-				}
-			}
-			break;
+		
 		case ID_OPENWITH:
 			bOpenWith = true;
 		case ID_OPEN:

@@ -96,6 +96,31 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	m_rev2 = rev2;
 	
 }
+void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
+{
+	if(path!=NULL)
+	{
+		m_path1 = *path;
+		m_path2 = *path;
+	}
+	m_rev1.m_CommitHash = hash1;
+	m_rev2.m_CommitHash = hash2;
+}
+void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
+{
+	if(path!=NULL)
+	{
+		m_path1 = *path;
+		m_path2 = *path;
+	}
+	m_rev1 = rev1;
+	m_rev2.m_CommitHash = _T("");
+	m_rev2.m_Subject = _T("Previou Version");
+
+	//this->GetDlgItem()->EnableWindow(FALSE);
+	
+	
+}
 
 BOOL CFileDiffDlg::OnInitDialog()
 {
@@ -170,6 +195,9 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	// Start with focus on file list
 	GetDlgItem(IDC_FILELIST)->SetFocus();
+
+	if(m_rev2.m_CommitHash.IsEmpty())
+		m_SwitchButton.EnableWindow(FALSE);
 	return FALSE;
 }
 
@@ -228,6 +256,7 @@ UINT CFileDiffDlg::DiffThread()
 	{
 		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat %s %s"),rev1,m_rev2.m_CommitHash);
 	}
+
 	CString out;
 	g_Git.Run(cmd,&out);
 	this->m_arFileList.ParserFromLog(out);

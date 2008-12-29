@@ -566,11 +566,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
@@ -806,19 +806,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\open.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -922,19 +922,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\saveas.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\saveas.ico"
 				>
 			</File>
 			<File
@@ -1026,11 +1026,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
@@ -1554,11 +1554,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\..\..\..\tortoisegit\src\TortoiseProc\CloneDlg.htm"
-			DeploymentContent="true"
-			>
-		</File>
 		<File
 			RelativePath="Resource.h"
 			>

@@ -30,7 +30,7 @@ class CLogDlg;
  * Instances of CStoreSelection save the selection of the CLogDlg. When the instance
  * is deleted the destructor restores the selection.
  */
-typedef std::map<CString, GitRev*> MAP_HASH_REV;
+typedef std::map<CString, int> MAP_HASH_REV;
 
 class CStoreSelection
 {

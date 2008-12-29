@@ -91,7 +91,7 @@ int CLogDataVector::ParserFromLog()
 		onelog=log.Mid(start -4,length);
 		rev.ParserFromLog(onelog);
 		this->push_back(rev);
-		m_HashMap[rev.m_CommitHash]=&rev;
+		m_HashMap[rev.m_CommitHash]=size()-1;
 		start = next +4;
 	}
 

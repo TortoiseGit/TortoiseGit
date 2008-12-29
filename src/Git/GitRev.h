@@ -47,6 +47,7 @@ public:
 	git_revnum_t m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
 	CTGitPathList m_Files;
+	void Clear();
 	int	m_Action;
 	int ParserFromLog(CString &log);
 	CTime ConverFromString(CString input);
