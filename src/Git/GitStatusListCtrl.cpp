@@ -179,19 +179,20 @@ void CGitStatusListCtrl::ClearStatusArray()
 	m_arStatusArray.clear();
 #endif
 }
-
+#if 0
 CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetListEntry(UINT_PTR index)
 {
-#if 0
+
 	if (index >= (UINT_PTR)m_arListArray.size())
 		return NULL;
 	if (m_arListArray[index] >= m_arStatusArray.size())
 		return NULL;
 	return m_arStatusArray[m_arListArray[index]];
-#endif
+
 	return NULL;
 }
-
+#endif
+#if 0
 CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetVisibleListEntry(const CTGitPath& path)
 {
 	int itemCount = GetItemCount();
@@ -203,20 +204,23 @@ CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetVisibleListEntry(const CT
 	}
 	return NULL;
 }
-
+#endif
+#if 0
 CGitStatusListCtrl::FileEntry * CGitStatusListCtrl::GetListEntry(const CTGitPath& path)
 {
-#if 0
+
 	for (size_t i=0; i < m_arStatusArray.size(); i++)
 	{
 		FileEntry * entry = m_arStatusArray[i];
 		if (entry->GetPath().IsEquivalentTo(path))
 			return entry;
 	}
-#endif
+
 	return NULL;
 }
+#endif
 
+#if 0
 int CGitStatusListCtrl::GetIndex(const CTGitPath& path)
 {
 	int itemCount = GetItemCount();
@@ -228,6 +232,7 @@ int CGitStatusListCtrl::GetIndex(const CTGitPath& path)
 	}
 	return -1;
 }
+#endif 
 
 void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContainer, DWORD dwContextMenus /* = GitSLC_POPALL */, bool bHasCheckboxes /* = true */)
 {
@@ -671,7 +676,7 @@ bool CGitStatusListCtrl::FetchStatusForSingleTarget(
 #endif
 	return true;
 }
-
+#if 0
 const CGitStatusListCtrl::FileEntry*
 CGitStatusListCtrl::AddNewFileEntry(
 			const git_wc_status2_t* pGitStatus,  // The return from the Git GetStatus functions
@@ -683,7 +688,7 @@ CGitStatusListCtrl::AddNewFileEntry(
 			)
 {
 	FileEntry * entry = new FileEntry();
-#if 0
+
 	
 	entry->path = path;
 	entry->basepath = basePath;
@@ -816,9 +821,10 @@ CGitStatusListCtrl::AddNewFileEntry(
 
 	// Pass ownership of the entry to the array
 	m_arStatusArray.push_back(entry);
-#endif
+
 	return entry;
 }
+#endif
 
 void CGitStatusListCtrl::AddUnversionedFolder(const CTGitPath& folderName,
 												const CTGitPath& basePath,
@@ -1989,7 +1995,7 @@ void CGitStatusListCtrl::UncheckEntry(int index, int nListItems)
 		m_nSelected--;
 	}
 }
-
+#if 0
 bool CGitStatusListCtrl::EntryPathCompareNoCase(const FileEntry* pEntry1, const FileEntry* pEntry2)
 {
 	return pEntry1->path < pEntry2->path;
@@ -1999,7 +2005,7 @@ bool CGitStatusListCtrl::IsEntryVersioned(const FileEntry* pEntry1)
 {
 	return pEntry1->status != git_wc_status_unversioned;
 }
-
+#endif
 bool CGitStatusListCtrl::BuildStatistics()
 {
 #if 0
@@ -2252,6 +2258,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 						lv.mask = LVIF_GROUPID;
 						lv.iItem = i;
 						GetItem(&lv);
+#if 0
 						if (lv.iGroupId == group)
 						{
 							FileEntry * entry = GetListEntry(i);
@@ -2268,6 +2275,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 								}
 							}
 						}
+#endif
 					}
 					GetStatisticsString();
 					NotifyCheck();
@@ -4227,6 +4235,7 @@ void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 	if (m_bBlock)
 		return;
+#if 0
 	if (GetListEntry(pGetInfoTip->iItem >= 0))
 		if (pGetInfoTip->cchTextMax > GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString().GetLength())
 		{
@@ -4235,6 +4244,7 @@ void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 			else if (GetStringWidth(GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString()) > GetColumnWidth(pGetInfoTip->iItem))
 				_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString(), pGetInfoTip->cchTextMax);
 		}
+#endif
 }
 
 void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
@@ -4267,6 +4277,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (m_arListArray.size() > (DWORD_PTR)pLVCD->nmcd.dwItemSpec)
 			{
+#if 0
 				FileEntry * entry = GetListEntry((int)pLVCD->nmcd.dwItemSpec);
 				if (entry == NULL)
 					return;
@@ -4323,7 +4334,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 				if (entry->isConflicted)
 					crText = m_Colors.GetColor(CColors::Conflict);
-
+#endif
 				// Store the color back in the NMLVCUSTOMDRAW struct.
 				pLVCD->clrText = crText;
 			}
@@ -4370,10 +4381,10 @@ void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool
 	SetCheck(listboxIndex, bCheck);
 }
 
-
+#if 0
 void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck)
 {
-#if 0
+
 	int nListItems = GetItemCount();
 	for (int j=0; j< nListItems ; ++j)
 	{
@@ -4397,11 +4408,13 @@ void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry
 			}
 		}
 	}
-#endif
+
 }
+#endif
 
 void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 {
+#if 0
 	pathList.Clear();
 	int nListItems = GetItemCount();
 	for (int i=0; i< nListItems; i++)
@@ -4414,6 +4427,7 @@ void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 		}
 	}
 	pathList.SortByPathname();
+#endif
 }
 
 
@@ -4789,6 +4803,7 @@ bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 
 bool CGitStatusListCtrl::IsPathShown(const CTGitPath& path)
 {
+#if 0
 	int itemCount = GetItemCount();
 	for (int i=0; i < itemCount; i++)
 	{
@@ -4796,6 +4811,7 @@ bool CGitStatusListCtrl::IsPathShown(const CTGitPath& path)
 		if (entry->GetPath().IsEquivalentTo(path))
 			return true;
 	}
+#endif
 	return false;
 }
 
@@ -5085,6 +5101,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
 {
+#if 0
 	std::set<CString> changelists;
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
@@ -5095,6 +5112,8 @@ size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
 			changelists.insert(entry->changelist);
 	}
 	return changelists.size();
+#endif 
+	return 0;
 }
 
 bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)

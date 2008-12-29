@@ -403,12 +403,12 @@ void CGitStatusListCtrl::ColumnManager::ColumnResized (int column)
 
 // call these to update the user-prop list
 // (will also auto-insert /-remove new list columns)
-
+#if 0
 void CGitStatusListCtrl::ColumnManager::UpdateUserPropList 
     (const std::vector<FileEntry*>& files)
 {
     // collect all user-defined props
-#if 0
+
     std::set<CString> aggregatedProps;
     for (size_t i = 0, count = files.size(); i < count; ++i)
         files[i]->present_props.GetPropertyNames (aggregatedProps);
@@ -506,15 +506,16 @@ void CGitStatusListCtrl::ColumnManager::UpdateUserPropList
 
     ApplyColumnOrder();
 
-#endif
-}
 
+}
+#endif
+#if 0
 void CGitStatusListCtrl::ColumnManager::UpdateRelevance 
     ( const std::vector<FileEntry*>& files
     , const std::vector<size_t>& visibleFiles)
 {
     // collect all user-defined props that belong to shown files
-#if 0
+
     std::set<CString> aggregatedProps;
     for (size_t i = 0, count = visibleFiles.size(); i < count; ++i)
         files[visibleFiles[i]]->present_props.GetPropertyNames (aggregatedProps);
@@ -530,9 +531,9 @@ void CGitStatusListCtrl::ColumnManager::UpdateRelevance
             columns[i].relevant 
                 = aggregatedProps.find (GetName(i)) != aggregatedProps.end();
         }
-#endif
-}
 
+}
+#endif
 // don't clutter the context menu with irrelevant prop info
 
 bool CGitStatusListCtrl::ColumnManager::AnyUnusedProperties() const

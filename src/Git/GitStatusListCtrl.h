@@ -145,6 +145,7 @@ SVNSLC_SHOWINCOMPLETE|SVNSLC_SHOWEXTERNAL|SVNSLC_SHOWINEXTERNALS)
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 typedef CComCritSecLock<CComCriticalSection> Locker;
 
+class CGitStatusListCtrlDropTarget;
 /**
  * \ingroup SVN
  * A List control, based on the MFC CListCtrl which shows a list of
@@ -193,7 +194,7 @@ public:
 	 * Helper class for CGitStatusListCtrl which represents
 	 * the data for each file shown.
 	 */
-
+#if 0
 	class FileEntry
 	{
 	public:
@@ -319,6 +320,7 @@ public:
 		friend class CGitStatusListCtrlDropTarget;
         friend class CSorter;
 	};
+#endif
 	/**
 	 * \ingroup TortoiseProc
 	 * Helper class for CGitStatusListCtrl that represents
@@ -376,9 +378,9 @@ public:
         /// call these to update the user-prop list
         /// (will also auto-insert /-remove new list columns)
 
-        void UpdateUserPropList (const std::vector<FileEntry*>& files);
-        void UpdateRelevance ( const std::vector<FileEntry*>& files
-                             , const std::vector<size_t>& visibleFiles);
+        //void UpdateUserPropList (const std::vector<FileEntry*>& files);
+        //void UpdateRelevance ( const std::vector<FileEntry*>& files
+         //                    , const std::vector<size_t>& visibleFiles);
 
         /// don't clutter the context menu with irrelevant prop info
 
@@ -562,13 +564,13 @@ public:
 	/**
 	 * Returns the file entry data for the list control index.
 	 */
-	CGitStatusListCtrl::FileEntry * GetListEntry(UINT_PTR index);
+	//CGitStatusListCtrl::FileEntry * GetListEntry(UINT_PTR index);
 
 	/**
 	 * Returns the file entry data for the specified path.
 	 * \note The entry might not be shown in the list control.
 	 */
-	CGitStatusListCtrl::FileEntry * GetListEntry(const CTGitPath& path);
+	//CGitStatusListCtrl::FileEntry * GetListEntry(const CTGitPath& path);
 
 	/**
 	 * Returns the index of the list control entry with the specified path,
@@ -579,7 +581,7 @@ public:
 	/**
 	 * Returns the file entry data for the specified path in the list control.
 	 */
-	CGitStatusListCtrl::FileEntry * GetVisibleListEntry(const CTGitPath& path);
+	//CGitStatusListCtrl::FileEntry * GetVisibleListEntry(const CTGitPath& path);
 
 	/**
 	 * Returns a String containing some statistics like number of modified, normal, deleted,...
@@ -729,7 +731,7 @@ public:
 private:
 	void SaveColumnWidths(bool bSaveToRegistry = false);
 	void Sort();	///< Sorts the control by columns
-	void AddEntry(FileEntry * entry, WORD langID, int listIndex);	///< add an entry to the control
+	//void AddEntry(FileEntry * entry, WORD langID, int listIndex);	///< add an entry to the control
 	void RemoveListEntry(int index);	///< removes an entry from the listcontrol and both arrays
 	bool BuildStatistics();	///< build the statistics and correct the case of files/folders
 	void StartDiff(int fileindex);	///< start the external diff program
@@ -752,26 +754,26 @@ private:
 	void ClearStatusArray();
 
 	/// Sort predicate function - Compare the paths of two entries without regard to case
-	static bool EntryPathCompareNoCase(const FileEntry* pEntry1, const FileEntry* pEntry2);
+	//static bool EntryPathCompareNoCase(const FileEntry* pEntry1, const FileEntry* pEntry2);
 
 	/// Predicate used to build a list of only the versioned entries of the FileEntry array
-	static bool IsEntryVersioned(const FileEntry* pEntry1);
+	//static bool IsEntryVersioned(const FileEntry* pEntry1);
 
 	/// Look up the relevant show flags for a particular Git status value
 	DWORD GetShowFlagsFromGitStatus(git_wc_status_kind status);
 
 	/// Build a FileEntry item and add it to the FileEntry array
-	const FileEntry* AddNewFileEntry(
-		const git_wc_status2_t* pGitStatus,  // The return from the Git GetStatus functions
-		const CTGitPath& path,				// The path of the item we're adding
-		const CTGitPath& basePath,			// The base directory for this status build
-		bool bDirectItem,					// Was this item the first found by GetFirstFileStatus or by a subsequent GetNextFileStatus call
-		bool bInExternal,					// Are we in an 'external' folder
-		bool bEntryfromDifferentRepo		// if the entry is from a different repository
-		);
+	//const FileEntry* AddNewFileEntry(
+	//	const git_wc_status2_t* pGitStatus,  // The return from the Git GetStatus functions
+	//	const CTGitPath& path,				// The path of the item we're adding
+	//	const CTGitPath& basePath,			// The base directory for this status build
+	//	bool bDirectItem,					// Was this item the first found by GetFirstFileStatus or by a subsequent GetNextFileStatus call
+	//	bool bInExternal,					// Are we in an 'external' folder
+	//	bool bEntryfromDifferentRepo		// if the entry is from a different repository
+	//	);
 
 	/// Adjust the checkbox-state on all descendants of a specific item
-	void SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck);
+	//void SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck);
 
 	/// Build a path list of all the selected items in the list (NOTE - SELECTED, not CHECKED)
 	void FillListOfSelectedItemPaths(CTGitPathList& pathList, bool bNoIgnored = false);
