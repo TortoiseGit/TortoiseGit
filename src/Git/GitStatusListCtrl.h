@@ -915,7 +915,7 @@ public:
 
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
 	int m_FileLoaded;
-
+	git_revnum_t m_CurrentVersion;
 public:
 	CXPTheme	m_Theme;
 };

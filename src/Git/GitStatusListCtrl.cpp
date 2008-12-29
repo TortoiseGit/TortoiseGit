@@ -4045,10 +4045,17 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 {
 	if(fileindex<0)
 		return;
-	CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
+	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
+	{
+		CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
 			        CString(GIT_REV_ZERO),
 					GitRev::GetHead());
-	
+	}else
+	{
+		CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
+			        m_CurrentVersion,
+					m_CurrentVersion+_T("~1"));
+	}
 #if 0
 	if (fileindex < 0)
 		return;
@@ -5206,6 +5213,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 {
 	CString out;
 	this->m_bBusy=TRUE;
+	m_CurrentVersion=hash;
+
 	if(hash == GIT_REV_ZERO)
 	{
 		int count = 0;
