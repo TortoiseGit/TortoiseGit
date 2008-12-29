@@ -534,7 +534,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
 
 		// set the log message text
-		pMsgView->SetWindowText(_T("*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
+		pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
 		// turn bug ID's into links if the bugtraq: properties have been set
 		// and we can find a match of those in the log message
 		m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
@@ -699,6 +699,8 @@ void CLogDlg::OnBnClickedRefresh()
 
 void CLogDlg::Refresh (bool autoGoOnline)
 {
+	m_LogList.Refresh();
+
 #if 0
 	// refreshing means re-downloading the already shown log messages
 	UpdateData();
@@ -1853,7 +1855,8 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 
 BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	if (this->IsThreadRunning())
+	//if (this->IsThreadRunning())
+	if(m_LogList.m_bNoDispUpdates)
 	{
 		// only show the wait cursor over the list control
 		if ((pWnd)&&
@@ -1883,7 +1886,8 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
-	if (this->IsThreadRunning())
+	//if (this->IsThreadRunning())
+	if(m_LogList.m_bNoDispUpdates)
 		return;
 	if (pNMLV->iItem >= 0)
 	{
@@ -2844,22 +2848,22 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 
 		// now start filter the log list
 //		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-		RecalculateShownList(&m_LogList.m_arShownList);
+//		RecalculateShownList(&m_LogList.m_arShownList);
 //		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 
-		m_LogList.DeleteAllItems();
-		m_LogList.SetItemCountEx(m_LogList.ShownCountWithStopped());
-		m_LogList.RedrawItems(0, m_LogList.ShownCountWithStopped());
-		m_LogList.SetRedraw(false);
-		m_LogList.ResizeAllListCtrlCols();
-		m_LogList.SetRedraw(true);
-		m_LogList.Invalidate();
-		if ( m_LogList.GetItemCount()==1 )
-		{
-			m_LogList.SetSelectionMark(0);
-			m_LogList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
-		}
+//		m_LogList.DeleteAllItems();
+//		m_LogList.SetItemCountEx(m_LogList.ShownCountWithStopped());
+//		m_LogList.RedrawItems(0, m_LogList.ShownCountWithStopped());
+//		m_LogList.SetRedraw(false);
+//		m_LogList.ResizeAllListCtrlCols();
+//		m_LogList.SetRedraw(true);
+//		m_LogList.Invalidate();
+//		if ( m_LogList.GetItemCount()==1 )
+//		{
+//			m_LogList.SetSelectionMark(0);
+//			m_LogList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+//		}
 		theApp.DoWaitCursor(-1);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
@@ -3264,22 +3268,22 @@ void CLogDlg::OnBnClickedIncludemerge()
 
 void CLogDlg::UpdateLogInfoLabel()
 {
-#if 0
-	git_revnum_t rev1 = 0;
-	git_revnum_t rev2 = 0;
-	long selectedrevs = 0;
-	if (m_arShownList.GetCount())
+
+	git_revnum_t rev1 ;
+	git_revnum_t rev2 ;
+	long selectedrevs ;
+	int count =m_LogList.m_arShownList.GetCount();
+	if (count)
 	{
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(0));
-		rev1 = pLogEntry->Rev;
-		pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_arShownList.GetCount()-1));
-		rev2 = pLogEntry->Rev;
+		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(0)))->m_CommitHash;
+		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_arShownList.GetCount()-1));
+		rev2 =  (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(count-1)))->m_CommitHash;
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(IDS_LOG_LOGINFOSTRING, m_arShownList.GetCount(), rev2, rev1, selectedrevs);
+	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected"), count, rev2.Left(6), rev1.Left(6), selectedrevs);
 	m_sLogInfo = sTemp;
-#endif
+
 	UpdateData(FALSE);
 }
 

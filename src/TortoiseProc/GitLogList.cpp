@@ -257,6 +257,12 @@ void CGitLogList::ResizeAllListCtrlCols()
 	}
 
 }
+
+void Refresh()
+{
+	
+}
+
 BOOL CGitLogList::GetShortName(CString ref, CString &shortname,CString prefix)
 {
 	if(ref.Left(prefix.GetLength()) ==  prefix)
@@ -813,7 +819,7 @@ void CGitLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
 	
 	*pResult = 0;
-	if (m_bNoDispUpdates || m_bThreadRunning || bOutOfRange)
+	if (m_bNoDispUpdates || bOutOfRange)
 		return;
 
 	// Which item number?
@@ -1805,6 +1811,7 @@ UINT CGitLogList::LogThread()
 		m_ProcCallBack(m_ProcData,GITLOG_START);
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 
     //does the user force the cache to refresh (shift or control key down)?
     bool refresh =    (GetKeyState (VK_CONTROL) < 0) 
@@ -1819,7 +1826,7 @@ UINT CGitLogList::LogThread()
 
 	FillGitShortLog();
 	
-	InterlockedExchange(&m_bThreadRunning, FALSE);
+	
 
 	RedrawItems(0, m_arShownList.GetCount());
 	SetRedraw(false);
@@ -1877,6 +1884,24 @@ UINT CGitLogList::LogThread()
 	if(m_ProcCallBack)
 		m_ProcCallBack(m_ProcData,GITLOG_END);
 
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+
 	return 0;
 }
 
+void CGitLogList::Refresh()
+{
+	if(!m_bThreadRunning)
+	{
+		this->SetItemCountEx(0);
+		m_logEntries.clear();
+		InterlockedExchange(&m_bThreadRunning, TRUE);
+		InterlockedExchange(&m_bNoDispUpdates, TRUE);
+		if (AfxBeginThread(LogThreadEntry, this)==NULL)
+		{
+			InterlockedExchange(&m_bThreadRunning, FALSE);
+			InterlockedExchange(&m_bNoDispUpdates, FALSE);
+			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		}
+	}
+}

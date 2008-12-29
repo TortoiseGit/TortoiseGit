@@ -126,6 +126,7 @@ public:
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(CALLBACK_PROCESS *proc=NULL, void * data=NULL);
 	CPtrArray			m_arShownList;
+	void Refresh();
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -147,6 +148,8 @@ protected:
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
                                       const COLORREF& col,int top) ; 
 	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){::MoveToEx(hdc,x1,y1,NULL);::LineTo(hdc,x2,y2);}
+
+
 	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;
