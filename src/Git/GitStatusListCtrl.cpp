@@ -2654,19 +2654,50 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			{
 			case IDSVNLC_OPEN:
 				{
-					int ret = (int)ShellExecute(this->m_hWnd, NULL, filepath->GetWinPath(), NULL, NULL, SW_SHOW);
+					CString file;
+					if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+					{
+						file= filepath->GetWinPath();
+					}else
+					{
+						CString temppath;
+						GetTempPath(temppath);
+						file.Format(_T("%s%s_%s%s"),
+							temppath,						
+							filepath->GetBaseFilename(),
+							m_CurrentVersion.Left(6),
+							filepath->GetFileExtension());
+
+					}
+					int ret = (int)ShellExecute(this->m_hWnd, NULL,file, NULL, NULL, SW_SHOW);
 					if (ret <= HINSTANCE_ERROR)
 					{
 						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-						cmd += filepath->GetWinPath();
+						cmd += file;
 						CAppUtils::LaunchApplication(cmd, NULL, false);
 					}
 				}
 				break;
 			case IDSVNLC_OPENWITH:
 				{
+					CString file;
+					if(m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+					{
+						file= filepath->GetWinPath();
+					}else
+					{
+						CString temppath;
+						GetTempPath(temppath);
+						file.Format(_T("%s%s_%s%s"),
+							temppath,						
+							filepath->GetBaseFilename(),
+							m_CurrentVersion.Left(6),
+							filepath->GetFileExtension());
+
+					}
+
 					CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-					cmd += filepath->GetWinPathString() + _T(" ");
+					cmd += file + _T(" ");
 					CAppUtils::LaunchApplication(cmd, NULL, false);
 				}
 				break;
@@ -2693,8 +2724,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_BASE, entry->path, SVNRev::REV_WC);
 				//	else
 				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_WC, entry->path, SVNRev::REV_HEAD);
-					CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetWorkingCopy(),
+					if(m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetWorkingCopy(),
 															*filepath,GitRev::GetHead());
+					else
+						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
+															*filepath,m_CurrentVersion+_T("~1"));
 				}
 				break;
 			case IDSVNLC_ADD:
