@@ -1,10 +1,12 @@
 #include "StdAfx.h"
 #include "GitRev.h"
-
+#include "Git.h"
 
 GitRev::GitRev(void)
 {
 	m_Action=0;
+	m_IsFull = 0;
+	m_IsUpdateing = 0;
 }
 
 GitRev::~GitRev(void)
@@ -32,6 +34,22 @@ void GitRev::Clear()
 	m_Subject.Empty();
 	m_CommitHash.Empty();
 
+}
+int GitRev::CopyFrom(GitRev &rev)
+{
+	m_AuthorName	=rev.m_AuthorName	;
+	m_AuthorEmail	=rev.m_AuthorEmail	;
+	m_AuthorDate	=rev.m_AuthorDate	;
+	m_CommitterName	=rev.m_CommitterName	;
+	m_CommitterEmail=rev.m_CommitterEmail;
+	m_CommitterDate	=rev.m_CommitterDate	;
+	m_Subject		=rev.m_Subject		;
+	m_Body			=rev.m_Body			;
+	m_CommitHash	=rev.m_CommitHash	;
+	m_ParentHash	=rev.m_ParentHash	;
+	m_Files			=rev.m_Files			;	
+	m_Action		=rev.m_Action		;
+	return 0;
 }
 int GitRev::ParserFromLog(CString &log)
 {
@@ -119,4 +137,23 @@ CTime GitRev::ConverFromString(CString input)
 			 _wtoi(input.Mid(17,2)),
 			 _wtoi(input.Mid(20,4)));
 	return tm;
+}
+
+int GitRev::SafeFetchFullInfo(CGit *git)
+{
+	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
+	{
+		//GitRev rev;
+		CString onelog;
+		git->GetLog(onelog,m_CommitHash,1);
+		CString oldhash=m_CommitHash;
+		ParserFromLog(onelog);
+		
+		ASSERT(oldhash==m_CommitHash);
+
+		InterlockedExchange(&m_IsUpdateing,FALSE);
+		InterlockedExchange(&m_IsFull,TRUE);
+		return 0;
+	}
+	return -1;
 }

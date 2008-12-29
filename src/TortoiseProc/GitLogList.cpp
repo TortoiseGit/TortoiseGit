@@ -237,6 +237,10 @@ void CGitLogList::ResizeAllListCtrlCols()
 				{
 					cx = LOGLIST_MESSAGE_MAX;
 				}
+				if (cx < LOGLIST_MESSAGE_MIN)
+				{
+					cx = LOGLIST_MESSAGE_MIN;
+				}
 
 			}
 			// keep the bug id column small
@@ -636,6 +640,8 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (m_bNoDispUpdates)
 		return;
 
+
+
 	switch (pLVCD->nmcd.dwDrawStage)
 	{
 	case CDDS_PREPAINT:
@@ -719,9 +725,17 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 				{
 					GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
+					if(!data->m_IsFull)
+					{
+						if(data->SafeFetchFullInfo(&g_Git))
+							this->Invalidate();
+						TRACE(_T("Update ... %d\r\n"),pLVCD->nmcd.dwItemSpec);
+					}
+
 					if(m_HashMap[data->m_CommitHash].size()!=0)
 					{
 						CRect rect;
+
 						GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 					
 						FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
@@ -807,7 +821,8 @@ void CGitLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	GitRev * pLogEntry = NULL;
 	if (itemid < m_arShownList.GetCount())
 		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
-    
+
+	    
 	// Which column?
 	switch (pItem->iSubItem)
 	{
@@ -1057,7 +1072,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				CString tempfile=GetTempFile();
 				CString cmd;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				cmd.Format(_T("git.cmd diff-tree -r -p --stat %s"),r1->m_CommitHash);
+				cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash);
 				g_Git.RunLogFile(cmd,tempfile);
 				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r1->m_Subject);
 			}
@@ -1069,7 +1084,7 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 				CString cmd;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				cmd.Format(_T("git.cmd diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
+				cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
 				g_Git.RunLogFile(cmd,tempfile);
 				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r2->m_CommitHash.Left(6));
 
@@ -1696,12 +1711,14 @@ void CGitLogList::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = -1;
 }
 
-int CGitLogList::FillGitLog()
+int CGitLogList::FillGitShortLog()
 {
 	ClearText();
 
 	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserFromLog();
+	this->m_logEntries.ParserShortLog();
+
+	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx(this->m_logEntries.size());
 
 	this->m_arShownList.RemoveAll();
@@ -1800,160 +1817,7 @@ UINT CGitLogList::LogThread()
 	temp.LoadString(IDS_PROGRESSWAIT);
 	ShowText(temp, true);
 
-//	git_revnum_t r = -1;
-	
-	// get the repository root url, because the changed-files-list has the
-	// paths shown there relative to the repository root.
-//	CTGitPath rootpath;
-//  BOOL succeeded = GetRootAndHead(m_path, rootpath, r);
-
-//    m_sRepositoryRoot = rootpath.GetGitPathString();
-//    m_sURL = m_path.GetGitPathString();
-
-    // we need the UUID to unambigously identify the log cache
-//    if (logCachePool.IsEnabled())
-//        m_sUUID = logCachePool.GetRepositoryInfo().GetRepositoryUUID (rootpath);
-
-    // if the log dialog is started from a working copy, we need to turn that
-    // local path into an url here
-//    if (succeeded)
-//    {
-//        if (!m_path.IsUrl())
-//        {
-//	        m_sURL = GetURLFromPath(m_path);
-
-	        // The URL is escaped because Git::logReceiver
-	        // returns the path in a native format
-//	        m_sURL = CPathUtils::PathUnescape(m_sURL);
-  //      }
-//        m_sRelativeRoot = m_sURL.Mid(CPathUtils::PathUnescape(m_sRepositoryRoot).GetLength());
-//		m_sSelfRelativeURL = m_sRelativeRoot;
-  //  }
-#if 0
-    if (succeeded && !m_mergePath.IsEmpty() && m_mergedRevs.empty())
-    {
-	    // in case we got a merge path set, retrieve the merge info
-	    // of that path and check whether one of the merge URLs
-	    // match the URL we show the log for.
-	    GitPool localpool(pool);
-	    git_error_clear(Err);
-	    apr_hash_t * mergeinfo = NULL;
-	    if (git_client_mergeinfo_get_merged (&mergeinfo, m_mergePath.GetGitApiPath(localpool), GitRev(GitRev::REV_WC), m_pctx, localpool) == NULL)
-	    {
-		    // now check the relative paths
-		    apr_hash_index_t *hi;
-		    const void *key;
-		    void *val;
-
-		    if (mergeinfo)
-		    {
-			    for (hi = apr_hash_first(localpool, mergeinfo); hi; hi = apr_hash_next(hi))
-			    {
-				    apr_hash_this(hi, &key, NULL, &val);
-				    if (m_sURL.Compare(CUnicodeUtils::GetUnicode((char*)key)) == 0)
-				    {
-					    apr_array_header_t * arr = (apr_array_header_t*)val;
-					    if (val)
-					    {
-						    for (long i=0; i<arr->nelts; ++i)
-						    {
-							    git_merge_range_t * pRange = APR_ARRAY_IDX(arr, i, git_merge_range_t*);
-							    if (pRange)
-							    {
-								    for (git_revnum_t r=pRange->start+1; r<=pRange->end; ++r)
-								    {
-									    m_mergedRevs.insert(r);
-								    }
-							    }
-						    }
-					    }
-					    break;
-				    }
-			    }
-		    }
-	    }
-    }
-
-    m_LogProgress.SetPos(1);
-    if (m_startrev == GitRev::REV_HEAD)
-    {
-	    m_startrev = r;
-    }
-    if (m_endrev == GitRev::REV_HEAD)
-    {
-	    m_endrev = r;
-    }
-
-    if (m_limit != 0)
-    {
-	    m_limitcounter = m_limit;
-	    m_LogProgress.SetRange32(0, m_limit);
-    }
-    else
-	    m_LogProgress.SetRange32(m_endrev, m_startrev);
-	
-    if (!m_pegrev.IsValid())
-	    m_pegrev = m_startrev;
-    size_t startcount = m_logEntries.size();
-    m_lowestRev = -1;
-    m_bStrictStopped = false;
-
-    if (succeeded)
-    {
-        succeeded = ReceiveLog (CTGitPathList(m_path), m_pegrev, m_startrev, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
-        if ((!succeeded)&&(!m_path.IsUrl()))
-        {
-	        // try again with REV_WC as the start revision, just in case the path doesn't
-	        // exist anymore in HEAD
-	        succeeded = ReceiveLog(CTGitPathList(m_path), GitRev(), GitRev::REV_WC, m_endrev, m_limit, m_bStrict, m_bIncludeMerges, refresh);
-        }
-    }
-	m_LogList.ClearText();
-    if (!succeeded)
-	{
-		m_LogList.ShowText(GetLastErrorMessage(), true);
-	}
-	else
-	{
-		if (!m_wcRev.IsValid())
-		{
-			// fetch the revision the wc path is on so we can mark it
-			CTGitPath revWCPath = m_ProjectProperties.GetPropsPath();
-			if (!m_path.IsUrl())
-				revWCPath = m_path;
-			if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RecursiveLogRev"), FALSE)))
-			{
-				git_revnum_t minrev, maxrev;
-				bool switched, modified, sparse;
-				GetWCRevisionStatus(revWCPath, true, minrev, maxrev, switched, modified, sparse);
-				if (maxrev)
-					m_wcRev = maxrev;
-			}
-			else
-			{
-				CTGitPath dummypath;
-				GitStatus status;
-				git_wc_status2_t * stat = status.GetFirstFileStatus(revWCPath, dummypath, false, git_depth_empty);
-				if (stat && stat->entry && stat->entry->cmt_rev)
-					m_wcRev = stat->entry->cmt_rev;
-				if (stat && stat->entry && (stat->entry->kind == git_node_dir))
-					m_wcRev = stat->entry->revision;
-			}
-		}
-	}
-    if (m_bStrict && (m_lowestRev>1) && ((m_limit>0) ? ((startcount + m_limit)>m_logEntries.size()) : (m_endrev<m_lowestRev)))
-		m_bStrictStopped = true;
-	m_LogList.SetItemCountEx(ShownCountWithStopped());
-
-	m_timFrom = (__time64_t(m_tFrom));
-	m_timTo = (__time64_t(m_tTo));
-	m_DateFrom.SetRange(&m_timFrom, &m_timTo);
-	m_DateTo.SetRange(&m_timFrom, &m_timTo);
-	m_DateFrom.SetTime(&m_timFrom);
-	m_DateTo.SetTime(&m_timTo);
-#endif
-	//DialogEnableWindow(IDC_GETALL, TRUE);
-	FillGitLog();
+	FillGitShortLog();
 	
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 
@@ -1979,12 +1843,36 @@ UINT CGitLogList::LogThread()
 			SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 		}
 	}
+	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+
+	int index=0;
+	int updated=0;
+	int percent=0;
+	while(1)
+	{
+		for(int i=0;i<m_logEntries.size();i++)
+		{
+			if(!m_logEntries.FetchFullInfo(i))
+			{
+				updated++;
+			}
+			
+			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
+			if(percent == GITLOG_END)
+				percent == GITLOG_END -1;
+			
+			if(m_ProcCallBack)
+				m_ProcCallBack(m_ProcData,percent);
+		}
+		if(updated==m_logEntries.size())
+			break;
+	}
 
 	//RefreshCursor();
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
 
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+	
 
 	if(m_ProcCallBack)
 		m_ProcCallBack(m_ProcData,GITLOG_END);

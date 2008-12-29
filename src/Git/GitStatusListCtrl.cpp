@@ -2867,7 +2867,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						CTGitPath * path=(CTGitPath*)GetItemData(index);
 						CString cmd;
-						cmd.Format(_T("git.cmd add %s"),path->GetGitPathString());
+						cmd.Format(_T("git.exe add %s"),path->GetGitPathString());
 						CString output;
 						g_Git.Run(cmd,&output);
 						path->m_Action = CTGitPath::LOGACTIONS_ADDED;
@@ -5389,9 +5389,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			CString cmdout;
 			CString cmd;
 			if(list == NULL)
-				cmd=(_T("git.cmd diff-index --raw HEAD --numstat -C -M"));
+				cmd=(_T("git.exe diff-index --raw HEAD --numstat -C -M"));
 			else
-				cmd.Format(_T("git.cmd diff-index --raw HEAD --numstat -C -M -- \"%s\""),(*list)[i].GetGitPathString());
+				cmd.Format(_T("git.exe diff-index --raw HEAD --numstat -C -M -- \"%s\""),(*list)[i].GetGitPathString());
 
 			g_Git.Run(cmd,&cmdout);
 

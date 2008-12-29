@@ -103,20 +103,20 @@ int CGit::Run(CString cmd, CString* output)
 CString CGit::GetUserName(void)
 {
 	CString UserName;
-	Run(_T("git.cmd config user.name"),&UserName);
+	Run(_T("git.exe config user.name"),&UserName);
 	return UserName;
 }
 CString CGit::GetUserEmail(void)
 {
 	CString UserName;
-	Run(_T("git.cmd config user.email"),&UserName);
+	Run(_T("git.exe config user.email"),&UserName);
 	return UserName;
 }
 
 CString CGit::GetCurrentBranch(void)
 {
 	CString branch;
-	Run(_T("git.cmd branch"),&branch);
+	Run(_T("git.exe branch"),&branch);
 	if(branch.GetLength()>0)
 	{
 		branch.Replace(_T('*'),_T(' '));
@@ -126,39 +126,71 @@ CString CGit::GetCurrentBranch(void)
 	return CString("");
 }
 
-int CGit::GetLog(CString& logOut)
+int CGit::BuildOutputFormat(CString &format,bool IsFull)
+{
+	CString log;
+	log.Format(_T("#<%c>%%n"),LOG_REV_ITEM_BEGIN);
+	format += log;
+	if(IsFull)
+	{
+		log.Format(_T("#<%c>%%an%%n"),LOG_REV_AUTHOR_NAME);
+		format += log;
+		log.Format(_T("#<%c>%%ae%%n"),LOG_REV_AUTHOR_EMAIL);
+		format += log;
+		log.Format(_T("#<%c>%%ai%%n"),LOG_REV_AUTHOR_DATE);
+		format += log;
+		log.Format(_T("#<%c>%%cn%%n"),LOG_REV_COMMIT_NAME);
+		format += log;
+		log.Format(_T("#<%c>%%ce%%n"),LOG_REV_COMMIT_EMAIL);
+		format += log;
+		log.Format(_T("#<%c>%%ci%%n"),LOG_REV_COMMIT_DATE);
+		format += log;
+		log.Format(_T("#<%c>%%s%%n"),LOG_REV_COMMIT_SUBJECT);
+		format += log;
+		log.Format(_T("#<%c>%%b%%n"),LOG_REV_COMMIT_BODY);
+		format += log;
+	}
+	log.Format(_T("#<%c>%%H%%n"),LOG_REV_COMMIT_HASH);
+	format += log;
+	log.Format(_T("#<%c>%%P%%n"),LOG_REV_COMMIT_PARENT);
+	format += log;
+
+	if(IsFull)
+	{
+		log.Format(_T("#<%c>%%n"),LOG_REV_COMMIT_FILE);
+		format += log;
+	}
+	return 0;
+}
+
+int CGit::GetLog(CString& logOut, CString &hash, int count)
 {
 
 	CString cmd;
 	CString log;
-	cmd=("git.cmd log -C --numstat --raw --pretty=format:\"");
-	log.Format(_T("#<%c>%%n"),LOG_REV_ITEM_BEGIN);
+	CString num;
+	CString since;
+	if(count>0)
+		num.Format(_T("-n%d"),count);
+
+	cmd.Format(_T("git.exe log %s -C --numstat --raw --pretty=format:\""),
+				num);
+	BuildOutputFormat(log);
 	cmd += log;
-	log.Format(_T("#<%c>%%an%%n"),LOG_REV_AUTHOR_NAME);
-	cmd += log;
-	log.Format(_T("#<%c>%%ae%%n"),LOG_REV_AUTHOR_EMAIL);
-	cmd += log;
-	log.Format(_T("#<%c>%%ai%%n"),LOG_REV_AUTHOR_DATE);
-	cmd += log;
-	log.Format(_T("#<%c>%%cn%%n"),LOG_REV_COMMIT_NAME);
-	cmd += log;
-	log.Format(_T("#<%c>%%ce%%n"),LOG_REV_COMMIT_EMAIL);
-	cmd += log;
-	log.Format(_T("#<%c>%%ci%%n"),LOG_REV_COMMIT_DATE);
-	cmd += log;
-	log.Format(_T("#<%c>%%s%%n"),LOG_REV_COMMIT_SUBJECT);
-	cmd += log;
-	log.Format(_T("#<%c>%%b%%n"),LOG_REV_COMMIT_BODY);
-	cmd += log;
-	log.Format(_T("#<%c>%%H%%n"),LOG_REV_COMMIT_HASH);
-	cmd += log;
-	log.Format(_T("#<%c>%%P%%n"),LOG_REV_COMMIT_PARENT);
-	cmd += log;
-	log.Format(_T("#<%c>%%n"),LOG_REV_COMMIT_FILE);
+	cmd += CString(_T("\"  "))+hash;
+	return Run(cmd,&logOut);
+}
+
+
+int CGit::GetShortLog(CString &logOut)
+{
+	CString cmd;
+	CString log;
+	cmd=("git.exe log --topo-order -n100 --pretty=format:\"");
+	BuildOutputFormat(log,false);
 	cmd += log;
 	cmd += CString(_T("\" HEAD~40..HEAD"));
-	Run(cmd,&logOut);
-	return 0;
+	return Run(cmd,&logOut);
 }
 
 #define BUFSIZE 512
@@ -248,7 +280,7 @@ git_revnum_t CGit::GetHash(CString &friendname)
 {
 	CString cmd;
 	CString out;
-	cmd.Format(_T("git.cmd rev-parse %s" ),friendname);
+	cmd.Format(_T("git.exe rev-parse %s" ),friendname);
 	Run(cmd,&out);
 	int pos=out.ReverseFind(_T('\n'));
 	if(pos>0)

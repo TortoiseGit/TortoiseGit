@@ -38,7 +38,7 @@ public:
 		git.m_CurrentDir=cmdLinePath.GetWinPath();
 		CString output;
 
-		if (git.Run(_T("git.cmd init-db"),&output))
+		if (git.Run(_T("git.exe init-db"),&output))
 		{
 			CMessageBox::Show(hwndExplorer, IDS_PROC_REPOCREATEERR, IDS_APPNAME, MB_ICONERROR);
 			return false;

@@ -46,8 +46,14 @@ public:
 	int GetTagList(CStringList &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
-	int GetLog(CString& logOut);
+	//hash is empty means all. -1 means all
+	int GetLog(CString& logOut,CString &hash, int count=-1);
+
 	git_revnum_t GetHash(CString &friendname);
+
+	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
+	int GetShortLog(CString &log);
+	
 	
 };
 extern void GetTempPath(CString &path);

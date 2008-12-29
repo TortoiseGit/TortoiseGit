@@ -80,11 +80,16 @@ public:
 	}
 	void ClearAll();
 	int  ParserFromLog();
+	int ParserShortLog();
+	int FetchFullInfo(int i);
+
 	Lanes m_Lanes;
 	int	 m_FirstFreeLane;
 	MAP_HASH_REV m_HashMap;
 	void updateLanes(GitRev& c, Lanes& lns, CString &sha) ;
 	void setLane(CString& sha) ;
+	
+	
 
 
 #if 0

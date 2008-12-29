@@ -36,7 +36,7 @@ bool RevertCommand::Execute()
 		CString out;
 		for(int i=0;i< dlg.m_pathList.GetCount() ;i++)
 		{
-			cmd.Format(_T("git.cmd reset --hard -- \"%s\""),dlg.m_pathList[i].GetGitPathString());
+			cmd.Format(_T("git.exe reset --hard -- \"%s\""),dlg.m_pathList[i].GetGitPathString());
 			g_Git.Run(cmd,&out);
 		}
 #if 0

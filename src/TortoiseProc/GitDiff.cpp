@@ -24,7 +24,7 @@ int CGitDiff::Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, 
 				pPath->GetBaseFilename(),
 				rev1.Left(6),
 				pPath->GetFileExtension());
-		cmd.Format(_T("git.cmd cat-file -p %s:%s"),rev1,pPath->GetGitPathString());
+		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1,pPath->GetGitPathString());
 				g_Git.RunLogFile(cmd,file1);
 	}else
 	{
@@ -40,7 +40,7 @@ int CGitDiff::Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, 
 				pPath->GetBaseFilename(),
 				rev2.Left(6),
 				pPath->GetFileExtension());
-		cmd.Format(_T("git.cmd cat-file -p %s:%s"),rev2,pPath->GetGitPathString());
+		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2,pPath->GetGitPathString());
 		g_Git.RunLogFile(cmd,file2);
 	}else
 	{

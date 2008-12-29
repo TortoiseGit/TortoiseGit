@@ -396,8 +396,8 @@ void CLogDlg::LogRunStatus(int cur)
 		}
 
 		// We use a progress bar while getting the logs	
-		//m_LogProgress.SetRange32(0, 100);
-		//m_LogProgress.SetPos(0);
+		m_LogProgress.SetRange32(0, 100);
+		m_LogProgress.SetPos(0);
 
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
@@ -423,6 +423,8 @@ void CLogDlg::LogRunStatus(int cur)
 		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 
 	}
+
+	m_LogProgress.SetPos(cur);
 }
 void CLogDlg::SetDlgTitle(bool bOffline)
 {
@@ -1502,9 +1504,9 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool b
 
 	CString cmd;
 
-	cmd.Format(_T("git.cmd cat-file -p %s:%s"),rev1->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
+	cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
 	g_Git.RunLogFile(cmd,file1);
-	cmd.Format(_T("git.cmd cat-file -p %s:%s"),rev2->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
+	cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
 	g_Git.RunLogFile(cmd,file2);
 
 	CAppUtils::DiffFlags flags;

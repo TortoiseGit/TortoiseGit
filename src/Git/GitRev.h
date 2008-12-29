@@ -18,7 +18,7 @@ typedef std::vector<git_revnum_t> GIT_REV_LIST;
 #define LOG_REV_ITEM_BEGIN		_T('B')
 #define LOG_REV_ITEM_END		_T('C')
 
-
+class CGit;
 
 class GitRev
 {
@@ -27,6 +27,7 @@ public:
 //	GitRev(GitRev &rev);
 //	GitRev &operator=(GitRev &rev);
 	~GitRev(void);
+	
 	enum
 	{
 		REV_HEAD = -1,			///< head revision
@@ -34,8 +35,12 @@ public:
 		REV_WC = -3,			///< revision of the working copy
 		REV_UNSPECIFIED = -4,	///< unspecified revision
 	};
+	
+	int CopyFrom(GitRev &rev);
+
 	static CString GetHead(){return CString(_T("HEAD"));};
 	static CString GetWorkingCopy(){return CString(GIT_REV_ZERO);};
+	
 	CString m_AuthorName;
 	CString m_AuthorEmail;
 	CTime	m_AuthorDate;
@@ -47,12 +52,18 @@ public:
 	git_revnum_t m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
 	CTGitPathList m_Files;
-	void Clear();
 	int	m_Action;
+	
+	void Clear();
 	int ParserFromLog(CString &log);
 	CTime ConverFromString(CString input);
 	inline int ParentsCount(){return m_ParentHash.size();}
 	
 	//Show version tree Graphic
 	std::vector<int> m_Lanes;
+
+	volatile LONG m_IsFull;
+	volatile LONG m_IsUpdateing;
+	
+	int SafeFetchFullInfo(CGit *git);
 };

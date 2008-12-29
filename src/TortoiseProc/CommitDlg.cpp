@@ -414,13 +414,13 @@ void CCommitDlg::OnOK()
 	CString out;
 	if(uncheckedfiles.GetLength()>0)
 	{
-		cmd.Format(_T("git.cmd reset -- %s"),uncheckedfiles);
+		cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
 		g_Git.Run(cmd,&out);
 	}
 
 	if(checkedfiles.GetLength()>0)
 	{
-		cmd.Format(_T("git.cmd update-index -- %s"),checkedfiles);
+		cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
 		g_Git.Run(cmd,&out);
 
 		CString tempfile=::GetTempFile();
@@ -429,7 +429,7 @@ void CCommitDlg::OnOK()
 		file.Close();
 	
 		out =_T("");
-		cmd.Format(_T("git.cmd commit -F \"%s\""), tempfile);
+		cmd.Format(_T("git.exe commit -F \"%s\""), tempfile);
 		g_Git.Run(cmd,&out);
 	
 		CFile::Remove(tempfile);

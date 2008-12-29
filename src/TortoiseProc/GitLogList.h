@@ -43,6 +43,7 @@ enum LISTITEMSTATES_MINE {
 #define ICONITEMBORDER 5
 
 #define GITLOG_START 0
+#define GITLOG_START_ALL 1
 #define GITLOG_END   100
 
 typedef void CALLBACK_PROCESS(void * data, int progress);
@@ -71,7 +72,8 @@ public:
 		LOGLIST_AUTHOR,
 		LOGLIST_DATE,
 		LOGLIST_BUG,
-		LOGLIST_MESSAGE_MAX=250
+		LOGLIST_MESSAGE_MAX=300,
+		LOGLIST_MESSAGE_MIN=200
 	};
 
 	enum 
@@ -120,7 +122,7 @@ public:
 	void CopySelectionToClipBoard(bool hashonly=FALSE);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
-	int  FillGitLog();
+	int  FillGitShortLog();
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(CALLBACK_PROCESS *proc=NULL, void * data=NULL);
 	CPtrArray			m_arShownList;

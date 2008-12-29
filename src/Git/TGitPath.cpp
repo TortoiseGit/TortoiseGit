@@ -838,12 +838,12 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 		
 		if(list==NULL)
 		{
-			cmd=_T("git.cmd ls-files --exclude-standard --full-name --others");
+			cmd=_T("git.exe ls-files --exclude-standard --full-name --others");
 			cmd+=ignored;
 			
 		}
 		else
-		{	cmd.Format(_T("git.cmd ls-files --exclude-standard --full-name --others %s-- \"%s\""),
+		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others %s-- \"%s\""),
 					ignored,
 					(*list)[i].GetWinPathString());
 		}
