@@ -58,7 +58,7 @@ public:
 	}
 	void ClearAll();
 	int  ParserFromLog();
-	int ParserShortLog();
+	int ParserShortLog(CTGitPath *path =NULL,int count = -1  );
 	int FetchFullInfo(int i);
 
 	Lanes m_Lanes;

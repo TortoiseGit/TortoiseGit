@@ -22,6 +22,7 @@
 #include "GitStatus.h"
 #include "MessageBox.h"
 #include "ChangedDlg.h"
+#include "LogDlgHelper.h"
 
 bool PrevDiffCommand::Execute()
 {
@@ -43,8 +44,28 @@ bool PrevDiffCommand::Execute()
 
 		if (1)
 		{
-			CGitDiff diff;
-			bRet = diff.Diff(&cmdLinePath, git_revnum_t(_T("HEAD")), git_revnum_t(_T("HEAD~1")), false);
+			CString hash;
+			CString logout;
+		
+			CLogDataVector revs;
+			revs.ParserShortLog(&cmdLinePath,2);
+			if( revs.size() == 0)
+			{
+				CMessageBox::Show(hWndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);
+				return FALSE;
+			}
+
+			if( revs.size() == 1 )
+			{
+				CGitDiff diff;
+				bRet = diff.DiffNull(&cmdLinePath,revs[0].m_CommitHash);
+			}
+
+			if( revs.size() == 2 )
+			{
+				CGitDiff diff;
+				bRet = diff.Diff(&cmdLinePath, revs[0].m_CommitHash, revs[1].m_CommitHash, false);
+			}
 		}
 		else
 		{

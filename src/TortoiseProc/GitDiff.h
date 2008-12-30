@@ -11,4 +11,5 @@ public:
 	static int Parser(git_revnum_t &rev);
 
 	static int Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, bool blame=false, bool unified=false);
+	static int DiffNull(CTGitPath *pPath, git_revnum_t &rev1);
 };

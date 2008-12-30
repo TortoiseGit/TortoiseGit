@@ -63,7 +63,7 @@
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
 
-int CLogDataVector::ParserShortLog()
+int CLogDataVector::ParserShortLog(CTGitPath *path ,int count  )
 {
 	CString log;
 	GitRev rev;
@@ -71,7 +71,7 @@ int CLogDataVector::ParserShortLog()
 	CString begin;
 	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
 
-	g_Git.GetShortLog(log);
+	g_Git.GetShortLog(log,path,count);
 	if(log.GetLength()==0)
 		return 0;
 	

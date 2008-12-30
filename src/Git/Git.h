@@ -53,7 +53,7 @@ public:
 	git_revnum_t GetHash(CString &friendname);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
-	int GetShortLog(CString &log);
+	int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
 	
 	
 };

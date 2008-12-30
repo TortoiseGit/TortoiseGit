@@ -182,14 +182,21 @@ int CGit::GetLog(CString& logOut, CString &hash, int count)
 }
 
 
-int CGit::GetShortLog(CString &logOut)
+int CGit::GetShortLog(CString &logOut,CTGitPath * path, int count)
 {
 	CString cmd;
 	CString log;
-	cmd=("git.exe log --topo-order -n100 --pretty=format:\"");
+	int n;
+	if(count<0)
+		n=100;
+	else
+		n=count;
+	cmd.Format(_T("git.exe log --topo-order -n%d --pretty=format:\""),n);
 	BuildOutputFormat(log,false);
-	cmd += log;
-	cmd += CString(_T("\" HEAD~40..HEAD"));
+	cmd += log+_T("\"");
+	if (path)
+		cmd+= _T("  -- \"")+path->GetGitPathString()+_T("\"");
+	//cmd += CString(_T("\" HEAD~40..HEAD"));
 	return Run(cmd,&logOut);
 }
 
