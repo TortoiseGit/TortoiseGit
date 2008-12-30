@@ -138,6 +138,11 @@ public:
 	void RecalculateShownList(CPtrArray * pShownlist);
 
 	int					m_nSelectedFilter;
+	CLogDataVector		m_logEntries;
+	void RemoveFilter();
+	void StartFilter();
+	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
+	CString				m_sFilterText;
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -160,11 +165,13 @@ protected:
                                       const COLORREF& col,int top) ; 
 	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){::MoveToEx(hdc,x1,y1,NULL);::LineTo(hdc,x2,y2);}
 
-	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
+
 	BOOL IsEntryInDateRange(int i);
 
+
+
 	bool				m_bFilterWithRegex;
-	CString				m_sFilterText;
+
 	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;
@@ -178,7 +185,7 @@ protected:
 
 	CRegDWORD			m_regMaxBugIDColWidth;
 	int					m_nSearchIndex;
-	CLogDataVector		m_logEntries;
+	
 	CALLBACK_PROCESS    *m_ProcCallBack;
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;

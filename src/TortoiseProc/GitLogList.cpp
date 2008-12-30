@@ -2122,3 +2122,49 @@ BOOL CGitLogList::IsEntryInDateRange(int i)
 #endif;
 	return TRUE;
 }
+void CGitLogList::StartFilter()
+{
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+	RecalculateShownList(&m_arShownList);
+	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+
+
+	DeleteAllItems();
+	SetItemCountEx(ShownCountWithStopped());
+	RedrawItems(0, ShownCountWithStopped());
+	SetRedraw(false);
+	ResizeAllListCtrlCols();
+	SetRedraw(true);
+	Invalidate();
+}
+void CGitLogList::RemoveFilter()
+{
+
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
+
+	m_arShownList.RemoveAll();
+
+	// reset the time filter too
+#if 0
+	m_timFrom = (__time64_t(m_tFrom));
+	m_timTo = (__time64_t(m_tTo));
+	m_DateFrom.SetTime(&m_timFrom);
+	m_DateTo.SetTime(&m_timTo);
+	m_DateFrom.SetRange(&m_timFrom, &m_timTo);
+	m_DateTo.SetRange(&m_timFrom, &m_timTo);
+#endif
+
+	for (DWORD i=0; i<m_logEntries.size(); ++i)
+	{
+		m_arShownList.Add(&m_logEntries[i]);
+	}
+//	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+	DeleteAllItems();
+	SetItemCountEx(ShownCountWithStopped());
+	RedrawItems(0, ShownCountWithStopped());
+	SetRedraw(false);
+	ResizeAllListCtrlCols();
+	SetRedraw(true);
+
+	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+}

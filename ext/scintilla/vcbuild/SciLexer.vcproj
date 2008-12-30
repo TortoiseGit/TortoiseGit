@@ -2380,6 +2380,10 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\..\..\src\Git\ReadMe.txt"
+			>
+		</File>
+		<File
 			RelativePath="ReadMe.txt"
 			>
 		</File>

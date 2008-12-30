@@ -252,7 +252,7 @@ private:
 	CRect				m_MsgViewOrigRect;
 	CRect				m_LogListOrigRect;
 	CRect				m_ChgOrigRect;
-	CString				m_sFilterText;
+//	CString				m_sFilterText;
 	
 	//volatile LONG		m_bNoDispUpdates;
 	CDateTimeCtrl		m_DateFrom;

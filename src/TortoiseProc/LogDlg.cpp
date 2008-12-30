@@ -1,12 +1,9 @@
 // TortoiseGit - a Windows shell extension for easy version control
-
 // Copyright (C) 2003-2008 - TortoiseGit
-
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -53,8 +50,6 @@
 const UINT CLogDlg::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 
 
-
-
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
@@ -94,9 +89,6 @@ CLogDlg::~CLogDlg()
 	
     m_CurrentFilteredChangedArray.RemoveAll();
 	
-
-
-	
 }
 
 void CLogDlg::DoDataExchange(CDataExchange* pDX)
@@ -108,7 +100,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPLITTERTOP, m_wndSplitter1);
 	DDX_Control(pDX, IDC_SPLITTERBOTTOM, m_wndSplitter2);
 	DDX_Check(pDX, IDC_CHECK_STOPONCOPY, m_bStrict);
-	DDX_Text(pDX, IDC_SEARCHEDIT, m_sFilterText);
+	DDX_Text(pDX, IDC_SEARCHEDIT, m_LogList.m_sFilterText);
 	DDX_Control(pDX, IDC_DATEFROM, m_DateFrom);
 	DDX_Control(pDX, IDC_DATETO, m_DateTo);
 	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
@@ -2318,42 +2310,23 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 
 LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-#if 0
+
 	KillTimer(LOGFILTER_TIMER);
 
-	m_sFilterText.Empty();
+	m_LogList.m_sFilterText.Empty();
 	UpdateData(FALSE);
 	theApp.DoWaitCursor(1);
 	CStoreSelection storeselection(this);
 	FillLogMessageCtrl(false);
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	m_arShownList.RemoveAll();
 
-	// reset the time filter too
-	m_timFrom = (__time64_t(m_tFrom));
-	m_timTo = (__time64_t(m_tTo));
-	m_DateFrom.SetTime(&m_timFrom);
-	m_DateTo.SetTime(&m_timTo);
-	m_DateFrom.SetRange(&m_timFrom, &m_timTo);
-	m_DateTo.SetRange(&m_timFrom, &m_timTo);
+	m_LogList.RemoveFilter();
 
-	for (DWORD i=0; i<m_logEntries.size(); ++i)
-	{
-		m_arShownList.Add(m_logEntries[i]);
-	}
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
-	m_LogList.DeleteAllItems();
-	m_LogList.SetItemCountEx(ShownCountWithStopped());
-	m_LogList.RedrawItems(0, ShownCountWithStopped());
-	m_LogList.SetRedraw(false);
-	ResizeAllListCtrlCols();
-	m_LogList.SetRedraw(true);
 	theApp.DoWaitCursor(-1);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 	UpdateLogInfoLabel();
-#endif
+
 	return 0L;	
 }
 
@@ -2383,205 +2356,13 @@ void CLogDlg::SetFilterCueText()
 	temp = _T("   ")+temp;
 	m_cFilter.SetCueBanner(temp);
 }
-#if 0
-void CLogDlg::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
-
-	// Create a pointer to the item
-	LV_ITEM* pItem = &(pDispInfo)->item;
-
-	// Do the list need text information?
-	if (!(pItem->mask & LVIF_TEXT))
-		return;
-
-	// By default, clear text buffer.
-	lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
-
-	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
-	
-	*pResult = 0;
-	if (m_bNoDispUpdates || m_bThreadRunning || bOutOfRange)
-		return;
-
-	// Which item number?
-	int itemid = pItem->iItem;
-	GitRev * pLogEntry = NULL;
-	if (itemid < m_arShownList.GetCount())
-		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
-    
-	// Which column?
-	switch (pItem->iSubItem)
-	{
-	case this->LOGLIST_GRAPH:	//Graphic
-		if (pLogEntry)
-		{
-		}
-		break;
-	case this->LOGLIST_ACTION: //action -- no text in the column
-		break;
-	case this->LOGLIST_MESSAGE: //Message
-		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_Subject, pItem->cchTextMax);
-		break;
-	case this->LOGLIST_AUTHOR: //Author
-		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorName, pItem->cchTextMax);
-		break;
-	case this->LOGLIST_DATE: //Date
-		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")), pItem->cchTextMax);
-		break;
-		
-	case 5:
-
-		break;
-	default:
-		ASSERT(false);
-	}
-}
-#endif
-void CLogDlg::OnLvnGetdispinfoChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
-{
-
-#if 0
-	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
-
-	//Create a pointer to the item
-	LV_ITEM* pItem= &(pDispInfo)->item;
-
-	*pResult = 0;
-	if ((m_bNoDispUpdates)||(m_bThreadRunning))
-	{
-		if (pItem->mask & LVIF_TEXT)
-			lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
-		return;
-	}
-	if ((m_currentChangedArray!=NULL)&&(pItem->iItem >= m_currentChangedArray->GetCount()))
-	{
-		if (pItem->mask & LVIF_TEXT)
-			lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
-		return;
-	}
-	if ((m_currentChangedArray==NULL)&&(pItem->iItem >= m_currentChangedPathList.GetCount()))
-	{
-		if (pItem->mask & LVIF_TEXT)
-			lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
-		return;
-	}
-	CTGitPath lcpath = NULL;
-	if (m_currentChangedArray)
-		lcpath = (*m_currentChangedArray)[pItem->iItem];
-	//Does the list need text information?
-	if (pItem->mask & LVIF_TEXT)
-	{
-		//Which column?
-		switch (pItem->iSubItem)
-		{
-		case this->FILELIST_ACTION:	//Action
-#if 0
-			if (lcpath)
-				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->GetAction(), pItem->cchTextMax);
-			else
-				lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);				
-#endif
-			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.GetActionName(), pItem->cchTextMax);
-
-			break;
-
-		case this->FILELIST_ADD: //add
-#if 0
-			if (lcpath)
-				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->sPath, pItem->cchTextMax);
-			else
-				lstrcpyn(pItem->pszText, (LPCTSTR)m_currentChangedPathList[pItem->iItem].GetGitPathString(), pItem->cchTextMax);
-#endif
-			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.m_StatAdd, pItem->cchTextMax);
-			break;
-
-		case this->FILELIST_DEL: //del
-#if 0
-			if (lcpath)
-				lstrcpyn(pItem->pszText, (LPCTSTR)lcpath->sCopyFromPath, pItem->cchTextMax);
-			else
-				lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
-#endif
-			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.m_StatDel, pItem->cchTextMax);
-			break;
-		case this->FILELIST_PATH: //path
-#if 0
-			if ((lcpath==NULL)||(lcpath->sCopyFromPath.IsEmpty()))
-				lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
-			else
-				_stprintf_s(pItem->pszText, pItem->cchTextMax, _T("%ld"), lcpath->lCopyFromRev);
-#endif
-			lstrcpyn(pItem->pszText, (LPCTSTR)lcpath.GetGitPathString(), pItem->cchTextMax);
-			break;
-		}
-	}
-#endif
-	*pResult = 0;
-}
-
-void CLogDlg::OnEnChangeSearchedit()
-{
-#if 0
-	UpdateData();
-	if (m_sFilterText.IsEmpty())
-	{
-		CStoreSelection storeselection(this);
-		// clear the filter, i.e. make all entries appear
-		theApp.DoWaitCursor(1);
-		KillTimer(LOGFILTER_TIMER);
-		FillLogMessageCtrl(false);
-		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-		m_arShownList.RemoveAll();
-		for (DWORD i=0; i<m_logEntries.size(); ++i)
-		{
-			if (IsEntryInDateRange(i))
-				m_arShownList.Add(m_logEntries[i]);
-		}
-		InterlockedExchange(&m_bNoDispUpdates, FALSE);
-		m_LogList.DeleteAllItems();
-		m_LogList.SetItemCountEx(ShownCountWithStopped());
-		m_LogList.RedrawItems(0, ShownCountWithStopped());
-		m_LogList.SetRedraw(false);
-		ResizeAllListCtrlCols();
-		m_LogList.SetRedraw(true);
-		theApp.DoWaitCursor(-1);
-		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
-		GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
-		DialogEnableWindow(IDC_STATBUTTON, !(((m_bThreadRunning)||(m_arShownList.IsEmpty()))));
-		return;
-	}
-	if (Validate(m_sFilterText))
-		SetTimer(LOGFILTER_TIMER, 1000, NULL);
-	else
-		KillTimer(LOGFILTER_TIMER);
-#endif
-}
-
-bool CLogDlg::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
-{
-	try
-	{
-		tr1::regex_constants::syntax_option_type type = tr1::regex_constants::ECMAScript;
-		if (!bMatchCase)
-			type |= tr1::regex_constants::icase;
-		pat = tr1::wregex(regexp_str, type);
-		return true;
-	}
-	catch (exception) {}
-	return false;
-}
 
 bool CLogDlg::Validate(LPCTSTR string)
 {
 	if (!m_bFilterWithRegex)
 		return true;
 	tr1::wregex pat;
-	return ValidateRegexp(string, pat, false);
+	return m_LogList.ValidateRegexp(string, pat, false);
 }
 
 
@@ -2598,7 +2379,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		CWnd * focusWnd = GetFocus();
 		bool bSetFocusToFilterControl = ((focusWnd != GetDlgItem(IDC_DATEFROM))&&(focusWnd != GetDlgItem(IDC_DATETO))
 			&& (focusWnd != GetDlgItem(IDC_LOGLIST)));
-		if (m_sFilterText.IsEmpty())
+		if (m_LogList.m_sFilterText.IsEmpty())
 		{
 			DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
 			// do not return here!
@@ -2612,23 +2393,13 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		FillLogMessageCtrl(false);
 
 		// now start filter the log list
-//		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-//		RecalculateShownList(&m_LogList.m_arShownList);
-//		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+		m_LogList.StartFilter();
 
-
-//		m_LogList.DeleteAllItems();
-//		m_LogList.SetItemCountEx(m_LogList.ShownCountWithStopped());
-//		m_LogList.RedrawItems(0, m_LogList.ShownCountWithStopped());
-//		m_LogList.SetRedraw(false);
-//		m_LogList.ResizeAllListCtrlCols();
-//		m_LogList.SetRedraw(true);
-//		m_LogList.Invalidate();
-//		if ( m_LogList.GetItemCount()==1 )
-//		{
-//			m_LogList.SetSelectionMark(0);
-//			m_LogList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
-//		}
+		if ( m_LogList.GetItemCount()==1 )
+		{
+			m_LogList.SetSelectionMark(0);
+			m_LogList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+		}
 		theApp.DoWaitCursor(-1);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
@@ -3673,3 +3444,43 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 }
 
 
+void CLogDlg::OnEnChangeSearchedit()
+{
+	UpdateData();
+	if (m_LogList.m_sFilterText.IsEmpty())
+	{
+		CStoreSelection storeselection(this);
+		// clear the filter, i.e. make all entries appear
+		theApp.DoWaitCursor(1);
+		KillTimer(LOGFILTER_TIMER);
+		FillLogMessageCtrl(false);
+		m_LogList.StartFilter();
+#if 0
+		InterlockedExchange(&m_bNoDispUpdates, TRUE);
+		m_arShownList.RemoveAll();
+		for (DWORD i=0; i<m_logEntries.size(); ++i)
+		{
+			if (IsEntryInDateRange(i))
+				m_arShownList.Add(m_logEntries[i]);
+		}
+		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+		m_LogList.DeleteAllItems();
+		m_LogList.SetItemCountEx(ShownCountWithStopped());
+		m_LogList.RedrawItems(0, ShownCountWithStopped());
+		m_LogList.SetRedraw(false);
+		ResizeAllListCtrlCols();
+		m_LogList.SetRedraw(true);
+#endif
+		theApp.DoWaitCursor(-1);
+		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
+		DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
+		return;
+	}
+	if (Validate(m_LogList.m_sFilterText))
+		SetTimer(LOGFILTER_TIMER, 1000, NULL);
+	else
+		KillTimer(LOGFILTER_TIMER);
+
+}
