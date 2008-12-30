@@ -80,6 +80,9 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
 	g_Git.GetMapHashToFriendName(m_HashMap);
+
+	m_From=CTime(1970,1,2,0,0,0);
+	m_To=CTime::GetCurrentTime();
 }
 
 CGitLogList::~CGitLogList()
@@ -261,10 +264,6 @@ void CGitLogList::ResizeAllListCtrlCols()
 
 }
 
-void Refresh()
-{
-	
-}
 
 BOOL CGitLogList::GetShortName(CString ref, CString &shortname,CString prefix)
 {
@@ -1806,6 +1805,21 @@ UINT CGitLogList::LogThreadEntry(LPVOID pVoid)
 	return ((CGitLogList*)pVoid)->LogThread();
 }
 
+void CGitLogList::GetTimeRange(CTime &oldest, CTime &latest)
+{
+	//CTime time;
+	oldest=CTime::GetCurrentTime();
+	latest=CTime(1971,1,2,0,0,0);
+	for(int i=0;i<m_logEntries.size();i++)
+	{
+		if(m_logEntries[i].m_AuthorDate.GetTime() < oldest.GetTime())
+			oldest = m_logEntries[i].m_AuthorDate.GetTime();
+
+		if(m_logEntries[i].m_AuthorDate.GetTime() > latest.GetTime())
+			latest = m_logEntries[i].m_AuthorDate.GetTime();
+
+	}
+}
 
 UINT CGitLogList::LogThread()
 {
@@ -1906,6 +1920,9 @@ void CGitLogList::Refresh()
 			InterlockedExchange(&m_bNoDispUpdates, FALSE);
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
+		m_sFilterText.Empty();
+		m_From=CTime(1970,1,2,0,0,0);
+		m_To=CTime::GetCurrentTime();
 	}
 }
 bool CGitLogList::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
@@ -2112,15 +2129,13 @@ void CGitLogList::RecalculateShownList(CPtrArray * pShownlist)
 
 BOOL CGitLogList::IsEntryInDateRange(int i)
 {
-#if 0
-	__time64_t time = m_logEntries[i]->tmDate;
-	if ((time >= m_tFrom)&&(time <= m_tTo))
+	__time64_t time = m_logEntries[i].m_AuthorDate.GetTime();
+	if ((time >= m_From.GetTime())&&(time <= m_To.GetTime()))
 		return TRUE;
 
 	return FALSE;
 
-#endif;
-	return TRUE;
+//	return TRUE;
 }
 void CGitLogList::StartFilter()
 {
@@ -2133,7 +2148,7 @@ void CGitLogList::StartFilter()
 	SetItemCountEx(ShownCountWithStopped());
 	RedrawItems(0, ShownCountWithStopped());
 	SetRedraw(false);
-	ResizeAllListCtrlCols();
+	//ResizeAllListCtrlCols();
 	SetRedraw(true);
 	Invalidate();
 }

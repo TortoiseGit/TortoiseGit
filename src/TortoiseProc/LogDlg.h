@@ -257,8 +257,6 @@ private:
 	//volatile LONG		m_bNoDispUpdates;
 	CDateTimeCtrl		m_DateFrom;
 	CDateTimeCtrl		m_DateTo;
-	DWORD				m_tFrom;
-	DWORD				m_tTo;
 	int					m_limit;
 	int					m_limitcounter;
 	int                 m_nSortColumn;
@@ -277,8 +275,6 @@ private:
 
 	CToolTips			m_tooltips;
 
-	CTime				m_timFrom;
-	CTime				m_timTo;
 	CColors				m_Colors;
 	CImageList			m_imgList;
 #if 0

@@ -143,7 +143,9 @@ public:
 	void StartFilter();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
-
+	CTime			m_From;
+	CTime			m_To;
+	void				GetTimeRange(CTime &oldest,CTime &latest);
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);

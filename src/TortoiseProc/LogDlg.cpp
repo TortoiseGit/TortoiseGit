@@ -345,8 +345,8 @@ BOOL CLogDlg::OnInitDialog()
 
 	// first start a thread to obtain the log messages without
 	// blocking the dialog
-	m_tTo = 0;
-	m_tFrom = (DWORD)-1;
+	//m_tTo = 0;
+	//m_tFrom = (DWORD)-1;
 
 	m_LogList.FetchLogAsync(LogCallBack,this);
 
@@ -397,6 +397,11 @@ void CLogDlg::LogRunStatus(int cur)
 
 		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 
+		//CTime time=m_LogList.GetOldestTime();
+		CTime begin,end;
+		m_LogList.GetTimeRange(begin,end);
+		m_DateFrom.SetTime(&begin);
+		m_DateTo.SetTime(&end);
 	}
 
 	m_LogProgress.SetPos(cur);
@@ -2321,6 +2326,11 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 	m_LogList.RemoveFilter();
 
+	CTime begin,end;
+	m_LogList.GetTimeRange(begin,end);
+	m_DateFrom.SetTime(&begin);
+	m_DateTo.SetTime(&end);
+
 	theApp.DoWaitCursor(-1);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_SEARCHEDIT)->ShowWindow(SW_SHOW);
@@ -2418,9 +2428,9 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	try
 	{
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
-		if (time.GetTime() != m_tTo)
+		if (time.GetTime() != m_LogList.m_To.GetTime())
 		{
-			m_tTo = (DWORD)time.GetTime();
+			m_LogList.m_To = (DWORD)time.GetTime();
 			SetTimer(LOGFILTER_TIMER, 10, NULL);
 		}
 	}
@@ -2438,9 +2448,9 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	try
 	{
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
-		if (time.GetTime() != m_tFrom)
+		if (time.GetTime() != m_LogList.m_From.GetTime())
 		{
-			m_tFrom = (DWORD)time.GetTime();
+			m_LogList.m_From = (DWORD)time.GetTime();
 			SetTimer(LOGFILTER_TIMER, 10, NULL);
 		}
 	}
