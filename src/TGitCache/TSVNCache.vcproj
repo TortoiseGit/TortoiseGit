@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\Bin\Debug\Bin"
-			IntermediateDirectory="..\..\obj\TSVNCache\Debug"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\TSVNCache\$(ConfigurationName)\"
 			ConfigurationType="1"
 			UseOfATL="1"
 			CharacterSet="1"
@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;..\..\ext\gettext\include"
+				AdditionalIncludeDirectories="&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;UNICODE;_UNICODE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,8 +104,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\Release\bin"
-			IntermediateDirectory="..\..\obj\TGitCache\Release"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\TSVNCache\$(ConfigurationName)\"
 			ConfigurationType="1"
 			UseOfATL="1"
 			CharacterSet="1"
@@ -129,7 +129,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
-				AdditionalIncludeDirectories="../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;..\..\ext\gettext\include"
+				AdditionalIncludeDirectories="&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;UNICODE;_UNICODE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -431,18 +431,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\Svn\SVNAdminDir.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNGlobal.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\SVNHelpers.cpp"
-				>
 			</File>
 			<File
 				RelativePath="..\Svn\SVNStatus.cpp"

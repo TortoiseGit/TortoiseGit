@@ -36,6 +36,7 @@
  * 
  * thats it. 
  */
+#include "git.h"
 class CHistoryCombo : public CComboBoxEx
 {
 // Construction
@@ -111,7 +112,7 @@ public:
 	 */
 	CString GetString() const;
 
-	void AddString(CStringList &list);
+	void AddString(STRING_VECTOR &list);
 
 protected:
 	/**

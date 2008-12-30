@@ -149,7 +149,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		CString oldhash=m_CommitHash;
 		ParserFromLog(onelog);
 		
-		ASSERT(oldhash==m_CommitHash);
+		//ASSERT(oldhash==m_CommitHash);
 
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsFull,TRUE);

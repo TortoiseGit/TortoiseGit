@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\obj\ResizableLib\Release"
-			IntermediateDirectory="..\..\obj\ResizableLib\Release"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\ResizeableLib\$(ConfigurationName)\"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -98,8 +98,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\obj\ResizableLib\Debug"
-			IntermediateDirectory="..\obj\ResizableLib\Debug"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\ResizeableLib\$(ConfigurationName)\"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"

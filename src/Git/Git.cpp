@@ -288,7 +288,7 @@ git_revnum_t CGit::GetHash(CString &friendname)
 	return out;
 }
 
-int CGit::GetTagList(CStringList &list)
+int CGit::GetTagList(STRING_VECTOR &list)
 {
 	int ret;
 	CString cmd,output;
@@ -303,13 +303,13 @@ int CGit::GetTagList(CStringList &list)
 		{
 			i++;
 			one=output.Tokenize(_T("\n"),pos);
-			list.AddTail(one);
+			list.push_back(one);
 		}
 	}
 	return ret;
 }
 
-int CGit::GetBranchList(CStringList &list,int *current,BRANCH_TYPE type)
+int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
 	CString cmd,output;
@@ -330,7 +330,7 @@ int CGit::GetBranchList(CStringList &list,int *current,BRANCH_TYPE type)
 		{
 			i++;
 			one=output.Tokenize(_T("\n"),pos);
-			list.AddTail(one.Right(one.GetLength()-2));
+			list.push_back(one.Right(one.GetLength()-2));
 			if(one[0] == _T('*'))
 				if(current)
 					*current=i;
@@ -339,7 +339,7 @@ int CGit::GetBranchList(CStringList &list,int *current,BRANCH_TYPE type)
 	return ret;
 }
 
-int CGit::GetRemoteList(CStringList &list)
+int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	int ret;
 	CString cmd,output;
@@ -359,7 +359,7 @@ int CGit::GetRemoteList(CStringList &list)
 				url=one.Right(one.GetLength()-start-1);
 				one=url;
 				one=one.Left(one.Find(_T("."),0));
-				list.AddTail(one);
+				list.push_back(one);
 			}
 		}
 	}

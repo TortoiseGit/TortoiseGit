@@ -58,11 +58,11 @@ protected:
 
 	void Init()
 	{
-		CStringList list;
+		STRING_VECTOR list;
 		g_Git.GetTagList(list);
 		m_ChooseVersioinTags.AddString(list);
 
-		list.RemoveAll();
+		list.clear();
 		int current;
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
 		m_ChooseVersioinBranch.AddString(list);

@@ -315,13 +315,11 @@ void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
 		DeleteString(m_nMaxHistoryItems);
 }
-void CHistoryCombo::AddString(CStringList &list)
+void CHistoryCombo::AddString(STRING_VECTOR &list)
 {
-	POSITION pos;
-	pos=list.GetHeadPosition();
-	while(pos)
+	for(int i=0;i<list.size();i++)
 	{
-		AddString(list.GetNext(pos));
+		AddString(list[i]);
 	}
 }
 CString CHistoryCombo::GetString() const

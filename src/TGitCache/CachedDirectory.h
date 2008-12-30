@@ -19,7 +19,7 @@
 #pragma once
 
 #include "StatusCacheEntry.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 /**
  * \ingroup TSVNCache

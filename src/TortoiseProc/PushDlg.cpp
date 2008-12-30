@@ -67,27 +67,19 @@ BOOL CPushDlg::OnInitDialog()
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
-	CStringList list;
+	STRING_VECTOR list;
 
 	if(!g_Git.GetRemoteList(list))
 	{	
-		POSITION pos;
-		pos=list.GetHeadPosition();
-		while(pos)
-		{
-			m_Remote.AddString(list.GetNext(pos));
-		}
+		for(int i=0;i<list.size();i++)
+			m_Remote.AddString(list[i]);
 	}
 
 	int current=0;
 	if(!g_Git.GetBranchList(list,&current))
 	{
-		POSITION pos;
-		pos=list.GetHeadPosition();
-		while(pos)
-		{
-			m_BranchSource.AddString(list.GetNext(pos));
-		}
+		for(int i=0;i<list.size();i++)
+			m_BranchSource.AddString(list[i]);
 	}
 	m_BranchSource.SetCurSel(current);
 	

@@ -13,6 +13,7 @@ enum
 typedef std::vector<CString> STRING_VECTOR;
 typedef std::map<CString, STRING_VECTOR> MAP_HASH_NAME;
 
+
 class CGit
 {
 private:
@@ -41,9 +42,9 @@ public:
 		BRANCH_ALL=BRANCH_LOCAL|BRANCH_REMOTE,
 	}BRANCH_TYPE;
 
-	int GetRemoteList(CStringList &list);
-	int GetBranchList(CStringList &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
-	int GetTagList(CStringList &list);
+	int GetRemoteList(STRING_VECTOR &list);
+	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
+	int GetTagList(STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
 	//hash is empty means all. -1 means all
