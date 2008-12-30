@@ -25,7 +25,7 @@
 #include "ProgressDlg.h"
 //#include "RepositoryBrowser.h"
 //#include "CopyDlg.h"
-//#include "StatGraphDlg.h"
+#include "StatGraphDlg.h"
 #include "Logdlg.h"
 #include "MessageBox.h"
 #include "Registry.h"
@@ -61,7 +61,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_logcounter(0)
 	, m_nSearchIndex(0)
 	, m_wParam(0)
-	, m_nSelectedFilter(LOGFILTER_ALL)
 	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
 	, m_bShowedAll(false)
@@ -390,6 +389,7 @@ void CLogDlg::LogRunStatus(int cur)
 		DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		DialogEnableWindow(IDC_REFRESH, FALSE);
+		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
 	}
 
 	if( cur == GITLOG_END)
@@ -398,8 +398,8 @@ void CLogDlg::LogRunStatus(int cur)
 		if (!m_bShowedAll)
 			DialogEnableWindow(IDC_NEXTHUNDRED, TRUE);
 
-		DialogEnableWindow(IDC_CHECK_STOPONCOPY, TRUE);
-		DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
+		//DialogEnableWindow(IDC_CHECK_STOPONCOPY, TRUE);
+		//DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 
@@ -1872,30 +1872,30 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CLogDlg::OnBnClickedStatbutton()
 {
-#if 0
-	if (m_bThreadRunning)
+
+	if (this->IsThreadRunning())
 		return;
-	if (m_arShownList.IsEmpty())
+	if (m_LogList.m_arShownList.IsEmpty())
 		return;		// nothing is shown, so no statistics.
 	// the statistics dialog expects the log entries to be sorted by date
 	SortByColumn(3, false);
 	CPtrArray shownlist;
-	RecalculateShownList(&shownlist);
+	m_LogList.RecalculateShownList(&shownlist);
 	// create arrays which are aware of the current filter
 	CStringArray m_arAuthorsFiltered;
 	CDWordArray m_arDatesFiltered;
 	CDWordArray m_arFileChangesFiltered;
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(shownlist.GetAt(i));
-		CString strAuthor = pLogEntry->sAuthor;
+		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.GetAt(i));
+		CString strAuthor = pLogEntry->m_AuthorName;
 		if ( strAuthor.IsEmpty() )
 		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
 		m_arAuthorsFiltered.Add(strAuthor);
-		m_arDatesFiltered.Add(static_cast<DWORD>(pLogEntry->tmDate));
-		m_arFileChangesFiltered.Add(pLogEntry->dwFileChanges);
+		m_arDatesFiltered.Add(pLogEntry->m_AuthorDate.GetTime());
+		m_arFileChangesFiltered.Add(pLogEntry->m_Files.GetCount());
 	}
 	CStatGraphDlg dlg;
 	dlg.m_parAuthors = &m_arAuthorsFiltered;
@@ -1906,7 +1906,7 @@ void CLogDlg::OnBnClickedStatbutton()
 	// restore the previous sorting
 	SortByColumn(m_nSortColumn, m_bAscending);
 	OnTimer(LOGFILTER_TIMER);
-#endif
+
 }
 
 #if 0
@@ -2268,7 +2268,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 	CPoint point;
 	CString temp;
 	point = CPoint(rect->left, rect->bottom);
-#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_nSelectedFilter == x ? MF_CHECKED : MF_UNCHECKED))
+#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_LogList.m_nSelectedFilter == x ? MF_CHECKED : MF_UNCHECKED))
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
@@ -2307,7 +2307,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			}
 			else
 			{
-				m_nSelectedFilter = selection;
+				m_LogList.m_nSelectedFilter = selection;
 				SetFilterCueText();
 			}
 			SetTimer(LOGFILTER_TIMER, 1000, NULL);
@@ -2361,7 +2361,7 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 void CLogDlg::SetFilterCueText()
 {
 	CString temp;
-	switch (m_nSelectedFilter)
+	switch (m_LogList.m_nSelectedFilter)
 	{
 	case LOGFILTER_ALL:
 		temp.LoadString(IDS_LOG_FILTER_ALL);
@@ -2584,170 +2584,6 @@ bool CLogDlg::Validate(LPCTSTR string)
 	return ValidateRegexp(string, pat, false);
 }
 
-void CLogDlg::RecalculateShownList(CPtrArray * pShownlist)
-{
-#if 0
-	pShownlist->RemoveAll();
-	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
-	bool bRegex = false;
-	if (m_bFilterWithRegex)
-		bRegex = ValidateRegexp(m_sFilterText, pat, false);
-
-	tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_any;
-	CString sRev;
-	for (DWORD i=0; i<m_logEntries.size(); ++i)
-	{
-		if ((bRegex)&&(m_bFilterWithRegex))
-		{
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
-			{
-				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)m_logEntries[i]->sBugIDs);
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i]->sBugIDs), pat, flags)&&IsEntryInDateRange(i))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
-			{
-				ATLTRACE(_T("messge = \"%s\"\n"), (LPCTSTR)m_logEntries[i]->sMessage);
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i]->sMessage), pat, flags)&&IsEntryInDateRange(i))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
-			{
-				LogChangedPathArray * cpatharray = m_logEntries[i]->pArChangedPaths;
-
-				bool bGoing = true;
-				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount() && bGoing; ++cpPathIndex)
-				{
-					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-					if (regex_search(wstring((LPCTSTR)cpath->sCopyFromPath), pat, flags)&&IsEntryInDateRange(i))
-					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-					if (regex_search(wstring((LPCTSTR)cpath->sPath), pat, flags)&&IsEntryInDateRange(i))
-					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-					if (regex_search(wstring((LPCTSTR)cpath->GetAction()), pat, flags)&&IsEntryInDateRange(i))
-					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-				}
-				if (!bGoing)
-					continue;
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
-			{
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i]->sAuthor), pat, flags)&&IsEntryInDateRange(i))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
-			{
-				sRev.Format(_T("%ld"), m_logEntries[i]->Rev);
-				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-		} // if (bRegex)
-		else
-		{
-			CString find = m_sFilterText;
-			find.MakeLower();
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
-			{
-				CString sBugIDs = m_logEntries[i]->sBugIDs;
-
-				sBugIDs = sBugIDs.MakeLower();
-				if ((sBugIDs.Find(find) >= 0)&&(IsEntryInDateRange(i)))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
-			{
-				CString msg = m_logEntries[i]->sMessage;
-
-				msg = msg.MakeLower();
-				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
-			{
-				LogChangedPathArray * cpatharray = m_logEntries[i]->pArChangedPaths;
-
-				bool bGoing = true;
-				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount() && bGoing; ++cpPathIndex)
-				{
-					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-					CString path = cpath->sCopyFromPath;
-					path.MakeLower();
-					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
-					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-					path = cpath->sPath;
-					path.MakeLower();
-					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
-					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-					path = cpath->GetAction();
-					path.MakeLower();
-					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
-					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
-			{
-				CString msg = m_logEntries[i]->sAuthor;
-				msg = msg.MakeLower();
-				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
-			{
-				sRev.Format(_T("%ld"), m_logEntries[i]->Rev);
-				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))
-				{
-					pShownlist->Add(m_logEntries[i]);
-					continue;
-				}
-			}
-		} // else (from if (bRegex))	
-	} // for (DWORD i=0; i<m_logEntries.size(); ++i) 
-#endif
-}
 
 void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 {
@@ -2844,16 +2680,7 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	*pResult = 0;
 }
 
-BOOL CLogDlg::IsEntryInDateRange(int i)
-{
-#if 0
-	__time64_t time = m_logEntries[i]->tmDate;
-	if ((time >= m_tFrom)&&(time <= m_tTo))
-		return TRUE;
-#endif
-	return FALSE;
 
-}
 
 CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths /* = false */, bool bUseFilter /* = true */)
 {

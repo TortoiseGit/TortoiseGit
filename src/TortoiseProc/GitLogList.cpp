@@ -58,6 +58,7 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	, m_bThreadRunning(FALSE)
 	, m_bStrictStopped(false)
 	, m_pStoreSelection(NULL)
+	, m_nSelectedFilter(LOGFILTER_ALL)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -75,6 +76,8 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+
+	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
 	g_Git.GetMapHashToFriendName(m_HashMap);
 }
@@ -1904,4 +1907,218 @@ void CGitLogList::Refresh()
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 	}
+}
+bool CGitLogList::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
+{
+	try
+	{
+		tr1::regex_constants::syntax_option_type type = tr1::regex_constants::ECMAScript;
+		if (!bMatchCase)
+			type |= tr1::regex_constants::icase;
+		pat = tr1::wregex(regexp_str, type);
+		return true;
+	}
+	catch (exception) {}
+	return false;
+}
+
+void CGitLogList::RecalculateShownList(CPtrArray * pShownlist)
+{
+
+	pShownlist->RemoveAll();
+	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
+	bool bRegex = false;
+	if (m_bFilterWithRegex)
+		bRegex = ValidateRegexp(m_sFilterText, pat, false);
+
+	tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_any;
+	CString sRev;
+	for (DWORD i=0; i<m_logEntries.size(); ++i)
+	{
+		if ((bRegex)&&(m_bFilterWithRegex))
+		{
+#if 0
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+			{
+				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)m_logEntries[i]->sBugIDs);
+				if (regex_search(wstring((LPCTSTR)m_logEntries[i]->sBugIDs), pat, flags)&&IsEntryInDateRange(i))
+				{
+					pShownlist->Add(m_logEntries[i]);
+					continue;
+				}
+			}
+#endif
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			{
+				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries[i].m_Subject);
+				if (regex_search(wstring((LPCTSTR)m_logEntries[i].m_Subject), pat, flags)&&IsEntryInDateRange(i))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+
+				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries[i].m_Body);
+				if (regex_search(wstring((LPCTSTR)m_logEntries[i].m_Body), pat, flags)&&IsEntryInDateRange(i))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+			}
+#if 0
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+			{
+				LogChangedPathArray * cpatharray = m_logEntries[i]->pArChangedPaths;
+
+				bool bGoing = true;
+				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount() && bGoing; ++cpPathIndex)
+				{
+					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
+					if (regex_search(wstring((LPCTSTR)cpath->sCopyFromPath), pat, flags)&&IsEntryInDateRange(i))
+					{
+						pShownlist->Add(m_logEntries[i]);
+						bGoing = false;
+						continue;
+					}
+					if (regex_search(wstring((LPCTSTR)cpath->sPath), pat, flags)&&IsEntryInDateRange(i))
+					{
+						pShownlist->Add(m_logEntries[i]);
+						bGoing = false;
+						continue;
+					}
+					if (regex_search(wstring((LPCTSTR)cpath->GetAction()), pat, flags)&&IsEntryInDateRange(i))
+					{
+						pShownlist->Add(m_logEntries[i]);
+						bGoing = false;
+						continue;
+					}
+				}
+				if (!bGoing)
+					continue;
+			}
+#endif
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+			{
+				if (regex_search(wstring((LPCTSTR)m_logEntries[i].m_AuthorName), pat, flags)&&IsEntryInDateRange(i))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+			}
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+			{
+				sRev.Format(_T("%ld"), m_logEntries[i].m_CommitHash);
+				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+			}
+		} // if (bRegex)
+		else
+		{
+			CString find = m_sFilterText;
+			find.MakeLower();
+#if 0
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+			{
+				CString sBugIDs = m_logEntries[i]->sBugIDs;
+
+				sBugIDs = sBugIDs.MakeLower();
+				if ((sBugIDs.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->Add(m_logEntries[i]);
+					continue;
+				}
+			}
+#endif
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			{
+				CString msg = m_logEntries[i].m_Subject;
+
+				msg = msg.MakeLower();
+				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+				msg = m_logEntries[i].m_Body;
+
+				msg = msg.MakeLower();
+				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+			}
+#if 0
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+			{
+				LogChangedPathArray * cpatharray = m_logEntries[i]->pArChangedPaths;
+
+				bool bGoing = true;
+				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount() && bGoing; ++cpPathIndex)
+				{
+					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
+					CString path = cpath->sCopyFromPath;
+					path.MakeLower();
+					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
+					{
+						pShownlist->Add(m_logEntries[i]);
+						bGoing = false;
+						continue;
+					}
+					path = cpath->sPath;
+					path.MakeLower();
+					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
+					{
+						pShownlist->Add(m_logEntries[i]);
+						bGoing = false;
+						continue;
+					}
+					path = cpath->GetAction();
+					path.MakeLower();
+					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
+					{
+						pShownlist->Add(m_logEntries[i]);
+						bGoing = false;
+						continue;
+					}
+				}
+			}
+#endif
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+			{
+				CString msg = m_logEntries[i].m_AuthorName;
+				msg = msg.MakeLower();
+				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+			}
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+			{
+				sRev.Format(_T("%ld"), m_logEntries[i].m_CommitHash);
+				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->Add(&m_logEntries[i]);
+					continue;
+				}
+			}
+		} // else (from if (bRegex))	
+	} // for (DWORD i=0; i<m_logEntries.size(); ++i) 
+
+}
+
+BOOL CGitLogList::IsEntryInDateRange(int i)
+{
+#if 0
+	__time64_t time = m_logEntries[i]->tmDate;
+	if ((time >= m_tFrom)&&(time <= m_tTo))
+		return TRUE;
+
+	return FALSE;
+
+#endif;
+	return TRUE;
 }

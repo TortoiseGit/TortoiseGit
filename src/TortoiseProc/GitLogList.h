@@ -46,6 +46,14 @@ enum LISTITEMSTATES_MINE {
 #define GITLOG_START_ALL 1
 #define GITLOG_END   100
 
+#define LOGFILTER_ALL      1
+#define LOGFILTER_MESSAGES 2
+#define LOGFILTER_PATHS    3
+#define LOGFILTER_AUTHORS  4
+#define LOGFILTER_REVS	   5
+#define LOGFILTER_REGEX	   6
+#define LOGFILTER_BUGID    7
+
 typedef void CALLBACK_PROCESS(void * data, int progress);
 
 class CGitLogList : public CHintListCtrl
@@ -127,6 +135,9 @@ public:
 	int FetchLogAsync(CALLBACK_PROCESS *proc=NULL, void * data=NULL);
 	CPtrArray			m_arShownList;
 	void Refresh();
+	void RecalculateShownList(CPtrArray * pShownlist);
+
+	int					m_nSelectedFilter;
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -149,7 +160,11 @@ protected:
                                       const COLORREF& col,int top) ; 
 	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){::MoveToEx(hdc,x1,y1,NULL);::LineTo(hdc,x2,y2);}
 
+	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
+	BOOL IsEntryInDateRange(int i);
 
+	bool				m_bFilterWithRegex;
+	CString				m_sFilterText;
 	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;

@@ -35,6 +35,7 @@
 #include <regex>
 #include "GitLogList.h"
 #include "GitStatusListCtrl.h"
+
 using namespace std;
 
 
@@ -42,14 +43,6 @@ using namespace std;
 #define MERGE_REVSELECTEND       2
 #define MERGE_REVSELECTSTARTEND  3		///< both
 #define MERGE_REVSELECTMINUSONE  4		///< first with N-1
-
-#define LOGFILTER_ALL      1
-#define LOGFILTER_MESSAGES 2
-#define LOGFILTER_PATHS    3
-#define LOGFILTER_AUTHORS  4
-#define LOGFILTER_REVS	   5
-#define LOGFILTER_REGEX	   6
-#define LOGFILTER_BUGID    7
 
 
 #define LOGFILTER_TIMER		101
@@ -173,12 +166,12 @@ private:
 	void AdjustMinSize();
 	void SetSplitterRange();
 	void SetFilterCueText();
-	BOOL IsEntryInDateRange(int i);
+	
 	void CopySelectionToClipBoard();
 	void CopyChangedSelectionToClipBoard();
 	CTGitPathList GetChangedPathsFromSelectedRevisions(bool bRelativePaths = false, bool bUseFilter = true);
     void SortShownListArray();
-	void RecalculateShownList(CPtrArray * pShownlist);
+	
     void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending);
 	void SortByColumn(int nSortColumn, bool bAscending);
 	
@@ -220,10 +213,7 @@ private:
 	CString				m_sURL;
 	CString				m_sUUID;    ///< empty if the log cache is not used
 	CGitLogList			m_LogList;
-	//CListCtrl			m_ChangedFileListCtrl;
-	
 	CGitStatusListCtrl  m_ChangedFileListCtrl;
-
 	CFilterEdit			m_cFilter;
 	CProgressCtrl		m_LogProgress;
 	CMenuButton			m_btnShow;
@@ -263,7 +253,7 @@ private:
 	CRect				m_LogListOrigRect;
 	CRect				m_ChgOrigRect;
 	CString				m_sFilterText;
-	int					m_nSelectedFilter;
+	
 	//volatile LONG		m_bNoDispUpdates;
 	CDateTimeCtrl		m_DateFrom;
 	CDateTimeCtrl		m_DateTo;

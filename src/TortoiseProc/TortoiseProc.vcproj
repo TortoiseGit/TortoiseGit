@@ -1497,6 +1497,14 @@
 				RelativePath=".\ProgressDlg.h"
 				>
 			</File>
+			<File
+				RelativePath=".\StatGraphDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StatGraphDlg.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Git"

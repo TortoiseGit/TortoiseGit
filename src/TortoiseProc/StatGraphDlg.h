@@ -21,7 +21,7 @@
 #include "StandAloneDlg.h"
 #include "MyGraph.h"
 #include "XPImageButton.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "UnicodeUtils.h"
 
 #include <map>
@@ -69,7 +69,7 @@ public:
 	CDWordArray	*	m_parDates;
 	CDWordArray	*	m_parFileChanges;
 	CStringArray *	m_parAuthors;
-	CTSVNPath		m_path;
+	CTGitPath		m_path;
 
 protected:
 

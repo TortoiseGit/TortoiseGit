@@ -42,29 +42,7 @@ protected:
 	std::set<LONG> m_SetSelectedRevisions;
 };
 
-/**
- * \ingroup TortoiseProc
- * Contains the data of one log entry, used in the log dialog
- */
-#if 0
-typedef struct LogEntryData
-{   
-	git_revnum_t Rev;
-	__time64_t tmDate;
-	CString sDate;
-	CString sAuthor;
-	CString sMessage;
-	CString sShortMessage;
-	CString sBugIDs;
-	DWORD dwFileChanges;
-	LogChangedPathArray* pArChangedPaths;
-	BOOL bCopies;
-	BOOL bCopiedSelf;
-	DWORD actions;
-	BOOL haschildren;
-	DWORD childStackDepth;
-} LOGENTRYDATA, *PLOGENTRYDATA;
-#endif
+
 /**
  * \ingroup TortoiseProc
  * Helper class for the log dialog, handles all the log entries, including
