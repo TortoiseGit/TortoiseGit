@@ -21,7 +21,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
-			IntermediateDirectory="..\..\TortoiseShell\$(ConfigurationName)\"
+			IntermediateDirectory="..\..\obj\TortoiseShell\$(ConfigurationName)\"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			UseOfATL="1"
@@ -127,7 +127,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
-			IntermediateDirectory="..\..\TortoiseShell\$(ConfigurationName)\"
+			IntermediateDirectory="..\..\obj\TortoiseShell\$(ConfigurationName)\"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			UseOfATL="1"

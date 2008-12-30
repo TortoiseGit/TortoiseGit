@@ -22,7 +22,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
-			IntermediateDirectory="..\..\TortoiseUDiff\$(ConfigurationName)"
+			IntermediateDirectory="..\..\obj\TortoiseUDiff\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -96,7 +96,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
-			IntermediateDirectory="..\..\TortoiseUDiff\$(ConfigurationName)"
+			IntermediateDirectory="..\..\obj\TortoiseUDiff\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
