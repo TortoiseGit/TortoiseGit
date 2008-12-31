@@ -14,7 +14,8 @@ CGit::~CGit(void)
 {
 }
 
-char buffer[4096];
+static char g_Buffer[4096];
+
 int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CString *StdioFile)
 {
 	SECURITY_ATTRIBUTES sa;
@@ -68,6 +69,15 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	return 0;
 
 }
+//Must use sperate function to convert ANSI str to union code string
+//Becuase A2W use stack as internal convert buffer. 
+void CGit::StringAppend(CString *str,char *p)
+{
+       USES_CONVERSION;
+       str->Append(A2W(p));
+
+}
+
 int CGit::Run(CString cmd, CString* output)
 {
 	PROCESS_INFORMATION pi;
@@ -76,11 +86,10 @@ int CGit::Run(CString cmd, CString* output)
 		return GIT_ERROR_CREATE_PROCESS;
 
 	DWORD readnumber;
-	while(ReadFile(hRead,buffer,4090,&readnumber,NULL))
+	while(ReadFile(hRead,g_Buffer,1023,&readnumber,NULL))
 	{
-		buffer[readnumber]=0;
-		USES_CONVERSION;
-		output->Append(A2W(buffer));
+		g_Buffer[readnumber]=0;
+		StringAppend(output,g_Buffer);
 	}
 
 	

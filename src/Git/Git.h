@@ -54,7 +54,7 @@ public:
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
-	
+	static void StringAppend(CString *str,char *p);
 	
 };
 extern void GetTempPath(CString &path);
