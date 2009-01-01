@@ -76,7 +76,7 @@ void CGit::StringAppend(CString *str,char *p)
        USES_CONVERSION;
        str->Append(A2W(p));
 
-}
+}	
 
 int CGit::Run(CString cmd, CString* output)
 {

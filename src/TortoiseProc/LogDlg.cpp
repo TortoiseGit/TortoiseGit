@@ -512,19 +512,25 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		}
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
 
-		// set the log message text
-		pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
-		// turn bug ID's into links if the bugtraq: properties have been set
-		// and we can find a match of those in the log message
-		m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
-		CAppUtils::FormatTextInRichEditControl(pMsgView);
+		if(!pLogEntry->m_IsFull)
+		{
+			pMsgView->SetWindowText(_T("load ..."));
+		}else
+		{
+			// set the log message text
+			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
+			// turn bug ID's into links if the bugtraq: properties have been set
+			// and we can find a match of those in the log message
+			m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
+			CAppUtils::FormatTextInRichEditControl(pMsgView);
 
-		m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
-		m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
-		m_ChangedFileListCtrl.Show(0);
+			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
+			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
+			m_ChangedFileListCtrl.Show(0);
 
-		m_ChangedFileListCtrl.SetRedraw(TRUE);
-		return;
+			m_ChangedFileListCtrl.SetRedraw(TRUE);
+			return;
+		}
 #if 0
 		// fill in the changed files list control
 		if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
