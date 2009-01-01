@@ -118,9 +118,18 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 	}
 	CGit::m_MsysGitPath=str;
 
-	TCHAR *oldpath;
+	TCHAR *oldpath,*home;
 	size_t size;
+
+	_tdupenv_s(&home,&size,_T("HOME")); 
 	
+	if(home == NULL)
+	{		
+		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
+		_tputenv_s(_T("HOME"),home);
+		free(home);
+	}
+	//set path
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
 
 	CString path;
@@ -128,6 +137,8 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 	path+=oldpath;
 
 	_tputenv_s(_T("PATH"),path);
+
+	free(oldpath);
 
 	CString cmd,out;
 	cmd=_T("git.exe --version");

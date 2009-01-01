@@ -1064,7 +1064,8 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
-		AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
+		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
+				AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
 	}
 	
 	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
@@ -1112,13 +1113,15 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 		pApp->DoWaitCursor(-1);
 
 	Invalidate();
+	
+	m_dwShow = dwShow;
 
 #if 0
 
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
 		pApp->DoWaitCursor(1);
-	m_dwShow = dwShow;
+
 	m_bShowFolders = bShowFolders;
 	
 	int nTopIndex = GetTopIndex();
@@ -2743,13 +2746,16 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString cmd;
 						cmd.Format(_T("git.exe add %s"),path->GetGitPathString());
 						CString output;
-						g_Git.Run(cmd,&output);
-						path->m_Action = CTGitPath::LOGACTIONS_ADDED;
-						SetEntryCheck(path,index,true);
-						SetItemGroup(index,0);
-						this->m_StatusFileList.AddPath(*path);
-						this->m_UnRevFileList.RemoveItem(*path);
-						this->m_IgnoreFileList.RemoveItem(*path);
+						if(!g_Git.Run(cmd,&output))
+						{
+							path->m_Action = CTGitPath::LOGACTIONS_ADDED;
+							SetEntryCheck(path,index,true);
+							SetItemGroup(index,0);
+							this->m_StatusFileList.AddPath(*path);
+							this->m_UnRevFileList.RemoveItem(*path);
+							this->m_IgnoreFileList.RemoveItem(*path);
+							Show(this->m_dwShow);
+						}
 					}
 					
 				}
@@ -5267,7 +5273,21 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			else
 				cmd.Format(_T("git.exe diff-index --raw HEAD --numstat -C -M -- \"%s\""),(*list)[i].GetGitPathString());
 
-			g_Git.Run(cmd,&cmdout);
+			if(g_Git.Run(cmd,&cmdout))
+			{
+				cmdout.Empty();
+				if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&cmdout))
+				{
+					CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
+					return -1;
+				}
+				if(cmdout.IsEmpty())
+					break; //this is initial repositoyr, there are no any history
+
+				CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
+				return -1;
+
+			}
 
 			out+=cmdout;
 		}

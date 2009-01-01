@@ -66,9 +66,7 @@ bool CommitCommand::Execute()
 		}
 	}
 #endif
-	if(pathList.GetCount()>0)
-		g_Git.m_CurrentDir=pathList[0].GetWinPathString();
-	
+		
 	while (bFailed)
 	{
 		bFailed = false;

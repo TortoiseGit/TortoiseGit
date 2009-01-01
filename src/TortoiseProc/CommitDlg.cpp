@@ -841,6 +841,10 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			dwShow |= SVNSLC_SHOWUNVERSIONED;
 		else
 			dwShow &= ~SVNSLC_SHOWUNVERSIONED;
+		if(dwShow & SVNSLC_SHOWUNVERSIONED)
+		{
+			m_ListCtrl.GetStatus(this->m_pathList,false,false,true);
+		}
 		m_ListCtrl.Show(dwShow);
 	}
 }
