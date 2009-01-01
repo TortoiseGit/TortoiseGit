@@ -35,7 +35,7 @@ public:
 	virtual bool			Execute()
 	{
 		CGit git;
-		git.m_CurrentDir=cmdLinePath.GetWinPath();
+		git.m_CurrentDir=this->orgCmdLinePath.GetWinPath();
 		CString output;
 
 		if (git.Run(_T("git.exe init-db"),&output))
