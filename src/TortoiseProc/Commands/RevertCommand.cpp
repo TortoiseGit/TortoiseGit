@@ -30,14 +30,17 @@ bool RevertCommand::Execute()
 	if (dlg.DoModal() == IDOK)
 	{
 
-		if (dlg.m_pathList.GetCount() == 0)
+		if (dlg.m_selectedPathList.GetCount() == 0)
 			return FALSE;
 		CString cmd;
 		CString out;
-		for(int i=0;i< dlg.m_pathList.GetCount() ;i++)
+		for(int i=0;i< dlg.m_selectedPathList.GetCount() ;i++)
 		{
-			cmd.Format(_T("git.exe reset --hard -- \"%s\""),dlg.m_pathList[i].GetGitPathString());
-			g_Git.Run(cmd,&out);
+			cmd.Format(_T("git.exe checkout -f -- \"%s\""),dlg.m_selectedPathList[i].GetGitPathString());
+			if(g_Git.Run(cmd,&out))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			}
 		}
 #if 0
 		CSVNProgressDlg progDlg;

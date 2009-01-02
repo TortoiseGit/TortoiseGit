@@ -91,7 +91,7 @@ void CGitSwitchDlg::OnBnClickedOk()
 	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
 	
-	
+	UpdateRevsionName();
 	//this->m_Version.SaveHistory();
 
 	OnOK();

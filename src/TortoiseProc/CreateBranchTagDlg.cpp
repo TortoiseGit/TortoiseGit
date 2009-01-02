@@ -90,6 +90,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
+
 	if(this->m_BranchTagName.Trim().IsEmpty())
 	{
 		CMessageBox::Show(NULL,_T("Branch\\Tag name can't empty"),_T("TortiseGit"),MB_OK);

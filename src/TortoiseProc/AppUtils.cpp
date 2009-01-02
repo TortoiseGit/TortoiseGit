@@ -1126,7 +1126,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
 				track,
 				force,
 				dlg.m_BranchTagName,
-				dlg.m_Base
+				dlg.m_VersionName
 				);
 
 	
@@ -1136,7 +1136,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
 				track,
 				force,
 				dlg.m_BranchTagName,
-				dlg.m_Base
+				dlg.m_VersionName
 				);
 		}
 		CString out;
@@ -1175,7 +1175,7 @@ bool CAppUtils::Switch(CString *CommitHash)
 			 force,
 			 track,
 			 branch,
-			 dlg.m_Base);
+			 dlg.m_VersionName);
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;

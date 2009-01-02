@@ -26,5 +26,5 @@
 
 bool SwitchCommand::Execute()
 {
-	return CAppUtils::CreateBranchTag(NULL);
+	return CAppUtils::Switch(NULL);
 }

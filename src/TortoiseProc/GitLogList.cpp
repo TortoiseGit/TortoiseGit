@@ -1184,6 +1184,9 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 			break;
 		case ID_SWITCHTOREV:
 			CAppUtils::Switch(&pSelLogEntry->m_CommitHash);
+			m_HashMap.clear();
+			g_Git.GetMapHashToFriendName(m_HashMap);
+			Invalidate();
 			break;
 
 		default:
