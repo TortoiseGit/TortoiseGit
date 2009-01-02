@@ -163,8 +163,8 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
 {
-	if (m_pDropTarget)
-		delete m_pDropTarget;
+//	if (m_pDropTarget)
+//		delete m_pDropTarget;
 	ClearStatusArray();
 }
 
@@ -464,6 +464,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
 	SetCursorPos(pt.x, pt.y);
 	return bRet;
 #endif 
+	BuildStatistics();
 	return TRUE;
 }
 
@@ -2029,19 +2030,8 @@ bool CGitStatusListCtrl::IsEntryVersioned(const FileEntry* pEntry1)
 #endif
 bool CGitStatusListCtrl::BuildStatistics()
 {
-#if 0
+
 	bool bRefetchStatus = false;
-	FileEntryVector::iterator itFirstUnversionedEntry;
-	itFirstUnversionedEntry = std::partition(m_arStatusArray.begin(), m_arStatusArray.end(), IsEntryVersioned);
-	if (m_bUnversionedLast)
-	{
-		// We partition the list of items so that it's arrange with all the versioned items first
-		// then all the unversioned items afterwards.
-		// Then we sort the versioned part of this, so that we can do quick look-ups in it
-		std::sort(m_arStatusArray.begin(), itFirstUnversionedEntry, EntryPathCompareNoCase);
-		// Also sort the unversioned section, to make the list look nice...
-		std::sort(itFirstUnversionedEntry, m_arStatusArray.end(), EntryPathCompareNoCase);
-	}
 
 	// now gather some statistics
 	m_nUnversioned = 0;
@@ -2052,87 +2042,33 @@ bool CGitStatusListCtrl::BuildStatistics()
 	m_nConflicted = 0;
 	m_nTotal = 0;
 	m_nSelected = 0;
+	
 	for (int i=0; i < (int)m_arStatusArray.size(); ++i)
 	{
-		const FileEntry * entry = m_arStatusArray[i];
-		if (entry)
-		{
-			switch (entry->status)
-			{
-			case git_wc_status_normal:
-				m_nNormal++;
-				break;
-			case git_wc_status_added:
-				m_nAdded++;
-				break;
-			case git_wc_status_missing:
-			case git_wc_status_deleted:
-				m_nDeleted++;
-				break;
-			case git_wc_status_replaced:
-			case git_wc_status_modified:
-			case git_wc_status_merged:
-				m_nModified++;
-				break;
-			case git_wc_status_conflicted:
-			case git_wc_status_obstructed:
-				m_nConflicted++;
-				break;
-			case git_wc_status_ignored:
-				m_nUnversioned++;
-				break;
-			default:
-#if 0
-				{
-					if (GitStatus::IsImportant(entry->remotestatus))
-						break;
-					m_nUnversioned++;
-					// If an entry is in an unversioned folder, we don't have to do an expensive array search
-					// to find out if it got case-renamed: an unversioned folder can't have versioned files
-					// But nested folders are also considered to be in unversioned folders, we have to do the
-					// check in that case too, otherwise we would miss case-renamed folders - they show up
-					// as nested folders.
-					if (((!entry->inunversionedfolder)||(entry->isNested))&&(m_bUnversionedLast))
-					{
-						// check if the unversioned item is just
-						// a file differing in case but still versioned
-						FileEntryVector::iterator itMatchingItem;
-						if(std::binary_search(m_arStatusArray.begin(), itFirstUnversionedEntry, entry, EntryPathCompareNoCase))
-						{
-							// We've confirmed that there *is* a matching file
-							// Find its exact location
-							FileEntryVector::iterator itMatchingItem;
-							itMatchingItem = std::lower_bound(m_arStatusArray.begin(), itFirstUnversionedEntry, entry, EntryPathCompareNoCase);
+		int status=((CTGitPath*)m_arStatusArray[i])->m_Action;
 
-							// adjust the case of the filename
-							if (MoveFileEx(entry->path.GetWinPath(), (*itMatchingItem)->path.GetWinPath(), MOVEFILE_REPLACE_EXISTING))
-							{
-								// We successfully adjusted the case in the filename. But there is now a file with status 'missing'
-								// in the array, because that's the status of the file before we adjusted the case.
-								// We have to refetch the status of that file.
-								// Since fetching the status of single files/directories is very expensive and there can be
-								// multiple case-renames here, we just set a flag and refetch the status at the end from scratch.
-								bRefetchStatus = true;
-								DeleteItem(i);
-								m_arStatusArray.erase(m_arStatusArray.begin()+i);
-								delete entry;
-								i--;
-								m_nUnversioned--;
-								// now that we removed an unversioned item from the array, find the first unversioned item in the 'new'
-								// list again.
-								itFirstUnversionedEntry = std::partition(m_arStatusArray.begin(), m_arStatusArray.end(), IsEntryVersioned);
-							}
-							break;
-						}
-					}
-				}
-#endif
-				break;
-			} // switch (entry->status)
-		} // if (entry)
+		if(status&CTGitPath::LOGACTIONS_ADDED)
+			m_nAdded++;
+		
+		if(status&CTGitPath::LOGACTIONS_DELETED)
+			m_nDeleted++;
+		
+		if(status&(CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_MODIFIED))
+			m_nModified++;
+		
+		if(status&CTGitPath::LOGACTIONS_CONFLICT)
+			m_nConflicted++;
+		
+		if(status&(CTGitPath::LOGACTIONS_IGNORE|CTGitPath::LOGACTIONS_UNVER))
+			m_nUnversioned++;
+	
+	
+
+//			} // switch (entry->status)
+//		} // if (entry)
 	} // for (int i=0; i < (int)m_arStatusArray.size(); ++i)
 	return !bRefetchStatus;
-#endif 
+
 	return FALSE;
 }
 
