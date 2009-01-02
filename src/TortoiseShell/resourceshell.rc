@@ -69,7 +69,7 @@ IDI_PROPERTIES          ICON                    "..\\Resources\\menuproperties.i
 IDI_DELUNVERSIONED      ICON                    "..\\Resources\\menudelunversioned.ico"
 IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ico"
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
-IDI_PUSH                ICON                    "..\\resources\\pull1.ico"
+IDI_PUSH                ICON                    "..\\resources\\Push.ico"
 IDI_CLONE               ICON                    "..\\resources\\checkout.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON                    "..\\resources\\icon1.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
