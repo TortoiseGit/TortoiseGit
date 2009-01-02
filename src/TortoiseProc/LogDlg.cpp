@@ -526,7 +526,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
-			m_ChangedFileListCtrl.Show(0);
+			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
 
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;

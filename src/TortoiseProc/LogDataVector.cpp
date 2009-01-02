@@ -68,6 +68,9 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,int count  )
 	CString log;
 	GitRev rev;
 
+	if(g_Git.IsInitRepos())
+		return 0;
+
 	CString begin;
 	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
 

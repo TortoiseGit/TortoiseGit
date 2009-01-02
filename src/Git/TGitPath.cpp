@@ -855,11 +855,13 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 		while( pos>=0 )
 		{
 			one=out.Tokenize(_T("\n"),pos);
-
-			//SetFromGit will clear all status
-			path.SetFromGit(one);
-			path.m_Action=action;
-			AddPath(path);
+			if(!one.IsEmpty())
+			{
+				//SetFromGit will clear all status
+				path.SetFromGit(one);
+				path.m_Action=action;
+				AddPath(path);
+			}
 		}
 	}
 	return 0;

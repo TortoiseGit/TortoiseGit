@@ -1047,7 +1047,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */)
+void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */,BOOL UpdateStatusList)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -1062,6 +1062,24 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	PrepareGroups();
 	m_nSelected = 0;
 
+	if(UpdateStatusList)
+	{
+		m_arStatusArray.clear();
+		for(int i=0;i<this->m_StatusFileList.GetCount();i++)
+		{
+			m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
+		}
+
+		for(int i=0;i<this->m_UnRevFileList.GetCount();i++)
+		{
+			m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
+		}
+
+		for(int i=0;i<this->m_IgnoreFileList.GetCount();i++)
+		{
+			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
+		}
+	}
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
@@ -2357,7 +2375,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					//	{
 					//		if ((m_dwContextMenus & SVNSLC_POPGNUDIFF)&&(wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing))
 					//		{
-					popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					if(!g_Git.IsInitRepos())
+						popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+
 					bEntryAdded = true;
 					//		}
 					//	}
@@ -2754,7 +2774,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							this->m_StatusFileList.AddPath(*path);
 							this->m_UnRevFileList.RemoveItem(*path);
 							this->m_IgnoreFileList.RemoveItem(*path);
-							Show(this->m_dwShow);
+							Show(this->m_dwShow,0,true,true);
 						}
 					}
 					
@@ -4088,9 +4108,13 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		return;
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 	{
-		CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
+		if(!g_Git.IsInitRepos())
+			CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
 			        CString(GIT_REV_ZERO),
 					GitRev::GetHead());
+		else
+			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
+			        CString(GIT_REV_ZERO));
 	}else
 	{
 		CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),

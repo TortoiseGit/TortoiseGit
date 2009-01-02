@@ -525,7 +525,7 @@ public:
 	 * \param dwShow mask of file types to show. Use the GitSLC_SHOWxxx defines.
 	 * \param dwCheck mask of file types to check. Use GitLC_SHOWxxx defines. Default (0) means 'use the entry's stored check status'
 	 */
-	void Show(DWORD dwShow, DWORD dwCheck = 0, bool bShowFolders = true);
+	void Show(DWORD dwShow, DWORD dwCheck = 0, bool bShowFolders = true,BOOL updateStatusList=FALSE);
 	void Show(DWORD dwShow, const CTGitPathList& checkedList, bool bShowFolders = true);
 
 	/**

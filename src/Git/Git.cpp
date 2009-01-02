@@ -77,7 +77,20 @@ void CGit::StringAppend(CString *str,char *p)
        str->Append(A2W(p));
 
 }	
+BOOL CGit::IsInitRepos()
+{
+	CString cmdout;
+	cmdout.Empty();
+	if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&cmdout))
+	{
+	//	CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
+		return TRUE;
+	}
+	if(cmdout.IsEmpty())
+		return TRUE;
 
+	return FALSE;
+}
 int CGit::Run(CString cmd, CString* output)
 {
 	PROCESS_INFORMATION pi;
