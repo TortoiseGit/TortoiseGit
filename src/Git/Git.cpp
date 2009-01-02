@@ -137,13 +137,22 @@ CString CGit::GetUserEmail(void)
 
 CString CGit::GetCurrentBranch(void)
 {
-	CString branch;
-	Run(_T("git.exe branch"),&branch);
-	if(branch.GetLength()>0)
-	{
-		branch.Replace(_T('*'),_T(' '));
-		branch.TrimLeft();
-		return branch;
+	CString output;
+	//Run(_T("git.exe branch"),&branch);
+
+	int ret=g_Git.Run(_T("git.exe branch"),&output);
+	if(!ret)
+	{		
+		int pos=0;
+		CString one;
+		while( pos>=0 )
+		{
+			//i++;
+			one=output.Tokenize(_T("\n"),pos);
+			//list.push_back(one.Right(one.GetLength()-2));
+			if(one[0] == _T('*'))
+				return one.Right(one.GetLength()-2);
+		}
 	}
 	return CString("");
 }
