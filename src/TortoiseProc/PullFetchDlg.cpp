@@ -57,6 +57,14 @@ BOOL CPullFetchDlg::OnInitDialog()
 	else
 		this->SetWindowTextW(_T("Fetch"));
 
+	STRING_VECTOR list;
+
+	if(!g_Git.GetRemoteList(list))
+	{	
+		for(int i=0;i<list.size();i++)
+			m_Remote.AddString(list[i]);
+	}
+
 	return TRUE;
 }
 // CPullFetchDlg message handlers
