@@ -71,6 +71,7 @@ IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ic
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 IDI_PUSH                ICON                    "..\\resources\\Push.ico"
 IDI_CLONE               ICON                    "..\\resources\\checkout.ico"
+IDI_TAG					ICON					"..\\resources\\Tag.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -245,6 +246,15 @@ BEGIN
     IDS_STATUSDELETED       "deleted"
     IDS_STATUSREPLACED      "replaced"
     IDS_STATUSMODIFIED      "modified"
+END
+
+STRINGTABLE
+BEGIN
+	IDS_MENUTAG				"Create Tag"
+	IDS_MENUFORMATPATCH		"Create Patch Serial"
+	IDS_MENUIMPORTPATCH		"Apply Patch Serial"
+	IDS_MENUCHERRYPICK		"Cherry Pick"
+	IDS_MENUFETCH			"Fetch"
 END
 
 STRINGTABLE 

@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CPullFetchDlg, CResizableStandAloneDialog)
 CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
-
+	m_IsPull=TRUE;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -52,7 +52,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_Other.LoadHistory(_T("Software\\TortoiseGit\\History\\PullURLS"), _T("url"));
 	m_Other.SetCurSel(0);
 
-	
+	if(m_IsPull)
+		this->SetWindowTextW(_T("Pull"));
+	else
+		this->SetWindowTextW(_T("Fetch"));
 
 	return TRUE;
 }

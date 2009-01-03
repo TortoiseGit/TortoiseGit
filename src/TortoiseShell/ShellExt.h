@@ -150,6 +150,12 @@ protected:
 		ShellMenuPull,
 		ShellMenuPush,
 		ShellMenuClone,
+		ShellMenuBranch,
+		ShellMenuTag,
+		ShellMenuFormatPatch,
+		ShellMenuImportPatch,
+		ShellMenuCherryPick,
+		ShellMenuFetch,
 		ShellMenuLastEntry			// used to mark the menu array end
 	};
 

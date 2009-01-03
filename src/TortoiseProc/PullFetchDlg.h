@@ -24,6 +24,7 @@ protected:
 	
 	DECLARE_MESSAGE_MAP()
 public:
+	BOOL m_IsPull;
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnBnClickedOk();
 	CString m_RemoteURL;

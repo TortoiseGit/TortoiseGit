@@ -178,6 +178,11 @@
 #define IDS_git_DEPTH_EXCLUDE           304
 #define IDS_git_DEPTH_UNKNOWN           305
 #define IDS_git_DEPTH_WORKING           306
+#define IDS_MENUTAG						307
+#define	IDS_MENUFORMATPATCH				308
+#define IDS_MENUIMPORTPATCH				309
+#define IDS_MENUCHERRYPICK				310
+#define IDS_MENUFETCH					311
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
 #define IDC_REPOURL                     1003
@@ -216,6 +221,7 @@
 #define IDI_ICON1                       5165
 #define IDI_PUSH                        5166
 #define IDI_CLONE                       5167
+#define IDI_TAG							5168
 #define IDC_LOCKOWNER                   11019
 #define IDC_LOCKDATE                    11020
 #define IDC_EDITPROPERTIES              11021

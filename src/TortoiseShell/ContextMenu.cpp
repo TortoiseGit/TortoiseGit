@@ -35,9 +35,13 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuClone,						MENUCLONE,			IDI_CLONE,				IDS_MENUCLONE,			IDS_MENUDESCCHECKOUT,
 	ITEMIS_FOLDER, ITEMIS_INSVN|ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuPull,						MENUPULL,			IDI_PULL,				IDS_MENUPULL,
+	{ ShellMenuPull,						MENUPULL,			IDI_PULL,				IDS_MENUPULL,			IDS_MENUPULL,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
-	{ ShellMenuPush,						MENUPUSH,			IDI_PUSH,				IDS_MENUPUSH,
+
+	{ ShellMenuFetch,						MENUFETCH,			IDI_PULL,				IDS_MENUFETCH,			IDS_MENUFETCH,
+	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
+	{ ShellMenuPush,						MENUPUSH,			IDI_PUSH,				IDS_MENUPUSH,			IDS_MENUPULL,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
 //	{ ShellMenuCheckout,					MENUCHECKOUT,		IDI_CHECKOUT,			IDS_MENUCHECKOUT,			IDS_MENUDESCCHECKOUT,
@@ -126,8 +130,13 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuMergeAll,					MENUMERGEALL,		IDI_MERGE,				IDS_MENUMERGEALL,			IDS_MENUDESCMERGEALL,
 	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, 0, 0, 0, 0, 0 },
 
+	{ ShellMenuBranch,						MENUCOPY,			IDI_COPY,				IDS_MENUBRANCH,				IDS_MENUDESCCOPY,
+	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+	{ ShellMenuTag,							MENUTAG,			IDI_TAG,				IDS_MENUTAG,				IDS_MENUDESCCOPY,
+	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
 	{ ShellMenuExport,						MENUEXPORT,			IDI_EXPORT,				IDS_MENUEXPORT,				IDS_MENUDESCEXPORT,
-	ITEMIS_INSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0, 0, 0 },
+	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
 //	{ ShellMenuRelocate,					MENURELOCATE,		IDI_RELOCATE,			IDS_MENURELOCATE,			IDS_MENUDESCRELOCATE,
 //	ITEMIS_INSVN|ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
@@ -149,13 +158,23 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
 
-//	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
-//	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
+	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
+	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
 
-//	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
-//	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
+	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
+	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
+
+	{ ShellMenuCherryPick,					MENUCHERRYPICK,		IDI_CREATEPATCH,		IDS_MENUCHERRYPICK,		IDS_MENUDESCCREATEPATCH,
+	ITEMIS_INSVN, ITEMIS_NORMAL, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
+	{ ShellMenuFormatPatch,					MENUFORMATPATCH,	IDI_CREATEPATCH,		IDS_MENUFORMATPATCH,		IDS_MENUDESCCREATEPATCH,
+	ITEMIS_INSVN, ITEMIS_NORMAL, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
+	{ ShellMenuImportPatch,					MENUIMPORTPATCH,	IDI_PATCH,				IDS_MENUIMPORTPATCH,		IDS_MENUDESCCREATEPATCH,
+	ITEMIS_INSVN, ITEMIS_NORMAL, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
 
 	{ ShellMenuCreatePatch,					MENUCREATEPATCH,	IDI_CREATEPATCH,		IDS_MENUCREATEPATCH,		IDS_MENUDESCCREATEPATCH,
 	ITEMIS_INSVN, ITEMIS_NORMAL, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
@@ -1773,19 +1792,74 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuPull:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("pull /pathfile:\"");
-				svnCmd += tempfile;
+				svnCmd += _T("pull /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuPush:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("push /pathfile:\"");
-				svnCmd += tempfile;
+				svnCmd += _T("push /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
 				break;
+			case ShellMenuBranch:
+				svnCmd += _T("branch /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+			
+			case ShellMenuTag:
+				svnCmd += _T("tag /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+
+			case ShellMenuFormatPatch:
+				svnCmd += _T("formatpatch /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+
+			case ShellMenuImportPatch:
+				svnCmd += _T("importpatch /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+
+			case ShellMenuCherryPick:
+				svnCmd += _T("cherrypick /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+			case ShellMenuFetch:
+				svnCmd += _T("fetch /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+
 			default:
 				break;
 				//#endregion

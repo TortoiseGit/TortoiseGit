@@ -10,8 +10,8 @@
 			>
 			<DebugSettings
 				Command="$(TargetPath)"
-				WorkingDirectory="D:\"
-				CommandArguments="/command:log /path:&quot;D:\\Test&quot;"
+				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
+				CommandArguments="/command:push /path:&quot;D:\\Profiles\\b20596\\buildtest\\TortoiseGit&quot;"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

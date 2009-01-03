@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "StdAfx.h"
-#include "PullCommand.h"
+#include "FetchCommand.h"
 
 //#include "SVNProgressDlg.h"
 #include "StringUtils.h"
@@ -26,15 +26,17 @@
 #include "PullFetchDlg.h"
 #include "ProgressDlg.h"
 
-bool PullCommand::Execute()
+bool FetchCommand::Execute()
 {
 	CPullFetchDlg dlg;
+	dlg.m_IsPull=FALSE;
+
 	if(dlg.DoModal()==IDOK)
 	{
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;
-		cmd.Format(_T("git.exe pull \"%s\""),url);
+		cmd.Format(_T("git.exe fetch \"%s\""),url);
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)
