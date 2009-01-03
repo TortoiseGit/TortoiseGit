@@ -35,7 +35,7 @@ bool PullCommand::Execute()
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;
-		cmd.Format(_T("git.exe pull \"%s\""),url);
+		cmd.Format(_T("git.exe pull \"%s\" %s"),url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)

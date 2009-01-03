@@ -36,7 +36,7 @@ bool FetchCommand::Execute()
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;
-		cmd.Format(_T("git.exe fetch \"%s\""),url);
+		cmd.Format(_T("git.exe fetch \"%s\" %s"),url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)

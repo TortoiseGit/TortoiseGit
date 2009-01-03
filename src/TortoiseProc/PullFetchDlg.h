@@ -19,6 +19,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	CHistoryCombo	m_Remote;
 	CHistoryCombo	m_Other;
+	CHistoryCombo	m_RemoteBranch;
 	virtual BOOL OnInitDialog();
 
 	
@@ -28,4 +29,5 @@ public:
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnBnClickedOk();
 	CString m_RemoteURL;
+	CString m_RemoteBranchName;
 };
