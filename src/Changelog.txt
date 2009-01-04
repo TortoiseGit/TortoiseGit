@@ -1,3 +1,34 @@
+version 0.2.0.0 preview version:
+Features:
+	1. Add TortoisgeMerge as default compare tools
+	2. Pull, Fetch, Push 
+	3. Create Branch\Tag
+	4. Switch branch \Chechout
+	5. Compare with previous version
+	6. Clone(only support local repository, see known issue for detail)
+	7. Log Dialog support filter
+	8. Check for modifications
+	9. Revert local change
+	10.Create Patch Serial
+	11.Apply Patch Serial
+	12.Add file to repository(see know issue)
+	13.Export to zip file
+
+Bug Fix:
+	1. A2W cause stack overwrite bug when git output is long. 
+
+	
+Known Issue:
+	1. ProcessDlg will wait for ever when clone remote repository(ssh, http,git).
+	2. push fetch and pull don't support password mode. Just support public key problem. 
+	3. Just fetch first 100 log item. 
+	4. If install TortoiseGit before MsysGit, you need modify register 
+	    HKEY_LOCAL_MACHINE\Software\TortoiseGit\\MsysGit\
+	   Let it point to correct msysgit install path.
+	5. Add File, please commit and show unversion file, the choose add file, then right clict, Choose Add file	 
+	6. To new initial repository, You will not see add file again in commit dialog box if give up commit when choose add
+	 
+
 version 0.1.0.0 preview version
 
 Features:

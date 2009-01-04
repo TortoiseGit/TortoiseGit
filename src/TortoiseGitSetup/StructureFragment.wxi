@@ -302,12 +302,14 @@
               <File Id="F__soundwarning" ShortName="TWARN.WAV" Name="TortoiseSVN_Warning.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Warning.wav" />
               <File Id="F__soundnotification" ShortName="TNOTIFY.WAV" Name="TortoiseSVN_Notification.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Notification.wav" />
             </Component>
-<!--
+
             <Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
+              <!--
               <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseBlame.exe" KeyPath="yes" />
+             --> 
               <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
            </Component>
---> 
+            
 <!--
             <Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
 
