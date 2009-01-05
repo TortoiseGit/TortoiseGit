@@ -144,7 +144,7 @@ int CLogDataVector::ParserFromLog()
 
 void CLogDataVector::setLane(CString& sha) 
 {
-	Lanes* l = &(this->m_Lanes);
+	Lanes* l = &(this->m_Lns);
 	int i = m_FirstFreeLane;
 	
 //	QVector<QByteArray> ba;
@@ -203,7 +203,7 @@ void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CString &sha)
 	if (isDiscontinuity)
 		lns.changeActiveLane(sha); // uses previous isBoundary state
 
-	lns.setBoundary(0/*c.isBoundary()*/); // update must be here
+	lns.setBoundary(c.IsBoundary()); // update must be here
 
 	if (isFork)
 		lns.setFork(sha);

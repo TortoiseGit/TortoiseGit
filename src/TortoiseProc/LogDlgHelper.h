@@ -61,7 +61,7 @@ public:
 	int ParserShortLog(CTGitPath *path =NULL,int count = -1  );
 	int FetchFullInfo(int i);
 
-	Lanes m_Lanes;
+	Lanes m_Lns;
 	int	 m_FirstFreeLane;
 	MAP_HASH_REV m_HashMap;
 	void updateLanes(GitRev& c, Lanes& lns, CString &sha) ;

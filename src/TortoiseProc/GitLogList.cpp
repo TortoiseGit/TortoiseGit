@@ -582,7 +582,7 @@ void CGitLogList::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x
 void CGitLogList::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 {
 	//todo unfinished
-	return;
+//	return;
 	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
 	CRect rt=rect;
 	LVITEM   rItem;
@@ -592,7 +592,7 @@ void CGitLogList::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
-	static const COLORREF colors[Lanes::COLORS_NUM] = { RGB(0,0,0), RGB(0xFF,0,0), RGB(0,0x1F,0),
+	static const COLORREF colors[Lanes::COLORS_NUM] = { RGB(0,0,0), RGB(0xFF,0,0), RGB(0,0xFF,0),
 	                                           RGB(0,0,0xFF), RGB(128,128,128), RGB(128,128,0),
 	                                           RGB(0,128,128), RGB(128,0,128) };
 

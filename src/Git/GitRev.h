@@ -53,7 +53,10 @@ public:
 	GIT_REV_LIST m_ParentHash;
 	CTGitPathList m_Files;
 	int	m_Action;
+	TCHAR m_Mark;
 	
+	BOOL IsBoundary(){return m_Mark == _T('-');}
+
 	void Clear();
 	int ParserFromLog(CString &log);
 	CTime ConverFromString(CString input);

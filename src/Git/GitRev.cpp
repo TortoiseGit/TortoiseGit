@@ -33,6 +33,7 @@ void GitRev::Clear()
 	m_Body.Empty();
 	m_Subject.Empty();
 	m_CommitHash.Empty();
+	m_Mark=0;
 
 }
 int GitRev::CopyFrom(GitRev &rev)
@@ -49,6 +50,7 @@ int GitRev::CopyFrom(GitRev &rev)
 	m_ParentHash	=rev.m_ParentHash	;
 	m_Files			=rev.m_Files			;	
 	m_Action		=rev.m_Action		;
+	m_Mark			=rev.m_Mark;
 	return 0;
 }
 int GitRev::ParserFromLog(CString &log)
@@ -100,10 +102,18 @@ int GitRev::ParserFromLog(CString &log)
 				this->m_Body = text +_T("\n");
 				break;
 			case LOG_REV_COMMIT_HASH:
-				this->m_CommitHash = text;
+				this->m_CommitHash = text.Right(40);
+				this->m_Mark=text[0];
 				break;
 			case LOG_REV_COMMIT_PARENT:
-				this->m_ParentHash.insert(this->m_ParentHash.end(),text);
+				while(text.GetLength()>0)
+				{
+					this->m_ParentHash.insert(this->m_ParentHash.end(),text.Left(40));
+					if(text.GetLength()>40)
+						text=text.Right(text.GetLength()-41);
+					else
+						break;
+				}
 				break;
 			case LOG_REV_COMMIT_FILE:
 				break;

@@ -181,7 +181,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 		log.Format(_T("#<%c>%%b%%n"),LOG_REV_COMMIT_BODY);
 		format += log;
 	}
-	log.Format(_T("#<%c>%%H%%n"),LOG_REV_COMMIT_HASH);
+	log.Format(_T("#<%c>%%m%%H%%n"),LOG_REV_COMMIT_HASH);
 	format += log;
 	log.Format(_T("#<%c>%%P%%n"),LOG_REV_COMMIT_PARENT);
 	format += log;
@@ -204,7 +204,7 @@ int CGit::GetLog(CString& logOut, CString &hash, int count)
 	if(count>0)
 		num.Format(_T("-n%d"),count);
 
-	cmd.Format(_T("git.exe log %s -C --numstat --raw --pretty=format:\""),
+	cmd.Format(_T("git.exe log %s --left-right --boundary -C --numstat --raw --pretty=format:\""),
 				num);
 	BuildOutputFormat(log);
 	cmd += log;
@@ -222,7 +222,7 @@ int CGit::GetShortLog(CString &logOut,CTGitPath * path, int count)
 		n=100;
 	else
 		n=count;
-	cmd.Format(_T("git.exe log --topo-order -n%d --pretty=format:\""),n);
+	cmd.Format(_T("git.exe log --left-right --boundary --topo-order -n%d --pretty=format:\""),n);
 	BuildOutputFormat(log,false);
 	cmd += log+_T("\"");
 	if (path)
