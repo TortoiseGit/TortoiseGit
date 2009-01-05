@@ -234,7 +234,7 @@ void Lanes::afterFork() {
 		if (!boundary && IS_NODE(t))
 			t = ACTIVE; // boundary will be reset by changeActiveLane()
 	}
-	while (*typeVec.end() == EMPTY) {
+	while (typeVec.back() == EMPTY) {
 		typeVec.pop_back();
 		nextShaVec.pop_back();
 	}

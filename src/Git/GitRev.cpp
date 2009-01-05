@@ -103,7 +103,10 @@ int GitRev::ParserFromLog(CString &log)
 				break;
 			case LOG_REV_COMMIT_HASH:
 				this->m_CommitHash = text.Right(40);
-				this->m_Mark=text[0];
+				if(text.GetLength()>40)
+				{
+					this->m_Mark=text[0];
+				}
 				break;
 			case LOG_REV_COMMIT_PARENT:
 				while(text.GetLength()>0)
@@ -155,11 +158,16 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 	{
 		//GitRev rev;
 		CString onelog;
+		TCHAR oldmark=this->m_Mark;
+	
 		git->GetLog(onelog,m_CommitHash,1);
 		CString oldhash=m_CommitHash;
 		ParserFromLog(onelog);
 		
 		//ASSERT(oldhash==m_CommitHash);
+		if(oldmark!=0)
+			this->m_Mark=oldmark;  //parser full log will cause old mark overwrited. 
+							       //So we need keep old bound mark.
 
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsFull,TRUE);

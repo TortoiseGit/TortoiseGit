@@ -561,6 +561,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	
 	// redraw the views
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+#if 0
 	if (m_currentChangedArray)
 	{
 		m_ChangedFileListCtrl.SetItemCountEx(m_currentChangedArray->GetCount());
@@ -576,6 +577,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		m_ChangedFileListCtrl.SetItemCountEx(0);
 		m_ChangedFileListCtrl.Invalidate();
 	}
+#endif
 	CAppUtils::ResizeAllListCtrlCols(&m_ChangedFileListCtrl);
 	// sort according to the settings
 	if (m_nSortColumnPathList > 0)

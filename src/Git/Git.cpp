@@ -204,7 +204,7 @@ int CGit::GetLog(CString& logOut, CString &hash, int count)
 	if(count>0)
 		num.Format(_T("-n%d"),count);
 
-	cmd.Format(_T("git.exe log %s --left-right --boundary -C --numstat --raw --pretty=format:\""),
+	cmd.Format(_T("git.exe log %s -C --numstat --raw --pretty=format:\""),
 				num);
 	BuildOutputFormat(log);
 	cmd += log;
