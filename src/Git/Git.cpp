@@ -408,7 +408,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
 	int ret;
 	CString cmd,output;
-	cmd=_T("git show-ref");
+	cmd=_T("git show-ref -d");
 	ret=g_Git.Run(cmd,&output);
 	if(!ret)
 	{
