@@ -18,7 +18,7 @@
 //
 #include "StdAfx.h"
 #include "Dbt.h"
-#include "SVNStatusCache.h"
+#include "GitStatusCache.h"
 #include ".\directorywatcher.h"
 
 extern HWND hWnd;
@@ -84,7 +84,7 @@ void CDirectoryWatcher::SetFolderCrawler(CFolderCrawler * crawler)
 	m_FolderCrawler = crawler;
 }
 
-bool CDirectoryWatcher::RemovePathAndChildren(const CTSVNPath& path)
+bool CDirectoryWatcher::RemovePathAndChildren(const CTGitPath& path)
 {
 	bool bRemoved = false;
 	AutoLocker lock(m_critSec);
@@ -101,7 +101,7 @@ repeat:
 	return bRemoved;
 }
 
-void CDirectoryWatcher::BlockPath(const CTSVNPath& path)
+void CDirectoryWatcher::BlockPath(const CTGitPath& path)
 {
 	blockedPath = path;
 	// block the path from being watched for 4 seconds
@@ -109,9 +109,9 @@ void CDirectoryWatcher::BlockPath(const CTSVNPath& path)
 	ATLTRACE(_T("Blocking path: %s\n"), path.GetWinPath());
 }
 
-bool CDirectoryWatcher::AddPath(const CTSVNPath& path)
+bool CDirectoryWatcher::AddPath(const CTGitPath& path)
 {
-	if (!CSVNStatusCache::Instance().IsPathAllowed(path))
+	if (!CGitStatusCache::Instance().IsPathAllowed(path))
 		return false;
 	if ((!blockedPath.IsEmpty())&&(blockedPath.IsAncestorOf(path)))
 	{
@@ -129,7 +129,7 @@ bool CDirectoryWatcher::AddPath(const CTSVNPath& path)
 	}
 	
 	// now check if with the new path we might have a new root
-	CTSVNPath newroot;
+	CTGitPath newroot;
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
 	{
 		const CString& watched = watchedPaths[i].GetWinPathString();
@@ -144,11 +144,11 @@ bool CDirectoryWatcher::AddPath(const CTSVNPath& path)
 				{
 					if (sPath.GetAt(len)=='\\')
 					{
-						newroot = CTSVNPath(sPath.Left(len));
+						newroot = CTGitPath(sPath.Left(len));
 					}
 					else if (watched.GetAt(len)=='\\')
 					{
-						newroot = CTSVNPath(watched.Left(len));
+						newroot = CTGitPath(watched.Left(len));
 					}
 				}
 				break;
@@ -176,11 +176,11 @@ bool CDirectoryWatcher::AddPath(const CTSVNPath& path)
 				{
 					if (sPath.GetAt(len)=='\\')
 					{
-						newroot = CTSVNPath(watched);
+						newroot = CTGitPath(watched);
 					}
 					else if (watched.GetLength() == 3 && watched[1] == ':')
 					{
-						newroot = CTSVNPath(watched);
+						newroot = CTGitPath(watched);
 					}
 				}
 			}
@@ -202,7 +202,7 @@ bool CDirectoryWatcher::AddPath(const CTSVNPath& path)
 	return true;
 }
 
-bool CDirectoryWatcher::IsPathWatched(const CTSVNPath& path)
+bool CDirectoryWatcher::IsPathWatched(const CTGitPath& path)
 {
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
 	{
@@ -255,7 +255,7 @@ void CDirectoryWatcher::WorkerThread()
 				m_hCompPort = NULL;
 				for (int i=0; i<watchedPaths.GetCount(); ++i)
 				{
-					CTSVNPath watchedPath = watchedPaths[i];
+					CTGitPath watchedPath = watchedPaths[i];
 
 					HANDLE hDir = CreateFile(watchedPath.GetWinPath(), 
 											FILE_LIST_DIRECTORY, 
@@ -394,7 +394,7 @@ void CDirectoryWatcher::WorkerThread()
 								continue;
 							}
 							ATLTRACE(_T("change notification: %s\n"), buf);
-							m_FolderCrawler->AddPathForUpdate(CTSVNPath(buf));
+							m_FolderCrawler->AddPathForUpdate(CTGitPath(buf));
 						}
 						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 							break;
@@ -443,9 +443,9 @@ void CDirectoryWatcher::ClearInfoMap()
 	m_hCompPort = INVALID_HANDLE_VALUE;
 }
 
-CTSVNPath CDirectoryWatcher::CloseInfoMap(HDEVNOTIFY hdev)
+CTGitPath CDirectoryWatcher::CloseInfoMap(HDEVNOTIFY hdev)
 {
-	CTSVNPath path;
+	CTGitPath path;
 	if (watchInfoMap.size() == 0)
 		return path;
 	AutoLocker lock(m_critSec);
@@ -467,7 +467,7 @@ CTSVNPath CDirectoryWatcher::CloseInfoMap(HDEVNOTIFY hdev)
 	return path;
 }
 
-bool CDirectoryWatcher::CloseHandlesForPath(const CTSVNPath& path)
+bool CDirectoryWatcher::CloseHandlesForPath(const CTGitPath& path)
 {
 	if (watchInfoMap.size() == 0)
 		return false;
@@ -475,7 +475,7 @@ bool CDirectoryWatcher::CloseHandlesForPath(const CTSVNPath& path)
 	for (std::map<HANDLE, CDirWatchInfo *>::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)
 	{
 		CDirectoryWatcher::CDirWatchInfo * info = I->second;
-		CTSVNPath p = CTSVNPath(info->m_DirPath);
+		CTGitPath p = CTGitPath(info->m_DirPath);
 		if (path.IsAncestorOf(p))
 		{
 			RemovePathAndChildren(p);
@@ -490,7 +490,7 @@ bool CDirectoryWatcher::CloseHandlesForPath(const CTSVNPath& path)
 	return true;
 }
 
-CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTSVNPath& DirectoryName) :
+CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName) :
 	m_hDir(hDir),
 	m_DirName(DirectoryName)
 {

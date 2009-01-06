@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "CacheInterface.h"
 #include <set>
 //////////////////////////////////////////////////////////////////////////
@@ -40,11 +40,11 @@ public:
 
 public:
 	void Initialise();
-	void AddDirectoryForUpdate(const CTSVNPath& path);
-	void AddPathForUpdate(const CTSVNPath& path);
+	void AddDirectoryForUpdate(const CTGitPath& path);
+	void AddPathForUpdate(const CTGitPath& path);
 	void Stop();
 	bool SetHoldoff(DWORD milliseconds = 100);
-	void BlockPath(const CTSVNPath& path, DWORD ticks = 0);
+	void BlockPath(const CTGitPath& path, DWORD ticks = 0);
 private:
 	static unsigned int __stdcall ThreadEntry(void* pContext);
 	void WorkerThread();
@@ -52,8 +52,8 @@ private:
 private:
 	CComAutoCriticalSection m_critSec;
 	HANDLE m_hThread;
-	std::deque<CTSVNPath> m_foldersToUpdate;
-	std::deque<CTSVNPath> m_pathsToUpdate;
+	std::deque<CTGitPath> m_foldersToUpdate;
+	std::deque<CTGitPath> m_pathsToUpdate;
 	HANDLE m_hTerminationEvent;
 	HANDLE m_hWakeEvent;
 	
@@ -70,7 +70,7 @@ private:
 	bool m_bItemsAddedSinceLastCrawl;
 	bool m_bPathsAddedSinceLastCrawl;
 	
-	CTSVNPath m_blockedPath;
+	CTGitPath m_blockedPath;
 	DWORD m_blockReleasesAt;
 	bool m_bRun;
 

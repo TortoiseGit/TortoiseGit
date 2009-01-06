@@ -36,14 +36,14 @@
  * Provides access to a global object of itself which handles all
  * the requests for status.
  */
-class CSVNStatusCache
+class CGitStatusCache
 {
 private:
-	CSVNStatusCache(void);
-	~CSVNStatusCache(void);
+	CGitStatusCache(void);
+	~CGitStatusCache(void);
 
 public:
-	static CSVNStatusCache& Instance();
+	static CGitStatusCache& Instance();
 	static void Create();
 	static void Destroy();
 	static bool SaveCache();
@@ -53,30 +53,30 @@ public:
 	void Refresh();
 
 	/// Get the status for a single path (main entry point, called from named-pipe code
-	CStatusCacheEntry GetStatusForPath(const CTSVNPath& path, DWORD flags,  bool bFetch = true);
+	CStatusCacheEntry GetStatusForPath(const CTGitPath& path, DWORD flags,  bool bFetch = true);
 
 	/// Find a directory in the cache (a new entry will be created if there isn't an existing entry)
-	CCachedDirectory * GetDirectoryCacheEntry(const CTSVNPath& path);
-	CCachedDirectory * GetDirectoryCacheEntryNoCreate(const CTSVNPath& path);
+	CCachedDirectory * GetDirectoryCacheEntry(const CTGitPath& path);
+	CCachedDirectory * GetDirectoryCacheEntryNoCreate(const CTGitPath& path);
 
 	/// Add a folder to the background crawler's work list
-	void AddFolderForCrawling(const CTSVNPath& path);
+	void AddFolderForCrawling(const CTGitPath& path);
 
 	/// Removes the cache for a specific path, e.g. if a folder got deleted/renamed
-	void RemoveCacheForPath(const CTSVNPath& path);
+	void RemoveCacheForPath(const CTGitPath& path);
 
 	/// Removes all items from the cache
 	void ClearCache();
 	
 	/// Call this method before getting the status for a shell request
-	void StartRequest(const CTSVNPath& path);
+	void StartRequest(const CTGitPath& path);
 	/// Call this method after the data for the shell request has been gathered
-	void EndRequest(const CTSVNPath& path);
+	void EndRequest(const CTGitPath& path);
 	
 	/// Notifies the shell about file/folder status changes.
 	/// A notification is only sent for paths which aren't currently
 	/// in the list of handled shell requests to avoid deadlocks.
-	void UpdateShell(const CTSVNPath& path);
+	void UpdateShell(const CTGitPath& path);
 
 	size_t GetCacheSize() {return m_directoryCache.size();}
 	int GetNumberOfWatchedPaths() {return watcher.GetNumberOfWatchedPaths();}
@@ -85,7 +85,7 @@ public:
 	void Stop();
 
 	void CloseWatcherHandles(HDEVNOTIFY hdev);
-	void CSVNStatusCache::CloseWatcherHandles(const CTSVNPath& path);
+	void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path);
 
 	bool WaitToRead(DWORD waitTime = INFINITE) {return m_rwSection.WaitToRead(waitTime);}
 	bool WaitToWrite(DWORD waitTime = INFINITE) {return m_rwSection.WaitToWrite(waitTime);}
@@ -98,11 +98,11 @@ public:
 	void AssertLock() {;}
 	void AssertWriting() {;}
 #endif
-	bool IsPathAllowed(const CTSVNPath& path) {return !!m_shellCache.IsPathAllowed(path.GetWinPath());}
+	bool IsPathAllowed(const CTGitPath& path) {return !!m_shellCache.IsPathAllowed(path.GetWinPath());}
 	bool IsUnversionedAsModified() {return !!m_shellCache.IsUnversionedAsModified();}
-	bool IsPathGood(const CTSVNPath& path);
-	bool IsPathWatched(const CTSVNPath& path) {return watcher.IsPathWatched(path);}
-	bool AddPathToWatch(const CTSVNPath& path) {return watcher.AddPath(path);}
+	bool IsPathGood(const CTGitPath& path);
+	bool IsPathWatched(const CTGitPath& path) {return watcher.IsPathWatched(path);}
+	bool AddPathToWatch(const CTGitPath& path) {return watcher.AddPath(path);}
 
 	bool m_bClearMemory;
 private:
@@ -110,16 +110,16 @@ private:
 	CRWSection m_rwSection;
 	CAtlList<CString> m_askedList;
 	CCachedDirectory::CachedDirMap m_directoryCache;
-	std::set<CTSVNPath> m_NoWatchPaths;
-	SVNHelper m_svnHelp;
+	std::set<CTGitPath> m_NoWatchPaths;
+//	SVNHelper m_svnHelp;
 	ShellCache	m_shellCache;
 
-	static CSVNStatusCache* m_pInstance;
+	static CGitStatusCache* m_pInstance;
 
 	CFolderCrawler m_folderCrawler;
 	CShellUpdater m_shellUpdater;
 
-	CTSVNPath m_mostRecentPath;
+	CTGitPath m_mostRecentPath;
 	CStatusCacheEntry m_mostRecentStatus;
 	long m_mostRecentExpiresAt;
 

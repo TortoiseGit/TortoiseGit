@@ -24,6 +24,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\TSVNCache\$(ConfigurationName)\"
 			ConfigurationType="1"
+			UseOfMFC="0"
 			UseOfATL="1"
 			CharacterSet="1"
 			>
@@ -69,10 +70,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="Crypt32.lib ../../ext/Subversion\debug_win32\libsvn_diff-nonet.lib ../../ext/Subversion\debug_win32\libsvn_ra-nonet.lib ../../ext/Subversion\debug_win32\libsvn_wc-nonet.lib ../../ext/Subversion\debug_win32\libsvn_subr-nonet.lib ../../ext/Subversion\debug_win32\libsvn_client-nonet.lib ../../ext/Subversion\debug_win32\libsvn_delta-nonet.lib ../../ext/apr\debug_win32\libapr_tsvn.lib ../../ext/apr-util\debug_win32\libaprutil_tsvn.lib ../../ext/apr-util\xml\expat\lib\debug_win32\xml.lib ../../ext/libintl/libintl3-win32/lib/intl3_tsvn.lib"
+				AdditionalDependencies="gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib Crypt32.lib"
 				OutputFile="$(OutDir)/TSVNCache.exe"
 				LinkIncremental="2"
-				IgnoreDefaultLibraryNames="LIBC"
+				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMTD;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/TSVNCache.pdb"
 				SubSystem="2"
@@ -377,6 +378,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Git\Git.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitAdminDir.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitRev.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitStatus.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\PathUtils.cpp"
 				>
 			</File>
@@ -433,19 +450,15 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Svn\SVNStatus.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SVNStatusCache.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\TSVNCache.cpp"
+				RelativePath="..\Git\TGitPath.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Svn\TSVNPath.cpp"
+				RelativePath=".\TSVNCache.cpp"
 				>
 			</File>
 			<File
@@ -520,10 +533,6 @@
 			</File>
 			<File
 				RelativePath="..\Svn\SVNStatus.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SVNStatusCache.h"
 				>
 			</File>
 			<File

@@ -20,17 +20,17 @@
 #include "stdafx.h"
 #include "shellapi.h"
 #include "TSVNCache.h"
-#include "SVNStatusCache.h"
+#include "GitStatusCache.h"
 #include "CacheInterface.h"
 #include "Resource.h"
 #include "registry.h"
-#include "..\crashrpt\CrashReport.h"
-#include "SVNAdminDir.h"
+//#include "..\crashrpt\CrashReport.h"
+#include "GitAdminDir.h"
 #include "Dbt.h"
 #include <initguid.h>
 #include "ioevent.h"
 #include "..\version.h"
-#include "svn_dso.h"
+//#include "svn_dso.h"
 
 #include <ShellAPI.h>
 
@@ -44,7 +44,7 @@
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-CCrashReport crasher("crashreports@tortoisesvn.tigris.org", "Crash Report for TSVNCache " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
+//CCrashReport crasher("crashreports@tortoisesvn.tigris.org", "Crash Report for TSVNCache " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
 DWORD WINAPI 		InstanceThread(LPVOID); 
 DWORD WINAPI		PipeThread(LPVOID);
@@ -141,11 +141,11 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 		return 0;
 	}
 
-	apr_initialize();
-	svn_dso_initialize2();
-	g_SVNAdminDir.Init();
-	CSVNStatusCache::Create();
-	CSVNStatusCache::Instance().Init();
+//	apr_initialize();
+//	svn_dso_initialize2();
+	g_GitAdminDir.Init();
+	CGitStatusCache::Create();
+	CGitStatusCache::Instance().Init();
 
 	SecureZeroMemory(szCurrentCrawledPath, sizeof(szCurrentCrawledPath));
 	
@@ -261,9 +261,9 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 	bRun = false;
 
 	Shell_NotifyIcon(NIM_DELETE,&niData);
-	CSVNStatusCache::Destroy();
-	g_SVNAdminDir.Close();
-	apr_terminate();
+	CGitStatusCache::Destroy();
+	g_GitAdminDir.Close();
+//	apr_terminate();
 
 	return 0;
 }
@@ -287,8 +287,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				CString sInfoTip;
 				NOTIFYICONDATA SystemTray;
 				sInfoTip.Format(_T("Cached Directories : %ld\nWatched paths : %ld"), 
-					CSVNStatusCache::Instance().GetCacheSize(),
-					CSVNStatusCache::Instance().GetNumberOfWatchedPaths());
+					CGitStatusCache::Instance().GetCacheSize(),
+					CGitStatusCache::Instance().GetNumberOfWatchedPaths());
 
 				SystemTray.cbSize = sizeof(NOTIFYICONDATA);
 				SystemTray.hWnd   = hTrayWnd;
@@ -366,10 +366,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_QUERYENDSESSION:
 		{
 			ATLTRACE("WM_QUERYENDSESSION\n");
-			if (CSVNStatusCache::Instance().WaitToWrite(200))
+			if (CGitStatusCache::Instance().WaitToWrite(200))
 			{
-				CSVNStatusCache::Instance().Stop();
-				CSVNStatusCache::Instance().Done();
+				CGitStatusCache::Instance().Stop();
+				CGitStatusCache::Instance().Done();
 			}
 			return TRUE;
 		}
@@ -380,9 +380,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_QUIT:
 		{
 			ATLTRACE("WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
-			CSVNStatusCache::Instance().WaitToWrite();
-			CSVNStatusCache::Instance().Stop();
-			CSVNStatusCache::Instance().SaveCache();
+			CGitStatusCache::Instance().WaitToWrite();
+			CGitStatusCache::Instance().Stop();
+			CGitStatusCache::Instance().SaveCache();
 			if (message != WM_QUIT)
 				PostQuitMessage(0);
 			bRun = false;
@@ -403,16 +403,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_DISMOUNT))
 						{
 							ATLTRACE("Device to be dismounted\n");
-							CSVNStatusCache::Instance().WaitToWrite();
-							CSVNStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-							CSVNStatusCache::Instance().Done();
+							CGitStatusCache::Instance().WaitToWrite();
+							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+							CGitStatusCache::Instance().Done();
 						}
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_LOCK))
 						{
 							ATLTRACE("Device lock event\n");
-							CSVNStatusCache::Instance().WaitToWrite();
-							CSVNStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-							CSVNStatusCache::Instance().Done();
+							CGitStatusCache::Instance().WaitToWrite();
+							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+							CGitStatusCache::Instance().Done();
 						}
 					}
 				}
@@ -422,15 +422,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+					CGitStatusCache::Instance().Done();
 				}
 				else
 				{
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
+					CGitStatusCache::Instance().Done();
 				}
 				break;
 			case DBT_DEVICEQUERYREMOVE:
@@ -438,15 +438,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+					CGitStatusCache::Instance().Done();
 				}
 				else
 				{
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
+					CGitStatusCache::Instance().Done();
 				}
 				break;
 			case DBT_DEVICEREMOVECOMPLETE:
@@ -454,15 +454,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
+					CGitStatusCache::Instance().Done();
 				}
 				else
 				{
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
+					CGitStatusCache::Instance().Done();
 				}
 				break;
 			}
@@ -478,7 +478,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 VOID GetAnswerToRequest(const TSVNCacheRequest* pRequest, TSVNCacheResponse* pReply, DWORD* pResponseLength)
 {
-	CTSVNPath path;
+	CTGitPath path;
 	*pResponseLength = 0;
 	if(pRequest->flags & TSVNCACHE_FLAGS_FOLDERISKNOWN)
 	{
@@ -489,10 +489,10 @@ VOID GetAnswerToRequest(const TSVNCacheRequest* pRequest, TSVNCacheResponse* pRe
 		path.SetFromWin(pRequest->path);
 	}
 
-	if (CSVNStatusCache::Instance().WaitToRead(2000))
+	if (CGitStatusCache::Instance().WaitToRead(2000))
 	{
-		CSVNStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
-		CSVNStatusCache::Instance().Done();
+		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
+		CGitStatusCache::Instance().Done();
 	}
 	else
 	{
@@ -772,29 +772,29 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				return 0;
 			case TSVNCACHECOMMAND_CRAWL:
 				{
-					CTSVNPath changedpath;
+					CTGitPath changedpath;
 					changedpath.SetFromWin(CString(command.path), true);
 					// remove the path from our cache - that will 'invalidate' it.
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().RemoveCacheForPath(changedpath);
-					CSVNStatusCache::Instance().Done();
-					CSVNStatusCache::Instance().AddFolderForCrawling(changedpath.GetDirectory());
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
+					CGitStatusCache::Instance().Done();
+					CGitStatusCache::Instance().AddFolderForCrawling(changedpath.GetDirectory());
 				}
 				break;
 			case TSVNCACHECOMMAND_REFRESHALL:
-				CSVNStatusCache::Instance().WaitToWrite();
-				CSVNStatusCache::Instance().Refresh();
-				CSVNStatusCache::Instance().Done();
+				CGitStatusCache::Instance().WaitToWrite();
+				CGitStatusCache::Instance().Refresh();
+				CGitStatusCache::Instance().Done();
 				break;
 			case TSVNCACHECOMMAND_RELEASE:
 				{
-					CTSVNPath changedpath;
+					CTGitPath changedpath;
 					changedpath.SetFromWin(CString(command.path), true);
 					ATLTRACE(_T("release handle for path %s\n"), changedpath.GetWinPath());
-					CSVNStatusCache::Instance().WaitToWrite();
-					CSVNStatusCache::Instance().CloseWatcherHandles(changedpath);
-					CSVNStatusCache::Instance().RemoveCacheForPath(changedpath);
-					CSVNStatusCache::Instance().Done();
+					CGitStatusCache::Instance().WaitToWrite();
+					CGitStatusCache::Instance().CloseWatcherHandles(changedpath);
+					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
+					CGitStatusCache::Instance().Done();
 				}
 				break;
 

@@ -20,17 +20,18 @@
 #pragma once
 #include "wininet.h"
 
+#include "GitStatus.h"
 // The name of the named-pipe for the cache
 #ifdef WIN64
-#define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TSVNCache64")
-#define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TSVNCacheCommand64")
-#define TSVN_CACHE_WINDOW_NAME _T("TSVNCacheWindow64")
-#define TSVN_CACHE_MUTEX_NAME _T("TSVNCacheMutex64")
+#define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache64")
+#define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand64")
+#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow64")
+#define TSVN_CACHE_MUTEX_NAME _T("TGitCacheMutex64")
 #else
-#define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TSVNCache")
-#define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TSVNCacheCommand")
-#define TSVN_CACHE_WINDOW_NAME _T("TSVNCacheWindow")
-#define TSVN_CACHE_MUTEX_NAME _T("TSVNCacheMutex")
+#define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache")
+#define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand")
+#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
+#define TSVN_CACHE_MUTEX_NAME _T("TGitCacheMutex")
 #endif
 
 CString GetCachePipeName();
@@ -51,7 +52,7 @@ struct TSVNCacheRequest
 
 // CustomActions will use this header but does not need nor understand the SVN types ...
 
-#ifdef SVN_WC_H
+//#ifdef SVN_WC_H
 
 /**
  * \ingroup TSVNCache
@@ -59,9 +60,9 @@ struct TSVNCacheRequest
  */
 struct TSVNCacheResponse
 {
-	svn_wc_status2_t m_status;
-	svn_wc_entry_t m_entry;
-	svn_node_kind_t m_kind;
+	git_wc_status2_t m_status;
+//	svn_wc_entry_t m_entry;
+//	svn_node_kind_t m_kind;
 	char m_url[INTERNET_MAX_URL_LENGTH+1];
 	char m_owner[255];		///< owner of the lock
 	char m_author[255];
@@ -69,7 +70,7 @@ struct TSVNCacheResponse
 	bool m_needslock;		///< whether the file has the svn:needs-lock property set or not (only works with the new working copy version)
 };
 
-#endif // SVN_WC_H
+//#endif // SVN_WC_H
 
 /**
  * \ingroup TSVNCache

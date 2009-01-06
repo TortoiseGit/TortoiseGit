@@ -19,7 +19,7 @@
 
 #include "StdAfx.h"
 #include "shlobj.h"
-#include "SVNStatusCache.h"
+#include "GitStatusCache.h"
 
 CShellUpdater::CShellUpdater(void)
 {
@@ -70,7 +70,7 @@ void CShellUpdater::Initialise()
 	SetThreadPriority(m_hThread, THREAD_PRIORITY_LOWEST);
 }
 
-void CShellUpdater::AddPathForUpdate(const CTSVNPath& path)
+void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 {
 	{
 		AutoLocker lock(m_critSec);
@@ -113,7 +113,7 @@ void CShellUpdater::WorkerThread()
 		Sleep(50);
 		for(;;)
 		{
-			CTSVNPath workingPath;
+			CTGitPath workingPath;
 			if (!m_bRunning)
 				return;
 			Sleep(0);
@@ -127,7 +127,7 @@ void CShellUpdater::WorkerThread()
 
 				if(m_bItemsAddedSinceLastUpdate)
 				{
-					m_pathsToUpdate.erase(std::unique(m_pathsToUpdate.begin(), m_pathsToUpdate.end(), &CTSVNPath::PredLeftEquivalentToRight), m_pathsToUpdate.end());
+					m_pathsToUpdate.erase(std::unique(m_pathsToUpdate.begin(), m_pathsToUpdate.end(), &CTGitPath::PredLeftEquivalentToRight), m_pathsToUpdate.end());
 					m_bItemsAddedSinceLastUpdate = false;
 				}
 
@@ -141,15 +141,15 @@ void CShellUpdater::WorkerThread()
 			{
 				// check if the path is monitored by the watcher. If it isn't, then we have to invalidate the cache
 				// for that path and add it to the watcher.
-				if (!CSVNStatusCache::Instance().IsPathWatched(workingPath))
+				if (!CGitStatusCache::Instance().IsPathWatched(workingPath))
 				{
 					if (workingPath.HasAdminDir())
-						CSVNStatusCache::Instance().AddPathToWatch(workingPath);
+						CGitStatusCache::Instance().AddPathToWatch(workingPath);
 				}
 				// first send a notification about a sub folder change, so explorer doesn't discard
 				// the folder notification. Since we only know for sure that the subversion admin
 				// dir is present, we send a notification for that folder.
-				CString admindir = workingPath.GetWinPathString() + _T("\\") + g_SVNAdminDir.GetAdminDirName();
+				CString admindir = workingPath.GetWinPathString() + _T("\\") + g_GitAdminDir.GetAdminDirName();
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, NULL);
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), NULL);
 				// Sending an UPDATEDIR notification somehow overwrites/deletes the UPDATEITEM message. And without

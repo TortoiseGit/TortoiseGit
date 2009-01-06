@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Git", "Git\Git.vcproj", "{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseProc", "TortoiseProc\TortoiseProc.vcproj", "{50797F06-39C5-4802-8E2B-7B7A4EF03214}"

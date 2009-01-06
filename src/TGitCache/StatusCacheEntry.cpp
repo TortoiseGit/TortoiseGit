@@ -18,7 +18,7 @@
 //
 #include "StdAfx.h"
 #include ".\statuscacheentry.h"
-#include "SVNStatus.h"
+#include "GitStatus.h"
 #include "CacheInterface.h"
 #include "registry.h"
 
@@ -27,21 +27,21 @@ DWORD cachetimeout = (DWORD)CRegStdWORD(_T("Software\\TortoiseSVN\\Cachetimeout"
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)
-	, m_kind(svn_node_unknown)
+//	, m_kind(svn_node_unknown)
 	, m_bReadOnly(false)
-	, m_highestPriorityLocalStatus(svn_wc_status_none)
+	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
 	SetAsUnversioned();
 }
 
-CStatusCacheEntry::CStatusCacheEntry(const svn_wc_status2_t* pSVNStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil /* = 0*/)
+CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)
-	, m_kind(svn_node_unknown)
+//	, m_kind(svn_node_unknown)
 	, m_bReadOnly(false)
-	, m_highestPriorityLocalStatus(svn_wc_status_none)
+	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
-	SetStatus(pSVNStatus);
+	SetStatus(pGitStatus);
 	m_lastWriteTime = lastWriteTime;
 	if (validuntil)
 		m_discardAtTime = validuntil;
@@ -65,18 +65,17 @@ bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
 	WRITESTRINGTOFILE(m_sUrl);
 	WRITESTRINGTOFILE(m_sOwner);
 	WRITESTRINGTOFILE(m_sAuthor);
-	WRITEVALUETOFILE(m_kind);
+//	WRITEVALUETOFILE(m_kind);
 	WRITEVALUETOFILE(m_bReadOnly);
 	WRITESTRINGTOFILE(m_sPresentProps);
 
-	// now save the status struct (without the entry field, because we don't use that)
-	WRITEVALUETOFILE(m_svnStatus.copied);
-	WRITEVALUETOFILE(m_svnStatus.locked);
-	WRITEVALUETOFILE(m_svnStatus.prop_status);
-	WRITEVALUETOFILE(m_svnStatus.repos_prop_status);
-	WRITEVALUETOFILE(m_svnStatus.repos_text_status);
-	WRITEVALUETOFILE(m_svnStatus.switched);
-	WRITEVALUETOFILE(m_svnStatus.text_status);
+	// now save the status struct (without the entry field, because we don't use that)	WRITEVALUETOFILE(m_GitStatus.copied);
+//	WRITEVALUETOFILE(m_GitStatus.locked);
+//	WRITEVALUETOFILE(m_GitStatus.prop_status);
+//	WRITEVALUETOFILE(m_GitStatus.repos_prop_status);
+//	WRITEVALUETOFILE(m_GitStatus.repos_text_status);
+//	WRITEVALUETOFILE(m_GitStatus.switched);
+//	WRITEVALUETOFILE(m_GitStatus.text_status);
 	return true;
 }
 
@@ -126,7 +125,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 			}
 			m_sAuthor.ReleaseBuffer(value);
 		}
-		LOADVALUEFROMFILE(m_kind);
+//		LOADVALUEFROMFILE(m_kind);
 		LOADVALUEFROMFILE(m_bReadOnly);
 		LOADVALUEFROMFILE(value);
 		if (value != 0)
@@ -138,15 +137,15 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 			}
 			m_sPresentProps.ReleaseBuffer(value);
 		}
-		SecureZeroMemory(&m_svnStatus, sizeof(m_svnStatus));
-		LOADVALUEFROMFILE(m_svnStatus.copied);
-		LOADVALUEFROMFILE(m_svnStatus.locked);
-		LOADVALUEFROMFILE(m_svnStatus.prop_status);
-		LOADVALUEFROMFILE(m_svnStatus.repos_prop_status);
-		LOADVALUEFROMFILE(m_svnStatus.repos_text_status);
-		LOADVALUEFROMFILE(m_svnStatus.switched);
-		LOADVALUEFROMFILE(m_svnStatus.text_status);
-		m_svnStatus.entry = NULL;
+		SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
+//		LOADVALUEFROMFILE(m_GitStatus.copied);
+//		LOADVALUEFROMFILE(m_GitStatus.locked);
+//		LOADVALUEFROMFILE(m_GitStatus.prop_status);
+//		LOADVALUEFROMFILE(m_GitStatus.repos_prop_status);
+//		LOADVALUEFROMFILE(m_GitStatus.repos_text_status);
+//		LOADVALUEFROMFILE(m_GitStatus.switched);
+//		LOADVALUEFROMFILE(m_GitStatus.text_status);
+//		m_GitStatus.entry = NULL;
 		m_discardAtTime = GetTickCount()+cachetimeout;
 	}
 	catch ( CAtlException )
@@ -156,28 +155,29 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 	return true;
 }
 
-void CStatusCacheEntry::SetStatus(const svn_wc_status2_t* pSVNStatus)
+void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 {
-	if(pSVNStatus == NULL)
+	if(pGitStatus == NULL)
 	{
 		SetAsUnversioned();
 	}
 	else
 	{
-		m_highestPriorityLocalStatus = SVNStatus::GetMoreImportant(pSVNStatus->prop_status, pSVNStatus->text_status);
-		m_svnStatus = *pSVNStatus;
+		m_highestPriorityLocalStatus = GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status);
+		m_GitStatus = *pGitStatus;
 
 		// Currently we don't deep-copy the whole entry value, but we do take a few members
-        if(pSVNStatus->entry != NULL)
+#if 0
+        if(pGitStatus->entry != NULL)
 		{
-			m_sUrl = pSVNStatus->entry->url;
-			m_commitRevision = pSVNStatus->entry->cmt_rev;
+			m_sUrl = pGitStatus->entry->url;
+			m_commitRevision = pGitStatus->entry->cmt_rev;
 			m_bSVNEntryFieldSet = true;
-			m_sOwner = pSVNStatus->entry->lock_owner;
-			m_kind = pSVNStatus->entry->kind;
-			m_sAuthor = pSVNStatus->entry->cmt_author;
-			if (pSVNStatus->entry->present_props)
-				m_sPresentProps = pSVNStatus->entry->present_props;
+			m_sOwner = pGitStatus->entry->lock_owner;
+			m_kind = pGitStatus->entry->kind;
+			m_sAuthor = pGitStatus->entry->cmt_author;
+			if (pGitStatus->entry->present_props)
+				m_sPresentProps = pGitStatus->entry->present_props;
 		}
 		else
 		{
@@ -185,7 +185,8 @@ void CStatusCacheEntry::SetStatus(const svn_wc_status2_t* pSVNStatus)
 			m_commitRevision = 0;
 			m_bSVNEntryFieldSet = false;
 		}
-		m_svnStatus.entry = NULL;
+		m_GitStatus.entry = NULL;
+#endif
 	}
 	m_discardAtTime = GetTickCount()+cachetimeout;
 	m_bSet = true;
@@ -194,16 +195,16 @@ void CStatusCacheEntry::SetStatus(const svn_wc_status2_t* pSVNStatus)
 
 void CStatusCacheEntry::SetAsUnversioned()
 {
-	SecureZeroMemory(&m_svnStatus, sizeof(m_svnStatus));
+	SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
 	m_discardAtTime = GetTickCount()+cachetimeout;
-	svn_wc_status_kind status = svn_wc_status_none;
-	if (m_highestPriorityLocalStatus == svn_wc_status_ignored)
-		status = svn_wc_status_ignored;
-	if (m_highestPriorityLocalStatus == svn_wc_status_unversioned)
-		status = svn_wc_status_unversioned;
+	git_wc_status_kind status = git_wc_status_none;
+	if (m_highestPriorityLocalStatus == git_wc_status_missing)
+		status = git_wc_status_missing;
+	if (m_highestPriorityLocalStatus == git_wc_status_unversioned)
+		status = git_wc_status_unversioned;
 	m_highestPriorityLocalStatus = status;
-	m_svnStatus.prop_status = svn_wc_status_none;
-	m_svnStatus.text_status = status;
+	m_GitStatus.prop_status = git_wc_status_none;
+	m_GitStatus.text_status = status;
 	m_lastWriteTime = 0;
 }
 
@@ -217,17 +218,17 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 	SecureZeroMemory(&response, sizeof(response));
 	if(m_bSVNEntryFieldSet)
 	{
-		response.m_status = m_svnStatus;
-		response.m_entry.cmt_rev = m_commitRevision;
+		response.m_status = m_GitStatus;
+//		response.m_entry.cmt_rev = m_commitRevision;
 
 		// There is no point trying to set these pointers here, because this is not 
 		// the process which will be using the data.
 		// The process which receives this response (generally the TSVN Shell Extension)
 		// must fix-up these pointers when it gets them
-		response.m_status.entry = NULL;
-		response.m_entry.url = NULL;
+//		response.m_status.entry = NULL;
+//		response.m_entry.url = NULL;
 
-		response.m_kind = m_kind;
+//		response.m_kind = m_kind;
 		response.m_readonly = m_bReadOnly;
 
 		if (m_sPresentProps.Find("svn:needs-lock")>=0)
@@ -244,14 +245,14 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 	}
 	else
 	{
-		response.m_status = m_svnStatus;
+		response.m_status = m_GitStatus;
 		responseLength = sizeof(response.m_status);
 	}
 }
 
 bool CStatusCacheEntry::IsVersioned() const
 {
-	return m_highestPriorityLocalStatus > svn_wc_status_unversioned;
+	return m_highestPriorityLocalStatus > git_wc_status_unversioned;
 }
 
 bool CStatusCacheEntry::DoesFileTimeMatch(__int64 testTime) const
@@ -260,16 +261,16 @@ bool CStatusCacheEntry::DoesFileTimeMatch(__int64 testTime) const
 }
 
 
-bool CStatusCacheEntry::ForceStatus(svn_wc_status_kind forcedStatus)
+bool CStatusCacheEntry::ForceStatus(git_wc_status_kind forcedStatus)
 {
-	svn_wc_status_kind newStatus = forcedStatus; 
+	git_wc_status_kind newStatus = forcedStatus; 
 
 	if(newStatus != m_highestPriorityLocalStatus)
 	{
 		// We've had a status change
 		m_highestPriorityLocalStatus = newStatus;
-		m_svnStatus.text_status = newStatus;
-		m_svnStatus.prop_status = newStatus;
+		m_GitStatus.text_status = newStatus;
+		m_GitStatus.prop_status = newStatus;
 		m_discardAtTime = GetTickCount()+cachetimeout;
 		return true;
 	}

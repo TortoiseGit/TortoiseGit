@@ -18,25 +18,25 @@
 //
 
 #include "StdAfx.h"
-#include "SVNStatus.h"
-#include "Svnstatuscache.h"
+#include "GitStatus.h"
+#include "GitStatuscache.h"
 #include "CacheInterface.h"
 #include "shlobj.h"
 
 //////////////////////////////////////////////////////////////////////////
 
-CSVNStatusCache* CSVNStatusCache::m_pInstance;
+CGitStatusCache* CGitStatusCache::m_pInstance;
 
-CSVNStatusCache& CSVNStatusCache::Instance()
+CGitStatusCache& CGitStatusCache::Instance()
 {
 	ATLASSERT(m_pInstance != NULL);
 	return *m_pInstance;
 }
 
-void CSVNStatusCache::Create()
+void CGitStatusCache::Create()
 {
 	ATLASSERT(m_pInstance == NULL);
-	m_pInstance = new CSVNStatusCache;
+	m_pInstance = new CGitStatusCache;
 
 	m_pInstance->watcher.SetFolderCrawler(&m_pInstance->m_folderCrawler);
 #define LOADVALUEFROMFILE(x) if (fread(&x, sizeof(x), 1, pFile)!=1) goto exit;
@@ -97,12 +97,12 @@ void CSVNStatusCache::Create()
 							goto error;
 						if (!cacheddir->LoadFromDisk(pFile))
 							goto error;
-						CTSVNPath KeyPath = CTSVNPath(sKey);
+						CTGitPath KeyPath = CTGitPath(sKey);
 						if (m_pInstance->IsPathAllowed(KeyPath))
 						{
 							m_pInstance->m_directoryCache[KeyPath] = cacheddir;
 							// only add the path to the watch list if it is versioned
-							if ((cacheddir->GetCurrentFullStatus() != svn_wc_status_unversioned)&&(cacheddir->GetCurrentFullStatus() != svn_wc_status_none))
+							if ((cacheddir->GetCurrentFullStatus() != git_wc_status_unversioned)&&(cacheddir->GetCurrentFullStatus() != git_wc_status_none))
 								m_pInstance->watcher.AddPath(KeyPath);
 							// do *not* add the paths for crawling!
 							// because crawled paths will trigger a shell
@@ -134,11 +134,11 @@ error:
 		Sleep(100);
 	}
 	delete m_pInstance;
-	m_pInstance = new CSVNStatusCache;
+	m_pInstance = new CGitStatusCache;
 	ATLTRACE("cache not loaded from disk\n");
 }
 
-bool CSVNStatusCache::SaveCache()
+bool CGitStatusCache::SaveCache()
 {
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) goto error;
 	unsigned int value = 0;
@@ -196,7 +196,7 @@ error:
 	return false;
 }
 
-void CSVNStatusCache::Destroy()
+void CGitStatusCache::Destroy()
 {
 	if (m_pInstance)
 	{
@@ -207,38 +207,38 @@ void CSVNStatusCache::Destroy()
 	m_pInstance = NULL;
 }
 
-void CSVNStatusCache::Stop()
+void CGitStatusCache::Stop()
 {
-	m_svnHelp.Cancel(true);
+//	m_svnHelp.Cancel(true);
 	watcher.Stop();
 	m_folderCrawler.Stop();
 	m_shellUpdater.Stop();
 }
 
-void CSVNStatusCache::Init()
+void CGitStatusCache::Init()
 {
 	m_folderCrawler.Initialise();
 	m_shellUpdater.Initialise();
 }
 
-CSVNStatusCache::CSVNStatusCache(void)
+CGitStatusCache::CGitStatusCache(void)
 {
 	TCHAR path[MAX_PATH];
 	SHGetFolderPath(NULL, CSIDL_COOKIES, NULL, 0, path);
-	m_NoWatchPaths.insert(CTSVNPath(CString(path)));
+	m_NoWatchPaths.insert(CTGitPath(CString(path)));
 	SHGetFolderPath(NULL, CSIDL_HISTORY, NULL, 0, path);
-	m_NoWatchPaths.insert(CTSVNPath(CString(path)));
+	m_NoWatchPaths.insert(CTGitPath(CString(path)));
 	SHGetFolderPath(NULL, CSIDL_INTERNET_CACHE, NULL, 0, path);
-	m_NoWatchPaths.insert(CTSVNPath(CString(path)));
+	m_NoWatchPaths.insert(CTGitPath(CString(path)));
 	SHGetFolderPath(NULL, CSIDL_SYSTEM, NULL, 0, path);
-	m_NoWatchPaths.insert(CTSVNPath(CString(path)));
+	m_NoWatchPaths.insert(CTGitPath(CString(path)));
 	SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, path);
-	m_NoWatchPaths.insert(CTSVNPath(CString(path)));
+	m_NoWatchPaths.insert(CTGitPath(CString(path)));
 	m_bClearMemory = false;
 	m_mostRecentExpiresAt = 0;
 }
 
-CSVNStatusCache::~CSVNStatusCache(void)
+CGitStatusCache::~CGitStatusCache(void)
 {
 	for (CCachedDirectory::CachedDirMap::iterator I = m_pInstance->m_directoryCache.begin(); I != m_pInstance->m_directoryCache.end(); ++I)
 	{
@@ -247,10 +247,10 @@ CSVNStatusCache::~CSVNStatusCache(void)
 	}
 }
 
-void CSVNStatusCache::Refresh()
+void CGitStatusCache::Refresh()
 {
 	m_shellCache.ForceRefresh();
-	m_pInstance->m_svnHelp.ReloadConfig();
+//	m_pInstance->m_svnHelp.ReloadConfig();
 	if (m_pInstance->m_directoryCache.size())
 	{
 		CCachedDirectory::CachedDirMap::iterator I = m_pInstance->m_directoryCache.begin();
@@ -260,7 +260,7 @@ void CSVNStatusCache::Refresh()
 				I->second->RefreshMostImportant();
 			else
 			{
-				CSVNStatusCache::Instance().RemoveCacheForPath(I->first);
+				CGitStatusCache::Instance().RemoveCacheForPath(I->first);
 				I = m_pInstance->m_directoryCache.begin();
 				if (I == m_pInstance->m_directoryCache.end())
 					break;
@@ -269,9 +269,9 @@ void CSVNStatusCache::Refresh()
 	}
 }
 
-bool CSVNStatusCache::IsPathGood(const CTSVNPath& path)
+bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 {
-	for (std::set<CTSVNPath>::iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
+	for (std::set<CTGitPath>::iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
 	{
 		if (it->IsAncestorOf(path))
 			return false;
@@ -279,12 +279,12 @@ bool CSVNStatusCache::IsPathGood(const CTSVNPath& path)
 	return true;
 }
 
-void CSVNStatusCache::UpdateShell(const CTSVNPath& path)
+void CGitStatusCache::UpdateShell(const CTGitPath& path)
 {
 	m_shellUpdater.AddPathForUpdate(path);
 }
 
-void CSVNStatusCache::ClearCache()
+void CGitStatusCache::ClearCache()
 {
 	for (CCachedDirectory::CachedDirMap::iterator I = m_directoryCache.begin(); I != m_directoryCache.end(); ++I)
 	{
@@ -294,18 +294,18 @@ void CSVNStatusCache::ClearCache()
 	m_directoryCache.clear();
 }
 
-bool CSVNStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
+bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 {
 	if (cdir == NULL)
 		return false;
 	AssertWriting();
-	typedef std::map<CTSVNPath, svn_wc_status_kind>  ChildDirStatus;
+	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
 	if (cdir->m_childDirectories.size())
 	{
 		ChildDirStatus::iterator it = cdir->m_childDirectories.begin();
 		for (; it != cdir->m_childDirectories.end(); )
 		{
-			CCachedDirectory * childdir = CSVNStatusCache::Instance().GetDirectoryCacheEntryNoCreate(it->first);
+			CCachedDirectory * childdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(it->first);
 			if ((childdir)&&(!cdir->m_directoryPath.IsEquivalentTo(childdir->m_directoryPath)))
 				RemoveCacheForDirectory(childdir);
 			cdir->m_childDirectories.erase(it->first);
@@ -320,7 +320,7 @@ bool CSVNStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 	return true;
 }
 
-void CSVNStatusCache::RemoveCacheForPath(const CTSVNPath& path)
+void CGitStatusCache::RemoveCacheForPath(const CTGitPath& path)
 {
 	// Stop the crawler starting on a new folder
 	CCrawlInhibitor crawlInhibit(&m_folderCrawler);
@@ -337,7 +337,7 @@ void CSVNStatusCache::RemoveCacheForPath(const CTSVNPath& path)
 	RemoveCacheForDirectory(dirtoremove);
 }
 
-CCachedDirectory * CSVNStatusCache::GetDirectoryCacheEntry(const CTSVNPath& path)
+CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path)
 {
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
@@ -373,10 +373,10 @@ CCachedDirectory * CSVNStatusCache::GetDirectoryCacheEntry(const CTSVNPath& path
 			m_directoryCache.erase(itMap);
 		// We don't know anything about this directory yet - lets add it to our cache
 		// but only if it exists!
-		if (path.Exists() && m_shellCache.IsPathAllowed(path.GetWinPath()) && !g_SVNAdminDir.IsAdminDirPath(path.GetWinPath()))
+		if (path.Exists() && m_shellCache.IsPathAllowed(path.GetWinPath()) && !g_GitAdminDir.IsAdminDirPath(path.GetWinPath()))
 		{
 			// some notifications are for files which got removed/moved around.
-			// In such cases, the CTSVNPath::IsDirectory() will return true (it assumes a directory if
+			// In such cases, the CTGitPath::IsDirectory() will return true (it assumes a directory if
 			// the path doesn't exist). Which means we can get here with a path to a file
 			// instead of a directory.
 			// Since we're here most likely called from the crawler thread, the file could exist
@@ -399,7 +399,7 @@ CCachedDirectory * CSVNStatusCache::GetDirectoryCacheEntry(const CTSVNPath& path
 	}
 }
 
-CCachedDirectory * CSVNStatusCache::GetDirectoryCacheEntryNoCreate(const CTSVNPath& path)
+CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPath& path)
 {
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
@@ -413,7 +413,7 @@ CCachedDirectory * CSVNStatusCache::GetDirectoryCacheEntryNoCreate(const CTSVNPa
 	return NULL;
 }
 
-CStatusCacheEntry CSVNStatusCache::GetStatusForPath(const CTSVNPath& path, DWORD flags,  bool bFetch /* = true */)
+CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags,  bool bFetch /* = true */)
 {
 	bool bRecursive = !!(flags & TSVNCACHE_FLAGS_RECUSIVE_STATUS);
 
@@ -435,7 +435,7 @@ CStatusCacheEntry CSVNStatusCache::GetStatusForPath(const CTSVNPath& path, DWORD
 		// Please note, that this may be a second "lock" used concurrently to the one in RemoveCacheForPath().
 		CCrawlInhibitor crawlInhibit(&m_folderCrawler);
 
-		CTSVNPath dirpath = path.GetContainingDirectory();
+		CTGitPath dirpath = path.GetContainingDirectory();
 		if ((dirpath.IsEmpty()) || (!m_shellCache.IsPathAllowed(dirpath.GetWinPath())))
 			dirpath = path.GetDirectory();
 		CCachedDirectory * cachedDir = GetDirectoryCacheEntry(dirpath);
@@ -449,23 +449,23 @@ CStatusCacheEntry CSVNStatusCache::GetStatusForPath(const CTSVNPath& path, DWORD
 	m_mostRecentStatus = CStatusCacheEntry();
 	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasSVNAdminDir(path.GetWinPath(), true))
 	{
-		m_mostRecentStatus.ForceStatus(svn_wc_status_normal);
+		m_mostRecentStatus.ForceStatus(git_wc_status_normal);
 	}
 	return m_mostRecentStatus;
 }
 
-void CSVNStatusCache::AddFolderForCrawling(const CTSVNPath& path)
+void CGitStatusCache::AddFolderForCrawling(const CTGitPath& path)
 {
 	m_folderCrawler.AddDirectoryForUpdate(path);
 }
 
-void CSVNStatusCache::CloseWatcherHandles(HDEVNOTIFY hdev)
+void CGitStatusCache::CloseWatcherHandles(HDEVNOTIFY hdev)
 {
-	CTSVNPath path = watcher.CloseInfoMap(hdev);
+	CTGitPath path = watcher.CloseInfoMap(hdev);
 	m_folderCrawler.BlockPath(path);
 }
 
-void CSVNStatusCache::CloseWatcherHandles(const CTSVNPath& path)
+void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path)
 {
 	watcher.CloseHandlesForPath(path);
 	m_folderCrawler.BlockPath(path);

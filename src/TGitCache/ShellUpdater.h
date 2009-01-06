@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 /**
  * \ingroup TSVNCache
@@ -33,7 +33,7 @@ public:
 
 public:
 	void Initialise();
-	void AddPathForUpdate(const CTSVNPath& path);
+	void AddPathForUpdate(const CTGitPath& path);
 	void Stop();
 
 private:
@@ -43,7 +43,7 @@ private:
 private:
 	CComAutoCriticalSection m_critSec;
 	HANDLE m_hThread;
-	std::deque<CTSVNPath> m_pathsToUpdate;
+	std::deque<CTGitPath> m_pathsToUpdate;
 	HANDLE m_hTerminationEvent;
 	HANDLE m_hWakeEvent;
 	

@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "FolderCrawler.h"
 #include "ShellCache.h"
 
@@ -37,7 +37,7 @@
  * children of already watched folders are automatically removed from watching.
  * This leads to having only the roots of file systems watched (e.g. C:\, D:\,...)
  * after a few paths have been added to the watched list (at least, when the
- * CSVNStatusCache adds those paths).
+ * CGitStatusCache adds those paths).
  */
 class CDirectoryWatcher
 {
@@ -51,15 +51,15 @@ public:
 	 * watched recursively, then the new path is just ignored and the method
 	 * returns false.
 	 */
-	bool AddPath(const CTSVNPath& path);
+	bool AddPath(const CTGitPath& path);
 	/**
 	 * Removes a path and all its children from the watched list.
 	 */
-	bool RemovePathAndChildren(const CTSVNPath& path);
+	bool RemovePathAndChildren(const CTGitPath& path);
 	/**
 	 * Checks if a path is watched
 	 */
-	bool IsPathWatched(const CTSVNPath& path);
+	bool IsPathWatched(const CTGitPath& path);
 	
 	/**
 	 * Returns the number of recursively watched paths.
@@ -76,8 +76,8 @@ public:
 	 */
 	void Stop();
 
-	CTSVNPath CloseInfoMap(HDEVNOTIFY hdev = INVALID_HANDLE_VALUE);
-	bool CloseHandlesForPath(const CTSVNPath& path);
+	CTGitPath CloseInfoMap(HDEVNOTIFY hdev = INVALID_HANDLE_VALUE);
+	bool CloseHandlesForPath(const CTGitPath& path);
 
 private:
 	static unsigned int __stdcall ThreadEntry(void* pContext);
@@ -85,7 +85,7 @@ private:
 
 	void ClearInfoMap();
 
-	void BlockPath(const CTSVNPath& path);
+	void BlockPath(const CTGitPath& path);
 
 private:
 	CComAutoCriticalSection	m_critSec;
@@ -95,9 +95,9 @@ private:
 
 	CFolderCrawler *		m_FolderCrawler;	///< where the change reports go to
 	
-	CTSVNPathList			watchedPaths;	///< list of watched paths.
+	CTGitPathList			watchedPaths;	///< list of watched paths.
 
-	CTSVNPath				blockedPath;
+	CTGitPath				blockedPath;
 	DWORD					blockTickCount;
 
 	/**
@@ -110,7 +110,7 @@ private:
 		CDirWatchInfo();	// private & not implemented
 		CDirWatchInfo & operator=(const CDirWatchInfo & rhs);//so that they're aren't accidentally used. -- you'll get a linker error
 	public:
-		CDirWatchInfo(HANDLE hDir, const CTSVNPath& DirectoryName);
+		CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName);
 		~CDirWatchInfo();
 
 	protected:
@@ -118,7 +118,7 @@ private:
 		bool	CloseDirectoryHandle();
 
 		HANDLE		m_hDir;			///< handle to the directory that we're watching
-		CTSVNPath	m_DirName;		///< the directory that we're watching
+		CTGitPath	m_DirName;		///< the directory that we're watching
 		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
 		DWORD		m_dwBufLength;	///< length or returned data from ReadDirectoryChangesW -- ignored?...
 		OVERLAPPED  m_Overlapped;
