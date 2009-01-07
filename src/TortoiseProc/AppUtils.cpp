@@ -1185,3 +1185,32 @@ bool CAppUtils::Switch(CString *CommitHash)
 	}
 	return FALSE;
 }
+
+bool CAppUtils::IgnoreFile(CTGitPath &path,bool IsMask)
+{
+	CString ignorefile;
+	ignorefile=g_Git.m_CurrentDir;
+	ignorefile+=path.GetDirectory().GetWinPathString()+_T("\\.gitignore");
+
+	CStdioFile file;
+	if(!file.Open(ignorefile,CFile::modeCreate|CFile::modeWrite))
+	{
+		CMessageBox::Show(NULL,ignorefile+_T(" Open Failure"),_T("TortoiseGit"),MB_OK);
+		return FALSE;
+	}
+
+	CString ignorelist;
+	file.ReadString(ignorelist);
+
+	if(IsMask)
+	{
+		ignorelist+=_T("\n*.")+path.GetFileExtension();
+	}else
+	{
+		ignorelist+=_T("\n")+path.GetBaseFilename();
+	}
+	file.WriteString(ignorelist);
+
+	file.Close();
+	return TRUE;
+}

@@ -20,7 +20,7 @@
 #include "TortoiseProc.h"
 #include "Blame.h"
 #include "ProgressDlg.h"
-#include "TSVNPath.h"
+#include "TGitPath.h"
 #include "Registry.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"
@@ -36,16 +36,18 @@ CBlame::CBlame()
 }
 CBlame::~CBlame()
 {
-	m_progressDlg.Stop();
+//	m_progressDlg.Stop();
 }
 
-BOOL CBlame::BlameCallback(LONG linenumber, svn_revnum_t revision, const CString& author, const CString& date,
-						   svn_revnum_t merged_revision, const CString& merged_author, const CString& merged_date, const CString& merged_path,
+BOOL CBlame::BlameCallback(LONG linenumber, git_revnum_t revision, const CString& author, const CString& date,
+						   git_revnum_t merged_revision, const CString& merged_author, const CString& merged_date, const CString& merged_path,
 						   const CStringA& line)
 {
+
+#if 0
 	CStringA infolineA;
 	CStringA fulllineA;
-	svn_revnum_t origrev = revision;
+	git_revnum_t origrev = revision;
 
 	if (((m_lowestrev < 0)||(m_lowestrev > revision))&&(revision >= 0))
 		m_lowestrev = revision;
@@ -90,10 +92,12 @@ BOOL CBlame::BlameCallback(LONG linenumber, svn_revnum_t revision, const CString
 	}
 	else
 		return FALSE;
+#endif
 	return TRUE;
 }
 
-BOOL CBlame::Log(svn_revnum_t revision, const CString& /*author*/, const CString& /*date*/, const CString& message, LogChangedPathArray * /*cpaths*/, apr_time_t /*time*/, int /*filechanges*/, BOOL /*copies*/, DWORD /*actions*/, BOOL /*children*/)
+#if 0
+BOOL CBlame::Log(git_revnum_t revision, const CString& /*author*/, const CString& /*date*/, const CString& message, LogChangedPathArray * /*cpaths*/, apr_time_t /*time*/, int /*filechanges*/, BOOL /*copies*/, DWORD /*actions*/, BOOL /*children*/)
 {
 	m_progressDlg.SetProgress(m_highestrev - revision, m_highestrev);
 	if (m_saveLog.m_hFile != INVALID_HANDLE_VALUE)
@@ -106,18 +110,20 @@ BOOL CBlame::Log(svn_revnum_t revision, const CString& /*author*/, const CString
 	}
 	return TRUE;
 }
+#endif
 
 BOOL CBlame::Cancel()
 {
-	if (m_progressDlg.HasUserCancelled())
-		m_bCancelled = TRUE;
+//	if (m_progressDlg.HasUserCancelled())
+//		m_bCancelled = TRUE;
 	return m_bCancelled;
 }
 
-CString CBlame::BlameToTempFile(const CTSVNPath& path, SVNRev startrev, SVNRev endrev, SVNRev pegrev, 
+CString CBlame::BlameToTempFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev pegrev, 
 								CString& logfile, const CString& options, BOOL includemerge, 
 								BOOL showprogress, BOOL ignoremimetype)
 {
+#if 0
 	// if the user specified to use another tool to show the blames, there's no
 	// need to fetch the log later: only TortoiseBlame uses those logs to give 
 	// the user additional information for the blame.
@@ -180,7 +186,7 @@ CString CBlame::BlameToTempFile(const CTSVNPath& path, SVNRev startrev, SVNRev e
 			logfile.Empty();
 			return m_sSavePath;
 		}
-		BOOL bRet = ReceiveLog(CTSVNPathList(path), pegrev, m_nHeadRev, m_lowestrev, 0, FALSE, m_bHasMerges, false);
+		BOOL bRet = ReceiveLog(CTGitPathList(path), pegrev, m_nHeadRev, m_lowestrev, 0, FALSE, m_bHasMerges, false);
 		if (!bRet)
 		{
 			m_saveLog.Close();
@@ -195,10 +201,11 @@ CString CBlame::BlameToTempFile(const CTSVNPath& path, SVNRev startrev, SVNRev e
 	m_progressDlg.Stop();
 	if (m_saveFile.m_hFile != INVALID_HANDLE_VALUE)
 		m_saveFile.Close();
-
+#endif;
 	return m_sSavePath;
 }
-BOOL CBlame::Notify(const CTSVNPath& /*path*/, svn_wc_notify_action_t /*action*/, 
+#if 0
+BOOL CBlame::Notify(const CTGitPath& /*path*/, svn_wc_notify_action_t /*action*/, 
 					svn_node_kind_t /*kind*/, const CString& /*mime_type*/, 
 					svn_wc_notify_state_t /*content_state*/, 
 					svn_wc_notify_state_t /*prop_state*/, LONG rev,
@@ -209,9 +216,9 @@ BOOL CBlame::Notify(const CTSVNPath& /*path*/, svn_wc_notify_action_t /*action*/
 	m_progressDlg.SetProgress(rev, m_nHeadRev);
 	return TRUE;
 }
-
-bool CBlame::BlameToFile(const CTSVNPath& path, SVNRev startrev, SVNRev endrev, SVNRev peg, 
-						 const CTSVNPath& tofile, const CString& options, BOOL ignoremimetype, BOOL includemerge)
+#endif
+bool CBlame::BlameToFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev peg, 
+						 const CTGitPath& tofile, const CString& options, BOOL ignoremimetype, BOOL includemerge)
 {
 	CString temp;
 	if (!m_saveFile.Open(tofile.GetWinPathString(), CFile::typeText | CFile::modeReadWrite | CFile::modeCreate))

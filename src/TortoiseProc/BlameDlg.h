@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "SVNRev.h"
+#include "GitRev.h"
 #include "Registry.h"
 #include "StandAloneDlg.h"
 
@@ -52,10 +52,10 @@ protected:
 	CRegDWORD m_regTextView;
 
 public:
-	SVNRev	StartRev;
-	SVNRev	EndRev;
+	CString	StartRev;
+	CString	EndRev;
 	BOOL	m_bTextView;
 	BOOL	m_bIgnoreEOL;
 	BOOL	m_bIncludeMerge;
-	svn_diff_file_ignore_space_t	m_IgnoreSpaces;
+	int		m_IgnoreSpaces;
 };

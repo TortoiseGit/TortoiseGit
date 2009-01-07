@@ -21,7 +21,7 @@
 
 #include "BlameDlg.h"
 #include "Blame.h"
-#include "SVN.h"
+#include "Git.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
 
@@ -32,7 +32,9 @@ bool BlameCommand::Execute()
 	bool bShowDialog = true;
 	CBlameDlg dlg;
 	CString options;
-	dlg.EndRev = SVNRev::REV_HEAD;
+	dlg.DoModal();
+//	dlg.EndRev = GitRev::REV_HEAD;
+#if 0
 	if (parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")))
 	{
 		bShowDialog = false;
@@ -102,5 +104,6 @@ bool BlameCommand::Execute()
 			CMessageBox::Show(hwndExplorer, blame.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
 		}
 	}
+#endif
 	return bRet;
 }

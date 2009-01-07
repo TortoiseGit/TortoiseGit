@@ -1104,6 +1104,22 @@
 			<Filter
 				Name="Blame"
 				>
+				<File
+					RelativePath=".\Commands\BlameCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\BlameCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\BlameDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\BlameDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Log"
@@ -1462,6 +1478,18 @@
 				</File>
 				<File
 					RelativePath=".\ImportPatchDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cat"
+				>
+				<File
+					RelativePath=".\Commands\CatCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CatCommand.h"
 					>
 				</File>
 			</Filter>

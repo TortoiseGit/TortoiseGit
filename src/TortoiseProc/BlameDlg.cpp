@@ -24,9 +24,9 @@
 IMPLEMENT_DYNAMIC(CBlameDlg, CStandAloneDialog)
 CBlameDlg::CBlameDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CBlameDlg::IDD, pParent)
-	, StartRev(1)
-	, EndRev(0)
-	, m_sStartRev(_T("1"))
+//	, StartRev(1)
+//	, EndRev(0)
+//	, m_sStartRev(_T("1"))
 	, m_bTextView(FALSE)
 	, m_bIgnoreEOL(TRUE)
 	, m_bIncludeMerge(TRUE)
@@ -70,14 +70,14 @@ BOOL CBlameDlg::OnInitDialog()
 
 	m_bTextView = m_regTextView;
 	// set head revision as default revision
-	if (EndRev.IsHead())
+//	if (EndRev.IsHead())
 		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_HEAD);
-	else
-	{
-		m_sEndRev = EndRev.ToString();
-		UpdateData(FALSE);
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
-	}
+//	else
+//	{
+//		m_sEndRev = EndRev.ToString();
+//		UpdateData(FALSE);
+//		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
+//	}
 
 	CheckRadioButton(IDC_COMPAREWHITESPACES, IDC_IGNOREALLWHITESPACES, IDC_IGNOREALLWHITESPACES);
 
@@ -92,23 +92,23 @@ void CBlameDlg::OnOK()
 		return; // don't dismiss dialog (error message already shown by MFC framework)
 
 	m_regTextView = m_bTextView;
-	StartRev = SVNRev(m_sStartRev);
-	EndRev = SVNRev(m_sEndRev);
-	if (!StartRev.IsValid())
+//	StartRev = SVNRev(m_sStartRev);
+//	EndRev = SVNRev(m_sEndRev);
+//	if (!StartRev.IsValid())
+//	{
+///		ShowBalloon(IDC_REVISON_START, IDS_ERR_INVALIDREV);
+//		return;
+//	}
+//	EndRev = SVNRev(m_sEndRev);
+//	if (GetCheckedRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N) == IDC_REVISION_HEAD)
 	{
-		ShowBalloon(IDC_REVISON_START, IDS_ERR_INVALIDREV);
-		return;
+		EndRev = _T("HEAD");
 	}
-	EndRev = SVNRev(m_sEndRev);
-	if (GetCheckedRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N) == IDC_REVISION_HEAD)
-	{
-		EndRev = SVNRev(_T("HEAD"));
-	}
-	if (!EndRev.IsValid())
-	{
-		ShowBalloon(IDC_REVISION_END, IDS_ERR_INVALIDREV);
-		return;
-	}
+//	if (!EndRev.IsValid())
+//	{
+//		ShowBalloon(IDC_REVISION_END, IDS_ERR_INVALIDREV);
+//		return;
+//	}
 	BOOL extBlame = CRegDWORD(_T("Software\\TortoiseSVN\\TextBlame"), FALSE);
 	if (extBlame)
 		m_bTextView = true;
@@ -117,14 +117,14 @@ void CBlameDlg::OnOK()
 	switch (rb)
 	{
 	case IDC_IGNOREWHITESPACECHANGES:
-		m_IgnoreSpaces = svn_diff_file_ignore_space_change;
+//		m_IgnoreSpaces = svn_diff_file_ignore_space_change;
 		break;
 	case IDC_IGNOREALLWHITESPACES:
-		m_IgnoreSpaces = svn_diff_file_ignore_space_all;
+//		m_IgnoreSpaces = svn_diff_file_ignore_space_all;
 		break;
 	case IDC_COMPAREWHITESPACES:
 	default:
-		m_IgnoreSpaces = svn_diff_file_ignore_space_none;
+//		m_IgnoreSpaces = svn_diff_file_ignore_space_none;
 		break;
 	}
 

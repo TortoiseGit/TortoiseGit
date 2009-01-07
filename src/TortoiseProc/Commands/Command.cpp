@@ -45,11 +45,11 @@
 #include "IgnoreCommand.h"
 #include "FormatPatchCommand.h"
 #include "ImportPatchCommand.h"
-
+#include "BlameCommand.h"
 
 #if 0
 
-#include "BlameCommand.h"
+
 #include "CatCommand.h"
 #include "CheckoutCommand.h"
 #include "CleanupCommand.h"
@@ -290,11 +290,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new FormatPatchCommand;
 	case cmdImportPatch:
 		return new ImportPatchCommand;
+	case cmdBlame:
+		return new BlameCommand;
+	
 
 #if 0
 
-	case cmdBlame:
-		return new BlameCommand;
 	case cmdCat:
 		return new CatCommand;
 	case cmdCheckout:
@@ -348,8 +349,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RebuildIconCacheCommand;
 	case cmdRelocate:
 		return new RelocateCommand;
-	case cmdRemove:
-		return new RemoveCommand;
+
 
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;

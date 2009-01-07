@@ -30,7 +30,7 @@ class CTGitPath;
  * \ingroup TortoiseProc
  * Helper class to get the blame information for a file.
  */
-class CBlame : public CGit
+class CBlame  
 {
 public:
 	CBlame();
@@ -54,13 +54,15 @@ private:
 								git_revnum_t merged_revision, const CString& merged_author, const CString& merged_date, const CString& merged_path,
 								const CStringA& line);
 	BOOL		Cancel();
+/*
 	BOOL		Notify(const CTGitPath& path, git_wc_notify_action_t action, 
 						git_node_kind_t kind, const CString& mime_type, 
 						git_wc_notify_state_t content_state, 
 						git_wc_notify_state_t prop_state, LONG rev,
 						const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
 						git_error_t * err, apr_pool_t * pool);
-	BOOL		Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
+						*/
+	//BOOL		Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths, apr_time_t time, int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
 private:
 	BOOL		m_bCancelled;			///< TRUE if the operation should be canceled
 	LONG		m_nCounter;				///< Counts the number of calls to the Cancel() callback (revisions?)

@@ -20,10 +20,11 @@
 #include "CatCommand.h"
 
 #include "PathUtils.h"
-#include "SVN.h"
+#include "Git.h"
 
 bool CatCommand::Execute()
 {
+#if 0
 	CString savepath = CPathUtils::GetLongPathname(parser.GetVal(_T("savepath")));
 	CString revision = parser.GetVal(_T("revision"));
 	CString pegrevision = parser.GetVal(_T("pegrevision"));
@@ -39,6 +40,7 @@ bool CatCommand::Execute()
 		::MessageBox(NULL, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
 		::DeleteFile(savepath);
 		return false;
-	} 
+	}
+#endif
 	return true;
 }

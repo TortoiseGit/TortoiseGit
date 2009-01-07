@@ -53,7 +53,7 @@ bool DiffCommand::Execute()
 			else
 #endif
 			{
-				//svn_revnum_t baseRev = 0;
+				//git_revnum_t baseRev = 0;
 				bRet = diff.Diff(&cmdLinePath,git_revnum_t(_T("HEAD")),git_revnum_t(GIT_REV_ZERO));
 			}
 		}

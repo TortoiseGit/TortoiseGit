@@ -116,5 +116,28 @@ bool RemoveCommand::Execute()
 	if (bRet)
 		CShellUpdater::Instance().AddPathsForUpdate(pathList);
 #endif
+	int key=CMessageBox::Show(hwndExplorer, _T("File will removed from version control\r\n Do you want to keep local copy"), _T("TortoiseGit"), MB_ICONINFORMATION|MB_YESNOCANCEL);
+	if(key == IDCANCEL)
+		return FALSE;
+
+	CString cmd;
+	if(key == IDNO)
+		cmd=_T("git.exe rm -r -f ");
+
+	if(key == IDYES)
+		cmd= _T("git.exe update-index --force-remove -- ");
+
+	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	{
+		CString output;
+		if(g_Git.Run(cmd+pathList[nPath].GetGitPathString(),&output))
+		{
+			key=CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION|MB_OKCANCEL);
+			if(key == IDCANCEL)
+				return FALSE;
+
+		}
+	}
+
 	return bRet;
 }

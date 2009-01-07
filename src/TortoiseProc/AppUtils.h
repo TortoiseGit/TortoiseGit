@@ -164,6 +164,8 @@ public:
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL);
 	static bool Switch(CString *CommitHash);
 
+	static bool IgnoreFile(CTGitPath &file, bool IsMask);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

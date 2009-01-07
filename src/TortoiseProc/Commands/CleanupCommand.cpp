@@ -30,6 +30,12 @@
 bool CleanupCommand::Execute()
 {
 	bool bRet = false;
+
+	CProgressDlg progress;
+	progress.m_GitCmd.Format(_T("Git Clean -d -x"));
+	if(progress.DoModal()==IDOK)
+			return TRUE;
+
 #if 0
 	CProgressDlg progress;
 	progress.SetTitle(IDS_PROC_CLEANUP);
