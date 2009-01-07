@@ -20,7 +20,7 @@
 //#include "vld.h"
 #include "TortoiseProc.h"
 #include "SysImageList.h"
-//#include "CrashReport.h"
+#include "CrashReport.h"
 #include "CmdLineParser.h"
 #include "Hooks.h"
 #include "AppUtils.h"
@@ -150,7 +150,7 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 		return true;
 	
 }
-//CCrashReport crasher("crashreports@tortoisesvn.tigris.org", "Crash Report for TortoiseSVN " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
+CCrashReport crasher("tortoisegit-dev@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
 // CTortoiseProcApp initialization
 
