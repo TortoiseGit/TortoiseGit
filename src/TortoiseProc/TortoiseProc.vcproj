@@ -440,6 +440,10 @@
 				Name="3rd Party"
 				>
 			</Filter>
+			<Filter
+				Name="Graph"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -1492,6 +1496,10 @@
 					RelativePath=".\Commands\CatCommand.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="graph"
+				>
 			</Filter>
 		</Filter>
 		<Filter
