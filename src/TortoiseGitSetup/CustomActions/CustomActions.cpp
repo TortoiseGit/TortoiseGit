@@ -29,9 +29,9 @@
 #pragma comment(lib, "shell32")
 
 #ifdef WIN64
-#define TSVN_CACHE_WINDOW_NAME _T("TSVNCacheWindow64")
+#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow64")
 #else
-#define TSVN_CACHE_WINDOW_NAME _T("TSVNCacheWindow")
+#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
 #endif
 
 

@@ -150,7 +150,7 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 		return true;
 	
 }
-CCrashReport crasher("tortoisegit-dev@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
+CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
 // CTortoiseProcApp initialization
 
