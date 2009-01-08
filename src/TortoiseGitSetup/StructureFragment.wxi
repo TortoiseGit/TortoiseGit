@@ -28,12 +28,12 @@
           <?endif ?>
 
           <?if $(var.Platform) = "x64" ?>
-          <Merge Id='CRT' Language='0' Source='$(var.MergeModules)\Microsoft_VC90_CRT_x86_x64.msm' DiskId='1' />
-          <Merge Id='CRT Policy' Language='0' Source='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86_x64.msm' DiskId='1' />
-          <Merge Id='MFC' Language='0' Source='$(var.MergeModules)\Microsoft_VC90_MFC_x86_x64.msm' DiskId='1' />
-          <Merge Id='MFC Policy' Language='0' Source='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFC_x86_x64.msm' DiskId='1' />
-          <Merge Id='MFCLOC' Language='0' Source='$(var.MergeModules)\Microsoft_VC90_MFCLOC_x86_x64.msm' DiskId='1' />
-          <Merge Id='MFCLOC Policy' Language='0' Source='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFCLOC_x86_x64.msm' DiskId='1' />
+          <Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_CRT_x86_x64.msm' DiskId='1' />
+          <Merge Id='CRT Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86_x64.msm' DiskId='1' />
+          <Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86_x64.msm' DiskId='1' />
+          <Merge Id='MFC Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFC_x86_x64.msm' DiskId='1' />
+          <Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFCLOC_x86_x64.msm' DiskId='1' />
+          <Merge Id='MFCLOC Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFCLOC_x86_x64.msm' DiskId='1' />
           <?endif ?>
 
           <?if $(var.Platform) = "x86" ?>
@@ -41,7 +41,9 @@
  -->         <?endif ?>
 
           <?if $(var.Platform) = "x64" ?>
+          <!--
           <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.0.4.11886-x64.msm' DiskId='1' />
+          -->
           <?endif ?>
 
           <Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">

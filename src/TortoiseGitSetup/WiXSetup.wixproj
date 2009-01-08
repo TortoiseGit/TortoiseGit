@@ -19,11 +19,27 @@
     </SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\..\bin\setup\</OutputPath>
+    <OutputPath>..\..\bin\setup\x86\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <WixVariables>
+    </WixVariables>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <OutputPath>..\..\bin\setup\x64\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
