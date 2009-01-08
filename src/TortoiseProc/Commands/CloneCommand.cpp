@@ -36,7 +36,7 @@ bool CloneCommand::Execute()
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
 		CString cmd;
-		cmd.Format(_T("git.exe clone %s %s"),
+		cmd.Format(_T("git.exe clone \"%s\" \"%s\""),
 						url,
 						dir);
 		CProgressDlg progress;
