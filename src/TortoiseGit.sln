@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Git", "Git\Git.vcproj", "{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseProc", "TortoiseProc\TortoiseProc.vcproj", "{50797F06-39C5-4802-8E2B-7B7A4EF03214}"
@@ -39,6 +39,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoisePlink", "TortoisePlink\Windows\MSVC\Plink\TortoisePlink.vcproj", "{D3AFBFBE-5501-4077-B3B4-3D28BBCA8F20}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomActions", "TortoiseGitSetup\CustomActions\CustomActions.vcproj", "{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitBlame", "TortoiseGitBlame\TortoiseGitBlame.vcproj", "{62507C2F-9290-4342-910F-BFC44DF99B01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -451,6 +453,30 @@ Global
 		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|x64.ActiveCfg = Release|x64
 		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|x64.Build.0 = Release|x64
 		{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}.Release|x86.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.debug_static|Mixed Platforms.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.debug_static|Mixed Platforms.Build.0 = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.debug_static|Win32.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.debug_static|Win32.Build.0 = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.debug_static|x64.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.debug_static|x86.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Win32.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Win32.Build.0 = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|x64.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|x86.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|Mixed Platforms.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|Mixed Platforms.Build.0 = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|Win32.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|Win32.Build.0 = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|x64.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|x86.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Win32.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Win32.Build.0 = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x64.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

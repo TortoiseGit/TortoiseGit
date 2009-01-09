@@ -110,7 +110,7 @@ void CSetBugTraq::OnBnClickedRemovebutton()
 	{
 		if (m_cBugTraqList.GetItemState(index, LVIS_SELECTED) & LVIS_SELECTED)
 		{
-			CTSVNPath path = CTSVNPath(m_cBugTraqList.GetItemText(index, 0));
+			CTGitPath path = CTGitPath(m_cBugTraqList.GetItemText(index, 0));
 			m_cBugTraqList.DeleteItem(index);
 			m_associations.RemoveByPath(path);
 			SetModified();

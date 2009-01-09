@@ -82,10 +82,10 @@ private:
     /// used by cache update
 
     CProgressDlg*   progress;
-    svn_revnum_t    headRevision;
+    git_revnum_t    headRevision;
 
     void ReceiveLog ( LogChangedPathArray* changes
-	                , svn_revnum_t rev
+	                , git_revnum_t rev
                     , const StandardRevProps* stdRevProps
                     , UserRevPropArray* userRevProps
                     , bool mergesFollow);
