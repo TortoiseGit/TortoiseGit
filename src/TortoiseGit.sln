@@ -41,6 +41,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomActions", "TortoiseGitSetup\CustomActions\CustomActions.vcproj", "{454D5FCC-E25A-4B45-9CA2-01ABB0FA5181}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitBlame", "TortoiseGitBlame\TortoiseGitBlame.vcproj", "{62507C2F-9290-4342-910F-BFC44DF99B01}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IBugTraqProvider", "IBugTraqProvider\IBugTraqProvider.vcproj", "{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -477,6 +478,30 @@ Global
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Win32.Build.0 = Release|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x64.ActiveCfg = Release|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x86.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|Mixed Platforms.Build.0 = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|Win32.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|Win32.Build.0 = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|x64.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|x86.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Win32.Build.0 = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|x64.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|x86.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|Mixed Platforms.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|Mixed Platforms.Build.0 = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|Win32.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|Win32.Build.0 = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|x64.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|x86.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Release|Win32.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Release|Win32.Build.0 = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Release|x64.ActiveCfg = Release|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
