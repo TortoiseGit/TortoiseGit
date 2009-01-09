@@ -129,8 +129,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 		m_pToolTip->Activate(TRUE);
 	}
 	
-	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\StatAuthorsCaseSensitive")));
-	m_bSortByCommitCount = DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\StatSortByCommitCount")));
+	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive")));
+	m_bSortByCommitCount = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount")));
 	UpdateData(FALSE);
 
 	CString temp;
@@ -231,7 +231,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	m_Skipper.SetPageSize(5);
 
 	// we use a stats page encoding here, 0 stands for the statistics dialog
-	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseSVN\\LastViewedStatsPage"), 0);
+	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 
 	// open last viewed statistics page as first page
 	int graphtype = lastStatsPage / 10;
@@ -265,9 +265,9 @@ BOOL CStatGraphDlg::OnInitDialog()
 		default : return TRUE;
 	}
 
-	LCID m_locale = MAKELCID((DWORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
+	LCID m_locale = MAKELCID((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
 
-	bool bUseSystemLocale = !!(DWORD)CRegStdWORD(_T("Software\\TortoiseSVN\\UseSystemLocaleForDates"), TRUE);
+	bool bUseSystemLocale = !!(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
 	TCHAR l = 0;
@@ -1493,12 +1493,12 @@ void CStatGraphDlg::StoreCurrentGraphType()
 	}
 	
 	// store current chart type in registry
-	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseSVN\\LastViewedStatsPage"), 0);
+	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 	lastStatsPage = statspage;
 
-	CRegDWORD regAuthors = CRegDWORD(_T("Software\\TortoiseSVN\\StatAuthorsCaseSensitive"));
+	CRegDWORD regAuthors = CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive"));
 	regAuthors = m_bAuthorsCaseSensitive;
 
-	CRegDWORD regSort = CRegDWORD(_T("Software\\TortoiseSVN\\StatSortByCommitCount"));
+	CRegDWORD regSort = CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount"));
 	regSort = m_bSortByCommitCount;
 }

@@ -94,9 +94,9 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 		RegisterClass(&wndcls);
 	}
 
-	m_bShowOverview = CRegDWORD(_T("Software\\TortoiseSVN\\RevisionGraph\\ShowRevGraphOverview"), TRUE);
-	m_bTweakTrunkColors = CRegDWORD(_T("Software\\TortoiseSVN\\RevisionGraph\\TweakTrunkColors"), TRUE) != FALSE;
-	m_bTweakTagsColors = CRegDWORD(_T("Software\\TortoiseSVN\\RevisionGraph\\TweakTagsColors"), TRUE) != FALSE;
+	m_bShowOverview = CRegDWORD(_T("Software\\TortoiseGit\\RevisionGraph\\ShowRevGraphOverview"), TRUE);
+	m_bTweakTrunkColors = CRegDWORD(_T("Software\\TortoiseGit\\RevisionGraph\\TweakTrunkColors"), TRUE) != FALSE;
+	m_bTweakTagsColors = CRegDWORD(_T("Software\\TortoiseGit\\RevisionGraph\\TweakTagsColors"), TRUE) != FALSE;
 }
 
 CRevisionGraphWnd::~CRevisionGraphWnd()

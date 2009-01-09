@@ -20,7 +20,7 @@
 #include "TortoiseProc.h"
 #include "Settings.h"
 #include "MessageBox.h"
-#include "..\..\TSVNCache\CacheInterface.h"
+#include "..\..\TGitCache\CacheInterface.h"
 
 
 
@@ -43,18 +43,18 @@ void CSettings::AddPropPages()
 	m_pOverlayPage = new CSetOverlayPage();
 	m_pOverlaysPage = new CSetOverlayIcons();
 	m_pProxyPage = new CSetProxyPage();
-	m_pProgsDiffPage = new CSettingsProgsDiff();
-	m_pProgsMergePage = new CSettingsProgsMerge();
-	m_pProgsUniDiffPage = new CSettingsProgsUniDiff();
+//	m_pProgsDiffPage = new CSettingsProgsDiff();
+//	m_pProgsMergePage = new CSettingsProgsMerge();
+//	m_pProgsUniDiffPage = new CSettingsProgsUniDiff();
 	m_pLookAndFeelPage = new CSetLookAndFeelPage();
 	m_pDialogsPage = new CSetDialogs();
 	m_pMiscPage = new CSetMisc();
 	m_pRevisionGraphPage = new CSettingsRevisionGraph();
-	m_pLogCachePage = new CSetLogCache();
-	m_pLogCacheListPage = new CSettingsLogCaches();
+//	m_pLogCachePage = new CSetLogCache();
+//	m_pLogCacheListPage = new CSettingsLogCaches();
 	m_pColorsPage = new CSettingsColors();
 	m_pSavedPage = new CSetSavedDataPage();
-	m_pHooksPage = new CSetHooks();
+//	m_pHooksPage = new CSetHooks();
 	m_pBugTraqPage = new CSetBugTraq();
 	m_pTBlamePage = new CSettingsTBlame();
 
@@ -62,18 +62,18 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pOverlayPage, m_pOverlayPage->GetIconID());
 	SetPageIcon(m_pOverlaysPage, m_pOverlaysPage->GetIconID());
 	SetPageIcon(m_pProxyPage, m_pProxyPage->GetIconID());
-	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
-	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
-	SetPageIcon(m_pProgsUniDiffPage, m_pProgsUniDiffPage->GetIconID());
+////	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
+////	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
+//////	SetPageIcon(m_pProgsUniDiffPage, m_pProgsUniDiffPage->GetIconID());
 	SetPageIcon(m_pLookAndFeelPage, m_pLookAndFeelPage->GetIconID());
 	SetPageIcon(m_pDialogsPage, m_pDialogsPage->GetIconID());
 	SetPageIcon(m_pRevisionGraphPage, m_pRevisionGraphPage->GetIconID());
 	SetPageIcon(m_pMiscPage, m_pMiscPage->GetIconID());
-	SetPageIcon(m_pLogCachePage, m_pLogCachePage->GetIconID());
-	SetPageIcon(m_pLogCacheListPage, m_pLogCacheListPage->GetIconID());
+////	SetPageIcon(m_pLogCachePage, m_pLogCachePage->GetIconID());
+//	SetPageIcon(m_pLogCacheListPage, m_pLogCacheListPage->GetIconID());
 	SetPageIcon(m_pColorsPage, m_pColorsPage->GetIconID());
 	SetPageIcon(m_pSavedPage, m_pSavedPage->GetIconID());
-	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
+//	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
 
@@ -81,18 +81,18 @@ void CSettings::AddPropPages()
 	AddPage(m_pOverlayPage);
 	AddPage(m_pOverlaysPage);
 	AddPage(m_pProxyPage);
-	AddPage(m_pProgsDiffPage);
-	AddPage(m_pProgsMergePage);
-	AddPage(m_pProgsUniDiffPage);
+//	AddPage(m_pProgsDiffPage);
+//	AddPage(m_pProgsMergePage);
+//	AddPage(m_pProgsUniDiffPage);
 	AddPage(m_pLookAndFeelPage);
 	AddPage(m_pDialogsPage);
 	AddPage(m_pMiscPage);
 	AddPage(m_pRevisionGraphPage);
 	AddPage(m_pColorsPage);
 	AddPage(m_pSavedPage);
-	AddPage(m_pLogCachePage);
-    AddPage(m_pLogCacheListPage);
-	AddPage(m_pHooksPage);
+//	AddPage(m_pLogCachePage);
+//    AddPage(m_pLogCacheListPage);
+//	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
 	AddPage(m_pTBlamePage);
 }
@@ -103,18 +103,18 @@ void CSettings::RemovePropPages()
 	delete m_pOverlayPage;
 	delete m_pOverlaysPage;
 	delete m_pProxyPage;
-	delete m_pProgsDiffPage;
-	delete m_pProgsMergePage;
-	delete m_pProgsUniDiffPage;
+////	delete m_pProgsDiffPage;
+//	delete m_pProgsMergePage;
+////	delete m_pProgsUniDiffPage;
 	delete m_pLookAndFeelPage;
 	delete m_pDialogsPage;
     delete m_pRevisionGraphPage;
 	delete m_pMiscPage;
-	delete m_pLogCachePage;
-	delete m_pLogCacheListPage;
+////	delete m_pLogCachePage;
+////	delete m_pLogCacheListPage;
 	delete m_pColorsPage;
 	delete m_pSavedPage;
-	delete m_pHooksPage;
+//	delete m_pHooksPage;
 	delete m_pBugTraqPage;
 	delete m_pTBlamePage;
 }
@@ -126,18 +126,18 @@ void CSettings::HandleRestart()
 	restart |= m_pOverlayPage->GetRestart();
 	restart |= m_pOverlaysPage->GetRestart();
 	restart |= m_pProxyPage->GetRestart();
-	restart |= m_pProgsDiffPage->GetRestart();
-	restart |= m_pProgsMergePage->GetRestart();
-	restart |= m_pProgsUniDiffPage->GetRestart();
+//	restart |= m_pProgsDiffPage->GetRestart();
+//	restart |= m_pProgsMergePage->GetRestart();
+////	restart |= m_pProgsUniDiffPage->GetRestart();
 	restart |= m_pLookAndFeelPage->GetRestart();
 	restart |= m_pDialogsPage->GetRestart();
     restart |= m_pRevisionGraphPage->GetRestart();
 	restart |= m_pMiscPage->GetRestart();
-	restart |= m_pLogCachePage->GetRestart();
-	restart |= m_pLogCacheListPage->GetRestart();
+////	restart |= m_pLogCachePage->GetRestart();
+//	restart |= m_pLogCacheListPage->GetRestart();
 	restart |= m_pColorsPage->GetRestart();
 	restart |= m_pSavedPage->GetRestart();
-	restart |= m_pHooksPage->GetRestart();
+////	restart |= m_pHooksPage->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
 	restart |= m_pTBlamePage->GetRestart();
 	if (restart & ISettingsPropPage::Restart_System)

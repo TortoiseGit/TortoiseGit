@@ -53,7 +53,7 @@ BOOL CRelocateDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 
 	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS"), _T("url"));
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 	m_URLCombo.SetCurSel(0);
 
 	RECT rect;

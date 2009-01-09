@@ -68,18 +68,18 @@ private:
 	CSetProxyPage *			m_pProxyPage;
 	CSetOverlayPage *		m_pOverlayPage;
 	CSetOverlayIcons *		m_pOverlaysPage;
-	CSettingsProgsDiff*		m_pProgsDiffPage;
-	CSettingsProgsMerge *	m_pProgsMergePage;
-	CSettingsProgsUniDiff * m_pProgsUniDiffPage;
+//	CSettingsProgsDiff*		m_pProgsDiffPage;
+//	CSettingsProgsMerge *	m_pProgsMergePage;
+//	CSettingsProgsUniDiff * m_pProgsUniDiffPage;
 	CSetLookAndFeelPage *	m_pLookAndFeelPage;
 	CSetDialogs *			m_pDialogsPage;
     CSettingsRevisionGraph* m_pRevisionGraphPage;
 	CSettingsColors *		m_pColorsPage;
 	CSetMisc *				m_pMiscPage;
-	CSetLogCache *			m_pLogCachePage;
-    CSettingsLogCaches*     m_pLogCacheListPage;
+//	CSetLogCache *			m_pLogCachePage;
+//    CSettingsLogCaches*     m_pLogCacheListPage;
 	CSetSavedDataPage *		m_pSavedPage;
-	CSetHooks *				m_pHooksPage;
+//	CSetHooks *				m_pHooksPage;
 	CSetBugTraq *			m_pBugTraqPage;
 	CSettingsTBlame *		m_pTBlamePage;
 

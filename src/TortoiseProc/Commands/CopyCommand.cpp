@@ -71,11 +71,11 @@ bool CopyCommand::Execute()
 			copyRev = dlg.m_CopyRev;
 			doSwitch = dlg.m_bDoSwitch;
 			progDlg.DoModal();
-			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseSVN\\ErrorOccurred"), FALSE);
+			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseGit\\ErrorOccurred"), FALSE);
 			err = (DWORD)progDlg.DidErrorsOccur();
 			bRet = !progDlg.DidErrorsOccur();
 			repeat = progDlg.DidErrorsOccur();
-			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseSVN\\CommitReopen"), FALSE);
+			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseGit\\CommitReopen"), FALSE);
 			if (DWORD(bFailRepeat) == FALSE)
 				repeat = false;		// do not repeat if the user chose not to in the settings.
 		}

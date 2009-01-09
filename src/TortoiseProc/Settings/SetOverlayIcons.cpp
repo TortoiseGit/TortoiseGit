@@ -21,7 +21,7 @@
 #include "DirFileEnum.h"
 #include "MessageBox.h"
 #include ".\setoverlayicons.h"
-#include "SVNStatus.h"
+#include "GitStatus.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "ShellUpdater.h"
@@ -105,7 +105,8 @@ BOOL CSetOverlayIcons::OnInitDialog()
 		if (ComboItem.CompareNoCase(m_sOriginalIconSet)==0)
 			m_cIconSet.SetCurSel(i);
 	}
-	WORD langID = (WORD)(DWORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
+#if 0
+	WORD langID = (WORD)(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR statustext[MAX_STATUS_STRING_LENGTH];
 	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_normal, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
 	m_sNormal = statustext;
@@ -121,7 +122,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 	m_sIgnored = statustext;
 	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_unversioned, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
 	m_sUnversioned = statustext;
-
+#endif
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);
 

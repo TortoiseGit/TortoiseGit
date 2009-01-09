@@ -35,23 +35,23 @@ CSetMisc::CSetMisc()
 	, m_bShowLockDlg(FALSE)
 	, m_bAutoSelect(TRUE)
 {
-	m_regUnversionedRecurse = CRegDWORD(_T("Software\\TortoiseSVN\\UnversionedRecurse"), TRUE);
+	m_regUnversionedRecurse = CRegDWORD(_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
 	m_bUnversionedRecurse = (DWORD)m_regUnversionedRecurse;
-	m_regAutocompletion = CRegDWORD(_T("Software\\TortoiseSVN\\Autocompletion"), TRUE);
+	m_regAutocompletion = CRegDWORD(_T("Software\\TortoiseGit\\Autocompletion"), TRUE);
 	m_bAutocompletion = (DWORD)m_regAutocompletion;
-	m_regAutocompletionTimeout = CRegDWORD(_T("Software\\TortoiseSVN\\AutocompleteParseTimeout"), 5);
+	m_regAutocompletionTimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
 	m_dwAutocompletionTimeout = (DWORD)m_regAutocompletionTimeout;
-	m_regSpell = CRegDWORD(_T("Software\\TortoiseSVN\\Spellchecker"), FALSE);
+	m_regSpell = CRegDWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE);
 	m_bSpell = (DWORD)m_regSpell;
-	m_regCheckRepo = CRegDWORD(_T("Software\\TortoiseSVN\\CheckRepo"), FALSE);
+	m_regCheckRepo = CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
 	m_bCheckRepo = (DWORD)m_regCheckRepo;
-	m_regMaxHistory = CRegDWORD(_T("Software\\TortoiseSVN\\MaxHistoryItems"), 25);
+	m_regMaxHistory = CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25);
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
-	m_regCommitReopen = CRegDWORD(_T("Software\\TortoiseSVN\\CommitReopen"), FALSE);
+	m_regCommitReopen = CRegDWORD(_T("Software\\TortoiseGit\\CommitReopen"), FALSE);
 	m_bCommitReopen = (BOOL)(DWORD)m_regCommitReopen;
-	m_regShowLockDlg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowLockDlg"), TRUE);
+	m_regShowLockDlg = CRegDWORD(_T("Software\\TortoiseGit\\ShowLockDlg"), TRUE);
 	m_bShowLockDlg = (BOOL)(DWORD)m_regShowLockDlg;
-	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseSVN\\SelectFilesForCommit"), TRUE);
+	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
 }
 

@@ -29,7 +29,7 @@ CSettingsProgsUniDiff::CSettingsProgsUniDiff()
 	, m_sDiffViewerPath(_T(""))
 	, m_iDiffViewer(0)
 {
-	m_regDiffViewerPath = CRegString(_T("Software\\TortoiseSVN\\DiffViewer"));
+	m_regDiffViewerPath = CRegString(_T("Software\\TortoiseGit\\DiffViewer"));
 }
 
 CSettingsProgsUniDiff::~CSettingsProgsUniDiff()

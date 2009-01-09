@@ -944,7 +944,7 @@ UINT CGitProgressDlg::ProgressThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	RefreshCursor();
 
-	DWORD dwAutoClose = CRegStdWORD(_T("Software\\TortoiseSVN\\AutoClose"));
+	DWORD dwAutoClose = CRegStdWORD(_T("Software\\TortoiseGit\\AutoClose"));
 	if (m_options & ProgOptDryRun)
 		dwAutoClose = 0;		// dry run means progress dialog doesn't auto close at all
 	if (!m_bLastVisible)
@@ -1515,7 +1515,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 									break;
 								}
 								// If necessary, convert the line-endings on the file before diffing
-								if ((DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\ConvertBase"), TRUE))
+								if ((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\ConvertBase"), TRUE))
 								{
 									CTSVNPath temporaryFile = CTempFiles::Instance().GetTempFilePath(false, data->path, SVNRev::REV_BASE);
 									if (!svn.Cat(data->path, SVNRev(SVNRev::REV_BASE), SVNRev(SVNRev::REV_BASE), temporaryFile))
@@ -1637,7 +1637,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						break;
 					case ID_LOG:
 						{
-							CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+							CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 							int limit = (int)(DWORD)reg;
 							svn_revnum_t rev = m_RevisionEnd;
 							if (!data->basepath.IsEmpty())
@@ -2051,7 +2051,7 @@ bool CGitProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
 		// if the locking-dialog is skipped in the settings, tell the
 		// user how to steal the lock anyway (i.e., how to get the lock
 		// dialog back without changing the settings)
-		if (!DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\ShowLockDlg"), TRUE)))
+		if (!DWORD(CRegDWORD(_T("Software\\TortoiseGit\\ShowLockDlg"), TRUE)))
 		{
 			ReportString(CString(MAKEINTRESOURCE(IDS_SVNPROGRESS_LOCKHINT)), CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
 		}
@@ -2078,7 +2078,7 @@ bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 
 	GetDlgItem(IDC_INFOTEXT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseSVN\\MergeNonInteractive"), FALSE);
+	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
 	if (DWORD(nonint))
 	{
 		::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_SETCHECK, BST_CHECKED, 0);
@@ -2091,7 +2091,7 @@ bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 	{
 		CString sSuggestedMessage;
 		CString sMergedLogMessage;
-		CString sSeparator = CRegString(_T("Software\\TortoiseSVN\\MergeLogSeparator"), _T("........"));
+		CString sSeparator = CRegString(_T("Software\\TortoiseGit\\MergeLogSeparator"), _T("........"));
 		CString temp;
 
 		// Merging revisions %s of %s to %s into %s, %s%s
@@ -2174,7 +2174,7 @@ bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*
 	ReportCmd(sCmdInfo);
 
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseSVN\\MergeNonInteractive"), FALSE);
+	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
 	if (DWORD(nonint))
 	{
 		::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_SETCHECK, BST_CHECKED, 0);
@@ -2209,7 +2209,7 @@ bool CGitProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localop
 	ReportCmd(sCmdInfo);
 
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseSVN\\MergeNonInteractive"), FALSE);
+	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
 	if (DWORD(nonint))
 	{
 		::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_SETCHECK, BST_CHECKED, 0);
@@ -2312,7 +2312,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_REVERT_BKG);
 
 	CTSVNPathList delList = m_selectedPaths;
-	if (DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\RevertWithRecycleBin"), TRUE)))
+	if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
 		delList.DeleteAllFiles(true);
 
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
@@ -2536,7 +2536,7 @@ void CGitProgressDlg::OnBnClickedNoninteractive()
 {
 	LRESULT res = ::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_GETCHECK, 0, 0);
 	m_AlwaysConflicted = (res == BST_CHECKED);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseSVN\\MergeNonInteractive"), FALSE);
+	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
 	nonint = m_AlwaysConflicted;
 }
 

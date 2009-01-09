@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell"
+				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell;./MiscUi"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -111,7 +111,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell"
+				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell;./MiscUi"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -286,6 +286,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\BugTraqAssociations.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\CmdLineParser.cpp"
 				>
@@ -520,6 +524,26 @@
 			>
 			<File
 				RelativePath=".\TreePropSheet\PropPageFrame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TreePropSheet\PropPageFrame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TreePropSheet\PropPageFrameDefault.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TreePropSheet\PropPageFrameDefault.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TreePropSheet\TreePropSheet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TreePropSheet\TreePropSheet.h"
 				>
 			</File>
 		</Filter>

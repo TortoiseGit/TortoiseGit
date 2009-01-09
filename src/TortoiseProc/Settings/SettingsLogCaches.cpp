@@ -20,7 +20,7 @@
 #include "TortoiseProc.h"
 #include "SettingsLogCaches.h"
 #include "MessageBox.h"
-#include "SVN.h"
+#include "Git.h"
 #include "SVNError.h"
 #include "LogCachePool.h"
 #include "LogCacheStatistics.h"

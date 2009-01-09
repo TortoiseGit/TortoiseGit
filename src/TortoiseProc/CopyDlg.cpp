@@ -87,7 +87,7 @@ BOOL CCopyDlg::OnInitDialog()
 
 	CTSVNPath path(m_path);
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseSVN\\MaxHistoryItems"), 25));
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
 
 	SetRevision(m_CopyRev);
 
@@ -112,7 +112,7 @@ BOOL CCopyDlg::OnInitDialog()
 		this->EndDialog(IDCANCEL);		//exit
 	}
 	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sUUID, _T("url"));
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sUUID, _T("url"));
 	m_URLCombo.AddString(CTSVNPath(m_wcURL).GetUIPathString(), 0);
 	m_URLCombo.SelectString(-1, CTSVNPath(m_wcURL).GetUIPathString());
 	SetDlgItemText(IDC_FROMURL, m_wcURL);
@@ -120,12 +120,12 @@ BOOL CCopyDlg::OnInitDialog()
 		m_URLCombo.SetWindowText(m_URL);
 
 	CString reg;
-	reg.Format(_T("Software\\TortoiseSVN\\History\\commit%s"), (LPCTSTR)sUUID);
+	reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)sUUID);
 	m_History.Load(reg, _T("logmsgs"));
 
 	m_ProjectProperties.ReadProps(m_path);
 	m_cLogMessage.Init(m_ProjectProperties);
-	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8));
+	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	if (m_ProjectProperties.sMessage.IsEmpty())
 	{
 		GetDlgItem(IDC_BUGID)->ShowWindow(SW_HIDE);
@@ -344,7 +344,7 @@ void CCopyDlg::OnBnClickedBrowsefrom()
 	{
 		delete m_pLogDlg;
 		m_pLogDlg = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		int limit = (int)(LONG)reg;
 		m_pLogDlg->SetParams(CTSVNPath(m_wcURL), SVNRev::REV_HEAD, SVNRev::REV_HEAD, 1, limit, TRUE);
 		m_pLogDlg->SetSelect(true);

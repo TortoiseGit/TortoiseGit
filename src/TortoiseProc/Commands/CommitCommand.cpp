@@ -108,11 +108,11 @@ bool CommitCommand::Execute()
 //			progDlg.SetItemCount(dlg.m_itemsCount);
 //			progDlg.SetBugTraqProvider(dlg.m_BugTraqProvider);
 //			progDlg.DoModal();
-//			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseSVN\\ErrorOccurred"), FALSE);
+//			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseGit\\ErrorOccurred"), FALSE);
 //			err = (DWORD)progDlg.DidErrorsOccur();
 //			bFailed = progDlg.DidErrorsOccur();
 //			bRet = progDlg.DidErrorsOccur();
-//			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseSVN\\CommitReopen"), FALSE);
+//			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseGit\\CommitReopen"), FALSE);
 //			if (DWORD(bFailRepeat)==0)
 //				bFailed = false;		// do not repeat if the user chose not to in the settings.
 		}

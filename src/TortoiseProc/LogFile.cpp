@@ -22,7 +22,7 @@
 
 CLogFile::CLogFile(void)
 {
-	m_maxlines = CRegStdWORD(_T("Software\\TortoiseSVN\\MaxLinesInLogfile"), 4000);
+	m_maxlines = CRegStdWORD(_T("Software\\TortoiseGit\\MaxLinesInLogfile"), 4000);
 }
 
 CLogFile::~CLogFile(void)

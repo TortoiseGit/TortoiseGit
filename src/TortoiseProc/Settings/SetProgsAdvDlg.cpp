@@ -28,7 +28,7 @@ IMPLEMENT_DYNAMIC(CSetProgsAdvDlg, CDialog)
 CSetProgsAdvDlg::CSetProgsAdvDlg(const CString& type, CWnd* pParent /*=NULL*/)
 	: CDialog(CSetProgsAdvDlg::IDD, pParent)
 	, m_sType(type)
-	, m_regToolKey(_T("Software\\TortoiseSVN\\") + type + _T("Tools"))
+	, m_regToolKey(_T("Software\\TortoiseGit\\") + type + _T("Tools"))
 	, m_ToolsValid(false)
 {
 }
@@ -302,7 +302,7 @@ void CSetProgsAdvDlg::OnBnClickedRestoredefaults()
 		{
 			if (filename.Left(5).CompareNoCase(_T("diff-"))==0)
 			{
-				CRegString diffreg = CRegString(_T("Software\\TortoiseSVN\\DiffTools\\")+ext);
+				CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\")+ext);
 				diffreg = _T("wscript.exe \"") + file + _T("\" %base %mine") + kind;
 			}
 		}
@@ -310,7 +310,7 @@ void CSetProgsAdvDlg::OnBnClickedRestoredefaults()
 		{
 			if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
 			{
-				CRegString diffreg = CRegString(_T("Software\\TortoiseSVN\\MergeTools\\")+ext);
+				CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\")+ext);
 				diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
 			}
 		}

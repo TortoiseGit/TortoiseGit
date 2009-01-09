@@ -132,7 +132,7 @@ void CFolderCrawler::WorkerThread()
 
 	for(;;)
 	{
-		bool bRecursive = !!(DWORD)CRegStdWORD(_T("Software\\TortoiseSVN\\RecursiveOverlay"), TRUE);
+		bool bRecursive = !!(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
 
 		if (fullver >= 0x0600)
 		{

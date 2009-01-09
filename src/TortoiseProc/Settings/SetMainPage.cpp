@@ -25,7 +25,7 @@
 #include "SVNProgressDlg.h"
 #include "..\version.h"
 #include ".\setmainpage.h"
-#include "SVN.h"
+#include "Git.h"
 #include "MessageBox.h"
 
 
@@ -37,10 +37,10 @@ CSetMainPage::CSetMainPage()
 	, m_bLastCommitTime(FALSE)
 	, m_bUseDotNetHack(FALSE)
 {
-	m_regLanguage = CRegDWORD(_T("Software\\TortoiseSVN\\LanguageID"), 1033);
-	CString temp(SVN_CONFIG_DEFAULT_GLOBAL_IGNORES);
-	m_regExtensions = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\global-ignores"), temp);
-	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseSVN\\CheckNewer"), TRUE);
+	m_regLanguage = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
+//	CString temp(SVN_CONFIG_DEFAULT_GLOBAL_IGNORES);
+//	m_regExtensions = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\global-ignores"), temp);
+	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
 	m_regLastCommitTime = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\use-commit-times"), _T(""));
 	if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))
 		m_bUseDotNetHack = false;
@@ -202,12 +202,14 @@ BOOL CSetMainPage::OnApply()
 
 void CSetMainPage::OnBnClickedEditconfig()
 {
+#if 0
 	TCHAR buf[MAX_PATH];
 	SVN::EnsureConfigFile();
 	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
 	CString path = buf;
 	path += _T("\\Subversion\\config");
 	CAppUtils::StartTextViewer(path);
+#endif
 }
 
 void CSetMainPage::OnBnClickedChecknewerbutton()

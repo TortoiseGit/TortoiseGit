@@ -31,7 +31,7 @@ CBlameDlg::CBlameDlg(CWnd* pParent /*=NULL*/)
 	, m_bIgnoreEOL(TRUE)
 	, m_bIncludeMerge(TRUE)
 {
-	m_regTextView = CRegDWORD(_T("Software\\TortoiseSVN\\TextBlame"), FALSE);
+	m_regTextView = CRegDWORD(_T("Software\\TortoiseGit\\TextBlame"), FALSE);
 	m_bTextView = m_regTextView;
 }
 
@@ -109,7 +109,7 @@ void CBlameDlg::OnOK()
 //		ShowBalloon(IDC_REVISION_END, IDS_ERR_INVALIDREV);
 //		return;
 //	}
-	BOOL extBlame = CRegDWORD(_T("Software\\TortoiseSVN\\TextBlame"), FALSE);
+	BOOL extBlame = CRegDWORD(_T("Software\\TortoiseGit\\TextBlame"), FALSE);
 	if (extBlame)
 		m_bTextView = true;
 

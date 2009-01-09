@@ -32,11 +32,11 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_sFontName(_T(""))
 	, m_dwTabSize(4)
 {
-	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseSVN\\BlameNewColor"), RGB(255, 230, 230));
-	m_regOldLinesColor = CRegDWORD(_T("Software\\TortoiseSVN\\BlameOldColor"), RGB(230, 230, 255));
-	m_regFontName = CRegString(_T("Software\\TortoiseSVN\\BlameFontName"), _T("Courier New"));
-	m_regFontSize = CRegDWORD(_T("Software\\TortoiseSVN\\BlameFontSize"), 10);
-	m_regTabSize = CRegDWORD(_T("Software\\TortoiseSVN\\BlameTabSize"), 4);
+	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
+	m_regOldLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
+	m_regFontName = CRegString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"));
+	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10);
+	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
 }
 
 CSettingsTBlame::~CSettingsTBlame()

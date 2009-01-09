@@ -21,7 +21,7 @@
 #include "SetProxyPage.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
-#include "SVN.h"
+#include "git.h"
 #include ".\setproxypage.h"
 #include "MessageBox.h"
 
@@ -42,16 +42,16 @@ CSetProxyPage::CSetProxyPage()
 	m_regUsername = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-username"), _T(""));
 	m_regPassword = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-password"), _T(""));
 	m_regTimeout = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-timeout"), _T(""));
-	m_regSSHClient = CRegString(_T("Software\\TortoiseSVN\\SSH"));
+	m_regSSHClient = CRegString(_T("Software\\TortoiseGit\\SSH"));
 	m_SSHClient = m_regSSHClient;
 	m_regExceptions = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-exceptions"), _T(""));
 
-	m_regServeraddress_copy = CRegString(_T("Software\\TortoiseSVN\\Servers\\global\\http-proxy-host"), _T(""));
-	m_regServerport_copy = CRegString(_T("Software\\TortoiseSVN\\Servers\\global\\http-proxy-port"), _T(""));
-	m_regUsername_copy = CRegString(_T("Software\\TortoiseSVN\\Servers\\global\\http-proxy-username"), _T(""));
-	m_regPassword_copy = CRegString(_T("Software\\TortoiseSVN\\Servers\\global\\http-proxy-password"), _T(""));
-	m_regTimeout_copy = CRegString(_T("Software\\TortoiseSVN\\Servers\\global\\http-proxy-timeout"), _T(""));
-	m_regExceptions_copy = CRegString(_T("Software\\TortoiseSVN\\Servers\\global\\http-proxy-exceptions"), _T(""));
+	m_regServeraddress_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-host"), _T(""));
+	m_regServerport_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-port"), _T(""));
+	m_regUsername_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-username"), _T(""));
+	m_regPassword_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-password"), _T(""));
+	m_regTimeout_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-timeout"), _T(""));
+	m_regExceptions_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-exceptions"), _T(""));
 }
 
 CSetProxyPage::~CSetProxyPage()
@@ -243,10 +243,12 @@ void CSetProxyPage::OnBnClickedSshbrowse()
 
 void CSetProxyPage::OnBnClickedEditservers()
 {
+#if 0
 	TCHAR buf[MAX_PATH];
 	SVN::EnsureConfigFile();
 	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
 	CString path = buf;
 	path += _T("\\Subversion\\servers");
 	CAppUtils::StartTextViewer(path);
+#endif
 }

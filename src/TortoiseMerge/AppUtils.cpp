@@ -43,7 +43,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	if (sSCMPath.IsEmpty())
 	{
 		// no path set, so use TortoiseSVN as default
-		sSCMPath = CRegString(_T("Software\\TortoiseSVN\\ProcPath"), _T(""), false, HKEY_LOCAL_MACHINE);
+		sSCMPath = CRegString(_T("Software\\TortoiseGit\\ProcPath"), _T(""), false, HKEY_LOCAL_MACHINE);
 		if (sSCMPath.IsEmpty())
 		{
 			TCHAR pszSCMPath[MAX_PATH];

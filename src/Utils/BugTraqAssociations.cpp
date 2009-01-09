@@ -25,7 +25,7 @@
 DEFINE_GUID(CATID_BugTraqProvider, 
 			0x3494fa92, 0xb139, 0x4730, 0x95, 0x91, 0x1, 0x13, 0x5d, 0x5e, 0x78, 0x31);
 
-#define BUGTRAQ_ASSOCIATIONS_REGPATH _T("Software\\TortoiseSVN\\BugTraq Associations")
+#define BUGTRAQ_ASSOCIATIONS_REGPATH _T("Software\\TortoiseGit\\BugTraq Associations")
 
 CBugTraqAssociations::~CBugTraqAssociations()
 {
@@ -81,16 +81,16 @@ void CBugTraqAssociations::Add(const CBugTraqAssociation &assoc)
 	m_inner.push_back(new CBugTraqAssociation(assoc));
 }
 
-bool CBugTraqAssociations::FindProvider(const CTSVNPathList &pathList, CBugTraqAssociation *assoc) const
+bool CBugTraqAssociations::FindProvider(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const
 {
 	return FindProviderForPathList(pathList, assoc);
 }
 
-bool CBugTraqAssociations::FindProviderForPathList(const CTSVNPathList &pathList, CBugTraqAssociation *assoc) const
+bool CBugTraqAssociations::FindProviderForPathList(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const
 {
 	for (int i = 0; i < pathList.GetCount(); ++i)
 	{
-		CTSVNPath path = pathList[i];
+		CTGitPath path = pathList[i];
 		if (FindProviderForPath(path, assoc))
 			return true;
 	}
@@ -98,7 +98,7 @@ bool CBugTraqAssociations::FindProviderForPathList(const CTSVNPathList &pathList
 	return false;
 }
 
-bool CBugTraqAssociations::FindProviderForPath(CTSVNPath path, CBugTraqAssociation *assoc) const
+bool CBugTraqAssociations::FindProviderForPath(CTGitPath path, CBugTraqAssociation *assoc) const
 {
 	do
 	{
@@ -178,7 +178,7 @@ void CBugTraqAssociations::Save() const
 	RegCloseKey(hk);
 }
 
-void CBugTraqAssociations::RemoveByPath(const CTSVNPath &path)
+void CBugTraqAssociations::RemoveByPath(const CTGitPath &path)
 {
 	inner_t::iterator it = std::find_if(m_inner.begin(), m_inner.end(), FindByPathPred(path));
 	if (it != m_inner.end())

@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
+				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -137,7 +137,7 @@
 				Optimization="1"
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph"
+				AdditionalIncludeDirectories="&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\TortoiseProc;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -392,6 +392,10 @@
 			Name="Utils"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;h;hpp;hxx;hm;inl;inc"
 			>
+			<File
+				RelativePath="..\TGitCache\CacheInterface.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\ProjectProperties.cpp"
 				>
@@ -1529,30 +1533,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Settings\SetHooks.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SetHooks.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SetHooksAdv.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SetHooksAdv.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SetLogCache.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SetLogCache.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Settings\SetLookAndFeelPage.cpp"
 					>
 				</File>
@@ -1638,38 +1618,6 @@
 				</File>
 				<File
 					RelativePath=".\Commands\SettingsCommand.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsLogCaches.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsLogCaches.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsProgsDiff.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsProgsDiff.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsProgsMerge.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsProgsMerge.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsProgsUniDiff.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsProgsUniDiff.h"
 					>
 				</File>
 				<File

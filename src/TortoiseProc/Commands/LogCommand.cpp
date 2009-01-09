@@ -56,10 +56,10 @@ bool LogCommand::Execute()
 
 	if (limit == 0)
 	{
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		limit = (int)(LONG)reg;
 	}
-	BOOL bStrict = (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LastLogStrict"), FALSE);
+	BOOL bStrict = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE);
 	if (parser.HasKey(_T("strict")))
 	{
 		bStrict = TRUE;

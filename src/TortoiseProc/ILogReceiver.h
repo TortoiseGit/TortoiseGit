@@ -40,7 +40,7 @@ struct LogChangedPath
 {
 	CString sPath;
 //	CString sCopyFromPath;
-	git_revnum_t lCopyFromRev;
+	CString lCopyFromRev;
 	DWORD action;
 
 	/// returns the action as a string
@@ -127,7 +127,7 @@ public:
 	/// may throw a SVNError to cancel the log
 
 	virtual void ReceiveLog ( LogChangedPathArray* changes
-							, git_revnum_t rev
+							, CString rev
                             , const StandardRevProps* stdRevProps
                             , UserRevPropArray* userRevProps
                             , bool mergesFollow) = 0;

@@ -25,7 +25,7 @@
  * \ingroup TortoiseProc
  * CLogFile implements a log file with a limited size.
  * The log file consists of multiple lines. The amount of lines can
- * be limited with the registry entry Software\\TortoiseSVN\\MaxLinesInLogfile
+ * be limited with the registry entry Software\\TortoiseGit\\MaxLinesInLogfile
  * and defaults to 4000 lines.
  */
 class CLogFile

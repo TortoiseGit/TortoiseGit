@@ -81,7 +81,7 @@ BOOL CCheckoutDlg::OnInitDialog()
 	CString sUrlSave = m_URL;
 	m_URLCombo.SetURLHistory(TRUE);
 	m_bAutoCreateTargetName = FALSE;
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS"), _T("url"));
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 	m_bAutoCreateTargetName = !PathIsDirectoryEmpty(m_sCheckoutDirOrig);
 	m_URLCombo.SetCurSel(0);
 
@@ -115,7 +115,7 @@ BOOL CCheckoutDlg::OnInitDialog()
 	}
 	if (m_strCheckoutDirectory.IsEmpty())
 	{
-		CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseSVN\\History\\lastCheckoutPath"));
+		CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseGit\\History\\lastCheckoutPath"));
 		m_strCheckoutDirectory = lastCheckoutPath;
 		if (m_strCheckoutDirectory.GetLength() <= 2)
 			m_strCheckoutDirectory += _T("\\");
@@ -246,7 +246,7 @@ void CCheckoutDlg::OnOK()
 		break;
 	}
 	UpdateData(FALSE);
-	CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseSVN\\History\\lastCheckoutPath"));
+	CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseGit\\History\\lastCheckoutPath"));
 	lastCheckoutPath = m_strCheckoutDirectory.Left(m_strCheckoutDirectory.ReverseFind('\\'));
 	CResizableStandAloneDialog::OnOK();
 }
@@ -269,8 +269,8 @@ void CCheckoutDlg::OnBnClickedBrowse()
 	{
 		SetRevision(rev);
 
-		CRegString regDefCheckoutUrl(_T("Software\\TortoiseSVN\\DefaultCheckoutUrl"));
-		CRegString regDefCheckoutPath(_T("Software\\TortoiseSVN\\DefaultCheckoutPath"));
+		CRegString regDefCheckoutUrl(_T("Software\\TortoiseGit\\DefaultCheckoutUrl"));
+		CRegString regDefCheckoutPath(_T("Software\\TortoiseGit\\DefaultCheckoutPath"));
 		if (!CString(regDefCheckoutUrl).IsEmpty())
 		{
 			m_URL = m_URLCombo.GetString();
@@ -286,7 +286,7 @@ void CCheckoutDlg::OnBnClickedBrowse()
 			m_strCheckoutDirectory = m_sCheckoutDirOrig.TrimRight('\\')+_T('\\')+name;
 		if (m_strCheckoutDirectory.IsEmpty())
 		{
-			CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseSVN\\History\\lastCheckoutPath"));
+			CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseGit\\History\\lastCheckoutPath"));
 			m_strCheckoutDirectory = lastCheckoutPath;
 			if (m_strCheckoutDirectory.GetLength() <= 2)
 				m_strCheckoutDirectory += _T("\\");
@@ -347,7 +347,7 @@ void CCheckoutDlg::OnBnClickedShowlog()
 	{
 		delete m_pLogDlg;
 		m_pLogDlg = new CLogDlg();
-		m_pLogDlg->SetParams(CTSVNPath(m_URL), SVNRev::REV_HEAD, SVNRev::REV_HEAD, 1, (int)(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100));
+		m_pLogDlg->SetParams(CTSVNPath(m_URL), SVNRev::REV_HEAD, SVNRev::REV_HEAD, 1, (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100));
 		m_pLogDlg->m_wParam = 1;
 		m_pLogDlg->SetSelect(true);
 		m_pLogDlg->m_pNotifyWindow = this;
@@ -405,7 +405,7 @@ void CCheckoutDlg::OnCbnEditchangeUrlcombo()
 		m_strCheckoutDirectory = m_sCheckoutDirOrig.TrimRight('\\')+_T('\\')+name;
 	if (m_strCheckoutDirectory.IsEmpty())
 	{
-		CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseSVN\\History\\lastCheckoutPath"));
+		CRegString lastCheckoutPath = CRegString(_T("Software\\TortoiseGit\\History\\lastCheckoutPath"));
 		m_strCheckoutDirectory = lastCheckoutPath;
 		if (m_strCheckoutDirectory.GetLength() <= 2)
 			m_strCheckoutDirectory += _T("\\");

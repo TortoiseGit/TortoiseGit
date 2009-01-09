@@ -38,9 +38,9 @@ CFullGraphFinalizer::CFullGraphFinalizer
 {
     // initialize path classificator
 
-    CRegStdString trunkPattern (_T("Software\\TortoiseSVN\\RevisionGraph\\TrunkPattern"), _T("trunk"));
-    CRegStdString branchesPattern (_T("Software\\TortoiseSVN\\RevisionGraph\\BranchPattern"), _T("branches"));
-    CRegStdString tagsPattern (_T("Software\\TortoiseSVN\\RevisionGraph\\TagsPattern"), _T("tags"));
+    CRegStdString trunkPattern (_T("Software\\TortoiseGit\\RevisionGraph\\TrunkPattern"), _T("trunk"));
+    CRegStdString branchesPattern (_T("Software\\TortoiseGit\\RevisionGraph\\BranchPattern"), _T("branches"));
+    CRegStdString tagsPattern (_T("Software\\TortoiseGit\\RevisionGraph\\TagsPattern"), _T("tags"));
 
     const CPathDictionary& paths = history.GetCache()->GetLogInfo().GetPaths();
     pathClassification.reset 

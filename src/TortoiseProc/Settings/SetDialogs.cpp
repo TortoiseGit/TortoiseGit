@@ -24,7 +24,7 @@
 #include "SVNProgressDlg.h"
 #include "..\version.h"
 #include ".\setdialogs.h"
-#include "SVN.h"
+#include "Git.h"
 #include "MessageBox.h"
 #include "BrowseFolder.h"
 
@@ -42,17 +42,17 @@ CSetDialogs::CSetDialogs()
 	, m_bUseSystemLocaleForDates(FALSE)
 	, m_bUseRecycleBin(TRUE)
 {
-	m_regAutoClose = CRegDWORD(_T("Software\\TortoiseSVN\\AutoClose"));
-	m_regDefaultLogs = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
-	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseSVN\\LogDateFormat"), FALSE);
-	m_regUseSystemLocaleForDates = CRegDWORD(_T("Software\\TortoiseSVN\\UseSystemLocaleForDates"), TRUE);
-	m_regFontName = CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New"));
-	m_regFontSize = CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8);
-	m_regUseWCURL = CRegDWORD(_T("Software\\TortoiseSVN\\MergeWCURL"), FALSE);
-	m_regDefaultCheckoutPath = CRegString(_T("Software\\TortoiseSVN\\DefaultCheckoutPath"));
-	m_regDefaultCheckoutUrl = CRegString(_T("Software\\TortoiseSVN\\DefaultCheckoutUrl"));
-	m_regDiffByDoubleClick = CRegDWORD(_T("Software\\TortoiseSVN\\DiffByDoubleClickInLog"), FALSE);
-	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseSVN\\RevertWithRecycleBin"), TRUE);
+	m_regAutoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoClose"));
+	m_regDefaultLogs = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
+	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), FALSE);
+	m_regUseSystemLocaleForDates = CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
+	m_regFontName = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
+	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8);
+	m_regUseWCURL = CRegDWORD(_T("Software\\TortoiseGit\\MergeWCURL"), FALSE);
+	m_regDefaultCheckoutPath = CRegString(_T("Software\\TortoiseGit\\DefaultCheckoutPath"));
+	m_regDefaultCheckoutUrl = CRegString(_T("Software\\TortoiseGit\\DefaultCheckoutUrl"));
+	m_regDiffByDoubleClick = CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE);
+	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
 }
 
 CSetDialogs::~CSetDialogs()

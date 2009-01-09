@@ -112,6 +112,7 @@ void CSetHooks::RebuildHookList()
 
 void CSetHooks::OnBnClickedRemovebutton()
 {
+#if 0
 	// traversing from the end to the beginning so that the indices are not skipped
 	int index = m_cHookList.GetItemCount()-1;
 	while (index >= 0)
@@ -127,10 +128,12 @@ void CSetHooks::OnBnClickedRemovebutton()
 		}
 		index--;
 	}
+#endif
 }
 
 void CSetHooks::OnBnClickedEditbutton()
 {
+#if 0
 	if (m_cHookList.GetSelectedCount() > 1)
 		return;
 	POSITION pos = m_cHookList.GetFirstSelectedItemPosition();
@@ -152,6 +155,7 @@ void CSetHooks::OnBnClickedEditbutton()
 			SetModified();
 		}
 	}
+#endif
 }
 
 void CSetHooks::OnBnClickedAddbutton()

@@ -30,7 +30,7 @@ bool LockCommand::Execute()
 	ProjectProperties props;
 	props.ReadPropsPathList(pathList);
 	lockDlg.SetProjectProperties(&props);
-	if (pathList.AreAllPathsFiles() && !DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\ShowLockDlg"), TRUE)) && !props.nMinLockMsgSize)
+	if (pathList.AreAllPathsFiles() && !DWORD(CRegDWORD(_T("Software\\TortoiseGit\\ShowLockDlg"), TRUE)) && !props.nMinLockMsgSize)
 	{
 		// just lock the requested files
 		CSVNProgressDlg progDlg;

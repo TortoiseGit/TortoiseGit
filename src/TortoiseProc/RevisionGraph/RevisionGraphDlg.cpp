@@ -56,7 +56,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=NULL*/)
 
     // restore option state
 
-	DWORD dwOpts = CRegStdWORD(_T("Software\\TortoiseSVN\\RevisionGraphOptions"), 0x211);
+	DWORD dwOpts = CRegStdWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 0x211);
     m_options.SetRegistryFlags (dwOpts, 0x3ff);
 }
 
@@ -64,7 +64,7 @@ CRevisionGraphDlg::~CRevisionGraphDlg()
 {
     // save option state
 
-	CRegStdWORD regOpts = CRegStdWORD(_T("Software\\TortoiseSVN\\RevisionGraphOptions"), 1);
+	CRegStdWORD regOpts = CRegStdWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 1);
     regOpts = m_options.GetRegistryFlags();
 
     // GDI+ cleanup
@@ -247,7 +247,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	CMenu * pMenu = GetMenu();
 	if (pMenu)
 	{
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowRevGraphOverview"), FALSE);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
 		m_Graph.SetShowOverview ((DWORD)reg != FALSE);
 		pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
 		int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
@@ -740,7 +740,7 @@ void CRevisionGraphDlg::OnViewShowoverview()
 		m_Graph.SetShowOverview (true);
 	}
 
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowRevGraphOverview"), FALSE);
+	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
 	reg = m_Graph.GetShowOverview();
 	m_Graph.Invalidate(FALSE);
 }

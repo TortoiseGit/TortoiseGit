@@ -66,7 +66,7 @@ BOOL CUrlDiffDlg::OnInitDialog()
 	CString url = svn.GetURLFromPath(svnPath);
 	CString sUUID = svn.GetUUIDFromPath(svnPath);
 	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sUUID, _T("url"));
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sUUID, _T("url"));
 	m_URLCombo.SetCurSel(0);
 
 	if (!url.IsEmpty())
@@ -173,7 +173,7 @@ void CUrlDiffDlg::OnBnClickedLog()
 	{
 		delete m_pLogDlg;
 		m_pLogDlg = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		int limit = (int)(LONG)reg;
 		m_pLogDlg->SetSelect(true);
 		m_pLogDlg->m_pNotifyWindow = this;

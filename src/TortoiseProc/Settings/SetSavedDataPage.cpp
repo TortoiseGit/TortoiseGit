@@ -31,7 +31,7 @@ CSetSavedDataPage::CSetSavedDataPage()
 	: ISettingsPropPage(CSetSavedDataPage::IDD)
 	, m_maxLines(0)
 {
-	m_regMaxLines = CRegDWORD(_T("Software\\TortoiseSVN\\MaxLinesInLogfile"), 4000);
+	m_regMaxLines = CRegDWORD(_T("Software\\TortoiseGit\\MaxLinesInLogfile"), 4000);
 	m_maxLines = m_regMaxLines;
 }
 
@@ -62,7 +62,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	int nUrlHistWC = 0;
 	INT_PTR nUrlHistItems = 0;
 	int nLogHistRepo = 0;
-	CRegistryKey regloghist(_T("Software\\TortoiseSVN\\History"));
+	CRegistryKey regloghist(_T("Software\\TortoiseGit\\History"));
 	CStringList loghistlist;
 	regloghist.getSubKeys(loghistlist);
 	for (POSITION pos = loghistlist.GetHeadPosition(); pos != NULL; )
@@ -71,7 +71,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 		if (sHistName.Left(6).CompareNoCase(_T("commit"))==0)
 		{
 			nLogHistWC++;
-			CRegistryKey regloghistwc(_T("Software\\TortoiseSVN\\History\\")+sHistName);
+			CRegistryKey regloghistwc(_T("Software\\TortoiseGit\\History\\")+sHistName);
 			CStringList loghistlistwc;
 			regloghistwc.getValues(loghistlistwc);
 			nLogHistMsg += loghistlistwc.GetCount();
@@ -81,7 +81,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 			// repoURLs
 			CStringList urlhistlistmain;
 			CStringList urlhistlistmainvalues;
-			CRegistryKey regurlhistlist(_T("Software\\TortoiseSVN\\History\\repoURLS"));
+			CRegistryKey regurlhistlist(_T("Software\\TortoiseGit\\History\\repoURLS"));
 			regurlhistlist.getSubKeys(urlhistlistmain);
 			regurlhistlist.getValues(urlhistlistmainvalues);
 			nUrlHistItems += urlhistlistmainvalues.GetCount();
@@ -90,7 +90,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 				CString sWCUID = urlhistlistmain.GetNext(urlpos);
 				nUrlHistWC++;
 				CStringList urlhistlistwc;
-				CRegistryKey regurlhistlistwc(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sWCUID);
+				CRegistryKey regurlhistlistwc(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sWCUID);
 				regurlhistlistwc.getValues(urlhistlistwc);
 				nUrlHistItems += urlhistlistwc.GetCount();
 			}
@@ -99,7 +99,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	
 	// find out how many dialog sizes / positions we've stored
 	INT_PTR nResizableDialogs = 0;
-	CRegistryKey regResizable(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState"));
+	CRegistryKey regResizable(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState"));
 	CStringList resizablelist;
 	regResizable.getValues(resizablelist);
 	nResizableDialogs += resizablelist.GetCount();
@@ -194,7 +194,7 @@ END_MESSAGE_MAP()
 
 void CSetSavedDataPage::OnBnClickedUrlhistclear()
 {
-	CRegistryKey reg(_T("Software\\TortoiseSVN\\History\\repoURLS"));
+	CRegistryKey reg(_T("Software\\TortoiseGit\\History\\repoURLS"));
 	reg.removeKey();
 	m_btnUrlHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_URLHISTCLEAR));
@@ -203,7 +203,7 @@ void CSetSavedDataPage::OnBnClickedUrlhistclear()
 
 void CSetSavedDataPage::OnBnClickedLoghistclear()
 {
-	CRegistryKey reg(_T("Software\\TortoiseSVN\\History"));
+	CRegistryKey reg(_T("Software\\TortoiseGit\\History"));
 	CStringList histlist;
 	reg.getSubKeys(histlist);
 	for (POSITION pos = histlist.GetHeadPosition(); pos != NULL; )
@@ -211,7 +211,7 @@ void CSetSavedDataPage::OnBnClickedLoghistclear()
 		CString sHist = histlist.GetNext(pos);
 		if (sHist.Left(6).CompareNoCase(_T("commit"))==0)
 		{
-			CRegistryKey regkey(_T("Software\\TortoiseSVN\\History\\")+sHist);
+			CRegistryKey regkey(_T("Software\\TortoiseGit\\History\\")+sHist);
 			regkey.removeKey();
 		}
 	}
@@ -223,7 +223,7 @@ void CSetSavedDataPage::OnBnClickedLoghistclear()
 
 void CSetSavedDataPage::OnBnClickedResizablehistclear()
 {
-	CRegistryKey reg(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState"));
+	CRegistryKey reg(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState"));
 	reg.removeKey();
 	m_btnResizableHistClear.EnableWindow(FALSE);
 	m_tooltips.DelTool(GetDlgItem(IDC_RESIZABLEHISTCLEAR));
@@ -232,7 +232,7 @@ void CSetSavedDataPage::OnBnClickedResizablehistclear()
 
 void CSetSavedDataPage::OnBnClickedAuthhistclear()
 {
-	CRegStdString auth = CRegStdString(_T("Software\\TortoiseSVN\\Auth\\"));
+	CRegStdString auth = CRegStdString(_T("Software\\TortoiseGit\\Auth\\"));
 	auth.removeKey();
 	TCHAR pathbuf[MAX_PATH] = {0};
 	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, pathbuf)==S_OK)

@@ -32,16 +32,16 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	, m_bGetLockTop(FALSE)
 	, m_bBlock(false)
 {
-	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseSVN\\ContextMenuEntries"), MENUCHECKOUT | MENUUPDATE | MENUCOMMIT);
-	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseSVN\\ContextMenuEntrieshigh"), 0);
+	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUCHECKOUT | MENUUPDATE | MENUCOMMIT);
+	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), 0);
 
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
 
-	m_regGetLockTop = CRegDWORD(_T("Software\\TortoiseSVN\\GetLockTop"), TRUE);
+	m_regGetLockTop = CRegDWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
 	m_bGetLockTop = m_regGetLockTop;
 
-	m_regNoContextPaths = CRegString(_T("Software\\TortoiseSVN\\NoContextPaths"), _T(""));
+	m_regNoContextPaths = CRegString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
 	m_sNoContextPaths = m_regNoContextPaths;
 	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"));
 }

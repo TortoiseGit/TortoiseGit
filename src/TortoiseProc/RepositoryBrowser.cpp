@@ -243,7 +243,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	// set up the list control
 	// set the extended style of the list control
 	// the style LVS_EX_FULLROWSELECT interferes with the background watermark image but it's more important to be able to select in the whole row.
-	CRegDWORD regFullRowSelect(_T("Software\\TortoiseSVN\\FullRowSelect"), TRUE);
+	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
 	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
 	if (DWORD(regFullRowSelect))
 		exStyle |= LVS_EX_FULLROWSELECT;
@@ -913,7 +913,7 @@ void CRepositoryBrowser::FillList(deque<CItem> * pItems)
 		m_arColumnAutoWidths[col] = m_RepoList.GetColumnWidth(col);
 	}
 
-	CRegString regColWidths(_T("Software\\TortoiseSVN\\RepoBrowserColumnWidth"));
+	CRegString regColWidths(_T("Software\\TortoiseGit\\RepoBrowserColumnWidth"));
 	if (!CString(regColWidths).IsEmpty())
 	{
 		StringToWidthArray(regColWidths, m_arColumnWidths);
@@ -2914,7 +2914,7 @@ CString CRepositoryBrowser::WidthArrayToString(int WidthArray[])
 
 void CRepositoryBrowser::SaveColumnWidths(bool bSaveToRegistry /* = false */)
 {
-	CRegString regColWidth(_T("Software\\TortoiseSVN\\RepoBrowserColumnWidth"));
+	CRegString regColWidth(_T("Software\\TortoiseGit\\RepoBrowserColumnWidth"));
 	int maxcol = ((CHeaderCtrl*)(m_RepoList.GetDlgItem(0)))->GetItemCount()-1;
 	// first clear the width array
 	for (int col = 0; col < 7; ++col)

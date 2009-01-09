@@ -19,19 +19,19 @@
 #include "StdAfx.h"
 #include ".\colors.h"
 
-CColors::CColors(void) : m_regAdded(_T("Software\\TortoiseSVN\\Colors\\Added"), RGB(100, 0, 100))
-	, m_regCmd(_T("Software\\TortoiseSVN\\Colors\\Cmd"), ::GetSysColor(COLOR_GRAYTEXT))
-	, m_regConflict(_T("Software\\TortoiseSVN\\Colors\\Conflict"), RGB(255, 0, 0))
-	, m_regModified(_T("Software\\TortoiseSVN\\Colors\\Modified"), RGB(0, 50, 160))
-	, m_regMerged(_T("Software\\TortoiseSVN\\Colors\\Merged"), RGB(0, 100, 0))
-	, m_regDeleted(_T("Software\\TortoiseSVN\\Colors\\Deleted"), RGB(100, 0, 0))
-	, m_regLastCommit(_T("Software\\TortoiseSVN\\Colors\\LastCommit"), RGB(100, 100, 100))
-	, m_regDeletedNode(_T("Software\\TortoiseSVN\\Colors\\DeletedNode"), RGB(255, 0, 0))
-	, m_regAddedNode(_T("Software\\TortoiseSVN\\Colors\\AddedNode"), RGB(0, 255, 0))
-	, m_regReplacedNode(_T("Software\\TortoiseSVN\\Colors\\ReplacedNode"), RGB(0, 255, 0))
-	, m_regRenamedNode(_T("Software\\TortoiseSVN\\Colors\\RenamedNode"), RGB(0, 0, 255))
-	, m_regLastCommitNode(_T("Software\\TortoiseSVN\\Colors\\LastCommitNode"), RGB(200, 200, 200))
-	, m_regPropertyChanged(_T("Software\\TortoiseSVN\\Colors\\PropertyChanged"), RGB(0, 50, 160))
+CColors::CColors(void) : m_regAdded(_T("Software\\TortoiseGit\\Colors\\Added"), RGB(100, 0, 100))
+	, m_regCmd(_T("Software\\TortoiseGit\\Colors\\Cmd"), ::GetSysColor(COLOR_GRAYTEXT))
+	, m_regConflict(_T("Software\\TortoiseGit\\Colors\\Conflict"), RGB(255, 0, 0))
+	, m_regModified(_T("Software\\TortoiseGit\\Colors\\Modified"), RGB(0, 50, 160))
+	, m_regMerged(_T("Software\\TortoiseGit\\Colors\\Merged"), RGB(0, 100, 0))
+	, m_regDeleted(_T("Software\\TortoiseGit\\Colors\\Deleted"), RGB(100, 0, 0))
+	, m_regLastCommit(_T("Software\\TortoiseGit\\Colors\\LastCommit"), RGB(100, 100, 100))
+	, m_regDeletedNode(_T("Software\\TortoiseGit\\Colors\\DeletedNode"), RGB(255, 0, 0))
+	, m_regAddedNode(_T("Software\\TortoiseGit\\Colors\\AddedNode"), RGB(0, 255, 0))
+	, m_regReplacedNode(_T("Software\\TortoiseGit\\Colors\\ReplacedNode"), RGB(0, 255, 0))
+	, m_regRenamedNode(_T("Software\\TortoiseGit\\Colors\\RenamedNode"), RGB(0, 0, 255))
+	, m_regLastCommitNode(_T("Software\\TortoiseGit\\Colors\\LastCommitNode"), RGB(200, 200, 200))
+	, m_regPropertyChanged(_T("Software\\TortoiseGit\\Colors\\PropertyChanged"), RGB(0, 50, 160))
 {
 }
 

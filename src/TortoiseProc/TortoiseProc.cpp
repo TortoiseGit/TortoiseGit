@@ -359,7 +359,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 	}
 
 	// check for newer versions
-	if (CRegDWORD(_T("Software\\TortoiseSVN\\CheckNewer"), TRUE) != FALSE)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) != FALSE)
 	{
 		time_t now;
 		struct tm ptm;
@@ -373,7 +373,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 			// that's not needed.
 			week = ptm.tm_yday / 7;
 
-			CRegDWORD oldweek = CRegDWORD(_T("Software\\TortoiseSVN\\CheckNewerWeek"), (DWORD)-1);
+			CRegDWORD oldweek = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeek"), (DWORD)-1);
 			if (((DWORD)oldweek) == -1)
 				oldweek = week;		// first start of TortoiseProc, no update check needed
 			else
@@ -502,7 +502,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 
 void CTortoiseProcApp::CheckUpgrade()
 {
-	CRegString regVersion = CRegString(_T("Software\\TortoiseSVN\\CurrentVersion"));
+	CRegString regVersion = CRegString(_T("Software\\TortoiseGit\\CurrentVersion"));
 	CString sVersion = regVersion;
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
@@ -518,11 +518,11 @@ void CTortoiseProcApp::CheckUpgrade()
 		lVersion |= (_ttol(sVersion.Mid(pos+1))<<8);
 	}
 	
-	CRegDWORD regval = CRegDWORD(_T("Software\\TortoiseSVN\\DontConvertBase"), 999);
+	CRegDWORD regval = CRegDWORD(_T("Software\\TortoiseGit\\DontConvertBase"), 999);
 	if ((DWORD)regval != 999)
 	{
 		// there's a leftover registry setting we have to convert and then delete it
-		CRegDWORD newregval = CRegDWORD(_T("Software\\TortoiseSVN\\ConvertBase"));
+		CRegDWORD newregval = CRegDWORD(_T("Software\\TortoiseGit\\ConvertBase"));
 		newregval = !regval;
 		regval.removeValue();
 	}
@@ -531,22 +531,22 @@ void CTortoiseProcApp::CheckUpgrade()
 	{
 		CSoundUtils::RegisterTSVNSounds();
 		// remove all saved dialog positions
-		CRegString(_T("Software\\TortoiseSVN\\TortoiseProc\\ResizableState\\")).removeKey();
-		CRegDWORD(_T("Software\\TortoiseSVN\\RecursiveOverlay")).removeValue();
+		CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\")).removeKey();
+		CRegDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay")).removeValue();
 		// remove the external cache key
-		CRegDWORD(_T("Software\\TortoiseSVN\\ExternalCache")).removeValue();
+		CRegDWORD(_T("Software\\TortoiseGit\\ExternalCache")).removeValue();
 	}
 #endif	
 	if (lVersion <= 0x01020200)
 	{
 		// upgrade to > 1.2.3 means the doc diff scripts changed from vbs to js
 		// so remove the diff/merge scripts if they're the defaults
-		CRegString diffreg = CRegString(_T("Software\\TortoiseSVN\\DiffTools\\.doc"));
+		CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.doc"));
 		CString sDiff = diffreg;
 		CString sCL = _T("wscript.exe \"") + CPathUtils::GetAppParentDirectory()+_T("Diff-Scripts\\diff-doc.vbs\"");
 		if (sDiff.Left(sCL.GetLength()).CompareNoCase(sCL)==0)
 			diffreg = _T("");
-		CRegString mergereg = CRegString(_T("Software\\TortoiseSVN\\MergeTools\\.doc"));
+		CRegString mergereg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\.doc"));
 		sDiff = mergereg;
 		sCL = _T("wscript.exe \"") + CPathUtils::GetAppParentDirectory()+_T("Diff-Scripts\\merge-doc.vbs\"");
 		if (sDiff.Left(sCL.GetLength()).CompareNoCase(sCL)==0)
@@ -554,7 +554,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 	if (lVersion <= 0x01040000)
 	{
-		CRegStdWORD(_T("Software\\TortoiseSVN\\OwnerdrawnMenus")).removeValue();
+		CRegStdWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
 	}
 	
 	// set the custom diff scripts for every user
@@ -579,26 +579,26 @@ void CTortoiseProcApp::CheckUpgrade()
 		
 		if (filename.Left(5).CompareNoCase(_T("diff-"))==0)
 		{
-			CRegString diffreg = CRegString(_T("Software\\TortoiseSVN\\DiffTools\\")+ext);
+			CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\")+ext);
 			CString diffregstring = diffreg;
 			if ((diffregstring.IsEmpty()) || (diffregstring.Find(filename)>=0))
 				diffreg = _T("wscript.exe \"") + file + _T("\" %base %mine") + kind;
 		}
 		if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
 		{
-			CRegString diffreg = CRegString(_T("Software\\TortoiseSVN\\MergeTools\\")+ext);
+			CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\")+ext);
 			CString diffregstring = diffreg;
 			if ((diffregstring.IsEmpty()) || (diffregstring.Find(filename)>=0))
 				diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
 		}
 	}
 
-	// Initialize "Software\\TortoiseSVN\\DiffProps" once with the same value as "Software\\TortoiseSVN\\Diff"
-	CRegString regDiffPropsPath = CRegString(_T("Software\\TortoiseSVN\\DiffProps"),_T("non-existant"));
+	// Initialize "Software\\TortoiseGit\\DiffProps" once with the same value as "Software\\TortoiseGit\\Diff"
+	CRegString regDiffPropsPath = CRegString(_T("Software\\TortoiseGit\\DiffProps"),_T("non-existant"));
 	CString strDiffPropsPath = regDiffPropsPath;
 	if ( strDiffPropsPath==_T("non-existant") )
 	{
-		CString strDiffPath = CRegString(_T("Software\\TortoiseSVN\\Diff"));
+		CString strDiffPath = CRegString(_T("Software\\TortoiseGit\\Diff"));
 		regDiffPropsPath = strDiffPath;
 	}
 

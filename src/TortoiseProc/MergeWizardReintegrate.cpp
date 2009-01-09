@@ -73,8 +73,8 @@ BOOL CMergeWizardReintegrate::OnInitDialog()
 
 	CString sUUID = ((CMergeWizard*)GetParent())->sUUID;
 	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sUUID, _T("url"));
-	if (!(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\MergeWCURL"), FALSE))
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sUUID, _T("url"));
+	if (!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\MergeWCURL"), FALSE))
 		m_URLCombo.SetCurSel(0);
 
 	SetDlgItemText(IDC_WCEDIT, ((CMergeWizard*)GetParent())->wcPath.GetWinPath());
@@ -136,7 +136,7 @@ void CMergeWizardReintegrate::OnBnClickedShowmergelog()
 			m_pLogDlg->DestroyWindow();
 		delete m_pLogDlg;
 		m_pLogDlg = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		int limit = (int)(LONG)reg;
 		m_pLogDlg->SetDialogTitle(CString(MAKEINTRESOURCE(IDS_MERGE_SELECTRANGE)));
 
@@ -163,7 +163,7 @@ void CMergeWizardReintegrate::OnBnClickedShowlogwc()
 		m_pLogDlg2->DestroyWindow();
 	delete m_pLogDlg2;
 	m_pLogDlg2 = new CLogDlg();
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 	int limit = (int)(LONG)reg;
 	m_pLogDlg2->SetDialogTitle(CString(MAKEINTRESOURCE(IDS_MERGE_SELECTRANGE)));
 

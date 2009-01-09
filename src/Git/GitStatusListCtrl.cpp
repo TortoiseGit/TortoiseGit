@@ -1055,7 +1055,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 		pApp->DoWaitCursor(1);
 
 	Locker lock(m_critSec);
-	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
+	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	
 	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
@@ -1282,7 +1282,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bo
 #if 0
 
 	Locker lock(m_critSec);
-	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseSVN\\LanguageID"), GetUserDefaultLangID());
+	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -2800,7 +2800,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							if (entry->status != git_wc_status_added)
 								delList.AddPath(entry->GetPath());
 						}
-						if (DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\RevertWithRecycleBin"), TRUE)))
+						if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
 							delList.DeleteAllFiles(true);
 
 						if (!git.Revert(targetList, CStringArray(), FALSE))

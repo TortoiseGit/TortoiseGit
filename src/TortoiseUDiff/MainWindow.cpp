@@ -126,9 +126,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		break;
 	case WM_CLOSE:
 		{
-			CRegStdWORD w = CRegStdWORD(_T("Software\\TortoiseSVN\\UDiffViewerWidth"), (DWORD)CW_USEDEFAULT);
-			CRegStdWORD h = CRegStdWORD(_T("Software\\TortoiseSVN\\UDiffViewerHeight"), (DWORD)CW_USEDEFAULT);
-			CRegStdWORD p = CRegStdWORD(_T("Software\\TortoiseSVN\\UDiffViewerPos"), 0);
+			CRegStdWORD w = CRegStdWORD(_T("Software\\TortoiseGit\\UDiffViewerWidth"), (DWORD)CW_USEDEFAULT);
+			CRegStdWORD h = CRegStdWORD(_T("Software\\TortoiseGit\\UDiffViewerHeight"), (DWORD)CW_USEDEFAULT);
+			CRegStdWORD p = CRegStdWORD(_T("Software\\TortoiseGit\\UDiffViewerPos"), 0);
 
 			RECT rect;
 			::GetWindowRect(*this, &rect);
@@ -257,9 +257,9 @@ LRESULT CMainWindow::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
 
 bool CMainWindow::Initialize()
 {
-	CRegStdWORD pos(_T("Software\\TortoiseSVN\\UDiffViewerPos"), 0);
-	CRegStdWORD width(_T("Software\\TortoiseSVN\\UDiffViewerWidth"), (DWORD)640);
-	CRegStdWORD height(_T("Software\\TortoiseSVN\\UDiffViewerHeight"), (DWORD)480);
+	CRegStdWORD pos(_T("Software\\TortoiseGit\\UDiffViewerPos"), 0);
+	CRegStdWORD width(_T("Software\\TortoiseGit\\UDiffViewerWidth"), (DWORD)640);
+	CRegStdWORD height(_T("Software\\TortoiseGit\\UDiffViewerHeight"), (DWORD)480);
 	if (DWORD(pos) && DWORD(width) && DWORD(height))
 	{
 		RECT rc;
@@ -304,8 +304,8 @@ bool CMainWindow::Initialize()
 		// Reusing TortoiseBlame's setting which already have an user friendly
 		// pane in TortoiseSVN's Settings dialog, while there is no such
 		// pane for TortoiseUDiff.
-		CRegStdWORD(_T("Software\\TortoiseSVN\\BlameFontSize"), 10),
-		WideToMultibyte(CRegStdString(_T("Software\\TortoiseSVN\\BlameFontName"), _T("Courier New"))).c_str());
+		CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
+		WideToMultibyte(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str());
 	SendEditor(SCI_SETTABWIDTH, 4);
 	SendEditor(SCI_SETREADONLY, TRUE);
 	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"_99999");

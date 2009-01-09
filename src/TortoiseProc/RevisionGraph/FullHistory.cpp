@@ -78,7 +78,7 @@ CFullHistory::CFullHistory(void)
 	ctx.cancel_baton = this;
 
 	//set up the SVN_SSH param
-	CString tsvn_ssh = CRegString(_T("Software\\TortoiseSVN\\SSH"));
+	CString tsvn_ssh = CRegString(_T("Software\\TortoiseGit\\SSH"));
 	if (tsvn_ssh.IsEmpty())
 		tsvn_ssh = CPathUtils::GetAppDirectory() + _T("TortoisePlink.exe");
 	tsvn_ssh.Replace('\\', '/');

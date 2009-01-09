@@ -98,8 +98,8 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	CString temp;
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 
-	CRegString checkurluser = CRegString(_T("Software\\TortoiseSVN\\UpdateCheckURL"), _T(""));
-	CRegString checkurlmachine = CRegString(_T("Software\\TortoiseSVN\\UpdateCheckURL"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
+	CRegString checkurluser = CRegString(_T("Software\\TortoiseGit\\UpdateCheckURL"), _T(""));
+	CRegString checkurlmachine = CRegString(_T("Software\\TortoiseGit\\UpdateCheckURL"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
 	CString sCheckURL = checkurluser;
 	if (sCheckURL.IsEmpty())
 	{

@@ -57,7 +57,7 @@ BOOL CInputDlg::OnInitDialog()
 	else
 		m_cInput.Init();
 
-	m_cInput.SetFont((CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8));
+	m_cInput.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 
 	if (m_pProjectProperties)
 	{

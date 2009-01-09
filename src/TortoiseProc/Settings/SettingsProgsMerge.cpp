@@ -30,7 +30,7 @@ CSettingsProgsMerge::CSettingsProgsMerge()
 	, m_iExtMerge(0)
 	, m_dlgAdvMerge(_T("Merge"))
 {
-	m_regMergePath = CRegString(_T("Software\\TortoiseSVN\\Merge"));
+	m_regMergePath = CRegString(_T("Software\\TortoiseGit\\Merge"));
 }
 
 CSettingsProgsMerge::~CSettingsProgsMerge()

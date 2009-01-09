@@ -22,7 +22,7 @@
 #include "SetOverlayIcons.h"
 #include "Globals.h"
 #include "ShellUpdater.h"
-#include "..\TSVNCache\CacheInterface.h"
+#include "..\TGitCache\CacheInterface.h"
 #include ".\setoverlaypage.h"
 #include "MessageBox.h"
 
@@ -45,21 +45,21 @@ CSetOverlayPage::CSetOverlayPage()
 	, m_bShowIgnoredOverlay(FALSE)
 	, m_bShowUnversionedOverlay(FALSE)
 {
-	m_regOnlyExplorer = CRegDWORD(_T("Software\\TortoiseSVN\\LoadDllOnlyInExplorer"), FALSE);
-	m_regDriveMaskRemovable = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskRemovable"));
-	m_regDriveMaskFloppy = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskFloppy"));
-	m_regDriveMaskRemote = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskRemote"));
-	m_regDriveMaskFixed = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskFixed"), TRUE);
-	m_regDriveMaskCDROM = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskCDROM"));
-	m_regDriveMaskRAM = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskRAM"));
-	m_regDriveMaskUnknown = CRegDWORD(_T("Software\\TortoiseSVN\\DriveMaskUnknown"));
-	m_regExcludePaths = CRegString(_T("Software\\TortoiseSVN\\OverlayExcludeList"));
-	m_regIncludePaths = CRegString(_T("Software\\TortoiseSVN\\OverlayIncludeList"));
-	m_regCacheType = CRegDWORD(_T("Software\\TortoiseSVN\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1);
-	m_regUnversionedAsModified = CRegDWORD(_T("Software\\TortoiseSVN\\UnversionedAsModified"), FALSE);
-	m_regShowExcludedAsNormal = CRegDWORD(_T("Software\\TortoiseSVN\\ShowExcludedAsNormal"), TRUE);
-	m_regShowIgnoredOverlay = CRegDWORD(_T("Software\\TortoiseSVN\\ShowIgnoredOverlay"), TRUE);
-	m_regShowUnversionedOverlay = CRegDWORD(_T("Software\\TortoiseSVN\\ShowUnversionedOverlay"), TRUE);
+	m_regOnlyExplorer = CRegDWORD(_T("Software\\TortoiseGit\\LoadDllOnlyInExplorer"), FALSE);
+	m_regDriveMaskRemovable = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRemovable"));
+	m_regDriveMaskFloppy = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskFloppy"));
+	m_regDriveMaskRemote = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRemote"));
+	m_regDriveMaskFixed = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskFixed"), TRUE);
+	m_regDriveMaskCDROM = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskCDROM"));
+	m_regDriveMaskRAM = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRAM"));
+	m_regDriveMaskUnknown = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskUnknown"));
+	m_regExcludePaths = CRegString(_T("Software\\TortoiseGit\\OverlayExcludeList"));
+	m_regIncludePaths = CRegString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
+	m_regCacheType = CRegDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1);
+	m_regUnversionedAsModified = CRegDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
+	m_regShowExcludedAsNormal = CRegDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
+	m_regShowIgnoredOverlay = CRegDWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
+	m_regShowUnversionedOverlay = CRegDWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
 
 	m_bOnlyExplorer = m_regOnlyExplorer;
 	m_bRemovable = m_regDriveMaskRemovable;

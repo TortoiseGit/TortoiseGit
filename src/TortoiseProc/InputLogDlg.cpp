@@ -70,7 +70,7 @@ BOOL CInputLogDlg::OnInitDialog()
 	else
 		m_cInput.Init();
 
-	m_cInput.SetFont((CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8));
+	m_cInput.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 
 	if (m_pProjectProperties)
 	{
@@ -109,7 +109,7 @@ void CInputLogDlg::OnOK()
 	m_sLogMsg = m_cInput.GetText();
 	
 	CString reg;
-	reg.Format(_T("Software\\TortoiseSVN\\History\\commit%s"), (LPCTSTR)m_sUUID);
+	reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_sUUID);
 
 	CRegHistory history;
 	history.Load(reg, _T("logmsgs"));
@@ -163,7 +163,7 @@ void CInputLogDlg::UpdateOKButton()
 void CInputLogDlg::OnBnClickedHistory()
 {
 	CString reg;
-	reg.Format(_T("Software\\TortoiseSVN\\History\\commit%s"), (LPCTSTR)m_sUUID);
+	reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_sUUID);
 	CRegHistory history;
 	history.Load(reg, _T("logmsgs"));
 	CHistoryDlg HistoryDlg;

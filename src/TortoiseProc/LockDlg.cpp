@@ -70,8 +70,8 @@ BOOL CLockDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseSVN\\MaxHistoryItems"), 25));
-	m_History.Load(_T("Software\\TortoiseSVN\\History\\commit"), _T("logmsgs"));
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
+	m_History.Load(_T("Software\\TortoiseGit\\History\\commit"), _T("logmsgs"));
 
 	m_cFileList.Init(SVNSLC_COLEXT | SVNSLC_COLLOCK | SVNSLC_COLSVNNEEDSLOCK, _T("LockDlg"));
 	m_cFileList.SetSelectButton(&m_SelectAll);
@@ -83,7 +83,7 @@ BOOL CLockDlg::OnInitDialog()
 		m_cEdit.Init(*m_ProjectProperties);
 	else
 		m_cEdit.Init();
-	m_cEdit.SetFont((CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8));
+	m_cEdit.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 
 	if (!m_sLockMessage.IsEmpty())
 		m_cEdit.SetText(m_sLockMessage);

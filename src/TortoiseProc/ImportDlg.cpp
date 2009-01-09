@@ -58,12 +58,12 @@ BOOL CImportDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseSVN\\MaxHistoryItems"), 25));
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
 
 	if (m_url.IsEmpty())
 	{
 		m_URLCombo.SetURLHistory(TRUE);
-		m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS"), _T("url"));
+		m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 	}
 	else
 	{
@@ -77,10 +77,10 @@ BOOL CImportDlg::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 	
-	m_History.Load(_T("Software\\TortoiseSVN\\History\\commit"), _T("logmsgs"));
+	m_History.Load(_T("Software\\TortoiseGit\\History\\commit"), _T("logmsgs"));
 	m_ProjectProperties.ReadProps(m_path);
 	m_cMessage.Init(m_ProjectProperties);
-	m_cMessage.SetFont((CString)CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\LogFontSize"), 8));
+	m_cMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 
 	AdjustControlSize(IDC_IMPORTIGNORED);
 

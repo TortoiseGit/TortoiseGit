@@ -91,14 +91,14 @@ BOOL CMergeWizardTree::OnInitDialog()
 	CMergeWizard * pWizard = (CMergeWizard*)GetParent();
 	CString sUUID = pWizard->sUUID;
 	m_URLCombo.SetURLHistory(TRUE);
-	m_URLCombo.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sUUID, _T("url"));
-	if (!(DWORD)CRegDWORD(_T("Software\\TortoiseSVN\\MergeWCURL"), FALSE))
+	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sUUID, _T("url"));
+	if (!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\MergeWCURL"), FALSE))
 		m_URLCombo.SetCurSel(0);
 	// Only set the "From" Url if there is no url history available
 	if (m_URLCombo.GetString().IsEmpty())
 		m_URLCombo.SetWindowText(CPathUtils::PathUnescape(pWizard->url));
 	m_URLCombo2.SetURLHistory(TRUE);
-	m_URLCombo2.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS\\")+sUUID, _T("url"));
+	m_URLCombo2.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS\\")+sUUID, _T("url"));
 	m_URLCombo2.SetCurSel(0);
 	if (m_URLCombo2.GetString().IsEmpty())
 		m_URLCombo2.SetWindowText(CPathUtils::PathUnescape(pWizard->url));
@@ -263,7 +263,7 @@ void CMergeWizardTree::OnBnClickedFindbranchstart()
 			delete m_pLogDlg;
 		}
 		m_pLogDlg = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		int limit = (int)(LONG)reg;
 		m_pLogDlg->m_wParam = MERGE_REVSELECTSTART;
 		m_pLogDlg->SetDialogTitle(CString(MAKEINTRESOURCE(IDS_MERGE_SELECTSTARTREVISION)));
@@ -299,7 +299,7 @@ void CMergeWizardTree::OnBnClickedFindbranchend()
 			delete m_pLogDlg2;
 		}
 		m_pLogDlg2 = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		int limit = (int)(LONG)reg;
 		m_pLogDlg2->m_wParam = MERGE_REVSELECTEND;
 		m_pLogDlg2->SetDialogTitle(CString(MAKEINTRESOURCE(IDS_MERGE_SELECTENDREVISION)));
@@ -365,7 +365,7 @@ void CMergeWizardTree::OnBnClickedShowlogwc()
 		m_pLogDlg3->DestroyWindow();
 	delete m_pLogDlg3;
 	m_pLogDlg3 = new CLogDlg();
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\NumberOfLogs"), 100);
+	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 	int limit = (int)(LONG)reg;
 	m_pLogDlg3->SetDialogTitle(CString(MAKEINTRESOURCE(IDS_MERGE_SELECTRANGE)));
 

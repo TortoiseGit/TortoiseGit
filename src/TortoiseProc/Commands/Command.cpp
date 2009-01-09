@@ -46,7 +46,7 @@
 #include "FormatPatchCommand.h"
 #include "ImportPatchCommand.h"
 #include "BlameCommand.h"
-
+#include "SettingsCommand.h"
 #if 0
 
 
@@ -87,7 +87,7 @@
 #include "RevertCommand.h"
 #include "RevisiongraphCommand.h"
 #include "RTFMCommand.h"
-#include "SettingsCommand.h"
+
 #include "ShowCompareCommand.h"
 
 #include "UnIgnoreCommand.h"
@@ -292,8 +292,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ImportPatchCommand;
 	case cmdBlame:
 		return new BlameCommand;
-	
-
+	case cmdSettings:
+		return new SettingsCommand;
 #if 0
 
 	case cmdCat:
@@ -360,8 +360,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 	case cmdRevisionGraph:
 		return new RevisionGraphCommand;
-	case cmdSettings:
-		return new SettingsCommand;
+
 	case cmdShowCompare:
 		return new ShowCompareCommand;
 

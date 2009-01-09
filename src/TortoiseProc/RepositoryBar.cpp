@@ -104,7 +104,7 @@ bool CRepositoryBar::Create(CWnd* parent, UINT id, bool in_dialog)
 		m_cbxUrl.Create(WS_CHILD | WS_TABSTOP | CBS_DROPDOWN, rect, this, IDC_URL_COMBO);
 		m_cbxUrl.SetURLHistory(true);
 		m_cbxUrl.SetFont(font);
-		m_cbxUrl.LoadHistory(_T("Software\\TortoiseSVN\\History\\repoURLS"), _T("url"));
+		m_cbxUrl.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 		temp.LoadString(IDS_REPO_BROWSEURL);
 		rbbi.lpText     = const_cast<LPTSTR>((LPCTSTR)temp);
 		rbbi.hwndChild  = m_cbxUrl.m_hWnd;

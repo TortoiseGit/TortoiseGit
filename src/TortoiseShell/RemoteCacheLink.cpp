@@ -227,7 +227,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCache
 		startup.cb = sizeof(startup);
 		memset(&process, 0, sizeof(process));
 
-		CRegString cachePath(_T("Software\\TortoiseSVN\\CachePath"), _T("TSVNCache.exe"), false, HKEY_LOCAL_MACHINE);
+		CRegString cachePath(_T("Software\\TortoiseGit\\CachePath"), _T("TSVNCache.exe"), false, HKEY_LOCAL_MACHINE);
 		CString sCachePath = cachePath;
 		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength()+1), _T(""), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 		{

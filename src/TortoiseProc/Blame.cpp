@@ -127,7 +127,7 @@ CString CBlame::BlameToTempFile(const CTGitPath& path, GitRev startrev, GitRev e
 	// if the user specified to use another tool to show the blames, there's no
 	// need to fetch the log later: only TortoiseBlame uses those logs to give 
 	// the user additional information for the blame.
-	BOOL extBlame = CRegDWORD(_T("Software\\TortoiseSVN\\TextBlame"), FALSE);
+	BOOL extBlame = CRegDWORD(_T("Software\\TortoiseGit\\TextBlame"), FALSE);
 
 	CString temp;
 	m_sSavePath = CTempFiles::Instance().GetTempFilePath(false).GetWinPathString();

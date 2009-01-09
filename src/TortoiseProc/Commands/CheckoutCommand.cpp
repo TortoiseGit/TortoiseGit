@@ -32,7 +32,7 @@ bool CheckoutCommand::Execute()
 	// specified in the settings dialog, and fall back to the current 
 	// working directory instead if no such path was specified.
 	CTSVNPath checkoutDirectory;
-	CRegString regDefCheckoutPath(_T("Software\\TortoiseSVN\\DefaultCheckoutPath"));
+	CRegString regDefCheckoutPath(_T("Software\\TortoiseGit\\DefaultCheckoutPath"));
 	if (cmdLinePath.IsEmpty())
 	{
 		if (CString(regDefCheckoutPath).IsEmpty())
@@ -64,7 +64,7 @@ bool CheckoutCommand::Execute()
 	dlg.m_URL = parser.GetVal(_T("url"));
 	// if there is no url specified on the command line, check if there's one
 	// specified in the settings dialog to use as the default and use that
-	CRegString regDefCheckoutUrl(_T("Software\\TortoiseSVN\\DefaultCheckoutUrl"));
+	CRegString regDefCheckoutUrl(_T("Software\\TortoiseGit\\DefaultCheckoutUrl"));
 	if (!CString(regDefCheckoutUrl).IsEmpty())
 	{
 		// if the URL specified is a child of the default URL, we also

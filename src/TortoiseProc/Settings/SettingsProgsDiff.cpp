@@ -31,11 +31,11 @@ CSettingsProgsDiff::CSettingsProgsDiff()
 	, m_sDiffPath(_T(""))
 	, m_iExtDiffProps(0)
 	, m_sDiffPropsPath(_T(""))
-	, m_regConvertBase(_T("Software\\TortoiseSVN\\ConvertBase"), TRUE)
+	, m_regConvertBase(_T("Software\\TortoiseGit\\ConvertBase"), TRUE)
 	, m_bConvertBase(false)
 {
-	m_regDiffPath = CRegString(_T("Software\\TortoiseSVN\\Diff"));
-	m_regDiffPropsPath = CRegString(_T("Software\\TortoiseSVN\\DiffProps"));
+	m_regDiffPath = CRegString(_T("Software\\TortoiseGit\\Diff"));
+	m_regDiffPropsPath = CRegString(_T("Software\\TortoiseGit\\DiffProps"));
 }
 
 CSettingsProgsDiff::~CSettingsProgsDiff()

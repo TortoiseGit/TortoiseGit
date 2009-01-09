@@ -80,7 +80,7 @@ BOOL CMergeWizard::OnInitDialog()
 
 void CMergeWizard::SaveMode()
 {
-	CRegDWORD regMergeWizardMode(_T("Software\\TortoiseSVN\\MergeWizardMode"), 0);
+	CRegDWORD regMergeWizardMode(_T("Software\\TortoiseGit\\MergeWizardMode"), 0);
 	if (DWORD(regMergeWizardMode))
 	{
 		switch (nRevRangeMerge)

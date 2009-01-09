@@ -110,6 +110,7 @@ BOOL CSetHooksAdv::OnInitDialog()
 
 void CSetHooksAdv::OnOK()
 {
+#if 0
 	UpdateData();
 	int cursel = m_cHookTypeCombo.GetCurSel();
 	key.htype = unknown_hook;
@@ -136,11 +137,13 @@ void CSetHooksAdv::OnOK()
 		ShowBalloon(IDC_HOOKCOMMANDLINE, IDS_ERR_NOHOOKCOMMANDPECIFIED);
 		return;
 	}
+#endif
 	CResizableStandAloneDialog::OnOK();
 }
 
 void CSetHooksAdv::OnBnClickedHookbrowse()
 {
+#if 0
 	UpdateData();
 	CBrowseFolder browser;
 	CString sPath;
@@ -151,6 +154,7 @@ void CSetHooksAdv::OnBnClickedHookbrowse()
 		m_sPath = sPath;
 		UpdateData(FALSE);
 	}
+#endif
 }
 
 void CSetHooksAdv::OnBnClickedHookcommandbrowse()
