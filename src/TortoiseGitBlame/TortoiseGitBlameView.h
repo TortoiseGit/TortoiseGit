@@ -8,6 +8,7 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 #include "registry.h"
+#include "SciEdit.h"
 
 
 const COLORREF black = RGB(0,0,0);
@@ -71,9 +72,15 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg int OnCreate(LPCREATESTRUCT lpcs);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+
 	DECLARE_MESSAGE_MAP()
 
 public:
+
+	CSciEdit			m_TextView;
+
 	HINSTANCE hInstance;
 	HINSTANCE hResource;
 	HWND currentDialog;

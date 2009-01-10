@@ -39,6 +39,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
+	ON_WM_CREATE()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CTortoiseGitBlameView construction/destruction
@@ -55,7 +57,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_font = 0;
 	m_italicfont = 0;
-	m_blamewidth = 0;
+	m_blamewidth = 100;
 	m_revwidth = 0;
 	m_datewidth = 0;
 	m_authorwidth = 0;
@@ -91,7 +93,35 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 }
 
 
+int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
+{
 
+	CRect rect,rect1;
+	this->GetWindowRect(&rect1);
+	rect.left=m_blamewidth;
+	rect.right=rect.Width();
+	rect.top=0;
+	rect.bottom=rect.Height();
+	BOOL b=m_TextView.Create(_T("Scintilla"),_T("source"),0,rect,this,0,0);
+	m_TextView.Init(0);
+	m_TextView.ShowWindow( SW_SHOW);
+	//m_TextView.InsertText(_T("Abdadfasdf"));
+	 
+	return CView::OnCreate(lpcs);
+}
+
+void CTortoiseGitBlameView::OnSize(UINT nType,int cx, int cy)
+{
+
+	CRect rect;
+	rect.left=m_blamewidth;
+	rect.right=cx;
+	rect.top=0;
+	rect.bottom=cy;
+
+	m_TextView.MoveWindow(&rect);
+
+}
 BOOL CTortoiseGitBlameView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
