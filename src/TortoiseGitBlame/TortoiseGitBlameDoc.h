@@ -5,6 +5,7 @@
 
 #pragma once
 
+class CMainFrame ;
 
 class CTortoiseGitBlameDoc : public CDocument
 {
@@ -17,12 +18,12 @@ public:
 
 // Operations
 public:
-
+	BOOL m_IsGitFile;
 // Overrides
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 // Implementation
 public:
 	virtual ~CTortoiseGitBlameDoc();
@@ -30,9 +31,14 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+	CMainFrame *GetMainFrame()
+	{
+		return (CMainFrame*)AfxGetApp()->GetMainWnd();
+	}
 
 protected:
-
+	
+	
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()

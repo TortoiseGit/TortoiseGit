@@ -55,6 +55,7 @@
 #define IDS_LOG_DATE                    1210
 #define IDS_LOG_REVISION                1208
 #define IDS_LOG_BUGIDS                  1840
+#define IDS_LOG_ID						9605
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED

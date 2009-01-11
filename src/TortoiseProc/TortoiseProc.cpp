@@ -57,7 +57,7 @@ BEGIN_MESSAGE_MAP(CTortoiseProcApp, CWinAppEx)
 END_MESSAGE_MAP()
 
 CString g_version;
-CString CGit::m_MsysGitPath;
+//CString CGit::m_MsysGitPath;
 //////////////////////////////////////////////////////////////////////////
 
 CTortoiseProcApp::CTortoiseProcApp()
@@ -105,50 +105,7 @@ CString sOrigCWD;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
 {
-	CRegString msysdir=CRegString(_T("Software\\TortoiseGit\\MSysGit"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
-	CString str=msysdir;
-	if(str.IsEmpty())
-	{
-		CRegString msysinstalldir=CRegString(_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1\\InstallLocation"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
-		str=msysinstalldir;
-		str+="\\bin";
-		msysdir=str;
-		msysdir.write();
-
-	}
-	CGit::m_MsysGitPath=str;
-
-	TCHAR *oldpath,*home;
-	size_t size;
-
-	_tdupenv_s(&home,&size,_T("HOME")); 
-	
-	if(home == NULL)
-	{		
-		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
-		_tputenv_s(_T("HOME"),home);
-		free(home);
-	}
-	//set path
-	_tdupenv_s(&oldpath,&size,_T("PATH")); 
-
-	CString path;
-	path.Format(_T("%s;"),str);
-	path+=oldpath;
-
-	_tputenv_s(_T("PATH"),path);
-
-	free(oldpath);
-
-	CString cmd,out;
-	cmd=_T("git.exe --version");
-	if(g_Git.Run(cmd,&out))
-	{
-		return false;
-	}
-	else
-		return true;
-	
+	return CGit::CheckMsysGitDir();	
 }
 CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 

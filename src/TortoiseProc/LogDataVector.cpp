@@ -107,12 +107,12 @@ int CLogDataVector::FetchFullInfo(int i)
 	return at(i).SafeFetchFullInfo(&g_Git);
 }
 //CLogDataVector Class
-int CLogDataVector::ParserFromLog()
+int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask)
 {
 	CString log;
 	GitRev rev;
 	CString emptyhash;
-	g_Git.GetLog(log,emptyhash);
+	g_Git.GetLog(log,emptyhash,path,count,infomask);
 
 	CString begin;
 	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);

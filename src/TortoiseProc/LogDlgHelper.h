@@ -58,7 +58,7 @@ public:
 		m_FirstFreeLane=0;
 	}
 	void ClearAll();
-	int  ParserFromLog();
+	int  ParserFromLog(CTGitPath *path =NULL,int count = -1,int infomask=CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE);
 	int ParserShortLog(CTGitPath *path =NULL,int count = -1  );
 	int FetchFullInfo(int i);
 

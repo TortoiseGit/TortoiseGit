@@ -77,6 +77,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndTabs.AddTab(&m_LogList, strTabName, (UINT)0);
 
+	m_LogList.m_IsIDReplaceAction=TRUE;
 	m_LogList.DeleteAllItems();
 	m_LogList.InsertGitColumn();
 
@@ -146,6 +147,17 @@ void COutputWnd::FillFindWindow()
 //	m_wndOutputFind.AddString(_T("but you can change the way it is displayed as you wish..."));
 }
 
+int COutputWnd::LoadHistory(CString filename)
+{
+	m_LogList.ReloadHashMap();
+	CTGitPath path;
+	path.SetFromWin(filename);
+
+	m_LogList.FillGitLog(&path,0);
+
+	return 0;
+
+}
 /////////////////////////////////////////////////////////////////////////////
 // COutputList1
 
@@ -211,5 +223,4 @@ void COutputList::OnViewOutput()
 
 	}
 }
-
 

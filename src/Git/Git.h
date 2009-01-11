@@ -19,7 +19,9 @@ class CGit
 private:
 	GitAdminDir m_GitDir;
 public:
-	static CString m_MsysGitPath;
+	static BOOL CheckMsysGitDir();
+
+//	static CString m_MsysGitPath;
 	CGit(void);
 	~CGit(void);
 	int Run(CString cmd, CString* output);
@@ -42,13 +44,20 @@ public:
 		BRANCH_ALL=BRANCH_LOCAL|BRANCH_REMOTE,
 	}BRANCH_TYPE;
 
+	typedef enum
+	{
+		LOG_INFO_STAT=0x1,
+		LOG_INFO_FILESTATE=0x2,
+		LOG_INFO_PATCH=0x4,
+	}LOG_INFO_MASK;
+
 	int GetRemoteList(STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
 	//hash is empty means all. -1 means all
-	int GetLog(CString& logOut,CString &hash, int count=-1);
+	int GetLog(CString& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE);
 
 	git_revnum_t GetHash(CString &friendname);
 

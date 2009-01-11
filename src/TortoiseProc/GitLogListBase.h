@@ -63,6 +63,7 @@ public:
 	CGitLogListBase();
 	virtual ~CGitLogListBase();
 	volatile LONG		m_bNoDispUpdates;
+	BOOL m_IsIDReplaceAction;
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
@@ -130,6 +131,8 @@ public:
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  FillGitShortLog();
+	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE);
+
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(CALLBACK_PROCESS *proc=NULL, void * data=NULL);
 	CPtrArray			m_arShownList;
@@ -146,6 +149,11 @@ public:
 	CTime			m_To;
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect)=0;
+	void ReloadHashMap()
+	{	
+		m_HashMap.clear();
+		g_Git.GetMapHashToFriendName(m_HashMap);
+	}
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);

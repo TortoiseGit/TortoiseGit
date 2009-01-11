@@ -23,5 +23,6 @@ BEGIN
     IDS_LOG_AUTHOR          "Author"
     IDS_LOG_DATE            "Date"
 	IDS_LOG_BUGIDS          "Bug-ID"
+	IDS_LOG_ID				"ID"
 END
 

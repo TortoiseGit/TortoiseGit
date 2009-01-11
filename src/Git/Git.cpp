@@ -2,6 +2,7 @@
 #include "Git.h"
 #include "atlconv.h"
 #include "GitRev.h"
+#include "registry.h"
 
 #define MAX_DIRBUFFER 1000
 CGit g_Git;
@@ -194,21 +195,36 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-int CGit::GetLog(CString& logOut, CString &hash, int count)
+int CGit::GetLog(CString& logOut, CString &hash,  CTGitPath *path ,int count,int mask)
 {
 
 	CString cmd;
 	CString log;
 	CString num;
 	CString since;
+
+	CString file;
+
+	if(path)
+		file.Format(_T(" -- \"%s\""),path->GetGitPathString());
+	
 	if(count>0)
 		num.Format(_T("-n%d"),count);
 
-	cmd.Format(_T("git.exe log %s -C --numstat --raw --pretty=format:\""),
-				num);
+	CString param;
+
+	if(mask& LOG_INFO_STAT )
+		param += _T(" -numstat ");
+	if(mask& LOG_INFO_FILESTATE)
+		param += _T("--raw");
+
+	cmd.Format(_T("git.exe log %s -C %s --pretty=format:\""),
+				num,param);
+
 	BuildOutputFormat(log);
 	cmd += log;
-	cmd += CString(_T("\"  "))+hash;
+	cmd += CString(_T("\"  "))+hash+file;
+
 	return Run(cmd,&logOut);
 }
 
@@ -431,4 +447,52 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		}
 	}
 	return ret;
+}
+
+BOOL CGit::CheckMsysGitDir()
+{
+	CRegString msysdir=CRegString(_T("Software\\TortoiseGit\\MSysGit"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
+	CString str=msysdir;
+	if(str.IsEmpty())
+	{
+		CRegString msysinstalldir=CRegString(_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1\\InstallLocation"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
+		str=msysinstalldir;
+		str+="\\bin";
+		msysdir=str;
+		msysdir.write();
+
+	}
+	//CGit::m_MsysGitPath=str;
+
+	TCHAR *oldpath,*home;
+	size_t size;
+
+	_tdupenv_s(&home,&size,_T("HOME")); 
+	
+	if(home == NULL)
+	{		
+		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
+		_tputenv_s(_T("HOME"),home);
+		free(home);
+	}
+	//set path
+	_tdupenv_s(&oldpath,&size,_T("PATH")); 
+
+	CString path;
+	path.Format(_T("%s;"),str);
+	path+=oldpath;
+
+	_tputenv_s(_T("PATH"),path);
+
+	free(oldpath);
+
+	CString cmd,out;
+	cmd=_T("git.exe --version");
+	if(g_Git.Run(cmd,&out))
+	{
+		return false;
+	}
+	else
+		return true;
+
 }

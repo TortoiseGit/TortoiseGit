@@ -70,6 +70,8 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	
 	m_bShowBugtraqColumn=0;
 
+	m_IsIDReplaceAction=FALSE;
+
 	m_wcRev.m_CommitHash=GIT_REV_ZERO;
 	m_wcRev.m_Subject=_T("Working Copy");
 
@@ -152,9 +154,16 @@ void CGitLogListBase::InsertGitColumn()
 //	CString log;
 //	g_Git.GetLog(log);
 
-	temp.LoadString(IDS_LOG_ACTIONS);
-	InsertColumn(this->LOGLIST_ACTION, temp);
-	
+	if(m_IsIDReplaceAction)
+	{
+		temp.LoadString(IDS_LOG_ID);
+		InsertColumn(this->LOGLIST_ACTION, temp);
+	}
+	else
+	{
+		temp.LoadString(IDS_LOG_ACTIONS);
+		InsertColumn(this->LOGLIST_ACTION, temp);
+	}
 	temp.LoadString(IDS_LOG_MESSAGE);
 	InsertColumn(this->LOGLIST_MESSAGE, temp);
 	
@@ -762,6 +771,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			
 			if (pLVCD->iSubItem == 1)
 			{
+				if(this->m_IsIDReplaceAction)
+				{
+					*pResult = CDRF_DODEFAULT;
+					return;
+				}
 				*pResult = CDRF_DODEFAULT;
 
 				if (m_arShownList.GetCount() <= (INT_PTR)pLVCD->nmcd.dwItemSpec)
@@ -834,6 +848,8 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (itemid < m_arShownList.GetCount())
 		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
 
+	CString temp;
+	temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
 	    
 	// Which column?
 	switch (pItem->iSubItem)
@@ -844,6 +860,8 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		break;
 	case this->LOGLIST_ACTION: //action -- no text in the column
+		if(this->m_IsIDReplaceAction)
+			lstrcpyn(pItem->pszText, temp, pItem->cchTextMax);
 		break;
 	case this->LOGLIST_MESSAGE: //Message
 		if (pLogEntry)
@@ -1284,6 +1302,27 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 #endif
 	*pResult = -1;
+}
+
+int CGitLogListBase::FillGitLog(CTGitPath *path,int info)
+{
+	ClearText();
+
+	this->m_logEntries.ClearAll();
+	this->m_logEntries.ParserFromLog(path,-1,info);
+
+	//this->m_logEntries.ParserFromLog();
+	SetItemCountEx(this->m_logEntries.size());
+
+	this->m_arShownList.RemoveAll();
+
+	for(int i=0;i<m_logEntries.size();i++)
+	{
+		m_logEntries[i].m_IsFull=TRUE;
+		this->m_arShownList.Add(&m_logEntries[i]);
+	}
+	return 0;
+
 }
 
 int CGitLogListBase::FillGitShortLog()
