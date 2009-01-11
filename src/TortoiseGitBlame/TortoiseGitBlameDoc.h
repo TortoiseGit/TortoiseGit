@@ -15,7 +15,8 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	CString m_BlameData;
+	CString m_CurrentFileName;
 // Operations
 public:
 	BOOL m_IsGitFile;

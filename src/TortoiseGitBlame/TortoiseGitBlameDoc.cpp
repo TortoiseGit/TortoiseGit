@@ -10,6 +10,8 @@
 #include "MessageBox.h"
 #include "Git.h"
 #include "MainFrm.h"
+#include "TGitPath.h"
+#include "TortoiseGitBlameView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +54,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
+	m_CurrentFileName=lpszPathName;
+
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 	if(!CGit::CheckMsysGitDir())
@@ -70,6 +74,20 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		m_IsGitFile=TRUE;
 		g_Git.m_CurrentDir=topdir;
 		GetMainFrame()->m_wndOutput.LoadHistory(lpszPathName);
+		
+		CString cmd;
+		CTGitPath path;
+		path.SetFromWin(lpszPathName);
+		cmd.Format(_T("git.exe blame -s -l -- \"%s\""),path.GetGitPathString());
+		m_BlameData.Empty();
+		if(g_Git.Run(cmd,&m_BlameData))
+		{
+			CMessageBox::Show(NULL,CString(_T("Blame Error"))+m_BlameData,_T("TortoiseGitBlame"),MB_OK);
+
+		}
+		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
+		pView->UpdateInfo();
+		
 	}
 
 	return TRUE;

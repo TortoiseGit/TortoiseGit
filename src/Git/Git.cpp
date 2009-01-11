@@ -218,7 +218,7 @@ int CGit::GetLog(CString& logOut, CString &hash,  CTGitPath *path ,int count,int
 	if(mask& LOG_INFO_FILESTATE)
 		param += _T("--raw");
 
-	cmd.Format(_T("git.exe log %s -C %s --pretty=format:\""),
+	cmd.Format(_T("git.exe log %s -C --left-right --boundary --topo-order --parents %s --pretty=format:\""),
 				num,param);
 
 	BuildOutputFormat(log);

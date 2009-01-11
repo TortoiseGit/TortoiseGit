@@ -79,13 +79,15 @@ protected:
 
 public:
 
+	void UpdateInfo();
+
 	CSciEdit			m_TextView;
 
 	HINSTANCE hInstance;
 	HINSTANCE hResource;
 	HWND currentDialog;
 	HWND wMain;
-	HWND wEditor;
+	HWND m_wEditor;
 	HWND wBlame;
 	HWND wHeader;
 	HWND wLocator;
@@ -137,13 +139,16 @@ public:
 	long						m_highestrev;
 	bool						m_colorage;
 
-	std::vector<bool>			mergelines;
-	std::vector<LONG>			revs;
-	std::vector<LONG>			origrevs;
-	std::vector<CString>	dates;
-	std::vector<CString>	authors;
-	std::vector<CString>	paths;
-	std::map<LONG, CString>	logmessages;
+//	std::vector<bool>		m_Mergelines;
+	std::vector<LONG>		m_ID;
+	std::vector<LONG>		m_LineNum;
+//	std::vector<LONG>		m_Origrevs;
+	std::vector<CString>	m_Dates;
+	std::vector<CString>	m_Authors;
+	std::vector<CString>	m_CommitHash;
+
+//	std::vector<CString>	m_Paths;
+//	std::map<LONG, CString>	logmessages;
 	char						m_szTip[MAX_LOG_LENGTH*2+6];
 	wchar_t						m_wszTip[MAX_LOG_LENGTH*2+6];
 	void StringExpand(LPSTR str);
@@ -151,7 +156,7 @@ public:
 	BOOL						ttVisible;
 protected:
 	void CreateFont();
-	void SetupLexer(LPCSTR filename);
+	void SetupLexer(CString filename);
 	void SetupCppLexer();
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CString GetAppDirectory();

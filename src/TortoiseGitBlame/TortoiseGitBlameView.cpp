@@ -52,7 +52,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	hResource = 0;
 	currentDialog = 0;
 	wMain = 0;
-	wEditor = 0;
+	m_wEditor = 0;
 	wLocator = 0;
 
 	m_font = 0;
@@ -106,7 +106,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_TextView.Init(0);
 	m_TextView.ShowWindow( SW_SHOW);
 	//m_TextView.InsertText(_T("Abdadfasdf"));
-	 
+	m_wEditor = m_TextView.m_hWnd;
 	return CView::OnCreate(lpcs);
 }
 
@@ -250,7 +250,7 @@ LRESULT CTortoiseGitBlameView::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam
 	{
 		return ((SciFnDirect) m_directFunction)(m_directPointer, Msg, wParam, lParam);
 	}
-	return ::SendMessage(wEditor, Msg, wParam, lParam);	
+	return ::SendMessage(m_wEditor, Msg, wParam, lParam);	
 }
 
 void CTortoiseGitBlameView::GetRange(int start, int end, char *text) 
@@ -260,7 +260,8 @@ void CTortoiseGitBlameView::GetRange(int start, int end, char *text)
 	tr.chrg.cpMin = start;
 	tr.chrg.cpMax = end;
 	tr.lpstrText = text;
-	SendMessage(wEditor, EM_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&tr));
+
+	SendMessage(m_wEditor, EM_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&tr));
 #endif
 }
 
@@ -348,7 +349,7 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_CANCEL);
 	SendEditor(SCI_SETUNDOCOLLECTION, 0);
-	::ShowWindow(wEditor, SW_HIDE);
+	::ShowWindow(m_wEditor, SW_HIDE);
 	std::ifstream File;
 	File.open(fileName);
 	if (!File.good())
@@ -498,7 +499,7 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 		SendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
 
 	SendEditor(SCI_SETUNDOCOLLECTION, 1);
-	::SetFocus(wEditor);
+	::SetFocus(m_wEditor);
 	SendEditor(EM_EMPTYUNDOBUFFER);
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_GOTOPOS, 0);
@@ -507,7 +508,7 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 
 	//check which lexer to use, depending on the filetype
 	SetupLexer(fileName);
-	::ShowWindow(wEditor, SW_SHOW);
+	::ShowWindow(m_wEditor, SW_SHOW);
 	m_blamewidth = 0;
 	::InvalidateRect(wMain, NULL, TRUE);
 	RECT rc;
@@ -530,8 +531,8 @@ void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, i
 void CTortoiseGitBlameView::InitialiseEditor() 
 {
 #if 0
-	m_directFunction = SendMessage(wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
-	m_directPointer = SendMessage(wEditor, SCI_GETDIRECTPOINTER, 0, 0);
+	m_directFunction = SendMessage(m_wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
+	m_directPointer = SendMessage(m_wEditor, SCI_GETDIRECTPOINTER, 0, 0);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
 	SetAStyle(STYLE_DEFAULT, black, white, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10), 
 		((stdstring)(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New")))).c_str());
@@ -674,6 +675,7 @@ bool CTortoiseGitBlameView::DoSearch(LPSTR what, DWORD flags)
 
 bool CTortoiseGitBlameView::GotoLine(long line)
 {
+#if 0
 	--line;
 	if (line < 0)
 		return false;
@@ -709,7 +711,7 @@ bool CTortoiseGitBlameView::GotoLine(long line)
 	int nPosStart = SendEditor(SCI_POSITIONFROMLINE,line);
 	int nPosEnd = SendEditor(SCI_GETLINEENDPOSITION,line);
 	SendEditor(SCI_SETSEL,nPosEnd,nPosStart);
-
+#endif
 	return true;
 }
 
@@ -907,10 +909,10 @@ void CTortoiseGitBlameView::Notify(SCNotification *notification)
 //		InvalidateRect(wLocator, NULL, FALSE);
 		break;
 	case SCN_GETBKCOLOR:
-		if ((m_colorage)&&(notification->line < (int)revs.size()))
-		{
-			notification->lParam = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (revs[notification->line]-m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
-		}
+//		if ((m_colorage)&&(notification->line < (int)revs.size()))
+//		{
+//			notification->lParam = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (revs[notification->line]-m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
+//		}
 		break;
 	}
 }
@@ -1202,6 +1204,7 @@ void CTortoiseGitBlameView::DrawHeader(HDC hDC)
 
 void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 {
+#if 0
 	if (hDC == NULL)
 		return;
 
@@ -1244,6 +1247,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 	}
+#endif
 }
 
 void CTortoiseGitBlameView::StringExpand(LPSTR str)
@@ -1614,7 +1618,7 @@ void CTortoiseGitBlameView::InitSize()
 		sourcerc.right -= LOCATOR_WIDTH;
 	}
 	::InvalidateRect(wMain, NULL, FALSE);
-    ::SetWindowPos(wEditor, 0, sourcerc.left, sourcerc.top, sourcerc.right - sourcerc.left, sourcerc.bottom - sourcerc.top, 0);
+    ::SetWindowPos(m_wEditor, 0, sourcerc.left, sourcerc.top, sourcerc.right - sourcerc.left, sourcerc.bottom - sourcerc.top, 0);
 	::SetWindowPos(wBlame, 0, blamerc.left, blamerc.top, blamerc.right - blamerc.left, blamerc.bottom - blamerc.top, 0);
 	if (m_colorage)
 		::SetWindowPos(wLocator, 0, 0, blamerc.top, LOCATOR_WIDTH, blamerc.bottom - blamerc.top, SWP_SHOWWINDOW);
@@ -1645,7 +1649,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message) 
 	{
 	case WM_CREATE:
-		app.wEditor = ::CreateWindow(
+		app.m_wEditor = ::CreateWindow(
 			"Scintilla",
 			"Source",
 			WS_CHILD | WS_VSCROLL | WS_HSCROLL | WS_CLIPCHILDREN,
@@ -1656,8 +1660,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			app.hResource,
 			0);
 		app.InitialiseEditor();
-		::ShowWindow(app.wEditor, SW_SHOW);
-		::SetFocus(app.wEditor);
+		::ShowWindow(app.m_wEditor, SW_SHOW);
+		::SetFocus(app.m_wEditor);
 		app.wBlame = ::CreateWindow(
 			_T("TortoiseGitBlameViewBlame"), 
 			_T("blame"), 
@@ -1725,7 +1729,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			wp.length = sizeof(WINDOWPLACEMENT);
 			GetWindowPlacement(app.wMain, &wp);
 			state = wp.showCmd;
-			::DestroyWindow(app.wEditor);
+			::DestroyWindow(app.m_wEditor);
 			::PostQuitMessage(0);
 		}
 		return 0;
@@ -1998,24 +2002,27 @@ LRESULT CALLBACK WndLocatorProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 }
 #endif
 
-void CTortoiseGitBlameView::SetupLexer(LPCSTR filename)
+void CTortoiseGitBlameView::SetupLexer(CString filename)
 {
-#if 0
-	char line[20];
-	const char * lineptr = _tcsrchr(filename, '.');
 
-	if (lineptr)
+	TCHAR *line;
+	//const char * lineptr = _tcsrchr(filename, '.');
+	int start=filename.ReverseFind(_T('.'));
+	if (start>0)
 	{
-		_tcscpy_s(line, 20, lineptr+1);
-		_tcslwr_s(line, 20);
+		//_tcscpy_s(line, 20, lineptr+1);
+		//_tcslwr_s(line, 20);
+		CString ext=filename.Right(filename.GetLength()-start-1);
+		line=ext.GetBuffer();
+
 		if ((_tcscmp(line, _T("py"))==0)||
 			(_tcscmp(line, _T("pyw"))==0)||
 			(_tcscmp(line, _T("pyw"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_PYTHON);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("and assert break class continue def del elif \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("and assert break class continue def del elif \
 else except exec finally for from global if import in is lambda None \
-not or pass print raise return try while yield"));
+not or pass print raise return try while yield")).GetBuffer()));
 			SetAStyle(SCE_P_DEFAULT, black);
 			SetAStyle(SCE_P_COMMENTLINE, darkGreen);
 			SetAStyle(SCE_P_NUMBER, RGB(0, 0x80, 0x80));
@@ -2043,15 +2050,15 @@ not or pass print raise return try while yield"));
 			(_tcscmp(line, _T("mak"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("and and_eq asm auto bitand bitor bool break \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("and and_eq asm auto bitand bitor bool break \
 case catch char class compl const const_cast continue \
 default delete do double dynamic_cast else enum explicit export extern false float for \
 friend goto if inline int long mutable namespace new not not_eq \
 operator or or_eq private protected public \
 register reinterpret_cast return short signed sizeof static static_cast struct switch \
 template this throw true try typedef typeid typename union unsigned using \
-virtual void volatile wchar_t while xor xor_eq"));
-			SendEditor(SCI_SETKEYWORDS, 3, (LPARAM)_T("a addindex addtogroup anchor arg attention \
+virtual void volatile wchar_t while xor xor_eq")).GetBuffer()));
+			SendEditor(SCI_SETKEYWORDS, 3, (LPARAM)(m_TextView.StringForControl(_T("a addindex addtogroup anchor arg attention \
 author b brief bug c class code date def defgroup deprecated dontinclude \
 e em endcode endhtmlonly endif endlatexonly endlink endverbatim enum example exception \
 f$ f[ f] file fn hideinitializer htmlinclude htmlonly \
@@ -2060,40 +2067,40 @@ mainpage name namespace nosubgrouping note overload \
 p page par param post pre ref relates remarks return retval \
 sa section see showinitializer since skip skipline struct subsection \
 test throw todo typedef union until \
-var verbatim verbinclude version warning weakgroup $ @ \\ & < > # { }"));
+var verbatim verbinclude version warning weakgroup $ @ \\ & < > # { }")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if (_tcscmp(line, _T("cs"))==0)
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("abstract as base bool break byte case catch char checked class \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("abstract as base bool break byte case catch char checked class \
 const continue decimal default delegate do double else enum \
 event explicit extern false finally fixed float for foreach goto if \
 implicit in int interface internal is lock long namespace new null \
 object operator out override params private protected public \
 readonly ref return sbyte sealed short sizeof stackalloc static \
 string struct switch this throw true try typeof uint ulong \
-unchecked unsafe ushort using virtual void while"));
+unchecked unsafe ushort using virtual void while")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if ((_tcscmp(line, _T("rc"))==0)||
 			(_tcscmp(line, _T("rc2"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON \
 BEGIN BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX CLASS \
 COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG DIALOGEX DISCARDABLE \
 EDITTEXT END EXSTYLE FONT GROUPBOX ICON LANGUAGE LISTBOX LTEXT \
 MENU MENUEX MENUITEM MESSAGETABLE POPUP \
 PUSHBUTTON RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 \
-STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY"));
+STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if ((_tcscmp(line, _T("idl"))==0)||
 			(_tcscmp(line, _T("odl"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("aggregatable allocate appobject arrays async async_uuid \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("aggregatable allocate appobject arrays async async_uuid \
 auto_handle \
 bindable boolean broadcast byte byte_count \
 call_as callback char coclass code comm_status \
@@ -2124,29 +2131,29 @@ shape short signed size_is small source strict_context_handle \
 string struct switch switch_is switch_type \
 transmit_as typedef \
 uidefault union unique unsigned user_marshal usesgetlasterror uuid \
-v1_enum vararg version void wchar_t wire_marshal"));
+v1_enum vararg version void wchar_t wire_marshal")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if (_tcscmp(line, _T("java"))==0)
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("abstract assert boolean break byte case catch char class \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("abstract assert boolean break byte case catch char class \
 const continue default do double else extends final finally float for future \
 generic goto if implements import inner instanceof int interface long \
 native new null outer package private protected public rest \
 return short static super switch synchronized this throw throws \
-transient try var void volatile while"));
+transient try var void volatile while")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if (_tcscmp(line, _T("js"))==0)
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("abstract boolean break byte case catch char class \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("abstract boolean break byte case catch char class \
 const continue debugger default delete do double else enum export extends \
 final finally float for function goto if implements import in instanceof \
 int interface long native new package private protected public \
 return short static super switch synchronized this throw throws \
-transient try typeof var void volatile while with"));
+transient try typeof var void volatile while with")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if ((_tcscmp(line, _T("pas"))==0)||
@@ -2154,13 +2161,13 @@ transient try typeof var void volatile while with"));
 			(_tcscmp(line, _T("pp"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_PASCAL);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("and array as begin case class const constructor \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("and array as begin case class const constructor \
 destructor div do downto else end except file finally \
 for function goto if implementation in inherited \
 interface is mod not object of on or packed \
 procedure program property raise record repeat \
 set shl shr then threadvar to try type unit \
-until uses var while with xor"));
+until uses var while with xor")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if ((_tcscmp(line, _T("as"))==0)||
@@ -2168,11 +2175,11 @@ until uses var while with xor"));
 			(_tcscmp(line, _T("jsfl"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_CPP);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("add and break case catch class continue default delete do \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("add and break case catch class continue default delete do \
 dynamic else eq extends false finally for function ge get gt if implements import in \
 instanceof interface intrinsic le lt ne new not null or private public return \
-set static super switch this throw true try typeof undefined var void while with"));
-			SendEditor(SCI_SETKEYWORDS, 1, (LPARAM)_T("Array Arguments Accessibility Boolean Button Camera Color \
+set static super switch this throw true try typeof undefined var void while with")).GetBuffer()));
+			SendEditor(SCI_SETKEYWORDS, 1, (LPARAM)(m_TextView.StringForControl(_T("Array Arguments Accessibility Boolean Button Camera Color \
 ContextMenu ContextMenuItem Date Error Function Key LoadVars LocalConnection Math \
 Microphone Mouse MovieClip MovieClipLoader NetConnection NetStream Number Object \
 PrintJob Selection SharedObject Sound Stage String StyleSheet System TextField \
@@ -2185,7 +2192,7 @@ loadVariables loadVariablesNum maxscroll mbchr mblength mbord mbsubstring MMExec
 NaN newline nextFrame nextScene on onClipEvent onUpdate ord parseFloat parseInt play \
 prevFrame prevScene print printAsBitmap printAsBitmapNum printNum random removeMovieClip \
 scroll set setInterval setProperty startDrag stop stopAllSounds stopDrag substring \
-targetPath tellTarget toggleHighQuality trace unescape unloadMovie unLoadMovieNum updateAfterEvent"));
+targetPath tellTarget toggleHighQuality trace unescape unloadMovie unLoadMovieNum updateAfterEvent")).GetBuffer()));
 			SetupCppLexer();
 		}
 		if ((_tcscmp(line, _T("html"))==0)||
@@ -2207,7 +2214,7 @@ targetPath tellTarget toggleHighQuality trace unescape unloadMovie unLoadMovieNu
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_HTML);
 			SendEditor(SCI_SETSTYLEBITS, 7);
-			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)_T("a abbr acronym address applet area b base basefont \
+			SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)(m_TextView.StringForControl(_T("a abbr acronym address applet area b base basefont \
 bdo big blockquote body br button caption center \
 cite code col colgroup dd del dfn dir div dl dt em \
 fieldset font form frame frameset h1 h2 h3 h4 h5 h6 \
@@ -2237,30 +2244,30 @@ scheme scope selected shape size span src standby start style \
 summary tabindex target text title topmargin type usemap \
 valign value valuetype version vlink vspace width \
 text password checkbox radio submit reset \
-file hidden image"));
-			SendEditor(SCI_SETKEYWORDS, 1, (LPARAM)_T("assign audio block break catch choice clear disconnect else elseif \
+file hidden image")).GetBuffer()));
+			SendEditor(SCI_SETKEYWORDS, 1, (LPARAM)(m_TextView.StringForControl(_T("assign audio block break catch choice clear disconnect else elseif \
 emphasis enumerate error exit field filled form goto grammar help \
 if initial link log menu meta noinput nomatch object option p paragraph \
 param phoneme prompt property prosody record reprompt return s say-as \
-script sentence subdialog submit throw transfer value var voice vxml"));
-			SendEditor(SCI_SETKEYWORDS, 2, (LPARAM)_T("accept age alphabet anchor application base beep bridge category charset \
+script sentence subdialog submit throw transfer value var voice vxml")).GetBuffer()));
+			SendEditor(SCI_SETKEYWORDS, 2, (LPARAM)(m_TextView.StringForControl(_T("accept age alphabet anchor application base beep bridge category charset \
 classid cond connecttimeout content contour count dest destexpr dtmf dtmfterm \
 duration enctype event eventexpr expr expritem fetchtimeout finalsilence \
 gender http-equiv id level maxage maxstale maxtime message messageexpr \
 method mime modal mode name namelist next nextitem ph pitch range rate \
 scope size sizeexpr skiplist slot src srcexpr sub time timeexpr timeout \
-transferaudio type value variant version volume xml:lang"));
-			SendEditor(SCI_SETKEYWORDS, 3, (LPARAM)_T("and assert break class continue def del elif \
+transferaudio type value variant version volume xml:lang")).GetBuffer()));
+			SendEditor(SCI_SETKEYWORDS, 3, (LPARAM)(m_TextView.StringForControl(_T("and assert break class continue def del elif \
 else except exec finally for from global if import in is lambda None \
-not or pass print raise return try while yield"));
-			SendEditor(SCI_SETKEYWORDS, 4, (LPARAM)_T("and argv as argc break case cfunction class continue declare default do \
+not or pass print raise return try while yield")).GetBuffer()));
+			SendEditor(SCI_SETKEYWORDS, 4, (LPARAM)(m_TextView.StringForControl(_T("and argv as argc break case cfunction class continue declare default do \
 die echo else elseif empty enddeclare endfor endforeach endif endswitch \
 endwhile e_all e_parse e_error e_warning eval exit extends false for \
 foreach function global http_cookie_vars http_get_vars http_post_vars \
 http_post_files http_env_vars http_server_vars if include include_once \
 list new not null old_function or parent php_os php_self php_version \
 print require require_once return static switch stdclass this true var \
-xor virtual while __file__ __line__ __sleep __wakeup"));
+xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 
 			SetAStyle(SCE_H_TAG, darkBlue);
 			SetAStyle(SCE_H_TAGUNKNOWN, red);
@@ -2293,14 +2300,14 @@ xor virtual while __file__ __line__ __sleep __wakeup"));
 			// Show the whole section of VBScript with light blue background
 			for (int bstyle=SCE_HB_DEFAULT; bstyle<=SCE_HB_STRINGEOL; bstyle++) {
 				SendEditor(SCI_STYLESETFONT, bstyle, 
-					reinterpret_cast<LPARAM>("Lucida Console"));
+					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, bstyle, lightBlue);
 				// This call extends the backround colour of the last style on the line to the edge of the window
 				SendEditor(SCI_STYLESETEOLFILLED, bstyle, 1);
 			}
 			SendEditor(SCI_STYLESETBACK, SCE_HB_STRINGEOL, RGB(0x7F,0x7F,0xFF));
 			SendEditor(SCI_STYLESETFONT, SCE_HB_COMMENTLINE, 
-				reinterpret_cast<LPARAM>("Lucida Console"));
+				reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 
 			SetAStyle(SCE_HBA_DEFAULT, black);
 			SetAStyle(SCE_HBA_COMMENTLINE, darkGreen);
@@ -2313,14 +2320,14 @@ xor virtual while __file__ __line__ __sleep __wakeup"));
 			// Show the whole section of ASP VBScript with bright yellow background
 			for (int bastyle=SCE_HBA_DEFAULT; bastyle<=SCE_HBA_STRINGEOL; bastyle++) {
 				SendEditor(SCI_STYLESETFONT, bastyle, 
-					reinterpret_cast<LPARAM>("Lucida Console"));
+					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, bastyle, RGB(0xFF, 0xFF, 0));
 				// This call extends the backround colour of the last style on the line to the edge of the window
 				SendEditor(SCI_STYLESETEOLFILLED, bastyle, 1);
 			}
 			SendEditor(SCI_STYLESETBACK, SCE_HBA_STRINGEOL, RGB(0xCF,0xCF,0x7F));
 			SendEditor(SCI_STYLESETFONT, SCE_HBA_COMMENTLINE, 
-				reinterpret_cast<LPARAM>("Lucida Console"));
+				reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 
 			// If there is no need to support embedded Javascript, the following code can be dropped.
 			// Javascript will still be correctly processed but will be displayed in just the default style.
@@ -2364,7 +2371,7 @@ xor virtual while __file__ __line__ __sleep __wakeup"));
 			// Show the whole section of Javascript with off white background
 			for (int jstyle=SCE_HJ_DEFAULT; jstyle<=SCE_HJ_SYMBOLS; jstyle++) {
 				SendEditor(SCI_STYLESETFONT, jstyle, 
-					reinterpret_cast<LPARAM>("Lucida Console"));
+					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, jstyle, offWhite);
 				SendEditor(SCI_STYLESETEOLFILLED, jstyle, 1);
 			}
@@ -2374,7 +2381,7 @@ xor virtual while __file__ __line__ __sleep __wakeup"));
 			// Show the whole section of Javascript with brown background
 			for (int jastyle=SCE_HJA_DEFAULT; jastyle<=SCE_HJA_SYMBOLS; jastyle++) {
 				SendEditor(SCI_STYLESETFONT, jastyle, 
-					reinterpret_cast<LPARAM>("Lucida Console"));
+					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, jastyle, RGB(0xDF, 0xDF, 0x7F));
 				SendEditor(SCI_STYLESETEOLFILLED, jastyle, 1);
 			}
@@ -2388,7 +2395,7 @@ xor virtual while __file__ __line__ __sleep __wakeup"));
 		SetupCppLexer();
 	}
 	SendEditor(SCI_COLOURISE, 0, -1);
-#endif
+
 }
 
 void CTortoiseGitBlameView::SetupCppLexer()
@@ -2407,4 +2414,46 @@ void CTortoiseGitBlameView::SetupCppLexer()
 	SetAStyle(SCE_C_IDENTIFIER, RGB(0, 0, 0));
 	SetAStyle(SCE_C_PREPROCESSOR, RGB(0x80, 0, 0));
 	SetAStyle(SCE_C_OPERATOR, RGB(0x80, 0x80, 0));
+}
+
+
+void CTortoiseGitBlameView::UpdateInfo()
+{
+	CString &data = GetDocument()->m_BlameData;
+	CString one;
+	int pos=0;
+
+	this->m_CommitHash.clear();
+	this->m_Authors.clear();
+	this->m_ID.clear();
+	CString line;
+	SendEditor(SCI_SETREADONLY, FALSE);
+	SendEditor(SCI_CLEARALL);
+	SendEditor(EM_EMPTYUNDOBUFFER);
+	SendEditor(SCI_SETSAVEPOINT);
+	SendEditor(SCI_CANCEL);
+	SendEditor(SCI_SETUNDOCOLLECTION, 0);
+
+	while( pos>=0 )
+	{
+		one=data.Tokenize(_T("\n"),pos);
+		m_CommitHash.push_back(one.Left(40));
+		int start=0;
+		start=one.Find(_T(')'),40);
+		if(start>0)
+		{
+			line=one.Right(one.GetLength()-start-2);
+			this->m_TextView.InsertText(line,true);
+		}
+	}
+
+	SetupLexer(GetDocument()->m_CurrentFileName);
+
+	SendEditor(SCI_SETUNDOCOLLECTION, 1);
+	SendEditor(EM_EMPTYUNDOBUFFER);
+	SendEditor(SCI_SETSAVEPOINT);
+	SendEditor(SCI_GOTOPOS, 0);
+	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
+	SendEditor(SCI_SETREADONLY, TRUE);
+
 }
