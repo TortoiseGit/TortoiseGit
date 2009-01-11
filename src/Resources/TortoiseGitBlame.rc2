@@ -12,5 +12,16 @@
 
 /////////////////////////////////////////////////////////////////////////////
 #include "..\version.h"
-//#include "..\\TortoiseShell\\resourceshell.rc"
+#include "..\\TortoiseShell\\resourceshell.rc"
 /////////////////////////////////////////////////////////////////////////////
+STRINGTABLE 
+BEGIN
+    IDS_LOG_GRAPH           "Graph"
+	IDS_LOG_ACTIONS         "Actions"
+	IDS_LOG_MESSAGE         "Message"
+    IDS_LOG_REVISION        "Revision"
+    IDS_LOG_AUTHOR          "Author"
+    IDS_LOG_DATE            "Date"
+	IDS_LOG_BUGIDS          "Bug-ID"
+END
+

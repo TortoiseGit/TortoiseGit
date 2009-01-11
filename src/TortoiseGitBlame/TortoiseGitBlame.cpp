@@ -92,7 +92,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	//  serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
-		IDR_MAINFRAME,
+		IDR_TORTOISE_GIT_BLAME_MAINFRAME,
 		RUNTIME_CLASS(CTortoiseGitBlameDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
 		RUNTIME_CLASS(CTortoiseGitBlameView));

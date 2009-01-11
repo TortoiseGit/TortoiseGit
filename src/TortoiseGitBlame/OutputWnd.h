@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "GitBlameLogList.h"
 /////////////////////////////////////////////////////////////////////////////
 // COutputList window
 
@@ -35,9 +36,10 @@ protected:
 
 	CMFCTabCtrl	m_wndTabs;
 
-	COutputList m_wndOutputBuild;
-	COutputList m_wndOutputDebug;
-	COutputList m_wndOutputFind;
+	CGitBlameLogList m_LogList;
+//	COutputList m_wndOutputBuild;
+//	COutputList m_wndOutputDebug;
+//	COutputList m_wndOutputFind;
 
 protected:
 	void FillBuildWindow();

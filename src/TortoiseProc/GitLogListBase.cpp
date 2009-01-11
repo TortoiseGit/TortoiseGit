@@ -67,6 +67,8 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
+	
+	m_bShowBugtraqColumn=0;
 
 	m_wcRev.m_CommitHash=GIT_REV_ZERO;
 	m_wcRev.m_Subject=_T("Working Copy");
