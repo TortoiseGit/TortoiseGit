@@ -27,7 +27,7 @@
 
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "GitLogList.h"
+#include "GitLogListBase.h"
 #include "GitRev.h"
 //#include "VssStyle.h"
 #include "IconMenu.h"

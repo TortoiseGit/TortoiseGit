@@ -574,11 +574,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -814,19 +814,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\open.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -930,19 +930,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File
@@ -1034,11 +1034,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
@@ -1133,11 +1133,19 @@
 				Name="Log"
 				>
 				<File
-					RelativePath=".\GitLogList.cpp"
+					RelativePath=".\GitLogList.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GitLogList.h"
+					RelativePath=".\GitLogListAction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GitLogListBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GitLogListBase.h"
 					>
 				</File>
 				<File
@@ -1262,26 +1270,6 @@
 				</File>
 				<File
 					RelativePath=".\Commands\CleanupCommand.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Switch"
-				>
-				<File
-					RelativePath=".\GitSwitchDlg.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\GitSwitchDlg.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\SwitchCommand.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\SwitchCommand.h"
 					>
 				</File>
 			</Filter>
@@ -1650,6 +1638,26 @@
 				</File>
 				<File
 					RelativePath=".\Settings\ToolAssocDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Switch"
+				>
+				<File
+					RelativePath=".\GitSwitchDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GitSwitchDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\SwitchCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\SwitchCommand.h"
 					>
 				</File>
 			</Filter>

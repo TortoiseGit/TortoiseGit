@@ -9,12 +9,11 @@
 
 */
 #include "stdafx.h"
-#include "TortoiseProc.h"
-#include "GitLogList.h"
+#include "GitLogListBase.h"
 #include "GitRev.h"
 //#include "VssStyle.h"
 #include "IconMenu.h"
-// CGitLogList
+// CGitLogListBase
 #include "cursor.h"
 #include "InputDlg.h"
 #include "PropDlg.h"
@@ -45,13 +44,13 @@
 //#include "RepositoryInfo.h"
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
+#include "..\\TortoiseShell\\Resource.h"
 
 
 
+IMPLEMENT_DYNAMIC(CGitLogListBase, CHintListCtrl)
 
-IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
-
-CGitLogList::CGitLogList():CHintListCtrl()
+CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	,m_regMaxBugIDColWidth(_T("Software\\TortoiseGit\\MaxBugIDColWidth"), 200)
 	,m_nSearchIndex(0)
 	,m_bNoDispUpdates(FALSE)
@@ -85,7 +84,7 @@ CGitLogList::CGitLogList():CHintListCtrl()
 	m_To=CTime::GetCurrentTime();
 }
 
-CGitLogList::~CGitLogList()
+CGitLogListBase::~CGitLogListBase()
 {
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 
@@ -106,7 +105,7 @@ CGitLogList::~CGitLogList()
 }
 
 
-BEGIN_MESSAGE_MAP(CGitLogList, CHintListCtrl)
+BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoLoglist)
 	ON_WM_CONTEXTMENU()
@@ -115,13 +114,13 @@ BEGIN_MESSAGE_MAP(CGitLogList, CHintListCtrl)
 	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
-int CGitLogList:: OnCreate(LPCREATESTRUCT lpCreateStruct)
+int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	PreSubclassWindow();
 	return CHintListCtrl::OnCreate(lpCreateStruct);
 }
 
-void CGitLogList::PreSubclassWindow()
+void CGitLogListBase::PreSubclassWindow()
 {
 	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
@@ -129,7 +128,7 @@ void CGitLogList::PreSubclassWindow()
 	CHintListCtrl::PreSubclassWindow();
 }
 
-void CGitLogList::InsertGitColumn()
+void CGitLogListBase::InsertGitColumn()
 {
 	CString temp;
 
@@ -179,7 +178,7 @@ void CGitLogList::InsertGitColumn()
 
 }
 
-void CGitLogList::ResizeAllListCtrlCols()
+void CGitLogListBase::ResizeAllListCtrlCols()
 {
 
 	const int nMinimumWidth = ICONITEMBORDER+16*4;
@@ -265,7 +264,7 @@ void CGitLogList::ResizeAllListCtrlCols()
 }
 
 
-BOOL CGitLogList::GetShortName(CString ref, CString &shortname,CString prefix)
+BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefix)
 {
 	TRACE(_T("%s %s\r\n"),ref,prefix);
 	if(ref.Left(prefix.GetLength()) ==  prefix)
@@ -277,7 +276,7 @@ BOOL CGitLogList::GetShortName(CString ref, CString &shortname,CString prefix)
 	}
 	return FALSE;
 }
-void CGitLogList::FillBackGround(HDC hdc, int Index,CRect &rect)
+void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 {	
 //	HBRUSH brush;
 	LVITEM   rItem;
@@ -351,7 +350,7 @@ void CGitLogList::FillBackGround(HDC hdc, int Index,CRect &rect)
 	}
 }
 
-void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
+void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 {
 	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
 	CRect rt=rect;
@@ -427,7 +426,7 @@ void CGitLogList::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	
 }
 
-void CGitLogList::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
+void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
                                       const COLORREF& col,int top
 									  )  
 {
@@ -582,7 +581,7 @@ void CGitLogList::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x
 	#undef R_CENTER
 }
 
-void CGitLogList::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
+void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 {
 	//todo unfinished
 //	return;
@@ -641,7 +640,7 @@ void CGitLogList::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	TRACE(_T("index %d %d\r\n"),index,data->m_Lanes.size());
 }
 
-void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
@@ -805,9 +804,9 @@ void CGitLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 }
 
-// CGitLogList message handlers
+// CGitLogListBase message handlers
 
-void CGitLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 
@@ -865,7 +864,7 @@ void CGitLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 }
 
-void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
+void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 
 	int selIndex = GetSelectionMark();
@@ -1073,455 +1072,15 @@ void CGitLogList::OnContextMenu(CWnd* pWnd, CPoint point)
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);
 //		SetPromptApp(&theApp);
-		theApp.DoWaitCursor(1);
-		bool bOpenWith = false;
-
-		switch (cmd)
-		{
-			case ID_GNUDIFF1:
-			{
-				CString tempfile=GetTempFile();
-				CString cmd;
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash);
-				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r1->m_Subject);
-			}
-			break;
-
-			case ID_GNUDIFF2:
-			{
-				CString tempfile=GetTempFile();
-				CString cmd;
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
-				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r2->m_CommitHash.Left(6));
-
-			}
-			break;
-
-		case ID_COMPARETWO:
-			{
-				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				CFileDiffDlg dlg;
-				dlg.SetDiff(NULL,*r1,*r2);
-				dlg.DoModal();
-				
-			}
-			break;
-		
-
-		case ID_COMPARE:
-			{
-				GitRev * r1 = &m_wcRev;
-				GitRev * r2 = pSelLogEntry;
-				CFileDiffDlg dlg;
-				dlg.SetDiff(NULL,*r1,*r2);
-				dlg.DoModal();
-
-				//user clicked on the menu item "compare with working copy"
-				//if (PromptShown())
-				//{
-				//	GitDiff diff(this, m_hWnd, true);
-				//	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-				//	diff.SetHEADPeg(m_LogRevision);
-				//	diff.ShowCompare(m_path, GitRev::REV_WC, m_path, revSelected);
-				//}
-				//else
-				//	CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_WC, m_path, revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-			}
-			break;
-
-		case ID_COMPAREWITHPREVIOUS:
-			{
-
-				CFileDiffDlg dlg;
-				
-				if(pSelLogEntry->m_ParentHash.size()>0)
-				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
-				{
-					dlg.SetDiff(NULL,pSelLogEntry->m_CommitHash,pSelLogEntry->m_ParentHash[0]);
-					dlg.DoModal();
-				}else
-				{
-					CMessageBox::Show(NULL,_T("No previous version"),_T("TortoiseGit"),MB_OK);	
-				}
-				//if (PromptShown())
-				//{
-				//	GitDiff diff(this, m_hWnd, true);
-				//	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-				//	diff.SetHEADPeg(m_LogRevision);
-				//	diff.ShowCompare(CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected);
-				//}
-				//else
-				//	CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-			}
-			break;
-		case ID_COPYCLIPBOARD:
-			{
-				CopySelectionToClipBoard();
-			}
-			break;
-		case ID_COPYHASH:
-			{
-				CopySelectionToClipBoard(TRUE);
-			}
-			break;
-		case ID_EXPORT:
-			CAppUtils::Export(&pSelLogEntry->m_CommitHash);
-			break;
-		case ID_CREATE_BRANCH:
-			CAppUtils::CreateBranchTag(FALSE,&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
-			Invalidate();			
-			break;
-		case ID_CREATE_TAG:
-			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
-			Invalidate();
-			break;
-		case ID_SWITCHTOREV:
-			CAppUtils::Switch(&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
-			Invalidate();
-			break;
-
-		default:
-			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
-			break;
-#if 0
 	
-		case ID_REVERTREV:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
-				CString msg;
-				msg.Format(IDS_LOG_REVERT_CONFIRM, m_path.GetWinPath());
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					CGitProgressDlg dlg;
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(m_path));
-					dlg.SetUrl(pathURL);
-					dlg.SetSecondUrl(pathURL);
-					revisionRanges.AdjustForMerge(true);
-					dlg.SetRevisionRanges(revisionRanges);
-					dlg.SetPegRevision(m_LogRevision);
-					dlg.DoModal();
-				}
-			}
-			break;
-		case ID_MERGEREV:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
-
-				CString path = m_path.GetWinPathString();
-				bool bGotSavePath = false;
-				if ((GetSelectedCount() == 1)&&(!m_path.IsDirectory()))
-				{
-					bGotSavePath = CAppUtils::FileOpenSave(path, NULL, IDS_LOG_MERGETO, IDS_COMMONFILEFILTER, true, GetSafeHwnd());
-				}
-				else
-				{
-					CBrowseFolder folderBrowser;
-					folderBrowser.SetInfo(CString(MAKEINTRESOURCE(IDS_LOG_MERGETO)));
-					bGotSavePath = (folderBrowser.Show(GetSafeHwnd(), path, path) == CBrowseFolder::OK);
-				}
-				if (bGotSavePath)
-				{
-					CGitProgressDlg dlg;
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(CTGitPath(path)));
-					dlg.SetUrl(pathURL);
-					dlg.SetSecondUrl(pathURL);
-					revisionRanges.AdjustForMerge(false);
-					dlg.SetRevisionRanges(revisionRanges);
-					dlg.SetPegRevision(m_LogRevision);
-					dlg.DoModal();
-				}
-			}
-			break;
-		case ID_REVERTTOREV:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
-
-				CString msg;
-				msg.Format(IDS_LOG_REVERTTOREV_CONFIRM, m_path.GetWinPath());
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					CGitProgressDlg dlg;
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(m_path));
-					dlg.SetUrl(pathURL);
-					dlg.SetSecondUrl(pathURL);
-					GitRevRangeArray revarray;
-					revarray.AddRevRange(GitRev::REV_HEAD, revSelected);
-					dlg.SetRevisionRanges(revarray);
-					dlg.SetPegRevision(m_LogRevision);
-					dlg.DoModal();
-				}
-			}
-			break;
-	
-
-	
-		case ID_BLAMECOMPARE:
-			{
-				//user clicked on the menu item "compare with working copy"
-				//now first get the revision which is selected
-				if (PromptShown())
-				{
-					GitDiff diff(this, this->m_hWnd, true);
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(m_path, GitRev::REV_BASE, m_path, revSelected, GitRev(), false, true);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_BASE, m_path, revSelected, GitRev(), m_LogRevision, false, false, true);
-			}
-			break;
-		case ID_BLAMETWO:
-			{
-				//user clicked on the menu item "compare and blame revisions"
-				if (PromptShown())
-				{
-					GitDiff diff(this, this->m_hWnd, true);
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTGitPath(pathURL), revSelected2, CTGitPath(pathURL), revSelected, GitRev(), false, true);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revSelected2, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
-			}
-			break;
-		case ID_BLAMEWITHPREVIOUS:
-			{
-				//user clicked on the menu item "Compare and Blame with previous revision"
-				if (PromptShown())
-				{
-					GitDiff diff(this, this->m_hWnd, true);
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), false, true);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
-			}
-			break;
+		this->ContextMenuAction(cmd, FirstSelect, LastSelect);
 		
-		case ID_OPENWITH:
-			bOpenWith = true;
-		case ID_OPEN:
-			{
-				CProgressDlg progDlg;
-				progDlg.SetTitle(IDS_APPNAME);
-				progDlg.SetAnimation(IDR_DOWNLOAD);
-				CString sInfoLine;
-				sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, m_path.GetWinPath(), (LPCTSTR)revSelected.ToString());
-				progDlg.SetLine(1, sInfoLine, true);
-				SetAndClearProgressInfo(&progDlg);
-				progDlg.ShowModeless(m_hWnd);
-				CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, m_path, revSelected);
-				bool bSuccess = true;
-				if (!Cat(m_path, GitRev(GitRev::REV_HEAD), revSelected, tempfile))
-				{
-					bSuccess = false;
-					// try again, but with the selected revision as the peg revision
-					if (!Cat(m_path, revSelected, revSelected, tempfile))
-					{
-						progDlg.Stop();
-						SetAndClearProgressInfo((HWND)NULL);
-						CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-						EnableOKButton();
-						break;
-					}
-					bSuccess = true;
-				}
-				if (bSuccess)
-				{
-					progDlg.Stop();
-					SetAndClearProgressInfo((HWND)NULL);
-					SetFileAttributes(tempfile.GetWinPath(), FILE_ATTRIBUTE_READONLY);
-					int ret = 0;
-					if (!bOpenWith)
-						ret = (int)ShellExecute(this->m_hWnd, NULL, tempfile.GetWinPath(), NULL, NULL, SW_SHOWNORMAL);
-					if ((ret <= HINSTANCE_ERROR)||bOpenWith)
-					{
-						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-						cmd += tempfile.GetWinPathString() + _T(" ");
-						CAppUtils::LaunchApplication(cmd, NULL, false);
-					}
-				}
-			}
-			break;
-		case ID_BLAME:
-			{
-				CBlameDlg dlg;
-				dlg.EndRev = revSelected;
-				if (dlg.DoModal() == IDOK)
-				{
-					CBlame blame;
-					CString tempfile;
-					CString logfile;
-					tempfile = blame.BlameToTempFile(m_path, dlg.StartRev, dlg.EndRev, dlg.EndRev, logfile, _T(""), dlg.m_bIncludeMerge, TRUE, TRUE);
-					if (!tempfile.IsEmpty())
-					{
-						if (dlg.m_bTextView)
-						{
-							//open the default text editor for the result file
-							CAppUtils::StartTextViewer(tempfile);
-						}
-						else
-						{
-							CString sParams = _T("/path:\"") + m_path.GetGitPathString() + _T("\" ");
-							if(!CAppUtils::LaunchTortoiseBlame(tempfile, logfile, CPathUtils::GetFileNameFromPath(m_path.GetFileOrDirectoryName()),sParams))
-							{
-								break;
-							}
-						}
-					}
-					else
-					{
-						CMessageBox::Show(this->m_hWnd, blame.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					}
-				}
-			}
-			break;
-		case ID_UPDATE:
-			{
-				CString sCmd;
-				CString url = _T("tgit:")+pathURL;
-				sCmd.Format(_T("%s /command:update /path:\"%s\" /rev:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)m_path.GetWinPath(), (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
-		case ID_FINDENTRY:
-			{
-				m_nSearchIndex = GetSelectionMark();
-				if (m_nSearchIndex < 0)
-					m_nSearchIndex = 0;
-				if (m_pFindDialog)
-				{
-					break;
-				}
-				else
-				{
-					m_pFindDialog = new CFindReplaceDialog();
-					m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
-				}
-			}
-			break;
-		case ID_REPOBROWSE:
-			{
-				CString sCmd;
-				sCmd.Format(_T("%s /command:repobrowser /path:\"%s\" /rev:%s"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)pathURL, (LPCTSTR)revSelected.ToString());
-
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
-		case ID_EDITLOG:
-			{
-				EditLogMessage(selIndex);
-			}
-			break;
-		case ID_EDITAUTHOR:
-			{
-				EditAuthor(selEntries);
-			}
-			break;
-		case ID_REVPROPS:
-			{
-				CEditPropertiesDlg dlg;
-				dlg.SetProjectProperties(&m_ProjectProperties);
-				CTGitPathList escapedlist;
-				dlg.SetPathList(CTGitPathList(CTGitPath(pathURL)));
-				dlg.SetRevision(revSelected);
-				dlg.RevProps(true);
-				dlg.DoModal();
-			}
-			break;
-		
-		case ID_EXPORT:
-			{
-				CString sCmd;
-				sCmd.Format(_T("%s /command:export /path:\"%s\" /revision:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)pathURL, (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
-		case ID_CHECKOUT:
-			{
-				CString sCmd;
-				CString url = _T("tgit:")+pathURL;
-				sCmd.Format(_T("%s /command:checkout /url:\"%s\" /revision:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)url, (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
-		case ID_VIEWREV:
-			{
-				CString url = m_ProjectProperties.sWebViewerRev;
-				url = GetAbsoluteUrlFromRelativeUrl(url);
-				url.Replace(_T("%REVISION%"), revSelected.ToString());
-				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
-			}
-			break;
-		case ID_VIEWPATHREV:
-			{
-				CString relurl = pathURL;
-				CString sRoot = GetRepositoryRoot(CTGitPath(relurl));
-				relurl = relurl.Mid(sRoot.GetLength());
-				CString url = m_ProjectProperties.sWebViewerPathRev;
-				url = GetAbsoluteUrlFromRelativeUrl(url);
-				url.Replace(_T("%REVISION%"), revSelected.ToString());
-				url.Replace(_T("%PATH%"), relurl);
-				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
-			}
-			break;
-#endif
-		
-		} // switch (cmd)
-		theApp.DoWaitCursor(-1);
 //		EnableOKButton();
 	} // if (popup.CreatePopupMenu())
 
 }
 
-bool CGitLogList::IsSelectionContinuous()
+bool CGitLogListBase::IsSelectionContinuous()
 {
 	if ( GetSelectedCount()==1 )
 	{
@@ -1549,7 +1108,7 @@ bool CGitLogList::IsSelectionContinuous()
 	return bContinuous;
 }
 
-void CGitLogList::CopySelectionToClipBoard(bool HashOnly)
+void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 {
 
 	CString sClipdata;
@@ -1600,7 +1159,7 @@ void CGitLogList::CopySelectionToClipBoard(bool HashOnly)
 
 }
 
-void CGitLogList::DiffSelectedRevWithPrevious()
+void CGitLogListBase::DiffSelectedRevWithPrevious()
 {
 #if 0
 	if (m_bThreadRunning)
@@ -1662,7 +1221,7 @@ void CGitLogList::DiffSelectedRevWithPrevious()
 #endif
 }
 
-void CGitLogList::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVFINDITEM pFindInfo = reinterpret_cast<LPNMLVFINDITEM>(pNMHDR);
 	*pResult = -1;
@@ -1725,7 +1284,7 @@ void CGitLogList::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = -1;
 }
 
-int CGitLogList::FillGitShortLog()
+int CGitLogListBase::FillGitShortLog()
 {
 	ClearText();
 
@@ -1743,7 +1302,7 @@ int CGitLogList::FillGitShortLog()
 	return 0;
 }
 
-BOOL CGitLogList::PreTranslateMessage(MSG* pMsg)
+BOOL CGitLogListBase::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
 	BOOL bSkipAccelerator = ( pMsg->message == WM_KEYDOWN && pMsg->wParam=='C' && (GetFocus()==GetDlgItem(IDC_MSGVIEW) || GetFocus()==GetDlgItem(IDC_SEARCHEDIT) ) && GetKeyState(VK_CONTROL)&0x8000 );
@@ -1779,7 +1338,7 @@ BOOL CGitLogList::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-void CGitLogList::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
+void CGitLogListBase::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	// a double click on an entry in the revision list has happened
 	*pResult = 0;
@@ -1788,7 +1347,7 @@ void CGitLogList::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	  DiffSelectedRevWithPrevious();
 }
 
-int CGitLogList::FetchLogAsync(CALLBACK_PROCESS *proc,void * data)
+int CGitLogListBase::FetchLogAsync(CALLBACK_PROCESS *proc,void * data)
 {
 	m_ProcCallBack=proc;
 	m_ProcData=data;
@@ -1806,12 +1365,12 @@ int CGitLogList::FetchLogAsync(CALLBACK_PROCESS *proc,void * data)
 }
 
 //this is the thread function which calls the subversion function
-UINT CGitLogList::LogThreadEntry(LPVOID pVoid)
+UINT CGitLogListBase::LogThreadEntry(LPVOID pVoid)
 {
-	return ((CGitLogList*)pVoid)->LogThread();
+	return ((CGitLogListBase*)pVoid)->LogThread();
 }
 
-void CGitLogList::GetTimeRange(CTime &oldest, CTime &latest)
+void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 {
 	//CTime time;
 	oldest=CTime::GetCurrentTime();
@@ -1827,7 +1386,7 @@ void CGitLogList::GetTimeRange(CTime &oldest, CTime &latest)
 	}
 }
 
-UINT CGitLogList::LogThread()
+UINT CGitLogListBase::LogThread()
 {
 
 	if(m_ProcCallBack)
@@ -1912,7 +1471,7 @@ UINT CGitLogList::LogThread()
 	return 0;
 }
 
-void CGitLogList::Refresh()
+void CGitLogListBase::Refresh()
 {
 	if(!m_bThreadRunning)
 	{
@@ -1931,7 +1490,7 @@ void CGitLogList::Refresh()
 		m_To=CTime::GetCurrentTime();
 	}
 }
-bool CGitLogList::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
+bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
 {
 	try
 	{
@@ -1945,7 +1504,7 @@ bool CGitLogList::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMat
 	return false;
 }
 
-void CGitLogList::RecalculateShownList(CPtrArray * pShownlist)
+void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 {
 
 	pShownlist->RemoveAll();
@@ -2133,7 +1692,7 @@ void CGitLogList::RecalculateShownList(CPtrArray * pShownlist)
 
 }
 
-BOOL CGitLogList::IsEntryInDateRange(int i)
+BOOL CGitLogListBase::IsEntryInDateRange(int i)
 {
 	__time64_t time = m_logEntries[i].m_AuthorDate.GetTime();
 	if ((time >= m_From.GetTime())&&(time <= m_To.GetTime()))
@@ -2143,7 +1702,7 @@ BOOL CGitLogList::IsEntryInDateRange(int i)
 
 //	return TRUE;
 }
-void CGitLogList::StartFilter()
+void CGitLogListBase::StartFilter()
 {
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	RecalculateShownList(&m_arShownList);
@@ -2158,7 +1717,7 @@ void CGitLogList::StartFilter()
 	SetRedraw(true);
 	Invalidate();
 }
-void CGitLogList::RemoveFilter()
+void CGitLogListBase::RemoveFilter()
 {
 
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);

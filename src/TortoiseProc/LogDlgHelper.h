@@ -22,6 +22,7 @@
 #include "GitStatus.h"
 #include "ILogReceiver.h"
 #include "lanes.h"
+#include <set> 
 
 class CLogDlg;
 

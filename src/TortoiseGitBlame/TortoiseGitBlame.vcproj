@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell"
+				AdditionalIncludeDirectories="..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -128,7 +128,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell"
+				AdditionalIncludeDirectories="..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -190,6 +190,42 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\GitBlameLogList.h"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\GitLogListBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\GitLogListBase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\lanes.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\lanes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\LogDataVector.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\LogDlgHelper.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\LogDlgHelper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LogListBlameAction.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\MainFrm.cpp"
 				>
@@ -351,11 +387,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TortoiseGitBlame.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\res\TortoiseGitBlame.rc2"
+				RelativePath="..\Resources\TortoiseGitBlame.rc"
 				>
 			</File>
 			<File
