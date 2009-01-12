@@ -2519,6 +2519,10 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 			this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
 															LVIS_SELECTED,
 															LVIS_SELECTED);
+
+			GitRev *pRev;
+			pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
+			this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 		}
 		else
 		{

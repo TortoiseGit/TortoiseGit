@@ -160,22 +160,91 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
+	
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Basic Info"));
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Appearance"));
+	
+	m_CommitHash = new CMFCPropertyGridProperty(
+				_T("Commit Hash"), 
+				_T(""),
+				_T("Commit Hash")
+				);
+	pGroup1->AddSubItem(m_CommitHash);
 
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("3D Look"), (_variant_t) false, _T("Specifies the window's font will be non-bold and controls will have a 3D border")));
+	m_AuthorName = new CMFCPropertyGridProperty(
+				_T("Author"), 
+				_T(""),
+				_T("Author")
+				);
+	pGroup1->AddSubItem(m_AuthorName);
 
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Border"), _T("Dialog Frame"), _T("One of: None, Thin, Resizable, or Dialog Frame"));
-	pProp->AddOption(_T("None"));
-	pProp->AddOption(_T("Thin"));
-	pProp->AddOption(_T("Resizable"));
-	pProp->AddOption(_T("Dialog Frame"));
-	pProp->AllowEdit(FALSE);
+	m_AuthorDate = new CMFCPropertyGridProperty(
+				_T("Author Date"), 
+				_T(""),
+				_T("Author Date")
+				);
+	pGroup1->AddSubItem(m_AuthorDate);
 
-	pGroup1->AddSubItem(pProp);
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Caption"), (_variant_t) _T("About"), _T("Specifies the text that will be displayed in the window's title bar")));
+	m_AuthorEmail= new CMFCPropertyGridProperty(
+				_T("Author Email"), 
+				_T(""),
+				_T("Author Email")
+				);
+	pGroup1->AddSubItem(m_AuthorEmail);
+
+	m_CommitterName = new CMFCPropertyGridProperty(
+				_T("Committer Name"), 
+				_T(""),
+				_T("Committer Name")
+				);
+	pGroup1->AddSubItem(m_CommitterName);
+
+	m_CommitterEmail =new CMFCPropertyGridProperty(
+				_T("Committer Email"), 
+				_T(""),
+				_T("Committer Email")
+				);
+	pGroup1->AddSubItem(m_CommitterEmail);
+
+	m_CommitterDate = new CMFCPropertyGridProperty(
+				_T("Committer Date"), 
+				_T(""),
+				_T("Committer Date")
+				);;
+	pGroup1->AddSubItem(m_CommitterDate);
+
+	m_Subject = new CMFCPropertyGridProperty(
+				_T("Subject"), 
+				_T(""),
+				_T("Subject")
+				);;;
+	pGroup1->AddSubItem(m_Subject);
+
+	m_Body = new CMFCPropertyGridProperty(
+				_T("Body"), 
+				_T(""),
+				_T("Body")
+				);;;;
+	pGroup1->AddSubItem(m_Body);
+
+	for(int i=0;i<pGroup1->GetSubItemsCount();i++)
+	{
+		pGroup1->GetSubItem(i)->AllowEdit(FALSE);
+	}
+
+	//std::vector<CMFCPropertyGridProperty*> m_ParentHash;
+	//std::vector<CMFCPropertyGridProperty*> m_ParentSubject;
 
 	m_wndPropList.AddProperty(pGroup1);
+	m_BaseInfoGroup=pGroup1;
+
+	m_ParentGroup=new CMFCPropertyGridProperty(_T("Parent"));
+
+	m_wndPropList.AddProperty(m_ParentGroup);
+#if 0
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Caption"), (_variant_t) _T("About"), _T("Specifies the text that will be displayed in the window's title bar")));
+
+	
 
 	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("Window Size"), 0, TRUE);
 
@@ -233,6 +302,7 @@ void CPropertiesWnd::InitPropList()
 
 	pGroup4->Expand(FALSE);
 	m_wndPropList.AddProperty(pGroup4);
+#endif
 }
 
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
@@ -266,4 +336,81 @@ void CPropertiesWnd::SetPropListFont()
 	m_fntPropList.CreateFontIndirect(&lf);
 
 	m_wndPropList.SetFont(&m_fntPropList);
+}
+void CPropertiesWnd::RemoveParent()
+{
+	for(int i=0;i<m_ParentGroup->GetSubItemsCount();i++)
+	{
+		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
+		m_ParentGroup->RemoveSubItem(p);
+	}
+	
+}
+void CPropertiesWnd::UpdateProperties(GitRev *rev)
+{
+	if(rev)
+	{
+		m_CommitHash->SetValue(rev->m_CommitHash);
+		m_AuthorName->SetValue(rev->m_AuthorName);
+		m_AuthorDate->SetValue(rev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")));
+		m_AuthorEmail->SetValue(rev->m_AuthorEmail);	
+
+		m_CommitterName->SetValue(rev->m_CommitterName);
+		m_CommitterEmail->SetValue(rev->m_CommitterEmail);
+		m_CommitterDate->SetValue(rev->m_CommitterDate.Format(_T("%Y-%m-%d %H:%M")));
+
+		m_Subject->SetValue(rev->m_Subject);
+		m_Body->SetValue(rev->m_Body);
+
+		RemoveParent();
+
+		m_ParentGroup;
+	
+		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
+
+		for(int i=0;i<rev->m_ParentHash.size();i++)
+		{
+			CString str;
+			CString parentsubject;
+			int index=pLogEntry->m_HashMap[rev->m_ParentHash[i]];
+			if(index>=0)
+				parentsubject=pLogEntry->at(index).m_Subject;
+
+			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i],parentsubject);
+			
+			CMFCPropertyGridProperty*p=new CMFCPropertyGridProperty(
+											rev->m_ParentHash[i].Left(8), 
+												parentsubject,
+												str
+											);
+			m_ParentGroup->AddSubItem(p);
+			m_ParentGroup->Expand();
+		}
+		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
+			m_BaseInfoGroup->GetSubItem(i)->SetDescription(m_BaseInfoGroup->GetSubItem(i)->GetValue());
+
+	}else
+	{
+		m_CommitHash->SetValue(_T(""));
+		m_AuthorName->SetValue(_T(""));
+		m_AuthorDate->SetValue(_T(""));
+		m_AuthorEmail->SetValue(_T(""));
+
+		m_CommitterName->SetValue(_T(""));
+		m_CommitterEmail->SetValue(_T(""));
+		m_CommitterDate->SetValue(_T(""));
+
+		m_Subject->SetValue(_T(""));
+		m_Body->SetValue(_T(""));
+
+		RemoveParent();
+		//m_ParentGroup;
+
+		//m_ParentHash->SetValue(_T(""));
+		//m_ParentSubject->SetValue(_T(""));		
+		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
+			m_BaseInfoGroup->GetSubItem(i)->SetDescription(_T(""));
+	}
+	this->Invalidate();
+	m_wndPropList.Invalidate();
 }

@@ -33,14 +33,14 @@ public:
 #endif
 
 	COutputWnd        m_wndOutput;
-
+	CPropertiesWnd    m_wndProperties;
 protected:  // control bar embedded members
 	CMFCMenuBar       m_wndMenuBar;
 	CMFCToolBar       m_wndToolBar;
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
 	
-	CPropertiesWnd    m_wndProperties;
+
 
 // Generated message map functions
 protected:

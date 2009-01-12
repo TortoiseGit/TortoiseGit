@@ -431,11 +431,11 @@ BEGIN
 	IDS_STATUS_PANE2        "Pane 2"
 	IDS_TOOLBAR_STANDARD    "Standard"
 	IDS_TOOLBAR_CUSTOMIZE   "Customize..."
-	IDS_OUTPUT_WND          "Output"
+	IDS_OUTPUT_WND          "Git Revision List"
 	IDS_BUILD_TAB           "Build"
 	IDS_DEBUG_TAB           "Debug"
 	IDS_FIND_TAB            "Find"
-	IDS_PROPERTIES_WND      "Properties"
+	IDS_PROPERTIES_WND      "Commit Info"
 	IDS_EDIT_MENU           "Edit"
 END
 

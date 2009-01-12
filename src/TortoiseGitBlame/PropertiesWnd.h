@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "GitRev.h"
+
 class CPropertiesToolBar : public CMFCToolBar
 {
 public:
@@ -28,12 +30,16 @@ public:
 		m_wndPropList.SetGroupNameFullWidth(bSet);
 	}
 
+	// rev=NULL, means clear properties info;
+	void UpdateProperties(GitRev *rev=NULL);
+
 protected:
 	CFont m_fntPropList;
 	CComboBox m_wndObjectCombo;
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
 
+	void RemoveParent();
 // Implementation
 public:
 	virtual ~CPropertiesWnd();
@@ -56,5 +62,24 @@ protected:
 
 	void InitPropList();
 	void SetPropListFont();
+
+	CMFCPropertyGridProperty* m_CommitHash;
+	CMFCPropertyGridProperty* m_AuthorName;
+	CMFCPropertyGridProperty* m_AuthorDate;
+	CMFCPropertyGridProperty* m_AuthorEmail;
+
+	CMFCPropertyGridProperty* m_CommitterName;
+	CMFCPropertyGridProperty* m_CommitterEmail;
+	CMFCPropertyGridProperty* m_CommitterDate;
+
+	CMFCPropertyGridProperty* m_Subject;
+	CMFCPropertyGridProperty* m_Body;
+
+	CMFCPropertyGridProperty* m_ParentGroup;
+	CMFCPropertyGridProperty* m_BaseInfoGroup;
+
+	std::vector<CMFCPropertyGridProperty*> m_ParentHash;
+	std::vector<CMFCPropertyGridProperty*> m_ParentSubject;
+
 };
 
