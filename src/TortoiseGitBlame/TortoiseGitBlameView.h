@@ -23,7 +23,7 @@ const int blockSize = 128 * 1024;
 
 #define BLAMESPACE 20
 #define HEADER_HEIGHT 18
-#define LOCATOR_WIDTH 20
+#define LOCATOR_WIDTH 10
 
 #define MAX_LOG_LENGTH 2000
 
@@ -76,6 +76,9 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpcs);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnSciPainted(NMHDR*, LRESULT*);
+	afx_msg void OnLButtonDown(UINT nFlags,CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags,CPoint point){OnLButtonDown(nFlags,point);CView::OnRButtonDown(nFlags,point);};
+	afx_msg void OnSciGetBkColor(NMHDR*, LRESULT*);
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -193,6 +196,8 @@ protected:
 
 	CRegStdWORD					m_regOldLinesColor;
 	CRegStdWORD					m_regNewLinesColor;
+
+	CGitBlameLogList * GetLogList();
 
 };
 

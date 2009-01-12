@@ -42,7 +42,13 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEHOVER()
+	ON_WM_MOUSELEAVE()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_RBUTTONDOWN()
 	ON_NOTIFY(SCN_PAINTED,0,OnSciPainted)
+	ON_NOTIFY(SCN_GETBKCOLOR,0,OnSciGetBkColor)
 END_MESSAGE_MAP()
 
 // CTortoiseGitBlameView construction/destruction
@@ -102,7 +108,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 
 	CRect rect,rect1;
 	this->GetWindowRect(&rect1);
-	rect.left=m_blamewidth;
+	rect.left=m_blamewidth+LOCATOR_WIDTH;
 	rect.right=rect.Width();
 	rect.top=0;
 	rect.bottom=rect.Height();
@@ -146,6 +152,7 @@ void CTortoiseGitBlameView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	DrawBlame(this->GetDC()->m_hDC);
+	DrawLocatorBar(this->GetDC()->m_hDC);
 	// TODO: add draw code for native data here
 }
 
@@ -1121,10 +1128,11 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			str.Format(_T("%d.%s"),m_ID[i],m_Authors[i]);
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
-			rc.top=Y;rc.left=0;		
+			rc.top=Y;
+			rc.left=LOCATOR_WIDTH;		
 			rc.bottom=Y+height;
-			rc.right = rc.left + 100;
-			::ExtTextOut(hDC, 0, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+			rc.right = rc.left + m_blamewidth;
+			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 			int Left = m_revwidth;
 #if 0
 			if (ShowDate)
@@ -1227,7 +1235,6 @@ void CTortoiseGitBlameView::DrawHeader(HDC hDC)
 
 void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 {
-#if 0
 	if (hDC == NULL)
 		return;
 
@@ -1237,13 +1244,17 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	COLORREF blackColor = GetSysColor(COLOR_WINDOWTEXT);
 
 	RECT rc;
-	::GetClientRect(wLocator, &rc);
+	//::GetClientRect(wLocator, &rc);
+	this->GetClientRect(&rc);
+
+	rc.right=LOCATOR_WIDTH;
+
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;
 	LONG currentLine = 0;
 
 	// draw the colored bar
-	for (std::vector<LONG>::const_iterator it = revs.begin(); it != revs.end(); ++it)
+	for (std::vector<LONG>::const_iterator it = m_ID.begin(); it != m_ID.end(); ++it)
 	{
 		currentLine++;
 		// get the line color
@@ -1254,23 +1265,23 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		}
 		SetBkColor(hDC, cr);
 		lineRect.top = Y;
-		lineRect.bottom = (currentLine * height / revs.size());
+		lineRect.bottom = (currentLine * height / m_ID.size());
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 		Y = lineRect.bottom;
 	}
 
-	if (revs.size())
+	if (m_ID.size())
 	{
 		// now draw two lines indicating the scroll position of the source view
 		SetBkColor(hDC, blackColor);
-		lineRect.top = line * height / revs.size();
+		lineRect.top = line * height / m_ID.size();
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
-		lineRect.top = (line + linesonscreen) * height / revs.size();
+		lineRect.top = (line + linesonscreen) * height / m_ID.size();
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 	}
-#endif
+
 }
 
 void CTortoiseGitBlameView::StringExpand(LPSTR str)
@@ -1901,34 +1912,6 @@ LRESULT CALLBACK WndBlameProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 		// fall through
 	case WM_LBUTTONDOWN:
 		{
-			int y = ((int)(short)HIWORD(lParam));
-			LONG_PTR line = app.SendEditor(SCI_GETFIRSTVISIBLELINE);
-			LONG_PTR height = app.SendEditor(SCI_TEXTHEIGHT);
-			line = line + (y/height);
-			if (line < (LONG)app.revs.size())
-			{
-				app.SetSelectedLine(line);
-				if (app.revs[line] != app.m_selectedrev)
-				{
-					app.m_selectedrev = app.revs[line];
-					app.m_selectedorigrev = app.origrevs[line];
-					app.m_selectedauthor = app.authors[line];
-					app.m_selecteddate = app.dates[line];
-				}
-				else
-				{
-					app.m_selectedauthor.clear();
-					app.m_selecteddate.clear();
-					app.m_selectedrev = -2;
-					app.m_selectedorigrev = -2;
-				}
-				::InvalidateRect(app.wBlame, NULL, FALSE);
-			}
-			else
-			{
-				app.SetSelectedLine(-1);
-			}
-		}
 		break;
 	case WM_SETFOCUS:
 		::SetFocus(app.wBlame);
@@ -2474,7 +2457,7 @@ void CTortoiseGitBlameView::UpdateInfo()
 			this->m_TextView.InsertText(line,true);
 		}
 		int id=pRevs->m_HashMap[one.Left(40)];		
-		if(id>=0)
+		if(id>=0 && id <GetLogData()->size())
 		{
 			m_ID.push_back(pRevs->size()-id);
 			m_Authors.push_back(pRevs->at(id).m_AuthorName);
@@ -2493,9 +2476,17 @@ void CTortoiseGitBlameView::UpdateInfo()
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 	SendEditor(SCI_SETREADONLY, TRUE);
 
+	m_lowestrev=1;
+	m_highestrev=this->GetLogData()->size();
 
 	this->Invalidate();
 }
+
+CGitBlameLogList * CTortoiseGitBlameView::GetLogList()
+{
+	return &(GetDocument()->GetMainFrame()->m_wndOutput.m_LogList);
+}
+
 
 CLogDataVector * CTortoiseGitBlameView::GetLogData()
 {
@@ -2505,4 +2496,62 @@ CLogDataVector * CTortoiseGitBlameView::GetLogData()
 void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 {
 	this->Invalidate();
+}
+
+void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
+{
+
+	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
+	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
+	line = line + (point.y/height);
+			
+	if (line < (LONG)m_CommitHash.size())
+	{
+		SetSelectedLine(line);
+		if (m_CommitHash[line] != m_SelectedHash)
+		{
+			m_SelectedHash = m_CommitHash[line];
+//			app.m_selectedorigrev = app.origrevs[line];
+//			app.m_selectedauthor = app.authors[line];
+//			app.m_selecteddate = app.dates[line];
+			
+			
+			this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
+															LVIS_SELECTED,
+															LVIS_SELECTED);
+		}
+		else
+		{
+			m_SelectedHash.Empty();
+//			app.m_selecteddate.clear();
+//			app.m_selectedrev = -2;
+//			app.m_selectedorigrev = -2;
+		}
+		//::InvalidateRect( NULL, FALSE);
+		this->Invalidate();
+		this->m_TextView.Invalidate();
+		
+	}
+	else
+	{
+		SetSelectedLine(-1);
+	}
+		
+	CView::OnLButtonDown(nFlags,point);
+}
+
+void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* result)
+{
+
+	SCNotification *notification=reinterpret_cast<SCNotification *>(hdr);
+
+	if ((m_colorage)&&(notification->line < (int)m_CommitHash.size()))
+	{
+		if(m_CommitHash[notification->line] == this->m_SelectedHash )
+			notification->lParam = m_selectedauthorcolor;
+		else
+			notification->lParam = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (m_ID[notification->line]-m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
+	}
+
+
 }

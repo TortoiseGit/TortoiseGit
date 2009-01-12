@@ -46,7 +46,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// Create output panes:
 	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP;
+	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL ;
 
 	if (! m_LogList.Create(dwStyle,rectDummy,&m_wndTabs,2) )
 	{
@@ -96,6 +96,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	FillDebugWindow();
 //	FillFindWindow();
 
+	this->SetWindowTextW(_T("Git Log"));
 	return 0;
 }
 
