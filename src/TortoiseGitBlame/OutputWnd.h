@@ -31,7 +31,7 @@ public:
 	COutputWnd();
 
 // Attributes
-protected:
+public:
 	CFont m_Font;
 
 	CMFCTabCtrl	m_wndTabs;

@@ -24,6 +24,7 @@
 
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -82,6 +83,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_lowestrev = LONG_MAX;
 	m_highestrev = 0;
 	m_colorage = true;
+
+	m_bShowLine=true;
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -107,6 +110,8 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_TextView.ShowWindow( SW_SHOW);
 	//m_TextView.InsertText(_T("Abdadfasdf"));
 	m_wEditor = m_TextView.m_hWnd;
+	CreateFont();
+	InitialiseEditor();
 	return CView::OnCreate(lpcs);
 }
 
@@ -139,6 +144,7 @@ void CTortoiseGitBlameView::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
+	DrawBlame(this->GetDC()->m_hDC);
 	// TODO: add draw code for native data here
 }
 
@@ -518,28 +524,32 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 	return TRUE;
 }
 
-void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face) 
+void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, CString *face) 
 {
 	SendEditor(SCI_STYLESETFORE, style, fore);
 	SendEditor(SCI_STYLESETBACK, style, back);
 	if (size >= 1)
 		SendEditor(SCI_STYLESETSIZE, style, size);
 	if (face) 
-		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
+		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(this->m_TextView.StringForControl(*face).GetBuffer()));
 }
 
 void CTortoiseGitBlameView::InitialiseEditor() 
 {
-#if 0
-	m_directFunction = SendMessage(m_wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
-	m_directPointer = SendMessage(m_wEditor, SCI_GETDIRECTPOINTER, 0, 0);
+
+	m_directFunction = ::SendMessage(m_wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
+	m_directPointer = ::SendMessage(m_wEditor, SCI_GETDIRECTPOINTER, 0, 0);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
-	SetAStyle(STYLE_DEFAULT, black, white, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10), 
-		((stdstring)(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New")))).c_str());
+	SetAStyle(STYLE_DEFAULT, 
+			  black, 
+			  white, 
+			(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10), 
+			&CString(((stdstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str())
+			);
 	SendEditor(SCI_SETTABWIDTH, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4));
 	SendEditor(SCI_SETREADONLY, TRUE);
-	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)_T("_99999"));
-	if (ShowLine)
+	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)this->m_TextView.StringForControl(_T("_99999")).GetBuffer());
+	if (m_bShowLine)
 		SendEditor(SCI_SETMARGINWIDTHN, 0, pix);
 	else
 		SendEditor(SCI_SETMARGINWIDTHN, 0);
@@ -553,7 +563,9 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
 	m_regOldLinesColor = CRegStdWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
 	m_regNewLinesColor = CRegStdWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
-#endif
+	
+	this->m_TextView.Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
+
 }
 
 void CTortoiseGitBlameView::StartSearch()
@@ -1054,11 +1066,12 @@ void CTortoiseGitBlameView::CreateFont()
 
 	::ReleaseDC(wBlame, hDC);
 
+	//m_TextView.SetFont(lf.lfFaceName,((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10)));
 }
 
 void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 {
-#if 0
+
 	if (hDC == NULL)
 		return;
 	if (m_font == NULL)
@@ -1072,40 +1085,47 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	TCHAR buf[MAX_PATH];
 	RECT rc;
 	BOOL sel = FALSE;
-	::GetClientRect(wBlame, &rc);
+	//::GetClientRect(this->m_hWnd, &rc);
 	for (LRESULT i=line; i<(line+linesonscreen); ++i)
 	{
 		sel = FALSE;
-		if (i < (int)revs.size())
+		if (i < (int)m_CommitHash.size())
 		{
-			if (mergelines[i])
-				oldfont = (HFONT)::SelectObject(hDC, m_italicfont);
-			else
+		//	if (mergelines[i])
+		//		oldfont = (HFONT)::SelectObject(hDC, m_italicfont);
+		//	else
 				oldfont = (HFONT)::SelectObject(hDC, m_font);
 			::SetBkColor(hDC, m_windowcolor);
 			::SetTextColor(hDC, m_textcolor);
-			if (authors[i].GetLength()>0)
+			if (m_CommitHash[i].GetLength()>0)
 			{
-				if (authors[i].Compare(m_mouseauthor)==0)
+				if (m_CommitHash[i].Compare(m_MouseHash)==0)
 					::SetBkColor(hDC, m_mouseauthorcolor);
-				if (authors[i].Compare(m_selectedauthor)==0)
+				if (m_CommitHash[i].Compare(m_SelectedHash)==0)
 				{
 					::SetBkColor(hDC, m_selectedauthorcolor);
 					::SetTextColor(hDC, m_texthighlightcolor);
 					sel = TRUE;
 				}
 			}
-			if ((revs[i] == m_mouserev)&&(!sel))
-				::SetBkColor(hDC, m_mouserevcolor);
-			if (revs[i] == m_selectedrev)
-			{
-				::SetBkColor(hDC, m_selectedrevcolor);
-				::SetTextColor(hDC, m_texthighlightcolor);
-			}
-			_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
-			rc.right = rc.left + m_revwidth;
-			::ExtTextOut(hDC, 0, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
+			//if ((revs[i] == m_mouserev)&&(!sel))
+			//	::SetBkColor(hDC, m_mouserevcolor);
+			//if (revs[i] == m_selectedrev)
+			//{
+			//	::SetBkColor(hDC, m_selectedrevcolor);
+			//	::SetTextColor(hDC, m_texthighlightcolor);
+			//}
+
+			CString str;
+			str.Format(_T("%d.%s"),m_ID[i],m_Authors[i]);
+
+			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
+			rc.top=Y;rc.left=0;		
+			rc.bottom=Y+height;
+			rc.right = rc.left + 100;
+			::ExtTextOut(hDC, 0, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 			int Left = m_revwidth;
+#if 0
 			if (ShowDate)
 			{
 				rc.right = rc.left + Left + m_datewidth;
@@ -1120,6 +1140,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
 				Left += m_authorwidth;
 			}
+#endif
+#if 0
 			if (ShowPath)
 			{
 				rc.right = rc.left + Left + m_pathwidth;
@@ -1127,6 +1149,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
 				Left += m_authorwidth;
 			}
+#endif
 			if ((i==m_SelectedLine)&&(currentDialog))
 			{
 				LOGBRUSH brush;
@@ -1158,7 +1181,6 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			Y += height;
 		}
 	}
-#endif
 }
 
 void CTortoiseGitBlameView::DrawHeader(HDC hDC)
@@ -2423,10 +2445,15 @@ void CTortoiseGitBlameView::UpdateInfo()
 	CString one;
 	int pos=0;
 
+	CLogDataVector * pRevs= GetLogData();
+
 	this->m_CommitHash.clear();
 	this->m_Authors.clear();
 	this->m_ID.clear();
 	CString line;
+
+	CreateFont();
+
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
 	SendEditor(EM_EMPTYUNDOBUFFER);
@@ -2445,6 +2472,15 @@ void CTortoiseGitBlameView::UpdateInfo()
 			line=one.Right(one.GetLength()-start-2);
 			this->m_TextView.InsertText(line,true);
 		}
+		int id=pRevs->m_HashMap[one.Left(40)];		
+		if(id>=0)
+		{
+			m_ID.push_back(pRevs->size()-id);
+			m_Authors.push_back(pRevs->at(id).m_AuthorName);
+		}else
+		{
+			ASSERT(FALSE);
+		}
 	}
 
 	SetupLexer(GetDocument()->m_CurrentFileName);
@@ -2456,4 +2492,11 @@ void CTortoiseGitBlameView::UpdateInfo()
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 	SendEditor(SCI_SETREADONLY, TRUE);
 
+
+	this->Invalidate();
+}
+
+CLogDataVector * CTortoiseGitBlameView::GetLogData()
+{
+	return &(GetDocument()->GetMainFrame()->m_wndOutput.m_LogList.m_logEntries);
 }

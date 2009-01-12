@@ -10,6 +10,7 @@
 #include "registry.h"
 #include "SciEdit.h"
 
+#include "GitBlameLogList.h"
 
 const COLORREF black = RGB(0,0,0);
 const COLORREF white = RGB(0xff,0xff,0xff);
@@ -108,7 +109,8 @@ public:
 	void Command(int id);
 	void Notify(SCNotification *notification);
 
-	void SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, const char *face=0);
+	void SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, CString *face=0);
+
 	void InitialiseEditor();
     void InitSize();
 	LONG GetBlameWidth();
@@ -129,11 +131,11 @@ public:
 	void SetSelectedLine(LONG line) { m_SelectedLine=line;};
 
 	LONG						m_mouserev;
-	CString					m_mouseauthor;
+	CString						m_MouseHash;
 	LONG						m_selectedrev;
 	LONG						m_selectedorigrev;
-	CString					m_selectedauthor;
-	CString					m_selecteddate;
+	CString						m_SelectedHash;
+	CString						m_selecteddate;
 	static long					m_gotoline;
 	long						m_lowestrev;
 	long						m_highestrev;
@@ -154,6 +156,11 @@ public:
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
 	BOOL						ttVisible;
+
+	CLogDataVector *		GetLogData();
+
+	BOOL m_bShowLine;
+
 protected:
 	void CreateFont();
 	void SetupLexer(CString filename);

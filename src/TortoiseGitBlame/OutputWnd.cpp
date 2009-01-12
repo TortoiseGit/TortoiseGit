@@ -153,7 +153,7 @@ int COutputWnd::LoadHistory(CString filename)
 	CTGitPath path;
 	path.SetFromWin(filename);
 
-	m_LogList.FillGitLog(&path,0);
+	m_LogList.FillGitLog(&path,CGit::LOG_INFO_FULLHISTORY);
 
 	return 0;
 
