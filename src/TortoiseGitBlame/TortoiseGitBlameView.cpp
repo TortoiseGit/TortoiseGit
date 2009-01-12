@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_NOTIFY(SCN_PAINTED,0,OnSciPainted)
 END_MESSAGE_MAP()
 
 // CTortoiseGitBlameView construction/destruction
@@ -2499,4 +2500,9 @@ void CTortoiseGitBlameView::UpdateInfo()
 CLogDataVector * CTortoiseGitBlameView::GetLogData()
 {
 	return &(GetDocument()->GetMainFrame()->m_wndOutput.m_LogList.m_logEntries);
+}
+
+void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
+{
+	this->Invalidate();
 }
