@@ -11,6 +11,7 @@
 #include "SciEdit.h"
 
 #include "GitBlameLogList.h"
+#include "Balloon.h"
 
 const COLORREF black = RGB(0,0,0);
 const COLORREF white = RGB(0xff,0xff,0xff);
@@ -70,6 +71,7 @@ protected:
 
 // Generated message map functions
 protected:
+	BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -79,6 +81,8 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags,CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags,CPoint point){OnLButtonDown(nFlags,point);CView::OnRButtonDown(nFlags,point);};
 	afx_msg void OnSciGetBkColor(NMHDR*, LRESULT*);
+	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -87,6 +91,7 @@ public:
 	void FocusOn(GitRev *pRev);
 
 	CSciEdit			m_TextView;
+	CBalloon			m_ToolTip;
 
 	HINSTANCE hInstance;
 	HINSTANCE hResource;
@@ -139,7 +144,7 @@ public:
 	void SetSelectedLine(LONG line) { m_SelectedLine=line;};
 
 	LONG						m_mouserev;
-	CString						m_MouseHash;
+	LONG						m_MouseLine;
 	LONG						m_selectedrev;
 	LONG						m_selectedorigrev;
 	CString						m_SelectedHash;

@@ -25,6 +25,7 @@
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "MainFrm.h"
+#include "Balloon.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -122,6 +123,9 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_wEditor = m_TextView.m_hWnd;
 	CreateFont();
 	InitialiseEditor();
+	m_ToolTip.Create(this->GetParent());	
+	m_ToolTip.AddTool(this,_T("Test"));
+	
 	return CView::OnCreate(lpcs);
 }
 
@@ -1132,8 +1136,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			::SetTextColor(hDC, m_textcolor);
 			if (m_CommitHash[i].GetLength()>0)
 			{
-				if (m_CommitHash[i].Compare(m_MouseHash)==0)
-					::SetBkColor(hDC, m_mouseauthorcolor);
+				//if (m_CommitHash[i].Compare(m_MouseHash)==0)
+				//	::SetBkColor(hDC, m_mouseauthorcolor);
 				if (m_CommitHash[i].Compare(m_SelectedHash)==0)
 				{
 					::SetBkColor(hDC, m_selectedauthorcolor);
@@ -2607,4 +2611,71 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 	this->Invalidate();
 	this->m_TextView.Invalidate();
 
+}
+
+void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
+{
+
+	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
+	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
+	line = line + (point.y/height);
+			
+	if (line < (LONG)m_CommitHash.size())
+	{
+		if (line != m_MouseLine)
+		{
+			m_MouseLine = line;//m_CommitHash[line];
+//			app.m_selectedorigrev = app.origrevs[line];
+//			app.m_selectedauthor = app.authors[line];
+//			app.m_selecteddate = app.dates[line];
+			
+			
+			GitRev *pRev;
+			pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
+			//this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+			this->ClientToScreen(&point);
+			//BALLOON_INFO bi;
+			//if(m_ToolTip.GetTool(this, bi))
+			//{
+			//	bi.sBalloonTip=pRev->m_CommitHash;
+				CString str;
+				str.Format(_T("%s\n<b>%s</b>\n%s"),pRev->m_CommitHash,pRev->m_Subject,pRev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")));
+				m_ToolTip.AddTool(this,str);
+				m_ToolTip.DisplayToolTip(&point);
+			//}
+
+		}
+		else
+		{
+			m_MouseLine=-1;
+//			app.m_selecteddate.clear();
+//			app.m_selectedrev = -2;
+//			app.m_selectedorigrev = -2;
+		}
+		//::InvalidateRect( NULL, FALSE);
+		//this->Invalidate();
+	}
+	
+//	 const CString str=_T("this is a <b>Message Balloon</b>\n<hr=100%>\n<ct=0x0000FF>Warning! Warning!</ct>\nSomething unexpected happened");
+	 //CBalloon::ShowBalloon(NULL, point, 
+	  //            str,
+	  //             FALSE, (HICON)IDI_EXCLAMATION,
+		//		   (UINT)CBalloon ::BALLOON_RIGHT_TOP, (UINT)CBalloon ::BALLOON_EFFECT_SOLID,(COLORREF)NULL,  (COLORREF)NULL,  (COLORREF)NULL);
+}
+
+void CTortoiseGitBlameView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	TRACKMOUSEEVENT tme;
+	tme.cbSize=sizeof(TRACKMOUSEEVENT);
+	tme.dwFlags=TME_HOVER|TME_LEAVE;
+	tme.hwndTrack=this->m_hWnd;
+	tme.dwHoverTime=1;
+	TrackMouseEvent(&tme);
+}
+
+
+BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
+{
+	m_ToolTip.RelayEvent(pMsg);
+	return CView::PreTranslateMessage(pMsg);
 }

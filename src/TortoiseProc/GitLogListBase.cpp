@@ -126,7 +126,7 @@ int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CGitLogListBase::PreSubclassWindow()
 {
-	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
+	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
 	m_Theme.SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
 	CHintListCtrl::PreSubclassWindow();
