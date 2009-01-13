@@ -21,7 +21,7 @@ const COLORREF darkBlue = RGB(0, 0, 0x80);
 const COLORREF lightBlue = RGB(0xA6, 0xCA, 0xF0);
 const int blockSize = 128 * 1024;
 
-#define BLAMESPACE 20
+#define BLAMESPACE 5
 #define HEADER_HEIGHT 18
 #define LOCATOR_WIDTH 10
 
@@ -101,6 +101,10 @@ public:
 	BOOL bIgnoreEOL;
 	BOOL bIgnoreSpaces;
 	BOOL bIgnoreAllSpaces;
+
+	BOOL m_bShowAuthor;
+	BOOL m_bShowDate;
+
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);
 

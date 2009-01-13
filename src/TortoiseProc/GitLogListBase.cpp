@@ -1789,3 +1789,16 @@ void CGitLogListBase::RemoveFilter()
 
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 }
+
+void CGitLogListBase::Clear()
+{
+	m_arShownList.RemoveAll();
+	m_logEntries.clear();
+	m_logEntries.m_HashMap.clear();
+	DeleteAllItems();
+	m_logEntries.m_Lns.clear();
+
+	m_logEntries.m_FirstFreeLane=0;
+	m_logEntries.m_Lns.clear();
+
+}

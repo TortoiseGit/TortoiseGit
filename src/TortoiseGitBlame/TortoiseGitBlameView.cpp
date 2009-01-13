@@ -65,7 +65,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_font = 0;
 	m_italicfont = 0;
-	m_blamewidth = 100;
+	m_blamewidth = 0;
 	m_revwidth = 0;
 	m_datewidth = 0;
 	m_authorwidth = 0;
@@ -92,6 +92,9 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_colorage = true;
 
 	m_bShowLine=true;
+
+	m_bShowAuthor=true;
+	m_bShowDate=false;
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -1002,38 +1005,58 @@ void CTortoiseGitBlameView::GotoLineDlg()
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
 {
-#if 0
-	if (m_blamewidth)
-		return m_blamewidth;
 	LONG blamewidth = 0;
 	SIZE width;
 	CreateFont();
-	HDC hDC = ::GetDC(wBlame);
+	HDC hDC = this->GetDC()->m_hDC;
 	HFONT oldfont = (HFONT)::SelectObject(hDC, m_font);
+	
 	TCHAR buf[MAX_PATH];
-	_stprintf_s(buf, MAX_PATH, _T("%8ld "), 88888888);
+	//_stprintf_s(buf, MAX_PATH, _T("%8ld "), 88888888);
+	//::GetTextExtentPoint(hDC, buf, _tcslen(buf), &width);
+	//m_revwidth = width.cx + BLAMESPACE;
+	//blamewidth += m_revwidth;
+
+	int maxnum=0;
+	for (int i=0;i<this->m_Authors.size();i++)
+	{
+		if(m_ID[i]>maxnum)
+			maxnum=m_ID[i];
+	}
+	_stprintf_s(buf, MAX_PATH, _T("%d."), maxnum);
 	::GetTextExtentPoint(hDC, buf, _tcslen(buf), &width);
 	m_revwidth = width.cx + BLAMESPACE;
 	blamewidth += m_revwidth;
-	if (ShowDate)
+
+#if 0
+	_stprintf_s(buf, MAX_PATH, _T("%d"), m_CommitHash.size());
+	::GetTextExtentPoint(hDC, buf, _tcslen(buf), &width);
+	m_linewidth = width.cx + BLAMESPACE;
+	blamewidth += m_revwidth;
+#endif 
+
+	if (m_bShowDate)
 	{
 		_stprintf_s(buf, MAX_PATH, _T("%30s"), _T("31.08.2001 06:24:14"));
 		::GetTextExtentPoint32(hDC, buf, _tcslen(buf), &width);
 		m_datewidth = width.cx + BLAMESPACE;
 		blamewidth += m_datewidth;
 	}
-	if (ShowAuthor)
+	if ( m_bShowAuthor)
 	{
 		SIZE maxwidth = {0};
-		for (std::vector<CString>::iterator I = authors.begin(); I != authors.end(); ++I)
+
+		for (int i=0;i<this->m_Authors.size();i++)
+		//for (std::vector<CString>::iterator I = authors.begin(); I != authors.end(); ++I)
 		{
-			::GetTextExtentPoint32(hDC, I->c_str(), I->size(), &width);
+			::GetTextExtentPoint32(hDC,m_Authors[i] , m_Authors[i].GetLength(), &width);
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
 		m_authorwidth = maxwidth.cx + BLAMESPACE;
 		blamewidth += m_authorwidth;
 	}
+#if 0
 	if (ShowPath)
 	{
 		SIZE maxwidth = {0};
@@ -1046,14 +1069,16 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 		m_pathwidth = maxwidth.cx + BLAMESPACE;
 		blamewidth += m_pathwidth;
 	}
+#endif
 	::SelectObject(hDC, oldfont);
 	POINT pt = {blamewidth, 0};
 	LPtoDP(hDC, &pt, 1);
 	m_blamewidth = pt.x;
-	ReleaseDC(wBlame, hDC);
-#endif
+	//::ReleaseDC(wBlame, hDC);
+
 	//return m_blamewidth;
-	return 100;
+	return blamewidth;
+
 }
 
 void CTortoiseGitBlameView::CreateFont()
@@ -1125,7 +1150,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			//}
 
 			CString str;
-			str.Format(_T("%d.%s"),m_ID[i],m_Authors[i]);
+			str.Format(_T("%d"),m_ID[i]);
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
 			rc.top=Y;
@@ -1134,6 +1159,14 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			rc.right = rc.left + m_blamewidth;
 			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 			int Left = m_revwidth;
+			
+			if (m_bShowAuthor)
+			{
+				rc.right = rc.left + Left + m_authorwidth;
+				//_stprintf_s(buf, MAX_PATH, _T("%-30s            "), authors[i].c_str());
+				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_Authors[i], m_Authors[i].GetLength(), 0);
+				Left += m_authorwidth;
+			}
 #if 0
 			if (ShowDate)
 			{
@@ -1142,13 +1175,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
 				Left += m_datewidth;
 			}
-			if (ShowAuthor)
-			{
-				rc.right = rc.left + Left + m_authorwidth;
-				_stprintf_s(buf, MAX_PATH, _T("%-30s            "), authors[i].c_str());
-				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
-				Left += m_authorwidth;
-			}
+			
 #endif
 #if 0
 			if (ShowPath)
@@ -2478,6 +2505,14 @@ void CTortoiseGitBlameView::UpdateInfo()
 
 	m_lowestrev=1;
 	m_highestrev=this->GetLogData()->size();
+
+	GetBlameWidth();
+	CRect rect;
+	this->GetClientRect(rect);
+	//this->m_TextView.GetWindowRect(rect);
+	//this->m_TextView.ScreenToClient(rect);
+	rect.left=this->m_blamewidth;
+	this->m_TextView.MoveWindow(rect);
 
 	this->Invalidate();
 }

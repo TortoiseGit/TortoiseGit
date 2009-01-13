@@ -138,6 +138,7 @@ public:
 	CPtrArray			m_arShownList;
 	void Refresh();
 	void RecalculateShownList(CPtrArray * pShownlist);
+	void Clear();
 
 	int					m_nSelectedFilter;
 	CLogDataVector		m_logEntries;
