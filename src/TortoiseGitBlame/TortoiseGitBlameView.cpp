@@ -2475,6 +2475,8 @@ void CTortoiseGitBlameView::UpdateInfo()
 	while( pos>=0 )
 	{
 		one=data.Tokenize(_T("\n"),pos);
+		if(one.IsEmpty())
+			continue;
 		m_CommitHash.push_back(one.Left(40));
 		int start=0;
 		start=one.Find(_T(')'),40);
