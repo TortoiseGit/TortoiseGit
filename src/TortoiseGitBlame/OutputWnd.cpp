@@ -4,6 +4,8 @@
 #include "OutputWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
+#include "TortoiseGitBlameDoc.h"
+#include "TortoiseGitBlameView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,9 +24,22 @@ COutputWnd::~COutputWnd()
 {
 }
 
+IMPLEMENT_DYNCREATE(CGitMFCTabCtrl, CMFCTabCtrl)
+
+BEGIN_MESSAGE_MAP(CGitMFCTabCtrl, CMFCTabCtrl)
+	ON_NOTIFY(LVN_ITEMCHANGED, 0, OnLvnItemchangedLoglist)
+END_MESSAGE_MAP()
+
+void CGitMFCTabCtrl::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	COutputWnd *pWnd=DYNAMIC_DOWNCAST(COutputWnd,this->GetParent());
+	pWnd->OnLvnItemchangedLoglist(pNMHDR,pResult);
+}
+
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_NOTIFY(LVN_ITEMCHANGED, 0, OnLvnItemchangedLoglist)
 END_MESSAGE_MAP()
 
 int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -32,13 +47,14 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
+	TRACE(_T("%u\n"),LVN_ITEMCHANGED);
 	m_Font.CreateStockObject(DEFAULT_GUI_FONT);
 
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
 	// Create tabs window:
-	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1))
+	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 0))
 	{
 		TRACE0("Failed to create output tab window\n");
 		return -1;      // fail to create
@@ -46,9 +62,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// Create output panes:
 	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL ;
+	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
-	if (! m_LogList.Create(dwStyle,rectDummy,&m_wndTabs,2) )
+	if (! m_LogList.Create(dwStyle,rectDummy,&m_wndTabs,0) )
 	{
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
@@ -158,6 +174,26 @@ int COutputWnd::LoadHistory(CString filename)
 
 	return 0;
 
+}
+void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+
+	//if (this->IsThreadRunning())
+	if (pNMLV->iItem >= 0)
+	{
+		if (pNMLV->iSubItem != 0)
+			return;
+		
+		if (pNMLV->uNewState & LVIS_SELECTED)
+		{
+			CMainFrame *pMain=DYNAMIC_DOWNCAST(CMainFrame,AfxGetApp()->GetMainWnd());
+			POSITION pos=pMain->GetActiveDocument()->GetFirstViewPosition();
+			CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,pMain->GetActiveDocument()->GetNextView(pos));
+			pView->FocusOn(&this->m_LogList.m_logEntries[pNMLV->iItem]);
+		}
+	}
 }
 /////////////////////////////////////////////////////////////////////////////
 // COutputList1

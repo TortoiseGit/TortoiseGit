@@ -84,6 +84,7 @@ protected:
 public:
 
 	void UpdateInfo();
+	void FocusOn(GitRev *pRev);
 
 	CSciEdit			m_TextView;
 

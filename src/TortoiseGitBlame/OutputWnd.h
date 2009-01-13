@@ -24,6 +24,17 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
+class COutputWnd;
+
+class CGitMFCTabCtrl: public CMFCTabCtrl
+{
+protected:
+	DECLARE_MESSAGE_MAP()
+	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+
+	DECLARE_DYNCREATE(CGitMFCTabCtrl);
+};
+
 class COutputWnd : public CDockablePane
 {
 // Construction
@@ -34,7 +45,7 @@ public:
 public:
 	CFont m_Font;
 
-	CMFCTabCtrl	m_wndTabs;
+	CGitMFCTabCtrl	m_wndTabs;
 
 	CGitBlameLogList m_LogList;
 //	COutputList m_wndOutputBuild;
@@ -47,11 +58,11 @@ protected:
 	void FillFindWindow();
 
 	void AdjustHorzScroll(CListBox& wndListBox);
-
+	
 // Implementation
 public:
 	virtual ~COutputWnd();
-
+	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	int	LoadHistory(CString filename);
 
 protected:

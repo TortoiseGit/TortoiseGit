@@ -2557,5 +2557,17 @@ void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* result)
 			notification->lParam = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (m_ID[notification->line]-m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
 	}
 
+}
+
+void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
+{
+	m_SelectedHash = pRev->m_CommitHash;
+
+	//GitRev *pRev;
+	//pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
+	this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+
+	this->Invalidate();
+	this->m_TextView.Invalidate();
 
 }
