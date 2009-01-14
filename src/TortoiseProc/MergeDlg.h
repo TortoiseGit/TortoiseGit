@@ -5,7 +5,7 @@
 #include "ChooseVersion.h"
 // CMergeDlg dialog
 
-class CMergeDlg : public CResizableStandAloneDialog,CChooseVersion
+class CMergeDlg : public CResizableStandAloneDialog,public CChooseVersion
 {
 	DECLARE_DYNAMIC(CMergeDlg)
 
@@ -19,7 +19,7 @@ public:
 	BOOL m_bSquash;
 	BOOL m_bNoFF;
 
-	CString m_Base;
+	//CString m_Base;
 
 
 protected:

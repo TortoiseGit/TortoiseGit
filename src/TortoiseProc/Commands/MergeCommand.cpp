@@ -40,7 +40,7 @@ bool MergeCommand::Execute()
 		cmd.Format(_T("git.exe merge %s %s %s"),
 			noff,
 			squash,
-			dlg.m_Base);
+			dlg.m_VersionName);
 
 		CString output;
 		g_Git.Run(cmd,&output);
