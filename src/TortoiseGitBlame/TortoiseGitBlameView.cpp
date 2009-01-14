@@ -1145,6 +1145,10 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 					sel = TRUE;
 				}
 			}
+
+			if(m_MouseLine == i)
+				::SetBkColor(hDC, m_mouserevcolor);
+
 			//if ((revs[i] == m_mouserev)&&(!sel))
 			//	::SetBkColor(hDC, m_mouserevcolor);
 			//if (revs[i] == m_selectedrev)
@@ -2639,10 +2643,21 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			//{
 			//	bi.sBalloonTip=pRev->m_CommitHash;
 				CString str;
-				str.Format(_T("%s\n<b>%s</b>\n%s"),pRev->m_CommitHash,pRev->m_Subject,pRev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")));
+				str.Format(_T("%s\n<b>%s</b>\n%s\n%s"),pRev->m_CommitHash,
+													   pRev->m_Subject,
+													   pRev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")),
+													   pRev->m_Body);
 				m_ToolTip.AddTool(this,str);
 				m_ToolTip.DisplayToolTip(&point);
 			//}
+	
+			CRect rect;
+			this->ScreenToClient(&point);
+			rect.left=LOCATOR_WIDTH;
+			rect.right=this->m_blamewidth+rect.left;
+			rect.top=point.y-height;
+			rect.bottom=point.y+height;
+			this->InvalidateRect(rect);
 
 		}
 		else
