@@ -306,9 +306,9 @@
             </Component>
 
             <Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
-              <!--
-              <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseBlame.exe" KeyPath="yes" />
-             --> 
+             
+              <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
+          
               <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
            </Component>
             
