@@ -22,7 +22,7 @@
 #include "TGitPath.h"
 #include "RenameDlg.h"
 #include ".\renamedlg.h"
-
+#include "CommonResource.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=NULL*/)

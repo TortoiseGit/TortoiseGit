@@ -27,7 +27,7 @@
 #include ".\setmainpage.h"
 #include "Git.h"
 #include "MessageBox.h"
-
+#include "CommonResource.h"
 
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
 CSetMainPage::CSetMainPage()

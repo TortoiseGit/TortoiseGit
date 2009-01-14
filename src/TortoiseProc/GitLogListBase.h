@@ -2,7 +2,7 @@
 
 #include "HintListCtrl.h"
 #include "XPTheme.h"
-#include "resource.h"
+#include "CommonResource.h"
 #include "Git.h"
 #include "ProjectProperties.h"
 #include "TGitPath.h"

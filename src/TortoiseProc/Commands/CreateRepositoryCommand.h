@@ -20,7 +20,7 @@
 #include "Command.h"
 
 #include "MessageBox.h"
-
+#include "CommonResource.h"
 #include "git.h"
 /**
  * \ingroup TortoiseProc

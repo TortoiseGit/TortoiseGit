@@ -21,7 +21,7 @@
 #include "Settings.h"
 #include "MessageBox.h"
 #include "..\..\TGitCache\CacheInterface.h"
-
+#include "CommonResource.h"
 
 
 IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)

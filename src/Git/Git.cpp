@@ -214,7 +214,7 @@ int CGit::GetLog(CString& logOut, CString &hash,  CTGitPath *path ,int count,int
 	CString param;
 
 	if(mask& LOG_INFO_STAT )
-		param += _T(" -numstat ");
+		param += _T(" --numstat ");
 	if(mask& LOG_INFO_FILESTATE)
 		param += _T(" --raw ");
 

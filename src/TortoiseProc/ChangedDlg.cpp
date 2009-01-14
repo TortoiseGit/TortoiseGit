@@ -25,6 +25,8 @@
 
 #include "GitStatusListCtrl.h"
 
+#include "CommonResource.h"
+
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
 CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CChangedDlg::IDD, pParent)

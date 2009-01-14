@@ -31,6 +31,7 @@
 #include "RevisionDlg.h"
 #include ".\filediffdlg.h"
 #include "gitdiff.h"
+#include "CommonResource.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2

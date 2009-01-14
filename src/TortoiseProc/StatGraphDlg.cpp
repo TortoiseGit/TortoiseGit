@@ -25,7 +25,7 @@
 #include "PathUtils.h"
 #include "MessageBox.h"
 #include "Registry.h"
-
+#include "CommonResource.h"
 #include <cmath>
 #include <locale>
 #include <list>

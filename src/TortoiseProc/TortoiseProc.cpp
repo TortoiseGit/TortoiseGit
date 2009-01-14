@@ -40,7 +40,7 @@
 //#include <openssl/err.h>
 
 #include "Commands\Command.h"
-
+#include "CommonResource.h"
 #include "..\version.h"
 #define STRUCT_IOVEC_DEFINED
 //#include "sasl.h"

@@ -60,7 +60,7 @@ int GitRev::ParserFromLog(CString &log)
 	CString key;
 	CString text;
 	CString filelist;
-	TCHAR mode;
+	TCHAR mode=0;
 	CTGitPath  path;
 	this->m_Files.Clear();
     m_Action=0;

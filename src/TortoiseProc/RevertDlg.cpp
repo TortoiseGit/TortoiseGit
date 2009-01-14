@@ -23,6 +23,7 @@
 #include "Git.h"
 #include "Registry.h"
 #include ".\revertdlg.h"
+#include "CommonResource.h"
 
 #define REFRESHTIMER   100
 

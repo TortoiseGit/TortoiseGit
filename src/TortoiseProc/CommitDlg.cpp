@@ -30,6 +30,7 @@
 #include "GitStatus.h"
 #include "HistoryDlg.h"
 #include "Hooks.h"
+#include "CommonResource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

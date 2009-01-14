@@ -1,0 +1,94 @@
+//
+// TortoiseCommon.RC2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+
+/////////////////////////////////////////////////////////////////////////////
+#include "..\Resources\CommonResource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+STRINGTABLE 
+BEGIN
+    IDS_LOG_GRAPH           "Graph"
+	IDS_LOG_ACTIONS         "Actions"
+	IDS_LOG_MESSAGE         "Message"
+    IDS_LOG_REVISION        "Revision"
+    IDS_LOG_AUTHOR          "Author"
+    IDS_LOG_DATE            "Date"
+	IDS_LOG_BUGIDS          "Bug-ID"
+	IDS_LOG_ID				"ID"
+    IDS_LOG_POPUP_COMPARE   "Compare with &working copy"
+    IDS_LOG_POPUP_SAVE      "Save revision &to..."
+    IDS_LOG_POPUP_COMPARETWO "&Compare revisions"
+    IDS_LOG_POPUP_UPDATE    "&Update item to revision"
+END
+
+
+STRINGTABLE 
+BEGIN
+    IDS_LOG_POPUP_REVERTREVS "&Revert changes from these revisions"
+    IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
+    IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
+    IDS_LOG_POPUP_BLAMECOMPARE "Compare and &blame with working BASE"
+    IDS_LOG_POPUP_BLAMEREVS "&Blame revisions"
+    IDS_LOG_POPUP_BLAMEDIFF "&Blame changes"
+    IDS_LOG_POPUP_VIEWREV   "View revision in &webviewer"
+    IDS_LOG_POPUP_VIEWPATHREV "View revision for path in &webviewer"
+    IDS_LOG_POPUP_COMPAREWITHPREVIOUS "Compare with previous revision"
+    IDS_LOG_POPUP_BLAMEWITHPREVIOUS "Compare and blame with previous revision"
+    IDS_LOG_POPUP_BLAME     "Blame"
+    IDS_LOG_POPUP_GNUDIFF_CH "Show changes as &unified diff"
+    IDS_LOG_POPUP_GETMERGELOGS "Get merge logs"
+    IDS_LOG_POPUP_MERGEREV  "Merge revision to..."
+    IDS_LOG_POPUP_MERGEREVS "Merge revisions to..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LOG_POPUP_DIFF      "Show &changes"
+    IDS_LOG_POPUP_REVERTREV "&Revert changes from this revision"
+    IDS_LOG_POPUP_GNUDIFF   "Show differences as &unified diff"
+    IDS_LOG_POPUP_FIND      "Search &log messages..."
+    IDS_LOG_POPUP_OPEN      "&Open"
+    IDS_LOG_POPUP_EDITAUTHOR "Edit author"
+    IDS_LOG_POPUP_EDITLOG   "Edit log message"
+    IDS_LOG_POPUP_OPENWITH  "Open with..."
+	IDS_REPOBROWSE_SHOWREVPROP "Show revision properties"
+END
+
+
+STRINGTABLE 
+BEGIN
+    IDS_ERR_THREADSTARTFAILED "Could not start thread!"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SCIEDIT_UNDO        "&Undo"
+    IDS_SCIEDIT_REDO        "&Redo"
+    IDS_SCIEDIT_CUT         "Cu&t"
+    IDS_SCIEDIT_COPY        "Cop&y"
+    IDS_SCIEDIT_PASTE       "&Paste"
+    IDS_SCIEDIT_SELECTALL   "Select &All"
+    IDS_SCIEDIT_ADDWORD     "Add '%s' to dictionary"
+    IDS_SCIEDIT_SPLITLINES  "Split lines"
+END
+
+
+STRINGTABLE 
+BEGIN
+    IDS_SPELLEDIT_THESAURUS "Thesaurus"
+    IDS_SPELLEDIT_CORRECTIONS "Corrections"
+    IDS_SPELLEDIT_NOCORRECTIONS "No spell corrections"
+    IDS_SPELLEDIT_NOTHESAURUS "No thesaurus suggestions"
+    IDS_APPNAME             "TortoiseGit"
+
+END
+
