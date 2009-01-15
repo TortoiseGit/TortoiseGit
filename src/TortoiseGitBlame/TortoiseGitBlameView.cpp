@@ -26,11 +26,13 @@
 #include "TortoiseGitBlameView.h"
 #include "MainFrm.h"
 #include "Balloon.h"
+#include "EditGotoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+UINT CTortoiseGitBlameView::m_FindDialogMessage;
 
 // CTortoiseGitBlameView
 
@@ -52,7 +54,9 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_RBUTTONDOWN()
 	ON_NOTIFY(SCN_PAINTED,0,OnSciPainted)
 	ON_NOTIFY(SCN_GETBKCOLOR,0,OnSciGetBkColor)
+    ON_REGISTERED_MESSAGE(m_FindDialogMessage,   OnFindDialogMessage)  
 END_MESSAGE_MAP()
+
 
 // CTortoiseGitBlameView construction/destruction
 
@@ -98,6 +102,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_bShowAuthor=true;
 	m_bShowDate=false;
+
+    m_FindDialogMessage   =   ::RegisterWindowMessage(FINDMSGSTRING);   
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -2698,8 +2704,46 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 
 void CTortoiseGitBlameView::OnEditFind()
 {
+    m_pFindDialog=new CFindReplaceDialog();
+    m_pFindDialog->Create(TRUE,_T(""),NULL,FR_DOWN,this);  
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
 {
+    CEditGotoDlg dlg;
+    if(dlg.DoModal()==IDOK)
+    {
+        this->GotoLine(dlg.m_LineNumber);
+    }
 }
+
+LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam)//这个也是找那个程序改的，只不过换成了自己的类   
+{   
+    ASSERT(m_pFindDialog   !=   NULL);   
+    
+    //   If   the   FR_DIALOGTERM   flag   is   set,   
+          //   invalidate   the   handle   identifying   the   dialog   box.   
+    if   (m_pFindDialog->IsTerminating())   
+    {   
+            m_pFindDialog   =   NULL;   
+            return   0;   
+    }   
+
+    //   If   the   FR_FINDNEXT   flag   is   set,   
+    //   call   the   application-defined   search   routine   
+    //   to   search   for   the   requested   string.   
+    if(m_pFindDialog->FindNext())   
+    {   
+            //read   data   from   dialog   
+        CString   FindName   =   m_pFindDialog->GetFindString();   
+        bool   bMatchCase   =   m_pFindDialog->MatchCase()   ==   TRUE;   
+        bool   bMatchWholeWord   =   m_pFindDialog->MatchWholeWord()   ==   TRUE;   
+        bool   bSearchDown   =   m_pFindDialog->SearchDown()   ==   TRUE;   
+
+            //with   given   name   do   search   
+    //        *FindWhatYouNeed(FindName,   bMatchCase,   bMatchWholeWord,   bSearchDown);   
+    }   
+
+    return   0;   
+}   
+

@@ -85,8 +85,10 @@ protected:
 	afx_msg void OnSciGetBkColor(NMHDR*, LRESULT*);
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg LRESULT OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam);
 	DECLARE_MESSAGE_MAP()
 
+    static UINT m_FindDialogMessage;
 public:
 
 	void UpdateInfo();
@@ -210,6 +212,8 @@ protected:
 	CRegStdWORD					m_regNewLinesColor;
 
 	CGitBlameLogList * GetLogList();
+
+    CFindReplaceDialog          *m_pFindDialog;
 
 };
 
