@@ -41,6 +41,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
+	ON_COMMAND(ID_EDIT_FIND,OnEditFind)
+	ON_COMMAND(ID_EDIT_GOTO,OnEditGoto)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_MOUSEMOVE()
@@ -702,13 +704,12 @@ bool CTortoiseGitBlameView::DoSearch(LPSTR what, DWORD flags)
 
 bool CTortoiseGitBlameView::GotoLine(long line)
 {
-#if 0
 	--line;
 	if (line < 0)
 		return false;
-	if ((unsigned long)line >= authors.size())
+	if ((unsigned long)line >= m_CommitHash.size())
 	{
-		line = authors.size()-1;
+		line = m_CommitHash.size()-1;
 	}
 
 	int nCurrentPos = SendEditor(SCI_GETCURRENTPOS);
@@ -738,7 +739,7 @@ bool CTortoiseGitBlameView::GotoLine(long line)
 	int nPosStart = SendEditor(SCI_POSITIONFROMLINE,line);
 	int nPosEnd = SendEditor(SCI_GETLINEENDPOSITION,line);
 	SendEditor(SCI_SETSEL,nPosEnd,nPosStart);
-#endif
+
 	return true;
 }
 
@@ -2693,4 +2694,12 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 {
 	m_ToolTip.RelayEvent(pMsg);
 	return CView::PreTranslateMessage(pMsg);
+}
+
+void CTortoiseGitBlameView::OnEditFind()
+{
+}
+
+void CTortoiseGitBlameView::OnEditGoto()
+{
 }

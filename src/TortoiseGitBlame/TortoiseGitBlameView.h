@@ -72,6 +72,8 @@ protected:
 // Generated message map functions
 protected:
 	BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnEditFind();
+	afx_msg void OnEditGoto();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
