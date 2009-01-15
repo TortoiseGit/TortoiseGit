@@ -104,6 +104,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bShowDate=false;
 
     m_FindDialogMessage   =   ::RegisterWindowMessage(FINDMSGSTRING);   
+	m_pFindDialog = NULL;
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -593,7 +594,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 
 void CTortoiseGitBlameView::StartSearch()
 {
-	if (currentDialog)
+	if (m_pFindDialog)
 		return;
 	bool bCase = false;
 	// Initialize FINDREPLACE
@@ -610,87 +611,53 @@ void CTortoiseGitBlameView::StartSearch()
 	currentDialog = FindText(&fr);
 }
 
-bool CTortoiseGitBlameView::DoSearch(LPSTR what, DWORD flags)
+bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 {
-#if 0
-	TCHAR szWhat[80];
+
+	//char szWhat[80];
 	int pos = SendEditor(SCI_GETCURRENTPOS);
 	int line = SendEditor(SCI_LINEFROMPOSITION, pos);
 	bool bFound = false;
 	bool bCaseSensitive = !!(flags & FR_MATCHCASE);
 
-	strcpy_s(szWhat, sizeof(szWhat), what);
+	//strcpy_s(szWhat, sizeof(szWhat), what);
 
 	if(!bCaseSensitive)
 	{
-		char *p;
-		size_t len = strlen(szWhat);
-		for (p = szWhat; p < szWhat + len; p++)
-		{
-			if (isupper(*p)&&__isascii(*p))
-				*p = _tolower(*p);
-		}
+		what=what.MakeLower();
 	}
 
-	CString sWhat = CString(szWhat);
+	//CString sWhat = CString(szWhat);
 	
-	char buf[20];
-	int i=0;
-	for (i=line; (i<(int)authors.size())&&(!bFound); ++i)
+	//char buf[20];
+	//int i=0;
+	int i=line;
+	do
 	{
 		int bufsize = SendEditor(SCI_GETLINE, i);
 		char * linebuf = new char[bufsize+1];
 		SecureZeroMemory(linebuf, bufsize+1);
 		SendEditor(SCI_GETLINE, i, (LPARAM)linebuf);
+		CString oneline=this->m_TextView.StringFromControl(linebuf);
 		if (!bCaseSensitive)
 		{
-			char *p;
-			for (p = linebuf; p < linebuf + bufsize; p++)
-			{
-				if (isupper(*p)&&__isascii(*p))
-					*p = _tolower(*p);
-			}
+			oneline=oneline.MakeLower();
 		}
-		_stprintf_s(buf, 20, _T("%ld"), revs[i]);
-		if (authors[i].compare(sWhat)==0)
+		//_stprintf_s(buf, 20, _T("%ld"), revs[i]);
+		if (this->m_Authors[i].Find(what)>=0)
 			bFound = true;
-		else if ((!bCaseSensitive)&&(_stricmp(authors[i].c_str(), szWhat)==0))
+		else if ((!bCaseSensitive)&&(this->m_Authors[i].MakeLower().Find(what)>=0))
 			bFound = true;
-		else if (strcmp(buf, szWhat) == 0)
+		else if (oneline.Find(what) >=0)
 			bFound = true;
-		else if (strstr(linebuf, szWhat))
-			bFound = true;
+		
 		delete [] linebuf;
-	}
-	if (!bFound)
-	{
-		for (i=0; (i<line)&&(!bFound); ++i)
-		{
-			int bufsize = SendEditor(SCI_GETLINE, i);
-			char * linebuf = new char[bufsize+1];
-			SecureZeroMemory(linebuf, bufsize+1);
-			SendEditor(SCI_GETLINE, i, (LPARAM)linebuf);
-			if (!bCaseSensitive)
-			{
-				char *p;
-				for (p = linebuf; p < linebuf + bufsize; p++)
-				{
-					if (isupper(*p)&&__isascii(*p))
-						*p = _tolower(*p);
-				}
-			}
-			_stprintf_s(buf, 20, _T("%ld"), revs[i]);
-			if (authors[i].compare(sWhat)==0)
-				bFound = true;
-			else if ((!bCaseSensitive)&&(_stricmp(authors[i].c_str(), szWhat)==0))
-				bFound = true;
-			else if (strcmp(buf, szWhat) == 0)
-				bFound = true;
-			else if (strstr(linebuf, szWhat))
-				bFound = true;
-			delete [] linebuf;
-		}
-	}
+
+		i++;
+		if(i>=m_CommitHash.size())
+			i=0;
+	}while(i!=line &&(!bFound));
+
 	if (bFound)
 	{
 		GotoLine(i);
@@ -702,9 +669,9 @@ bool CTortoiseGitBlameView::DoSearch(LPSTR what, DWORD flags)
 	}
 	else
 	{
-		::MessageBox(wMain, searchstringnotfound, "CTortoiseGitBlameView", MB_ICONINFORMATION);
+		::MessageBox(wMain, what+_T(" not found"), _T("CTortoiseGitBlameView"), MB_ICONINFORMATION);
 	}
-#endif
+
 	return true;
 }
 
@@ -1201,7 +1168,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				Left += m_authorwidth;
 			}
 #endif
-			if ((i==m_SelectedLine)&&(currentDialog))
+			if ((i==m_SelectedLine)&&(m_pFindDialog))
 			{
 				LOGBRUSH brush;
 				brush.lbColor = m_textcolor;
@@ -2705,6 +2672,7 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 void CTortoiseGitBlameView::OnEditFind()
 {
     m_pFindDialog=new CFindReplaceDialog();
+	
     m_pFindDialog->Create(TRUE,_T(""),NULL,FR_DOWN,this);  
 }
 
@@ -2739,7 +2707,8 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM   wParam,   LPARAM   l
         bool   bMatchCase   =   m_pFindDialog->MatchCase()   ==   TRUE;   
         bool   bMatchWholeWord   =   m_pFindDialog->MatchWholeWord()   ==   TRUE;   
         bool   bSearchDown   =   m_pFindDialog->SearchDown()   ==   TRUE;   
-
+		
+		DoSearch(FindName,m_pFindDialog->m_fr.Flags);
             //with   given   name   do   search   
     //        *FindWhatYouNeed(FindName,   bMatchCase,   bMatchWholeWord,   bSearchDown);   
     }   

@@ -139,7 +139,7 @@ public:
 	void BlamePreviousRevision();
 	void DiffPreviousRevision();
 	void ShowLog();
-	bool DoSearch(LPSTR what, DWORD flags);
+	bool DoSearch(CString what, DWORD flags);
 	bool GotoLine(long line);
 	bool ScrollToLine(long line);
 	void GotoLineDlg();
