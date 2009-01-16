@@ -25,6 +25,10 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName,CString Rev);
+	virtual void SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU = TRUE);
+	
+	
 // Implementation
 public:
 	virtual ~CTortoiseGitBlameDoc();
@@ -39,7 +43,7 @@ public:
 
 protected:
 	
-	
+	CString m_Rev;
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()

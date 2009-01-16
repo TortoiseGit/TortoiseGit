@@ -48,13 +48,19 @@ BOOL CTortoiseGitBlameDoc::OnNewDocument()
 
 	return TRUE;
 }
-
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	return OnOpenDocument(lpszPathName,_T(""));
+}
+
+BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 {
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
 	m_CurrentFileName=lpszPathName;
+
+	m_Rev=Rev;
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
@@ -78,7 +84,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		CString cmd;
 		CTGitPath path;
 		path.SetFromWin(lpszPathName);
-		cmd.Format(_T("git.exe blame -s -l -- \"%s\""),path.GetGitPathString());
+		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.Empty();
 		if(g_Git.Run(cmd,&m_BlameData))
 		{
@@ -86,13 +92,36 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 		}
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
-		pView->UpdateInfo();
-		
+		if(pView == NULL)
+		{
+			CWnd* pWnd = GetMainFrame()->GetDescendantWindow(AFX_IDW_PANE_FIRST, TRUE);
+			if (pWnd != NULL && pWnd->IsKindOf(RUNTIME_CLASS(CTortoiseGitBlameView)))
+			{
+				pView = (CTortoiseGitBlameView*)pWnd;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+		pView->UpdateInfo();		
 	}
 
 	return TRUE;
 }
 
+void CTortoiseGitBlameDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
+{
+	CDocument::SetPathName(lpszPathName,bAddToMRU);
+
+	CString title;
+	if(m_Rev.IsEmpty())
+		title=CString(lpszPathName)+_T(":HEAD");
+	else
+		title=CString(lpszPathName)+_T(":")+m_Rev;
+
+	this->SetTitle(title);
+}
 
 // CTortoiseGitBlameDoc serialization
 

@@ -12,7 +12,10 @@ class CMainFrame : public CFrameWndEx
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
-
+	virtual void OnUpdateFrameTitle(BOOL bAddToTitle)
+	{
+		CFrameWndEx::OnUpdateFrameTitle( bAddToTitle);
+	};
 // Attributes
 public:
 

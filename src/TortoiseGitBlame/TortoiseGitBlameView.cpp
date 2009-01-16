@@ -135,7 +135,9 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_ToolTip.Create(this->GetParent());	
 	m_ToolTip.AddTool(this,_T("Test"));
 	
+	::AfxGetApp()->GetMainWnd();
 	return CView::OnCreate(lpcs);
+	
 }
 
 void CTortoiseGitBlameView::OnSize(UINT nType,int cx, int cy)
