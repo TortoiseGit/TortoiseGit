@@ -32,6 +32,7 @@ public:
 	virtual void LoadCustomState();
 	virtual void SaveCustomState();
 
+	CString m_Rev;
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 };

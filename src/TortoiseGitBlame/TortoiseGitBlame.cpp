@@ -9,6 +9,7 @@
 
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
+#include "CmdLineParser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -105,7 +106,6 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-
 
 	// Dispatch commands specified on the command line.  Will return FALSE if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.

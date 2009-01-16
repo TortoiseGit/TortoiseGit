@@ -45,6 +45,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
 	ON_COMMAND(ID_EDIT_FIND,OnEditFind)
 	ON_COMMAND(ID_EDIT_GOTO,OnEditGoto)
+	ON_COMMAND(ID_EDIT_COPY,CopySelectedLogToClipboard)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_MOUSEMOVE()
@@ -733,33 +734,7 @@ bool CTortoiseGitBlameView::ScrollToLine(long line)
 
 void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 {
-#if 0
-	if (m_selectedrev <= 0)
-		return;
-	std::map<LONG, CString>::iterator iter;
-	if ((iter = app.logmessages.find(m_selectedrev)) != app.logmessages.end())
-	{
-		CString msg;
-		msg += m_selectedauthor;
-		msg += "  ";
-		msg += app.m_selecteddate;
-		msg += '\n';
-		msg += iter->second;
-		msg += _T("\n");
-		if (OpenClipboard(app.wBlame))
-		{
-			EmptyClipboard();
-			HGLOBAL hClipboardData;
-			hClipboardData = GlobalAlloc(GMEM_DDESHARE, msg.size()+1);
-			char * pchData;
-			pchData = (char*)GlobalLock(hClipboardData);
-			strcpy_s(pchData, msg.size()+1, msg.c_str());
-			GlobalUnlock(hClipboardData);
-			SetClipboardData(CF_TEXT,hClipboardData);
-			CloseClipboard();
-		}
-	}
-#endif
+	this->GetLogList()->CopySelectionToClipBoard(FALSE);
 }
 
 void CTortoiseGitBlameView::BlamePreviousRevision()
@@ -973,15 +948,6 @@ void CTortoiseGitBlameView::Command(int id)
 #endif
 }
 
-void CTortoiseGitBlameView::GotoLineDlg()
-{
-#if 0
-	if (DialogBox(hResource, MAKEINTRESOURCE(IDD_GOTODLG), wMain, GotoDlgProc)==IDOK)
-	{
-		GotoLine(m_gotoline);
-	}
-#endif
-}
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
 {

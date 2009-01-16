@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory=""
-				CommandArguments="D:\Profiles\b20596\git\alloc.c"
+				CommandArguments="D:\Profiles\b20596\git\alloc.c /rev:2c1cbe"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

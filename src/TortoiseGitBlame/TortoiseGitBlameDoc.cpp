@@ -12,6 +12,7 @@
 #include "MainFrm.h"
 #include "TGitPath.h"
 #include "TortoiseGitBlameView.h"
+#include "CmdLineParser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,7 +51,16 @@ BOOL CTortoiseGitBlameDoc::OnNewDocument()
 }
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	return OnOpenDocument(lpszPathName,_T(""));
+	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
+	if(parser.HasVal(_T("rev")))
+	{
+		m_Rev=parser.GetVal(_T("rev"));
+	}else
+	{
+		m_Rev.Empty();
+	}
+
+	return OnOpenDocument(lpszPathName,m_Rev);
 }
 
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
@@ -59,7 +69,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		return FALSE;
 
 	m_CurrentFileName=lpszPathName;
-
 	m_Rev=Rev;
 
 	// TODO: add reinitialization code here
