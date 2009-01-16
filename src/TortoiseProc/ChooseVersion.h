@@ -3,6 +3,8 @@
 
 class CChooseVersion
 {
+public:
+	
 private:
 	CWnd *	m_pWin;
 protected:
@@ -57,7 +59,10 @@ protected:
 	}
 
 	void Init()
-	{
+	{	
+		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
+		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
+
 		STRING_VECTOR list;
 		g_Git.GetTagList(list);
 		m_ChooseVersioinTags.AddString(list);
@@ -67,6 +72,8 @@ protected:
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
 		m_ChooseVersioinBranch.AddString(list);
 		m_ChooseVersioinBranch.SetCurSel(current);
+
+
 	}
 public:					
 	CString m_VersionName;
