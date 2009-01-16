@@ -28,12 +28,13 @@
 
 bool BlameCommand::Execute()
 {
-	bool bRet = false;
-	bool bShowDialog = true;
-	CBlameDlg dlg;
-	CString options;
-	dlg.DoModal();
+//	bool bRet = false;
+//	bool bShowDialog = true;
+//	CBlameDlg dlg;
+//	CString options;
+//	dlg.DoModal();
 //	dlg.EndRev = GitRev::REV_HEAD;
+	CAppUtils::LaunchTortoiseBlame(orgCmdLinePath.GetWinPath(), _T(""),_T(""));
 #if 0
 	if (parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")))
 	{
@@ -105,5 +106,5 @@ bool BlameCommand::Execute()
 		}
 	}
 #endif
-	return bRet;
+	return TRUE;
 }
