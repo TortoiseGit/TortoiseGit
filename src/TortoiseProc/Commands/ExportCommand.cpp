@@ -23,5 +23,10 @@
 
 bool ExportCommand::Execute()
 {
-	return CAppUtils::Export();
+	CString base=parser.GetVal(_T("rev"));
+	CString *p=&base;
+	if(base.IsEmpty())
+		p=NULL;
+
+	return CAppUtils::Export(p);
 }

@@ -29,5 +29,10 @@
 
 bool TagCommand::Execute()
 {
-	return CAppUtils::CreateBranchTag(TRUE);
+	CString base=parser.GetVal(_T("rev"));
+	CString *p=&base;
+	if(base.IsEmpty())
+		p=NULL;
+
+	return CAppUtils::CreateBranchTag(TRUE,p);
 }
