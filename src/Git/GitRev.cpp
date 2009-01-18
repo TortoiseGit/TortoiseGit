@@ -76,7 +76,7 @@ int GitRev::ParserFromLog(CString &log)
 			{
 			case LOG_REV_ITEM_BEGIN:
 				this->Clear();
-
+				break;
 			case LOG_REV_AUTHOR_NAME:
 				this->m_AuthorName = text;
 				break;

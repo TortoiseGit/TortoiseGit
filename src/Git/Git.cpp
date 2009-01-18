@@ -75,7 +75,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 void CGit::StringAppend(CString *str,char *p)
 {
        USES_CONVERSION;
-       str->Append(A2W(p));
+       str->Append(A2W_CP(p,CP_UTF8));
 
 }	
 BOOL CGit::IsInitRepos()

@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
-				CommandArguments="/command:blame /path:&quot;D:\\Profiles\\b20596\\git\\alloc.c&quot;"
+				CommandArguments="/command:log /path:&quot;D:\\test4\\tt&quot;"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"
