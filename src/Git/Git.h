@@ -50,6 +50,7 @@ public:
 		LOG_INFO_FILESTATE=0x2,
 		LOG_INFO_PATCH=0x4,
 		LOG_INFO_FULLHISTORY=0x8,
+		LOG_INFO_BOUNDARY=0x10
 	}LOG_INFO_MASK;
 
 	int GetRemoteList(STRING_VECTOR &list);
@@ -58,7 +59,7 @@ public:
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
 	//hash is empty means all. -1 means all
-	int GetLog(CString& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE);
+	int GetLog(CString& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY);
 
 	git_revnum_t GetHash(CString &friendname);
 

@@ -31,6 +31,7 @@
 #include "HistoryDlg.h"
 #include "Hooks.h"
 #include "CommonResource.h"
+#include "UnicodeUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -425,8 +426,10 @@ void CCommitDlg::OnOK()
 		g_Git.Run(cmd,&out);
 
 		CString tempfile=::GetTempFile();
-		CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
-		file.WriteString(m_sLogMessage);
+		CFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
+		CStringA log=CUnicodeUtils::GetUTF8( m_sLogMessage);
+		file.Write(log,log.GetLength());
+		//file.WriteString(m_sLogMessage);
 		file.Close();
 	
 		out =_T("");

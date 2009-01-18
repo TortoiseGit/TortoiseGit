@@ -160,7 +160,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		CString onelog;
 		TCHAR oldmark=this->m_Mark;
 	
-		git->GetLog(onelog,m_CommitHash,NULL,1);
+		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE);
 		CString oldhash=m_CommitHash;
 		ParserFromLog(onelog);
 		
