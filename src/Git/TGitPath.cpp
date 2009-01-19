@@ -116,11 +116,13 @@ void CTGitPath::SetFromGit(const char* pPath, bool bIsDirectory)
 	m_bIsDirectory = bIsDirectory;
 }
 
-void CTGitPath::SetFromGit(const CString& sPath)
+void CTGitPath::SetFromGit(const CString& sPath,CString *oldpath)
 {
 	Reset();
 	m_sFwdslashPath = sPath;
 	SanitizeRootPath(m_sFwdslashPath, true);
+	if(oldpath)
+		m_sOldFwdslashPath = *oldpath;
 }
 
 void CTGitPath::SetFromWin(LPCTSTR pPath)
@@ -188,6 +190,10 @@ const CString& CTGitPath::GetGitPathString() const
 	return m_sFwdslashPath;
 }
 
+const CString &CTGitPath::GetGitOldPathString() const
+{
+	return m_sOldFwdslashPath;
+}
 #if 0
 const char* CTGitPath::GetGitApiPath(apr_pool_t *pool) const
 {
@@ -876,6 +882,7 @@ int CTGitPathList::ParserFromLog(CString &log)
 	while( pos>=0 )
 	{
 		one=log.Tokenize(_T("\n"),pos);
+		path.Reset();
 		if(one[0]==_T(':'))
 		{
 			int tabstart=0;
@@ -901,15 +908,30 @@ int CTGitPathList::ParserFromLog(CString &log)
 							
 				}else
 				{	
-					path.SetFromGit(pathname);
+					int ac=path.ParserAction(action);
+					if(ac & CTGitPath::LOGACTIONS_REPLACED)
+					{
+						CString oldname;
+						int oldnametab=pathname.Find(_T("\t"));
+						if(oldnametab>0)
+							path.SetFromGit(pathname.Right(pathname.GetLength()-oldnametab-1),&pathname.Left(oldnametab));
+						else
+						{
+							ASSERT(FALSE);
+							path.SetFromGit(pathname);
+						}
+					}else
+						path.SetFromGit(pathname);
+					path.m_Action=ac;
 					//action must be set after setfromgit. SetFromGit will clear all status. 
-					this->m_Action|=path.ParserAction(action);
+					this->m_Action|=ac;
 					AddPath(path);
 				}
 			}
 					
 		}else
 		{
+
 			int tabstart=0;
 			path.Reset();
 			CString StatAdd=(one.Tokenize(_T("\t"),tabstart));
@@ -917,7 +939,13 @@ int CTGitPathList::ParserFromLog(CString &log)
 				break;
 			CString StatDel=(one.Tokenize(_T("\t"),tabstart));
 			//SetFromGit will reset all context of GitRev
-			path.SetFromGit(one.Right(one.GetLength()-tabstart));
+			one=one.Right(one.GetLength()-tabstart);
+			int rename=one.Find(_T(" => "));
+			if(rename>0)
+			{
+				path.SetFromGit(one.Right(one.GetLength()-rename-4),&one.Left(rename));
+			}else
+				path.SetFromGit(one.Right(one.GetLength()-tabstart));
 				
 			CTGitPath *GitPath=LookForGitPath(path.GetGitPathString());
 			if(GitPath)
@@ -932,6 +960,7 @@ int CTGitPathList::ParserFromLog(CString &log)
 				AddPath(path);
 			}
 		}
+
 	}
 	return pos;
 }

@@ -337,6 +337,7 @@ void CCommitDlg::OnOK()
 	//first add all the unversioned files the user selected
 	//and check if all versioned files are selected
 	int nUnchecked = 0;
+	int nchecked = 0;
 	m_bRecursive = true;
 	int nListItems = m_ListCtrl.GetItemCount();
 
@@ -347,8 +348,11 @@ void CCommitDlg::OnOK()
 	//std::set<CString> checkedLists;
 	//std::set<CString> uncheckedLists;
 
-	CString checkedfiles;
-	CString uncheckedfiles;
+	//CString checkedfiles;
+	//CString uncheckedfiles;
+
+	CString cmd;
+	CString out;
 
 	for (int j=0; j<nListItems; j++)
 	{
@@ -378,13 +382,27 @@ void CCommitDlg::OnOK()
 				bCheckedInExternal = true;
 			}
 #endif
+			cmd.Format(_T("git.exe update-index -- \"%s\""),entry->GetGitPathString());
+			g_Git.Run(cmd,&out);
+			nchecked++;
 			//checkedLists.insert(entry->GetGitPathString());
-			checkedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
+//			checkedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
 		}
 		else
 		{
 			//uncheckedLists.insert(entry->GetGitPathString());
-			uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
+			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
+			{	//To init git repository, there are not HEAD, so we can use git reset command
+				cmd.Format(_T("git.exe rm --cache -- \"%s\""),entry->GetGitPathString());
+				g_Git.Run(cmd,&out);	
+			}
+			else
+			{
+				cmd.Format(_T("git.exe reset -- %s"),entry->GetGitPathString());
+				g_Git.Run(cmd,&out);
+			}
+
+		//	uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
 #if 0
 			if ((entry->status != Git_wc_status_unversioned)	&&
 				(entry->status != Git_wc_status_ignored))
@@ -412,18 +430,17 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	CString cmd;
-	CString out;
-	if(uncheckedfiles.GetLength()>0)
-	{
-		cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
-		g_Git.Run(cmd,&out);
-	}
+	//if(uncheckedfiles.GetLength()>0)
+	//{
+	//	cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
+	//	g_Git.Run(cmd,&out);
+	//}
 
-	if(checkedfiles.GetLength()>0)
+	//if(checkedfiles.GetLength()>0)
+	if(nchecked)
 	{
-		cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
-		g_Git.Run(cmd,&out);
+	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
+	//	g_Git.Run(cmd,&out);
 
 		CString tempfile=::GetTempFile();
 		CFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
@@ -1033,6 +1050,9 @@ void CCommitDlg::GetAutocompletionList()
 			return;
 
 		CTGitPath *path = (CTGitPath*)m_ListCtrl.GetItemData(i);
+
+		if(path == NULL)
+			continue;
 
 		CString sPartPath =path->GetGitPathString();
 		m_autolist.insert(sPartPath);

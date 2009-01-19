@@ -29,7 +29,8 @@ public:
 	 */
 	void SetFromGit(const char* pPath);
 	void SetFromGit(const char* pPath, bool bIsDirectory);
-	void SetFromGit(const CString& sPath);
+	void SetFromGit(const CString& sPath,CString *OldPath=NULL);
+	
 	/**
 	 * Set the path as UNICODE with backslashes
 	 */
@@ -52,6 +53,8 @@ public:
 	 * Returns the path with forward slashes.
 	 */
 	const CString& GetGitPathString() const;
+
+	const CString& GetGitOldPathString() const;
 	/**
 	 * Returns the path completely prepared to be fed the the Git APIs
 	 * It will be in UTF8, with URLs escaped, if necessary
@@ -245,6 +248,11 @@ private:
 	mutable CString m_sUIPath;
 	mutable	CStringA m_sUTF8FwdslashPath;
 	mutable CStringA m_sUTF8FwdslashPathEscaped;
+
+	//used for rename case
+	mutable CString m_sOldBackslashPath;
+	mutable CString m_sOldFwdslashPath;
+	
 	// Have we yet determined if this is a directory or not?
 	mutable bool m_bDirectoryKnown;
 	mutable bool m_bIsDirectory;
