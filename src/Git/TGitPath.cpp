@@ -947,12 +947,13 @@ int CTGitPathList::ParserFromLog(CString &log)
 			if(rename>0)
 			{
 				CString basepath;
-				int include_left=one.Find(_T("/{"));
-				if(include_left>0)
+				int include_left=one.Find(_T("{"));
+				int include_right=one.Find(_T("}"),rename);
+				if(include_left>0 && include_right>0 )
 				{
-					basepath=one.Left(include_left+1);
-					CString newname=basepath+one.Mid(rename+4,one.GetLength()-rename-5);
-					CString oldname=basepath+one.Mid(include_left+2,rename-include_left-2);
+					basepath=one.Left(include_left);
+					CString newname=basepath+one.Mid(rename+4,include_right-rename-4)+one.Right(one.GetLength()-include_right-1);
+					CString oldname=basepath+one.Mid(include_left+2,rename-include_left-2)+one.Right(one.GetLength()-include_right-1);
 					path.SetFromGit(newname,&oldname	);
 				}else
 					path.SetFromGit(one.Right(one.GetLength()-rename-4),&one.Left(rename));
