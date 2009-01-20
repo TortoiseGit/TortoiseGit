@@ -2,7 +2,7 @@
 <VisualStudioUserFile
 	ProjectType="Visual C++"
 	Version="9.00"
-	ShowAllFiles="false"
+	ShowAllFiles="true"
 	>
 	<Configurations>
 		<Configuration
@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
-				CommandArguments="/command:commit /path:&quot;D:\\test4\\tt&quot;"
+				CommandArguments="/command:log /path:&quot;D:\profile\b20596\buildtest\tortoisegit&quot;"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"
