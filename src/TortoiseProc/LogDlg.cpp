@@ -348,6 +348,7 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tTo = 0;
 	//m_tFrom = (DWORD)-1;
 
+	m_LogList.m_Path=m_path;
 	m_LogList.FetchLogAsync(LogCallBack,this);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();

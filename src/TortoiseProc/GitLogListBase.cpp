@@ -1340,7 +1340,14 @@ int CGitLogListBase::FillGitShortLog()
     else
         path=&this->m_Path;
 
-	this->m_logEntries.ParserShortLog(path,-1);
+	CString hash;
+	int mask;
+	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
+	if(this->m_bAllBranch)
+		mask |= CGit::LOG_INFO_ALL_BRANCH;
+
+	this->m_logEntries.ParserShortLog(path,hash,-1,mask);
+	
 
 	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx(this->m_logEntries.size());

@@ -49,7 +49,8 @@ bool PrevDiffCommand::Execute()
 			CString logout;
 		
 			CLogDataVector revs;
-			revs.ParserShortLog(&cmdLinePath,2);
+	
+			revs.ParserShortLog(&cmdLinePath,hash,2);
 			if( revs.size() == 0)
 			{
 				CMessageBox::Show(hWndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);

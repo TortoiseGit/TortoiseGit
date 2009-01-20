@@ -59,7 +59,7 @@ public:
 	}
 	void ClearAll();
 	int  ParserFromLog(CTGitPath *path =NULL,int count = -1,int infomask=CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE);
-	int ParserShortLog(CTGitPath *path =NULL,int count = -1  );
+	int  ParserShortLog(CTGitPath *path ,CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH );
 	int FetchFullInfo(int i);
 
 	Lanes m_Lns;

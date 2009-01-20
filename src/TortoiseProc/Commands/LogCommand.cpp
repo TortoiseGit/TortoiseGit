@@ -25,21 +25,21 @@ bool LogCommand::Execute()
 {
 	//the log command line looks like this:
 	//command:log path:<path_to_file_or_directory_to_show_the_log_messages> [startrev:<startrevision>] [endrev:<endrevision>]
-#if 0 
+
 	CString val = parser.GetVal(_T("startrev"));
 	if ( val.IsEmpty() )
 	{
 		// support deprecated parameter prior 1.5.0
 		val = parser.GetVal(_T("revstart"));
 	}
-	SVNRev revstart = val.IsEmpty() ? SVNRev() : SVNRev(val);
+	GitRev revstart ;
 	val = parser.GetVal(_T("endrev"));
 	if ( val.IsEmpty() )
 	{
 		// support deprecated parameter prior 1.5.0
 		val = parser.GetVal(_T("revend"));
 	}
-	SVNRev revend = val.IsEmpty() ? SVNRev() : SVNRev(val);
+	GitRev revend ;
 	val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
 	val = parser.GetVal(_T("pegrev"));
@@ -48,11 +48,16 @@ bool LogCommand::Execute()
 		// support deprecated parameter prior 1.5.0
 		val = parser.GetVal(_T("revpeg"));
 	}
+
+	GitRev pegrev;
+
+#if 0
 	SVNRev pegrev = val.IsEmpty() ? SVNRev() : SVNRev(val);
 	if (!revstart.IsValid())
 		revstart = SVNRev::REV_HEAD;
 	if (!revend.IsValid())
 		revend = 0;
+#endif
 
 	if (limit == 0)
 	{
@@ -64,11 +69,12 @@ bool LogCommand::Execute()
 	{
 		bStrict = TRUE;
 	}
-#endif	
+
 	
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
-//	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit, bStrict);
+	//dlg.SetParams(cmdLinePath);
+	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit, bStrict);
 //	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
 //	val = parser.GetVal(_T("propspath"));
 //	if (!val.IsEmpty())

@@ -222,21 +222,31 @@ int CGit::GetLog(CString& logOut, CString &hash,  CTGitPath *path ,int count,int
 		param += _T(" --full-history ");
 
 	if(mask& LOG_INFO_BOUNDARY)
-		param += _T("--left-right --boundary ");
+		param += _T(" --left-right --boundary ");
+
+	if(mask& CGit::LOG_INFO_ALL_BRANCH)
+		param += _T(" --all ");
+
+	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
+		param += _T(" -C ");
+	
+	if(mask& CGit::LOG_INFO_DETECT_RENAME )
+		param += _T(" -M ");
 
 	param+=hash;
 
-	cmd.Format(_T("git.exe log %s -C --topo-order --parents %s --pretty=format:\""),
+	cmd.Format(_T("git.exe log %s --topo-order --parents %s --pretty=format:\""),
 				num,param);
 
-	BuildOutputFormat(log);
+	BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
+
 	cmd += log;
 	cmd += CString(_T("\"  "))+hash+file;
 
 	return Run(cmd,&logOut);
 }
 
-
+#if 0
 int CGit::GetShortLog(CString &logOut,CTGitPath * path, int count)
 {
 	CString cmd;
@@ -254,6 +264,7 @@ int CGit::GetShortLog(CString &logOut,CTGitPath * path, int count)
 	//cmd += CString(_T("\" HEAD~40..HEAD"));
 	return Run(cmd,&logOut);
 }
+#endif
 
 #define BUFSIZE 512
 void GetTempPath(CString &path)

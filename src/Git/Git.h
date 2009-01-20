@@ -51,7 +51,10 @@ public:
 		LOG_INFO_PATCH=0x4,
 		LOG_INFO_FULLHISTORY=0x8,
 		LOG_INFO_BOUNDARY=0x10,
-        LOG_INFO_ALL=0x20
+        LOG_INFO_ALL_BRANCH=0x20,
+		LOG_INFO_ONLY_HASH=0x40,
+		LOG_INFO_DETECT_RENAME=0x80,
+		LOG_INFO_DETECT_COPYRENAME=0x100
 	}LOG_INFO_MASK;
 
 	int GetRemoteList(STRING_VECTOR &list);
@@ -60,12 +63,12 @@ public:
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
 	//hash is empty means all. -1 means all
-	int GetLog(CString& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY);
+	int GetLog(CString& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME);
 
 	git_revnum_t GetHash(CString &friendname);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
-	int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
+	//int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
 	static void StringAppend(CString *str,char *p);
 
 	BOOL IsInitRepos();

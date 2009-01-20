@@ -160,15 +160,16 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		CString onelog;
 		TCHAR oldmark=this->m_Mark;
 	
-		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE);
+		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME);
 		CString oldhash=m_CommitHash;
+		GIT_REV_LIST oldlist=this->m_ParentHash;
 		ParserFromLog(onelog);
 		
 		//ASSERT(oldhash==m_CommitHash);
 		if(oldmark!=0)
 			this->m_Mark=oldmark;  //parser full log will cause old mark overwrited. 
 							       //So we need keep old bound mark.
-
+		this->m_ParentHash=oldlist;
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsFull,TRUE);
 		return 0;
