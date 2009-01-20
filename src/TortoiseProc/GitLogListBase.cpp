@@ -87,6 +87,9 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_From=CTime(1970,1,2,0,0,0);
 	m_To=CTime::GetCurrentTime();
     m_bAllBranch = FALSE;
+	m_LoadingThread = NULL;
+
+	m_bExitThread=FALSE;
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -1409,10 +1412,11 @@ int CGitLogListBase::FetchLogAsync(CALLBACK_PROCESS *proc,void * data)
 {
 	m_ProcCallBack=proc;
 	m_ProcData=data;
-
+	m_bExitThread=FALSE;
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	if (AfxBeginThread(LogThreadEntry, this)==NULL)
+	m_LoadingThread = AfxBeginThread(LogThreadEntry, this);
+	if (m_LoadingThread ==NULL)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
@@ -1510,6 +1514,9 @@ UINT CGitLogListBase::LogThread()
 			
 			if(m_ProcCallBack)
 				m_ProcCallBack(m_ProcData,percent);
+
+			if(m_bExitThread)
+				break;
 		}
 		if(updated==m_logEntries.size())
 			break;

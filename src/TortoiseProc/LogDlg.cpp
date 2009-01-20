@@ -596,53 +596,30 @@ void CLogDlg::OnBnClickedGetall()
 
 void CLogDlg::GetAll(bool bForceAll /* = false */)
 {
-#if 0
+
 	// fetch all requested log messages, either the specified range or
 	// really *all* available log messages.
-	UpdateData();
+	///UpdateData();
 	INT_PTR entry = m_btnShow.GetCurrentEntry();
 	if (bForceAll)
 		entry = 0;
 
 	switch (entry)
 	{
-	case 0:	// show all
-	
-		m_endrev = 0;
-		m_startrev = m_LogRevision;
-		if (m_bStrict)
-			m_bShowedAll = true;
-
+	case 0:	// show all branch;
+		m_LogList.m_bAllBranch=true;
 		break;
-	case 1: // show range
-		{
-
-			// ask for a revision range
-			CRevisionRangeDlg dlg;
-			dlg.SetStartRevision(m_startrev);
-			dlg.SetEndRevision( (m_endrev>=0) ? m_endrev : 0);
-			if (dlg.DoModal()!=IDOK)
-			{
-				return;
-			}
-			m_endrev = dlg.GetEndRevision();
-			m_startrev = dlg.GetStartRevision();
-			if (((m_endrev.IsNumber())&&(m_startrev.IsNumber()))||
-				(m_endrev.IsHead()||m_startrev.IsHead()))
-			{
-				if (((LONG)m_startrev < (LONG)m_endrev)||
-					(m_endrev.IsHead()))
-				{
-					git_revnum_t temp = m_startrev;
-					m_startrev = m_endrev;
-					m_endrev = temp;
-				}
-			}
-			m_bShowedAll = false;
-		}
-
+	case 1: // show whole project
+		m_LogList.m_Path.Reset();
+		SetWindowText(m_sTitle + _T(" - "));
 		break;
 	}
+	m_LogList.m_bExitThread=TRUE;
+	::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,INFINITE);
+	
+	m_LogList.Clear();
+	m_LogList.FetchLogAsync(LogCallBack,this);
+#if 0
 	m_ChangedFileListCtrl.SetItemCountEx(0);
 	m_ChangedFileListCtrl.Invalidate();
 	// We need to create CStoreSelection on the heap or else
@@ -769,8 +746,9 @@ void CLogDlg::OnCancel()
 	temp2.LoadString(IDS_MSGBOX_CANCEL);
 	if ((temp.Compare(temp2)==0)||(this->IsThreadRunning()))
 	{
-		m_bCancelled = true;
-		return;
+		//m_bCancelled = true;
+		//return;
+		m_LogList.TerminateThread();
 	}
 	UpdateData();
 	if (m_bSaveStrict)

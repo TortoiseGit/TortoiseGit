@@ -159,6 +159,14 @@ public:
 		m_HashMap.clear();
 		g_Git.GetMapHashToFriendName(m_HashMap);
 	}
+	void TerminateThread()
+	{
+		if(this->m_LoadingThread)
+			AfxTermThread((HINSTANCE)m_LoadingThread->m_hThread);
+	};
+	
+	volatile bool		m_bExitThread;
+	CWinThread*			m_LoadingThread;
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -205,6 +213,10 @@ protected:
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;
 	MAP_HASH_NAME		m_HashMap;
+
+
+
+	
 };
 
 
