@@ -57,11 +57,11 @@
 	<!-- Target specific component GUIDs ............................................. -->
 
 	<?if $(var.Platform) = "x64" ?>
-	<?define GuidInfoFiles="B776F75C-B019-44b1-957A-3F58D3A225CF"?>
+	<?define GuidInfoFiles="78ACAFC6-6F62-4a58-85DC-E4FE52AEA41E"?>
 	<?define GuidProgramMenuFolder="B776F75C-B019-44b1-957A-3F58D3A225CF"?>
 
 	<?define GuidShellRegistry="9E011A3C-F5D1-47ab-8BE2-443C2FFF9499"?>
-	<?define GuidMachineRegistry="9E011A3C-F5D1-47ab-8BE2-443C2FFF9499"?>
+	<?define GuidMachineRegistry="E61BA450-C3DF-4ea5-98D4-240E4B05C9C4"?>
 	<?define GuidApproveShellComponents="E7E43AE0-DB46-4af9-95EA-2EF7AD3F2119"?>
 	<?define GuidSvnProtocol="0AD2B787-A9B3-4ad7-99A5-EC6DFF0EB2B7"?>
 	<?define GuidASPNETHack="C9279E7B-3D81-4c9e-962F-987252011A29"?>
@@ -96,9 +96,9 @@
 	<?define GuidIconsClassic="1123191B-D931-49ae-A6D0-551CC82B8E83"?>
 	<?define GuidIconsCVSClassic="5D337941-A1FA-46a4-9B23-B6EDB133D97C"?>
 	<?define GuidIconsModern="4C840CEE-A967-4784-AF1C-617757D60DBB"?>
-	<?define GuidIconsXPStyle="53FBA4D1-B436-4f1c-875C-0A7FA18002FE"?>
-	<?define GuidIconsMarkPhippard="53FBA4D1-B436-4f1c-875C-0A7FA18002FE"?>
-	<?define GuidIconsStraight="53FBA4D1-B436-4f1c-875C-0A7FA18002FE"?>
+	<?define GuidIconsXPStyle="96412A1D-3EE2-4874-8CFC-8EF4D0E36467"?>
+	<?define GuidIconsMarkPhippard="9151E386-6DD8-45a8-8C04-EBEBD9D8E179"?>
+	<?define GuidIconsStraight="669EE534-B358-489e-AD81-544A32172FE7"?>
 
 	<?else?>
 
