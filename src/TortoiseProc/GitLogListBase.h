@@ -148,6 +148,10 @@ public:
 	CString				m_sFilterText;
 	CTime			m_From;
 	CTime			m_To;
+    
+    CTGitPath           m_Path;
+    BOOL           m_bAllBranch;
+
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect)=0;
 	void ReloadHashMap()

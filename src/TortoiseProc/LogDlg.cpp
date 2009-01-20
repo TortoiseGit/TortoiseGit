@@ -337,7 +337,7 @@ BOOL CLogDlg::OnInitDialog()
 	// set the choices for the "Show All" button
 	temp.LoadString(IDS_LOG_SHOWALL);
 	m_btnShow.AddEntry(temp);
-	temp.LoadString(IDS_LOG_SHOWRANGE);
+	temp.LoadString(IDS_LOG_SHOW_WHOLE);
 	m_btnShow.AddEntry(temp);
 	m_btnShow.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry")));
 
@@ -375,7 +375,7 @@ void CLogDlg::LogRunStatus(int cur)
 
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
-		DialogEnableWindow(IDC_GETALL, FALSE);
+		//DialogEnableWindow(IDC_GETALL, FALSE);
 		DialogEnableWindow(IDC_NEXTHUNDRED, FALSE);
 		DialogEnableWindow(IDC_CHECK_STOPONCOPY, FALSE);
 		DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
@@ -390,7 +390,7 @@ void CLogDlg::LogRunStatus(int cur)
 		if (!m_bShowedAll)
 			DialogEnableWindow(IDC_NEXTHUNDRED, TRUE);
 
-		//DialogEnableWindow(IDC_CHECK_STOPONCOPY, TRUE);
+		DialogEnableWindow(IDC_GETALL, TRUE);
 		//DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);

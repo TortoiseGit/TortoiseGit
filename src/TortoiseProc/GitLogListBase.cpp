@@ -86,6 +86,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_From=CTime(1970,1,2,0,0,0);
 	m_To=CTime::GetCurrentTime();
+    m_bAllBranch = FALSE;
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -1321,6 +1322,9 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info)
 		m_logEntries[i].m_IsFull=TRUE;
 		this->m_arShownList.Add(&m_logEntries[i]);
 	}
+
+    if(path)
+        m_Path=*path;
 	return 0;
 
 }
@@ -1330,7 +1334,13 @@ int CGitLogListBase::FillGitShortLog()
 	ClearText();
 
 	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserShortLog();
+    CTGitPath *path;
+    if(this->m_Path.IsEmpty())
+        path=NULL;
+    else
+        path=&this->m_Path;
+
+	this->m_logEntries.ParserShortLog(path,-1);
 
 	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx(this->m_logEntries.size());
