@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory="D:\Profiles\b20596\tortoisegit"
-				CommandArguments="/command:commit /path:&quot;D:\\test4\\tt&quot;"
+				CommandArguments="/command:log /path:&quot;D:\\Profiles\\b20596\\git&quot;"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

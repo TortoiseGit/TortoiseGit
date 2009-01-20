@@ -28,6 +28,9 @@
 //#include "AppUtils.h"
 #endif
 
+#ifndef ASSERT
+#define ASSERT()
+#endif
 using namespace std;
 extern CGit g_Git;
 
