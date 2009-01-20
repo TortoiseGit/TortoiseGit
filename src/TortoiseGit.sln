@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
+# Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Git", "Git\Git.vcproj", "{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseProc", "TortoiseProc\TortoiseProc.vcproj", "{50797F06-39C5-4802-8E2B-7B7A4EF03214}"
@@ -472,7 +472,8 @@ Global
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Win32.ActiveCfg = Debug|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|Win32.Build.0 = Debug|Win32
-		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|x64.ActiveCfg = Debug|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|x64.ActiveCfg = Debug|x64
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|x64.Build.0 = Debug|x64
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Debug|x86.ActiveCfg = Debug|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|Mixed Platforms.ActiveCfg = Release|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.release_static|Mixed Platforms.Build.0 = Release|Win32
@@ -484,7 +485,7 @@ Global
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Win32.ActiveCfg = Release|Win32
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|Win32.Build.0 = Release|Win32
-		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x64.ActiveCfg = Release|Win32
+		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x64.ActiveCfg = Release|x64
 		{62507C2F-9290-4342-910F-BFC44DF99B01}.Release|x86.ActiveCfg = Release|Win32
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|Mixed Platforms.ActiveCfg = Debug|Win32
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.debug_static|Mixed Platforms.Build.0 = Debug|Win32
@@ -496,7 +497,8 @@ Global
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Win32.ActiveCfg = Debug|Win32
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|Win32.Build.0 = Debug|Win32
-		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|x64.ActiveCfg = Debug|Win32
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|x64.ActiveCfg = Debug|x64
+		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|x64.Build.0 = Debug|x64
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.Debug|x86.ActiveCfg = Debug|Win32
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|Mixed Platforms.ActiveCfg = Release|Win32
 		{2C879469-DB8F-4BF0-B016-AE864D2A7BBC}.release_static|Mixed Platforms.Build.0 = Release|Win32
