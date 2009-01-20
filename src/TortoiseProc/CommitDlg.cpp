@@ -664,8 +664,7 @@ UINT CCommitDlg::StatusThread()
 			m_ListCtrl.Show(dwShow, m_checkedPathList);
 		else
 		{
-			DWORD dwCheck = m_bSelectFilesForCommit ?SVNSLC_SHOWDIRECTS|SVNSLC_SHOWMODIFIED|SVNSLC_SHOWADDED|SVNSLC_SHOWREMOVED
-				|SVNSLC_SHOWREPLACED|SVNSLC_SHOWMERGED|SVNSLC_SHOWLOCKS : 0;
+			DWORD dwCheck = m_bSelectFilesForCommit ? dwShow : 0;
 			m_ListCtrl.Show(dwShow, dwCheck);
 			m_bSelectFilesForCommit = true;
 		}
@@ -690,17 +689,17 @@ UINT CCommitDlg::StatusThread()
 	}
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems()))
 	{
-//		if (CMessageBox::Show(m_hWnd, IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED, IDS_APPNAME, MB_ICONINFORMATION | MB_YESNO)==IDYES)
-//		{
-//			m_bShowUnversioned = TRUE;
-//			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
-//			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
-//			m_ListCtrl.Show(dwShow);
-//		}
+		if (CMessageBox::Show(m_hWnd, IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED, IDS_APPNAME, MB_ICONINFORMATION | MB_YESNO)==IDYES)
+		{
+			m_bShowUnversioned = TRUE;
+			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
+			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
+			m_ListCtrl.Show(dwShow);
+		}
 	}
 
-//	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
-//	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	m_autolist.clear();
 	// we don't have to block the commit dialog while we fetch the

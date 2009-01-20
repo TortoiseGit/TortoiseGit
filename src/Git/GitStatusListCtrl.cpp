@@ -1787,7 +1787,9 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 	for (int i=0; i<GetItemCount(); ++i)
 	{
 		CTGitPath * entry = (CTGitPath*)GetItemData(i);
-		SetCheck(i, entry->m_Checked);
+		ASSERT(entry);
+		if(entry)
+			SetCheck(i, entry->m_Checked);
 	}
 
 	m_bBlock = FALSE;
@@ -2705,6 +2707,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					while ((index = GetNextSelectedItem(pos)) >= 0)
 					{
 						CTGitPath * path=(CTGitPath*)GetItemData(index);
+						ASSERT(path);
+						if(path == NULL)
+							continue;
 						CString cmd;
 						cmd.Format(_T("git.exe add %s"),path->GetGitPathString());
 						CString output;
@@ -5157,7 +5162,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 	}
 
-
+#if 0
 	m_bHasIgnoreGroup = false;
 
 	// now add the items which don't belong to a group
@@ -5203,7 +5208,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			it->second = InsertGroup(groupindex, &grp);
 		}
 	}
-
+#endif
 	return bHasGroups;
 }
 

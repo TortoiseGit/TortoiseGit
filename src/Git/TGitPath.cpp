@@ -948,7 +948,7 @@ int CTGitPathList::ParserFromLog(CString &log)
 			{
 				path.SetFromGit(one.Right(one.GetLength()-rename-4),&one.Left(rename));
 			}else
-				path.SetFromGit(one.Right(one.GetLength()-tabstart));
+				path.SetFromGit(one);
 				
 			CTGitPath *GitPath=LookForGitPath(path.GetGitPathString());
 			if(GitPath)
