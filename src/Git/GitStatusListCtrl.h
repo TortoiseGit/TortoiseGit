@@ -638,7 +638,7 @@ public:
 	 * if \a bStrict is set to false, then the paths passed to the control
 	 * to fetch the status (in GetStatus()) are used if possible.
 	 */
-	CTGitPath GetCommonDirectory(bool bStrict);
+	CString GetCommonDirectory(bool bStrict);
 
 	/**
 	 * Returns the parent url of all entries in the control.

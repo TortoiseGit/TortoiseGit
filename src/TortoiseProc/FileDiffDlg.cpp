@@ -318,7 +318,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 
 	CGitDiff diff;
 	CTGitPath* fd = m_arFilteredList[selIndex];
-	diff.Diff(fd, this->m_rev1.m_CommitHash, this->m_rev2.m_CommitHash, blame, FALSE);
+	diff.Diff(fd, fd,this->m_rev1.m_CommitHash, this->m_rev2.m_CommitHash, blame, FALSE);
 
 #if 0
 	CFileDiffDlg::CTGitPath* fd = m_arFilteredList[selIndex];

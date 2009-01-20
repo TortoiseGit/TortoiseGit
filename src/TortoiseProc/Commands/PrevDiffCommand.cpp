@@ -65,7 +65,7 @@ bool PrevDiffCommand::Execute()
 			if( revs.size() == 2 )
 			{
 				CGitDiff diff;
-				bRet = diff.Diff(&cmdLinePath, revs[0].m_CommitHash, revs[1].m_CommitHash, false);
+				bRet = diff.Diff(&cmdLinePath,&cmdLinePath, revs[0].m_CommitHash, revs[1].m_CommitHash, false);
 			}
 		}
 		else

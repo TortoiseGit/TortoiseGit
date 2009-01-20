@@ -54,7 +54,7 @@ bool DiffCommand::Execute()
 #endif
 			{
 				//git_revnum_t baseRev = 0;
-				bRet = diff.Diff(&cmdLinePath,git_revnum_t(_T("HEAD")),git_revnum_t(GIT_REV_ZERO));
+				bRet = diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(_T("HEAD")),git_revnum_t(GIT_REV_ZERO));
 			}
 		}
 	} 

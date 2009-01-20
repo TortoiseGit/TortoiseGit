@@ -62,7 +62,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 	return 0;
 }
 
-int CGitDiff::Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, bool blame, bool unified)
+int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, git_revnum_t & rev2, bool blame, bool unified)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -90,19 +90,19 @@ int CGitDiff::Diff(CTGitPath * pPath, git_revnum_t & rev1, git_revnum_t & rev2, 
 		
 		file2.Format(_T("%s\\%s_%s%s"),
 				temppath,						
-				pPath->GetBaseFilename(),
+				pPath2->GetBaseFilename(),
 				rev2.Left(6),
-				pPath->GetFileExtension());
-		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2,pPath->GetGitPathString());
+				pPath2->GetFileExtension());
+		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2,pPath2->GetGitPathString());
 		g_Git.RunLogFile(cmd,file2);
 	}else
 	{
-		file2=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+		file2=g_Git.m_CurrentDir+_T("\\")+pPath2->GetWinPathString();
 	}
 	
 	CAppUtils::DiffFlags flags;
 	CAppUtils::StartExtDiff(file2,file1,
-							pPath->GetGitPathString()+_T(":")+rev2.Left(6),
+							pPath2->GetGitPathString()+_T(":")+rev2.Left(6),
 							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
 							,flags);
 

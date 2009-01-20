@@ -4053,10 +4053,21 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 {
 	if(fileindex<0)
 		return;
+
+	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+	CTGitPath file2;
+	if(file1.m_Action & CTGitPath::LOGACTIONS_REPLACED)
+	{
+		file2.SetFromGit(file1.GetGitOldPathString());
+	}else
+	{
+		file2=file1;
+	}
+
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 	{
 		if(!g_Git.IsInitRepos())
-			CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
+			CGitDiff::Diff(&file1,&file2,
 			        CString(GIT_REV_ZERO),
 					GitRev::GetHead());
 		else
@@ -4064,7 +4075,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			        CString(GIT_REV_ZERO));
 	}else
 	{
-		CGitDiff::Diff((CTGitPath*)GetItemData(fileindex),
+		CGitDiff::Diff(&file1,&file2,
 			        m_CurrentVersion,
 					m_CurrentVersion+_T("~1"));
 	}
@@ -4150,20 +4161,25 @@ CString CGitStatusListCtrl::GetStatisticsString()
 
 }
 
-CTGitPath CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
+CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 {
 	if (!bStrict)
 	{
 		// not strict means that the selected folder has priority
 		if (!m_StatusFileList.GetCommonDirectory().IsEmpty())
-			return m_StatusFileList.GetCommonDirectory();
+			return m_StatusFileList.GetCommonDirectory().GetWinPath();
 	}
 
 	CTGitPath commonBaseDirectory;
 	int nListItems = GetItemCount();
 	for (int i=0; i<nListItems; ++i)
 	{
-		CTGitPath& baseDirectory = *(CTGitPath*)this->GetItemData(i);
+		CTGitPath baseDirectory,*p= (CTGitPath*)this->GetItemData(i);
+		ASSERT(p);
+		if(p==NULL)
+			continue;
+		baseDirectory = p->GetDirectory();
+
 		if(commonBaseDirectory.IsEmpty())
 		{
 			commonBaseDirectory = baseDirectory;
@@ -4177,7 +4193,7 @@ CTGitPath CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 			}
 		}
 	}
-	return commonBaseDirectory;
+	return g_Git.m_CurrentDir+CString(_T("\\"))+commonBaseDirectory.GetWinPath();
 }
 
 CTGitPath CGitStatusListCtrl::GetCommonURL(bool bStrict)
