@@ -134,7 +134,8 @@ int CGit::Run(CString cmd, CString* output,int code)
 
 	if(ret)
 		return ret;
-
+	
+	vector.push_back(0);
 	StringAppend(output,&(vector[0]),code);
 	return 0;
 }

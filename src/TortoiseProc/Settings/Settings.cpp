@@ -118,6 +118,8 @@ void CSettings::RemovePropPages()
 ////	delete m_pLogCachePage;
 ////	delete m_pLogCacheListPage;
 	delete m_pColorsPage;
+	delete m_pColorsPage2;
+	delete m_pColorsPage3;
 	delete m_pSavedPage;
 //	delete m_pHooksPage;
 	delete m_pBugTraqPage;
