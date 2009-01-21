@@ -24,17 +24,17 @@
  * \ingroup TortoiseProc
  * Settings property page to set custom colors used in TortoiseSVN
  */
-class CSettingsColors : public ISettingsPropPage
+class CSettingsColors2 : public ISettingsPropPage
 {
-	DECLARE_DYNAMIC(CSettingsColors)
+	DECLARE_DYNAMIC(CSettingsColors2)
 
 public:
-	CSettingsColors();
-	virtual ~CSettingsColors();
+	CSettingsColors2();
+	virtual ~CSettingsColors2();
 
 	UINT GetIconID() {return IDI_LOOKANDFEEL;}
 
-	enum { IDD = IDD_SETTINGSCOLORS_1 };
+	enum { IDD = IDD_SETTINGSCOLORS_2 };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

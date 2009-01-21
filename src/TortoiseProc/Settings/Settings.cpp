@@ -53,6 +53,8 @@ void CSettings::AddPropPages()
 //	m_pLogCachePage = new CSetLogCache();
 //	m_pLogCacheListPage = new CSettingsLogCaches();
 	m_pColorsPage = new CSettingsColors();
+    m_pColorsPage2 = new CSettingsColors2();
+    m_pColorsPage3 = new CSettingsColors3();
 	m_pSavedPage = new CSetSavedDataPage();
 //	m_pHooksPage = new CSetHooks();
 	m_pBugTraqPage = new CSetBugTraq();
@@ -72,6 +74,9 @@ void CSettings::AddPropPages()
 ////	SetPageIcon(m_pLogCachePage, m_pLogCachePage->GetIconID());
 //	SetPageIcon(m_pLogCacheListPage, m_pLogCacheListPage->GetIconID());
 	SetPageIcon(m_pColorsPage, m_pColorsPage->GetIconID());
+    SetPageIcon(m_pColorsPage2, m_pColorsPage2->GetIconID());
+    SetPageIcon(m_pColorsPage3, m_pColorsPage3->GetIconID());
+
 	SetPageIcon(m_pSavedPage, m_pSavedPage->GetIconID());
 //	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());

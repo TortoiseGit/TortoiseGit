@@ -29,6 +29,8 @@
 #include "SetLookAndFeelPage.h"
 #include "SetDialogs.h"
 #include "SettingsColors.h"
+#include "SettingsColors2.h"
+#include "SettingsColors3.h"
 #include "SetMisc.h"
 #include "SetLogCache.h"
 #include "SettingsLogCaches.h"
@@ -75,6 +77,8 @@ private:
 	CSetDialogs *			m_pDialogsPage;
     CSettingsRevisionGraph* m_pRevisionGraphPage;
 	CSettingsColors *		m_pColorsPage;
+    CSettingsColors2 *		m_pColorsPage2;
+    CSettingsColors3 *		m_pColorsPage3;
 	CSetMisc *				m_pMiscPage;
 //	CSetLogCache *			m_pLogCachePage;
 //    CSettingsLogCaches*     m_pLogCacheListPage;
