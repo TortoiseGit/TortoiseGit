@@ -65,10 +65,12 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 	this->m_Files.Clear();
     m_Action=0;
 	int begintime=0;
-	while( pos <= log.size() && pos>0)
+	BYTE *p=&log[0];
+	int filebegin=-1;
+
+	while( pos < log.size() && pos>=0)
 	{
-		if(begintime>1)
-			break;
+		
 		//one=log.Tokenize(_T("\n"),pos);
 		if(log[pos]==_T('#') && log[pos+1] == _T('<') && log[pos+3] == _T('>'))
 		{
@@ -76,12 +78,15 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 			text.Empty();
 			g_Git.StringAppend(&text,&log[pos+4],CP_UTF8);
 			mode = log[pos+2];
-
+			
 			switch(mode)
 			{
 			case LOG_REV_ITEM_BEGIN:
-				this->Clear();
 				begintime++;
+				if(begintime>1)
+					break;
+				else
+					this->Clear();
 				break;
 			case LOG_REV_AUTHOR_NAME:
 				this->m_AuthorName = text;
@@ -136,16 +141,29 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 //				break;
 			case LOG_REV_COMMIT_FILE:
 				//filelist += one +_T("\n");
-				filelist.append(log,pos,log.find(0,pos));				
+				//filelist.append(log,pos,log.find(0,pos));
+				if(filebegin<0)
+					filebegin=pos;
 				break;
 			}
 		}
-		pos=log.find(0,pos);
+		
+		if(begintime>1)
+		{
+			break;
+		}
+
+		//find next string start 
+		pos=log.findNextString(pos);
 	}
 	
-	this->m_Files.ParserFromLog(filelist);
-	this->m_Action=this->m_Files.GetAction();
-	return 0;
+	if(filebegin>=0)
+	{
+		filelist.append(log,filebegin,pos);	
+		this->m_Files.ParserFromLog(filelist);
+		this->m_Action=this->m_Files.GetAction();
+	}
+	return pos;
 }
 
 CTime GitRev::ConverFromString(CString input)

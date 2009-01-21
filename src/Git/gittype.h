@@ -18,6 +18,24 @@ public:
 				return i;
 		return -1;
 	}
+	int findNextString(int start=0)
+	{
+		int pos=start;
+		do
+		{
+			pos=find(0,pos);
+			if(pos >= 0)
+				pos++;
+			else
+				break;
+
+			if( pos >= size())
+				return -1;
+
+		}while(at(pos)==0);
+
+		return pos;
+	}
 	int append( std::vector<BYTE> &v,int start=0,int end=-1)
 	{
 		if(end<0)

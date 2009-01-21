@@ -882,14 +882,18 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 {
 	this->Clear();
 	int pos=0;
+	BYTE *p=&log[0];
 	//CString one;
 	CTGitPath path;
 	m_Action=0;
-	while( pos>=0 )
+	while( pos>=0 && pos<log.size())
 	{
 		//one=log.Tokenize(_T("\n"),pos);
 		path.Reset();
-		if(log[pos]==_T(':'))
+		if(log[pos]=='\n')
+			pos++;
+
+		if(log[pos]==':')
 		{
 			int end=log.find(0,pos);
 			int actionstart=-1;
@@ -949,12 +953,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 				AddPath(path);
 				
 			}
-		
-			pos=log.find(0,pos);
-			if(pos>=0)
-			{
-				pos++;
-			}
+	
 		}else
 		{			
 			int tabstart=0;
@@ -968,16 +967,17 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 			if(tabstart >=0)
 			{
 				log[tabstart]=0;
-				pos=tabstart;
 				g_Git.StringAppend(&StatAdd,&log[pos],CP_UTF8);
+				pos=tabstart+1;
 			}
 
 			tabstart=log.find('\t',pos);
 			if(tabstart >=0)
 			{
 				log[tabstart]=0;
-				pos=tabstart;
+				
 				g_Git.StringAppend(&StatDel,&log[pos],CP_UTF8);
+				pos=tabstart+1;
 			}
 			
 			if(log[pos] == 0) //rename
@@ -1010,11 +1010,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 				AddPath(path);
 			}
 
-			pos=log.find(0,pos);
-			if(pos>=0)
-				pos++;
 		}
-
+		pos=log.findNextString(pos);
 	}
 	return pos;
 }

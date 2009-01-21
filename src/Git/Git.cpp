@@ -171,35 +171,35 @@ CString CGit::GetCurrentBranch(void)
 int CGit::BuildOutputFormat(CString &format,bool IsFull)
 {
 	CString log;
-	log.Format(_T("#<%c>%%n"),LOG_REV_ITEM_BEGIN);
+	log.Format(_T("#<%c>%%x00"),LOG_REV_ITEM_BEGIN);
 	format += log;
 	if(IsFull)
 	{
-		log.Format(_T("#<%c>%%an%%n"),LOG_REV_AUTHOR_NAME);
+		log.Format(_T("#<%c>%%an%%x00"),LOG_REV_AUTHOR_NAME);
 		format += log;
-		log.Format(_T("#<%c>%%ae%%n"),LOG_REV_AUTHOR_EMAIL);
+		log.Format(_T("#<%c>%%ae%%x00"),LOG_REV_AUTHOR_EMAIL);
 		format += log;
-		log.Format(_T("#<%c>%%ai%%n"),LOG_REV_AUTHOR_DATE);
+		log.Format(_T("#<%c>%%ai%%x00"),LOG_REV_AUTHOR_DATE);
 		format += log;
-		log.Format(_T("#<%c>%%cn%%n"),LOG_REV_COMMIT_NAME);
+		log.Format(_T("#<%c>%%cn%%x00"),LOG_REV_COMMIT_NAME);
 		format += log;
-		log.Format(_T("#<%c>%%ce%%n"),LOG_REV_COMMIT_EMAIL);
+		log.Format(_T("#<%c>%%ce%%x00"),LOG_REV_COMMIT_EMAIL);
 		format += log;
-		log.Format(_T("#<%c>%%ci%%n"),LOG_REV_COMMIT_DATE);
+		log.Format(_T("#<%c>%%ci%%x00"),LOG_REV_COMMIT_DATE);
 		format += log;
-		log.Format(_T("#<%c>%%s%%n"),LOG_REV_COMMIT_SUBJECT);
+		log.Format(_T("#<%c>%%s%%x00"),LOG_REV_COMMIT_SUBJECT);
 		format += log;
-		log.Format(_T("#<%c>%%b%%n"),LOG_REV_COMMIT_BODY);
+		log.Format(_T("#<%c>%%b%%x00"),LOG_REV_COMMIT_BODY);
 		format += log;
 	}
-	log.Format(_T("#<%c>%%m%%H%%n"),LOG_REV_COMMIT_HASH);
+	log.Format(_T("#<%c>%%m%%H%%x00"),LOG_REV_COMMIT_HASH);
 	format += log;
-	log.Format(_T("#<%c>%%P%%n"),LOG_REV_COMMIT_PARENT);
+	log.Format(_T("#<%c>%%P%%x00"),LOG_REV_COMMIT_PARENT);
 	format += log;
 
 	if(IsFull)
 	{
-		log.Format(_T("#<%c>%%n"),LOG_REV_COMMIT_FILE);
+		log.Format(_T("#<%c>%%x00"),LOG_REV_COMMIT_FILE);
 		format += log;
 	}
 	return 0;

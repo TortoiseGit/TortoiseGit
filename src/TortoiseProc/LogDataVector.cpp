@@ -85,16 +85,14 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int
 	int start=4;
 	int length;
 	int next =0;
-	while( next>=0 )
+	while( next>=0 && next<log.size())
 	{
 		next=rev.ParserFromLog(log,next);
 
 		rev.m_Subject=_T("Load .................................");
 		this->push_back(rev);
 		m_HashMap[rev.m_CommitHash]=size()-1;
-		
-		if(next>0)
-			next++;
+
 		//next=log.find(0,next);
 	}
 
@@ -127,8 +125,6 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask)
 		next=rev.ParserFromLog(log,next);
 		this->push_back(rev);
 		m_HashMap[rev.m_CommitHash]=size()-1;		
-		if(next>=0)
-			next++;
 	}
 
 	return 0;

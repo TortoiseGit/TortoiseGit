@@ -75,7 +75,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	m_bSaveState = FALSE;
 	retSuccess = false;
 	CGit git;
-	git.GetUserName();
+	//git.GetUserName();
 }
 
 CTortoiseProcApp::~CTortoiseProcApp()
