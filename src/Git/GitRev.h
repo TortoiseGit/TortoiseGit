@@ -1,4 +1,5 @@
 #pragma once
+#include "gittype.h"
 #include "GitStatus.h"
 #include "AtlTime.h"
 
@@ -58,7 +59,7 @@ public:
 	BOOL IsBoundary(){return m_Mark == _T('-');}
 
 	void Clear();
-	int ParserFromLog(CString &log);
+	int ParserFromLog(BYTE_VECTOR &log,int start=0);
 	CTime ConverFromString(CString input);
 	inline int ParentsCount(){return m_ParentHash.size();}
 	

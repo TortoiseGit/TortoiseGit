@@ -54,7 +54,7 @@ bool FormatPatchCommand::Execute()
 			);
 
 		CString out;
-		if(g_Git.Run(cmd,&out))
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 		}

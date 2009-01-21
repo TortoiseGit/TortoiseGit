@@ -37,7 +37,7 @@ bool RevertCommand::Execute()
 		for(int i=0;i< dlg.m_selectedPathList.GetCount() ;i++)
 		{
 			cmd.Format(_T("git.exe checkout -f -- \"%s\""),dlg.m_selectedPathList[i].GetGitPathString());
-			if(g_Git.Run(cmd,&out))
+			if(g_Git.Run(cmd,&out,CP_OEMCP))
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 			}

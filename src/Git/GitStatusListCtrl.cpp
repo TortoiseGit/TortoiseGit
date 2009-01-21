@@ -301,6 +301,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
 	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)&pathList);
 
+
 #if 0
 	
 	int refetchcounter = 0;
@@ -2713,7 +2714,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString cmd;
 						cmd.Format(_T("git.exe add %s"),path->GetGitPathString());
 						CString output;
-						if(!g_Git.Run(cmd,&output))
+						if(!g_Git.Run(cmd,&output,CP_OEMCP))
 						{
 							path->m_Action = CTGitPath::LOGACTIONS_ADDED;
 							SetEntryCheck(path,index,true);
@@ -5239,7 +5240,7 @@ void CGitStatusListCtrl::NotifyCheck()
 
 int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 {
-	CString out;
+	BYTE_VECTOR out;
 	this->m_bBusy=TRUE;
 	m_CurrentVersion=hash;
 
@@ -5253,7 +5254,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 		for(int i=0;i<count;i++)
 		{	
-			CString cmdout;
+			BYTE_VECTOR cmdout;
+			cmdout.clear();
 			CString cmd;
 			if(list == NULL)
 				cmd=(_T("git.exe diff-index --raw HEAD --numstat -C -M"));
@@ -5262,21 +5264,23 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 			if(g_Git.Run(cmd,&cmdout))
 			{
-				cmdout.Empty();
-				if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&cmdout))
+				cmdout.clear();
+				CString strout;
+				if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&strout,CP_UTF8))
 				{
-					CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
+					CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
 					return -1;
 				}
-				if(cmdout.IsEmpty())
+				if(strout.IsEmpty())
 					break; //this is initial repositoyr, there are no any history
 
-				CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
 				return -1;
 
 			}
 
-			out+=cmdout;
+			//out+=cmdout;
+			out.append(cmdout,0);
 		}
 
 
@@ -5291,7 +5295,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 		for(int i=0;i<count;i++)
 		{	
-			CString cmdout;
+			BYTE_VECTOR cmdout;
 			CString cmd;
 			if(list == NULL)
 				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M %s"),hash);
@@ -5300,7 +5304,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 			g_Git.Run(cmd,&cmdout);
 
-			out+=cmdout;
+			out.append(cmdout);
 		}
 		this->m_StatusFileList.ParserFromLog(out);
 

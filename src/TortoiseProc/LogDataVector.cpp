@@ -66,7 +66,7 @@
 
 int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int mask )
 {
-	CString log;
+	BYTE_VECTOR log;
 	GitRev rev;
 
 	if(g_Git.IsInitRepos())
@@ -79,27 +79,23 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int
 
 	g_Git.GetLog(log,hash,path,count,mask);
 
-	if(log.GetLength()==0)
+	if(log.size()==0)
 		return 0;
 	
 	int start=4;
 	int length;
-	int next =1;
-	while( next>0 )
+	int next =0;
+	while( next>=0 )
 	{
-		next=log.Find(begin,start);
-		if(next >0 )
-			length = next - start+4;
-		else
-			length = log.GetLength()-start+4;
+		next=rev.ParserFromLog(log,next);
 
-		CString onelog =log;
-		onelog=log.Mid(start -4,length);
-		rev.ParserFromLog(onelog);
 		rev.m_Subject=_T("Load .................................");
 		this->push_back(rev);
 		m_HashMap[rev.m_CommitHash]=size()-1;
-		start = next +4;
+		
+		if(next>0)
+			next++;
+		//next=log.find(0,next);
 	}
 
 	return 0;
@@ -112,7 +108,7 @@ int CLogDataVector::FetchFullInfo(int i)
 //CLogDataVector Class
 int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask)
 {
-	CString log;
+	BYTE_VECTOR log;
 	GitRev rev;
 	CString emptyhash;
 	g_Git.GetLog(log,emptyhash,path,count,infomask);
@@ -120,7 +116,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask)
 	CString begin;
 	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
 	
-	if(log.GetLength()==0)
+	if(log.size()==0)
 		return 0;
 	
 	int start=4;
@@ -128,18 +124,11 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask)
 	int next =1;
 	while( next>0 )
 	{
-		next=log.Find(begin,start);
-		if(next >0 )
-			length = next - start+4;
-		else
-			length = log.GetLength()-start+4;
-
-		CString onelog =log;
-		onelog=log.Mid(start -4,length);
-		rev.ParserFromLog(onelog);
+		next=rev.ParserFromLog(log,next);
 		this->push_back(rev);
-		m_HashMap[rev.m_CommitHash]=size()-1;
-		start = next +4;
+		m_HashMap[rev.m_CommitHash]=size()-1;		
+		if(next>=0)
+			next++;
 	}
 
 	return 0;

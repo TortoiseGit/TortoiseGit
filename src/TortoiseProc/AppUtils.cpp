@@ -1142,7 +1142,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
 				);
 		}
 		CString out;
-		if(g_Git.Run(cmd,&out))
+		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 		}

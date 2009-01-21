@@ -83,18 +83,20 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	m_Action=0;
 }
 
-int CTGitPath::ParserAction(CString action)
+int CTGitPath::ParserAction(BYTE action)
 {
-	action=action.TrimLeft();
-	TCHAR c=action.GetAt(0);
-	if(c == _T('M'))
+	//action=action.TrimLeft();
+	//TCHAR c=action.GetAt(0);
+	if(action == 'M')
 		m_Action|= LOGACTIONS_MODIFIED;
-	if(c == _T('R'))
+	if(action == 'R')
 		m_Action|= LOGACTIONS_REPLACED;
-	if(c == _T('A'))
+	if(action == 'A')
 		m_Action|= LOGACTIONS_ADDED;
-	if(c == _T('D'))
+	if(action == 'D')
 		m_Action|= LOGACTIONS_DELETED;
+	if(action == 'U')
+		m_Action|= LOGACTIONS_UNMERGED;
 
 	return m_Action;
 }
@@ -856,7 +858,7 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 					ignored,
 					(*list)[i].GetWinPathString());
 		}
-		
+#ifdef VECTOR_F		
 		CString out;
 		g_Git.Run(cmd,&out);
 
@@ -872,94 +874,129 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 				AddPath(path);
 			}
 		}
+#endif
 	}
 	return 0;
 }
-int CTGitPathList::ParserFromLog(CString &log)
+int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 {
 	this->Clear();
 	int pos=0;
-	CString one;
+	//CString one;
 	CTGitPath path;
 	m_Action=0;
 	while( pos>=0 )
 	{
-		one=log.Tokenize(_T("\n"),pos);
+		//one=log.Tokenize(_T("\n"),pos);
 		path.Reset();
-		if(one[0]==_T(':'))
+		if(log[pos]==_T(':'))
 		{
-			int tabstart=0;
-			int actionstart=0;
-			CString pathname;
-			CString action;
-			one.Tokenize(_T("\t"),tabstart);
-			if(tabstart >0)
+			int end=log.find(0,pos);
+			int actionstart=-1;
+			int numfile=1;
+			int file1=-1,file2=-1;
+			if( end>0 )
 			{
-				action=one.Left(tabstart);
-				actionstart=action.ReverseFind(_T(' '));
-				if(actionstart>0)
+				actionstart=log.find(' ',end-6);
+				pos=actionstart;
+			}
+			if( actionstart>0 )
+			{
+				actionstart++;
+
+				file1 = log.find(0,actionstart);
+				if( file1>=0 )
 				{
-					action=action.Right(action.GetLength()-actionstart);
+					file1++;
+					pos=file1;
 				}
-				pathname=one.Right(one.GetLength()-tabstart);
-						
-				CTGitPath *GitPath=LookForGitPath(pathname);
-						
-				if(GitPath)
+				if( log[actionstart] == 'C' || log[actionstart] == 'R' )
 				{
-					this->m_Action|=GitPath->ParserAction(action);	
-							
-				}else
-				{	
-					int ac=path.ParserAction(action);
-					if(ac & CTGitPath::LOGACTIONS_REPLACED)
+					file2=file1;
+					numfile=2;
+					file1 = log.find(0,file1);
+					if(file1>=0 )
 					{
-						CString oldname;
-						int oldnametab=pathname.Find(_T("\t"));
-						if(oldnametab>0)
-							path.SetFromGit(pathname.Right(pathname.GetLength()-oldnametab-1),&pathname.Left(oldnametab));
-						else
-						{
-							ASSERT(FALSE);
-							path.SetFromGit(pathname);
-						}
-					}else
-						path.SetFromGit(pathname);
-					path.m_Action=ac;
-					//action must be set after setfromgit. SetFromGit will clear all status. 
-					this->m_Action|=ac;
-					AddPath(path);
+						file1++;
+						pos=file1;
+					}
+
 				}
 			}
-					
-		}else
-		{
+			
+			CString pathname1;
+			CString pathname2;
 
+			if( file1>=0 )
+				g_Git.StringAppend(&pathname1,&log[file1],CP_OEMCP);
+			if( file2>=0 )
+				g_Git.StringAppend(&pathname2,&log[file2],CP_OEMCP);
+
+			CTGitPath *GitPath=LookForGitPath(pathname1);
+
+			if(GitPath)
+			{
+				this->m_Action|=GitPath->ParserAction( log[actionstart] );	
+							
+			}else
+			{	
+				int ac=path.ParserAction(log[actionstart] );
+
+				path.SetFromGit(pathname1,&pathname2);
+				path.m_Action=ac;
+					//action must be set after setfromgit. SetFromGit will clear all status. 
+				this->m_Action|=ac;
+				AddPath(path);
+				
+			}
+		
+			pos=log.find(0,pos);
+			if(pos>=0)
+			{
+				pos++;
+			}
+		}else
+		{			
 			int tabstart=0;
 			path.Reset();
-			CString StatAdd=(one.Tokenize(_T("\t"),tabstart));
-			if( tabstart< 0)
-				break;
-			CString StatDel=(one.Tokenize(_T("\t"),tabstart));
-			//SetFromGit will reset all context of GitRev
-			one=one.Right(one.GetLength()-tabstart);
-			int rename=one.Find(_T(" => "));
-			if(rename>0)
+			CString StatAdd;
+			CString StatDel;
+			CString file1;
+			CString file2;
+
+			tabstart=log.find('\t',pos);
+			if(tabstart >=0)
 			{
-				CString basepath;
-				int include_left=one.Find(_T("{"));
-				int include_right=one.Find(_T("}"),rename);
-				if(include_left>0 && include_right>0 )
+				log[tabstart]=0;
+				pos=tabstart;
+				g_Git.StringAppend(&StatAdd,&log[pos],CP_UTF8);
+			}
+
+			tabstart=log.find('\t',pos);
+			if(tabstart >=0)
+			{
+				log[tabstart]=0;
+				pos=tabstart;
+				g_Git.StringAppend(&StatDel,&log[pos],CP_UTF8);
+			}
+			
+			if(log[pos] == 0) //rename
+			{
+				pos++;
+				g_Git.StringAppend(&file2,&log[pos],CP_OEMCP);
+				int sec=log.find(0,pos);
+				if(sec>=0)
 				{
-					basepath=one.Left(include_left);
-					CString newname=basepath+one.Mid(rename+4,include_right-rename-4)+one.Right(one.GetLength()-include_right-1);
-					CString oldname=basepath+one.Mid(include_left+2,rename-include_left-2)+one.Right(one.GetLength()-include_right-1);
-					path.SetFromGit(newname,&oldname	);
-				}else
-					path.SetFromGit(one.Right(one.GetLength()-rename-4),&one.Left(rename));
+					sec++;
+					g_Git.StringAppend(&file1,&log[sec],CP_OEMCP);
+				}
+
 			}else
-				path.SetFromGit(one);
-				
+			{
+				g_Git.StringAppend(&file1,&log[pos],CP_OEMCP);
+			}
+			path.SetFromGit(file1,&file2);
+	
 			CTGitPath *GitPath=LookForGitPath(path.GetGitPathString());
 			if(GitPath)
 			{
@@ -972,6 +1009,10 @@ int CTGitPathList::ParserFromLog(CString &log)
 				path.m_StatDel=StatDel;
 				AddPath(path);
 			}
+
+			pos=log.find(0,pos);
+			if(pos>=0)
+				pos++;
 		}
 
 	}

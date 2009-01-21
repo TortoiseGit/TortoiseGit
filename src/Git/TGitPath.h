@@ -1,4 +1,5 @@
 #pragma once
+#include "gittype.h"
 
 class CTGitPath
 {
@@ -13,6 +14,7 @@ public:
 		LOGACTIONS_MODIFIED	= 0x00000002,
 		LOGACTIONS_REPLACED	= 0x00000004,
 		LOGACTIONS_DELETED	= 0x00000008,
+		LOGACTIONS_UNMERGED = 0x00000010,
 		LOGACTIONS_UNVER	= 0x80000000,
 		LOGACTIONS_IGNORE	= 0x40000000,
 		LOGACTIONS_CONFLICT = 0x20000000,
@@ -22,7 +24,7 @@ public:
 	CString m_StatDel;
 	int		m_Action;
 	bool    m_Checked;
-	int	ParserAction(CString action);
+	int	ParserAction(BYTE action);
 	CString GetActionName();
 	/**
 	 * Set the path as an UTF8 string with forward slashes
@@ -300,7 +302,7 @@ public:
 	bool LoadFromFile(const CTGitPath& filename);
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
 	CTGitPath * LookForGitPath(CString path);
-	int	ParserFromLog(CString &log);
+	int	ParserFromLog(BYTE_VECTOR &log);
 	int FillUnRev(int Action,CTGitPathList *list=NULL);
 	int GetAction();
 	/**

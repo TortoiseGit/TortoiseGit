@@ -258,7 +258,7 @@ UINT CFileDiffDlg::DiffThread()
 		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat %s %s"),rev1,m_rev2.m_CommitHash);
 	}
 
-	CString out;
+	BYTE_VECTOR out;
 	g_Git.Run(cmd,&out);
 	this->m_arFileList.ParserFromLog(out);
 	

@@ -53,29 +53,35 @@ int GitRev::CopyFrom(GitRev &rev)
 	m_Mark			=rev.m_Mark;
 	return 0;
 }
-int GitRev::ParserFromLog(CString &log)
+int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 {
-	int pos=0;
+	int pos=start;
 	CString one;
 	CString key;
 	CString text;
-	CString filelist;
-	TCHAR mode=0;
+	BYTE_VECTOR filelist;
+	BYTE mode=0;
 	CTGitPath  path;
 	this->m_Files.Clear();
     m_Action=0;
-
-	while( pos>=0 )
+	int begintime=0;
+	while( pos <= log.size() && pos>0)
 	{
-		one=log.Tokenize(_T("\n"),pos);
-		if(one[0]==_T('#') && one[1] == _T('<') && one[3] == _T('>'))
+		if(begintime>1)
+			break;
+		//one=log.Tokenize(_T("\n"),pos);
+		if(log[pos]==_T('#') && log[pos+1] == _T('<') && log[pos+3] == _T('>'))
 		{
-			text = one.Right(one.GetLength()-4);
-			mode = one[2];
+			//text = one.Right(one.GetLength()-4);
+			text.Empty();
+			g_Git.StringAppend(&text,&log[pos+4],CP_UTF8);
+			mode = log[pos+2];
+
 			switch(mode)
 			{
 			case LOG_REV_ITEM_BEGIN:
 				this->Clear();
+				begintime++;
 				break;
 			case LOG_REV_AUTHOR_NAME:
 				this->m_AuthorName = text;
@@ -125,14 +131,16 @@ int GitRev::ParserFromLog(CString &log)
 		{
 			switch(mode)
 			{
-			case LOG_REV_COMMIT_BODY:
-				this->m_Body += one+_T("\n");
-				break;
+//			case LOG_REV_COMMIT_BODY:
+//				this->m_Body += one+_T("\n");
+//				break;
 			case LOG_REV_COMMIT_FILE:
-				filelist += one +_T("\n");
+				//filelist += one +_T("\n");
+				filelist.append(log,pos,log.find(0,pos));				
 				break;
 			}
 		}
+		pos=log.find(0,pos);
 	}
 	
 	this->m_Files.ParserFromLog(filelist);
@@ -157,7 +165,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
 	{
 		//GitRev rev;
-		CString onelog;
+		BYTE_VECTOR onelog;
 		TCHAR oldmark=this->m_Mark;
 	
 		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME);

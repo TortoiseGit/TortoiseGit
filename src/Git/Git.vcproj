@@ -381,6 +381,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gittype.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>

@@ -95,7 +95,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		path.SetFromWin(lpszPathName);
 		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.Empty();
-		if(g_Git.Run(cmd,&m_BlameData))
+		if(g_Git.Run(cmd,&m_BlameData,CP_UTF8))
 		{
 			CMessageBox::Show(NULL,CString(_T("Blame Error"))+m_BlameData,_T("TortoiseGitBlame"),MB_OK);
 

@@ -130,7 +130,7 @@ bool RemoveCommand::Execute()
 	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
 	{
 		CString output;
-		if(g_Git.Run(cmd+pathList[nPath].GetGitPathString(),&output))
+		if(g_Git.Run(cmd+pathList[nPath].GetGitPathString(),&output,CP_OEMCP))
 		{
 			key=CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION|MB_OKCANCEL);
 			if(key == IDCANCEL)

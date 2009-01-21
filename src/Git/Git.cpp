@@ -72,17 +72,17 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 }
 //Must use sperate function to convert ANSI str to union code string
 //Becuase A2W use stack as internal convert buffer. 
-void CGit::StringAppend(CString *str,char *p)
+void CGit::StringAppend(CString *str,BYTE *p,int code)
 {
        USES_CONVERSION;
-       str->Append(A2W_CP(p,CP_UTF8));
+       str->Append(A2W_CP((LPCSTR)p,code));
 
 }	
 BOOL CGit::IsInitRepos()
 {
 	CString cmdout;
 	cmdout.Empty();
-	if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&cmdout))
+	if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&cmdout,CP_UTF8))
 	{
 	//	CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
 		return TRUE;
@@ -92,7 +92,7 @@ BOOL CGit::IsInitRepos()
 
 	return FALSE;
 }
-int CGit::Run(CString cmd, CString* output)
+int CGit::Run(CString cmd,BYTE_VECTOR *vector)
 {
 	PROCESS_INFORMATION pi;
 	HANDLE hRead;
@@ -100,10 +100,12 @@ int CGit::Run(CString cmd, CString* output)
 		return GIT_ERROR_CREATE_PROCESS;
 
 	DWORD readnumber;
-	while(ReadFile(hRead,g_Buffer,1023,&readnumber,NULL))
+	BYTE data;
+	while(ReadFile(hRead,&data,1,&readnumber,NULL))
 	{
-		g_Buffer[readnumber]=0;
-		StringAppend(output,g_Buffer);
+		//g_Buffer[readnumber]=0;
+		vector->push_back(data);
+//		StringAppend(output,g_Buffer,codes);
 	}
 
 	
@@ -121,18 +123,26 @@ int CGit::Run(CString cmd, CString* output)
 
 	CloseHandle(hRead);
 	return exitcode;
+
+}
+int CGit::Run(CString cmd, CString* output,int code)
+{
+	BYTE_VECTOR vector;
+	Run(cmd,&vector);
+	StringAppend(output,&(vector[0]),code);
+	return 0;
 }
 
 CString CGit::GetUserName(void)
 {
 	CString UserName;
-	Run(_T("git.exe config user.name"),&UserName);
+	Run(_T("git.exe config user.name"),&UserName,CP_UTF8);
 	return UserName;
 }
 CString CGit::GetUserEmail(void)
 {
 	CString UserName;
-	Run(_T("git.exe config user.email"),&UserName);
+	Run(_T("git.exe config user.email"),&UserName,CP_UTF8);
 	return UserName;
 }
 
@@ -141,7 +151,7 @@ CString CGit::GetCurrentBranch(void)
 	CString output;
 	//Run(_T("git.exe branch"),&branch);
 
-	int ret=g_Git.Run(_T("git.exe branch"),&output);
+	int ret=g_Git.Run(_T("git.exe branch"),&output,CP_UTF8);
 	if(!ret)
 	{		
 		int pos=0;
@@ -195,7 +205,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-int CGit::GetLog(CString& logOut, CString &hash,  CTGitPath *path ,int count,int mask)
+int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask)
 {
 
 	CString cmd;
@@ -235,7 +245,7 @@ int CGit::GetLog(CString& logOut, CString &hash,  CTGitPath *path ,int count,int
 
 	param+=hash;
 
-	cmd.Format(_T("git.exe log %s --topo-order --parents %s --pretty=format:\""),
+	cmd.Format(_T("git.exe log %s -z --topo-order --parents %s --pretty=format:\""),
 				num,param);
 
 	BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
@@ -354,7 +364,7 @@ git_revnum_t CGit::GetHash(CString &friendname)
 	CString cmd;
 	CString out;
 	cmd.Format(_T("git.exe rev-parse %s" ),friendname);
-	Run(cmd,&out);
+	Run(cmd,&out,CP_UTF8);
 	int pos=out.ReverseFind(_T('\n'));
 	if(pos>0)
 		return out.Left(pos);
@@ -367,7 +377,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	CString cmd,output;
 	cmd=_T("git.exe tag -l");
 	int i=0;
-	ret=g_Git.Run(cmd,&output);
+	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
 	{		
 		int pos=0;
@@ -394,7 +404,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 		cmd+=_T(" -r");
 
 	int i=0;
-	ret=g_Git.Run(cmd,&output);
+	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
 	{		
 		int pos=0;
@@ -417,7 +427,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	int ret;
 	CString cmd,output;
 	cmd=_T("git.exe config  --get-regexp remote.*.url");
-	ret=g_Git.Run(cmd,&output);
+	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
 	{
 		int pos=0;
@@ -444,7 +454,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	int ret;
 	CString cmd,output;
 	cmd=_T("git show-ref -d");
-	ret=g_Git.Run(cmd,&output);
+	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
 	{
 		int pos=0;
@@ -507,7 +517,7 @@ BOOL CGit::CheckMsysGitDir()
 
 	CString cmd,out;
 	cmd=_T("git.exe --version");
-	if(g_Git.Run(cmd,&out))
+	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		return false;
 	}

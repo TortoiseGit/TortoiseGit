@@ -383,7 +383,7 @@ void CCommitDlg::OnOK()
 			}
 #endif
 			cmd.Format(_T("git.exe update-index -- \"%s\""),entry->GetGitPathString());
-			g_Git.Run(cmd,&out);
+			g_Git.Run(cmd,&out,CP_OEMCP);
 			nchecked++;
 			//checkedLists.insert(entry->GetGitPathString());
 //			checkedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
@@ -394,12 +394,12 @@ void CCommitDlg::OnOK()
 			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
 			{	//To init git repository, there are not HEAD, so we can use git reset command
 				cmd.Format(_T("git.exe rm --cache -- \"%s\""),entry->GetGitPathString());
-				g_Git.Run(cmd,&out);	
+				g_Git.Run(cmd,&out,CP_OEMCP);	
 			}
 			else
 			{
 				cmd.Format(_T("git.exe reset -- %s"),entry->GetGitPathString());
-				g_Git.Run(cmd,&out);
+				g_Git.Run(cmd,&out,CP_OEMCP);
 			}
 
 		//	uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
@@ -451,7 +451,7 @@ void CCommitDlg::OnOK()
 	
 		out =_T("");
 		cmd.Format(_T("git.exe commit -F \"%s\""), tempfile);
-		g_Git.Run(cmd,&out);
+		g_Git.Run(cmd,&out,CP_OEMCP);
 	
 		CFile::Remove(tempfile);
 
