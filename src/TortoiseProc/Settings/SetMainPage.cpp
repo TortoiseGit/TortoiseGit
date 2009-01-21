@@ -28,18 +28,22 @@
 #include "Git.h"
 #include "MessageBox.h"
 #include "CommonResource.h"
+#include "GitConfig.h"
+#include "BrowseFolder.h"
 
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
 CSetMainPage::CSetMainPage()
 	: ISettingsPropPage(CSetMainPage::IDD)
-	, m_sTempExtensions(_T(""))
+	, m_sMsysGitPath(_T(""))
 	, m_bCheckNewer(TRUE)
 	, m_bLastCommitTime(FALSE)
 	, m_bUseDotNetHack(FALSE)
 {
 	m_regLanguage = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
-//	CString temp(SVN_CONFIG_DEFAULT_GLOBAL_IGNORES);
-//	m_regExtensions = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\global-ignores"), temp);
+	CString temp=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);;
+	if(!temp.IsEmpty())
+		temp+=_T("bin");
+	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE,HKEY_LOCAL_MACHINE);
 	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
 	m_regLastCommitTime = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\use-commit-times"), _T(""));
 	if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))
@@ -57,22 +61,24 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	ISettingsPropPage::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LANGUAGECOMBO, m_LanguageCombo);
 	m_dwLanguage = (DWORD)m_LanguageCombo.GetItemData(m_LanguageCombo.GetCurSel());
-	DDX_Text(pDX, IDC_TEMPEXTENSIONS, m_sTempExtensions);
-	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
-	DDX_Check(pDX, IDC_COMMITFILETIMES, m_bLastCommitTime);
-	DDX_Check(pDX, IDC_ASPDOTNETHACK, m_bUseDotNetHack);
+	DDX_Text(pDX, IDC_MSYSGIT_PATH, m_sMsysGitPath);
+//	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
+//	DDX_Check(pDX, IDC_COMMITFILETIMES, m_bLastCommitTime);
+//	DDX_Check(pDX, IDC_ASPDOTNETHACK, m_bUseDotNetHack);
 }
 
 
 BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_LANGUAGECOMBO, OnModified)
-	ON_EN_CHANGE(IDC_TEMPEXTENSIONS, OnModified)
+//	ON_EN_CHANGE(IDC_TEMPEXTENSIONS, OnModified)
 	ON_BN_CLICKED(IDC_EDITCONFIG, OnBnClickedEditconfig)
 	ON_BN_CLICKED(IDC_CHECKNEWERVERSION, OnModified)
 	ON_BN_CLICKED(IDC_CHECKNEWERBUTTON, OnBnClickedChecknewerbutton)
 	ON_BN_CLICKED(IDC_COMMITFILETIMES, OnModified)
 	ON_BN_CLICKED(IDC_SOUNDS, OnBnClickedSounds)
 	ON_BN_CLICKED(IDC_ASPDOTNETHACK, OnASPHACK)
+	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
+	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
 END_MESSAGE_MAP()
 
 BOOL CSetMainPage::OnInitDialog()
@@ -81,7 +87,7 @@ BOOL CSetMainPage::OnInitDialog()
 
 	EnableToolTips();
 
-	m_sTempExtensions = m_regExtensions;
+	m_sMsysGitPath = m_regMsysGitPath;
 	m_dwLanguage = m_regLanguage;
 	m_bCheckNewer = m_regCheckNewer;
 
@@ -90,12 +96,14 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bLastCommitTime = (temp.CompareNoCase(_T("yes"))==0);
 
 	m_tooltips.Create(this);
-	m_tooltips.AddTool(IDC_TEMPEXTENSIONS, IDS_SETTINGS_TEMPEXTENSIONS_TT);
-	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
-	m_tooltips.AddTool(IDC_COMMITFILETIMES, IDS_SETTINGS_COMMITFILETIMES_TT);
-	m_tooltips.AddTool(IDC_ASPDOTNETHACK, IDS_SETTINGS_DOTNETHACK_TT);
+	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
+	//m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
+	//m_tooltips.AddTool(IDC_COMMITFILETIMES, IDS_SETTINGS_COMMITFILETIMES_TT);
+	//m_tooltips.AddTool(IDC_ASPDOTNETHACK, IDS_SETTINGS_DOTNETHACK_TT);
 
 	// set up the language selecting combobox
+	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
+
 	TCHAR buf[MAX_PATH];
 	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, sizeof(buf)/sizeof(TCHAR));
 	m_LanguageCombo.AddString(buf);
@@ -163,9 +171,9 @@ BOOL CSetMainPage::OnApply()
 {
 	UpdateData();
 	Store (m_dwLanguage, m_regLanguage);
-	if (m_sTempExtensions.Compare(CString(m_regExtensions)))
+	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)))
 	{
-		Store (m_sTempExtensions, m_regExtensions);
+		Store (m_sMsysGitPath, m_regMsysGitPath);
 		m_restart = Restart_Cache;
 	}
 	Store (m_bCheckNewer, m_regCheckNewer);
@@ -235,9 +243,35 @@ void CSetMainPage::OnBnClickedSounds()
 		CAppUtils::LaunchApplication(_T("RUNDLL32 Shell32,Control_RunDLL mmsys.cpl,,1"), NULL, false);
 }
 
+void CSetMainPage::OnBrowseDir()
+{
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	CString dir;
+	this->UpdateData(TRUE);
+	dir=this->m_sMsysGitPath;
+	if (browseFolder.Show(GetSafeHwnd(), dir) == CBrowseFolder::OK) 
+	{
+		m_sMsysGitPath=dir;
+		Store (m_sMsysGitPath, m_regMsysGitPath);
+		this->UpdateData(FALSE);
+	}
+	SetModified(TRUE);
+}
 
-
-
-
+void CSetMainPage::OnCheck()
+{
+	if(g_Git.CheckMsysGitDir())
+	{
+		CString cmd;
+		CString out;
+		cmd=_T("git.exe --version");
+		g_Git.Run(cmd,&out,CP_UTF8);
+		this->GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(out);
+	}else
+	{
+		CMessageBox::Show(NULL,_T("Msys Git Install Path Error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+	}
+}
 
 

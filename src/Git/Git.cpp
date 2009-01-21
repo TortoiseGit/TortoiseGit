@@ -3,6 +3,7 @@
 #include "atlconv.h"
 #include "GitRev.h"
 #include "registry.h"
+#include "GitConfig.h"
 
 #define MAX_DIRBUFFER 1000
 CGit g_Git;
@@ -128,7 +129,12 @@ int CGit::Run(CString cmd,BYTE_VECTOR *vector)
 int CGit::Run(CString cmd, CString* output,int code)
 {
 	BYTE_VECTOR vector;
-	Run(cmd,&vector);
+	int ret;
+	ret=Run(cmd,&vector);
+
+	if(ret)
+		return ret;
+
 	StringAppend(output,&(vector[0]),code);
 	return 0;
 }
@@ -480,11 +486,11 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 BOOL CGit::CheckMsysGitDir()
 {
-	CRegString msysdir=CRegString(_T("Software\\TortoiseGit\\MSysGit"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
+	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 	CString str=msysdir;
 	if(str.IsEmpty())
 	{
-		CRegString msysinstalldir=CRegString(_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1\\InstallLocation"),_T(""),FALSE,HKEY_LOCAL_MACHINE);
+		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
 		str+="\\bin";
 		msysdir=str;

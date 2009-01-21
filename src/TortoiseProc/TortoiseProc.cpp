@@ -42,6 +42,8 @@
 #include "Commands\Command.h"
 #include "CommonResource.h"
 #include "..\version.h"
+#include "..\Settings\Settings.h"
+
 #define STRUCT_IOVEC_DEFINED
 //#include "sasl.h"
 
@@ -126,6 +128,13 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 							_T("TortoiseGit"),MB_YESNO|MB_ICONERROR)==IDYES);
 		{
 			//todo open setting
+				CSettings dlg(IDS_PROC_SETTINGS_TITLE);
+				dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
+				dlg.SetTreeWidth(220);
+
+				dlg.DoModal();
+				dlg.HandleRestart();
+				return TRUE;
 		}
 		return FALSE;	
 	}

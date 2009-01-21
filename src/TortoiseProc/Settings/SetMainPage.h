@@ -47,8 +47,8 @@ protected:
 	CString GetVersionFromFile(const CString & p_strDateiname);
 
 private:
-	CRegString		m_regExtensions;
-	CString			m_sTempExtensions;
+	CRegString		m_regMsysGitPath;
+	CString			m_sMsysGitPath;
 	CToolTips		m_tooltips;
 	CComboBox		m_LanguageCombo;
 	CRegDWORD		m_regLanguage;
@@ -69,4 +69,6 @@ public:
 	afx_msg void OnBnClickedEditconfig();
 	afx_msg void OnBnClickedChecknewerbutton();
 	afx_msg void OnBnClickedSounds();
+	afx_msg void OnBrowseDir();
+	afx_msg void OnCheck();
 };
