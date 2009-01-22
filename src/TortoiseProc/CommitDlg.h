@@ -139,4 +139,5 @@ private:
 public:
 	afx_msg void OnBnClickedSignOff();
 	afx_msg void OnStnClickedCommitlabel();
+	afx_msg void OnBnClickedCommitAmend();
 };

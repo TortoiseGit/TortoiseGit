@@ -40,6 +40,7 @@
 #include "GitStatus.h"
 #include "CreateBranchTagDlg.h"
 #include "GitSwitchDlg.h"
+#include "ResetDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -1215,4 +1216,38 @@ bool CAppUtils::IgnoreFile(CTGitPath &path,bool IsMask)
 
 	file.Close();
 	return TRUE;
+}
+
+bool CAppUtils::GitReset(CString *CommitHash,int type)
+{
+	CResetDlg dlg;
+	dlg.m_ResetType=type;
+	if (dlg.DoModal() == IDOK)
+	{
+		CString cmd;
+		CString type;
+		switch(dlg.m_ResetType)
+		{
+		case 0:
+			type=_T("--soft");
+			break;
+		case 1:
+			type=_T("--mixed");
+			break;
+		case 2:
+			type=_T("--hard");
+			break;
+		default:
+			type=_T("--mixed");
+			break;
+		}
+		cmd.Format(_T("git.exe reset %s %s"),type, *CommitHash);
+
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		if(progress.DoModal()==IDOK)
+			return TRUE;
+
+	}
+	return FALSE;
 }

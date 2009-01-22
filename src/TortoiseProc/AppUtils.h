@@ -165,7 +165,7 @@ public:
 	static bool Switch(CString *CommitHash);
 
 	static bool IgnoreFile(CTGitPath &file, bool IsMask);
-
+	static bool GitReset(CString *CommitHash,int type=1);
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

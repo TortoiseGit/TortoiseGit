@@ -1,9 +1,9 @@
 #pragma once
 
-
+#include "StandAloneDlg.h"
 // CResetDlg dialog
 
-class CResetDlg : public CDialog
+class CResetDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CResetDlg)
 
@@ -16,6 +16,8 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
 public:

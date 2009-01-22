@@ -176,7 +176,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			Invalidate();
 			break;
 		case ID_RESET:
-
+			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash);
+			m_HashMap.clear();
+			g_Git.GetMapHashToFriendName(m_HashMap);
+			Invalidate();
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
