@@ -1519,7 +1519,7 @@ UINT CGitLogListBase::LogThread()
 			
 			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
 			if(percent == GITLOG_END)
-				percent == GITLOG_END -1;
+				percent = GITLOG_END -1;
 			
 			if(m_ProcCallBack)
 				m_ProcCallBack(m_ProcData,percent);

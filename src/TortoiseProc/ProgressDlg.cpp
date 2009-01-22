@@ -176,7 +176,7 @@ void CProgressDlg::RemoveLastLine(CString &str)
 {
 	int start;
 	start=str.ReverseFind(_T('\n'));
-	if(start>0);
+	if(start>0)
 		str=str.Left(start);
 	return;
 }
