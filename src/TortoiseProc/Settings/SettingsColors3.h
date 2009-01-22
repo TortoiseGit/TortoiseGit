@@ -45,15 +45,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 private:
-	CMFCColorButton m_cConflict;
-	CMFCColorButton m_cAdded;
-	CMFCColorButton m_cDeleted;
-	CMFCColorButton m_cMerged;
-	CMFCColorButton m_cModified;
-	CMFCColorButton m_cAddedNode;
-	CMFCColorButton m_cDeletedNode;
-	CMFCColorButton m_cRenamedNode;
-	CMFCColorButton m_cReplacedNode;
+	CMFCColorButton m_cLine[8];
 	CColors			m_Colors;
 public:
 };

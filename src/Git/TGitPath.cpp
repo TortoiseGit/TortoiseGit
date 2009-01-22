@@ -882,7 +882,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 {
 	this->Clear();
 	int pos=0;
-	BYTE *p=&log[0];
+	//BYTE *p=&log[0];
 	//CString one;
 	CTGitPath path;
 	m_Action=0;

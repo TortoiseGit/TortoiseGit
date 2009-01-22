@@ -5258,9 +5258,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			cmdout.clear();
 			CString cmd;
 			if(list == NULL)
-				cmd=(_T("git.exe diff-index --raw HEAD --numstat -C -M"));
+				cmd=(_T("git.exe diff-index --raw HEAD --numstat -C -M -z"));
 			else
-				cmd.Format(_T("git.exe diff-index --raw HEAD --numstat -C -M -- \"%s\""),(*list)[i].GetGitPathString());
+				cmd.Format(_T("git.exe diff-index  --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
 			if(g_Git.Run(cmd,&cmdout))
 			{
@@ -5278,7 +5278,13 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				return -1;
 
 			}
+			
+			if(list == NULL)
+				cmd=(_T("git.exe diff-index --cached --raw HEAD --numstat -C -M -z"));
+			else
+				cmd.Format(_T("git.exe diff-index  --cached --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
+			g_Git.Run(cmd,&cmdout);
 			//out+=cmdout;
 			out.append(cmdout,0);
 		}
@@ -5298,9 +5304,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			BYTE_VECTOR cmdout;
 			CString cmd;
 			if(list == NULL)
-				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M %s"),hash);
+				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M -z %s"),hash);
 			else
-				cmd.Format(_T("git.exe diff-tree --raw  --numstat -C -M %s -- \"%s\""),hash,(*list)[i].GetGitPathString());
+				cmd.Format(_T("git.exe diff-tree --raw  --numstat -C -M %s -z -- \"%s\""),hash,(*list)[i].GetGitPathString());
 
 			g_Git.Run(cmd,&cmdout);
 

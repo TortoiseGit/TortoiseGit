@@ -83,6 +83,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
 	g_Git.GetMapHashToFriendName(m_HashMap);
+	m_CurrentBranch=g_Git.GetCurrentBranch();
 
 	m_From=CTime(1970,1,2,0,0,0);
 	m_To=CTime::GetCurrentTime();
@@ -90,6 +91,11 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LoadingThread = NULL;
 
 	m_bExitThread=FALSE;
+
+	for(int i=0;i<Lanes::COLORS_NUM;i++)
+	{
+		m_LineColors[i] = m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i));
+	}
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -386,14 +392,18 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		shortname=_T("");
 		if(GetShortName(str,shortname,_T("refs/heads/")))
 		{
-			brush = ::CreateSolidBrush(RGB(0xff, 0, 0));
+			if( shortname == m_CurrentBranch )
+				brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::CurrentBranch));
+			else
+				brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::LocalBranch));
+
 		}else if(GetShortName(str,shortname,_T("refs/remotes/")))
 		{
-			brush = ::CreateSolidBrush(RGB(0xff, 0xff, 0));
+			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::RemoteBranch));
 		}
 		else if(GetShortName(str,shortname,_T("refs/tags/")))
 		{
-			brush = ::CreateSolidBrush(RGB(0, 0, 0xff));
+			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::Tag));
 		}
 
 		if(!shortname.IsEmpty())
@@ -609,11 +619,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
-	static const COLORREF colors[Lanes::COLORS_NUM] = { RGB(0,0,0), RGB(0xFF,0,0), RGB(0,0xFF,0),
-	                                           RGB(0,0,0xFF), RGB(128,128,128), RGB(128,128,0),
-	                                           RGB(0,128,128), RGB(128,0,128) };
-
-
+	
 //	p->translate(QPoint(opt.rect.left(), opt.rect.top()));
 
 
@@ -646,10 +652,10 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		            || ln ==Lanes:: CROSS_EMPTY) ? mergeLane : i;
 
 		if (ln == Lanes::CROSS) {
-			paintGraphLane(hdc, rect.Height(),Lanes::NOT_ACTIVE, x1, x2, colors[col % Lanes::COLORS_NUM],rect.top);
-			paintGraphLane(hdc, rect.Height(),Lanes::CROSS, x1, x2, colors[mergeLane % Lanes::COLORS_NUM],rect.top);
+			paintGraphLane(hdc, rect.Height(),Lanes::NOT_ACTIVE, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
+			paintGraphLane(hdc, rect.Height(),Lanes::CROSS, x1, x2, m_LineColors[mergeLane % Lanes::COLORS_NUM],rect.top);
 		} else
-			paintGraphLane(hdc, rect.Height(),ln, x1, x2, colors[col % Lanes::COLORS_NUM],rect.top);
+			paintGraphLane(hdc, rect.Height(),ln, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
 	}
 
 	TRACE(_T("index %d %d\r\n"),index,data->m_Lanes.size());

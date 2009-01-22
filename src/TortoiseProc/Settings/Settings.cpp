@@ -94,6 +94,8 @@ void CSettings::AddPropPages()
 	AddPage(m_pMiscPage);
 	AddPage(m_pRevisionGraphPage);
 	AddPage(m_pColorsPage);
+	AddPage(m_pColorsPage2);
+	AddPage(m_pColorsPage3);
 	AddPage(m_pSavedPage);
 //	AddPage(m_pLogCachePage);
 //    AddPage(m_pLogCacheListPage);
@@ -143,6 +145,8 @@ void CSettings::HandleRestart()
 ////	restart |= m_pLogCachePage->GetRestart();
 //	restart |= m_pLogCacheListPage->GetRestart();
 	restart |= m_pColorsPage->GetRestart();
+	restart |= m_pColorsPage2->GetRestart();
+	restart |= m_pColorsPage3->GetRestart();
 	restart |= m_pSavedPage->GetRestart();
 ////	restart |= m_pHooksPage->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();

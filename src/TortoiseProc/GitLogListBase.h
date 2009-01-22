@@ -158,6 +158,7 @@ public:
 	{	
 		m_HashMap.clear();
 		g_Git.GetMapHashToFriendName(m_HashMap);
+		m_CurrentBranch=g_Git.GetCurrentBranch();
 	}
 	void TerminateThread()
 	{
@@ -214,9 +215,11 @@ protected:
 	CStoreSelection*	m_pStoreSelection;
 	MAP_HASH_NAME		m_HashMap;
 
+	CColors				m_Colors;
 
-
+	CString				m_CurrentBranch;
 	
+	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 };
 
 

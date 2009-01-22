@@ -43,13 +43,37 @@ public:
 		ReplacedNode,
 		RenamedNode,
 		LastCommitNode,
-		PropertyChanged
+		PropertyChanged,
+		CurrentBranch,
+		LocalBranch,
+		RemoteBranch,
+		Tag,
+		BranchLine1,
+		BranchLine2,
+		BranchLine3,
+		BranchLine4,
+		BranchLine5,
+		BranchLine6,
+		BranchLine7,
+		BranchLine8,
+		COLOR_END=-1
 	};
 	
 	COLORREF GetColor(Colors col, bool bDefault = false);
 	void SetColor(Colors col, COLORREF cr);
-	
+
+	struct COLOR_DATA
+	{
+		Colors		Color;
+		TCHAR *		RegKey;
+		COLORREF	Default;
+	};
+
 private:
+
+	static COLOR_DATA m_ColorArray[];
+
+	/*
 	CRegDWORD m_regCmd;
 	CRegDWORD m_regConflict;
 	CRegDWORD m_regModified;
@@ -63,4 +87,17 @@ private:
 	CRegDWORD m_regRenamedNode;
 	CRegDWORD m_regLastCommitNode;
 	CRegDWORD m_regPropertyChanged;
+	CRegDWORD m_regCurrentBranch;
+	CRegDWORD m_regLocalBranch;
+	CRegDWORD m_regRemoteBranch;
+	CRegDWORD m_regTag;
+	CRegDWORD m_regBranchLine1;
+	CRegDWORD m_regBranchLine2;
+	CRegDWORD m_regBranchLine3;
+	CRegDWORD m_regBranchLine4;
+	CRegDWORD m_regBranchLine5;
+	CRegDWORD m_regBranchLine6;
+	CRegDWORD m_regBranchLine7;
+	CRegDWORD m_regBranchLine8;
+*/
 };

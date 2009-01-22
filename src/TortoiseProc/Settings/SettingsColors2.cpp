@@ -34,96 +34,65 @@ CSettingsColors2::~CSettingsColors2()
 void CSettingsColors2::DoDataExchange(CDataExchange* pDX)
 {
 	ISettingsPropPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_CONFLICTCOLOR, m_cConflict);
-	DDX_Control(pDX, IDC_ADDEDCOLOR, m_cAdded);
-	DDX_Control(pDX, IDC_DELETEDCOLOR, m_cDeleted);
-	DDX_Control(pDX, IDC_MERGEDCOLOR, m_cMerged);
-	DDX_Control(pDX, IDC_MODIFIEDCOLOR, m_cModified);
-	DDX_Control(pDX, IDC_DELETEDNODECOLOR, m_cDeletedNode);
-	DDX_Control(pDX, IDC_ADDEDNODECOLOR, m_cAddedNode);
-	DDX_Control(pDX, IDC_REPLACEDNODECOLOR, m_cReplacedNode);
-	DDX_Control(pDX, IDC_RENAMEDNODECOLOR, m_cRenamedNode);
+	DDX_Control(pDX, IDC_CURRENT_BRANCH, this->m_cCurrentBranch);
+	DDX_Control(pDX, IDC_LOCAL_BRANCH,	 this->m_cLocalBranch);
+	DDX_Control(pDX, IDC_REMOTE_BRANCH,  this->m_cRemoteBranch);
+	DDX_Control(pDX, IDC_TAGS,			this->m_cTags);
 }
 
 
 BEGIN_MESSAGE_MAP(CSettingsColors2, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestore)
-	ON_BN_CLICKED(IDC_CONFLICTCOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_ADDEDCOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_DELETEDCOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_MERGEDCOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_MODIFIEDCOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_DELETEDNODECOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_ADDEDNODECOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_REPLACEDNODECOLOR, &CSettingsColors2::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_RENAMEDNODECOLOR, &CSettingsColors2::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_CURRENT_BRANCH, &CSettingsColors2::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_LOCAL_BRANCH, &CSettingsColors2::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_REMOTE_BRANCH, &CSettingsColors2::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_TAGS, &CSettingsColors2::OnBnClickedColor)
 END_MESSAGE_MAP()
 
 BOOL CSettingsColors2::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
-	m_cAdded.SetColor(m_Colors.GetColor(CColors::Added));
-	m_cDeleted.SetColor(m_Colors.GetColor(CColors::Deleted));
-	m_cMerged.SetColor(m_Colors.GetColor(CColors::Merged));
-	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified));
-	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
-	m_cAddedNode.SetColor(m_Colors.GetColor(CColors::AddedNode));
-	m_cDeletedNode.SetColor(m_Colors.GetColor(CColors::DeletedNode));
-	m_cRenamedNode.SetColor(m_Colors.GetColor(CColors::RenamedNode));
-	m_cReplacedNode.SetColor(m_Colors.GetColor(CColors::ReplacedNode));
-
+	m_cCurrentBranch.SetColor(m_Colors.GetColor(CColors::CurrentBranch));
+	m_cLocalBranch.SetColor(m_Colors.GetColor(CColors::LocalBranch));
+	m_cRemoteBranch.SetColor(m_Colors.GetColor(CColors::RemoteBranch));
+	m_cTags.SetColor(m_Colors.GetColor(CColors::Tag));
+	
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
 	sCustomText.LoadString(IDS_COLOURPICKER_CUSTOMTEXT);
-	m_cAdded.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Added, true));
-	m_cAdded.EnableOtherButton(sCustomText);
-	m_cDeleted.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Deleted, true));
-	m_cDeleted.EnableOtherButton(sCustomText);
-	m_cMerged.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Merged, true));
-	m_cMerged.EnableOtherButton(sCustomText);
-	m_cModified.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Modified, true));
-	m_cModified.EnableOtherButton(sCustomText);
-	m_cConflict.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Conflict, true));
-	m_cConflict.EnableOtherButton(sCustomText);
-	m_cAddedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::AddedNode, true));
-	m_cAddedNode.EnableOtherButton(sCustomText);
-	m_cDeletedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::DeletedNode, true));
-	m_cDeletedNode.EnableOtherButton(sCustomText);
-	m_cRenamedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::RenamedNode, true));
-	m_cRenamedNode.EnableOtherButton(sCustomText);
-	m_cReplacedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::ReplacedNode, true));
-	m_cReplacedNode.EnableOtherButton(sCustomText);
+
+	m_cCurrentBranch.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::CurrentBranch, true));
+	m_cCurrentBranch.EnableOtherButton(sCustomText);
 	
+	m_cLocalBranch.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::LocalBranch, true));
+	m_cLocalBranch.EnableOtherButton(sCustomText);
+
+	m_cRemoteBranch.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::RemoteBranch, true));
+	m_cRemoteBranch.EnableOtherButton(sCustomText);
+
+	m_cTags.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::Tag, true));
+	m_cTags.EnableOtherButton(sCustomText);
+
 	return TRUE;
 }
 
 void CSettingsColors2::OnBnClickedRestore()
 {
-	m_cAdded.SetColor(m_Colors.GetColor(CColors::Added));
-	m_cDeleted.SetColor(m_Colors.GetColor(CColors::Deleted));
-	m_cMerged.SetColor(m_Colors.GetColor(CColors::Merged));
-	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified));
-	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
-	m_cAddedNode.SetColor(m_Colors.GetColor(CColors::AddedNode));
-	m_cDeletedNode.SetColor(m_Colors.GetColor(CColors::DeletedNode));
-	m_cRenamedNode.SetColor(m_Colors.GetColor(CColors::RenamedNode));
-	m_cReplacedNode.SetColor(m_Colors.GetColor(CColors::ReplacedNode));
+	m_cCurrentBranch.SetColor(m_Colors.GetColor(CColors::CurrentBranch));
+	m_cLocalBranch.SetColor(m_Colors.GetColor(CColors::LocalBranch));
+	m_cRemoteBranch.SetColor(m_Colors.GetColor(CColors::RemoteBranch));
+	m_cTags.SetColor(m_Colors.GetColor(CColors::Tag));
+
 	SetModified(TRUE);
 }
 
 BOOL CSettingsColors2::OnApply()
 {
-	m_Colors.SetColor(CColors::Added, m_cAdded.GetColor() == -1 ? m_cAdded.GetAutomaticColor() : m_cAdded.GetColor());
-	m_Colors.SetColor(CColors::Deleted, m_cDeleted.GetColor() == -1 ? m_cDeleted.GetAutomaticColor() : m_cDeleted.GetColor());
-	m_Colors.SetColor(CColors::Merged, m_cMerged.GetColor() == -1 ? m_cMerged.GetAutomaticColor() : m_cMerged.GetColor());
-	m_Colors.SetColor(CColors::Modified, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
-	m_Colors.SetColor(CColors::Conflict, m_cConflict.GetColor() == -1 ? m_cConflict.GetAutomaticColor() : m_cConflict.GetColor());
-	m_Colors.SetColor(CColors::AddedNode, m_cAddedNode.GetColor() == -1 ? m_cAddedNode.GetAutomaticColor() : m_cAddedNode.GetColor());
-	m_Colors.SetColor(CColors::DeletedNode, m_cDeletedNode.GetColor() == -1 ? m_cDeletedNode.GetAutomaticColor() : m_cDeletedNode.GetColor());
-	m_Colors.SetColor(CColors::RenamedNode, m_cRenamedNode.GetColor() == -1 ? m_cRenamedNode.GetAutomaticColor() : m_cRenamedNode.GetColor());
-	m_Colors.SetColor(CColors::ReplacedNode, m_cReplacedNode.GetColor() == -1 ? m_cReplacedNode.GetAutomaticColor() : m_cReplacedNode.GetColor());
-	m_Colors.SetColor(CColors::PropertyChanged, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
+	m_Colors.SetColor(CColors::CurrentBranch,	m_cCurrentBranch.GetColor() == -1 ? m_cCurrentBranch.GetAutomaticColor() :	m_cCurrentBranch.GetColor());
+	m_Colors.SetColor(CColors::LocalBranch,		m_cLocalBranch.GetColor() == -1 ?	m_cLocalBranch.GetAutomaticColor() :	m_cLocalBranch.GetColor());
+	m_Colors.SetColor(CColors::RemoteBranch,	m_cRemoteBranch.GetColor() == -1 ?	m_cRemoteBranch.GetAutomaticColor() :	m_cRemoteBranch.GetColor());
+	m_Colors.SetColor(CColors::Tag,				m_cTags.GetColor() == -1 ?			m_cTags.GetAutomaticColor() :			m_cTags.GetColor());
 
 	return ISettingsPropPage::OnApply();
 }
