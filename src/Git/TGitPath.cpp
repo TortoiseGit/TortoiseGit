@@ -81,6 +81,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 {
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
+	m_Stage=0;
 }
 
 int CTGitPath::ParserAction(BYTE action)
@@ -97,7 +98,10 @@ int CTGitPath::ParserAction(BYTE action)
 		m_Action|= LOGACTIONS_DELETED;
 	if(action == 'U')
 		m_Action|= LOGACTIONS_UNMERGED;
-
+	if(action == 'K')
+		m_Action|= LOGACTIONS_DELETED;
+	if(action == 'H')
+		m_Action|= LOGACTIONS_CACHE;
 	return m_Action;
 }
 void CTGitPath::SetFromGit(const char* pPath)
@@ -827,6 +831,43 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
 	AddPath(firstEntry);
 }
+int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool staged)
+{
+	int pos=0;
+	CString one;
+	CTGitPath path;
+	CString part;
+	while(pos>=0 && pos<out.size())
+	{
+		one.Empty();
+		path.Reset();
+
+		g_Git.StringAppend(&one,&out[pos],CP_OEMCP);
+		int tabstart=0;
+		path.m_Action=path.ParserAction(out[pos]);
+		one.Tokenize(_T("\t"),tabstart); 
+
+		if(tabstart>=0)
+			path.SetFromGit(one.Right(one.GetLength()-tabstart));
+
+		tabstart=0;
+
+		part=one.Tokenize(_T(" "),tabstart); //Tag
+
+		part=one.Tokenize(_T(" "),tabstart); //Mode
+		
+		part=one.Tokenize(_T(" "),tabstart); //Hash
+
+		part=one.Tokenize(_T("\t"),tabstart); //Stage
+
+		path.m_Stage=_ttol(part);
+
+		this->AddPath(path);
+
+		pos=out.findNextString(pos);
+	}
+	return pos;
+}
 int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 {
 	int pos=0;
@@ -849,23 +890,25 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 		
 		if(list==NULL)
 		{
-			cmd=_T("git.exe ls-files --exclude-standard --full-name --others");
+			cmd=_T("git.exe ls-files --exclude-standard --full-name --others -z");
 			cmd+=ignored;
 			
 		}
 		else
-		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others %s-- \"%s\""),
+		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others -z %s-- \"%s\""),
 					ignored,
 					(*list)[i].GetWinPathString());
 		}
-#ifdef VECTOR_F		
-		CString out;
-		g_Git.Run(cmd,&out);
 
+		BYTE_VECTOR out;
+		out.clear();
+		g_Git.Run(cmd,&out);
+		
+		pos=0;
 		CString one;
-		while( pos>=0 )
+		while( pos>=0 && pos<out.size())
 		{
-			one=out.Tokenize(_T("\n"),pos);
+			g_Git.StringAppend(&one,&out[pos],CP_OEMCP);
 			if(!one.IsEmpty())
 			{
 				//SetFromGit will clear all status
@@ -873,8 +916,9 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 				path.m_Action=action;
 				AddPath(path);
 			}
+			pos=out.findNextString(pos);
 		}
-#endif
+
 	}
 	return 0;
 }
@@ -1806,6 +1850,8 @@ CString CTGitPath::GetActionName()
 		return _T("Added");
 	if(m_Action  & CTGitPath::LOGACTIONS_DELETED)
 		return _T("Deleted");
+	if(m_Action  & CTGitPath::LOGACTIONS_UNMERGED)
+		return _T("Conflict");
 	if(m_Action  & CTGitPath::LOGACTIONS_MODIFIED)
 		return _T("Modified");
 	if(m_Action  & CTGitPath::LOGACTIONS_REPLACED)

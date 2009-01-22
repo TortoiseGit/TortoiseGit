@@ -2065,7 +2065,7 @@ bool CGitStatusListCtrl::BuildStatistics()
 		if(status&(CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_MODIFIED))
 			m_nModified++;
 		
-		if(status&CTGitPath::LOGACTIONS_CONFLICT)
+		if(status&CTGitPath::LOGACTIONS_UNMERGED)
 			m_nConflicted++;
 		
 		if(status&(CTGitPath::LOGACTIONS_IGNORE|CTGitPath::LOGACTIONS_UNVER))
@@ -2303,6 +2303,26 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		if (popup.CreatePopupMenu())
 		{
 			//Add Menu for verion controled file
+		
+			if (wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
+			{
+				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
+				{
+					popup.AppendMenuIcon(IDSVNLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
+				}
+				if (m_dwContextMenus & SVNSLC_POPRESOLVE)
+				{
+					popup.AppendMenuIcon(IDSVNLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
+				}
+				if ((m_dwContextMenus & SVNSLC_POPRESOLVE)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
+				{
+					popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
+					popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
+				}
+				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)||(m_dwContextMenus & SVNSLC_POPRESOLVE))
+					popup.AppendMenu(MF_SEPARATOR);
+			}
+
 			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
 			{
 				if (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE)
@@ -2355,6 +2375,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//}
 			}
 			
+	
 			///Select Multi item
 			//if (GetSelectedCount() > 0)
 			//{
@@ -2402,17 +2423,17 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//		}
 			//	}
 			//}
-			if ((GetSelectedCount() == 1)&&(!wcStatus & CTGitPath::LOGACTIONS_UNVER)
-				&&(!wcStatus & CTGitPath::LOGACTIONS_IGNORE))
+			if ((GetSelectedCount() == 1)&&(!(wcStatus & CTGitPath::LOGACTIONS_UNVER))
+				&&(!(wcStatus & CTGitPath::LOGACTIONS_IGNORE)))
 			{
 				if (m_dwContextMenus & SVNSLC_POPSHOWLOG)
 				{
 					popup.AppendMenuIcon(IDSVNLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
-//				if (m_dwContextMenus & SVNSLC_POPBLAME)
-//				{
-//					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
-//				}
+				if (m_dwContextMenus & SVNSLC_POPBLAME)
+				{
+					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
+				}
 			}
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
 //			{
@@ -2503,27 +2524,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 			}
-#if 0
-			if (((wcStatus == git_wc_status_conflicted)||(entry->isConflicted)))
-			{
-				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)||(m_dwContextMenus & SVNSLC_POPRESOLVE))
-					popup.AppendMenu(MF_SEPARATOR);
 
-				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)&&(entry->textstatus == git_wc_status_conflicted))
-				{
-					popup.AppendMenuIcon(IDSVNLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
-				}
-				if (m_dwContextMenus & SVNSLC_POPRESOLVE)
-				{
-					popup.AppendMenuIcon(IDSVNLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
-				}
-				if ((m_dwContextMenus & SVNSLC_POPRESOLVE)&&(entry->textstatus == git_wc_status_conflicted))
-				{
-					popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
-					popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
-				}
-			}
-#endif
+
 #if 0			
 			if (GetSelectedCount() > 0)
 			{
@@ -2727,6 +2729,34 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 					
 				}
+				break;
+
+			case IDSVNLC_BLAME:
+				{
+					CString sCmd;
+					sCmd.Format(_T("\"%s\" /command:blame /path:\"%s\""),
+						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+filepath->GetWinPath());
+
+					CAppUtils::LaunchApplication(sCmd, NULL, false);
+				}
+				break;
+
+			case IDSVNLC_LOG:
+				{
+					CString sCmd;
+					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
+						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+filepath->GetWinPath());
+
+					CAppUtils::LaunchApplication(sCmd, NULL, false);
+				}
+				break;
+
+			case IDSVNLC_EDITCONFLICT:
+				CString sCmd;
+				sCmd.Format(_T("\"%s\" /command:conflicteditor /path:\"%s\""),
+						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+filepath->GetWinPath());
+				
+				CAppUtils::LaunchApplication(sCmd, NULL, false);
 				break;
 #if 0
 			case IDSVNLC_COPY:
@@ -2958,38 +2988,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CAppUtils::LaunchApplication(sCmd, NULL, false);
 					}
-				}
-				break;
-			case IDSVNLC_LOG:
-				{
-					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), filepath.GetWinPath());
-
-					if (!filepath.IsUrl())
-					{
-						sCmd += _T(" /propspath:\"");
-						sCmd += filepath.GetWinPathString();
-						sCmd += _T("\"");
-					}	
-
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
-				}
-				break;
-			case IDSVNLC_BLAME:
-				{
-					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:blame /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), filepath.GetWinPath());
-
-					if (!filepath.IsUrl())
-					{
-						sCmd += _T(" /propspath:\"");
-						sCmd += filepath.GetWinPathString();
-						sCmd += _T("\"");
-					}	
-
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
 				break;
 			case IDSVNLC_OPEN:
@@ -4327,7 +4325,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				// brown  : missing, deleted, replaced
 				// green  : merged (or potential merges)
 				// red    : conflicts or sure conflicts
-				if(entry->m_Action & CTGitPath::LOGACTIONS_CONFLICT)
+				if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 				{
 					crText = m_Colors.GetColor(CColors::Conflict);
 

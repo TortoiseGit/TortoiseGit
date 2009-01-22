@@ -6,7 +6,8 @@ class CTGitPath
 public:
 	CTGitPath(void);
 	~CTGitPath(void);
- CTGitPath(const CString& sUnknownPath);
+	CTGitPath(const CString& sUnknownPath);
+	int m_Stage;
 public:
 	enum
 	{	
@@ -15,9 +16,10 @@ public:
 		LOGACTIONS_REPLACED	= 0x00000004,
 		LOGACTIONS_DELETED	= 0x00000008,
 		LOGACTIONS_UNMERGED = 0x00000010,
+		LOGACTIONS_CACHE	= 0x00000020,
 		LOGACTIONS_UNVER	= 0x80000000,
 		LOGACTIONS_IGNORE	= 0x40000000,
-		LOGACTIONS_CONFLICT = 0x20000000,
+		//LOGACTIONS_CONFLICT = 0x20000000,
 	};
 
 	CString m_StatAdd;
@@ -297,12 +299,14 @@ public:
 	// A constructor which allows a path list to be easily built with one initial entry in
 	explicit CTGitPathList(const CTGitPath& firstEntry);
 	int m_Action;
+
 public:
 	void AddPath(const CTGitPath& newPath);
 	bool LoadFromFile(const CTGitPath& filename);
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
 	CTGitPath * LookForGitPath(CString path);
 	int	ParserFromLog(BYTE_VECTOR &log);
+	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(int Action,CTGitPathList *list=NULL);
 	int GetAction();
 	/**

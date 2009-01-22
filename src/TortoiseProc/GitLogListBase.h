@@ -123,7 +123,8 @@ public:
 	ID_CHERRY_PICK,
 	ID_CREATE_BRANCH,
 	ID_CREATE_TAG,
-	ID_SWITCHTOREV
+	ID_SWITCHTOREV,
+	ID_RESET
 	};
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();

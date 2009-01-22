@@ -107,94 +107,6 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|x64"
-			OutputDirectory="..\..\bin\Debug64\bin"
-			IntermediateDirectory="..\..\obj\TortoiseProc\Debug64"
-			ConfigurationType="1"
-			UseOfMFC="2"
-			UseOfATL="0"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
-				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
-				MinimalRebuild="true"
-				ExceptionHandling="2"
-				RuntimeLibrary="3"
-				TreatWChar_tAsBuiltInType="true"
-				ForceConformanceInForLoopScope="true"
-				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="2"
-				WarningLevel="4"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"
-				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;;..\TortoiseShell"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
-				LinkIncremental="2"
-				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMT"
-				DelayLoadDLLs="gdiplus.dll"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\TortoiseProc\$(ConfigurationName)"
@@ -266,6 +178,94 @@
 				DataExecutionPrevention="0"
 				TargetMachine="1"
 				Profile="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\..\bin\Debug64\bin"
+			IntermediateDirectory="..\..\obj\TortoiseProc\Debug64"
+			ConfigurationType="1"
+			UseOfMFC="2"
+			UseOfATL="0"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
+				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
+				MinimalRebuild="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				ForceConformanceInForLoopScope="true"
+				RuntimeTypeInfo="true"
+				UsePrecompiledHeader="2"
+				WarningLevel="4"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;;..\TortoiseShell"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				LinkIncremental="2"
+				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMT"
+				DelayLoadDLLs="gdiplus.dll"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -574,11 +574,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
@@ -814,19 +814,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\open.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -930,19 +930,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\saveas.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\saveas.ico"
 				>
 			</File>
 			<File
@@ -1034,11 +1034,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
@@ -1701,6 +1701,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Conflict"
+				>
+				<File
+					RelativePath=".\Commands\ConflictEditorCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\ConflictEditorCommand.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
@@ -1790,7 +1802,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Release|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -1798,7 +1810,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32"
+				Name="Debug|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"

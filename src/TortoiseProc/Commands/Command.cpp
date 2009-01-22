@@ -47,6 +47,7 @@
 #include "ImportPatchCommand.h"
 #include "BlameCommand.h"
 #include "SettingsCommand.h"
+#include "ConflictEditorCommand.h"
 #if 0
 
 
@@ -54,7 +55,7 @@
 #include "CheckoutCommand.h"
 #include "CleanupCommand.h"
 
-#include "ConflictEditorCommand.h"
+
 #include "CopyCommand.h"
 #include "CrashCommand.h"
 #include "CreatePatchCommand.h"
@@ -294,6 +295,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new BlameCommand;
 	case cmdSettings:
 		return new SettingsCommand;
+	case cmdConflictEditor:
+		return new ConflictEditorCommand;
 #if 0
 
 	case cmdCat:
@@ -303,8 +306,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	case cmdCleanup:
 		return new CleanupCommand;
 
-	case cmdConflictEditor:
-		return new ConflictEditorCommand;
+	
 	case cmdCopy:
 		return new CopyCommand;
 	case cmdCrash:

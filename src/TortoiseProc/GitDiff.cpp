@@ -108,3 +108,8 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 
 	return 0;
 }
+
+int CGitDiff::StartConflictEditor(CTGitPath* file)
+{
+	return 0;
+}

@@ -1043,6 +1043,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			//if (m_hasWC)
 			//	popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREV, IDI_MERGE);
 			
+			CString str;
+			str.Format(_T("Reset %s to this"),g_Git.GetCurrentBranch());
+			popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 			popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
 			popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
 			popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);

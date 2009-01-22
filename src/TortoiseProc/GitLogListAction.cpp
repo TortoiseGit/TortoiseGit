@@ -175,7 +175,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			g_Git.GetMapHashToFriendName(m_HashMap);
 			Invalidate();
 			break;
+		case ID_RESET:
 
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;

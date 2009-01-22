@@ -31,10 +31,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute()
-	{
-//		return SVNDiff::StartConflictEditor(cmdLinePath);
-	}
+	virtual bool			Execute();
 };
 
 
