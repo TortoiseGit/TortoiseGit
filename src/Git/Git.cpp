@@ -329,8 +329,6 @@ CString GetTempFile()
 
 int CGit::RunLogFile(CString cmd,CString &filename)
 {
-	HANDLE hRead, hWrite;
-
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	si.cb=sizeof(STARTUPINFO);

@@ -368,7 +368,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 	
 		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
-		for(int i=0;i<rev->m_ParentHash.size();i++)
+		for(unsigned int i=0;i<rev->m_ParentHash.size();i++)
 		{
 			CString str;
 			CString parentsubject;

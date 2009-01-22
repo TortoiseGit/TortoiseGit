@@ -71,14 +71,14 @@ BOOL CPushDlg::OnInitDialog()
 
 	if(!g_Git.GetRemoteList(list))
 	{	
-		for(int i=0;i<list.size();i++)
+		for(unsigned int i=0;i<list.size();i++)
 			m_Remote.AddString(list[i]);
 	}
 
 	int current=0;
 	if(!g_Git.GetBranchList(list,&current))
 	{
-		for(int i=0;i<list.size();i++)
+		for(unsigned int i=0;i<list.size();i++)
 			m_BranchSource.AddString(list[i]);
 	}
 	m_BranchSource.SetCurSel(current);

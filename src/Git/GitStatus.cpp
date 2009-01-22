@@ -189,7 +189,7 @@ stdstring GitStatus::GetLastErrorMsg() const
 // static method
 git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth)
 {
-	git_wc_status_kind			statuskind;
+	git_wc_status_kind			statuskind = git_wc_status_none;
 #if 0
 	git_client_ctx_t * 			ctx;
 	
@@ -208,7 +208,6 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	git_revnum_t youngest = Git_INVALID_REVNUM;
 	git_opt_revision_t rev;
 	rev.kind = git_opt_revision_unspecified;
-	statuskind = git_wc_status_none;
 	err = git_client_status4 (&youngest,
 							path.GetGitApiPath(pool),
 							&rev,

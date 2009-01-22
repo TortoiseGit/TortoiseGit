@@ -88,7 +88,6 @@ bool GitAdminDir::HasAdminDir(const CString& path) const
 
 bool GitAdminDir::HasAdminDir(const CString& path,CString *ProjectTopDir) const
 {
-	bool b=PathIsDirectory(path);
 	return HasAdminDir(path, !!PathIsDirectory(path),ProjectTopDir);
 }
 

@@ -116,7 +116,6 @@ void CExportDlg::OnOK()
 		return;
 	}
 
-	bool bAutoCreateTargetName = m_bAutoCreateTargetName;
 	m_bAutoCreateTargetName = false;
 
 //	m_URLCombo.SaveHistory();

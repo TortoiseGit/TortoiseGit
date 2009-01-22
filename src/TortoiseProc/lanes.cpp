@@ -204,7 +204,7 @@ void Lanes::afterMerge() {
 	if (boundary)
 		return; // will be reset by changeActiveLane()
 
-	for (int i = 0; i < typeVec.size(); i++) {
+	for (unsigned int i = 0; i < typeVec.size(); i++) {
 
 		int& t = typeVec[i];
 
@@ -221,7 +221,7 @@ void Lanes::afterMerge() {
 
 void Lanes::afterFork() {
 
-	for (int i = 0; i < typeVec.size(); i++) {
+	for (unsigned int i = 0; i < typeVec.size(); i++) {
 
 		int& t = typeVec[i];
 
@@ -262,7 +262,7 @@ void Lanes::nextParent(const QString& sha) {
 
 int Lanes::findNextSha(const QString& next, int pos) {
 
-	for (int i = pos; i < nextShaVec.size(); i++)
+	for (unsigned int i = pos; i < nextShaVec.size(); i++)
 		if (nextShaVec[i] == next)
 			return i;
 	return -1;
@@ -270,7 +270,7 @@ int Lanes::findNextSha(const QString& next, int pos) {
 
 int Lanes::findType(int type, int pos) {
 
-	for (int i = pos; i < typeVec.size(); i++)
+	for (unsigned int i = pos; i < typeVec.size(); i++)
 		if (typeVec[i] == type)
 			return i;
 	return -1;

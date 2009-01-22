@@ -657,7 +657,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 		delete [] linebuf;
 
 		i++;
-		if(i>=m_CommitHash.size())
+		if(i>=(signed int)m_CommitHash.size())
 			i=0;
 	}while(i!=line &&(!bFound));
 
@@ -964,7 +964,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	//blamewidth += m_revwidth;
 
 	int maxnum=0;
-	for (int i=0;i<this->m_Authors.size();i++)
+	for (unsigned int i=0;i<this->m_Authors.size();i++)
 	{
 		if(m_ID[i]>maxnum)
 			maxnum=m_ID[i];
@@ -992,7 +992,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		for (int i=0;i<this->m_Authors.size();i++)
+		for (unsigned int i=0;i<this->m_Authors.size();i++)
 		//for (std::vector<CString>::iterator I = authors.begin(); I != authors.end(); ++I)
 		{
 			::GetTextExtentPoint32(hDC,m_Authors[i] , m_Authors[i].GetLength(), &width);
@@ -2435,7 +2435,7 @@ void CTortoiseGitBlameView::UpdateInfo()
 			line=one.Right(one.GetLength()-start-2);
 			this->m_TextView.InsertText(line,true);
 		}
-		int id=pRevs->m_HashMap[one.Left(40)];		
+		unsigned int id=pRevs->m_HashMap[one.Left(40)];		
 		if(id>=0 && id <GetLogData()->size())
 		{
 			m_ID.push_back(pRevs->size()-id);

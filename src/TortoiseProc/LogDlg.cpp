@@ -2799,7 +2799,7 @@ void CLogDlg::UpdateLogInfoLabel()
 
 	git_revnum_t rev1 ;
 	git_revnum_t rev2 ;
-	long selectedrevs ;
+	long selectedrevs = 0;
 	int count =m_LogList.m_arShownList.GetCount();
 	if (count)
 	{

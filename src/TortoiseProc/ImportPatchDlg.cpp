@@ -145,8 +145,6 @@ void CImportPatchDlg::OnBnClickedButtonRemove()
 
 void CImportPatchDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
-	int i;
 	for(int i=0;i<m_cList.GetItemCount();i++)
 	{
 		CTGitPath path;

@@ -382,7 +382,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
-	for(int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
+	for(unsigned int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
 	{
 		CString str;
 		str=m_HashMap[data->m_CommitHash][i];
@@ -1329,7 +1329,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info)
 
 	this->m_arShownList.RemoveAll();
 
-	for(int i=0;i<m_logEntries.size();i++)
+	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
 		m_logEntries[i].m_IsFull=TRUE;
 		this->m_arShownList.Add(&m_logEntries[i]);
@@ -1366,7 +1366,7 @@ int CGitLogListBase::FillGitShortLog()
 
 	this->m_arShownList.RemoveAll();
 
-	for(int i=0;i<m_logEntries.size();i++)
+	for(unsigned int i=0;i<m_logEntries.size();i++)
 		this->m_arShownList.Add(&m_logEntries[i]);
 
 	return 0;
@@ -1446,7 +1446,7 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 	//CTime time;
 	oldest=CTime::GetCurrentTime();
 	latest=CTime(1971,1,2,0,0,0);
-	for(int i=0;i<m_logEntries.size();i++)
+	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
 		if(m_logEntries[i].m_AuthorDate.GetTime() < oldest.GetTime())
 			oldest = m_logEntries[i].m_AuthorDate.GetTime();
@@ -1506,11 +1506,11 @@ UINT CGitLogListBase::LogThread()
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 	int index=0;
-	int updated=0;
+	unsigned int updated=0;
 	int percent=0;
 	while(1)
 	{
-		for(int i=0;i<m_logEntries.size();i++)
+		for(unsigned int i=0;i<m_logEntries.size();i++)
 		{
 			if(!m_logEntries.FetchFullInfo(i))
 			{
