@@ -95,6 +95,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
 	ON_STN_CLICKED(IDC_COMMITLABEL, &CCommitDlg::OnStnClickedCommitlabel)
+    ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -1447,4 +1448,9 @@ void CCommitDlg::OnBnClickedSignOff()
 void CCommitDlg::OnStnClickedCommitlabel()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void CCommitDlg::OnBnClickedCommitAmend()
+{
+    // TODO: Add your control notification handler code here
 }
