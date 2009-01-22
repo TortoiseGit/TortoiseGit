@@ -1,0 +1,7 @@
+bin
+obj
+*.user
+*.ncb
+*.suo
+*.chm
+ext/scintilla/vcbuild/Release
