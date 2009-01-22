@@ -2316,8 +2316,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				if ((m_dwContextMenus & SVNSLC_POPRESOLVE)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
-					popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
-					popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
+					//popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
+					//popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
 				}
 				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)||(m_dwContextMenus & SVNSLC_POPRESOLVE))
 					popup.AppendMenu(MF_SEPARATOR);
@@ -2752,12 +2752,42 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDSVNLC_EDITCONFLICT:
-				CString sCmd;
-				sCmd.Format(_T("\"%s\" /command:conflicteditor /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+filepath->GetWinPath());
-				
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
+			{
+				CAppUtils::ConflictEdit(*filepath);
 				break;
+			}
+			case IDSVNLC_RESOLVECONFLICT:
+			{
+				if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					while (pos != 0)
+					{
+						int index;
+						index = GetNextSelectedItem(pos);
+						CTGitPath * fentry =(CTGitPath*) this->GetItemData(index);
+						if(fentry == NULL)
+							continue;
+
+						if ( fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+						{
+							CString cmd,output;
+							cmd.Format(_T("git.exe add \"%s\""),fentry->GetGitPathString());
+							if(g_Git.Run(cmd,&output,CP_OEMCP))
+							{
+								CMessageBox::Show(m_hWnd, output, _T("TortoiseSVN"), MB_ICONERROR);
+							}else
+							{
+								fentry->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
+								fentry->m_Action &=~CTGitPath::LOGACTIONS_UNMERGED;
+							}
+						}
+						
+					}
+					Show(m_dwShow, 0, m_bShowFolders);
+				}
+			}
+			break;
 #if 0
 			case IDSVNLC_COPY:
 				CopySelectedEntriesToClipboard(0);
@@ -3452,47 +3482,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDSVNLC_EDITCONFLICT:
 				SVNDiff::StartConflictEditor(filepath);
 				break;
-			case IDSVNLC_RESOLVECONFLICT:
-			case IDSVNLC_RESOLVEMINE:
-			case IDSVNLC_RESOLVETHEIRS:
-				{
-					git_wc_conflict_choice_t result = git_wc_conflict_choose_merged;
-					switch (cmd)
-					{
-					case IDSVNLC_RESOLVETHEIRS:
-						result = git_wc_conflict_choose_theirs_full;
-						break;
-					case IDSVNLC_RESOLVEMINE:
-						result = git_wc_conflict_choose_mine_full;
-						break;
-					case IDSVNLC_RESOLVECONFLICT:
-						result = git_wc_conflict_choose_merged;
-						break;
-					}
-					if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
-					{
-						SVN git;
-						POSITION pos = GetFirstSelectedItemPosition();
-						while (pos != 0)
-						{
-							int index;
-							index = GetNextSelectedItem(pos);
-							FileEntry * fentry = m_arStatusArray[m_arListArray[index]];
-							if (!git.Resolve(fentry->GetPath(), result, FALSE))
-							{
-								CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
-							}
-							else
-							{
-								fentry->status = git_wc_status_modified;
-								fentry->textstatus = git_wc_status_modified;
-								fentry->isConflicted = false;
-							}
-						}
-						Show(m_dwShow, 0, m_bShowFolders);
-					}
-				}
-				break;
+			
 			case IDSVNLC_ADD:
 				{
 					SVN git;

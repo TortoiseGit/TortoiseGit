@@ -123,6 +123,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_ListCtrl.EnableFileDrop();
 	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
 	
+	this->DialogEnableWindow(IDC_COMMIT_AMEND,FALSE);
 //	m_ProjectProperties.ReadPropsPathList(m_pathList);
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));

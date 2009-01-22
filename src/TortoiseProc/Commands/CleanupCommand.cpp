@@ -31,11 +31,13 @@ bool CleanupCommand::Execute()
 {
 	bool bRet = false;
 
-	CProgressDlg progress;
-	progress.m_GitCmd.Format(_T("Git Clean -d -x"));
-	if(progress.DoModal()==IDOK)
+	if(CMessageBox::Show(NULL,_T("Are you sure clean all unversion files"),_T("TortoiseGit"),MB_YESNO)==IDYES)
+	{
+		CProgressDlg progress;
+		progress.m_GitCmd.Format(_T("Git Clean -d -x -f"));
+		if(progress.DoModal()==IDOK)
 			return TRUE;
-
+	}
 #if 0
 	CProgressDlg progress;
 	progress.SetTitle(IDS_PROC_CLEANUP);
