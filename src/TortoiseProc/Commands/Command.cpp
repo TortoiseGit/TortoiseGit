@@ -48,12 +48,14 @@
 #include "BlameCommand.h"
 #include "SettingsCommand.h"
 #include "ConflictEditorCommand.h"
+#include "CleanupCommand.h"
+
 #if 0
 
 
 #include "CatCommand.h"
 #include "CheckoutCommand.h"
-#include "CleanupCommand.h"
+
 
 
 #include "CopyCommand.h"
@@ -297,14 +299,15 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SettingsCommand;
 	case cmdConflictEditor:
 		return new ConflictEditorCommand;
+	case cmdCleanup:
+		return new CleanupCommand;
 #if 0
 
 	case cmdCat:
 		return new CatCommand;
 	case cmdCheckout:
 		return new CheckoutCommand;
-	case cmdCleanup:
-		return new CleanupCommand;
+
 
 	
 	case cmdCopy:

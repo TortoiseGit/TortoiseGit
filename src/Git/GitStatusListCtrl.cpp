@@ -2735,7 +2735,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CString sCmd;
 					sCmd.Format(_T("\"%s\" /command:blame /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+filepath->GetWinPath());
+						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath());
 
 					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
@@ -2745,7 +2745,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CString sCmd;
 					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+filepath->GetWinPath());
+						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath());
 
 					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}

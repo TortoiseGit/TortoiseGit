@@ -30,11 +30,12 @@
 bool CleanupCommand::Execute()
 {
 	bool bRet = false;
-
-	if(CMessageBox::Show(NULL,_T("Are you sure clean all unversion files"),_T("TortoiseGit"),MB_YESNO)==IDYES)
+	CString temp;
+	temp.Format(_T("Are you sure clean all untracked files"));
+	if(CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_YESNO)==IDYES)
 	{
 		CProgressDlg progress;
-		progress.m_GitCmd.Format(_T("Git Clean -d -x -f"));
+		progress.m_GitCmd.Format(_T("git clean -d -x -f "));
 		if(progress.DoModal()==IDOK)
 			return TRUE;
 	}

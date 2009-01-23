@@ -427,6 +427,8 @@ void CLogDlg::SetDlgTitle(bool bOffline)
 	{
 		if (m_path.IsUrl())
 			SetWindowText(m_sTitle + _T(" - ") + m_path.GetUIPathString());
+		else if (m_path.IsEmpty())
+			SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
 		else if (m_path.IsDirectory())
 			SetWindowText(m_sTitle + _T(" - ") + m_path.GetWinPathString());
 		else
