@@ -616,8 +616,10 @@ void CLogDlg::GetAll(bool bForceAll /* = false */)
 		SetWindowText(m_sTitle + _T(" - "));
 		break;
 	}
-	m_LogList.m_bExitThread=TRUE;
-	::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,INFINITE);
+	//m_LogList.m_bExitThread=TRUE;
+	//::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,INFINITE);
+
+	m_LogList.TerminateThread();
 	
 	m_LogList.Clear();
 	m_LogList.FetchLogAsync(LogCallBack,this);
