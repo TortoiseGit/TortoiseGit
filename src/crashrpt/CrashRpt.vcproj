@@ -75,6 +75,7 @@
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				CompileAs="0"
+				DisableSpecificWarnings="4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

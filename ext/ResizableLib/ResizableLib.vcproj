@@ -63,6 +63,7 @@
 				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DisableSpecificWarnings="4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -138,6 +139,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
+				DisableSpecificWarnings="4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

@@ -62,7 +62,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4996"
+				DisableSpecificWarnings="4996,4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -242,6 +242,7 @@
 				PrecompiledHeaderFile=".\Release/SciLexer.pch"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DisableSpecificWarnings="4996,4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
