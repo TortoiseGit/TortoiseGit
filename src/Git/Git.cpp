@@ -75,9 +75,19 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 //Becuase A2W use stack as internal convert buffer. 
 void CGit::StringAppend(CString *str,BYTE *p,int code)
 {
-       USES_CONVERSION;
-       str->Append(A2W_CP((LPCSTR)p,code));
-
+     //USES_CONVERSION;
+	 //str->Append(A2W_CP((LPCSTR)p,code));
+	WCHAR * buf;
+	int len = strlen((const char*)p);
+	//if (len==0)
+	//	return ;
+	//buf = new WCHAR[len*4 + 1];
+	buf = str->GetBuffer(len*4+1+str->GetLength())+str->GetLength();
+	SecureZeroMemory(buf, (len*4 + 1)*sizeof(WCHAR));
+	MultiByteToWideChar(code, 0, (LPCSTR)p, -1, buf, len*4);
+	str->ReleaseBuffer();
+	//str->Append(buf);
+	//delete buf;
 }	
 BOOL CGit::IsInitRepos()
 {
@@ -136,6 +146,7 @@ int CGit::Run(CString cmd, CString* output,int code)
 		return ret;
 	
 	vector.push_back(0);
+	
 	StringAppend(output,&(vector[0]),code);
 	return 0;
 }

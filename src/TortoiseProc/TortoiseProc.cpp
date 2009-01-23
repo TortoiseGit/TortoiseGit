@@ -408,7 +408,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 					break;
 		}
 
-		if(g_Git.m_CurrentDir)
+		if(!g_Git.m_CurrentDir.IsEmpty())
 			SetCurrentDirectory(g_Git.m_CurrentDir);
 
 		cmd->SetParser(parser);

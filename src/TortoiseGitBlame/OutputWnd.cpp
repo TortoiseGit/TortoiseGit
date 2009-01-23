@@ -168,7 +168,7 @@ int COutputWnd::LoadHistory(CString filename)
 {
 	m_LogList.ReloadHashMap();
 	CTGitPath path;
-	path.SetFromWin(filename);
+	path.SetFromGit(filename);
 	
 	m_LogList.Clear();
 	m_LogList.FillGitLog(&path,0/*CGit::LOG_INFO_FULLHISTORY*/);

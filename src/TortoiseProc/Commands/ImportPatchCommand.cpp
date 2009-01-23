@@ -31,12 +31,13 @@ bool ImportPatchCommand::Execute()
 	CImportPatchDlg dlg;
 //	dlg.m_bIsTag=TRUE;
 	CString cmd;
+	CString output;
 	if(dlg.DoModal()==IDOK)
 	{
 		for(int i=0;i<dlg.m_PathList.GetCount();i++)
 		{			
 			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
-			CString output;
+			
 			if(g_Git.Run(cmd,&output,CP_OEMCP))
 			{
 				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
@@ -45,5 +46,6 @@ bool ImportPatchCommand::Execute()
 		}
 		return TRUE;
 	}
+	CMessageBox::Show(NULL,CString(_T("Patch applied"))+output,_T("TortoiseGit"),MB_OK);
 	return FALSE;
 }

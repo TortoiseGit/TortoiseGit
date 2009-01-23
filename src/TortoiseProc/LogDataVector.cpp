@@ -119,8 +119,8 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask)
 	
 	int start=4;
 	int length;
-	int next =1;
-	while( next>0 )
+	int next =0;
+	while( next>=0 )
 	{
 		next=rev.ParserFromLog(log,next);
 		this->push_back(rev);

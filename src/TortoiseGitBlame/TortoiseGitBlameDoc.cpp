@@ -88,11 +88,19 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	{
 		m_IsGitFile=TRUE;
 		g_Git.m_CurrentDir=topdir;
-		GetMainFrame()->m_wndOutput.LoadHistory(lpszPathName);
-		
-		CString cmd;
+
+		CString PathName=lpszPathName;
+		PathName=PathName.Right(PathName.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
 		CTGitPath path;
-		path.SetFromWin(lpszPathName);
+		path.SetFromWin(PathName);
+
+		if(!g_Git.m_CurrentDir.IsEmpty())
+			SetCurrentDirectory(g_Git.m_CurrentDir);
+		
+		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString());
+	
+		CString cmd;
+		
 		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.Empty();
 		if(g_Git.Run(cmd,&m_BlameData,CP_UTF8))
