@@ -964,7 +964,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	//blamewidth += m_revwidth;
 
 	int maxnum=0;
-	for (unsigned int i=0;i<this->m_Authors.size();i++)
+	for (unsigned int i=0;i<this->m_ID.size();i++)
 	{
 		if(m_ID[i]>maxnum)
 			maxnum=m_ID[i];
@@ -1100,7 +1100,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			//}
 
 			CString str;
-			str.Format(_T("%d"),m_ID[i]);
+			if(m_ID[i]>=0)
+				str.Format(_T("%d"),m_ID[i]);
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
 			rc.top=Y;
@@ -2435,14 +2436,22 @@ void CTortoiseGitBlameView::UpdateInfo()
 			line=one.Right(one.GetLength()-start-2);
 			this->m_TextView.InsertText(line,true);
 		}
-		unsigned int id=pRevs->m_HashMap[one.Left(40)];		
-		if(id>=0 && id <GetLogData()->size())
+		int id;
+		if(pRevs->m_HashMap.find(one.Left(40))!=pRevs->m_HashMap.end())
+		{
+			id=pRevs->m_HashMap[one.Left(40)];	
+		}
+		else
+			id=-1;
+
+		if(id>=0 && id <(int)GetLogData()->size())
 		{
 			m_ID.push_back(pRevs->size()-id);
 			m_Authors.push_back(pRevs->at(id).m_AuthorName);
 		}else
 		{
-			ASSERT(FALSE);
+			m_ID.push_back(id);
+			m_Authors.push_back(one.Left(6));
 		}
 	}
 
@@ -2503,13 +2512,19 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 //			app.m_selecteddate = app.dates[line];
 			
 			
-			this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
+			if(m_ID[line]>=0)
+			{
+				this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
 															LVIS_SELECTED,
 															LVIS_SELECTED);
 
-			GitRev *pRev;
-			pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
-			this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+				GitRev *pRev;
+				pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
+				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+			}else
+			{
+				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(NULL);
+			}
 		}
 		else
 		{
@@ -2575,7 +2590,11 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 //			app.m_selectedauthor = app.authors[line];
 //			app.m_selecteddate = app.dates[line];
 			
-			
+			if(m_ID[line]<0)
+			{
+				m_ToolTip.AddTool(this,_T(""));
+				return;
+			}
 			GitRev *pRev;
 			pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
 			//this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
