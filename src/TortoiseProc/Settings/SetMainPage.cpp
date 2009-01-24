@@ -79,12 +79,17 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ASPDOTNETHACK, OnASPHACK)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
+	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnModified)
 END_MESSAGE_MAP()
 
 BOOL CSetMainPage::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	// disable features that have not yet been implemented
+	GetDlgItem(IDC_CHECKNEWERVERSION)->EnableWindow( FALSE );
+	GetDlgItem(IDC_CHECKNEWERBUTTON)->EnableWindow( FALSE );
+	
 	EnableToolTips();
 
 	m_sMsysGitPath = m_regMsysGitPath;
@@ -204,8 +209,17 @@ BOOL CSetMainPage::OnApply()
 			m_restart = Restart_System;
 		}
 	}
-	SetModified(FALSE);
-	return ISettingsPropPage::OnApply();
+	// only complete if the msysgit directory is ok
+	if(g_Git.CheckMsysGitDir())
+	{
+		SetModified(FALSE);
+		return ISettingsPropPage::OnApply();
+	}
+	else
+	{
+		CMessageBox::Show(NULL,_T("Msys Git Install Path Error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return 0;
+	}
 }
 
 void CSetMainPage::OnBnClickedEditconfig()

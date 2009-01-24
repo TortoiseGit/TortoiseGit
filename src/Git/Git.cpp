@@ -502,7 +502,12 @@ BOOL CGit::CheckMsysGitDir()
 	{
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
-		str+="\\bin";
+        // check it has a trailing blank
+        if (str.Right(1) != "\\")
+        {
+            str += "\\";
+        }
+		str+="bin";
 		msysdir=str;
 		msysdir.write();
 
@@ -518,8 +523,9 @@ BOOL CGit::CheckMsysGitDir()
 	{		
 		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
 		_tputenv_s(_T("HOME"),home);
-		free(home);
 	}
+	free(home);
+	
 	//set path
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
 
