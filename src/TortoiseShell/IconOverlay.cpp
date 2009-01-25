@@ -132,7 +132,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			return S_FALSE;
 		}
-#if 0
+
 		switch (g_ShellCache.GetCacheType())
 		{
 		case ShellCache::exe:
@@ -140,22 +140,21 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 #if 0
 				TSVNCacheResponse itemStatus;
 				SecureZeroMemory(&itemStatus, sizeof(itemStatus));
-				if (m_remoteCacheLink.GetStatusFromRemoteCache(CTSVNPath(pPath), &itemStatus, true))
+				if (m_remoteCacheLink.GetStatusFromRemoteCache(CTGitPath(pPath), &itemStatus, true))
 				{
-					status = SVNStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
 					if ((itemStatus.m_kind == git_node_file)&&(status == git_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))
 						readonlyoverlay = true;
 					if (itemStatus.m_owner[0]!=0)
 						lockedoverlay = true;
 				}
-#endif 
+#endif
 			}
-//			break;
+			break;
 		case ShellCache::dll:
 			{
 				// Look in our caches for this item 
-#if 0
-				const FileStatusCacheEntry * s = m_CachedStatus.GetCachedItem(CTSVNPath(pPath));
+				const FileStatusCacheEntry * s = m_CachedStatus.GetCachedItem(CTGitPath(pPath));
 				if (s)
 				{
 					status = s->status;
@@ -177,9 +176,11 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 							}
 							else
 							{
-								const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTSVNPath(pPath), TRUE);
+								const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
 								status = s->status;
-								status = SVNStatus::GetMoreImportant(git_wc_status_normal, status);
+								// if get status fails then display status as 'normal' on folder (since it contains .git)
+								// TODO: works for svn since each folder has .svn, not sure if git needs additinoal processing
+								status = GitStatus::GetMoreImportant(git_wc_status_normal, status);
 							}
 						}
 						else
@@ -189,7 +190,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					}
 					else
 					{
-						const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTSVNPath(pPath), FALSE);
+						const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), FALSE);
 						status = s->status;
 					}
 				}
@@ -197,7 +198,6 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					readonlyoverlay = true;
 				if ((s)&&(s->owner[0]!=0))
 					lockedoverlay = true;
-#endif
 			}
 
 			break;
@@ -225,25 +225,13 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			break;
 		}
 		ATLTRACE(_T("Status %d for file %s\n"), status, pwszPath);
-#endif 
-	}
-
-	if (PathIsDirectory(pPath))
-	{
-		if (g_ShellCache.HasSVNAdminDir(pPath, TRUE))
-		{
-			status = git_wc_status_normal;		
-		}else
-		{
-			status = git_wc_status_none;
-		}
 	}
 	g_filepath.clear();
 	g_filepath = pPath;
 	g_filestatus = status;
 	g_readonlyoverlay = readonlyoverlay;
 	g_lockedoverlay = lockedoverlay;
-	
+
 	//the priority system of the shell doesn't seem to work as expected (or as I expected):
 	//as it seems that if one handler returns S_OK then that handler is used, no matter
 	//if other handlers would return S_OK too (they're never called on my machine!)

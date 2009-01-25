@@ -16,7 +16,7 @@
 <Include>
    <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="D__ProgramFilesFolder" ShortName="PFiles" Name="Program Files">
-        <Directory Id="INSTALLDIR" ShortName="TSVN" Name="TortoiseGit">
+        <Directory Id="INSTALLDIR" ShortName="TGIT" Name="TortoiseGit">
 
           <?if $(var.Platform) = "x86" ?>
           <Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\microsoft_vc90_crt_x86.msm' DiskId='1' />
@@ -132,7 +132,7 @@
           <Component Id="C__machineregistry" Guid="$(var.GuidMachineRegistry)" Win64="$(var.Win64YesNo)">
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
-            <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TSVNCache.exe" Type="string" />
+            <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseMerge.exe" Type="string" />
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\SubWCRev.exe" Action="createKeyAndRemoveKeyOnUninstall" />
@@ -172,7 +172,7 @@
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
           </Component>
-
+<!--
           <Component Id="C__svnprotocoll" Guid="$(var.GuidSvnProtocol)" Win64="$(var.Win64YesNo)">
             <Registry Root="HKMU" Key="Software\Classes\svn" KeyPath="yes" Value="URL:SVN Protocol" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\svn" Name="URL Protocol" Type="string" />
@@ -189,19 +189,19 @@
             <Registry Root="HKMU" Key="Software\Classes\tsvn\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\tsvn\shell\open\command" Value="[INSTALLDIR]bin\TortoiseProc.exe /command:checkout /url:&quot;%1&quot;" Type="string" />
           </Component>
-
+ -->
           <Component Id="C__ASPDOTNETHACK" Guid="$(var.GuidASPNETHack)" Win64="$(var.Win64YesNo)">
             <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="ASP.NET KeyPath" Value="ASP.NET" Type="string" />
             <!-- only used because this component needs a key path! -->
             <Environment Id="E__ASPDOTNETHACK" Action="create" Name="SVN_ASP_DOT_NET_HACK" Value="1" Permanent="yes" System="yes" />
           </Component>
           <Directory Id="D__Bin" ShortName="BIN" Name="bin" >
-           
+<!--
           <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
              <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libapr_tsvn.dll" KeyPath="yes" />
              <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libaprutil_tsvn.dll" />
           </Component>
-
+ -->
 <!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
              <File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
               <File Id="F__saslANONYMOUS" ShortName="saslANON.DLL" Name="saslANONYMOUS.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslANONYMOUS.dll" />
@@ -228,14 +228,18 @@
 -->               <RemoveFile Id="F__Tortoise_lang"  Name="*.chm" On="uninstall" />
             </Component>
 
+            <Component Id="C__wingit" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
+              <File Id="F__wingit" ShortName="WINGIT.DLL" Name="wingit.dll" DiskId="1" Source="..\..\ext\wingit\wingit.dll" KeyPath="yes" />
+            </Component>
+            
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
-              <File Id="F__TortoiseShell" ShortName="TORTSVN.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
+              <File Id="F__TortoiseShell" ShortName="TORTGIT.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
 <!--              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
 -->
 <!--              <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
 -->
-<!--              <File Id="F__TSVNCache" ShortName="TSVNCACH.EXE" Name="TSVNCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TSVNCache.exe" />
+<!--              <File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
 -->
               <File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
               <File Id="F__websiteurl" ShortName="WEBSITE.URL" Name="Website.url" Source="include\Website.url" DiskId="1" />
@@ -282,7 +286,7 @@
               <Shortcut Id="S__Website" Directory="D_TortoisePrgMenu"  Name="Website" Advertise="no"
               Target="[INSTALLDIR]bin\website.url" Description="TortoiseGit Website" />
 <!--
-              <Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TSVN" Name="TortoiseGit" Advertise="no"
+              <Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TGIT" Name="TortoiseGit" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
 -->
             <Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no"
@@ -330,6 +334,7 @@
               <File Id="F__TortoiseUDiff" ShortName="TUDIFF.EXE" Name="TortoiseUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseUDiff.exe" KeyPath="yes" />
             </Component>
 
+<!--
             <Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
               <Registry Root="HKMU" Key="Software\Classes\.diff" Action="createKeyAndRemoveKeyOnUninstall" />
               <Registry Root="HKMU" Key="Software\Classes\.diff" KeyPath="yes" Value="unified_diff_file" Type="string" />
@@ -338,8 +343,9 @@
               <Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Action="createKeyAndRemoveKeyOnUninstall" />
               <Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Value="[INSTALLDIR]bin\TortoiseUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
             </Component>
+-->
 
-            <Component Id="C__PlainSettingsShortcuts" Guid="$(var.GuidPlainSettingsShortcuts)" Win64="$(var.Win64YesNo)">
+              <Component Id="C__PlainSettingsShortcuts" Guid="$(var.GuidPlainSettingsShortcuts)" Win64="$(var.Win64YesNo)">
               <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
               <Condition><![CDATA[NOT VersionNT64]]></Condition>
               <Shortcut Id="S__PlainConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no"

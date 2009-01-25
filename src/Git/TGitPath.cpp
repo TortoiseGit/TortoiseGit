@@ -729,8 +729,25 @@ bool CTGitPath::HasAdminDir() const
 		return m_bHasAdminDir;
 
 	EnsureBackslashPathSet();
-	m_bHasAdminDir = g_GitAdminDir.HasAdminDir(m_sBackslashPath, IsDirectory());
+	m_bHasAdminDir = g_GitAdminDir.HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
 	m_bHasAdminDirKnown = true;
+	return m_bHasAdminDir;
+}
+
+bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const
+{
+	if (m_bHasAdminDirKnown)
+	{
+		if (ProjectTopDir)
+			*ProjectTopDir = m_sProjectRoot;
+		return m_bHasAdminDir;
+	}
+
+	EnsureBackslashPathSet();
+	m_bHasAdminDir = g_GitAdminDir.HasAdminDir(m_sBackslashPath, IsDirectory(), &m_sProjectRoot);
+	m_bHasAdminDirKnown = true;
+	if (ProjectTopDir)
+		*ProjectTopDir = m_sProjectRoot;
 	return m_bHasAdminDir;
 }
 

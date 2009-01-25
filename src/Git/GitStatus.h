@@ -15,6 +15,7 @@ typedef std::basic_string<wchar_t> wide_string;
 #pragma warning (pop)
 
 #include "TGitPath.h"
+#include "wingit.h"
 
 typedef enum type_git_wc_status_kind
 {
@@ -59,6 +60,21 @@ typedef struct git_wc_status2_t
 }git_wc_status2;
 
 #define MAX_STATUS_STRING_LENGTH		256
+
+
+// convert wingit.dll status to git_wc_status_kind
+inline static git_wc_status_kind GitStatusFromWingit(int nStatus)
+{
+	switch (nStatus)
+	{
+	case WGFS_Normal: return git_wc_status_normal;
+	case WGFS_Modified: return git_wc_status_modified;
+	case WGFS_Deleted: return git_wc_status_deleted;
+	}
+
+	return git_wc_status_none;
+}
+
 
 /**
  * \ingroup Git
@@ -232,7 +248,8 @@ private:
 	/**
 	 * Callback function which collects the raw status from a Git_client_status() function call
 	 */
-//	static git_error_t * getallstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
+	//static git_error_t * getallstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
+	static BOOL getallstatus(const struct wgFile_s *pFile, void *pUserData);
 
 	/**
 	 * Callback function which stores the raw status from a Git_client_status() function call

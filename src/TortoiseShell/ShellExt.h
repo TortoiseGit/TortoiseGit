@@ -24,7 +24,7 @@
 #include "ShellCache.h"
 #include "RemoteCacheLink.h"
 #include "GitStatus.h"
-//#include "SVNFolderStatus.h"
+#include "GitFolderStatus.h"
 #include "uxtheme.h"
 
 extern	UINT				g_cRefThisDll;			// Reference count of this DLL.
@@ -208,7 +208,7 @@ protected:
 	git_wc_status_kind	filestatus;
 	std::map<UINT, HBITMAP> bitmaps;
 
-//	SVNFolderStatus		m_CachedStatus;		// status cache
+	GitFolderStatus		m_CachedStatus;		// status cache
 	CRemoteCacheLink	m_remoteCacheLink;
 
 	FN_GetBufferedPaintBits pfnGetBufferedPaintBits;

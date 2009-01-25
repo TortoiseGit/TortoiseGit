@@ -11,6 +11,11 @@ CGit g_Git;
 CGit::CGit(void)
 {
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
+
+	if ( !wgInit() )
+	{
+		// TODO
+	}
 }
 
 CGit::~CGit(void)

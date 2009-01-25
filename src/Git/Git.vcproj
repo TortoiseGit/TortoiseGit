@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="Git"
 	ProjectGUID="{7CA5B1EB-8CC9-40A6-96D8-83649C1A870B}"
 	RootNamespace="Git"
@@ -372,6 +372,10 @@
 			</File>
 			<File
 				RelativePath=".\GitConfig.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GitFolderStatus.h"
 				>
 			</File>
 			<File

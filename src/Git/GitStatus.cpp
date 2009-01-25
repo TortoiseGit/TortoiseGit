@@ -33,6 +33,7 @@
 //#	include "PathUtils.h"
 #endif
 
+
 GitStatus::GitStatus(bool * pbCanceled)
 	: status(NULL)
 {
@@ -189,27 +190,48 @@ stdstring GitStatus::GetLastErrorMsg() const
 // static method
 git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth)
 {
-	git_wc_status_kind			statuskind = git_wc_status_none;
-#if 0
-	git_client_ctx_t * 			ctx;
+	git_wc_status_kind			statuskind;
+//	git_client_ctx_t * 			ctx;
 	
-	apr_pool_t *				pool;
-	git_error_t *				err;
+//	apr_pool_t *				pool;
+//	git_error_t *				err;
+	BOOL						err;
 	BOOL						isDir;
+	CString						sProjectRoot;
 
 	isDir = path.IsDirectory();
-	if (!path.HasAdminDir())
+	if (!path.HasAdminDir(&sProjectRoot))
 		return git_wc_status_none;
 
-	pool = git_pool_create (NULL);				// create the memory pool
+//	pool = git_pool_create (NULL);				// create the memory pool
 
-	git_error_clear(git_client_create_context(&ctx, pool));
+//	git_error_clear(git_client_create_context(&ctx, pool));
 
-	git_revnum_t youngest = Git_INVALID_REVNUM;
-	git_opt_revision_t rev;
-	rev.kind = git_opt_revision_unspecified;
-	err = git_client_status4 (&youngest,
-							path.GetGitApiPath(pool),
+//	git_revnum_t youngest = Git_INVALID_REVNUM;
+//	git_opt_revision_t rev;
+//	rev.kind = git_opt_revision_unspecified;
+	statuskind = git_wc_status_none;
+
+	// TODO: not sure what to do with recursivenes, it's very unclear exactly what svn does, wingit will however return
+	//       the correct (recursive) status for folders, so WGEFF_NoRecurse can be specified to avoid unecessary processing
+	//const BOOL bIsRecursive = (depth == git_depth_infinity || depth == git_depth_unknown); // taken from SVN source
+	UINT nFlags = WGEFF_DirStatusAll;
+	//if (!bIsRecursive)
+		nFlags |= WGEFF_NoRecurse;
+
+	LPCSTR lpszSubPath = NULL;
+	CStringA sSubPath;
+	CString s = path.GetDirectory().GetWinPathString();
+	if (s.GetLength() > sProjectRoot.GetLength())
+	{
+		sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+		lpszSubPath = sSubPath;
+	}
+
+	err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
+
+	/*err = git_client_status4 (&youngest,
+							path.GetSVNApiPath(pool),
 							&rev,
 							getallstatus,
 							&statuskind,
@@ -220,18 +242,18 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 							FALSE,		//ignore externals
 							NULL,
 							ctx,
-							pool);
+							pool);*/
 
 	// Error present
 	if (err != NULL)
 	{
-		git_error_clear(err);
-		git_pool_destroy (pool);				//free allocated memory
+//		git_error_clear(err);
+//		git_pool_destroy (pool);				//free allocated memory
 		return git_wc_status_none;	
 	}
 
-	git_pool_destroy (pool);				//free allocated memory
-#endif
+//	git_pool_destroy (pool);				//free allocated memory
+
 	return statuskind;
 }
 
@@ -338,8 +360,34 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 #endif
 	return CString("");
 }
+
 git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& path, CTGitPath& retPath, bool update, git_depth_t depth, bool bNoIgnore /* = true */, bool bNoExternals /* = false */)
 {
+	static git_wc_status2 st;
+/*
+	m_fileCache.Reset();
+
+	m_fileCache.Init( CStringA( path.GetWinPathString().GetString() ) );
+MessageBox(NULL, path.GetWinPathString(), _T("GetFirstFile"), MB_OK);
+	m_fileCache.m_pFileIter = m_fileCache.m_pFiles;
+	st.text_status = git_wc_status_none;
+
+	if (m_fileCache.m_pFileIter)
+	{
+		switch(m_fileCache.m_pFileIter->nStatus)
+		{
+		case WGFS_Normal: st.text_status = git_wc_status_normal; break;
+		case WGFS_Modified: st.text_status = git_wc_status_modified; break;
+		case WGFS_Deleted: st.text_status = git_wc_status_deleted; break;
+		}
+
+		//retPath.SetFromGit((const char*)item->key);
+
+		m_fileCache.m_pFileIter = m_fileCache.m_pFileIter->pNext;
+	}
+
+	return &st;
+*/
 #if 0
 	const sort_item*			item;
 
@@ -392,6 +440,7 @@ git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& path, CTGitPat
 
 unsigned int GitStatus::GetVersionedCount() const
 {
+//	return /**/m_fileCache.GetFileCount();
 
 	unsigned int count = 0;
 #if 0
@@ -411,6 +460,24 @@ unsigned int GitStatus::GetVersionedCount() const
 
 git_wc_status2_t * GitStatus::GetNextFileStatus(CTGitPath& retPath)
 {
+	static git_wc_status2 st;
+
+	st.text_status = git_wc_status_none;
+
+	/*if (m_fileCache.m_pFileIter)
+	{
+		switch(m_fileCache.m_pFileIter->nStatus)
+		{
+		case WGFS_Normal: st.text_status = git_wc_status_normal; break;
+		case WGFS_Modified: st.text_status = git_wc_status_modified; break;
+		case WGFS_Deleted: st.text_status = git_wc_status_deleted; break;
+		}
+
+		m_fileCache.m_pFileIter = m_fileCache.m_pFileIter->pNext;
+	}*/
+
+	return &st;
+
 #if 0
 	const sort_item*			item;
 
@@ -667,6 +734,13 @@ int GitStatus::LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int 
 		lpBuffer[ret] = 0;
 	}
 	return ret;
+}
+
+BOOL GitStatus::getallstatus(const struct wgFile_s *pFile, void *pUserData)
+{
+	git_wc_status_kind * s = (git_wc_status_kind *)pUserData;
+	*s = GitStatus::GetMoreImportant(*s, GitStatusFromWingit(pFile->nStatus));
+	return FALSE;
 }
 
 #if 0

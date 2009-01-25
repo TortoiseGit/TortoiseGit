@@ -146,6 +146,7 @@ public:
 	}
 	CacheType GetCacheType()
 	{
+return dll;
 		if ((GetTickCount() - REGISTRYTIMEOUT) > cachetypeticker)
 		{
 			cachetypeticker = GetTickCount();
@@ -435,7 +436,7 @@ public:
 		}
 		return &columnrevformat;
 	}
-	BOOL HasSVNAdminDir(LPCTSTR path, BOOL bIsDir)
+	BOOL HasSVNAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
 	{
 		size_t len = _tcslen(path);
 		TCHAR * buf = new TCHAR[len+1];
@@ -450,18 +451,31 @@ public:
 		}
 		if ((GetTickCount() - ADMINDIRTIMEOUT) < admindirticker)
 		{
-			std::map<stdstring, BOOL>::iterator iter;
+			std::map<stdstring, AdminDir_s>::iterator iter;
 			sAdminDirCacheKey.assign(buf);
 			if ((iter = admindircache.find(sAdminDirCacheKey)) != admindircache.end())
 			{
 				delete [] buf;
-				return iter->second;
+				if (ProjectTopDir && iter->second.bHasAdminDir)
+					*ProjectTopDir = iter->second.sProjectRoot.c_str();
+				return iter->second.bHasAdminDir;
 			}
 		}
-		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf, true);
+		CString sProjectRoot;
+		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf, true, &sProjectRoot);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
-		admindircache[buf] = hasAdminDir;
+
+		AdminDir_s &ad = admindircache[buf];
+		ad.bHasAdminDir = hasAdminDir;
+		if (hasAdminDir)
+		{
+			ad.sProjectRoot.assign(sProjectRoot);
+
+			if (ProjectTopDir)
+				*ProjectTopDir = sProjectRoot;
+		}
+
 		delete [] buf;
 		return hasAdminDir;
 	}
@@ -568,6 +582,13 @@ private:
 			includeliststr = (stdstring)includelist;
 		}
 	}
+
+	struct AdminDir_s
+	{
+		BOOL bHasAdminDir;
+		stdstring sProjectRoot;
+	};
+
 	CRegStdWORD cachetype;
 	CRegStdWORD blockstatus;
 	CRegStdWORD langid;
@@ -623,7 +644,7 @@ private:
 	NUMBERFMT columnrevformat;
 	TCHAR szDecSep[5];
 	TCHAR szThousandsSep[5];
-	std::map<stdstring, BOOL> admindircache;
+	std::map<stdstring, AdminDir_s> admindircache;
 	stdstring sAdminDirCacheKey;
 	CRegStdString nocontextpaths;
 	stdstring excludecontextstr;

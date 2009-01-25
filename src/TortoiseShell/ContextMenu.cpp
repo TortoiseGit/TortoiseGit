@@ -333,7 +333,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							}
 							catch ( ... )
 							{
-								ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 								itemStates |= ITEMIS_INSVN;
@@ -432,7 +432,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 								catch ( ... )
 								{
-									ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+									ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 								}
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
@@ -545,7 +545,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			}
 			catch ( ... )
 			{
-				ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+				ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 			}
 		}
 		else
@@ -601,7 +601,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 					catch ( ... )
 					{
-						ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+						ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 					}
 				}
 				else
