@@ -15,7 +15,7 @@ typedef std::basic_string<wchar_t> wide_string;
 #pragma warning (pop)
 
 #include "TGitPath.h"
-#include "wingit.h"
+#include "../../ext/wingit/wingit.h"
 
 typedef enum type_git_wc_status_kind
 {

@@ -5,6 +5,7 @@
 #include "registry.h"
 #include "GitConfig.h"
 
+
 #define MAX_DIRBUFFER 1000
 CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
