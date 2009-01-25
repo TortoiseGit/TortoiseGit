@@ -6,6 +6,7 @@
 #include "GitConfig.h"
 
 #define MAX_DIRBUFFER 1000
+CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
 CGit::CGit(void)
 {
@@ -22,7 +23,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hRead, hWrite;
-	HANDLE hStdioFile;
+	HANDLE hStdioFile = NULL;
 
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
 	sa.lpSecurityDescriptor=NULL;
@@ -530,11 +531,29 @@ BOOL CGit::CheckMsysGitDir()
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
 
 	CString path;
+	CString unterminated_path = str;	// path to msysgit without semicolon
+	CString oldpath_s = oldpath;
 	path.Format(_T("%s;"),str);
-	path+=oldpath;
-
-	_tputenv_s(_T("PATH"),path);
-
+	// check msysgit not already in path
+	if ( oldpath_s.Find( path ) < 0  &&  oldpath_s.Right( unterminated_path.GetLength() ) != unterminated_path )
+	{
+		// not already there, see if we have to take out one we added last time
+		if ( ms_LastMsysGitDir != "" )
+		{
+			// we have added one so take it out
+			int index = oldpath_s.Find( ms_LastMsysGitDir );
+			if ( index >= 0 )
+			{
+				oldpath_s = oldpath_s.Left( index ) + 
+					oldpath_s.Right( oldpath_s.GetLength() - (index+ms_LastMsysGitDir.GetLength()) );
+			}
+		}
+		// save the new msysdir path that we are about to add
+		ms_LastMsysGitDir = path;
+		// add the new one on the front of the existing path
+		path+=oldpath_s;
+		_tputenv_s(_T("PATH"),path);
+	}
 	free(oldpath);
 
 	CString cmd,out;

@@ -11,6 +11,7 @@ private:
 	GitAdminDir m_GitDir;
 public:
 	static BOOL CheckMsysGitDir();
+	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 
 //	static CString m_MsysGitPath;
 	CGit(void);
