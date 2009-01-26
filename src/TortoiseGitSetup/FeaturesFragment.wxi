@@ -53,11 +53,9 @@
 				<ComponentRef Id="C__iconsstraight" />
 			</Feature>
 
-<!--
 			<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow">
 				<ComponentRef Id="C__TortoiseUDiffAssoc" />
 			</Feature>
--->
 
       <?if $(var.DictionaryENGB) = 1 ?>
 			<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow">

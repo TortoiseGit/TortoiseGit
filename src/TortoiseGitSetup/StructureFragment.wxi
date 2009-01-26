@@ -173,6 +173,8 @@
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" Name="{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
           </Component>
 <!--
+shouldn't these be renamed to 'git' protocol etc. don't know what types git would have (git+ssh tgit?) so commenting
+out everything for now, leaving these enabled as they are would make the installer break an already installed TortoiseSVN
           <Component Id="C__svnprotocoll" Guid="$(var.GuidSvnProtocol)" Win64="$(var.Win64YesNo)">
             <Registry Root="HKMU" Key="Software\Classes\svn" KeyPath="yes" Value="URL:SVN Protocol" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\svn" Name="URL Protocol" Type="string" />
@@ -334,7 +336,6 @@
               <File Id="F__TortoiseUDiff" ShortName="TUDIFF.EXE" Name="TortoiseUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseUDiff.exe" KeyPath="yes" />
             </Component>
 
-<!--
             <Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
               <Registry Root="HKMU" Key="Software\Classes\.diff" Action="createKeyAndRemoveKeyOnUninstall" />
               <Registry Root="HKMU" Key="Software\Classes\.diff" KeyPath="yes" Value="unified_diff_file" Type="string" />
@@ -343,7 +344,6 @@
               <Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Action="createKeyAndRemoveKeyOnUninstall" />
               <Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Value="[INSTALLDIR]bin\TortoiseUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
             </Component>
--->
 
               <Component Id="C__PlainSettingsShortcuts" Guid="$(var.GuidPlainSettingsShortcuts)" Win64="$(var.Win64YesNo)">
               <Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
