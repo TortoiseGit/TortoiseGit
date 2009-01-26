@@ -132,8 +132,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="wingit.lib"
-				AdditionalLibraryDirectories="../../ext/wingit"
+				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
