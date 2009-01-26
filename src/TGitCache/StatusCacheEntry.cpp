@@ -27,7 +27,7 @@ DWORD cachetimeout = (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\Cachetimeout"
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)
-//	, m_kind(svn_node_unknown)
+	, m_kind(git_node_unknown)
 	, m_bReadOnly(false)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
@@ -37,7 +37,7 @@ CStatusCacheEntry::CStatusCacheEntry()
 CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)
-//	, m_kind(svn_node_unknown)
+	, m_kind(git_node_unknown)
 	, m_bReadOnly(false)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
@@ -65,17 +65,17 @@ bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
 	WRITESTRINGTOFILE(m_sUrl);
 	WRITESTRINGTOFILE(m_sOwner);
 	WRITESTRINGTOFILE(m_sAuthor);
-//	WRITEVALUETOFILE(m_kind);
+	WRITEVALUETOFILE(m_kind);
 	WRITEVALUETOFILE(m_bReadOnly);
 	WRITESTRINGTOFILE(m_sPresentProps);
 
 	// now save the status struct (without the entry field, because we don't use that)	WRITEVALUETOFILE(m_GitStatus.copied);
 //	WRITEVALUETOFILE(m_GitStatus.locked);
-//	WRITEVALUETOFILE(m_GitStatus.prop_status);
+	WRITEVALUETOFILE(m_GitStatus.prop_status);
 //	WRITEVALUETOFILE(m_GitStatus.repos_prop_status);
 //	WRITEVALUETOFILE(m_GitStatus.repos_text_status);
 //	WRITEVALUETOFILE(m_GitStatus.switched);
-//	WRITEVALUETOFILE(m_GitStatus.text_status);
+	WRITEVALUETOFILE(m_GitStatus.text_status);
 	return true;
 }
 
@@ -125,7 +125,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 			}
 			m_sAuthor.ReleaseBuffer(value);
 		}
-//		LOADVALUEFROMFILE(m_kind);
+		LOADVALUEFROMFILE(m_kind);
 		LOADVALUEFROMFILE(m_bReadOnly);
 		LOADVALUEFROMFILE(value);
 		if (value != 0)
@@ -140,11 +140,11 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
 //		LOADVALUEFROMFILE(m_GitStatus.copied);
 //		LOADVALUEFROMFILE(m_GitStatus.locked);
-//		LOADVALUEFROMFILE(m_GitStatus.prop_status);
+		LOADVALUEFROMFILE(m_GitStatus.prop_status);
 //		LOADVALUEFROMFILE(m_GitStatus.repos_prop_status);
 //		LOADVALUEFROMFILE(m_GitStatus.repos_text_status);
 //		LOADVALUEFROMFILE(m_GitStatus.switched);
-//		LOADVALUEFROMFILE(m_GitStatus.text_status);
+		LOADVALUEFROMFILE(m_GitStatus.text_status);
 //		m_GitStatus.entry = NULL;
 		m_discardAtTime = GetTickCount()+cachetimeout;
 	}
@@ -228,7 +228,7 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 //		response.m_status.entry = NULL;
 //		response.m_entry.url = NULL;
 
-//		response.m_kind = m_kind;
+		response.m_kind = m_kind;
 		response.m_readonly = m_bReadOnly;
 
 		if (m_sPresentProps.Find("svn:needs-lock")>=0)

@@ -498,6 +498,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Git\GitAdminDir.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitStatus.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GitStatusCache.h"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\PathUtils.h"
 				>
 			</File>
@@ -530,27 +542,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Svn\SVNAdminDir.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SVN\SVNGlobal.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\SVNHelpers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\SVNStatus.h"
+				RelativePath="..\Git\TGitPath.h"
 				>
 			</File>
 			<File
 				RelativePath=".\TSVNCache.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Svn\TSVNPath.h"
 				>
 			</File>
 			<File

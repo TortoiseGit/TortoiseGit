@@ -509,6 +509,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RemoteCacheLink.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ShellExt.cpp"
 				>
 			</File>

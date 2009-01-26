@@ -19,7 +19,9 @@
 #pragma once
 
 struct TSVNCacheResponse;
-class CTSVNPath;
+class CTGitPath;
+
+#include "GitStatus.h"
 
 /**
  * \ingroup TortoiseShell
@@ -28,12 +30,12 @@ class CTSVNPath;
 class CRemoteCacheLink
 {
 public:
-	CRemoteCacheLink(void){};
-	~CRemoteCacheLink(void){};
+	CRemoteCacheLink(void);
+	~CRemoteCacheLink(void);
 
 public:
-	bool GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive);
-	bool ReleaseLockForPath(const CTSVNPath& path);
+	bool GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive);
+	bool ReleaseLockForPath(const CTGitPath& path);
 
 private:
 	bool EnsurePipeOpen();
@@ -51,7 +53,7 @@ private:
 
 
 	CComCriticalSection m_critSec;
-//	git_wc_status2_t m_dummyStatus;
+	git_wc_status2_t m_dummyStatus;
 	long m_lastTimeout;
 
 };

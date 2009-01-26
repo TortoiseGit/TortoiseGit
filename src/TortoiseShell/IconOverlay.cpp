@@ -22,7 +22,7 @@
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
 #include "GitStatus.h"
-//#include "..\TSVNCache\CacheInterface.h"
+#include "..\TGitCache\CacheInterface.h"
 
 // "The Shell calls IShellIconOverlayIdentifier::GetOverlayInfo to request the
 //  location of the handler's icon overlay. The icon overlay handler returns

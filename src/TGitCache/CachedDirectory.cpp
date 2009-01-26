@@ -396,9 +396,10 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				m_currentStatusFetchingPathTicks = GetTickCount();
 			}
 			ATLTRACE(_T("svn_cli_stat for '%s' (req %s)\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
-			git_error_t* pErr;
-#if 0
-			 = svn_client_status4 (
+
+			BOOL pErr = 0;//!wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
+
+			/*git_error_t* pErr = svn_client_status4 (
 				NULL,
 				m_directoryPath.GetSVNApiPath(subPool),
 				&revision,
@@ -412,8 +413,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				NULL,									//changelists
 				CGitStatusCache::Instance().m_svnHelp.ClientContext(),
 				subPool
-				);
-#endif
+				);*/
 			{
 				AutoLocker pathlock(m_critSecPath);
 				m_currentStatusFetchingPath.Reset();

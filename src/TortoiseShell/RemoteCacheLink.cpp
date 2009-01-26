@@ -19,8 +19,8 @@
 #include "StdAfx.h"
 #include "Remotecachelink.h"
 #include "ShellExt.h"
-//#include "..\TSVNCache\CacheInterface.h"
-//#include "TSVNPath.h"
+#include "..\TGitCache\CacheInterface.h"
+#include "TGitPath.h"
 #define GetCachePipeName() _T("HH")
 #define GetCacheCommandPipeName() _T("CC")
 
@@ -28,11 +28,11 @@ CRemoteCacheLink::CRemoteCacheLink(void)
 	: m_hPipe(INVALID_HANDLE_VALUE)
 	, m_hCommandPipe(INVALID_HANDLE_VALUE)
 {
-//	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));
-//	m_dummyStatus.text_status = svn_wc_status_none;
-//	m_dummyStatus.prop_status = svn_wc_status_none;
-//	m_dummyStatus.repos_text_status = svn_wc_status_none;
-//	m_dummyStatus.repos_prop_status = svn_wc_status_none;
+	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));
+	m_dummyStatus.text_status = git_wc_status_none;
+	m_dummyStatus.prop_status = git_wc_status_none;
+//	m_dummyStatus.repos_text_status = git_wc_status_none;
+//	m_dummyStatus.repos_prop_status = git_wc_status_none;
 	m_lastTimeout = 0;
 	m_critSec.Init();
 }
@@ -193,7 +193,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 	{
 		// now tell the cache we don't need it's command thread anymore
 		DWORD cbWritten; 
-/*		TSVNCacheCommand cmd;
+		TSVNCacheCommand cmd;
 		SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
 		cmd.command = TSVNCACHECOMMAND_END;
 		WriteFile( 
@@ -205,11 +205,10 @@ void CRemoteCacheLink::CloseCommandPipe()
 		DisconnectNamedPipe(m_hCommandPipe); 
 		CloseHandle(m_hCommandPipe); 
 		m_hCommandPipe = INVALID_HANDLE_VALUE;
-*/
 	}
 }
 
-bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive)
+bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive)
 {
 	if(!EnsurePipeOpen())
 	{
@@ -227,7 +226,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCache
 		startup.cb = sizeof(startup);
 		memset(&process, 0, sizeof(process));
 
-		CRegString cachePath(_T("Software\\TortoiseGit\\CachePath"), _T("TSVNCache.exe"), false, HKEY_LOCAL_MACHINE);
+		CRegString cachePath(_T("Software\\TortoiseGit\\CachePath"), _T("TGitCache.exe"), false, HKEY_LOCAL_MACHINE);
 		CString sCachePath = cachePath;
 		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength()+1), _T(""), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 		{
@@ -308,7 +307,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCache
 
 	if (fSuccess)
 	{
-		if(nBytesRead == sizeof(TSVNCacheResponse))
+/*		if(nBytesRead == sizeof(TSVNCacheResponse))
 		{
 			// This is a full response - we need to fix-up some pointers
 			pReturnedStatus->m_status.entry = &pReturnedStatus->m_entry;
@@ -318,14 +317,14 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTSVNPath& Path, TSVNCache
 		{
 			pReturnedStatus->m_status.entry = NULL;
 		}
-
+*/
 		return true;
 	}
 	ClosePipe();
 	return false;
 }
 
-bool CRemoteCacheLink::ReleaseLockForPath(const CTSVNPath& path)
+bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 {
 	EnsureCommandPipeOpen();
 	if (m_hCommandPipe != INVALID_HANDLE_VALUE) 

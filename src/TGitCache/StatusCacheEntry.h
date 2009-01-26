@@ -22,7 +22,7 @@ struct TSVNCacheResponse;
 #define CACHETIMEOUT	0x7FFFFFFF
 extern DWORD cachetimeout;
 
-#include "GitStatus.h"
+#include "CacheInterface.h"
 
 /**
  * \ingroup TSVNCache
@@ -39,14 +39,14 @@ public:
 	bool DoesFileTimeMatch(__int64 testTime) const;
 	bool ForceStatus(git_wc_status_kind forcedStatus);
 	git_wc_status_kind GetEffectiveStatus() const { return m_highestPriorityLocalStatus; }
-	bool IsKindKnown() const { return true;/*((m_kind != git_node_none)&&(m_kind != git_node_unknown));*/ }
+	bool IsKindKnown() const { return ((m_kind != git_node_none)&&(m_kind != git_node_unknown)); }
 	void SetStatus(const git_wc_status2_t* pGitStatus);
 	bool HasBeenSet() const;
 	void Invalidate();
-	bool IsDirectory() const {return true; /*((m_kind == git_node_dir)&&(m_highestPriorityLocalStatus != git_wc_status_ignored));*/}
+	bool IsDirectory() const { return ((m_kind == git_node_dir)&&(m_highestPriorityLocalStatus != git_wc_status_ignored)); }
 	bool SaveToDisk(FILE * pFile);
 	bool LoadFromDisk(FILE * pFile);
-//	void SetKind(git_node_kind_t kind) {m_kind = kind;}
+	void SetKind(git_node_kind_t kind) {m_kind = kind;}
 private:
 	void SetAsUnversioned();
 
@@ -56,7 +56,7 @@ private:
 	git_wc_status2_t	m_GitStatus;
 	__int64				m_lastWriteTime;
 	bool				m_bSet;
-//	git_node_kind_t		m_kind;
+	git_node_kind_t		m_kind;
 	bool				m_bReadOnly;
 
 	// Values copied from the 'entries' structure
@@ -67,5 +67,5 @@ private:
 	CStringA			m_sPresentProps;
 	git_revnum_t		m_commitRevision;
 
-//	friend class CGitStatusCache;
+	friend class CGitStatusCache;
 };

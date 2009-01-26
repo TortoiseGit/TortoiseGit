@@ -44,7 +44,7 @@
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TSVNCache " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
+CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TGitCache " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
 DWORD WINAPI 		InstanceThread(LPVOID); 
 DWORD WINAPI		PipeThread(LPVOID);
@@ -122,7 +122,7 @@ void DebugOutputLastError()
 	}
 
 	// Display the string.
-	OutputDebugStringA("TSVNCache GetLastError(): ");
+	OutputDebugStringA("TGitCache GetLastError(): ");
 	OutputDebugString((LPCTSTR)lpMsgBuf);
 	OutputDebugStringA("\n");
 
@@ -136,8 +136,8 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 	if (hReloadProtection == 0 || GetLastError() == ERROR_ALREADY_EXISTS)
 	{
-		// An instance of TSVNCache is already running
-		ATLTRACE("TSVNCache ignoring restart\n");
+		// An instance of TGitCache is already running
+		ATLTRACE("TGitCache ignoring restart\n");
 		return 0;
 	}
 
