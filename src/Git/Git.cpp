@@ -389,6 +389,8 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 
 git_revnum_t CGit::GetHash(CString &friendname)
 {
+	// NOTE: could replace this with wgGetRevisionID call
+
 	CString cmd;
 	CString out;
 	cmd.Format(_T("git.exe rev-parse %s" ),friendname);

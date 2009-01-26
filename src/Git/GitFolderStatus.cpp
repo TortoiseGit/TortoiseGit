@@ -241,7 +241,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 //if (lpszSubPath) MessageBoxA(NULL, lpszSubPath, "BuildCache", MB_OK);
 //MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
-		err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusDelta, &fillstatusmap, this);
+		err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
 
 		/*err = svn_client_status4 (&youngest,
 			filepath.GetDirectory().GetSVNApiPath(pool),

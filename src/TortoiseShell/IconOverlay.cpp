@@ -178,9 +178,15 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 							{
 								const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
 								status = s->status;
-								// if get status fails then display status as 'normal' on folder (since it contains .git)
-								// TODO: works for svn since each folder has .svn, not sure if git needs additinoal processing
-								status = GitStatus::GetMoreImportant(git_wc_status_normal, status);
+								// GitFolderStatus does not list unversioned files/dir so they would always end up as normal below
+								// so let's assume file/dir is unversioned if not found in cache
+								/*// sub-dirs that are empty (or contain no versioned files) are reported as unversioned (and should be kept as such)
+								if (status != git_wc_status_unversioned)
+								{
+									// if get status fails then display status as 'normal' on folder (since it contains .git)
+									// TODO: works for svn since each folder has .svn, not sure if git needs additinoal processing
+									status = GitStatus::GetMoreImportant(git_wc_status_normal, status);
+								}*/
 							}
 						}
 						else
