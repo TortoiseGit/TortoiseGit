@@ -504,11 +504,11 @@ BOOL CGit::CheckMsysGitDir()
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
         // check it has a trailing blank
-        if (str.Right(1) != "\\")
+        if (str.Right(1) != _T("\\"))
         {
-            str += "\\";
+            str += _T("\\");
         }
-		str+="bin";
+		str+=_T("bin");
 		msysdir=str;
 		msysdir.write();
 
@@ -538,7 +538,7 @@ BOOL CGit::CheckMsysGitDir()
 	if ( oldpath_s.Find( path ) < 0  &&  oldpath_s.Right( unterminated_path.GetLength() ) != unterminated_path )
 	{
 		// not already there, see if we have to take out one we added last time
-		if ( ms_LastMsysGitDir != "" )
+		if ( ms_LastMsysGitDir != _T("") )
 		{
 			// we have added one so take it out
 			int index = oldpath_s.Find( ms_LastMsysGitDir );

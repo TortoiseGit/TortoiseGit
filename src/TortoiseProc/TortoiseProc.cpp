@@ -58,16 +58,16 @@ BEGIN_MESSAGE_MAP(CTortoiseProcApp, CWinAppEx)
 	ON_COMMAND(ID_HELP, CWinAppEx::OnHelp)
 END_MESSAGE_MAP()
 
-CString g_version;
+//CString g_version;
 //CString CGit::m_MsysGitPath;
 //////////////////////////////////////////////////////////////////////////
 
 CTortoiseProcApp::CTortoiseProcApp()
 {
 	EnableHtmlHelp();
-	int argc = 0;
-	g_version=_T("abc");
-	const char* const * argv = NULL;
+//	int argc = 0;
+//	g_version=_T("abc");
+//	const char* const * argv = NULL;
 //	apr_app_initialize(&argc, &argv, NULL);
 //	svn_dso_initialize2();
 	SYS_IMAGE_LIST();
@@ -126,16 +126,16 @@ BOOL CTortoiseProcApp::InitInstance()
 		if(CMessageBox::Show(NULL,_T("MSysGit(http://code.google.com/p/msysgit) have not installed Correctly\n\
 or MSysGit Path setting error\n\
 Click Yes to open setting dialog to setup MSysGit Path"),
-							_T("TortoiseGit"),MB_YESNO|MB_ICONERROR)==IDYES);
+							_T("TortoiseGit"),MB_YESNO|MB_ICONERROR)==IDYES)
 		{
-			//todo open setting
-				CSettings dlg(IDS_PROC_SETTINGS_TITLE);
-				dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-				dlg.SetTreeWidth(220);
-
-				dlg.DoModal();
-				dlg.HandleRestart();
-				return TRUE;
+			// open settings dialog
+			CSettings dlg(IDS_PROC_SETTINGS_TITLE);
+			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
+			dlg.SetTreeWidth(220);
+			
+			dlg.DoModal();
+			dlg.HandleRestart();
+			return TRUE;
 		}
 		return FALSE;	
 	}

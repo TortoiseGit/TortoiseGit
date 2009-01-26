@@ -89,6 +89,8 @@ BOOL CSetMainPage::OnInitDialog()
 	// disable features that have not yet been implemented
 	GetDlgItem(IDC_CHECKNEWERVERSION)->EnableWindow( FALSE );
 	GetDlgItem(IDC_CHECKNEWERBUTTON)->EnableWindow( FALSE );
+	GetDlgItem(IDC_SOUNDS)->EnableWindow( FALSE );
+	GetDlgItem(IDC_SOUNDS_TEXT)->EnableWindow( FALSE );
 	
 	EnableToolTips();
 
