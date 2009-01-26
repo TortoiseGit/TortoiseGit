@@ -7,6 +7,7 @@
 #define LOG_INDEX_MAGIC		0x88445566
 #define LOG_DATA_MAGIC		0x99aa00FF
 #define LOG_DATA_ITEM_MAGIC 0x0F8899CC
+#define LOG_DATA_FILE_MAGIC 0x19999FFF
 #define LOG_INDEX_VERSION 0x1
 
 struct SLogCacheIndexHeader 
@@ -32,7 +33,6 @@ struct SLogCacheRevItemHeader
 {
 	DWORD m_Magic;
 	DWORD m_Version;
-	DWORD m_RevSize;
 	DWORD m_FileCount;
 };
 
@@ -74,8 +74,8 @@ protected:
 
 	}
 
-	int SaveOneItem(GitRev &Rev);
-	int LoadOneItem(GitRev &Rev,UINT offset);
+	int SaveOneItem(CString &GitDir,GitRev &Rev,UINT offset);
+	int LoadOneItem(CString &GitDir,GitRev &Rev,UINT offset);
 
 public:
 	CLogCache();
