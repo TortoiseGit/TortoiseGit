@@ -73,13 +73,10 @@ static BOOL FindGitPath()
 		return FALSE;
 	}
 
-	TCHAR *env = (TCHAR*)alloca(size);
+	TCHAR *env = (TCHAR*)alloca(size * sizeof(TCHAR));
 	_tgetenv_s(&size, env, size, _T("PATH"));
 
 	TCHAR buf[_MAX_PATH];
-
-	const LPCTSTR filename = _T("git.exe");
-	const int filelen = _tcslen(filename);
 
 	// search in all paths defined in PATH
 	while ((env = nextpath(env, buf, _MAX_PATH-1)) && *buf)
@@ -87,13 +84,13 @@ static BOOL FindGitPath()
 		TCHAR *pfin = buf + _tcslen(buf)-1;
 
 		// ensure trailing slash
-		if (*pfin != '/' && *pfin != '\\')
-			_tccpy(pfin+1, _T("\\"));
+		if (*pfin != _T('/') && *pfin != _T('\\'))
+			_tcscpy(++pfin, _T("\\"));
 
 		const int len = _tcslen(buf);
 
-		if ((len + filelen) < _MAX_PATH)
-			_tccpy(buf+len, filename);
+		if ((len + 7) < _MAX_PATH)
+			_tcscpy(pfin+1, _T("git.exe"));
 		else
 			break;
 
@@ -652,15 +649,16 @@ BOOL CGit::CheckMsysGitDir()
 	{
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
-        // check it has a trailing blank
-        if (str.Right(1) != _T("\\"))
-        {
-            str += _T("\\");
-        }
-		str+=_T("bin");
-		msysdir=str;
-		msysdir.write();
-
+		if ( !str.IsEmpty() )
+		{
+			str += (str[str.GetLength()-1] != '\\') ? "\\bin" : "bin";
+			msysdir=str;
+			msysdir.write();
+		}
+		else
+		{
+			return false;
+		}
 	}
 	//CGit::m_MsysGitPath=str;
 
@@ -669,29 +667,10 @@ BOOL CGit::CheckMsysGitDir()
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
 
 	CString path;
-	CString unterminated_path = str;	// path to msysgit without semicolon
-	CString oldpath_s = oldpath;
-	path.Format(_T("%s;"),str);
-	// check msysgit not already in path
-	if ( oldpath_s.Find( path ) < 0  &&  oldpath_s.Right( unterminated_path.GetLength() ) != unterminated_path )
-	{
-		// not already there, see if we have to take out one we added last time
-		if ( ms_LastMsysGitDir != _T("") )
-		{
-			// we have added one so take it out
-			int index = oldpath_s.Find( ms_LastMsysGitDir );
-			if ( index >= 0 )
-			{
-				oldpath_s = oldpath_s.Left( index ) + 
-					oldpath_s.Right( oldpath_s.GetLength() - (index+ms_LastMsysGitDir.GetLength()) );
-			}
-		}
-		// save the new msysdir path that we are about to add
-		ms_LastMsysGitDir = path;
-		// add the new one on the front of the existing path
-		path+=oldpath_s;
-		_tputenv_s(_T("PATH"),path);
-	}
+	path.Format(_T("%s;%s"),oldpath,str);
+
+	_tputenv_s(_T("PATH"),path);
+
 	free(oldpath);
 
 	if( !FindGitPath() )

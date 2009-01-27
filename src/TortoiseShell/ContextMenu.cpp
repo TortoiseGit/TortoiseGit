@@ -468,13 +468,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-//				if (g_ShellCache.HasGitAdminDir(child.toString().c_str(), FALSE))
+// ? was this disabled because the /wc option does not work safely with Git? or because the code below didn't compile before?
+//				if (g_ShellCache.HasSVNAdminDir(child.toString().c_str(), FALSE))
 //					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 				GlobalUnlock(medium.hGlobal);
 
 				// if the item is a versioned folder, check if there's a patch file
 				// in the clipboard to be used in "Apply Patch"
-				UINT cFormatDiff = RegisterClipboardFormat(_T("Tgit_UNIFIEDDIFF"));
+				UINT cFormatDiff = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 				if (cFormatDiff)
 				{
 					if (IsClipboardFormatAvailable(cFormatDiff)) 
@@ -775,7 +776,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	TCHAR * path = new TCHAR[pathlength+1];
 	TCHAR * tempFile = new TCHAR[pathlength + 100];
 	GetTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("svn"), 0, tempFile);
+	GetTempFileName (path, _T("git"), 0, tempFile);
 	tempfile = stdstring(tempFile);
 
 	HANDLE file = ::CreateFile (tempFile,
@@ -829,7 +830,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 	TCHAR * path = new TCHAR[pathlength+1];
 	TCHAR * tempFile = new TCHAR[pathlength + 100];
 	GetTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("svn"), 0, tempFile);
+	GetTempFileName (path, _T("git"), 0, tempFile);
 	stdstring retFilePath = stdstring(tempFile);
 	
 	HANDLE file = ::CreateFile (tempFile,
@@ -1631,7 +1632,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					// if there's a patch file in the clipboard, we save it
 					// to a temporary file and tell TortoiseMerge to use that one
-					UINT cFormat = RegisterClipboardFormat(_T("Tgit_UNIFIEDDIFF"));
+					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 					if ((cFormat)&&(OpenClipboard(NULL)))
 					{ 
 						HGLOBAL hglb = GetClipboardData(cFormat); 
@@ -1641,7 +1642,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 						TCHAR * path = new TCHAR[len+1];
 						TCHAR * tempF = new TCHAR[len+100];
 						GetTempPath (len+1, path);
-						GetTempFileName (path, TEXT("svn"), 0, tempF);
+						GetTempFileName (path, TEXT("git"), 0, tempF);
 						std::wstring sTempFile = std::wstring(tempF);
 						delete [] path;
 						delete [] tempF;
