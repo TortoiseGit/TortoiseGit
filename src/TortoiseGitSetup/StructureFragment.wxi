@@ -198,12 +198,12 @@ out everything for now, leaving these enabled as they are would make the install
             <Environment Id="E__ASPDOTNETHACK" Action="create" Name="SVN_ASP_DOT_NET_HACK" Value="1" Permanent="yes" System="yes" />
           </Component>
           <Directory Id="D__Bin" ShortName="BIN" Name="bin" >
-<!--
+
           <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
              <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libapr_tsvn.dll" KeyPath="yes" />
              <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libaprutil_tsvn.dll" />
           </Component>
- -->
+
 <!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
              <File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
               <File Id="F__saslANONYMOUS" ShortName="saslANON.DLL" Name="saslANONYMOUS.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslANONYMOUS.dll" />

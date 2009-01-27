@@ -3,8 +3,8 @@
 		<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow"
 		TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local" >
 			<ComponentRef Id="C__infofiles" />
-<!--			<ComponentRef Id="C__apr" />
-			<ComponentRef Id="C__sasl" />
+			<ComponentRef Id="C__apr" />
+<!--			<ComponentRef Id="C__sasl" />
 -->			<ComponentRef Id="C__gettext" />
 
 			<ComponentRef Id="C__help_en" />
