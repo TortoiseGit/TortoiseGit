@@ -89,7 +89,7 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 	//buf = new WCHAR[len*4 + 1];
 	buf = str->GetBuffer(len*4+1+str->GetLength())+str->GetLength();
 	SecureZeroMemory(buf, (len*4 + 1)*sizeof(WCHAR));
-	MultiByteToWideChar(code, 0, (LPCSTR)p, -1, buf, len*4);
+	MultiByteToWideChar(code, 0, (LPCSTR)p, len, buf, len*4);
 	str->ReleaseBuffer();
 	//str->Append(buf);
 	//delete buf;

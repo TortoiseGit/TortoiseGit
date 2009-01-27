@@ -17,7 +17,7 @@
 #include "HintListCtrl.h"
 //#include "GitLogList.h"
 #include "lanes.h"
-
+#include "GitLogCache.h"
 #include <regex>
 // CGitLogList
 #if (NTDDI_VERSION < NTDDI_LONGHORN)
@@ -71,6 +71,7 @@ public:
 	bool				m_hasWC;
 	GitRev				m_wcRev;
 	volatile LONG 		m_bThreadRunning;
+	CLogCache			m_LogCache;
 
 	enum
 	{
@@ -171,6 +172,7 @@ public:
 	CWinThread*			m_LoadingThread;
 protected:
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnDestroy();
 	afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

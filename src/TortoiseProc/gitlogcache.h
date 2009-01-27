@@ -20,7 +20,7 @@ struct SLogCacheIndexHeader
 struct SLogCacheItem
 {
 	BYTE  m_Hash[40];
-	DWORD m_Offset;
+	ULONGLONG m_Offset;
 };
 
 struct SLogCacheRevFileHeader
@@ -47,43 +47,53 @@ protected:
 	CFile m_DataFile;
 	CFile m_LockFile;
 
-	BOOL CheckHeader(SLogCacheRevFileHeader &header)
+	BOOL CheckHeader(SLogCacheIndexHeader &header)
 	{
-		if(header.m_Magic == LOG_DATA_MAGIC)
-			return TRUE;
-		else
+		if(header.m_Magic != LOG_INDEX_MAGIC)
 			return FALSE;
 
-		if(header.m_Version == LOG_INDEX_VERSION)
-			return TRUE;
-		else
+		if(header.m_Version != LOG_INDEX_VERSION)
 			return FALSE;
+
+		return TRUE;
+	}
+
+	BOOL CheckHeader(SLogCacheRevFileHeader &header)
+	{
+		if(header.m_Magic != LOG_DATA_MAGIC)
+			return FALSE;
+
+		if(header.m_Version != LOG_INDEX_VERSION)
+			return FALSE;
+
+		return TRUE;
 	}
 
 	BOOL CheckHeader(SLogCacheRevItemHeader &header)
 	{
-		if(header.m_Magic == LOG_DATA_ITEM_MAGIC)
-			return TRUE;
-		else
+		if(header.m_Magic != LOG_DATA_ITEM_MAGIC)
 			return FALSE;
 
-		if(header.m_Version == LOG_INDEX_VERSION)
-			return TRUE;
-		else
+		if(header.m_Version != LOG_INDEX_VERSION)
 			return FALSE;
-
+		
+		return TRUE;
 	}
 
-	int SaveOneItem(CString &GitDir,GitRev &Rev,UINT offset);
-	int LoadOneItem(CString &GitDir,GitRev &Rev,UINT offset);
+	int SaveOneItem(GitRev &Rev,ULONGLONG offset);
+	int LoadOneItem(GitRev &Rev,ULONGLONG offset);
+	CString m_GitDir;
+	int RebuildCacheFile();
 
 public:
 	CLogCache();
 	~CLogCache();
-	int FetchCache(CString GitDir);
+	int FetchCacheIndex(CString GitDir);
 	std::vector<GitRev> m_NewCacheEntry;
-	std::map<CString, DWORD> m_HashMapIndex;
+	std::map<CString, ULONGLONG> m_HashMapIndex;
 	int GetCacheData(GitRev &Rev);
 	int AddCacheEntry(GitRev &Rev);
+	int SaveCache();
+
 
 };

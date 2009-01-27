@@ -36,7 +36,7 @@ void GitRev::Clear()
 	m_Mark=0;
 
 }
-int GitRev::CopyFrom(GitRev &rev)
+int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
 {
 	m_AuthorName	=rev.m_AuthorName	;
 	m_AuthorEmail	=rev.m_AuthorEmail	;
@@ -47,10 +47,14 @@ int GitRev::CopyFrom(GitRev &rev)
 	m_Subject		=rev.m_Subject		;
 	m_Body			=rev.m_Body			;
 	m_CommitHash	=rev.m_CommitHash	;
-	m_ParentHash	=rev.m_ParentHash	;
 	m_Files			=rev.m_Files			;	
 	m_Action		=rev.m_Action		;
-	m_Mark			=rev.m_Mark;
+
+	if(!OmitParentAndMark)
+	{
+		m_ParentHash	=rev.m_ParentHash	;
+		m_Mark			=rev.m_Mark;
+	}
 	return 0;
 }
 int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
