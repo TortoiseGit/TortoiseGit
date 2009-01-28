@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="TortoiseProc"
 	ProjectGUID="{50797F06-39C5-4802-8E2B-7B7A4EF03214}"
 	RootNamespace="TortoiseProc"
@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib wingit.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../ext/wingit"
 				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMTD;"
@@ -578,11 +578,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -818,19 +818,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\open.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -934,19 +934,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File
@@ -1038,11 +1038,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File

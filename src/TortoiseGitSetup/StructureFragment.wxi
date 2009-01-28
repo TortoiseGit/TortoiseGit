@@ -230,7 +230,7 @@ out everything for now, leaving these enabled as they are would make the install
 -->               <RemoveFile Id="F__Tortoise_lang"  Name="*.chm" On="uninstall" />
             </Component>
 
-            <Component Id="C__wingit" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
+            <Component Id="C__wingit" Guid="$(var.GuidGitLib)" Win64="$(var.Win64YesNo)">
               <File Id="F__wingit" ShortName="WINGIT.DLL" Name="wingit.dll" DiskId="1" Source="..\..\ext\wingit\wingit.dll" KeyPath="yes" />
             </Component>
             

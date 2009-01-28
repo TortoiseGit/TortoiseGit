@@ -46,7 +46,7 @@ public:
 	};
 	ShellCache()
 	{
-		cachetype = CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
+		cachetype = CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : dll);
 		showrecursive = CRegStdWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
 		folderoverlay = CRegStdWORD(_T("Software\\TortoiseGit\\FolderOverlay"), TRUE);
 		driveremote = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskRemote"));

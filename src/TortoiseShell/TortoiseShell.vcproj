@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="TortoiseShell"
 	ProjectGUID="{E873DD32-5A31-4DE1-8341-A56A2A5489EA}"
 	RootNamespace="TortoiseShell"
@@ -84,7 +84,7 @@
 				IgnoreImportLibrary="true"
 				UseLibraryDependencyInputs="false"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib wingit.lib"
 				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
