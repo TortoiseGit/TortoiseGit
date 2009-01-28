@@ -167,6 +167,16 @@ public:
 	static bool IgnoreFile(CTGitPath &file, bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
 	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false);
+	/**
+	 * FUNCTION    :   FormatDateAndTime
+	 * DESCRIPTION :   Generates a displayable string from a CTime object in
+	 *                 system short or long format dependant on setting of option
+	 *				   as DATE_SHORTDATE or DATE_LONGDATE. bIncludeTime (optional) includes time.
+	 * RETURN      :   CString containing date/time
+	 */
+	static CString FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime=true );
+
+	
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

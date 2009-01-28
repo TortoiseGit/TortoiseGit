@@ -1593,3 +1593,30 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 #endif
 	return bRet;
 }
+
+/**
+ * FUNCTION    :   FormatDateAndTime
+ * DESCRIPTION :   Generates a displayable string from a CTime object in
+ *                 system short or long format dependant on setting of option
+ *				   as DATE_SHORTDATE or DATE_LONGDATE 	
+ * RETURN      :   CString containing date/time
+ */
+CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/  )
+{
+    SYSTEMTIME sysTime;
+	cTime.GetAsSystemTime( sysTime );
+	CString datetime;
+
+    TCHAR buf[100];
+
+    GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, 
+                                                           sizeof(buf)/sizeof(TCHAR)-1);
+    datetime = buf;
+	if ( bIncludeTime )
+	{
+		datetime += _T(" ");
+		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, sizeof(buf)/sizeof(TCHAR)-1);
+		datetime += buf;
+	}
+	return datetime;
+}

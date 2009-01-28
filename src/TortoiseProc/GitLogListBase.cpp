@@ -47,7 +47,6 @@
 #include "..\\TortoiseShell\\Resource.h"
 
 
-
 IMPLEMENT_DYNAMIC(CGitLogListBase, CHintListCtrl)
 
 CGitLogListBase::CGitLogListBase():CHintListCtrl()
@@ -95,6 +94,16 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
 		m_LineColors[i] = m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i));
+	}
+	// get short/long datetime setting from registry
+	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), FALSE);
+	if ( RegUseShortDateFormat )
+	{
+		m_DateFormat = DATE_SHORTDATE;
+	}
+	else
+	{
+		m_DateFormat = DATE_LONGDATE;
 	}
 }
 
@@ -891,7 +900,9 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case this->LOGLIST_DATE: //Date
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")), pItem->cchTextMax);
+			lstrcpyn(pItem->pszText,
+				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat ), 
+				pItem->cchTextMax);
 		break;
 		
 	case 5:
@@ -1184,7 +1195,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
 					(LPCTSTR)sRev, pLogEntry->m_CommitHash,
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->m_AuthorName,
-					(LPCTSTR)sDate, (LPCTSTR)pLogEntry->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")),
+					(LPCTSTR)sDate, (LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat ),
 					(LPCTSTR)sMessage, pLogEntry->m_Subject+_T("\r\n")+pLogEntry->m_Body,
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;

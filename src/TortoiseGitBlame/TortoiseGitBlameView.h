@@ -215,6 +215,7 @@ protected:
 
     CFindReplaceDialog          *m_pFindDialog;
 
+	DWORD						m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 };
 
 #ifndef _DEBUG  // debug version in TortoiseGitBlameView.cpp

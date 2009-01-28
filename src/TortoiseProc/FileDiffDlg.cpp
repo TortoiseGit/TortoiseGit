@@ -889,8 +889,10 @@ void CFileDiffDlg::SetURLLabels()
 	SetDlgItemText(IDC_FIRSTURL, m_rev1.m_Subject+CString(_T("\r\n"))+m_rev1.m_CommitHash);
 	SetDlgItemText(IDC_SECONDURL,m_rev2.m_Subject+CString(_T("\r\n"))+m_rev2.m_CommitHash);
 
-	m_tooltips.AddTool(IDC_FIRSTURL,  m_rev1.m_AuthorDate.Format(_T("%Y-%m-%d  "))+m_rev1.m_AuthorName);
-	m_tooltips.AddTool(IDC_SECONDURL, m_rev2.m_AuthorDate.Format(_T("%Y-%m-%d  "))+m_rev2.m_AuthorName);
+	m_tooltips.AddTool(IDC_FIRSTURL,  
+		CAppUtils::FormatDateAndTime( m_rev1.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev1.m_AuthorName);
+	m_tooltips.AddTool(IDC_SECONDURL, 
+		CAppUtils::FormatDateAndTime( m_rev2.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev2.m_AuthorName);
 
 }
 

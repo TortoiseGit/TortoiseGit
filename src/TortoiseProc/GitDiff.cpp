@@ -88,7 +88,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 	if(rev2 != GIT_REV_ZERO)
 	{
 		
-		file2.Format(_T("%s\\%s_%s%s"),
+		file2.Format(_T("%s%s_%s%s"),
 				temppath,						
 				pPath2->GetBaseFilename(),
 				rev2.Left(6),

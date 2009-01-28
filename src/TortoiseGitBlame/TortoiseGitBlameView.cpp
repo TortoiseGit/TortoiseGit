@@ -27,6 +27,7 @@
 #include "MainFrm.h"
 #include "Balloon.h"
 #include "EditGotoDlg.h"
+#include "AppUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -106,6 +107,16 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
     m_FindDialogMessage   =   ::RegisterWindowMessage(FINDMSGSTRING);   
 	m_pFindDialog = NULL;
+	// get short/long datetime setting from registry
+	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), FALSE);
+	if ( RegUseShortDateFormat )
+	{
+		m_DateFormat = DATE_SHORTDATE;
+	}
+	else
+	{
+		m_DateFormat = DATE_LONGDATE;
+	}
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -2606,7 +2617,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 				CString str;
 				str.Format(_T("%s\n<b>%s</b>\n%s\n%s"),pRev->m_CommitHash,
 													   pRev->m_Subject,
-													   pRev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")),
+													   CAppUtils::FormatDateAndTime( pRev->m_AuthorDate, m_DateFormat ), 
 													   pRev->m_Body);
 				m_ToolTip.AddTool(this,str);
 				m_ToolTip.DisplayToolTip(&point);
