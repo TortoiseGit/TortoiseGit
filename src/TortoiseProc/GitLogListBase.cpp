@@ -116,6 +116,13 @@ CGitLogListBase::~CGitLogListBase()
 		delete m_pStoreSelection;
 		m_pStoreSelection = NULL;
 	}
+
+	if(this->m_bThreadRunning)
+	{
+		m_bExitThread=true;
+		WaitForSingleObject(m_LoadingThread->m_hThread,1000);
+		TerminateThread();
+	}
 }
 
 
@@ -1483,7 +1490,8 @@ UINT CGitLogListBase::LogThread()
 
 	FillGitShortLog();
 	
-	
+	if(this->m_bExitThread)
+		return 0;
 
 	RedrawItems(0, m_arShownList.GetCount());
 	SetRedraw(false);
@@ -1537,6 +1545,9 @@ UINT CGitLogListBase::LogThread()
 				this->InvalidateRect(rect);
 			}
 			
+			if(m_bExitThread)
+				return 0;
+
 			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
 			if(percent == GITLOG_END)
 				percent = GITLOG_END -1;
@@ -1544,8 +1555,7 @@ UINT CGitLogListBase::LogThread()
 			if(m_ProcCallBack)
 				m_ProcCallBack(m_ProcData,percent);
 
-			if(m_bExitThread)
-				break;
+			
 		}
 		if(updated==m_logEntries.size())
 			break;
@@ -1810,6 +1820,7 @@ void CGitLogListBase::StartFilter()
 	//ResizeAllListCtrlCols();
 	SetRedraw(true);
 	Invalidate();
+
 }
 void CGitLogListBase::RemoveFilter()
 {

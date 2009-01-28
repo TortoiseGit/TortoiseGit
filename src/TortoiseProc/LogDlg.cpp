@@ -396,7 +396,7 @@ void CLogDlg::LogRunStatus(int cur)
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 
-		PostMessage(WM_TIMER, LOGFILTER_TIMER);
+//		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 
 		//CTime time=m_LogList.GetOldestTime();
 		CTime begin,end;
@@ -752,7 +752,14 @@ void CLogDlg::OnCancel()
 	{
 		//m_bCancelled = true;
 		//return;
-		m_LogList.TerminateThread();
+		if(m_LogList.m_bThreadRunning)
+		{
+			//m_LogList.m_bExitThread=true;
+			//WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,INFINITE);
+			m_LogList.TerminateThread();
+		}
+
+		//m_LogList.TerminateThread();
 	}
 	UpdateData();
 	if (m_bSaveStrict)
