@@ -108,7 +108,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
     m_FindDialogMessage   =   ::RegisterWindowMessage(FINDMSGSTRING);   
 	m_pFindDialog = NULL;
 	// get short/long datetime setting from registry
-	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), FALSE);
+	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	if ( RegUseShortDateFormat )
 	{
 		m_DateFormat = DATE_SHORTDATE;

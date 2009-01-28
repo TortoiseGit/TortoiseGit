@@ -96,7 +96,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 		m_LineColors[i] = m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i));
 	}
 	// get short/long datetime setting from registry
-	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), FALSE);
+	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	if ( RegUseShortDateFormat )
 	{
 		m_DateFormat = DATE_SHORTDATE;

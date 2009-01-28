@@ -44,7 +44,7 @@ CSetDialogs::CSetDialogs()
 {
 	m_regAutoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoClose"));
 	m_regDefaultLogs = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
-	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), FALSE);
+	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	m_regUseSystemLocaleForDates = CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	m_regFontName = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8);
