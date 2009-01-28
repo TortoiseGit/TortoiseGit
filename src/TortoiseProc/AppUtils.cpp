@@ -1598,25 +1598,44 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
  * FUNCTION    :   FormatDateAndTime
  * DESCRIPTION :   Generates a displayable string from a CTime object in
  *                 system short or long format dependant on setting of option
- *				   as DATE_SHORTDATE or DATE_LONGDATE 	
+ *				   as DATE_SHORTDATE or DATE_LONGDATE
+ *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
+ *				   rather than locale
  * RETURN      :   CString containing date/time
  */
 CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/  )
 {
-    SYSTEMTIME sysTime;
-	cTime.GetAsSystemTime( sysTime );
 	CString datetime;
-
-    TCHAR buf[100];
-
-    GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, 
-                                                           sizeof(buf)/sizeof(TCHAR)-1);
-    datetime = buf;
-	if ( bIncludeTime )
+    // should we use the locale settings for formatting the date/time?
+	if (CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE))
 	{
-		datetime += _T(" ");
-		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, sizeof(buf)/sizeof(TCHAR)-1);
-		datetime += buf;
+		// yes
+		SYSTEMTIME sysTime;
+		cTime.GetAsSystemTime( sysTime );
+		
+		TCHAR buf[100];
+		
+		GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, 
+			sizeof(buf)/sizeof(TCHAR)-1);
+		datetime = buf;
+		if ( bIncludeTime )
+		{
+			datetime += _T(" ");
+			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, sizeof(buf)/sizeof(TCHAR)-1);
+			datetime += buf;
+		}
+	}
+	else
+	{
+		// no, so fixed format
+		if ( bIncludeTime )
+		{
+			datetime = cTime.Format(_T("%Y-%m-%d %H:%M:%S"));
+		}
+		else
+		{
+			datetime = cTime.Format(_T("%Y-%m-%d"));
+		}
 	}
 	return datetime;
 }
