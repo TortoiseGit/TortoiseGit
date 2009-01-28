@@ -74,18 +74,23 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 }
 //Must use sperate function to convert ANSI str to union code string
 //Becuase A2W use stack as internal convert buffer. 
-void CGit::StringAppend(CString *str,BYTE *p,int code)
+void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 {
      //USES_CONVERSION;
 	 //str->Append(A2W_CP((LPCSTR)p,code));
 	WCHAR * buf;
-	int len = strlen((const char*)p);
+
+	int len ;
+	if(length<0)
+		len= strlen((const char*)p);
+	else
+		len=length;
 	//if (len==0)
 	//	return ;
 	//buf = new WCHAR[len*4 + 1];
 	buf = str->GetBuffer(len*4+1+str->GetLength())+str->GetLength();
 	SecureZeroMemory(buf, (len*4 + 1)*sizeof(WCHAR));
-	MultiByteToWideChar(code, 0, (LPCSTR)p, -1, buf, len*4);
+	MultiByteToWideChar(code, 0, (LPCSTR)p, len, buf, len*4);
 	str->ReleaseBuffer();
 	//str->Append(buf);
 	//delete buf;

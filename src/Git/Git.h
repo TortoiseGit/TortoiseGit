@@ -64,7 +64,7 @@ public:
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
-	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8);
+	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8,int length=-1);
 
 	BOOL IsInitRepos();
 	

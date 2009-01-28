@@ -1135,6 +1135,14 @@
 				Name="Log"
 				>
 				<File
+					RelativePath=".\GitLogCache.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\gitlogcache.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GitLogList.h"
 					>
 				</File>

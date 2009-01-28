@@ -37,7 +37,7 @@ public:
 		REV_UNSPECIFIED = -4,	///< unspecified revision
 	};
 	
-	int CopyFrom(GitRev &rev);
+	int CopyFrom(GitRev &rev,bool OmitParentAndMark=false);
 
 	static CString GetHead(){return CString(_T("HEAD"));};
 	static CString GetWorkingCopy(){return CString(GIT_REV_ZERO);};

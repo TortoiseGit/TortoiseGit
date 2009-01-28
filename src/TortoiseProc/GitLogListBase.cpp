@@ -126,6 +126,7 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclkLoglist)
 	ON_NOTIFY_REFLECT(LVN_ODFINDITEM,OnLvnOdfinditemLoglist)
 	ON_WM_CREATE()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -756,12 +757,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 				{
 					GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
-					if(!data->m_IsFull)
-					{
-						if(data->SafeFetchFullInfo(&g_Git))
-							this->Invalidate();
-						TRACE(_T("Update ... %d\r\n"),pLVCD->nmcd.dwItemSpec);
-					}
+					//if(!data->m_IsFull)
+					//{
+						//if(data->SafeFetchFullInfo(&g_Git))
+						//	this->Invalidate();
+						//TRACE(_T("Update ... %d\r\n"),pLVCD->nmcd.dwItemSpec);
+					//}
 
 					if(m_HashMap[data->m_CommitHash].size()!=0)
 					{
@@ -1346,6 +1347,9 @@ int CGitLogListBase::FillGitShortLog()
 	ClearText();
 
 	this->m_logEntries.ClearAll();
+
+	m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
+
     CTGitPath *path;
     if(this->m_Path.IsEmpty())
         path=NULL;
@@ -1508,13 +1512,29 @@ UINT CGitLogListBase::LogThread()
 	int index=0;
 	unsigned int updated=0;
 	int percent=0;
+	CRect rect;
 	while(1)
 	{
 		for(unsigned int i=0;i<m_logEntries.size();i++)
 		{
-			if(!m_logEntries.FetchFullInfo(i))
+			if(m_LogCache.GetCacheData(m_logEntries[i]))
+			{
+				if(!m_logEntries.FetchFullInfo(i))
+				{
+					updated++;
+					this->GetItemRect(i,&rect,LVIR_BOUNDS);
+					this->InvalidateRect(rect);
+  				}
+				m_LogCache.AddCacheEntry(m_logEntries[i]);
+
+			}else
 			{
 				updated++;
+				InterlockedExchange(&m_logEntries[i].m_IsUpdateing,FALSE);
+				InterlockedExchange(&m_logEntries[i].m_IsFull,TRUE);
+
+				this->GetItemRect(i,&rect,LVIR_BOUNDS);
+				this->InvalidateRect(rect);
 			}
 			
 			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
@@ -1834,4 +1854,15 @@ void CGitLogListBase::Clear()
 	m_logEntries.m_FirstFreeLane=0;
 	m_logEntries.m_Lns.clear();
 
+}
+
+void CGitLogListBase::OnDestroy()
+{
+	while(m_LogCache.SaveCache())
+	{
+		if(CMessageBox::Show(NULL,_T("Can Save Log Cache to Disk,click yes for retry, click no for give up"),_T("TortoiseGit"),
+							MB_YESNO) == IDNO)
+							break;
+	}
+	CHintListCtrl::OnDestroy();
 }
