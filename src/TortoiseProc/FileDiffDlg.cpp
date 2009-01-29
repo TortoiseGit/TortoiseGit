@@ -104,8 +104,16 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 		m_path1 = *path;
 		m_path2 = *path;
 	}
-	m_rev1.m_CommitHash = hash1;
-	m_rev2.m_CommitHash = hash2;
+	
+	BYTE_VECTOR logout;
+
+	g_Git.GetLog(logout,hash1,path,1,0);
+	m_rev1.ParserFromLog(logout);
+
+	logout.clear();
+
+	g_Git.GetLog(logout,hash2,path,1,0);
+	m_rev2.ParserFromLog(logout);
 }
 void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 {
