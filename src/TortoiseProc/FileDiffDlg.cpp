@@ -250,12 +250,12 @@ UINT CFileDiffDlg::DiffThread()
 	{
 		rev1=+_T("");
 		if(this->m_rev1.m_CommitHash == GIT_REV_ZERO)
-			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat  %s"),m_rev2.m_CommitHash);
+			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s"),m_rev2.m_CommitHash);
 		else
-			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat  %s"),m_rev1.m_CommitHash);
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s"),m_rev1.m_CommitHash);
 	}else
 	{
-		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat %s %s"),rev1,m_rev2.m_CommitHash);
+		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s"),rev1,m_rev2.m_CommitHash);
 	}
 
 	BYTE_VECTOR out;
