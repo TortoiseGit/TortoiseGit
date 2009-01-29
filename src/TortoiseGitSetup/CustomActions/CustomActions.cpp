@@ -69,7 +69,7 @@ UINT __stdcall TerminateCache(MSIHANDLE hModule)
 
 UINT __stdcall OpenDonatePage(MSIHANDLE hModule)
 {
-	ShellExecute(NULL, _T("open"), _T("http://tortoisesvn.tigris.org/donate.html"), NULL,NULL, SW_SHOW);
+	ShellExecute(NULL, _T("open"), _T("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=GJGTG75GV5PL6&lc=C2&item_name=TortoiseGit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"), NULL,NULL, SW_SHOW);
 	return ERROR_SUCCESS;
 }
 
