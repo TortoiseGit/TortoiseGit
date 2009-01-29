@@ -27,7 +27,7 @@
 #include "MainFrm.h"
 #include "Balloon.h"
 #include "EditGotoDlg.h"
-#include "AppUtils.h"
+#include "TortoiseGitBlameAppUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
