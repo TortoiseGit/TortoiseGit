@@ -216,83 +216,31 @@ void CGitLogListBase::InsertGitColumn()
 
 }
 
+/**
+ * Resizes all columns in a list control to values in registry.
+ */
 void CGitLogListBase::ResizeAllListCtrlCols()
 {
-
-	const int nMinimumWidth = ICONITEMBORDER+16*4;
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	int nItemCount = GetItemCount();
-	TCHAR textbuf[MAX_PATH];
-	CHeaderCtrl * pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
+	// column max and min widths to allow
+	static const int nMinimumWidth = 10;
+	static const int nMaximumWidth = 1000;
+	CHeaderCtrl* pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
 	if (pHdrCtrl)
 	{
-		for (int col = 0; col <= maxcol; col++)
+		int numcols = pHdrCtrl->GetItemCount();
+		for (int col = 0; col < numcols; col++)
 		{
-			HDITEM hdi = {0};
-			hdi.mask = HDI_TEXT;
-			hdi.pszText = textbuf;
-			hdi.cchTextMax = sizeof(textbuf);
-			pHdrCtrl->GetItem(col, &hdi);
-			int cx = GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
-			for (int index = 0; index<nItemCount; ++index)
+			// get width for this col last time from registry
+			CString regentry;
+			regentry.Format( _T("Software\\TortoiseGit\\log\\ColWidth%d"), col);
+			CRegDWORD regwidth(regentry, 0);
+			int cx = regwidth;
+			if (cx < nMinimumWidth)
 			{
-				// get the width of the string and add 14 pixels for the column separator and margins
-				int linewidth = GetStringWidth(GetItemText(index, col)) + 14;
-				if (index < m_arShownList.GetCount())
-				{
-					GitRev * pCurLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(index));
-					if ((pCurLogEntry)&&(pCurLogEntry->m_CommitHash == m_wcRev.m_CommitHash))
-					{
-						// set the bold font and ask for the string width again
-						SendMessage(WM_SETFONT, (WPARAM)m_boldFont, NULL);
-						linewidth = GetStringWidth(GetItemText(index, col)) + 14;
-						// restore the system font
-						SendMessage(WM_SETFONT, NULL, NULL);
-					}
-				}
-				if (index == 0)
-				{
-					// add the image size
-					CImageList * pImgList = GetImageList(LVSIL_SMALL);
-					if ((pImgList)&&(pImgList->GetImageCount()))
-					{
-						IMAGEINFO imginfo;
-						pImgList->GetImageInfo(0, &imginfo);
-						linewidth += (imginfo.rcImage.right - imginfo.rcImage.left);
-						linewidth += 3;	// 3 pixels between icon and text
-					}
-				}
-				if (cx < linewidth)
-					cx = linewidth;
-			}
-			// Adjust columns "Actions" containing icons
-			if (col == this->LOGLIST_ACTION)
+				cx = nMinimumWidth;
+			} else if (cx > nMaximumWidth)
 			{
-				if (cx < nMinimumWidth)
-				{
-					cx = nMinimumWidth;
-				}
-			}
-			
-			if (col == this->LOGLIST_MESSAGE)
-			{
-				if (cx > LOGLIST_MESSAGE_MAX)
-				{
-					cx = LOGLIST_MESSAGE_MAX;
-				}
-				if (cx < LOGLIST_MESSAGE_MIN)
-				{
-					cx = LOGLIST_MESSAGE_MIN;
-				}
-
-			}
-			// keep the bug id column small
-			if ((col == 4)&&(m_bShowBugtraqColumn))
-			{
-				if (cx > (int)(DWORD)m_regMaxBugIDColWidth)
-				{
-					cx = (int)(DWORD)m_regMaxBugIDColWidth;
-				}
+				cx = nMaximumWidth;
 			}
 
 			SetColumnWidth(col, cx);
@@ -1505,9 +1453,9 @@ UINT CGitLogListBase::LogThread()
 		return 0;
 
 	RedrawItems(0, m_arShownList.GetCount());
-	SetRedraw(false);
-	ResizeAllListCtrlCols();
-	SetRedraw(true);
+//	SetRedraw(false);
+//	ResizeAllListCtrlCols();
+//	SetRedraw(true);
 
 	if ( m_pStoreSelection )
 	{
@@ -1858,9 +1806,9 @@ void CGitLogListBase::RemoveFilter()
 	DeleteAllItems();
 	SetItemCountEx(ShownCountWithStopped());
 	RedrawItems(0, ShownCountWithStopped());
-	SetRedraw(false);
-	ResizeAllListCtrlCols();
-	SetRedraw(true);
+//	SetRedraw(false);
+//	ResizeAllListCtrlCols();
+//	SetRedraw(true);
 
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 }
@@ -1880,11 +1828,33 @@ void CGitLogListBase::Clear()
 
 void CGitLogListBase::OnDestroy()
 {
+	// save the column widths to the registry
+	SaveColumnWidths();
 	while(m_LogCache.SaveCache())
 	{
-		if(CMessageBox::Show(NULL,_T("Can Save Log Cache to Disk,click yes for retry, click no for give up"),_T("TortoiseGit"),
+		if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk,click yes for retry, click no for give up"),_T("TortoiseGit"),
 							MB_YESNO) == IDNO)
 							break;
 	}
 	CHintListCtrl::OnDestroy();
+}
+
+/**
+ * Save column widths to the registry
+ */
+void CGitLogListBase::SaveColumnWidths()
+{
+	CHeaderCtrl* pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
+	if (pHdrCtrl)
+	{
+		int numcols = pHdrCtrl->GetItemCount();
+		for (int col = 0; col < numcols; col++)
+		{
+			int width = GetColumnWidth( col );
+			CString regentry;
+			regentry.Format( _T("Software\\TortoiseGit\\log\\ColWidth%d"), col);
+			CRegDWORD regwidth(regentry, 0);
+			regwidth = width;	// this writes it to reg
+		}
+	}
 }

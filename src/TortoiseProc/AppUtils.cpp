@@ -607,47 +607,6 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile,CString Rev,const 
 	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, false);
 }
 
-void CAppUtils::ResizeAllListCtrlCols(CListCtrl * pListCtrl)
-{
-	int maxcol = ((CHeaderCtrl*)(pListCtrl->GetDlgItem(0)))->GetItemCount()-1;
-	int nItemCount = pListCtrl->GetItemCount();
-	TCHAR textbuf[MAX_PATH];
-	CHeaderCtrl * pHdrCtrl = (CHeaderCtrl*)(pListCtrl->GetDlgItem(0));
-	if (pHdrCtrl)
-	{
-		for (int col = 0; col <= maxcol; col++)
-		{
-			HDITEM hdi = {0};
-			hdi.mask = HDI_TEXT;
-			hdi.pszText = textbuf;
-			hdi.cchTextMax = sizeof(textbuf);
-			pHdrCtrl->GetItem(col, &hdi);
-			int cx = pListCtrl->GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
-			for (int index = 0; index<nItemCount; ++index)
-			{
-				// get the width of the string and add 14 pixels for the column separator and margins
-				int linewidth = pListCtrl->GetStringWidth(pListCtrl->GetItemText(index, col)) + 14;
-				if (index == 0)
-				{
-					// add the image size
-					CImageList * pImgList = pListCtrl->GetImageList(LVSIL_SMALL);
-					if ((pImgList)&&(pImgList->GetImageCount()))
-					{
-						IMAGEINFO imginfo;
-						pImgList->GetImageInfo(0, &imginfo);
-						linewidth += (imginfo.rcImage.right - imginfo.rcImage.left);
-						linewidth += 3;	// 3 pixels between icon and text
-					}
-				}
-				if (cx < linewidth)
-					cx = linewidth;
-			}
-			pListCtrl->SetColumnWidth(col, cx);
-
-		}
-	}
-}
-
 bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 {
 	CString sText;
