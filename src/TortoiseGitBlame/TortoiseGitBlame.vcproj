@@ -473,6 +473,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TortoiseGitBlameAppUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TortoiseGitBlameDoc.cpp"
 				>
 			</File>
