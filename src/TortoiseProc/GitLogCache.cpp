@@ -223,6 +223,9 @@ int CLogCache::RebuildCacheFile()
 }
 int CLogCache::SaveCache()
 {
+	if( this->m_NewCacheEntry.size() == 0 )
+		return 0;
+
 	bool bIsRebuild=false;
 	if(this->m_DataFile.m_hFile != CFile::hFileNull)
 		m_DataFile.Close();
