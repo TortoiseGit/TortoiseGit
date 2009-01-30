@@ -154,7 +154,7 @@ public:
 	CTime			m_To;
     
     CTGitPath           m_Path;
-    BOOL           m_bAllBranch;
+    int					m_ShowMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect)=0;

@@ -86,7 +86,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_From=CTime(1970,1,2,0,0,0);
 	m_To=CTime::GetCurrentTime();
-    m_bAllBranch = FALSE;
+    m_ShowMask = 0;
 	m_LoadingThread = NULL;
 
 	m_bExitThread=FALSE;
@@ -1326,8 +1326,8 @@ int CGitLogListBase::FillGitShortLog()
 	CString hash;
 	int mask;
 	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
-	if(this->m_bAllBranch)
-		mask |= CGit::LOG_INFO_ALL_BRANCH;
+//	if(this->m_bAllBranch)
+	mask |= m_ShowMask;
 
 	this->m_logEntries.ParserShortLog(path,hash,-1,mask);
 	

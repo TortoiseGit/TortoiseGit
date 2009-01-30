@@ -338,6 +338,10 @@ BOOL CLogDlg::OnInitDialog()
 	format.LoadString(IDS_LOG_SHOW_CURRENT_BRANCH);
 	temp.Format(format,g_Git.GetCurrentBranch());
 	m_btnShow.AddEntry(temp);
+	temp.LoadString(IDS_LOG_SHOW_FIRST_PARENT);
+	m_btnShow.AddEntry(temp);
+	temp.LoadString(IDS_LOG_SHOW_NO_MERGE);
+	m_btnShow.AddEntry(temp);
 	m_btnShow.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry")));
 
 	temp.LoadString(IDS_LOG_SHOW_WHOLE);
@@ -410,12 +414,13 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
-
+		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 		//CTime time=m_LogList.GetOldestTime();
 		CTime begin,end;
 		m_LogList.GetTimeRange(begin,end);
 		m_DateFrom.SetTime(&begin);
 		m_DateTo.SetTime(&end);
+
 	
 	}else
 	{
@@ -640,11 +645,16 @@ void CLogDlg::GetAll(bool bIsShowProjectOrBranch)
 		switch (entry)
 		{
 			case 0:	// show all branch
-				m_LogList.m_bAllBranch=true;
+				m_LogList.m_ShowMask=CGit::LOG_INFO_ALL_BRANCH;
 				break;
 			case 1: // show current branch
-				m_LogList.m_bAllBranch=false;
-				
+				m_LogList.m_ShowMask=0;
+				break;
+			case 2: // first parent
+				m_LogList.m_ShowMask=CGit::LOG_INFO_FIRST_PARENT;
+				break;
+			case 3: // no merge
+				m_LogList.m_ShowMask=CGit::LOG_INFO_NO_MERGE;
 				break;
 		}
 	}

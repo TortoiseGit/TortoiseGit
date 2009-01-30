@@ -267,6 +267,11 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 	if(mask& CGit::LOG_INFO_DETECT_RENAME )
 		param += _T(" -M ");
 
+	if(mask& CGit::LOG_INFO_FIRST_PARENT )
+		param += _T(" --first-parent ");
+	
+	if(mask& CGit::LOG_INFO_NO_MERGE )
+		param += _T(" --no-merges ");
 	param+=hash;
 
 	cmd.Format(_T("git.exe log %s -z --topo-order --parents %s --pretty=format:\""),
