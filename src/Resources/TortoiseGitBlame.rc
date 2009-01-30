@@ -159,7 +159,9 @@ BEGIN
         MENUITEM "Go to\tCtrl+G",               ID_EDIT_GOTO
     END
     POPUP "&View"
-    BEGIN
+    BEGIN		
+		MENUITEM "Next"							ID_VIEW_NEXT
+		MENUITEM "Previous"						ID_VIEW_PREV
         POPUP "&Toolbars and Docking Windows"
         BEGIN
             MENUITEM "<placeholder>",               ID_VIEW_TOOLBAR

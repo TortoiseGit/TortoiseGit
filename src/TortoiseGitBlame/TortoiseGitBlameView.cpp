@@ -47,6 +47,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_EDIT_FIND,OnEditFind)
 	ON_COMMAND(ID_EDIT_GOTO,OnEditGoto)
 	ON_COMMAND(ID_EDIT_COPY,CopySelectedLogToClipboard)
+	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
+	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_MOUSEMOVE()
@@ -969,10 +971,6 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	HFONT oldfont = (HFONT)::SelectObject(hDC, m_font);
 	
 	TCHAR buf[MAX_PATH];
-	//_stprintf_s(buf, MAX_PATH, _T("%8ld "), 88888888);
-	//::GetTextExtentPoint(hDC, buf, _tcslen(buf), &width);
-	//m_revwidth = width.cx + BLAMESPACE;
-	//blamewidth += m_revwidth;
 
 	int maxnum=0;
 	for (unsigned int i=0;i<this->m_ID.size();i++)
@@ -2584,6 +2582,14 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 	this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 
 	this->Invalidate();
+
+	int i;
+	for(i=0;i<m_CommitHash.size();i++)
+	{
+		if( pRev->m_CommitHash == m_CommitHash[i] )
+			break;
+	}
+	this->GotoLine(i);
 	this->m_TextView.Invalidate();
 
 }
@@ -2701,3 +2707,47 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM   wParam,   LPARAM   l
     return   0;   
 }   
 
+void CTortoiseGitBlameView::OnViewNext()
+{
+	FindNextLine(this->m_SelectedHash,false);
+}
+void CTortoiseGitBlameView::OnViewPrev()
+{
+	FindNextLine(this->m_SelectedHash,true);
+}
+
+int CTortoiseGitBlameView::FindNextLine(CString CommitHash,bool bUpOrDown)
+{
+	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
+	LONG_PTR startline =line;
+	bool findNoMatch =false;
+	while(line>=0 && line<m_CommitHash.size())
+	{
+		if(m_CommitHash[line]!=CommitHash)
+		{
+			findNoMatch=true;
+		}
+
+		if(m_CommitHash[line] == CommitHash && findNoMatch)
+		{
+			if( line == startline+2 )
+			{
+				findNoMatch=false;
+			}
+			else
+			{
+				if( bUpOrDown )
+				{
+					line=FindFirstLine(CommitHash,line);
+				}
+				SendEditor(SCI_LINESCROLL,0,line-startline-2);
+				return line;
+			}
+		}
+		if(bUpOrDown)
+			line--;
+		else
+			line++;
+	}
+	return -1;
+}

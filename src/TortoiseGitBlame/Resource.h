@@ -39,6 +39,9 @@
 #define ID_EDIT_GOTO                    220
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222
+#define ID_VIEW_NEXT					223
+#define ID_VIEW_PREV					224
+
 #define IDS_STATUS_PANE1                20122
 #define IDS_STATUS_PANE2                20123
 #define IDS_TOOLBAR_STANDARD            20124

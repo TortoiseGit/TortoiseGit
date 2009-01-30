@@ -86,6 +86,23 @@ protected:
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg LRESULT OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam);
+	afx_msg void OnViewNext();
+	afx_msg void OnViewPrev();
+	
+	int FindNextLine(CString commithash, bool bUpOrDown=false);
+	int FindFirstLine(CString commithash, int line)
+	{
+		while(line>=0)
+		{
+			if( m_CommitHash[line] != commithash )
+			{
+				return line++;
+			}
+			line--;
+		}
+		return line;
+	}
+
 	DECLARE_MESSAGE_MAP()
 
     static UINT m_FindDialogMessage;
