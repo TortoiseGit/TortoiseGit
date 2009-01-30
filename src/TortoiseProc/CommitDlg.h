@@ -107,9 +107,12 @@ public:
 	CString				m_sBugID;
 	CString				m_sChangeList;
 	BOOL				m_bKeepChangeList;
+	BOOL				m_bCommitAmend;
 	INT_PTR				m_itemsCount;
 	bool				m_bSelectFilesForCommit;
 //	CComPtr<IBugTraqProvider> m_BugTraqProvider;
+	CString				m_NoAmendStr;
+	CString				m_AmendStr;
 
 private:
 	CWinThread*			m_pThread;

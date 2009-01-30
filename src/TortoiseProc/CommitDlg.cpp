@@ -76,6 +76,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_KEEPLOCK, m_bKeepLocks);
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
+	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -123,7 +124,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_ListCtrl.EnableFileDrop();
 	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
 	
-	this->DialogEnableWindow(IDC_COMMIT_AMEND,FALSE);
+	//this->DialogEnableWindow(IDC_COMMIT_AMEND,FALSE);
 //	m_ProjectProperties.ReadPropsPathList(m_pathList);
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
@@ -133,6 +134,7 @@ BOOL CCommitDlg::OnInitDialog()
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXTERNALWARNING, IDS_COMMITDLG_EXTERNALS);
+	m_tooltips.AddTool(IDC_COMMIT_AMEND,IDS_COMMIT_AMEND_TT);
 //	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 	
 	m_SelectAll.SetCheck(BST_INDETERMINATE);
@@ -279,6 +281,9 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 	err = FALSE;
 
+	this->UpdateData(TRUE);
+	this->m_bCommitAmend=FALSE;
+	this->UpdateData(FALSE);
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -301,6 +306,8 @@ void CCommitDlg::OnOK()
 			InterlockedExchange(&m_bThreadRunning, FALSE);
 		}
 	}
+	this->UpdateData();
+
 	CString id;
 	GetDlgItemText(IDC_BUGID, id);
 	if (!m_ProjectProperties.CheckBugID(id))
@@ -440,7 +447,7 @@ void CCommitDlg::OnOK()
 	//}
 
 	//if(checkedfiles.GetLength()>0)
-	if(nchecked)
+	if(nchecked||m_bCommitAmend)
 	{
 	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
 	//	g_Git.Run(cmd,&out);
@@ -453,7 +460,12 @@ void CCommitDlg::OnOK()
 		file.Close();
 	
 		out =_T("");
-		cmd.Format(_T("git.exe commit -F \"%s\""), tempfile);
+		CString amend;
+		if(this->m_bCommitAmend)
+		{
+			amend=_T("--amend");
+		}
+		cmd.Format(_T("git.exe commit %s -F \"%s\""),amend, tempfile);
 		g_Git.Run(cmd,&out,CP_OEMCP);
 	
 		CFile::Remove(tempfile);
@@ -1458,4 +1470,26 @@ void CCommitDlg::OnStnClickedCommitlabel()
 void CCommitDlg::OnBnClickedCommitAmend()
 {
     // TODO: Add your control notification handler code here
+	this->UpdateData();
+	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
+	{
+		GitRev rev;
+		BYTE_VECTOR vector;
+		g_Git.GetLog(vector,CString(_T("HEAD")),NULL,1);
+		rev.ParserFromLog(vector);
+		m_AmendStr=rev.m_Subject+_T("\n\n")+rev.m_Body;
+	}
+
+	if(this->m_bCommitAmend)
+	{
+		this->m_NoAmendStr=this->m_cLogMessage.GetText();
+		m_cLogMessage.SetText(m_AmendStr);
+
+	}else
+	{
+		this->m_AmendStr=this->m_cLogMessage.GetText();
+		m_cLogMessage.SetText(m_NoAmendStr);
+
+	}
+
 }
