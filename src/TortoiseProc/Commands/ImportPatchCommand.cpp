@@ -44,8 +44,10 @@ bool ImportPatchCommand::Execute()
 				return FALSE;
 			}
 		}
+		
+		CMessageBox::Show(NULL,CString(_T("Patch applied: "))+output,_T("TortoiseGit"),MB_OK);
 		return TRUE;
 	}
-	CMessageBox::Show(NULL,CString(_T("Patch applied"))+output,_T("TortoiseGit"),MB_OK);
+	
 	return FALSE;
 }
