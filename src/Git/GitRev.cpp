@@ -172,13 +172,48 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 
 CTime GitRev::ConverFromString(CString input)
 {
+	// pick up date from string
 	CTime tm(_wtoi(input.Mid(0,4)),
 			 _wtoi(input.Mid(5,2)),
 			 _wtoi(input.Mid(8,2)),
 			 _wtoi(input.Mid(11,2)),
 			 _wtoi(input.Mid(14,2)),
 			 _wtoi(input.Mid(17,2)),
-			 _wtoi(input.Mid(20,4)));
+			 0);
+	// pick up utc offset
+	CString sign = input.Mid(20,1);		// + or -
+	int hoursOffset =  _wtoi(input.Mid(21,2));
+	int minsOffset = _wtoi(input.Mid(23,2));
+	if ( sign == "-" )
+	{
+		hoursOffset = -hoursOffset;
+		minsOffset = -minsOffset;
+	}
+	// make a timespan object with this value
+	CTimeSpan offset( 0, hoursOffset, minsOffset, 0 );
+	// we have to subtract this from the time given to get UTC
+	tm -= offset;
+	// get local timezone
+	SYSTEMTIME sysTime;
+	tm.GetAsSystemTime( sysTime );
+	TIME_ZONE_INFORMATION timeZone;
+	if ( GetTimeZoneInformation( &timeZone ) == TIME_ZONE_ID_UNKNOWN )
+	{
+		ASSERT(false);
+	}
+	else
+	{
+		SYSTEMTIME local;
+		if ( SystemTimeToTzSpecificLocalTime( &timeZone, &sysTime, &local ) )
+		{
+			sysTime = local;
+		}
+		else
+		{
+			ASSERT(false);
+		}
+	}
+	tm = CTime( sysTime, 0 );
 	return tm;
 }
 

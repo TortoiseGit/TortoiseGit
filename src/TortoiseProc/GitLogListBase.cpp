@@ -850,7 +850,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_DATE: //Date
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText,
-				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat ), 
+				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, true ), 
 				pItem->cchTextMax);
 		break;
 		

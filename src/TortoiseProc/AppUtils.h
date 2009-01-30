@@ -168,10 +168,23 @@ public:
 	 *				   as DATE_SHORTDATE or DATE_LONGDATE. bIncludeTime (optional) includes time.
 	 * RETURN      :   CString containing date/time
 	 */
-	static CString FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime=true );
+	static CString FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime=true,
+		bool bRelative=false );
+	/**
+	 *	Converts a given time to a relative display string (relative to current time)
+	 *	Given time must be in local timezone
+	 *  If more than a year ago or in the future then normal date/time is shown
+	 */
+	static CString ToRelativeTimeString(CTime time);
 
 	
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
+	/**
+	 *	Generates a display string showing the relative time between the two given times as COleDateTimes
+	 *	time must be earlier than RelativeTo
+	 *  If more than a year ago or time > RelativeTo then an empty string is returned
+	 */
+	static CString ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo);
 };
