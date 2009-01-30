@@ -49,7 +49,8 @@ BOOL CCloneDlg::OnInitDialog()
 	CWnd *window=this->GetDlgItem(IDC_CLONE_DIR);
 	if(window)
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
-	
+
+	EnableSaveRestore(_T("CloneDlg"));
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 

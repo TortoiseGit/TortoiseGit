@@ -56,9 +56,11 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
-
+	
 	CHOOSE_VERSION_ADDANCHOR;
 	Init();
+
+	EnableSaveRestore(_T("SwitchDlg"));
 
 	if(m_Base.IsEmpty())
 		SetDefaultChoose(IDC_RADIO_BRANCH);

@@ -44,6 +44,7 @@ END_MESSAGE_MAP()
 BOOL CPushDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	
 	AddAnchor(IDC_BRANCH_REMOTE, TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_SOURCE, TOP_LEFT);
 
@@ -59,10 +60,11 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
+	EnableSaveRestore(_T("PushDlg"));
+
 	m_RemoteURL.SetURLHistory(TRUE);
 	m_RemoteURL.LoadHistory(_T("Software\\TortoiseGit\\History\\PushURLS"), _T("url"));
 	m_RemoteURL.SetCurSel(0);
-
 
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
@@ -87,6 +89,8 @@ BOOL CPushDlg::OnInitDialog()
 	m_BranchRemote.SetCurSel(0);
 
 	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
+
+	
 	return TRUE;
 }
 

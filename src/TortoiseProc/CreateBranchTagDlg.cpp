@@ -79,7 +79,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 		this->SetWindowTextW(_T("Create Branch"));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
 	}
-	
+	EnableSaveRestore(_T("BranchTagDlg"));
 	return TRUE;
 
 

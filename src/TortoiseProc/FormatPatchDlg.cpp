@@ -87,6 +87,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	
 	OnBnClickedRadio();
 
+	EnableSaveRestore(_T("FormatPatchDlg"));
 	return TRUE;
 }
 // CFormatPatchDlg message handlers

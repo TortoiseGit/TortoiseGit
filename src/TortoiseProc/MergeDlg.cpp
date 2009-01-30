@@ -60,6 +60,8 @@ BOOL CMergeDlg::OnInitDialog()
 	Init();
 	
 	this->SetDefaultChoose(IDC_RADIO_BRANCH);
+	
+	EnableSaveRestore(_T("MergeDlg"));
 
 	return TRUE;
 }

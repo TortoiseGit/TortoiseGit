@@ -71,7 +71,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		for(unsigned int i=0;i<list.size();i++)
 			m_Remote.AddString(list[i]);
 	}
-
+	EnableSaveRestore(_T("PullFetchDlg"));
 	return TRUE;
 }
 // CPullFetchDlg message handlers
