@@ -166,6 +166,8 @@ public:
 	std::vector<CString>	m_Authors;
 	std::vector<CString>	m_CommitHash;
 
+	std::map<CString,GitRev> m_NoListCommit;
+
 //	std::vector<CString>	m_Paths;
 //	std::map<LONG, CString>	logmessages;
 	char						m_szTip[MAX_LOG_LENGTH*2+6];

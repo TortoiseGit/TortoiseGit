@@ -171,7 +171,7 @@ int COutputWnd::LoadHistory(CString filename)
 	path.SetFromGit(filename);
 	
 	m_LogList.Clear();
-	m_LogList.FillGitLog(&path,0/*CGit::LOG_INFO_FULLHISTORY*/);
+	m_LogList.FillGitLog(&path,0/*CGit::LOG_INFO_FOLLOW*/);
 
 	return 0;
 

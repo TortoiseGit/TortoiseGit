@@ -372,7 +372,16 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 		{
 			CString str;
 			CString parentsubject;
-			int index=pLogEntry->m_HashMap[rev->m_ParentHash[i]];
+			int index;
+
+			if( pLogEntry->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_HashMap.end() )
+			{ 
+				index = -1;
+			}
+			else
+			{
+				index=pLogEntry->m_HashMap[rev->m_ParentHash[i]];
+			}
 			if(index>=0)
 				parentsubject=pLogEntry->at(index).m_Subject;
 

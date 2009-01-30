@@ -2417,6 +2417,8 @@ void CTortoiseGitBlameView::UpdateInfo()
 	CString &data = GetDocument()->m_BlameData;
 	CString one;
 	int pos=0;
+	
+	BYTE_VECTOR vector;
 
 	CLogDataVector * pRevs= GetLogData();
 
@@ -2453,7 +2455,15 @@ void CTortoiseGitBlameView::UpdateInfo()
 			id=pRevs->m_HashMap[one.Left(40)];	
 		}
 		else
+		{
 			id=-1;
+			if(this->m_NoListCommit.find(one.Left(40)) == m_NoListCommit.end() )
+			{
+				g_Git.GetLog(vector,one.Left(40),NULL,1);
+				this->m_NoListCommit[one.Left(40)].ParserFromLog(vector);
+			}
+			
+		}
 
 		if(id>=0 && id <(int)GetLogData()->size())
 		{
@@ -2518,10 +2528,6 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		if (m_CommitHash[line] != m_SelectedHash)
 		{
 			m_SelectedHash = m_CommitHash[line];
-//			app.m_selectedorigrev = app.origrevs[line];
-//			app.m_selectedauthor = app.authors[line];
-//			app.m_selecteddate = app.dates[line];
-			
 			
 			if(m_ID[line]>=0)
 			{
@@ -2534,15 +2540,12 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 			}else
 			{
-				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(NULL);
+				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&m_NoListCommit[m_CommitHash[line]]);
 			}
 		}
 		else
 		{
 			m_SelectedHash.Empty();
-//			app.m_selecteddate.clear();
-//			app.m_selectedrev = -2;
-//			app.m_selectedorigrev = -2;
 		}
 		//::InvalidateRect( NULL, FALSE);
 		this->Invalidate();
@@ -2597,31 +2600,26 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 		if (line != m_MouseLine)
 		{
 			m_MouseLine = line;//m_CommitHash[line];
-//			app.m_selectedorigrev = app.origrevs[line];
-//			app.m_selectedauthor = app.authors[line];
-//			app.m_selecteddate = app.dates[line];
-			
+			GitRev *pRev;
 			if(m_ID[line]<0)
 			{
-				m_ToolTip.AddTool(this,_T(""));
-				return;
+				pRev=&this->m_NoListCommit[m_CommitHash[line]];
+
+			}else
+			{
+				pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
 			}
-			GitRev *pRev;
-			pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
-			//this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+
 			this->ClientToScreen(&point);
-			//BALLOON_INFO bi;
-			//if(m_ToolTip.GetTool(this, bi))
-			//{
-			//	bi.sBalloonTip=pRev->m_CommitHash;
-				CString str;
-				str.Format(_T("%s\n<b>%s</b>\n%s\n%s"),pRev->m_CommitHash,
+
+			CString str;
+			str.Format(_T("%s\n<b>%s</b>\n%s %s\n%s"),pRev->m_CommitHash,
 													   pRev->m_Subject,
+													   pRev->m_AuthorName,
 													   CAppUtils::FormatDateAndTime( pRev->m_AuthorDate, m_DateFormat ), 
 													   pRev->m_Body);
-				m_ToolTip.AddTool(this,str);
-				m_ToolTip.DisplayToolTip(&point);
-			//}
+			m_ToolTip.AddTool(this,str);
+			m_ToolTip.DisplayToolTip(&point);
 	
 			CRect rect;
 			this->ScreenToClient(&point);
@@ -2635,19 +2633,8 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 		else
 		{
 			m_MouseLine=-1;
-//			app.m_selecteddate.clear();
-//			app.m_selectedrev = -2;
-//			app.m_selectedorigrev = -2;
 		}
-		//::InvalidateRect( NULL, FALSE);
-		//this->Invalidate();
 	}
-	
-//	 const CString str=_T("this is a <b>Message Balloon</b>\n<hr=100%>\n<ct=0x0000FF>Warning! Warning!</ct>\nSomething unexpected happened");
-	 //CBalloon::ShowBalloon(NULL, point, 
-	  //            str,
-	  //             FALSE, (HICON)IDI_EXCLAMATION,
-		//		   (UINT)CBalloon ::BALLOON_RIGHT_TOP, (UINT)CBalloon ::BALLOON_EFFECT_SOLID,(COLORREF)NULL,  (COLORREF)NULL,  (COLORREF)NULL);
 }
 
 void CTortoiseGitBlameView::OnMouseMove(UINT nFlags, CPoint point)

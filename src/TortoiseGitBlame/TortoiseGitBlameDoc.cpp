@@ -97,6 +97,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if(!g_Git.m_CurrentDir.IsEmpty())
 			SetCurrentDirectory(g_Git.m_CurrentDir);
 		
+		m_GitPath = path;
 		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString());
 	
 		CString cmd;

@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include "Git.h"
+#include "TGitPath.h"
+
 class CMainFrame ;
 
 class CTortoiseGitBlameDoc : public CDocument
@@ -20,6 +23,7 @@ public:
 // Operations
 public:
 	BOOL m_IsGitFile;
+	CTGitPath m_GitPath;
 // Overrides
 public:
 	virtual BOOL OnNewDocument();

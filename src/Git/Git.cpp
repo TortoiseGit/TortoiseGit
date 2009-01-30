@@ -272,9 +272,13 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 	
 	if(mask& CGit::LOG_INFO_NO_MERGE )
 		param += _T(" --no-merges ");
+
+	if(mask& CGit::LOG_INFO_FOLLOW)
+		param += _T(" --follow ");
+
 	param+=hash;
 
-	cmd.Format(_T("git.exe log %s -z --topo-order --parents %s --pretty=format:\""),
+	cmd.Format(_T("git.exe log %s -z --topo-order %s --parents --pretty=format:\""),
 				num,param);
 
 	BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
