@@ -115,12 +115,6 @@ public:
 		const CString& sBlameFile, CString Rev, const CString& sParams = CString());
 	
 	/**
-	 * Resizes all columns in a list control. Considers also icons in columns
-	 * with no text.
-	 */
-	static void ResizeAllListCtrlCols(CListCtrl * pListCtrl);
-
-	/**
 	 * Formats text in a rich edit control (version 2).
 	 * text in between * chars is formatted bold
 	 * text in between ^ chars is formatted italic

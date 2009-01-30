@@ -586,7 +586,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		m_ChangedFileListCtrl.Invalidate();
 	}
 #endif
-	CAppUtils::ResizeAllListCtrlCols(&m_ChangedFileListCtrl);
 	// sort according to the settings
 	if (m_nSortColumnPathList > 0)
 		SetSortArrow(&m_ChangedFileListCtrl, m_nSortColumnPathList, m_bAscendingPathList);
@@ -2653,89 +2652,6 @@ int CLogDlg::SortCompare(const void * pElem1, const void * pElem2)
 #endif
 	return 0;
 }
-
-#if 0
-void CLogDlg::ResizeAllListCtrlCols()
-{
-
-	const int nMinimumWidth = ICONITEMBORDER+16*4;
-	int maxcol = ((CHeaderCtrl*)(m_LogList.GetDlgItem(0)))->GetItemCount()-1;
-	int nItemCount = m_LogList.GetItemCount();
-	TCHAR textbuf[MAX_PATH];
-	CHeaderCtrl * pHdrCtrl = (CHeaderCtrl*)(m_LogList.GetDlgItem(0));
-	if (pHdrCtrl)
-	{
-		for (int col = 0; col <= maxcol; col++)
-		{
-			HDITEM hdi = {0};
-			hdi.mask = HDI_TEXT;
-			hdi.pszText = textbuf;
-			hdi.cchTextMax = sizeof(textbuf);
-			pHdrCtrl->GetItem(col, &hdi);
-			int cx = m_LogList.GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
-			for (int index = 0; index<nItemCount; ++index)
-			{
-				// get the width of the string and add 14 pixels for the column separator and margins
-				int linewidth = m_LogList.GetStringWidth(m_LogList.GetItemText(index, col)) + 14;
-				if (index < m_arShownList.GetCount())
-				{
-					GitRev * pCurLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(index));
-					if ((pCurLogEntry)&&(pCurLogEntry->m_CommitHash == m_wcRev.m_CommitHash))
-					{
-						// set the bold font and ask for the string width again
-						m_LogList.SendMessage(WM_SETFONT, (WPARAM)m_boldFont, NULL);
-						linewidth = m_LogList.GetStringWidth(m_LogList.GetItemText(index, col)) + 14;
-						// restore the system font
-						m_LogList.SendMessage(WM_SETFONT, NULL, NULL);
-					}
-				}
-				if (index == 0)
-				{
-					// add the image size
-					CImageList * pImgList = m_LogList.GetImageList(LVSIL_SMALL);
-					if ((pImgList)&&(pImgList->GetImageCount()))
-					{
-						IMAGEINFO imginfo;
-						pImgList->GetImageInfo(0, &imginfo);
-						linewidth += (imginfo.rcImage.right - imginfo.rcImage.left);
-						linewidth += 3;	// 3 pixels between icon and text
-					}
-				}
-				if (cx < linewidth)
-					cx = linewidth;
-			}
-			// Adjust columns "Actions" containing icons
-			if (col == this->LOGLIST_ACTION)
-			{
-				if (cx < nMinimumWidth)
-				{
-					cx = nMinimumWidth;
-				}
-			}
-			
-			if (col == this->LOGLIST_MESSAGE)
-			{
-				if (cx > LOGLIST_MESSAGE_MAX)
-				{
-					cx = LOGLIST_MESSAGE_MAX;
-				}
-
-			}
-			// keep the bug id column small
-			if ((col == 4)&&(m_bShowBugtraqColumn))
-			{
-				if (cx > (int)(DWORD)m_regMaxBugIDColWidth)
-				{
-					cx = (int)(DWORD)m_regMaxBugIDColWidth;
-				}
-			}
-
-			m_LogList.SetColumnWidth(col, cx);
-		}
-	}
-
-}
-#endif
 
 void CLogDlg::OnBnClickedHidepaths()
 {
