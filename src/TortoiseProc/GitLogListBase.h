@@ -53,7 +53,9 @@ enum LISTITEMSTATES_MINE {
 #define LOGFILTER_REGEX	   6
 #define LOGFILTER_BUGID    7
 
-typedef void CALLBACK_PROCESS(void * data, int progress);
+//typedef void CALLBACK_PROCESS(void * data, int progress);
+#define MSG_LOADED				(WM_USER+110)
+#define MSG_LOAD_PERCENTAGE		(WM_USER+111)
 
 class CGitLogListBase : public CHintListCtrl
 {
@@ -136,7 +138,7 @@ public:
 	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE);
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
-	int FetchLogAsync(CALLBACK_PROCESS *proc=NULL, void * data=NULL);
+	int FetchLogAsync(void * data=NULL);
 	CPtrArray			m_arShownList;
 	void Refresh();
 	void RecalculateShownList(CPtrArray * pShownlist);
@@ -167,6 +169,11 @@ public:
 		if(this->m_LoadingThread)
 			AfxTermThread((HINSTANCE)m_LoadingThread->m_hThread);
 	};
+
+	bool IsInWorkingThread()
+	{
+		return (AfxGetThread() == m_LoadingThread);
+	}
 	
 	volatile bool		m_bExitThread;
 	CWinThread*			m_LoadingThread;
@@ -177,6 +184,7 @@ protected:
 	afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	void PreSubclassWindow();
@@ -213,7 +221,6 @@ protected:
 	CRegDWORD			m_regMaxBugIDColWidth;
 	int					m_nSearchIndex;
 	
-	CALLBACK_PROCESS    *m_ProcCallBack;
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;
 	MAP_HASH_NAME		m_HashMap;

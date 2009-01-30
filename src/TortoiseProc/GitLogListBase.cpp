@@ -143,6 +143,7 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_NOTIFY_REFLECT(LVN_ODFINDITEM,OnLvnOdfinditemLoglist)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
+	ON_MESSAGE(MSG_LOADED,OnLoad)
 END_MESSAGE_MAP()
 
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -1384,7 +1385,10 @@ int CGitLogListBase::FillGitShortLog()
 	
 
 	//this->m_logEntries.ParserFromLog();
-	SetItemCountEx(this->m_logEntries.size());
+	if(IsInWorkingThread())
+		PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+	else
+		SetItemCountEx(this->m_logEntries.size());
 
 	this->m_arShownList.RemoveAll();
 
@@ -1439,9 +1443,8 @@ void CGitLogListBase::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	  DiffSelectedRevWithPrevious();
 }
 
-int CGitLogListBase::FetchLogAsync(CALLBACK_PROCESS *proc,void * data)
+int CGitLogListBase::FetchLogAsync(void * data)
 {
-	m_ProcCallBack=proc;
 	m_ProcData=data;
 	m_bExitThread=FALSE;
 	InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -1482,8 +1485,9 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 UINT CGitLogListBase::LogThread()
 {
 
-	if(m_ProcCallBack)
-		m_ProcCallBack(m_ProcData,GITLOG_START);
+//	if(m_ProcCallBack)
+//		m_ProcCallBack(m_ProcData,GITLOG_START);
+	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START,0);
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
@@ -1503,7 +1507,7 @@ UINT CGitLogListBase::LogThread()
 	
 	if(this->m_bExitThread)
 		return 0;
-
+#if 0
 	RedrawItems(0, m_arShownList.GetCount());
 	SetRedraw(false);
 	ResizeAllListCtrlCols();
@@ -1526,6 +1530,7 @@ UINT CGitLogListBase::LogThread()
 			SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 		}
 	}
+#endif
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 	int index=0;
@@ -1541,8 +1546,6 @@ UINT CGitLogListBase::LogThread()
 				if(!m_logEntries.FetchFullInfo(i))
 				{
 					updated++;
-					this->GetItemRect(i,&rect,LVIR_BOUNDS);
-					this->InvalidateRect(rect);
   				}
 				m_LogCache.AddCacheEntry(m_logEntries[i]);
 
@@ -1551,11 +1554,10 @@ UINT CGitLogListBase::LogThread()
 				updated++;
 				InterlockedExchange(&m_logEntries[i].m_IsUpdateing,FALSE);
 				InterlockedExchange(&m_logEntries[i].m_IsFull,TRUE);
-
-				this->GetItemRect(i,&rect,LVIR_BOUNDS);
-				this->InvalidateRect(rect);
 			}
 			
+			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)i,0);
+
 			if(m_bExitThread)
 				return 0;
 
@@ -1563,8 +1565,7 @@ UINT CGitLogListBase::LogThread()
 			if(percent == GITLOG_END)
 				percent = GITLOG_END -1;
 			
-			if(m_ProcCallBack)
-				m_ProcCallBack(m_ProcData,percent);
+			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
 
 			
 		}
@@ -1576,10 +1577,7 @@ UINT CGitLogListBase::LogThread()
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
 
-	
-
-	if(m_ProcCallBack)
-		m_ProcCallBack(m_ProcData,GITLOG_END);
+	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 
@@ -1880,6 +1878,13 @@ void CGitLogListBase::Clear()
 
 void CGitLogListBase::OnDestroy()
 {
+	if(this->m_bThreadRunning)
+	{
+		this->m_bExitThread=true;
+		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
+		if(ret == WAIT_TIMEOUT)
+			TerminateThread();
+	}
 	while(m_LogCache.SaveCache())
 	{
 		if(CMessageBox::Show(NULL,_T("Can Save Log Cache to Disk,click yes for retry, click no for give up"),_T("TortoiseGit"),
@@ -1887,4 +1892,13 @@ void CGitLogListBase::OnDestroy()
 							break;
 	}
 	CHintListCtrl::OnDestroy();
+}
+
+LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
+{
+	CRect rect;
+	int i=(int)wParam;
+	this->GetItemRect(i,&rect,LVIR_BOUNDS);
+	this->InvalidateRect(rect);
+	return 0;
 }

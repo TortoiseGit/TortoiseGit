@@ -123,6 +123,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
+
+	ON_MESSAGE(MSG_LOAD_PERCENTAGE,OnLogListLoading)
 	
 	ON_EN_CHANGE(IDC_SEARCHEDIT, OnEnChangeSearchedit)
 	ON_WM_TIMER()
@@ -349,14 +351,16 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tFrom = (DWORD)-1;
 
 	m_LogList.m_Path=m_path;
-	m_LogList.FetchLogAsync(LogCallBack,this);
+	m_LogList.FetchLogAsync(this);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
 	return FALSE;
 }
 
-void CLogDlg::LogRunStatus(int cur)
+LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 {
+	int cur=(int)wParam;
+
 	if( cur == GITLOG_START )
 	{
 		CString temp;
@@ -406,6 +410,7 @@ void CLogDlg::LogRunStatus(int cur)
 	}
 
 	m_LogProgress.SetPos(cur);
+	return 0;
 }
 void CLogDlg::SetDlgTitle(bool bOffline)
 {
@@ -616,48 +621,14 @@ void CLogDlg::GetAll(bool bForceAll /* = false */)
 		SetWindowText(m_sTitle + _T(" - "));
 		break;
 	}
-	//m_LogList.m_bExitThread=TRUE;
-	//::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,INFINITE);
-
-	m_LogList.TerminateThread();
+	m_LogList.m_bExitThread=TRUE;
+	DWORD ret =::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,20000);
+	if(ret == WAIT_TIMEOUT)
+		m_LogList.TerminateThread();
 	
 	m_LogList.Clear();
-	m_LogList.FetchLogAsync(LogCallBack,this);
-#if 0
-	m_ChangedFileListCtrl.SetItemCountEx(0);
-	m_ChangedFileListCtrl.Invalidate();
-	// We need to create CStoreSelection on the heap or else
-	// the variable will run out of the scope before the
-	// thread ends. Therefore we let the thread delete
-	// the instance.
-	m_pStoreSelection = new CStoreSelection(this);
-	m_LogList.SetItemCountEx(0);
-	m_LogList.Invalidate();
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
-	pMsgView->SetWindowText(_T(""));
+	m_LogList.FetchLogAsync(this);
 
-	SetSortArrow(&m_LogList, -1, true);
-
-	m_LogList.DeleteAllItems();
-	m_arShownList.RemoveAll();
-	m_logEntries.ClearAll();
-
-	m_logcounter = 0;
-	m_bCancelled = FALSE;
-	m_tTo = 0;
-	m_tFrom = (DWORD)-1;
-	m_limit = 0;
-
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	if (AfxBeginThread(LogThreadEntry, this)==NULL)
-	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
-	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
-#endif
 }
 
 void CLogDlg::OnBnClickedRefresh()

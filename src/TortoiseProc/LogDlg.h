@@ -108,6 +108,8 @@ protected:
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnLogListLoading(WPARAM wParam, LPARAM lParam);
+
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnBnClickedGetall();
