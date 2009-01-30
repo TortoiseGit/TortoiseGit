@@ -374,6 +374,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		CString temp;
 		temp.LoadString(IDS_PROGRESSWAIT);
 
+		this->m_LogList.ShowText(temp, true);
+
 		// change the text of the close button to "Cancel" since now the thread
 		// is running, and simply closing the dialog doesn't work.
 		if (!GetDlgItem(IDOK)->IsWindowVisible())
@@ -395,9 +397,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
-	}
 
-	if( cur == GITLOG_END)
+	}else if( cur == GITLOG_END)
 	{
 		
 		//if (!m_bShowedAll)
@@ -415,9 +416,13 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		m_LogList.GetTimeRange(begin,end);
 		m_DateFrom.SetTime(&begin);
 		m_DateTo.SetTime(&end);
+	
+	}else
+	{
+		if(this->m_LogList.HasText())
+			this->m_LogList.ClearText();
+		m_LogProgress.SetPos(cur);
 	}
-
-	m_LogProgress.SetPos(cur);
 	return 0;
 }
 void CLogDlg::SetDlgTitle(bool bOffline)

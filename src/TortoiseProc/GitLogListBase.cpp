@@ -1447,10 +1447,6 @@ UINT CGitLogListBase::LogThread()
 	//disable the "Get All" button while we're receiving
 	//log messages.
 
-	CString temp;
-	temp.LoadString(IDS_PROGRESSWAIT);
-	ShowText(temp, true);
-
 	FillGitShortLog();
 	
 	if(this->m_bExitThread)
