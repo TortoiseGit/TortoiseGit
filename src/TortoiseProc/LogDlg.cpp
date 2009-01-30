@@ -105,6 +105,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DATETO, m_DateTo);
 	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
 	DDX_Control(pDX, IDC_GETALL, m_btnShow);
+	DDX_Control(pDX, IDC_SHOWWHOLEPROJECT,m_btnShowWholeProject);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_INCLUDEMERGE, m_bIncludeMerges);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
@@ -130,7 +131,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETO, OnDtnDatetimechangeDateto)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEFROM, OnDtnDatetimechangeDatefrom)
-	ON_BN_CLICKED(IDC_NEXTHUNDRED, OnBnClickedNexthundred)
+	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
 	//ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGMSG, OnNMCustomdrawChangedFileList)
 	//ON_NOTIFY(LVN_GETDISPINFO, IDC_LOGMSG, OnLvnGetdispinfoChangedFileList)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST	, OnLvnColumnclick)
@@ -166,6 +167,7 @@ void CLogDlg::SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, G
 
 BOOL CLogDlg::OnInitDialog()
 {
+	CString temp;
 	CResizableStandAloneDialog::OnInitDialog();
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_LOGDLG));
@@ -181,14 +183,7 @@ BOOL CLogDlg::OnInitDialog()
 	if (!m_bStrict)
 		m_bStrict = m_regLastStrict;
 	UpdateData(FALSE);
-	CString temp;
-	if (m_limit)
-		temp.Format(IDS_LOG_SHOWNEXT, m_limit);
-	else
-		temp.Format(IDS_LOG_SHOWNEXT, (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100));
-
-	SetDlgItemText(IDC_NEXTHUNDRED, temp);
-
+	
 	// set the font to use in the log message view, configured in the settings dialog
 	CAppUtils::CreateFontForLogs(m_logFont);
 	GetDlgItem(IDC_MSGVIEW)->SetFont(&m_logFont);
@@ -270,7 +265,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_CHECK_STOPONCOPY, BOTTOM_LEFT);
 	AddAnchor(IDC_INCLUDEMERGE, BOTTOM_LEFT);
 	AddAnchor(IDC_GETALL, BOTTOM_LEFT);
-	AddAnchor(IDC_NEXTHUNDRED, BOTTOM_LEFT);
+	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -339,9 +334,22 @@ BOOL CLogDlg::OnInitDialog()
 	// set the choices for the "Show All" button
 	temp.LoadString(IDS_LOG_SHOWALL);
 	m_btnShow.AddEntry(temp);
-	temp.LoadString(IDS_LOG_SHOW_WHOLE);
+	CString format;
+	format.LoadString(IDS_LOG_SHOW_CURRENT_BRANCH);
+	temp.Format(format,g_Git.GetCurrentBranch());
 	m_btnShow.AddEntry(temp);
 	m_btnShow.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry")));
+
+	temp.LoadString(IDS_LOG_SHOW_WHOLE);
+	this->m_btnShowWholeProject.AddEntry(temp);
+	format.LoadString(IDS_LOG_SHOW_CURRENT_PATH);
+	temp.Format(format,m_path.GetGitPathString());
+	if(!m_path.IsEmpty())
+	{
+		this->m_btnShowWholeProject.AddEntry(temp);
+		this->m_btnShowWholeProject.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowWholeProject")));
+	}
+
 
 	m_mergedRevs.clear();
 
@@ -381,7 +389,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
 		//DialogEnableWindow(IDC_GETALL, FALSE);
-		DialogEnableWindow(IDC_NEXTHUNDRED, FALSE);
+		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
 		DialogEnableWindow(IDC_CHECK_STOPONCOPY, FALSE);
 		DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
@@ -392,8 +400,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 	if( cur == GITLOG_END)
 	{
 		
-		if (!m_bShowedAll)
-			DialogEnableWindow(IDC_NEXTHUNDRED, TRUE);
+		//if (!m_bShowedAll)
+		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
 		DialogEnableWindow(IDC_GETALL, TRUE);
 		//DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
@@ -600,26 +608,42 @@ void CLogDlg::OnBnClickedGetall()
 	GetAll();
 }
 
-void CLogDlg::GetAll(bool bForceAll /* = false */)
+void CLogDlg::GetAll(bool bIsShowProjectOrBranch)
 {
 
 	// fetch all requested log messages, either the specified range or
 	// really *all* available log messages.
 	///UpdateData();
-	INT_PTR entry = m_btnShow.GetCurrentEntry();
-	if (bForceAll)
-		entry = 0;
-
-	switch (entry)
+	if(bIsShowProjectOrBranch)
 	{
-	case 0:	// show all branch;
-		m_LogList.m_bAllBranch=true;
-		break;
-	case 1: // show whole project
-		m_LogList.m_Path.Reset();
-		SetWindowText(m_sTitle + _T(" - "));
-		break;
+		INT_PTR entry = this->m_btnShowWholeProject.GetCurrentEntry();
+		switch (entry)
+		{
+			case 0:	// show whole Project
+				m_LogList.m_Path.Reset();
+				SetWindowText(m_sTitle + _T(" - ")+_T("whole project"));
+				break;
+			case 1: // show whole project
+				m_LogList.m_Path=this->m_path;
+				SetWindowText(m_sTitle + _T(" - ")+this->m_path.GetGitPathString());
+				break;
+		}
+
+	}else
+	{
+		INT_PTR entry = m_btnShow.GetCurrentEntry();
+		switch (entry)
+		{
+			case 0:	// show all branch
+				m_LogList.m_bAllBranch=true;
+				break;
+			case 1: // show current branch
+				m_LogList.m_bAllBranch=false;
+				
+				break;
+		}
 	}
+
 	m_LogList.m_bExitThread=TRUE;
 	DWORD ret =::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,20000);
 	if(ret == WAIT_TIMEOUT)
@@ -641,51 +665,9 @@ void CLogDlg::Refresh (bool autoGoOnline)
 	m_LogList.Refresh();
 }
 
-void CLogDlg::OnBnClickedNexthundred()
+void CLogDlg::OnBnClickShowWholeProject()
 {
-#if 0
-	UpdateData();
-	// we have to fetch the next X log messages.
-	if (m_logEntries.size() < 1)
-	{
-		// since there weren't any log messages fetched before, just
-		// fetch all since we don't have an 'anchor' to fetch the 'next'
-		// messages from.
-		return GetAll(true);
-	}
-	git_revnum_t rev = m_logEntries[m_logEntries.size()-1]->Rev;
-
-	if (rev < 1)
-		return;		// do nothing! No more revisions to get
-
-	m_startrev = rev;
-	m_endrev = 0;
-	m_bCancelled = FALSE;
-
-    // rev is is revision we already have and we will receive it again
-    // -> fetch one extra revision to get NumberOfLogs *new* revisions
-
-	m_limit = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100) +1;
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	SetSortArrow(&m_LogList, -1, true);
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	// We need to create CStoreSelection on the heap or else
-	// the variable will run out of the scope before the
-	// thread ends. Therefore we let the thread delete
-	// the instance.
-	m_pStoreSelection = new CStoreSelection(this);
-
-	// since we fetch the log from the last revision we already have,
-	// we have to remove that revision entry to avoid getting it twice
-	m_logEntries.pop_back();
-	if (AfxBeginThread(LogThreadEntry, this)==NULL)
-	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
-	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
-#endif
+	GetAll(true);
 }
 
 BOOL CLogDlg::Cancel()
@@ -734,8 +716,13 @@ void CLogDlg::OnCancel()
 	UpdateData();
 	if (m_bSaveStrict)
 		m_regLastStrict = m_bStrict;
+	
 	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	reg = m_btnShow.GetCurrentEntry();
+
+	reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowWholeProject"));
+	reg = m_btnShowWholeProject.GetCurrentEntry();
+
 	SaveSplitterPos();
 	__super::OnCancel();
 }
@@ -2550,16 +2537,7 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 	SortShownListArray();
 	m_LogList.Invalidate();
 	UpdateLogInfoLabel();
-	// the "next 100" button only makes sense if the log messages
-	// are sorted by revision in descending order
-	if ((m_nSortColumn)||(m_bAscending))
-	{
-		DialogEnableWindow(IDC_NEXTHUNDRED, false);
-	}
-	else
-	{
-		DialogEnableWindow(IDC_NEXTHUNDRED, true);
-	}
+	
 	*pResult = 0;
 }
 

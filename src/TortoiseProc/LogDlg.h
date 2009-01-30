@@ -128,7 +128,7 @@ protected:
 	afx_msg void OnDtnDatetimechangeDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnBnClickedNexthundred();
+	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedCheckStoponcopy();
 	
@@ -178,7 +178,7 @@ private:
 	void SortByColumn(int nSortColumn, bool bAscending);
 	
 	void EnableOKButton();
-	void GetAll(bool bForceAll = false);
+	void GetAll(bool bIsShowProjectOrBranch = false);
 	void UpdateLogInfoLabel();
 	void SaveSplitterPos();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase);
@@ -217,6 +217,7 @@ private:
 	CFilterEdit			m_cFilter;
 	CProgressCtrl		m_LogProgress;
 	CMenuButton			m_btnShow;
+	CMenuButton			m_btnShowWholeProject;
 	CTGitPath			m_path;
 	CTGitPath			m_mergePath;
 	GitRev				m_pegrev;
