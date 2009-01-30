@@ -222,6 +222,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
 	
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
@@ -1396,6 +1397,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_LOGMESSAGE);
 	RemoveAnchor(IDC_SPLITTER);
 	RemoveAnchor(IDC_SIGNOFF);
+	RemoveAnchor(IDC_COMMIT_AMEND);
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	CSplitterControl::ChangeHeight(&m_cLogMessage, delta, CW_TOPALIGN);
@@ -1403,12 +1405,14 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangeHeight(&m_ListCtrl, -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LISTGROUP), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
+	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
 	ArrangeLayout();
 	// adjust the minimum size of the dialog to prevent the resizing from
 	// moving the list control too far down.
