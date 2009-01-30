@@ -236,6 +236,18 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 			regentry.Format( _T("Software\\TortoiseGit\\log\\ColWidth%d"), col);
 			CRegDWORD regwidth(regentry, 0);
 			int cx = regwidth;
+			if ( cx == 0 )
+			{
+				// no saved value, setup sensible defaults
+				if (col == this->LOGLIST_MESSAGE)
+				{
+					cx = LOGLIST_MESSAGE_MIN;
+				}
+				else
+				{
+					cx = ICONITEMBORDER+16*4;
+				}
+			}
 			if (cx < nMinimumWidth)
 			{
 				cx = nMinimumWidth;
