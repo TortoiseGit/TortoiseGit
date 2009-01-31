@@ -164,8 +164,13 @@ public:
 	/**
 	 * FUNCTION    :   FormatDateAndTime
 	 * DESCRIPTION :   Generates a displayable string from a CTime object in
-	 *                 system short or long format dependant on setting of option
-	 *				   as DATE_SHORTDATE or DATE_LONGDATE. bIncludeTime (optional) includes time.
+	 *                 system short or long format  or as a relative value
+	 *				   cTime - the time
+	 *				   option - DATE_SHORTDATE or DATE_LONGDATE
+	 *				   bIncluedeTime - whether to show time as well as date
+	 *				   bRelative - if true then relative time is shown if reasonable 
+	 *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
+	 *				   rather than locale
 	 * RETURN      :   CString containing date/time
 	 */
 	static CString FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime=true,
@@ -173,7 +178,6 @@ public:
 	/**
 	 *	Converts a given time to a relative display string (relative to current time)
 	 *	Given time must be in local timezone
-	 *  If more than a year ago or in the future then normal date/time is shown
 	 */
 	static CString ToRelativeTimeString(CTime time);
 
@@ -183,8 +187,6 @@ private:
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
 	/**
 	 *	Generates a display string showing the relative time between the two given times as COleDateTimes
-	 *	time must be earlier than RelativeTo
-	 *  If more than a year ago or time > RelativeTo then an empty string is returned
 	 */
 	static CString ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo);
 };

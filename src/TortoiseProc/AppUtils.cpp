@@ -1613,7 +1613,6 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
 /**
  *	Converts a given time to a relative display string (relative to current time)
  *	Given time must be in local timezone
- *  If more than a year ago or in the future then normal date/time is shown
  */
 CString CAppUtils::ToRelativeTimeString(CTime time)
 {
@@ -1629,8 +1628,6 @@ CString CAppUtils::ToRelativeTimeString(CTime time)
 
 /**
  *	Generates a display string showing the relative time between the two given times as COleDateTimes
- *	time must be earlier than RelativeTo
- *  If more than a year ago or time > RelativeTo then an empty string is returned
  */
 CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
 {
@@ -1639,7 +1636,7 @@ CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeT
     //years
 	if(fabs(ts.GetTotalDays()) >= 3*365)
     {
-		answer .FormatMessage(_T("%1!d! Years ago"), (int)(ts.GetTotalDays()/365));
+		answer.FormatMessage(_T("%1!d! Years ago"), (int)(ts.GetTotalDays()/365));
 	}
 	//Months
 	if(fabs(ts.GetTotalDays()) >= 60)
