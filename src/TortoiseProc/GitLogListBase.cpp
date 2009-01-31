@@ -1477,7 +1477,6 @@ UINT CGitLogListBase::LogThread()
 #endif
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
-	int index=0;
 	unsigned int updated=0;
 	int percent=0;
 	CRect rect;

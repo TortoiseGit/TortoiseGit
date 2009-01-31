@@ -82,8 +82,7 @@ public:
 		FILELIST_PATH
 	};
 
-	void SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit, 
-		BOOL bStrict = CRegDWORD(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE), BOOL bSaveStrict = TRUE);
+	void SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit);
 	void SetIncludeMerge(bool bInclude = true) {m_bIncludeMerges = bInclude;}
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
@@ -231,11 +230,8 @@ private:
 	long				m_logcounter;
 	bool				m_bCancelled;
 	
-	BOOL				m_bStrict;
-
 	BOOL				m_bIncludeMerges;
 	git_revnum_t		m_lowestRev;
-	BOOL				m_bSaveStrict;
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
 	CTGitPathList		m_currentChangedPathList;
@@ -264,7 +260,6 @@ private:
 	bool                m_bAscending;
 	static int			m_nSortColumnPathList;
 	static bool			m_bAscendingPathList;
-	CRegDWORD			m_regLastStrict;
 	//CRegDWORD			m_regMaxBugIDColWidth;
 	CButton				m_cHidePaths;
 	bool				m_bShowedAll;

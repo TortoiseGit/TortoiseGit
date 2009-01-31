@@ -64,17 +64,11 @@ bool LogCommand::Execute()
 		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		limit = (int)(LONG)reg;
 	}
-	BOOL bStrict = (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE);
-	if (parser.HasKey(_T("strict")))
-	{
-		bStrict = TRUE;
-	}
-
 	
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	//dlg.SetParams(cmdLinePath);
-	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit, bStrict);
+	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit);
 //	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
 //	val = parser.GetVal(_T("propspath"));
 //	if (!val.IsEmpty())

@@ -60,7 +60,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_nSortColumn(0)
 	, m_bShowedAll(false)
 	, m_bSelect(false)
-	, m_regLastStrict(_T("Software\\TortoiseGit\\LastLogStrict"), FALSE)
 	
 	, m_bSelectionMustBeContinuous(false)
 	, m_bShowBugtraqColumn(false)
@@ -99,7 +98,6 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESS, m_LogProgress);
 	DDX_Control(pDX, IDC_SPLITTERTOP, m_wndSplitter1);
 	DDX_Control(pDX, IDC_SPLITTERBOTTOM, m_wndSplitter2);
-	DDX_Check(pDX, IDC_CHECK_STOPONCOPY, m_bStrict);
 	DDX_Text(pDX, IDC_SEARCHEDIT, m_LogList.m_sFilterText);
 	DDX_Control(pDX, IDC_DATEFROM, m_DateFrom);
 	DDX_Control(pDX, IDC_DATETO, m_DateTo);
@@ -138,7 +136,6 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	
-	ON_BN_CLICKED(IDC_CHECK_STOPONCOPY, &CLogDlg::OnBnClickedCheckStoponcopy)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
 	ON_WM_SIZE()
@@ -150,7 +147,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
 END_MESSAGE_MAP()
 
-void CLogDlg::SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit, BOOL bStrict /* = FALSE */, BOOL bSaveStrict /* = TRUE */)
+void CLogDlg::SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit /* = FALSE */)
 {
 	m_path = path;
 	m_pegrev = pegrev;
@@ -158,8 +155,6 @@ void CLogDlg::SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, G
 	m_LogRevision = startrev;
 	m_endrev = endrev;
 	m_hasWC = !path.IsUrl();
-	m_bStrict = bStrict;
-	m_bSaveStrict = bSaveStrict;
 	m_limit = limit;
 	if (::IsWindow(m_hWnd))
 		UpdateData(FALSE);
@@ -180,8 +175,6 @@ BOOL CLogDlg::OnInitDialog()
 	m_bVista = (fullver >= 0x0600);
 
 	// use the state of the "stop on copy/rename" option from the last time
-	if (!m_bStrict)
-		m_bStrict = m_regLastStrict;
 	UpdateData(FALSE);
 	
 	// set the font to use in the log message view, configured in the settings dialog
@@ -234,7 +227,6 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetValidator(this);
 	
 	AdjustControlSize(IDC_HIDEPATHS);
-	AdjustControlSize(IDC_CHECK_STOPONCOPY);
 	AdjustControlSize(IDC_INCLUDEMERGE);
 
 	GetClientRect(m_DlgOrigRect);
@@ -262,7 +254,6 @@ BOOL CLogDlg::OnInitDialog()
 
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);	
 	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);	
-	AddAnchor(IDC_CHECK_STOPONCOPY, BOTTOM_LEFT);
 	AddAnchor(IDC_INCLUDEMERGE, BOTTOM_LEFT);
 	AddAnchor(IDC_GETALL, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
@@ -396,7 +387,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 
 		//DialogEnableWindow(IDC_GETALL, FALSE);
 		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
-		DialogEnableWindow(IDC_CHECK_STOPONCOPY, FALSE);
 		DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		DialogEnableWindow(IDC_REFRESH, FALSE);
@@ -729,8 +719,6 @@ void CLogDlg::OnCancel()
 		//m_LogList.TerminateThread();
 	}
 	UpdateData();
-	if (m_bSaveStrict)
-		m_regLastStrict = m_bStrict;
 	
 	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	reg = m_btnShow.GetCurrentEntry();
@@ -1235,8 +1223,6 @@ void CLogDlg::OnOK()
 		}
 	}
 	UpdateData();
-	if (m_bSaveStrict)
-		m_regLastStrict = m_bStrict;
 	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	reg = m_btnShow.GetCurrentEntry();
 	SaveSplitterPos();
@@ -1790,7 +1776,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		m_nSearchIndex = pNMLV->iItem;
 		if (pNMLV->iSubItem != 0)
 			return;
-		if ((pNMLV->iItem == m_LogList.m_arShownList.GetCount())&&(m_bStrict)&&(1/*m_bStrictStopped*/))
+		if ((pNMLV->iItem == m_LogList.m_arShownList.GetCount()))
 		{
 			// remove the selected state
 			if (pNMLV->uChanged & LVIF_STATE)
