@@ -2,6 +2,16 @@
 #include "GitRev.h"
 #include "Git.h"
 
+// provide an ASSERT macro for when compiled without MFC
+#if !defined ASSERT
+	#ifdef _DEBUG
+		#define ASSERT(x) {if(!(x)) _asm{int 0x03}}
+	#else
+		#define ASSERT(x)	
+	#endif
+#endif
+
+
 GitRev::GitRev(void)
 {
 	m_Action=0;
@@ -69,7 +79,6 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 	this->m_Files.Clear();
     m_Action=0;
 	int begintime=0;
-	BYTE *p=&log[0];
 	int filebegin=-1;
 
 	while( pos < log.size() && pos>=0)
@@ -197,7 +206,7 @@ CTime GitRev::ConverFromString(CString input)
 	SYSTEMTIME sysTime;
 	tm.GetAsSystemTime( sysTime );
 	TIME_ZONE_INFORMATION timeZone;
-	if ( GetTimeZoneInformation( &timeZone ) == TIME_ZONE_ID_UNKNOWN )
+	if ( GetTimeZoneInformation( &timeZone ) == TIME_ZONE_ID_INVALID )
 	{
 		ASSERT(false);
 	}
