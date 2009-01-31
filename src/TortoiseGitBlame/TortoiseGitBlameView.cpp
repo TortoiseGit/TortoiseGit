@@ -2483,8 +2483,8 @@ void CTortoiseGitBlameView::UpdateInfo()
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 	SendEditor(SCI_SETREADONLY, TRUE);
 
-	m_lowestrev=1;
-	m_highestrev=this->GetLogData()->size();
+	m_lowestrev=0;
+	m_highestrev=this->GetLogData()->size()+m_NoListCommit.size();
 
 	GetBlameWidth();
 	CRect rect;
