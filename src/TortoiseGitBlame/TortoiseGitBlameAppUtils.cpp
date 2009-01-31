@@ -158,8 +158,6 @@ CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeT
 CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
 {
 	CString answer;
-	answer.LoadString(9604);
-	answer.LoadString(9605);
 	if ( count == 1 )
 	{
 		answer.FormatMessage( format_1, count );
