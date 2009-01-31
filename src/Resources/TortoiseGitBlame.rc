@@ -100,6 +100,9 @@ BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_FILE_SAVE
+	SEPARATOR
+	BUTTON		ID_VIEW_PREV 
+	BUTTON		ID_VIEW_NEXT
     SEPARATOR
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
@@ -115,6 +118,9 @@ BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_FILE_SAVE
+	SEPARATOR
+	BUTTON		ID_VIEW_PREV
+	BUTTON		ID_VIEW_NEXT
     SEPARATOR
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
@@ -388,6 +394,8 @@ BEGIN
     ID_HELP_USING           "Display instructions about how to use help\nHelp"
     ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
     ID_HELP                 "Display help for current task or command\nHelp"
+	ID_VIEW_NEXT			"Show next change of selected commit\nShow next"
+	ID_VIEW_PREV			"Show previous change of selected commit\nShow previous"
 END
 
 STRINGTABLE 
