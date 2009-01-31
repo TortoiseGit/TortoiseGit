@@ -107,7 +107,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	}
 	// get relative time display setting from registry
 	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
-	m_bRelativeTimes = regRelativeTimes;
+	m_bRelativeTimes = (regRelativeTimes != 0);
 }
 
 CGitLogListBase::~CGitLogListBase()

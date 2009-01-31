@@ -234,7 +234,7 @@ protected:
 	
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
-	BOOL				m_bRelativeTimes;	// Show relative times
+	bool				m_bRelativeTimes;	// Show relative times
 };
 
 

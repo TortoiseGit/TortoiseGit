@@ -1635,40 +1635,60 @@ CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeT
     //years
 	if(fabs(ts.GetTotalDays()) >= 3*365)
     {
-		answer.FormatMessage(_T("%1!d! Years ago"), (int)(ts.GetTotalDays()/365));
+		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/365, IDS_YEAR_AGO, IDS_YEARS_AGO );
 	}
 	//Months
 	if(fabs(ts.GetTotalDays()) >= 60)
 	{
-		answer.FormatMessage( _T("%1!d! Months ago"), (int)(ts.GetTotalDays()/30) );
+		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/30, IDS_MONTH_AGO, IDS_MONTHS_AGO );
 		return answer;
 	}
 	//Weeks
 	if(fabs(ts.GetTotalDays()) >= 14)
 	{
-		answer.FormatMessage(_T("%1!d! Weeks ago"), (int)(ts.GetTotalDays()/7) );
+		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/7, IDS_WEEK_AGO, IDS_WEEKS_AGO );
 		return answer;
 	}
 	//Days
 	if(fabs(ts.GetTotalDays()) >= 2)
 	{
-		answer.FormatMessage(_T("%1!d! Days ago"), (int)(ts.GetTotalDays()) );
+		answer = ExpandRelativeTime( (int)ts.GetTotalDays(), IDS_DAY_AGO, IDS_DAYS_AGO );
 		return answer;
 	}
 	//hours
 	if(fabs(ts.GetTotalHours()) >= 2)
 	{
-		answer.FormatMessage(_T("%1!d! Hours ago"), (int)(ts.GetTotalHours()) );
+		answer = ExpandRelativeTime( (int)ts.GetTotalHours(), IDS_HOUR_AGO, IDS_HOURS_AGO );
 		return answer;
 	}
 	//minutes
 	if(fabs(ts.GetTotalMinutes()) >= 2)
 	{
-		answer.FormatMessage(_T("%1!d! Minutes ago"), (int)(ts.GetTotalMinutes()) );
+		answer = ExpandRelativeTime( (int)ts.GetTotalMinutes(), IDS_MINUTE_AGO, IDS_MINUTES_AGO );
 		return answer;
 	}
 	//seconds
-	answer.FormatMessage(_T("%1!d! Seconds ago"), (int)(ts.GetTotalSeconds()) );
+		answer = ExpandRelativeTime( (int)ts.GetTotalSeconds(), IDS_SECOND_AGO, IDS_SECONDS_AGO );
     return answer;
+}
+
+/** 
+ * Passed a value and two resource string ids
+ * if count is 1 then FormatString is called with format_1 and the value
+ * otherwise format_2 is used
+ * the formatted string is returned
+*/
+CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
+{
+	CString answer;
+	if ( count == 1 )
+	{
+		answer.FormatMessage( format_1, count );
+	}
+	else
+	{
+		answer.FormatMessage( format_n, count );
+	}
+	return answer;
 }
 

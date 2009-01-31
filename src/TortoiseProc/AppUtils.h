@@ -189,4 +189,5 @@ private:
 	 *	Generates a display string showing the relative time between the two given times as COleDateTimes
 	 */
 	static CString ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo);
+	static CString ExpandRelativeTime( int count, UINT format_1, UINT format_n );
 };
