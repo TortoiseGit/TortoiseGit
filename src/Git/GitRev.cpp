@@ -17,6 +17,11 @@ GitRev::GitRev(void)
 	m_Action=0;
 	m_IsFull = 0;
 	m_IsUpdateing = 0;
+	// fetch local machine timezone info
+	if ( GetTimeZoneInformation( &m_TimeZone ) == TIME_ZONE_ID_INVALID )
+	{
+		ASSERT(false);
+	}
 }
 
 GitRev::~GitRev(void)
@@ -205,22 +210,14 @@ CTime GitRev::ConverFromString(CString input)
 	// get local timezone
 	SYSTEMTIME sysTime;
 	tm.GetAsSystemTime( sysTime );
-	TIME_ZONE_INFORMATION timeZone;
-	if ( GetTimeZoneInformation( &timeZone ) == TIME_ZONE_ID_INVALID )
+	SYSTEMTIME local;
+	if ( SystemTimeToTzSpecificLocalTime( &m_TimeZone, &sysTime, &local ) )
 	{
-		ASSERT(false);
+		sysTime = local;
 	}
 	else
 	{
-		SYSTEMTIME local;
-		if ( SystemTimeToTzSpecificLocalTime( &timeZone, &sysTime, &local ) )
-		{
-			sysTime = local;
-		}
-		else
-		{
-			ASSERT(false);
-		}
+		ASSERT(false);
 	}
 	tm = CTime( sysTime, 0 );
 	return tm;

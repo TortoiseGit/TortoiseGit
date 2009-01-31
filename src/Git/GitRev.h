@@ -70,4 +70,7 @@ public:
 	volatile LONG m_IsUpdateing;
 	
 	int SafeFetchFullInfo(CGit *git);
+
+private:
+	TIME_ZONE_INFORMATION m_TimeZone;
 };

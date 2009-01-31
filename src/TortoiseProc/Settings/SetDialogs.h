@@ -50,7 +50,9 @@ protected:
 private:
 	CToolTips		m_tooltips;
 	BOOL			m_bShortDateFormat;
+	BOOL			m_bRelativeTimes;
 	CRegDWORD		m_regShortDateFormat;
+	CRegDWORD		m_regRelativeTimes;
 	BOOL			m_bUseSystemLocaleForDates;
 	CRegDWORD		m_regUseSystemLocaleForDates;
 	CRegDWORD		m_regAutoClose;

@@ -105,6 +105,9 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	{
 		m_DateFormat = DATE_LONGDATE;
 	}
+	// get relative time display setting from registry
+	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
+	m_bRelativeTimes = regRelativeTimes;
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -862,7 +865,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_DATE: //Date
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText,
-				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, true ), 
+				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, m_bRelativeTimes ), 
 				pItem->cchTextMax);
 		break;
 		
@@ -1156,7 +1159,8 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
 					(LPCTSTR)sRev, pLogEntry->m_CommitHash,
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->m_AuthorName,
-					(LPCTSTR)sDate, (LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat ),
+					(LPCTSTR)sDate, 
+					(LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, m_bRelativeTimes ),
 					(LPCTSTR)sMessage, pLogEntry->m_Subject+_T("\r\n")+pLogEntry->m_Body,
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;

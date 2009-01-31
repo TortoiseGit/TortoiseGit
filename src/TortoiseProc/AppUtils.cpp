@@ -1622,8 +1622,7 @@ CString CAppUtils::ToRelativeTimeString(CTime time)
 	time.GetAsSystemTime( sysTime );
 	COleDateTime oleTime( sysTime );
 	answer = ToRelativeTimeString(oleTime, COleDateTime::GetCurrentTime());
-	// change this to return answer when happy
-	return CAppUtils::FormatDateAndTime( time, DATE_SHORTDATE) + " " + answer;
+	return answer;
 }
 
 /**

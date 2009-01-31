@@ -33,6 +33,7 @@ CSetDialogs::CSetDialogs()
 	: ISettingsPropPage(CSetDialogs::IDD)
 	, m_sDefaultLogs(_T(""))
 	, m_bShortDateFormat(FALSE)
+	, m_bRelativeTimes(FALSE)
 	, m_dwFontSize(0)
 	, m_sFontName(_T(""))
 	, m_bUseWCURL(FALSE)
@@ -45,6 +46,7 @@ CSetDialogs::CSetDialogs()
 	m_regAutoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoClose"));
 	m_regDefaultLogs = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
+	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
 	m_regUseSystemLocaleForDates = CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	m_regFontName = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8);
@@ -73,6 +75,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
 	DDX_Text(pDX, IDC_DEFAULTLOG, m_sDefaultLogs);
 	DDX_Check(pDX, IDC_SHORTDATEFORMAT, m_bShortDateFormat);
+	DDX_Check(pDX, IDC_RELATIVETIMES, m_bRelativeTimes);
 	DDX_Control(pDX, IDC_AUTOCLOSECOMBO, m_cAutoClose);
 	DDX_Check(pDX, IDC_WCURLFROM, m_bUseWCURL);
 	DDX_Text(pDX, IDC_CHECKOUTPATH, m_sDefaultCheckoutPath);
@@ -86,6 +89,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_DEFAULTLOG, OnChange)
 	ON_BN_CLICKED(IDC_SHORTDATEFORMAT, OnChange)
+	ON_BN_CLICKED(IDC_RELATIVETIMES, OnChange)
 	ON_BN_CLICKED(IDC_SYSTEMLOCALEFORDATES, OnChange)
 	ON_CBN_SELCHANGE(IDC_FONTSIZES, OnChange)
 	ON_CBN_SELCHANGE(IDC_FONTNAMES, OnChange)
@@ -121,6 +125,7 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_dwAutoClose = m_regAutoClose;
 	m_bShortDateFormat = m_regShortDateFormat;
+	m_bRelativeTimes = m_regRelativeTimes;
 	m_bUseSystemLocaleForDates = m_regUseSystemLocaleForDates;
 	m_sFontName = m_regFontName;
 	m_dwFontSize = m_regFontSize;
@@ -143,6 +148,7 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SHORTDATEFORMAT, IDS_SETTINGS_SHORTDATEFORMAT_TT);
+	m_tooltips.AddTool(IDC_RELATIVETIMES, IDS_SETTINGS_RELATIVETIMES_TT);
 	m_tooltips.AddTool(IDC_SYSTEMLOCALEFORDATES, IDS_SETTINGS_USESYSTEMLOCALEFORDATES_TT);
 	m_tooltips.AddTool(IDC_AUTOCLOSECOMBO, IDS_SETTINGS_AUTOCLOSE_TT);
 	m_tooltips.AddTool(IDC_WCURLFROM, IDS_SETTINGS_USEWCURL_TT);
@@ -201,6 +207,7 @@ BOOL CSetDialogs::OnApply()
 
     Store (m_dwAutoClose, m_regAutoClose);
 	Store (m_bShortDateFormat, m_regShortDateFormat);
+	Store (m_bRelativeTimes, m_regRelativeTimes);
     Store (m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
 
     long val = _ttol(m_sDefaultLogs);
