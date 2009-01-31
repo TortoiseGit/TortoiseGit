@@ -346,15 +346,12 @@ void CCommitDlg::OnOK()
 	CDWordArray arDeleted;
 	//first add all the unversioned files the user selected
 	//and check if all versioned files are selected
-	int nUnchecked = 0;
 	int nchecked = 0;
 	m_bRecursive = true;
 	int nListItems = m_ListCtrl.GetItemCount();
 
 	CTGitPathList itemsToAdd;
 	CTGitPathList itemsToRemove;
-	bool bCheckedInExternal = false;
-	bool bHasConflicted = false;
 	//std::set<CString> checkedLists;
 	//std::set<CString> uncheckedLists;
 
@@ -1475,7 +1472,8 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	{
 		GitRev rev;
 		BYTE_VECTOR vector;
-		g_Git.GetLog(vector,CString(_T("HEAD")),NULL,1);
+		CString head(_T("HEAD"));
+		g_Git.GetLog(vector,head,NULL,1);
 		rev.ParserFromLog(vector);
 		m_AmendStr=rev.m_Subject+_T("\n\n")+rev.m_Body;
 	}

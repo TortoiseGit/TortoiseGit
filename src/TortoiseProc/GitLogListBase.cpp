@@ -1834,7 +1834,7 @@ void CGitLogListBase::OnDestroy()
 	}
 	while(m_LogCache.SaveCache())
 	{
-		if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk,click yes for retry, click no for give up"),_T("TortoiseGit"),
+		if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."),_T("TortoiseGit"),
 							MB_YESNO) == IDNO)
 							break;
 	}
