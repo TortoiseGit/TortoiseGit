@@ -4315,7 +4315,11 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				// brown  : missing, deleted, replaced
 				// green  : merged (or potential merges)
 				// red    : conflicts or sure conflicts
-				if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+				if(entry->m_Action & CTGitPath::LOGACTIONS_GRAY)
+				{
+					crText = RGB(128,128,128);
+
+				}else if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 				{
 					crText = m_Colors.GetColor(CColors::Conflict);
 
@@ -5318,8 +5322,12 @@ int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 	m_arStatusArray.clear();
 	for(int i=0;i<list.GetCount();i++)
 	{
-		CTGitPath * gitpatch=(CTGitPath*)&list[i];
-		gitpatch->m_Checked = TRUE;
+		CTGitPath * gitpath=(CTGitPath*)&list[i];
+		
+		if(gitpath ->m_Action & CTGitPath::LOGACTIONS_HIDE)
+			continue;
+
+		gitpath->m_Checked = TRUE;
 		m_arStatusArray.push_back((CTGitPath*)&list[i]);
 	}
 	return 0;

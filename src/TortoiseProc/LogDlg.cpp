@@ -387,7 +387,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 
 		//DialogEnableWindow(IDC_GETALL, FALSE);
 		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
-		DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
+		//DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
@@ -399,9 +399,10 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
 		DialogEnableWindow(IDC_GETALL, TRUE);
-		//DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
+		DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
+		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
@@ -540,6 +541,21 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
 			CAppUtils::FormatTextInRichEditControl(pMsgView);
 
+			int HidePaths=m_cHidePaths.GetState() & 0x0003;
+			CString matchpath=this->m_path.GetGitPathString();
+
+			for(int i=0;i<pLogEntry->m_Files.GetCount() && (!matchpath.IsEmpty());i++)
+			{
+				((CTGitPath&)pLogEntry->m_Files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
+				
+				if(pLogEntry->m_Files[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
+				{
+					if(HidePaths==BST_CHECKED)
+						((CTGitPath&)pLogEntry->m_Files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+					if(HidePaths==BST_INDETERMINATE)
+						((CTGitPath&)pLogEntry->m_Files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
+				}
+			}
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
@@ -547,24 +563,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
-#if 0
-		// fill in the changed files list control
-		if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
-		{
-			m_CurrentFilteredChangedArray.RemoveAll();
-			for (INT_PTR c = 0; c < m_currentChangedArray->GetCount(); ++c)
-			{
-				LogChangedPath * cpath = m_currentChangedArray->GetAt(c);
-				if (cpath == NULL)
-					continue;
-				if (m_currentChangedArray->GetAt(c)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
-				{
-					m_CurrentFilteredChangedArray.Add(cpath);
-				}
-			}
-			m_currentChangedArray = &m_CurrentFilteredChangedArray;
-		}
-#endif
+
 	}
 	else
 	{
