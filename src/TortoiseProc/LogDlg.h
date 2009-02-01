@@ -135,7 +135,7 @@ protected:
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnBnClickedIncludemerge();
+	afx_msg void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
 	afx_msg void OnRefresh();
 	afx_msg void OnFind();
@@ -232,6 +232,7 @@ private:
 	bool				m_bCancelled;
 	
 	BOOL				m_bIncludeMerges;
+	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
 
 	git_revnum_t		m_lowestRev;

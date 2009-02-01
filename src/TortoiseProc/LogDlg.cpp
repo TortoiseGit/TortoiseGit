@@ -81,7 +81,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 	m_bAllBranch=FALSE;
-	
+	m_bFirstParent=FALSE;
 }
 
 CLogDlg::~CLogDlg()
@@ -106,7 +106,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_GETALL, m_btnShow);
 	DDX_Control(pDX, IDC_SHOWWHOLEPROJECT,m_btnShowWholeProject);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
-	DDX_Check(pDX, IDC_INCLUDEMERGE, m_bIncludeMerges);
+	DDX_Check(pDX, IDC_LOG_FIRSTPARENT, m_bFirstParent);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 }
@@ -143,7 +143,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
 	ON_WM_SIZE()
-	ON_BN_CLICKED(IDC_INCLUDEMERGE, &CLogDlg::OnBnClickedIncludemerge)
+	ON_BN_CLICKED(IDC_LOG_FIRSTPARENT, &CLogDlg::OnBnClickedFirstParent)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnRefresh)
 	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
@@ -231,7 +231,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetValidator(this);
 	
 	AdjustControlSize(IDC_HIDEPATHS);
-	AdjustControlSize(IDC_INCLUDEMERGE);
+	AdjustControlSize(IDC_LOG_FIRSTPARENT);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 
 	GetClientRect(m_DlgOrigRect);
@@ -260,7 +260,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);	
 	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);	
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
-	AddAnchor(IDC_INCLUDEMERGE, BOTTOM_LEFT);
+	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
 	AddAnchor(IDC_GETALL, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
@@ -393,7 +393,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 
 		//DialogEnableWindow(IDC_GETALL, FALSE);
 		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
-		//DialogEnableWindow(IDC_INCLUDEMERGE, FALSE);
+		//DialogEnableWindow(IDC_LOG_FIRSTPARENT, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
@@ -405,7 +405,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
 		DialogEnableWindow(IDC_GETALL, TRUE);
-		DialogEnableWindow(IDC_INCLUDEMERGE, TRUE);
+		DialogEnableWindow(IDC_LOG_FIRSTPARENT, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
@@ -417,12 +417,16 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		m_LogList.GetTimeRange(begin,end);
 		m_DateFrom.SetTime(&begin);
 		m_DateTo.SetTime(&end);
-
+		
+		
 	
 	}else
 	{
 		if(this->m_LogList.HasText())
+		{
 			this->m_LogList.ClearText();
+			UpdateLogInfoLabel();
+		}
 		m_LogProgress.SetPos(cur);
 	}
 	return 0;
@@ -2664,15 +2668,6 @@ void CLogDlg::OnBnClickedCheckStoponcopy()
 	Refresh();
 }
 
-void CLogDlg::OnBnClickedIncludemerge()
-{
-#if 0
-	m_endrev = 0;
-
-	m_limit = 0;
-#endif
-	Refresh();
-}
 
 void CLogDlg::UpdateLogInfoLabel()
 {
@@ -3376,4 +3371,20 @@ void CLogDlg::OnBnClickedAllBranch()
 	m_LogList.Refresh();
 
 	FillLogMessageCtrl(false);
+}
+
+
+void CLogDlg::OnBnClickedFirstParent()
+{
+	this->UpdateData();
+
+	if(this->m_bFirstParent)
+		m_LogList.m_ShowMask|=CGit::LOG_INFO_FIRST_PARENT;
+	else
+		m_LogList.m_ShowMask&=~CGit::LOG_INFO_FIRST_PARENT;
+
+	m_LogList.Refresh();
+
+	FillLogMessageCtrl(false);
+
 }
