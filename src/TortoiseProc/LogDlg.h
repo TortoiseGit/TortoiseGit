@@ -129,6 +129,7 @@ protected:
 	afx_msg void OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
+	afx_msg void OnBnClickedAllBranch();
 	afx_msg void OnBnClickedCheckStoponcopy();
 	
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
@@ -231,6 +232,8 @@ private:
 	bool				m_bCancelled;
 	
 	BOOL				m_bIncludeMerges;
+	BOOL				m_bAllBranch;
+
 	git_revnum_t		m_lowestRev;
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

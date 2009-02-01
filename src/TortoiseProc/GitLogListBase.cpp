@@ -1545,10 +1545,16 @@ UINT CGitLogListBase::LogThread()
 
 void CGitLogListBase::Refresh()
 {
+	m_bExitThread=TRUE;
+	DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
+	if(ret == WAIT_TIMEOUT)
+		TerminateThread();
+
 	if(!m_bThreadRunning)
 	{
 		this->SetItemCountEx(0);
 		m_logEntries.clear();
+		m_bExitThread=FALSE;
 		InterlockedExchange(&m_bThreadRunning, TRUE);
 		InterlockedExchange(&m_bNoDispUpdates, TRUE);
 		if (AfxBeginThread(LogThreadEntry, this)==NULL)

@@ -80,6 +80,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bVista(false)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
+	m_bAllBranch=FALSE;
 	
 }
 
@@ -106,6 +107,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SHOWWHOLEPROJECT,m_btnShowWholeProject);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_INCLUDEMERGE, m_bIncludeMerges);
+	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 }
 
@@ -119,6 +121,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
+
 	
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
@@ -135,6 +138,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST	, OnLvnColumnclick)
 	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
+	ON_BN_CLICKED(IDC_LOG_ALLBRANCH,OnBnClickedAllBranch)
 	
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
@@ -228,6 +232,7 @@ BOOL CLogDlg::OnInitDialog()
 	
 	AdjustControlSize(IDC_HIDEPATHS);
 	AdjustControlSize(IDC_INCLUDEMERGE);
+	AdjustControlSize(IDC_LOG_ALLBRANCH);
 
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
@@ -254,6 +259,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);	
 	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);	
+	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
 	AddAnchor(IDC_INCLUDEMERGE, BOTTOM_LEFT);
 	AddAnchor(IDC_GETALL, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
@@ -3356,4 +3362,18 @@ void CLogDlg::OnEnChangeSearchedit()
 	else
 		KillTimer(LOGFILTER_TIMER);
 
+}
+
+void CLogDlg::OnBnClickedAllBranch()
+{
+	this->UpdateData();
+
+	if(this->m_bAllBranch)
+		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
+	else
+		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
+
+	m_LogList.Refresh();
+
+	FillLogMessageCtrl(false);
 }
