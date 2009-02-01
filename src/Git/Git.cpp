@@ -106,6 +106,8 @@ static BOOL FindGitPath()
 
 
 #define MAX_DIRBUFFER 1000
+#define CALL_OUTPUT_READ_CHUNK_SIZE 1024
+
 CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
 BOOL g_IsWingitDllload = TRUE;
@@ -279,20 +281,18 @@ BOOL CGit::IsInitRepos()
 
 	return FALSE;
 }
-int CGit::Run(CString cmd,BYTE_VECTOR *vector)
+int CGit::Run(CGitCall* pcall)
 {
 	PROCESS_INFORMATION pi;
 	HANDLE hRead;
-	if(RunAsync(cmd,&pi,&hRead))
+	if(RunAsync(pcall->GetCmd(),&pi,&hRead))
 		return GIT_ERROR_CREATE_PROCESS;
 
 	DWORD readnumber;
-	BYTE data;
-	while(ReadFile(hRead,&data,1,&readnumber,NULL))
+	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
+	while(ReadFile(hRead,data,CALL_OUTPUT_READ_CHUNK_SIZE,&readnumber,NULL))
 	{
-		//g_Buffer[readnumber]=0;
-		vector->push_back(data);
-//		StringAppend(output,g_Buffer,codes);
+		pcall->OnOutputData(data,readnumber);
 	}
 
 	
@@ -310,7 +310,25 @@ int CGit::Run(CString cmd,BYTE_VECTOR *vector)
 
 	CloseHandle(hRead);
 	return exitcode;
+}
+class CGitCall_ByteVector : public CGitCall
+{
+public:
+	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector):CGitCall(cmd),m_pvector(pvector){}
+	virtual bool OnOutputData(const BYTE* data, size_t size)
+	{
+		size_t oldsize=m_pvector->size();
+		m_pvector->resize(m_pvector->size()+size);
+		memcpy(&*(m_pvector->begin()+oldsize),data,size);
+		return false;
+	}
+	BYTE_VECTOR* m_pvector;
 
+};
+int CGit::Run(CString cmd,BYTE_VECTOR *vector)
+{
+	CGitCall_ByteVector call(cmd,vector);
+	return Run(&call);
 }
 int CGit::Run(CString cmd, CString* output,int code)
 {

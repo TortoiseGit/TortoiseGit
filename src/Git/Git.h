@@ -4,6 +4,21 @@
 #include "GitStatus.h"
 #include "GitAdminDir.h"
 
+class CGitCall
+{
+public:
+	CGitCall(CString cmd):m_Cmd(cmd){}
+
+	CString			GetCmd()const{return m_Cmd;}
+
+	//When this function returns 'true' the git command should be aborted.
+	//This behavior is not implemented yet.
+	virtual bool	OnOutputData(const BYTE* data, size_t size)=0;
+
+private:
+	CString m_Cmd;
+
+};
 
 class CGit
 {
@@ -19,6 +34,7 @@ public:
 	
 	int Run(CString cmd, CString* output,int code);
 	int Run(CString cmd, BYTE_VECTOR *byte_array);
+	int Run(CGitCall* pcall);
 
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, CString &filename);
