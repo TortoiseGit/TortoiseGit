@@ -1466,7 +1466,11 @@ UINT CGitLogListBase::LogThread()
 	FillGitShortLog();
 	
 	if(this->m_bExitThread)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		return 0;
+	}
 #if 0
 	RedrawItems(0, m_arShownList.GetCount());
 //	SetRedraw(false);
@@ -1518,7 +1522,11 @@ UINT CGitLogListBase::LogThread()
 			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)i,0);
 
 			if(m_bExitThread)
+			{
+				InterlockedExchange(&m_bThreadRunning, FALSE);
+				InterlockedExchange(&m_bNoDispUpdates, FALSE);
 				return 0;
+			}
 
 			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
 			if(percent == GITLOG_END)
@@ -1551,8 +1559,9 @@ void CGitLogListBase::Refresh()
 		TerminateThread();
 
 	this->Clear();
-
-	if(!m_bThreadRunning)
+	
+	//Assume Thread have exited
+	//if(!m_bThreadRunning)
 	{
 		this->SetItemCountEx(0);
 		m_logEntries.clear();

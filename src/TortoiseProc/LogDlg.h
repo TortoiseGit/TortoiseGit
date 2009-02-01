@@ -234,6 +234,7 @@ private:
 	BOOL				m_bIncludeMerges;
 	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
+	BOOL				m_bWholeProject;
 
 	git_revnum_t		m_lowestRev;
 	CTGitPathList	*   m_currentChangedArray;

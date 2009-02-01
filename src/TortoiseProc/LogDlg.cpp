@@ -82,6 +82,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 	m_bAllBranch=FALSE;
 	m_bFirstParent=FALSE;
+	m_bWholeProject=FALSE;
 }
 
 CLogDlg::~CLogDlg()
@@ -103,17 +104,16 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DATEFROM, m_DateFrom);
 	DDX_Control(pDX, IDC_DATETO, m_DateTo);
 	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
-	DDX_Control(pDX, IDC_GETALL, m_btnShow);
-	DDX_Control(pDX, IDC_SHOWWHOLEPROJECT,m_btnShowWholeProject);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_FIRSTPARENT, m_bFirstParent);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
+	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 }
 
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
-	ON_BN_CLICKED(IDC_GETALL, OnBnClickedGetall)
+	//ON_BN_CLICKED(IDC_GETALL, OnBnClickedGetall)
 	//ON_NOTIFY(NM_DBLCLK, IDC_LOGMSG, OnNMDblclkChangedFileList)
 	ON_WM_CONTEXTMENU()
 	ON_WM_SETCURSOR()
@@ -261,7 +261,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);	
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
-	AddAnchor(IDC_GETALL, BOTTOM_LEFT);
+	//AddAnchor(IDC_GETALL, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
@@ -328,30 +328,6 @@ BOOL CLogDlg::OnInitDialog()
 		GetDlgItem(IDOK)->ShowWindow(SW_HIDE);
 	}
 	
-	// set the choices for the "Show All" button
-	temp.LoadString(IDS_LOG_SHOWALL);
-	m_btnShow.AddEntry(temp);
-	CString format;
-	format.LoadString(IDS_LOG_SHOW_CURRENT_BRANCH);
-	temp.Format(format,g_Git.GetCurrentBranch());
-	m_btnShow.AddEntry(temp);
-	temp.LoadString(IDS_LOG_SHOW_FIRST_PARENT);
-	m_btnShow.AddEntry(temp);
-	temp.LoadString(IDS_LOG_SHOW_NO_MERGE);
-	m_btnShow.AddEntry(temp);
-	m_btnShow.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry")));
-
-	temp.LoadString(IDS_LOG_SHOW_WHOLE);
-	this->m_btnShowWholeProject.AddEntry(temp);
-	format.LoadString(IDS_LOG_SHOW_CURRENT_PATH);
-	temp.Format(format,m_path.GetGitPathString());
-	if(!m_path.IsEmpty())
-	{
-		this->m_btnShowWholeProject.AddEntry(temp);
-		this->m_btnShowWholeProject.SetCurrentEntry((LONG)CRegDWORD(_T("Software\\TortoiseGit\\ShowWholeProject")));
-	}
-
-
 	m_mergedRevs.clear();
 
 	// first start a thread to obtain the log messages without
@@ -404,7 +380,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 		//if (!m_bShowedAll)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
-		DialogEnableWindow(IDC_GETALL, TRUE);
+		//DialogEnableWindow(IDC_GETALL, TRUE);
 		DialogEnableWindow(IDC_LOG_FIRSTPARENT, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
@@ -556,6 +532,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			for(int i=0;i<pLogEntry->m_Files.GetCount() && (!matchpath.IsEmpty());i++)
 			{
+				if( m_bWholeProject )
+					break;
+
 				((CTGitPath&)pLogEntry->m_Files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
 				
 				if(pLogEntry->m_Files[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
@@ -612,62 +591,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 }
 
-void CLogDlg::OnBnClickedGetall()
-{
-	GetAll();
-}
-
-void CLogDlg::GetAll(bool bIsShowProjectOrBranch)
-{
-
-	// fetch all requested log messages, either the specified range or
-	// really *all* available log messages.
-	///UpdateData();
-	if(bIsShowProjectOrBranch)
-	{
-		INT_PTR entry = this->m_btnShowWholeProject.GetCurrentEntry();
-		switch (entry)
-		{
-			case 0:	// show whole Project
-				m_LogList.m_Path.Reset();
-				SetWindowText(m_sTitle + _T(" - ")+_T("whole project"));
-				break;
-			case 1: // show whole project
-				m_LogList.m_Path=this->m_path;
-				SetWindowText(m_sTitle + _T(" - ")+this->m_path.GetGitPathString());
-				break;
-		}
-
-	}else
-	{
-		INT_PTR entry = m_btnShow.GetCurrentEntry();
-		switch (entry)
-		{
-			case 0:	// show all branch
-				m_LogList.m_ShowMask=CGit::LOG_INFO_ALL_BRANCH;
-				break;
-			case 1: // show current branch
-				m_LogList.m_ShowMask=0;
-				break;
-			case 2: // first parent
-				m_LogList.m_ShowMask=CGit::LOG_INFO_FIRST_PARENT;
-				break;
-			case 3: // no merge
-				m_LogList.m_ShowMask=CGit::LOG_INFO_NO_MERGE;
-				break;
-		}
-	}
-
-	m_LogList.m_bExitThread=TRUE;
-	DWORD ret =::WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,20000);
-	if(ret == WAIT_TIMEOUT)
-		m_LogList.TerminateThread();
-	
-	m_LogList.Clear();
-	m_LogList.FetchLogAsync(this);
-
-}
-
 void CLogDlg::OnBnClickedRefresh()
 {
 	m_limit = 0;
@@ -679,10 +602,7 @@ void CLogDlg::Refresh (bool autoGoOnline)
 	m_LogList.Refresh();
 }
 
-void CLogDlg::OnBnClickShowWholeProject()
-{
-	GetAll(true);
-}
+
 
 BOOL CLogDlg::Cancel()
 {
@@ -729,12 +649,6 @@ void CLogDlg::OnCancel()
 	}
 	UpdateData();
 	
-	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
-	reg = m_btnShow.GetCurrentEntry();
-
-	reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowWholeProject"));
-	reg = m_btnShowWholeProject.GetCurrentEntry();
-
 	SaveSplitterPos();
 	__super::OnCancel();
 }
@@ -3255,9 +3169,11 @@ void CLogDlg::OnSize(UINT nType, int cx, int cy)
 
 void CLogDlg::OnRefresh()
 {
-	if (GetDlgItem(IDC_GETALL)->IsWindowEnabled())
+	//if (GetDlgItem(IDC_GETALL)->IsWindowEnabled())
 	{
 		m_limit = 0;
+		this->m_LogProgress.SetPos(0);
+		
 		Refresh (true);
 	}
 }
@@ -3368,7 +3284,7 @@ void CLogDlg::OnBnClickedAllBranch()
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
-	m_LogList.Refresh();
+	OnRefresh();
 
 	FillLogMessageCtrl(false);
 }
@@ -3383,7 +3299,29 @@ void CLogDlg::OnBnClickedFirstParent()
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_FIRST_PARENT;
 
-	m_LogList.Refresh();
+	OnRefresh();
+
+	FillLogMessageCtrl(false);
+
+}
+
+void CLogDlg::OnBnClickShowWholeProject()
+{
+	this->UpdateData();
+
+	if(this->m_bWholeProject)
+	{
+		m_LogList.m_Path.Reset();
+		SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
+	}
+	else
+	{
+		m_LogList.m_Path=m_path;
+		if(!m_path.IsEmpty())
+			SetWindowText(m_sTitle + _T(" - ") + m_path.GetGitPathString());
+	}
+	
+	OnRefresh();
 
 	FillLogMessageCtrl(false);
 
