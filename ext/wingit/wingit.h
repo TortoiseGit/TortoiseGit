@@ -13,7 +13,7 @@
 #ifndef _WINGIT_H_
 #define _WINGIT_H_
 
-#define WG_VERSION "0.1.6"
+#define WG_VERSION "0.1.7"
 
 
 #define DLLIMPORT __declspec(dllimport) __stdcall
@@ -56,6 +56,9 @@ enum WGFILESTATUS
 {
 	WGFS_Normal,
 	WGFS_Modified,
+	//WGFS_Staged,
+	//WGFS_Added,
+	WGFS_Conflicted,
 	WGFS_Deleted,
 
 	WGFS_Unknown = -1,
@@ -74,7 +77,6 @@ struct wgFile_s
 {
 	const char *sFileName;			// filename or directory relative to project root (using forward slashes)
 	int nStatus;					// the WGFILESTATUS of the file
-	int nStage;						// the stage number of the file (0 if unstaged)
 	int nFlags;						// a combination of WGFILEFLAGS
 
 	const BYTE* sha1;				// points to the BYTE[20] sha1 (NULL for directories, WGFF_Directory)

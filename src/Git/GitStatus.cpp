@@ -216,7 +216,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 
 	LPCSTR lpszSubPath = NULL;
 	CStringA sSubPath;
-	CString s = path.GetDirectory().GetWinPathString();
+	CString s = path.GetWinPathString();
 	if (s.GetLength() > sProjectRoot.GetLength())
 	{
 		sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
@@ -345,7 +345,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 	LPCSTR lpszSubPath = NULL;
 	CStringA sSubPath;
-	CString s = path.GetDirectory().GetWinPathString();
+	CString s = path.GetWinPathString();
 	if (s.GetLength() > sProjectRoot.GetLength())
 	{
 		sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
@@ -360,6 +360,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 	m_status.prop_status = m_status.text_status = git_wc_status_none;
 
+	// NOTE: currently wgEnumFiles will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
 	m_err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
 
 	/*m_err = git_client_status4 (&youngest,
@@ -378,7 +379,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 
 	// Error present if function is not under version control
-	if ((m_err != NULL) || /*(apr_hash_count(statushash) == 0)*/m_status.prop_status == git_wc_status_none)
+	if ((m_err != NULL) /*|| (apr_hash_count(statushash) == 0)*/)
 	{
 		status = NULL;
 //		return -2;	

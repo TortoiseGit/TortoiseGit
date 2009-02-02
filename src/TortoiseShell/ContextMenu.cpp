@@ -308,12 +308,12 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									fetchedstatus = status;
 									//if ((stat.status->entry)&&(stat.status->entry->lock_token))
 									//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-									//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-									//{
-									//	itemStates |= ITEMIS_FOLDER;
-									//	if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-									//		itemStates |= ITEMIS_FOLDERINGit;
-									//}
+									if ( askedpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+									{
+										itemStates |= ITEMIS_FOLDER;
+										if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+											itemStates |= ITEMIS_FOLDERINSVN;
+									}
 									//if ((stat.status->entry)&&(stat.status->entry->present_props))
 									//{
 									//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
@@ -402,14 +402,15 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 										fetchedstatus = status;
 										//if ((stat.status->entry)&&(stat.status->entry->lock_token))
 										//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-										//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-										//{
-										//	itemStates |= ITEMIS_FOLDER;
-										//	if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-										//		itemStates |= ITEMIS_FOLDERINGit;
-										//}
-										//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
-										//	itemStates |= ITEMIS_CONFLICTED;
+										if ( strpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+										{
+											itemStates |= ITEMIS_FOLDER;
+											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+												itemStates |= ITEMIS_FOLDERINSVN;
+										}
+										// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
+										if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
+											itemStates |= ITEMIS_CONFLICTED;
 										//if ((stat.status->entry)&&(stat.status->entry->present_props))
 										//{
 										//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
@@ -470,9 +471,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-// ? was this disabled because the /wc option does not work safely with Git? or because the code below didn't compile before?
-//				if (g_ShellCache.HasSVNAdminDir(child.toString().c_str(), FALSE))
-//					itemStates |= ITEMIS_INVERSIONEDFOLDER;
+				if (g_ShellCache.HasSVNAdminDir(child.toString().c_str(), FALSE))
+					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 				GlobalUnlock(medium.hGlobal);
 
 				// if the item is a versioned folder, check if there's a patch file
@@ -1064,10 +1064,12 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	int menuIndex = 0;
 	bool bAddSeparator = false;
 	bool bMenuEntryAdded = false;
+	bool bMenuEmpty = true;
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
 	bool bShowIcons = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
-	if (fullver <= 0x0500)
+	// ?? TortoiseSVN had this as (fullver <= 0x0500) this disabled icons in win2k, but icons work fine in win2k
+	if (fullver < 0x0500)
 		bShowIcons = false;
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
@@ -1077,7 +1079,8 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 			// another 'normal' menu entry after we insert a separator.
 			// we simply set a flag here, indicating that before the next
 			// 'normal' menu entry, a separator should be added.
-			bAddSeparator = true;
+			if (!bMenuEmpty)
+				bAddSeparator = true;
 		}
 		else
 		{
@@ -1150,6 +1153,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					{
 						InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons);
 						bMenuEntryAdded = true;
+						bMenuEmpty = false;
 					}
 					else
 					{
@@ -1171,7 +1175,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 										menuInfo[menuIndex].command,
 										uFlags);
 						if (!bIsTop)
+						{
 							bMenuEntryAdded = true;
+							bMenuEmpty = false;
+						}
 					}
 				}
 			}
