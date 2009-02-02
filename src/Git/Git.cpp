@@ -570,6 +570,16 @@ BOOL CGit::CheckMsysGitDir()
 	}
 	free(oldpath);
 
+	//setup ssh client
+	CRegString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
+	CString ssh=sshclient;
+//	ssh.Format(_T("\"%s\""),(CString)sshclient);
+
+	if(!ssh.IsEmpty())
+	{
+		_tputenv_s(_T("GIT_SSH"),ssh);
+	}
+
 	CString cmd,out;
 	cmd=_T("git.exe --version");
 	if(g_Git.Run(cmd,&out,CP_UTF8))
