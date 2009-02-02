@@ -43,7 +43,7 @@
 				<MergeRef Id="MFCLOC Policy" />
 			</Feature>
 			<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden" >
-				<!--<MergeRef Id="Ovlays" />-->
+				<MergeRef Id="Ovlays" />
 			</Feature>
 
 			<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow">
