@@ -33,6 +33,7 @@
 //#	include "PathUtils.h"
 #endif
 
+
 GitStatus::GitStatus(bool * pbCanceled)
 	: status(NULL)
 {
@@ -189,27 +190,58 @@ stdstring GitStatus::GetLastErrorMsg() const
 // static method
 git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth)
 {
-	git_wc_status_kind			statuskind = git_wc_status_none;
-#if 0
-	git_client_ctx_t * 			ctx;
+	git_wc_status_kind			statuskind;
+//	git_client_ctx_t * 			ctx;
 	
-	apr_pool_t *				pool;
-	git_error_t *				err;
+//	apr_pool_t *				pool;
+//	git_error_t *				err;
+	BOOL						err;
 	BOOL						isDir;
+	CString						sProjectRoot;
 
 	isDir = path.IsDirectory();
-	if (!path.HasAdminDir())
+	if (!path.HasAdminDir(&sProjectRoot))
 		return git_wc_status_none;
 
-	pool = git_pool_create (NULL);				// create the memory pool
+//	pool = git_pool_create (NULL);				// create the memory pool
 
-	git_error_clear(git_client_create_context(&ctx, pool));
+//	git_error_clear(git_client_create_context(&ctx, pool));
 
-	git_revnum_t youngest = Git_INVALID_REVNUM;
-	git_opt_revision_t rev;
-	rev.kind = git_opt_revision_unspecified;
-	err = git_client_status4 (&youngest,
-							path.GetGitApiPath(pool),
+//	git_revnum_t youngest = Git_INVALID_REVNUM;
+//	git_opt_revision_t rev;
+//	rev.kind = git_opt_revision_unspecified;
+	statuskind = git_wc_status_none;
+
+	const BOOL bIsRecursive = (depth == git_depth_infinity || depth == git_depth_unknown); // taken from SVN source
+
+	LPCSTR lpszSubPath = NULL;
+	CStringA sSubPath;
+	CString s = path.GetDirectory().GetWinPathString();
+	if (s.GetLength() > sProjectRoot.GetLength())
+	{
+		sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+		lpszSubPath = sSubPath;
+	}
+
+#if 1
+	// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
+	UINT nFlags = WGEFF_SingleFile;
+	if (!bIsRecursive)
+		nFlags |= WGEFF_NoRecurse;
+	if (!lpszSubPath)
+		// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
+		nFlags |= WGEFF_EmptyAsNormal;
+#else
+	// enumerate all files, recursively if requested
+	UINT nFlags = 0;
+	if (!bIsRecursive)
+		nFlags |= WGEFF_NoRecurse;
+#endif
+
+	err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
+
+	/*err = git_client_status4 (&youngest,
+							path.GetSVNApiPath(pool),
 							&rev,
 							getallstatus,
 							&statuskind,
@@ -220,18 +252,18 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 							FALSE,		//ignore externals
 							NULL,
 							ctx,
-							pool);
+							pool);*/
 
 	// Error present
 	if (err != NULL)
 	{
-		git_error_clear(err);
-		git_pool_destroy (pool);				//free allocated memory
+//		git_error_clear(err);
+//		git_pool_destroy (pool);				//free allocated memory
 		return git_wc_status_none;	
 	}
 
-	git_pool_destroy (pool);				//free allocated memory
-#endif
+//	git_pool_destroy (pool);				//free allocated memory
+
 	return statuskind;
 }
 
@@ -286,23 +318,51 @@ int GitStatus::GetStatusRanking(git_wc_status_kind status)
 
 git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false */, bool noignore /* = false */, bool noexternals /* = false */)
 {
-#if 0
-	apr_hash_t *				statushash;
-	apr_hash_t *				exthash;
-	apr_array_header_t *		statusarray;
-	const sort_item*			item;
+	// NOTE: unlike the SVN version this one does not cache the enumerated files, because in practice no code in all of
+	//       Tortoise uses this, all places that call GetStatus create a temp GitStatus object which gets destroyed right
+	//       after the call again
+
+//	apr_hash_t *				statushash;
+//	apr_hash_t *				exthash;
+//	apr_array_header_t *		statusarray;
+//	const sort_item*			item;
 	
-	git_error_clear(m_err);
-	statushash = apr_hash_make(m_pool);
-	exthash = apr_hash_make(m_pool);
-	git_revnum_t youngest = Git_INVALID_REVNUM;
-	git_opt_revision_t rev;
-	rev.kind = git_opt_revision_unspecified;
+//	git_error_clear(m_err);
+//	statushash = apr_hash_make(m_pool);
+//	exthash = apr_hash_make(m_pool);
+	git_revnum_t youngest = GIT_INVALID_REVNUM;
+//	git_opt_revision_t rev;
+//	rev.kind = git_opt_revision_unspecified;
+
+	CString sProjectRoot;
+	if ( !path.HasAdminDir(&sProjectRoot) )
+		return youngest;
+
 	struct hashbaton_t hashbaton;
-	hashbaton.hash = statushash;
-	hashbaton.exthash = exthash;
+//	hashbaton.hash = statushash;
+//	hashbaton.exthash = exthash;
 	hashbaton.pThis = this;
-	m_err = git_client_status4 (&youngest,
+
+	LPCSTR lpszSubPath = NULL;
+	CStringA sSubPath;
+	CString s = path.GetDirectory().GetWinPathString();
+	if (s.GetLength() > sProjectRoot.GetLength())
+	{
+		sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+		lpszSubPath = sSubPath;
+	}
+
+	// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
+	UINT nFlags = WGEFF_SingleFile | WGEFF_NoRecurse;
+	if (!lpszSubPath)
+		// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
+		nFlags |= WGEFF_EmptyAsNormal;
+
+	m_status.prop_status = m_status.text_status = git_wc_status_none;
+
+	m_err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
+
+	/*m_err = git_client_status4 (&youngest,
 							path.GetGitApiPath(m_pool),
 							&rev,
 							getstatushash,
@@ -314,32 +374,65 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 							noexternals,
 							NULL,
 							ctx,
-							m_pool);
+							m_pool);*/
 
 
 	// Error present if function is not under version control
-	if ((m_err != NULL) || (apr_hash_count(statushash) == 0))
+	if ((m_err != NULL) || /*(apr_hash_count(statushash) == 0)*/m_status.prop_status == git_wc_status_none)
 	{
 		status = NULL;
-		return -2;	
+//		return -2;	
+		return GIT_INVALID_REVNUM;
 	}
 
 	// Convert the unordered hash to an ordered, sorted array
-	statusarray = sort_hash (statushash,
+	/*statusarray = sort_hash (statushash,
 							  sort_compare_items_as_paths,
-							  m_pool);
+							  m_pool);*/
 
 	// only the first entry is needed (no recurse)
-	item = &APR_ARRAY_IDX (statusarray, 0, const sort_item);
+//	item = &APR_ARRAY_IDX (statusarray, 0, const sort_item);
 	
-	status = (git_wc_status2_t *) item->value;
-	
+//	status = (git_wc_status2_t *) item->value;
+	status = &m_status;
+
+	if (update)
+	{
+		const BYTE *sha1 = wgGetRevisionID(CStringA(sProjectRoot), NULL);
+		if (sha1)
+			youngest = ConvertHashToRevnum(sha1);
+	}
+
 	return youngest;
-#endif
-	return CString("");
 }
+
 git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& path, CTGitPath& retPath, bool update, git_depth_t depth, bool bNoIgnore /* = true */, bool bNoExternals /* = false */)
 {
+	static git_wc_status2 st;
+/*
+	m_fileCache.Reset();
+
+	m_fileCache.Init( CStringA( path.GetWinPathString().GetString() ) );
+MessageBox(NULL, path.GetWinPathString(), _T("GetFirstFile"), MB_OK);
+	m_fileCache.m_pFileIter = m_fileCache.m_pFiles;
+	st.text_status = git_wc_status_none;
+
+	if (m_fileCache.m_pFileIter)
+	{
+		switch(m_fileCache.m_pFileIter->nStatus)
+		{
+		case WGFS_Normal: st.text_status = git_wc_status_normal; break;
+		case WGFS_Modified: st.text_status = git_wc_status_modified; break;
+		case WGFS_Deleted: st.text_status = git_wc_status_deleted; break;
+		}
+
+		//retPath.SetFromGit((const char*)item->key);
+
+		m_fileCache.m_pFileIter = m_fileCache.m_pFileIter->pNext;
+	}
+
+	return &st;
+*/
 #if 0
 	const sort_item*			item;
 
@@ -392,6 +485,7 @@ git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& path, CTGitPat
 
 unsigned int GitStatus::GetVersionedCount() const
 {
+//	return /**/m_fileCache.GetFileCount();
 
 	unsigned int count = 0;
 #if 0
@@ -411,6 +505,24 @@ unsigned int GitStatus::GetVersionedCount() const
 
 git_wc_status2_t * GitStatus::GetNextFileStatus(CTGitPath& retPath)
 {
+	static git_wc_status2 st;
+
+	st.text_status = git_wc_status_none;
+
+	/*if (m_fileCache.m_pFileIter)
+	{
+		switch(m_fileCache.m_pFileIter->nStatus)
+		{
+		case WGFS_Normal: st.text_status = git_wc_status_normal; break;
+		case WGFS_Modified: st.text_status = git_wc_status_modified; break;
+		case WGFS_Deleted: st.text_status = git_wc_status_deleted; break;
+		}
+
+		m_fileCache.m_pFileIter = m_fileCache.m_pFileIter->pNext;
+	}*/
+
+	return &st;
+
 #if 0
 	const sort_item*			item;
 
@@ -667,6 +779,20 @@ int GitStatus::LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int 
 		lpBuffer[ret] = 0;
 	}
 	return ret;
+}
+
+BOOL GitStatus::getallstatus(const struct wgFile_s *pFile, void *pUserData)
+{
+	git_wc_status_kind * s = (git_wc_status_kind *)pUserData;
+	*s = GitStatus::GetMoreImportant(*s, GitStatusFromWingit(pFile->nStatus));
+	return FALSE;
+}
+
+BOOL GitStatus::getstatus(const struct wgFile_s *pFile, void *pUserData)
+{
+	git_wc_status2_t * s = (git_wc_status2_t*)pUserData;
+	s->prop_status = s->text_status = GitStatus::GetMoreImportant(s->prop_status, GitStatusFromWingit(pFile->nStatus));
+	return FALSE;
 }
 
 #if 0

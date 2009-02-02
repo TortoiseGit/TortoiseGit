@@ -333,9 +333,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							}
 							catch ( ... )
 							{
-								ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 							}
-							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							if (askedpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
@@ -432,10 +433,11 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 								catch ( ... )
 								{
-									ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+									ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 								}
 							}
-							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							if (strpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{
@@ -468,13 +470,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-//				if (g_ShellCache.HasGitAdminDir(child.toString().c_str(), FALSE))
+// ? was this disabled because the /wc option does not work safely with Git? or because the code below didn't compile before?
+//				if (g_ShellCache.HasSVNAdminDir(child.toString().c_str(), FALSE))
 //					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 				GlobalUnlock(medium.hGlobal);
 
 				// if the item is a versioned folder, check if there's a patch file
 				// in the clipboard to be used in "Apply Patch"
-				UINT cFormatDiff = RegisterClipboardFormat(_T("Tgit_UNIFIEDDIFF"));
+				UINT cFormatDiff = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 				if (cFormatDiff)
 				{
 					if (IsClipboardFormatAvailable(cFormatDiff)) 
@@ -503,10 +506,13 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		git_wc_status_kind status = git_wc_status_none;
 		if (IsClipboardFormatAvailable(CF_HDROP)) 
 			itemStatesFolder |= ITEMIS_PATHINCLIPBOARD;
+		
+		CTGitPath askedpath;
+		askedpath.SetFromWin(folder_.c_str());
+
 		if ((folder_.compare(statuspath)!=0)&&(g_ShellCache.IsContextPathAllowed(folder_.c_str())))
 		{
-			CTGitPath askedpath;
-			askedpath.SetFromWin(folder_.c_str());
+			
 			try
 			{
 				GitStatus stat;
@@ -523,16 +529,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 //					}
 //					if ((stat.status->entry)&&(stat.status->entry->uuid))
 //						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-					if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-						itemStatesFolder |= ITEMIS_INSVN;
-					if (status == git_wc_status_normal)
-						itemStatesFolder |= ITEMIS_NORMAL;
-					if (status == git_wc_status_conflicted)
-						itemStatesFolder |= ITEMIS_CONFLICTED;
-					if (status == git_wc_status_added)
-						itemStatesFolder |= ITEMIS_ADDED;
-					if (status == git_wc_status_deleted)
-						itemStatesFolder |= ITEMIS_DELETED;
+				
 				}
 				else
 				{
@@ -542,17 +539,31 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					if (askedpath.HasAdminDir())
 						status = git_wc_status_normal;
 				}
+				
+				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				if (askedpath.HasAdminDir())
+					itemStatesFolder |= ITEMIS_INSVN;
+				if (status == git_wc_status_normal)
+					itemStatesFolder |= ITEMIS_NORMAL;
+				if (status == git_wc_status_conflicted)
+					itemStatesFolder |= ITEMIS_CONFLICTED;
+				if (status == git_wc_status_added)
+					itemStatesFolder |= ITEMIS_ADDED;
+				if (status == git_wc_status_deleted)
+					itemStatesFolder |= ITEMIS_DELETED;
+
 			}
 			catch ( ... )
 			{
-				ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+				ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 			}
 		}
 		else
 		{
 			status = fetchedstatus;
 		}
-		if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+		//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+		if (askedpath.HasAdminDir())
 		{
 			itemStatesFolder |= ITEMIS_FOLDERINSVN;
 		}
@@ -577,10 +588,11 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			{
 				folder_ = files_.front();
 				git_wc_status_kind status = git_wc_status_none;
+				CTGitPath askedpath;
+				askedpath.SetFromWin(folder_.c_str());
+
 				if (folder_.compare(statuspath)!=0)
-				{
-					CTGitPath askedpath;
-					askedpath.SetFromWin(folder_.c_str());
+				{				
 					try
 					{
 						GitStatus stat;
@@ -601,14 +613,15 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 					catch ( ... )
 					{
-						ATLTRACE2(_T("Exception in GitStatus::GetAllStatus()\n"));
+						ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 					}
 				}
 				else
 				{
 					status = fetchedstatus;
 				}
-				if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				if (askedpath.HasAdminDir())
 					itemStates |= ITEMIS_FOLDERINSVN;
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
@@ -775,7 +788,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	TCHAR * path = new TCHAR[pathlength+1];
 	TCHAR * tempFile = new TCHAR[pathlength + 100];
 	GetTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("svn"), 0, tempFile);
+	GetTempFileName (path, _T("git"), 0, tempFile);
 	tempfile = stdstring(tempFile);
 
 	HANDLE file = ::CreateFile (tempFile,
@@ -829,7 +842,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 	TCHAR * path = new TCHAR[pathlength+1];
 	TCHAR * tempFile = new TCHAR[pathlength + 100];
 	GetTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("svn"), 0, tempFile);
+	GetTempFileName (path, _T("git"), 0, tempFile);
 	stdstring retFilePath = stdstring(tempFile);
 	
 	HANDLE file = ::CreateFile (tempFile,
@@ -1631,7 +1644,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					// if there's a patch file in the clipboard, we save it
 					// to a temporary file and tell TortoiseMerge to use that one
-					UINT cFormat = RegisterClipboardFormat(_T("Tgit_UNIFIEDDIFF"));
+					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 					if ((cFormat)&&(OpenClipboard(NULL)))
 					{ 
 						HGLOBAL hglb = GetClipboardData(cFormat); 
@@ -1641,7 +1654,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 						TCHAR * path = new TCHAR[len+1];
 						TCHAR * tempF = new TCHAR[len+100];
 						GetTempPath (len+1, path);
-						GetTempFileName (path, TEXT("svn"), 0, tempF);
+						GetTempFileName (path, TEXT("git"), 0, tempF);
 						std::wstring sTempFile = std::wstring(tempF);
 						delete [] path;
 						delete [] tempF;

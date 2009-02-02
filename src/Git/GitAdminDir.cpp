@@ -102,6 +102,26 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 		sDirName = path.Left(path.ReverseFind('\\'));
 	}
 	
+	// a .git dir or anything inside it should be left out, only interested in working copy files -- Myagi
+	{
+	int n = 0;
+	for (;;)
+	{
+		n = sDirName.Find(_T("\\.git"), n);
+		if (n < 0)
+		{
+			break;
+		}
+
+		// check for actual .git dir (and not .gitignore or something else), continue search if false match
+		n += 5;
+		if (sDirName[n] == _T('\\') || sDirName[n] == 0)
+		{
+			return false;
+		}
+	}
+	}
+
 	do
 	{
 		if(PathFileExists(sDirName + _T("\\.git")))

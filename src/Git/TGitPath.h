@@ -197,6 +197,7 @@ public:
 	 * contains an admin directory.
 	 */
 	bool HasAdminDir() const;
+	bool HasAdminDir(CString *ProjectTopDir) const;
 	
 	/**
 	 * Checks if the path point to or below a Subversion admin directory (.Git).
@@ -256,11 +257,12 @@ private:
 	mutable CString m_sUIPath;
 	mutable	CStringA m_sUTF8FwdslashPath;
 	mutable CStringA m_sUTF8FwdslashPathEscaped;
+	mutable CString m_sProjectRoot;
 
 	//used for rename case
 	mutable CString m_sOldBackslashPath;
 	mutable CString m_sOldFwdslashPath;
-	
+
 	// Have we yet determined if this is a directory or not?
 	mutable bool m_bDirectoryKnown;
 	mutable bool m_bIsDirectory;

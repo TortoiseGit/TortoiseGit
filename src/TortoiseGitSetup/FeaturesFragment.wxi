@@ -8,6 +8,7 @@
 -->			<ComponentRef Id="C__gettext" />
 
 			<ComponentRef Id="C__help_en" />
+      <ComponentRef Id="C__wingit" />
 			<ComponentRef Id="C__TortoiseSVN" />
 			<ComponentRef Id="C__TortoiseSVNShortcuts" />
 			<ComponentRef Id="C__TortoiseMerge" />
@@ -24,7 +25,8 @@
 			<ComponentRef Id="C__PlatformSettingsShortcuts" />
 			<ComponentRef Id="C__shellregistry" />
 			<ComponentRef Id="C__machineregistry" />
-			<ComponentRef Id="C__svnprotocoll" />
+<!--			<ComponentRef Id="C__svnprotocoll" />
+-->
 			<ComponentRef Id="C__approveshellcomponents" />
 			<ComponentRef Id="C__ProgramMenuFolder" />
 			<ComponentRef Id="C__Sounds" />
@@ -55,7 +57,7 @@
 				<ComponentRef Id="C__TortoiseUDiffAssoc" />
 			</Feature>
 
-			<?if $(var.DictionaryENGB) = 1 ?>
+      <?if $(var.DictionaryENGB) = 1 ?>
 			<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow">
 				<ComponentRef Id="C__DictionaryENGB" />
 			</Feature>

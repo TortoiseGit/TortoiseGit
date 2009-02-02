@@ -5,12 +5,123 @@
 #include "registry.h"
 #include "GitConfig.h"
 
+
+static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
+{
+	LPCTSTR orgsrc;
+
+	while (*src == _T(';'))
+		src++;
+
+	orgsrc = src;
+
+	if (!--maxlen)
+		goto nullterm;
+
+	while (*src && *src != _T(';'))
+	{
+		if (*src != _T('"'))
+		{
+			*dst++ = *src++;
+			if (!--maxlen)
+			{
+				orgsrc = src;
+				goto nullterm;
+			}
+		}
+		else
+		{
+			src++;
+			while (*src && *src != _T('"'))
+			{
+				*dst++ = *src++;
+				if (!--maxlen)
+				{
+					orgsrc = src;
+					goto nullterm;
+				}
+			}
+
+			if (*src)
+				src++;
+		}
+	}
+
+	while (*src == _T(';'))
+		src++;
+
+nullterm:
+
+	*dst = 0;
+
+	return (orgsrc != src) ? (LPTSTR)src : NULL;
+}
+
+static inline BOOL FileExists(LPCTSTR lpszFileName)
+{
+	struct _stat st;
+	return _tstat(lpszFileName, &st) == 0;
+}
+
+static BOOL FindGitPath()
+{
+	size_t size;
+	_tgetenv_s(&size, NULL, 0, _T("PATH"));
+
+	if (!size)
+	{
+		return FALSE;
+	}
+
+	TCHAR *env = (TCHAR*)alloca(size * sizeof(TCHAR));
+	_tgetenv_s(&size, env, size, _T("PATH"));
+
+	TCHAR buf[_MAX_PATH];
+
+	// search in all paths defined in PATH
+	while ((env = nextpath(env, buf, _MAX_PATH-1)) && *buf)
+	{
+		TCHAR *pfin = buf + _tcslen(buf)-1;
+
+		// ensure trailing slash
+		if (*pfin != _T('/') && *pfin != _T('\\'))
+			_tcscpy(++pfin, _T("\\"));
+
+		const int len = _tcslen(buf);
+
+		if ((len + 7) < _MAX_PATH)
+			_tcscpy(pfin+1, _T("git.exe"));
+		else
+			break;
+
+		if ( FileExists(buf) )
+		{
+			// dir found
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+
 #define MAX_DIRBUFFER 1000
 CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
 CGit::CGit(void)
 {
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
+
+	// make sure git/bin is in PATH before wingit.dll gets (delay) loaded by wgInit()
+	if ( !CheckMsysGitDir() )
+	{
+		// TODO
+	}
+
+	if ( !wgInit() )
+	{
+		// TODO
+	}
 }
 
 CGit::~CGit(void)
@@ -389,6 +500,8 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 
 git_revnum_t CGit::GetHash(CString &friendname)
 {
+	// NOTE: could replace this with wgGetRevisionID call
+
 	CString cmd;
 	CString out;
 	cmd.Format(_T("git.exe rev-parse %s" ),friendname);
@@ -508,82 +621,81 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 BOOL CGit::CheckMsysGitDir()
 {
+	static BOOL bInitialized = FALSE;
+
+	if (bInitialized)
+	{
+		return TRUE;
+	}
+
+	TCHAR *oldpath,*home;
+	size_t size;
+
+	// set HOME if not set already
+	_tgetenv_s(&size, NULL, 0, _T("HOME"));
+	if (!size)
+	{
+		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
+		_tputenv_s(_T("HOME"),home);
+		free(home);
+	}
+
+	// search PATH if git/bin directory is alredy present
+	if ( FindGitPath() )
+	{
+		bInitialized = TRUE;
+		return TRUE;
+	}
+
+	// add git/bin path to PATH
+
 	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 	CString str=msysdir;
 	if(str.IsEmpty())
 	{
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
-        // check it has a trailing blank
-        if (str.Right(1) != _T("\\"))
-        {
-            str += _T("\\");
-        }
-		str+=_T("bin");
-		msysdir=str;
-		msysdir.write();
-
+		if ( !str.IsEmpty() )
+		{
+			str += (str[str.GetLength()-1] != '\\') ? "\\bin" : "bin";
+			msysdir=str;
+			msysdir.write();
+		}
+		else
+		{
+			return false;
+		}
 	}
 	//CGit::m_MsysGitPath=str;
 
-	TCHAR *oldpath,*home;
-	size_t size;
-
-	_tdupenv_s(&home,&size,_T("HOME")); 
-	
-	if(home == NULL)
-	{		
-		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
-		_tputenv_s(_T("HOME"),home);
-	}
-	free(home);
-	
 	//set path
+
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
 
 	CString path;
-	CString unterminated_path = str;	// path to msysgit without semicolon
-	CString oldpath_s = oldpath;
-	path.Format(_T("%s;"),str);
-	// check msysgit not already in path
-	if ( oldpath_s.Find( path ) < 0  &&  oldpath_s.Right( unterminated_path.GetLength() ) != unterminated_path )
-	{
-		// not already there, see if we have to take out one we added last time
-		if ( ms_LastMsysGitDir != _T("") )
-		{
-			// we have added one so take it out
-			int index = oldpath_s.Find( ms_LastMsysGitDir );
-			if ( index >= 0 )
-			{
-				oldpath_s = oldpath_s.Left( index ) + 
-					oldpath_s.Right( oldpath_s.GetLength() - (index+ms_LastMsysGitDir.GetLength()) );
-			}
-		}
-		// save the new msysdir path that we are about to add
-		ms_LastMsysGitDir = path;
-		// add the new one on the front of the existing path
-		path+=oldpath_s;
-		_tputenv_s(_T("PATH"),path);
-	}
+	path.Format(_T("%s;%s"),oldpath,str);
+
+	_tputenv_s(_T("PATH"),path);
+
 	free(oldpath);
 
-	//setup ssh client
+
+     //setup ssh client
 	CRegString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
 	CString ssh=sshclient;
-//	ssh.Format(_T("\"%s\""),(CString)sshclient);
 
 	if(!ssh.IsEmpty())
 	{
 		_tputenv_s(_T("GIT_SSH"),ssh);
 	}
 
-	CString cmd,out;
-	cmd=_T("git.exe --version");
-	if(g_Git.Run(cmd,&out,CP_UTF8))
+    if( !FindGitPath() )
 	{
 		return false;
 	}
 	else
+	{
+		bInitialized = TRUE;
 		return true;
-
+	}
 }

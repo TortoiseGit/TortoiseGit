@@ -15,6 +15,7 @@ typedef std::basic_string<wchar_t> wide_string;
 #pragma warning (pop)
 
 #include "TGitPath.h"
+#include "../../ext/wingit/wingit.h"
 
 typedef enum type_git_wc_status_kind
 {
@@ -46,6 +47,7 @@ typedef enum
 
 
 #define GIT_REV_ZERO _T("0000000000000000000000000000000000000000")
+#define GIT_INVALID_REVNUM _T("")
 typedef CString git_revnum_t;
 typedef int git_error_t;
 
@@ -59,6 +61,44 @@ typedef struct git_wc_status2_t
 }git_wc_status2;
 
 #define MAX_STATUS_STRING_LENGTH		256
+
+
+// convert wingit.dll status to git_wc_status_kind
+inline static git_wc_status_kind GitStatusFromWingit(int nStatus)
+{
+	switch (nStatus)
+	{
+	case WGFS_Normal: return git_wc_status_normal;
+	case WGFS_Modified: return git_wc_status_modified;
+	case WGFS_Deleted: return git_wc_status_deleted;
+
+	case WGFS_Empty: return git_wc_status_unversioned;
+	}
+
+	return git_wc_status_none;
+}
+
+// convert 20 byte sha1 hash to the git_revnum_t type
+inline static git_revnum_t ConvertHashToRevnum(const BYTE *sha1)
+{
+	if (!sha1)
+		return GIT_INVALID_REVNUM;
+
+	char s[41];
+	char *p = s;
+	for (int i=0; i<20; i++)
+	{
+#pragma warning(push)
+#pragma warning(disable: 4996)
+		sprintf(p, "%02x", (UINT)*sha1);
+#pragma warning(pop)
+		p += 2;
+		sha1++;
+	}
+
+	return CString(s);
+}
+
 
 /**
  * \ingroup Git
@@ -217,7 +257,10 @@ private:
 
 //	git_client_ctx_t * 			ctx;
 	git_wc_status_kind			m_allstatus;	///< used by GetAllStatus and GetAllStatusRecursive
-	git_error_t *				m_err;			///< Subversion error baton
+//	git_error_t *				m_err;			///< Subversion error baton
+	BOOL						m_err;
+
+	git_wc_status2_t			m_status;		// used for GetStatus
 
 #ifdef _MFC_VER
 //	GitPrompt					m_prompt;
@@ -232,7 +275,9 @@ private:
 	/**
 	 * Callback function which collects the raw status from a Git_client_status() function call
 	 */
-//	static git_error_t * getallstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
+	//static git_error_t * getallstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
+	static BOOL getallstatus(const struct wgFile_s *pFile, void *pUserData);
+	static BOOL getstatus(const struct wgFile_s *pFile, void *pUserData);
 
 	/**
 	 * Callback function which stores the raw status from a Git_client_status() function call
