@@ -191,6 +191,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
+	void FetchFullLogInfo();
 	void FillBackGround(HDC hdc, int Index,CRect &rect);
 	void DrawTagBranch(HDC,CRect &rect,INT_PTR index);
 	void DrawGraph(HDC,CRect &rect,INT_PTR index);

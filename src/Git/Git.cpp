@@ -416,6 +416,13 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 
 int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask)
 {
+	CGitCall_ByteVector gitCall(CString(),&logOut);
+	return GetLog(&gitCall,hash,path,count,mask);
+}
+
+//int CGit::GetLog(CGitCall* pgitCall, CString &hash,  CTGitPath *path ,int count,int mask)
+int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask)
+{
 
 	CString cmd;
 	CString log;
@@ -471,7 +478,10 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 	cmd += log;
 	cmd += CString(_T("\"  "))+hash+file;
 
-	return Run(cmd,&logOut);
+	pgitCall->SetCmd(cmd);
+
+	return Run(pgitCall);
+//	return Run(cmd,&logOut);
 }
 
 #if 0

@@ -7,10 +7,13 @@
 class CGitCall
 {
 public:
+	CGitCall(){}
 	CGitCall(CString cmd):m_Cmd(cmd){}
 
 	CString			GetCmd()const{return m_Cmd;}
+	void			SetCmd(CString cmd){m_Cmd=cmd;}
 
+	//This function is called when command output data is available.
 	//When this function returns 'true' the git command should be aborted.
 	//This behavior is not implemented yet.
 	virtual bool	OnOutputData(const BYTE* data, size_t size)=0;
@@ -19,6 +22,8 @@ private:
 	CString m_Cmd;
 
 };
+
+class CTGitPath;
 
 class CGit
 {
@@ -77,6 +82,8 @@ public:
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
 	
 	//hash is empty means all. -1 means all
+
+	int GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME);
 	int GetLog(BYTE_VECTOR& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME);
 
 	git_revnum_t GetHash(CString &friendname);
