@@ -148,13 +148,10 @@ int CGit::Run(CString cmd, CString* output,int code)
 	int ret;
 	ret=Run(cmd,&vector);
 
-	if(ret)
-		return ret;
-	
 	vector.push_back(0);
 	
 	StringAppend(output,&(vector[0]),code);
-	return 0;
+	return ret;
 }
 
 CString CGit::GetUserName(void)
