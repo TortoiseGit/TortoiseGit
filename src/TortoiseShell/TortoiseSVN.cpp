@@ -45,7 +45,7 @@ bool				g_ignoredovlloaded = false;
 bool				g_unversionedovlloaded = false;
 CComCriticalSection	g_csGlobalCOMGuard;
 
-LPCTSTR				g_MenuIDString = _T("TortoiseSVN");
+LPCTSTR				g_MenuIDString = _T("TortoiseGit");
 extern std::set<CShellExt *> g_exts;
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
