@@ -90,13 +90,20 @@ void CGitSwitchDlg::OnBnClickedChooseRadioHost()
 
 void CGitSwitchDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
 	
-	UpdateRevsionName();
-	//this->m_Version.SaveHistory();
-
-	OnOK();
+	// make sure a valid branch has been entered if a new branch is required
+	if ( m_bBranch  &&  ( m_NewBranch.Trim().IsEmpty() ||  m_NewBranch.Find(' ') >= 0 ) )
+	{
+		// new branch requested but name is empty or contains spaces
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+	}
+	else
+	{
+		UpdateRevsionName();
+		//this->m_Version.SaveHistory();
+		OnOK();
+	}
 }
 void CGitSwitchDlg::OnBnClickedCheckBranch()
 {

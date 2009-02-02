@@ -17,6 +17,7 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
 	CChooseVersion(this)
 {
 	m_bIsTag=0;
+	m_bSwitch = 1;	// default switch to checkbox selected
 }
 
 CCreateBranchTagDlg::~CCreateBranchTagDlg()
@@ -32,6 +33,7 @@ void CCreateBranchTagDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BRANCH_TAG, this->m_BranchTagName);
 	DDX_Check(pDX,IDC_CHECK_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
+	DDX_Check(pDX,IDC_CHECK_SWITCH,this->m_bSwitch);
 
 }
 
@@ -79,6 +81,12 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 		this->SetWindowTextW(_T("Create Branch"));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
 	}
+	// show the switch checkbox if we are a create branch dialog
+	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );
+	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
+	CString HeadText;
+	pHead->GetWindowText( HeadText ); 
+	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
 	EnableSaveRestore(_T("BranchTagDlg"));
 	return TRUE;
 
@@ -91,9 +99,10 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
 
-	if(this->m_BranchTagName.Trim().IsEmpty())
+	this->m_BranchTagName.Trim();
+	if(this->m_BranchTagName.IsEmpty()  ||  this->m_BranchTagName.Find(' ') >= 0 )
 	{
-		CMessageBox::Show(NULL,_T("Branch\\Tag name can't empty"),_T("TortiseGit"),MB_OK);
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
 		return;
 	}
 	this->UpdateRevsionName();

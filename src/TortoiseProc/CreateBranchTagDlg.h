@@ -19,6 +19,7 @@ public:
 	BOOL m_bForce;
 	BOOL m_bTrack;
 	BOOL m_bIsTag;
+	BOOL m_bSwitch;
 
 	CString m_Base;
 	CString m_BranchTagName;
