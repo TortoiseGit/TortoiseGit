@@ -2673,7 +2673,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 			case IDSVNLC_EXPLORE:
 				{
-					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetWinPath(), NULL, NULL, SW_SHOW);
+					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
 				}
 				break;
 			case IDSVNLC_COMPARE:
