@@ -335,7 +335,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							{
 								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 							}
-							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							if (askedpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
@@ -435,7 +436,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 								}
 							}
-							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							if (strpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{
@@ -504,10 +506,13 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		git_wc_status_kind status = git_wc_status_none;
 		if (IsClipboardFormatAvailable(CF_HDROP)) 
 			itemStatesFolder |= ITEMIS_PATHINCLIPBOARD;
+		
+		CTGitPath askedpath;
+		askedpath.SetFromWin(folder_.c_str());
+
 		if ((folder_.compare(statuspath)!=0)&&(g_ShellCache.IsContextPathAllowed(folder_.c_str())))
 		{
-			CTGitPath askedpath;
-			askedpath.SetFromWin(folder_.c_str());
+			
 			try
 			{
 				GitStatus stat;
@@ -524,16 +529,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 //					}
 //					if ((stat.status->entry)&&(stat.status->entry->uuid))
 //						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-					if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-						itemStatesFolder |= ITEMIS_INSVN;
-					if (status == git_wc_status_normal)
-						itemStatesFolder |= ITEMIS_NORMAL;
-					if (status == git_wc_status_conflicted)
-						itemStatesFolder |= ITEMIS_CONFLICTED;
-					if (status == git_wc_status_added)
-						itemStatesFolder |= ITEMIS_ADDED;
-					if (status == git_wc_status_deleted)
-						itemStatesFolder |= ITEMIS_DELETED;
+				
 				}
 				else
 				{
@@ -543,6 +539,19 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					if (askedpath.HasAdminDir())
 						status = git_wc_status_normal;
 				}
+				
+				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				if (askedpath.HasAdminDir())
+					itemStatesFolder |= ITEMIS_INSVN;
+				if (status == git_wc_status_normal)
+					itemStatesFolder |= ITEMIS_NORMAL;
+				if (status == git_wc_status_conflicted)
+					itemStatesFolder |= ITEMIS_CONFLICTED;
+				if (status == git_wc_status_added)
+					itemStatesFolder |= ITEMIS_ADDED;
+				if (status == git_wc_status_deleted)
+					itemStatesFolder |= ITEMIS_DELETED;
+
 			}
 			catch ( ... )
 			{
@@ -553,7 +562,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		{
 			status = fetchedstatus;
 		}
-		if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+		//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+		if (askedpath.HasAdminDir())
 		{
 			itemStatesFolder |= ITEMIS_FOLDERINSVN;
 		}
@@ -578,10 +588,11 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			{
 				folder_ = files_.front();
 				git_wc_status_kind status = git_wc_status_none;
+				CTGitPath askedpath;
+				askedpath.SetFromWin(folder_.c_str());
+
 				if (folder_.compare(statuspath)!=0)
-				{
-					CTGitPath askedpath;
-					askedpath.SetFromWin(folder_.c_str());
+				{				
 					try
 					{
 						GitStatus stat;
@@ -609,7 +620,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				{
 					status = fetchedstatus;
 				}
-				if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				if (askedpath.HasAdminDir())
 					itemStates |= ITEMIS_FOLDERINSVN;
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
