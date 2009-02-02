@@ -908,6 +908,7 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 		CString one;
 		while( pos>=0 && pos<out.size())
 		{
+			one.Empty();
 			g_Git.StringAppend(&one,&out[pos],CP_OEMCP);
 			if(!one.IsEmpty())
 			{
