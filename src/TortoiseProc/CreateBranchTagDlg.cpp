@@ -17,7 +17,7 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
 	CChooseVersion(this)
 {
 	m_bIsTag=0;
-	m_bSwitch = 1;	// default switch to checkbox selected
+	m_bSwitch = 0;	// default switch to checkbox not selected
 }
 
 CCreateBranchTagDlg::~CCreateBranchTagDlg()
