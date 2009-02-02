@@ -707,6 +707,7 @@ UINT CCommitDlg::StatusThread()
 			m_bShowUnversioned = TRUE;
 			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
 			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
+			m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER);
 			m_ListCtrl.Show(dwShow);
 		}
 	}
