@@ -914,6 +914,7 @@ public:
 	int UpdateWithGitPathList(CTGitPathList &list);
 
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);
+	void Clear();
 	int m_FileLoaded;
 	git_revnum_t m_CurrentVersion;
 public:

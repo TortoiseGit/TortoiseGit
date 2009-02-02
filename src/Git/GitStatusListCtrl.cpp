@@ -5376,6 +5376,15 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 	}
 	return 0;
 }
+
+void CGitStatusListCtrl::Clear()
+{
+	m_FileLoaded=0;
+	this->DeleteAllItems();
+	this->m_arListArray.clear();
+	this->m_arStatusArray.clear();
+	this->m_changelists.clear();
+}
 //////////////////////////////////////////////////////////////////////////
 #if 0
 bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD * /*pdwEffect*/, POINTL pt)
