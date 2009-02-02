@@ -40,8 +40,8 @@ public:
 	}
 	int findData(const BYTE* dataToFind, size_t dataSize, int start=0)
 	{
-		const BYTE* pos=&*begin()+start;
-		const BYTE* dataEnd=&*end()-(dataSize-1);//Set end one step after last place to search
+		const BYTE* pos=&*(begin()+start);
+		const BYTE* dataEnd=&*(begin()+size()-(dataSize-1) );//Set end one step after last place to search
 		if(pos>=dataEnd)
 			return -1;//Started over end. Return not found
 		if(dataSize==0)
