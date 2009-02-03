@@ -1,3 +1,43 @@
+
+version 0.3.0.0 version:
+Features:
+	1.Icon Overlay
+	  Show different icon overlay at git repository. Support File and directory icon overlay. 
+
+	2.Show version tree at log dialog. 
+          Show version graphic tree at log list dialog. Use QGit style. 
+	
+	3.Enable log cache to improve log show speed. 
+
+	4.VS2008 Style Blame application. 
+          Show different back color according to line age. Show blame file log list to know which line is newer. 
+	
+	5.Enable conflict handle
+ 	  Show conflict status at any file list, such as commit dialog. User just need right click and choose resolve conflict, tortoisemerge will be launch. 
+	
+	6.Related time show support. 
+	
+	7.Setting dialog support. 
+	
+	8.Enable TortoisePlink. 
+          Passwork dialog can prompt when use tortoiseplink as ssh client. 
+	
+	9.Git Reset support. 
+	  User can right click log list at log dialog. Choose reset to reset current branch to choosed commit. 
+	
+	10.Current handle renamed file at file list. 
+	  
+Bug Fix:
+	1. Fix issue8. Clone of git via HTTP Creates repo in wrong location
+	2. Fix issue9. Error commit file with chinese filename. 
+	3. Fix issue10. Switch and Create Branch drop-downs only display 25 items
+	4. Fix issue13. Create branch fail if branch name is invalidate
+	5. Fix issue14. Commit dialog don't report error when no message input 
+	6. Fix issue16. Commit dialog, F5 don't work.
+	7. Fix "explore to" in context menu in commit dialog. 
+	8. Fix redraw all when loading thread finish load log.
+
+
 version 0.2.0.0 preview version:
 Features:
 	1. Add TortoisgeMerge as default compare tools
