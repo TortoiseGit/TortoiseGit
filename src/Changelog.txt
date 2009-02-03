@@ -4,7 +4,7 @@ Features:
 	1.Icon Overlay
 	  Show different icon overlay at git repository. Support File and directory icon overlay. 
 
-	2.Show version tree at log dialog. 
+	2.Show version tree in log dialog. 
           Show version graphic tree at log list dialog. Use QGit style. 
 	
 	3.Enable log cache to improve log show speed. 
@@ -23,7 +23,7 @@ Features:
           Passwork dialog can prompt when use tortoiseplink as ssh client. 
 	
 	9.Git Reset support. 
-	  User can right click log list at log dialog. Choose reset to reset current branch to choosed commit. 
+	  User can right click log list at log dialog. Choose reset to reset current branch to chosen commit. 
 	
 	10.Current handle renamed file at file list. 
 	  
