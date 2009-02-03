@@ -395,7 +395,7 @@ void CCommitDlg::OnOK()
 				bCheckedInExternal = true;
 			}
 #endif
-			cmd.Format(_T("git.exe update-index -- \"%s\""),entry->GetGitPathString());
+			cmd.Format(_T("git.exe update-index --add -- \"%s\""),entry->GetGitPathString());
 			g_Git.Run(cmd,&out,CP_OEMCP);
 			nchecked++;
 			//checkedLists.insert(entry->GetGitPathString());
