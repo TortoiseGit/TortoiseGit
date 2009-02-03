@@ -1453,6 +1453,8 @@ public:
 	CGitCall_FetchFullLogInfo(CGitLogListBase* ploglist):m_ploglist(ploglist),m_CollectedCount(0){}
 	virtual bool OnOutputData(const BYTE* data, size_t size)
 	{
+		if(size==0)
+			return m_ploglist->m_bExitThread;
 		//Add received data to byte collector
 		m_ByteCollector.append(data,size);
 
@@ -1473,6 +1475,13 @@ public:
 
 		return m_ploglist->m_bExitThread;
 	}
+	virtual void OnEnd()
+	{
+		//Rest should be a complete log line.
+		if(!m_ByteCollector.empty())
+			OnLogInfo(m_ByteCollector);
+	}
+
 
 	void OnLogInfo(BYTE_VECTOR& logInfo)
 	{
@@ -1508,6 +1517,7 @@ public:
 		revInVector->m_ParentHash=oldlist;
 
 		//Reset updating
+		InterlockedExchange(&revInVector->m_IsFull,TRUE);
 		InterlockedExchange(&revInVector->m_IsUpdateing,FALSE);
 
 		//Notify listcontrol and update progress bar
@@ -1532,6 +1542,52 @@ void CGitLogListBase::FetchFullLogInfo()
 {
 	CGitCall_FetchFullLogInfo fetcher(this);
 	g_Git.GetLog(&fetcher,CString(),NULL,-1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME);
+}
+
+void CGitLogListBase::FetchFullLogInfoOrig()
+{
+	unsigned int updated=0;
+	int percent=0;
+	CRect rect;
+	while(1)
+	{
+		for(unsigned int i=0;i<m_logEntries.size();i++)
+		{
+			if(m_LogCache.GetCacheData(m_logEntries[i]))
+			{
+				if(!m_logEntries.FetchFullInfo(i))
+				{
+					updated++;
+  				}
+				m_LogCache.AddCacheEntry(m_logEntries[i]);
+
+			}else
+			{
+				updated++;
+				InterlockedExchange(&m_logEntries[i].m_IsUpdateing,FALSE);
+				InterlockedExchange(&m_logEntries[i].m_IsFull,TRUE);
+			}
+			
+			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)i,0);
+
+			if(m_bExitThread)
+			{
+				InterlockedExchange(&m_bThreadRunning, FALSE);
+				InterlockedExchange(&m_bNoDispUpdates, FALSE);
+				return;
+			}
+
+			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
+			if(percent == GITLOG_END)
+				percent = GITLOG_END -1;
+			
+			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
+
+			
+		}
+		if(updated==m_logEntries.size())
+			break;
+	}
 }
 
 UINT CGitLogListBase::LogThread()
@@ -1585,52 +1641,9 @@ UINT CGitLogListBase::LogThread()
 #endif
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
-	unsigned int updated=0;
-	int percent=0;
-	CRect rect;
-/*	while(1)
-	{
-		for(unsigned int i=0;i<m_logEntries.size();i++)
-		{
-			if(m_LogCache.GetCacheData(m_logEntries[i]))
-			{
-				if(!m_logEntries.FetchFullInfo(i))
-				{
-					updated++;
-  				}
-				m_LogCache.AddCacheEntry(m_logEntries[i]);
 
-			}else
-			{
-				updated++;
-				InterlockedExchange(&m_logEntries[i].m_IsUpdateing,FALSE);
-				InterlockedExchange(&m_logEntries[i].m_IsFull,TRUE);
-			}
-			
-			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)i,0);
-
-			if(m_bExitThread)
-			{
-				InterlockedExchange(&m_bThreadRunning, FALSE);
-				InterlockedExchange(&m_bNoDispUpdates, FALSE);
-				return 0;
-			}
-
-			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
-			if(percent == GITLOG_END)
-				percent = GITLOG_END -1;
-			
-			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
-
-			
-		}
-		if(updated==m_logEntries.size())
-			break;
-
-		//m_logEntries.FetchFullInfo(i);
-	}
-*/
 	FetchFullLogInfo();
+	//FetchFullLogInfoOrig();
 	//RefreshCursor();
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
