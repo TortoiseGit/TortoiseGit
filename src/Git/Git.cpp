@@ -292,8 +292,10 @@ int CGit::Run(CGitCall* pcall)
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
 	while(ReadFile(hRead,data,CALL_OUTPUT_READ_CHUNK_SIZE,&readnumber,NULL))
 	{
+		//Todo: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
 		pcall->OnOutputData(data,readnumber);
 	}
+	pcall->OnEnd();
 
 	
 	CloseHandle(pi.hThread);

@@ -17,6 +17,7 @@ public:
 	//When this function returns 'true' the git command should be aborted.
 	//This behavior is not implemented yet.
 	virtual bool	OnOutputData(const BYTE* data, size_t size)=0;
+	virtual void	OnEnd(){}
 
 private:
 	CString m_Cmd;
