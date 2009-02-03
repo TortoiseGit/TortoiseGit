@@ -1541,7 +1541,12 @@ public:
 void CGitLogListBase::FetchFullLogInfo()
 {
 	CGitCall_FetchFullLogInfo fetcher(this);
-	g_Git.GetLog(&fetcher,CString(),NULL,-1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME);
+	int mask=
+		CGit::LOG_INFO_STAT|
+		CGit::LOG_INFO_FILESTATE|
+		CGit::LOG_INFO_DETECT_COPYRENAME|
+		m_ShowMask;
+	g_Git.GetLog(&fetcher,CString(),NULL,-1,mask);
 }
 
 void CGitLogListBase::FetchFullLogInfoOrig()
