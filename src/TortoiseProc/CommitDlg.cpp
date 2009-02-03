@@ -316,6 +316,12 @@ void CCommitDlg::OnOK()
 		return;
 	}
 	m_sLogMessage = m_cLogMessage.GetText();
+	if ( m_sLogMessage.IsEmpty() )
+	{
+		// no message entered, go round again
+		CMessageBox::Show(this->m_hWnd, IDS_COMMITDLG_NOMESSAGE, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return;
+	}
 	if ((m_ProjectProperties.bWarnIfNoIssue) && (id.IsEmpty() && !m_ProjectProperties.HasBugID(m_sLogMessage)))
 	{
 		if (CMessageBox::Show(this->m_hWnd, IDS_COMMITDLG_NOISSUEWARNING, IDS_APPNAME, MB_YESNO | MB_ICONWARNING)!=IDYES)
@@ -706,7 +712,7 @@ UINT CCommitDlg::StatusThread()
 		{
 			m_bShowUnversioned = TRUE;
 			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
-			DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS;
+			DWORD dwShow = (DWORD)(SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS);
 			m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER);
 			m_ListCtrl.Show(dwShow);
 		}
@@ -916,7 +922,7 @@ LRESULT CCommitDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 	return 0;
 }
 
-LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
+LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM /*lParam*/)
 {
 #if 0
 	BringWindowToTop();
@@ -1197,7 +1203,7 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
 }
 
-bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
+bool CCommitDlg::HandleMenuItemClick(int /*cmd*/, CSciEdit * /*pSciEdit*/)
 {
 #if 0
 	if (m_bBlock)
