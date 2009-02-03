@@ -2,6 +2,7 @@
 #include "GitDiff.h"
 #include "AppUtils.h"
 #include "git.h"
+#include "resource.h"
 
 CGitDiff::CGitDiff(void)
 {
@@ -62,13 +63,14 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 	return 0;
 }
 
-int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, git_revnum_t & rev2, bool blame, bool unified)
+int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, git_revnum_t & rev2, bool /*blame*/, bool /*unified*/)
 {
 	CString temppath;
 	GetTempPath(temppath);
 	Parser(rev1);
 	Parser(rev2);
 	CString file1;
+	CString title1;
 	CString cmd;
 	if(rev1 != GIT_REV_ZERO )
 	{
@@ -77,14 +79,17 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 				pPath->GetBaseFilename(),
 				rev1.Left(6),
 				pPath->GetFileExtension());
+		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
 		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1,pPath->GetGitPathString());
 				g_Git.RunLogFile(cmd,file1);
 	}else
 	{
 		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+		title1.Format( IDS_DIFF_WCNAME, pPath->GetFileOrDirectoryName() );
 	}
 
 	CString file2;
+	CString title2;
 	if(rev2 != GIT_REV_ZERO)
 	{
 		
@@ -93,23 +98,25 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 				pPath2->GetBaseFilename(),
 				rev2.Left(6),
 				pPath2->GetFileExtension());
+		title2 = pPath2->GetFileOrDirectoryName()+_T(":")+rev2.Left(6);
 		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2,pPath2->GetGitPathString());
 		g_Git.RunLogFile(cmd,file2);
 	}else
 	{
 		file2=g_Git.m_CurrentDir+_T("\\")+pPath2->GetWinPathString();
+		title2.Format( IDS_DIFF_WCNAME, pPath2->GetFileOrDirectoryName() );
 	}
 	
 	CAppUtils::DiffFlags flags;
 	CAppUtils::StartExtDiff(file2,file1,
-							pPath2->GetGitPathString()+_T(":")+rev2.Left(6),
-							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
+							title2,
+							title1
 							,flags);
 
 	return 0;
 }
 
-int CGitDiff::StartConflictEditor(CTGitPath* file)
+int CGitDiff::StartConflictEditor(CTGitPath* /*file*/)
 {
 	return 0;
 }

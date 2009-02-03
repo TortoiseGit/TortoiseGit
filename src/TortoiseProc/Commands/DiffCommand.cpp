@@ -29,7 +29,7 @@ bool DiffCommand::Execute()
 	bool bRet = false;
 	CString path2 = CPathUtils::GetLongPathname(parser.GetVal(_T("path2")));
 	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
-	bool bBlame = !!parser.HasKey(_T("blame"));
+//	bool bBlame = !!parser.HasKey(_T("blame"));
 	if (path2.IsEmpty())
 	{
 		if (cmdLinePath.IsDirectory())
@@ -54,7 +54,7 @@ bool DiffCommand::Execute()
 #endif
 			{
 				//git_revnum_t baseRev = 0;
-				bRet = diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(_T("HEAD")),git_revnum_t(GIT_REV_ZERO));
+				bRet = diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
 			}
 		}
 	} 
