@@ -290,12 +290,16 @@ int CGit::Run(CGitCall* pcall)
 
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
+	bool bAborted=false;
 	while(ReadFile(hRead,data,CALL_OUTPUT_READ_CHUNK_SIZE,&readnumber,NULL))
 	{
 		//Todo: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
-		pcall->OnOutputData(data,readnumber);
+		if(!bAborted)//For now, flush output when command aborted.
+			if(pcall->OnOutputData(data,readnumber))
+				bAborted=true;
 	}
-	pcall->OnEnd();
+	if(!bAborted)
+		pcall->OnEnd();
 
 	
 	CloseHandle(pi.hThread);
