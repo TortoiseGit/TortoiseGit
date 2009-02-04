@@ -552,12 +552,12 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 		CString one;
 		while( pos>=0 )
 		{
-			i++;
 			one=output.Tokenize(_T("\n"),pos);
 			list.push_back(one.Right(one.GetLength()-2));
 			if(one[0] == _T('*'))
 				if(current)
 					*current=i;
+			i++;
 		}
 	}
 	return ret;

@@ -78,6 +78,7 @@ BOOL CPushDlg::OnInitDialog()
 	}
 
 	int current=0;
+	list.clear();
 	if(!g_Git.GetBranchList(list,&current))
 	{
 		for(unsigned int i=0;i<list.size();i++)
