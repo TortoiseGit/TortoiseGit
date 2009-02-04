@@ -1085,8 +1085,12 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	}
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
+		//set default checkbox status
+		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck)
+			((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
+
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
-				AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
+			AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
 	}
 	
 	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
@@ -1730,8 +1734,8 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 #endif
 bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)
 {
-	if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS) == NULL)
-		return false;
+//	if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS) == NULL)
+//		return false;
 	if (groupindex < 0)
 		return false;
 	LVITEM i = {0};
@@ -4421,20 +4425,20 @@ void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry
 
 void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 {
-#if 0
+
 	pathList.Clear();
 	int nListItems = GetItemCount();
 	for (int i=0; i< nListItems; i++)
 	{
-		const FileEntry* entry = GetListEntry(i);
+		CTGitPath * entry = (CTGitPath*)GetItemData(i);
 		ASSERT(entry != NULL);
-		if (entry->IsChecked())
+		if (entry->m_Checked)
 		{
-			pathList.AddPath(entry->path);
+			pathList.AddPath(*entry);
 		}
 	}
 	pathList.SortByPathname();
-#endif
+
 }
 
 

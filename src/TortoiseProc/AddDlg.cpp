@@ -138,12 +138,13 @@ UINT CAddDlg::AddThread()
 	// and show the ones which the user can add (i.e. the unversioned ones)
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
-	if (!m_addListCtrl.GetStatus(m_pathList))
+	m_addListCtrl.Clear();
+	if (!m_addListCtrl.GetStatus(m_pathList,false,false,true,true))
 	{
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());
 	}
 	m_addListCtrl.Show(SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT, 
-						SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT);
+						SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT,true,true);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	return 0;

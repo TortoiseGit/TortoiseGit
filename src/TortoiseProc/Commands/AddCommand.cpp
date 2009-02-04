@@ -22,6 +22,7 @@
 #include "AddDlg.h"
 #include "SVNProgressDlg.h"
 #include "ShellUpdater.h"
+#include "messagebox.h"
 
 bool AddCommand::Execute()
 {
@@ -54,6 +55,21 @@ bool AddCommand::Execute()
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
 			{
+				CString cmd,out;
+				int success=0;
+				for(int i=0;i<dlg.m_pathList.GetCount();i++)
+				{
+					cmd.Format(_T("git.exe add \"%s\""),dlg.m_pathList[i].GetGitPathString());
+					if(g_Git.Run(cmd,&out,CP_OEMCP))
+					{
+						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					}
+					success++;
+				}
+				CString message;
+				message.Format(_T("%d file added"),success);
+				CMessageBox::Show(NULL,message,_T("TortoiseGit"),MB_OK);
+				return TRUE;
 #if 0
 				if (dlg.m_pathList.GetCount() == 0)
 					return FALSE;
