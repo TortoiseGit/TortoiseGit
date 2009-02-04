@@ -151,7 +151,8 @@ public:
 			cachetypeticker = GetTickCount();
 			cachetype.read();
 		}
-		return CacheType(DWORD((cachetype)));
+		//return CacheType(DWORD((cachetype)));
+		/*TEMP: until TGitCache done*/return CacheType(DWORD((cachetype))) == exe ? dll : CacheType(DWORD((cachetype)));
 	}
 	DWORD BlockStatus()
 	{
