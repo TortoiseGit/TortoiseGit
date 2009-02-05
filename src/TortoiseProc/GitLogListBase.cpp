@@ -1559,7 +1559,9 @@ void CGitLogListBase::Refresh()
 		TerminateThread();
 
 	this->Clear();
-	
+
+	//Update branch and Tag info
+	ReloadHashMap();
 	//Assume Thread have exited
 	//if(!m_bThreadRunning)
 	{
