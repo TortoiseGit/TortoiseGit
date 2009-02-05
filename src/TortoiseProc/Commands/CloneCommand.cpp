@@ -35,6 +35,13 @@ bool CloneCommand::Execute()
 	{
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
+		// is this a windows format UNC path, ie starts with \\ 
+		if (url.Find(_T("\\\\")) == 0)
+		{
+			// yes, change all \ to /
+			// this should not be necessary but msysgit does not support the use \ here yet
+			url.Replace( _T('\\'), _T('/'));
+		}
 		CString cmd;
 		cmd.Format(_T("git.exe clone \"%s\" \"%s\""),
 						url,
