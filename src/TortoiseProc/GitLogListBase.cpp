@@ -1679,7 +1679,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 			{
-				sRev.Format(_T("%ld"), m_logEntries[i].m_CommitHash);
+				sRev.Format(_T("%s"), m_logEntries[i].m_CommitHash);
 				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->Add(&m_logEntries[i]);
@@ -1771,7 +1771,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 			{
-				sRev.Format(_T("%ld"), m_logEntries[i].m_CommitHash);
+				sRev.Format(_T("%s"), m_logEntries[i].m_CommitHash);
 				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->Add(&m_logEntries[i]);
