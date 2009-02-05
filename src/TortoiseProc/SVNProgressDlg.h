@@ -66,6 +66,11 @@ typedef enum
 
 #define WM_SHOWCONFLICTRESOLVER (WM_APP + 100)
 
+typedef enum
+{
+	git_wc_notify_add,
+
+}git_wc_notify_action_t;
 /**
  * \ingroup TortoiseProc
  * Handles different Subversion commands and shows the notify messages
@@ -140,14 +145,15 @@ private:
 	class NotificationData
 	{
 	public:
-		NotificationData() :
+		NotificationData(){} ;
+	    git_wc_notify_action_t action;
 #if 0
 		  action((git_wc_notify_action_t)-1),
 			  kind(git_node_none),
 			  content_state(git_wc_notify_state_inapplicable),
 			  prop_state(git_wc_notify_state_inapplicable),
 			  rev(0),
-#endif
+
 			  color(::GetSysColor(COLOR_WINDOWTEXT)),
 			  bConflictedActionItem(false),
 			  bAuxItem(false)
@@ -157,6 +163,7 @@ private:
 //			  merge_range.end = 0;
 //			  merge_range.start = 0;
 		  }
+#endif
 	public:
 		// The text we put into the first column (the Git action for normal items, just text for aux items)
 		CString					sActionColumnText;	
@@ -181,16 +188,18 @@ private:
 	};
 protected:
 
-#if 0	//implement the virtual methods from Git base class
-	virtual BOOL Notify(const CTGitPath& path, git_wc_notify_action_t action, 
+	//Need update in the future implement the virtual methods from Git base class
+	virtual BOOL Notify(const CTGitPath& path, git_wc_notify_action_t action
+		/*
 		git_node_kind_t kind, const CString& mime_type, 
 		git_wc_notify_state_t content_state, 
 		git_wc_notify_state_t prop_state, LONG rev,
 		const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
 		const CString& changelistname,
 		git_merge_range_t * range,
-		git_error_t * err, apr_pool_t * pool);
-#endif
+		git_error_t * err, apr_pool_t * pool*/
+		);
+
 //	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 	virtual BOOL						OnInitDialog();
 	virtual BOOL						Cancel();

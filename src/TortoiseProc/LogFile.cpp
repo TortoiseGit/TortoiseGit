@@ -31,11 +31,11 @@ CLogFile::~CLogFile(void)
 
 bool CLogFile::Open()
 {
-	CTSVNPath logfile = CTSVNPath(CPathUtils::GetAppDataDirectory() + _T("\\logfile.txt"));
+	CTGitPath logfile = CTGitPath(CPathUtils::GetAppDataDirectory() + _T("\\logfile.txt"));
 	return Open(logfile);
 }
 
-bool CLogFile::Open(const CTSVNPath& logfile)
+bool CLogFile::Open(const CTGitPath& logfile)
 {
 	m_lines.clear();
 	m_logfile = logfile;

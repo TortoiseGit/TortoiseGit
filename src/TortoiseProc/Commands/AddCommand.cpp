@@ -55,6 +55,7 @@ bool AddCommand::Execute()
 			dlg.m_pathList = pathList;
 			if (dlg.DoModal() == IDOK)
 			{
+#if 0
 				CString cmd,out;
 				int success=0;
 				for(int i=0;i<dlg.m_pathList.GetCount();i++)
@@ -70,22 +71,23 @@ bool AddCommand::Execute()
 				message.Format(_T("%d file added"),success);
 				CMessageBox::Show(NULL,message,_T("TortoiseGit"),MB_OK);
 				return TRUE;
-#if 0
+#endif
+
 				if (dlg.m_pathList.GetCount() == 0)
 					return FALSE;
-				CSVNProgressDlg progDlg;
+				CGitProgressDlg progDlg;
 				theApp.m_pMainWnd = &progDlg;
-				progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Add);
+				progDlg.SetCommand(CGitProgressDlg::GitProgress_Add);
 				if (parser.HasVal(_T("closeonend")))
 					progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 				progDlg.SetPathList(dlg.m_pathList);
-				ProjectProperties props;
-				props.ReadPropsPathList(dlg.m_pathList);
-				progDlg.SetProjectProperties(props);
+				//ProjectProperties props;
+				//props.ReadPropsPathList(dlg.m_pathList);
+				//progDlg.SetProjectProperties(props);
 				progDlg.SetItemCount(dlg.m_pathList.GetCount());
 				progDlg.DoModal();
 				bRet = !progDlg.DidErrorsOccur();
-#endif
+
 			}
 	//	}
 	}

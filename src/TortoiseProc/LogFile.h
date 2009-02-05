@@ -37,7 +37,7 @@ public:
 	/**
 	 * Opens the log file and reads its contents
 	 */
-	bool	Open(const CTSVNPath& logfile);
+	bool	Open(const CTGitPath& logfile);
 	/**
 	 * Opens the default log file for TortoiseSVN and reads its contents
 	 */

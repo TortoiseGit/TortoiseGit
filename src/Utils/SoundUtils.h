@@ -30,11 +30,11 @@ public:
 	
 	/**
 	 * Registers our own sounds under the available sound schemes
-	 * Users then can customize the TSVN sounds in the sounds panel of Windows.
+	 * Users then can customize the TGit sounds in the sounds panel of Windows.
 	 */
-	static void RegisterTSVNSounds();
+	static void RegisterTGitSounds();
 
-	static void PlayTSVNWarning();
-	static void PlayTSVNError();
-	static void PlayTSVNNotification();
+	static void PlayTGitWarning();
+	static void PlayTGitError();
+	static void PlayTGitNotification();
 };

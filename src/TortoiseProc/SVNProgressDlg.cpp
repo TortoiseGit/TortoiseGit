@@ -41,6 +41,7 @@
 #include "IconMenu.h"
 #include "BugTraqAssociations.h"
 
+static UINT WM_GITPROGRESS = RegisterWindowMessage(_T("TORTOISEGIT_GITPROGRESS_MSG"));
 
 BOOL	CGitProgressDlg::m_bAscending = FALSE;
 int		CGitProgressDlg::m_nSortedColumn = -1;
@@ -123,7 +124,7 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(HDN_ITEMCLICK, 0, OnHdnItemclickSvnprogress)
 	ON_WM_SETCURSOR()
 	ON_WM_CONTEXTMENU()
-	ON_REGISTERED_MESSAGE(WM_SVNPROGRESS, OnSVNProgress)
+	ON_REGISTERED_MESSAGE(WM_GITPROGRESS, OnGitProgress)
 	ON_WM_TIMER()
 	ON_EN_SETFOCUS(IDC_INFOTEXT, &CGitProgressDlg::OnEnSetfocusInfotext)
 	ON_NOTIFY(LVN_BEGINDRAG, IDC_SVNPROGRESS, &CGitProgressDlg::OnLvnBegindragSvnprogress)
@@ -140,6 +141,7 @@ BOOL CGitProgressDlg::Cancel()
 
 LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM lParam)
 {
+#if 0
 	CConflictResolveDlg dlg(this);
 	const svn_wc_conflict_description_t *description = (svn_wc_conflict_description_t *)lParam;
 	if (description)
@@ -159,13 +161,16 @@ LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM lParam
 		m_bCancelled = dlg.IsCancelled();
 		return dlg.GetResult();
 	}
-	return svn_wc_conflict_choose_postpone;
-}
 
+	return svn_wc_conflict_choose_postpone;
+#endif
+	return 0;
+}
+#if 0
 svn_wc_conflict_choice_t CGitProgressDlg::ConflictResolveCallback(const svn_wc_conflict_description_t *description, CString& mergedfile)
 {
 	// we only bother the user when merging
-	if (((m_Command == SVNProgress_Merge)||(m_Command == SVNProgress_MergeAll)||(m_Command == SVNProgress_MergeReintegrate))&&(!m_AlwaysConflicted)&&(description))
+	if (((m_Command == GitProgress_Merge)||(m_Command == GitProgress_MergeAll)||(m_Command == GitProgress_MergeReintegrate))&&(!m_AlwaysConflicted)&&(description))
 	{
 		// we're in a worker thread here. That means we must not show a dialog from the thread
 		// but let the UI thread do it.
@@ -177,7 +182,7 @@ svn_wc_conflict_choice_t CGitProgressDlg::ConflictResolveCallback(const svn_wc_c
 
 	return svn_wc_conflict_choose_postpone;
 }
-
+#endif
 void CGitProgressDlg::AddItemToList()
 {
 	int totalcount = m_ProgList.GetItemCount();
@@ -210,20 +215,25 @@ void CGitProgressDlg::AddItemToList()
 	}
 }
 
-BOOL CGitProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t action, 
+
+BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t action
+							 /*
 							 svn_node_kind_t kind, const CString& mime_type, 
 							 svn_wc_notify_state_t content_state, 
 							 svn_wc_notify_state_t prop_state, LONG rev,
 							 const svn_lock_t * lock, svn_wc_notify_lock_state_t lock_state,
 							 const CString& changelistname,
 							 svn_merge_range_t * range,
-							 svn_error_t * err, apr_pool_t * pool)
+							 svn_error_t * err, apr_pool_t * pool
+							 */)
 {
 	bool bNoNotify = false;
 	bool bDoAddData = true;
 	NotificationData * data = new NotificationData();
 	data->path = path;
 	data->action = action;
+	data->sPathColumnText=path.GetGitPathString();
+#if 0
 	data->kind = kind;
 	data->mime_type = mime_type;
 	data->content_state = content_state;
@@ -238,24 +248,26 @@ BOOL CGitProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t actio
 		data->basepath = m_basePath;
 	if (range)
 		data->merge_range = *range;
+#endif
 	switch (data->action)
 	{
-	case svn_wc_notify_add:
-	case svn_wc_notify_update_add:
-		if ((data->content_state == svn_wc_notify_state_conflicted) || (data->prop_state == svn_wc_notify_state_conflicted))
-		{
-			data->color = m_Colors.GetColor(CColors::Conflict);
-			data->bConflictedActionItem = true;
-			data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
-			m_nConflicts++;
-		}
-		else
-		{
-			m_bMergesAddsDeletesOccurred = true;
+	case git_wc_notify_add:
+	//case svn_wc_notify_update_add:
+	//	if ((data->content_state == svn_wc_notify_state_conflicted) || (data->prop_state == svn_wc_notify_state_conflicted))
+	//	{
+	//		data->color = m_Colors.GetColor(CColors::Conflict);
+	//		data->bConflictedActionItem = true;
+	//		data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
+	//		m_nConflicts++;
+	//	}
+	//	else
+	//	{
+	//		m_bMergesAddsDeletesOccurred = true;
 			data->sActionColumnText.LoadString(IDS_SVNACTION_ADD);
 			data->color = m_Colors.GetColor(CColors::Added);
-		}
+	//	}
 		break;
+#if 0
 	case svn_wc_notify_commit_added:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_ADDING);
 		data->color = m_Colors.GetColor(CColors::Added);
@@ -461,6 +473,7 @@ BOOL CGitProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t actio
 			data->sActionColumnText.Format(IDS_SVNACTION_MERGEBEGINMULTIPLEREVERSE, data->merge_range.start, data->merge_range.end + 1);
 		data->bAuxItem = true;
 		break;
+#endif
 	default:
 		break;
 	} // switch (data->action)
@@ -473,7 +486,7 @@ BOOL CGitProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t actio
 		{
 			m_arData.push_back(data);
 			AddItemToList();
-			if ((!data->bAuxItem)&&(m_itemCount > 0))
+			if (/*(!data->bAuxItem)&&*/(m_itemCount > 0))
 			{
 				m_itemCount--;
 
@@ -483,19 +496,22 @@ BOOL CGitProgressDlg::Notify(const CTSVNPath& path, svn_wc_notify_action_t actio
 				progControl->SetRange32(0, m_itemCountTotal);
 			}
 		}
-		if ((action == svn_wc_notify_commit_postfix_txdelta)&&(bSecondResized == FALSE))
-		{
-			ResizeColumns();
-			bSecondResized = TRUE;
-		}
+		//if ((action == svn_wc_notify_commit_postfix_txdelta)&&(bSecondResized == FALSE))
+		//{
+		//	ResizeColumns();
+		//	bSecondResized = TRUE;
+		//}
 	}
 
 	return TRUE;
 }
 
+
 CString CGitProgressDlg::BuildInfoString()
 {
 	CString infotext;
+#if 0
+	
 	CString temp;
 	int added = 0;
 	int copied = 0;
@@ -632,10 +648,11 @@ CString CGitProgressDlg::BuildInfoString()
 		infotext += temp;
 		infotext.AppendFormat(_T(":%d "), resolved);
 	}
+#endif
 	return infotext;
 }
 
-void CGitProgressDlg::SetSelectedList(const CTSVNPathList& selPaths)
+void CGitProgressDlg::SetSelectedList(const CTGitPathList& selPaths)
 {
 	m_selectedPaths = selPaths;
 }
@@ -728,7 +745,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGBUTTON, BOTTOM_RIGHT);
-	SetPromptParentWindow(this->m_hWnd);
+	//SetPromptParentWindow(this->m_hWnd);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("SVNProgressDlg"));
@@ -740,27 +757,29 @@ bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 	return CAppUtils::SetListCtrlBackgroundImage(m_ProgList.GetSafeHwnd(), nID);
 }
 
+#if 0
 void CGitProgressDlg::ReportSVNError()
 {
 	ReportError(GetLastErrorMessage());
 }
+#endif
 
 void CGitProgressDlg::ReportError(const CString& sError)
 {
-	CSoundUtils::PlayTSVNError();
+	CSoundUtils::PlayTGitError();
 	ReportString(sError, CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), m_Colors.GetColor(CColors::Conflict));
 	m_bErrorsOccurred = true;
 }
 
 void CGitProgressDlg::ReportWarning(const CString& sWarning)
 {
-	CSoundUtils::PlayTSVNWarning();
+	CSoundUtils::PlayTGitWarning();
 	ReportString(sWarning, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)), m_Colors.GetColor(CColors::Conflict));
 }
 
 void CGitProgressDlg::ReportNotification(const CString& sNotification)
 {
-	CSoundUtils::PlayTSVNNotification();
+	CSoundUtils::PlayTGitNotification();
 	ReportString(sNotification, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
 }
 
@@ -817,7 +836,7 @@ UINT CGitProgressDlg::ProgressThread()
 
 	DialogEnableWindow(IDOK, FALSE);
 	DialogEnableWindow(IDCANCEL, TRUE);
-	SetAndClearProgressInfo(m_hWnd);
+//	SetAndClearProgressInfo(m_hWnd);
 	m_itemCount = m_itemCountTotal;
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -827,52 +846,52 @@ UINT CGitProgressDlg::ProgressThread()
 	CTime startTime = CTime::GetCurrentTime();
 	switch (m_Command)
 	{
-	case SVNProgress_Add:
+	case GitProgress_Add:
 		bSuccess = CmdAdd(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Checkout:
+	case GitProgress_Checkout:
 		bSuccess = CmdCheckout(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Commit:
+	case GitProgress_Commit:
 		bSuccess = CmdCommit(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Copy:
+	case GitProgress_Copy:
 		bSuccess = CmdCopy(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Export:
+	case GitProgress_Export:
 		bSuccess = CmdExport(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Import:
+	case GitProgress_Import:
 		bSuccess = CmdImport(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Lock:
+	case GitProgress_Lock:
 		bSuccess = CmdLock(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Merge:
+	case GitProgress_Merge:
 		bSuccess = CmdMerge(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_MergeAll:
+	case GitProgress_MergeAll:
 		bSuccess = CmdMergeAll(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_MergeReintegrate:
+	case GitProgress_MergeReintegrate:
 		bSuccess = CmdMergeReintegrate(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Rename:
+	case GitProgress_Rename:
 		bSuccess = CmdRename(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Resolve:
+	case GitProgress_Resolve:
 		bSuccess = CmdResolve(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Revert:
+	case GitProgress_Revert:
 		bSuccess = CmdRevert(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Switch:
+	case GitProgress_Switch:
 		bSuccess = CmdSwitch(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Unlock:
+	case GitProgress_Unlock:
 		bSuccess = CmdUnlock(sWindowTitle, localoperation);
 		break;
-	case SVNProgress_Update:
+	case GitProgress_Update:
 		bSuccess = CmdUpdate(sWindowTitle, localoperation);
 		break;
 	}
@@ -967,6 +986,7 @@ UINT CGitProgressDlg::ProgressThread()
 
 void CGitProgressDlg::OnBnClickedLogbutton()
 {
+#if 0
 	if (m_targetPathList.GetCount() != 1)
 		return;
 	StringRevMap::iterator it = m_UpdateStartRevMap.begin();
@@ -978,6 +998,7 @@ void CGitProgressDlg::OnBnClickedLogbutton()
 	CLogDlg dlg;
 	dlg.SetParams(m_targetPathList[0], m_RevisionEnd, m_RevisionEnd, rev, 0, TRUE);
 	dlg.DoModal();
+#endif
 }
 
 
@@ -1104,6 +1125,7 @@ void CGitProgressDlg::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CGitProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 {
+#if 0
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 	if (pNMLV->iItem < 0)
@@ -1120,10 +1142,10 @@ void CGitProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 		// We've double-clicked on a conflicted item - do a three-way merge on it
 		SVNDiff::StartConflictEditor(data->path);
 	}
-	else if ((data->action == svn_wc_notify_update_update) && ((data->content_state == svn_wc_notify_state_merged)||(SVNProgress_Merge == m_Command)) || (data->action == svn_wc_notify_resolved))
+	else if ((data->action == svn_wc_notify_update_update) && ((data->content_state == svn_wc_notify_state_merged)||(GitProgress_Merge == m_Command)) || (data->action == svn_wc_notify_resolved))
 	{
 		// This is a modified file which has been merged on update. Diff it against base
-		CTSVNPath temporaryFile;
+		CTGitPath temporaryFile;
 		SVNDiff diff(this, this->m_hWnd, true);
 		diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		svn_revnum_t baseRev = 0;
@@ -1142,6 +1164,7 @@ void CGitProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 			CAppUtils::LaunchApplication(cmd, NULL, false);
 		}
 	}
+#endif
 }
 
 void CGitProgressDlg::OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1171,8 +1194,9 @@ bool CGitProgressDlg::NotificationDataIsAux(const NotificationData* pData)
 	return pData->bAuxItem;
 }
 
-LRESULT CGitProgressDlg::OnSVNProgress(WPARAM /*wParam*/, LPARAM lParam)
+LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM lParam)
 {
+#if 0
 	SVNProgress * pProgressData = (SVNProgress *)lParam;
 	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
 	if ((pProgressData->total > 1000)&&(!progControl->IsWindowVisible()))
@@ -1200,6 +1224,7 @@ LRESULT CGitProgressDlg::OnSVNProgress(WPARAM /*wParam*/, LPARAM lParam)
 		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, (double)((double)pProgressData->overall_total / 1024000.0));
 	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)pProgressData->SpeedString);
 	SetDlgItemText(IDC_PROGRESSLABEL, progText);
+#endif
 	return 0;
 }
 
@@ -1271,7 +1296,7 @@ bool CGitProgressDlg::SortCompare(const NotificationData * pData1, const Notific
 	// Sort by path if everything else is equal
 	if (result == 0)
 	{
-		result = CTSVNPath::Compare(pData1->path, pData2->path);
+		result = CTGitPath::Compare(pData1->path, pData2->path);
 	}
 
 	if (!m_bAscending)
@@ -1361,6 +1386,7 @@ BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 
 void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
+#if 0
 	if (m_options & ProgOptDryRun)
 		return;	// don't do anything in a dry-run.
 
@@ -1405,7 +1431,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							popup.AppendMenuIcon(ID_CONFLICTUSETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS,IDI_RESOLVE);
 							popup.AppendMenuIcon(ID_CONFLICTUSEMINE, IDS_SVNPROGRESS_MENUUSEMINE,IDI_RESOLVE);
 						}
-						else if ((data->content_state == svn_wc_notify_state_merged)||(SVNProgress_Merge == m_Command)||(data->action == svn_wc_notify_resolved))
+						else if ((data->content_state == svn_wc_notify_state_merged)||(GitProgress_Merge == m_Command)||(data->action == svn_wc_notify_resolved))
 							popup.SetDefaultItem(ID_COMPARE, FALSE);
 					
 					if (m_ProgList.GetSelectedCount() == 1)
@@ -1436,9 +1462,9 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (data)
 					{
 						CString sPath = GetPathFromColumnText(data->sPathColumnText);
-						if ((!sPath.IsEmpty())&&(!SVN::PathIsURL(CTSVNPath(sPath))))
+						if ((!sPath.IsEmpty())&&(!SVN::PathIsURL(CTGitPath(sPath))))
 						{
-							CTSVNPath path = CTSVNPath(sPath);
+							CTGitPath path = CTGitPath(sPath);
 							if (path.GetDirectory().Exists())
 							{
 								popup.AppendMenuIcon(ID_EXPLORE, IDS_SVNPROGRESS_MENUOPENPARENT, IDI_EXPLORER);
@@ -1488,7 +1514,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						{
 							CString sPath = GetPathFromColumnText(data->sPathColumnText);
 
-							CTSVNPath path = CTSVNPath(sPath);
+							CTGitPath path = CTGitPath(sPath);
 							ShellExecute(m_hWnd, _T("explore"), path.GetDirectory().GetWinPath(), NULL, path.GetDirectory().GetWinPath(), SW_SHOW);
 						}
 						break;
@@ -1505,8 +1531,8 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							// if the file was merged during update, do a three way diff between OLD, MINE, THEIRS
 							if (data->content_state == svn_wc_notify_state_merged)
 							{
-								CTSVNPath basefile = CTempFiles::Instance().GetTempFilePath(false, data->path, rev);
-								CTSVNPath newfile = CTempFiles::Instance().GetTempFilePath(false, data->path, SVNRev::REV_HEAD);
+								CTGitPath basefile = CTempFiles::Instance().GetTempFilePath(false, data->path, rev);
+								CTGitPath newfile = CTempFiles::Instance().GetTempFilePath(false, data->path, SVNRev::REV_HEAD);
 								SVN svn;
 								if (!svn.Cat(data->path, SVNRev(SVNRev::REV_WC), rev, basefile))
 								{
@@ -1517,7 +1543,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 								// If necessary, convert the line-endings on the file before diffing
 								if ((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\ConvertBase"), TRUE))
 								{
-									CTSVNPath temporaryFile = CTempFiles::Instance().GetTempFilePath(false, data->path, SVNRev::REV_BASE);
+									CTGitPath temporaryFile = CTempFiles::Instance().GetTempFilePath(false, data->path, SVNRev::REV_BASE);
 									if (!svn.Cat(data->path, SVNRev(SVNRev::REV_BASE), SVNRev(SVNRev::REV_BASE), temporaryFile))
 									{
 										temporaryFile.Reset();
@@ -1539,7 +1565,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							}
 							else
 							{
-								CTSVNPath tempfile = CTempFiles::Instance().GetTempFilePath(false, data->path, rev);
+								CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, data->path, rev);
 								SVN svn;
 								if (!svn.Cat(data->path, SVNRev(SVNRev::REV_WC), rev, tempfile))
 								{
@@ -1563,7 +1589,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					case ID_EDITCONFLICT:
 						{
 							CString sPath = GetPathFromColumnText(data->sPathColumnText);
-							SVNDiff::StartConflictEditor(CTSVNPath(sPath));
+							SVNDiff::StartConflictEditor(CTGitPath(sPath));
 						}
 						break;
 					case ID_CONFLICTUSETHEIRS:
@@ -1651,7 +1677,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							// the path might be inside an external folder which has its own
 							// revisions.
 							CString sPath = GetPathFromColumnText(data->sPathColumnText);
-							dlg.SetParams(CTSVNPath(sPath), SVNRev(), SVNRev::REV_HEAD, 1, limit, TRUE);
+							dlg.SetParams(CTGitPath(sPath), SVNRev(), SVNRev::REV_HEAD, 1, limit, TRUE);
 							dlg.DoModal();
 						}
 						break;
@@ -1677,6 +1703,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 		}
 	}
+#endif
 }
 
 void CGitProgressDlg::OnEnSetfocusInfotext()
@@ -1690,7 +1717,7 @@ void CGitProgressDlg::OnEnSetfocusInfotext()
 void CGitProgressDlg::OnLvnBegindragSvnprogress(NMHDR* , LRESULT *pResult)
 {
 	//LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-
+#if 0
 	int selIndex = m_ProgList.GetSelectionMark();
 	if (selIndex < 0)
 		return;
@@ -1715,7 +1742,7 @@ void CGitProgressDlg::OnLvnBegindragSvnprogress(NMHDR* , LRESULT *pResult)
 	{
 		dropFiles.CreateStructure();
 	}
-
+#endif
 	*pResult = 0;
 }
 
@@ -1724,6 +1751,9 @@ void CGitProgressDlg::OnSize(UINT nType, int cx, int cy)
 	CResizableStandAloneDialog::OnSize(nType, cx, cy);
 	if ((nType == SIZE_RESTORED)&&(m_bLastVisible))
 	{
+		if(!m_ProgList.m_hWnd)
+			return;
+
 		int count = m_ProgList.GetItemCount();
 		if (count > 0)
 			m_ProgList.EnsureVisible(count-1, false);
@@ -1735,28 +1765,46 @@ void CGitProgressDlg::OnSize(UINT nType, int cx, int cy)
 //////////////////////////////////////////////////////////////////////////
 bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 {
+
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_ADD);
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
+
+	for(int i=0;i<m_targetPathList.GetCount();i++)
+	{
+		CString cmd,out;
+		cmd.Format(_T("git.exe add \"%s\""),m_targetPathList[i].GetGitPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			m_bErrorsOccurred=true;
+			return false;
+		}
+		Notify(m_targetPathList[i],git_wc_notify_add);
+	}
+#if 0
 	if (!Add(m_targetPathList, &m_ProjectProperties, svn_depth_empty, FALSE, TRUE, TRUE))
 	{
 		ReportSVNError();
 		return false;
 	}
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+#endif
+	//CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+	m_bErrorsOccurred=false;
 	return true;
 }
 
 bool CGitProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_CHECKOUT);
 	SetBackgroundImage(IDI_CHECKOUT_BKG);
-	CTSVNPathList urls;
+	CTGitPathList urls;
 	urls.LoadFromAsteriskSeparatedString(m_url.GetSVNPathString());
-	CTSVNPath checkoutdir = m_targetPathList[0];
+	CTGitPath checkoutdir = m_targetPathList[0];
 	for (int i=0; i<urls.GetCount(); ++i)
 	{
 		sWindowTitle = urls[i].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
@@ -1794,11 +1842,13 @@ bool CGitProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*
 			}
 		}
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COMMIT);
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_COMMIT_BKG);
@@ -1924,11 +1974,13 @@ bool CGitProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
 			return false;
 		}
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COPY);
 	SetWindowText(sWindowTitle);
@@ -1968,11 +2020,13 @@ bool CGitProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
 			ReportNotification(sMsg);
 		}
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_EXPORT);
 	sWindowTitle = m_url.GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
@@ -1991,11 +2045,13 @@ bool CGitProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
 		ReportSVNError();
 		return false;
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_IMPORT);
 	sWindowTitle = m_targetPathList[0].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
@@ -2011,11 +2067,13 @@ bool CGitProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
 		ReportSVNError();
 		return false;
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_LOCK);
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_LOCK_BKG);
@@ -2057,11 +2115,13 @@ bool CGitProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
 		}
 		return false;
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	bool bFailed = false;
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGE);
@@ -2139,10 +2199,13 @@ bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_INFOTEXT)->ShowWindow(SW_SHOW);
 	return !bFailed;
+#endif
+	return true;
 }
 
 bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGE);
 	SetBackgroundImage(IDI_MERGE_BKG);
@@ -2153,7 +2216,7 @@ bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*
 	CString sCmdInfo;
 	sCmdInfo.LoadString(IDS_PROGRS_INFOGETTINGINFO);
 	ReportCmd(sCmdInfo);
-	CTSVNPathList suggestedSources;
+	CTGitPathList suggestedSources;
 	if (!SuggestMergeSources(m_targetPathList[0], m_Revision, suggestedSources))
 	{
 		ReportSVNError();
@@ -2192,11 +2255,13 @@ bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*
 	}
 
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGEREINTEGRATE);
 	SetBackgroundImage(IDI_MERGE_BKG);
@@ -2224,11 +2289,13 @@ bool CGitProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localop
 	}
 
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	if ((!m_targetPathList[0].IsUrl())&&(!m_url.IsUrl()))
 		localoperation = true;
@@ -2241,11 +2308,13 @@ bool CGitProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
 		ReportSVNError();
 		return false;
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 {
+#if 0
 	localoperation = true;
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_RESOLVE);
@@ -2301,17 +2370,19 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 			Resolve(m_targetPathList[fileindex], svn_wc_conflict_choose_merged, true);
 	}
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 {
+#if 0
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_REVERT);
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_REVERT_BKG);
 
-	CTSVNPathList delList = m_selectedPaths;
+	CTGitPathList delList = m_selectedPaths;
 	if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
 		delList.DeleteAllFiles(true);
 
@@ -2322,11 +2393,13 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 		return false;
 	}
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	SVNStatus st;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_SWITCH);
@@ -2361,11 +2434,13 @@ bool CGitProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
 	{
 		GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 	}
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UNLOCK);
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_UNLOCK_BKG);
@@ -2376,11 +2451,13 @@ bool CGitProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
 		return false;
 	}
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+#endif
 	return true;
 }
 
 bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 {
+#if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UPDATE);
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_UPDATE_BKG);
@@ -2393,7 +2470,7 @@ bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 	int nUUIDs = 0;
 	for(int nItem = 0; nItem < targetcount; nItem++)
 	{
-		const CTSVNPath& targetPath = m_targetPathList[nItem];
+		const CTGitPath& targetPath = m_targetPathList[nItem];
 		SVNStatus st;
 		LONG headrev = -1;
 		m_Revision = revstore;
@@ -2456,12 +2533,12 @@ bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 		// so we have to update them separately
 		for(int nItem = 0; nItem < targetcount; nItem++)
 		{
-			const CTSVNPath& targetPath = m_targetPathList[nItem];
+			const CTGitPath& targetPath = m_targetPathList[nItem];
 			m_basePath = targetPath;
 			CString sNotify;
 			sNotify.Format(IDS_PROGRS_UPDATEPATH, m_basePath.GetWinPath());
 			ReportString(sNotify, CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
-			if (!Update(CTSVNPathList(targetPath), revstore, m_depth, TRUE, m_options & ProgOptIgnoreExternals))
+			if (!Update(CTGitPathList(targetPath), revstore, m_depth, TRUE, m_options & ProgOptIgnoreExternals))
 			{
 				ReportSVNError();
 				return false;
@@ -2478,8 +2555,8 @@ bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 		// to update all intermediate folders manually
 		if ((m_targetPathList.GetCount() == 1) && (!m_targetPathList[0].Exists()))
 		{
-			CTSVNPath wcPath = m_targetPathList[0].GetContainingDirectory();
-			CTSVNPath existingParentPath = wcPath.GetContainingDirectory();
+			CTGitPath wcPath = m_targetPathList[0].GetContainingDirectory();
+			CTGitPath existingParentPath = wcPath.GetContainingDirectory();
 			while (!existingParentPath.Exists() && (existingParentPath.GetWinPathString().GetLength() > 2))
 			{
 				existingParentPath = existingParentPath.GetContainingDirectory();
@@ -2487,7 +2564,7 @@ bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 			if (existingParentPath.GetWinPathString().GetLength() && !existingParentPath.IsEquivalentTo(wcPath))
 			{
 				// update all intermediate directories with depth 'empty'
-				CTSVNPath intermediatepath = existingParentPath;
+				CTGitPath intermediatepath = existingParentPath;
 				bool bSuccess = true;
 				while (bSuccess && intermediatepath.IsAncestorOf(wcPath) && !intermediatepath.IsEquivalentTo(wcPath))
 				{
@@ -2497,7 +2574,7 @@ bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 						intermediatepath = wcPath;
 					else
 						intermediatepath.AppendPathString(childname);
-					bSuccess = !!Update(CTSVNPathList(intermediatepath), m_Revision, svn_depth_empty, false, true);
+					bSuccess = !!Update(CTGitPathList(intermediatepath), m_Revision, svn_depth_empty, false, true);
 				}
 
 				if (!bSuccess)
@@ -2528,7 +2605,7 @@ bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
 	// (either a file or a directory)
 	if ((m_targetPathList.GetCount() == 1)&&(m_UpdateStartRevMap.size()>0))
 		GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
-
+#endif
 	return true;
 }
 
