@@ -1625,7 +1625,7 @@ void CLogDlg::EditLogMessage(int index)
 	EnableOKButton();
 #endif
 }
-#if 0
+
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
@@ -1636,7 +1636,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		{
 			if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 			{
-				DiffSelectedRevWithPrevious();
+				m_LogList.DiffSelectedRevWithPrevious();
 				return TRUE;
 			}
 		}
@@ -1656,7 +1656,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
-#endif
+
 
 BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
