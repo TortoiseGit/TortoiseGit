@@ -5253,40 +5253,62 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			BYTE_VECTOR cmdout;
 			cmdout.clear();
 			CString cmd;
-			if(list == NULL)
-				cmd=(_T("git.exe diff-index --raw HEAD --numstat -C -M -z"));
-			else
-				cmd.Format(_T("git.exe diff-index  --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
-
-			if(g_Git.Run(cmd,&cmdout))
+			if(!g_Git.IsInitRepos())
 			{
-				cmdout.clear();
-				CString strout;
-				if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&strout,CP_UTF8))
+				if(list == NULL)
+					cmd=(_T("git.exe diff-index --raw HEAD --numstat -C -M -z"));
+				else
+					cmd.Format(_T("git.exe diff-index  --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+	
+				if(g_Git.Run(cmd,&cmdout))
 				{
+					cmdout.clear();
+					CString strout;
+					if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&strout,CP_UTF8))
+					{
+						CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
+						return -1;
+					}
+					if(strout.IsEmpty())
+						break; //this is initial repositoyr, there are no any history
+
 					CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
 					return -1;
+
 				}
-				if(strout.IsEmpty())
-					break; //this is initial repositoyr, there are no any history
+				
+				if(list == NULL)
+					cmd=(_T("git.exe diff-index --cached --raw HEAD --numstat -C -M -z"));
+				else
+					cmd.Format(_T("git.exe diff-index  --cached --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
-				CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
-				return -1;
-
+				g_Git.Run(cmd,&cmdout);
+				//out+=cmdout;
+				out.append(cmdout,0);
 			}
-			
-			if(list == NULL)
-				cmd=(_T("git.exe diff-index --cached --raw HEAD --numstat -C -M -z"));
-			else
-				cmd.Format(_T("git.exe diff-index  --cached --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+			else // Init Repository
+			{
+				if(list == NULL)
+					cmd=_T("git.exe ls-files -s -t -z");
+				else
+					cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
 
-			g_Git.Run(cmd,&cmdout);
-			//out+=cmdout;
-			out.append(cmdout,0);
+				g_Git.Run(cmd,&cmdout);
+				//out+=cmdout;
+				out.append(cmdout,0);
+			}
 		}
 
+		if(g_Git.IsInitRepos())
+		{
+			m_StatusFileList.ParserFromLsFile(out);
+			for(int i=0;i<m_StatusFileList.GetCount();i++)
+				((CTGitPath&)(m_StatusFileList[i])).m_Action=CTGitPath::LOGACTIONS_ADDED;
+		}
+		else
+			this->m_StatusFileList.ParserFromLog(out);
 
-		this->m_StatusFileList.ParserFromLog(out);
+		
 	}else
 	{
 		int count = 0;
