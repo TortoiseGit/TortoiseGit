@@ -1,5 +1,17 @@
+Version 0.3.1.0 version(internal)
+Bug Fix:
+	*Issue 20:  Add To Ignore from Commit dialog not working
+	*Fix Issue 31 in tortoisegit: Init Repository, Commit dialog can not show added file
+	*Issue 30: Clone does not support UNC path to repository
+	*Fix when setting ssh client is null. GIT_SSH environment variable is not clear
+	*Fix Issue 29:  F5 should refresh TGit log
+	*Fix log filter don't filter commit hash
+	*Issue 25:  Log refresh does not pick up new tags on top line, or move 'master' up
+	*Fix Issue 27:  Deleted files not committed
+	*Fix Issue 22 Error deleting file from context menu if filename contains spaces
+	*Fix Issue 6 Add does not work.
 
-version 0.3.0.0 version:
+version 0.3.0.0 version(internal):
 Features:
 	1.Icon Overlay
 	  Show different icon overlay at git repository. Support File and directory icon overlay. 
