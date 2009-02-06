@@ -159,26 +159,22 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			break;
 		case ID_CREATE_BRANCH:
 			CAppUtils::CreateBranchTag(FALSE,&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
+			ReloadHashMap();
 			Invalidate();			
 			break;
 		case ID_CREATE_TAG:
 			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
+			ReloadHashMap();
 			Invalidate();
 			break;
 		case ID_SWITCHTOREV:
 			CAppUtils::Switch(&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
+			ReloadHashMap();
 			Invalidate();
 			break;
 		case ID_RESET:
 			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash);
-			m_HashMap.clear();
-			g_Git.GetMapHashToFriendName(m_HashMap);
+			ReloadHashMap();
 			Invalidate();
 			break;
 		default:
