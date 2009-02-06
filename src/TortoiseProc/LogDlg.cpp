@@ -1653,7 +1653,8 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 	}
 	
-	m_tooltips.RelayEvent(pMsg);
+	if(::IsWindow(m_tooltips.m_hWnd))
+		m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
 
