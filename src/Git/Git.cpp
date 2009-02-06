@@ -108,6 +108,41 @@ static BOOL FindGitPath()
 #define MAX_DIRBUFFER 1000
 CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
+BOOL g_IsWingitDllload = TRUE;
+
+LPBYTE wgGetRevisionID_safe(const char *pszProjectPath, const char *pszName)
+{
+	if(g_IsWingitDllload)
+		return wgGetRevisionID(pszProjectPath,pszName);
+	else
+		return NULL;
+}
+
+BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
+{
+	if(g_IsWingitDllload)
+		return wgEnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
+	else
+		return FALSE;
+}
+
+static void InitWinGitDll()
+{
+	__try
+	{
+
+		if ( !wgInit() )
+		{
+				// TODO
+		}
+	}
+	__except(1)
+	{
+		g_IsWingitDllload=FALSE;
+		return;
+	}
+
+}
 CGit::CGit(void)
 {
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
@@ -117,11 +152,7 @@ CGit::CGit(void)
 	{
 		// TODO
 	}
-
-	if ( !wgInit() )
-	{
-		// TODO
-	}
+	InitWinGitDll();
 }
 
 CGit::~CGit(void)

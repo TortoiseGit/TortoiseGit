@@ -32,7 +32,7 @@
 //#	include "TGitPath.h"
 //#	include "PathUtils.h"
 #endif
-
+#include "git.h"
 
 GitStatus::GitStatus(bool * pbCanceled)
 	: status(NULL)
@@ -238,7 +238,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 		nFlags |= WGEFF_NoRecurse;
 #endif
 
-	err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
+	err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
 
 	/*err = git_client_status4 (&youngest,
 							path.GetSVNApiPath(pool),
@@ -360,8 +360,8 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 	m_status.prop_status = m_status.text_status = git_wc_status_none;
 
-	// NOTE: currently wgEnumFiles will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
-	m_err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
+	// NOTE: currently wgEnumFiles_safe_safe_safe will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
+	m_err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
 
 	/*m_err = git_client_status4 (&youngest,
 							path.GetGitApiPath(m_pool),
@@ -399,7 +399,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 	if (update)
 	{
-		const BYTE *sha1 = wgGetRevisionID(CStringA(sProjectRoot), NULL);
+		const BYTE *sha1 = wgGetRevisionID_safe(CStringA(sProjectRoot), NULL);
 		if (sha1)
 			youngest = ConvertHashToRevnum(sha1);
 	}

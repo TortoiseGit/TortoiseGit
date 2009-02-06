@@ -8,6 +8,8 @@ enum
 	GIT_ERROR_GET_EXIT_CODE
 };
 
+extern BOOL g_IsWingitDllload;
+
 class CGitByteArray:public std::vector<BYTE>
 {
 public:

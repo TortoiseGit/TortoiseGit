@@ -76,7 +76,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
-	CGit git;
+	//CGit git;
 	//git.GetUserName();
 }
 
