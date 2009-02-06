@@ -111,7 +111,7 @@ CGit g_Git;
 CGit::CGit(void)
 {
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
-
+	m_CurrentDir.ReleaseBuffer();
 	// make sure git/bin is in PATH before wingit.dll gets (delay) loaded by wgInit()
 	if ( !CheckMsysGitDir() )
 	{
