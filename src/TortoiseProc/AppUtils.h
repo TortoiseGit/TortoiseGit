@@ -158,7 +158,8 @@ public:
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL);
 	static bool Switch(CString *CommitHash);
 
-	static bool IgnoreFile(CTGitPath &file, bool IsMask);
+//	static bool IgnoreFile(CTGitPath &file, bool IsMask);
+	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
 	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false);
 	/**

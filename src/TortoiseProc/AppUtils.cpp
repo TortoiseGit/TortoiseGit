@@ -1156,34 +1156,57 @@ bool CAppUtils::Switch(CString *CommitHash)
 	return FALSE;
 }
 
-bool CAppUtils::IgnoreFile(CTGitPath &path,bool IsMask)
+bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 {
 	CString ignorefile;
-	ignorefile=g_Git.m_CurrentDir;
-	ignorefile+=path.GetDirectory().GetWinPathString()+_T("\\.gitignore");
+	ignorefile=g_Git.m_CurrentDir+_T("\\");
+
+	if(IsMask)
+	{
+		ignorefile+=path.GetCommonRoot().GetWinPathString()+_T("\\.gitignore");
+
+	}else
+	{
+		ignorefile+=_T("\\.gitignore");
+	}
 
 	CStdioFile file;
-	if(!file.Open(ignorefile,CFile::modeCreate|CFile::modeWrite))
+	if(!file.Open(ignorefile,CFile::modeCreate|CFile::modeReadWrite|CFile::modeNoTruncate))
 	{
 		CMessageBox::Show(NULL,ignorefile+_T(" Open Failure"),_T("TortoiseGit"),MB_OK);
 		return FALSE;
 	}
 
 	CString ignorelist;
-	file.ReadString(ignorelist);
+	try
+	{
+		//file.ReadString(ignorelist);
+		file.SeekToEnd();
 
-	if(IsMask)
+		for(int i=0;i<path.GetCount();i++)
+		{
+			if(IsMask)
+			{
+				ignorelist+=_T("\n*")+path[i].GetFileExtension();
+				break;
+			}else
+			{
+				ignorelist+=_T("\n/")+path[i].GetGitPathString();
+			}
+		}
+		file.WriteString(ignorelist);
+
+		file.Close();
+
+	}catch(...)
 	{
-		ignorelist+=_T("\n*.")+path.GetFileExtension();
-	}else
-	{
-		ignorelist+=_T("\n")+path.GetBaseFilename();
+		file.Close();
+		return FALSE;
 	}
-	file.WriteString(ignorelist);
-
-	file.Close();
+	
 	return TRUE;
 }
+
 
 bool CAppUtils::GitReset(CString *CommitHash,int type)
 {

@@ -2792,6 +2792,354 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 			break;
+
+			case IDSVNLC_IGNORE:
+			{
+				CTGitPathList ignorelist;
+				//std::vector<CString> toremove;
+				FillListOfSelectedItemPaths(ignorelist, true);
+				SetRedraw(FALSE);
+
+				if(!CAppUtils::IgnoreFile(ignorelist,false))
+					break;
+
+				for(int i=0;i<ignorelist.GetCount();i++)
+				{
+					int nListboxEntries = GetItemCount();
+					for (int nItem=0; nItem<nListboxEntries; ++nItem)
+					{
+						CTGitPath *path=(CTGitPath*)GetItemData(nItem);
+						if (path->GetGitPathString()==ignorelist[i].GetGitPathString())
+						{
+							RemoveListEntry(nItem);
+							break;
+						}
+					}
+				}
+				SetRedraw(TRUE);
+			}
+#if 0
+					CTSVNPathList ignorelist;
+					std::vector<CString> toremove;
+					FillListOfSelectedItemPaths(ignorelist, true);
+					SetRedraw(FALSE);
+					for (int j=0; j<ignorelist.GetCount(); ++j)
+					{
+						int nListboxEntries = GetItemCount();
+						for (int i=0; i<nListboxEntries; ++i)
+						{
+							if (GetListEntry(i)->GetPath().IsEquivalentTo(ignorelist[j]))
+							{
+								selIndex = i;
+								break;
+							}
+						}
+						CString name = CPathUtils::PathPatternEscape(ignorelist[j].GetFileOrDirectoryName());
+						CTSVNPath parentfolder = ignorelist[j].GetContainingDirectory();
+						SVNProperties props(parentfolder, SVNRev::REV_WC, false);
+						CStringA value;
+						for (int i=0; i<props.GetCount(); i++)
+						{
+							CString propname(props.GetItemName(i).c_str());
+							if (propname.CompareNoCase(_T("git:ignore"))==0)
+							{
+								stdstring stemp;
+								// treat values as normal text even if they're not
+								value = (char *)props.GetItemValue(i).c_str();
+							}
+						}
+						if (value.IsEmpty())
+							value = name;
+						else
+						{
+							value = value.Trim("\n\r");
+							value += "\n";
+							value += name;
+							value.Remove('\r');
+						}
+						if (!props.Add(_T("git:ignore"), (LPCSTR)value))
+						{
+							CString temp;
+							temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
+							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+							break;
+						}
+						if (GetCheck(selIndex))
+							m_nSelected--;
+						m_nTotal--;
+
+						// now, if we ignored a folder, remove all its children
+						if (ignorelist[j].IsDirectory())
+						{
+							for (int i=0; i<(int)m_arListArray.size(); ++i)
+							{
+								FileEntry * entry = GetListEntry(i);
+								if (entry->status == git_wc_status_unversioned)
+								{
+									if (!ignorelist[j].IsEquivalentTo(entry->GetPath())&&(ignorelist[j].IsAncestorOf(entry->GetPath())))
+									{
+										entry->status = git_wc_status_ignored;
+										entry->textstatus = git_wc_status_ignored;
+										if (GetCheck(i))
+											m_nSelected--;
+										toremove.push_back(entry->GetPath().GetSVNPathString());
+									}
+								}
+							}
+						}
+
+						CTSVNPath basepath = m_arStatusArray[m_arListArray[selIndex]]->basepath;
+
+						FileEntry * entry = m_arStatusArray[m_arListArray[selIndex]];
+						if ( entry->status == git_wc_status_unversioned ) // keep "deleted" items
+							toremove.push_back(entry->GetPath().GetSVNPathString());
+
+						if (!m_bIgnoreRemoveOnly)
+						{
+							SVNStatus status;
+							git_wc_status2_t * s;
+							CTSVNPath gitPath;
+							s = status.GetFirstFileStatus(parentfolder, gitPath, false, git_depth_empty);
+							// first check if the folder isn't already present in the list
+							bool bFound = false;
+							nListboxEntries = GetItemCount();
+							for (int i=0; i<nListboxEntries; ++i)
+							{
+								FileEntry * entry = GetListEntry(i);
+								if (entry->path.IsEquivalentTo(gitPath))
+								{
+									bFound = true;
+									break;
+								}
+							}
+							if (!bFound)
+							{
+								if (s!=0)
+								{
+									FileEntry * entry = new FileEntry();
+									entry->path = gitPath;
+									entry->basepath = basepath;
+									entry->status = SVNStatus::GetMoreImportant(s->text_status, s->prop_status);
+									entry->textstatus = s->text_status;
+									entry->propstatus = s->prop_status;
+									entry->remotestatus = SVNStatus::GetMoreImportant(s->repos_text_status, s->repos_prop_status);
+									entry->remotetextstatus = s->repos_text_status;
+									entry->remotepropstatus = s->repos_prop_status;
+									entry->inunversionedfolder = FALSE;
+									entry->checked = true;
+									entry->inexternal = false;
+									entry->direct = false;
+									entry->isfolder = true;
+									entry->last_commit_date = 0;
+									entry->last_commit_rev = 0;
+									entry->remoterev = 0;
+									if (s->entry)
+									{
+										if (s->entry->url)
+										{
+											entry->url = CUnicodeUtils::GetUnicode(CPathUtils::PathUnescape(s->entry->url));
+										}
+									}
+									if (s->entry && s->entry->present_props)
+									{
+										entry->present_props = s->entry->present_props;
+									}
+									m_arStatusArray.push_back(entry);
+									m_arListArray.push_back(m_arStatusArray.size()-1);
+									AddEntry(entry, langID, GetItemCount());
+								}
+							}
+						}
+					}
+					for (std::vector<CString>::iterator it = toremove.begin(); it != toremove.end(); ++it)
+					{
+						int nListboxEntries = GetItemCount();
+						for (int i=0; i<nListboxEntries; ++i)
+						{
+							if (GetListEntry(i)->path.GetSVNPathString().Compare(*it)==0)
+							{
+								RemoveListEntry(i);
+								break;
+							}
+						}
+					}
+					SetRedraw(TRUE);
+				}
+#endif
+				break;
+			case IDSVNLC_IGNOREMASK:
+				{
+					CString common;
+					CString ext=filepath->GetFileExtension();
+					CTGitPathList ignorelist;
+					FillListOfSelectedItemPaths(ignorelist, true);
+					SetRedraw(FALSE);
+
+					CAppUtils::IgnoreFile(ignorelist,true);
+					common=ignorelist.GetCommonRoot().GetGitPathString();
+
+					for (int i=0; i< GetItemCount(); ++i)
+					{
+						CTGitPath *path=(CTGitPath*)GetItemData(i);
+						if(!( path->m_Action & CTGitPath::LOGACTIONS_UNVER))
+							continue;
+						if( path->GetGitPathString().Left(common.GetLength()) == common )
+						{
+							if (path->GetFileExtension()==ext)
+							{
+								RemoveListEntry(i);
+								i--; // remove index i at item, new one will replace. 
+							}
+						}
+					}
+					
+					SetRedraw(TRUE);
+				}
+#if 0
+					std::set<CTSVNPath> parentlist;
+					for (int i=0; i<ignorelist.GetCount(); ++i)
+					{
+						parentlist.insert(ignorelist[i].GetContainingDirectory());
+					}
+					std::set<CTSVNPath>::iterator it;
+					std::vector<CString> toremove;
+					
+					for (it = parentlist.begin(); it != parentlist.end(); ++it)
+					{
+						CTSVNPath parentFolder = (*it).GetDirectory();
+						SVNProperties props(parentFolder, SVNRev::REV_WC, false);
+						CStringA value;
+						for (int i=0; i<props.GetCount(); i++)
+						{
+							CString propname(props.GetItemName(i).c_str());
+							if (propname.CompareNoCase(_T("git:ignore"))==0)
+							{
+								stdstring stemp;
+								// treat values as normal text even if they're not
+								value = (char *)props.GetItemValue(i).c_str();
+							}
+						}
+						if (value.IsEmpty())
+							value = name;
+						else
+						{
+							value = value.Trim("\n\r");
+							value += "\n";
+							value += name;
+							value.Remove('\r');
+						}
+						if (!props.Add(_T("git:ignore"), (LPCSTR)value))
+						{
+							CString temp;
+							temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
+							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+						}
+						else
+						{
+							CTSVNPath basepath;
+							int nListboxEntries = GetItemCount();
+							for (int i=0; i<nListboxEntries; ++i)
+							{
+								FileEntry * entry = GetListEntry(i);
+								ASSERT(entry != NULL);
+								if (entry == NULL)
+									continue;
+								if (basepath.IsEmpty())
+									basepath = entry->basepath;
+								// since we ignored files with a mask (e.g. *.exe)
+								// we have to find find all files in the same
+								// folder (IsAncestorOf() returns TRUE for _all_ children,
+								// not just the immediate ones) which match the
+								// mask and remove them from the list too.
+								if ((entry->status == git_wc_status_unversioned)&&(parentFolder.IsAncestorOf(entry->path)))
+								{
+									CString f = entry->path.GetSVNPathString();
+									if (f.Mid(parentFolder.GetSVNPathString().GetLength()).Find('/')<=0)
+									{
+										if (CStringUtils::WildCardMatch(name, f))
+										{
+											if (GetCheck(i))
+												m_nSelected--;
+											m_nTotal--;
+											toremove.push_back(f);
+										}
+									}
+								}
+							}
+							if (!m_bIgnoreRemoveOnly)
+							{
+								SVNStatus status;
+								git_wc_status2_t * s;
+								CTSVNPath gitPath;
+								s = status.GetFirstFileStatus(parentFolder, gitPath, false, git_depth_empty);
+								if (s!=0)
+								{
+									// first check if the folder isn't already present in the list
+									bool bFound = false;
+									for (int i=0; i<nListboxEntries; ++i)
+									{
+										FileEntry * entry = GetListEntry(i);
+										if (entry->path.IsEquivalentTo(gitPath))
+										{
+											bFound = true;
+											break;
+										}
+									}
+									if (!bFound)
+									{
+										FileEntry * entry = new FileEntry();
+										entry->path = gitPath;
+										entry->basepath = basepath;
+										entry->status = SVNStatus::GetMoreImportant(s->text_status, s->prop_status);
+										entry->textstatus = s->text_status;
+										entry->propstatus = s->prop_status;
+										entry->remotestatus = SVNStatus::GetMoreImportant(s->repos_text_status, s->repos_prop_status);
+										entry->remotetextstatus = s->repos_text_status;
+										entry->remotepropstatus = s->repos_prop_status;
+										entry->inunversionedfolder = false;
+										entry->checked = true;
+										entry->inexternal = false;
+										entry->direct = false;
+										entry->isfolder = true;
+										entry->last_commit_date = 0;
+										entry->last_commit_rev = 0;
+										entry->remoterev = 0;
+										if (s->entry)
+										{
+											if (s->entry->url)
+											{
+												entry->url = CUnicodeUtils::GetUnicode(CPathUtils::PathUnescape(s->entry->url));
+											}
+										}
+										if (s->entry && s->entry->present_props)
+										{
+											entry->present_props = s->entry->present_props;
+										}
+										m_arStatusArray.push_back(entry);
+										m_arListArray.push_back(m_arStatusArray.size()-1);
+										AddEntry(entry, langID, GetItemCount());
+									}
+								}
+							}
+						}
+					}
+					for (std::vector<CString>::iterator it = toremove.begin(); it != toremove.end(); ++it)
+					{
+						int nListboxEntries = GetItemCount();
+						for (int i=0; i<nListboxEntries; ++i)
+						{
+							if (GetListEntry(i)->path.GetSVNPathString().Compare(*it)==0)
+							{
+								RemoveListEntry(i);
+								break;
+							}
+						}
+					}
+					SetRedraw(TRUE);
+				}
+#endif
+				break;
+			
 #if 0
 			case IDSVNLC_COPY:
 				CopySelectedEntriesToClipboard(0);
@@ -3315,155 +3663,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										m_arListArray.push_back(m_arStatusArray.size()-1);
 										AddEntry(entry, langID, GetItemCount());
 									}
-								}
-							}
-						}
-					}
-					for (std::vector<CString>::iterator it = toremove.begin(); it != toremove.end(); ++it)
-					{
-						int nListboxEntries = GetItemCount();
-						for (int i=0; i<nListboxEntries; ++i)
-						{
-							if (GetListEntry(i)->path.GetSVNPathString().Compare(*it)==0)
-							{
-								RemoveListEntry(i);
-								break;
-							}
-						}
-					}
-					SetRedraw(TRUE);
-				}
-				break;
-			case IDSVNLC_IGNORE:
-				{
-					CTSVNPathList ignorelist;
-					std::vector<CString> toremove;
-					FillListOfSelectedItemPaths(ignorelist, true);
-					SetRedraw(FALSE);
-					for (int j=0; j<ignorelist.GetCount(); ++j)
-					{
-						int nListboxEntries = GetItemCount();
-						for (int i=0; i<nListboxEntries; ++i)
-						{
-							if (GetListEntry(i)->GetPath().IsEquivalentTo(ignorelist[j]))
-							{
-								selIndex = i;
-								break;
-							}
-						}
-						CString name = CPathUtils::PathPatternEscape(ignorelist[j].GetFileOrDirectoryName());
-						CTSVNPath parentfolder = ignorelist[j].GetContainingDirectory();
-						SVNProperties props(parentfolder, SVNRev::REV_WC, false);
-						CStringA value;
-						for (int i=0; i<props.GetCount(); i++)
-						{
-							CString propname(props.GetItemName(i).c_str());
-							if (propname.CompareNoCase(_T("git:ignore"))==0)
-							{
-								stdstring stemp;
-								// treat values as normal text even if they're not
-								value = (char *)props.GetItemValue(i).c_str();
-							}
-						}
-						if (value.IsEmpty())
-							value = name;
-						else
-						{
-							value = value.Trim("\n\r");
-							value += "\n";
-							value += name;
-							value.Remove('\r');
-						}
-						if (!props.Add(_T("git:ignore"), (LPCSTR)value))
-						{
-							CString temp;
-							temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
-							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
-							break;
-						}
-						if (GetCheck(selIndex))
-							m_nSelected--;
-						m_nTotal--;
-
-						// now, if we ignored a folder, remove all its children
-						if (ignorelist[j].IsDirectory())
-						{
-							for (int i=0; i<(int)m_arListArray.size(); ++i)
-							{
-								FileEntry * entry = GetListEntry(i);
-								if (entry->status == git_wc_status_unversioned)
-								{
-									if (!ignorelist[j].IsEquivalentTo(entry->GetPath())&&(ignorelist[j].IsAncestorOf(entry->GetPath())))
-									{
-										entry->status = git_wc_status_ignored;
-										entry->textstatus = git_wc_status_ignored;
-										if (GetCheck(i))
-											m_nSelected--;
-										toremove.push_back(entry->GetPath().GetSVNPathString());
-									}
-								}
-							}
-						}
-
-						CTSVNPath basepath = m_arStatusArray[m_arListArray[selIndex]]->basepath;
-
-						FileEntry * entry = m_arStatusArray[m_arListArray[selIndex]];
-						if ( entry->status == git_wc_status_unversioned ) // keep "deleted" items
-							toremove.push_back(entry->GetPath().GetSVNPathString());
-
-						if (!m_bIgnoreRemoveOnly)
-						{
-							SVNStatus status;
-							git_wc_status2_t * s;
-							CTSVNPath gitPath;
-							s = status.GetFirstFileStatus(parentfolder, gitPath, false, git_depth_empty);
-							// first check if the folder isn't already present in the list
-							bool bFound = false;
-							nListboxEntries = GetItemCount();
-							for (int i=0; i<nListboxEntries; ++i)
-							{
-								FileEntry * entry = GetListEntry(i);
-								if (entry->path.IsEquivalentTo(gitPath))
-								{
-									bFound = true;
-									break;
-								}
-							}
-							if (!bFound)
-							{
-								if (s!=0)
-								{
-									FileEntry * entry = new FileEntry();
-									entry->path = gitPath;
-									entry->basepath = basepath;
-									entry->status = SVNStatus::GetMoreImportant(s->text_status, s->prop_status);
-									entry->textstatus = s->text_status;
-									entry->propstatus = s->prop_status;
-									entry->remotestatus = SVNStatus::GetMoreImportant(s->repos_text_status, s->repos_prop_status);
-									entry->remotetextstatus = s->repos_text_status;
-									entry->remotepropstatus = s->repos_prop_status;
-									entry->inunversionedfolder = FALSE;
-									entry->checked = true;
-									entry->inexternal = false;
-									entry->direct = false;
-									entry->isfolder = true;
-									entry->last_commit_date = 0;
-									entry->last_commit_rev = 0;
-									entry->remoterev = 0;
-									if (s->entry)
-									{
-										if (s->entry->url)
-										{
-											entry->url = CUnicodeUtils::GetUnicode(CPathUtils::PathUnescape(s->entry->url));
-										}
-									}
-									if (s->entry && s->entry->present_props)
-									{
-										entry->present_props = s->entry->present_props;
-									}
-									m_arStatusArray.push_back(entry);
-									m_arListArray.push_back(m_arStatusArray.size()-1);
-									AddEntry(entry, langID, GetItemCount());
 								}
 							}
 						}
@@ -4371,9 +4570,13 @@ BOOL CGitStatusListCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void CGitStatusListCtrl::RemoveListEntry(int index)
 {
-#if 0
+
 	Locker lock(m_critSec);
 	DeleteItem(index);
+
+	m_arStatusArray.erase(m_arStatusArray.begin()+index);
+
+#if 0
 	delete m_arStatusArray[m_arListArray[index]];
 	m_arStatusArray.erase(m_arStatusArray.begin()+m_arListArray[index]);
 	m_arListArray.erase(m_arListArray.begin()+index);
