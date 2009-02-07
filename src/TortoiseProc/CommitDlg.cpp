@@ -395,8 +395,8 @@ void CCommitDlg::OnOK()
 				bCheckedInExternal = true;
 			}
 #endif
-			if( entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
-				cmd.Format(_T("git.exe update-index --add -f -- \"%s\""),entry->GetGitPathString());
+			if( entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+				cmd.Format(_T("git.exe add -f -- \"%s\""),entry->GetGitPathString());
 			else if ( entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 				cmd.Format(_T("git.exe update-index --remove -- \"%s\""),entry->GetGitPathString());
 			else
