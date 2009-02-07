@@ -70,6 +70,7 @@ public:
 	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8,int length=-1);
 
 	BOOL IsInitRepos();
+	static BOOL IsVista();
 	
 };
 extern void GetTempPath(CString &path);

@@ -126,11 +126,32 @@ BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsign
 		return FALSE;
 }
 
+BOOL CGit::IsVista()
+{
+	OSVERSIONINFO osvi;
+    BOOL bIsWindowsXPorLater;
+
+    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+    GetVersionEx(&osvi);
+	
+	if(osvi.dwMajorVersion >= 6)
+		return TRUE;
+	else
+		return FALSE;
+}
+
 static void InitWinGitDll()
 {
 	__try
 	{
 
+		if( CGit::IsVista () )
+		{
+			g_IsWingitDllload=FALSE;
+			return;
+		}
 		if ( !wgInit() )
 		{
 				// TODO

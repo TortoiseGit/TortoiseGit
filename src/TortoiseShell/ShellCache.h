@@ -20,6 +20,7 @@
 #include "registry.h"
 #include "Globals.h"
 #include "GitAdminDir.h"
+#include "Git.h"
 
 #define REGISTRYTIMEOUT 2000
 #define EXCLUDELISTTIMEOUT 5000
@@ -152,7 +153,10 @@ public:
 			cachetype.read();
 		}
 		//return CacheType(DWORD((cachetype)));
-		/*TEMP: until TGitCache done*/return CacheType(DWORD((cachetype))) == exe ? dll : CacheType(DWORD((cachetype)));
+		/*TEMP: until TGitCache done*/
+		if(CGit::IsVista())
+			return none;
+		return CacheType(DWORD((cachetype))) == exe ? dll : CacheType(DWORD((cachetype)));
 	}
 	DWORD BlockStatus()
 	{
