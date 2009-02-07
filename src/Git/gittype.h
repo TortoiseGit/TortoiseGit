@@ -40,8 +40,17 @@ public:
 	}
 	int findData(const BYTE* dataToFind, size_t dataSize, int start=0)
 	{
+		//Pre checks
+		if(empty())
+			return -1;
+		if(dataSize==0)
+			return 0;
+		if(dataSize>size()-start)
+			return -1;//Data to find is greater then data to search in. No match
+
+		//Initialize
 		const BYTE* pos=&*(begin()+start);
-		const BYTE* dataEnd=&*(begin()+size()-(dataSize-1) );//Set end one step after last place to search
+		const BYTE* dataEnd=&*(begin()+(size()-dataSize) );++dataEnd;//Set end one step after last place to search
 		if(pos>=dataEnd)
 			return -1;//Started over end. Return not found
 		if(dataSize==0)
