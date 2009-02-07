@@ -1647,8 +1647,8 @@ UINT CGitLogListBase::LogThread()
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 
-	FetchFullLogInfo();
-	//FetchFullLogInfoOrig();
+	//FetchFullLogInfo();
+	FetchFullLogInfoOrig();
 	//RefreshCursor();
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
