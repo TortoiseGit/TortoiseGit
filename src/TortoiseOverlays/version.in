@@ -1,0 +1,17 @@
+#define FILEVER        $MajorVersion$,$MinorVersion$,$MicroVersion$,$WCREV$
+#define PRODUCTVER     $MajorVersion$,$MinorVersion$,$MicroVersion$,$WCREV$
+#define STRFILEVER     "$MajorVersion$, $MinorVersion$, $MicroVersion$, $WCREV$\0"
+#define STRPRODUCTVER  "$MajorVersion$, $MinorVersion$, $MicroVersion$, $WCREV$\0"
+
+#define TSVN_VERMAJOR             $MajorVersion$
+#define TSVN_VERMINOR             $MinorVersion$
+#define TSVN_VERMICRO             $MicroVersion$
+#define TSVN_VERBUILD			  $WCREV$
+#define TSVN_VERDATE			  "$WCDATE$"
+
+#ifdef _WIN64
+#define TSVN_PLATFORM		"64 Bit $DEVBUILD$"
+#else
+#define TSVN_PLATFORM		"32 Bit $DEVBUILD$"
+#endif
+

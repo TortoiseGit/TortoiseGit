@@ -1,0 +1,45 @@
+#ifdef APSTUDIO_INVOKED
+#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+#include "version.h"
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION FILEVER
+ PRODUCTVERSION PRODUCTVER
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE VFT_DLL
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040004e4"
+        BEGIN
+            VALUE "CompanyName", "http://tortoisesvn.net\0"
+            VALUE "FileDescription", "TortoiseSVN overlay handler shim\0"
+            VALUE "FileVersion", STRFILEVER
+            VALUE "InternalName", "TortoiseOverlays.dll\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008 - TortoiseSVN\0"
+            VALUE "OriginalFilename", "TortoiseOverlays.dll\0"
+            VALUE "ProductName", "TortoiseSVN\0"
+            VALUE "ProductVersion", STRPRODUCTVER
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x400, 1252
+    END
+END
