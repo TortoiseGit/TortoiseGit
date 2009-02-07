@@ -154,8 +154,8 @@ public:
 		}
 		//return CacheType(DWORD((cachetype)));
 		/*TEMP: until TGitCache done*/
-		if(CGit::IsVista())
-			return none;
+//		if(CGit::IsVista())
+//			return none;
 		return CacheType(DWORD((cachetype))) == exe ? dll : CacheType(DWORD((cachetype)));
 	}
 	DWORD BlockStatus()

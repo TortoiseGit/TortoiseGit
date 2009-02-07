@@ -4,6 +4,8 @@
 #include "GitRev.h"
 #include "registry.h"
 #include "GitConfig.h"
+#include <map>
+#include "UnicodeUtils.h"
 
 
 static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
@@ -125,7 +127,7 @@ BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsign
 	if(g_IsWingitDllload)
 		return wgEnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
 	else
-		return FALSE;
+		return g_Git.EnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
 }
 
 BOOL CGit::IsVista()
@@ -794,4 +796,108 @@ BOOL CGit::CheckMsysGitDir()
 		bInitialized = TRUE;
 		return true;
 	}
+}
+
+
+class CGitCall_EnumFiles : public CGitCall
+{
+public:
+	CGitCall_EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
+	:	m_pszProjectPath(pszProjectPath),
+		m_pszSubPath(pszSubPath),
+		m_nFlags(nFlags),
+		m_pEnumCb(pEnumCb),
+		m_pUserData(pUserData)
+	{
+	}
+
+	typedef std::map<CStringA,char>	TStrCharMap;
+
+	const char *	m_pszProjectPath;
+	const char *	m_pszSubPath;
+	unsigned int	m_nFlags;
+	WGENUMFILECB *	m_pEnumCb;
+	void *			m_pUserData;
+
+	BYTE_VECTOR		m_DataCollector;
+	TStrCharMap		m_FileStatus;
+
+	virtual bool	OnOutputData(const BYTE* data, size_t size)
+	{
+		m_DataCollector.append(data,size);
+		while(true)
+		{
+			int found=m_DataCollector.findData((const BYTE*)"\n",1);
+			if(found<0)
+				return false;
+			CStringA line;
+			char* pline=line.GetBuffer(found+1);
+			memcpy(pline,&*m_DataCollector.begin(),found);
+			pline[found]='\0';
+			line.ReleaseBuffer();
+			OnSingleLine(line);
+			m_DataCollector.erase(m_DataCollector.begin(),m_DataCollector.begin()+found+1);
+		}
+		return false;//Should never reach this
+	}
+	virtual void	OnEnd()
+	{
+		for(TStrCharMap::iterator itFileStatus=m_FileStatus.begin();itFileStatus!=m_FileStatus.end();++itFileStatus)
+		{
+			wgFile_s fileStatus;
+			fileStatus.sFileName=itFileStatus->first;
+			switch(itFileStatus->second)
+			{
+			case 'C':	fileStatus.nStatus=WGFS_Modified;break;
+			case 'H':	fileStatus.nStatus=WGFS_Normal;break;
+			case 'R':	fileStatus.nStatus=WGFS_Deleted;break;
+			case '?':	fileStatus.nStatus=WGFS_Empty;break;//Other?
+			case 'K'://Todo: Killed?
+			case 'M'://Todo: What to do with this state? WGFS_Conflicted?
+			default://Unexpected status. Show as normal.
+				fileStatus.nStatus=WGFS_Normal;
+			}
+			fileStatus.sha1=NULL;//Unknown with this call
+			fileStatus.nFlags=0;//Never a directory with this call. Git doesnt track directories as such.
+			(*m_pEnumCb)(&fileStatus,m_pUserData);
+		}
+	}
+	bool OnSingleLine(CStringA line)
+	{
+		//Parse single line
+		int space=line.Find(' ');
+		if(space<0)
+			return false;
+		char status=line[0];
+		CStringA path=line;
+		path=path.Mid(space+1);
+		m_FileStatus[path]=status;
+		return true;
+	}
+
+
+
+
+};
+
+BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
+{
+	if(*pszProjectPath=='\0')
+		return FALSE;
+	CGitCall_EnumFiles W_GitCall(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
+	CString cmd;
+
+/*	char W_szToDir[MAX_PATH];
+	strncpy(W_szToDir,pszProjectPath,sizeof(W_szToDir)-1);
+	if(W_szToDir[strlen(W_szToDir)-1]!='\\')
+		strncat(W_szToDir,"\\",sizeof(W_szToDir)-1);
+
+	SetCurrentDirectoryA(W_szToDir);
+	GetCurrentDirectoryA(sizeof(W_szToDir)-1,W_szToDir);
+*/
+	SetCurrentDir(CUnicodeUtils::GetUnicode(pszProjectPath));
+	cmd.Format(_T("git.exe ls-files -t -c -d -m"));// -- %s"),CUnicodeUtils::GetUnicode(pszProjectPath));
+	W_GitCall.SetCmd(cmd);
+	Run(&W_GitCall);
+	return TRUE;
 }
