@@ -1,4 +1,4 @@
-Translations
+﻿Translations
 ------------
 
 TortoiseSVN is still in development so translations of all resources is
@@ -70,12 +70,8 @@ If you want to implement a new language for TortoiseSVN do the following.
 5) Make sure your file is saved in UTF-8 encoding and that it does *not*
    begin with UTF-8 BOMs (Byte Order Marks)
 
-6) Send your Tortoise_xx.po to the mailing list (patches@tortoisesvn.tigris.org).
-   or, if you have a Tigris ID (http://www.tigris.org/servlets/Join) and
-   request a role in the project
-   (http://tortoisesvn.tigris.org/servlets/ProjectMembershipRequest),
-   and is granted the role by the project admins, you may commit your
-   translations directory to the TortoiseSVN repository.
+6) Send your Tortoise_xx.po to the mailing list (tortoisegit-dev@googlegroups.com
+).
 
 Adding to an existing translation
 ---------------------------------
@@ -112,6 +108,8 @@ Building your own dlls
 ----------------------
 If you want to test the translations you made yourself, before you release
 them, you need four things:
+
+#The Below is tortoiseSVN document. 
 
 - The "raw" resource dlls for your version of TortoiseSVN. Other dlls
   won't work. Take a look at:
