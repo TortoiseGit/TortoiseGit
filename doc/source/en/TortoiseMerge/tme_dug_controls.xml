@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<sect1 id="tmerge-dug-toolbar">
+	<title>Buttons and Other Controls</title>
+	<para>
+		<figure id="tmerge-dug-dia-toolbar">
+			<title>The Toolbar</title>
+			<graphic fileref="images/TMerge_Toolbar.png"/>
+		</figure>
+		Below the menu bar lies the tool bar. This provides easy access to
+		the most commonly used tools, which are
+		<itemizedlist>
+			<listitem>
+				<para>
+					<guibutton>Open</guibutton>
+					accesses the file-open dialog. What else?
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Save</guibutton>
+					saves any changes you have made.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Reload</guibutton>
+					discards any changes you have made in TortoiseMerge and
+					reloads the files from disk.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Undo</guibutton>
+					implements a multi-level undo, allowing you to reverse
+					any changes you have made within TortoiseMerge.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Prev/Next Difference</guibutton>
+					jumps directly to the next point where the files differ.
+					This saves scrolling through all the unchanged parts
+					of the file.
+				</para>
+				<para>
+					When you do this in 2-pane diff mode, the detail bar at
+					the bottom of the screen will show you the inline differences
+					for the first line, regardless of where the mouse is hovering.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Prev/Next Conflict</guibutton>
+					jumps directly to the next point where the file
+					differences are in conflict and need to be resolved.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Use Theirs/Use Mine</guibutton>
+					selects whether to use a block from the left
+					or the right pane.
+					Refer to the next section for more information about
+					editing changes and conflicts.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Theirs before Mine/Mine before Theirs</guibutton>
+					is used when you want to combine changes in a conflicted file.
+					Refer to the next section for more information about
+					editing changes and conflicts.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Mark as Resolved</guibutton>
+					When you have resolved all the conflicts in a file and
+					saved the changes, you can mark it as resolved from
+					within TortoiseMerge, rather than going back to
+					explorer and marking as resolved from there.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Show Whitespaces</guibutton>
+					toggles the option to display space and tab characters
+					as symbols so you can distinguish white space changes.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Inline Diff Word-wise</guibutton>
+					toggles the method used to display inline diffs.
+					In word-wise mode, when a character is changed, the whole
+					word is highlighted. In char-wise mode, each individual
+					changed character is highlighted.
+				</para>
+				<para>
+					Word-wise is the default and in most cases it works better.
+					For example if you change a variable name, the whole name
+					is highlighted in word-wise mode, whereas in char-wise mode
+					you tend to get a mess of added and deleted characters
+					which doesn't make much sense. However, some content does
+					not resolve neatly into words, for example a hex file,
+					and in that case, char-wise display works better.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Switch View</guibutton>
+					selects between one-pane and two-pane view.
+					Disabled in 3-pane view.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Switch Left and Right View</guibutton>
+					In 2-pane view, swaps the left and right windows.
+					When you are comparing a file in 2 different trees, 
+					as opposed to 2 revisions of the same file, TortoiseSVN
+					does not know which one should go in the left pane as
+					the <quote>original/base</quote> version. If it gets
+					this wrong, you can change it to make viewing easier.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Show/Hide Patch List</guibutton>
+					When TortoiseMerge has a patch list, this button allows
+					you to hide it (so you can see both windows), or show it
+					(so you can review the file list).
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guibutton>Settings</guibutton>
+					takes you to TortoiseMerge's settings dialog.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		On the left side of the window is a locator bar. This provides
+		a quick visual reference as to where the changes lie within the
+		file. The bar has three columns. The left column refers to the
+		left pane, the right column to the right pane, and the centre
+		column to the bottom pane (if present). In one-pane view only
+		the left column is used. The locator bar can also be used as a
+		scroll bar to scroll all the windows simultaneously.
+	</para>
+	<para>
+		Below the bottom window is the status bar. This shows the number of
+		lines added and deleted in <literal>Theirs</literal> and
+		<literal>Mine</literal>, and the number of unresolved
+		conflicts remaining.
+		You can also see which line-ending style is in use, what
+		encoding (ASCII, UTF-8, etc) is assumed by TortoiseMerge, and whether
+		there is a byte-order-mark (BOM) present in UTF-8 files.
+		The left side of the status bar is used to display hints when you
+		hover the mouse over a control.
+	</para>
+</sect1>

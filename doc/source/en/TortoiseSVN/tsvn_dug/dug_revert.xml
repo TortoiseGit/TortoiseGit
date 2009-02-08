@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-revert">
+	<?dbhh topicname="HIDD_REVERT"?>
+	<title>Undo Changes</title>
+	<indexterm>
+		<primary>revert</primary>
+	</indexterm>
+	<indexterm>
+		<primary>undo</primary>
+	</indexterm>
+	<para>
+		If you want to undo all changes you made in a file since
+		the last update you need to select the file,
+		<action>right click</action> to pop up the context menu and then select
+		the command
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Revert</guimenuitem>
+		</menuchoice>
+		A dialog will pop up showing you the files that you've changed and
+		can revert. Select those you want to revert and click on
+		<guibutton>OK</guibutton>.
+		<figure id="tsvn-dug-revert-dia-1">
+			<title>Revert dialog</title>
+			<graphic fileref="../images/Revert.png"/>
+		</figure>
+	</para>
+	<para>
+		If you want to undo a deletion or a rename, you need to use
+		Revert on the parent folder as the deleted item does not
+		exist for you to right-click on.
+	</para>
+	<para>
+		If you want to undo the addition of an item, this appears in
+		the context menu as
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Undo add...</guimenuitem>
+		</menuchoice>.
+		This is really a revert as well, but the name has been changed
+		to make it more obvious.
+	</para>
+	<para>
+		The columns in this dialog can be customized in the same way as the
+		columns in the <guilabel>Check for modifications</guilabel> dialog.
+		Read <xref linkend="tsvn-dug-wcstatus-2"/> for further details.
+	</para>
+	<tip>
+		<title>Undoing Changes which have been Committed</title>
+		<para>
+			<menuchoice>
+				<guimenuitem>Revert</guimenuitem>
+			</menuchoice>
+			will only undo your local changes. It does <emphasis>not</emphasis>
+			undo any changes which have already been committed. If you want to
+			undo all the changes which were committed in a particular revision,
+			read <xref linkend="tsvn-dug-showlog"/> for further information.
+		</para>
+	</tip>
+	<tip>
+		<title>Revert is Slow</title>
+		<para>
+			When you revert changes you may find that the operation takes a lot
+			longer than you expect. This is because the modified version of the
+			file is sent to the recycle bin, so you can retrieve your changes
+			if you reverted by mistake. However, if your recycle bin is full,
+			Windows takes a long time to find a place to put the file. The
+			solution is simple: either empty the recycle bin or deactivate
+			the <guilabel>Use recycle bin when reverting</guilabel> box
+			in TortoiseSVN's settings.
+		</para>
+	</tip>
+</sect1>

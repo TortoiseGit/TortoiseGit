@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
+<appendix id="tsvn-admins" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Useful Tips For Administrators</title>
+	<simplesect>
+		<para>
+			This appendix contains solutions to problems/questions you might
+			have when you are responsible for deploying TortoiseSVN to multiple
+			client computers.
+		</para>
+	</simplesect>
+	<sect1 id="tsvn-admins-grouppolicies">
+		<title>Deploy TortoiseSVN via group policies</title>
+		<indexterm>
+			<primary>group policies</primary>
+		</indexterm>
+		<indexterm>
+			<primary>GPO</primary>
+		</indexterm>
+		<indexterm>
+			<primary>msi</primary>
+		</indexterm>
+		<indexterm>
+			<primary>domain controller</primary>
+		</indexterm>
+		<indexterm>
+			<primary>deploy</primary>
+		</indexterm>
+		<para>
+			The TortoiseSVN installer comes as an MSI file, which means you
+			should have no problems adding that MSI file to the group policies
+			of your domain controller.
+		</para>
+		<para>
+			A good walk-through on how to do that can be found in the knowledge
+			base article 314934 from Microsoft:
+			<ulink url="http://support.microsoft.com/?kbid=314934">
+				<citetitle>http://support.microsoft.com/?kbid=314934</citetitle>
+			</ulink>.
+		</para>
+		<para>
+			Versions 1.3.0 and later of TortoiseSVN must be installed under
+			<emphasis>Computer Configuration</emphasis> and not under
+			<emphasis>User Configuration</emphasis>. This is because those versions
+			need the new CRT and MFC DLLs, which can only be deployed <emphasis>per
+			computer</emphasis> and not <emphasis>per user</emphasis>.
+			If you really must install TortoiseSVN on a per user basis, then you must
+			first install the MFC and CRT package version 8 from Microsoft on each
+			computer you want to install TortoiseSVN as per user.
+		</para>
+	</sect1>
+	<sect1 id="tsvn-admins-upgradecheck">
+		<title>Redirect the upgrade check</title>
+		<indexterm>
+			<primary>upgrade check</primary>
+		</indexterm>
+		<indexterm>
+			<primary>check new version</primary>
+		</indexterm>
+		<indexterm>
+			<primary>version</primary>
+		</indexterm>
+		<para>
+			TortoiseSVN checks if there's a new version available every few days.
+			If there is a newer version available, a dialog shows up informing
+			the user about that.
+		</para>
+		<figure id="tsvn-admins-dia1">
+			<title>The upgrade dialog</title>
+			<graphic fileref="images/upgradecheck.png"/>
+		</figure>
+		<para>
+			If you're responsible for a lot of users in your domain, you might want
+			your users to use only versions you have approved and not have them install
+			always the latest version. You probably don't want that upgrade dialog
+			to show up so your users don't go and upgrade immediately.
+		</para>
+		<para>
+			Versions 1.4.0 and later of TortoiseSVN allow you to redirect that upgrade
+			check to your intranet server. You can set the registry key
+			<filename>HKCU\Software\TortoiseSVN\UpdateCheckURL</filename> (string value)
+			to an URL pointing to a text file in your intranet. That text file must have
+			the following format:
+<screen>
+1.4.1.6000
+A new version of TortoiseSVN is available for you to download!
+http://192.168.2.1/downloads/TortoiseSVN-1.4.1.6000-svn-1.4.0.msi
+</screen>
+			The first line in that file is the version string. You must make sure that
+			it matches the exact version string of the TortoiseSVN installation package.
+			The second line is a custom text, shown in the upgrade dialog. You can write
+			there whatever you want. Just note that the space in the upgrade dialog is
+			limited. Too long messages will get truncated!
+			The third line is the URL to the new installation package. This URL is opened
+			when the user clicks on the custom message label in the upgrade dialog.
+			You can also just point the user to a web page instead of the MSI file directly.
+			The URL is opened with the default web browser, so if you specify a web page,
+			that page is opened and shown to the user. If you specify the MSI package,
+			the browser will ask the user to save the MSI file locally.
+		</para>
+	</sect1>
+	<sect1 id="tsvn-admins-aspdotnethack">
+		<title>Setting the <literal>SVN_ASP_DOT_NET_HACK</literal> environment variable</title>
+		<indexterm>
+			<primary>SVN_ASP_DOT_NET_HACK</primary>
+		</indexterm>
+		<indexterm>
+			<primary>VS2003</primary>
+		</indexterm>
+		<indexterm>
+			<primary>ASP projects</primary>
+		</indexterm>
+		<para>
+			As of version 1.4.0 and later, the TortoiseSVN installer doesn't provide
+			the user with the option to set the <literal>SVN_ASP_DOT_NET_HACK</literal>
+			environment variable
+			anymore, since that caused many problems and confusions with users which
+			always install <emphasis>everything</emphasis> no matter if they know
+			what it is for.
+		</para>
+		<para>
+			But that option is only hidden for the user. You still can force the
+			TortoiseSVN installer to set that environment variable by setting the
+			<literal>ASPDOTNETHACK</literal>
+			property to TRUE. For example, you can start the installer like this:
+<screen>
+msiexec /i TortoiseSVN-1.4.0.msi ASPDOTNETHACK=TRUE
+</screen>
+		</para>
+	</sect1>
+	<sect1 id="tsvn-admins-disablemenus">
+		<title>Disable context menu entries</title>
+		<indexterm>
+			<primary>context menu entries</primary>
+		</indexterm>
+		<indexterm>
+			<primary>disable functions</primary>
+		</indexterm>
+		<indexterm>
+			<primary>group policies</primary>
+		</indexterm>
+		<para>
+			As of version 1.5.0 and later, TortoiseSVN allows you to disable (actually, hide)
+			context menu entries. Since this is a feature which should not be used lightly
+			but only if there is a compelling reason, there is no GUI for this and it has
+			to be done directly in the registry.
+			This can be used to disable certain commands for users who should not use them.
+			But please note that only the context menu entries in the <emphasis>explorer</emphasis>
+			are hidden, and the commands are still available through other means, e.g. the
+			command line or even other dialogs in TortoiseSVN itself!
+		</para>
+		<para>
+			The registry keys which hold the information on which context menus to show are
+			<filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskLow</filename>
+			and <filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskHigh</filename>.
+		</para>
+		<para>
+			Each of these registry entries is a <literal>DWORD</literal> value, with each
+			bit corresponding to a specific menu entry. A set bit means the corresponding
+			menu entry is deactivated.
+		</para>
+		<para>
+			<table id="tsvn-admins-disablemenus-1-table">
+				<title>Menu entries and their values</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colwidth="2*"/>
+					<colspec colnum="2" colwidth="6*"/>
+					<thead>
+						<row>
+							<entry>Value</entry>
+							<entry>Menu entry</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry condition="pot">0x0000000000000001</entry>
+							<entry>Checkout</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000002</entry>
+							<entry>Update</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000004</entry>
+							<entry>Commit</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000008</entry>
+							<entry>Add</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000010</entry>
+							<entry>Revert</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000020</entry>
+							<entry>Cleanup</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000040</entry>
+							<entry>Resolve</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000080</entry>
+							<entry>Switch</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000100</entry>
+							<entry>Import</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000200</entry>
+							<entry>Export</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000400</entry>
+							<entry>Create Repository here</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000800</entry>
+							<entry>Branch/Tag</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000001000</entry>
+							<entry>Merge</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000002000</entry>
+							<entry>Delete</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000004000</entry>
+							<entry>Rename</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000008000</entry>
+							<entry>Update to revision</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000010000</entry>
+							<entry>Diff</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000020000</entry>
+							<entry>Show Log</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000040000</entry>
+							<entry>Edit Conflicts</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000080000</entry>
+							<entry>Relocate</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000100000</entry>
+							<entry>Check for modifications</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000200000</entry>
+							<entry>Ignore</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000400000</entry>
+							<entry>Repository Browser</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000800000</entry>
+							<entry>Blame</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000001000000</entry>
+							<entry>Create Patch</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000002000000</entry>
+							<entry>Apply Patch</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000004000000</entry>
+							<entry>Revision graph</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000008000000</entry>
+							<entry>Lock</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000010000000</entry>
+							<entry>Remove Lock</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000020000000</entry>
+							<entry>Properties</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000040000000</entry>
+							<entry>Diff with URL</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000080000000</entry>
+							<entry>Delete unversioned items</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x2000000000000000</entry>
+							<entry>Settings</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x4000000000000000</entry>
+							<entry>Help</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x8000000000000000</entry>
+							<entry>About</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</para>
+		<para>
+			Example: to disable the <quote>Relocate</quote> the 
+			<quote>Delete unversioned items</quote>
+			and the <quote>Settings</quote> menu entries, add the values assigned
+			to the entries like this:
+<screen>
+  0x0000000000080000
++ 0x0000000080000000
++ 0x2000000000000000
+= 0x2000000080080000
+</screen>
+			The lower <literal>DWORD</literal> value (<literal>0x80080000</literal>)
+			must then be stored in
+			<filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskLow</filename>,
+			the higher <literal>DWORD</literal> value (<literal>0x20000000</literal>) in
+			<filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskHigh</filename>.
+		</para>
+		<para>
+			To enable the menu entries again, simply delete the two registry keys.
+		</para>
+	</sect1>
+</appendix>

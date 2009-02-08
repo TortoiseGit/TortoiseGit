@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-settings" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>TortoiseSVN's Settings</title>
+	<indexterm>
+		<primary>settings</primary>
+	</indexterm>
+	<para>
+		To find out what the different settings are for, just leave your
+		mouse pointer a second on the editbox/checkbox... and a helpful
+		tooltip will popup.
+	</para>
+	<!-- ================================================================= -->
+	<!-- include external entity refs -->
+	<xi:include href="./dug_settings_general.xml"/>
+	<xi:include href="./dug_settings_overlays.xml"/>
+	<xi:include href="./dug_settings_network.xml"/>
+	<xi:include href="./dug_settings_progs.xml"/>
+	<xi:include href="./dug_settings_saved.xml"/>
+	<xi:include href="./dug_settings_logcache.xml"/>
+	<xi:include href="./dug_settings_hooks.xml"/>
+	<xi:include href="./dug_settings_blame.xml"/>
+	<xi:include href="./dug_settings_registry.xml"/>
+	<xi:include href="./dug_settings_aspdotnet.xml"/>
+</sect1>

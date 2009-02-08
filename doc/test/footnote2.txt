@@ -1,0 +1,12 @@
+<sect1 id="tsvn-footnote">
+	<title>Use of shortcut keys</title>
+	<para>
+		As with all Windows programs, there are standard shortcut
+		and function keys available.
+		Ctrl-C  Copy
+		Ctrl-V  Paste
+		Ctrl-X  Delete
+		F1  Help
+		F5  Refresh view
+	</para>
+</sect1>

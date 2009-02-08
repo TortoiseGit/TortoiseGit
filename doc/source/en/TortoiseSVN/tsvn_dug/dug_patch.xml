@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-patch">
+	<title>Creating and Applying Patches</title>
+	<indexterm>
+		<primary>patch</primary>
+	</indexterm>
+	<indexterm>
+		<primary>diff</primary>
+	</indexterm>
+	<indexterm>
+		<primary>unified diff</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_PATCH"?>
+	<?dbhh topicname="HIDD_CREATEPATCH"?>
+	<para>
+		For open source projects (like this one) everyone has read
+		access to the repository, and anyone can make a contribution
+		to the project. So how are those contributions controlled?
+		If just anyone could commit changes, the project would be permanently
+		unstable and probably permanently broken. In this situation the
+		change is managed by submitting a <firstterm>patch</firstterm> file
+		to the development team, who do have write access.
+		They can review the patch first, and then either submit it to the
+		repository or reject it back to the author.
+	</para>
+	<para>
+		Patch files are simply Unified-Diff files showing the differences
+		between your working copy and the base revision.
+	</para>
+	<sect2 id="tsvn-dug-patch-1">
+		<title>Creating a Patch File</title>
+		<para>
+			First you need to make <emphasis>and test</emphasis> your changes.
+			Then instead of using
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Commit...</guimenuitem>
+			</menuchoice>
+			on the parent folder, you select
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Create Patch...</guimenuitem>
+			</menuchoice>
+		</para>
+		<figure id="tsvn-dug-patch-dia-1">
+			<title>The Create Patch dialog</title>
+			<graphic fileref="../images/CreatePatch.png"/>
+		</figure>
+		<para>
+			you can now select the files you want included in the patch,
+			just as you would with a full commit. This will produce a single
+			file containing a summary of all the changes you have made to the
+			selected files since the last update from the repository.
+		</para>
+		<para>
+			The columns in this dialog can be customized in the same way as the
+			columns in the <guilabel>Check for modifications</guilabel> dialog.
+			Read <xref linkend="tsvn-dug-wcstatus-2"/> for further details.
+		</para>
+		<para>
+			You can produce separate patches containing changes to different
+			sets of files. Of course, if you create a patch file, make some more changes
+			to the <emphasis>same</emphasis> files and then create another patch, the
+			second patch file will include <emphasis>both</emphasis> sets of changes.
+		</para>
+		<para>
+			Just save the file using a filename of your choice.
+			Patch files can have any extension you like, but by convention they
+			should use the <filename>.patch</filename> or
+			<filename>.diff</filename> extension.
+			You are now ready to submit your patch file.
+		</para>
+		<para>
+			You can also save the patch to the clipboard instead of to a file.
+			You might want to do this so that you can paste it into an email for
+			review by others. Or if you have two working copies on one machine and
+			you want to transfer changes from one to the other, a patch on the
+			clipboard is a convenient way of doing this.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-patch-2">
+		<title>Applying a Patch File</title>
+		<para>
+			Patch files are applied to your working copy. This should be done
+			from the same folder level as was used to create the patch.
+			If you are not sure what this is, just look at the first line of
+			the patch file. For example, if the first file being worked on was
+			<filename>doc/source/english/chapter1.xml</filename>
+			and the first line in the patch file is
+			<filename>Index: english/chapter1.xml</filename>
+			then you need to apply the patch to the
+			<filename>doc/source/</filename> folder.
+			However, provided you are in the correct working copy, if you
+			pick the wrong folder level, TortoiseSVN will notice and suggest the
+			correct level.
+		</para>
+		<para>
+			In order to apply a patch file to your working copy, you need
+			to have at least read access to the repository.
+			The reason for this is that the merge program must
+			reference the changes back to the revision against
+			which they were made by the remote developer.
+		</para>
+		<para>
+			From the context menu for that folder, click on
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Apply Patch...</guimenuitem>
+			</menuchoice>
+			This will bring up a file open dialog allowing you to select the
+			patch file to apply. By default only <filename>.patch</filename>
+			or <filename>.diff</filename>
+			files are shown, but you can opt for <quote>All files</quote>.
+			If you previously saved a patch to the clipboard, you can use
+			<guibutton>Open from clipboard...</guibutton> in the file
+			open dialog.
+		</para>
+		<para>
+			Alternatively, if the patch file has a <filename>.patch</filename>
+			or <filename>.diff</filename> extension, you can right click on it
+			directly and select
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Apply Patch...</guimenuitem>
+			</menuchoice>.
+			In this case you will be prompted to enter a working copy location.
+		</para>
+		<para>
+			These two methods just offer different ways of doing the same thing.
+			With the first method you select the WC and browse to the patch file.
+			With the second you select the patch file and browse to the WC.
+		</para>
+		<para>
+			Once you have selected the patch file and working copy location,
+			TortoiseMerge runs to merge the changes from the patch file
+			with your working copy. A small window lists the files which have
+			been changed. Double click on each one in turn, review the changes
+			and save the merged files.
+		</para>
+		<para>
+			The remote developer's patch has now been applied to your working copy,
+			so you need to commit to allow everyone else to access the changes
+			from the repository.
+		</para>
+	</sect2>
+</sect1>

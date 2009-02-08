@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-merge">
+	<title>Merging</title>
+	<?dbhh topicname="HIDD_MERGEWIZARD_START"?>
+	<indexterm>
+		<primary>merge</primary>
+	</indexterm>
+	<para>
+		Where branches are used to maintain separate lines of development,
+		at some stage you will want to merge the changes made on one branch
+		back into the trunk, or vice versa.
+	</para>
+	<para>
+		It is important to understand how branching and merging works in
+		Subversion before you start using it, as it can become quite complex.
+		It is highly recommended that you read the chapter
+		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.html">
+			<citetitle>Branching and Merging</citetitle>
+		</ulink>
+		in the Subversion book, which gives a full description and many 
+		examples of how it is used.
+	</para>
+	<para>
+		The next point to note is that merging <emphasis>always</emphasis>
+		takes place within a working copy. If you want to merge changes
+		<emphasis>into</emphasis> a branch, you have to have a working copy
+		for that branch checked out, and invoke the merge wizard from that
+		working copy using
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Merge...</guimenuitem>
+		</menuchoice>.
+	</para>
+	<para>
+		In general it is a good idea to perform a merge into an unmodified
+		working copy. If you have made other changes in your WC, commit those
+		first. If the merge does not go as you expect, you may want to revert
+		the changes, and the <guilabel>Revert</guilabel> command will discard
+		<emphasis>all</emphasis> changes including any you made before the merge.
+	</para>
+	<para>
+		There are three common use cases for merging which are handled in
+		slightly different ways, as described below.
+		The first page of the merge wizard asks you to select the method
+		you need.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>Merge a range of revisions</term>
+			<listitem>
+				<para>
+					This method covers the case when you have made one or more
+					revisions to a branch (or to the trunk) and you want to port
+					those changes across to a different branch.
+				</para>
+				<para>
+					What you are asking Subversion to do is this:
+					<quote>Calculate the changes necessary to get [FROM] revision 1
+					of branch A [TO] revision 7 of branch A, and apply those changes
+					to my working copy (of trunk or branch B).</quote>
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Reintegrate a branch</term>
+			<listitem>
+				<para>
+					This method covers the case when you have made a feature branch
+					as discussed in the Subversion book. All trunk changes have been
+					ported to the feature branch, week by week, and now the feature
+					is complete you want to merge it back into the trunk. Because
+					you have kept the feature branch synchronized with the trunk,
+					the latest versions of branch and trunk will be absolutely
+					identical except for your branch changes.
+				</para>
+				<para>
+					This is a special case of the tree merge described below,
+					and it requires only the URL to merge from (normally) your
+					development branch. It uses the merge-tracking features of
+					Subversion to calculate the correct revision ranges to use,
+					and perform additional checks which ensure that the branch has
+					been fully updated with trunk changes. This ensures that you don't
+					accidentally undo work that others have committed to trunk since
+					you last synchronized changes.
+				</para>
+				<para>
+					After the merge, all branch development has been completely
+					merged back into the main development line. The branch is now
+					redundant and can be deleted.
+				</para>
+				<para>
+					Once you have performed a reintegrate merge you should not
+					continue to use it for development. The reason for this is that
+					if you try to resynchronize your existing branch from trunk later on,
+					merge tracking will see your reintegration as a trunk change
+					that has not yet been merged into the branch, and will try to
+					merge the branch-to-trunk merge back into the branch!
+					The solution to this is simply to create a new branch from trunk
+					to continue the next phase of your development.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Merge two different trees</term>
+			<listitem>
+				<para>
+					This is a more general case of the reintegrate method.
+					What you are asking Subversion to do is:
+					<quote>Calculate the changes necessary to get [FROM] the head
+					revision of the trunk [TO] the head revision of the branch, and
+					apply those changes to my working copy (of the trunk).</quote>
+					The net result is that trunk now looks exactly like the branch.
+				</para>
+				<para>
+					If your server/repository does not support merge-tracking
+					then this is the only way to merge a branch back to trunk.
+					Another use case occurs when you are using vendor branches
+					and you need to merge the changes following a new vendor drop
+					into your trunk code. For more information read the chapter on
+					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.vendorbr.html">
+						<citetitle>vendor branches</citetitle>
+					</ulink>
+					in the Subversion Book.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
+	<sect2 id="tsvn-dug-merge-range">
+		<title>Merging a Range of Revisions</title>
+		<?dbhh topicname="HIDD_MERGEWIZARD_REVRANGE"?>
+		<indexterm>
+			<primary>merge</primary>
+			<secondary>revision range</secondary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-merge-wizard-range">
+				<title>The Merge Wizard - Select Revision Range</title>
+				<graphic fileref="../images/MergeWizardRange.png"/>
+			</figure>
+			In the <guilabel>From:</guilabel> field enter the full
+			folder URL of the branch or tag containing the changes
+			you want to port into your working copy.
+			You may also click
+			<guibutton>...</guibutton>
+			to browse the repository and find the desired branch.
+			If you have merged from this branch before, then just
+			use the drop down list which shows a history of
+			previously used URLs.
+		</para>
+		<para>
+			In the <guilabel>Revision range to merge</guilabel> field
+			enter the list of revisions you want to merge. This can
+			be a single revision, a list of specific revisions
+			separated by commas, or a range of revisions separated by a
+			dash, or any combination of these.
+		</para>
+		<important>
+			<para>
+				There is an important difference in the way a revision
+				range is specified with TortoiseSVN compared to the
+				command line client. The easiest way to visualise it is
+				to think of a fence with posts and fence panels.
+			</para>
+			<para>
+				With the command line client you specify the changes
+				to merge using two <quote>fence post</quote> revisions
+				which specify the <emphasis>before</emphasis> and
+				<emphasis>after</emphasis> points.
+			</para>
+			<para>
+				With TortoiseSVN you specify the changeset to merge
+				using <quote>fence panels</quote>. The reason for this
+				becomes clear when you use the log dialog to specify
+				revisions to merge, where each revision appears as
+				a changeset.
+			</para>
+			<para>
+				If you are merging revisions in chunks, the method
+				shown in the subversion book will have you merge
+				100-200 this time and 200-300 next time. With
+				TortoiseSVN you would merge 100-200 this time and
+				201-300 next time.
+			</para>
+			<para>
+				This difference has generated a lot of heat on the
+				mailing lists. We acknowledge that there is a difference
+				from the command line client, but we believe that for the
+				majority of GUI users it is easier to understand the
+				method we have implemented.
+			</para>
+		</important>
+		<para>
+			The easiest way to select the range of revisions you need
+			is to click on <guibutton>Show Log</guibutton>, as this
+			will list recent changes with their log comments.
+			If you want to merge the changes from a single revision, just
+			select that revision. If you want to merge changes from several
+			revisions, then select that range
+			(using the usual <keycap>Shift</keycap>-modifier).
+			Click on <guibutton>OK</guibutton> and the list of revision
+			numbers to merge will be filled in for you.
+		</para>
+		<para>
+			If you want to merge changes back <emphasis>out</emphasis>
+			of your working copy, to revert a change which has already
+			been committed, select the revisions to revert and make sure
+			the <guilabel>Reverse merge</guilabel> box is checked.
+		</para>
+		<para>
+			If you have already merged some changes from this branch,
+			hopefully you will have made a note of the last revision
+			merged in the log message when you committed the change.
+			In that case, you can use <guibutton>Show Log</guibutton>
+			for the Working Copy to trace that log message.
+			Remembering that we are thinking of revisions as
+			changesets, you should Use the revision after the
+			end point of the last merge as the start point for this
+			merge. For example, if you have merged revisions 37 to 39
+			last time, then the start point for this merge should be
+			revision 40.
+		</para>
+		<para>
+			If you are using the merge tracking features of Subversion,
+			you do not need to remember which revisions have already been
+			merged - Subversion will record that for you. If you leave
+			the revision range blank, all revisions which have not yet
+			been merged will be included. Read
+			<xref linkend="tsvn-dug-merge-tracking"/> to find out more.
+		</para>
+		<para>
+			If other people may be committing changes then be careful
+			about using the HEAD revision. It may not refer to the
+			revision you think it does if someone else made a commit
+			after your last update.
+		</para>
+		<para>
+			Click <guibutton>Next</guibutton> and go to
+			<xref linkend="tsvn-dug-merge-options"/>
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-reintegrate">
+		<title>Reintegrate a branch</title>
+		<?dbhh topicname="HIDD_MERGEWIZARD_REINTEGRATE"?>
+		<indexterm>
+			<primary>merge</primary>
+			<secondary>reintegrate</secondary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-merge-wizard-reintegrate">
+				<title>The Merge Wizard - Reintegrate Merge</title>
+				<graphic fileref="../images/MergeWizardReintegrate.png"/>
+			</figure>
+			To merge a feature branch back into the trunk you must start the
+			merge wizard from within a working copy of the trunk.
+		</para>
+		<para>
+			In the <guilabel>From URL:</guilabel> field enter the full
+			folder URL of the branch that you want to merge back.
+			You may also click
+			<guibutton>...</guibutton>
+			to browse the repository.
+		</para>
+		<para>
+			There are some conditions which apply to a reintegrate merge.
+			Firstly, the server must support merge tracking.
+			The working copy must be of depth infinite (no sparse checkouts),
+			and it must not have any local modifications, switched items or
+			items that have been updated to revisions other than HEAD.
+			All changes to trunk made during branch development must have
+			been merged across to the branch (or marked as having been merged).
+			The range of revisions to merge will be calculated automatically.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-tree">
+		<title>Merging Two Different Trees</title>
+		<?dbhh topicname="HIDD_MERGEWIZARD_TREE"?>
+		<indexterm>
+			<primary>merge</primary>
+			<secondary>two trees</secondary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-merge-wizard-trees">
+				<title>The Merge Wizard - Tree Merge</title>
+				<graphic fileref="../images/MergeWizardTree.png"/>
+			</figure>
+			If you are using this method to merge a feature branch back to trunk,
+			you need to start the merge wizard from within a working copy of trunk.
+		</para>
+		<para>
+			In the <guilabel>From:</guilabel> field enter the full
+			folder URL of the <emphasis>trunk</emphasis>. This
+			may sound wrong, but remember that the trunk is the
+			start point to which you want to add the branch changes.
+			You may also click
+			<guibutton>...</guibutton>
+			to browse the repository.
+		</para>
+		<para>
+			In the <guilabel>To:</guilabel> field enter the full
+			folder URL of the feature branch.
+		</para>
+		<para>
+			In both the <guilabel>From Revision</guilabel> field and
+			the <guilabel>To Revision</guilabel> field, enter the
+			last revision number at which the two trees were
+			synchronized. If you are sure no-one else is making
+			commits you can use the HEAD revision in both cases.
+			If there is a chance that someone else may have made
+			a commit since that synchronization, use the specific
+			revision number to avoid losing more recent commits.
+		</para>
+		<para>
+			You can also use <guibutton>Show Log</guibutton> to
+			select the revision.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-options">
+		<title>Merge Options</title>
+		<?dbhh topicname="HIDD_MERGEWIZARD_OPTIONS"?>
+		<para>
+			This page of the wizard lets you specify advanced options,
+			before starting the merge process.
+			Most of the time you can just use the default settings.
+		</para>
+		<para>
+			You can specify the depth to use for the merge, i.e. how far down
+			into your working copy the merge should go. The depth terms used
+			are described in <xref linkend="tsvn-dug-checkout-depth"/>. The
+			default depth is <guilabel>Working copy</guilabel>, which uses
+			the existing depth setting, and is almost always what you want.
+		</para>
+		<para>
+			Most of the time you want merge to take account of the file's history,
+			so that changes relative to a common ancestor are merged. Sometimes
+			you may need to merge files which are perhaps related, but not in
+			your repository. For example you may have imported versions 1 and 2 of
+			a third party library into two separate directories. Although they
+			are logically related, Subversion has no knowledge of this because
+			it only sees the tarballs you imported. If you attempt to merge the
+			difference between these two trees you would see a complete removal
+			followed by a complete add. To make Subversion use only path-based
+			differences rather than history-based differences, check the
+			<guilabel>Ignore ancestry</guilabel> box. Read more about this 
+			topic in the Subversion book,
+			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.advanced.html#svn.branchmerge.advanced.ancestry">
+				<citetitle>Noticing or Ignoring Ancestry</citetitle>
+			</ulink>
+		</para>
+		<para>
+			You can specify the way that line ending and whitespace changes are handled.
+			These options are described in <xref linkend="tsvn-dug-diff-eol-whitespace"/>.
+			The default behaviour is to treat all whitespace and line-end differences
+			as real changes to be merged.
+		</para>
+		<para>
+			If you are using merge tracking and you want to mark a revision as
+			having been merged, without actually doing the merge here, check the
+			<guilabel>Only record the merge</guilabel> checkbox. There are two
+			possible reasons you might want to do this. It may be that the merge
+			is too complicated for the merge algorithms, so you code the changes
+			by hand, then mark the change as merged so that the merge tracking
+			algorithm is aware of it. Or you might want to prevent a particular
+			revision from being merged. Marking it as already merged will prevent
+			the merge occurring with merge-tracking-aware clients.
+		</para>
+		<para>
+			Now everything is set up, all you have to do is click on the
+			<guibutton>Merge</guibutton> button. If you want to preview the results
+			<guibutton>Test Merge</guibutton> performs the merge operation, but does
+			<emphasis>not</emphasis> modify the working copy at all.
+			It shows you a list of the files that will be changed
+			by a real merge, and notes those areas where conflicts will occur.
+		</para>
+		<para>
+			The merge progress dialog shows each stage of the merge, with the
+			revision ranges involved. This may indicate one more revision than
+			you were expecting. For example if you asked to merge revision 123
+			the progress dialog will report <quote>Merging revisions 122 through
+			123</quote>. To understand this you need to remember that Merge is
+			closely related to Diff. The merge process works by generating a list
+			of differences between two points in the repository, and applying
+			those differences to your working copy. The progress dialog is simply
+			showing the start and end points for the diff.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-review">
+		<title>Reviewing the Merge Results</title>
+		<para>
+			The merge is now complete. It's a good idea to have a look at the
+			merge and see if it's as expected. Merging is usually quite complicated.
+			Conflicts often arise if the branch has drifted far from the trunk.
+		</para>
+		<para>
+			For Subversion clients and servers prior to 1.5, no merge information
+			is stored and merged revisions have to be tracked manually. 
+			When you have tested the changes and come to commit this revision,
+			your commit log message should <emphasis>always</emphasis>
+			include the revision numbers which have been ported in the merge.
+			If you want to apply another merge at a later time you will need to
+			know what you have already merged, as you do not want to port a
+			change more than once. For more information about this, refer to
+			<!-- NOTE this reference to the 1.4 book is deliberate. This is the
+			     pre-mergetracking stuff which is not covered in version 1.5
+			-->
+			<ulink url="http://svnbook.red-bean.com/en/1.4/svn.branchmerge.copychanges.html#svn.branchmerge.copychanges.bestprac">
+				<citetitle>Best Practices for Merging</citetitle>
+			</ulink>
+			in the Subversion book.
+		</para>
+		<para>
+			If your server and all clients are running Subversion 1.5 or higher,
+			the merge tracking facility will record the revisions merged and avoid
+			a revision being merged more than once. This makes your life much simpler
+			as you can simply merge the entire revision range each time and know
+			that only new revisions will actually be merged.
+		</para>
+		<para>
+			Branch management is important. If you want to keep this branch up to
+			date with the trunk, you should be sure to merge often so that the
+			branch and trunk do not drift too far apart. Of course, you
+			should still avoid repeated merging of changes, as explained above.
+		</para>
+		<tip>
+			<para>
+				If you have just merged a feature branch back into the trunk,
+				the trunk now contains all the new feature code, and the
+				branch is obsolete. You can now delete it from the repository
+				if required.
+			</para>
+		</tip>
+		<important>
+			<para>
+				Subversion can't merge a file with a folder and vice versa - only
+				folders to folders and files to files. If you click on a file and
+				open up the merge dialog, then you have to give a path to a file
+				in that dialog. If you select a folder and bring up the dialog,
+				then you must specify a folder URL for the merge.
+			</para>
+		</important>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-tracking">
+		<title>Merge Tracking</title>
+		<indexterm>
+			<primary>merge tracking</primary>
+		</indexterm>
+		<para>
+			Subversion 1.5 introduced facilities for merge tracking. When you
+			merge changes from one tree into another, the revision numbers merged are
+			stored and this information can be used for several different purposes.
+			<itemizedlist>
+				<listitem>
+					<para>
+						You can avoid the danger of merging the same revision twice
+						(repeated merge problem). Once a revision is marked as having
+						been merged, future merges which include that revision in the
+						range will skip over it.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When you merge a branch back into trunk, the log dialog
+						can show you the branch commits as part of the trunk
+						log, giving better traceability of changes.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When you show the log dialog from within the merge dialog,
+						revisions already merged are shown in grey.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When showing blame information for a file, you can choose
+						to show the original author of merged revisions, rather than
+						the person who did the merge.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						You can mark revisions as <emphasis>do not merge</emphasis>
+						by including them in the list of merged revisions without
+						actually doing the merge.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			Merge tracking information is stored in the <literal>svn:mergeinfo</literal>
+			property by the client when it performs a merge. When the merge is committed
+			the server stores that information in a database, and when you request merge,
+			log	or blame information, the server can respond appropriately. For the system
+			to work properly you must ensure that the server, the repository and all clients
+			are upgraded.
+			Earlier clients will not store the <literal>svn:mergeinfo</literal> property
+			and earlier servers will not provide the information requested by new clients.
+		</para>
+		<para>
+			Find out more about merge tracking from Subversion's
+			<ulink url="http://subversion.tigris.org/merge-tracking/index.html">
+				<citetitle>Merge tracking documentation</citetitle>
+			</ulink>.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-conflict-callback">
+		<title>Handling Conflicts during Merge</title>
+		<?dbhh topicname="HIDD_CONFLICTRESOLVE"?>
+		<indexterm>
+			<primary>merge conflicts</primary>
+		</indexterm>
+		<para>
+			Merging does not always go smoothly. Sometimes there is a
+			conflict, and if you are merging multiple ranges, you generally
+			want to resolve the conflict before merging of the next range
+			starts. TortoiseSVN helps you through this process by showing
+			the <emphasis>merge conflict callback</emphasis> dialog.
+			<figure id="tsvn-dug-merge-callback-dia">
+				<title>The Merge Conflict Callback Dialog</title>
+				<graphic fileref="../images/MergeConflictCallback.png"/>
+			</figure>
+		</para>
+		<para>
+			When a conflict occurs during the merge, you have three ways to
+			handle it.
+			<orderedlist>
+				<listitem>
+					<para>
+						You may decide that your local changes are much more
+						important, so you want to discard the version from the
+						repository and keep your local version. Or you might
+						discard your local changes in favour of the repository
+						version. Either way, no attempt is made to merge the
+						changes - you choose one or the other.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Normally you will want to look at the conflicts and resolve
+						them. In that case, choose the <guibutton>Edit Conflict</guibutton>
+						which will start up your merge tool. When you are satisfied with
+						the result, click <guibutton>Resolved</guibutton>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						The last option is to postpone resolution and continue
+						with merging. You can choose to do that for the current
+						conflicted file, or for all files in the rest of the merge.
+						However, if there are further changes in that file, it
+						will not be possible to complete the merge.
+					</para>
+				</listitem>
+			</orderedlist>
+		</para>
+		<para>
+			If you do not want to use this interactive callback, there is a
+			checkbox in the merge progress dialog <guilabel>Merge non-interactive</guilabel>.
+			If this is set for a merge and the merge would result in a conflict,
+			the file is marked as in conflict and the merge goes on. You will have
+			to resolve the conflicts after the whole merge is finished.
+			If it is not set, then before a file is marked as conflicted you get the
+			chance to resolve the conflict <emphasis>during</emphasis> the merge.
+			This has the advantage that if a file gets multiple merges (multiple
+			revisions apply a change to that file), subsequent merges might succeed
+			depending on which lines are affected. But of course you can't walk away
+			to get a coffee while the merge is running ;)
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-all">
+		<title>Merge a Completed Branch</title>
+		<?dbhh topicname="HIDD_MERGEALL"?>
+		<indexterm>
+			<primary>merge reintegrate</primary>
+		</indexterm>
+		<para>
+			If you want to merge all changes from a feature branch
+			back to trunk, then you can use the
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Merge reintegrate...</guimenuitem>
+			</menuchoice>
+			from the extended context menu (hold down the <keycap>Shift</keycap>
+			key while you right click on the file).
+			<figure id="tsvn-dug-mergeall-dia-1">
+				<title>The Merge reintegrate Dialog</title>
+				<graphic fileref="../images/MergeAll.png"/>
+			</figure>
+			This dialog is very easy. All you have to do is set the options for
+			the merge, as described in <xref linkend="tsvn-dug-merge-options"/>.
+			The rest is done by TortoiseSVN automatically using merge tracking.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-merge-maintenance">
+		<title>Feature Branch Maintenance</title>
+		<para>
+			When you develop a new feature on a separate branch it is a good
+			idea to work out a policy for re-integration when the feature is
+			complete. If other work is going on in <literal>trunk</literal>
+			at the same time you may find that the differences become significant
+			over time, and merging back becomes a nightmare.
+		</para>
+		<para>
+			If the feature is relatively simple and development will not take
+			long then you can adopt a simple approach, which is to keep
+			the branch entirely separate until the feature is complete,
+			then merge the branch changes back into trunk. In the merge wizard
+			this would be a simple <guilabel>Merge a range of revisions</guilabel>,
+			with the revision range being the revision span of the branch.
+		</para>
+		<para>
+			If the feature is going to take longer and you need to account
+			for changes in <literal>trunk</literal>, then you need to keep
+			the branch synchronised. This simply means that periodically
+			you merge trunk changes into the branch, so that the branch
+			contains all the trunk changes <emphasis>plus</emphasis> the
+			new feature. The synchronisation process uses
+			<guilabel>Merge a range of revisions</guilabel>. When the feature
+			is complete then you can merge it back to <literal>trunk</literal>
+			using either <guilabel>Reintegrate a branch</guilabel> or
+			<guilabel>Merge two different trees</guilabel>.
+		</para>
+	</sect2>
+</sect1>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-network">
+	<?dbhh topicname="HIDD_SETTINGSPROXY"?>
+	<title>Network Settings</title>
+	<indexterm>
+		<primary>proxy server</primary>
+	</indexterm>
+	<para>
+		<figure id="tsvn-dug-settings-dia-4">
+			<title>The Settings Dialog, Network Page</title>
+			<graphic fileref="../images/SettingsProxy.png"/>
+		</figure>
+		Here you can configure your proxy server, if you need one to get
+		through your company's firewall.
+	</para>
+	<para>
+		If you need to set up per-repository proxy settings, you will
+		need to use the Subversion <filename>servers</filename> file to
+		configure this. Use <guibutton>Edit</guibutton> to get there
+		directly. Consult the
+		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html">
+			<citetitle>Runtime Configuration Area</citetitle>
+		</ulink>
+		for details on how to use this file.
+	</para>
+	<para>
+		You can also specify which program TortoiseSVN should use to
+		establish a secure connection to a svn+ssh repository.
+		We recommend that you use TortoisePlink.exe. This is a version
+		of the popular Plink program, and is included with TortoiseSVN,
+		but it is compiled as a Windowless app, so you don't get a DOS
+		box popping up every time you authenticate.
+	</para>
+	<para>
+		You must specify the full path to the executable. For TortoisePlink.exe
+		this is the standard TortoiseSVN bin directory. Use the
+		<guibutton>Browse</guibutton> button to help locate it.
+		Note that if the path contains spaces, you must enclose it in quotes,
+		e.g.
+<screen>
+"C:\Program Files\TortoiseSVN\bin\TortoisePlink.exe"
+</screen>
+	</para>
+	<para>
+		One side-effect of not having a window is that there is
+		nowhere for any error messages to go, so if authentication
+		fails you will simply get a message saying something like
+		<quote>Unable to write to standard output</quote>.
+		For this reason we recommend that you first set up using
+		standard Plink. When everything is working, you can use
+		TortoisePlink with exactly the same parameters.
+	</para>
+	<para>
+		TortoisePlink does not have any documentation of its own because it
+		is just a minor variant of Plink. Find out about command line
+		parameters from the
+		<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">
+			<citetitle>PuTTY website</citetitle>
+		</ulink>
+	</para>
+	<para>
+		To avoid being prompted for a password repeatedly, you might also
+		consider using a password caching tool such as Pageant. This is also
+		available for download from the PuTTY website.
+	</para>
+	<para>
+		Finally, setting up SSH on server and clients is a non-trivial process
+		which is beyond the scope of this help file. However, you can find a
+		guide in the TortoiseSVN FAQ listed under
+		<ulink url="http://tortoisesvn.net/ssh_howto">
+			<citetitle>Subversion/TortoiseSVN SSH How-To</citetitle>
+		</ulink>.
+	</para>
+</sect2>

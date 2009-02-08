@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../../dtd/dblite.dtd">
+<chapter id="tsvn-repository" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>The Repository</title>
+	<simplesect>
+		<para>
+			No matter which protocol you use to access your repositories, you
+			always need to create at least one repository. This can either be done
+			with the Subversion command line client or with TortoiseSVN.
+		</para>
+		<para>
+			If you haven't created a Subversion repository yet,
+			it's time to do that now.
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- include external entity refs -->
+	<xi:include href="./repository_create.xml"/>
+	<xi:include href="./repository_backup.xml"/>
+	<xi:include href="./repository_hooks.xml"/>
+	<xi:include href="./checkout_links.xml"/>
+</chapter>

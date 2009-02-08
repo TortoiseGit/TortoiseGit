@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-add">
+	<title>Adding New Files And Directories</title>
+	<indexterm>
+		<primary>add</primary>
+	</indexterm>
+	<indexterm>
+		<primary>version new files</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_ADD"?>
+	<para>
+		<figure id="tsvn-dug-adding-dia-1">
+			<title>Explorer context menu for unversioned files</title>
+			<graphic fileref="../images/ContextMenuFileNoControl.png"/>
+		</figure>
+		If you created new files and/or directories during
+		your development process then you need to add them
+		to source control too. Select the file(s) and/or directory
+		and use
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Add</guimenuitem>
+		</menuchoice>.
+	</para>
+	<para>
+		After you added the files/directories to source control
+		the file appears with a <literal>added</literal> icon overlay which means you
+		first have to commit your working copy to make those
+		files/directories available to other developers.
+		Adding a file/directory does <emphasis>not</emphasis> affect
+		the repository!
+	</para>
+	<tip>
+		<title>Many Adds</title>
+		<para>
+			You can also use the Add command on already versioned
+			folders. In that case, the add dialog will show you all
+			unversioned files inside that versioned folder.
+			This helps if you have many new files and need to add
+			them all at once.
+		</para>
+	</tip>
+	<para>
+		To add files from outside your working copy you can use
+		the drag-and-drop handler:
+		<orderedlist>
+			<listitem>
+				<para>
+					select the files you want to add
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<action>right-drag</action> them
+					to the new location inside the working copy
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					release the right mouse button
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					select
+					<menuchoice>
+						<guimenu>Context Menu</guimenu>
+						<guimenuitem>SVN Add files to this WC</guimenuitem>
+					</menuchoice>.
+					The files will then be copied to the working copy and
+					added to version control.
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+	<para>
+		You can also add files within a working copy simply by left-dragging and
+		dropping them onto the commit dialog.
+	</para>
+	<para>
+		If you add a file or folder by mistake, you can undo the addition
+		before you commit using
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Undo add...</guimenuitem>
+		</menuchoice>.
+	</para>
+</sect1>

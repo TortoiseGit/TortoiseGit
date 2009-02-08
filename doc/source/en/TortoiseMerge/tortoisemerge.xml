@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book SYSTEM "../../dtd/dblite.dtd">
+<book id="tmerge" lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>TortoiseMerge</title>
+	<?dbhh topicname="HIDR_MAINFRAME"?>
+	<subtitle>A diff/merge tool for Windows</subtitle>
+	<xi:include href="../version.xml"/>
+	<bookinfo>
+		<edition>First</edition>
+		<authorgroup>
+			<author>
+				<firstname>Stefan</firstname>
+				<surname>Küng</surname>
+			</author>
+			<author>
+				<firstname>Lübbe</firstname>
+				<surname>Onken</surname>
+			</author>
+			<author>
+				<firstname>Simon</firstname>
+				<surname>Large</surname>
+			</author>
+		</authorgroup>
+		<xi:include href="../pubdate.xml"/>
+	</bookinfo>
+	<!-- include external files -->
+	<xi:include href="./tme_preface.xml"/>
+	<xi:include href="./tme_introduction.xml"/>
+	<xi:include href="./tme_basics.xml"/>
+	<xi:include href="./tme_dug.xml"/>
+	<xi:include href="./tme_app_shortcuts.xml"/>
+	<xi:include href="./tme_app_automation.xml"/>
+	<xi:include href="../glossary.xml"/>
+</book>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
+<appendix id="tme-automation">
+	<title>Automating TortoiseMerge</title>
+	<simplesect>
+		<para>
+			TortoiseMerge can be started with command line parameters to avoid having
+			to go through the <guilabel>Open</guilabel> dialog to select the files 
+			yourself. This is useful also if you want to use TortoiseMerge from 
+			another application.
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 1 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tme-automation-basics">
+		<title>TortoiseMerge Command Line Switches</title>
+		<indexterm>
+			<primary>automation</primary>
+		</indexterm>
+		<indexterm>
+			<primary>command line</primary>
+		</indexterm>
+		<para>
+			Most switches require additional information like a path or some
+			other string. In those cases, append an ':' to the switch and put
+			the string/path after it. Example:
+<screen>
+/base:"c:\folder\my base file.txt"
+</screen>
+		</para>
+<!--
+ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION
+Don't touch these lines:
+<entry condition="pot">/about</entry>
+
+  The condition="pot" prevents the strings from being extracted into
+  the .pot file, so nobody translates them.
+  The '/' in front of the command has to stay there to prevent these strings
+  from being translated if the po file "by chance" contains a matching translation.
+-->
+		<para>
+			<table id="tme-automation-1-table">
+				<title>List of available command line options</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colwidth="2*"/>
+					<colspec colnum="2" colwidth="6*"/>
+					<thead>
+						<row>
+							<entry>Command</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry condition="pot">/?</entry>
+							<entry>
+								Shows a dialog box with the most important command line
+								switches.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/help</entry>
+							<entry>
+								The same as <option>?</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/base</entry>
+							<entry>
+								Specifies the <emphasis>base</emphasis> file used
+								in three way diffs. This is the common ancestor
+								of the files being diffed, although it is not
+								shown in a separate window.
+								For two way diffs, this is the left file.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/basename</entry>
+							<entry>
+								The name of the base file.
+								This is shown in the view title instead of the file path.
+								For three way diffs it is shown in a tooltip for the
+								view title.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/theirs</entry>
+							<entry>
+								Specifies the <emphasis>theirs</emphasis> file used
+								in three way diffs, displayed in the left pane.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/theirsname</entry>
+							<entry>
+								The name of the theirs file. This is shown in the
+								view title instead of the file path.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/mine</entry>
+							<entry>
+								Specifies the <emphasis>mine</emphasis> file used
+								in three way diffs, displayed in the right pane.
+								For two way diffs, this is the right file.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/minename</entry>
+							<entry>
+								The name of the mine file. This is shown in the
+								view title instead of the file path.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/merged</entry>
+							<entry>
+								Specifies the resulting <emphasis>merged</emphasis> file used
+								in three way diffs. This is the file path where the result of
+								the merge/conflict resolving is saved.
+								If this is not set, then TortoiseMerge will ask the user where
+								to save the result.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/mergedname</entry>
+							<entry>
+								The name of the merged file. This is shown in the
+								view title instead of the file path.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/patchpath</entry>
+							<entry>
+								The path where a patch should be applied to. If you don't
+								set this path, then TortoiseMerge will try to find the path
+								itself to match the paths in the patch file, but that can take
+								<emphasis>very long</emphasis>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/patchoriginal</entry>
+							<entry>
+								The name of the original file to patch. Used for the view
+								title.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/patchpatched</entry>
+							<entry>
+								The name of the resulting patched file. Used for the view
+								title.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/diff</entry>
+							<entry>
+								The path to the patch/diff file to apply to a directory.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/oneway</entry>
+							<entry>
+								Forces TortoiseMerge to start with the one-way view
+								instead of the view the user specified in the settings.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/reversedpatch</entry>
+							<entry>
+								Switches the left and right view of the specified
+								two files to diff.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">/createunifieddiff</entry>
+							<entry>
+								Creates a unified diff file (patch file) of two files
+								specified with
+								<literal>/origfile:"path_to_original_file"</literal> and
+								<literal>/modifiedfile:"path_to_modified_file"</literal>.
+								The target path is set with
+								<literal>/outfile:"path_to_resulting_patchfile"</literal>.
+								If <literal>/outfile</literal> is not set, a file save dialog
+								is shown so the user can choose the location to save the
+								patch file.
+								Note: If <literal>/createunifieddiff</literal> is set,
+								all other parameters are ignored.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</para>
+		<para>
+			You can also supply simple filenames on the command line for compatibility
+			with other diff programs. In this simplified form the command line is
+<screen>
+TortoiseMerge BaseFilePath MyFilePath [ TheirFilePath ]
+</screen>
+			If two files are given they will be compared with each other.
+			If three files are given, the first is taken as the BASE file,
+			and the other two are compared with it in a three-way diff.
+		</para>
+	</sect1>
+</appendix>

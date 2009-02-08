@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<chapter id="tmerge-dug" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Using TortoiseMerge</title>
+	<simplesect>
+		<para>
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- include external entity refs -->
+	<xi:include href="./tme_dug_views.xml"/>
+	<xi:include href="./tme_dug_controls.xml"/>
+	<xi:include href="./tme_dug_icons.xml"/>
+	<xi:include href="./tme_dug_conflicts.xml"/>
+	<xi:include href="./tme_dug_open.xml"/>
+	<xi:include href="./tme_dug_settings.xml"/>
+</chapter>

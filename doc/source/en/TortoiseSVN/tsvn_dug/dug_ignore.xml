@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-ignore">
+	<title>Ignoring Files And Directories</title>
+	<indexterm>
+		<primary>ignore</primary>
+	</indexterm>
+	<indexterm>
+		<primary>unversioned files/folders</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_IGNORE"?>
+	<para>
+		<figure id="tsvn-dug-ignoring-dia-1">
+			<title>Explorer context menu for unversioned files</title>
+			<graphic fileref="../images/ContextMenuFileIgnore.png"/>
+		</figure>
+		In most projects you will have files and folders that should not be subject
+		to version control. These might include files created by the compiler,
+		<filename>*.obj, *.lst</filename>, maybe an output folder used to store
+		the executable. Whenever you commit changes, TortoiseSVN shows your unversioned
+		files, which fills up the file list in the commit dialog. Of course you
+		can turn off this display, but then you might forget to add a new source
+		file.
+	</para>
+	<para>
+		The best way to avoid these problems is to add the derived files
+		to the project's ignore list. That way they will never show up in
+		the commit dialog, but genuine unversioned source files will still
+		be flagged up.
+	</para>
+	<para>
+		If you <action>right click</action> on a single unversioned file,
+		and select the command
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Add to Ignore List</guimenuitem>
+		</menuchoice>
+		from the context menu, a submenu appears allowing you to select just that
+		file, or all files with the same extension.
+		If you select multiple files, there is no submenu and you can only add
+		those specific files/folders.
+	</para>
+	<para>
+		If you want to remove one or more items from the ignore list,
+		<action>right click</action> on those items and select
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Remove from Ignore List</guimenuitem>
+		</menuchoice>
+		You can also access a folder's <literal>svn:ignore</literal>
+		property directly. That allows you to specify more general
+		patterns using filename globbing, described in the section below.
+		Read <xref linkend="tsvn-dug-propertypage"/> for more information
+		on setting properties directly. Please be aware that each ignore pattern 
+		has to be placed on a separate line. Separating them by spaces does not work.
+	</para>
+	<tip>
+		<title>The Global Ignore List</title>
+		<para>
+			Another way to ignore files is to add them to the
+			<firstterm>global ignore list</firstterm>. The big difference here
+			is that the global ignore list is a client property.
+			It applies to <emphasis>all</emphasis> Subversion projects, but on
+			the client PC only. In general it is better to use the
+			<filename>svn:ignore</filename> property where possible, because it
+			can be applied to specific project areas, and it works for
+			everyone who checks out the project. Read
+			<xref linkend="tsvn-dug-settings-main"/> for more information. 
+		</para>
+	</tip>
+	<tip>
+		<title>Ignoring Versioned Items</title>
+		<para>
+			Versioned files and folders can never be ignored - that's a feature
+			of Subversion. If you versioned a file by mistake, read
+			<xref linkend="tsvn-howto-unversion"/> for instructions on how to
+			<quote>unversion</quote> it.
+		</para>
+	</tip>
+	<sect2 id="tsvn-dug-ignore-glob">
+		<title>Pattern Matching in Ignore Lists</title>
+		<indexterm>
+			<primary>globbing</primary>
+		</indexterm>
+		<indexterm>
+			<primary>pattern matching</primary>
+		</indexterm>
+		<para>
+			Subversion's ignore patterns make use of filename globbing,
+			a technique originally used in Unix to specify files using
+			meta-characters as wildcards. The following characters have
+			special meaning:
+			<variablelist>
+				<varlistentry>
+					<term>*</term>
+					<listitem>
+						<para>
+							Matches any string of characters, including
+							the empty string (no characters).
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>?</term>
+					<listitem>
+						<para>
+							Matches any single character.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>[...]</term>
+					<listitem>
+						<para>
+							Matches any one of the characters enclosed in the
+							square brackets. Within the brackets, a pair of
+							characters separated by <quote>-</quote>
+							matches any character lexically between the two.
+							For example <literal>[AGm-p]</literal> matches
+							any one of <literal>A</literal>, <literal>G</literal>,
+							<literal>m</literal>, <literal>n</literal>,
+							<literal>o</literal> or <literal>p</literal>.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			Pattern matching is case sensitive, which can cause problems
+			on Windows. You can force case insensitivity the hard way
+			by pairing characters, eg. to ignore <literal>*.tmp</literal>
+			regardless of case, you could use a pattern like
+			<literal>*.[Tt][Mm][Pp]</literal>.
+		</para>
+		<para>
+			If you want an official definition for globbing, you can find
+			it in the IEEE specifications for the shell command language
+			<ulink url="http://www.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13">
+				<citetitle>Pattern Matching Notation</citetitle>
+			</ulink>.
+		</para>
+		<tip>
+			<title>No Paths in Global Ignore List</title>
+			<para>
+				You should not include path information in your pattern.
+				The pattern matching is intended to be used against plain
+				file names and folder names.
+				If you want to ignore all <literal>CVS</literal> folders,
+				just add <literal>CVS</literal> to the ignore list. There is
+				no need to specify <literal>CVS */CVS</literal> as you did in
+				earlier versions.
+				If you want to ignore all <literal>tmp</literal> folders
+				when they exist within a <literal>prog</literal> folder but
+				not within a <literal>doc</literal> folder you should use the
+				<literal>svn:ignore</literal> property instead. There is no
+				reliable way to achieve this using global ignore patterns.
+			</para>
+		</tip>
+	</sect2>
+</sect1>

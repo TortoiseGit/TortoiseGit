@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop version="1.0">
+<!--<!DOCTYPE configuration SYSTEM "config.dtd">-->
+<!--
+     this file contains templates which allow an user easy
+     configuration of Fop. Actually normally you don't need this configuration
+     file, but if you need to change configuration, you should
+     always use this file and *not* config.xml.
+     Usage: java org.apache.fop.apps.Fop -c userconfig.xml -fo fo-file -pdf pdf-file
+-->
+
+<!--
+   this file is translated automatically to userconfig.xml by our
+   build script.
+-->
+
+
+
+<!--
+************************************************************************
+  Add fonts here. The %FONTSDIR% string is replaced with your system
+  fonts directory. Always use %FONTSDIR% to avoid fixed paths which
+  might not work on other systems than yours.
+************************************************************************
+-->
+
+  <source-resolution>96</source-resolution>
+  <target-resolution>96</target-resolution>
+
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <font metrics-url="xsl/fonts/msgothic.xml" embed-url="%FONTSDIR%\msgothic.ttc" kerning="yes">
+          <font-triplet name="Gothic" style="normal" weight="normal"/>
+          <font-triplet name="Gothic" style="normal" weight="bold"/>
+          <font-triplet name="Gothic" style="italic" weight="normal"/>
+          <font-triplet name="Gothic" style="italic" weight="bold"/>
+        </font>
+        <font metrics-url="xsl/fonts/msmincho.xml" embed-url="%FONTSDIR%\msmincho.ttc" kerning="yes">
+          <font-triplet name="Mincho" style="normal" weight="normal"/>
+          <font-triplet name="Mincho" style="normal" weight="bold"/>
+          <font-triplet name="Mincho" style="italic" weight="normal"/>
+          <font-triplet name="Mincho" style="italic" weight="bold"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+
+</fop>
+

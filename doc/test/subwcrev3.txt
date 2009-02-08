@@ -1,0 +1,49 @@
+SubWCRev  -  A Working Copy Status Tool for Subversion
+------------------------------------------------------
+
+SubWCRev is Windows console program which can be used to read the status
+of a Subversion working copy and optionally perform keyword substitution
+in a template file.
+
+usage: SubWCRev WorkingCopyPath [SrcVersionFile] [DstVersionFile] [-n|-d]
+
+Params:
+WorkingCopyPath    :   path to a Subversion working copy
+SrcVersionFile     :   path to a template header file
+DstVersionFile     :   path to where to save the resulting header file
+-n                 :   if given, then SubWCRev will error if the working
+                       copy contains local modifications
+-d                 :   if given, then SubWCRev will only do its job if
+                       DstVersionFile does not exist
+
+
+SubWCRev reads the Subversion status of all files in a working copy, excluding
+externals. It records the highest revision number found, and the commit
+timestamp of that revision, and also whether there are local modifications in
+the working copy. The revision number and mod status are displayed on stdout.
+
+If a source and destination files are supplied, SubWCRev copies source
+to destination, performing keyword substitution as follows:
+
+$WCREV$ is replaced with the highest version number in the working copy.
+
+$WCDATE$ is replaced with the commit date/time of that revision in
+international format, ie. yyyy-mm-dd hh:mm:ss
+
+$WCMODS?FalseCond:TrueCond$ is replaced with TrueCond if there are
+local modifications, or FalseCond if not.
+
+Finally, an optional switch may be added to abort SubWCRev if certain
+conditions are not met.
+
+The -n switch causes SubWCRev to abort with ERRORLEVEL 7 if there are
+any local modifications.
+
+The -d switch causes SubWCRev to abort with ERRORLEVEL 8 if the destination
+file already exists.
+
+-------------------------------------------------------------------------------
+SubWCRev was written by Stefan Küng for the TortoiseSVN project.
+Visit our website at http://tortoisesvn.tigris.org
+-------------------------------------------------------------------------------
+

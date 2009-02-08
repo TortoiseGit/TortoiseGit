@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-export">
+	<title>Exporting a Subversion Working Copy</title>
+	<indexterm>
+		<primary>export</primary>
+	</indexterm>
+	<indexterm>
+		<primary>unversioned 'working copy'</primary>
+	</indexterm>
+	<para>
+		Sometimes you may want a copy of your working tree without any of
+		those <filename>.svn</filename> directories, e.g. to create a zipped
+		tarball of your source, or to export to a web server. Instead of
+		making a copy and then deleting all those <filename>.svn</filename>
+		directories manually, TortoiseSVN offers the command
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Export...</guimenuitem>
+		</menuchoice>.
+		Exporting from a URL and exporting from a working copy are treated
+		slightly differently.
+	</para>
+	<para>
+		<figure id="tsvn-dug-export-dia-1">
+			<title>The Export-from-URL Dialog</title>
+			<graphic fileref="../images/ExportURL.png"/>
+		</figure>
+		If you execute this command on an unversioned folder, TortoiseSVN will
+		assume that the selected folder is the target, and open a dialog for
+		you to enter the URL and revision to export from.
+		This dialog has options to export only the top level folder, to omit
+		external references, and to override the line end style for files which
+		have the <literal>svn:eol-style</literal> property set.
+	</para>
+	<para>
+		Of course you can export directly from the repository too.
+		Use the Repository Browser to navigate to the relevant subtree
+		in your repository, then use
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Export</guimenuitem>
+		</menuchoice>.
+		You will get the <guilabel>Export from URL</guilabel> dialog described above.
+	</para>
+	<para>
+		If you execute this command on your working copy you'll be asked for
+		a place to save the <emphasis>clean</emphasis> working copy without the
+		<filename>.svn</filename> folders.
+		By default, only the versioned files are exported, but you can use the
+		<guilabel>Export unversioned files too</guilabel> checkbox to include any other
+		unversioned files which exist in your WC and not in the repository.
+		External references using <literal>svn:externals</literal> can be
+		omitted if required.
+	</para>
+	<para>
+		Another way to export from a working copy is to <action>right drag</action>
+		the working copy folder to another location and choose
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>SVN Export here</guimenuitem>
+		</menuchoice>
+		or 
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>SVN Export all here</guimenuitem>
+		</menuchoice>.
+		The second option includes the unversioned files as well.
+	</para>
+	<para>
+		When exporting from a working copy,
+		if the target folder already contains a folder of the same
+		name as the one you are exporting, you will be given the option
+		to overwrite the existing content, or to create a new folder with
+		an automatically generated name, eg. <literal>Target (1)</literal>.
+	</para>
+	<tip>
+		<title>Exporting single files</title>
+		<para>
+			The export dialog does not allow exporting single files, even 
+			though Subversion can.
+		</para>
+		<para>
+			To export single files with TortoiseSVN, you have to use
+			the repository browser (<xref linkend="tsvn-dug-repobrowser"/>).
+			Simply drag the file(s) you want to export from the repository
+			browser to where you want them in the explorer, or use the
+			context menu in the repository browser to export the files.
+		</para>
+	</tip>
+	<tip>
+		<title>Exporting a Change Tree</title>
+		<para>
+			If you want to export a copy of your project tree structure
+			but containing only the files which have changed in a particular
+			revision, or between any two revisions, use the compare revisions
+			feature described in <xref linkend="tsvn-dug-compare-revs"/>.
+		</para>
+	</tip>
+	<sect2 id="tsvn-dug-export-unversion">
+		<title>Removing a working copy from version control</title>
+		<indexterm>
+			<primary>unversion</primary>
+		</indexterm>
+		<para>
+			Sometimes you have a working copy which you want to convert back
+			to a normal folder without the <literal>.svn</literal> directories.
+			What you really need is an export-in-place command, that just
+			removes the control directories rather than generating a new
+			clean directory tree.
+		</para>
+		<para>
+			The answer is surprisingly simple - export the folder to itself!
+			TortoiseSVN detects this special case and asks if you want to
+			make the working copy unversioned. If you answer
+			<emphasis>yes</emphasis> the control directories will be removed
+			and you will have a plain, unversioned directory tree.
+		</para>
+	</sect2>
+</sect1>

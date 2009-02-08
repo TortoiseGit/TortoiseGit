@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-saved-data">
+	<?dbhh topicname="HIDD_SETTINGSSAVEDDATA"?>
+	<title>Saved Data Settings</title>
+	<para>
+		<figure id="tsvn-dug-settings-dia-saved-data">
+			<title>The Settings Dialog, Saved Data Page</title>
+			<graphic fileref="../images/SettingsSavedData.png"/>
+		</figure>
+		For your convenience, TortoiseSVN saves many of the settings
+		you use, and remembers where you have been lately. If you
+		want to clear out that cache of data, you can do it here.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>URL history</term>
+			<listitem>
+				<para>
+					Whenever you checkout a working copy, merge changes
+					or use the repository browser, TortoiseSVN keeps a record
+					of recently used URLs and offers them in a combo box.
+					Sometimes that list gets cluttered with outdated URLs
+					so it is useful to flush it out periodically.
+				</para>
+				<para>
+					If you want to remove a single item from one of the combo
+					boxes you can do that in-place. Just click on the arrow
+					to drop the combo box down, move the mouse over the item
+					you want to remove and type <keycap>Shift+Del</keycap>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Log messages (Input dialog)</term>
+			<listitem>
+				<para>
+					TortoiseSVN stores recent commit log messages that you
+					enter. These are stored per repository, so if you access many
+					repositories this list can grow quite large.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Log messages (Show log dialog)</term>
+			<listitem>
+				<para>
+					TortoiseSVN caches log messages fetched by the Show Log
+					dialog to save time when you next show the log. If someone
+					else edits a log message and you already have that message
+					cached, you will not see the change until you clear the
+					cache. Log message caching is enabled on the
+					<guilabel>Log Cache</guilabel> tab.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Dialog sizes and positions</term>
+			<listitem>
+				<para>
+					Many dialogs remember the size and screen position that you
+					last used.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Authentication data</term>
+			<listitem>
+				<para>
+					When you authenticate with a Subversion server, the username
+					and password are cached locally so you don't have to keep
+					entering them. You may want to clear this for security reasons,
+					or because you want to access the repository under a different
+					username ... does John know you are using his PC?
+				</para>
+				<para>
+					If you want to clear authentication data for one particular server only,
+					read <xref linkend="tsvn-dug-general-auth"/> for instructions
+					on how to find the cached data.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Action log</term>
+			<listitem>
+				<para>
+					TortoiseSVN keeps a log of everything written to its progress
+					dialogs. This can be useful when, for example, you want to check
+					what happened in a recent update command.
+				</para>
+				<para>
+					The log file is limited in length and when it grows too big the
+					oldest content is discarded. By default 4000 lines are kept, but
+					you can customize that number.
+				</para>
+				<para>
+					From here you can view the log file content, and also clear it.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
+</sect2>

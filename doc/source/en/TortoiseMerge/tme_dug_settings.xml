@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<sect1 id="tmerge-dug-settings">
+	<title>Settings</title>
+	<sect2 id="tmerge-dug-settings-main">
+		<title>Main Settings Page</title>
+		<?dbhh topicname="HIDD_SETMAINPAGE"?>
+		<figure id="tmerge-dug-dia-setmain">
+			<title>The Settings Main Page</title>
+			<graphic fileref="images/TMerge_SettingsGeneral.png"/>
+		</figure>
+		<para>
+			Most of the options here are self-explanatory, but a few
+			points need clarifying.
+		</para>
+		<para>
+			<guilabel>Backup original file</guilabel>
+			renames the original file in the WC to <literal>filename.bak</literal>
+			before saving the modified version.
+		</para>
+		<para>
+			<guilabel>Ignore line endings</guilabel>
+			hides changes which are due solely to difference in line-end style.
+		</para>
+		<para>
+			<guilabel>Ignore case changes</guilabel>
+			hides changes which are due solely to case changes within the text.
+			This can be useful with apps such as Visual Basic, which changes
+			case in variables without warning.
+		</para>
+		<para>
+			<guilabel>Colour code in-line changes</guilabel>
+			uses the same scheme as the line diff bar to show the detailed
+			in-line changes within the main display panes.
+			Lines which have been heavily modified will not be shown using this
+			method as the results are simply confusing. In this case the line
+			will be shown as replaced (old line deleted, new line added).
+		</para>
+		<para>
+			<guilabel>Compare whitespaces</guilabel>
+			shows all changes in indentation and inline whitespace as
+			added/removed lines (which is how Subversion treats such changes).
+		</para>
+		<para>
+			<guilabel>Ignore whitespace changes</guilabel>
+			hides changes which are due solely to a change in the
+			amount or type of whitespace, eg. changing the indentation
+			or changing tabs to spaces. Adding whitespace where there
+			was none before, or removing a whitespace completely is still
+			shown as a change.
+		</para>
+		<para>
+			<guilabel>Ignore all whitespaces</guilabel>
+			hides all whitespace-only changes.
+		</para>
+	</sect2>
+	<sect2 id="tmerge-dug-settings-color">
+		<title>Colour Settings Page</title>
+		<?dbhh topicname="HIDD_SETCOLORPAGE"?>
+		<figure id="tmerge-dug-dia-setcolor">
+			<title>The Settings Color Page</title>
+			<graphic fileref="images/TMerge_SettingsColors.png"/>
+		</figure>
+		<para>
+			This dialog allows you to select the background color coding
+			used to highlight the different line changes.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Normal</term>
+				<listitem>
+					All lines which are unchanged, or where changes are hidden.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Added</term>
+				<listitem>
+					Lines which have been added.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Removed</term>
+				<listitem>
+					Lines which have been deleted.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Modified</term>
+				<listitem>
+					Lines which have relatively small changes, and are shown using inline diff.
+					This colour is used for the <emphasis>unchanged</emphasis> portion of
+					the line content. Changed portions will be shown using the inline
+					added and deleted colours described below.
+					If <guilabel>Colour code in-line changes</guilabel> is not enabled,
+					this colour will not be used and changed lines will always be shown
+					as replacements.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Conflicted</term>
+				<listitem>
+					Where the same line has been changed in both files.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Conflict resolved</term>
+				<listitem>
+					Where the same line has been changed in both files,
+					and you have now selected which version should be used.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Empty</term>
+				<listitem>
+					Where lines have been added in the opposite pane,
+					and no such line existed in this pane.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Inline added text</term>
+				<listitem>
+					When inline diffs are shown, added text is shown in this colour.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Inline removed text</term>
+				<listitem>
+					When inline diffs are shown, deleted text is shown in this colour.
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Misc whitespaces</term>
+				<listitem>
+					Characters used to indicate Whitespace are shown in a different colour
+					from normal text.
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect2>
+</sect1>

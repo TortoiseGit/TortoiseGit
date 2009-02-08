@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<project name="country">
+	<description>Country specified layer for build file</description>
+
+	<!-- language code for Japanese -->
+	<property name="lang.target.code" 
+		value="1041" 
+	/>
+
+</project>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-conflicts">
+	<?dbhh topicname="HIDD_RESOLVE"?>
+	<title>Resolving Conflicts</title>
+	<indexterm>
+		<primary>conflict</primary>
+	</indexterm>
+	<indexterm>
+		<primary>resolve</primary>
+	</indexterm>
+	<para>
+		Once in a while, you will get a <emphasis>conflict</emphasis> when
+		you update your files from the repository. A conflict
+		occurs when two or more developers have changed the same
+		few lines of a file. As Subversion knows nothing of your
+		project, it leaves resolving the conflicts to the developers.
+		Whenever a conflict is reported, you should open the file in
+		question, and search for lines starting with the string
+		<literal>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</literal>.
+		The conflicting area is marked like this:
+<screen>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; filename
+    your changes
+=======
+    code merged from repository
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; revision
+</screen>
+		Also, for every conflicted file Subversion places three
+		additional files in your directory:
+		<variablelist>
+			<varlistentry>
+				<term>filename.ext.mine</term>
+				<listitem>
+					<para>
+						This is your file as it existed in your
+						working copy before you updated your working copy
+						- that is, without conflict markers. This file has
+						your latest changes in it and nothing else.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>filename.ext.rOLDREV</term>
+				<listitem>
+					<para>
+						This is the file that was the BASE
+						revision before you updated your working copy. That is,
+						it the file that you checked out before you made
+						your latest edits.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>filename.ext.rNEWREV</term>
+				<listitem>
+					<para>
+						This is the file that your Subversion
+						client just received from the server when you updated
+						your working copy. This file corresponds to the HEAD
+						revision of the repository.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</para>
+	<para>
+		You can either launch an external merge tool / conflict
+		editor with
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Edit Conflicts</guimenuitem>
+		</menuchoice>
+		or you can use any other editor to manually
+		resolve the conflict. You should decide what the code
+		should look like, do the necessary changes and save the file.
+	</para>
+	<para>
+		Afterwards execute the command
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Resolved</guimenuitem>
+		</menuchoice>
+		and commit your modifications to the repository.
+		Please note that the Resolve command does not really
+		resolve the conflict. It just removes the
+		<filename>filename.ext.mine</filename> and
+		<filename>filename.ext.r*</filename> files,
+		to allow you to commit your changes.
+	</para>
+	<para>
+		If you have conflicts with binary files, Subversion does
+		not attempt to merge the files itself. The local file remains
+		unchanged (exactly as you last changed it) and you have
+		<filename>filename.ext.r*</filename> files.
+		If you want to discard your changes and keep the repository
+		version, just use the Revert command. If you want to keep
+		your version and overwrite the repository version, use the
+		Resolved command, then commit your version.
+	</para>
+	<para>
+		You can use the Resolved command for multiple files
+		if you right click on the parent folder and select
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Resolved...</guimenuitem>
+		</menuchoice>
+		This will bring up a dialog listing all conflicted files
+		in that folder, and you can select which ones to mark
+		as resolved.
+	</para>
+</sect1>

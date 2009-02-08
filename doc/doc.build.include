@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<!--
+============================================================ 
+ $Date: 2008-12-16 22:51:06 +0800 (Tue, 16 Dec 2008) $
+ $Author: luebbe $
+ $Rev: 14867 $
+============================================================ 
+
+Customization layer for build files.
+
+You can override these settings by defining them on the command line or by
+defining them in doc.build.user which is included here if it exists.
+
+Example content of doc.build.user:
+<property name="applications" value="TortoiseSVN" />
+<property name="docformats" value="chm" />
+<property name="languages" value="en" />
+
+This will only build the english HTML help file for TortoiseSVN
+
+-->
+
+<project name="customize">
+	<description>Customization layer for build file</description>
+
+	<include buildfile="doc.build.user" if="${file::exists('doc.build.user')}"/>
+
+	<!-- ============================================================ -->
+	<!-- List of applications, languages and output formats in which  -->
+	<!-- the documentation will be created by default                 -->
+
+	<property name="applications" 
+		value="TortoiseSVN,TortoiseMerge" 
+		unless="${property::exists('applications')}"
+	/>
+	<property name="docformats" 
+		value="pdf,chm,html,htmlsingle" 
+		unless="${property::exists('docformats')}"
+	/>
+	<property name="languages" 
+		value="en,de,es,fa,fi,fr,hr,id,ja,nl,ru,sl,sk,sr_spc,sr_spl,zh_CN" 
+		unless="${property::exists('languages')}"
+	/>
+
+	<!-- ============================================================ -->
+	<!-- Define property so that doc.build alone doesn't fail         -->
+
+	<property name="devrelease"
+		value="" 
+		unless="${property::exists('devrelease')}"
+	/>
+
+	<property name="critical" value="${devrelease!='-dev'}" />
+
+	<!-- ============================================================ -->
+	<!-- Settings for the translation                                 -->
+	
+	<!-- Base language. All other documents are created using this    -->
+	<!-- documents structure                                          -->
+	<property name="lang.base"
+		value="en"
+		unless="${property::exists('lang.base')}"
+	/>
+	
+	<!-- ============================================================ -->
+	<!-- Settings for the CHM Help creation                           -->
+	<!-- Attention, this is implemented as a target, because I could  -->
+	<!-- not find a better way to create the property depending on    -->
+	<!-- the app name                                                 -->
+	
+	<target name="help.prepare.TortoiseSVN">
+	<echo message="help.prepare.TortoiseSVN"/>
+		<property name="help.resource.TortoiseSVN"
+		  value="../src/TortoiseProc/resource.h"
+			unless="${property::exists('help.resource.TortoiseSVN')}"
+		/>
+		<property name="help.resource" value="${help.resource.TortoiseSVN}" />
+	</target>
+	<target name="help.prepare.TortoiseMerge">
+	<echo message="help.prepare.TortoiseMerge"/>
+		<property name="help.resource.TortoiseMerge"
+	  	value="../src/TortoiseMerge/resource.h"
+			unless="${property::exists('help.resource.TortoiseMerge')}"
+		/>
+		<property name="help.resource" value="${help.resource.TortoiseMerge}" />
+	</target>
+	
+	<!-- Fileset to exclude from translation and .pot creation        -->
+	<!-- Duplicate these files in the "sourcefiles" fileset           -->
+<!--
+	<fileset id="files.exclude">
+		<include name="source/${lang.base}/**/version.xml"/>
+		<include name="source/${lang.base}/**/pubdate.xml"/>
+	</fileset>
+	
+	<fileset id="files.filtered">
+		<include name="source/${lang.base}/TortoiseSVN/**/*.xml"/>
+		<include name="source/${lang.base}/**/wishlist.xml"/>
+		<exclude name="source/${lang.base}/**/version.xml"/>
+		<exclude name="source/${lang.base}/**/pubdate.xml"/>
+	</fileset>
+-->
+
+	<!-- Name of the po template file to create. Can also be a list   -->
+	<!-- of applications if you want to create a template for each    -->
+	<property name="potemplates" value="${applications}" />
+
+	<!-- ============================================================ -->
+	<!-- Paths to the binaries                                        -->
+	<property name="path.bin" 
+		value="${path::get-full-path('../Tools')}"
+		unless="${property::exists('path.bin')}"
+	/>
+	<property name="path.fop" 
+		value="${path::get-full-path('../Tools/fop')}"
+		unless="${property::exists('path.fop')}"
+	/>
+	<property name="path.xsl" 
+		value="${string::replace(path::get-full-path('../Tools/xsl'), '\', '/')}"
+		unless="${property::exists('path.xsl')}"
+	/>
+	<property name="path.gettext" 
+		value="${path::get-full-path('../Tools')}"
+		unless="${property::exists('path.gettext')}"
+	/>
+
+	<!-- Choose between 32/64 Bit executable of SubWCRev -->
+	<property name="bindirextension" 
+	  value=""
+		unless="${property::exists('bindirextension')}"
+	/>
+	<property name="path.subwcrev" 
+		value="../bin/release${bindirextension}/bin/"
+		unless="${property::exists('path.subwcrev')}"
+	/>
+
+	<!-- ============================================================ -->
+	<!-- Settings for XSLTPROC                                        -->
+
+	<!-- Paths where the xsl and css files are found                  -->
+	<property name="path.user.xsl" value="./xsl"/>
+	<property name="path.user.css" value="./source"/>
+
+	<!-- stylesheets and stringparams                                 -->
+	<property name="xsl.pdf.params" value="--nonet --xinclude"/>
+	<property name="xsl.pdf.file" value="pdfdoc.xsl"/>
+	<property name="xsl.chm.params" value="--nonet --xinclude --stringparam html.stylesheet styles_chm.css --stringparam use.id.as.filename 1"/>
+	<property name="xsl.chm.file" value="htmlhelp.xsl"/>
+	<property name="xsl.html.params" value="--nonet --xinclude --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1"/>
+	<property name="xsl.html.file" value="htmlsingle.xsl"/>
+	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1"/>
+	<property name="xsl.htmlsingle.file" value="htmlchunk.xsl"/>
+	<property name="xsl.profile.params" value="--nonet --xinclude --stringparam profile.condition &quot;exclude&quot;"/>
+	<property name="xsl.profile.file" value="profile.xsl"/>
+
+<!-- ====================================================================== -->
+<!-- Custom target to prepare the build                                     -->
+<!-- ====================================================================== -->
+
+	<target name="prepare.custom" 
+		description="Prepare XSL files, create help context file"
+		depends="PrepareVersionInfo">
+
+		<exec program="SubWCRev.exe"
+			commandline="source/${lang.base} source/pubdate.tmpl source/${lang.base}/pubdate.xml"
+			basedir="${path.subwcrev}"
+			failonerror="false"
+			resultproperty="result.subwcrev"
+			verbose="false"
+		/>
+		<copy file="source/Pubdate.none" tofile="source/${lang.base}/pubdate.xml" overwrite="true" unless="${result.subwcrev=='0'}"/>
+
+		<!-- Delete CHM help context files to force re-creation -->
+		<delete file="source/TortoiseSVN.h" if="${file::exists('source/TortoiseSVN.h')}"/>
+		<delete file="source/TortoiseMerge.h" if="${file::exists('source/TortoiseMerge.h')}"/>
+
+		<!-- Store path to docbook stylesheets in helper stylesheets -->
+		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_pdfdoc.xsl"/>
+		<echo message="&lt;xsl:import href=&quot;${path.xsl}/fo/docbook.xsl&quot;/&gt;" file="${path.user.xsl}/db_pdfdoc.xsl" append="true"/>
+		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_pdfdoc.xsl" append="true"/>
+
+		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlhelp.xsl"/>
+		<echo message="&lt;xsl:import href=&quot;${path.xsl}/htmlhelp/htmlhelp.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlhelp.xsl" append="true"/>
+		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_htmlhelp.xsl" append="true"/>
+
+		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlsingle.xsl"/>
+		<echo message="&lt;xsl:import href=&quot;${path.xsl}/html/docbook.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlsingle.xsl" append="true"/>
+		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_htmlsingle.xsl" append="true"/>
+
+		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlchunk.xsl"/>
+		<echo message="&lt;xsl:import href=&quot;${path.xsl}/html/chunk.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlchunk.xsl" append="true"/>
+		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_htmlchunk.xsl" append="true"/>
+
+	</target>
+
+<!-- ====================================================================== -->
+<!-- Prepare version info for version file and output filenames             -->
+<!-- ====================================================================== -->
+
+	<target name="PrepareVersionInfo" description="Prepares version info for version file and output filenames">
+
+		<if test="${not environment::variable-exists('MajorVersion')}">
+
+		        <if test="${file::exists('../versioninfo.build')}">
+				<!-- try to get version info even if full build environment is not available -->
+				<property name="SubWCRevFileName" value="${path.subwcrev}/subwcrev.exe" unless="${property::exists('configuration')}"/>
+					<nant target="versioninfo">
+						<buildfiles>
+							<include name="../versioninfo.build" />
+						</buildfiles>
+					</nant>
+<!--				<echo>Note: version information set!</echo> -->
+			</if>
+		        <if test="${not file::exists('../versioninfo.build')}">
+				<echo>Version information set to dummy values</echo>
+				<setenv>
+					<variable name="MajorVersion" value="ver" />
+					<variable name="MinorVersion" value="x" />
+					<variable name="MicroVersion" value="x" />
+				</setenv>
+			</if>                                            
+		</if>
+
+		<property name="docverstring" value="${environment::get-variable('MajorVersion')}.${environment::get-variable('MinorVersion')}.${environment::get-variable('MicroVersion')}"/>
+
+	</target>
+
+<!-- ====================================================================== -->
+<!-- Prepare help context file                                              -->
+<!-- ====================================================================== -->
+
+	<target name="help.prepare" description="Create CHM help context">
+		<call target="help.prepare.${app}" />
+<!--		if="${target::exists('help.prepare.${app}')}"/>-->
+
+		<property name="help.context" value="source/${app}.h"/>
+		<if test="${not file::exists(help.context)}">
+
+			<property name="headerfile" value="source/${app}_ASCII.h"/>
+			<loadfile file="${help.resource}" property="header" />
+			<echo file="${headerfile}" message="${header}" />
+			<echo message="header file ${help.resource}" />
+			
+			<echo message="// Generated Help Map file." file="${help.context}" />
+			<echo message="" file="${help.context}" append="true"/>
+			<echo message="// Commands (ID_* and IDM_*)" file="${help.context}" append="true"/>
+			<exec program="makehm"
+						commandline="/h ID_,HID_,0x10000 IDM_,HIDM_,0x10000 ${headerfile}"
+						output="${help.context}"
+						append="true"
+						verbose="false" />
+
+			<echo message="" file="${help.context}" append="true"/>
+			<echo message="echo // Prompts (IDP_*)" file="${help.context}" append="true"/>
+			<exec program="makehm"
+						commandline="/h IDP_,HIDP_,0x30000 ${headerfile}"
+						output="${help.context}"
+						append="true"
+						verbose="false" />
+
+			<echo message="" file="${help.context}" append="true"/>
+			<echo message="echo // Resources (IDR_*)" file="${help.context}" append="true"/>
+			<exec program="makehm"
+						commandline="/h IDR_,HIDR_,0x20000 ${headerfile}"
+						output="${help.context}"
+						append="true"
+						verbose="false" />
+
+			<echo message="" file="${help.context}" append="true"/>
+			<echo message="echo // Dialogs (IDD_*)" file="${help.context}" append="true"/>
+			<exec program="makehm"
+						commandline="/h IDD_,HIDD_,0x20000 ${headerfile}"
+						output="${help.context}"
+						append="true"
+						verbose="false" />
+
+			<echo message="" file="${help.context}" append="true"/>
+			<echo message="// Frame Controls xyxzy(IDW_*)" file="${help.context}" append="true"/>
+			<exec program="makehm"
+						commandline="/h /a afxhh.h IDW_,HIDW_,0x50000 ${headerfile}"
+						output="${help.context}"
+						append="true"
+						verbose="false" />
+		</if>
+
+		<!-- Copy help context to target location -->
+		<copy file="${help.context}" tofile="${doc.target.work}/context.h" overwrite="true"/>
+
+	</target>
+
+</project>

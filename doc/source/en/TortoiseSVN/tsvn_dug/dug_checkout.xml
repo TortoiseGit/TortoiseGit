@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-checkout">
+	<title>Checking Out A Working Copy</title>
+	<indexterm>
+		<primary>checkout</primary>
+	</indexterm>
+	<indexterm>
+		<primary>create working copy</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_CHECKOUT"?>
+	<para>
+		To obtain a working copy you need to do a <firstterm>checkout</firstterm>
+		from a repository.
+	</para>
+	<para>
+		Select a directory in windows explorer where you want to place
+		your working copy. <action>Right click</action> to pop up the
+		context menu and select the command
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Checkout...</guimenuitem>
+		</menuchoice>,
+		which brings up the following dialog box:
+		<figure id="tsvn-dug-checkout-dia-1">
+			<title>The Checkout dialog</title>
+			<graphic fileref="../images/Checkout.png"/>
+		</figure>
+		If you enter a folder name that does not yet exist, then a
+		directory with that name is created.
+	</para>
+	<sect2 id="tsvn-dug-checkout-depth">
+		<title>Checkout Depth</title>
+		<para>
+			You can choose the <firstterm>depth</firstterm> you want to checkout,
+			which allows you to specify the depth of recursion into child folders.
+			If you want just a few sections of a large tree, You can checkout
+			the top level folder only, then update selected folders recursively.
+			<variablelist>
+				<varlistentry>
+					<term>Fully recursive</term>
+					<listitem>
+						<para>
+							Checkout the entire tree, including all child folders
+							and sub-folders.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Immediate children, including folders</term>
+					<listitem>
+						<para>
+							Checkout the specified directory, including all files
+							and child folders, but do not populate the child folders.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Only file children</term>
+					<listitem>
+						<para>
+							Checkout the specified directory, including all files
+							but do not checkout any child folders.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Only this item</term>
+					<listitem>
+						<para>
+							Checkout the directory only. Do not populate it with
+							files or child folders.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Working copy</term>
+					<listitem>
+						<para>
+							Retain the depth specified in the working copy. This
+							option is not used in the checkout dialog, but it is
+							the default in all other dialogs which have a depth
+							setting.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			If you check out a sparse working copy (i.e., by choosing something other
+			than <literal>fully recursive</literal> for the checkout depth), you can
+			fetch additional sub-folders by using the repository browser
+			(<xref linkend="tsvn-dug-repobrowser" />) or the check for modifications dialog
+			(<xref linkend="tsvn-dug-wcstatus-2" />).
+		</para>
+		<para>
+			In the repository browser,
+			<action>Right click</action> on the checked out folder, then use
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Repo-Browser</guimenuitem>
+			</menuchoice>
+			to bring up the repository browser. Find the sub-folder you would like
+			to add to your working copy, then use
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Update item to revision...</guimenuitem>
+			</menuchoice>
+			That menu will only be visible if the selected item does not exist yet
+			in your working copy, but the parent item does exist.
+		</para>
+		<para>
+			In the check for modifications dialog, first click on the button
+			<guibutton>Check repository</guibutton>. The dialog will show all
+			the files and folders which are in the repository but which you
+			have not checked out as <literal>remotely added</literal>.
+			<action>Right click</action> on the folder(s) you would like to add
+			to your working copy, then use
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Update</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			This feature is very useful when you only want to checkout parts of a
+			large tree, but you want the convenience of updating a single working
+			copy. Suppose you have a large tree which has sub-folders
+			<literal>Project01</literal> to <literal>Project99</literal>,
+			and you only want to checkout
+			<literal>Project03</literal>,
+			<literal>Project25</literal> and
+			<literal>Project76/SubProj</literal>.
+			Use these steps:
+		</para>
+		<orderedlist>
+			<listitem>
+				<para>
+					Checkout the parent folder with depth
+					<quote>Only this item</quote>
+					You now have an empty top level folder.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Select the new folder and use
+					<menuchoice>
+						<guimenu>TortoiseSVN</guimenu>
+						<guimenuitem>Repo browser</guimenuitem>
+					</menuchoice>
+					to display the repository content.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Right click on <literal>Project03</literal> and
+					<menuchoice>
+						<guimenu>Context menu</guimenu>
+						<guimenuitem>Update item to revision...</guimenuitem>
+					</menuchoice>.
+					Keep the default settings and click on
+					<guibutton>OK</guibutton>. You now have
+					that folder fully populated.
+				</para>
+				<para>
+					Repeat the same process for <literal>Project25</literal>.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Navigate to <literal>Project76/SubProj</literal> and
+					do the same. This time note that the <literal>Project76</literal>
+					folder has no content except for <literal>SubProj</literal>,
+					which itself is fully populated. Subversion has created the
+					intermediate folders for you without populating them.
+				</para>
+			</listitem>
+		</orderedlist>
+		<tip>
+			<title>Working copy depth cannot be reduced</title>
+			<para>
+				Once you have checked out a working copy to a particular
+				depth you can increase that depth later to get more content.
+				However you cannot reduce the depth again to remove content.
+				That feature may be added in a later version of Subversion.
+			</para>
+		</tip>
+		<tip>
+			<title>Using an older server</title>
+			<para>
+				Pre-1.5 servers do not understand the working copy depth
+				request, so they cannot always deal with requests efficiently.
+				The command will still work, but an older server may send all
+				the data, leaving the client to filter out what is not required,
+				which may mean a lot of network traffic. If possible you should
+				upgrade your server to 1.5.
+			</para>
+		</tip>
+	</sect2>
+	<para>
+		If the project contains references to external projects which you do
+		<emphasis>not</emphasis> want checked out at the same time, use the
+		<guilabel>Omit externals</guilabel> checkbox.
+	</para>
+	<important>
+		<para>
+			If <guilabel>Omit externals</guilabel> is checked, or if you wish
+			to increase the depth value, you will have to perform
+			updates to your working copy using
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Update to Revision...</guimenuitem>
+			</menuchoice>
+			instead of
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Update</guimenuitem>
+			</menuchoice>.
+			The standard update will include all externals and keep the existing depth.
+		</para>
+	</important>
+	<para>
+		It is recommended that you check out only the <literal>trunk</literal> part of the
+		directory tree, or lower. If you specify the parent path of the
+		directory tree in the URL then you might end up with a full
+		hard disk since you will get a copy of the entire repository tree
+		including every branch and tag of your project!
+	</para>
+	<tip>
+		<title>Exporting</title>
+		<para>
+			Sometimes you may want to create a local copy without any of those
+			<filename>.svn</filename> directories, e.g. to create a zipped
+			tarball of your source.
+			Read <xref linkend="tsvn-dug-export"/> to find out how to do that.
+		</para>
+	</tip>
+</sect1>

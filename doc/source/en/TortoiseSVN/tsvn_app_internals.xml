@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
+<appendix id="tsvn-app-internals" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Implementation Details</title>
+	<simplesect>
+		<para>
+			This appendix contains a more detailed discussion of the
+			implementation of some of TortoiseSVN's features.
+		</para>
+	</simplesect>
+	<sect1 id="tsvn-app-internals-overlays">
+		<title>Icon Overlays</title>
+		<indexterm>
+			<primary>overlay priority</primary>
+		</indexterm>
+		<indexterm>
+			<primary>overlays</primary>
+		</indexterm>
+		<para>
+			Every file and folder has a Subversion status value as reported
+			by the Subversion library. In the command line client, these
+			are represented by single letter codes, but in TortoiseSVN they
+			are shown graphically using the icon overlays. Because the number
+			of overlays is very limited, each overlay may represent one of
+			several status values.
+		</para>
+		<para>
+			<graphic fileref="images/ConflictIcon.png"/>
+			The <emphasis>Conflicted</emphasis> overlay is used to
+			represent the <literal>conflicted</literal> state, where
+			an update or switch results in conflicts between local
+			changes and changes downloaded from the repository. It is
+			also used to indicate the <literal>obstructed</literal> state,
+			which can occur when an operation is unable to complete.
+		</para>
+		<para>
+			<graphic fileref="images/ModifiedIcon.png"/>
+			The <emphasis>Modified</emphasis> overlay represents the
+			<literal>modified</literal> state, where you have made
+			local modifications, the <literal>merged</literal> state,
+			where changes from the repository have been merged with
+			local changes, and the <literal>replaced</literal> state,
+			where a file has been deleted and replaced by another
+			different file with the same name.
+		</para>
+		<para>
+			<graphic fileref="images/DeletedIcon.png"/> 
+			The <emphasis>Deleted</emphasis> overlay represents the
+			<literal>deleted</literal> state, where an item is scheduled for
+			deletion, or the <literal>missing</literal> state, where an
+			item is not present. Naturally an item which is missing cannot have
+			an overlay itself, but the parent folder can be marked if one of its
+			child items is missing.
+		</para>
+		<para>
+			<graphic fileref="images/AddedIcon.png"/> 
+			The <emphasis>Added</emphasis> overlay is simply used to
+			represent the <literal>added</literal> status when an item
+			has been added to version control.
+		</para>
+		<para>
+			<graphic fileref="images/InSubVersionIcon.png"/>
+			The <emphasis>In Subversion</emphasis> overlay is used to
+			represent an item which is in the <literal>normal</literal>
+			state, or a versioned item whose state is not yet known.
+			Because TortoiseSVN uses a background caching process to
+			gather status, it may take a few seconds before the overlay
+			updates.
+		</para>
+		<para>
+			<graphic fileref="images/ReadOnlyIcon.png"/> 
+			The <emphasis>Needs Lock</emphasis> overlay is used to
+			indicate when a file has the <literal>svn:needs-lock</literal>
+			property set. For working copies which were created using
+			Subversion 1.4.0 and later, the <literal>svn:needs-lock</literal>
+			status is cached locally by Subversion and this is used to
+			determine when to show this overlay. For working copies which
+			are in pre-1.4.x format, TortoiseSVN shows this overlay when the
+			file has read-only status. Note that Subversion automatically
+			upgrades working copies when you update them, although the
+			caching of the <literal>svn:needs-lock</literal> property
+			may not happen until the file itself is updated.
+		</para>
+		<para>
+			<graphic fileref="images/LockedIcon.png"/> 
+			The <emphasis>Locked</emphasis> overlay is used when the local
+			working copy holds a lock for that file.
+		</para>
+		<para>
+			<graphic fileref="images/IgnoredIcon.png"/>
+			The <emphasis>Ignored</emphasis> overlay is used to
+			represent an item which is in the <literal>ignored</literal>
+			state, either due to a global ignore pattern, or the
+			<literal>svn:ignore</literal> property of the parent folder.
+			This overlay is optional.
+		</para>
+		<para>
+			<graphic fileref="images/UnversionedIcon.png"/>
+			The <emphasis>Unversioned</emphasis> overlay is used to
+			represent an item which is in the <literal>unversioned</literal>
+			state. This is an item in a versioned folder, but which is not
+			under version control itself.
+			This overlay is optional.
+		</para>
+		<para>
+			If an item has subversion status <literal>none</literal> (the item
+			is not within a working copy) then no overlay is shown.
+			If you have chosen to disable the <emphasis>Ignored</emphasis>
+			and <emphasis>Unversioned</emphasis> overlays then no overlay
+			will be shown for those files either.
+		</para>
+		<para>
+			An item can only have one Subversion status value. For example
+			a file could be locally modified and it could be marked for
+			deletion at the same time. Subversion returns a single status
+			value - in this case <literal>deleted</literal>.
+			Those priorities are defined within Subversion itself.
+		</para>
+		<para>
+			When TortoiseSVN displays the status recursively (the default
+			setting), each folder displays an overlay reflecting its own
+			status and the status of all its children. In order to display
+			a single <emphasis>summary</emphasis> overlay, we use the
+			priority order shown above to determine which overlay to use,
+			with the <emphasis>Conflicted</emphasis> overlay taking highest
+			priority.
+		</para>
+		<para>
+			In fact, you may find that not all of these icons are used on your
+			system. This is because the number of overlays allowed by Windows
+			is limited to 15. Windows uses 4 of those, and the remaining 11
+			can be used by other applications. If there are not enough overlay
+			slots available, TortoiseSVN tries to be a
+			<quote>Good Citizen (TM)</quote> and limits its use of overlays to
+			give other apps a chance.
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>Normal</emphasis>,
+					<emphasis>Modified</emphasis> and
+					<emphasis>Conflicted</emphasis>
+					are always loaded and visible.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Deleted</emphasis>
+					is loaded if possible, but falls back to
+					<emphasis>Modified</emphasis> if there are not enough slots.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Read-Only</emphasis>
+					is loaded if possible, but falls back to
+					<emphasis>Normal</emphasis> if there are not enough slots.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Locked</emphasis>
+					is only loaded if there are fewer than 13 overlays already
+					loaded. It falls back to <emphasis>Normal</emphasis>
+					if there are not enough slots.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Added</emphasis>
+					is only loaded if there are fewer than 14 overlays already
+					loaded. It falls back to <emphasis>Modified</emphasis>
+					if there are not enough slots.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</sect1>
+</appendix>

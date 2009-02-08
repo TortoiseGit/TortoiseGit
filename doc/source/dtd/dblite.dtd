@@ -1,0 +1,637 @@
+<!--
+     DocBook Lite XML with ISO-8879 entities
+
+     PubID: "-//ORA//DTD DBLite XML//EN"
+
+     Derived from DocBook by the OASIS group
+
+     Please direct all questions, bug reports, or suggestions for
+     changes to <tools@oreilly.com>.
+
+     $Id: dblite.dtd,v 1.12 2002/08/07 20:53:18 eray Exp $
+
+-->
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                            OVERRIDE ENTITY DECLS
+
+-->
+
+<!-- add url -->
+<!ENTITY % local.bibliomisc.attrib "
+        url             CDATA                #IMPLIED
+">
+
+<!-- add url -->
+<!ENTITY % local.citetitle.attrib "
+        url1            CDATA                #IMPLIED
+">
+
+<!-- add sortas -->
+<!ENTITY % local.seeseealso.attrib "
+        sortas          CDATA                #IMPLIED
+">
+
+<!-- remove format, add height -->
+<!ENTITY % graphics.attrib "
+        entityref       ENTITY               #IMPLIED
+        fileref         CDATA                #IMPLIED
+        srccredit       CDATA                #IMPLIED
+        width           CDATA                #IMPLIED
+        depth           CDATA                #IMPLIED
+        align           CDATA                #IMPLIED
+        scale           CDATA                #IMPLIED
+        scalefit        CDATA                #IMPLIED
+">
+
+<!-- remove format -->
+<!ENTITY % linespecific.attrib "
+        linenumbering   CDATA                #IMPLIED
+">
+
+<!-- remove format -->
+<!ENTITY % objectdata.attrib "
+        entityref       ENTITY               #IMPLIED
+        fileref         CDATA                #IMPLIED
+        srccredit       CDATA                #IMPLIED
+">
+
+<!-- constrain chapter contents -->
+<!ENTITY % bookcomponent.content "
+                               (
+                                  indexterm
+                                 |refentry
+                                 |simplesect
+                                 |sect1
+                                 |section
+                               )+
+">
+
+
+<!--
+
+    Marked sections to turn off so we can declare our own versions
+    of elements.
+
+-->
+<!ENTITY % appendix.element "IGNORE">
+<!ENTITY % arg.attlist "IGNORE">
+<!ENTITY % arg.element "IGNORE">
+<!ENTITY % bibliodiv.element "IGNORE">
+<!ENTITY % bibliomisc.element "IGNORE">
+<!ENTITY % book.element "IGNORE">
+<!ENTITY % callout.attlist "IGNORE">
+<!ENTITY % chapter.element "IGNORE">
+<!ENTITY % classsynopsis.attlist "IGNORE">
+<!ENTITY % classsynopsis.element "IGNORE">
+<!ENTITY % co.attlist "IGNORE">
+<!ENTITY % colophon.element "IGNORE">
+<!ENTITY % cmdsynopsis.attlist "IGNORE">
+<!ENTITY % cmdsynopsis.element "IGNORE">
+<!ENTITY % footnote.element "IGNORE">
+<!ENTITY % funcdef.element "IGNORE">
+<!ENTITY % funcparams.element "IGNORE">
+<!ENTITY % funcprototype.attlist "IGNORE">
+<!ENTITY % funcprototype.element "IGNORE">
+<!ENTITY % funcsynopsis.element "IGNORE">
+<!ENTITY % glossary.element "IGNORE">
+<!ENTITY % group.attlist "IGNORE">
+<!ENTITY % group.element "IGNORE">
+<!ENTITY % link.attlist "IGNORE">
+<!ENTITY % menuchoice.element "IGNORE">
+<!ENTITY % paramdef.element "IGNORE">
+<!ENTITY % programlisting.element "IGNORE">
+<!ENTITY % refentry.element "IGNORE">
+<!ENTITY % refmeta.element "IGNORE">
+<!ENTITY % refmiscinfo.element "IGNORE">
+<!ENTITY % refname.element "IGNORE">
+<!ENTITY % refnamediv.element "IGNORE">
+<!ENTITY % refsect1.element "IGNORE">
+<!ENTITY % sect1.element "IGNORE">
+<!ENTITY % sect2.element "IGNORE">
+<!ENTITY % sect3.element "IGNORE">
+<!ENTITY % sect4.element "IGNORE">
+<!ENTITY % simplesect.element "IGNORE">
+<!ENTITY % systemitem.attlist "IGNORE">
+<!ENTITY % title.element "IGNORE">
+<!ENTITY % varargs.element "IGNORE">
+<!ENTITY % xref.attlist "IGNORE">
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                             IMPORT DOCBOOK 4.1
+
+-->
+<!ENTITY % db 
+                 PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
+                 "docbook41/docbookx.dtd"
+>
+%db;
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                           OVERRIDE ELEMENT DECLS
+
+-->
+
+<!-- simplify model -->
+<!ELEMENT appendix             ( indexterm*,
+                                 title,
+                                 appendixinfo?,
+                                 (
+                                     indexterm
+                                   | refentry
+                                   | simplesect
+                                   | sect1
+                                   | section
+                                 )*
+                               )
+>
+
+<!-- allow paras after biblioentries -->
+<!ELEMENT bibliodiv            (
+                                 (%sect.title.content;)?, 
+                                 (
+                                   %component.mix;
+                                   | biblioentry
+                                   | bibliomixed
+                                 )+
+                               )
+>
+
+<!-- allow paras in content -->
+<!ELEMENT bibliomisc           (
+                                   #PCDATA | para
+                               )*
+>
+
+<!-- simplify model -->
+<!ELEMENT book                 (
+                                 title, 
+                                 subtitle*, 
+                                 bookinfo?,
+                                 toc?,
+                                 (
+                                     dedication
+                                   | preface
+                                 )*,
+                                 (
+                                     chapter
+                                   | part
+                                 )*,
+                                 (
+                                     appendix
+                                   | bibliography
+                                   | colophon
+                                   | glossary
+                                   | reference
+                                   | index
+                                 )*
+                               )
+>
+
+<!-- simplify model -->
+<!ELEMENT chapter              ( indexterm*,
+                                 title,
+                                 chapterinfo?,
+                                 (
+                                     indexterm
+                                   | refentry
+                                   | simplesect
+                                   | sect1
+                                   | section
+                                 )*
+                               )
+>
+
+<!-- simplify model -->
+<!ELEMENT colophon             (
+                                 title?,
+                                 (
+                                     simplesect
+                                   | sect1
+                                   | section
+                                 )*
+                               )
+>
+
+<!-- new element -->
+<!ELEMENT copyrightpg          (
+                                 title?,
+                                 (
+                                     simplesect
+                                   | sect1
+                                   | section
+                                 )*
+                               )
+>
+
+<!-- use different content model, defined above -->
+<!ELEMENT footnote ( literallayout
+                    |programlisting
+                    |screen
+                    |para)*>
+
+<!ELEMENT glossary             ( indexterm*,
+                                 title,
+                                 (
+                                     glossdiv
+                                   | glossentry
+                                   | simplesect
+                                   | sect1
+                                   | section
+                                 )*
+                               )
+>
+
+<!-- allow graphic -->
+<!ELEMENT programlisting (%para.char.mix; | co | lineannotation | graphic)*>
+
+<!-- simplify model -->
+<!ELEMENT menuchoice (shortcut|guibutton|guiicon|guilabel
+                |guimenu|guimenuitem|guisubmenu|interface)*>
+
+
+<!-- simplify model -->
+<!ELEMENT refentry             (   refmeta
+                                 | (%ndxterm.class;)*
+                                 | refnamediv
+                                 | refsect1
+                                 | refsynopsisdiv
+                                 | refentry
+                               )*
+>
+
+<!-- simplify model -->
+<!ELEMENT refmeta              (
+                                   refentrytitle
+                                 | refmiscinfo
+                                 | (%ndxterm.class;)*
+                               )*
+>
+
+<!-- allow inlines -->
+<!ELEMENT refmiscinfo (#PCDATA
+                      |%gen.char.class;
+                      |%tech.char.class;)*>
+
+<!-- allow inlines -->
+<!ELEMENT refname (#PCDATA
+                  |%gen.char.class;
+                  |%tech.char.class;)*>
+
+<!-- make refpurpose optional -->
+<!ELEMENT refnamediv           (
+                                 refdescriptor?, 
+                                 refname, 
+                                 refpurpose?, 
+                                 refclass*,
+                                 (
+                                     remark
+                                   | %link.char.class;
+                                 )*
+                               )
+>
+
+<!-- make title optional, simplify -->
+<!ELEMENT refsect1             (
+                                 refsect1info?, 
+                                 (
+                                   %refsect.title.content;
+                                 )*,
+                                 (
+                                   (
+                                     (
+                                       %refcomponent.mix;
+                                     )*,
+                                     refsect2*
+                                   )
+                                 )
+                               )
+>
+
+<!-- simplify content model -->
+<!ELEMENT sect1 ( indexterm*,
+                  sect1info?,
+                  title,
+		  (%divcomponent.mix;|refentry|sect2)*
+                )>
+
+<!-- simplify content model -->
+<!ELEMENT sect2 ( indexterm*,
+                  title,
+		  (%divcomponent.mix;|refentry|sect3)*
+                )>
+
+<!-- simplify content model -->
+<!ELEMENT sect3 ( indexterm*,
+                  title,
+		  (%divcomponent.mix;|refentry|sect4)*
+                )>
+
+<!-- simplify content model -->
+<!ELEMENT sect4 ( indexterm*,
+                  title,
+		  (%divcomponent.mix;|refentry)*
+                )>
+
+<!-- make title optional, allow refentry -->
+<!ELEMENT simplesect           (
+                                 (
+                                   %sect.title.content;
+                                 )?, 
+                                 (
+                                     %divcomponent.mix;
+                                   | glossentry
+                                   | refentry
+                                 )+
+                               )
+>
+
+<!-- use different content model, defined above -->
+<!ELEMENT title (#PCDATA
+		|abbrev|acronym|citation|citerefentry|citetitle|emphasis
+		|firstterm|foreignphrase|glossterm|footnote|phrase
+		|quote|trademark|wordasword|action|application
+                |classname|methodname|interfacename|exceptionname
+                |ooclass|oointerface|ooexception|command|computeroutput
+		|database|email|envar|errorcode|errorname|errortype|filename
+		|function|guibutton|guiicon|guilabel|guimenu|guimenuitem
+		|guisubmenu|hardware|interface|keycap
+		|keycode|keycombo|keysym|literal|constant|markup|medialabel
+		|menuchoice|mousebutton|option|optional|parameter
+		|prompt|property|replaceable|returnvalue|sgmltag|structfield
+		|structname|symbol|systemitem|token|type|userinput|varname
+		|remark|subscript|superscript)*>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                           OVERRIDE ATTLIST DECLS
+
+-->
+
+<!-- Make arearefs optional, add idref. -->
+<!ATTLIST callout
+                arearefs     IDREFS        #IMPLIED
+                idref        IDREF         #IMPLIED
+                %common.attrib;
+                %callout.role.attrib;
+                %local.callout.attrib;
+>
+
+
+<!-- Make id optional -->
+<!ATTLIST co
+                id           IDREF         #IMPLIED
+                linkend      IDREF         #IMPLIED
+                linkends     IDREFS        #IMPLIED
+		%label.attrib;
+		%co.role.attrib;
+>
+
+
+<!-- Make linkend optional, allow linkends -->
+<!ATTLIST link
+		endterm      IDREF         #IMPLIED
+                linkend      IDREF         #IMPLIED
+                linkends     IDREFS        #IMPLIED
+		%common.attrib;
+		%link.role.attrib;
+>
+<!ATTLIST xref
+		endterm      IDREF         #IMPLIED
+                linkend      IDREF         #IMPLIED
+                linkends     IDREFS        #IMPLIED
+		%common.attrib;
+		%link.role.attrib;
+>
+
+
+<!-- Add more items to the class attribute -->
+<!ATTLIST systemitem
+                class   (constant
+                        |groupname
+                        |library
+                        |macro
+                        |osname
+                        |resource
+                        |systemname
+                        |url
+                        |username)      #IMPLIED
+                %moreinfo.attrib;
+                %common.attrib;
+                %systemitem.role.attrib;
+>
+
+
+<!-- ======================================================================
+                             NUTSHELL EXTENSION
+     ====================================================================== -->
+
+
+<!ELEMENT nutlist (
+                               title?,
+                               nutentry+
+)>
+<!ATTLIST nutlist
+                               longestterm  CDATA  #IMPLIED
+                               %common.attrib;
+>
+
+<!ELEMENT nutentry (
+                               term*,
+                               nutsynopsis*,
+                               nutlisttitle?,
+                               (
+                                   listitem
+                                 | nutentrybody
+                               )+
+)>
+<!ATTLIST nutentry
+                               %common.attrib;
+>
+
+<!ELEMENT nutsynopsis (%para.char.mix; | %para.mix;)*>
+<!ATTLIST nutsynopsis
+                               %common.attrib;
+>
+
+<!ELEMENT nutentrybody (
+                                   (%divcomponent.mix;)+
+                                 | sect2
+                                 | refsect2
+                               )*
+>
+<!ATTLIST nutentrybody
+                               %common.attrib;
+>
+
+<!ELEMENT nutlisttitle (#PCDATA
+		|abbrev|acronym|citation|citerefentry|citetitle|emphasis
+		|firstterm|foreignphrase|glossterm|footnote|phrase
+		|quote|trademark|wordasword|action|application
+                |classname|methodname|interfacename|exceptionname
+                |ooclass|oointerface|ooexception|command|computeroutput
+		|database|email|envar|errorcode|errorname|errortype|filename
+		|function|guibutton|guiicon|guilabel|guimenu|guimenuitem
+		|guisubmenu|hardware|interface|keycap
+		|keycode|keycombo|keysym|literal|constant|markup|medialabel
+		|menuchoice|mousebutton|option|optional|parameter
+		|prompt|property|replaceable|returnvalue|sgmltag|structfield
+		|structname|symbol|systemitem|token|type|userinput|varname
+		|remark|subscript|superscript)*>
+
+<!ATTLIST nutlisttitle
+                               %common.attrib;
+>
+
+
+<!-- ======================================================================
+                          GENERATED CODE EXTENSION
+     ====================================================================== -->
+
+<!ENTITY % synop.content "
+                                 #PCDATA
+                               | arg
+                               | group
+                               | option
+                               | replaceable
+">
+
+<!ELEMENT arg
+                               (%synop.content;)*
+>
+<!ATTLIST arg
+                               choice (opt|req|plain) 'opt'
+                               rep (norepeat|repeat) 'norepeat'
+                               %common.attrib;
+>
+
+<!ELEMENT group
+                               (%synop.content;)*
+>
+
+<!ATTLIST group
+                               choice (opt|req|plain|optmult|reqmult) 'opt'
+                               rep (norepeat|repeat) 'norepeat'
+                               %common.attrib;
+>
+
+<!ELEMENT classsynopsis (
+                               (
+                                   modifiers
+                                 | classname
+                                 | extends
+                                 | implements
+                                 | throws
+                                 | type
+                                 | members
+                                 | indexterm
+                               )+
+)>
+<!ATTLIST classsynopsis
+                               keyword   CDATA     #IMPLIED
+                               %common.attrib;
+>
+
+<!ELEMENT cmdsynopsis (
+                               (
+                                   command
+                                 | arg
+                                 | group
+                               )+
+)>
+<!ATTLIST cmdsynopsis
+                               sepchar   CDATA     " "
+                               %common.attrib;
+>
+
+<!ELEMENT extends (
+                               (
+                                   link
+                                 | classref
+                               )*
+)>
+
+<!ELEMENT funcdef
+                               (   #PCDATA
+                                 | accessors
+                                 | modifiers
+                                 | function
+                                 | type
+                               )*
+>
+
+<!ELEMENT funcparams 
+                               (%para.char.mix;)*
+>
+
+<!ELEMENT funcprototype (
+                               (
+                                   funcdef
+                                 | paramdef
+                                 | classsynopsis
+                                 | extends
+                                 | implements
+                                 | throws
+                                 | accessors
+                               )+
+)>
+<!ATTLIST funcprototype
+                               flags     CDATA    #IMPLIED
+                               %common.attrib;
+>
+
+<!ELEMENT funcsynopsis (
+                               (
+                                   funcprototype
+                                 | funcdef
+                                 | varargs
+                                 | paramdef
+                               )+
+)>
+
+<!ELEMENT implements (
+                               (
+                                   link
+                                 | classref
+                               )*
+)>
+
+<!ELEMENT membergroup (
+                               (funcprototype
+                               | structfield)+
+)>
+
+<!ELEMENT members (
+                               title,
+                               membergroup*
+)>
+
+<!ELEMENT modifiers
+                               (#PCDATA)*
+>
+
+<!ELEMENT accessors (
+                               accessor*
+)>
+
+<!ELEMENT accessor
+                               (#PCDATA)*
+>
+
+<!ELEMENT varargs
+                               (#PCDATA)*
+>
+
+<!ELEMENT paramdef
+                               (
+                                   #PCDATA
+                                 | replaceable
+                                 | parameter
+                                 | modifiers
+                                 | type
+                                 | funcparams
+                               )*
+>
+

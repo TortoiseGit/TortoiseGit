@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-registry">
+	<title>Registry Settings</title>
+	<indexterm>
+		<primary>registry</primary>
+	</indexterm>
+	<para>
+		A few infrequently used settings are available only by editing
+		the registry directly. It goes without saying that you should
+		only edit registry values if you know what you are doing.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>Configuration</term>
+			<listitem>
+				<para>
+					You can specify a different location for the Subversion
+					configuration file using registry location
+					<literal>HKCU\Software\TortoiseSVN\ConfigDir</literal>.
+					This will affect all TortoiseSVN operations.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Cache tray icon</term>
+			<listitem>
+				<para>
+					To add a cache tray icon for the TSVNCache program,
+					create a <literal>DWORD</literal> key with a value of 1 at
+					<literal>HKCU\Software\TortoiseSVN\CacheTrayIcon</literal>.
+					This is really only useful for developers as it allows
+					you to terminate the program gracefully.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Debug</term>
+			<listitem>
+				<para>
+					To show the command line parameters passed from the shell
+					extension to TortoiseProc.exe
+					create a <literal>DWORD</literal> key with a value of 1 at
+					<literal>HKCU\Software\TortoiseSVN\Debug</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Owner-Drawn Menus</term>
+			<listitem>
+				<para>
+					This can be useful if you use something other than the windows explorer
+					or if you get problems with the context menu displaying correctly.
+					create a <literal>DWORD</literal> key with a value of 0 at
+					<literal>HKCU\Software\TortoiseSVN\OwnerdrawnMenus</literal>
+					if you don't want TortoiseSVN to use owner-draw menu items in the shell
+					context menu. Set this value to 2 if you don't want TortoiseSVN to use
+					icons in the context menu at all.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Block Overlay Status</term>
+			<listitem>
+				<para>
+					If you don't want the explorer to update the status overlays while another
+					TortoiseSVN command is running (e.g. Update, Commit, ...) then
+					create a <literal>DWORD</literal> key with a value of 1 at
+					<literal>HKCU\Software\TortoiseSVN\BlockStatus</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Update Check URL</term>
+			<listitem>
+				<para>
+					<literal>HKCU\Software\TortoiseSVN\UpdateCheckURL</literal>
+					contains the URL from which TortoiseSVN tries to download a text file
+					to find out if there are updates available. You can also set this under
+					<literal>HKLM</literal> instead of <literal>HKCU</literal> if you want,
+					but <literal>HKCU</literal> overwrites the setting in <literal>HKLM</literal>.
+					This might be useful for company admins who don't want their users to
+					update TortoiseSVN until they approve it.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Filenames without extensions in auto-completion list</term>
+			<listitem>
+				<para>
+					The auto-completion list shown in the commit message editor
+					displays the names of files listed for commit.
+					To also include these names with extensions removed,
+					create a <literal>DWORD</literal> key with a value of 1 at
+					<literal>HKCU\Software\TortoiseSVN\AutocompleteRemovesExtensions</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Explorer columns everywhere</term>
+			<listitem>
+				<para>
+					The extra columns the TortoiseSVN adds to the details view
+					in Windows Explorer are normally only active in a working
+					copy. If you want those to be accessible everywhere, not
+					just in working copies, create a <literal>DWORD</literal>
+					key with a value of 1 at
+					<literal>HKCU\Software\TortoiseSVN\ColumnsEveryWhere</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Merge log separator</term>
+			<listitem>
+				<para>
+					When you merge revisions from another branch, and merge tracking
+					information is available, the log messages from the revisions
+					you merge will be collected to make up a commit log message.
+					A pre-defined string is used to separate the individual log
+					messages of the merged revisions. If you prefer, you can create
+					a <literal>SZ</literal> key at
+					<literal>HKCU\Software\TortoiseSVN\MergeLogSeparator</literal>
+					containing a separator string of your choice.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Always blame changes with TortoiseMerge</term>
+			<listitem>
+				<para>
+					TortoiseSVN allows you to assign external diff viewer.
+					Most such viewers, however, are not suited for change blaming
+					(<xref linkend="tsvn-dug-blame-diffs"/>),
+					so you might wish to fall back to TortoiseMerge in this case.
+					To do so, create a <literal>DWORD</literal>	key with a value of 1 at
+					<literal>HKCU\Software\TortoiseSVN\DiffBlamesWithTortoiseMerge</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Current revision highlighting for folders in log dialog</term>
+			<listitem>
+				<para>
+					The log dialog highlights the current working copy revision
+					when the log is shown for a file. To do the same thing for a
+					folder requires a working copy crawl, which can be a slow
+					operation for large working copies.
+					If you want to enable this feature you must create a
+					<literal>DWORD</literal> registry key at
+					<literal>HKCU\Software\TortoiseSVN\RecursiveLogRev</literal>.
+					A value of 0 disables the feature (no highlighting for folders),
+					a value of 1 (default) will fetch the status recursively (find the
+					highest revision in the working copy tree), and a value of 2 will
+					check the revision of the selected folder itself, but will
+					not check any child items.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Make checkout fail if an item of the same name exists</term>
+			<listitem>
+				<para>
+					By default, if you checkout a working copy over an existing
+					unversioned folder structure, as you might do after import,
+					then any existing which differ from the repository content
+					will be left unchanged and marked as modified. When you come
+					to commit, it is your local copy which will then be sent back
+					to the repository. Some people would prefer the checkout to
+					fail if the existing content differs, so that if two people
+					add the same file the second person's version does not
+					overwrite the original version by mistake.
+					If you want to force checkouts to fail in this instance you must
+					create a <literal>DWORD</literal> registry key with value 0 at
+					<literal>HKCU\Software\TortoiseSVN\AllowUnversionedObstruction</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
+</sect2>

@@ -1,0 +1,7 @@
+<sect1 id="tsvn-footnote">
+	<title>Use of shortcut keys</title>
+	<para>
+		As with all Windows programs, there are standard shortcut
+		and function keys available.
+	</para>
+</sect1>

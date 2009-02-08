@@ -1,0 +1,2624 @@
+<html>
+<head>
+<title>Using DocBook Lite</title>
+<style>
+body {
+  background-color: wheat;
+  font-family: sans-serif;
+}
+.section {
+  margin: 0.5em;
+  padding: 0.5em;
+  background-color: wheat;
+}
+.contents {
+  margin: 0.5em;
+  padding: 0.5em;
+  background-color: silver;
+}
+</style>
+</head>
+
+<body>
+<h1 class="doctitle">Using DocBook Lite</h1>
+<div class="contents">
+<h2 class="ctitle">Contents</h2>
+<a href="#section-1">1. Introduction</a>
+<br>
+<a href="#section-2">2. XML</a>
+<br>
+<a href="#section-3">3. For best results...</a>
+<br>
+<a href="#section-4">4. The Physical Structure of a Book</a>
+<br>
+<a href="#section-5">5. The Logical Structure of a Book</a>
+<br>
+<a href="#section-6">6. Block elements</a>
+<br>
+<a href="#section-7">7. Inline elements</a>
+<br>
+<a href="#section-8">8. Tables</a>
+<br>
+<a href="#section-9">9. Indexterms</a>
+<br>
+<a href="#section-10">10. Out-of-flow Text</a>
+<br>
+<a href="#section-11">11. Reference Pages</a>
+<br>
+<a href="#section-12">12. See Also...</a>
+<br>
+</div>
+  
+
+  
+
+
+
+  <a name="section-1"></a>
+<div class="section">
+    <h2 class="stitle">1. Introduction</h2>
+
+    <p>
+This document describes the use of DocBook Lite, a document type
+definition (DTD) that defines and shapes the markup of O'Reilly
+books. The DTD declares a set of elements (containers of content) and
+entities (stand-ins for content). Its notation restricts the kinds of
+elements and data that each element can hold. For example, a
+<tt>&lt;chapter&gt;</tt> can contain a
+<tt>&lt;para&gt;</tt> (paragraph), but cannot contain a
+<tt>&lt;book&gt;</tt>.
+    </p>
+
+    <p>
+DocBook Lite is an application of the XML markup language rules. XML
+doesn't require that you use a DTD, but we find that enforcing
+structure is vital to our ability to produce and repurpose books
+efficiently. Originally, we used the full DocBook application
+maintained by <a href="http://www.oasis-open.org/">the OASIS
+SGML/XML standards group</a>, but have since refined it to a small
+subset with its own DTD. It has a few additions for some types of
+books, but mostly the markup should be compatible with the full
+DocBook.
+    </p>
+  </div>
+
+
+
+
+  <a name="section-2"></a>
+<div class="section">
+    <h2 class="stitle">2. XML</h2>
+
+    <p>
+The eXtensible Markup Language (XML) is a
+specification for how markup should work in a document. Using codes
+embedded in text, it defines structure and properties for the parts of
+a document. The basic philosophy of XML is that every unique part of a
+document should be clearly labelled and its position should be
+unambiguous. If a document satisfies the minimal rules of XML, it is
+said to be well-formed. A document that is not
+well-formed has syntax or other kinds of errors that need to be fixed
+before the document can be processed.
+    </p>
+
+    
+      <p>
+The rules for a well-formed XML document differ from those of
+HTML pages. HTML is less strict with syntax, and most browser will not
+complain about poor style or errors. However, XML is much less
+forgiving, so be warned.
+      </p>
+    
+
+    <p>
+DocBook Lite adds another level of control to the document. It
+restricts the kinds of elements and structures that make up a
+book. Specially tailored to O'Reilly's style, the DTD ensures that the
+book has maximum quality and information value by the time it reaches
+production. A document that conforms to our DTD is described as
+valid. A document that is not valid has
+incorrect markup that needs to be fixed before it can be accurately
+processed by our tools.
+    </p>
+
+    <p>
+To test the validity of a document, you need to use a program called a
+validator. Sometimes this is built-in to the
+text editor you're using. For example, Arbortext's Adept editor has a
+validation option. Other editors may not include a validating parser
+because it's assumed that any document you open is already valid, and
+you won't make any mistakes because the editor won't let you (it
+constrains your actions). There are also stand-alone validators that
+read a document and list errors for you. We use nsgmls to validate
+books.
+    </p>
+
+    
+      <p>
+<tt>nsgmls</tt> is written and maintained by James Clark
+and is available for free from <a href="http://www.jclark.com/sp/nsgmls.htm">his web page</a>.
+      </p>
+    
+  </div>
+
+
+
+
+  <a name="section-3"></a>
+<div class="section">
+    <h2 class="stitle">3. For best results...</h2>
+
+    <p>
+Just because you're using XML doesn't mean the document is marked up
+as well as it can be. Even a valid document can have mistakes and
+problems that lower the quality of the book and slow down
+production. For example, you may use the wrong element name, which
+will pass the DTD test but not make sense to a human. The following
+code fragment shows the correct markup for a term-definition
+list:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;variablelist&gt;
+
+ &lt;varlistentry&gt;
+  &lt;term&gt;monkey&lt;/term&gt;
+  &lt;listitem&gt;&lt;para&gt;A cute, furry mammal that climbs in trees.&lt;/para&gt;&lt;/listitem&gt;
+ &lt;/varlistentry&gt;
+
+ &lt;varlistentry&gt;
+  &lt;term&gt;koala&lt;/term&gt;
+  &lt;listitem&gt;&lt;para&gt;A cute, furry mammal that climbs in trees.&lt;/para&gt;&lt;/listitem&gt;
+ &lt;/varlistentry&gt;
+
+&lt;/variablelist&gt;</pre>
+</div>
+
+    <p>
+Sometimes, people choose to do this with another kind of list:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;itemizedlist&gt;
+ &lt;listitem&gt;&lt;para&gt;Monkey - A cute, furry mammal that climbs in trees.&lt;/para&gt;&lt;/listitem&gt;
+ &lt;listitem&gt;&lt;para&gt;Koala - A cute, furry mammal that climbs in trees.&lt;/para&gt;&lt;/listitem&gt;
+&lt;/itemizedlist&gt;</pre>
+</div>
+
+    <p>
+It's easier to type it the second way, but then you lose some
+information, like the fact that it's supposed to be a mapping of terms
+to definitions. Although you may think you're saving time with this
+shortcut, it will add delays later when production staff have to
+transform the list into its proper markup.
+    </p>
+
+    <p>
+Another common mistake authors make is to assume that
+presentational markup is just as good as
+semantic markup. In other words, saying how
+something looks is as good as saying what it is. This is contrary to
+the philosophy of XML, and also will cause problems for your book
+later on. For example, consider the inline markup for a Web address,
+or URL. In print, a URL appears in italic like this:
+    </p>
+
+    
+      <p>
+For more information, you <em>really</em> ought to
+check out the W3C's website at
+<em>http://www.w3.org/</em>.
+      </p>
+    
+
+    <p>
+The correct way to mark up this passage is like this:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;para&gt;For more information, you &lt;emphasis&gt;really&lt;/emphasis&gt; 
+ought to check out the W3C's website at &lt;systemitem
+class="url"&gt;http://www.w3.org/&lt;/systemitem&gt;.&lt;/para&gt;</pre>
+</div>
+
+    <p>
+This is called semantic markup because the
+"really" and the URL are labelled according to their meaning, not
+their appearance. The next snippet shows the incorrect, presentational
+markup: 
+    </p>
+
+    <div class="programlisting">
+<pre>For more information, you &lt;emphasis&gt;really&lt;/emphasis&gt;
+ought to check out the W3C's website at
+&lt;emphasis&gt;http://www.w3.org/&lt;/emphasis&gt;.</pre>
+</div>
+
+    <p>
+The author thought that because <tt>&lt;emphasis&gt;</tt>
+causes its contents to be formatted in italic, it's okay to label
+everything that comes out in italic as a
+<tt>&lt;emphasis&gt;</tt>. So what? Well, it becomes a
+problem when you want to <em>repurpose</em> the document
+in HTML. Instead of the URL coming out as a hyperlink, it's merely
+formatted in italic. When everything is marked up presentationally,
+it's impossible to reuse the content in a different context.
+    </p>
+  </div>
+
+
+
+
+  <a name="section-4"></a>
+<div class="section">
+    <h2 class="stitle">4. The Physical Structure of a Book</h2>
+
+    <p>
+By physical structure, we mean the files and
+directories used to contain the pieces of an XML document. An O'Reilly
+book typically is stored in a single directory. Each chapter, preface,
+and appendix exists in a separate file, and there is a
+"master" file which contains the top (root) element for
+the book. The following table lists the kinds of files and their name
+conventions:
+    </p>
+
+    <table border="1">
+      <h4 class="exampletitle">Table 1. File naming conventions</h4>
+      <tr>
+        <th>element</th>
+        <th>filename</th>
+        <th>purpose</th>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;book&gt;</tt></td>
+        <td>book.xml</td>
+        <td>
+          <p>
+Contains the DOCTYPE declaration, declares local entities
+in the internal subset, holds metadata, contains file reference
+entities to chapters and other external elements.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;copyrightpg&gt;</tt></td>
+        <td>copy.xml</td>
+        <td>
+          <p>
+Contains the copyright page with legal info.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;preface&gt;</tt></td>
+        <td>ch00.xml</td>
+        <td>
+          <p>
+Contains the preface.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;chapter&gt;</tt></td>
+        <td>
+          <p>
+ch<i>xx</i>.xml, where
+<i>xx</i> is the number of the chapter (e.g. 01,
+04, 11)
+          </p>
+        </td> 
+        <td>
+          <p>
+Contains a chapter.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;appendix&gt;</tt></td>
+        <td>
+          <p>
+app<i>x</i>.xml, where
+<i>x</i> is the letter of the appendix (e.g. a, b,
+c)
+          </p>
+        </td>
+        <td>
+          <p>
+Contains an appendix.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;bibliography&gt;</tt></td>
+        <td>biblio.xml</td>
+        <td>
+          <p>
+A chapter-level section containing bibliographic citations.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;glossary&gt;</tt></td>
+        <td>gloss.xml</td>
+        <td>
+          <p>
+A chapter-level section containing glossary definitions.
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;part&gt;</tt></td>
+        <td>
+          <p>
+part<i>x</i>.xml, where
+<i>x</i> is the number of the part (e.g. 1, 2,
+3)
+          </p>
+        </td>
+        <td>
+          <p>
+Contains a part (the first page only).
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;colophon&gt;</tt></td>
+        <td>colo.xml</td>
+        <td>
+          <p>
+A section at the end of the book describing details of the
+book's production.
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <p>
+So a typical directory listing for a book would look something like
+this:
+    </p>
+
+    <div class="screen">
+<pre>$&gt; ls /work/java/java.qref/xml
+
+    appa.xml      ch01.xml      ch06.xml      part1.xml
+    appb.xml      ch02.xml      ch07.xml      part2.xml
+    appc.xml      ch03.xml      ch08.xml
+    book.xml      ch04.xml      colo.xml
+    ch00.xml      ch05.xml      copy.xml</pre>
+</div>
+
+    <p>
+There is one master file for the book (<i>book.xml</i>);
+three files for appendixes A, B, and C; one file for the preface;
+eight files for chapters 1-8; two files for parts I and II; and a file
+each for the copyright page and colophon. Note that the part files do
+not contain the chapters, even though the
+<tt>&lt;part&gt;</tt> elements logically contain
+<tt>&lt;chapter&gt;</tt>s.
+    </p> 
+  </div>
+
+
+
+
+  <a name="section-5"></a>
+<div class="section">
+    <h2 class="stitle">5. The Logical Structure of a Book</h2>
+
+    <p>
+Logical structure is defined by the book's
+markup once the files have been assembled, which is how the parser
+sees the document. The hierarchy of the book (chapters, sections,
+sub-sections, etc.) is constructed using elements called
+divisions. A division is a container that
+usually has a <tt>&lt;title&gt;</tt> and contains other
+divisions or block elements. We will look at top-level containers
+(<tt>&lt;book&gt;</tt>, <tt>&lt;chapter&gt;</tt>,
+<tt>&lt;preface&gt;</tt>,
+<tt>&lt;appendix&gt;</tt>, and
+<tt>&lt;part&gt;</tt>), and intermediate-level divisions
+(<tt>&lt;sect1&gt;</tt>, <tt>&lt;sect2&gt;</tt>,
+<tt>&lt;sect3&gt;</tt>, <tt>&lt;sect4&gt;</tt>,
+<tt>&lt;simplesect&gt;</tt>, and
+<tt>&lt;partinfo&gt;</tt>).
+    </p>
+
+    <a name="section-1.1"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.1. ID Attributes</h3>
+
+      <p>
+To facilitate cross references, you should use IDs in major
+hierarchical elements such as sections, chapters, and appendixes. 
+For example, a chapter might have an ID like this:
+      </p>
+
+      <div class="programlisting">
+<pre>&lt;chapter id="intro-chapter"&gt;</pre>
+</div>
+
+      <p> 
+Technically, the only requirement for an ID attribute is that it be
+unique, since in XML no two elements can have the same ID attribute.
+However, we ask that you use attribute names that are easy to read
+and indicate the type of element and its subject.  For example,
+<tt>id="shapes-section"</tt> is better than
+<tt>id="A6-4.2"</tt>.  
+      </p>
+
+      <p>
+When the book is in production, and the order of elements is
+solidified, we will sometimes run a program that inserts ID attributes
+where they were previously missing, or to replace those that make
+sense only to the author.  These generated IDs follow a pattern that
+helps production staff trace links to their targets, even if the
+target ID is missing or misspelled.  The following table lists these
+ID patterns:
+      </p>
+
+      <table border="1">
+        <h4 class="exampletitle">Table 1. Autogenerated ID Attributes</h4>
+        <tr>
+          <th>element</th>
+          <th>pattern</th>
+          <th>example</th>
+        </tr>
+
+        <tr>
+          <td>appendix</td>
+          <td><i>prefix</i>-APP-<i>letter</i></td>
+          <td>MONKEYS-APP-B</td>
+        </tr>
+
+        <tr>
+          <td>chapter</td>
+          <td><i>prefix</i>-CH-<i>num</i></td>
+          <td>MONKEYS-CH-3</td>
+        </tr>
+
+        <tr>
+          <td>preface</td>
+          <td><i>prefix</i>-PREF</td>
+          <td>MONKEYS-PREF</td>
+        </tr>
+
+        <tr>
+          <td>part</td>
+          <td><i>prefix</i>-PART-<i>num</i></td>
+          <td>MONKEYS-PART-2</td>
+        </tr>
+
+        <tr>
+          <td>sect1 (A-head or section)</td>
+          <td><i>prefix</i>-<i>CH/APP</i>-<i>num/letter</i>-SECT-<i>num</i></td>
+          <td>MONKEYS-CH-3-SECT-2</td>
+        </tr>
+
+        <tr>
+          <td>sect2 (B-head or sub section)</td>
+          <td><i>prefix</i>-<i>CH/APP</i>-<i>num/letter</i>-SECT-<i>num</i>.<i>num</i></td>
+          <td>MONKEYS-CH-3-SECT-2.4</td>
+        </tr>
+
+        <tr>
+          <td>figure</td>
+          <td><i>prefix</i>-<i>CH/APP</i>-<i>num/letter</i>-FIG-<i>num</i></td>
+          <td>MONKEYS-PREF-FIG-24</td>
+        </tr>
+
+        <tr>
+          <td>table</td>
+          <td><i>prefix</i>-<i>CH/APP</i>-<i>num/letter</i>-TABLE-<i>num</i></td>
+          <td>MONKEYS-APP-C-TABLE-11</td>
+        </tr>
+
+        <tr>
+          <td>example</td>
+          <td><i>prefix</i>-<i>CH/APP</i>-<i>num/letter</i>-EX-<i>num</i></td>
+          <td>MONKEYS-CH-12-EX-8</td>
+        </tr>
+
+        <tr>
+          <td>indexterm</td>
+          <td><i>prefix</i>-<i>terms</i></td>
+          <td>MONKEYS-perilous-furballs</td>
+        </tr>
+      </table>
+
+      <p>
+The <i>prefix</i> is a short code you pick to
+represent your book in <tt>id</tt>s. It's not required, but
+we use it to eliminate any confusion when handling files separately,
+since there is nothing within each file to indicate which book it came
+from.
+      </p>
+
+      <p>
+The number for any element type starts at 1.  For elements inside
+chapters or appendixes, the numbering is starts within the
+chapter/appendix and continues to increment until the very end. An
+exception is for sections, whose numbering resets to 1 with each
+parent section or chapter.
+      </p>
+    </div>
+
+
+    <a name="section-1.2"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.2. The master book file</h3>
+
+      <p>
+This file is the root of the whole book. Therefore, it contains the
+important XML declaration at the top, as well as a directive to
+declare the DTD. You would modify the second string value to the
+actual location of the DTD on your system. Next are entity
+declarations. These can only reside inside the square brackets. First
+are the entities that point to the files in your book. Then follow any
+special entities you want to define. The
+<tt>&lt;bookinfo&gt;</tt> element will later be filled with
+metadata, but for now it can be left empty. Finally, the entity
+references for book files are listed in order at the bottom.
+      </p>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. Contents of <i>book.xml</i>
+</h4>
+        <div class="programlisting">
+<pre>&lt;!DOCTYPE book PUBLIC 
+    "-//ORA//DBLITE 1.1//EN" "/usr/local/prod/sgml/dblite/new.dtd"
+[
+
+&lt;!-- Declare external entities --&gt;
+
+&lt;!ENTITY ch00     SYSTEM "ch00.xml"&gt;
+&lt;!ENTITY ch01     SYSTEM "ch01.xml"&gt;
+&lt;!ENTITY ch02     SYSTEM "ch02.xml"&gt;
+&lt;!ENTITY ch03     SYSTEM "ch03.xml"&gt;
+&lt;!ENTITY ch04     SYSTEM "ch04.xml"&gt;
+&lt;!ENTITY ch05     SYSTEM "ch05.xml"&gt;
+&lt;!ENTITY ch06     SYSTEM "ch06.xml"&gt;
+&lt;!ENTITY ch07     SYSTEM "ch07.xml"&gt;
+&lt;!ENTITY ch08     SYSTEM "ch08.xml"&gt;
+&lt;!ENTITY ch09     SYSTEM "ch09.xml"&gt;
+&lt;!ENTITY part1    SYSTEM "part1.xml"&gt;
+&lt;!ENTITY part2    SYSTEM "part2.xml"&gt;
+&lt;!ENTITY appa     SYSTEM "appa.xml"&gt;
+&lt;!ENTITY appb     SYSTEM "appb.xml"&gt;
+&lt;!ENTITY appc     SYSTEM "appc.xml"&gt;
+&lt;!ENTITY copy     SYSTEM "copy.xml"&gt;
+&lt;!ENTITY colo     SYSTEM "colo.xml"&gt;
+
+&lt;!-- Declare text entities --&gt;
+
+&lt;!ENTITY ascii    "&lt;acronym&gt;ASCII&lt;/acronym&gt;"&gt;
+&lt;!ENTITY html     "&lt;acronym&gt;HTML&lt;/acronym&gt;"&gt;
+&lt;!ENTITY sgml     "&lt;acronym&gt;SGML&lt;/acronym&gt;"&gt;
+&lt;!ENTITY xml      "&lt;acronym&gt;XML&lt;/acronym&gt;"&gt;
+&lt;!ENTITY w3url    "http://www.w3.org/"&gt;
+
+]&gt;
+
+&lt;book&gt;
+  &lt;title&gt;Learning &amp;xml;&lt;/title&gt;
+
+  &lt;bookinfo&gt;
+
+      &lt;!-- Marketing information and metadata, 
+              to be filled out in production. --&gt;
+
+  &lt;/bookinfo&gt;
+
+  &lt;!-- External entity refs --&gt;
+
+  &amp;ch00;
+  &amp;copy;
+  &amp;part1;
+  &amp;part2;
+  &amp;colo;
+
+&lt;/book&gt;</pre>
+</div>
+      </div>
+
+      
+        <p>
+In this example, none of the external entity references for chapters
+and appendixes appear in <i>book.xml</i>. We will see
+later that the chapters and appendixes are references only inside the
+files for the parts in which they belong, to maintain the proper
+hierarchy.
+        </p>
+      
+    </div>
+
+    <a name="section-1.3"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.3. The preface</h3>
+
+      <p>
+The preface is contained entirely within one file called
+<i>ch00.xml</i>.  It looks like this:
+      </p>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. Contents of <i>ch00.xml</i>
+</h4>
+        <div class="programlisting">
+<pre>&lt;preface id="XML-PREF"&gt;
+  &lt;title&gt;Preface&lt;/title&gt;
+
+          &lt;!-- preamble (no A-head) --&gt;
+
+  &lt;simplesect&gt;
+    &lt;para&gt;Welcome to &amp;xml;. Put on your geek hat, twirl the
+    propeller, and get ready for a wacky ride!&lt;/para&gt;
+
+    &lt;para&gt;Blah blah blah blah blah...&lt;/para&gt;
+  &lt;/simplesect&gt;
+
+          &lt;!-- the first section (A-head) --&gt;
+
+  &lt;sect1 id="XML-PREF-SECT-1"&gt;
+    &lt;title&gt;Why &amp;xml;?&lt;/title&gt;
+
+    &lt;para&gt;&amp;xml; is a markup language development kit.  Blah blah
+    blah...&lt;/para&gt;
+
+    &lt;para&gt;Blah blah blah blah blah...&lt;/para&gt;
+  &lt;/sect1&gt;
+
+          &lt;!-- the second section --&gt;
+
+  &lt;sect1 id="XML-PREF-SECT-2"&gt;
+    &lt;title&gt;What's inside&lt;/title&gt;
+
+    &lt;para&gt;&lt;xref linkend="XML-PART-1"/&gt; starts off with an
+    introduction to some basic &amp;xml; areas that any author ought to be
+    familiar with. Blah blah blah...&lt;/para&gt;
+  &lt;/sect1&gt;
+
+          &lt;!-- Other sections... --&gt;
+
+&lt;/preface&gt;</pre>
+</div>
+      </div>
+    </div>
+
+
+    <a name="section-1.4"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.4. Part Pages</h3>
+      <p>
+A <tt>&lt;part&gt;</tt> is an element that contains chapters
+or appendixes, dividing the book into major categories. At O'Reilly,
+we separate chapters into different files by convention, so the part
+is spread across several files. The front page of the part doesn't
+belong in any particular chapter, so it gets its own file:
+      </p>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. Contents of <i>part1.xml</i>
+</h4>
+        <div class="programlisting">
+<pre>&lt;part id="XML-PART-1"&gt;
+  &lt;title&gt;Basic Concepts&lt;/title&gt;
+
+  &lt;partintro&gt;
+    &lt;para&gt;In this part of the book, we focus on easy material.
+    Blah blah blah...&lt;/para&gt;
+  &lt;/partintro&gt;
+
+  &lt;!-- External entity references --&gt;
+
+  &amp;ch01;
+  &amp;ch02;
+  &amp;ch03;
+  &amp;ch04;
+
+&lt;/part&gt;</pre>
+</div>
+      </div>
+
+      <p>
+No entity declarations are necessary because they were made in the
+<i>book.xml</i> file and carried over. The
+<tt>&lt;partinfo&gt;</tt> is an intermediate-level division
+that contains all elements between the
+<tt>&lt;title&gt;</tt> and the chapter-level children of the
+<tt>&lt;part&gt;</tt>.
+      </p>
+    </div>
+
+
+    <a name="section-1.5"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.5. The Chapter</h3>
+
+      <p>
+Chapters follow the same basic pattern as a preface:
+      </p>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. Contents of ch01.xml</h4>
+        <div class="programlisting">
+<pre>&lt;chapter id="XML-CH-1"&gt;
+  &lt;title&gt;&amp;xml; Basics&lt;/title&gt;
+
+          &lt;!-- preamble (no A-head) --&gt;
+
+  &lt;simplesect&gt;
+    &lt;para&gt;In this chapter, we cover the
+    fundamentals of markup and document structure.  Blah blah blah...&lt;/para&gt;
+
+    &lt;para&gt;Blah blah blah blah blah...&lt;/para&gt;
+  &lt;/simplesect&gt;
+
+          &lt;!-- the first section (A-head) --&gt;
+
+  &lt;sect1 id="XML-CH-1-SECT-1"&gt;
+    &lt;title&gt;What is Markup?&lt;/title&gt;
+
+    &lt;para&gt;There's a lot of stuff you can
+    do with markup.  Blah blah blah...&lt;/para&gt;
+
+    &lt;para&gt;Blah blah blah blah blah...&lt;/para&gt;
+  &lt;/sect1&gt;
+
+          &lt;!-- the second section --&gt;
+
+  &lt;sect1 id="XML-CH-1-SECT-2"&gt;
+    &lt;title&gt;A historical perspective&lt;/title&gt;
+
+    &lt;para&gt;It's useful to see how &amp;xml;
+    fits in the long line of markup languages. Blah blah blah...&lt;/para&gt;
+
+          &lt;!-- a sub-section --&gt;
+
+    &lt;sect2 id="XML-CH-1-SECT-2.1&gt;
+      &lt;title&gt;The earliest days&lt;/title&gt;
+
+      &lt;para&gt;Back in the olden days of
+      digital text, work was very hard. We had to flip knife switches
+      to program computers and &amp;ascii;
+      was the only character set in town. Blah blah blah...&lt;/para&gt;
+
+      &lt;para&gt;Blah blah blah blah blah...&lt;/para&gt;
+
+          &lt;!-- a sub-sub-section --&gt;
+
+      &lt;sect3 id="XML-CH-1-SECT-2.1.1&gt;
+        &lt;title&gt;How I had to walk to work barefoot, uphill
+        both ways&lt;/title&gt;
+
+        &lt;para&gt;Blah blah blah blah blah...&lt;/para&gt;
+
+        &lt;figure id="XML-CH-1-FIG-1"&gt;
+          &lt;title&gt;Picture of my blistered feet&lt;/title&gt;
+          &lt;graphic fileref="figs/soretoes.gif"/&gt;
+        &lt;/figure&gt;
+
+      &lt;/sect3&gt;
+    &lt;/sect2&gt;
+  &lt;/sect1&gt;
+
+          &lt;!-- Other sections... --&gt;
+
+&lt;/chapter&gt;</pre>
+</div>
+      </div>
+
+      <p>
+The hierarchy of sections is important. A
+<tt>&lt;sect1&gt;</tt> contains
+<tt>&lt;sect2&gt;</tt>s, which can contain
+<tt>&lt;sect3&gt;</tt>s, etc. Also important: we now require
+that elements after the chapter <tt>&lt;title&gt;</tt>, but
+before the first <tt>&lt;sect1&gt;</tt>, be enclosed in a
+<tt>&lt;simplesect&gt;</tt>.
+      </p>
+
+      <p>
+Appendixes are pretty much the same as chapters, except that they are
+contained in an <tt>&lt;appendix&gt;</tt> element instead of
+a <tt>&lt;chapter&gt;</tt>, and the <tt>id</tt>
+format is different.
+      </p>
+    </div>
+
+
+    <a name="section-1.6"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.6. Glossary</h3>
+
+      <p>
+A glossary is a collection of definitions for terms used in the
+book. A <tt>&lt;glossary&gt;</tt> element surrounds the
+whole thing, and is usually at the same level as a chapter.  Each
+definition is contained in a <tt>&lt;glossentry&gt;</tt>
+element with one <tt>&lt;glossentry&gt;</tt>,
+containing the term being defined, and an optional (if there is a
+see-also, for example) <tt>&lt;glossdef&gt;</tt>, containing
+the definition. It can also contain any number of
+<tt>&lt;glosssee&gt;</tt> and
+<tt>&lt;glossseealso&gt;</tt> elements, which redirect the 
+reader's attention to another term. Stylistically, a
+<tt>&lt;glossentry&gt;</tt> should not contain both a
+<tt>&lt;glossdef&gt;</tt> and
+<tt>&lt;glosssee&gt;</tt>, but a
+<tt>&lt;glossdef&gt;</tt> and
+<tt>&lt;glossseealso&gt;</tt> are okay.
+      </p>
+
+      <p>
+A glossary looks like this:
+      </p>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. Contents of gloss.xml</h4>
+        <div class="programlisting">
+<pre>&lt;glossary id="the-glossary"&gt;
+
+  &lt;!-- SECTION: XML-SPECIFIC TERMS --&gt;
+
+  &lt;glossdiv&gt;
+    &lt;title&gt;XML Terms&lt;/title&gt;
+    &lt;glossentry&gt;
+      &lt;glossterm&gt;absolute location term&lt;/glossterm&gt;
+      &lt;glossdef&gt;
+        &lt;para&gt;A term that completely identifies the location of a
+          resource via XPointer. A unique ID attribute assigned to an
+          element can be used as an absolute location
+          term.&lt;/para&gt;
+      &lt;/glossdef&gt;
+      &lt;glossseealso&gt;relative location term&lt;/glossseealso&gt;
+      &lt;glossseealso&gt;XPath&lt;/glossseealso&gt;
+      &lt;glossseealso&gt;XPointer&lt;/glossseealso&gt;
+    &lt;/glossentry&gt;
+
+    &lt;glossentry&gt;
+      &lt;glossterm&gt;actuation&lt;/glossterm&gt;
+      &lt;glossdef&gt;
+        &lt;para&gt;How a link in a document is triggered. For example, a
+          link to an imported graphic automatically includes a graphic
+          in the document, and a link to a URL resource requires a
+          signal from a human.&lt;/para&gt;
+      &lt;/glossdef&gt;
+    &lt;/glossentry&gt;
+  &lt;/glossdiv&gt;
+
+  &lt;!-- SECTION: OTHER TERMS --&gt;
+
+  &lt;glossdiv&gt;
+    &lt;title&gt;Other Terms&lt;/title&gt;
+    &lt;glossentry&gt;
+      &lt;glossterm&gt;albatross&lt;glossterm&gt;
+      &lt;glosssee&gt;birds&lt;/glosssee&gt;
+    &lt;/glossentry&gt;
+  &lt;/glossdiv&gt;
+&lt;/glossary&gt;</pre>
+</div>
+      </div>
+    </div>
+
+
+    <a name="section-1.7"></a>
+<div class="ssection">
+      <h3 class="sstitle">5.7. Bibliography</h3>
+
+      <p>Coming soon...</p>
+
+    </div>
+  </div>
+
+
+
+
+  <a name="section-6"></a>
+<div class="section">
+    <h2 class="stitle">6. Block elements</h2>
+
+    <p>
+A block element is any element that starts a
+new line when formatted and contains inline elements. We have seen
+three already: <tt>&lt;para&gt;</tt>,
+<tt>&lt;title&gt;</tt>, and
+<tt>&lt;figure&gt;</tt>. Following is a table of block
+elements with examples:
+    </p>
+
+    <table border="1">
+      <h4 class="exampletitle">Table 1. Common block elements</h4>
+      <tr>
+        <th>element</th>
+        <th>purpose</th>
+        <th>example</th>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;para&gt;</tt></td>
+        <td>Paragraph.</td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;para&gt;The quick, brown fox jumped over the lazy 
+dog. The quick, brown fox jumped over the lazy dog. 
+The quick, brown fox jumped over the lazy dog.&lt;/para&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;title&gt;</tt></td>
+        <td>Title.</td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;title&gt;The Benefits of Laughter&lt;/title&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;remark&gt;</tt></td>
+        <td>
+          <p>
+Comment that is not meant for the audience, and outside of the
+flow of text. Usually, a communication between the author, editor, 
+reviewers, copyeditors, etc.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;remark&gt;This section is too short
+and needs more examples. [Ellen]&lt;/remark&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;blockquote&gt;</tt></td>
+        <td>Quotation.</td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;blockquote&gt;
+  &lt;para&gt;"They who can give up essential 
+  liberty to purchase a little temporary 
+  safety, deserve neither liberty nor safety," 
+  spat Ben Franklin.&lt;/para&gt;
+  &lt;para&gt;"Yes," replied Mark Twain, "but
+  loyalty to petrified opinion never broke a 
+  chain or freed a human soul."&lt;/para&gt;
+&lt;/blockquote&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;itemizedlist&gt;</tt></td>
+        <td>
+<p>A list of items where order doesn't matter.</p>
+</td>
+        <td>
+<div class="programlisting">
+<pre>&lt;itemizedlist&gt;
+  &lt;listitem&gt;&lt;para&gt;dogsled&lt;/para&gt;&lt;/listitem&gt;
+  &lt;listitem&gt;&lt;para&gt;hang-glider&lt;/para&gt;&lt;/listitem&gt;
+  &lt;listitem&gt;&lt;para&gt;roller blades&lt;/para&gt;&lt;/listitem&gt;
+&lt;/itemizedlist&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;orderedlist&gt;</tt></td>
+        <td>
+          <p>
+A list of items where order is important.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;orderedlist&gt;
+  &lt;listitem&gt;&lt;para&gt;Get a bowl.&lt;/para&gt;&lt;/listitem&gt;
+  &lt;listitem&gt;&lt;para&gt;Pour the cereal.&lt;/para&gt;&lt;/listitem&gt;
+  &lt;listitem&gt;&lt;para&gt;Add the milk.&lt;/para&gt;&lt;/listitem&gt;
+  &lt;listitem&gt;&lt;para&gt;Eat.&lt;/para&gt;&lt;/listitem&gt;
+&lt;/orderedlist&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;variablelist&gt;</tt></td>
+        <td>
+          <p>
+A list that contains terms and their definitions.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;variablelist&gt;
+  &lt;varlistentry&gt;&lt;term&gt;Snickers&lt;/term&gt;
+  &lt;listitem&gt;&lt;para&gt;Peanuts in nougat
+    covered in chocolate.&lt;/para&gt;&lt;/listitem&gt;&lt;/varlistentry&gt; 
+  &lt;varlistentry&gt;&lt;term&gt;Payday&lt;/term&gt;
+  &lt;listitem&gt;&lt;para&gt;A peanut cluster cemented with caramel and 
+    delicious sticky stuff.&lt;/para&gt;&lt;/listitem&gt;&lt;/varlistentry&gt; 
+&lt;/variablelist&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;programlisting&gt;</tt></td>
+        <td>
+          <p>
+A piece of computer code or example markup where whitespace and
+other formatting must be preserved.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;programlisting&gt;public void init(ServletConfig config) 
+                                     throws ServletException {
+  super.init(config);
+  String greeting = getInitParameter("greeting");
+}&lt;/programlisting&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;screen&gt;</tt></td>
+        <td>
+          <p>
+A representation of data displayed on a computer
+screen. (Whitespace and other formatting are preserved.)
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;screen&gt;&amp;gt; ls -l
+total 6860
+-r--r--r-- 1 eray   ora  2570 Mar 27 19:38 BOOKFILES
+-rw-rw-r-- 1 eray   ora 13283 Mar 27 19:38 BOOKIDS
+-rw-rw-r-- 1 sierra ora  2692 Mar 28 14:43 Makefile
+drwxrwxr-x 2 jwizda ora   512 Aug 10 14:22 RCS/
+-rw-rw-r-- 1 jwizda ora    39 Jul 26 17:39 README&lt;/screen&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;literallayout&gt;</tt></td>
+        <td>
+          <p>
+Traditional text with special linebreaks to be preserved.
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>&lt;literallayout&gt;to be yourself, in a world that 
+     tries,           night and day,       to make you 
+just like everybody else, is to fight 
+ the greatest battle there ever is 
+ to fight,                and never stop fighting   
+   e. e. cummings&lt;/literallayout&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;figure&gt;</tt></td>
+        <td>
+          <p>
+A graphic with a title.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;figure id="FOO-APP-E-FIG-19"&gt;
+  &lt;title&gt;The garden variety eggplant&lt;/title&gt;
+  &lt;graphic fileref="figs/eggplant.eps"/&gt;
+&lt;/figure&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;example&gt;</tt></td>
+        <td>
+          <p>Anything that serves as an example and requires a
+title. (Use an &lt;informalexample&gt; if you don't need a
+title.)
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>&lt;example id="BAZ-CH-14-EX-5"&gt;
+  &lt;title&gt;Contents of the file 
+    &lt;filename&gt;blather.cfg&lt;/filename&gt;&lt;/title&gt;
+  &lt;programlisting&gt;CATS	= -c/usr/local/prod/sgml/CATALOG
+DSLCAT	= -c/usr/local/sp/dsssl/catalog
+DECL	= /usr/local/sp/pubtext/xml.dcl
+SRCHURL = xsrch.htm
+STYLE	= dbwrap.dsl
+VALOPTS	= -sv -wxml&lt;/programlisting&gt;
+&lt;/example&gt;</pre>
+</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+
+
+  <a name="section-7"></a>
+<div class="section">
+    <h2 class="stitle">7. Inline elements</h2>
+
+    <p>
+In contrast to block elements, inline elements
+do not force a line break, but coexist peacefully with their siblings
+inside a block element. There are two basic types: those that contain
+data, and those that don't. The first group is used to label one or
+more words as a special kind of object, or deserving of special
+processing. Those in the second group function as markers in the text,
+anchoring a cross reference or marking some other kind of positional
+data. The following table lists inline elements and their
+function.
+    </p>
+
+    <table border="1">
+      <h4 class="exampletitle">Table 1. Inline Elements</h4>
+      <tr>
+        <th>element</th>
+        <th>purpose</th>
+        <th>example</th>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;abbrev&gt;</tt></td>
+        <td>An abbreviated term.</td>
+        <td>
+          <div class="programlisting">
+<pre>She's in &lt;abbrev&gt;bldg&lt;/abbrev 42.&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;accel&gt;</tt></td>
+        <td>A shortcut.</td>
+        <td>
+          <div class="programlisting">
+<pre>Type &lt;accel&gt;Ctl-s&lt;/accel&gt; to search for
+a term.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;acronym&gt;</tt></td>
+        <td>
+          <p>
+Mark text as being an acronym.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;acronym&gt;ASCII&lt;/acronym&gt;</pre>
+</div>
+        </td> 
+      </tr>
+
+      <tr>
+        <td><tt>&lt;action&gt;</tt></td>
+        <td>
+          <p>
+A user interface action like a mouse click.
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>Click &lt;action&gt;mouse
+button-3&lt;/action&gt; for a pop-up menu.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;application&gt;</tt></td>
+        <td>
+          <p>
+The name of a computer software program.</p>
+</td>
+        <td>
+          <div class="programlisting">
+<pre>We can convert any document written in
+&lt;application&lt;Microsoft Word&lt;/application&gt;.</pre>
+</div>
+        </td> 
+      </tr>
+
+      <tr>
+        <td><tt>&lt;citation&gt;</tt></td>
+        <td>
+          <p>
+The source of a quote or piece of information.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;citation&gt;Bill Gates&lt;/citation&gt; 
+once said &lt;quote&gt;256 kB of RAM ought to be good enough
+for anybody.&lt;/quote&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;citetitle&gt;</tt></td>
+        <td>
+          <p>
+The name of a book or article.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;citetitle&gt;The Hobbit&lt;/citetitle&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;classname&gt;</tt></td>
+        <td>
+          <p>
+An identifier for a class in some programming
+language.
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>The &lt;classname&gt;string&lt;/class&gt;
+class has six public methods.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;classref&gt;</tt></td>
+        <td>
+          <p>
+A cross reference to a class, with special formatting such as
+displaying the class name. (Used mainly in Java books.)
+          </p>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;command&gt;</tt></td>
+        <td>
+          <p>
+Any command one would type in a computer terminal.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>To print the file to screen, use the 
+&lt;command&gt;lpr&lt;/command&gt; command.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;computeroutput&gt;</tt></td>
+        <td>
+          <p>
+Text that would be output by a computer program.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>When we run the script we get the result
+&lt;computeroutput&gt;file not found&lt;/computeroutput&gt;.</pre>
+</div>
+        </td> 
+      </tr>
+
+      <tr>
+        <td><tt>&lt;email&gt;</tt></td>
+        <td>
+          <p>
+An email address. (Note that there may be some conflict
+with the &lt;systemitem&gt; element.)
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>Send questions to
+&lt;email&gt;tools@oreilly.com&lt;/email&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;emphasis&gt;</tt></td>
+        <td>
+          <p>
+Give special emphasis to a word or phrase. Usually this
+formats as italic, but default formatting can be overridden with a
+<tt>role</tt> attribute such as
+<tt>role="bold"</tt>.
+          </p>
+        </td>
+        <td>
+<div class="programlisting">
+<pre>This step is &lt;emphasis&gt;very&lt;/emphasis&gt; important</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;envar&gt;</tt></td>
+        <td>An environment variable.</td>
+        <td>
+          <div class="programlisting">
+<pre>Set the variable &lt;envar&gt;EDITOR&lt;/envar&gt;
+to &lt;literal&gt;emacs&lt;/literal&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;filename&gt;</tt></td>
+        <td>Tags a word as being a filename.</td>
+        <td>
+          <div class="programlisting">
+<pre>Be sure to read
+&lt;filename&gt;readme.txt&lt;/filename&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;firstterm&gt;</tt></td>
+        <td>
+          <p>
+The first time an important term is mentioned.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>A &lt;firstterm&gt;squib&lt;/firstterm&gt;
+is someone born to a wizard family but who can't do magic.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;foreignphrase&gt;</tt></td>
+        <td>Words from another language.</td>
+        <td>
+          <div class="programlisting">
+<pre>There's nothing wrong with borrowing code 
+&lt;foreignphrase&gt;per se&lt;foreignphrase&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;footnoteref&gt;</tt></td>
+        <td>
+          <p>
+A marker that imports a <tt>&lt;footnote&gt;</tt>
+where there would otherwise be a redundant footnote
+definition.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The Eiffel Tower is huge&lt;footnote id="ABC-CH-4-FN-2"&gt;
+&lt;para&gt;Although, compared to a breadbox, any
+building is huge.&lt;/para&gt;&lt;/footnote&gt;. So is a redwood 
+tree&lt;footnoteref linkend="ABC-CH-4-FN-2"&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;graphic&gt;</tt></td>
+        <td>
+          <p>
+An icon or picture to be imported into the document.
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>Examples marked with a disk icon 
+&lt;graphic fileref="figs/icon.eps"&gt; are on
+the companion disk.</pre>
+</div>
+        </td> 
+      </tr>
+
+      <tr>
+        <td><tt>&lt;function&gt;</tt></td>
+        <td>
+          <p>
+The name of a function, method, or subroutine.
+          </p>
+        </td>
+        <td>
+<div class="programlisting">
+<pre>The function
+&lt;function&gt;alpha_sort&lt;/function&gt; can be made more
+efficient.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;guibutton&gt;</tt></td>
+        <td>
+          <p>
+A clickable control (e.g. a button) in a graphical interface.
+          </p>
+        </td>
+        <td>
+<div class="programlisting">
+<pre>Select the
+&lt;guibutton&gt;print&lt;guibutton&gt; button to get 
+hardcopy.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;guimenu&gt;</tt></td>
+        <td>
+          <p>
+A menu or submenu in a graphical interface.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>Close the program by selecting 
+&lt;guimenuitem&gt;exit&lt;/guimenuitem&gt; from the
+&lt;guimenu&gt;file&lt;/guimenu&gt; menu.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;guimenuitem&gt;</tt></td>
+        <td>
+          <p>
+An item in a menu or submenu in a graphical interface.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>Close the program by selecting 
+&lt;guimenuitem&gt;exit&lt;/guimenuitem&gt; from the
+&lt;guimenu&gt;file&lt;/guimenu&gt; menu.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;keycap&gt;</tt></td>
+        <td>
+          <p>
+A character to be represented as a key on a keyboard.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>Pressing &lt;keycap&gt;s&lt;/keycap&gt;
+will save the buffer to a file.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;keysym&gt;</tt></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;lineannotation&gt;</tt></td>
+        <td>
+          <p>
+An annotation appearing inside a <tt>&lt;screen&gt;</tt> or
+<tt>&lt;programlisting&gt;</tt>.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>for( int $i=0; $i&lt;10; $i++ ) {
+  &lt;lineannotation&gt;body of loop&lt;/lineannotation&gt;
+}</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;literal&gt;</tt></td>
+        <td>
+          <p>
+A token or string that is part of a computer program or
+script, which should be formatted in constant width.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>If the parameter's value is 
+&lt;literal&gt;YELLOW&lt;/literal&gt; your subroutine will
+explode.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;option&gt;</tt></td>
+        <td>
+          <p>
+A code to apply an optional parameter to a command,
+program, or function.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The command synopsis is 
+&lt;command&gt;rm &lt;option&gt;-i&lt;/option&gt; *.txt&lt;/command&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;optional&gt;</tt></td>
+        <td>
+          <p>
+Designates some text as an optional item.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The stylesheet specification is optional: 
+&lt;command&gt;formatfiles &lt;optional&gt;stylesheet&lt;/optional&gt; 
+in.xml&lt;command&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;parameter&gt;</tt></td>
+        <td>
+          <p>
+The name of a parameter for a function, method, or subroutine.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>In the &lt;function&gt;factorial&lt;/function&gt;
+function, there is only one parameter,
+&lt;parameter&gt;num&lt;/parameter&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;prompt&gt;</tt></td>
+        <td>
+          <p>
+            A word meant to appear as a prompt in a computer display.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>At the prompt 
+&lt;prompt&gt;Data?&lt;/prompt&gt;, type in your age in
+hexadecimal.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;quote&gt;</tt></td>
+        <td>
+          <p>
+Quoted text.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>Our motto is 
+&lt;foreignphrase&gt;Caveat Emptor&lt;/foreignphrase&gt;, 
+which means &lt;quote&gt;we hope you like it!&lt;/quote&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;replaceable&gt;</tt></td>
+        <td>
+          <p>
+Marks the data as a replaceable item, a value to be filled in.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>...where &lt;replaceable&gt;w&lt;/replaceable&gt;
+is the width.</pre>
+</div>
+        </td> 
+      </tr>
+
+      <tr>
+        <td><tt>&lt;returnvalue&gt;</tt></td>
+        <td>
+          <p>
+Data that has been returned from a program or function.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The &lt;function&gt;reverse_string&lt;/function&gt;
+gives the value &lt;returnvalue&gt;tesolcmoorb&lt;/returnvalue&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;sgmltag&gt;</tt></td>
+        <td>
+          <p>
+The name of an SGML or XML element.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The &lt;sgmltag&gt;P&lt;/sgmltag&gt;
+element adds space above and below.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;structfield&gt;</tt></td>
+        <td>
+          <p>
+The name of a field in a data structure.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>&lt;structfield&gt;name&lt;/structfield&gt;
+is a fixed array of bytes.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;structname&gt;</tt></td>
+        <td>
+          <p>
+The name of a data structure.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>To add a record, we must create a new 
+&lt;structname&gt;PartStruct&lt;/structname&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;subscript&gt;</tt></td>
+        <td>
+          <p>
+Text that should be rendered in subscript (smaller and
+below the baseline).
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The molecule
+H&lt;subscript&gt;2&lt;/subscript&gt;O has many strange
+properties.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;superscript&gt;</tt></td>
+        <td>
+          <p>
+Text that should be rendered in superscript (smaller and
+above the midline).
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>Einstein revolutionized physics with 
+the simple equation E=MC&lt;superscript&gt;2&lt;/superscript&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;symbol&gt;</tt></td>
+        <td>
+          <p>A special symbol or token.</p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The mutant gene &lt;symbol&gt;BLu-6&lt;/symbol&gt;
+is responsible for Smurfs' vivid azure hue.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;systemitem&gt;</tt></td>
+        <td>
+          <p>
+Designates data as a special item having to do with
+computers or networks. Most common use is to encode a
+URL.
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>&lt;systemitem class="url"&gt;http://www.oreilly.com&lt;/systemitem&gt;</pre>
+</div>
+        </td> 
+      </tr>
+
+      <tr>
+        <td><tt>&lt;type&gt;</tt></td>
+        <td>
+          <p>A variable or constant data type.</p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>The function returns a value of type 
+&lt;type&gt;boolean&lt;/type&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;userinput&gt;</tt></td>
+        <td>
+          <p>
+Text entered by a human into a computer terminal.
+          </p>
+        </td> 
+        <td>
+          <div class="programlisting">
+<pre>At the command line, type
+&lt;userinput&gt;telnet bubba.beerguzzlin.org&lt;/userinput&gt;</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;wordasword&gt;</tt></td>
+        <td>
+          <p>A word used as an example.</p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>By &lt;wordasword&gt;snake&lt;/wordasword&gt;, 
+I mean &lt;quote&gt;dirty, stinkin' varmint&lt;/quote&gt;.</pre>
+</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><tt>&lt;xref&gt;</tt></td>
+        <td>
+          <p>
+A cross reference to some element in the book. The
+required <tt>linkend</tt> attribute contains the
+<tt>id</tt> of the element being referenced.
+          </p>
+        </td>
+        <td>
+          <div class="programlisting">
+<pre>For more information, refer to
+&lt;xref linkend="XYZ-CH-4"/&gt;.</pre>
+</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+
+
+  <a name="section-8"></a>
+<div class="section">
+    <h2 class="stitle">8. Tables</h2>
+
+    <p>
+The tables used in DocBook Lite are a slimmed-down version of the CALS
+table model, a popular markup format for tables. There are two outer
+elements for tables: <tt>&lt;table&gt;</tt>, which requires
+a title, and <tt>&lt;informaltable&gt;</tt>, which does not.
+These elements contain a <tt>&lt;tgroup&gt;</tt> element
+with an attribute <tt>cols</tt> that specifies the number of
+columns in the table.
+    </p>
+
+    <p>
+The table has a head, body, and foot, contained in
+<tt>&lt;thead&gt;</tt>, <tt>&lt;tbody&gt;</tt>,
+and <tt>&lt;tfoot&gt;</tt> elements, respectively. Only the
+body is required. The head and body contain a set of rows, each a
+<tt>&lt;row&gt;</tt> element. The foot contains text that
+will appear just below the table, usually within the lines.
+    </p>
+
+    <p>
+A <tt>&lt;row&gt;</tt> element contains some number of
+<tt>&lt;entry&gt;</tt>s, each corresponding to a table
+cell. The entry may either contain mixed content text, or a block
+element such as a paragraph. The following is an example of a simple
+titled table:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;table id="ABC-CH-1-TABLE-5"&gt;
+  &lt;title&gt;States and Their Capitals&lt;/title&gt;
+  &lt;tgroup cols="2"&gt;
+    &lt;thead&gt;
+      &lt;row&gt;
+        &lt;entry&gt;State&lt;/entry&gt;
+        &lt;entry&gt;Capital&lt;/entry&gt;
+      &lt;/row&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;row&gt;
+        &lt;entry&gt;New York&lt;/entry&gt;
+        &lt;entry&gt;Albany&lt;/entry&gt;
+      &lt;/row&gt;
+      &lt;row&gt;
+        &lt;entry&gt;Massachusetts&lt;/entry&gt;
+        &lt;entry&gt;Boston&lt;/entry&gt;
+      &lt;/row&gt;
+      &lt;row&gt;
+        &lt;entry&gt;Hawaii&lt;/entry&gt;
+        &lt;entry&gt;Honalulu&lt;/entry&gt;
+      &lt;/row&gt;
+    &lt;/tbody&gt;
+  &lt;/tgroup&gt;
+&lt;/table&gt;</pre>
+</div>
+
+    <p>
+To span a row, add to the <tt>&lt;entry&gt;</tt>
+element an attribute <tt>morerows="N"</tt>, where N is the
+number of rows to span beyond the current row. For example, to make an
+entry that spans 3 rows, use <tt>morerows="2"</tt>. For each
+of the following rows that are spanned, leave out an
+<tt>&lt;entry&gt;</tt> element, since the spanning cell will
+inhabit that space.
+    </p>
+
+    <p>
+To span columns, it's a bit more complicated (we didn't try to fix the
+weird CALS way of doing it). First, you have to name the columns.
+Second, you need to create named spans. Finally, you reference the
+spans within the table cells. Here's an example:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;informaltable&gt;
+  &lt;tgroup cols="3"&gt;
+    &lt;colspec colnum="1" colname="c1"&gt;
+    &lt;colspec colnum="3" colname="c3"&gt;
+    &lt;spanspec spanname="span13" namest="c1" nameend="c3"&gt;
+    &lt;tbody&gt;
+      &lt;row&gt;
+        &lt;entry&gt;A&lt;/entry&gt;
+        &lt;entry&gt;B&lt;/entry&gt;
+        &lt;entry&gt;C&lt;/entry&gt;
+      &lt;/row&gt;
+      &lt;row&gt;
+        &lt;entry colspan="span13" &gt;D&lt;/entry&gt;
+      &lt;/row&gt;
+      &lt;row&gt;
+        &lt;entry&gt;E&lt;/entry&gt;
+        &lt;entry&gt;F&lt;/entry&gt;
+        &lt;entry&gt;G&lt;/entry&gt;
+      &lt;/row&gt;
+    &lt;/tbody&gt;
+  &lt;/tgroup&gt;
+&lt;/table&gt;</pre>
+</div>
+  </div>
+
+
+
+
+  <a name="section-9"></a>
+<div class="section">
+    <h2 class="stitle">9. Indexterms</h2>
+
+    <p>
+We generate indexes for books automatically, with the data originating
+in <tt>&lt;indexterm&gt;</tt> elements interspersed
+throughout the book. An indexterm holds all the information necessary
+for a single entry in an index, including the primary, secondary, and
+tertiary terms, references to other entries (see, see also), how to
+sort the term, and whether it should cross a range of pages.  An
+indexterm typically looks like this:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;indexterm id="ixt-blather-frobozz-zmic"&gt;
+  &lt;primary&gt;blather&lt;/primary&gt;
+  &lt;secondary&gt;frobozz&lt;/secondary&gt;
+  &lt;tertiary sortas="@"&gt;zmic&lt;/tertiary&gt;
+  &lt;seealso&gt;fuj&lt;/seealso&gt;
+&lt;/indexterm&gt;</pre>
+</div>
+
+    <p>
+The term in this example is a tertiary-level term "zmic", which appears
+under the secondary term "frobozz", under the primary term
+"blather". It will be sorted as if it began with the character "@",
+which will pull it to the top of the secondary term's listing. The
+term will display "see also fuj".  Here's how the final index entry
+might look in an index:
+    </p>
+
+    <div class="screen">
+<pre>blaam 24-26
+blather
+  abba 12, 15
+  crufty 99-105, 411
+  frobozz 75
+    zmic 10 (see also fuj)          &lt;-- the term
+    asca 19, 22
+    gumm 82-88
+    splat 470
+    zingle (see grooby)
+  gurgle 99, 111
+bmm (see kluk)
+bravy
+  scoot 45-48
+  yodle 91</pre>
+</div>
+
+    <p>
+Indexterms can appear inside a wide variety of elements, but they
+typically appear inside paragraphs, lists, tables, or sections.  They
+are forbidden from appearing in titles, and should only rarely appear
+inside program listings.
+    </p>
+
+    <p>
+To create a term that spans a segment of text, you use two
+<tt>&lt;indexterm&gt;</tt> elements linked by an
+<tt>id</tt>-<tt>startref</tt> 
+attribute pair and <tt>class</tt> attributes. For
+example:
+    </p>
+
+    <div class="programlisting">
+<pre>&lt;!-- start of the range --&gt;
+&lt;indexterm id="idx-fooby" class="startofrange"&gt;
+  &lt;primary&gt;fooby&lt;/primary&gt;
+&lt;/indexterm&gt;
+
+&lt;!-- content to be indexed --&gt;
+&lt;sect1&gt;
+  &lt;title&gt;Programming Your Fooby&lt;/title&gt;
+  &lt;para&gt;Blah blah blah...&lt;/para&gt;
+  ...
+&lt;/sect1&gt;
+
+&lt;!-- end of the range --&gt;
+&lt;indexterm class="endofrange" startref="idx-fooby"/&gt;</pre>
+</div>
+  </div>
+
+
+
+
+  <a name="section-10"></a>
+<div class="section">
+    <h2 class="stitle">10. Out-of-flow Text</h2>
+
+    <p>
+Out-of-flow text is handled in several ways. Sidebars are for short
+discussions that don't belong in the general flow, aren't suitable for
+their own section, and can easily be encapsulated as a one-page
+aside. Admonitions (e.g. warnings, cautions, tips, etc.) are like
+sidebars but attract attention to themselves with more dramatic
+formatting and often an icon. Footnotes are shorter notes that have
+only a weak connection to the text and should be removed from view to
+the bottom of the page.
+    </p>
+
+    <a name="section-1.1"></a>
+<div class="ssection">
+      <h3 class="sstitle">10.1. Sidebars</h3>
+
+      <p>
+A sidebar functions like a section, but cannot contain sections within
+itself. Any other block content is allowed. They can appear at any
+level in the document underneath the chapter level. For example:
+      </p>
+
+      <div class="programlisting">
+<pre>&lt;section&gt;
+  &lt;title&gt;Bathyscaph Care and Maintenance&lt;/title&gt;
+  &lt;para&gt;The hull of your submersible chamber is warranted
+  for seven years against seal ruptures and corrosion of fittings.
+  With proper care, you can extend the usable lifetime 
+  considerably. Barnacles are the most common cause of
+  metal fatigue and gasket deterioration (see the sidebar for
+  tips in removing these pests).&lt;/para&gt;
+
+  &lt;sidebar&gt;
+    &lt;title&gt;Scraping Barnacles&lt;/title&gt;
+    &lt;para&gt;You'll need a wire brush and a solution of equal parts
+    vinegar and water. Pour the solution over the barnacles and let it
+    sit for several hours. When the barnacle shells are soft, scrub
+    them vigorously with the brush...&lt;/para&gt;
+    ...
+  &lt;/sidebar&gt;
+  ...
+&lt;/sect2&gt;</pre>
+</div>  
+    </div>
+
+
+    <a name="section-1.2"></a>
+<div class="ssection">
+      <h3 class="sstitle">10.2. Admonitions</h3>
+
+      <p>
+To catch a reader's attention about a serious consideration, use an
+admonition. DocBook provides a whole bunch: caution, important, note, tip,
+and warning. In the absence of a title, either a default will be used
+(e.g. "WARNING!") or an icon will catch the reader's attention. Here's
+an example:
+      </p>
+
+      <div class="programlisting">
+<pre>&lt;caution&gt;
+  &lt;para&gt;Make sure your craft has reached the surface
+  before unsealing the hatch. Otherwise, high-pressure 
+  water will flood the compartment.&lt;/para&gt;
+&lt;/caution&gt;</pre>
+</div>
+
+      <p>
+An admonition can appear in any section but cannot contain
+sections. Try to keep its content simple, using only paragraphs and
+lists if possible.
+      </p>
+    </div>
+
+
+    <a name="section-1.3"></a>
+<div class="ssection">
+      <h3 class="sstitle">10.3. Footnotes</h3>
+
+      <p>
+A <tt>&lt;footnote&gt;</tt> is coded as a block that
+interrupts a paragraph. It can look a little odd:
+      </p>
+
+      <div class="programlisting">
+<pre>&lt;para&gt;When on Mars, be sure to 
+visit the great volcano Olympus Mons&lt;footnote&gt;
+  &lt;para&gt;It happens to be the tallest mountain in the Solar
+  System, so bring your best hiking shoes.&lt;/para&gt;
+&lt;/footnote&gt;...</pre>
+</div>
+
+      <p>
+When the same footnote applies to different places in a document, you
+can use a <tt>&lt;footnoteref&gt;</tt> element to reference
+it. The following example shows how:
+      </p>
+
+      <div class="programlisting">
+<pre>&lt;table&gt;
+  &lt;tgroup cols="2"&gt;
+    &lt;row&gt;
+      &lt;entry&gt;apple&lt;/entry&gt;
+      &lt;entry&gt;red&lt;/entry&gt;
+    &lt;/row&gt;
+    &lt;row&gt;
+      &lt;entry&gt;banana&lt;footnote id="warning"&gt;
+        &lt;para&gt;Peel it first!&lt;/para&gt;
+        &lt;/footnote&gt;&lt;/entry&gt;
+      &lt;entry&gt;yellow&lt;/entry&gt;
+    &lt;/row&gt;
+    &lt;row&gt;
+      &lt;entry&gt;grape&lt;/entry&gt;
+      &lt;entry&gt;purple&lt;/entry&gt;
+    &lt;/row&gt;
+    &lt;row&gt;
+      &lt;entry&gt;orange&lt;footnoteref 
+        linkend="warning"/&gt;&lt;/entry&gt;
+      &lt;entry&gt;orange&lt;/entry&gt;
+    &lt;/row&gt;
+  &lt;/tgroup&gt;
+&lt;/table&gt;</pre>
+</div>
+    </div>
+
+
+    <a name="section-1.4"></a>
+<div class="ssection">
+      <h3 class="sstitle">10.4. Endnotes</h3>
+
+      <p>
+In some cases, you want a footnote's text to appear in another section
+or chapter. The <tt>&lt;endnote&gt;</tt> element serves that
+function. It also stores the body of the note elsewhere. For example:
+      </p>
+
+      <div class="programlisting">
+<pre>&lt;para&gt;We suspect that lightning often appears in hues other 
+  than white. This hypothesis is supported by
+  Dr. Indigo Riceway&lt;endnote linkend="note-riceway"/&gt;.&lt;/para&gt;
+...
+&lt;endnote id="note-riceway"&gt;
+  &lt;para&gt;Riceway wrote about green lightning in his
+  book...&lt;/para&gt;
+&lt;/endnote&gt;</pre>
+</div>
+    </div>
+  </div>
+
+
+
+
+  <a name="section-11"></a>
+<div class="section">
+    <h2 class="stitle">11. Reference Pages</h2>
+
+    <p>
+One of the more complex block elements is
+<tt>&lt;refentry&gt;</tt>. It is used to encode a compact set of
+information about a command, application, or other technical
+entity. There are several different ways to format a reference entry,
+so we provide a <tt>role</tt> attribute to let you choose
+the one that best fits your book.
+    </p>
+
+    <p>
+There are three main types supported:
+    </p>
+
+    <ul>
+      <li>
+        <p>
+Default
+        </p>
+      </li>
+      <li>
+        <p>
+Nutshell
+        </p>
+      </li>
+      <li>
+        <p>
+Java
+        </p>
+      </li>
+    </ul>
+
+
+    <a name="section-1.1"></a>
+<div class="ssection">
+      <h3 class="sstitle">11.1. Default Reference Pages</h3>
+
+      <p>
+Here are three examples of common reference pages used in DocBook Lite:
+      </p> 
+
+      <div class="figure">
+        <h4 class="figuretitle">Figure 1. 
+A refentry from <i>Samba</i>, Appendix C
+        </h4>
+        <image src="figs/ref1.gif"></image>
+      </div>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. How the above refentry is coded</h4>
+        <div class="programlisting">
+<pre>&lt;refentry&gt;
+ &lt;refmeta&gt;
+  &lt;refmiscinfo class="allowable values"&gt;YES, NO&lt;/refmiscinfo&gt;
+  &lt;refmiscinfo class="default"&gt;NO&lt;/refmiscinfo&gt;
+ &lt;/refmeta&gt;
+ &lt;refnamediv&gt;
+  &lt;refname&gt;alternate permissions = boolean&lt;/refname&gt;
+ &lt;/refnamediv&gt;
+ &lt;refsynopsisdiv&gt;
+  &lt;para&gt;Obsolete. Has no effect in Samba 2. Files will be shown as
+   read-only if the owner can't write them. In Samba 1.9 and
+   earlier, setting this option would set the DOS filesystem read-only
+   attribute on any file the user couldn't read. This in turn
+   required the &lt;literal&gt;delete readonly&lt;/literal&gt; 
+   option.&lt;/para&gt;
+  &lt;/refsynopsisdiv&gt;
+&lt;/refentry&gt;</pre>
+</div>
+      </div>
+
+      <div class="figure">
+        <h4 class="figuretitle">Figure 2. 
+A refentry from <i>MySQL and mSQL</i>, Chapter 21
+        </h4>
+        <image src="figs/ref2.gif"></image>
+      </div>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 2. How the above refentry is coded</h4>
+        <div class="programlisting">
+<pre>&lt;refentry&gt;
+ &lt;refmeta&gt;
+  &lt;refentrytitle&gt;DBI::do&lt;/refentrytitle&gt;
+ &lt;/refmeta&gt;
+ &lt;refnamediv&gt;
+  &lt;refname&gt;DBI::do&lt;/refname&gt;
+ &lt;/refnamediv&gt;
+ &lt;refsynopsisdiv&gt;
+  &lt;synopsis&gt;$rows_affected  = $db-&amp;gt;do($statement);
+$rows_affected  = $db-&amp;gt;do($statement, \%unused);
+$rows_affected  = 
+    $db-&amp;gt;do($statement, \%unused, @bind_values);&lt;/synopsis&gt;
+  &lt;para&gt;&lt;literal&gt;DBI::do&lt;/literal&gt; directly performs a
+  non-&lt;literal&gt;SELECT&lt;/literal&gt; SQL statement and 
+  returns the number of rows affected by the statement. This is 
+  faster than a &lt;literal&gt;DBI::prepare/DBI::execute 
+  &lt;/literal&gt;pair which requires two function calls. The 
+  first argument is the SQL statement itself. The
+  second argument is unused in DBD::mSQL and DBD::mysql, 
+  but can hold a reference to a hash of attributes for other 
+  DBD modules. The final argument is an array of values used 
+  to replace `placeholders,' which are indicated with a
+  `?' in the statement. The values of the array are
+  substituted for the placeholders from left to right. As an
+  additional bonus, &lt;literal&gt;DBI::do&lt;/literal&gt; will 
+  automatically quote string values before substitution.&lt;/para&gt;
+ &lt;/refsynopsisdiv&gt;
+ &lt;refsect1&gt;
+  &lt;title&gt;Example&lt;/title&gt;
+  &lt;programlisting&gt;use DBI;
+my $db = DBI-&amp;gt;connect('DBI:mSQL:mydata',undef,undef);
+
+my $rows_affected = 
+  $db-&amp;gt;do("UPDATE mytable SET name='Joe' WHERE name='Bob'");
+print "$rows_affected Joe's were changed to Bob's\n";
+
+my $rows_affected2 = 
+  $db-&amp;gt;do("INSERT INTO mytable (name) VALUES (?)",
+				{}, ("Sheldon's Cycle"));
+# After quoting and substitution, the statement:
+# INSERT INTO mytable (name) VALUES ('Sheldon's Cycle')
+# was sent to the database server.&lt;/programlisting&gt;
+ &lt;/refsect1&gt;
+&lt;/refentry&gt;</pre>
+</div>
+      </div>
+
+      <div class="figure">
+        <h4 class="figuretitle">Figure 3. 
+A refentry from <i>Apache: The Definitive Guide</i>,
+Chapter 14
+        </h4>
+        <image src="figs/ref3.gif"></image>
+      </div>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 3. How the above refentry is coded</h4>
+        <div class="programlisting">
+<pre>&lt;refentry&gt;
+ &lt;refmeta&gt;
+  &lt;refentrytitle&gt;ap_pstrndup&lt;/refentrytitle&gt;
+ &lt;/refmeta&gt;
+ &lt;refnamediv&gt;
+  &lt;refname&gt;ap_pstrndup&lt;/refname&gt;
+  &lt;refpurpose&gt;duplicate a string in a pool with 
+    limited length&lt;/refpurpose&gt;
+ &lt;/refnamediv&gt;
+ &lt;refsynopsisdiv&gt;
+  &lt;synopsis&gt;
+    char *ap_pstrndup(pool *p, const char *s, int n)&lt;/synopsis&gt;
+  &lt;para&gt;Allocates &lt;literal&gt;n&lt;/literal&gt;+1 bytes 
+  of memory and copies up to &lt;literal&gt;n&lt;/literal&gt; 
+  characters from &lt;literal&gt;s&lt;/literal&gt;,
+  &lt;literal&gt;NULL&lt;/literal&gt;- terminating the result. 
+  The memory is destroyed when the pool is destroyed. Returns 
+  a pointer to the new block of memory, or 
+  &lt;literal&gt;NULL&lt;/literal&gt; if &lt;literal&gt;s&lt;/literal&gt;
+  is &lt;literal&gt;NULL&lt;/literal&gt;.&lt;/para&gt;
+ &lt;/refsynopsisdiv&gt;
+&lt;/refentry&gt;</pre>
+</div>
+      </div>
+    </div>
+
+
+    <a name="section-1.2"></a>
+<div class="ssection">
+      <h3 class="sstitle">11.2. Nutshell Type Reference Pages</h3>
+
+      <p>
+Nutshell books use a particular kind of reference structure that
+looks like this:
+      </p>
+
+      <div class="figure">
+        <h4 class="figuretitle">Figure 1. 
+A refentry from <i>Unix in a Nutshell</i>, Chapter 5
+        </h4>
+        <image src="figs/ref4.gif"></image>
+      </div>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. How the above refentry is coded</h4>
+        <div class="programlisting">
+<pre>&lt;nutlist longestterm="unseten"&gt;
+
+ &lt;nutentry&gt;&lt;term&gt;alias&lt;/term&gt;
+  &lt;nutsynopsis&gt;&lt;literal&gt;alias&lt;/literal&gt; 
+  [&lt;replaceable&gt;name&lt;/replaceable&gt; 
+  [&lt;replaceable&gt;command&lt;/replaceable&gt;]]&lt;/nutsynopsis&gt;
+  &lt;nutentrybody&gt;
+   &lt;para&gt;Assign &lt;emphasis&gt;name&lt;/emphasis&gt; 
+    as the shorthand name, or alias, for 
+    &lt;emphasis&gt;command&lt;/emphasis&gt;.  If
+    &lt;emphasis&gt;command&lt;/emphasis&gt; is omitted, print the 
+    alias for &lt;emphasis&gt;name&lt;/emphasis&gt;; 
+    if &lt;emphasis&gt;name&lt;/emphasis&gt; is also
+    omitted, print all aliases.  Aliases can be defined on the command
+    line, but they are more often stored in 
+    &lt;literal&gt;.cshrc&lt;/literal&gt;
+    so that they take effect after login.  (See [cross ref deleted]
+    earlier in this chapter.)  Alias definitions can reference
+    command-line arguments, much like the history list.  Use
+    &lt;literal&gt;\!*&lt;/literal&gt; to refer to all command-line
+    arguments, &lt;literal&gt;\!^&lt;/literal&gt; for the first argument,
+    &lt;literal&gt;\!$&lt;/literal&gt; for the last, etc.  An alias
+    &lt;emphasis&gt;name&lt;/emphasis&gt; can be any valid Unix 
+    command; however, you lose the original command's meaning unless 
+    you type &lt;emphasis&gt;\name&lt;/emphasis&gt;.  
+    See also &lt;emphasis
+    role="bold"&gt;unalias&lt;/emphasis&gt;.&lt;/para&gt;
+
+    &lt;refsect2&gt;&lt;title&gt;Examples&lt;/title&gt; 
+    &lt;para&gt;Set the size for &lt;literal&gt;xterm&lt;/literal&gt; 
+    windows under the X Window System:&lt;/para&gt;
+    &lt;programlisting&gt;alias R 'set noglob; eval `resize`; 
+      unset noglob'&lt;/programlisting&gt;
+    &lt;para&gt;Show aliases that contain the string
+     &lt;emphasis&gt;ls&lt;/emphasis&gt;:&lt;/para&gt;
+    &lt;programlisting&gt;alias | grep ls&lt;/programlisting&gt;
+    &lt;para&gt;Run &lt;literal&gt;nroff&lt;/literal&gt; 
+    on all command-line arguments:&lt;/para&gt;
+    &lt;programlisting&gt;alias ms 'nroff -ms \!*'&lt;/programlisting&gt;
+    &lt;para&gt;Copy the file that is named as the first argument:&lt;/para&gt;
+    &lt;programlisting&gt;alias back 'cp \!^ \!^.old'&lt;/programlisting&gt;
+    &lt;para&gt;Use the regular &lt;literal&gt;ls&lt;/literal&gt;, 
+    not its alias:&lt;/para&gt;
+    &lt;programlisting&gt;% &lt;userinput&gt;\ls
+      &lt;/userinput&gt;&lt;/programlisting&gt;
+   &lt;/refsect2&gt;
+  &lt;/nutentrybody&gt;
+ &lt;/nutentry&gt;
+
+&lt;/nutlist&gt;</pre>
+</div>
+      </div>
+    </div>
+
+
+    <a name="section-1.3"></a>
+<div class="ssection">
+      <h3 class="sstitle">11.3. Java Type Reference Pages</h3>
+
+      <p>
+This example shows how Java <tt>&lt;refentry&gt;</tt>s
+look:
+      </p>
+
+      <div class="figure">
+        <h4 class="figuretitle">Figure 1. 
+A refentry from <i>Java Fundamental Classes in a
+Nutshell</i>, Chapter 32.
+        </h4>
+        <image src="figs/ref5.gif"></image>
+      </div>
+
+      <div class="example">
+        <h4 class="exampletitle">Example 1. How the above refentry is coded</h4>
+        <div class="programlisting">
+<pre>&lt;refentry role="java" 
+    id="java.io.dataoutputstream"&gt;
+ &lt;refmeta&gt;
+  &lt;refmiscinfo class="version"&gt;Java 1.0&lt;/refmiscinfo&gt;
+  &lt;refmiscinfo class="package"&gt;java.io&lt;/refmiscinfo&gt;
+  &lt;refmiscinfo class="flags"&gt;PJ1.1&lt;/refmiscinfo&gt;
+ &lt;/refmeta&gt;
+ &lt;refnamediv&gt;
+  &lt;refname&gt;DataOutputStream&lt;/refname&gt;
+ &lt;/refnamediv&gt;
+
+ &lt;refsect1 role="intro"&gt;
+  &lt;para&gt;This class is a subclass of
+   &lt;literal&gt;FilterOutputStream&lt;/literal&gt; that allows 
+   you to write Java primitive data types in a portable binary 
+   format. Create a &lt;literal&gt;DataOutputStream&lt;/literal&gt; 
+   by specifying the &lt;literal&gt;OutputStream&lt;/literal&gt; 
+   that is to be filtered in the call to the constructor. 
+   &lt;literal&gt;DataOutputStream&lt;/literal&gt; has methods
+   that output only primitive types; use
+   &lt;literal&gt;ObjectOutputStream&lt;/literal&gt; to output object
+   values. &lt;/para&gt;
+ &lt;/refsect1&gt;
+
+ &lt;refsynopsisdiv&gt;
+  &lt;classsynopsis keyword="class"&gt;
+   &lt;modifiers&gt;public&lt;/modifiers&gt;
+   &lt;classname&gt;DataOutputStream&lt;/classname&gt;
+   &lt;extends&gt;&lt;classref package="java.io" 
+     class="FilterOutputStream"/&gt;&lt;/extends&gt;
+   &lt;implements&gt;&lt;classref 
+     package="java.io" class="DataOutput"/&gt;&lt;/implements&gt;
+
+   &lt;members&gt;&lt;title&gt;Public Constructors&lt;/title&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public&lt;/modifiers&gt;
+       &lt;function&gt;DataOutputStream&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;paramdef&gt;
+       &lt;type&gt;&lt;classref role="includePkg" 
+         package="java.io" class="OutputStream"/&gt;&lt;/type&gt;
+       &lt;parameter&gt;out&lt;/parameter&gt;
+      &lt;/paramdef&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+   &lt;/members&gt;
+
+   &lt;members&gt;&lt;title&gt;Public Instance Methods&lt;/title&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public final&lt;/modifiers&gt; 
+       &lt;type&gt;int&lt;/type&gt;
+       &lt;function&gt;size&lt;/function&gt;
+      &lt;/funcdef&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+   &lt;/members&gt;
+
+   &lt;members&gt;&lt;title&gt;Methods Implementing 
+     &lt;classref package="java.io" class="DataOutput"/&gt;&lt;/title&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=" synchronized"&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public&lt;/modifiers&gt; &lt;type&gt;void&lt;/type&gt;
+       &lt;function&gt;write&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;paramdef&gt;&lt;type&gt;int&lt;/type&gt; &lt;parameter&gt;b&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;throws&gt;&lt;classref package="java.io" class="IOException"/&gt;&lt;/throws&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=" synchronized"&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public&lt;/modifiers&gt; &lt;type&gt;void&lt;/type&gt;
+       &lt;function&gt;write&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;paramdef&gt;
+       &lt;type&gt;byte[&amp;thinsp;]&lt;/type&gt; &lt;parameter&gt;b&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;paramdef&gt;&lt;type&gt;int&lt;/type&gt; &lt;parameter&gt;off&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;paramdef&gt;&lt;type&gt;int&lt;/type&gt; &lt;parameter&gt;len&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;throws&gt;&lt;classref package="java.io" class="IOException"/&gt;&lt;/throws&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public final&lt;/modifiers&gt; &lt;type&gt;void&lt;/type&gt;
+       &lt;function&gt;writeBoolean&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;paramdef&gt;&lt;type&gt;boolean&lt;/type&gt; &lt;parameter&gt;v&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;throws&gt;&lt;classref package="java.io" class="IOException"/&gt;&lt;/throws&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public final&lt;/modifiers&gt; &lt;type&gt;void&lt;/type&gt;
+       &lt;function&gt;writeByte&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;paramdef&gt;&lt;type&gt;int&lt;/type&gt; &lt;parameter&gt;v&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;throws&gt;&lt;classref package="java.io" class="IOException"/&gt;&lt;/throws&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public final&lt;/modifiers&gt; &lt;type&gt;void&lt;/type&gt;
+       &lt;function&gt;writeInt&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;paramdef&gt;&lt;type&gt;int&lt;/type&gt; &lt;parameter&gt;v&lt;/parameter&gt;&lt;/paramdef&gt;
+      &lt;throws&gt;&lt;classref package="java.io" class="IOException"/&gt;&lt;/throws&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+   &lt;/members&gt;
+
+   &lt;members&gt;&lt;title&gt;Public Methods Overriding &lt;classref package="java.io"
+     class="FilterOutputStream"/&gt;&lt;/title&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="method" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;public&lt;/modifiers&gt; &lt;type&gt;void&lt;/type&gt;
+       &lt;function&gt;flush&lt;/function&gt;
+      &lt;/funcdef&gt;
+      &lt;throws&gt;&lt;classref package="java.io" class="IOException"/&gt;&lt;/throws&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+   &lt;/members&gt;
+
+   &lt;members&gt;
+    &lt;title&gt;Protected Instance Fields&lt;/title&gt;
+    &lt;membergroup&gt;
+     &lt;funcprototype revision="" role="field" flags=""&gt;
+      &lt;funcdef&gt;&lt;modifiers&gt;protected&lt;/modifiers&gt; &lt;type&gt;int&lt;/type&gt;
+       &lt;function&gt;written&lt;/function&gt;
+      &lt;/funcdef&gt;
+     &lt;/funcprototype&gt;
+    &lt;/membergroup&gt;
+   &lt;/members&gt;
+  &lt;/classsynopsis&gt;
+ &lt;/refsynopsisdiv&gt;
+
+ &lt;refsect1&gt;
+  &lt;title&gt;Hierarchy&lt;/title&gt;
+  &lt;para&gt;
+   &lt;literal&gt;&lt;classref package="java.lang" class="Object"/&gt; &amp;rarr;
+   &lt;classref role="includePkg" package="java.io"
+   class="OutputStream"/&gt; &amp;rarr; &lt;classref package="java.io"
+   class="FilterOutputStream"/&gt; &amp;rarr; &lt;classref role="includePkg"
+   package="java.io" class="DataOutputStream"/&gt; (&lt;classref
+   package="java.io" class="DataOutput"/&gt;)&lt;/literal&gt;&lt;/para&gt;
+ &lt;/refsect1&gt;
+&lt;/refentry&gt;</pre>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <a name="section-12"></a>
+<hr>
+<span class="footertitle">Written by:</span>
+<br>
+<b>Erik Ray <i><a href="mailto:eray@oreilly.com">eray@oreilly.com</a></i>
+<br>
+</b>
+</body>
+</html>

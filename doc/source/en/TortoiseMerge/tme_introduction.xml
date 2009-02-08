@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<chapter id="tmerge-intro">
+	<title>Introduction</title>
+	<simplesect>
+		<para>
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 1 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tmerge-intro-overview">
+		<title>Overview</title>
+		<para>
+			TortoiseMerge is a free/open-source application. It lets you see
+			differences in text files, merge those changes and even review and
+			apply unified diff files, often called <firstterm>patches</firstterm>.
+		</para>
+		<para>
+			While working on text files, e.g. source files in your favourite
+			programming language, or html/xml files for your documentation or
+			website, you will often have a situation where you need to compare
+			different versions of those files. Sometimes you get a different
+			version from someone else, sometimes you just want to see the changes
+			you've made.
+		</para>
+		<para>
+			If you're working with a version control system (e.g. Subversion)
+			then you sometimes get <emphasis>conflicts</emphasis> when you
+			update your working copy. This happens if someone else changed the
+			same parts of the file you're currently working on as you did.
+			Then you have to resolve those conflicts manually. This is where
+			TortoiseMerge can help you.
+		</para>
+		<para>
+			The following diagram shows you the relationships between the
+			files involved in a conflict:
+		</para>
+		<figure id="tmerge-ch1-dia1">
+			<title>File Conflict</title>
+			<graphic fileref="images/mergeprinciple.png"/>
+		</figure>
+		<para>
+			A conflict can also occur if you try to apply an outdated patch file.
+			In such cases, without TortoiseMerge, you would either have to ask
+			the person you got that patch file from for a current version or try
+			to apply that patch file manually.
+		</para>
+		<para>
+			But now with TortoiseMerge this isn't necessary anymore -
+			at least not if you're working with a version control system like
+			Subversion. TortoiseMerge parses the patch file for the
+			revision/version the patch was created for and automatically tries
+			to fetch that specific version from your source-control.
+			Then it applies the patch and lets you review both your changes
+			to the file, and theirs. Then you can decide which changes
+			you want to keep.
+		</para>
+	</sect1>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 2 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tmerge-intro-history">
+		<title>TortoiseMerge's History</title>
+		<para>
+			While working on
+			<ulink url="http://tortoisesvn.tigris.org">
+				<citetitle>TortoiseSVN</citetitle>
+			</ulink>
+			we found that whenever users sent in patches to enhance the project
+			or just to fix bugs, we had a lot of work just applying those
+			patches. And many times those patches were outdated and couldn't
+			be applied with the command line patch tool 
+			<ulink url="http://unxutils.sourceforge.net/">
+				<citetitle>http://unxutils.sourceforge.net/</citetitle>
+			</ulink>
+			because we were working on those files and had sometimes changed
+			those files already.
+		</para>
+		<para>
+			This was also the main reason why TortoiseSVN did not originally
+			have a
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Create Patch</guimenuitem>
+			</menuchoice>
+			implemented: we preferred users to send us the whole files because
+			with those it was easier to apply patches.
+		</para>
+		<para>
+			So we spent a lot of time, searching the Internet for a GUI tool
+			which could apply patch files, but all we found was that such a tool
+			didn't exist. So to cut a long story short: We decided that if
+			no-one else could provide such a tool we would have to write our
+			own. That's when TortoiseMerge was born.
+		</para>
+		<para>
+			Since TortoiseSVN already uses the Subversion library, which has a
+			nice diffing engine built in, it was just natural to use this
+			library instead of the GNU diff.
+		</para>
+	</sect1>
+</chapter>

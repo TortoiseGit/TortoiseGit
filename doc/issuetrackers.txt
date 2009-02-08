@@ -1,0 +1,222 @@
+Integration of Subversion (GUI) clients with Bug Tracking Tools:
+================================================================================
+
+I. Preface
+==========
+This document is primarily intended for writers of various GUI clients for 
+Subversion.  Clients such as TortoiseSVN, Subclipse, RapidSVN, PySVN and many 
+others.
+
+The goal of this document is to outline a common technique for defining and then 
+integrating these GUI clients with third party bug tracking software.  
+
+II. Introduction
+================
+It is very common in Software Development for changes to be related to a 
+specific bug or issue ID. Users of bug tracking systems would like to associate 
+the changes they make in Subversion with a specific ID in their bug tracking 
+system. There are already a number of people that have integrated these systems 
+with Subversion. They typically rely on the end user entering a log message on 
+their commits in some kind of a specific format that can be parsed with a 
+commit-hook or in some cases just on-the-fly in a web-based presentation of the 
+commit info. This option is OK, but it is not very user-friendly and it places 
+all of the integration within the bug tracking tool. When using a Subversion 
+client, you can see the log message info, but there is no way to jump to the bug 
+system.
+
+Subversion (GUI) clients can help both the users and the bug tracking tools in 
+that task:
+
+- When the user enters a log message, a well defined line including the issue 
+number associated with the commit can be added by the client automatically. This 
+reduces the risk that the users enters the issue number in a way the bug 
+tracking tools can't parse correctly and therefore won't know that the commit 
+was associated with a specific issue. The users won't have to remember the 
+format they have to use for each log message and each individual project - the 
+client will take care of that.
+
+- When the user browses the log messages, there should be an easy way to fire up 
+the webbrowser to see the issue associated with that log message/commit.
+
+III. Requirements
+=================
+To make the integration with bug tracking tools possible, a Subversion client 
+needs some information about the bug tracking tool used in a project. That 
+information should be available inside the working copy so that clients don't 
+have to access the repository over a possibly very slow connection to get that 
+information.
+
+The information a client needs is:
+
+- the URL pointing to the bug tracking tool 
+- the format of the issue number it has to add to the log messages so the 
+  bug tracking tool can recognize it. Or
+- a regular expression to parse the log message with to extract the issue number
+
+There are other things a Subversion (GUI) client could use to make the 
+integration with bug tracking tools easier for the user, but these are 
+essential for the integration to work.
+
+IV. Implementation
+==================
+The required information for the clients is stored in *folder* properties. The 
+reason we chose this path is explained in the FAQ at the end of this document.
+
+There are two different ways a client can integrate with an issue tracker. One
+is very basic but provides the user with a separate GUI to enter bug ID's,
+and the other one is based on regular expressions where the user has to enter
+the bug ID's directly into the log message.
+
+
+The following properties are defined which are used by both ways:
+
+---------
+name  : bugtraq:url
+value : (string)
+This value is the URL pointing to the bug tracking tool. The URL string should 
+contain the substring "%BUGID%" which the client replaces with the issue number. 
+That way the resulting URL will point directly to the correct issue.
+NOTE: The URL must be properly URI encoded by the user.
+This URL can be used by clients to create a link to the bug tracking tool when
+showing the logmessage of a revision.
+To allow relative URLs, the following formats can be used (subset of the 
+svn:external relative urls):
+^/   relative to the repository root. Since issue trackers can not reside
+     below a subversion repository, the URL must contain navigations.
+     For example: ^/../../issues/id?123
+/    relative to the server's hostname
+---------
+
+---------
+name  : bugtraq:warnifnoissue
+value : "true"/"yes" or "false"/"no"
+If set to "true", then the clients will warn the user if the issue text box is
+left empty. But it must _not_ block the commit, only give the user a chance to
+enter an issue number in case (s)he forgot it.
+---------
+
+Properties used with the basic integration:
+
+---------
+name  : bugtraq:label
+value : (string)
+This can be used by a client as a GUI label describing the text box where the 
+user has to enter the issue number. If this is not set, then a default value 
+should be used, e.g. "Bug-ID / Issue-Number :". Keep in mind though that most 
+GUI clients don't resize their windows according to the size of GUI elements. So 
+keep the size of the label string below 20-25 chars.
+---------
+
+---------
+name  : bugtraq:message
+value : (string)
+If this property is set, then the client should show a text box in the commit 
+window where the user can enter an issue number.
+
+The value string of this property is used by the client to create an additional 
+line added to the log message. The string must contain the substring "%BUGID%" 
+which is replaced with the issue number the user entered before applied to the 
+log message. The client will add the resulting string as a new line to the end 
+of the log message the user entered:
+logmessage + "\n" + resultstring
+In case bugtraq:append is set to "false", then the log message is defined as
+resultstring + "\n" + logmessage
+
+The client should make sure that the string doesn't have multiple lines.
+If more than one issue number is entered by the user (separated by commas), the 
+client must make sure that there's no whitespace chars before and after the 
+comma. And also the whole issue number string must be trimmed.
+Note: if the bugtraq:logregex property is set, then this property should be
+ignored for parsing the log message but only be used to show the issue ID edit box.
+---------
+
+---------
+name  : bugtraq:number
+value : "true"/"yes" or "false"/"no"
+If this property is set to "false", then the client allows any character entered 
+in the issue text box. Any other value or if the property is missing then only 
+numbers are allowed as the issue number. One exception is the ',' char, which is
+used to separate multiple issues.
+
+The client must never complain if the text box is left empty, i.e. if no issue
+number is given. Not all commits are assigned to an issue!
+
+Note: if the property bugtraq:logregex is set and this property is set to false,
+then the client should use the regex against the created string which is added
+to the log message to check if the bug ID is valid.
+---------
+
+---------
+name  : bugtraq:append
+value : "true"/"yes" or "false"/"no"
+If set to "false", then the bugtraq:message part is inserted at the top of
+the log message, if "yes" or not set, then it's appended to the log message at
+the bottom.
+---------
+
+
+Properties used with the regex integration:
+
+---------
+name  : bugtraq:logregex
+value : (string)
+This property contains one or two regular expressions, separated by a newline.
+If only one expression is set, then the bare bug ID's must be matched in the
+groups of the regex string. Example:
+[Ii]ssue #?(\d+)
+
+If two expressions are set, then the first expression is used to find a 
+string which relates to a bug ID but may contain more than just the bug ID 
+(e.g. "Issue #123" or "resolves issue 123").
+The second expression is then used to extract the bare bug ID from the string
+extracted with the first expression.
+An example:
+if you want to catch every pattern "issue #XXX" and "issue #890, #789" inside
+a log message you could use the following regex strings:
+[Ii]ssue #?(\d+)(,? ?#?(\d+))+
+(\d+)
+
+The property bugtraq:logregex will override bugtraq:number and bugtraq:message.
+If both bugtraq:logregex and bugtraq:message are set, then bugtraq:message is
+only used if the user enters an issue ID in the edit box of the commit window.
+Both are used in the log window to find the URL's to point to the issuetracker.
+---------
+
+
+Please note:
+- All property names and values must be properly UTF8 encoded. The client must
+  take care of that when setting the properties.
+- If the properties are not set for a folder, the client should search upwards
+  in the working copy for them until the working copy root is reached.
+
+
+A. FAQ
+======
+Q: Why is the integration with bug tracking tools not defined by the Subversion
+   project?
+A: The Subversion developers want to keep Subversion "clean", i.e. they 
+   concentrate on Subversions basic tasks.
+
+Q: Why don't you use a config file located on the server or revision properties
+   instead of folder properties?
+A: A config file located on the server and revision properties would mean that
+   a client would need to connect to the server each time the bugtracking 
+   information is needed. On slow connections, this can take several seconds and
+   would make the GUI respond slower.
+
+Q: Isn't there a way to store the data in the repository, but having it also
+   stored in the working copy?
+A: Subversion doesn't provide such a feature (yet). And there's no way to be 
+   sure that there ever will be such a feature. So we have to make use of that
+   what's already available.
+   Also, if the properties are set for each folder, then you can assign a 
+   different bug tracking tool for a subfolder if you want to. Or you can 
+   provide a different URL for each folder.
+
+Q: But if I have many folders, I have to add those properties to each one of
+   them! Isn't there a better way?
+A: Sorry, but no. But if you can be sure that each user checks out only from
+   e.g. /trunk/ and not some subfolder, then it's enough if you set the 
+   properties there. The clients will search for those properties the path up
+   to the working copy root for those properties.
+

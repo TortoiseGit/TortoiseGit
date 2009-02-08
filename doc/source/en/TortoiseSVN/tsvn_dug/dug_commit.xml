@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-commit">
+	<title>Committing Your Changes To The Repository</title>
+	<indexterm>
+		<primary>commit</primary>
+	</indexterm>
+	<indexterm>
+		<primary>send changes</primary>
+	</indexterm>
+	<indexterm>
+		<primary>check in</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_COMMITDLG"?>
+	<para>
+		Sending the changes you made to your working copy is known as
+		<firstterm>committing</firstterm> the changes. But before you
+		commit you have to make sure that your working copy is up to
+		date. You can either use
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Update</guimenuitem>
+		</menuchoice>
+		directly. Or you can use
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Check for Modifications</guimenuitem>
+		</menuchoice>
+		first, to see which files have changed locally or on the server.
+	</para>
+	<sect2 id="tsvn-dug-commit-basics">
+		<title>The Commit Dialog</title>
+		<para>
+			If your working copy is up to date and there are no conflicts,
+			you are ready to commit your changes. Select any file
+			and/or folders you want to commit, then
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Commit...</guimenuitem>
+			</menuchoice>.
+			<figure id="tsvn-dug-commit-dia-1">
+				<title>The Commit dialog</title>
+				<graphic fileref="../images/Commit.png"/>
+			</figure>
+		</para>
+		<para>
+			The commit dialog will show you every changed file,
+			including added, deleted and unversioned files. If you don't
+			want a changed file to be committed, just uncheck that
+			file. If you want to include an unversioned file,
+			just check that file to add it to the commit.
+		</para>
+		<para>
+			Items which have been switched to a different repository path are
+			also indicated using an <literal>(s)</literal> marker. You may have
+			switched something while working on a branch and forgotten to switch
+			back to trunk. This is your warning sign!
+		</para>
+		<tip>
+			<title>Commit files or folders?</title>
+			<para>
+				When you commit files, the commit dialog shows only
+				the files you have selected. When you commit a folder
+				the commit dialog will select the changed files automatically.
+				If you forget about a new file you created, committing the
+				folder will find it anyway. Committing a folder does <emphasis>not</emphasis>
+				mean that every file gets marked as changed; It just makes
+				your life easier by doing more work for you.
+			</para>
+		</tip>
+		<para>
+			If you have modified files which have been included from a different
+			repository using <literal>svn:externals</literal>, those changes cannot
+			be included in the same atomic commit. A warning symbol below the file
+			list tells you if this has happened, and the tooltip explains that
+			those external files have to be committed separately.
+		</para>
+		<tip>
+			<title>Many unversioned files in the commit dialog</title>
+			<para>
+				If you think that the commit dialog shows you too
+				many unversioned (e.g. compiler generated or editor backup)
+				files, there are several ways to handle this. You can:
+				<itemizedlist>
+					<listitem>
+						<para>
+							add the file (or a wildcard extension)
+							to the list of files to exclude on the settings page.
+							This will affect every working copy you have.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							add the file to the <literal>svn:ignore</literal> list
+							using
+							<menuchoice>
+								<guimenu>TortoiseSVN</guimenu>
+								<guimenuitem>Add to ignore list</guimenuitem>
+							</menuchoice>
+							This will only affect the directory on
+							which you set the <literal>svn:ignore</literal> property.
+							Using the SVN Property Dialog, you can alter the
+							<literal>svn:ignore</literal> property for a directory.
+						</para>
+					</listitem>
+				</itemizedlist>
+				Read <xref linkend="tsvn-dug-ignore"/> for more information. 
+			</para>
+		</tip>
+		<para>
+			<action>Double clicking</action> on any modified file in the commit
+			dialog will launch the external diff tool to show your changes.
+			The context menu will give you more options, as shown in the screenshot.
+			You can also drag files from here into another application such as a
+			text editor or an IDE.
+		</para>
+		<para>
+			You can select or deselect items by clicking on the checkbox to the
+			left of the item. For directories you can use <keycap>Shift</keycap>-<action>select</action>
+			to make the action recursive.
+		</para>
+		<para>
+			The columns displayed in the bottom pane are customizable. If you
+			<action>right click</action> on any column header you will see a
+			context menu allowing you to select which columns are displayed.
+			You can also change column width by using the drag handle which
+			appears when you move the mouse over a column boundary. These
+			customizations are preserved, so you will see the same headings
+			next time.
+		</para>
+		<para>
+			By default when you commit changes, any locks that you hold on files
+			are released automatically after the commit succeeds. If you want
+			to keep those locks, make sure the <guilabel>Keep locks</guilabel>
+			checkbox is checked. The default state of this checkbox is taken
+			from the <literal>no_unlock</literal> option in the Subversion
+			configuration file. Read <xref linkend="tsvn-dug-settings-main"/>
+			for information on how to edit the Subversion configuration file.
+		</para>
+		<tip>
+			<title>Drag and Drop</title>
+			<para>
+				You can drag files into the commit dialog from elsewhere, so
+				long as the working copies are checked out from the same repository.
+				For example, you may have a huge working copy with several
+				explorer windows open to look at distant folders of the
+				hierarchy. If you want to avoid committing from the top
+				level folder (with a lengthy folder crawl to check for changes)
+				you can open the commit dialog for one folder and drag in items
+				from the other windows to include within the same atomic commit.
+			</para>
+			<para>
+				You can drag unversioned files which reside within a working copy
+				into the commit dialog, and they will be SVN added automatically.
+			</para>
+		</tip>
+		<tip>
+			<title>Repairing External Renames</title>
+			<para>
+				Sometimes files get renamed outside of Subversion, and they show up
+				in the file list as a missing file and an unversioned file. To avoid
+				losing the history you need to notify Subversion about the connection.
+				Simply select both the old name (missing) and the new name (unversioned)
+				and use
+				<menuchoice>
+					<guimenu>Context Menu</guimenu>
+					<guimenuitem>Repair Move</guimenuitem>
+				</menuchoice>
+				to pair the two files as a rename.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-commit-changelists">
+		<title>Change Lists</title>
+		<para>
+			The commit dialog supports Subversion's changelist feature to help
+			with grouping related files together. Find out about this feature
+			in <xref linkend="tsvn-dug-changelists"/>.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-commit-ignore">
+		<title>Excluding Items from the Commit List</title>
+		<para>
+			Sometimes you have versioned files that change frequently but that you
+			really don't want to commit. Sometimes this indicates a flaw in your
+			build process - why are those files versioned? should you be using
+			template files? But occasionally it is inevitable. A classic reason
+			is that your IDE changes a timestamp in the project file every time
+			you build. The project file has to be versioned as it includes all the
+			build settings, but it doesn't need to be committed just because the
+			timestamp changed.
+		</para>
+		<para>
+			To help out in awkward cases like this, we have reserved a changelist
+			called <literal>ignore-on-commit</literal>. Any file added to this
+			changelist will automatically be unchecked in the commit dialog.
+			You can still commit changes, but you have to select it manually
+			in the commit dialog.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-commit-log">
+		<title>Commit Log Messages</title>
+		<para>
+			Be sure to enter a log message which describes the changes you are
+			committing. This will help you to see what happened and when, as you
+			browse through the project log messages at a later date. The message
+			can be as long or as brief as you like; many projects have guidelines
+			for what should be included, the language to use, and sometimes even
+			a strict format.
+		</para>
+		<para>
+			You can apply simple formatting to your log messages using a convention
+			similar to that used within emails.
+			To apply styling to <literal>text</literal>, use
+			<literal>*text*</literal> for bold,
+			<literal>_text_</literal> for underlining, and
+			<literal>^text^</literal> for italics.
+		</para>
+		<para>
+			<figure id="tsvn-dug-commit-dia-2">
+				<title>The Commit Dialog Spellchecker</title>
+				<graphic fileref="../images/CommitSpellcheck.png"/>
+			</figure>
+			TortoiseSVN includes a spellchecker to help you get your log messages
+			right. This will highlight any mis-spelled words. Use the context menu
+			to access the suggested corrections. Of course, it doesn't know
+			<emphasis>every</emphasis> technical term that you do, so correctly
+			spelt words will sometimes show up as errors. But don't worry. You can
+			just add them to your personal dictionary using the context menu.
+		</para>
+		<para>
+			The log message window also includes a filename and function auto-completion
+			facility. This uses regular expressions to extract class and function names
+			from the (text) files you are committing, as well as the filenames themselves.
+			If a word you are typing matches anything in the list (after you have typed at
+			least 3 characters, or pressed <keycap>Ctrl+Space</keycap>),
+			a drop-down appears allowing you to select the full name.
+			The regular expressions supplied with TortoiseSVN are held in the TortoiseSVN
+			installation <filename>bin</filename> folder. You can also define your own
+			regexes and store them in <filename>%APPDATA%\TortoiseSVN\autolist.txt</filename>.
+			Of course your private autolist will not be overwritten when you update your
+			installation of TortoiseSVN. If you are unfamiliar with regular expressions,
+			take a look at the introduction at
+			<ulink url="http://en.wikipedia.org/wiki/Regular_expression">
+				<citetitle>http://en.wikipedia.org/wiki/Regular_expression</citetitle>
+			</ulink>,
+			and the online documentation and tutorial at
+			<ulink url="http://www.regular-expressions.info/">
+				<citetitle>http://www.regular-expressions.info/</citetitle>
+			</ulink>.
+		</para>
+		<para>
+			You can re-use previously entered log messages. Just click on
+			<guibutton>Recent messages</guibutton> to view a list of the last few
+			messages you entered for this working copy. The number of stored messages
+			can be customized in the TortoiseSVN settings dialog.
+		</para>
+		<para>
+			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
+			page of TortoiseSVN's settings, or you can clear individual messages from
+			within the <guilabel>Recent messages</guilabel> dialog using the
+			<keycap>Delete</keycap> key.
+		</para>
+		<para>
+			If you want to include the checked paths in your log message, you can use
+			the command
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Paste filename list</guimenuitem>
+			</menuchoice>
+			in the edit control.
+		</para>
+		<para>
+			Another way to insert the paths into the log message is to simply
+			drag the files from the file list onto the edit control.
+		</para>
+		<tip>
+			<title>Special Folder Properties</title>
+			<para>
+				There are several special folder properties which can be used to
+				help give more control over the formatting of commit log messages and
+				the language used by the spellchecker module.
+				Read <xref linkend="tsvn-dug-propertypage"/> for further information.
+			</para>
+		</tip>
+		<tip>
+			<title>Integration with Bug Tracking Tools</title>
+			<para>
+				If you have activated the bug tracking system, you can set one or more 
+				Issues in the <guilabel>Bug-ID / Issue-Nr:</guilabel> text box. Multiple
+				issues should be comma separated. Alternatively, if you are using
+				regex-based bug tracking support, just add your issue references
+				as part of the log message.
+				Learn more in <xref linkend="tsvn-dug-bugtracker"/>.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-commit-progress">
+		<title>Commit Progress</title>
+		<para>
+			After pressing <guibutton>OK</guibutton>, a dialog appears displaying
+			the progress of the commit.
+			<figure id="tsvn-dug-commit-dia-3">
+				<title>The Progress dialog showing a commit in progress</title>
+				<graphic fileref="../images/CommitProgress.png"/>
+			</figure>
+		</para>
+		<para>
+			The progress dialog uses colour coding to highlight different
+			commit actions
+			<variablelist>
+				<varlistentry>
+					<term>Blue</term>
+					<listitem>
+						<para>
+						Committing a modification.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Purple</term>
+					<listitem>
+						<para>
+						Committing a new addition.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Dark red</term>
+					<listitem>
+						<para>
+						Committing a deletion or a replacement.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Black</term>
+					<listitem>
+						<para>
+						All other items.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			This is the default colour scheme, but you can customise those colours
+			using the settings dialog.
+			Read <xref linkend="tsvn-dug-settings-colours"/> for more information.
+		</para>
+	</sect2>
+</sect1>

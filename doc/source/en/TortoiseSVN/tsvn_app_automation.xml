@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
+<appendix id="tsvn-automation">
+	<title>Automating TortoiseSVN</title>
+	<simplesect>
+		<para>
+			Since all commands for TortoiseSVN are controlled through command
+			line parameters, you can automate it with batch scripts or start specific
+			commands and dialogs from other programs (e.g. your favourite text editor).
+		</para>
+		<important>
+		<para>
+			Remember that TortoiseSVN is a GUI client, and this automation guide
+			shows you how to make the TortoiseSVN dialogs appear to collect user
+			input. If you want to write a script which requires no input, you should
+			use the official Subversion command line client instead.
+		</para>
+		</important>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 1 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tsvn-automation-basics">
+		<title>TortoiseSVN Commands</title>
+		<indexterm>
+			<primary>automation</primary>
+		</indexterm>
+		<indexterm>
+			<primary>command line</primary>
+		</indexterm>
+		<para>
+			The TortoiseSVN GUI program is called <literal>TortoiseProc.exe</literal>.
+			All commands are specified with the parameter <option>/command:abcd</option>
+			where <literal>abcd</literal> is the required command name. Most of these
+			commands need at least one path argument, which is given with 
+			<option>/path:"some\path"</option>. In the following table the command 
+			refers to the <option>/command:abcd</option> parameter and the path
+			refers to the <option>/path:"some\path"</option> parameter.
+		</para>
+		<para>
+			Since some of the commands can take a list of target paths (e.g. committing
+			several specific files) the <option>/path</option> parameter can take
+			several paths, separated by a <literal>*</literal> character.
+		</para>
+		<para>
+			TortoiseSVN uses temporary files to pass multiple arguments between
+			the shell extension and the main program. From TortoiseSVN 1.5.0 on and later,
+			<option>/notempfile</option> parameter is obsolete and there is no need
+			to add it anymore.
+		</para>
+		<para>
+			The progress dialog which is used for commits, updates and many more commands
+			usually stays open after the command has finished until the user presses
+			the <guibutton>OK</guibutton> button. This can be changed by checking
+			the corresponding option in the settings dialog. But using that setting
+			will close the progress dialog, no matter if you start the command
+			from your batch file or from the TortoiseSVN context menu.
+		</para>
+		<para>
+			To specify a different location of the configuration file, use the parameter
+			<option>/configdir:"path\to\config\directory"</option>.
+			This will override the default path, including any registry setting.
+		</para>
+		<para>
+			To close the progress dialog at the end of a command automatically without
+			using the permanent setting you can pass the <option>/closeonend</option>
+			parameter.
+			<itemizedlist>
+				<listitem>
+					<para>
+						<option>/closeonend:0</option> don't close the dialog automatically
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<option>/closeonend:1</option> auto close if no errors
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<option>/closeonend:2</option> auto close if no errors and conflicts
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<option>/closeonend:3</option> auto close if no errors, conflicts and merges
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<option>/closeonend:4</option> auto close if no errors, conflicts and merges
+						for local operations
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The table below lists all the commands which can be accessed
+			using the TortoiseProc.exe command line. As described above,
+			these should be used in the form <literal>/command:abcd</literal>.
+			In the table, the <literal>/command</literal> prefix is omitted
+			to save space.
+		</para>
+<!--
+ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION
+Don't touch these lines:
+<entry condition="pot">:about</entry>
+
+  The condition="pot" prevents the strings from being extracted into
+	the .pot file, so nobody translates them.
+  The colons in front of the command have to stay there to prevent these strings
+  from being translated if the po file "by chance" contains a matching translation.
+-->
+		<para>
+			<table id="tsvn-automation-1-table">
+				<title>List of available commands and options</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colwidth="2*"/>
+					<colspec colnum="2" colwidth="6*"/>
+					<thead>
+						<row>
+							<entry>Command</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry condition="pot">:about</entry>
+							<entry>
+								Shows the about dialog. This is also shown if no
+								command is given.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:log</entry>
+							<entry>
+								Opens the log dialog. The <option>/path</option> specifies the
+								file or folder for which the log should be shown.
+								Three additional options can be set:
+								<option>/startrev:xxx</option>, 
+								<option>/endrev:xxx</option> and
+								<option>/strict</option>
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:checkout</entry>
+							<entry>
+								Opens the checkout dialog. The <option>/path</option>
+								specifies the target directory and the <option>/url</option>
+								specifies the URL to checkout from.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:import</entry>
+							<entry>
+								Opens the import dialog. The <option>/path</option>
+								specifies the directory with the data to import.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:update</entry>
+							<entry>
+								Updates the working copy in <option>/path</option> to
+								HEAD. If the option <option>/rev</option> is given
+								then a dialog is shown to ask the user to which
+								revision the update should go. To avoid the dialog
+								specify a revision number <option>/rev:1234</option>.
+								Other options are <option>/nonrecursive</option> and
+								<option>/ignoreexternals</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:commit</entry>
+							<entry>
+								Opens the commit dialog. The <option>/path</option> specifies the
+								target directory or the list of files to commit.
+								You can also specify the <option>/logmsg</option> switch
+								to pass a predefined log message to the commit dialog.
+								Or, if you don't want to pass the log message on the
+								command line, use <option>/logmsgfile:path</option>,
+								where <option>path</option>
+								points to a file containing the log message.
+								To pre-fill the bug ID box (in case you've set up
+								integration with bug trackers properly), you can use
+								the <option>/bugid:"the bug id here"</option> to
+								do that.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:add</entry>
+							<entry>
+								Adds the files in <option>/path</option> to
+								version control.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:revert</entry>
+							<entry>
+								Reverts local modifications of a working copy.
+								The <option>/path</option> tells which items
+								to revert.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:cleanup</entry>
+							<entry>
+								Cleans up interrupted or aborted operations and
+								unlocks the working copy in <option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:resolve</entry>
+							<entry>
+								Marks a conflicted file specified in 
+								<option>/path</option> as resolved. If 
+								<option>/noquestion</option> is given, then resolving
+								is done without asking the user first if it really
+								should be done.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:repocreate</entry>
+							<entry>
+								Creates a repository in <option>/path</option>
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:switch</entry>
+							<entry>
+								Opens the switch dialog. The <option>/path</option> specifies the
+								target directory.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:export</entry>
+							<entry>
+								Exports the working copy in <option>/path</option>
+								to another directory. If the <option>/path</option>
+								points to an unversioned directory, a dialog will ask
+								for an URL to export to the directory in <option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:merge</entry>
+							<entry>
+								Opens the merge dialog. The <option>/path</option> specifies the
+								target directory.
+								For merging a revision range, the following options are available:
+								<option>/fromurl:URL</option>,
+								<option>/revrange:string</option>.
+								For merging two repository trees, the following options are available:
+								<option>/fromurl:URL</option>,
+								<option>/tourl:URL</option>,
+								<option>/fromrev:xxx</option> and 
+								<option>/torev:xxx</option>.
+								These pre-fill the relevant fields in the merge dialog.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:mergeall</entry>
+							<entry>
+								Opens the merge all dialog. The <option>/path</option> specifies the
+								target directory.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:copy</entry>
+							<entry>
+								Brings up the branch/tag dialog.
+								The <option>/path</option>
+								is the working copy to branch/tag from.
+								And the <option>/url</option> is the
+								target URL.
+								You can also specify the <option>/logmsg</option> switch
+								to pass a predefined log message to the branch/tag dialog.
+								Or, if you don't want to pass the log message on the
+								command line, use <option>/logmsgfile:path</option>,
+								where <option>path</option>
+								points to a file containing the log message.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:settings</entry>
+							<entry>
+								Opens the settings dialog.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:remove</entry>
+							<entry>
+								Removes the file(s) in <option>/path</option> from
+								version control.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:rename</entry>
+							<entry>
+								Renames the file in <option>/path</option>. The new
+								name for the file is asked with a dialog.
+								To avoid the question about renaming similar files
+								in one step, pass <option>/noquestion</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:diff</entry>
+							<entry>
+								Starts the external diff program specified in the
+								TortoiseSVN settings. The <option>/path</option>
+								specifies the first file.
+								If the option <option>/path2</option>
+								is set, then the diff program is started with those
+								two files. If <option>/path2</option> is omitted,
+								then the diff is done between the file in
+								<option>/path</option> and its BASE.
+								To explicitly set the revision numbers use
+								<option>/startrev:xxx</option> and
+								<option>/endrev:xxx</option>.
+								If <option>/blame</option> is set and <option>/path2</option>
+								is not set, then the diff is done by first blaming 
+								the files with the given revisions.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:showcompare</entry>
+							<entry>
+								<para>
+								Depending on the URLs and revisions to compare, this
+								either shows a unified diff (if the option <option>unified</option> is set), 
+								a dialog with a list of files that have changed or if 
+								the URLs point to files starts the diff viewer for 
+								those two files.
+								</para>
+								<para>
+								The options <option>url1</option>, <option>url2</option>,
+								<option>revision1</option> and <option>revision2</option>
+								must be specified. The options <option>pegrevision</option>,
+								<option>ignoreancestry</option>, <option>blame</option> and
+								<option>unified</option> are optional.
+								</para>
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:conflicteditor</entry>
+							<entry>
+								Starts the conflict editor specified in the TortoiseSVN
+								settings with the correct files for the conflicted
+								file in <option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:relocate</entry>
+							<entry>
+								Opens the relocate dialog. The <option>/path</option>
+								specifies the working copy path to relocate.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:help</entry>
+							<entry>
+								Opens the help file.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:repostatus</entry>
+							<entry>
+								Opens the check-for-modifications dialog. The <option>/path</option>
+								specifies the working copy directory.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:repobrowser</entry>
+							<entry>
+								Starts the repository browser dialog, pointing to
+								the URL of the working copy given in
+								<option>/path</option> or <option>/path</option>
+								points directly to an URL.
+								An additional option <option>/rev:xxx</option> can
+								be used to specify the revision which the repository
+								browser should show. If the <option>/rev:xxx</option>
+								is omitted, it defaults to HEAD.
+								If <option>/path</option> points to an URL, the 
+								<option>/projectpropertiespath:path/to/wc</option> specifies
+								the path from where to read and use the project properties.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:ignore</entry>
+							<entry>
+								Adds all targets in <option>/path</option> to the
+								ignore list, i.e. adds the <literal>svn:ignore</literal>
+								property to those files.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:blame</entry>
+							<entry>
+								<para>
+								Opens the blame dialog for the file specified 
+								in <option>/path</option>.
+								</para>
+								<para>
+								If the options <option>/startrev</option> and
+								<option>/endrev</option> are set, then the dialog
+								asking for the blame range is not shown but
+								the revision values of those options are used
+								instead.
+								</para>
+								<para>
+								If the option <option>/line:nnn</option> is set,
+								TortoiseBlame will open with the specified line
+								number showing.
+								</para>
+								<para>
+								The options <option>/ignoreeol</option>, 
+								<option>/ignorespaces</option> and
+								<option>/ignoreallspaces</option> are also supported.
+								</para>
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:cat</entry>
+							<entry>
+								Saves a file from an URL or working copy path given
+								in <option>/path</option> to the location given in
+								<option>/savepath:path</option>. The revision is
+								given in <option>/revision:xxx</option>. This can
+								be used to get a file with a specific revision.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:createpatch</entry>
+							<entry>
+								Creates a patch file for the path given in
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:revisiongraph</entry>
+							<entry>
+								Shows the revision graph for the path given in
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:lock</entry>
+							<entry>
+								Locks a file or all files in a directory given in
+								<option>/path</option>.
+								The 'lock' dialog is shown so the
+								user can enter a comment for the lock.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:unlock</entry>
+							<entry>
+								Unlocks a file or all files in a directory given in
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:rebuildiconcache</entry>
+							<entry>
+								Rebuilds the windows icon cache. Only use this in
+								case the windows icons are corrupted. A side effect
+								of this (which can't be avoided) is that the icons
+								on the desktop get rearranged.
+								To suppress the message box, pass <option>/noquestion</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:properties</entry>
+							<entry>
+								Shows the properties dialog for the path given in
+								<option>/path</option>.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</para>
+		<para>
+			Examples (which should be entered on one line):
+<screen>
+TortoiseProc.exe /command:commit
+                 /path:"c:\svn_wc\file1.txt*c:\svn_wc\file2.txt"
+                 /logmsg:"test log message" /closeonend:0
+
+TortoiseProc.exe /command:update /path:"c:\svn_wc\" /closeonend:0
+
+TortoiseProc.exe /command:log /path:"c:\svn_wc\file1.txt"
+                 /startrev:50 /endrev:60 /closeonend:0
+</screen>
+		</para>
+	</sect1>
+
+	<sect1 id="tsvn-automation-idiff">
+		<title>TortoiseIDiff Commands</title>
+		<indexterm>
+			<primary>automation</primary>
+		</indexterm>
+		<indexterm>
+			<primary>command line</primary>
+		</indexterm>
+		<para>
+			The image diff tool has a few command line options which you
+			can use to control how the tool is started.
+			The program is called <literal>TortoiseIDiff.exe</literal>.
+		</para>
+		<para>
+			The table below lists all the options which can be passed
+			to the image diff tool on the command line.
+		</para>
+<!--
+ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION
+Don't touch these lines:
+<entry condition="pot">:about</entry>
+
+  The condition="pot" prevents the strings from being extracted into
+	the .pot file, so nobody translates them.
+  The colons in front of the command have to stay there to prevent these strings
+  from being translated if the po file "by chance" contains a matching translation.
+-->
+		<para>
+			<table id="tsvn-automation-idiff-1-table">
+				<title>List of available options</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colwidth="2*"/>
+					<colspec colnum="2" colwidth="6*"/>
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry condition="pot">:left</entry>
+							<entry>
+								Path to the file shown on the left.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:lefttitle</entry>
+							<entry>
+								A title string. This string is used in the image view
+								title instead of the full path to the image file.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:right</entry>
+							<entry>
+								Path to the file shown on the right.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:righttitle</entry>
+							<entry>
+								A title string. This string is used in the image view
+								title instead of the full path to the image file.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:overlay</entry>
+							<entry>
+								If specified, the image diff tool switches
+								to the overlay mode (alpha blend).
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:fit</entry>
+							<entry>
+								If specified, the image diff tool fits both
+								images together.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:showinfo</entry>
+							<entry>
+								Shows the image info box.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</para>
+		<para>
+			Example (which should be entered on one line):
+<screen>
+TortoiseIDiff.exe /left:"c:\images\img1.jpg" /lefttitle:"image 1"
+                  /right:"c:\images\img2.jpg" /righttitle:"image 2"
+                  /fit /overlay
+</screen>
+		</para>
+	</sect1>
+
+</appendix>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<chapter id="tmerge-basics">
+	<title>Basic Concepts</title>
+	<simplesect>
+		<para>
+			TortoiseMerge has several different uses:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Viewing the difference between two files and merging
+						changes into one of them, or removing unwanted changes.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Editing conflicts between local changes and changes in the
+						Subversion repository following an update.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Applying patch files. This is the reason TortoiseMerge
+						was created :)
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<sect1 id="tmerge-basics-diff">
+		<title>Viewing and Merging Differences</title>
+		<para>
+			In this mode you are comparing two files. The file in the left pane
+			is considered to be the original file (sometimes referred to as
+			<emphasis>Theirs</emphasis>, and the file in the right pane is the
+			modified file (sometimes referred to as <emphasis>Mine</emphasis>.
+		</para>
+		<para>
+			You can make simple line-based changes to the file in the right pane
+			which include:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Reverting changed lines back to the text shown in the left pane.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Using a combination of both blocks, either
+						<emphasis>Theirs</emphasis> before <emphasis>Mine</emphasis> or
+						<emphasis>Mine</emphasis> before <emphasis>Theirs</emphasis>.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			You can also edit the file in the right pane just as you would in a
+			text editor. Such lines are marked using a pencil icon.
+			Please note that if you want to make any of the line/block-based changes
+			described above, it is better to do those first since once you start
+			editing the file yourself it becomes impossible for TortoiseMerge to
+			keep track of the relationship to the original files.
+		</para>
+	</sect1>
+	<sect1 id="tmerge-basics-conflicts">
+		<title>Editing Conflicts</title>
+		<para>
+			This is sometimes referred to as a three-way merge, and is shown in three panes.
+			However there are actually four files involved. The file which is not shown is
+			the common base file, the last common ancestor of the two files which are now
+			in conflict. The relationships between the three files are explained in
+			the diagram below:
+		</para>
+		<figure id="tmerge-dug-dia-conflict">
+			<title>File Conflict</title>
+			<graphic fileref="images/mergeprinciple.png"/>
+		</figure>
+		<para>
+			The base file represents the oldest version of a file, from
+			where <emphasis>You</emphasis> and <emphasis>They</emphasis> start
+			making changes. <emphasis>Mine</emphasis> represents 
+			the base file with all the changes <emphasis>you</emphasis> made, 
+			and <emphasis>Theirs</emphasis> is the file with all the changes 
+			<emphasis>someone else</emphasis> made to the file.
+			The left pane shows the changes in <emphasis>Theirs</emphasis>
+			relative to the base file and the right pane shows the changes in
+			<emphasis>Mine</emphasis> relative to the base file. The bottom pane is the
+			output file which is where you are trying to resolve the conflicts.
+		</para>
+		<para>
+			In conflict resolution view, you can choose to use blocks from
+			<emphasis>Mine</emphasis> or <emphasis>Theirs</emphasis> or both.
+			But in this case, the changes are shown in the bottom pane.
+		</para>
+	</sect1>
+	<sect1 id="tmerge-basics-patch">
+		<title>Applying Patches</title>
+		<para>
+			A patch file is a Subversion unified diff file, which contains
+			the information required to apply changes to a set of files.
+			The patch may have been supplied by another developer so that you
+			can see changes he has made and possibly commit them to the repository.
+			Or it may have been generated internally by TortoiseSVN when comparing
+			two folders. This happens when you compare a repository revision with
+			your working copy folder, or if you compare two different repository
+			revisions, or if you compare two different repository paths.
+		</para>
+		<para>
+			In either case TortoiseMerge will show a small window listing the
+			files included in the patch. By double clicking on one of these files
+			you fetch the relevant file and apply the changes. The left pane shows
+			the original file content and the right pane shows it after the patch
+			is applied.
+		</para>
+		<para>
+			You can edit the file in the right pane exactly as you would in
+			compare/edit mode.
+		</para>
+	</sect1>
+</chapter>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-blame">
+	<title>Who Changed Which Line?</title>
+	<indexterm>
+		<primary>blame</primary>
+	</indexterm>
+	<indexterm>
+		<primary>annotate</primary>
+	</indexterm>
+	<indexterm>
+		<primary>praise</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_BLAME"?>
+	<para>
+		Sometimes you need to know not only what lines have changed, but also
+		who exactly changed specific lines in a file. That's when the
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Blame...</guimenuitem>
+		</menuchoice>
+		command, sometimes also referred to as <firstterm>annotate</firstterm>
+		command comes in handy.
+	</para>
+	<para>
+		This command lists, for every line in a file, the author and the revision
+		the line was changed.
+	</para>
+	<sect2 id="tsvn-dug-blame-simple">
+		<title>Blame for Files</title>
+		<para>
+			<figure id="tsvn-dug-blame-dia-1">
+				<title>The Annotate / Blame Dialog</title>
+				<graphic fileref="../images/BlameDialog.png"/>
+			</figure>
+			If you're not interested in changes from earlier revisions you can
+			set the revision from which the blame should start. Set this to <literal>1</literal>,
+			if you want the blame for <emphasis>every</emphasis> revision.
+		</para>
+		<para>
+			By default the blame file is viewed using <firstterm>TortoiseBlame</firstterm>,
+			which highlights the different revisions to make it easier to read.
+			If you wish to print or edit the blame file, select
+			<guilabel>Use Text viewer to view blames</guilabel>
+		</para>
+		<para>
+			You can specify the way that line ending and whitespace changes are handled.
+			These options are described in <xref linkend="tsvn-dug-diff-eol-whitespace"/>.
+			The default behaviour is to treat all whitespace and line-end differences
+			as real changes, but if you want to ignore an indentation change and find
+			the original author, you can choose an appropriate option here.
+		</para>
+		<para>
+			Once you press <guibutton>OK</guibutton> TortoiseSVN starts retrieving
+			the data to create the blame file. Please note: This can take several
+			minutes to finish, depending on how much the file has changed and
+			of course your network connection to the repository. Once the blame
+			process has finished the result is written into a temporary file and
+			you can view the results.
+		</para>
+		<para>
+			<figure id="tsvn-dug-blame-dia-2">
+				<title>TortoiseBlame</title>
+				<graphic fileref="../images/TortoiseBlame.png"/>
+			</figure>
+			TortoiseBlame, which is included with TortoiseSVN, makes the blame file
+			easier to read. When you hover the mouse over a line in the blame info
+			column, all lines with the same revision are shown with a darker
+			background. Lines from other revisions which were changed by the same author
+			are shown with a light background.
+			The colouring may not work as clearly if you have your display set to
+			256 colour mode.
+		</para>
+		<para>
+			If you <action>left click</action>
+			on a line, all lines with the same revision are highlighted, and lines from
+			other revisions by the same author are highlighted in a lighter colour.
+			This highlighting is sticky, allowing you to move the mouse without losing
+			the highlights. Click on that revision again to turn off highlighting.
+		</para>
+		<para>
+			The revision comments (log message) are shown in a hint box whenever
+			the mouse hovers over the blame info column. If you want to copy the
+			log message for that revision, use the context menu which appears when
+			you right click on the blame info column.
+		</para>
+		<para>
+			You can search within the Blame report using
+			<menuchoice>
+				<guimenu>Edit</guimenu>
+				<guimenuitem>Find...</guimenuitem>
+			</menuchoice>.
+			This allows you to search for revision numbers, authors and the content of
+			the file itself. Log messages are not included in the search - you should
+			use the Log Dialog to search those.
+		</para>
+		<para>
+			You can also jump to a specific line number using
+			<menuchoice>
+				<guimenu>Edit</guimenu>
+				<guimenuitem>Go To Line...</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			When the mouse is over the blame info columns, a context menu is
+			available which helps with comparing revisions and examining history,
+			using the revision number of the line under the mouse as a reference.
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Blame previous revision</guimenuitem>
+			</menuchoice> generates a blame report for the same file, but using
+			the previous revision as the upper limit. This gives you the blame
+			report for the state of the file just before the line you are looking
+			at was last changed.
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Show changes</guimenuitem>
+			</menuchoice> starts your diff viewer, showing you what changed in
+			the referenced revision.
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Show log</guimenuitem>
+			</menuchoice> displays the revision log dialog starting with the
+			referenced revision.
+		</para>
+		<para>
+			If you need a better visual indicator of where the oldest and newest
+			changes are, select
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Color age of lines</guimenuitem>
+			</menuchoice>.
+			This will use a colour gradient to show newer lines in red and older lines
+			in blue. The default colouring is quite light, but you can change it using
+			the TortoiseBlame settings.
+		</para>
+		<para>
+			If you are using Merge Tracking, where lines have changed as a result of
+			merging from another path, TortoiseBlame will show the revision and author
+			of the last change in the original file rather than the revision where the
+			merge took place. These lines are indicated by showing the revision and
+			author in italics.
+			If you do not want merged lines shown in this way, uncheck the
+			<guilabel>Include merge info</guilabel> checkbox.
+		</para>
+		<para>
+			If you want to see the paths involved in the merge, select
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Merge paths</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			The settings for TortoiseBlame can be accessed using
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Settings...</guimenuitem>
+			</menuchoice>
+			on the TortoiseBlame tab. Refer to 
+			<xref linkend="tsvn-dug-settings-tortoiseblame"/>.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-blame-diffs">
+		<title>Blame Differences</title>
+		<para>
+			One of the limitations of the Blame report is that it only shows the file as
+			it was in a particular revision, and shows the last person to change each line.
+			Sometimes you want to know what change was made, as well as who made it. What
+			you need here is a combination of the diff and blame reports.
+		</para>
+		<para>
+			The revision log dialog includes several options which allow you to do this.
+			<variablelist>
+				<varlistentry>
+					<term>Blame Revisions</term>
+					<listitem>
+						<para>
+							In the top pane, select 2 revisions, then select
+							<menuchoice>
+								<guimenu>Context menu</guimenu>
+								<guimenuitem>Blame revisions</guimenuitem>
+							</menuchoice>.
+							This will fetch the blame data for the 2 revisions, then
+							use the diff viewer to compare the two blame files.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Blame Changes</term>
+					<listitem>
+						<para>
+							Select one revision in the top pane, then pick one file
+							in the bottom pane and select
+							<menuchoice>
+								<guimenu>Context menu</guimenu>
+								<guimenuitem>Blame changes</guimenuitem>
+							</menuchoice>.
+							This will fetch the blame data for the selected revision
+							and the previous revision, then use the diff viewer to
+							compare the two blame files.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Compare and Blame with Working BASE</term>
+					<listitem>
+						<para>
+							Show the log for a single file, and in the top pane, select
+							a single revision, then select
+							<menuchoice>
+								<guimenu>Context menu</guimenu>
+								<guimenuitem>Compare and Blame with Working BASE</guimenuitem>
+							</menuchoice>.
+							This will fetch the blame data for the selected revision,
+							and for the file in the working BASE, then use the diff
+							viewer to compare the two blame files.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+	</sect2>
+</sect1>

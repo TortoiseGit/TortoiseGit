@@ -1,0 +1,159 @@
+首先，你需要安装编译器软件。
+
+A.  你需要 VS.NET2005 (或者至少 Visual C++ .NET 2005) 构建全部 TortoiseSVN
+    软件包。这是推荐选项，但不是免费的 :-(
+    如果你需要构建 msi 安装包，确认已经安装 “Tools for Redistributing
+    Applications”。
+
+B.  如果没有 VS.NET，你可以下载免费的 Visual C++ 2005 Express。它只能构建
+    Subversion 库，SubWCRev，TortoiseBlame 和 TortoiseIDiff 程序。
+    - 安装 Visual C++ 2005 Express 版本。
+      下载地址: http://msdn.microsoft.com/vstudio/express/visualc/
+    - 安装 Microsoft Platform SDK，版本是 Windows Server 2003 SP1
+      你至少要安装 SDK 中的以下组件:
+        - Windows Core SDK
+        - Web Workshop (IE) SDK
+        - Data Access Services
+        - Debugging Tools
+    - 安装 MASM 6.15，下载地址: http://win32assembly.online.fr/files/masm615.zip
+      将它增加到环境变量 PATH 中。
+    不要为安装 WiX 烦恼，因为你不能构建那么多软件。
+
+C.  如果你计划构建 64 位软件包，请安装软件包
+    - 在 VS.NET2005 专业版或更高版本中的 "Language Tools" -> "Visual C++"
+      -> "X64 Compilers and Tools"
+      它会为你提供交叉编译器，以及适当的命令行环境。在 XP64 中，还会有一个本机编译器。
+    - x64 SDK (在 Windows Server 2003 Platform SDK 中有，可以从
+      http://www.microsoft.com/downloads 免费下载) 或许可用，但是尚未测试。
+
+下一步，你需要安装一些工具/程序:
+- Java runtime            : http://java.sun.com, http://java.sun.com/webapps/getjava/BrowserRedirect
+- Python 2.4(*)           : http://www.python.org/windows/
+- libxml2 python bindings : http://users.skynet.be/sbi/libxml-python/
+- Perl                    : http://www.activestate.com/Products/ActivePerl/
+- WiX(*)                  : http://wix.sourceforge.net
+- NAnt(*)                 : http://nant.sourceforge.net
+- gdiplus merge module(#) : http://www.installshield.com/downloads/modules.asp?prod=ISX&lan=english&xmlUse=y
+
+(*) 将这些可执行程序/动态库的路径增加到环境变量 PATH 中。
+    为了让新的环境变量生效，你可能需要重新登录!
+
+(#) 将文件 gdiplus.msm 复制/移动到目录 "%CommonProgramFiles%\Merge Modules" 中。
+
+
+下一步，你需要下载:
+- OpenSSL source          : http://www.openssl.org/source/
+- ZLib source             : http://www.gzip.org/zlib/
+- tools collection        : http://tortoisesvn.tigris.org/files/documents/406/37871/Tools.zip
+- dictionaries/thesauri   : http://lingucomponent.openoffice.org/
+
+现在你几乎准备完毕。只需要做以下步骤:
+- 在你的硬盘上创建新目录，例如 SVN。确认你最少有 1.5 GB 剩余空间!!!
+- 在目录 SVN 中创建新目录 “common”。
+- 在目录 “common” 中解压 openssl 源代码，改名为 “openssl”。
+- 在目录 “common” 中解压 zlib 源代码，改名为 “zlib”。
+- 将 dictionaries/thesauri 复制到 “common\spell”。
+  注意文件名称很重要!必须为 en_US.aff，en_US.dic，en_GB.aff 和 en_GB.dic (或者你使用的其它语言)。
+  警告: 只支持词典格式 OO2。早期版本会让 TortoiseSVN 崩溃!
+- 从 Subversion 版本库将 TortoiseSVN 源代码检出到目录 SVN\TortoiseSVN。
+- 解压文件 “tools.zip”，建议目录是 “SVN\TortoiseSVN\Tools”。
+  注视: 目录 tools 的路径不能包含特殊字符或空格。如果你将TortoiseSVN 源代码
+  检出到这样的位置，你可以将目录 tools 存放到其它合适的位置。
+- 将位于 TSVN 根目录的文件 default.build.user.tmpl 复制到
+  default.build.user。然后调整文件中使用的路径。
+- 将文件 doc\doc.build.user.tmpl 复制到 doc\doc.build.user。然后按照
+  设置调整文件中使用的路径。
+- 某些语言的文档需要特别的配置。如果在目录 doc\xsl\languagecode\ 有文件
+  “userconfig.template.xml”，那么将其复制到 “userconfig.xml”，然后按照你的
+  OS 配置调整文件中的路径。
+
+
+构建 32 位软件包
+
+  提示: 在构建 TortoiseSVN之前，你需要调用目录 %VS80COMNTOOLS% 中的文件
+  vsvars32.bat。如果你不想每次都这么做，你可以让命令行窗口自动调用此文件:
+  - 创建一个包含以下内容的 .reg 文件，合并到你的注册表。
+    Windows Registry Editor Version 5.00
+
+    [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor]
+    "AutoRun"="\"C:\\Program Files\\Microsoft Visual Studio 8\\Common7\\Tools\\vsvars32.bat\""
+  你下次启动命令行窗口时，这个文件会被自动执行。
+
+  注意 Express 版本需要为 Platform SDK 设置变量。我发现的最简单的方法是编辑 VC++ 提供的文件
+  C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat
+  查找标签 :x86，增加对 setenv.cmd 的调用:
+
+    :x86
+    if not exist "%~dp0bin\vcvars32.bat" goto missing
+    call "%~dp0bin\vcvars32.bat"
+    rem Added SDK setup 14/12/2005 SJL
+    call "C:\Program Files\Microsoft Platform SDK\setenv.cmd"
+    goto :eof
+
+  然后与上述调用 vsvars32 类似，在启动命令行窗口时自动调用 vsvarsall.bat。
+
+  现在，如果你还有时间的话，可以运行构建脚本编译 TortoiseSVN。拿一杯咖啡 - 依赖
+  于你的计算机速度(我的机器需要 1 小时 50 分钟)，它可能需要两个小时!
+
+  > nant
+  会显示你可用的目标的帮助信息
+
+  > nant setup
+  会编译一切，板含文档和语言包，创建 msi 安装程序
+
+  注意: 当构建脚本编译 Subversion 时，你可能看到一些编译错误，例如:
+  > error C2065: 'SVN_FS_WANT_DB_MAJOR' : undeclared identifier
+  > error C2065: 'SVN_FS_WANT_DB_MINOR' : undeclared identifier
+  > error C2065: 'SVN_FS_WANT_DB_PATCH' : undeclared identifier
+  这是正常的，无须担忧。这些错误的原因是 TortoiseSVN 构建两次 Subversion 库。
+  一次构建所有 RA 访问层和所有库，另一次没有这些构建。这些错误在 “原始” 构建
+  中出现，但是这些库不在此构建中使用。当然，构建脚本可以调整为只构建真正需要
+  的库，但是与构建全部相比，构建独立的工程并不容易。
+  如果你愿意改进构建脚本，摆脱这些错误，欢迎与我们联系！
+
+  如果你使用 VC++ Express 构建，你的选项稍微受限。首先在 default.build.user 中
+  修改构建工具。它已经设置好了，你只需要去掉注视即可:
+
+    <property name="buildtool" value="vcexpress.exe" />
+
+  现在你需要构建 Subversion 库:
+  > nant Subversion
+
+  注意 VC Express 编译器在后台工作，没有控制台窗口。它有大量的磁盘操作，但是在
+  Nant 控制台窗口没有结果显示。请耐心等候!
+
+  在构建应用程序之前，更新版本信息:
+  > nant VersionInfo
+
+  现在你可以用打开文件 SubWCRev.vcproj 的方法启动 IDE。可能会出现一些错误对话
+  框，你可以忽略。右击 SubWCRev，选择 “Build”。
+
+  你也可以右击 TortoiseBlame，然后构建。
+
+在 win32 中构建 64 位软件包(交叉编译)
+
+  首先，我们需要一些在构建时用到的 32 位 SVN 工具。按照上述指示，或者打开
+  "Microsoft Visual Studio 2005" -> "Visual Studio Tools" ->
+  "Visual Studio 2005 Command Prompt"，切换到 TSVN 源代码目录，运行
+
+    nant release binaries
+
+  现在，构建 x64 软件包: 打开
+  "Microsoft Visual Studio 2005" -> "Visual Studio Tools" ->
+  "Visual Studio 2005 x64 Cross Tools Command Prompt"，切换到 TSVN 源代码目录，
+  运行
+
+    nant x64 cross release setup
+
+  在脚本结束后，可以在目录 .\bin 找到软件包。
+
+
+在 x64 中构建 64 位软件包
+
+  为了在 64 位 Windows 中构建本机软件包，打开
+  "Microsoft Visual Studio 2005" -> "Visual Studio Tools" ->
+  "Visual Studio 2005 Win64 Command Prompt"，切换到 TSVN 源代码目录，运行
+
+    nant x64 release setup
+
+  在脚本结束后，可以在目录 .\bin 找到软件包。

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book SYSTEM "../../dtd/dblite.dtd">
+<book id="tsvn" lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>TortoiseSVN</title>
+	<subtitle>A Subversion client for Windows</subtitle>
+	<xi:include href="../version.xml"/>
+	<bookinfo>
+		<edition>First</edition>
+		<authorgroup>
+			<author>
+				<firstname>Stefan</firstname>
+				<surname>Küng</surname>
+			</author>
+			<author>
+				<firstname>Lübbe</firstname>
+				<surname>Onken</surname>
+			</author>
+			<author>
+				<firstname>Simon</firstname>
+				<surname>Large</surname>
+			</author>
+		</authorgroup>
+		<xi:include href="../pubdate.xml"/>
+	</bookinfo>
+	<!-- include external files -->
+	<xi:include href="./tsvn_preface.xml"/>
+	<xi:include href="./tsvn_introduction.xml"/>
+	<xi:include href="./tsvn_basics.xml"/>
+	<xi:include href="./tsvn_server/server.xml"/>
+	<xi:include href="./tsvn_repository/repository.xml"/>
+	<xi:include href="./tsvn_dug/dug.xml"/>
+	<xi:include href="./tsvn_subwcrev.xml"/>
+	<xi:include href="./tsvn_app_faq.xml"/>
+	<xi:include href="./tsvn_app_howto.xml"/>
+	<xi:include href="./tsvn_app_admins.xml" />
+	<xi:include href="./tsvn_app_automation.xml"/>	
+	<xi:include href="./tsvn_app_cli.xml"/>
+	<xi:include href="./tsvn_app_internals.xml"/>
+	<xi:include href="./tsvn_app_ssh.xml"/>
+	<xi:include href="../glossary.xml"/>
+	<index id="tsvn-index"/>
+</book>

@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<chapter id="tsvn-introduction">
+	<title>Introduction</title>
+	<?dbhh topicname="HIDD_ABOUT"?>
+	<simplesect>
+		<indexterm>
+			<primary>version control</primary>
+		</indexterm>
+		<para>
+			Version control is the art of managing changes to
+			information. It has long been a critical tool for programmers,
+			who typically spend their time making small changes to software
+			and then undoing or checking some of those changes the next day.  
+			Imagine a team of such developers working concurrently - and perhaps even
+			simultaneously on the very same files! - and you can see why
+			a good system is needed to <emphasis>manage the potential chaos</emphasis>.
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 1 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tsvn-intro-about">
+		<title>What is TortoiseSVN?</title>
+		<para>
+			TortoiseSVN is a free open-source client for the
+			<firstterm>Subversion</firstterm> version control system.
+			That is, TortoiseSVN manages files and directories over time.
+			Files are stored in a central <firstterm>repository</firstterm>.
+			The repository is much like an ordinary file server, except that it
+			remembers every change ever made to your files and directories.
+			This allows you to recover older versions of your files and examine
+			the history of how and when your data changed, and who changed it.
+			This is why many people think of Subversion and version control
+			systems in general as a sort of <quote>time machine</quote>.
+		</para>
+		<para>
+			Some version control systems are also software configuration
+			management (SCM) systems.  These systems are specifically
+			tailored to manage trees of source code, and have many features
+			that are specific to software development - such as natively
+			understanding programming languages, or supplying tools for
+			building software.  Subversion, however, is not one of these
+			systems; it is a general system that can be used to manage
+			<emphasis>any</emphasis> collection of files, including
+			source code.
+		</para>
+	</sect1>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 2 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tsvn-intro-history">
+		<title>TortoiseSVN's History</title>
+		<para>
+			In 2002, Tim Kemp found that Subversion was a very good version
+			control system, but it lacked a good GUI client. The idea for a
+			Subversion client as a Windows shell integration was inspired by
+			the similar client for CVS named TortoiseCVS.
+		</para>
+		<para>
+			Tim studied the source code of TortoiseCVS and used it as a base for
+			TortoiseSVN. He then started the project, registered the domain
+			<literal>tortoisesvn.org</literal> and put the source code online. During that time,
+			Stefan Küng was looking for a good and free version control system
+			and found Subversion and the source for TortoiseSVN. Since TortoiseSVN
+			was still not ready for use then he joined the project and started
+			programming. Soon he rewrote most of the existing code and started
+			adding commands and features, up to a point where nothing of the
+			original code remained.
+		</para>
+		<para>
+			As Subversion became more stable it attracted more and more users
+			who also started using TortoiseSVN as their Subversion client.
+			The user base grew quickly (and is still growing every day).
+			That's when Lübbe Onken offered to help out with some nice icons
+			and a logo for TortoiseSVN. And he takes care of the website
+			and manages the translation.
+		</para>
+	</sect1>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 3 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tsvn-intro-features">
+		<title>TortoiseSVN's Features</title>
+		<para>
+			What makes TortoiseSVN such a good Subversion client?
+			Here's a short list of features.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Shell integration</term>
+				<listitem>
+					<indexterm>
+						<primary>Windows shell</primary>
+					</indexterm>
+					<indexterm>
+						<primary>explorer</primary>
+					</indexterm>
+					<para>
+						TortoiseSVN integrates seamlessly into the Windows shell
+						(i.e. the explorer). This means you can keep working
+						with the tools you're already familiar with. And you
+						do not have to change into a different application
+						each time you need functions of the version control!
+					</para>
+					<para>
+						And you are not even forced to use the Windows Explorer.
+						TortoiseSVN's context menus work in many other file managers,
+						and in the File/Open dialog which is common to most
+						standard Windows applications.
+						You should, however, bear in mind that TortoiseSVN
+						is intentionally developed as extension for the Windows
+						Explorer. Thus it is possible that in other applications
+						the integration is not as complete and e.g. the icon
+						overlays may not be shown.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Icon overlays</term>
+				<listitem>
+					<para>
+						The status of every versioned file and folder is
+						indicated by small overlay icons. That way you can see
+						right away what the status of your working copy is.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Easy access to Subversion commands</term>
+				<listitem>
+					<para>
+						All Subversion commands are available from the explorer
+						context menu. TortoiseSVN adds its own submenu there.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			Since TortoiseSVN is a Subversion client, we would also like to show you
+			some of the features of Subversion itself:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Directory versioning</term>
+				<listitem>
+					<para>
+						CVS only tracks the history of individual files, but
+						Subversion implements a <quote>virtual</quote>
+						versioned filesystem that tracks changes to whole
+						directory trees over time.
+						Files <emphasis>and</emphasis> directories are
+						versioned. As a result, there are real client-side
+						<command>move</command> and <command>copy</command>
+						commands that operate on files and directories.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Atomic commits</term>
+				<listitem>
+					<para>
+						A commit either goes into the repository completely,
+						or not at all.  This allows developers to construct and
+						commit changes as logical chunks.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Versioned metadata</term>
+				<listitem>
+					<para>
+						Each file and directory has an invisible set of
+						<quote>properties</quote> attached. You can invent and
+						store any arbitrary key/value pairs you wish.
+						Properties are versioned over time, just like file
+						contents.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Choice of network layers</term>
+				<listitem>
+					<para>
+						Subversion has an abstracted notion of repository
+						access, making it easy for people to implement new
+						network mechanisms. Subversion's <quote>advanced</quote>
+						network server is a module for the Apache web server,
+						which speaks a variant of HTTP called WebDAV/DeltaV.
+						This gives Subversion a big advantage in stability and
+						interoperability, and provides various key features for
+						free: authentication, authorization, wire compression,
+						and repository browsing, for example. A smaller,
+						standalone Subversion server process is also available.
+						This server speaks a custom protocol which can be
+						easily tunneled over ssh.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Consistent data handling</term>
+				<listitem>
+					<para>
+						Subversion expresses file differences using a binary
+						differencing algorithm, which works identically on both
+						text (human-readable) and binary (human-unreadable) files.
+						Both types of files are stored equally compressed in the
+						repository, and differences are transmitted in both
+						directions across the network.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Efficient branching and tagging</term>
+				<listitem>
+					<para>
+						The cost of branching and tagging need not be
+						proportional to the project size. Subversion creates
+						branches and tags by simply copying the project, using
+						a mechanism similar to a hard-link.
+						Thus these operations take only a very small,
+						constant amount of time, and very little space in the repository.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Hackability</term>
+				<listitem>
+					<para>
+						Subversion has no historical baggage; it is implemented
+						as a collection of shared C libraries with well-defined
+						APIs. This makes Subversion extremely maintainable and
+						usable by other applications and languages.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect1>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 4 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tsvn-intro-install">
+		<title>Installing TortoiseSVN</title>
+		<sect2>
+			<title>System requirements</title>
+			<para>
+				TortoiseSVN runs on Windows 2000 SP2, Windows XP or higher.
+				Windows 98, Windows ME and Windows NT4 are no longer supported
+				since TortoiseSVN 1.2.0, but you can still download
+				the older versions if you really need them.
+			</para>
+			<para>
+				If you encounter any problems during or after installing
+				TortoiseSVN please refer to
+				<xref linkend="tsvn-faq"/>
+				first.
+			</para>
+		</sect2>
+		<sect2>
+			<title>Installation</title>
+			<indexterm>
+				<primary>install</primary>
+			</indexterm>
+			<para>
+				TortoiseSVN comes with an easy to use installer. Double click on
+				the installer file and follow the instructions. The installer
+				will take care of the rest. 
+			</para>
+			<important>
+				<para>
+					You need Administrator privileges to install TortoiseSVN.
+				</para>
+			</important>
+		</sect2>
+		<sect2 id="tsvn-intro-install-lang">
+			<title>Language Packs</title>
+			<indexterm>
+				<primary>language packs</primary>
+			</indexterm>
+			<indexterm>
+				<primary>translations</primary>
+			</indexterm>
+			<para>
+				The TortoiseSVN user interface has been translated into many
+				different languages, so you may be able to download a language
+				pack to suit your needs.
+				You can find the language packs on our 
+				<ulink url="http://tortoisesvn.net/translation_status">
+					<citetitle>translation status page</citetitle>
+				</ulink>.
+				And if there is no language pack available yet, why not join
+				the team and submit your own translation ;-)
+			</para>
+			<para>
+				Each language pack is packaged as a <literal>.exe</literal> installer.
+				Just run the install program and follow the instructions.
+				Next time you restart, the translation will be available.
+			</para>
+		</sect2>
+		<sect2 id="tsvn-intro-install-spell">
+			<title>Spellchecker</title>
+			<indexterm>
+				<primary>spellchecker</primary>
+			</indexterm>
+			<indexterm>
+				<primary>dictionary</primary>
+			</indexterm>
+			<para>
+				TortoiseSVN includes a spell checker which allows you to check your
+				commit log messages. This is especially useful if the project language
+				is not your native language.
+				The spell checker uses the same dictionary files as
+				<ulink url="http://openoffice.org">
+					<citetitle>OpenOffice</citetitle>
+				</ulink>
+				and 
+				<ulink url="http://mozilla.org">
+					<citetitle>Mozilla</citetitle>
+				</ulink>.
+			</para>
+			<para>
+				The installer automatically adds the US and UK English dictionaries.
+				If you want other languages, the easiest option is simply to
+				install one of TortoiseSVN's language packs. This will install
+				the appropriate dictionary files as well as the TortoiseSVN local
+				user interface.
+				Next time you restart, the dictionary will be available too.
+			</para>
+			<para>
+				Or you can install the dictionaries yourself. If you have OpenOffice or
+				Mozilla installed, you can copy those dictionaries, which are located
+				in the installation folders for those applications.
+				Otherwise, you need to download the required dictionary files from
+				<ulink url="http://wiki.services.openoffice.org/wiki/Dictionaries">
+					<citetitle>http://wiki.services.openoffice.org/wiki/Dictionaries</citetitle>
+				</ulink>
+			</para>
+			<para>
+				Once you have got the dictionary files, you
+				probably need to rename them so that the filenames only have
+				the locale chars in it.
+				Example:
+				<itemizedlist>
+					<listitem>
+						<para>
+							<filename>en_US.aff</filename>
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<filename>en_US.dic</filename>
+						</para>
+					</listitem>
+				</itemizedlist>
+				Then just copy them to the <filename>bin</filename> sub-folder of
+				the TortoiseSVN installation folder. Normally this will be
+				<filename>C:\Program Files\TortoiseSVN\bin</filename>.
+				If you don't want to litter the <filename>bin</filename> sub-folder,
+				you can instead place your spell checker files in
+				<filename>C:\Program Files\TortoiseSVN\Languages</filename>. If that folder isn't
+				there, you have to create it first.
+				The next time you start TortoiseSVN, the spell checker will be available.
+			</para>
+			<para>
+				If you install multiple dictionaries, TortoiseSVN uses these rules
+				to select which one to use.
+				<orderedlist>
+					<listitem>
+						<para>
+						Check the <literal>tsvn:projectlanguage</literal> setting.
+						Refer to <xref linkend="tsvn-dug-propertypage"/> for information
+						about setting project properties.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+						If no project language is set, or that language is not
+						installed, try the language corresponding to the Windows locale.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+						If the exact Windows locale doesn't work, try the
+						<quote>Base</quote> language, eg.
+						<literal>de_CH</literal> (Swiss-German) falls back to
+						<literal>de_DE</literal> (German).
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+						If none of the above works, then the default language
+						is English, which is included with the standard installation.
+						</para>
+					</listitem>
+				</orderedlist>
+			</para>
+		</sect2>
+	</sect1>
+</chapter>
+<!--
+local variables:
+sgml-parent-document: ("book.xml" "chapter")
+end:
+-->

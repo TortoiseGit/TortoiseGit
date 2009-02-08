@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<sect1 id="tmerge-dug-views">
+	<title>Viewing Modes</title>
+	<para>
+		TortoiseMerge has three main viewing modes: one-pane, two-pane
+		and three-pane view. One/two-pane view is used to view changes
+		and three-pane view is used to resolve conflicts.
+	</para>
+	<sect2 id="tmerge-dug-view-merge">
+		<title>Viewing / Merging</title>
+		<figure id="tmerge-dug-dia-1pane">
+			<title>One Pane View</title>
+			<graphic fileref="images/TMerge_OnePane.png"/>
+		</figure>
+		<figure id="tmerge-dug-dia-2pane">
+			<title>Two Pane View</title>
+			<graphic fileref="images/TMerge_TwoPane.png"/>
+		</figure>
+		<para>
+			The two pane view has some features which are not available
+			in the one pane view:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Changes inside the modified lines are shown in different
+						colors. Added string parts are shown with a lighter color,
+						but you can of course configure the colors used here.
+						Removed parts are indicated with a dark brown vertical
+						line in the string. Check out the screenshot above to
+						see how this works.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Code reorganization usually means a lot of changes in whitespaces
+						(space, tab, newlines) but no actual code change. For example,
+						you split up a very long line into several lines, or you sometimes
+						compact several lines together into one.
+					</para>
+					<para>
+						Such changes are marked with a white circle symbol on the left side
+						of the views. If you see such a white circle, you know immediately
+						that no real code change is there and you don't have to check the
+						changed block further.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Hand editing of the file in the right pane is possible in two-pane
+						view. Such changes are marked with a pencil symbol.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			If you want to compare/merge three files, TortoiseMerge 
+			will show you the differences in a three pane view. This view 
+			is also used if you need to resolve conflicted files.
+		</para>
+		<figure id="tmerge-dug-dia-3pane">
+			<title>Three Pane View</title>
+			<graphic fileref="images/TMerge_ThreePane.png"/>
+		</figure>
+		<para>
+			The left pane shows you the differences between 
+			<emphasis>Their</emphasis> file and the <emphasis>Base</emphasis>
+			file, while the right pane shows you the differences between
+			<emphasis>Mine</emphasis> file and the <emphasis>Base</emphasis>
+			file. The bottom pane shows you the result of merging
+			<emphasis>Base</emphasis>, <emphasis>Mine</emphasis> and 
+			<emphasis>Theirs</emphasis> with possible conflicts.
+		</para>
+		<para>
+			If you hover the mouse over the pane title, a tooltip will
+			show the filenames used for the diff in each pane.
+		</para>
+	</sect2>
+	<sect2 id="tmerge-dug-view-patch">
+		<title>Applying Patches</title>
+		<para>
+			After TortoiseMerge parses the patch file it will show
+			you a small window with all the files which have changes
+			according to the patch file.
+			<figure id="tmerge-dug-dia-patch">
+				<title>Patch File List</title>
+				<graphic fileref="images/TMerge_PatchWindow.png"/>
+			</figure>
+			If the filename is shown in black, then the patch can be applied
+			without any problems. That means the file is not outdated
+			according to the patch.
+			However, if the filename is shown in red, then the patch can't
+			get applied directly because you already changed that file.
+		</para>
+		<para>
+			But don't worry. If you're working with Subversion you can
+			retrieve an older version of the file and resolve the conflict.
+			In fact, TortoiseMerge automatically tries to get that older
+			version of the file and then shows you the diff between
+			<emphasis>Base</emphasis> (the older version of the file),
+			<emphasis>Mine</emphasis> (the file as it is currently in your
+			working copy) and <emphasis>Theirs</emphasis> (the older version
+			of the file with the patch already applied). Then you can
+			resolve possible conflicts manually.
+		</para>
+		<para>
+			The patch file window has a context menu which allows you to
+			preview the effect of the patch on the current file
+			(apply without saving), to apply and save the changes
+			for the selected file, or to apply and save changes to
+			<emphasis>all</emphasis> files in the list.
+			The double-click action is to preview.
+		</para>
+		<para>
+			Depending on whether TortoiseMerge can apply the patch directly
+			or by fetching an older version of the file first, it shows you
+			a two pane view (patch can be applied directly) or a three pane
+			view (older version of file fetched).
+		</para>
+	</sect2>
+</sect1>

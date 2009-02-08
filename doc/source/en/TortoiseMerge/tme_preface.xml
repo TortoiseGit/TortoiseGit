@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE preface SYSTEM "../../dtd/dblite.dtd">
+<preface id="tme-preface" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Preface</title>
+	<simplesect>
+		<graphic srccredit="TortoiseMerge Logo" fileref="images/tortoisemerge_logo_hor468x64.png"/>
+	</simplesect>
+	<simplesect>
+		<para>
+			When working on a project, either an open-source project where
+			several people review your code, or a commercial
+			project where you sell a component with your source code, there will
+			be people and customers who find bugs or want to improve your 
+			project. To do that they send you patches which you have to review
+			and decide if you want to apply them.
+		</para>
+		<para>
+			TortoiseMerge helps you with both those tasks:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Reviewing patches
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Applying the patches
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			TortoiseMerge also helps you to sort out conflicted files which can
+			occur if you're working with a source control system and others
+			are working on the same files as you.
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- ========================	SECTION	1 ============================ -->
+	<!-- ================================================================= -->
+	<sect1 id="tme-preface-source">
+		<title>TortoiseMerge is free!</title>
+		<para>
+			TortoiseMerge is free. You don't have to pay for it, you can use it
+			any way you want. It is developed under the GP license (GPL).
+		</para>
+		<para>
+			TortoiseMerge is an Open Source project. That means you have full
+			read access to the source code of this program. You can browse it
+			on this link
+			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/">
+				<citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle>
+			</ulink>.
+			You will be prompted to enter username and password.
+			The username is <literal>guest</literal>, and the password must be left blank.
+			The most recent version (where we're currently working) is located under
+			<filename>/trunk/</filename>,
+			and the released versions are located under
+			<filename>/tags/</filename>.
+		</para>
+		<xi:include href="../wishlist.xml"/>
+	</sect1>
+	<!-- ================================================================= -->
+	<!-- ========================	SECTION	2 ============================ -->
+	<!-- ================================================================= -->
+	<sect1 id="tme-preface-acknowledgements">
+		<title>Acknowledgments</title>
+		<para>
+			<variablelist>
+				<varlistentry>
+					<term>
+						Stefan Küng
+					</term>
+					<listitem>
+						<para>
+							for the hard work on TortoiseMerge
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						Lübbe Onken
+					</term>
+					<listitem>
+						<para>
+							for the beautiful icons, logo, bug hunting and
+							taking care of the documentation
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						The Tigris Style project
+					</term>
+					<listitem>
+						<para>
+							for some of the styles which are reused in this
+							documentation
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						Our Contributors
+					</term>
+					<listitem>
+						<para>
+							for the patches, bug reports and new ideas, and for
+							helping others by answering questions on our mailing list.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						Our Donators
+					</term>
+					<listitem>
+						<para>
+							for many hours of joy with the music they sent us
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+	<graphic srccredit="hide" fileref="images/background.png" />
+	</sect1>
+</preface>

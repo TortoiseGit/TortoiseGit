@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-general">
+	<title>Getting Started</title>
+	<sect2 id="tsvn-dug-general-icons">
+		<title>Icon Overlays</title>
+		<para>
+			<figure id="tsvn-dug-general-dia-icons">
+				<title>Explorer showing icon overlays</title>
+				<graphic fileref="../images/Overlays.png"/>
+			</figure>
+			One of the most visible features of TortoiseSVN is the icon
+			overlays which appear on files in your working copy. These
+			show you at a glance which of your files have been modified.
+			Refer to <xref linkend="tsvn-dug-wcstatus-1"/> to find out
+			what the different overlays represent.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-general-menu">
+		<title>Context Menus</title>
+		<indexterm>
+			<primary>context menu</primary>
+		</indexterm>
+		<indexterm>
+			<primary>right-click</primary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-context-dir-control">
+				<title>Context menu for a directory under version control</title>
+				<graphic fileref="../images/ContextMenuDirControl.png"/>
+			</figure>
+			All TortoiseSVN commands are invoked from the context menu of the windows
+			explorer. Most are directly visible, when you <action>right click</action>
+			on a file or folder. The commands that are available depend on whether the
+			file or folder or its parent folder is under version control or not.
+			You can also see the TortoiseSVN menu as part of the Explorer file menu.
+		</para>
+		<tip>
+			<para>
+				Some commands which are very rarely used are only available in the
+				extended context menu. To bring up the extended context menu, hold
+				down the <keycap>Shift</keycap> key when you <action>right-click</action>.
+			</para>
+		</tip>
+		<para>
+			In some cases you may see several TortoiseSVN entries. This is not a bug!
+			<figure id="tsvn-dug-explorer-file-menu">
+				<title>Explorer file menu for a shortcut in a versioned folder</title>
+				<graphic fileref="../images/ExplorerFileMenuFileShortcut.png"/>
+			</figure>
+			This example is for an unversioned shortcut within a versioned folder, and
+			in the Explorer file menu there are <emphasis>three</emphasis> entries
+			for TortoiseSVN. One is for the folder, one for the shortcut itself,
+			and the third for the object the shortcut is pointing to.
+			To help you distinguish between them, the icons have an indicator in the
+			lower right corner to show whether the menu entry is for a file,
+			a folder, a shortcut or for multiple selected items.
+		</para>
+		<para>
+			If you are using Windows 2000 you will find that the context menus are
+			shown as plain text, without the menu icons shown above. We are aware that
+			this was working in previous versions, but Microsoft has changed the way
+			its icon handlers work for Vista, requiring us to use a different display
+			method which unfortunately does not work on Windows 2000.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-general-drag">
+		<title>Drag and Drop</title>
+		<indexterm>
+			<primary>drag handler</primary>
+		</indexterm>
+		<indexterm>
+			<primary>drag-n-drop</primary>
+		</indexterm>
+		<indexterm>
+			<primary>right drag</primary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-right-drag">
+				<title>Right drag menu for a directory under version control</title>
+				<graphic fileref="../images/RightDragMenu.png"/>
+			</figure>
+			Other commands are available as drag handlers, when you <action>right drag</action>
+			files or folders to a new location inside working copies or when you 
+			<action>right drag</action> a non-versioned file or folder into a directory 
+			which is under version control.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-general-shortcuts">
+		<title>Common Shortcuts</title>
+		<para>
+			Some common operations have well-known Windows shortcuts, but do
+			not appear on buttons or in menus. If you can't work out how
+			to do something obvious, like refreshing a view, check here.
+			<variablelist>
+				<varlistentry>
+					<term>F1</term>
+					<listitem>
+						<para>
+							Help, of course.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>F5</term>
+					<listitem>
+						<para>
+							Refresh the current view. This is perhaps the single
+							most useful one-key command. For example ...
+							In Explorer this will refresh the icon overlays on your working copy.
+							In the commit dialog it will re-scan the working copy
+							to see what may need to be committed.
+							In the Revision Log dialog it will contact the repository
+							again to check for more recent changes.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Ctrl-A</term>
+					<listitem>
+						<para>
+							Select all. This can be used if you get an error message
+							and want to copy and paste into an email. Use Ctrl-A
+							to select the error message and then ...
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Ctrl-C</term>
+					<listitem>
+						<para>
+							... Copy the selected text.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-general-auth">
+		<title>Authentication</title>
+		<indexterm>
+			<primary>authentication</primary>
+		</indexterm>
+		<para>
+			If the repository that you are trying to access is password protected, an 
+			authentication Dialog will show up.
+			<figure id="tsvn-fig-authentication">
+				<title>Authentication Dialog</title>
+				<graphic fileref="../images/Authenticate.png"/>
+			</figure>
+			Enter your username and password. The checkbox will make TortoiseSVN
+			store the credentials in Subversion's default directory: 
+			<filename>%APPDATA%\Subversion\auth</filename> in three subdirectories:
+			<itemizedlist>
+				<listitem>
+					<para>
+						<filename>svn.simple</filename> contains credentials
+						for basic authentication (username/password).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<filename>svn.ssl.server</filename> contains
+						SSL server certificates.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<filename>svn.username</filename> contains credentials
+						for username-only authentication (no password needed).
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			If you want to clear the authentication cache for all
+			servers, you can do so from the <guilabel>Saved Data</guilabel> page
+			of TortoiseSVN's settings dialog. That button will clear all cached
+			authentication data from the Subversion <filename>auth</filename>
+			directories, as well as any authentication
+			data stored in the registry by earlier versions of TortoiseSVN.
+			Refer to <xref linkend="tsvn-dug-settings-saved-data"/>.
+		</para>
+		<para>
+			Some people like to have the authentication data deleted when they
+			log off Windows, or on shutdown. The way to do that is to use a shutdown
+			script to delete the <filename>%APPDATA%\Subversion\auth</filename>
+			directory, e.g.
+<screen>
+@echo off
+rmdir /s /q "%APPDATA%\Subversion\auth"
+</screen>
+			You can find a description of how to install such scripts at
+			<ulink url="http://www.windows-help-central.com/windows-shutdown-script.html">
+				<citetitle>windows-help-central.com</citetitle>
+			</ulink>.
+		</para>
+		<para>
+			For more information on how to set up your server for
+			authentication and access control, refer to
+			<xref linkend="tsvn-serversetup"/>
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-general-window-max">
+		<title>Maximizing Windows</title>
+		<indexterm>
+			<primary>maximize</primary>
+		</indexterm>
+		<para>
+			Many of TortoiseSVN's dialogs have a lot of information to display,
+			but it is often useful to maximize only the height, or only the width,
+			rather than maximizing to fill the screen. As a convenience, there are
+			shortcuts for this on the <guilabel>Maximize</guilabel> button.
+			Use the <action>middle mouse</action> button to maximize vertically,
+			and <action>right mouse</action> to maximize horizontally.
+		</para>
+	</sect2>
+</sect1>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
+<appendix id="tsvn-faq" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Frequently Asked Questions (FAQ)</title>
+	<simplesect>
+		<indexterm>
+			<primary>FAQ</primary>
+		</indexterm>
+		<para>
+			Because TortoiseSVN is being developed all the time
+			it is sometimes hard to keep the documentation completely
+			up to date. We maintain an  
+			<ulink url="http://tortoisesvn.tigris.org/faq.html">
+				<citetitle>online FAQ</citetitle>
+			</ulink>
+			which contains a selection of the questions we are asked
+			the most on the TortoiseSVN mailing lists
+			<email>dev@tortoisesvn.tigris.org</email> and
+			<email>users@tortoisesvn.tigris.org</email>.
+		</para>
+		<para>
+			We also maintain a project
+			<ulink url="http://issues.tortoisesvn.net">
+				<citetitle>Issue Tracker</citetitle>
+			</ulink>
+			which tells you about some of the things we have on our To-Do list,
+			and bugs which have already been fixed. If you think you have found
+			a bug, or want to request a new feature, check here first to see
+			if someone else got there before you.
+		</para>
+		<para>
+			If you have a question which is not answered anywhere
+			else, the best place to ask it is on one of the mailing lists.
+			<email>users@tortoisesvn.tigris.org</email> is the one to use
+			if you have questions about using TortoiseSVN.
+			If you want to help out with the development of TortoiseSVN,
+			then you should take part in discussions on
+			<email>dev@tortoisesvn.tigris.org</email>.
+		</para>
+	</simplesect>
+</appendix>
+<!--
+local variables: 
+sgml-parent-document: ("book.xml" "appendix")
+end:
+-->

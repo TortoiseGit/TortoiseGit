@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-main">
+	<?dbhh topicname="HIDD_SETTINGSMAIN"?>
+	<title>General Settings</title>
+	<indexterm>
+		<primary>sounds</primary>
+	</indexterm>
+	<para>
+		<figure id="tsvn-dug-settings-dia-main">
+			<title>The Settings Dialog, General Page</title>
+			<graphic fileref="../images/SettingsMain.png"/>
+		</figure>
+		This dialog allows you to specify your preferred language,
+		and the Subversion-specific settings.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>Language</term>
+			<listitem>
+				<para>
+					Selects your user interface language.
+					What else did you expect?
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Automatically check for newer versions every week</term>
+			<listitem>
+				<para>
+					If checked, TortoiseSVN will contact its download site once a week 
+					to see if there is a newer version of the program available.
+					Use <guibutton>Check now</guibutton> if you want an answer
+					right away. The new version will not be downloaded; you
+					simply receive an information dialog telling you that the
+					new version is available.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>System sounds</term>
+			<listitem>
+				<para>
+					TortoiseSVN has three custom sounds which are installed by default.
+					<itemizedlist>
+						<listitem>
+							<para>
+							Error
+							</para>
+							</listitem>
+						<listitem>
+							<para>
+							Notice
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+							Warning
+							</para>
+						</listitem>
+					</itemizedlist>
+					You can select different sounds (or turn these sounds
+					off completely) using the Windows Control Panel.
+					<guibutton>Configure</guibutton> is a shortcut to the Control Panel.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Global ignore pattern</term>
+			<listitem>
+				<indexterm>
+					<primary>exclude pattern</primary>
+				</indexterm>
+				<indexterm>
+					<primary>global ignore</primary>
+				</indexterm>
+				<para>
+					Global ignore patterns are used to prevent unversioned files from
+					showing up e.g. in the commit dialog. Files matching the
+					patterns are also ignored by an import.
+					Ignore files or directories by typing in the names or extensions.
+					Patterns are separated by spaces e.g.
+					<literal>bin obj *.bak *.~?? *.jar *.[Tt]mp</literal>.
+					These patterns should not include any path separators. Note also
+					that there is no way to differentiate between files and directories.
+					Read <xref linkend="tsvn-dug-ignore-glob"/> for more information
+					on the pattern-matching syntax.
+				</para>
+				<para>
+					Note that the ignore patterns you specify here will also
+					affect other Subversion clients running on your PC, including
+					the command line client.
+				</para>
+				<caution>
+					<para>
+					If you use the Subversion configuration file to set
+					a <literal>global-ignores</literal> pattern, it will
+					override the settings you make here. The Subversion
+					configuration file is accessed using the
+					<guibutton>Edit</guibutton> as described below.
+					</para>
+				</caution>
+				<para>
+					This ignore pattern will affect all your projects.
+					It is not versioned, so it will not affect other users.
+					By contrast you can also use the versioned
+					<literal>svn:ignore</literal> property to exclude
+					files or directories from version control. Read
+					<xref linkend="tsvn-dug-ignore"/>
+					for more information.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Set file dates to the <quote>last commit time</quote></term>
+			<listitem>
+				<para>
+					This option tells TortoiseSVN to set the file dates to
+					the last commit time when doing a checkout or an update.
+					Otherwise TortoiseSVN will use the current date.
+					If you are developing software it is generally best
+					to use the current date because build systems normally
+					look at the date stamps to decide which files need
+					compiling. If you use <quote>last commit time</quote> and revert
+					to an older file revision, your project may not compile
+					as you expect it to.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Subversion configuration file</term>
+			<listitem>
+				<para>
+					Use <guibutton>Edit</guibutton> to edit the 
+					Subversion configuration file directly.
+					Some settings cannot be modified directly by 
+					TortoiseSVN, and need to be set here instead.
+					For more information about the Subversion 
+					<filename>config</filename> file see the 
+					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html">
+						<citetitle>Runtime Configuration Area</citetitle>
+					</ulink>.
+					The section on 
+					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.props.html#svn.advanced.props.auto">
+						<citetitle>Automatic Property Setting</citetitle>
+					</ulink>
+					is of particular interest, and that is configured here.
+					Note that Subversion can read configuration information
+					from several places, and you need to know which one
+					takes priority. Refer to 
+					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html#svn.advanced.confarea.windows-registry">
+						<citetitle>Configuration and the Windows Registry</citetitle>
+					</ulink> to find out more.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Use <filename>_svn</filename> instead of <filename>.svn</filename> directories</term>
+			<listitem>
+				<para>
+					VS.NET when used with web projects can't handle the <literal>.svn</literal>
+					folders that Subversion uses to store its internal information.
+					This is not a bug in Subversion. The bug is in VS.NET and the frontpage
+					extensions it uses. Read <xref linkend="tsvn-dug-settings-asp-dot-net"/>
+					to find out more about this issue.
+				</para>
+				<para>
+					If you want to change the behaviour of Subversion and TortoiseSVN,
+					you can use this checkbox to set the environment variable which
+					controls this.
+				</para>
+				<para>
+					You should note that changing this option will not automatically
+					convert existing working copies to use the new admin directory.
+					You will have to do that yourself using a script (See our FAQ)
+					or simply check out a fresh working copy.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
+	<sect3 id="tsvn-dug-settings-look-feel">
+		<title>Context Menu Settings</title>
+		<?dbhh topicname="HIDD_SETTINGSLOOKANDFEEL"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-context">
+				<title>The Settings Dialog, Context Menu Page</title>
+				<graphic fileref="../images/SettingsContext.png"/>
+			</figure>
+			This page allows you to specify which of the TortoiseSVN context menu
+			entries will show up in the main context menu, and which will appear
+			in the TortoiseSVN submenu. By default most items are unchecked and
+			appear in the submenu.
+		</para>
+		<para>
+			There is a special case for <guilabel>Get Lock</guilabel>. You can of
+			course promote it to the top level using the list above, but as most
+			files don't need locking this just adds clutter. However, a file with
+			the <literal>svn:needs-lock</literal> property needs this action every
+			time it is edited, so in that case it is very useful to have at the top
+			level. Checking the box here means that when a file is selected which has
+			the <literal>svn:needs-lock</literal> property set,
+			<guilabel>Get Lock</guilabel> will always appear at the top level.
+		</para>
+		<para>
+			If there are some paths on your computer where you just don't want
+			TortoiseSVN's context menu to appear at all, you can list them in
+			the box at the bottom.
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-dialogs">
+		<title>TortoiseSVN Dialog Settings 1</title>
+		<?dbhh topicname="HIDD_SETTINGSDIALOGS"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-dialogs">
+				<title>The Settings Dialog, Dialogs 1 Page</title>
+				<graphic fileref="../images/SettingsDialog.png"/>
+			</figure>
+			This dialog allows you to configure some of TortoiseSVN's
+			dialogs the way you like them.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Default number of log messages</term>
+				<listitem>
+					<para>
+						Limits the number of log messages that TortoiseSVN
+						fetches when you first select
+						<menuchoice>
+							<guimenu>TortoiseSVN</guimenu>
+							<guimenuitem>Show Log</guimenuitem>
+						</menuchoice>
+						Useful for slow server connections. You can always use
+						<guibutton>Show All</guibutton> or
+						<guibutton>Next 100</guibutton> to get more messages.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Font for log messages</term>
+				<listitem>
+					<para>
+						Selects the font face and size used to display the log
+						message itself in the middle pane of the Revision Log
+						dialog, and when composing log messages in the Commit
+						dialog.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Short date / time format in log messages</term>
+				<listitem>
+					<para>
+						If the standard long messages use up too much 
+						space on your screen use the short format.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Can double-click in log list to compare with previous revision</term>
+				<listitem>
+					<para>
+						If you frequently find yourself comparing revisions in the top
+						pane of the log dialog, you can use this option to allow that
+						action on double-click. It is not enabled by default because
+						fetching the diff is often a long process, and many people
+						prefer to avoid the wait after an accidental double-click,
+						which is why this option is not enabled by default.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Progress Dialog</term>
+				<listitem>
+					<para>
+						TortoiseSVN can automatically close all progress dialogs 
+						when the action is finished without error. This setting
+						allows you to select the conditions for closing the
+						dialogs. The default (recommended) setting is
+						<guilabel>Close manually</guilabel>
+						which allows you to review all messages and check what
+						has happened. However, you may decide that you want to
+						ignore some types of message and have the dialog
+						close automatically if there are no critical changes.
+					</para>
+					<para>
+						<guilabel>Auto-close if no merges, adds or deletes</guilabel>
+						means that the progress dialog will close if there were
+						simple updates, but if changes from the repository were
+						merged with yours, or if any files were added or deleted,
+						the dialog will remain open. It will also stay open if
+						there were any conflicts or errors during the operation.
+					</para>
+					<para>
+						<guilabel>Auto-close if no merges, adds or deletes for
+						local operations</guilabel> means that the progress dialog
+						will close as for <guilabel>Auto-close if no merges, adds
+						or deletes</guilabel> but only for local operations like adding
+						files or reverting changes. For remote operations the
+						dialog will stay open.
+					</para>
+					<para>
+						<guilabel>Auto-close if no conflicts</guilabel>
+						relaxes the criteria further and will close the dialog
+						even if there were merges, adds or deletes. However,
+						if there were any conflicts or errors, the dialog
+						remains open.
+					</para>
+					<para>
+						<guilabel>Auto-close if no errors</guilabel>
+						always closes the dialog even if there were conflicts.
+						The only condition that keeps the dialog open is an
+						error condition, which occurs when Subversion is unable
+						to complete the task. For example, an update fails
+						because the server is inaccessible, or a commit fails
+						because the working copy is out-of-date.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Use recycle bin when reverting</term>
+				<listitem>
+					<para>
+						When you revert local modifications, your changes are
+						discarded. TortoiseSVN gives you an extra safety net by
+						sending the modified file to the recycle bin before
+						bringing back the pristine copy. If you prefer to
+						skip the recycle bin, uncheck this option.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Use URL of WC as the default <quote>From:</quote> URL</term>
+				<listitem>
+					<para>
+						In the merge dialog, the default behaviour is for the
+						<guilabel>From:</guilabel> URL to be remembered between
+						merges. However, some people like to perform merges from
+						many different points in their hierarchy, and find it easier
+						to start out with the URL of the current working copy.
+						This can then be edited to refer to a parallel path on
+						another branch.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Default checkout path</term>
+				<listitem>
+					<para>
+						You can specify the default path for checkouts. If you keep all
+						your checkouts in one place, it is useful to have the drive
+						and folder pre-filled so you only have to add the new folder name
+						to the end.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Default checkout URL</term>
+				<listitem>
+					<para>
+						You can also specify the default URL for checkouts. If you often
+						checkout sub-projects of some very large project, it can be useful
+						to have the URL pre-filled so you only have to add the sub-project
+						name to the end.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-dialogs-2">
+		<title>TortoiseSVN Dialog Settings 2</title>
+		<?dbhh topicname="HIDD_SETTINGSMISC"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-dialogs-2">
+				<title>The Settings Dialog, Dialogs 2 Page</title>
+				<graphic fileref="../images/SettingsDialog2.png"/>
+			</figure>
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Recurse into unversioned folders</term>
+				<listitem>
+					<para>
+						If this box is checked (default state), then whenever
+						the status of an unversioned folder is shown in the
+						<guilabel>Add</guilabel>,
+						<guilabel>Commit</guilabel> or
+						<guilabel>Check for Modifications</guilabel> dialog,
+						every child file and folder is also shown.
+						If you uncheck this box, only the unversioned parent is shown.
+						Unchecking reduces clutter in these dialogs. In that case if you
+						select an unversioned folder for Add, it is added recursively.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Use auto-completion of file paths and keywords</term>
+				<listitem>
+					<para>
+						The commit dialog includes a facility to parse the list
+						of filenames being committed. When you type the first 3
+						letters of an item in the list, the auto-completion
+						box pops up, and you can press Enter to complete the
+						filename. Check the box to enable this feature.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Timeout in seconds to stop the auto-completion parsing</term>
+				<listitem>
+					<para>
+						The auto-completion parser can be quite slow if there are a lot
+						of large files to check. This timeout stops the commit dialog
+						being held up for too long. If you are missing important
+						auto-completion information, you can extend the timeout.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Only use spellchecker when <literal>tsvn:projectlanguage</literal> is set</term>
+				<listitem>
+					<para>
+						If you don't wish to use the spellchecker for all commits,
+						check this box. The spellchecker will still be enabled where
+						the project properties require it.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Max. items to keep in the log message history</term>
+				<listitem>
+					<para>
+						When you type in a log message in the commit dialog, TortoiseSVN
+						stores it for possible re-use later. By default it will keep the
+						last 25 log messages for each repository, but you can customize
+						that number here.
+						If you have many different repositories, you may wish to
+						reduce this to avoid filling your registry.
+					</para>
+					<para>
+						Note that this setting applies only to messages that you type
+						in on this computer. It has nothing to do with the log cache.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Re-open commit and branch/tag dialog after a commit failed</term>
+				<listitem>
+					<para>
+						When a commit fails for some reason (working copy needs updating,
+						pre-commit hook rejects commit, network error, etc), you can select
+						this option to keep the commit dialog open ready to try again.
+						However, you should be aware that this can lead to problems.
+						If the failure means you need to update your working copy, and
+						that update leads to conflicts you must resolve those first.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Select items automatically</term>
+				<listitem>
+					<para>
+						The normal behaviour in the commit dialog is for all modified
+						(versioned) items to be selected for commit automatically.
+						If you prefer to start with nothing selected and pick the
+						items for commit manually, uncheck this box.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Contact the repository on startup</term>
+				<listitem>
+					<para>
+						The Check for Modifications dialog checks the working copy
+						by default, and only contacts the repository when you click
+						<guibutton>Check repository</guibutton>. If you always want
+						to check the repository, you can use this setting to make that
+						action happen automatically.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Show Lock dialog before locking files</term>
+				<listitem>
+					<para>
+						When you select one or more files and then use
+						<menuchoice>
+							<guimenu>TortoiseSVN</guimenu>
+							<guimenuitem>Lock</guimenuitem>
+						</menuchoice>
+						to take out a lock on those files, on some projects it is
+						customary to write a lock message explaining why you have
+						locked the files. If you do not use lock messages, you can
+						uncheck this box to skip that dialog and lock the files
+						immediately.
+					</para>
+					<para>
+						If you use the lock command on a folder, you are always
+						presented with the lock dialog as that also gives you the
+						option to select files for locking.
+					</para>
+					<para>
+						If your project is using the <literal>tsvn:lockmsgminsize</literal>
+						property, you will see the lock dialog regardless of this setting
+						because the project <emphasis>requires</emphasis> lock messages.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-colours">
+		<title>TortoiseSVN Colour Settings</title>
+		<?dbhh topicname="HIDD_SETTINGSCOLORS"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-colors">
+				<title>The Settings Dialog, Colours Page</title>
+				<graphic fileref="../images/SettingsColors.png"/>
+			</figure>
+			This dialog allows you to configure the text colours
+			used in TortoiseSVN's dialogs the way you like them.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Possible or real conflict / obstructed</term>
+				<listitem>
+					<para>
+						A conflict has occurred during update, or may occur during merge.
+						Update is obstructed by an existing unversioned file/folder of
+						the same name as a versioned one.
+					</para>
+					<para>
+						This colour is also used for error messages in the progress dialogs.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Added files</term>
+				<listitem>
+					<para>
+						Items added to the repository.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Missing / deleted / replaced</term>
+				<listitem>
+					<para>
+						Items deleted from the repository, missing from the working
+						copy, or deleted from the working copy and replaced with
+						another file of the same name.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Merged</term>
+				<listitem>
+					<para>
+						Changes from the repository successfully merged into the WC
+						without creating any conflicts.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Modified / copied</term>
+				<listitem>
+					<para>
+						Add with history, or paths copied in the repository.
+						Also used in the log dialog for entries which include
+						copied items.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Deleted node</term>
+				<listitem>
+					<para>
+						An item which has been deleted from the repository.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Added node</term>
+				<listitem>
+					<para>
+						An item which has been added to the repository, by an add, copy
+						or move operation.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Renamed node</term>
+				<listitem>
+					<para>
+						An item which has been renamed within the repository.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Replaced node</term>
+				<listitem>
+					<para>
+						The original item has been deleted and a new item with
+						the same name replaces it.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect3>
+</sect2>

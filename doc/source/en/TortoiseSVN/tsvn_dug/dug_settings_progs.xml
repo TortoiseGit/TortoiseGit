@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-progs">
+	<title>External Program Settings</title>
+	<para>
+		<figure id="tsvn-dug-settings-dia-5">
+			<title>The Settings Dialog, Diff Viewer Page</title>
+			<?dbhh topicname="HIDD_SETTINGSPROGSDIFF"?>
+			<graphic fileref="../images/SettingsProgs.png"/>
+		</figure>
+		Here you can define your own diff/merge programs that TortoiseSVN
+		should use. The default setting is to use TortoiseMerge
+		which is installed alongside TortoiseSVN.
+	</para>
+	<para>
+		Read <xref linkend="tsvn-dug-diff-tools"/> for a list of some of the
+		external diff/merge programs that people are using with TortoiseSVN.
+	</para>
+	<sect3 id="tsvn-dug-settings-Diff">
+		<title>Diff Viewer</title>
+		<?dbhh topicname="HIDD_SETTINGSPROGSDIFF"?>
+		<para>
+			An external diff program may be used for comparing different
+			revisions of files. The external program will need to
+			obtain the filenames from the command line, along with
+			any other command line options. TortoiseSVN uses
+			substitution parameters prefixed with <literal>%</literal>.
+			When it encounters one of these it will substitute the
+			appropriate value. The order of the parameters will depend
+			on the Diff program you use.
+			<variablelist>
+				<varlistentry>
+					<term condition="pot">%base</term>
+					<listitem>
+						<para>
+							The original file without your changes
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%bname</term>
+					<listitem>
+						<para>
+							The window title for the base file
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%mine</term>
+					<listitem>
+						<para>
+							Your own file, with your changes
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%yname</term>
+					<listitem>
+						<para>
+							The window title for your file
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			The window titles are not pure filenames.
+			TortoiseSVN treats that as a name to display and creates
+			the names accordingly. So e.g. if you're doing a
+			diff from a file in revision 123 with a file 
+			in your working copy, the names will be
+			<filename>filename : revision 123</filename>
+			and
+			<filename>filename : working copy</filename>
+		</para>
+		<para>
+			For example, with ExamDiff Pro:
+<screen>
+C:\Path-To\ExamDiff.exe %base %mine --left_display_name:%bname
+    --right_display_name:%yname
+</screen>
+			or with KDiff3:
+<screen>
+C:\Path-To\kdiff3.exe %base %mine --L1 %bname --L2 %yname
+</screen>
+			or with WinMerge:
+<screen>
+C:\Path-To\WinMerge.exe -e -ub -dl %bname -dr %yname %base %mine
+</screen>
+			or with Araxis:
+<screen>
+C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
+    %base %mine
+</screen>
+		</para>
+		<para>
+			If you use the <literal>svn:keywords</literal> property to
+			expand keywords, and in particular the <emphasis>revision</emphasis>
+			of a file, then there may be a difference between files which
+			is purely due to the current value of the keyword. Also if you use
+			<literal>svn:eol-style = native</literal> the BASE file will have
+			pure <literal>LF</literal> line endings whereas your file will
+			have <literal>CR-LF</literal> line endings. TortoiseSVN will normally hide
+			these differences automatically by first parsing the BASE file to
+			expand keywords and line endings before doing the diff operation.
+			However, this can take a long time with large files. If
+			<guilabel>Convert files when diffing against BASE</guilabel>
+			is unchecked then TortoiseSVN will skip pre-processing the files.
+		</para>
+		<para>
+			You can also specify a different diff tool to use on Subversion
+			properties. Since these tend to be short simple text strings, you
+			may want to use a simpler more compact viewer.
+		</para>
+		<para>
+			If you have configured an alternate diff tool, you can access
+			TortoiseMerge <emphasis>and</emphasis> the third party tool
+			from the context menus.
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Diff</guimenuitem>
+			</menuchoice>
+			uses the primary diff tool, and
+			<keycap>Shift</keycap>+
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Diff</guimenuitem>
+			</menuchoice>
+			uses the secondary diff tool.
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-Merge">
+		<title>Merge Tool</title>
+		<?dbhh topicname="HIDD_SETTINGSPROGSMERGE"?>
+		<para>
+			An external merge program used to resolve conflicted
+			files. Parameter substitution is used in the same way
+			as with the Diff Program.
+			<variablelist>
+				<varlistentry>
+					<term condition="pot">%base</term>
+					<listitem>
+						<para>
+							the original file without your or
+							the others changes
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%bname</term>
+					<listitem>
+						<para>
+							The window title for the base file
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%mine</term>
+					<listitem>
+						<para>
+							your own file, with your changes
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%yname</term>
+					<listitem>
+						<para>
+							The window title for your file
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%theirs</term>
+					<listitem>
+						<para>
+							the file as it is in the repository
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%tname</term>
+					<listitem>
+						<para>
+							The window title for the file in the repository
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%merged</term>
+					<listitem>
+						<para>
+							the conflicted file, the result of
+							the merge operation
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%mname</term>
+					<listitem>
+						<para>
+							The window title for the merged file
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			For example, with Perforce Merge:
+<screen>
+C:\Path-To\P4Merge.exe %base %theirs %mine %merged
+</screen>
+			or with KDiff3:
+<screen>
+C:\Path-To\kdiff3.exe %base %mine %theirs -o %merged
+    --L1 %bname --L2 %yname --L3 %tname
+</screen>
+			or with Araxis:
+<screen>
+C:\Path-To\compare.exe /max /wait /3 /title1:%tname /title2:%bname
+    /title3:%yname %theirs %base %mine %merged /a2
+</screen>
+			or with WinMerge (2.8 or later):
+<screen>
+C:\Path-To\WinMerge.exe %merged
+</screen>
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-Progs-Adv">
+		<title>Diff/Merge Advanced Settings</title>
+		<?dbhh topicname="HIDD_SETTINGSPROGSADV"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-6">
+				<title>The Settings Dialog, Diff/Merge Advanced Dialog</title>
+				<graphic fileref="../images/SettingsProgsAdv.png"/>
+			</figure>
+			In the advanced settings, you can define a different diff and merge
+			program for every file extension. For instance you could associate
+			Photoshop as the <quote>Diff</quote> Program for <filename>.jpg</filename> files :-)
+			You can also associate the <literal>svn:mime-type</literal> property
+			with a diff or merge program.
+		</para>
+		<para>
+			To associate using a file extension, you need to specify the extension.
+			Use <literal>.bmp</literal> to describe Windows bitmap files.
+			To associate using the <literal>svn:mime-type</literal> property, specify
+			the mime type, including a slash, for example
+			<literal>text/xml</literal>.
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-Patch">
+		<title>Unified Diff Viewer</title>
+		<?dbhh topicname="HIDD_SETTINGSPROGSUNIDIFF"?>
+		<para>
+			A viewer program for unified-diff files (patch files).
+			No parameters are required.
+			The <guilabel>Default</guilabel> option is to check for
+			a file association for <filename>.diff</filename> files,
+			and then for <filename>.txt</filename> files.
+			If you don't have a viewer for <filename>.diff</filename>
+			files, you will most likely get NotePad.
+		</para>
+		<para>
+			The original Windows NotePad program does not behave
+			well on files which do not have standard CR-LF
+			line-endings. Since most unified diff files have pure
+			LF line-endings, they do not view well in NotePad.
+			However, you can download a free NotePad replacement
+			<ulink url="http://www.flos-freeware.ch/notepad2.html">
+				<citetitle>Notepad2</citetitle>
+			</ulink>
+			which not only displays the line-endings correctly,
+			but also colour codes the added and removed lines.
+		</para>
+	</sect3>
+</sect2>

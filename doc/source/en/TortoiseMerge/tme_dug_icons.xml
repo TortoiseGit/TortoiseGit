@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<sect1 id="tmerge-dug-icons">
+	<title>Line Status Icons</title>
+	<para>
+		Changed lines are marked with an icon to indicate what type of change
+		has occurred.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_lineadded.png"/>
+		A line has been added.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_lineremoved.png"/>
+		A line has been removed.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_lineequal.png"/>
+		A change has been undone by reverting to the original content of the line.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_linewhitespace.png"/>
+		This line contains only whitespace changes. Where several consecutive lines
+		are marked, the paragraph may have been re-wrapped, causing words to shuffle
+		onto adjacent lines.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_lineedited.png"/>
+		A line has been edited by hand, using TortoiseMerge as a text editor.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_lineconflicted.png"/>
+		This line is in conflict.
+	</para>
+	<para>
+		<graphic fileref="images/TMerge_lineconflictedignored.png"/>
+		This line is conflicted, but the effect is hidden by whitespace or line-ending
+		settings.
+	</para>
+</sect1>

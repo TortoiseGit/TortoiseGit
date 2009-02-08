@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-cleanup">
+	<title>Cleanup</title>
+	<indexterm>
+		<primary>cleanup</primary>
+	</indexterm>
+	<para>
+		If a Subversion command cannot complete successfully, perhaps
+		due to server problems, your working copy can be left in an
+		inconsistent state. In that case you need to use
+		<menuchoice>
+			<guimenu>TortoiseSVN</guimenu>
+			<guimenuitem>Cleanup</guimenuitem>
+		</menuchoice>
+		on the folder. It is a good idea to do this at the top level
+		of the working copy.
+	</para>
+	<para>
+		Cleanup has another useful side effect. If a file date changes
+		but its content doesn't, Subversion cannot tell whether it has
+		really changed except by doing a byte-by-byte comparison with
+		the pristine copy. If you have a lot of files in this state it
+		makes acquiring status very slow, which will make many dialogs
+		slow to respond. Executing a Cleanup on your working copy will
+		repair these <quote>broken</quote> timestamps and restore
+		status checks to full speed.
+	</para>
+	<tip>
+		<title>Use Commit Timestamps</title>
+		<para>
+			Some earlier releases of Subversion were affected by a bug
+			which caused timestamp mismatch when you check out with
+			the <guilabel>Use commit timestamps</guilabel> option
+			checked. Use the Cleanup command to speed up these
+			working copies.
+		</para>
+	</tip>
+</sect1>

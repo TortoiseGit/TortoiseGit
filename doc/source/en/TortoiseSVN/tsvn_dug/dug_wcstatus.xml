@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-wcstatus">
+	<title>Getting Status Information</title>
+	<indexterm>
+		<primary>status</primary>
+	</indexterm>
+	<indexterm>
+		<primary>view changes</primary>
+	</indexterm>
+	<indexterm>
+		<primary>working copy status</primary>
+	</indexterm>
+	<para>
+		While you are working on your working copy you often need to know
+		which files you have changed/added/removed or renamed, or even which
+		files got changed and committed by others.
+	</para>
+	<sect2 id="tsvn-dug-wcstatus-1">
+		<title>Icon Overlays</title>
+		<indexterm>
+			<primary>overlays</primary>
+		</indexterm>
+		<indexterm>
+			<primary>icons</primary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-wcstatus-dia-1">
+				<title>Explorer showing icon overlays</title>
+				<graphic fileref="../images/Overlays.png"/>
+			</figure>
+		</para>
+		<para>
+			Now that you have checked out a working copy from a Subversion
+			repository you can see your files in the windows explorer with
+			changed icons. This is one of the reasons why TortoiseSVN is so
+			popular. TortoiseSVN adds a so called overlay icon to each
+			file icon which overlaps the original file icon. Depending on
+			the Subversion status of the file the overlay icon is different.
+		</para>
+		<para>
+			<graphic fileref="../images/InSubVersionIcon.png"/>
+			A fresh checked out working copy has a green checkmark as overlay.
+			That means the Subversion status is <emphasis>normal</emphasis>.
+		</para>
+		<para>
+			<graphic fileref="../images/ModifiedIcon.png"/>
+			As soon as you start editing a file,
+			the status changes to <emphasis>modified</emphasis>
+			and the icon overlay then changes to a red exclamation
+			mark. That way you can easily see which files were changed
+			since you last updated your working copy and need to be committed.
+		</para>
+		<para>
+			<graphic fileref="../images/ConflictIcon.png"/>
+			If during an update a <emphasis>conflict</emphasis> occurs then
+			the icon changes to a yellow exclamation mark.
+		</para>
+		<para>
+			<graphic fileref="../images/ReadOnlyIcon.png"/> 
+			If you have set the <literal>svn:needs-lock</literal> property on a file,
+			Subversion makes that file read-only until you get a lock on that file.
+			Such files have this overlay to indicate that you have to get a lock
+			first before you can edit that file.
+		</para>
+		<para>
+			<graphic fileref="../images/LockedIcon.png"/> 
+			If you hold a lock on a file, and the Subversion status is
+			<emphasis>normal</emphasis>, this icon overlay reminds you that you
+			should release the lock if you are not using it to allow others to
+			commit their changes to the file.
+		</para>
+		<para>
+			<graphic fileref="../images/DeletedIcon.png"/> 
+			This icon shows you that some files or folders inside the current folder
+			have been scheduled to be <emphasis>deleted</emphasis> from version control
+			or a file under version control is missing in a folder.
+		</para>
+		<para>
+			<graphic fileref="../images/AddedIcon.png"/> 
+			The plus sign tells you that a file or folder has been scheduled to be
+			<emphasis>added</emphasis> to version control.
+		</para>
+		<para>
+			<graphic fileref="../images/IgnoredIcon.png"/> 
+			The bar sign tells you that a file or folder is
+			<emphasis>ignored</emphasis> for version control purposes.
+			This overlay is optional.
+		</para>
+		<para>
+			<graphic fileref="../images/UnversionedIcon.png"/> 
+			This icon shows files and folders which are not under version control,
+			but have not been ignored.
+			This overlay is optional.
+		</para>
+		<para>
+			In fact, you may find that not all of these icons are used on your system.
+			This is because the number of overlays allowed by Windows is very limited
+			and if you are also using an old version of TortoiseCVS, then there are
+			not enough overlay slots available.
+			TortoiseSVN tries to be a <quote>Good Citizen (TM)</quote>
+			and limits its use of overlays to give other apps a chance too.
+		</para>
+		<para>
+			Now that there are more Tortoise clients around (TortoiseCVS, TortoiseHG, ...)
+			the icon limit becomes a real problem. To work around this, the TortoiseSVN
+			project introduced a common shared icon set, loaded as a DLL, which can be
+			used by all Tortoise clients. Check with your client provider to see if
+			this has been integrated yet :-)
+		</para>
+		<para>
+			For a description of how icon overlays correspond to Subversion
+			status and other technical details, read
+			<xref linkend="tsvn-app-internals-overlays"/>.
+		</para>
+	</sect2>
+	<sect2>
+		<title>TortoiseSVN Columns In Windows Explorer</title>
+		<indexterm>
+			<primary>Explorer Columns</primary>
+		</indexterm>
+		<para>
+			The same information which is available from the icon overlays
+			(and much more) can be displayed as additional columns in
+			Windows Explorer's Details View.
+		</para>
+		<para>
+			Simply right click on one of the headings of a column, choose
+			<guimenuitem>More...</guimenuitem> from the context menu displayed. A
+			dialog will appear where you can specify the columns and their
+			order, which is displayed in the <quote>Detailed View</quote>. Scroll down
+			until the entries starting with SVN come into view. Check the
+			ones you would like to have displayed and close the dialog by
+			pressing <guibutton>OK</guibutton>. The columns will be appended
+			to the right of those currently displayed. You can reorder them by
+			drag and drop, or resize them, so that they fit your needs.
+		</para>
+		<important>
+			<para>The additional columns in the Windows Explorer are not
+			available on Vista, since Microsoft decided to not allow such
+			columns for <emphasis>all</emphasis> files anymore but only
+			for specific file types.</para>
+		</important>
+		<tip>
+			<para>
+				If you want the current layout to be displayed in all your
+				working copies, you may want to make this the default view.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-wcstatus-2">
+		<?dbhh topicname="HIDD_CHANGEDFILES"?>
+		<title>Local and Remote Status</title>
+		<indexterm>
+			<primary>status</primary>
+		</indexterm>
+		<indexterm>
+			<primary>modifications</primary>
+		</indexterm>
+		<para>
+			<figure id="tsvn-dug-wcstatus-dia-2">
+				<title>Check for Modifications</title>
+				<graphic fileref="../images/RepoStatus.png"/>
+			</figure>
+			It's often very useful to know which files you have
+			changed and also which files got changed and
+			committed by others. That's where the command
+			<menuchoice>
+				<guimenu>TortoiseSVN</guimenu>
+				<guimenuitem>Check For Modifications...</guimenuitem>
+			</menuchoice>
+			comes in handy.
+			This dialog will show you every file that has changed in any
+			way in your working copy, as well as any unversioned files
+			you may have.
+		</para>
+		<para>
+			If you click on the
+			<guibutton>Check Repository</guibutton> then you can also
+			look for changes in the repository. That way
+			you can check before an update if there's a possible conflict.
+			You can also update selected files from the repository without
+			updating the whole folder. By default, the <guibutton>Check Repository</guibutton>
+			button only fetches the remote status with the checkout depth
+			of the working copy. If you want to see all files and folders
+			in the repository, even those you have not checked out, then you
+			have to hold down the <keycap>Shift</keycap> key when you 
+			click on the <guibutton>Check Repository</guibutton> button.
+		</para>
+		<para>
+			The dialog uses colour coding to highlight the status.
+			<variablelist>
+				<varlistentry>
+					<term>Blue</term>
+					<listitem>
+						<para>
+						Locally modified items.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Purple</term>
+					<listitem>
+						<para>
+						Added items.
+						Items which have been added with history have a
+						<literal>+</literal> sign in the
+						<guilabel>Text status</guilabel> column,
+						and a tooltip shows where the item was copied from.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Dark red</term>
+					<listitem>
+						<para>
+						Deleted or missing items.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Green</term>
+					<listitem>
+						<para>
+						Items modified locally and in the repository.
+						The changes will be merged on update.
+						These <emphasis>may</emphasis> produce conflicts on update.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Bright red</term>
+					<listitem>
+						<para>
+						Items modified locally and deleted in repository,
+						or modified in repository and deleted locally.
+						These <emphasis>will</emphasis> produce conflicts on update.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Black</term>
+					<listitem>
+						<para>
+						Unchanged and unversioned items.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			This is the default colour scheme, but you can customise those colours
+			using the settings dialog.
+			Read <xref linkend="tsvn-dug-settings-colours"/> for more information.
+		</para>
+		<para>
+			Items which have been switched to a different repository path are
+			also indicated using an <literal>(s)</literal> marker. You may have
+			switched something while working on a branch and forgotten to switch
+			back to trunk. This is your warning sign!
+		</para>
+		<para>
+			From the context menu of the dialog you can show a diff of the
+			changes. Check the local changes <emphasis>you</emphasis> made using
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Compare with Base</guimenuitem>
+			</menuchoice>.
+			Check the changes in the repository made by others using
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Show Differences as Unified Diff</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			You can also revert changes in individual files. If you have deleted
+			a file accidentally, it will show up as <emphasis>Missing</emphasis>
+			and you can use <emphasis>Revert</emphasis> to recover it.
+		</para>
+		<para>
+			Unversioned and ignored files can be sent to the recycle bin from here using
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Delete</guimenuitem>
+			</menuchoice>.
+			If you want to delete files permanently (bypassing the recycle bin) hold
+			the <keycap>Shift</keycap> key while clicking on <guilabel>Delete</guilabel>.
+		</para>
+		<para>
+			If you want to examine a file in detail, you can drag it from here
+			into another application such as a text editor or IDE.
+		</para>
+		<para>
+			The columns are customizable. If you
+			<action>right click</action> on any column header you will see a
+			context menu allowing you to select which columns are displayed.
+			You can also change column width by using the drag handle which
+			appears when you move the mouse over a column boundary. These
+			customizations are preserved, so you will see the same headings
+			next time.
+		</para>
+		<para>
+			If you are working on several unrelated tasks at once, you can also
+			group files together into changelists.
+			Read <xref linkend="tsvn-dug-commit-changelists"/> for more information.
+		</para>
+		<para>
+			At the bottom of the dialog you can see a summary of the range of repository
+			revisions in use in your working copy. These are the <emphasis>commit</emphasis>
+			revisions, not the <emphasis>update</emphasis> revisions; they represent the
+			range of revisions where these files were last committed, not the revisions
+			to which they have been updated. Note that the revision range shown applies
+			only to the items displayed, not to the entire working copy. If you want to
+			see that information for the whole working copy you must check the
+			<guilabel>Show unmodified files</guilabel> checkbox.
+		</para>
+		<tip>
+			<para>
+				If you want a flat view of your working copy, i.e. showing all files
+				and folders at every level of the folder hierarchy, then the
+				<guilabel>Check for Modifications</guilabel> dialog is the
+				easiest way to achieve that. Just check the
+				<guilabel>Show unmodified files</guilabel> checkbox to show
+				all files in your working copy.
+			</para>
+		</tip>
+		<tip>
+			<title>Repairing External Renames</title>
+			<para>
+				Sometimes files get renamed outside of Subversion, and they show up
+				in the file list as a missing file and an unversioned file. To avoid
+				losing the history you need to notify Subversion about the connection.
+				Simply select both the old name (missing) and the new name (unversioned)
+				and use
+				<menuchoice>
+					<guimenu>Context Menu</guimenu>
+					<guimenuitem>Repair Move</guimenuitem>
+				</menuchoice>
+				to pair the two files as a rename.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-diffing">
+		<title>Viewing Diffs</title>
+		<indexterm>
+			<primary>diffing</primary>
+		</indexterm>
+		<para>
+			Often you want to look inside your files, to have a look at what
+			you've changed. You can accomplish this by selecting a file which
+			has changed, and selecting <guimenuitem>Diff</guimenuitem> from
+			TortoiseSVN's context menu. This starts the external
+			diff-viewer, which will then compare the current file with the
+			pristine copy (<literal>BASE</literal> revision), which was stored
+			after the last checkout or update.
+		</para>
+		<tip>
+			<para>
+				Even when not inside a working copy or when you have multiple
+				versions of the file lying around, you can still display diffs:
+			</para>
+			<para>
+				Select the two files you want to compare in explorer
+				(e.g. using <keycap>Ctrl</keycap> and the mouse) and
+				choose <guimenuitem>Diff</guimenuitem> from TortoiseSVN's
+				context menu. The file clicked last (the one with the focus,
+				i.e. the dotted rectangle) will be regarded as the later
+				one. 
+			</para>
+		</tip>
+	</sect2>
+</sect1>

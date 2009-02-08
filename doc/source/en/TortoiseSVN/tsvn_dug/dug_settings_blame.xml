@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-tortoiseblame">
+	<?dbhh topicname="HIDD_SETTINGSTBLAME"?>
+	<title>TortoiseBlame Settings</title>
+	<para>
+		<figure id="tsvn-dug-settings-dia-blame">
+			<title>The Settings Dialog, TortoiseBlame Page</title>
+			<graphic fileref="../images/SettingsBlame.png"/>
+		</figure>
+		The settings used by TortoiseBlame are controlled from the
+		main context menu, not directly with TortoiseBlame itself.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>Colors</term>
+			<listitem>
+				<para>
+					TortoiseBlame can use the background colour to indicate the age
+					of lines in a file. You set the endpoints by specifying the
+					colours for the newest and oldest revisions, and TortoiseBlame
+					uses a linear interpolation between these colours according to
+					the repository revision indicated for each line.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Font</term>
+			<listitem>
+				<para>
+					You can select the font used to display the text, and the point
+					size to use. This applies both to the file content, and to the
+					author and revision information shown in the left pane.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Tabs</term>
+			<listitem>
+				<para>
+					Defines how many spaces to use for expansion when a tab character
+					is found in the file content.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
+</sect2>

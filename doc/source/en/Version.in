@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TRANSLATORS: "$MajorVersion$.$MinorVersion$.$MicroVersion$" is a literal value and should not be translated -->
+<subtitle>Version $MajorVersion$.$MinorVersion$.$MicroVersion$</subtitle>

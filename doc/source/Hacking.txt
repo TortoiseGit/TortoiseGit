@@ -1,0 +1,196 @@
+Hacking the Docs
+================
+
+While you are working on the docs, please oberve the following rules for your markup.
+The markup is processed by XSL Transformations, FO Processors and the like. Always
+remember that you define the structure and leave the formatting to the processors
+For more information about tags in docbook read http://www.docbook.org/tdg/index.html.
+If you want to translate the german or french docs you have to enable UTF-8 BOM's in 
+your editor.
+
+Rules
+=====
+- Separate XML tags from content
+  In most cases, the XML tag should be included on a line by itself,
+  and the content should be indented, eg.
+  <para>
+  	Contents of the paragraph, which
+  	may span several lines or just one.
+  </para>
+  Some tags are only used for a few words, eg. <emphasis> and these
+  may be included inline. But please do not break such a tag over
+  a line boundary. eg <emphasis>NOT
+  </emphasis> like this.
+  
+- Use leading tabs, not spaces
+  Please set up your editor NOT to expand tabs to spaces. If anyone
+  else views the file with different tab settings it will look a mess.
+  Recommended tab setting for viewing is 4 spaces.
+
+- Avoid very long lines
+  Most of the files have kept line length to within 80 characters when
+  viewed at tabstop=4, although this is not rigidly adhered to. Using
+  very long lines just makes the file harder to read and edit.
+
+- Emphasis
+  Don't use capitalization to emphasize,
+  use <emphasis>Important</emphasis> instead
+
+- Key / Mouse Actions
+  If you want to say: "Press Alt-A to abort", use the following markup:
+  Click on <action>ALT+A</action> to abort
+  If you want to say: "Do a right click to abort", use the following markup:
+  Do a <action>right click</action> to abort
+  For consistency, please use 'left click' instead of 'left-click' or
+  'leftclick'. The same applies to 'right click' and 'double click'.
+
+- Gui Buttons
+  If you want to say: "Click on OK to continue", use the following markup:
+  Click on <guibutton>OK</guibutton> to continue
+
+- Gui Menus
+  If you want to say: "Select Commit from the TortoiseSVN menu", use the following
+  markup, with layout shown:
+  Select
+  <menuchoice>
+  	<guimenu>TortoiseSVN</guimenu>
+  	<guimenuitem>Commit</guimenuitem>
+  </menuchoice>
+
+  For context menus within TSVN dialogs, use this markup:
+  <menuchoice>
+  	<guimenu>Context Menu</guimenu>
+  	<guimenuitem>Commit</guimenuitem>
+  </menuchoice>
+  
+- Gui Labels / Fields
+  If you want to say: "Select the URL from the URL Combobox", use the following markup:
+  "Select the URL from the <guilabel>URL</guilabel> Combobox"
+
+- User input, system output and properties are marked with <literal> like: 
+  "Enter <literal>something</literal> to continue"
+  "The <literal>svn:ignore</literal> property"
+
+- Typing on a command line is marked with <command> like:
+  "Enter <command>DIR/W</command> at the command prompt.
+
+- Multiline input/output or file content is marked using <screen>.
+  Note that any leading spaces are also included in the formatting,
+  so this text normally appears hard against the left margin in the
+  XML source file. The <screen> tag should also be left aligned. eg.
+  the content of the Apache config file is shown as follows:
+<screen>
+&lt;Location /svn&gt;
+DAV svn
+SVNParentPath D:\SVN
+AuthType Basic
+AuthName "Subversion repositories"
+AuthUserFile passwd
+#AuthzSVNAccessFile svnaccessfile
+Require valid-user
+&lt;/Location&gt;
+</screen>
+
+- Figures (graphics) should use a format like this:
+  <figure id="tsvn-DUG-settings-dia-1">
+	<title>The Settings Dialog, Main Tab</title>
+	<graphic fileref="images/SettingsMain.png"/>
+  </figure>
+
+- Links:
+  Use this <xref linkend="tsvn-DUG-import-4"/> to reference internal sections.
+  Use ulink for external links. This should be formatted as
+  as shown below:
+  <ulink url="http://svnbook.red-bean.com/">
+  	<citetitle>SVN book</citetitle>
+  </ulink>.
+
+- A list of bullet points is declared as follows:
+  <itemizedlist>
+  	<listitem>
+  		paragraphs in point 1
+  	</listitem>
+  	<listitem>
+  		paragraphs in point 2
+  	</listitem>
+  </itemizedlist>
+  Each paragraph should be enclosed in <para> tags.
+
+- A numbered list is declared as follows:
+  <orderedlist>
+  	<listitem>
+  		paragraphs in point 1
+  	</listitem>
+  	<listitem>
+  		paragraphs in point 2
+  	</listitem>
+  </orderedlist>
+  Each paragraph should be enclosed in <para> tags.
+
+- A list with headings for each item is declared as follows:
+  <variablelist>
+  	<varlistentry>
+  		<term>First heading</term>
+  		<listitem>
+  			paragraphs in point 1
+  		</listitem>
+  	</varlistentry>
+  	<varlistentry>
+  		<term>Second heading</term>
+  		<listitem>
+  			paragraphs in point 2
+  		</listitem>
+  	</varlistentry>
+  </variablelist>
+  Each paragraph should be enclosed in <para> tags.
+
+- Mark Filenames with <filename>Hacking.txt</filename>
+  Note this also applies to executables when the reference includes the .exe extension.
+
+- Mark URLS with <systemitem class="url">file:///C:/SVNRepository/</systemitem>
+
+- Place markers where you want an index entry to point to:
+  <indexterm>
+  	<primary>text to go in index</primary>
+  </indexterm>
+
+- Avoid quotes (" or ').
+  Use <literal> instead, because normally you refer to input or output text.
+  If you really want to quote something, use <quote>Hello, world</quote>.
+  Using literal quote characters can cause 'overflow' errors during
+  formatting.
+
+- Don't use literal '<' and '>' marks
+  The XML interpreter will get confused as they look like tag chars.
+  Use &lt; for < and &gt; for >
+  
+Use the out of line info boxes:
+===============================
+like:
+<important>
+<tip>
+<caution>
+<warning>
+
+if you want to inform the reader about something special.
+
+Special markers for translation
+===============================
+Some tags are marked like this:
+<entry condition="pot">:about</entry>
+
+The condition="pot" prevents the strings from being extracted into the .pot file,
+so that nobody translates them. Mostly these strings will have some feature
+such as a leading colon, slash, dot or dollar. Those chars have to stay there to
+prevent these strings from being translated if the po file "by chance" contains
+a matching translation.
+
+Be careful using this attribute. It must only be applied at paragraph level,
+not inline, otherwise the translation process will break.
+
+Add To this Document
+====================
+Please add missing stuff to these docs and correct errors.
+
+Cheers
+-Lübbe

@@ -1,0 +1,260 @@
+/************************************************************************/
+/* Generic style-sheet for the documentation                            */
+/* in Windows CHM Help File format                                      */
+/*                                                                      */
+/* If you prefer sans-serif fonts, just replace all the instances of    */
+/* 'times new roman,times,serif' with 'arial,helvetica,sans-serif'.     */
+/************************************************************************/
+
+
+/* Generic tag-level style definitions */
+body {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	background: #fff;
+	color: #000;
+	margin: 0;
+	padding: 0;
+}
+
+PRE
+{
+    font-size: 10pt;
+}
+TT
+{
+    font-size: 12pt;
+}
+
+TT.Filename, TT.Literal{
+	font-weight: bold;
+}
+
+a {
+	color: blue;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: black;
+}
+
+IMG {
+  border: none;
+}
+
+div.figure {
+	padding: 4px;
+	clear: both;
+	text-align: center;
+	margin: 0px 0px 5px 10px;
+}
+
+div.figure p {
+	margin-top: 2px;
+	margin-bottom: 0px;
+	font-size: 80%;
+	text-align: center;
+}
+
+.author
+{
+    font-size: 12pt;
+    font-style: italic;
+    font-weight: normal;
+    color: black;
+}
+
+div.navheader, 
+div.navfooter {
+  width:100%; filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#809BC8', endColorstr='#FFFFFF', gradientType='0');
+  color: white;
+  clear: both;
+  border: 1px solid black;
+  border-left: 0;
+  border-right: 0;
+}
+
+div.navheader table th {
+	font-size: medium;
+}
+
+/* normal text in the footer */
+div.navfooter table td {
+	color: black;
+}
+    
+div.navheader table td a,
+div.navfooter table td a {
+	color: #black;
+	text-decoration: none;
+}
+
+/* links in header and footer */
+div.navheader table td a:hover,
+div.navfooter table td a:hover {
+	text-decoration: underline;
+	background-color: transparent;
+}
+
+div.navheader table td a:visited,
+div.navfooter table td a:visited {
+	color: black;
+}
+
+div.navheader hr, div.navfooter hr{
+	display: none;
+}
+
+div.book,
+div.chapter,
+div.sect1, 
+div.sect2,
+div.sect3,
+div.preface,
+div.appendix, 
+div.section, 
+div.glossary {
+	margin: 20px;
+}
+
+/* table of contents */
+div.toc {
+	border: 1px solid black;
+	padding: 0px 10px;
+	background-color: #fff9cd;
+	color: black;
+	margin-bottom: 1cm;
+	width: 80%;
+}
+
+div.toc b { font-size: 140%; }
+
+div.toc a {
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+/* toc definitions for different sections and chapters */
+div.book div.toc {
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+	font-size: medium;
+}
+
+div.table title { background-color: #FFFFFF; width:100%; border: 0px; }
+div.table p { text-align: center; }
+div.table tr td p { text-align: left; }
+div.table table {
+	background-color: #7099C5;
+	font-size: 90%;
+	border-width: 0px;
+}
+div.table th {
+	text-align: center;
+	color: white;
+	background-color: #7099C5;
+	padding: 1px 4px 1px 4px;
+	border: none;
+	vertical-align: top;
+}
+div.table tr {
+	background-color: #f0f0ff;
+}
+div.table td {
+	vertical-align: top;
+	padding: 2px 4px 1px 4px;
+	border: none;
+}
+
+.caution, .important, .note, .tip, .warning {
+	border-top: 5px solid;
+	border-left: 1px solid;
+	margin: 1em 0 0 1em;
+	padding: 5px 0 10px 0;
+	width: 90%;
+	clear: both;
+}
+
+.action, .guibutton, .guimenu, .guimenuitem {
+  font-weight: bold;
+}
+
+.guibutton, .guimenu, .guimenuitem {
+  padding: 0px 0.5em 0px 0.5em;
+}
+
+.guimenu, .guimenuitem, .guilabel {
+/*	font-size: 10pt; */
+	background-color: #EEE;
+}
+
+.guibutton {
+	font-size: 10pt;
+	border-width: 1px 2px 2px 1px;
+	border-style: solid;
+	background: #eee;
+	border-color: #ddd #bbb #bbb #ddd;
+}
+
+.sidebar {
+	background-color: #DCDCDC;
+	padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.tip {
+	border-color: #090;
+}
+
+.note {
+	border-color: #069;
+}
+
+.important {
+	border-color: #069;
+}
+
+.caution {
+	border-color: #c60;
+}
+
+.warning {
+	border-color: #900;
+}
+
+.term { border-bottom: 1px dotted black; }
+
+.screen {
+	font-family: monospace;
+	font-size: 1em;
+	display: block;
+	padding: 10px;
+	border: 1px solid #bbb;
+	background-color: #eee;
+	color: #000;   
+	overflow: auto;
+	border-radius: 2.5px;
+	-moz-border-radius: 2.5px;
+	margin: 0.5em 2em;
+}
+
+.programlisting {
+	font-family: monospace;
+	font-size: 1em;
+	display: block;
+	padding: 10px;
+	border: 1px solid #bbb;
+	background-color: #ddd;
+	color: #000;   
+	overflow: auto;
+	border-radius: 2.5px;
+	-moz-border-radius: 2.5px;
+	margin: 0.5em 2em;
+}
+
+.filename
+{
+font-family: arial,helvetica,sans-serif;
+font-style: italic;
+}

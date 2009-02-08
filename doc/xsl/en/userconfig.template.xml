@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop version="1.0">
+<!--<!DOCTYPE configuration SYSTEM "config.dtd">-->
+<!--
+     this file contains templates which allow an user easy
+     configuration of Fop. Actually normally you don't need this configuration
+     file, but if you need to change configuration, you should
+     always use this file and *not* config.xml.
+     Usage: java org.apache.fop.apps.Fop -c userconfig.xml -fo fo-file -pdf pdf-file
+-->
+
+
+<!--
+************************************************************************
+  Add fonts here. The %FONTSDIR% string is replaced with your system
+  fonts directory. Always use %FONTSDIR% to avoid fixed paths which
+  might not work on other systems than yours.
+************************************************************************
+-->
+<!--  <base>.</base>
+  <font-base>.</font-base>
+-->
+
+	<source-resolution>96</source-resolution>
+	<target-resolution>96</target-resolution>
+
+
+</fop>

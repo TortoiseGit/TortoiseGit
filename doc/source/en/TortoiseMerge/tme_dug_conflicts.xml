@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<sect1 id="tmerge-dug-conflicts">
+	<title>Merging / Editing Conflicts</title>
+	<para>
+		TortoiseMerge not only <emphasis>shows</emphasis> you the differences
+		between files but also lets you resolve conflicts or apply changes.
+	</para>
+	<para>
+		If you're in two pane view, then you can only edit the file in the
+		right pane (<literal>Mine</literal>). To apply changes made in the
+		left file (<literal>Theirs</literal>),
+		<action>right-click</action> on the changed lines and select
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Use text block from <quote>theirs</quote>
+			</guimenuitem>
+		</menuchoice>.
+		Then the changes from the left file are added to the right file.
+	</para>
+	<para>
+		Sometimes you actually want both text blocks, and the context menu
+		also offers you
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Use both text blocks (this one first)</guimenuitem>
+		</menuchoice>
+		and
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Use both text blocks (this one last)</guimenuitem>
+		</menuchoice>.
+	</para>
+	<para>
+		You can also edit the output file just as you would in a
+		text editor. Such lines are marked using a pencil icon.
+		Please note that if you want to make any of the line/block-based changes
+		described above, it is better to do those first since once you start
+		editing the file yourself it becomes impossible for TortoiseMerge to
+		keep track of the relationship to the original files.
+	</para>
+	<para>
+		If you're in three pane view (sometimes called
+		<emphasis>merge view</emphasis>) you can only edit the file in the
+		bottom view (<literal>Merged</literal>). As in two pane view,
+		you can <action>right-click</action> on conflicted
+		lines and either select
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Use text block from <quote>theirs</quote>
+			</guimenuitem>
+		</menuchoice>
+		or
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Use text block from <quote>mine</quote>
+			</guimenuitem>
+		</menuchoice>.
+		In addition, if you want <emphasis>both</emphasis> blocks, you can
+		select
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>
+				Use text block from <quote>mine</quote>
+				before <quote>theirs</quote>
+			</guimenuitem>
+		</menuchoice>
+		or
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>
+				Use text block from <quote>theirs</quote>
+				before <quote>mine</quote>
+			</guimenuitem>
+		</menuchoice>.
+		According to the command you've selected, the changes are used
+		in the resulting <literal>Merged</literal> file.
+	</para>
+	<para>
+		Sometimes a file will be marked as conflicted in Subversion, yet when
+		you view it using TortoiseMerge there are no conflicts shown. This may
+		be due to the whitespace handling you have chosen. If you choose to
+		ignore line-endings or whitespace changes, those lines will be marked
+		using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the
+		conflict you still need to pick which version you want to use.
+	</para>
+	<para>
+		Sometimes the conflict is too difficult to resolve by simply picking
+		<literal>Theirs</literal> and <literal>Mine</literal> and it
+		requires hand editing. TortoiseMerge allows you to do all the easy
+		changes visually first and then save the file, leaving only the
+		difficult changes to be resolved by hand-editing.
+	</para>
+	<important>
+		<para>
+			Note that if you use TortoiseMerge on the same files again,
+			any changes to your working copy, whether in TortoiseMerge,
+			or by hand-editing, <emphasis>will be discarded</emphasis>
+			and the file will appear as it did when conflict-editing
+			first started.
+		</para>
+	</important>
+</sect1>

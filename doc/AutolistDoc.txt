@@ -1,0 +1,43 @@
+As of revision 2659, TSVN now can parse all the files listed and checked
+in the commit dialog for words to use in the autocompletion list. This
+is a very handy feature when writing log messages since it helps you
+refer to changed methods, class names, ...
+
+The parsing of the files is done with regexes, and those regexes are
+kept in {ProgramFiles}\TortoiseSVN\bin in autolist.txt. In our source
+tree, that file lives at trunk/src/TortoiseSVNSetup/include/autolist.txt
+
+The installed file gets replaced whenever TSVN is upgraded (because bad
+regexes can cause the commit dialog to crash), so anything you add there
+will be lost on upgrade.
+
+Versions of TSVN later than 1.4 look for an additional file at
+%APPDATA%\TortoiseSVN\autolist.txt, which is where you can put user-
+defined regexes in addition to the standard ones.
+
+So here's how you can help:
+- find a filetype/programming language you know well
+- decide what of a typical file of that type you'd want in the
+  autocompletion list. Usually, you'd want method/function names,
+  class names, interface names. But maybe not variable names since
+  then the autocompletion list could get just too big!
+- write a regex to parse for those strings
+- test your regex on as many files you can find
+- improve the regex and test again.
+- test the whole thing with TSVN directly
+- send us your regex string with the filetype you want it to apply to,
+  and maybe some testfiles too.
+
+To help you with this task, there's a little tool to test your regex
+strings on files located here:
+http://tortoisesvn.tigris.org/files/documents/406/20668/RegExpTest.exe
+Just enter your regex string and drag the files you want to test it with
+over the dialog. The parsed strings will be listed at the bottom of the
+dialog.
+
+If you are unfamiliar with regular expressions, take a look at the online
+documentation and tutorial at http://www.regular-expressions.info/
+
+Note that TSVN also uses regex groups and you can specify the flags to
+use in the autolist.txt file like this:
+(MULTILINE|NOCASE|GLOBAL) .txt, .pic = (regex-string)

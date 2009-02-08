@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-bugtracker">
+	<title>Integration with Bug Tracking Systems / Issue Trackers</title>
+	<indexterm>
+		<primary>bug tracking</primary>
+	</indexterm>
+	<indexterm>
+		<primary>bug tracker</primary>
+	</indexterm>
+	<indexterm>
+		<primary>issue tracker</primary>
+	</indexterm>
+	<indexterm>
+		<primary>bugtracker</primary>
+	</indexterm>
+	<para>
+		It is very common in Software Development for changes to be related to a specific
+		bug or issue ID. Users of bug tracking systems (issue trackers) would like to associate
+		the changes they make in Subversion with a specific ID in their issue tracker.
+		Most issue trackers therefore provide a pre-commit hook script which parses the log
+		message to find the bug ID with which the commit is associated.
+		This is somewhat error prone since it relies on the user to write the log message
+		properly so that the pre-commit hook script can parse it correctly.
+	</para>
+	<para>
+		TortoiseSVN can help the user in two ways:
+		<orderedlist>
+			<listitem>
+				<para>
+					When the user enters a log message, a well defined line including
+					the issue number associated with the commit can be added automatically.
+					This reduces the risk that the user enters the issue number in a way
+					the bug tracking tools can't parse correctly.
+				</para>
+				<para>
+					Or TortoiseSVN can highlight the part of
+					the entered log message which is recognized by the issue tracker.
+					That way the user knows that the log message can be parsed correctly.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					When the user browses the log messages, TortoiseSVN
+					creates a link out of each bug ID in the log message which fires
+					up the browser to the issue mentioned.
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+	<sect2 id="tsvn-dug-bugtracker-link">
+		<title>Adding Issue Numbers to Log Messages</title>
+		<para>
+			You can integrate a bug tracking tool of your choice in
+			TortoiseSVN. To do this, you have to define
+			some properties, which start with <literal>bugtraq:</literal>.
+			They must be set on Folders: (<xref linkend="tsvn-dug-propertypage"/>)
+		</para>
+		<para>
+			There are two ways to integrate TortoiseSVN with issue trackers. One is
+			based on simple strings, the other is based on
+			<emphasis>regular expressions</emphasis>.
+			The properties used by both approaches are:
+			<variablelist>
+				<varlistentry>
+					<term condition="pot">bugtraq:url</term>
+					<listitem>
+						<para>
+							Set this property to the URL of your bug tracking tool.
+							It must be properly URI encoded and it has to contain
+							<literal>%BUGID%</literal>.
+							<literal>%BUGID%</literal> is replaced with the Issue number
+							you entered. This allows TortoiseSVN
+							to display a link in the log dialog, so when you are looking
+							at the revision log you can jump directly to your
+							bug tracking tool.
+							You do not have to provide this property, but then
+							TortoiseSVN shows only the
+							issue number and not the link to it.
+							e.g the TortoiseSVN project is using
+							<systemitem class="url">http://issues.tortoisesvn.net/?do=details&amp;id=%BUGID%</systemitem>
+						</para>
+						<para>
+							You can also use relative URLs instead of absolute ones. This is
+							useful when your issue tracker is on the same domain/server
+							as your source repository. In case the domain name ever changes,
+							you don't have to adjust the <literal>bugtraq:url</literal> property.
+							There are two ways to specify a relative URL:
+						</para>
+						<para>
+							If it begins with the string <literal>^/</literal> it is assumed
+							to be relative to the repository root.
+							For example, <literal>^/../?do=details&amp;id=%BUGID%</literal>
+							will resolve to
+							<systemitem class="url">http://tortoisesvn.net/?do=details&amp;id=%BUGID%</systemitem>
+							if your repository is located on
+							<systemitem class="url">http://tortoisesvn.net/svn/trunk/</systemitem>.
+						</para>
+						<para>
+							A URL beginning with the string <literal>/</literal> is assumed
+							to be relative to the server's hostname.
+							For example <literal>/?do=details&amp;id=%BUGID%</literal>
+							will resolve to
+							<systemitem class="url">http://tortoisesvn.net/?do=details&amp;id=%BUGID%</systemitem>
+							if your repository is located anywhere on
+							<systemitem class="url">http://tortoisesvn.net</systemitem>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">bugtraq:warnifnoissue</term>
+					<listitem>
+						<para>
+							Set this to <literal>true</literal>, if you want
+							TortoiseSVN to warn you
+							because of an empty issue-number text field. Valid values 
+							are <literal>true/false</literal>.
+							<emphasis>
+								If not defined, <literal>false</literal> is assumed.
+							</emphasis>
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<sect3 id="tsvn-dug-bugtracker-link-simple">
+			<title>Issue Number in Text Box</title>
+			<para>
+				In the simple approach, TortoiseSVN shows the user a separate
+				input field where a bug ID can be entered. Then a separate line
+				is appended/prepended to the log message the user entered.
+				<variablelist>
+					<varlistentry>
+						<term condition="pot">bugtraq:message</term>
+						<listitem>
+							<para>
+								This property activates the bug tracking system
+								in <emphasis>Input field</emphasis> mode.
+								If this property is set, then TortoiseSVN
+								will prompt you to enter an issue number when you commit
+								your changes. It's used to add a line at the end of the
+								log message. It must contain
+								<literal>%BUGID%</literal>, which is replaced with the
+								issue number on commit. This ensures that your commit log
+								contains a reference to the issue number which is always
+								in a consistent format and can be parsed by your
+								bug tracking tool to associate the issue number with a
+								particular commit. As an example you might use
+								<literal>Issue : %BUGID%</literal>, 
+								but this depends on your Tool.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">bugtraq:append</term>
+						<listitem>
+							<para>
+								This property defines if the bug-ID is appended (true)
+								to the end of the log message or inserted (false) at the
+								start of the log message. Valid values are
+								<literal>true/false</literal>.
+								<emphasis>
+									If not defined, <literal>true</literal> is assumed,
+									so that existing projects don't break.
+								</emphasis>
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">bugtraq:label</term>
+						<listitem>
+							<para>
+								This text is shown by TortoiseSVN
+								on the commit dialog to label the edit box where you enter
+								the issue number. If it's not set,
+								<literal>Bug-ID / Issue-Nr:</literal> will be displayed.
+								Keep in mind though that the window will not be resized
+								to fit this label, so keep the size of the label below
+								20-25 characters. 
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">bugtraq:number</term>
+						<listitem>
+							<para>
+								If set to <literal>true</literal> only numbers are allowed
+								in the issue-number text field.
+								An exception is the comma, so you can comma separate several
+								numbers. Valid values are <literal>true/false</literal>. 
+								<emphasis>
+									If not defined, <literal>true</literal> is assumed.
+								</emphasis>
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+		</sect3>
+		<sect3 id="tsvn-dug-bugtracker-link-regex">
+			<title>Issue Numbers Using Regular Expressions</title>
+			<para>
+				In the approach with <emphasis>regular expressions</emphasis>, TortoiseSVN
+				doesn't show a separate input field but marks the part of the log message
+				the user enters which is recognized by the issue tracker. This is done while
+				the user writes the log message. This also means that the bug ID can be
+				anywhere inside a log message! This method is much more flexible, and is
+				the one used by the TortoiseSVN project itself.
+				<variablelist>
+					<varlistentry>
+						<term condition="pot">bugtraq:logregex</term>
+						<listitem>
+							<para>
+								This property activates the bug tracking system
+								in <emphasis>Regex</emphasis> mode.
+								It contains either a single regular expressions,
+								or two regular expressions separated by a newline.
+							</para>
+							<para>
+								If two expressions are set, then the first expression is used as
+								a pre-filter to find expressions which contain bug IDs. The
+								second expression then extracts the bare bug IDs from the
+								result of the first regex. This allows you to use a list
+								of bug IDs and natural language expressions if you wish.
+								e.g. you might fix several bugs and include a string something
+								like this:
+								<quote>This change resolves issues #23, #24 and #25</quote>
+							</para>
+							<para>
+								If you want to catch bug IDs as used in the expression above
+								inside a log message, you could use the following regex strings,
+								which are the ones used by the TortoiseSVN project:
+								<literal>[Ii]ssues?:?(\s*(,|and)?\s*#\d+)+</literal> and
+								<literal>(\d+)</literal>
+							</para>
+							<para>
+								The first expression picks out <quote>issues #23, #24 and #25</quote>
+								from the surrounding log message.
+								The second regex extracts plain decimal numbers from the output
+								of the first regex, so it will return <quote>23</quote>, <quote>24</quote>
+								and <quote>25</quote> to use as bug IDs.
+							</para>
+							<para>
+								Breaking the first regex down a little, it must start with
+								the word <quote>issue</quote>, possibly capitalised.
+								This is optionally followed by an <quote>s</quote> (more than one
+								issue) and optionally a colon. This is followed by one or more
+								groups each having zero or more leading whitespace, an optional
+								comma or <quote>and</quote> and more optional space. Finally there
+								is a mandatory <quote>#</quote> and a mandatory decimal number.
+							</para>
+							<para>
+								If only one expression is set, then the bare bug IDs must be
+								matched in the groups of the regex string. Example:
+								<literal>[Ii]ssue(?:s)? #?(\d+)</literal>
+								This method is required by a few issue trackers, e.g. trac,
+								but it is harder to construct the regex. We recommend that you
+								only use this method if your issue tracker documentation
+								tells you to.
+							</para>
+							<para>
+								If you are unfamiliar with regular expressions, take a look at
+								the introduction at
+								<ulink url="http://en.wikipedia.org/wiki/Regular_expression">
+									<citetitle>http://en.wikipedia.org/wiki/Regular_expression</citetitle>
+								</ulink>,
+								and the online documentation and tutorial at
+								<ulink url="http://www.regular-expressions.info/">
+									<citetitle>http://www.regular-expressions.info/</citetitle>
+								</ulink>.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+		</sect3>
+		<para>
+			If both the <literal>bugtraq:message</literal> and <literal>bugtraq:logregex</literal>
+			properties are set, <literal>logregex</literal> takes precedence.
+		</para>
+		<tip>
+			<para>
+				Even if you don't have an issue tracker with a pre-commit hook parsing your
+				log messages, you still can use this to turn the issues mentioned in your
+				log messages into links!
+			</para>
+			<para>
+				And even if you don't need the links, the issue numbers show up as a
+				separate column in the log dialog, making it easier to find the changes
+				which relate to a particular issue.
+			</para>
+		</tip>
+		<para>
+			Some <literal>tsvn:</literal> properties require a
+			<literal>true/false</literal> value. TortoiseSVN also understands
+			<literal>yes</literal> as a synonym for <literal>true</literal> and
+			<literal>no</literal> as a synonym for <literal>false</literal>.
+		</para>
+		<important>
+			<title>Set the Properties on Folders</title>
+			<para>
+				These properties must be set on folders for the system to work. 
+				When you commit a file or folder the properties are read from that folder.
+				If the properties are not found there, TortoiseSVN will search upwards
+				through the folder tree to find them until it comes to an unversioned
+				folder, or the tree root (eg. <literal>C:\</literal>) is found.
+				If you can be sure that each user checks out only from e.g
+				<filename>trunk/</filename> and not some sub-folder, then it's enough if
+				you set the properties on <filename>trunk/</filename>.
+				If you can't be sure, you should set the properties recursively
+				on each sub-folder.
+				A property setting deeper in the project hierarchy overrides settings on
+				higher levels (closer to <filename>trunk/</filename>).
+			</para>
+			<para>
+				For <literal>tsvn:</literal> properties <emphasis>only</emphasis>
+				you can use the <guilabel>Recursive</guilabel> checkbox to set
+				the property to all sub-folders in the hierarchy, without also
+				setting it on all files.
+			</para>
+		</important>
+		<tip>
+			<title>No Issue Tracker Information from Repository Browser</title>
+			<para>
+				Because the issue tracker integration depends upon accessing subversion
+				properties, you will only see the results when using a checked
+				out working copy. Fetching properties remotely is a slow operation,
+				so you will not see this feature in action from the repo browser.
+			</para>
+		</tip>
+		<para>
+			This issue tracker integration is not restricted to TortoiseSVN; it can be used
+			with any Subversion client. For more information, read the full
+			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/doc/issuetrackers.txt">
+				<citetitle>Issue Tracker Integration Specification</citetitle>
+			</ulink>
+			in the TortoiseSVN source repository.
+			(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-bugtracker-ref">
+		<title>Getting Information from the Issue Tracker</title>
+		<para>
+			The previous section deals with adding issue information to the
+			log messages. But what if you need to get information from the issue
+			tracker? The commit dialog has a Windows COM interface which allows
+			integration an external program that can talk to your tracker.
+			Typically you might want to query the tracker to get a list of
+			open issues assigned to you, so that you can pick the issues that
+			are being addressed in this commit.
+		</para>
+		<para>
+			Any such interface is of course highly specific to your system,
+			so we cannot provide this part, and describing how to create such a
+			program is beyond the scope of this manual. The interface definition
+			and sample programs can be obtained from the <literal>contrib</literal>
+			folder in the
+			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/contrib/issue-tracker-plugins">
+				<citetitle>TortoiseSVN repository</citetitle>
+			</ulink>.
+			(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
+		</para>
+		<para>
+			For illustration purposes, let's suppose that your system administrator
+			has provided you with an issue tracker plugin which you have installed,
+			and that you have set up some of your working copies to use the plugin
+			in TortoiseSVN's settings dialog.
+			When you open the commit dialog from a working copy to which the plugin
+			has been assigned, you will see a new button at the top of the dialog.
+			<figure id="tsvn-dug-bugtracker-dia-1">
+				<title>Example issue tracker query dialog</title>
+				<graphic fileref="../images/IssueTrackerQuery.png"/>
+			</figure>
+			In this example you can select one or more open issues. The plugin
+			can then generate specially formatted text which it adds to your log
+			message.
+		</para>
+		<para>
+			If you work with the Google Code repository, you can use the ready-made
+			<ulink url="http://code.google.com/p/gurtle/">
+				<citetitle>Gurtle</citetitle>
+			</ulink>
+			plugin.
+		</para>
+	</sect2>
+</sect1>

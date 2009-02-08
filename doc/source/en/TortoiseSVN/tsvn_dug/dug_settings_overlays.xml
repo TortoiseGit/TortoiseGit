@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-overlay">
+	<title>Icon Overlay Settings</title>
+	<?dbhh topicname="HIDD_SETTINGSOVERLAY"?>
+	<para>
+		<figure id="tsvn-dug-settings-dia-overlay">
+			<title>The Settings Dialog, Icon Overlays Page</title>
+			<graphic fileref="../images/SettingsOverlay.png"/>
+		</figure>
+		This page allows you to choose the items for which TortoiseSVN will
+		display icon overlays.
+	</para>
+	<para>
+		By default, overlay icons and context menus will appear in all open/save
+		dialogs as well as in Windows Explorer. If you want them to appear
+		<emphasis>only</emphasis> in Windows Explorer, check the
+		<guilabel>Show overlays and context menu only in explorer</guilabel> box.
+	</para>
+	<para>
+		Ignored items and Unversioned items are not usually given an overlay.
+		If you want to show an overlay in these cases, just check the boxes.
+	</para>
+	<para>
+		You can also choose to mark folders as
+		modified if they contain unversioned items. This could be useful for
+		reminding you that you have created new files which are not yet versioned.
+		This option is only available when you use the <emphasis>default</emphasis>
+		status cache option (see below).
+	</para>
+	<para>
+		Since it takes quite a while to fetch the status of a working copy,
+		TortoiseSVN uses a cache to store the status so the explorer
+		doesn't get hogged too much when showing the overlays.
+		You can choose which type of cache TortoiseSVN should use according
+		to your system and working copy size here:
+		<variablelist>
+			<varlistentry>
+				<term>Default</term>
+				<listitem>
+					<para>
+						Caches all status information in a separate process
+						(<filename>TSVNCache.exe</filename>). That process
+						watches all drives for changes and fetches the status
+						again if files inside a working copy get modified.
+						The process runs with the least possible priority so
+						other programs don't get hogged because of it. That 
+						also means that the status information is not
+						<emphasis>real time</emphasis> but it can take a few
+						seconds for the overlays to change.
+					</para>
+					<para>
+						Advantage: the overlays show the status recursively,
+						i.e. if a file deep inside a working copy is modified,
+						all folders up to the working copy root will also
+						show the modified overlay. And since the process can
+						send notifications to the shell, the overlays on the left
+						tree view usually change too.
+					</para>
+					<para>
+						Disadvantage: the process runs constantly, even if you're not 
+						working on your projects. It also uses around 10-50 MB of RAM 
+						depending on number and size of your working copies.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Shell</term>
+				<listitem>
+					<para>
+						Caching is done directly inside the shell extension
+						dll, but only for the currently visible folder.
+						Each time you navigate to another folder, the status
+						information is fetched again.
+					</para>
+					<para>
+						Advantage: needs only very little memory (around 1 MB of RAM)
+						and can show the status in <emphasis>real time</emphasis>.
+					</para>
+					<para>
+						Disadvantage: Since only one folder is cached, the overlays
+						don't show the status recursively. For big working copies,
+						it can take more time to show a folder in explorer than
+						with the default cache. Also the mime-type column is not
+						available.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>None</term>
+				<listitem>
+					<para>
+						With this setting, the TortoiseSVN does not fetch the status
+						at all in Explorer. Because of that, files don't get an overlay
+						and folders only get a 'normal' overlay if they're versioned.
+						No other overlays are shown, and no extra columns are available
+						either.
+					</para>
+					<para>
+						Advantage: uses absolutely no additional memory and does
+						not slow down the Explorer at all while browsing.
+					</para>
+					<para>
+						Disadvantage: Status information of files and folders is not
+						shown in Explorer. To see if your working copies are modified,
+						you have to use the <quote>Check for modifications</quote> dialog.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</para>
+	<para>
+		The next group allows you to select which classes of storage should
+		show overlays. By default, only hard drives are selected.
+		You can even disable all icon overlays, but where's the fun in that?
+	</para>
+	<para>
+		Network drives can be very slow, so by default
+		icons are not shown for working copies located on network shares.
+	</para>
+	<para>
+		USB Flash drives appear to be a special case in that the drive type
+		is identified by the device itself. Some appear as fixed drives,
+		and some as removable drives.
+	</para>
+	<para>
+		The <guilabel>Exclude Paths</guilabel> are used to tell TortoiseSVN
+		those paths for which it should <emphasis>not</emphasis> show icon
+		overlays and status columns.
+		This is useful if you have some very big working copies containing
+		only libraries which you won't change at all and therefore don't
+		need the overlays. For example:
+	</para>
+	<para>
+		<filename>f:\development\SVN\Subversion</filename> will disable
+		the overlays <emphasis>only</emphasis> on that specific folder. You
+		still can see the overlays on all files and folder inside that folder.
+	</para>
+	<para>
+		<filename>f:\development\SVN\Subversion*</filename> will disable the
+		overlays on <emphasis>all</emphasis> files and folders whose path
+		starts with <filename>f:\development\SVN\Subversion</filename>. That
+		means you won't see overlays for any files and folders below that
+		path.
+	</para>
+	<para>
+		The same applies to the <guilabel>Include Paths</guilabel>. Except that
+		for those paths the overlays are shown even if the overlays are disabled
+		for that specific drive type, or by an exclude path specified above.
+	</para>
+	<para>
+		Users sometimes ask how these three settings interact, and the definitive
+		answer is:
+<screen>
+if (path is in include list)
+  show overlays
+if (path is allowed drive type) AND (path is not in exclude list)
+  show overlays
+</screen>
+		The include list <emphasis>always</emphasis> makes the overlays show.
+		Otherwise, overlays are shown for all marked drive types
+		<emphasis>unless</emphasis> the path is excluded.
+	</para>
+	<para>
+		TSVNCache.exe also uses these paths to restrict its scanning. If you
+		want it to look only in particular folders, disable all drive types
+		and include only the folders you specifically want to be scanned.
+	</para>
+	<tip>
+		<title>Exclude <literal>SUBST</literal> Drives</title>
+		<indexterm>
+			<primary>SUBST drives</primary>
+		</indexterm>
+		<para>
+			It is often convenient to use a <literal>SUBST</literal> drive
+			to access your working copies, e.g. using the command
+<screen>
+subst T: C:\TortoiseSVN\trunk\doc
+</screen>
+			However this can cause the overlays not to update, as
+			<literal>TSVNCache</literal> will only receive one notification when
+			a file changes, and that is normally for the original path. This means
+			that your overlays on the <literal>subst</literal> path may never
+			be updated.
+		</para>
+		<para>
+			An easy way to work around this is to exclude the original path
+			from showing overlays, so that the overlays show up on the
+			<literal>subst</literal> path instead.
+		</para>
+	</tip>
+	<para>
+		Sometimes you will exclude areas that contain working copies,
+		which saves TSVNCache from scanning and monitoring for changes,
+		but you still want a visual indication that such folders are versioned.
+		The <guilabel>Show excluded folders as 'normal'</guilabel> checkbox
+		allows you to do this. With this option, versioned folders in any
+		excluded area (drive type not checked, or specifically excluded)
+		will show up as normal and up-to-date, with a green check
+		mark. This reminds you that you are looking at a working copy, even
+		though the folder overlays may not be correct. Files do not get an
+		overlay at all. Note that the context menus still work, even though
+		the overlays are not shown.
+	</para>
+	<para>
+		As a special exception to this, drives <literal>A:</literal>
+		and <literal>B:</literal> are never considered for the
+		<guilabel>Show excluded folders as 'normal'</guilabel> option.
+		This is because Windows is forced to look on the drive, which can
+		result in a delay of several seconds when starting Explorer, even
+		if your PC does have a floppy drive.
+	</para>
+	<sect3 id="tsvn-dug-settings-icon-set">
+		<title>Icon Set Selection</title>
+		<?dbhh topicname="HIDD_OVERLAYICONS"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-icons">
+				<title>The Settings Dialog, Icon Set Page</title>
+				<graphic fileref="../images/SettingsOverlayChooser.png"/>
+			</figure>
+			You can change the overlay icon set to the one you like best.
+			Note that if you change overlay set, you may have to restart
+			your computer for the changes to take effect.
+		</para>
+	</sect3>
+</sect2>

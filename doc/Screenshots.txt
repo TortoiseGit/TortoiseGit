@@ -1,0 +1,347 @@
+Grabbing Screenshots for TortoiseSVN Docs
+=========================================
+This file is a guide to grabbing screenshots for the user manual.
+Although there are not many hard and fast rules, some screenshots need
+care to set up as they are demonstrating a range of features.
+
+To help with consistency, some of these instructions are presented
+as a TortoiseProc.exe command line. These assume that the TSVN
+bin directory is in the PATH and that you have a doc folder checked
+out at C:\TortoiseSVN\Doc. Adjust the path according to your location.
+
+If you do not already have a screen capture/image viewer program,
+download a free copy of IrfanView from www.irfanview.com
+
+You will also need to ensure that the screenshots are at the correct
+DPI setting and size to fit the page. Fortunately this is easy as you
+can use the AdjustImages.bat script which does the conversion for you.
+This script requires NConvert.exe which you can download from
+http://www.xnview.com
+
+From the images directory you can simply run adjustimages to check all
+images in all languages - it could take a long time. You can check
+specific languages or images using a single parameter, eg.
+adjustimages en\*.png
+adjustimages en\Rev*.png
+
+
+General rules for all screenshots
+=================================
+Use PNG format
+8 bit colour depth (256 colours)
+Windows XP style preferred
+
+Test Repository
+===============
+We now have a batch file to create a repository and some working copies
+in various states of modification and conflict. In the test folder,
+create a file called DocPath.txt which contains the path to your doc
+folder, but with forward slashes and URI escaping of spaces and other
+funny characters. Now simply run MakeTest.bat to create the test folders
+in the 'temp' subfolder.
+
+Instructions for each screenshot
+================================
+Authenticate.png
+	You will have to clear authentication to make this one appear.
+	Do this temporarily for the TSVN repo by renaming
+	[Application Data]\Subversion\auth\svn.simple\f55fc06b366775f8c026407285be8070
+
+BlameDialog.png
+	Blame any file
+
+ch02dia1-7.png
+	These are 'borrowed' from the Subversion Book
+
+Changelist.png
+	Use the 'doc' test WC.
+	Open the commit dialog and add dug_blame.xml to a new changelist 'Blame doc update'.
+	Screenshot shows context menu for the changelist.
+	Remove dug_blame.xml from the changelist.
+
+Checkout.png
+	Just pretend to checkout the TSVN doc folder:
+	TortoiseProc.exe /command:checkout /path:"C:\TortoiseSVN\Doc" /url:"http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/doc"
+
+Commit.png
+	Use the 'doc' test WC.
+	Modify server.xml in the 'ext' folder
+	Open the commit dialog for the 'doc' folder
+	Type a message with spelling problem, eg.
+		Update documentation to explain new Frobnicate checkbox.
+	Right click on dug_blame and include context menu in screenshot.
+	This setup is also used for CommitSpellCheck.png and CreatePatch.png
+
+CommitSpellcheck.png
+	As above, but right click on the mis-spelled word to get the context menu.
+
+CommitProgress.png
+	Capture the progress dialog at the end of any commit.
+
+ContextMenuDirControl.png
+	In explorer, right click on a versioned folder (eg. TSVN doc folder) and
+	capture the main context menu and the large TSVN sub menu.
+	You will probably have to capture the entire explorer window and
+	then edit out everything except the context menus. Ideally, also edit
+	out all non-TSVN items from the main context menu.
+	Because of the manual editing, this item (and the next 3) is a bit of
+	a pain and generally best left until just before a new release in case
+	something else changes.
+
+ContextMenuDirNoControl.png
+	As above, but capture for an unversioned folder.
+
+ContextMenuFileControl.png
+	As above, but capture for a single versioned file.
+
+ContextMenuFileNoControl.png
+	As above, but capture for a single unversioned file.
+	Expand the 'add to ignore list' entry.
+
+Copy.png
+	Open the branch/tag dialog for the TSVN doc folder and enter a
+	fictitious URL for the target. It is easiest to copy and paste the
+	source URL and edit /trunk/ to /branches_1.4.x/ or something like that.
+
+CreatePatch.png
+	Set up as for the commit dialog, but create a patch instead.
+	The dialog shows the files selected for the patch.
+
+ExplorerFileMenu.png
+	Use the 'doc' test WC.
+	In explorer, right click on showlog.xml and 'Create shortcut'
+	Select the newly created shortcut.
+	Click on the explorer file menu and capture the menu which opens.
+	There should be 3 TSVN entries (shortcut, shortcut-target and folder).
+	Delete the shortcut when you're done.
+
+ExportURL.png
+	Right click on the TSVN doc folder and Export
+	Enter a folder name in the Export directory box
+
+GetLock.png
+	Make sure you have the 'Show lock dialog before locking files' option
+	checked in Settings->Dialogs 2
+	Select a bunch of versioned files and use TSVN->GetLock
+
+Import.png
+	Right click on any unversioned folder and TSVN->import
+	Make up a URL like http://svn.example.com/svn/paint/trunk
+	Add a suitable message like 'Initial import of paint files'.
+
+IssueTrackerQuery.png
+	Install the example CS issue tracker plugin.
+	Set up the plugin to work on your test docs folder.
+	Open the commit dialog and click on the 'Choose Issue' button.
+	Centre the plugin dialog over the commit dialog so that you can still
+	see the 'choose issue' button.
+	You will need a whole screen capture, then trim down to just the
+	commit dialog area.
+
+LogContextMenu1.png
+	Right click on any versioned file or folder and TSVN->show log
+	Select 2 revisions in the top pane
+	Right click on the selected revisions (top pane) and capture the context menu
+
+LogContextMenu2.png
+	Right click on any versioned file or folder and TSVN->show log
+	Select 1 revision in the top panel
+	Right click on a file in the bottom pane and capture the context menu
+
+LogContextMenu.png
+	Right click on any versioned file (not folder) and TSVN->show log
+	Select 1 revision in the top panel
+	Right click on the selected revisions (top pane) and capture the context menu
+
+LogMessages.png
+	Show the log dialog for the TSVN src directory (use the repo browser if you
+	do not have this in a working copy
+	Use 'Show range' to get revisions 5000 to 5100
+	Centre r5050 in the top pane
+	Position the mouse over the hyperlink for issue #198
+
+LogMergeTrack.png
+	[TEMPORARY - FixMe after 1.5 release]
+	Download the SVN 1.5 Beta client and merge tracking dump file.
+	Load the dump file into a test repo and checkout a WC.
+	ShowLog for the WC and select 'Include merged revisions'
+	Move the slider to show a useful range of real and merged revisions.
+
+MergeWizardRange.png
+	Start the merge dialog from the TSVN doc folder.
+	Select the 'revision range' option and hit Next.
+	Put some fictitious numbers in the revision range box.
+
+MergeWizardTree.png
+	Start the merge dialog from the TSVN trunk or doc folder.
+	Select the 'merge two trees' option and hit Next.
+	Copy the URL to the End URL box and edit it to reflect a branch,
+	eg the LogCaching branch.
+	Enter the same revision number in both boxes.
+
+MergeWizardOptions.png
+	Last page of the wizard, with default options.
+
+MergeConflictCallback.png
+	Use a fresh 'doc' test WC
+	Showlog for dug_ignore.xml
+	Select r6 and 'revert changes from this revision.
+	This should generate a conflict and bring up the callback.
+
+mergeprinciple.png
+	Borrowed from the Subversion docs
+
+Properties.png
+	Right click on the TSVN doc folder and open Explorer properties
+	  (not TSVN properties).
+	Capture the Subversion tab
+
+PropertyAdd.png
+	For any versioned folder, TSVN->Properties
+	In the list, click Add
+	Capture the add properties dialog with the combo expanded
+
+PropertyList.png
+	For the TSVN doc folder, TSVN->properties
+
+Relocate.png
+	For the TSVN doc folder, TSVN->relocate
+	Edit the To URL to show a different hostname
+	  eg. http://repos.tortoisesvn.net
+	Do NOT click OK ;)
+
+Repobrowser.png
+	Open the repo browser to show the contents of TSVN trunk in the left pane
+	In the right pane, right click on the TortoiseBlame folder to show context menu
+
+RepoStatus.png
+	Use the 'doc' test WC
+	TSVN->Check for Modifications
+	Click the 'check repository' button
+	Show context menu for locally modified file (dug_add.xml)
+	Make sure context menu is not obscuring useful columns -
+	  position the mouse at the left edge of remote property status
+
+Revert.png
+	Use the 'doc' test WC
+	TSVN->Revert
+
+RevisionGraph.png
+	Show revision graph for the TSVN doc folder
+	  (this may take a couple of minutes if the log cache is empty)
+	Make sure these settings are used on the toolbar:
+	Show-all-revisions 		OFF
+	Group-branches together ON
+	Oldest-at-top  			OFF
+	Show HEAD  				ON
+	Show overview  			ON
+	Set the zoom such that there are about 10-15 nodes showing
+	Select 2 revisions and show the context menu
+
+RightDragMenu.png
+	Right-drag a versioned item to a versioned folder
+
+SettingsHooks.png
+	TortoiseSVN->Settings->Hooks scripts
+	If you do have any hooks, create 2 (see below) eg. start commit and post update
+	Capture the settings dialog with the 2 hooks displayed
+
+SettingsHookEdit.png
+	Add a new client hook
+	Type eg. Start commit hook
+	Working copy path - your doc folder
+	Command line - some fictitious path + start-commit.bat
+	(the hook does not have to exist)
+
+SettingsLogCache.png
+	Just a screenshot, but if you want to hide your personal cached URLs,
+	go to %APPDATA%\TortoiseSVN\logcache and temporarily move any cache directory
+	to the level above. You will have to close and reopen the settings dialog.
+	The cache size gives you a clue which GUID corresponds to which URL.
+
+SettingsMain.png
+	Include an ignore pattern. If you don't have one, use "*.tmp *.~*"
+
+SettingsColors.png
+SettingsContext.png
+SettingsDialog.png
+SettingsDialog2.png
+SettingsOverlay.png
+SettingsOverlayChooser.png
+SettingsProgs.png
+SettingsProgsAdv.png
+SettingsProxy.png
+SettingsSavedData.png
+SettingsLogStats.png
+	All other settings dialogs, just get a screenshot of the appropriate page.
+
+StatsByAuthor.png
+	Use TortoiseSVN/doc/po
+	TSVN->Showlog
+	Show 'Commits by author' in bar graph view
+	Make sure there are several authors - 7 or 8 is good
+
+StatsByAuthPie.png
+	As above but view as pie chart
+
+StatsByDate.png
+	Use TortoiseSVN/doc/po
+	TSVN->Showlog
+	Show 'Commits by date' in line graph view
+	Adjust the slider so that there are about 4 traces shown
+
+Switch.png
+	TortoiseSVN->switch for TSVN doc folder
+
+TMerge_OnePane.png
+	Select doc/test/subwcrev2.txt and doc/test/subwcrev3.txt
+	Right click on subwcrev3.txt and TSVN->Diff
+	Use 1-pane view
+	Make sure the 3 areas with changes are showing
+
+TMerge_Open.png
+	Start TortoiseMerge from the start menu
+
+TMerge_PatchWindow.png
+	Use the 'doc' test WC
+	TSVN->Apply Patch
+	Select doc/test/temp/docs.patch
+	In the patch list, right click on one of the files to show the
+	  context menu, making sure it is within the patch window
+	Capture just the patch list window
+
+TMerge_SettingsColors.png
+TMerge_SettingsGeneral.png
+	Simple snapshots of the settings
+
+TMerge_ThreePane.png
+	Use the 'docs' test WC
+	TSVN->Update (after fresh repo/WC creation)
+	TSVN->Edit conflicts for subwcrev.txt
+	Jump to first conflict
+
+TMerge_TwoPane.png
+	As for MergeOnePane, but use 2-pane view.
+
+TortoiseBlame.png
+	TortoiseSVN->Blame for tsvn_app_automation.xml
+	Enable age-colouring of lines.
+	Display a range of revisions with several authors,
+	  eg lines 342-368.
+	Hover the mouse over a revision that appears a few times,
+	  and has a reasonable comment attached, eg. r7408.
+	Capture with the log message tooltip showing.
+
+TortoiseIDiff.png
+	Ideally diff one of the screenshots you have updated.
+
+UpdateFinished.png
+	Use a freshly created 'docs' test WC
+	TSVN->update
+	Capture the progress dialog when update is finished
+	
+upgradecheck.png
+	Downgrade to an older version of TSVN or capture this as the opportunity arises
+	TSVN->About
+	Click on 'Check for updates'
+	Hover the mouse over the URL of the TSVN site

@@ -1,0 +1,123 @@
+This file serves as a template for standard answers which can
+be used on the mailing list. This might help avoid rude answers
+to some special users.
+
+General
+-------
+You do not receive a proper reply from us, because:
+( ) It looks like you haven't read the docs yet
+( ) Your bug report is incomplete or not a bug at all
+( ) Your feature request is not specified in enough detail
+( ) You are violating our list etiquette
+( ) We are just in a bad mood
+
+To avoid further problems on this list, please read the appropriate
+documentation first:
+
+The TortoiseSVN documentation is located here:
+http://tortoisesvn.tigris.org/docs.html
+
+Or you can read the help file on your own PC:
+StartMenu->TortoiseSVN->Help
+
+Please read our FAQ for answers to some common problems:
+http://tortoisesvn.sourceforge.net/?q=node/1
+
+Check these instructions if you want to report a bug:
+http://tortoisesvn.tigris.org/reportbugs.html
+
+Our rules for this list are found here:
+http://tortoisesvn.tigris.org/list_etiquette.html
+
+
+
+RTFM
+----
+This is a predefined answer to your question. You're getting this 
+instead of a real answer to your question because it seems you 
+haven't read the documentation yet.
+Please read our docs and the FAQ first. If you then still have 
+some questions, you can come back to the mailing list and ask 
+again. But if you do, make sure you give as much detail about 
+your problem as possible.
+The docs are located here:
+http://tortoisesvn.tigris.org/docs.html
+
+The FAQ is located here:
+http://tortoisesvn.sourceforge.net/?q=node/1
+
+
+BUG
+---
+This is a predefined answer to your bugreport. You're getting this
+because your bug report is incomplete, and we cannot tell whether
+this is a real bug or simply user error.
+Please read about how to report a bug here:
+http://tortoisesvn.tigris.org/reportbugs.html
+The documentation is located here:
+http://tortoisesvn.tigris.org/docs.html
+
+and most important our rules for the mailing list:
+http://tortoisesvn.tigris.org/list_etiquette.html
+
+If you're done reading that and you still think you've found a bug in
+TortoiseSVN then please come back to this mailing list with as much
+information as you can give us about the bug.
+
+
+Etiquette
+---------
+This is a predefined answer to your mail. You get this because your mail
+was written in an offensive tone which doesn't belong on this list.
+There are some rules for people using this mailing list. Please read them 
+carefully and of course try to follow those rules. Otherwise you might get 
+unsubscribed from the list or your mails won't be moderated through anymore.
+The rules are located here:
+http://tortoisesvn.tigris.org/list_etiquette.html
+
+
+Feature Request:
+----------------
+This is a predefined answer to your feature request. You're getting this
+instead of a real answer because you wrote your request in a very demanding tone.
+Requesting a feature should be written friendly, they're after all _requests_ 
+and not demands. In an open source project you can't demand a feature. 
+The developers don't get paid, they're spending their free time on this
+project for free. You're using a free program, you don't pay anything for it.
+So please behave civil and ask nicely for a new feature. Explain what you want,
+and why you need it. If it makes sense for a majority of users your request will
+make it on the todo list. Always keep in mind that we will fix bugs before we 
+add new features.
+To avoid further problems on this list, please read our rules for this list:
+http://tortoisesvn.tigris.org/list_etiquette.html
+
+Top Posting:
+------------
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing on usenet and mailing lists?
+
+CrashReport fixed:
+------------------
+Hi,
+Thanks for sending the crashreport. We analyzed your crashreport and 
+fixed the bug which caused the crash. You can now either wait for 
+the next release or use the next nightly build. The link to the nightly
+builds is on our download page.
+
+CrashReport outdated:
+---------------------
+Hi,
+Thanks for sending the crashreport, but please understand that we don't
+have the time to analyze crashreports for old versions.
+Please update to the latest released version. If the crash still occurs
+with that release, you can send again a crashreport.
+
+CrashReport library:
+--------------------
+Hi,
+Thanks for sending the crashreport. We analyzed your crashreport, but
+unfortunately the bug is not in TortoiseSVN itself but in one of the
+libraries TortoiseSVN uses. We will discuss this with the developers
+of that library and try to get this bug fixed.
