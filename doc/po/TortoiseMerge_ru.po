@@ -1,7 +1,7 @@
 #
 # Russian translation for TortoiseMerge
-# Copyright (C) 2005-2008 the TortoiseSVN team
-# This file is distributed under the same license as TortoiseSVN
+# Copyright (C) 2005-2008 the TortoiseGit team
+# This file is distributed under the same license as TortoiseGit
 #
 # Last commit by:
 # $Author: steveking $
@@ -14,11 +14,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: TortoiseSVN Documentation\n"
+"Project-Id-Version: TortoiseGit Documentation\n"
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-11-17 17:19+0300\n"
 "Last-Translator: Stanislav Petrakov <stannic@gmail.com>\n"
-"Language-Team: TortoiseSVN translation team <dev@tortoisesvn.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -122,8 +122,8 @@ msgstr "TortoiseMerge бесплатен. Вам не нужно за него �
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:71
-msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
-msgstr "TortoiseMerge - проект с Открытым Исходным Кодом (Open Source). Это означает, что вы имеете полный доступ на чтение к исходному коду этой программы. Вы можете просмотреть его по ссылке <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. У вас будут запрошены имя пользователя и пароль. В качестве имени пользователя введите <literal>guest</literal>, пароль нужно оставить пустым. Самая последняя версия (над которой мы работаем в данный момент) находится в <filename>/trunk/</filename>, ранее выпущенные версии находятся в <filename>/tags/</filename>."
+msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
+msgstr "TortoiseMerge - проект с Открытым Исходным Кодом (Open Source). Это означает, что вы имеете полный доступ на чтение к исходному коду этой программы. Вы можете просмотреть его по ссылке <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. У вас будут запрошены имя пользователя и пароль. В качестве имени пользователя введите <literal>guest</literal>, пароль нужно оставить пустым. Самая последняя версия (над которой мы работаем в данный момент) находится в <filename>/trunk/</filename>, ранее выпущенные версии находятся в <filename>/tags/</filename>."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:90
@@ -132,13 +132,13 @@ msgstr "Вознаграждение"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:91
-msgid "Even though TortoiseSVN and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
-msgstr "Хотя TortoiseSVN и TortoiseMerge и бесплатны, вы можете посодействовать разработчикам, присылая заплатки и активно участвуя в разработке. Вы также можете помочь нам, подбодрив нас в то нескончаемое время, которое мы проводим за нашими компьютерами."
+msgid "Even though TortoiseGit and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
+msgstr "Хотя TortoiseGit и TortoiseMerge и бесплатны, вы можете посодействовать разработчикам, присылая заплатки и активно участвуя в разработке. Вы также можете помочь нам, подбодрив нас в то нескончаемое время, которое мы проводим за нашими компьютерами."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:97
-msgid "While working on TortoiseSVN we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
-msgstr "Во время работы над TortoiseSVN мы любим слушать музыку. И так как мы затрачиваем много времени на проект, нам надо  <emphasis>много</emphasis> музыки. Поэтому мы составили списки пожеланий с нашими любимыми музыкальными CD и DVD: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Пожалуйста, взгляните также и на список людей, которые внесли вклад в проект, присылая исправления или переводы."
+msgid "While working on TortoiseGit we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
+msgstr "Во время работы над TortoiseGit мы любим слушать музыку. И так как мы затрачиваем много времени на проект, нам надо  <emphasis>много</emphasis> музыки. Поэтому мы составили списки пожеланий с нашими любимыми музыкальными CD и DVD: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Пожалуйста, взгляните также и на список людей, которые внесли вклад в проект, присылая исправления или переводы."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:113
@@ -249,13 +249,13 @@ msgstr "История TortoiseMerge"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:236
-msgid "While working on <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
-msgstr "В процессе работы над <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> мы обнаружили, что когда пользователи предоставляют заплатки для улучшения проекта или же для исправления ошибок, надо приложить массу усилий только чтобы применить эти заплатки. И много раз эти заплатки были устаревшими и не могли быть применены при помощи инструмента командной строки для применения заплаток <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> поскольку мы продолжали работать над этими файлами и иногда эти файлы были уже изменены."
+msgid "While working on <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
+msgstr "В процессе работы над <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> мы обнаружили, что когда пользователи предоставляют заплатки для улучшения проекта или же для исправления ошибок, надо приложить массу усилий только чтобы применить эти заплатки. И много раз эти заплатки были устаревшими и не могли быть применены при помощи инструмента командной строки для применения заплаток <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> поскольку мы продолжали работать над этими файлами и иногда эти файлы были уже изменены."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:251
-msgid "This was also the main reason why TortoiseSVN did not originally have a <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
-msgstr "Именно в этом была основная причина, почему в TortoiseSVN изначально не была реализована команда <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Создать заплатку</guimenuitem></menuchoice>: мы предпочитали, чтобы пользователи присылали нам файлы целиком, поскольку так заплатки было проще применять."
+msgid "This was also the main reason why TortoiseGit did not originally have a <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
+msgstr "Именно в этом была основная причина, почему в TortoiseGit изначально не была реализована команда <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Создать заплатку</guimenuitem></menuchoice>: мы предпочитали, чтобы пользователи присылали нам файлы целиком, поскольку так заплатки было проще применять."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:261
@@ -264,8 +264,8 @@ msgstr "Итак, мы потратили много времени на пои�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseSVN already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "Поскольку TortoiseSVN уже использует библиотеку Subversion, которая обладает хорошим механизмом сравнения, было вполне естественно использовать эту библиотеку вместо GNU diff."
+msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "Поскольку TortoiseGit уже использует библиотеку Subversion, которая обладает хорошим механизмом сравнения, было вполне естественно использовать эту библиотеку вместо GNU diff."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -353,8 +353,8 @@ msgstr "Применение заплаток"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseSVN when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
-msgstr "Файл заплатки - это файл объединённых различий Subversion, содержащий информацию, необходимую для применения изменений к набору файлов. Заплатка может быть предоставлена другим разработчиком, чтобы вы могли посмотреть сделанные им изменения и, возможно, зафиксировать их в хранилище. Или, она может быть создана внутри TortoiseSVN при сравнении двух папок. Это случается при сравнении ревизии из хранилища с рабочей папкой, или при сравнении двух различных путей в хранилище."
+msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgstr "Файл заплатки - это файл объединённых различий Subversion, содержащий информацию, необходимую для применения изменений к набору файлов. Заплатка может быть предоставлена другим разработчиком, чтобы вы могли посмотреть сделанные им изменения и, возможно, зафиксировать их в хранилище. Или, она может быть создана внутри TortoiseGit при сравнении двух папок. Это случается при сравнении ревизии из хранилища с рабочей папкой, или при сравнении двух различных путей в хранилище."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:380
@@ -550,8 +550,8 @@ msgstr "<guibutton>Переключить вид</guibutton> выбирает м
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:635
-msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseSVN does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
-msgstr "<guibutton>Поменять левую панель с правой</guibutton> : в двухпанельном виде меняет местами левое и правое окно. Когда вы сравниваете файл в двух разных деревьях, в отличие от двух ревизий одного и того же файла, TortoiseSVN не знает, какой из них должен быть на левой панели как <quote>оригинальная/базовая</quote> версия. Если файлы расположены неверно, вы можете это изменить для облегчения просмотра."
+msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseGit does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
+msgstr "<guibutton>Поменять левую панель с правой</guibutton> : в двухпанельном виде меняет местами левое и правое окно. Когда вы сравниваете файл в двух разных деревьях, в отличие от двух ревизий одного и того же файла, TortoiseGit не знает, какой из них должен быть на левой панели как <quote>оригинальная/базовая</quote> версия. Если файлы расположены неверно, вы можете это изменить для облегчения просмотра."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:646
@@ -1463,8 +1463,8 @@ msgstr "Процесс, при помощи которого изменения 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1576
-msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseSVN's Merge command."
-msgstr "Слияние случается автоматически при обновлении рабочей копии. Вы можете слить отдельные изменения из другого ответвления при помощи команды слияния TortoiseSVN."
+msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseGit's Merge command."
+msgstr "Слияние случается автоматически при обновлении рабочей копии. Вы можете слить отдельные изменения из другого ответвления при помощи команды слияния TortoiseGit."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1584
@@ -1483,8 +1483,8 @@ msgstr "Свойство"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseSVN has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "Помимо версирования ваших папок и файлов, Subversion позволяет добавлять версированные метаданные, - называемые <quote>свойствами</quote>, - к каждому версированному файлу или папке. У каждого свойства есть имя и значение, почти как у ключа реестра. В Subversion есть несколько специальных свойств для внутреннего использования, таких как <literal>svn:eol-style</literal>. И у TortoiseSVN тоже есть такого рода свойства, вроде <literal>tsvn:logminsize</literal>. Вы можете добавить ваши собственные свойства с именем и значением по вашему выбору."
+msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "Помимо версирования ваших папок и файлов, Subversion позволяет добавлять версированные метаданные, - называемые <quote>свойствами</quote>, - к каждому версированному файлу или папке. У каждого свойства есть имя и значение, почти как у ключа реестра. В Subversion есть несколько специальных свойств для внутреннего использования, таких как <literal>svn:eol-style</literal>. И у TortoiseGit тоже есть такого рода свойства, вроде <literal>tsvn:logminsize</literal>. Вы можете добавить ваши собственные свойства с именем и значением по вашему выбору."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1614

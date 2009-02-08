@@ -3,7 +3,7 @@
 <preface id="tsvn-preface">
 	<title>Preface</title>
 	<simplesect>
-		<graphic srccredit="TortoiseSVN Logo" fileref="images/tortoisesvn_logo_hor468x64.png" scalefit="1" width="100%"/>
+		<graphic srccredit="TortoiseGit Logo" fileref="images/TortoiseGit_logo_hor468x64.png" scalefit="1" width="100%"/>
 	</simplesect>
 	<simplesect>
 		<para>
@@ -37,7 +37,7 @@
 		</para>
 		<para>
 			If you answered <quote>yes</quote> to one of these questions, then
-			TortoiseSVN is for you! Just read on to find out how TortoiseSVN
+			TortoiseGit is for you! Just read on to find out how TortoiseGit
 			can help you in your work. It's not that difficult.
 		</para>
 	</simplesect>
@@ -49,7 +49,7 @@
 		<para>
 			This book is written for computer literate folk who want to
 			use Subversion to manage their data, but are uncomfortable using the
-			command line client to do so. Since TortoiseSVN is a windows shell
+			command line client to do so. Since TortoiseGit is a windows shell
 			extension it's assumed that the user is familiar with the windows
 			explorer and knows how to use it.
 		</para>
@@ -61,18 +61,18 @@
 		<title>Reading Guide</title>
 		<para>
 			This <xref linkend="tsvn-preface"/> explains a little about the
-			TortoiseSVN project, the community of people who work on it, and
+			TortoiseGit project, the community of people who work on it, and
 			the licensing conditions for using it and distributing it.
 		</para>
 		<para>
-			The <xref linkend="tsvn-introduction"/> explains what TortoiseSVN is,
+			The <xref linkend="tsvn-introduction"/> explains what TortoiseGit is,
 			what it does, where it comes from and the basics for installing it
 			on your PC.
 		</para>
 		<para>
 			In <xref linkend="tsvn-basics"/> we give a short introduction
 			to the <emphasis>Subversion</emphasis> revision control system which
-			underlies TortoiseSVN. This is borrowed from the documentation for the
+			underlies TortoiseGit. This is borrowed from the documentation for the
 			Subversion project and explains the different approaches to version
 			control, and how Subversion works.
 		</para>
@@ -83,19 +83,19 @@
 		</para>
 		<para>
 			The chapter on <xref linkend="tsvn-repository"/> explains how to set up
-			a local repository, which is useful for testing Subversion and TortoiseSVN
+			a local repository, which is useful for testing Subversion and TortoiseGit
 			using a single PC. It also explains a bit about repository administration
 			which is also relevant to repositories located on a server.
 		</para>
 		<para>
 			The <xref linkend="tsvn-dug"/> is the most important section as
-			it explains all the main features of TortoiseSVN and how to use them.
+			it explains all the main features of TortoiseGit and how to use them.
 			It takes the form of a tutorial, starting with checking out a working copy,
 			modifying it, committing your changes, etc. It then progresses to more
 			advanced topics.
 		</para>
 		<para>
-			<xref linkend="tsvn-subwcrev"/> is a separate program included with TortoiseSVN
+			<xref linkend="tsvn-subwcrev"/> is a separate program included with TortoiseGit
 			which can extract the information from your working copy and write it into a
 			file. This is useful for including build information in your projects.
 		</para>
@@ -105,12 +105,12 @@
 		</para>
 		<para>
 			The section on <xref linkend="tsvn-automation"/> shows how the
-			TortoiseSVN GUI dialogs can be called from the command line. This is useful
+			TortoiseGit GUI dialogs can be called from the command line. This is useful
 			for scripting where you still need user interaction.
 		</para>
 		<para>
 			The <xref linkend="tsvn-cli"/> give a correlation
-			between TortoiseSVN commands and their equivalents in the Subversion
+			between TortoiseGit commands and their equivalents in the Subversion
 			command line client <literal>svn.exe</literal>.
 		</para>
 	</sect1>
@@ -118,17 +118,17 @@
 	<!-- ========================	SECTION	2 ============================== -->
 	<!-- =================================================================== -->
 	<sect1 id="tsvn-preface-source">
-		<title>TortoiseSVN is free!</title>
+		<title>TortoiseGit is free!</title>
 		<para>
-			TortoiseSVN is free. You don't have to pay to use it, and you can use it
+			TortoiseGit is free. You don't have to pay to use it, and you can use it
 			any way you want. It is developed under the GNU General Public License (GPL).
 		</para>
 		<para>
-			TortoiseSVN is an Open Source project. That means you have full
+			TortoiseGit is an Open Source project. That means you have full
 			read access to the source code of this program. You can browse it
 			on this link
-			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/">
-				<citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle>
+			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/">
+				<citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle>
 			</ulink>.
 			You will be prompted to enter username and password.
 			The username is <literal>guest</literal>, and the password must be left blank.
@@ -144,7 +144,7 @@
 	<sect1 id="tsvn-preface-community">
 		<title>Community</title>
 		<para>
-			Both TortoiseSVN and Subversion are developed by a community of
+			Both TortoiseGit and Subversion are developed by a community of
 			people who are working on those projects. They come from different
 			countries all over the world and joined together to create wonderful
 			programs.
@@ -160,7 +160,7 @@
 				<term>Tim Kemp</term>
 				<listitem>
 					<para>
-						for founding the TortoiseSVN project
+						for founding the TortoiseGit project
 					</para>
 				</listitem>
 			</varlistentry>
@@ -168,7 +168,7 @@
 				<term>Stefan Küng</term>
 				<listitem>
 					<para>
-						for the hard work to get TortoiseSVN to what it is now
+						for the hard work to get TortoiseGit to what it is now
 					</para>
 				</listitem>
 			</varlistentry>
@@ -232,20 +232,20 @@
 		<title>Terminology used in this document</title>
 		<para>
 			To make reading the docs easier, the names of all the screens and Menus 
-			from TortoiseSVN are marked up in a different font.
+			from TortoiseGit are marked up in a different font.
 			The <guilabel>Log Dialog</guilabel> for instance.
 		</para>
 		<para>
 			A menu choice is indicated with an arrow.
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Show Log</guimenuitem>
 			</menuchoice>
 			means: select <emphasis>Show Log</emphasis> from the
-			<emphasis>TortoiseSVN</emphasis> context menu.
+			<emphasis>TortoiseGit</emphasis> context menu.
 		</para>
 		<para>
-			Where a local context menu appears within one of the TortoiseSVN
+			Where a local context menu appears within one of the TortoiseGit
 			dialogs, it is shown like this:
 			<menuchoice>
 				<guimenu>Context Menu</guimenu>

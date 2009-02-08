@@ -71,6 +71,6 @@ The -d switch causes SubWCRev to abort with ERRORLEVEL 9 if the destination
 file already exists.
 
 -------------------------------------------------------------------------------
-SubWCRev was written by Stefan Küng for the TortoiseSVN project.
-Visit our website at http://tortoisesvn.tigris.org
+SubWCRev was written by Stefan Küng for the TortoiseGit project.
+Visit our website at http://TortoiseGit.tigris.org
 -------------------------------------------------------------------------------

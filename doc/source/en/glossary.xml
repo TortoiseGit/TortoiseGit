@@ -228,7 +228,7 @@
 			<para>
 				Merging happens automatically when you update your working copy.
 				You can also merge specific changes from another branch using
-				TortoiseSVN's Merge command.
+				TortoiseGit's Merge command.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -256,7 +256,7 @@
 				to each of your versioned directories and files. Each property has a
 				name and a value, rather like a registry key. Subversion has some
 				special properties which it uses internally, such as
-				<literal>svn:eol-style</literal>. TortoiseSVN has some too, such as
+				<literal>svn:eol-style</literal>. TortoiseGit has some too, such as
 				<literal>tsvn:logminsize</literal>. You can add your own properties
 				with any name and value you choose.
 			</para>

@@ -1,7 +1,7 @@
 #
 # Japanese translation for TortoiseMerge
-# Copyright (C) 2004-2008 the TortoiseSVN team
-# This file is distributed under the same license as TortoiseSVN
+# Copyright (C) 2004-2008 the TortoiseGit team
+# This file is distributed under the same license as TortoiseGit
 #
 # Last commit by:
 # $Author: luebbe $
@@ -13,11 +13,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: TortoiseSVN Documentation\n"
+"Project-Id-Version: TortoiseGit Documentation\n"
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-11-17 23:55+0900\n"
 "Last-Translator: KURASAWA Nozomu <nabetaro@caldron.jp>\n"
-"Language-Team: TortoiseSVN translation team <dev@tortoisesvn.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -118,8 +118,8 @@ msgstr "TortoiseMerge はフリーです。お金を払う必要はありませ�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:71
-msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
-msgstr "TortoiseMerge はオープンソースプロジェクトです。これは、あなたがこのプログラムのソースコードに完全に読み取りアクセスできることを意味しています。このリンク  <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink> から、ソースを閲覧できます。ユーザ名とパスワードを要求されますので、ユーザ名を <literal>guest</literal>、パスワードを空のままにしてください。(私たちが現在作業している) 最新のバージョンは <filename>/trunk/</filename> に、既にリリースされたバージョンは <filename>/tags/</filename> に配置しています。"
+msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
+msgstr "TortoiseMerge はオープンソースプロジェクトです。これは、あなたがこのプログラムのソースコードに完全に読み取りアクセスできることを意味しています。このリンク  <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink> から、ソースを閲覧できます。ユーザ名とパスワードを要求されますので、ユーザ名を <literal>guest</literal>、パスワードを空のままにしてください。(私たちが現在作業している) 最新のバージョンは <filename>/trunk/</filename> に、既にリリースされたバージョンは <filename>/tags/</filename> に配置しています。"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:90
@@ -128,13 +128,13 @@ msgstr "寄付!"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:91
-msgid "Even though TortoiseSVN and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
-msgstr "TortoiseSVN と TortoiseMerge はフリーですが、パッチを送ったり、開発体制内で積極的に役割をこなしたりして、開発者をサポートできます。また、コンピュータの前で過ごす私たちを限りなく応援できます。"
+msgid "Even though TortoiseGit and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
+msgstr "TortoiseGit と TortoiseMerge はフリーですが、パッチを送ったり、開発体制内で積極的に役割をこなしたりして、開発者をサポートできます。また、コンピュータの前で過ごす私たちを限りなく応援できます。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:97
-msgid "While working on TortoiseSVN we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
-msgstr "私たちは TortoiseSVN の作業中、音楽を聴くのが大好きです。また長時間このプロジェクトに関わっているために、音楽が<emphasis>たくさん</emphasis>必要です。そこで、私たちの好きな CD や DVD の欲しいものリストを用意しました。<ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> パッチや翻訳を送ってプロジェクトに貢献している人の一覧もご覧ください。"
+msgid "While working on TortoiseGit we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
+msgstr "私たちは TortoiseGit の作業中、音楽を聴くのが大好きです。また長時間このプロジェクトに関わっているために、音楽が<emphasis>たくさん</emphasis>必要です。そこで、私たちの好きな CD や DVD の欲しいものリストを用意しました。<ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> パッチや翻訳を送ってプロジェクトに貢献している人の一覧もご覧ください。"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:113
@@ -245,13 +245,13 @@ msgstr "TortoiseMerge の歴史"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:236
-msgid "While working on <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
-msgstr "<ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> の作業をしていると、プロジェクトの拡張やバグの修正のためのパッチを送ってもらったときにはいつも、そのパッチを適用するのに大量の作業を行うことになっていました。また多くの場合、既にファイルを更新してしまっていたために、そのパッチは時代遅れになっており、コマンドラインパッチツール <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> では適用できませんでした。"
+msgid "While working on <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
+msgstr "<ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> の作業をしていると、プロジェクトの拡張やバグの修正のためのパッチを送ってもらったときにはいつも、そのパッチを適用するのに大量の作業を行うことになっていました。また多くの場合、既にファイルを更新してしまっていたために、そのパッチは時代遅れになっており、コマンドラインパッチツール <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> では適用できませんでした。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:251
-msgid "This was also the main reason why TortoiseSVN did not originally have a <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
-msgstr "また、TortoiseSVN がもともと<menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>パッチの作成</guimenuitem></menuchoice> を実装していなかった主な理由なのですが、パッチの適用が簡単だったので、私たちはユーザがファイル全体を送ってくれるのを歓迎していました。"
+msgid "This was also the main reason why TortoiseGit did not originally have a <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
+msgstr "また、TortoiseGit がもともと<menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>パッチの作成</guimenuitem></menuchoice> を実装していなかった主な理由なのですが、パッチの適用が簡単だったので、私たちはユーザがファイル全体を送ってくれるのを歓迎していました。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:261
@@ -260,8 +260,8 @@ msgstr "パッチファイルを適用する GUI ツールをインターネッ�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseSVN already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "TortoiseSVN は既に (すばらしい差分エンジンを内蔵した) Subversion ライブラリを使用していたので、GNU diff の代わりにこのライブラリを使用するのは自然なことでした。"
+msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "TortoiseGit は既に (すばらしい差分エンジンを内蔵した) Subversion ライブラリを使用していたので、GNU diff の代わりにこのライブラリを使用するのは自然なことでした。"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -349,8 +349,8 @@ msgstr "パッチを適用"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseSVN when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
-msgstr "パッチファイルは、Subversion の unified diff ファイルで、変更を適用するファイルの一覧が含まれています。パッチは、あなたが変更点を確認してからコミットできるように、他の開発者によって作成されたかもしれません。また、TortoiseSVN が 2 つのフォルダを比較する際に、内部的に作成したかもしれません。これは、リポジトリリビジョンと作業コピーフォルダを比較したり、2 つの異なるリポジトリリビジョンを比較したり、2 つの異なるリポジトリパスを比較したりすると発生します。"
+msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgstr "パッチファイルは、Subversion の unified diff ファイルで、変更を適用するファイルの一覧が含まれています。パッチは、あなたが変更点を確認してからコミットできるように、他の開発者によって作成されたかもしれません。また、TortoiseGit が 2 つのフォルダを比較する際に、内部的に作成したかもしれません。これは、リポジトリリビジョンと作業コピーフォルダを比較したり、2 つの異なるリポジトリリビジョンを比較したり、2 つの異なるリポジトリパスを比較したりすると発生します。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:380
@@ -546,8 +546,8 @@ msgstr "<guibutton>ビューの切り替え</guibutton> 1 ペインビューと 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:635
-msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseSVN does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
-msgstr "<guibutton>左と右のビューを入れ替え</guibutton> 2 ペインビューで左右のウィンドウを入れ替えます。同じファイルの 2 つのリビジョン間で比較するのに対して、2 つの異なるツリーで比較を行っている場合、TortoiseSVN はどちらのファイルを <quote>オリジナル/ベース</quote> 版と見なして左ペインに表示したらいいか分かりません。間違っていた場合、これで簡単に表示を切り替えられます。"
+msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseGit does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
+msgstr "<guibutton>左と右のビューを入れ替え</guibutton> 2 ペインビューで左右のウィンドウを入れ替えます。同じファイルの 2 つのリビジョン間で比較するのに対して、2 つの異なるツリーで比較を行っている場合、TortoiseGit はどちらのファイルを <quote>オリジナル/ベース</quote> 版と見なして左ペインに表示したらいいか分かりません。間違っていた場合、これで簡単に表示を切り替えられます。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:646
@@ -1458,8 +1458,8 @@ msgstr "リポジトリに追加された変更を、手元で行った変更を
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1576
-msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseSVN's Merge command."
-msgstr "作業コピーを更新する際に、自動的にマージが行われます。また、TortoiseSVN のマージツールを用いて、別のブランチにある変更を指定してマージすることもできます。"
+msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseGit's Merge command."
+msgstr "作業コピーを更新する際に、自動的にマージが行われます。また、TortoiseGit のマージツールを用いて、別のブランチにある変更を指定してマージすることもできます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1584
@@ -1478,8 +1478,8 @@ msgstr "プロパティ"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseSVN has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "ディレクトリやファイルをバージョン管理下に置くのに加えて、Subversion はバージョン管理下のメタデータを追加できます。これは、バージョン管理下のディレクトリ・ファイルごとの <quote>プロパティ</quote> として参照されます。プロパティには、レジストリキーと同じように、それぞれ名前と値があります。Subversion には、<literal>svn:eol-style</literal> のような内部で使用する特殊なプロパティがいくつかあります。TortoiseSVN にも <literal>tsvn:logminsize</literal> のような特殊なプロパティがあります。お好みの名前と値を持つプロパティの追加もできます。"
+msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "ディレクトリやファイルをバージョン管理下に置くのに加えて、Subversion はバージョン管理下のメタデータを追加できます。これは、バージョン管理下のディレクトリ・ファイルごとの <quote>プロパティ</quote> として参照されます。プロパティには、レジストリキーと同じように、それぞれ名前と値があります。Subversion には、<literal>svn:eol-style</literal> のような内部で使用する特殊なプロパティがいくつかあります。TortoiseGit にも <literal>tsvn:logminsize</literal> のような特殊なプロパティがあります。お好みの名前と値を持つプロパティの追加もできます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1614

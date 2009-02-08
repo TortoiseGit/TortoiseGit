@@ -21,7 +21,7 @@
 		the trunk, and the ideal way to view this sort of information is
 		as a graph or tree structure. That's when you need to use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Revision Graph...</guimenuitem>
 		</menuchoice>
 	</para>
@@ -32,7 +32,7 @@
 	</para>
 	<important>
 		<para>
-			In order to generate the graph, TortoiseSVN must fetch all log messages
+			In order to generate the graph, TortoiseGit must fetch all log messages
 			from the repository root. Needless to say this can take several minutes
 			even with a repository of a few thousand revisions, depending on server
 			speed, network bandwidth, etc. If you try this with something like the
@@ -42,7 +42,7 @@
 		<para>
 			The good news is that if you are using Log Caching, you only have to
 			suffer this delay once. After that, log data is held locally.
-			Log caching is enabled in TortoiseSVN's settings.
+			Log caching is enabled in TortoiseGit's settings.
 		</para>
 	</important>
 	<sect2 id="tsvn-dug-revgraph-nodes">
@@ -53,7 +53,7 @@
 			Different types of node can be distinguished by shape and colour.
 			The shapes are fixed, but colours can be set using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Settings</guimenuitem>
 			</menuchoice>
 			<variablelist>

@@ -24,7 +24,7 @@
 		properly so that the pre-commit hook script can parse it correctly.
 	</para>
 	<para>
-		TortoiseSVN can help the user in two ways:
+		TortoiseGit can help the user in two ways:
 		<orderedlist>
 			<listitem>
 				<para>
@@ -34,14 +34,14 @@
 					the bug tracking tools can't parse correctly.
 				</para>
 				<para>
-					Or TortoiseSVN can highlight the part of
+					Or TortoiseGit can highlight the part of
 					the entered log message which is recognized by the issue tracker.
 					That way the user knows that the log message can be parsed correctly.
 				</para>
 			</listitem>
 			<listitem>
 				<para>
-					When the user browses the log messages, TortoiseSVN
+					When the user browses the log messages, TortoiseGit
 					creates a link out of each bug ID in the log message which fires
 					up the browser to the issue mentioned.
 				</para>
@@ -52,12 +52,12 @@
 		<title>Adding Issue Numbers to Log Messages</title>
 		<para>
 			You can integrate a bug tracking tool of your choice in
-			TortoiseSVN. To do this, you have to define
+			TortoiseGit. To do this, you have to define
 			some properties, which start with <literal>bugtraq:</literal>.
 			They must be set on Folders: (<xref linkend="tsvn-dug-propertypage"/>)
 		</para>
 		<para>
-			There are two ways to integrate TortoiseSVN with issue trackers. One is
+			There are two ways to integrate TortoiseGit with issue trackers. One is
 			based on simple strings, the other is based on
 			<emphasis>regular expressions</emphasis>.
 			The properties used by both approaches are:
@@ -70,15 +70,15 @@
 							It must be properly URI encoded and it has to contain
 							<literal>%BUGID%</literal>.
 							<literal>%BUGID%</literal> is replaced with the Issue number
-							you entered. This allows TortoiseSVN
+							you entered. This allows TortoiseGit
 							to display a link in the log dialog, so when you are looking
 							at the revision log you can jump directly to your
 							bug tracking tool.
 							You do not have to provide this property, but then
-							TortoiseSVN shows only the
+							TortoiseGit shows only the
 							issue number and not the link to it.
-							e.g the TortoiseSVN project is using
-							<systemitem class="url">http://issues.tortoisesvn.net/?do=details&amp;id=%BUGID%</systemitem>
+							e.g the TortoiseGit project is using
+							<systemitem class="url">http://issues.TortoiseGit.net/?do=details&amp;id=%BUGID%</systemitem>
 						</para>
 						<para>
 							You can also use relative URLs instead of absolute ones. This is
@@ -92,18 +92,18 @@
 							to be relative to the repository root.
 							For example, <literal>^/../?do=details&amp;id=%BUGID%</literal>
 							will resolve to
-							<systemitem class="url">http://tortoisesvn.net/?do=details&amp;id=%BUGID%</systemitem>
+							<systemitem class="url">http://TortoiseGit.net/?do=details&amp;id=%BUGID%</systemitem>
 							if your repository is located on
-							<systemitem class="url">http://tortoisesvn.net/svn/trunk/</systemitem>.
+							<systemitem class="url">http://TortoiseGit.net/svn/trunk/</systemitem>.
 						</para>
 						<para>
 							A URL beginning with the string <literal>/</literal> is assumed
 							to be relative to the server's hostname.
 							For example <literal>/?do=details&amp;id=%BUGID%</literal>
 							will resolve to
-							<systemitem class="url">http://tortoisesvn.net/?do=details&amp;id=%BUGID%</systemitem>
+							<systemitem class="url">http://TortoiseGit.net/?do=details&amp;id=%BUGID%</systemitem>
 							if your repository is located anywhere on
-							<systemitem class="url">http://tortoisesvn.net</systemitem>.
+							<systemitem class="url">http://TortoiseGit.net</systemitem>.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -112,7 +112,7 @@
 					<listitem>
 						<para>
 							Set this to <literal>true</literal>, if you want
-							TortoiseSVN to warn you
+							TortoiseGit to warn you
 							because of an empty issue-number text field. Valid values 
 							are <literal>true/false</literal>.
 							<emphasis>
@@ -126,7 +126,7 @@
 		<sect3 id="tsvn-dug-bugtracker-link-simple">
 			<title>Issue Number in Text Box</title>
 			<para>
-				In the simple approach, TortoiseSVN shows the user a separate
+				In the simple approach, TortoiseGit shows the user a separate
 				input field where a bug ID can be entered. Then a separate line
 				is appended/prepended to the log message the user entered.
 				<variablelist>
@@ -136,7 +136,7 @@
 							<para>
 								This property activates the bug tracking system
 								in <emphasis>Input field</emphasis> mode.
-								If this property is set, then TortoiseSVN
+								If this property is set, then TortoiseGit
 								will prompt you to enter an issue number when you commit
 								your changes. It's used to add a line at the end of the
 								log message. It must contain
@@ -170,7 +170,7 @@
 						<term condition="pot">bugtraq:label</term>
 						<listitem>
 							<para>
-								This text is shown by TortoiseSVN
+								This text is shown by TortoiseGit
 								on the commit dialog to label the edit box where you enter
 								the issue number. If it's not set,
 								<literal>Bug-ID / Issue-Nr:</literal> will be displayed.
@@ -200,12 +200,12 @@
 		<sect3 id="tsvn-dug-bugtracker-link-regex">
 			<title>Issue Numbers Using Regular Expressions</title>
 			<para>
-				In the approach with <emphasis>regular expressions</emphasis>, TortoiseSVN
+				In the approach with <emphasis>regular expressions</emphasis>, TortoiseGit
 				doesn't show a separate input field but marks the part of the log message
 				the user enters which is recognized by the issue tracker. This is done while
 				the user writes the log message. This also means that the bug ID can be
 				anywhere inside a log message! This method is much more flexible, and is
-				the one used by the TortoiseSVN project itself.
+				the one used by the TortoiseGit project itself.
 				<variablelist>
 					<varlistentry>
 						<term condition="pot">bugtraq:logregex</term>
@@ -229,7 +229,7 @@
 							<para>
 								If you want to catch bug IDs as used in the expression above
 								inside a log message, you could use the following regex strings,
-								which are the ones used by the TortoiseSVN project:
+								which are the ones used by the TortoiseGit project:
 								<literal>[Ii]ssues?:?(\s*(,|and)?\s*#\d+)+</literal> and
 								<literal>(\d+)</literal>
 							</para>
@@ -292,7 +292,7 @@
 		</tip>
 		<para>
 			Some <literal>tsvn:</literal> properties require a
-			<literal>true/false</literal> value. TortoiseSVN also understands
+			<literal>true/false</literal> value. TortoiseGit also understands
 			<literal>yes</literal> as a synonym for <literal>true</literal> and
 			<literal>no</literal> as a synonym for <literal>false</literal>.
 		</para>
@@ -301,7 +301,7 @@
 			<para>
 				These properties must be set on folders for the system to work. 
 				When you commit a file or folder the properties are read from that folder.
-				If the properties are not found there, TortoiseSVN will search upwards
+				If the properties are not found there, TortoiseGit will search upwards
 				through the folder tree to find them until it comes to an unversioned
 				folder, or the tree root (eg. <literal>C:\</literal>) is found.
 				If you can be sure that each user checks out only from e.g
@@ -329,12 +329,12 @@
 			</para>
 		</tip>
 		<para>
-			This issue tracker integration is not restricted to TortoiseSVN; it can be used
+			This issue tracker integration is not restricted to TortoiseGit; it can be used
 			with any Subversion client. For more information, read the full
-			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/doc/issuetrackers.txt">
+			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/doc/issuetrackers.txt">
 				<citetitle>Issue Tracker Integration Specification</citetitle>
 			</ulink>
-			in the TortoiseSVN source repository.
+			in the TortoiseGit source repository.
 			(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
 		</para>
 	</sect2>
@@ -355,8 +355,8 @@
 			program is beyond the scope of this manual. The interface definition
 			and sample programs can be obtained from the <literal>contrib</literal>
 			folder in the
-			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/contrib/issue-tracker-plugins">
-				<citetitle>TortoiseSVN repository</citetitle>
+			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/contrib/issue-tracker-plugins">
+				<citetitle>TortoiseGit repository</citetitle>
 			</ulink>.
 			(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
 		</para>
@@ -364,7 +364,7 @@
 			For illustration purposes, let's suppose that your system administrator
 			has provided you with an issue tracker plugin which you have installed,
 			and that you have set up some of your working copies to use the plugin
-			in TortoiseSVN's settings dialog.
+			in TortoiseGit's settings dialog.
 			When you open the commit dialog from a working copy to which the plugin
 			has been assigned, you will see a new button at the top of the dialog.
 			<figure id="tsvn-dug-bugtracker-dia-1">

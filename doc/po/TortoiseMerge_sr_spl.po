@@ -1,7 +1,7 @@
 #
 # Serbian latin translation for TortoiseMerge
-# Copyright (C) 2004-2008 the TortoiseSVN team
-# This file is distributed under the same license as TortoiseSVN
+# Copyright (C) 2004-2008 the TortoiseGit team
+# This file is distributed under the same license as TortoiseGit
 #
 # Last commit by:
 # $Author: luebbe $
@@ -18,7 +18,7 @@ msgstr ""
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-11-17 23:16+0100\n"
 "Last-Translator: Milorad Popović\n"
-"Language-Team: TortoiseSVN translation team <dev@tortoisesvn.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -119,8 +119,8 @@ msgstr "TortoiseMerge je besplatan. Vi ne treba da platite za njega, možete ga 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:71
-msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
-msgstr "TortoiseMerge je Otvoren Kod projekat. To znači da imate pun pristup izvornom kodu ovog projekta. Možete ga pretraživati na vezi <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>.Bi'ete pitani da unesete korisnika i loyinku. Korisnik je <literal>guest</literal>, a lozinka mora ostati prazna. Najskorija verzija (gde mi trenutno radimo) locirana je pod <filename>/trunk/</filename> realizovana verzija je pod <filename>/tags/</filename>."
+msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
+msgstr "TortoiseMerge je Otvoren Kod projekat. To znači da imate pun pristup izvornom kodu ovog projekta. Možete ga pretraživati na vezi <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>.Bi'ete pitani da unesete korisnika i loyinku. Korisnik je <literal>guest</literal>, a lozinka mora ostati prazna. Najskorija verzija (gde mi trenutno radimo) locirana je pod <filename>/trunk/</filename> realizovana verzija je pod <filename>/tags/</filename>."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:90
@@ -129,13 +129,13 @@ msgstr "Donirajte!"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:91
-msgid "Even though TortoiseSVN and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
-msgstr "Bez obzira što su TortoiseSVN i TortoiseMerge besplatni, možete podržati razvoj slanjem zakrpa i igranjem aktivne uloge u razvoju. Možete pomoći ako nas pohvalite za beskonačne sate provedene ispred naših kompjutera."
+msgid "Even though TortoiseGit and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
+msgstr "Bez obzira što su TortoiseGit i TortoiseMerge besplatni, možete podržati razvoj slanjem zakrpa i igranjem aktivne uloge u razvoju. Možete pomoći ako nas pohvalite za beskonačne sate provedene ispred naših kompjutera."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:97
-msgid "While working on TortoiseSVN we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
-msgstr "Dok radimo na TortoiseSVN volimo da slušamo muziku. I pošto trošimo mnogo sati na ovom projktu treba nam <emphasis>mnogo</emphasis> muzike. Zato smo sastavili listu želja sa našim muzičkim favoritima CDima i DVDima: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink>  Molim vas da takođe pogledate listu ljudi koji učestvuju u projektu slanjem zakrpa ili prevoda."
+msgid "While working on TortoiseGit we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
+msgstr "Dok radimo na TortoiseGit volimo da slušamo muziku. I pošto trošimo mnogo sati na ovom projktu treba nam <emphasis>mnogo</emphasis> muzike. Zato smo sastavili listu želja sa našim muzičkim favoritima CDima i DVDima: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink>  Molim vas da takođe pogledate listu ljudi koji učestvuju u projektu slanjem zakrpa ili prevoda."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:113
@@ -246,13 +246,13 @@ msgstr "TortoiseMerge istorija"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:236
-msgid "While working on <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
-msgstr "Dok radite na <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> našli smo da kadgod korisnici pošalju zakrpe da poboljšaju projekat ili samo da fiksiraju bagove, imali smo puno posla samo da primenimo te zakrpe. Mnogo puta ove zakrpe su bile zastarele i nisu se mogle primenite alatom iz komandne linije.<ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> zato što smo radili na tim fajlovima i nekad  već izmenili te fajlove."
+msgid "While working on <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
+msgstr "Dok radite na <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> našli smo da kadgod korisnici pošalju zakrpe da poboljšaju projekat ili samo da fiksiraju bagove, imali smo puno posla samo da primenimo te zakrpe. Mnogo puta ove zakrpe su bile zastarele i nisu se mogle primenite alatom iz komandne linije.<ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> zato što smo radili na tim fajlovima i nekad  već izmenili te fajlove."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:251
-msgid "This was also the main reason why TortoiseSVN did not originally have a <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
-msgstr "To je takođe glavni razlog zašto TortoiseSVN originalno nije imao <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Kreiraj zakrpu</guimenuitem></menuchoice> primenjeno: preferiramo da korisnici cele fajlove jer je sa njima lakše primeniti zakrpe."
+msgid "This was also the main reason why TortoiseGit did not originally have a <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
+msgstr "To je takođe glavni razlog zašto TortoiseGit originalno nije imao <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Kreiraj zakrpu</guimenuitem></menuchoice> primenjeno: preferiramo da korisnici cele fajlove jer je sa njima lakše primeniti zakrpe."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:261
@@ -261,8 +261,8 @@ msgstr "Tako smo potrošili puno vremena pretražujući internet za GUI alat koj
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseSVN already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "kako TortoiseSVN već koristi Subverzionu biblioteku, koja ima fino razlikovanje u sebi, bilo je prirodno da se koristi biblioteka umesto GNU razl."
+msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "kako TortoiseGit već koristi Subverzionu biblioteku, koja ima fino razlikovanje u sebi, bilo je prirodno da se koristi biblioteka umesto GNU razl."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -350,8 +350,8 @@ msgstr "Primena zakrpa"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseSVN when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
-msgstr "Fajl zakrpe je Subverzioni objedinjeni diff fajl, koji sadrži informacije koje zahtevaju da se primene izmene u skupu fajlova. Drugi ljudi iz razvoja su nabavljali zakrpe tako da možete videti izmene koje su urađene možda urezati ih u spremište. Ili može biti generisan interno pomoću TortoiseSVN kada se uporede dva imenika. Ovo se dešava kada se uporede revizije spremišta sa vašim imenikom  radne kopije, ili ako uporedite dve razlike revizija spremišta, ili ako uporedite dve različite putanje spremišta."
+msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgstr "Fajl zakrpe je Subverzioni objedinjeni diff fajl, koji sadrži informacije koje zahtevaju da se primene izmene u skupu fajlova. Drugi ljudi iz razvoja su nabavljali zakrpe tako da možete videti izmene koje su urađene možda urezati ih u spremište. Ili može biti generisan interno pomoću TortoiseGit kada se uporede dva imenika. Ovo se dešava kada se uporede revizije spremišta sa vašim imenikom  radne kopije, ili ako uporedite dve razlike revizija spremišta, ili ako uporedite dve različite putanje spremišta."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:380
@@ -547,13 +547,13 @@ msgstr "<guibutton>Prebaci pogled</guibutton> bira između jedan-panel i dva-pan
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:635
-msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseSVN does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
-msgstr "<guibutton>Prebaci levi i desni pogled</guibutton> U 2-panela pogledu izmenjuje levi i desni prozor. Kada poredite fajlove u 2 različita stabla, nasuprot od 2 revizije istog fajla, TortoiseSVN ne zna koji treba da ide u levi panel kao <quote>originalna/osnovna</quote> verzija. Ako uzme pogrešnu vi je možete zameniti da napraviti lakši pregled."
+msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseGit does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
+msgstr "<guibutton>Prebaci levi i desni pogled</guibutton> U 2-panela pogledu izmenjuje levi i desni prozor. Kada poredite fajlove u 2 različita stabla, nasuprot od 2 revizije istog fajla, TortoiseGit ne zna koji treba da ide u levi panel kao <quote>originalna/osnovna</quote> verzija. Ako uzme pogrešnu vi je možete zameniti da napraviti lakši pregled."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:646
 msgid "<guibutton>Show/Hide Patch List</guibutton> When TortoiseMerge has a patch list, this button allows you to hide it (so you can see both windows), or show it (so you can review the file list)."
-msgstr "<guibutton>Prikaži/Sakri listu zakrpa</guibutton> Kada TortoiseSVN ima listu zakrpa, ovo dugme vam omogućava da je sakrijete (tako da možete videti oba prozora), ili je prikazati (tako da možete pregledati listu fajlova)."
+msgstr "<guibutton>Prikaži/Sakri listu zakrpa</guibutton> Kada TortoiseGit ima listu zakrpa, ovo dugme vam omogućava da je sakrijete (tako da možete videti oba prozora), ili je prikazati (tako da možete pregledati listu fajlova)."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:654
@@ -1459,8 +1459,8 @@ msgstr "Proces pomoću koga su izmene iz spremišta dodate vašoj radnoj kopiji 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1576
-msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseSVN's Merge command."
-msgstr "Stapanje se dešava automatski kada ažurirate radnu kopiju. Možete takođe stopiti specifične izmene od druge grane koristeći TortoiseSVNovu Stopi komandu."
+msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseGit's Merge command."
+msgstr "Stapanje se dešava automatski kada ažurirate radnu kopiju. Možete takođe stopiti specifične izmene od druge grane koristeći TortoiseGitovu Stopi komandu."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1584
@@ -1479,8 +1479,8 @@ msgstr "Osobina"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseSVN has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "U dodatku verzionisanju vaših imenika i fajlova, Subverzija omogućava da dodate verzionisane metapodatke - označenih kao <quote>osobine</quote> svakog od verzionisanih imenika i fajlova. Svaka osobina ima ime i vrednost, radije kao ključ registra. Subverzija ima neke specijalne osobine koje se koriste interno, tako kao <literal>svn:eol-stil</literal>. TortoiseSVN ima neke takođe, kao <literal>tsvn:logminsajz</literal>. Možete dodati vaše osobine sa bilo kojim imenom i vrednošću koju izaberete. "
+msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "U dodatku verzionisanju vaših imenika i fajlova, Subverzija omogućava da dodate verzionisane metapodatke - označenih kao <quote>osobine</quote> svakog od verzionisanih imenika i fajlova. Svaka osobina ima ime i vrednost, radije kao ključ registra. Subverzija ima neke specijalne osobine koje se koriste interno, tako kao <literal>svn:eol-stil</literal>. TortoiseGit ima neke takođe, kao <literal>tsvn:logminsajz</literal>. Možete dodati vaše osobine sa bilo kojim imenom i vrednošću koju izaberete. "
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1614

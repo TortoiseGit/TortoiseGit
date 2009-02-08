@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-settings" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>TortoiseSVN's Settings</title>
+	<title>TortoiseGit's Settings</title>
 	<indexterm>
 		<primary>settings</primary>
 	</indexterm>

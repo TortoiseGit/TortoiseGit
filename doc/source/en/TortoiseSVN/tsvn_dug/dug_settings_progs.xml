@@ -8,13 +8,13 @@
 			<?dbhh topicname="HIDD_SETTINGSPROGSDIFF"?>
 			<graphic fileref="../images/SettingsProgs.png"/>
 		</figure>
-		Here you can define your own diff/merge programs that TortoiseSVN
+		Here you can define your own diff/merge programs that TortoiseGit
 		should use. The default setting is to use TortoiseMerge
-		which is installed alongside TortoiseSVN.
+		which is installed alongside TortoiseGit.
 	</para>
 	<para>
 		Read <xref linkend="tsvn-dug-diff-tools"/> for a list of some of the
-		external diff/merge programs that people are using with TortoiseSVN.
+		external diff/merge programs that people are using with TortoiseGit.
 	</para>
 	<sect3 id="tsvn-dug-settings-Diff">
 		<title>Diff Viewer</title>
@@ -23,7 +23,7 @@
 			An external diff program may be used for comparing different
 			revisions of files. The external program will need to
 			obtain the filenames from the command line, along with
-			any other command line options. TortoiseSVN uses
+			any other command line options. TortoiseGit uses
 			substitution parameters prefixed with <literal>%</literal>.
 			When it encounters one of these it will substitute the
 			appropriate value. The order of the parameters will depend
@@ -65,7 +65,7 @@
 		</para>
 		<para>
 			The window titles are not pure filenames.
-			TortoiseSVN treats that as a name to display and creates
+			TortoiseGit treats that as a name to display and creates
 			the names accordingly. So e.g. if you're doing a
 			diff from a file in revision 123 with a file 
 			in your working copy, the names will be
@@ -100,12 +100,12 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 			is purely due to the current value of the keyword. Also if you use
 			<literal>svn:eol-style = native</literal> the BASE file will have
 			pure <literal>LF</literal> line endings whereas your file will
-			have <literal>CR-LF</literal> line endings. TortoiseSVN will normally hide
+			have <literal>CR-LF</literal> line endings. TortoiseGit will normally hide
 			these differences automatically by first parsing the BASE file to
 			expand keywords and line endings before doing the diff operation.
 			However, this can take a long time with large files. If
 			<guilabel>Convert files when diffing against BASE</guilabel>
-			is unchecked then TortoiseSVN will skip pre-processing the files.
+			is unchecked then TortoiseGit will skip pre-processing the files.
 		</para>
 		<para>
 			You can also specify a different diff tool to use on Subversion

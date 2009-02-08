@@ -4,7 +4,7 @@
 	<title>Setting Up A Server</title>
 	<simplesect>
 		<para>
-			To use TortoiseSVN (or any other Subversion client), you need a place where your 
+			To use TortoiseGit (or any other Subversion client), you need a place where your 
 			repositories are 	located. You can either store your repositories locally and access 
 			them using the <literal>file://</literal> protocol or you can place them on a 
 			server and access them with the <literal>http://</literal> or 

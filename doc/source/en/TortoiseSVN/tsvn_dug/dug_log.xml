@@ -66,7 +66,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						From the TortoiseSVN context submenu
+						From the TortoiseGit context submenu
 					</para>
 				</listitem>
 				<listitem>
@@ -130,7 +130,7 @@
 						<para>
 							Compare the selected revision with your working copy.
 							The default Diff-Tool is TortoiseMerge which
-							is supplied with TortoiseSVN.
+							is supplied with TortoiseGit.
 							If the log dialog is for a folder, this will show you a list
 							of changed files, and allow you to review the changes made
 							to each file individually.
@@ -369,7 +369,7 @@
 						<para>
 							Compare the two selected revisions using a visual
 							difference tool. The default Diff-Tool is TortoiseMerge
-							which is supplied with TortoiseSVN.
+							which is supplied with TortoiseGit.
 						</para>
 						<para>
 							If you select this option for a folder, a further dialog pops
@@ -579,7 +579,7 @@
 						messages fetched is limited to 100, but you can change
 						this value in 
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Settings</guimenuitem>
 						</menuchoice>
 						(<xref linkend="tsvn-dug-settings-dialogs"/>),
@@ -597,7 +597,7 @@
 					</para>
 					<para>
 						Normally you will want to leave this option unchecked.
-						TortoiseSVN remembers the state of the checkbox, so
+						TortoiseGit remembers the state of the checkbox, so
 						it will respect your preference.
 					</para>
 					<para>
@@ -654,7 +654,7 @@
 			This can be a slow operation for large working copies so if
 			you want to enable this feature you must create a
 			<literal>DWORD</literal> registry key with value 1 at
-			<literal>HKCU\Software\TortoiseSVN\RecursiveLogRev</literal>.
+			<literal>HKCU\Software\TortoiseGit\RecursiveLogRev</literal>.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-showlog-mergetrack">

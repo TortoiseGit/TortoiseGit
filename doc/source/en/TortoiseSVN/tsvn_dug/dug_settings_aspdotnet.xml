@@ -20,7 +20,7 @@
 		</para>
 	</sidebar>
 	<para>
-		As of Version 1.3.0 of Subversion and TortoiseSVN, you can set
+		As of Version 1.3.0 of Subversion and TortoiseGit, you can set
 		the environment variable <literal>SVN_ASP_DOT_NET_HACK</literal>.
 		If that variable is set, then Subversion will use <literal>_svn</literal>
 		folders instead of <literal>.svn</literal> folders. You must restart
@@ -32,7 +32,7 @@
 	<para>
 		For more information, and other ways to avoid this problem in the
 		first place, check out the article about this in our
-		<ulink url="http://tortoisesvn.net/aspdotnethack">
+		<ulink url="http://TortoiseGit.net/aspdotnethack">
 			<citetitle>FAQ</citetitle>
 		</ulink>.
 	</para>

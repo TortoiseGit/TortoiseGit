@@ -9,7 +9,7 @@
 				<title>Explorer showing icon overlays</title>
 				<graphic fileref="../images/Overlays.png"/>
 			</figure>
-			One of the most visible features of TortoiseSVN is the icon
+			One of the most visible features of TortoiseGit is the icon
 			overlays which appear on files in your working copy. These
 			show you at a glance which of your files have been modified.
 			Refer to <xref linkend="tsvn-dug-wcstatus-1"/> to find out
@@ -29,11 +29,11 @@
 				<title>Context menu for a directory under version control</title>
 				<graphic fileref="../images/ContextMenuDirControl.png"/>
 			</figure>
-			All TortoiseSVN commands are invoked from the context menu of the windows
+			All TortoiseGit commands are invoked from the context menu of the windows
 			explorer. Most are directly visible, when you <action>right click</action>
 			on a file or folder. The commands that are available depend on whether the
 			file or folder or its parent folder is under version control or not.
-			You can also see the TortoiseSVN menu as part of the Explorer file menu.
+			You can also see the TortoiseGit menu as part of the Explorer file menu.
 		</para>
 		<tip>
 			<para>
@@ -43,14 +43,14 @@
 			</para>
 		</tip>
 		<para>
-			In some cases you may see several TortoiseSVN entries. This is not a bug!
+			In some cases you may see several TortoiseGit entries. This is not a bug!
 			<figure id="tsvn-dug-explorer-file-menu">
 				<title>Explorer file menu for a shortcut in a versioned folder</title>
 				<graphic fileref="../images/ExplorerFileMenuFileShortcut.png"/>
 			</figure>
 			This example is for an unversioned shortcut within a versioned folder, and
 			in the Explorer file menu there are <emphasis>three</emphasis> entries
-			for TortoiseSVN. One is for the folder, one for the shortcut itself,
+			for TortoiseGit. One is for the folder, one for the shortcut itself,
 			and the third for the object the shortcut is pointing to.
 			To help you distinguish between them, the icons have an indicator in the
 			lower right corner to show whether the menu entry is for a file,
@@ -148,7 +148,7 @@
 				<title>Authentication Dialog</title>
 				<graphic fileref="../images/Authenticate.png"/>
 			</figure>
-			Enter your username and password. The checkbox will make TortoiseSVN
+			Enter your username and password. The checkbox will make TortoiseGit
 			store the credentials in Subversion's default directory: 
 			<filename>%APPDATA%\Subversion\auth</filename> in three subdirectories:
 			<itemizedlist>
@@ -175,10 +175,10 @@
 		<para>
 			If you want to clear the authentication cache for all
 			servers, you can do so from the <guilabel>Saved Data</guilabel> page
-			of TortoiseSVN's settings dialog. That button will clear all cached
+			of TortoiseGit's settings dialog. That button will clear all cached
 			authentication data from the Subversion <filename>auth</filename>
 			directories, as well as any authentication
-			data stored in the registry by earlier versions of TortoiseSVN.
+			data stored in the registry by earlier versions of TortoiseGit.
 			Refer to <xref linkend="tsvn-dug-settings-saved-data"/>.
 		</para>
 		<para>
@@ -207,7 +207,7 @@ rmdir /s /q "%APPDATA%\Subversion\auth"
 			<primary>maximize</primary>
 		</indexterm>
 		<para>
-			Many of TortoiseSVN's dialogs have a lot of information to display,
+			Many of TortoiseGit's dialogs have a lot of information to display,
 			but it is often useful to maximize only the height, or only the width,
 			rather than maximizing to fill the screen. As a convenience, there are
 			shortcuts for this on the <guilabel>Maximize</guilabel> button.

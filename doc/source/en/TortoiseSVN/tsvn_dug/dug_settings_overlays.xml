@@ -8,7 +8,7 @@
 			<title>The Settings Dialog, Icon Overlays Page</title>
 			<graphic fileref="../images/SettingsOverlay.png"/>
 		</figure>
-		This page allows you to choose the items for which TortoiseSVN will
+		This page allows you to choose the items for which TortoiseGit will
 		display icon overlays.
 	</para>
 	<para>
@@ -30,9 +30,9 @@
 	</para>
 	<para>
 		Since it takes quite a while to fetch the status of a working copy,
-		TortoiseSVN uses a cache to store the status so the explorer
+		TortoiseGit uses a cache to store the status so the explorer
 		doesn't get hogged too much when showing the overlays.
-		You can choose which type of cache TortoiseSVN should use according
+		You can choose which type of cache TortoiseGit should use according
 		to your system and working copy size here:
 		<variablelist>
 			<varlistentry>
@@ -90,7 +90,7 @@
 				<term>None</term>
 				<listitem>
 					<para>
-						With this setting, the TortoiseSVN does not fetch the status
+						With this setting, the TortoiseGit does not fetch the status
 						at all in Explorer. Because of that, files don't get an overlay
 						and folders only get a 'normal' overlay if they're versioned.
 						No other overlays are shown, and no extra columns are available
@@ -124,7 +124,7 @@
 		and some as removable drives.
 	</para>
 	<para>
-		The <guilabel>Exclude Paths</guilabel> are used to tell TortoiseSVN
+		The <guilabel>Exclude Paths</guilabel> are used to tell TortoiseGit
 		those paths for which it should <emphasis>not</emphasis> show icon
 		overlays and status columns.
 		This is useful if you have some very big working copies containing
@@ -175,7 +175,7 @@ if (path is allowed drive type) AND (path is not in exclude list)
 			It is often convenient to use a <literal>SUBST</literal> drive
 			to access your working copies, e.g. using the command
 <screen>
-subst T: C:\TortoiseSVN\trunk\doc
+subst T: C:\TortoiseGit\trunk\doc
 </screen>
 			However this can cause the overlays not to update, as
 			<literal>TSVNCache</literal> will only receive one notification when

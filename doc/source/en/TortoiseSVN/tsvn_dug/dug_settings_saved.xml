@@ -8,7 +8,7 @@
 			<title>The Settings Dialog, Saved Data Page</title>
 			<graphic fileref="../images/SettingsSavedData.png"/>
 		</figure>
-		For your convenience, TortoiseSVN saves many of the settings
+		For your convenience, TortoiseGit saves many of the settings
 		you use, and remembers where you have been lately. If you
 		want to clear out that cache of data, you can do it here.
 	</para>
@@ -18,7 +18,7 @@
 			<listitem>
 				<para>
 					Whenever you checkout a working copy, merge changes
-					or use the repository browser, TortoiseSVN keeps a record
+					or use the repository browser, TortoiseGit keeps a record
 					of recently used URLs and offers them in a combo box.
 					Sometimes that list gets cluttered with outdated URLs
 					so it is useful to flush it out periodically.
@@ -35,7 +35,7 @@
 			<term>Log messages (Input dialog)</term>
 			<listitem>
 				<para>
-					TortoiseSVN stores recent commit log messages that you
+					TortoiseGit stores recent commit log messages that you
 					enter. These are stored per repository, so if you access many
 					repositories this list can grow quite large.
 				</para>
@@ -45,7 +45,7 @@
 			<term>Log messages (Show log dialog)</term>
 			<listitem>
 				<para>
-					TortoiseSVN caches log messages fetched by the Show Log
+					TortoiseGit caches log messages fetched by the Show Log
 					dialog to save time when you next show the log. If someone
 					else edits a log message and you already have that message
 					cached, you will not see the change until you clear the
@@ -84,7 +84,7 @@
 			<term>Action log</term>
 			<listitem>
 				<para>
-					TortoiseSVN keeps a log of everything written to its progress
+					TortoiseGit keeps a log of everything written to its progress
 					dialogs. This can be useful when, for example, you want to check
 					what happened in a recent update command.
 				</para>

@@ -28,7 +28,7 @@
 			<term>Automatically check for newer versions every week</term>
 			<listitem>
 				<para>
-					If checked, TortoiseSVN will contact its download site once a week 
+					If checked, TortoiseGit will contact its download site once a week 
 					to see if there is a newer version of the program available.
 					Use <guibutton>Check now</guibutton> if you want an answer
 					right away. The new version will not be downloaded; you
@@ -41,7 +41,7 @@
 			<term>System sounds</term>
 			<listitem>
 				<para>
-					TortoiseSVN has three custom sounds which are installed by default.
+					TortoiseGit has three custom sounds which are installed by default.
 					<itemizedlist>
 						<listitem>
 							<para>
@@ -115,9 +115,9 @@
 			<term>Set file dates to the <quote>last commit time</quote></term>
 			<listitem>
 				<para>
-					This option tells TortoiseSVN to set the file dates to
+					This option tells TortoiseGit to set the file dates to
 					the last commit time when doing a checkout or an update.
-					Otherwise TortoiseSVN will use the current date.
+					Otherwise TortoiseGit will use the current date.
 					If you are developing software it is generally best
 					to use the current date because build systems normally
 					look at the date stamps to decide which files need
@@ -134,7 +134,7 @@
 					Use <guibutton>Edit</guibutton> to edit the 
 					Subversion configuration file directly.
 					Some settings cannot be modified directly by 
-					TortoiseSVN, and need to be set here instead.
+					TortoiseGit, and need to be set here instead.
 					For more information about the Subversion 
 					<filename>config</filename> file see the 
 					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html">
@@ -165,7 +165,7 @@
 					to find out more about this issue.
 				</para>
 				<para>
-					If you want to change the behaviour of Subversion and TortoiseSVN,
+					If you want to change the behaviour of Subversion and TortoiseGit,
 					you can use this checkbox to set the environment variable which
 					controls this.
 				</para>
@@ -186,9 +186,9 @@
 				<title>The Settings Dialog, Context Menu Page</title>
 				<graphic fileref="../images/SettingsContext.png"/>
 			</figure>
-			This page allows you to specify which of the TortoiseSVN context menu
+			This page allows you to specify which of the TortoiseGit context menu
 			entries will show up in the main context menu, and which will appear
-			in the TortoiseSVN submenu. By default most items are unchecked and
+			in the TortoiseGit submenu. By default most items are unchecked and
 			appear in the submenu.
 		</para>
 		<para>
@@ -203,19 +203,19 @@
 		</para>
 		<para>
 			If there are some paths on your computer where you just don't want
-			TortoiseSVN's context menu to appear at all, you can list them in
+			TortoiseGit's context menu to appear at all, you can list them in
 			the box at the bottom.
 		</para>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-dialogs">
-		<title>TortoiseSVN Dialog Settings 1</title>
+		<title>TortoiseGit Dialog Settings 1</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS"?>
 		<para>
 			<figure id="tsvn-dug-settings-dia-dialogs">
 				<title>The Settings Dialog, Dialogs 1 Page</title>
 				<graphic fileref="../images/SettingsDialog.png"/>
 			</figure>
-			This dialog allows you to configure some of TortoiseSVN's
+			This dialog allows you to configure some of TortoiseGit's
 			dialogs the way you like them.
 		</para>
 		<variablelist>
@@ -223,10 +223,10 @@
 				<term>Default number of log messages</term>
 				<listitem>
 					<para>
-						Limits the number of log messages that TortoiseSVN
+						Limits the number of log messages that TortoiseGit
 						fetches when you first select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Show Log</guimenuitem>
 						</menuchoice>
 						Useful for slow server connections. You can always use
@@ -272,7 +272,7 @@
 				<term>Progress Dialog</term>
 				<listitem>
 					<para>
-						TortoiseSVN can automatically close all progress dialogs 
+						TortoiseGit can automatically close all progress dialogs 
 						when the action is finished without error. This setting
 						allows you to select the conditions for closing the
 						dialogs. The default (recommended) setting is
@@ -321,7 +321,7 @@
 				<listitem>
 					<para>
 						When you revert local modifications, your changes are
-						discarded. TortoiseSVN gives you an extra safety net by
+						discarded. TortoiseGit gives you an extra safety net by
 						sending the modified file to the recycle bin before
 						bringing back the pristine copy. If you prefer to
 						skip the recycle bin, uncheck this option.
@@ -367,7 +367,7 @@
 		</variablelist>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-dialogs-2">
-		<title>TortoiseSVN Dialog Settings 2</title>
+		<title>TortoiseGit Dialog Settings 2</title>
 		<?dbhh topicname="HIDD_SETTINGSMISC"?>
 		<para>
 			<figure id="tsvn-dug-settings-dia-dialogs-2">
@@ -429,7 +429,7 @@
 				<term>Max. items to keep in the log message history</term>
 				<listitem>
 					<para>
-						When you type in a log message in the commit dialog, TortoiseSVN
+						When you type in a log message in the commit dialog, TortoiseGit
 						stores it for possible re-use later. By default it will keep the
 						last 25 log messages for each repository, but you can customize
 						that number here.
@@ -484,7 +484,7 @@
 					<para>
 						When you select one or more files and then use
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Lock</guimenuitem>
 						</menuchoice>
 						to take out a lock on those files, on some projects it is
@@ -508,7 +508,7 @@
 		</variablelist>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-colours">
-		<title>TortoiseSVN Colour Settings</title>
+		<title>TortoiseGit Colour Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSCOLORS"?>
 		<para>
 			<figure id="tsvn-dug-settings-dia-colors">
@@ -516,7 +516,7 @@
 				<graphic fileref="../images/SettingsColors.png"/>
 			</figure>
 			This dialog allows you to configure the text colours
-			used in TortoiseSVN's dialogs the way you like them.
+			used in TortoiseGit's dialogs the way you like them.
 		</para>
 		<variablelist>
 			<varlistentry>

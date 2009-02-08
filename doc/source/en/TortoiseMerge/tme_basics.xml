@@ -100,7 +100,7 @@
 			the information required to apply changes to a set of files.
 			The patch may have been supplied by another developer so that you
 			can see changes he has made and possibly commit them to the repository.
-			Or it may have been generated internally by TortoiseSVN when comparing
+			Or it may have been generated internally by TortoiseGit when comparing
 			two folders. This happens when you compare a repository revision with
 			your working copy folder, or if you compare two different repository
 			revisions, or if you compare two different repository paths.

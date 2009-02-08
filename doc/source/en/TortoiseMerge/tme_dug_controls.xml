@@ -119,7 +119,7 @@
 					<guibutton>Switch Left and Right View</guibutton>
 					In 2-pane view, swaps the left and right windows.
 					When you are comparing a file in 2 different trees, 
-					as opposed to 2 revisions of the same file, TortoiseSVN
+					as opposed to 2 revisions of the same file, TortoiseGit
 					does not know which one should go in the left pane as
 					the <quote>original/base</quote> version. If it gets
 					this wrong, you can change it to make viewing easier.

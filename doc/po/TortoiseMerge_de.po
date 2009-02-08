@@ -1,7 +1,7 @@
 #
 # German translation for TortoiseMerge
-# Copyright (C) 2004-2008 the TortoiseSVN team
-# This file is distributed under the same license as TortoiseSVN
+# Copyright (C) 2004-2008 the TortoiseGit team
+# This file is distributed under the same license as TortoiseGit
 #
 # Last commit by:
 # $Author: steveking $
@@ -18,7 +18,7 @@ msgstr ""
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-11-17 15:29+0100\n"
 "Last-Translator: Lübbe Onken <l.onken@rac.de>\n"
-"Language-Team: TortoiseSVN translation team <dev@tortoisesvn.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -125,8 +125,8 @@ msgstr "TortoiseMerge ist freie Software. Sie brauchen nichts dafür zu bezahlen
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:71
-msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
-msgstr "TortoiseMerge ist ein Open Source Projekt. Das bedeutet, dass sie Zugang zum Quellcode des Programms haben. Sie können den Quellcode unter folgender URL <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink> ansehen. Sie werden nach einem Benutzernamen und Passwort gefragt. Der Benutzername ist <literal>guest</literal> und das Passwort muss leer gelassen werden. Die aktuellste Version (an der wir gerade arbeiten) ist immer im Ordner <emphasis><filename>/trunk/</filename></emphasis>zu finden. Die bereits veröffentlichten Versionen finden sich im Ordner <emphasis><filename>/tags/</filename></emphasis>."
+msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
+msgstr "TortoiseMerge ist ein Open Source Projekt. Das bedeutet, dass sie Zugang zum Quellcode des Programms haben. Sie können den Quellcode unter folgender URL <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink> ansehen. Sie werden nach einem Benutzernamen und Passwort gefragt. Der Benutzername ist <literal>guest</literal> und das Passwort muss leer gelassen werden. Die aktuellste Version (an der wir gerade arbeiten) ist immer im Ordner <emphasis><filename>/trunk/</filename></emphasis>zu finden. Die bereits veröffentlichten Versionen finden sich im Ordner <emphasis><filename>/tags/</filename></emphasis>."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:90
@@ -135,13 +135,13 @@ msgstr "Spenden!"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:91
-msgid "Even though TortoiseSVN and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
-msgstr "Obwohl TortoiseSVN und TortoiseMerge für Sie als Anwender kostenlos sind, können Sie uns auf viele Weise helfen. Sie können uns Patches schicken und damit bei der Entwicklung direkt mithelfen, oder Sie können uns bei unserer Arbeit motivieren."
+msgid "Even though TortoiseGit and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
+msgstr "Obwohl TortoiseGit und TortoiseMerge für Sie als Anwender kostenlos sind, können Sie uns auf viele Weise helfen. Sie können uns Patches schicken und damit bei der Entwicklung direkt mithelfen, oder Sie können uns bei unserer Arbeit motivieren."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:97
-msgid "While working on TortoiseSVN we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
-msgstr "Während wir an TortoiseMerge und TortoiseSVN arbeiten hören wir gerne Musik. Und weil wir viele viele Stunden an TortoiseSVN arbeiten, benötigen wir immer wieder <emphasis>neue</emphasis> Musik. Aus diesem Grund haben wir im Internet Seiten eingerichtet, von denen aus Sie uns Musik-CD's und auch mal eine DVD schenken können: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"> <citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle> </ulink> Bitte schauen Sie sich auch die Liste der Personen an, die das Projekt durch z.B. Übersetzungen unterstützt haben."
+msgid "While working on TortoiseGit we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
+msgstr "Während wir an TortoiseMerge und TortoiseGit arbeiten hören wir gerne Musik. Und weil wir viele viele Stunden an TortoiseGit arbeiten, benötigen wir immer wieder <emphasis>neue</emphasis> Musik. Aus diesem Grund haben wir im Internet Seiten eingerichtet, von denen aus Sie uns Musik-CD's und auch mal eine DVD schenken können: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"> <citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle> </ulink> Bitte schauen Sie sich auch die Liste der Personen an, die das Projekt durch z.B. Übersetzungen unterstützt haben."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:113
@@ -252,13 +252,13 @@ msgstr "TortoiseMerge's Geschichte"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:236
-msgid "While working on <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
-msgstr "Während der Arbeit an <ulink url=\"http://tortoisesvn.tigris.org\"> <citetitle>TortoiseSVN</citetitle></ulink> war es jedes Mal sehr lästig, wenn jemand uns Patches mit Fehlerkorrekturen oder Erweiterungen zugeschickt hat, diese Patches auch einzubinden. Denn es gab bis dahin nur ein Kommandozeilenprogramm namens <filename>patch.exe</filename>, erhältlich bei <ulink url=\"http://unxutils.sourceforge.net/\"> <citetitle>http://unxutils.sourceforge.net/</citetitle></ulink>, welches solche Dateien zu einem Projekt hinzufügen konnte. Die Durchsicht solcher Änderungen war daher aufwendig und schwierig, insbesondere wenn die Patchdatei schon veraltet war."
+msgid "While working on <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
+msgstr "Während der Arbeit an <ulink url=\"http://TortoiseGit.tigris.org\"> <citetitle>TortoiseGit</citetitle></ulink> war es jedes Mal sehr lästig, wenn jemand uns Patches mit Fehlerkorrekturen oder Erweiterungen zugeschickt hat, diese Patches auch einzubinden. Denn es gab bis dahin nur ein Kommandozeilenprogramm namens <filename>patch.exe</filename>, erhältlich bei <ulink url=\"http://unxutils.sourceforge.net/\"> <citetitle>http://unxutils.sourceforge.net/</citetitle></ulink>, welches solche Dateien zu einem Projekt hinzufügen konnte. Die Durchsicht solcher Änderungen war daher aufwendig und schwierig, insbesondere wenn die Patchdatei schon veraltet war."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:251
-msgid "This was also the main reason why TortoiseSVN did not originally have a <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
-msgstr "Das war auch der Hauptgrund, weshalb TortoiseSVN keinen Befehl \"Erstelle Patch\" implementiert hatte: wir wollten lieber die ganzen Dateien von den Anwendern haben, statt der Patchdateien, weil es für uns einfacher war Änderungen auf diese Weise zum Projekt hinzuzufügen."
+msgid "This was also the main reason why TortoiseGit did not originally have a <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
+msgstr "Das war auch der Hauptgrund, weshalb TortoiseGit keinen Befehl \"Erstelle Patch\" implementiert hatte: wir wollten lieber die ganzen Dateien von den Anwendern haben, statt der Patchdateien, weil es für uns einfacher war Änderungen auf diese Weise zum Projekt hinzuzufügen."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:261
@@ -267,8 +267,8 @@ msgstr "Also haben wir viel Zeit damit verbracht, das Internet nach einem guten 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseSVN already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "Da TortoiseSVN schon die Subversion Bibliothek benutzt welche gute Vergleichsfunktionen enthält, war es nur natürlich, dieselbe Funktionsbibliothek anstelle von GNU Diff für TortoiseMerge zu nutzen."
+msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "Da TortoiseGit schon die Subversion Bibliothek benutzt welche gute Vergleichsfunktionen enthält, war es nur natürlich, dieselbe Funktionsbibliothek anstelle von GNU Diff für TortoiseMerge zu nutzen."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -356,8 +356,8 @@ msgstr "Patches Anwenden"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseSVN when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
-msgstr "Ein Patch ist eine Datei im Subversion Standard-Diff Format, die die Informationen über Änderungen an einem Satz von Dateien enthält. Der Patch kann von einem anderen Entwickler stammen, so dass Sie seine Änderungen anwenden, überprüfen und gegebenenfalls in das Projektarchiv übertragen können. Die Patchdatei kann auch intern durch TortoiseSVN beim Vergleich zweier Ordner generiert werden. Dies geschieht zum Beispiel wenn Sie eine Revision im Projektarchiv mit der Arbeitskopie oder auch zwei Revisionen im Projektarchiv oder zwei verschiedene Pfade im Projektarchiv miteinander vergleichen."
+msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgstr "Ein Patch ist eine Datei im Subversion Standard-Diff Format, die die Informationen über Änderungen an einem Satz von Dateien enthält. Der Patch kann von einem anderen Entwickler stammen, so dass Sie seine Änderungen anwenden, überprüfen und gegebenenfalls in das Projektarchiv übertragen können. Die Patchdatei kann auch intern durch TortoiseGit beim Vergleich zweier Ordner generiert werden. Dies geschieht zum Beispiel wenn Sie eine Revision im Projektarchiv mit der Arbeitskopie oder auch zwei Revisionen im Projektarchiv oder zwei verschiedene Pfade im Projektarchiv miteinander vergleichen."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:380
@@ -382,7 +382,7 @@ msgstr "Ansichten"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:403
 msgid "TortoiseMerge has three main viewing modes: one-pane, two-pane and three-pane view. One/two-pane view is used to view changes and three-pane view is used to resolve conflicts."
-msgstr "TortoiseSVN besitzt drei verschiedene Ansichten: mit einem, zwei oder drei Bereichen. Die Ein-/Zweifenstersicht dient zum Betrachten von Änderungen und die Dreifenstersicht zum Auflösen von Konflikten."
+msgstr "TortoiseGit besitzt drei verschiedene Ansichten: mit einem, zwei oder drei Bereichen. Die Ein-/Zweifenstersicht dient zum Betrachten von Änderungen und die Dreifenstersicht zum Auflösen von Konflikten."
 
 #. (title)
 #. (title)
@@ -553,8 +553,8 @@ msgstr "<guibutton>Wechsle Ansicht</guibutton> wechselt zwischen Ein- und Zweife
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:635
-msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseSVN does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
-msgstr "<guibutton>Tausche Links - Rechts</guibutton>. In der Zweifenstersicht wird der Inhalt des rechten mit dem des linken Bereichs vertauscht. Wenn Sie zwei Dateien in verschiedenen Bäumen vergleichen, weiß TortoiseSVN im Gegensatz zu zwei verschiedenen Revisionen derselben Datei nicht, welche Version als <quote>Original/Basis</quote> Version im linken Bereich angezeigt werden soll. Falls TortoiseSVN falsch rät können Sie somit einfach die Anzeige tauschen."
+msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseGit does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
+msgstr "<guibutton>Tausche Links - Rechts</guibutton>. In der Zweifenstersicht wird der Inhalt des rechten mit dem des linken Bereichs vertauscht. Wenn Sie zwei Dateien in verschiedenen Bäumen vergleichen, weiß TortoiseGit im Gegensatz zu zwei verschiedenen Revisionen derselben Datei nicht, welche Version als <quote>Original/Basis</quote> Version im linken Bereich angezeigt werden soll. Falls TortoiseGit falsch rät können Sie somit einfach die Anzeige tauschen."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:646
@@ -614,7 +614,7 @@ msgstr "<graphic fileref=\"images/TMerge_linewhitespace.png\"/> Diese Zeile enth
 #. (para)
 #: ../source/TortoiseMerge_en.xml:706
 msgid "<graphic fileref=\"images/TMerge_lineedited.png\"/> A line has been edited by hand, using TortoiseMerge as a text editor."
-msgstr "<graphic fileref=\"images/TMerge_lineedited.png\"/> Eine Zeile wurde manuell in TortoiseSVN geändert."
+msgstr "<graphic fileref=\"images/TMerge_lineedited.png\"/> Eine Zeile wurde manuell in TortoiseGit geändert."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:710
@@ -1464,8 +1464,8 @@ msgstr "Der Prozess mit welchem Änderungen vom Projektarchiv zur Arbeitskopie h
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1576
-msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseSVN's Merge command."
-msgstr "Das Zusammenführen passiert automatisch, wenn Sie ihre Arbeitskopie aktualisieren. Sie können auch mit dem TortoiseSVN Befehl \"Zusammenführen\" spezifische Änderungen von einem Zweig in der Arbeitskopie zusammenführen."
+msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseGit's Merge command."
+msgstr "Das Zusammenführen passiert automatisch, wenn Sie ihre Arbeitskopie aktualisieren. Sie können auch mit dem TortoiseGit Befehl \"Zusammenführen\" spezifische Änderungen von einem Zweig in der Arbeitskopie zusammenführen."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1584
@@ -1484,8 +1484,8 @@ msgstr "Eigenschaft"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseSVN has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "Zusätzlich zur Versionierung von Dateien und Ordnern erlaubt Subversion die Versionierung von Metadaten für Ordner und Dateien, auch als <quote>Eigenschaften</quote> bezeichnet. Jede Eigenschaft hat einen Namen und einen Wert, ähnlich wie ein Registry-Schlüssel. Subversion selbst hat einige spezielle Eigenschaften definiert, welche intern benutzt werden, wie zum Beispiel <literal>svn:eol-style</literal>. TortoiseSVN nutzt ebenfalls spezielle Eigenschaften, so zum Beispiel <literal>tsvn:logminsize</literal>. Sie können eigene Eigenschaften mit jedem Namen und Wert erstellen den sie möchten."
+msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "Zusätzlich zur Versionierung von Dateien und Ordnern erlaubt Subversion die Versionierung von Metadaten für Ordner und Dateien, auch als <quote>Eigenschaften</quote> bezeichnet. Jede Eigenschaft hat einen Namen und einen Wert, ähnlich wie ein Registry-Schlüssel. Subversion selbst hat einige spezielle Eigenschaften definiert, welche intern benutzt werden, wie zum Beispiel <literal>svn:eol-style</literal>. TortoiseGit nutzt ebenfalls spezielle Eigenschaften, so zum Beispiel <literal>tsvn:logminsize</literal>. Sie können eigene Eigenschaften mit jedem Namen und Wert erstellen den sie möchten."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1614

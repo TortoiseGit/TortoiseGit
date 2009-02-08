@@ -19,7 +19,7 @@
 		to source control too. Select the file(s) and/or directory
 		and use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Add</guimenuitem>
 		</menuchoice>.
 	</para>
@@ -82,7 +82,7 @@
 		If you add a file or folder by mistake, you can undo the addition
 		before you commit using
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Undo add...</guimenuitem>
 		</menuchoice>.
 	</para>

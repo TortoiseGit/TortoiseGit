@@ -24,10 +24,10 @@
 		<ulink url="http://websvn.tigris.org/">
 			<citetitle>WebSVN</citetitle>
 		</ulink>.
-		TortoiseSVN provides a means to link with these viewers.
+		TortoiseGit provides a means to link with these viewers.
 	</para>
 	<para>
-		You can integrate a repo viewer of your choice in TortoiseSVN.
+		You can integrate a repo viewer of your choice in TortoiseGit.
 		To do this, you have to define some properties which define the linkage.
 		They must be set on Folders: (<xref linkend="tsvn-dug-propertypage"/>)
 	</para>
@@ -43,7 +43,7 @@
 						<literal>%REVISION%</literal>.
 						<literal>%REVISION%</literal> is replaced with the revision
 						number in question.
-						This allows TortoiseSVN to display a context menu entry in the
+						This allows TortoiseGit to display a context menu entry in the
 						log dialog
 						<menuchoice>
 							<guimenu>Context Menu</guimenu>
@@ -62,7 +62,7 @@
 						<literal>%REVISION%</literal> and <literal>%PATH%</literal>.
 						<literal>%PATH%</literal> is replaced with the path relative
 						to the repository root.
-						This allows TortoiseSVN to display a context menu entry in the
+						This allows TortoiseGit to display a context menu entry in the
 						log dialog
 						<menuchoice>
 							<guimenu>Context Menu</guimenu>
@@ -90,7 +90,7 @@
 		<para>
 			These properties must be set on folders for the system to work. 
 			When you commit a file or folder the properties are read from that folder.
-			If the properties are not found there, TortoiseSVN will search upwards
+			If the properties are not found there, TortoiseGit will search upwards
 			through the folder tree to find them until it comes to an unversioned
 			folder, or the tree root (eg. <literal>C:\</literal>) is found.
 			If you can be sure that each user checks out only from e.g

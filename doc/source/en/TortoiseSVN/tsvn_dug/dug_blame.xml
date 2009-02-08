@@ -16,7 +16,7 @@
 		Sometimes you need to know not only what lines have changed, but also
 		who exactly changed specific lines in a file. That's when the
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Blame...</guimenuitem>
 		</menuchoice>
 		command, sometimes also referred to as <firstterm>annotate</firstterm>
@@ -51,7 +51,7 @@
 			the original author, you can choose an appropriate option here.
 		</para>
 		<para>
-			Once you press <guibutton>OK</guibutton> TortoiseSVN starts retrieving
+			Once you press <guibutton>OK</guibutton> TortoiseGit starts retrieving
 			the data to create the blame file. Please note: This can take several
 			minutes to finish, depending on how much the file has changed and
 			of course your network connection to the repository. Once the blame
@@ -63,7 +63,7 @@
 				<title>TortoiseBlame</title>
 				<graphic fileref="../images/TortoiseBlame.png"/>
 			</figure>
-			TortoiseBlame, which is included with TortoiseSVN, makes the blame file
+			TortoiseBlame, which is included with TortoiseGit, makes the blame file
 			easier to read. When you hover the mouse over a line in the blame info
 			column, all lines with the same revision are shown with a darker
 			background. Lines from other revisions which were changed by the same author
@@ -153,7 +153,7 @@
 		<para>
 			The settings for TortoiseBlame can be accessed using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Settings...</guimenuitem>
 			</menuchoice>
 			on the TortoiseBlame tab. Refer to 

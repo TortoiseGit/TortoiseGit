@@ -13,9 +13,9 @@
 		see what has changed. You might want to look at the differences
 		between two revisions of the same file, or the differences between
 		two separate files.
-		TortoiseSVN provides a built-in tool named 
+		TortoiseGit provides a built-in tool named 
 		<application>TortoiseMerge</application> for viewing differences of
-		text files. For viewing differences of image files, TortoiseSVN
+		text files. For viewing differences of image files, TortoiseGit
 		also has a tool named <application>TortoiseIDiff</application>.
 		Of course, you can use your own favourite diff program if you
 		like.
@@ -32,7 +32,7 @@
 						have made in your working copy, just use the explorer
 						context menu and select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff</guimenuitem>
 						</menuchoice>.
 					</para>
@@ -48,7 +48,7 @@
 						Just hold down the <keycap>Shift</keycap> key while you
 						right click on the file. Then select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff with URL</guimenuitem>
 						</menuchoice>. In the following dialog, specify the URL in
 						the repository with which you want to compare your local
@@ -78,7 +78,7 @@
 						revision and your working copy, assuming that the working copy
 						hasn't been modified, just right click on the file. Then select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff with previous version</guimenuitem>
 						</menuchoice>.
 						This will perform a diff between the revision before
@@ -133,7 +133,7 @@
 						both files (using the usual <keycap>Ctrl</keycap>-modifier).
 						Then from the explorer context menu select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff</guimenuitem>
 						</menuchoice>.
 					</para>
@@ -149,7 +149,7 @@
 						file then holding down the <keycap>Shift</keycap> key whilst
 						right clicking to obtain the context menu. Select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff with URL</guimenuitem>
 						</menuchoice>.
 						You can do the same thing for a working copy folder.
@@ -174,7 +174,7 @@
 				<term>Difference between folders</term>
 				<listitem>
 					<para>
-						The built-in tools supplied with TortoiseSVN do not support
+						The built-in tools supplied with TortoiseGit do not support
 						viewing differences between directory hierarchies. But if you
 						have an external tool which does support that feature, you can
 						use that instead. In <xref linkend="tsvn-dug-diff-tools"/>
@@ -320,7 +320,7 @@
 				<graphic fileref="../images/TortoiseIDiff.png"/>
 			</figure>
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Diff</guimenuitem>
 			</menuchoice>
 			for any of the common image file formats will start TortoiseIDiff
@@ -495,7 +495,7 @@
 		</variablelist>
 		<para>
 			Read <xref linkend="tsvn-dug-settings-progs"/> for information
-			on how to set up TortoiseSVN to use these tools.
+			on how to set up TortoiseGit to use these tools.
 		</para>
 	</sect2>
 </sect1>

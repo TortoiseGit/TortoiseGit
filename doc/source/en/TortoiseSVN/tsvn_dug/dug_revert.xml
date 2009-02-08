@@ -15,7 +15,7 @@
 		<action>right click</action> to pop up the context menu and then select
 		the command
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Revert</guimenuitem>
 		</menuchoice>
 		A dialog will pop up showing you the files that you've changed and
@@ -35,7 +35,7 @@
 		If you want to undo the addition of an item, this appears in
 		the context menu as
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Undo add...</guimenuitem>
 		</menuchoice>.
 		This is really a revert as well, but the name has been changed
@@ -68,7 +68,7 @@
 			Windows takes a long time to find a place to put the file. The
 			solution is simple: either empty the recycle bin or deactivate
 			the <guilabel>Use recycle bin when reverting</guilabel> box
-			in TortoiseSVN's settings.
+			in TortoiseGit's settings.
 		</para>
 	</tip>
 </sect1>

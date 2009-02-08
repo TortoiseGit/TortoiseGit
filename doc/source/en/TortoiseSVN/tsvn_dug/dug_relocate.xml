@@ -29,7 +29,7 @@
 		copy again from the new location and to move all your
 		changed data back into the new working copy,
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Relocate</guimenuitem>
 		</menuchoice>
 		is the command you are looking for. It basically
@@ -38,7 +38,7 @@
 		the entries to the new value.
 	</para>
 	<para>
-		You may be surprised to find that TortoiseSVN contacts the repository
+		You may be surprised to find that TortoiseGit contacts the repository
 		as part of this operation. All it is doing is performing some simple
 		checks to make sure that the new URL really does refer to the same
 		repository as the existing working copy.
@@ -77,7 +77,7 @@
 						You want to switch to a different branch or directory within the 
 						same repository. To do that you should use
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Switch...</guimenuitem>
 						</menuchoice>.
 						Read <xref linkend="tsvn-dug-switch-1"/> for more information.

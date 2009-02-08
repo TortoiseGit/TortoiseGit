@@ -13,9 +13,9 @@
 		those <filename>.svn</filename> directories, e.g. to create a zipped
 		tarball of your source, or to export to a web server. Instead of
 		making a copy and then deleting all those <filename>.svn</filename>
-		directories manually, TortoiseSVN offers the command
+		directories manually, TortoiseGit offers the command
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Export...</guimenuitem>
 		</menuchoice>.
 		Exporting from a URL and exporting from a working copy are treated
@@ -26,7 +26,7 @@
 			<title>The Export-from-URL Dialog</title>
 			<graphic fileref="../images/ExportURL.png"/>
 		</figure>
-		If you execute this command on an unversioned folder, TortoiseSVN will
+		If you execute this command on an unversioned folder, TortoiseGit will
 		assume that the selected folder is the target, and open a dialog for
 		you to enter the URL and revision to export from.
 		This dialog has options to export only the top level folder, to omit
@@ -81,7 +81,7 @@
 			though Subversion can.
 		</para>
 		<para>
-			To export single files with TortoiseSVN, you have to use
+			To export single files with TortoiseGit, you have to use
 			the repository browser (<xref linkend="tsvn-dug-repobrowser"/>).
 			Simply drag the file(s) you want to export from the repository
 			browser to where you want them in the explorer, or use the
@@ -111,7 +111,7 @@
 		</para>
 		<para>
 			The answer is surprisingly simple - export the folder to itself!
-			TortoiseSVN detects this special case and asks if you want to
+			TortoiseGit detects this special case and asks if you want to
 			make the working copy unversioned. If you answer
 			<emphasis>yes</emphasis> the control directories will be removed
 			and you will have a plain, unversioned directory tree.

@@ -28,7 +28,7 @@
 		for that branch checked out, and invoke the merge wizard from that
 		working copy using
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Merge...</guimenuitem>
 		</menuchoice>.
 	</para>
@@ -158,7 +158,7 @@
 		<important>
 			<para>
 				There is an important difference in the way a revision
-				range is specified with TortoiseSVN compared to the
+				range is specified with TortoiseGit compared to the
 				command line client. The easiest way to visualise it is
 				to think of a fence with posts and fence panels.
 			</para>
@@ -169,7 +169,7 @@
 				<emphasis>after</emphasis> points.
 			</para>
 			<para>
-				With TortoiseSVN you specify the changeset to merge
+				With TortoiseGit you specify the changeset to merge
 				using <quote>fence panels</quote>. The reason for this
 				becomes clear when you use the log dialog to specify
 				revisions to merge, where each revision appears as
@@ -179,7 +179,7 @@
 				If you are merging revisions in chunks, the method
 				shown in the subversion book will have you merge
 				100-200 this time and 200-300 next time. With
-				TortoiseSVN you would merge 100-200 this time and
+				TortoiseGit you would merge 100-200 this time and
 				201-300 next time.
 			</para>
 			<para>
@@ -513,7 +513,7 @@
 			Merging does not always go smoothly. Sometimes there is a
 			conflict, and if you are merging multiple ranges, you generally
 			want to resolve the conflict before merging of the next range
-			starts. TortoiseSVN helps you through this process by showing
+			starts. TortoiseGit helps you through this process by showing
 			the <emphasis>merge conflict callback</emphasis> dialog.
 			<figure id="tsvn-dug-merge-callback-dia">
 				<title>The Merge Conflict Callback Dialog</title>
@@ -577,7 +577,7 @@
 			If you want to merge all changes from a feature branch
 			back to trunk, then you can use the
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Merge reintegrate...</guimenuitem>
 			</menuchoice>
 			from the extended context menu (hold down the <keycap>Shift</keycap>
@@ -588,7 +588,7 @@
 			</figure>
 			This dialog is very easy. All you have to do is set the options for
 			the merge, as described in <xref linkend="tsvn-dug-merge-options"/>.
-			The rest is done by TortoiseSVN automatically using merge tracking.
+			The rest is done by TortoiseGit automatically using merge tracking.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-merge-maintenance">

@@ -60,15 +60,15 @@ svnadmin create --fs-type fsfs MyNewRepository
 		</para>
 	</sect2>
 	<!-- ================================================================= -->
-	<sect2 id="tsvn-repository-create-tortoisesvn">
-		<title>Creating The Repository With TortoiseSVN</title>
+	<sect2 id="tsvn-repository-create-TortoiseGit">
+		<title>Creating The Repository With TortoiseGit</title>
 		<indexterm>
 			<primary>Create</primary>
-			<secondary>TortoiseSVN</secondary>
+			<secondary>TortoiseGit</secondary>
 		</indexterm>
 		<?dbhh topicname="HIDD_REPOCREATE"?>
 		<figure id="tsvn-serversetup-local-dia-1">
-			<title>The TortoiseSVN menu for unversioned folders</title>
+			<title>The TortoiseGit menu for unversioned folders</title>
 			<graphic fileref="../images/ContextMenuDirNoControl.png"/>
 		</figure>
 		<orderedlist>
@@ -88,7 +88,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 					<action>Right-click</action> on the newly created folder
 					and select
 					<menuchoice>
-						<guimenu>TortoiseSVN</guimenu>
+						<guimenu>TortoiseGit</guimenu>
 						<guimenuitem>Create Repository here...</guimenuitem>
 					</menuchoice>.
 				</para>
@@ -102,14 +102,14 @@ svnadmin create --fs-type fsfs MyNewRepository
 		</orderedlist>
 		<tip>
 			<para>
-				TortoiseSVN no longer offers the option to create BDB repositories,
+				TortoiseGit no longer offers the option to create BDB repositories,
 				although you can still use the command line client to create them.
 				FSFS repositories are generally easier for you to maintain, and also
-				makes it easier for us to maintain TortoiseSVN due to compatibility
+				makes it easier for us to maintain TortoiseGit due to compatibility
 				issues between the different BDB versions.
 			</para>
 			<para>
-				Future versions of TortoiseSVN will not support
+				Future versions of TortoiseGit will not support
 				<literal>file://</literal> access to BDB repositories due to these
 				compatibility issues, although it will of course always support
 				this repository format when accessed via a server through the
@@ -267,7 +267,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 			When you commit changes, it is the revision number of the whole
 			repository which changes, not the revision number of the project.
 			Having 2 unrelated projects share a repository can mean large gaps
-			in the revision numbers. The Subversion and TortoiseSVN projects
+			in the revision numbers. The Subversion and TortoiseGit projects
 			appear at the same host address, but are completely separate
 			repositories allowing independent development, and no confusion
 			over build numbers.
@@ -278,7 +278,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 			your team.  Remember that whatever you choose, it's not a
 			permanent commitment.  You can reorganize your repository at any
 			time.  Because branches and tags are ordinary directories,
-			TortoiseSVN can move or rename them however you wish. 
+			TortoiseGit can move or rename them however you wish. 
 		</para>
 		<para>
 			Switching from one layout to another is just a matter of 
@@ -313,7 +313,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 						<action>right click</action> on the folder and
 						selecting
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Import...</guimenuitem>
 						</menuchoice>
 						This will import your temp

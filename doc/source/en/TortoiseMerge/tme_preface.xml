@@ -48,8 +48,8 @@
 			TortoiseMerge is an Open Source project. That means you have full
 			read access to the source code of this program. You can browse it
 			on this link
-			<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/">
-				<citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle>
+			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/">
+				<citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle>
 			</ulink>.
 			You will be prompted to enter username and password.
 			The username is <literal>guest</literal>, and the password must be left blank.

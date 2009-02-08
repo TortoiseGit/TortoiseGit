@@ -25,21 +25,21 @@
 		for details on how to use this file.
 	</para>
 	<para>
-		You can also specify which program TortoiseSVN should use to
+		You can also specify which program TortoiseGit should use to
 		establish a secure connection to a svn+ssh repository.
 		We recommend that you use TortoisePlink.exe. This is a version
-		of the popular Plink program, and is included with TortoiseSVN,
+		of the popular Plink program, and is included with TortoiseGit,
 		but it is compiled as a Windowless app, so you don't get a DOS
 		box popping up every time you authenticate.
 	</para>
 	<para>
 		You must specify the full path to the executable. For TortoisePlink.exe
-		this is the standard TortoiseSVN bin directory. Use the
+		this is the standard TortoiseGit bin directory. Use the
 		<guibutton>Browse</guibutton> button to help locate it.
 		Note that if the path contains spaces, you must enclose it in quotes,
 		e.g.
 <screen>
-"C:\Program Files\TortoiseSVN\bin\TortoisePlink.exe"
+"C:\Program Files\TortoiseGit\bin\TortoisePlink.exe"
 </screen>
 	</para>
 	<para>
@@ -67,9 +67,9 @@
 	<para>
 		Finally, setting up SSH on server and clients is a non-trivial process
 		which is beyond the scope of this help file. However, you can find a
-		guide in the TortoiseSVN FAQ listed under
-		<ulink url="http://tortoisesvn.net/ssh_howto">
-			<citetitle>Subversion/TortoiseSVN SSH How-To</citetitle>
+		guide in the TortoiseGit FAQ listed under
+		<ulink url="http://TortoiseGit.net/ssh_howto">
+			<citetitle>Subversion/TortoiseGit SSH How-To</citetitle>
 		</ulink>.
 	</para>
 </sect2>

@@ -102,7 +102,7 @@
 	<para>
 		A hook is defined for a particular working copy path. You only need to
 		specify the top level path; if you perform an operation in a sub-folder,
-		TortoiseSVN will automatically search upwards for a matching path.
+		TortoiseGit will automatically search upwards for a matching path.
 	</para>
 	<para>
 		Next you must specify the command line to execute, starting with the path
@@ -112,7 +112,7 @@
 	</para>
 	<para>
 		The command line includes several parameters which get filled in
-		by TortoiseSVN. The parameters passed depend upon which hook is called.
+		by TortoiseGit. The parameters passed depend upon which hook is called.
 		Each hook has its own parameters which are passed in the following order:
 		<variablelist>
 			<varlistentry>
@@ -314,8 +314,8 @@
 	</para>
 	<para>
 		Sample client hook scripts can be found in the <literal>contrib</literal> folder in the
-		<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/contrib/hook-scripts">
-			<citetitle>TortoiseSVN repository</citetitle>
+		<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/contrib/hook-scripts">
+			<citetitle>TortoiseGit repository</citetitle>
 		</ulink>.
 		(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
 	</para>
@@ -324,7 +324,7 @@
 		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ"?>
 		<?dbhh topicname="HIDD_SETTINGSBUGTRAQADV"?>
 		<para>
-			TortoiseSVN can use a COM plugin to query issue trackers when in the
+			TortoiseGit can use a COM plugin to query issue trackers when in the
 			commit dialog. The use of such plugins is described in
 			<xref linkend="tsvn-dug-bugtracker-ref" />.
 			If your system administrator has provided you with a plugin, which

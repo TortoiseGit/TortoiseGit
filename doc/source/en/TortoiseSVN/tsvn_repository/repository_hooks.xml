@@ -28,7 +28,7 @@
 	</para>
 	<para>
 		These hook scripts are executed by the server that hosts the
-		repository. TortoiseSVN also allows you to configure client side 
+		repository. TortoiseGit also allows you to configure client side 
 		hook scripts that are executed locally upon certain events. See
 		<xref linkend="tsvn-dug-settings-hooks"/> for more information.
 	</para>

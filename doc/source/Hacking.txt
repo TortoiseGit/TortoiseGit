@@ -49,11 +49,11 @@ Rules
   Click on <guibutton>OK</guibutton> to continue
 
 - Gui Menus
-  If you want to say: "Select Commit from the TortoiseSVN menu", use the following
+  If you want to say: "Select Commit from the TortoiseGit menu", use the following
   markup, with layout shown:
   Select
   <menuchoice>
-  	<guimenu>TortoiseSVN</guimenu>
+  	<guimenu>TortoiseGit</guimenu>
   	<guimenuitem>Commit</guimenuitem>
   </menuchoice>
 

@@ -5,7 +5,7 @@
 	<simplesect>
 		<para>
 			This appendix contains solutions to problems/questions you might
-			have when using TortoiseSVN.
+			have when using TortoiseGit.
 		</para>
 	</simplesect>
 	<sect1 id="tsvn-howto-move">
@@ -22,7 +22,7 @@
 		<para>
 			Moving/Copying single files can be done by using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Rename...</guimenuitem>
 			</menuchoice>.
 			But if you want to move/copy a lot of files, this way is just
@@ -68,7 +68,7 @@
 		</indexterm>
 		<para>
 			There are two ways to prevent users from committing with an empty
-			log message. One is specific to TortoiseSVN, the other works for
+			log message. One is specific to TortoiseGit, the other works for
 			all Subversion clients, but requires access to the server directly.
 		</para>
 		<sect2 id="tsvn-howto-minlogsize-hookscript">
@@ -90,10 +90,10 @@
 			</para>
 			<para>
 				This method is the recommended way if your users also use other
-				Subversion clients than TortoiseSVN. The drawback is that the commit
+				Subversion clients than TortoiseGit. The drawback is that the commit
 				is rejected by the server and therefore users will get an error
 				message. The client can't know before the commit that it will be
-				rejected. If you want to make TortoiseSVN have the <guibutton>OK</guibutton>
+				rejected. If you want to make TortoiseGit have the <guibutton>OK</guibutton>
 				button disabled until the log message is long enough
 				then please use the method described below.
 			</para>
@@ -101,11 +101,11 @@
 		<sect2 id="tsvn-howto-minlogsize-projectproperties">
 			<title>Project properties</title>
 			<para>
-				TortoiseSVN uses properties to control some of its features. One of those
+				TortoiseGit uses properties to control some of its features. One of those
 				properties is the <literal>tsvn:logminsize</literal> property.
 			</para>
 			<para>
-				If you set that property on a folder, then TortoiseSVN will disable the
+				If you set that property on a folder, then TortoiseGit will disable the
 				<guibutton>OK</guibutton> button in all commit dialogs until the user has
 				entered a log message with at least the length specified in the property.
 			</para>
@@ -123,7 +123,7 @@
 		<para>
 			Normally you update your working copy using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Update</guimenuitem>
 			</menuchoice>.
 			But if you only want to pick up some new files that a colleague has added
@@ -133,7 +133,7 @@
 		<para>
 			Use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Check for Modifications</guimenuitem>
 			</menuchoice>.
 			and click on <guibutton>Check repository</guibutton> to see what has changed
@@ -176,7 +176,7 @@
 					<para>
 						Select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Show Log</guimenuitem>
 						</menuchoice>
 						to display a list of revisions. You may need to use
@@ -231,7 +231,7 @@
 					<para>
 						In your working copy select
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Merge</guimenuitem>
 						</menuchoice>.
 					</para>
@@ -279,7 +279,7 @@
 		<sect2 id="tsvn-howto-rollback-dumpload">
 			<title>Use <literal>svndumpfilter</literal></title>
 			<para>
-				Since TortoiseSVN never loses data, your <quote>rolled back</quote>
+				Since TortoiseGit never loses data, your <quote>rolled back</quote>
 				revisions still exist as intermediate revisions in the repository. Only 
 				the HEAD revision was changed to a previous state.
 				If you want to make revisions disappear completely from your
@@ -314,7 +314,7 @@
 			If you want to compare two revisions in an item's history,
 			for example revisions 100 and 200 of the same file, just use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Show Log</guimenuitem>
 			</menuchoice>
 			to list the revision history for that file. Pick the two revisions
@@ -338,7 +338,7 @@
 			If you want to compare two trees to see what has changed,
 			for example the trunk and a tagged release, you can use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Revision Graph</guimenuitem>
 			</menuchoice>
 			Select the two nodes to compare, then use
@@ -424,7 +424,7 @@
 			<para>
 				Select
 				<menuchoice>
-					<guimenu>TortoiseSVN</guimenu>
+					<guimenu>TortoiseGit</guimenu>
 					<guimenuitem>Checkout</guimenuitem>
 				</menuchoice>
 				for the new folder and checkout a copy of the common
@@ -519,7 +519,7 @@ TortoiseProc.exe /command:repobrowser /path:"url/to/repository"
 			If you have not yet committed the add, then all you have to do
 			is use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Revert...</guimenuitem>
 			</menuchoice>
 			to undo the add. You should then add the file(s) to the ignore
@@ -534,7 +534,7 @@ TortoiseProc.exe /command:repobrowser /path:"url/to/repository"
 						Hold the <keycap>Shift</keycap> key to get the extended
 						context menu and use
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Delete (keep local)</guimenuitem>
 						</menuchoice>
 						to mark the file/folder for deletion from the repository
@@ -544,7 +544,7 @@ TortoiseProc.exe /command:repobrowser /path:"url/to/repository"
 				<listitem>
 					<para>
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Commit</guimenuitem>
 						</menuchoice>
 						the parent folder.

@@ -21,11 +21,11 @@
 	<!-- ======================== SECTION 1 ============================== -->
 	<!-- ================================================================= -->
 	<sect1 id="tsvn-intro-about">
-		<title>What is TortoiseSVN?</title>
+		<title>What is TortoiseGit?</title>
 		<para>
-			TortoiseSVN is a free open-source client for the
+			TortoiseGit is a free open-source client for the
 			<firstterm>Subversion</firstterm> version control system.
-			That is, TortoiseSVN manages files and directories over time.
+			That is, TortoiseGit manages files and directories over time.
 			Files are stored in a central <firstterm>repository</firstterm>.
 			The repository is much like an ordinary file server, except that it
 			remembers every change ever made to your files and directories.
@@ -50,7 +50,7 @@
 	<!-- ======================== SECTION 2 ============================== -->
 	<!-- ================================================================= -->
 	<sect1 id="tsvn-intro-history">
-		<title>TortoiseSVN's History</title>
+		<title>TortoiseGit's History</title>
 		<para>
 			In 2002, Tim Kemp found that Subversion was a very good version
 			control system, but it lacked a good GUI client. The idea for a
@@ -59,10 +59,10 @@
 		</para>
 		<para>
 			Tim studied the source code of TortoiseCVS and used it as a base for
-			TortoiseSVN. He then started the project, registered the domain
-			<literal>tortoisesvn.org</literal> and put the source code online. During that time,
+			TortoiseGit. He then started the project, registered the domain
+			<literal>TortoiseGit.org</literal> and put the source code online. During that time,
 			Stefan Küng was looking for a good and free version control system
-			and found Subversion and the source for TortoiseSVN. Since TortoiseSVN
+			and found Subversion and the source for TortoiseGit. Since TortoiseGit
 			was still not ready for use then he joined the project and started
 			programming. Soon he rewrote most of the existing code and started
 			adding commands and features, up to a point where nothing of the
@@ -70,10 +70,10 @@
 		</para>
 		<para>
 			As Subversion became more stable it attracted more and more users
-			who also started using TortoiseSVN as their Subversion client.
+			who also started using TortoiseGit as their Subversion client.
 			The user base grew quickly (and is still growing every day).
 			That's when Lübbe Onken offered to help out with some nice icons
-			and a logo for TortoiseSVN. And he takes care of the website
+			and a logo for TortoiseGit. And he takes care of the website
 			and manages the translation.
 		</para>
 	</sect1>
@@ -81,9 +81,9 @@
 	<!-- ======================== SECTION 3 ============================== -->
 	<!-- ================================================================= -->
 	<sect1 id="tsvn-intro-features">
-		<title>TortoiseSVN's Features</title>
+		<title>TortoiseGit's Features</title>
 		<para>
-			What makes TortoiseSVN such a good Subversion client?
+			What makes TortoiseGit such a good Subversion client?
 			Here's a short list of features.
 		</para>
 		<variablelist>
@@ -97,7 +97,7 @@
 						<primary>explorer</primary>
 					</indexterm>
 					<para>
-						TortoiseSVN integrates seamlessly into the Windows shell
+						TortoiseGit integrates seamlessly into the Windows shell
 						(i.e. the explorer). This means you can keep working
 						with the tools you're already familiar with. And you
 						do not have to change into a different application
@@ -105,10 +105,10 @@
 					</para>
 					<para>
 						And you are not even forced to use the Windows Explorer.
-						TortoiseSVN's context menus work in many other file managers,
+						TortoiseGit's context menus work in many other file managers,
 						and in the File/Open dialog which is common to most
 						standard Windows applications.
-						You should, however, bear in mind that TortoiseSVN
+						You should, however, bear in mind that TortoiseGit
 						is intentionally developed as extension for the Windows
 						Explorer. Thus it is possible that in other applications
 						the integration is not as complete and e.g. the icon
@@ -131,13 +131,13 @@
 				<listitem>
 					<para>
 						All Subversion commands are available from the explorer
-						context menu. TortoiseSVN adds its own submenu there.
+						context menu. TortoiseGit adds its own submenu there.
 					</para>
 				</listitem>
 			</varlistentry>
 		</variablelist>
 		<para>
-			Since TortoiseSVN is a Subversion client, we would also like to show you
+			Since TortoiseGit is a Subversion client, we would also like to show you
 			some of the features of Subversion itself:
 		</para>
 		<variablelist>
@@ -240,18 +240,18 @@
 	<!-- ======================== SECTION 4 ============================== -->
 	<!-- ================================================================= -->
 	<sect1 id="tsvn-intro-install">
-		<title>Installing TortoiseSVN</title>
+		<title>Installing TortoiseGit</title>
 		<sect2>
 			<title>System requirements</title>
 			<para>
-				TortoiseSVN runs on Windows 2000 SP2, Windows XP or higher.
+				TortoiseGit runs on Windows 2000 SP2, Windows XP or higher.
 				Windows 98, Windows ME and Windows NT4 are no longer supported
-				since TortoiseSVN 1.2.0, but you can still download
+				since TortoiseGit 1.2.0, but you can still download
 				the older versions if you really need them.
 			</para>
 			<para>
 				If you encounter any problems during or after installing
-				TortoiseSVN please refer to
+				TortoiseGit please refer to
 				<xref linkend="tsvn-faq"/>
 				first.
 			</para>
@@ -262,13 +262,13 @@
 				<primary>install</primary>
 			</indexterm>
 			<para>
-				TortoiseSVN comes with an easy to use installer. Double click on
+				TortoiseGit comes with an easy to use installer. Double click on
 				the installer file and follow the instructions. The installer
 				will take care of the rest. 
 			</para>
 			<important>
 				<para>
-					You need Administrator privileges to install TortoiseSVN.
+					You need Administrator privileges to install TortoiseGit.
 				</para>
 			</important>
 		</sect2>
@@ -281,11 +281,11 @@
 				<primary>translations</primary>
 			</indexterm>
 			<para>
-				The TortoiseSVN user interface has been translated into many
+				The TortoiseGit user interface has been translated into many
 				different languages, so you may be able to download a language
 				pack to suit your needs.
 				You can find the language packs on our 
-				<ulink url="http://tortoisesvn.net/translation_status">
+				<ulink url="http://TortoiseGit.net/translation_status">
 					<citetitle>translation status page</citetitle>
 				</ulink>.
 				And if there is no language pack available yet, why not join
@@ -306,7 +306,7 @@
 				<primary>dictionary</primary>
 			</indexterm>
 			<para>
-				TortoiseSVN includes a spell checker which allows you to check your
+				TortoiseGit includes a spell checker which allows you to check your
 				commit log messages. This is especially useful if the project language
 				is not your native language.
 				The spell checker uses the same dictionary files as
@@ -321,8 +321,8 @@
 			<para>
 				The installer automatically adds the US and UK English dictionaries.
 				If you want other languages, the easiest option is simply to
-				install one of TortoiseSVN's language packs. This will install
-				the appropriate dictionary files as well as the TortoiseSVN local
+				install one of TortoiseGit's language packs. This will install
+				the appropriate dictionary files as well as the TortoiseGit local
 				user interface.
 				Next time you restart, the dictionary will be available too.
 			</para>
@@ -353,16 +353,16 @@
 					</listitem>
 				</itemizedlist>
 				Then just copy them to the <filename>bin</filename> sub-folder of
-				the TortoiseSVN installation folder. Normally this will be
-				<filename>C:\Program Files\TortoiseSVN\bin</filename>.
+				the TortoiseGit installation folder. Normally this will be
+				<filename>C:\Program Files\TortoiseGit\bin</filename>.
 				If you don't want to litter the <filename>bin</filename> sub-folder,
 				you can instead place your spell checker files in
-				<filename>C:\Program Files\TortoiseSVN\Languages</filename>. If that folder isn't
+				<filename>C:\Program Files\TortoiseGit\Languages</filename>. If that folder isn't
 				there, you have to create it first.
-				The next time you start TortoiseSVN, the spell checker will be available.
+				The next time you start TortoiseGit, the spell checker will be available.
 			</para>
 			<para>
-				If you install multiple dictionaries, TortoiseSVN uses these rules
+				If you install multiple dictionaries, TortoiseGit uses these rules
 				to select which one to use.
 				<orderedlist>
 					<listitem>

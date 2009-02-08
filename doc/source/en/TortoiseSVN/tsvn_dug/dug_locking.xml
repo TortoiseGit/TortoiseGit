@@ -66,7 +66,7 @@
 			the file. This acts as a warning that you should not edit that
 			file unless you have first acquired a lock.
 			Files which are versioned and read-only are marked with a
-			special overlay in TortoiseSVN to indicate that you need to
+			special overlay in TortoiseGit to indicate that you need to
 			acquire a lock before editing.
 		</para>
 		<para>
@@ -99,7 +99,7 @@
 			Select the file(s) in your working copy for which you want to 
 			acquire a lock, then select the command
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Get Lock...</guimenuitem>
 			</menuchoice>.
 			<figure id="tsvn-dug-locking-dia-lock">
@@ -118,7 +118,7 @@
 		<para>
 			If you select a folder and then use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Get Lock...</guimenuitem>
 			</menuchoice>
 			the lock dialog will open with <emphasis>every</emphasis> file
@@ -145,10 +145,10 @@
 			To release a lock manually, select the file(s) in your working copy
 			for which you want to release the lock, then select the command
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Release Lock</guimenuitem>
 			</menuchoice>
-			There is nothing further to enter so TortoiseSVN will contact
+			There is nothing further to enter so TortoiseGit will contact
 			the repository and release the locks. You can also use this
 			command on a folder to release all locks recursively.
 		</para>
@@ -162,7 +162,7 @@
 			</figure>
 			To see what locks you and others hold, you can use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Check for Modifications...</guimenuitem>
 			</menuchoice>.
 			Locally held lock tokens show up immediately. To check for
@@ -197,7 +197,7 @@
 			Files with this property set will always be checked out and updated
 			with the read-only flag set unless your working copy holds a lock.
 			<graphic fileref="../images/ReadOnlyIcon.png"/> 
-			As a reminder, TortoiseSVN uses a special overlay to indicate this.
+			As a reminder, TortoiseGit uses a special overlay to indicate this.
 		</para>
 		<para>
 			If you operate a policy where every file has to be locked then

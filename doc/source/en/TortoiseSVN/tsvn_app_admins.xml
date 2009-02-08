@@ -5,12 +5,12 @@
 	<simplesect>
 		<para>
 			This appendix contains solutions to problems/questions you might
-			have when you are responsible for deploying TortoiseSVN to multiple
+			have when you are responsible for deploying TortoiseGit to multiple
 			client computers.
 		</para>
 	</simplesect>
 	<sect1 id="tsvn-admins-grouppolicies">
-		<title>Deploy TortoiseSVN via group policies</title>
+		<title>Deploy TortoiseGit via group policies</title>
 		<indexterm>
 			<primary>group policies</primary>
 		</indexterm>
@@ -27,7 +27,7 @@
 			<primary>deploy</primary>
 		</indexterm>
 		<para>
-			The TortoiseSVN installer comes as an MSI file, which means you
+			The TortoiseGit installer comes as an MSI file, which means you
 			should have no problems adding that MSI file to the group policies
 			of your domain controller.
 		</para>
@@ -39,14 +39,14 @@
 			</ulink>.
 		</para>
 		<para>
-			Versions 1.3.0 and later of TortoiseSVN must be installed under
+			Versions 1.3.0 and later of TortoiseGit must be installed under
 			<emphasis>Computer Configuration</emphasis> and not under
 			<emphasis>User Configuration</emphasis>. This is because those versions
 			need the new CRT and MFC DLLs, which can only be deployed <emphasis>per
 			computer</emphasis> and not <emphasis>per user</emphasis>.
-			If you really must install TortoiseSVN on a per user basis, then you must
+			If you really must install TortoiseGit on a per user basis, then you must
 			first install the MFC and CRT package version 8 from Microsoft on each
-			computer you want to install TortoiseSVN as per user.
+			computer you want to install TortoiseGit as per user.
 		</para>
 	</sect1>
 	<sect1 id="tsvn-admins-upgradecheck">
@@ -61,7 +61,7 @@
 			<primary>version</primary>
 		</indexterm>
 		<para>
-			TortoiseSVN checks if there's a new version available every few days.
+			TortoiseGit checks if there's a new version available every few days.
 			If there is a newer version available, a dialog shows up informing
 			the user about that.
 		</para>
@@ -76,18 +76,18 @@
 			to show up so your users don't go and upgrade immediately.
 		</para>
 		<para>
-			Versions 1.4.0 and later of TortoiseSVN allow you to redirect that upgrade
+			Versions 1.4.0 and later of TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
-			<filename>HKCU\Software\TortoiseSVN\UpdateCheckURL</filename> (string value)
+			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> (string value)
 			to an URL pointing to a text file in your intranet. That text file must have
 			the following format:
 <screen>
 1.4.1.6000
-A new version of TortoiseSVN is available for you to download!
-http://192.168.2.1/downloads/TortoiseSVN-1.4.1.6000-svn-1.4.0.msi
+A new version of TortoiseGit is available for you to download!
+http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 </screen>
 			The first line in that file is the version string. You must make sure that
-			it matches the exact version string of the TortoiseSVN installation package.
+			it matches the exact version string of the TortoiseGit installation package.
 			The second line is a custom text, shown in the upgrade dialog. You can write
 			there whatever you want. Just note that the space in the upgrade dialog is
 			limited. Too long messages will get truncated!
@@ -111,7 +111,7 @@ http://192.168.2.1/downloads/TortoiseSVN-1.4.1.6000-svn-1.4.0.msi
 			<primary>ASP projects</primary>
 		</indexterm>
 		<para>
-			As of version 1.4.0 and later, the TortoiseSVN installer doesn't provide
+			As of version 1.4.0 and later, the TortoiseGit installer doesn't provide
 			the user with the option to set the <literal>SVN_ASP_DOT_NET_HACK</literal>
 			environment variable
 			anymore, since that caused many problems and confusions with users which
@@ -120,11 +120,11 @@ http://192.168.2.1/downloads/TortoiseSVN-1.4.1.6000-svn-1.4.0.msi
 		</para>
 		<para>
 			But that option is only hidden for the user. You still can force the
-			TortoiseSVN installer to set that environment variable by setting the
+			TortoiseGit installer to set that environment variable by setting the
 			<literal>ASPDOTNETHACK</literal>
 			property to TRUE. For example, you can start the installer like this:
 <screen>
-msiexec /i TortoiseSVN-1.4.0.msi ASPDOTNETHACK=TRUE
+msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 </screen>
 		</para>
 	</sect1>
@@ -140,19 +140,19 @@ msiexec /i TortoiseSVN-1.4.0.msi ASPDOTNETHACK=TRUE
 			<primary>group policies</primary>
 		</indexterm>
 		<para>
-			As of version 1.5.0 and later, TortoiseSVN allows you to disable (actually, hide)
+			As of version 1.5.0 and later, TortoiseGit allows you to disable (actually, hide)
 			context menu entries. Since this is a feature which should not be used lightly
 			but only if there is a compelling reason, there is no GUI for this and it has
 			to be done directly in the registry.
 			This can be used to disable certain commands for users who should not use them.
 			But please note that only the context menu entries in the <emphasis>explorer</emphasis>
 			are hidden, and the commands are still available through other means, e.g. the
-			command line or even other dialogs in TortoiseSVN itself!
+			command line or even other dialogs in TortoiseGit itself!
 		</para>
 		<para>
 			The registry keys which hold the information on which context menus to show are
-			<filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskLow</filename>
-			and <filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskHigh</filename>.
+			<filename>HKEY_CURRENT_USER\Software\TortoiseGit\ContextMenuEntriesMaskLow</filename>
+			and <filename>HKEY_CURRENT_USER\Software\TortoiseGit\ContextMenuEntriesMaskHigh</filename>.
 		</para>
 		<para>
 			Each of these registry entries is a <literal>DWORD</literal> value, with each
@@ -329,9 +329,9 @@ msiexec /i TortoiseSVN-1.4.0.msi ASPDOTNETHACK=TRUE
 </screen>
 			The lower <literal>DWORD</literal> value (<literal>0x80080000</literal>)
 			must then be stored in
-			<filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskLow</filename>,
+			<filename>HKEY_CURRENT_USER\Software\TortoiseGit\ContextMenuEntriesMaskLow</filename>,
 			the higher <literal>DWORD</literal> value (<literal>0x20000000</literal>) in
-			<filename>HKEY_CURRENT_USER\Software\TortoiseSVN\ContextMenuEntriesMaskHigh</filename>.
+			<filename>HKEY_CURRENT_USER\Software\TortoiseGit\ContextMenuEntriesMaskHigh</filename>.
 		</para>
 		<para>
 			To enable the menu entries again, simply delete the two registry keys.

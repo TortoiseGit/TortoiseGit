@@ -20,8 +20,8 @@
 			<guimenuitem>properties</guimenuitem>
 		</menuchoice>
 		in the context menu (note: this is the normal properties menu entry
-		the explorer provides, not the one in the TortoiseSVN submenu!).
-		In the properties dialog box TortoiseSVN has added a new
+		the explorer provides, not the one in the TortoiseGit submenu!).
+		In the properties dialog box TortoiseGit has added a new
 		property page for files/folders under Subversion control,
 		where you can see all relevant information about the
 		selected file/directory.
@@ -41,10 +41,10 @@
 			You can read and set the Subversion properties
 			from the Windows properties dialog, but also from
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>properties</guimenuitem>
 			</menuchoice>
-			and within TortoiseSVN's status lists, from
+			and within TortoiseGit's status lists, from
 			<menuchoice>
 				<guimenu>Context menu</guimenu>
 				<guimenuitem>properties</guimenuitem>
@@ -191,7 +191,7 @@
 			<para>
 				From the file or folder where the properties are already set, use
 				<menuchoice>
-					<guimenu>TortoiseSVN</guimenu>
+					<guimenu>TortoiseGit</guimenu>
 					<guimenuitem>properties</guimenuitem>
 				</menuchoice>,
 				select the properties you wish to export and click on
@@ -201,7 +201,7 @@
 			<para>
 				From the folder(s) where you wish to apply these properties, use
 				<menuchoice>
-					<guimenu>TortoiseSVN</guimenu>
+					<guimenu>TortoiseGit</guimenu>
 					<guimenuitem>properties</guimenuitem>
 				</menuchoice>
 				and click on <guibutton>Import...</guibutton>. You will be prompted
@@ -217,7 +217,7 @@
 				<guibutton>OK</guibutton>.
 			</para>
 			<para>
-				The Import file format is binary and proprietary to TortoiseSVN.
+				The Import file format is binary and proprietary to TortoiseGit.
 				Its only purpose is to transfer properties using Import and Export,
 				so there is no need to edit these files.
 			</para>
@@ -225,7 +225,7 @@
 		<sect3 id="tsvn-dug-propertypage-props-binary">
 			<title>Binary Properties</title>
 			<para>
-				TortoiseSVN can handle binary property values using files.
+				TortoiseGit can handle binary property values using files.
 				To read a binary property value, <guibutton>Save...</guibutton>
 				to a file. To set a binary value, use a hex editor or other appropriate
 				tool to create a file with the content you require, then
@@ -244,14 +244,14 @@
 				<primary>auto-props</primary>
 			</indexterm>
 			<para>
-				You can configure Subversion and TortoiseSVN to set properties
+				You can configure Subversion and TortoiseGit to set properties
 				automatically on files and folders when they are added to the
 				repository. There are two ways of doing this.
 			</para>
 			<para>
 				You can edit the subversion configuration file to enable
 				this feature on your client. The <guilabel>General</guilabel>
-				page of TortoiseSVN's settings dialog has an edit button to
+				page of TortoiseGit's settings dialog has an edit button to
 				take you there directly.
 				The config file is a simple text file which controls some of
 				subversion's workings. You need to change two things:
@@ -268,7 +268,7 @@
 			<para>
 				An alternative method is to set the <literal>tsvn:autoprops</literal>
 				property on folders, as described in the next section. This method
-				only works for TortoiseSVN clients, but it does get propagated
+				only works for TortoiseGit clients, but it does get propagated
 				to all working copies on update.
 			</para>
 			<para>
@@ -301,15 +301,15 @@
 		</tip>
 	</sect2>
 	<sect2 id="tsvn-dug-propertypage-tsvn-props">
-		<title>TortoiseSVN Project Properties</title>
+		<title>TortoiseGit Project Properties</title>
 		<indexterm>
 			<primary>project properties</primary>
 		</indexterm>
 		<indexterm>
-			<primary>TortoiseSVN properties</primary>
+			<primary>TortoiseGit properties</primary>
 		</indexterm>
 		<para>
-			TortoiseSVN has a few special properties of its own, and these begin
+			TortoiseGit has a few special properties of its own, and these begin
 			with <literal>tsvn:</literal>.
 			<itemizedlist>
 				<listitem>
@@ -389,7 +389,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						TortoiseSVN can use spell checker modules which are also
+						TortoiseGit can use spell checker modules which are also
 						used by OpenOffice and Mozilla. If you have those installed
 						this property will determine which spell checker to use, i.e.
 						in which language the log messages for your project should
@@ -447,12 +447,12 @@
 		</para>
 		<para>
 			Some <literal>tsvn:</literal> properties require a
-			<literal>true/false</literal> value. TortoiseSVN also understands
+			<literal>true/false</literal> value. TortoiseGit also understands
 			<literal>yes</literal> as a synonym for <literal>true</literal> and
 			<literal>no</literal> as a synonym for <literal>false</literal>.
 		</para>
 		<para>
-			TortoiseSVN can integrate with some bug tracking tools. This uses
+			TortoiseGit can integrate with some bug tracking tools. This uses
 			project properties that start with <literal>bugtraq:</literal>.
 			Read <xref linkend="tsvn-dug-bugtracker"/> for further information.
 		</para>
@@ -467,7 +467,7 @@
 				These special project properties must be set on
 				<emphasis>folders</emphasis> for the system to work. 
 				When you commit a file or folder the properties are read from that folder.
-				If the properties are not found there, TortoiseSVN will search upwards
+				If the properties are not found there, TortoiseGit will search upwards
 				through the folder tree to find them until it comes to an unversioned
 				folder, or the tree root (eg. <literal>C:\</literal>) is found.
 				If you can be sure that each user checks out only from e.g
@@ -485,16 +485,16 @@
 			</para>
 		</important>
 		<para>
-			When you add new sub-folders using TortoiseSVN, any
+			When you add new sub-folders using TortoiseGit, any
 			project properties present in the parent folder
 			will automatically be added to the new child folder too.
 		</para>
 		<caution>
 			<para>
-				Although TortoiseSVN's project properties are extremely useful,
-				they only work with TortoiseSVN, and some will only work in newer versions
-				of TortoiseSVN. If people working on your project use a variety of
-				Subversion clients, or possibly have old versions of TortoiseSVN,
+				Although TortoiseGit's project properties are extremely useful,
+				they only work with TortoiseGit, and some will only work in newer versions
+				of TortoiseGit. If people working on your project use a variety of
+				Subversion clients, or possibly have old versions of TortoiseGit,
 				you may want to use repository hooks to enforce project policies.
 				project properties can only help to implement a
 				policy, they cannot enforce it.

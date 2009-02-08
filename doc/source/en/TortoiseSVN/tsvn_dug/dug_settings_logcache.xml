@@ -12,7 +12,7 @@
 			<graphic fileref="../images/SettingsLogCache.png"/>
 		</figure>
 		This dialog allows you to configure the log caching feature of
-		TortoiseSVN, which retains a local copy of log messages and changed
+		TortoiseGit, which retains a local copy of log messages and changed
 		paths to avoid time-consuming downloads from the server. Using the
 		log cache can dramatically speed up the log dialog and the revision graph.
 		Another useful feature is that the log messages can still be
@@ -101,7 +101,7 @@
 						If you browse around a lot of repositories you will
 						accumulate a lot of log caches. If you're not actively
 						using them, the cache will not grow very big, so
-						TortoiseSVN purges them after a set time by default.
+						TortoiseGit purges them after a set time by default.
 						Use this item to control cache purging.
 					</para>
 				</listitem>
@@ -111,7 +111,7 @@
 				<listitem>
 					<para>
 						Larger caches are more expensive to reacquire, so
-						TortoiseSVN only purges small caches. Fine tune the
+						TortoiseGit only purges small caches. Fine tune the
 						threshold with this value.
 					</para>
 				</listitem>
@@ -145,7 +145,7 @@
 			</figure>
 			Click on the <guibutton>Details</guibutton> button to see
 			detailed statistics for a particular cache. Many of the fields
-			shown here are mainly of interest to the developers of TortoiseSVN,
+			shown here are mainly of interest to the developers of TortoiseGit,
 			so they are not all described in detail.
 			<variablelist>
 				<varlistentry>

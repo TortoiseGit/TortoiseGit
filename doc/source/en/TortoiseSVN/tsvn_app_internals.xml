@@ -5,7 +5,7 @@
 	<simplesect>
 		<para>
 			This appendix contains a more detailed discussion of the
-			implementation of some of TortoiseSVN's features.
+			implementation of some of TortoiseGit's features.
 		</para>
 	</simplesect>
 	<sect1 id="tsvn-app-internals-overlays">
@@ -19,7 +19,7 @@
 		<para>
 			Every file and folder has a Subversion status value as reported
 			by the Subversion library. In the command line client, these
-			are represented by single letter codes, but in TortoiseSVN they
+			are represented by single letter codes, but in TortoiseGit they
 			are shown graphically using the icon overlays. Because the number
 			of overlays is very limited, each overlay may represent one of
 			several status values.
@@ -63,7 +63,7 @@
 			The <emphasis>In Subversion</emphasis> overlay is used to
 			represent an item which is in the <literal>normal</literal>
 			state, or a versioned item whose state is not yet known.
-			Because TortoiseSVN uses a background caching process to
+			Because TortoiseGit uses a background caching process to
 			gather status, it may take a few seconds before the overlay
 			updates.
 		</para>
@@ -75,7 +75,7 @@
 			Subversion 1.4.0 and later, the <literal>svn:needs-lock</literal>
 			status is cached locally by Subversion and this is used to
 			determine when to show this overlay. For working copies which
-			are in pre-1.4.x format, TortoiseSVN shows this overlay when the
+			are in pre-1.4.x format, TortoiseGit shows this overlay when the
 			file has read-only status. Note that Subversion automatically
 			upgrades working copies when you update them, although the
 			caching of the <literal>svn:needs-lock</literal> property
@@ -117,7 +117,7 @@
 			Those priorities are defined within Subversion itself.
 		</para>
 		<para>
-			When TortoiseSVN displays the status recursively (the default
+			When TortoiseGit displays the status recursively (the default
 			setting), each folder displays an overlay reflecting its own
 			status and the status of all its children. In order to display
 			a single <emphasis>summary</emphasis> overlay, we use the
@@ -130,7 +130,7 @@
 			system. This is because the number of overlays allowed by Windows
 			is limited to 15. Windows uses 4 of those, and the remaining 11
 			can be used by other applications. If there are not enough overlay
-			slots available, TortoiseSVN tries to be a
+			slots available, TortoiseGit tries to be a
 			<quote>Good Citizen (TM)</quote> and limits its use of overlays to
 			give other apps a chance.
 		</para>

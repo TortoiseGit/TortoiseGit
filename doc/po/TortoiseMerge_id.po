@@ -1,7 +1,7 @@
 #
 # Indonesian translation for TortoiseMerge
-# Copyright (C) 2004-2009 the TortoiseSVN team
-# This file is distributed under the same license as TortoiseSVN
+# Copyright (C) 2004-2009 the TortoiseGit team
+# This file is distributed under the same license as TortoiseGit
 #
 # Last commit by:
 # $Author: luebbe $
@@ -14,11 +14,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: TortoiseSVN Documentation\n"
+"Project-Id-Version: TortoiseGit Documentation\n"
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2009-01-01 22:35+0700\n"
 "Last-Translator: Thomas Edwin Santosa <thomas@katalisindonesia.com>\n"
-"Language-Team: TortoiseSVN translation team <dev@tortoisesvn.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -121,8 +121,8 @@ msgstr "TortoiseMerge adalah bebas. Anda tidak perlu membayarnya, Anda bisa meng
 # Indonesian#: source/TortoiseMerge_en.xml:68
 #. (para)
 #: ../source/TortoiseMerge_en.xml:71
-msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
-msgstr "TortoiseMerge adalah proyek Sumber Terbuka. Ini berarti bahwa Anda mempunyai akses penuh ke kode sumber dari program ini. Anda bisa melihatnya pada pranala ini <ulink url=\"http://tortoisesvn.tigris.org/svn/tortoisesvn/\"><citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/</citetitle></ulink>. Anda akan diminta untuk memasukkan nama pengguna dan sandi lewat. Nama pengguna adalah <literal>guest</literal>, dan sandi lewat harus dibiarkan kosong. Versi paling baru (di mana saat ini kami sedang bekerja) ditempatkan di bawah <filename>/trunk/</filename>, dan versi rilis ditempatkan di bawah <filename>/tags/</filename>."
+msgid "TortoiseMerge is an Open Source project. That means you have full read access to the source code of this program. You can browse it on this link <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. You will be prompted to enter username and password. The username is <literal>guest</literal>, and the password must be left blank. The most recent version (where we're currently working) is located under <filename>/trunk/</filename>, and the released versions are located under <filename>/tags/</filename>."
+msgstr "TortoiseMerge adalah proyek Sumber Terbuka. Ini berarti bahwa Anda mempunyai akses penuh ke kode sumber dari program ini. Anda bisa melihatnya pada pranala ini <ulink url=\"http://TortoiseGit.tigris.org/svn/TortoiseGit/\"><citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle></ulink>. Anda akan diminta untuk memasukkan nama pengguna dan sandi lewat. Nama pengguna adalah <literal>guest</literal>, dan sandi lewat harus dibiarkan kosong. Versi paling baru (di mana saat ini kami sedang bekerja) ditempatkan di bawah <filename>/trunk/</filename>, dan versi rilis ditempatkan di bawah <filename>/tags/</filename>."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:90
@@ -131,13 +131,13 @@ msgstr "Sumbang!"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:91
-msgid "Even though TortoiseSVN and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
-msgstr "Meskipun TortoiseSVN dan TortoiseMerge bebas, Anda bisa mendukung para pengembang dengan mengirimkan patch dan berperan aktif dalam pengembangan. Anda juga bisa membuat kami gembira selama jam tanpa akhir yang kami luangkan di depan komputer kami."
+msgid "Even though TortoiseGit and TortoiseMerge are free, you can support the developers by sending in patches and play an active role in the development. You can also help to cheer us up during the endless hours we spend in front of our computers."
+msgstr "Meskipun TortoiseGit dan TortoiseMerge bebas, Anda bisa mendukung para pengembang dengan mengirimkan patch dan berperan aktif dalam pengembangan. Anda juga bisa membuat kami gembira selama jam tanpa akhir yang kami luangkan di depan komputer kami."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:97
-msgid "While working on TortoiseSVN we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
-msgstr "Ketika bekerja pada TortoiseSVN kami senang mendengarkan musik. Dan karena kami meluangkan banyak jam pada proyek, kami memerlukan <emphasis>banyak</emphasis> musik. Oleh karena itu, kami telah menyiapkan beberapa daftar keinginan dengan CD dan DVD musik favorit kami: <ulink url=\"http://tortoisesvn.tigris.org/donate.html\"><citetitle>http://tortoisesvn.tigris.org/donate.html</citetitle></ulink> Silahkan lihat daftar orang yang berkontribusi terhadap proyek dengan mengirimkan tambalan atau terjemahan."
+msgid "While working on TortoiseGit we love to listen to music. And since we spend many hours on the project we need a <emphasis>lot</emphasis> of music. Therefore we have set up some wish-lists with our favourite music CDs and DVDs: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Please also have a look at the list of people who contributed to the project by sending in patches or translations."
+msgstr "Ketika bekerja pada TortoiseGit kami senang mendengarkan musik. Dan karena kami meluangkan banyak jam pada proyek, kami memerlukan <emphasis>banyak</emphasis> musik. Oleh karena itu, kami telah menyiapkan beberapa daftar keinginan dengan CD dan DVD musik favorit kami: <ulink url=\"http://TortoiseGit.tigris.org/donate.html\"><citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle></ulink> Silahkan lihat daftar orang yang berkontribusi terhadap proyek dengan mengirimkan tambalan atau terjemahan."
 
 # Indonesian#: source/TortoiseMerge_en.xml:110
 #. (title)
@@ -270,14 +270,14 @@ msgstr "Sejarah TortoiseMerge"
 # Indonesian#: source/TortoiseMerge_en.xml:234
 #. (para)
 #: ../source/TortoiseMerge_en.xml:236
-msgid "While working on <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
-msgstr "Ketika bekerja pada <ulink url=\"http://tortoisesvn.tigris.org\"><citetitle>TortoiseSVN</citetitle></ulink> kami menemukan bahwa kapan saja pengguna mengirimkan patch untuk meningkatkan proyek atau hanya membetulkan bug, kami banyak bekerja hanya untuk menerapkan patch itu. Dan banyak waktu dari patch itu yang ketinggalan jaman dan tidak bisa diterapkan dengan piranti baris perintah patch <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> karena kami bekerja pada file-file itu dan kadang kala sudah mengubah file tersebut."
+msgid "While working on <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> we found that whenever users sent in patches to enhance the project or just to fix bugs, we had a lot of work just applying those patches. And many times those patches were outdated and couldn't be applied with the command line patch tool <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> because we were working on those files and had sometimes changed those files already."
+msgstr "Ketika bekerja pada <ulink url=\"http://TortoiseGit.tigris.org\"><citetitle>TortoiseGit</citetitle></ulink> kami menemukan bahwa kapan saja pengguna mengirimkan patch untuk meningkatkan proyek atau hanya membetulkan bug, kami banyak bekerja hanya untuk menerapkan patch itu. Dan banyak waktu dari patch itu yang ketinggalan jaman dan tidak bisa diterapkan dengan piranti baris perintah patch <ulink url=\"http://unxutils.sourceforge.net/\"><citetitle>http://unxutils.sourceforge.net/</citetitle></ulink> karena kami bekerja pada file-file itu dan kadang kala sudah mengubah file tersebut."
 
 # Indonesian#: source/TortoiseMerge_en.xml:250
 #. (para)
 #: ../source/TortoiseMerge_en.xml:251
-msgid "This was also the main reason why TortoiseSVN did not originally have a <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
-msgstr "Ini juga alasa utama mengapa TortoiseSVN aslinya tidak mempunyai <menuchoice><guimenu>TortoiseSVN</guimenu><guimenuitem>Buat Patch</guimenuitem></menuchoice> diimplementasikan: kami lebih menyukai pengguna untuk mengirimkan kepada kami keseluruhan file karena dengan itu lebih mudah menerapkan patches."
+msgid "This was also the main reason why TortoiseGit did not originally have a <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Create Patch</guimenuitem></menuchoice> implemented: we preferred users to send us the whole files because with those it was easier to apply patches."
+msgstr "Ini juga alasa utama mengapa TortoiseGit aslinya tidak mempunyai <menuchoice><guimenu>TortoiseGit</guimenu><guimenuitem>Buat Patch</guimenuitem></menuchoice> diimplementasikan: kami lebih menyukai pengguna untuk mengirimkan kepada kami keseluruhan file karena dengan itu lebih mudah menerapkan patches."
 
 # Indonesian#: source/TortoiseMerge_en.xml:260
 #. (para)
@@ -288,8 +288,8 @@ msgstr "Maka kami meluangkan banyak waktu, mencari internet untuk piranti GUI ya
 # Indonesian#: source/TortoiseMerge_en.xml:268
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseSVN already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "Karena TortoiseSVN sudah menggunakan pustaka Subversion, yang mempunyai mesin pembeda secara pabrikan, ini menjadi alami untuk menggunakan librari ini daripada GNU diff."
+msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "Karena TortoiseGit sudah menggunakan pustaka Subversion, yang mempunyai mesin pembeda secara pabrikan, ini menjadi alami untuk menggunakan librari ini daripada GNU diff."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -384,7 +384,7 @@ msgstr "Menerapkan Patch"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseSVN when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
 msgstr ""
 
 #. (para)
@@ -604,8 +604,8 @@ msgstr "<guibutton>Tukar Tampilan</guibutton> memilih antara tampilan satu-pane 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:635
-msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseSVN does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
-msgstr "<guibutton>Tukar Tampilan Kiri dan Kanan</guibutton> Dalam tampilan 2-pane, menukar jendela kiri dan kanan. Ketika Anda membandingkan file dalam 2 susunan berbeda, kebalikan dari 2 revisi dari file yang sama, TortoiseSVN tidak mengetahui yang mana yang harus di sebelah pane kiri karena versi <quote>original/base</quote>. Jika ini salah, Anda bisa mengubahnya untuk kemudahan melihatnya."
+msgid "<guibutton>Switch Left and Right View</guibutton> In 2-pane view, swaps the left and right windows. When you are comparing a file in 2 different trees, as opposed to 2 revisions of the same file, TortoiseGit does not know which one should go in the left pane as the <quote>original/base</quote> version. If it gets this wrong, you can change it to make viewing easier."
+msgstr "<guibutton>Tukar Tampilan Kiri dan Kanan</guibutton> Dalam tampilan 2-pane, menukar jendela kiri dan kanan. Ketika Anda membandingkan file dalam 2 susunan berbeda, kebalikan dari 2 revisi dari file yang sama, TortoiseGit tidak mengetahui yang mana yang harus di sebelah pane kiri karena versi <quote>original/base</quote>. Jika ini salah, Anda bisa mengubahnya untuk kemudahan melihatnya."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:646
@@ -1678,8 +1678,8 @@ msgstr "Proses di mana perubahan dari repositori ditambahkan ke copy pekerjaan A
 # Indonesian#: source/TortoiseMerge_en.xml:1314
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1576
-msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseSVN's Merge command."
-msgstr "Penggabungan terjadi secara otomatis ketika Anda memutahirkan copy pekerjaan Anda. Anda juga bisa menggabung perubahan spesifik dari cabang lain menggunakan perintah Merge TortoiseSVN."
+msgid "Merging happens automatically when you update your working copy. You can also merge specific changes from another branch using TortoiseGit's Merge command."
+msgstr "Penggabungan terjadi secara otomatis ketika Anda memutahirkan copy pekerjaan Anda. Anda juga bisa menggabung perubahan spesifik dari cabang lain menggunakan perintah Merge TortoiseGit."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1322
 #. (glossterm)
@@ -1702,8 +1702,8 @@ msgstr "Property (Properti)"
 # Indonesian#: source/TortoiseMerge_en.xml:1340
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseSVN has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "Sebagai tambahan ke direktori dan file versi Anda, Subversion membolehkan Anda untuk menambahkan metadata yang diversi - dirujuk sebagai <quote>properties</quote> ke setiap direktori dan file yang diversi Anda. Setiap properti mempunyai nama dan nilai, mirip kunci registri. Subversion mempunyai beberapa properti khusus yang digunakan secara internal, seperti <literal>svn:eol-style</literal>. TortoiseSVN juga mempunyai beberapa, seperti <literal>tsvn:logminsize</literal>. Anda bisa menambah properti Anda sendiri dengan setiap nama dan nilai yang Anda pilih."
+msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "Sebagai tambahan ke direktori dan file versi Anda, Subversion membolehkan Anda untuk menambahkan metadata yang diversi - dirujuk sebagai <quote>properties</quote> ke setiap direktori dan file yang diversi Anda. Setiap properti mempunyai nama dan nilai, mirip kunci registri. Subversion mempunyai beberapa properti khusus yang digunakan secara internal, seperti <literal>svn:eol-style</literal>. TortoiseGit juga mempunyai beberapa, seperti <literal>tsvn:logminsize</literal>. Anda bisa menambah properti Anda sendiri dengan setiap nama dan nilai yang Anda pilih."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1353
 #. (glossterm)

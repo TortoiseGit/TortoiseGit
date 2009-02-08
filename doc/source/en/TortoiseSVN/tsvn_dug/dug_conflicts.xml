@@ -68,7 +68,7 @@
 		You can either launch an external merge tool / conflict
 		editor with
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Edit Conflicts</guimenuitem>
 		</menuchoice>
 		or you can use any other editor to manually
@@ -78,7 +78,7 @@
 	<para>
 		Afterwards execute the command
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Resolved</guimenuitem>
 		</menuchoice>
 		and commit your modifications to the repository.
@@ -102,7 +102,7 @@
 		You can use the Resolved command for multiple files
 		if you right click on the parent folder and select
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Resolved...</guimenuitem>
 		</menuchoice>
 		This will bring up a dialog listing all conflicted files

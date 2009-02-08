@@ -80,7 +80,7 @@
 			<action>right click</action>
 			to open the context menu. Select the command
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Import...</guimenuitem>
 			</menuchoice>
 			which brings up a dialog box:
@@ -121,7 +121,7 @@ C:\Projects\Widget\images
 			on setting a global ignore pattern.
 		</para>
 		<para>
-			As soon as you press <guibutton>OK</guibutton> TortoiseSVN imports the
+			As soon as you press <guibutton>OK</guibutton> TortoiseGit imports the
 			complete directory tree including all files into the repository.
 			The project is now stored in the repository under version control.
 			Please note that the folder you imported is <emphasis>NOT</emphasis>
@@ -157,7 +157,7 @@ C:\Projects\Widget\images
 					<para>
 						Use
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Add...</guimenuitem>
 						</menuchoice>
 						on this versioned folder to add some or all of the content.
@@ -195,7 +195,7 @@ C:\Projects\Widget\images
 			is not a problem anymore.
 		</para>
 		<para>
-			As an example, you can have a look at TortoiseSVN's build script. It
+			As an example, you can have a look at TortoiseGit's build script. It
 			calls a file named <filename>TortoiseVars.bat</filename> which
 			doesn't exist in the repository. Only the file
 			<filename>TortoiseVars.tmpl</filename>.
@@ -412,7 +412,7 @@ skins/toolkit -r21 http://svn.red-bean.com/repos/skin-maker
 			</varlistentry>
 		</variablelist>
 		<para>
-			If you need more information how TortoiseSVN
+			If you need more information how TortoiseGit
 			handles Properties read <xref linkend="tsvn-dug-propertypage"/>.
 		</para>
 		<para>

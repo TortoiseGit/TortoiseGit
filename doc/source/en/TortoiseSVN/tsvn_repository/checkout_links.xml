@@ -6,7 +6,7 @@
 		<primary>checkout link</primary>
 	</indexterm>
 	<indexterm>
-		<primary>TortoiseSVN link</primary>
+		<primary>TortoiseGit link</primary>
 	</indexterm>
 	<indexterm>
 		<primary>link</primary>
@@ -18,11 +18,11 @@
 		If you want to make your Subversion repository available
 		to others you may want to include a link to it from your
 		website. One way to make this more accessible is to include
-		a <firstterm>checkout link</firstterm> for other TortoiseSVN users.
+		a <firstterm>checkout link</firstterm> for other TortoiseGit users.
 	</para>
 	<para>
-		When you install TortoiseSVN, it registers a new
-		<literal>tsvn:</literal> protocol. When a TortoiseSVN user clicks on
+		When you install TortoiseGit, it registers a new
+		<literal>tsvn:</literal> protocol. When a TortoiseGit user clicks on
 		such a link, the checkout dialog will open automatically with
 		the repository URL already filled in.
 	</para>
@@ -37,8 +37,8 @@
 	<para>
 		Of course it would look even better if you included a suitable picture.
 		You can use the
-		<ulink url="http://tortoisesvn.tigris.org/images/TortoiseCheckout.png">
-			<citetitle>TortoiseSVN logo</citetitle>
+		<ulink url="http://TortoiseGit.tigris.org/images/TortoiseCheckout.png">
+			<citetitle>TortoiseGit logo</citetitle>
 		</ulink>
 		or you can provide your own image.
 <programlisting>

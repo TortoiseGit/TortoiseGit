@@ -13,21 +13,21 @@
 			Sometimes this manual refers you to the main Subversion
 			documentation, which describes Subversion in terms of the
 			Command Line Interface (CLI). To help you understand what
-			TortoiseSVN is doing behind the scenes, we have compiled
+			TortoiseGit is doing behind the scenes, we have compiled
 			a list showing the equivalent CLI commands for each of
-			TortoiseSVN's GUI operations.
+			TortoiseGit's GUI operations.
 		</para>
 		<note>
 			<para>
-			Even though there are CLI equivalents to what TortoiseSVN
-			does, remember that TortoiseSVN does <emphasis>not</emphasis>
+			Even though there are CLI equivalents to what TortoiseGit
+			does, remember that TortoiseGit does <emphasis>not</emphasis>
 			call the CLI but uses the Subversion library directly.
 			</para>
 		</note>
 		<para>
-			If you think you have found a bug in TortoiseSVN, we
+			If you think you have found a bug in TortoiseGit, we
 			may ask you to try to reproduce it using the CLI, so
-			that we can distinguish TortoiseSVN issues from Subversion
+			that we can distinguish TortoiseGit issues from Subversion
 			issues. This reference tells you which command to try.
 		</para>
 	</simplesect>
@@ -37,14 +37,14 @@
 			In the descriptions which follow, the URL for a repository
 			location is shown simply as
 			<literal>URL</literal>, and an example might be
-			<systemitem class="url">http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk</systemitem>.
+			<systemitem class="url">http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk</systemitem>.
 			The working copy path is shown simply as
 			<literal>PATH</literal>, and an example might be
-			<filename>C:\TortoiseSVN\trunk</filename>.
+			<filename>C:\TortoiseGit\trunk</filename>.
 		</para>
 		<important>
 			<para>
-			Because TortoiseSVN is a Windows Shell Extension, it is not able
+			Because TortoiseGit is a Windows Shell Extension, it is not able
 			to use the notion of a current working directory. All working
 			copy paths must be given using the absolute path, not a relative
 			path.
@@ -52,12 +52,12 @@
 		</important>
 		<para>
 			Certain items are optional, and these are often controlled by
-			checkboxes or radio buttons in TortoiseSVN. These options are
+			checkboxes or radio buttons in TortoiseGit. These options are
 			shown in [square brackets] in the command line definitions.
 		</para>
 	</sect1>
 	<sect1 id="tsvn-cli-main">
-		<title>TortoiseSVN Commands</title>
+		<title>TortoiseGit Commands</title>
 		<sect2 id="tsvn-cli-checkout">
 			<title>Checkout</title>
 <screen>
@@ -85,13 +85,13 @@ svn update [-r rev] PATH
 			<para>
 				Updating multiple items is currently not an atomic operation
 				in Subversion. So
-				TortoiseSVN first finds the HEAD revision of the repository,
+				TortoiseGit first finds the HEAD revision of the repository,
 				and then updates all items to that particular revision number to
 				avoid creating a mixed revision working copy.
 			</para>
 			<para>
 				If only one item is selected for updating or the selected items are
-				not all from the same repository, TortoiseSVN just updates
+				not all from the same repository, TortoiseGit just updates
 			to HEAD.
 			</para>
 			<para>
@@ -118,7 +118,7 @@ svn update [-r rev] [-N] [--ignore-externals] PATH
 		<sect2 id="tsvn-cli-commit">
 			<title>Commit</title>
 			<para>
-				In TortoiseSVN, the commit dialog uses several Subversion commands.
+				In TortoiseGit, the commit dialog uses several Subversion commands.
 				The first stage is a status check which determines the items
 				in your working copy which can potentially be committed. You can
 				review the list, diff files against BASE and select the items you
@@ -129,7 +129,7 @@ svn status -v PATH
 </screen>
 			<para>
 				If <guilabel>Show unversioned files</guilabel> is checked,
-				TortoiseSVN will also show all unversioned files and folders in
+				TortoiseGit will also show all unversioned files and folders in
 				the working copy hierarchy, taking account of the ignore rules.
 				This particular feature has no direct equivalent in Subversion,
 				as the <literal>svn status</literal> command does not descend into
@@ -145,7 +145,7 @@ svn add PATH...
 			<para>
 				When you click on OK, the Subversion commit takes place. If you have
 				left all the file selection checkboxes in their default state,
-				TortoiseSVN uses a single recursive commit of the working copy.
+				TortoiseGit uses a single recursive commit of the working copy.
 				If you deselect some files, then a non-recursive commit
 				(<literal>-N</literal>) must be used, and every path must be
 				specified individually on the commit command line.
@@ -171,14 +171,14 @@ svn diff PATH
 				If you use Diff from the main context menu, you are diffing
 				a modified file against its BASE revision. The output from
 				the CLI command above also does this and produces output
-				in unified-diff format. However, this is not what TortoiseSVN
-				is using. TortoiseSVN uses TortoiseMerge (or a diff program of
+				in unified-diff format. However, this is not what TortoiseGit
+				is using. TortoiseGit uses TortoiseMerge (or a diff program of
 				your choosing) to display differences visually between
 				full-text files, so there is no direct CLI equivalent.
 			</para>
 			<para>
-				You can also diff any 2 files using TortoiseSVN, whether or
-				not they are version controlled. TortoiseSVN just feeds the
+				You can also diff any 2 files using TortoiseGit, whether or
+				not they are version controlled. TortoiseGit just feeds the
 				two files into the chosen diff program and lets it work out
 				where the differences lie.
 			</para>
@@ -191,7 +191,7 @@ svn log -v -r 0:N --limit 100 [--stop-on-copy] PATH
 svn log -v -r M:N [--stop-on-copy] PATH
 </screen>
 			<para>
-				By default, TortoiseSVN tries to fetch 100 log messages
+				By default, TortoiseGit tries to fetch 100 log messages
 				using the --limit method. If the settings instruct it to
 				use old APIs, then the second form is used to fetch the
 				log messages for 100 repository revisions.
@@ -217,7 +217,7 @@ svn status -u -v PATH
 			</para>
 			<para>
 				If <guilabel>Show unversioned files</guilabel> is checked,
-				TortoiseSVN will also show all unversioned files and folders in
+				TortoiseGit will also show all unversioned files and folders in
 				the working copy hierarchy, taking account of the ignore rules.
 				This particular feature has no direct equivalent in Subversion,
 				as the <literal>svn status</literal> command does not descend into
@@ -227,11 +227,11 @@ svn status -u -v PATH
 		<sect2 id="tsvn-cli-revgraph">
 			<title>Revision Graph</title>
 			<para>
-				The revision graph is a feature of TortoiseSVN only. There's no
+				The revision graph is a feature of TortoiseGit only. There's no
 				equivalent in the command line client.
 			</para>
 			<para>
-				What TortoiseSVN does is an
+				What TortoiseGit does is an
 <screen>
 svn info URL_of_WC
 svn log -v URL
@@ -298,7 +298,7 @@ svn status -v PATH
 			<para>
 				When you click on OK, the Subversion revert takes place. If you have
 				left all the file selection checkboxes in their default state,
-				TortoiseSVN uses a single recursive (<literal>-R</literal>)
+				TortoiseGit uses a single recursive (<literal>-R</literal>)
 				revert of the working copy. If you deselect some files, then
 				every path must be specified individually on the revert command line.
 			</para>
@@ -403,7 +403,7 @@ svn export [-r rev] [--ignore-externals] URL Export_PATH
 				line equivalent.
 			</para>
 			<para>
-				What TortoiseSVN does is to copy all files to the new location
+				What TortoiseGit does is to copy all files to the new location
 				while showing you the progress of the operation. Unversioned
 				files/folders can optionally be exported too.
 			</para>
@@ -431,7 +431,7 @@ svnadmin create --fs-type fsfs PATH
 svn add PATH...
 </screen>
 			<para>
-				If you selected a folder, TortoiseSVN first scans it
+				If you selected a folder, TortoiseGit first scans it
 				recursively for items which can be added.
 			</para>
 		</sect2>
@@ -477,7 +477,7 @@ svn propset svn:ignore -F tempfile PATH
 svn diff PATH > patch-file
 </screen>
 			<para>
-				TortoiseSVN creates a patch file in unified diff format
+				TortoiseGit creates a patch file in unified diff format
 				by comparing the working copy with its BASE version.
 			</para>
 		</sect2>

@@ -7,20 +7,20 @@
 			<primary>FAQ</primary>
 		</indexterm>
 		<para>
-			Because TortoiseSVN is being developed all the time
+			Because TortoiseGit is being developed all the time
 			it is sometimes hard to keep the documentation completely
 			up to date. We maintain an  
-			<ulink url="http://tortoisesvn.tigris.org/faq.html">
+			<ulink url="http://TortoiseGit.tigris.org/faq.html">
 				<citetitle>online FAQ</citetitle>
 			</ulink>
 			which contains a selection of the questions we are asked
-			the most on the TortoiseSVN mailing lists
-			<email>dev@tortoisesvn.tigris.org</email> and
-			<email>users@tortoisesvn.tigris.org</email>.
+			the most on the TortoiseGit mailing lists
+			<email>dev@TortoiseGit.tigris.org</email> and
+			<email>users@TortoiseGit.tigris.org</email>.
 		</para>
 		<para>
 			We also maintain a project
-			<ulink url="http://issues.tortoisesvn.net">
+			<ulink url="http://issues.TortoiseGit.net">
 				<citetitle>Issue Tracker</citetitle>
 			</ulink>
 			which tells you about some of the things we have on our To-Do list,
@@ -31,11 +31,11 @@
 		<para>
 			If you have a question which is not answered anywhere
 			else, the best place to ask it is on one of the mailing lists.
-			<email>users@tortoisesvn.tigris.org</email> is the one to use
-			if you have questions about using TortoiseSVN.
-			If you want to help out with the development of TortoiseSVN,
+			<email>users@TortoiseGit.tigris.org</email> is the one to use
+			if you have questions about using TortoiseGit.
+			If you want to help out with the development of TortoiseGit,
 			then you should take part in discussions on
-			<email>dev@tortoisesvn.tigris.org</email>.
+			<email>dev@TortoiseGit.tigris.org</email>.
 		</para>
 	</simplesect>
 </appendix>

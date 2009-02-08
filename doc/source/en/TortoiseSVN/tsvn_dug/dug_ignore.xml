@@ -17,7 +17,7 @@
 		In most projects you will have files and folders that should not be subject
 		to version control. These might include files created by the compiler,
 		<filename>*.obj, *.lst</filename>, maybe an output folder used to store
-		the executable. Whenever you commit changes, TortoiseSVN shows your unversioned
+		the executable. Whenever you commit changes, TortoiseGit shows your unversioned
 		files, which fills up the file list in the commit dialog. Of course you
 		can turn off this display, but then you might forget to add a new source
 		file.
@@ -32,7 +32,7 @@
 		If you <action>right click</action> on a single unversioned file,
 		and select the command
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Add to Ignore List</guimenuitem>
 		</menuchoice>
 		from the context menu, a submenu appears allowing you to select just that
@@ -44,7 +44,7 @@
 		If you want to remove one or more items from the ignore list,
 		<action>right click</action> on those items and select
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Remove from Ignore List</guimenuitem>
 		</menuchoice>
 		You can also access a folder's <literal>svn:ignore</literal>

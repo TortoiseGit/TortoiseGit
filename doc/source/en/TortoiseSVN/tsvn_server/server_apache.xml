@@ -226,7 +226,7 @@ LoadModule authz_svn_module modules/mod_authz_svn.so
 		<title>Configuration</title>
 		<para>
 			Now you have set up Apache and Subversion, but Apache doesn't
-			know how to handle Subversion clients like TortoiseSVN yet.
+			know how to handle Subversion clients like TortoiseGit yet.
 			To get Apache to know which URL will be used for Subversion
 			repositories you have to edit the Apache configuration file (usually
 			located in
@@ -452,16 +452,16 @@ Require valid-user
 					<para>
 						You can get those three files directly from our source repository
 						at
-						<ulink url="http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/contrib/other/svnindex">
-							<citetitle>http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/contrib/other/svnindex</citetitle>
+						<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/contrib/other/svnindex">
+							<citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/contrib/other/svnindex</citetitle>
 						</ulink>.
-						(<xref linkend="tsvn-preface-source"/> explains how to access the TortoiseSVN source repository).
+						(<xref linkend="tsvn-preface-source"/> explains how to access the TortoiseGit source repository).
 					</para>
 					<para>
-						The XSL file from the TortoiseSVN repository has a nice
+						The XSL file from the TortoiseGit repository has a nice
 						gimmick: if you browse the repository with your web browser, then
 						every folder in your repository has an icon on the right shown.
-						If you click on that icon, the TortoiseSVN checkout dialog
+						If you click on that icon, the TortoiseGit checkout dialog
 						is started for this URL.
 					</para>
 				</listitem>
@@ -483,9 +483,9 @@ Require valid-user
 			location as the first repository and you're done! In my company
 			I have direct access to that specific folder on the server via
 			SMB (normal windows file access). So I just create a new folder
-			there, run the TortoiseSVN command
+			there, run the TortoiseGit command
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Create repository here...</guimenuitem>
 			</menuchoice>
 			and a new project has a home...
@@ -685,7 +685,7 @@ SSPIOfferBasic On
 				entry in the same case that Internet Explorer passes to Apache.  
 				You will also need to train your users to also type in their 
 				credentials	using lower case when accessing repositories via
-				TortoiseSVN.  
+				TortoiseGit.  
 			</para>
 			<para>
 				Apache's Error and Access logs are your best friend in 
@@ -866,7 +866,7 @@ bin\openssl x509 -in conf\server.cert -out conf\server.der.crt
 				the repository with the Internet Explorer doesn't work
 				anymore. Don't worry - this is only the Internet Explorer
 				not able to authenticate. Other browsers don't have that
-				problem and TortoiseSVN and any other Subversion client are
+				problem and TortoiseGit and any other Subversion client are
 				still able to authenticate.
 			</para>
 			<para>
@@ -943,7 +943,7 @@ SetEnvIf User-Agent ".*MSIE.*" \
 	<sect2 id="tsvn-serversetup-apache-sslcerts">
 		<title>Using client certificates with virtual SSL hosts</title>
 		<para>
-			Sent to the TortoiseSVN mailing list by Nigel Green. Thanks!
+			Sent to the TortoiseGit mailing list by Nigel Green. Thanks!
 		</para>
 		<para>
 			In some server configurations you may need to setup a single server

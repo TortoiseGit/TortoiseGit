@@ -43,7 +43,7 @@
 		<action>Copy</action> or <action>Cut</action> to copy one or more versioned items
 		to the clipboard. If the clipboard contains such versioned items, you can then use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Paste</guimenuitem>
 		</menuchoice>
 		(note: not the standard Windows <action>Paste</action>)
@@ -53,7 +53,7 @@
 		You can copy files and folders from your working copy to another
 		location in the repository using
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Branch/Tag</guimenuitem>
 		</menuchoice>.
 		Refer to <xref linkend="tsvn-dug-branch-1"/> to find out more.
@@ -79,7 +79,7 @@
 		<para>
 			Whilst you can copy and files and folders <emphasis>within</emphasis>
 			a repository, you <emphasis>cannot</emphasis> copy or move from one
-			repository to another while preserving history using TortoiseSVN.
+			repository to another while preserving history using TortoiseGit.
 			Not even if the repositories live on the same server. All you can
 			do is copy the content in its current state and add it as new
 			content to the second repository.

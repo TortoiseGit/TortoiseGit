@@ -17,7 +17,7 @@
 	</para>
 	<important>
 		<para>
-			The changelist feature in TortoiseSVN is only available in Windows XP 
+			The changelist feature in TortoiseGit is only available in Windows XP 
 			and later, as it depends on a shell capability which is not present
 			in Windows 2000.
 			Sorry, but Win2K is really quite old now, so please don't complain.
@@ -66,7 +66,7 @@
 		entries, then check one of the selected entries to check all.
 	</para>
 	<para>
-		TortoiseSVN reserves one changelist name for its own use, namely
+		TortoiseGit reserves one changelist name for its own use, namely
 		<literal>ignore-on-commit</literal>. This is used to mark versioned
 		files which you almost never want to commit even though they have local
 		changes. This feature is described in <xref linkend="tsvn-dug-commit-ignore"/>.

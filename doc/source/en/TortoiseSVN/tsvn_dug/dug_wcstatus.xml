@@ -33,8 +33,8 @@
 		<para>
 			Now that you have checked out a working copy from a Subversion
 			repository you can see your files in the windows explorer with
-			changed icons. This is one of the reasons why TortoiseSVN is so
-			popular. TortoiseSVN adds a so called overlay icon to each
+			changed icons. This is one of the reasons why TortoiseGit is so
+			popular. TortoiseGit adds a so called overlay icon to each
 			file icon which overlaps the original file icon. Depending on
 			the Subversion status of the file the overlay icon is different.
 		</para>
@@ -98,12 +98,12 @@
 			This is because the number of overlays allowed by Windows is very limited
 			and if you are also using an old version of TortoiseCVS, then there are
 			not enough overlay slots available.
-			TortoiseSVN tries to be a <quote>Good Citizen (TM)</quote>
+			TortoiseGit tries to be a <quote>Good Citizen (TM)</quote>
 			and limits its use of overlays to give other apps a chance too.
 		</para>
 		<para>
 			Now that there are more Tortoise clients around (TortoiseCVS, TortoiseHG, ...)
-			the icon limit becomes a real problem. To work around this, the TortoiseSVN
+			the icon limit becomes a real problem. To work around this, the TortoiseGit
 			project introduced a common shared icon set, loaded as a DLL, which can be
 			used by all Tortoise clients. Check with your client provider to see if
 			this has been integrated yet :-)
@@ -115,7 +115,7 @@
 		</para>
 	</sect2>
 	<sect2>
-		<title>TortoiseSVN Columns In Windows Explorer</title>
+		<title>TortoiseGit Columns In Windows Explorer</title>
 		<indexterm>
 			<primary>Explorer Columns</primary>
 		</indexterm>
@@ -166,7 +166,7 @@
 			changed and also which files got changed and
 			committed by others. That's where the command
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Check For Modifications...</guimenuitem>
 			</menuchoice>
 			comes in handy.
@@ -349,7 +349,7 @@
 			Often you want to look inside your files, to have a look at what
 			you've changed. You can accomplish this by selecting a file which
 			has changed, and selecting <guimenuitem>Diff</guimenuitem> from
-			TortoiseSVN's context menu. This starts the external
+			TortoiseGit's context menu. This starts the external
 			diff-viewer, which will then compare the current file with the
 			pristine copy (<literal>BASE</literal> revision), which was stored
 			after the last checkout or update.
@@ -362,7 +362,7 @@
 			<para>
 				Select the two files you want to compare in explorer
 				(e.g. using <keycap>Ctrl</keycap> and the mouse) and
-				choose <guimenuitem>Diff</guimenuitem> from TortoiseSVN's
+				choose <guimenuitem>Diff</guimenuitem> from TortoiseGit's
 				context menu. The file clicked last (the one with the focus,
 				i.e. the dotted rectangle) will be regarded as the later
 				one. 

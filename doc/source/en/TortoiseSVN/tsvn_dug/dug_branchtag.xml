@@ -52,7 +52,7 @@
 			Select the folder in your working copy which you want to copy
 			to a branch or tag, then select the command
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Branch/Tag...</guimenuitem>
 			</menuchoice>.
 		</para>
@@ -150,7 +150,7 @@
 			everything from the desired branch in the repository to your working
 			directory,
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Switch...</guimenuitem>
 			</menuchoice>
 			only transfers the changed data to your
@@ -163,7 +163,7 @@
 				<listitem>
 					<para>
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Checkout</guimenuitem>
 						</menuchoice>
 						to make a fresh checkout in an empty folder.
@@ -178,7 +178,7 @@
 						newly created copy in the repository. Again select the
 						top level folder of your project and use
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Switch...</guimenuitem>
 						</menuchoice>
 						from the context menu.
@@ -206,7 +206,7 @@
 						the expense of a fresh checkout, you can use Windows Explorer
 						to make a copy of your trunk checkout in another folder, then
 						<menuchoice>
-							<guimenu>TortoiseSVN</guimenu>
+							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Switch...</guimenuitem>
 						</menuchoice>
 						that copy to your new branch.
@@ -234,7 +234,7 @@
 						because your local files are not write protected there is
 						nothing to stop you doing this by mistake.
 						However, if you try to commit to a path in the repository
-						which contains <filename>/tags/</filename>, TortoiseSVN will
+						which contains <filename>/tags/</filename>, TortoiseGit will
 						warn you.
 					</para>
 				</listitem>

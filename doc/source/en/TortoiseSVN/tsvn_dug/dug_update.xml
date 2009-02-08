@@ -21,7 +21,7 @@
 		entire directory hierarchies. To update, select the files
 		and/or directories you want, <action>right click</action> and select
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Update</guimenuitem>
 		</menuchoice>
 		in the explorer context menu. A window will pop up displaying the 
@@ -105,7 +105,7 @@
 		most common use case. If you want more control over the update
 		process, you should use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Update to Revision...</guimenuitem>
 		</menuchoice> instead.
 		This allows you to update your working copy to a specific
@@ -162,7 +162,7 @@
 				<guimenuitem>Update</guimenuitem>
 			</menuchoice>,
 			all of those files/folders
-			are updated one by one. TortoiseSVN makes sure that all files/folders
+			are updated one by one. TortoiseGit makes sure that all files/folders
 			which are from the same repository are updated to the exact same
 			revision! Even if between those updates another commit occurred.
 		</para>
@@ -186,7 +186,7 @@
 		<para>
 			If you keep getting error messages, use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Check for Modifications</guimenuitem>
 			</menuchoice>
 			instead to list all the problem files. That way you can deal with them

@@ -64,8 +64,8 @@
 		<title>TortoiseMerge's History</title>
 		<para>
 			While working on
-			<ulink url="http://tortoisesvn.tigris.org">
-				<citetitle>TortoiseSVN</citetitle>
+			<ulink url="http://TortoiseGit.tigris.org">
+				<citetitle>TortoiseGit</citetitle>
 			</ulink>
 			we found that whenever users sent in patches to enhance the project
 			or just to fix bugs, we had a lot of work just applying those
@@ -78,10 +78,10 @@
 			those files already.
 		</para>
 		<para>
-			This was also the main reason why TortoiseSVN did not originally
+			This was also the main reason why TortoiseGit did not originally
 			have a
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Create Patch</guimenuitem>
 			</menuchoice>
 			implemented: we preferred users to send us the whole files because
@@ -95,7 +95,7 @@
 			own. That's when TortoiseMerge was born.
 		</para>
 		<para>
-			Since TortoiseSVN already uses the Subversion library, which has a
+			Since TortoiseGit already uses the Subversion library, which has a
 			nice diffing engine built in, it was just natural to use this
 			library instead of the GNU diff.
 		</para>

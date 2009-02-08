@@ -18,12 +18,12 @@
 		commit you have to make sure that your working copy is up to
 		date. You can either use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Update</guimenuitem>
 		</menuchoice>
 		directly. Or you can use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Check for Modifications</guimenuitem>
 		</menuchoice>
 		first, to see which files have changed locally or on the server.
@@ -35,7 +35,7 @@
 			you are ready to commit your changes. Select any file
 			and/or folders you want to commit, then
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Commit...</guimenuitem>
 			</menuchoice>.
 			<figure id="tsvn-dug-commit-dia-1">
@@ -94,7 +94,7 @@
 							add the file to the <literal>svn:ignore</literal> list
 							using
 							<menuchoice>
-								<guimenu>TortoiseSVN</guimenu>
+								<guimenu>TortoiseGit</guimenu>
 								<guimenuitem>Add to ignore list</guimenuitem>
 							</menuchoice>
 							This will only affect the directory on
@@ -221,7 +221,7 @@
 				<title>The Commit Dialog Spellchecker</title>
 				<graphic fileref="../images/CommitSpellcheck.png"/>
 			</figure>
-			TortoiseSVN includes a spellchecker to help you get your log messages
+			TortoiseGit includes a spellchecker to help you get your log messages
 			right. This will highlight any mis-spelled words. Use the context menu
 			to access the suggested corrections. Of course, it doesn't know
 			<emphasis>every</emphasis> technical term that you do, so correctly
@@ -235,11 +235,11 @@
 			If a word you are typing matches anything in the list (after you have typed at
 			least 3 characters, or pressed <keycap>Ctrl+Space</keycap>),
 			a drop-down appears allowing you to select the full name.
-			The regular expressions supplied with TortoiseSVN are held in the TortoiseSVN
+			The regular expressions supplied with TortoiseGit are held in the TortoiseGit
 			installation <filename>bin</filename> folder. You can also define your own
-			regexes and store them in <filename>%APPDATA%\TortoiseSVN\autolist.txt</filename>.
+			regexes and store them in <filename>%APPDATA%\TortoiseGit\autolist.txt</filename>.
 			Of course your private autolist will not be overwritten when you update your
-			installation of TortoiseSVN. If you are unfamiliar with regular expressions,
+			installation of TortoiseGit. If you are unfamiliar with regular expressions,
 			take a look at the introduction at
 			<ulink url="http://en.wikipedia.org/wiki/Regular_expression">
 				<citetitle>http://en.wikipedia.org/wiki/Regular_expression</citetitle>
@@ -253,11 +253,11 @@
 			You can re-use previously entered log messages. Just click on
 			<guibutton>Recent messages</guibutton> to view a list of the last few
 			messages you entered for this working copy. The number of stored messages
-			can be customized in the TortoiseSVN settings dialog.
+			can be customized in the TortoiseGit settings dialog.
 		</para>
 		<para>
 			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
-			page of TortoiseSVN's settings, or you can clear individual messages from
+			page of TortoiseGit's settings, or you can clear individual messages from
 			within the <guilabel>Recent messages</guilabel> dialog using the
 			<keycap>Delete</keycap> key.
 		</para>

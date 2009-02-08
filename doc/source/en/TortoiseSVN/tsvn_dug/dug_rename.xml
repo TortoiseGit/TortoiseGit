@@ -5,7 +5,7 @@
 	<para>
 		Unlike CVS, Subversion allows renaming and moving of files and
 		folders. So there are menu entries for delete and rename
-		in the TortoiseSVN submenu.
+		in the TortoiseGit submenu.
 		<figure id="tsvn-dug-renaming-dia-1">
 			<title>Explorer context menu for versioned files</title>
 			<graphic fileref="../images/ContextMenuFileControl.png"/>
@@ -22,7 +22,7 @@
 		<para>
 			Use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>
 			to remove files or folders from subversion.
@@ -30,7 +30,7 @@
 		<para>
 			When you 
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>
 			a file, it is removed from your working copy immediately as well
@@ -38,7 +38,7 @@
 			The file's parent folder shows a <quote>deleted</quote> icon overlay.
 			Up until you commit the change, you can get the file back using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Revert</guimenuitem>
 			</menuchoice>
 			on the parent folder.
@@ -46,19 +46,19 @@
 		<para>
 			When you
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>
 			a folder, it remains in your working copy, but the overlay
 			changes to indicate that it is marked for deletion.
 			Up until you commit the change, you can get the folder back using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Revert</guimenuitem>
 			</menuchoice>
 			on the folder itself.
 			This difference in behaviour between files and folders
-			is a part of Subversion, not TortoiseSVN.
+			is a part of Subversion, not TortoiseGit.
 		</para>
 		<para>
 			If you want to delete an item from the repository, but keep it
@@ -73,27 +73,27 @@
 		</para>
 		<para>
 			If a <emphasis>file</emphasis> is deleted via the explorer
-			instead of using the TortoiseSVN context menu, the commit
+			instead of using the TortoiseGit context menu, the commit
 			dialog shows those files and lets you remove them from
 			version control too before the commit. However, if you update
 			your working copy, Subversion will spot the missing file and
 			replace it with the latest version from the repository.
 			If you need to delete a version-controlled file, always use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice> so that Subversion doesn't have to guess what
 			you really want to do.
 		</para>
 		<para>
 			If a <emphasis>folder</emphasis> is deleted via the explorer instead 
-			of using the TortoiseSVN context menu,  your working copy will be broken
+			of using the TortoiseGit context menu,  your working copy will be broken
 			and you will be unable to commit. If you update your working copy,
 			Subversion will replace the missing folder with the latest version
 			from the repository and you can then delete it the correct way
 			using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>.
 		</para>
@@ -103,7 +103,7 @@
 				If you have deleted a file or a folder and already committed
 				that delete operation to the repository, then a normal 
 				<menuchoice>
-					<guimenu>TortoiseSVN</guimenu>
+					<guimenu>TortoiseGit</guimenu>
 					<guimenuitem>Revert</guimenuitem>
 				</menuchoice>
 				can't bring it back anymore. But the file or folder is not
@@ -195,7 +195,7 @@
 		<caution>
 			<title>Do Not SVN Move Externals</title>
 			<para>
-				You should <emphasis>not</emphasis> use the TortoiseSVN
+				You should <emphasis>not</emphasis> use the TortoiseGit
 				<guilabel>Move</guilabel> or <guilabel>Rename</guilabel>
 				commands on a folder which has been created using
 				<literal>svn:externals</literal>.
@@ -253,7 +253,7 @@
 				<listitem>
 					<para>
 						Rename from UPPERcase to UPPERcase_ with the rename command
-						in the TortoiseSVN submenu.
+						in the TortoiseGit submenu.
 					</para>
 				</listitem>
 				<listitem>
@@ -339,7 +339,7 @@
 			of clearing the decks.
 		</para>
 		<para>
-			TortoiseSVN provides just such an option using
+			TortoiseGit provides just such an option using
 			<menuchoice>
 				<guimenu>Extended Context Menu</guimenu>
 				<guimenuitem>Delete unversioned items...</guimenuitem>

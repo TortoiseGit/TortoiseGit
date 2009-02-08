@@ -18,7 +18,7 @@
 		your working copy. <action>Right click</action> to pop up the
 		context menu and select the command
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Checkout...</guimenuitem>
 		</menuchoice>,
 		which brings up the following dialog box:
@@ -97,7 +97,7 @@
 			In the repository browser,
 			<action>Right click</action> on the checked out folder, then use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Repo-Browser</guimenuitem>
 			</menuchoice>
 			to bring up the repository browser. Find the sub-folder you would like
@@ -144,7 +144,7 @@
 				<para>
 					Select the new folder and use
 					<menuchoice>
-						<guimenu>TortoiseSVN</guimenu>
+						<guimenu>TortoiseGit</guimenu>
 						<guimenuitem>Repo browser</guimenuitem>
 					</menuchoice>
 					to display the repository content.
@@ -207,12 +207,12 @@
 			to increase the depth value, you will have to perform
 			updates to your working copy using
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Update to Revision...</guimenuitem>
 			</menuchoice>
 			instead of
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Update</guimenuitem>
 			</menuchoice>.
 			The standard update will include all externals and keep the existing depth.

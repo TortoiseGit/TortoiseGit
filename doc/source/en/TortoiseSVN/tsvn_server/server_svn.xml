@@ -92,7 +92,7 @@ svnserve.exe --daemon
 		<para>
 			To test that svnserve is working, use
 			<menuchoice>
-				<guimenu>TortoiseSVN</guimenu>
+				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Repo-Browser</guimenuitem>
 			</menuchoice>
 			to view a repository.
@@ -117,7 +117,7 @@ svnserve.exe --daemon --root drive:\path\to\repository\root
 <screen>
 svnserve.exe --daemon --root c:\repos
 </screen>
-			And in TortoiseSVN our repo-browser URL is now shortened to:
+			And in TortoiseGit our repo-browser URL is now shortened to:
 <screen>
 svn://localhost/TestRepo
 </screen>
@@ -231,7 +231,7 @@ svnservice -remove
 		<para>
 			The default svnserve setup provides anonymous read-only access.
 			This means that you can use an <literal>svn://</literal> URL
-			to checkout and update, or use the repo-browser in TortoiseSVN
+			to checkout and update, or use the repo-browser in TortoiseGit
 			to view the repository, but you won't be able to commit any changes.
 		</para>
 		<para>
@@ -282,7 +282,7 @@ username = password
 			<para>
 				If you maintain multiple repositories using the same password 
 				database, the use of an authentication realm will make life 
-				easier for users, as TortoiseSVN can cache your credentials 
+				easier for users, as TortoiseGit can cache your credentials 
 				so that you only have to enter them once.  More information 
 				can be found in the Subversion book, specifically in the 
 				sections
@@ -308,7 +308,7 @@ username = password
 				open source software written by Carnegie Mellon University.
 				It adds generic authentication and encryption capabilities
 				to any network protocol, and as of Subversion 1.5 and later,
-				both the svnserve server and TortoiseSVN client know how to
+				both the svnserve server and TortoiseGit client know how to
 				make use of this library.
 			</para>
 			<para>
@@ -358,7 +358,7 @@ use-sasl = true
 pwcheck_method: auxprop
 auxprop_plugin: sasldb
 mech_list: DIGEST-MD5
-sasldb_path: C:\TortoiseSVN\sasldb
+sasldb_path: C:\TortoiseGit\sasldb
 </screen>
 				The last line shows the location of the authentication database,
 				which is a file called <filename>sasldb</filename>.
@@ -377,7 +377,7 @@ sasldb_path: C:\TortoiseSVN\sasldb
 				installer, that program will be in the install directory.
 				Use a command something like this:
 <screen>
-saslpasswd2 -c -f C:\TortoiseSVN\sasldb -u realm username
+saslpasswd2 -c -f C:\TortoiseGit\sasldb -u realm username
 </screen>
 				The <literal>-f</literal> switch gives the database location,
 				<literal>realm</literal> must be the same as the value you

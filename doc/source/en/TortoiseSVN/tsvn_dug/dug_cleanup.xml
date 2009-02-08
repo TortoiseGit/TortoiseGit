@@ -10,7 +10,7 @@
 		due to server problems, your working copy can be left in an
 		inconsistent state. In that case you need to use
 		<menuchoice>
-			<guimenu>TortoiseSVN</guimenu>
+			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Cleanup</guimenuitem>
 		</menuchoice>
 		on the folder. It is a good idea to do this at the top level

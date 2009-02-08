@@ -17,8 +17,8 @@
 				<para>
 					You can specify a different location for the Subversion
 					configuration file using registry location
-					<literal>HKCU\Software\TortoiseSVN\ConfigDir</literal>.
-					This will affect all TortoiseSVN operations.
+					<literal>HKCU\Software\TortoiseGit\ConfigDir</literal>.
+					This will affect all TortoiseGit operations.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -28,7 +28,7 @@
 				<para>
 					To add a cache tray icon for the TSVNCache program,
 					create a <literal>DWORD</literal> key with a value of 1 at
-					<literal>HKCU\Software\TortoiseSVN\CacheTrayIcon</literal>.
+					<literal>HKCU\Software\TortoiseGit\CacheTrayIcon</literal>.
 					This is really only useful for developers as it allows
 					you to terminate the program gracefully.
 				</para>
@@ -41,7 +41,7 @@
 					To show the command line parameters passed from the shell
 					extension to TortoiseProc.exe
 					create a <literal>DWORD</literal> key with a value of 1 at
-					<literal>HKCU\Software\TortoiseSVN\Debug</literal>.
+					<literal>HKCU\Software\TortoiseGit\Debug</literal>.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -52,9 +52,9 @@
 					This can be useful if you use something other than the windows explorer
 					or if you get problems with the context menu displaying correctly.
 					create a <literal>DWORD</literal> key with a value of 0 at
-					<literal>HKCU\Software\TortoiseSVN\OwnerdrawnMenus</literal>
-					if you don't want TortoiseSVN to use owner-draw menu items in the shell
-					context menu. Set this value to 2 if you don't want TortoiseSVN to use
+					<literal>HKCU\Software\TortoiseGit\OwnerdrawnMenus</literal>
+					if you don't want TortoiseGit to use owner-draw menu items in the shell
+					context menu. Set this value to 2 if you don't want TortoiseGit to use
 					icons in the context menu at all.
 				</para>
 			</listitem>
@@ -64,9 +64,9 @@
 			<listitem>
 				<para>
 					If you don't want the explorer to update the status overlays while another
-					TortoiseSVN command is running (e.g. Update, Commit, ...) then
+					TortoiseGit command is running (e.g. Update, Commit, ...) then
 					create a <literal>DWORD</literal> key with a value of 1 at
-					<literal>HKCU\Software\TortoiseSVN\BlockStatus</literal>.
+					<literal>HKCU\Software\TortoiseGit\BlockStatus</literal>.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -74,13 +74,13 @@
 			<term>Update Check URL</term>
 			<listitem>
 				<para>
-					<literal>HKCU\Software\TortoiseSVN\UpdateCheckURL</literal>
-					contains the URL from which TortoiseSVN tries to download a text file
+					<literal>HKCU\Software\TortoiseGit\UpdateCheckURL</literal>
+					contains the URL from which TortoiseGit tries to download a text file
 					to find out if there are updates available. You can also set this under
 					<literal>HKLM</literal> instead of <literal>HKCU</literal> if you want,
 					but <literal>HKCU</literal> overwrites the setting in <literal>HKLM</literal>.
 					This might be useful for company admins who don't want their users to
-					update TortoiseSVN until they approve it.
+					update TortoiseGit until they approve it.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -92,7 +92,7 @@
 					displays the names of files listed for commit.
 					To also include these names with extensions removed,
 					create a <literal>DWORD</literal> key with a value of 1 at
-					<literal>HKCU\Software\TortoiseSVN\AutocompleteRemovesExtensions</literal>.
+					<literal>HKCU\Software\TortoiseGit\AutocompleteRemovesExtensions</literal>.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -100,12 +100,12 @@
 			<term>Explorer columns everywhere</term>
 			<listitem>
 				<para>
-					The extra columns the TortoiseSVN adds to the details view
+					The extra columns the TortoiseGit adds to the details view
 					in Windows Explorer are normally only active in a working
 					copy. If you want those to be accessible everywhere, not
 					just in working copies, create a <literal>DWORD</literal>
 					key with a value of 1 at
-					<literal>HKCU\Software\TortoiseSVN\ColumnsEveryWhere</literal>.
+					<literal>HKCU\Software\TortoiseGit\ColumnsEveryWhere</literal>.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -119,7 +119,7 @@
 					A pre-defined string is used to separate the individual log
 					messages of the merged revisions. If you prefer, you can create
 					a <literal>SZ</literal> key at
-					<literal>HKCU\Software\TortoiseSVN\MergeLogSeparator</literal>
+					<literal>HKCU\Software\TortoiseGit\MergeLogSeparator</literal>
 					containing a separator string of your choice.
 				</para>
 			</listitem>
@@ -128,12 +128,12 @@
 			<term>Always blame changes with TortoiseMerge</term>
 			<listitem>
 				<para>
-					TortoiseSVN allows you to assign external diff viewer.
+					TortoiseGit allows you to assign external diff viewer.
 					Most such viewers, however, are not suited for change blaming
 					(<xref linkend="tsvn-dug-blame-diffs"/>),
 					so you might wish to fall back to TortoiseMerge in this case.
 					To do so, create a <literal>DWORD</literal>	key with a value of 1 at
-					<literal>HKCU\Software\TortoiseSVN\DiffBlamesWithTortoiseMerge</literal>.
+					<literal>HKCU\Software\TortoiseGit\DiffBlamesWithTortoiseMerge</literal>.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -147,7 +147,7 @@
 					operation for large working copies.
 					If you want to enable this feature you must create a
 					<literal>DWORD</literal> registry key at
-					<literal>HKCU\Software\TortoiseSVN\RecursiveLogRev</literal>.
+					<literal>HKCU\Software\TortoiseGit\RecursiveLogRev</literal>.
 					A value of 0 disables the feature (no highlighting for folders),
 					a value of 1 (default) will fetch the status recursively (find the
 					highest revision in the working copy tree), and a value of 2 will
@@ -171,7 +171,7 @@
 					overwrite the original version by mistake.
 					If you want to force checkouts to fail in this instance you must
 					create a <literal>DWORD</literal> registry key with value 0 at
-					<literal>HKCU\Software\TortoiseSVN\AllowUnversionedObstruction</literal>.
+					<literal>HKCU\Software\TortoiseGit\AllowUnversionedObstruction</literal>.
 				</para>
 			</listitem>
 		</varlistentry>

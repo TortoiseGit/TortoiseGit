@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tsvn-automation">
-	<title>Automating TortoiseSVN</title>
+	<title>Automating TortoiseGit</title>
 	<simplesect>
 		<para>
-			Since all commands for TortoiseSVN are controlled through command
+			Since all commands for TortoiseGit are controlled through command
 			line parameters, you can automate it with batch scripts or start specific
 			commands and dialogs from other programs (e.g. your favourite text editor).
 		</para>
 		<important>
 		<para>
-			Remember that TortoiseSVN is a GUI client, and this automation guide
-			shows you how to make the TortoiseSVN dialogs appear to collect user
+			Remember that TortoiseGit is a GUI client, and this automation guide
+			shows you how to make the TortoiseGit dialogs appear to collect user
 			input. If you want to write a script which requires no input, you should
 			use the official Subversion command line client instead.
 		</para>
@@ -21,7 +21,7 @@
 	<!-- ======================== SECTION 1 ============================== -->
 	<!-- ================================================================= -->
 	<sect1 id="tsvn-automation-basics">
-		<title>TortoiseSVN Commands</title>
+		<title>TortoiseGit Commands</title>
 		<indexterm>
 			<primary>automation</primary>
 		</indexterm>
@@ -29,7 +29,7 @@
 			<primary>command line</primary>
 		</indexterm>
 		<para>
-			The TortoiseSVN GUI program is called <literal>TortoiseProc.exe</literal>.
+			The TortoiseGit GUI program is called <literal>TortoiseProc.exe</literal>.
 			All commands are specified with the parameter <option>/command:abcd</option>
 			where <literal>abcd</literal> is the required command name. Most of these
 			commands need at least one path argument, which is given with 
@@ -43,8 +43,8 @@
 			several paths, separated by a <literal>*</literal> character.
 		</para>
 		<para>
-			TortoiseSVN uses temporary files to pass multiple arguments between
-			the shell extension and the main program. From TortoiseSVN 1.5.0 on and later,
+			TortoiseGit uses temporary files to pass multiple arguments between
+			the shell extension and the main program. From TortoiseGit 1.5.0 on and later,
 			<option>/notempfile</option> parameter is obsolete and there is no need
 			to add it anymore.
 		</para>
@@ -54,7 +54,7 @@
 			the <guibutton>OK</guibutton> button. This can be changed by checking
 			the corresponding option in the settings dialog. But using that setting
 			will close the progress dialog, no matter if you start the command
-			from your batch file or from the TortoiseSVN context menu.
+			from your batch file or from the TortoiseGit context menu.
 		</para>
 		<para>
 			To specify a different location of the configuration file, use the parameter
@@ -305,7 +305,7 @@ Don't touch these lines:
 							<entry condition="pot">:diff</entry>
 							<entry>
 								Starts the external diff program specified in the
-								TortoiseSVN settings. The <option>/path</option>
+								TortoiseGit settings. The <option>/path</option>
 								specifies the first file.
 								If the option <option>/path2</option>
 								is set, then the diff program is started with those
@@ -342,7 +342,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:conflicteditor</entry>
 							<entry>
-								Starts the conflict editor specified in the TortoiseSVN
+								Starts the conflict editor specified in the TortoiseGit
 								settings with the correct files for the conflicted
 								file in <option>/path</option>.
 							</entry>
