@@ -1,3 +1,7 @@
+version 0.3.3.0 version(external)
+	*Disable file overlay icon at vista system to avoid explore crash
+	*File overlay default is enable at XP system. User can disable it by setting dialog. 
+
 Version 0.3.1.0 version(internal)
 Bug Fix:
 	*Issue 20:  Add To Ignore from Commit dialog not working
