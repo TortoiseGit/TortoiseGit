@@ -47,11 +47,14 @@ bool PushCommand::Execute()
 		if(dlg.m_bForce)
 			force=_T("--force");
 		
-		cmd.Format(_T("git.exe push %s %s %s \"%s\" %s:%s"),
+		cmd.Format(_T("git.exe push %s %s %s \"%s\" %s"),
 				thin,tags,force,
 				dlg.m_URL,
-				dlg.m_BranchSourceName,
-				dlg.m_BranchRemoteName);
+				dlg.m_BranchSourceName);
+		if (!dlg.m_BranchRemoteName.IsEmpty())
+		{
+			cmd += _T(":") + dlg.m_BranchRemoteName;
+		}
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
