@@ -128,6 +128,13 @@ BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsign
 
 BOOL CGit::IsVista()
 {
+
+	if( CRegStdWORD(_T("Software\\TortoiseGit\\CacheType") ) == 0)
+	{
+		g_IsWingitDllload=FALSE;
+		return TRUE;
+	}
+
 	OSVERSIONINFO osvi;
     BOOL bIsWindowsXPorLater;
 
