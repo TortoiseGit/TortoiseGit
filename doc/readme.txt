@@ -17,13 +17,9 @@ tools\xsl\		- the docbook xsl files from sourceforge
 tools\			- xsl processor, hhc.exe, ...
 
 you can download all the required tools as a zip package from our website:
-http://tortoisesvn.tigris.org/servlets/ProjectDocumentList?folderID=616
+http://groups.google.com/group/tortoisegit-dev/files/
+tools.z01 tools.z02 tools.zip. Use winzip extract to \TortotiseGit\Tools
 
-Note that building the documentation for TSVN version 1.5 and later, you need the
-Tools-1.5.zip.
-
-Currently you can build the docs using NAnt. Download a current release from:
-http://sourceforge.net/project/showfiles.php?group_id=31650
 
 Please note that having spaces in your directory path will (for the time being)
 cause the documentation build process to fail.
@@ -63,6 +59,11 @@ Building the docs:
 
 NAnt Build:
 -----------
+
+VS->Tools->Vistual Studio 2008 command line
+cd doc
+..\tools\nant-0.86-beta1\bin\nant.exe
+
 A NAnt build script has been provided to build the docs. When doc.build is run for
 the first time, the template doc.build.include.template is copied to doc.build.include.
 

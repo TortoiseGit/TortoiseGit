@@ -6,3 +6,5 @@ obj
 *.chm
 ext/scintilla/vcbuild/Release
 IBugTraqProvider_?.?
+/Tools
+/doc/output
