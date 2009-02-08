@@ -3240,7 +3240,7 @@ msgid "Git URL"
 msgstr ""
 
 #. Resource IDs: (297)
-msgid "Git clone"
+msgid "Git clone..."
 msgstr ""
 
 #. Resource IDs: (17)
