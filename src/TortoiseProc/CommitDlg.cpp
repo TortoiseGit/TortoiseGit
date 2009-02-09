@@ -690,6 +690,7 @@ UINT CCommitDlg::StatusThread()
 		else
 		{
 			DWORD dwCheck = m_bSelectFilesForCommit ? dwShow : 0;
+			dwCheck &=~(CTGitPath::LOGACTIONS_UNVER); //don't check unversion file default. 
 			m_ListCtrl.Show(dwShow, dwCheck);
 			m_bSelectFilesForCommit = true;
 		}
@@ -720,7 +721,7 @@ UINT CCommitDlg::StatusThread()
 			GetDlgItem(IDC_SHOWUNVERSIONED)->SendMessage(BM_SETCHECK, BST_CHECKED);
 			DWORD dwShow = (DWORD)(SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS);
 			m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER);
-			m_ListCtrl.Show(dwShow);
+			m_ListCtrl.Show(dwShow,dwShow&(~CTGitPath::LOGACTIONS_UNVER));
 		}
 	}
 
