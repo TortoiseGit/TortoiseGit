@@ -89,7 +89,13 @@ public:
 	void SetDialogTitle(const CString& sTitle) {m_sTitle = sTitle;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
+	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
 	void SetMergePath(const CTGitPath& mergepath) {m_mergePath = mergepath;}
+	/**
+	 * Provides selected commit hash if available, call after OK return from here
+	 * Empty if none
+	**/
+	CString GetSelectedHash(){ return m_sSelectedHash; }
 
 //	const GitRevRangeArray&	GetSelectedRevRanges() {return m_selectedRevs;}
 
@@ -227,7 +233,9 @@ private:
 	//GitRev				m_wcRev;
 //	GitRevRangeArray	m_selectedRevs;
 //	GitRevRangeArray	m_selectedRevsOneRange;
+	CString				m_sSelectedHash;	// set to selected commit hash on OK if appropriate
 	bool				m_bSelectionMustBeContinuous;
+	bool				m_bSelectionMustBeSingle;
 	long				m_logcounter;
 	bool				m_bCancelled;
 	

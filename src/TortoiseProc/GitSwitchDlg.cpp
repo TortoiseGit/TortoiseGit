@@ -89,6 +89,11 @@ void CGitSwitchDlg::OnBnClickedChooseRadioHost()
 	
 }
 
+void CGitSwitchDlg::OnBnClickedShow()
+{
+	OnBnClickedChooseVersion();
+}
+
 void CGitSwitchDlg::OnBnClickedOk()
 {
 	this->UpdateData(TRUE);

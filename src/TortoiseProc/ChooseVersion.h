@@ -1,5 +1,6 @@
 #pragma once
 #include "afxwin.h"
+#include "LogDlg.h"
 
 class CChooseVersion
 {
@@ -32,7 +33,27 @@ protected:
 			this->m_ChooseVersioinVersion.EnableWindow(TRUE);						
 		break;		
 		}
+		// enable version browse button if Version is selected
+		m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(radio == IDC_RADIO_VERSION);
 	}
+
+	void OnBnClickedChooseVersion()
+	{
+		// use the git log to allow selection of a version
+		CLogDlg dlg;
+		// tell the dialog to use mode for selecting revisions
+		dlg.SetSelect(true);
+		// only one revision must be selected however
+		dlg.SingleSelection(true);
+		if ( dlg.DoModal() == IDOK )
+		{
+			// get selected hash if any
+			CString selectedHash = dlg.GetSelectedHash();
+			// load into window, do this even if empty so that it is clear that nothing has been selected
+			m_ChooseVersioinVersion.SetWindowText( selectedHash );
+		}
+	}
+
 	void UpdateRevsionName()
 	{																			
 		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);		
@@ -94,6 +115,7 @@ public:
 	ON_BN_CLICKED(IDC_RADIO_HEAD,		OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_RADIO_BRANCH,		OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_RADIO_TAGS,		OnBnClickedChooseRadioHost)\
+	ON_BN_CLICKED(IDC_BUTTON_SHOW, 		OnBnClickedShow)\
 	ON_BN_CLICKED(IDC_RADIO_VERSION,	OnBnClickedChooseRadioHost)
 
 #define CHOOSE_VERSION_ADDANCHOR								\
@@ -106,4 +128,5 @@ public:
 	}	
 
 #define CHOOSE_EVENT_RADIO() \
-	afx_msg void OnBnClickedChooseRadioHost(){OnBnClickedChooseRadio();}
+	afx_msg void OnBnClickedChooseRadioHost(){OnBnClickedChooseRadio();}\
+	afx_msg void OnBnClickedShow(){OnBnClickedChooseVersion();}

@@ -29,6 +29,7 @@ protected:
 	void OnBnClickedOk();
 
 	afx_msg void OnBnClickedChooseRadioHost();
+	afx_msg void OnBnClickedShow();
 
 	DECLARE_MESSAGE_MAP()
 public:

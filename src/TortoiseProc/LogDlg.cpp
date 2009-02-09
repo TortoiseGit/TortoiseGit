@@ -315,14 +315,13 @@ BOOL CLogDlg::OnInitDialog()
 	if (m_bSelect)
 	{
 		// the dialog is used to select revisions
-		if (m_bSelectionMustBeContinuous)
-			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()!=0)&&(m_LogList.IsSelectionContinuous()));
-		else
-			DialogEnableWindow(IDOK, m_LogList.GetSelectedCount()!=0);
+		// enable the OK button if appropriate
+		EnableOKButton();
 	}
 	else
 	{
 		// the dialog is used to just view log messages
+		// hide the OK button and set text on Cancel button to OK
 		GetDlgItemText(IDOK, temp);
 		SetDlgItemText(IDCANCEL, temp);
 		GetDlgItem(IDOK)->ShowWindow(SW_HIDE);
@@ -453,7 +452,12 @@ void CLogDlg::EnableOKButton()
 	if (m_bSelect)
 	{
 		// the dialog is used to select revisions
-		if (m_bSelectionMustBeContinuous)
+		if (m_bSelectionMustBeSingle)
+		{
+			// enable OK button if only a single revision is selected
+			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()==1));
+		}
+		else if (m_bSelectionMustBeContinuous)
 			DialogEnableWindow(IDOK, (m_LogList.GetSelectedCount()!=0)&&(m_LogList.IsSelectionContinuous()));
 		else
 			DialogEnableWindow(IDOK, m_LogList.GetSelectedCount()!=0);
@@ -628,24 +632,9 @@ void CLogDlg::SaveSplitterPos()
 void CLogDlg::OnCancel()
 {
 	// canceling means stopping the working thread if it's still running.
-	// we do this by using the Subversion cancel callback.
-	// But canceling can also mean just to close the dialog, depending on the
-	// text shown on the cancel button (it could simply read "OK").
-	CString temp, temp2;
-	GetDlgItemText(IDOK, temp);
-	temp2.LoadString(IDS_MSGBOX_CANCEL);
-	if ((temp.Compare(temp2)==0)||(this->IsThreadRunning()))
+	if (this->IsThreadRunning())
 	{
-		//m_bCancelled = true;
-		//return;
-		if(m_LogList.m_bThreadRunning)
-		{
-			//m_LogList.m_bExitThread=true;
-			//WaitForSingleObject(m_LogList.m_LoadingThread->m_hThread,INFINITE);
-			m_LogList.TerminateThread();
-		}
-
-		//m_LogList.TerminateThread();
+		m_LogList.TerminateThread();
 	}
 	UpdateData();
 	
@@ -1059,11 +1048,36 @@ LRESULT CLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 void CLogDlg::OnOK()
 {
-#if 0 
 	// since the log dialog is also used to select revisions for other
 	// dialogs, we have to do some work before closing this dialog
 	if (GetFocus() != GetDlgItem(IDOK))
 		return;	// if the "OK" button doesn't have the focus, do nothing: this prevents closing the dialog when pressing enter
+
+	
+	if (this->IsThreadRunning())
+	{
+		m_LogList.TerminateThread();
+	}
+	UpdateData();
+	// check that one and only one row is selected
+	if (m_LogList.GetSelectedCount() == 1)
+	{
+		// get the selected row
+		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+		int selIndex = m_LogList.GetNextSelectedItem(pos);
+		if (selIndex < m_LogList.m_arShownList.GetCount())
+		{
+			// all ok, pick up the revision
+			GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
+			// extract the hash
+			m_sSelectedHash = pLogEntry->m_CommitHash;
+		}
+	}
+	UpdateData(FALSE);
+	SaveSplitterPos();
+	__super::OnOK();
+	
+	#if 0 
 	if (!GetDlgItem(IDOK)->IsWindowVisible() && GetFocus() != GetDlgItem(IDCANCEL))
 		return; // the Cancel button works as the OK button. But if the cancel button has not the focus, do nothing.
 
