@@ -352,14 +352,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 
 		this->m_LogList.ShowText(temp, true);
 
-		// change the text of the close button to "Cancel" since now the thread
-		// is running, and simply closing the dialog doesn't work.
-		if (!GetDlgItem(IDOK)->IsWindowVisible())
-		{
-			temp.LoadString(IDS_MSGBOX_CANCEL);
-			SetDlgItemText(IDCANCEL, temp);
-		}
-
 		// We use a progress bar while getting the logs	
 		m_LogProgress.SetRange32(0, 100);
 		m_LogProgress.SetPos(0);
