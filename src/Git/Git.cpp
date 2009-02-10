@@ -116,18 +116,19 @@ BOOL g_IsWingitDllload = TRUE;
 
 LPBYTE wgGetRevisionID_safe(const char *pszProjectPath, const char *pszName)
 {
-	if(g_IsWingitDllload)
-		return wgGetRevisionID(pszProjectPath,pszName);
-	else
-		return NULL;
+	//if(g_IsWingitDllload)
+	//	return wgGetRevisionID(pszProjectPath,pszName);
+	//else
+	return NULL;
 }
 
 BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
 {
-	if(g_IsWingitDllload)
-		return wgEnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
-	else
-		return g_Git.EnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
+	//if(g_IsWingitDllload)
+	//	return wgEnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
+	//else
+	//	return g_Git.EnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
+	return FALSE;
 }
 
 BOOL CGit::IsVista()
@@ -177,6 +178,7 @@ static void InitWinGitDll()
 }
 CGit::CGit(void)
 {
+#if 0
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
 	m_CurrentDir.ReleaseBuffer();
 	// make sure git/bin is in PATH before wingit.dll gets (delay) loaded by wgInit()
@@ -185,6 +187,7 @@ CGit::CGit(void)
 		// TODO
 	}
 	InitWinGitDll();
+#endif
 }
 
 CGit::~CGit(void)

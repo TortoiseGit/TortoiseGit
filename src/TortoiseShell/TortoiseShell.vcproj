@@ -84,7 +84,7 @@
 				IgnoreImportLibrary="true"
 				UseLibraryDependencyInputs="false"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib wingit.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -193,7 +193,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib wingit.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -470,6 +470,10 @@
 			</File>
 			<File
 				RelativePath="..\Git\GitFolderStatus.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitIndex.cpp"
 				>
 			</File>
 			<File

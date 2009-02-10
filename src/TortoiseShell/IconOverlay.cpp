@@ -242,6 +242,10 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	//as it seems that if one handler returns S_OK then that handler is used, no matter
 	//if other handlers would return S_OK too (they're never called on my machine!)
 	//So we return S_OK for ONLY ONE handler!
+
+	if(g_ShellCache.HasSVNAdminDir(pPath, true) && status == git_wc_status_none)
+		status = git_wc_status_unversioned;
+
 	switch (status)
 	{
 		// note: we can show other overlays if due to lack of enough free overlay

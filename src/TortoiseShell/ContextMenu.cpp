@@ -156,7 +156,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 //	ITEMIS_FOLDER, ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
-	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
+	ITEMIS_NORMAL|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
 	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
@@ -335,8 +335,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							{
 								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 							}
-							//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-							if (askedpath.HasAdminDir())
+
+							if ( askedpath.IsDirectory() )
+							{
+								if (askedpath.HasAdminDir())
+									itemStates |= ITEMIS_INSVN;
+							}
+							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							//if (askedpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
@@ -437,8 +443,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 								}
 							}
-							//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-							if (strpath.HasAdminDir())
+
+							if ( strpath.IsDirectory() )
+							{
+								if (strpath.HasAdminDir())
+									itemStates |= ITEMIS_INSVN;
+							}
+							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+							//if (strpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{

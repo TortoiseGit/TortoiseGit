@@ -43,6 +43,7 @@
 #include "CommonResource.h"
 #include "..\version.h"
 #include "..\Settings\Settings.h"
+#include "gitindex.h"
 
 #define STRUCT_IOVEC_DEFINED
 //#include "sasl.h"
@@ -78,6 +79,8 @@ CTortoiseProcApp::CTortoiseProcApp()
 	retSuccess = false;
 	//CGit git;
 	//git.GetUserName();
+
+	
 }
 
 CTortoiseProcApp::~CTortoiseProcApp()
@@ -107,6 +110,11 @@ CString sOrigCWD;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
 {
+	CGitIndexFileMap map;
+	//int status;
+	//CTGitPath path;
+	//path.SetFromGit(_T("src/gpl.txt"));
+	//map.GetFileStatus(_T("D:\\TortoiseGit"),&path, &status);
 	return CGit::CheckMsysGitDir();	
 }
 CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash

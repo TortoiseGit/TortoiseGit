@@ -23,9 +23,11 @@
 #include "..\TGitCache\CacheInterface.h"
 #include "Git.h"
 //#include "GitGlobal.h"
+#include "gitindex.h"
 
 extern ShellCache g_ShellCache;
 
+extern CGitIndexFileMap g_IndexFileMap;
 
 // get / auto-alloc a string "copy"
 
@@ -231,19 +233,25 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	{
 		// extract the sub-path (relative to project root)
 //MessageBox(NULL, filepath.GetDirectory().GetWinPathString(), sProjectRoot, MB_OK);
-		LPCSTR lpszSubPath = NULL;
-		CStringA sSubPath;
-		CString s = filepath.GetDirectory().GetWinPathString();
+//		LPCSTR lpszSubPath = NULL;
+		CString sSubPath;
+		CString s = filepath.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
-			lpszSubPath = sSubPath;
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+//			lpszSubPath = sSubPath;
 		}
 
 //if (lpszSubPath) MessageBoxA(NULL, lpszSubPath, "BuildCache", MB_OK);
 //MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
-		err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
+		//err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
+		//CTGitPath path;
+		//path.SetFromWin(sSubPath);
+		git_wc_status_kind status;
 
+		err = g_IndexFileMap.GetFileStatus((CString&)sProjectRoot,sSubPath,&status,true,true,fillstatusmap,this);
+		
+		//err = g_IndexFileMap.GetFileStatus(sProjectRoot,&path,
 		/*err = svn_client_status4 (&youngest,
 			filepath.GetDirectory().GetSVNApiPath(pool),
 			&rev,
@@ -397,7 +405,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 	return NULL;
 }
 
-BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserData)
+void GitFolderStatus::fillstatusmap(CString &path,git_wc_status_kind status,void *pUserData)
 {
 	GitFolderStatus *Stat = (GitFolderStatus*)pUserData;
 
@@ -411,11 +419,11 @@ BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserDat
 //	s.rev = -1;
 	s.owner = Stat->owners.GetString(NULL);
 
-	s.status = git_wc_status_none;
+	s.status = status;
 
 	//s.status = GitStatus::GetMoreImportant(s.status, status->text_status);
 	//s.status = GitStatus::GetMoreImportant(s.status, status->prop_status);
-	s.status = GitStatusFromWingit(pFile->nStatus);
+	//s.status = GitStatusFromWingit(pFile->nStatus);
 
 	// TODO ?: s.blaha = pFile->nStage
 
@@ -423,18 +431,24 @@ BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserDat
 	//s.tree_conflict = (status->tree_conflict != NULL);
 
 	s.askedcounter = GITFOLDERSTATUS_CACHETIMES;
-	stdstring str;
-	if (pFile->sFileName)
-	{
-		str = CUnicodeUtils::StdGetUnicode(pFile->sFileName);
-		std::replace(str.begin(), str.end(), '/', '\\');
+	//stdstring str;
+	//if (pFile->sFileName)
+	//{
+	//	str = CUnicodeUtils::StdGetUnicode(pFile->sFileName);
+	//	std::replace(str.begin(), str.end(), '/', '\\');
 //MessageBox(NULL, str.c_str(), _T(""), MB_OK);
+	//}
+	//else
+	//	str = _T(" ");
+	if( path.Right(1) == _T("\\"))
+	{
+		path=path.Left(path.GetLength()-1);
 	}
-	else
-		str = _T(" ");
+	stdstring str;
+	str=path;
 	cache[str] = s;
 
-	return FALSE;
+	return;
 }
 
 #if 0

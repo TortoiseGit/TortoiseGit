@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="TGitCache"
 	ProjectGUID="{A00D2EDC-B4F5-4B41-94BA-13961DE5D296}"
 	RootNamespace="TSVNCache"
@@ -390,6 +390,10 @@
 			</File>
 			<File
 				RelativePath="..\Git\GitAdminDir.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\GitIndex.cpp"
 				>
 			</File>
 			<File

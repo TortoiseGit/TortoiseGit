@@ -261,7 +261,7 @@ private:
 //	git_client_ctx_t * 			ctx;
 	git_wc_status_kind			m_allstatus;	///< used by GetAllStatus and GetAllStatusRecursive
 //	git_error_t *				m_err;			///< Subversion error baton
-	BOOL						m_err;
+	git_error_t							m_err;
 
 	git_wc_status2_t			m_status;		// used for GetStatus
 
