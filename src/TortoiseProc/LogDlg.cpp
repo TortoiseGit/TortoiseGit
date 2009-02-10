@@ -341,7 +341,7 @@ BOOL CLogDlg::OnInitDialog()
 	return FALSE;
 }
 
-LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
+LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 {
 	int cur=(int)wParam;
 
@@ -593,7 +593,7 @@ void CLogDlg::OnBnClickedRefresh()
 	Refresh (true);
 }
 
-void CLogDlg::Refresh (bool autoGoOnline)
+void CLogDlg::Refresh (bool /*autoGoOnline*/)
 {
 	m_LogList.Refresh();
 }
@@ -660,7 +660,7 @@ CString CLogDlg::MakeShortMessage(const CString& message)
 	return sShortMessage;
 }
 
-BOOL CLogDlg::Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths,  int filechanges, BOOL copies, DWORD actions, BOOL haschildren)
+BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString& /*date*/, const CString& /*message*/, LogChangedPathArray * /*cpaths*/,  int /*filechanges*/, BOOL /*copies*/, DWORD /*actions*/, BOOL /*haschildren*/)
 {
 #if 0
 	if (rev == SVN_INVALID_REVNUM)
@@ -821,7 +821,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 #endif
 }
 
-BOOL CLogDlg::IsDiffPossible(LogChangedPath * changedpath, git_revnum_t rev)
+BOOL CLogDlg::IsDiffPossible(LogChangedPath * /*changedpath*/, git_revnum_t rev)
 {
 #if 0
 	CString added, deleted;
@@ -1401,7 +1401,7 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool b
 	EnableOKButton();
 }
 
-BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, git_revnum_t rev)
+BOOL CLogDlg::Open(bool /*bOpenWith*/,CString changedpath, git_revnum_t rev)
 {
 #if 0
 	DialogEnableWindow(IDOK, FALSE);
@@ -1471,7 +1471,7 @@ BOOL CLogDlg::Open(bool bOpenWith,CString changedpath, git_revnum_t rev)
 	return TRUE;
 }
 
-void CLogDlg::EditAuthor(const CLogDataVector& logs)
+void CLogDlg::EditAuthor(const CLogDataVector& /*logs*/)
 {
 #if 0
 	CString url;
@@ -1550,7 +1550,7 @@ void CLogDlg::EditAuthor(const CLogDataVector& logs)
 #endif
 }
 
-void CLogDlg::EditLogMessage(int index)
+void CLogDlg::EditLogMessage(int /*index*/)
 {
 #if 0
 	CString url;
@@ -2349,7 +2349,7 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 
 
-CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths /* = false */, bool bUseFilter /* = true */)
+CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool /*bRelativePaths*/ /* = false */, bool /*bUseFilter*/ /* = true */)
 {
 	CTGitPathList pathList;
 #if 0
@@ -2393,7 +2393,7 @@ CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool bRelativePaths 
 	return pathList;
 }
 
-void CLogDlg::SortByColumn(int nSortColumn, bool bAscending)
+void CLogDlg::SortByColumn(int /*nSortColumn*/, bool /*bAscending*/)
 {
 #if 0
 	switch(nSortColumn)
@@ -2506,7 +2506,7 @@ void CLogDlg::SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 		pHeader->SetItem(nColumn, &HeaderItem);
 	}
 }
-void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
+void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
 {
 #if 0
 	if (this->IsThreadRunning())
@@ -2528,7 +2528,7 @@ void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
 int CLogDlg::m_nSortColumnPathList = 0;
 bool CLogDlg::m_bAscendingPathList = false;
 
-int CLogDlg::SortCompare(const void * pElem1, const void * pElem2)
+int CLogDlg::SortCompare(const void * /*pElem1*/, const void * /*pElem2*/)
 {
 #if 0
 	LogChangedPath * cpath1 = *((LogChangedPath**)pElem1);
