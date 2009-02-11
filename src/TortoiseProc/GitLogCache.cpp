@@ -129,6 +129,7 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 		ar<<header.m_Magic;
 		ar<<header.m_Version;
 		ar<<Rev.m_Files[i].GetGitPathString();
+		ar<<Rev.m_Files[i].GetGitOldPathString();
 		ar<<Rev.m_Files[i].m_Action;
 		ar<<Rev.m_Files[i].m_Stage;
 		ar<<Rev.m_Files[i].m_StatAdd;
@@ -177,7 +178,7 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 	for(int i=0;i<header.m_FileCount;i++)
 	{
 		CTGitPath path;
-		CString file;
+		CString file,oldfile;
 		path.Reset();
 		SLogCacheRevFileHeader header;
 
@@ -187,7 +188,8 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		if( this->CheckHeader(header) )
 			return -1;
 		ar>>file;
-		path.SetFromGit(file);
+		ar>>oldfile;
+		path.SetFromGit(file,&oldfile);
 
 		ar>>path.m_Action;
 		ar>>path.m_Stage;
