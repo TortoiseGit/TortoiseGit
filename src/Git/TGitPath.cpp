@@ -102,6 +102,9 @@ int CTGitPath::ParserAction(BYTE action)
 		m_Action|= LOGACTIONS_DELETED;
 	if(action == 'H')
 		m_Action|= LOGACTIONS_CACHE;
+	if(action == 'C' )
+		m_Action|= LOGACTIONS_COPY;
+
 	return m_Action;
 }
 void CTGitPath::SetFromGit(const char* pPath)
@@ -1052,6 +1055,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 					sec++;
 					g_Git.StringAppend(&file1,&log[sec],CP_OEMCP);
 				}
+				pos=sec;
 
 			}else
 			{
@@ -1874,6 +1878,9 @@ CString CTGitPath::GetActionName()
 		return _T("Modified");
 	if(m_Action  & CTGitPath::LOGACTIONS_REPLACED)
 		return _T("Rename");
+	if(m_Action  & CTGitPath::LOGACTIONS_COPY)
+		return _T("Copy");
+
 	return _T("Unknown");
 }
 

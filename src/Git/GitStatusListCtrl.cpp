@@ -1449,7 +1449,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	// relative path
 	CString rename;
 	rename.Format(_T("(from %s)"),GitPath->GetGitOldPathString());
-	if(GitPath->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 		entryname+=rename;
 	
 	InsertItem(index, entryname, icon_idx);
@@ -2060,7 +2060,7 @@ bool CGitStatusListCtrl::BuildStatistics()
 	{
 		int status=((CTGitPath*)m_arStatusArray[i])->m_Action;
 
-		if(status&CTGitPath::LOGACTIONS_ADDED)
+		if(status&(CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 			m_nAdded++;
 		
 		if(status&CTGitPath::LOGACTIONS_DELETED)
@@ -4248,7 +4248,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
 	CTGitPath file2;
-	if(file1.m_Action & CTGitPath::LOGACTIONS_REPLACED)
+	if(file1.m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 	{
 		file2.SetFromGit(file1.GetGitOldPathString());
 	}else
@@ -4526,11 +4526,11 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					crText = m_Colors.GetColor(CColors::Conflict);
 
-				}else if(entry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
+				}else if(entry->m_Action & (CTGitPath::LOGACTIONS_MODIFIED))
 				{
 					crText = m_Colors.GetColor(CColors::Modified);
 
-				}else if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
+				}else if(entry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 				{
 					crText = m_Colors.GetColor(CColors::Added);
 				}
