@@ -105,5 +105,4 @@ extern CString GetTempFile();
 
 extern CGit g_Git;
 
-extern LPBYTE wgGetRevisionID_safe(const char *pszProjectPath, const char *pszName);
-extern BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
+inline static BOOL wgEnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) { return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); }
