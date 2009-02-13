@@ -49,6 +49,7 @@
 #include "SettingsCommand.h"
 #include "ConflictEditorCommand.h"
 #include "CleanupCommand.h"
+#include "RebaseCommand.h"
 
 #if 0
 
@@ -141,6 +142,7 @@ typedef enum
 	cmdRebuildIconCache,
 	cmdRelocate,
 	cmdRemove,
+	cmdRebase,
 	cmdRename,
 	cmdRepoBrowser,
 	cmdRepoCreate,
@@ -206,6 +208,7 @@ static const struct CommandInfo
 	{	cmdRebuildIconCache,_T("rebuildiconcache")	},
 	{	cmdRelocate,		_T("relocate")			},
 	{	cmdRemove,			_T("remove")			},
+	{	cmdRebase,			_T("rebase")			},
 	{	cmdRename,			_T("rename")			},
 	{	cmdRepoBrowser,		_T("repobrowser")		},
 	{	cmdRepoCreate,		_T("repocreate")		},
@@ -301,6 +304,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ConflictEditorCommand;
 	case cmdCleanup:
 		return new CleanupCommand;
+	case cmdRebase:
+		return new RebaseCommand;
 #if 0
 
 	case cmdCat:

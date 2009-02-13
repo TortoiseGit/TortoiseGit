@@ -417,14 +417,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\RebaseDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RebaseDlg.h"
-				>
-			</File>
-			<File
 				RelativePath="..\TortoiseShell\resource.h"
 				>
 			</File>
@@ -1386,26 +1378,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="merge"
-				>
-				<File
-					RelativePath=".\Commands\MergeCommand.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\MergeCommand.h"
-					>
-				</File>
-				<File
-					RelativePath=".\MergeDlg.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\MergeDlg.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Export"
 				>
 				<File
@@ -1744,6 +1716,42 @@
 			<Filter
 				Name="Rebase"
 				>
+				<File
+					RelativePath=".\Commands\RebaseCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RebaseCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RebaseDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RebaseDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="merge"
+				>
+				<File
+					RelativePath=".\Commands\MergeCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\MergeCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\MergeDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\MergeDlg.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
