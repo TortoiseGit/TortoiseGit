@@ -5,6 +5,7 @@
 #include "GitStatusListCtrl.h"
 #include "SciEdit.h"
 #include "SplitterControl.h"
+#include "HistoryCombo.h"
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
 
@@ -53,4 +54,7 @@ public:
 	CGitStatusListCtrl m_FileListCtrl;
 	CSciEdit		   m_LogMessageCtrl;
 	CListCtrl		   m_CommitList;
+
+	CHistoryCombo	   m_BranchCtrl;
+	CHistoryCombo	   m_UpstreamCtrl;
 };

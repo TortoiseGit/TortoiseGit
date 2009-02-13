@@ -33,6 +33,9 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Check(pDX, IDC_EDIT_ALL, m_bEditAll);
 	DDX_Control(pDX, IDC_REBASE_SPLIT, m_wndSplitter);
 	DDX_Control(pDX,IDC_COMMIT_LIST,m_CommitList);
+	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
+	DDX_Control(pDX,IDC_REBASE_COMBOXEX_UPSTREAM,   this->m_UpstreamCtrl);
+
 }
 
 
@@ -55,7 +58,11 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_PROGRESS,BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_PICK_ALL,TOP_LEFT);
 	AddAnchor(IDC_SQUASH_ALL,TOP_LEFT);
-	AddAnchor(IDC_EDIT_ALL,TOP_LEFT);
+	AddAnchor(IDC_EDIT_ALL,TOP_LEFT);	
+	AddAnchor(IDC_REBASE_COMBOXEX_UPSTREAM,TOP_LEFT);
+	AddAnchor(IDC_REBASE_COMBOXEX_BRANCH,TOP_LEFT);
+	AddAnchor(IDC_REBASE_STATIC_UPSTREAM,TOP_LEFT);
+	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
 	
 }
 
