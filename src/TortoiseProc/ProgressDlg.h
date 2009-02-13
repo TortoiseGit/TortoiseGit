@@ -25,6 +25,8 @@ public:
 	CWinThread*				m_pThread;	
 	volatile LONG			m_bThreadRunning;
 	DWORD			  m_GitStatus;
+	BOOL		  m_bShowCommand;	// whether to display the command in the log window (default true)
+	CString		  m_PreText;		// optional text to show in log window before running command
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	static UINT ProgressThreadEntry(LPVOID pVoid);
