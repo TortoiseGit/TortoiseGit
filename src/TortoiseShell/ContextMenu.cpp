@@ -1173,13 +1173,8 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					}
 					else
 					{
-						// the 'get lock' command is special
 						bool bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
-						if (menuInfo[menuIndex].command == ShellMenuLock)
-						{
-							if ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop())
-								bIsTop = true;
-						}
+
 						// insert the menu entry
 						InsertGitMenu(	bIsTop,
 										bIsTop ? hMenu : subMenu,
@@ -1759,28 +1754,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuLock:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("lock /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				break;
-			case ShellMenuUnlock:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("unlock /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				break;
-			case ShellMenuUnlockForce:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("unlock /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /force");
-				break;
 			case ShellMenuProperties:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("properties /pathfile:\"");
@@ -2149,18 +2122,6 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 			resource = MAKEINTRESOURCE(menuInfo[menuIndex].iconID);
 			switch (id)
 			{
-			case ShellMenuLock:
-				// menu lock is special because it can be set to the top
-				// with a separate option in the registry
-				space = ((layout & MENULOCK) || ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop())) ? 0 : 6;
-				if ((layout & MENULOCK) || ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop()))
-				{
-					_tcscpy_s(textbuf, 255, _T("Git "));
-					_tcscat_s(textbuf, 255, stringtablebuffer);
-					_tcscpy_s(stringtablebuffer, 255, textbuf);
-				}
-				break;
-				// the sub menu entries are special because they're *always* on the top level menu
 			case ShellSubMenuMultiple:
 			case ShellSubMenuLink:
 			case ShellSubMenuFolder:

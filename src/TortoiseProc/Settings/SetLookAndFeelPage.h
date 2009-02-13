@@ -65,9 +65,6 @@ private:
 	unsigned __int64	m_topmenu;
 	bool				m_bBlock;
 	
-	CRegDWORD			m_regGetLockTop;
-	BOOL				m_bGetLockTop;
-
 	CString				m_sNoContextPaths;
 	CRegString			m_regNoContextPaths;
 };
