@@ -18,6 +18,11 @@
 //
 
 #include "stdafx.h"
+#ifdef _TORTOISESHELL
+#include "ShellExt.h"
+#else
+#include "registry.h"
+#endif
 //#include "resource.h"
 #include "..\TortoiseShell\resource.h"
 //#include "git_config.h"
@@ -217,35 +222,52 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 
 	const BOOL bIsRecursive = (depth == git_depth_infinity || depth == git_depth_unknown); // taken from SVN source
 
-	//LPCSTR lpszSubPath = NULL;
-	CString sSubPath;
-	CString s = path.GetWinPathString();
-	if (s.GetLength() > sProjectRoot.GetLength())
+#ifdef _TORTOISESHELL
+	if (g_ShellCache.GetCacheType() == ShellCache::dll)
+#else
+	if ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1) == 2)
+#endif
 	{
-		sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
-	//	lpszSubPath = sSubPath;
+		// gitindex.h based status
+
+		CString sSubPath;
+		CString s = path.GetWinPathString();
+		if (s.GetLength() > sProjectRoot.GetLength())
+		{
+			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+		}
+
+		err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&statuskind);
 	}
+	else
+	{
+		LPCSTR lpszSubPath = NULL;
+		CStringA sSubPath;
+		CString s = path.GetWinPathString();
+		if (s.GetLength() > sProjectRoot.GetLength())
+		{
+			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+			lpszSubPath = sSubPath;
+		}
 
 #if 1
-	// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
-	//UINT nFlags = WGEFF_SingleFile;
-	//if (!bIsRecursive)
-	//	nFlags |= WGEFF_NoRecurse;
-	//if (!lpszSubPath)
-		// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
-	//	nFlags |= WGEFF_EmptyAsNormal;
+		// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
+		UINT nFlags = WGEFF_SingleFile;
+		if (!bIsRecursive)
+			nFlags |= WGEFF_NoRecurse;
+		if (!lpszSubPath)
+			// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
+			nFlags |= WGEFF_EmptyAsNormal;
 #else
-	// enumerate all files, recursively if requested
-	UINT nFlags = 0;
-	if (!bIsRecursive)
-		nFlags |= WGEFF_NoRecurse;
+		// enumerate all files, recursively if requested
+		UINT nFlags = 0;
+		if (!bIsRecursive)
+			nFlags |= WGEFF_NoRecurse;
 #endif
 
-	//err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
-	
-	err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&statuskind);
+		err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
 
-	/*err = git_client_status4 (&youngest,
+		/*err = git_client_status4 (&youngest,
 							path.GetSVNApiPath(pool),
 							&rev,
 							getallstatus,
@@ -258,6 +280,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 							NULL,
 							ctx,
 							pool);*/
+	}
 
 	// Error present
 	if (err != NULL)
@@ -348,30 +371,48 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 //	hashbaton.exthash = exthash;
 	hashbaton.pThis = this;
 
-	//LPCSTR lpszSubPath = NULL;
-	CString sSubPath;
-	CString s = path.GetWinPathString();
-	if (s.GetLength() > sProjectRoot.GetLength())
+#ifdef _TORTOISESHELL
+	if (g_ShellCache.GetCacheType() == ShellCache::dll)
+#else
+	if ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1) == 2)
+#endif
 	{
-		sSubPath = CString(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
-	//	lpszSubPath = sSubPath;
+		// gitindex.h based status
+
+		CString sSubPath;
+		CString s = path.GetWinPathString();
+		if (s.GetLength() > sProjectRoot.GetLength())
+		{
+			sSubPath = CString(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+		}
+
+		m_status.prop_status = m_status.text_status = git_wc_status_none;
+
+		m_err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&m_status.text_status);
 	}
+	else
+	{
+		LPCSTR lpszSubPath = NULL;
+		CStringA sSubPath;
+		CString s = path.GetWinPathString();
+		if (s.GetLength() > sProjectRoot.GetLength())
+		{
+			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+			lpszSubPath = sSubPath;
+		}
 
-	
-	// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
-	//UINT nFlags = WGEFF_SingleFile | WGEFF_NoRecurse;
-	//if (!lpszSubPath)
-	//	// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
-	//	nFlags |= WGEFF_EmptyAsNormal;
+		// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
+		UINT nFlags = WGEFF_SingleFile | WGEFF_NoRecurse;
+		if (!lpszSubPath)
+			// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
+			nFlags |= WGEFF_EmptyAsNormal;
 
-	m_status.prop_status = m_status.text_status = git_wc_status_none;
+		m_status.prop_status = m_status.text_status = git_wc_status_none;
 
-	// NOTE: currently wgEnumFiles_safe_safe_safe will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
-	//m_err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
+		// NOTE: currently wgEnumFiles will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
+		m_err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
 
-	m_err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&m_status.text_status);
-	
-	/*m_err = git_client_status4 (&youngest,
+		/*m_err = git_client_status4 (&youngest,
 							path.GetGitApiPath(m_pool),
 							&rev,
 							getstatushash,
@@ -384,7 +425,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 							NULL,
 							ctx,
 							m_pool);*/
-
+	}
 
 	// Error present if function is not under version control
 	if (m_err) /*|| (apr_hash_count(statushash) == 0)*/
@@ -407,9 +448,9 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 	if (update)
 	{
-		//const BYTE *sha1 = wgGetRevisionID_safe(CStringA(sProjectRoot), NULL);
-		//if (sha1)
-		//	youngest = ConvertHashToRevnum(sha1);
+		// done to match TSVN functionality of this function (not sure if any code uses the reutrn val)
+		// if TGit does not need this, then change the return type of function
+		youngest = g_Git.GetHash(CString(_T("HEAD")));
 	}
 
 	return youngest;

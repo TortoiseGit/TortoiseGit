@@ -152,6 +152,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			break;
 		case ShellCache::dll:
+		case ShellCache::dllFull:
 			{
 				// Look in our caches for this item 
 				const FileStatusCacheEntry * s = m_CachedStatus.GetCachedItem(CTGitPath(pPath));
@@ -243,6 +244,8 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	//if other handlers would return S_OK too (they're never called on my machine!)
 	//So we return S_OK for ONLY ONE handler!
 
+	// TODO: not sure this should be here. if anywhere it should be in case 'dll' above
+	//       because if overlay type 'none' is selected we don't want this to change status to unversioned (which may have overlay)
 	if(g_ShellCache.HasSVNAdminDir(pPath, true) && status == git_wc_status_none)
 		status = git_wc_status_unversioned;
 

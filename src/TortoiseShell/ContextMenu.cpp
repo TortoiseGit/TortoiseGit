@@ -157,6 +157,8 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 
 	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
 	ITEMIS_NORMAL|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
+	// TODO: original code is ITEMIS_INSVN|ITEMIS_ONLYONE, makes sense to only allow blaming of versioned files
+	//       why was this changed, is this related to GitStatus?
 
 	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
 	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
@@ -336,13 +338,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 							}
 
+							// TODO: should we really assume any sub-directory to be versioned
+							//       or only if it contains versioned files
 							if ( askedpath.IsDirectory() )
 							{
 								if (askedpath.HasAdminDir())
 									itemStates |= ITEMIS_INSVN;
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-							//if (askedpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
@@ -444,13 +447,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 							}
 
+							// TODO: should we really assume any sub-directory to be versioned
+							//       or only if it contains versioned files
 							if ( strpath.IsDirectory() )
 							{
 								if (strpath.HasAdminDir())
 									itemStates |= ITEMIS_INSVN;
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-							//if (strpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{

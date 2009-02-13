@@ -117,7 +117,8 @@ private:
 	DWORD				GetTimeoutValue();
 	//static git_error_t*	fillstatusmap (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
 	//static git_error_t*	findfolderstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
-	static void			fillstatusmap(CString &path,git_wc_status_kind status,void *pdata);
+	static BOOL			fillstatusmap(const struct wgFile_s *pFile, void *pUserData);
+	static void			fillstatusmap_idx(CString &path,git_wc_status_kind status,void *pdata);
 
 	static CTGitPath	folderpath;
 	void				ClearCache();

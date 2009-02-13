@@ -43,7 +43,8 @@ public:
 	{
 		none,
 		exe,
-		dll
+		dll,
+		dllFull,// same as dll except it uses commandline git tool with all status modes supported
 	};
 	ShellCache()
 	{
