@@ -911,9 +911,9 @@ BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigne
 	}
 
 	if (pszSubPath)
-		cmd.Format(_T("igit.exe %s status %s %s"), CUnicodeUtils::GetUnicode(pszProjectPath), sMode, CUnicodeUtils::GetUnicode(pszSubPath));
+		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), CUnicodeUtils::GetUnicode(pszProjectPath), sMode, CUnicodeUtils::GetUnicode(pszSubPath));
 	else
-		cmd.Format(_T("igit.exe %s status %s"), CUnicodeUtils::GetUnicode(pszProjectPath), sMode);
+		cmd.Format(_T("igit.exe \"%s\" status %s"), CUnicodeUtils::GetUnicode(pszProjectPath), sMode);
 
 	W_GitCall.SetCmd(cmd);
 	// NOTE: should igit get added as a part of msysgit then use below line instead of the above one
