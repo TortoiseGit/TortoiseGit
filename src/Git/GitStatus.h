@@ -15,7 +15,6 @@ typedef std::basic_string<wchar_t> wide_string;
 #pragma warning (pop)
 
 #include "TGitPath.h"
-#include "../../ext/wingit/wingit.h"
 
 typedef enum type_git_wc_status_kind
 {
@@ -63,6 +62,59 @@ typedef struct git_wc_status2_t
 #define MAX_STATUS_STRING_LENGTH		256
 
 
+/////////////////////////////////////////////////////////////////////
+// WINGIT API (replaced by commandline tool, but defs and data types kept so old code still works)
+
+// Flags for wgEnumFiles
+enum WGENUMFILEFLAGS
+{
+	WGEFF_NoRecurse		= (1<<0),	// only enumerate files directly in the specified path
+	WGEFF_FullPath		= (1<<1),	// enumerated filenames are specified with full path (instead of relative to proj root)
+	WGEFF_DirStatusDelta= (1<<2),	// include directories, in enumeration, that have a recursive status != WGFS_Normal (may have a slightly better performance than WGEFF_DirStatusAll)
+	WGEFF_DirStatusAll	= (1<<3),	// include directories, in enumeration, with recursive status
+	WGEFF_EmptyAsNormal	= (1<<4),	// report sub-directories, with no versioned files, as WGFS_Normal instead of WGFS_Empty
+	WGEFF_SingleFile	= (1<<5)	// indicates that the status of a single file or dir, specified by pszSubPath, is wanted
+};
+
+// File status
+enum WGFILESTATUS
+{
+	WGFS_Normal,
+	WGFS_Modified,
+	WGFS_Staged,
+	WGFS_Added,
+	WGFS_Conflicted,
+	WGFS_Deleted,
+
+	WGFS_Ignored = -1,
+	WGFS_Unversioned = -2,
+	WGFS_Empty = -3,
+	WGFS_Unknown = -4
+};
+
+// File flags
+enum WGFILEFLAGS
+{
+	WGFF_Directory		= (1<<0)	// enumerated file is a directory
+};
+
+struct wgFile_s
+{
+	const char *sFileName;			// filename or directory relative to project root (using forward slashes)
+	int nStatus;					// the WGFILESTATUS of the file
+	int nFlags;						// a combination of WGFILEFLAGS
+
+	const BYTE* sha1;				// points to the BYTE[20] sha1 (NULL for directories, WGFF_Directory)
+};
+
+// Application-defined callback function for wgEnumFiles, returns TRUE to abort enumeration
+// NOTE: do NOT store the pFile pointer or any pointers in wgFile_s for later use, the data is only valid for a single callback call
+typedef BOOL (__cdecl WGENUMFILECB)(const struct wgFile_s *pFile, void *pUserData);
+
+//
+/////////////////////////////////////////////////////////////////////
+
+
 // convert wingit.dll status to git_wc_status_kind
 inline static git_wc_status_kind GitStatusFromWingit(int nStatus)
 {
@@ -70,11 +122,13 @@ inline static git_wc_status_kind GitStatusFromWingit(int nStatus)
 	{
 	case WGFS_Normal: return git_wc_status_normal;
 	case WGFS_Modified: return git_wc_status_modified;
-	//case WGFS_Staged: return git_wc_status_modified;
-	//case WGFS_Added: return git_wc_status_added;
+	case WGFS_Staged: return git_wc_status_modified;
+	case WGFS_Added: return git_wc_status_added;
 	case WGFS_Conflicted: return git_wc_status_conflicted;
 	case WGFS_Deleted: return git_wc_status_deleted;
 
+	case WGFS_Ignored: return git_wc_status_ignored;
+	case WGFS_Unversioned: return git_wc_status_unversioned;
 	case WGFS_Empty: return git_wc_status_unversioned;
 	}
 

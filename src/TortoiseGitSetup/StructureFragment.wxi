@@ -231,7 +231,7 @@ out everything for now, leaving these enabled as they are would make the install
             </Component>
 
             <Component Id="C__wingit" Guid="$(var.GuidGitLib)" Win64="$(var.Win64YesNo)">
-              <File Id="F__wingit" ShortName="WINGIT.DLL" Name="wingit.dll" DiskId="1" Source="..\..\ext\wingit\wingit.dll" KeyPath="yes" />
+              <File Id="F__wingit" ShortName="IGIT.EXE" Name="igit.exe" DiskId="1" Source="..\..\ext\igit.exe" KeyPath="yes" />
             </Component>
             
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">

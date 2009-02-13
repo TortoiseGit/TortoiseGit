@@ -359,6 +359,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 		}
 		break;
 	case ShellCache::dll:
+	case ShellCache::dllFull:
 		{
 			status = m_CachedStatus.GetFullStatus(CTSVNPath(path), bIsDir, TRUE);
 			filestatus = status->status;

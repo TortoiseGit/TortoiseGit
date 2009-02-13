@@ -75,7 +75,7 @@
 				AdditionalDependencies="Crypt32.lib"
 				OutputFile="$(OutDir)/TGitCache.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../ext/wingit"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="libc"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/TGitCache.pdb"
@@ -154,11 +154,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib wingit.lib"
+				AdditionalDependencies="Crypt32.lib"
 				OutputFile="$(OutDir)/TGitCache.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../ext/wingit"
-				DelayLoadDLLs="wingit.dll"
+				AdditionalLibraryDirectories=""
+				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
