@@ -16,7 +16,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
     , m_bSquashAll(FALSE)
     , m_bEditAll(FALSE)
 {
-
+	m_RebaseStage=CHOOSE_BRANCH;
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -136,6 +136,15 @@ BOOL CRebaseDlg::OnInitDialog()
 		}
 	}
 
+	if( this->m_RebaseStage == CHOOSE_BRANCH)
+	{
+		this->LoadBranchInfo();
+
+	}else
+	{
+		this->m_BranchCtrl.EnableWindow(FALSE);
+		this->m_UpstreamCtrl.EnableWindow(FALSE);
+	}
 
 	return TRUE;
 }
@@ -242,4 +251,20 @@ void CRebaseDlg::SaveSplitterPos()
 		ScreenToClient(&rectSplitter);
 		regPos = rectSplitter.top;
 	}
+}
+
+void CRebaseDlg::LoadBranchInfo()
+{
+	m_BranchCtrl.SetMaxHistoryItems(0x7FFFFFFF);
+	m_UpstreamCtrl.SetMaxHistoryItems(0x7FFFFFFF);
+
+	STRING_VECTOR list;
+	list.clear();
+	int current;
+	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
+	m_BranchCtrl.AddString(list);
+	m_UpstreamCtrl.AddString(list);
+
+	m_BranchCtrl.SetCurSel(current);
+
 }

@@ -20,6 +20,15 @@ public:
 // Dialog Data
 	enum { IDD = IDD_REBASE };
 
+	enum REBASE_STAGE
+	{
+		CHOOSE_BRANCH,
+		CHOOSE_COMMIT_PICK_MODE,
+		REBASE_START,
+		REBASE_CONTINUE,
+		REBASE_ABORT,
+	};
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
@@ -32,6 +41,8 @@ protected:
 	void SetSplitterRange();
 	void SaveSplitterPos();
 	
+	void LoadBranchInfo();
+
 	CRect				m_DlgOrigRect;
 	CRect				m_CommitListOrigRect;
 
@@ -57,4 +68,9 @@ public:
 
 	CHistoryCombo	   m_BranchCtrl;
 	CHistoryCombo	   m_UpstreamCtrl;
+
+	REBASE_STAGE	   m_RebaseStage;
+
+
+
 };
