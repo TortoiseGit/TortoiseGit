@@ -1898,7 +1898,7 @@
 		/>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="\build\x64\TortoiseGit\src\Resources\TortoiseProcENG.rc"
+			Value="\\geo\msdev\TortoiseGit\src\Resources\TortoiseProcENG.rc"
 		/>
 	</Globals>
 </VisualStudioProject>

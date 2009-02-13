@@ -116,6 +116,7 @@ BEGIN_MESSAGE_MAP(CSetOverlayPage, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_INCLUDEPATHS, OnChange)
 	ON_BN_CLICKED(IDC_CACHEDEFAULT, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_CACHESHELL, &CSetOverlayPage::OnChange)
+	ON_BN_CLICKED(IDC_CACHESHELL2, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_CACHENONE, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_UNVERSIONEDASMODIFIED, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_SHOWEXCLUDEDASNORMAL, &CSetOverlayPage::OnChange)
@@ -139,6 +140,9 @@ BOOL CSetOverlayPage::OnInitDialog()
 	case 2:
 		CheckRadioButton(IDC_CACHEDEFAULT, IDC_CACHENONE, IDC_CACHESHELL);
 		break;
+	case 3:
+		CheckRadioButton(IDC_CACHEDEFAULT, IDC_CACHENONE, IDC_CACHESHELL2);
+		break;
 	}
 	GetDlgItem(IDC_UNVERSIONEDASMODIFIED)->EnableWindow(m_dwCacheType == 1);
 	GetDlgItem(IDC_FLOPPY)->EnableWindow(m_bRemovable);
@@ -149,6 +153,7 @@ BOOL CSetOverlayPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_INCLUDEPATHS, IDS_SETTINGS_INCLUDELIST_TT);
 	m_tooltips.AddTool(IDC_CACHEDEFAULT, IDS_SETTINGS_CACHEDEFAULT_TT);
 	m_tooltips.AddTool(IDC_CACHESHELL, IDS_SETTINGS_CACHESHELL_TT);
+	m_tooltips.AddTool(IDC_CACHESHELL2, IDS_SETTINGS_CACHESHELL_TT);//TODO: separate tooltip text
 	m_tooltips.AddTool(IDC_CACHENONE, IDS_SETTINGS_CACHENONE_TT);
 	m_tooltips.AddTool(IDC_UNVERSIONEDASMODIFIED, IDS_SETTINGS_UNVERSIONEDASMODIFIED_TT);
 	m_tooltips.AddTool(IDC_SHOWEXCLUDEDASNORMAL, IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT);
@@ -176,6 +181,9 @@ void CSetOverlayPage::OnChange()
 		break;
 	case IDC_CACHESHELL:
 		m_dwCacheType = 2;
+		break;
+	case IDC_CACHESHELL2:
+		m_dwCacheType = 3;
 		break;
 	case IDC_CACHENONE:
 		m_dwCacheType = 0;
