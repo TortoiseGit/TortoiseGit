@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "RebaseDlg.h"
-
+#include "AppUtils.h"
 
 // CRebaseDlg dialog
 
@@ -45,6 +45,8 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
     ON_BN_CLICKED(IDC_EDIT_ALL, &CRebaseDlg::OnBnClickedEditAll)
     ON_BN_CLICKED(IDC_REBASE_SPLIT, &CRebaseDlg::OnBnClickedRebaseSplit)
 	ON_WM_SIZE()
+	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
+	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -106,6 +108,8 @@ BOOL CRebaseDlg::OnInitDialog()
 		TRACE0("Failed to create log message control");
 		return FALSE;
 	}
+
+	m_tooltips.Create(this);
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS , _T("RebaseDlg"));
 
@@ -267,4 +271,45 @@ void CRebaseDlg::LoadBranchInfo()
 
 	m_BranchCtrl.SetCurSel(current);
 
+	AddBranchToolTips(&m_BranchCtrl);
+	AddBranchToolTips(&m_UpstreamCtrl);
+
+}
+
+void CRebaseDlg::OnCbnSelchangeBranch()
+{
+
+}
+
+void CRebaseDlg::OnCbnSelchangeUpstream()
+{
+
+}
+
+void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
+{
+	if(pBranch)
+	{
+		CString text=pBranch->GetString();
+		CString tooltip;
+		BYTE_VECTOR data;
+		g_Git.GetLog(data,text,NULL,1,0);
+		GitRev rev;
+		rev.ParserFromLog(data);
+		tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
+			rev.m_CommitHash,
+			rev.m_AuthorName,
+			CAppUtils::FormatDateAndTime(rev.m_AuthorDate,DATE_LONGDATE),
+			rev.m_Subject,
+			rev.m_Body);
+
+		pBranch->DisableTooltip();
+		this->m_tooltips.AddTool(pBranch->GetComboBoxCtrl(),tooltip);
+	}
+}
+
+BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
+{
+	m_tooltips.RelayEvent(pMsg);
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

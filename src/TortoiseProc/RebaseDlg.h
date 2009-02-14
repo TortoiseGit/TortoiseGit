@@ -6,6 +6,8 @@
 #include "SciEdit.h"
 #include "SplitterControl.h"
 #include "HistoryCombo.h"
+#include "Balloon.h"
+#include "GitLogList.h"
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
 
@@ -45,6 +47,7 @@ protected:
 
 	CRect				m_DlgOrigRect;
 	CRect				m_CommitListOrigRect;
+	BOOL PreTranslateMessage(MSG* pMsg);
 
 public:
    
@@ -53,9 +56,13 @@ public:
     afx_msg void OnBnClickedEditAll();
     afx_msg void OnBnClickedRebaseSplit();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnCbnSelchangeBranch();
+	afx_msg void OnCbnSelchangeUpstream();
 
     CProgressCtrl m_ProgressBar;
     CStatic m_CtrlStatusText;
+	CBalloon			m_tooltips;
+
     BOOL m_bPickAll;
     BOOL m_bSquashAll;
     BOOL m_bEditAll;
@@ -64,13 +71,15 @@ public:
 	CMFCTabCtrl m_ctrlTabCtrl;
 	CGitStatusListCtrl m_FileListCtrl;
 	CSciEdit		   m_LogMessageCtrl;
-	CListCtrl		   m_CommitList;
+	
+	CGitLogList		   m_CommitList;
 
-	CHistoryCombo	   m_BranchCtrl;
-	CHistoryCombo	   m_UpstreamCtrl;
+	CHistoryCombo m_BranchCtrl;
+	CHistoryCombo m_UpstreamCtrl;
 
 	REBASE_STAGE	   m_RebaseStage;
 
-
+	void AddBranchToolTips(CHistoryCombo *pBranch);
+	
 
 };

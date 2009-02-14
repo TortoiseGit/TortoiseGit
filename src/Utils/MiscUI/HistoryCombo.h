@@ -52,7 +52,7 @@ public:
 	 * position, otherwise add it to the end of the list.
 	 */
 	int AddString(CString str, INT_PTR pos = -1);
-
+	void DisableTooltip(){m_bDyn = FALSE;} //because rebase need disable combox tooltip to show version info
 protected:
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
