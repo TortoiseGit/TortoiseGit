@@ -60,6 +60,7 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnCbnSelchangeBranch();
 	afx_msg void OnCbnSelchangeUpstream();
+	afx_msg void OnBnClickedContinue();
 
     CProgressCtrl m_ProgressBar;
     CStatic m_CtrlStatusText;
@@ -83,5 +84,6 @@ public:
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	
+	int m_CurrentRebaseIndex;
 
 };

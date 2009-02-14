@@ -298,6 +298,8 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
+	GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(Index);
+
 	if (m_Theme.IsAppThemed() && m_bVista)
 	{
 		m_Theme.Open(m_hWnd, L"Explorer");
@@ -351,6 +353,11 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 			//if (pLogEntry->bCopiedSelf)
 			//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
 			//else
+			if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+				brush = ::CreateSolidBrush(RGB(156,156,156));
+			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+				brush = ::CreateSolidBrush(RGB(200,200,128));
+			else 
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
 		}
 		if (brush == NULL)
@@ -698,6 +705,22 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (data->bCopies)
 						crText = m_Colors.GetColor(CColors::Modified);
 #endif
+					if (data->m_Action&CTGitPath::LOGACTIONS_REBASE_DONE )
+						crText = RGB(128,128,128);
+
+					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+						pLVCD->clrTextBk = RGB(156,156,156);
+					else if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+						pLVCD->clrTextBk  = RGB(200,200,128);
+					else 
+						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
+
+					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_CURRENT)
+					{
+						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+					}
+
 //					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
 //						crText = GetSysColor(COLOR_GRAYTEXT);
 //					if (data->Rev == m_wcRev)

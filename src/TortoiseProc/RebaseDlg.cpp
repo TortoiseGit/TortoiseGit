@@ -17,6 +17,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
     , m_bEditAll(FALSE)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
+	m_CurrentRebaseIndex=-1;
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -44,6 +45,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
     ON_BN_CLICKED(IDC_SQUASH_ALL, &CRebaseDlg::OnBnClickedSquashAll)
     ON_BN_CLICKED(IDC_EDIT_ALL, &CRebaseDlg::OnBnClickedEditAll)
     ON_BN_CLICKED(IDC_REBASE_SPLIT, &CRebaseDlg::OnBnClickedRebaseSplit)
+	ON_BN_CLICKED(IDC_REBASE_CONTINUE,OnBnClickedContinue)
 	ON_WM_SIZE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
@@ -384,4 +386,41 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CRebaseDlg::OnBnClickedContinue()
+{
+	GitRev *prevRev,*curRev;
+	prevRev=curRev=NULL;
+	CRect rect;
+	if( m_CurrentRebaseIndex >= m_CommitList.m_arShownList.GetSize())
+		return;
+
+	if( m_CurrentRebaseIndex >= 0)
+	{
+		prevRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+	}
+	m_CurrentRebaseIndex++;
+	if(m_CurrentRebaseIndex<m_CommitList.m_arShownList.GetSize())
+	{
+		curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+
+	}
+	if(prevRev)
+	{
+		prevRev->m_Action &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
+		prevRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_DONE;
+		m_CommitList.GetItemRect(m_CurrentRebaseIndex-1,&rect,LVIR_BOUNDS);
+		m_CommitList.InvalidateRect(rect);
+
+	}
+
+	if(curRev)
+	{
+		curRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
+		m_CommitList.GetItemRect(m_CurrentRebaseIndex,&rect,LVIR_BOUNDS);
+		m_CommitList.InvalidateRect(rect);
+	}
+
+	
 }
