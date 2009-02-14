@@ -152,6 +152,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	m_CommitList.m_IsIDReplaceAction = TRUE;
 	m_CommitList.m_IsOldFirst = TRUE;
+	m_CommitList.m_IsRebaseReplaceGraph = TRUE;
 
 	m_CommitList.DeleteAllItems();
 	m_CommitList.InsertGitColumn();
@@ -164,20 +165,54 @@ BOOL CRebaseDlg::OnInitDialog()
 void CRebaseDlg::OnBnClickedPickAll()
 {
     // TODO: Add your control notification handler code here
+	this->UpdateData();
+	if(this->m_bPickAll)
+		this->SetAllRebaseAction(CTGitPath::LOGACTIONS_REBASE_PICK);
+
+	this->m_bEditAll=FALSE;
+	this->m_bSquashAll=FALSE;
+	this->UpdateData(FALSE);
+	
 }
 
 void CRebaseDlg::OnBnClickedSquashAll()
 {
     // TODO: Add your control notification handler code here
+	this->UpdateData();
+	if(this->m_bSquashAll)
+		this->SetAllRebaseAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
+
+	this->m_bEditAll=FALSE;
+	this->m_bPickAll=FALSE;
+	this->UpdateData(FALSE);
+
 }
 
 void CRebaseDlg::OnBnClickedEditAll()
 {
     // TODO: Add your control notification handler code here
+	this->UpdateData();
+	if( this->m_bEditAll )
+		this->SetAllRebaseAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
+
+	this->m_bPickAll=FALSE;
+	this->m_bSquashAll=FALSE;
+	this->UpdateData(FALSE);
+
+}
+
+void CRebaseDlg::SetAllRebaseAction(int action)
+{
+	for(int i=0;i<this->m_CommitList.m_logEntries.size();i++)
+	{
+		m_CommitList.m_logEntries[i].m_Action=action;
+	}
+	m_CommitList.Invalidate();
 }
 
 void CRebaseDlg::OnBnClickedRebaseSplit()
 {
+	this->UpdateData();
     // TODO: Add your control notification handler code here
 }
 
@@ -311,12 +346,16 @@ void CRebaseDlg::FetchLogList()
 		}
 	}
 	
-	m_CommitList.Invalidate();
-
 	m_tooltips.Pop();
 	AddBranchToolTips(&this->m_BranchCtrl);
 	AddBranchToolTips(&this->m_UpstreamCtrl);
 	
+	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
+	{
+		m_CommitList.m_logEntries[i].m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
+	}
+	
+	m_CommitList.Invalidate();
 }
 
 void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)

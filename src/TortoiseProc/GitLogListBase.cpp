@@ -91,6 +91,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_bExitThread=FALSE;
 	m_IsOldFirst = FALSE;
+	m_IsRebaseReplaceGraph = FALSE;
 
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
@@ -174,6 +175,14 @@ void CGitLogListBase::InsertGitColumn()
 		DeleteColumn(c--);
 	temp.LoadString(IDS_LOG_GRAPH);
 
+	if(m_IsRebaseReplaceGraph)
+	{
+		temp=_T("Rebase");
+	}
+	else
+	{
+		temp.LoadString(IDS_LOG_GRAPH);
+	}
 	InsertColumn(this->LOGLIST_GRAPH, temp);
 	
 #if 0	
@@ -719,7 +728,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (pLVCD->iSubItem == LOGLIST_GRAPH)
 			{
-				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
+				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{
 					CRect rect;
 					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
@@ -856,6 +865,13 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_GRAPH:	//Graphic
 		if (pLogEntry)
 		{
+			if(this->m_IsRebaseReplaceGraph)
+			{
+				CTGitPath path;
+				path.m_Action=pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+
+				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
+			}
 		}
 		break;
 	case this->LOGLIST_ACTION: //action -- no text in the column
@@ -974,6 +990,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())
 	{
+
+		if(this->m_IsRebaseReplaceGraph)
+		{
+			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_OPEN);
+		}
+
 		if (GetSelectedCount() == 1)
 		{
 #if 0

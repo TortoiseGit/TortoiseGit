@@ -1880,6 +1880,12 @@ CString CTGitPath::GetActionName()
 		return _T("Rename");
 	if(m_Action  & CTGitPath::LOGACTIONS_COPY)
 		return _T("Copy");
+	if(m_Action & CTGitPath::LOGACTIONS_REBASE_EDIT)
+		return _T("Edit");
+	if(m_Action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
+		return _T("Squash");
+	if(m_Action & CTGitPath::LOGACTIONS_REBASE_PICK)
+		return _T("Pick");
 
 	return _T("Unknown");
 }

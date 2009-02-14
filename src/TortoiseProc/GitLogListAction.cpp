@@ -59,7 +59,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 
 	theApp.DoWaitCursor(1);
 	bool bOpenWith = false;
-
 	switch (cmd)
 		{
 			case ID_GNUDIFF1:
@@ -176,6 +175,15 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash);
 			ReloadHashMap();
 			Invalidate();
+			break;
+		case ID_REBASE_PICK:
+			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
+			break;
+		case ID_REBASE_EDIT:
+			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
+			break;
+		case ID_REBASE_SQUASH:
+			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
@@ -502,4 +510,20 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		} // switch (cmd)
 
 		theApp.DoWaitCursor(-1);
+}
+
+void CGitLogList::SetSelectedAction(int action)
+{
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index;
+	while(pos)
+	{
+		index = GetNextSelectedItem(pos);
+		((GitRev*)m_arShownList[index])->m_Action = action;
+		CRect rect;
+		this->GetItemRect(index,&rect,LVIR_BOUNDS);
+		this->InvalidateRect(rect);
+
+	}
+
 }

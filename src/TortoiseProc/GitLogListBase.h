@@ -130,7 +130,10 @@ public:
 	ID_CREATE_BRANCH,
 	ID_CREATE_TAG,
 	ID_SWITCHTOREV,
-	ID_RESET
+	ID_RESET,
+	ID_REBASE_PICK,
+	ID_REBASE_EDIT,
+	ID_REBASE_SQUASH
 	};
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
