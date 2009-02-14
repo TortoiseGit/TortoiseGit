@@ -114,7 +114,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS , _T("RebaseDlg"));
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
-	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Log Message"),1);
+	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
 	AddRebaseAnchor();
 
 
@@ -149,6 +149,9 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 	}
+
+	m_CommitList.m_IsIDReplaceAction = TRUE;
+	m_CommitList.m_IsOldFirst = TRUE;
 
 	m_CommitList.DeleteAllItems();
 	m_CommitList.InsertGitColumn();
@@ -297,7 +300,23 @@ void CRebaseDlg::FetchLogList()
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(_T("Nothing Rebase"));
 
+	CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
+	
+	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
+	{
+		if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
+		{
+			m_CommitList.Clear();
+			m_CommitList.ShowText(_T("Nothing Rebase"));
+		}
+	}
+	
 	m_CommitList.Invalidate();
+
+	m_tooltips.Pop();
+	AddBranchToolTips(&this->m_BranchCtrl);
+	AddBranchToolTips(&this->m_UpstreamCtrl);
+	
 }
 
 void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)

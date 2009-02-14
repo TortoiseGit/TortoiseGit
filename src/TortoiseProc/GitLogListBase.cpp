@@ -90,6 +90,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LoadingThread = NULL;
 
 	m_bExitThread=FALSE;
+	m_IsOldFirst = FALSE;
 
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
@@ -840,7 +841,14 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
 
 	CString temp;
-	temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
+	if(m_IsOldFirst)
+	{
+		temp.Format(_T("%d"),pItem->iItem+1);
+
+	}else
+	{
+		temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
+	}
 	    
 	// Which column?
 	switch (pItem->iSubItem)
@@ -1315,8 +1323,16 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
-		m_logEntries[i].m_IsFull=TRUE;
-		this->m_arShownList.Add(&m_logEntries[i]);
+		if(m_IsOldFirst)
+		{
+			m_logEntries[m_logEntries.size()-i-1].m_IsFull=TRUE;
+			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-i-1]);
+		
+		}else
+		{
+			m_logEntries[i].m_IsFull=TRUE;
+			this->m_arShownList.Add(&m_logEntries[i]);
+		}
 	}
 
     if(path)
@@ -1357,8 +1373,16 @@ int CGitLogListBase::FillGitShortLog()
 	this->m_arShownList.RemoveAll();
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
-		this->m_arShownList.Add(&m_logEntries[i]);
+	{
+		if(this->m_IsOldFirst)
+		{
+			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-1-i]);
 
+		}else
+		{
+			this->m_arShownList.Add(&m_logEntries[i]);
+		}
+	}
 	return 0;
 }
 
@@ -1937,7 +1961,13 @@ void CGitLogListBase::RemoveFilter()
 
 	for (DWORD i=0; i<m_logEntries.size(); ++i)
 	{
-		m_arShownList.Add(&m_logEntries[i]);
+		if(this->m_IsOldFirst)
+		{
+			m_arShownList.Add(&m_logEntries[m_logEntries.size()-i-1]);
+		}else
+		{
+			m_arShownList.Add(&m_logEntries[i]);
+		}
 	}
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 	DeleteAllItems();

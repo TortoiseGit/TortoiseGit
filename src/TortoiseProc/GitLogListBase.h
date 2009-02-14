@@ -66,6 +66,9 @@ public:
 	virtual ~CGitLogListBase();
 	volatile LONG		m_bNoDispUpdates;
 	BOOL m_IsIDReplaceAction;
+	BOOL m_IsOldFirst;
+	BOOL m_IsRebaseReplaceGraph;
+
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
