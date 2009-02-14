@@ -388,14 +388,14 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask)
+int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask,CString *from,CString *to)
 {
 	CGitCall_ByteVector gitCall(CString(),&logOut);
-	return GetLog(&gitCall,hash,path,count,mask);
+	return GetLog(&gitCall,hash,path,count,mask,from,to);
 }
 
 //int CGit::GetLog(CGitCall* pgitCall, CString &hash,  CTGitPath *path ,int count,int mask)
-int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask)
+int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
 {
 
 	CString cmd;
@@ -442,6 +442,12 @@ int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, 
 	if(mask& CGit::LOG_INFO_FOLLOW)
 		param += _T(" --follow ");
 
+	if(from != NULL && to != NULL)
+	{
+		CString range;
+		range.Format(_T(" %s..%s "),*from,*to);
+		param += range;
+	}
 	param+=hash;
 
 	cmd.Format(_T("git.exe log %s -z --topo-order %s --parents --pretty=format:\""),

@@ -1301,12 +1301,12 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = -1;
 }
 
-int CGitLogListBase::FillGitLog(CTGitPath *path,int info)
+int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *to)
 {
 	ClearText();
 
 	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserFromLog(path,-1,info);
+	this->m_logEntries.ParserFromLog(path,-1,info,from,to);
 
 	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx(this->m_logEntries.size());

@@ -44,6 +44,7 @@ protected:
 	void SaveSplitterPos();
 	
 	void LoadBranchInfo();
+	void FetchLogList();
 
 	CRect				m_DlgOrigRect;
 	CRect				m_CommitListOrigRect;

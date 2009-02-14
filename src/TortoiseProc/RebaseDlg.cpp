@@ -113,7 +113,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS , _T("RebaseDlg"));
 
-	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Modified File"));
+	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Log Message"),1);
 	AddRebaseAnchor();
 
@@ -150,6 +150,10 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 	}
 
+	m_CommitList.DeleteAllItems();
+	m_CommitList.InsertGitColumn();
+
+	FetchLogList();
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -278,12 +282,22 @@ void CRebaseDlg::LoadBranchInfo()
 
 void CRebaseDlg::OnCbnSelchangeBranch()
 {
-
+	FetchLogList();
 }
 
 void CRebaseDlg::OnCbnSelchangeUpstream()
 {
+	FetchLogList();
+}
 
+void CRebaseDlg::FetchLogList()
+{
+	m_CommitList.Clear();
+	this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
+	if( m_CommitList.GetItemCount() == 0 )
+		m_CommitList.ShowText(_T("Nothing Rebase"));
+
+	m_CommitList.Invalidate();
 }
 
 void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
