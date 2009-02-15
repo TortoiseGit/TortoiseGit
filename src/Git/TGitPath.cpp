@@ -1886,6 +1886,8 @@ CString CTGitPath::GetActionName()
 		return _T("Squash");
 	if(m_Action & CTGitPath::LOGACTIONS_REBASE_PICK)
 		return _T("Pick");
+	if(m_Action & CTGitPath::LOGACTIONS_REBASE_SKIP)
+		return _T("Skip");
 
 	return _T("Unknown");
 }

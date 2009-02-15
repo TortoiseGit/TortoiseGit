@@ -185,6 +185,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		case ID_REBASE_SQUASH:
 			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
 			break;
+		case ID_REBASE_SKIP:
+			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;

@@ -92,6 +92,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bExitThread=FALSE;
 	m_IsOldFirst = FALSE;
 	m_IsRebaseReplaceGraph = FALSE;
+	m_IsEnableRebaseMenu = FALSE;
 
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
@@ -705,7 +706,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (data->bCopies)
 						crText = m_Colors.GetColor(CColors::Modified);
 #endif
-					if (data->m_Action&CTGitPath::LOGACTIONS_REBASE_DONE )
+					if (data->m_Action& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) ) 
 						crText = RGB(128,128,128);
 
 					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
@@ -1014,11 +1015,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (popup.CreatePopupMenu())
 	{
 
-		if(this->m_IsRebaseReplaceGraph)
+		if(this->m_IsEnableRebaseMenu)
 		{
 			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_OPEN);
 			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_OPEN);
 			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_SKIP,   _T("SKIP"),   IDI_OPEN);
 		}
 
 		if (GetSelectedCount() == 1)

@@ -11,6 +11,10 @@
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
 
+#define REBASE_TAB_CONFLICT  0
+#define REBASE_TAB_MESSAGE   1
+#define REBASE_TAB_LOG		 2
+
 class CRebaseDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CRebaseDlg)
@@ -29,6 +33,7 @@ public:
 		REBASE_START,
 		REBASE_CONTINUE,
 		REBASE_ABORT,
+		REBASE_FINISH,
 	};
 
 protected:
@@ -50,6 +55,12 @@ protected:
 	CRect				m_DlgOrigRect;
 	CRect				m_CommitListOrigRect;
 	BOOL PreTranslateMessage(MSG* pMsg);
+
+	CSciEdit m_wndOutputRebase;
+	void SetContinueButtonText();
+	void SetControlEnable();
+	void UpdateProgress();
+	void UpdateCurrentStatus();
 
 public:
    

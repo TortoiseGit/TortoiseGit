@@ -97,7 +97,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 	// Create output panes:
 	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
 	if (! this->m_FileListCtrl.Create(dwStyle,rectDummy,&this->m_ctrlTabCtrl,0) )
 	{
@@ -110,13 +110,25 @@ BOOL CRebaseDlg::OnInitDialog()
 		TRACE0("Failed to create log message control");
 		return FALSE;
 	}
+	m_LogMessageCtrl.Init(0);
 
+	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+
+	if (!m_wndOutputRebase.Create(_T("Scintilla"),_T("source"),0,rectDummy, &m_ctrlTabCtrl, 0,0) )
+	{
+		TRACE0("Failed to create output windows\n");
+		return -1;      // fail to create
+	}
+	m_wndOutputRebase.Init(0);
+	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
+	
 	m_tooltips.Create(this);
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS , _T("RebaseDlg"));
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
+	m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	AddRebaseAnchor();
 
 
@@ -153,13 +165,14 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 
 	m_CommitList.m_IsIDReplaceAction = TRUE;
-	m_CommitList.m_IsOldFirst = TRUE;
+//	m_CommitList.m_IsOldFirst = TRUE;
 	m_CommitList.m_IsRebaseReplaceGraph = TRUE;
 
 	m_CommitList.DeleteAllItems();
 	m_CommitList.InsertGitColumn();
 
 	FetchLogList();
+	SetContinueButtonText();
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -358,6 +371,12 @@ void CRebaseDlg::FetchLogList()
 	}
 	
 	m_CommitList.Invalidate();
+
+	if(m_CommitList.m_IsOldFirst)
+		this->m_CurrentRebaseIndex = -1;
+	else
+		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
+	
 }
 
 void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
@@ -393,24 +412,31 @@ void CRebaseDlg::OnBnClickedContinue()
 	GitRev *prevRev,*curRev;
 	prevRev=curRev=NULL;
 	CRect rect;
-	if( m_CurrentRebaseIndex >= m_CommitList.m_arShownList.GetSize())
-		return;
+	int prevIndex=m_CurrentRebaseIndex;
+	
+	UpdateCurrentStatus();
 
-	if( m_CurrentRebaseIndex >= 0)
+	if( m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex< m_CommitList.m_arShownList.GetSize())
 	{
 		prevRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
 	}
-	m_CurrentRebaseIndex++;
-	if(m_CurrentRebaseIndex<m_CommitList.m_arShownList.GetSize())
+	
+	if(m_CommitList.m_IsOldFirst)
+		m_CurrentRebaseIndex++;
+	else
+		m_CurrentRebaseIndex--;
+
+	if(m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex<m_CommitList.m_arShownList.GetSize())
 	{
 		curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
 
 	}
+
 	if(prevRev)
 	{
 		prevRev->m_Action &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
 		prevRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_DONE;
-		m_CommitList.GetItemRect(m_CurrentRebaseIndex-1,&rect,LVIR_BOUNDS);
+		m_CommitList.GetItemRect(prevIndex,&rect,LVIR_BOUNDS);
 		m_CommitList.InvalidateRect(rect);
 
 	}
@@ -422,5 +448,107 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_CommitList.InvalidateRect(rect);
 	}
 
+
+	UpdateCurrentStatus();
+
+	m_CommitList.EnsureVisible(m_CurrentRebaseIndex,FALSE);
 	
+	this->SetContinueButtonText();
+	this->SetControlEnable();
+	UpdateProgress();
+}
+
+void CRebaseDlg::SetContinueButtonText()
+{
+	CString Text;
+	switch(this->m_RebaseStage)
+	{
+	case CHOOSE_BRANCH:
+	case CHOOSE_COMMIT_PICK_MODE:
+		Text = _T("Start");
+		break;
+
+	case REBASE_START:
+	case REBASE_CONTINUE:
+		Text = _T("Continue");
+		break;
+	case REBASE_ABORT:
+	case REBASE_FINISH:
+		Text = _T("Finish");
+		break;
+	}
+	this->GetDlgItem(IDC_REBASE_CONTINUE)->SetWindowText(Text);
+}
+
+void CRebaseDlg::SetControlEnable()
+{
+	switch(this->m_RebaseStage)
+	{
+	case CHOOSE_BRANCH:
+	case CHOOSE_COMMIT_PICK_MODE:
+		
+		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
+		this->m_CommitList.m_IsEnableRebaseMenu=TRUE;
+		break;
+
+	case REBASE_START:
+	case REBASE_CONTINUE:
+	case REBASE_ABORT:
+	case REBASE_FINISH:
+		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(FALSE);
+		this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
+		break;
+	}
+}
+
+void CRebaseDlg::UpdateProgress()
+{
+	int index;
+
+	if(m_CommitList.m_IsOldFirst)
+		index = m_CurrentRebaseIndex+1;
+	else
+		index = m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
+
+	m_ProgressBar.SetRange(1,m_CommitList.GetItemCount());
+	m_ProgressBar.SetPos(index);
+
+	if(m_CurrentRebaseIndex>0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
+	{
+		CString text;
+		text.Format(_T("Rebasing...(%d/%d)"),index,m_CommitList.GetItemCount());
+		m_CtrlStatusText.SetWindowText(text);
+
+	}
+}
+
+void CRebaseDlg::UpdateCurrentStatus()
+{
+	if( m_CurrentRebaseIndex < 0)
+	{
+		if(m_CommitList.m_IsOldFirst)
+			m_RebaseStage = CRebaseDlg::REBASE_START;
+		else
+			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
+	}
+
+	if( m_CurrentRebaseIndex == m_CommitList.m_arShownList.GetSize())
+	{
+		if(m_CommitList.m_IsOldFirst)
+			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
+		else
+			m_RebaseStage = CRebaseDlg::REBASE_START;
+	}
+
+	SetContinueButtonText();
+	SetControlEnable();
+	UpdateProgress();
 }

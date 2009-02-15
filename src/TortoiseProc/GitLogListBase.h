@@ -68,6 +68,7 @@ public:
 	BOOL m_IsIDReplaceAction;
 	BOOL m_IsOldFirst;
 	BOOL m_IsRebaseReplaceGraph;
+	BOOL m_IsEnableRebaseMenu;
 
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
@@ -133,7 +134,8 @@ public:
 	ID_RESET,
 	ID_REBASE_PICK,
 	ID_REBASE_EDIT,
-	ID_REBASE_SQUASH
+	ID_REBASE_SQUASH,
+	ID_REBASE_SKIP,
 	};
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
