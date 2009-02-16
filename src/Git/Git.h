@@ -47,6 +47,7 @@ public:
 	CString GetUserName(void);
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);
+	BOOL CheckCleanWorkTree();
 
 	bool SetCurrentDir(CString path)
 	{

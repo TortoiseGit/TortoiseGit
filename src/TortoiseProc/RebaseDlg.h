@@ -61,6 +61,11 @@ protected:
 	void SetControlEnable();
 	void UpdateProgress();
 	void UpdateCurrentStatus();
+	int  DoRebase();
+	volatile LONG 		m_bThreadRunning;
+	int  RebaseThread();
+	static UINT RebaseThreadEntry(LPVOID pVoid){return ((CRebaseDlg *)pVoid)->RebaseThread();};
+	BOOL IsEnd();
 
 public:
    
@@ -94,7 +99,10 @@ public:
 	REBASE_STAGE	   m_RebaseStage;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
-	
-	int m_CurrentRebaseIndex;
-
+	void AddLogString(CString str);
+	int	 StartRebase();
+	int  CheckRebaseCondition();
+	int  m_CurrentRebaseIndex;
+	int  StateAction();
+	int  GoNext();
 };

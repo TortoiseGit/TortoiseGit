@@ -218,6 +218,9 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 {
      //USES_CONVERSION;
 	 //str->Append(A2W_CP((LPCSTR)p,code));
+	if(str == NULL)
+		return ;
+
 	WCHAR * buf;
 
 	int len ;
@@ -926,6 +929,30 @@ BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigne
 	//W_GitCall.SetCmd(CGit::ms_LastMsysGitDir + cmd);
 
 	if ( Run(&W_GitCall) )
+		return FALSE;
+
+	return TRUE;
+}
+
+BOOL CGit::CheckCleanWorkTree()
+{
+	CString out;
+	CString cmd;
+	cmd=_T("git.exe rev-parse --verify HEAD");
+
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	cmd=_T("git.exe update-index --ignore-submodules --refresh");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	cmd=_T("git.exe diff-files --quiet --ignore-submodules");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	cmd=_T("git diff-index --cached --quiet HEAD --ignore-submodules");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
 		return FALSE;
 
 	return TRUE;

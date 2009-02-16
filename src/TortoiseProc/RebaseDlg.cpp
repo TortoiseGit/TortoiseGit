@@ -5,7 +5,8 @@
 #include "TortoiseProc.h"
 #include "RebaseDlg.h"
 #include "AppUtils.h"
-
+#include "MessageBox.h"
+#include "UnicodeUtils.h"
 // CRebaseDlg dialog
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
@@ -18,6 +19,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
+	m_bThreadRunning =FALSE;
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -352,6 +354,7 @@ void CRebaseDlg::FetchLogList()
 
 	CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
 	
+#if 0
 	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
 	{
 		if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
@@ -360,7 +363,8 @@ void CRebaseDlg::FetchLogList()
 			m_CommitList.ShowText(_T("Nothing Rebase"));
 		}
 	}
-	
+#endif
+
 	m_tooltips.Pop();
 	AddBranchToolTips(&this->m_BranchCtrl);
 	AddBranchToolTips(&this->m_UpstreamCtrl);
@@ -406,58 +410,111 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
-
-void CRebaseDlg::OnBnClickedContinue()
+int CRebaseDlg::CheckRebaseCondition()
 {
-	GitRev *prevRev,*curRev;
-	prevRev=curRev=NULL;
-	CRect rect;
-	int prevIndex=m_CurrentRebaseIndex;
-	
-	UpdateCurrentStatus();
+	this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 
-	if( m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex< m_CommitList.m_arShownList.GetSize())
+	if( !g_Git.CheckCleanWorkTree()  )
 	{
-		prevRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		CMessageBox::Show(NULL,_T("Rebase Need Clean Working Tree"),_T("TortoiseGit"),MB_OK);
+		return -1;
+	}
+	//Todo Check $REBASE_ROOT
+	//Todo Check $DOTEST
+
+	CString cmd;
+	cmd=_T("git.exe var GIT_COMMITTER_IDENT");
+	if(g_Git.Run(cmd,NULL,CP_UTF8))
+		return -1;
+
+	//Todo call pre_rebase_hook
+}
+int CRebaseDlg::StartRebase()
+{
+	CString cmd,out;
+	//Todo call comment_for_reflog
+	cmd.Format(_T("git.exe checkout %s"),this->m_BranchCtrl.GetString());
+	this->AddLogString(cmd);
+
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return -1;
+
+	this->AddLogString(out);
+
+	cmd=_T("git.exe rev-parse --verify HEAD");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(_T("No Head"));
+		return -1;
+	}
+	//Todo 
+	//git symbolic-ref HEAD > "$DOTEST"/head-name 2> /dev/null ||
+	//		echo "detached HEAD" > "$DOTEST"/head-name
+
+	cmd.Format(_T("git.exe update-ref ORIG_HEAD HEAD"));
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(_T("update ORIG_HEAD Fail"));
+		return -1;
 	}
 	
+	cmd.Format(_T("git.exe update-ref ORIG_HEAD HEAD"));
+
+	cmd.Format(_T("git.exe checkout %s"),this->m_UpstreamCtrl.GetString());
+	this->AddLogString(cmd);
+
+	out.Empty();
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		return -1;
+	}
+
+	this->AddLogString(_T("Start Rebase\r\n"));
+	return 0;
+}
+void CRebaseDlg::OnBnClickedContinue()
+{
+	if( m_RebaseStage == CHOOSE_BRANCH|| m_RebaseStage == CHOOSE_COMMIT_PICK_MODE )
+	{
+		if(CheckRebaseCondition())
+			return ;
+		m_RebaseStage = REBASE_START;
+	}
+
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	SetControlEnable();
+	
+	if (AfxBeginThread(RebaseThreadEntry, this)==NULL)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		CMessageBox::Show(NULL, _T("Create Rebase Thread Fail"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		SetControlEnable();
+	}
+}
+int CRebaseDlg::GoNext()
+{
 	if(m_CommitList.m_IsOldFirst)
 		m_CurrentRebaseIndex++;
 	else
-		m_CurrentRebaseIndex--;
+		m_CurrentRebaseIndex--;	
+	return 0;
 
-	if(m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex<m_CommitList.m_arShownList.GetSize())
-	{
-		curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-
-	}
-
-	if(prevRev)
-	{
-		prevRev->m_Action &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
-		prevRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_DONE;
-		m_CommitList.GetItemRect(prevIndex,&rect,LVIR_BOUNDS);
-		m_CommitList.InvalidateRect(rect);
-
-	}
-
-	if(curRev)
-	{
-		curRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
-		m_CommitList.GetItemRect(m_CurrentRebaseIndex,&rect,LVIR_BOUNDS);
-		m_CommitList.InvalidateRect(rect);
-	}
-
-
-	UpdateCurrentStatus();
-
-	m_CommitList.EnsureVisible(m_CurrentRebaseIndex,FALSE);
-	
-	this->SetContinueButtonText();
-	this->SetControlEnable();
-	UpdateProgress();
 }
+int CRebaseDlg::StateAction()
+{
+	switch(this->m_RebaseStage)
+	{
+	case CHOOSE_BRANCH:
+	case CHOOSE_COMMIT_PICK_MODE:
+		if(StartRebase())
+			return -1;
+		m_RebaseStage = REBASE_START;
+		GoNext();
+		break;
+	}
 
+	return 0;	
+}
 void CRebaseDlg::SetContinueButtonText()
 {
 	CString Text;
@@ -507,11 +564,23 @@ void CRebaseDlg::SetControlEnable()
 		this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
 		break;
 	}
+
+	if(m_bThreadRunning)
+	{
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_REBASE_ABORT)->EnableWindow(FALSE);
+
+	}else
+	{
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
+		this->GetDlgItem(IDC_REBASE_ABORT)->EnableWindow(TRUE);
+	}
 }
 
 void CRebaseDlg::UpdateProgress()
 {
 	int index;
+	CRect rect;
 
 	if(m_CommitList.m_IsOldFirst)
 		index = m_CurrentRebaseIndex+1;
@@ -528,6 +597,41 @@ void CRebaseDlg::UpdateProgress()
 		m_CtrlStatusText.SetWindowText(text);
 
 	}
+
+	GitRev *prevRev=NULL, *curRev=NULL;
+	int prevIndex;
+
+	if( m_CurrentRebaseIndex >= 0 && m_CurrentRebaseIndex< m_CommitList.m_arShownList.GetSize())
+	{
+		curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+	}
+	
+	if(m_CommitList.m_IsOldFirst)
+		prevIndex=m_CurrentRebaseIndex+1;
+	else
+		prevIndex=m_CurrentRebaseIndex-1;
+
+	if(prevIndex >= 0 && prevIndex<m_CommitList.m_arShownList.GetSize())
+	{
+		curRev=(GitRev*)m_CommitList.m_arShownList[prevIndex];
+	}
+
+	if(prevRev)
+	{
+		prevRev->m_Action &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
+		prevRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_DONE;
+		m_CommitList.GetItemRect(prevIndex,&rect,LVIR_BOUNDS);
+		m_CommitList.InvalidateRect(rect);
+	}
+
+	if(curRev)
+	{
+		curRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
+		m_CommitList.GetItemRect(m_CurrentRebaseIndex,&rect,LVIR_BOUNDS);
+		m_CommitList.InvalidateRect(rect);
+	}
+	m_CommitList.EnsureVisible(m_CurrentRebaseIndex,FALSE);
+
 }
 
 void CRebaseDlg::UpdateCurrentStatus()
@@ -551,4 +655,96 @@ void CRebaseDlg::UpdateCurrentStatus()
 	SetContinueButtonText();
 	SetControlEnable();
 	UpdateProgress();
+}
+
+void CRebaseDlg::AddLogString(CString str)
+{
+	this->m_wndOutputRebase.SendMessage(SCI_SETREADONLY, FALSE);
+	CStringA sTextA = m_wndOutputRebase.StringForControl(str);//CUnicodeUtils::GetUTF8(str);
+	this->m_wndOutputRebase.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
+	this->m_wndOutputRebase.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
+	this->m_wndOutputRebase.SendMessage(SCI_SETREADONLY, TRUE);
+}
+
+int CRebaseDlg::DoRebase()
+{	
+	if(m_CurrentRebaseIndex <0)
+		return 0;
+	if(m_CurrentRebaseIndex >= m_CommitList.GetItemCount() )
+		return 0;
+
+	this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+
+	GitRev *pRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+	int mode=pRev->m_Action & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+	switch(mode)
+	{
+	case CTGitPath::LOGACTIONS_REBASE_PICK:
+		AddLogString(CString(_T("Pick "))+pRev->m_CommitHash);
+		pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+		break;
+	case CTGitPath::LOGACTIONS_REBASE_SQUASH:
+		break;
+	case CTGitPath::LOGACTIONS_REBASE_EDIT:
+		break;
+	case CTGitPath::LOGACTIONS_REBASE_SKIP:
+		pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+		return 0;
+		break;
+	default:
+		AddLogString(CString(_T("Unknow Action for "))+pRev->m_CommitHash);
+		break;
+	}
+	return 0;
+}
+
+BOOL CRebaseDlg::IsEnd()
+{
+	if(m_CommitList.m_IsOldFirst)
+		return m_CurrentRebaseIndex>= this->m_CommitList.GetItemCount();
+	else
+		return m_CurrentRebaseIndex<0;
+}
+
+int CRebaseDlg::RebaseThread()
+{
+	int ret=0;
+	while(1)
+	{
+		if( m_RebaseStage == REBASE_START )
+		{
+			if( this->StartRebase() )
+			{
+				InterlockedExchange(&m_bThreadRunning, FALSE);
+				ret = -1;
+				break;
+			}
+			m_RebaseStage = REBASE_CONTINUE;
+		}
+
+		if( m_RebaseStage == REBASE_CONTINUE )
+		{
+			this->GoNext();	
+			if(IsEnd())
+			{
+				ret = 0;
+				m_RebaseStage = REBASE_FINISH;
+				break;
+			}
+
+			ret = DoRebase();
+
+			if( ret )
+			{	
+				break;
+			}
+		}
+		this->UpdateCurrentStatus();
+	}
+
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+	this->UpdateCurrentStatus();
+	this->SetControlEnable();
+	this->SetContinueButtonText();
+	return ret;
 }
