@@ -607,19 +607,18 @@ void CRebaseDlg::UpdateProgress()
 	}
 	
 	if(m_CommitList.m_IsOldFirst)
-		prevIndex=m_CurrentRebaseIndex+1;
-	else
 		prevIndex=m_CurrentRebaseIndex-1;
+	else
+		prevIndex=m_CurrentRebaseIndex+1;
 
 	if(prevIndex >= 0 && prevIndex<m_CommitList.m_arShownList.GetSize())
 	{
-		curRev=(GitRev*)m_CommitList.m_arShownList[prevIndex];
+		prevRev=(GitRev*)m_CommitList.m_arShownList[prevIndex];
 	}
 
 	if(prevRev)
 	{
 		prevRev->m_Action &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
-		prevRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_DONE;
 		m_CommitList.GetItemRect(prevIndex,&rect,LVIR_BOUNDS);
 		m_CommitList.InvalidateRect(rect);
 	}
