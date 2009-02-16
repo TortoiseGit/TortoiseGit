@@ -957,3 +957,23 @@ BOOL CGit::CheckCleanWorkTree()
 
 	return TRUE;
 }
+
+int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
+{
+	BYTE_VECTOR vector;
+
+	CString cmd;
+	if(path)
+		cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),path->GetGitPathString());
+	else
+		cmd=_T("git.exe ls-files -u -t -z");
+
+	if(g_Git.Run(cmd,&vector))
+	{
+		return -1;
+	}
+
+	list.ParserFromLsFile(vector);
+
+	return 0;
+}

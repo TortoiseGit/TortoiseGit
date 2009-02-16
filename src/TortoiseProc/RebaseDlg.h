@@ -15,6 +15,8 @@
 #define REBASE_TAB_MESSAGE   1
 #define REBASE_TAB_LOG		 2
 
+#define MSG_REBASE_UPDATE_UI	(WM_USER+151)
+
 class CRebaseDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CRebaseDlg)
@@ -34,6 +36,7 @@ public:
 		REBASE_CONTINUE,
 		REBASE_ABORT,
 		REBASE_FINISH,
+		REBASE_CONFLICT,
 	};
 
 protected:
@@ -41,6 +44,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	LRESULT OnRebaseUpdateUI(WPARAM wParam, LPARAM lParam);
 	void DoSize(int delta);
 	void AddRebaseAnchor();
 	void RemoveAnchor();
@@ -61,6 +65,7 @@ protected:
 	void SetControlEnable();
 	void UpdateProgress();
 	void UpdateCurrentStatus();
+	void ListConflictFile();
 	int  DoRebase();
 	volatile LONG 		m_bThreadRunning;
 	int  RebaseThread();

@@ -100,6 +100,7 @@ public:
 
 	BOOL IsInitRepos();
 	static BOOL IsVista();
+	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
 	
 };
 extern void GetTempPath(CString &path);

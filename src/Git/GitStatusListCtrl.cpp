@@ -1083,6 +1083,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
 		}
 	}
+	int index =0;
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
 		//set default checkbox status
@@ -1090,7 +1091,10 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
 
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
-			AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
+		{
+			AddEntry((CTGitPath*)m_arStatusArray[i],langID,index);
+			index++;
+		}
 	}
 	
 	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
@@ -5346,7 +5350,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	TCHAR groupname[1024];
 	int groupindex = 0;
 
-	if(bHasGroups);
+	if(bHasGroups)
 	{
 		LVGROUP grp = {0};
 		grp.cbSize = sizeof(LVGROUP);

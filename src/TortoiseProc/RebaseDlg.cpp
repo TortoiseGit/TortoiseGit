@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
+	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -99,7 +100,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 	// Create output panes:
 	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
 	if (! this->m_FileListCtrl.Create(dwStyle,rectDummy,&this->m_ctrlTabCtrl,0) )
 	{
@@ -126,7 +127,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	
 	m_tooltips.Create(this);
 
-	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS , _T("RebaseDlg"));
+	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |IDS_STATUSLIST_COLADD|IDS_STATUSLIST_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
@@ -529,6 +530,11 @@ void CRebaseDlg::SetContinueButtonText()
 	case REBASE_CONTINUE:
 		Text = _T("Continue");
 		break;
+
+	case REBASE_CONFLICT:
+		Text = _T("Commit");
+		break;
+
 	case REBASE_ABORT:
 	case REBASE_FINISH:
 		Text = _T("Finish");
@@ -556,6 +562,7 @@ void CRebaseDlg::SetControlEnable()
 	case REBASE_CONTINUE:
 	case REBASE_ABORT:
 	case REBASE_FINISH:
+	case REBASE_CONFLICT:
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
@@ -667,6 +674,7 @@ void CRebaseDlg::AddLogString(CString str)
 
 int CRebaseDlg::DoRebase()
 {	
+	CString cmd,out;
 	if(m_CurrentRebaseIndex <0)
 		return 0;
 	if(m_CurrentRebaseIndex >= m_CommitList.GetItemCount() )
@@ -680,7 +688,29 @@ int CRebaseDlg::DoRebase()
 	{
 	case CTGitPath::LOGACTIONS_REBASE_PICK:
 		AddLogString(CString(_T("Pick "))+pRev->m_CommitHash);
-		pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+		cmd.Format(_T("git.exe cherry-pick %s"),pRev->m_CommitHash);
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			AddLogString(out);
+			CTGitPathList list;
+			if(g_Git.ListConflictFile(list))
+			{
+				AddLogString(_T("Get conflict files fail"));
+				return -1;
+			}
+			if(list.GetCount() == 0 )
+			{
+				pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+				break;
+			}
+
+			this->m_RebaseStage = REBASE_CONFLICT;
+			return -1;	
+		}else
+		{
+			AddLogString(out);
+			pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+		}
 		break;
 	case CTGitPath::LOGACTIONS_REBASE_SQUASH:
 		break;
@@ -738,12 +768,41 @@ int CRebaseDlg::RebaseThread()
 				break;
 			}
 		}
-		this->UpdateCurrentStatus();
+		this->PostMessage(MSG_REBASE_UPDATE_UI);
+		//this->UpdateCurrentStatus();
 	}
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
-	this->UpdateCurrentStatus();
-	this->SetControlEnable();
-	this->SetContinueButtonText();
+	this->PostMessage(MSG_REBASE_UPDATE_UI);
 	return ret;
+}
+
+void CRebaseDlg::ListConflictFile()
+{
+	this->m_FileListCtrl.DeleteAllItems();	
+	CTGitPathList list;
+	CTGitPath path;
+	list.AddPath(path);
+
+	this->m_FileListCtrl.GetStatus(list);
+	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED,CTGitPath::LOGACTIONS_UNMERGED);
+	if( this->m_FileListCtrl.GetItemCount() == 0 )
+	{
+		
+	}
+}
+
+LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
+{
+	UpdateCurrentStatus();
+	switch(m_RebaseStage)
+	{
+	case REBASE_CONFLICT:
+		ListConflictFile();			
+		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
+		break;
+	default:
+		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+	}	
+	return 0;
 }
