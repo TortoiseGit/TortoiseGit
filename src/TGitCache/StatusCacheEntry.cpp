@@ -61,7 +61,7 @@ bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(m_lastWriteTime);
 	WRITEVALUETOFILE(m_bSet);
 	WRITEVALUETOFILE(m_bSVNEntryFieldSet);
-	WRITEVALUETOFILE(m_commitRevision);
+	CStringA srev(m_commitRevision); WRITESTRINGTOFILE(srev);
 	WRITESTRINGTOFILE(m_sUrl);
 	WRITESTRINGTOFILE(m_sOwner);
 	WRITESTRINGTOFILE(m_sAuthor);
@@ -92,7 +92,19 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_lastWriteTime);
 		LOADVALUEFROMFILE(m_bSet);
 		LOADVALUEFROMFILE(m_bSVNEntryFieldSet);
-		LOADVALUEFROMFILE(m_commitRevision);
+		LOADVALUEFROMFILE(value);
+		if (value != 0)
+		{
+			CStringA s;
+			if (fread(s.GetBuffer(value+1), sizeof(char), value, pFile)!=value)
+			{
+				s.ReleaseBuffer(0);
+				m_commitRevision.Empty();
+				return false;
+			}
+			s.ReleaseBuffer(value);
+			m_commitRevision = s;
+		}
 		LOADVALUEFROMFILE(value);
 		if (value != 0)
 		{
@@ -167,8 +179,7 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 		m_GitStatus = *pGitStatus;
 
 		// Currently we don't deep-copy the whole entry value, but we do take a few members
-#if 0
-        if(pGitStatus->entry != NULL)
+/*        if(pGitStatus->entry != NULL)
 		{
 			m_sUrl = pGitStatus->entry->url;
 			m_commitRevision = pGitStatus->entry->cmt_rev;
@@ -179,14 +190,13 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 			if (pGitStatus->entry->present_props)
 				m_sPresentProps = pGitStatus->entry->present_props;
 		}
-		else
+		else*/
 		{
 			m_sUrl.Empty();
-			m_commitRevision = 0;
+			m_commitRevision = GIT_INVALID_REVNUM;
 			m_bSVNEntryFieldSet = false;
 		}
-		m_GitStatus.entry = NULL;
-#endif
+//		m_GitStatus.entry = NULL;
 	}
 	m_discardAtTime = GetTickCount()+cachetimeout;
 	m_bSet = true;
@@ -219,7 +229,7 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 	if(m_bSVNEntryFieldSet)
 	{
 		response.m_status = m_GitStatus;
-//		response.m_entry.cmt_rev = m_commitRevision;
+		wcscpy_s(response.m_entry.cmt_rev, 41, m_commitRevision.GetString());
 
 		// There is no point trying to set these pointers here, because this is not 
 		// the process which will be using the data.

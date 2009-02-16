@@ -429,7 +429,8 @@ BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserDat
 
 	s.author = Stat->authors.GetString(NULL);
 	s.url = Stat->urls.GetString(NULL);
-//	s.rev = -1;
+	if (pFile->sha1)
+		s.rev = ConvertHashToRevnum(pFile->sha1);
 	s.owner = Stat->owners.GetString(NULL);
 
 	s.status = git_wc_status_none;

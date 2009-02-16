@@ -78,7 +78,7 @@ typedef struct FileStatusCacheEntry
 	const char*				url;		///< points to a (possibly) shared value
 	const char*				owner;		///< points to a (possible) lock owner
 	bool					needslock;
-	//git_revnum_t			rev;
+	git_revnum_t			rev;
 	int						askedcounter;
 	//git_lock_t *			lock;
 	bool					tree_conflict;

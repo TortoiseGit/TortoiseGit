@@ -453,6 +453,10 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
+				RelativePath="..\TGitCache\CacheInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath="ColumnProvider.cpp"
 				>
 			</File>

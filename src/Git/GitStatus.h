@@ -50,6 +50,15 @@ typedef enum
 typedef CString git_revnum_t;
 typedef int git_error_t;
 
+typedef struct git_wc_entry_t
+{
+	// url in repository
+	const char *url;
+
+	TCHAR cmt_rev[41];
+} git_wc_entry_t;
+
+
 typedef struct git_wc_status2_t
 { 
   /** The status of the entries text. */
@@ -57,6 +66,8 @@ typedef struct git_wc_status2_t
 
   /** The status of the entries properties. */
   git_wc_status_kind prop_status;
+
+  //git_wc_entry_t *entry;
 }git_wc_status2;
 
 #define MAX_STATUS_STRING_LENGTH		256

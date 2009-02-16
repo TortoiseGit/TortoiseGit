@@ -137,18 +137,16 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		{
 		case ShellCache::exe:
 			{
-#if 0
 				TSVNCacheResponse itemStatus;
 				SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 				if (m_remoteCacheLink.GetStatusFromRemoteCache(CTGitPath(pPath), &itemStatus, true))
 				{
 					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
-					if ((itemStatus.m_kind == git_node_file)&&(status == git_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))
+/*					if ((itemStatus.m_kind == git_node_file)&&(status == git_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))
 						readonlyoverlay = true;
 					if (itemStatus.m_owner[0]!=0)
-						lockedoverlay = true;
+						lockedoverlay = true;*/
 				}
-#endif
 			}
 			break;
 		case ShellCache::dll:
@@ -207,6 +205,10 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					lockedoverlay = true;
 			}
 
+			// index based version does not enumerate unversioned files, so default to unversioned
+			if (g_ShellCache.GetCacheType() == ShellCache::dll
+				&& status == git_wc_status_none && g_ShellCache.HasSVNAdminDir(pPath, true))
+				status = git_wc_status_unversioned;
 			break;
 		default:
 		case ShellCache::none:
@@ -243,11 +245,6 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	//as it seems that if one handler returns S_OK then that handler is used, no matter
 	//if other handlers would return S_OK too (they're never called on my machine!)
 	//So we return S_OK for ONLY ONE handler!
-
-	// TODO: not sure this should be here. if anywhere it should be in case 'dll' above
-	//       because if overlay type 'none' is selected we don't want this to change status to unversioned (which may have overlay)
-	if(g_ShellCache.HasSVNAdminDir(pPath, true) && status == git_wc_status_none)
-		status = git_wc_status_unversioned;
 
 	switch (status)
 	{

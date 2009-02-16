@@ -204,7 +204,7 @@ protected:
 	stdstring itemshorturl;
 	stdstring ignoredprops;
 	stdstring owner;
-//	git_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
+	git_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
 	git_wc_status_kind	filestatus;
 	std::map<UINT, HBITMAP> bitmaps;
 

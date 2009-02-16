@@ -153,11 +153,7 @@ public:
 			cachetypeticker = GetTickCount();
 			cachetype.read();
 		}
-		//return CacheType(DWORD((cachetype)));
-		/*TEMP: until TGitCache done*/
-//		if(CGit::IsVista())
-//			return none;
-		return CacheType(DWORD((cachetype))) == exe ? dll : CacheType(DWORD((cachetype)));
+		return CacheType(DWORD((cachetype)));
 	}
 	DWORD BlockStatus()
 	{

@@ -21,8 +21,6 @@
 #include "ShellExt.h"
 #include "..\TGitCache\CacheInterface.h"
 #include "TGitPath.h"
-#define GetCachePipeName() _T("HH")
-#define GetCacheCommandPipeName() _T("CC")
 
 CRemoteCacheLink::CRemoteCacheLink(void) 
 	: m_hPipe(INVALID_HANDLE_VALUE)
@@ -307,17 +305,17 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCache
 
 	if (fSuccess)
 	{
-/*		if(nBytesRead == sizeof(TSVNCacheResponse))
+		if(nBytesRead == sizeof(TSVNCacheResponse))
 		{
 			// This is a full response - we need to fix-up some pointers
-			pReturnedStatus->m_status.entry = &pReturnedStatus->m_entry;
-			pReturnedStatus->m_entry.url = pReturnedStatus->m_url;
+//			pReturnedStatus->m_status.entry = &pReturnedStatus->m_entry;
+//			pReturnedStatus->m_entry.url = pReturnedStatus->m_url;
 		}
 		else
 		{
-			pReturnedStatus->m_status.entry = NULL;
+//			pReturnedStatus->m_status.entry = NULL;
 		}
-*/
+
 		return true;
 	}
 	ClosePipe();

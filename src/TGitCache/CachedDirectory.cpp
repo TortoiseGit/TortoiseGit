@@ -25,8 +25,8 @@
 
 CCachedDirectory::CCachedDirectory(void)
 {
-	m_entriesFileTime = 0;
-	m_propsFileTime = 0;
+	m_indexFileTime = 0;
+//	m_propsFileTime = 0;
 	m_currentStatusFetchingPathTicks = 0;
 	m_bCurrentFullStatusValid = false;
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
@@ -42,8 +42,8 @@ CCachedDirectory::CCachedDirectory(const CTGitPath& directoryPath)
 	ATLASSERT(directoryPath.IsDirectory() || !PathFileExists(directoryPath.GetWinPath()));
 
 	m_directoryPath = directoryPath;
-	m_entriesFileTime = 0;
-	m_propsFileTime = 0;
+	m_indexFileTime = 0;
+//	m_propsFileTime = 0;
 	m_currentStatusFetchingPathTicks = 0;
 	m_bCurrentFullStatusValid = false;
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
@@ -88,8 +88,8 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 			WRITEVALUETOFILE(status);
 		}
 	}
-	WRITEVALUETOFILE(m_entriesFileTime);
-	WRITEVALUETOFILE(m_propsFileTime);
+	WRITEVALUETOFILE(m_indexFileTime);
+//	WRITEVALUETOFILE(m_propsFileTime);
 	value = m_directoryPath.GetWinPathString().GetLength();
 	WRITEVALUETOFILE(value);
 	if (value)
@@ -156,8 +156,8 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				m_childDirectories[CTGitPath(sPath)] = status;
 			}
 		}
-		LOADVALUEFROMFILE(m_entriesFileTime);
-		LOADVALUEFROMFILE(m_propsFileTime);
+		LOADVALUEFROMFILE(m_indexFileTime);
+//		LOADVALUEFROMFILE(m_propsFileTime);
 		LOADVALUEFROMFILE(value);
 		if (value > MAX_PATH)
 			return false;
@@ -195,43 +195,48 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	{
 		bRequestForSelf = true;
 	}
-
+//OutputDebugStringA("GetStatusForMember: ");OutputDebugStringW(path.GetWinPathString());OutputDebugStringA("\r\n");
 	// In all most circumstances, we ask for the status of a member of this directory.
 	ATLASSERT(m_directoryPath.IsEquivalentToWithoutCase(path.GetContainingDirectory()) || bRequestForSelf);
 
-	// Check if the entries file has been changed
-	CTGitPath entriesFilePath(m_directoryPath);
-	CTGitPath propsDirPath(m_directoryPath);
+	CString sProjectRoot;
+	const BOOL bIsVersionedPath = m_directoryPath.HasAdminDir(&sProjectRoot);
+
+	// Check if the index file has been changed
+	CTGitPath indexFilePath(bIsVersionedPath ? sProjectRoot : m_directoryPath);
+//	CTGitPath propsDirPath(m_directoryPath);
 	if (g_GitAdminDir.IsVSNETHackActive())
 	{
-		entriesFilePath.AppendPathString(g_GitAdminDir.GetVSNETAdminDirName() + _T("\\entries"));
-		propsDirPath.AppendPathString(g_GitAdminDir.GetVSNETAdminDirName() + _T("\\dir-props"));
+		indexFilePath.AppendPathString(g_GitAdminDir.GetVSNETAdminDirName() + _T("\\index"));
+//		propsDirPath.AppendPathString(g_GitAdminDir.GetVSNETAdminDirName() + _T("\\dir-props"));
 	}
 	else
 	{
-		entriesFilePath.AppendPathString(g_GitAdminDir.GetAdminDirName() + _T("\\entries"));
-		propsDirPath.AppendPathString(g_GitAdminDir.GetAdminDirName() + _T("\\dir-props"));
+		indexFilePath.AppendPathString(g_GitAdminDir.GetAdminDirName() + _T("\\index"));
+//		propsDirPath.AppendPathString(g_GitAdminDir.GetAdminDirName() + _T("\\dir-props"));
 	}
-	if ( (m_entriesFileTime == entriesFilePath.GetLastWriteTime()) && ((entriesFilePath.GetLastWriteTime() == 0) || (m_propsFileTime == propsDirPath.GetLastWriteTime())) )
+	if ( (m_indexFileTime == indexFilePath.GetLastWriteTime()) /*&& ((indexFilePath.GetLastWriteTime() == 0) || (m_propsFileTime == propsDirPath.GetLastWriteTime()))*/ )
 	{
-		m_entriesFileTime = entriesFilePath.GetLastWriteTime();
-		if (m_entriesFileTime)
-			m_propsFileTime = propsDirPath.GetLastWriteTime();
+//		m_indexFileTime = indexFilePath.GetLastWriteTime();
+//		if (m_indexFileTime)
+//			m_propsFileTime = propsDirPath.GetLastWriteTime();
 
-		if(m_entriesFileTime == 0)
+		//if(m_indexFileTime == 0)
+		// a newly created project (without commits) has no index file but we still want it to count as versioned
+		if(m_indexFileTime == 0 && !bIsVersionedPath)
 		{
 			// We are a folder which is not in a working copy
 			bThisDirectoryIsUnversioned = true;
 			m_ownStatus.SetStatus(NULL);
 
-			// If a user removes the .svn directory, we get here with m_entryCache
+			// If a user removes the .git directory, we get here with m_entryCache
 			// not being empty, but still us being unversioned
 			if (!m_entryCache.empty())
 			{
 				m_entryCache.clear();
 			}
 			ATLASSERT(m_entryCache.empty());
-			
+
 			// However, a member *DIRECTORY* might be the top of WC
 			// so we need to ask them to get their own status
 			if(!path.IsDirectory())
@@ -245,6 +250,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				// So mark it for crawling, and let the crawler remove it
 				// later
 				CGitStatusCache::Instance().AddFolderForCrawling(path.GetContainingDirectory());
+
 				return CStatusCacheEntry();
 			}
 			else
@@ -252,9 +258,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				// If we're in the special case of a directory being asked for its own status
 				// and this directory is unversioned, then we should just return that here
 				if(bRequestForSelf)
-				{
 					return CStatusCacheEntry();
-				}
 			}
 		}
 
@@ -276,7 +280,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 						CGitStatusCache::Instance().AddFolderForCrawling(it->first);
 					}
 				}
-
 				return dirEntry->GetOwnStatus(bRecursive);
 			}
 		}
@@ -341,14 +344,14 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		// we already have (to save time and make the explorer
 		// more responsive in stress conditions).
 		// We leave the refreshing to the crawler.
-		if ((!bFetch)&&(m_entriesFileTime))
+		if ((!bFetch)&&(m_indexFileTime))
 		{
 			CGitStatusCache::Instance().AddFolderForCrawling(path.GetDirectory());
 			return CStatusCacheEntry();
 		}
 		AutoLocker lock(m_critSec);
-		m_entriesFileTime = entriesFilePath.GetLastWriteTime();
-		m_propsFileTime = propsDirPath.GetLastWriteTime();
+		m_indexFileTime = indexFilePath.GetLastWriteTime();
+//		m_propsFileTime = propsDirPath.GetLastWriteTime();
 		m_entryCache.clear();
 		strCacheKey = GetCacheKey(path);
 	}
@@ -361,7 +364,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 
 	if (g_GitAdminDir.IsAdminDirPath(path.GetWinPathString()))
 	{
-		// We're being asked for the status of an .SVN directory
+		// We're being asked for the status of an .git directory
 		// It's not worth asking for this
 		return CStatusCacheEntry();
 	}
@@ -395,9 +398,23 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				m_currentStatusFetchingPath = m_directoryPath;
 				m_currentStatusFetchingPathTicks = GetTickCount();
 			}
-			ATLTRACE(_T("svn_cli_stat for '%s' (req %s)\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
+			ATLTRACE(_T("git_enum_files for '%s' (req %s)\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
 
-			BOOL pErr = 0;//!wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
+			CString sProjectRoot;
+			m_directoryPath.HasAdminDir(&sProjectRoot);
+			ATLASSERT( !m_directoryPath.IsEmpty() );
+
+			LPCSTR lpszSubPath = NULL;
+			CStringA sSubPath;
+			CString s = m_directoryPath.GetDirectory().GetWinPathString();
+			if (s.GetLength() > sProjectRoot.GetLength())
+			{
+				sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+				lpszSubPath = sSubPath;
+			}
+//MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
+//OutputDebugStringA("###");OutputDebugStringW(sProjectRoot);OutputDebugStringA(" - ");OutputDebugStringA(sSubPath);OutputDebugStringA("\r\n");
+			BOOL pErr = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath, &GetStatusCallback, this);
 
 			/*git_error_t* pErr = svn_client_status4 (
 				NULL,
@@ -418,7 +435,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				AutoLocker pathlock(m_critSecPath);
 				m_currentStatusFetchingPath.Reset();
 			}
-			ATLTRACE(_T("svn_cli_stat finished for '%s'\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
+			ATLTRACE(_T("git_enum_files finished for '%s'\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
 			if(pErr)
 			{
 				// Handle an error
@@ -428,7 +445,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				// If we allow ourselves to fall on through, then folders will be asked
 				// for their own status, and will set themselves as unversioned, for the 
 				// benefit of future requests
-//				ATLTRACE("svn_cli_stat err: '%s'\n", pErr->message);
+//				ATLTRACE("git_enum_files err: '%s'\n", pErr->message);
 //				svn_error_clear(pErr);
 				// No assert here! Since we _can_ get here, an assertion is not an option!
 				// Reasons to get here: 
@@ -442,7 +459,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				}
 				else
 				{
-					ATLTRACE("svn_cli_stat error, assume none status\n");
+					ATLTRACE("git_enum_files error, assume none status\n");
 					// Since we only assume a none status here due to svn_client_status()
 					// returning an error, make sure that this status times out soon.
 					CGitStatusCache::Instance().m_folderCrawler.BlockPath(m_directoryPath, 2000);
@@ -453,7 +470,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		}
 		else
 		{
-			ATLTRACE("Skipped SVN status for unversioned folder\n");
+			ATLTRACE("Skipped git status for unversioned folder\n");
 		}
 	}
 	// Now that we've refreshed our SVN status, we can see if it's 
@@ -501,7 +518,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		{
 			if ((childDir->GetCurrentFullStatus() != git_wc_status_missing)||(pGitStatus==NULL)||(pGitStatus->text_status != git_wc_status_unversioned))
 				childDir->m_ownStatus.SetStatus(pGitStatus);
-//			childDir->m_ownStatus.SetKind(svn_node_dir);
+			childDir->m_ownStatus.SetKind(git_node_dir);
 		}
 	}
 	else
@@ -525,6 +542,8 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 			entry_it = m_entryCache.insert(entry_it, std::make_pair(cachekey, CStatusCacheEntry()));
 		}
 		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), path.IsReadOnly(), validuntil);
+		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
+		entry_it->second.SetKind(git_node_file);
 	}
 }
 
@@ -543,6 +562,147 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return m_directoryPath.GetWinPathString() + _T("\\") + cacheKey;
 }
 
+BOOL CCachedDirectory::GetStatusCallback(const struct wgFile_s *pFile, void *pUserData)
+{
+	CCachedDirectory* pThis = (CCachedDirectory*)pUserData;
+
+	const char *path = pFile->sFileName;
+
+	if (path == NULL)
+		return FALSE;
+
+	git_wc_status2_t _status;
+	git_wc_status2_t *status = &_status;
+
+	if ((pFile->nFlags & WGFF_Directory) && pFile->nStatus == WGFS_Unknown)
+		status->prop_status = status->text_status = git_wc_status_incomplete;
+	else
+		status->prop_status = status->text_status = GitStatusFromWingit(pFile->nStatus);
+//if (pFile->nStatus > WGFS_Normal) {CStringA s; s.Format("==>%s %d\r\n",pFile->sFileName,pFile->nStatus); OutputDebugStringA(s);}
+	CTGitPath svnPath;
+
+//	if(status->entry)
+	{
+		//if ((status->text_status != git_wc_status_none)&&(status->text_status != git_wc_status_missing))
+			svnPath.SetFromGit(path, pFile->nFlags & WGFF_Directory);
+		/*else
+			svnPath.SetFromGit(path);*/
+
+		if (pFile->nFlags & WGFF_Directory)
+		{
+			if ( !svnPath.IsEquivalentToWithoutCase(pThis->m_directoryPath) )
+			{
+				if (pThis->m_bRecursive)
+				{
+					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
+//OutputDebugStringA("AddFolderCrawl: ");OutputDebugStringW(svnPath.GetWinPathString());OutputDebugStringA("\r\n");
+					CGitStatusCache::Instance().AddFolderForCrawling(svnPath);
+				}
+
+				// Make sure we know about this child directory
+				// This initial status value is likely to be overwritten from below at some point
+				git_wc_status_kind s = GitStatus::GetMoreImportant(status->text_status, status->prop_status);
+				CCachedDirectory * cdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(svnPath);
+				if (cdir)
+				{
+					// This child directory is already in our cache!
+					// So ask this dir about its recursive status
+					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
+					AutoLocker lock(pThis->m_critSec);
+					pThis->m_childDirectories[svnPath] = st;
+				}
+				else
+				{
+					// the child directory is not in the cache. Create a new entry for it in the cache which is
+					// initially 'unversioned'. But we added that directory to the crawling list above, which
+					// means the cache will be updated soon.
+					CGitStatusCache::Instance().GetDirectoryCacheEntry(svnPath);
+					AutoLocker lock(pThis->m_critSec);
+					pThis->m_childDirectories[svnPath] = s;
+				}
+			}
+		}
+		else
+		{
+			// Keep track of the most important status of all the files in this directory
+			// Don't include subdirectories in this figure, because they need to provide their 
+			// own 'most important' value
+			pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status->text_status);
+			pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status->prop_status);
+			if (((status->text_status == git_wc_status_unversioned)||(status->text_status == git_wc_status_none))
+				&&(CGitStatusCache::Instance().IsUnversionedAsModified()))
+			{
+				// treat unversioned files as modified
+				if (pThis->m_mostImportantFileStatus != git_wc_status_added)
+					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_modified);
+			}
+		}
+	}
+#if 0
+	else
+	{
+		svnPath.SetFromGit(path);
+		// Subversion returns no 'entry' field for versioned folders if they're
+		// part of another working copy (nested layouts).
+		// So we have to make sure that such an 'unversioned' folder really
+		// is unversioned.
+		if (((status->text_status == git_wc_status_unversioned)||(status->text_status == git_wc_status_missing))&&(!svnPath.IsEquivalentToWithoutCase(pThis->m_directoryPath))&&(svnPath.IsDirectory()))
+		{
+			if (svnPath.HasAdminDir())
+			{
+				CGitStatusCache::Instance().AddFolderForCrawling(svnPath);
+				// Mark the directory as 'versioned' (status 'normal' for now).
+				// This initial value will be overwritten from below some time later
+				{
+					AutoLocker lock(pThis->m_critSec);
+					pThis->m_childDirectories[svnPath] = git_wc_status_normal;
+				}
+				// Make sure the entry is also in the cache
+				CGitStatusCache::Instance().GetDirectoryCacheEntry(svnPath);
+				// also mark the status in the status object as normal
+				status->text_status = git_wc_status_normal;
+			}
+		}
+		else if (status->text_status == git_wc_status_external)
+		{
+			CGitStatusCache::Instance().AddFolderForCrawling(svnPath);
+			// Mark the directory as 'versioned' (status 'normal' for now).
+			// This initial value will be overwritten from below some time later
+			{
+				AutoLocker lock(pThis->m_critSec);
+				pThis->m_childDirectories[svnPath] = git_wc_status_normal;
+			}
+			// we have added a directory to the child-directory list of this
+			// directory. We now must make sure that this directory also has
+			// an entry in the cache.
+			CGitStatusCache::Instance().GetDirectoryCacheEntry(svnPath);
+			// also mark the status in the status object as normal
+			status->text_status = git_wc_status_normal;
+		}
+		else
+		{
+			if (svnPath.IsDirectory())
+			{
+				AutoLocker lock(pThis->m_critSec);
+				pThis->m_childDirectories[svnPath] = GitStatus::GetMoreImportant(status->text_status, status->prop_status);
+			}
+			else if ((CGitStatusCache::Instance().IsUnversionedAsModified())&&(status->text_status != git_wc_status_missing))
+			{
+				// make this unversioned item change the most important status of this
+				// folder to modified if it doesn't already have another status
+				if (pThis->m_mostImportantFileStatus != git_wc_status_added)
+					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_modified);
+			}
+		}
+	}
+#endif
+
+	pThis->AddEntry(svnPath, status);
+
+	return FALSE;
+}
+
+#if 0
 git_error_t * CCachedDirectory::GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status)
 {
 	CCachedDirectory* pThis = (CCachedDirectory*)baton;
@@ -552,7 +712,6 @@ git_error_t * CCachedDirectory::GetStatusCallback(void *baton, const char *path,
 		
 	CTGitPath svnPath;
 
-#if 0
 	if(status->entry)
 	{
 		if ((status->text_status != git_wc_status_none)&&(status->text_status != git_wc_status_missing))
@@ -665,11 +824,12 @@ git_error_t * CCachedDirectory::GetStatusCallback(void *baton, const char *path,
 			}
 		}
 	}
-#endif
+
 	pThis->AddEntry(svnPath, status);
 
 	return 0;
 }
+#endif
 
 bool 
 CCachedDirectory::IsOwnStatusValid() const

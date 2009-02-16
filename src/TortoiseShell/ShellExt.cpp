@@ -282,7 +282,7 @@ UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*
 	if (wFunc == FO_COPY)
 		return IDYES;	// copying is not a problem for us
 
-//	m_remoteCacheLink.ReleaseLockForPath(CTSVNPath(pszSrcFile));
+	m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
 	// we could now wait a little bit to give the cache time to release the handles.
 	// but the explorer/shell already retries any action for about two seconds
 	// if it first fails. So if the cache hasn't released the handle yet, the explorer
