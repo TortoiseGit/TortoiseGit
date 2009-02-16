@@ -241,8 +241,7 @@ out everything for now, leaving these enabled as they are would make the install
 -->
 			  <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
 
-<!--              <File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
--->
+              <File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
               <File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
               <File Id="F__websiteurl" ShortName="WEBSITE.URL" Name="Website.url" Source="include\Website.url" DiskId="1" />
 <!--
