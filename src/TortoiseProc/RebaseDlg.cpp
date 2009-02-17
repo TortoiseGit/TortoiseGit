@@ -48,6 +48,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
     ON_BN_CLICKED(IDC_EDIT_ALL, &CRebaseDlg::OnBnClickedEditAll)
     ON_BN_CLICKED(IDC_REBASE_SPLIT, &CRebaseDlg::OnBnClickedRebaseSplit)
 	ON_BN_CLICKED(IDC_REBASE_CONTINUE,OnBnClickedContinue)
+	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
 	ON_WM_SIZE()
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
@@ -469,6 +470,20 @@ int CRebaseDlg::StartRebase()
 	{
 		return -1;
 	}
+	
+	cmd.Format(_T("git.exe rev-parse %s"),this->m_UpstreamCtrl.GetString());
+	if(g_Git.Run(cmd,&this->m_OrigUpstreamHash,CP_UTF8))
+	{
+		this->AddLogString(m_OrigUpstreamHash);
+		return -1;
+	}
+
+	cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&this->m_OrigBranchHash,CP_UTF8))
+	{
+		this->AddLogString(m_OrigBranchHash);
+		return -1;
+	}
 
 	this->AddLogString(_T("Start Rebase\r\n"));
 	return 0;
@@ -480,6 +495,24 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(CheckRebaseCondition())
 			return ;
 		m_RebaseStage = REBASE_START;
+	}
+
+	if( m_RebaseStage == REBASE_FINISH )
+	{
+		CString cmd,out;
+		cmd.Format(_T("git branch -f %s"),this->m_BranchCtrl.GetString());
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			AddLogString(out);
+			return ;
+		}
+		cmd.Format(_T("git reset --hard %s"),this->m_OrigUpstreamHash);
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			AddLogString(out);
+			return ;
+		}
+		OnOK();
 	}
 
 	if( m_RebaseStage == REBASE_CONFLICT )
@@ -835,4 +868,27 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 	}	
 	return 0;
+}
+
+void CRebaseDlg::OnBnClickedAbort()
+{
+	CString cmd,out;
+	if(m_OrigUpstreamHash.IsEmpty())
+	{
+		this->OnCancel();
+	}
+	cmd.Format(_T("git reset --hard %s"),this->m_OrigUpstreamHash);
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return ;
+	}
+	
+	cmd.Format(_T("git checkout -f %s"),this->m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return ;
+	}
+	this->OnCancel();
 }
