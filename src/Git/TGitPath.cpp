@@ -1865,31 +1865,34 @@ CTGitPath * CTGitPathList::LookForGitPath(CString path)
 	}
 	return NULL;
 }
-
-CString CTGitPath::GetActionName()
+CString CTGitPath::GetActionName(int action)
 {
-	if(m_Action  & CTGitPath::LOGACTIONS_ADDED)
+	if(action  & CTGitPath::LOGACTIONS_ADDED)
 		return _T("Added");
-	if(m_Action  & CTGitPath::LOGACTIONS_DELETED)
+	if(action  & CTGitPath::LOGACTIONS_DELETED)
 		return _T("Deleted");
-	if(m_Action  & CTGitPath::LOGACTIONS_UNMERGED)
+	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
 		return _T("Conflict");
-	if(m_Action  & CTGitPath::LOGACTIONS_MODIFIED)
+	if(action  & CTGitPath::LOGACTIONS_MODIFIED)
 		return _T("Modified");
-	if(m_Action  & CTGitPath::LOGACTIONS_REPLACED)
+	if(action  & CTGitPath::LOGACTIONS_REPLACED)
 		return _T("Rename");
-	if(m_Action  & CTGitPath::LOGACTIONS_COPY)
+	if(action  & CTGitPath::LOGACTIONS_COPY)
 		return _T("Copy");
-	if(m_Action & CTGitPath::LOGACTIONS_REBASE_EDIT)
+	if(action & CTGitPath::LOGACTIONS_REBASE_EDIT)
 		return _T("Edit");
-	if(m_Action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
+	if(action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
 		return _T("Squash");
-	if(m_Action & CTGitPath::LOGACTIONS_REBASE_PICK)
+	if(action & CTGitPath::LOGACTIONS_REBASE_PICK)
 		return _T("Pick");
-	if(m_Action & CTGitPath::LOGACTIONS_REBASE_SKIP)
+	if(action & CTGitPath::LOGACTIONS_REBASE_SKIP)
 		return _T("Skip");
 
 	return _T("Unknown");
+}
+CString CTGitPath::GetActionName()
+{
+	return GetActionName(m_Action);
 }
 
 int CTGitPathList::GetAction()

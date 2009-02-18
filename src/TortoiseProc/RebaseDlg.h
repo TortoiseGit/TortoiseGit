@@ -37,6 +37,7 @@ public:
 		REBASE_ABORT,
 		REBASE_FINISH,
 		REBASE_CONFLICT,
+		REBASE_EDIT,
 	};
 
 protected:
@@ -74,6 +75,9 @@ protected:
 
 	CString m_OrigBranchHash;
 	CString m_OrigUpstreamHash;
+
+	int VerifyNoConflict();
+	CString GetRebaseModeName(int rebasemode);
 
 public:
    

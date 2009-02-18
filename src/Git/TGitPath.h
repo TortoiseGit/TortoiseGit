@@ -44,6 +44,7 @@ public:
 	bool    m_Checked;
 	int	ParserAction(BYTE action);
 	CString GetActionName();
+	static CString GetActionName(int action);
 	/**
 	 * Set the path as an UTF8 string with forward slashes
 	 */
