@@ -38,6 +38,8 @@ public:
 		REBASE_FINISH,
 		REBASE_CONFLICT,
 		REBASE_EDIT,
+		REBASE_SQUASH_EDIT,
+		REBASE_SQUASH_CONFLICT,
 	};
 
 protected:
@@ -78,6 +80,10 @@ protected:
 
 	int VerifyNoConflict();
 	CString GetRebaseModeName(int rebasemode);
+
+	CString m_SquashMessage;
+
+	int CheckNextCommitIsSquash();
 
 public:
    

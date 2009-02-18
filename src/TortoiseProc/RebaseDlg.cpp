@@ -177,6 +177,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	FetchLogList();
 	SetContinueButtonText();
+	this->SetControlEnable();
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -531,13 +532,24 @@ void CRebaseDlg::OnBnClickedContinue()
 		OnOK();
 	}
 
+	if( m_RebaseStage == REBASE_SQUASH_CONFLICT)
+	{
+		if(VerifyNoConflict())
+			return;
+		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		m_RebaseStage=REBASE_CONTINUE;
+		curRev->m_Action|=CTGitPath::LOGACTIONS_REBASE_DONE;
+		this->UpdateCurrentStatus();
+
+	}
+
 	if( m_RebaseStage == REBASE_CONFLICT )
 	{
 		if(VerifyNoConflict())
 			return;
 
 		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-	
+		
 		CString out =_T("");
 		CString cmd;
 		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash);
@@ -569,7 +581,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		
 	}
 
-	if( m_RebaseStage == REBASE_EDIT )
+	if( m_RebaseStage == REBASE_EDIT ||  m_RebaseStage == REBASE_SQUASH_EDIT )
 	{
 		CString str;
 		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
@@ -590,7 +602,10 @@ void CRebaseDlg::OnBnClickedContinue()
 	
 		CString out,cmd;
 		
-		cmd.Format(_T("git.exe commit --amend -F \"%s\""), tempfile);
+		if(  m_RebaseStage == REBASE_SQUASH_EDIT )
+			cmd.Format(_T("git.exe commit -F \"%s\""), tempfile);
+		else
+			cmd.Format(_T("git.exe commit --amend -F \"%s\""), tempfile);
 
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
@@ -619,6 +634,40 @@ void CRebaseDlg::OnBnClickedContinue()
 		CMessageBox::Show(NULL, _T("Create Rebase Thread Fail"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		SetControlEnable();
 	}
+}
+int CRebaseDlg::CheckNextCommitIsSquash()
+{
+	int index;
+	if(m_CommitList.m_IsOldFirst)
+		index=m_CurrentRebaseIndex+1;
+	else
+		index=m_CurrentRebaseIndex-1;
+
+	GitRev *curRev;
+	do
+	{
+		curRev=(GitRev*)m_CommitList.m_arShownList[index];
+		
+		if( curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH )
+			return 0;
+		if( curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SKIP)
+		{
+			if(m_CommitList.m_IsOldFirst)
+				index++;
+			else
+				index--;
+		}else
+			return -1;
+
+		if(index<0)
+			return -1;
+		if(index>= m_CommitList.GetItemCount())
+			return -1;
+
+	}while(curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SKIP);
+	
+	return -1;
+
 }
 int CRebaseDlg::GoNext()
 {
@@ -656,6 +705,7 @@ void CRebaseDlg::SetContinueButtonText()
 
 	case REBASE_START:
 	case REBASE_CONTINUE:
+	case REBASE_SQUASH_CONFLICT:
 		Text = _T("Continue");
 		break;
 
@@ -664,6 +714,10 @@ void CRebaseDlg::SetContinueButtonText()
 		break;
 	case REBASE_EDIT:
 		Text = _T("Amend");
+		break;
+
+	case REBASE_SQUASH_EDIT:
+		Text = _T("Commit");
 		break;
 
 	case REBASE_ABORT:
@@ -695,6 +749,7 @@ void CRebaseDlg::SetControlEnable()
 	case REBASE_FINISH:
 	case REBASE_CONFLICT:
 	case REBASE_EDIT:
+	case REBASE_SQUASH_CONFLICT:
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
@@ -805,60 +860,85 @@ int CRebaseDlg::DoRebase()
 	if(m_CurrentRebaseIndex >= m_CommitList.GetItemCount() )
 		return 0;
 
-	this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-
 	GitRev *pRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
 	int mode=pRev->m_Action & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
-	switch(mode)
+	CString nocommit;
+
+	if( mode== CTGitPath::LOGACTIONS_REBASE_SKIP)
 	{
-	case CTGitPath::LOGACTIONS_REBASE_EDIT:
-	case CTGitPath::LOGACTIONS_REBASE_PICK:	
-		AddLogString(CTGitPath::GetActionName(mode)+pRev->m_CommitHash);
-		AddLogString(pRev->m_Subject);
-		cmd.Format(_T("git.exe cherry-pick %s"),pRev->m_CommitHash);
-		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
-			AddLogString(out);
-			CTGitPathList list;
-			if(g_Git.ListConflictFile(list))
-			{
-				AddLogString(_T("Get conflict files fail"));
-				return -1;
-			}
-			if(list.GetCount() == 0 )
-			{
-				if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
-					pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
-				else
-					return -1; // Edit return -1 to stop rebase. 
-				break;
-			}
-
-			this->m_RebaseStage = REBASE_CONFLICT;
-			return -1;	
-
-		}else
-		{
-			AddLogString(out);
-			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
-				pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
-			else
-			{
-				this->m_RebaseStage = REBASE_EDIT;
-				return -1; // Edit return -1 to stop rebase. 
-			}
-		}
-		break;
-	case CTGitPath::LOGACTIONS_REBASE_SQUASH:
-		break;
-	case CTGitPath::LOGACTIONS_REBASE_SKIP:
 		pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
 		return 0;
-		break;
-	default:
-		AddLogString(CString(_T("Unknow Action for "))+pRev->m_CommitHash);
-		break;
 	}
+	
+	if( mode != CTGitPath::LOGACTIONS_REBASE_PICK )
+	{
+		this->m_SquashMessage+= pRev->m_Subject;
+		this->m_SquashMessage+= _T("\n");
+		this->m_SquashMessage+= pRev->m_Body;
+	}
+	else
+		this->m_SquashMessage.Empty();
+
+	if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+		nocommit=_T(" --no-commit ");
+
+	AddLogString(CTGitPath::GetActionName(mode)+_T(":")+pRev->m_CommitHash);
+	AddLogString(pRev->m_Subject);
+	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash);
+
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		CTGitPathList list;
+		if(g_Git.ListConflictFile(list))
+		{
+			AddLogString(_T("Get conflict files fail"));
+			return -1;
+		}
+		if(list.GetCount() == 0 )
+		{
+			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
+			{
+				pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+				return 0;
+			}
+			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
+				return -1; // Edit return -1 to stop rebase. 
+			
+			// Squash Case
+			if(CheckNextCommitIsSquash())
+			{   // no squash
+				// let user edit last commmit message
+				this->m_RebaseStage = REBASE_SQUASH_EDIT;
+				return -1;
+			}
+		}
+		if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+			m_RebaseStage = REBASE_SQUASH_CONFLICT;
+		else
+			m_RebaseStage = REBASE_CONFLICT;
+		return -1;	
+
+	}else
+	{
+		AddLogString(out);
+		if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
+		{
+			pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+			return 0;
+		}
+		if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
+			return -1; // Edit return -1 to stop rebase. 
+
+		// Squash Case
+		if(CheckNextCommitIsSquash())
+		{   // no squash
+			// let user edit last commmit message
+			this->m_RebaseStage = REBASE_SQUASH_EDIT;
+			return -1;
+		}
+	}
+	
 	return 0;
 }
 
@@ -940,6 +1020,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	switch(m_RebaseStage)
 	{
 	case REBASE_CONFLICT:
+	case REBASE_SQUASH_CONFLICT:
 		ListConflictFile();			
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
 		this->m_LogMessageCtrl.SetText(curRev->m_Subject+_T("\n")+curRev->m_Body);
@@ -947,6 +1028,10 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		this->m_LogMessageCtrl.SetText(curRev->m_Subject+_T("\n")+curRev->m_Body);
+		break;
+	case REBASE_SQUASH_EDIT:
+		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
+		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
 		break;
 	default:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
