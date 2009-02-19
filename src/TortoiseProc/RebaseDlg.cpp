@@ -537,6 +537,14 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(VerifyNoConflict())
 			return;
 		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		if(this->CheckNextCommitIsSquash())
+		{//next commit is not squash;
+			m_RebaseStage = REBASE_SQUASH_EDIT;
+			this->OnRebaseUpdateUI(0,0);
+			this->UpdateCurrentStatus();
+			return ;
+
+		}
 		m_RebaseStage=REBASE_CONTINUE;
 		curRev->m_Action|=CTGitPath::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
@@ -852,6 +860,18 @@ void CRebaseDlg::AddLogString(CString str)
 	this->m_wndOutputRebase.SendMessage(SCI_SETREADONLY, TRUE);
 }
 
+int CRebaseDlg::GetCurrentCommitID()
+{
+	if(m_CommitList.m_IsOldFirst)
+	{
+		return this->m_CurrentRebaseIndex+1;
+
+	}else
+	{
+		return m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
+	}
+}
+
 int CRebaseDlg::DoRebase()
 {	
 	CString cmd,out;
@@ -882,7 +902,9 @@ int CRebaseDlg::DoRebase()
 	if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
 		nocommit=_T(" --no-commit ");
 
-	AddLogString(CTGitPath::GetActionName(mode)+_T(":")+pRev->m_CommitHash);
+	CString log;
+	log.Format(_T("%s %d:%s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash);
+	AddLogString(log);
 	AddLogString(pRev->m_Subject);
 	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash);
 

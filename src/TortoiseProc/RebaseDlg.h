@@ -84,6 +84,7 @@ protected:
 	CString m_SquashMessage;
 
 	int CheckNextCommitIsSquash();
+	int GetCurrentCommitID();
 
 public:
    
