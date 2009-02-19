@@ -254,7 +254,8 @@ BEGIN
 	IDS_MENUFORMATPATCH		"Create Patch Serial"
 	IDS_MENUIMPORTPATCH		"Apply Patch Serial"
 	IDS_MENUCHERRYPICK		"Cherry Pick"
-	IDS_MENUFETCH			"Fetch"
+	IDS_MENUFETCH			"Fetch..."
+	IDS_MENUREBASE			"Rebase..."
 END
 
 STRINGTABLE 

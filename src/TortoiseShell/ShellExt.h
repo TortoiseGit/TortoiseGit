@@ -156,6 +156,7 @@ protected:
 		ShellMenuImportPatch,
 		ShellMenuCherryPick,
 		ShellMenuFetch,
+		ShellMenuRebase,
 		ShellMenuLastEntry			// used to mark the menu array end
 	};
 
