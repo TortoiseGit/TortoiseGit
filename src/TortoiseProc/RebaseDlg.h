@@ -58,6 +58,7 @@ protected:
 	void LoadBranchInfo();
 	void FetchLogList();
 	void SetAllRebaseAction(int action);
+	void OnCancel();
 
 	CRect				m_DlgOrigRect;
 	CRect				m_CommitListOrigRect;

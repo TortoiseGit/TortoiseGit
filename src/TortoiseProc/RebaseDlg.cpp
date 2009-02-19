@@ -1075,7 +1075,10 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	}	
 	return 0;
 }
-
+void CRebaseDlg::OnCancel()
+{
+	OnBnClickedAbort();
+}
 void CRebaseDlg::OnBnClickedAbort()
 {
 	CString cmd,out;
@@ -1099,5 +1102,6 @@ void CRebaseDlg::OnBnClickedAbort()
 		AddLogString(out);
 		return ;
 	}
-	this->OnCancel();
+	
+	__super::OnCancel();
 }
