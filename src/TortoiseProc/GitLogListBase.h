@@ -68,12 +68,13 @@ public:
 	BOOL m_IsIDReplaceAction;
 	BOOL m_IsOldFirst;
 	BOOL m_IsRebaseReplaceGraph;
-	BOOL m_IsEnableRebaseMenu;
+
 
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
 	BOOL m_bCancelled;
+	unsigned __int64 m_ContextMenuMask;
 
 	bool				m_hasWC;
 	GitRev				m_wcRev;
@@ -138,6 +139,7 @@ public:
 	ID_REBASE_SQUASH,
 	ID_REBASE_SKIP,
 	};
+	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
 	void CopySelectionToClipBoard(bool hashonly=FALSE);

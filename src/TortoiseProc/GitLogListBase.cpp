@@ -92,7 +92,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bExitThread=FALSE;
 	m_IsOldFirst = FALSE;
 	m_IsRebaseReplaceGraph = FALSE;
-	m_IsEnableRebaseMenu = FALSE;
+
 
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
@@ -111,6 +111,12 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	// get relative time display setting from registry
 	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
 	m_bRelativeTimes = (regRelativeTimes != 0);
+	m_ContextMenuMask = 0xFFFFFFFFFFFFFFFF;
+
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_PICK);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SQUASH);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -1015,13 +1021,21 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (popup.CreatePopupMenu())
 	{
 
-		if(this->m_IsEnableRebaseMenu)
-		{
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
 			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_OPEN);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
 			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_OPEN);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_EDIT))
 			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_OPEN);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SKIP))
 			popup.AppendMenuIcon(ID_REBASE_SKIP,   _T("SKIP"),   IDI_OPEN);
-		}
+		
+		if(m_ContextMenuMask&(GetContextMenuBit(ID_REBASE_SKIP)|GetContextMenuBit(ID_REBASE_EDIT)|
+			      GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
+			popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		if (GetSelectedCount() == 1)
 		{
@@ -1047,7 +1061,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if (m_hasWC)
 				{
-					popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE))
+						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 					// TODO:
 					// TortoiseMerge could be improved to take a /blame switch
 					// and then not 'cat' the files from a unified diff but
@@ -1056,8 +1071,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					// this feature is commented out.
 					//popup.AppendMenu(ID_BLAMECOMPARE, IDS_LOG_POPUP_BLAMECOMPARE, IDI_BLAME);
 				}
-				popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
-				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1))
+					popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
+
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPAREWITHPREVIOUS))
+					popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
@@ -1085,12 +1103,24 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			
 			CString str;
 			str.Format(_T("Reset %s to this"),g_Git.GetCurrentBranch());
-			popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
-			popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
-			popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
-			popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
-			popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
-			popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
+				popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
+				popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
+				popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
+				popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
+				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
+				popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);	
 			
 
 			popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -1100,12 +1130,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			bool bAddSeparator = false;
 			if (IsSelectionContinuous() || (GetSelectedCount() == 2))
 			{
-				popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO))
+					popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 			}
 			if (GetSelectedCount() == 2)
 			{
 				//popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
-				popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2))
+					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 				bAddSeparator = true;
 			}
 			if (m_hasWC)
@@ -1134,13 +1166,17 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		
 		if (GetSelectedCount() == 1)
 		{
-			popup.AppendMenuIcon(ID_COPYHASH, _T("Copy Commit Hash"));
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
+				popup.AppendMenuIcon(ID_COPYHASH, _T("Copy Commit Hash"));
 		}
 		if (GetSelectedCount() != 0)
 		{
-			popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
+				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
 		}
-		popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
+			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);

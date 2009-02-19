@@ -178,6 +178,13 @@ BOOL CRebaseDlg::OnInitDialog()
 	FetchLogList();
 	SetContinueButtonText();
 	this->SetControlEnable();
+
+	m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_CHERRY_PICK)|
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_SWITCHTOREV)|
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_RESET)|
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTREV)|
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTTOREV));
+
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -748,7 +755,11 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
-		this->m_CommitList.m_IsEnableRebaseMenu=TRUE;
+		//this->m_CommitList.m_IsEnableRebaseMenu=TRUE;
+		this->m_CommitList.m_ContextMenuMask |= m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP);
 		break;
 
 	case REBASE_START:
@@ -763,7 +774,11 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(FALSE);
-		this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
+		//this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
+		this->m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP));
 		break;
 	}
 
