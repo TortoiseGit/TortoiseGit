@@ -2232,14 +2232,14 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 						lv.mask = LVIF_GROUPID;
 						lv.iItem = i;
 						GetItem(&lv);
-#if 0
+
 						if (lv.iGroupId == group)
 						{
-							FileEntry * entry = GetListEntry(i);
+							CTGitPath * entry = (CTGitPath*)GetItemData(i);
 							if (entry)
 							{
-								bool bOldCheck = !!GetCheck(i);
-								//SetEntryCheck(entry, i, bCheck);
+								bool bOldCheck = entry->m_Checked;
+								SetEntryCheck(entry, i, bCheck);
 								if (bCheck != bOldCheck)
 								{
 									if (bCheck)
@@ -2249,7 +2249,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 								}
 							}
 						}
-#endif
+
 					}
 					GetStatisticsString();
 					NotifyCheck();

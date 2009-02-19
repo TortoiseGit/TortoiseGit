@@ -74,6 +74,7 @@ public:
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
 	BOOL m_bCancelled;
+
 	bool				m_hasWC;
 	GitRev				m_wcRev;
 	volatile LONG 		m_bThreadRunning;
