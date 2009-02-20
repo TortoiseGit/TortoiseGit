@@ -43,7 +43,8 @@ public:
 	{
 		none,
 		exe,
-		dll
+		dll,
+		dllFull,// same as dll except it uses commandline git tool with all status modes supported
 	};
 	ShellCache()
 	{
@@ -83,8 +84,8 @@ public:
 		getlocktopticker = cachetypeticker;
 		excludedasnormalticker = cachetypeticker;
 		excontextticker = cachetypeticker;
-		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUCREATEREPOS|MENUCLONE|MENUUPDATE|MENUCOMMIT);
-		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUCREATEREPOS|MENUCLONE|MENUUPDATE|MENUCOMMIT)>>32);
+		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
+		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
 		menumasklow_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumaskhigh_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumasklow_cu = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);
@@ -152,11 +153,7 @@ public:
 			cachetypeticker = GetTickCount();
 			cachetype.read();
 		}
-		//return CacheType(DWORD((cachetype)));
-		/*TEMP: until TGitCache done*/
-//		if(CGit::IsVista())
-//			return none;
-		return CacheType(DWORD((cachetype))) == exe ? dll : CacheType(DWORD((cachetype)));
+		return CacheType(DWORD((cachetype)));
 	}
 	DWORD BlockStatus()
 	{

@@ -48,7 +48,7 @@ void CGitStatusCache::Create()
 	TCHAR path2[MAX_PATH];
 	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
 	{
-		_tcscat_s(path, MAX_PATH, _T("\\TSVNCache"));
+		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
 		if (!PathIsDirectory(path))
 		{
 			if (CreateDirectory(path, NULL)==0)
@@ -148,7 +148,7 @@ bool CGitStatusCache::SaveCache()
 	TCHAR path[MAX_PATH];		//MAX_PATH ok here.
 	if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, path)==S_OK)
 	{
-		_tcscat_s(path, MAX_PATH, _T("\\TSVNCache"));
+		_tcscat_s(path, MAX_PATH, _T("\\TGitCache"));
 		if (!PathIsDirectory(path))
 			CreateDirectory(path, NULL);
 		_tcscat_s(path, MAX_PATH, _T("\\cache"));

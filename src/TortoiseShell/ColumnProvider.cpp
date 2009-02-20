@@ -24,7 +24,7 @@
 #include "UnicodeUtils.h"
 #include "GitStatus.h"
 #include "PathUtils.h"
-//#include "..\TSVNCache\CacheInterface.h"
+#include "..\TGitCache\CacheInterface.h"
 
 
 const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
@@ -342,15 +342,15 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 	case ShellCache::exe:
 		{
 			SecureZeroMemory(&itemStatus, sizeof(itemStatus));
-			if(m_remoteCacheLink.GetStatusFromRemoteCache(CTSVNPath(path), &itemStatus, true))
+			if(m_remoteCacheLink.GetStatusFromRemoteCache(CTGitPath(path), &itemStatus, true))
 			{
-				filestatus = SVNStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+				filestatus = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
 			}
 			else
 			{
 				filestatus = git_wc_status_none;
 				columnauthor.clear();
-				columnrev = 0;
+				columnrev = GIT_INVALID_REVNUM;
 				itemurl.clear();
 				itemshorturl.clear();
 				owner.clear();
@@ -359,8 +359,9 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 		}
 		break;
 	case ShellCache::dll:
+	case ShellCache::dllFull:
 		{
-			status = m_CachedStatus.GetFullStatus(CTSVNPath(path), bIsDir, TRUE);
+			status = m_CachedStatus.GetFullStatus(CTGitPath(path), bIsDir, TRUE);
 			filestatus = status->status;
 		}
 		break;
@@ -372,7 +373,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			else
 				filestatus = git_wc_status_none;
 			columnauthor.clear();
-			columnrev = 0;
+			columnrev = GIT_INVALID_REVNUM;
 			itemurl.clear();
 			itemshorturl.clear();
 			owner.clear();
@@ -422,7 +423,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			// Note: this will strip too much if such a folder is *below* the repository
 			// root - but it's called 'short url' and we're free to shorten it the way we
 			// like :)
-			ptr = _tcsstr(urlComponents.lpszUrlPath, _T("/trunk"));
+			/*ptr = _tcsstr(urlComponents.lpszUrlPath, _T("/trunk"));
 			if (ptr == NULL)
 				ptr = _tcsstr(urlComponents.lpszUrlPath, _T("\\trunk"));
 			if ((ptr == NULL)||((*(ptr+6) != 0)&&(*(ptr+6) != '/')&&(*(ptr+6) != '\\')))
@@ -441,7 +442,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			}
 			if (ptr)
 				itemshorturl = ptr;
-			else
+			else*/
 				itemshorturl = urlComponents.lpszUrlPath;
 		}
 		else 

@@ -99,6 +99,8 @@ static BOOL FindGitPath()
 		if ( FileExists(buf) )
 		{
 			// dir found
+			pfin[1] = 0;
+			CGit::ms_LastMsysGitDir = buf;
 			return TRUE;
 		}
 	}
@@ -112,31 +114,17 @@ static BOOL FindGitPath()
 
 CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
-BOOL g_IsWingitDllload = TRUE;
 
-LPBYTE wgGetRevisionID_safe(const char *pszProjectPath, const char *pszName)
-{
-	//if(g_IsWingitDllload)
-	//	return wgGetRevisionID(pszProjectPath,pszName);
-	//else
-	return NULL;
-}
+// contains system environment that should be used by child processes (RunAsync)
+// initialized by CheckMsysGitDir
+static LPTSTR l_processEnv = NULL;
 
-BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
-{
-	//if(g_IsWingitDllload)
-	//	return wgEnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
-	//else
-	//	return g_Git.EnumFiles(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
-	return FALSE;
-}
 
 BOOL CGit::IsVista()
 {
 
 	if( CRegStdWORD(_T("Software\\TortoiseGit\\CacheType") ) == 0)
 	{
-		g_IsWingitDllload=FALSE;
 		return TRUE;
 	}
 
@@ -154,40 +142,12 @@ BOOL CGit::IsVista()
 		return FALSE;
 }
 
-static void InitWinGitDll()
-{
-	__try
-	{
-
-		if( CGit::IsVista () )
-		{
-			g_IsWingitDllload=FALSE;
-			return;
-		}
-		if ( !wgInit() )
-		{
-				// TODO
-		}
-	}
-	__except(1)
-	{
-		g_IsWingitDllload=FALSE;
-		return;
-	}
-
-}
 CGit::CGit(void)
 {
-#if 0
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
 	m_CurrentDir.ReleaseBuffer();
-	// make sure git/bin is in PATH before wingit.dll gets (delay) loaded by wgInit()
-	if ( !CheckMsysGitDir() )
-	{
-		// TODO
-	}
-	InitWinGitDll();
-#endif
+
+	CheckMsysGitDir();
 }
 
 CGit::~CGit(void)
@@ -230,7 +190,10 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
-	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,NULL,NULL,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
+	LPTSTR pEnv = l_processEnv;
+	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
+
+	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;
 		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
@@ -255,6 +218,9 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 {
      //USES_CONVERSION;
 	 //str->Append(A2W_CP((LPCSTR)p,code));
+	if(str == NULL)
+		return ;
+
 	WCHAR * buf;
 
 	int len ;
@@ -425,14 +391,14 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask)
+int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask,CString *from,CString *to)
 {
 	CGitCall_ByteVector gitCall(CString(),&logOut);
-	return GetLog(&gitCall,hash,path,count,mask);
+	return GetLog(&gitCall,hash,path,count,mask,from,to);
 }
 
 //int CGit::GetLog(CGitCall* pgitCall, CString &hash,  CTGitPath *path ,int count,int mask)
-int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask)
+int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
 {
 
 	CString cmd;
@@ -479,6 +445,12 @@ int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, 
 	if(mask& CGit::LOG_INFO_FOLLOW)
 		param += _T(" --follow ");
 
+	if(from != NULL && to != NULL)
+	{
+		CString range;
+		range.Format(_T(" %s..%s "),*from,*to);
+		param += range;
+	}
 	param+=hash;
 
 	cmd.Format(_T("git.exe log %s -z --topo-order %s --parents --pretty=format:\""),
@@ -598,8 +570,6 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 
 git_revnum_t CGit::GetHash(CString &friendname)
 {
-	// NOTE: could replace this with wgGetRevisionID call
-
 	CString cmd;
 	CString out;
 	cmd.Format(_T("git.exe rev-parse %s" ),friendname);
@@ -787,6 +757,7 @@ BOOL CGit::CheckMsysGitDir()
 
 	_tputenv_s(_T("PATH"),path);
 
+	CString sOldPath = oldpath;
 	free(oldpath);
 
 
@@ -796,6 +767,12 @@ BOOL CGit::CheckMsysGitDir()
 	}
 	else
 	{
+#ifdef _TORTOISESHELL
+		l_processEnv = GetEnvironmentStrings();
+		// updated environment is now duplicated for use in CreateProcess, restore original PATH for current process
+		_tputenv_s(_T("PATH"),sOldPath);
+#endif
+
 		bInitialized = TRUE;
 		return true;
 	}
@@ -823,70 +800,97 @@ public:
 	void *			m_pUserData;
 
 	BYTE_VECTOR		m_DataCollector;
-	TStrCharMap		m_FileStatus;
 
 	virtual bool	OnOutputData(const BYTE* data, size_t size)
 	{
 		m_DataCollector.append(data,size);
 		while(true)
 		{
-			int found=m_DataCollector.findData((const BYTE*)"\n",1);
+			// lines from igit.exe are 0 terminated
+			int found=m_DataCollector.findData((const BYTE*)"",1);
 			if(found<0)
 				return false;
-			CStringA line;
-			char* pline=line.GetBuffer(found+1);
-			memcpy(pline,&*m_DataCollector.begin(),found);
-			pline[found]='\0';
-			line.ReleaseBuffer();
-			OnSingleLine(line);
-			m_DataCollector.erase(m_DataCollector.begin(),m_DataCollector.begin()+found+1);
+			OnSingleLine( (LPCSTR)&*m_DataCollector.begin() );
+			m_DataCollector.erase(m_DataCollector.begin(), m_DataCollector.begin()+found+1);
 		}
 		return false;//Should never reach this
 	}
 	virtual void	OnEnd()
 	{
-		for(TStrCharMap::iterator itFileStatus=m_FileStatus.begin();itFileStatus!=m_FileStatus.end();++itFileStatus)
-		{
-			wgFile_s fileStatus;
-			fileStatus.sFileName=itFileStatus->first;
-			switch(itFileStatus->second)
-			{
-			case 'C':	fileStatus.nStatus=WGFS_Modified;break;
-			case 'H':	fileStatus.nStatus=WGFS_Normal;break;
-			case 'R':	fileStatus.nStatus=WGFS_Deleted;break;
-			case '?':	fileStatus.nStatus=WGFS_Empty;break;//Other?
-			case 'K'://Todo: Killed?
-			case 'M'://Todo: What to do with this state? WGFS_Conflicted?
-			default://Unexpected status. Show as normal.
-				fileStatus.nStatus=WGFS_Normal;
-			}
-			fileStatus.sha1=NULL;//Unknown with this call
-			fileStatus.nFlags=0;//Never a directory with this call. Git doesnt track directories as such.
-			(*m_pEnumCb)(&fileStatus,m_pUserData);
-		}
 	}
-	bool OnSingleLine(CStringA line)
+
+	UINT HexChar(char ch)
+	{
+		if (ch >= '0' && ch <= '9')
+			return (UINT)(ch - '0');
+		else if (ch >= 'A' && ch <= 'F')
+			return (UINT)(ch - 'A') + 10;
+		else if (ch >= 'a' && ch <= 'f')
+			return (UINT)(ch - 'a') + 10;
+		else
+			return 0;
+	}
+
+	bool OnSingleLine(LPCSTR line)
 	{
 		//Parse single line
-		int space=line.Find(' ');
-		if(space<0)
+
+		wgFile_s fileStatus;
+
+		// file/dir type
+
+		fileStatus.nFlags = 0;
+		if (*line == 'D')
+			fileStatus.nFlags |= WGFF_Directory;
+		line += 2;
+
+		// status
+
+		fileStatus.nStatus = WGFS_Unknown;
+		switch (*line)
+		{
+		case 'N': fileStatus.nStatus = WGFS_Normal; break;
+		case 'M': fileStatus.nStatus = WGFS_Modified; break;
+		case 'S': fileStatus.nStatus = WGFS_Staged; break;
+		case 'A': fileStatus.nStatus = WGFS_Added; break;
+		case 'C': fileStatus.nStatus = WGFS_Conflicted; break;
+		case 'D': fileStatus.nStatus = WGFS_Deleted; break;
+		case 'I': fileStatus.nStatus = WGFS_Ignored; break;
+		case 'U': fileStatus.nStatus = WGFS_Unversioned; break;
+		case 'E': fileStatus.nStatus = WGFS_Empty; break;
+		}
+		line += 2;
+
+		// file sha1
+
+		BYTE sha1[20];
+		fileStatus.sha1 = NULL;
+		if ( !(fileStatus.nFlags & WGFF_Directory) )
+		{
+			for (int i=0; i<20; i++)
+			{
+				sha1[i] = (HexChar(line[0]) << 8) | HexChar(line[1]);
+				line += 2;
+			}
+
+			line++;
+		}
+
+		// filename
+		fileStatus.sFileName = line;
+
+		if ( (*m_pEnumCb)(&fileStatus,m_pUserData) )
 			return false;
-		char status=line[0];
-		CStringA path=line;
-		path=path.Mid(space+1);
-		m_FileStatus[path]=status;
+
 		return true;
 	}
-
-
-
-
 };
 
 BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
 {
-	if(*pszProjectPath=='\0')
+	if(!pszProjectPath || *pszProjectPath=='\0')
 		return FALSE;
+
 	CGitCall_EnumFiles W_GitCall(pszProjectPath,pszSubPath,nFlags,pEnumCb,pUserData);
 	CString cmd;
 
@@ -899,8 +903,77 @@ BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigne
 	GetCurrentDirectoryA(sizeof(W_szToDir)-1,W_szToDir);
 */
 	SetCurrentDir(CUnicodeUtils::GetUnicode(pszProjectPath));
-	cmd.Format(_T("git.exe ls-files -t -c -d -m"));// -- %s"),CUnicodeUtils::GetUnicode(pszProjectPath));
+
+	CString sMode;
+	if (nFlags)
+	{
+		if (nFlags & WGEFF_NoRecurse) sMode += _T("r");
+		if (nFlags & WGEFF_FullPath) sMode += _T("f");
+		if (nFlags & WGEFF_DirStatusDelta) sMode += _T("d");
+		if (nFlags & WGEFF_DirStatusAll) sMode += _T("D");
+		if (nFlags & WGEFF_EmptyAsNormal) sMode += _T("e");
+		if (nFlags & WGEFF_SingleFile) sMode += _T("s");
+	}
+	else
+	{
+		sMode = _T("-");
+	}
+
+	if (pszSubPath)
+		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), CUnicodeUtils::GetUnicode(pszProjectPath), sMode, CUnicodeUtils::GetUnicode(pszSubPath));
+	else
+		cmd.Format(_T("igit.exe \"%s\" status %s"), CUnicodeUtils::GetUnicode(pszProjectPath), sMode);
+
 	W_GitCall.SetCmd(cmd);
-	Run(&W_GitCall);
+	// NOTE: should igit get added as a part of msysgit then use below line instead of the above one
+	//W_GitCall.SetCmd(CGit::ms_LastMsysGitDir + cmd);
+
+	if ( Run(&W_GitCall) )
+		return FALSE;
+
 	return TRUE;
+}
+
+BOOL CGit::CheckCleanWorkTree()
+{
+	CString out;
+	CString cmd;
+	cmd=_T("git.exe rev-parse --verify HEAD");
+
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	cmd=_T("git.exe update-index --ignore-submodules --refresh");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	cmd=_T("git.exe diff-files --quiet --ignore-submodules");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	cmd=_T("git diff-index --cached --quiet HEAD --ignore-submodules");
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return FALSE;
+
+	return TRUE;
+}
+
+int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
+{
+	BYTE_VECTOR vector;
+
+	CString cmd;
+	if(path)
+		cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),path->GetGitPathString());
+	else
+		cmd=_T("git.exe ls-files -u -t -z");
+
+	if(g_Git.Run(cmd,&vector))
+	{
+		return -1;
+	}
+
+	list.ParserFromLsFile(vector);
+
+	return 0;
 }

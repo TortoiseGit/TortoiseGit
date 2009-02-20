@@ -90,6 +90,9 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_LoadingThread = NULL;
 
 	m_bExitThread=FALSE;
+	m_IsOldFirst = FALSE;
+	m_IsRebaseReplaceGraph = FALSE;
+
 
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
@@ -108,6 +111,12 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	// get relative time display setting from registry
 	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
 	m_bRelativeTimes = (regRelativeTimes != 0);
+	m_ContextMenuMask = 0xFFFFFFFFFFFFFFFF;
+
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_PICK);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SQUASH);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -173,6 +182,14 @@ void CGitLogListBase::InsertGitColumn()
 		DeleteColumn(c--);
 	temp.LoadString(IDS_LOG_GRAPH);
 
+	if(m_IsRebaseReplaceGraph)
+	{
+		temp=_T("Rebase");
+	}
+	else
+	{
+		temp.LoadString(IDS_LOG_GRAPH);
+	}
 	InsertColumn(this->LOGLIST_GRAPH, temp);
 	
 #if 0	
@@ -288,6 +305,8 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
+	GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(Index);
+
 	if (m_Theme.IsAppThemed() && m_bVista)
 	{
 		m_Theme.Open(m_hWnd, L"Explorer");
@@ -341,6 +360,11 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 			//if (pLogEntry->bCopiedSelf)
 			//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
 			//else
+			if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+				brush = ::CreateSolidBrush(RGB(156,156,156));
+			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+				brush = ::CreateSolidBrush(RGB(200,200,128));
+			else 
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
 		}
 		if (brush == NULL)
@@ -688,6 +712,22 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (data->bCopies)
 						crText = m_Colors.GetColor(CColors::Modified);
 #endif
+					if (data->m_Action& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) ) 
+						crText = RGB(128,128,128);
+
+					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+						pLVCD->clrTextBk = RGB(156,156,156);
+					else if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+						pLVCD->clrTextBk  = RGB(200,200,128);
+					else 
+						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
+
+					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_CURRENT)
+					{
+						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+					}
+
 //					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
 //						crText = GetSysColor(COLOR_GRAYTEXT);
 //					if (data->Rev == m_wcRev)
@@ -718,7 +758,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (pLVCD->iSubItem == LOGLIST_GRAPH)
 			{
-				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
+				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{
 					CRect rect;
 					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
@@ -790,7 +830,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_ADDED)
+				if (pLogEntry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY) )
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
@@ -840,7 +880,14 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
 
 	CString temp;
-	temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
+	if(m_IsOldFirst)
+	{
+		temp.Format(_T("%d"),pItem->iItem+1);
+
+	}else
+	{
+		temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
+	}
 	    
 	// Which column?
 	switch (pItem->iSubItem)
@@ -848,6 +895,13 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_GRAPH:	//Graphic
 		if (pLogEntry)
 		{
+			if(this->m_IsRebaseReplaceGraph)
+			{
+				CTGitPath path;
+				path.m_Action=pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+
+				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
+			}
 		}
 		break;
 	case this->LOGLIST_ACTION: //action -- no text in the column
@@ -966,6 +1020,23 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())
 	{
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
+			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_OPEN);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
+			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_OPEN);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_EDIT))
+			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_OPEN);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SKIP))
+			popup.AppendMenuIcon(ID_REBASE_SKIP,   _T("SKIP"),   IDI_OPEN);
+		
+		if(m_ContextMenuMask&(GetContextMenuBit(ID_REBASE_SKIP)|GetContextMenuBit(ID_REBASE_EDIT)|
+			      GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+
 		if (GetSelectedCount() == 1)
 		{
 #if 0
@@ -990,7 +1061,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if (m_hasWC)
 				{
-					popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE))
+						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 					// TODO:
 					// TortoiseMerge could be improved to take a /blame switch
 					// and then not 'cat' the files from a unified diff but
@@ -999,8 +1071,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					// this feature is commented out.
 					//popup.AppendMenu(ID_BLAMECOMPARE, IDS_LOG_POPUP_BLAMECOMPARE, IDI_BLAME);
 				}
-				popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
-				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1))
+					popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
+
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPAREWITHPREVIOUS))
+					popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
@@ -1028,12 +1103,24 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			
 			CString str;
 			str.Format(_T("Reset %s to this"),g_Git.GetCurrentBranch());
-			popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
-			popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
-			popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
-			popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
-			popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
-			popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
+				popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
+				popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
+				popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
+				popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
+				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
+				popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);	
 			
 
 			popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -1043,12 +1130,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			bool bAddSeparator = false;
 			if (IsSelectionContinuous() || (GetSelectedCount() == 2))
 			{
-				popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO))
+					popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 			}
 			if (GetSelectedCount() == 2)
 			{
 				//popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
-				popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2))
+					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 				bAddSeparator = true;
 			}
 			if (m_hasWC)
@@ -1077,13 +1166,17 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		
 		if (GetSelectedCount() == 1)
 		{
-			popup.AppendMenuIcon(ID_COPYHASH, _T("Copy Commit Hash"));
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
+				popup.AppendMenuIcon(ID_COPYHASH, _T("Copy Commit Hash"));
 		}
 		if (GetSelectedCount() != 0)
 		{
-			popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
+				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
 		}
-		popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
+			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);
@@ -1301,12 +1394,12 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = -1;
 }
 
-int CGitLogListBase::FillGitLog(CTGitPath *path,int info)
+int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *to)
 {
 	ClearText();
 
 	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserFromLog(path,-1,info);
+	this->m_logEntries.ParserFromLog(path,-1,info,from,to);
 
 	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx(this->m_logEntries.size());
@@ -1315,8 +1408,16 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info)
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
-		m_logEntries[i].m_IsFull=TRUE;
-		this->m_arShownList.Add(&m_logEntries[i]);
+		if(m_IsOldFirst)
+		{
+			m_logEntries[m_logEntries.size()-i-1].m_IsFull=TRUE;
+			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-i-1]);
+		
+		}else
+		{
+			m_logEntries[i].m_IsFull=TRUE;
+			this->m_arShownList.Add(&m_logEntries[i]);
+		}
 	}
 
     if(path)
@@ -1357,8 +1458,16 @@ int CGitLogListBase::FillGitShortLog()
 	this->m_arShownList.RemoveAll();
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
-		this->m_arShownList.Add(&m_logEntries[i]);
+	{
+		if(this->m_IsOldFirst)
+		{
+			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-1-i]);
 
+		}else
+		{
+			this->m_arShownList.Add(&m_logEntries[i]);
+		}
+	}
 	return 0;
 }
 
@@ -1937,7 +2046,13 @@ void CGitLogListBase::RemoveFilter()
 
 	for (DWORD i=0; i<m_logEntries.size(); ++i)
 	{
-		m_arShownList.Add(&m_logEntries[i]);
+		if(this->m_IsOldFirst)
+		{
+			m_arShownList.Add(&m_logEntries[m_logEntries.size()-i-1]);
+		}else
+		{
+			m_arShownList.Add(&m_logEntries[i]);
+		}
 	}
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 	DeleteAllItems();

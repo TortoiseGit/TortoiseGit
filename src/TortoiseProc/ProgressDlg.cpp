@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true)
 {
 
 }
@@ -50,7 +50,16 @@ BOOL CProgressDlg::OnInitDialog()
 
 	m_Animate.Open(IDR_DOWNLOAD);
 	
-	m_Log.SetWindowTextW(this->m_GitCmd+_T("\r\n\r\n"));
+	CString InitialText;
+	if ( !m_PreText.IsEmpty() )
+	{
+		InitialText = m_PreText + _T("\r\n");
+	}
+	if (m_bShowCommand)
+	{
+		InitialText += m_GitCmd+_T("\r\n\r\n");
+	}
+	m_Log.SetWindowTextW(InitialText);
 	m_CurrentWork.SetWindowTextW(_T(""));
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);

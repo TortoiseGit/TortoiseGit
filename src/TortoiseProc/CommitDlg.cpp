@@ -32,6 +32,7 @@
 #include "Hooks.h"
 #include "CommonResource.h"
 #include "UnicodeUtils.h"
+#include "ProgressDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -475,11 +476,14 @@ void CCommitDlg::OnOK()
 			amend=_T("--amend");
 		}
 		cmd.Format(_T("git.exe commit %s -F \"%s\""),amend, tempfile);
-		g_Git.Run(cmd,&out,CP_OEMCP);
+		
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		progress.m_bShowCommand = FALSE;	// don't show the commit command
+		progress.m_PreText = out;			// show any output already generated in log window
+		progress.DoModal();
 	
 		CFile::Remove(tempfile);
-
-		CMessageBox::Show(this->m_hWnd, out, _T("Commit Finish"), MB_OK | MB_ICONINFORMATION);
 	}else
 		CMessageBox::Show(this->m_hWnd, _T("Nothing Commit"), _T("Commit Finish"), MB_OK | MB_ICONINFORMATION);
 #if 0

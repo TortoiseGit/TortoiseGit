@@ -73,6 +73,9 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuShowChanged,					MENUSHOWCHANGED,	IDI_SHOWCHANGED,		IDS_MENUSHOWCHANGED,		IDS_MENUDESCSHOWCHANGED,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0},
 
+	{ ShellMenuRebase,					    MENUREBASE,			IDI_SHOWCHANGED,		IDS_MENUREBASE,				IDS_MENUREBASE,
+	ITEMIS_INSVN|ITEMIS_ONLYONE, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0},
+
 //	{ ShellMenuRevisionGraph,				MENUREVISIONGRAPH,	IDI_REVISIONGRAPH,		IDS_MENUREVISIONGRAPH,		IDS_MENUDESCREVISIONGRAPH,
 //	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, 0, 0, 0, 0},
 
@@ -157,6 +160,8 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 
 	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
 	ITEMIS_NORMAL|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
+	// TODO: original code is ITEMIS_INSVN|ITEMIS_ONLYONE, makes sense to only allow blaming of versioned files
+	//       why was this changed, is this related to GitStatus?
 
 	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
 	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
@@ -336,13 +341,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
 							}
 
+							// TODO: should we really assume any sub-directory to be versioned
+							//       or only if it contains versioned files
 							if ( askedpath.IsDirectory() )
 							{
 								if (askedpath.HasAdminDir())
 									itemStates |= ITEMIS_INSVN;
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-							//if (askedpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
@@ -444,13 +450,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 							}
 
+							// TODO: should we really assume any sub-directory to be versioned
+							//       or only if it contains versioned files
 							if ( strpath.IsDirectory() )
 							{
 								if (strpath.HasAdminDir())
 									itemStates |= ITEMIS_INSVN;
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-							//if (strpath.HasAdminDir())
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{
@@ -1169,13 +1176,8 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					}
 					else
 					{
-						// the 'get lock' command is special
 						bool bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
-						if (menuInfo[menuIndex].command == ShellMenuLock)
-						{
-							if ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop())
-								bIsTop = true;
-						}
+
 						// insert the menu entry
 						InsertGitMenu(	bIsTop,
 										bIsTop ? hMenu : subMenu,
@@ -1616,6 +1618,14 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
+			case ShellMenuRebase:
+				svnCmd += _T("rebase /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
 			case ShellMenuShowChanged:
 				if (files_.size() > 1)
                 {
@@ -1754,28 +1764,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				else
 					svnCmd += folder_;
 				svnCmd += _T("\"");
-				break;
-			case ShellMenuLock:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("lock /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				break;
-			case ShellMenuUnlock:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("unlock /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				break;
-			case ShellMenuUnlockForce:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("unlock /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /force");
 				break;
 			case ShellMenuProperties:
 				tempfile = WriteFileListToTempFile();
@@ -2145,18 +2133,6 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 			resource = MAKEINTRESOURCE(menuInfo[menuIndex].iconID);
 			switch (id)
 			{
-			case ShellMenuLock:
-				// menu lock is special because it can be set to the top
-				// with a separate option in the registry
-				space = ((layout & MENULOCK) || ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop())) ? 0 : 6;
-				if ((layout & MENULOCK) || ((itemStates & ITEMIS_NEEDSLOCK) && g_ShellCache.IsGetLockTop()))
-				{
-					_tcscpy_s(textbuf, 255, _T("Git "));
-					_tcscat_s(textbuf, 255, stringtablebuffer);
-					_tcscpy_s(stringtablebuffer, 255, textbuf);
-				}
-				break;
-				// the sub menu entries are special because they're *always* on the top level menu
 			case ShellSubMenuMultiple:
 			case ShellSubMenuLink:
 			case ShellSubMenuFolder:

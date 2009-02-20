@@ -43,7 +43,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 				pPath->GetBaseFilename(),
 				rev1.Left(6),
 				pPath->GetFileExtension());
-		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1,pPath->GetGitPathString());
+		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),rev1,pPath->GetGitPathString());
 				g_Git.RunLogFile(cmd,file1);
 	}else
 	{
@@ -80,7 +80,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 				rev1.Left(6),
 				pPath->GetFileExtension());
 		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
-		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1,pPath->GetGitPathString());
+		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),rev1,pPath->GetGitPathString());
 				g_Git.RunLogFile(cmd,file1);
 	}else
 	{
@@ -99,7 +99,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 				rev2.Left(6),
 				pPath2->GetFileExtension());
 		title2 = pPath2->GetFileOrDirectoryName()+_T(":")+rev2.Left(6);
-		cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2,pPath2->GetGitPathString());
+		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),rev2,pPath2->GetGitPathString());
 		g_Git.RunLogFile(cmd,file2);
 	}else
 	{

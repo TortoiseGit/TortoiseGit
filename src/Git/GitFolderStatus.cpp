@@ -116,7 +116,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //	apr_hash_t *				statushash;
 //	apr_pool_t *				pool;
 	//git_error_t *				err = NULL; // If svn_client_status comes out through catch(...), err would else be unassigned
-	BOOL err = FALSE;
+	git_error_t err = 0;
 
 	//dont' build the cache if an instance of TortoiseProc is running
 	//since this could interfere with svn commands running (concurrent
@@ -231,40 +231,53 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //	rev.kind = git_opt_revision_unspecified;
 	try
 	{
-		// extract the sub-path (relative to project root)
-//MessageBox(NULL, filepath.GetDirectory().GetWinPathString(), sProjectRoot, MB_OK);
-//		LPCSTR lpszSubPath = NULL;
-		CString sSubPath;
-		CString s = filepath.GetWinPathString();
-		if (s.GetLength() > sProjectRoot.GetLength())
+		if (g_ShellCache.GetCacheType() == ShellCache::dll)
 		{
-			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
-//			lpszSubPath = sSubPath;
+			// gitindex.h based status
+
+			// extract the sub-path (relative to project root)
+			CString sSubPath;
+			CString s = filepath.GetWinPathString();
+			if (s.GetLength() > sProjectRoot.GetLength())
+			{
+					sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+			}
+
+			git_wc_status_kind status;
+
+			err = g_IndexFileMap.GetFileStatus((CString&)sProjectRoot,sSubPath,&status,true,true,fillstatusmap_idx,this);
 		}
+		else
+		{
+			// extract the sub-path (relative to project root)
+//MessageBox(NULL, filepath.GetDirectory().GetWinPathString(), sProjectRoot, MB_OK);
+			LPCSTR lpszSubPath = NULL;
+			CStringA sSubPath;
+			CString s = filepath.GetDirectory().GetWinPathString();
+			if (s.GetLength() > sProjectRoot.GetLength())
+			{
+				sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+				lpszSubPath = sSubPath;
+			}
 
 //if (lpszSubPath) MessageBoxA(NULL, lpszSubPath, "BuildCache", MB_OK);
 //MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
-		//err = !wgEnumFiles_safe(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
-		//CTGitPath path;
-		//path.SetFromWin(sSubPath);
-		git_wc_status_kind status;
+			err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
 
-		err = g_IndexFileMap.GetFileStatus((CString&)sProjectRoot,sSubPath,&status,true,true,fillstatusmap,this);
-		
-		//err = g_IndexFileMap.GetFileStatus(sProjectRoot,&path,
-		/*err = svn_client_status4 (&youngest,
-			filepath.GetDirectory().GetSVNApiPath(pool),
-			&rev,
-			fillstatusmap,
-			this,
-			svn_depth_immediates,		//depth
-			TRUE,		//getall
-			FALSE,		//update
-			TRUE,		//noignore
-			FALSE,		//ignore externals
-			NULL,
-			localctx,
-			pool);*/
+			/*err = svn_client_status4 (&youngest,
+				filepath.GetDirectory().GetSVNApiPath(pool),
+				&rev,
+				fillstatusmap,
+				this,
+				svn_depth_immediates,		//depth
+				TRUE,		//getall
+				FALSE,		//update
+				TRUE,		//noignore
+				FALSE,		//ignore externals
+				NULL,
+				localctx,
+				pool);*/
+		}
 	}
 	catch ( ... )
 	{
@@ -405,7 +418,48 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 	return NULL;
 }
 
-void GitFolderStatus::fillstatusmap(CString &path,git_wc_status_kind status,void *pUserData)
+BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserData)
+{
+	GitFolderStatus *Stat = (GitFolderStatus*)pUserData;
+
+	FileStatusMap &cache = Stat->m_cache;
+	FileStatusCacheEntry s;
+	s.needslock = false;
+	s.tree_conflict = false;
+
+	s.author = Stat->authors.GetString(NULL);
+	s.url = Stat->urls.GetString(NULL);
+	if (pFile->sha1)
+		s.rev = ConvertHashToRevnum(pFile->sha1);
+	s.owner = Stat->owners.GetString(NULL);
+
+	s.status = git_wc_status_none;
+
+	//s.status = GitStatus::GetMoreImportant(s.status, status->text_status);
+	//s.status = GitStatus::GetMoreImportant(s.status, status->prop_status);
+	s.status = GitStatusFromWingit(pFile->nStatus);
+
+	// TODO ?: s.blaha = pFile->nStage
+
+	//s.lock = status->repos_lock;
+	//s.tree_conflict = (status->tree_conflict != NULL);
+
+	s.askedcounter = GITFOLDERSTATUS_CACHETIMES;
+	stdstring str;
+	if (pFile->sFileName)
+	{
+		str = CUnicodeUtils::StdGetUnicode(pFile->sFileName);
+		std::replace(str.begin(), str.end(), '/', '\\');
+//MessageBox(NULL, str.c_str(), _T(""), MB_OK);
+	}
+	else
+		str = _T(" ");
+	cache[str] = s;
+
+	return FALSE;
+}
+
+void GitFolderStatus::fillstatusmap_idx(CString &path,git_wc_status_kind status,void *pUserData)
 {
 	GitFolderStatus *Stat = (GitFolderStatus*)pUserData;
 

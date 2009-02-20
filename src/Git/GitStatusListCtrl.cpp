@@ -1083,6 +1083,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
 		}
 	}
+	int index =0;
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
 		//set default checkbox status
@@ -1090,7 +1091,10 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
 
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
-			AddEntry((CTGitPath*)m_arStatusArray[i],langID,i);
+		{
+			AddEntry((CTGitPath*)m_arStatusArray[i],langID,index);
+			index++;
+		}
 	}
 	
 	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
@@ -1449,7 +1453,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	// relative path
 	CString rename;
 	rename.Format(_T("(from %s)"),GitPath->GetGitOldPathString());
-	if(GitPath->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 		entryname+=rename;
 	
 	InsertItem(index, entryname, icon_idx);
@@ -2060,7 +2064,7 @@ bool CGitStatusListCtrl::BuildStatistics()
 	{
 		int status=((CTGitPath*)m_arStatusArray[i])->m_Action;
 
-		if(status&CTGitPath::LOGACTIONS_ADDED)
+		if(status&(CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 			m_nAdded++;
 		
 		if(status&CTGitPath::LOGACTIONS_DELETED)
@@ -2228,14 +2232,14 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 						lv.mask = LVIF_GROUPID;
 						lv.iItem = i;
 						GetItem(&lv);
-#if 0
+
 						if (lv.iGroupId == group)
 						{
-							FileEntry * entry = GetListEntry(i);
+							CTGitPath * entry = (CTGitPath*)GetItemData(i);
 							if (entry)
 							{
-								bool bOldCheck = !!GetCheck(i);
-								//SetEntryCheck(entry, i, bCheck);
+								bool bOldCheck = entry->m_Checked;
+								SetEntryCheck(entry, i, bCheck);
 								if (bCheck != bOldCheck)
 								{
 									if (bCheck)
@@ -2245,7 +2249,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 								}
 							}
 						}
-#endif
+
 					}
 					GetStatisticsString();
 					NotifyCheck();
@@ -4248,7 +4252,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
 	CTGitPath file2;
-	if(file1.m_Action & CTGitPath::LOGACTIONS_REPLACED)
+	if(file1.m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 	{
 		file2.SetFromGit(file1.GetGitOldPathString());
 	}else
@@ -4526,11 +4530,11 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					crText = m_Colors.GetColor(CColors::Conflict);
 
-				}else if(entry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
+				}else if(entry->m_Action & (CTGitPath::LOGACTIONS_MODIFIED))
 				{
 					crText = m_Colors.GetColor(CColors::Modified);
 
-				}else if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
+				}else if(entry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 				{
 					crText = m_Colors.GetColor(CColors::Added);
 				}

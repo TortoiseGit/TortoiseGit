@@ -78,7 +78,7 @@ typedef struct FileStatusCacheEntry
 	const char*				url;		///< points to a (possibly) shared value
 	const char*				owner;		///< points to a (possible) lock owner
 	bool					needslock;
-	//git_revnum_t			rev;
+	git_revnum_t			rev;
 	int						askedcounter;
 	//git_lock_t *			lock;
 	bool					tree_conflict;
@@ -117,7 +117,8 @@ private:
 	DWORD				GetTimeoutValue();
 	//static git_error_t*	fillstatusmap (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
 	//static git_error_t*	findfolderstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
-	static void			fillstatusmap(CString &path,git_wc_status_kind status,void *pdata);
+	static BOOL			fillstatusmap(const struct wgFile_s *pFile, void *pUserData);
+	static void			fillstatusmap_idx(CString &path,git_wc_status_kind status,void *pdata);
 
 	static CTGitPath	folderpath;
 	void				ClearCache();

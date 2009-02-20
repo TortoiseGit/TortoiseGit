@@ -40,6 +40,17 @@ CString GetCacheMutexName();
 
 CString GetCacheID();
 
+
+typedef enum git_node_kind_t
+{
+	git_node_none,
+	git_node_file,
+	git_node_dir,
+	git_node_unknown,
+
+}git_node_kind;
+
+
 /**
  * \ingroup TSVNCache
  * A structure passed as a request from the shell (or other client) to the external cache
@@ -61,8 +72,8 @@ struct TSVNCacheRequest
 struct TSVNCacheResponse
 {
 	git_wc_status2_t m_status;
-//	svn_wc_entry_t m_entry;
-//	svn_node_kind_t m_kind;
+	git_wc_entry_t m_entry;
+	git_node_kind_t m_kind;
 	char m_url[INTERNET_MAX_URL_LENGTH+1];
 	char m_owner[255];		///< owner of the lock
 	char m_author[255];

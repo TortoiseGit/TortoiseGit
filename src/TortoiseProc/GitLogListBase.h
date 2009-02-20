@@ -66,10 +66,16 @@ public:
 	virtual ~CGitLogListBase();
 	volatile LONG		m_bNoDispUpdates;
 	BOOL m_IsIDReplaceAction;
+	BOOL m_IsOldFirst;
+	BOOL m_IsRebaseReplaceGraph;
+
+
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
 	BOOL m_bSearchIndex;
 	BOOL m_bCancelled;
+	unsigned __int64 m_ContextMenuMask;
+
 	bool				m_hasWC;
 	GitRev				m_wcRev;
 	volatile LONG 		m_bThreadRunning;
@@ -127,15 +133,20 @@ public:
 	ID_CREATE_BRANCH,
 	ID_CREATE_TAG,
 	ID_SWITCHTOREV,
-	ID_RESET
+	ID_RESET,
+	ID_REBASE_PICK,
+	ID_REBASE_EDIT,
+	ID_REBASE_SQUASH,
+	ID_REBASE_SKIP,
 	};
+	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
 	void CopySelectionToClipBoard(bool hashonly=FALSE);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  FillGitShortLog();
-	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE);
+	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE,CString *from=NULL,CString *to=NULL);
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);

@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,44 +16,25 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#pragma once
+#include "StdAfx.h"
+#include "RebaseCommand.h"
 
-struct TSVNCacheResponse;
-class CTGitPath;
+#include "MessageBox.h"
+//#include "SVNProgressDlg.h"
+//#include "ProgressDlg.h"
+#include "RebaseDlg.h"
+#include "InputLogDlg.h"
+#include "Git.h"
+#include "DirFileEnum.h"
+#include "ShellUpdater.h"
 
-#include "GitStatus.h"
-
-/**
- * \ingroup TortoiseShell
- * This class provides the link to the cache process.
- */
-class CRemoteCacheLink
+bool RebaseCommand::Execute()
 {
-public:
-	CRemoteCacheLink(void);
-	~CRemoteCacheLink(void);
-
-public:
-	bool GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive);
-	bool ReleaseLockForPath(const CTGitPath& path);
-
-private:
-	bool EnsurePipeOpen();
-	void ClosePipe();
-
-	bool EnsureCommandPipeOpen();
-	void CloseCommandPipe();
-
-private:
-	HANDLE m_hPipe;
-	OVERLAPPED m_Overlapped;
-	HANDLE m_hEvent;
-
-	HANDLE m_hCommandPipe;
-
-
-	CComCriticalSection m_critSec;
-	git_wc_status2_t m_dummyStatus;
-	long m_lastTimeout;
-
-};
+	bool bRet =false;
+	CRebaseDlg dlg;
+	if(dlg.DoModal() == IDOK)
+	{
+		bRet=true;
+	}
+	return bRet;
+}

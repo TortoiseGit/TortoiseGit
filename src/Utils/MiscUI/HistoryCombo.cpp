@@ -52,6 +52,7 @@ BOOL CHistoryCombo::PreCreateWindow(CREATESTRUCT& cs)
 
 BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 {
+
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		bool bShift = !!(GetKeyState(VK_SHIFT) & 0x8000);
@@ -65,7 +66,7 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 		}
 	}
-	if (pMsg->message == WM_MOUSEMOVE) 
+	if (pMsg->message == WM_MOUSEMOVE && this->m_bDyn ) 
 	{
 		if ((pMsg->wParam & MK_LBUTTON) == 0)
 		{
@@ -76,6 +77,7 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 		}
 	}
+
 	return CComboBoxEx::PreTranslateMessage(pMsg);
 }
 

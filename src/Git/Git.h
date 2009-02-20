@@ -47,6 +47,7 @@ public:
 	CString GetUserName(void);
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);
+	BOOL CheckCleanWorkTree();
 
 	bool SetCurrentDir(CString path)
 	{
@@ -84,8 +85,10 @@ public:
 	
 	//hash is empty means all. -1 means all
 
-	int GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME);
-	int GetLog(BYTE_VECTOR& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME);
+	int GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME,
+								CString *from=NULL,CString *to=NULL);
+	int GetLog(BYTE_VECTOR& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME,
+								CString *from=NULL,CString *to=NULL);
 
 	BOOL EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
 
@@ -97,6 +100,7 @@ public:
 
 	BOOL IsInitRepos();
 	static BOOL IsVista();
+	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
 	
 };
 extern void GetTempPath(CString &path);
@@ -105,5 +109,4 @@ extern CString GetTempFile();
 
 extern CGit g_Git;
 
-extern LPBYTE wgGetRevisionID_safe(const char *pszProjectPath, const char *pszName);
-extern BOOL wgEnumFiles_safe(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
+inline static BOOL wgEnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) { return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); }

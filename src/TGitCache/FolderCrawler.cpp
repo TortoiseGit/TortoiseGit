@@ -240,23 +240,25 @@ void CFolderCrawler::WorkerThread()
 				// don't crawl paths that are excluded
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
 					continue;
-				// check if the changed path is inside an .svn folder
-				if ((workingPath.HasAdminDir()&&workingPath.IsDirectory())||workingPath.IsAdminDir())
+				// check if the changed path is inside an .git folder
+				if ((workingPath.HasAdminDir()&&workingPath.IsDirectory()) || workingPath.IsAdminDir())
 				{
-					// we don't crawl for paths changed in a tmp folder inside an .svn folder.
+					// we don't crawl for paths changed in a tmp folder inside an .git folder.
 					// Because we also get notifications for those even if we just ask for the status!
 					// And changes there don't affect the file status at all, so it's safe
 					// to ignore notifications on those paths.
 					if (workingPath.IsAdminDir())
 					{
-						CString lowerpath = workingPath.GetWinPathString();
+						// TODO: add git specific filters here. is there really any change besides index file in .git
+						//       that is relevant for overlays?
+						/*CString lowerpath = workingPath.GetWinPathString();
 						lowerpath.MakeLower();
 						if (lowerpath.Find(_T("\\tmp\\"))>0)
 							continue;
 						if (lowerpath.Find(_T("\\tmp")) == (lowerpath.GetLength()-4))
 							continue;
 						if (lowerpath.Find(_T("\\log"))>0)
-							continue;
+							continue;*/
 						// Here's a little problem:
 						// the lock file is also created for fetching the status
 						// and not just when committing.

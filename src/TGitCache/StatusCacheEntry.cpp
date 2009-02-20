@@ -27,7 +27,7 @@ DWORD cachetimeout = (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\Cachetimeout"
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)
-//	, m_kind(svn_node_unknown)
+	, m_kind(git_node_unknown)
 	, m_bReadOnly(false)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
@@ -37,7 +37,7 @@ CStatusCacheEntry::CStatusCacheEntry()
 CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)
-//	, m_kind(svn_node_unknown)
+	, m_kind(git_node_unknown)
 	, m_bReadOnly(false)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 {
@@ -61,21 +61,21 @@ bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(m_lastWriteTime);
 	WRITEVALUETOFILE(m_bSet);
 	WRITEVALUETOFILE(m_bSVNEntryFieldSet);
-	WRITEVALUETOFILE(m_commitRevision);
+	CStringA srev(m_commitRevision); WRITESTRINGTOFILE(srev);
 	WRITESTRINGTOFILE(m_sUrl);
 	WRITESTRINGTOFILE(m_sOwner);
 	WRITESTRINGTOFILE(m_sAuthor);
-//	WRITEVALUETOFILE(m_kind);
+	WRITEVALUETOFILE(m_kind);
 	WRITEVALUETOFILE(m_bReadOnly);
 	WRITESTRINGTOFILE(m_sPresentProps);
 
 	// now save the status struct (without the entry field, because we don't use that)	WRITEVALUETOFILE(m_GitStatus.copied);
 //	WRITEVALUETOFILE(m_GitStatus.locked);
-//	WRITEVALUETOFILE(m_GitStatus.prop_status);
+	WRITEVALUETOFILE(m_GitStatus.prop_status);
 //	WRITEVALUETOFILE(m_GitStatus.repos_prop_status);
 //	WRITEVALUETOFILE(m_GitStatus.repos_text_status);
 //	WRITEVALUETOFILE(m_GitStatus.switched);
-//	WRITEVALUETOFILE(m_GitStatus.text_status);
+	WRITEVALUETOFILE(m_GitStatus.text_status);
 	return true;
 }
 
@@ -92,7 +92,19 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		LOADVALUEFROMFILE(m_lastWriteTime);
 		LOADVALUEFROMFILE(m_bSet);
 		LOADVALUEFROMFILE(m_bSVNEntryFieldSet);
-		LOADVALUEFROMFILE(m_commitRevision);
+		LOADVALUEFROMFILE(value);
+		if (value != 0)
+		{
+			CStringA s;
+			if (fread(s.GetBuffer(value+1), sizeof(char), value, pFile)!=value)
+			{
+				s.ReleaseBuffer(0);
+				m_commitRevision.Empty();
+				return false;
+			}
+			s.ReleaseBuffer(value);
+			m_commitRevision = s;
+		}
 		LOADVALUEFROMFILE(value);
 		if (value != 0)
 		{
@@ -125,7 +137,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 			}
 			m_sAuthor.ReleaseBuffer(value);
 		}
-//		LOADVALUEFROMFILE(m_kind);
+		LOADVALUEFROMFILE(m_kind);
 		LOADVALUEFROMFILE(m_bReadOnly);
 		LOADVALUEFROMFILE(value);
 		if (value != 0)
@@ -140,11 +152,11 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 		SecureZeroMemory(&m_GitStatus, sizeof(m_GitStatus));
 //		LOADVALUEFROMFILE(m_GitStatus.copied);
 //		LOADVALUEFROMFILE(m_GitStatus.locked);
-//		LOADVALUEFROMFILE(m_GitStatus.prop_status);
+		LOADVALUEFROMFILE(m_GitStatus.prop_status);
 //		LOADVALUEFROMFILE(m_GitStatus.repos_prop_status);
 //		LOADVALUEFROMFILE(m_GitStatus.repos_text_status);
 //		LOADVALUEFROMFILE(m_GitStatus.switched);
-//		LOADVALUEFROMFILE(m_GitStatus.text_status);
+		LOADVALUEFROMFILE(m_GitStatus.text_status);
 //		m_GitStatus.entry = NULL;
 		m_discardAtTime = GetTickCount()+cachetimeout;
 	}
@@ -167,8 +179,7 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 		m_GitStatus = *pGitStatus;
 
 		// Currently we don't deep-copy the whole entry value, but we do take a few members
-#if 0
-        if(pGitStatus->entry != NULL)
+/*        if(pGitStatus->entry != NULL)
 		{
 			m_sUrl = pGitStatus->entry->url;
 			m_commitRevision = pGitStatus->entry->cmt_rev;
@@ -179,14 +190,13 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 			if (pGitStatus->entry->present_props)
 				m_sPresentProps = pGitStatus->entry->present_props;
 		}
-		else
+		else*/
 		{
 			m_sUrl.Empty();
-			m_commitRevision = 0;
+			m_commitRevision = GIT_INVALID_REVNUM;
 			m_bSVNEntryFieldSet = false;
 		}
-		m_GitStatus.entry = NULL;
-#endif
+//		m_GitStatus.entry = NULL;
 	}
 	m_discardAtTime = GetTickCount()+cachetimeout;
 	m_bSet = true;
@@ -219,7 +229,7 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 	if(m_bSVNEntryFieldSet)
 	{
 		response.m_status = m_GitStatus;
-//		response.m_entry.cmt_rev = m_commitRevision;
+		wcscpy_s(response.m_entry.cmt_rev, 41, m_commitRevision.GetString());
 
 		// There is no point trying to set these pointers here, because this is not 
 		// the process which will be using the data.
@@ -228,7 +238,7 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 //		response.m_status.entry = NULL;
 //		response.m_entry.url = NULL;
 
-//		response.m_kind = m_kind;
+		response.m_kind = m_kind;
 		response.m_readonly = m_bReadOnly;
 
 		if (m_sPresentProps.Find("svn:needs-lock")>=0)

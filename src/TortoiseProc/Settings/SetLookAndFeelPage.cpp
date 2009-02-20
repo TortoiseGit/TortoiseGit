@@ -29,17 +29,13 @@
 IMPLEMENT_DYNAMIC(CSetLookAndFeelPage, ISettingsPropPage)
 CSetLookAndFeelPage::CSetLookAndFeelPage()
 	: ISettingsPropPage(CSetLookAndFeelPage::IDD)
-	, m_bGetLockTop(FALSE)
 	, m_bBlock(false)
 {
-	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUCHECKOUT | MENUUPDATE | MENUCOMMIT);
+	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUCLONE | MENUPUSH | MENUPULL | MENUCOMMIT);
 	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), 0);
 
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
-
-	m_regGetLockTop = CRegDWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
-	m_bGetLockTop = m_regGetLockTop;
 
 	m_regNoContextPaths = CRegString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
 	m_sNoContextPaths = m_regNoContextPaths;
@@ -54,7 +50,6 @@ void CSetLookAndFeelPage::DoDataExchange(CDataExchange* pDX)
 {
 	ISettingsPropPage::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MENULIST, m_cMenuList);
-	DDX_Check(pDX, IDC_GETLOCKTOP, m_bGetLockTop);
 	DDX_Text(pDX, IDC_NOCONTEXTPATHS, m_sNoContextPaths);
 }
 
@@ -91,40 +86,43 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
-	InsertItem(IDS_MENUCHECKOUT, IDI_CHECKOUT, MENUCHECKOUT);
-	InsertItem(IDS_MENUUPDATE, IDI_UPDATE, MENUUPDATE);
+	InsertItem(IDS_MENUCLONE, IDI_CLONE, MENUCLONE);
+//	InsertItem(IDS_MENUUPDATE, IDI_UPDATE, MENUUPDATE);
+	InsertItem(IDS_MENUPULL, IDI_PULL, MENUPULL);
+	InsertItem(IDS_MENUFETCH, IDI_PULL, MENUFETCH);
+	InsertItem(IDS_MENUPUSH, IDI_PUSH, MENUPUSH);
 	InsertItem(IDS_MENUCOMMIT, IDI_COMMIT, MENUCOMMIT);
 	InsertItem(IDS_MENUDIFF, IDI_DIFF, MENUDIFF);
 	InsertItem(IDS_MENUPREVDIFF, IDI_DIFF, MENUPREVDIFF);
-	InsertItem(IDS_MENUURLDIFF, IDI_DIFF, MENUURLDIFF);
+//	InsertItem(IDS_MENUURLDIFF, IDI_DIFF, MENUURLDIFF);
 	InsertItem(IDS_MENULOG, IDI_LOG, MENULOG);
-	InsertItem(IDS_MENUREPOBROWSE, IDI_REPOBROWSE, MENUREPOBROWSE);
+//	InsertItem(IDS_MENUREPOBROWSE, IDI_REPOBROWSE, MENUREPOBROWSE);
 	InsertItem(IDS_MENUSHOWCHANGED, IDI_SHOWCHANGED, MENUSHOWCHANGED);
-	InsertItem(IDS_MENUREVISIONGRAPH, IDI_REVISIONGRAPH, MENUREVISIONGRAPH);
+//	InsertItem(IDS_MENUREVISIONGRAPH, IDI_REVISIONGRAPH, MENUREVISIONGRAPH);
 	InsertItem(IDS_MENUCONFLICT, IDI_CONFLICT, MENUCONFLICTEDITOR);
-	InsertItem(IDS_MENURESOLVE, IDI_RESOLVE, MENURESOLVE);
-	InsertItem(IDS_MENUUPDATEEXT, IDI_UPDATE, MENUUPDATEEXT);
+//	InsertItem(IDS_MENURESOLVE, IDI_RESOLVE, MENURESOLVE);
+//	InsertItem(IDS_MENUUPDATEEXT, IDI_UPDATE, MENUUPDATEEXT);
 	InsertItem(IDS_MENURENAME, IDI_RENAME, MENURENAME);
 	InsertItem(IDS_MENUREMOVE, IDI_DELETE, MENUREMOVE);
 	InsertItem(IDS_MENUREVERT, IDI_REVERT, MENUREVERT);
 	InsertItem(IDS_MENUDELUNVERSIONED, IDI_DELUNVERSIONED, MENUDELUNVERSIONED);
 	InsertItem(IDS_MENUCLEANUP, IDI_CLEANUP, MENUCLEANUP);
-	InsertItem(IDS_MENU_LOCK, IDI_LOCK, MENULOCK);
-	InsertItem(IDS_MENU_UNLOCK, IDI_UNLOCK, MENUUNLOCK);
+//	InsertItem(IDS_MENU_LOCK, IDI_LOCK, MENULOCK);
+//	InsertItem(IDS_MENU_UNLOCK, IDI_UNLOCK, MENUUNLOCK);
 	InsertItem(IDS_MENUBRANCH, IDI_COPY, MENUCOPY);
 	InsertItem(IDS_MENUSWITCH, IDI_SWITCH, MENUSWITCH);
 	InsertItem(IDS_MENUMERGE, IDI_MERGE, MENUMERGE);
 	InsertItem(IDS_MENUEXPORT, IDI_EXPORT, MENUEXPORT);
-	InsertItem(IDS_MENURELOCATE, IDI_RELOCATE, MENURELOCATE);
+//	InsertItem(IDS_MENURELOCATE, IDI_RELOCATE, MENURELOCATE);
 	InsertItem(IDS_MENUCREATEREPOS, IDI_CREATEREPOS, MENUCREATEREPOS);
 	InsertItem(IDS_MENUADD, IDI_ADD, MENUADD);
-	InsertItem(IDS_MENUIMPORT, IDI_IMPORT, MENUIMPORT);
+//	InsertItem(IDS_MENUIMPORT, IDI_IMPORT, MENUIMPORT);
 	InsertItem(IDS_MENUBLAME, IDI_BLAME, MENUBLAME);
 	InsertItem(IDS_MENUIGNORE, IDI_IGNORE, MENUIGNORE);
 	InsertItem(IDS_MENUCREATEPATCH, IDI_CREATEPATCH, MENUCREATEPATCH);
 	InsertItem(IDS_MENUAPPLYPATCH, IDI_PATCH, MENUAPPLYPATCH);
 	InsertItem(IDS_MENUPROPERTIES, IDI_PROPERTIES, MENUPROPERTIES);
-	InsertItem(IDS_MENUCLIPPASTE, IDI_CLIPPASTE, MENUCLIPPASTE);
+//	InsertItem(IDS_MENUCLIPPASTE, IDI_CLIPPASTE, MENUCLIPPASTE);
 	m_bBlock = false;
 
 	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
@@ -153,7 +151,6 @@ BOOL CSetLookAndFeelPage::OnApply()
 	UpdateData();
     Store ((DWORD)(m_topmenu & 0xFFFFFFFF),	m_regTopmenu);
     Store ((DWORD)(m_topmenu >> 32), m_regTopmenuhigh);
-    Store (m_bGetLockTop, m_regGetLockTop);
 
 	m_sNoContextPaths.Replace(_T("\r"), _T(""));
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
@@ -188,40 +185,42 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 	{
 		int i=0;
 		m_topmenu = 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCHECKOUT : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUPDATE : 0;
+		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLONE : 0;
+		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPULL : 0;
+		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUFETCH : 0;
+		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPUSH : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCOMMIT : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUDIFF : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPREVDIFF : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUURLDIFF : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUURLDIFF : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENULOG : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREPOBROWSE : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREPOBROWSE : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUSHOWCHANGED : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREVISIONGRAPH : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREVISIONGRAPH : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCONFLICTEDITOR : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURESOLVE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUPDATEEXT : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURESOLVE : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUPDATEEXT : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURENAME : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREMOVE : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREVERT : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUDELUNVERSIONED : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLEANUP : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENULOCK : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUNLOCK : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENULOCK : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUNLOCK : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCOPY : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUSWITCH : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUMERGE : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUEXPORT : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURELOCATE : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURELOCATE : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCREATEREPOS : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUADD : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUIMPORT : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUIMPORT : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUBLAME : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUIGNORE : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCREATEPATCH : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUAPPLYPATCH : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPROPERTIES : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLIPPASTE : 0;
+//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLIPPASTE : 0;
 	}
 	*pResult = 0;
 }

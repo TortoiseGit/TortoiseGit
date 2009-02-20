@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TortoiseLangs"
 	ProjectGUID="{EC88E7EC-3074-4841-BA45-B938D098EFF6}"
 	RootNamespace="TortoiseLangs"
@@ -50,8 +50,8 @@
 				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
 				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
 				CleanCommandLine="nmake /f Makefile clean "
-				Output=""
-				PreprocessorDefinitions="WIN32;_DEBUG"
+				Output="TortoiseLangs.exe"
+				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
 				AssemblySearchPath=""

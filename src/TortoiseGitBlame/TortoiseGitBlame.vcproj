@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TortoiseGitBlame"
 	ProjectGUID="{62507C2F-9290-4342-910F-BFC44DF99B01}"
 	RootNamespace="TortoiseGitBlame"
@@ -74,9 +74,9 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../ext/wingit"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBCMTD"
-				DelayLoadDLLs="wingit.dll"
+				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -156,8 +156,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
-				LinkIncremental="2"
-				IgnoreDefaultLibraryNames="LIBCMTD"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"

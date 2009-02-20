@@ -102,6 +102,9 @@ int CTGitPath::ParserAction(BYTE action)
 		m_Action|= LOGACTIONS_DELETED;
 	if(action == 'H')
 		m_Action|= LOGACTIONS_CACHE;
+	if(action == 'C' )
+		m_Action|= LOGACTIONS_COPY;
+
 	return m_Action;
 }
 void CTGitPath::SetFromGit(const char* pPath)
@@ -1052,6 +1055,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 					sec++;
 					g_Git.StringAppend(&file1,&log[sec],CP_OEMCP);
 				}
+				pos=sec;
 
 			}else
 			{
@@ -1861,20 +1865,34 @@ CTGitPath * CTGitPathList::LookForGitPath(CString path)
 	}
 	return NULL;
 }
+CString CTGitPath::GetActionName(int action)
+{
+	if(action  & CTGitPath::LOGACTIONS_ADDED)
+		return _T("Added");
+	if(action  & CTGitPath::LOGACTIONS_DELETED)
+		return _T("Deleted");
+	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
+		return _T("Conflict");
+	if(action  & CTGitPath::LOGACTIONS_MODIFIED)
+		return _T("Modified");
+	if(action  & CTGitPath::LOGACTIONS_REPLACED)
+		return _T("Rename");
+	if(action  & CTGitPath::LOGACTIONS_COPY)
+		return _T("Copy");
+	if(action & CTGitPath::LOGACTIONS_REBASE_EDIT)
+		return _T("Edit");
+	if(action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
+		return _T("Squash");
+	if(action & CTGitPath::LOGACTIONS_REBASE_PICK)
+		return _T("Pick");
+	if(action & CTGitPath::LOGACTIONS_REBASE_SKIP)
+		return _T("Skip");
 
+	return _T("Unknown");
+}
 CString CTGitPath::GetActionName()
 {
-	if(m_Action  & CTGitPath::LOGACTIONS_ADDED)
-		return _T("Added");
-	if(m_Action  & CTGitPath::LOGACTIONS_DELETED)
-		return _T("Deleted");
-	if(m_Action  & CTGitPath::LOGACTIONS_UNMERGED)
-		return _T("Conflict");
-	if(m_Action  & CTGitPath::LOGACTIONS_MODIFIED)
-		return _T("Modified");
-	if(m_Action  & CTGitPath::LOGACTIONS_REPLACED)
-		return _T("Rename");
-	return _T("Unknown");
+	return GetActionName(m_Action);
 }
 
 int CTGitPathList::GetAction()

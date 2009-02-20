@@ -48,7 +48,8 @@ public:
 	/// Get the current full status of this folder
 	git_wc_status_kind GetCurrentFullStatus() {return m_currentFullStatus;}
 private:
-	static git_error_t* GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status);
+//	static git_error_t* GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status);
+	static BOOL GetStatusCallback(const struct wgFile_s *pFile, void *pUserData);
 	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, DWORD validuntil = 0);
 	CString GetCacheKey(const CTGitPath& path);
 	CString GetFullPathString(const CString& cacheKey);
@@ -76,10 +77,10 @@ private:
 	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
 	ChildDirStatus m_childDirectories;
 
-	// The timestamp of the .SVN\entries file.  For an unversioned directory, this will be zero
-	__int64 m_entriesFileTime;
+	// The timestamp of the .git\index file.  For an unversioned directory, this will be zero
+	__int64 m_indexFileTime;
 	// The timestamp of the .SVN\props dir.  For an unversioned directory, this will be zero
-	__int64 m_propsFileTime;
+//	__int64 m_propsFileTime;
 	
 	// The path of the directory with this object looks after
 	CTGitPath	m_directoryPath;

@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,43 +17,19 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
-struct TSVNCacheResponse;
-class CTGitPath;
-
-#include "GitStatus.h"
+#include "Command.h"
 
 /**
- * \ingroup TortoiseShell
- * This class provides the link to the cache process.
+ * \ingroup TortoiseProc
+ * Renames files and folders.
  */
-class CRemoteCacheLink
+class RebaseCommand : public Command
 {
 public:
-	CRemoteCacheLink(void);
-	~CRemoteCacheLink(void);
-
-public:
-	bool GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive);
-	bool ReleaseLockForPath(const CTGitPath& path);
-
-private:
-	bool EnsurePipeOpen();
-	void ClosePipe();
-
-	bool EnsureCommandPipeOpen();
-	void CloseCommandPipe();
-
-private:
-	HANDLE m_hPipe;
-	OVERLAPPED m_Overlapped;
-	HANDLE m_hEvent;
-
-	HANDLE m_hCommandPipe;
-
-
-	CComCriticalSection m_critSec;
-	git_wc_status2_t m_dummyStatus;
-	long m_lastTimeout;
-
+	/**
+	 * Executes the command.
+	 */
+	virtual bool			Execute();
 };
+
+

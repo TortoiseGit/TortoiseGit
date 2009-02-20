@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TortoiseShell"
 	ProjectGUID="{E873DD32-5A31-4DE1-8341-A56A2A5489EA}"
 	RootNamespace="TortoiseShell"
@@ -53,7 +53,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories="&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SVN_DEBUG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SVN_DEBUG;_TORTOISESHELL"
 				BasicRuntimeChecks="1"
 				RuntimeLibrary="3"
 				ForceConformanceInForLoopScope="true"
@@ -88,11 +88,11 @@
 				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../../ext/wingit"
+				AdditionalLibraryDirectories=""
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile=".\ShellExt.def"
-				DelayLoadDLLs="gdiplus.dll;"
+				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/TortoiseGit.pdb"
 				OptimizeReferences="1"
@@ -164,7 +164,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_TORTOISESHELL"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -197,10 +197,10 @@
 				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../../ext/wingit"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="libcd, libc, shell32"
 				ModuleDefinitionFile=".\ShellExt.def"
-				DelayLoadDLLs="gdiplus.dll;"
+				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/TortoiseShell.pdb"
 				SubSystem="2"
@@ -453,6 +453,10 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
+				RelativePath="..\TGitCache\CacheInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath="ColumnProvider.cpp"
 				>
 			</File>
@@ -506,6 +510,10 @@
 			</File>
 			<File
 				RelativePath="..\Utils\Registry.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RemoteCacheLink.cpp"
 				>
 			</File>
 			<File
