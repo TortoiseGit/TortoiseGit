@@ -45,6 +45,7 @@
 //#include "RepositoryInfo.h"
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
+#include "CommitDlg.h"
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
@@ -187,6 +188,62 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			break;
 		case ID_REBASE_SKIP:
 			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
+			break;
+		case ID_COMBINE_COMMIT:
+		{
+			CString head;
+			CString headhash;
+			
+			head.Format(_T("HEAD~%d"),LastSelect);
+			CString hash=g_Git.GetHash(head);
+			hash=hash.Left(40);
+			
+			headhash=g_Git.GetHash(CString(_T("HEAD")));
+			headhash=headhash.Left(40);			
+			
+			GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+			if(pLastEntry->m_CommitHash != hash)
+			{
+				CMessageBox::Show(NULL,_T("Only combine top continuous commit"),_T("TortoiseGit"),MB_OK);
+			}
+			if(!g_Git.CheckCleanWorkTree())
+			{
+				CMessageBox::Show(NULL,_T("Combine need clean work tree"),_T("TortoiseGit"),MB_OK);
+				break;
+			}
+			CString cmd,out;
+
+			cmd.Format(_T("git.exe reset --mixed  %s"),hash);
+			if(g_Git.Run(cmd,&out,CP_UTF8))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			}
+			CCommitDlg dlg;
+			for(int i=FirstSelect;i<=LastSelect;i++)
+			{
+				GitRev* pRev = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+				dlg.m_sLogMessage+=pRev->m_Subject+_T("\n")+pRev->m_Body;
+				dlg.m_sLogMessage+=_T("\n");
+			}
+			dlg.m_bWholeProject=true;
+			dlg.m_bSelectFilesForCommit = true;
+			dlg.m_bCommitAmend=true;
+			dlg.m_AmendStr=dlg.m_sLogMessage;
+
+			if (dlg.DoModal() == IDOK)
+			{
+									
+			}else
+			{
+				cmd.Format(_T("git.exe reset --hard  %s"),headhash);
+				out.Empty();
+				if(g_Git.Run(cmd,&out,CP_UTF8))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				}
+			}
+			Refresh();
+		}
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);

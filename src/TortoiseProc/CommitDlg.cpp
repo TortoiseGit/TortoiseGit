@@ -57,6 +57,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_itemsCount(0)
 	, m_bSelectFilesForCommit(TRUE)
 {
+	this->m_bCommitAmend=FALSE;
 }
 
 CCommitDlg::~CCommitDlg()
@@ -284,9 +285,9 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 	err = FALSE;
 
-	this->UpdateData(TRUE);
-	this->m_bCommitAmend=FALSE;
-	this->UpdateData(FALSE);
+	//this->UpdateData(TRUE);
+	//this->m_bCommitAmend=FALSE;
+	//this->UpdateData(FALSE);
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

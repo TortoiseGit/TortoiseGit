@@ -138,6 +138,7 @@ public:
 	ID_REBASE_EDIT,
 	ID_REBASE_SQUASH,
 	ID_REBASE_SKIP,
+	ID_COMBINE_COMMIT,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();

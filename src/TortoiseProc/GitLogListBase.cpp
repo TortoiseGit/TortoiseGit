@@ -1133,12 +1133,27 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO))
 					popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 			}
+
 			if (GetSelectedCount() == 2)
 			{
 				//popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2))
 					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 				bAddSeparator = true;
+			}
+
+			if ( IsSelectionContinuous() )
+			{
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
+				{
+					CString head;
+					head.Format(_T("HEAD~%d"),LastSelect);
+					CString hash=g_Git.GetHash(head);
+					hash=hash.Left(40);
+					GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+					if(pLastEntry->m_CommitHash == hash)
+						popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("Combine to one commit"),IDI_MERGE);
+				}
 			}
 			if (m_hasWC)
 			{
