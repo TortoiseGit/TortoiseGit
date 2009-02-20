@@ -107,5 +107,6 @@ bool CleanupCommand::Execute()
 	}
 	CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseSVN"), MB_OK | (strFailedPaths.IsEmpty()?MB_ICONINFORMATION:MB_ICONERROR));
 #endif
+	CShellUpdater::Instance().Flush();
 	return bRet;
 }

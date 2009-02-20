@@ -86,10 +86,14 @@ bool AddCommand::Execute()
 				//progDlg.SetProjectProperties(props);
 				progDlg.SetItemCount(dlg.m_pathList.GetCount());
 				progDlg.DoModal();
+
+				CShellUpdater::Instance().AddPathsForUpdate(dlg.m_pathList);
+
 				bRet = !progDlg.DidErrorsOccur();
 
 			}
 	//	}
 	}
+	CShellUpdater::Instance().Flush();
 	return bRet;
 }

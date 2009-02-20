@@ -33,6 +33,7 @@
 #include "CommonResource.h"
 #include "UnicodeUtils.h"
 #include "ProgressDlg.h"
+#include "ShellUpdater.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -406,6 +407,7 @@ void CCommitDlg::OnOK()
 
 			g_Git.Run(cmd,&out,CP_OEMCP);
 			nchecked++;
+
 			//checkedLists.insert(entry->GetGitPathString());
 //			checkedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
 		}
@@ -449,6 +451,8 @@ void CCommitDlg::OnOK()
 			}
 #endif
 		}
+
+		CShellUpdater::Instance().AddPathForUpdate(*entry);
 	}
 
 	//if(uncheckedfiles.GetLength()>0)
@@ -626,6 +630,8 @@ void CCommitDlg::OnOK()
 	SaveSplitterPos();
 
 	CResizableStandAloneDialog::OnOK();
+
+	CShellUpdater::Instance().Flush();
 }
 
 void CCommitDlg::SaveSplitterPos()

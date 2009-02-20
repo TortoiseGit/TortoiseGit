@@ -61,6 +61,10 @@ bool RenameCommand::Execute()
 		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK);
 	}
 
+	CTGitPath newpath;
+	newpath.SetFromGit(sNewName);
+
+	CShellUpdater::Instance().AddPathForUpdate(newpath);
 #if 0
 	TRACE(_T("rename file %s to %s\n"), (LPCTSTR)cmdLinePath.GetWinPathString(), (LPCTSTR)sNewName);
 	CTSVNPath destinationPath(basePath);
@@ -248,5 +252,6 @@ bool RenameCommand::Execute()
 		}
 	}
 #endif
+	CShellUpdater::Instance().Flush();
 	return bRet;
 }

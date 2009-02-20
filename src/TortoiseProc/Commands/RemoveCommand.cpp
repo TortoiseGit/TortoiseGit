@@ -145,7 +145,10 @@ bool RemoveCommand::Execute()
 
 	output.Format(_T("%d files removed"),nPath);
 	
+	CShellUpdater::Instance().AddPathsForUpdate(pathList);
+
 	CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION|MB_OK);
 
+	CShellUpdater::Instance().Flush();
 	return bRet;
 }

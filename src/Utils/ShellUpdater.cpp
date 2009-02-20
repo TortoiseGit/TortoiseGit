@@ -18,12 +18,13 @@
 //
 #include "StdAfx.h"
 #include "Shellupdater.h"
-#include "../TSVNCache/CacheInterface.h"
+#include "../TGitCache/CacheInterface.h"
 #include "Registry.h"
+#include "git.h"
 
 CShellUpdater::CShellUpdater(void)
 {
-	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseSVNCacheInvalidationEvent"));
+	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent"));
 }
 
 CShellUpdater::~CShellUpdater(void)
@@ -43,7 +44,7 @@ CShellUpdater& CShellUpdater::Instance()
 * Add a single path for updating.
 * The update will happen at some suitable time in the future
 */
-void CShellUpdater::AddPathForUpdate(const CTSVNPath& path)
+void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 {
 	// Tell the shell extension to purge its cache - we'll redo this when 
 	// we actually do the shell-updates, but sometimes there's an earlier update, which
@@ -56,7 +57,7 @@ void CShellUpdater::AddPathForUpdate(const CTSVNPath& path)
 * Add a list of paths for updating.
 * The update will happen when the list is destroyed, at the end of execution
 */
-void CShellUpdater::AddPathsForUpdate(const CTSVNPathList& pathList)
+void CShellUpdater::AddPathsForUpdate(const CTGitPathList& pathList)
 {
 	for(int nPath=0; nPath < pathList.GetCount(); nPath++)
 	{
@@ -113,18 +114,20 @@ void CShellUpdater::UpdateShell()
 			NULL,     // don't set maximum bytes 
 			NULL))    // don't set maximum time 
 		{
+			CTGitPath path;
 			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); nPath++)
 			{
-				ATLTRACE(_T("Cache Item Update for %s (%d)\n"), m_pathsForUpdating[nPath].GetDirectory().GetWinPathString(), GetTickCount());
-				if (!m_pathsForUpdating[nPath].IsDirectory())
+				path.SetFromWin(g_Git.m_CurrentDir+_T("\\")+m_pathsForUpdating[nPath].GetDirectory().GetWinPathString());
+				ATLTRACE(_T("Cache Item Update for %s (%d)\n"), path.GetDirectory().GetWinPathString(), GetTickCount());
+				if (!path.IsDirectory())
 				{
 					// send notifications to the shell for changed files - folders are updated by the cache itself.
-					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, m_pathsForUpdating[nPath].GetWinPath(), NULL);
+					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.GetWinPath(), NULL);
 				}
 				DWORD cbWritten; 
 				TSVNCacheCommand cmd;
 				cmd.command = TSVNCACHECOMMAND_CRAWL;
-				wcsncpy_s(cmd.path, MAX_PATH+1, m_pathsForUpdating[nPath].GetDirectory().GetWinPath(), MAX_PATH);
+				wcsncpy_s(cmd.path, MAX_PATH+1, path.GetDirectory().GetWinPath(), MAX_PATH);
 				BOOL fSuccess = WriteFile( 
 					hPipe,			// handle to pipe 
 					&cmd,			// buffer to write from 
