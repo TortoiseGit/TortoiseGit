@@ -50,7 +50,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bThreadRunning(FALSE)
 	, m_bRunThread(FALSE)
 	, m_pThread(NULL)
-	, m_bKeepLocks(FALSE)
+	, m_bWholeProject(FALSE)
 	, m_bKeepChangeList(TRUE)
 	, m_itemsCount(0)
 	, m_bSelectFilesForCommit(TRUE)
@@ -73,7 +73,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
 	DDX_Text(pDX, IDC_BUGID, m_sBugID);
-	DDX_Check(pDX, IDC_KEEPLOCK, m_bKeepLocks);
+	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
@@ -112,7 +112,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_bKeepChangeList = m_regKeepChangelists;
 
 //	GitConfig config;
-//	m_bKeepLocks = config.KeepLocks();
+//	m_bWholeProject = config.KeepLocks();
 
 	UpdateData(FALSE);
 	
@@ -198,7 +198,7 @@ BOOL CCommitDlg::OnInitDialog()
 	
 	AdjustControlSize(IDC_SHOWUNVERSIONED);
 	AdjustControlSize(IDC_SELECTALL);
-	AdjustControlSize(IDC_KEEPLOCK);
+	AdjustControlSize(IDC_WHOLE_PROJECT);
 
 	GetClientRect(m_DlgOrigRect);
 	m_cLogMessage.GetClientRect(m_LogMsgOrigRect);
@@ -219,7 +219,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
 	AddAnchor(IDC_EXTERNALWARNING, BOTTOM_RIGHT);
 	AddAnchor(IDC_STATISTICS, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_KEEPLOCK, BOTTOM_LEFT);
+	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_KEEPLISTS, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
@@ -597,8 +597,8 @@ void CCommitDlg::OnOK()
 #endif
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
-	if (!GetDlgItem(IDC_KEEPLOCK)->IsWindowEnabled())
-		m_bKeepLocks = FALSE;
+	if (!GetDlgItem(IDC_WHOLE_PROJECT)->IsWindowEnabled())
+		m_bWholeProject = FALSE;
 	m_regKeepChangelists = m_bKeepChangeList;
 	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
 		m_bKeepChangeList = FALSE;
@@ -673,7 +673,7 @@ UINT CCommitDlg::StatusThread()
 #endif
     // Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
-	BOOL success = m_ListCtrl.GetStatus(m_pathList);
+	BOOL success = m_ListCtrl.GetStatus(&m_pathList);
 
 	//m_ListCtrl.UpdateFileList(git_revnum_t(GIT_REV_ZERO));
 	if(this->m_bShowUnversioned)
@@ -746,7 +746,7 @@ UINT CCommitDlg::StatusThread()
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
 		if (m_ListCtrl.HasLocks())
-			DialogEnableWindow(IDC_KEEPLOCK, true);
+			DialogEnableWindow(IDC_WHOLE_PROJECT, true);
 		// we have the list, now signal the main thread about it
 		SendMessage(WM_AUTOLISTREADY);	// only send the message if the thread wasn't told to quit!
 	}
@@ -890,7 +890,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			dwShow &= ~SVNSLC_SHOWUNVERSIONED;
 		if(dwShow & SVNSLC_SHOWUNVERSIONED)
 		{
-			m_ListCtrl.GetStatus(this->m_pathList,false,false,true);
+			m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
 		m_ListCtrl.Show(dwShow);
 	}

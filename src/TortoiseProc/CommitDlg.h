@@ -103,7 +103,7 @@ public:
 	BOOL				m_bRecursive;
 	CSciEdit			m_cLogMessage;
 	CString				m_sLogMessage;
-	BOOL				m_bKeepLocks;
+	BOOL				m_bWholeProject;
 	CString				m_sBugID;
 	CString				m_sChangeList;
 	BOOL				m_bKeepChangeList;

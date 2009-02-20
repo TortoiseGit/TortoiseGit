@@ -40,29 +40,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="0"
-			>
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="adfad"
-				ReBuildCommandLine=""
-				CleanCommandLine=""
-				Output="TortoiseLangs.exe"
-				PreprocessorDefinitions="WIN32;NDEBUG"
-				IncludeSearchPath=""
-				ForcedIncludes=""
-				AssemblySearchPath=""
-				ForcedUsingAssemblies=""
-				CompileAsManaged=""
-			/>
-		</Configuration>
-		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="../bin/$(ConfigurationName)/bin"
+			IntermediateDirectory="../obj/lang/$(ConfigurationName)64/"
 			ConfigurationType="0"
 			>
 			<Tool
@@ -80,9 +60,29 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="../bin/$(ConfigurationName)/bin"
+			IntermediateDirectory="../obj/lang/$(ConfigurationName)/"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="adfad"
+				ReBuildCommandLine=""
+				CleanCommandLine=""
+				Output="TortoiseLangs.exe"
+				PreprocessorDefinitions="WIN32;NDEBUG"
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="../bin/$(ConfigurationName)/bin"
+			IntermediateDirectory="../obj/lang/$(ConfigurationName)64/"
 			ConfigurationType="0"
 			>
 			<Tool

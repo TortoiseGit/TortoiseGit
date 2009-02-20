@@ -93,6 +93,80 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release|x64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\hunspell\$(ConfigurationName)64"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				PreprocessorDefinitions="W32;NDEBUG;_LIB"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				PrecompiledHeaderFile=".\Release/hunspell.pch"
+				AssemblerListingLocation="$(IntDir)\"
+				ObjectFile="$(IntDir)\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1038"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)\$(ProjectName).lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\Release/hunspell.bsc"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\hunspell\$(ConfigurationName)"
@@ -167,83 +241,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="W32;NDEBUG;_LIB"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/hunspell.pch"
-				AssemblerListingLocation="$(IntDir)\"
-				ObjectFile="$(IntDir)\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1038"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\$(ProjectName).lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-				SuppressStartupBanner="true"
-				OutputFile=".\Release/hunspell.bsc"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\hunspell\$(ConfigurationName)64"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -334,7 +334,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -342,7 +342,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -370,7 +370,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -378,7 +378,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -406,7 +406,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -414,7 +414,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -442,7 +442,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -450,7 +450,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -478,7 +478,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -486,7 +486,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -514,7 +514,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -522,7 +522,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -554,7 +554,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -562,7 +562,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

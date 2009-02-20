@@ -104,6 +104,87 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)64"
+			ConfigurationType="1"
+			UseOfMFC="2"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir);..\TortoiseShell"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				LinkIncremental="2"
+				IgnoreDefaultLibraryNames="LIBCMTD"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="17"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)"
@@ -190,90 +271,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|x64"
-			OutputDirectory="..\..\bin\debug64\bin"
-			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)"
-			ConfigurationType="1"
-			UseOfMFC="2"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir);..\TortoiseShell"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
-				LinkIncremental="2"
-				IgnoreDefaultLibraryNames="LIBCMTD"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Release|x64"
-			OutputDirectory="..\..\bin\Release64\bin"
-			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)64"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="1"
@@ -447,7 +447,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -455,7 +455,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|x64"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -544,19 +544,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\output_wnd.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\res\output_wnd.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\output_wnd_hc.ico"
+				RelativePath="..\Resources\blameres\output_wnd.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\res\output_wnd_hc.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\blameres\output_wnd_hc.ico"
 				>
 			</File>
 			<File
@@ -568,19 +568,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\properties_hc.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\properties_hc.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\properties_wnd.ico"
+				RelativePath=".\res\properties_hc.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\blameres\properties_wnd.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\properties_wnd.ico"
 				>
 			</File>
 			<File
@@ -592,19 +592,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\Toolbar.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\Toolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\Toolbar256.bmp"
+				RelativePath=".\res\Toolbar.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\blameres\Toolbar256.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Toolbar256.bmp"
 				>
 			</File>
 			<File
@@ -627,7 +627,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -635,7 +635,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|x64"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -652,11 +652,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\res\TortoiseGitBlameDoc.ico"
+				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
+				RelativePath=".\res\TortoiseGitBlameDoc.ico"
 				>
 			</File>
 			<File
@@ -1061,7 +1061,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -1072,7 +1072,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|x64"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"

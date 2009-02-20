@@ -514,7 +514,7 @@ public:
 	 * \param bUpdate TRUE if the remote status is requested too.
 	 * \return TRUE on success.
 	 */
-	BOOL GetStatus ( const CTGitPathList& pathList
+	BOOL GetStatus ( const CTGitPathList* pathList=NULL
                    , bool bUpdate = false
                    , bool bShowIgnores = false
 				   , bool bShowUnRev=false

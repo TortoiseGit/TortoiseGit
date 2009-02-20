@@ -287,7 +287,7 @@ bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)
 	return CAppUtils::SetListCtrlBackgroundImage(GetSafeHwnd(), nID);
 }
 
-BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
+BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
                                    , bool bUpdate /* = FALSE */
                                    , bool bShowIgnores /* = false */
 								   , bool bShowUnRev
@@ -299,7 +299,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList& pathList
 		mask|= CGitStatusListCtrl::FILELIST_IGNORE;
 	if(bShowUnRev)
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
-	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)&pathList);
+	this->UpdateFileList(mask,bUpdate,pathList);
 
 
 #if 0
@@ -5346,7 +5346,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	TCHAR groupname[1024];
 	int groupindex = 0;
 
-	if(bHasGroups);
+	if(bHasGroups)
 	{
 		LVGROUP grp = {0};
 		grp.cbSize = sizeof(LVGROUP);

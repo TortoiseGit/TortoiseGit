@@ -98,6 +98,84 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release|x64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\ResizeableLib\$(ConfigurationName)64\"
+			ConfigurationType="4"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="1"
+				FavorSizeOrSpeed="2"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				ForceConformanceInForLoopScope="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerListingLocation=""
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_AFXDLL;NDEBUG"
+				Culture="0"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/$(ProjectName).lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\ResizeableLib\$(ConfigurationName)\"
@@ -174,87 +252,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|x64"
-			OutputDirectory="..\..\obj\ResizableLib\Release64"
-			IntermediateDirectory="..\..\obj\ResizableLib\Release64"
-			ConfigurationType="4"
-			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="1"
-				FavorSizeOrSpeed="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				StringPooling="true"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="true"
-				ForceConformanceInForLoopScope="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
-				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
-				WarningLevel="4"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_AFXDLL;NDEBUG"
-				Culture="0"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/$(ProjectName).lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="..\..\obj\ResizableLib\Debug64"
-			IntermediateDirectory="..\..\obj\ResizableLib\Debug64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\ResizeableLib\$(ConfigurationName)64\"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -427,7 +427,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -435,7 +435,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

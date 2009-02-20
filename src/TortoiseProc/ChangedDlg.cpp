@@ -138,7 +138,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
     DialogEnableWindow(IDC_SHOWUSERPROPS, FALSE);
 	CString temp;
-	if (!m_FileListCtrl.GetStatus(m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned,m_bShowUserProps != FALSE))
+	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned,m_bShowUserProps != FALSE))
 	{
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());

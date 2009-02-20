@@ -139,7 +139,7 @@ UINT CAddDlg::AddThread()
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 	m_addListCtrl.Clear();
-	if (!m_addListCtrl.GetStatus(m_pathList,false,false,true,true))
+	if (!m_addListCtrl.GetStatus(&m_pathList,false,false,true,true))
 	{
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());
 	}
