@@ -299,7 +299,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		mask|= CGitStatusListCtrl::FILELIST_IGNORE;
 	if(bShowUnRev)
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
-	this->UpdateFileList(mask,bUpdate,pathList);
+	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)pathList);
 
 
 #if 0

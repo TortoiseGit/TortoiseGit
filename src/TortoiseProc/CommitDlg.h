@@ -143,4 +143,5 @@ public:
 	afx_msg void OnBnClickedSignOff();
 	afx_msg void OnStnClickedCommitlabel();
 	afx_msg void OnBnClickedCommitAmend();
+    afx_msg void OnBnClickedWholeProject();
 };

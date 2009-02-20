@@ -75,6 +75,12 @@ bool CommitCommand::Execute()
 		{
 			dlg.m_sBugID = parser.GetVal(_T("bugid"));
 		}
+        
+        if (parser.HasKey(_T("wholeproject")))
+		{
+            dlg.m_bWholeProject = TRUE;
+		}
+
 		dlg.m_sLogMessage = sLogMsg;
 		dlg.m_pathList = pathList;
 		dlg.m_checkedPathList = selectedList;

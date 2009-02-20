@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
 	ON_STN_CLICKED(IDC_COMMITLABEL, &CCommitDlg::OnStnClickedCommitlabel)
     ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
+    ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -656,6 +657,7 @@ UINT CCommitDlg::StatusThread()
 
 	DialogEnableWindow(IDOK, false);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, false);
+    DialogEnableWindow(IDC_WHOLE_PROJECT, false);
 	DialogEnableWindow(IDC_SELECTALL, false);
 	GetDlgItem(IDC_EXTERNALWARNING)->ShowWindow(SW_HIDE);
 	DialogEnableWindow(IDC_EXTERNALWARNING, false);
@@ -677,7 +679,11 @@ UINT CCommitDlg::StatusThread()
 #endif
     // Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
-	BOOL success = m_ListCtrl.GetStatus(&m_pathList);
+	BOOL success;
+    if(m_bWholeProject)
+        success=m_ListCtrl.GetStatus(NULL);
+    else
+        success=m_ListCtrl.GetStatus(&m_pathList);
 
 	//m_ListCtrl.UpdateFileList(git_revnum_t(GIT_REV_ZERO));
 	if(this->m_bShowUnversioned)
@@ -730,7 +736,11 @@ UINT CCommitDlg::StatusThread()
 	}
 
 	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
-	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+
+    if(this->m_bWholeProject)   
+        SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
+    else
+	    SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	m_autolist.clear();
 	// we don't have to block the commit dialog while we fetch the
@@ -746,6 +756,7 @@ UINT CCommitDlg::StatusThread()
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
+        DialogEnableWindow(IDC_WHOLE_PROJECT, true);
 		DialogEnableWindow(IDC_SELECTALL, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
@@ -894,7 +905,10 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			dwShow &= ~SVNSLC_SHOWUNVERSIONED;
 		if(dwShow & SVNSLC_SHOWUNVERSIONED)
 		{
-			m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
+            if(m_bWholeProject)
+                m_ListCtrl.GetStatus(NULL,false,false,true);
+            else
+			    m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
 		m_ListCtrl.Show(dwShow);
 	}
@@ -1508,5 +1522,30 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		m_cLogMessage.SetText(m_NoAmendStr);
 
 	}
+
+}
+
+void CCommitDlg::OnBnClickedWholeProject()
+{
+    // TODO: Add your control notification handler code here
+    m_tooltips.Pop();	// hide the tooltips
+	UpdateData();
+    m_ListCtrl.Clear();
+	if (!m_bBlock)
+	{
+	    if(m_bWholeProject)
+            m_ListCtrl.GetStatus(NULL,true,false,true);
+        else
+		    m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
+		
+		m_ListCtrl.Show(m_ListCtrl.GetShowFlags());
+	}
+
+   	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+
+    if(this->m_bWholeProject)   
+        SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
+    else
+	    SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 }
