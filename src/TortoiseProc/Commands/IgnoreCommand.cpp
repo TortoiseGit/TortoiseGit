@@ -21,10 +21,22 @@
 
 #include "MessageBox.h"
 #include "PathUtils.h"
+#include "AppUtils.h"
 //#include "SVNProperties.h"
 
 bool IgnoreCommand::Execute()
 {
+	bool bmask=false;
+	
+	if(parser.HasKey(_T("onlymask")))
+	{
+		bmask=true;
+	}
+
+	if(CAppUtils::IgnoreFile(pathList,bmask))
+		return false;
+
+	return true;
 #if 0
 	CString filelist;
 	BOOL err = FALSE;
@@ -90,5 +102,4 @@ bool IgnoreCommand::Execute()
 		return true;
 	}
 #endif
-	return false;
 }

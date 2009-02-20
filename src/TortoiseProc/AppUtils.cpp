@@ -1163,7 +1163,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 
 	if(IsMask)
 	{
-		ignorefile+=path.GetCommonRoot().GetWinPathString()+_T("\\.gitignore");
+		ignorefile+=path.GetCommonRoot().GetDirectory().GetWinPathString()+_T("\\.gitignore");
 
 	}else
 	{
@@ -1178,17 +1178,19 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 	}
 
 	CString ignorelist;
+	CString mask;
 	try
 	{
 		//file.ReadString(ignorelist);
 		file.SeekToEnd();
-
 		for(int i=0;i<path.GetCount();i++)
 		{
 			if(IsMask)
 			{
-				ignorelist+=_T("\n*")+path[i].GetFileExtension();
-				break;
+				mask=_T("*")+path[i].GetFileExtension();
+				if(ignorelist.Find(mask)<0)
+					ignorelist+=_T("\n")+mask;
+				
 			}else
 			{
 				ignorelist+=_T("\n/")+path[i].GetGitPathString();
