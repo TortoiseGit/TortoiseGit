@@ -66,7 +66,7 @@ BOOL CAboutDlg::OnInitDialog()
 		_T(ZLIB_VERSION));
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
 #endif
-	this->SetWindowText(_T("TortoiseSVN"));
+	this->SetWindowText(_T("TortoiseGit"));
 
 	CPictureHolder tmpPic;
 	tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
