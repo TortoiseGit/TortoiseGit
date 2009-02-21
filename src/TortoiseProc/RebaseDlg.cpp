@@ -20,6 +20,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
 	m_bThreadRunning =FALSE;
+	this->m_IsCherryPick = FALSE;
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -172,17 +173,30 @@ BOOL CRebaseDlg::OnInitDialog()
 //	m_CommitList.m_IsOldFirst = TRUE;
 	m_CommitList.m_IsRebaseReplaceGraph = TRUE;
 
-	m_CommitList.DeleteAllItems();
 	m_CommitList.InsertGitColumn();
 
-	FetchLogList();
-	SetContinueButtonText();
 	this->SetControlEnable();
+
+	if(m_IsCherryPick)
+	{
+		this->m_BranchCtrl.SetCurSel(-1);
+		this->m_BranchCtrl.EnableWindow(FALSE);
+		this->m_UpstreamCtrl.EnableWindow(FALSE);
+		this->SetWindowText(_T("Cherry Pick"));
+		this->m_CommitList.StartFilter();
+
+	}else
+	{
+		SetContinueButtonText();
+		m_CommitList.DeleteAllItems();
+		FetchLogList();
+	}
 
 	m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_CHERRY_PICK)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_SWITCHTOREV)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_RESET)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTREV)|
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_TO_VERSION)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTTOREV));
 
 	return TRUE;
@@ -343,6 +357,11 @@ void CRebaseDlg::LoadBranchInfo()
 	AddBranchToolTips(&m_BranchCtrl);
 	AddBranchToolTips(&m_UpstreamCtrl);
 
+	if(!m_Upstream.IsEmpty())
+	{
+		m_UpstreamCtrl.AddString(m_Upstream);
+		m_UpstreamCtrl.SetCurSel(m_UpstreamCtrl.GetCount()-1);
+	}
 }
 
 void CRebaseDlg::OnCbnSelchangeBranch()
@@ -753,8 +772,11 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
+		if(!m_IsCherryPick)
+		{
+			this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(TRUE);
+			this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
+		}
 		//this->m_CommitList.m_IsEnableRebaseMenu=TRUE;
 		this->m_CommitList.m_ContextMenuMask |= m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
@@ -1084,8 +1106,14 @@ void CRebaseDlg::OnBnClickedAbort()
 	CString cmd,out;
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
-		this->OnCancel();
+		__super::OnCancel();
 	}
+	
+	if(m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage== CHOOSE_COMMIT_PICK_MODE)
+	{
+		return;
+	}
+
 	if(CMessageBox::Show(NULL,_T("Are you sure abort rebase"),_T("TortoiseGit"),MB_YESNO) != IDYES)
 		return;
 

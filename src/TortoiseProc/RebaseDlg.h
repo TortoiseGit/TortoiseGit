@@ -116,6 +116,9 @@ public:
 
 	CHistoryCombo m_BranchCtrl;
 	CHistoryCombo m_UpstreamCtrl;
+	
+	CString		  m_Upstream;
+	BOOL		  m_IsCherryPick;
 
 	REBASE_STAGE	   m_RebaseStage;
 

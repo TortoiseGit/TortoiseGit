@@ -46,6 +46,7 @@
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
 #include "CommitDlg.h"
+#include "RebaseDlg.h"
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
@@ -245,6 +246,49 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			Refresh();
 		}
 			break;
+
+		case ID_CHERRY_PICK:
+			if(!g_Git.CheckCleanWorkTree())
+			{
+				CMessageBox::Show(NULL,_T("Cherry Pick Require Clean Working Tree"),_T("TortoiseGit"),MB_OK);
+			
+			}else
+			{
+				CRebaseDlg dlg;
+				dlg.m_IsCherryPick = TRUE;
+				dlg.m_Upstream = this->m_CurrentBranch;
+				POSITION pos = GetFirstSelectedItemPosition();
+				while(pos)
+				{
+					int indexNext = GetNextSelectedItem(pos);
+					dlg.m_CommitList.m_logEntries.push_back(*(GitRev*)m_arShownList[indexNext]);
+					dlg.m_CommitList.m_logEntries.at(dlg.m_CommitList.m_logEntries.size()-1).m_Action |= CTGitPath::LOGACTIONS_REBASE_PICK;
+				}
+
+				if(dlg.DoModal() == IDOK)
+				{
+					Refresh();
+				}
+			}
+			break;
+		case ID_REBASE_TO_VERSION:
+			if(!g_Git.CheckCleanWorkTree())
+			{
+				CMessageBox::Show(NULL,_T("Rebase Require Clean Working Tree"),_T("TortoiseGit"),MB_OK);
+			
+			}else
+			{
+				CRebaseDlg dlg;
+				dlg.m_Upstream = pSelLogEntry->m_CommitHash;
+
+				if(dlg.DoModal() == IDOK)
+				{
+					Refresh();
+				}
+			}
+
+			break;
+
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;

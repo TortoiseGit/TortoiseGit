@@ -31,6 +31,13 @@
 bool RebaseCommand::Execute()
 {
 	bool bRet =false;
+	
+	if(!g_Git.CheckCleanWorkTree())
+	{
+		CMessageBox::Show(NULL,_T("Rebase Require Clean Working Tree"),_T("TortoiseGit"),MB_OK);
+		return false;		
+	}
+
 	CRebaseDlg dlg;
 	if(dlg.DoModal() == IDOK)
 	{
