@@ -1298,12 +1298,22 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 
 	
 	format=_T("git.exe cat-file blob \":%d:%s\"");
+	CFile tempfile;
+	//create a empty file, incase stage is not three
+	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
+	tempfile.Close();
+	tempfile.Open(theirs.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
+	tempfile.Close();
+	tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
+	tempfile.Close();
+
+
 	for(int i=0;i<list.GetCount();i++)
 	{
 		CString cmd;
 		CString outfile;
 		cmd.Format(format,list[i].m_Stage,list[i].GetGitPathString());
-
+		
 		if( list[i].m_Stage == 1)
 		{
 			outfile=base.GetWinPathString();
@@ -1315,7 +1325,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 		if( list[i].m_Stage == 3 )
 		{
 			outfile=theirs.GetWinPathString();
-		}
+		}	
 		g_Git.RunLogFile(cmd,outfile);
 	}
 
