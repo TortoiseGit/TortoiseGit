@@ -1046,25 +1046,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if (GetSelectedCount() == 1)
 		{
-#if 0
-			if (!m_path.IsDirectory())
-			{
-				if (m_hasWC)
-				{
-					popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
-					popup.AppendMenuIcon(ID_BLAMECOMPARE, IDS_LOG_POPUP_BLAMECOMPARE, IDI_BLAME);
-				}
-				popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
-				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
-				popup.AppendMenu(MF_SEPARATOR, NULL);
-				popup.AppendMenuIcon(ID_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
-				popup.AppendMenuIcon(ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
-				popup.AppendMenuIcon(ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-				popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
-				popup.AppendMenu(MF_SEPARATOR, NULL);
-			}
-			else
-#endif 
 			{
 				if (m_hasWC)
 				{
@@ -1122,14 +1103,23 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
 				popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
-
+		}
+	
+		if ( GetSelectedCount() >0 )
+		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
 				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+	
+		}
 
+		if (GetSelectedCount() == 1)
+		{
+			CString str;
 			str.Format(_T("Rebase %s to this"),g_Git.GetCurrentBranch());
 
-			if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
-				popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_EXPORT);			
+			if(pSelLogEntry->m_CommitHash != m_HeadHash)
+				if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
+					popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_EXPORT);			
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 				popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);	
