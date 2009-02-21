@@ -202,45 +202,108 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			headhash=g_Git.GetHash(CString(_T("HEAD")));
 			headhash=headhash.Left(40);			
 			
+			GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 			GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-			if(pLastEntry->m_CommitHash != hash)
-			{
-				CMessageBox::Show(NULL,_T("Only combine top continuous commit"),_T("TortoiseGit"),MB_OK);
-			}
+//			if(pLastEntry->m_CommitHash != hash)
+//			{
+//				CMessageBox::Show(NULL,_T("Only combine top continuous commit"),_T("TortoiseGit"),MB_OK);
+//			}
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(NULL,_T("Combine need clean work tree"),_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(NULL,_T("Combine needs a clean work tree"),_T("TortoiseGit"),MB_OK);
 				break;
 			}
 			CString cmd,out;
 
-			cmd.Format(_T("git.exe reset --mixed  %s"),hash);
-			if(g_Git.Run(cmd,&out,CP_UTF8))
+			//Use throw to abort this process (reset back to original HEAD)
+			try
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-			}
-			CCommitDlg dlg;
-			for(int i=FirstSelect;i<=LastSelect;i++)
-			{
-				GitRev* pRev = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
-				dlg.m_sLogMessage+=pRev->m_Subject+_T("\n")+pRev->m_Body;
-				dlg.m_sLogMessage+=_T("\n");
-			}
-			dlg.m_bWholeProject=true;
-			dlg.m_bSelectFilesForCommit = true;
-			dlg.m_bCommitAmend=true;
-			dlg.m_AmendStr=dlg.m_sLogMessage;
+				cmd.Format(_T("git.exe reset --hard  %s"),pFirstEntry->m_CommitHash);
+				if(g_Git.Run(cmd,&out,CP_UTF8))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to first commit (first step) aborting...\r\n\r\n")+out));
+				}
+				cmd.Format(_T("git.exe reset --mixed  %s"),hash);
+				if(g_Git.Run(cmd,&out,CP_UTF8))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to last commit (second step) aborting...\r\n\r\n")+out));
+				}
+				CCommitDlg dlg;
+				for(int i=FirstSelect;i<=LastSelect;i++)
+				{
+					GitRev* pRev = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+					dlg.m_sLogMessage+=pRev->m_Subject+_T("\n")+pRev->m_Body;
+					dlg.m_sLogMessage+=_T("\n");
+				}
+				dlg.m_bWholeProject=true;
+				dlg.m_bSelectFilesForCommit = true;
+				dlg.m_bCommitAmend=true;
+				dlg.m_AmendStr=dlg.m_sLogMessage;
 
-			if (dlg.DoModal() == IDOK)
+				bool abort=false;
+				if (dlg.DoModal() == IDOK)
+				{
+					if(pFirstEntry->m_CommitHash!=headhash)
+					{
+						//Commitrange firstEntry..headhash (from top of combine to original head) needs to be 'cherry-picked'
+						//on top of new commit.
+						//Use the rebase --onto command for it.
+						//
+						//All this can be done in one step using the following command:
+						//cmd.Format(_T("git.exe format-patch --stdout --binary --full-index -k %s..%s | git am -k -3"),
+						//	pFirstEntry->m_CommitHash,
+						//	headhash);
+						//But I am not sure if a '|' is going to work in a CreateProcess() call.
+						//
+						//Later the progress dialog could be used to execute these steps.
+
+						CString currentBranch=g_Git.GetCurrentBranch();
+						cmd.Format(_T("git.exe rebase --onto \"%s\" %s %s"),
+							currentBranch,
+							pFirstEntry->m_CommitHash,
+							headhash);
+						if(g_Git.Run(cmd,&out,CP_UTF8)!=0)
+						{
+							CString msg;
+							msg.Format(_T("Error while rebasing commits on top of combined commits. Aborting.\r\n\r\n%s"),out);
+//							CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
+							g_Git.Run(_T("git.exe rebase --abort"),&out,CP_UTF8);
+							throw std::exception(CUnicodeUtils::GetUTF8(msg));
+						}
+
+						//HEAD is now on <no branch>. 
+						//The following steps are to get HEAD back on the original branch and reset the branch to the new HEAD
+						//To avoid 2 working copy changes, we could use git branch -f <original branch> <hash new head> 
+						//And then git checkout <original branch>
+						//But I don't know if 'git branch -f' removes tracking options. So for now, do a checkout and a reset.
+						
+						//Store new HEAD
+						CString newHead=g_Git.GetHash(CString(_T("HEAD")));
+
+						//Checkout working branch
+						cmd.Format(_T("git.exe checkout -f \"%s\""),currentBranch);
+						if(g_Git.Run(cmd,&out,CP_UTF8))
+							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not checkout original branch. Aborting...\r\n\r\n")+out));
+
+						//Reset to new HEAD
+						cmd.Format(_T("git.exe reset --hard  %s"),newHead);
+						if(g_Git.Run(cmd,&out,CP_UTF8))
+							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to new head. Aborting...\r\n\r\n")+out));
+					}
+				}
+				else
+					throw std::exception("User aborted the combine process");
+			}
+			catch(std::exception& e)
 			{
-									
-			}else
-			{
+				CMessageBox::Show(NULL,CUnicodeUtils::GetUnicode(CStringA(e.what())),_T("TortoiseGit: Combine error"),MB_OK|MB_ICONERROR);
 				cmd.Format(_T("git.exe reset --hard  %s"),headhash);
 				out.Empty();
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					CMessageBox::Show(NULL,_T("Could not reset to original HEAD\r\n\r\n")+out,_T("TortoiseGit"),MB_OK);
 				}
 			}
 			Refresh();

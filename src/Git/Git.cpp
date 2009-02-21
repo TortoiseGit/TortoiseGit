@@ -599,7 +599,8 @@ git_revnum_t CGit::GetHash(CString &friendname)
 	CString out;
 	cmd.Format(_T("git.exe rev-parse %s" ),friendname);
 	Run(cmd,&out,CP_UTF8);
-	int pos=out.ReverseFind(_T('\n'));
+//	int pos=out.ReverseFind(_T('\n'));
+	int pos=out.FindOneOf(_T("\r\n"));
 	if(pos>0)
 		return out.Left(pos);
 	return out;
