@@ -87,13 +87,8 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	CWnd *pwnd=this->GetDlgItem(IDC_REBASE_DUMY_TAB);
 	pwnd->GetWindowRect(&rectDummy);
+	this->ScreenToClient(rectDummy);
 
-	rectDummy.top-=20;
-	rectDummy.bottom-=20;
-
-	rectDummy.left-=5;
-	rectDummy.right-=5;
-	
 	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_REBASE_TAB))
 	{
 		TRACE0("Failed to create output tab window\n");
