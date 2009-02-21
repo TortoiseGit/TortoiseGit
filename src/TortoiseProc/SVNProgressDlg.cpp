@@ -267,6 +267,11 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 			data->color = m_Colors.GetColor(CColors::Added);
 	//	}
 		break;
+	
+	case git_wc_notify_resolved:
+		data->sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
+		break;
+
 #if 0
 	case svn_wc_notify_commit_added:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_ADDING);
@@ -294,9 +299,6 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 		break;
 	case svn_wc_notify_revert:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
-		break;
-	case svn_wc_notify_resolved:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
 		break;
 	case svn_wc_notify_update_replace:
 	case svn_wc_notify_commit_replaced:
@@ -1775,7 +1777,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
 		CString cmd,out;
-		cmd.Format(_T("git.exe add \"%s\""),m_targetPathList[i].GetGitPathString());
+		cmd.Format(_T("git.exe add -f \"%s\""),m_targetPathList[i].GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_OEMCP))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -2314,7 +2316,7 @@ bool CGitProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
 
 bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 {
-#if 0
+
 	localoperation = true;
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_RESOLVE);
@@ -2322,6 +2324,20 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_RESOLVE_BKG);
 	// check if the file may still have conflict markers in it.
 	BOOL bMarkers = FALSE;
+
+	for(int i=0;i<m_targetPathList.GetCount();i++)
+	{
+		CString cmd,out;
+		cmd.Format(_T("git.exe add -f \"%s\""),m_targetPathList[i].GetGitPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			m_bErrorsOccurred=true;
+			return false;
+		}
+		Notify(m_targetPathList[i],git_wc_notify_resolved);
+	}
+#if 0
 	if ((m_options & ProgOptSkipConflictCheck) == 0)
 	{
 		try
@@ -2369,8 +2385,9 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 		for (INT_PTR fileindex=0; fileindex<m_targetPathList.GetCount(); ++fileindex)
 			Resolve(m_targetPathList[fileindex], svn_wc_conflict_choose_merged, true);
 	}
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 #endif
+	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+
 	return true;
 }
 

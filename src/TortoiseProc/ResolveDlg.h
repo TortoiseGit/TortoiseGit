@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "StandAloneDlg.h"
-#include "SVNStatusListCtrl.h"
+#include "GitStatusListCtrl.h"
 
 
 /**
@@ -55,10 +55,10 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CTSVNPathList	m_pathList;
+	CTGitPathList	m_pathList;
 
 private:
-	CSVNStatusListCtrl	m_resolveListCtrl;
+	CGitStatusListCtrl	m_resolveListCtrl;
 	volatile LONG		m_bThreadRunning;
 	CButton				m_SelectAll;
 	bool				m_bCancelled;

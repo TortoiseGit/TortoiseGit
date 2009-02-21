@@ -1700,6 +1700,22 @@
 					RelativePath=".\Commands\ConflictEditorCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Commands\ResolveCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\ResolveCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolveDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolveDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Rebase"

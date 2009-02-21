@@ -69,6 +69,7 @@ typedef enum
 typedef enum
 {
 	git_wc_notify_add,
+	git_wc_notify_resolved
 
 }git_wc_notify_action_t;
 /**

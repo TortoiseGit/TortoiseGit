@@ -50,7 +50,7 @@
 #include "ConflictEditorCommand.h"
 #include "CleanupCommand.h"
 #include "RebaseCommand.h"
-
+#include "ResolveCommand.h"
 #if 0
 
 
@@ -87,7 +87,7 @@
 
 #include "RepositoryBrowserCommand.h"
 
-#include "ResolveCommand.h"
+
 #include "RevertCommand.h"
 #include "RevisiongraphCommand.h"
 #include "RTFMCommand.h"
@@ -306,6 +306,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CleanupCommand;
 	case cmdRebase:
 		return new RebaseCommand;
+	case cmdResolve:
+		return new ResolveCommand;
 #if 0
 
 	case cmdCat:
@@ -365,8 +367,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RepositoryBrowserCommand;
 
 
-	case cmdResolve:
-		return new ResolveCommand;
+
 
 	case cmdRevisionGraph:
 		return new RevisionGraphCommand;
