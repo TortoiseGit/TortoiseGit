@@ -670,27 +670,33 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		_tcscpy_s(menutextbuffer, 255, _T("Git "));
 	}
 	_tcscat_s(menutextbuffer, 255, stringtablebuffer);
-	if ((fullver < 0x500)||(fullver == 0x500 && !uFlags))
+	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
 	{
+		// on win2k, the context menu does not work properly if we use
+		// icon bitmaps. At least the menu text is empty in the context menu
+		// for folder backgrounds (seems like a win2k bug).
+		// the workaround is to use the check/unchecked bitmaps, which are drawn
+		// with AND raster op, but it's better than nothing at all
 		InsertMenu(menu, pos, MF_BYPOSITION | MF_STRING , id, menutextbuffer);
-		if (fullver >= 0x500)
+		if (icon)
 		{
-			// on win2k, the context menu does not work properly if we use
-			// icon bitmaps. At least the menu text is empty in the context menu
-			// for folder backgrounds (seems like a win2k bug).
 			HBITMAP bmp = IconToBitmap(icon); 
 			SetMenuItemBitmaps(menu, pos, MF_BYPOSITION, bmp, bmp);
 		}
 	}
 	else
 	{
-		MENUITEMINFO menuiteminfo = {0};
+		MENUITEMINFO menuiteminfo;
+		SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 		menuiteminfo.cbSize = sizeof(menuiteminfo);
-		menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_BITMAP | MIIM_STRING;
+		menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_STRING;
 		menuiteminfo.fType = MFT_STRING;
 		menuiteminfo.dwTypeData = menutextbuffer;
 		if (icon)
+		{
+			menuiteminfo.fMask |= MIIM_BITMAP;
 			menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
+		}
 		menuiteminfo.wID = id;
 		InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
 	}
@@ -1087,9 +1093,9 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
 	bool bShowIcons = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
-	// ?? TortoiseSVN had this as (fullver <= 0x0500) this disabled icons in win2k, but icons work fine in win2k
-	if (fullver < 0x0500)
-		bShowIcons = false;
+	// ?? TSV disabled icons for win2k and earlier, but they work for win2k and should work for win95 and up
+	/*if (fullver <= 0x500)
+		bShowIcons = false;*/
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
 		if (menuInfo[menuIndex].command == ShellSeparator)
@@ -1170,7 +1176,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					// handle special cases (sub menus)
 					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub))
 					{
-						InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons);
+						InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags);
 						bMenuEntryAdded = true;
 						bMenuEmpty = false;
 					}
@@ -1242,19 +1248,26 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 		myIDMap[idCmd] = ShellSubMenu;
 	}
 	HBITMAP bmp = NULL;
-	if ((fullver < 0x500)||(fullver == 0x500 && !uFlags))
+	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
 	{
-		bmp = IconToBitmap(uIcon);
-		menuiteminfo.fMask = MIIM_STRING | MIIM_ID | MIIM_SUBMENU | MIIM_CHECKMARKS | MIIM_DATA;
+		menuiteminfo.fMask = MIIM_STRING | MIIM_ID | MIIM_SUBMENU | MIIM_DATA;
+		if (uIcon)
+		{
+			menuiteminfo.fMask |= MIIM_CHECKMARKS;
+			bmp = IconToBitmap(uIcon);
+			menuiteminfo.hbmpChecked = bmp;
+			menuiteminfo.hbmpUnchecked = bmp;
+		}
 	}
 	else
 	{
-		menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_BITMAP | MIIM_STRING;
-		if (bShowIcons)
+		menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
+		if (uIcon)
+		{
+			menuiteminfo.fMask |= MIIM_BITMAP;
 			menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(uIcon) : HBMMENU_CALLBACK;
+		}
 	}
-	menuiteminfo.hbmpChecked = bmp;
-	menuiteminfo.hbmpUnchecked = bmp;
 	menuiteminfo.hSubMenu = subMenu;
 	menuiteminfo.wID = idCmd++;
 	InsertMenuItem(hMenu, indexMenu++, TRUE, &menuiteminfo);
@@ -2011,7 +2024,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	case WM_MEASUREITEM:
 		{
 			MEASUREITEMSTRUCT* lpmis = (MEASUREITEMSTRUCT*)lParam;
-			if (lpmis==NULL)
+			if (lpmis==NULL||lpmis->CtlType!=ODT_MENU)
 				break;
 			lpmis->itemWidth += 2;
 			if (lpmis->itemHeight < 16)
@@ -2183,7 +2196,7 @@ bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 	return false;
 }
 
-void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons)
+void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags)
 {
 	HMENU ignoresubmenu = NULL;
 	int indexignoresub = 0;
@@ -2303,13 +2316,27 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		MENUITEMINFO menuiteminfo;
 		SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 		menuiteminfo.cbSize = sizeof(menuiteminfo);
-		menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_BITMAP | MIIM_STRING;
+		if (fullver < 0x500 || (fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
+		{
+			menuiteminfo.fMask = MIIM_STRING | MIIM_ID | MIIM_SUBMENU | MIIM_DATA;
+			if (icon)
+			{
+				HBITMAP bmp = IconToBitmap(icon);
+				menuiteminfo.fMask |= MIIM_CHECKMARKS;
+				menuiteminfo.hbmpChecked = bmp;
+				menuiteminfo.hbmpUnchecked = bmp;
+			}
+		}
+		else
+		{
+			menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
+			if (icon)
+			{
+				menuiteminfo.fMask |= MIIM_BITMAP;
+				menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
+			}
+		}
 		menuiteminfo.fType = MFT_STRING;
-		HBITMAP bmp = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : IconToBitmap(icon);
-		if (icon)
-			menuiteminfo.hbmpItem = (fullver >= 0x600) ? bmp : HBMMENU_CALLBACK;
-		menuiteminfo.hbmpChecked = bmp;
-		menuiteminfo.hbmpUnchecked = bmp;
 		menuiteminfo.hSubMenu = ignoresubmenu;
 		menuiteminfo.wID = idCmd;
 		SecureZeroMemory(stringtablebuffer, sizeof(stringtablebuffer));
