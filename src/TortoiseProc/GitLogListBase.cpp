@@ -83,6 +83,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	g_Git.GetMapHashToFriendName(m_HashMap);
 	m_CurrentBranch=g_Git.GetCurrentBranch();
+	this->m_HeadHash=g_Git.GetHash(CString(_T("HEAD"))).Left(40);
 
 	m_From=CTime(1970,1,2,0,0,0);
 	m_To=CTime::GetCurrentTime();
@@ -728,6 +729,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 
+					if(data->m_CommitHash == m_HeadHash)
+					{
+						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+					}
+
 //					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
 //						crText = GetSysColor(COLOR_GRAYTEXT);
 //					if (data->Rev == m_wcRev)
@@ -1118,6 +1125,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
 				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+
+			str.Format(_T("Rebase %s to this"),g_Git.GetCurrentBranch());
+
+			if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
+				popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_EXPORT);			
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 				popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);	

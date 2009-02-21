@@ -139,6 +139,7 @@ public:
 	ID_REBASE_SQUASH,
 	ID_REBASE_SKIP,
 	ID_COMBINE_COMMIT,
+	ID_REBASE_TO_VERSION,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();
@@ -175,6 +176,7 @@ public:
 		m_HashMap.clear();
 		g_Git.GetMapHashToFriendName(m_HashMap);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
+		this->m_HeadHash=g_Git.GetHash(CString(_T("HEAD"))).Left(40);
 	}
 	void TerminateThread()
 	{
@@ -245,6 +247,7 @@ protected:
 	CColors				m_Colors;
 
 	CString				m_CurrentBranch;
+	CString				m_HeadHash;
 	
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
