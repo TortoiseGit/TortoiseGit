@@ -120,27 +120,6 @@ CGit g_Git;
 static LPTSTR l_processEnv = NULL;
 
 
-BOOL CGit::IsVista()
-{
-
-	if( CRegStdWORD(_T("Software\\TortoiseGit\\CacheType") ) == 0)
-	{
-		return TRUE;
-	}
-
-	OSVERSIONINFO osvi;
-    BOOL bIsWindowsXPorLater;
-
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-    GetVersionEx(&osvi);
-	
-	if(osvi.dwMajorVersion >= 6)
-		return TRUE;
-	else
-		return FALSE;
-}
 
 CGit::CGit(void)
 {
@@ -956,6 +935,44 @@ BOOL CGit::CheckCleanWorkTree()
 		return FALSE;
 
 	return TRUE;
+}
+int CGit::Revert(CTGitPathList &list,bool keep)
+{
+	int ret;
+	for(int i=0;i<list.GetCount();i++)
+	{	
+		ret = Revert((CTGitPath&)list[i],keep);
+		if(ret)
+			return ret;
+	}
+	return 0;
+}
+int CGit::Revert(CTGitPath &path,bool keep)
+{
+	CString cmd, out;
+	if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
+	{	//To init git repository, there are not HEAD, so we can use git reset command
+		cmd.Format(_T("git.exe rm --cache -- \"%s\""),path.GetGitPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
+			return -1;
+	}
+	else if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED )
+	{
+		cmd.Format(_T("git.exe mv \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
+			return -1;
+		
+		cmd.Format(_T("git.exe checkout -f -- \"%s\""),path.GetGitOldPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
+			return -1;
+	}
+	else
+	{
+		cmd.Format(_T("git.exe checkout -f -- \"%s\""),path.GetGitPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
+			return -1;
+	}
+	return 0;
 }
 
 int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)

@@ -2431,6 +2431,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//		}
 			//	}
 			//}
+
+			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)))
+			{
+				if (m_dwContextMenus & SVNSLC_POPREVERT)
+				{
+					popup.AppendMenuIcon(IDSVNLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
+				}
+			}
+
 			if ((GetSelectedCount() == 1)&&(!(wcStatus & CTGitPath::LOGACTIONS_UNVER))
 				&&(!(wcStatus & CTGitPath::LOGACTIONS_IGNORE)))
 			{
@@ -3144,6 +3153,77 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 #endif
 				break;
 			
+				case IDSVNLC_REVERT:
+				{
+					// If at least one item is not in the status "added"
+					// we ask for a confirmation
+					BOOL bConfirm = FALSE;
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+					{
+						//FileEntry * fentry = GetListEntry(index);
+						CTGitPath *fentry=(CTGitPath*)GetItemData(index);
+						if(fentry && fentry->m_Action &CTGitPath::LOGACTIONS_MODIFIED )
+						{
+							bConfirm = TRUE;
+							break;
+						}
+					}	
+
+					CString str;
+					str.Format(IDS_PROC_WARNREVERT,GetSelectedCount());
+
+					if (!bConfirm || CMessageBox::Show(this->m_hWnd, str, _T("TortoiseSVN"), MB_YESNO | MB_ICONQUESTION)==IDYES)
+					{
+						CTGitPathList targetList;
+						FillListOfSelectedItemPaths(targetList);
+
+						// make sure that the list is reverse sorted, so that
+						// children are removed before any parents
+						targetList.SortByPathname(true);
+
+						// put all reverted files in the trashbin, except the ones with 'added'
+						// status because they are not restored by the revert.
+						CTGitPathList delList;
+						POSITION pos = GetFirstSelectedItemPosition();
+						int index;
+						while ((index = GetNextSelectedItem(pos)) >= 0)
+						{
+							CTGitPath *entry=(CTGitPath *)GetItemData(index);
+							if (entry&&(!(entry->m_Action& CTGitPath::LOGACTIONS_ADDED)))
+								delList.AddPath(*entry);
+						}
+						if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
+							delList.DeleteAllFiles(true);
+
+						if (g_Git.Revert(targetList))
+						{
+							CMessageBox::Show(this->m_hWnd, _T("Revert Fail"), _T("TortoiseSVN"), MB_ICONERROR);
+						}
+						else
+						{
+							for(int i=0;i<targetList.GetCount();i++)
+							{	
+								int nListboxEntries = GetItemCount();
+								for (int nItem=0; nItem<nListboxEntries; ++nItem)
+								{
+									CTGitPath *path=(CTGitPath*)GetItemData(nItem);
+									if (path->GetGitPathString()==targetList[i].GetGitPathString())
+									{
+										RemoveListEntry(nItem);
+										break;
+									}
+								}
+							}
+							SetRedraw(TRUE);
+							SaveColumnWidths();
+							Show(m_dwShow, 0, m_bShowFolders);
+							NotifyCheck();
+						}
+					}
+				}
+				break;
 #if 0
 			case IDSVNLC_COPY:
 				CopySelectedEntriesToClipboard(0);
@@ -3186,125 +3266,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CAppUtils::LaunchApplication(commandline, NULL, false);
 				}
 				break;
-			case IDSVNLC_REVERT:
-				{
-					// If at least one item is not in the status "added"
-					// we ask for a confirmation
-					BOOL bConfirm = FALSE;
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index;
-					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
-						FileEntry * fentry = GetListEntry(index);
-						if (fentry->textstatus != git_wc_status_added)
-						{
-							bConfirm = TRUE;
-							break;
-						}
-					}	
-
-					CString str;
-					str.Format(IDS_PROC_WARNREVERT,GetSelectedCount());
-
-					if (!bConfirm || CMessageBox::Show(this->m_hWnd, str, _T("TortoiseSVN"), MB_YESNO | MB_ICONQUESTION)==IDYES)
-					{
-						CTSVNPathList targetList;
-						FillListOfSelectedItemPaths(targetList);
-
-						// make sure that the list is reverse sorted, so that
-						// children are removed before any parents
-						targetList.SortByPathname(true);
-
-						SVN git;
-
-						// put all reverted files in the trashbin, except the ones with 'added'
-						// status because they are not restored by the revert.
-						CTSVNPathList delList;
-						POSITION pos = GetFirstSelectedItemPosition();
-						int index;
-						while ((index = GetNextSelectedItem(pos)) >= 0)
-						{
-							FileEntry * entry = GetListEntry(index);
-							if (entry->status != git_wc_status_added)
-								delList.AddPath(entry->GetPath());
-						}
-						if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
-							delList.DeleteAllFiles(true);
-
-						if (!git.Revert(targetList, CStringArray(), FALSE))
-						{
-							CMessageBox::Show(this->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
-						}
-						else
-						{
-							// since the entries got reverted we need to remove
-							// them from the list too, if no remote changes are shown,
-							// if the unmodified files are not shown
-							// and if the item is not part of a changelist
-							POSITION pos;
-							SetRedraw(FALSE);
-							while ((pos = GetFirstSelectedItemPosition())!=0)
-							{
-								int index;
-								index = GetNextSelectedItem(pos);
-								FileEntry * fentry = m_arStatusArray[m_arListArray[index]];
-								if ( fentry->IsFolder() )
-								{
-									// refresh!
-									CWnd* pParent = GetParent();
-									if (NULL != pParent && NULL != pParent->GetSafeHwnd())
-									{
-										pParent->SendMessage(SVNSLNM_NEEDSREFRESH);
-									}
-									break;
-								}
-
-								BOOL bAdded = (fentry->textstatus == git_wc_status_added);
-								fentry->status = git_wc_status_normal;
-								fentry->propstatus = git_wc_status_normal;
-								fentry->textstatus = git_wc_status_normal;
-								fentry->copied = false;
-								fentry->isConflicted = false;
-								if ((fentry->GetChangeList().IsEmpty()&&(fentry->remotestatus <= git_wc_status_normal))||(m_dwShow & SVNSLC_SHOWNORMAL))
-								{
-									if ( bAdded )
-									{
-										// reverting added items makes them unversioned, not 'normal'
-										if (fentry->IsFolder())
-											fentry->propstatus = git_wc_status_none;
-										else
-											fentry->propstatus = git_wc_status_unversioned;
-										fentry->status = git_wc_status_unversioned;
-										fentry->textstatus = git_wc_status_unversioned;
-										SetItemState(index, 0, LVIS_SELECTED);
-										SetEntryCheck(fentry, index, false);
-									}
-									else if ((fentry->switched)||(m_dwShow & SVNSLC_SHOWNORMAL))
-									{
-										SetItemState(index, 0, LVIS_SELECTED);
-									}
-									else
-									{
-										m_nTotal--;
-										if (GetCheck(index))
-											m_nSelected--;
-										RemoveListEntry(index);
-										Invalidate();
-									}
-								}
-								else
-								{
-									SetItemState(index, 0, LVIS_SELECTED);
-								}
-							}
-							SetRedraw(TRUE);
-							SaveColumnWidths();
-							Show(m_dwShow, 0, m_bShowFolders);
-							NotifyCheck();
-						}
-					}
-				}
-				break;
+		
 			case IDSVNLC_COMPARE:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();

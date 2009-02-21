@@ -48,6 +48,8 @@ public:
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);
 	BOOL CheckCleanWorkTree();
+	int Revert(CTGitPath &path,bool keep=true);
+	int Revert(CTGitPathList &list,bool keep=true);
 
 	bool SetCurrentDir(CString path)
 	{
@@ -99,7 +101,6 @@ public:
 	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8,int length=-1);
 
 	BOOL IsInitRepos();
-	static BOOL IsVista();
 	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
 	
 };
