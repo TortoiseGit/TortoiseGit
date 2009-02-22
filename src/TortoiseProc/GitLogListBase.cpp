@@ -1029,16 +1029,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
-			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_PICK);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
-			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_SQUASH);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_EDIT))
-			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_EDIT);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SKIP))
-			popup.AppendMenuIcon(ID_REBASE_SKIP,   _T("SKIP"),   IDI_OPEN);
+			popup.AppendMenuIcon(ID_REBASE_SKIP,   _T("SKIP"),   IDI_SKIP);
 		
 		if(m_ContextMenuMask&(GetContextMenuBit(ID_REBASE_SKIP)|GetContextMenuBit(ID_REBASE_EDIT)|
 			      GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
@@ -1119,7 +1119,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(pSelLogEntry->m_CommitHash != m_HeadHash)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
-					popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_EXPORT);			
+					popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);			
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 				popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);	

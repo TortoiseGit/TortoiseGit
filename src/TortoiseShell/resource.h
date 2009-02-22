@@ -223,6 +223,12 @@
 #define IDI_PUSH                        5166
 #define IDI_CLONE                       5167
 #define IDI_TAG							5168
+#define IDI_REBASE						5169
+#define IDI_COMBINE						5170
+#define IDI_SKIP						5171
+#define IDI_EDIT						5172
+#define IDI_SQUASH						5173
+#define IDI_PICK						5174
 #define IDC_LOCKOWNER                   11019
 #define IDC_LOCKDATE                    11020
 #define IDC_EDITPROPERTIES              11021

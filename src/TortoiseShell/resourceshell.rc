@@ -72,6 +72,12 @@ IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 IDI_PUSH                ICON                    "..\\resources\\Push.ico"
 IDI_CLONE               ICON                    "..\\resources\\checkout.ico"
 IDI_TAG					ICON					"..\\resources\\Tag.ico"
+IDI_REBASE				ICON					"..\\resources\\menurebase.ico"
+IDI_COMBINE				ICON					"..\\resources\\menucombine.ico"
+IDI_SKIP				ICON					"..\\resources\\menuskip.ico"
+IDI_SQUASH				ICON					"..\\resources\\menusquash.ico"
+IDI_EDIT				ICON					"..\\resources\\menuedit.ico"
+IDI_PICK				ICON					"..\\resources\\menupick.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -255,7 +261,7 @@ BEGIN
 	IDS_MENUIMPORTPATCH		"Apply Patch Serial"
 	IDS_MENUCHERRYPICK		"Cherry Pick"
 	IDS_MENUFETCH			"Fetch..."
-	IDS_MENUREBASE			"Rebase..."
+	IDS_MENUREBASE			"*Rebase..."
 END
 
 STRINGTABLE 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="TortoiseShell"
 	ProjectGUID="{E873DD32-5A31-4DE1-8341-A56A2A5489EA}"
 	RootNamespace="TortoiseShell"
@@ -691,6 +691,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menucombine.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menucommit.ico"
 				>
 			</File>
@@ -756,6 +760,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\menuproperties.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\menurebase.ico"
 				>
 			</File>
 			<File
