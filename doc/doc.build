@@ -6,7 +6,7 @@
  $Rev: 14835 $
 ============================================================ 
 
-NAnt build script for the TortoiseSVN documentation
+NAnt build script for the TortoiseGit documentation
 
 All project specific configuration is stored in doc.build.include.
 All user/site specific configuration is stored in doc.build.user.
@@ -354,7 +354,7 @@ All user/site specific configuration is stored in doc.build.user.
 			file="${spellcheck.log}"
 			failonerror="false"/>
 
-		<copy file="Aspell/TortoiseSVN.tmpl.pws" tofile="Aspell/Temp.pws" overwrite="true">
+		<copy file="Aspell/TortoiseGit.tmpl.pws" tofile="Aspell/Temp.pws" overwrite="true">
 			<filterchain>
 				<replacetokens begintoken="$" endtoken="$">
 					<token key="LANG" value="${lang.target}" />
@@ -378,7 +378,7 @@ All user/site specific configuration is stored in doc.build.user.
 					<sourcefiles>
 						<include name="${file.target}"/>
 						<include name="ASpell/${lang.target}.pws"/>
-						<include name="ASpell/TortoiseSVN.tmpl.pws"/>
+						<include name="ASpell/TortoiseGit.tmpl.pws"/>
 					</sourcefiles>
 					<targetfiles>
 						<include name="${file.log}"/>
@@ -521,7 +521,7 @@ All user/site specific configuration is stored in doc.build.user.
 <!-- Create the API documentation                                           -->
 <!-- ====================================================================== -->
 
-	<target name="apidoc" depends="SubversionAPIdoc,TortoiseSVNAPIdoc" />
+	<target name="apidoc" depends="SubversionAPIdoc,TortoiseGitAPIdoc" />
 
 	<target name="SubversionAPIdoc">
 		<loadfile file="API\DoxyfileSVN" property="SubversionDoxyFile" />
@@ -536,15 +536,15 @@ All user/site specific configuration is stored in doc.build.user.
 		<delete file="Doxyfile" />
 	</target>
 
-	<target name="TortoiseSVNAPIdoc">
-		<loadfile file="API\Doxyfile" property="TortoiseSVNDoxyFile" />
-		<echo file="Doxyfile" message="${TortoiseSVNDoxyFile}" />
+	<target name="TortoiseGitAPIdoc">
+		<loadfile file="API\Doxyfile" property="TortoiseGitDoxyFile" />
+		<echo file="Doxyfile" message="${TortoiseGitDoxyFile}" />
 		<echo file="Doxyfile" message="HHC_LOCATION=${environment::get-variable('HHLOC')}" append="true" />
 		<mkdir dir="output" />
 		<exec program="doxygen.exe">
 			<arg value="Doxyfile" />
 		</exec>
-		<move file="output\doxygen\html\TortoiseAPI.chm" tofile="output\TortoiseSVNAPI.chm" overwrite="true" />
+		<move file="output\doxygen\html\TortoiseAPI.chm" tofile="output\TortoiseGitAPI.chm" overwrite="true" />
 		<delete dir="output\doxygen" />
 		<delete file="Doxyfile" />
 	</target>

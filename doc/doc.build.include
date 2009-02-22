@@ -12,11 +12,11 @@ You can override these settings by defining them on the command line or by
 defining them in doc.build.user which is included here if it exists.
 
 Example content of doc.build.user:
-<property name="applications" value="TortoiseSVN" />
+<property name="applications" value="TortoiseGit" />
 <property name="docformats" value="chm" />
 <property name="languages" value="en" />
 
-This will only build the english HTML help file for TortoiseSVN
+This will only build the english HTML help file for TortoiseGit
 
 -->
 
@@ -30,7 +30,7 @@ This will only build the english HTML help file for TortoiseSVN
 	<!-- the documentation will be created by default                 -->
 
 	<property name="applications" 
-		value="TortoiseSVN,TortoiseMerge" 
+		value="TortoiseGit,TortoiseMerge" 
 		unless="${property::exists('applications')}"
 	/>
 	<property name="docformats" 
@@ -68,13 +68,13 @@ This will only build the english HTML help file for TortoiseSVN
 	<!-- not find a better way to create the property depending on    -->
 	<!-- the app name                                                 -->
 	
-	<target name="help.prepare.TortoiseSVN">
-	<echo message="help.prepare.TortoiseSVN"/>
-		<property name="help.resource.TortoiseSVN"
+	<target name="help.prepare.TortoiseGit">
+	<echo message="help.prepare.TortoiseGit"/>
+		<property name="help.resource.TortoiseGit"
 		  value="../src/TortoiseProc/resource.h"
-			unless="${property::exists('help.resource.TortoiseSVN')}"
+			unless="${property::exists('help.resource.TortoiseGit')}"
 		/>
-		<property name="help.resource" value="${help.resource.TortoiseSVN}" />
+		<property name="help.resource" value="${help.resource.TortoiseGit}" />
 	</target>
 	<target name="help.prepare.TortoiseMerge">
 	<echo message="help.prepare.TortoiseMerge"/>
@@ -94,7 +94,7 @@ This will only build the english HTML help file for TortoiseSVN
 	</fileset>
 	
 	<fileset id="files.filtered">
-		<include name="source/${lang.base}/TortoiseSVN/**/*.xml"/>
+		<include name="source/${lang.base}/TortoiseGit/**/*.xml"/>
 		<include name="source/${lang.base}/**/wishlist.xml"/>
 		<exclude name="source/${lang.base}/**/version.xml"/>
 		<exclude name="source/${lang.base}/**/pubdate.xml"/>
@@ -171,7 +171,7 @@ This will only build the english HTML help file for TortoiseSVN
 		<copy file="source/Pubdate.none" tofile="source/${lang.base}/pubdate.xml" overwrite="true" unless="${result.subwcrev=='0'}"/>
 
 		<!-- Delete CHM help context files to force re-creation -->
-		<delete file="source/TortoiseSVN.h" if="${file::exists('source/TortoiseSVN.h')}"/>
+		<delete file="source/TortoiseGit.h" if="${file::exists('source/TortoiseGit.h')}"/>
 		<delete file="source/TortoiseMerge.h" if="${file::exists('source/TortoiseMerge.h')}"/>
 
 		<!-- Store path to docbook stylesheets in helper stylesheets -->
