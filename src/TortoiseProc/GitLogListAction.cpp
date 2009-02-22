@@ -195,19 +195,24 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			CString head;
 			CString headhash;
 			
+			head.Format(_T("HEAD~%d"),FirstSelect);
+			CString hashFirst=g_Git.GetHash(head);
+
 			head.Format(_T("HEAD~%d"),LastSelect);
-			CString hash=g_Git.GetHash(head);
-			hash=hash.Left(40);
+			CString hashLast=g_Git.GetHash(head);
 			
 			headhash=g_Git.GetHash(CString(_T("HEAD")));
-			headhash=headhash.Left(40);			
 			
 			GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 			GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-//			if(pLastEntry->m_CommitHash != hash)
-//			{
-//				CMessageBox::Show(NULL,_T("Only combine top continuous commit"),_T("TortoiseGit"),MB_OK);
-//			}
+			if(pFirstEntry->m_CommitHash != hashFirst || pLastEntry->m_CommitHash != hashLast)
+			{
+				CMessageBox::Show(NULL,_T(
+					"Cannot combine commits now.\r\n\
+					Make sure you are viewing the log of your current branch and \
+					no filters are applied."),_T("TortoiseGit"),MB_OK);
+				break;
+			}
 			if(!g_Git.CheckCleanWorkTree())
 			{
 				CMessageBox::Show(NULL,_T("Combine needs a clean work tree"),_T("TortoiseGit"),MB_OK);
@@ -224,7 +229,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to first commit (first step) aborting...\r\n\r\n")+out));
 				}
-				cmd.Format(_T("git.exe reset --mixed  %s"),hash);
+				cmd.Format(_T("git.exe reset --mixed  %s"),hashLast);
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
