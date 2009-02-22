@@ -1789,9 +1789,12 @@ UINT CGitLogListBase::LogThread()
 void CGitLogListBase::Refresh()
 {	
 	m_bExitThread=TRUE;
-	DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
-	if(ret == WAIT_TIMEOUT)
-		TerminateThread();
+	if(m_LoadingThread!=NULL)
+	{
+		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
+		if(ret == WAIT_TIMEOUT)
+			TerminateThread();
+	}
 
 	this->Clear();
 

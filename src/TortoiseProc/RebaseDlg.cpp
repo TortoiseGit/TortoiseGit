@@ -192,7 +192,8 @@ BOOL CRebaseDlg::OnInitDialog()
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_RESET)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTREV)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_TO_VERSION)|
-										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTTOREV));
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTTOREV)|
+										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_COMBINE_COMMIT));
 
 	return TRUE;
 }
