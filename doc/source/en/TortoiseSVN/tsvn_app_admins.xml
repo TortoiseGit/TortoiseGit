@@ -39,7 +39,7 @@
 			</ulink>.
 		</para>
 		<para>
-			Versions 1.3.0 and later of TortoiseGit must be installed under
+			Versions 0.3.0 and later of TortoiseGit must be installed under
 			<emphasis>Computer Configuration</emphasis> and not under
 			<emphasis>User Configuration</emphasis>. This is because those versions
 			need the new CRT and MFC DLLs, which can only be deployed <emphasis>per
@@ -76,13 +76,13 @@
 			to show up so your users don't go and upgrade immediately.
 		</para>
 		<para>
-			Versions 1.4.0 and later of TortoiseGit allow you to redirect that upgrade
+			Versions 0.x.0 and later of TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
 			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> (string value)
 			to an URL pointing to a text file in your intranet. That text file must have
 			the following format:
 <screen>
-1.4.1.6000
+X.X.X.6000
 A new version of TortoiseGit is available for you to download!
 http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 </screen>
@@ -99,6 +99,7 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 			the browser will ask the user to save the MSI file locally.
 		</para>
 	</sect1>
+<!--
 	<sect1 id="tsvn-admins-aspdotnethack">
 		<title>Setting the <literal>SVN_ASP_DOT_NET_HACK</literal> environment variable</title>
 		<indexterm>
@@ -128,6 +129,7 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 </screen>
 		</para>
 	</sect1>
+-->
 	<sect1 id="tsvn-admins-disablemenus">
 		<title>Disable context menu entries</title>
 		<indexterm>
@@ -140,7 +142,7 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 			<primary>group policies</primary>
 		</indexterm>
 		<para>
-			As of version 1.5.0 and later, TortoiseGit allows you to disable (actually, hide)
+			As of version 0.x.0 and later, TortoiseGit allows you to disable (actually, hide)
 			context menu entries. Since this is a feature which should not be used lightly
 			but only if there is a compelling reason, there is no GUI for this and it has
 			to be done directly in the registry.

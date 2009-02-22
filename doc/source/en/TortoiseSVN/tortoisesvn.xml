@@ -2,15 +2,16 @@
 <!DOCTYPE book SYSTEM "../../dtd/dblite.dtd">
 <book id="tsvn" lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>TortoiseGit</title>
-	<subtitle>A Subversion client for Windows</subtitle>
+	<subtitle>A Git client for Windows</subtitle>
 	<xi:include href="../version.xml"/>
 	<bookinfo>
 		<edition>First</edition>
 		<authorgroup>
 			<author>
-				<firstname>Stefan</firstname>
-				<surname>Küng</surname>
+				<firstname>Frank</firstname>
+				<surname>Li</surname>
 			</author>
+<!--
 			<author>
 				<firstname>Lübbe</firstname>
 				<surname>Onken</surname>
@@ -19,6 +20,7 @@
 				<firstname>Simon</firstname>
 				<surname>Large</surname>
 			</author>
+-->
 		</authorgroup>
 		<xi:include href="../pubdate.xml"/>
 	</bookinfo>
