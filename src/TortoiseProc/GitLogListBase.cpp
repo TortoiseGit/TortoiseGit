@@ -1115,7 +1115,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			CString str;
-			str.Format(_T("Rebase %s to this"),g_Git.GetCurrentBranch());
+			str.Format(_T("*Rebase %s to this"),g_Git.GetCurrentBranch());
 
 			if(pSelLogEntry->m_CommitHash != m_HeadHash)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
@@ -1154,7 +1154,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					hash=hash.Left(40);
 					GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 					if(pLastEntry->m_CommitHash == hash)
-						popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("Combine to one commit"),IDI_MERGE);
+						popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_MERGE);
 				}
 			}
 			if (m_hasWC)
