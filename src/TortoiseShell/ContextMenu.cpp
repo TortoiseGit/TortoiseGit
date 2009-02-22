@@ -659,7 +659,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 
 void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags)
 {
-	TCHAR menutextbuffer[255] = {0};
+	TCHAR menutextbuffer[512] = {0};
 	TCHAR verbsbuffer[255] = {0};
 	MAKESTRING(stringid);
 
@@ -670,6 +670,61 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		_tcscpy_s(menutextbuffer, 255, _T("Git "));
 	}
 	_tcscat_s(menutextbuffer, 255, stringtablebuffer);
+#if 1
+	// insert branch name into "Git Commit..." entry, so it looks like "Git Commit "master"..."
+	// so we have an easy and fast way to check the current branch
+	// (the other alternative is using a separate disabled menu entry, the code is already done but commented out)
+	if (com == ShellMenuCommit)
+	{
+		// get branch name
+		CTGitPath path(folder_.empty() ? files_.front().c_str() : folder_.c_str());
+		CString sProjectRoot;
+		CString sBranchName;
+
+		if (path.HasAdminDir(&sProjectRoot) && !g_Git.GetCurrentBranchFromFile(sProjectRoot, sBranchName))
+		{
+			if (sBranchName.GetLength() == 40)
+			{
+				// if SHA1 only show 4 first bytes
+				BOOL bIsSha1 = TRUE;
+				for (int i=0; i<40; i++)
+					if ( !iswxdigit(sBranchName[i]) )
+					{
+						bIsSha1 = FALSE;
+						break;
+					}
+				if (bIsSha1)
+					sBranchName = sBranchName.Left(8) + _T("....");
+			}
+
+			// sanity check
+			if (sBranchName.GetLength() > 64)
+				sBranchName = sBranchName.Left(64) + _T("...");
+
+			// scan to before "..."
+			LPTSTR s = menutextbuffer + _tcslen(menutextbuffer)-1;
+			if (s > menutextbuffer)
+			{
+				while (s > menutextbuffer)
+				{
+					if (*s != _T('.'))
+					{
+						s++;
+						break;
+					}
+					s--;
+				}
+			}
+			else
+			{
+				s = menutextbuffer;
+			}
+
+			// append branch name and end with ...
+			_tcscpy(s, _T(" -> \"") + sBranchName + _T("\"..."));
+		}
+	}
+#endif
 	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
 	{
 		// on win2k, the context menu does not work properly if we use
@@ -1096,6 +1151,72 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	// ?? TSV disabled icons for win2k and earlier, but they work for win2k and should work for win95 and up
 	/*if (fullver <= 0x500)
 		bShowIcons = false;*/
+
+#if 0
+	if (itemStates & (ITEMIS_INSVN|ITEMIS_FOLDERINSVN))
+	{
+		// show current branch name (as a "read-only" menu entry)
+
+		CTGitPath path(folder_.empty() ? files_.front().c_str() : folder_.c_str());
+		CString sProjectRoot;
+		CString sBranchName;
+
+		if (path.HasAdminDir(&sProjectRoot) && !g_Git.GetCurrentBranchFromFile(sProjectRoot, sBranchName))
+		{
+			if (sBranchName.GetLength() == 40)
+			{
+				// if SHA1 only show 4 first bytes
+				BOOL bIsSha1 = TRUE;
+				for (int i=0; i<40; i++)
+					if ( !iswxdigit(sBranchName[i]) )
+					{
+						bIsSha1 = FALSE;
+						break;
+					}
+				if (bIsSha1)
+					sBranchName = sBranchName.Left(8) + _T("....");
+			}
+
+			sBranchName = _T('"') + sBranchName + _T('"');
+
+			const int icon = IDI_COPY;
+			const int pos = indexMenu++;
+			const int id = idCmd++;
+
+			if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
+			{
+				InsertMenu(hMenu, pos, MF_DISABLED|MF_GRAYED|MF_BYPOSITION|MF_STRING, id, sBranchName);
+				HBITMAP bmp = IconToBitmap(icon); 
+				SetMenuItemBitmaps(hMenu, pos, MF_BYPOSITION, bmp, bmp);
+			}
+			else
+			{
+				MENUITEMINFO menuiteminfo;
+				SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
+				menuiteminfo.cbSize = sizeof(menuiteminfo);
+				menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_STRING | MIIM_STATE;
+				menuiteminfo.fState = MFS_DISABLED;
+				menuiteminfo.fType = MFT_STRING;
+				menuiteminfo.dwTypeData = (LPWSTR)sBranchName.GetString();
+				if (icon)
+				{
+					menuiteminfo.fMask |= MIIM_BITMAP;
+					menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
+
+					if (menuiteminfo.hbmpItem == HBMMENU_CALLBACK)
+					{
+						// WM_DRAWITEM uses myIDMap to get icon, we use the same icon as create branch
+						myIDMap[id - idCmdFirst] = ShellMenuBranch;
+						myIDMap[id] = ShellMenuBranch;
+					}
+				}
+				menuiteminfo.wID = id;
+				InsertMenuItem(hMenu, pos, TRUE, &menuiteminfo);
+			}
+		}
+	}
+#endif
+
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
 		if (menuInfo[menuIndex].command == ShellSeparator)

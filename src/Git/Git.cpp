@@ -333,6 +333,52 @@ CString CGit::GetCurrentBranch(void)
 	return CString("");
 }
 
+int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut)
+{
+	// read current branch name like git-gui does, by parsing the .git/HEAD file directly
+
+	if ( sProjectRoot.IsEmpty() )
+		return -1;
+
+	CString sHeadFile = sProjectRoot + _T("\\") + g_GitAdminDir.GetAdminDirName() + _T("\\HEAD");
+
+	FILE *pFile;
+	_tfopen_s(&pFile, sHeadFile.GetString(), _T("r"));
+
+	if (!pFile)
+	{
+		return -1;
+	}
+
+	char s[256] = {0};
+    fgets(s, sizeof(s), pFile);
+
+	fclose(pFile);
+
+	const char *pfx = "ref: refs/heads/";
+	const int len = 16;//strlen(pfx)
+
+	if ( !strncmp(s, pfx, len) )
+	{
+		//# We're on a branch.  It might not exist.  But
+		//# HEAD looks good enough to be a branch.
+		sBranchOut = s + len;
+		sBranchOut.TrimRight(_T(" \r\n\t"));
+
+		if ( sBranchOut.IsEmpty() )
+			return -1;
+	}
+	else
+	{
+		//# Assume this is a detached head.
+		sBranchOut = "HEAD";
+
+		return 1;
+	}
+
+	return 0;
+}
+
 int CGit::BuildOutputFormat(CString &format,bool IsFull)
 {
 	CString log;
