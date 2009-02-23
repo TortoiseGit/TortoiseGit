@@ -9,7 +9,7 @@
 		</indexterm>
 		<para>
 			There may be situations where it's not possible to use Apache as
-			your server.  Fortunately, Subversion includes Svnserve
+			your server.  Fortunately, Git includes Svnserve
 			- a lightweight stand-alone server which uses a custom protocol
 			over an ordinary TCP/IP connection.
 		</para>
@@ -25,13 +25,13 @@
 			<orderedlist>
 				<listitem>
 					<para>
-						Get the latest version of Subversion from
-						<ulink url="http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91">
-							<citetitle>http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91</citetitle>
+						Get the latest version of Git from
+						<ulink url="http://Git.tigris.org/servlets/ProjectDocumentList?folderID=91">
+							<citetitle>http://Git.tigris.org/servlets/ProjectDocumentList?folderID=91</citetitle>
 						</ulink>.
 						Alternatively get a pre-packaged installer from CollabNet at
-						<ulink url="http://www.collab.net/downloads/subversion">
-							<citetitle>http://www.collab.net/downloads/subversion</citetitle>
+						<ulink url="http://www.collab.net/downloads/Git">
+							<citetitle>http://www.collab.net/downloads/Git</citetitle>
 						</ulink>.
 						This installer will setup svnserve as a Windows service, and also includes
 						some of the tools you need if you are going to use SASL for security.
@@ -39,21 +39,21 @@
 				</listitem>
 				<listitem>
 					<para>
-						If you already have a version of Subversion installed, and
+						If you already have a version of Git installed, and
 						svnserve is running, you will need to stop it before continuing.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						Run the Subversion installer. If you run the installer on
+						Run the Git installer. If you run the installer on
 						your server (recommended) you can skip step 4.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						Open the windows-explorer, go to the
-						installation directory of Subversion (usually
-						<filename>C:\Program Files\Subversion</filename>) and in the
+						installation directory of Git (usually
+						<filename>C:\Program Files\Git</filename>) and in the
 						<filename>bin</filename> directory, find the files
 						<filename>svnserve.exe</filename>,
 						<filename>intl3_svn.dll</filename>,
@@ -150,7 +150,7 @@ svn://localhost/TestRepo
 				Running svnserve as a user is usually not the best way.
 				It means always having a user logged in on your server,
 				and remembering to restart it after a reboot. A better way is to run 
-				svnserve as a windows service. Starting with Subversion 1.4,
+				svnserve as a windows service. Starting with Git 1.4,
 				svnserve can be installed as a native windows service.
 			</para>
 			<para>
@@ -159,21 +159,21 @@ svn://localhost/TestRepo
 				started when windows starts.
 <screen>
 sc create svnserve binpath= "c:\svnserve\svnserve.exe --service 
-    --root c:\repos" displayname= "Subversion" depend= tcpip 
+    --root c:\repos" displayname= "Git" depend= tcpip 
     start= auto
 </screen>
 				If any of the paths include spaces, you have to use (escaped) quotes
 				around the path, like this:
 <screen>
 sc create svnserve binpath= "
-    \"C:\Program Files\Subversion\bin\svnserve.exe\"
-    --service --root c:\repos" displayname= "Subversion" 
+    \"C:\Program Files\Git\bin\svnserve.exe\"
+    --service --root c:\repos" displayname= "Git" 
     depend= tcpip start= auto
 </screen>
 				You can also add a description after creating the service. This
 				will show up in the Windows Services Manager.
 <screen>
-sc description svnserve "Subversion server (svnserve)"
+sc description svnserve "Git server (svnserve)"
 </screen>
 			</para>
 			<para>
@@ -196,7 +196,7 @@ sc description svnserve "Subversion server (svnserve)"
 obj= "NT AUTHORITY\LocalService"
 </screen>
 					Note that you would have to give the Local Service account
-					appropriate rights to both Subversion and your repositories,
+					appropriate rights to both Git and your repositories,
 					as well as any applications which are used by hook scripts.
 					The built-in group for this is called "LOCAL SERVICE".
 				</para>
@@ -284,7 +284,7 @@ username = password
 				database, the use of an authentication realm will make life 
 				easier for users, as TortoiseGit can cache your credentials 
 				so that you only have to enter them once.  More information 
-				can be found in the Subversion book, specifically in the 
+				can be found in the Git book, specifically in the 
 				sections
 				<ulink url="http://svnbook.red-bean.com/en/1.5/svn.serverconfig.svnserve.html#svn.serverconfig.svnserve.auth.users">
 					<citetitle>Create a 'users' file and realm</citetitle> 
@@ -307,13 +307,13 @@ username = password
 				The Cyrus Simple Authentication and Security Layer is
 				open source software written by Carnegie Mellon University.
 				It adds generic authentication and encryption capabilities
-				to any network protocol, and as of Subversion 1.5 and later,
+				to any network protocol, and as of Git 1.5 and later,
 				both the svnserve server and TortoiseGit client know how to
 				make use of this library.
 			</para>
 			<para>
 				For a more complete discussion of the options available, you should
-				look at the Subversion book in the section
+				look at the Git book in the section
 				<ulink url="http://svnbook.red-bean.com/en/1.5/svn.serverconfig.svnserve.html#svn.serverconfig.svnserve.sasl">
 					<citetitle>Using svnserve with SASL</citetitle>
 				</ulink>.
@@ -336,7 +336,7 @@ use-sasl = true
 			</para>
 			<para>
 				Second, create a file called <filename>svn.conf</filename> in a
-				convenient location - typically in the directory where subversion
+				convenient location - typically in the directory where Git
 				is installed.
 			</para>
 			<para>
@@ -346,7 +346,7 @@ use-sasl = true
 				and place two new string values inside it:
 				<literal>SearchPath</literal> set to the directory path containing
 				the <filename>sasl*.dll</filename> plug-ins (normally in the
-				Subversion install directory), and <literal>ConfFile</literal> set
+				Git install directory), and <literal>ConfFile</literal> set
 				to the directory containing the <filename>svn.conf</filename> file.
 				If you used the CollabNet installer, these registry keys will already
 				have been created for you.
@@ -442,14 +442,14 @@ max-encryption = 256
 		<para>
 			Further information about svnserve can be found in the
 			<ulink url="http://svnbook.red-bean.com">
-				<citetitle>Version Control with Subversion</citetitle>
+				<citetitle>Version Control with Git</citetitle>
 			</ulink>.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-serversetup-svnserve-6">
 		<title>Path-based Authorization with svnserve</title>
 		<para>
-			Starting with Subversion 1.3, svnserve supports the same
+			Starting with Git 1.3, svnserve supports the same
 			<literal>mod_authz_svn</literal> path-based authorization scheme
 			that is available with the Apache server. You need to edit the
 			<filename>conf/svnserve.conf</filename> file in your repository

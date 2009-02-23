@@ -15,7 +15,7 @@
 			<term>Configuration</term>
 			<listitem>
 				<para>
-					You can specify a different location for the Subversion
+					You can specify a different location for the Git
 					configuration file using registry location
 					<literal>HKCU\Software\TortoiseGit\ConfigDir</literal>.
 					This will affect all TortoiseGit operations.

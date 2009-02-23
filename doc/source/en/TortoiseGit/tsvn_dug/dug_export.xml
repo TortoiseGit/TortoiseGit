@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-export">
-	<title>Exporting a Subversion Working Copy</title>
+	<title>Exporting a Git Working Copy</title>
 	<indexterm>
 		<primary>export</primary>
 	</indexterm>
@@ -78,7 +78,7 @@
 		<title>Exporting single files</title>
 		<para>
 			The export dialog does not allow exporting single files, even 
-			though Subversion can.
+			though Git can.
 		</para>
 		<para>
 			To export single files with TortoiseGit, you have to use

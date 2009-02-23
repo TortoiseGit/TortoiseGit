@@ -170,7 +170,7 @@
 					Navigate to <literal>Project76/SubProj</literal> and
 					do the same. This time note that the <literal>Project76</literal>
 					folder has no content except for <literal>SubProj</literal>,
-					which itself is fully populated. Subversion has created the
+					which itself is fully populated. Git has created the
 					intermediate folders for you without populating them.
 				</para>
 			</listitem>
@@ -181,7 +181,7 @@
 				Once you have checked out a working copy to a particular
 				depth you can increase that depth later to get more content.
 				However you cannot reduce the depth again to remove content.
-				That feature may be added in a later version of Subversion.
+				That feature may be added in a later version of Git.
 			</para>
 		</tip>
 		<tip>

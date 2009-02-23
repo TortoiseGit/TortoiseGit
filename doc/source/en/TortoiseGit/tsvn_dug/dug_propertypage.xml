@@ -7,12 +7,12 @@
 	</indexterm>
 	<para>
 		<figure id="tsvn-dug-propertypage-dia-1">
-			<title>Explorer property page, Subversion tab</title>
+			<title>Explorer property page, Git tab</title>
 			<graphic fileref="../images/Properties.png"/>
 		</figure>
 		Sometimes you want to have more detailed information
 		about a file/directory than just the icon overlay.
-		You can get all the information Subversion provides in the
+		You can get all the information Git provides in the
 		explorer properties dialog. Just select the file or
 		directory and select
 		<menuchoice>
@@ -22,23 +22,23 @@
 		in the context menu (note: this is the normal properties menu entry
 		the explorer provides, not the one in the TortoiseGit submenu!).
 		In the properties dialog box TortoiseGit has added a new
-		property page for files/folders under Subversion control,
+		property page for files/folders under Git control,
 		where you can see all relevant information about the
 		selected file/directory.
 	</para>
 	<sect2 id="tsvn-dug-propertypage-props">
-		<title>Subversion Properties</title>
+		<title>Git Properties</title>
 		<indexterm>
-			<primary>Subversion properties</primary>
+			<primary>Git properties</primary>
 		</indexterm>
 		<?dbhh topicname="HIDD_EDITPROPERTIES"?>
 		<?dbhh topicname="HIDD_EDITPROPERTYVALUE"?>
 		<para>
 			<figure id="tsvn-dug-propertypage-dia-2">
-				<title>Subversion property page</title>
+				<title>Git property page</title>
 				<graphic fileref="../images/PropertyList.png"/>
 			</figure>
-			You can read and set the Subversion properties
+			You can read and set the Git properties
 			from the Windows properties dialog, but also from
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
@@ -52,7 +52,7 @@
 		</para>
 		<para>
 			You can add your own properties, or some properties with a 
-			special meaning in Subversion. These begin with <literal>svn:</literal>. 
+			special meaning in Git. These begin with <literal>svn:</literal>. 
 			<literal>svn:externals</literal> is such a property; see how to handle
 			externals in <xref linkend="tsvn-dug-import-4"/>.
 		</para>
@@ -65,7 +65,7 @@
 				<primary>expand keywords</primary>
 			</indexterm>
 			<para>
-				Subversion supports CVS-like keyword expansion which can be
+				Git supports CVS-like keyword expansion which can be
 				used to embed filename and revision information within the
 				file itself. Keywords currently supported are:
 				<variablelist>
@@ -120,13 +120,13 @@
 				<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.props.special.keywords.html">
 					<citetitle>svn:keywords section</citetitle>
 				</ulink>
-				in the Subversion book, which gives a full description of these
+				in the Git book, which gives a full description of these
 				keywords and how to enable and use them.
 			</para>
 		</sect3>
 
 		<para>
-			For more information about properties in Subversion see the 
+			For more information about properties in Git see the 
 			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.props.html">
 				<citetitle>Special Properties</citetitle>
 			</ulink>.
@@ -244,24 +244,24 @@
 				<primary>auto-props</primary>
 			</indexterm>
 			<para>
-				You can configure Subversion and TortoiseGit to set properties
+				You can configure Git and TortoiseGit to set properties
 				automatically on files and folders when they are added to the
 				repository. There are two ways of doing this.
 			</para>
 			<para>
-				You can edit the subversion configuration file to enable
+				You can edit the Git configuration file to enable
 				this feature on your client. The <guilabel>General</guilabel>
 				page of TortoiseGit's settings dialog has an edit button to
 				take you there directly.
 				The config file is a simple text file which controls some of
-				subversion's workings. You need to change two things:
+				Git's workings. You need to change two things:
 				firstly in the section headed
 				<literal>miscellany</literal> uncomment the line
 				<literal>enable-auto-props = yes</literal>.
 				Secondly you need to edit the section below to define which
 				properties you want added to which file types.
-				This method is a standard subversion feature and works with
-				any subversion client. However it has to be defined on each
+				This method is a standard Git feature and works with
+				any Git client. However it has to be defined on each
 				client individually - there is no way to propagate these settings
 				from the repository.
 			</para>
@@ -286,7 +286,7 @@
 		<important>
 			<title>Commit properties</title>
 			<para>
-				Subversion properties are versioned. After you change or add a 
+				Git properties are versioned. After you change or add a 
 				property you have to commit your changes.
 			</para>
 		</important>
@@ -294,7 +294,7 @@
 			<title>Conflicts on properties</title>
 			<para>
 				If there's a conflict on committing the changes, because another 
-				user has changed the same property, Subversion generates a 
+				user has changed the same property, Git generates a 
 				<filename>.prej</filename> file. Delete this file after you 
 				have resolved the conflict.
 			</para>
@@ -358,14 +358,14 @@
 				</listitem>
 				<listitem>
 					<para>
-						Subversion allows you to set <quote>autoprops</quote> which
+						Git allows you to set <quote>autoprops</quote> which
 						will be applied to newly added or imported files, based on
 						the file extension. This depends on every client having set
-						appropriate autoprops in their subversion configuration file.
+						appropriate autoprops in their Git configuration file.
 						<literal>tsvn:autoprops</literal> can be set on folders
 						and these will be merged with the user's local autoprops
 						when importing or adding files.
-						The format is the same as for subversion autoprops, e.g.
+						The format is the same as for Git autoprops, e.g.
 						<literal>*.sh = svn:eol-style=native;svn:executable</literal>
 						sets two properties on files with the <literal>.sh</literal>
 						extension.
@@ -494,7 +494,7 @@
 				Although TortoiseGit's project properties are extremely useful,
 				they only work with TortoiseGit, and some will only work in newer versions
 				of TortoiseGit. If people working on your project use a variety of
-				Subversion clients, or possibly have old versions of TortoiseGit,
+				Git clients, or possibly have old versions of TortoiseGit,
 				you may want to use repository hooks to enforce project policies.
 				project properties can only help to implement a
 				policy, they cannot enforce it.

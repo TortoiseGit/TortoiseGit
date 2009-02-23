@@ -521,17 +521,17 @@ All user/site specific configuration is stored in doc.build.user.
 <!-- Create the API documentation                                           -->
 <!-- ====================================================================== -->
 
-	<target name="apidoc" depends="SubversionAPIdoc,TortoiseGitAPIdoc" />
+	<target name="apidoc" depends="GitAPIdoc,TortoiseGitAPIdoc" />
 
-	<target name="SubversionAPIdoc">
-		<loadfile file="API\DoxyfileSVN" property="SubversionDoxyFile" />
-		<echo file="Doxyfile" message="${SubversionDoxyFile}" />
+	<target name="GitAPIdoc">
+		<loadfile file="API\DoxyfileSVN" property="GitDoxyFile" />
+		<echo file="Doxyfile" message="${GitDoxyFile}" />
 		<echo file="Doxyfile" message="HHC_LOCATION=${environment::get-variable('HHLOC')}" append="true" />
 		<mkdir dir="output" />
 		<exec program="doxygen.exe">
 			<arg value="Doxyfile" />
 		</exec>
-		<move file="output\doxygen\html\SubversionAPI.chm" tofile="output\SubversionAPI.chm" overwrite="true" />
+		<move file="output\doxygen\html\GitAPI.chm" tofile="output\GitAPI.chm" overwrite="true" />
 		<delete dir="output\doxygen" />
 		<delete file="Doxyfile" />
 	</target>

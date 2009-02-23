@@ -347,7 +347,7 @@
 						<para>
 							Search log messages for the text you enter. This searches
 							the log messages that you entered and also the action summaries
-							created by Subversion (shown in the bottom pane). The search
+							created by Git (shown in the bottom pane). The search
 							is not case sensitive.
 						</para>
 					</listitem>
@@ -499,7 +499,7 @@
 					<term>Show properties</term>
 					<listitem>
 						<para>
-							View the Subversion properties for the selected item.
+							View the Git properties for the selected item.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -538,7 +538,7 @@
 				to differences. What's the difference?
 			</para>
 			<para>
-				Subversion uses revision numbers to mean 2 different things.
+				Git uses revision numbers to mean 2 different things.
 				A revision generally represents the state of the repository at
 				a point in time, but it can also be used to represent the changeset
 				which created that revision, eg. <quote>Done in r1234</quote> means 
@@ -549,13 +549,13 @@
 			<para>
 				If you select two revisions N and M, the context menu will offer
 				to show the <emphasis>difference</emphasis> between those two
-				revisions. In Subversion terms this is
+				revisions. In Git terms this is
 				<literal>diff -r M:N</literal>.
 			</para>
 			<para>
 				If you select a single revision N, the context menu will offer
 				to show the <emphasis>changes</emphasis> made in that revision.
-				In Subversion terms this is <literal>diff -r N-1:N</literal>
+				In Git terms this is <literal>diff -r N-1:N</literal>
 				or <literal>diff -c N</literal>.
 			</para>
 			<para>
@@ -608,7 +608,7 @@
 						of the branch does not make sense in that instance.
 					</para>
 					<para>
-						Note that Subversion currently implements renaming
+						Note that Git currently implements renaming
 						as a copy/delete pair, so renaming a file or folder
 						will also cause the log display to stop if this
 						option is checked.
@@ -663,7 +663,7 @@
 			<primary>merge tracking log</primary>
 		</indexterm>
 		<para>
-			Subversion 1.5 and later keeps a record of merges using properties.
+			Git 1.5 and later keeps a record of merges using properties.
 			This allows us to get a more detailed history of merged changes.
 			For example, if you develop a new feature on a branch and then merge
 			that branch back to trunk, the feature development will show up on
@@ -703,7 +703,7 @@
 			<primary>revprops</primary>
 		</indexterm>
 		<para>
-			Revision properties are completely different from the Subversion
+			Revision properties are completely different from the Git
 			properties of each item. Revprops are descriptive items which are
 			associated with one specific revision number in the repository,
 			such as log message, commit date and committer name (author).
@@ -716,7 +716,7 @@
 			authentication or...
 		</para>
 		<para>
-			Subversion lets you change revision properties any time you want.
+			Git lets you change revision properties any time you want.
 			But since such changes can't be
 			undone (those changes are not versioned) this feature is disabled
 			by default. To make this work, you must set up a pre-revprop-change
@@ -724,7 +724,7 @@
 			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.reposadmin.create.html#svn.reposadmin.create.hooks">
 				<citetitle>Hook Scripts</citetitle>
 			</ulink>
-			in the Subversion Book for details about how to do that.
+			in the Git Book for details about how to do that.
 			Read <xref linkend="tsvn-repository-hooks"/> to find some further
 			notes on implementing hooks on a Windows machine.
 		</para>
@@ -736,7 +736,7 @@
 		</para>
 		<warning>
 			<para>
-				Because Subversion's revision properties are not versioned, making 
+				Because Git's revision properties are not versioned, making 
 				modifications to such a property (for example, the
 				<literal>svn:log</literal> commit 
 				message property) will overwrite the previous value of that 
@@ -804,7 +804,7 @@
 		<tip>
 			<title>No Log Formatting from Repository Browser</title>
 			<para>
-				Because the formatting depends upon accessing subversion
+				Because the formatting depends upon accessing Git
 				properties, you will only see the results when using a checked
 				out working copy. Fetching properties remotely is a slow operation,
 				so you will not see this feature in action from the repo browser.

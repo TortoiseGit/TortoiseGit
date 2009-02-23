@@ -34,15 +34,15 @@ svnadmin hotcopy path/to/repository path/to/backup --clean-logs
 	</para>
 	<para>
 		The <literal>svnadmin</literal> tool is installed automatically
-		when you install the Subversion command line client. If you
+		when you install the Git command line client. If you
 		are installing the command line tools on a Windows PC, the
 		best way is to download the Windows installer version. It
 		is compressed more efficiently than the <filename>.zip</filename>
 		version, so the download is smaller, and it takes care of setting
 		the paths for you. You can download the latest version of the
-		Subversion command line client from
-		<ulink url="http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91">
-			<citetitle>http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91</citetitle>
+		Git command line client from
+		<ulink url="http://Git.tigris.org/servlets/ProjectDocumentList?folderID=91">
+			<citetitle>http://Git.tigris.org/servlets/ProjectDocumentList?folderID=91</citetitle>
 		</ulink>.
 	</para>
 </sect1>

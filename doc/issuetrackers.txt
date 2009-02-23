@@ -1,10 +1,10 @@
-Integration of Subversion (GUI) clients with Bug Tracking Tools:
+Integration of Git (GUI) clients with Bug Tracking Tools:
 ================================================================================
 
 I. Preface
 ==========
 This document is primarily intended for writers of various GUI clients for 
-Subversion.  Clients such as TortoiseSVN, Subclipse, RapidSVN, PySVN and many 
+Git.  Clients such as TortoiseSVN, Subclipse, RapidSVN, PySVN and many 
 others.
 
 The goal of this document is to outline a common technique for defining and then 
@@ -14,17 +14,17 @@ II. Introduction
 ================
 It is very common in Software Development for changes to be related to a 
 specific bug or issue ID. Users of bug tracking systems would like to associate 
-the changes they make in Subversion with a specific ID in their bug tracking 
+the changes they make in Git with a specific ID in their bug tracking 
 system. There are already a number of people that have integrated these systems 
-with Subversion. They typically rely on the end user entering a log message on 
+with Git. They typically rely on the end user entering a log message on 
 their commits in some kind of a specific format that can be parsed with a 
 commit-hook or in some cases just on-the-fly in a web-based presentation of the 
 commit info. This option is OK, but it is not very user-friendly and it places 
-all of the integration within the bug tracking tool. When using a Subversion 
+all of the integration within the bug tracking tool. When using a Git 
 client, you can see the log message info, but there is no way to jump to the bug 
 system.
 
-Subversion (GUI) clients can help both the users and the bug tracking tools in 
+Git (GUI) clients can help both the users and the bug tracking tools in 
 that task:
 
 - When the user enters a log message, a well defined line including the issue 
@@ -40,7 +40,7 @@ the webbrowser to see the issue associated with that log message/commit.
 
 III. Requirements
 =================
-To make the integration with bug tracking tools possible, a Subversion client 
+To make the integration with bug tracking tools possible, a Git client 
 needs some information about the bug tracking tool used in a project. That 
 information should be available inside the working copy so that clients don't 
 have to access the repository over a possibly very slow connection to get that 
@@ -53,7 +53,7 @@ The information a client needs is:
   bug tracking tool can recognize it. Or
 - a regular expression to parse the log message with to extract the issue number
 
-There are other things a Subversion (GUI) client could use to make the 
+There are other things a Git (GUI) client could use to make the 
 integration with bug tracking tools easier for the user, but these are 
 essential for the integration to work.
 
@@ -82,7 +82,7 @@ showing the logmessage of a revision.
 To allow relative URLs, the following formats can be used (subset of the 
 svn:external relative urls):
 ^/   relative to the repository root. Since issue trackers can not reside
-     below a subversion repository, the URL must contain navigations.
+     below a Git repository, the URL must contain navigations.
      For example: ^/../../issues/id?123
 /    relative to the server's hostname
 ---------
@@ -192,10 +192,10 @@ Please note:
 
 A. FAQ
 ======
-Q: Why is the integration with bug tracking tools not defined by the Subversion
+Q: Why is the integration with bug tracking tools not defined by the Git
    project?
-A: The Subversion developers want to keep Subversion "clean", i.e. they 
-   concentrate on Subversions basic tasks.
+A: The Git developers want to keep Git "clean", i.e. they 
+   concentrate on Gits basic tasks.
 
 Q: Why don't you use a config file located on the server or revision properties
    instead of folder properties?
@@ -206,7 +206,7 @@ A: A config file located on the server and revision properties would mean that
 
 Q: Isn't there a way to store the data in the repository, but having it also
    stored in the working copy?
-A: Subversion doesn't provide such a feature (yet). And there's no way to be 
+A: Git doesn't provide such a feature (yet). And there's no way to be 
    sure that there ever will be such a feature. So we have to make use of that
    what's already available.
    Also, if the properties are set for each folder, then you can assign a 

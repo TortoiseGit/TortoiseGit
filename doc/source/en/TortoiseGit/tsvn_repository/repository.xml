@@ -6,10 +6,10 @@
 		<para>
 			No matter which protocol you use to access your repositories, you
 			always need to create at least one repository. This can either be done
-			with the Subversion command line client or with TortoiseGit.
+			with the Git command line client or with TortoiseGit.
 		</para>
 		<para>
-			If you haven't created a Subversion repository yet,
+			If you haven't created a Git repository yet,
 			it's time to do that now.
 		</para>
 	</simplesect>

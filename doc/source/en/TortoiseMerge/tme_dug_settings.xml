@@ -39,7 +39,7 @@
 		<para>
 			<guilabel>Compare whitespaces</guilabel>
 			shows all changes in indentation and inline whitespace as
-			added/removed lines (which is how Subversion treats such changes).
+			added/removed lines (which is how Git treats such changes).
 		</para>
 		<para>
 			<guilabel>Ignore whitespace changes</guilabel>

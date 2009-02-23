@@ -175,14 +175,6 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 					</thead>
 					<tbody>
 						<row>
-							<entry condition="pot">0x0000000000000001</entry>
-							<entry>Checkout</entry>
-						</row>
-						<row>
-							<entry condition="pot">0x0000000000000002</entry>
-							<entry>Update</entry>
-						</row>
-						<row>
 							<entry condition="pot">0x0000000000000004</entry>
 							<entry>Commit</entry>
 						</row>
@@ -205,10 +197,6 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 						<row>
 							<entry condition="pot">0x0000000000000080</entry>
 							<entry>Switch</entry>
-						</row>
-						<row>
-							<entry condition="pot">0x0000000000000100</entry>
-							<entry>Import</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000000200</entry>
@@ -235,10 +223,6 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 							<entry>Rename</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000000008000</entry>
-							<entry>Update to revision</entry>
-						</row>
-						<row>
 							<entry condition="pot">0x0000000000010000</entry>
 							<entry>Diff</entry>
 						</row>
@@ -251,20 +235,12 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 							<entry>Edit Conflicts</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000000080000</entry>
-							<entry>Relocate</entry>
-						</row>
-						<row>
 							<entry condition="pot">0x0000000000100000</entry>
 							<entry>Check for modifications</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000200000</entry>
 							<entry>Ignore</entry>
-						</row>
-						<row>
-							<entry condition="pot">0x0000000000400000</entry>
-							<entry>Repository Browser</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000800000</entry>
@@ -283,24 +259,44 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 							<entry>Revision graph</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000008000000</entry>
-							<entry>Lock</entry>
-						</row>
-						<row>
-							<entry condition="pot">0x0000000010000000</entry>
-							<entry>Remove Lock</entry>
-						</row>
-						<row>
 							<entry condition="pot">0x0000000020000000</entry>
 							<entry>Properties</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000040000000</entry>
-							<entry>Diff with URL</entry>
+							<entry condition="pot">0x0000000800000000</entry>
+							<entry>Pull</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000080000000</entry>
-							<entry>Delete unversioned items</entry>
+							<entry condition="pot">0x0000001000000000</entry>
+							<entry>Push</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000002000000000</entry>
+							<entry>Clone</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000004000000000</entry>
+							<entry>Tag</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000008000000000</entry>
+							<entry>Format Patch</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000010000000000</entry>
+							<entry>Import Patch</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000020000000000</entry>
+							<entry>Cherry Pick</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000040000000000</entry>
+							<entry>Fetch</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000080000000000</entry>
+							<entry>Rebase</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x2000000000000000</entry>

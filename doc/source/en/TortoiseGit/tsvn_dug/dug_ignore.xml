@@ -60,7 +60,7 @@
 			Another way to ignore files is to add them to the
 			<firstterm>global ignore list</firstterm>. The big difference here
 			is that the global ignore list is a client property.
-			It applies to <emphasis>all</emphasis> Subversion projects, but on
+			It applies to <emphasis>all</emphasis> Git projects, but on
 			the client PC only. In general it is better to use the
 			<filename>svn:ignore</filename> property where possible, because it
 			can be applied to specific project areas, and it works for
@@ -72,7 +72,7 @@
 		<title>Ignoring Versioned Items</title>
 		<para>
 			Versioned files and folders can never be ignored - that's a feature
-			of Subversion. If you versioned a file by mistake, read
+			of Git. If you versioned a file by mistake, read
 			<xref linkend="tsvn-howto-unversion"/> for instructions on how to
 			<quote>unversion</quote> it.
 		</para>
@@ -86,7 +86,7 @@
 			<primary>pattern matching</primary>
 		</indexterm>
 		<para>
-			Subversion's ignore patterns make use of filename globbing,
+			Git's ignore patterns make use of filename globbing,
 			a technique originally used in Unix to specify files using
 			meta-characters as wildcards. The following characters have
 			special meaning:

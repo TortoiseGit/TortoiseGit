@@ -8,21 +8,21 @@
 		<para>
 			This document describes day to day usage of the TortoiseGit client.
 			It is <emphasis>not</emphasis> an introduction to version control
-			systems, and <emphasis>not</emphasis> an introduction to Subversion
+			systems, and <emphasis>not</emphasis> an introduction to Git
 			(SVN). It is more like a place you may turn to when you know
 			approximately what you want to do, but don't quite remember how
 			to do it.
 		</para>
 		<para>
-			If you need an introduction to version control with Subversion,
+			If you need an introduction to version control with Git,
 			then we recommend you read the fantastic book:
 <ulink url="http://svnbook.red-bean.com/">
-<citetitle>Version Control with Subversion</citetitle>
+<citetitle>Version Control with Git</citetitle>
 </ulink>.
 		</para>
 		<para>
 			This document is also a work in progress, just as TortoiseGit and
-			Subversion are. If you find any mistakes, please report them to
+			Git are. If you find any mistakes, please report them to
 			the mailing list so we can update the documentation. Some of
 			the screenshots in the Daily Use Guide (DUG) might not reflect the
 			current state of the software. Please forgive us. We're working on
@@ -43,13 +43,13 @@
 				</listitem>
 				<listitem>
 					<para>
-						You should know the basics of Subversion.
+						You should know the basics of Git.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
 						You should have set up a server and/or have access
-						to a Subversion repository.
+						to a Git repository.
 					</para>
 				</listitem>
 			</itemizedlist>

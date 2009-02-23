@@ -68,7 +68,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						You want to move to a different Subversion repository. In that case
+						You want to move to a different Git repository. In that case
 						you should perform a clean checkout from the new repository location.
 					</para>
 				</listitem>

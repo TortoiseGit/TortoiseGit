@@ -8,7 +8,7 @@
 			<primary>Apache</primary>
 		</indexterm>
 		<para>
-			The most flexible of all possible server setups for Subversion
+			The most flexible of all possible server setups for Git
 			is the Apache based one. Although a bit more complicated to set up,
 			it offers benefits that other servers cannot:
 		</para>
@@ -20,7 +20,7 @@
 				<term>WebDAV</term>
 				<listitem>
 					<para>
-						The Apache based Subversion server uses the
+						The Apache based Git server uses the
 						WebDAV protocol which is supported by many other
 						programs as well. You could e.g. mount such
 						a repository as a <quote>Web folder</quote> in the Windows
@@ -35,7 +35,7 @@
 					<para>
 						You can point your browser to the URL of your
 						repository and browse the contents of it without
-						having a Subversion client installed. This
+						having a Git client installed. This
 						gives access to your data to a much wider circle of
 						users.
 					</para>
@@ -149,25 +149,25 @@
 		</para>
 	</sect2>
 	<sect2 id="tsvn-serversetup-apache-3">
-		<title>Installing Subversion</title>
+		<title>Installing Git</title>
 		<para>
 			<orderedlist>
 				<listitem>
 					<para>
-						Download the latest version of the Subversion Win32 binaries for
+						Download the latest version of the Git Win32 binaries for
 						Apache. Be sure to get the right version to integrate with your
 						version of Apache, otherwise you will get an obscure error
 						message when you try to restart.
 						If you have Apache 2.2.x go to
-						<ulink url="http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=8100">
-							<citetitle>http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=8100</citetitle>
+						<ulink url="http://Git.tigris.org/servlets/ProjectDocumentList?folderID=8100">
+							<citetitle>http://Git.tigris.org/servlets/ProjectDocumentList?folderID=8100</citetitle>
 						</ulink>.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						Run the Subversion installer and follow
-						the instructions. If the Subversion installer recognized
+						Run the Git installer and follow
+						the instructions. If the Git installer recognized
 						that you've installed Apache, then you're almost done.
 						If it couldn't find an Apache server then you have to
 						do some additional steps.
@@ -179,8 +179,8 @@
 					</indexterm>
 					<para>
 						Using the windows explorer, go to the installation
-						directory of Subversion (usually
-						<filename>c:\program files\Subversion</filename>)
+						directory of Git (usually
+						<filename>c:\program files\Git</filename>)
 						and find the files
 						<filename>/httpd/mod_dav_svn.so</filename> and
 						<filename>mod_authz_svn.so</filename>. Copy these files
@@ -193,7 +193,7 @@
 					<para>
 						Copy the file <filename>/bin/libdb*.dll</filename>
 						and <filename>/bin/intl3_svn.dll</filename> from
-						the Subversion installation directory to the Apache
+						the Git installation directory to the Apache
 						bin directory.
 					</para>
 				</listitem>
@@ -225,9 +225,9 @@ LoadModule authz_svn_module modules/mod_authz_svn.so
 	<sect2 id="tsvn-serversetup-apache-4">
 		<title>Configuration</title>
 		<para>
-			Now you have set up Apache and Subversion, but Apache doesn't
-			know how to handle Subversion clients like TortoiseGit yet.
-			To get Apache to know which URL will be used for Subversion
+			Now you have set up Apache and Git, but Apache doesn't
+			know how to handle Git clients like TortoiseGit yet.
+			To get Apache to know which URL will be used for Git
 			repositories you have to edit the Apache configuration file (usually
 			located in
 			<filename>c:\program files\apache group\apache2\conf\httpd.conf</filename>)
@@ -243,13 +243,13 @@ LoadModule authz_svn_module modules/mod_authz_svn.so
   SVNParentPath D:\SVN
   #SVNIndexXSLT "/svnindex.xsl"
   AuthType Basic
-  AuthName "Subversion repositories"
+  AuthName "Git repositories"
   AuthUserFile passwd
   #AuthzSVNAccessFile svnaccessfile
   Require valid-user
 &lt;/Location&gt;
 </screen>
-						This configures Apache so that all your Subversion
+						This configures Apache so that all your Git
 						repositories are physically located below
 						<filename>D:\SVN</filename>. The repositories are
 						served to the outside world from the URL:
@@ -289,7 +289,7 @@ bin\htpasswd passwd &lt;username&gt;
 						Point your browser to
 						<systemitem class="url">http://MyServer/svn/MyNewRepository</systemitem>
 						(where <filename>MyNewRepository</filename> is the name of the
-						Subversion repository you created before). If all went
+						Git repository you created before). If all went
 						well you should be prompted for a username and password,
 						then you can see the contents of your
 						repository.
@@ -320,7 +320,7 @@ bin\htpasswd passwd &lt;username&gt;
 						<row>
 							<entry condition="pot">&lt;Location /svn&gt;</entry>
 							<entry>
-								means that the Subversion repositories are available from the URL
+								means that the Git repositories are available from the URL
 								<systemitem class="url">http://MyServer/svn/</systemitem>
 							</entry>
 						</row>
@@ -328,13 +328,13 @@ bin\htpasswd passwd &lt;username&gt;
 							<entry condition="pot">DAV svn</entry>
 							<entry>
 								tells Apache which module will be responsible to serve
-								that URL - in this case the Subversion module.
+								that URL - in this case the Git module.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">SVNListParentPath on</entry>
 							<entry>
-								For Subversion version 1.3 and higher, this directive enables
+								For Git version 1.3 and higher, this directive enables
 								listing all the available repositories under
 								<literal>SVNParentPath</literal>.
 							</entry>
@@ -342,7 +342,7 @@ bin\htpasswd passwd &lt;username&gt;
 						<row>
 							<entry condition="pot">SVNParentPath D:\SVN</entry>
 							<entry>
-								tells Subversion to look for repositories below
+								tells Git to look for repositories below
 								<filename>D:\SVN</filename>
 							</entry>
 						</row>
@@ -361,7 +361,7 @@ bin\htpasswd passwd &lt;username&gt;
 							</entry>
 						</row>
 						<row>
-							<entry condition="pot">AuthName "Subversion repositories"</entry>
+							<entry condition="pot">AuthName "Git repositories"</entry>
 							<entry>
 								is used as an information whenever an authentication
 								dialog pops up to tell the user what the authentication is for
@@ -377,7 +377,7 @@ bin\htpasswd passwd &lt;username&gt;
 							<entry condition="pot">AuthzSVNAccessFile</entry>
 							<entry>
 								Location of the Access file for paths inside a
-								Subversion repository
+								Git repository
 							</entry>
 						</row>
 						<row>
@@ -418,12 +418,12 @@ Require valid-user
 <screen>
 #AuthzSVNAccessFile svnaccessfile
 </screen>
-						and create a Subversion access file. Apache will 
+						and create a Git access file. Apache will 
 						make sure that only valid users are able to access 
 						your <filename>/svn</filename> location, and will then 
-						pass the username to Subversion's <literal>AuthzSVNAccessFile</literal> 
+						pass the username to Git's <literal>AuthzSVNAccessFile</literal> 
 						module so that it can enforce more granular access 
-						based upon rules listed in the Subversion access file.
+						based upon rules listed in the Git access file.
 						Note that paths are specified either as
 						<literal>repos:path</literal> or simply
 						<literal>path</literal>. If you don't specify a
@@ -478,7 +478,7 @@ Require valid-user
 		</indexterm>
 		<para>
 			If you used the <literal>SVNParentPath</literal> directive then you don't have to
-			change the Apache config file every time you add a new Subversion
+			change the Apache config file every time you add a new Git
 			repository. Simply create the new repository under the same
 			location as the first repository and you're done! In my company
 			I have direct access to that specific folder on the server via
@@ -491,7 +491,7 @@ Require valid-user
 			and a new project has a home...
 		</para>
 		<para>
-			If you are using Subversion 1.3 or later, you can use the
+			If you are using Git 1.3 or later, you can use the
 			<literal>SVNListParentPath on</literal> directive to allow Apache
 			to produce a listing of all available projects if you point your
 			browser at the parent path rather than at a specific repository.
@@ -508,7 +508,7 @@ Require valid-user
 		<para>
 			The <literal>mod_authz_svn</literal> module permits fine-grained control of access
 			permissions based on user names and repository paths. This is
-			available with the Apache server, and as of Subversion 1.3
+			available with the Apache server, and as of Git 1.3
 			it is available with svnserve as well.
 		</para>
 		<para>
@@ -615,7 +615,7 @@ LoadModule auth_module modules/mod_auth.so
 			</listitem>
 			<listitem>
 				<para>
-					To make the Subversion location use this
+					To make the Git location use this
 					type of authentication you have to change the line
 <screen>
 AuthType Basic
@@ -662,7 +662,7 @@ SSPIOfferBasic On
 		</important>
 		<tip>
 			<para>
-				Subversion <filename>AuthzSVNAccessFile</filename> files are
+				Git <filename>AuthzSVNAccessFile</filename> files are
 				case sensitive in regard to user names (<literal>JUser</literal>
 				is different from <literal>juser</literal>). 
 			</para>
@@ -673,7 +673,7 @@ SSPIOfferBasic On
 			</para>
 			<para>
 				This difference can bite you when using SSPI authentication 
-				as the windows domain and user names are passed to Subversion 
+				as the windows domain and user names are passed to Git 
 				in the same case as the user types them in at the prompt.  
 				
 				Internet Explorer often passes the username to Apache 
@@ -690,7 +690,7 @@ SSPIOfferBasic On
 			<para>
 				Apache's Error and Access logs are your best friend in 
 				deciphering problems such as these as they will help you 
-				determine the username string passed onto Subversion's 
+				determine the username string passed onto Git's 
 				<literal>AuthzSVNAccessFile</literal> module. You may need to
 				experiment with the exact format of the user string in the
 				<literal>svnaccessfile</literal>
@@ -707,7 +707,7 @@ SSPIOfferBasic On
 		</indexterm>
 		<para>
 			It is also possible to have more than one authentication source for
-			your Subversion repository. To do this, you need to make each 
+			your Git repository. To do this, you need to make each 
 			authentication type non-authoritative, so that Apache will check
 			multiple sources for a matching username/password.
 		</para>
@@ -738,7 +738,7 @@ SSPIAuthoritative Off
   SVNListParentPath on
   SVNParentPath D:\SVN
 
-  AuthName "Subversion repositories"
+  AuthName "Git repositories"
   AuthzSVNAccessFile svnaccessfile.txt
 
 # NT Domain Logins.
@@ -866,7 +866,7 @@ bin\openssl x509 -in conf\server.cert -out conf\server.der.crt
 				the repository with the Internet Explorer doesn't work
 				anymore. Don't worry - this is only the Internet Explorer
 				not able to authenticate. Other browsers don't have that
-				problem and TortoiseGit and any other Subversion client are
+				problem and TortoiseGit and any other Git client are
 				still able to authenticate.
 			</para>
 			<para>
@@ -879,7 +879,7 @@ bin\openssl x509 -in conf\server.cert -out conf\server.der.crt
 							directive in the Apache config file, and add the
 							<literal>SSPIBasicPreferred On</literal>.
 							This will allow IE to authenticate again, but
-							other browsers and Subversion won't be able to
+							other browsers and Git won't be able to
 							authenticate against that location.
 						</para>
 					</listitem>
@@ -920,7 +920,7 @@ SetEnvIf User-Agent ".*MSIE.*" \
 				When you've set up SSL to make your repository more secure, you
 				might want to disable the normal access via non-SSL (http) and
 				only allow https access.
-				To do this, you have to add another directive to the Subversion
+				To do this, you have to add another directive to the Git
 				<literal>&lt;Location&gt;</literal> block: <literal>SSLRequireSSL</literal>.
 			</para>
 			<para>
@@ -931,7 +931,7 @@ SetEnvIf User-Agent ".*MSIE.*" \
   SVNParentPath D:\SVN
   SSLRequireSSL
   AuthType Basic
-  AuthName "Subversion repositories"
+  AuthName "Git repositories"
   AuthUserFile passwd
   #AuthzSVNAccessFile svnaccessfile
   Require valid-user
@@ -949,7 +949,7 @@ SetEnvIf User-Agent ".*MSIE.*" \
 			In some server configurations you may need to setup a single server
 			containing 2 virtual SSL hosts: The first one for public web access, 
 			with no requirement for a client certificate. The second one to be
-			secure with a required client certificate, running a Subversion server.
+			secure with a required client certificate, running a Git server.
 		</para>
 		<para>
 			Adding an <literal>SSLVerifyClient Optional</literal> directive to the 
@@ -963,7 +963,7 @@ SetEnvIf User-Agent ".*MSIE.*" \
 		</para>
 		<para>
 			The solution is to add the following directive to the virtual host
-			directory that you want to lock down for Subversion:
+			directory that you want to lock down for Git:
 <screen>
 SSLRequire %{SSL_CLIENT_VERIFY} eq "SUCCESS"
 </screen>
@@ -983,10 +983,10 @@ SSLVerifyClient Optional
   &lt;/Directory&gt;
 &lt;/VirtualHost&gt;
 
-### Virtual host configuration for SUBVERSION 
+### Virtual host configuration for Git 
 ### (requiring a client certificate)
 &lt;VirtualHost 127.0.0.1:443&gt;
-  &lt;Directory "subversion host root path"&gt;
+  &lt;Directory "Git host root path"&gt;
     SSLRequire %{SSL_CLIENT_VERIFY} eq "SUCCESS"
   &lt;/Directory&gt;
 

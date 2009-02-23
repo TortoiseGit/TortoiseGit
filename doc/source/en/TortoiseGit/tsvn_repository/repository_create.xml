@@ -17,7 +17,7 @@
 		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.reposadmin.planning.html#svn.reposadmin.basics.backends">
 			<citetitle>Choosing a Data Store</citetitle>
 		</ulink>
-		in the Subversion book for more information.
+		in the Git book for more information.
 	</para>
 	<sect2 id="tsvn-repository-create-commandline">
 		<title>Creating a Repository with the Command Line Client</title>
@@ -138,7 +138,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 		</indexterm>
 		<para>
 			To access your local repository you need the path to that folder.
-			Just remember that Subversion expects all repository paths in the form
+			Just remember that Git expects all repository paths in the form
 			<systemitem class="url">file:///C:/SVNRepository/</systemitem>.
 			Note the use of forward slashes throughout.
 		</para>
@@ -185,7 +185,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 		</para>
 		<para>
 			Secondly not all network file sharing protocols support the locking
-			that Subversion requires, so you may find your repository gets corrupted.
+			that Git requires, so you may find your repository gets corrupted.
 			It may not happen straight away, but one day two users will try to access
 			the repository at the same time.
 		</para>
@@ -267,7 +267,7 @@ svnadmin create --fs-type fsfs MyNewRepository
 			When you commit changes, it is the revision number of the whole
 			repository which changes, not the revision number of the project.
 			Having 2 unrelated projects share a repository can mean large gaps
-			in the revision numbers. The Subversion and TortoiseGit projects
+			in the revision numbers. The Git and TortoiseGit projects
 			appear at the same host address, but are completely separate
 			repositories allowing independent development, and no confusion
 			over build numbers.

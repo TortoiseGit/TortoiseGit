@@ -8,11 +8,6 @@
 		<edition>First</edition>
 		<authorgroup>
 			<author>
-				<firstname>Frank</firstname>
-				<surname>Li</surname>
-			</author>
-<!--
-			<author>
 				<firstname>Lübbe</firstname>
 				<surname>Onken</surname>
 			</author>
@@ -20,7 +15,10 @@
 				<firstname>Simon</firstname>
 				<surname>Large</surname>
 			</author>
--->
+			<author>
+				<firstname>Frank</firstname>
+				<surname>Li</surname>
+			</author>
 		</authorgroup>
 		<xi:include href="../pubdate.xml"/>
 	</bookinfo>
@@ -44,5 +42,10 @@
 	<xi:include href="./tsvn_app_internals.xml"/>
 	<xi:include href="./tsvn_app_ssh.xml"/>
 	<xi:include href="../glossary.xml"/>
+	<appendix id="git-user manual" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<!--
+	<xi:include href="./user-manual.xml" xpointer="xpointer(//book)"/>
+	-->
+	</appendix>
 	<index id="tsvn-index"/>
 </book>

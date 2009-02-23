@@ -26,7 +26,7 @@
 			<xref linkend="tsvn-repository-layout"/> for further advice.
 		</para>
 		<para>
-			This section describes the Subversion import command, which was designed
+			This section describes the Git import command, which was designed
 			for importing a directory hierarchy into the repository in one shot.
 			Although it does the job, it has several shortcomings:
 			<itemizedlist>
@@ -208,7 +208,7 @@ C:\Projects\Widget\images
 		<para>
 			So as not to disturb the users, we also added the file
 			<filename>TortoiseVars.bat</filename> to the ignore list of its
-			parent folder, i.e. we've set the Subversion property
+			parent folder, i.e. we've set the Git property
 			<literal>svn:ignore</literal> to include that filename.
 			That way it won't show up as unversioned on every commit.
 		</para>
@@ -240,7 +240,7 @@ C:\Projects\Widget\images
 				<guimenuitem>Properties</guimenuitem>
 			</menuchoice>
 			from the context menu. 
-			The Properties Dialog comes up. Then go to the Subversion tab.
+			The Properties Dialog comes up. Then go to the Git tab.
 			There, you can set properties. Click <guibutton>Add...</guibutton>.
 			Select the <literal>svn:externals</literal> property from the
 			combobox and write in the edit box the repository URL in the format
@@ -260,7 +260,7 @@ quick_graphs  http://graphics.red-bean.com/repos/fast%20graphics
 skins/toolkit -r21 http://svn.red-bean.com/repos/skin-maker
 </screen>
 			Now click <guibutton>Set</guibutton> and commit your changes.
-			When you (or any other user) update your working copy, Subversion
+			When you (or any other user) update your working copy, Git
 			will create a sub-folder 
 			<filename>D:\dev\project1\sounds</filename> and checkout the sounds
 			project, another sub-folder <filename>D:\dev\project1\quick graphs</filename>
@@ -306,7 +306,7 @@ skins/toolkit -r21 http://svn.red-bean.com/repos/skin-maker
 			won't change and might not work anymore.
 		</para>
 		<para>
-			To avoid such problems, Subversion clients version 1.5 and
+			To avoid such problems, Git clients version 1.5 and
 			higher support relative external URLs. Four different methods
 			of specifying a relative URL are supported.
 			In the following examples, assume we have two repositories: one at

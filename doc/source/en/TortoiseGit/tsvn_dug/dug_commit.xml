@@ -133,9 +133,9 @@
 			are released automatically after the commit succeeds. If you want
 			to keep those locks, make sure the <guilabel>Keep locks</guilabel>
 			checkbox is checked. The default state of this checkbox is taken
-			from the <literal>no_unlock</literal> option in the Subversion
+			from the <literal>no_unlock</literal> option in the Git
 			configuration file. Read <xref linkend="tsvn-dug-settings-main"/>
-			for information on how to edit the Subversion configuration file.
+			for information on how to edit the Git configuration file.
 		</para>
 		<tip>
 			<title>Drag and Drop</title>
@@ -157,9 +157,9 @@
 		<tip>
 			<title>Repairing External Renames</title>
 			<para>
-				Sometimes files get renamed outside of Subversion, and they show up
+				Sometimes files get renamed outside of Git, and they show up
 				in the file list as a missing file and an unversioned file. To avoid
-				losing the history you need to notify Subversion about the connection.
+				losing the history you need to notify Git about the connection.
 				Simply select both the old name (missing) and the new name (unversioned)
 				and use
 				<menuchoice>
@@ -173,7 +173,7 @@
 	<sect2 id="tsvn-dug-commit-changelists">
 		<title>Change Lists</title>
 		<para>
-			The commit dialog supports Subversion's changelist feature to help
+			The commit dialog supports Git's changelist feature to help
 			with grouping related files together. Find out about this feature
 			in <xref linkend="tsvn-dug-changelists"/>.
 		</para>

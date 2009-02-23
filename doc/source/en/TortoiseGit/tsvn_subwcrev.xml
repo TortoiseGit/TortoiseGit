@@ -17,7 +17,7 @@
 		</indexterm>
 		<para>
 			SubWCRev is Windows console program which can be used to read
-			the status of a Subversion working copy and optionally perform
+			the status of a Git working copy and optionally perform
 			keyword substitution in a template file.
 			This is often used as part of the build process as a means of
 			incorporating working copy information into the object you
@@ -31,7 +31,7 @@
 	<sect1 id="tsvn-subwcrev-cli">
 		<title>The SubWCRev Command Line</title>
 		<para>
-			SubWCRev reads the Subversion status of all files in a working
+			SubWCRev reads the Git status of all files in a working
 			copy, excluding externals by default. It records the highest commit
 			revision number found, and the commit timestamp of that revision,
 			It also records whether there are local modifications in the working
@@ -345,7 +345,7 @@ char *URL      = "http://project.domain.org/svn/trunk/src";
 			<primary>COM SubWCRev interface</primary>
 		</indexterm>
 		<para>
-			If you need to access Subversion revision information from other
+			If you need to access Git revision information from other
 			programs, you can use the COM interface of SubWCRev. The object to
 			create is <literal>SubWCRev.object</literal>, and the following
 			methods are supported:

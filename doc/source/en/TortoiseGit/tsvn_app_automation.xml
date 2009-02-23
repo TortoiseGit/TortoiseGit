@@ -13,7 +13,7 @@
 			Remember that TortoiseGit is a GUI client, and this automation guide
 			shows you how to make the TortoiseGit dialogs appear to collect user
 			input. If you want to write a script which requires no input, you should
-			use the official Subversion command line client instead.
+			use the official Git command line client instead.
 		</para>
 		</important>
 	</simplesect>

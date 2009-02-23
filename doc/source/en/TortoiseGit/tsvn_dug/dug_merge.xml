@@ -13,12 +13,12 @@
 	</para>
 	<para>
 		It is important to understand how branching and merging works in
-		Subversion before you start using it, as it can become quite complex.
+		Git before you start using it, as it can become quite complex.
 		It is highly recommended that you read the chapter
 		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.html">
 			<citetitle>Branching and Merging</citetitle>
 		</ulink>
-		in the Subversion book, which gives a full description and many 
+		in the Git book, which gives a full description and many 
 		examples of how it is used.
 	</para>
 	<para>
@@ -55,7 +55,7 @@
 					those changes across to a different branch.
 				</para>
 				<para>
-					What you are asking Subversion to do is this:
+					What you are asking Git to do is this:
 					<quote>Calculate the changes necessary to get [FROM] revision 1
 					of branch A [TO] revision 7 of branch A, and apply those changes
 					to my working copy (of trunk or branch B).</quote>
@@ -67,7 +67,7 @@
 			<listitem>
 				<para>
 					This method covers the case when you have made a feature branch
-					as discussed in the Subversion book. All trunk changes have been
+					as discussed in the Git book. All trunk changes have been
 					ported to the feature branch, week by week, and now the feature
 					is complete you want to merge it back into the trunk. Because
 					you have kept the feature branch synchronized with the trunk,
@@ -78,7 +78,7 @@
 					This is a special case of the tree merge described below,
 					and it requires only the URL to merge from (normally) your
 					development branch. It uses the merge-tracking features of
-					Subversion to calculate the correct revision ranges to use,
+					Git to calculate the correct revision ranges to use,
 					and perform additional checks which ensure that the branch has
 					been fully updated with trunk changes. This ensures that you don't
 					accidentally undo work that others have committed to trunk since
@@ -106,7 +106,7 @@
 			<listitem>
 				<para>
 					This is a more general case of the reintegrate method.
-					What you are asking Subversion to do is:
+					What you are asking Git to do is:
 					<quote>Calculate the changes necessary to get [FROM] the head
 					revision of the trunk [TO] the head revision of the branch, and
 					apply those changes to my working copy (of the trunk).</quote>
@@ -121,7 +121,7 @@
 					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.vendorbr.html">
 						<citetitle>vendor branches</citetitle>
 					</ulink>
-					in the Subversion Book.
+					in the Git Book.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -177,7 +177,7 @@
 			</para>
 			<para>
 				If you are merging revisions in chunks, the method
-				shown in the subversion book will have you merge
+				shown in the Git book will have you merge
 				100-200 this time and 200-300 next time. With
 				TortoiseGit you would merge 100-200 this time and
 				201-300 next time.
@@ -221,9 +221,9 @@
 			revision 40.
 		</para>
 		<para>
-			If you are using the merge tracking features of Subversion,
+			If you are using the merge tracking features of Git,
 			you do not need to remember which revisions have already been
-			merged - Subversion will record that for you. If you leave
+			merged - Git will record that for you. If you leave
 			the revision range blank, all revisions which have not yet
 			been merged will be included. Read
 			<xref linkend="tsvn-dug-merge-tracking"/> to find out more.
@@ -336,13 +336,13 @@
 			you may need to merge files which are perhaps related, but not in
 			your repository. For example you may have imported versions 1 and 2 of
 			a third party library into two separate directories. Although they
-			are logically related, Subversion has no knowledge of this because
+			are logically related, Git has no knowledge of this because
 			it only sees the tarballs you imported. If you attempt to merge the
 			difference between these two trees you would see a complete removal
-			followed by a complete add. To make Subversion use only path-based
+			followed by a complete add. To make Git use only path-based
 			differences rather than history-based differences, check the
 			<guilabel>Ignore ancestry</guilabel> box. Read more about this 
-			topic in the Subversion book,
+			topic in the Git book,
 			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.advanced.html#svn.branchmerge.advanced.ancestry">
 				<citetitle>Noticing or Ignoring Ancestry</citetitle>
 			</ulink>
@@ -392,7 +392,7 @@
 			Conflicts often arise if the branch has drifted far from the trunk.
 		</para>
 		<para>
-			For Subversion clients and servers prior to 1.5, no merge information
+			For Git clients and servers prior to 1.5, no merge information
 			is stored and merged revisions have to be tracked manually. 
 			When you have tested the changes and come to commit this revision,
 			your commit log message should <emphasis>always</emphasis>
@@ -406,10 +406,10 @@
 			<ulink url="http://svnbook.red-bean.com/en/1.4/svn.branchmerge.copychanges.html#svn.branchmerge.copychanges.bestprac">
 				<citetitle>Best Practices for Merging</citetitle>
 			</ulink>
-			in the Subversion book.
+			in the Git book.
 		</para>
 		<para>
-			If your server and all clients are running Subversion 1.5 or higher,
+			If your server and all clients are running Git 1.5 or higher,
 			the merge tracking facility will record the revisions merged and avoid
 			a revision being merged more than once. This makes your life much simpler
 			as you can simply merge the entire revision range each time and know
@@ -431,7 +431,7 @@
 		</tip>
 		<important>
 			<para>
-				Subversion can't merge a file with a folder and vice versa - only
+				Git can't merge a file with a folder and vice versa - only
 				folders to folders and files to files. If you click on a file and
 				open up the merge dialog, then you have to give a path to a file
 				in that dialog. If you select a folder and bring up the dialog,
@@ -445,7 +445,7 @@
 			<primary>merge tracking</primary>
 		</indexterm>
 		<para>
-			Subversion 1.5 introduced facilities for merge tracking. When you
+			Git 1.5 introduced facilities for merge tracking. When you
 			merge changes from one tree into another, the revision numbers merged are
 			stored and this information can be used for several different purposes.
 			<itemizedlist>
@@ -497,8 +497,8 @@
 			and earlier servers will not provide the information requested by new clients.
 		</para>
 		<para>
-			Find out more about merge tracking from Subversion's
-			<ulink url="http://subversion.tigris.org/merge-tracking/index.html">
+			Find out more about merge tracking from Git's
+			<ulink url="http://Git.tigris.org/merge-tracking/index.html">
 				<citetitle>Merge tracking documentation</citetitle>
 			</ulink>.
 		</para>

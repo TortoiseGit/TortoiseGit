@@ -93,7 +93,7 @@
 			get applied directly because you already changed that file.
 		</para>
 		<para>
-			But don't worry. If you're working with Subversion you can
+			But don't worry. If you're working with Git you can
 			retrieve an older version of the file and resolve the conflict.
 			In fact, TortoiseMerge automatically tries to get that older
 			version of the file and then shows you the diff between

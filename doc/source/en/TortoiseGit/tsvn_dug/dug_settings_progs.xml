@@ -108,7 +108,7 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 			is unchecked then TortoiseGit will skip pre-processing the files.
 		</para>
 		<para>
-			You can also specify a different diff tool to use on Subversion
+			You can also specify a different diff tool to use on Git
 			properties. Since these tend to be short simple text strings, you
 			may want to use a simpler more compact viewer.
 		</para>

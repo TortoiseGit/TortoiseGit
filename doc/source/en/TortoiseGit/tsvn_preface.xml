@@ -3,7 +3,7 @@
 <preface id="tsvn-preface">
 	<title>Preface</title>
 	<simplesect>
-		<graphic srccredit="TortoiseGit Logo" fileref="images/TortoiseGit_logo_hor468x64.png" scalefit="1" width="100%"/>
+		<graphic srccredit="TortoiseGit Logo" fileref="images/TortoiseGit_logo_hor468x64.png" scalefit="1" />
 	</simplesect>
 	<simplesect>
 		<para>
@@ -48,7 +48,7 @@
 		<title>Audience</title>
 		<para>
 			This book is written for computer literate folk who want to
-			use Subversion to manage their data, but are uncomfortable using the
+			use Git to manage their data, but are uncomfortable using the
 			command line client to do so. Since TortoiseGit is a windows shell
 			extension it's assumed that the user is familiar with the windows
 			explorer and knows how to use it.
@@ -71,19 +71,19 @@
 		</para>
 		<para>
 			In <xref linkend="tsvn-basics"/> we give a short introduction
-			to the <emphasis>Subversion</emphasis> revision control system which
+			to the <emphasis>Git</emphasis> revision control system which
 			underlies TortoiseGit. This is borrowed from the documentation for the
-			Subversion project and explains the different approaches to version
-			control, and how Subversion works.
+			Git project and explains the different approaches to version
+			control, and how Git works.
 		</para>
 		<para>
-			Even most Subversion users will never have to set up a server themselves.
+			Even most Git users will never have to set up a server themselves.
 			The next chapter deals with how to set up such a server, and is useful
 			for administrators.
 		</para>
 		<para>
 			The chapter on <xref linkend="tsvn-repository"/> explains how to set up
-			a local repository, which is useful for testing Subversion and TortoiseGit
+			a local repository, which is useful for testing Git and TortoiseGit
 			using a single PC. It also explains a bit about repository administration
 			which is also relevant to repositories located on a server.
 		</para>
@@ -94,11 +94,13 @@
 			modifying it, committing your changes, etc. It then progresses to more
 			advanced topics.
 		</para>
+		<!--
 		<para>
 			<xref linkend="tsvn-subwcrev"/> is a separate program included with TortoiseGit
 			which can extract the information from your working copy and write it into a
 			file. This is useful for including build information in your projects.
 		</para>
+		-->
 		<para>
 			The <xref linkend="tsvn-howto"/> section answers some common questions
 			about performing tasks which are not explicitly covered elsewhere.
@@ -110,7 +112,7 @@
 		</para>
 		<para>
 			The <xref linkend="tsvn-cli"/> give a correlation
-			between TortoiseGit commands and their equivalents in the Subversion
+			between TortoiseGit commands and their equivalents in the Git
 			command line client <literal>svn.exe</literal>.
 		</para>
 	</sect1>
@@ -125,17 +127,10 @@
 		</para>
 		<para>
 			TortoiseGit is an Open Source project. That means you have full
-			read access to the source code of this program. You can browse it
-			on this link
-			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/">
-				<citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle>
-			</ulink>.
-			You will be prompted to enter username and password.
-			The username is <literal>guest</literal>, and the password must be left blank.
-			The most recent version (where we're currently working) is located under
-			<filename>/trunk/</filename>,
-			and the released versions are located under
-			<filename>/tags/</filename>.
+			read access to the source code of this program. Project Home is 
+			<ulink url="http://code.google.com/p/tortoisegit">
+				<citetitle>http://code.google.com/p/tortoisegit</citetitle>
+			</ulink>
 		</para>
 	</sect1>
 	<!-- =================================================================== -->
@@ -144,7 +139,7 @@
 	<sect1 id="tsvn-preface-community">
 		<title>Community</title>
 		<para>
-			Both TortoiseGit and Subversion are developed by a community of
+			Both TortoiseGit and Git are developed by a community of
 			people who are working on those projects. They come from different
 			countries all over the world and joined together to create wonderful
 			programs.
@@ -157,10 +152,39 @@
 		<title>Acknowledgments</title>
 		<variablelist>
 			<varlistentry>
-				<term>Tim Kemp</term>
+				<term>Frank Li</term>
 				<listitem>
 					<para>
 						for founding the TortoiseGit project
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Colin Law</term>
+				<listitem>
+					<para>						
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>myagi</term>
+				<listitem>
+					<para>						
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Johan t Hart</term>
+				<listitem>
+					<para>						
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Tim Kemp</term>
+				<listitem>
+					<para>
+						for founding the TortoiseSVN project(TortoiseGit come from this project)
 					</para>
 				</listitem>
 			</varlistentry>
@@ -190,10 +214,10 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>The Subversion Book</term>
+				<term>The Git Book</term>
 				<listitem>
 					<para>
-						for the great introduction to Subversion and its
+						for the great introduction to Git and its
 						chapter 2 which we copied here
 					</para>
 				</listitem>

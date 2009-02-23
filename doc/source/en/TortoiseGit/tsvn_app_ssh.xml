@@ -5,21 +5,21 @@
 	<simplesect>
 		<para>
 			This section provides a step-by-step guide to setting up
-			Subversion and TortoiseGit to use the <literal>svn+ssh</literal>
+			Git and TortoiseGit to use the <literal>svn+ssh</literal>
 			protocol. If you already use authenticated SSH connections to login
 			to your server, then you are already there and you can find more detail
-			in the Subversion book. If you are not using SSH but would like to do
-			so to protect your Subversion installation, this guide gives a simple
+			in the Git book. If you are not using SSH but would like to do
+			so to protect your Git installation, this guide gives a simple
 			method which does not involve creating a separate SSH user account
-			on the server for every subversion user.
+			on the server for every Git user.
 		</para>
 		<para>
 			In this implementation we create a single SSH user account for
-			all subversion users, and use different authentication keys to
-			differentiate between the real Subversion users.
+			all Git users, and use different authentication keys to
+			differentiate between the real Git users.
 		</para>
 		<para>
-			In this appendix we assume that you already have the subversion tools
+			In this appendix we assume that you already have the Git tools
 			installed, and that you have created a repository as detailed elsewhere
 			in this manual. Note that you should <emphasis>not</emphasis> start
 			svnserve as a service or daemon when used with SSH.
@@ -27,7 +27,7 @@
 		<para>
 			Much of the information here comes from a tutorial
 			provided by Marc Logemann, which can be found at
-			<ulink url="http://www.logemann.org/2007/03/13/subversion-TortoiseGit-ssh-howto/">
+			<ulink url="http://www.logemann.org/2007/03/13/Git-TortoiseGit-ssh-howto/">
 				<citetitle>www.logemann.org</citetitle>
 			</ulink>
 			Additional information on setting up a Windows server was
@@ -46,9 +46,9 @@ ps xa | grep sshd
 			and look for ssh jobs.
 		</para>
 		<para>
-			One point to note is that if you build Subversion from source and
+			One point to note is that if you build Git from source and
 			do not provide any argument to <filename>./configure</filename>,
-			Subversion creates a <filename>bin</filename> directory under
+			Git creates a <filename>bin</filename> directory under
 			<filename>/usr/local</filename> and places its binaries there.
 			If you want to use tunneling mode with SSH, you have to be aware
 			that the user logging in via SSH needs to execute the svnserve program 
@@ -212,8 +212,8 @@ ChallengeResponseAuthentication no
 			So far we have only tested that you can login using SSH. Now we need
 			to make sure that the SSH connection can actually run svnserve.
 			On the server modify <filename>/home/svnuser/.ssh/authorized_keys</filename>
-			as follows to allow many subversion authors to use the same system account,
-			<literal>svnuser</literal>. Note that every subversion author uses the same
+			as follows to allow many Git authors to use the same system account,
+			<literal>svnuser</literal>. Note that every Git author uses the same
 			login but a different authentication key, thus you have to add one line for
 			every author.
 		</para>

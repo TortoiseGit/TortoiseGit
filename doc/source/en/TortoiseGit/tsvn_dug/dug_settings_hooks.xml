@@ -16,7 +16,7 @@
 			<graphic fileref="../images/SettingsHooks.png"/>
 		</figure>
 		This dialog allows you to set up hook scripts which will be
-		executed automatically when certain Subversion actions are performed.
+		executed automatically when certain Git actions are performed.
 		As opposed to the hook scripts explained in <xref linkend="tsvn-repository-hooks"/>,
 		these scripts are executed locally on the client. 
 	</para>
@@ -85,7 +85,7 @@
 				<term>Pre-update</term>
 				<listitem>
 					<para>
-						Called before the actual Subversion update begins.
+						Called before the actual Git update begins.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -305,7 +305,7 @@
 		whether you want them or not ;-)
 	</para>
 	<para>
-		If you want the Subversion operation to hold off until the hook has completed,
+		If you want the Git operation to hold off until the hook has completed,
 		check <guilabel>Wait for the script to finish</guilabel>.
 	</para>
 	<para>

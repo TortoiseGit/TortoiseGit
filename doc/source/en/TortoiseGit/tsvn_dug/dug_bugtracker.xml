@@ -17,7 +17,7 @@
 	<para>
 		It is very common in Software Development for changes to be related to a specific
 		bug or issue ID. Users of bug tracking systems (issue trackers) would like to associate
-		the changes they make in Subversion with a specific ID in their issue tracker.
+		the changes they make in Git with a specific ID in their issue tracker.
 		Most issue trackers therefore provide a pre-commit hook script which parses the log
 		message to find the bug ID with which the commit is associated.
 		This is somewhat error prone since it relies on the user to write the log message
@@ -322,7 +322,7 @@
 		<tip>
 			<title>No Issue Tracker Information from Repository Browser</title>
 			<para>
-				Because the issue tracker integration depends upon accessing subversion
+				Because the issue tracker integration depends upon accessing Git
 				properties, you will only see the results when using a checked
 				out working copy. Fetching properties remotely is a slow operation,
 				so you will not see this feature in action from the repo browser.
@@ -330,7 +330,7 @@
 		</tip>
 		<para>
 			This issue tracker integration is not restricted to TortoiseGit; it can be used
-			with any Subversion client. For more information, read the full
+			with any Git client. For more information, read the full
 			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/trunk/doc/issuetrackers.txt">
 				<citetitle>Issue Tracker Integration Specification</citetitle>
 			</ulink>

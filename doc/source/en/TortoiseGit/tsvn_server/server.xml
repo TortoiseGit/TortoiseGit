@@ -4,7 +4,7 @@
 	<title>Setting Up A Server</title>
 	<simplesect>
 		<para>
-			To use TortoiseGit (or any other Subversion client), you need a place where your 
+			To use TortoiseGit (or any other Git client), you need a place where your 
 			repositories are 	located. You can either store your repositories locally and access 
 			them using the <literal>file://</literal> protocol or you can place them on a 
 			server and access them with the <literal>http://</literal> or 
@@ -15,9 +15,9 @@
 			such a server on a Windows machine.
 		</para>
 		<para>
-			More detailed information on the Subversion server options, and how
+			More detailed information on the Git server options, and how
 			to choose the best architecture for your situation, can be
-			found in the Subversion book under
+			found in the Git book under
 			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.serverconfig.html">
 				<citetitle>Server Configuration</citetitle>
 			</ulink>.

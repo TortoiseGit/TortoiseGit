@@ -385,7 +385,7 @@
 		</para>
 		<caution>
 			<para>
-				Because Subversion cannot provide all the information required,
+				Because Git cannot provide all the information required,
 				a certain amount of interpretation is required, which can sometimes
 				give strange results. Nevertheless, the output for the trunk will
 				generally give useful results.

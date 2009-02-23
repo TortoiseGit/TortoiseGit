@@ -24,14 +24,14 @@
 		<title>What is TortoiseGit?</title>
 		<para>
 			TortoiseGit is a free open-source client for the
-			<firstterm>Subversion</firstterm> version control system.
+			<firstterm>Git</firstterm> version control system.
 			That is, TortoiseGit manages files and directories over time.
 			Files are stored in a central <firstterm>repository</firstterm>.
 			The repository is much like an ordinary file server, except that it
 			remembers every change ever made to your files and directories.
 			This allows you to recover older versions of your files and examine
 			the history of how and when your data changed, and who changed it.
-			This is why many people think of Subversion and version control
+			This is why many people think of Git and version control
 			systems in general as a sort of <quote>time machine</quote>.
 		</para>
 		<para>
@@ -40,7 +40,7 @@
 			tailored to manage trees of source code, and have many features
 			that are specific to software development - such as natively
 			understanding programming languages, or supplying tools for
-			building software.  Subversion, however, is not one of these
+			building software.  Git, however, is not one of these
 			systems; it is a general system that can be used to manage
 			<emphasis>any</emphasis> collection of files, including
 			source code.
@@ -52,9 +52,9 @@
 	<sect1 id="tsvn-intro-history">
 		<title>TortoiseGit's History</title>
 		<para>
-			In 2002, Tim Kemp found that Subversion was a very good version
+			In 2002, Tim Kemp found that Git was a very good version
 			control system, but it lacked a good GUI client. The idea for a
-			Subversion client as a Windows shell integration was inspired by
+			Git client as a Windows shell integration was inspired by
 			the similar client for CVS named TortoiseCVS.
 		</para>
 		<para>
@@ -62,15 +62,15 @@
 			TortoiseGit. He then started the project, registered the domain
 			<literal>TortoiseGit.org</literal> and put the source code online. During that time,
 			Stefan Küng was looking for a good and free version control system
-			and found Subversion and the source for TortoiseGit. Since TortoiseGit
+			and found Git and the source for TortoiseGit. Since TortoiseGit
 			was still not ready for use then he joined the project and started
 			programming. Soon he rewrote most of the existing code and started
 			adding commands and features, up to a point where nothing of the
 			original code remained.
 		</para>
 		<para>
-			As Subversion became more stable it attracted more and more users
-			who also started using TortoiseGit as their Subversion client.
+			As Git became more stable it attracted more and more users
+			who also started using TortoiseGit as their Git client.
 			The user base grew quickly (and is still growing every day).
 			That's when Lübbe Onken offered to help out with some nice icons
 			and a logo for TortoiseGit. And he takes care of the website
@@ -83,7 +83,7 @@
 	<sect1 id="tsvn-intro-features">
 		<title>TortoiseGit's Features</title>
 		<para>
-			What makes TortoiseGit such a good Subversion client?
+			What makes TortoiseGit such a good Git client?
 			Here's a short list of features.
 		</para>
 		<variablelist>
@@ -127,18 +127,18 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Easy access to Subversion commands</term>
+				<term>Easy access to Git commands</term>
 				<listitem>
 					<para>
-						All Subversion commands are available from the explorer
+						All Git commands are available from the explorer
 						context menu. TortoiseGit adds its own submenu there.
 					</para>
 				</listitem>
 			</varlistentry>
 		</variablelist>
 		<para>
-			Since TortoiseGit is a Subversion client, we would also like to show you
-			some of the features of Subversion itself:
+			Since TortoiseGit is a Git client, we would also like to show you
+			some of the features of Git itself:
 		</para>
 		<variablelist>
 			<varlistentry>
@@ -146,7 +146,7 @@
 				<listitem>
 					<para>
 						CVS only tracks the history of individual files, but
-						Subversion implements a <quote>virtual</quote>
+						Git implements a <quote>virtual</quote>
 						versioned filesystem that tracks changes to whole
 						directory trees over time.
 						Files <emphasis>and</emphasis> directories are
@@ -182,16 +182,16 @@
 				<term>Choice of network layers</term>
 				<listitem>
 					<para>
-						Subversion has an abstracted notion of repository
+						Git has an abstracted notion of repository
 						access, making it easy for people to implement new
-						network mechanisms. Subversion's <quote>advanced</quote>
+						network mechanisms. Git's <quote>advanced</quote>
 						network server is a module for the Apache web server,
 						which speaks a variant of HTTP called WebDAV/DeltaV.
-						This gives Subversion a big advantage in stability and
+						This gives Git a big advantage in stability and
 						interoperability, and provides various key features for
 						free: authentication, authorization, wire compression,
 						and repository browsing, for example. A smaller,
-						standalone Subversion server process is also available.
+						standalone Git server process is also available.
 						This server speaks a custom protocol which can be
 						easily tunneled over ssh.
 					</para>
@@ -201,7 +201,7 @@
 				<term>Consistent data handling</term>
 				<listitem>
 					<para>
-						Subversion expresses file differences using a binary
+						Git expresses file differences using a binary
 						differencing algorithm, which works identically on both
 						text (human-readable) and binary (human-unreadable) files.
 						Both types of files are stored equally compressed in the
@@ -215,7 +215,7 @@
 				<listitem>
 					<para>
 						The cost of branching and tagging need not be
-						proportional to the project size. Subversion creates
+						proportional to the project size. Git creates
 						branches and tags by simply copying the project, using
 						a mechanism similar to a hard-link.
 						Thus these operations take only a very small,
@@ -227,9 +227,9 @@
 				<term>Hackability</term>
 				<listitem>
 					<para>
-						Subversion has no historical baggage; it is implemented
+						Git has no historical baggage; it is implemented
 						as a collection of shared C libraries with well-defined
-						APIs. This makes Subversion extremely maintainable and
+						APIs. This makes Git extremely maintainable and
 						usable by other applications and languages.
 					</para>
 				</listitem>
