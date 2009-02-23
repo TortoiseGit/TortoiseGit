@@ -566,7 +566,7 @@ BOOL CCachedDirectory::GetStatusCallback(const struct wgFile_s *pFile, void *pUs
 {
 	CCachedDirectory* pThis = (CCachedDirectory*)pUserData;
 
-	const char *path = pFile->sFileName;
+	const TCHAR *path = pFile->sFileName;
 
 	if (path == NULL)
 		return FALSE;

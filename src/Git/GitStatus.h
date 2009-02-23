@@ -111,7 +111,7 @@ enum WGFILEFLAGS
 
 struct wgFile_s
 {
-	const char *sFileName;			// filename or directory relative to project root (using forward slashes)
+	LPCTSTR sFileName;				// filename or directory relative to project root (using forward slashes)
 	int nStatus;					// the WGFILESTATUS of the file
 	int nFlags;						// a combination of WGFILEFLAGS
 
