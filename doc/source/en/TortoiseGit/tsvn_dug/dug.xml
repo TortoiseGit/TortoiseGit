@@ -8,11 +8,11 @@
 		<para>
 			This document describes day to day usage of the TortoiseGit client.
 			It is <emphasis>not</emphasis> an introduction to version control
-			systems, and <emphasis>not</emphasis> an introduction to Git
-			(SVN). It is more like a place you may turn to when you know
-			approximately what you want to do, but don't quite remember how
-			to do it.
+			systems, and <emphasis>not</emphasis> an introduction to Git. It is 
+			more like a place you may turn to when you know	approximately 
+			what you want to do, but don't quite remember how to do it.
 		</para>
+		<!--
 		<para>
 			If you need an introduction to version control with Git,
 			then we recommend you read the fantastic book:
@@ -20,6 +20,7 @@
 <citetitle>Version Control with Git</citetitle>
 </ulink>.
 		</para>
+		-->
 		<para>
 			This document is also a work in progress, just as TortoiseGit and
 			Git are. If you find any mistakes, please report them to
@@ -58,7 +59,9 @@
 	<!-- ================================================================= -->
 	<!-- include external entity refs -->
 	<xi:include href="./dug_general.xml"/>
+	<!--
 	<xi:include href="./dug_import.xml"/>
+	-->
 	<xi:include href="./dug_checkout.xml"/>
 	<xi:include href="./dug_commit.xml"/>
 	<xi:include href="./dug_update.xml"/>
@@ -76,15 +79,25 @@
 	<xi:include href="./dug_propertypage.xml"/>
 	<xi:include href="./dug_branchtag.xml"/>
 	<xi:include href="./dug_merge.xml"/>
+	<!--
 	<xi:include href="./dug_locking.xml"/>
+	-->
 	<xi:include href="./dug_patch.xml"/>
 	<xi:include href="./dug_blame.xml"/>
+	<!--
 	<xi:include href="./dug_repobrowser.xml"/>
+	-->
+	<!--
 	<xi:include href="./dug_revgraph.xml"/>
+	-->
 	<xi:include href="./dug_export.xml"/>
+	<!--
 	<xi:include href="./dug_relocate.xml"/>
+	-->
 	<xi:include href="./dug_bugtracker.xml"/>
+	<!--
 	<xi:include href="./dug_repoviewer.xml"/>
+	-->
 	<xi:include href="./dug_settings.xml"/>
 	<sect1 id="tsvn-dug-donate">
 		<title>Final Step</title>

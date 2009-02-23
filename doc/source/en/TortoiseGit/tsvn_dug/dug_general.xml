@@ -136,6 +136,7 @@
 			</variablelist>
 		</para>
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-general-auth">
 		<title>Authentication</title>
 		<indexterm>
@@ -201,6 +202,7 @@ rmdir /s /q "%APPDATA%\Git\auth"
 			<xref linkend="tsvn-serversetup"/>
 		</para>
 	</sect2>
+	-->
 	<sect2 id="tsvn-dug-general-window-max">
 		<title>Maximizing Windows</title>
 		<indexterm>

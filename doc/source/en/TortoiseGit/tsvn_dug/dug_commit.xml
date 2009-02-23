@@ -14,24 +14,17 @@
 	<?dbhh topicname="HIDD_COMMITDLG"?>
 	<para>
 		Sending the changes you made to your working copy is known as
-		<firstterm>committing</firstterm> the changes. But before you
-		commit you have to make sure that your working copy is up to
-		date. You can either use
-		<menuchoice>
-			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Update</guimenuitem>
-		</menuchoice>
-		directly. Or you can use
+		<firstterm>committing</firstterm> the changes. you can use
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Check for Modifications</guimenuitem>
 		</menuchoice>
-		first, to see which files have changed locally or on the server.
+		first, to see which files have changed locally.
 	</para>
 	<sect2 id="tsvn-dug-commit-basics">
 		<title>The Commit Dialog</title>
 		<para>
-			If your working copy is up to date and there are no conflicts,
+			If there are no conflicts,
 			you are ready to commit your changes. Select any file
 			and/or folders you want to commit, then
 			<menuchoice>
@@ -56,6 +49,7 @@
 			switched something while working on a branch and forgotten to switch
 			back to trunk. This is your warning sign!
 		</para>
+		<!--
 		<tip>
 			<title>Commit files or folders?</title>
 			<para>
@@ -68,6 +62,8 @@
 				your life easier by doing more work for you.
 			</para>
 		</tip>
+		-->
+		<--
 		<para>
 			If you have modified files which have been included from a different
 			repository using <literal>svn:externals</literal>, those changes cannot
@@ -75,6 +71,7 @@
 			list tells you if this has happened, and the tooltip explains that
 			those external files have to be committed separately.
 		</para>
+		-->
 		<tip>
 			<title>Many unversioned files in the commit dialog</title>
 			<para>
@@ -97,10 +94,12 @@
 								<guimenu>TortoiseGit</guimenu>
 								<guimenuitem>Add to ignore list</guimenuitem>
 							</menuchoice>
+							<!--
 							This will only affect the directory on
 							which you set the <literal>svn:ignore</literal> property.
 							Using the SVN Property Dialog, you can alter the
 							<literal>svn:ignore</literal> property for a directory.
+							-->
 						</para>
 					</listitem>
 				</itemizedlist>
@@ -154,6 +153,7 @@
 				into the commit dialog, and they will be SVN added automatically.
 			</para>
 		</tip>
+		<!--
 		<tip>
 			<title>Repairing External Renames</title>
 			<para>
@@ -169,6 +169,7 @@
 				to pair the two files as a rename.
 			</para>
 		</tip>
+		-->
 	</sect2>
 	<sect2 id="tsvn-dug-commit-changelists">
 		<title>Change Lists</title>
@@ -249,12 +250,14 @@
 				<citetitle>http://www.regular-expressions.info/</citetitle>
 			</ulink>.
 		</para>
+		<!--
 		<para>
 			You can re-use previously entered log messages. Just click on
 			<guibutton>Recent messages</guibutton> to view a list of the last few
 			messages you entered for this working copy. The number of stored messages
 			can be customized in the TortoiseGit settings dialog.
 		</para>
+		-->
 		<para>
 			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
 			page of TortoiseGit's settings, or you can clear individual messages from
@@ -274,6 +277,7 @@
 			Another way to insert the paths into the log message is to simply
 			drag the files from the file list onto the edit control.
 		</para>
+		<!--
 		<tip>
 			<title>Special Folder Properties</title>
 			<para>
@@ -283,6 +287,7 @@
 				Read <xref linkend="tsvn-dug-propertypage"/> for further information.
 			</para>
 		</tip>
+		-->
 		<tip>
 			<title>Integration with Bug Tracking Tools</title>
 			<para>
@@ -295,6 +300,7 @@
 			</para>
 		</tip>
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-commit-progress">
 		<title>Commit Progress</title>
 		<para>
@@ -349,4 +355,5 @@
 			Read <xref linkend="tsvn-dug-settings-colours"/> for more information.
 		</para>
 	</sect2>
+	-->
 </sect1>

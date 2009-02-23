@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-checkout">
-	<title>Checking Out A Working Copy</title>
+	<title>Checking Out A Working Copy(Switch to version)</title>
 	<indexterm>
 		<primary>checkout</primary>
+	</indexterm>
+	<indexterm>
+		<primary>Switch</primary>
 	</indexterm>
 	<indexterm>
 		<primary>create working copy</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_CHECKOUT"?>
 	<para>
-		To obtain a working copy you need to do a <firstterm>checkout</firstterm>
-		from a repository.
+		To obtain a special version working copy you need to do a <firstterm>checkout</firstterm>
+		from a local repository.
 	</para>
 	<para>
-		Select a directory in windows explorer where you want to place
-		your working copy. <action>Right click</action> to pop up the
+		Select a git repository directory in windows explorer
+		<action>Right click</action> to pop up the
 		context menu and select the command
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Checkout...</guimenuitem>
+			<guimenuitem>Switch\Checkout...</guimenuitem>
 		</menuchoice>,
 		which brings up the following dialog box:
 		<figure id="tsvn-dug-checkout-dia-1">
 			<title>The Checkout dialog</title>
 			<graphic fileref="../images/Checkout.png"/>
 		</figure>
-		If you enter a folder name that does not yet exist, then a
-		directory with that name is created.
+		If you enter a branch name, new branch created and switch to new branchs.
 	</para>
+	<!--
 	<sect2 id="tsvn-dug-checkout-depth">
 		<title>Checkout Depth</title>
 		<para>
@@ -196,11 +199,14 @@
 			</para>
 		</tip>
 	</sect2>
+	-->
+	<--
 	<para>
 		If the project contains references to external projects which you do
 		<emphasis>not</emphasis> want checked out at the same time, use the
 		<guilabel>Omit externals</guilabel> checkbox.
 	</para>
+	-->
 	<important>
 		<para>
 			If <guilabel>Omit externals</guilabel> is checked, or if you wish

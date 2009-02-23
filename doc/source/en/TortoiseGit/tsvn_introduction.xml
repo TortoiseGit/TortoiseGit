@@ -25,8 +25,8 @@
 		<para>
 			TortoiseGit is a free open-source client for the
 			<firstterm>Git</firstterm> version control system.
-			That is, TortoiseGit manages files and directories over time.
-			Files are stored in a central <firstterm>repository</firstterm>.
+			That is, TortoiseGit manages files over time.
+			Files are stored in a local <firstterm>repository</firstterm>.
 			The repository is much like an ordinary file server, except that it
 			remembers every change ever made to your files and directories.
 			This allows you to recover older versions of your files and examine
@@ -45,6 +45,13 @@
 			<emphasis>any</emphasis> collection of files, including
 			source code.
 		</para>
+		<para>
+			Git is an <emphasis>open source, distributed version control system</emphasis>
+			designed to handle everything from small to very large projects with speed and 
+			efficiency. Every Git clone is a full-fledged repository with complete history 
+			and full revision tracking capabilities, not dependent on network access or 
+			a central server. Branching and merging are fast and easy to do.
+		</para>
 	</sect1>
 	<!-- ================================================================= -->
 	<!-- ======================== SECTION 2 ============================== -->
@@ -52,29 +59,19 @@
 	<sect1 id="tsvn-intro-history">
 		<title>TortoiseGit's History</title>
 		<para>
-			In 2002, Tim Kemp found that Git was a very good version
+			In 2008, Frank Li found that Git was a very good version
 			control system, but it lacked a good GUI client. The idea for a
 			Git client as a Windows shell integration was inspired by
-			the similar client for CVS named TortoiseCVS.
+			the similar client for SVN named TortoiseSVN.
 		</para>
 		<para>
-			Tim studied the source code of TortoiseCVS and used it as a base for
-			TortoiseGit. He then started the project, registered the domain
-			<literal>TortoiseGit.org</literal> and put the source code online. During that time,
-			Stefan Küng was looking for a good and free version control system
-			and found Git and the source for TortoiseGit. Since TortoiseGit
-			was still not ready for use then he joined the project and started
-			programming. Soon he rewrote most of the existing code and started
-			adding commands and features, up to a point where nothing of the
-			original code remained.
+			Frank studied the source code of TortoiseSVN and used it as a base for
+			TortoiseGit. He then started the project, registered the project
+			at code.google.com and put the source code online. 
 		</para>
 		<para>
 			As Git became more stable it attracted more and more users
 			who also started using TortoiseGit as their Git client.
-			The user base grew quickly (and is still growing every day).
-			That's when Lübbe Onken offered to help out with some nice icons
-			and a logo for TortoiseGit. And he takes care of the website
-			and manages the translation.
 		</para>
 	</sect1>
 	<!-- ================================================================= -->
@@ -142,17 +139,19 @@
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term>Directory versioning</term>
+				<term>Distributed version control</term>
 				<listitem>
 					<para>
-						CVS only tracks the history of individual files, but
-						Git implements a <quote>virtual</quote>
-						versioned filesystem that tracks changes to whole
-						directory trees over time.
-						Files <emphasis>and</emphasis> directories are
-						versioned. As a result, there are real client-side
-						<command>move</command> and <command>copy</command>
-						commands that operate on files and directories.
+						 Like most other modern version control systems, Git 
+						 gives each developer a local copy of the entire development 
+						 history, and changes are copied from one such repository 
+						 to another. These changes are imported as additional 
+						 development branches, and can be merged in the same way 
+						 as a locally developed branch. Repositories can be easily 
+						 accessed via the efficient Git protocol (optionally wrapped 
+						 in ssh for authentication and security) or simply using 
+						 HTTP - you can publish your repository anywhere without 
+						 any special webserver configuration required.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -161,52 +160,44 @@
 				<listitem>
 					<para>
 						A commit either goes into the repository completely,
-						or not at all.  This allows developers to construct and
-						commit changes as logical chunks.
+						or not at all. 
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Versioned metadata</term>
+				<term>Strong support for non-linear development</term>
 				<listitem>
 					<para>
-						Each file and directory has an invisible set of
-						<quote>properties</quote> attached. You can invent and
-						store any arbitrary key/value pairs you wish.
-						Properties are versioned over time, just like file
-						contents.
+						Git supports rapid and convenient branching and merging, 
+						and includes powerful tools for visualizing and navigating 
+						a non-linear development history.					
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Choice of network layers</term>
+				<term>Efficient handling of large projects</term>
 				<listitem>
 					<para>
-						Git has an abstracted notion of repository
-						access, making it easy for people to implement new
-						network mechanisms. Git's <quote>advanced</quote>
-						network server is a module for the Apache web server,
-						which speaks a variant of HTTP called WebDAV/DeltaV.
-						This gives Git a big advantage in stability and
-						interoperability, and provides various key features for
-						free: authentication, authorization, wire compression,
-						and repository browsing, for example. A smaller,
-						standalone Git server process is also available.
-						This server speaks a custom protocol which can be
-						easily tunneled over ssh.
+						Git is very fast and scales well even when working with 
+						large projects and long histories. It is commonly an order 
+						of magnitude faster than most other version control systems, 
+						and several orders of magnitude faster on some operations. 
+						It also uses an extremely efficient packed format for long-term 
+						revision storage that currently tops any other open source 
+						version control system.
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Consistent data handling</term>
+				<term>Cryptographic authentication of history</term>
 				<listitem>
 					<para>
-						Git expresses file differences using a binary
-						differencing algorithm, which works identically on both
-						text (human-readable) and binary (human-unreadable) files.
-						Both types of files are stored equally compressed in the
-						repository, and differences are transmitted in both
-						directions across the network.
+						The Git history is stored in such a way that the name of a 
+						particular revision (a "commit" in Git terms) depends upon 
+						the complete development history leading up to that commit. 
+						Once it is published, it is not possible to change the old 
+						versions without it being noticed. Also, tags can be 
+						cryptographically signed. 
 					</para>
 				</listitem>
 			</varlistentry>
@@ -215,22 +206,19 @@
 				<listitem>
 					<para>
 						The cost of branching and tagging need not be
-						proportional to the project size. Git creates
-						branches and tags by simply copying the project, using
-						a mechanism similar to a hard-link.
-						Thus these operations take only a very small,
-						constant amount of time, and very little space in the repository.
+						proportional to the project size. Branch is just head of commits. 
+						Tag is friend name of commit hash. 
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Hackability</term>
+				<term>Toolkit design.</term>
 				<listitem>
 					<para>
-						Git has no historical baggage; it is implemented
-						as a collection of shared C libraries with well-defined
-						APIs. This makes Git extremely maintainable and
-						usable by other applications and languages.
+						Following the Unix tradition, Git is a collection of many small 
+						tools written in C, and a number of scripts that provide convenient 
+						wrappers. Git provides tools for both easy human usage and easy 
+						scripting to perform new clever operations.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -245,9 +233,7 @@
 			<title>System requirements</title>
 			<para>
 				TortoiseGit runs on Windows 2000 SP2, Windows XP or higher.
-				Windows 98, Windows ME and Windows NT4 are no longer supported
-				since TortoiseGit 1.2.0, but you can still download
-				the older versions if you really need them.
+				Windows 98, Windows ME and Windows NT4 are no longer supported.
 			</para>
 			<para>
 				If you encounter any problems during or after installing
@@ -273,7 +259,7 @@
 			</important>
 		</sect2>
 		<sect2 id="tsvn-intro-install-lang">
-			<title>Language Packs</title>
+			<title>Language Packs(not start)</title>
 			<indexterm>
 				<primary>language packs</primary>
 			</indexterm>
@@ -297,7 +283,7 @@
 				Next time you restart, the translation will be available.
 			</para>
 		</sect2>
-		<sect2 id="tsvn-intro-install-spell">
+		<sect2 id="tsvn-intro-instalsl-spell">
 			<title>Spellchecker</title>
 			<indexterm>
 				<primary>spellchecker</primary>
