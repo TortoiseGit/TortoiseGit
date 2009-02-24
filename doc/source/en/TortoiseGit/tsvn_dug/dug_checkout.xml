@@ -200,7 +200,7 @@
 		</tip>
 	</sect2>
 	-->
-	<--
+	<!--
 	<para>
 		If the project contains references to external projects which you do
 		<emphasis>not</emphasis> want checked out at the same time, use the

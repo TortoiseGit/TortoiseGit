@@ -51,6 +51,12 @@
 #include "CleanupCommand.h"
 #include "RebaseCommand.h"
 #include "ResolveCommand.h"
+#include "DropMoveCommand.h"
+#include "DropCopyAddCommand.h"
+#include "DropCopyCommand.h"
+#include "DropExportCommand.h"
+#include "HelpCommand.h"
+
 #if 0
 
 
@@ -65,12 +71,10 @@
 
 #include "DelUnversionedCommand.h"
 
-#include "DropCopyAddCommand.h"
-#include "DropCopyCommand.h"
-#include "DropExportCommand.h"
-#include "DropMoveCommand.h"
 
-#include "HelpCommand.h"
+
+
+
 
 #include "ImportCommand.h"
 #include "LockCommand.h"
@@ -308,6 +312,16 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RebaseCommand;
 	case cmdResolve:
 		return new ResolveCommand;
+	case cmdDropMove:
+		return new DropMoveCommand;
+//	case cmdDropCopy:
+//		return new DropCopyCommand;
+//	case cmdDropCopyAdd:
+//		return new DropCopyAddCommand;
+//	case cmdDropExport:
+//		return new DropExportCommand;
+	case cmdHelp:
+		return new HelpCommand;
 #if 0
 
 	case cmdCat:
@@ -326,25 +340,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	case cmdDelUnversioned:
 		return new DelUnversionedCommand;
 
-	case cmdDropCopy:
-		return new DropCopyCommand;
-	case cmdDropCopyAdd:
-		return new DropCopyAddCommand;
-	case cmdDropExport:
-		return new DropExportCommand;
-	case cmdDropMove:
-		return new DropMoveCommand;
 
-	case cmdHelp:
-		return new HelpCommand;
 
 	case cmdImport:
 		return new ImportCommand;
 	case cmdLock:
 		return new LockCommand;
-
-	case cmdMerge:
-		return new MergeCommand;
 	case cmdMergeAll:
 		return new MergeAllCommand;
 	case cmdPasteCopy:
@@ -361,20 +362,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RebuildIconCacheCommand;
 	case cmdRelocate:
 		return new RelocateCommand;
-
-
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;
-
-
-
-
 	case cmdRevisionGraph:
 		return new RevisionGraphCommand;
-
 	case cmdShowCompare:
 		return new ShowCompareCommand;
-
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
 	case cmdUnlock:

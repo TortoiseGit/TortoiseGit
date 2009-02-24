@@ -27,11 +27,11 @@
  * \remark you need to call AfxOleInit() before using this class, preferably in
  * your app's InitInistance() method.
  */
-class CProgressDlg  
+class CSysProgressDlg  
 {
 public:
-    CProgressDlg();
-    ~CProgressDlg();
+    CSysProgressDlg();
+    ~CSysProgressDlg();
 
 	/**
 	 * sets the title of the progress dialog box.

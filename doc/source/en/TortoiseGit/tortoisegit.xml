@@ -7,13 +7,13 @@
 	<bookinfo>
 		<edition>First</edition>
 		<authorgroup>
-			<author>
+			<author>`
 				<firstname>Lübbe</firstname>
-				<surname>Onken</surname>
+				<surname>Onken (TortoiseSVN)</surname>
 			</author>
 			<author>
 				<firstname>Simon</firstname>
-				<surname>Large</surname>
+				<surname>Large (TortoiseSVN)</surname>
 			</author>
 			<author>
 				<firstname>Frank</firstname>

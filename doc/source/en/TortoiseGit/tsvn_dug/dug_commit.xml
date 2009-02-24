@@ -63,7 +63,7 @@
 			</para>
 		</tip>
 		-->
-		<--
+		<!--
 		<para>
 			If you have modified files which have been included from a different
 			repository using <literal>svn:externals</literal>, those changes cannot

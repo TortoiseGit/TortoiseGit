@@ -17,9 +17,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 
-CProgressDlg::CProgressDlg() :
+CSysProgressDlg::CSysProgressDlg() :
 			m_pIDlg(NULL),
 		    m_bValid(false),			//not valid by default
             m_isVisible(false),
@@ -28,7 +28,7 @@ CProgressDlg::CProgressDlg() :
 	EnsureValid();
 }
 
-CProgressDlg::~CProgressDlg()
+CSysProgressDlg::~CSysProgressDlg()
 {
     if (m_bValid)
     {
@@ -39,7 +39,7 @@ CProgressDlg::~CProgressDlg()
     }
 }
 
-bool CProgressDlg::EnsureValid()
+bool CSysProgressDlg::EnsureValid()
 {
 	if (!m_bValid)
 	{
@@ -53,7 +53,7 @@ bool CProgressDlg::EnsureValid()
 	}
 	return m_bValid;
 }
-void CProgressDlg::SetTitle(LPCTSTR szTitle)
+void CSysProgressDlg::SetTitle(LPCTSTR szTitle)
 {
     USES_CONVERSION;
     if (m_bValid)
@@ -61,12 +61,12 @@ void CProgressDlg::SetTitle(LPCTSTR szTitle)
 		m_pIDlg->SetTitle(T2COLE(szTitle));
 	}
 }
-void CProgressDlg::SetTitle ( UINT idTitle)
+void CSysProgressDlg::SetTitle ( UINT idTitle)
 {
 	SetTitle(CString(MAKEINTRESOURCE(idTitle)));
 }
 
-void CProgressDlg::SetLine(DWORD dwLine, LPCTSTR szText, bool bCompactPath /* = false */)
+void CSysProgressDlg::SetLine(DWORD dwLine, LPCTSTR szText, bool bCompactPath /* = false */)
 {
 	USES_CONVERSION;
 	if (m_bValid)
@@ -76,13 +76,13 @@ void CProgressDlg::SetLine(DWORD dwLine, LPCTSTR szText, bool bCompactPath /* = 
 }
 
 #ifdef _MFC_VER
-void CProgressDlg::SetCancelMsg ( UINT idMessage )
+void CSysProgressDlg::SetCancelMsg ( UINT idMessage )
 {
 	SetCancelMsg(CString(MAKEINTRESOURCE(idMessage)));
 }
 #endif // _MFC_VER
 
-void CProgressDlg::SetCancelMsg(LPCTSTR szMessage)
+void CSysProgressDlg::SetCancelMsg(LPCTSTR szMessage)
 {
     USES_CONVERSION;
 	if (m_bValid)
@@ -91,7 +91,7 @@ void CProgressDlg::SetCancelMsg(LPCTSTR szMessage)
 	}
 }
 
-void CProgressDlg::SetAnimation(HINSTANCE hinst, UINT uRsrcID)
+void CSysProgressDlg::SetAnimation(HINSTANCE hinst, UINT uRsrcID)
 {
 	if (m_bValid)
 	{
@@ -99,7 +99,7 @@ void CProgressDlg::SetAnimation(HINSTANCE hinst, UINT uRsrcID)
 	}
 }
 #ifdef _MFC_VER
-void CProgressDlg::SetAnimation(UINT uRsrcID)
+void CSysProgressDlg::SetAnimation(UINT uRsrcID)
 {
 	if (m_bValid)
 	{
@@ -107,7 +107,7 @@ void CProgressDlg::SetAnimation(UINT uRsrcID)
 	}
 }
 #endif
-void CProgressDlg::SetTime(bool bTime /* = true */)
+void CSysProgressDlg::SetTime(bool bTime /* = true */)
 {
     m_dwDlgFlags &= ~(PROGDLG_NOTIME | PROGDLG_AUTOTIME);
 
@@ -117,7 +117,7 @@ void CProgressDlg::SetTime(bool bTime /* = true */)
         m_dwDlgFlags |= PROGDLG_NOTIME;
 }
 
-void CProgressDlg::SetShowProgressBar(bool bShow /* = true */)
+void CSysProgressDlg::SetShowProgressBar(bool bShow /* = true */)
 {
     if (bShow)
         m_dwDlgFlags &= ~PROGDLG_NOPROGRESSBAR;
@@ -125,19 +125,19 @@ void CProgressDlg::SetShowProgressBar(bool bShow /* = true */)
         m_dwDlgFlags |= PROGDLG_NOPROGRESSBAR;
 }
 #ifdef _MFC_VER
-HRESULT CProgressDlg::ShowModal (CWnd* pwndParent)
+HRESULT CSysProgressDlg::ShowModal (CWnd* pwndParent)
 {
 	EnsureValid();
 	return ShowModal(pwndParent->GetSafeHwnd());
 }
 
-HRESULT CProgressDlg::ShowModeless(CWnd* pwndParent)
+HRESULT CSysProgressDlg::ShowModeless(CWnd* pwndParent)
 {
 	EnsureValid();
 	return ShowModeless(pwndParent->GetSafeHwnd());
 }
 
-void CProgressDlg::FormatPathLine ( DWORD dwLine, UINT idFormatText, ...)
+void CSysProgressDlg::FormatPathLine ( DWORD dwLine, UINT idFormatText, ...)
 {
 	va_list args;
 	va_start(args, idFormatText);
@@ -149,7 +149,7 @@ void CProgressDlg::FormatPathLine ( DWORD dwLine, UINT idFormatText, ...)
 	va_end(args);
 }
 
-void CProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
+void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
 {
 	va_list args;
 	va_start(args, idFormatText);
@@ -162,7 +162,7 @@ void CProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
 }
 
 #endif
-HRESULT CProgressDlg::ShowModal (HWND hWndParent)
+HRESULT CSysProgressDlg::ShowModal (HWND hWndParent)
 {
 	EnsureValid();
 	HRESULT hr;
@@ -183,7 +183,7 @@ HRESULT CProgressDlg::ShowModal (HWND hWndParent)
 	return E_FAIL;
 }
 
-HRESULT CProgressDlg::ShowModeless(HWND hWndParent)
+HRESULT CSysProgressDlg::ShowModeless(HWND hWndParent)
 {
 	EnsureValid();
 	HRESULT hr = E_FAIL;
@@ -217,7 +217,7 @@ HRESULT CProgressDlg::ShowModeless(HWND hWndParent)
 	return hr;
 }
 
-void CProgressDlg::SetProgress(DWORD dwProgress, DWORD dwMax)
+void CSysProgressDlg::SetProgress(DWORD dwProgress, DWORD dwMax)
 {
 	if (m_bValid)
 	{
@@ -226,7 +226,7 @@ void CProgressDlg::SetProgress(DWORD dwProgress, DWORD dwMax)
 }
 
 
-void CProgressDlg::SetProgress64(ULONGLONG u64Progress, ULONGLONG u64ProgressMax)
+void CSysProgressDlg::SetProgress64(ULONGLONG u64Progress, ULONGLONG u64ProgressMax)
 {
 	if (m_bValid)
 	{
@@ -235,7 +235,7 @@ void CProgressDlg::SetProgress64(ULONGLONG u64Progress, ULONGLONG u64ProgressMax
 }
 
 
-bool CProgressDlg::HasUserCancelled()
+bool CSysProgressDlg::HasUserCancelled()
 {
 	if (m_bValid)
 	{
@@ -244,7 +244,7 @@ bool CProgressDlg::HasUserCancelled()
 	return FALSE;
 }
 
-void CProgressDlg::Stop()
+void CSysProgressDlg::Stop()
 {
     if ((m_isVisible)&&(m_bValid))
     {
@@ -272,7 +272,7 @@ void CProgressDlg::Stop()
     }
 }
 
-void CProgressDlg::ResetTimer()
+void CSysProgressDlg::ResetTimer()
 {
 	if (m_bValid)
 	{
