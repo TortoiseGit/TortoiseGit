@@ -323,8 +323,15 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 		case git_wc_status_replaced:
 		case git_wc_status_modified:
-		case git_wc_status_merged:
 			if (m_State == FileStateModified)
+			{
+				g_filepath.clear();
+				return S_OK;
+			}
+			else
+				return S_FALSE;
+		case git_wc_status_merged:
+			if (m_State == FileStateReadOnly)
 			{
 				g_filepath.clear();
 				return S_OK;
