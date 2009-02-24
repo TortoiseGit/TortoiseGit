@@ -222,7 +222,7 @@ protected:
 
 	BOOL IsEntryInDateRange(int i);
 
-
+	int GetHeadIndex();
 
 	bool				m_bFilterWithRegex;
 

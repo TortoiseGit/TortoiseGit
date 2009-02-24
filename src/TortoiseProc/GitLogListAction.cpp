@@ -194,15 +194,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		{
 			CString head;
 			CString headhash;
-			
-			head.Format(_T("HEAD~%d"),FirstSelect);
-			CString hashFirst=g_Git.GetHash(head);
+			CString hashFirst,hashLast;
 
-			head.Format(_T("HEAD~%d"),LastSelect);
-			CString hashLast=g_Git.GetHash(head);
-			
-			headhash=g_Git.GetHash(CString(_T("HEAD")));
-			
+			int headindex=GetHeadIndex();
+			if(headindex>=0) //incase show all branch, head is not the first commits. 
+			{
+				head.Format(_T("HEAD~%d"),FirstSelect-headindex);
+				hashFirst=g_Git.GetHash(head);
+
+				head.Format(_T("HEAD~%d"),LastSelect-headindex);
+				hashLast=g_Git.GetHash(head);
+			}
+						
 			GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 			GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 			if(pFirstEntry->m_CommitHash != hashFirst || pLastEntry->m_CommitHash != hashLast)
@@ -213,6 +216,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 					no filters are applied."),_T("TortoiseGit"),MB_OK);
 				break;
 			}
+			
+			headhash=g_Git.GetHash(CString(_T("HEAD")));
+			
 			if(!g_Git.CheckCleanWorkTree())
 			{
 				CMessageBox::Show(NULL,_T("Combine needs a clean work tree"),_T("TortoiseGit"),MB_OK);
