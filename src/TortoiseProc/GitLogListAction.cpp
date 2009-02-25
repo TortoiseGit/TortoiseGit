@@ -20,6 +20,7 @@
 #include "PropDlg.h"
 #include "SVNProgressDlg.h"
 #include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 //#include "RepositoryBrowser.h"
 //#include "CopyDlg.h"
 //#include "StatGraphDlg.h"
@@ -49,6 +50,51 @@
 #include "RebaseDlg.h"
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
+
+int CGitLogList::CherryPickFrom(CString from, CString to)
+{
+	CLogDataVector logs;
+	if(logs.ParserFromLog(NULL,-1,0,&from,&to))
+		return -1;
+
+	if(logs.size() == 0)
+		return 0;
+
+	CSysProgressDlg progress;
+	if (progress.IsValid())
+	{
+		progress.SetTitle(_T("Cherry Pick"));
+		progress.SetAnimation(IDR_MOVEANI);
+		progress.SetTime(true);
+		progress.ShowModeless(this);
+	}
+
+	for(int i=logs.size()-1;i>=0;i--)
+	{
+		if (progress.IsValid())
+		{
+			progress.FormatPathLine(1, _T("Pick up %s"), logs[i].m_CommitHash);
+			progress.FormatPathLine(2, _T("%s"), logs[i].m_Subject);
+			progress.SetProgress(logs.size()-i, logs.size());
+		}
+		if ((progress.IsValid())&&(progress.HasUserCancelled()))
+		{
+			//CMessageBox::Show(hwndExplorer, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_ICONINFORMATION);
+			throw std::exception(CUnicodeUtils::GetUTF8(_T("User canceled\r\n\r\n")));
+			return -1;
+		}
+		CString cmd,out;
+		cmd.Format(_T("git.exe cherry-pick %s"),logs[i].m_CommitHash);
+		out.Empty();
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			throw std::exception(CUnicodeUtils::GetUTF8(CString(_T("Cherry Pick Failure\r\n\r\n"))+out));
+			return -1;
+		}
+	}
+	
+	return 0;
+}
 
 void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 {	
@@ -270,6 +316,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 						//
 						//Later the progress dialog could be used to execute these steps.
 
+						if(CherryPickFrom(pFirstEntry->m_CommitHash,headhash))
+						{
+							CString msg;
+							msg.Format(_T("Error while cherry pick commits on top of combined commits. Aborting.\r\n\r\n"));
+							throw std::exception(CUnicodeUtils::GetUTF8(msg));
+						}
+#if 0
 						CString currentBranch=g_Git.GetCurrentBranch();
 						cmd.Format(_T("git.exe rebase --onto \"%s\" %s %s"),
 							currentBranch,
@@ -302,6 +355,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 						cmd.Format(_T("git.exe reset --hard  %s"),newHead);
 						if(g_Git.Run(cmd,&out,CP_UTF8))
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to new head. Aborting...\r\n\r\n")+out));
+#endif
 					}
 				}
 				else

@@ -149,6 +149,18 @@ void CSysProgressDlg::FormatPathLine ( DWORD dwLine, UINT idFormatText, ...)
 	va_end(args);
 }
 
+void CSysProgressDlg::FormatPathLine ( DWORD dwLine, CString FormatText, ...)
+{
+	va_list args;
+	va_start(args, FormatText);
+
+	CString sText;
+	sText.FormatV(CString(FormatText), args);
+	SetLine(dwLine, sText, true);
+
+	va_end(args);
+}
+
 void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
 {
 	va_list args;

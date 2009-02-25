@@ -63,6 +63,7 @@ public:
 	* the system to measure the space available for the text, and do path compaction properly
 	*/
 	void FormatPathLine ( DWORD dwLine, UINT idFormatText, ...);
+	void FormatPathLine ( DWORD dwLine, CString FormatText, ...);
 	void FormatNonPathLine ( DWORD dwLine, UINT idFormatText, ...);
 #endif
     /**
