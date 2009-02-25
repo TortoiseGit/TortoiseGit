@@ -34,8 +34,7 @@
 					start of the log message.
 				</para>
 				<para>
-					Lines shown in blue indicate that something has been copied
-					to this development line (perhaps from a branch).
+					Lines shown in bold indicate that that is HEAD commit.
 				</para>
 			</listitem>
 			<listitem>
@@ -74,6 +73,7 @@
 						From the property page
 					</para>
 				</listitem>
+				<!--
 				<listitem>
 					<para>
 						From the Progress dialog after an update
@@ -81,6 +81,7 @@
 						which were changed since your last update
 					</para>
 				</listitem>
+				-->
 			</itemizedlist>
 		</para>
 	</sect2>
@@ -108,7 +109,7 @@
 		</para>
 		<para>
 			<graphic fileref="../images/ActionReplacedIcon.png"/>
-			If a revision replaced a file or directory, the
+			If a revision replaced(rename) a file, the
 			<emphasis>replaced</emphasis> icon is shown in the fourth column.
 		</para>
 	</sect2>
@@ -137,6 +138,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Compare and blame with working BASE</term>
 					<listitem>
@@ -148,6 +150,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
 					<term>Show changes as unified diff</term>
 					<listitem>
@@ -172,6 +175,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Compare and blame with previous revision</term>
 					<listitem>
@@ -183,6 +187,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
+				<!--
 				<varlistentry>
 					<term>Save revision to...</term>
 					<listitem>
@@ -192,6 +198,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
 					<term>Open / Open with...</term>
 					<listitem>
@@ -209,6 +216,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Browse repository</term>
 					<listitem>
@@ -218,31 +226,38 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
-					<term>Create branch/tag from revision</term>
+					<term>Create branch from revision</term>
 					<listitem>
 						<para>
-							Create a branch or tag from a selected revision.
-							This is useful e.g. if you forgot to create a tag and already
-							committed some changes which weren't supposed to get into
-							that release.
+							Create a branch from a selected revision.
+							This is useful e.g. 
 						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Update item to revision</term>
+					<term>Create tag from revision</term>
+					<listitem>
+						<para>
+							Create a tag from a selected revision.
+							This is useful e.g. 
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Switch\Checkout to revision</term>
 					<listitem>
 						<para>
 							Update your working copy to the selected revision.
 							Useful if you want to have your working copy reflect
 							a time in the past, or if there have been further commits to
 							the repository and you want to update your working copy one
-							step at a time. It is best to update a whole directory
-							in your working copy, not just one file, otherwise your
-							working copy could be inconsistent.
+							step at a time. 
 						</para>
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Revert changes from this revision</term>
 					<listitem>
@@ -260,6 +275,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
+				<!--
 				<varlistentry>
 					<term>Revert to this revision</term>
 					<listitem>
@@ -277,6 +294,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
+				<!--
 				<varlistentry>
 					<term>Merge revision to...</term>
 					<listitem>
@@ -292,6 +311,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
+				<!--
 				<varlistentry>
 					<term>Checkout...</term>
 					<listitem>
@@ -302,6 +323,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
 					<term>Export...</term>
 					<listitem>
@@ -312,6 +334,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Edit author / log message</term>
 					<listitem>
@@ -322,6 +345,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
+				<!--
 				<varlistentry>
 					<term>Show revision properties</term>
 					<listitem>
@@ -331,6 +356,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
 					<term>Copy to clipboard</term>
 					<listitem>
@@ -347,7 +373,7 @@
 						<para>
 							Search log messages for the text you enter. This searches
 							the log messages that you entered and also the action summaries
-							created by Subversion (shown in the bottom pane). The search
+							created by Git (shown in the bottom pane). The search
 							is not case sensitive.
 						</para>
 					</listitem>
@@ -371,14 +397,17 @@
 							difference tool. The default Diff-Tool is TortoiseMerge
 							which is supplied with TortoiseGit.
 						</para>
+						<!--
 						<para>
 							If you select this option for a folder, a further dialog pops
 							up listing the changed files and offering you further
 							diff options. Read more about the Compare Revisions
 							dialog in <xref linkend="tsvn-dug-compare-revs"/>.
 						</para>
+						-->
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Blame revisions</term>
 					<listitem>
@@ -389,6 +418,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
 					<term>Show differences as unified diff</term>
 					<listitem>
@@ -416,6 +446,7 @@
 				</varlistentry>
 			</variablelist>
 		</para>
+		<!--
 		<para>
 			If you select two or more revisions (using the usual
 			<keycap>Ctrl</keycap> or <keycap>Shift</keycap> modifiers),
@@ -423,6 +454,7 @@
 			which were made in the selected revisions. This is the easiest
 			way to rollback a group of revisions in one go.
 		</para>
+		-->
 		<para>
 			You can also choose to merge the selected revisions to another
 			working copy, as described above.
@@ -499,7 +531,7 @@
 					<term>Show properties</term>
 					<listitem>
 						<para>
-							View the Subversion properties for the selected item.
+							View the Git properties for the selected item.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -538,7 +570,7 @@
 				to differences. What's the difference?
 			</para>
 			<para>
-				Subversion uses revision numbers to mean 2 different things.
+				Git uses revision numbers to mean 2 different things.
 				A revision generally represents the state of the repository at
 				a point in time, but it can also be used to represent the changeset
 				which created that revision, eg. <quote>Done in r1234</quote> means 
@@ -549,13 +581,13 @@
 			<para>
 				If you select two revisions N and M, the context menu will offer
 				to show the <emphasis>difference</emphasis> between those two
-				revisions. In Subversion terms this is
+				revisions. In Git terms this is
 				<literal>diff -r M:N</literal>.
 			</para>
 			<para>
 				If you select a single revision N, the context menu will offer
 				to show the <emphasis>changes</emphasis> made in that revision.
-				In Subversion terms this is <literal>diff -r N-1:N</literal>
+				In Git terms this is <literal>diff -r N-1:N</literal>
 				or <literal>diff -c N</literal>.
 			</para>
 			<para>
@@ -608,7 +640,7 @@
 						of the branch does not make sense in that instance.
 					</para>
 					<para>
-						Note that Subversion currently implements renaming
+						Note that Git currently implements renaming
 						as a copy/delete pair, so renaming a file or folder
 						will also cause the log display to stop if this
 						option is checked.
@@ -663,7 +695,7 @@
 			<primary>merge tracking log</primary>
 		</indexterm>
 		<para>
-			Subversion 1.5 and later keeps a record of merges using properties.
+			Git 1.5 and later keeps a record of merges using properties.
 			This allows us to get a more detailed history of merged changes.
 			For example, if you develop a new feature on a branch and then merge
 			that branch back to trunk, the feature development will show up on
@@ -703,7 +735,7 @@
 			<primary>revprops</primary>
 		</indexterm>
 		<para>
-			Revision properties are completely different from the Subversion
+			Revision properties are completely different from the Git
 			properties of each item. Revprops are descriptive items which are
 			associated with one specific revision number in the repository,
 			such as log message, commit date and committer name (author).
@@ -716,7 +748,7 @@
 			authentication or...
 		</para>
 		<para>
-			Subversion lets you change revision properties any time you want.
+			Git lets you change revision properties any time you want.
 			But since such changes can't be
 			undone (those changes are not versioned) this feature is disabled
 			by default. To make this work, you must set up a pre-revprop-change
@@ -724,7 +756,7 @@
 			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.reposadmin.create.html#svn.reposadmin.create.hooks">
 				<citetitle>Hook Scripts</citetitle>
 			</ulink>
-			in the Subversion Book for details about how to do that.
+			in the Git Book for details about how to do that.
 			Read <xref linkend="tsvn-repository-hooks"/> to find some further
 			notes on implementing hooks on a Windows machine.
 		</para>
@@ -736,7 +768,7 @@
 		</para>
 		<warning>
 			<para>
-				Because Subversion's revision properties are not versioned, making 
+				Because Git's revision properties are not versioned, making 
 				modifications to such a property (for example, the
 				<literal>svn:log</literal> commit 
 				message property) will overwrite the previous value of that 
@@ -804,7 +836,7 @@
 		<tip>
 			<title>No Log Formatting from Repository Browser</title>
 			<para>
-				Because the formatting depends upon accessing subversion
+				Because the formatting depends upon accessing Git
 				properties, you will only see the results when using a checked
 				out working copy. Fetching properties remotely is a slow operation,
 				so you will not see this feature in action from the repo browser.

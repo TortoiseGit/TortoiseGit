@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tsvn-dug-settings-asp-dot-net">
-	<title>Subversion Working Folders</title>
+	<title>Git Working Folders</title>
 	<indexterm>
 		<primary>.svn folder</primary>
 	</indexterm>
@@ -10,8 +10,8 @@
 	</indexterm>
 	<para>
 		VS.NET 2003 when used with web projects can't handle the <literal>.svn</literal>
-		folders that Subversion uses to store its internal information.
-		This is not a bug in Subversion. The bug is in VS.NET 2003 and the frontpage
+		folders that Git uses to store its internal information.
+		This is not a bug in Git. The bug is in VS.NET 2003 and the frontpage
 		extensions it uses.
 	</para>
 	<sidebar>
@@ -20,9 +20,9 @@
 		</para>
 	</sidebar>
 	<para>
-		As of Version 1.3.0 of Subversion and TortoiseGit, you can set
+		As of Version 1.3.0 of Git and TortoiseGit, you can set
 		the environment variable <literal>SVN_ASP_DOT_NET_HACK</literal>.
-		If that variable is set, then Subversion will use <literal>_svn</literal>
+		If that variable is set, then Git will use <literal>_svn</literal>
 		folders instead of <literal>.svn</literal> folders. You must restart
 		your shell for that environment variable to take effect. Normally that means
 		rebooting your PC. To make this easier, you can now do this from

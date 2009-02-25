@@ -19,17 +19,19 @@
 #include "StdAfx.h"
 #include "DropExportCommand.h"
 #include "MessageBox.h"
-#include "SVN.h"
-#include "SVNAdminDir.h"
+#include "Git.h"
+#include "GitAdminDir.h"
 #include "DirFileEnum.h"
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 
 bool DropExportCommand::Execute()
 {
 	bool bRet = true;
+#if 0
 	CString droppath = parser.GetVal(_T("droptarget"));
-	if (CTSVNPath(droppath).IsAdminDir())
+	if (CTGitPath(droppath).IsAdminDir())
 		return false;
+
 	SVN svn;
 	if ((pathList.GetCount() == 1)&&
 		(pathList[0].IsEquivalentTo(CTSVNPath(droppath))))
@@ -104,5 +106,6 @@ bool DropExportCommand::Execute()
 			}
 		}
 	}
+#endif
 	return bRet;
 }

@@ -69,7 +69,7 @@
 		<para>
 			There are two ways to prevent users from committing with an empty
 			log message. One is specific to TortoiseGit, the other works for
-			all Subversion clients, but requires access to the server directly.
+			all Git clients, but requires access to the server directly.
 		</para>
 		<sect2 id="tsvn-howto-minlogsize-hookscript">
 			<title>Hook-script on the server</title>
@@ -90,7 +90,7 @@
 			</para>
 			<para>
 				This method is the recommended way if your users also use other
-				Subversion clients than TortoiseGit. The drawback is that the commit
+				Git clients than TortoiseGit. The drawback is that the commit
 				is rejected by the server and therefore users will get an error
 				message. The client can't know before the commit that it will be
 				rejected. If you want to make TortoiseGit have the <guibutton>OK</guibutton>
@@ -291,7 +291,7 @@
 			</para>
 			<para>
 				The only way to remove data from the repository is to use the
-				Subversion command line tool <literal>svnadmin</literal>.
+				Git command line tool <literal>svnadmin</literal>.
 				You can find a description of how this works in the
 				<ulink url="http://svnbook.red-bean.com/en/1.5/svn.reposadmin.maint.html">
 					<citetitle>Repository Maintenance</citetitle>
@@ -390,7 +390,7 @@
 				refer to <xref linkend="tsvn-dug-import-4"/>.
 			</para>
 			<para>
-				Commit the new folder. Now when you update, Subversion
+				Commit the new folder. Now when you update, Git
 				will pull a copy of that project from its repository
 				into your working copy. The sub-folders will be created
 				automatically if required.
@@ -419,7 +419,7 @@
 			<title>Use a nested working copy</title>
 			<para>
 				Create a new folder within your project to contain the
-				common code, but do not add it to Subversion
+				common code, but do not add it to Git
 			</para>
 			<para>
 				Select

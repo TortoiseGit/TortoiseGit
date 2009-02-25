@@ -1149,12 +1149,17 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
 				{
 					CString head;
-					head.Format(_T("HEAD~%d"),LastSelect);
-					CString hash=g_Git.GetHash(head);
-					hash=hash.Left(40);
-					GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-					if(pLastEntry->m_CommitHash == hash)
-						popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_MERGE);
+					int headindex;
+					headindex = this->GetHeadIndex();
+					if(headindex>=0)
+					{
+						head.Format(_T("HEAD~%d"),LastSelect-headindex);
+						CString hash=g_Git.GetHash(head);
+						hash=hash.Left(40);
+						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+						if(pLastEntry->m_CommitHash == hash)
+							popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_MERGE);
+					}
 				}
 			}
 			if (m_hasWC)
@@ -2148,3 +2153,19 @@ void CGitLogListBase::SaveColumnWidths()
 	}
 }
 
+int CGitLogListBase::GetHeadIndex()
+{
+	if(m_HeadHash.IsEmpty())
+		return -1;
+
+	for(int i=0;i<m_arShownList.GetCount();i++)
+	{
+		GitRev *pRev = (GitRev*)m_arShownList[i];
+		if(pRev)
+		{
+			if(pRev->m_CommitHash == m_HeadHash )
+				return i;
+		}
+	}
+	return -1;
+}

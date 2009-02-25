@@ -448,7 +448,7 @@ BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserDat
 	stdstring str;
 	if (pFile->sFileName)
 	{
-		str = CUnicodeUtils::StdGetUnicode(pFile->sFileName);
+		str = pFile->sFileName;//CUnicodeUtils::StdGetUnicode(pFile->sFileName);
 		std::replace(str.begin(), str.end(), '/', '\\');
 //MessageBox(NULL, str.c_str(), _T(""), MB_OK);
 	}

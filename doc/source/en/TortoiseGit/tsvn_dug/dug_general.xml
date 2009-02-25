@@ -136,6 +136,7 @@
 			</variablelist>
 		</para>
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-general-auth">
 		<title>Authentication</title>
 		<indexterm>
@@ -149,8 +150,8 @@
 				<graphic fileref="../images/Authenticate.png"/>
 			</figure>
 			Enter your username and password. The checkbox will make TortoiseGit
-			store the credentials in Subversion's default directory: 
-			<filename>%APPDATA%\Subversion\auth</filename> in three subdirectories:
+			store the credentials in Git's default directory: 
+			<filename>%APPDATA%\Git\auth</filename> in three subdirectories:
 			<itemizedlist>
 				<listitem>
 					<para>
@@ -176,7 +177,7 @@
 			If you want to clear the authentication cache for all
 			servers, you can do so from the <guilabel>Saved Data</guilabel> page
 			of TortoiseGit's settings dialog. That button will clear all cached
-			authentication data from the Subversion <filename>auth</filename>
+			authentication data from the Git <filename>auth</filename>
 			directories, as well as any authentication
 			data stored in the registry by earlier versions of TortoiseGit.
 			Refer to <xref linkend="tsvn-dug-settings-saved-data"/>.
@@ -184,11 +185,11 @@
 		<para>
 			Some people like to have the authentication data deleted when they
 			log off Windows, or on shutdown. The way to do that is to use a shutdown
-			script to delete the <filename>%APPDATA%\Subversion\auth</filename>
+			script to delete the <filename>%APPDATA%\Git\auth</filename>
 			directory, e.g.
 <screen>
 @echo off
-rmdir /s /q "%APPDATA%\Subversion\auth"
+rmdir /s /q "%APPDATA%\Git\auth"
 </screen>
 			You can find a description of how to install such scripts at
 			<ulink url="http://www.windows-help-central.com/windows-shutdown-script.html">
@@ -201,6 +202,7 @@ rmdir /s /q "%APPDATA%\Subversion\auth"
 			<xref linkend="tsvn-serversetup"/>
 		</para>
 	</sect2>
+	-->
 	<sect2 id="tsvn-dug-general-window-max">
 		<title>Maximizing Windows</title>
 		<indexterm>

@@ -32,7 +32,7 @@
 		environment. This process is known as <firstterm>tagging</firstterm>.
 	</para>
 	<para>
-		Subversion does not have special commands for branching
+		Git does not have special commands for branching
 		or tagging, but uses so-called <quote>cheap copies</quote>
 		instead. Cheap copies are similar to hard links in Unix, which means
 		that instead of making a complete copy in the repository, an internal
@@ -219,7 +219,7 @@
 			</figure>
 		</para>
 		<para>
-			Although Subversion itself makes no distinction between tags
+			Although Git itself makes no distinction between tags
 			and branches, the way they are typically used differs a bit.
 			<itemizedlist>
 				<listitem>

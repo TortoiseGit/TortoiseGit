@@ -77,7 +77,7 @@
 		in the resulting <literal>Merged</literal> file.
 	</para>
 	<para>
-		Sometimes a file will be marked as conflicted in Subversion, yet when
+		Sometimes a file will be marked as conflicted in Git, yet when
 		you view it using TortoiseMerge there are no conflicts shown. This may
 		be due to the whitespace handling you have chosen. If you choose to
 		ignore line-endings or whitespace changes, those lines will be marked

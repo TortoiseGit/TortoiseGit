@@ -10,7 +10,7 @@
 		<glossterm>Add</glossterm>
 		<glossdef>
 			<para>
-				A Subversion command that is used to add a
+				A Git command that is used to add a
 				file or directory to your working copy.
 				The new items are added to the repository when you commit.
 			</para>
@@ -58,7 +58,7 @@
 				development line so as to develop a new feature without rendering
 				the main line unstable. Or you can branch a stable release to which
 				you make only bug fixes, while new developments take place on the
-				unstable trunk. In Subversion a branch is implemented as a
+				unstable trunk. In Git a branch is implemented as a
 				<quote>cheap copy</quote>.
 			</para>
 		</glossdef>
@@ -67,7 +67,7 @@
 		<glossterm>Checkout</glossterm>
 		<glossdef>
 			<para>
-				A Subversion command which creates a local working copy in an empty
+				A Git command which creates a local working copy in an empty
 				directory by downloading versioned files from the repository.
 			</para>
 		</glossdef>
@@ -76,7 +76,7 @@
 		<glossterm>Cleanup</glossterm>
 		<glossdef>
 			<para>
-				To quote from the Subversion book:
+				To quote from the Git book:
 				<quote>
 					Recursively clean up the working copy, removing locks and resuming
 					unfinished operations. If you ever get a
@@ -93,7 +93,7 @@
 		<glossterm>Commit</glossterm>
 		<glossdef>
 			<para>
-				This Subversion command is used to pass the changes in your local
+				This Git command is used to pass the changes in your local
 				working copy back into the repository, creating a new repository
 				revision.
 			</para>
@@ -105,7 +105,7 @@
 			<para>
 				When changes from the repository are merged with local changes, 
 				sometimes those changes occur on the same lines. In this case
-				Subversion cannot automatically decide which version to use and
+				Git cannot automatically decide which version to use and
 				the file is said to be in conflict. You have to edit the file manually
 				and resolve the conflict before you can commit any further changes.
 			</para>
@@ -115,7 +115,7 @@
 		<glossterm>Copy</glossterm>
 		<glossdef>
 			<para>
-				In a Subversion repository you can create a copy of a single file
+				In a Git repository you can create a copy of a single file
 				or an entire tree. These are implemented as <quote>cheap copies</quote>
 				which act a bit like a link to the original in that they take up
 				almost no space. Making a copy preserves the history of the item
@@ -158,7 +158,7 @@
 		<glossterm>FSFS</glossterm>
 		<glossdef>
 			<para>
-				A proprietary Subversion filesystem backend for repositories.
+				A proprietary Git filesystem backend for repositories.
 				Can be used on network shares. Default for 1.2 and newer repositories.
 			</para>
 		</glossdef>
@@ -183,7 +183,7 @@
 		<glossterm>Import</glossterm>
 		<glossdef>
 			<para>
-				Subversion command to import an entire folder hierarchy into the repository
+				Git command to import an entire folder hierarchy into the repository
 				in a single revision.
 			</para>
 		</glossdef>
@@ -237,7 +237,7 @@
 		<glossdef>
 			<para>
 				If a working copy has changes to text files only, it is possible
-				to use Subversion's Diff command to generate a single file summary
+				to use Git's Diff command to generate a single file summary
 				of those changes in Unified Diff format. A file of this type is often
 				referred to as a <quote>Patch</quote>, and it can be emailed to someone
 				else (or to a mailing list) and applied to another working copy.
@@ -251,10 +251,10 @@
 		<glossterm>Property</glossterm>
 		<glossdef>
 			<para>
-				In addition to versioning your directories and files, Subversion allows
+				In addition to versioning your directories and files, Git allows
 				you to add versioned metadata - referred to as <quote>properties</quote>
 				to each of your versioned directories and files. Each property has a
-				name and a value, rather like a registry key. Subversion has some
+				name and a value, rather like a registry key. Git has some
 				special properties which it uses internally, such as
 				<literal>svn:eol-style</literal>. TortoiseGit has some too, such as
 				<literal>tsvn:logminsize</literal>. You can add your own properties
@@ -306,7 +306,7 @@
 		<glossterm>Revert</glossterm>
 		<glossdef>
 			<para>
-				Subversion keeps a local <quote>pristine</quote> copy of each file as
+				Git keeps a local <quote>pristine</quote> copy of each file as
 				it was when you last updated your working copy. If you have made changes
 				and decide you want to undo them, you can use the <quote>revert</quote>
 				command to go back to the pristine copy.
@@ -347,10 +347,10 @@
 		<glossterm>SVN</glossterm>
 		<glossdef>
 			<para>
-				A frequently-used abbreviation for Subversion.
+				A frequently-used abbreviation for Git.
 			</para>
 			<para>
-				The name of the Subversion custom protocol used by the
+				The name of the Git custom protocol used by the
 				<quote>svnserve</quote> repository server.
 			</para>
 		</glossdef>
@@ -373,7 +373,7 @@
 		<glossterm>Update</glossterm>
 		<glossdef>
 			<para>
-				This Subversion command pulls down the latest changes from the
+				This Git command pulls down the latest changes from the
 				repository into your working copy, merging any changes made by
 				others with local changes in the working copy.
 			</para>

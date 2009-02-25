@@ -17,7 +17,7 @@ msgstr ""
 "POT-Creation-Date: 2008-10-24 23:17 +0000\n"
 "PO-Revision-Date: 2009-02-03 21:30+0200\n"
 "Last-Translator: Kari Granö <kari.grano@gmail.com>\n"
-"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <tortoisegit-dev@googlegroups.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -213,8 +213,8 @@ msgstr "Kun työskentelet tekstitiedostojen kanssa (esim. lähdekooditiedostot, 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:198
-msgid "If you're working with a version control system (e.g. Subversion) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
-msgstr "Jos työskentelet versionhallintajärjestelmän (esimerkiksi Subversion) kanssa, törmäät joskus <emphasis>ristiriitoihin</emphasis> päivittäessäsi työkopiotasi.  Näin tapahtuu, kun joku toinen muuttaa samoja osia kuin siitä tiedostosta, jota parhaillaan työstät. Tällaisessa tilanteessa syntyneet ristiriidat pitää ratkoa käsin, ja silloin TortoiseMerge voi auttaa."
+msgid "If you're working with a version control system (e.g. Git) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
+msgstr "Jos työskentelet versionhallintajärjestelmän (esimerkiksi Git) kanssa, törmäät joskus <emphasis>ristiriitoihin</emphasis> päivittäessäsi työkopiotasi.  Näin tapahtuu, kun joku toinen muuttaa samoja osia kuin siitä tiedostosta, jota parhaillaan työstät. Tällaisessa tilanteessa syntyneet ristiriidat pitää ratkoa käsin, ja silloin TortoiseMerge voi auttaa."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:206
@@ -235,8 +235,8 @@ msgstr "Ristiriita voi myös syntyä, kun koetat käyttää vanhentunutta paikka
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:220
-msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Subversion. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
-msgstr "TortoiseMergen ansiosta tämä ei kuitenkaan ole enää tarpeen - ainakin jos työskentelet Subversionin kaltaisen versionhallintajärjestelmän kanssa. TortoiseMerge jäsentää paikkatiedoston sille versiolle, jolle paikkatiedosto luotiin, ja koettaa automaattisesti noutaa tämän version arkistostasi.  Sitten se käyttää paikkatiedoston ja antaa sinun ja muiden katselmoida muutoksesi ko. tiedostoon. Lopuksi voit päättää, mitkä muutokset haluat pitää."
+msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Git. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
+msgstr "TortoiseMergen ansiosta tämä ei kuitenkaan ole enää tarpeen - ainakin jos työskentelet Gitin kaltaisen versionhallintajärjestelmän kanssa. TortoiseMerge jäsentää paikkatiedoston sille versiolle, jolle paikkatiedosto luotiin, ja koettaa automaattisesti noutaa tämän version arkistostasi.  Sitten se käyttää paikkatiedoston ja antaa sinun ja muiden katselmoida muutoksesi ko. tiedostoon. Lopuksi voit päättää, mitkä muutokset haluat pitää."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:235
@@ -260,8 +260,8 @@ msgstr "Vietimme runsaasti aikaa etsien internetistä graafisella käyttöliitty
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "Koska TortoiseGit käyttää Subversion-kirjastoa, johon sisältyy näppärä vertailumekanismi, oli luontevaa valita se GNU diff -kirjaston sijaan."
+msgid "Since TortoiseGit already uses the Git library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "Koska TortoiseGit käyttää Git-kirjastoa, johon sisältyy näppärä vertailumekanismi, oli luontevaa valita se GNU diff -kirjaston sijaan."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -275,8 +275,8 @@ msgstr "Kahden tiedoston välisten erojen tutkiminen ja muutosten yhdistäminen 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:288
-msgid "Editing conflicts between local changes and changes in the Subversion repository following an update."
-msgstr "Päivityksestä johtuvien, paikallisten ja Subversion-arkistossa olevien muutosten välillä olevien ristiriitojen selvittäminen."
+msgid "Editing conflicts between local changes and changes in the Git repository following an update."
+msgstr "Päivityksestä johtuvien, paikallisten ja Git-arkistossa olevien muutosten välillä olevien ristiriitojen selvittäminen."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:294
@@ -349,8 +349,8 @@ msgstr "Paikkatiedoston käyttäminen"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
-msgstr "Paikkatiedosto on Subversionin unified diff -muodossa oleva tiedosto, joka sisältää tarvittavat tiedot muutosten soveltamiseksi joukolle tiedostoja. Paikka voi olla toisen kehittäjän lähettämä, ja sen avulla voit nähdä hänen tekemänsä muutokset ja mahdollisesti toimittaa ne arkistoon. Paikka voi myös olla TortoiseGit-ohjelman toimesta tuotettu vertailtaessa kahta kansiota. Tämä tapahtuu, kun vertaat arkiston versiota työkopiosi kansioon, kahta arkiston versiota, tai kahta erilaista arkiston polkua."
+msgid "A patch file is a Git unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgstr "Paikkatiedosto on Gitin unified diff -muodossa oleva tiedosto, joka sisältää tarvittavat tiedot muutosten soveltamiseksi joukolle tiedostoja. Paikka voi olla toisen kehittäjän lähettämä, ja sen avulla voit nähdä hänen tekemänsä muutokset ja mahdollisesti toimittaa ne arkistoon. Paikka voi myös olla TortoiseGit-ohjelman toimesta tuotettu vertailtaessa kahta kansiota. Tämä tapahtuu, kun vertaat arkiston versiota työkopiosi kansioon, kahta arkiston versiota, tai kahta erilaista arkiston polkua."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:380
@@ -451,8 +451,8 @@ msgstr "Luettuaan paikkatiedoston TortoiseMerge avaa pienen ikkunan, jossa on lu
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:493
-msgid "But don't worry. If you're working with Subversion you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
-msgstr "Tilanteen voi kuitenkin vielä pelastaa.  Jos käytät Subversion-ohjelmaa, voit palauttaa tiedostosta vanhemman version ja ratkaista ristiriidan.  Itse asiassa TortoiseMerge yrittää automaattisesti hakea tiedoston vanhemman version ja näyttää sitten erot tiedostojen <emphasis>Kanta</emphasis> (tiedoston vanhempi versio), <emphasis>Minun</emphasis> (tiedoston työkopio) ja <emphasis>Heidän</emphasis> (tiedoston vanhempi versio, jossa paikka on jo otettu käyttöön). Voit sitten ratkoa mahdolliset ristiriidat käsin."
+msgid "But don't worry. If you're working with Git you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
+msgstr "Tilanteen voi kuitenkin vielä pelastaa.  Jos käytät Git-ohjelmaa, voit palauttaa tiedostosta vanhemman version ja ratkaista ristiriidan.  Itse asiassa TortoiseMerge yrittää automaattisesti hakea tiedoston vanhemman version ja näyttää sitten erot tiedostojen <emphasis>Kanta</emphasis> (tiedoston vanhempi versio), <emphasis>Minun</emphasis> (tiedoston työkopio) ja <emphasis>Heidän</emphasis> (tiedoston vanhempi versio, jossa paikka on jo otettu käyttöön). Voit sitten ratkoa mahdolliset ristiriidat käsin."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:504
@@ -651,8 +651,8 @@ msgstr "Kolmen paneelin näkymässä (jota joskus kutsutaan <emphasis>yhdistämi
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:796
-msgid "Sometimes a file will be marked as conflicted in Subversion, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
-msgstr "Joskus Subversion merkitsee tiedoston ristiriitaiseksi, mutta katsoessasi sitä TortoiseMergellä ristiriitoja ei löydy. Tämä saattaa johtua valitsemastasi tyhjämerkkien käsittelytavasta. Jos päätät ohittaa rivinlopputyyli- tai tyhjämerkkien muutokset, tällaiset rivit merkitään <emphasis>Ohitettu ristiriita</emphasis>-kuvakkeella. Ratkaistaksesi ristiriidan sinun on silti valittava, mitä versiota haluat käyttää."
+msgid "Sometimes a file will be marked as conflicted in Git, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
+msgstr "Joskus Git merkitsee tiedoston ristiriitaiseksi, mutta katsoessasi sitä TortoiseMergellä ristiriitoja ei löydy. Tämä saattaa johtua valitsemastasi tyhjämerkkien käsittelytavasta. Jos päätät ohittaa rivinlopputyyli- tai tyhjämerkkien muutokset, tällaiset rivit merkitään <emphasis>Ohitettu ristiriita</emphasis>-kuvakkeella. Ratkaistaksesi ristiriidan sinun on silti valittava, mitä versiota haluat käyttää."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:804
@@ -701,8 +701,8 @@ msgstr "Jos haluat käyttää paikkatiedoston, sinun pitää antaa sekä itse pa
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:873
-msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Subversion working copy. Other formats like patch files generated by CVS are currently not supported!"
-msgstr "Nykyisin tuetaan vain <emphasis>unified diff</emphasis> -muodossa olevia paikkatiedoja.  Lisäksi nämä tiedostot tulee luoda Subversion-työkopiosta.  Muita tiedostomuotoja (esim. CVS-paikkatiedostot) ei tueta!"
+msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Git working copy. Other formats like patch files generated by CVS are currently not supported!"
+msgstr "Nykyisin tuetaan vain <emphasis>unified diff</emphasis> -muodossa olevia paikkatiedoja.  Lisäksi nämä tiedostot tulee luoda Git-työkopiosta.  Muita tiedostomuotoja (esim. CVS-paikkatiedostot) ei tueta!"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:884
@@ -746,8 +746,8 @@ msgstr "Valinta <guilabel>Väritä rivin sisäiset muutokset</guilabel> käyttä
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:919
-msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Subversion treats such changes)."
-msgstr "Valinta <guilabel>Vertaa tyhjämerkkejä</guilabel> näyttää kaikki muutokset sisennyksessä ja rivin sisäisissä tyhjämerkeissä lisättyinä/poistettuina riveinä (samaan tapaan kuin Subversion käsittelee tällaisia muutoksia)."
+msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Git treats such changes)."
+msgstr "Valinta <guilabel>Vertaa tyhjämerkkejä</guilabel> näyttää kaikki muutokset sisennyksessä ja rivin sisäisissä tyhjämerkeissä lisättyinä/poistettuina riveinä (samaan tapaan kuin Git käsittelee tällaisia muutoksia)."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:924
@@ -1253,8 +1253,8 @@ msgstr "Lisää"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1360
-msgid "A Subversion command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
-msgstr "Subversion-komento, jota käytetään tiedoston tai hakemiston lisäämiseen työkopioosi.  Uudet alkiot lisätään versionhallintaan toimita arkistoon -komennolla."
+msgid "A Git command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
+msgstr "Git-komento, jota käytetään tiedoston tai hakemiston lisäämiseen työkopioosi.  Uudet alkiot lisätään versionhallintaan toimita arkistoon -komennolla."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1368
@@ -1284,7 +1284,7 @@ msgstr "BDB"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1393
 msgid "Berkeley DB. A well tested database backend for repositories, that cannot be used on network shares. Default for pre 1.2 repositories."
-msgstr "Berkeley -tietokanta.  Vakaa tietokanta arkistojen toteutukseen.  Ei sovellu käytettäväksi verkkojakojen (file://) kanssa. Oletusarvoinen arkiston toteutustapa ennen Subversion-versiota 1.2."
+msgstr "Berkeley -tietokanta.  Vakaa tietokanta arkistojen toteutukseen.  Ei sovellu käytettäväksi verkkojakojen (file://) kanssa. Oletusarvoinen arkiston toteutustapa ennen Git-versiota 1.2."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1400
@@ -1293,8 +1293,8 @@ msgstr "Haara"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1402
-msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Subversion a branch is implemented as a <quote>cheap copy</quote>."
-msgstr "Versionhallintajärjestelmissä usein käytetty termi, joka kuvaa, mitä tapahtuu, kun kehitystyö haarautuu kahteen erilliseen polkuun. Pääkehityshaara joudutaan haaroittamaan esimerkiksi silloin, kun tarvitaan uusi ominaisuus, jota voidaan kehittää ajan kanssa tekemättä päähaarasta epävakaata. Toinen vaihtoehto on tehdä päähaarasta julkaisua varten haara, johon tehdään vain virhekorjauksia, ja samaan aikaan uusia toimintoja kehitetään epävakaaseen päähaaraan.  Subversion toteuttaa haarat <quote>halpoina kopioina</quote>."
+msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Git a branch is implemented as a <quote>cheap copy</quote>."
+msgstr "Versionhallintajärjestelmissä usein käytetty termi, joka kuvaa, mitä tapahtuu, kun kehitystyö haarautuu kahteen erilliseen polkuun. Pääkehityshaara joudutaan haaroittamaan esimerkiksi silloin, kun tarvitaan uusi ominaisuus, jota voidaan kehittää ajan kanssa tekemättä päähaarasta epävakaata. Toinen vaihtoehto on tehdä päähaarasta julkaisua varten haara, johon tehdään vain virhekorjauksia, ja samaan aikaan uusia toimintoja kehitetään epävakaaseen päähaaraan.  Git toteuttaa haarat <quote>halpoina kopioina</quote>."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1415
@@ -1303,8 +1303,8 @@ msgstr "Hae työkopio"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1417
-msgid "A Subversion command which creates a local working copy in an empty directory by downloading versioned files from the repository."
-msgstr "Subversion-komento, joka luo paikallisen työkopion tyhjään hakemistoon noutamalla versioituja tiedostoja arkistosta."
+msgid "A Git command which creates a local working copy in an empty directory by downloading versioned files from the repository."
+msgstr "Git-komento, joka luo paikallisen työkopion tyhjään hakemistoon noutamalla versioituja tiedostoja arkistosta."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1424
@@ -1313,8 +1313,8 @@ msgstr "Siivous"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1426
-msgid "To quote from the Subversion book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
-msgstr "Lainaus Subversion-kirjasta: <quote> Siivoaa työkopion rekursiivisesti poistamalla lukot ja kesken jääneet operaatiot.  Jos törmäät joskus <literal>työkopio lukittu</literal> -virheeseen, suorita tämä komento poistaaksesi vanhentuneet lukot ja tehdäksesi työkopiosta jälleen käyttökelpoisen.</quote> Huomaa, että tässä <quote>lukko</quote> viittaa paikallisen tiedostojärjestelmän lukitukseen, ei arkistolukitukseen."
+msgid "To quote from the Git book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
+msgstr "Lainaus Git-kirjasta: <quote> Siivoaa työkopion rekursiivisesti poistamalla lukot ja kesken jääneet operaatiot.  Jos törmäät joskus <literal>työkopio lukittu</literal> -virheeseen, suorita tämä komento poistaaksesi vanhentuneet lukot ja tehdäksesi työkopiosta jälleen käyttökelpoisen.</quote> Huomaa, että tässä <quote>lukko</quote> viittaa paikallisen tiedostojärjestelmän lukitukseen, ei arkistolukitukseen."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1441
@@ -1323,8 +1323,8 @@ msgstr "Toimita arkistoon"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1443
-msgid "This Subversion command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
-msgstr "Tämä Subversion-komento siirtää muutokset paikallisesta työkopiostasi takaisin arkistoon luoden samalla uuden arkistoversion."
+msgid "This Git command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
+msgstr "Tämä Git-komento siirtää muutokset paikallisesta työkopiostasi takaisin arkistoon luoden samalla uuden arkistoversion."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1451
@@ -1333,8 +1333,8 @@ msgstr "Ristiriita"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1453
-msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Subversion cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
-msgstr "Kun arkiston muutokset yhdistetään paikallisten muutosten kanssa, ne osuvat joskus samoille riveille.  Tällöin Subversion ei voi automaattisesti päättää, mitä versiota käyttää ja tiedoston sanotaan olevan ristiriitainen. Sinun pitää muokata tiedostoa käsin ratkaistaksesi ristiriidat ennen kuin voit toimittaa muutokset arkistoon."
+msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Git cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
+msgstr "Kun arkiston muutokset yhdistetään paikallisten muutosten kanssa, ne osuvat joskus samoille riveille.  Tällöin Git ei voi automaattisesti päättää, mitä versiota käyttää ja tiedoston sanotaan olevan ristiriitainen. Sinun pitää muokata tiedostoa käsin ratkaistaksesi ristiriidat ennen kuin voit toimittaa muutokset arkistoon."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1463
@@ -1343,8 +1343,8 @@ msgstr "Kopio"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1465
-msgid "In a Subversion repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
-msgstr "Subversion-arkistossa voit tehdä kopion yksittäisestä tiedostosta tai kokonaisesta hakemistopuusta. Kopiot on toteutettu <quote>halpoina kopioina</quote>, jotka toimivat ikään kuin linkkeinä alkuperäiseen.  Tämän ansiosta ne eivät vaadi lähes lainkaan tilaa. Kopion tekeminen säilyttää kohteen muutoshistorian, joten voit jäljittää muutoksia, jotka tapahtuivat ennen kopion tekoa."
+msgid "In a Git repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
+msgstr "Git-arkistossa voit tehdä kopion yksittäisestä tiedostosta tai kokonaisesta hakemistopuusta. Kopiot on toteutettu <quote>halpoina kopioina</quote>, jotka toimivat ikään kuin linkkeinä alkuperäiseen.  Tämän ansiosta ne eivät vaadi lähes lainkaan tilaa. Kopion tekeminen säilyttää kohteen muutoshistorian, joten voit jäljittää muutoksia, jotka tapahtuivat ennen kopion tekoa."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1475
@@ -1383,8 +1383,8 @@ msgstr "FSFS"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1508
-msgid "A proprietary Subversion filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
-msgstr "Subversion-ohjelman tarpeisiin kehitetty tiedostojärjestelmä arkistojen toteutukseen. Voidaan käyttää verkkojakojen (file://) kanssa.  Oletusarvoinen arkistojen toteutustapa Subversion-versiosta 1.2 lähtien."
+msgid "A proprietary Git filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
+msgstr "Git-ohjelman tarpeisiin kehitetty tiedostojärjestelmä arkistojen toteutukseen. Voidaan käyttää verkkojakojen (file://) kanssa.  Oletusarvoinen arkistojen toteutustapa Git-versiosta 1.2 lähtien."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1515
@@ -1413,8 +1413,8 @@ msgstr "Tuo"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1533
-msgid "Subversion command to import an entire folder hierarchy into the repository in a single revision."
-msgstr "Subversion-komento, jolla lisätään kansio (alikansioineen) arkistoon.  Toimenpide synnyttää yhden uuden version."
+msgid "Git command to import an entire folder hierarchy into the repository in a single revision."
+msgstr "Git-komento, jolla lisätään kansio (alikansioineen) arkistoon.  Toimenpide synnyttää yhden uuden version."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1540
@@ -1468,8 +1468,8 @@ msgstr "Paikka"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1586
-msgid "If a working copy has changes to text files only, it is possible to use Subversion's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
-msgstr "Mikäli työkopiossa on vain tekstitiedostoihin tehtyjä muutoksia, on mahdollista käyttää Subversion-ohjelman Diff-komentoa muutoskoostetiedoston luomiseksi Unified Diff-muodossa.  Tällaista tiedostoa kutsutaan usein <quote>paikaksi</quote>, ja se voidaan lähettää sähköpostin liitteenä jollekulle toiselle (tai postituslistalle) käytettäväksi toisessa työkopiossa. Joku, jolla ei ole oikeutta toimittaa muutoksia arkistoon suoraan, voi tehdä muutokset ja toimittaa paikkatiedoston henkilölle, jolla tällainen oikeus on.  Paikkatiedostoa voi käyttää myös, kun haluat muiden katselmoivan tekemiäsi muutoksia."
+msgid "If a working copy has changes to text files only, it is possible to use Git's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
+msgstr "Mikäli työkopiossa on vain tekstitiedostoihin tehtyjä muutoksia, on mahdollista käyttää Git-ohjelman Diff-komentoa muutoskoostetiedoston luomiseksi Unified Diff-muodossa.  Tällaista tiedostoa kutsutaan usein <quote>paikaksi</quote>, ja se voidaan lähettää sähköpostin liitteenä jollekulle toiselle (tai postituslistalle) käytettäväksi toisessa työkopiossa. Joku, jolla ei ole oikeutta toimittaa muutoksia arkistoon suoraan, voi tehdä muutokset ja toimittaa paikkatiedoston henkilölle, jolla tällainen oikeus on.  Paikkatiedostoa voi käyttää myös, kun haluat muiden katselmoivan tekemiäsi muutoksia."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1599
@@ -1478,8 +1478,8 @@ msgstr "Ominaisuus"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "Kansioiden ja tiedostojen versioinnin lisäksi Subversion sallii versioidun metatiedon (<quote>ominaisuuksien</quote>) lisäämisen kuhunkin versioituun kansioon ja tiedostoon. Kullakin ominaisuudella on nimi ja arvo (vrt. rekisteriavain). Subversion-ohjelmalla on muutamia erikoisominaisuuksia, joita se käyttää sisäisesti (esim. <literal>svn:eol-style</literal>. TortoiseGit-ohjelmalla on myös muutamia, kuten esimerkiksi <literal>svn:logminsize</literal>. Voit myös lisätä omia ominaisuuksiasi haluamasi nimellä ja arvolla."
+msgid "In addition to versioning your directories and files, Git allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Git has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "Kansioiden ja tiedostojen versioinnin lisäksi Git sallii versioidun metatiedon (<quote>ominaisuuksien</quote>) lisäämisen kuhunkin versioituun kansioon ja tiedostoon. Kullakin ominaisuudella on nimi ja arvo (vrt. rekisteriavain). Git-ohjelmalla on muutamia erikoisominaisuuksia, joita se käyttää sisäisesti (esim. <literal>svn:eol-style</literal>. TortoiseGit-ohjelmalla on myös muutamia, kuten esimerkiksi <literal>svn:logminsize</literal>. Voit myös lisätä omia ominaisuuksiasi haluamasi nimellä ja arvolla."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1614
@@ -1523,8 +1523,8 @@ msgstr "Palauta"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1656
-msgid "Subversion keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
-msgstr "Subversion säilyttää paikallisesti <quote>muuttumatonta</quote> kopiota jokaisesta tiedostosta sellaisena kuin se oli silloin, kun viimeksi päivitit työkopiosi. Jos olet tehnyt muutoksia ja päätät perua ne, voit käyttää <quote>palauta</quote>-komentoa siirtyäksesi takaisin muuttumattomaan kopioon."
+msgid "Git keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
+msgstr "Git säilyttää paikallisesti <quote>muuttumatonta</quote> kopiota jokaisesta tiedostosta sellaisena kuin se oli silloin, kun viimeksi päivitit työkopiosi. Jos olet tehnyt muutoksia ja päätät perua ne, voit käyttää <quote>palauta</quote>-komentoa siirtyäksesi takaisin muuttumattomaan kopioon."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1665
@@ -1558,13 +1558,13 @@ msgstr "SVN"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1697
-msgid "A frequently-used abbreviation for Subversion."
-msgstr "Subversion-ohjelmasta usein käytetty lyhenne."
+msgid "A frequently-used abbreviation for Git."
+msgstr "Git-ohjelmasta usein käytetty lyhenne."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1700
-msgid "The name of the Subversion custom protocol used by the <quote>svnserve</quote> repository server."
-msgstr "Subversionin käyttämän erikoisprotokollan nimi, jota käyttää mm. <quote>svnserve</quote> versionhallintapalvelin."
+msgid "The name of the Git custom protocol used by the <quote>svnserve</quote> repository server."
+msgstr "Gitin käyttämän erikoisprotokollan nimi, jota käyttää mm. <quote>svnserve</quote> versionhallintapalvelin."
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1707
@@ -1583,8 +1583,8 @@ msgstr "Päivitä"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1723
-msgid "This Subversion command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
-msgstr "Tämä Subversion-komento noutaa viimeisimmät muutokset arkistosta työkopioosi, yhdistäen muitten tekemät muutokset paikallisten muutosten kanssa"
+msgid "This Git command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
+msgstr "Tämä Git-komento noutaa viimeisimmät muutokset arkistosta työkopioosi, yhdistäen muitten tekemät muutokset paikallisten muutosten kanssa"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1731

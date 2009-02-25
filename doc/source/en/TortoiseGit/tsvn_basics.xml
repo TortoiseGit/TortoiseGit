@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
-<!-- This chapter is copied over from the Subversion book and slightly
+<!-- This chapter is copied over from the Git book and slightly
 	 modified for the TortoiseGit client.
 -->
 <chapter id="tsvn-basics">
 	<title>Basic Concepts</title>
 	<simplesect>
 		<indexterm>
-			<primary>Subversion book</primary>
+			<primary>Git book</primary>
 		</indexterm>
 		<para>
 			This chapter is a slightly modified version of the same chapter
-			in the Subversion book. An online version of the Subversion book is 
+			in the Git book. An online version of the Git book is 
 			available here:
 			<ulink url="http://svnbook.red-bean.com/">
 				<citetitle>http://svnbook.red-bean.com/</citetitle>
 			</ulink>.
 		</para>
 		<para>
-			This chapter is a short, casual introduction to Subversion.
+			This chapter is a short, casual introduction to Git.
 			If you're new to version control, this chapter is definitely for
 			you. We begin with a discussion of general version control
 			concepts, work our way into the specific ideas behind
-			Subversion, and show some simple examples of Subversion in
+			Git, and show some simple examples of Git in
 			use.
 		</para>
 		<para>
 			Even though the examples in this chapter show people sharing
-			collections of program source code, keep in mind that Subversion
+			collections of program source code, keep in mind that Git
 			can manage any sort of file collection - it's not limited to
 			helping computer programmers.
 		</para>
@@ -38,7 +38,7 @@
 			<primary>repository</primary>
 		</indexterm>
 		<para>
-			Subversion is a centralized system for sharing information.
+			Git is a centralized system for sharing information.
 			At its core is a <firstterm>repository</firstterm>, which is a
 			central store of data. The repository stores information in the
 			form of a <firstterm>filesystem tree</firstterm> - a typical
@@ -56,7 +56,7 @@
 			So why is this interesting? So far, this sounds like the
 			definition of a typical file server. And indeed, the repository
 			<emphasis>is</emphasis> a kind of file server, but it's not your
-			usual breed. What makes the Subversion repository special is
+			usual breed. What makes the Git repository special is
 			that <emphasis>it remembers every change</emphasis> ever written
 			to it: every change to every file, and even changes to the
 			directory tree itself, such as the addition, deletion, and
@@ -178,7 +178,7 @@
 		<sect2 id="tsvn-basics-versioning-copymodifymerge">
 			<title>The Copy-Modify-Merge Solution</title>
 			<para>
-				Subversion, CVS, and other version control systems use a
+				Git, CVS, and other version control systems use a
 				<firstterm>copy-modify-merge</firstterm> model as an
 				alternative to locking. In this model, each user's client
 				reads the repository and creates a personal <firstterm>working
@@ -258,20 +258,20 @@
 			</para>
 		</sect2>
 		<sect2 id="tsvn-basics-versioning-4">
-			<title>What does Subversion Do?</title>
+			<title>What does Git Do?</title>
 			<para>
-				Subversion uses the copy-modify-merge solution by default,
+				Git uses the copy-modify-merge solution by default,
 				and in many cases this is all you will ever need. However,
-				as of Version 1.2, Subversion also supports file locking,
+				as of Version 1.2, Git also supports file locking,
 				so if you have unmergeable files, or if you are simply
-				forced into a locking policy by management, Subversion
+				forced into a locking policy by management, Git
 				will still provide the features you need.
 			</para>
 		</sect2>
 	</sect1>
 	<!-- How svn implements the philosophy -->
 	<sect1 id="tsvn-basics-svn">
-		<title>Subversion in Action</title>
+		<title>Git in Action</title>
 		<sect2 id="tsvn-basics-svn-workingcopy">
 			<title>Working Copies</title>
 			<indexterm>
@@ -279,42 +279,42 @@
 			</indexterm>
 			<para>
 				You've already read about working copies; now we'll
-				demonstrate how the Subversion client creates and uses
+				demonstrate how the Git client creates and uses
 				them.
 			</para>
 			<para>
-				A Subversion working copy is an ordinary directory tree on
+				A Git working copy is an ordinary directory tree on
 				your local system, containing a collection of files. You can
 				edit these files however you wish, and if they're source code
 				files, you can compile your program from them in the usual
 				way. Your working copy is your own private work area:
-				Subversion will never incorporate other people's changes, nor
+				Git will never incorporate other people's changes, nor
 				make your own changes available to others, until you
 				explicitly tell it to do so.
 			</para>
 			<para>
 				After you've made some changes to the files in your
-				working copy and verified that they work properly, Subversion
+				working copy and verified that they work properly, Git
 				provides you with commands to <emphasis>publish</emphasis> your changes to the
 				other people working with you on your project (by writing to
 				the repository). If other people publish their own changes,
-				Subversion provides you with commands to merge those changes
+				Git provides you with commands to merge those changes
 				into your working directory (by reading from the
 				repository).
 			</para>
 			<para>
 				A working copy also contains some extra files, created and
-				maintained by Subversion, to help it carry out these commands.
+				maintained by Git, to help it carry out these commands.
 				In particular, each directory in your working copy contains a
 				subdirectory named <filename>.svn</filename>, also known as
 				the working copy <firstterm>administrative
 				directory</firstterm>. The files in each administrative
-				directory help Subversion recognize which files contain
+				directory help Git recognize which files contain
 				unpublished changes, and which files are out-of-date with
 				respect to others' work.
 			</para>
 			<para>
-				A typical Subversion repository often holds the files (or
+				A typical Git repository often holds the files (or
 				source code) for several projects; usually, each project is a
 				subdirectory in the repository's filesystem tree. In this
 				arrangement, a user's working copy will usually correspond to
@@ -343,8 +343,8 @@
 			<para>
 				Suppose you make changes to <filename>button.c</filename>.
 				Since the <filename>.svn</filename> directory remembers the
-				file's modification date and original contents, Subversion can
-				tell that you've changed the file. However, Subversion does
+				file's modification date and original contents, Git can
+				tell that you've changed the file. However, Git does
 				not make your changes public until you explicitly tell it to.
 				The act of publishing your changes is more commonly known as
 				<firstterm>committing</firstterm> (or <firstterm>checking
@@ -352,7 +352,7 @@
 			</para>
 			<para>
 				To publish your changes to others, you can use
-				Subversion's <command>commit</command> command.
+				Git's <command>commit</command> command.
 			</para>
 			<para>
 				Now your changes to <filename>button.c</filename> have
@@ -365,20 +365,20 @@
 				working copy of <filename>/calc</filename> at the same time
 				you did. When you commit your change to
 				<filename>button.c</filename>, Sally's working copy is left
-				unchanged; Subversion only modifies working copies at the
+				unchanged; Git only modifies working copies at the
 				user's request.
 			</para>
 			<para>
 				To bring her project up to date, Sally can ask
-				Subversion to <firstterm>update</firstterm> her working copy,
-				by using the Subversion <command>update</command> command.
+				Git to <firstterm>update</firstterm> her working copy,
+				by using the Git <command>update</command> command.
 				This will incorporate your changes into her working copy, as
 				well as any others that have been committed since she checked
 				it out.
 			</para>
 			<para>
 				Note that Sally didn't need to
-				specify which files to update; Subversion uses the information
+				specify which files to update; Git uses the information
 				in the <filename>.svn</filename> directory, and further
 				information in the repository, to decide which files need to
 				be brought up to date.
@@ -387,7 +387,7 @@
 		<sect2 id="tsvn-basics-svn-urls">
 			<title>Repository URLs</title>
 			<para>
-				Subversion repositories can be accessed through many
+				Git repositories can be accessed through many
 				different methods - on local disk, or through various
 				network protocols. A repository location, however, is
 				always a URL. The URL schema indicates the access
@@ -418,7 +418,7 @@
 								<literal>http://</literal>
 							</entry>
 							<entry>
-								Access via WebDAV protocol to Subversion-aware Apache server.
+								Access via WebDAV protocol to Git-aware Apache server.
 							</entry>
 						</row>
 						<row>
@@ -451,7 +451,7 @@
 				</tgroup>
 			</table>
 			<para>
-				For the most part, Subversion's URLs use the standard
+				For the most part, Git's URLs use the standard
 				syntax, allowing for server names and port numbers to be
 				specified as part of the URL.
 				The <literal>file://</literal> access method is normally used
@@ -516,7 +516,7 @@ file:///X|/path/to/repos
 			<para>
 				In the repository, each commit is treated as an atomic
 				transaction: either all the commits changes take place, or
-				none of them take place. Subversion retains this
+				none of them take place. Git retains this
 				atomicity in the face of program crashes, system crashes,
 				network problems, and other users' actions.
 			</para>
@@ -545,13 +545,13 @@ file:///X|/path/to/repos
 				<title>Global Revision Numbers</title>
 				<para>
 					Unlike those of many other version control systems,
-					Subversion's revision numbers apply to <emphasis>entire
+					Git's revision numbers apply to <emphasis>entire
 					trees</emphasis>, not individual files. Each revision
 					number selects an entire tree, a particular state of the
 					repository after some committed change. Another way to
 					think about it is that revision N represents the state of
 					the repository filesystem after the Nth commit. When a
-					Subversion user talks about ``revision 5 of
+					Git user talks about ``revision 5 of
 					<filename>foo.c</filename>'', they really mean
 					``<filename>foo.c</filename> as it appears in revision 5.''
 					Notice that in general, revisions N and M of a file do
@@ -599,7 +599,7 @@ calc/Makefile:6
 				appear in your working copy, and your change will still be
 				present in <filename>button.c</filename>. In this example,
 				the text of <filename>Makefile</filename> is identical in
-				revisions 4, 5, and 6, but Subversion will mark your working
+				revisions 4, 5, and 6, but Git will mark your working
 				copy of <filename>Makefile</filename> with revision 6 to
 				indicate that it is still current. So, after you do a clean
 				update at the top of your working copy, it will generally
@@ -609,7 +609,7 @@ calc/Makefile:6
 		<sect2 id="tsvn-basics-svn-wcrepository">
 			<title>How Working Copies Track the Repository</title>
 			<para>
-				For each file in a working directory, Subversion records
+				For each file in a working directory, Git records
 				two essential pieces of information in the
 				<filename>.svn/</filename> administrative area:</para>
 			<itemizedlist>
@@ -629,7 +629,7 @@ calc/Makefile:6
 			</itemizedlist>
 			<para>
 				Given this information, by talking to the repository,
-				Subversion can tell which of the following four states a
+				Git can tell which of the following four states a
 				working file is in:
 			</para>
 			<variablelist>
@@ -683,7 +683,7 @@ calc/Makefile:6
 							of the file will fail with an <emphasis>out-of-date</emphasis>
 							error. The file should be updated first; an <command>update</command>
 							command will attempt to merge the public
-							changes with the local changes. If Subversion can't
+							changes with the local changes. If Git can't
 							complete the merge in a plausible way automatically, it
 							leaves it to the user to resolve the
 							conflict.
@@ -696,7 +696,7 @@ calc/Makefile:6
 	<sect1 id="tsvn-basics-summary">
 		<title>Summary</title>
 		<para>
-			We've covered a number of fundamental Subversion concepts in
+			We've covered a number of fundamental Git concepts in
 			this chapter:
 		</para>
 		<itemizedlist>
@@ -709,13 +709,13 @@ calc/Makefile:6
 			<listitem>
 				<para>
 					We've seen some simple examples of how two collaborators
-					can use Subversion to publish and receive changes from one
+					can use Git to publish and receive changes from one
 					another, using the 'copy-modify-merge' model.
 				</para>
 			</listitem>
 			<listitem>
 				<para>
-					We've talked a bit about the way Subversion tracks and
+					We've talked a bit about the way Git tracks and
 					manages information in a working copy.
 				</para>
 			</listitem>

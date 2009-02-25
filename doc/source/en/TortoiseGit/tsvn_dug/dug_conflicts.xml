@@ -13,7 +13,7 @@
 		Once in a while, you will get a <emphasis>conflict</emphasis> when
 		you update your files from the repository. A conflict
 		occurs when two or more developers have changed the same
-		few lines of a file. As Subversion knows nothing of your
+		few lines of a file. As Git knows nothing of your
 		project, it leaves resolving the conflicts to the developers.
 		Whenever a conflict is reported, you should open the file in
 		question, and search for lines starting with the string
@@ -26,7 +26,7 @@
     code merged from repository
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; revision
 </screen>
-		Also, for every conflicted file Subversion places three
+		Also, for every conflicted file Git places three
 		additional files in your directory:
 		<variablelist>
 			<varlistentry>
@@ -55,7 +55,7 @@
 				<term>filename.ext.rNEWREV</term>
 				<listitem>
 					<para>
-						This is the file that your Subversion
+						This is the file that your Git
 						client just received from the server when you updated
 						your working copy. This file corresponds to the HEAD
 						revision of the repository.
@@ -89,7 +89,7 @@
 		to allow you to commit your changes.
 	</para>
 	<para>
-		If you have conflicts with binary files, Subversion does
+		If you have conflicts with binary files, Git does
 		not attempt to merge the files itself. The local file remains
 		unchanged (exactly as you last changed it) and you have
 		<filename>filename.ext.r*</filename> files.

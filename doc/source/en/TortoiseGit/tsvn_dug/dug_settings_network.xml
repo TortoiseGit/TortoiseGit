@@ -16,7 +16,7 @@
 	</para>
 	<para>
 		If you need to set up per-repository proxy settings, you will
-		need to use the Subversion <filename>servers</filename> file to
+		need to use the Git <filename>servers</filename> file to
 		configure this. Use <guibutton>Edit</guibutton> to get there
 		directly. Consult the
 		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html">
@@ -69,7 +69,7 @@
 		which is beyond the scope of this help file. However, you can find a
 		guide in the TortoiseGit FAQ listed under
 		<ulink url="http://TortoiseGit.net/ssh_howto">
-			<citetitle>Subversion/TortoiseGit SSH How-To</citetitle>
+			<citetitle>Git/TortoiseGit SSH How-To</citetitle>
 		</ulink>.
 	</para>
 </sect2>

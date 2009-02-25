@@ -10,8 +10,8 @@
 			<primary>CLI</primary>
 		</indexterm>
 		<para>
-			Sometimes this manual refers you to the main Subversion
-			documentation, which describes Subversion in terms of the
+			Sometimes this manual refers you to the main Git
+			documentation, which describes Git in terms of the
 			Command Line Interface (CLI). To help you understand what
 			TortoiseGit is doing behind the scenes, we have compiled
 			a list showing the equivalent CLI commands for each of
@@ -21,13 +21,13 @@
 			<para>
 			Even though there are CLI equivalents to what TortoiseGit
 			does, remember that TortoiseGit does <emphasis>not</emphasis>
-			call the CLI but uses the Subversion library directly.
+			call the CLI but uses the Git library directly.
 			</para>
 		</note>
 		<para>
 			If you think you have found a bug in TortoiseGit, we
 			may ask you to try to reproduce it using the CLI, so
-			that we can distinguish TortoiseGit issues from Subversion
+			that we can distinguish TortoiseGit issues from Git
 			issues. This reference tells you which command to try.
 		</para>
 	</simplesect>
@@ -84,7 +84,7 @@ svn update [-r rev] PATH
 </screen>
 			<para>
 				Updating multiple items is currently not an atomic operation
-				in Subversion. So
+				in Git. So
 				TortoiseGit first finds the HEAD revision of the repository,
 				and then updates all items to that particular revision number to
 				avoid creating a mixed revision working copy.
@@ -118,7 +118,7 @@ svn update [-r rev] [-N] [--ignore-externals] PATH
 		<sect2 id="tsvn-cli-commit">
 			<title>Commit</title>
 			<para>
-				In TortoiseGit, the commit dialog uses several Subversion commands.
+				In TortoiseGit, the commit dialog uses several Git commands.
 				The first stage is a status check which determines the items
 				in your working copy which can potentially be committed. You can
 				review the list, diff files against BASE and select the items you
@@ -131,7 +131,7 @@ svn status -v PATH
 				If <guilabel>Show unversioned files</guilabel> is checked,
 				TortoiseGit will also show all unversioned files and folders in
 				the working copy hierarchy, taking account of the ignore rules.
-				This particular feature has no direct equivalent in Subversion,
+				This particular feature has no direct equivalent in Git,
 				as the <literal>svn status</literal> command does not descend into
 				unversioned folders.
 			</para>
@@ -143,7 +143,7 @@ svn status -v PATH
 svn add PATH...
 </screen>
 			<para>
-				When you click on OK, the Subversion commit takes place. If you have
+				When you click on OK, the Git commit takes place. If you have
 				left all the file selection checkboxes in their default state,
 				TortoiseGit uses a single recursive commit of the working copy.
 				If you deselect some files, then a non-recursive commit
@@ -219,7 +219,7 @@ svn status -u -v PATH
 				If <guilabel>Show unversioned files</guilabel> is checked,
 				TortoiseGit will also show all unversioned files and folders in
 				the working copy hierarchy, taking account of the ignore rules.
-				This particular feature has no direct equivalent in Subversion,
+				This particular feature has no direct equivalent in Git,
 				as the <literal>svn status</literal> command does not descend into
 				unversioned folders.
 			</para>
@@ -296,7 +296,7 @@ svn status -v PATH
 				want to be included in the revert.
 			</para>
 			<para>
-				When you click on OK, the Subversion revert takes place. If you have
+				When you click on OK, the Git revert takes place. If you have
 				left all the file selection checkboxes in their default state,
 				TortoiseGit uses a single recursive (<literal>-R</literal>)
 				revert of the working copy. If you deselect some files, then
@@ -399,7 +399,7 @@ svn export [-r rev] [--ignore-externals] URL Export_PATH
 			</para>
 			<para>
 				Exporting a working copy to a different location is done without
-				using the Subversion library, so there's no matching command
+				using the Git library, so there's no matching command
 				line equivalent.
 			</para>
 			<para>
@@ -487,7 +487,7 @@ svn diff PATH > patch-file
 				Applying patches is a tricky business unless the patch
 				and working copy are at the same revision. Luckily for
 				you, you can use TortoiseMerge, which has no direct
-				equivalent in Subversion.
+				equivalent in Git.
 			</para>
 		</sect2>
 	</sect1>

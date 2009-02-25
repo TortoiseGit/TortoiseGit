@@ -9,6 +9,7 @@ class CGitLogList : public CGitLogListBase
 protected:
 	
 	void SetSelectedAction(int action);
+	int	 CherryPickFrom(CString from, CString to);
 
 public:
 	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect);

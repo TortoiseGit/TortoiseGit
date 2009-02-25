@@ -17,8 +17,8 @@
 			<primary>overlays</primary>
 		</indexterm>
 		<para>
-			Every file and folder has a Subversion status value as reported
-			by the Subversion library. In the command line client, these
+			Every file and folder has a Git status value as reported
+			by the Git library. In the command line client, these
 			are represented by single letter codes, but in TortoiseGit they
 			are shown graphically using the icon overlays. Because the number
 			of overlays is very limited, each overlay may represent one of
@@ -59,8 +59,8 @@
 			has been added to version control.
 		</para>
 		<para>
-			<graphic fileref="images/InSubVersionIcon.png"/>
-			The <emphasis>In Subversion</emphasis> overlay is used to
+			<graphic fileref="images/InGitIcon.png"/>
+			The <emphasis>In Git</emphasis> overlay is used to
 			represent an item which is in the <literal>normal</literal>
 			state, or a versioned item whose state is not yet known.
 			Because TortoiseGit uses a background caching process to
@@ -72,11 +72,11 @@
 			The <emphasis>Needs Lock</emphasis> overlay is used to
 			indicate when a file has the <literal>svn:needs-lock</literal>
 			property set. For working copies which were created using
-			Subversion 1.4.0 and later, the <literal>svn:needs-lock</literal>
-			status is cached locally by Subversion and this is used to
+			Git 1.4.0 and later, the <literal>svn:needs-lock</literal>
+			status is cached locally by Git and this is used to
 			determine when to show this overlay. For working copies which
 			are in pre-1.4.x format, TortoiseGit shows this overlay when the
-			file has read-only status. Note that Subversion automatically
+			file has read-only status. Note that Git automatically
 			upgrades working copies when you update them, although the
 			caching of the <literal>svn:needs-lock</literal> property
 			may not happen until the file itself is updated.
@@ -103,18 +103,18 @@
 			This overlay is optional.
 		</para>
 		<para>
-			If an item has subversion status <literal>none</literal> (the item
+			If an item has Git status <literal>none</literal> (the item
 			is not within a working copy) then no overlay is shown.
 			If you have chosen to disable the <emphasis>Ignored</emphasis>
 			and <emphasis>Unversioned</emphasis> overlays then no overlay
 			will be shown for those files either.
 		</para>
 		<para>
-			An item can only have one Subversion status value. For example
+			An item can only have one Git status value. For example
 			a file could be locally modified and it could be marked for
-			deletion at the same time. Subversion returns a single status
+			deletion at the same time. Git returns a single status
 			value - in this case <literal>deleted</literal>.
-			Those priorities are defined within Subversion itself.
+			Those priorities are defined within Git itself.
 		</para>
 		<para>
 			When TortoiseGit displays the status recursively (the default

@@ -63,7 +63,7 @@ ssl
 sspi
 stdout
 stderr
-Subversion
+Git
 SubWCRev
 svn
 svnserve

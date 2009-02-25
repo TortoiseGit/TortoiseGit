@@ -23,7 +23,7 @@
 		You could simply copy the files and add them as described above, but
 		that would not give you any history. And if you subsequently fix a bug
 		in the original files, you can only merge the fix automatically if the
-		new copy is related to the original in Subversion.
+		new copy is related to the original in Git.
 	</para>
 	<para>
 		The easiest way to copy files and folders from within a working copy is

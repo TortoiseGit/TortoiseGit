@@ -111,7 +111,7 @@ enum WGFILEFLAGS
 
 struct wgFile_s
 {
-	const char *sFileName;			// filename or directory relative to project root (using forward slashes)
+	LPCTSTR sFileName;				// filename or directory relative to project root (using forward slashes)
 	int nStatus;					// the WGFILESTATUS of the file
 	int nFlags;						// a combination of WGFILEFLAGS
 
@@ -133,7 +133,7 @@ inline static git_wc_status_kind GitStatusFromWingit(int nStatus)
 	{
 	case WGFS_Normal: return git_wc_status_normal;
 	case WGFS_Modified: return git_wc_status_modified;
-	case WGFS_Staged: return git_wc_status_modified;
+	case WGFS_Staged: return git_wc_status_merged;
 	case WGFS_Added: return git_wc_status_added;
 	case WGFS_Conflicted: return git_wc_status_conflicted;
 	case WGFS_Deleted: return git_wc_status_deleted;

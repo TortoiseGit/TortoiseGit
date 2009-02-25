@@ -17,7 +17,7 @@ msgstr ""
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-11-17 23:55+0900\n"
 "Last-Translator: KURASAWA Nozomu <nabetaro@caldron.jp>\n"
-"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <tortoisegit-dev@googlegroups.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -213,8 +213,8 @@ msgstr "お好みのプログラム言語のソースファイルや、ドキュ
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:198
-msgid "If you're working with a version control system (e.g. Subversion) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
-msgstr "バージョン管理システム (例: Subversion) を利用して作業を行っていると、作業コピーの更新時に <emphasis>競合</emphasis> することがあります。これは作業を行ったファイルのある部分に対して、他の誰かが同じ部分を変更したことによって起こります。この競合は手動で解決しなければなりません。TortoiseMerge はこの作業を助けてくれます。"
+msgid "If you're working with a version control system (e.g. Git) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
+msgstr "バージョン管理システム (例: Git) を利用して作業を行っていると、作業コピーの更新時に <emphasis>競合</emphasis> することがあります。これは作業を行ったファイルのある部分に対して、他の誰かが同じ部分を変更したことによって起こります。この競合は手動で解決しなければなりません。TortoiseMerge はこの作業を助けてくれます。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:206
@@ -235,8 +235,8 @@ msgstr "古くなってしまったパッチファイルを適用しようとし
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:220
-msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Subversion. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
-msgstr "ですが、TortoiseMerge を使うとこういったことがもう必要ありません。少なくとも Subversion のようなバージョン管理システムを使用する限りにおいては。TortoiseMerge はパッチを作成したリビジョン・バージョンを解析し、ソース管理システムからその特定のバージョンを自動的に取得します。その後パッチを適用し、自分の行った変更と他の人の行った変更の両方を確認できるようにします。これにより、変更点を保持するかどうか決めることができます。"
+msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Git. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
+msgstr "ですが、TortoiseMerge を使うとこういったことがもう必要ありません。少なくとも Git のようなバージョン管理システムを使用する限りにおいては。TortoiseMerge はパッチを作成したリビジョン・バージョンを解析し、ソース管理システムからその特定のバージョンを自動的に取得します。その後パッチを適用し、自分の行った変更と他の人の行った変更の両方を確認できるようにします。これにより、変更点を保持するかどうか決めることができます。"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:235
@@ -260,8 +260,8 @@ msgstr "パッチファイルを適用する GUI ツールをインターネッ�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "TortoiseGit は既に (すばらしい差分エンジンを内蔵した) Subversion ライブラリを使用していたので、GNU diff の代わりにこのライブラリを使用するのは自然なことでした。"
+msgid "Since TortoiseGit already uses the Git library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "TortoiseGit は既に (すばらしい差分エンジンを内蔵した) Git ライブラリを使用していたので、GNU diff の代わりにこのライブラリを使用するのは自然なことでした。"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -275,8 +275,8 @@ msgstr "2 ファイルの差分を表示し、変更点をマージしたり、�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:288
-msgid "Editing conflicts between local changes and changes in the Subversion repository following an update."
-msgstr "ローカルな変更と、更新で取得した Subversion のリポジトリにある変更との競合の編集を行えます。"
+msgid "Editing conflicts between local changes and changes in the Git repository following an update."
+msgstr "ローカルな変更と、更新で取得した Git のリポジトリにある変更との競合の編集を行えます。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:294
@@ -349,8 +349,8 @@ msgstr "パッチを適用"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
-msgstr "パッチファイルは、Subversion の unified diff ファイルで、変更を適用するファイルの一覧が含まれています。パッチは、あなたが変更点を確認してからコミットできるように、他の開発者によって作成されたかもしれません。また、TortoiseGit が 2 つのフォルダを比較する際に、内部的に作成したかもしれません。これは、リポジトリリビジョンと作業コピーフォルダを比較したり、2 つの異なるリポジトリリビジョンを比較したり、2 つの異なるリポジトリパスを比較したりすると発生します。"
+msgid "A patch file is a Git unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgstr "パッチファイルは、Git の unified diff ファイルで、変更を適用するファイルの一覧が含まれています。パッチは、あなたが変更点を確認してからコミットできるように、他の開発者によって作成されたかもしれません。また、TortoiseGit が 2 つのフォルダを比較する際に、内部的に作成したかもしれません。これは、リポジトリリビジョンと作業コピーフォルダを比較したり、2 つの異なるリポジトリリビジョンを比較したり、2 つの異なるリポジトリパスを比較したりすると発生します。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:380
@@ -451,8 +451,8 @@ msgstr "TortoiseMerge がパッチファイルをパースすると、そのパ�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:493
-msgid "But don't worry. If you're working with Subversion you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
-msgstr "でも、ご心配なく。Subversion で作業していれば、古いバージョンのファイルを取り出し、競合を解消できます。実際、TortoiseMerge は自動で古いバージョンのファイルを取り出し、<literal>Base</literal> (古いバージョンのファイル)、<literal>Mine</literal> (現在作業コピーにあるファイル)、<literal>Theirs</literal> (古いバージョンのファイルにパッチが当たったファイル) の差分を表示します。以上から手動で競合を解消できます。"
+msgid "But don't worry. If you're working with Git you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
+msgstr "でも、ご心配なく。Git で作業していれば、古いバージョンのファイルを取り出し、競合を解消できます。実際、TortoiseMerge は自動で古いバージョンのファイルを取り出し、<literal>Base</literal> (古いバージョンのファイル)、<literal>Mine</literal> (現在作業コピーにあるファイル)、<literal>Theirs</literal> (古いバージョンのファイルにパッチが当たったファイル) の差分を表示します。以上から手動で競合を解消できます。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:504
@@ -651,8 +651,8 @@ msgstr "3 ペインビュー (時に <emphasis>マージビュー</emphasis> と
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:796
-msgid "Sometimes a file will be marked as conflicted in Subversion, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
-msgstr "時には、TortoiseMerge では競合していないのに、Subversion で競合が発生したと印がつけられることがあります。これは、選択した空白の扱いによるものかもしれません。行末や空白の変更を無視するようにした場合、その行は <emphasis>競合無視</emphasis> アイコンを用いて印がつけられます。競合を解消するために、どのバージョンを採用するか選択する必要があります。"
+msgid "Sometimes a file will be marked as conflicted in Git, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
+msgstr "時には、TortoiseMerge では競合していないのに、Git で競合が発生したと印がつけられることがあります。これは、選択した空白の扱いによるものかもしれません。行末や空白の変更を無視するようにした場合、その行は <emphasis>競合無視</emphasis> アイコンを用いて印がつけられます。競合を解消するために、どのバージョンを採用するか選択する必要があります。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:804
@@ -701,8 +701,8 @@ msgstr "パッチファイルを適用する場合、パッチファイルその
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:873
-msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Subversion working copy. Other formats like patch files generated by CVS are currently not supported!"
-msgstr "現在、<emphasis>Unified Diff Format</emphasis> しかサポートしていません。さらに、Subversion の作業コピーで作成されたファイルのみです。CVS で作成されたパッチファイルのような他の形式は、現在サポートしていません!"
+msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Git working copy. Other formats like patch files generated by CVS are currently not supported!"
+msgstr "現在、<emphasis>Unified Diff Format</emphasis> しかサポートしていません。さらに、Git の作業コピーで作成されたファイルのみです。CVS で作成されたパッチファイルのような他の形式は、現在サポートしていません!"
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:884
@@ -746,8 +746,8 @@ msgstr "<guilabel>変更された行内の色コード</guilabel> メイン表�
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:919
-msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Subversion treats such changes)."
-msgstr "<guilabel>空白を比較</guilabel> 行の追加・削除と同様 (Subversion の扱いと同様) に、インデントや行内の空白の変更を示します。"
+msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Git treats such changes)."
+msgstr "<guilabel>空白を比較</guilabel> 行の追加・削除と同様 (Git の扱いと同様) に、インデントや行内の空白の変更を示します。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:924
@@ -1253,8 +1253,8 @@ msgstr "追加"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1360
-msgid "A Subversion command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
-msgstr "ファイルやディレクトリをリポジトリに追加する Subversion コマンド。コミットするとリポジトリに追加されます。"
+msgid "A Git command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
+msgstr "ファイルやディレクトリをリポジトリに追加する Git コマンド。コミットするとリポジトリに追加されます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1368
@@ -1293,8 +1293,8 @@ msgstr "ブランチ"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1402
-msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Subversion a branch is implemented as a <quote>cheap copy</quote>."
-msgstr "ある点で開発が2つの独立したパスに分岐したことをと表す、リビジョン管理システムの用語です。メインラインを不安定にせずに新機能の開発を行うように、メインの開発ラインからブランチを作成できます。また、今後バグフィックスしか行わない安定版リリースのブランチを作成し、新機能の開発は不安定なトランクで行えます。Subversion のブランチは、<quote>チープコピー</quote> として実装されています。"
+msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Git a branch is implemented as a <quote>cheap copy</quote>."
+msgstr "ある点で開発が2つの独立したパスに分岐したことをと表す、リビジョン管理システムの用語です。メインラインを不安定にせずに新機能の開発を行うように、メインの開発ラインからブランチを作成できます。また、今後バグフィックスしか行わない安定版リリースのブランチを作成し、新機能の開発は不安定なトランクで行えます。Git のブランチは、<quote>チープコピー</quote> として実装されています。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1415
@@ -1303,8 +1303,8 @@ msgstr "チェックアウト"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1417
-msgid "A Subversion command which creates a local working copy in an empty directory by downloading versioned files from the repository."
-msgstr "空のディレクトリにリポジトリからバージョン管理下のファイルをダウンロードし、手元の作業コピーを作成する Subversion コマンドです。"
+msgid "A Git command which creates a local working copy in an empty directory by downloading versioned files from the repository."
+msgstr "空のディレクトリにリポジトリからバージョン管理下のファイルをダウンロードし、手元の作業コピーを作成する Git コマンドです。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1424
@@ -1313,8 +1313,8 @@ msgstr "クリーンアップ"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1426
-msgid "To quote from the Subversion book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
-msgstr "以下 Subversion book から引用します。<quote>作業コピーを再帰的にクリーンアップ (ロックの削除、未完操作の回復) を行います。<emphasis>作業コピーがロックされています</emphasis> というエラーが出続ける場合、このコマンドを実行し、古くなったロックを削除し、作業コピーをまた使えるようにします。</quote> ここで言う <emphasis>ロック</emphasis> は、ファイルシステムのロックを指しており、リポジトリのロックではないことに注意してください。"
+msgid "To quote from the Git book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
+msgstr "以下 Git book から引用します。<quote>作業コピーを再帰的にクリーンアップ (ロックの削除、未完操作の回復) を行います。<emphasis>作業コピーがロックされています</emphasis> というエラーが出続ける場合、このコマンドを実行し、古くなったロックを削除し、作業コピーをまた使えるようにします。</quote> ここで言う <emphasis>ロック</emphasis> は、ファイルシステムのロックを指しており、リポジトリのロックではないことに注意してください。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1441
@@ -1323,8 +1323,8 @@ msgstr "コミット"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1443
-msgid "This Subversion command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
-msgstr "手元の作業コピーの変更点をリポジトリに渡し、リポジトリのリビジョンを新しく作成するのに使用する Subversion コマンドです。"
+msgid "This Git command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
+msgstr "手元の作業コピーの変更点をリポジトリに渡し、リポジトリのリビジョンを新しく作成するのに使用する Git コマンドです。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1451
@@ -1333,8 +1333,8 @@ msgstr "競合"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1453
-msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Subversion cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
-msgstr "リポジトリの変更が手元にマージされる際、時には同じ行に変更がある場合があります。この場合、Subversion はそちらを使用するか自動的に決定できません。これを競合と呼びます。それ以降の変更をコミットする前には、ファイルを手で修正し競合を解消しなければなりません。"
+msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Git cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
+msgstr "リポジトリの変更が手元にマージされる際、時には同じ行に変更がある場合があります。この場合、Git はそちらを使用するか自動的に決定できません。これを競合と呼びます。それ以降の変更をコミットする前には、ファイルを手で修正し競合を解消しなければなりません。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1463
@@ -1343,8 +1343,8 @@ msgstr "コピー"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1465
-msgid "In a Subversion repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
-msgstr "Subversion リポジトリでは、単一ファイルやツリー全体のコピーを作成できます。これは、領域を消費しないように、オリジナルへのリンクに少し似ている <quote>チープコピー</quote> で実装されています。コピーの作成ではコピー内に履歴を保存します。そのためコピーされる前についても追跡できます。"
+msgid "In a Git repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
+msgstr "Git リポジトリでは、単一ファイルやツリー全体のコピーを作成できます。これは、領域を消費しないように、オリジナルへのリンクに少し似ている <quote>チープコピー</quote> で実装されています。コピーの作成ではコピー内に履歴を保存します。そのためコピーされる前についても追跡できます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1475
@@ -1383,8 +1383,8 @@ msgstr "FSFS"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1508
-msgid "A proprietary Subversion filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
-msgstr "リポジトリ用の Subversion が持つファイルシステムバックエンド。ネットワーク共有が可能。1.2 以降のリポジトリのデフォルト。"
+msgid "A proprietary Git filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
+msgstr "リポジトリ用の Git が持つファイルシステムバックエンド。ネットワーク共有が可能。1.2 以降のリポジトリのデフォルト。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1515
@@ -1413,7 +1413,7 @@ msgstr "インポート"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1533
-msgid "Subversion command to import an entire folder hierarchy into the repository in a single revision."
+msgid "Git command to import an entire folder hierarchy into the repository in a single revision."
 msgstr "ひとつのリビジョンで、フォルダ階層のエントリをリポジトリにインポートするコマンドです。"
 
 #. (glossterm)
@@ -1468,8 +1468,8 @@ msgstr "パッチ"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1586
-msgid "If a working copy has changes to text files only, it is possible to use Subversion's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
-msgstr "作業コピーにテキストファイルの変更のみある場合、Unified Diff 形式で変更内容の単一ファイルを作成するのに、Subversion の Diff コマンドを使用できます。この形のファイルは、よく <quote>パッチ</quote> と言われており、他の誰か (やメーリングリスト) にメールで送ったり、他の作業コピーに適用したりできます。コミットアクセスできない人は、権限のあるコミッタが適用するように、変更をパッチファイルにして送ることができます。また、変更に自信がなければ、他の人に見てもらうようにパッチを送れます。"
+msgid "If a working copy has changes to text files only, it is possible to use Git's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
+msgstr "作業コピーにテキストファイルの変更のみある場合、Unified Diff 形式で変更内容の単一ファイルを作成するのに、Git の Diff コマンドを使用できます。この形のファイルは、よく <quote>パッチ</quote> と言われており、他の誰か (やメーリングリスト) にメールで送ったり、他の作業コピーに適用したりできます。コミットアクセスできない人は、権限のあるコミッタが適用するように、変更をパッチファイルにして送ることができます。また、変更に自信がなければ、他の人に見てもらうようにパッチを送れます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1599
@@ -1478,8 +1478,8 @@ msgstr "プロパティ"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "ディレクトリやファイルをバージョン管理下に置くのに加えて、Subversion はバージョン管理下のメタデータを追加できます。これは、バージョン管理下のディレクトリ・ファイルごとの <quote>プロパティ</quote> として参照されます。プロパティには、レジストリキーと同じように、それぞれ名前と値があります。Subversion には、<literal>svn:eol-style</literal> のような内部で使用する特殊なプロパティがいくつかあります。TortoiseGit にも <literal>tsvn:logminsize</literal> のような特殊なプロパティがあります。お好みの名前と値を持つプロパティの追加もできます。"
+msgid "In addition to versioning your directories and files, Git allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Git has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "ディレクトリやファイルをバージョン管理下に置くのに加えて、Git はバージョン管理下のメタデータを追加できます。これは、バージョン管理下のディレクトリ・ファイルごとの <quote>プロパティ</quote> として参照されます。プロパティには、レジストリキーと同じように、それぞれ名前と値があります。Git には、<literal>svn:eol-style</literal> のような内部で使用する特殊なプロパティがいくつかあります。TortoiseGit にも <literal>tsvn:logminsize</literal> のような特殊なプロパティがあります。お好みの名前と値を持つプロパティの追加もできます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1614
@@ -1523,8 +1523,8 @@ msgstr "取り消し"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1656
-msgid "Subversion keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
-msgstr "作業コピーを最後に更新したときから、Subversion はそれぞれのファイルの <quote>当初の</quote> コピーを手元に保持しています。変更を行い、その変更を取り消したい場合は、<quote>取り消し</quote> コマンドを使用して当初のコピーに戻せます。"
+msgid "Git keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
+msgstr "作業コピーを最後に更新したときから、Git はそれぞれのファイルの <quote>当初の</quote> コピーを手元に保持しています。変更を行い、その変更を取り消したい場合は、<quote>取り消し</quote> コマンドを使用して当初のコピーに戻せます。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1665
@@ -1558,13 +1558,13 @@ msgstr "SVN"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1697
-msgid "A frequently-used abbreviation for Subversion."
-msgstr "Subversion のよく使われる省略表現。"
+msgid "A frequently-used abbreviation for Git."
+msgstr "Git のよく使われる省略表現。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1700
-msgid "The name of the Subversion custom protocol used by the <quote>svnserve</quote> repository server."
-msgstr "<quote>svnserve</quote> リポジトリサーバで使われる、Subversion カスタムプロトコルの名前です。"
+msgid "The name of the Git custom protocol used by the <quote>svnserve</quote> repository server."
+msgstr "<quote>svnserve</quote> リポジトリサーバで使われる、Git カスタムプロトコルの名前です。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1707
@@ -1583,7 +1583,7 @@ msgstr "更新"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1723
-msgid "This Subversion command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
+msgid "This Git command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
 msgstr "リポジトリから作業コピーへ最新の変更点を取得するコマンド。作業コピーの変更点に、他の人が行った変更をマージします。"
 
 #. (glossterm)

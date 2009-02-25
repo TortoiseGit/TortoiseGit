@@ -172,9 +172,9 @@
 		<para>
 			Sometimes when you try to update, the update fails with a message to
 			say that there is already a local file of the same name. This typically
-			happens when Subversion tries to checkout a newly versioned file, and finds
+			happens when Git tries to checkout a newly versioned file, and finds
 			that an unversioned file of the same name already exists in your working
-			folder. Subversion will never overwrite an unversioned file - it might
+			folder. Git will never overwrite an unversioned file - it might
 			contain something you are working on, which coincidentally has the same
 			filename as another developer has used for his newly committed file. 
 		</para>

@@ -586,11 +586,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
@@ -826,19 +826,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\open.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -942,19 +942,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\saveas.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\saveas.ico"
 				>
 			</File>
 			<File
@@ -1046,11 +1046,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
@@ -1208,6 +1208,14 @@
 			<Filter
 				Name="Rename"
 				>
+				<File
+					RelativePath=".\Commands\DropMoveCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropMoveCommand.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Commands\RenameCommand.cpp"
 					>
@@ -1368,6 +1376,14 @@
 			<Filter
 				Name="Export"
 				>
+				<File
+					RelativePath=".\Commands\DropExportCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropExportCommand.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Commands\ExportCommand.cpp"
 					>
@@ -1766,6 +1782,26 @@
 				</File>
 				<File
 					RelativePath=".\Commands\RepoStatusCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Copy"
+				>
+				<File
+					RelativePath=".\Commands\DropCopyAddCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropCopyAddCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropCopyCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropCopyCommand.h"
 					>
 				</File>
 			</Filter>

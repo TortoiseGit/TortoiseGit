@@ -31,17 +31,17 @@
 			</figure>
 		</para>
 		<para>
-			Now that you have checked out a working copy from a Subversion
+			Now that you have checked out a working copy from a Git
 			repository you can see your files in the windows explorer with
 			changed icons. This is one of the reasons why TortoiseGit is so
 			popular. TortoiseGit adds a so called overlay icon to each
 			file icon which overlaps the original file icon. Depending on
-			the Subversion status of the file the overlay icon is different.
+			the Git status of the file the overlay icon is different.
 		</para>
 		<para>
-			<graphic fileref="../images/InSubVersionIcon.png"/>
+			<graphic fileref="../images/InGitIcon.png"/>
 			A fresh checked out working copy has a green checkmark as overlay.
-			That means the Subversion status is <emphasis>normal</emphasis>.
+			That means the Git status is <emphasis>normal</emphasis>.
 		</para>
 		<para>
 			<graphic fileref="../images/ModifiedIcon.png"/>
@@ -59,13 +59,13 @@
 		<para>
 			<graphic fileref="../images/ReadOnlyIcon.png"/> 
 			If you have set the <literal>svn:needs-lock</literal> property on a file,
-			Subversion makes that file read-only until you get a lock on that file.
+			Git makes that file read-only until you get a lock on that file.
 			Such files have this overlay to indicate that you have to get a lock
 			first before you can edit that file.
 		</para>
 		<para>
 			<graphic fileref="../images/LockedIcon.png"/> 
-			If you hold a lock on a file, and the Subversion status is
+			If you hold a lock on a file, and the Git status is
 			<emphasis>normal</emphasis>, this icon overlay reminds you that you
 			should release the lock if you are not using it to allow others to
 			commit their changes to the file.
@@ -109,7 +109,7 @@
 			this has been integrated yet :-)
 		</para>
 		<para>
-			For a description of how icon overlays correspond to Subversion
+			For a description of how icon overlays correspond to Git
 			status and other technical details, read
 			<xref linkend="tsvn-app-internals-overlays"/>.
 		</para>
@@ -327,9 +327,9 @@
 		<tip>
 			<title>Repairing External Renames</title>
 			<para>
-				Sometimes files get renamed outside of Subversion, and they show up
+				Sometimes files get renamed outside of Git, and they show up
 				in the file list as a missing file and an unversioned file. To avoid
-				losing the history you need to notify Subversion about the connection.
+				losing the history you need to notify Git about the connection.
 				Simply select both the old name (missing) and the new name (unversioned)
 				and use
 				<menuchoice>

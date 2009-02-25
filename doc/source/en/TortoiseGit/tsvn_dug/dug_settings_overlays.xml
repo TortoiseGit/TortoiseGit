@@ -132,14 +132,14 @@
 		need the overlays. For example:
 	</para>
 	<para>
-		<filename>f:\development\SVN\Subversion</filename> will disable
+		<filename>f:\development\SVN\Git</filename> will disable
 		the overlays <emphasis>only</emphasis> on that specific folder. You
 		still can see the overlays on all files and folder inside that folder.
 	</para>
 	<para>
-		<filename>f:\development\SVN\Subversion*</filename> will disable the
+		<filename>f:\development\SVN\Git*</filename> will disable the
 		overlays on <emphasis>all</emphasis> files and folders whose path
-		starts with <filename>f:\development\SVN\Subversion</filename>. That
+		starts with <filename>f:\development\SVN\Git</filename>. That
 		means you won't see overlays for any files and folders below that
 		path.
 	</para>

@@ -15,8 +15,8 @@
 			</ulink>
 			which contains a selection of the questions we are asked
 			the most on the TortoiseGit mailing lists
-			<email>dev@TortoiseGit.tigris.org</email> and
-			<email>users@TortoiseGit.tigris.org</email>.
+			<email>tortoisegit-dev@googlegroups.com </email> and
+			<email>tortoisegit-users@googlegroups.com </email>.
 		</para>
 		<para>
 			We also maintain a project
@@ -31,11 +31,11 @@
 		<para>
 			If you have a question which is not answered anywhere
 			else, the best place to ask it is on one of the mailing lists.
-			<email>users@TortoiseGit.tigris.org</email> is the one to use
+			<email>tortoisegit-users@googlegroups.com </email> is the one to use
 			if you have questions about using TortoiseGit.
 			If you want to help out with the development of TortoiseGit,
 			then you should take part in discussions on
-			<email>dev@TortoiseGit.tigris.org</email>.
+			<email>tortoisegit-dev@googlegroups.com </email>.
 		</para>
 	</simplesect>
 </appendix>

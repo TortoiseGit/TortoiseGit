@@ -128,6 +128,18 @@ void CTGitPath::SetFromGit(const char* pPath, bool bIsDirectory)
 	m_bIsDirectory = bIsDirectory;
 }
 
+void CTGitPath::SetFromGit(const TCHAR* pPath, bool bIsDirectory)
+{
+	Reset();
+	if (pPath)
+	{
+		m_sFwdslashPath = pPath;
+		SanitizeRootPath(m_sFwdslashPath, true);
+	}
+	m_bDirectoryKnown = true;
+	m_bIsDirectory = bIsDirectory;
+}
+
 void CTGitPath::SetFromGit(const CString& sPath,CString *oldpath)
 {
 	Reset();

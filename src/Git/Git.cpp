@@ -868,6 +868,9 @@ public:
 		fileStatus.nFlags = 0;
 		if (*line == 'D')
 			fileStatus.nFlags |= WGFF_Directory;
+		else if (*line != 'F')
+			// parse error
+			return false;
 		line += 2;
 
 		// status
@@ -884,6 +887,10 @@ public:
 		case 'I': fileStatus.nStatus = WGFS_Ignored; break;
 		case 'U': fileStatus.nStatus = WGFS_Unversioned; break;
 		case 'E': fileStatus.nStatus = WGFS_Empty; break;
+		case '?': fileStatus.nStatus = WGFS_Unknown; break;
+		default:
+			// parse error
+			return false;
 		}
 		line += 2;
 
@@ -895,7 +902,7 @@ public:
 		{
 			for (int i=0; i<20; i++)
 			{
-				sha1[i] = (HexChar(line[0]) << 8) | HexChar(line[1]);
+				sha1[i] = (BYTE)((HexChar(line[0]) << 8) | HexChar(line[1]));
 				line += 2;
 			}
 
@@ -903,10 +910,17 @@ public:
 		}
 
 		// filename
-		fileStatus.sFileName = line;
+		int len = strlen(line);
+		if (len && len < 2048)
+		{
+			WCHAR *buf = (WCHAR*)alloca((len*4+2)*sizeof(WCHAR));
+			*buf = 0;
+			MultiByteToWideChar(CP_ACP, 0, line, len+1, buf, len*4+1);
+			fileStatus.sFileName = buf;
 
-		if ( (*m_pEnumCb)(&fileStatus,m_pUserData) )
-			return false;
+			if (*buf && (*m_pEnumCb)(&fileStatus,m_pUserData))
+				return false;
+		}
 
 		return true;
 	}

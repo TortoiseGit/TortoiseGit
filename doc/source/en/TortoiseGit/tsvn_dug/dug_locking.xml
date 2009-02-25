@@ -9,7 +9,7 @@
 		<primary>readonly</primary>
 	</indexterm>
 	<para>
-		Subversion generally works best without locking, using the
+		Git generally works best without locking, using the
 		<quote>Copy-Modify-Merge</quote> methods described earlier in
 		<xref linkend="tsvn-basics-versioning-copymodifymerge"/>.
 		However there are a few instances when you may need to implement
@@ -33,13 +33,13 @@
 		</itemizedlist>
 	</para>
 	<para>
-		Firstly you need to ensure that your Subversion server is upgraded to at
+		Firstly you need to ensure that your Git server is upgraded to at
 		least version 1.2. Earlier versions do not support locking at all. If you
 		are using <literal>file://</literal> access, then of course only your
 		client needs to be updated.
 	</para>
 	<sect2 id="tsvn-dug-locking-how">
-		<title>How Locking Works in Subversion</title>
+		<title>How Locking Works in Git</title>
 		<para>
 			By default, nothing is locked and anyone who has commit access can
 			commit changes to any file at any time. Others will update their
@@ -58,7 +58,7 @@
 			out a lock. Unless they check the lock status regularly, the first
 			they will know about it is when their commit fails, which in most
 			cases is not very useful. To make it easier to manage locks, there
-			is a new Subversion property
+			is a new Git property
 			<literal>svn:needs-lock</literal>.
 			When this property is set (to any value) on a file, whenever the
 			file is checked out or updated, the local copy is made read-only
@@ -77,7 +77,7 @@
 		</para>
 		<para>
 			If one of your co-workers acquires a lock and then goes on holiday
-			without releasing it, what do you do? Subversion provides a means
+			without releasing it, what do you do? Git provides a means
 			to force locks. Releasing a lock held by someone else is referred
 			to as <firstterm>Breaking</firstterm> the lock, and forcibly
 			acquiring a lock which someone else already holds is referred to
@@ -182,7 +182,7 @@
 				are working with unmergeable file types and you steal
 				someone else's lock, once you release the lock they
 				are free to check in their changes and overwrite yours.
-				Subversion doesn't lose data, but you have lost the
+				Git doesn't lose data, but you have lost the
 				team-working protection that locking gave you.
 			</para>
 		</caution>
@@ -201,7 +201,7 @@
 		</para>
 		<para>
 			If you operate a policy where every file has to be locked then
-			you may find it easier to use Subversion's auto-props feature
+			you may find it easier to use Git's auto-props feature
 			to set the property automatically every time you add new files.
 			Read <xref linkend="tsvn-dug-propertypage-auto-props"/> for
 			further information.
@@ -210,7 +210,7 @@
 	<sect2 id="tsvn-dug-locking-hooks">
 		<title>The Locking Hook Scripts</title>
 		<para>
-			When you create a new repository with Subversion 1.2 or higher,
+			When you create a new repository with Git 1.2 or higher,
 			four hook templates are created in the repository
 			<filename>hooks</filename> directory. These are called before
 			and after getting a lock, and before and after releasing a lock.

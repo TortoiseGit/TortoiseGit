@@ -23,7 +23,7 @@
 		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.reposadmin.create.html#svn.reposadmin.create.hooks">
 			<citetitle>Hook Scripts</citetitle>
 		</ulink>
-		in the Subversion Book for full details about the hooks which
+		in the Git Book for full details about the hooks which
 		are implemented. 
 	</para>
 	<para>

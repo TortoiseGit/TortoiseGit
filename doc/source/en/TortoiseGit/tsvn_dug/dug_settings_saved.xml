@@ -67,7 +67,7 @@
 			<term>Authentication data</term>
 			<listitem>
 				<para>
-					When you authenticate with a Subversion server, the username
+					When you authenticate with a Git server, the username
 					and password are cached locally so you don't have to keep
 					entering them. You may want to clear this for security reasons,
 					or because you want to access the repository under a different
