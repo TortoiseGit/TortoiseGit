@@ -32,7 +32,7 @@ static char THIS_FILE[]=__FILE__;
 const int g_ciArrowSizeX = 4 ;
 const int g_ciArrowSizeY = 2 ;
 
-IMPLEMENT_DYNCREATE(CMenuButton, _Inherited)
+IMPLEMENT_DYNCREATE(CMenuButton, COddButton)
 
 CMenuButton::CMenuButton(void):
 	_Inherited(),

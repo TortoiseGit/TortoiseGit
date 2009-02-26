@@ -24,7 +24,7 @@
 
 // CSettingsTBlame dialog
 
-IMPLEMENT_DYNAMIC(CSettingsTBlame, ISettingsPropPage)
+//IMPLEMENT_DYNAMIC(CSettingsTBlame, ISettingsPropPage)
 
 CSettingsTBlame::CSettingsTBlame()
 	: ISettingsPropPage(CSettingsTBlame::IDD)

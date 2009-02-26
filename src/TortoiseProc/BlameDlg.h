@@ -28,7 +28,7 @@
  */
 class CBlameDlg : public CStandAloneDialog
 {
-	DECLARE_DYNAMIC(CBlameDlg)
+//	DECLARE_DYNAMIC(CBlameDlg)
 
 public:
 	CBlameDlg(CWnd* pParent = NULL);   // standard constructor

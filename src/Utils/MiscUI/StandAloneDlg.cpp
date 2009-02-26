@@ -20,7 +20,7 @@
 #include "Resource.h"
 #include "StandAloneDlg.h"
 
-IMPLEMENT_DYNAMIC(CResizableStandAloneDialog, CStandAloneDialogTmpl<CResizableDialog>)
+IMPLEMENT_DYNAMIC(CResizableStandAloneDialog, CDialog)
 CResizableStandAloneDialog::CResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= NULL*/)
 	: CStandAloneDialogTmpl<CResizableDialog>(nIDTemplate, pParentWnd)
 	, m_bVertical(false)

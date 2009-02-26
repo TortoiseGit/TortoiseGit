@@ -24,7 +24,7 @@
 #include "..\version.h"
 //#include "AppUtils.h"
 
-IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
+//IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CAboutDlg::IDD, pParent)
 {

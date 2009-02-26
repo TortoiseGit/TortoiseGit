@@ -26,6 +26,7 @@
  */
 class CHintListCtrl : public CListCtrl
 {
+	DECLARE_DYNAMIC(CHintListCtrl)
 public: 
 	CHintListCtrl();
 	~CHintListCtrl();

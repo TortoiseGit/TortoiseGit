@@ -21,7 +21,7 @@
 #include "BlameDlg.h"
 #include "Registry.h"
 
-IMPLEMENT_DYNAMIC(CBlameDlg, CStandAloneDialog)
+//IMPLEMENT_DYNAMIC(CBlameDlg, CStandAloneDialog)
 CBlameDlg::CBlameDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CBlameDlg::IDD, pParent)
 //	, StartRev(1)

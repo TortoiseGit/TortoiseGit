@@ -40,6 +40,7 @@ COddButton::~COddButton()
 {
 }
 
+IMPLEMENT_DYNAMIC(COddButton, CButton)
 
 BEGIN_MESSAGE_MAP(COddButton, CButton)
 	//{{AFX_MSG_MAP(COddButton)

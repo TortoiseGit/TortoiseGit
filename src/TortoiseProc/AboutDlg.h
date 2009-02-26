@@ -35,7 +35,7 @@
  */
 class CAboutDlg : public CStandAloneDialog
 {
-	DECLARE_DYNAMIC(CAboutDlg)
+//	DECLARE_DYNAMIC(CAboutDlg)
 
 public:
 	CAboutDlg(CWnd* pParent = NULL);   // standard constructor

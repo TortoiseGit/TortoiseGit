@@ -37,6 +37,7 @@ protected:
 
 class COutputWnd : public CDockablePane
 {
+	DECLARE_DYNAMIC(COutputWnd)
 // Construction
 public:
 	COutputWnd();

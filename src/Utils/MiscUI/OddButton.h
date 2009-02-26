@@ -43,6 +43,7 @@
 */
 class COddButton : public CButton
 {
+	DECLARE_DYNAMIC(COddButton)
 // Construction
 public:
 	COddButton();

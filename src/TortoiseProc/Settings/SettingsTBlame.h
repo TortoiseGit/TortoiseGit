@@ -27,7 +27,7 @@
  */
 class CSettingsTBlame : public ISettingsPropPage
 {
-	DECLARE_DYNAMIC(CSettingsTBlame)
+//	DECLARE_DYNAMIC(CSettingsTBlame)
 
 public:
 	CSettingsTBlame();
