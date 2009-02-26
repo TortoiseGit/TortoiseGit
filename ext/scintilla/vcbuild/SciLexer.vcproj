@@ -56,7 +56,7 @@
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/SciLexer.pch"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -147,7 +147,7 @@
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/SciLexer.pch"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -4330,11 +4330,11 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="ReadMe.txt"
+			RelativePath="..\..\..\src\Git\ReadMe.txt"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\src\Git\ReadMe.txt"
+			RelativePath="ReadMe.txt"
 			>
 		</File>
 	</Files>
