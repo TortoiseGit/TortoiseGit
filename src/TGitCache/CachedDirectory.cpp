@@ -404,17 +404,17 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			m_directoryPath.HasAdminDir(&sProjectRoot);
 			ATLASSERT( !m_directoryPath.IsEmpty() );
 
-			LPCSTR lpszSubPath = NULL;
-			CStringA sSubPath;
+			LPCTSTR lpszSubPath = NULL;
+			CString sSubPath;
 			CString s = m_directoryPath.GetDirectory().GetWinPathString();
 			if (s.GetLength() > sProjectRoot.GetLength())
 			{
-				sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 				lpszSubPath = sSubPath;
 			}
 //MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
 //OutputDebugStringA("###");OutputDebugStringW(sProjectRoot);OutputDebugStringA(" - ");OutputDebugStringA(sSubPath);OutputDebugStringA("\r\n");
-			BOOL pErr = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath, &GetStatusCallback, this);
+			BOOL pErr = !wgEnumFiles(sProjectRoot, lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath, &GetStatusCallback, this);
 
 			/*git_error_t* pErr = svn_client_status4 (
 				NULL,

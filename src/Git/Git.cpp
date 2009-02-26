@@ -808,7 +808,7 @@ BOOL CGit::CheckMsysGitDir()
 class CGitCall_EnumFiles : public CGitCall
 {
 public:
-	CGitCall_EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
+	CGitCall_EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
 	:	m_pszProjectPath(pszProjectPath),
 		m_pszSubPath(pszSubPath),
 		m_nFlags(nFlags),
@@ -819,8 +819,8 @@ public:
 
 	typedef std::map<CStringA,char>	TStrCharMap;
 
-	const char *	m_pszProjectPath;
-	const char *	m_pszSubPath;
+	const TCHAR *	m_pszProjectPath;
+	const TCHAR *	m_pszSubPath;
 	unsigned int	m_nFlags;
 	WGENUMFILECB *	m_pEnumCb;
 	void *			m_pUserData;
@@ -926,7 +926,7 @@ public:
 	}
 };
 
-BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
+BOOL CGit::EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
 {
 	if(!pszProjectPath || *pszProjectPath=='\0')
 		return FALSE;
@@ -942,7 +942,7 @@ BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigne
 	SetCurrentDirectoryA(W_szToDir);
 	GetCurrentDirectoryA(sizeof(W_szToDir)-1,W_szToDir);
 */
-	SetCurrentDir(CUnicodeUtils::GetUnicode(pszProjectPath));
+	SetCurrentDir(pszProjectPath);
 
 	CString sMode;
 	if (nFlags)
@@ -960,9 +960,9 @@ BOOL CGit::EnumFiles(const char *pszProjectPath, const char *pszSubPath, unsigne
 	}
 
 	if (pszSubPath)
-		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), CUnicodeUtils::GetUnicode(pszProjectPath), sMode, CUnicodeUtils::GetUnicode(pszSubPath));
+		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), pszProjectPath, sMode, pszSubPath);
 	else
-		cmd.Format(_T("igit.exe \"%s\" status %s"), CUnicodeUtils::GetUnicode(pszProjectPath), sMode);
+		cmd.Format(_T("igit.exe \"%s\" status %s"), pszProjectPath, sMode);
 
 	W_GitCall.SetCmd(cmd);
 	// NOTE: should igit get added as a part of msysgit then use below line instead of the above one
