@@ -18,6 +18,7 @@
 #include "stdafx.h"
 #include "SettingsPropPage.h"
 
+IMPLEMENT_DYNAMIC(ISettingsPropPage, CPropertyPage)
 
 ISettingsPropPage::ISettingsPropPage() : CPropertyPage()
 	, m_restart(Restart_None)

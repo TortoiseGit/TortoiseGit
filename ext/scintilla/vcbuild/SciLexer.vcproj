@@ -232,8 +232,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\include,..\src"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				StringPooling="true"
@@ -324,8 +322,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\include,..\src"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				StringPooling="true"
@@ -4330,11 +4326,11 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\src\Git\ReadMe.txt"
+			RelativePath="ReadMe.txt"
 			>
 		</File>
 		<File
-			RelativePath="ReadMe.txt"
+			RelativePath="..\..\..\src\Git\ReadMe.txt"
 			>
 		</File>
 	</Files>

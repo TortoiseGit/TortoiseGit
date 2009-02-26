@@ -21,7 +21,7 @@
 #include "SettingsRevisionGraph.h"
 #include "MessageBox.h"
 
-IMPLEMENT_DYNAMIC(CSettingsRevisionGraph, ISettingsPropPage)
+//IMPLEMENT_DYNAMIC(CSettingsRevisionGraph, ISettingsPropPage)
 
 CSettingsRevisionGraph::CSettingsRevisionGraph()
 	: ISettingsPropPage(CSettingsRevisionGraph::IDD)

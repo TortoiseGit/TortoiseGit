@@ -31,7 +31,7 @@ class CProgressDlg;
 class CSettingsRevisionGraph 
     : public ISettingsPropPage
 {
-	DECLARE_DYNAMIC(CSettingsRevisionGraph)
+//	DECLARE_DYNAMIC(CSettingsRevisionGraph)
 
 public:
 	CSettingsRevisionGraph();

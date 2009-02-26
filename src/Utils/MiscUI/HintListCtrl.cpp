@@ -43,6 +43,8 @@ void CHintListCtrl::ClearText()
 	Invalidate();
 }
 
+IMPLEMENT_DYNAMIC(CHintListCtrl, CListCtrl)
+
 BEGIN_MESSAGE_MAP(CHintListCtrl, CListCtrl)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
