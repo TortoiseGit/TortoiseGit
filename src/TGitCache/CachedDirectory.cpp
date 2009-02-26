@@ -853,11 +853,13 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 	// Combine our OWN folder status with the most important of our *FILES'* status.
 	git_wc_status_kind retVal = GitStatus::GetMoreImportant(m_mostImportantFileStatus, m_ownStatus.GetEffectiveStatus());
 
-	if ((retVal != git_wc_status_modified)&&(retVal != m_ownStatus.GetEffectiveStatus()))
+	// NOTE: TSVN marks dir as modified if it contains added/deleted/missing files, but we prefer the most important
+	//       status to propagate upward in its original state
+	/*if ((retVal != git_wc_status_modified)&&(retVal != m_ownStatus.GetEffectiveStatus()))
 	{
 		if ((retVal == git_wc_status_added)||(retVal == git_wc_status_deleted)||(retVal == git_wc_status_missing))
 			retVal = git_wc_status_modified;
-	}
+	}*/
 
 	// Now combine all our child-directorie's status
 	
@@ -866,11 +868,11 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 	for(it = m_childDirectories.begin(); it != m_childDirectories.end(); ++it)
 	{
 		retVal = GitStatus::GetMoreImportant(retVal, it->second);
-		if ((retVal != git_wc_status_modified)&&(retVal != m_ownStatus.GetEffectiveStatus()))
+		/*if ((retVal != git_wc_status_modified)&&(retVal != m_ownStatus.GetEffectiveStatus()))
 		{
 			if ((retVal == git_wc_status_added)||(retVal == git_wc_status_deleted)||(retVal == git_wc_status_missing))
 				retVal = git_wc_status_modified;
-		}
+		}*/
 	}
 	
 	return retVal;
