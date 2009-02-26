@@ -66,6 +66,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -141,6 +142,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -214,6 +216,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -290,6 +293,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
