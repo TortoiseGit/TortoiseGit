@@ -5409,14 +5409,14 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 	this->m_bBusy=TRUE;
 	m_CurrentVersion=hash;
 
+	int count = 0;
+	if(list == NULL)
+		count = 1;
+	else
+		count = list->GetCount();
+
 	if(hash == GIT_REV_ZERO)
 	{
-		int count = 0;
-		if(list == NULL)
-			count = 1;
-		else
-			count = list->GetCount();
-
 		for(int i=0;i<count;i++)
 		{	
 			BYTE_VECTOR cmdout;
@@ -5477,7 +5477,31 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 		else
 			this->m_StatusFileList.ParserFromLog(out);
 
-		
+		//handle delete conflict case, when remote : modified, local : deleted. 
+		for(int i=0;i<count;i++)
+		{	
+			BYTE_VECTOR cmdout;
+			CString cmd;
+
+			if(list == NULL)
+				cmd=_T("git.exe ls-files -u -t -z");
+			else
+				cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),(*list)[i].GetGitPathString());
+
+			g_Git.Run(cmd,&cmdout);
+
+			CTGitPathList conflictlist;
+			conflictlist.ParserFromLog(cmdout);
+			for(int i=0;i<conflictlist.GetCount();i++)
+			{
+				CTGitPath *p=m_StatusFileList.LookForGitPath(conflictlist[i].GetGitPathString());
+				if(p)
+					p->m_Action|=CTGitPath::LOGACTIONS_UNMERGED;
+				else
+					m_StatusFileList.AddPath(conflictlist[i]);
+			}	
+		}
+
 	}else
 	{
 		int count = 0;
@@ -5502,12 +5526,14 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 		this->m_StatusFileList.ParserFromLog(out);
 
 	}
+	
 	for(int i=0;i<m_StatusFileList.GetCount();i++)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
 		gitpatch->m_Checked = TRUE;
 		m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 	}
+
 	this->m_bBusy=FALSE;
 	return 0;
 }

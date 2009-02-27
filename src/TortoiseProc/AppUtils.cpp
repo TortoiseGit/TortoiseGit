@@ -1364,6 +1364,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 		CDeleteConflictDlg dlg;
 		DescribeFile(b_local, b_base,dlg.m_LocalStatus);
 		DescribeFile(b_remote,b_base,dlg.m_RemoteStatus);
+		dlg.m_bShowModifiedButton=b_base;
 		dlg.m_File=merge.GetGitPathString();
 		if(dlg.DoModal() == IDOK)
 		{
