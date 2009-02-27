@@ -698,6 +698,11 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 	GitRev *curRev;
 	do
 	{
+		if(index<0)
+			return -1;
+		if(index>= m_CommitList.GetItemCount())
+			return -1;
+
 		curRev=(GitRev*)m_CommitList.m_arShownList[index];
 		
 		if( curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH )
@@ -709,12 +714,7 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 			else
 				index--;
 		}else
-			return -1;
-
-		if(index<0)
-			return -1;
-		if(index>= m_CommitList.GetItemCount())
-			return -1;
+			return -1;		
 
 	}while(curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SKIP);
 	
@@ -1149,6 +1149,13 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(CMessageBox::Show(NULL,_T("Are you sure abort rebase"),_T("TortoiseGit"),MB_YESNO) != IDYES)
 		return;
 
+	cmd.Format(_T("git checkout -f %s"),this->m_UpstreamCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return ;
+	}
+
 	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.Left(40));
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
@@ -1163,5 +1170,11 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 	
+	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.Left(40));
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return ;
+	}
 	__super::OnCancel();
 }
