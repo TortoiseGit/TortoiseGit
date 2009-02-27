@@ -1019,6 +1019,7 @@ int CRebaseDlg::RebaseThread()
 				break;
 			}
 			m_RebaseStage = REBASE_CONTINUE;
+			continue;
 
 		}else if( m_RebaseStage == REBASE_CONTINUE )
 		{
