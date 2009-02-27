@@ -195,6 +195,12 @@ BOOL CRebaseDlg::OnInitDialog()
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTTOREV)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_COMBINE_COMMIT));
 
+	if(m_CommitList.m_IsOldFirst)
+		this->m_CurrentRebaseIndex = -1;
+	else
+		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
+
+
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -458,14 +464,18 @@ int CRebaseDlg::CheckRebaseCondition()
 int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
-	//Todo call comment_for_reflog
-	cmd.Format(_T("git.exe checkout %s"),this->m_BranchCtrl.GetString());
-	this->AddLogString(cmd);
 
-	if(g_Git.Run(cmd,&out,CP_UTF8))
-		return -1;
+	if(!this->m_IsCherryPick)
+	{
+		//Todo call comment_for_reflog
+		cmd.Format(_T("git.exe checkout %s"),this->m_BranchCtrl.GetString());
+		this->AddLogString(cmd);
 
-	this->AddLogString(out);
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+			return -1;
+
+		this->AddLogString(out);
+	}
 
 	cmd=_T("git.exe rev-parse --verify HEAD");
 	if(g_Git.Run(cmd,&out,CP_UTF8))
@@ -484,17 +494,18 @@ int CRebaseDlg::StartRebase()
 		return -1;
 	}
 	
-	cmd.Format(_T("git.exe update-ref ORIG_HEAD HEAD"));
-
-	cmd.Format(_T("git.exe checkout %s"),this->m_UpstreamCtrl.GetString());
-	this->AddLogString(cmd);
-
-	out.Empty();
-	if(g_Git.Run(cmd,&out,CP_UTF8))
+	if( !this->m_IsCherryPick )
 	{
-		return -1;
-	}
+		cmd.Format(_T("git.exe checkout %s"),this->m_UpstreamCtrl.GetString());
+		this->AddLogString(cmd);
 
+		out.Empty();
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			return -1;
+		}
+	}
+	
 	m_OrigUpstreamHash.Empty();
 	m_OrigUpstreamHash= g_Git.GetHash(this->m_UpstreamCtrl.GetString());
 	if(m_OrigUpstreamHash.IsEmpty())
@@ -503,14 +514,19 @@ int CRebaseDlg::StartRebase()
 		return -1;
 	}
 
-	cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
-	if(g_Git.Run(cmd,&this->m_OrigBranchHash,CP_UTF8))
+	if( !this->m_IsCherryPick )
 	{
-		this->AddLogString(m_OrigBranchHash);
-		return -1;
-	}
+		cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
+		if(g_Git.Run(cmd,&this->m_OrigBranchHash,CP_UTF8))
+		{
+			this->AddLogString(m_OrigBranchHash);
+			return -1;
+		}
+		this->AddLogString(_T("Start Rebase\r\n"));
 
-	this->AddLogString(_T("Start Rebase\r\n"));
+	}else
+		this->AddLogString(_T("Start Cherry-pick\r\n"));
+	
 	return 0;
 }
 int  CRebaseDlg::VerifyNoConflict()
@@ -531,6 +547,9 @@ int  CRebaseDlg::VerifyNoConflict()
 }
 int CRebaseDlg::FinishRebase()
 {
+	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
+		return 0;
+
 	CString cmd,out;
 	cmd.Format(_T("git.exe branch -f %s"),this->m_BranchCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
@@ -1155,7 +1174,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(CMessageBox::Show(NULL,_T("Are you sure abort rebase"),_T("TortoiseGit"),MB_YESNO) != IDYES)
 		return;
 
-	cmd.Format(_T("git checkout -f %s"),this->m_UpstreamCtrl.GetString());
+	cmd.Format(_T("git.exe checkout -f %s"),this->m_UpstreamCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
@@ -1169,6 +1188,9 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 	
+	if(this->m_IsCherryPick) //there are not "branch" at cherry pick mode
+		return;
+
 	cmd.Format(_T("git checkout -f %s"),this->m_BranchCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
