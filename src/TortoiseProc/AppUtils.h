@@ -191,4 +191,6 @@ private:
 	 */
 	static CString ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo);
 	static CString ExpandRelativeTime( int count, UINT format_1, UINT format_n );
+
+	static void DescribeFile(bool mode, bool base,CString &descript);
 };
