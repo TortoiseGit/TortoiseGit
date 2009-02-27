@@ -1097,7 +1097,8 @@ void CRebaseDlg::ListConflictFile()
 	list.AddPath(path);
 
 	this->m_FileListCtrl.GetStatus(&list,true);
-	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED,CTGitPath::LOGACTIONS_UNMERGED);
+	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
+							   CTGitPath::LOGACTIONS_UNMERGED);
 	if( this->m_FileListCtrl.GetItemCount() == 0 )
 	{
 		
