@@ -40,6 +40,7 @@ public:
 		REBASE_EDIT,
 		REBASE_SQUASH_EDIT,
 		REBASE_SQUASH_CONFLICT,
+		REBASE_DONE,
 	};
 
 protected:
@@ -86,6 +87,7 @@ protected:
 
 	int CheckNextCommitIsSquash();
 	int GetCurrentCommitID();
+	int FinishRebase();
 
 public:
    

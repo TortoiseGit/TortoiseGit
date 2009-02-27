@@ -453,6 +453,7 @@ int CRebaseDlg::CheckRebaseCondition()
 		return -1;
 
 	//Todo call pre_rebase_hook
+	return 0;
 }
 int CRebaseDlg::StartRebase()
 {
@@ -493,9 +494,10 @@ int CRebaseDlg::StartRebase()
 	{
 		return -1;
 	}
-	
-	cmd.Format(_T("git.exe rev-parse %s"),this->m_UpstreamCtrl.GetString());
-	if(g_Git.Run(cmd,&this->m_OrigUpstreamHash,CP_UTF8))
+
+	m_OrigUpstreamHash.Empty();
+	m_OrigUpstreamHash= g_Git.GetHash(this->m_UpstreamCtrl.GetString());
+	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		this->AddLogString(m_OrigUpstreamHash);
 		return -1;
@@ -527,6 +529,31 @@ int  CRebaseDlg::VerifyNoConflict()
 	return 0;
 
 }
+int CRebaseDlg::FinishRebase()
+{
+	CString cmd,out;
+	cmd.Format(_T("git.exe branch -f %s"),this->m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	out.Empty();
+	cmd.Format(_T("git.exe reset --hard %s"),this->m_OrigUpstreamHash);
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	out.Empty();
+	cmd.Format(_T("git.exe checkout -f %s"),this->m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	return 0;
+}
 void CRebaseDlg::OnBnClickedContinue()
 {
 	if( m_RebaseStage == CHOOSE_BRANCH|| m_RebaseStage == CHOOSE_COMMIT_PICK_MODE )
@@ -536,21 +563,16 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_START;
 	}
 
+	if( m_RebaseStage == REBASE_DONE)
+	{
+		OnOK();
+	}
+
 	if( m_RebaseStage == REBASE_FINISH )
 	{
-		CString cmd,out;
-		cmd.Format(_T("git branch -f %s"),this->m_BranchCtrl.GetString());
-		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
-			AddLogString(out);
+		if(FinishRebase())
 			return ;
-		}
-		cmd.Format(_T("git reset --hard %s"),this->m_OrigUpstreamHash);
-		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
-			AddLogString(out);
-			return ;
-		}
+
 		OnOK();
 	}
 
@@ -754,6 +776,10 @@ void CRebaseDlg::SetContinueButtonText()
 	case REBASE_FINISH:
 		Text = _T("Finish");
 		break;
+
+	case REBASE_DONE:
+		Text = _T("Done");
+		break;
 	}
 	this->GetDlgItem(IDC_REBASE_CONTINUE)->SetWindowText(Text);
 }
@@ -787,6 +813,7 @@ void CRebaseDlg::SetControlEnable()
 	case REBASE_CONFLICT:
 	case REBASE_EDIT:
 	case REBASE_SQUASH_CONFLICT:
+	case REBASE_DONE:
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
@@ -825,7 +852,7 @@ void CRebaseDlg::UpdateProgress()
 	m_ProgressBar.SetRange(1,m_CommitList.GetItemCount());
 	m_ProgressBar.SetPos(index);
 
-	if(m_CurrentRebaseIndex>0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
+	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
 	{
 		CString text;
 		text.Format(_T("Rebasing...(%d/%d)"),index,m_CommitList.GetItemCount());
@@ -863,7 +890,7 @@ void CRebaseDlg::UpdateProgress()
 
 void CRebaseDlg::UpdateCurrentStatus()
 {
-	if( m_CurrentRebaseIndex < 0)
+	if( m_CurrentRebaseIndex < 0 && m_RebaseStage!= REBASE_DONE)
 	{
 		if(m_CommitList.m_IsOldFirst)
 			m_RebaseStage = CRebaseDlg::REBASE_START;
@@ -871,12 +898,12 @@ void CRebaseDlg::UpdateCurrentStatus()
 			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
 	}
 
-	if( m_CurrentRebaseIndex == m_CommitList.m_arShownList.GetSize())
+	if( m_CurrentRebaseIndex == m_CommitList.m_arShownList.GetSize() && m_RebaseStage!= REBASE_DONE)
 	{
 		if(m_CommitList.m_IsOldFirst)
-			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
+			m_RebaseStage = CRebaseDlg::REBASE_DONE;
 		else
-			m_RebaseStage = CRebaseDlg::REBASE_START;
+			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
 	}
 
 	SetContinueButtonText();
@@ -1019,7 +1046,6 @@ int CRebaseDlg::RebaseThread()
 				break;
 			}
 			m_RebaseStage = REBASE_CONTINUE;
-			continue;
 
 		}else if( m_RebaseStage == REBASE_CONTINUE )
 		{
@@ -1028,18 +1054,27 @@ int CRebaseDlg::RebaseThread()
 			{
 				ret = 0;
 				m_RebaseStage = REBASE_FINISH;
-				break;
+				
+			}else
+			{
+				ret = DoRebase();
+
+				if( ret )
+				{	
+					break;
+				}
 			}
 
-			ret = DoRebase();
-
-			if( ret )
-			{	
-				break;
-			}
-
-		}else
+		}else if( m_RebaseStage == REBASE_FINISH )
+		{			
+			FinishRebase();
+			m_RebaseStage = REBASE_DONE;
 			break;
+			
+		}else
+		{
+			break;
+		}
 		this->PostMessage(MSG_REBASE_UPDATE_UI);
 		//this->UpdateCurrentStatus();
 	}
