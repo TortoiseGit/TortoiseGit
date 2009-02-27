@@ -1307,6 +1307,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 	tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
 	tempfile.Close();
 
+	bool base=false, local=false, remote=false;
 
 	for(int i=0;i<list.GetCount();i++)
 	{
@@ -1316,21 +1317,31 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 		
 		if( list[i].m_Stage == 1)
 		{
+			base = true;
 			outfile=base.GetWinPathString();
 		}
 		if( list[i].m_Stage == 2 )
 		{
+			local = true;
 			outfile=mine.GetWinPathString();
 		}
 		if( list[i].m_Stage == 3 )
 		{
+			remote = true;
 			outfile=theirs.GetWinPathString();
 		}	
 		g_Git.RunLogFile(cmd,outfile);
 	}
 
-	merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
-	bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+	if(local && remote )
+	{
+		merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
+		bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+	
+	}else
+	{
+
+	}
 
 #if 0
 
