@@ -985,8 +985,10 @@ int CRebaseDlg::DoRebase()
 				return 0;
 			}
 			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
+			{
+				this->m_RebaseStage = REBASE_EDIT ;
 				return -1; // Edit return -1 to stop rebase. 
-			
+			}
 			// Squash Case
 			if(CheckNextCommitIsSquash())
 			{   // no squash
@@ -1010,7 +1012,10 @@ int CRebaseDlg::DoRebase()
 			return 0;
 		}
 		if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
+		{
+			this->m_RebaseStage = REBASE_EDIT ;
 			return -1; // Edit return -1 to stop rebase. 
+		}
 
 		// Squash Case
 		if(CheckNextCommitIsSquash())
