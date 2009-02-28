@@ -164,7 +164,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	//       why was this changed, is this related to GitStatus?
 
 	{ ShellMenuIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUIGNORE,				IDS_MENUDESCIGNORE,
-	ITEMIS_INVERSIONEDFOLDER,C, 0, 0, 0, 0, 0, 0 },
+	ITEMIS_INVERSIONEDFOLDER, ITEMIS_IGNORED|ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
 	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
