@@ -1235,9 +1235,9 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
 }
 
-bool CCommitDlg::HandleMenuItemClick(int /*cmd*/, CSciEdit * /*pSciEdit*/)
+bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 {
-#if 0
+
 	if (m_bBlock)
 		return false;
 	if (cmd == m_nPopupPasteListCmd)
@@ -1247,27 +1247,27 @@ bool CCommitDlg::HandleMenuItemClick(int /*cmd*/, CSciEdit * /*pSciEdit*/)
 		int nListItems = m_ListCtrl.GetItemCount();
 		for (int i=0; i<nListItems; ++i)
 		{
-			CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
-			if (entry->IsChecked())
+			CTGitPath * entry = (CTGitPath*)m_ListCtrl.GetItemData(i);
+			if (entry&&entry->m_Checked)
 			{
 				CString line;
-				Git_wc_status_kind status = entry->status;
-				if (status == Git_wc_status_unversioned)
-					status = Git_wc_status_added;
-				if (status == Git_wc_status_missing)
-					status = Git_wc_status_deleted;
+				CString status = entry->GetActionName();
+				if(entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+					status = _T("Add");
+
+				//git_wc_status_kind status = entry->status;
 				WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 				if (m_ProjectProperties.bFileListInEnglish)
 					langID = 1033;
-				GitStatus::GetStatusString(AfxGetResourceHandle(), status, buf, sizeof(buf)/sizeof(TCHAR), langID);
-				line.Format(_T("%-10s %s\r\n"), buf, (LPCTSTR)m_ListCtrl.GetItemText(i,0));
+				
+				line.Format(_T("%-10s %s\r\n"),status , (LPCTSTR)m_ListCtrl.GetItemText(i,0));
 				logmsg += line;
 			}
 		}
 		pSciEdit->InsertText(logmsg);
 		return true;
 	}
-#endif
+
 	return false;
 }
 

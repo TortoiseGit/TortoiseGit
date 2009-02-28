@@ -152,10 +152,19 @@
 		<title>Acknowledgments</title>
 		<variablelist>
 			<varlistentry>
-				<term>Frank Li</term>
+				<term>Frank Li "lznuaa@gmail.com"</term>
 				<listitem>
 					<para>
 						for founding the TortoiseGit project
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>myagi(Georg Fischer) "snowcoder@gmail.com"</term>
+				<listitem>
+					<para>
+					
+					For hard work to get TortoiseGit Overlay work.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -165,14 +174,7 @@
 					<para>						
 					</para>
 				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>myagi</term>
-				<listitem>
-					<para>						
-					</para>
-				</listitem>
-			</varlistentry>
+			</varlistentry>			
 			<varlistentry>
 				<term>Johan t Hart</term>
 				<listitem>

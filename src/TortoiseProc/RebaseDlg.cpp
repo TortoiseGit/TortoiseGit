@@ -195,6 +195,12 @@ BOOL CRebaseDlg::OnInitDialog()
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REVERTTOREV)|
 										m_CommitList.GetContextMenuBit(CGitLogListBase::ID_COMBINE_COMMIT));
 
+	if(m_CommitList.m_IsOldFirst)
+		this->m_CurrentRebaseIndex = -1;
+	else
+		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
+
+
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -453,18 +459,23 @@ int CRebaseDlg::CheckRebaseCondition()
 		return -1;
 
 	//Todo call pre_rebase_hook
+	return 0;
 }
 int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
-	//Todo call comment_for_reflog
-	cmd.Format(_T("git.exe checkout %s"),this->m_BranchCtrl.GetString());
-	this->AddLogString(cmd);
 
-	if(g_Git.Run(cmd,&out,CP_UTF8))
-		return -1;
+	if(!this->m_IsCherryPick)
+	{
+		//Todo call comment_for_reflog
+		cmd.Format(_T("git.exe checkout %s"),this->m_BranchCtrl.GetString());
+		this->AddLogString(cmd);
 
-	this->AddLogString(out);
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+			return -1;
+
+		this->AddLogString(out);
+	}
 
 	cmd=_T("git.exe rev-parse --verify HEAD");
 	if(g_Git.Run(cmd,&out,CP_UTF8))
@@ -483,32 +494,39 @@ int CRebaseDlg::StartRebase()
 		return -1;
 	}
 	
-	cmd.Format(_T("git.exe update-ref ORIG_HEAD HEAD"));
-
-	cmd.Format(_T("git.exe checkout %s"),this->m_UpstreamCtrl.GetString());
-	this->AddLogString(cmd);
-
-	out.Empty();
-	if(g_Git.Run(cmd,&out,CP_UTF8))
+	if( !this->m_IsCherryPick )
 	{
-		return -1;
+		cmd.Format(_T("git.exe checkout %s"),this->m_UpstreamCtrl.GetString());
+		this->AddLogString(cmd);
+
+		out.Empty();
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			return -1;
+		}
 	}
 	
-	cmd.Format(_T("git.exe rev-parse %s"),this->m_UpstreamCtrl.GetString());
-	if(g_Git.Run(cmd,&this->m_OrigUpstreamHash,CP_UTF8))
+	m_OrigUpstreamHash.Empty();
+	m_OrigUpstreamHash= g_Git.GetHash(this->m_UpstreamCtrl.GetString());
+	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		this->AddLogString(m_OrigUpstreamHash);
 		return -1;
 	}
 
-	cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
-	if(g_Git.Run(cmd,&this->m_OrigBranchHash,CP_UTF8))
+	if( !this->m_IsCherryPick )
 	{
-		this->AddLogString(m_OrigBranchHash);
-		return -1;
-	}
+		cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
+		if(g_Git.Run(cmd,&this->m_OrigBranchHash,CP_UTF8))
+		{
+			this->AddLogString(m_OrigBranchHash);
+			return -1;
+		}
+		this->AddLogString(_T("Start Rebase\r\n"));
 
-	this->AddLogString(_T("Start Rebase\r\n"));
+	}else
+		this->AddLogString(_T("Start Cherry-pick\r\n"));
+	
 	return 0;
 }
 int  CRebaseDlg::VerifyNoConflict()
@@ -527,6 +545,34 @@ int  CRebaseDlg::VerifyNoConflict()
 	return 0;
 
 }
+int CRebaseDlg::FinishRebase()
+{
+	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
+		return 0;
+
+	CString cmd,out;
+	cmd.Format(_T("git.exe branch -f %s"),this->m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	out.Empty();
+	cmd.Format(_T("git.exe reset --hard %s"),this->m_OrigUpstreamHash);
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	out.Empty();
+	cmd.Format(_T("git.exe checkout -f %s"),this->m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	return 0;
+}
 void CRebaseDlg::OnBnClickedContinue()
 {
 	if( m_RebaseStage == CHOOSE_BRANCH|| m_RebaseStage == CHOOSE_COMMIT_PICK_MODE )
@@ -536,21 +582,16 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_START;
 	}
 
+	if( m_RebaseStage == REBASE_DONE)
+	{
+		OnOK();
+	}
+
 	if( m_RebaseStage == REBASE_FINISH )
 	{
-		CString cmd,out;
-		cmd.Format(_T("git branch -f %s"),this->m_BranchCtrl.GetString());
-		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
-			AddLogString(out);
+		if(FinishRebase())
 			return ;
-		}
-		cmd.Format(_T("git reset --hard %s"),this->m_OrigUpstreamHash);
-		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
-			AddLogString(out);
-			return ;
-		}
+
 		OnOK();
 	}
 
@@ -676,6 +717,11 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 	GitRev *curRev;
 	do
 	{
+		if(index<0)
+			return -1;
+		if(index>= m_CommitList.GetItemCount())
+			return -1;
+
 		curRev=(GitRev*)m_CommitList.m_arShownList[index];
 		
 		if( curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH )
@@ -687,12 +733,7 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 			else
 				index--;
 		}else
-			return -1;
-
-		if(index<0)
-			return -1;
-		if(index>= m_CommitList.GetItemCount())
-			return -1;
+			return -1;		
 
 	}while(curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SKIP);
 	
@@ -754,6 +795,10 @@ void CRebaseDlg::SetContinueButtonText()
 	case REBASE_FINISH:
 		Text = _T("Finish");
 		break;
+
+	case REBASE_DONE:
+		Text = _T("Done");
+		break;
 	}
 	this->GetDlgItem(IDC_REBASE_CONTINUE)->SetWindowText(Text);
 }
@@ -787,6 +832,7 @@ void CRebaseDlg::SetControlEnable()
 	case REBASE_CONFLICT:
 	case REBASE_EDIT:
 	case REBASE_SQUASH_CONFLICT:
+	case REBASE_DONE:
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
@@ -825,7 +871,7 @@ void CRebaseDlg::UpdateProgress()
 	m_ProgressBar.SetRange(1,m_CommitList.GetItemCount());
 	m_ProgressBar.SetPos(index);
 
-	if(m_CurrentRebaseIndex>0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
+	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
 	{
 		CString text;
 		text.Format(_T("Rebasing...(%d/%d)"),index,m_CommitList.GetItemCount());
@@ -863,7 +909,7 @@ void CRebaseDlg::UpdateProgress()
 
 void CRebaseDlg::UpdateCurrentStatus()
 {
-	if( m_CurrentRebaseIndex < 0)
+	if( m_CurrentRebaseIndex < 0 && m_RebaseStage!= REBASE_DONE)
 	{
 		if(m_CommitList.m_IsOldFirst)
 			m_RebaseStage = CRebaseDlg::REBASE_START;
@@ -871,12 +917,12 @@ void CRebaseDlg::UpdateCurrentStatus()
 			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
 	}
 
-	if( m_CurrentRebaseIndex == m_CommitList.m_arShownList.GetSize())
+	if( m_CurrentRebaseIndex == m_CommitList.m_arShownList.GetSize() && m_RebaseStage!= REBASE_DONE)
 	{
 		if(m_CommitList.m_IsOldFirst)
-			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
+			m_RebaseStage = CRebaseDlg::REBASE_DONE;
 		else
-			m_RebaseStage = CRebaseDlg::REBASE_START;
+			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
 	}
 
 	SetContinueButtonText();
@@ -958,8 +1004,10 @@ int CRebaseDlg::DoRebase()
 				return 0;
 			}
 			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
+			{
+				this->m_RebaseStage = REBASE_EDIT ;
 				return -1; // Edit return -1 to stop rebase. 
-			
+			}
 			// Squash Case
 			if(CheckNextCommitIsSquash())
 			{   // no squash
@@ -983,7 +1031,10 @@ int CRebaseDlg::DoRebase()
 			return 0;
 		}
 		if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
+		{
+			this->m_RebaseStage = REBASE_EDIT ;
 			return -1; // Edit return -1 to stop rebase. 
+		}
 
 		// Squash Case
 		if(CheckNextCommitIsSquash())
@@ -1027,18 +1078,27 @@ int CRebaseDlg::RebaseThread()
 			{
 				ret = 0;
 				m_RebaseStage = REBASE_FINISH;
-				break;
+				
+			}else
+			{
+				ret = DoRebase();
+
+				if( ret )
+				{	
+					break;
+				}
 			}
 
-			ret = DoRebase();
-
-			if( ret )
-			{	
-				break;
-			}
-
-		}else
+		}else if( m_RebaseStage == REBASE_FINISH )
+		{			
+			FinishRebase();
+			m_RebaseStage = REBASE_DONE;
 			break;
+			
+		}else
+		{
+			break;
+		}
 		this->PostMessage(MSG_REBASE_UPDATE_UI);
 		//this->UpdateCurrentStatus();
 	}
@@ -1056,7 +1116,8 @@ void CRebaseDlg::ListConflictFile()
 	list.AddPath(path);
 
 	this->m_FileListCtrl.GetStatus(&list,true);
-	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED,CTGitPath::LOGACTIONS_UNMERGED);
+	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
+							   CTGitPath::LOGACTIONS_UNMERGED);
 	if( this->m_FileListCtrl.GetItemCount() == 0 )
 	{
 		
@@ -1113,6 +1174,13 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(CMessageBox::Show(NULL,_T("Are you sure abort rebase"),_T("TortoiseGit"),MB_YESNO) != IDYES)
 		return;
 
+	cmd.Format(_T("git.exe checkout -f %s"),this->m_UpstreamCtrl.GetString());
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return ;
+	}
+
 	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.Left(40));
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
@@ -1120,6 +1188,9 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 	
+	if(this->m_IsCherryPick) //there are not "branch" at cherry pick mode
+		return;
+
 	cmd.Format(_T("git checkout -f %s"),this->m_BranchCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
@@ -1127,5 +1198,11 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 	
+	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.Left(40));
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return ;
+	}
 	__super::OnCancel();
 }

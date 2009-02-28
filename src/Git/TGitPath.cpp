@@ -1879,12 +1879,12 @@ CTGitPath * CTGitPathList::LookForGitPath(CString path)
 }
 CString CTGitPath::GetActionName(int action)
 {
+	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
+		return _T("Conflict");
 	if(action  & CTGitPath::LOGACTIONS_ADDED)
 		return _T("Added");
 	if(action  & CTGitPath::LOGACTIONS_DELETED)
 		return _T("Deleted");
-	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
-		return _T("Conflict");
 	if(action  & CTGitPath::LOGACTIONS_MODIFIED)
 		return _T("Modified");
 	if(action  & CTGitPath::LOGACTIONS_REPLACED)

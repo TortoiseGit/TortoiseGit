@@ -1103,18 +1103,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
 				popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
-		}
-	
-		if ( GetSelectedCount() >0 )
-		{
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
-				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
-	
-		}
-
-		if (GetSelectedCount() == 1)
-		{
-			CString str;
+			
 			str.Format(_T("*Rebase %s to this"),g_Git.GetCurrentBranch());
 
 			if(pSelLogEntry->m_CommitHash != m_HeadHash)
@@ -1126,8 +1115,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			
 
 			popup.AppendMenu(MF_SEPARATOR, NULL);
+
 		}
-		else if (GetSelectedCount() >= 2)
+	
+		if (GetSelectedCount() >= 2)
 		{
 			bool bAddSeparator = false;
 			if (IsSelectionContinuous() || (GetSelectedCount() == 2))
@@ -1144,7 +1135,20 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
-			if ( IsSelectionContinuous() )
+			if (m_hasWC)
+			{
+				//popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
+//				if (m_hasWC)
+//					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
+				bAddSeparator = true;
+			}
+			if (bAddSeparator)
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+		}
+
+		if ( GetSelectedCount() >0 )
+		{
+			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
 			{
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
 				{
@@ -1158,20 +1162,17 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						hash=hash.Left(40);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 						if(pLastEntry->m_CommitHash == hash)
-							popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_MERGE);
+							popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_COMBINE);
 					}
 				}
 			}
-			if (m_hasWC)
-			{
-				//popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
-//				if (m_hasWC)
-//					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
-				bAddSeparator = true;
-			}
-			if (bAddSeparator)
-				popup.AppendMenu(MF_SEPARATOR, NULL);
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
+				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+	
 		}
+
+		
 #if 0
 //		if ((selEntries.size() > 0)&&(bAllFromTheSameAuthor))
 //		{

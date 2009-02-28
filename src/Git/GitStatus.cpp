@@ -241,12 +241,12 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	}
 	else
 	{
-		LPCSTR lpszSubPath = NULL;
-		CStringA sSubPath;
+		LPCTSTR lpszSubPath = NULL;
+		CString sSubPath;
 		CString s = path.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 			lpszSubPath = sSubPath;
 		}
 
@@ -265,7 +265,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 			nFlags |= WGEFF_NoRecurse;
 #endif
 
-		err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getallstatus, &statuskind);
+		err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getallstatus, &statuskind);
 
 		/*err = git_client_status4 (&youngest,
 							path.GetSVNApiPath(pool),
@@ -392,12 +392,12 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 	}
 	else
 	{
-		LPCSTR lpszSubPath = NULL;
-		CStringA sSubPath;
+		LPCTSTR lpszSubPath = NULL;
+		CString sSubPath;
 		CString s = path.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 			lpszSubPath = sSubPath;
 		}
 
@@ -410,7 +410,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 		m_status.prop_status = m_status.text_status = git_wc_status_none;
 
 		// NOTE: currently wgEnumFiles will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
-		m_err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, nFlags, &getstatus, &m_status);
+		m_err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getstatus, &m_status);
 
 		/*m_err = git_client_status4 (&youngest,
 							path.GetGitApiPath(m_pool),
