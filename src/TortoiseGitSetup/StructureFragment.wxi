@@ -48,8 +48,7 @@
 
           <Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
             <File Id="F__changelog" ShortName="CHANGELG.TXT" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
-<!--            <File Id="F__subversionlicense" ShortName="LICENSES.TXT" Name="Subversion license.txt" DiskId="1" Source="..\..\ext\Subversion\subversion\LICENSE" />
--->            <File Id="F__tortoisesvnlicense" ShortName="LICENSE.TXT" Name="TortoiseGit License.txt" DiskId="1" Source="..\gpl.txt" />
+            <File Id="F__tortoisesvnlicense" ShortName="LICENSE.TXT" Name="TortoiseGit License.txt" DiskId="1" Source="..\gpl.txt" />
             <File Id="F__openssllicense" ShortName="OSSL_LIC.TXT" Name="OpenSSL License.txt" DiskId="1" Source="include\OpenSSL_License.txt" />
 <!--            <File Id="F__aprlicense" ShortName="APR_LIC.TXT" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
  -->           <File Id="F__sasllicense" ShortName="CYRUSSAS.TXT" Name="CyrusSASL License.txt" DiskId="1" Source="include\CyrusSASL_License.txt" />
@@ -225,9 +224,8 @@ out everything for now, leaving these enabled as they are would make the install
             <?endif ?>
 
             <Component Id="C__help_en" Guid="$(var.GuidHelpEN)" Win64="$(var.Win64YesNo)">
-<!--             <File Id="F_TortoiseSVN_en" ShortName="TSVNHELP.CHM" Name="TortoiseSVN_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseSVN_en.chm" KeyPath="yes" />
-              <File Id="F__TortoiseMerge_en" ShortName="TMEHELP.CHM" Name="TortoiseMerge_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseMerge_en.chm" />
--->               <RemoveFile Id="F__Tortoise_lang"  Name="*.chm" On="uninstall" />
+              <File Id="F_TortoiseGit_en" ShortName="TSVNHELP.CHM" Name="TortoiseGit_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseGit_en.chm" KeyPath="yes" />
+              <File Id="F__TortoiseMerge_en" ShortName="TMEHELP.CHM" Name="TortoiseMerge_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseMerge_en.chm" />               <RemoveFile Id="F__Tortoise_lang"  Name="*.chm" On="uninstall" />
             </Component>
 
             <Component Id="C__wingit" Guid="$(var.GuidGitLib)" Win64="$(var.Win64YesNo)">
@@ -237,10 +235,12 @@ out everything for now, leaving these enabled as they are would make the install
             
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
-              <File Id="F__TortoiseShell" ShortName="TORTGIT.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
+              <File Id="F__TortoiseShell" ShortName="TORTGIT.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />		  
 <!--              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
 -->
 			  <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
+			  <File Id="F__PuttyGen"      ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
+			  <File Id="F__pageant"       ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
 
               <File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
               <File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
