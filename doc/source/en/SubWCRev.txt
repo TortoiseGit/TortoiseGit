@@ -1,14 +1,14 @@
-SubWCRev  -  A Working Copy Status Tool for Subversion
+SubWCRev  -  A Working Copy Status Tool for Git
 ------------------------------------------------------
 
 SubWCRev is Windows console program which can be used to read the status
-of a Subversion working copy and optionally perform keyword substitution
+of a Git working copy and optionally perform keyword substitution
 in a template file.
 
 usage: SubWCRev WorkingCopyPath [SrcVersionFile DstVersionFile] [-nmdfe]
 
 Params:
-WorkingCopyPath    :   path to a Subversion working copy.
+WorkingCopyPath    :   path to a Git working copy.
 SrcVersionFile     :   path to a template header file containing keywords.
 DstVersionFile     :   path to save the resulting parsed file.
 -n                 :   if given, then SubWCRev will error if the working
@@ -27,7 +27,7 @@ DstVersionFile     :   path to save the resulting parsed file.
 
 Switches must be given in a single argument, eg. '-nm' not '-n -m'.
 
-SubWCRev reads the Subversion status of all files in a working copy, excluding
+SubWCRev reads the Git status of all files in a working copy, excluding
 externals. It records the highest commit revision number found, and the commit
 timestamp of that revision, and also whether there are local modifications in
 the working copy, or mixed update revisions. The revision number, update

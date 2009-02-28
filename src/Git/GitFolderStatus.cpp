@@ -251,18 +251,18 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		{
 			// extract the sub-path (relative to project root)
 //MessageBox(NULL, filepath.GetDirectory().GetWinPathString(), sProjectRoot, MB_OK);
-			LPCSTR lpszSubPath = NULL;
-			CStringA sSubPath;
+			LPCTSTR lpszSubPath = NULL;
+			CString sSubPath;
 			CString s = filepath.GetDirectory().GetWinPathString();
 			if (s.GetLength() > sProjectRoot.GetLength())
 			{
-				sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 				lpszSubPath = sSubPath;
 			}
 
 //if (lpszSubPath) MessageBoxA(NULL, lpszSubPath, "BuildCache", MB_OK);
 //MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
-			err = !wgEnumFiles(CStringA(sProjectRoot), lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
+			err = !wgEnumFiles(sProjectRoot, lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
 
 			/*err = svn_client_status4 (&youngest,
 				filepath.GetDirectory().GetSVNApiPath(pool),
@@ -448,7 +448,7 @@ BOOL GitFolderStatus::fillstatusmap(const struct wgFile_s *pFile, void *pUserDat
 	stdstring str;
 	if (pFile->sFileName)
 	{
-		str = CUnicodeUtils::StdGetUnicode(pFile->sFileName);
+		str = pFile->sFileName;//CUnicodeUtils::StdGetUnicode(pFile->sFileName);
 		std::replace(str.begin(), str.end(), '/', '\\');
 //MessageBox(NULL, str.c_str(), _T(""), MB_OK);
 	}

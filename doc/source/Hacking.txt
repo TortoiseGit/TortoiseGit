@@ -84,7 +84,7 @@ Rules
 DAV svn
 SVNParentPath D:\SVN
 AuthType Basic
-AuthName "Subversion repositories"
+AuthName "Git repositories"
 AuthUserFile passwd
 #AuthzSVNAccessFile svnaccessfile
 Require valid-user

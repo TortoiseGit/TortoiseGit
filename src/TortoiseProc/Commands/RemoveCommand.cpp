@@ -116,16 +116,22 @@ bool RemoveCommand::Execute()
 	if (bRet)
 		CShellUpdater::Instance().AddPathsForUpdate(pathList);
 #endif
-	int key=CMessageBox::Show(hwndExplorer, _T("File will removed from version control\r\n Do you want to keep local copy"), _T("TortoiseGit"), MB_ICONINFORMATION|MB_YESNOCANCEL);
-	if(key == IDCANCEL)
-		return FALSE;
+
+	//we don't ask user about if keep local copy. 
+	//because there are command "Delete(keep local copy)" at explore context menu 
+	//int key=CMessageBox::Show(hwndExplorer, _T("File will removed from version control\r\n Do you want to keep local copy"), _T("TortoiseGit"), MB_ICONINFORMATION|MB_YESNOCANCEL);
+	//if(key == IDCANCEL)
+	int key;
 
 	CString format;
-	if(key == IDNO)
-		format=_T("git.exe rm -r -f \"%s\"");
 
-	if(key == IDYES)
+	if(parser.HasKey(_T("keep")))
+	{
 		format= _T("git.exe update-index --force-remove -- \"%s\"");
+	}else
+	{
+		format=_T("git.exe rm -r -f \"%s\"");
+	}
 
 	CString output;
 	CString cmd;

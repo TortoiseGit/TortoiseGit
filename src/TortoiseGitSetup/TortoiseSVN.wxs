@@ -104,12 +104,11 @@
 			<AppSearch Sequence="1"></AppSearch>
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
-      <!--
-			<RemoveExistingProducts After="FindRelatedProducts"><![CDATA[PREVIOUSVERSIONSINSTALLED OR (NOT NEWERVERSIONDETECTED AND OKTODOWNGRADE = 1)]]></RemoveExistingProducts>
-      -->
-      <!--
+      
+			<RemoveExistingProducts After="InstallFinalize"><![CDATA[PREVIOUSVERSIONSINSTALLED OR (NOT NEWERVERSIONDETECTED AND OKTODOWNGRADE = 1)]]></RemoveExistingProducts>
+          
       <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
-      -->
+      
 			<ScheduleReboot After="RegisterProduct" />
 		</InstallExecuteSequence>
 

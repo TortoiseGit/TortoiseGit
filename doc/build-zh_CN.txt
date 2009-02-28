@@ -6,7 +6,7 @@ A.  你需要 VS.NET2005 (或者至少 Visual C++ .NET 2005) 构建全部 Tortoi
     Applications”。
 
 B.  如果没有 VS.NET，你可以下载免费的 Visual C++ 2005 Express。它只能构建
-    Subversion 库，SubWCRev，TortoiseBlame 和 TortoiseIDiff 程序。
+    Git 库，SubWCRev，TortoiseBlame 和 TortoiseIDiff 程序。
     - 安装 Visual C++ 2005 Express 版本。
       下载地址: http://msdn.microsoft.com/vstudio/express/visualc/
     - 安装 Microsoft Platform SDK，版本是 Windows Server 2003 SP1
@@ -55,7 +55,7 @@ C.  如果你计划构建 64 位软件包，请安装软件包
 - 将 dictionaries/thesauri 复制到 “common\spell”。
   注意文件名称很重要!必须为 en_US.aff，en_US.dic，en_GB.aff 和 en_GB.dic (或者你使用的其它语言)。
   警告: 只支持词典格式 OO2。早期版本会让 TortoiseSVN 崩溃!
-- 从 Subversion 版本库将 TortoiseSVN 源代码检出到目录 SVN\TortoiseSVN。
+- 从 Git 版本库将 TortoiseSVN 源代码检出到目录 SVN\TortoiseSVN。
 - 解压文件 “tools.zip”，建议目录是 “SVN\TortoiseSVN\Tools”。
   注视: 目录 tools 的路径不能包含特殊字符或空格。如果你将TortoiseSVN 源代码
   检出到这样的位置，你可以将目录 tools 存放到其它合适的位置。
@@ -101,11 +101,11 @@ C.  如果你计划构建 64 位软件包，请安装软件包
   > nant setup
   会编译一切，板含文档和语言包，创建 msi 安装程序
 
-  注意: 当构建脚本编译 Subversion 时，你可能看到一些编译错误，例如:
+  注意: 当构建脚本编译 Git 时，你可能看到一些编译错误，例如:
   > error C2065: 'SVN_FS_WANT_DB_MAJOR' : undeclared identifier
   > error C2065: 'SVN_FS_WANT_DB_MINOR' : undeclared identifier
   > error C2065: 'SVN_FS_WANT_DB_PATCH' : undeclared identifier
-  这是正常的，无须担忧。这些错误的原因是 TortoiseSVN 构建两次 Subversion 库。
+  这是正常的，无须担忧。这些错误的原因是 TortoiseSVN 构建两次 Git 库。
   一次构建所有 RA 访问层和所有库，另一次没有这些构建。这些错误在 “原始” 构建
   中出现，但是这些库不在此构建中使用。当然，构建脚本可以调整为只构建真正需要
   的库，但是与构建全部相比，构建独立的工程并不容易。
@@ -116,8 +116,8 @@ C.  如果你计划构建 64 位软件包，请安装软件包
 
     <property name="buildtool" value="vcexpress.exe" />
 
-  现在你需要构建 Subversion 库:
-  > nant Subversion
+  现在你需要构建 Git 库:
+  > nant Git
 
   注意 VC Express 编译器在后台工作，没有控制台窗口。它有大量的磁盘操作，但是在
   Nant 控制台窗口没有结果显示。请耐心等候!

@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-showlog">
+	<title>Revision Log Dialog</title>
+	<indexterm>
+		<primary>log</primary>
+	</indexterm>
+	<indexterm>
+		<primary>history</primary>
+	</indexterm>
+	<indexterm>
+		<primary>commit messages</primary>
+	</indexterm>
+	<indexterm>
+		<primary>log messages</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_LOGMESSAGE"?>
+	<para>
+		For every change you make and commit, you should provide
+		a log message for that change. That way you can later find out
+		what changes you made and why, and you have a detailed log for
+		your development process.
+	</para>
+	<para>
+		The Revision Log Dialog retrieves all those log messages and shows them
+		to you.
+		The display is divided into 3 panes.
+		<itemizedlist>
+			<listitem>
+				<para>
+					The top pane shows a list of revisions where changes to the
+					file/folder have been committed. This summary includes the
+					date and time, the person who committed the revision and the
+					start of the log message.
+				</para>
+				<para>
+					Lines shown in bold indicate that that is HEAD commit.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The middle pane shows the full log message for the selected
+					revision.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The bottom pane shows a list of all files and folders that
+					were changed as part of the selected revision.
+				</para>
+			</listitem>
+		</itemizedlist>
+		But it does much more than that - it provides context menu
+		commands which you can use to get even more information about the
+		project history.
+	</para>
+	<sect2 id="tsvn-dug-showlog-1">
+		<title>Invoking the Revision Log Dialog</title>
+		<para>
+			<figure id="tsvn-dug-showlog-1-dia-1">
+				<title>The Revision Log Dialog</title>
+				<graphic fileref="../images/LogMessages.png"/>
+			</figure>
+			There are several places from where you can show the Log dialog:
+			<itemizedlist>
+				<listitem>
+					<para>
+						From the TortoiseGit context submenu
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						From the property page
+					</para>
+				</listitem>
+				<!--
+				<listitem>
+					<para>
+						From the Progress dialog after an update
+						has finished. Then the Log dialog only shows those revisions
+						which were changed since your last update
+					</para>
+				</listitem>
+				-->
+			</itemizedlist>
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-actions">
+		<title>Revision Log Actions</title>
+		<para>
+			The top pane has an <guilabel>Actions</guilabel> column containing
+			icons that summarize what has been done in that revision.
+			There are four different icons, each shown in its own column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionModifiedIcon.png"/>
+			If a revision modified a file or directory, the
+			<emphasis>modified</emphasis> icon is shown in the first column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionAddedIcon.png"/>
+			If a revision added a file or directory, the
+			<emphasis>added</emphasis> icon is shown in the second column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionDeletedIcon.png"/>
+			If a revision deleted a file or directory, the
+			<emphasis>deleted</emphasis> icon is shown in the third column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionReplacedIcon.png"/>
+			If a revision replaced(rename) a file, the
+			<emphasis>replaced</emphasis> icon is shown in the fourth column.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-2">
+		<title>Getting Additional Information</title>
+		<para>
+			<figure id="tsvn-dug-showlog-2-dia-1">
+				<title>The Revision Log Dialog Top Pane with Context Menu</title>
+				<graphic fileref="../images/LogContextMenu.png"/>
+			</figure>
+			The top pane of the Log dialog has a context menu that allows you to
+			access much more information. Some of these menu entries appear only
+			when the log is shown for a file, and some only when the log is shown
+			for a folder.
+			<variablelist>
+				<varlistentry>
+					<term>Compare with working copy</term>
+					<listitem>
+						<para>
+							Compare the selected revision with your working copy.
+							The default Diff-Tool is TortoiseMerge which
+							is supplied with TortoiseGit.
+							If the log dialog is for a folder, this will show you a list
+							of changed files, and allow you to review the changes made
+							to each file individually.
+						</para>
+					</listitem>
+				</varlistentry>
+				<!--
+				<varlistentry>
+					<term>Compare and blame with working BASE</term>
+					<listitem>
+						<para>
+							Blame the selected revision, and the file in your working BASE
+							and compare the blame reports using a visual diff tool.
+							Read <xref linkend="tsvn-dug-blame-diffs"/> for more detail.
+							(files only).
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<varlistentry>
+					<term>Show changes as unified diff</term>
+					<listitem>
+						<para>
+							View the changes made in the selected revision as a
+							Unified-Diff file (GNU patch format). This shows
+							only the differences with a few lines of context. It
+							is harder to read than a visual file compare, but will
+							show all file changes together in a compact format.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Compare with previous revision</term>
+					<listitem>
+						<para>
+							Compare the selected revision with the previous revision.
+							This works in a similar manner to comparing with your
+							working copy.
+							For folders this option will first show the changed files
+							dialog allowing you to select files to compare.
+						</para>
+					</listitem>
+				</varlistentry>
+				<!--
+				<varlistentry>
+					<term>Compare and blame with previous revision</term>
+					<listitem>
+						<para>
+							Show the changed files dialog allowing you to select files.
+							Blame the selected revision, and the previous revision,
+							and compare the results using a visual diff tool.
+							(folders only).
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<!--
+				<varlistentry>
+					<term>Save revision to...</term>
+					<listitem>
+						<para>
+							Save the selected revision to a file so you have an older
+							version of that file. (files only).
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<varlistentry>
+					<term>Open / Open with...</term>
+					<listitem>
+						<para>
+							Open the selected file, either with the default viewer for
+							that file type, or with a program you choose. (files only).
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Blame...</term>
+					<listitem>
+						<para>
+							Blame the file up to the selected revision. (files only).
+						</para>
+					</listitem>
+				</varlistentry>
+				<!--
+				<varlistentry>
+					<term>Browse repository</term>
+					<listitem>
+						<para>
+							Open the repository browser to examine the selected file or
+							folder in the repository as it was at the selected revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<varlistentry>
+					<term>Create branch from revision</term>
+					<listitem>
+						<para>
+							Create a branch from a selected revision.
+							This is useful e.g. 
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Create tag from revision</term>
+					<listitem>
+						<para>
+							Create a tag from a selected revision.
+							This is useful e.g. 
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Switch\Checkout to revision</term>
+					<listitem>
+						<para>
+							Update your working copy to the selected revision.
+							Useful if you want to have your working copy reflect
+							a time in the past, or if there have been further commits to
+							the repository and you want to update your working copy one
+							step at a time. 
+						</para>
+					</listitem>
+				</varlistentry>
+				<!--
+				<varlistentry>
+					<term>Revert changes from this revision</term>
+					<listitem>
+						<para>
+							Revert changes from which were made in the selected
+							revision. The changes are reverted in your working copy so
+							this operation does <emphasis>not</emphasis> affect the
+							repository at all! Note that this will undo the changes
+							made in that revision only. It does not replace your
+							working copy with the entire file at the earlier revision.
+							This is very useful for undoing an earlier change when
+							other unrelated changes have been made since. If you have
+							made local changes, this command will merge these changes
+							into your working copy.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<!--
+				<varlistentry>
+					<term>Revert to this revision</term>
+					<listitem>
+						<para>
+							Revert to an earlier revision. If you have made several
+							changes, and then decide that you really want to go back to
+							how things were in revision N, this is the command you need.
+							Again, the changes are reverted in your working copy so
+							this operation does <emphasis>not</emphasis> affect the
+							repository until you commit the changes. Note that this
+							will undo <emphasis>all</emphasis> changes made after the
+							selected revision, replacing the file/folder with the
+							earlier version. If you have made local changes, this
+							command will merge these changes into your working copy.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<!--
+				<varlistentry>
+					<term>Merge revision to...</term>
+					<listitem>
+						<para>
+							Merge the selected revision(s) into a different working copy.
+							A folder selection dialog allows you to choose the working
+							copy to merge into, but after that there is no confirmation
+							dialog, nor any opportunity to try a test merge. It is a good
+							idea to merge into an unmodified working copy so that you can
+							revert the changes if it doesn't work out!
+							This is a useful feature if you want to merge selected
+							revisions from one branch to another.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<!--
+				<varlistentry>
+					<term>Checkout...</term>
+					<listitem>
+						<para>
+							Make a fresh checkout of the selected folder at the selected
+							revision. This brings up a dialog for you to confirm the
+							URL and revision, and select a location for the checkout.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<varlistentry>
+					<term>Export...</term>
+					<listitem>
+						<para>
+							Export the selected file/folder at the selected
+							revision. This brings up a dialog for you to confirm the
+							URL and revision, and select a location for the export.
+						</para>
+					</listitem>
+				</varlistentry>
+				<!--
+				<varlistentry>
+					<term>Edit author / log message</term>
+					<listitem>
+						<para>
+							Edit the log message or author attached to a previous commit.
+							Read <xref linkend="tsvn-dug-showlog-4"/> to find out
+							how this works.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<!--
+				<varlistentry>
+					<term>Show revision properties</term>
+					<listitem>
+						<para>
+							View and edit any revision property, not just log message
+							and author. Refer to <xref linkend="tsvn-dug-showlog-4"/>.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<varlistentry>
+					<term>Copy to clipboard</term>
+					<listitem>
+						<para>
+							Copy the log details of the selected revisions to the clipboard.
+							This will copy the revision number, author, date, log message
+							and the list of changed items for each revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Search log messages...</term>
+					<listitem>
+						<para>
+							Search log messages for the text you enter. This searches
+							the log messages that you entered and also the action summaries
+							created by Git (shown in the bottom pane). The search
+							is not case sensitive.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			<figure id="tsvn-dug-showlog-2-dia-1a">
+				<title>Top Pane Context Menu for 2 Selected Revisions</title>
+				<graphic fileref="../images/LogContextMenu1.png"/>
+			</figure>
+			If you select two revisions at once (using the usual
+			<keycap>Ctrl</keycap>-modifier), the context menu changes and
+			gives you fewer options:
+			<variablelist>
+				<varlistentry>
+					<term>Compare revisions</term>
+					<listitem>
+						<para>
+							Compare the two selected revisions using a visual
+							difference tool. The default Diff-Tool is TortoiseMerge
+							which is supplied with TortoiseGit.
+						</para>
+						<!--
+						<para>
+							If you select this option for a folder, a further dialog pops
+							up listing the changed files and offering you further
+							diff options. Read more about the Compare Revisions
+							dialog in <xref linkend="tsvn-dug-compare-revs"/>.
+						</para>
+						-->
+					</listitem>
+				</varlistentry>
+				<!--
+				<varlistentry>
+					<term>Blame revisions</term>
+					<listitem>
+						<para>
+							Blame the two revisions and compare the blame reports using
+							a visual difference tool.
+							Read <xref linkend="tsvn-dug-blame-diffs"/> for more detail.
+						</para>
+					</listitem>
+				</varlistentry>
+				-->
+				<varlistentry>
+					<term>Show differences as unified diff</term>
+					<listitem>
+						<para>
+							View the differences between the two selected revisions
+							as a Unified-Diff file. This works for files and folders.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy to clipboard</term>
+					<listitem>
+						<para>
+							Copy log messages to clipboard as described above.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Search log messages...</term>
+					<listitem>
+						<para>
+							Search log messages as described above.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<!--
+		<para>
+			If you select two or more revisions (using the usual
+			<keycap>Ctrl</keycap> or <keycap>Shift</keycap> modifiers),
+			the context menu will include an entry to Revert all changes
+			which were made in the selected revisions. This is the easiest
+			way to rollback a group of revisions in one go.
+		</para>
+		-->
+		<para>
+			You can also choose to merge the selected revisions to another
+			working copy, as described above.
+		</para>
+		<para>
+			If all selected revisions have the same author, you can edit
+			the author of all those revisions in one go.
+		</para>
+		<para>
+			<figure id="tsvn-dug-showlog-2-dia-2">
+				<title>The Log Dialog Bottom Pane with Context Menu</title>
+				<graphic fileref="../images/LogContextMenu2.png"/>
+			</figure>
+			The bottom pane of the Log dialog also has a context menu that allows you to
+			<variablelist>
+				<varlistentry>
+					<term>Show changes</term>
+					<listitem>
+						<para>
+							Show changes made in the selected revision for the
+							selected file. This context menu is only available for
+							files shown as <emphasis>modified</emphasis>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Blame changes</term>
+					<listitem>
+						<para>
+							Blame the selected revision and the previous revision for the
+							selected file, and compare the blame reports
+							using a visual diff tool.
+							Read <xref linkend="tsvn-dug-blame-diffs"/> for more detail.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Show as unified diff</term>
+					<listitem>
+						<para>
+							Show file changes in unified diff format.
+							This context menu is only available for
+							files shown as <emphasis>modified</emphasis>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Open / Open with...</term>
+					<listitem>
+						<para>
+							Open the selected file, either with the default viewer for
+							that file type, or with a program you choose.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Blame...</term>
+					<listitem>
+						<para>
+							Opens the Blame dialog, allowing you to blame up to the
+							selected revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Revert changes from this revision</term>
+					<listitem>
+						<para>
+							Revert the changes made to the selected file in that revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Show properties</term>
+					<listitem>
+						<para>
+							View the Git properties for the selected item.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Show log</term>
+					<listitem>
+						<para>
+							Show the revision log for the selected single file.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Get merge logs</term>
+					<listitem>
+						<para>
+							Show the revision log for the selected single file,
+							including merged changes. Find out more in
+							<xref linkend="tsvn-dug-showlog-mergetrack"/>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Save revision to...</term>
+					<listitem>
+						<para>
+							Save the selected revision to a file so you
+							have an older version of that file.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<tip>
+			<para>
+				You may notice that sometimes we refer to changes and other times
+				to differences. What's the difference?
+			</para>
+			<para>
+				Git uses revision numbers to mean 2 different things.
+				A revision generally represents the state of the repository at
+				a point in time, but it can also be used to represent the changeset
+				which created that revision, eg. <quote>Done in r1234</quote> means 
+				that the changes committed in r1234 implement feature X.
+				To make it clearer which sense is being used, we use two
+				different terms.
+			</para>
+			<para>
+				If you select two revisions N and M, the context menu will offer
+				to show the <emphasis>difference</emphasis> between those two
+				revisions. In Git terms this is
+				<literal>diff -r M:N</literal>.
+			</para>
+			<para>
+				If you select a single revision N, the context menu will offer
+				to show the <emphasis>changes</emphasis> made in that revision.
+				In Git terms this is <literal>diff -r N-1:N</literal>
+				or <literal>diff -c N</literal>.
+			</para>
+			<para>
+				The bottom pane shows the files changed in all selected revisions,
+				so the context menu always offers to show <emphasis>changes</emphasis>.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-3">
+		<title>Getting more log messages</title>
+		<para>
+			The Log dialog does not always show all changes ever made for a
+			number of reasons:
+			<itemizedlist>
+				<listitem>
+					<para>
+						For a large repository there may be hundreds or even
+						thousands of changes and fetching them all could take
+						a long time. Normally you are only interested in the
+						more recent changes. By default, the number of log
+						messages fetched is limited to 100, but you can change
+						this value in 
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Settings</guimenuitem>
+						</menuchoice>
+						(<xref linkend="tsvn-dug-settings-dialogs"/>),
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When the <guilabel>Stop on copy/rename</guilabel>
+						box is checked, Show Log will stop at the point that
+						the selected file or folder was copied from somewhere
+						else within the repository. This can be useful when
+						looking at branches (or tags) as it stops at the root
+						of that branch, and gives a quick indication of changes
+						made in that branch only.
+					</para>
+					<para>
+						Normally you will want to leave this option unchecked.
+						TortoiseGit remembers the state of the checkbox, so
+						it will respect your preference.
+					</para>
+					<para>
+						When the Show Log dialog is invoked from within the
+						Merge dialog, the box is always checked by default.
+						This is because merging is most often looking at
+						changes on branches, and going back beyond the root
+						of the branch does not make sense in that instance.
+					</para>
+					<para>
+						Note that Git currently implements renaming
+						as a copy/delete pair, so renaming a file or folder
+						will also cause the log display to stop if this
+						option is checked.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			If you want to see more log messages, click the
+			<guibutton>Next 100</guibutton> to retrieve the next 100 log messages.
+			You can repeat this as many times as needed.
+		</para>
+		<para>
+			Next to this button there is a multi-function button which remembers
+			the last option you used it for. Click on the arrow to see the other
+			options offered.
+		</para>
+		<para>
+			Use <guibutton>Show Range ...</guibutton> if you want to view a specific
+			range of revisions. A dialog will then prompt you to enter the start
+			and end revision.
+		</para>
+		<para>
+			Use <guibutton>Show All</guibutton> if you want to see
+			<emphasis>all</emphasis> log messages from HEAD right back to revision 1.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-current-rev">
+		<title>Current Working Copy Revision</title>
+		<para>
+			Because the log dialog shows you the log from HEAD, not from the
+			current working copy revision, it often happens that there are
+			log messages shown for content which has not yet been updated
+			in your working copy. To help make this clearer, the commit
+			message which corresponds to the revision you have in your
+			working copy is shown in bold.
+		</para>
+		<para>
+			By default this only works for files. This is because the
+			update revision for a folder may not correspond to the update
+			revision of its content, and the only way to find the effective
+			update revision for the folder is to crawl the working copy.
+			This can be a slow operation for large working copies so if
+			you want to enable this feature you must create a
+			<literal>DWORD</literal> registry key with value 1 at
+			<literal>HKCU\Software\TortoiseGit\RecursiveLogRev</literal>.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-mergetrack">
+		<title>Merge Tracking Features</title>
+		<indexterm>
+			<primary>merge tracking log</primary>
+		</indexterm>
+		<para>
+			Git 1.5 and later keeps a record of merges using properties.
+			This allows us to get a more detailed history of merged changes.
+			For example, if you develop a new feature on a branch and then merge
+			that branch back to trunk, the feature development will show up on
+			the trunk log as a single commit for the merge, even though there
+			may have been 1000 commits during branch development.
+		</para>
+		<figure id="tsvn-dug-showlog-dia-mergetrack">
+			<title>The Log Dialog Showing Merge Tracking Revisions</title>
+			<graphic fileref="../images/LogMergeTrack.png"/>
+		</figure>
+		<para>
+			If you want to see the detail of which revisions were merged as part
+			of that commit, use the <guilabel>Include merged revisions</guilabel>
+			checkbox. This will fetch the log messages again, but will also
+			interleave the log messages from revisions which were merged.
+			Merged revisions are shown in grey because they represent changes
+			made on a different part of the tree.
+		</para>
+		<para>
+			Of course, merging is never simple! During feature development on the
+			branch there will probably be occasional merges back from trunk to
+			keep the branch in sync with the main line code. So the merge history
+			of the branch will also include another layer of merge history.
+			These different layers are shown in the log dialog using indentation
+			levels.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-4">
+		<title>Changing the Log Message and Author</title>
+		<indexterm>
+			<primary>edit log/author</primary>
+		</indexterm>
+		<indexterm>
+			<primary>revision properties</primary>
+		</indexterm>
+		<indexterm>
+			<primary>revprops</primary>
+		</indexterm>
+		<para>
+			Revision properties are completely different from the Git
+			properties of each item. Revprops are descriptive items which are
+			associated with one specific revision number in the repository,
+			such as log message, commit date and committer name (author).
+		</para>
+		<para>
+			Sometimes you might want to change a log message you once entered,
+			maybe because there's a spelling error in it or you want to
+			improve the message or change it for other reasons. Or you want to
+			change the author of the commit because you forgot to set up
+			authentication or...
+		</para>
+		<para>
+			Git lets you change revision properties any time you want.
+			But since such changes can't be
+			undone (those changes are not versioned) this feature is disabled
+			by default. To make this work, you must set up a pre-revprop-change
+			hook. Please refer to the chapter on
+			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.reposadmin.create.html#svn.reposadmin.create.hooks">
+				<citetitle>Hook Scripts</citetitle>
+			</ulink>
+			in the Git Book for details about how to do that.
+			Read <xref linkend="tsvn-repository-hooks"/> to find some further
+			notes on implementing hooks on a Windows machine.
+		</para>
+		<para>
+			Once you've set up your server with the required hooks, you can
+			change the author and log message (or any other revprop) of any revision,
+			using the context menu from the top pane of the Log dialog.
+			You can also edit a log message using the context menu for the middle pane.
+		</para>
+		<warning>
+			<para>
+				Because Git's revision properties are not versioned, making 
+				modifications to such a property (for example, the
+				<literal>svn:log</literal> commit 
+				message property) will overwrite the previous value of that 
+				property <emphasis>forever</emphasis>.
+			</para>
+		</warning>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-filter">
+		<title>Filtering Log Messages</title>
+		<indexterm>
+			<primary>filter</primary>
+		</indexterm>
+		<para>
+			If you want to restrict the log messages to show only those
+			you are interested in rather than scrolling through a list
+			of hundreds, you can use the filter controls at the top of
+			the Log Dialog. The start and end date controls allow you
+			to restrict the output to a known date range. The search
+			box allows you to show only messages which contain a
+			particular phrase.
+		</para>
+		<para>
+			Click on the search icon to select which information you want
+			to search in, and to choose <emphasis>regex</emphasis> mode.
+			Normally you will only need a simple text search, but if you
+			need to more flexible search terms, you can use regular expressions.
+			If you hover the mouse over the box, a tooltip will give hints
+			on how to use the regex functions.
+			You can also find online documentation and a tutorial at
+			<ulink url="http://www.regular-expressions.info/">
+				<citetitle>http://www.regular-expressions.info/</citetitle>
+			</ulink>.
+			The filter works by checking whether your filter string matches
+			the log entries, and then only those entries which <emphasis>match</emphasis>
+			the filter string are shown.
+		</para>
+		<para>
+			To make the filter show all log entries that do <emphasis>not</emphasis>
+			match the filter string, start the string with an exclamation mark ('!').
+			For example, a filter string <literal>!username</literal> will only
+			show those entries which were not committed by <literal>username</literal>.
+		</para>
+		<para>
+			Note that these filters act on the messages already retrieved.
+			They do not control downloading of messages from the repository.
+		</para>
+		<para>
+			You can also filter the path names in the bottom pane using the
+			<guilabel>Hide unrelated changed paths</guilabel> checkbox.
+			Related paths are those which contain the path used to display
+			the log. If you fetch the log for a folder, that means anything
+			in that folder or below it. For a file it means just that one file.
+			The checkbox is tristate: you can show all paths, grey out the
+			unrelated ones, or hide the unrelated paths completely.
+		</para>
+		<para>
+			Sometimes your working practices will require log messages to follow
+			a particular format, which means that the text describing the changes
+			is not visible in the abbreviated summary shown in the top pane.
+			The property <literal>tsvn:logsummary</literal> can be used to
+			extract a portion of the log message to be shown in the top pane.
+			Read <xref linkend="tsvn-dug-propertypage-tsvn-props"/> to find
+			out how to use this property.
+		</para>
+		<tip>
+			<title>No Log Formatting from Repository Browser</title>
+			<para>
+				Because the formatting depends upon accessing Git
+				properties, you will only see the results when using a checked
+				out working copy. Fetching properties remotely is a slow operation,
+				so you will not see this feature in action from the repo browser.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-5">
+		<?dbhh topicname="HIDD_STATGRAPH"?>
+		<title>Statistical Information</title>
+		<indexterm>
+			<primary>statistics</primary>
+		</indexterm>
+		<para>
+			The <guibutton>Statistics</guibutton> button brings up a box
+			showing some interesting information about the revisions
+			shown in the Log dialog. This shows how many authors have
+			been at work, how many commits they have made, progress
+			by week, and much more. Now you can see at a glance who
+			has been working hardest and who is slacking ;-)
+		</para>
+		<sect3 id="tsvn-dug-showlog-stats-1">
+			<title>Statistics Page</title>
+			<para>
+				This page gives you all the numbers you can think of,
+				in particular the period and number of revisions covered,
+				and some min/max/average values.
+			</para>
+		</sect3>
+		<sect3 id="tsvn-dug-showlog-stats-2">
+			<title>Commits by Author Page</title>
+			<para>
+				<figure id="tsvn-dug-showlog-stats-dia-2">
+					<title>Commits-by-Author Histogram</title>
+					<graphic fileref="../images/StatsByAuthor.png"/>
+				</figure>
+				This graph shows you which authors have been active on the
+				project as a simple histogram, stacked histogram or
+				pie chart.
+				<figure id="tsvn-dug-showlog-stats-dia-3">
+					<title>Commits-by-Author Pie Chart</title>
+					<graphic fileref="../images/StatsByAuthPie.png"/>
+				</figure>
+			</para>
+			<para>
+				Where there are a few major authors and many minor contributors,
+				the number of tiny segments can make the graph more difficult to
+				read. The slider at the bottom allows you to set a threshold
+				(as a percentage of total commits) below which any activity is
+				grouped into an <emphasis>Others</emphasis> category.
+			</para>
+		</sect3>
+		<sect3 id="tsvn-dug-showlog-stats-3">
+			<title>Commits by date Page</title>
+			<para>
+				<figure id="tsvn-dug-showlog-stats-dia-4">
+					<title>Commits-by-date Graph</title>
+					<graphic fileref="../images/StatsByDate.png"/>
+				</figure>
+				This page gives you a graphical representation of project
+				activity in terms of number of commits <emphasis>and</emphasis>
+				author. This gives some idea of when a project is being worked
+				on, and who was working at which time.
+			</para>
+			<para>
+				When there are several authors, you will get many lines on the
+				graph. There are two views available here: <emphasis>normal</emphasis>,
+				where each author's activity is relative to the base line, and
+				<emphasis>stacked</emphasis>, where each author's activity is
+				relative to the line underneath.
+				The latter option avoids the lines crossing over, which can make
+				the graph easier to read, but less easy to see one author's output.
+			</para>
+		</sect3>
+		<para>
+			By default the analysis is case-sensitive, so users
+			<literal>PeterEgan</literal> and <literal>PeteRegan</literal>
+			are treated as different authors. However, in many cases user names
+			are not case-sensitive, and are sometimes entered inconsistently,
+			so you may want <literal>DavidMorgan</literal> and
+			<literal>davidmorgan</literal> to be treated as the same person.
+			Use the <guilabel>Authors case insensitive</guilabel> checkbox
+			to control how this is handled.
+		</para>
+		<para>
+			Note that the statistics cover the same period as the
+			Log dialog. If that is only displaying one revision
+			then the statistics will not tell you very much.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-cache">
+		<?dbhh topicname="HIDD_GOOFFLINE"?>
+		<title>Offline Mode</title>
+		<para>
+			If the server is not reachable, and you have log caching enabled
+			you can use the log dialog and revision graph in offline mode.
+			This uses data from the cache, which allows you to continue working
+			although the information may not be up-to-date or even complete.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-showlog-refresh">
+		<title>Refreshing the View</title>
+		<para>
+			If you want to check the server again for newer log messages,
+			you can simply refresh the view using <keycap>F5</keycap>. If you
+			are using the log cache (enabled by default), this will check the
+			repository for newer messages and fetch only the new ones.
+			If the log cache was in offline mode, this will also attempt to
+			go back online.
+		</para>
+		<para>
+			If you are using the log cache and you think the message content
+			or author may have changed, you can use <keycap>Shift-F5</keycap>
+			or <keycap>Ctrl-F5</keycap> to re-fetch the displayed messages from
+			the server and update the log cache. Note that this only affects
+			messages currently shown and does not invalidate the entire cache
+			for that repository.
+		</para>
+	</sect2>
+</sect1>

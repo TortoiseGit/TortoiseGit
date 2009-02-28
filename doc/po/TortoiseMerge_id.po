@@ -18,7 +18,7 @@ msgstr ""
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2009-01-01 22:35+0700\n"
 "Last-Translator: Thomas Edwin Santosa <thomas@katalisindonesia.com>\n"
-"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <tortoisegit-dev@googlegroups.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -232,8 +232,8 @@ msgstr "Ketika bekerja pada file teks, contohnya file sumber dalam bahasa pemrog
 # Indonesian#: source/TortoiseMerge_en.xml:197
 #. (para)
 #: ../source/TortoiseMerge_en.xml:198
-msgid "If you're working with a version control system (e.g. Subversion) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
-msgstr "Jika Anda bekerja dengan sistem kontrol versi (contohnya Subversion) maka Anda biasanya akan menghadapi <emphasis>konflik</emphasis> ketika Anda memutahirkan copy pekerjaan Anda. Ini terjadi jika orang lain mengubah bagian yang sama dari file yang sama yang Anda kerjakan. Maka Anda harus menyelesaikan konflik itu secara manual. Disinilah TortoiseMerge bisa membantu Anda."
+msgid "If you're working with a version control system (e.g. Git) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
+msgstr "Jika Anda bekerja dengan sistem kontrol versi (contohnya Git) maka Anda biasanya akan menghadapi <emphasis>konflik</emphasis> ketika Anda memutahirkan copy pekerjaan Anda. Ini terjadi jika orang lain mengubah bagian yang sama dari file yang sama yang Anda kerjakan. Maka Anda harus menyelesaikan konflik itu secara manual. Disinilah TortoiseMerge bisa membantu Anda."
 
 # Indonesian#: source/TortoiseMerge_en.xml:205
 #. (para)
@@ -258,8 +258,8 @@ msgstr "Suatu konflik bisa juga terjadi jika Anda mencoba menerapkan sebuah berk
 # Indonesian#: source/TortoiseMerge_en.xml:219
 #. (para)
 #: ../source/TortoiseMerge_en.xml:220
-msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Subversion. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
-msgstr "Tetapi sekarang dengan TortoiseMerge ini tidak perlu lagi - setidaknya tidak jika Anda bekerja dengan sistem kontrol versi seperti Subversion. TortoiseMerge mengurai berkas tambalan untuk revisi/versi dari tambalan yang dibuat untuk dan secara otomatis mencoba mengambil versi tertentu dari kontrol-sumber Anda. Kemudian menerapkan tambalan dan memungkinkan Anda meninjau kedua perubahan Anda pada berkas, dan milik mereka. Lalu Anda bisa memutuskan perubahan mana yang ingin Anda simpan."
+msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Git. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
+msgstr "Tetapi sekarang dengan TortoiseMerge ini tidak perlu lagi - setidaknya tidak jika Anda bekerja dengan sistem kontrol versi seperti Git. TortoiseMerge mengurai berkas tambalan untuk revisi/versi dari tambalan yang dibuat untuk dan secara otomatis mencoba mengambil versi tertentu dari kontrol-sumber Anda. Kemudian menerapkan tambalan dan memungkinkan Anda meninjau kedua perubahan Anda pada berkas, dan milik mereka. Lalu Anda bisa memutuskan perubahan mana yang ingin Anda simpan."
 
 # Indonesian#: source/TortoiseMerge_en.xml:233
 #. (title)
@@ -288,8 +288,8 @@ msgstr "Maka kami meluangkan banyak waktu, mencari internet untuk piranti GUI ya
 # Indonesian#: source/TortoiseMerge_en.xml:268
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
-msgstr "Karena TortoiseGit sudah menggunakan pustaka Subversion, yang mempunyai mesin pembeda secara pabrikan, ini menjadi alami untuk menggunakan librari ini daripada GNU diff."
+msgid "Since TortoiseGit already uses the Git library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgstr "Karena TortoiseGit sudah menggunakan pustaka Git, yang mempunyai mesin pembeda secara pabrikan, ini menjadi alami untuk menggunakan librari ini daripada GNU diff."
 
 #. (title)
 #: ../source/TortoiseMerge_en.xml:276
@@ -303,8 +303,8 @@ msgstr "Melihat perbedaan di antara dua berkas dan menggabungkan perubahan-perub
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:288
-msgid "Editing conflicts between local changes and changes in the Subversion repository following an update."
-msgstr "Menyunting konflik di antara perubahan-perubahan lokal dan perubahan-perubahan dalam repositori Subversion setelah suatu update."
+msgid "Editing conflicts between local changes and changes in the Git repository following an update."
+msgstr "Menyunting konflik di antara perubahan-perubahan lokal dan perubahan-perubahan dalam repositori Git setelah suatu update."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:294
@@ -384,7 +384,7 @@ msgstr "Menerapkan Patch"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgid "A patch file is a Git unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
 msgstr ""
 
 #. (para)
@@ -504,8 +504,8 @@ msgstr "Jika TortoiseMerge bisa mengurai patchfile ia akan memperlihatkan kepada
 #. (para)
 #: ../source/TortoiseMerge_en.xml:493
 #, fuzzy
-msgid "But don't worry. If you're working with Subversion you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
-msgstr "Tapi jangan khawatir. Jika Anda bekerja dengan Subversion Anda bisa mengambil versi file lama dan menyelesaikan konflik tersebut. Kenyataannya, TortoiseMerge secara otomatis mencoba mendapatkan versi file lama itu dan kemudian memperlihatkannya kepada Anda perbedaan di antara <literal>Base</literal> (file versi lebih lama), <literal>Saya</literal> (file di mana copy pekerjaan Anda saat ini) dan <literal>Mereka</literal> (versi file lama dengan patch yang sudah diterapkan). Selanjutnya Anda bisa menyelesaikan kemungkinan konflik secara manual."
+msgid "But don't worry. If you're working with Git you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
+msgstr "Tapi jangan khawatir. Jika Anda bekerja dengan Git Anda bisa mengambil versi file lama dan menyelesaikan konflik tersebut. Kenyataannya, TortoiseMerge secara otomatis mencoba mendapatkan versi file lama itu dan kemudian memperlihatkannya kepada Anda perbedaan di antara <literal>Base</literal> (file versi lebih lama), <literal>Saya</literal> (file di mana copy pekerjaan Anda saat ini) dan <literal>Mereka</literal> (versi file lama dengan patch yang sudah diterapkan). Selanjutnya Anda bisa menyelesaikan kemungkinan konflik secara manual."
 
 # Indonesian#: source/TortoiseMerge_en.xml:438
 #. (para)
@@ -718,7 +718,7 @@ msgstr "Jika Anda dalam tampilan tiga pane (kadang kala disebut <emphasis>tampil
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:796
-msgid "Sometimes a file will be marked as conflicted in Subversion, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
+msgid "Sometimes a file will be marked as conflicted in Git, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
 msgstr ""
 
 # Indonesian#: source/TortoiseMerge_en.xml:643
@@ -783,8 +783,8 @@ msgstr "Jika Anda ingin menerapkan patchfile Anda harus menetapkan kedua path te
 #. (para)
 #: ../source/TortoiseMerge_en.xml:873
 #, fuzzy
-msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Subversion working copy. Other formats like patch files generated by CVS are currently not supported!"
-msgstr "Saat ini, hanya patchfiles dalam <emphasis>Format Unified Diff</emphasis> yang didukung. Dan hanya file yang dibuat dari working copy Subversion. Format lain seperti patchfiles yang dibuat oleh CVS saat ini tidak didukung!"
+msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Git working copy. Other formats like patch files generated by CVS are currently not supported!"
+msgstr "Saat ini, hanya patchfiles dalam <emphasis>Format Unified Diff</emphasis> yang didukung. Dan hanya file yang dibuat dari working copy Git. Format lain seperti patchfiles yang dibuat oleh CVS saat ini tidak didukung!"
 
 # Indonesian#: source/TortoiseMerge_en.xml:673
 #. (title)
@@ -837,8 +837,8 @@ msgstr "<guilabel>Kode warna perubahan-perubahan sebaris</guilabel> menggunakan 
 # Indonesian#: source/TortoiseMerge_en.xml:705
 #. (para)
 #: ../source/TortoiseMerge_en.xml:919
-msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Subversion treats such changes)."
-msgstr "<guilabel>Bandingkan spasi putih</guilabel> memperlihatkan semua perubahan dalam indentasi dan spasi putih sebaris karena baris ditambah/dihapus (inilah bagaimana Subversion memperlakukan perubahan demikian)."
+msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Git treats such changes)."
+msgstr "<guilabel>Bandingkan spasi putih</guilabel> memperlihatkan semua perubahan dalam indentasi dan spasi putih sebaris karena baris ditambah/dihapus (inilah bagaimana Git memperlakukan perubahan demikian)."
 
 # Indonesian#: source/TortoiseMerge_en.xml:711
 #. (para)
@@ -1427,8 +1427,8 @@ msgstr "Add (Tambah)"
 # Indonesian#: source/TortoiseMerge_en.xml:1096
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1360
-msgid "A Subversion command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
-msgstr "Perintah Subversion yang digunakan untuk menambah file atau direktori ke copy pekerjaan Anda. Item baru ditambahkan ke repositori saat Anda komit."
+msgid "A Git command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
+msgstr "Perintah Git yang digunakan untuk menambah file atau direktori ke copy pekerjaan Anda. Item baru ditambahkan ke repositori saat Anda komit."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1104
 #. (glossterm)
@@ -1476,8 +1476,8 @@ msgstr "Branch (Cabang)"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1402
 #, fuzzy
-msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Subversion a branch is implemented as a <quote>cheap copy</quote>."
-msgstr "Batasan yang sering digunakan dalam sistem kontrol revisi untuk menjelaskan apa yang terjadi ketika garpu pengembangan pada titik tertentu dan mengikuti 2 path terpisah. Anda bisa membuat cabang di luar barisan pengembangan utama untuk mengembangkan fitur baru tanpa membuat barisan utama menjadi tidak stabil. Atau Anda bisa mencabangkan rilis stabil ke mana Anda hanya membuat pembetulan bug, sementara pengembangan baru menempati batang tidak stabil. Dalam Subversion cabang diimplementasikan sebagai <quote>copy murah</quote>."
+msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Git a branch is implemented as a <quote>cheap copy</quote>."
+msgstr "Batasan yang sering digunakan dalam sistem kontrol revisi untuk menjelaskan apa yang terjadi ketika garpu pengembangan pada titik tertentu dan mengikuti 2 path terpisah. Anda bisa membuat cabang di luar barisan pengembangan utama untuk mengembangkan fitur baru tanpa membuat barisan utama menjadi tidak stabil. Atau Anda bisa mencabangkan rilis stabil ke mana Anda hanya membuat pembetulan bug, sementara pengembangan baru menempati batang tidak stabil. Dalam Git cabang diimplementasikan sebagai <quote>copy murah</quote>."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1152
 #. (glossterm)
@@ -1488,8 +1488,8 @@ msgstr "Checkout"
 # Indonesian#: source/TortoiseMerge_en.xml:1154
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1417
-msgid "A Subversion command which creates a local working copy in an empty directory by downloading versioned files from the repository."
-msgstr "Perintah Subversion yang membuat copy pekerjaan lokal dalam direktori kosong dengan mengunduh file berversi dari repositori."
+msgid "A Git command which creates a local working copy in an empty directory by downloading versioned files from the repository."
+msgstr "Perintah Git yang membuat copy pekerjaan lokal dalam direktori kosong dengan mengunduh file berversi dari repositori."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1161
 #. (glossterm)
@@ -1501,8 +1501,8 @@ msgstr "Cleanup (Bersihkan)"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1426
 #, fuzzy
-msgid "To quote from the Subversion book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
-msgstr "Mengutip dari buku Subversion: <quote> Secara rekursif membersihkan copy pekerjaan, menghapus kuncian dan melanjutkan operasi yang belum selesai. Jika Anda pernah mendapatkan kesalahan <literal>copy pekerjaan dikunci</literal>, jalankan perintah ini untuk menghapus kuncian basi dan mendapatkan copy pekerjaan Anda kedalam kondisi yang berguna lagi. </quote> Catatan bahwa konteks <quote>kunci</quote> merujuk ke penguncian sistem file lokal, bukan penguncian repositori."
+msgid "To quote from the Git book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
+msgstr "Mengutip dari buku Git: <quote> Secara rekursif membersihkan copy pekerjaan, menghapus kuncian dan melanjutkan operasi yang belum selesai. Jika Anda pernah mendapatkan kesalahan <literal>copy pekerjaan dikunci</literal>, jalankan perintah ini untuk menghapus kuncian basi dan mendapatkan copy pekerjaan Anda kedalam kondisi yang berguna lagi. </quote> Catatan bahwa konteks <quote>kunci</quote> merujuk ke penguncian sistem file lokal, bukan penguncian repositori."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1178
 #. (glossterm)
@@ -1513,8 +1513,8 @@ msgstr "Commit (Komit)"
 # Indonesian#: source/TortoiseMerge_en.xml:1180
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1443
-msgid "This Subversion command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
-msgstr "Perintah Subversion ini digunakan untuk mengoper perubahan dalam copy pekerjaan Anda kembali ke dalam repositori, membuat revisi repositori baru."
+msgid "This Git command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
+msgstr "Perintah Git ini digunakan untuk mengoper perubahan dalam copy pekerjaan Anda kembali ke dalam repositori, membuat revisi repositori baru."
 
 # Indonesian#: source/TortoiseMerge_en.xml:762
 #. (glossterm)
@@ -1525,8 +1525,8 @@ msgstr "Conflict (Konflik)"
 # Indonesian#: source/TortoiseMerge_en.xml:1190
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1453
-msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Subversion cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
-msgstr "Ketika perubahan dari repositori digabung dengan perubahan lokal, ada kalanya perubahan itu terjadi pada baris yang sama. Dalam hal ini Subversion tidak bisa secara otomatis menentukan versi yang mana untuk digunakan dan file yang dinyatakan sebagai konflik. Anda harus mengedit file secara manual dan menyelesaikan konflik sebelum Anda bisa mengkomit perubahan selanjutnya."
+msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Git cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
+msgstr "Ketika perubahan dari repositori digabung dengan perubahan lokal, ada kalanya perubahan itu terjadi pada baris yang sama. Dalam hal ini Git tidak bisa secara otomatis menentukan versi yang mana untuk digunakan dan file yang dinyatakan sebagai konflik. Anda harus mengedit file secara manual dan menyelesaikan konflik sebelum Anda bisa mengkomit perubahan selanjutnya."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1201
 #. (glossterm)
@@ -1537,8 +1537,8 @@ msgstr "Copy"
 # Indonesian#: source/TortoiseMerge_en.xml:1203
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1465
-msgid "In a Subversion repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
-msgstr "Dalam repositori Subversion Anda bisa membuat copy dari file tunggal atau susunan keseluruhan. Ini diimplementasikan sebagai <quote>copy murah</quote> yang bertindak sedikit mirip link ke original di dalamnya hampir tidak ada ruang. Membuat copy menjaga sejarah dari item dalam copy, dengan demikian Anda bisa melacak perubahan yang dibuat sebelum copy dibuat."
+msgid "In a Git repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
+msgstr "Dalam repositori Git Anda bisa membuat copy dari file tunggal atau susunan keseluruhan. Ini diimplementasikan sebagai <quote>copy murah</quote> yang bertindak sedikit mirip link ke original di dalamnya hampir tidak ada ruang. Membuat copy menjaga sejarah dari item dalam copy, dengan demikian Anda bisa melacak perubahan yang dibuat sebelum copy dibuat."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1213
 #. (glossterm)
@@ -1587,8 +1587,8 @@ msgstr "FSFS"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1508
 #, fuzzy
-msgid "A proprietary Subversion filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
-msgstr "FS Filesystem. Backend sistem file untuk repositori hak milik Subversion. Bisa digunakan pada jaringan berbagi. Standar untuk repositori 1.2 dan lebih baru."
+msgid "A proprietary Git filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
+msgstr "FS Filesystem. Backend sistem file untuk repositori hak milik Git. Bisa digunakan pada jaringan berbagi. Standar untuk repositori 1.2 dan lebih baru."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1253
 #. (glossterm)
@@ -1623,8 +1623,8 @@ msgstr "Import (Impor)"
 # Indonesian#: source/TortoiseMerge_en.xml:1271
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1533
-msgid "Subversion command to import an entire folder hierarchy into the repository in a single revision."
-msgstr "Perintah Subversion untuk mengimpor keseluruhan hirarki folder ke dalam revisi tunggal."
+msgid "Git command to import an entire folder hierarchy into the repository in a single revision."
+msgstr "Perintah Git untuk mengimpor keseluruhan hirarki folder ke dalam revisi tunggal."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1278
 #. (glossterm)
@@ -1690,8 +1690,8 @@ msgstr "Patch"
 # Indonesian#: source/TortoiseMerge_en.xml:1324
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1586
-msgid "If a working copy has changes to text files only, it is possible to use Subversion's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
-msgstr "Jika copy pekerjaan sudah berubah ke hanya file teks, ini memungkinkan untuk menggunakan perintah Diff Subversion untuk menghasilkan ringkasan file tunggal dari perubahan itu dalam format Unified Diff. File dari tipe ini sering dirujuk sebagai <quote>Patch</quote>, dan bisa diemail ke orang lain (atau daftar mailing) dan diterapkan ke copy pekerjaan lain. Seseorang tanpa akses komit bisa membuat perubahan dan mengirimkan file patch untuk pengkomit yang diotorisasi untuk menerapkan. Atau jika Anda tidak yakin mengenai perubahan Anda bisa mengirimkan patch untuk ditinjau orang lain."
+msgid "If a working copy has changes to text files only, it is possible to use Git's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
+msgstr "Jika copy pekerjaan sudah berubah ke hanya file teks, ini memungkinkan untuk menggunakan perintah Diff Git untuk menghasilkan ringkasan file tunggal dari perubahan itu dalam format Unified Diff. File dari tipe ini sering dirujuk sebagai <quote>Patch</quote>, dan bisa diemail ke orang lain (atau daftar mailing) dan diterapkan ke copy pekerjaan lain. Seseorang tanpa akses komit bisa membuat perubahan dan mengirimkan file patch untuk pengkomit yang diotorisasi untuk menerapkan. Atau jika Anda tidak yakin mengenai perubahan Anda bisa mengirimkan patch untuk ditinjau orang lain."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1338
 #. (glossterm)
@@ -1702,8 +1702,8 @@ msgstr "Property (Properti)"
 # Indonesian#: source/TortoiseMerge_en.xml:1340
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
-msgstr "Sebagai tambahan ke direktori dan file versi Anda, Subversion membolehkan Anda untuk menambahkan metadata yang diversi - dirujuk sebagai <quote>properties</quote> ke setiap direktori dan file yang diversi Anda. Setiap properti mempunyai nama dan nilai, mirip kunci registri. Subversion mempunyai beberapa properti khusus yang digunakan secara internal, seperti <literal>svn:eol-style</literal>. TortoiseGit juga mempunyai beberapa, seperti <literal>tsvn:logminsize</literal>. Anda bisa menambah properti Anda sendiri dengan setiap nama dan nilai yang Anda pilih."
+msgid "In addition to versioning your directories and files, Git allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Git has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgstr "Sebagai tambahan ke direktori dan file versi Anda, Git membolehkan Anda untuk menambahkan metadata yang diversi - dirujuk sebagai <quote>properties</quote> ke setiap direktori dan file yang diversi Anda. Setiap properti mempunyai nama dan nilai, mirip kunci registri. Git mempunyai beberapa properti khusus yang digunakan secara internal, seperti <literal>svn:eol-style</literal>. TortoiseGit juga mempunyai beberapa, seperti <literal>tsvn:logminsize</literal>. Anda bisa menambah properti Anda sendiri dengan setiap nama dan nilai yang Anda pilih."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1353
 #. (glossterm)
@@ -1756,8 +1756,8 @@ msgstr "Revert (Pulihkan)"
 # Indonesian#: source/TortoiseMerge_en.xml:1395
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1656
-msgid "Subversion keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
-msgstr "Subversion memelihara copy <quote>murni</quote> lokal dari setiap file seperti setelah saat terakhir Anda memutahirkan copy pekerjaan Anda. Jika Anda telah membuat perubahan dan menentukan Anda ingin membatalkannya, Anda bisa menggunakan perintah <quote>pulihkan</quote> untuk kembali ke copy murni."
+msgid "Git keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
+msgstr "Git memelihara copy <quote>murni</quote> lokal dari setiap file seperti setelah saat terakhir Anda memutahirkan copy pekerjaan Anda. Jika Anda telah membuat perubahan dan menentukan Anda ingin membatalkannya, Anda bisa menggunakan perintah <quote>pulihkan</quote> untuk kembali ke copy murni."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1404
 #. (glossterm)
@@ -1798,14 +1798,14 @@ msgstr "SVN"
 # Indonesian#: source/TortoiseMerge_en.xml:1436
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1697
-msgid "A frequently-used abbreviation for Subversion."
-msgstr "Singkatan dari Subversion yang sering digunakan."
+msgid "A frequently-used abbreviation for Git."
+msgstr "Singkatan dari Git yang sering digunakan."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1439
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1700
-msgid "The name of the Subversion custom protocol used by the <quote>svnserve</quote> repository server."
-msgstr "Nama dari protokol bebas Subversion yang digunakan oleh server repositori <quote>svnserve</quote>."
+msgid "The name of the Git custom protocol used by the <quote>svnserve</quote> repository server."
+msgstr "Nama dari protokol bebas Git yang digunakan oleh server repositori <quote>svnserve</quote>."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1446
 #. (glossterm)
@@ -1828,8 +1828,8 @@ msgstr "Update (Mutahirkan)"
 # Indonesian#: source/TortoiseMerge_en.xml:1462
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1723
-msgid "This Subversion command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
-msgstr "Perintah Subversion ini menarik perubahan terbaru dari repositori ke dalam copy pekerjaan Anda, menggabung setiap perubahan oleh orang lain dengan perubahan lokal dalam copy pekerjaan."
+msgid "This Git command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
+msgstr "Perintah Git ini menarik perubahan terbaru dari repositori ke dalam copy pekerjaan Anda, menggabung setiap perubahan oleh orang lain dengan perubahan lokal dalam copy pekerjaan."
 
 # Indonesian#: source/TortoiseMerge_en.xml:1470
 #. (glossterm)

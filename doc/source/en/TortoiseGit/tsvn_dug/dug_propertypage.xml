@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-propertypage">
+	<title>Project Settings</title>
+	<indexterm>
+		<primary>properties</primary>
+	</indexterm>
+	<para>
+		<figure id="tsvn-dug-propertypage-dia-1">
+			<title>Explorer property page, Git tab</title>
+			<graphic fileref="../images/Properties.png"/>
+		</figure>
+		Sometimes you want to have more detailed information
+		about a file/directory than just the icon overlay.
+		You can get all the information Git provides in the
+		explorer properties dialog. Just select the file or
+		directory and select
+		<menuchoice>
+			<guimenu>Windows Menu</guimenu>
+			<guimenuitem>properties</guimenuitem>
+		</menuchoice>
+		in the context menu (note: this is the normal properties menu entry
+		the explorer provides, not the one in the TortoiseGit submenu!).
+		In the properties dialog box TortoiseGit has added a new
+		property page for files/folders under Git control,
+		where you can see all relevant information about the
+		selected file/directory.
+	</para>
+	<sect2 id="tsvn-dug-propertypage-props">
+		<title>Git Properties</title>
+		<indexterm>
+			<primary>Git properties</primary>
+		</indexterm>
+		<?dbhh topicname="HIDD_EDITPROPERTIES"?>
+		<?dbhh topicname="HIDD_EDITPROPERTYVALUE"?>
+		<para>
+			<figure id="tsvn-dug-propertypage-dia-2">
+				<title>Git property page</title>
+				<graphic fileref="../images/PropertyList.png"/>
+			</figure>
+			You can read and set the Git properties
+			from the Windows properties dialog, but also from
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>properties</guimenuitem>
+			</menuchoice>
+			and within TortoiseGit's status lists, from
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>properties</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			You can add your own properties, or some properties with a 
+			special meaning in Git. These begin with <literal>svn:</literal>. 
+			<literal>svn:externals</literal> is such a property; see how to handle
+			externals in <xref linkend="tsvn-dug-import-4"/>.
+		</para>
+		<sect3 id="tsvn-dug-propertypage-props-keywords">
+			<title>svn:keywords</title>
+			<indexterm>
+				<primary>keywords</primary>
+			</indexterm>
+			<indexterm>
+				<primary>expand keywords</primary>
+			</indexterm>
+			<para>
+				Git supports CVS-like keyword expansion which can be
+				used to embed filename and revision information within the
+				file itself. Keywords currently supported are:
+				<variablelist>
+					<varlistentry>
+						<term condition="pot">$Date$</term>
+						<listitem>
+							<para>
+								Date of last known commit. This is based on
+								information obtained when you update your working
+								copy. It does <emphasis>not</emphasis> check the
+								repository to find more recent changes.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">$Revision$</term>
+						<listitem>
+							<para>
+								Revision of last known commit.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">$Author$</term>
+						<listitem>
+							<para>
+								Author who made the last known commit.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">$HeadURL$</term>
+						<listitem>
+							<para>
+								The full URL of this file in the repository.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term condition="pot">$Id$</term>
+						<listitem>
+							<para>
+								A compressed combination of the previous
+								four keywords.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+			<para>
+				To find out how to use these keywords, look at the
+				<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.props.special.keywords.html">
+					<citetitle>svn:keywords section</citetitle>
+				</ulink>
+				in the Git book, which gives a full description of these
+				keywords and how to enable and use them.
+			</para>
+		</sect3>
+
+		<para>
+			For more information about properties in Git see the 
+			<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.props.html">
+				<citetitle>Special Properties</citetitle>
+			</ulink>.
+		</para>
+		<sect3 id="tsvn-dug-propertypage-props-add">
+			<title>Adding and Editing Properties</title>
+			<para>
+				<figure id="tsvn-dug-propertypage-dia-add">
+					<title>Adding properties</title>
+					<graphic fileref="../images/PropertyAdd.png"/>
+				</figure>
+				To add a new property, first click on <guilabel>Add...</guilabel>.
+				Select the required property name from the combo box,
+				or type in a name of your own choice, then enter a value
+				in the box below. Properties which take multiple values, such as an
+				ignore list, can be entered on multiple lines.
+				Click on <guibutton>OK</guibutton> to add that property to the list.
+			</para>
+			<para>
+				If you want to apply a property to many items at once, select the
+				files/folders in explorer, then select
+				<menuchoice>
+					<guimenu>Context menu</guimenu>
+					<guimenuitem>properties</guimenuitem>
+				</menuchoice>
+			</para>
+			<para>
+				If you want to apply the property to <emphasis>every</emphasis> file
+				and folder in the hierarchy below the current folder, check the
+				<guilabel>Recursive</guilabel> checkbox.
+			</para>
+			<para>
+				Some properties, for example <literal>svn:needs-lock</literal>,
+				can only be applied to files, so the property name doesn't appear
+				in the drop down list for folders. You can still apply such a
+				property recursively to all files in a hierarchy, but you have
+				to type in the property name yourself.
+			</para>
+			<para>
+				If you wish to edit an existing property, select that property from
+				the list of existing properties, then click on <guibutton>Edit...</guibutton>.
+			</para>
+			<para>
+				If you wish to remove an existing property, select that property from
+				the list of existing properties, then click on <guibutton>Remove</guibutton>.
+			</para>
+			<para>
+				The <literal>svn:externals</literal> property can be used to
+				pull in other projects from the same repository or a completely
+				different repository. For more information, read
+				<xref linkend="tsvn-dug-import-4"/>.
+			</para>
+		</sect3>
+		<sect3 id="tsvn-dug-propertypage-props-import">
+			<title>Exporting and Importing Properties</title>
+			<para>
+				Often you will find yourself applying the same set of properties many
+				times, for example <literal>bugtraq:logregex</literal>. To simplify
+				the process of copying properties from one project to another, you
+				can use the Export/Import feature.
+			</para>
+			<para>
+				From the file or folder where the properties are already set, use
+				<menuchoice>
+					<guimenu>TortoiseGit</guimenu>
+					<guimenuitem>properties</guimenuitem>
+				</menuchoice>,
+				select the properties you wish to export and click on
+				<guibutton>Export...</guibutton>. You will be prompted for a filename
+				where the property names and values will be saved.
+			</para>
+			<para>
+				From the folder(s) where you wish to apply these properties, use
+				<menuchoice>
+					<guimenu>TortoiseGit</guimenu>
+					<guimenuitem>properties</guimenuitem>
+				</menuchoice>
+				and click on <guibutton>Import...</guibutton>. You will be prompted
+				for a filename to import from, so navigate to the place you saved
+				the export file previously and select it. The properties will be added
+				to the folders non-recursively.
+			</para>
+			<para>
+				If you want to add properties to a tree recursively, follow the steps
+				above, then in the property dialog select each property in turn,
+				click on <guibutton>Edit...</guibutton>, check the
+				<guilabel>Apply property recursively</guilabel> box and click on
+				<guibutton>OK</guibutton>.
+			</para>
+			<para>
+				The Import file format is binary and proprietary to TortoiseGit.
+				Its only purpose is to transfer properties using Import and Export,
+				so there is no need to edit these files.
+			</para>
+		</sect3>
+		<sect3 id="tsvn-dug-propertypage-props-binary">
+			<title>Binary Properties</title>
+			<para>
+				TortoiseGit can handle binary property values using files.
+				To read a binary property value, <guibutton>Save...</guibutton>
+				to a file. To set a binary value, use a hex editor or other appropriate
+				tool to create a file with the content you require, then
+				<guibutton>Load...</guibutton> from that file.
+			</para>
+			<para>
+				Although binary properties are not often used, they can be useful in
+				some applications. For example if you are storing huge graphics files,
+				or if the application used to load the file is huge, you might want
+				to store a thumbnail as a property so you can obtain a preview quickly.
+			</para>
+		</sect3>
+		<sect3 id="tsvn-dug-propertypage-auto-props">
+			<title>Automatic property setting</title>
+			<indexterm>
+				<primary>auto-props</primary>
+			</indexterm>
+			<para>
+				You can configure Git and TortoiseGit to set properties
+				automatically on files and folders when they are added to the
+				repository. There are two ways of doing this.
+			</para>
+			<para>
+				You can edit the Git configuration file to enable
+				this feature on your client. The <guilabel>General</guilabel>
+				page of TortoiseGit's settings dialog has an edit button to
+				take you there directly.
+				The config file is a simple text file which controls some of
+				Git's workings. You need to change two things:
+				firstly in the section headed
+				<literal>miscellany</literal> uncomment the line
+				<literal>enable-auto-props = yes</literal>.
+				Secondly you need to edit the section below to define which
+				properties you want added to which file types.
+				This method is a standard Git feature and works with
+				any Git client. However it has to be defined on each
+				client individually - there is no way to propagate these settings
+				from the repository.
+			</para>
+			<para>
+				An alternative method is to set the <literal>tsvn:autoprops</literal>
+				property on folders, as described in the next section. This method
+				only works for TortoiseGit clients, but it does get propagated
+				to all working copies on update.
+			</para>
+			<para>
+				Whichever method you choose, you should note that auto-props
+				are only applied to files at the time they are added to the
+				repository. Auto-props will never change the properties of files
+				which are already versioned.
+			</para>
+			<para>
+				If you want to be absolutely sure that new files have the correct
+				properties applied, you should set up a repository pre-commit
+				hook to reject commits where the required properties are not set.
+			</para>
+		</sect3>
+		<important>
+			<title>Commit properties</title>
+			<para>
+				Git properties are versioned. After you change or add a 
+				property you have to commit your changes.
+			</para>
+		</important>
+		<tip>
+			<title>Conflicts on properties</title>
+			<para>
+				If there's a conflict on committing the changes, because another 
+				user has changed the same property, Git generates a 
+				<filename>.prej</filename> file. Delete this file after you 
+				have resolved the conflict.
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tsvn-dug-propertypage-tsvn-props">
+		<title>TortoiseGit Project Properties</title>
+		<indexterm>
+			<primary>project properties</primary>
+		</indexterm>
+		<indexterm>
+			<primary>TortoiseGit properties</primary>
+		</indexterm>
+		<para>
+			TortoiseGit has a few special properties of its own, and these begin
+			with <literal>tsvn:</literal>.
+			<itemizedlist>
+				<listitem>
+					<para>
+						<literal>tsvn:logminsize</literal>
+						sets the minimum length of a log message for a commit.
+						If you enter a shorter message than specified here, the commit
+						is disabled. This feature is very useful for reminding you to
+						supply a proper descriptive message for every commit.
+						If this property is not set,
+						or the value is zero, empty log messages are allowed.
+					</para>
+					<para>
+						<literal>tsvn:lockmsgminsize</literal>
+						sets the minimum length of a lock message.
+						If you enter a shorter message than specified here, the lock
+						is disabled. This feature is very useful for reminding you to
+						supply a proper descriptive message for every lock you get.
+						If this property is not set,
+						or the value is zero, empty lock messages are allowed.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<literal>tsvn:logwidthmarker</literal> is used with projects which
+						require log messages to be formatted with some maximum width
+						(typically 80 characters) before a line break. Setting this
+						property to a non-zero will do 2 things in the log message
+						entry dialog: it places a marker to indicate the maximum width,
+						and it disables word wrap in the display, so that you can see
+						whether the text you entered is too long. Note: this feature
+						will only work correctly if you have a fixed-width font
+						selected for log messages.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<literal>tsvn:logtemplate</literal> is used with projects which
+						have rules about log message formatting. The property holds
+						a multi-line text string which will be inserted in the commit
+						message box when you start a commit. You can then edit it to
+						include the required information. Note: if you are also using
+						<literal>tsvn:logminsize</literal>, be sure to set the length
+						longer than the template or you will lose the protection mechanism.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Git allows you to set <quote>autoprops</quote> which
+						will be applied to newly added or imported files, based on
+						the file extension. This depends on every client having set
+						appropriate autoprops in their Git configuration file.
+						<literal>tsvn:autoprops</literal> can be set on folders
+						and these will be merged with the user's local autoprops
+						when importing or adding files.
+						The format is the same as for Git autoprops, e.g.
+						<literal>*.sh = svn:eol-style=native;svn:executable</literal>
+						sets two properties on files with the <literal>.sh</literal>
+						extension.
+					</para>
+					<para>
+						If there is a conflict between the local autoprops and
+						<literal>tsvn:autoprops</literal>, the project settings take
+						precedence because they are specific to that project.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						In the Commit dialog you have the option to paste in the
+						list of changed files, including the status of each file
+						(added, modified, etc).
+						<literal>tsvn:logfilelistenglish</literal> defines whether
+						the file status is inserted in English or in the localized
+						language. If the property is not set, the default is
+						<literal>true</literal>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						TortoiseGit can use spell checker modules which are also
+						used by OpenOffice and Mozilla. If you have those installed
+						this property will determine which spell checker to use, i.e.
+						in which language the log messages for your project should
+						be written.
+						<literal>tsvn:projectlanguage</literal> sets the language
+						module the spell checking engine should use when you enter
+						a log message. You can find the values for your language
+						on this page:
+						<ulink url="http://msdn2.microsoft.com/en-us/library/ms776260.aspx">
+							<citetitle>MSDN: Language Identifiers</citetitle>
+						</ulink>.
+					</para>
+					<para>
+						You can enter this value in decimal, or in hexadecimal if
+						prefixed with <literal>0x</literal>.
+						For example English (US) can be entered as
+						<literal>0x0409</literal> or <literal>1033</literal>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						The property <literal>tsvn:logsummary</literal> is used to
+						extract a portion of the log message which is then shown
+						in the log dialog as the log message summary.
+					</para>
+					<para>
+						The value of the <literal>tsvn:logsummary</literal> property
+						must be set to a one line regex string which contains one
+						regex group. Whatever matches that group is used as the
+						summary.
+					</para>
+					<para>
+						An example: 
+						<literal>\[SUMMARY\]:\s+(.*)</literal> 
+						Will catch everything after <quote>[SUMMARY]</quote> in the log message
+						and use that as the summary.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When you want to add a new property, you can either pick one from
+						the list in the combo box, or you can enter any property name
+						you like. If your project uses some custom properties,
+						and you want those properties to appear in the list in the combo
+						box (to avoid typos when you enter a property name), you can
+						create a list of your custom properties using
+						<literal>tsvn:userfileproperties</literal> and
+						<literal>tsvn:userdirproperties</literal>.
+						Apply these properties to a folder. When you go to edit
+						the properties of any child item, your custom properties will
+						appear in the list of pre-defined property names.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			Some <literal>tsvn:</literal> properties require a
+			<literal>true/false</literal> value. TortoiseGit also understands
+			<literal>yes</literal> as a synonym for <literal>true</literal> and
+			<literal>no</literal> as a synonym for <literal>false</literal>.
+		</para>
+		<para>
+			TortoiseGit can integrate with some bug tracking tools. This uses
+			project properties that start with <literal>bugtraq:</literal>.
+			Read <xref linkend="tsvn-dug-bugtracker"/> for further information.
+		</para>
+		<para>
+			It can also integrate with some web-based repository browsers,
+			using project properties that start with <literal>webviewer:</literal>.
+			Read <xref linkend="tsvn-dug-repoviewer"/> for further information.
+		</para>
+		<important>
+			<title>Set the project properties on folders</title>
+			<para>
+				These special project properties must be set on
+				<emphasis>folders</emphasis> for the system to work. 
+				When you commit a file or folder the properties are read from that folder.
+				If the properties are not found there, TortoiseGit will search upwards
+				through the folder tree to find them until it comes to an unversioned
+				folder, or the tree root (eg. <literal>C:\</literal>) is found.
+				If you can be sure that each user checks out only from e.g
+				<filename>trunk/</filename> and not some sub-folder, then it is
+				sufficient to set the properties on <filename>trunk/</filename>.
+				If you can't be sure, you should set the properties recursively on each sub-folder.
+				A property setting deeper in the project hierarchy overrides settings on
+				higher levels (closer to <filename>trunk/</filename>).
+			</para>
+			<para>
+				For project properties <emphasis>only</emphasis>
+				you can use the <guilabel>Recursive</guilabel> checkbox to set
+				the property to all sub-folders in the hierarchy, without also
+				setting it on all files.
+			</para>
+		</important>
+		<para>
+			When you add new sub-folders using TortoiseGit, any
+			project properties present in the parent folder
+			will automatically be added to the new child folder too.
+		</para>
+		<caution>
+			<para>
+				Although TortoiseGit's project properties are extremely useful,
+				they only work with TortoiseGit, and some will only work in newer versions
+				of TortoiseGit. If people working on your project use a variety of
+				Git clients, or possibly have old versions of TortoiseGit,
+				you may want to use repository hooks to enforce project policies.
+				project properties can only help to implement a
+				policy, they cannot enforce it.
+			</para>
+		</caution>
+	</sect2>
+</sect1>

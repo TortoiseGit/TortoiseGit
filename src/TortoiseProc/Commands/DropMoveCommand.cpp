@@ -19,21 +19,32 @@
 #include "StdAfx.h"
 #include "DropMoveCommand.h"
 
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 #include "MessageBox.h"
-#include "SVN.h"
+#include "Git.h"
 #include "RenameDlg.h"
 #include "ShellUpdater.h"
+#include "commonresource.h"
 
 bool DropMoveCommand::Execute()
 {
 	CString droppath = parser.GetVal(_T("droptarget"));
-	if (CTSVNPath(droppath).IsAdminDir())
+	CString ProjectTop;
+	if (CTGitPath(droppath).HasAdminDir(&ProjectTop))
 		return FALSE;
-	SVN svn;
+	
+	if (ProjectTop != g_Git.m_CurrentDir )
+	{
+		CMessageBox::Show(NULL,_T("Target and source must be the same git repository"),_T("TortoiseGit"),MB_OK);
+		return FALSE;
+	}
+
+	droppath.Right(droppath.GetLength()-ProjectTop.GetLength()-1);
+
 	unsigned long count = 0;
 	pathList.RemoveAdminPaths();
 	CString sNewName;
+
 	if ((parser.HasKey(_T("rename")))&&(pathList.GetCount()==1))
 	{
 		// ask for a new name of the source item
@@ -49,7 +60,7 @@ bool DropMoveCommand::Execute()
 			sNewName = renDlg.m_name;
 		} while(sNewName.IsEmpty() || PathFileExists(droppath+_T("\\")+sNewName));
 	}
-	CProgressDlg progress;
+	CSysProgressDlg progress;
 	if (progress.IsValid())
 	{
 		progress.SetTitle(IDS_PROC_MOVING);
@@ -59,11 +70,11 @@ bool DropMoveCommand::Execute()
 	}
 	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
 	{
-		CTSVNPath destPath;
+		CTGitPath destPath;
 		if (sNewName.IsEmpty())
-			destPath = CTSVNPath(droppath+_T("\\")+pathList[nPath].GetFileOrDirectoryName());
+			destPath = CTGitPath(droppath+_T("\\")+pathList[nPath].GetFileOrDirectoryName());
 		else
-			destPath = CTSVNPath(droppath+_T("\\")+sNewName);
+			destPath = CTGitPath(droppath+_T("\\")+sNewName);
 		if (destPath.Exists())
 		{
 			CString name = pathList[nPath].GetFileOrDirectoryName();
@@ -79,30 +90,26 @@ bool DropMoveCommand::Execute()
 			}
 			destPath.SetFromWin(droppath+_T("\\")+dlg.m_name);
 		} 
-		if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, FALSE))
+		CString cmd,out;
+		
+		cmd.Format(_T("git.exe mv \"%s\" \"%s\""),pathList[nPath].GetGitPathString(),destPath.GetGitPathString());
+		if(g_Git.Run(cmd,&out,CP_OEMCP))
 		{
-			if (svn.Err && (svn.Err->apr_err == SVN_ERR_UNVERSIONED_RESOURCE ||
-				svn.Err->apr_err == SVN_ERR_CLIENT_MODIFIED))
+			if (CMessageBox::Show(hwndExplorer, out, _T("TortoiseGit"), MB_YESNO)==IDYES)
 			{
-				// file/folder seems to have local modifications. Ask the user if
-				// a force is requested.
-				CString temp = svn.GetLastErrorMessage();
-				CString sQuestion(MAKEINTRESOURCE(IDS_PROC_FORCEMOVE));
-				temp += _T("\n") + sQuestion;
-				if (CMessageBox::Show(hwndExplorer, temp, _T("TortoiseSVN"), MB_YESNO)==IDYES)
-				{
+#if 0
 					if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))
 					{
 						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
 						return FALSE;		//get out of here
 					}
 					CShellUpdater::Instance().AddPathForUpdate(destPath);
-				}
+#endif
 			}
 			else
 			{
-				TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+				//TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
+				CMessageBox::Show(hwndExplorer, _T("Cancel"), _T("TortoiseGit"), MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 		} 

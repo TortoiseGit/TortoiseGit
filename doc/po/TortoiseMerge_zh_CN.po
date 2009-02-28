@@ -35,7 +35,7 @@
 # repository        版本库
 # revert            恢复
 # revision          版本
-# Subversion book   Subversion 手册
+# Git book   Git 手册
 # undo              撤销
 # unified diff      标准差异
 # unversioned       未版本控制
@@ -48,7 +48,7 @@ msgstr ""
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-12-24 09:36+0800\n"
 "Last-Translator: Dongsheng Song <dongsheng@users.sourceforge.net>\n"
-"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <tortoisegit-dev@googlegroups.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -324,13 +324,13 @@ msgstr ""
 #. (para)
 #: ../source/TortoiseMerge_en.xml:198
 msgid ""
-"If you're working with a version control system (e.g. Subversion) then you "
+"If you're working with a version control system (e.g. Git) then you "
 "sometimes get <emphasis>conflicts</emphasis> when you update your working "
 "copy. This happens if someone else changed the same parts of the file you're "
 "currently working on as you did. Then you have to resolve those conflicts "
 "manually. This is where TortoiseMerge can help you."
 msgstr ""
-"如果你使用版本控制系统(如 Subversion)时，当你更新工作副本时你可能会遇到“ "
+"如果你使用版本控制系统(如 Git)时，当你更新工作副本时你可能会遇到“ "
 "<emphasis>冲突</emphasis> ”。这种情况通常发生在其他人也修改了你当前正在处理的"
 "文件的同一部分。当遇到冲突时，你必须手工来解决它——这就是 TortoiseMerge 能帮助"
 "你的地方。"
@@ -363,13 +363,13 @@ msgstr ""
 #: ../source/TortoiseMerge_en.xml:220
 msgid ""
 "But now with TortoiseMerge this isn't necessary anymore - at least not if "
-"you're working with a version control system like Subversion. TortoiseMerge "
+"you're working with a version control system like Git. TortoiseMerge "
 "parses the patch file for the revision/version the patch was created for and "
 "automatically tries to fetch that specific version from your source-control. "
 "Then it applies the patch and lets you review both your changes to the file, "
 "and theirs. Then you can decide which changes you want to keep."
 msgstr ""
-"但是现在有了 TortoiseMerge，它就不再是必需的了 —— 至少当你使用类似 Subversion "
+"但是现在有了 TortoiseMerge，它就不再是必需的了 —— 至少当你使用类似 Git "
 "这样的版本控制系统时不是必需的。TortoiseMerge 解析补丁文件创建的修订版/版本"
 "号，并自动尝试从你的版本控制系统中获取对应的版本。然后应用该补丁，让你对比文件"
 "的原始内容及其修改后的内容。因此你能决定是否接受那些修改。"
@@ -424,11 +424,11 @@ msgstr ""
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
 msgid ""
-"Since TortoiseGit already uses the Subversion library, which has a nice "
+"Since TortoiseGit already uses the Git library, which has a nice "
 "diffing engine built in, it was just natural to use this library instead of "
 "the GNU diff."
 msgstr ""
-"因为 TortoiseGit 已经使用了 Subversion 库，它内置了一个很好的差异比较工具。很"
+"因为 TortoiseGit 已经使用了 Git 库，它内置了一个很好的差异比较工具。很"
 "自然的，我们使用这个库代替 GNU diff。"
 
 #. (title)
@@ -451,7 +451,7 @@ msgstr "察看两个文件的差异，合并它们，或者删除不想要的修
 #. (para)
 #: ../source/TortoiseMerge_en.xml:288
 msgid ""
-"Editing conflicts between local changes and changes in the Subversion "
+"Editing conflicts between local changes and changes in the Git "
 "repository following an update."
 msgstr "更新后，编辑本地修改和版本库修改之间的冲突。"
 
@@ -570,7 +570,7 @@ msgstr "应用补丁"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
 msgid ""
-"A patch file is a Subversion unified diff file, which contains the "
+"A patch file is a Git unified diff file, which contains the "
 "information required to apply changes to a set of files. The patch may have "
 "been supplied by another developer so that you can see changes he has made "
 "and possibly commit them to the repository. Or it may have been generated "
@@ -579,7 +579,7 @@ msgid ""
 "compare two different repository revisions, or if you compare two different "
 "repository paths."
 msgstr ""
-"补丁文件是 Subversion 统一差异格式，它包含了使用补丁的信息。补丁可能是其他人提"
+"补丁文件是 Git 统一差异格式，它包含了使用补丁的信息。补丁可能是其他人提"
 "供的，所以你可以察看其修改，或许将它提交到版本库。或者补丁是 TortoiseGit 比较"
 "两个目录生成的。例如你比较版本库中的版本与工作副本，或者比较两个版本库版本，或"
 "者比较两个不同的版本库路径。"
@@ -745,7 +745,7 @@ msgstr "补丁文件列表"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:493
 msgid ""
-"But don't worry. If you're working with Subversion you can retrieve an older "
+"But don't worry. If you're working with Git you can retrieve an older "
 "version of the file and resolve the conflict. In fact, TortoiseMerge "
 "automatically tries to get that older version of the file and then shows you "
 "the diff between <emphasis>Base</emphasis> (the older version of the file), "
@@ -753,7 +753,7 @@ msgid ""
 "and <emphasis>Theirs</emphasis> (the older version of the file with the patch "
 "already applied). Then you can resolve possible conflicts manually."
 msgstr ""
-"但是别担心。如果你使用 Subversion，可以取出这个文件的老版本来解决冲突。实际"
+"但是别担心。如果你使用 Git，可以取出这个文件的老版本来解决冲突。实际"
 "上，TortoiseMerge 自动尝试取出老版本，给出<emphasis>基础版本</emphasis>(此文件"
 "的老版本), <emphasis>我的版本</emphasis>(你的工作副本中的文件)，和<emphasis>他"
 "人的版本</emphasis>(已经打补丁的老版本)之间的差异。然后你可以手工解决冲突。"
@@ -1154,14 +1154,14 @@ msgstr ""
 #. (para)
 #: ../source/TortoiseMerge_en.xml:796
 msgid ""
-"Sometimes a file will be marked as conflicted in Subversion, yet when you "
+"Sometimes a file will be marked as conflicted in Git, yet when you "
 "view it using TortoiseMerge there are no conflicts shown. This may be due to "
 "the whitespace handling you have chosen. If you choose to ignore line-endings "
 "or whitespace changes, those lines will be marked using the "
 "<emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still "
 "need to pick which version you want to use."
 msgstr ""
-"有时候在 Subversion 中的文件会被标记为冲突，但是当你用 TortoiseMerge 察看时，"
+"有时候在 Git 中的文件会被标记为冲突，但是当你用 TortoiseMerge 察看时，"
 "却没有显示冲突。这可能是你选择的空白处理方式造成的。如果你选择忽略行结束符或空"
 "白改变，这些行会用 <emphasis>冲突被忽略</emphasis> 图标标记。为了解决冲突，你"
 "仍旧需要选择你要使用的版本。"
@@ -1260,11 +1260,11 @@ msgstr ""
 #: ../source/TortoiseMerge_en.xml:873
 msgid ""
 "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are "
-"supported. And only files which were generated from a Subversion working "
+"supported. And only files which were generated from a Git working "
 "copy. Other formats like patch files generated by CVS are currently not "
 "supported!"
 msgstr ""
-"当前仅支持<emphasis>标准差异格式</emphasis>。并且是在 Subversion 工作副本中生"
+"当前仅支持<emphasis>标准差异格式</emphasis>。并且是在 Git 工作副本中生"
 "成的补丁。其它格式，例如 CVS 生成的补丁文件不受支持！"
 
 #. (title)
@@ -1332,11 +1332,11 @@ msgstr ""
 #: ../source/TortoiseMerge_en.xml:919
 msgid ""
 "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and "
-"inline whitespace as added/removed lines (which is how Subversion treats such "
+"inline whitespace as added/removed lines (which is how Git treats such "
 "changes)."
 msgstr ""
 "<guilabel>比较空白字符</guilabel> 将全部缩进变化，或行内空白字符的变化按照添"
-"加/删除的行显示(即 Subversion 处理变化的方式)。"
+"加/删除的行显示(即 Git 处理变化的方式)。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:924
@@ -1924,10 +1924,10 @@ msgstr "增加"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1360
 msgid ""
-"A Subversion command that is used to add a file or directory to your working "
+"A Git command that is used to add a file or directory to your working "
 "copy. The new items are added to the repository when you commit."
 msgstr ""
-"用于增加文件或目录到你的工作副本中的 Subversion 命令。当你提交时，这些新项目会"
+"用于增加文件或目录到你的工作副本中的 Git 命令。当你提交时，这些新项目会"
 "增加到版本库中。"
 
 #. (glossterm)
@@ -1991,13 +1991,13 @@ msgid ""
 "You can create a branch off the main development line so as to develop a new "
 "feature without rendering the main line unstable. Or you can branch a stable "
 "release to which you make only bug fixes, while new developments take place "
-"on the unstable trunk. In Subversion a branch is implemented as a "
+"on the unstable trunk. In Git a branch is implemented as a "
 "<quote>cheap copy</quote>."
 msgstr ""
 "一个经常被开发者在特定时期跟踪两个独立路径时使用的术语，它描述了在版本控制系统"
 "中发生的事情。你可以从主开发线创建分支，从而开发新特性，不会使主开发线陷入不稳"
 "定状态。或者你创建一个稳定发布版的分支，仅用于修复问题，新的开发位于不稳定的主"
-"开发线。在 Subversion 中，分支用<quote>廉价拷贝</quote>实现。"
+"开发线。在 Git 中，分支用<quote>廉价拷贝</quote>实现。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1415
@@ -2007,10 +2007,10 @@ msgstr "检出"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1417
 msgid ""
-"A Subversion command which creates a local working copy in an empty directory "
+"A Git command which creates a local working copy in an empty directory "
 "by downloading versioned files from the repository."
 msgstr ""
-"此 Subversion 命令从版本库下载受版本控制的文件，在空目录创建本地工作副本。"
+"此 Git 命令从版本库下载受版本控制的文件，在空目录创建本地工作副本。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1424
@@ -2020,14 +2020,14 @@ msgstr "清理"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1426
 msgid ""
-"To quote from the Subversion book: <quote> Recursively clean up the working "
+"To quote from the Git book: <quote> Recursively clean up the working "
 "copy, removing locks and resuming unfinished operations. If you ever get a "
 "<emphasis>working copy locked</emphasis> error, run this command to remove "
 "stale locks and get your working copy into a usable state again. </quote> "
 "Note that in this context <emphasis>lock</emphasis> refers to local "
 "filesystem locking, not repository locking."
 msgstr ""
-"摘自 Subversion 手册：<quote> 递归的清理工作目录，删除锁，恢复未完成的工作。如"
+"摘自 Git 手册：<quote> 递归的清理工作目录，删除锁，恢复未完成的工作。如"
 "果你遇到<literal>工作目录已经锁定</literal>错误，运行此命令删除过时的锁，使你"
 "的工作副本恢复到可用状态。</quote>注释：在此上下文中<quote>锁</quote>指的是本"
 "地文件系统中的锁，不是版本库的锁。"
@@ -2040,9 +2040,9 @@ msgstr "提交"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1443
 msgid ""
-"This Subversion command is used to pass the changes in your local working "
+"This Git command is used to pass the changes in your local working "
 "copy back into the repository, creating a new repository revision."
-msgstr "此 Subversion 命令用于将你的本地修改传递到版本库中，创建新版本。"
+msgstr "此 Git 命令用于将你的本地修改传递到版本库中，创建新版本。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1451
@@ -2053,12 +2053,12 @@ msgstr "冲突"
 #: ../source/TortoiseMerge_en.xml:1453
 msgid ""
 "When changes from the repository are merged with local changes, sometimes "
-"those changes occur on the same lines. In this case Subversion cannot "
+"those changes occur on the same lines. In this case Git cannot "
 "automatically decide which version to use and the file is said to be in "
 "conflict. You have to edit the file manually and resolve the conflict before "
 "you can commit any further changes."
 msgstr ""
-"当仓库的改变合并到本地修改时，有时会在相同的行修改。在这种情况下，Subversion "
+"当仓库的改变合并到本地修改时，有时会在相同的行修改。在这种情况下，Git "
 "不能自动决定采用哪个版本，文件就处于冲突状态。你必须手工编辑文件，在你提交之前"
 "解决冲突。"
 
@@ -2070,13 +2070,13 @@ msgstr "复制"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1465
 msgid ""
-"In a Subversion repository you can create a copy of a single file or an "
+"In a Git repository you can create a copy of a single file or an "
 "entire tree. These are implemented as <quote>cheap copies</quote> which act a "
 "bit like a link to the original in that they take up almost no space. Making "
 "a copy preserves the history of the item in the copy, so you can trace "
 "changes made before the copy was made."
 msgstr ""
-"在 Subversion 版本库中，你可以创建单个文件或一个目录树的副本。此操作用<quote>"
+"在 Git 版本库中，你可以创建单个文件或一个目录树的副本。此操作用<quote>"
 "廉价拷贝</quote>实现，它有些象符号连接到原始文件，几乎不耗费空间。创建的副本保"
 "留了历史，所以你可以跟踪副本创建之前的修改。"
 
@@ -2132,10 +2132,10 @@ msgstr "FSFS"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1508
 msgid ""
-"A proprietary Subversion filesystem backend for repositories. Can be used on "
+"A proprietary Git filesystem backend for repositories. Can be used on "
 "network shares. Default for 1.2 and newer repositories."
 msgstr ""
-"一个专用于 Subversion 版本库的文件系统后端，可以使用网络文件系统(例如 NFS 或 "
+"一个专用于 Git 版本库的文件系统后端，可以使用网络文件系统(例如 NFS 或 "
 "SMBFS)。是 1.2 版本及其后的版本库之默认后端。"
 
 #. (glossterm)
@@ -2168,9 +2168,9 @@ msgstr "导入"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1533
 msgid ""
-"Subversion command to import an entire folder hierarchy into the repository "
+"Git command to import an entire folder hierarchy into the repository "
 "in a single revision."
-msgstr "用于一次导入整个文件夹(包含子目录)的 Subversion 命令。"
+msgstr "用于一次导入整个文件夹(包含子目录)的 Git 命令。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1540
@@ -2244,14 +2244,14 @@ msgstr "补丁"
 #: ../source/TortoiseMerge_en.xml:1586
 msgid ""
 "If a working copy has changes to text files only, it is possible to use "
-"Subversion's Diff command to generate a single file summary of those changes "
+"Git's Diff command to generate a single file summary of those changes "
 "in Unified Diff format. A file of this type is often referred to as a "
 "<quote>Patch</quote>, and it can be emailed to someone else (or to a mailing "
 "list) and applied to another working copy. Someone without commit access can "
 "make changes and submit a patch file for an authorized committer to apply. Or "
 "if you are unsure about a change you can submit a patch for others to review."
 msgstr ""
-"如果工作副本只修改了文本文件，就可以使用 Subversion 的差异命令产生一个标准差异"
+"如果工作副本只修改了文本文件，就可以使用 Git 的差异命令产生一个标准差异"
 "格式文件。这种文件类型通常称为<quote>补丁</quote>，可以应用到其他工作副本。没"
 "有提交权的人可以在修改后，发送补丁文件给一个认可的提交者来提交。或者不能确定此"
 "修改是否恰当，你可以发送补丁给其他人评审。"
@@ -2264,17 +2264,17 @@ msgstr "属性"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
 msgid ""
-"In addition to versioning your directories and files, Subversion allows you "
+"In addition to versioning your directories and files, Git allows you "
 "to add versioned metadata - referred to as <quote>properties</quote> to each "
 "of your versioned directories and files. Each property has a name and a "
-"value, rather like a registry key. Subversion has some special properties "
+"value, rather like a registry key. Git has some special properties "
 "which it uses internally, such as <literal>svn:eol-style</literal>. "
 "TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can "
 "add your own properties with any name and value you choose."
 msgstr ""
-"在版本控制文件和目录之外，Subversion 还允许你增加版本控制元数据 - 称为<quote>"
+"在版本控制文件和目录之外，Git 还允许你增加版本控制元数据 - 称为<quote>"
 "属性</quote> - 到你的版本控制文件和目录。每个属性都有名字和值，很像注册表键。"
-"Subversion 有内部使用的专用属性，例如 <literal>svn:eol-style</literal>。"
+"Git 有内部使用的专用属性，例如 <literal>svn:eol-style</literal>。"
 "TortoiseGit 也是如此，例如 <literal>tsvn:logminsize</literal>。你可以增加自己"
 "的属性，允许选择任意名称和取值。"
 
@@ -2347,12 +2347,12 @@ msgstr "恢复"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1656
 msgid ""
-"Subversion keeps a local <quote>pristine</quote> copy of each file as it was "
+"Git keeps a local <quote>pristine</quote> copy of each file as it was "
 "when you last updated your working copy. If you have made changes and decide "
 "you want to undo them, you can use the <quote>revert</quote> command to go "
 "back to the pristine copy."
 msgstr ""
-"当最后更新工作目录时，Subversion 为每个文件保留了一份本地<quote>原始</quote>副"
+"当最后更新工作目录时，Git 为每个文件保留了一份本地<quote>原始</quote>副"
 "本。如果你做了修改，决定撤销，可以使用<quote>恢复</quote>命令得到原始副本。"
 
 #. (glossterm)
@@ -2405,13 +2405,13 @@ msgstr "SVN"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1697
-msgid "A frequently-used abbreviation for Subversion."
-msgstr "一个友好的 Subversion 缩写。"
+msgid "A frequently-used abbreviation for Git."
+msgstr "一个友好的 Git 缩写。"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1700
 msgid ""
-"The name of the Subversion custom protocol used by the <quote>svnserve</"
+"The name of the Git custom protocol used by the <quote>svnserve</"
 "quote> repository server."
 msgstr "被<quote>svnserve</quote>版本库服务器使用的专用协议名称。"
 
@@ -2443,11 +2443,11 @@ msgstr "更新"
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1723
 msgid ""
-"This Subversion command pulls down the latest changes from the repository "
+"This Git command pulls down the latest changes from the repository "
 "into your working copy, merging any changes made by others with local changes "
 "in the working copy."
 msgstr ""
-"此命令从 Subversion 版本库下载最新的修改到你的工作副本，合并任何本地修改。"
+"此命令从 Git 版本库下载最新的修改到你的工作副本，合并任何本地修改。"
 
 #. (glossterm)
 #: ../source/TortoiseMerge_en.xml:1731

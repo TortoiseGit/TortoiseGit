@@ -427,6 +427,14 @@
 					RelativePath=".\AppUtils.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\DeleteConflictDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DeleteConflictDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="UI"
@@ -1209,6 +1217,14 @@
 				Name="Rename"
 				>
 				<File
+					RelativePath=".\Commands\DropMoveCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropMoveCommand.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\RenameCommand.cpp"
 					>
 				</File>
@@ -1368,6 +1384,14 @@
 			<Filter
 				Name="Export"
 				>
+				<File
+					RelativePath=".\Commands\DropExportCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropExportCommand.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Commands\ExportCommand.cpp"
 					>
@@ -1766,6 +1790,26 @@
 				</File>
 				<File
 					RelativePath=".\Commands\RepoStatusCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Copy"
+				>
+				<File
+					RelativePath=".\Commands\DropCopyAddCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropCopyAddCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropCopyCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\DropCopyCommand.h"
 					>
 				</File>
 			</Filter>

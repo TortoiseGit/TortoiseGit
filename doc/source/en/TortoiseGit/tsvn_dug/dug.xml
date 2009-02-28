@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../../dtd/dblite.dtd">
+<chapter id="tsvn-dug" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Daily Use Guide</title>
+	<?dbhh topicname="HIDD_URL"?>
+	<?dbhh topicname="HIDD_SVNPROGRESS"?>
+	<simplesect>
+		<para>
+			This document describes day to day usage of the TortoiseGit client.
+			It is <emphasis>not</emphasis> an introduction to version control
+			systems, and <emphasis>not</emphasis> an introduction to Git. It is 
+			more like a place you may turn to when you know	approximately 
+			what you want to do, but don't quite remember how to do it.
+		</para>
+		<!--
+		<para>
+			If you need an introduction to version control with Git,
+			then we recommend you read the fantastic book:
+<ulink url="http://svnbook.red-bean.com/">
+<citetitle>Version Control with Git</citetitle>
+</ulink>.
+		</para>
+		-->
+		<para>
+			This document is also a work in progress, just as TortoiseGit and
+			Git are. If you find any mistakes, please report them to
+			the mailing list so we can update the documentation. Some of
+			the screenshots in the Daily Use Guide (DUG) might not reflect the
+			current state of the software. Please forgive us. We're working on
+			TortoiseGit in our free time.
+		</para>
+		<para>
+			In order to get the most out of the Daily Use Guide:
+			<itemizedlist>
+				<listitem>
+					<para>
+						You should have installed TortoiseGit already.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						You should be familiar with version control systems.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						You should know the basics of Git.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						You should have set up a server and/or have access
+						to a Git repository.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<!-- ================================================================= -->
+	<!-- include external entity refs -->
+	<xi:include href="./dug_general.xml"/>
+	<!--
+	<xi:include href="./dug_import.xml"/>
+	-->
+	<xi:include href="./dug_checkout.xml"/>
+	<xi:include href="./dug_commit.xml"/>
+	<!--
+	<xi:include href="./dug_update.xml"/>
+	-->
+	<xi:include href="./dug_conflicts.xml"/>
+	<xi:include href="./dug_wcstatus.xml"/>
+	<!--
+	<xi:include href="./dug_changelist.xml"/>
+	-->
+	<xi:include href="./dug_log.xml"/>
+	<xi:include href="./dug_diff.xml"/>
+	<xi:include href="./dug_add.xml"/>
+	<xi:include href="./dug_copy.xml"/>
+	<xi:include href="./dug_ignore.xml"/>
+	<xi:include href="./dug_rename.xml"/>
+	<xi:include href="./dug_revert.xml"/>
+	<!--
+	<xi:include href="./dug_cleanup.xml"/>
+	-->
+	<!--
+	<xi:include href="./dug_propertypage.xml"/>
+	-->
+	<xi:include href="./dug_branchtag.xml"/>
+	<xi:include href="./dug_merge.xml"/>
+	<!--
+	<xi:include href="./dug_locking.xml"/>
+	-->
+	<xi:include href="./dug_patch.xml"/>
+	<xi:include href="./dug_blame.xml"/>
+	<!--
+	<xi:include href="./dug_repobrowser.xml"/>
+	-->
+	<!--
+	<xi:include href="./dug_revgraph.xml"/>
+	-->
+	<xi:include href="./dug_export.xml"/>
+	<!--
+	<xi:include href="./dug_relocate.xml"/>
+	-->
+	<xi:include href="./dug_bugtracker.xml"/>
+	<!--
+	<xi:include href="./dug_repoviewer.xml"/>
+	-->
+	<xi:include href="./dug_settings.xml"/>
+	<sect1 id="tsvn-dug-donate">
+		<title>Final Step</title>
+		<xi:include href="../../wishlist.xml"/>
+	</sect1>
+</chapter>

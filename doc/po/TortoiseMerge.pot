@@ -197,7 +197,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:198
 #.(para)
-msgid "If you're working with a version control system (e.g. Subversion) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
+msgid "If you're working with a version control system (e.g. Git) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:206
@@ -219,7 +219,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:220
 #.(para)
-msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Subversion. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
+msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Git. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:235
@@ -244,7 +244,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:268
 #.(para)
-msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgid "Since TortoiseGit already uses the Git library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:276
@@ -259,7 +259,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:288
 #.(para)
-msgid "Editing conflicts between local changes and changes in the Subversion repository following an update."
+msgid "Editing conflicts between local changes and changes in the Git repository following an update."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:294
@@ -333,7 +333,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:370
 #.(para)
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgid "A patch file is a Git unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:380
@@ -435,7 +435,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:493
 #.(para)
-msgid "But don't worry. If you're working with Subversion you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
+msgid "But don't worry. If you're working with Git you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:504
@@ -635,7 +635,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:796
 #.(para)
-msgid "Sometimes a file will be marked as conflicted in Subversion, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
+msgid "Sometimes a file will be marked as conflicted in Git, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:804
@@ -685,7 +685,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:873
 #.(para)
-msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Subversion working copy. Other formats like patch files generated by CVS are currently not supported!"
+msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Git working copy. Other formats like patch files generated by CVS are currently not supported!"
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:884
@@ -730,7 +730,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:919
 #.(para)
-msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Subversion treats such changes)."
+msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Git treats such changes)."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:924
@@ -1225,7 +1225,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1360
 #.(para)
-msgid "A Subversion command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
+msgid "A Git command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1368
@@ -1265,7 +1265,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1402
 #.(para)
-msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Subversion a branch is implemented as a <quote>cheap copy</quote>."
+msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Git a branch is implemented as a <quote>cheap copy</quote>."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1415
@@ -1275,7 +1275,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1417
 #.(para)
-msgid "A Subversion command which creates a local working copy in an empty directory by downloading versioned files from the repository."
+msgid "A Git command which creates a local working copy in an empty directory by downloading versioned files from the repository."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1424
@@ -1285,7 +1285,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1426
 #.(para)
-msgid "To quote from the Subversion book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
+msgid "To quote from the Git book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1441
@@ -1295,7 +1295,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1443
 #.(para)
-msgid "This Subversion command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
+msgid "This Git command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1451
@@ -1305,7 +1305,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1453
 #.(para)
-msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Subversion cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
+msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Git cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1463
@@ -1315,7 +1315,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1465
 #.(para)
-msgid "In a Subversion repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
+msgid "In a Git repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1475
@@ -1355,7 +1355,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1508
 #.(para)
-msgid "A proprietary Subversion filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
+msgid "A proprietary Git filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1515
@@ -1385,7 +1385,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1533
 #.(para)
-msgid "Subversion command to import an entire folder hierarchy into the repository in a single revision."
+msgid "Git command to import an entire folder hierarchy into the repository in a single revision."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1540
@@ -1440,7 +1440,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1586
 #.(para)
-msgid "If a working copy has changes to text files only, it is possible to use Subversion's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
+msgid "If a working copy has changes to text files only, it is possible to use Git's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1599
@@ -1450,7 +1450,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1601
 #.(para)
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgid "In addition to versioning your directories and files, Git allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Git has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1614
@@ -1495,7 +1495,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1656
 #.(para)
-msgid "Subversion keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
+msgid "Git keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1665
@@ -1530,12 +1530,12 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1697
 #.(para)
-msgid "A frequently-used abbreviation for Subversion."
+msgid "A frequently-used abbreviation for Git."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1700
 #.(para)
-msgid "The name of the Subversion custom protocol used by the <quote>svnserve</quote> repository server."
+msgid "The name of the Git custom protocol used by the <quote>svnserve</quote> repository server."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1707
@@ -1555,7 +1555,7 @@ msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1723
 #.(para)
-msgid "This Subversion command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
+msgid "This Git command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
 msgstr ""
 
 #: ../source/TortoiseMerge_en.xml:1731

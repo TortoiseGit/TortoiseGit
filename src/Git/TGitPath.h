@@ -50,6 +50,7 @@ public:
 	 */
 	void SetFromGit(const char* pPath);
 	void SetFromGit(const char* pPath, bool bIsDirectory);
+	void SetFromGit(const TCHAR* pPath, bool bIsDirectory);
 	void SetFromGit(const CString& sPath,CString *OldPath=NULL);
 	
 	/**

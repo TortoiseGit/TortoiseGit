@@ -18,7 +18,7 @@ msgstr ""
 "POT-Creation-Date: 2008-11-17 00:14 +0000\n"
 "PO-Revision-Date: 2008-11-17 23:16+0100\n"
 "Last-Translator: Milorad Popović\n"
-"Language-Team: TortoiseGit translation team <dev@TortoiseGit.tigris.org>\n"
+"Language-Team: TortoiseGit translation team <tortoisegit-dev@googlegroups.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -214,7 +214,7 @@ msgstr "Dok se radi sa tekst fajlovima, tj. fajlovi izvornog koda u vašem najdr
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:198
-msgid "If you're working with a version control system (e.g. Subversion) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
+msgid "If you're working with a version control system (e.g. Git) then you sometimes get <emphasis>conflicts</emphasis> when you update your working copy. This happens if someone else changed the same parts of the file you're currently working on as you did. Then you have to resolve those conflicts manually. This is where TortoiseMerge can help you."
 msgstr "Ako radite sa sistemom kontrole verzija (tj. Subverzija)  tada ponekad dobijete <emphasis>konflikte</emphasis> kada ažurirate vašu radnu kopiju. Ovo se dešava ako je još neko izmenio iste delove fajla na kome ste vi trenutno radili. Tada imate da rešite ove konflikte ručno. Tu vam TortoiseMerge može pomoći."
 
 #. (para)
@@ -236,7 +236,7 @@ msgstr " Konflikt se takođe može javiti ako pokušate primeniti zastareli fajl
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:220
-msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Subversion. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
+msgid "But now with TortoiseMerge this isn't necessary anymore - at least not if you're working with a version control system like Git. TortoiseMerge parses the patch file for the revision/version the patch was created for and automatically tries to fetch that specific version from your source-control. Then it applies the patch and lets you review both your changes to the file, and theirs. Then you can decide which changes you want to keep."
 msgstr "Ali sada sa TortoiseMerge ovo više nije neophodno - ni najmanje ako radite sa sistemom kontrole verzija kao što je Subverzija. TortoiseMerge analizira fajl zakrpe za revizija/verzija zakrpe kreirane i automatski pokušava da nađe specijalnu verziju iz vaše sors-kontrole. Zatim se primenjuje na zakrpe i omogućava vam da pregledate oboje, vaše izmene fajla i od drugih. Zatim možete odlučiti koje izmene želite da zadržite."
 
 #. (title)
@@ -261,7 +261,7 @@ msgstr "Tako smo potrošili puno vremena pretražujući internet za GUI alat koj
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:268
-msgid "Since TortoiseGit already uses the Subversion library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
+msgid "Since TortoiseGit already uses the Git library, which has a nice diffing engine built in, it was just natural to use this library instead of the GNU diff."
 msgstr "kako TortoiseGit već koristi Subverzionu biblioteku, koja ima fino razlikovanje u sebi, bilo je prirodno da se koristi biblioteka umesto GNU razl."
 
 #. (title)
@@ -276,7 +276,7 @@ msgstr "Gledanje razlike između dva fajla i spajanje izmena u jedan od njih, il
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:288
-msgid "Editing conflicts between local changes and changes in the Subversion repository following an update."
+msgid "Editing conflicts between local changes and changes in the Git repository following an update."
 msgstr "Uređenje konflikata između lokalnih izmena i izmena u Subverzionom spremištu prateći ažuriranje."
 
 #. (para)
@@ -350,7 +350,7 @@ msgstr "Primena zakrpa"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:370
-msgid "A patch file is a Subversion unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
+msgid "A patch file is a Git unified diff file, which contains the information required to apply changes to a set of files. The patch may have been supplied by another developer so that you can see changes he has made and possibly commit them to the repository. Or it may have been generated internally by TortoiseGit when comparing two folders. This happens when you compare a repository revision with your working copy folder, or if you compare two different repository revisions, or if you compare two different repository paths."
 msgstr "Fajl zakrpe je Subverzioni objedinjeni diff fajl, koji sadrži informacije koje zahtevaju da se primene izmene u skupu fajlova. Drugi ljudi iz razvoja su nabavljali zakrpe tako da možete videti izmene koje su urađene možda urezati ih u spremište. Ili može biti generisan interno pomoću TortoiseGit kada se uporede dva imenika. Ovo se dešava kada se uporede revizije spremišta sa vašim imenikom  radne kopije, ili ako uporedite dve razlike revizija spremišta, ili ako uporedite dve različite putanje spremišta."
 
 #. (para)
@@ -452,7 +452,7 @@ msgstr "Posle analize TortoiseMerge fajla zakrpa biće pokazano mali prozor sa s
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:493
-msgid "But don't worry. If you're working with Subversion you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
+msgid "But don't worry. If you're working with Git you can retrieve an older version of the file and resolve the conflict. In fact, TortoiseMerge automatically tries to get that older version of the file and then shows you the diff between <emphasis>Base</emphasis> (the older version of the file), <emphasis>Mine</emphasis> (the file as it is currently in your working copy) and <emphasis>Theirs</emphasis> (the older version of the file with the patch already applied). Then you can resolve possible conflicts manually."
 msgstr "Ali ne brinite. Ako radite sa Subverzijom možete vratiti staru verziju fajla i rešiti konflikt. U stvari, TortoiseMerge automatski pokušava da dobije staru verziju fajla i onda vam pokazuje diff između <emphasis>Osnove</emphasis> (stara verzija fajla), <emphasis>Moj</emphasis> (fajl kao onaj koji je trenutno u vašoj radnoj kopiji) i <emphasis>NJihovi</emphasis> (stara verzija fajla sa zakrpom koja je već primenjena). Tada možete rešiti moguće konflikte ručno."
 
 #. (para)
@@ -652,7 +652,7 @@ msgstr "Ako ste u tri panela pogledu (ponekad zvan <emphasis>pogled spajanja</em
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:796
-msgid "Sometimes a file will be marked as conflicted in Subversion, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
+msgid "Sometimes a file will be marked as conflicted in Git, yet when you view it using TortoiseMerge there are no conflicts shown. This may be due to the whitespace handling you have chosen. If you choose to ignore line-endings or whitespace changes, those lines will be marked using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the conflict you still need to pick which version you want to use."
 msgstr "Ponekad fajl će biti označen kao konfliktan u Subverziji, ali kada ga pogledate pomoću TortoiseMerge neće biti prikazanih konflikata. Ovo se može desiti zbog načina na koji ste rukovali belimpoljimlj. Ako izaberete da zanemarite linijski-završetak il belapolja izmene, te linije će biti označene koeisteći <emphasis>Konflikt-Zanemaren</emphasis> ikeone. Da se reši konflikt treba samo odabrati koju verziju da koristite."
 
 #. (para)
@@ -702,7 +702,7 @@ msgstr "Ako želite da primenite fajl zakrpu imate da podesite obe putanje do sa
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:873
-msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Subversion working copy. Other formats like patch files generated by CVS are currently not supported!"
+msgid "Currently, only patch files in <emphasis>Unified Diff Format</emphasis> are supported. And only files which were generated from a Git working copy. Other formats like patch files generated by CVS are currently not supported!"
 msgstr "Trenutno, samo fajlovi zakrpe u mphasis>Ujedinjen Diff Format</emphasis> je podržan. I samo fajlovi koji su generisani iz Subverzione radne kopije. Ostali formati kao fajlovi zakrpe generisani sa CVS trenutno nisu podržani."
 
 #. (title)
@@ -747,7 +747,7 @@ msgstr "<guilabel>Kolor kod u-liniji izmene</guilabel> koristi istu šemu kao i 
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:919
-msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Subversion treats such changes)."
+msgid "<guilabel>Compare whitespaces</guilabel> shows all changes in indentation and inline whitespace as added/removed lines (which is how Git treats such changes)."
 msgstr "<guilabel>Poređenje belihpolja</guilabel> prikazuje sve izmene u uvlačenju linija i unutarlinijska belapolja kao dodate/uklonjene linije (kako Subverzija tretira takve izmene)."
 
 #. (para)
@@ -1254,7 +1254,7 @@ msgstr "Dodaj"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1360
-msgid "A Subversion command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
+msgid "A Git command that is used to add a file or directory to your working copy. The new items are added to the repository when you commit."
 msgstr "Subverziona komanda koja se koristi da doda fajl ili imenik u vašu radnu kopiju. Nova stavka je dodata u spremište kada urezujete."
 
 #. (glossterm)
@@ -1294,7 +1294,7 @@ msgstr "Grana"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1402
-msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Subversion a branch is implemented as a <quote>cheap copy</quote>."
+msgid "A term frequently used in revision control systems to describe what happens when development forks at a particular point and follows 2 separate paths. You can create a branch off the main development line so as to develop a new feature without rendering the main line unstable. Or you can branch a stable release to which you make only bug fixes, while new developments take place on the unstable trunk. In Git a branch is implemented as a <quote>cheap copy</quote>."
 msgstr "Termin često korišćen u sistemu kontrole verzija da opiše šta se dešava kada ljudi iz razvoja u posebnom uprave i slede 2 odvojene putanje. Možete kreirati granu linije glavnog razvoja tako da razvijete nove osobine bez da učinite glavnu liniju nestabilnom. Ili možete granati stabilnu realizaciju gde se fiksirali bagove, dok novi razvoj krene na nestabilnom deblu. U Subverziji grana se inplementira kao  <quote>jeftina kopija</quote>."
 
 #. (glossterm)
@@ -1304,7 +1304,7 @@ msgstr "Preuzimanje"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1417
-msgid "A Subversion command which creates a local working copy in an empty directory by downloading versioned files from the repository."
+msgid "A Git command which creates a local working copy in an empty directory by downloading versioned files from the repository."
 msgstr "Subverziona komanda koja kreira lokalnu radnu kopiju u praznom imeniku skidanjem verzionisanih fajlova iz spremišta."
 
 #. (glossterm)
@@ -1314,7 +1314,7 @@ msgstr "Čišćenje"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1426
-msgid "To quote from the Subversion book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
+msgid "To quote from the Git book: <quote> Recursively clean up the working copy, removing locks and resuming unfinished operations. If you ever get a <emphasis>working copy locked</emphasis> error, run this command to remove stale locks and get your working copy into a usable state again. </quote> Note that in this context <emphasis>lock</emphasis> refers to local filesystem locking, not repository locking."
 msgstr "Da citiramo iz Subverzione knjige: <quote> Rekurzivno brišite radnu kopiju, izbacite ključeve i ponovite nezavršene operacije. Ako ikad dobijete <emphasis>radna kopija zaključavanja</emphasis> greška, uradite ovu komandu da izbacite bajate ključeve i dovedete radnu kopiju u korisnom stanju. </quote> Primetimo da u ovom kontekstu  <emphasis>zaključavanje</emphasis> se odnosi na zaključavanje fajlsistema, nije zaključavanje spremišta."
 
 #. (glossterm)
@@ -1324,7 +1324,7 @@ msgstr "Urezivanje"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1443
-msgid "This Subversion command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
+msgid "This Git command is used to pass the changes in your local working copy back into the repository, creating a new repository revision."
 msgstr "Subverziona komanda se koristi da se prođu izmene u vašoj lokalnoj radnoj kopiji nazad u spremište, kreiranjem nove revizije spremišta."
 
 #. (glossterm)
@@ -1334,7 +1334,7 @@ msgstr "Konflikt"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1453
-msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Subversion cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
+msgid "When changes from the repository are merged with local changes, sometimes those changes occur on the same lines. In this case Git cannot automatically decide which version to use and the file is said to be in conflict. You have to edit the file manually and resolve the conflict before you can commit any further changes."
 msgstr "Kada se izmene iz spremišta spoje sa lokalnim izmenama, ponekad ove izmene se pojavljuju u istoj liniji. U tom slučaju Subverzija ne može automatski da odluči koju verziju da koristi i za fajl se kaže da je u konfliktu. Imate da uredite fajl ručno i rešite konflikt pre nego što urežete dalje izmene."
 
 #. (glossterm)
@@ -1344,7 +1344,7 @@ msgstr "Kopiranje"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1465
-msgid "In a Subversion repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
+msgid "In a Git repository you can create a copy of a single file or an entire tree. These are implemented as <quote>cheap copies</quote> which act a bit like a link to the original in that they take up almost no space. Making a copy preserves the history of the item in the copy, so you can trace changes made before the copy was made."
 msgstr "U Subverzionom spremištu možete kreirati kopiju pojedinog fajla ili prazno stablo. Ovo je primenjeno kao <quote>jeftine kopije</quote> koje pomalo liče na na veze ka originalima u tome da gotovo nemaju ramake. Praveći kopiju sačuva se istorija stvke u kopiji tako da možete pratiti izmene pre nego je kopija napravljena."
 
 #. (glossterm)
@@ -1384,7 +1384,7 @@ msgstr "FSFS"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1508
-msgid "A proprietary Subversion filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
+msgid "A proprietary Git filesystem backend for repositories. Can be used on network shares. Default for 1.2 and newer repositories."
 msgstr "Ovlašćeni Subverzioni fajlsistem u osnovi spremišta. Može se koristiti u mrežnoj podeli. Uobičajen za 1.2 i novija spremišta."
 
 #. (glossterm)
@@ -1414,7 +1414,7 @@ msgstr "Uvoz"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1533
-msgid "Subversion command to import an entire folder hierarchy into the repository in a single revision."
+msgid "Git command to import an entire folder hierarchy into the repository in a single revision."
 msgstr "Subverziona komanda da uveze celu hijerarhiju imenika u spremište u jednoj reviziji."
 
 #. (glossterm)
@@ -1469,7 +1469,7 @@ msgstr "Zakrpa"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1586
-msgid "If a working copy has changes to text files only, it is possible to use Subversion's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
+msgid "If a working copy has changes to text files only, it is possible to use Git's Diff command to generate a single file summary of those changes in Unified Diff format. A file of this type is often referred to as a <quote>Patch</quote>, and it can be emailed to someone else (or to a mailing list) and applied to another working copy. Someone without commit access can make changes and submit a patch file for an authorized committer to apply. Or if you are unsure about a change you can submit a patch for others to review."
 msgstr "Radna kopija ima izmene samo tekst fajlova, moguće je koristiti Subverzione Diff komande da se generiše pojedinačan fajl rezultata tih izmena u Ujedinjenom Diff formatu. Fajl ovog tipa se često odnosi na <quote>Zakrpu</quote>, i može poslato epoštom još nekom (ili na poštansku listu) i primeniti se u sledećoj radnoj kopiji.Neko bez pristupa urezivanju može uraditi izmene i poslati fajl zakrpu autorizovanom urezivaču da je primeni. Ili ako niste sigurni u izmene možete poslati zakrpu drugima da je pregledaju. "
 
 #. (glossterm)
@@ -1479,7 +1479,7 @@ msgstr "Osobina"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1601
-msgid "In addition to versioning your directories and files, Subversion allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Subversion has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
+msgid "In addition to versioning your directories and files, Git allows you to add versioned metadata - referred to as <quote>properties</quote> to each of your versioned directories and files. Each property has a name and a value, rather like a registry key. Git has some special properties which it uses internally, such as <literal>svn:eol-style</literal>. TortoiseGit has some too, such as <literal>tsvn:logminsize</literal>. You can add your own properties with any name and value you choose."
 msgstr "U dodatku verzionisanju vaših imenika i fajlova, Subverzija omogućava da dodate verzionisane metapodatke - označenih kao <quote>osobine</quote> svakog od verzionisanih imenika i fajlova. Svaka osobina ima ime i vrednost, radije kao ključ registra. Subverzija ima neke specijalne osobine koje se koriste interno, tako kao <literal>svn:eol-stil</literal>. TortoiseGit ima neke takođe, kao <literal>tsvn:logminsajz</literal>. Možete dodati vaše osobine sa bilo kojim imenom i vrednošću koju izaberete. "
 
 #. (glossterm)
@@ -1524,7 +1524,7 @@ msgstr "Vratiti"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1656
-msgid "Subversion keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
+msgid "Git keeps a local <quote>pristine</quote> copy of each file as it was when you last updated your working copy. If you have made changes and decide you want to undo them, you can use the <quote>revert</quote> command to go back to the pristine copy."
 msgstr "Subverzija čuva lokalnu <quote>neizmenjenu</quote> kopiju svakog fajla kakav je bio kada ste poslednji put ažurirali radnu kopiju. Ako uradite izmene i odlučite da ih poništite treba da koristite <quote>vrati</quote> komandu da se vratite na neizmenjenu kopiju."
 
 #. (glossterm)
@@ -1559,12 +1559,12 @@ msgstr "SVN"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1697
-msgid "A frequently-used abbreviation for Subversion."
+msgid "A frequently-used abbreviation for Git."
 msgstr "Često-korišćena skraćenica za Subverziju."
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1700
-msgid "The name of the Subversion custom protocol used by the <quote>svnserve</quote> repository server."
+msgid "The name of the Git custom protocol used by the <quote>svnserve</quote> repository server."
 msgstr "Ime Subverzionog običnog protokola korišćenog od <quote>svnserv</quote> servera spremišta."
 
 #. (glossterm)
@@ -1584,7 +1584,7 @@ msgstr "Ažuriranje"
 
 #. (para)
 #: ../source/TortoiseMerge_en.xml:1723
-msgid "This Subversion command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
+msgid "This Git command pulls down the latest changes from the repository into your working copy, merging any changes made by others with local changes in the working copy."
 msgstr "Subverziona komanda dovlači zadnje izmene iz spremišta u vašu radnu kopiju, spajajući bilo koju izmenu urađenu od drugih sa lokalnim izmenama u radnoj kopiji."
 
 #. (glossterm)

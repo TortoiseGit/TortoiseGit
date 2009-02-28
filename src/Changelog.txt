@@ -1,3 +1,43 @@
+Version 0.4.0.0 version(internal)
+Features:
+	*Full Overlay Icon Support.
+	 Show "Conflict, ignore file, untracked file, modified, Add, staged" icon according to file status. 
+
+	*Rebase Support.
+         Support "Pick" "Sqaush" "Edit" and "Skip" commit when rebase branch. 
+         Support abort.
+ 	
+	*Combine Multi-commits to one commit.
+	 Combine continous commits to one commit. The limition is the only single line(no merge point) above combined commit.
+
+	*Cherry Pick multi commits. 
+	 User can use multi commits at log dialog and then choose cherry pick these. Cherry Pick dialog guide you finish whole work. 
+         Support "Pick" "Squash" "Edit" and "Skip" commits.
+	
+	*First x64 version. 
+
+	*Support version "browse" at switch, export, new branch/tag and merge dialogs.
+
+	*Add context menu item "Revert" at Commit dialog File List.
+
+	*Show bold font for HEAD at log dialog.
+	
+	*Add "Whole Project" checkbox at commit dialog
+
+	*First Version Help Document. 
+
+Bug Fix:
+	*Fix issue 36, Push not working if no remote branch is specified
+	*Default UnCheck untrack file at commit dialog
+	*Issue 40:  Commit from subfolder shows unversioned files in parent
+	*Fix diff problem when filenames have embedded spaces
+	*Fix Issue 24,45, Commit results not in window with scroll bars
+	*Fix for win2k context menu icons
+	*Fix Issue 46, The about window title still displays TortoiseSVN
+	*Fix Issue 37, When the file name contains Chinese char, Diff doesn't work. 
+	*Fix Issue 28, "Add" status icon overlay is not correct.  
+
+
 version 0.3.3.0 version(external)
 	*Disable file overlay icon at vista system to avoid explore crash
 	*File overlay default is enable at XP system. User can disable it by setting dialog. 

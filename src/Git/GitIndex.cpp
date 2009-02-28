@@ -13,7 +13,7 @@
 
 #define FILL_DATA() \
 	m_FileName.Empty();\
-	g_Git.StringAppend(&m_FileName,(BYTE*)entry->name,CP_OEMCP,Big2lit(entry->flags)&CE_NAMEMASK);\
+	g_Git.StringAppend(&m_FileName,(BYTE*)entry->name,CP_ACP,Big2lit(entry->flags)&CE_NAMEMASK);\
 	m_FileName.Replace(_T('/'),_T('\\'));\
 	this->m_Flags=Big2lit(entry->flags);\
 	this->m_ModifyTime=Big2lit(entry->mtime.sec);

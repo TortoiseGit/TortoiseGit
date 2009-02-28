@@ -41,6 +41,7 @@
 #include "CreateBranchTagDlg.h"
 #include "GitSwitchDlg.h"
 #include "ResetDlg.h"
+#include "DeleteConflictDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -1244,6 +1245,22 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 	return FALSE;
 }
 
+void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
+{
+	if(mode == FALSE)
+	{
+		descript=_T("Deleted");
+		return;
+	}
+	if(base)
+	{
+		descript=_T("Modified");
+		return;
+	}
+	descript=_T("Created");
+	return;
+}
+
 bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 {
 	bool bRet = false;
@@ -1307,6 +1324,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 	tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
 	tempfile.Close();
 
+	bool b_base=false, b_local=false, b_remote=false;
 
 	for(int i=0;i<list.GetCount();i++)
 	{
@@ -1316,21 +1334,60 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 		
 		if( list[i].m_Stage == 1)
 		{
+			b_base = true;
 			outfile=base.GetWinPathString();
 		}
 		if( list[i].m_Stage == 2 )
 		{
+			b_local = true;
 			outfile=mine.GetWinPathString();
 		}
 		if( list[i].m_Stage == 3 )
 		{
+			b_remote = true;
 			outfile=theirs.GetWinPathString();
 		}	
 		g_Git.RunLogFile(cmd,outfile);
 	}
 
-	merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
-	bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+	if(b_local && b_remote )
+	{
+		merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
+		bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+	
+	}else
+	{
+		CFile::Remove(mine.GetWinPathString());
+		CFile::Remove(theirs.GetWinPathString());
+		CFile::Remove(base.GetWinPathString());
+
+		CDeleteConflictDlg dlg;
+		DescribeFile(b_local, b_base,dlg.m_LocalStatus);
+		DescribeFile(b_remote,b_base,dlg.m_RemoteStatus);
+		dlg.m_bShowModifiedButton=b_base;
+		dlg.m_File=merge.GetGitPathString();
+		if(dlg.DoModal() == IDOK)
+		{
+			CString cmd,out;
+			if(dlg.m_bIsDelete)
+			{
+				cmd.Format(_T("git.exe rm \"%s\""),merge.GetGitPathString());
+			}else
+				cmd.Format(_T("git.exe add \"%s\""),merge.GetGitPathString());
+
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				return FALSE;
+			}
+			return TRUE;
+		}
+		else 
+			return FALSE;
+
+		
+
+	}
 
 #if 0
 

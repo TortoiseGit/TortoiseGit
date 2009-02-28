@@ -45,13 +45,13 @@ Instructions for each screenshot
 Authenticate.png
 	You will have to clear authentication to make this one appear.
 	Do this temporarily for the TSVN repo by renaming
-	[Application Data]\Subversion\auth\svn.simple\f55fc06b366775f8c026407285be8070
+	[Application Data]\Git\auth\svn.simple\f55fc06b366775f8c026407285be8070
 
 BlameDialog.png
 	Blame any file
 
 ch02dia1-7.png
-	These are 'borrowed' from the Subversion Book
+	These are 'borrowed' from the Git Book
 
 Changelist.png
 	Use the 'doc' test WC.
@@ -189,12 +189,12 @@ MergeConflictCallback.png
 	This should generate a conflict and bring up the callback.
 
 mergeprinciple.png
-	Borrowed from the Subversion docs
+	Borrowed from the Git docs
 
 Properties.png
 	Right click on the TSVN doc folder and open Explorer properties
 	  (not TSVN properties).
-	Capture the Subversion tab
+	Capture the Git tab
 
 PropertyAdd.png
 	For any versioned folder, TSVN->Properties

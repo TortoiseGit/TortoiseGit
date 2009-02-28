@@ -19,19 +19,20 @@
 #include "StdAfx.h"
 #include "DropCopyCommand.h"
 
-#include "SVNProgressDlg.h"
+#include "SysProgressDlg.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
 #include "RenameDlg.h"
-#include "SVN.h"
+#include "Git.h"
 #include "ShellUpdater.h"
 
 bool DropCopyCommand::Execute()
 {
+#if 0
 	CString sDroppath = parser.GetVal(_T("droptarget"));
-	if (CTSVNPath(sDroppath).IsAdminDir())
+	if (CTGitPath(sDroppath).IsAdminDir())
 		return FALSE;
-	SVN svn;
+	
 	unsigned long count = 0;
 	CString sNewName;
 	pathList.RemoveAdminPaths();
@@ -108,5 +109,6 @@ bool DropCopyCommand::Execute()
 			return false;
 		}
 	}
+#endif
 	return true;
 }

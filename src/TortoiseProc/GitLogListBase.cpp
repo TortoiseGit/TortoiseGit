@@ -1103,19 +1103,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
 				popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
-		}
-	
-		if ( GetSelectedCount() >0 )
-		{
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
-				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
-	
-		}
-
-		if (GetSelectedCount() == 1)
-		{
-			CString str;
-			str.Format(_T("Rebase %s to this"),g_Git.GetCurrentBranch());
+			
+			str.Format(_T("*Rebase %s to this"),g_Git.GetCurrentBranch());
 
 			if(pSelLogEntry->m_CommitHash != m_HeadHash)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
@@ -1126,8 +1115,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			
 
 			popup.AppendMenu(MF_SEPARATOR, NULL);
+
 		}
-		else if (GetSelectedCount() >= 2)
+	
+		if (GetSelectedCount() >= 2)
 		{
 			bool bAddSeparator = false;
 			if (IsSelectionContinuous() || (GetSelectedCount() == 2))
@@ -1144,19 +1135,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
-			if ( IsSelectionContinuous() )
-			{
-				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
-				{
-					CString head;
-					head.Format(_T("HEAD~%d"),LastSelect);
-					CString hash=g_Git.GetHash(head);
-					hash=hash.Left(40);
-					GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-					if(pLastEntry->m_CommitHash == hash)
-						popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("Combine to one commit"),IDI_MERGE);
-				}
-			}
 			if (m_hasWC)
 			{
 				//popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
@@ -1167,6 +1145,34 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
+
+		if ( GetSelectedCount() >0 )
+		{
+			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
+			{
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
+				{
+					CString head;
+					int headindex;
+					headindex = this->GetHeadIndex();
+					if(headindex>=0)
+					{
+						head.Format(_T("HEAD~%d"),LastSelect-headindex);
+						CString hash=g_Git.GetHash(head);
+						hash=hash.Left(40);
+						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+						if(pLastEntry->m_CommitHash == hash)
+							popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_COMBINE);
+					}
+				}
+			}
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
+				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+	
+		}
+
+		
 #if 0
 //		if ((selEntries.size() > 0)&&(bAllFromTheSameAuthor))
 //		{
@@ -1789,9 +1795,12 @@ UINT CGitLogListBase::LogThread()
 void CGitLogListBase::Refresh()
 {	
 	m_bExitThread=TRUE;
-	DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
-	if(ret == WAIT_TIMEOUT)
-		TerminateThread();
+	if(m_LoadingThread!=NULL)
+	{
+		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
+		if(ret == WAIT_TIMEOUT)
+			TerminateThread();
+	}
 
 	this->Clear();
 
@@ -2145,3 +2154,19 @@ void CGitLogListBase::SaveColumnWidths()
 	}
 }
 
+int CGitLogListBase::GetHeadIndex()
+{
+	if(m_HeadHash.IsEmpty())
+		return -1;
+
+	for(int i=0;i<m_arShownList.GetCount();i++)
+	{
+		GitRev *pRev = (GitRev*)m_arShownList[i];
+		if(pRev)
+		{
+			if(pRev->m_CommitHash == m_HeadHash )
+				return i;
+		}
+	}
+	return -1;
+}

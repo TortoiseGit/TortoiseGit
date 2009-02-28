@@ -15,7 +15,7 @@
 				<listitem>
 					<para>
 						Editing conflicts between local changes and changes in the
-						Subversion repository following an update.
+						Git repository following an update.
 					</para>
 				</listitem>
 				<listitem>
@@ -96,7 +96,7 @@
 	<sect1 id="tmerge-basics-patch">
 		<title>Applying Patches</title>
 		<para>
-			A patch file is a Subversion unified diff file, which contains
+			A patch file is a Git unified diff file, which contains
 			the information required to apply changes to a set of files.
 			The patch may have been supplied by another developer so that you
 			can see changes he has made and possibly commit them to the repository.

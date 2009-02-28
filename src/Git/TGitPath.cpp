@@ -128,6 +128,18 @@ void CTGitPath::SetFromGit(const char* pPath, bool bIsDirectory)
 	m_bIsDirectory = bIsDirectory;
 }
 
+void CTGitPath::SetFromGit(const TCHAR* pPath, bool bIsDirectory)
+{
+	Reset();
+	if (pPath)
+	{
+		m_sFwdslashPath = pPath;
+		SanitizeRootPath(m_sFwdslashPath, true);
+	}
+	m_bDirectoryKnown = true;
+	m_bIsDirectory = bIsDirectory;
+}
+
 void CTGitPath::SetFromGit(const CString& sPath,CString *oldpath)
 {
 	Reset();
@@ -1867,12 +1879,12 @@ CTGitPath * CTGitPathList::LookForGitPath(CString path)
 }
 CString CTGitPath::GetActionName(int action)
 {
+	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
+		return _T("Conflict");
 	if(action  & CTGitPath::LOGACTIONS_ADDED)
 		return _T("Added");
 	if(action  & CTGitPath::LOGACTIONS_DELETED)
 		return _T("Deleted");
-	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
-		return _T("Conflict");
 	if(action  & CTGitPath::LOGACTIONS_MODIFIED)
 		return _T("Modified");
 	if(action  & CTGitPath::LOGACTIONS_REPLACED)

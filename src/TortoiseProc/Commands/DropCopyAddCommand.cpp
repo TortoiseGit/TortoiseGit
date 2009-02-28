@@ -25,6 +25,7 @@
 bool DropCopyAddCommand::Execute()
 {
 	bool bRet = false;
+#if 0
 	CString droppath = parser.GetVal(_T("droptarget"));
 	if (CTSVNPath(droppath).IsAdminDir())
 		return FALSE;
@@ -105,5 +106,6 @@ bool DropCopyAddCommand::Execute()
 	progDlg.SetProjectProperties(props);
 	progDlg.DoModal();
 	bRet = !progDlg.DidErrorsOccur();
+#endif
 	return bRet;
 }

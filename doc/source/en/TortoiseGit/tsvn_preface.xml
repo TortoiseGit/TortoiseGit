@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE preface SYSTEM "../../dtd/dblite.dtd">
+<preface id="tsvn-preface">
+	<title>Preface</title>
+	<simplesect>
+		<graphic srccredit="TortoiseGit Logo" fileref="images/TortoiseGit_logo_hor468x64.png" scalefit="1" />
+	</simplesect>
+	<simplesect>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Do you work in a team?
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Has it ever happened that you were working on a file,
+						and someone else was working on the same file at the same time?
+						Did you lose your changes to that file because of that?
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Have you ever saved a file, and then wanted to
+						revert the changes you made? Have you ever wished you
+						could see what a file looked like some time ago?
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Have you ever found a bug in your project and
+						wanted to know when that bug got into your files?
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			If you answered <quote>yes</quote> to one of these questions, then
+			TortoiseGit is for you! Just read on to find out how TortoiseGit
+			can help you in your work. It's not that difficult.
+		</para>
+	</simplesect>
+	<!-- =================================================================== -->
+	<!-- ========================	SECTION	1 ============================== -->
+	<!-- =================================================================== -->
+	<sect1 id="tsvn-preface-audience">
+		<title>Audience</title>
+		<para>
+			This book is written for computer literate folk who want to
+			use Git to manage their data, but are uncomfortable using the
+			command line client to do so. Since TortoiseGit is a windows shell
+			extension it's assumed that the user is familiar with the windows
+			explorer and knows how to use it.
+		</para>
+	</sect1>
+	<!-- =================================================================== -->
+	<!-- ========================	SECTION	1a ============================= -->
+	<!-- =================================================================== -->
+	<sect1 id="tsvn-preface-readingguide">
+		<title>Reading Guide</title>
+		<para>
+			This <xref linkend="tsvn-preface"/> explains a little about the
+			TortoiseGit project, the community of people who work on it, and
+			the licensing conditions for using it and distributing it.
+		</para>
+		<para>
+			The <xref linkend="tsvn-introduction"/> explains what TortoiseGit is,
+			what it does, where it comes from and the basics for installing it
+			on your PC.
+		</para>
+		<para>
+			In <xref linkend="tsvn-basics"/> we give a short introduction
+			to the <emphasis>Git</emphasis> revision control system which
+			underlies TortoiseGit. This is borrowed from the documentation for the
+			Git project and explains the different approaches to version
+			control, and how Git works.
+		</para>
+		<para>
+			Even most Git users will never have to set up a server themselves.
+			The next chapter deals with how to set up such a server, and is useful
+			for administrators.
+		</para>
+		<para>
+			The chapter on <xref linkend="tsvn-repository"/> explains how to set up
+			a local repository, which is useful for testing Git and TortoiseGit
+			using a single PC. It also explains a bit about repository administration
+			which is also relevant to repositories located on a server.
+		</para>
+		<para>
+			The <xref linkend="tsvn-dug"/> is the most important section as
+			it explains all the main features of TortoiseGit and how to use them.
+			It takes the form of a tutorial, starting with checking out a working copy,
+			modifying it, committing your changes, etc. It then progresses to more
+			advanced topics.
+		</para>
+		<!--
+		<para>
+			<xref linkend="tsvn-subwcrev"/> is a separate program included with TortoiseGit
+			which can extract the information from your working copy and write it into a
+			file. This is useful for including build information in your projects.
+		</para>
+		-->
+		<para>
+			The <xref linkend="tsvn-howto"/> section answers some common questions
+			about performing tasks which are not explicitly covered elsewhere.
+		</para>
+		<para>
+			The section on <xref linkend="tsvn-automation"/> shows how the
+			TortoiseGit GUI dialogs can be called from the command line. This is useful
+			for scripting where you still need user interaction.
+		</para>
+		<para>
+			The <xref linkend="tsvn-cli"/> give a correlation
+			between TortoiseGit commands and their equivalents in the Git
+			command line client <literal>svn.exe</literal>.
+		</para>
+	</sect1>
+	<!-- =================================================================== -->
+	<!-- ========================	SECTION	2 ============================== -->
+	<!-- =================================================================== -->
+	<sect1 id="tsvn-preface-source">
+		<title>TortoiseGit is free!</title>
+		<para>
+			TortoiseGit is free. You don't have to pay to use it, and you can use it
+			any way you want. It is developed under the GNU General Public License (GPL).
+		</para>
+		<para>
+			TortoiseGit is an Open Source project. That means you have full
+			read access to the source code of this program. Project Home is 
+			<ulink url="http://code.google.com/p/tortoisegit">
+				<citetitle>http://code.google.com/p/tortoisegit</citetitle>
+			</ulink>
+		</para>
+	</sect1>
+	<!-- =================================================================== -->
+	<!-- ========================	SECTION	3 ============================== -->
+	<!-- =================================================================== -->
+	<sect1 id="tsvn-preface-community">
+		<title>Community</title>
+		<para>
+			Both TortoiseGit and Git are developed by a community of
+			people who are working on those projects. They come from different
+			countries all over the world and joined together to create wonderful
+			programs.
+		</para>
+	</sect1>
+	<!-- =================================================================== -->
+	<!-- ========================	SECTION	4 ============================== -->
+	<!-- =================================================================== -->
+	<sect1 id="tsvn-preface-acknowledgements">
+		<title>Acknowledgments</title>
+		<variablelist>
+			<varlistentry>
+				<term>Frank Li "lznuaa@gmail.com"</term>
+				<listitem>
+					<para>
+						for founding the TortoiseGit project
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>myagi(Georg Fischer) "snowcoder@gmail.com"</term>
+				<listitem>
+					<para>
+					
+					For hard work to get TortoiseGit Overlay work.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Colin Law</term>
+				<listitem>
+					<para>						
+					</para>
+				</listitem>
+			</varlistentry>			
+			<varlistentry>
+				<term>Johan t Hart</term>
+				<listitem>
+					<para>						
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Tim Kemp</term>
+				<listitem>
+					<para>
+						for founding the TortoiseSVN project(TortoiseGit come from this project)
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Stefan Küng</term>
+				<listitem>
+					<para>
+						for the hard work to get TortoiseGit to what it is now
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Lübbe Onken</term>
+				<listitem>
+					<para>
+						for the beautiful icons, logo, bug hunting, translating and
+						managing the translations
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Simon Large</term>
+				<listitem>
+					<para>
+						for helping with the documentation and bug hunting
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>The Git Book</term>
+				<listitem>
+					<para>
+						for the great introduction to Git and its
+						chapter 2 which we copied here
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>The Tigris Style project</term>
+				<listitem>
+					<para>
+						for some of the styles which are reused in this documentation
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Our Contributors</term>
+				<listitem>
+					<para>
+						for the patches, bug reports and new ideas, and for
+						helping others by answering questions on our mailing list.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Our Donators</term>
+				<listitem>
+					<para>
+						for many hours of joy with the music they sent us
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect1>
+	<!-- ================================================================= -->
+	<!-- ======================== SECTION 5 ============================== -->
+	<!-- ================================================================= -->
+	<sect1 id="tsvn-preface-terminoloty">
+		<title>Terminology used in this document</title>
+		<para>
+			To make reading the docs easier, the names of all the screens and Menus 
+			from TortoiseGit are marked up in a different font.
+			The <guilabel>Log Dialog</guilabel> for instance.
+		</para>
+		<para>
+			A menu choice is indicated with an arrow.
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Show Log</guimenuitem>
+			</menuchoice>
+			means: select <emphasis>Show Log</emphasis> from the
+			<emphasis>TortoiseGit</emphasis> context menu.
+		</para>
+		<para>
+			Where a local context menu appears within one of the TortoiseGit
+			dialogs, it is shown like this:
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Save As ...</guimenuitem>
+			</menuchoice>
+		</para>
+		<para>
+			User Interface Buttons are indicated like this:
+			Press <guibutton>OK</guibutton> to continue.
+		</para>
+		<para>
+			User Actions are indicated using a bold font.
+			<keycap>Alt+A</keycap>: press the
+			<keycap>Alt</keycap>-Key on your keyboard and while holding it down
+			press the <keycap>A</keycap>-Key as well.
+			<action>Right-drag</action>: press the right mouse button and while
+			holding it down <emphasis>drag</emphasis> the items to the new location.
+		</para>
+		<para>
+			System output and keyboard input is indicated with a
+			<literal>different</literal> font as well.
+		</para>
+		<important>
+			<para>
+				Important notes are marked with an icon.
+			</para>
+		</important>
+		<tip>
+			<para>
+				Tips that make your life easier.
+			</para>
+		</tip>
+		<caution>
+			<para>
+				Places where you have to be careful what you are doing.
+			</para>
+		</caution>
+		<warning>
+			<para>
+				Where extreme care has to be taken, data corruption or other
+				nasty things may occur if these warnings are ignored.
+			</para>
+		</warning>
+		<graphic srccredit="hide" fileref="images/background.png" scalefit="1" width="100%"/>
+	</sect1>
+</preface>
