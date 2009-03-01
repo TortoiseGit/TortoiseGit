@@ -194,7 +194,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 	sHelppath = sHelppath.MakeLower();
 	// MFC uses a help file with the same name as the application by default,
 	// which means we have to change that default to our language specific help files
-	sHelppath.Replace(_T("tortoiseproc.chm"), _T("TortoiseSVN_en.chm"));
+	sHelppath.Replace(_T("tortoiseproc.chm"), _T("TortoiseGit_en.chm"));
 	free((void*)m_pszHelpFilePath);
 	m_pszHelpFilePath=_tcsdup(sHelppath);
 	sHelppath = CPathUtils::GetAppParentDirectory() + _T("Languages\\TortoiseGit_en.chm");
