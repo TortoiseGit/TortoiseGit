@@ -1,0 +1,3 @@
+[submodule "ext/igit"]
+	path = ext/igit
+	url = git://repo.or.cz/git/mingw/4msysgit/wingit-dll.git
