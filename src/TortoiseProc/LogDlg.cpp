@@ -2150,6 +2150,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 	// FIXME: x64 version would get this function called with unexpected parameters.
 	if (!lParam)
 		return 0;
+
 	RECT * rect = (LPRECT)lParam;
 	CPoint point;
 	CString temp;
