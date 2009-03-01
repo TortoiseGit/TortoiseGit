@@ -26,6 +26,7 @@
     code merged from repository
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; revision
 </screen>
+<!--
 		Also, for every conflicted file Git places three
 		additional files in your directory:
 		<variablelist>
@@ -63,9 +64,10 @@
 				</listitem>
 			</varlistentry>
 		</variablelist>
+-->
 	</para>
 	<para>
-		You can either launch an external merge tool / conflict
+		You can launch an external merge tool / conflict
 		editor with
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -83,9 +85,13 @@
 		</menuchoice>
 		and commit your modifications to the repository.
 		Please note that the Resolve command does not really
-		resolve the conflict. It just removes the
+		resolve the conflict. 
+		<!--
+		It just removes the
 		<filename>filename.ext.mine</filename> and
 		<filename>filename.ext.r*</filename> files,
+		-->
+		I use "git add" to mark file status as resolved
 		to allow you to commit your changes.
 	</para>
 	<para>
