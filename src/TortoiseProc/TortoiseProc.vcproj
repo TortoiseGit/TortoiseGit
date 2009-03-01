@@ -78,7 +78,7 @@
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMTD;"
+				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -166,7 +166,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="2"
-				IgnoreDefaultLibraryNames="libcd.lib;libc;shell32;LIBCMT"
+				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -588,11 +588,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
@@ -828,19 +828,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\open.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -944,19 +944,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\saveas.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\saveas.ico"
 				>
 			</File>
 			<File
@@ -1048,11 +1048,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File

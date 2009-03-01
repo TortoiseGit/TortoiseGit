@@ -75,7 +75,7 @@
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				IgnoreDefaultLibraryNames="LIBCMTD"
+				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -158,6 +158,7 @@
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"
@@ -240,6 +241,7 @@
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../ext/wingit"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -322,6 +324,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -540,19 +543,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\output_wnd.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\res\output_wnd.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\output_wnd_hc.ico"
+				RelativePath="..\Resources\blameres\output_wnd.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\res\output_wnd_hc.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\blameres\output_wnd_hc.ico"
 				>
 			</File>
 			<File
@@ -564,19 +567,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\properties_hc.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\properties_hc.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\properties_wnd.ico"
+				RelativePath=".\res\properties_hc.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\blameres\properties_wnd.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\properties_wnd.ico"
 				>
 			</File>
 			<File
@@ -588,19 +591,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\Toolbar.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\Toolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\Toolbar256.bmp"
+				RelativePath=".\res\Toolbar.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\blameres\Toolbar256.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Toolbar256.bmp"
 				>
 			</File>
 			<File
@@ -648,11 +651,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\res\TortoiseGitBlameDoc.ico"
+				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
+				RelativePath=".\res\TortoiseGitBlameDoc.ico"
 				>
 			</File>
 			<File
