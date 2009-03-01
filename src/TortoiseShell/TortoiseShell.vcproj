@@ -23,8 +23,8 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\TortoiseShell\$(ConfigurationName)\"
 			ConfigurationType="2"
-			UseOfMFC="2"
-			UseOfATL="0"
+			UseOfMFC="0"
+			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -90,7 +90,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=""
 				IgnoreAllDefaultLibraries="false"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile=".\ShellExt.def"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
@@ -127,12 +127,121 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\TortoiseShell\$(ConfigurationName)\"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			UseOfATL="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/TortoiseShell.tlb"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				AdditionalIncludeDirectories="&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_TORTOISESHELL"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="false"
+				ForceConformanceInForLoopScope="true"
+				UsePrecompiledHeader="2"
+				AssemblerListingLocation="..\..\obj\TortoiseShell\Release/"
+				ObjectFile="..\..\obj\TortoiseShell\Release/"
+				ProgramDataBaseFileName="..\..\obj\TortoiseShell\Release/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG;TSVNSHELL"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="true"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				OutputFile="$(OutDir)/TortoiseGit.dll"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames="libcd, libc, shell32"
+				ModuleDefinitionFile=".\ShellExt.def"
+				DelayLoadDLLs="gdiplus.dll"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/TortoiseShell.pdb"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				OptimizeForWindows98="0"
+				BaseAddress="0x5960000"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="..\..\obj\TortoiseShell\Release/TortoiseSVN.lib"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\Debug64\bin"
 			IntermediateDirectory="..\..\obj\TortoiseShell\Debug64"
 			ConfigurationType="2"
-			UseOfMFC="2"
-			UseOfATL="0"
+			UseOfMFC="0"
+			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -195,7 +304,7 @@
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				IgnoreAllDefaultLibraries="false"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile=".\ShellExt.def"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
@@ -229,117 +338,12 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
-			IntermediateDirectory="..\..\obj\TortoiseShell\$(ConfigurationName)\"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			UseOfATL="1"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/TortoiseShell.tlb"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_TORTOISESHELL"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				BufferSecurityCheck="false"
-				EnableFunctionLevelLinking="false"
-				ForceConformanceInForLoopScope="true"
-				UsePrecompiledHeader="2"
-				AssemblerListingLocation="..\..\obj\TortoiseShell\Release/"
-				ObjectFile="..\..\obj\TortoiseShell\Release/"
-				ProgramDataBaseFileName="..\..\obj\TortoiseShell\Release/"
-				WarningLevel="4"
-				SuppressStartupBanner="true"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG;TSVNSHELL"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
-				OutputFile="$(OutDir)/TortoiseGit.dll"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories=""
-				IgnoreDefaultLibraryNames=""
-				ModuleDefinitionFile=".\ShellExt.def"
-				DelayLoadDLLs="gdiplus.dll"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TortoiseShell.pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				OptimizeForWindows98="0"
-				BaseAddress="0x5960000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseShell\Release/TortoiseSVN.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\Release64\bin"
 			IntermediateDirectory="..\..\obj\TortoiseShell\Release64"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			UseOfATL="0"
+			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -366,10 +370,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;../Git&quot;;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\SVN;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;NDEBUG;_WINDOWS;_USRDLL"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="false"
 				ForceConformanceInForLoopScope="true"
@@ -399,7 +407,7 @@
 				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="libcd, libc, shell32"
 				ModuleDefinitionFile=".\ShellExt.def"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
@@ -532,7 +540,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|x64"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -540,7 +548,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
