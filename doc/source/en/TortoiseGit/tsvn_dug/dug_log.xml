@@ -68,11 +68,13 @@
 						From the TortoiseGit context submenu
 					</para>
 				</listitem>
+				<!--
 				<listitem>
 					<para>
 						From the property page
 					</para>
 				</listitem>
+				-->
 				<!--
 				<listitem>
 					<para>
@@ -254,6 +256,33 @@
 							a time in the past, or if there have been further commits to
 							the repository and you want to update your working copy one
 							step at a time. 
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Reset (current branch) to this</term>
+					<listitem>
+						<para>
+							Reset current branch HEAD to selected commit. 
+							<!-- todo refer reset -->
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Rebase (current branch) to this</term>
+					<listitem>
+						<para>
+							Rebase current branch to selected commit. 
+							<!-- todo refer rebase -->
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Cherry Pick this commit</term>
+					<listitem>
+						<para>
+							Cherry Pick this commit to current branch
+							<!-- todo refer cherry pick -->
 						</para>
 					</listitem>
 				</varlistentry>
@@ -446,15 +475,14 @@
 				</varlistentry>
 			</variablelist>
 		</para>
-		<!--
+		
 		<para>
 			If you select two or more revisions (using the usual
 			<keycap>Ctrl</keycap> or <keycap>Shift</keycap> modifiers),
-			the context menu will include an entry to Revert all changes
-			which were made in the selected revisions. This is the easiest
-			way to rollback a group of revisions in one go.
+			You can combine select commits to one commit. And cherry pick 
+			these commits to current branch.
 		</para>
-		-->
+		<!--
 		<para>
 			You can also choose to merge the selected revisions to another
 			working copy, as described above.
@@ -463,6 +491,7 @@
 			If all selected revisions have the same author, you can edit
 			the author of all those revisions in one go.
 		</para>
+		-->
 		<para>
 			<figure id="tsvn-dug-showlog-2-dia-2">
 				<title>The Log Dialog Bottom Pane with Context Menu</title>
@@ -470,6 +499,7 @@
 			</figure>
 			The bottom pane of the Log dialog also has a context menu that allows you to
 			<variablelist>
+				<!--
 				<varlistentry>
 					<term>Show changes</term>
 					<listitem>
@@ -501,6 +531,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 				<varlistentry>
 					<term>Open / Open with...</term>
 					<listitem>
@@ -519,6 +550,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<!--
 				<varlistentry>
 					<term>Revert changes from this revision</term>
 					<listitem>
@@ -535,6 +567,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
+				<!--
 				<varlistentry>
 					<term>Show log</term>
 					<listitem>
@@ -562,6 +596,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				-->
 			</variablelist>
 		</para>
 		<tip>
@@ -569,8 +604,9 @@
 				You may notice that sometimes we refer to changes and other times
 				to differences. What's the difference?
 			</para>
+			<!--
 			<para>
-				Git uses revision numbers to mean 2 different things.
+				Git uses commit hash to mean 2 different things.
 				A revision generally represents the state of the repository at
 				a point in time, but it can also be used to represent the changeset
 				which created that revision, eg. <quote>Done in r1234</quote> means 
@@ -594,8 +630,10 @@
 				The bottom pane shows the files changed in all selected revisions,
 				so the context menu always offers to show <emphasis>changes</emphasis>.
 			</para>
+			-->
 		</tip>
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-showlog-3">
 		<title>Getting more log messages</title>
 		<para>
@@ -668,6 +706,8 @@
 			<emphasis>all</emphasis> log messages from HEAD right back to revision 1.
 		</para>
 	</sect2>
+	-->
+	<!--
 	<sect2 id="tsvn-dug-showlog-current-rev">
 		<title>Current Working Copy Revision</title>
 		<para>
@@ -689,6 +729,8 @@
 			<literal>HKCU\Software\TortoiseGit\RecursiveLogRev</literal>.
 		</para>
 	</sect2>
+	-->
+	<!--
 	<sect2 id="tsvn-dug-showlog-mergetrack">
 		<title>Merge Tracking Features</title>
 		<indexterm>
@@ -723,6 +765,8 @@
 			levels.
 		</para>
 	</sect2>
+	-->
+	<!--
 	<sect2 id="tsvn-dug-showlog-4">
 		<title>Changing the Log Message and Author</title>
 		<indexterm>
@@ -776,6 +820,7 @@
 			</para>
 		</warning>
 	</sect2>
+	-->
 	<sect2 id="tsvn-dug-showlog-filter">
 		<title>Filtering Log Messages</title>
 		<indexterm>
@@ -926,6 +971,7 @@
 			then the statistics will not tell you very much.
 		</para>
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-showlog-cache">
 		<?dbhh topicname="HIDD_GOOFFLINE"?>
 		<title>Offline Mode</title>
@@ -936,16 +982,16 @@
 			although the information may not be up-to-date or even complete.
 		</para>
 	</sect2>
+	-->
 	<sect2 id="tsvn-dug-showlog-refresh">
 		<title>Refreshing the View</title>
 		<para>
-			If you want to check the server again for newer log messages,
+			If you want to check the repository again for newer log messages,
 			you can simply refresh the view using <keycap>F5</keycap>. If you
 			are using the log cache (enabled by default), this will check the
 			repository for newer messages and fetch only the new ones.
-			If the log cache was in offline mode, this will also attempt to
-			go back online.
 		</para>
+		<!--
 		<para>
 			If you are using the log cache and you think the message content
 			or author may have changed, you can use <keycap>Shift-F5</keycap>
@@ -954,5 +1000,6 @@
 			messages currently shown and does not invalidate the entire cache
 			for that repository.
 		</para>
+		-->
 	</sect2>
 </sect1>
