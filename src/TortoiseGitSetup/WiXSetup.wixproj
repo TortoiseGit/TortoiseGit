@@ -21,7 +21,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\bin\setup\x86\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
   </PropertyGroup>
@@ -35,7 +35,7 @@
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <DefineConstants>IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
     <OutputPath>..\..\bin\setup\x64\</OutputPath>
