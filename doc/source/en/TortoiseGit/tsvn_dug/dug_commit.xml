@@ -44,11 +44,18 @@
 			just check that file to add it to the commit.
 		</para>
 		<para>
+			Default commit dialog just list select paths and their child directory files. 
+			If you want to list all files of project, you can just click <guilabel>
+			Whole Project</guilabel>
+		</para>
+		<!--
+		<para>
 			Items which have been switched to a different repository path are
 			also indicated using an <literal>(s)</literal> marker. You may have
 			switched something while working on a branch and forgotten to switch
 			back to trunk. This is your warning sign!
 		</para>
+		-->
 		<!--
 		<tip>
 			<title>Commit files or folders?</title>
@@ -79,6 +86,7 @@
 				many unversioned (e.g. compiler generated or editor backup)
 				files, there are several ways to handle this. You can:
 				<itemizedlist>
+					<!--
 					<listitem>
 						<para>
 							add the file (or a wildcard extension)
@@ -86,9 +94,10 @@
 							This will affect every working copy you have.
 						</para>
 					</listitem>
+					-->
 					<listitem>
 						<para>
-							add the file to the <literal>svn:ignore</literal> list
+							add the file to the <literal>git:ignore</literal> list
 							using
 							<menuchoice>
 								<guimenu>TortoiseGit</guimenu>
@@ -127,6 +136,7 @@
 			customizations are preserved, so you will see the same headings
 			next time.
 		</para>
+		<!--
 		<para>
 			By default when you commit changes, any locks that you hold on files
 			are released automatically after the commit succeeds. If you want
@@ -136,8 +146,10 @@
 			configuration file. Read <xref linkend="tsvn-dug-settings-main"/>
 			for information on how to edit the Git configuration file.
 		</para>
+		-->
 		<tip>
 			<title>Drag and Drop</title>
+			<!--
 			<para>
 				You can drag files into the commit dialog from elsewhere, so
 				long as the working copies are checked out from the same repository.
@@ -150,8 +162,9 @@
 			</para>
 			<para>
 				You can drag unversioned files which reside within a working copy
-				into the commit dialog, and they will be SVN added automatically.
+				into the commit dialog, and they will be Git added automatically.
 			</para>
+			-->
 		</tip>
 		<!--
 		<tip>
@@ -171,6 +184,7 @@
 		</tip>
 		-->
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-commit-changelists">
 		<title>Change Lists</title>
 		<para>
@@ -179,6 +193,8 @@
 			in <xref linkend="tsvn-dug-changelists"/>.
 		</para>
 	</sect2>
+	-->
+	<!--
 	<sect2 id="tsvn-dug-commit-ignore">
 		<title>Excluding Items from the Commit List</title>
 		<para>
@@ -199,6 +215,7 @@
 			in the commit dialog.
 		</para>
 	</sect2>
+	-->
 	<sect2 id="tsvn-dug-commit-log">
 		<title>Commit Log Messages</title>
 		<para>
@@ -259,11 +276,17 @@
 		</para>
 		-->
 		<para>
+			You can add your name and email address to end of log message by click <guilabel>
+			Sign</guilabel>
+		</para>
+		<!--
+		<para>
 			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
 			page of TortoiseGit's settings, or you can clear individual messages from
 			within the <guilabel>Recent messages</guilabel> dialog using the
 			<keycap>Delete</keycap> key.
 		</para>
+		-->
 		<para>
 			If you want to include the checked paths in your log message, you can use
 			the command

@@ -27,9 +27,9 @@
 		which brings up the following dialog box:
 		<figure id="tsvn-dug-checkout-dia-1">
 			<title>The Checkout dialog</title>
-			<graphic fileref="../images/Checkout.png"/>
+			<graphic fileref="../images/SwitchCheckOut.png"/>
 		</figure>
-		If you enter a branch name, new branch created and switch to new branchs.
+		If you enter a branch name at <guilabel>Create New Branch</guilabel>, new branch created and switch to new branchs.
 	</para>
 	<!--
 	<sect2 id="tsvn-dug-checkout-depth">
@@ -209,33 +209,16 @@
 	-->
 	<important>
 		<para>
-			If <guilabel>Omit externals</guilabel> is checked, or if you wish
-			to increase the depth value, you will have to perform
-			updates to your working copy using
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Update to Revision...</guimenuitem>
-			</menuchoice>
-			instead of
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Update</guimenuitem>
-			</menuchoice>.
-			The standard update will include all externals and keep the existing depth.
+			If you checkout\switch to <guilabel>Tags</guilabel> or <guilabel>Version</guilabel>
+			Prefer you create new branch for it, otherwise you will work at "no branch".
 		</para>
 	</important>
-	<para>
-		It is recommended that you check out only the <literal>trunk</literal> part of the
-		directory tree, or lower. If you specify the parent path of the
-		directory tree in the URL then you might end up with a full
-		hard disk since you will get a copy of the entire repository tree
-		including every branch and tag of your project!
-	</para>
+	
 	<tip>
 		<title>Exporting</title>
 		<para>
 			Sometimes you may want to create a local copy without any of those
-			<filename>.svn</filename> directories, e.g. to create a zipped
+			<filename>.git</filename> directories, e.g. to create a zipped
 			tarball of your source.
 			Read <xref linkend="tsvn-dug-export"/> to find out how to do that.
 		</para>
