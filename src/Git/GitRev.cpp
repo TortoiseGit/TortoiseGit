@@ -4,11 +4,8 @@
 
 // provide an ASSERT macro for when compiled without MFC
 #if !defined ASSERT
-	#ifdef _DEBUG
-		#define ASSERT(x) {if(!(x)) _asm{int 0x03}}
-	#else
-		#define ASSERT(x)	
-	#endif
+	// Don't use _asm here, it isn't supported by x64 version of compiler. In fact, MFC's ASSERT() is the same with _ASSERTE().
+	#define ASSERT(x) _ASSERTE(x)
 #endif
 
 

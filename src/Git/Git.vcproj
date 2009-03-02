@@ -25,7 +25,7 @@
 			IntermediateDirectory="..\..\obj\git\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
-			UseOfATL="1"
+			UseOfATL="0"
 			CharacterSet="1"
 			>
 			<Tool
@@ -90,7 +90,7 @@
 			IntermediateDirectory="..\..\obj\git\$(ConfigurationName)64"
 			ConfigurationType="4"
 			UseOfMFC="2"
-			UseOfATL="1"
+			UseOfATL="0"
 			CharacterSet="1"
 			>
 			<Tool
