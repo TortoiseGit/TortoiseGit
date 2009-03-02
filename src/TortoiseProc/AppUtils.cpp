@@ -1078,10 +1078,10 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
 		CString force;
 		CString track;
 		if(dlg.m_bTrack)
-			track=_T("--track");
+			track=_T(" --track ");
 
 		if(dlg.m_bForce)
-			force=_T("-f");
+			force=_T(" -f ");
 
 		if(IsTag)
 		{
