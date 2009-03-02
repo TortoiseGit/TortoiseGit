@@ -235,7 +235,7 @@
 				AdditionalIncludeDirectories="..\include,..\src"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/SciLexer.pch"
 				WarningLevel="4"
@@ -325,7 +325,7 @@
 				AdditionalIncludeDirectories="..\include,..\src"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/SciLexer.pch"
 				WarningLevel="4"
@@ -4326,11 +4326,11 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="ReadMe.txt"
+			RelativePath="..\..\..\src\Git\ReadMe.txt"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\src\Git\ReadMe.txt"
+			RelativePath="ReadMe.txt"
 			>
 		</File>
 	</Files>
