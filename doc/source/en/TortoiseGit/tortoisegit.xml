@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book SYSTEM "../../dtd/dblite.dtd">
 <book id="tsvn" lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>TortoiseGit</title>
@@ -40,12 +40,14 @@
 	<xi:include href="./tsvn_app_automation.xml"/>	
 	<xi:include href="./tsvn_app_cli.xml"/>
 	<xi:include href="./tsvn_app_internals.xml"/>
+	
 	<xi:include href="./tsvn_app_ssh.xml"/>
+	
+	<xi:include href="./user-manual.xml"/>	
+	
+	
 	<xi:include href="../glossary.xml"/>
-	<appendix id="git-user manual" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<!--
-	<xi:include href="./user-manual.xml" xpointer="xpointer(//book)"/>
-	-->
+	<appendix id="appendix" xmlns:xi="http://www.w3.org/2001/XInclude">
 	</appendix>
 	<index id="tsvn-index"/>
 </book>
