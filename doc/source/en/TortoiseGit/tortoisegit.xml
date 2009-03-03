@@ -42,10 +42,9 @@
 	<xi:include href="./tsvn_app_internals.xml"/>
 	
 	<xi:include href="./tsvn_app_ssh.xml"/>
-	
-	<xi:include href="./user-manual.xml"/>	
-	
-	
+
+	<xi:include href="./git_doc/git-doc.xml"/>
+
 	<xi:include href="../glossary.xml"/>
 	<appendix id="appendix" xmlns:xi="http://www.w3.org/2001/XInclude">
 	</appendix>
