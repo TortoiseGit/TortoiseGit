@@ -27,9 +27,9 @@ pages, or <ulink url="git-help.html">git-help(1)</ulink> command.  For example, 
 without any explanation.</simpara>
 <simpara>Finally, see <xref linkend="todo"/> for ways that you can help make this manual more
 complete.</simpara>
-<simplesect id="repositories-and-branches">
+<section id="repositories-and-branches">
 <title>Repositories and Branches</title>
-<simplesect id="how-to-get-a-git-repository">
+<section id="how-to-get-a-git-repository">
 <title>How to get a git repository</title>
 <simpara>It will be useful to have a git repository to experiment with as you
 read this manual.</simpara>
@@ -48,8 +48,8 @@ directory, you will see that it contains a copy of the project files,
 called the <link linkend="def_working_tree">working tree</link>, together with a special
 top-level directory named ".git", which contains all the information
 about the history of the project.</simpara>
-</simplesect>
-<simplesect id="how-to-check-out">
+</section>
+<section id="how-to-check-out">
 <title>How to check out a different version of a project</title>
 <simpara>Git is best thought of as a tool for storing the history of a collection
 of files.  It stores the history as a compressed collection of
@@ -100,8 +100,8 @@ the current branch to point at v2.6.17 instead, with</simpara>
 particular point in history, then resetting that branch may leave you
 with no way to find the history it used to point to; so use this command
 carefully.</simpara>
-</simplesect>
-<simplesect id="understanding-commits">
+</section>
+<section id="understanding-commits">
 <title>Understanding History: Commits</title>
 <simpara>Every change in the history of a project is represented by a commit.
 The <ulink url="git-show.html">git-show(1)</ulink> command shows the most recent commit on the
@@ -143,7 +143,7 @@ without its name also changing.</simpara>
 <simpara>In fact, in <xref linkend="git-concepts"/> we shall see that everything stored in git
 history, including file data and directory contents, is stored in an object
 with a name that is a hash of its contents.</simpara>
-<simplesect id="understanding-reachability">
+<section id="understanding-reachability">
 <title>Understanding history: commits, parents, and reachability</title>
 <simpara>Every commit (except the very first commit in a project) also has a
 parent commit which shows what happened before this commit.
@@ -162,8 +162,8 @@ commits will help understand how the git organizes history.</simpara>
 if commit X is an ancestor of commit Y.  Equivalently, you could say
 that Y is a descendant of X, or that there is a chain of parents
 leading from commit Y to commit X.</simpara>
-</simplesect>
-<simplesect id="history-diagrams">
+</section>
+<section id="history-diagrams">
 <title>Understanding history: History diagrams</title>
 <simpara>We will sometimes represent git history using diagrams like the one
 below.  Commits are shown as "o", and the links between them with
@@ -175,8 +175,8 @@ lines drawn with - / and \.  Time goes left to right:</simpara>
          o--o--o &lt;-- Branch B</literallayout>
 <simpara>If we need to talk about a particular commit, the character "o" may
 be replaced with another letter or number.</simpara>
-</simplesect>
-<simplesect id="what-is-a-branch">
+</section>
+<section id="what-is-a-branch">
 <title>Understanding history: What is a branch?</title>
 <simpara>When we need to be precise, we will use the word "branch" to mean a line
 of development, and "branch head" (or just "head") to mean a reference
@@ -186,9 +186,9 @@ the line of three commits leading up to that point as all being part of
 "branch A".</simpara>
 <simpara>However, when no confusion will result, we often just use the term
 "branch" both for branches and for branch heads.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="manipulating-branches">
+</section>
+</section>
+<section id="manipulating-branches">
 <title>Manipulating branches</title>
 <simpara>Creating, deleting, and modifying branches is quick and easy; here&#8217;s
 a summary of the commands:</simpara>
@@ -280,8 +280,8 @@ branch.  In fact, git uses a file named "HEAD" in the .git directory to
 remember which branch is current:</simpara>
 <literallayout>$ cat .git/HEAD
 ref: refs/heads/master</literallayout>
-</simplesect>
-<simplesect id="detached-head">
+</section>
+<section id="detached-head">
 <title>Examining an old version without creating a new branch</title>
 <simpara>The git-checkout command normally expects a branch head, but will also
 accept an arbitrary commit; for example, you can check out the commit
@@ -303,8 +303,8 @@ $ git branch
 <simpara>This is an easy way to check out a particular version without having to
 make up a name for the new branch.   You can still create a new branch
 (or tag) for this version later if you decide to.</simpara>
-</simplesect>
-<simplesect id="examining-remote-branches">
+</section>
+<section id="examining-remote-branches">
 <title>Examining branches from a remote repository</title>
 <simpara>The "master" branch that was created at the time you cloned is a copy
 of the HEAD in the repository that you cloned from.  That repository
@@ -325,8 +325,8 @@ examine them on a branch of your own, just as you would a tag:</simpara>
 <literallayout>$ git checkout -b my-todo-copy origin/todo</literallayout>
 <simpara>Note that the name "origin" is just the name that git uses by default
 to refer to the repository that you cloned from.</simpara>
-</simplesect>
-<simplesect id="how-git-stores-references">
+</section>
+<section id="how-git-stores-references">
 <title>Naming branches, tags, and other references</title>
 <simpara>Branches, remote-tracking branches, and tags are all references to
 commits.  All references are named with a slash-separated path name
@@ -362,8 +362,8 @@ is usually a shortcut for the HEAD branch in the repository "origin".</simpara>
 the order it uses to decide which to choose when there are multiple
 references with the same shorthand name, see the "SPECIFYING
 REVISIONS" section of <ulink url="git-rev-parse.html">git-rev-parse(1)</ulink>.</simpara>
-</simplesect>
-<simplesect id="Updating-a-repository-With-git-fetch">
+</section>
+<section id="Updating-a-repository-With-git-fetch">
 <title>Updating a repository with git-fetch</title>
 <simpara>Eventually the developer cloned from will do additional work in her
 repository, creating new commits and advancing the branches to point
@@ -372,8 +372,8 @@ at the new commits.</simpara>
 remote-tracking branches to the latest version found in her
 repository.  It will not touch any of your own branches&#8212;not even the
 "master" branch that was created for you on clone.</simpara>
-</simplesect>
-<simplesect id="fetching-branches">
+</section>
+<section id="fetching-branches">
 <title>Fetching branches from other repositories</title>
 <simpara>You can also track branches from repositories other than the one you
 cloned from, using <ulink url="git-remote.html">git-remote(1)</ulink>:</simpara>
@@ -400,9 +400,9 @@ a new stanza:</simpara>
 or delete these configuration options by editing .git/config with a
 text editor.  (See the "CONFIGURATION FILE" section of
 <ulink url="git-config.html">git-config(1)</ulink> for details.)</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="exploring-git-history">
+</section>
+</section>
+<section id="exploring-git-history">
 <title>Exploring git history</title>
 <simpara>Git is best thought of as a tool for storing the history of a
 collection of files.  It does this by storing compressed snapshots of
@@ -412,7 +412,7 @@ the relationships between these snapshots.</simpara>
 history of a project.</simpara>
 <simpara>We start with one specialized tool that is useful for finding the
 commit that introduced a bug into a project.</simpara>
-<simplesect id="using-bisect">
+<section id="using-bisect">
 <title>How to use bisect to find a regression</title>
 <simpara>Suppose version 2.6.18 of your project worked, but the version at
 "master" crashes.  Sometimes the best way to find the cause of such a
@@ -464,8 +464,8 @@ bad one between some first skipped commits and a later bad commit.</simpara>
 test script that can tell a good from a bad commit. See
 <ulink url="git-bisect.html">git-bisect(1)</ulink> for more information about this and other "git
 bisect" features.</simpara>
-</simplesect>
-<simplesect id="naming-commits">
+</section>
+<section id="naming-commits">
 <title>Naming commits</title>
 <simpara>We have seen several ways of naming commits already:</simpara>
 <itemizedlist>
@@ -524,8 +524,8 @@ occasionally useful for translating some name for a commit to the object
 name for that commit:</simpara>
 <literallayout>$ git rev-parse origin
 e05db0fd4f31dde7005f075a84f96b360d05984b</literallayout>
-</simplesect>
-<simplesect id="creating-tags">
+</section>
+<section id="creating-tags">
 <title>Creating tags</title>
 <simpara>We can also create a tag to refer to a particular commit; after
 running</simpara>
@@ -535,8 +535,8 @@ running</simpara>
 comment with the tag, and possibly sign it cryptographically, then you
 should create a tag object instead; see the <ulink url="git-tag.html">git-tag(1)</ulink> man page
 for details.</simpara>
-</simplesect>
-<simplesect id="browsing-revisions">
+</section>
+<section id="browsing-revisions">
 <title>Browsing revisions</title>
 <simpara>The <ulink url="git-log.html">git-log(1)</ulink> command can show lists of commits.  On its
 own, it shows all commits reachable from the parent commit; but you
@@ -562,8 +562,8 @@ display options.</simpara>
 backwards through the parents; however, since git history can contain
 multiple independent lines of development, the particular order that
 commits are listed in may be somewhat arbitrary.</simpara>
-</simplesect>
-<simplesect id="generating-diffs">
+</section>
+<section id="generating-diffs">
 <title>Generating diffs</title>
 <simpara>You can generate diffs between any two versions using
 <ulink url="git-diff.html">git-diff(1)</ulink>:</simpara>
@@ -577,8 +577,8 @@ use <ulink url="git-format-patch.html">git-format-patch(1)</ulink>:</simpara>
 <literallayout>$ git format-patch master..test</literallayout>
 <simpara>will generate a file with a patch for each commit reachable from test
 but not from master.</simpara>
-</simplesect>
-<simplesect id="viewing-old-file-versions">
+</section>
+<section id="viewing-old-file-versions">
 <title>Viewing old file versions</title>
 <simpara>You can always view an old version of a file by just checking out the
 correct revision first.  But sometimes it is more convenient to be
@@ -587,10 +587,10 @@ anything out; this command does that:</simpara>
 <literallayout>$ git show v2.5:fs/locks.c</literallayout>
 <simpara>Before the colon may be anything that names a commit, and after it
 may be any path to a file tracked by git.</simpara>
-</simplesect>
-<simplesect id="history-examples">
+</section>
+<section id="history-examples">
 <title>Examples</title>
-<simplesect id="counting-commits-on-a-branch">
+<section id="counting-commits-on-a-branch">
 <title>Counting the number of commits on a branch</title>
 <simpara>Suppose you want to know how many commits you&#8217;ve made on "mybranch"
 since it diverged from "origin":</simpara>
@@ -599,8 +599,8 @@ since it diverged from "origin":</simpara>
 lower-level command <ulink url="git-rev-list.html">git-rev-list(1)</ulink>, which just lists the SHA1&#8217;s
 of all the given commits:</simpara>
 <literallayout>$ git rev-list origin..mybranch | wc -l</literallayout>
-</simplesect>
-<simplesect id="checking-for-equal-branches">
+</section>
+<section id="checking-for-equal-branches">
 <title>Check whether two branches point at the same history</title>
 <simpara>Suppose you want to check whether two branches point at the same point
 in history.</simpara>
@@ -618,8 +618,8 @@ contained reachable from either one reference or the other but not
 both: so</simpara>
 <literallayout>$ git log origin...master</literallayout>
 <simpara>will return no commits when the two branches are equal.</simpara>
-</simplesect>
-<simplesect id="finding-tagged-descendants">
+</section>
+<section id="finding-tagged-descendants">
 <title>Find first tagged version including a given fix</title>
 <simpara>Suppose you know that the commit e05db0fd fixed a certain problem.
 You&#8217;d like to find the earliest tagged release that contains that
@@ -668,8 +668,8 @@ available
 available</literallayout>
 <simpara>Which shows that e05db0fd is reachable from itself, from v1.5.0-rc1, and
 from v1.5.0-rc2, but not from v1.5.0-rc0.</simpara>
-</simplesect>
-<simplesect id="showing-commits-unique-to-a-branch">
+</section>
+<section id="showing-commits-unique-to-a-branch">
 <title>Showing commits unique to a given branch</title>
 <simpara>Suppose you would like to see all the commits reachable from the branch
 head named "master" but not from any other head in your repository.</simpara>
@@ -697,8 +697,8 @@ commits reachable from some head but not from any tag in the repository:</simpar
 <literallayout>$ gitk $( git show-ref --heads ) --not  $( git show-ref --tags )</literallayout>
 <simpara>(See <ulink url="git-rev-parse.html">git-rev-parse(1)</ulink> for explanations of commit-selecting
 syntax such as <literal>--not</literal>.)</simpara>
-</simplesect>
-<simplesect id="making-a-release">
+</section>
+<section id="making-a-release">
 <title>Creating a changelog and tarball for a software release</title>
 <simpara>The <ulink url="git-archive.html">git-archive(1)</ulink> command can create a tar or zip archive from
 any version of a project; for example:</simpara>
@@ -724,8 +724,8 @@ echo "git shortlog --no-merges v$new ^v$last &gt; ../ShortLog"
 echo "git diff --stat --summary -M v$last v$new &gt; ../diffstat-$new"</literallayout>
 <simpara>and then he just cut-and-pastes the output commands after verifying that
 they look OK.</simpara>
-</simplesect>
-<simplesect id="Finding-comments-With-given-Content">
+</section>
+<section id="Finding-comments-With-given-Content">
 <title>Finding commits referencing a file with given content</title>
 <simpara>Somebody hands you a copy of a file, and asks which commits modified a
 file such that it contained the given content either before or after the
@@ -735,12 +735,12 @@ commit.  You can find out with this:</simpara>
 <simpara>Figuring out why this works is left as an exercise to the (advanced)
 student.  The <ulink url="git-log.html">git-log(1)</ulink>, <ulink url="git-diff-tree.html">git-diff-tree(1)</ulink>, and
 <ulink url="git-hash-object.html">git-hash-object(1)</ulink> man pages may prove helpful.</simpara>
-</simplesect>
-</simplesect>
-</simplesect>
-<simplesect id="Developing-With-git">
+</section>
+</section>
+</section>
+<section id="Developing-With-git">
 <title>Developing with git</title>
-<simplesect id="telling-git-your-name">
+<section id="telling-git-your-name">
 <title>Telling git your name</title>
 <simpara>Before creating any commits, you should introduce yourself to git.  The
 easiest way to do so is to make sure the following lines appear in a
@@ -750,8 +750,8 @@ file named .gitconfig in your home directory:</simpara>
         email = you@yourdomain.example.com</literallayout>
 <simpara>(See the "CONFIGURATION FILE" section of <ulink url="git-config.html">git-config(1)</ulink> for
 details on the configuration file.)</simpara>
-</simplesect>
-<simplesect id="creating-a-new-repository">
+</section>
+<section id="creating-a-new-repository">
 <title>Creating a new repository</title>
 <simpara>Creating a new repository from scratch is very easy:</simpara>
 <literallayout>$ mkdir project
@@ -763,8 +763,8 @@ $ cd project
 $ git init
 $ git add . # include everything below ./ in the first commit:
 $ git commit</literallayout>
-</simplesect>
-<simplesect id="how-to-make-a-commit">
+</section>
+<section id="how-to-make-a-commit">
 <title>How to make a commit</title>
 <simpara>Creating a new commit takes three steps:</simpara>
 <orderedlist numeration="arabic">
@@ -833,8 +833,8 @@ $ git status        # a brief per-file summary of the above.</literallayout>
 the index and the working tree files, and individually select diff hunks
 for inclusion in the index (by right-clicking on the diff hunk and
 choosing "Stage Hunk For Commit").</simpara>
-</simplesect>
-<simplesect id="creating-good-commit-messages">
+</section>
+<section id="creating-good-commit-messages">
 <title>Creating good commit messages</title>
 <simpara>Though not required, it&#8217;s a good idea to begin the commit message
 with a single short (less than 50 character) line summarizing the
@@ -842,8 +842,8 @@ change, followed by a blank line and then a more thorough
 description.  Tools that turn commits into email, for example, use
 the first line on the Subject line and the rest of the commit in the
 body.</simpara>
-</simplesect>
-<simplesect id="ignoring-files">
+</section>
+<section id="ignoring-files">
 <title>Ignoring files</title>
 <simpara>A project will often generate files that you do <emphasis>not</emphasis> want to track with git.
 This typically includes files generated by a build process or temporary
@@ -876,8 +876,8 @@ them in a file in your repository named .git/info/exclude, or in any file
 specified by the <literal>core.excludesfile</literal> configuration variable.  Some git
 commands can also take exclude patterns directly on the command line.
 See <ulink url="gitignore.html">gitignore(5)</ulink> for the details.</simpara>
-</simplesect>
-<simplesect id="how-to-merge">
+</section>
+<section id="how-to-merge">
 <title>How to merge</title>
 <simpara>You can rejoin two diverging branches of development using
 <ulink url="git-merge.html">git-merge(1)</ulink>:</simpara>
@@ -898,8 +898,8 @@ creating a new file.</simpara>
 <simpara>If you examine the resulting commit using gitk, you will see that it
 has two parents, one pointing to the top of the current branch, and
 one to the top of the other branch.</simpara>
-</simplesect>
-<simplesect id="resolving-a-merge">
+</section>
+<section id="resolving-a-merge">
 <title>Resolving a merge</title>
 <simpara>When a merge isn&#8217;t resolved automatically, git leaves the index and
 the working tree in a special state that gives you all the
@@ -925,7 +925,7 @@ default message unchanged, but you may add additional commentary of
 your own if desired.</simpara>
 <simpara>The above is all you need to know to resolve a simple merge.  But git
 also provides more information to help resolve conflicts:</simpara>
-<simplesect id="conflict-resolution">
+<section id="conflict-resolution">
 <title>Getting conflict-resolution help during a merge</title>
 <simpara>All of the changes that git was able to merge automatically are
 already added to the index file, so <ulink url="git-diff.html">git-diff(1)</ulink> shows only
@@ -996,9 +996,9 @@ unmerged files using external tools such as Emacs or kdiff3.</simpara>
 <literallayout>$ git add file.txt</literallayout>
 <simpara>the different stages of that file will be "collapsed", after which
 git-diff will (by default) no longer show diffs for that file.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="undoing-a-merge">
+</section>
+</section>
+<section id="undoing-a-merge">
 <title>Undoing a merge</title>
 <simpara>If you get stuck and decide to just give up and throw the whole mess
 away, you can always return to the pre-merge state with</simpara>
@@ -1009,8 +1009,8 @@ away, you can always return to the pre-merge state with</simpara>
 throw away a commit you have already committed if that commit may
 itself have been merged into another branch, as doing so may confuse
 further merges.</simpara>
-</simplesect>
-<simplesect id="fast-forwards">
+</section>
+<section id="fast-forwards">
 <title>Fast-forward merges</title>
 <simpara>There is one special case not mentioned above, which is treated
 differently.  Normally, a merge results in a merge commit, with two
@@ -1021,8 +1021,8 @@ commit present in the one is already contained in the other&#8212;then git
 just performs a "fast forward"; the head of the current branch is moved
 forward to point at the head of the merged-in branch, without any new
 commits being created.</simpara>
-</simplesect>
-<simplesect id="fixing-mistakes">
+</section>
+<section id="fixing-mistakes">
 <title>Fixing mistakes</title>
 <simpara>If you&#8217;ve messed up the working tree, but haven&#8217;t yet committed your
 mistake, you can return the entire working tree to the last committed
@@ -1048,7 +1048,7 @@ You can go back and modify the old commit.  You should
 </simpara>
 </listitem>
 </orderedlist>
-<simplesect id="reverting-a-commit">
+<section id="reverting-a-commit">
 <title>Fixing a mistake with a new commit</title>
 <simpara>Creating a new commit that reverts an earlier change is very easy;
 just pass the <ulink url="git-revert.html">git-revert(1)</ulink> command a reference to the bad
@@ -1062,8 +1062,8 @@ will be given a chance to edit the commit message for the new commit.</simpara>
 intact any changes made since then.  If more recent changes overlap
 with the changes to be reverted, then you will be asked to fix
 conflicts manually, just as in the case of <link linkend="resolving-a-merge">resolving a merge</link>.</simpara>
-</simplesect>
-<simplesect id="fixing-a-mistake-by-rewriting-history">
+</section>
+<section id="fixing-a-mistake-by-rewriting-history">
 <title>Fixing a mistake by rewriting history</title>
 <simpara>If the problematic commit is the most recent commit, and you have not
 yet made that commit public, then you may just
@@ -1080,8 +1080,8 @@ that case.</simpara>
 <simpara>It is also possible to replace commits further back in the history, but
 this is an advanced topic to be left for
 <link linkend="cleaning-up-history">another chapter</link>.</simpara>
-</simplesect>
-<simplesect id="checkout-of-path">
+</section>
+<section id="checkout-of-path">
 <title>Checking out an old version of a file</title>
 <simpara>In the process of undoing a previous bad change, you may find it
 useful to check out an older version of a particular file using
@@ -1096,8 +1096,8 @@ modifying the working directory, you can do that with
 <ulink url="git-show.html">git-show(1)</ulink>:</simpara>
 <literallayout>$ git show HEAD^:path/to/file</literallayout>
 <simpara>which will display the given version of the file.</simpara>
-</simplesect>
-<simplesect id="interrupted-work">
+</section>
+<section id="interrupted-work">
 <title>Temporarily setting aside work in progress</title>
 <simpara>While you are in the middle of working on something complicated, you
 find an unrelated but obvious and trivial bug.  You would like to fix it
@@ -1114,9 +1114,9 @@ $ git commit -a -m "blorpl: typofix"</literallayout>
 <simpara>After that, you can go back to what you were working on with
 <literal>git stash apply</literal>:</simpara>
 <literallayout>$ git stash apply</literallayout>
-</simplesect>
-</simplesect>
-<simplesect id="ensuring-good-performance">
+</section>
+</section>
+<section id="ensuring-good-performance">
 <title>Ensuring good performance</title>
 <simpara>On large repositories, git depends on compression to keep the history
 information from taking up too much space on disk or in memory.</simpara>
@@ -1125,10 +1125,10 @@ should occasionally run <ulink url="git-gc.html">git-gc(1)</ulink>:</simpara>
 <literallayout>$ git gc</literallayout>
 <simpara>to recompress the archive.  This can be very time-consuming, so
 you may prefer to run git-gc when you are not doing other work.</simpara>
-</simplesect>
-<simplesect id="ensuring-reliability">
+</section>
+<section id="ensuring-reliability">
 <title>Ensuring reliability</title>
-<simplesect id="checking-for-corruption">
+<section id="checking-for-corruption">
 <title>Checking the repository for corruption</title>
 <simpara>The <ulink url="git-fsck.html">git-fsck(1)</ulink> command runs a number of self-consistency checks
 on the repository, and reports on any problems.  This may take some
@@ -1146,10 +1146,10 @@ dangling tree b24c2473f1fd3d91352a624795be026d64c8841f
 <simpara>Dangling objects are not a problem.  At worst they may take up a little
 extra disk space.  They can sometimes provide a last-resort method for
 recovering lost work&#8212;see <xref linkend="dangling-objects"/> for details.</simpara>
-</simplesect>
-<simplesect id="recovering-lost-changes">
+</section>
+<section id="recovering-lost-changes">
 <title>Recovering lost changes</title>
-<simplesect id="reflogs">
+<section id="reflogs">
 <title>Reflogs</title>
 <simpara>Say you modify a branch with <literal><ulink url="git-reset.html">git-reset(1)</ulink> --hard</literal>, and then
 realize that the branch was the only reference you had to that point in
@@ -1179,8 +1179,8 @@ section of <ulink url="git-rev-parse.html">git-rev-parse(1)</ulink> for details.
 While normal history is shared by every repository that works on the
 same project, the reflog history is not shared: it tells you only about
 how the branches in your local repository have changed over time.</simpara>
-</simplesect>
-<simplesect id="dangling-object-recovery">
+</section>
+<section id="dangling-object-recovery">
 <title>Examining dangling objects</title>
 <simpara>In some situations the reflog may not be able to save you.  For example,
 suppose you delete a branch, then realize you need the history it
@@ -1208,13 +1208,13 @@ reference pointing to it, for example, a new branch:</simpara>
 <literallayout>$ git branch recovered-branch 7281251ddd</literallayout>
 <simpara>Other types of dangling objects (blobs and trees) are also possible, and
 dangling objects can arise in other situations.</simpara>
-</simplesect>
-</simplesect>
-</simplesect>
-</simplesect>
-<simplesect id="sharing-development">
+</section>
+</section>
+</section>
+</section>
+<section id="sharing-development">
 <title>Sharing development with others</title>
-<simplesect id="getting-updates-With-git-pull">
+<section id="getting-updates-With-git-pull">
 <title>Getting updates with git-pull</title>
 <simpara>After you clone a repository and make a few changes of your own, you
 may wish to check the original repository for updates and merge them
@@ -1248,8 +1248,8 @@ the commands</simpara>
 <literallayout>$ git pull . branch
 $ git merge branch</literallayout>
 <simpara>are roughly equivalent.  The former is actually very commonly used.</simpara>
-</simplesect>
-<simplesect id="submitting-patches">
+</section>
+<section id="submitting-patches">
 <title>Submitting patches to a project</title>
 <simpara>If you just have a few changes, the simplest way to submit them may
 just be to send them as patches in email:</simpara>
@@ -1262,8 +1262,8 @@ hand.  However, if you have a lot to send at once, you may prefer to
 use the <ulink url="git-send-email.html">git-send-email(1)</ulink> script to automate the process.
 Consult the mailing list for your project first to determine how they
 prefer such patches be handled.</simpara>
-</simplesect>
-<simplesect id="importing-patches">
+</section>
+<section id="importing-patches">
 <title>Importing patches to a project</title>
 <simpara>Git also provides a tool called <ulink url="git-am.html">git-am(1)</ulink> (am stands for
 "apply mailbox"), for importing such an emailed series of patches.
@@ -1283,8 +1283,8 @@ remaining patches from the mailbox.</simpara>
 <simpara>The final result will be a series of commits, one for each patch in
 the original mailbox, with authorship and commit log message each
 taken from the message containing each patch.</simpara>
-</simplesect>
-<simplesect id="public-repositories">
+</section>
+<section id="public-repositories">
 <title>Public git repositories</title>
 <simpara>Another way to submit changes to a project is to tell the maintainer
 of that project to pull the changes from your repository using
@@ -1321,7 +1321,7 @@ your personal repo ------------------&gt; your public repo
       |               they push             V
 their public repo &lt;------------------- their repo</literallayout>
 <simpara>We explain how to do this in the following sections.</simpara>
-<simplesect id="setting-up-a-public-repository">
+<section id="setting-up-a-public-repository">
 <title>Setting up a public repository</title>
 <simpara>Assume your personal repository is in the directory ~/proj.  We
 first create a new clone of the repository and tell git-daemon that it
@@ -1334,8 +1334,8 @@ around it.</simpara>
 <simpara>Next, copy proj.git to the server where you plan to host the
 public repository.  You can use scp, rsync, or whatever is most
 convenient.</simpara>
-</simplesect>
-<simplesect id="exporting-via-git">
+</section>
+<section id="exporting-via-git">
 <title>Exporting a git repository via the git protocol</title>
 <simpara>This is the preferred method.</simpara>
 <simpara>If someone else administers the server, they should tell you what
@@ -1350,8 +1350,8 @@ arguments will further restrict the exports to those paths.</simpara>
 <simpara>You can also run git-daemon as an inetd service; see the
 <ulink url="git-daemon.html">git-daemon(1)</ulink> man page for details.  (See especially the
 examples section.)</simpara>
-</simplesect>
-<simplesect id="exporting-via-http">
+</section>
+<section id="exporting-via-http">
 <title>Exporting a git repository via http</title>
 <simpara>The git protocol gives better performance and reliability, but on a
 host with a web server set up, http exports may be simpler to set up.</simpara>
@@ -1371,8 +1371,8 @@ clone or pull from that URL, for example with a command line like:</simpara>
 <ulink url="howto/setup-git-server-over-http.txt">setup-git-server-over-http</ulink>
 for a slightly more sophisticated setup using WebDAV which also
 allows pushing over http.)</simpara>
-</simplesect>
-<simplesect id="pushing-changes-to-a-public-repository">
+</section>
+<section id="pushing-changes-to-a-public-repository">
 <title>Pushing changes to a public repository</title>
 <simpara>Note that the two techniques outlined above (exporting via
 <link linkend="exporting-via-http">http</link> or <link linkend="exporting-via-git">git</link>) allow other
@@ -1404,8 +1404,8 @@ EOF</literallayout>
 <simpara>See the explanations of the remote.&lt;name&gt;.url, branch.&lt;name&gt;.remote,
 and remote.&lt;name&gt;.push options in <ulink url="git-config.html">git-config(1)</ulink> for
 details.</simpara>
-</simplesect>
-<simplesect id="forcing-push">
+</section>
+<section id="forcing-push">
 <title>What to do when a push fails</title>
 <simpara>If a push would not result in a <link linkend="fast-forwards">fast forward</link> of the
 remote branch, then it will fail with an error like:</simpara>
@@ -1450,8 +1450,8 @@ solution is to retry the push after first updating your work: either by a
 pull, or by a fetch followed by a rebase; see the
 <link linkend="setting-up-a-shared-repository">next section</link> and
 <ulink url="gitcvs-migration.html">gitcvs-migration(7)</ulink> for more.</simpara>
-</simplesect>
-<simplesect id="setting-up-a-shared-repository">
+</section>
+<section id="setting-up-a-shared-repository">
 <title>Setting up a shared repository</title>
 <simpara>Another way to collaborate is by using a model similar to that
 commonly used in CVS, where several developers with special rights
@@ -1491,17 +1491,17 @@ The lack of a central group of "committers" means there is
 </simpara>
 </listitem>
 </itemizedlist>
-</simplesect>
-<simplesect id="setting-up-gitweb">
+</section>
+<section id="setting-up-gitweb">
 <title>Allowing web browsing of a repository</title>
 <simpara>The gitweb cgi script provides users an easy way to browse your
 project&#8217;s files and history without having to install git; see the file
 gitweb/INSTALL in the git source tree for instructions on setting it up.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="sharing-development-examples">
+</section>
+</section>
+<section id="sharing-development-examples">
 <title>Examples</title>
-<simplesect id="maintaining-topic-branches">
+<section id="maintaining-topic-branches">
 <title>Maintaining topic branches for a Linux subsystem maintainer</title>
 <simpara>This describes how Tony Luck uses git in his role as maintainer of the
 IA64 architecture for the Linux kernel.</simpara>
@@ -1714,17 +1714,17 @@ do
         esac
         git log origin/master..$branch | git shortlog
 done</literallayout>
-</simplesect>
-</simplesect>
-</simplesect>
-<simplesect id="cleaning-up-history">
+</section>
+</section>
+</section>
+<section id="cleaning-up-history">
 <title>Rewriting history and maintaining patch series</title>
 <simpara>Normally commits are only added to a project, never taken away or
 replaced.  Git is designed with this assumption, and violating it will
 cause git&#8217;s merge machinery (for example) to do the wrong thing.</simpara>
 <simpara>However, there is a situation in which it can be useful to violate this
 assumption.</simpara>
-<simplesect id="patch-series">
+<section id="patch-series">
 <title>Creating the perfect patch series</title>
 <simpara>Suppose you are a contributor to a large project, and you want to add a
 complicated feature, and to present it to the other developers in a way
@@ -1764,8 +1764,8 @@ The complete series produces the same end result as your own
 <simpara>We will introduce some tools that can help you do this, explain how to
 use them, and then explain some of the problems that can arise because
 you are rewriting history.</simpara>
-</simplesect>
-<simplesect id="using-git-rebase">
+</section>
+<section id="using-git-rebase">
 <title>Keeping a patch series up to date using git-rebase</title>
 <simpara>Suppose that you create a branch "mywork" on a remote-tracking branch
 "origin", and create some commits on top of it:</simpara>
@@ -1811,8 +1811,8 @@ running git-commit, just run</simpara>
 <simpara>At any point you may use the <literal>--abort</literal> option to abort this process and
 return mywork to the state it had before you started the rebase:</simpara>
 <literallayout>$ git rebase --abort</literallayout>
-</simplesect>
-<simplesect id="rewriting-one-commit">
+</section>
+<section id="rewriting-one-commit">
 <title>Rewriting a single commit</title>
 <simpara>We saw in <xref linkend="fixing-a-mistake-by-rewriting-history"/> that you can replace the
 most recent commit using</simpara>
@@ -1839,8 +1839,8 @@ then clean up with</simpara>
 <simpara>Note that the immutable nature of git history means that you haven&#8217;t really
 "modified" existing commits; instead, you have replaced the old commits with
 new commits having new object names.</simpara>
-</simplesect>
-<simplesect id="reordering-patch-series">
+</section>
+<section id="reordering-patch-series">
 <title>Reordering or selecting from a patch series</title>
 <simpara>Given one existing commit, the <ulink url="git-cherry-pick.html">git-cherry-pick(1)</ulink> command
 allows you to apply the change introduced by that commit and create a
@@ -1860,14 +1860,14 @@ patches, then reset the state to before the patches:</simpara>
 $ git reset --hard origin</literallayout>
 <simpara>Then modify, reorder, or eliminate patches as preferred before applying
 them again with <ulink url="git-am.html">git-am(1)</ulink>.</simpara>
-</simplesect>
-<simplesect id="patch-series-tools">
+</section>
+<section id="patch-series-tools">
 <title>Other tools</title>
 <simpara>There are numerous other tools, such as StGIT, which exist for the
 purpose of maintaining a patch series.  These are outside of the scope of
 this manual.</simpara>
-</simplesect>
-<simplesect id="problems-With-rewriting-history">
+</section>
+<section id="problems-With-rewriting-history">
 <title>Problems with rewriting history</title>
 <simpara>The primary problem with rewriting the history of a branch has to do
 with merging.  Suppose somebody fetches your branch and merges it into
@@ -1899,8 +1899,8 @@ order to examine or test them, but they should not attempt to pull such
 branches into their own work.</simpara>
 <simpara>For true distributed development that supports proper merging,
 published branches should never be rewritten.</simpara>
-</simplesect>
-<simplesect id="bisect-merges">
+</section>
+<section id="bisect-merges">
 <title>Why bisecting merge commits can be harder than bisecting linear history</title>
 <simpara>The <ulink url="git-bisect.html">git-bisect(1)</ulink> command correctly handles history that
 includes merge commits.  However, when the commit that it finds is a
@@ -1948,11 +1948,11 @@ and understanding why Y* was broken would probably be easier.</simpara>
 working on an otherwise merge-heavy project, keep the history
 linear by rebasing against the latest upstream version before
 publishing.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="advanced-branch-management">
+</section>
+</section>
+<section id="advanced-branch-management">
 <title>Advanced branch management</title>
-<simplesect id="fetching-individual-branches">
+<section id="fetching-individual-branches">
 <title>Fetching individual branches</title>
 <simpara>Instead of using <ulink url="git-remote.html">git-remote(1)</ulink>, you can also choose just
 to update one branch at a time, and to store it locally under an
@@ -1969,8 +1969,8 @@ branch named "master" from the repository at the given URL.  If you
 already have a branch named example-master, it will attempt to
 <link linkend="fast-forwards">fast-forward</link> to the commit given by example.com&#8217;s
 master branch.  In more detail:</simpara>
-</simplesect>
-<simplesect id="fetch-fast-forwards">
+</section>
+<section id="fetch-fast-forwards">
 <title>git fetch and fast-forwards</title>
 <simpara>In the previous example, when updating an existing branch, "git-fetch"
 checks to make sure that the most recent commit on the remote
@@ -1994,8 +1994,8 @@ described in the following section.  However, note that in the
 situation above this may mean losing the commits labeled "a" and "b",
 unless you&#8217;ve already created a reference of your own pointing to
 them.</simpara>
-</simplesect>
-<simplesect id="forcing-fetch">
+</section>
+<section id="forcing-fetch">
 <title>Forcing git-fetch to do non-fast-forward updates</title>
 <simpara>If git fetch fails because the new head of a branch is not a
 descendant of the old head, you may force the update with:</simpara>
@@ -2005,8 +2005,8 @@ flag to force updates of all the fetched branches, as in:</simpara>
 <literallayout>$ git fetch -f origin</literallayout>
 <simpara>Be aware that commits that the old version of example/master pointed at
 may be lost, as we saw in the previous section.</simpara>
-</simplesect>
-<simplesect id="remote-branch-configuration">
+</section>
+<section id="remote-branch-configuration">
 <title>Configuring remote branches</title>
 <simpara>We saw above that "origin" is just a shortcut to refer to the
 repository that you originally cloned from.  This information is
@@ -2042,15 +2042,15 @@ directly editing the file .git/config instead of using
 <ulink url="git-config.html">git-config(1)</ulink>.</simpara>
 <simpara>See <ulink url="git-config.html">git-config(1)</ulink> for more details on the configuration
 options mentioned above.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="git-concepts">
+</section>
+</section>
+<section id="git-concepts">
 <title>Git concepts</title>
 <simpara>Git is built on a small number of simple but powerful ideas.  While it
 is possible to get things done without understanding them, you will find
 git much more intuitive if you do.</simpara>
 <simpara>We start with the most important, the  <link linkend="def_object_database">object database</link> and the <link linkend="def_index">index</link>.</simpara>
-<simplesect id="the-object-database">
+<section id="the-object-database">
 <title>The Object Database</title>
 <simpara>We already saw in <xref linkend="understanding-commits"/> that all commits are stored
 under a 40-digit "object name".  In fact, all the information needed to
@@ -2118,7 +2118,7 @@ A <link linkend="def_tag_object">"tag" object</link> symbolically identifies and
 </listitem>
 </itemizedlist>
 <simpara>The object types in some more detail:</simpara>
-<simplesect id="commit-object">
+<section id="commit-object">
 <title>Commit Object</title>
 <simpara>The "commit" object links a physical state of a tree with a description
 of how we got there and why.  Use the --pretty=raw option to
@@ -2183,8 +2183,8 @@ file data at changing paths suggests a rename.  (See, for example, the
 <simpara>A commit is usually created by <ulink url="git-commit.html">git-commit(1)</ulink>, which creates a
 commit whose parent is normally the current HEAD, and whose tree is
 taken from the content currently stored in the index.</simpara>
-</simplesect>
-<simplesect id="tree-object">
+</section>
+<section id="tree-object">
 <title>Tree Object</title>
 <simpara>The ever-versatile <ulink url="git-show.html">git-show(1)</ulink> command can also be used to
 examine tree objects, but <ulink url="git-ls-tree.html">git-ls-tree(1)</ulink> will give you more
@@ -2214,8 +2214,8 @@ identical object names.</simpara>
 entries.  See <xref linkend="submodules"/> for documentation.)</simpara>
 <simpara>Note that the files all have mode 644 or 755: git actually only pays
 attention to the executable bit.</simpara>
-</simplesect>
-<simplesect id="blob-object">
+</section>
+<section id="blob-object">
 <title>Blob Object</title>
 <simpara>You can use <ulink url="git-show.html">git-show(1)</ulink> to examine the contents of a blob; take,
 for example, the blob in the entry for "COPYING" from the tree above:</simpara>
@@ -2236,8 +2236,8 @@ renaming a file does not change the object that file is associated with.</simpar
 <ulink url="git-show.html">git-show(1)</ulink> with the &lt;revision&gt;:&lt;path&gt; syntax.  This can
 sometimes be useful for browsing the contents of a tree that is not
 currently checked out.</simpara>
-</simplesect>
-<simplesect id="trust">
+</section>
+<section id="trust">
 <title>Trust</title>
 <simpara>If you receive the SHA1 name of a blob from one source, and its contents
 from another (possibly untrusted) source, you can still trust that those
@@ -2260,8 +2260,8 @@ sending out a single email that tells the people the name (SHA1 hash)
 of the top commit, and digitally sign that email using something
 like GPG/PGP.</simpara>
 <simpara>To assist in this, git also provides the tag object&#8230;</simpara>
-</simplesect>
-<simplesect id="tag-object">
+</section>
+<section id="tag-object">
 <title>Tag Object</title>
 <simpara>A tag object contains an object, object type, tag name, the name of the
 person ("tagger") who created the tag, and a message, which may contain
@@ -2284,8 +2284,8 @@ nLE/L9aUXdWeTFPron96DLA=
 objects.  (Note that <ulink url="git-tag.html">git-tag(1)</ulink> can also be used to create
 "lightweight tags", which are not tag objects at all, but just simple
 references whose names begin with "refs/tags/").</simpara>
-</simplesect>
-<simplesect id="pack-files">
+</section>
+<section id="pack-files">
 <title>How git stores objects efficiently: pack files</title>
 <simpara>Newly created objects are initially created in a file named after the
 object&#8217;s SHA1 hash (stored in .git/objects).</simpara>
@@ -2323,8 +2323,8 @@ You can verify that the loose objects are gone by looking at the
 objects will work exactly as they did before.</simpara>
 <simpara>The <ulink url="git-gc.html">git-gc(1)</ulink> command performs packing, pruning, and more for
 you, so is normally the only high-level command you need.</simpara>
-</simplesect>
-<simplesect id="dangling-objects">
+</section>
+<section id="dangling-objects">
 <title>Dangling objects</title>
 <simpara>The <ulink url="git-fsck.html">git-fsck(1)</ulink> command will sometimes complain about dangling
 objects.  They are not a problem.</simpara>
@@ -2384,8 +2384,8 @@ Running it while somebody is actually changing the repository can cause
 confusing and scary messages, but it won&#8217;t actually do anything bad. In
 contrast, running "git prune" while somebody is actively changing the
 repository is a <emphasis role="strong">BAD</emphasis> idea).</simpara>
-</simplesect>
-<simplesect id="recovering-from-repository-corruption">
+</section>
+<section id="recovering-from-repository-corruption">
 <title>Recovering from repository corruption</title>
 <simpara>By design, git treats data trusted to it with caution.  However, even in
 the absence of bugs in git itself, it is still possible that hardware or
@@ -2464,9 +2464,9 @@ shot at reconstructing the contents of the in-between state 4b9458b.</simpara>
 <simpara>and just looked for the sha of the missing object (4b9458b..) in that
 whole thing. It&#8217;s up to you - git does <emphasis role="strong">have</emphasis> a lot of information, it is
 just missing one particular blob version.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="the-index">
+</section>
+</section>
+<section id="the-index">
 <title>The index</title>
 <simpara>The index is a binary file (generally kept in .git/index) containing a
 sorted list of path names, each with permissions and the SHA1 of a blob
@@ -2524,9 +2524,9 @@ conflicts.</simpara>
 a tree which you are in the process of working on.</simpara>
 <simpara>If you blow the index away entirely, you generally haven&#8217;t lost any
 information as long as you have the name of the tree that it described.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="submodules">
+</section>
+</section>
+<section id="submodules">
 <title>Submodules</title>
 <simpara>Large projects are often composed of smaller, self-contained modules.  For
 example, an embedded Linux distribution&#8217;s source tree would include every
@@ -2667,7 +2667,7 @@ $ git commit -m "Updated submodule a."
 $ git push</literallayout>
 <simpara>You have to run <literal>git submodule update</literal> after <literal>git pull</literal> if you want to update
 submodules, too.</simpara>
-<simplesect id="_pitfalls_with_submodules">
+<section id="_pitfalls_with_submodules">
 <title>Pitfalls with submodules</title>
 <simpara>Always publish the submodule change before publishing the change to the
 superproject that references it. If you forget to publish the submodule change,
@@ -2702,15 +2702,15 @@ $ cat a.txt
 module a</literallayout>
 <note><simpara>The changes are still visible in the submodule&#8217;s reflog.</simpara></note>
 <simpara>This is not the case if you did not commit your changes.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="low-level-operations">
+</section>
+</section>
+<section id="low-level-operations">
 <title>Low-level git operations</title>
 <simpara>Many of the higher-level commands were originally implemented as shell
 scripts using a smaller core of low-level git commands.  These can still
 be useful when doing unusual things with git, or just as a way to
 understand its inner workings.</simpara>
-<simplesect id="object-manipulation">
+<section id="object-manipulation">
 <title>Object access and manipulation</title>
 <simpara>The <ulink url="git-cat-file.html">git-cat-file(1)</ulink> command can show the contents of any object,
 though the higher-level <ulink url="git-show.html">git-show(1)</ulink> is usually more useful.</simpara>
@@ -2722,8 +2722,8 @@ accessed by <ulink url="git-ls-tree.html">git-ls-tree(1)</ulink>.  Two trees can
 <simpara>A tag is created with <ulink url="git-mktag.html">git-mktag(1)</ulink>, and the signature can be
 verified by <ulink url="git-verify-tag.html">git-verify-tag(1)</ulink>, though it is normally simpler to
 use <ulink url="git-tag.html">git-tag(1)</ulink> for both.</simpara>
-</simplesect>
-<simplesect id="the-workflow">
+</section>
+<section id="the-workflow">
 <title>The Workflow</title>
 <simpara>High-level operations such as <ulink url="git-commit.html">git-commit(1)</ulink>,
 <ulink url="git-checkout.html">git-checkout(1)</ulink> and <ulink url="git-reset.html">git-reset(1)</ulink> work by moving data
@@ -2735,7 +2735,7 @@ work <emphasis role="strong">purely</emphasis> on the index file (showing the cu
 index), but most operations move data between the index file and either
 the database or the working directory. Thus there are four main
 combinations:</simpara>
-<simplesect id="working-directory-to-index">
+<section id="working-directory-to-index">
 <title>working directory &#8594; index</title>
 <simpara>The <ulink url="git-update-index.html">git-update-index(1)</ulink> command updates the index with
 information from the working directory.  You generally update the
@@ -2761,8 +2761,8 @@ it will only update the fields that are used to quickly test whether
 an object still matches its old backing store object.</simpara>
 <simpara>The previously introduced <ulink url="git-add.html">git-add(1)</ulink> is just a wrapper for
 <ulink url="git-update-index.html">git-update-index(1)</ulink>.</simpara>
-</simplesect>
-<simplesect id="index-to-object-database">
+</section>
+<section id="index-to-object-database">
 <title>index &#8594; object database</title>
 <simpara>You write your current index file to a "tree" object with the program</simpara>
 <literallayout>$ git write-tree</literallayout>
@@ -2771,8 +2771,8 @@ current index into the set of tree objects that describe that state,
 and it will return the name of the resulting top-level tree. You can
 use that tree to re-generate the index at any time by going in the
 other direction:</simpara>
-</simplesect>
-<simplesect id="object-database-to-index">
+</section>
+<section id="object-database-to-index">
 <title>object database &#8594; index</title>
 <simpara>You read a "tree" file from the object database, and use that to
 populate (and overwrite&#8212;don&#8217;t do this if your index contains any
@@ -2782,8 +2782,8 @@ index.  Normal operation is just</simpara>
 <simpara>and your index file will now be equivalent to the tree that you saved
 earlier. However, that is only your <emphasis>index</emphasis> file: your working
 directory contents have not been modified.</simpara>
-</simplesect>
-<simplesect id="index-to-working-directory">
+</section>
+<section id="index-to-working-directory">
 <title>index &#8594; working directory</title>
 <simpara>You update your working directory from the index by "checking out"
 files. This is not a very common operation, since normally you&#8217;d just
@@ -2802,8 +2802,8 @@ need to use the "-f" flag (<emphasis>before</emphasis> the "-a" flag or the file
 <emphasis>force</emphasis> the checkout.</simpara>
 <simpara>Finally, there are a few odds and ends which are not purely moving
 from one representation to the other:</simpara>
-</simplesect>
-<simplesect id="tying-it-all-together">
+</section>
+<section id="tying-it-all-together">
 <title>Tying it all together</title>
 <simpara>To commit a tree you have instantiated with "git write-tree", you&#8217;d
 create a "commit" object that refers to that tree and the history
@@ -2861,9 +2861,9 @@ various pieces fit together.</simpara>
                     |  Working  |
                     | Directory |
                     +-----------+</literallayout>
-</simplesect>
-</simplesect>
-<simplesect id="examining-the-data">
+</section>
+</section>
+<section id="examining-the-data">
 <title>Examining the data</title>
 <simpara>You can examine the data represented in the object database and the
 index with various helper tools. For every object, you can use
@@ -2883,8 +2883,8 @@ follow the convention of having the top commit name in <literal>.git/HEAD</liter
 you can do</simpara>
 <literallayout>$ git cat-file commit HEAD</literallayout>
 <simpara>to see what the top commit was.</simpara>
-</simplesect>
-<simplesect id="merging-multiple-trees">
+</section>
+<section id="merging-multiple-trees">
 <title>Merging multiple trees</title>
 <simpara>Git helps you do a three-way merge, which you can expand to n-way by
 repeating the merge procedure arbitrary times until you finally
@@ -2916,8 +2916,8 @@ you have in your current index anyway).</simpara>
 <simpara>which will do all trivial merge operations for you directly in the
 index file, and you can just write the result out with
 <literal>git write-tree</literal>.</simpara>
-</simplesect>
-<simplesect id="merging-multiple-trees-2">
+</section>
+<section id="merging-multiple-trees-2">
 <title>Merging multiple trees, continued</title>
 <simpara>Sadly, many merges aren&#8217;t trivial. If there are files that have
 been added, moved or removed, or if both branches have modified the
@@ -2966,13 +2966,13 @@ for this.  There is a <literal>git-merge-index</literal> program that extracts t
 stages to temporary files and calls a "merge" script on it:</simpara>
 <literallayout>$ git merge-index git-merge-one-file hello.c</literallayout>
 <simpara>and that is what higher level <literal>git-merge -s resolve</literal> is implemented with.</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="hacking-git">
+</section>
+</section>
+<section id="hacking-git">
 <title>Hacking git</title>
 <simpara>This chapter covers internal details of the git implementation which
 probably only git developers need to understand.</simpara>
-<simplesect id="object-details">
+<section id="object-details">
 <title>Object storage format</title>
 <simpara>All objects have a statically determined "type" which identifies the
 format of the object (i.e. how it is used, and how it can refer to other
@@ -2998,8 +2998,8 @@ connectivity to other objects verified. This is generally done with
 the <literal>git-fsck</literal> program, which generates a full dependency graph
 of all objects, and verifies their internal consistency (in addition
 to just verifying their superficial consistency through the hash).</simpara>
-</simplesect>
-<simplesect id="birdview-on-the-source-code">
+</section>
+<section id="birdview-on-the-source-code">
 <title>A birds-eye view of Git&#8217;s source code</title>
 <simpara>It is not always easy for new developers to find their way through Git&#8217;s
 source code.  This section gives you a little guidance to show where to
@@ -3171,9 +3171,9 @@ builtin:</simpara>
 <literallayout>$ git log --no-merges --diff-filter=A builtin-*.c</literallayout>
 <simpara>You see, Git is actually the best tool to find out about the source of Git
 itself!</simpara>
-</simplesect>
-</simplesect>
-<simplesect id="glossary">
+</section>
+</section>
+<section id="glossary">
 <title>GIT Glossary</title>
 <variablelist>
 <varlistentry>
@@ -4137,12 +4137,12 @@ This commit is referred to as a "merge commit", or sometimes just a
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
+</section>
 <appendix id="git-quick-start">
 <title>Git Quick Reference</title>
 <simpara>This is a quick summary of the major commands; the previous chapters
 explain how these work in more detail.</simpara>
-<simplesect id="quick-creating-a-new-repository">
+<section id="quick-creating-a-new-repository">
 <title>Creating a new repository</title>
 <simpara>From a tarball:</simpara>
 <literallayout>$ tar xzf project.tar.gz
@@ -4154,8 +4154,8 @@ $ git commit</literallayout>
 <simpara>From a remote repository:</simpara>
 <literallayout>$ git clone git://example.com/pub/project.git
 $ cd project</literallayout>
-</simplesect>
-<simplesect id="managing-branches">
+</section>
+<section id="managing-branches">
 <title>Managing branches</title>
 <literallayout>$ git branch         # list all local branches in this repo
 $ git checkout test  # switch working directory to branch "test"
@@ -4194,8 +4194,8 @@ $ git remote show example       # get details
     ...
 $ git fetch example             # update branches from example
 $ git branch -r                 # list all remote branches</literallayout>
-</simplesect>
-<simplesect id="exploring-history">
+</section>
+<section id="exploring-history">
 <title>Exploring history</title>
 <literallayout>$ gitk                      # visualize and browse history
 $ git log                   # list all commits
@@ -4222,8 +4222,8 @@ Bisecting: 675 revisions left to test after this
 $ git bisect good               # if this revision is good, or
 $ git bisect bad                # if this revision is bad.
                                 # repeat until done.</literallayout>
-</simplesect>
-<simplesect id="making-changes">
+</section>
+<section id="making-changes">
 <title>Making changes</title>
 <simpara>Make sure git knows who to blame:</simpara>
 <literallayout>$ cat &gt;&gt;~/.gitconfig &lt;&lt;\EOF
@@ -4240,15 +4240,15 @@ $ git commit</literallayout>
 <simpara>Or, prepare and create the commit in one step:</simpara>
 <literallayout>$ git commit d.txt # use latest content only of d.txt
 $ git commit -a    # use latest content of all tracked files</literallayout>
-</simplesect>
-<simplesect id="merging">
+</section>
+<section id="merging">
 <title>Merging</title>
 <literallayout>$ git merge test   # merge branch "test" into the current branch
 $ git pull git://example.com/project.git master
                    # fetch and merge in remote branch
 $ git pull . test  # equivalent to git merge test</literallayout>
-</simplesect>
-<simplesect id="sharing-your-changes">
+</section>
+<section id="sharing-your-changes">
 <title>Sharing your changes</title>
 <simpara>Importing or exporting patches:</simpara>
 <literallayout>$ git format-patch origin..HEAD # format a patch for each commit
@@ -4268,14 +4268,14 @@ branch with your commits:</simpara>
 <simpara>Shortcut version for a frequently used remote repository:</simpara>
 <literallayout>$ git remote add example ssh://example.com/project.git
 $ git push example test</literallayout>
-</simplesect>
-<simplesect id="repository-maintenance">
+</section>
+<section id="repository-maintenance">
 <title>Repository maintenance</title>
 <simpara>Check for corruption:</simpara>
 <literallayout>$ git fsck</literallayout>
 <simpara>Recompress, remove unused cruft:</simpara>
 <literallayout>$ git gc</literallayout>
-</simplesect>
+</section>
 </appendix>
 <appendix id="todo">
 <title>Notes and todo list for this manual</title>
