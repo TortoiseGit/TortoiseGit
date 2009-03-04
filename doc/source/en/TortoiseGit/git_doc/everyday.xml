@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<article lang="en" id="Everyday GIT With 20 Commands Or So">
+<article lang="en" id="Everyday">
 <articleinfo>
-    <title>Everyday GIT With 20 Commands Or So</title>
+    <title>Everyday</title>
         <indexterm>
-                <primary>Everyday GIT With 20 Commands Or So</primary>
+                <primary>Everyday</primary>
         </indexterm>
 </articleinfo>
 <simpara><xref linkend="Basic Repository"/> commands are needed by people who have a

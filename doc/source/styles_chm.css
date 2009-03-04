@@ -258,3 +258,18 @@ div.table td {
 font-family: arial,helvetica,sans-serif;
 font-style: italic;
 }
+
+div.literallayout p {
+  padding: 0em;
+  margin: 0em;
+}
+
+div.literallayout {
+  font-family: monospace;
+#  margin: 0.5em 10% 0.5em 1em;
+  margin: 0em;
+  color: navy;
+  border: 1px solid silver;
+  background: #f4f4f4;
+  padding: 0.5em;
+}

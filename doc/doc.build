@@ -467,11 +467,13 @@ All user/site specific configuration is stored in doc.build.user.
 
 			<copy file="${doc.target.work}/htmlhelp.chm" tofile="${file.target}"/>
 		</if>
+		<!--
 		<delete>
 			<fileset>
 				<include name="${doc.target.work}/*.*"/>
 			</fileset>
 		</delete>
+		-->
 	</target>
 
 <!-- ====================================================================== -->

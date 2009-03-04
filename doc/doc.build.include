@@ -30,15 +30,19 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- the documentation will be created by default                 -->
 
 	<property name="applications" 
-		value="TortoiseGit,TortoiseMerge" 
+		value="TortoiseGit" 
 		unless="${property::exists('applications')}"
 	/>
+	
+	<!-- pdf,chm,html,htmlsingle -->
 	<property name="docformats" 
-		value="pdf,chm,html,htmlsingle" 
+		value="chm" 
 		unless="${property::exists('docformats')}"
 	/>
+	
+	<!--,de,es,fa,fi,fr,hr,id,ja,nl,ru,sl,sk,sr_spc,sr_spl,zh_CN" -->
 	<property name="languages" 
-		value="en,de,es,fa,fi,fr,hr,id,ja,nl,ru,sl,sk,sr_spc,sr_spl,zh_CN" 
+		value="en"
 		unless="${property::exists('languages')}"
 	/>
 
@@ -84,7 +88,14 @@ This will only build the english HTML help file for TortoiseGit
 		/>
 		<property name="help.resource" value="${help.resource.TortoiseMerge}" />
 	</target>
-	
+	<target name="help.prepare.Git">
+	<echo message="help.prepare.Git"/>
+		<property name="help.resource.TortoiseGit"
+		  value="../src/TortoiseProc/resource.h"
+			unless="${property::exists('help.resource.TortoiseGit')}"
+		/>
+		<property name="help.resource" value="${help.resource.TortoiseGit}" />
+	</target>
 	<!-- Fileset to exclude from translation and .pot creation        -->
 	<!-- Duplicate these files in the "sourcefiles" fileset           -->
 <!--
