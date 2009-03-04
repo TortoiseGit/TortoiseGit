@@ -114,6 +114,7 @@ div.sect3,
 div.preface,
 div.appendix, 
 div.section, 
+div.article,
 div.glossary {
 	margin: 20px;
 }
