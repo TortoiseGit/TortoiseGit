@@ -1,3 +1,8 @@
+Version 0.4.1.0 version(internal)
+        *Fixed x64 build of TortoiseProc crashed due to received unexpected messages
+	*Fix tag to head when *force* check box checked
+	*Add Git document to help
+
 Version 0.4.0.0 version(internal)
 Features:
 	*Full Overlay Icon Support.
