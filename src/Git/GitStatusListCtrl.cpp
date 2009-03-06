@@ -1426,7 +1426,7 @@ int CGitStatusListCtrl::GetColumnIndex(int mask)
 	int i=0;
 	for(i=0;i<32;i++)
 		if(mask&0x1)
-			return i-1;
+			return i;
 		else
 			mask=mask>>1;
 	return -1;
