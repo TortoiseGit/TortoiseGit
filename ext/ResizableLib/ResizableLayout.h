@@ -164,6 +164,12 @@ private:
 		const CRect &rectParent, CRect &rectChild, UINT& uFlags) const;
 
 protected:
+
+	BOOL IsInAnchorList(HWND hwnd)
+	{
+		POSITION pos;
+		return m_mapLayout.Lookup(hwnd, pos);
+	}
 	//! @brief Override to initialize resize properties (clipping, refresh)
 	virtual void InitResizeProperties(LAYOUTINFO& layout) const;
 

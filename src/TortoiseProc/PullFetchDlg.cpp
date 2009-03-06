@@ -47,6 +47,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
+	this->AddOthersToAnchor();
+
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
 	m_Remote.EnableWindow(TRUE);
 	m_Other.EnableWindow(FALSE);

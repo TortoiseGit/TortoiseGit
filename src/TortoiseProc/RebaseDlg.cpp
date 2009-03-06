@@ -72,7 +72,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_COMBOXEX_BRANCH,TOP_LEFT);
 	AddAnchor(IDC_REBASE_STATIC_UPSTREAM,TOP_LEFT);
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
-	
+	this->AddOthersToAnchor();
 }
 
 BOOL CRebaseDlg::OnInitDialog()

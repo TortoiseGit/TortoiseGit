@@ -176,3 +176,16 @@ LRESULT CResizableDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	HandleNcCalcSize(TRUE, (LPNCCALCSIZE_PARAMS)lParam, lResult);
 	return lResult;
 }
+
+BOOL CResizableDialog::AddOthersToAnchor()
+{
+	CWnd * pWnd = GetWindow(GW_CHILD);
+	while(pWnd)
+	{
+		if(!IsInAnchorList(pWnd->m_hWnd) && pWnd->m_hWnd != m_wndGrip.m_hWnd )
+			this->AddAnchor(pWnd->m_hWnd,TOP_LEFT);
+		
+		pWnd=pWnd->GetNextWindow(GW_HWNDNEXT);
+	}
+	return TRUE;
+}

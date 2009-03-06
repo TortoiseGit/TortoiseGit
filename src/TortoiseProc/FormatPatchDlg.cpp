@@ -68,6 +68,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	AddAnchor(IDC_BUTTON_FROM,  TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_TO,	TOP_RIGHT);
+	this->AddOthersToAnchor();
 
 	m_cDir.SetPathHistory(TRUE);
 	m_cDir.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchURLS"), _T("path"));

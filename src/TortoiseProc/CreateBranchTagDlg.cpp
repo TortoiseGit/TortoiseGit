@@ -57,6 +57,8 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
+	this->AddOthersToAnchor();
+
 	if(m_Base.IsEmpty())
 	{
 		this->SetDefaultChoose(IDC_RADIO_HEAD);

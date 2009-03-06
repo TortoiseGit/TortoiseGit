@@ -40,6 +40,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
+	this->AddOthersToAnchor();
+
 	EnableSaveRestore(_T("ImportDlg"));
 	return TRUE;
 }

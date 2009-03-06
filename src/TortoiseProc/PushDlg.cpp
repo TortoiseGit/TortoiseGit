@@ -45,25 +45,40 @@ BOOL CPushDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDC_BRANCH_GROUP, TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_STATIC_REMOTE, TOP_RIGHT);
+	AddAnchor(IDC_STATIC_SOURCE, TOP_LEFT);
+
 	AddAnchor(IDC_BRANCH_REMOTE, TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_SOURCE, TOP_LEFT);
 
+	AddAnchor(IDC_URL_GROUP, TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_RD_REMOTE, TOP_LEFT);
+	AddAnchor(IDC_RD_URL, TOP_LEFT);
+
 	AddAnchor(IDC_REMOTE, TOP_LEFT, TOP_RIGHT);
+	
 	AddAnchor(IDC_URL, TOP_LEFT,TOP_RIGHT);
 
-	AddAnchor(IDC_URL_GROUP, TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_OPTION_GROUP, TOP_LEFT,TOP_RIGHT);
-	AddAnchor(IDC_BRANCH_GROUP, TOP_LEFT,TOP_RIGHT);
+	
+	AddAnchor(IDC_FORCE, TOP_LEFT);
+	AddAnchor(IDC_PACK, TOP_LEFT);
+	AddAnchor(IDC_TAGS, TOP_LEFT);
 
-	AddAnchor(IDC_STATIC_REMOTE, TOP_RIGHT);
 
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddOthersToAnchor();
+
 
 	EnableSaveRestore(_T("PushDlg"));
 
 	m_RemoteURL.SetURLHistory(TRUE);
-	m_RemoteURL.LoadHistory(_T("Software\\TortoiseGit\\History\\PushURLS"), _T("url"));
+	
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'),_T('_'));
+	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
 	m_RemoteURL.SetCurSel(0);
 
 	m_RemoteURL.EnableWindow(FALSE);
@@ -86,7 +101,7 @@ BOOL CPushDlg::OnInitDialog()
 	}
 	m_BranchSource.SetCurSel(current);
 	
-	m_BranchRemote.LoadHistory(_T("Software\\TortoiseGit\\History\\RemoteBranch"), _T("branch"));
+	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
 	m_BranchRemote.SetCurSel(0);
 
 	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());

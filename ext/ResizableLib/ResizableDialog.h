@@ -58,6 +58,7 @@ private:
 // Operations
 public:
 
+	int AddOthersToAnchor();
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CResizableDialog)

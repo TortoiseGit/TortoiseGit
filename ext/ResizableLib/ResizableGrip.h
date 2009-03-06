@@ -66,7 +66,7 @@ private:
 		CDC m_dcGrip, m_dcMask;
 		CBitmap m_bmGrip, m_bmMask;
 	};
-
+protected:
 	CSizeGrip m_wndGrip;		// grip control
 	int m_nShowCount;			// support for hiding the grip
 
