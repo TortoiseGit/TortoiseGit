@@ -35,6 +35,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
+	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
@@ -85,7 +86,7 @@ UINT CProgressDlg::ProgressThread()
 	PROCESS_INFORMATION pi;
 	HANDLE hRead;
 
-	m_Animate.Play(0,-1,-1);
+	this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
 
 	CString *pfilename;
 	if(m_LogFile.IsEmpty())
@@ -94,7 +95,6 @@ UINT CProgressDlg::ProgressThread()
 		pfilename=&m_LogFile;
 
 	g_Git.RunAsync(this->m_GitCmd,&pi, &hRead,pfilename);
-	this->DialogEnableWindow(IDOK,FALSE);
 
 	DWORD readnumber;
 	char buffer[2];
@@ -102,7 +102,7 @@ UINT CProgressDlg::ProgressThread()
 	while(ReadFile(hRead,buffer,1,&readnumber,NULL))
 	{
 		buffer[readnumber]=0;
-		ParserCmdOutput((TCHAR)buffer[0]);
+		this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_END,(TCHAR)buffer[0]);
 	}
 
 	CloseHandle(pi.hThread);
@@ -119,13 +119,30 @@ UINT CProgressDlg::ProgressThread()
 
 	CloseHandle(hRead);
 
-	m_Progress.SetPos(100);
-	this->DialogEnableWindow(IDOK,TRUE);
+	this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_END,0);
 
-	m_Animate.Stop();
 	return 0;
 }
 
+LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
+{
+	if(wParam == MSG_PROGRESSDLG_START)
+	{
+		m_Animate.Play(0,-1,-1);
+		this->DialogEnableWindow(IDOK,FALSE);
+	}
+	if(wParam == MSG_PROGRESSDLG_END)
+	{
+		m_Animate.Stop();
+		m_Progress.SetPos(100);
+		this->DialogEnableWindow(IDOK,TRUE);
+	}
+
+	if(lParam != 0)
+		ParserCmdOutput((TCHAR)lParam);
+
+	return 0;
+}
 int CProgressDlg::FindPercentage(CString &log)
 {
 	int s1=log.Find(_T('%'));

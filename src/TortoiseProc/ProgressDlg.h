@@ -2,7 +2,10 @@
 
 #include "StandAloneDlg.h"
 
+#define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 // CProgressDlg dialog
+#define MSG_PROGRESSDLG_START 0
+#define MSG_PROGRESSDLG_END   110
 
 class CProgressDlg : public CResizableStandAloneDialog
 {
@@ -35,6 +38,8 @@ protected:
 	void		ParserCmdOutput(TCHAR ch);
 	int			FindPercentage(CString &log);
 	void        RemoveLastLine(CString &str);
+
+	LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
 	CString		m_LogText;
 	DECLARE_MESSAGE_MAP()
