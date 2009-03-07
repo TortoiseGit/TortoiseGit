@@ -41,7 +41,9 @@
 				<MergeRef Id="MFC Policy" />
 				<MergeRef Id="MFCLOC" />
 				<MergeRef Id="MFCLOC Policy" />
-			</Feature>
+        <MergeRef Id="ATL" />
+        <MergeRef Id="ATL Policy" />
+      </Feature>
 			<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden" >
 				<MergeRef Id="Ovlays" />
 			</Feature>
