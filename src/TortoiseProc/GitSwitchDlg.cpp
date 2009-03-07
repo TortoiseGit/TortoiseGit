@@ -18,6 +18,8 @@ CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=NULL*/)
 	,CChooseVersion(this)
 {
 	m_bBranch=FALSE;
+	m_bTrack=FALSE;
+	m_bForce=FALSE;
 }
 
 CGitSwitchDlg::~CGitSwitchDlg()
@@ -55,9 +57,9 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	this->AddOthersToAnchor();
 	
 	CHOOSE_VERSION_ADDANCHOR;
+	this->AddOthersToAnchor();
 
 	EnableSaveRestore(_T("SwitchDlg"));
 

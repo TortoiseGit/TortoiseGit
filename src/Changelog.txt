@@ -1,4 +1,10 @@
-Version 0.4.1.0 version(internal)
+Version 0.4.2.0 version(external)
+	*Fix Shell menu disappear because ATL library have not installed. 
+	*Fix Commit Dialog and Log Dialog default column is wrong 
+	*Fix some dialog can't show after resize and close and open again
+	*Fix ProgressDlg Sometime thread is dead blocked.
+
+Version 0.4.1.0 version(external)
         *Fixed x64 build of TortoiseProc crashed due to received unexpected messages
 	*Fix tag to head when *force* check box checked
 	*Add Git document to help
