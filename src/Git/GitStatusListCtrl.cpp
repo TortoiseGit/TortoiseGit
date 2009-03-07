@@ -63,43 +63,7 @@ const UINT CGitStatusListCtrl::SVNSLNM_ADDFILE
 const UINT CGitStatusListCtrl::SVNSLNM_CHECKCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_CHECKCHANGED"));
 
-#define IDSVNLC_REVERT			 1
-#define IDSVNLC_COMPARE			 2
-#define IDSVNLC_OPEN			 3
-#define IDSVNLC_DELETE			 4
-#define IDSVNLC_IGNORE			 5
-#define IDSVNLC_GNUDIFF1		 6
-#define IDSVNLC_UPDATE           7
-#define IDSVNLC_LOG              8
-#define IDSVNLC_EDITCONFLICT     9
-#define IDSVNLC_IGNOREMASK	    10
-#define IDSVNLC_ADD			    11
-#define IDSVNLC_RESOLVECONFLICT 12
-#define IDSVNLC_LOCK			13
-#define IDSVNLC_LOCKFORCE		14
-#define IDSVNLC_UNLOCK			15
-#define IDSVNLC_UNLOCKFORCE		16
-#define IDSVNLC_OPENWITH		17
-#define IDSVNLC_EXPLORE			18
-#define IDSVNLC_RESOLVETHEIRS	19
-#define IDSVNLC_RESOLVEMINE		20
-#define IDSVNLC_REMOVE			21
-#define IDSVNLC_COMMIT			22
-#define IDSVNLC_PROPERTIES		23
-#define IDSVNLC_COPY			24
-#define IDSVNLC_COPYEXT			25
-#define IDSVNLC_REPAIRMOVE		26
-#define IDSVNLC_REMOVEFROMCS	27
-#define IDSVNLC_CREATECS		28
-#define IDSVNLC_CREATEIGNORECS	29
-#define IDSVNLC_CHECKGROUP		30
-#define IDSVNLC_UNCHECKGROUP	31
-#define IDSVNLC_ADD_RECURSIVE   32
-#define IDSVNLC_COMPAREWC		33
-#define IDSVNLC_BLAME			34
-// the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where 
-// the submenu items get command ID's sequent to this number
-#define IDSVNLC_MOVETOCS		35
+
 
 
 BEGIN_MESSAGE_MAP(CGitStatusListCtrl, CListCtrl)
@@ -235,7 +199,7 @@ int CGitStatusListCtrl::GetIndex(const CTGitPath& path)
 }
 #endif 
 
-void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContainer, DWORD dwContextMenus /* = GitSLC_POPALL */, bool bHasCheckboxes /* = true */)
+void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus /* = GitSLC_POPALL */, bool bHasCheckboxes /* = true */)
 {
 	Locker lock(m_critSec);
 
@@ -2438,6 +2402,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDSVNLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
 				}
+
+				if ((m_dwContextMenus & GetContextMenuBit(IDSVNLC_REVERTTOREV)) && ( !this->m_CurrentVersion.IsEmpty() )
+					&& this->m_CurrentVersion != GIT_REV_ZERO)
+				{
+					popup.AppendMenuIcon(IDSVNLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
+				}
 			}
 
 			if ((GetSelectedCount() == 1)&&(!(wcStatus & CTGitPath::LOGACTIONS_UNVER))
@@ -2453,17 +2423,26 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
-//			{
+			if ( (GetSelectedCount() == 1) )
+			{
+				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) ) 
+				{
+					popup.AppendMenuIcon(IDSVNLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
+				}
+
 				if (m_dwContextMenus & SVNSLC_POPOPEN)
 				{
+					popup.AppendMenuIcon(IDSVNLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 					popup.AppendMenuIcon(IDSVNLC_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 				}
+				
 				if (m_dwContextMenus & SVNSLC_POPEXPLORE)
 				{
 					popup.AppendMenuIcon(IDSVNLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 				}
-//			}
+	
+			}
 			if (GetSelectedCount() > 0)
 			{
 //				if (((wcStatus == git_wc_status_unversioned)||(wcStatus == git_wc_status_ignored))&&(m_dwContextMenus & SVNSLC_POPDELETE))

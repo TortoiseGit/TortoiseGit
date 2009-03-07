@@ -124,7 +124,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	
 	m_tooltips.Create(this);
 
-	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |IDS_STATUSLIST_COLADD|IDS_STATUSLIST_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
+	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);

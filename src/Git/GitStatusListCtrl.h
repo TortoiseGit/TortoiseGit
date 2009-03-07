@@ -102,28 +102,28 @@ SVNSLC_SHOWINCOMPLETE|SVNSLC_SHOWEXTERNAL|SVNSLC_SHOWINEXTERNALS)
 
 #define SVNSLC_SHOWALL (SVNSLC_SHOWVERSIONED|SVNSLC_SHOWUNVERSIONED)
 
-#define SVNSLC_POPALL					0xFFFFFFFF
-#define SVNSLC_POPCOMPAREWITHBASE		0x00000001
-#define SVNSLC_POPCOMPARE				0x00000002
-#define SVNSLC_POPGNUDIFF				0x00000004
-#define SVNSLC_POPREVERT				0x00000008
-#define SVNSLC_POPUPDATE				0x00000010
-#define SVNSLC_POPSHOWLOG				0x00000020
-#define SVNSLC_POPOPEN					0x00000040
-#define SVNSLC_POPDELETE				0x00000080
-#define SVNSLC_POPADD					0x00000100
-#define SVNSLC_POPIGNORE				0x00000200
-#define SVNSLC_POPCONFLICT				0x00000400
-#define SVNSLC_POPRESOLVE				0x00000800
-#define SVNSLC_POPLOCK					0x00001000
-#define SVNSLC_POPUNLOCK				0x00002000
-#define SVNSLC_POPUNLOCKFORCE			0x00004000
-#define SVNSLC_POPEXPLORE				0x00008000
-#define SVNSLC_POPCOMMIT				0x00010000
-#define SVNSLC_POPPROPERTIES			0x00020000
-#define SVNSLC_POPREPAIRMOVE			0x00040000
-#define SVNSLC_POPCHANGELISTS			0x00080000
-#define SVNSLC_POPBLAME					0x00100000
+#define SVNSLC_POPALL					0xFFFFFFFFFFFFFFFF
+#define SVNSLC_POPCOMPAREWITHBASE		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARE) 
+#define SVNSLC_POPCOMPARE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPAREWC) 
+#define SVNSLC_POPGNUDIFF				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF1) 
+#define SVNSLC_POPREVERT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_REVERT) 
+#define SVNSLC_POPUPDATE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_UPDATE)
+#define SVNSLC_POPSHOWLOG				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_LOG)
+#define SVNSLC_POPOPEN					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_OPEN)
+#define SVNSLC_POPDELETE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_DELETE)
+#define SVNSLC_POPADD					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_ADD)
+#define SVNSLC_POPIGNORE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_IGNORE)
+#define SVNSLC_POPCONFLICT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_EDITCONFLICT)
+#define SVNSLC_POPRESOLVE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_RESOLVECONFLICT)
+#define SVNSLC_POPLOCK					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_LOCK)
+#define SVNSLC_POPUNLOCK				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_UNLOCK)
+#define SVNSLC_POPUNLOCKFORCE			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_UNLOCKFORCE)
+#define SVNSLC_POPEXPLORE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_EXPLORE)
+#define SVNSLC_POPCOMMIT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMMIT)
+#define SVNSLC_POPPROPERTIES			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_PROPERTIES)
+#define SVNSLC_POPREPAIRMOVE			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_REPAIRMOVE)
+#define SVNSLC_POPCHANGELISTS			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_CHECKGROUP)
+#define SVNSLC_POPBLAME					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_BLAME)
 
 #define SVNSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 
@@ -159,7 +159,52 @@ class CGitStatusListCtrl :
 	public CListCtrl
 {
 public:
+	enum
+	{
+		IDSVNLC_REVERT = 1,
+		IDSVNLC_COMPARE,
+		IDSVNLC_OPEN,	
+		IDSVNLC_DELETE,
+		IDSVNLC_IGNORE,
+		IDSVNLC_GNUDIFF1		 ,
+		IDSVNLC_UPDATE          ,
+		IDSVNLC_LOG              ,
+		IDSVNLC_EDITCONFLICT     ,
+		IDSVNLC_IGNOREMASK	    ,
+		IDSVNLC_ADD			    ,
+		IDSVNLC_RESOLVECONFLICT ,
+		IDSVNLC_LOCK			,
+		IDSVNLC_LOCKFORCE		,
+		IDSVNLC_UNLOCK			,
+		IDSVNLC_UNLOCKFORCE		,
+		IDSVNLC_OPENWITH		,
+		IDSVNLC_EXPLORE			,
+		IDSVNLC_RESOLVETHEIRS	,
+		IDSVNLC_RESOLVEMINE		,
+		IDSVNLC_REMOVE			,
+		IDSVNLC_COMMIT			,
+		IDSVNLC_PROPERTIES		,
+		IDSVNLC_COPY			,
+		IDSVNLC_COPYEXT			,
+		IDSVNLC_REPAIRMOVE		,
+		IDSVNLC_REMOVEFROMCS	,
+		IDSVNLC_CREATECS		,
+		IDSVNLC_CREATEIGNORECS	,
+		IDSVNLC_CHECKGROUP		,
+		IDSVNLC_UNCHECKGROUP	,
+		IDSVNLC_ADD_RECURSIVE   ,
+		IDSVNLC_COMPAREWC		,
+		IDSVNLC_BLAME			,
+		IDSVNLC_SAVEAS			,
+		IDSVNLC_REVERTTOREV		,
+		IDSVNLC_VIEWREV			,
+		IDSVNLC_FINDENTRY       ,
+// the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where 
+// the submenu items get command ID's sequent to this number
+		IDSVNLC_MOVETOCS		,
+	};
 	int GetColumnIndex(int colmask);
+	static inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	/**
 	 * Sent to the parent window (using ::SendMessage) after a context menu
 	 * command has finished if the item count has changed.
@@ -487,7 +532,7 @@ public:
 	 *                       Use the GitSLC_POPxxx defines.
 	 * \param bHasCheckboxes TRUE if the control should show check boxes on the left of each file entry.
 	 */
-	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, DWORD dwContextMenus = (SVNSLC_POPALL ^ SVNSLC_POPCOMMIT), bool bHasCheckboxes = true);
+	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = (SVNSLC_POPALL ^ SVNSLC_POPCOMMIT), bool bHasCheckboxes = true);
 	/**
 	 * Sets a background image for the list control.
 	 * The image is shown in the right bottom corner.
@@ -866,7 +911,7 @@ private:
 	bool						m_bShowFolders;
 	bool						m_bShowIgnores;
 	bool						m_bUpdate;
-	DWORD						m_dwContextMenus;
+	unsigned __int64			m_dwContextMenus;
 	BOOL						m_bBlock;
 	BOOL						m_bBlockUI;
 	bool						m_bBusy;

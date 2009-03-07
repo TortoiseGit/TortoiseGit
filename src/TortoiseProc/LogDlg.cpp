@@ -766,24 +766,27 @@ GitRev g_rev;
 
 void CLogDlg::CopyChangedSelectionToClipBoard()
 {
-#if 0
+
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	if (pos == NULL)
 		return;	// nothing is selected, get out of here
 
 	CString sPaths;
 
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
-	if (pos)
+//	CGitRev* pLogEntry = reinterpret_cast<CGitRev* >(m_LogList.m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+//	if (pos)
 	{
 		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
 		{
 			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			sPaths += m_currentChangedPathList[nItem].GetGitPathString();
+			CTGitPath *path = (CTGitPath*)m_ChangedFileListCtrl.GetItemData(nItem);
+			if(path)
+				sPaths += path->GetGitPathString();
 			sPaths += _T("\r\n");
 		}
 	}
+#if 0
 	else
 	{
 		// only one revision is selected in the log dialog top pane
@@ -816,9 +819,10 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 			}
 		}
 	}
+#endif
 	sPaths.Trim();
 	CStringUtils::WriteAsciiStringToClipboard(sPaths, GetSafeHwnd());
-#endif
+
 }
 
 BOOL CLogDlg::IsDiffPossible(LogChangedPath * /*changedpath*/, git_revnum_t rev)
@@ -1790,261 +1794,6 @@ void CLogDlg::OnBnClickedStatbutton()
 	SortByColumn(m_nSortColumn, m_bAscending);
 	OnTimer(LOGFILTER_TIMER);
 
-}
-
-#if 0
-void CLogDlg::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
-{
-
-	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
-	// Take the default processing unless we set this to something else below.
-	*pResult = CDRF_DODEFAULT;
-
-	if (m_bNoDispUpdates)
-		return;
-
-	switch (pLVCD->nmcd.dwDrawStage)
-	{
-	case CDDS_PREPAINT:
-		{
-			*pResult = CDRF_NOTIFYITEMDRAW;
-			return;
-		}
-		break;
-	case CDDS_ITEMPREPAINT:
-		{
-			// This is the prepaint stage for an item. Here's where we set the
-			// item's text color. 
-			
-			// Tell Windows to send draw notifications for each subitem.
-			*pResult = CDRF_NOTIFYSUBITEMDRAW;
-
-			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
-
-			if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
-			{
-				GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
-				if (data)
-				{
-#if 0
-					if (data->bCopiedSelf)
-					{
-						// only change the background color if the item is not 'hot' (on vista with themes enabled)
-						if (!theme.IsAppThemed() || !m_bVista || ((pLVCD->nmcd.uItemState & CDIS_HOT)==0))
-							pLVCD->clrTextBk = GetSysColor(COLOR_MENU);
-					}
-
-					if (data->bCopies)
-						crText = m_Colors.GetColor(CColors::Modified);
-#endif
-//					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
-//						crText = GetSysColor(COLOR_GRAYTEXT);
-//					if (data->Rev == m_wcRev)
-//					{
-//						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
-						// We changed the font, so we're returning CDRF_NEWFONT. This
-						// tells the control to recalculate the extent of the text.
-//						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
-//					}
-				}
-			}
-			if (m_arShownList.GetCount() == (INT_PTR)pLVCD->nmcd.dwItemSpec)
-			{
-				if (m_bStrictStopped)
-					crText = GetSysColor(COLOR_GRAYTEXT);
-			}
-			// Store the color back in the NMLVCUSTOMDRAW struct.
-			pLVCD->clrText = crText;
-			return;
-		}
-		break;
-	case CDDS_ITEMPREPAINT|CDDS_ITEM|CDDS_SUBITEM:
-		{
-			if ((m_bStrictStopped)&&(m_arShownList.GetCount() == (INT_PTR)pLVCD->nmcd.dwItemSpec))
-			{
-				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
-			}
-			if (pLVCD->iSubItem == 1)
-			{
-				*pResult = CDRF_DODEFAULT;
-
-				if (m_arShownList.GetCount() <= (INT_PTR)pLVCD->nmcd.dwItemSpec)
-					return;
-
-				int		nIcons = 0;
-				int		iconwidth = ::GetSystemMetrics(SM_CXSMICON);
-				int		iconheight = ::GetSystemMetrics(SM_CYSMICON);
-
-				GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec));
-
-				// Get the selected state of the
-				// item being drawn.
-				LVITEM   rItem;
-				SecureZeroMemory(&rItem, sizeof(LVITEM));
-				rItem.mask  = LVIF_STATE;
-				rItem.iItem = pLVCD->nmcd.dwItemSpec;
-				rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
-				m_LogList.GetItem(&rItem);
-
-				CRect rect;
-				m_LogList.GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
-
-				// Fill the background
-				if (theme.IsAppThemed() && m_bVista)
-				{
-					theme.Open(m_hWnd, L"Explorer");
-					int state = LISS_NORMAL;
-					if (rItem.state & LVIS_SELECTED)
-					{
-						if (::GetFocus() == m_LogList.m_hWnd)
-							state |= LISS_SELECTED;
-						else
-							state |= LISS_SELECTEDNOTFOCUS;
-					}
-					else
-					{
-#if 0
-						if (pLogEntry->bCopiedSelf)
-						{
-							// unfortunately, the pLVCD->nmcd.uItemState does not contain valid
-							// information at this drawing stage. But we can check the whether the
-							// previous stage changed the background color of the item
-							if (pLVCD->clrTextBk == GetSysColor(COLOR_MENU))
-							{
-								HBRUSH brush;
-								brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-								if (brush)
-								{
-									::FillRect(pLVCD->nmcd.hdc, &rect, brush);
-									::DeleteObject(brush);
-								}
-							}
-						}
-#endif
-					}
-
-					if (theme.IsBackgroundPartiallyTransparent(LVP_LISTDETAIL, state))
-						theme.DrawParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
-
-					theme.DrawBackground(pLVCD->nmcd.hdc, LVP_LISTDETAIL, state, &rect, NULL);
-				}
-				else
-				{
-					HBRUSH brush;
-					if (rItem.state & LVIS_SELECTED)
-					{
-						if (::GetFocus() == m_LogList.m_hWnd)
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_HIGHLIGHT));
-						else
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
-					}
-					else
-					{
-						//if (pLogEntry->bCopiedSelf)
-						//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-						//else
-							brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
-					}
-					if (brush == NULL)
-						return;
-
-					::FillRect(pLVCD->nmcd.hdc, &rect, brush);
-					::DeleteObject(brush);
-				}
-
-				// Draw the icon(s) into the compatible DC
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
-
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_ADDED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
-
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
-
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
-				*pResult = CDRF_SKIPDEFAULT;
-				return;
-			}
-		}
-		break;
-	}
-	*pResult = CDRF_DODEFAULT;
-
-}
-#endif
-
-void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR *pNMHDR, LRESULT *pResult)
-{
-
-	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
-	// Take the default processing unless we set this to something else below.
-	*pResult = CDRF_DODEFAULT;
-
-//	if (m_bNoDispUpdates)
-//		return;
-
-	// First thing - check the draw stage. If it's the control's prepaint
-	// stage, then tell Windows we want messages for every item.
-
-	if ( CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage )
-	{
-		*pResult = CDRF_NOTIFYITEMDRAW;
-	}
-	else if ( CDDS_ITEMPREPAINT == pLVCD->nmcd.dwDrawStage )
-	{
-		// This is the prepaint stage for an item. Here's where we set the
-		// item's text color. Our return value will tell Windows to draw the
-		// item itself, but it will use the new color we set here.
-
-		// Tell Windows to paint the control itself.
-		*pResult = CDRF_DODEFAULT;
-
-		COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
-		bool bGrayed = false;
-#if 0
-		if ((m_cHidePaths.GetState() & 0x0003)==BST_INDETERMINATE)
-		{
-			if ((m_currentChangedArray)&&((m_currentChangedArray->GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)))
-			{
-				//if ((*m_currentChangedArray)[(pLVCD->nmcd.dwItemSpec)]sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
-				{
-					crText = GetSysColor(COLOR_GRAYTEXT);
-					bGrayed = true;
-				}
-			}
-			else if (m_currentChangedPathList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
-			{
-				//if (m_currentChangedPathList[pLVCD->nmcd.dwItemSpec].GetGitPathString().Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)!=0)
-				{
-					crText = GetSysColor(COLOR_GRAYTEXT);
-					bGrayed = true;
-				}
-			}
-		}
-
-#endif
-		if ((!bGrayed)&&(m_currentChangedArray)&&(m_currentChangedArray->GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec))
-		{
-			DWORD action = ((*m_currentChangedArray)[pLVCD->nmcd.dwItemSpec]).m_Action;
-			if (action == CTGitPath::LOGACTIONS_MODIFIED)
-				crText = m_Colors.GetColor(CColors::Modified);
-			if (action == CTGitPath::LOGACTIONS_REPLACED)
-				crText = m_Colors.GetColor(CColors::Deleted);
-			if (action == CTGitPath::LOGACTIONS_ADDED)
-				crText = m_Colors.GetColor(CColors::Added);
-			if (action == CTGitPath::LOGACTIONS_DELETED)
-				crText = m_Colors.GetColor(CColors::Deleted);
-		}
-
-		// Store the color back in the NMLVCUSTOMDRAW struct.
-		pLVCD->clrText = crText;
-	}
 }
 
 void CLogDlg::DoSizeV1(int delta)
