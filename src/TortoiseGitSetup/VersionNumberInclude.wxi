@@ -2,6 +2,6 @@
 <Include Id="VersionNumberInclude">
 	<?define MajorVersion="0" ?>
 	<?define MinorVersion="4" ?>
-	<?define MicroVersion="1" ?>
+	<?define MicroVersion="2" ?>
 	<?define BuildVersion="0" ?>
 </Include>
