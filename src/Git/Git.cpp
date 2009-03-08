@@ -1023,13 +1023,13 @@ int CGit::Revert(CTGitPath &path,bool keep)
 		if(g_Git.Run(cmd,&out,CP_OEMCP))
 			return -1;
 		
-		cmd.Format(_T("git.exe checkout -f -- \"%s\""),path.GetGitOldPathString());
+		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_OEMCP))
 			return -1;
 	}
 	else
 	{
-		cmd.Format(_T("git.exe checkout -f -- \"%s\""),path.GetGitPathString());
+		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_OEMCP))
 			return -1;
 	}

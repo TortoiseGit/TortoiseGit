@@ -3153,7 +3153,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CString str;
 					str.Format(IDS_PROC_WARNREVERT,GetSelectedCount());
 
-					if (!bConfirm || CMessageBox::Show(this->m_hWnd, str, _T("TortoiseSVN"), MB_YESNO | MB_ICONQUESTION)==IDYES)
+					if (!bConfirm || CMessageBox::Show(this->m_hWnd, str, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION)==IDYES)
 					{
 						CTGitPathList targetList;
 						FillListOfSelectedItemPaths(targetList);
