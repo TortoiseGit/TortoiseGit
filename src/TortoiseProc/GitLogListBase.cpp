@@ -1029,16 +1029,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
-			popup.AppendMenuIcon(ID_REBASE_PICK,   _T("Pick"),   IDI_PICK);
+			popup.AppendMenuIcon(ID_REBASE_PICK,  IDS_REBASE_SKIP,   IDI_PICK);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
-			popup.AppendMenuIcon(ID_REBASE_SQUASH, _T("Squash"), IDI_SQUASH);
+			popup.AppendMenuIcon(ID_REBASE_SQUASH,IDS_REBASE_SQUASH, IDI_SQUASH);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_EDIT))
-			popup.AppendMenuIcon(ID_REBASE_EDIT,   _T("Edit"),   IDI_EDIT);
+			popup.AppendMenuIcon(ID_REBASE_EDIT,  IDS_REBASE_EDIT,   IDI_EDIT);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SKIP))
-			popup.AppendMenuIcon(ID_REBASE_SKIP,   _T("SKIP"),   IDI_SKIP);
+			popup.AppendMenuIcon(ID_REBASE_SKIP,  IDS_REBASE_SKIP,   IDI_SKIP);
 		
 		if(m_ContextMenuMask&(GetContextMenuBit(ID_REBASE_SKIP)|GetContextMenuBit(ID_REBASE_EDIT)|
 			      GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
@@ -1089,29 +1089,31 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			//if (m_hasWC)
 			//	popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREV, IDI_MERGE);
 			
-			CString str;
-			str.Format(_T("Reset %s to this"),g_Git.GetCurrentBranch());
+			CString str,format;
+			format.LoadString(IDS_RESET_TO_THIS_FORMAT);
+			str.Format(format,g_Git.GetCurrentBranch());
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
 				popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
-				popup.AppendMenuIcon(ID_SWITCHTOREV, _T("Switch/Checkout to this") , IDI_SWITCH);
+				popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
-				popup.AppendMenuIcon(ID_CREATE_BRANCH, _T("Create Branch at this version") , IDI_COPY);
+				popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS , IDI_COPY);
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
-				popup.AppendMenuIcon(ID_CREATE_TAG, _T("Create Tag at this version"), IDI_COPY);
+				popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_COPY);
 			
-			str.Format(_T("*Rebase %s to this"),g_Git.GetCurrentBranch());
+			format.LoadString(IDS_REBASE_THIS_FORMAT);
+			str.Format(format,g_Git.GetCurrentBranch());
 
 			if(pSelLogEntry->m_CommitHash != m_HeadHash)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
 					popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);			
 
 			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
-				popup.AppendMenuIcon(ID_EXPORT, _T("Export this version"), IDI_EXPORT);	
+				popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);	
 			
 
 			popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -1162,12 +1164,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						hash=hash.Left(40);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 						if(pLastEntry->m_CommitHash == hash)
-							popup.AppendMenuIcon(ID_COMBINE_COMMIT,_T("*Combine to one commit"),IDI_COMBINE);
+							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
 					}
 				}
 			}
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
-				popup.AppendMenuIcon(ID_CHERRY_PICK, _T("Cherry Pick this version"), IDI_EXPORT);
+				popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 	
 		}
@@ -1190,7 +1192,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
-				popup.AppendMenuIcon(ID_COPYHASH, _T("Copy Commit Hash"));
+				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH);
 		}
 		if (GetSelectedCount() != 0)
 		{
