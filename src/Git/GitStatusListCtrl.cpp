@@ -2302,6 +2302,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
 					popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
 				}
+
+				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPAREWC))
+				{
+					popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+				}
 				//Select one items
 				if (GetSelectedCount() == 1)
 				{

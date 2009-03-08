@@ -1563,6 +1563,18 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Settings\SettingsProgsDiff.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingsProgsMerge.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingsProgsUniDiff.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SetProxyPage.cpp"
 					>
 				</File>

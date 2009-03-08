@@ -70,9 +70,9 @@ private:
 	CSetProxyPage *			m_pProxyPage;
 	CSetOverlayPage *		m_pOverlayPage;
 	CSetOverlayIcons *		m_pOverlaysPage;
-//	CSettingsProgsDiff*		m_pProgsDiffPage;
-//	CSettingsProgsMerge *	m_pProgsMergePage;
-//	CSettingsProgsUniDiff * m_pProgsUniDiffPage;
+	CSettingsProgsDiff*		m_pProgsDiffPage;
+	CSettingsProgsMerge *	m_pProgsMergePage;
+	CSettingsProgsUniDiff * m_pProgsUniDiffPage;
 	CSetLookAndFeelPage *	m_pLookAndFeelPage;
 	CSetDialogs *			m_pDialogsPage;
     CSettingsRevisionGraph* m_pRevisionGraphPage;
