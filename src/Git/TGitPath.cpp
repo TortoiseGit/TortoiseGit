@@ -550,7 +550,7 @@ CString CTGitPath::GetBaseFilename() const
 	CString filename=GetFilename();
 	dot = filename.ReverseFind(_T('.'));
 	if(dot>0)
-		return filename.Left(dot-1);
+		return filename.Left(dot);
 	else
 		return filename;
 }

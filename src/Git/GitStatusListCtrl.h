@@ -873,6 +873,9 @@ private:
 	afx_msg void OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDestroy();
 
+
+	void FileSaveAs(CTGitPath *path);
+
 private:
 	bool *						m_pbCanceled;
 	bool					    m_bAscending;		///< sort direction

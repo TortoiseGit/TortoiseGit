@@ -3203,13 +3203,18 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-#if 0
+
 			case IDSVNLC_COPY:
 				CopySelectedEntriesToClipboard(0);
 				break;
 			case IDSVNLC_COPYEXT:
 				CopySelectedEntriesToClipboard((DWORD)-1);
 				break;
+
+			case IDSVNLC_SAVEAS:
+				FileSaveAs(filepath);
+				break;
+#if 0
 			case IDSVNLC_PROPERTIES:
 				{
 					CTSVNPathList targetList;
@@ -3246,17 +3251,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 		
-			case IDSVNLC_COMPARE:
-				{
-					POSITION pos = GetFirstSelectedItemPosition();
-					while ( pos )
-					{
-						int index = GetNextSelectedItem(pos);
-						StartDiff(index);
-					}
-				}
-				break;
-			case IDSVNLC_COMPAREWC:
+		case IDSVNLC_COMPAREWC:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
@@ -3317,29 +3312,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-			case IDSVNLC_OPEN:
-				{
-					int ret = (int)ShellExecute(this->m_hWnd, NULL, filepath.GetWinPath(), NULL, NULL, SW_SHOW);
-					if (ret <= HINSTANCE_ERROR)
-					{
-						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-						cmd += filepath.GetWinPathString();
-						CAppUtils::LaunchApplication(cmd, NULL, false);
-					}
-				}
-				break;
-			case IDSVNLC_OPENWITH:
-				{
-					CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-					cmd += filepath.GetWinPathString() + _T(" ");
-					CAppUtils::LaunchApplication(cmd, NULL, false);
-				}
-				break;
-			case IDSVNLC_EXPLORE:
-				{
-					ShellExecute(this->m_hWnd, _T("explore"), filepath.GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
-				}
-				break;
+	
 			case IDSVNLC_REMOVE:
 				{
 					SVN git;
@@ -3480,157 +3453,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-			case IDSVNLC_IGNOREMASK:
-				{
-					CString name = _T("*")+filepath.GetFileExtension();
-					CTSVNPathList ignorelist;
-					FillListOfSelectedItemPaths(ignorelist, true);
-					std::set<CTSVNPath> parentlist;
-					for (int i=0; i<ignorelist.GetCount(); ++i)
-					{
-						parentlist.insert(ignorelist[i].GetContainingDirectory());
-					}
-					std::set<CTSVNPath>::iterator it;
-					std::vector<CString> toremove;
-					SetRedraw(FALSE);
-					for (it = parentlist.begin(); it != parentlist.end(); ++it)
-					{
-						CTSVNPath parentFolder = (*it).GetDirectory();
-						SVNProperties props(parentFolder, SVNRev::REV_WC, false);
-						CStringA value;
-						for (int i=0; i<props.GetCount(); i++)
-						{
-							CString propname(props.GetItemName(i).c_str());
-							if (propname.CompareNoCase(_T("git:ignore"))==0)
-							{
-								stdstring stemp;
-								// treat values as normal text even if they're not
-								value = (char *)props.GetItemValue(i).c_str();
-							}
-						}
-						if (value.IsEmpty())
-							value = name;
-						else
-						{
-							value = value.Trim("\n\r");
-							value += "\n";
-							value += name;
-							value.Remove('\r');
-						}
-						if (!props.Add(_T("git:ignore"), (LPCSTR)value))
-						{
-							CString temp;
-							temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
-							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
-						}
-						else
-						{
-							CTSVNPath basepath;
-							int nListboxEntries = GetItemCount();
-							for (int i=0; i<nListboxEntries; ++i)
-							{
-								FileEntry * entry = GetListEntry(i);
-								ASSERT(entry != NULL);
-								if (entry == NULL)
-									continue;
-								if (basepath.IsEmpty())
-									basepath = entry->basepath;
-								// since we ignored files with a mask (e.g. *.exe)
-								// we have to find find all files in the same
-								// folder (IsAncestorOf() returns TRUE for _all_ children,
-								// not just the immediate ones) which match the
-								// mask and remove them from the list too.
-								if ((entry->status == git_wc_status_unversioned)&&(parentFolder.IsAncestorOf(entry->path)))
-								{
-									CString f = entry->path.GetSVNPathString();
-									if (f.Mid(parentFolder.GetSVNPathString().GetLength()).Find('/')<=0)
-									{
-										if (CStringUtils::WildCardMatch(name, f))
-										{
-											if (GetCheck(i))
-												m_nSelected--;
-											m_nTotal--;
-											toremove.push_back(f);
-										}
-									}
-								}
-							}
-							if (!m_bIgnoreRemoveOnly)
-							{
-								SVNStatus status;
-								git_wc_status2_t * s;
-								CTSVNPath gitPath;
-								s = status.GetFirstFileStatus(parentFolder, gitPath, false, git_depth_empty);
-								if (s!=0)
-								{
-									// first check if the folder isn't already present in the list
-									bool bFound = false;
-									for (int i=0; i<nListboxEntries; ++i)
-									{
-										FileEntry * entry = GetListEntry(i);
-										if (entry->path.IsEquivalentTo(gitPath))
-										{
-											bFound = true;
-											break;
-										}
-									}
-									if (!bFound)
-									{
-										FileEntry * entry = new FileEntry();
-										entry->path = gitPath;
-										entry->basepath = basepath;
-										entry->status = SVNStatus::GetMoreImportant(s->text_status, s->prop_status);
-										entry->textstatus = s->text_status;
-										entry->propstatus = s->prop_status;
-										entry->remotestatus = SVNStatus::GetMoreImportant(s->repos_text_status, s->repos_prop_status);
-										entry->remotetextstatus = s->repos_text_status;
-										entry->remotepropstatus = s->repos_prop_status;
-										entry->inunversionedfolder = false;
-										entry->checked = true;
-										entry->inexternal = false;
-										entry->direct = false;
-										entry->isfolder = true;
-										entry->last_commit_date = 0;
-										entry->last_commit_rev = 0;
-										entry->remoterev = 0;
-										if (s->entry)
-										{
-											if (s->entry->url)
-											{
-												entry->url = CUnicodeUtils::GetUnicode(CPathUtils::PathUnescape(s->entry->url));
-											}
-										}
-										if (s->entry && s->entry->present_props)
-										{
-											entry->present_props = s->entry->present_props;
-										}
-										m_arStatusArray.push_back(entry);
-										m_arListArray.push_back(m_arStatusArray.size()-1);
-										AddEntry(entry, langID, GetItemCount());
-									}
-								}
-							}
-						}
-					}
-					for (std::vector<CString>::iterator it = toremove.begin(); it != toremove.end(); ++it)
-					{
-						int nListboxEntries = GetItemCount();
-						for (int i=0; i<nListboxEntries; ++i)
-						{
-							if (GetListEntry(i)->path.GetSVNPathString().Compare(*it)==0)
-							{
-								RemoveListEntry(i);
-								break;
-							}
-						}
-					}
-					SetRedraw(TRUE);
-				}
-				break;
-			case IDSVNLC_EDITCONFLICT:
-				SVNDiff::StartConflictEditor(filepath);
-				break;
-			
+
+
 			case IDSVNLC_ADD:
 				{
 					SVN git;
@@ -3696,55 +3520,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-			case IDSVNLC_LOCK:
-				{
-					CTSVNPathList itemsToLock;
-					FillListOfSelectedItemPaths(itemsToLock);
-					CInputDlg inpDlg;
-					inpDlg.m_sTitle.LoadString(IDS_MENU_LOCK);
-					CStringUtils::RemoveAccelerators(inpDlg.m_sTitle);
-					inpDlg.m_sHintText.LoadString(IDS_LOCK_MESSAGEHINT);
-					inpDlg.m_sCheckText.LoadString(IDS_LOCK_STEALCHECK);
-					ProjectProperties props;
-					props.ReadPropsPathList(itemsToLock);
-					props.nMinLogSize = 0;		// the lock message is optional, so no minimum!
-					inpDlg.m_pProjectProperties = &props;
-					if (inpDlg.DoModal()==IDOK)
-					{
-						CSVNProgressDlg progDlg;
-						progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Lock);
-						progDlg.SetOptions(inpDlg.m_iCheck ? ProgOptLockForce : ProgOptNone);
-						progDlg.SetPathList(itemsToLock);
-						progDlg.SetCommitMessage(inpDlg.m_sInputText);
-						progDlg.DoModal();
-						// refresh!
-						CWnd* pParent = GetParent();
-						if (NULL != pParent && NULL != pParent->GetSafeHwnd())
-						{
-							pParent->SendMessage(SVNSLNM_NEEDSREFRESH);
-						}
-					}
-				}
-				break;
-			case IDSVNLC_UNLOCKFORCE:
-				bForce = true;
-			case IDSVNLC_UNLOCK:
-				{
-					CTSVNPathList itemsToUnlock;
-					FillListOfSelectedItemPaths(itemsToUnlock);
-					CSVNProgressDlg progDlg;
-					progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Unlock);
-					progDlg.SetOptions(bForce ? ProgOptLockForce : ProgOptNone);
-					progDlg.SetPathList(itemsToUnlock);
-					progDlg.DoModal();
-					// refresh!
-					CWnd* pParent = GetParent();
-					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
-					{
-						pParent->SendMessage(SVNSLNM_NEEDSREFRESH);
-					}
-				}
-				break;
+
 			case IDSVNLC_REPAIRMOVE:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -5721,3 +5497,43 @@ HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeySta
 }f
 
 #endif
+
+void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
+{
+	CString filename;
+	filename.Format(_T("%s-%s%s"),path->GetBaseFilename(),this->m_CurrentVersion.Left(6),path->GetFileExtension());
+	CFileDialog dlg(FALSE,NULL,
+					filename,		
+					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+					NULL);
+	CString currentpath;
+	currentpath=g_Git.m_CurrentDir+_T("\\");
+	currentpath+=path->GetWinPathString();
+
+	dlg.m_ofn.lpstrInitialDir=currentpath.GetBuffer();
+
+	CString cmd,out;		
+	if(dlg.DoModal()==IDOK)
+	{
+		filename = dlg.GetFileName();
+		if(m_CurrentVersion == GIT_REV_ZERO)
+		{
+			cmd.Format(_T("copy /Y \"%s\" \"%s\""),path->GetWinPath(),filename);
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				return;
+			}
+
+		}else
+		{
+			cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),m_CurrentVersion,path->GetGitPathString());
+			if(g_Git.RunLogFile(cmd,filename))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				return;
+			}
+		}
+	}
+
+}
