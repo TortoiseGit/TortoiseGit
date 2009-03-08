@@ -780,6 +780,7 @@ private:
 	void RemoveListEntry(int index);	///< removes an entry from the listcontrol and both arrays
 	bool BuildStatistics();	///< build the statistics and correct the case of files/folders
 	void StartDiff(int fileindex);	///< start the external diff program
+	void StartDiffWC(int fileindex);	///< start the external diff program
 
     /// fetch all user properties for all items
     void FetchUserProperties();

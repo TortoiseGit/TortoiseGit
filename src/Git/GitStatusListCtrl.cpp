@@ -2305,7 +2305,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPAREWC))
 				{
-					popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+					if( (!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
+						popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 				}
 				//Select one items
 				if (GetSelectedCount() == 1)
@@ -2677,6 +2678,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
 				}
 				break;
+
+			// Compare current version and work copy. 
+			case IDSVNLC_COMPAREWC:
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					while ( pos )
+					{
+						int index = GetNextSelectedItem(pos);
+						StartDiffWC(index);
+					}
+				}
+				break;
+			// Compare with base version. when current version is zero, compare workcopy and HEAD. 
 			case IDSVNLC_COMPARE:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -3968,6 +3982,22 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 			StartDiff(pNMLV->iItem);
 		}
 	}
+
+}
+void CGitStatusListCtrl::StartDiffWC(int fileindex)
+{
+	if(fileindex<0)
+		return;
+
+	CString Ver;
+	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
+		return;
+
+	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+
+	CGitDiff::Diff(&file1,&file1,
+			        CString(GIT_REV_ZERO),
+					m_CurrentVersion);
 
 }
 
