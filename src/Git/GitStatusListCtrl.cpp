@@ -2624,54 +2624,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			bool bForce = false;
 			switch (cmd)
 			{
+			case IDSVNLC_VIEWREV:
+				OpenFile(filepath,NOTEPAD2);
+				break;
 			case IDSVNLC_OPEN:
-				{
-					CString file;
-					if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
-					{
-						file= filepath->GetWinPath();
-					}else
-					{
-						CString temppath;
-						GetTempPath(temppath);
-						file.Format(_T("%s%s_%s%s"),
-							temppath,						
-							filepath->GetBaseFilename(),
-							m_CurrentVersion.Left(6),
-							filepath->GetFileExtension());
-
-					}
-					int ret = (int)ShellExecute(this->m_hWnd, NULL,file, NULL, NULL, SW_SHOW);
-					if (ret <= HINSTANCE_ERROR)
-					{
-						CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-						cmd += file;
-						CAppUtils::LaunchApplication(cmd, NULL, false);
-					}
-				}
+				OpenFile(filepath,OPEN);
 				break;
 			case IDSVNLC_OPENWITH:
-				{
-					CString file;
-					if(m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
-					{
-						file= filepath->GetWinPath();
-					}else
-					{
-						CString temppath;
-						GetTempPath(temppath);
-						file.Format(_T("%s%s_%s%s"),
-							temppath,						
-							filepath->GetBaseFilename(),
-							m_CurrentVersion.Left(6),
-							filepath->GetFileExtension());
-
-					}
-
-					CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-					cmd += file + _T(" ");
-					CAppUtils::LaunchApplication(cmd, NULL, false);
-				}
+				OpenFile(filepath,OPEN_WITH);
 				break;
 			case IDSVNLC_EXPLORE:
 				{
@@ -5602,4 +5562,57 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 
 	out.Format(_T("%d files revert to %s"),count,m_CurrentVersion.Left(6));
 	CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+}
+
+void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
+{
+	CString file;
+	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+	{
+		file= filepath->GetWinPath();
+	}else
+	{
+		CString temppath;
+		GetTempPath(temppath);
+		file.Format(_T("%s%s_%s%s"),
+					temppath,						
+					filepath->GetBaseFilename(),
+					m_CurrentVersion.Left(6),
+					filepath->GetFileExtension());
+		CString cmd,out;
+		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),m_CurrentVersion,filepath->GetGitPathString());
+		if(g_Git.RunLogFile(cmd,file))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			return;
+		}
+
+	}
+	if(mode == NOTEPAD2)
+	{
+		CString sCmd;
+		sCmd.Format(_T("\"%s\" \"%s\""),
+			(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("notepad2.exe")), file);
+
+		CAppUtils::LaunchApplication(sCmd, NULL, false);
+		return ;
+	}
+	int ret = HINSTANCE_ERROR;
+
+	if(mode == OPEN )
+	{
+		ret = (int)ShellExecute(this->m_hWnd, NULL,file, NULL, NULL, SW_SHOW);
+	
+		if (ret > HINSTANCE_ERROR)
+		{
+			return;
+		}
+	}
+
+	{
+		CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
+		cmd += file;
+		CAppUtils::LaunchApplication(cmd, NULL, false);
+	}
+	
 }

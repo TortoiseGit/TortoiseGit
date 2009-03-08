@@ -781,6 +781,14 @@ private:
 	bool BuildStatistics();	///< build the statistics and correct the case of files/folders
 	void StartDiff(int fileindex);	///< start the external diff program
 	void StartDiffWC(int fileindex);	///< start the external diff program
+	
+	enum
+	{
+		NOTEPAD2,
+		OPEN,
+		OPEN_WITH,
+	};
+	void OpenFile(CTGitPath *path,int mode);
 
     /// fetch all user properties for all items
     void FetchUserProperties();
