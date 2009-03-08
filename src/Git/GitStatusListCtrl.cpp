@@ -3214,6 +3214,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDSVNLC_SAVEAS:
 				FileSaveAs(filepath);
 				break;
+
+			case IDSVNLC_REVERTTOREV:
+				RevertSelectedItemToVersion();
+				break;
 #if 0
 			case IDSVNLC_PROPERTIES:
 				{
@@ -5536,4 +5540,26 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		}
 	}
 
+}
+
+int CGitStatusListCtrl::RevertSelectedItemToVersion()
+{
+	if(this->m_CurrentVersion.IsEmpty())
+		return 0;
+	if(this->m_CurrentVersion == GIT_REV_ZERO)
+		return 0;
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index;
+	CString cmd,out;
+	while ((index = GetNextSelectedItem(pos)) >= 0)
+	{
+		CTGitPath *fentry=(CTGitPath*)GetItemData(index);
+		cmd.Format(_T("git.exe checkout %s -- \"%s\""),m_CurrentVersion,fentry->GetGitPathString());
+		out.Empty();
+		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+		}
+	}	
 }

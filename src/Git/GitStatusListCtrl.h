@@ -875,6 +875,7 @@ private:
 
 
 	void FileSaveAs(CTGitPath *path);
+	int RevertSelectedItemToVersion();
 
 private:
 	bool *						m_pbCanceled;
