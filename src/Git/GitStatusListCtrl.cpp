@@ -5552,6 +5552,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	CString cmd,out;
+	int count =0;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
 		CTGitPath *fentry=(CTGitPath*)GetItemData(index);
@@ -5561,5 +5562,9 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 		}
-	}	
+		count++;
+	}
+
+	out.Format(_T("%d files revert to %s"),count,m_CurrentVersion.Left(6));
+	CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 }
