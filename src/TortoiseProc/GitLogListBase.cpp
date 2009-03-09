@@ -1296,9 +1296,20 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 
 void CGitLogListBase::DiffSelectedRevWithPrevious()
 {
-#if 0
 	if (m_bThreadRunning)
 		return;
+
+	int FirstSelect=-1, LastSelect=-1;
+	POSITION pos = GetFirstSelectedItemPosition();
+	FirstSelect = GetNextSelectedItem(pos);
+	while(pos)
+	{
+		LastSelect = GetNextSelectedItem(pos);
+	}
+
+	ContextMenuAction(ID_COMPAREWITHPREVIOUS,FirstSelect,LastSelect);
+
+#if 0
 	UpdateLogInfoLabel();
 	int selIndex = m_LogList.GetSelectionMark();
 	if (selIndex < 0)
@@ -1537,8 +1548,8 @@ void CGitLogListBase::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	// a double click on an entry in the revision list has happened
 	*pResult = 0;
 
-  if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
-	  DiffSelectedRevWithPrevious();
+	if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+		DiffSelectedRevWithPrevious();
 }
 
 int CGitLogListBase::FetchLogAsync(void * data)
