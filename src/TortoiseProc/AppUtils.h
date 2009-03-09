@@ -182,7 +182,7 @@ public:
 	 */
 	static CString ToRelativeTimeString(CTime time);
 
-	
+	static CString GetMergeTempFile(CString str,CTGitPath &merge);
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

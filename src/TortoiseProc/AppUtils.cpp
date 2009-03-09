@@ -1261,6 +1261,14 @@ void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
 	return;
 }
 
+CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
+{
+	CString file;
+	file=g_Git.m_CurrentDir+_T("\\")+merge.GetDirectory().GetWinPathString()+_T("\\")+merge.GetFilename()+_T(".")+type+merge.GetFileExtension();
+
+	return file;
+}
+
 bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 {
 	bool bRet = false;
@@ -1302,18 +1310,13 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 	CTGitPath mine;
 	CTGitPath base;
 
-	CString format;
-	format=g_Git.m_CurrentDir+_T("\\")+directory.GetWinPathString()+merge.GetFilename()+CString(_T(".%s."))+temp+merge.GetFileExtension();
-
-	CString file;
-	file.Format(format,_T("LOCAL"));
-	mine.SetFromGit(file);
-	file.Format(format,_T("REMOTE"));
-	theirs.SetFromGit(file);
-	file.Format(format,_T("BASE"));
-	base.SetFromGit(file);
-
 	
+	mine.SetFromGit(GetMergeTempFile(_T("LOCAL"),merge));
+	theirs.SetFromGit(GetMergeTempFile(_T("REMOTE"),merge));
+	base.SetFromGit(GetMergeTempFile(_T("BASE"),merge));
+
+	CString format;
+
 	format=_T("git.exe cat-file blob \":%d:%s\"");
 	CFile tempfile;
 	//create a empty file, incase stage is not three

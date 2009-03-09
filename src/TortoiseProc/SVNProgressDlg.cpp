@@ -2327,7 +2327,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
-		CString cmd,out;
+		CString cmd,out,tempmergefile;
 		cmd.Format(_T("git.exe add -f \"%s\""),m_targetPathList[i].GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_OEMCP))
 		{
@@ -2335,6 +2335,33 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 			m_bErrorsOccurred=true;
 			return false;
 		}
+		
+
+		try
+		{
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("LOCAL"),(CTGitPath &)m_targetPathList[i]);
+			CFile::Remove(tempmergefile);
+		}catch(...)
+		{
+		}
+		
+		try
+		{
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("REMOTE"),(CTGitPath &)m_targetPathList[i]);
+			CFile::Remove(tempmergefile);
+		}catch(...)
+		{
+		}
+
+		try
+		{
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("BASE"),(CTGitPath &)m_targetPathList[i]);
+			CFile::Remove(tempmergefile);
+		}catch(...)
+		{
+		}
+		
+
 		Notify(m_targetPathList[i],git_wc_notify_resolved);
 	}
 #if 0
