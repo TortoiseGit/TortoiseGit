@@ -2528,10 +2528,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 
 
-#if 0			
+		
 			if (GetSelectedCount() > 0)
 			{
-
+#if 0	
 				if ((!entry->IsFolder())&&(wcStatus >= git_wc_status_normal)
 					&&(wcStatus!=git_wc_status_missing)&&(wcStatus!=git_wc_status_deleted)
 					&&(wcStatus!=git_wc_status_added))
@@ -2566,9 +2566,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenu(MF_SEPARATOR);
 					popup.AppendMenuIcon(IDSVNLC_PROPERTIES, IDS_STATUSLIST_CONTEXT_PROPERTIES, IDI_PROPERTIES);
 				}
+#endif 
 				popup.AppendMenu(MF_SEPARATOR);
 				popup.AppendMenuIcon(IDSVNLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
 				popup.AppendMenuIcon(IDSVNLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
+#if 0
 				if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS)&&(XPorLater)
 					&&(wcStatus != git_wc_status_unversioned)&&(wcStatus != git_wc_status_none))
 				{
@@ -2614,8 +2616,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						popup.AppendMenu(MF_POPUP|MF_STRING, (UINT_PTR)changelistSubMenu.GetSafeHmenu(), temp);
 					}
 				}
-			}
 #endif
+			}
+
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 
 			m_bBlock = TRUE;
@@ -4790,7 +4793,7 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 
 bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 {
-#if 0
+
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
@@ -4821,18 +4824,23 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 	int index;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
-		FileEntry * entry = GetListEntry(index);
-		sClipboard += entry->GetDisplayName();
+		CTGitPath * entry = (CTGitPath*)GetItemData(index);
+		if(entry == NULL)
+			continue;
+
+		sClipboard += entry->GetWinPathString();
 		if (selection & SVNSLC_COLFILENAME)
 		{
-			sClipboard += _T("\t")+entry->path.GetFileOrDirectoryName();
+			sClipboard += _T("\t")+entry->GetFileOrDirectoryName();
 		}
 		if (selection & SVNSLC_COLEXT)
 		{
-			sClipboard += _T("\t")+entry->path.GetFileExtension();
+			sClipboard += _T("\t")+entry->GetFileExtension();
 		}
+	
 		if (selection & SVNSLC_COLSTATUS)
 		{
+#if 0
 			if (entry->isNested)
 			{
 				temp.LoadString(IDS_STATUSLIST_NESTED);
@@ -4851,10 +4859,13 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 					_tcscat_s(buf, 100, ponly);
 				temp = buf;
 			}
-			sClipboard += _T("\t")+temp;
+#endif
+			sClipboard += _T("\t")+entry->GetActionName();
 		}
+#if 0
 		if (selection & SVNSLC_COLTEXTSTATUS)
 		{
+
 			if (entry->isNested)
 			{
 				temp.LoadString(IDS_STATUSLIST_NESTED);
@@ -4870,6 +4881,8 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			sClipboard += _T("\t")+temp;
 		}
+#endif
+#if 0
 		if (selection & SVNSLC_COLREMOTESTATUS)
 		{
 			if (entry->isNested)
@@ -4992,6 +5005,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 				temp.Empty();
 			sClipboard += _T("\t")+temp;
 		}
+
 		if (selection & SVNSLC_COLDATE)
 		{
 			TCHAR datebuf[SVN_DATE_BUFFER];
@@ -5023,12 +5037,21 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
                 sClipboard += _T("\t") + value;
             }
         }
+#endif
+		if (selection & SVNSLC_COLADD)
+		{
+			sClipboard += _T("\t")+entry->m_StatAdd;
+		}
+		if (selection & SVNSLC_COLDEL)
+		{
+			sClipboard += _T("\t")+entry->m_StatDel;
+		}
 
 		sClipboard += _T("\r\n");
 	}
 
 	return CStringUtils::WriteAsciiStringToClipboard(sClipboard);
-#endif
+
 	return TRUE;
 
 }
