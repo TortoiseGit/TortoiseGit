@@ -205,7 +205,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENUCHECKOUT        "Switch/Chec&kout..."
-    IDS_MENUUPDATE          "&Update"
+    IDS_MENUUPDATE          "Submodule &Update"
     IDS_MENUCOMMIT          "&Commit..."
     IDS_MENUCREATEREPOS     "Create repositor&y here"
     IDS_MENUADD             "&Add..."
@@ -218,7 +218,7 @@ STRINGTABLE
 BEGIN
     IDS_MENUSWITCH          "S&witch..."
     IDS_MENUMERGE           "&Merge..."
-    IDS_MENUBRANCH          "Create Branch"
+    IDS_MENUBRANCH          "Create Branch..."
     IDS_MENUIMPORT          "&Import..."
     IDS_MENUEXPORT          "E&xport..."
     IDS_MENUSETTINGS        "&Settings"
@@ -256,12 +256,16 @@ END
 
 STRINGTABLE
 BEGIN
-	IDS_MENUTAG				"Create Tag"
-	IDS_MENUFORMATPATCH		"Create Patch Serial"
-	IDS_MENUIMPORTPATCH		"Apply Patch Serial"
-	IDS_MENUCHERRYPICK		"Cherry Pick"
+	IDS_MENUTAG				"Create Tag..."
+	IDS_MENUFORMATPATCH		"Create Patch Serial..."
+	IDS_MENUIMPORTPATCH		"Apply Patch Serial..."
+	IDS_MENUCHERRYPICK		"Cherry Pick..."
 	IDS_MENUFETCH			"Fetch..."
 	IDS_MENUREBASE			"*Rebase..."
+	IDS_MENUSTASHSAVE		"Stash Save"
+	IDS_MENUSTASHAPPLY		"Stash Apply"
+	IDS_MENUSUBADD			"Submodule Add"
+	IDS_MENUSUBSYNC			"Submodule Sync"
 END
 
 STRINGTABLE 
@@ -276,7 +280,7 @@ BEGIN
     IDS_MENUDESCRENAME      "Renames files / folders inside version control"
     IDS_MENUREMOVE          "&Delete"
     IDS_MENUDESCREMOVE      "Deletes files / folders from version control"
-    IDS_MENUUPDATEEXT       "&Update to revision..."
+    IDS_MENUUPDATEEXT       "Submodule &Update"
     IDS_MENUDESCUPDATEEXT   "Updates the working copy to a specific revision"
     IDS_COLTITLESTATUS      "Git Status"
     IDS_COLDESCSTATUS       "Status of item in Git"
@@ -339,8 +343,8 @@ BEGIN
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore items by &extension"
-    IDS_MENUPULL            "Pull"
-    IDS_MENUPUSH            "Push"
+    IDS_MENUPULL            "Pull..."
+    IDS_MENUPUSH            "Push..."
     IDS_MENUCLONE           "Clone..."
 END
 

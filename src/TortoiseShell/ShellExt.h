@@ -157,6 +157,10 @@ protected:
 		ShellMenuCherryPick,
 		ShellMenuFetch,
 		ShellMenuRebase,
+		ShellMenuStashSave,
+		ShellMenuStashApply,
+		ShellMenuSubAdd,
+		ShellMenuSubSync,
 		ShellMenuLastEntry			// used to mark the menu array end
 	};
 

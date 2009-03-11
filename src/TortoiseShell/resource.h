@@ -184,6 +184,11 @@
 #define IDS_MENUCHERRYPICK				310
 #define IDS_MENUFETCH					311
 #define IDS_MENUREBASE					312
+#define IDS_MENUSTASHSAVE				313
+#define IDS_MENUSTASHAPPLY				314
+#define IDS_MENUSUBADD					315
+#define IDS_MENUSUBSYNC					316
+
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
 #define IDC_REPOURL                     1003
