@@ -23,6 +23,7 @@
 
 CVisibleGraph::CVisibleGraph()
     : nodeFactory()
+    , insertionIndex (SIZE_MAX)
 {
 }
 
@@ -62,8 +63,7 @@ CVisibleGraphNode* CVisibleGraph::Add ( const CFullGraphNode* base
 void CVisibleGraph::ReplaceRoot ( CVisibleGraphNode* oldRoot
                                 , CVisibleGraphNode* newRoot)
 {
-    assert (newRoot->GetPrevious() == NULL);
-    assert (newRoot->GetCopySource() == NULL);
+    assert (newRoot->GetSource() == NULL);
 
     for (size_t i = 0, count = roots.size(); i < count; ++i)
         if (roots[i] == oldRoot)
@@ -82,8 +82,9 @@ void CVisibleGraph::RemoveRoot (CVisibleGraphNode* root)
     for (size_t i = 0, count = roots.size(); i < count; ++i)
         if (roots[i] == root)
         {
-            roots[i] = roots[count-1];
-            roots.pop_back();
+            roots.erase (roots.begin() + i);
+            if (i < insertionIndex)
+                --insertionIndex;
 
             return;
         }
@@ -95,9 +96,16 @@ void CVisibleGraph::RemoveRoot (CVisibleGraphNode* root)
 
 void CVisibleGraph::AddRoot (CVisibleGraphNode* root)
 {
-    assert (root->GetPrevious() == NULL);
-    assert (root->GetCopySource() == NULL);
+    assert (root->GetSource() == NULL);
 
-    roots.push_back (root);
+    if (insertionIndex > roots.size())
+    {
+        roots.push_back (root);
+    }
+    else
+    {
+        roots.insert (roots.begin() + insertionIndex, root);
+        ++insertionIndex;
+    }
 }
 

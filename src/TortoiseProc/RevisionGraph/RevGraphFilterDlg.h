@@ -35,7 +35,9 @@ public:
 	void	GetRevisionRange (svn_revnum_t& minrev, svn_revnum_t& maxrev);
 	void	SetRevisionRange (svn_revnum_t minrev, svn_revnum_t maxrev);
 	CString	GetFilterString() {return m_sFilterPaths;}
-	void	SetFilterString(const CString& str) {m_sFilterPaths = str;}
+	void	SetFilterString (const CString& str) {m_sFilterPaths = str;}
+	bool	GetRemoveSubTrees() {return m_removeSubTree != FALSE;}
+    void	SetRemoveSubTrees (bool value) {m_removeSubTree = value ? TRUE : FALSE;}
 
 // Dialog Data
 	enum { IDD = IDD_REVGRAPHFILTER };
@@ -51,6 +53,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 protected:
 	CString				m_sFilterPaths;
+    BOOL                m_removeSubTree;
 	CSpinButtonCtrl		m_cFromSpin;
 	CSpinButtonCtrl		m_cToSpin;
 	CString				m_sFromRev;

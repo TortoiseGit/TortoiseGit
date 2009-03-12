@@ -19,12 +19,22 @@
 #include "StdAfx.h"
 #include "ShowWC.h"
 #include "FullGraphNode.h"
+#include "VisibleGraphNode.h"
 
 // construction
 
 CShowWC::CShowWC (CRevisionGraphOptionList& list)
     : inherited (list)
 {
+}
+
+// implement IRevisionGraphOption: 
+// this one must always be executed
+// (ICopyFilterOption, if selected; IModificationOption is not)
+
+bool CShowWC::IsActive() const
+{
+    return true;
 }
 
 // implement ICopyFilterOption
@@ -34,7 +44,24 @@ CShowWC::ShallRemove (const CFullGraphNode* node) const
 {
     // "Pin" HEAD nodes
 
-    return node->GetClassification().Is (CNodeClassification::IS_WORKINGCOPY)
+    return (   node->GetClassification().Is (CNodeClassification::IS_WORKINGCOPY)
+            && IsSelected())
          ? ICopyFilterOption::PRESERVE_NODE
          : ICopyFilterOption::KEEP_NODE;
+}
+
+// implement IModificationOption (post-filter deleted non-tagged branches)
+
+void CShowWC::Apply (CVisibleGraph*, CVisibleGraphNode* node)
+{
+    if (!IsSelected())
+    {
+        CNodeClassification classification = node->GetClassification();
+        if (classification.Matches ( CNodeClassification::IS_WORKINGCOPY
+                                   , CNodeClassification::IS_MODIFIED_WC))
+        {
+            classification.Remove (CNodeClassification::IS_WORKINGCOPY);
+            node->SetClassification (classification);
+        }
+    }
 }

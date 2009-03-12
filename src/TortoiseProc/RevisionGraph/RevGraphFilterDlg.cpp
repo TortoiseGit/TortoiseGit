@@ -26,6 +26,7 @@ IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
 CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CRevGraphFilterDlg::IDD, pParent)
 	, m_sFilterPaths(_T(""))
+    , m_removeSubTree (FALSE)
 	, m_sFromRev(_T(""))
 	, m_sToRev(_T(""))
     , m_minrev (1)
@@ -42,6 +43,7 @@ void CRevGraphFilterDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_PATHFILTER, m_sFilterPaths);
+	DDX_Check(pDX, IDC_REMOVESUBTREE, m_removeSubTree);
 	DDX_Control(pDX, IDC_FROMSPIN, m_cFromSpin);
 	DDX_Control(pDX, IDC_TOSPIN, m_cToSpin);
 	DDX_Text(pDX, IDC_FROMREV, m_sFromRev);

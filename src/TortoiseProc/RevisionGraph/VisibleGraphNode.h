@@ -91,12 +91,18 @@ public:
 
         CFactory();
 
+        /// just checkin ...
+
+        ~CFactory();
+
         /// factory interface
 
         CVisibleGraphNode* Create ( const CFullGraphNode* base
                                   , CVisibleGraphNode* prev
                                   , bool preserveNode);
         void Destroy (CVisibleGraphNode* node);
+
+        void Destroy (CCopyTarget*& copyTarget);
 
         CFoldedTag* Create ( const CFullGraphNode* tagNode
                            , size_t depth
@@ -150,6 +156,8 @@ public:
 
     /// data access
 
+    const CFullGraphNode* GetBase() const;
+
 	const CDictionaryBasedTempPath& GetPath() const;
 	CDictionaryBasedPath GetRealPath() const;
 	const CFoldedTag* GetFirstTag() const;
@@ -164,8 +172,15 @@ public:
 
 	revision_t GetRevision() const;
 	CNodeClassification GetClassification() const;
+	void SetClassification (CNodeClassification newValue);
 
 	index_t GetIndex() const;
+
+    bool IsRoot() const;
+
+    /// combined info (copySource | previous)
+
+    const CVisibleGraphNode* GetSource() const;
 
     /// set index members within the whole sub-tree
 
@@ -173,11 +188,19 @@ public:
 
     /// remove node and move links to pre-decessor
 
-    void DropNode (CVisibleGraph* graph);
+    void DropNode (CVisibleGraph* graph, bool preserveTags);
+
+    /// remove node and sub-tree 
+
+    void DropSubTree (CVisibleGraph* graph);
 
     /// remove node and add it as folded tag to the parent
 
     void FoldTag (CVisibleGraph* graph);
+
+    /// remove links to this node and make it a new root
+
+    void MakeRoot (CVisibleGraph* graph, bool deleteSource);
 };
 
 /// CVisibleGraphNode::CFoldedTag construction
@@ -228,6 +251,11 @@ inline size_t CVisibleGraphNode::CFactory::GetNodeCount() const
 }
 
 /// CVisibleGraphNode data access
+
+inline const CFullGraphNode* CVisibleGraphNode::GetBase() const
+{
+    return base;
+}
 
 inline const CDictionaryBasedTempPath& CVisibleGraphNode::GetPath() const
 {
@@ -285,7 +313,25 @@ inline CNodeClassification CVisibleGraphNode::GetClassification() const
     return classification;
 }
 
+inline void CVisibleGraphNode::SetClassification (CNodeClassification newValue)
+{
+    classification = newValue;
+}
+
 inline index_t CVisibleGraphNode::GetIndex() const
 {
     return index;
 }
+
+inline bool CVisibleGraphNode::IsRoot() const
+{
+    return (copySource == NULL) && (prev == NULL);
+}
+
+// combined info (copySource | previous)
+
+inline const CVisibleGraphNode* CVisibleGraphNode::GetSource() const
+{
+    return copySource == NULL ? prev : copySource;
+}
+

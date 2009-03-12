@@ -38,6 +38,10 @@ private:
 
     std::vector<CVisibleGraphNode*> roots;
 
+    /// where new roots should be inserted
+
+    size_t insertionIndex;
+
 public:
 
     /// construction / destruction
@@ -63,6 +67,8 @@ public:
     const CVisibleGraphNode* GetRoot (size_t index) const;
 
     size_t GetNodeCount() const;
+    size_t GetInsertionIndex() const;
+    void SetInsertionIndex (size_t index);
 
     /// factory access
 
@@ -91,7 +97,18 @@ inline size_t CVisibleGraph::GetNodeCount() const
     return nodeFactory.GetNodeCount();
 }
 
+inline size_t CVisibleGraph::GetInsertionIndex() const
+{
+    return insertionIndex;
+}
+
+inline void CVisibleGraph::SetInsertionIndex (size_t index) 
+{
+    insertionIndex = index;
+}
+
 inline CVisibleGraphNode::CFactory& CVisibleGraph::GetFactory()
 {
     return nodeFactory;
 }
+

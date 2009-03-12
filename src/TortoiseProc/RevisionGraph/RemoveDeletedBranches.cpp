@@ -49,6 +49,6 @@ void CRemoveDeletedBranches::Apply (CVisibleGraph* graph, CVisibleGraphNode* nod
         && (node->GetFirstTag() == NULL)
         && (node->GetClassification().Is (CNodeClassification::PATH_ONLY_DELETED)))
     {
-        node->DropNode (graph);
+        node->DropNode (graph, true);
     }
 }

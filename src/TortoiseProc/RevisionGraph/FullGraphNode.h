@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "DictionaryBasedTempPath.h"
+#include "./Containers/DictionaryBasedTempPath.h"
 #include "SimpleList.h"
 #include "NodeClassification.h"
 
@@ -124,6 +124,10 @@ public:
 	revision_t GetRevision() const;
 	CNodeClassification GetClassification() const;
 
+    // combined info (copySource | previous)
+
+    const CFullGraphNode* GetSource() const;
+
 };
 
 /// CVisibleGraphNode  modification
@@ -189,5 +193,12 @@ inline revision_t CFullGraphNode::GetRevision() const
 inline CNodeClassification CFullGraphNode::GetClassification() const
 {
     return classification;
+}
+
+// combined info (copySource | previous)
+
+inline const CFullGraphNode* CFullGraphNode::GetSource() const
+{
+    return copySource == NULL ? prev : copySource;
 }
 

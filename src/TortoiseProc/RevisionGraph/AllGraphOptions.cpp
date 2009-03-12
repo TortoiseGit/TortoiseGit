@@ -24,20 +24,29 @@
 #include "RemoveSimpleChanges.h"
 #include "RemoveDeletedBranches.h"
 #include "FoldTags.h"
+#include "RemoveUnchangedBranches.h"
 #include "ShowHeads.h"
 #include "ShowWC.h"
+#include "ShowWCModification.h"
 #include "ExactCopyFroms.h"
 #include "RevisionInRange.h"
 #include "RemovePathsBySubString.h"
 
+#include "CutTrees.h"
+#include "CollapseTreeDownward.h"
+#include "CollapseTreeUpward.h"
+
 #include "StandardNodeSizeAssignment.h"
 #include "StandardNodePositioning.h"
 #include "StrictOrderNodePositioning.h"
+#include "TopAlignTrees.h"
 #include "UpsideDownLayout.h"
+#include "ShowPathsAsDiff.h"
+#include "ShowTreeStripes.h"
 
 // construction (create all option objects) / destruction
 
-CAllRevisionGraphOptions::CAllRevisionGraphOptions()
+CAllRevisionGraphOptions::CAllRevisionGraphOptions (const CGraphNodeStates* nodeStates)
 {
     // create filter options.
 
@@ -56,13 +65,24 @@ CAllRevisionGraphOptions::CAllRevisionGraphOptions()
     new CFoldTags (*this);
     new CRemoveDeletedBranches (*this);
     new CShowWC (*this);
+    new CRemoveUnchangedBranches (*this);
+    new CShowWCModification (*this);
+    new CShowPathsAsDiff (*this);
+    new CShowTreeStripes (*this);
+    new CTopAlignTrees (*this);
 
     (new CRevisionInRange (*this))->ToggleSelection();
     (new CRemovePathsBySubString (*this))->ToggleSelection();
 
+    // tree node collapsing & cutting
+
+    (new CCutTrees (*this, nodeStates))->ToggleSelection();
+    (new CCollapseTreeDownward (*this, nodeStates))->ToggleSelection();
+    (new CCollapseTreeUpward (*this, nodeStates))->ToggleSelection();
+
     // create layout options
 
-    (new CStandardNodeSizeAssignment (*this))->ToggleSelection();
+    (new CStandardNodeSizeAssignment (*this, nodeStates))->ToggleSelection();
     new CStrictOrderNodePositioning (*this, standardNodePositioning, reduceCrossLines);
 
     // link options as necessary

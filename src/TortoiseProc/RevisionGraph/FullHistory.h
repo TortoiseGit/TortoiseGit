@@ -91,7 +91,11 @@ public:
 
     /// query data
 
-	bool						FetchRevisionData (CString path, SVNRev pegRev, bool showWCRev, CProgressDlg* progress);
+	bool						FetchRevisionData ( CString path
+                                                  , SVNRev pegRev
+                                                  , bool showWCRev
+                                                  , bool showWCModification
+                                                  , CProgressDlg* progress);
 
     /// data access
 
@@ -108,6 +112,7 @@ public:
 
     const CDictionaryBasedTempPath* GetWCPath() const {return wcPath.get();}
     revision_t                  GetWCRevision() const {return wcRevision;}
+    bool                        GetWCModified() const {return wcModified;}
 
     SCopyInfo**                 GetFirstCopyFrom() const {return copyFromRelation;}
     SCopyInfo**                 GetFirstCopyTo() const {return copyToRelation;}
@@ -128,6 +133,7 @@ private:
     CString                     uuid;
 	revision_t					headRevision;
 	revision_t					pegRevision;
+    revision_t                  firstRevision;
 
 	svn_client_ctx_t 			ctx;
 	SVNPrompt					prompt;
@@ -148,6 +154,7 @@ private:
 
 	std::auto_ptr<CDictionaryBasedTempPath> wcPath;
     revision_t                  wcRevision;
+    bool                        wcModified;
 
     boost::pool<>               copyInfoPool;
 	std::vector<SCopyInfo*>		copiesContainer;

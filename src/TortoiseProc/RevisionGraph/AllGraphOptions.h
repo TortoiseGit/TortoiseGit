@@ -18,9 +18,15 @@
 //
 #pragma once
 
+// required includes
+
 #include "CopyFilterOptions.h"
 #include "ModificationOptions.h"
 #include "LayoutOptions.h"
+
+// forward declaration
+
+class CGraphNodeStates;
 
 /**
 * Common container for all revision graph options.
@@ -33,7 +39,7 @@ public:
 
     /// construction (create all option objects) / destruction
 
-    CAllRevisionGraphOptions();
+    CAllRevisionGraphOptions (const CGraphNodeStates* nodeStates);
     virtual ~CAllRevisionGraphOptions() {};
 
     /// access specific sub-sets

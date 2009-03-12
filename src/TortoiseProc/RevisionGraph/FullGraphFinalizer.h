@@ -50,6 +50,7 @@ private:
     void MarkCopySource (CFullGraphNode* node);
     void MarkWCRevision (CFullGraphNode* node);
     void MarkHead (CFullGraphNode* node);
+    void AddWCModification (CFullGraphNode* node);
     void ForwardClassification (CFullGraphNode* node);
 
     /// inherit properties

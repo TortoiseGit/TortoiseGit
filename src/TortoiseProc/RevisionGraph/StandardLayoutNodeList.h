@@ -47,7 +47,7 @@ public:
 
     virtual index_t GetFirstVisible (const CRect& viewRect) const;
     virtual index_t GetNextVisible (index_t prev, const CRect& viewRect) const;
-    virtual index_t GetAt (const CPoint& point, long delta) const;
+    virtual index_t GetAt (const CPoint& point, CSize delta) const;
 
     /// implement ILayoutNodeList
 

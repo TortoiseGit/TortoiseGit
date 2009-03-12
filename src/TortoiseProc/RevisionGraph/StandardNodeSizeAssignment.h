@@ -22,15 +22,21 @@
 #include "RevisionGraphOptionsImpl.h"
 
 class IRevisionGraphLayout;
+class CGraphNodeStates;
 
 class CStandardNodeSizeAssignment 
     : public CRevisionGraphOptionImpl<ILayoutOption, 100, 0>
 {
+private:
+
+    const CGraphNodeStates* nodeStates;
+
 public:
 
     /// construction
 
-    CStandardNodeSizeAssignment (CRevisionGraphOptionList& list);
+    CStandardNodeSizeAssignment ( CRevisionGraphOptionList& list
+                                , const CGraphNodeStates* nodeStates);
 
     /// cast @a layout pointer to the respective modification
     /// interface and write the data.

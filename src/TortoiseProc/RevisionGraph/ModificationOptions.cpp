@@ -138,6 +138,63 @@ void CModificationOptions::TraverseToRootCopiesLast
     }
 }
 
+void CModificationOptions::InternalApply (CVisibleGraph* graph, bool cyclicFilters)
+{
+    typedef std::vector<IModificationOption*>::const_iterator IT;
+
+    // apply filters until the graph is stable
+
+    size_t nodeCount = 0;
+    do
+    {
+        nodeCount = graph->GetNodeCount();
+        for ( IT iter = options.begin(), end = options.end()
+            ; (iter != end)
+            ; ++iter)
+        {
+            // process every root only once
+
+            std::set<CVisibleGraphNode*> processedRoots;
+
+            // separate runs for cyclic and non-cyclic filters
+
+            if ((*iter)->IsCyclic() == cyclicFilters)
+            {
+                // graph will adjust the insertion index automatically
+
+                for ( size_t i = graph->GetRootCount()
+                    ; i > 0
+                    ; i = (i == graph->GetInsertionIndex())
+                          ? i-1
+                          : graph->GetInsertionIndex())
+                {
+                    CVisibleGraphNode* root = graph->GetRoot (i-1);
+                    graph->SetInsertionIndex (i);
+
+                    if (processedRoots.insert (root).second)
+                    {
+                        // we have not yet processed this root
+
+                        if ((*iter)->WantsCopiesFirst())
+                            if ((*iter)->WantsRootFirst())
+                                TraverseFromRootCopiesFirst (*iter, graph, root);
+                            else
+                                TraverseToRootCopiesFirst (*iter, graph, root);
+                        else
+                            if ((*iter)->WantsRootFirst())
+                                TraverseFromRootCopiesLast (*iter, graph, root);
+                            else
+                                TraverseToRootCopiesLast (*iter, graph, root);
+                    }
+                }
+            }
+
+            (*iter)->PostFilter (graph);
+        }
+    }
+    while (cyclicFilters && (nodeCount != graph->GetNodeCount()));
+}
+
 // construction
 
 CModificationOptions::CModificationOptions 
@@ -150,33 +207,11 @@ CModificationOptions::CModificationOptions
 
 void CModificationOptions::Apply (CVisibleGraph* graph)
 {
-    typedef std::vector<IModificationOption*>::const_iterator IT;
+    // apply all changes cyclically that may need to be run more than once
 
-    // apply filters until the graph is stable
+    InternalApply (graph, true);
 
-    size_t nodeCount = 0;
-    while (nodeCount != graph->GetNodeCount())
-    {
-        nodeCount = graph->GetNodeCount();
-        for ( IT iter = options.begin(), end = options.end()
-            ; (iter != end)
-            ; ++iter)
-        {
-            for (size_t i = graph->GetRootCount(); i > 0; --i)
-            {
-                CVisibleGraphNode* root = graph->GetRoot (i-1);
-                if ((*iter)->WantsCopiesFirst())
-                    if ((*iter)->WantsRootFirst())
-                        TraverseFromRootCopiesFirst (*iter, graph, root);
-                    else
-                        TraverseToRootCopiesFirst (*iter, graph, root);
-                else
-                    if ((*iter)->WantsRootFirst())
-                        TraverseFromRootCopiesLast (*iter, graph, root);
-                    else
-                        TraverseToRootCopiesLast (*iter, graph, root);
-            }
-        }
-    }
+    // run those that need to be executed only once
+
+    InternalApply (graph, false);
 }
-

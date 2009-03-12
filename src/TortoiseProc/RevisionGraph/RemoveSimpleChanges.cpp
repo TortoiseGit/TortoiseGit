@@ -69,6 +69,6 @@ void CRemoveSimpleChanges::Apply (CVisibleGraph* graph, CVisibleGraphNode* node)
         && (node->GetFirstTag() == NULL)
         && (node->GetFirstCopyTarget() == NULL))
     {
-        node->DropNode (graph);
+        node->DropNode (graph, true);
     }
 }

@@ -77,11 +77,31 @@ CString CStandardLayoutNodeList::GetToolTip (index_t index) const
 
     const CVisibleGraphNode* node = nodes[index].node;
 
-    // find the revision in our cache. 
-    // May not be present if this is the WC / HEAD revision.
+    // node properties
 
+	CNodeClassification classification = node->GetClassification();
     revision_t revision = node->GetRevision();
+
+    CString path 
+        = CUnicodeUtils::StdGetUnicode 
+            (node->GetPath().GetPath()).c_str();
+
+    // special case: the "workspace is modified" node
+
+    if (classification.Is (CNodeClassification::IS_MODIFIED_WC))
+    {
+	    strTipText.Format ( IDS_REVGRAPH_BOXTOOLTIP_WC
+                          , revision-1
+                          , (LPCTSTR)path);
+        return strTipText;
+    }
+
+    // find the revision in our cache. 
+    // Might not be present if this is the WC / HEAD revision
+    // (but should not happen).
+
     index_t revisionIndex = revisions [revision];
+    assert (revisionIndex != NO_INDEX);
     if (revisionIndex == NO_INDEX)
         return strTipText;
 
@@ -91,9 +111,6 @@ CString CStandardLayoutNodeList::GetToolTip (index_t index) const
 	apr_time_t timeStamp = revisionInfo.GetTimeStamp (revisionIndex);
 	SVN::formatDate(date, timeStamp);
 
-    CString realPath 
-        = CUnicodeUtils::StdGetUnicode 
-            (node->GetRealPath().GetPath()).c_str();
     CString author 
         = CUnicodeUtils::StdGetUnicode 
             (revisionInfo.GetAuthor (revisionIndex)).c_str();
@@ -101,13 +118,55 @@ CString CStandardLayoutNodeList::GetToolTip (index_t index) const
         = CUnicodeUtils::StdGetUnicode 
             (revisionInfo.GetComment (revisionIndex)).c_str();
 
+    // description of the operation represented by this node
+
+    CString revisionDescription;
+	if (classification.Is (CNodeClassification::IS_COPY_TARGET))
+    {
+        if (classification.Is (CNodeClassification::IS_TAG))
+            revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_TAG);
+	    else if (classification.Is (CNodeClassification::IS_BRANCH))
+            revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_BRANCH);
+	    else
+            revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_COPY);
+    }
+	else if (classification.Is (CNodeClassification::IS_ADDED))
+        revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_ADDED);
+	else if (classification.Is (CNodeClassification::IS_DELETED))
+        revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_DELETE);
+	else if (classification.Is (CNodeClassification::IS_RENAMED))
+        revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_RENAME);
+	else if (classification.Is (CNodeClassification::IS_LAST))
+        revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_HEAD);
+    else if (classification.Is (CNodeClassification::IS_MODIFIED))
+        revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_MODIFIED);
+	else
+        revisionDescription.LoadString (IDS_REVGRAPH_NODEIS_COPYSOURCE);
+
+    // copy-from info, if available
+
+    CString copyFromLine;
+    const CFullGraphNode* copySource = node->GetBase()->GetCopySource();
+	if (copySource != NULL)
+    {
+        CString copyFromPath 
+            = CUnicodeUtils::StdGetUnicode 
+                (copySource->GetPath().GetPath()).c_str();
+        revision_t copyFromRevision = copySource->GetRevision();
+
+        copyFromLine.Format ( IDS_REVGRAPH_BOXTOOLTIP_COPYSOURCE
+                            , (LPCTSTR)copyFromPath
+                            , copyFromRevision);
+    }
+
     // construct the tooltip
 
     if (node->GetFirstTag() == NULL)
     {
 	    strTipText.Format ( IDS_REVGRAPH_BOXTOOLTIP
-                          , revision, (LPCTSTR)realPath, (LPCTSTR)author
-                          , date, (LPCTSTR)comment);
+                          , revision, (LPCTSTR)revisionDescription
+                          , (LPCTSTR)path, (LPCTSTR)copyFromLine
+                          , (LPCTSTR)author, date, (LPCTSTR)comment);
     }
     else
     {
@@ -158,8 +217,10 @@ CString CStandardLayoutNodeList::GetToolTip (index_t index) const
         }
 
 	    strTipText.Format ( IDS_REVGRAPH_BOXTOOLTIP_TAGGED
-                          , revision, (LPCTSTR)realPath, (LPCTSTR)author
-                          , date, tagCount, (LPCTSTR)tags, (LPCTSTR)comment);
+                          , revision, (LPCTSTR)revisionDescription
+                          , (LPCTSTR)path, (LPCTSTR)copyFromLine
+                          , (LPCTSTR)author, date, tagCount, (LPCTSTR)tags
+                          , (LPCTSTR)comment);
     }
 
     // ready
@@ -182,15 +243,15 @@ index_t CStandardLayoutNodeList::GetNextVisible ( index_t prev
     return static_cast<index_t>(NO_INDEX);
 }
 
-index_t CStandardLayoutNodeList::GetAt (const CPoint& point, long delta) const
+index_t CStandardLayoutNodeList::GetAt (const CPoint& point, CSize delta) const
 {
     for (size_t i = 0, count = nodes.size(); i < count; ++i)
     {
         const CRect& rect = nodes[i].rect;
-        if (   (rect.top - point.y <= delta)
-            && (rect.left - point.x <= delta)
-            && (point.y - rect.bottom <= delta)
-            && (point.x - rect.right <= delta))
+        if (   (rect.top - point.y <= delta.cy)
+            && (rect.left - point.x <= delta.cx)
+            && (point.y - rect.bottom <= delta.cy)
+            && (point.x - rect.right <= delta.cx))
         {
             return static_cast<index_t>(i);
         }

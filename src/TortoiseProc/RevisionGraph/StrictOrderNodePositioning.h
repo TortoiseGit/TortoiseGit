@@ -20,7 +20,7 @@
 
 #include "LayoutOptions.h"
 #include "RevisionGraphOptionsImpl.h"
-#include "LogCacheGlobals.h"
+#include "./Containers/LogCacheGlobals.h"
 
 class IRevisionGraphLayout;
 class IStandardLayoutNodeAccess;

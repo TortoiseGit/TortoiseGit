@@ -47,6 +47,11 @@ public:
     CStandardLayoutNodeInfo* previousBranch;
     CStandardLayoutNodeInfo* lastBranch;
 
+    /// the graph may consist of multiple trees.
+    /// root(node) = graph (node)->GetRoot (rootID);
+
+    index_t rootID;
+
     /// branch sizes
 
     index_t subTreeWidth;
@@ -59,6 +64,12 @@ public:
     bool requiresRevision;
     bool requiresPath;
     bool requiresGap;
+
+    /// number of path elements that shall not be shown
+    /// (used by "show diff path" option)
+
+    index_t skipStartPathElements;
+    index_t skipTailPathElements;
 
     /// required size(s) to display all content
 
@@ -121,6 +132,10 @@ private:
 
     const CCachedLogInfo* cache;
 
+    /// logical tree structure
+
+    const CVisibleGraph* graph;
+
     /// nodes (in the order defined by CVisibleGraphNode::index)
 
     std::vector<CStandardLayoutNodeInfo> nodes;
@@ -133,6 +148,10 @@ private:
 
     std::vector<STextInfo> texts;
 
+    /// bounding rects of the individual trees
+
+    std::vector<CRect> trees;
+
     /// area that covers all visible items
 
     CRect boundingRect;
@@ -142,10 +161,14 @@ private:
     void SortNodes();
     void InitializeNodes ( const CVisibleGraphNode* node
                          , CStandardLayoutNodeInfo* parentBranch);
-    void InitializeNodes (const CVisibleGraph* graph);
+    void InitializeNodes();
 
     void CreateConnections();
     void CreateTexts();
+
+    void CloseTreeBoundingRectGaps();
+    void CalculateTreeBoundingRects();
+
     void CalculateBoundingRect();
 
 public:
@@ -163,6 +186,7 @@ public:
 
     virtual CRect GetRect() const;
 
+    virtual const ILayoutRectList* GetTrees() const;
     virtual const ILayoutNodeList* GetNodes() const;
     virtual const ILayoutConnectionList* GetConnections() const;
     virtual const ILayoutTextList* GetTexts() const;

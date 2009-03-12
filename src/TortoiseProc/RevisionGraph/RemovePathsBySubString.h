@@ -20,7 +20,7 @@
 
 // include base classes
 
-#include "LogCacheGlobals.h"
+#include "./Containers/LogCacheGlobals.h"
 #include "CopyFilterOptions.h"
 #include "revisiongraphoptionsimpl.h"
 #include "Resource.h"
@@ -28,6 +28,11 @@
 /** Remove all branches / tags that have been deleted and have
 * no surviving copy.
 */
+
+namespace LogCache
+{
+    class CDictionaryBasedPath;
+}
 
 using namespace LogCache;
 
@@ -42,6 +47,10 @@ private:
 
     std::set<std::string> filterPaths;
 
+    /// if true, don't remove matching nodes but the whole sub-tree
+
+    bool removeSubTrees;
+
     /// cache results for fully cached paths
 
     enum PathClassification
@@ -53,6 +62,11 @@ private:
 
     mutable std::vector<PathClassification> pathClassification;
 
+    // path classification by cache
+
+    PathClassification Classify (const std::string& path) const;
+    PathClassification QuickClassification (const CDictionaryBasedPath& path) const;
+
 public:
 
     /// construction
@@ -63,6 +77,15 @@ public:
 
     const std::set<std::string>& GetFilterPaths() const;
     std::set<std::string>& GetFilterPaths();
+
+    /// access to removal behavior
+
+    bool GetRemoveSubTrees() const;
+    void SetRemoveSubTrees (bool value);
+
+    /// implement IRevisionGraphOption
+
+    virtual bool IsActive() const; 
 
     /// implement ICopyFilterOption
 

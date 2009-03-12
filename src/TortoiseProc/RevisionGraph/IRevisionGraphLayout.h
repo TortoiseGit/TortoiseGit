@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "LogCacheGlobals.h"
+#include "./Containers/LogCacheGlobals.h"
 
 using namespace LogCache;
 
@@ -52,7 +52,16 @@ public:
 
     virtual index_t GetFirstVisible (const CRect& viewRect) const = 0;
     virtual index_t GetNextVisible (index_t prev, const CRect& viewRect) const = 0;
-    virtual index_t GetAt (const CPoint& point, long delta) const = 0;
+    virtual index_t GetAt (const CPoint& point, CSize delta) const = 0;
+};
+
+class ILayoutRectList : public ILayoutItemList
+{
+public:
+
+    /// standard data access
+
+    virtual CRect GetRect (index_t index) const = 0;
 };
 
 class ILayoutConnectionList : public ILayoutItemList
@@ -94,13 +103,14 @@ public:
 
 		enum 
 		{
-			STYLE_DEFAULT  = 0,
+			STYLE_DEFAULT     = 0,
 
-			STYLE_ADDED    = 1,
-			STYLE_DELETED  = 2,
-			STYLE_RENAMED  = 3,
-			STYLE_LAST	   = 4,
-            STYLE_MODIFIED = 5
+			STYLE_ADDED       = 1,
+			STYLE_DELETED     = 2,
+			STYLE_RENAMED     = 3,
+			STYLE_LAST	      = 4,
+            STYLE_MODIFIED    = 5,
+            STYLE_MODIFIED_WC = 6
 		};
 
         /// Area occupied by this node.
@@ -142,7 +152,8 @@ public:
 		enum
 		{
             STYLE_DEFAULT   = 0,
-			STYLE_HEADING   = 1
+			STYLE_HEADING   = 1,
+            STYLE_WARNING   = 2
 		};
 
         /// style (shape, font, size) index. 
@@ -192,6 +203,7 @@ public:
     /// access to the sub-structures.
     /// The caller is required to delete the return objects.
 
+    virtual const ILayoutRectList* GetTrees() const = 0;
     virtual const ILayoutNodeList* GetNodes() const = 0;
     virtual const ILayoutConnectionList* GetConnections() const = 0;
     virtual const ILayoutTextList* GetTexts() const = 0;

@@ -51,6 +51,14 @@ void CRevisionInRange::SetUpperLimit (revision_t limit)
     upperLimit = limit;
 }
 
+// implement IRevisionGraphOption
+
+bool CRevisionInRange::IsActive() const
+{
+    return ((lowerLimit > 1) && (lowerLimit != NO_REVISION))
+        || (upperLimit != NO_REVISION);
+}
+
 // implement ICopyFilterOption
 
 ICopyFilterOption::EResult 

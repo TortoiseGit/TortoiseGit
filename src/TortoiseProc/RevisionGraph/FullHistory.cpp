@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,9 @@ CFullHistory::CFullHistory(void)
     , progress (NULL)
     , headRevision ((revision_t)NO_REVISION)
     , pegRevision ((revision_t)NO_REVISION)
+    , firstRevision ((revision_t)NO_REVISION)
     , wcRevision ((revision_t)NO_REVISION)
+    , wcModified (false)
     , copyInfoPool (sizeof (SCopyInfo), 1024)
     , copyToRelation (NULL)
     , copyToRelationEnd (NULL)
@@ -78,7 +80,7 @@ CFullHistory::CFullHistory(void)
 	ctx.cancel_baton = this;
 
 	//set up the SVN_SSH param
-	CString tsvn_ssh = CRegString(_T("Software\\TortoiseGit\\SSH"));
+	CString tsvn_ssh = CRegString(_T("Software\\TortoiseSVN\\SSH"));
 	if (tsvn_ssh.IsEmpty())
 		tsvn_ssh = CPathUtils::GetAppDirectory() + _T("TortoisePlink.exe");
 	tsvn_ssh.Replace('\\', '/');
@@ -159,9 +161,10 @@ void CFullHistory::ReceiveLog ( LogChangedPathArray* changes
 		    text.LoadString(IDS_REVGRAPH_PROGGETREVS);
 		    text2.Format(IDS_REVGRAPH_PROGCURRENTREV, rev);
 
+            DWORD revisionCount = headRevision - firstRevision+1;
 		    progress->SetLine(1, text);
 		    progress->SetLine(2, text2);
-		    progress->SetProgress (headRevision - rev, headRevision);
+		    progress->SetProgress (headRevision - rev, revisionCount);
             if (!progress->IsVisible())
     	        progress->ShowModeless ((CWnd*)NULL);
 
@@ -177,6 +180,7 @@ void CFullHistory::ReceiveLog ( LogChangedPathArray* changes
 bool CFullHistory::FetchRevisionData ( CString path
                                      , SVNRev pegRev
                                      , bool showWCRev
+                                     , bool showWCModification
                                      , CProgressDlg* progress)
 {
 	// set some text on the progress dialog, before we wait
@@ -184,10 +188,13 @@ bool CFullHistory::FetchRevisionData ( CString path
     this->progress = progress;
 
 	CString temp;
-	temp.LoadString(IDS_REVGRAPH_PROGGETREVS);
+	temp.LoadString (IDS_REVGRAPH_PROGGETREVS);
     progress->SetLine(1, temp);
-    progress->SetLine(2, _T(""));
+
+    temp.LoadString (IDS_REVGRAPH_PROGPREPARING);
+    progress->SetLine(2, temp);
     progress->SetProgress(0, 1);
+    progress->ShowModeless ((CWnd*)NULL);
 
 	// prepare the path for Subversion
     CTSVNPath svnPath (path);
@@ -218,7 +225,6 @@ bool CFullHistory::FetchRevisionData ( CString path
     pegRevision = pegRev;
     if (pegRevision == NO_REVISION)
     {
-	    CTSVNPath svnPath (path);
 	    if (!svnPath.IsUrl())
 	    {
 		    SVNInfo info;
@@ -235,7 +241,6 @@ bool CFullHistory::FetchRevisionData ( CString path
         // select / construct query object and optimize revision range to fetch
 
 		svnQuery.reset (new CSVNLogQuery (&ctx, pool));
-        revision_t firstRevision = 0;
 
         if (svn.GetLogCachePool()->IsEnabled())
         {
@@ -248,7 +253,10 @@ bool CFullHistory::FetchRevisionData ( CString path
 
             uuid = pool->GetRepositoryInfo().GetRepositoryUUID (svnPath);
             cache = pool->GetCache (uuid, GetRepositoryRoot());
-            firstRevision = cache->GetRevisions().GetFirstMissingRevision(1);
+
+            firstRevision = cache != NULL
+                          ? cache->GetRevisions().GetFirstMissingRevision(1)
+                          : 0;
 
 			// if the cache is already complete, the firstRevision here is
 			// HEAD+1 - that revision does not exist and would throw an error later
@@ -260,6 +268,7 @@ bool CFullHistory::FetchRevisionData ( CString path
         {
 		    query.reset (new CCacheLogQuery (svn, svnQuery.get()));
             cache = NULL;
+            firstRevision = 0;
         }
 
         // actually fetch the data
@@ -290,21 +299,35 @@ bool CFullHistory::FetchRevisionData ( CString path
 	    // later in the graph (handle option changes properly!).
         // For performance reasons, we only don't do it if we want to display it.
 
-        if (showWCRev)
+        if (showWCRev || showWCModification)
         {
             svn_revnum_t maxrev = wcRevision;
-            svn_revnum_t minrev;
+            svn_revnum_t minrev = 0;
 	        bool switched, modified, sparse;
-	        if (svn.GetWCRevisionStatus ( CTSVNPath (path)
-								        , true
-								        , minrev
-								        , maxrev
-								        , switched
-								        , modified
-								        , sparse))
-	        {
-		        wcRevision = maxrev;
-	        }
+			CTSVNPath tpath = CTSVNPath (path);
+			if (!tpath.IsUrl())
+			{
+                temp.LoadString (IDS_REVGRAPH_PROGREADINGWC);
+                progress->SetLine(2, temp);
+
+				if (svn.GetWCRevisionStatus ( CTSVNPath (path)
+											, true    // get the "commit" revision
+											, minrev
+											, maxrev
+											, switched
+											, modified
+											, sparse))
+				{
+					// we want to report the oldest revision as WC revision:
+					// If you commit at $WC/path/ and after that ask for the 
+					// rev graph at $WC/, we want to display the revision of
+					// the base path ($WC/ is now "older") instead of the
+					// newest one.
+
+					wcRevision = maxrev;
+					wcModified = modified;
+				}
+			}
         }
 
         // analyse the data

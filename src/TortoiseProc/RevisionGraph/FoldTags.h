@@ -21,7 +21,6 @@
 // include base classes
 
 #include "ModificationOptions.h"
-#include "revisiongraphoptionsimpl.h"
 #include "Resource.h"
 
 /** Remove all branches / tags that have been deleted and have
@@ -29,12 +28,19 @@
 */
 
 class CFoldTags 
-    : public COrderedTraversalOptionImpl< IModificationOption
-                                       , 100
-                                       , ID_VIEW_FOLDTAGS
-                                       , true           // fold branches first
-                                       , false>         // from leaves to root
+    : public CModificationOptionImpl< IModificationOption
+                                    , 100
+                                    , ID_VIEW_FOLDTAGS
+                                    , true           // fold branches first
+                                    , false          // from leaves to root
+                                    , true>          // this is a cyclic option
 {
+private:
+
+    /// that the line from node downward have any visible copy targets?
+
+    bool CopyTargetsVisibile (const CVisibleGraphNode* node) const;
+
 public:
 
     /// construction

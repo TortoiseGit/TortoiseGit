@@ -20,41 +20,31 @@
 #include "RemovePathsBySubString.h"
 #include "FullGraphNode.h"
 
-// construction
+// path classification by cache
 
-CRemovePathsBySubString::CRemovePathsBySubString (CRevisionGraphOptionList& list)
-    : inherited (list)
+CRemovePathsBySubString::PathClassification 
+CRemovePathsBySubString::Classify (const std::string& path) const
 {
+    // we have to attempt full string searches as we look for 
+    // arbitrary sub-strings
+
+	for ( std::set<std::string>::const_iterator iter = filterPaths.begin()
+        , end = filterPaths.end()
+        ; iter != end
+        ; ++iter)
+    {
+        if (path.find (*iter) != std::string::npos)
+            return REMOVE;
+    }
+
+    // done here
+
+    return KEEP;
 }
 
-// get / set limits
-
-/// access to the sub-string container
-
-const std::set<std::string>& CRemovePathsBySubString::GetFilterPaths() const
+CRemovePathsBySubString::PathClassification 
+CRemovePathsBySubString::QuickClassification (const CDictionaryBasedPath& path) const
 {
-    return filterPaths;
-}
-
-std::set<std::string>& CRemovePathsBySubString::GetFilterPaths()
-{
-    return filterPaths;
-}
-
-// implement ICopyFilterOption
-
-ICopyFilterOption::EResult 
-CRemovePathsBySubString::ShallRemove (const CFullGraphNode* node) const
-{
-    // short-cut
-
-    if (filterPaths.empty())
-        return ICopyFilterOption::KEEP_NODE;
-
-    // node to classify
-
-    const CDictionaryBasedPath& path = node->GetRealPath();
-
     // ensure the index is valid within classification cache 
 
     if (pathClassification.size() <= path.GetIndex())
@@ -70,27 +60,80 @@ CRemovePathsBySubString::ShallRemove (const CFullGraphNode* node) const
 
     PathClassification& classification = pathClassification[path.GetIndex()];
     if (classification == UNKNOWN)
-    {
-        std::string fullPath = path.GetPath();
+        classification = Classify (path.GetPath());
 
-        classification = KEEP;
-    	for ( std::set<std::string>::const_iterator iter = filterPaths.begin()
-            , end = filterPaths.end()
-            ; iter != end
-            ; ++iter)
-        {
-            if (fullPath.find (*iter) != std::string::npos)
-            {
-                classification = REMOVE;
-                break;
-            }
-        }
-    }
+    // done here
+
+    return classification;
+}
+
+// construction
+
+CRemovePathsBySubString::CRemovePathsBySubString (CRevisionGraphOptionList& list)
+    : inherited (list)
+    , removeSubTrees (false)
+{
+}
+
+// access to the sub-string container
+
+const std::set<std::string>& CRemovePathsBySubString::GetFilterPaths() const
+{
+    return filterPaths;
+}
+
+std::set<std::string>& CRemovePathsBySubString::GetFilterPaths()
+{
+    return filterPaths;
+}
+
+// access to removal behavior
+
+bool CRemovePathsBySubString::GetRemoveSubTrees() const
+{
+    return removeSubTrees;
+}
+
+void CRemovePathsBySubString::SetRemoveSubTrees (bool value)
+{
+    removeSubTrees = value;
+}
+
+// implement IRevisionGraphOption
+
+bool CRemovePathsBySubString::IsActive() const
+{
+    return !filterPaths.empty();
+}
+
+// implement ICopyFilterOption
+
+ICopyFilterOption::EResult 
+CRemovePathsBySubString::ShallRemove (const CFullGraphNode* node) const
+{
+    // short-cut
+
+    if (filterPaths.empty())
+        return ICopyFilterOption::KEEP_NODE;
+
+    // path to classify
+
+    const CDictionaryBasedTempPath& path = node->GetPath();
+
+    // most paths can be filtered quickly using the classification cache
+
+    PathClassification classification = QuickClassification (path.GetBasePath());
+
+    // take a closer look if necessary
+
+    if ((classification != REMOVE) && !path.IsFullyCachedPath())
+        classification = Classify (path.GetPath());
 
     // return the result
 
     return classification == REMOVE
-        ? ICopyFilterOption::REMOVE_NODE
+        ? removeSubTrees ? ICopyFilterOption::REMOVE_SUBTREE 
+                         : ICopyFilterOption::REMOVE_NODE
         : ICopyFilterOption::KEEP_NODE;
 }
 

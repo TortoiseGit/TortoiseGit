@@ -33,17 +33,28 @@ void CStandardNodePositioning::StackSubTree
     // the highest position allowed for any branch
     // (if actually reached, node must be at 0,0)
 
-    long branchMinY = localColumnEnds[0] + node->requiredSize.cy;
+    long branchMinY = localColumnEnds[0];
+
+    // shift sub-branches down by at least this value to make room for
+    // the connection line to it
+
+    long connectionShift = node->rect.top + node->rect.Height() / 2 + 10;
 
     // shift subtree downwards until there is no overlap with upper sub-trees
 
-    long subTreeMinY = 0;
+    long subTreeMinY = branchMinY + connectionShift;
     if (reduceCrossLines->IsActive())
     {
-        for (size_t i = 0, count = branchColumnStarts.size(); i < count; ++i)
+        // create a "stairs-like" branch start:
+        // columns must start at the same line or above their right neigbour
+
+        long minStart = LONG_MAX;
+        for (size_t i = branchColumnStarts.size(); i > 0; --i)
         {
-            subTreeMinY = max ( subTreeMinY
-                , localColumnEnds[i+1] + node->rect.Height() / 2 + 10);
+            minStart = min (minStart, branchColumnStarts[i-1] - connectionShift);
+            branchColumnStarts[i-1] = minStart;
+
+            subTreeMinY = max (subTreeMinY, localColumnEnds[i] - minStart);
         }
     }
     else
@@ -51,7 +62,7 @@ void CStandardNodePositioning::StackSubTree
         for (size_t i = 0, count = branchColumnStarts.size(); i < count; ++i)
         {
             subTreeMinY = max ( subTreeMinY
-                , localColumnEnds[i+1] - branchColumnStarts[i] + node->rect.Height() / 2 + 10);
+                              , localColumnEnds[i+1] - branchColumnStarts[i] + connectionShift);
         }
     }
 
@@ -59,11 +70,11 @@ void CStandardNodePositioning::StackSubTree
     // (will be applied to .rect in a second pass)
 
     node->subTreeShift.cx = node->requiredSize.cx + 50;
-    node->subTreeShift.cy = max (branchMinY, subTreeMinY);
+    node->subTreeShift.cy = subTreeMinY;
 
     // adjust y-coord of the start node
 
-    long nodeYShift = node->subTreeShift.cy - node->requiredSize.cy;
+    long nodeYShift = node->subTreeShift.cy - connectionShift;
     node->rect.top += nodeYShift;
     node->rect.bottom += nodeYShift;
 
@@ -78,7 +89,7 @@ void CStandardNodePositioning::StackSubTree
         localColumnStarts[i+1] = min ( localColumnStarts[i+1]
                                      , subTreeYShift + branchColumnStarts[i]);
         localColumnEnds[i+1] = max ( localColumnEnds[i+1]
-                                      , subTreeYShift + branchColumnEnds[i]);
+                                   , subTreeYShift + branchColumnEnds[i]);
     }
 }
 
@@ -270,8 +281,7 @@ void CStandardNodePositioning::ApplyTo (IRevisionGraphLayout* layout)
     for (index_t i = 0, count = nodeAccess->GetNodeCount(); i < count; ++i)
     {
         CStandardLayoutNodeInfo* node = nodeAccess->GetNode(i);
-        if (   (node->node->GetPrevious() == NULL)
-            && (node->node->GetCopySource() == NULL))
+        if (node->node->GetSource() == NULL)
         {
             // we found a root -> place it
 
@@ -283,7 +293,7 @@ void CStandardNodePositioning::ApplyTo (IRevisionGraphLayout* layout)
             // actually move the node rects to thier final position
 
             ShiftNodes (node, treeShift);
-            treeShift.cx = BoundingRect (node).right + 50;
+            treeShift.cx = BoundingRect (node).right + 100;
         }
     }
 }

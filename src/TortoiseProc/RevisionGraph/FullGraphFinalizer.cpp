@@ -38,9 +38,9 @@ CFullGraphFinalizer::CFullGraphFinalizer
 {
     // initialize path classificator
 
-    CRegStdString trunkPattern (_T("Software\\TortoiseGit\\RevisionGraph\\TrunkPattern"), _T("trunk"));
-    CRegStdString branchesPattern (_T("Software\\TortoiseGit\\RevisionGraph\\BranchPattern"), _T("branches"));
-    CRegStdString tagsPattern (_T("Software\\TortoiseGit\\RevisionGraph\\TagsPattern"), _T("tags"));
+    CRegStdString trunkPattern (_T("Software\\TortoiseSVN\\RevisionGraph\\TrunkPattern"), _T("trunk"));
+    CRegStdString branchesPattern (_T("Software\\TortoiseSVN\\RevisionGraph\\BranchPattern"), _T("branches"));
+    CRegStdString tagsPattern (_T("Software\\TortoiseSVN\\RevisionGraph\\TagsPattern"), _T("tags"));
 
     const CPathDictionary& paths = history.GetCache()->GetLogInfo().GetPaths();
     pathClassification.reset 
@@ -193,6 +193,28 @@ void CFullGraphFinalizer::MarkHead (CFullGraphNode* node)
     node->AddClassification (CNodeClassification::IS_LAST);
 }
 
+void CFullGraphFinalizer::AddWCModification (CFullGraphNode* node)
+{
+    // is this the BASE node for our WC?
+
+    if (node->GetClassification().Matches 
+            ( CNodeClassification::IS_WORKINGCOPY
+            , CNodeClassification::IS_MODIFIED_WC))
+    {
+        if (history.GetWCModified())
+        {
+            // add the modification node
+
+            CNodeClassification classification = node->GetClassification();
+            classification.Add (  CNodeClassification::IS_MODIFIED_WC
+                                | (node->GetNext() == NULL
+                                    ? 0
+                                    : CNodeClassification::IS_COPY_TARGET));
+            graph.Add (node->GetPath(), node->GetRevision()+1, classification, node);
+        }
+    }
+}
+
 // classify nodes on by one
 
 void CFullGraphFinalizer::ForwardClassification (CFullGraphNode* node)
@@ -205,6 +227,7 @@ void CFullGraphFinalizer::ForwardClassification (CFullGraphNode* node)
         MarkCopySource (node);
         MarkWCRevision (node);
         MarkHead (node);
+        AddWCModification (node);
 
         // add path-based classification
 

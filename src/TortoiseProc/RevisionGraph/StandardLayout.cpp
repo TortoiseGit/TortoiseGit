@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 
 #include "VisibleGraph.h"
 
+#include "StandardLayoutRectList.h"
 #include "StandardLayoutNodeList.h"
 #include "StandardLayoutConnectionList.h"
 #include "StandardLayoutTextList.h"
@@ -36,6 +37,7 @@ CStandardLayoutNodeInfo::CStandardLayoutNodeInfo()
     , nextBranch (NULL)
     , previousBranch (NULL)
     , lastBranch (NULL)
+    , rootID ((index_t)NO_INDEX)
     , subTreeWidth (1)
     , subTreeHeight (1)
     , subTreeWeight (1)
@@ -43,6 +45,8 @@ CStandardLayoutNodeInfo::CStandardLayoutNodeInfo()
     , requiresRevision (true)
     , requiresPath (true)
     , requiresGap (true)
+    , skipStartPathElements (0)
+    , skipTailPathElements (0)
     , requiredSize (0, 0)
     , subTreeShift (0, 0)
     , treeShift (0, 0)
@@ -118,6 +122,10 @@ void CStandardLayout::InitializeNodes ( const CVisibleGraphNode* start
     CStandardLayoutNodeInfo* previousInBranch = NULL;
     CStandardLayoutNodeInfo* lastInBranch = NULL;
 
+    // copy this info to all sub-nodes:
+
+    index_t rootID = nodes[start->GetIndex()].rootID;
+
     // measure subtree size, calculate branch length and back-link it
 
     index_t branchLength = 0;
@@ -132,6 +140,7 @@ void CStandardLayout::InitializeNodes ( const CVisibleGraphNode* start
 
         assert (nodeInfo.node == NULL);
         nodeInfo.node = node;
+        nodeInfo.rootID = rootID;
         nodeInfo.previousInBranch = previousInBranch;
         nodeInfo.parentBranch = parentBranch;
         if (previousInBranch != NULL)
@@ -156,6 +165,7 @@ void CStandardLayout::InitializeNodes ( const CVisibleGraphNode* start
 
                 const CVisibleGraphNode* subNode = target->value();
                 CStandardLayoutNodeInfo& subNodeInfo = nodes[subNode->GetIndex()];
+                subNodeInfo.rootID = rootID;
 
                 if (previousBranch != NULL)
                 {
@@ -211,12 +221,17 @@ void CStandardLayout::InitializeNodes ( const CVisibleGraphNode* start
     }
 }
 
-void CStandardLayout::InitializeNodes (const CVisibleGraph* graph)
+void CStandardLayout::InitializeNodes()
 {
     nodes.resize (graph->GetNodeCount());
 
     for (size_t i = 0, count = graph->GetRootCount(); i < count; ++i)
-        InitializeNodes (graph->GetRoot (i), NULL);
+    {
+        const CVisibleGraphNode* root = graph->GetRoot(i);
+        nodes[root->GetIndex()].rootID = static_cast<index_t>(i);
+
+        InitializeNodes (root, NULL);
+    }
 
     // every node info must actually refer to a node
 
@@ -256,9 +271,7 @@ void CStandardLayout::CreateConnections()
     for (index_t i = 0, count = (index_t)nodes.size(); i < count; ++i)
     {
         const CVisibleGraphNode* node = nodes[i].node;
-        const CVisibleGraphNode* previousNode = node->GetCopySource()
-                                              ? node->GetCopySource()
-                                              : node->GetPrevious();
+        const CVisibleGraphNode* previousNode = node->GetSource();
 
         // skip roots
 
@@ -301,8 +314,57 @@ void CStandardLayout::CreateTexts()
             texts.push_back (STextInfo (i, 0));
 
         if (info.requiresPath)
-            for (index_t k = info.node->GetPath().GetDepth(); k > 0; --k)
+        {
+            size_t visibleElementCount = info.node->GetPath().GetDepth() 
+                                       - info.skipStartPathElements
+                                       - info.skipTailPathElements;
+            for (index_t k = visibleElementCount; k > 0; --k)
                 texts.push_back (STextInfo (i, k));
+        }
+    }
+}
+
+// just iterate over all nodes
+
+inline bool SortRectByLeft (const CRect& lhs, const CRect& rhs)
+{
+    return lhs.left < rhs.left;
+};
+
+void CStandardLayout::CloseTreeBoundingRectGaps()
+{
+    std::sort (trees.begin(), trees.end(), &SortRectByLeft);
+
+    for (size_t i = 1, count = trees.size(); i < count; ++i)
+    {
+        LONG diff = (trees[i].left - trees[i-1].right + 1) / 2;
+        trees[i-1].right += diff;
+        trees[i].left -= diff;
+    }
+}
+
+void CStandardLayout::CalculateTreeBoundingRects()
+{
+    // initialize with empty rect
+
+    trees.resize (graph->GetRootCount());
+    for (size_t i = 0, count = graph->GetRootCount(); i < count; ++i)
+        trees[i] = CRect (0, 0, 0, 0);
+
+    for (size_t i = 0, count = nodes.size(); i < count; ++i)
+    {
+        const CStandardLayoutNodeInfo& nodeInfo = nodes[i];
+        const CSize& size = nodeInfo.requiredSize;
+
+        CRect rect = nodeInfo.rect;
+        rect.right = max (rect.left + size.cx, rect.right);
+        rect.bottom = max (rect.top + size.cy, rect.bottom);
+
+        CRect& bounds = trees[nodeInfo.rootID];
+        if (bounds.Width() == 0)
+            bounds = rect;
+        else
+            bounds |= rect;
     }
 }
 
@@ -321,18 +383,19 @@ void CStandardLayout::CalculateBoundingRect()
     // cover all node rects 
     // (connections and texts will lie within these bounds)
 
-    boundingRect = nodes[0].rect;
-    for (size_t i = 1, count = nodes.size(); i < count; ++i)
-        boundingRect |= nodes[i].rect;
+    boundingRect = trees[0];
+    for (size_t i = 1, count = trees.size(); i < count; ++i)
+        boundingRect |= trees[i];
 }
 
-/// construction / destruction
+// construction / destruction
 
 CStandardLayout::CStandardLayout ( const CCachedLogInfo* cache
                                  , const CVisibleGraph* graph)
     : cache (cache)
+    , graph (graph)
 {
-    InitializeNodes (graph);
+    InitializeNodes();
 }
 
 CStandardLayout::~CStandardLayout(void)
@@ -345,6 +408,9 @@ void CStandardLayout::Finalize()
 {
     CreateConnections();
     CreateTexts();
+
+    CalculateTreeBoundingRects();
+    CloseTreeBoundingRectGaps();
     CalculateBoundingRect();
 }
 
@@ -353,6 +419,11 @@ void CStandardLayout::Finalize()
 CRect CStandardLayout::GetRect() const
 {
     return boundingRect;
+}
+
+const ILayoutRectList* CStandardLayout::GetTrees() const
+{
+    return new CStandardLayoutRectList (trees);
 }
 
 const ILayoutNodeList* CStandardLayout::GetNodes() const

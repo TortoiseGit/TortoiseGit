@@ -20,7 +20,7 @@
 
 // include base classes
 
-#include "LogCacheGlobals.h"
+#include "./Containers/LogCacheGlobals.h"
 #include "CopyFilterOptions.h"
 #include "revisiongraphoptionsimpl.h"
 #include "Resource.h"
@@ -56,6 +56,10 @@ public:
 
     revision_t GetUpperLimit() const;
     void SetUpperLimit (revision_t limit);
+
+    /// implement IRevisionGraphOption
+
+    virtual bool IsActive() const; 
 
     /// implement ICopyFilterOption
 

@@ -23,17 +23,15 @@
 
 #include "VisibleGraph.h"
 
-inline bool CompareNodes 
-    ( const std::pair<revision_t, CStandardLayoutNodeInfo*>& lhs
-    , const std::pair<revision_t, CStandardLayoutNodeInfo*>& rhs)
-{
-    return lhs.first > rhs.first;
-}
+// return a vector of all nodes sorted by revision.
+// Also, sort all sub-node lists by revision.
 
 void CStrictOrderNodePositioning::SortRevisions 
     ( IStandardLayoutNodeAccess* nodeAccess
     , std::vector<std::pair<revision_t, CStandardLayoutNodeInfo*> >& nodes)
 {
+    std::vector<std::pair<revision_t, CStandardLayoutNodeInfo*> > subBranches;
+
     // fill vector
 
     index_t count = nodeAccess->GetNodeCount();
@@ -42,11 +40,56 @@ void CStrictOrderNodePositioning::SortRevisions
     {
         CStandardLayoutNodeInfo* node = nodeAccess->GetNode(i);
         nodes.push_back (std::make_pair (node->node->GetRevision(), node));
+
+        // more than 1 sub-branch?
+
+        if (   (node->firstSubBranch != NULL) 
+            && (node->firstSubBranch != node->firstSubBranch->lastBranch))
+        {
+            // sort them by revision
+
+            subBranches.clear();
+            for ( CStandardLayoutNodeInfo* subBranch = node->firstSubBranch
+                ; subBranch != NULL
+                ; subBranch = subBranch->nextBranch)
+            {
+                subBranches.push_back (std::make_pair (subBranch->node->GetRevision(), subBranch));
+            }
+
+            std::sort (subBranches.begin(), subBranches.end());
+
+            // when reducing cross-lines: put newest sub-branch to the left
+
+            if (reduceCrossLines->IsActive())
+                std::reverse (subBranches.begin(), subBranches.end());
+
+            // store the new order
+
+            CStandardLayoutNodeInfo* previousSubBranch = NULL;
+            CStandardLayoutNodeInfo* lastSubBranch = subBranches.rbegin()->second;
+            lastSubBranch->nextBranch = NULL;
+
+            for ( size_t k = 0, branchCount = subBranches.size()
+                ; k < branchCount
+                ; ++k)
+            {
+                CStandardLayoutNodeInfo* subBranch = subBranches[k].second;
+
+                subBranch->lastBranch = lastSubBranch;
+                subBranch->previousBranch = previousSubBranch;
+                if (previousSubBranch != NULL)
+                    previousSubBranch->nextBranch = subBranch;
+
+                previousSubBranch = subBranch;
+            }
+
+            node->firstSubBranch = subBranches[0].second;
+        }
     }
 
-    // sort it
+    // sort the nodes globally
 
-    std::sort (nodes.begin(), nodes.end()/*, CompareNodes*/);
+    std::sort (nodes.begin(), nodes.end());
 }
 
 void CStrictOrderNodePositioning::AssignColumns 
@@ -95,12 +138,12 @@ void CStrictOrderNodePositioning::AssignColumns
 
     if (reduceCrossLines->IsActive() && (start->parentBranch != NULL))
     {
-        revision_t connectionFirstRevision = start->parentBranch->node->GetRevision();
-        revision_t connectionLastRevision = firstRevision-1;
+        revision_t connectionFromRevision = start->parentBranch->node->GetRevision();
+        revision_t connectionToRevision = firstRevision-1;
         for (revision_t i = start->parentBranch->treeShift.cx+1; i <= column; ++i)
         {
-            startRevisions[i] = min (connectionFirstRevision, startRevisions[i]);
-            endRevisions[i] = max (connectionLastRevision, endRevisions[i]);
+            startRevisions[i] = min (connectionFromRevision, startRevisions[i]);
+            endRevisions[i] = max (connectionToRevision, endRevisions[i]);
         }
     }
 
@@ -149,8 +192,7 @@ void CStrictOrderNodePositioning::AssignColumns
     for (size_t i = 0, count = nodes.size(); i < count; ++i)
     {
         CStandardLayoutNodeInfo* node = nodes[i].second;
-        if (   (node->node->GetPrevious() == NULL)
-            && (node->node->GetCopySource() == NULL))
+        if (node->node->GetSource() == NULL)
         {
             AssignColumns ( node
                           , startRevisions.size()
@@ -221,9 +263,9 @@ void CStrictOrderNodePositioning::AssignRows
                 }
 
                 int halfHeight = node->rect.Height() / 2;
-                for (int i = column+1; i <= maxTargetColumn; ++i)
+                for (int j = column+1; j <= maxTargetColumn; ++j)
                 {
-                    rowStart = max (rowStart, columnTops[i] - halfHeight + 6);
+                    rowStart = max (rowStart, columnTops[j] - halfHeight + 6);
                 }
             }
         }
@@ -234,7 +276,7 @@ void CStrictOrderNodePositioning::AssignRows
         {
             CStandardLayoutNodeInfo* node = nodes[i].second;
             int column = node->treeShift.cx;
-            int height = node->rect.Height();
+            int height = node->requiredSize.cy;
 
             columnTops[column] = rowStart + height;
             node->treeShift.cy = rowStart;

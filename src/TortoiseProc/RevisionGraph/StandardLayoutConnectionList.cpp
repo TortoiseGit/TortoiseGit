@@ -67,7 +67,7 @@ index_t CStandardLayoutConnectionList::GetNextVisible
 
 index_t CStandardLayoutConnectionList::GetAt 
     ( const CPoint& /* point */
-    , long /* delta */) const
+    , CSize /* delta */) const
 {
     return static_cast<index_t>(NO_INDEX);
 }

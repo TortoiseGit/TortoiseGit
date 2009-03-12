@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,12 +21,15 @@
 #include "StandardNodeSizeAssignment.h"
 #include "StandardLayout.h"
 #include "VisibleGraphNode.h"
+#include "GraphNodeState.h"
 
 // construction
 
 CStandardNodeSizeAssignment::CStandardNodeSizeAssignment 
-    ( CRevisionGraphOptionList& list)
+    ( CRevisionGraphOptionList& list
+    , const CGraphNodeStates* nodeStates)
     : CRevisionGraphOptionImpl<ILayoutOption, 100, 0> (list)
+    , nodeStates (nodeStates)
 {
 }
 
@@ -48,15 +51,38 @@ void CStandardNodeSizeAssignment::ApplyTo (IRevisionGraphLayout* layout)
     {
         CStandardLayoutNodeInfo* node = nodeAccess->GetNode(i);
 
+        // expand node to show the path, if necessary
+
         node->requiresPath =   (node->previousInBranch == NULL)
                             || (   node->previousInBranch->node->GetPath() 
                                 != node->node->GetPath());
 
-        int hight = 28;
+        int height = 28;
         if (node->requiresPath)
-            hight += 3 + node->node->GetPath().GetDepth() * 21;
+        {
+            size_t visibleElementCount = node->node->GetPath().GetDepth() 
+                                       - node->skipStartPathElements
+                                       - node->skipTailPathElements;
+            height += 3 + visibleElementCount * 21;
+        }
 
-        node->requiredSize = CSize (200, hight);
-        node->rect = CRect (0, 0, 200, hight);
+        // shift (root) nodes down, if their source has been folded
+        // (otherwise, glyphs would be partly hidden)
+
+        DWORD state = nodeStates->GetFlags (node->node);
+        int shift = (state & ( CGraphNodeStates::COLLAPSED_ABOVE 
+                             | CGraphNodeStates::SPLIT_ABOVE)) == 0
+                  ? 0
+                  : 8;
+
+        int extension = (state & ( CGraphNodeStates::COLLAPSED_BELOW 
+                                 | CGraphNodeStates::SPLIT_BELOW)) == 0
+                      ? 0
+                      : 8;
+
+        // set result
+
+        node->requiredSize = CSize (200, height + extension + shift);
+        node->rect = CRect (0, shift, 200, height + shift);
     }
 }

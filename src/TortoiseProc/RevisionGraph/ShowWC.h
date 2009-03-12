@@ -21,6 +21,7 @@
 // include base classes
 
 #include "CopyFilterOptions.h"
+#include "ModificationOptions.h"
 #include "revisiongraphoptionsimpl.h"
 #include "Resource.h"
 
@@ -30,9 +31,15 @@
 */
 
 class CShowWC
-    : public CRevisionGraphOptionImpl< ICopyFilterOption
-                                     , 100
-                                     , ID_VIEW_SHOWWCREV>
+    : public CModificationOptionImpl
+                < CCombineInterface 
+                    < ICopyFilterOption
+                    , IModificationOption>
+                , 100
+                , ID_VIEW_SHOWWCREV
+                , true           // crawl branches first
+                , false          // root last
+                , false>         // no need to execute this more than once
 {
 public:
 
@@ -40,7 +47,17 @@ public:
 
     CShowWC (CRevisionGraphOptionList& list);
 
-    /// implement ICopyFilterOption
+    /// implement IRevisionGraphOption: 
+    /// this one must always be executed
+    /// (ICopyFilterOption, if selected; IModificationOption is not)
+
+    virtual bool IsActive() const; 
+
+    /// implement ICopyFilterOption (pre-filter most nodes)
 
     virtual EResult ShallRemove (const CFullGraphNode* node) const;
+
+    /// implement IModificationOption (post-filter deleted non-tagged branches)
+
+    virtual void Apply (CVisibleGraph*, CVisibleGraphNode* node);
 };

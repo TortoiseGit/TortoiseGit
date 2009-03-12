@@ -20,6 +20,7 @@
 #include "StandardLayoutTextList.h"
 #include "UnicodeUtils.h"
 #include "VisibleGraphNode.h"
+#include "resource.h"
 
 // construction
 
@@ -67,7 +68,7 @@ index_t CStandardLayoutTextList::GetNextVisible
 
 index_t CStandardLayoutTextList::GetAt 
     ( const CPoint& /* point */
-    , long /* delta */) const
+    , CSize /* delta */) const
 {
     return static_cast<index_t>(NO_INDEX);
 }
@@ -82,34 +83,58 @@ CStandardLayoutTextList::GetText (index_t index) const
     const CStandardLayout::STextInfo& textInfo = texts[index];
     const CStandardLayoutNodeInfo& nodeInfo = nodes[textInfo.nodeIndex];
 
+    bool isModifiedWC = nodeInfo.node->GetClassification().Is 
+                            (CNodeClassification::IS_MODIFIED_WC);
+
     CString text;
     CRect rect = nodeInfo.rect;
     if (textInfo.subPathIndex > 0)
     {
         rect.top = rect.top + 25 + 21 * (textInfo.subPathIndex-1);
 
-        CString path = CUnicodeUtils::StdGetUnicode 
-                         (nodeInfo.node->GetPath().GetPath()).c_str();
-        int index = 0;
-        for (int i = textInfo.subPathIndex; i > 0; --i)
-            text = path.Tokenize (_T("/"), index);
-
+        size_t index = textInfo.subPathIndex-1 + nodeInfo.skipStartPathElements;
+        const CDictionaryBasedTempPath& path = nodeInfo.node->GetPath();
+        size_t visibleElementCount = path.GetDepth() 
+                                   - nodeInfo.skipStartPathElements
+                                   - nodeInfo.skipTailPathElements;
+        text = CUnicodeUtils::StdGetUnicode (path[index]).c_str();
         text.Insert (0, _T('/'));
+
+        // add "...." pre- and post-fixes, if elements have been skipped
+
+        if ((textInfo.subPathIndex == 1) && (nodeInfo.skipStartPathElements > 0))
+            text.Insert (0, CString ('.', nodeInfo.skipStartPathElements));
+
+        if (   (visibleElementCount == (size_t)textInfo.subPathIndex) 
+            && (nodeInfo.skipTailPathElements != 0))
+        {
+            text.AppendChar (_T('/'));
+            text.Append (CString ('.', nodeInfo.skipTailPathElements));
+        }
     }
     else
     {
-        rect.top += 3;
-
-        TCHAR buffer[20];
-        _itot_s (nodeInfo.node->GetRevision(), buffer, 10);
-        text = buffer;
+        rect.top += 4;
+        if (isModifiedWC)
+        {
+            text.LoadString (IDS_SVN_SUMMARIZEMODIFIED);
+        }
+        else
+        {
+            TCHAR buffer[20];
+            _itot_s (nodeInfo.node->GetRevision(), buffer, 10);
+            text = buffer;
+        }
     }
 
     // construct result
 
     SText result;
 
-    result.style = textInfo.subPathIndex == 0;
+    result.style = textInfo.subPathIndex == 0
+                 ? isModifiedWC ? SText::STYLE_WARNING
+                                : SText::STYLE_HEADING
+                 : SText::STYLE_DEFAULT;
     result.rotation = 0;
     result.rect = rect;
     result.text = text;

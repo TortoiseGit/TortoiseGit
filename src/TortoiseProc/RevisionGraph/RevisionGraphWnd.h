@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,10 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "RevisionGraph/FullHistory.h"
-#include "RevisionGraph/FullGraph.h"
-#include "RevisionGraph/VisibleGraph.h"
-#include "RevisionGraph/IRevisionGraphLayout.h"
+#include "RevisionGraph/RevisionGraphState.h"
 #include "ProgressDlg.h"
 #include "Colors.h"
 #include "SVNDiff.h"
@@ -31,14 +28,35 @@ using namespace Gdiplus;
 #define REVGRAPH_PREVIEW_WIDTH 100
 #define REVGRAPH_PREVIEW_HEIGHT 200
 
-// we need at least 5x2 pixels per node 
-// to draw a meaningful pre-view
+// don't draw pre-views with more than that number of nodes
 
-#define REVGRAPH_PREVIEW_MAX_NODES (REVGRAPH_PREVIEW_HEIGHT * REVGRAPH_PREVIEW_WIDTH / 10)
+#define REVGRAPH_PREVIEW_MAX_NODES 10000
 
 // don't try to draw nodes smaller than that:
 
 #define REVGRAPH_MIN_NODE_HIGHT (0.5f)
+
+// size of the node marker
+
+enum
+{
+    MARKER_SIZE = 14
+};
+
+// size of the expand / collapse / split / join square gylphs
+
+enum
+{
+    GLYPH_SIZE = 16
+};
+
+// glyph display delay definitions
+
+enum
+{
+    GLYPH_HOVER_EVENT = 10,     // timer ID for the glyph display delay
+    GLYPH_HOVER_DELAY = 250     // delay until the glyphs are shown [ms]
+};
 
 /**
  * \ingroup TortoiseProc
@@ -58,9 +76,7 @@ enum NodeShape
 
 // forward declarations
 
-class CVisibleGraphNode;
-class IRevisionGraphLayout;
-class CAllRevisionGraphOptions;
+class CRevisionGraphDlg;
 
 /**
  * \ingroup TortoiseProc
@@ -86,43 +102,42 @@ public:
 	volatile LONG	m_bThreadRunning;
 	CProgressDlg* 	m_pProgress;
 
+    CRevisionGraphState m_state;
+
 	void			InitView();
 	void			Init(CWnd * pParent, LPRECT rect);
 	void			SaveGraphAs(CString sSavePath);
 
     bool            FetchRevisionData ( const CString& path
-                                      , SVNRev pegRevision
-                                      , const CAllRevisionGraphOptions& options);
-    bool            AnalyzeRevisionData (const CAllRevisionGraphOptions& options);
-    CString         GetLastErrorMessage() const;
+                                      , SVNRev pegRevision);
+    bool            AnalyzeRevisionData();
 
     bool            GetShowOverview() const;
     void            SetShowOverview (bool value);
 
+    void            GetSelected (const CVisibleGraphNode* node, bool head, CTSVNPath& path, SVNRev& rev, SVNRev& peg);
 	void			CompareRevs(bool bHead);
 	void			UnifiedDiffRevs(bool bHead);
 
+	CRect       	GetGraphRect();
+	CRect           GetClientRect();
+	CRect           GetWindowRect();
 	CRect           GetViewRect();
-    int             GetNodeCount();
 	void			DoZoom(float nZoomFactor);
+	bool			CancelMouseZoom();
 
     void            SetDlgTitle (bool offline);
 
-    svn_revnum_t    GetHeadRevision() const;             
-    CString         GetRepositoryRoot() const;             
-    CString         GetRepositoryUUID() const;
+  	void			BuildPreview();
 
 protected:
 	DWORD			m_dwTicks;
 	CRect			m_OverviewPosRect;
 	CRect			m_OverviewRect;
 
-	BOOL			m_bShowOverview;
+	bool			m_bShowOverview;
 
-    std::auto_ptr<CFullHistory>         m_fullHistory;
-    std::auto_ptr<CFullGraph>           m_fullGraph;
-    std::auto_ptr<CVisibleGraph>        m_visibleGraph;
-    std::auto_ptr<IRevisionGraphLayout> m_layout;
+    CRevisionGraphDlg *m_parent;
 
 	const CVisibleGraphNode * m_SelectedEntry1;
 	const CVisibleGraphNode * m_SelectedEntry2;
@@ -146,6 +161,12 @@ protected:
 	int				m_previewWidth;
 	int				m_previewHeight;
     float           m_previewZoom;
+
+    index_t         m_hoverIndex;   // node the cursor currently hovers over
+    DWORD           m_hoverGlyphs;  // the glyphs shown for \ref m_hoverIndex
+    mutable index_t m_tooltipIndex; // the node index we fetched the tooltip for
+    bool            m_showHoverGlyphs;  // if true, show the glyphs we currently hover over
+                                    // (will be activated only after some delay)
 	
 	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void	OnPaint();
@@ -161,35 +182,63 @@ protected:
 	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg BOOL	OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 	afx_msg LRESULT	OnWorkerThreadDone(WPARAM, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 private:
 
-    typedef bool (SVNDiff::*TDiffFunc)(const CTSVNPath& url1, const SVNRev& rev1, 
-	            					   const CTSVNPath& url2, const SVNRev& rev2, 
-						               SVNRev peg,
-						               bool ignoreancestry,
-						               bool blame);
-    typedef bool (*TStartDiffFunc)(HWND hWnd, const CTSVNPath& url1, const SVNRev& rev1, 
-						           const CTSVNPath& url2, const SVNRev& rev2, 
-						           const SVNRev& peg, const SVNRev& headpeg,
-						           bool bAlternateDiff,
-						           bool bIgnoreAncestry,
-                                   bool blame);
+    enum MarkerPosition
+    {
+        mpLeft = 0,   
+        mpRight = 1, 
+    };
 
-    void            Compare (TDiffFunc diffFunc, TStartDiffFunc startDiffFunc, bool bHead);
-    bool            PromptShown() const;
+    enum GlyphType
+    {
+        NoGlyph = -1,
+        ExpandGlyph = 0,    // "+"
+        CollapseGlyph = 1,  // "-"
+        SplitGlyph = 2,     // "x"
+        JoinGlyph = 3,      // "o"
+    };
+
+    enum GlyphPosition
+    {
+        Above = 0,    
+        Right = 4, 
+        Below = 8,     
+    };
+
+    bool            UpdateSelectedEntry (const CVisibleGraphNode * clickedentry);
+    void            AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
+    void            AddSVNOps (CMenu& popup);
+    void            AddGraphOps (CMenu& popup, const CVisibleGraphNode * node);
+    CString         GetSelectedURL() const;
+    CString         GetWCURL() const;
+    void            DoShowLog();
+    void            DoCheckForModification();
+    void            DoMergeTo();
+    void            DoUpdate();
+    void            DoSwitch();
+    void            DoSwitchToHead();
+    void            DoBrowseRepo();
+    void            ResetNodeFlags (DWORD flags);
+    void            ToggleNodeFlag (const CVisibleGraphNode *node, DWORD flag);
 
 	void			SetScrollbars(int nVert = 0, int nHorz = 0, int oldwidth = 0, int oldheight = 0);
-	CRect       	GetGraphRect();
 	CFont*			GetFont(BOOL bItalic = FALSE, BOOL bBold = FALSE);
 
     CSize           UsableTooltipRect();
     CString         DisplayableText (const CString& wholeText, const CSize& tooltipSize);
     CString         TooltipText (index_t index);
 
-    index_t         GetHitNode (CPoint point) const;
+    CPoint          GetLogCoordinates (CPoint point) const;
+    index_t         GetHitNode (CPoint point, CSize border = CSize (0, 0)) const;
+    DWORD           GetHoverGlyphs (CPoint point) const;
+    const CRevisionGraphState::SVisibleGlyph* GetHitGlyph (CPoint point) const;
+
+    void            ClearVisibleGlyphs (const CRect& rect);
 
     typedef PointF TCutRectangle[8];
     void            CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result);
@@ -199,18 +248,35 @@ private:
 	void			DrawShadow(Graphics& graphics, const RectF& rect,
 							   Color shadowColor, NodeShape shape);
 	void			DrawNode(Graphics& graphics, const RectF& rect,
-							 COLORREF contourRef, Color overlayColor,
+							 Color contour, Color overlayColor,
                              const CVisibleGraphNode *node, NodeShape shape);
+    RectF           TransformRectToScreen (const CRect& rect, const CSize& offset) const;
     RectF           GetNodeRect (const ILayoutNodeList::SNode& node, const CSize& offset) const;
+    RectF           GetBranchCover (const ILayoutNodeList* nodeList, index_t nodeIndex, bool upward, const CSize& offset);
+
+    void            DrawSquare (Graphics& graphics, const PointF& leftTop, 
+                                const Color& lightColor, const Color& darkColor, const Color& penColor);
+    void            DrawGlyph (Graphics& graphics, Image* glyphs, const PointF& leftTop,
+                               GlyphType glyph, GlyphPosition position);
+    void            DrawGlyphs (Graphics& graphics, Image* glyphs, const CVisibleGraphNode* node, const PointF& center, 
+                                GlyphType glyph1, GlyphType glyph2, GlyphPosition position, DWORD state1, DWORD state2, bool showAll);
+    void            DrawGlyphs (Graphics& graphics, Image* glyphs, const CVisibleGraphNode* node, const RectF& nodeRect,
+                                DWORD state, DWORD allowed, bool upsideDown);
+    void            DrawMarker ( Graphics& graphics, const RectF& noderect
+                               , MarkerPosition position, int relPosition, int colorIndex);
+    void            IndicateGlyphDirection ( Graphics& graphics, const ILayoutNodeList* nodeList    
+                                           , const ILayoutNodeList::SNode& node, const RectF& nodeRect
+                                           , DWORD glyphs, bool upsideDown, const CSize& offset);
+
+    void            DrawStripes (Graphics& graphics, const CSize& offset);
 
     void            DrawShadows (Graphics& graphics, const CRect& logRect, const CSize& offset);
-    void            DrawNodes (Graphics& graphics, const CRect& logRect, const CSize& offset);
+    void            DrawNodes (Graphics& graphics, Image* glyphs, const CRect& logRect, const CSize& offset);
     void            DrawConnections (CDC* pDC, const CRect& logRect, const CSize& offset);
     void            DrawTexts (CDC* pDC, const CRect& logRect, const CSize& offset);
+    void            DrawCurrentNodeGlyphs (Graphics& graphics, Image* glyphs, const CSize& offset);
     void			DrawGraph(CDC* pDC, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
 
 	int				GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 	void			DrawRubberBand();
-
-	void			BuildPreview();
 };

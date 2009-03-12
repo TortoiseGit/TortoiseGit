@@ -21,19 +21,19 @@
 // include base classes
 
 #include "ModificationOptions.h"
-#include "revisiongraphoptionsimpl.h"
 #include "Resource.h"
 
 /** Remove all "copy-from" nodes.
 */
 
 class CExactCopyFroms 
-    : public COrderedTraversalOptionImpl
+    : public CModificationOptionImpl
                 < IModificationOption
                 , 50
                 , ID_VIEW_EXACTCOPYSOURCE
                 , true          // fold branches first
-                , true>         // root first      
+                , true          // root first      
+                , true>         // this is a cyclic option
 {
 public:
 

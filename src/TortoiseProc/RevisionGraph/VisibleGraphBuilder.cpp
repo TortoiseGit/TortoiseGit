@@ -68,6 +68,8 @@ void CVisibleGraphBuilder::CopyBranches ( const CFullGraphNode* source
 void CVisibleGraphBuilder::Copy ( const CFullGraphNode* source
                                 , CVisibleGraphNode* target)
 {
+    bool firstNode = true;
+
     do
     {
         ICopyFilterOption::EResult filterAction = copyFilter.ShallRemove (source);
@@ -91,14 +93,22 @@ void CVisibleGraphBuilder::Copy ( const CFullGraphNode* source
             if (source == NULL)
                 return;
 
+            // special case: the creation node of the branch was removed
+            // -> create a new root
+
+            if (firstNode)
+                target = NULL;
+
             // test next node
 
             filterAction = copyFilter.ShallRemove (source);
         }
 
+        firstNode = false;
+
         // copy the node itself
 
-        bool preserveNode = filterAction != ICopyFilterOption::PRESERVE_NODE;
+        bool preserveNode = filterAction == ICopyFilterOption::PRESERVE_NODE;
         target = visibleGraph.Add (source, target, preserveNode);
 
         // copy branches

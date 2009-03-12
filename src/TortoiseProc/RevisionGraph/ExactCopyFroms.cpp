@@ -56,6 +56,6 @@ void CExactCopyFroms::Apply (CVisibleGraph* graph, CVisibleGraphNode* node)
         // remove it, if it is either no longer necessary or not wanted at all
 
         if (!IsSelected() || !isCopySource)
-            node->DropNode (graph);
+            node->DropNode (graph, true);
     }
 }

@@ -74,112 +74,114 @@ void CFullGraphBuilder::Run()
         // any known changes in this revision?
 
 		index_t index = revisions[revision];
-		if (index == NO_INDEX)
-			continue;
+		CDictionaryBasedPath basePath = index == NO_INDEX
+                                      ? CDictionaryBasedPath (NULL, index)
+                                      : revisionInfo.GetRootPath (index);
 
-		CDictionaryBasedPath basePath = revisionInfo.GetRootPath (index);
-		if (!basePath.IsValid())
-            continue;
-
-	    // collect search paths that have been deleted in this container
-	    // (delay potential node deletion until we finished tree traversal)
-
-	    std::vector<CSearchPathTree*> toRemove;
-
-        // special handling for replacements: 
-        // we must delete the old branches first and *then* add (some of) these
-        // again in the same revision
-
-        if ((   revisionInfo.GetSumChanges (index) 
-              & CRevisionInfoContainer::ACTION_REPLACED) != 0)
+		if (basePath.IsValid())
         {
+	        // collect search paths that have been deleted in this container
+	        // (delay potential node deletion until we finished tree traversal)
+
+	        std::vector<CSearchPathTree*> toRemove;
+
+            // special handling for replacements: 
+            // we must delete the old branches first and *then* add (some of) these
+            // again in the same revision
+
+            if ((   revisionInfo.GetSumChanges (index) 
+                  & CRevisionInfoContainer::ACTION_REPLACED) != 0)
+            {
+		        CSearchPathTree* startNode 
+			        = searchTree->FindCommonParent (basePath.GetIndex());
+
+                // crawl (possibly) affected sub-tree
+
+			    AnalyzeReplacements ( revision
+						            , revisionInfo.GetChangesBegin (index)
+						            , revisionInfo.GetChangesEnd (index)
+						            , startNode
+						            , toRemove);
+
+		        // remove deleted search paths
+
+		        for (size_t i = 0, count = toRemove.size(); i < count; ++i)
+			        toRemove[i]->Remove();
+
+                toRemove.clear();
+            }
+
+		    // handle remaining copy-to entries
+		    // (some may have a fromRevision that does not touch the fromPath)
+
+		    AddCopiedPaths ( revision
+					       , searchTree.get()
+					       , lastToCopy);
+
+		    // we are looking for search paths that (may) overlap 
+		    // with the revisions' changes
+
+	        // pre-order search-tree traversal
+
 		    CSearchPathTree* startNode 
 			    = searchTree->FindCommonParent (basePath.GetIndex());
 
-            // crawl (possibly) affected sub-tree
+		    if (startNode->GetPath().IsSameOrChildOf (basePath))
+		    {
+			    CSearchPathTree* searchNode = startNode;
 
-			AnalyzeReplacements ( revision
-						        , revisionInfo.GetChangesBegin (index)
-						        , revisionInfo.GetChangesEnd (index)
-						        , startNode
-						        , toRemove);
+			    AnalyzeRevisions ( revision
+						         , revisionInfo.GetChangesBegin (index)
+						         , revisionInfo.GetChangesEnd (index)
+						         , searchNode
+						         , toRemove);
+
+                startNode = startNode->GetParent();
+		    }
+		    else
+		    {
+			    CDictionaryBasedPath commonRoot
+				    = basePath.GetCommonRoot (startNode->GetPath().GetBasePath());
+			    startNode = searchTree->FindCommonParent (commonRoot.GetIndex());
+		    }
+
+        #ifdef _DEBUG
+            if (startNode != NULL)
+            {
+                // only valid for parents of the uppermost modified path
+
+	            for (CRevisionInfoContainer::CChangesIterator iter = revisionInfo.GetChangesBegin (index)
+                    , last = revisionInfo.GetChangesEnd (index)
+                    ; iter != last
+                    ; ++iter)
+                {
+                    assert (startNode->GetPath().IsSameOrParentOf (iter->GetPathID()));
+                }
+            }
+        #endif
+
+		    // mark changes on parent search nodes
+
+            assert (revisionInfo.GetChangesBegin (index) != revisionInfo.GetChangesEnd (index));
+
+		    for ( CSearchPathTree* searchNode = startNode
+			    ; searchNode != NULL
+			    ; searchNode = searchNode->GetParent())
+	        {
+			    if (searchNode->IsActive())
+				    AnalyzeAsChanges (revision, searchNode);
+	        }
 
 		    // remove deleted search paths
 
 		    for (size_t i = 0, count = toRemove.size(); i < count; ++i)
 			    toRemove[i]->Remove();
-
-            toRemove.clear();
         }
 
 		// handle remaining copy-to entries
-		// (some may have a fromRevision that does not touch the fromPath)
-
-		AddCopiedPaths ( revision
-					   , searchTree.get()
-					   , lastToCopy);
-
-		// we are looking for search paths that (may) overlap 
-		// with the revisions' changes
-
-	    // pre-order search-tree traversal
-
-		CSearchPathTree* startNode 
-			= searchTree->FindCommonParent (basePath.GetIndex());
-
-		if (startNode->GetPath().IsSameOrChildOf (basePath))
-		{
-			CSearchPathTree* searchNode = startNode;
-
-			AnalyzeRevisions ( revision
-						     , revisionInfo.GetChangesBegin (index)
-						     , revisionInfo.GetChangesEnd (index)
-						     , searchNode
-						     , toRemove);
-
-            startNode = startNode->GetParent();
-		}
-		else
-		{
-			CDictionaryBasedPath commonRoot
-				= basePath.GetCommonRoot (startNode->GetPath().GetBasePath());
-			startNode = searchTree->FindCommonParent (commonRoot.GetIndex());
-		}
-
-    #ifdef _DEBUG
-        if (startNode != NULL)
-        {
-            // only valid for parents of the uppermost modified path
-
-	        for (CRevisionInfoContainer::CChangesIterator iter = revisionInfo.GetChangesBegin (index)
-                , last = revisionInfo.GetChangesEnd (index)
-                ; iter != last
-                ; ++iter)
-            {
-                assert (startNode->GetPath().IsSameOrParentOf (iter->GetPathID()));
-            }
-        }
-    #endif
-
-		// mark changes on parent search nodes
-
-        assert (revisionInfo.GetChangesBegin (index) != revisionInfo.GetChangesEnd (index));
-
-		for ( CSearchPathTree* searchNode = startNode
-			; searchNode != NULL
-			; searchNode = searchNode->GetParent())
-	    {
-			if (searchNode->IsActive())
-				AnalyzeAsChanges (revision, searchNode);
-	    }
-
-		// remove deleted search paths
-
-		for (size_t i = 0, count = toRemove.size(); i < count; ++i)
-			toRemove[i]->Remove();
-
-		// handle remaining copy-to entries
-		// (some may have a fromRevision that does not touch the fromPath)
+		// (some may have a fromRevision that does not touch the fromPath).
+        // We must execute that even if there is no info for this revision
+        // (it may still be the copy-from-rev of some add).
 
 		FillCopyTargets ( revision
 						, searchTree.get()
