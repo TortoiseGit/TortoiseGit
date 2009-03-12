@@ -38,6 +38,7 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{LocalBranch,_T("Software\\TortoiseGit\\Colors\\LocalBranch"), RGB(0, 195, 0)},
 	{RemoteBranch,_T("Software\\TortoiseGit\\Colors\\RemoteBranch"), RGB(255, 221, 170)},
 	{Tag,_T("Software\\TortoiseGit\\Colors\\Tag"), RGB(255, 255, 0)},
+	{Stash,_T("Software\\TortoiseGit\\Colors\\Stash"), RGB(128, 128, 128)},
 	{BranchLine1,_T("Software\\TortoiseGit\\Colors\\BranchLine1"), RGB(0,0,0)},
 	{BranchLine2,_T("Software\\TortoiseGit\\Colors\\BranchLine2"), RGB(0xFF,0,0)},
 	{BranchLine3,_T("Software\\TortoiseGit\\Colors\\BranchLine3"), RGB(0,0xFF,0)},

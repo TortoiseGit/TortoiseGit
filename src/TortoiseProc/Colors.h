@@ -48,6 +48,7 @@ public:
 		LocalBranch,
 		RemoteBranch,
 		Tag,
+		Stash,
 		BranchLine1,
 		BranchLine2,
 		BranchLine3,

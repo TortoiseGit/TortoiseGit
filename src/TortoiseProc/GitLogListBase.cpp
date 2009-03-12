@@ -411,6 +411,12 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		{
 			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::Tag));
 		}
+		else if(GetShortName(str,shortname,_T("refs/stash")))
+		{
+			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::Stash));
+			shortname=_T("stash");
+		}
+		
 
 		if(!shortname.IsEmpty())
 		{
