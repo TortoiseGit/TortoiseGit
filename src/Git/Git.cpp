@@ -735,15 +735,20 @@ BOOL CGit::CheckMsysGitDir()
 	}
 
 	//setup ssh client
-	CRegString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
-	CString ssh=sshclient;
+	CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
 
-	if(!ssh.IsEmpty())
+	if(!sshclient.IsEmpty())
 	{
-		_tputenv_s(_T("GIT_SSH"),ssh);
+		_tputenv_s(_T("GIT_SSH"),sshclient);
 	}else
 	{
-		_tputenv_s(_T("GIT_SSH"),_T(""));
+		TCHAR sPlink[MAX_PATH];
+		GetModuleFileName(NULL, sPlink, _countof(sPlink));
+		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
+		if (ptr) {
+			_tcscpy(ptr + 1, _T("TortoisePlink.exe"));
+			_tputenv_s(_T("GIT_SSH"), sPlink);
+		}
 	}
 
 	// search PATH if git/bin directory is alredy present
