@@ -1268,6 +1268,18 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="Stash"
+				>
+				<File
+					RelativePath=".\Commands\StashCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\StashCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="Clean"
 				>
 				<File

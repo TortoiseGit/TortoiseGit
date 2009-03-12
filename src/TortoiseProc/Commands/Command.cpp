@@ -56,6 +56,7 @@
 #include "DropCopyCommand.h"
 #include "DropExportCommand.h"
 #include "HelpCommand.h"
+#include "StashCommand.h"
 
 #if 0
 
@@ -332,6 +333,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 //		return new DropExportCommand;
 	case cmdHelp:
 		return new HelpCommand;
+	case cmdStashSave:
+		return new StashSaveCommand;
+	case cmdStashApply:
+		return new StashApplyCommand;
 #if 0
 
 	case cmdCat:
