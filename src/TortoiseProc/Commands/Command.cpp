@@ -162,7 +162,12 @@ typedef enum
 	cmdUnlock,
 	cmdUpdate,
 	cmdUpdateCheck,
-	cmdUrlDiff,
+	cmdUrlDiff,	
+	cmdStashSave,	
+	cmdStashApply,
+	cmdStashList,
+	cmdSubAdd,		
+	cmdSubUpdate,	
 	
 } TGitCommand;
 
@@ -229,6 +234,11 @@ static const struct CommandInfo
 	{	cmdUpdate,			_T("update")			},
 	{	cmdUpdateCheck,		_T("updatecheck")		},
 	{	cmdUrlDiff,			_T("urldiff")			},
+	{	cmdStashSave,		_T("stashsave")			},
+	{	cmdStashApply,		_T("stashapply")		},
+	{	cmdStashList,		_T("stashlist")			},
+	{	cmdSubAdd,			_T("subadd")			},
+	{	cmdSubUpdate,		_T("subupdate")			},
 };
 
 
