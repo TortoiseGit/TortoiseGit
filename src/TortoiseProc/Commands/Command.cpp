@@ -58,6 +58,8 @@
 #include "HelpCommand.h"
 #include "StashCommand.h"
 #include "SubmoduleCommand.h"
+#include "ReflogCommand.h"
+
 #if 0
 
 
@@ -169,6 +171,7 @@ typedef enum
 	cmdStashList,
 	cmdSubAdd,		
 	cmdSubUpdate,	
+	cmdRefLog,
 	
 } TGitCommand;
 
@@ -240,6 +243,7 @@ static const struct CommandInfo
 	{	cmdStashList,		_T("stashlist")			},
 	{	cmdSubAdd,			_T("subadd")			},
 	{	cmdSubUpdate,		_T("subupdate")			},
+	{	cmdRefLog,			_T("reflog")			}
 };
 
 
@@ -341,6 +345,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SubmoduleAddCommand;
 	case cmdSubUpdate:
 		return new SubmoduleUpdateCommand;
+	case cmdRefLog:
+		return new RefLogCommand;
 
 #if 0
 

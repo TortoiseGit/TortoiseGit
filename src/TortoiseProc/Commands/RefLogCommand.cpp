@@ -26,11 +26,13 @@
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "ChangedDlg.h"
+#include "RefLogDlg.h"
 
 bool RefLogCommand::Execute()
 {
 	bool bRet = false;
 
-
+	CRefLogDlg dlg;
+	dlg.DoModal();
 	return bRet;
 }

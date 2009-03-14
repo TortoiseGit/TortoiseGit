@@ -104,6 +104,7 @@ public:
 
 	BOOL IsInitRepos();
 	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
+	int GetRefList(STRING_VECTOR &list);
 	
 };
 extern void GetTempPath(CString &path);

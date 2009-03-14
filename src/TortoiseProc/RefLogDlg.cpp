@@ -4,14 +4,14 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "RefLogDlg.h"
-
+#include "git.h"
 
 // CRefLogDlg dialog
 
-IMPLEMENT_DYNAMIC(CRefLogDlg, CDialog)
+IMPLEMENT_DYNAMIC(CRefLogDlg, CResizableStandAloneDialog)
 
 CRefLogDlg::CRefLogDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CRefLogDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CRefLogDlg::IDD, pParent)
 {
 
 }
@@ -28,11 +28,30 @@ void CRefLogDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CRefLogDlg, CDialog)
+BEGIN_MESSAGE_MAP(CRefLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CRefLogDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
+BOOL CRefLogDlg::OnInitDialog()
+{
+	CResizableStandAloneDialog::OnInitDialog();
 
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	
+	AddAnchor(IDC_REFLOG_LIST,TOP_LEFT,BOTTOM_RIGHT);
+
+	AddOthersToAnchor();
+	this->EnableSaveRestore(_T("RefLogDlg"));
+
+	STRING_VECTOR list;
+	g_Git.GetRefList(list);
+
+	this->m_ChooseRef.AddString(list);
+	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
+
+	return TRUE;
+}
 // CRefLogDlg message handlers
 
 void CRefLogDlg::OnBnClickedOk()

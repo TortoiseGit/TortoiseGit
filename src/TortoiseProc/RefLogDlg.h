@@ -1,10 +1,10 @@
 #pragma once
 #include "afxcmn.h"
-
-
+#include "StandAloneDlg.h"
+#include "HistoryCombo.h"
 // CRefLogDlg dialog
 
-class CRefLogDlg : public CDialog
+class CRefLogDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CRefLogDlg)
 
@@ -17,10 +17,11 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	BOOL OnInitDialog();
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CComboBoxEx m_ChooseRef;
+	CHistoryCombo m_ChooseRef;
 public:
 	CListCtrl m_RefList;
 public:

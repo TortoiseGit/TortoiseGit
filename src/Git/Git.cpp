@@ -684,6 +684,30 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	return ret;
 }
 
+int CGit::GetRefList(STRING_VECTOR &list)
+{
+	int ret;
+	CString cmd,output;
+	cmd=_T("git show-ref -d");
+	ret=g_Git.Run(cmd,&output,CP_UTF8);
+	if(!ret)
+	{
+		int pos=0;
+		CString one;
+		while( pos>=0 )
+		{
+			one=output.Tokenize(_T("\n"),pos);
+			int start=one.Find(_T(" "),0);
+			if(start>0)
+			{
+				CString name;
+				name=one.Right(one.GetLength()-start-1);
+				list.push_back(name);
+			}
+		}
+	}
+	return ret;
+}
 int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
 	int ret;
