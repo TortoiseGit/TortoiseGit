@@ -1208,6 +1208,18 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="Submodule"
+				>
+				<File
+					RelativePath=".\Commands\SubmoduleCommand.cpp"
+					>
+				</File>	
+				<File
+					RelativePath=".\Commands\SubmoduleCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="Rename"
 				>
 				<File

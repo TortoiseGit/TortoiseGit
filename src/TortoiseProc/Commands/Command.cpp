@@ -57,7 +57,7 @@
 #include "DropExportCommand.h"
 #include "HelpCommand.h"
 #include "StashCommand.h"
-
+#include "SubmoduleCommand.h"
 #if 0
 
 
@@ -337,6 +337,11 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new StashSaveCommand;
 	case cmdStashApply:
 		return new StashApplyCommand;
+	case cmdSubAdd:
+		return new SubmoduleAddCommand;
+	case cmdSubUpdate:
+		return new SubmoduleUpdateCommand;
+
 #if 0
 
 	case cmdCat:
