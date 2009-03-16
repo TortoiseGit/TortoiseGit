@@ -30,6 +30,7 @@ void CRefLogDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRefLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CRefLogDlg::OnBnClickedOk)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_REF,   &CRefLogDlg::OnCbnSelchangeRef)
 END_MESSAGE_MAP()
 
 BOOL CRefLogDlg::OnInitDialog()
@@ -50,6 +51,8 @@ BOOL CRefLogDlg::OnInitDialog()
 	this->m_ChooseRef.AddString(list);
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 
+	this->m_RefList.InsertRefLogColumn();
+	m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
 	return TRUE;
 }
 // CRefLogDlg message handlers
@@ -58,4 +61,9 @@ void CRefLogDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	OnOK();
+}
+
+void CRefLogDlg::OnCbnSelchangeRef()
+{
+	
 }

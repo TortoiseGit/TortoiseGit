@@ -2,6 +2,7 @@
 #include "afxcmn.h"
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
+#include "RefLoglist.h"
 // CRefLogDlg dialog
 
 class CRefLogDlg : public CResizableStandAloneDialog
@@ -18,12 +19,12 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
-
+	afx_msg void OnCbnSelchangeRef();	
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_ChooseRef;
 public:
-	CListCtrl m_RefList;
+	CRefLogList m_RefList;
 public:
 	afx_msg void OnBnClickedOk();
 };

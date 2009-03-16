@@ -130,6 +130,39 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	return 0;
 }
 
+int CLogDataVector::ParserFromRefLog(CString ref)
+{
+	CString cmd,out;
+	GitRev rev;
+	cmd.Format(_T("git.exe reflog show %s"),ref);
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+		return -1;
+	
+	int pos=0;
+	while(pos>=0)
+	{
+		CString one=out.Tokenize(_T("\n"),pos);
+		int ref=one.Find(_T(' '),0);
+		if(ref<0)
+			continue;
+
+		rev.m_CommitHash=one.Left(ref);
+		int action=one.Find(_T(' '),ref+1);
+		int message;
+		if(action>0)
+		{
+			rev.m_Ref=one.Mid(ref+1,action-ref-2);
+			message=one.Find(_T(":"),action);
+			if(message>0)
+			{
+				rev.m_RefAction=one.Mid(action+1,message-action-1);
+				rev.m_Subject=one.Right(one.GetLength()-message-1);
+			}
+		}
+	}
+	return 0;
+}
+
 void CLogDataVector::setLane(CString& sha) 
 {
 	Lanes* l = &(this->m_Lns);

@@ -61,6 +61,9 @@ public:
 	int  ParserFromLog(CTGitPath *path =NULL,int count = -1,int infomask=CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE,
 											 CString *from=NULL,CString *to=NULL);
 	int  ParserShortLog(CTGitPath *path ,CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH );
+
+	int  ParserFromRefLog(CString ref);
+
 	int FetchFullInfo(int i);
 //	void AddFullInfo(
 

@@ -55,7 +55,9 @@ public:
 	CTGitPathList m_Files;
 	int	m_Action;
 	TCHAR m_Mark;
-	
+	CString m_Ref;
+	CString m_RefAction;
+
 	BOOL IsBoundary(){return m_Mark == _T('-');}
 
 	void Clear();
