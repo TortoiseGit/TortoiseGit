@@ -133,7 +133,7 @@ protected:
 		ShellMenuIgnoreFile,
 		ShellMenuIgnoreCaseSensitive,
 		ShellMenuIgnoreCaseInsensitive,
-		ShellMenuRepoBrowse,
+		ShellMenuRefLog,
 		ShellMenuBlame,
 		ShellMenuApplyPatch,
 		ShellMenuCreatePatch,
@@ -159,6 +159,7 @@ protected:
 		ShellMenuRebase,
 		ShellMenuStashSave,
 		ShellMenuStashApply,
+		ShellMenuStashList,
 		ShellMenuSubAdd,
 		ShellMenuSubSync,
 		ShellMenuLastEntry			// used to mark the menu array end

@@ -188,6 +188,9 @@
 #define IDS_MENUSTASHAPPLY				314
 #define IDS_MENUSUBADD					315
 #define IDS_MENUSUBSYNC					316
+#define IDS_MENUREFLOG					317
+#define IDS_MENUDESCREFLOG				318
+#define IDS_MENUSTASHLIST				319
 
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002

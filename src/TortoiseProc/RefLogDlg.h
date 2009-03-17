@@ -23,6 +23,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_ChooseRef;
+	CString m_CurrentBranch;
 public:
 	CRefLogList m_RefList;
 public:

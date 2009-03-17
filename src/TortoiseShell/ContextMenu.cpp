@@ -68,6 +68,9 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuLog,							MENULOG,			IDI_LOG,				IDS_MENULOG,				IDS_MENUDESCLOG,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, 0, 0 },
 
+	{ ShellMenuRefLog,						MENUREFLOG,			IDI_LOG,				IDS_MENUREFLOG,				IDS_MENUDESCREFLOG,
+	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, ITEMIS_ADDED, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, ITEMIS_ADDED, 0, 0 },
+
 //	{ ShellMenuRepoBrowse,					MENUREPOBROWSE,		IDI_REPOBROWSE,			IDS_MENUREPOBROWSE,			IDS_MENUDESCREPOBROWSE,
 //	ITEMIS_ONLYONE, 0, ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
 
@@ -82,8 +85,11 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 
 	{ ShellMenuStashSave,				    MENUSTASHSAVE,		IDI_COMMIT,				IDS_MENUSTASHSAVE,				IDS_MENUSTASHSAVE,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
-	{ ShellMenuStashApply,				    MENUSTASHAPPLY,	    IDI_RELOCATE,				IDS_MENUSTASHAPPLY,				IDS_MENUSTASHAPPLY,
+	{ ShellMenuStashApply,				    MENUSTASHAPPLY,	    IDI_RELOCATE,			IDS_MENUSTASHAPPLY,				IDS_MENUSTASHAPPLY,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+	{ ShellMenuStashList,				    MENUSTASHAPPLY,	    IDI_LOG,				IDS_MENUSTASHLIST,				IDS_MENUSTASHLIST,
+	ITEMIS_INSVN|ITEMIS_EXTENDED, 0, ITEMIS_FOLDERINSVN|ITEMIS_EXTENDED, 0, 0, 0, 0, 0 },
+
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
@@ -1792,8 +1798,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
     				svnCmd += _T("\"");
                 }
 				break;
-			case ShellMenuRepoBrowse:
-				svnCmd += _T("repobrowser /path:\"");
+			case ShellMenuRefLog:
+				svnCmd += _T("reflog /path:\"");
 				if (files_.size() > 0)
 					svnCmd += files_.front();
 				else
@@ -1817,6 +1823,15 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				else
 					svnCmd += folder_;
 				svnCmd += _T("\"");
+				break;
+
+			case ShellMenuStashList:
+				svnCmd += _T("reflog /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\" /ref:refs/stash");
 				break;
 
 			case ShellMenuSubAdd:

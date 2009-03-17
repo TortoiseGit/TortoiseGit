@@ -264,6 +264,7 @@ BEGIN
 	IDS_MENUREBASE			"*Rebase..."
 	IDS_MENUSTASHSAVE		"Stash Save"
 	IDS_MENUSTASHAPPLY		"Stash Apply"
+	IDS_MENUSTASHLIST		"Stash List"
 	IDS_MENUSUBADD			"Submodule Add"
 	IDS_MENUSUBSYNC			"Submodule Sync"
 END
@@ -315,7 +316,9 @@ BEGIN
     IDS_DROPCOPYADDMENU     "Git Copy and add files to this WC"
     IDS_DROPMOVEMENU        "Git Move versioned item(s) here"
     IDS_MENULOG             "Show &log"
+	IDS_MENUREFLOG          "Show &Reflog"
     IDS_MENUDESCLOG         "Shows the log for the selected file / folder"
+	IDS_MENUDESCREFLOG      "Shows reference log"
     IDS_COLTITLEURL         "Git URL"
     IDS_COLDESCURL          "URL of Git items"
     IDS_COLTITLESHORTURL    "Git short URL"

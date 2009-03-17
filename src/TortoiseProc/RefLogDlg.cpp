@@ -48,18 +48,21 @@ BOOL CRefLogDlg::OnInitDialog()
 	STRING_VECTOR list;
 	g_Git.GetRefList(list);
 
-	CString currentbranch;
-	currentbranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
+	if(this->m_CurrentBranch.IsEmpty())
+	{
+		m_CurrentBranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
+	}
 
-	this->m_ChooseRef.AddString(list);
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
+	this->m_ChooseRef.AddString(list);
+	
 
 	this->m_RefList.InsertRefLogColumn();
 	//m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
 	
 	for(int i=0;i<list.size();i++)
 	{
-		if(list[i] == currentbranch)
+		if(list[i] == m_CurrentBranch)
 		{
 			m_ChooseRef.SetCurSel(i);
 			break;
