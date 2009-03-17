@@ -118,6 +118,8 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SQUASH);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
+
+	m_ColumnRegKey=_T("log");
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -254,7 +256,7 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 		{
 			// get width for this col last time from registry
 			CString regentry;
-			regentry.Format( _T("Software\\TortoiseGit\\log\\ColWidth%d"), col);
+			regentry.Format( _T("Software\\TortoiseGit\\%s\\ColWidth%d"),m_ColumnRegKey, col);
 			CRegDWORD regwidth(regentry, 0);
 			int cx = regwidth;
 			if ( cx == 0 )
@@ -2166,7 +2168,7 @@ void CGitLogListBase::SaveColumnWidths()
 		{
 			int width = GetColumnWidth( col );
 			CString regentry;
-			regentry.Format( _T("Software\\TortoiseGit\\log\\ColWidth%d"), col);
+			regentry.Format( _T("Software\\TortoiseGit\\%s\\ColWidth%d"),m_ColumnRegKey, col);
 			CRegDWORD regwidth(regentry, 0);
 			regwidth = width;	// this writes it to reg
 		}

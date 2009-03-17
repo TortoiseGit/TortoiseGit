@@ -159,6 +159,7 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 				rev.m_Subject=one.Right(one.GetLength()-message-1);
 			}
 		}
+		this->push_back(rev);
 	}
 	return 0;
 }

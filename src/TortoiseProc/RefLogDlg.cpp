@@ -48,11 +48,26 @@ BOOL CRefLogDlg::OnInitDialog()
 	STRING_VECTOR list;
 	g_Git.GetRefList(list);
 
+	CString currentbranch;
+	currentbranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
+
 	this->m_ChooseRef.AddString(list);
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 
 	this->m_RefList.InsertRefLogColumn();
-	m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
+	//m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
+	
+	for(int i=0;i<list.size();i++)
+	{
+		if(list[i] == currentbranch)
+		{
+			m_ChooseRef.SetCurSel(i);
+			break;
+		}
+	}
+
+	OnCbnSelchangeRef();
+
 	return TRUE;
 }
 // CRefLogDlg message handlers
@@ -65,5 +80,32 @@ void CRefLogDlg::OnBnClickedOk()
 
 void CRefLogDlg::OnCbnSelchangeRef()
 {
-	
+	CString ref=m_ChooseRef.GetString();
+	if(m_RefList.m_RefMap.find(ref) == m_RefList.m_RefMap.end())
+	{
+		m_RefList.m_RefMap[ref].ParserFromRefLog(ref);
+	}
+	m_RefList.ClearText();
+
+	//this->m_logEntries.ParserFromLog();
+	m_RefList.SetRedraw(false);
+
+	CLogDataVector *plog;
+	plog = &m_RefList.m_RefMap[ref];
+
+	m_RefList.SetItemCountEx(plog->size());
+
+	this->m_RefList.m_arShownList.RemoveAll();
+
+	for(unsigned int i=0;i<m_RefList.m_RefMap[ref].size();i++)
+	{
+		plog->at(i).m_IsFull=TRUE;
+		this->m_RefList.m_arShownList.Add(&(plog->at(i)));
+		
+	}
+
+	m_RefList.SetRedraw(true);
+
+	m_RefList.Invalidate();
+
 }

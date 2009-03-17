@@ -16,6 +16,10 @@ public:
 		REFLOG_ACTION,
 		REFLOG_MESSAGE
 	};
+	
+	std::map<CString,CLogDataVector> m_RefMap;
 protected:
+	virtual void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	virtual void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	
 };

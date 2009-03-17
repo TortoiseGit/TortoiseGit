@@ -194,8 +194,8 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
-	afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	virtual afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
@@ -249,6 +249,8 @@ protected:
 	CString				m_CurrentBranch;
 	CString				m_HeadHash;
 	
+	CString				m_ColumnRegKey;
+
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool				m_bRelativeTimes;	// Show relative times
