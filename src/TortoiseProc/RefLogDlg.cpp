@@ -31,7 +31,15 @@ void CRefLogDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRefLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CRefLogDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_REF,   &CRefLogDlg::OnCbnSelchangeRef)
+	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
 END_MESSAGE_MAP()
+
+LRESULT CRefLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
+{
+	m_RefList.m_RefMap.clear();
+	OnCbnSelchangeRef();
+	return 0;
+}
 
 BOOL CRefLogDlg::OnInitDialog()
 {

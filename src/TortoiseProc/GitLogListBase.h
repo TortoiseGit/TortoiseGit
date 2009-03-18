@@ -56,6 +56,7 @@ enum LISTITEMSTATES_MINE {
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)
 #define MSG_LOAD_PERCENTAGE		(WM_USER+111)
+#define MSG_REFLOG_CHANGED		(WM_USER+112)
 
 class CGitLogListBase : public CHintListCtrl
 {
@@ -139,6 +140,8 @@ public:
 	ID_REBASE_SQUASH,
 	ID_REBASE_SKIP,
 	ID_COMBINE_COMMIT,
+	ID_STASH_APPLY,
+	ID_REFLOG_DEL,
 	ID_REBASE_TO_VERSION,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}

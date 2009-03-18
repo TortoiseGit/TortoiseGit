@@ -42,6 +42,7 @@
 #include "GitSwitchDlg.h"
 #include "ResetDlg.h"
 #include "DeleteConflictDlg.h"
+#include "ChangedDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -51,6 +52,29 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
+int	 CAppUtils::StashApply(CString ref)
+{
+	CString cmd,out;
+	cmd=_T("git.exe stash apply ");
+	cmd+=ref;
+	
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+
+	}else
+	{
+ 		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success</ct>\nDo you want to show change?"))
+			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
+		{
+			CChangedDlg dlg;
+			dlg.m_pathList.AddPath(CTGitPath());
+			dlg.DoModal();			
+		}
+		return 0;
+	}
+	return -1;
+}
 bool CAppUtils::GetMimeType(const CTGitPath& file, CString& mimetype)
 {
 #if 0

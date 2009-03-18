@@ -417,6 +417,26 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 
 			break;
 
+		case ID_STASH_APPLY:
+			CAppUtils::StashApply(pSelLogEntry->m_Ref);
+			break;
+		
+		case ID_REFLOG_DEL:
+			{	
+				CString str;
+				str.Format(_T("Warning: %s will be deleted. It can <ct=0x0000FF><b>NOT</b></ct> recovered,\r\n \r\n Are you sure delete these?"),pSelLogEntry->m_Ref);
+				if(CMessageBox::Show(NULL,str,_T("TortoiseGit"),MB_YESNO|MB_ICONWARNING) == IDYES)
+				{
+					CString cmd,out;
+					cmd.Format(_T("git.exe reflog delete %s"),pSelLogEntry->m_Ref);
+					if(g_Git.Run(cmd,&out,CP_ACP))
+					{
+						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					}						
+					::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
+				}
+			}
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;

@@ -20,6 +20,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
 	afx_msg void OnCbnSelchangeRef();	
+	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_ChooseRef;

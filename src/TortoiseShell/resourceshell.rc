@@ -267,6 +267,7 @@ BEGIN
 	IDS_MENUSTASHLIST		"Stash List"
 	IDS_MENUSUBADD			"Submodule Add"
 	IDS_MENUSUBSYNC			"Submodule Sync"
+	IDS_REFLOG_DEL			"Delete Ref..."
 END
 
 STRINGTABLE 

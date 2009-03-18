@@ -1127,6 +1127,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		}
+
+		if(!pSelLogEntry->m_Ref.IsEmpty() && GetSelectedCount() == 1)
+		{
+			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL,     IDI_DELETE);	
+			popup.AppendMenuIcon(ID_STASH_APPLY,IDS_MENUSTASHAPPLY, IDI_RELOCATE);	
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+		}
 	
 		if (GetSelectedCount() >= 2)
 		{

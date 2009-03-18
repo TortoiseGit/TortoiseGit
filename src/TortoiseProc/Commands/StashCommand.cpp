@@ -25,7 +25,8 @@
 #include "Git.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
-#include "ChangedDlg.h"
+
+#include "AppUtils.h"
 
 bool StashSaveCommand::Execute()
 {
@@ -47,25 +48,8 @@ bool StashSaveCommand::Execute()
 
 bool StashApplyCommand::Execute()
 {
-	bool bRet = false;
-
-	CString cmd,out;
-	cmd=_T("git.exe stash apply");
+	if(CAppUtils::StashApply(_T("")))
+		return false;
+	return true;
 	
-	if(g_Git.Run(cmd,&out,CP_ACP))
-	{
-		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-
-	}else
-	{
- 		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success</ct>\nDo you want to show change?"))
-			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
-		{
-			CChangedDlg dlg;
-			dlg.m_pathList = pathList;
-			dlg.DoModal();			
-		}
-		bRet = true;
-	}
-	return bRet;
 }
