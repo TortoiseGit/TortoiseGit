@@ -171,7 +171,9 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 
 	LPTSTR pEnv = l_processEnv;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
-	dwFlags |= DETACHED_PROCESS;
+	
+	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password. 
+	dwFlags |= DETACHED_PROCESS; 
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
@@ -776,8 +778,17 @@ BOOL CGit::CheckMsysGitDir()
 		}
 	}
 
-	_tputenv_s(_T("DISPLAY"),_T(":9999"));
-	_tputenv_s(_T("SSH_ASKPASS"),_T("/C/Program Files/TortoiseGit/bin/TortoiseProc.exe"));
+	{
+		TCHAR sAskPass[MAX_PATH];
+		GetModuleFileName(NULL, sAskPass, _countof(sAskPass));
+		LPTSTR ptr = _tcsrchr(sAskPass, _T('\\'));
+		if (ptr) 
+		{
+			_tcscpy(ptr + 1, _T("SshAskPass.exe"));
+			_tputenv_s(_T("DISPLAY"),_T(":9999"));
+			_tputenv_s(_T("SSH_ASKPASS"),sAskPass);
+		}
+	}
 	// search PATH if git/bin directory is alredy present
 	if ( FindGitPath() )
 	{
