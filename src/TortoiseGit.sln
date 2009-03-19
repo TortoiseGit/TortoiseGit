@@ -76,6 +76,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseProcLang", "Tortois
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseLangs", "..\Languages\TortoiseLang.vcproj", "{EC88E7EC-3074-4841-BA45-B938D098EFF6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SshAskPass", "SshAskPass\SshAskPass.vcproj", "{E8C01071-3B47-4A3F-9168-AA58A4635638}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -225,6 +227,12 @@ Global
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6}.Release|Win32.ActiveCfg = Release|Win32
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6}.Release|Win32.Build.0 = Release|Win32
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6}.Release|x64.ActiveCfg = Release|x64
+		{E8C01071-3B47-4A3F-9168-AA58A4635638}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E8C01071-3B47-4A3F-9168-AA58A4635638}.Debug|Win32.Build.0 = Debug|Win32
+		{E8C01071-3B47-4A3F-9168-AA58A4635638}.Debug|x64.ActiveCfg = Debug|Win32
+		{E8C01071-3B47-4A3F-9168-AA58A4635638}.Release|Win32.ActiveCfg = Release|Win32
+		{E8C01071-3B47-4A3F-9168-AA58A4635638}.Release|Win32.Build.0 = Release|Win32
+		{E8C01071-3B47-4A3F-9168-AA58A4635638}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
