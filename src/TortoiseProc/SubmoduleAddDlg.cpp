@@ -8,10 +8,10 @@
 
 // CSubmoduleAddDlg dialog
 
-IMPLEMENT_DYNAMIC(CSubmoduleAddDlg, CDialog)
+IMPLEMENT_DYNAMIC(CSubmoduleAddDlg, CResizableStandAloneDialog)
 
 CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CSubmoduleAddDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
 	, m_bBranch(FALSE)
 	, m_strBranch(_T(""))
 {
@@ -32,8 +32,54 @@ void CSubmoduleAddDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSubmoduleAddDlg, CDialog)
+BEGIN_MESSAGE_MAP(CSubmoduleAddDlg, CResizableStandAloneDialog)
+	ON_COMMAND(IDC_REP_BROWSE,			OnRepBrowse)
+	ON_COMMAND(IDC_BUTTON_PATH_BROWSE,	OnPathBrowse)
+	ON_COMMAND(IDC_BRANCH_CHECK,		OnBranchCheck)
 END_MESSAGE_MAP()
 
 
 // CSubmoduleAddDlg message handlers
+
+BOOL CSubmoduleAddDlg::OnInitDialog()
+{
+	CResizableStandAloneDialog::OnInitDialog();
+
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDC_GROUP_SUBMODULE,TOP_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_COMBOBOXEX_REPOSITORY,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_COMBOBOXEX_PATH,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_REP_BROWSE,TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_PATH_BROWSE,TOP_RIGHT);	
+	AddAnchor(IDC_BRANCH_CHECK,BOTTOM_LEFT);
+	AddAnchor(IDC_SUBMODULE_BRANCH,BOTTOM_LEFT,BOTTOM_RIGHT);
+
+
+	AddOthersToAnchor();
+
+	EnableSaveRestore(_T("SubmoduleAddDlg"));
+
+	m_Repository.SetURLHistory(true);
+	m_PathCtrl.SetPathHistory(true);
+
+	return TRUE;
+}
+
+void CSubmoduleAddDlg::OnRepBrowse()
+{
+}
+void CSubmoduleAddDlg::OnPathBrowse()
+{
+}
+void CSubmoduleAddDlg::OnBranchCheck()
+{
+	this->UpdateData();
+	if(this->m_bBranch)
+	{
+		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(TRUE);		
+	}else
+	{
+		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(FALSE);		
+	}
+}

@@ -25,12 +25,15 @@
 #include "Git.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
-#include "ChangedDlg.h"
+#include "SubmoduleAddDlg.h"
 
 bool SubmoduleAddCommand::Execute()
 {
 	bool bRet = false;
+	CSubmoduleAddDlg dlg;
 
+	if( dlg.DoModal() == IDOK )
+		bRet = TRUE;
 
 	return bRet;
 }
