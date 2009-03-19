@@ -171,6 +171,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 
 	LPTSTR pEnv = l_processEnv;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
+	dwFlags |= DETACHED_PROCESS;
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
@@ -775,6 +776,8 @@ BOOL CGit::CheckMsysGitDir()
 		}
 	}
 
+	_tputenv_s(_T("DISPLAY"),_T(":9999"));
+	_tputenv_s(_T("SSH_ASKPASS"),_T("/C/Program Files/TortoiseGit/bin/TortoiseProc.exe"));
 	// search PATH if git/bin directory is alredy present
 	if ( FindGitPath() )
 	{
