@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "SubmoduleAddDlg.h"
-
+#include "BrowseFolder.h"
 
 // CSubmoduleAddDlg dialog
 
@@ -63,14 +63,35 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	m_Repository.SetURLHistory(true);
 	m_PathCtrl.SetPathHistory(true);
 
+	m_Repository.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModuleRepoURLS"), _T("url"));
+	m_PathCtrl.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModulePath"), _T("url"));
+	m_Repository.SetCurSel(0);
+
+	
 	return TRUE;
 }
 
 void CSubmoduleAddDlg::OnRepBrowse()
 {
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	CString strDirectory;
+	this->m_Repository.GetWindowTextW(strDirectory);
+	if (browseFolder.Show(GetSafeHwnd(), strDirectory) == CBrowseFolder::OK) 
+	{
+		this->m_Repository.SetWindowTextW(strDirectory);
+	}
 }
 void CSubmoduleAddDlg::OnPathBrowse()
 {
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	CString strDirectory;
+	this->m_PathCtrl.GetWindowTextW(strDirectory);
+	if (browseFolder.Show(GetSafeHwnd(), strDirectory) == CBrowseFolder::OK) 
+	{
+		this->m_PathCtrl.SetWindowTextW(strDirectory);
+	}
 }
 void CSubmoduleAddDlg::OnBranchCheck()
 {
@@ -82,4 +103,11 @@ void CSubmoduleAddDlg::OnBranchCheck()
 	{
 		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(FALSE);		
 	}
+}
+
+void CSubmoduleAddDlg::OnOK()
+{
+	m_Repository.SaveHistory();
+	m_PathCtrl.SaveHistory();
+	__super::OnOK();
 }

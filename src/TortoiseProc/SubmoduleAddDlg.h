@@ -20,7 +20,7 @@ protected:
 	void OnRepBrowse();
 	void OnPathBrowse();
 	void OnBranchCheck();
-	
+	virtual void OnOK();
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_Repository;
