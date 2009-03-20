@@ -329,12 +329,15 @@ CString CHistoryCombo::GetString() const
 	CString str;
 	int sel;
 	sel = GetCurSel();
+	DWORD style=GetStyle();
+	
 	if (sel == CB_ERR)
 	{
 		GetWindowText(str);
 		return str;
 	}
-	if ((m_bURLHistory)||(m_bPathHistory))
+
+	if ((m_bURLHistory)||(m_bPathHistory) || (!(style&CBS_SIMPLE)) )
 	{
 		//URL and path history combo boxes are editable, so get
 		//the string directly from the combobox
