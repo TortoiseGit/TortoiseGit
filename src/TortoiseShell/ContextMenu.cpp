@@ -1488,7 +1488,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += tempfile;
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /rev");
+				svnCmd += _T(" /bkpath:");
+				svnCmd += folder_;
 				break;
 			case ShellMenuCommit:
 				tempfile = WriteFileListToTempFile();

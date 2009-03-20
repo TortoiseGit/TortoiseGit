@@ -65,6 +65,25 @@ bool GitAdminDir::Close()
 	return true;
 }
 
+CString GitAdminDir::GetSuperProjectRoot(const CString& path) 
+{
+	CString projectroot=path;
+		
+	do
+	{
+		if(PathFileExists(projectroot + _T("\\.gitmodules")))
+		{
+			return projectroot;
+		}		
+		
+		projectroot = projectroot.Left(projectroot.ReverseFind('\\'));
+
+	}while(projectroot.ReverseFind('\\')>0);
+
+	return _T("");
+
+}
+
 bool GitAdminDir::IsAdminDirName(const CString& name) const
 {
 #if 0

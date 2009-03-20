@@ -44,6 +44,9 @@ bool SubmoduleAddCommand::Execute()
 		if(dlg.m_bBranch)
 			branch.Format(_T(" -b %s "), dlg.m_strBranch);
 
+		dlg.m_strPath.Replace(_T('\\'),_T('/'));
+		dlg.m_strRepos.Replace(_T('\\'),_T('/'));
+
 		cmd.Format(_T("git.exe submodule add %s -- \"%s\"  \"%s\""),
 						branch,
 						dlg.m_strRepos, dlg.m_strPath);
@@ -60,7 +63,31 @@ bool SubmoduleAddCommand::Execute()
 bool SubmoduleUpdateCommand::Execute()
 {
 	bool bRet = false;
+	CProgressDlg progress;
+	CString bkpath=parser.GetVal(_T("bkpath"));
 
+	CString super=g_GitAdminDir.GetSuperProjectRoot( bkpath );
+	if(super.IsEmpty())
+	{
+		CMessageBox::Show(NULL,_T("Can't found Super project"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		//change current project root to super project
+		return false;
+	}
 
-	return bRet;
+	g_Git.m_CurrentDir=super;
+	
+	progress.m_Title.Format(_T("Submodule update - %s"),super);
+
+	//progress.m_GitCmd.Format(_T("git.exe submodule update --init "));
+
+	CString str;
+	for(int i=0;i<this->orgPathList.GetCount();i++)
+	{
+		str.Format(_T("git.exe submodule update --init \"%s\""),((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+		progress.m_GitCmdList.push_back(str);
+	}
+
+	progress.DoModal();
+
+	return !progress.m_GitStatus;
 }

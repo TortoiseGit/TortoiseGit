@@ -97,6 +97,9 @@ public:
 	 * Returns true if the path points to a directory
 	 */
 	bool IsDirectory() const;
+
+	CTGitPath GetSubPath(CTGitPath &root);
+
 	/**
 	 * Returns the directory. If the path points to a directory, then the path
 	 * is returned unchanged. If the path points to a file, the path to the 

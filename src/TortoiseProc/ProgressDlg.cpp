@@ -56,7 +56,7 @@ BOOL CProgressDlg::OnInitDialog()
 	{
 		InitialText = m_PreText + _T("\r\n");
 	}
-	if (m_bShowCommand)
+	if (m_bShowCommand && (!m_GitCmd.IsEmpty() ))
 	{
 		InitialText += m_GitCmd+_T("\r\n\r\n");
 	}
@@ -73,6 +73,9 @@ BOOL CProgressDlg::OnInitDialog()
 		m_pThread->m_bAutoDelete = FALSE;
 		m_pThread->ResumeThread();
 	}
+
+	if(!m_Title.IsEmpty())
+		this->SetWindowText(m_Title);
 	return TRUE;
 }
 
@@ -94,25 +97,44 @@ UINT CProgressDlg::ProgressThread()
 	else
 		pfilename=&m_LogFile;
 
-	g_Git.RunAsync(this->m_GitCmd,&pi, &hRead,pfilename);
+	m_GitCmdList.push_back(m_GitCmd);
 
-	DWORD readnumber;
-	char buffer[2];
-	CString output;
-	while(ReadFile(hRead,buffer,1,&readnumber,NULL))
-	{
-		buffer[readnumber]=0;
-		this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_END,(TCHAR)buffer[0]);
-	}
-
-	CloseHandle(pi.hThread);
-
-	WaitForSingleObject(pi.hProcess, INFINITE);
 	m_GitStatus =0;
 
-	if(!GetExitCodeProcess(pi.hProcess,&m_GitStatus))
+	for(int i=0;i<m_GitCmdList.size();i++)
 	{
-		return GIT_ERROR_GET_EXIT_CODE;
+		if(m_GitCmdList[i].IsEmpty())
+			continue;
+
+		if (m_bShowCommand && m_GitCmdList[i]!= m_GitCmd)
+		{
+			CString str;
+			str+= m_GitCmdList[i]+_T("\r\n\r\n");
+			for(int j=0;j<str.GetLength();j++)
+				this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
+		}
+
+		g_Git.RunAsync(this->m_GitCmdList[i],&pi, &hRead,pfilename);
+
+		DWORD readnumber;
+		char buffer[2];
+		CString output;
+		while(ReadFile(hRead,buffer,1,&readnumber,NULL))
+		{
+			buffer[readnumber]=0;
+			this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,(TCHAR)buffer[0]);
+		}
+	
+		CloseHandle(pi.hThread);
+
+		WaitForSingleObject(pi.hProcess, INFINITE);
+		
+		DWORD status=0;
+		if(!GetExitCodeProcess(pi.hProcess,&status))
+		{
+			return GIT_ERROR_GET_EXIT_CODE;
+		}
+		m_GitStatus |= status;
 	}
 
 	CloseHandle(pi.hProcess);

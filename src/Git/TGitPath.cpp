@@ -428,6 +428,17 @@ void CTGitPath::UpdateAttributes() const
 	m_bExistsKnown = true;
 }
 
+CTGitPath CTGitPath::GetSubPath(CTGitPath &root)
+{
+	CTGitPath path;
+	
+	if(GetWinPathString().Left(root.GetWinPathString().GetLength()) == root.GetWinPathString())
+	{
+		CString str=GetWinPathString();
+		path.SetFromWin(str.Right(str.GetLength()-root.GetWinPathString().GetLength()-1));
+	}
+	return path;
+}
 
 void CTGitPath::EnsureBackslashPathSet() const
 {
@@ -1911,3 +1922,4 @@ int CTGitPathList::GetAction()
 {
 	return m_Action;
 }
+

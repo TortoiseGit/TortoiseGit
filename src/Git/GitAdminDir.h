@@ -29,6 +29,8 @@ public:
 	bool HasAdminDir(const CString& path) const;
 	bool HasAdminDir(const CString& path,CString * ProjectTopDir) const;
 	bool HasAdminDir(const CString& path, bool bDir,CString * ProjectTopDir=NULL) const;
+	CString GetSuperProjectRoot(const CString& path);
+
 	CString GetGitTopDir(const CString& path);
 	
 	/// Returns true if the admin dir name is set to "_svn".

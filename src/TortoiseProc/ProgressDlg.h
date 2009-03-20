@@ -5,6 +5,7 @@
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 // CProgressDlg dialog
 #define MSG_PROGRESSDLG_START 0
+#define MSG_PROGRESSDLG_RUN   50
 #define MSG_PROGRESSDLG_END   110
 
 class CProgressDlg : public CResizableStandAloneDialog
@@ -18,11 +19,14 @@ public:
 // Dialog Data
 	enum { IDD = IDD_GITPROGRESS };
 	CString m_GitCmd;
+	std::vector<CString> m_GitCmdList;
+
 	CString m_LogFile;
 
 	CProgressCtrl m_Progress;
 	
 	CEdit		  m_Log;
+	CString m_Title;
 	CAnimateCtrl  m_Animate;
 	CStatic		  m_CurrentWork;
 	CWinThread*				m_pThread;	
