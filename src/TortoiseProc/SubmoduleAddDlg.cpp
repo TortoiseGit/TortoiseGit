@@ -5,6 +5,7 @@
 #include "resource.h"
 #include "SubmoduleAddDlg.h"
 #include "BrowseFolder.h"
+#include "MessageBox.h"
 
 // CSubmoduleAddDlg dialog
 
@@ -65,8 +66,10 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 
 	m_Repository.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModuleRepoURLS"), _T("url"));
 	m_PathCtrl.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModulePath"), _T("url"));
+	m_PathCtrl.SetWindowText(m_strPath);
 	m_Repository.SetCurSel(0);
 
+	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(CString(_T("Submodule of Project: "))+m_strProject);
 	
 	return TRUE;
 }
@@ -88,7 +91,7 @@ void CSubmoduleAddDlg::OnPathBrowse()
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strDirectory;
 	this->m_PathCtrl.GetWindowTextW(strDirectory);
-	if (browseFolder.Show(GetSafeHwnd(), strDirectory) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), strDirectory,g_Git.m_CurrentDir) == CBrowseFolder::OK) 
 	{
 		this->m_PathCtrl.SetWindowTextW(strDirectory);
 	}
@@ -107,7 +110,33 @@ void CSubmoduleAddDlg::OnBranchCheck()
 
 void CSubmoduleAddDlg::OnOK()
 {
+	this->UpdateData();
+	if(m_bBranch)
+	{
+		m_strBranch.Trim();
+		if(m_strBranch.IsEmpty())
+		{
+			CMessageBox::Show(NULL,_T("Branch can't be empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return ;
+		}
+	}
 	m_Repository.SaveHistory();
 	m_PathCtrl.SaveHistory();
+
+	this->m_strPath=m_PathCtrl.GetString();
+	this->m_strRepos=m_Repository.GetString();
+
+	m_strPath.Trim();
+	m_strRepos.Trim();
+	if(m_strPath.IsEmpty())
+	{
+		CMessageBox::Show(NULL,_T("Path can't be empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return ;
+	}
+	if(m_strRepos.IsEmpty())
+	{
+		CMessageBox::Show(NULL,_T("Repository can't be empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return ;
+	}
 	__super::OnOK();
 }

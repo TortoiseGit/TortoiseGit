@@ -26,15 +26,34 @@
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "SubmoduleAddDlg.h"
+#include "ProgressDlg.h"
 
 bool SubmoduleAddCommand::Execute()
 {
 	bool bRet = false;
 	CSubmoduleAddDlg dlg;
-
+	dlg.m_strPath = cmdLinePath.GetDirectory().GetWinPathString();
+	dlg.m_strProject = g_Git.m_CurrentDir;
 	if( dlg.DoModal() == IDOK )
-		bRet = TRUE;
+	{
+		CString cmd;
+		if(dlg.m_strPath.Left(g_Git.m_CurrentDir.GetLength()) == g_Git.m_CurrentDir)
+			dlg.m_strPath = dlg.m_strPath.Right(dlg.m_strPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
+		
+		CString branch;
+		if(dlg.m_bBranch)
+			branch.Format(_T(" -b %s "), dlg.m_strBranch);
 
+		cmd.Format(_T("git.exe submodule add %s -- \"%s\"  \"%s\""),
+						branch,
+						dlg.m_strRepos, dlg.m_strPath);
+
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		progress.DoModal();
+
+		bRet = TRUE;
+	}
 	return bRet;
 }
 

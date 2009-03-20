@@ -30,4 +30,7 @@ public:
 	BOOL m_bBranch;
 public:
 	CString m_strBranch;
+	CString m_strPath;
+	CString m_strRepos;
+	CString m_strProject;
 };
