@@ -28,13 +28,29 @@ public:
 	virtual bool			Execute();
 };
 
-class SubmoduleUpdateCommand : public Command
+class SubmoduleCommand:public Command
+{
+public:
+	virtual bool Execute(CString cmd,CString arg=_T(""));
+
+};
+
+class SubmoduleUpdateCommand : public SubmoduleCommand
 {
 public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute();
+	virtual bool			Execute() {return SubmoduleCommand::Execute(_T("update"),_T("--init"));};
+};
+
+class SubmoduleSyncCommand : public SubmoduleCommand
+{
+public:
+	/**
+	 * Executes the command.
+	 */
+	virtual bool			Execute() {return SubmoduleCommand::Execute(_T("sync"));};
 };
 
 

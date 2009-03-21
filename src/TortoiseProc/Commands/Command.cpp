@@ -170,7 +170,8 @@ typedef enum
 	cmdStashApply,
 	cmdStashList,
 	cmdSubAdd,		
-	cmdSubUpdate,	
+	cmdSubUpdate,
+	cmdSubSync,
 	cmdRefLog,
 	
 } TGitCommand;
@@ -243,6 +244,7 @@ static const struct CommandInfo
 	{	cmdStashList,		_T("stashlist")			},
 	{	cmdSubAdd,			_T("subadd")			},
 	{	cmdSubUpdate,		_T("subupdate")			},
+	{	cmdSubSync,			_T("subsync")			},
 	{	cmdRefLog,			_T("reflog")			}
 };
 
@@ -347,6 +349,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SubmoduleUpdateCommand;
 	case cmdRefLog:
 		return new RefLogCommand;
+	case cmdSubSync:
+		return new SubmoduleSyncCommand;
 
 #if 0
 

@@ -60,7 +60,7 @@ bool SubmoduleAddCommand::Execute()
 	return bRet;
 }
 
-bool SubmoduleUpdateCommand::Execute()
+bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 {
 	bool bRet = false;
 	CProgressDlg progress;
@@ -86,7 +86,7 @@ bool SubmoduleUpdateCommand::Execute()
 
 	g_Git.m_CurrentDir=super;
 	
-	progress.m_Title.Format(_T("Submodule update - %s"),super);
+	progress.m_Title.Format(_T("Submodule %s - %s"),cmd,super);
 
 	//progress.m_GitCmd.Format(_T("git.exe submodule update --init "));
 
@@ -95,7 +95,7 @@ bool SubmoduleUpdateCommand::Execute()
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			str.Format(_T("git.exe submodule update --init \"%s\""),((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			str.Format(_T("git.exe submodule %s %s \"%s\""),cmd,arg, ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
 			progress.m_GitCmdList.push_back(str);
 		}
 	}
