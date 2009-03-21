@@ -64,7 +64,17 @@ bool SubmoduleUpdateCommand::Execute()
 {
 	bool bRet = false;
 	CProgressDlg progress;
-	CString bkpath=parser.GetVal(_T("bkpath"));
+	CString bkpath;
+
+	if(parser.HasKey(_T("bkpath")))
+	{
+		bkpath=parser.GetVal(_T("bkpath"));
+	}
+	else
+	{
+		bkpath=this->orgPathList[0].GetWinPathString();
+		bkpath=bkpath.Left(bkpath.ReverseFind(_T('\\')));
+	}
 
 	CString super=g_GitAdminDir.GetSuperProjectRoot( bkpath );
 	if(super.IsEmpty())
@@ -83,8 +93,11 @@ bool SubmoduleUpdateCommand::Execute()
 	CString str;
 	for(int i=0;i<this->orgPathList.GetCount();i++)
 	{
-		str.Format(_T("git.exe submodule update --init \"%s\""),((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
-		progress.m_GitCmdList.push_back(str);
+		if(orgPathList[i].IsDirectory())
+		{
+			str.Format(_T("git.exe submodule update --init \"%s\""),((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			progress.m_GitCmdList.push_back(str);
+		}
 	}
 
 	progress.DoModal();

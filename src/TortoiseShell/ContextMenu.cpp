@@ -185,7 +185,11 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuUpdateExt,					MENUUPDATEEXT,		IDI_UPDATE,				IDS_MENUUPDATEEXT,			IDS_MENUDESCUPDATEEXT,
-	ITEMIS_FOLDERINSVN|ITEMIS_SUBMODULE, 0, 0, 0, 0, 0, 0, 0 },
+	ITEMIS_INSVN|ITEMIS_FOLDER|ITEMIS_SUBMODULE, 0, 0, 0, 0, 0, 0, 0 },
+
+	{ ShellMenuSubSync,					MENUSUBSYNC,			IDI_MENUSYNC,				IDS_MENUSUBSYNC,			IDS_MENUSUBSYNC,
+	ITEMIS_INSVN|ITEMIS_FOLDER|ITEMIS_SUBMODULE|ITEMIS_EXTENDED, 0, 0, 0, 0, 0, 0, 0 },
+
 
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -366,6 +370,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							{
 								if (askedpath.HasAdminDir())
 									itemStates |= ITEMIS_INSVN;
+								if (askedpath.HasSubmodules())
+								{
+									itemStates |= ITEMIS_SUBMODULE;
+								}
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 								itemStates |= ITEMIS_INSVN;
@@ -475,6 +483,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							{
 								if (strpath.HasAdminDir())
 									itemStates |= ITEMIS_INSVN;
+								if (strpath.HasSubmodules())
+								{
+									itemStates |= ITEMIS_SUBMODULE;
+								}
 							}
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 								itemStates |= ITEMIS_INSVN;
@@ -1487,14 +1499,29 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
 				break;
+			case ShellMenuSubSync:
+				tempfile = WriteFileListToTempFile();
+				svnCmd += _T("subsync /pathfile:\"");
+				svnCmd += tempfile;
+				svnCmd += _T("\"");
+				svnCmd += _T(" /deletepathfile");
+				if(itemStatesFolder&ITEMIS_SUBMODULE)
+				{
+					svnCmd += _T(" /bkpath:");
+					svnCmd += folder_;
+				}
+				break;
 			case ShellMenuUpdateExt:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("subupdate /pathfile:\"");
 				svnCmd += tempfile;
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /bkpath:");
-				svnCmd += folder_;
+				if(itemStatesFolder&ITEMIS_SUBMODULE)
+				{
+					svnCmd += _T(" /bkpath:");
+					svnCmd += folder_;
+				}
 				break;
 			case ShellMenuCommit:
 				tempfile = WriteFileListToTempFile();

@@ -78,6 +78,7 @@ IDI_SKIP				ICON					"..\\resources\\menuskip.ico"
 IDI_SQUASH				ICON					"..\\resources\\menusquash.ico"
 IDI_EDIT				ICON					"..\\resources\\menuedit.ico"
 IDI_PICK				ICON					"..\\resources\\menupick.ico"
+IDI_MENUSYNC			ICON					"..\\resources\\menusync.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -192,6 +192,7 @@
 #define IDS_MENUDESCREFLOG				318
 #define IDS_MENUSTASHLIST				319
 #define IDS_REFLOG_DEL					320
+#define IDI_MENUSYNC					321
 
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
