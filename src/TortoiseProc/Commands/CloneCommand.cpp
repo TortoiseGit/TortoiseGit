@@ -43,7 +43,7 @@ bool CloneCommand::Execute()
 			url.Replace( _T('\\'), _T('/'));
 		}
 		CString cmd;
-		cmd.Format(_T("git.exe clone \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone -v \"%s\" \"%s\""),
 						url,
 						dir);
 		CProgressDlg progress;
