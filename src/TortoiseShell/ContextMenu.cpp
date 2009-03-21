@@ -185,7 +185,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuUpdateExt,					MENUUPDATEEXT,		IDI_UPDATE,				IDS_MENUUPDATEEXT,			IDS_MENUDESCUPDATEEXT,
-	ITEMIS_INSVN, ITEMIS_ADDED, ITEMIS_FOLDERINSVN, ITEMIS_ADDED, 0, 0, 0, 0 },
+	ITEMIS_FOLDERINSVN|ITEMIS_SUBMODULE, 0, 0, 0, 0, 0, 0, 0 },
 
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -605,6 +605,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		{
 			itemStatesFolder |= ITEMIS_FOLDERINSVN;
 		}
+		if (askedpath.HasSubmodules())
+		{
+			itemStatesFolder |= ITEMIS_SUBMODULE;
+		}
 		if (status == git_wc_status_ignored)
 			itemStatesFolder |= ITEMIS_IGNORED;
 		itemStatesFolder |= ITEMIS_FOLDER;
@@ -612,6 +616,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			itemStates |= ITEMIS_ONLYONE;
 		if (m_State != FileStateDropHandler)
 			itemStates |= itemStatesFolder;
+		
 
 	}
 	if (files_.size() == 2)

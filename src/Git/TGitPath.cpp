@@ -760,6 +760,11 @@ bool CTGitPath::HasAdminDir() const
 	return m_bHasAdminDir;
 }
 
+bool CTGitPath::HasSubmodules() const
+{
+	return !g_GitAdminDir.GetSuperProjectRoot(GetWinPathString()).IsEmpty();
+}
+
 bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const
 {
 	if (m_bHasAdminDirKnown)

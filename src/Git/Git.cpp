@@ -888,7 +888,7 @@ public:
 	{
 	}
 
-	UINT HexChar(char ch)
+	BYTE HexChar(char ch)
 	{
 		if (ch >= '0' && ch <= '9')
 			return (UINT)(ch - '0');
@@ -945,7 +945,9 @@ public:
 		{
 			for (int i=0; i<20; i++)
 			{
-				sha1[i] = (BYTE)((HexChar(line[0]) << 8) | HexChar(line[1]));
+				sha1[i]  = (HexChar(line[0])<<4)&0xF0;
+				sha1[i] |= HexChar(line[1])&0xF;
+
 				line += 2;
 			}
 

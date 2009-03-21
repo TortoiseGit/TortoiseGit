@@ -215,6 +215,7 @@ public:
 	 */
 	bool HasAdminDir() const;
 	bool HasAdminDir(CString *ProjectTopDir) const;
+	bool HasSubmodules() const;
 	
 	/**
 	 * Checks if the path point to or below a Subversion admin directory (.Git).
