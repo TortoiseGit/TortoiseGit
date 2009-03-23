@@ -401,14 +401,15 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 		format += log;
 		log.Format(_T("#<%c>%%ci%%x00"),LOG_REV_COMMIT_DATE);
 		format += log;
-		log.Format(_T("#<%c>%%s%%x00"),LOG_REV_COMMIT_SUBJECT);
-		format += log;
 		log.Format(_T("#<%c>%%b%%x00"),LOG_REV_COMMIT_BODY);
 		format += log;
 	}
+	
 	log.Format(_T("#<%c>%%m%%H%%x00"),LOG_REV_COMMIT_HASH);
 	format += log;
 	log.Format(_T("#<%c>%%P%%x00"),LOG_REV_COMMIT_PARENT);
+	format += log;
+	log.Format(_T("#<%c>%%s%%x00"),LOG_REV_COMMIT_SUBJECT);
 	format += log;
 
 	if(IsFull)

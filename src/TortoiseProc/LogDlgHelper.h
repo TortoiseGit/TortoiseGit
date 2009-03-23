@@ -72,9 +72,9 @@ public:
 	MAP_HASH_REV m_HashMap;
 	void updateLanes(GitRev& c, Lanes& lns, CString &sha) ;
 	void setLane(CString& sha) ;
-	
-	
 
+	BYTE_VECTOR		 m_RawlogData;
+	std::vector<int> m_RawLogStart;
 
 #if 0
 	/// Ascending date sorting.

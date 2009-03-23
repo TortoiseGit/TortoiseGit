@@ -1808,7 +1808,7 @@ UINT CGitLogListBase::LogThread()
 
 
 	//FetchFullLogInfo();
-	FetchFullLogInfoOrig();
+	//FetchFullLogInfoOrig();
 	//RefreshCursor();
 	// make sure the filter is applied (if any) now, after we refreshed/fetched
 	// the log messages
@@ -2122,13 +2122,9 @@ void CGitLogListBase::RemoveFilter()
 void CGitLogListBase::Clear()
 {
 	m_arShownList.RemoveAll();
-	m_logEntries.clear();
-	m_logEntries.m_HashMap.clear();
 	DeleteAllItems();
-	m_logEntries.m_Lns.clear();
 
-	m_logEntries.m_FirstFreeLane=0;
-	m_logEntries.m_Lns.clear();
+	m_logEntries.ClearAll();
 
 }
 

@@ -63,12 +63,28 @@
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
 
+void CLogDataVector::ClearAll()
+{
+
+	clear();
+	m_HashMap.clear();
+	m_Lns.clear();
+
+	m_FirstFreeLane=0;
+	m_Lns.clear();
+
+	m_RawlogData.clear();
+	m_RawLogStart.clear();
+}
 
 int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int mask )
 {
-	BYTE_VECTOR log;
-	GitRev rev;
+	//BYTE_VECTOR log;
+	m_RawlogData.clear();
+	m_RawLogStart.clear();
 
+	GitRev rev;
+	
 	if(g_Git.IsInitRepos())
 		return 0;
 
@@ -76,25 +92,34 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int
 	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
 
 	//g_Git.GetShortLog(log,path,count);
+	ULONGLONG  t1,t2;
+	t1=GetTickCount();
+	g_Git.GetLog(m_RawlogData, hash,path,count,mask);
+	t2=GetTickCount();
 
-	g_Git.GetLog(log,hash,path,count,mask);
+	TRACE(_T("GetLog Time %ld\r\n"),t2-t1);
 
-	if(log.size()==0)
+	if(m_RawlogData.size()==0)
 		return 0;
 	
 	int start=4;
 	int length;
 	int next =0;
-	while( next>=0 && next<log.size())
+	t1=GetTickCount();
+	int a1=0,b1=0;
+
+	while( next>=0 && next<m_RawlogData.size())
 	{
-		next=rev.ParserFromLog(log,next);
-
-		rev.m_Subject=_T("Load .................................");
-		this->push_back(rev);
-		m_HashMap[rev.m_CommitHash]=size()-1;
-
+		static const BYTE dataToFind[]={0,0};
+		m_RawLogStart.push_back(next);
+		//this->at(i).m_Subject=_T("parser...");
+		next=m_RawlogData.findData(dataToFind,2,next+1);
 		//next=log.find(0,next);
+
 	}
+	t2=GetTickCount();
+
+	TRACE(_T("Parser Log Time %ld\r\n"),t2-t1);
 
 	return 0;
 
