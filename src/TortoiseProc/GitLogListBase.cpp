@@ -625,6 +625,9 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	//todo unfinished
 //	return;
 	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
+	if(data->m_CommitHash.IsEmpty())
+		return;
+
 	CRect rt=rect;
 	LVITEM   rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
@@ -1497,9 +1500,8 @@ int CGitLogListBase::FillGitShortLog()
 //	if(this->m_bAllBranch)
 	mask |= m_ShowMask;
 
-	this->m_logEntries.ParserShortLog(path,hash,-1,mask);
+	this->m_logEntries.FetchShortLog(path,hash,-1,mask);
 	
-
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
 		PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
@@ -1510,6 +1512,7 @@ int CGitLogListBase::FillGitShortLog()
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
+		m_logEntries[i].m_Subject=_T("parser...");
 		if(this->m_IsOldFirst)
 		{
 			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-1-i]);
@@ -1658,9 +1661,21 @@ public:
 		GitRev* revInVector=&m_ploglist->m_logEntries[rev];
 
 
+		if(revInVector->m_IsFull)
+			return;
+
+		if(!m_ploglist->m_LogCache.GetCacheData(m_ploglist->m_logEntries[rev]))
+		{
+			++m_CollectedCount;
+			InterlockedExchange(&m_ploglist->m_logEntries[rev].m_IsUpdateing,FALSE);
+			InterlockedExchange(&m_ploglist->m_logEntries[rev].m_IsFull,TRUE);
+			::PostMessage(m_ploglist->m_hWnd,MSG_LOADED,(WPARAM)rev,0);
+			return;
+		}
+
 //		fullRev.m_IsUpdateing=TRUE;
 //		fullRev.m_IsFull=TRUE;
-
+	
 
 		if(InterlockedExchange(&revInVector->m_IsUpdateing,TRUE))
 			return;//Cannot update this row now. Ignore.
@@ -1676,6 +1691,9 @@ public:
 							       //So we need keep old bound mark.
 		revInVector->m_ParentHash=oldlist;
 
+		//update cache
+		m_ploglist->m_LogCache.AddCacheEntry(*revInVector);
+
 		//Reset updating
 		InterlockedExchange(&revInVector->m_IsFull,TRUE);
 		InterlockedExchange(&revInVector->m_IsUpdateing,FALSE);
@@ -1685,7 +1703,7 @@ public:
 
 		::PostMessage(m_ploglist->m_hWnd,MSG_LOADED,(WPARAM)rev,0);
 
-		DWORD percent=m_CollectedCount*98/m_ploglist->m_logEntries.size() + GITLOG_START+1;
+		DWORD percent=m_CollectedCount*68/m_ploglist->m_logEntries.size() + GITLOG_START+1+30;
 		if(percent == GITLOG_END)
 			percent = GITLOG_END -1;
 		
@@ -1698,7 +1716,7 @@ public:
 
 };
 
-void CGitLogListBase::FetchFullLogInfo()
+void CGitLogListBase::FetchFullLogInfo(CString &from, CString &to)
 {
 	CGitCall_FetchFullLogInfo fetcher(this);
 	int mask=
@@ -1706,18 +1724,27 @@ void CGitLogListBase::FetchFullLogInfo()
 		CGit::LOG_INFO_FILESTATE|
 		CGit::LOG_INFO_DETECT_COPYRENAME|
 		m_ShowMask;
-	g_Git.GetLog(&fetcher,CString(),NULL,-1,mask);
+
+	CTGitPath *path;
+    if(this->m_Path.IsEmpty())
+        path=NULL;
+    else
+        path=&this->m_Path;
+
+	g_Git.GetLog(&fetcher,CString(),path,-1,mask,&from,&to);
 }
 
-void CGitLogListBase::FetchFullLogInfoOrig()
+void CGitLogListBase::FetchLastLogInfo()
 {
 	unsigned int updated=0;
 	int percent=0;
 	CRect rect;
-	while(1)
 	{
 		for(unsigned int i=0;i<m_logEntries.size();i++)
 		{
+			if(m_logEntries[i].m_IsFull)
+				continue;
+
 			if(m_LogCache.GetCacheData(m_logEntries[i]))
 			{
 				if(!m_logEntries.FetchFullInfo(i))
@@ -1740,18 +1767,8 @@ void CGitLogListBase::FetchFullLogInfoOrig()
 				InterlockedExchange(&m_bThreadRunning, FALSE);
 				InterlockedExchange(&m_bNoDispUpdates, FALSE);
 				return;
-			}
-
-			percent=updated*98/m_logEntries.size() + GITLOG_START+1;
-			if(percent == GITLOG_END)
-				percent = GITLOG_END -1;
-			
-			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
-
-			
+			}			
 		}
-		if(updated==m_logEntries.size())
-			break;
 	}
 }
 
@@ -1780,6 +1797,50 @@ UINT CGitLogListBase::LogThread()
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		return 0;
 	}
+	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+	::PostMessage(GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START_ALL, 0);
+
+	int start=0; CString firstcommit,lastcommit;
+	int update=0;
+	for(int i=0;i<this->GetItemCount();i++)
+	{
+		start=this->m_logEntries[i].ParserFromLog(m_logEntries.m_RawlogData,start);
+		m_logEntries.m_HashMap[m_logEntries[i].m_CommitHash]=i;
+
+		if(m_LogCache.GetCacheData(m_logEntries[i]))
+		{
+			if(firstcommit.IsEmpty())
+				firstcommit=m_logEntries[i].m_CommitHash;
+			lastcommit=m_logEntries[i].m_CommitHash;
+
+		}else
+		{
+			InterlockedExchange(&m_logEntries[i].m_IsUpdateing,FALSE);
+			InterlockedExchange(&m_logEntries[i].m_IsFull,TRUE);
+			update++;
+		}
+		if(start<0)
+			break;
+		if(start>=m_logEntries.m_RawlogData.size())
+			break;
+
+		int percent=i*30/m_logEntries.size() + GITLOG_START+1;
+
+		::PostMessage(GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent, 0);
+		::PostMessage(m_hWnd,MSG_LOADED,(WPARAM) i, 0);
+
+		if(this->m_bExitThread)
+		{	
+			InterlockedExchange(&m_bThreadRunning, FALSE);
+			InterlockedExchange(&m_bNoDispUpdates, FALSE);
+			return 0;
+		}
+	}
+	if(!lastcommit.IsEmpty())
+		FetchFullLogInfo(lastcommit,firstcommit);
+	
+	this->FetchLastLogInfo();
+	
 #if 0
 	RedrawItems(0, m_arShownList.GetCount());
 //	SetRedraw(false);
@@ -1804,7 +1865,7 @@ UINT CGitLogListBase::LogThread()
 		}
 	}
 #endif
-	InterlockedExchange(&m_bNoDispUpdates, FALSE);
+
 
 
 	//FetchFullLogInfo();
