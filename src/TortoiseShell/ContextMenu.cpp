@@ -761,7 +761,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		}
 	}
 #endif
-	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
+	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE|CMF_EXTENDEDVERBS))))
 	{
 		// on win2k, the context menu does not work properly if we use
 		// icon bitmaps. At least the menu text is empty in the context menu
@@ -1219,7 +1219,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 			const int pos = indexMenu++;
 			const int id = idCmd++;
 
-			if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
+			if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE|CMF_EXTENDEDVERBS))))
 			{
 				InsertMenu(hMenu, pos, MF_DISABLED|MF_GRAYED|MF_BYPOSITION|MF_STRING, id, sBranchName);
 				HBITMAP bmp = IconToBitmap(icon); 
@@ -1405,7 +1405,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 		myIDMap[idCmd] = ShellSubMenu;
 	}
 	HBITMAP bmp = NULL;
-	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
+	if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE|CMF_EXTENDEDVERBS))))
 	{
 		menuiteminfo.fMask = MIIM_STRING | MIIM_ID | MIIM_SUBMENU | MIIM_DATA;
 		if (uIcon)
@@ -2526,7 +2526,7 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		MENUITEMINFO menuiteminfo;
 		SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
 		menuiteminfo.cbSize = sizeof(menuiteminfo);
-		if (fullver < 0x500 || (fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE))))
+		if (fullver < 0x500 || (fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE|CMF_EXTENDEDVERBS))))
 		{
 			menuiteminfo.fMask = MIIM_STRING | MIIM_ID | MIIM_SUBMENU | MIIM_DATA;
 			if (icon)
