@@ -2,6 +2,8 @@
 #include "GitRev.h"
 #include "Git.h"
 
+class CException; //Just in case afx.h is not included (cannot be included in every project which uses this file)
+
 // provide an ASSERT macro for when compiled without MFC
 #if !defined ASSERT
 	// Don't use _asm here, it isn't supported by x64 version of compiler. In fact, MFC's ASSERT() is the same with _ASSERTE().
@@ -184,40 +186,58 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 CTime GitRev::ConverFromString(CString input)
 {
 	// pick up date from string
-	CTime tm(_wtoi(input.Mid(0,4)),
-			 _wtoi(input.Mid(5,2)),
-			 _wtoi(input.Mid(8,2)),
-			 _wtoi(input.Mid(11,2)),
-			 _wtoi(input.Mid(14,2)),
-			 _wtoi(input.Mid(17,2)),
-			 0);
-	// pick up utc offset
-	CString sign = input.Mid(20,1);		// + or -
-	int hoursOffset =  _wtoi(input.Mid(21,2));
-	int minsOffset = _wtoi(input.Mid(23,2));
-	if ( sign == "-" )
+	try
 	{
-		hoursOffset = -hoursOffset;
-		minsOffset = -minsOffset;
+		CTime tm(_wtoi(input.Mid(0,4)),
+				 _wtoi(input.Mid(5,2)),
+				 _wtoi(input.Mid(8,2)),
+				 _wtoi(input.Mid(11,2)),
+				 _wtoi(input.Mid(14,2)),
+				 _wtoi(input.Mid(17,2)),
+				 0);
+		if(tm.GetTime()<=1)
+			return CTime();//Error parsing time-string
+
+		// pick up utc offset
+		CString sign = input.Mid(20,1);		// + or -
+		int hoursOffset =  _wtoi(input.Mid(21,2));
+		int minsOffset = _wtoi(input.Mid(23,2));
+		if ( sign == "-" )
+		{
+			hoursOffset = -hoursOffset;
+			minsOffset = -minsOffset;
+		}
+		// make a timespan object with this value
+		CTimeSpan offset( 0, hoursOffset, minsOffset, 0 );
+		// we have to subtract this from the time given to get UTC
+		tm -= offset;
+		// get local timezone
+		SYSTEMTIME sysTime;
+		tm.GetAsSystemTime( sysTime );
+		SYSTEMTIME local;
+		if ( SystemTimeToTzSpecificLocalTime( &m_TimeZone, &sysTime, &local ) )
+		{
+			sysTime = local;
+		}
+		else
+		{
+			ASSERT(false);
+		}
+		tm = CTime( sysTime, 0 );
+		return tm;
 	}
-	// make a timespan object with this value
-	CTimeSpan offset( 0, hoursOffset, minsOffset, 0 );
-	// we have to subtract this from the time given to get UTC
-	tm -= offset;
-	// get local timezone
-	SYSTEMTIME sysTime;
-	tm.GetAsSystemTime( sysTime );
-	SYSTEMTIME local;
-	if ( SystemTimeToTzSpecificLocalTime( &m_TimeZone, &sysTime, &local ) )
+	catch(CException* e)
 	{
-		sysTime = local;
+		//Probably the date was something like 1970-01-01 00:00:00. _mktime64() doesnt like this.
+		//Dont let the application crash on this exception
+
+#ifdef _AFX //CException classes are only defined when afx.h is included.
+			//When afx.h is not included, the exception is leaked.
+			//This will probably never happen because when CException is not defined, it cannot be thrown.
+		e->Delete();
+#endif //ifdef _AFX
 	}
-	else
-	{
-		ASSERT(false);
-	}
-	tm = CTime( sysTime, 0 );
-	return tm;
+	return CTime(); //Return an invalid time
 }
 
 int GitRev::SafeFetchFullInfo(CGit *git)
