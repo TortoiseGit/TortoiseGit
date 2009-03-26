@@ -30,6 +30,7 @@
       <Property Id="ButtonText_Yes"><![CDATA[&Yes]]></Property>
 
       <!-- UI Variables ................................................................ -->
+      <Property Id="SSHRadio">Plink</Property>
       <Property Id="IAgree">No</Property>
       <Property Id="InstallMode">Complete</Property>
       <Property Id="Setup">Setup</Property>
@@ -200,6 +201,41 @@
         </Control>
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
       </Dialog>
+      
+      <Dialog Id="SSHClient" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
+          <Publish Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+        </Control>
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
+          <Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
+          <Publish Property="InstallMode" Value="Custom">1</Publish>           
+          <Publish Event="ValidateProductID" Value="0">0</Publish>
+          <Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
+          <Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
+        </Control>
+
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="[BannerBitmap]" />
+        <Control Id="Title" Type="Text" X="155" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
+          <Text>[DlgTitleFont]Choose SSH Client</Text>
+        </Control>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="DialogDescription" Type="Text" X="75" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
+          <Text>Choose a kind of SSH Client</Text>
+        </Control>
+        
+        <Control Id="Buttons" Type="RadioButtonGroup" X="10" Y="60" Width="330" Height="150" Property="SSHRadio" />
+        
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        
+      </Dialog>
+      
+      <RadioButtonGroup Property="SSHRadio">
+        <RadioButton Text="{\DlgFont8}TortoisePLink, coming from Putty, which is better integrate with windows" Value="Plink" X="5" Y="0" Width="250" Height="30" />
+        <RadioButton Text="{\DlgFont8}OpenSSH, Git default SSH Client" Value="OpenSSH" X="5" Y="60" Width="250" Height="30" />
+      </RadioButtonGroup>
+      
 
       <Dialog Id="BrowseDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
         <Control Id="OK" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_OK]">
@@ -253,7 +289,7 @@
       <Dialog Id="CustomizeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
         <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
           <Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Change"]]></Publish>
-          <Publish Event="NewDialog" Value="LicenseAgreementDlg"><![CDATA[InstallMode = "Custom"]]></Publish>
+          <Publish Event="NewDialog" Value="SSHClient"><![CDATA[InstallMode = "Custom"]]></Publish>
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
           <Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
@@ -457,11 +493,9 @@
           <Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
-          <Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
-          <Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
-          <Publish Property="InstallMode" Value="Custom">1</Publish>
-          <Condition Action="disable"><![CDATA[IAgree <> "Yes"]]></Condition>
-          <Condition Action="enable">IAgree = "Yes"</Condition>
+           <Publish Event="NewDialog" Value="SSHClient">"Yes"</Publish>
+           <Condition Action="disable"><![CDATA[IAgree <> "Yes"]]></Condition>
+           <Condition Action="enable">IAgree = "Yes"</Condition>
         </Control>
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
           <Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -854,6 +888,7 @@
 
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
       </Dialog>
+
 
       <!-- UI Texts ................................................................................................ -->
       <UIText Id="AbsentPath" />

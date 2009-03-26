@@ -246,6 +246,7 @@ out everything for now, leaving these enabled as they are would make the install
 			  <File Id="F__PuttyGen"      ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 			  <File Id="F__pageant"       ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
 			  <File Id="F__notepad2"      ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2.exe" />
+			  <File Id="F__askpass"       ShortName="askpass.EXE"  Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
  	
 			  
               <File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
