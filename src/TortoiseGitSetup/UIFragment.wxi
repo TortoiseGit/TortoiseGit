@@ -30,7 +30,6 @@
       <Property Id="ButtonText_Yes"><![CDATA[&Yes]]></Property>
 
       <!-- UI Variables ................................................................ -->
-      <Property Id="SSHRadio">Plink</Property>
       <Property Id="IAgree">No</Property>
       <Property Id="InstallMode">Complete</Property>
       <Property Id="Setup">Setup</Property>
@@ -208,9 +207,18 @@
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
           <Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
-          <Publish Property="InstallMode" Value="Custom">1</Publish>           
-          <Publish Event="ValidateProductID" Value="0">0</Publish>
+          <Publish Property="InstallMode" Value="Custom">1</Publish>     
+		  <Publish Event="ValidateProductID" Value="0">0</Publish>
+
+		  
+		  <Publish Event="AddLocal" Value="SSHPlink">1</Publish>
+		  <Publish Event="AddLocal" Value="SSHOpenSSH">1</Publish>
+		  
+		  <Publish Event="Remove" Value="SSHPlink">SSHRadio = "OpenSSH"</Publish>
+		  <Publish Event="Remove" Value="SSHOpenSSH">SSHRadio = "Plink"</Publish>
+		  
           <Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
+		  
         </Control>
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
           <Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -232,8 +240,8 @@
       </Dialog>
       
       <RadioButtonGroup Property="SSHRadio">
-        <RadioButton Text="{\DlgFont8}TortoisePLink, coming from Putty, which is better integrate with windows" Value="Plink" X="5" Y="0" Width="250" Height="30" />
-        <RadioButton Text="{\DlgFont8}OpenSSH, Git default SSH Client" Value="OpenSSH" X="5" Y="60" Width="250" Height="30" />
+        <RadioButton Text="{\DlgFont8}TortoisePLink, coming from Putty, which is better integrate with windows" Value="Plink" X="5" Y="0" Width="300" Height="30" />
+        <RadioButton Text="{\DlgFont8}OpenSSH, Git default SSH Client" Value="OpenSSH" X="5" Y="60" Width="300" Height="30" />
       </RadioButtonGroup>
       
 

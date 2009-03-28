@@ -33,6 +33,8 @@
 
 		<Icon Id="TSVNIcon" SourceFile="..\Resources\Tortoise.ico" />
 
+		<Property Id="SSHRadio">Plink</Property>
+			  
 		<!-- Launch Condition related properties ................................................................................. -->
 		<Property Id="VERSIONIE">
 			<RegistrySearch Id="RegSearchIeVersion" Root="HKLM" Key="SOFTWARE\Microsoft\Internet Explorer" Name="Version" Type="raw" Win64="$(var.Win64YesNo)"/>
@@ -86,6 +88,7 @@
 		</Property>
 		<?endif ?>
     
+	
     <?include FeaturesFragment.wxi?>
     <?include StructureFragment.wxi?>
     <?include UIFragment.wxi?>

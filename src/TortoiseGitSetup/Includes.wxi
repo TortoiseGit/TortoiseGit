@@ -146,7 +146,8 @@
 	<?define GuidIconsXPStyle="EA15DA03-D008-4d2e-8BC4-F20E0A01418C"?>
 	<?define GuidIconsMarkPhippard="40D1B81D-F8FE-4a97-BCF0-F58BE2C9D7A9"?>
 	<?define GuidIconsStraight="6176FFF7-3626-4464-8B71-4A5E2551A2B8"?>
-
+	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
+	<?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
 	<?endif?>
 
 </Include>
