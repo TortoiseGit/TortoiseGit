@@ -59,6 +59,9 @@ void CSettings::AddPropPages()
 //	m_pHooksPage = new CSetHooks();
 	m_pBugTraqPage = new CSetBugTraq();
 	m_pTBlamePage = new CSettingsTBlame();
+	m_pGitConfig = new CSettingGitConfig();
+	m_pGitRemote = new CSettingGitRemote();
+
 
 	SetPageIcon(m_pMainPage, m_pMainPage->GetIconID());
 	SetPageIcon(m_pOverlayPage, m_pOverlayPage->GetIconID());
@@ -97,7 +100,10 @@ void CSettings::AddPropPages()
 	AddPage(m_pColorsPage2);
 	AddPage(m_pColorsPage3);
 	AddPage(m_pSavedPage);
-//	AddPage(m_pLogCachePage);
+
+	AddPage(m_pGitConfig);
+	AddPage(m_pGitRemote);
+//	AddPage(m_pGitRemotem_pLogCachePage);
 //    AddPage(m_pLogCacheListPage);
 //	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
@@ -126,6 +132,10 @@ void CSettings::RemovePropPages()
 //	delete m_pHooksPage;
 	delete m_pBugTraqPage;
 	delete m_pTBlamePage;
+
+	delete m_pGitConfig;
+	delete m_pGitRemote;
+
 }
 
 void CSettings::HandleRestart()
@@ -151,6 +161,10 @@ void CSettings::HandleRestart()
 ////	restart |= m_pHooksPage->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
 	restart |= m_pTBlamePage->GetRestart();
+
+	restart |= m_pGitConfig->GetRestart();
+	restart |= m_pGitRemote->GetRestart();
+
 	if (restart & ISettingsPropPage::Restart_System)
 	{
 		DWORD_PTR res = 0;

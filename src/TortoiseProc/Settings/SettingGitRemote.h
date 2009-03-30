@@ -1,17 +1,20 @@
 #pragma once
 #include "afxwin.h"
-
+#include "SettingsPropPage.h"
+#include "Tooltip.h"
+#include "registry.h"
+#include "afxwin.h"
 
 // CSettingGitRemote dialog
 
-class CSettingGitRemote : public CPropertyPage
+class CSettingGitRemote : public ISettingsPropPage
 {
 	DECLARE_DYNAMIC(CSettingGitRemote)
 
 public:
 	CSettingGitRemote();
 	virtual ~CSettingGitRemote();
-
+	UINT GetIconID() {return IDI_GENERAL;}
 // Dialog Data
 	enum { IDD = IDD_SETTINREMOTE };
 

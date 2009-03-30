@@ -1,16 +1,19 @@
 #pragma once
 
-
+#include "SettingsPropPage.h"
+#include "Tooltip.h"
+#include "registry.h"
+#include "afxwin.h"
 // CSettingGitConfig dialog
 
-class CSettingGitConfig : public CPropertyPage
+class CSettingGitConfig : public ISettingsPropPage
 {
 	DECLARE_DYNAMIC(CSettingGitConfig)
 
 public:
 	CSettingGitConfig();
 	virtual ~CSettingGitConfig();
-
+	UINT GetIconID() {return IDI_GENERAL;}
 // Dialog Data
 	enum { IDD = IDD_SETTINGIT_CONFIG };
 

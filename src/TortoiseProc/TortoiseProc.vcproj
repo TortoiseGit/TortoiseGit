@@ -1723,19 +1723,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\SettingGitConfig.cpp"
+					RelativePath=".\Settings\SettingGitConfig.cpp"
 				>
 				</File>
 				<File
-					RelativePath=".\SettingGitConfig.h"
+					RelativePath=".\Settings\SettingGitConfig.h"
 				>
 				</File>
 				<File
-					RelativePath=".\SettingGitRemote.cpp"
+					RelativePath=".\Settings\SettingGitRemote.cpp"
 				>
 				</File>
 				<File
-					RelativePath=".\SettingGitRemote.h"
+					RelativePath=".\Settings\SettingGitRemote.h"
 				>
 				</File>
 			</Filter>

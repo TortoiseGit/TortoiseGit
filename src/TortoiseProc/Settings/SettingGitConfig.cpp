@@ -8,10 +8,10 @@
 
 // CSettingGitConfig dialog
 
-IMPLEMENT_DYNAMIC(CSettingGitConfig, CPropertyPage)
+IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
 
 CSettingGitConfig::CSettingGitConfig()
-	: CPropertyPage(CSettingGitConfig::IDD)
+	: ISettingsPropPage(CSettingGitConfig::IDD)
     , m_UserName(_T(""))
     , m_UserEmail(_T(""))
     , m_bGlobal(FALSE)

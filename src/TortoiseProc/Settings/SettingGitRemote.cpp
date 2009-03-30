@@ -8,10 +8,10 @@
 
 // CSettingGitRemote dialog
 
-IMPLEMENT_DYNAMIC(CSettingGitRemote, CPropertyPage)
+IMPLEMENT_DYNAMIC(CSettingGitRemote, ISettingsPropPage)
 
 CSettingGitRemote::CSettingGitRemote()
-	: CPropertyPage(CSettingGitRemote::IDD)
+	: ISettingsPropPage(CSettingGitRemote::IDD)
     , m_strRemote(_T(""))
     , m_strUrl(_T(""))
     , m_strPuttyKeyfile(_T(""))

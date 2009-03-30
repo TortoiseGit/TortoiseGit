@@ -308,8 +308,15 @@ out everything for now, leaving these enabled as they are would make the install
 -->
             <Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
-            </Component>
-
+            
+			<Shortcut Id="S__puttykeygen" Directory="D_TortoisePrgMenu" Name="Puttygen" Advertise="no"
+              Target="[INSTALLDIR]bin\puttygen.exe" Description="putty key generate" Show="normal" />
+            
+			<Shortcut Id="S__pageant" Directory="D_TortoisePrgMenu" Name="Pageant" Advertise="no"
+              Target="[INSTALLDIR]bin\pageant.exe" Description="putty ageant" Show="normal" />
+         
+			</Component>
+			
             <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\ext\svnbin\TortoiseMerge.exe" KeyPath="yes" />
             </Component>
