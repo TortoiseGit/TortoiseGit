@@ -1722,6 +1722,22 @@
 					RelativePath=".\Settings\ToolAssocDlg.h"
 					>
 				</File>
+				<File
+					RelativePath=".\SettingGitConfig.cpp"
+				>
+				</File>
+				<File
+					RelativePath=".\SettingGitConfig.h"
+				>
+				</File>
+				<File
+					RelativePath=".\SettingGitRemote.cpp"
+				>
+				</File>
+				<File
+					RelativePath=".\SettingGitRemote.h"
+				>
+				</File>
 			</Filter>
 			<Filter
 				Name="Switch"
