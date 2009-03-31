@@ -34,6 +34,9 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
+    ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
+    ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnEnChangeGitUsername)
+    ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitConfig::OnInitDialog()
@@ -60,3 +63,43 @@ BOOL CSettingGitConfig::OnInitDialog()
 	return TRUE;
 }
 // CSettingGitConfig message handlers
+
+void CSettingGitConfig::OnBnClickedCheckGlobal()
+{
+    // TODO: Add your control notification handler code here
+    SetModified();
+}
+
+void CSettingGitConfig::OnEnChangeGitUsername()
+{
+    // TODO:  If this is a RICHEDIT control, the control will not
+    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
+    // function and call CRichEditCtrl().SetEventMask()
+    // with the ENM_CHANGE flag ORed into the mask.
+
+    // TODO:  Add your control notification handler code here
+    SetModified();
+}
+
+void CSettingGitConfig::OnEnChangeGitUseremail()
+{
+    // TODO:  If this is a RICHEDIT control, the control will not
+    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
+    // function and call CRichEditCtrl().SetEventMask()
+    // with the ENM_CHANGE flag ORed into the mask.
+
+    // TODO:  Add your control notification handler code here
+    SetModified();
+}
+
+BOOL CSettingGitConfig::OnApply()
+{
+    CString cmd, out;
+    this->UpdateData(FALSE);
+
+    cmd.Format(_T("git.exe config user.name %s"),this->m_UserName);
+    cmd.Format(_T("git.exe config user.email %s"),this->m_UserEmail);
+
+    SetModified(FALSE);
+	return ISettingsPropPage::OnApply();
+}

@@ -31,4 +31,8 @@ public:
     afx_msg void OnBnClickedButtonBrowse();
     afx_msg void OnBnClickedButtonAdd();
     afx_msg void OnLbnSelchangeListRemote();
+    afx_msg void OnEnChangeEditRemote();
+    afx_msg void OnEnChangeEditUrl();
+    afx_msg void OnBnClickedCheckIsautoloadputtykey();
+    afx_msg void OnEnChangeEditPuttyKey();
 };
