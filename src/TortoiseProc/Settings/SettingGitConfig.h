@@ -13,7 +13,7 @@ class CSettingGitConfig : public ISettingsPropPage
 public:
 	CSettingGitConfig();
 	virtual ~CSettingGitConfig();
-	UINT GetIconID() {return IDI_GENERAL;}
+	UINT GetIconID() {return IDI_GITCONFIG;}
 // Dialog Data
 	enum { IDD = IDD_SETTINGIT_CONFIG };
 

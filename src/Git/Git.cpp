@@ -305,13 +305,15 @@ CString CGit::GetUserName(void)
 {
 	CString UserName;
 	Run(_T("git.exe config user.name"),&UserName,CP_UTF8);
-	return UserName;
+	int start = 0;
+	return UserName.Tokenize(_T("\n"),start);
 }
 CString CGit::GetUserEmail(void)
 {
 	CString UserName;
 	Run(_T("git.exe config user.email"),&UserName,CP_UTF8);
-	return UserName;
+	int start = 0;
+	return UserName.Tokenize(_T("\n"),start);
 }
 
 CString CGit::GetCurrentBranch(void)

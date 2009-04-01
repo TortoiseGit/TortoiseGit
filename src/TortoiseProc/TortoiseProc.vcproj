@@ -588,11 +588,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -828,19 +828,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\open.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -944,19 +944,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File
@@ -1048,11 +1048,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
@@ -1639,6 +1639,22 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Settings\SettingGitConfig.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingGitConfig.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingGitRemote.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingGitRemote.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\Settings.cpp"
 					>
 				</File>
@@ -1721,22 +1737,6 @@
 				<File
 					RelativePath=".\Settings\ToolAssocDlg.h"
 					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingGitConfig.cpp"
-				>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingGitConfig.h"
-				>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingGitRemote.cpp"
-				>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingGitRemote.h"
-				>
 				</File>
 			</Filter>
 			<Filter

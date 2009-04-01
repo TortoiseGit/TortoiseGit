@@ -551,6 +551,7 @@ void CTreePropSheet::UpdateCaption()
 	HTREEITEM	hItem = m_pwndPageTree->GetSelectedItem();
 	if (!hItem)
 		return;
+	
 	CString		strCaption = m_pwndPageTree->GetItemText(hItem);
 
 	// if empty page, then update empty page message
@@ -560,7 +561,16 @@ void CTreePropSheet::UpdateCaption()
 	// if no captions are displayed, cancel here
 	if (!m_pFrame->GetShowCaption())
 		return;
+	
+	::GetWindowText(hPage,strCaption.GetBufferSetLength(256),256);
+	strCaption.ReleaseBuffer();
 
+	int start=strCaption.ReverseFind(_T(':'));
+	if(start>0)
+	{
+		if(strCaption[start-1] == _T(':'))
+			strCaption=strCaption.Right(strCaption.GetLength()-start-1);
+	}
 	// get tab control, to the the images from
 	CTabCtrl	*pTabCtrl = GetTabControl();
 	if (!IsWindow(pTabCtrl->GetSafeHwnd()))

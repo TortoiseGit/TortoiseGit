@@ -82,6 +82,9 @@ void CSettings::AddPropPages()
 
 	SetPageIcon(m_pSavedPage, m_pSavedPage->GetIconID());
 //	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
+
+	SetPageIcon(m_pGitConfig, m_pGitConfig->GetIconID());
+	SetPageIcon(m_pGitRemote, m_pGitRemote->GetIconID());
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
 

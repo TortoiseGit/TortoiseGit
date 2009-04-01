@@ -7,6 +7,7 @@
 #include "Git.h"
 #include "Settings.h"
 #include "GitAdminDir.h"
+#include "MessageBox.h"
 // CSettingGitConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
@@ -94,11 +95,25 @@ void CSettingGitConfig::OnEnChangeGitUseremail()
 
 BOOL CSettingGitConfig::OnApply()
 {
-    CString cmd, out;
+    CString cmd, out,global;
     this->UpdateData(FALSE);
+	
+	if(this->m_bGlobal)
+		global = _T(" --global ");
 
-    cmd.Format(_T("git.exe config user.name %s"),this->m_UserName);
-    cmd.Format(_T("git.exe config user.email %s"),this->m_UserEmail);
+    cmd.Format(_T("git.exe config %s user.name \"%s\""),global,this->m_UserName);
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return FALSE;
+	}
+	out.Empty();
+    cmd.Format(_T("git.exe config %s user.email \"%s\""),global,this->m_UserEmail);
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return FALSE;
+	}
 
     SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

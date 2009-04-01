@@ -14,7 +14,7 @@ class CSettingGitRemote : public ISettingsPropPage
 public:
 	CSettingGitRemote();
 	virtual ~CSettingGitRemote();
-	UINT GetIconID() {return IDI_GENERAL;}
+	UINT GetIconID() {return IDI_GITREMOTE;}
 // Dialog Data
 	enum { IDD = IDD_SETTINREMOTE };
 
