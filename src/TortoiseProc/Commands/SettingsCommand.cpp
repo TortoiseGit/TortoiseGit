@@ -23,10 +23,10 @@
 
 bool SettingsCommand::Execute()
 {
-	CSettings dlg(IDS_PROC_SETTINGS_TITLE);
+	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
 	dlg.SetTreeWidth(220);
-	dlg.m_CmdPath = this->orgCmdLinePath ;
+	
 	dlg.DoModal();
 	dlg.HandleRestart();
 	return true;

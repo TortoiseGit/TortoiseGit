@@ -22,12 +22,15 @@
 #include "MessageBox.h"
 #include "..\..\TGitCache\CacheInterface.h"
 #include "CommonResource.h"
-
+#include "GitAdminDir.h"
 
 IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)
-CSettings::CSettings(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
+CSettings::CSettings(UINT nIDCaption,CTGitPath *cmdPath, CWnd* pParentWnd, UINT iSelectPage)
 	:CTreePropSheet(nIDCaption, pParentWnd, iSelectPage)
 {
+	if(cmdPath)
+		this->m_CmdPath=*cmdPath;
+
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	AddPropPages();
 }
@@ -105,7 +108,11 @@ void CSettings::AddPropPages()
 	AddPage(m_pSavedPage);
 
 	AddPage(m_pGitConfig);
-	AddPage(m_pGitRemote);
+
+	if(	g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) )
+	{
+		AddPage(m_pGitRemote);
+	}
 //	AddPage(m_pGitRemotem_pLogCachePage);
 //    AddPage(m_pLogCacheListPage);
 //	AddPage(m_pHooksPage);

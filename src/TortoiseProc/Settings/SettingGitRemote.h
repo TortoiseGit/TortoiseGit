@@ -22,6 +22,12 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+
+	BOOL OnInitDialog();
+    BOOL OnApply();
+
+	BOOL m_bChanged;
+
 public:
     CListBox m_ctrlRemoteList;
     CString m_strRemote;
