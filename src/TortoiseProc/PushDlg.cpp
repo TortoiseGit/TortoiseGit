@@ -6,6 +6,7 @@
 #include "PushDlg.h"
 
 #include "Git.h"
+#include "registry.h"
 // CPushDlg dialog
 
 IMPLEMENT_DYNAMIC(CPushDlg, CResizableStandAloneDialog)
@@ -85,12 +86,20 @@ BOOL CPushDlg::OnInitDialog()
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 	STRING_VECTOR list;
+	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
+	m_RemoteReg = remote;
+	int sel=0;
 
 	if(!g_Git.GetRemoteList(list))
 	{	
 		for(unsigned int i=0;i<list.size();i++)
+		{
 			m_Remote.AddString(list[i]);
+			if(list[i] == remote)
+				sel = i;
+		}
 	}
+	m_Remote.SetCurSel(sel);
 
 	int current=0;
 	list.clear();
@@ -154,5 +163,8 @@ void CPushDlg::OnBnClickedOk()
 
 	this->m_RemoteURL.SaveHistory();
 	this->m_BranchRemote.SaveHistory();
+	
+	m_RemoteReg = m_Remote.GetString();
+
 	CResizableStandAloneDialog::OnOK();
 }

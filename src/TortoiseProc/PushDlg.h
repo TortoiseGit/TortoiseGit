@@ -2,6 +2,7 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
+#include "registry.h"
 // CPushDlg dialog
 
 class CPushDlg : public CResizableStandAloneDialog
@@ -20,6 +21,7 @@ public:
 	CString m_URL;
 	CString m_BranchSourceName;
 	CString m_BranchRemoteName;
+	CRegString m_RemoteReg;
 
 	BOOL			m_bTags;
 	BOOL			m_bForce;
