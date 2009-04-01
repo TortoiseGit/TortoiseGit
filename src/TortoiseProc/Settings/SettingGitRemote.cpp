@@ -19,7 +19,8 @@ CSettingGitRemote::CSettingGitRemote()
     , m_strUrl(_T(""))
     , m_strPuttyKeyfile(_T(""))
 {
-	m_bChanged=FALSE;
+
+	m_ChangedMask = 0;
 }
 
 CSettingGitRemote::~CSettingGitRemote()
@@ -75,7 +76,8 @@ BOOL CSettingGitRemote::OnInitDialog()
 			this->m_ctrlRemoteList.AddString(one);
 
 	}while(start>=0);
-		
+	
+	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
 	return TRUE;
 }
@@ -84,17 +86,42 @@ BOOL CSettingGitRemote::OnInitDialog()
 void CSettingGitRemote::OnBnClickedButtonBrowse()
 {
     // TODO: Add your control notification handler code here
+	CFileDialog dlg(TRUE,NULL,
+					NULL,
+					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+					_T("Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"));
+	
+	this->UpdateData();
+	if(dlg.DoModal()==IDOK)
+	{
+		this->m_strPuttyKeyfile = dlg.GetPathName();
+		this->UpdateData(FALSE);
+		OnEnChangeEditPuttyKey();
+	}
+	
+
 }
 
 void CSettingGitRemote::OnBnClickedButtonAdd()
 {
     // TODO: Add your control notification handler code here
+	this->m_strRemote.Empty();
+	this->m_strUrl.Empty();
+	this->m_strPuttyKeyfile.Empty();
+	this->m_bAutoLoad.SetCheck(false);
+	this->UpdateData(FALSE);
+	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(TRUE);
+	this->m_ChangedMask |= REMOTE_NAME;
+	this->m_ctrlRemoteList.SetCurSel(-1);
+	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(FALSE);
 }
 
 void CSettingGitRemote::OnLbnSelchangeListRemote()
 {
     // TODO: Add your control notification handler code here
-	if(m_bChanged)
+	CWaitCursor wait;
+
+	if(m_ChangedMask)
 	{
 		if(CMessageBox::Show(NULL,_T("Remote Config Changed\nDo you want to save change now or discard change"),
 								 _T("TortoiseGit"),MB_YESNO) == IDYES)
@@ -153,6 +180,9 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		m_bAutoLoad.SetCheck(true);
 	}
 	
+	m_ChangedMask=0;
+
+	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	this->UpdateData(FALSE);
 
 }
@@ -165,6 +195,10 @@ void CSettingGitRemote::OnEnChangeEditRemote()
     // with the ENM_CHANGE flag ORed into the mask.
 
     // TODO:  Add your control notification handler code here
+
+	m_ChangedMask|=REMOTE_NAME;
+
+	this->SetModified();
 }
 
 void CSettingGitRemote::OnEnChangeEditUrl()
@@ -175,11 +209,15 @@ void CSettingGitRemote::OnEnChangeEditUrl()
     // with the ENM_CHANGE flag ORed into the mask.
 
     // TODO:  Add your control notification handler code here
+	m_ChangedMask|=REMOTE_URL;
+	this->SetModified();
 }
 
 void CSettingGitRemote::OnBnClickedCheckIsautoloadputtykey()
 {
     // TODO: Add your control notification handler code here
+	m_ChangedMask|=REMOTE_AUTOLOAD;
+	this->SetModified();
 }
 
 void CSettingGitRemote::OnEnChangeEditPuttyKey()
@@ -190,11 +228,59 @@ void CSettingGitRemote::OnEnChangeEditPuttyKey()
     // with the ENM_CHANGE flag ORed into the mask.
 
     // TODO:  Add your control notification handler code here
+	m_ChangedMask|=REMOTE_PUTTYKEY;
+	this->SetModified();
 }
-
+void CSettingGitRemote::Save(CString key,CString value)
+{
+	CString cmd,out;
+	cmd.Format(_T("git.exe config remote.%s.%s \"%s\""),this->m_strRemote,key,value);
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+	}
+}
 BOOL CSettingGitRemote::OnApply()
 {
-  
+	CWaitCursor wait;
+	this->UpdateData();
+	if(m_ChangedMask & REMOTE_NAME)
+	{
+		//Add Remote
+		if( this->m_strRemote.IsEmpty() || this->m_strUrl.IsEmpty() )
+		{
+			CMessageBox::Show(NULL,_T("Remote Name and URL can't be Empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+		CString cmd,out;
+		cmd.Format(_T("git.exe remote add \"%s\" \"%s\""),m_strRemote,m_strUrl);
+		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			CMessageBox::Show(NULL,out,_T("TorotiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+		m_ChangedMask &= ~REMOTE_URL;
+
+		this->m_ctrlRemoteList.AddString(m_strRemote);
+		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
+	}
+	if(m_ChangedMask & REMOTE_URL)
+	{
+		Save(_T("url"),this->m_strUrl);
+	}
+
+	if(m_ChangedMask & REMOTE_PUTTYKEY)
+	{
+		Save(_T("puttykey"),this->m_strPuttyKeyfile);
+	}
+
+	if(m_ChangedMask & REMOTE_AUTOLOAD)
+	{
+		Save(_T("puttykeyautoload"),this->m_bAutoLoad.GetCheck()?_T("true"):_T("false"));
+	}
+	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
     SetModified(FALSE);
+
+	m_ChangedMask = 0;
 	return ISettingsPropPage::OnApply();
 }

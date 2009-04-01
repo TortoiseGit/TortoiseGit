@@ -6,12 +6,18 @@
 #include "afxwin.h"
 
 // CSettingGitRemote dialog
-
 class CSettingGitRemote : public ISettingsPropPage
 {
 	DECLARE_DYNAMIC(CSettingGitRemote)
 
 public:
+	enum
+	{
+		REMOTE_NAME		=0x1,
+		REMOTE_URL		=0x2,
+		REMOTE_PUTTYKEY	=0x4,
+		REMOTE_AUTOLOAD	=0x8,
+	};
 	CSettingGitRemote();
 	virtual ~CSettingGitRemote();
 	UINT GetIconID() {return IDI_GITREMOTE;}
@@ -26,7 +32,11 @@ protected:
 	BOOL OnInitDialog();
     BOOL OnApply();
 
-	BOOL m_bChanged;
+protected:
+
+	void Save(CString key, CString value);
+
+	int	 m_ChangedMask;
 
 public:
     CListBox m_ctrlRemoteList;
