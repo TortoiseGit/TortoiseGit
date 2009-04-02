@@ -16,7 +16,6 @@ public:
 		REMOTE_NAME		=0x1,
 		REMOTE_URL		=0x2,
 		REMOTE_PUTTYKEY	=0x4,
-		REMOTE_AUTOLOAD	=0x8,
 	};
 	CSettingGitRemote();
 	virtual ~CSettingGitRemote();
@@ -42,13 +41,12 @@ public:
     CListBox m_ctrlRemoteList;
     CString m_strRemote;
     CString m_strUrl;
-    CButton m_bAutoLoad;
+    
     CString m_strPuttyKeyfile;
     afx_msg void OnBnClickedButtonBrowse();
     afx_msg void OnBnClickedButtonAdd();
     afx_msg void OnLbnSelchangeListRemote();
     afx_msg void OnEnChangeEditRemote();
     afx_msg void OnEnChangeEditUrl();
-    afx_msg void OnBnClickedCheckIsautoloadputtykey();
     afx_msg void OnEnChangeEditPuttyKey();
 };

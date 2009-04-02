@@ -33,7 +33,6 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_LIST_REMOTE, m_ctrlRemoteList);
     DDX_Text(pDX, IDC_EDIT_REMOTE, m_strRemote);
     DDX_Text(pDX, IDC_EDIT_URL, m_strUrl);
-    DDX_Control(pDX, IDC_CHECK_ISAUTOLOADPUTTYKEY, m_bAutoLoad);
     DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
 }
 
@@ -44,7 +43,6 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
     ON_LBN_SELCHANGE(IDC_LIST_REMOTE, &CSettingGitRemote::OnLbnSelchangeListRemote)
     ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
     ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
-    ON_BN_CLICKED(IDC_CHECK_ISAUTOLOADPUTTYKEY, &CSettingGitRemote::OnBnClickedCheckIsautoloadputtykey)
     ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 END_MESSAGE_MAP()
 
@@ -108,7 +106,6 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 	this->m_strRemote.Empty();
 	this->m_strUrl.Empty();
 	this->m_strPuttyKeyfile.Empty();
-	this->m_bAutoLoad.SetCheck(false);
 	this->UpdateData(FALSE);
 	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(TRUE);
 	this->m_ChangedMask |= REMOTE_NAME;
@@ -164,22 +161,6 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	m_strPuttyKeyfile = m_strPuttyKeyfile.Tokenize(_T("\n"),start);
 	
 
-	cmd.Format(_T("git.exe config remote.%s.puttykeyautoload"),remote);
-	CString autoload;
-	if( g_Git.Run(cmd,&autoload,CP_ACP) )
-	{
-		//CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-		//return;
-	}
-
-	start=0;
-	autoload = autoload.Tokenize(_T("\n"),start);
-	m_bAutoLoad.SetCheck(false);
-	if( autoload == _T("true"))
-	{
-		m_bAutoLoad.SetCheck(true);
-	}
-	
 	m_ChangedMask=0;
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
@@ -210,13 +191,6 @@ void CSettingGitRemote::OnEnChangeEditUrl()
 
     // TODO:  Add your control notification handler code here
 	m_ChangedMask|=REMOTE_URL;
-	this->SetModified();
-}
-
-void CSettingGitRemote::OnBnClickedCheckIsautoloadputtykey()
-{
-    // TODO: Add your control notification handler code here
-	m_ChangedMask|=REMOTE_AUTOLOAD;
 	this->SetModified();
 }
 
@@ -274,10 +248,6 @@ BOOL CSettingGitRemote::OnApply()
 		Save(_T("puttykey"),this->m_strPuttyKeyfile);
 	}
 
-	if(m_ChangedMask & REMOTE_AUTOLOAD)
-	{
-		Save(_T("puttykeyautoload"),this->m_bAutoLoad.GetCheck()?_T("true"):_T("false"));
-	}
 	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
     SetModified(FALSE);
 
