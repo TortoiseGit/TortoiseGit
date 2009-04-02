@@ -1,3 +1,50 @@
+Version 0.5.0.0 version(internal)
+Features:
+	*Submodule Support.
+	 Support submodule add, sync and update. 
+	 "Submodule Sync" is located in explore context external menu, which need press "shift" key when right click.
+   
+	*Improve show log speed at big repository, such as git.git
+
+	*OpenSSH can prompt password dialog
+
+	*Clone, pull push support both OpenSSH and Plink. 
+	 Support both key and password mode. 
+	 Show progress when clone at git and SSH protocol. 
+
+	*Stash Save\Apply support
+	 
+	*Reflog support. Need press "shift" to show reflog menu item at context menu. 
+
+	*Add save special version to another file at file list, such as log dailog.
+	
+	*Add external diff merge and undiff setting at settings page
+
+	*Add Diff with workcopy at file list	
+
+	*Add MessageBox Tell user Revert Finished
+	
+	*Add Notepad2 to setup script to view text file
+	
+	*Add view in notepad2 at file list
+	
+	*Add Copy File list to clipboard 
+
+	*Choose Default SSH client when install TortoiseGit
+	
+	*Add user config and remote manage at setting dialog
+	
+	*Pull and push can autoload putty private key. 
+
+	 
+Bug Fix:
+	*Fixed Issue 55:  "resolved" function doesn't delete temporary files.
+	*Fix: Issue 57:  Data duplication when Clicking Check repository in Check for modification dialog	
+	*Fix GetString error when edit at HistoryCombo
+	*win2k context menu fix (had an issue when shift key was pressed)
+	*Fix crash in logviewer on invalid time strings
+	
+
 Version 0.4.2.0 version(external)
 	*Fix Shell menu disappear because ATL library have not installed. 
 	*Fix Commit Dialog and Log Dialog default column is wrong 

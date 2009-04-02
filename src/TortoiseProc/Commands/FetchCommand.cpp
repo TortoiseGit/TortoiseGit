@@ -25,6 +25,7 @@
 #include "MessageBox.h"
 #include "PullFetchDlg.h"
 #include "ProgressDlg.h"
+#include "AppUtils.h"
 
 bool FetchCommand::Execute()
 {
@@ -33,6 +34,11 @@ bool FetchCommand::Execute()
 
 	if(dlg.DoModal()==IDOK)
 	{
+		if(dlg.m_bAutoLoad)
+		{
+			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
+		}
+
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;

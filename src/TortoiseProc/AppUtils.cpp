@@ -614,7 +614,34 @@ bool CAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessage
 	CloseHandle(process.hProcess);
 	return true;
 }
+bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
+{
+	CString key,remote;
+	CString cmd,out;
+	if( pRemote == NULL)
+	{
+		remote=_T("origin");
+	}
+	if(keyfile == NULL)
+	{
+		cmd.Format(_T("git.exe config remote.%s.puttykeyfile"),remote);
+		g_Git.Run(cmd,&key,CP_ACP);
+		int start=0;
+		key.Tokenize(_T("\n"),start);
+	}
+	else
+		key=*keyfile;
 
+	if(key.IsEmpty())
+		return false;
+
+	CString proc=CPathUtils::GetAppDirectory();
+    proc += _T("pageant.exe \"");
+	proc += key;
+	proc += _T("\"");
+
+    return LaunchApplication(proc, IDS_ERR_EXTDIFFSTART, false);
+}
 bool CAppUtils::LaunchRemoteSetting()
 {
     CString proc=CPathUtils::GetAppDirectory();

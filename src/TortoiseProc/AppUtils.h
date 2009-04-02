@@ -189,6 +189,8 @@ public:
 
     static bool LaunchRemoteSetting();
 
+	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

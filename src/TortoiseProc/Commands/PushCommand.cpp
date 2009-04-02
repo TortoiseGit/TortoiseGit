@@ -26,6 +26,7 @@
 
 #include "PushDlg.h"
 #include "ProgressDlg.h"
+#include "AppUtils.h"
 
 bool PushCommand::Execute()
 {
@@ -39,6 +40,11 @@ bool PushCommand::Execute()
 		CString force;
 		CString tags;
 		CString thin;
+
+		if(dlg.m_bAutoLoad)
+		{
+			CAppUtils::LaunchPAgent(NULL,&dlg.m_URL);
+		}
 
 		if(dlg.m_bPack)
 			thin=_T("--thin");

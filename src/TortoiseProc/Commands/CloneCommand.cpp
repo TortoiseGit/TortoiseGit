@@ -26,6 +26,7 @@
 
 #include "CloneDlg.h"
 #include "ProgressDlg.h"
+#include "AppUtils.h"
 
 bool CloneCommand::Execute()
 {
@@ -33,6 +34,10 @@ bool CloneCommand::Execute()
 	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
 	if(dlg.DoModal()==IDOK)
 	{
+		if(dlg.m_bAutoloadPuttyKeyFile)
+		{
+			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
+		}
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
 		// is this a windows format UNC path, ie starts with \\ 
