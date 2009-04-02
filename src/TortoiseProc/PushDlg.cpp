@@ -7,6 +7,8 @@
 
 #include "Git.h"
 #include "registry.h"
+#include "AppUtils.h"
+
 // CPushDlg dialog
 
 IMPLEMENT_DYNAMIC(CPushDlg, CResizableStandAloneDialog)
@@ -14,7 +16,7 @@ IMPLEMENT_DYNAMIC(CPushDlg, CResizableStandAloneDialog)
 CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CPushDlg::IDD, pParent)
 {
-
+    m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
 
 CPushDlg::~CPushDlg()
@@ -31,6 +33,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
 	DDX_Check(pDX,IDC_TAGS,this->m_bTags);
+    DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
 
 }
 
@@ -40,6 +43,7 @@ BEGIN_MESSAGE_MAP(CPushDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_RD_URL, &CPushDlg::OnBnClickedRd)
 	ON_CBN_SELCHANGE(IDC_BRANCH_SOURCE, &CPushDlg::OnCbnSelchangeBranchSource)
 	ON_BN_CLICKED(IDOK, &CPushDlg::OnBnClickedOk)
+    ON_BN_CLICKED(IDC_REMOTE_MANAGE, &CPushDlg::OnBnClickedRemoteManage)
 END_MESSAGE_MAP()
 
 BOOL CPushDlg::OnInitDialog()
@@ -68,10 +72,13 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_FORCE, TOP_LEFT);
 	AddAnchor(IDC_PACK, TOP_LEFT);
 	AddAnchor(IDC_TAGS, TOP_LEFT);
+    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
 
+    AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
 
 	AddOthersToAnchor();
 
+    this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoad);
 
 	EnableSaveRestore(_T("PushDlg"));
 
@@ -167,4 +174,10 @@ void CPushDlg::OnBnClickedOk()
 	m_RemoteReg = m_Remote.GetString();
 
 	CResizableStandAloneDialog::OnOK();
+}
+
+void CPushDlg::OnBnClickedRemoteManage()
+{
+    // TODO: Add your control notification handler code here
+    CAppUtils::LaunchRemoteSetting();
 }

@@ -33,5 +33,10 @@ public:
 	afx_msg void OnEnChangeCloneDir();
 	CString m_Directory;
 	CHistoryCombo	m_URLCombo;
+    CHistoryCombo   m_PuttyKeyCombo;
+    CString m_strPuttyKeyFile;
 	CString m_URL;
+    BOOL    m_bAutoloadPuttyKeyFile;
+    afx_msg void OnBnClickedPuttykeyfileBrowse();
+    afx_msg void OnBnClickedPuttykeyAutoload();
 };

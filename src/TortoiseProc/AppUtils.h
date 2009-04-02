@@ -184,6 +184,11 @@ public:
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
 	static int	   StashApply(CString ref);
+
+    static bool IsSSHPutty();
+
+    static bool LaunchRemoteSetting();
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

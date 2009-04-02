@@ -26,6 +26,7 @@ public:
 	BOOL			m_bTags;
 	BOOL			m_bForce;
 	BOOL			m_bPack;
+    BOOL            m_bAutoLoad;
 
 	virtual BOOL OnInitDialog();
 // Dialog Data
@@ -39,4 +40,5 @@ public:
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnCbnSelchangeBranchSource();
 	afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedRemoteManage();
 };

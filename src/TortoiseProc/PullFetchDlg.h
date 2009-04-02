@@ -2,6 +2,7 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
+#include "HyperLink.h"
 // CPullFetchDlg dialog
 
 class CPullFetchDlg : public CResizableStandAloneDialog
@@ -25,9 +26,14 @@ protected:
 	
 	DECLARE_MESSAGE_MAP()
 public:
-	BOOL m_IsPull;
+	BOOL        m_IsPull;
+    BOOL        m_bAutoLoad;
+    BOOL        m_bAutoLoadEnable;
+    CHyperLink  m_RemoteManage;
+
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnBnClickedOk();
 	CString m_RemoteURL;
 	CString m_RemoteBranchName;
+    afx_msg void OnStnClickedRemoteManage();
 };

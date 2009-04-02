@@ -615,6 +615,15 @@ bool CAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessage
 	return true;
 }
 
+bool CAppUtils::LaunchRemoteSetting()
+{
+    CString proc=CPathUtils::GetAppDirectory();
+    proc += _T("TortoiseProc.exe /command:settings");
+    proc += _T(" /path:\"");
+    proc += g_Git.m_CurrentDir;
+    proc += _T("\" /page:remote");
+    return LaunchApplication(proc, IDS_ERR_EXTDIFFSTART, false);
+}
 /**
 * Launch the external blame viewer
 */
@@ -1819,3 +1828,13 @@ CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
 	return answer;
 }
 
+bool CAppUtils::IsSSHPutty()
+{
+    CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
+    sshclient=sshclient.MakeLower();
+    if(sshclient.Find(_T("plink.exe"),0)>=0)
+    {
+        return true;
+    }
+    return false;
+}

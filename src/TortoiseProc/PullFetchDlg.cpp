@@ -5,6 +5,7 @@
 #include "TortoiseProc.h"
 #include "PullFetchDlg.h"
 #include "Git.h"
+#include "AppUtils.h"
 
 // CPullFetchDlg dialog
 
@@ -14,6 +15,8 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
+    m_bAutoLoad = CAppUtils::IsSSHPutty();
+    m_bAutoLoadEnable=true;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -26,6 +29,8 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REMOTE_COMBO, this->m_Remote);
 	DDX_Control(pDX, IDC_OTHER, this->m_Other);
 	DDX_Control(pDX, IDC_REMOTE_BRANCH, this->m_RemoteBranch);
+    DDX_Control(pDX,IDC_REMOTE_MANAGE, this->m_RemoteManage);
+    DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
 
 }
 
@@ -34,6 +39,7 @@ BEGIN_MESSAGE_MAP(CPullFetchDlg,CResizableStandAloneDialog )
 	ON_BN_CLICKED(IDC_REMOTE_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_OTHER_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDOK, &CPullFetchDlg::OnBnClickedOk)
+    ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
 END_MESSAGE_MAP()
 
 BOOL CPullFetchDlg::OnInitDialog()
@@ -46,8 +52,13 @@ BOOL CPullFetchDlg::OnInitDialog()
 	
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+    AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,BOTTOM_RIGHT);
+    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
+    AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 
-	this->AddOthersToAnchor();
+    this->AddOthersToAnchor();
+
+    this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoadEnable);
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
 	m_Remote.EnableWindow(TRUE);
@@ -74,6 +85,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 			m_Remote.AddString(list[i]);
 	}
 	EnableSaveRestore(_T("PullFetchDlg"));
+    this->m_RemoteManage.SetURL(CString());
 	return TRUE;
 }
 // CPullFetchDlg message handlers
@@ -118,4 +130,10 @@ void CPullFetchDlg::OnBnClickedOk()
 	m_Other.SaveHistory();
 	m_RemoteBranch.SaveHistory();
 	this->OnOK();
+}
+
+void CPullFetchDlg::OnStnClickedRemoteManage()
+{
+    // TODO: Add your control notification handler code here
+    CAppUtils::LaunchRemoteSetting();
 }

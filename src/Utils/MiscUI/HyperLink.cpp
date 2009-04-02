@@ -116,7 +116,14 @@ END_MESSAGE_MAP()
 
 void CHyperLink::OnClicked()
 {
-    GotoURL(m_strURL);
+    if(!m_strURL.IsEmpty())
+    {
+        GotoURL(m_strURL);
+    }
+    else
+    {
+        ::SendMessage(this->GetParent()->m_hWnd,WM_COMMAND,this->GetDlgCtrlID(),0);
+    }
 }
 
 HBRUSH CHyperLink::CtlColor(CDC* pDC, UINT /*nCtlColor*/) 

@@ -6,7 +6,7 @@
 #include "CloneDlg.h"
 #include "BrowseFolder.h"
 #include "MessageBox.h"
-
+#include "AppUtils.h"
 // CCloneDlg dialog
 
 IMPLEMENT_DYNCREATE(CCloneDlg, CResizableStandAloneDialog)
@@ -15,7 +15,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CCloneDlg::IDD, pParent)
 	, m_Directory(_T(""))
 {
-
+    m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
 }
 
 CCloneDlg::~CCloneDlg()
@@ -26,7 +26,10 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_URLCOMBO, m_URLCombo);
+    DDX_Control(pDX, IDC_PUTTYKEYFILE, m_PuttyKeyCombo);
 	DDX_Text(pDX, IDC_CLONE_DIR, m_Directory);
+    DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD, m_bAutoloadPuttyKeyFile);
+
 }
 
 BOOL CCloneDlg::OnInitDialog()
@@ -39,6 +42,11 @@ BOOL CCloneDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
+    AddAnchor(IDC_GROUP_CLONE,TOP_LEFT,BOTTOM_RIGHT);
+    AddAnchor(IDC_PUTTYKEYFILE_BROWSE,BOTTOM_RIGHT);
+    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
+    AddAnchor(IDC_PUTTYKEYFILE,BOTTOM_LEFT,BOTTOM_RIGHT);
+
 	this->AddOthersToAnchor();
 
 	m_URLCombo.SetURLHistory(TRUE);
@@ -46,19 +54,29 @@ BOOL CCloneDlg::OnInitDialog()
 	if(m_URL.IsEmpty())
 		m_URLCombo.SetCurSel(0);
 	else
-		m_URLCombo.SetWindowTextW(m_URL);
+		m_URLCombo.SetWindowText(m_URL);
 
 	CWnd *window=this->GetDlgItem(IDC_CLONE_DIR);
 	if(window)
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
 
-	EnableSaveRestore(_T("CloneDlg"));
+    m_PuttyKeyCombo.SetPathHistory(TRUE);
+    m_PuttyKeyCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\puttykey"), _T("key"));
+    m_PuttyKeyCombo.SetCurSel(0);
+
+    this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow( CAppUtils::IsSSHPutty() );
+    this->GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+    this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+       
+    EnableSaveRestore(_T("CloneDlg"));
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CLONE_BROWSE_URL, &CCloneDlg::OnBnClickedCloneBrowseUrl)
 	ON_BN_CLICKED(IDC_CLONE_DIR_BROWSE, &CCloneDlg::OnBnClickedCloneDirBrowse)
+    ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, &CCloneDlg::OnBnClickedPuttykeyfileBrowse)
+    ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, &CCloneDlg::OnBnClickedPuttykeyAutoload)
 END_MESSAGE_MAP()
 
 
@@ -75,7 +93,11 @@ void CCloneDlg::OnOK()
 		CMessageBox::Show(NULL,_T("URL or Dir can't empty"),_T("TortiseGit"),MB_OK);
 		return;
 	}
+
 	m_URLCombo.SaveHistory();
+    m_PuttyKeyCombo.SaveHistory();
+
+    this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile );
 	CResizableDialog::OnOK();
 
 }
@@ -120,4 +142,29 @@ void CCloneDlg::OnEnChangeCloneDir()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
+{
+    // TODO: Add your control notification handler code here
+    CFileDialog dlg(TRUE,NULL,
+					NULL,
+					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+					_T("Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"));
+	
+	this->UpdateData();
+	if(dlg.DoModal()==IDOK)
+	{
+        this->m_PuttyKeyCombo.SetWindowText( dlg.GetPathName() );
+	}
+
+}
+
+void CCloneDlg::OnBnClickedPuttykeyAutoload()
+{
+    // TODO: Add your control notification handler code here
+    this->UpdateData();
+    this->GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+    this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+
 }
