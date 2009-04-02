@@ -150,7 +150,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	m_strUrl = m_strUrl.Tokenize(_T("\n"),start);
 
 
-	cmd.Format(_T("git.exe config remote.%s.puttykey"),remote);
+	cmd.Format(_T("git.exe config remote.%s.puttykeyfile"),remote);
 	this->m_strPuttyKeyfile.Empty();
 	if( g_Git.Run(cmd,&m_strPuttyKeyfile,CP_ACP) )
 	{
@@ -245,7 +245,7 @@ BOOL CSettingGitRemote::OnApply()
 
 	if(m_ChangedMask & REMOTE_PUTTYKEY)
 	{
-		Save(_T("puttykey"),this->m_strPuttyKeyfile);
+		Save(_T("puttykeyfile"),this->m_strPuttyKeyfile);
 	}
 
 	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
