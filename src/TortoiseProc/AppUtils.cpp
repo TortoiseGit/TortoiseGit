@@ -621,13 +621,16 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	if( pRemote == NULL)
 	{
 		remote=_T("origin");
+	}else
+	{
+		remote=*pRemote;
 	}
 	if(keyfile == NULL)
 	{
 		cmd.Format(_T("git.exe config remote.%s.puttykeyfile"),remote);
 		g_Git.Run(cmd,&key,CP_ACP);
 		int start=0;
-		key.Tokenize(_T("\n"),start);
+		key = key.Tokenize(_T("\n"),start);
 	}
 	else
 		key=*keyfile;
