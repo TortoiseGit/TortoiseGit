@@ -1802,7 +1802,7 @@ UINT CGitLogListBase::LogThread()
 
 	int start=0; CString firstcommit,lastcommit;
 	int update=0;
-	for(int i=0;i<this->GetItemCount();i++)
+	for(int i=0;i<m_logEntries.size();i++)
 	{
 		start=this->m_logEntries[i].ParserFromLog(m_logEntries.m_RawlogData,start);
 		m_logEntries.m_HashMap[m_logEntries[i].m_CommitHash]=i;
