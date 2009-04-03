@@ -2694,7 +2694,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString cmd;
 						cmd.Format(_T("git.exe add %s"),path->GetGitPathString());
 						CString output;
-						if(!g_Git.Run(cmd,&output,CP_OEMCP))
+						if(!g_Git.Run(cmd,&output,CP_ACP))
 						{
 							path->m_Action = CTGitPath::LOGACTIONS_ADDED;
 							SetEntryCheck(path,index,true);
@@ -2751,7 +2751,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							CString cmd,output;
 							cmd.Format(_T("git.exe add \"%s\""),fentry->GetGitPathString());
-							if(g_Git.Run(cmd,&output,CP_OEMCP))
+							if(g_Git.Run(cmd,&output,CP_ACP))
 							{
 								CMessageBox::Show(m_hWnd, output, _T("TortoiseSVN"), MB_ICONERROR);
 							}else

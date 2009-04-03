@@ -406,7 +406,7 @@ void CCommitDlg::OnOK()
 			else
 				cmd.Format(_T("git.exe update-index  -- \"%s\""),entry->GetGitPathString());
 
-			g_Git.Run(cmd,&out,CP_OEMCP);
+			g_Git.Run(cmd,&out,CP_ACP);
 			nchecked++;
 
 			//checkedLists.insert(entry->GetGitPathString());
@@ -418,12 +418,12 @@ void CCommitDlg::OnOK()
 			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
 			{	//To init git repository, there are not HEAD, so we can use git reset command
 				cmd.Format(_T("git.exe rm --cache -- \"%s\""),entry->GetGitPathString());
-				g_Git.Run(cmd,&out,CP_OEMCP);	
+				g_Git.Run(cmd,&out,CP_ACP);	
 			}
 			else
 			{
 				cmd.Format(_T("git.exe reset -- %s"),entry->GetGitPathString());
-				g_Git.Run(cmd,&out,CP_OEMCP);
+				g_Git.Run(cmd,&out,CP_ACP);
 			}
 
 		//	uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");

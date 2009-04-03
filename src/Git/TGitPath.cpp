@@ -890,7 +890,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool staged)
 		one.Empty();
 		path.Reset();
 
-		g_Git.StringAppend(&one,&out[pos],CP_OEMCP);
+		g_Git.StringAppend(&one,&out[pos],CP_ACP);
 		int tabstart=0;
 		path.m_Action=path.ParserAction(out[pos]);
 		one.Tokenize(_T("\t"),tabstart); 
@@ -957,7 +957,7 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 		while( pos>=0 && pos<out.size())
 		{
 			one.Empty();
-			g_Git.StringAppend(&one,&out[pos],CP_OEMCP);
+			g_Git.StringAppend(&one,&out[pos],CP_ACP);
 			if(!one.IsEmpty())
 			{
 				//SetFromGit will clear all status
@@ -1025,9 +1025,9 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 			CString pathname2;
 
 			if( file1>=0 )
-				g_Git.StringAppend(&pathname1,&log[file1],CP_OEMCP);
+				g_Git.StringAppend(&pathname1,&log[file1],CP_ACP);
 			if( file2>=0 )
-				g_Git.StringAppend(&pathname2,&log[file2],CP_OEMCP);
+				g_Git.StringAppend(&pathname2,&log[file2],CP_ACP);
 
 			CTGitPath *GitPath=LookForGitPath(pathname1);
 
@@ -1076,18 +1076,18 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 			if(log[pos] == 0) //rename
 			{
 				pos++;
-				g_Git.StringAppend(&file2,&log[pos],CP_OEMCP);
+				g_Git.StringAppend(&file2,&log[pos],CP_ACP);
 				int sec=log.find(0,pos);
 				if(sec>=0)
 				{
 					sec++;
-					g_Git.StringAppend(&file1,&log[sec],CP_OEMCP);
+					g_Git.StringAppend(&file1,&log[sec],CP_ACP);
 				}
 				pos=sec;
 
 			}else
 			{
-				g_Git.StringAppend(&file1,&log[pos],CP_OEMCP);
+				g_Git.StringAppend(&file1,&log[pos],CP_ACP);
 			}
 			path.SetFromGit(file1,&file2);
 	

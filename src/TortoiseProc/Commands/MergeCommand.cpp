@@ -43,7 +43,7 @@ bool MergeCommand::Execute()
 			dlg.m_VersionName);
 
 		CString output;
-		g_Git.Run(cmd,&output,CP_OEMCP);
+		g_Git.Run(cmd,&output,CP_ACP);
 
 		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
 	}

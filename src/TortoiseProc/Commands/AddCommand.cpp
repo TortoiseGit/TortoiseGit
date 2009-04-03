@@ -61,7 +61,7 @@ bool AddCommand::Execute()
 				for(int i=0;i<dlg.m_pathList.GetCount();i++)
 				{
 					cmd.Format(_T("git.exe add \"%s\""),dlg.m_pathList[i].GetGitPathString());
-					if(g_Git.Run(cmd,&out,CP_OEMCP))
+					if(g_Git.Run(cmd,&out,CP_ACP))
 					{
 						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					}

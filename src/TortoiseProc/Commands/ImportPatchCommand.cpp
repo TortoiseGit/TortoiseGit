@@ -38,7 +38,7 @@ bool ImportPatchCommand::Execute()
 		{			
 			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
 			
-			if(g_Git.Run(cmd,&output,CP_OEMCP))
+			if(g_Git.Run(cmd,&output,CP_ACP))
 			{
 				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
 				return FALSE;

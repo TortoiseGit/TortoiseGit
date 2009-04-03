@@ -1062,23 +1062,23 @@ int CGit::Revert(CTGitPath &path,bool keep)
 	if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{	//To init git repository, there are not HEAD, so we can use git reset command
 		cmd.Format(_T("git.exe rm --cache -- \"%s\""),path.GetGitPathString());
-		if(g_Git.Run(cmd,&out,CP_OEMCP))
+		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 	}
 	else if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED )
 	{
 		cmd.Format(_T("git.exe mv \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
-		if(g_Git.Run(cmd,&out,CP_OEMCP))
+		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 		
 		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitOldPathString());
-		if(g_Git.Run(cmd,&out,CP_OEMCP))
+		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 	}
 	else
 	{
 		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitPathString());
-		if(g_Git.Run(cmd,&out,CP_OEMCP))
+		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 	}
 	return 0;
