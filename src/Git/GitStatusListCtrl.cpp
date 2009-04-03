@@ -2692,7 +2692,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if(path == NULL)
 							continue;
 						CString cmd;
-						cmd.Format(_T("git.exe add %s"),path->GetGitPathString());
+						cmd.Format(_T("git.exe add \"%s\""),path->GetGitPathString());
 						CString output;
 						if(!g_Git.Run(cmd,&output,CP_ACP))
 						{
