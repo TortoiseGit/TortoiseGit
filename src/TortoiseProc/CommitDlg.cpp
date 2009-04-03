@@ -420,9 +420,9 @@ void CCommitDlg::OnOK()
 				cmd.Format(_T("git.exe rm --cache -- \"%s\""),entry->GetGitPathString());
 				g_Git.Run(cmd,&out,CP_ACP);	
 			}
-			else
+			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
 			{
-				cmd.Format(_T("git.exe reset -- %s"),entry->GetGitPathString());
+				cmd.Format(_T("git.exe reset -- \"%s\""),entry->GetGitPathString());
 				g_Git.Run(cmd,&out,CP_ACP);
 			}
 
