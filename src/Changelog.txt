@@ -43,6 +43,7 @@ Bug Fix:
 	*Fix GetString error when edit at HistoryCombo
 	*win2k context menu fix (had an issue when shift key was pressed)
 	*Fix crash in logviewer on invalid time strings
+	*Issue 61:  Add/Commit of files with umlauts in filename not working  
 	
 
 Version 0.4.2.0 version(external)
