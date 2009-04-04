@@ -1,3 +1,7 @@
+Version 0.5.1.0 version(internal)
+Fix:
+	Issue 52:  TortoiseMerge crashes on x64  
+
 Version 0.5.0.0 version(internal)
 Features:
 	*Submodule Support.

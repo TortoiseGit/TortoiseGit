@@ -211,8 +211,13 @@ out everything for now, leaving these enabled as they are would make the install
           <Directory Id="D__Bin" ShortName="BIN" Name="bin" >
 
           <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
+            <?if $(var.Platform) = "x64" ?>
+             <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\x64\libapr_tsvn.dll" KeyPath="yes" />
+             <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\x64\libaprutil_tsvn.dll" />
+            <?else?>
              <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libapr_tsvn.dll" KeyPath="yes" />
              <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\libaprutil_tsvn.dll" />
+            <?endif?>
           </Component>
 
 <!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
@@ -226,7 +231,11 @@ out everything for now, leaving these enabled as they are would make the install
            </Component>
 --> 
             <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
-              <File Id="F__intl" ShortName="INTL3_TS.DLL" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\intl3_tsvn.dll" KeyPath="yes" />
+              <?if $(var.Platform) = "x64" ?>
+                <File Id="F__intl" ShortName="INTL3_TS.DLL" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\x64\intl3_tsvn.dll" KeyPath="yes" />
+              <?else?>
+                <File Id="F__intl" ShortName="INTL3_TS.DLL" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\svnbin\intl3_tsvn.dll" KeyPath="yes" />
+              <?endif?>
             </Component>
             
             <?if $(var.IncludeCrashReportDll) = 1 ?>
@@ -318,7 +327,11 @@ out everything for now, leaving these enabled as they are would make the install
 			</Component>
 			
             <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
-              <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\ext\svnbin\TortoiseMerge.exe" KeyPath="yes" />
+              <?if $(var.Platform) = "x64" ?>
+                <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\ext\svnbin\x64\TortoiseMerge.exe" KeyPath="yes" />
+              <?else?>
+                <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\ext\svnbin\TortoiseMerge.exe" KeyPath="yes" />
+              <?endif?>
             </Component>
 
             <Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
