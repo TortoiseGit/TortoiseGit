@@ -1,0 +1,64 @@
+diff -ur gettext-0.14.1-src\gettext-runtime/config.h.msvc svn-gettext-runtime/config.h.msvc
+--- gettext-0.14.1-src\gettext-runtime/config.h.msvc	2004-01-29 18:17:46.000000000 +0100
++++ svn-gettext-runtime/config.h.msvc	2005-02-15 10:55:59.615625000 +0100
+@@ -152,7 +152,7 @@
+ #undef HAVE_GETUID
+ 
+ /* Define if you have the iconv() function. */
+-#define HAVE_ICONV 1
++#undef HAVE_ICONV
+ 
+ /* Define if you have the 'intmax_t' type in <stdint.h> or <inttypes.h>. */
+ #undef HAVE_INTMAX_T
+diff -ur gettext-0.14.1-src\gettext-runtime/intl/Makefile.msvc svn-gettext-runtime/intl/Makefile.msvc
+--- gettext-0.14.1-src\gettext-runtime/intl/Makefile.msvc	2003-06-19 16:32:00.000000000 +0200
++++ svn-gettext-runtime/intl/Makefile.msvc	2005-02-15 10:57:29.428125000 +0100
+@@ -76,11 +76,11 @@
+ DEBUGFLAGS = -Z7
+ !else
+ # Some people prefer -O2 -G6 instead of -O1, but -O2 is not reliable in MSVC5.
+-OPTIMFLAGS = -D_NDEBUG -O1
+-DEBUGFLAGS =
++OPTIMFLAGS = -FD -O2 -GX -Zi
++DEBUGFLAGS = -Zi
+ !endif
+ 
+-CFLAGS = $(MFLAGS) $(WARN_CFLAGS) $(OPTIMFLAGS) -DHAVE_CONFIG_H -DLOCALEDIR=\"$(IIlocaledir)\" -DLOCALE_ALIAS_PATH=\"$(IIaliaspath)\" -DIN_LIBINTL -DENABLE_RELOCATABLE=1 -DIN_LIBRARY -DINSTALLDIR=\"$(IIbindir)\" -DNO_XMALLOC -Dset_relocation_prefix=libintl_set_relocation_prefix -Drelocate=libintl_relocate -DDEPENDS_ON_LIBICONV=1
++CFLAGS = $(MFLAGS) $(WARN_CFLAGS) $(OPTIMFLAGS) -DHAVE_CONFIG_H -DLOCALEDIR=\"$(IIlocaledir)\" -DLOCALE_ALIAS_PATH=\"$(IIaliaspath)\" -DIN_LIBINTL -DENABLE_RELOCATABLE=1 -DIN_LIBRARY -DINSTALLDIR=\"$(IIbindir)\" -DNO_XMALLOC -Dset_relocation_prefix=libintl_set_relocation_prefix -Drelocate=libintl_relocate -DDEPENDS_ON_LIBICONV=0
+ 
+ INCLUDES = -I. -I.. -I$(includedir)
+ 
+@@ -103,7 +103,7 @@
+ 
+ RESOURCES = intl.res
+ 
+-all : intl.lib libintl.h
++all : intl3_svn.lib libintl.h
+ 
+ libgnuintl.h :
+ !if !$(DLL)
+@@ -183,18 +183,18 @@
+ 
+ !if !$(DLL)
+ 
+-intl.lib : $(OBJECTS)
+-	-$(RM) intl.lib
+-	$(AR) $(AR_FLAGS)intl.lib $(OBJECTS)
++intl3_svn.lib : $(OBJECTS)
++	-$(RM) intl3_svn.lib
++	$(AR) $(AR_FLAGS)intl3_svn.lib $(OBJECTS)
+ 
+ !else
+ 
+ # intl.dll and intl.lib are created together.
+-intl.lib : $(OBJECTS) $(RESOURCES)
+-	$(CC) $(MFLAGS) $(DEBUGFLAGS) -LD $(OBJECTS) $(libdir)\iconv.lib $(RESOURCES) -Feintl.dll
++intl3_svn.lib : $(OBJECTS) $(RESOURCES)
++	$(CC) $(MFLAGS) $(DEBUGFLAGS) -LD $(OBJECTS) $(RESOURCES) -Feintl3_svn.dll
+ 
+ intl.res : $(srcdir)\..\windows\intl.rc
+-	rc -Fo intl.res $(srcdir)\..\windows\intl.rc
++	rc -Fo intl.res $(srcdir)\libintl3-dll.rc
+ 
+ !endif
+ 
