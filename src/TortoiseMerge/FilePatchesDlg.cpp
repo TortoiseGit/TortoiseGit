@@ -22,7 +22,7 @@
 #include "Patch.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 
 
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CDialog)
@@ -326,7 +326,7 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			{
 				if (m_pCallBack)
 				{
-					CProgressDlg progDlg;
+					CSysProgressDlg progDlg;
 					progDlg.SetTitle(IDR_MAINFRAME);
 					progDlg.SetShowProgressBar(true);
 					progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_ALL)));
@@ -349,7 +349,7 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			{
 				if (m_pCallBack)
 				{
-					CProgressDlg progDlg;
+					CSysProgressDlg progDlg;
 					progDlg.SetTitle(IDR_MAINFRAME);
 					progDlg.SetShowProgressBar(true);
 					progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_SELECTED)));

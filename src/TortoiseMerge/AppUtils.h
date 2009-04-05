@@ -20,7 +20,7 @@
 //#include "svn_types.h"
 #include "GitStatus.h"
 
-class CProgressDlg;
+class CSysProgressDlg;
 
 /**
  * \ingroup TortoiseMerge
@@ -41,7 +41,7 @@ public:
 	 * \param hWnd the window handle of the calling app
 	 * \return TRUE if successful
 	 */
-	static BOOL GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CProgressDlg * progDlg, HWND hWnd = NULL);
+	static BOOL GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg * progDlg, HWND hWnd = NULL);
 	
 	/**
 	 * Creates a unified diff from two files

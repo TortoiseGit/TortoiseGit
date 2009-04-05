@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="libaprutil"
-	ProjectGUID="{D755A309-64A2-45A9-8751-1A2A82CE257A}"
+	ProjectGUID="{6BD19BAE-4041-4E85-B576-AAC9D54CAAB9}"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -25,7 +25,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw"
+				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw "
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -80,12 +80,12 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\libapr-tsvn.pdb"
+				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				BaseAddress="0x6EE60000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)\libaprutil-tsvn.lib"
+				ImportLibrary="$(OutDir)\libaprutil_tsvn.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -124,7 +124,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -181,13 +180,13 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\libapr-tsvn.pdb"
+				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				BaseAddress="0x6EE60000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)\libaprutil-tsvn.lib"
+				ImportLibrary="$(OutDir)\libaprutil_tsvn.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -850,7 +849,6 @@
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -860,7 +858,6 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -874,7 +871,6 @@
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -884,7 +880,6 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"

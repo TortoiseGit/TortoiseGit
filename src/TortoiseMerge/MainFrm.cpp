@@ -20,7 +20,7 @@
 #include "TortoiseMerge.h"
 #include "OpenDlg.h"
 #include "Patch.h"
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 #include "Settings.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
@@ -388,7 +388,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch)
 		//base file from version control and try
 		//again...
 		CString sTemp;
-		CProgressDlg progDlg;
+		CSysProgressDlg progDlg;
 		sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sVersion);
 		progDlg.SetLine(1, sTemp, true);
 		progDlg.SetLine(2, sFilePath, true);
@@ -488,7 +488,7 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 	ASSERT(tempfile1.Compare(tempfile2));
 	
 	CString sTemp;
-	CProgressDlg progDlg;
+	CSysProgressDlg progDlg;
 	sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sRev1);
 	progDlg.SetLine(1, sTemp, true);
 	progDlg.SetLine(2, sURL1, true);

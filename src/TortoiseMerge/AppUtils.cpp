@@ -20,7 +20,7 @@
 #include "Registry.h"
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 
 //#include "svn_pools.h"
 //#include "svn_io.h"
@@ -37,7 +37,7 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
-BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CProgressDlg * progDlg, HWND hWnd /*=NULL*/)
+BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg * progDlg, HWND hWnd /*=NULL*/)
 {
 	CString sSCMPath = CRegString(_T("Software\\TortoiseMerge\\SCMPath"), _T(""));
 	if (sSCMPath.IsEmpty())
