@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -452,7 +452,7 @@ BOOL CFileTextLines::Save(const CString& sFilePath, bool bSaveAsUTF8, DWORD dwIg
 				if (bIgnoreCase)
 					sLine = sLine.MakeLower();
 				file.Write((LPCTSTR)sLine, sLine.GetLength()*sizeof(TCHAR));
-				if ((ending == EOL_AUTOLINE)||(ending == EOL_NOENDING))
+				if (ending == EOL_AUTOLINE)
 					ending = m_LineEndings;
 				switch (ending)
 				{
@@ -488,7 +488,7 @@ BOOL CFileTextLines::Save(const CString& sFilePath, bool bSaveAsUTF8, DWORD dwIg
 					sLine = sLine.MakeLower();
 				if ((m_bReturnAtEnd)||(i != GetCount()-1))
 				{
-					if ((ending == EOL_AUTOLINE)||(ending == EOL_NOENDING))
+					if (ending == EOL_AUTOLINE)
 						ending = m_LineEndings;
 					switch (ending)
 					{
@@ -530,7 +530,7 @@ BOOL CFileTextLines::Save(const CString& sFilePath, bool bSaveAsUTF8, DWORD dwIg
 
 				if ((m_bReturnAtEnd)||(i != GetCount()-1))
 				{
-					if ((ending == EOL_AUTOLINE)||(ending == EOL_NOENDING))
+					if (ending == EOL_AUTOLINE)
 						ending = m_LineEndings;
 					switch (ending)
 					{

@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2004-2008 - TortoiseSVN
+// Copyright (C) 2004-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 #include "UnicodeUtils.h"
 #include "DirFileEnum.h"
 #include "TortoiseMerge.h"
-//#include "svn_wc.h"
+#include "svn_wc.h"
 #include "GitAdminDir.h"
 #include "Patch.h"
 
@@ -62,7 +62,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	EOL ending = EOL_NOENDING;
 	INT_PTR nIndex = 0;
 	INT_PTR nLineCount = 0;
-//	g_crasher.AddFile((LPCSTR)(LPCTSTR)filename, (LPCSTR)(LPCTSTR)_T("unified diff file"));
+	g_crasher.AddFile((LPCSTR)(LPCTSTR)filename, (LPCSTR)(LPCTSTR)_T("unified diff file"));
 
 	CFileTextLines PatchLines;
 	if (!PatchLines.Load(filename))
@@ -531,7 +531,7 @@ BOOL CPatch::PatchFile(const CString& sPath, const CString& sSavePath, const CSt
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
 	if (PathFileExists(sPatchFile))
 	{
-//		g_crasher.AddFile((LPCSTR)(LPCTSTR)sPatchFile, (LPCSTR)(LPCTSTR)_T("File to patch"));
+		g_crasher.AddFile((LPCSTR)(LPCTSTR)sPatchFile, (LPCSTR)(LPCTSTR)_T("File to patch"));
 	}
 	CFileTextLines PatchLines;
 	CFileTextLines PatchLinesResult;
@@ -609,6 +609,8 @@ BOOL CPatch::PatchFile(const CString& sPath, const CString& sSavePath, const CSt
 					{
 						if ((lAddLine < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lAddLine))==0))
 							lAddLine++;
+						else if (((lAddLine + 1) < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lAddLine+1))==0))
+							lAddLine += 2;
 						else if ((lRemoveLine < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lRemoveLine))==0))
 							lRemoveLine++;
 						else
@@ -674,17 +676,15 @@ CString	CPatch::CheckPatchPath(const CString& path)
 	bool isDir = false;
 	CString subpath;
 	CDirFileEnum filefinder(path);
-#if 0
 	while (filefinder.NextFile(subpath, &isDir))
 	{
 		if (!isDir)
 			continue;
-		if (g_SVNAdminDir.IsAdminDirPath(subpath))
+		if (g_GitAdminDir.IsAdminDirPath(subpath))
 			continue;
 		if (CountMatches(subpath) > (GetNumberOfFiles()/3))
 			return subpath;
 	}
-#endif
 	
 	// if a patch file only contains newly added files
 	// we can't really find the correct path.

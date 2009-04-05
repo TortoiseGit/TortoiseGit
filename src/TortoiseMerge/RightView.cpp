@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -182,6 +182,7 @@ void CRightView::UseFile(bool refreshViews /* = true */)
 			m_pwndBottom->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
 			bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 			m_pwndBottom->m_pViewData->SetState(i, m_pViewData->GetState(i));
+			m_pwndBottom->m_pViewData->SetLineEnding(i, m_pViewData->GetLineEnding(i));
 			if (m_pwndBottom->IsLineConflicted(i))
 				m_pwndBottom->m_pViewData->SetState(i, DIFFSTATE_CONFLICTRESOLVED);
 		}
@@ -193,6 +194,7 @@ void CRightView::UseFile(bool refreshViews /* = true */)
 		{
 			rightstate.difflines[i] = m_pViewData->GetLine(i);
 			m_pViewData->SetLine(i, m_pwndLeft->m_pViewData->GetLine(i));
+			m_pViewData->SetLineEnding(i, m_pwndLeft->m_pViewData->GetLineEnding(i));
 			DiffStates state = m_pwndLeft->m_pViewData->GetState(i);
 			switch (state)
 			{
@@ -248,6 +250,7 @@ void CRightView::UseBlock(bool refreshViews /* = true */)
 			m_pwndBottom->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
 			bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 			m_pwndBottom->m_pViewData->SetState(i, m_pViewData->GetState(i));
+			m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
 			if (m_pwndBottom->IsLineConflicted(i))
 			{
 				if (m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -264,6 +267,7 @@ void CRightView::UseBlock(bool refreshViews /* = true */)
 		{
 			rightstate.difflines[i] = m_pViewData->GetLine(i);
 			m_pViewData->SetLine(i, m_pwndLeft->m_pViewData->GetLine(i));
+			m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
 			DiffStates state = m_pwndLeft->m_pViewData->GetState(i);
 			switch (state)
 			{

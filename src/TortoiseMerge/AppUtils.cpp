@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,15 +19,16 @@
 #include "StdAfx.h"
 #include "Registry.h"
 #include "AppUtils.h"
+#include "PathUtils.h"
 #include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
 
-//#include "svn_pools.h"
-//#include "svn_io.h"
-//#include "svn_path.h"
-//#include "svn_diff.h"
-//#include "svn_string.h"
-//#include "svn_utf.h"
+#include "svn_pools.h"
+#include "svn_io.h"
+#include "svn_path.h"
+#include "svn_diff.h"
+#include "svn_string.h"
+#include "svn_utf.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -43,15 +44,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	if (sSCMPath.IsEmpty())
 	{
 		// no path set, so use TortoiseSVN as default
-		sSCMPath = CRegString(_T("Software\\TortoiseGit\\ProcPath"), _T(""), false, HKEY_LOCAL_MACHINE);
-		if (sSCMPath.IsEmpty())
-		{
-			TCHAR pszSCMPath[MAX_PATH];
-			GetModuleFileName(NULL, pszSCMPath, MAX_PATH);
-			sSCMPath = pszSCMPath;
-			sSCMPath = sSCMPath.Left(sSCMPath.ReverseFind('\\'));
-			sSCMPath += _T("\\TortoiseProc.exe");
-		}
+		sSCMPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
 		sSCMPath += _T(" /command:cat /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4");
 	}
 	CString sTemp;
@@ -105,7 +98,7 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	apr_file_t * outfile = NULL;
 	apr_pool_t * pool = svn_pool_create(NULL);
 
-	svn_error_t * err = svn_io_file_open (&outfile, svn_path_canonicalize(CUnicodeUtils::GetUTF8(output), pool),
+	svn_error_t * err = svn_io_file_open (&outfile, svn_path_internal_style(CUnicodeUtils::GetUTF8(output), pool),
 		APR_WRITE | APR_CREATE | APR_BINARY | APR_TRUNCATE,
 		APR_OS_DEFAULT, pool);
 	if (err == NULL)
@@ -117,12 +110,12 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 			svn_diff_file_options_t * opts = svn_diff_file_options_create(pool);
 			opts->ignore_eol_style = false;
 			opts->ignore_space = svn_diff_file_ignore_space_none;
-			err = svn_diff_file_diff_2(&diff, svn_path_canonicalize(CUnicodeUtils::GetUTF8(orig), pool), 
-				svn_path_canonicalize(CUnicodeUtils::GetUTF8(modified), pool), opts, pool);
+			err = svn_diff_file_diff_2(&diff, svn_path_internal_style(CUnicodeUtils::GetUTF8(orig), pool), 
+				svn_path_internal_style(CUnicodeUtils::GetUTF8(modified), pool), opts, pool);
 			if (err == NULL)
 			{
-				err = svn_diff_file_output_unified(stream, diff, svn_path_canonicalize(CUnicodeUtils::GetUTF8(orig), pool), 
-					svn_path_canonicalize(CUnicodeUtils::GetUTF8(modified), pool),
+				err = svn_diff_file_output_unified(stream, diff, svn_path_internal_style(CUnicodeUtils::GetUTF8(orig), pool), 
+					svn_path_internal_style(CUnicodeUtils::GetUTF8(modified), pool),
 					NULL, NULL, pool);
 				svn_stream_close(stream);
 			}
@@ -142,9 +135,8 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	return true;
 }
 
-CString CAppUtils::GetErrorString(git_error_t * Err)
+CString CAppUtils::GetErrorString(svn_error_t * Err)
 {
-#if 0
 	CString msg;
 	CString temp;
 	char errbuf[256];
@@ -210,7 +202,6 @@ CString CAppUtils::GetErrorString(git_error_t * Err)
 		}
 		return msg;
 	}
-#endif
 	return _T("");
 }
 

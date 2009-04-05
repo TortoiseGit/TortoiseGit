@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2004-2008 - TortoiseSVN
+// Copyright (C) 2004-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -136,6 +136,7 @@ CMainFrame::CMainFrame()
 	m_bInlineWordDiff = true;
 	m_bLineDiff = true;
 	m_bLocatorBar = true;
+	m_nMoveMovesToIgnore = 0;
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
 }
 
@@ -204,6 +205,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndLocatorBar.EnableGripper(FALSE);
 	m_wndLineDiffBar.EnableGripper(FALSE);
+
 	return 0;
 }
 
@@ -553,10 +555,10 @@ void CMainFrame::OnFileOpen()
 	m_Data.m_sDiffFile = dlg.m_sUnifiedDiffFile;
 	m_Data.m_sPatchPath = dlg.m_sPatchDirectory;
 	m_Data.m_mergedFile.SetOutOfUse();
-//	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sBaseFile, (LPCSTR)(LPCTSTR)_T("Basefile"));
-//	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sTheirFile, (LPCSTR)(LPCTSTR)_T("Theirfile"));
-//	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sYourFile, (LPCSTR)(LPCTSTR)_T("Yourfile"));
-//	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sUnifiedDiffFile, (LPCSTR)(LPCTSTR)_T("Difffile"));
+	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sBaseFile, (LPCSTR)(LPCTSTR)_T("Basefile"));
+	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sTheirFile, (LPCSTR)(LPCTSTR)_T("Theirfile"));
+	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sYourFile, (LPCSTR)(LPCTSTR)_T("Yourfile"));
+	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sUnifiedDiffFile, (LPCSTR)(LPCTSTR)_T("Difffile"));
 	
 	if (!m_Data.IsBaseFileInUse() && m_Data.IsTheirFileInUse() && m_Data.IsYourFileInUse())
 	{
@@ -586,6 +588,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 	m_Data.SetBlame(m_bBlame);
 	m_bHasConflicts = false;
 	CBaseView* pwndActiveView = m_pwndLeftView;
+	int nOldLine = m_pwndLeftView ? m_pwndLeftView->m_nTopLine : -1;
 	int nOldLineNumber =
 		m_pwndLeftView && m_pwndLeftView->m_pViewData ?
 		m_pwndLeftView->m_pViewData->GetLineNumber(m_pwndLeftView->m_nTopLine) : -1;
@@ -761,22 +764,30 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 	UpdateLayout();
 	SetActiveView(pwndActiveView);
 
-	if (bRetainPosition && pwndActiveView->m_pViewData && nOldLineNumber >= 0)
+	if (bRetainPosition && m_pwndLeftView->m_pViewData)
 	{
-		if (int n = pwndActiveView->m_pViewData->FindLineNumber(nOldLineNumber))
-		{
-			pwndActiveView->ScrollAllToLine(n);
-			POINT p;
-			p.x = 0;
-			p.y = n;
-			pwndActiveView->SetCaretPosition(p);
-		}
+		int n = nOldLineNumber;
+		if (n >= 0)
+			n = m_pwndLeftView->m_pViewData->FindLineNumber(n);
+		if (n < 0)
+			n = nOldLine;
+
+		m_pwndLeftView->ScrollAllToLine(n);
+		POINT p;
+		p.x = 0;
+		p.y = n;
+		m_pwndLeftView->SetCaretPosition(p);
 	}
 	else
 	{
 		bool bGoFirstDiff = (0 != (DWORD)CRegDWORD(_T("Software\\TortoiseMerge\\FirstDiffOnLoad"), TRUE));
-		if (bGoFirstDiff)
+		if (bGoFirstDiff) {
 			pwndActiveView->GoToFirstDifference();
+			// Ignore the first few Mouse Move messages, so that the line diff stays on
+			// the first diff line until the user actually moves the mouse
+			m_nMoveMovesToIgnore = 3; 
+		}
+
 	}
 	// Avoid incorrect rendering of active pane.
 	m_pwndBottomView->ScrollToChar(0);
@@ -812,11 +823,11 @@ void CMainFrame::UpdateLayout()
 
 void CMainFrame::OnSize(UINT nType, int cx, int cy)
 {
-    if (m_bInitSplitter && nType != SIZE_MINIMIZED)
-    {
+	if (m_bInitSplitter && nType != SIZE_MINIMIZED)
+	{
 		UpdateLayout();
-    }
-    CFrameWndEx::OnSize(nType, cx, cy);
+	}
+	CFrameWndEx::OnSize(nType, cx, cy);
 }
 
 void CMainFrame::OnViewWhitespaces()
@@ -871,6 +882,24 @@ void CMainFrame::OnViewOnewaydiff()
 		m_wndLocatorBar.DocumentUpdated();
 	}
 	LoadViews(true);
+}
+
+void CMainFrame::ShowDiffBar(bool bShow)
+{
+	if (bShow)
+	{
+		// restore the line diff bar
+		m_wndLineDiffBar.ShowPane(m_bLineDiff, false, true);
+		m_wndLineDiffBar.DocumentUpdated();
+		m_wndLocatorBar.ShowPane(m_bLocatorBar, false, true);
+		m_wndLocatorBar.DocumentUpdated();
+	}
+	else
+	{
+		// in one way view, hide the line diff bar
+		m_wndLineDiffBar.ShowPane(false, false, true);
+		m_wndLineDiffBar.DocumentUpdated();
+	}
 }
 
 int CMainFrame::CheckResolved()
@@ -934,7 +963,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 					do 
 					{
 						last++;
-					} while(last<pViewData->GetCount() && (pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED));
+					} while((last<pViewData->GetCount()) && ((pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED)));
 					file.Add(_T("<<<<<<< .mine"), EOL_NOENDING);
 					for (int j=first; j<last; j++)
 					{
@@ -1014,8 +1043,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	}
 	if (((DWORD)CRegDWORD(_T("Software\\TortoiseMerge\\Backup"))) != 0)
 	{
-		DeleteFile(m_Data.m_mergedFile.GetFilename() + _T(".bak"));
-		MoveFile(m_Data.m_mergedFile.GetFilename(), m_Data.m_mergedFile.GetFilename() + _T(".bak"));
+		MoveFileEx(m_Data.m_mergedFile.GetFilename(), m_Data.m_mergedFile.GetFilename() + _T(".bak"), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	}
 	if (SaveFile(m_Data.m_mergedFile.GetFilename())==0)
 	{

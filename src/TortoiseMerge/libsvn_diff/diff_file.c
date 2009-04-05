@@ -26,6 +26,12 @@
 #include <apr_mmap.h>
 #include <apr_getopt.h>
 
+#include <apr_general.h>
+#include "svn_error.h"
+#include "svn_version.h"
+#include "svn_io.h"
+#include "svn_ctype.h"
+
 #include "svn_error.h"
 #include "svn_types.h"
 
@@ -1111,7 +1117,7 @@ output_unified_diff_modified(void *baton,
   return SVN_NO_ERROR;
 }
 
-#if 0
+
 /* Set *HEADER to a new string consisting of PATH, a tab, and PATH's mtime. */
 static svn_error_t *
 output_unified_default_hdr(const char **header, const char *path,
@@ -1132,7 +1138,7 @@ output_unified_default_hdr(const char **header, const char *path,
 
   return SVN_NO_ERROR;
 }
-#endif
+
 
 static const svn_diff_output_fns_t svn_diff__file_output_unified_vtable =
 {

@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "DiffData.h"
-//#include "SVNLineDiff.h"
+#include "SVNLineDiff.h"
 #include "ScrollTool.h"
 #include "Undo.h"
 #include "LocatorBar.h"
@@ -125,6 +125,7 @@ protected:
 	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void	OnEditCopy();
 	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 	afx_msg void	OnMouseLeave();
 	afx_msg void	OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void	OnCaretDown();
@@ -211,7 +212,7 @@ protected:
 	void			DrawText(CDC * pDC, const CRect &rc, LPCTSTR text, int textlength, int nLineIndex, POINT coords, bool bModified, bool bInlineDiff);
 	void			ClearCurrentSelection();
 	void			AdjustSelection();
-	void            SelectNextBlock(int nDirection, bool bConflict);
+	void			SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfCurrentBlock = true);
 
 	void			RemoveLine(int nLineIndex);
 	void			RemoveSelectedText();
@@ -232,7 +233,7 @@ protected:
 	COLORREF		m_WhiteSpaceFg;
 	UINT			m_nStatusBarID;		///< The ID of the status bar pane used by this view. Must be set by the parent class.
 
-//	SVNLineDiff		m_svnlinediff;
+	SVNLineDiff		m_svnlinediff;
 	BOOL			m_bOtherDiffChecked;
 	BOOL			m_bModified;
 	BOOL			m_bFocused;

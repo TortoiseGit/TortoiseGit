@@ -1,7 +1,7 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2000-2008 CollabNet.  All rights reserved.
+ * Copyright (c) 2000-2009 CollabNet.  All rights reserved.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution.  The terms
@@ -42,10 +42,7 @@
 #if defined(SVN_ERROR_BUILD_ARRAY) || !defined(SVN_ERROR_ENUM_DEFINED)
 
 
-#include <apr.h>
 #include <apr_errno.h>     /* APR's error system */
-
-//#include "svn_props.h"     /* For SVN_PROP_EXTERNALS. */
 
 #ifdef __cplusplus
 extern "C" {
@@ -314,6 +311,10 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_ENTRY_ATTRIBUTE_INVALID,
              SVN_ERR_ENTRY_CATEGORY_START + 5,
              "Entry has an invalid attribute")
+
+  SVN_ERRDEF(SVN_ERR_ENTRY_FORBIDDEN,
+             SVN_ERR_ENTRY_CATEGORY_START + 6,
+             "Can't create an entry for a forbidden name")
 
   /* wc errors */
 
@@ -840,6 +841,13 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_RA_DAV_RELOCATED,
              SVN_ERR_RA_DAV_CATEGORY_START + 11,
              "Repository has been moved")
+
+  /* SVN_ERR_RA_DAV_CATEGORY_START + 12 is reserved for use in 1.7. */
+
+  /** @since New in 1.6 */
+  SVN_ERRDEF(SVN_ERR_RA_DAV_FORBIDDEN,
+             SVN_ERR_RA_DAV_CATEGORY_START + 13,
+             "URL access forbidden for unknown reason")
 
   /* ra_local errors */
 
