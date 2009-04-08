@@ -18,6 +18,7 @@
 //
 #include "StdAfx.h"
 #include "SubmoduleCommand.h"
+#include "commonresource.h"
 
 #include "MessageBox.h"
 #include "RenameDlg.h"
@@ -79,7 +80,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	CString super=g_GitAdminDir.GetSuperProjectRoot( bkpath );
 	if(super.IsEmpty())
 	{
-		CMessageBox::Show(NULL,_T("Can't found Super project"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL,IDS_ERR_NOTFOUND_SUPER_PRJECT,IDS_APPNAME,MB_OK|MB_ICONERROR);
 		//change current project root to super project
 		return false;
 	}
