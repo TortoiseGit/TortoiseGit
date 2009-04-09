@@ -67,23 +67,39 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	m_Other.SetURLHistory(TRUE);
 	m_Other.LoadHistory(_T("Software\\TortoiseGit\\History\\PullURLS"), _T("url"));
-	m_Other.SetCurSel(0);
+	CString clippath=CAppUtils::GetClipboardLink();
+	if(clippath.IsEmpty())
+		m_Other.SetCurSel(0);
+	else
+		m_Other.SetWindowText(clippath);
 
 	m_RemoteBranch.LoadHistory(_T("Software\\TortoiseGit\\History\\PullRemoteBranch"), _T("br"));
 	m_RemoteBranch.SetCurSel(0);
 
+	CString WorkingDir=g_Git.m_CurrentDir;
+
 	if(m_IsPull)
-		this->SetWindowTextW(_T("Pull"));
+		this->SetWindowTextW(CString(_T("Pull - "))+WorkingDir);
 	else
-		this->SetWindowTextW(_T("Fetch"));
+		this->SetWindowTextW(CString(_T("Fetch - "))+WorkingDir);
 
 	STRING_VECTOR list;
+	
+	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PullRemote\\")+WorkingDir));
+	m_RemoteReg = remote;
+	int sel=0;
 
 	if(!g_Git.GetRemoteList(list))
 	{	
 		for(unsigned int i=0;i<list.size();i++)
+		{
 			m_Remote.AddString(list[i]);
+			if(list[i] == remote)
+				sel = i;
+		}
 	}
+	m_Remote.SetCurSel(sel);
+
 	EnableSaveRestore(_T("PullFetchDlg"));
     this->m_RemoteManage.SetURL(CString());
 	return TRUE;
@@ -126,6 +142,8 @@ void CPullFetchDlg::OnBnClickedOk()
 		m_RemoteBranchName=m_RemoteBranch.GetString();
 		
 	}
+
+	m_RemoteReg = m_Remote.GetString();
 
 	m_Other.SaveHistory();
 	m_RemoteBranch.SaveHistory();

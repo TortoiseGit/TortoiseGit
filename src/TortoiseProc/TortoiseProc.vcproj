@@ -556,11 +556,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\copy.ico"
+				RelativePath="..\Resources\copy.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\copy.ico"
+				RelativePath=".\copy.ico"
 				>
 			</File>
 			<File
@@ -588,11 +588,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -613,6 +613,14 @@
 			</File>
 			<File
 				RelativePath="..\Resources\git.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\gitconfig.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\gitremote.ico"
 				>
 			</File>
 			<File
@@ -836,11 +844,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\open.ico"
+				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\open.ico"
+				RelativePath="..\Resources\open.ico"
 				>
 			</File>
 			<File
@@ -944,19 +952,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\saveas.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\saveas.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\saveas.ico"
 				>
 			</File>
 			<File

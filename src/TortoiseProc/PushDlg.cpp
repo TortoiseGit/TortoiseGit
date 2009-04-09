@@ -87,7 +87,11 @@ BOOL CPushDlg::OnInitDialog()
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
 	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
-	m_RemoteURL.SetCurSel(0);
+	CString clippath=CAppUtils::GetClipboardLink();
+	if(clippath.IsEmpty())
+		m_RemoteURL.SetCurSel(0);
+	else
+		m_RemoteURL.SetWindowText(clippath);
 
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);

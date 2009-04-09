@@ -52,7 +52,13 @@ BOOL CCloneDlg::OnInitDialog()
 	m_URLCombo.SetURLHistory(TRUE);
 	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 	if(m_URL.IsEmpty())
-		m_URLCombo.SetCurSel(0);
+	{
+		CString str=CAppUtils::GetClipboardLink();
+		if(str.IsEmpty())
+			m_URLCombo.SetCurSel(0);
+		else
+			m_URLCombo.SetWindowText(str);
+	}
 	else
 		m_URLCombo.SetWindowText(m_URL);
 

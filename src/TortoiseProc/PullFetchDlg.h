@@ -3,6 +3,7 @@
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
 #include "HyperLink.h"
+#include "registry.h"
 // CPullFetchDlg dialog
 
 class CPullFetchDlg : public CResizableStandAloneDialog
@@ -22,7 +23,7 @@ protected:
 	CHistoryCombo	m_Other;
 	CHistoryCombo	m_RemoteBranch;
 	virtual BOOL OnInitDialog();
-
+	CRegString m_RemoteReg;
 	
 	DECLARE_MESSAGE_MAP()
 public:

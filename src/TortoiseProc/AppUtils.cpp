@@ -1868,3 +1868,52 @@ bool CAppUtils::IsSSHPutty()
     }
     return false;
 }
+
+CString CAppUtils::GetClipboardLink()
+{
+	if (!OpenClipboard(NULL))
+		return CString();
+
+	CString sClipboardText;
+	HGLOBAL hglb = GetClipboardData(CF_TEXT);
+	if (hglb)
+	{
+		LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
+		sClipboardText = CString(lpstr);
+		GlobalUnlock(hglb); 
+	}
+	hglb = GetClipboardData(CF_UNICODETEXT);
+	if (hglb)
+	{
+		LPCTSTR lpstr = (LPCTSTR)GlobalLock(hglb);
+		sClipboardText = lpstr;
+		GlobalUnlock(hglb); 
+	}
+	CloseClipboard();
+
+	if(!sClipboardText.IsEmpty())
+	{
+		if(sClipboardText[0] == _T('\"') && sClipboardText[sClipboardText.GetLength()-1] == _T('\"'))
+			sClipboardText=sClipboardText.Mid(1,sClipboardText.GetLength()-2);
+
+		if(sClipboardText.Find( _T("http://")) == 0)
+			return sClipboardText;
+		
+		if(sClipboardText.Find( _T("https://")) == 0)
+			return sClipboardText;
+
+		if(sClipboardText.Find( _T("git://")) == 0)
+			return sClipboardText;
+
+		if(sClipboardText.Find( _T("ssh://")) == 0)
+			return sClipboardText;
+
+		if(sClipboardText.GetLength()>=2)
+			if( sClipboardText[1] == _T(':') )
+				if( (sClipboardText[0] >= 'A' &&  sClipboardText[0] <= 'Z') 
+					|| (sClipboardText[0] >= 'a' &&  sClipboardText[0] <= 'z') )
+					return sClipboardText;
+	}
+
+	return CString(_T(""));
+}
