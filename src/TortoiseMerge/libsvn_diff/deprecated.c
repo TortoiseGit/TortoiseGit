@@ -27,6 +27,10 @@
    deprecated functions in this file. */
 #define SVN_DEPRECATED
 
+#include "svn_error.h"
+#include "svn_version.h"
+#include "svn_io.h"
+
 #include "svn_diff.h"
 #include "svn_utf.h"
 

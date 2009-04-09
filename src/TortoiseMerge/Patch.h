@@ -95,4 +95,5 @@ protected:
 	 * stripped by 4 prefixes is interpreted as "dir/file.txt"
 	 */
 	int							m_nStrip;
+	bool						m_IsGitPatch;
 };

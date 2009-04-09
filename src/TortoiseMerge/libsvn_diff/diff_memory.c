@@ -22,13 +22,19 @@
 #include <apr_want.h>
 #include <apr_tables.h>
 
+#include <apr_general.h>
+#include "svn_error.h"
+#include "svn_version.h"
+#include "svn_io.h"
+#include "svn_ctype.h"
+
 #include "svn_diff.h"
 #include "svn_pools.h"
 #include "svn_types.h"
 #include "svn_string.h"
 #include "svn_utf.h"
 #include "diff.h"
-#include "svn_private_config.h"
+//#include "svn_private_config.h"
 
 typedef struct source_tokens_t
 {

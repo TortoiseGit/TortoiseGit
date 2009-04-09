@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -127,6 +127,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 						m_pwndBottom->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
 						bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 						m_pwndBottom->m_pViewData->SetState(i, m_pViewData->GetState(i));
+						m_pwndBottom->m_pViewData->SetLineEnding(i, m_pViewData->GetLineEnding(i));
 						if (m_pwndBottom->IsLineConflicted(i))
 						{
 							if (m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -143,14 +144,15 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 					{
 						rightstate.difflines[i] = m_pwndRight->m_pViewData->GetLine(i);
 						m_pwndRight->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
-						DiffStates state = m_pViewData->GetState(i);
-						switch (state)
+						m_pwndRight->m_pViewData->SetLineEnding(i, m_pViewData->GetLineEnding(i));
+						DiffStates state2 = m_pViewData->GetState(i);
+						switch (state2)
 						{
 						case DIFFSTATE_CONFLICTEMPTY:
 						case DIFFSTATE_UNKNOWN:
 						case DIFFSTATE_EMPTY:
 							rightstate.linestates[i] = m_pwndRight->m_pViewData->GetState(i);
-							m_pwndRight->m_pViewData->SetState(i, state);
+							m_pwndRight->m_pViewData->SetState(i, state2);
 							break;
 						case DIFFSTATE_YOURSADDED:
 						case DIFFSTATE_IDENTICALADDED:
@@ -191,6 +193,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 						m_pwndBottom->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
 						bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 						m_pwndBottom->m_pViewData->SetState(i, m_pViewData->GetState(i));
+						m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
 						if (m_pwndBottom->IsLineConflicted(i))
 						{
 							if (m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -207,8 +210,9 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 					{
 						rightstate.difflines[i] = m_pwndRight->m_pViewData->GetLine(i);
 						m_pwndRight->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
-						DiffStates state = m_pViewData->GetState(i);
-						switch (state)
+						m_pwndRight->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+						DiffStates state2 = m_pViewData->GetState(i);
+						switch (state2)
 						{
 						case DIFFSTATE_ADDED:
 						case DIFFSTATE_CONFLICTADDED:
@@ -222,7 +226,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 						case DIFFSTATE_YOURSADDED:
 						case DIFFSTATE_EMPTY:
 							rightstate.linestates[i] = m_pwndRight->m_pViewData->GetState(i);
-							m_pwndRight->m_pViewData->SetState(i, state);
+							m_pwndRight->m_pViewData->SetState(i, state2);
 							break;
 						case DIFFSTATE_IDENTICALREMOVED:
 						case DIFFSTATE_REMOVED:

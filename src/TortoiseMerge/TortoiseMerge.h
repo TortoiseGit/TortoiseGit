@@ -23,7 +23,7 @@
 #endif
 
 #include "resource.h"       // main symbols
-//#include "CrashReport.h"
+#include "CrashReport.h"
 
 
 /**
@@ -39,6 +39,7 @@ public:
 // Overrides
 public:
 	virtual BOOL InitInstance();
+	virtual int ExitInstance();
 
 // Implementation
 	UINT  m_nAppLook;
@@ -53,4 +54,4 @@ private:
 };
 
 extern CTortoiseMergeApp theApp;
-//extern CCrashReport g_crasher;
+extern CCrashReport g_crasher;

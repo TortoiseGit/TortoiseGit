@@ -21,12 +21,13 @@
 #include <apr_general.h>
 
 #include "svn_error.h"
-#include "svn_diff.h"
+#include "svn_version.h"
+#include "svn_io.h"
 #include "svn_types.h"
 #include "svn_ctype.h"
 
 #include "diff.h"
-
+#include "svn_diff.h"
 /**
  * An Adler-32 implementation per RFC1950.
  *

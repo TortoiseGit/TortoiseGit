@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,6 +39,8 @@
 #define INLINEADDED_COLOR			RGB(255, 255, 150)
 #define INLINEREMOVED_COLOR			RGB(200, 100, 100)
 #define MODIFIED_COLOR				RGB(220, 220, 255)
+
+#define IDT_SCROLLTIMER 101
 
 CBaseView * CBaseView::m_pwndLeft = NULL;
 CBaseView * CBaseView::m_pwndRight = NULL;
@@ -182,6 +184,7 @@ BEGIN_MESSAGE_MAP(CBaseView, CView)
 	ON_COMMAND(ID_EDIT_CUT, &CBaseView::OnEditCut)
 	ON_COMMAND(ID_EDIT_PASTE, &CBaseView::OnEditPaste)
 	ON_WM_MOUSELEAVE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -1369,14 +1372,13 @@ bool CBaseView::DrawInlineDiff(CDC *pDC, const CRect &rc, int nLineIndex, const 
 
 	CString diffline;
 	ExpandChars(pszDiffChars, 0, nDiffLength, diffline);
-//	svn_diff_t * diff = NULL;
-//	m_svnlinediff.Diff(&diff, line, line.GetLength(), diffline, diffline.GetLength(), m_bInlineWordDiff);
-//	if (!diff || !SVNLineDiff::ShowInlineDiff(diff))
-//		return false;
+	svn_diff_t * diff = NULL;
+	m_svnlinediff.Diff(&diff, line, line.GetLength(), diffline, diffline.GetLength(), m_bInlineWordDiff);
+	if (!diff || !SVNLineDiff::ShowInlineDiff(diff))
+		return false;
 
 	int lineoffset = 0;
 	std::deque<int> removedPositions;
-#if 0
 	while (diff)
 	{
 		apr_off_t len = diff->original_length;
@@ -1399,7 +1401,6 @@ bool CBaseView::DrawInlineDiff(CDC *pDC, const CRect &rc, int nLineIndex, const 
 	// Draw vertical bars at removed chunks' positions.
 	for (std::deque<int>::iterator it = removedPositions.begin(); it != removedPositions.end(); ++it)
 		pDC->FillSolidRect(*it, rc.top, 1, rc.Height(), m_InlineRemovedBk);
-#endif
 	return true;
 }
 
@@ -1856,43 +1857,8 @@ void CBaseView::RefreshViews()
 
 void CBaseView::GoToFirstDifference()
 {
-	int nCenterPos = 0;
-	if ((m_pViewData)&&(0 < m_pViewData->GetCount()))
-	{
-		while (nCenterPos < m_pViewData->GetCount())
-		{
-			DiffStates linestate = m_pViewData->GetState(nCenterPos);
-			if ((linestate != DIFFSTATE_NORMAL) &&
-				(linestate != DIFFSTATE_UNKNOWN))
-				break;
-			nCenterPos++;
-		}
-		if (nCenterPos >= m_pViewData->GetCount())
-			nCenterPos = m_pViewData->GetCount()-1;
-		int nTopPos = nCenterPos - (GetScreenLines()/2);
-		if (nTopPos < 0)
-			nTopPos = 0;
-		if (m_pwndLeft)
-		{
-			m_pwndLeft->m_ptCaretPos.x = 0;
-			m_pwndLeft->m_ptCaretPos.y = nCenterPos;
-			m_pwndLeft->m_nCaretGoalPos = 0;
-		}
-		if (m_pwndRight)
-		{
-			m_pwndRight->m_ptCaretPos.x = 0;
-			m_pwndRight->m_ptCaretPos.y = nCenterPos;
-			m_pwndRight->m_nCaretGoalPos = 0;
-		}
-		if (m_pwndBottom)
-		{
-			m_pwndBottom->m_ptCaretPos.x = 0;
-			m_pwndBottom->m_ptCaretPos.y = nCenterPos;
-			m_pwndBottom->m_nCaretGoalPos = 0;
-		}
-		ScrollAllToLine(nTopPos);
-		RecalcAllVertScrollBars(TRUE);
-	}
+	m_ptCaretPos.y = 0;
+	SelectNextBlock(1, false, false);
 }
 
 void CBaseView::HiglightLines(int start, int end /* = -1 */)
@@ -1950,7 +1916,7 @@ void CBaseView::OnMergePreviousdifference()
 	SelectNextBlock(-1, false);
 }
 
-void CBaseView::SelectNextBlock(int nDirection, bool bConflict)
+void CBaseView::SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfCurrentBlock /* = true */)
 {
 	if (! m_pViewData)
 		return;
@@ -1966,11 +1932,14 @@ void CBaseView::SelectNextBlock(int nDirection, bool bConflict)
 	if (nCenterPos >= m_pViewData->GetCount())
 		nCenterPos = m_pViewData->GetCount()-1;
 
-	// Find end of current block
-	DiffStates state = m_pViewData->GetState(nCenterPos);
-	while ((nCenterPos != nLimit) && 
-		   (m_pViewData->GetState(nCenterPos)==state))
-		nCenterPos += nDirection;
+	if (bSkipEndOfCurrentBlock) 
+	{
+		// Find end of current block
+		DiffStates state = m_pViewData->GetState(nCenterPos);
+		while ((nCenterPos != nLimit) && 
+		       (m_pViewData->GetState(nCenterPos)==state))
+			nCenterPos += nDirection;
+	}
 
 	// Find next diff/conflict block
 	while (nCenterPos != nLimit)
@@ -1991,10 +1960,10 @@ void CBaseView::SelectNextBlock(int nDirection, bool bConflict)
 	}
 
 	// Find end of new block
-	state = m_pViewData->GetState(nCenterPos);
+	DiffStates state = m_pViewData->GetState(nCenterPos);
 	int nBlockEnd = nCenterPos;
 	while ((nBlockEnd != nLimit) &&  
-		   (state == m_pViewData->GetState(nBlockEnd + nDirection)))
+			 (state == m_pViewData->GetState(nBlockEnd + nDirection)))
 		nBlockEnd += nDirection;
 
 	int nTopPos = nCenterPos - (GetScreenLines()/2);
@@ -2293,6 +2262,12 @@ void CBaseView::OnEditCopy()
 
 void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	if (m_pMainFrame->m_nMoveMovesToIgnore > 0) {
+		--m_pMainFrame->m_nMoveMovesToIgnore;
+		CView::OnMouseMove(nFlags, point);
+		return;
+	}
+
 	int nMouseLine = (((point.y - HEADERHEIGHT) / GetLineHeight()) + m_nTopLine);
 	nMouseLine--;		//we need the index
 	if (nMouseLine < -1)
@@ -2301,18 +2276,42 @@ void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	ShowDiffLines(nMouseLine);
 
+	KillTimer(IDT_SCROLLTIMER);
 	if (nFlags & MK_LBUTTON)
 	{
+		int saveMouseLine = nMouseLine >= 0 ? nMouseLine : 0;
+		saveMouseLine = saveMouseLine < GetLineCount() ? saveMouseLine : GetLineCount() - 1;
+		int charIndex = CalculateCharIndex(saveMouseLine, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
 		if (((m_nSelBlockStart >= 0)&&(m_nSelBlockEnd >= 0))&&
 			((nMouseLine >= m_nTopLine)&&(nMouseLine < GetLineCount())))
 		{
 			m_ptCaretPos.y = nMouseLine;
-			m_ptCaretPos.x = CalculateCharIndex(m_ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+			m_ptCaretPos.x = charIndex;
 			UpdateGoalPos();
 			AdjustSelection();
 			UpdateCaret();
 			Invalidate();
 			UpdateWindow();
+		}
+		if (nMouseLine < m_nTopLine)
+		{
+			ScrollToLine(m_nTopLine-1, TRUE);
+			SetTimer(IDT_SCROLLTIMER, 20, NULL);
+		}
+		if (nMouseLine >= m_nTopLine + GetScreenLines())
+		{
+			ScrollToLine(m_nTopLine+1, TRUE);
+			SetTimer(IDT_SCROLLTIMER, 20, NULL);
+		}
+		if (charIndex <= m_nOffsetChar)
+		{
+			ScrollSide(-1);
+			SetTimer(IDT_SCROLLTIMER, 20, NULL);
+		}
+		if (charIndex >= (GetScreenChars()+m_nOffsetChar))
+		{
+			ScrollSide(1);
+			SetTimer(IDT_SCROLLTIMER, 20, NULL);
 		}
 	}
 
@@ -2333,8 +2332,53 @@ void CBaseView::OnMouseLeave()
 {
 	ShowDiffLines(-1);
 	m_bMouseWithin = FALSE;
-
+	KillTimer(IDT_SCROLLTIMER);
 	CView::OnMouseLeave();
+}
+
+void CBaseView::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == IDT_SCROLLTIMER)
+	{
+		POINT point;
+		GetCursorPos(&point);
+		ScreenToClient(&point);
+		int nMouseLine = (((point.y - HEADERHEIGHT) / GetLineHeight()) + m_nTopLine);
+		nMouseLine--;		//we need the index
+		if (nMouseLine < -1)
+		{
+			nMouseLine = -1;
+		}
+		if (GetKeyState(VK_LBUTTON)&0x8000)
+		{
+			int saveMouseLine = nMouseLine >= 0 ? nMouseLine : 0;
+			saveMouseLine = saveMouseLine < GetLineCount() ? saveMouseLine : GetLineCount() - 1;
+			int charIndex = CalculateCharIndex(saveMouseLine, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+			if (nMouseLine < m_nTopLine)
+			{
+				ScrollToLine(m_nTopLine-1, TRUE);
+				SetTimer(IDT_SCROLLTIMER, 20, NULL);
+			}
+			if (nMouseLine >= m_nTopLine + GetScreenLines())
+			{
+				ScrollToLine(m_nTopLine+1, TRUE);
+				SetTimer(IDT_SCROLLTIMER, 20, NULL);
+			}
+			if (charIndex <= m_nOffsetChar)
+			{
+				ScrollSide(-1);
+				SetTimer(IDT_SCROLLTIMER, 20, NULL);
+			}
+			if (charIndex >= GetScreenChars())
+			{
+				ScrollSide(1);
+				SetTimer(IDT_SCROLLTIMER, 20, NULL);
+			}
+		}
+
+	}
+
+	CView::OnTimer(nIDEvent);
 }
 
 void CBaseView::SelectLines(int nLine1, int nLine2)
@@ -2383,6 +2427,7 @@ void CBaseView::UseTheirAndYourBlock(viewstate &rightstate, viewstate &bottomsta
 		m_pwndBottom->m_pViewData->SetLine(i, m_pwndLeft->m_pViewData->GetLine(i));
 		bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 		m_pwndBottom->m_pViewData->SetState(i, m_pwndLeft->m_pViewData->GetState(i));
+		m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
 		if (m_pwndBottom->IsLineConflicted(i))
 		{
 			if (m_pwndLeft->m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -2390,6 +2435,7 @@ void CBaseView::UseTheirAndYourBlock(viewstate &rightstate, viewstate &bottomsta
 			else
 				m_pwndBottom->m_pViewData->SetState(i, DIFFSTATE_CONFLICTRESOLVED);
 		}
+		m_pwndLeft->m_pViewData->SetState(i, DIFFSTATE_YOURSADDED);
 	}
 
 	// your block is done, now insert their block
@@ -2405,6 +2451,7 @@ void CBaseView::UseTheirAndYourBlock(viewstate &rightstate, viewstate &bottomsta
 			else
 				m_pwndBottom->m_pViewData->SetState(index, DIFFSTATE_CONFLICTRESOLVED);
 		}
+		m_pwndRight->m_pViewData->SetState(i, DIFFSTATE_THEIRSADDED);
 		index++;
 	}
 	// adjust line numbers
@@ -2418,10 +2465,10 @@ void CBaseView::UseTheirAndYourBlock(viewstate &rightstate, viewstate &bottomsta
 	// now insert an empty block in both yours and theirs
 	for (int emptyblocks=0; emptyblocks < m_nSelBlockEnd-m_nSelBlockStart+1; ++emptyblocks)
 	{
-		leftstate.addedlines.push_back(m_nSelBlockStart);
-		m_pwndLeft->m_pViewData->InsertData(m_nSelBlockStart, _T(""), DIFFSTATE_EMPTY, -1, EOL_NOENDING);
-		m_pwndRight->m_pViewData->InsertData(m_nSelBlockEnd+1, _T(""), DIFFSTATE_EMPTY, -1, EOL_NOENDING);
-		rightstate.addedlines.push_back(m_nSelBlockEnd+1);
+		rightstate.addedlines.push_back(m_nSelBlockStart);
+		m_pwndRight->m_pViewData->InsertData(m_nSelBlockStart, _T(""), DIFFSTATE_EMPTY, -1, EOL_NOENDING);
+		m_pwndLeft->m_pViewData->InsertData(m_nSelBlockEnd+1, _T(""), DIFFSTATE_EMPTY, -1, EOL_NOENDING);
+		leftstate.addedlines.push_back(m_nSelBlockEnd+1);
 	}
 	RecalcAllVertScrollBars();
 	m_pwndBottom->SetModified();
@@ -2440,6 +2487,7 @@ void CBaseView::UseYourAndTheirBlock(viewstate &rightstate, viewstate &bottomsta
 		bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 		m_pwndBottom->m_pViewData->SetState(i, m_pwndRight->m_pViewData->GetState(i));
 		rightstate.linestates[i] = m_pwndRight->m_pViewData->GetState(i);
+		m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
 		if (m_pwndBottom->IsLineConflicted(i))
 		{
 			if (m_pwndRight->m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -3047,4 +3095,5 @@ void CBaseView::OnEditPaste()
 		PasteText();
 	}
 }
+
 

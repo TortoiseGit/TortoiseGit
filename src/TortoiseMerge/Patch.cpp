@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2004-2008 - TortoiseSVN
+// Copyright (C) 2004-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 #include "UnicodeUtils.h"
 #include "DirFileEnum.h"
 #include "TortoiseMerge.h"
-//#include "svn_wc.h"
+#include "svn_wc.h"
 #include "GitAdminDir.h"
 #include "Patch.h"
 
@@ -34,6 +34,7 @@ static char THIS_FILE[] = __FILE__;
 CPatch::CPatch(void)
 {
 	m_nStrip = 0;
+	m_IsGitPatch = false;
 }
 
 CPatch::~CPatch(void)
@@ -62,7 +63,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	EOL ending = EOL_NOENDING;
 	INT_PTR nIndex = 0;
 	INT_PTR nLineCount = 0;
-//	g_crasher.AddFile((LPCSTR)(LPCTSTR)filename, (LPCSTR)(LPCTSTR)_T("unified diff file"));
+	g_crasher.AddFile((LPCSTR)(LPCTSTR)filename, (LPCSTR)(LPCTSTR)_T("unified diff file"));
 
 	CFileTextLines PatchLines;
 	if (!PatchLines.Load(filename))
@@ -76,10 +77,20 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	//now we got all the lines of the patch file
 	//in our array - parsing can start...
 
+	for(nIndex=0;PatchLines.GetCount();nIndex++)
+	{
+		sLine = PatchLines.GetAt(nIndex);
+		if(sLine.Left(10).Compare(_T("diff --git")) == 0)
+		{
+			this->m_IsGitPatch=true;
+			break;
+		}
+	}
+
 	//first, skip possible garbage at the beginning
 	//garbage is finished when a line starts with "Index: "
 	//and the next line consists of only "=" characters
-	for (; nIndex<PatchLines.GetCount(); nIndex++)
+	for (nIndex=0; nIndex<PatchLines.GetCount(); nIndex++)
 	{
 		sLine = PatchLines.GetAt(nIndex);
 		if (sLine.Left(4).Compare(_T("--- "))==0)
@@ -87,6 +98,10 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 		if ((nIndex+1)<PatchLines.GetCount())
 		{
 			sLine = PatchLines.GetAt(nIndex+1);
+
+			if(sLine.IsEmpty()&&m_IsGitPatch)
+				continue;
+
 			sLine.Replace(_T("="), _T(""));
 			if (sLine.IsEmpty())
 				break;
@@ -114,7 +129,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 			ending = EOL_AUTOLINE;
 		if (state == 0)
 		{
-			if ((sLine.Left(4).Compare(_T("--- "))==0)&&(sLine.Find('\t') >= 0))
+			if ((sLine.Left(4).Compare(_T("--- "))==0)&&((sLine.Find('\t') >= 0)||this->m_IsGitPatch))
 			{
 				state = 2;
 				if (chunks)
@@ -124,10 +139,19 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 					m_arFileDiffs.Add(chunks);
 				}
 				chunks = new Chunks();
+				
 				int nTab = sLine.Find('\t');
+
+				int filestart = 4;
+				if(m_IsGitPatch)
+				{
+					nTab=sLine.GetLength();
+					filestart = 6;
+				}
+
 				if (nTab >= 0)
 				{
-					chunks->sFilePath = sLine.Mid(4, nTab-4).Trim();
+					chunks->sFilePath = sLine.Mid(filestart, nTab-filestart).Trim();
 				}
 			}
 		}
@@ -531,7 +555,7 @@ BOOL CPatch::PatchFile(const CString& sPath, const CString& sSavePath, const CSt
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
 	if (PathFileExists(sPatchFile))
 	{
-//		g_crasher.AddFile((LPCSTR)(LPCTSTR)sPatchFile, (LPCSTR)(LPCTSTR)_T("File to patch"));
+		g_crasher.AddFile((LPCSTR)(LPCTSTR)sPatchFile, (LPCSTR)(LPCTSTR)_T("File to patch"));
 	}
 	CFileTextLines PatchLines;
 	CFileTextLines PatchLinesResult;
@@ -609,6 +633,8 @@ BOOL CPatch::PatchFile(const CString& sPath, const CString& sSavePath, const CSt
 					{
 						if ((lAddLine < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lAddLine))==0))
 							lAddLine++;
+						else if (((lAddLine + 1) < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lAddLine+1))==0))
+							lAddLine += 2;
 						else if ((lRemoveLine < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lRemoveLine))==0))
 							lRemoveLine++;
 						else
@@ -674,17 +700,15 @@ CString	CPatch::CheckPatchPath(const CString& path)
 	bool isDir = false;
 	CString subpath;
 	CDirFileEnum filefinder(path);
-#if 0
 	while (filefinder.NextFile(subpath, &isDir))
 	{
 		if (!isDir)
 			continue;
-		if (g_SVNAdminDir.IsAdminDirPath(subpath))
+		if (g_GitAdminDir.IsAdminDirPath(subpath))
 			continue;
 		if (CountMatches(subpath) > (GetNumberOfFiles()/3))
 			return subpath;
 	}
-#endif
 	
 	// if a patch file only contains newly added files
 	// we can't really find the correct path.

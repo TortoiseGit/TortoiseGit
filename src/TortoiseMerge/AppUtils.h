@@ -17,10 +17,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-//#include "svn_types.h"
-#include "GitStatus.h"
+#include "svn_types.h"
 
-class CProgressDlg;
+class CSysProgressDlg;
 
 /**
  * \ingroup TortoiseMerge
@@ -41,7 +40,7 @@ public:
 	 * \param hWnd the window handle of the calling app
 	 * \return TRUE if successful
 	 */
-	static BOOL GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CProgressDlg * progDlg, HWND hWnd = NULL);
+	static BOOL GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg * progDlg, HWND hWnd = NULL);
 	
 	/**
 	 * Creates a unified diff from two files
@@ -49,6 +48,6 @@ public:
 	static bool CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError);
 
 	static bool HasClipboardFormat(UINT format);
-	static CString GetErrorString(git_error_t * Err);
+	static CString GetErrorString(svn_error_t * Err);
 
 };

@@ -188,7 +188,6 @@ void CLocatorBar::OnPaint()
 		{
 			identcount = m_arLeftIdent.GetAt(i);
 			state = m_arLeftState.GetAt(i);
-			COLORREF color, color2;
 			CDiffColors::GetInstance().GetColors((DiffStates)state, color, color2);
 			if ((DiffStates)state != DIFFSTATE_NORMAL)
 				cacheDC.FillSolidRect(rect.left, height*linecount/m_nLines, 
@@ -206,7 +205,6 @@ void CLocatorBar::OnPaint()
 		{
 			identcount = m_arRightIdent.GetAt(i);
 			state = m_arRightState.GetAt(i);
-			COLORREF color, color2;
 			CDiffColors::GetInstance().GetColors((DiffStates)state, color, color2);
 			if ((DiffStates)state != DIFFSTATE_NORMAL)
 				cacheDC.FillSolidRect(rect.left + (width*2/3), height*linecount/m_nLines, 
@@ -223,7 +221,6 @@ void CLocatorBar::OnPaint()
 		{
 			identcount = m_arBottomIdent.GetAt(i);
 			state = m_arBottomState.GetAt(i);
-			COLORREF color, color2;
 			CDiffColors::GetInstance().GetColors((DiffStates)state, color, color2);
 			if ((DiffStates)state != DIFFSTATE_NORMAL)
 				cacheDC.FillSolidRect(rect.left + (width/3), height*linecount/m_nLines, 
@@ -257,7 +254,7 @@ void CLocatorBar::OnPaint()
 		{
 			for (int j=fishstart; j<fishstart+fishheight; j++)
 			{
-				COLORREF color = cacheDC.GetPixel(i, j);
+				color = cacheDC.GetPixel(i, j);
 				int r,g,b;
 				r = max(GetRValue(color)-20, 0);
 				g = max(GetGValue(color)-20, 0);

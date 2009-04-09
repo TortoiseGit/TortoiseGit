@@ -19,10 +19,10 @@
 #include "stdafx.h"
 #include "TortoiseMerge.h"
 #include "AboutDlg.h"
-//#include "svn_version.h"
-//#include "svn_diff.h"
-//#include "..\..\\apr\include\apr_version.h"
-//#include "..\..\apr-util\include\apu_version.h"
+#include "svn_version.h"
+#include "svn_diff.h"
+#include "..\..\\apr\include\apr_version.h"
+#include "..\..\apr-util\include\apu_version.h"
 #include "..\version.h"
 
 // CAboutDlg dialog
@@ -93,7 +93,7 @@ BOOL CAboutDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-#if 0
+
 	//set the version string
 	CString temp, boxtitle;
 	boxtitle.Format(IDS_ABOUTVERSIONBOX, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD, _T(TSVN_PLATFORM), _T(TSVN_VERDATE));
@@ -117,7 +117,7 @@ BOOL CAboutDlg::OnInitDialog()
 
 	m_cWebLink.SetURL(_T("http://tortoisesvn.net"));
 	m_cSupportLink.SetURL(_T("http://tortoisesvn.tigris.org/contributors.html"));
-#endif
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
