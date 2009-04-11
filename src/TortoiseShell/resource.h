@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by resource.rc
+// Used by resourceshell.rc
 //
 #define IDI_PULL                        5
 #define IDD_PROPPAGE                    107
@@ -178,22 +178,23 @@
 #define IDS_git_DEPTH_EXCLUDE           304
 #define IDS_git_DEPTH_UNKNOWN           305
 #define IDS_git_DEPTH_WORKING           306
-#define IDS_MENUTAG						307
-#define	IDS_MENUFORMATPATCH				308
-#define IDS_MENUIMPORTPATCH				309
-#define IDS_MENUCHERRYPICK				310
-#define IDS_MENUFETCH					311
-#define IDS_MENUREBASE					312
-#define IDS_MENUSTASHSAVE				313
-#define IDS_MENUSTASHAPPLY				314
-#define IDS_MENUSUBADD					315
-#define IDS_MENUSUBSYNC					316
-#define IDS_MENUREFLOG					317
-#define IDS_MENUDESCREFLOG				318
-#define IDS_MENUSTASHLIST				319
-#define IDS_REFLOG_DEL					320
-#define IDI_MENUSYNC					321
-
+#define IDS_MENUTAG                     307
+#define IDS_MENUFORMATPATCH             308
+#define IDS_MENUIMPORTPATCH             309
+#define IDS_MENUCHERRYPICK              310
+#define IDS_MENUFETCH                   311
+#define IDS_MENUREBASE                  312
+#define IDS_MENUSTASHSAVE               313
+#define IDS_MENUSTASHAPPLY              314
+#define IDS_MENUSUBADD                  315
+#define IDS_MENUSUBSYNC                 316
+#define IDS_MENUREFLOG                  317
+#define IDS_MENUDESCREFLOG              318
+#define IDS_MENUSTASHLIST               319
+#define IDS_REFLOG_DEL                  320
+#define IDI_MENUSYNC                    321
+#define IDS_MENUSENDMAIL                321
+#define IDS_MENUDESSENDMAIL             322
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
 #define IDC_REPOURL                     1003
@@ -232,13 +233,14 @@
 #define IDI_ICON1                       5165
 #define IDI_PUSH                        5166
 #define IDI_CLONE                       5167
-#define IDI_TAG							5168
-#define IDI_REBASE						5169
-#define IDI_COMBINE						5170
-#define IDI_SKIP						5171
-#define IDI_EDIT						5172
-#define IDI_SQUASH						5173
-#define IDI_PICK						5174
+#define IDI_TAG                         5168
+#define IDI_REBASE                      5169
+#define IDI_COMBINE                     5170
+#define IDI_SKIP                        5171
+#define IDI_EDIT                        5172
+#define IDI_SQUASH                      5173
+#define IDI_PICK                        5174
+#define IDI_MENUSENDMAIL                5175
 #define IDC_LOCKOWNER                   11019
 #define IDC_LOCKDATE                    11020
 #define IDC_EDITPROPERTIES              11021
@@ -253,7 +255,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5166
+#define _APS_NEXT_RESOURCE_VALUE        5176
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11026
 #define _APS_NEXT_SYMED_VALUE           5101

@@ -661,6 +661,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\icon2.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menuabout.ico"
 				>
 			</File>
@@ -717,6 +721,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menuedit.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menuexport.ico"
 				>
 			</File>
@@ -746,6 +754,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\menupatch.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\menupick.ico"
 				>
 			</File>
 			<File
@@ -781,6 +793,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menusendmail.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menusettings.ico"
 				>
 			</File>
@@ -789,7 +805,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\menuskip.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\menusquash.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menuswitch.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\menusync.ico"
 				>
 			</File>
 			<File
@@ -805,11 +833,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\Push.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\resourceshell.rc"
 				>
 			</File>
 			<File
 				RelativePath=".\resourceshell.rc2"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\tag.ico"
 				>
 			</File>
 			<File

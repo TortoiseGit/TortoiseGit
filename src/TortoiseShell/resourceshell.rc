@@ -71,14 +71,14 @@ IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ic
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 IDI_PUSH                ICON                    "..\\resources\\Push.ico"
 IDI_CLONE               ICON                    "..\\resources\\checkout.ico"
-IDI_TAG					ICON					"..\\resources\\Tag.ico"
-IDI_REBASE				ICON					"..\\resources\\menurebase.ico"
-IDI_COMBINE				ICON					"..\\resources\\menucombine.ico"
-IDI_SKIP				ICON					"..\\resources\\menuskip.ico"
-IDI_SQUASH				ICON					"..\\resources\\menusquash.ico"
-IDI_EDIT				ICON					"..\\resources\\menuedit.ico"
-IDI_PICK				ICON					"..\\resources\\menupick.ico"
-IDI_MENUSYNC			ICON					"..\\resources\\menusync.ico"
+IDI_TAG                 ICON                    "..\\resources\\Tag.ico"
+IDI_REBASE              ICON                    "..\\resources\\menurebase.ico"
+IDI_COMBINE             ICON                    "..\\resources\\menucombine.ico"
+IDI_SKIP                ICON                    "..\\resources\\menuskip.ico"
+IDI_SQUASH              ICON                    "..\\resources\\menusquash.ico"
+IDI_EDIT                ICON                    "..\\resources\\menuedit.ico"
+IDI_PICK                ICON                    "..\\resources\\menupick.ico"
+IDI_MENUSYNC            ICON                    "..\\resources\\menusync.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -99,7 +99,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-
+IDI_MENUSENDMAIL        ICON                    "..\\resources\\menusendmail.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -171,7 +171,7 @@ END
 BEGIN
     "LANGUAGE 9, 1\r\n"
     "#pragma code_page(1252)\r\n"
-    "#include ""resource.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""resourceshell.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "\0"
 END
 
@@ -255,20 +255,30 @@ BEGIN
     IDS_STATUSMODIFIED      "modified"
 END
 
-STRINGTABLE
+STRINGTABLE 
 BEGIN
-	IDS_MENUTAG				"Create Tag..."
-	IDS_MENUFORMATPATCH		"Create Patch Serial..."
-	IDS_MENUIMPORTPATCH		"Apply Patch Serial..."
-	IDS_MENUCHERRYPICK		"Cherry Pick..."
-	IDS_MENUFETCH			"Fetch..."
-	IDS_MENUREBASE			"*Rebase..."
-	IDS_MENUSTASHSAVE		"Stash Save"
-	IDS_MENUSTASHAPPLY		"Stash Apply"
-	IDS_MENUSTASHLIST		"Stash List"
-	IDS_MENUSUBADD			"Submodule Add"
-	IDS_MENUSUBSYNC			"Submodule Sync"
-	IDS_REFLOG_DEL			"Delete Ref..."
+    IDS_git_DEPTH_UNKNOWN   "Unknown depth"
+    IDS_git_DEPTH_WORKING   "Working copy"
+    IDS_MENUTAG             "Create Tag..."
+    IDS_MENUFORMATPATCH     "Create Patch Serial..."
+    IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
+    IDS_MENUCHERRYPICK      "Cherry Pick..."
+    IDS_MENUFETCH           "Fetch..."
+    IDS_MENUREBASE          "*Rebase..."
+    IDS_MENUSTASHSAVE       "Stash Save"
+    IDS_MENUSTASHAPPLY      "Stash Apply"
+    IDS_MENUSUBADD          "Submodule Add"
+    IDS_MENUSUBSYNC         "Submodule Sync"
+    IDS_MENUREFLOG          "Show &Reflog"
+    IDS_MENUDESCREFLOG      "Shows reference log"
+    IDS_MENUSTASHLIST       "Stash List"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_REFLOG_DEL          "Delete Ref..."
+    IDS_MENUSENDMAIL        "Send Mail..."
+    IDS_MENUDESSENDMAIL     "Send Patch by Email"
 END
 
 STRINGTABLE 
@@ -308,7 +318,7 @@ BEGIN
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
     IDS_MENUCREATEPATCH     "Create &patch..."
-    IDS_MENUAPPLYPATCH      "Apply &patch..."
+    IDS_MENUAPPLYPATCH      "Review &patch..."
 END
 
 STRINGTABLE 
@@ -318,9 +328,7 @@ BEGIN
     IDS_DROPCOPYADDMENU     "Git Copy and add files to this WC"
     IDS_DROPMOVEMENU        "Git Move versioned item(s) here"
     IDS_MENULOG             "Show &log"
-	IDS_MENUREFLOG          "Show &Reflog"
     IDS_MENUDESCLOG         "Shows the log for the selected file / folder"
-	IDS_MENUDESCREFLOG      "Shows reference log"
     IDS_COLTITLEURL         "Git URL"
     IDS_COLDESCURL          "URL of Git items"
     IDS_COLTITLESHORTURL    "Git short URL"
@@ -336,7 +344,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
-    IDS_MENUDESCAPPLYPATCH  "Applies a unified diff file to the working copy"
+    IDS_MENUDESCAPPLYPATCH  "Review unified diff file with tortoisemerge"
     IDS_MENUMERGEALL        "Merge reintegrate..."
     IDS_MENUDESCMERGEALL    "Merges all missing revisions back into the working copy using merge-tracking information"
     IDS_MENUUNDOADD         "Undo Add.."
@@ -415,12 +423,6 @@ BEGIN
     IDS_git_DEPTH_IMMEDIATE "Immediate children, including folders"
     IDS_git_DEPTH_FILES     "Only file children"
     IDS_git_DEPTH_EMPTY     "Only this item"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_git_DEPTH_UNKNOWN   "Unknown depth"
-    IDS_git_DEPTH_WORKING   "Working copy"
 END
 
 #endif    // English (U.S.) resources

@@ -162,6 +162,7 @@ protected:
 		ShellMenuStashList,
 		ShellMenuSubAdd,
 		ShellMenuSubSync,
+		ShellMenuSendMail,
 		ShellMenuLastEntry			// used to mark the menu array end
 	};
 
