@@ -62,7 +62,7 @@ bool FormatPatchCommand::Execute()
 		CShellUpdater::Instance().AddPathForUpdate(CTGitPath(dlg.m_Dir));
 		CShellUpdater::Instance().Flush();
 		
-		return !dlg.m_GitStatus;
+		return !progress.m_GitStatus;
 	}
 	return FALSE;
 }

@@ -1408,9 +1408,9 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	int nCol = 1;
 	CString entryname = GitPath->GetGitPathString();
 	int icon_idx = 0;
-//	if (entry->isfolder)
-//		icon_idx = m_nIconFolder;
-//	else
+	if (GitPath->IsDirectory())
+		icon_idx = m_nIconFolder;
+	else
 	{
 		icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(*GitPath);
 	}
