@@ -94,16 +94,16 @@ void CCloneDlg::OnOK()
 	this->m_URLCombo.GetWindowTextW(m_URL);
 	m_URL.Trim();
 	UpdateData(TRUE);
-	if(m_URL.IsEmpty()||m_Directory.IsEmpty())
+	if(m_URL.IsEmpty() || m_Directory.IsEmpty())
 	{
-		CMessageBox::Show(NULL,_T("URL or Dir can't empty"),_T("TortiseGit"),MB_OK);
+		CMessageBox::Show(NULL, _T("URL or Directory can't be empty"), _T("TortoiseGit"), MB_OK);
 		return;
 	}
 
 	m_URLCombo.SaveHistory();
     m_PuttyKeyCombo.SaveHistory();
 
-    this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile );
+    this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile);
 	CResizableDialog::OnOK();
 
 }
