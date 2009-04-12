@@ -26,6 +26,8 @@
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 
+#include "ProgressDlg.h"
+
 bool FormatPatchCommand::Execute()
 {
 	CFormatPatchDlg dlg;
@@ -53,11 +55,11 @@ bool FormatPatchCommand::Execute()
 			range
 			);
 
-		CString out;
-		if(g_Git.Run(cmd,&out,CP_ACP))
-		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-		}
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		if(progress.DoModal()==IDOK)
+			return TRUE;
+
 		return TRUE;
 		
 	}
