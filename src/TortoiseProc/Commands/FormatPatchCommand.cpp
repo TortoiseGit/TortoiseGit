@@ -57,11 +57,12 @@ bool FormatPatchCommand::Execute()
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-			return TRUE;
-
-		return TRUE;
+		progress.DoModal();
 		
+		CShellUpdater::Instance().AddPathForUpdate(CTGitPath(dlg.m_Dir));
+		CShellUpdater::Instance().Flush();
+		
+		return !dlg.m_GitStatus;
 	}
 	return FALSE;
 }
