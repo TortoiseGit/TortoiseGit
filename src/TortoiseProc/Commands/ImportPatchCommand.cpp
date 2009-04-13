@@ -32,6 +32,15 @@ bool ImportPatchCommand::Execute()
 //	dlg.m_bIsTag=TRUE;
 	CString cmd;
 	CString output;
+
+	for(int i=0;i<this->pathList.GetCount();i++)
+	{
+		if(!pathList[i].IsDirectory())
+		{
+			dlg.m_PathList.AddPath(pathList[i]);
+		}
+	}
+
 	if(dlg.DoModal()==IDOK)
 	{
 		for(int i=0;i<dlg.m_PathList.GetCount();i++)

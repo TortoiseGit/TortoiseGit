@@ -42,7 +42,17 @@ BOOL CImportPatchDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 
+	m_PathList.SortByPathname(true);
+
+	for(int i=0;i<m_PathList.GetCount();i++)
+	{
+		m_cList.InsertItem(0,m_PathList[i].GetWinPath());
+	}
+
+	//CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), nID);
+
 	EnableSaveRestore(_T("ImportDlg"));
+
 	return TRUE;
 }
 
@@ -147,6 +157,8 @@ void CImportPatchDlg::OnBnClickedButtonRemove()
 
 void CImportPatchDlg::OnBnClickedOk()
 {
+	m_PathList.Clear();
+
 	for(int i=0;i<m_cList.GetItemCount();i++)
 	{
 		CTGitPath path;

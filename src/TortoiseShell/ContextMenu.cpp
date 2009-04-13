@@ -2088,12 +2088,11 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 
 			case ShellMenuImportPatch:
-				svnCmd += _T("importpatch /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
+				tempfile = WriteFileListToTempFile();
+				svnCmd += _T("importpatch /pathfile:\"");
+				svnCmd += tempfile;
 				svnCmd += _T("\"");
+				svnCmd += _T(" /deletepathfile");
 				break;
 
 			case ShellMenuCherryPick:
