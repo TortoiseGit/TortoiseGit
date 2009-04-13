@@ -25,6 +25,7 @@
 #include "Git.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
+#include "AppUtils.h"
 
 bool ImportPatchCommand::Execute()
 {
@@ -32,6 +33,24 @@ bool ImportPatchCommand::Execute()
 //	dlg.m_bIsTag=TRUE;
 	CString cmd;
 	CString output;
+
+	if(!this->orgCmdLinePath.IsAdminDir())
+	{
+		CString str=CAppUtils::ChooseRepository((CString*)&orgCmdLinePath.GetWinPathString());
+		CTGitPath path;
+		path.SetFromWin(str);
+		
+		if(!path.HasAdminDir())
+		{
+			CString format;
+			format.LoadString(IDS_ERR_NOT_REPOSITORY);
+			CString err;
+			err.Format(format,str);
+			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+		g_Git.m_CurrentDir=str;
+	}
 
 	for(int i=0;i<this->pathList.GetCount();i++)
 	{

@@ -1917,3 +1917,27 @@ CString CAppUtils::GetClipboardLink()
 
 	return CString(_T(""));
 }
+
+CString CAppUtils::ChooseRepository(CString *path)
+{
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	CString strCloneDirectory;
+	if(path)
+		strCloneDirectory=*path;
+
+	CString title;
+	title.LoadString(IDS_CHOOSE_REPOSITORY);
+
+	browseFolder.SetInfo(title);
+
+	if (browseFolder.Show(NULL, strCloneDirectory) == CBrowseFolder::OK) 
+	{
+		return strCloneDirectory;
+		
+	}else
+	{
+		return CString();
+	}
+	
+}

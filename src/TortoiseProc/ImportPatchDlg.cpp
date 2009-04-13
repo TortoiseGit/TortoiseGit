@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "ImportPatchDlg.h"
-
+#include "git.h"
 
 // CImportPatchDlg dialog
 
@@ -51,6 +51,9 @@ BOOL CImportPatchDlg::OnInitDialog()
 
 	//CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), nID);
 
+	CString title;
+	this->GetWindowText(title);
+	this->SetWindowText(title+_T(" - ")+g_Git.m_CurrentDir);
 	EnableSaveRestore(_T("ImportDlg"));
 
 	return TRUE;

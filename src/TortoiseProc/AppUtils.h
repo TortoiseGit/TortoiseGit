@@ -192,6 +192,7 @@ public:
 	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
 
 	static CString GetClipboardLink();
+	static CString ChooseRepository(CString *path);
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
