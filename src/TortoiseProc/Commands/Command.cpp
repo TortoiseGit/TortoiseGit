@@ -59,6 +59,7 @@
 #include "StashCommand.h"
 #include "SubmoduleCommand.h"
 #include "ReflogCommand.h"
+#include "SendMailCommand.h"
 
 #if 0
 
@@ -157,6 +158,7 @@ typedef enum
 	cmdResolve,
 	cmdRevert,
 	cmdRevisionGraph,
+	cmdSendMail,
 	cmdSettings,
 	cmdShowCompare,
 	cmdSwitch,
@@ -230,6 +232,7 @@ static const struct CommandInfo
 	{	cmdResolve,			_T("resolve")			},
 	{	cmdRevert,			_T("revert")			},
 	{	cmdRevisionGraph,	_T("revisiongraph")		},
+	{	cmdSendMail,		_T("sendmail")			},
 	{	cmdSettings,		_T("settings")			},
 	{	cmdShowCompare,		_T("showcompare")		},
 	{	cmdSwitch,			_T("switch")			},
@@ -351,6 +354,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RefLogCommand;
 	case cmdSubSync:
 		return new SubmoduleSyncCommand;
+	case cmdSendMail:
+		return new SendMailCommand;
 
 #if 0
 
