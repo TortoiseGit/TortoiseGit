@@ -5,6 +5,9 @@
 bool SendMailCommand::Execute()
 {
 	CSendMailDlg dlg;
+
+	dlg.m_PathList  = orgPathList;
+	
 	if(dlg.DoModal()==IDOK)
 	{
 		return true;

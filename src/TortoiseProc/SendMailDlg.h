@@ -3,6 +3,9 @@
 #include "StandAloneDlg.h"
 #include "HyperLink.h"
 // CSendMailDlg dialog
+#include "ACEdit.h"
+#include "RegHistory.h"
+#include "TGitPath.h"
 
 class CSendMailDlg : public CResizableStandAloneDialog
 {
@@ -22,6 +25,9 @@ protected:
 
 	CHyperLink  m_SmtpSetup;
 
+	CACEdit		m_ctrlCC;
+	CACEdit		m_ctrlTO;
+	CRegHistory m_AddressReg;
 public:
 	CString m_To;
 	CString m_CC;
@@ -29,5 +35,8 @@ public:
 	BOOL m_bAttachment;
 	BOOL m_bBranch;
 	CListCtrl m_ctrlList;
+	CTGitPathList m_PathList;
+
 	afx_msg void OnBnClickedSendmailCombine();
+	afx_msg void OnBnClickedOk();
 };

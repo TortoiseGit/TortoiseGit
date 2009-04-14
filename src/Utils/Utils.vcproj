@@ -285,6 +285,22 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\ACEdit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ACEdit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ACListWnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ACListWnd.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BugTraqAssociations.cpp"
 				>
 			</File>
