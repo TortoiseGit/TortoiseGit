@@ -33,10 +33,13 @@ public:
 	CString m_CC;
 	CString m_Subject;
 	BOOL m_bAttachment;
-	BOOL m_bBranch;
+	BOOL m_bCombine;
 	CListCtrl m_ctrlList;
 	CTGitPathList m_PathList;
 
 	afx_msg void OnBnClickedSendmailCombine();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnEnChangeSendmailSubject();
 };

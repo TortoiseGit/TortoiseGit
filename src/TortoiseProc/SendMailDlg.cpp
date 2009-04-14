@@ -6,6 +6,7 @@
 #include "SendMailDlg.h"
 #include "MessageBox.h"
 #include "commonresource.h"
+#include "AppUtils.h"
 // CSendMailDlg dialog
 
 IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
@@ -16,7 +17,7 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	, m_CC(_T(""))
 	, m_Subject(_T(""))
 	, m_bAttachment(FALSE)
-	, m_bBranch(FALSE)
+	, m_bCombine(FALSE)
 {
 
 }
@@ -30,9 +31,8 @@ void CSendMailDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_SENDMAIL_TO, m_To);
 	DDX_Text(pDX, IDC_SENDMAIL_CC, m_CC);
-	DDX_Text(pDX, IDC_SENDMAIL_SUBJECT, m_Subject);
 	DDX_Check(pDX, IDC_SENDMAIL_ATTACHMENT, m_bAttachment);
-	DDX_Check(pDX, IDC_SENDMAIL_COMBINE, m_bBranch);
+	DDX_Check(pDX, IDC_SENDMAIL_COMBINE, m_bCombine);
 	DDX_Control(pDX, IDC_SENDMAIL_PATCHS, m_ctrlList);
 	DDX_Control(pDX,IDC_SENDMAIL_SETUP, this->m_SmtpSetup);
 	DDX_Control(pDX,IDC_SENDMAIL_TO,m_ctrlTO);
@@ -43,6 +43,9 @@ void CSendMailDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSendMailDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SENDMAIL_COMBINE, &CSendMailDlg::OnBnClickedSendmailCombine)
 	ON_BN_CLICKED(IDOK, &CSendMailDlg::OnBnClickedOk)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnLvnItemchangedSendmailPatchs)
+	ON_NOTIFY(NM_DBLCLK, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnNMDblclkSendmailPatchs)
+	ON_EN_CHANGE(IDC_SENDMAIL_SUBJECT, &CSendMailDlg::OnEnChangeSendmailSubject)
 END_MESSAGE_MAP()
 
 
@@ -90,12 +93,17 @@ BOOL CSendMailDlg::OnInitDialog()
 	
 //	m_ctrlCC.AddSearchString(_T("Tortoisegit-dev@google.com"));
 //	m_ctrlTO.AddSearchString(_T("Tortoisegit-dev@google.com"));
-
+	this->UpdateData(FALSE);
+	OnBnClickedSendmailCombine();
 	return TRUE;
 }
 void CSendMailDlg::OnBnClickedSendmailCombine()
 {
 	// TODO: Add your control notification handler code here
+	this->UpdateData();
+	this->GetDlgItem(IDC_SENDMAIL_SUBJECT)->EnableWindow(this->m_bCombine);
+	if(m_bCombine)
+		GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(this->m_Subject);
 }
 
 void CSendMailDlg::OnBnClickedOk()
@@ -125,4 +133,36 @@ void CSendMailDlg::OnBnClickedOk()
 	
 	OnOK();
 	// TODO: Add your control notification handler code here
+}
+
+void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	
+	*pResult = 0;
+}
+
+void CSendMailDlg::OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	CString path=this->m_ctrlList.GetItemText(pNMItemActivate->iItem,0);
+	CTGitPath gitpath;
+	gitpath.SetFromWin(path);
+	
+	CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
+
+	*pResult = 0;
+}
+
+void CSendMailDlg::OnEnChangeSendmailSubject()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
 }
