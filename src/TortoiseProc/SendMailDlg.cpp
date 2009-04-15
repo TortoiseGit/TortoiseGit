@@ -104,12 +104,15 @@ void CSendMailDlg::OnBnClickedSendmailCombine()
 	this->GetDlgItem(IDC_SENDMAIL_SUBJECT)->EnableWindow(this->m_bCombine);
 	if(m_bCombine)
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(this->m_Subject);
+
+	UpdateSubject();
 }
 
 void CSendMailDlg::OnBnClickedOk()
 {
 	
 	this->UpdateData();
+
 	if(this->m_To.IsEmpty() && this->m_CC.IsEmpty())
 	{
 		CMessageBox::Show(NULL,IDS_ERR_ADDRESS_NO_EMPTY,IDS_APPNAME,MB_OK|MB_ICONERROR);
@@ -131,13 +134,48 @@ void CSendMailDlg::OnBnClickedOk()
 		m_AddressReg.Save();
 	}	
 	
+	this->m_PathList.Clear();
+	for(int i=0;i<m_ctrlList.GetItemCount();i++)
+	{
+		CTGitPath path;
+		if(m_ctrlList.GetCheck(i))
+		{
+			path.SetFromWin(m_ctrlList.GetItemText(i,0));
+			this->m_PathList.AddPath(path);
+		}
+	}
 	OnOK();
 	// TODO: Add your control notification handler code here
+}
+
+void CSendMailDlg::UpdateSubject()
+{
+	this->UpdateData();
+
+	if(!this->m_bCombine)
+	{
+		if(m_ctrlList.GetSelectedCount()==1)
+		{
+			POSITION pos=m_ctrlList.GetFirstSelectedItemPosition();
+			int index=m_ctrlList.GetNextSelectedItem(pos);
+			if(this->m_MapPatch.find(index) == m_MapPatch.end() )
+			{
+				m_MapPatch[index].Parser(m_ctrlList.GetItemText(index,0));
+			}
+			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(m_MapPatch[index].m_Subject);
+		}
+		else
+		{
+			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(_T(""));
+		}
+	}
 }
 
 void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	
+	UpdateSubject();
 	// TODO: Add your control notification handler code here
 	
 	*pResult = 0;
@@ -164,5 +202,7 @@ void CSendMailDlg::OnEnChangeSendmailSubject()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
-	GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
+	this->UpdateData();
+	if(this->m_bCombine)
+		GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
 }

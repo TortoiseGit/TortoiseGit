@@ -6,6 +6,7 @@
 #include "ACEdit.h"
 #include "RegHistory.h"
 #include "TGitPath.h"
+#include "patch.h"
 
 class CSendMailDlg : public CResizableStandAloneDialog
 {
@@ -23,6 +24,8 @@ protected:
 	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 
+	void UpdateSubject();
+
 	CHyperLink  m_SmtpSetup;
 
 	CACEdit		m_ctrlCC;
@@ -36,6 +39,9 @@ public:
 	BOOL m_bCombine;
 	CListCtrl m_ctrlList;
 	CTGitPathList m_PathList;
+
+
+	std::map<int,CPatch> m_MapPatch;
 
 	afx_msg void OnBnClickedSendmailCombine();
 	afx_msg void OnBnClickedOk();
