@@ -590,8 +590,8 @@ int CSmtp::SmtpXYZdigits()
 bool CSmtp::FormatHeader(char* header)
 {
 	int i,s = 0;
-	TCHAR szDate[500];
-	TCHAR sztTime[500];
+	char szDate[500];
+	char sztTime[500];
 	char *to = NULL;
 	char *cc = NULL;
 	char *bcc = NULL;
@@ -677,8 +677,8 @@ bool CSmtp::FormatHeader(char* header)
 	// Date: <SP> <dd> <SP> <mon> <SP> <yy> <SP> <hh> ":" <mm> ":" <ss> <SP> <zone> <CRLF>
 	SYSTEMTIME st={0};
 	::GetSystemTime(&st);
-	::GetDateFormat(MAKELCID(0x0409,SORT_DEFAULT),0,&st,"ddd\',\' dd MMM yyyy",szDate,sizeof(szDate));
-	::GetTimeFormat(MAKELCID(0x0409,SORT_DEFAULT),TIME_FORCE24HOURFORMAT,&st,"HH\':\'mm\':\'ss",sztTime,sizeof(sztTime));
+	::GetDateFormatA(MAKELCID(0x0409,SORT_DEFAULT),0,&st,"ddd\',\' dd MMM yyyy",szDate,sizeof(szDate));
+	::GetTimeFormatA(MAKELCID(0x0409,SORT_DEFAULT),TIME_FORCE24HOURFORMAT,&st,"HH\':\'mm\':\'ss",sztTime,sizeof(sztTime));
 	sprintf(header,"Date: %s %s\r\n", szDate, sztTime); 
 	
 	// From: <SP> <sender>  <SP> "<" <sender-email> ">" <CRLF>

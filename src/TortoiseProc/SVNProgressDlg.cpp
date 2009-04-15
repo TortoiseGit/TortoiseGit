@@ -40,6 +40,7 @@
 #include "ShellUpdater.h"
 #include "IconMenu.h"
 #include "BugTraqAssociations.h"
+#include "patch.h"
 
 static UINT WM_GITPROGRESS = RegisterWindowMessage(_T("TORTOISEGIT_GITPROGRESS_MSG"));
 
@@ -266,6 +267,10 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 			data->sActionColumnText.LoadString(IDS_SVNACTION_ADD);
 			data->color = m_Colors.GetColor(CColors::Added);
 	//	}
+		break;
+	case git_wc_notify_sendmail:
+		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL);
+		data->color = m_Colors.GetColor(CColors::Modified);
 		break;
 	
 	case git_wc_notify_resolved:
@@ -895,6 +900,9 @@ UINT CGitProgressDlg::ProgressThread()
 		break;
 	case GitProgress_Update:
 		bSuccess = CmdUpdate(sWindowTitle, localoperation);
+		break;
+	case GitProgress_SendMail:
+		bSuccess = CmdSendMail(sWindowTitle, localoperation);
 		break;
 	}
 	if (!bSuccess)
@@ -2670,4 +2678,21 @@ CString CGitProgressDlg::GetPathFromColumnText(const CString& sColumnText)
 		sPath = m_targetPathList.GetCommonRoot().GetDirectory().GetWinPathString() + _T("\\") + CPathUtils::ParsePathInString(sColumnText);
 	}
 	return sPath;
+}
+
+bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
+{
+	sWindowTitle.LoadString(IDS_PROGRS_TITLE_SENDMAIL);
+	SetWindowText(sWindowTitle);
+	//SetBackgroundImage(IDI_ADD_BKG);
+	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
+
+	for(int i=0;i<m_targetPathList.GetCount();i++)
+	{
+		CPatch patch;
+		patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+			          this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
+		Notify(m_targetPathList[i],git_wc_notify_sendmail);
+	}
+	return true;
 }

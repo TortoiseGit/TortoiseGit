@@ -7,6 +7,7 @@
 #include "MessageBox.h"
 #include "commonresource.h"
 #include "AppUtils.h"
+
 // CSendMailDlg dialog
 
 IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)

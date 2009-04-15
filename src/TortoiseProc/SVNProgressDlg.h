@@ -69,9 +69,15 @@ typedef enum
 typedef enum
 {
 	git_wc_notify_add,
+	git_wc_notify_sendmail,
 	git_wc_notify_resolved
 
 }git_wc_notify_action_t;
+typedef enum
+{
+	SENDMAIL_ATTACHMENT=0x1,
+	SENDMAIL_COMBINED =0x2
+};
 /**
  * \ingroup TortoiseProc
  * Handles different Subversion commands and shows the notify messages
@@ -99,6 +105,7 @@ public:
 		GitProgress_Switch,
 		GitProgress_Unlock,
 		GitProgress_Update,
+		GitProgress_SendMail,
 	} Command;
 
 
@@ -122,6 +129,7 @@ public:
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 	
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
+	void SetSendMailOption(CString &TO, CString &CC,DWORD flags){m_SendMailTO=TO; m_SendMailCC=CC;this->m_SendMailFlags = flags;}
 	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
 	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
 	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
@@ -273,6 +281,7 @@ private:
 	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
 	bool		CmdUnlock(CString& sWindowTitle, bool& localoperation);
 	bool		CmdUpdate(CString& sWindowTitle, bool& localoperation);
+	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 
 private:
 	typedef std::map<CStringA, git_revnum_t> StringRevMap;
@@ -334,6 +343,10 @@ private:
 
 	bool					m_AlwaysConflicted;
 
+	DWORD					m_SendMailFlags;
+	CString					m_SendMailTO;
+	CString					m_SendMailCC;
+	
 ///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 
 	// some strings different methods can use

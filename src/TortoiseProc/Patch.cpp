@@ -1,5 +1,8 @@
 #include "StdAfx.h"
 #include "Patch.h"
+#include "csmtp.h"
+#include "registry.h"
+#include "unicodeutils.h"
 
 CPatch::CPatch()
 {
@@ -9,6 +12,55 @@ CPatch::CPatch()
 CPatch::~CPatch()
 {
 	
+
+}
+
+int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
+{
+	CSmtp mail;
+	
+	if(mail.GetLastError() != CSMTP_NO_ERROR )
+	{
+		return -1;
+	}
+	
+	if(this->Parser(pathfile)	)
+		return -1;
+
+
+	CRegString server(REG_SMTP_SERVER);
+	CRegDWORD  port(REG_SMTP_PORT,25);
+	CRegDWORD  bAuth(REG_SMTP_ISAUTH);
+	CRegDWORD  user(REG_SMTP_USER);
+	CRegDWORD  password(REG_SMTP_PASSWORD);
+
+	mail.SetSMTPServer(CUnicodeUtils::GetUTF8(server),port);
+
+	AddRecipient(mail,TO,false);
+	AddRecipient(mail,CC,true);
+
+	if( bAttachment )
+		mail.AddAttachment(CUnicodeUtils::GetUTF8(pathfile));
+
+	CString name,address;
+	GetNameAddress(this->m_Author,name,address);
+	mail.SetSenderName(CUnicodeUtils::GetUTF8(name));
+	mail.SetSenderMail(CUnicodeUtils::GetUTF8(address));
+
+	mail.SetXPriority(XPRIORITY_NORMAL);
+	mail.SetXMailer("The Bat! (v3.02) Professional");
+
+	mail.SetSubject(CUnicodeUtils::GetUTF8(this->m_Subject));
+
+	mail.SetMessageBody((char*)&this->m_Body[0]);
+
+	if(bAuth)
+	{
+		mail.SetLogin(CUnicodeUtils::GetUTF8((CString&)user));
+		mail.SetPassword(CUnicodeUtils::GetUTF8((CString&)password));
+	}
+
+	return !mail.Send();
 
 }
 
@@ -36,7 +88,57 @@ int CPatch::Parser(CString &pathfile)
 		i++;		
 	}
 
+	m_Body.resize(PatchFile.GetLength() - PatchFile.GetPosition());
+	PatchFile.Read(&m_Body.at(0),PatchFile.GetLength() - PatchFile.GetPosition());
 
 	PatchFile.Close();
 
+}
+
+void CPatch::GetNameAddress(CString &in, CString &name,CString &address)
+{
+	int start,end;
+	start=in.Find(_T('<'));
+	end=in.Find(_T('>'));
+
+	if(start >=0 && end >=0)
+	{
+		name=in.Left(start);
+		address=in.Mid(start+1,end-start-1);
+	}
+	else
+		address=in;
+}
+
+void CPatch::AddRecipient(CSmtp &mail, CString &tolist, bool isCC)
+{
+	int pos=0;
+	while(pos>=0)
+	{
+		CString one=tolist.Tokenize(_T(";"),pos);
+		int start=one.Find(_T('<'));
+		int end = one.Find(_T('>'));
+		CStringA name;
+		CStringA address;
+		if( start>=0 && end >=0)
+		{
+			name=CUnicodeUtils::GetUTF8(one.Left(start));
+			address=CUnicodeUtils::GetUTF8(one.Mid(start+1,end-start-1));
+			if(address.IsEmpty())
+				continue;
+			if(isCC)
+				mail.AddCCRecipient(address,name);
+			else
+				mail.AddRecipient(address,name);
+
+		}else
+		{
+			if(one.IsEmpty())
+				continue;
+			if(isCC)
+				mail.AddCCRecipient(CUnicodeUtils::GetUTF8(one));
+			else
+				mail.AddRecipient(CUnicodeUtils::GetUTF8(one));
+		}
+	}
 }
