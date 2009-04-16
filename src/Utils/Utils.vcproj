@@ -345,6 +345,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CBase64.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CmdLineParser.cpp"
 				>
 			</File>
@@ -402,6 +406,14 @@
 			</File>
 			<File
 				RelativePath=".\DropFiles.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HwSMTP.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HwSMTP.h"
 				>
 			</File>
 			<File

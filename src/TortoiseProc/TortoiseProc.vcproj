@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib Dnsapi.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames=""
@@ -164,7 +164,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib Dnsapi.lib"
 				LinkIncremental="2"
 				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs="gdiplus.dll"
@@ -253,7 +253,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib Dnsapi.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../ext/wingit"
 				IgnoreDefaultLibraryNames=""
@@ -347,7 +347,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
+				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib Dnsapi.lib"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs="gdiplus.dll"
@@ -564,11 +564,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\copy.ico"
+				RelativePath="..\Resources\copy.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\copy.ico"
+				RelativePath=".\copy.ico"
 				>
 			</File>
 			<File
@@ -596,11 +596,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -844,11 +844,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
@@ -880,11 +880,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\refresh.ico"
+				RelativePath="..\Resources\refresh.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\refresh.ico"
+				RelativePath=".\refresh.ico"
 				>
 			</File>
 			<File
@@ -960,11 +960,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
@@ -1064,11 +1064,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File

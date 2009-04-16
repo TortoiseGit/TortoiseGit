@@ -3,6 +3,8 @@
 #include "csmtp.h"
 #include "registry.h"
 #include "unicodeutils.h"
+#include "hwsmtp.h"
+#include "Windns.h"
 
 CPatch::CPatch()
 {
@@ -27,7 +29,29 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 	if(this->Parser(pathfile)	)
 		return -1;
 
+	int at=TO.Find(_T('@'));
+	int start =0;
+	TO = TO.Tokenize(_T(";"),start);
 
+	CString server=TO.Mid(at+1);
+
+	PDNS_RECORD pDnsRecord; 
+
+	DnsQuery(server, DNS_TYPE_MX,DNS_QUERY_BYPASS_CACHE,
+					    NULL,                   //Contains DNS server IP address.
+                        &pDnsRecord,                //Resource record that contains the response.
+                        NULL); 
+
+	CString name,address;
+	GetNameAddress(this->m_Author,name,address);
+
+
+	SendEmail(FALSE,pDnsRecord->Data.MX.pNameExchange,
+		NULL,NULL,FALSE,address,TO,this->m_Author,TO,this->m_Subject,_T("Test"));
+					
+	DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
+
+#if 0
 	CRegString server(REG_SMTP_SERVER);
 	CRegDWORD  port(REG_SMTP_PORT,25);
 	CRegDWORD  bAuth(REG_SMTP_ISAUTH);
@@ -61,6 +85,8 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 	}
 
 	return !mail.Send();
+#endif
+
 
 }
 
