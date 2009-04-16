@@ -57,6 +57,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bStrictStopped(false)
 	, m_pStoreSelection(NULL)
 	, m_nSelectedFilter(LOGFILTER_ALL)
+	, m_bVista(false)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -118,6 +119,13 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SQUASH);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
+
+	OSVERSIONINFOEX inf;
+	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
+	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO *)&inf);
+	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
+	m_bVista = (fullver >= 0x0600);
 
 	m_ColumnRegKey=_T("log");
 }
@@ -309,7 +317,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	GetItem(&rItem);
 
 	GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(Index);
+	HBRUSH brush;
 
+	
 	if (m_Theme.IsAppThemed() && m_bVista)
 	{
 		m_Theme.Open(m_hWnd, L"Explorer");
@@ -323,34 +333,27 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 		}
 		else
 		{
-#if 0
-			if (pLogEntry->bCopiedSelf)
-			{
-				// unfortunately, the pLVCD->nmcd.uItemState does not contain valid
-				// information at this drawing stage. But we can check the whether the
-				// previous stage changed the background color of the item
-				if (pLVCD->clrTextBk == GetSysColor(COLOR_MENU))
-				{
-					HBRUSH brush;
-					brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-					if (brush)
-					{
-						::FillRect(pLVCD->nmcd.hdc, &rect, brush);
-						::DeleteObject(brush);
-					}
-				}
-			}
-#endif
+			if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+				brush = ::CreateSolidBrush(RGB(156,156,156));
+			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+				brush = ::CreateSolidBrush(RGB(200,200,128));
+
+			if (brush == NULL)
+				return;
+
+			::FillRect(hdc, &rect, brush);
+			::DeleteObject(brush);
+
 		}
 
 		if (m_Theme.IsBackgroundPartiallyTransparent(LVP_LISTDETAIL, state))
 			m_Theme.DrawParentBackground(m_hWnd, hdc, &rect);
-
+		else
 			m_Theme.DrawBackground(hdc, LVP_LISTDETAIL, state, &rect, NULL);
 	}
 	else
 	{
-		HBRUSH brush;
+		
 		if (rItem.state & LVIS_SELECTED)
 		{
 			if (::GetFocus() == m_hWnd)
