@@ -31,8 +31,8 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 	CRegString server(REG_SMTP_SERVER);
 	CRegDWORD  port(REG_SMTP_PORT,25);
 	CRegDWORD  bAuth(REG_SMTP_ISAUTH);
-	CRegDWORD  user(REG_SMTP_USER);
-	CRegDWORD  password(REG_SMTP_PASSWORD);
+	CRegString  user(REG_SMTP_USER);
+	CRegString  password(REG_SMTP_PASSWORD);
 
 	mail.SetSMTPServer(CUnicodeUtils::GetUTF8(server),port);
 
