@@ -89,7 +89,7 @@ CHwSMTP::CHwSMTP () :
 	m_csMIMEContentType = _T( "multipart/mixed");
 	m_csPartBoundary = _T( "WC_MAIL_PaRt_BoUnDaRy_05151998" );
 	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
-//	m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
+	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
 }
 
 CHwSMTP::~CHwSMTP()
@@ -232,7 +232,7 @@ BOOL CHwSMTP::SendBuffer(char *buff,int size)
 	return TRUE;
 }
 // 利用socket发送数据，数据长度不能超过10M
-BOOL CHwSMTP::Send(LPCTSTR lpszData, ... )
+BOOL CHwSMTP::Send(CString &str )
 {
 	if ( !m_bConnected )
 	{
@@ -240,34 +240,8 @@ BOOL CHwSMTP::Send(LPCTSTR lpszData, ... )
 		return FALSE;
 	}
 
-	TCHAR *buf = NULL;
-	// 循环格式化字符串，如果缓冲不够则将缓冲加大然后重试以保证缓冲够用同时又不浪费
-	for ( int nBufCount = 1024; nBufCount<10*1024*1024; nBufCount += 1024 )
-	{
-		buf = new TCHAR[nBufCount];
-		if ( !buf )
-		{
-			::AfxThrowMemoryException ();
-			return FALSE;
-		}
-		memset ( buf, 0, nBufCount*sizeof(TCHAR) );
-
-		va_list  va;
-		va_start (va, lpszData);
-		int nLen = _vsnprintf_hw ((TCHAR*)buf, nBufCount-sizeof(TCHAR), lpszData, va);
-		va_end(va);
-		if ( nLen <= (int)(nBufCount-sizeof(TCHAR)) )
-			break;
-		delete[] buf; buf = NULL;
-	}
-	if ( !buf )
-	{
-		m_csLastError.Format ( _T("Memory too small or data too big.") );
-		return FALSE;
-	}
-
-	CMultiByteString cbsData ( buf );
-	delete[] buf; buf = NULL;
+	CMultiByteString cbsData ( str );
+	
 	TRACE ( _T("Send : %s\r\n"), cbsData.GetBuffer() );
 	if ( m_SendSock.Send ( cbsData.GetBuffer(), cbsData.GetLength() ) != cbsData.GetLength() )
 	{
@@ -285,7 +259,9 @@ BOOL CHwSMTP::SendEmail()
 	gethostname ( (char*)szLocalHostName, sizeof(szLocalHostName) );
 
 	// hello，握手
-	if ( !Send ( _T("HELO %s\r\n"), GetCompatibleString(szLocalHostName,FALSE) ) )
+	CString str;
+	str.Format(_T("HELO %s\r\n"), GetCompatibleString(szLocalHostName,FALSE));
+	if ( !Send (  str ))
 	{
 		return FALSE;
 	}
@@ -319,13 +295,13 @@ BOOL CHwSMTP::SendEmail()
 		return FALSE;
 	}
 	// 结束邮件正文
-	if ( !Send ( _T(".\r\n") ) ) return FALSE;
+	if ( !Send ( CString(_T(".\r\n") ) ) ) return FALSE;
 	if ( !GetResponse ( _T("250") ) )
 		return FALSE;
 
 	// 退出发送
 	if ( HANDLE_IS_VALID(m_SendSock.m_hSocket) )
-		Send ( _T("QUIT\r\n") );
+		Send ( CString(_T("QUIT\r\n")) );
 	m_bConnected = FALSE;
 
 	return bRet;
@@ -334,7 +310,7 @@ BOOL CHwSMTP::SendEmail()
 BOOL CHwSMTP::auth()
 {
 	int nResponseCode = 0;
-	if ( !Send ( _T("auth login\r\n") ) ) return FALSE;
+	if ( !Send ( CString(_T("auth login\r\n")) ) ) return FALSE;
 	if ( !GetResponse ( _T("334"), &nResponseCode ) ) return FALSE;
 	if ( nResponseCode != 334 )	// 不需要验证用户名和密码
 		return TRUE;
@@ -344,14 +320,21 @@ BOOL CHwSMTP::auth()
 	CString csBase64_UserName = GetCompatibleString ( Base64Encode.Encode ( cbsUserName.GetBuffer(), cbsUserName.GetLength() ).GetBuffer(0), FALSE );
 	CString csBase64_Passwd = GetCompatibleString ( Base64Encode.Encode ( cbsPasswd.GetBuffer(), cbsPasswd.GetLength() ).GetBuffer(0), FALSE );
 
-	if ( !Send ( _T("%s\r\n"), csBase64_UserName ) ) return FALSE;
+	CString str;
+	str.Format( _T("%s\r\n"), csBase64_UserName );
+	if ( !Send ( str ) ) 
+		return FALSE;
+
 	if ( !GetResponse ( _T("334") ) )
 	{
 		m_csLastError.Format ( _T("Authentication UserName failed") );
 		return FALSE;
 	}
+	
+	str.Format(_T("%s\r\n"), csBase64_Passwd );
+	if ( !Send ( str ) ) 
+		return FALSE;
 
-	if ( !Send ( _T("%s\r\n"), csBase64_Passwd ) ) return FALSE;
 	if ( !GetResponse ( _T("235") ) )
 	{
 		m_csLastError.Format ( _T("Authentication Password failed") );
@@ -363,18 +346,24 @@ BOOL CHwSMTP::auth()
 
 BOOL CHwSMTP::SendHead()
 {
-	if ( !Send ( _T("MAIL From: <%s>\r\n"), m_csAddrFrom ) ) return FALSE;
+	CString str;
+	str.Format( _T("MAIL From: <%s>\r\n"), m_csAddrFrom );
+	if ( !Send ( str  ) ) return FALSE;
+
 	if ( !GetResponse ( _T("250") ) ) return FALSE;
-	if ( !Send ( _T("RCPT TO: <%s>\r\n"), m_csAddrTo ) ) return FALSE;
+	
+	str.Format(_T("RCPT TO: <%s>\r\n"), m_csAddrTo );
+	if ( !Send ( str ) ) return FALSE;
 	if ( !GetResponse ( _T("250") ) ) return FALSE;
 
 	for ( int i=0; i<m_StrAryCC.GetSize(); i++ )
 	{
-		if ( !Send ( _T("RCPT TO: <%s>\r\n"), m_StrAryCC.GetAt(i) ) ) return FALSE;
+		str.Format(_T("RCPT TO: <%s>\r\n"), m_StrAryCC.GetAt(i)  );
+		if ( !Send ( str ) ) return FALSE;
 		if ( !GetResponse ( _T("250") ) ) return FALSE;
 	}
-	if ( !Send ( _T("DATA\r\n") ) ) return FALSE;
-	if ( !GetResponse ( _T("354") ) ) return FALSE;	
+	if ( !Send ( CString(_T("DATA\r\n") ) ) ) return FALSE;
+	if ( !GetResponse ( CString(_T("354") )) ) return FALSE;	
 
 	return TRUE;
 }
@@ -391,7 +380,7 @@ BOOL CHwSMTP::SendSubject()
 	csSubject += _T("\r\n");
 	csSubject += FormatString ( _T("From: %s\r\nTo: %s\r\n"), m_csSenderName, m_csReceiverName );
 	csSubject += FormatString ( _T("Subject: %s\r\n"), m_csSubject );
-	csSubject += FormatString ( _T("X-Mailer: chrys\r\nMIME-Version: 1.0\r\nContent-Type: %s; %s boundary=%s\r\n\r\n") , 
+	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s; %s boundary=%s\r\n\r\n") , 
 		m_csMIMEContentType, m_csCharSet, m_csPartBoundary );
 
 	return Send ( csSubject );
@@ -414,14 +403,9 @@ BOOL CHwSMTP::SendBody()
 		csBody += csTemp;
 	}
 
-	csTemp.Format ( _T("%s\r\n"), m_csBody );
-	csBody += csTemp;
-
-	if ( m_StrAryAttach.GetSize() > 0 )
-	{
-		csTemp.Format ( _T("--%s\r\n"), m_csPartBoundary );
-		csBody += csTemp;
-	}
+	//csTemp.Format ( _T("%s\r\n"), m_csBody );
+	csBody += m_csBody;
+	csBody += _T("\r\n");
 
 	return Send ( csBody );
 }
@@ -448,6 +432,9 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	csTemp = lpszFileName;
 	CString csShortFileName = csTemp.GetBuffer(0) + csTemp.ReverseFind ( '\\' );
 	csShortFileName.TrimLeft ( _T("\\") );
+
+	csTemp.Format ( _T("--%s\r\n"), m_csPartBoundary );
+	csAttach += csTemp;
 
 	csTemp.Format ( _T("Content-Type: application/octet-stream; file=%s\r\n"), csShortFileName );
 	csAttach += csTemp;
@@ -499,13 +486,11 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	if(!SendBuffer( filedata.GetBuffer() ))
 		return FALSE;
 
-	csAttach.Empty();
-	csTemp.Format ( _T("--%s\r\n"), m_csPartBoundary );
-	csAttach += csTemp;
 
 	delete[] pBuf;
 	
-	return Send ( csAttach );
+	return TRUE;
+	//return Send ( csAttach );
 }
 
 CString CHwSMTP::GetLastErrorText()

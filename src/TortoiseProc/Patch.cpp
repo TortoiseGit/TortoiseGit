@@ -136,6 +136,7 @@ int CPatch::Parser(CString &pathfile)
 
 	m_Body.resize(PatchFile.GetLength() - PatchFile.GetPosition());
 	PatchFile.Read(&m_Body.at(0),PatchFile.GetLength() - PatchFile.GetPosition());
+	m_Body.push_back(0);
 
 	PatchFile.Close();
 
