@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hwsmtp.h"
+#include "TGitPath.h"
 
 #define REG_SMTP_SERVER _T("Software\\TortoiseGit\\EMAIL\\SMTPSERVER")
 #define REG_SMTP_PORT _T("Software\\TortoiseGit\\EMAIL\\PORT")
@@ -18,6 +19,8 @@ public:
 	~CPatch(void);
 	int Parser(CString &pathfile);
 	int Send(CString &pathfile,CString &To, CString &CC,bool bAttachment);
+	
+	static int Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment,CString *errortext);
 
 	CString m_LastError;
 	CString m_Author;

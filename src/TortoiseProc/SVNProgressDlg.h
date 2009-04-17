@@ -131,7 +131,7 @@ public:
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 	
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
-	void SetSendMailOption(CString &TO, CString &CC,DWORD flags){m_SendMailTO=TO; m_SendMailCC=CC;this->m_SendMailFlags = flags;}
+	void SetSendMailOption(CString &TO, CString &CC,CString &Subject,DWORD flags){m_SendMailTO=TO;m_SendMailSubject=Subject; m_SendMailCC=CC;this->m_SendMailFlags = flags;}
 	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
 	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
 	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
@@ -351,7 +351,8 @@ private:
 	DWORD					m_SendMailFlags;
 	CString					m_SendMailTO;
 	CString					m_SendMailCC;
-	
+	CString					m_SendMailSubject;
+
 ///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 
 	// some strings different methods can use

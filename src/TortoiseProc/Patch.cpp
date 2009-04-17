@@ -91,6 +91,42 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 
 
 }
+int CPatch::Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment,CString *errortext)
+{
+	CStringArray attachments;
+	CString body;
+	for(int i=0;i<list.GetCount();i++)
+	{
+		CPatch patch;
+		patch.Parser((CString&)list[i].GetWinPathString());
+		if(bAttachment)
+		{
+			attachments.Add(list[i].GetWinPathString());
+			body+=patch.m_Subject;
+			body+=_T("\r\n");
+
+		}else
+		{
+			g_Git.StringAppend(&body,(BYTE*)patch.m_Body.GetBuffer(),CP_ACP,patch.m_Body.GetLength());
+		}
+
+	}
+
+	CHwSMTP mail;
+	
+	CString sender;
+	sender.Format(_T("%s <%s> "),g_Git.GetUserName(),g_Git.GetUserEmail());
+
+	if(mail.SendSpeedEmail(sender,To,subject,body,NULL,&attachments,CC,25,sender))
+		return 0;
+	else
+	{
+		if(errortext)
+			*errortext=mail.GetLastErrorText();
+		return -1;
+	}
+
+}
 
 int CPatch::Parser(CString &pathfile)
 {

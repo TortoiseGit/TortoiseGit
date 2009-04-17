@@ -34,7 +34,7 @@ bool SendMailCommand::Execute()
 		if(dlg.m_bCombine)
 			flags |= SENDMAIL_COMBINED;
 
-		progDlg.SetSendMailOption(dlg.m_To,dlg.m_CC,flags);
+		progDlg.SetSendMailOption(dlg.m_To,dlg.m_CC,dlg.m_Subject,flags);
 		
 		progDlg.DoModal();		
 

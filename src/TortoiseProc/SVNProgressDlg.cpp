@@ -2709,21 +2709,38 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 	//SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
 	bool ret=true;
-
-	for(int i=0;i<m_targetPathList.GetCount();i++)
+	if(this->m_SendMailFlags&SENDMAIL_COMBINED)
 	{
-		CPatch patch;
-		Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
-		int ret=patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
-			         this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
-		if(ret)
+		CString error;
+		CTGitPath path;
+		Notify(path,git_wc_notify_sendmail_start);
+		CString err;
+		if(CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_COMBINED,&err))
 		{
-			Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
+			Notify(path,git_wc_notify_sendmail_error,ret,&err);
 			ret = false;
+		}else
+		{
+			Notify(path,git_wc_notify_sendmail_done,ret);
 		}
-		Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
-		if(m_bCancelled)
-			return false;
+
+	}else
+	{
+		for(int i=0;i<m_targetPathList.GetCount();i++)
+		{
+			CPatch patch;
+			Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
+			int ret=patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+				         this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
+			if(ret)
+			{
+				Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
+				ret = false;
+			}
+			Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
+			if(m_bCancelled)
+				return false;
+		}
 	}
 	return ret;
 }
