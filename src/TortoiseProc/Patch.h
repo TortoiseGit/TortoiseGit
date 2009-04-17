@@ -1,6 +1,6 @@
 #pragma once
 
-#include "csmtp.h"
+#include "hwsmtp.h"
 
 #define REG_SMTP_SERVER _T("Software\\TortoiseGit\\EMAIL\\SMTPSERVER")
 #define REG_SMTP_PORT _T("Software\\TortoiseGit\\EMAIL\\PORT")
@@ -11,7 +11,7 @@
 class CPatch
 {
 protected:
-	void AddRecipient(CSmtp &mail, CString &tolist, bool isCC= FALSE);
+//	void AddRecipient(CSmtp &mail, CString &tolist, bool isCC= FALSE);
 	void GetNameAddress(CString &in, CString &name,CString &address);
 public:
 	CPatch();
@@ -19,6 +19,7 @@ public:
 	int Parser(CString &pathfile);
 	int Send(CString &pathfile,CString &To, CString &CC,bool bAttachment);
 
+	CString m_LastError;
 	CString m_Author;
 	CString m_Date;
 	CString m_Subject;

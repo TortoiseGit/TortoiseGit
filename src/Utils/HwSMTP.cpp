@@ -7,7 +7,7 @@
 #include "HwSMTP.h"
 #include "CBase64.h"
 #include "SpeedPostEmail.h"
-
+#include "Windns.h"
 #include <Afxmt.h>
 
 #ifdef _DEBUG
@@ -29,14 +29,16 @@ public:
 		BOOL bMustAuth,
 		LPCTSTR lpszAddrFrom,
 		LPCTSTR lpszAddrTo,
-		LPCTSTR lpszSenderName,
+		LPCTSTR lpszFromName,
 		LPCTSTR lpszReceiverName,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
 		LPCTSTR lpszCharSet,
 		CStringArray *pStrAryAttach,
-		CStringArray *pStrAryCC,
-		UINT nSmtpSrvPort
+		LPCTSTR pStrAryCC,
+		UINT nSmtpSrvPort,
+		LPCTSTR pSender,
+		LPCTSTR pToList
 		)
 	{
 		m_csSmtpSrvHost = GET_SAFE_STRING(lpszSmtpSrvHost);
@@ -45,15 +47,18 @@ public:
 		m_bMustAuth = bMustAuth;
 		m_csAddrFrom = GET_SAFE_STRING(lpszAddrFrom);
 		m_csAddrTo = GET_SAFE_STRING(lpszAddrTo);
-		m_csSenderName = GET_SAFE_STRING(lpszSenderName);
+		m_csFromName = GET_SAFE_STRING(lpszFromName);
 		m_csReceiverName = GET_SAFE_STRING(lpszReceiverName);
 		m_csSubject = GET_SAFE_STRING(lpszSubject);
 		m_csBody = GET_SAFE_STRING(lpszBody);
 		m_csCharSet = GET_SAFE_STRING(lpszCharSet);
+		m_StrCC = GET_SAFE_STRING(pStrAryCC);
+		m_csSender = GET_SAFE_STRING(pSender);
+		m_csToList = GET_SAFE_STRING(pToList);
+
 		if ( pStrAryAttach )
 			m_StrAryAttach.Append ( *pStrAryAttach );
-		if ( pStrAryCC )
-			m_StrAryCC.Append ( *pStrAryCC );
+		
 		m_nSmtpSrvPort = nSmtpSrvPort;
 		m_hThread = NULL;
 	}
@@ -65,14 +70,16 @@ public:
 	BOOL m_bMustAuth;
 	CString m_csAddrFrom;
 	CString m_csAddrTo;
-	CString m_csSenderName;
+	CString m_csFromName;
 	CString m_csReceiverName;
 	CString m_csSubject;
 	CString m_csBody;
 	CString m_csCharSet;
 	CStringArray m_StrAryAttach;
-	CStringArray m_StrAryCC;
+	CString m_StrCC;
 	UINT m_nSmtpSrvPort;
+	CString m_csSender;
+	CString m_csToList;
 
 	HANDLE m_hThread;
 };
@@ -96,6 +103,116 @@ CHwSMTP::~CHwSMTP()
 {
 }
 
+void CHwSMTP::GetNameAddress(CString &in, CString &name,CString &address)
+{
+	int start,end;
+	start=in.Find(_T('<'));
+	end=in.Find(_T('>'));
+
+	if(start >=0 && end >=0)
+	{
+		name=in.Left(start);
+		address=in.Mid(start+1,end-start-1);
+	}
+	else
+		address=in;
+}
+
+CString CHwSMTP::GetServerAddress(CString &email)
+{
+	CString str;
+	int start,end;
+	
+	start = email.Find(_T("<"));
+	end = email.Find(_T(">"));
+
+	if(start>=0 && end >=0)
+	{
+		str=email.Mid(start+1,end-start-1);
+	}
+	else
+	{
+		str=email;
+	}
+
+	start = str.Find(_T('@'));
+	return str.Mid(start+1);
+
+}
+
+BOOL CHwSMTP::SendSpeedEmail
+		(
+			LPCTSTR lpszAddrFrom,
+			LPCTSTR lpszAddrTo,
+			LPCTSTR lpszSubject,
+			LPCTSTR lpszBody,
+			LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
+			CStringArray *pStrAryAttach,
+			LPCTSTR pStrAryCC,
+			UINT    nSmtpSrvPort,
+			LPCTSTR pSend 
+		)
+{
+
+	BOOL ret=true;
+	CString To;
+	To += GET_SAFE_STRING(lpszAddrTo);
+	To += _T(";");
+	To += GET_SAFE_STRING(pStrAryCC);
+
+	std::map<CString,std::vector<CString>> Address;
+
+	int start = 0;
+	while( start >= 0 )
+	{
+		CString one= To.Tokenize(_T(";"),start);
+		one=one.Trim();
+		if(one.IsEmpty())
+			continue;
+		
+		CString addr;
+		addr = GetServerAddress(one);
+		if(addr.IsEmpty())
+			continue;
+		
+		
+		Address[addr].push_back(one);		
+
+	}
+
+	std::map<CString,std::vector<CString>>::iterator itr1  =  Address.begin();
+    for(  ;  itr1  !=  Address.end();  ++itr1 )
+    {
+        PDNS_RECORD pDnsRecord; 
+
+		DnsQuery(itr1->first ,
+			            DNS_TYPE_MX,DNS_QUERY_BYPASS_CACHE,
+					    NULL,                   //Contains DNS server IP address.
+                        &pDnsRecord,                //Resource record that contains the response.
+                        NULL
+						); 
+		
+		CString to;
+		to.Empty();
+		for(int i=0;i<itr1->second.size();i++)
+		{
+			to+=itr1->second[i];
+			to+=_T(";");
+		}
+		if(to.IsEmpty())
+			continue;
+
+		if(!SendEmail(pDnsRecord->Data.MX.pNameExchange,NULL,NULL,false,
+				lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
+				25,pSend,lpszAddrTo))
+			ret = false;
+
+		//SendEmail(itr1.first,NULL,NULL,false,lpszAddrFrom,,lpszFromname);
+		DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
+    }	
+
+	return ret;
+}
 BOOL CHwSMTP::SendEmail (
 		LPCTSTR lpszSmtpSrvHost,
 		LPCTSTR lpszUserName,
@@ -103,19 +220,21 @@ BOOL CHwSMTP::SendEmail (
 		BOOL bMustAuth,
 		LPCTSTR lpszAddrFrom,
 		LPCTSTR lpszAddrTo,
-		LPCTSTR lpszSenderName,
-		LPCTSTR lpszReceiverName,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
 		LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
 		CStringArray *pStrAryAttach/*=NULL*/,
-		CStringArray *pStrAryCC/*=NULL*/,
-		UINT nSmtpSrvPort/*=25*/
+		LPCTSTR pStrAryCC/*=NULL*/,
+		UINT nSmtpSrvPort,/*=25*/
+		LPCTSTR pSender,
+		LPCTSTR pToList
 		)
 {
-	TRACE ( _T("发送邮件：%s, %s, %s\n"), lpszAddrTo, lpszReceiverName, lpszBody );
+	TRACE ( _T("发送邮件：%s,  %s\n"), lpszAddrTo, lpszBody );
 	m_StrAryAttach.RemoveAll();
-	m_StrAryCC.RemoveAll();
+
+	m_StrCC += GET_SAFE_STRING(pStrAryCC);
+
 	m_csSmtpSrvHost = GET_SAFE_STRING ( lpszSmtpSrvHost );
 	if ( m_csSmtpSrvHost.GetLength() <= 0 )
 	{
@@ -133,18 +252,21 @@ BOOL CHwSMTP::SendEmail (
 
 	m_csAddrFrom = GET_SAFE_STRING ( lpszAddrFrom );
 	m_csAddrTo = GET_SAFE_STRING ( lpszAddrTo );
-	m_csSenderName = GET_SAFE_STRING ( lpszSenderName );
-	m_csReceiverName = GET_SAFE_STRING ( lpszReceiverName );
+//	m_csFromName = GET_SAFE_STRING ( lpszFromName );
+//	m_csReceiverName = GET_SAFE_STRING ( lpszReceiverName );
 	m_csSubject = GET_SAFE_STRING ( lpszSubject );
 	m_csBody = GET_SAFE_STRING ( lpszBody );
+	
+	this->m_csSender = GET_SAFE_STRING(pSender);
+	this->m_csToList = GET_SAFE_STRING(pToList);
+
 	m_nSmtpSrvPort = nSmtpSrvPort;
+
 	if ( lpszCharSet && lstrlen(lpszCharSet) > 0 )
 		m_csCharSet.Format ( _T("\r\n\tcharset=\"%s\"\r\n"), lpszCharSet );
 
 	if	(
-			m_csAddrFrom.GetLength() <= 0 || m_csAddrTo.GetLength() <= 0 ||
-			m_csSenderName.GetLength() <= 0 || m_csReceiverName.GetLength() <= 0 ||
-			m_csSubject.GetLength() <= 0 || m_csBody.GetLength() <= 0
+			m_csAddrFrom.GetLength() <= 0 || m_csAddrTo.GetLength() <= 0 
 		)
 	{
 		m_csLastError.Format ( _T("Parameter Error!") );
@@ -158,12 +280,8 @@ BOOL CHwSMTP::SendEmail (
 	if ( m_StrAryAttach.GetSize() < 1 )
 		m_csMIMEContentType = _T( "text/plain");
 
-	if ( pStrAryCC )
-	{
-		m_StrAryCC.Append ( *pStrAryCC );
-	}	
-
 	// 创建Socket
+	m_SendSock.Close();
 	if ( !m_SendSock.Create () )
 	{
 		m_csLastError.Format ( _T("Create socket failed!") );
@@ -347,21 +465,39 @@ BOOL CHwSMTP::auth()
 BOOL CHwSMTP::SendHead()
 {
 	CString str;
-	str.Format( _T("MAIL From: <%s>\r\n"), m_csAddrFrom );
+	CString name,addr;
+	GetNameAddress(m_csAddrFrom,name,addr);
+
+	str.Format( _T("MAIL From: <%s>\r\n"), addr );
 	if ( !Send ( str  ) ) return FALSE;
 
 	if ( !GetResponse ( _T("250") ) ) return FALSE;
 	
-	str.Format(_T("RCPT TO: <%s>\r\n"), m_csAddrTo );
-	if ( !Send ( str ) ) return FALSE;
-	if ( !GetResponse ( _T("250") ) ) return FALSE;
+	int start=0;
+	while(start>=0)
+	{
+		CString one=m_csAddrTo.Tokenize(_T(";"),start);
+		one=one.Trim();
+		if(one.IsEmpty())
+			continue;
 
+		
+		GetNameAddress(one,name,addr);
+		
+		str.Format(_T("RCPT TO: <%s>\r\n"), addr );
+		if ( !Send ( str ) ) return FALSE;
+		if ( !GetResponse ( _T("250") ) ) return FALSE;
+	}
+
+#if 0
 	for ( int i=0; i<m_StrAryCC.GetSize(); i++ )
 	{
 		str.Format(_T("RCPT TO: <%s>\r\n"), m_StrAryCC.GetAt(i)  );
 		if ( !Send ( str ) ) return FALSE;
 		if ( !GetResponse ( _T("250") ) ) return FALSE;
 	}
+#endif
+
 	if ( !Send ( CString(_T("DATA\r\n") ) ) ) return FALSE;
 	if ( !GetResponse ( CString(_T("354") )) ) return FALSE;	
 
@@ -378,7 +514,22 @@ BOOL CHwSMTP::SendSubject()
 		csSubject += GetCompatibleString(FormatDateTime (tNow, _T("%a, %d %b %y %H:%M:%S %Z")).GetBuffer(0),FALSE);
 	}
 	csSubject += _T("\r\n");
-	csSubject += FormatString ( _T("From: %s\r\nTo: %s\r\n"), m_csSenderName, m_csReceiverName );
+	csSubject += FormatString ( _T("From: %s\r\n"), this->m_csAddrFrom);
+	
+	csSubject += FormatString ( _T("CC: %s\r\n"), this->m_StrCC);
+	
+	if(m_csSender.IsEmpty())
+		m_csSender =  this->m_csAddrFrom;
+	
+	csSubject += FormatString ( _T("Sender: %s\r\n"), this->m_csSender);
+	
+	if(this->m_csToList.IsEmpty())
+		m_csToList = m_csReceiverName;
+	
+	csSubject += FormatString ( _T("To: %s\r\n"), this->m_csToList);
+
+	CString m_csToList;
+
 	csSubject += FormatString ( _T("Subject: %s\r\n"), m_csSubject );
 	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s; %s boundary=%s\r\n\r\n") , 
 		m_csMIMEContentType, m_csCharSet, m_csPartBoundary );
@@ -512,14 +663,13 @@ DWORD WINAPI ThreadProc_SendEmail( LPVOID lpParameter )
 		pEMailObject->m_bMustAuth,
 		pEMailObject->m_csAddrFrom,
 		pEMailObject->m_csAddrTo,
-		pEMailObject->m_csSenderName,
-		pEMailObject->m_csReceiverName,
 		pEMailObject->m_csSubject,
 		pEMailObject->m_csBody,
 		pEMailObject->m_csCharSet,
 		&pEMailObject->m_StrAryAttach,
-		&pEMailObject->m_StrAryCC,
-		pEMailObject->m_nSmtpSrvPort
+		pEMailObject->m_StrCC,
+		pEMailObject->m_nSmtpSrvPort,
+		pEMailObject->m_csSender
 		);
 	if ( !bRet)
 	{
@@ -551,14 +701,16 @@ BOOL SendEmail (
 				BOOL bMustAuth,
 				LPCTSTR lpszAddrFrom,
 				LPCTSTR lpszAddrTo,
-				LPCTSTR lpszSenderName,
+				LPCTSTR lpszFromName,
 				LPCTSTR lpszReceiverName,
 				LPCTSTR lpszSubject,
 				LPCTSTR lpszBody,
 				LPCTSTR lpszCharSet/*=NULL*/,
 				CStringArray *pStrAryAttach/*=NULL*/,
-				CStringArray *pStrAryCC/*=NULL*/,
-				UINT nSmtpSrvPort/*=25*/
+				LPCTSTR pStrAryCC/*=NULL*/,
+				UINT nSmtpSrvPort/*=25*/,
+				LPCTSTR lpszSender,
+				LPCTSTR lpszToList
 				)
 {
 	if ( !lpszSmtpSrvHost || lstrlen(lpszSmtpSrvHost) < 1 ||
@@ -576,14 +728,16 @@ BOOL SendEmail (
 		bMustAuth,
 		lpszAddrFrom,
 		lpszAddrTo,
-		lpszSenderName,
+		lpszFromName,
 		lpszReceiverName,
 		lpszSubject,
 		lpszBody,
 		lpszCharSet,
 		pStrAryAttach,
 		pStrAryCC,
-		nSmtpSrvPort
+		nSmtpSrvPort,
+		lpszSender,
+		lpszToList
 		);
 	if ( !pEMailObject ) return FALSE;
 

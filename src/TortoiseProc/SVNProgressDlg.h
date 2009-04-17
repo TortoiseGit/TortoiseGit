@@ -69,7 +69,9 @@ typedef enum
 typedef enum
 {
 	git_wc_notify_add,
-	git_wc_notify_sendmail,
+	git_wc_notify_sendmail_start,
+	git_wc_notify_sendmail_error,
+	git_wc_notify_sendmail_done,
 	git_wc_notify_resolved
 
 }git_wc_notify_action_t;
@@ -198,7 +200,10 @@ private:
 protected:
 
 	//Need update in the future implement the virtual methods from Git base class
-	virtual BOOL Notify(const CTGitPath& path, git_wc_notify_action_t action
+	virtual BOOL Notify(const CTGitPath& path, 
+								git_wc_notify_action_t action,
+								int status = 0,
+								CString *strErr =NULL
 		/*
 		git_node_kind_t kind, const CString& mime_type, 
 		git_wc_notify_state_t content_state, 

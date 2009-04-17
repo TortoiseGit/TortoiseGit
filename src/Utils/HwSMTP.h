@@ -58,21 +58,37 @@ public:
 		BOOL bMustAuth,
 		LPCTSTR lpszAddrFrom,
 		LPCTSTR lpszAddrTo,
-		LPCTSTR lpszSenderName,
-		LPCTSTR lpszReceiverName,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
 		LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
 		CStringArray *pStrAryAttach=NULL,
-		CStringArray *pStrAryCC=NULL,
-		UINT nSmtpSrvPort=25
+		LPCTSTR pStrAryCC=NULL,
+		UINT nSmtpSrvPort=25,
+		LPCTSTR pSend = NULL,
+		LPCTSTR pToList = NULL
+		);
+	BOOL SendSpeedEmail
+		(
+			LPCTSTR lpszAddrFrom,
+			LPCTSTR lpszAddrTo,
+			LPCTSTR lpszSubject,
+			LPCTSTR lpszBody,
+			LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
+			CStringArray *pStrAryAttach=NULL,
+			LPCTSTR pStrAryCC=NULL,
+			UINT nSmtpSrvPort=25,
+			LPCTSTR pSend = NULL
 		);
 	CHwSMTP();
 	virtual ~CHwSMTP();
 
+protected:
+	CString GetServerAddress(CString &email);
+	void GetNameAddress(CString &in, CString &name,CString &address);
+
 private:
 	BOOL SendSubject();
-	CStringArray m_StrAryCC;
+	CString m_StrCC;
 	BOOL SendHead();
 	BOOL auth();
 	BOOL SendEmail();
@@ -87,10 +103,13 @@ private:
 	CString m_csPasswd;
 	CString m_csAddrFrom;
 	CString m_csAddrTo;
-	CString m_csSenderName;
+	CString m_csFromName;
 	CString m_csReceiverName;
 	CString m_csSubject;
 	CString m_csBody;
+	CString m_csSender;
+	CString m_csToList;
+
 private:
 	BOOL m_bMustAuth;
 	UINT m_nSmtpSrvPort;
@@ -114,15 +133,19 @@ BOOL SendEmail (
 				  BOOL bMustAuth,							// SMTP 服务器需要身份验证
 				  LPCTSTR lpszAddrFrom,						// 发送者 E-Mail 地址
 				  LPCTSTR lpszAddrTo,						// 接收者的 E-Mail 地址
-				  LPCTSTR lpszSenderName,					// 发送者的名字，例如：谢红伟
+				  LPCTSTR lpszFromName,					// 发送者的名字，例如：谢红伟
 				  LPCTSTR lpszReceiverName,					// 接收者的名字，例如：张飞
 				  LPCTSTR lpszSubject,						// 邮件主题
 				  LPCTSTR lpszBody,							// 邮件内容
 				  LPCTSTR lpszCharSet=NULL,					// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
 				  CStringArray *pStrAryAttach=NULL,			// 附件文件路径，可以多个
-				  CStringArray *pStrAryCC=NULL,				// 抄送 E-Mail 地址，可以多个
-				  UINT nSmtpSrvPort=25						// SMTP 服务器的 TCP 端口号
+				  LPCTSTR pStrAryCC=NULL,				// 抄送 E-Mail 地址，可以多个
+				  UINT nSmtpSrvPort=25,						// SMTP 服务器的 TCP 端口号
+				  LPCTSTR pSend = NULL,
+				  LPCTSTR ToList = NULL
 				  );
+
+
 void EndOfSMTP ();
 
 #endif // !defined(AFX_HwSMTP_H__633A52B7_1CBE_41D7_BDA3_188D98D692AF__INCLUDED_)

@@ -217,7 +217,9 @@ void CGitProgressDlg::AddItemToList()
 }
 
 
-BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t action
+BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t action,
+							 int status ,
+							 CString *strErr 
 							 /*
 							 svn_node_kind_t kind, const CString& mime_type, 
 							 svn_wc_notify_state_t content_state, 
@@ -234,6 +236,7 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 	data->path = path;
 	data->action = action;
 	data->sPathColumnText=path.GetGitPathString();
+	data->bAuxItem = false;
 #if 0
 	data->kind = kind;
 	data->mime_type = mime_type;
@@ -268,11 +271,30 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 			data->color = m_Colors.GetColor(CColors::Added);
 	//	}
 		break;
-	case git_wc_notify_sendmail:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL);
+	case git_wc_notify_sendmail_start:
+		data->bAuxItem = true;
+		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_START);
 		data->color = m_Colors.GetColor(CColors::Modified);
 		break;
 	
+	case git_wc_notify_sendmail_error:
+		data->bAuxItem = true;
+		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_ERROR);
+		if(strErr)
+			data->sPathColumnText = *strErr;
+		else
+			data->sPathColumnText.Empty();
+		data->color = m_Colors.GetColor(CColors::Modified);
+		break;
+
+	case git_wc_notify_sendmail_done:
+		
+		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_DONE);
+		data->sPathColumnText.Empty();
+		data->color = m_Colors.GetColor(CColors::Modified);
+		break;
+
+
 	case git_wc_notify_resolved:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
 		break;
@@ -493,7 +515,7 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 		{
 			m_arData.push_back(data);
 			AddItemToList();
-			if (/*(!data->bAuxItem)&&*/(m_itemCount > 0))
+			if ((!data->bAuxItem) && (m_itemCount > 0))
 			{
 				m_itemCount--;
 
@@ -2690,9 +2712,14 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
 		CPatch patch;
-		patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
-			          this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
-		Notify(m_targetPathList[i],git_wc_notify_sendmail);
+		Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
+		int ret=patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+			         this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
+		if(ret)
+		{
+			Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
+		}
+		Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
 	}
 	return true;
 }

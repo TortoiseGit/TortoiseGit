@@ -31,46 +31,28 @@ void CPatch::ConvertToArray(CString &to,CStringArray &Array)
 
 int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 {
-	CSmtp mail;
-	
-	if(mail.GetLastError() != CSMTP_NO_ERROR )
-	{
-		return -1;
-	}
-	
+	CHwSMTP mail;
 	if(this->Parser(pathfile)	)
 		return -1;
 
-	int at=TO.Find(_T('@'));
-	int start =0;
-	TO = TO.Tokenize(_T(";"),start);
-
-	CString server=TO.Mid(at+1);
-
-	PDNS_RECORD pDnsRecord; 
-
-	DnsQuery(server, DNS_TYPE_MX,DNS_QUERY_BYPASS_CACHE,
-					    NULL,                   //Contains DNS server IP address.
-                        &pDnsRecord,                //Resource record that contains the response.
-                        NULL); 
-
-	CString name,address;
-	GetNameAddress(this->m_Author,name,address);
-
-
-	CStringArray attchments,CCArray;
+	CStringArray attachments,CCArray;
 	if(bAttachment)
 	{
-		attchments.Add(pathfile);
+		attachments.Add(pathfile);
 	}
 	
-	ConvertToArray(CC,CCArray);
+	//ConvertToArray(CC,CCArray);
 
-	SendEmail(FALSE,pDnsRecord->Data.MX.pNameExchange,
-		NULL,NULL,FALSE,address,TO,this->m_Author,TO,this->m_Subject,m_strBody,0,&attchments,&CCArray);
-					
-	DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
+	CString sender;
+	sender.Format(_T("%s <%s> "),g_Git.GetUserName(),g_Git.GetUserEmail());
 
+	if(mail.SendSpeedEmail(this->m_Author,TO,this->m_Subject,this->m_strBody,NULL,&attachments,CC,25,sender))
+		return 0;
+	else
+	{
+		this->m_LastError=mail.GetLastErrorText();
+		return -1;
+	}
 #if 0
 	CRegString server(REG_SMTP_SERVER);
 	CRegDWORD  port(REG_SMTP_PORT,25);
@@ -142,7 +124,7 @@ int CPatch::Parser(CString &pathfile)
 
 	g_Git.StringAppend(&m_strBody,&m_Body[0],CP_ACP);
 	
-
+	return 0;
 }
 
 void CPatch::GetNameAddress(CString &in, CString &name,CString &address)
@@ -159,7 +141,7 @@ void CPatch::GetNameAddress(CString &in, CString &name,CString &address)
 	else
 		address=in;
 }
-
+#if 0
 void CPatch::AddRecipient(CSmtp &mail, CString &tolist, bool isCC)
 {
 	int pos=0;
@@ -192,3 +174,4 @@ void CPatch::AddRecipient(CSmtp &mail, CString &tolist, bool isCC)
 		}
 	}
 }
+#endif
