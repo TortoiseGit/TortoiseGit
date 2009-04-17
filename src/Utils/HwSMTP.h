@@ -77,6 +77,7 @@ private:
 	BOOL auth();
 	BOOL SendEmail();
 	BOOL Send ( LPCTSTR lpszData, ... );
+	BOOL SendBuffer(char *buffer,int size=-1);
 	BOOL GetResponse( LPCTSTR lpszVerifyCode, int *pnCode=NULL );
 	BOOL m_bConnected;
 	CSocket m_SendSock;

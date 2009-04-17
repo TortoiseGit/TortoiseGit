@@ -213,7 +213,24 @@ BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
 
 	return TRUE;
 }
+BOOL CHwSMTP::SendBuffer(char *buff,int size)
+{
+	if(size<0)
+		size=strlen(buff);
+	if ( !m_bConnected )
+	{
+		m_csLastError.Format ( _T("Didn't connect") );
+		return FALSE;
+	}
 
+	if ( m_SendSock.Send ( buff, size ) != size )
+	{
+		m_csLastError.Format ( _T("Socket send data failed") );
+		return FALSE;
+	}
+	
+	return TRUE;
+}
 // 利用socket发送数据，数据长度不能超过10M
 BOOL CHwSMTP::Send(LPCTSTR lpszData, ... )
 {
@@ -454,7 +471,11 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		return FALSE;
 	}
 
+	if(!Send ( csAttach ))
+		return FALSE;
+
 	CFile file;
+	CStringA filedata;
 	try
 	{
 		if ( !file.Open ( lpszFileName, CFile::modeRead ) )
@@ -464,9 +485,8 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		}
 		UINT nFileLen = file.Read ( pBuf, dwFileSize );
 		CBase64 Base64Encode;
-		csTemp = Base64Encode.Encode ( pBuf, nFileLen );
-		csAttach += csTemp;
-		csAttach += _T("\r\n\r\n");
+		filedata = Base64Encode.Encode ( pBuf, nFileLen );
+		filedata += _T("\r\n\r\n");
 	}
 	catch ( CFileException e )
 	{
@@ -476,6 +496,10 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		return FALSE;
 	}
 
+	if(!SendBuffer( filedata.GetBuffer() ))
+		return FALSE;
+
+	csAttach.Empty();
 	csTemp.Format ( _T("--%s\r\n"), m_csPartBoundary );
 	csAttach += csTemp;
 

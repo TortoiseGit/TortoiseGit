@@ -24,4 +24,6 @@ public:
 	CString m_Subject;
 	CString m_PathFile;
 	std::vector<BYTE> m_Body;
+	CString m_strBody;
+	void ConvertToArray(CString &to, CStringArray &Array);
 };

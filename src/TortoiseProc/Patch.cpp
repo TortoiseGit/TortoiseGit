@@ -5,6 +5,7 @@
 #include "unicodeutils.h"
 #include "hwsmtp.h"
 #include "Windns.h"
+#include "Git.h"
 
 CPatch::CPatch()
 {
@@ -15,6 +16,17 @@ CPatch::~CPatch()
 {
 	
 
+}
+
+void CPatch::ConvertToArray(CString &to,CStringArray &Array)
+{
+	int start=0;
+	while(start>=0)
+	{
+		CString str=to.Tokenize(_T(";"),start);
+		if(!str.IsEmpty())
+			Array.Add(str);
+	}
 }
 
 int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
@@ -46,8 +58,16 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 	GetNameAddress(this->m_Author,name,address);
 
 
+	CStringArray attchments,CCArray;
+	if(bAttachment)
+	{
+		attchments.Add(pathfile);
+	}
+	
+	ConvertToArray(CC,CCArray);
+
 	SendEmail(FALSE,pDnsRecord->Data.MX.pNameExchange,
-		NULL,NULL,FALSE,address,TO,this->m_Author,TO,this->m_Subject,_T("Test"));
+		NULL,NULL,FALSE,address,TO,this->m_Author,TO,this->m_Subject,m_strBody,0,&attchments,&CCArray);
 					
 	DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
 
@@ -118,6 +138,9 @@ int CPatch::Parser(CString &pathfile)
 	PatchFile.Read(&m_Body.at(0),PatchFile.GetLength() - PatchFile.GetPosition());
 
 	PatchFile.Close();
+
+	g_Git.StringAppend(&m_strBody,&m_Body[0],CP_ACP);
+	
 
 }
 
