@@ -2708,6 +2708,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 	SetWindowText(sWindowTitle);
 	//SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
+	bool ret=true;
 
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
@@ -2718,8 +2719,11 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		if(ret)
 		{
 			Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
+			ret = false;
 		}
 		Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
+		if(m_bCancelled)
+			return false;
 	}
-	return true;
+	return ret;
 }

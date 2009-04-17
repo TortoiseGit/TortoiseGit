@@ -103,26 +103,43 @@ int CPatch::Parser(CString &pathfile)
 		return -1;
 	
 	int i=0;
-	while(PatchFile.ReadString(str))
-	{
+#if 0
+	while(i<4)
+	{   PatchFile.ReadString(str);
 		if(i==1)
 			this->m_Author=str.Right( str.GetLength() - 6 );
 		if(i==2)
 			this->m_Date = str.Right( str.GetLength() - 6 );
 		if(i==3)
 			this->m_Subject = str.Right( str.GetLength() - 8 );
-		if(i==4)
-			break;
+		
 		i++;		
 	}
 
-	m_Body.resize(PatchFile.GetLength() - PatchFile.GetPosition());
-	PatchFile.Read(&m_Body.at(0),PatchFile.GetLength() - PatchFile.GetPosition());
-	m_Body.push_back(0);
-
+	LONGLONG offset=PatchFile.GetPosition();
+#endif
+	PatchFile.Read(m_Body.GetBufferSetLength(PatchFile.GetLength()),PatchFile.GetLength());
 	PatchFile.Close();
 
-	g_Git.StringAppend(&m_strBody,&m_Body[0],CP_ACP);
+	int start=0;
+	CStringA one;
+	one=m_Body.Tokenize("\n",start);
+
+	one=m_Body.Tokenize("\n",start);
+	if(one.GetLength()>6)
+		g_Git.StringAppend(&m_Author,(BYTE*)one.GetBuffer()+6,CP_ACP,one.GetLength()-6);
+
+	one=m_Body.Tokenize("\n",start);
+	if(one.GetLength()>6)
+		g_Git.StringAppend(&m_Date,(BYTE*)one.GetBuffer()+6,CP_ACP,one.GetLength()-6);
+
+	one=m_Body.Tokenize("\n",start);
+	if(one.GetLength()>8)
+		g_Git.StringAppend(&m_Subject,(BYTE*)one.GetBuffer()+8,CP_ACP,one.GetLength()-8);
+
+	//one=m_Body.Tokenize("\n",start);
+	
+	g_Git.StringAppend(&m_strBody,(BYTE*)m_Body.GetBuffer()+start+1,CP_ACP,m_Body.GetLength()-start-1);
 	
 	return 0;
 }

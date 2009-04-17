@@ -24,7 +24,7 @@ public:
 	CString m_Date;
 	CString m_Subject;
 	CString m_PathFile;
-	std::vector<BYTE> m_Body;
+	CStringA m_Body;
 	CString m_strBody;
 	void ConvertToArray(CString &to, CStringArray &Array);
 };
