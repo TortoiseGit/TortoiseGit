@@ -7,6 +7,7 @@
 #include "RegHistory.h"
 #include "TGitPath.h"
 #include "patch.h"
+#include "Registry.h"
 
 class CSendMailDlg : public CResizableStandAloneDialog
 {
@@ -40,6 +41,8 @@ public:
 	CListCtrl m_ctrlList;
 	CTGitPathList m_PathList;
 
+    CRegDWORD	m_regAttach;
+	CRegDWORD	m_regCombine;
 
 	std::map<int,CPatch> m_MapPatch;
 

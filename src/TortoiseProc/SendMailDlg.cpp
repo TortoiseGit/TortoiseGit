@@ -17,9 +17,12 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	, m_To(_T(""))
 	, m_CC(_T(""))
 	, m_Subject(_T(""))
-	, m_bAttachment(FALSE)
-	, m_bCombine(FALSE)
+	
+	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
+	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
 {
+	m_bAttachment  = m_regAttach;
+	m_bCombine =     m_regCombine;
 
 }
 
@@ -145,6 +148,10 @@ void CSendMailDlg::OnBnClickedOk()
 			this->m_PathList.AddPath(path);
 		}
 	}
+
+	m_regAttach=m_bAttachment;
+	m_regCombine=m_bCombine;
+
 	OnOK();
 	// TODO: Add your control notification handler code here
 }
