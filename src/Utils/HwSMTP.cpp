@@ -97,6 +97,8 @@ CHwSMTP::CHwSMTP () :
 	m_csPartBoundary = _T( "WC_MAIL_PaRt_BoUnDaRy_05151998" );
 	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
 	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
+
+	AfxSocketInit();
 }
 
 CHwSMTP::~CHwSMTP()
@@ -183,10 +185,11 @@ BOOL CHwSMTP::SendSpeedEmail
 	std::map<CString,std::vector<CString>>::iterator itr1  =  Address.begin();
     for(  ;  itr1  !=  Address.end();  ++itr1 )
     {
-        PDNS_RECORD pDnsRecord; 
-
+        PDNS_RECORD pDnsRecord;
+		PDNS_RECORD pNext;
+		
 		DnsQuery(itr1->first ,
-			            DNS_TYPE_MX,DNS_QUERY_BYPASS_CACHE,
+			            DNS_TYPE_MX,DNS_QUERY_STANDARD,
 					    NULL,                   //Contains DNS server IP address.
                         &pDnsRecord,                //Resource record that contains the response.
                         NULL
@@ -202,9 +205,17 @@ BOOL CHwSMTP::SendSpeedEmail
 		if(to.IsEmpty())
 			continue;
 
-		if(!SendEmail(pDnsRecord->Data.MX.pNameExchange,NULL,NULL,false,
+		pNext=pDnsRecord;
+		while(pNext)
+		{
+		
+			if(SendEmail(pNext->Data.MX.pNameExchange,NULL,NULL,false,
 				lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
 				25,pSend,lpszAddrTo))
+				break;
+			pNext=pNext->pNext;
+		}
+		if(pNext == NULL)
 			ret = false;
 
 		//SendEmail(itr1.first,NULL,NULL,false,lpszAddrFrom,,lpszFromname);
@@ -284,6 +295,7 @@ BOOL CHwSMTP::SendEmail (
 	m_SendSock.Close();
 	if ( !m_SendSock.Create () )
 	{
+		int nResult = GetLastError();
 		m_csLastError.Format ( _T("Create socket failed!") );
 		return FALSE;
 	}
@@ -298,8 +310,11 @@ BOOL CHwSMTP::SendEmail (
 	if ( !GetResponse( _T("220") ) ) return FALSE;
 
 	m_bConnected = TRUE;
-	return SendEmail();
+	BOOL ret= SendEmail();
 
+	m_SendSock.Close();
+
+	return ret;
 }
 
 

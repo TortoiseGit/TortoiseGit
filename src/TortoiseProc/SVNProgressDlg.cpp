@@ -68,17 +68,18 @@ enum SVNProgressDlgContextMenuCommands
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
+	, m_bCancelled(FALSE)
+	, m_pThread(NULL)
 #if 0
 	, m_Revision(_T("HEAD"))
 	//, m_RevisionEnd(0)
 	, m_bLockWarning(false)
 	, m_bLockExists(false)
-	, m_bCancelled(FALSE)
 	, m_bThreadRunning(FALSE)
 	, m_nConflicts(0)
 	, m_bErrorsOccurred(FALSE)
 	, m_bMergesAddsDeletesOccurred(FALSE)
-	, m_pThread(NULL)
+	
 	, m_options(ProgOptNone)
 	, m_dwCloseOnEnd((DWORD)-1)
 	, m_bFinishedItemAdded(false)
@@ -290,6 +291,12 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 	case git_wc_notify_sendmail_done:
 		
 		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_DONE);
+		data->sPathColumnText.Empty();
+		data->color = m_Colors.GetColor(CColors::Modified);
+		break;
+
+	case git_wc_notify_sendmail_retry:
+		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
 		data->sPathColumnText.Empty();
 		data->color = m_Colors.GetColor(CColors::Modified);
 		break;
@@ -2715,7 +2722,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		CTGitPath path;
 		Notify(path,git_wc_notify_sendmail_start);
 		CString err;
-		if(CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_COMBINED,&err))
+		if(CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,&err))
 		{
 			Notify(path,git_wc_notify_sendmail_error,ret,&err);
 			ret = false;
@@ -2730,16 +2737,31 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		{
 			CPatch patch;
 			Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
-			int ret=patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
-				         this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
-			if(ret)
+
+			int retry=0;
+			while(retry<3)
 			{
-				Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
-				ret = false;
+				int ret=patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+				         this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT);
+				if(ret)
+				{
+					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
+					ret = false;
+				}else
+					break;
+
+				Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&patch.m_LastError);
+
+				retry++;
+				Sleep(2000);
+				if(m_bCancelled)
+				{
+					Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&CString("User Canceled"));
+				    return false;
+				}
 			}
 			Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
-			if(m_bCancelled)
-				return false;
+			
 		}
 	}
 	return ret;
