@@ -27,6 +27,7 @@
 #include "ShellUpdater.h"
 
 #include "ProgressDlg.h"
+#include "AppUtils.h"
 
 bool FormatPatchCommand::Execute()
 {
@@ -62,6 +63,31 @@ bool FormatPatchCommand::Execute()
 		CShellUpdater::Instance().AddPathForUpdate(CTGitPath(dlg.m_Dir));
 		CShellUpdater::Instance().Flush();
 		
+		if(!progress.m_GitStatus)
+		{
+			if(dlg.m_bSendMail)
+			{
+				CTGitPathList list;
+				CString log=progress.m_LogText;
+				int start=log.Find(cmd);
+				if(start >=0)
+					CString one=log.Tokenize(_T("\n"),start);
+
+				while(start>=0)
+				{
+					CString one=log.Tokenize(_T("\n"),start);
+					one=one.Trim();
+					if(one.IsEmpty())
+						continue;
+					one.Replace(_T('/'),_T('\\'));
+					CTGitPath path;
+					path.SetFromWin(one);
+					list.AddPath(path);
+				}
+
+				CAppUtils::SendPatchMail(list);
+			}
+		}
 		return !progress.m_GitStatus;
 	}
 	return FALSE;

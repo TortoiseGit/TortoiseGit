@@ -11,9 +11,11 @@
 IMPLEMENT_DYNAMIC(CFormatPatchDlg, CResizableStandAloneDialog)
 
 CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent),
+	m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail"),0)
 {
 	m_Num=1;
+	this->m_bSendMail = m_regSendMail;
 }
 
 CFormatPatchDlg::~CFormatPatchDlg()
@@ -36,7 +38,7 @@ void CFormatPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMBOBOXEX_FROM,	m_From);
 	DDX_Text(pDX, IDC_COMBOBOXEX_TO,	m_To);
 	
-
+	DDX_Check(pDX, IDC_CHECK_SENDMAIL, m_bSendMail);
 }
 
 
@@ -68,6 +70,10 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	AddAnchor(IDC_BUTTON_FROM,  TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_TO,	TOP_RIGHT);
+	AddAnchor(IDC_CHECK_SENDMAIL,BOTTOM_LEFT);
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+
 	this->AddOthersToAnchor();
 
 	m_cDir.SetPathHistory(TRUE);
@@ -127,6 +133,8 @@ void CFormatPatchDlg::OnBnClickedOk()
 	m_cTo.SaveHistory();
 	this->UpdateData(TRUE);
 	this->m_Radio=GetCheckedRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE);
+
+	m_regSendMail=this->m_bSendMail;
 	OnOK();
 }
 

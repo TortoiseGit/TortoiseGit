@@ -43,6 +43,8 @@
 #include "ResetDlg.h"
 #include "DeleteConflictDlg.h"
 #include "ChangedDlg.h"
+#include "SendMailDlg.h"
+#include "SVNProgressDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -1940,4 +1942,43 @@ CString CAppUtils::ChooseRepository(CString *path)
 		return CString();
 	}
 	
+}
+
+bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
+{
+	CSendMailDlg dlg;
+
+	dlg.m_PathList  = list;
+	
+	if(dlg.DoModal()==IDOK)
+	{
+		if(dlg.m_PathList.GetCount() == 0)
+			return FALSE;
+	
+		CGitProgressDlg progDlg;
+		
+		theApp.m_pMainWnd = &progDlg;
+		progDlg.SetCommand(CGitProgressDlg::GitProgress_SendMail);
+				
+		progDlg.SetAutoClose(autoclose);
+
+		progDlg.SetPathList(dlg.m_PathList);
+				//ProjectProperties props;
+				//props.ReadPropsPathList(dlg.m_pathList);
+				//progDlg.SetProjectProperties(props);
+		progDlg.SetItemCount(dlg.m_PathList.GetCount());
+
+		DWORD flags =0;
+		if(dlg.m_bAttachment)
+			flags |= SENDMAIL_ATTACHMENT;
+		if(dlg.m_bCombine)
+			flags |= SENDMAIL_COMBINED;
+
+		progDlg.SetSendMailOption(dlg.m_To,dlg.m_CC,dlg.m_Subject,flags);
+		
+		progDlg.DoModal();		
+
+		return true;
+	}
+	return false;
 }

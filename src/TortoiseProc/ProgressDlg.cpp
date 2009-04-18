@@ -36,6 +36,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
+	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
@@ -229,3 +230,10 @@ void CProgressDlg::RemoveLastLine(CString &str)
 	return;
 }
 // CProgressDlg message handlers
+
+void CProgressDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	m_Log.GetWindowText(this->m_LogText);
+	OnOK();
+}

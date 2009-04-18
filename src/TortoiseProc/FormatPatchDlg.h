@@ -2,6 +2,7 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
+#include "Registry.h"
 
 // CFormatPatchDlg dialog
 
@@ -25,6 +26,7 @@ protected:
 	CHistoryCombo m_cFrom;
 	CHistoryCombo m_cTo;
 	CEdit		  m_cNum;
+	CRegDWORD	m_regSendMail;
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -34,6 +36,7 @@ public:
 	CString m_To;
 	CString m_Since;
 	int m_Radio;
+    BOOL m_bSendMail;
 
 	afx_msg void OnBnClickedButtonDir();
 	afx_msg void OnBnClickedButtonFrom();

@@ -34,6 +34,7 @@ public:
 	DWORD			  m_GitStatus;
 	BOOL		  m_bShowCommand;	// whether to display the command in the log window (default true)
 	CString		  m_PreText;		// optional text to show in log window before running command
+	CString		  m_LogText;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	static UINT ProgressThreadEntry(LPVOID pVoid);
@@ -45,6 +46,8 @@ protected:
 
 	LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
-	CString		m_LogText;
+	
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
 };

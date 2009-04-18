@@ -193,6 +193,8 @@ public:
 
 	static CString GetClipboardLink();
 	static CString ChooseRepository(CString *path);
+
+	static bool SendPatchMail(CTGitPathList &pathlist,bool autoclose=false);
 	
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
