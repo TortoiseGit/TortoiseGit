@@ -2722,14 +2722,28 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		CTGitPath path;
 		Notify(path,git_wc_notify_sendmail_start);
 		CString err;
-		if(CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,&err))
+		int retry=0;
+		while(retry <3)
 		{
-			Notify(path,git_wc_notify_sendmail_error,ret,&err);
-			ret = false;
-		}else
-		{
-			Notify(path,git_wc_notify_sendmail_done,ret);
+			if(CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,&err))
+			{
+				Notify(path,git_wc_notify_sendmail_error,ret,&err);
+				ret = false;
+			}
+			else
+			{
+				break;		
+			}
+
+			retry++;
+			Sleep(2000);
+			if(m_bCancelled)
+			{
+				Notify(path,git_wc_notify_sendmail_retry,ret,&CString("User Canceled"));
+			    return false;
+			}
 		}
+		Notify(path,git_wc_notify_sendmail_done,ret);
 
 	}else
 	{
@@ -2747,9 +2761,11 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				{
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
 					ret = false;
-				}else
-					break;
 
+				}else
+				{
+					break;
+				}
 				Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&patch.m_LastError);
 
 				retry++;

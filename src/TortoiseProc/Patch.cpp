@@ -132,7 +132,7 @@ int CPatch::Parser(CString &pathfile)
 {
 	CString str;
 
-	CStdioFile PatchFile;
+	CFile PatchFile;
 
 	m_PathFile=pathfile;
 	if( ! PatchFile.Open(pathfile,CFile::modeRead) )
@@ -154,7 +154,8 @@ int CPatch::Parser(CString &pathfile)
 
 	LONGLONG offset=PatchFile.GetPosition();
 #endif
-	PatchFile.Read(m_Body.GetBufferSetLength(PatchFile.GetLength()),PatchFile.GetLength());
+	PatchFile.Read(m_Body.GetBuffer(PatchFile.GetLength()),PatchFile.GetLength());
+	m_Body.ReleaseBuffer();
 	PatchFile.Close();
 
 	int start=0;
