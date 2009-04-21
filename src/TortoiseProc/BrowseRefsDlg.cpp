@@ -8,10 +8,10 @@
 
 // CBrowseRefsDlg dialog
 
-IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CDialog)
+IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
 
 CBrowseRefsDlg::CBrowseRefsDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CBrowseRefsDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent)
 {
 
 }
@@ -27,7 +27,7 @@ void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CDialog)
+BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CBrowseRefsDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
@@ -41,7 +41,12 @@ void CBrowseRefsDlg::OnBnClickedOk()
 
 BOOL CBrowseRefsDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CResizableStandAloneDialog::OnInitDialog();
+
+	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_RIGHT);
+
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
 	Refresh();
 

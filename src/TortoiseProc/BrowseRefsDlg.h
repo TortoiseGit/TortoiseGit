@@ -3,6 +3,7 @@
 #include "Git.h"
 #include <map>
 #include "afxcmn.h"
+#include "StandAloneDlg.h"
 
 class CShadowTree
 {
@@ -23,7 +24,7 @@ public:
 	CShadowTree*	m_pParent;
 };
 
-class CBrowseRefsDlg : public CDialog
+class CBrowseRefsDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CBrowseRefsDlg)
 
