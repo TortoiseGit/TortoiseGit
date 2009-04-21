@@ -62,6 +62,8 @@
 #include "SendMailCommand.h"
 #include "CatCommand.h"
 
+#include "BrowseRefsDlg.h"
+
 #if 0
 
 
@@ -271,7 +273,19 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		}
 	}
 
-
+		
+	// CBrowseRefsDlg dialog
+#if 1
+	class TestCommand : public Command
+	{
+		virtual bool Execute()
+		{
+			CBrowseRefsDlg().DoModal();
+			return true;
+		}
+	};
+	return new TestCommand;
+#endif
 
 	switch (command)
 	{
