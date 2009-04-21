@@ -3880,7 +3880,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 	if (m_bBlock)
 		return;
-#if 0
+
 	if (pNMLV->iItem < 0)
 	{
 		if (!IsGroupViewEnabled())
@@ -3907,7 +3907,8 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 			GetItem(&lv);
 			if (lv.iGroupId == group)
 			{
-				FileEntry * entry = GetListEntry(i);
+				CTGitPath *entry=(CTGitPath*)GetItemData(i);
+
 				if (!bFirst)
 				{
 					bCheck = !GetCheck(i);
@@ -3932,18 +3933,16 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		NotifyCheck();
 		return;
 	}
-#endif
-//	FileEntry * entry = GetListEntry(pNMLV->iItem);
-//	if (entry)
+
+	CTGitPath *file=(CTGitPath*)GetItemData(pNMLV->iItem);
+
+	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
 	{
-//		if (entry->isConflicted)
-//		{
-//			gitDiff::StartConflictEditor(entry->GetPath());
-//		}
-//		else
-		{
-			StartDiff(pNMLV->iItem);
-		}
+		CAppUtils::ConflictEdit(*file,false);
+
+	}else
+	{
+		StartDiff(pNMLV->iItem);
 	}
 
 }
