@@ -53,6 +53,8 @@ public:
 
 	void			FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel);
 
+	bool			SelectRef(CString refName);
+
 private:
 	MAP_HASH_NAME	m_RefMap;
 

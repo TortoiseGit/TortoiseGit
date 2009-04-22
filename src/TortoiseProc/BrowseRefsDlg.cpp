@@ -114,8 +114,39 @@ void CBrowseRefsDlg::Refresh()
 		treeLeaf.m_csRef=iterRefName->second;
 	}
 
-	m_RefTreeCtrl.Expand(m_TreeRoot.m_hTree,TVE_EXPAND);
+	CString currHead;
+	g_Git.Run(L"git symbolic-ref HEAD",&currHead,CP_UTF8);
 
+	currHead.Trim(L"\r\n\t ");
+
+	if(!SelectRef(currHead))
+		//Probably not on a branch. Select root node.
+		m_RefTreeCtrl.Expand(m_TreeRoot.m_hTree,TVE_EXPAND);
+
+}
+
+bool CBrowseRefsDlg::SelectRef(CString refName)
+{
+	if(wcsnicmp(refName,L"refs/",5)!=0)
+		return false; // Not a ref name
+
+	CShadowTree& treeLeafHead=GetTreeNode(refName);
+	if(treeLeafHead.m_pParent==NULL)
+		return false; //Weird... should not occur.
+
+	//This is the current head.
+	m_RefTreeCtrl.Select(treeLeafHead.m_pParent->m_hTree,TVGN_CARET);
+
+	for(int indexPos = 0; indexPos < m_ListRefLeafs.GetItemCount(); ++indexPos)
+	{
+		CShadowTree* pCurrShadowTree = (CShadowTree*)m_ListRefLeafs.GetItemData(indexPos);
+		if(pCurrShadowTree == &treeLeafHead)
+		{
+			m_ListRefLeafs.SetItemState(indexPos,LVIS_SELECTED,LVIS_SELECTED);
+		}
+	}
+
+	return true;
 }
 
 CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos)
