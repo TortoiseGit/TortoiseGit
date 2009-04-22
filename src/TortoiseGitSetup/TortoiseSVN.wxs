@@ -4,12 +4,12 @@
 	<Product
 	UpgradeCode="$(var.UpgradeGuid)"
 	Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)"
-	Id="EB66C774-5CFC-41f6-9C03-CE4F9037150A"
+	Id="*"
 	Version="$(var.VersionNumberInternal)"
 	Manufacturer="TortoiseGit"
 	Language="1033">
 		<Package
-		Id="82B77BC3-0ACD-4a53-A34F-3F203E59D51A"
+		Id="*"
 		Keywords="$(var.PackageKeywords)"
 		Description="$(var.PackageDescription)"
 		Comments="$(var.PackageComments)"
@@ -25,9 +25,8 @@
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
 
 			<!-- flag is set if the install will trigger an upgrade of an existing install -->
-      <!--
 			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" />
-		--></Upgrade>
+    </Upgrade>
 
 		<Media Id="1" Cabinet="TSVN.cab" EmbedCab="yes" CompressionLevel="high" />
 
