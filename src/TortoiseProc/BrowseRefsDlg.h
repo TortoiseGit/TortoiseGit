@@ -14,6 +14,8 @@ public:
 	
 	CShadowTree*	GetNextSub(CString& nameLeft);
 
+	bool			IsLeaf()const {return m_ShadowTree.empty();}
+
 
 	CString			m_csName;
 	CString			m_csRef;
@@ -43,12 +45,19 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 
-	void		Refresh();
+	void			Refresh();
 
 	CShadowTree&	GetTreeNode(CString refName, CShadowTree* pTreePos=NULL);
 
+	void			FillListCtrlForTreeNode(HTREEITEM treeNode);
+
+	void			FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel);
+
+private:
 	MAP_HASH_NAME	m_RefMap;
 
 	CShadowTree		m_TreeRoot;
 	CTreeCtrl		m_RefTreeCtrl;
+	CListCtrl		m_ListRefLeafs;
+	afx_msg void OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult);
 };

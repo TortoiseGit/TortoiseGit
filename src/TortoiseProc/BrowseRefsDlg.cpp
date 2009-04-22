@@ -23,12 +23,14 @@ CBrowseRefsDlg::~CBrowseRefsDlg()
 void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TREE_REF, m_RefTreeCtrl);
+	DDX_Control(pDX, IDC_TREE_REF,			m_RefTreeCtrl);
+	DDX_Control(pDX, IDC_LIST_REF_LEAFS,	m_ListRefLeafs);
 }
 
 
 BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CBrowseRefsDlg::OnBnClickedOk)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_REF, &CBrowseRefsDlg::OnTvnSelchangedTreeRef)
 END_MESSAGE_MAP()
 
 
@@ -43,7 +45,14 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
+	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
+
+	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
+	m_ListRefLeafs.InsertColumn(0,L"Name",0,150);
+	m_ListRefLeafs.InsertColumn(1,L"Date Last Commit",0,100);
+	m_ListRefLeafs.InsertColumn(2,L"Last Commit",0,300);
+	m_ListRefLeafs.InsertColumn(3,L"Hash",0,80);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -51,8 +60,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	Refresh();
 
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+	return TRUE;
 }
 
 CShadowTree* CShadowTree::GetNextSub(CString& nameLeft)
@@ -128,13 +136,63 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos)
 		ASSERT(FALSE);
 		return *pTreePos;
 	}
-	if(pNextTree->m_hTree==NULL)
+
+	if(!refName.IsEmpty())
 	{
-		//New tree. Create node in control.
-		pNextTree->m_hTree=m_RefTreeCtrl.InsertItem(pNextTree->m_csName,pTreePos->m_hTree,NULL);
-		m_RefTreeCtrl.SetItemData(pNextTree->m_hTree,(DWORD_PTR)pNextTree);
+		//When the refName is not empty, this node is not a leaf, so lets add it to the tree control.
+		//Leafs are for the list control.
+		if(pNextTree->m_hTree==NULL)
+		{
+			//New tree. Create node in control.
+			pNextTree->m_hTree=m_RefTreeCtrl.InsertItem(pNextTree->m_csName,pTreePos->m_hTree,NULL);
+			m_RefTreeCtrl.SetItemData(pNextTree->m_hTree,(DWORD_PTR)pNextTree);
+		}
 	}
 
 	return GetTreeNode(refName,pNextTree);
 }
 
+
+void CBrowseRefsDlg::OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	*pResult = 0;
+
+	FillListCtrlForTreeNode(pNMTreeView->itemNew.hItem);
+}
+
+void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
+{
+	m_ListRefLeafs.DeleteAllItems();
+
+	CShadowTree* pTree=(CShadowTree*)(m_RefTreeCtrl.GetItemData(treeNode));
+	if(pTree==NULL)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+	FillListCtrlForShadowTree(pTree,L"",true);
+}
+
+void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel)
+{
+	if(pTree->IsLeaf())
+	{
+		int indexItem=m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(),L"");
+
+		m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
+		m_ListRefLeafs.SetItemText(indexItem,0,refNamePrefix+pTree->m_csName);
+		m_ListRefLeafs.SetItemText(indexItem,3,pTree->m_csRef);
+	}
+	else
+	{
+
+		CString csThisName;
+		if(!isFirstLevel)
+			csThisName=refNamePrefix+pTree->m_csName+L"/";
+		for(CShadowTree::TShadowTreeMap::iterator itSubTree=pTree->m_ShadowTree.begin(); itSubTree!=pTree->m_ShadowTree.end(); ++itSubTree)
+		{
+			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
+		}
+	}
+}
