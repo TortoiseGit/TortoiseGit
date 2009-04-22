@@ -64,17 +64,17 @@
       <!-- http://msdn2.microsoft.com/en-us/library/aa370887.aspx -->
 
       <!-- UI Binaries ................................................................. -->
-      <Binary Id="Up" src="include\Up.ico" />
-      <Binary Id="New" src="include\New.ico" />
-      <Binary Id="custicon" src="include\Custom.ico" />
-      <Binary Id="repairic" src="include\Repair.ico" />
-      <Binary Id="exclamic" src="include\Exclam.ico" />
-      <Binary Id="removico" src="include\Remove.ico" />
-      <Binary Id="completi" src="include\Complete.ico" />
-      <Binary Id="insticon" src="include\Typical.ico" />
-      <Binary Id="info" src="include\Info.ico" />
-      <Binary Id="bannrbmp" src="include\Banner.jpg" />
-      <Binary Id="dlgbmp" src="include\Dialog.jpg" />
+      <Binary Id="Up" SourceFile="include\Up.ico" />
+      <Binary Id="New" SourceFile="include\New.ico" />
+      <Binary Id="custicon" SourceFile="include\Custom.ico" />
+      <Binary Id="repairic" SourceFile="include\Repair.ico" />
+      <Binary Id="exclamic" SourceFile="include\Exclam.ico" />
+      <Binary Id="removico" SourceFile="include\Remove.ico" />
+      <Binary Id="completi" SourceFile="include\Complete.ico" />
+      <Binary Id="insticon" SourceFile="include\Typical.ico" />
+      <Binary Id="info" SourceFile="include\Info.ico" />
+      <Binary Id="bannrbmp" SourceFile="include\Banner.jpg" />
+      <Binary Id="dlgbmp" SourceFile="include\Dialog.jpg" />
 
       <!-- Text Styles .............................................................................................. -->
       <TextStyle Id="DlgFont8" FaceName="Tahoma" Size="8" />
@@ -510,7 +510,7 @@
         </Control>
 
         <Control Id="AgreementText" Type="ScrollableText" X="5" Y="60" Width="360" Height="120" Sunken="yes" TabSkip="no">
-          <Text src="include\TSVN_eula.rtf" />
+          <Text SourceFile="include\TSVN_eula.rtf" />
         </Control>
         <Control Id="Buttons" Type="RadioButtonGroup" X="10" Y="187" Width="330" Height="40" Property="IAgree" />
 
