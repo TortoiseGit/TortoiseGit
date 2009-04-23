@@ -678,20 +678,15 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_EXTERNALWARNING, false);
     // read the list of recent log entries before querying the WC for status
     // -> the user may select one and modify / update it while we are crawling the WC
-#if 0
+
 	if (m_History.GetCount()==0)
 	{
 		CString reg;
-		if (m_ListCtrl.m_sUUID.IsEmpty() && m_pathList.GetCount()>0)
-		{
-			Git Git;
-			reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)Git.GetUUIDFromPath(m_pathList[0]));
-		}
-		else
-			reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
+		reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_ListCtrl.m_sUUID);
+		reg.Replace(_T(':'),_T('_'));
 		m_History.Load(reg, _T("logmsgs"));
 	}
-#endif
+
     // Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
@@ -1241,6 +1236,15 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	CString sMenuItemText(MAKEINTRESOURCE(IDS_COMMITDLG_POPUP_PASTEFILELIST));
 	m_nPopupPasteListCmd = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
+
+	//CString sMenuItemText(MAKEINTRESOURCE(IDS_COMMITDLG_POPUP_PASTEFILELIST));
+	if(m_History.GetCount() > 0)
+	{
+		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTELASTMESSAGE);
+		m_nPopupPasteLastMessage = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteLastMessage, sMenuItemText);
+	}
+	
 }
 
 bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
@@ -1276,6 +1280,16 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		return true;
 	}
 
+	if(cmd == m_nPopupPasteLastMessage)
+	{
+		if(m_History.GetCount() ==0 )
+			return false;
+
+		CString logmsg;
+		logmsg +=m_History.GetEntry(0);
+		pSciEdit->InsertText(logmsg);
+		return true;
+	}
 	return false;
 }
 
