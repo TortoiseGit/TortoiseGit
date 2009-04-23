@@ -8,6 +8,7 @@
 #include "TGitPath.h"
 #include "patch.h"
 #include "Registry.h"
+#include "PatchListCtrl.h"
 
 class CSendMailDlg : public CResizableStandAloneDialog
 {
@@ -38,7 +39,7 @@ public:
 	CString m_Subject;
 	BOOL m_bAttachment;
 	BOOL m_bCombine;
-	CListCtrl m_ctrlList;
+	CPatchListCtrl m_ctrlList;
 	CTGitPathList m_PathList;
 
     CRegDWORD	m_regAttach;

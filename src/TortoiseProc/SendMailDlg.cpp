@@ -7,7 +7,7 @@
 #include "MessageBox.h"
 #include "commonresource.h"
 #include "AppUtils.h"
-
+#include "PatchListCtrl.h"
 // CSendMailDlg dialog
 
 IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
@@ -23,7 +23,7 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 {
 	m_bAttachment  = m_regAttach;
 	m_bCombine =     m_regCombine;
-
+	this->m_ctrlList.m_ContextMenuMask &=~ m_ctrlList.GetMenuMask(CPatchListCtrl::MENU_SENDMAIL);
 }
 
 CSendMailDlg::~CSendMailDlg()
