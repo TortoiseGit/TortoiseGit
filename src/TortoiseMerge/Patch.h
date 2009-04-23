@@ -59,6 +59,8 @@ protected:
 	int			CountDirMatches(const CString& path);
 	CString		RemoveUnicodeBOM(const CString& str);
 
+	BOOL		ParserGitPatch(CFileTextLines &PatchLines,int nIndex);
+
 	/**
 	 * Strips the filename by removing m_nStrip prefixes.
 	 */

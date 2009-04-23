@@ -57,6 +57,253 @@ void CPatch::FreeMemory()
 	m_arFileDiffs.RemoveAll();
 }
 
+BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
+{
+	CString sLine;
+	EOL ending = EOL_NOENDING;
+
+	int state = 0;
+	Chunks * chunks = NULL;
+	Chunk * chunk = NULL;
+	int nAddLineCount = 0;
+	int nRemoveLineCount = 0;
+	int nContextLineCount = 0;
+	for ( ;nIndex<PatchLines.GetCount(); nIndex++)
+	{
+		sLine = PatchLines.GetAt(nIndex);
+		ending = PatchLines.GetLineEnding(nIndex);
+		if (ending != EOL_NOENDING)
+			ending = EOL_AUTOLINE;
+		
+		switch (state)
+		{
+			case 0:	
+			{
+				// diff --git
+				if( sLine.Find(_T("diff --git"))==0)
+				{
+					if (chunks)
+					{
+						//this is a new file diff, so add the last one to 
+						//our array.
+						m_arFileDiffs.Add(chunks);
+					}
+					chunks = new Chunks();
+
+				}
+				
+				//index
+				if( sLine.Find(_T("index"))==0 )
+				{
+					int dotstart=sLine.Find(_T(".."));
+					if(dotstart>=0)
+					{
+						chunks->sRevision = sLine.Mid(dotstart-7,7);
+						chunks->sRevision2 = sLine.Mid(dotstart+2,7);
+					}
+				}
+
+				//---
+				if( sLine.Find(_T("--- "))==0 )
+				{
+					if (sLine.Left(3).Compare(_T("---"))!=0)
+					{
+						//no starting "---" found
+						//seems to be either garbage or just
+						//a binary file. So start over...
+						state = 0;
+						nIndex--;
+						if (chunks)
+						{
+							delete chunks;
+							chunks = NULL;
+						}
+						break;
+					}
+				
+					sLine = sLine.Mid(3);	//remove the "---"
+					sLine =sLine.Trim();
+					//at the end of the filepath there's a revision number...
+					int bracket = sLine.ReverseFind('(');
+					if (bracket < 0)
+					// some patch files can have another '(' char, especially ones created in Chinese OS
+						bracket = sLine.ReverseFind(0xff08);
+				
+					if (bracket < 0)
+					{
+						if (chunks->sFilePath.IsEmpty())
+							chunks->sFilePath = sLine.Trim();
+					}
+					else
+						chunks->sFilePath = sLine.Left(bracket-1).Trim();
+					
+					if (chunks->sFilePath.Find('\t')>=0)
+					{
+						chunks->sFilePath = chunks->sFilePath.Left(chunks->sFilePath.Find('\t'));
+					}
+					if( chunks->sFilePath.Find(_T("a/")) == 0 )
+						chunks->sFilePath=chunks->sFilePath.Mid(2);
+
+					chunks->sFilePath.Replace(_T('/'),_T('\\'));
+				}
+				
+				// +++
+				if( sLine.Find(_T("+++ ")) == 0 )
+				{
+					sLine = sLine.Mid(3);	//remove the "---"
+					sLine =sLine.Trim();
+				
+					//at the end of the filepath there's a revision number...
+					int bracket = sLine.ReverseFind('(');
+					if (bracket < 0)
+					// some patch files can have another '(' char, especially ones created in Chinese OS
+						bracket = sLine.ReverseFind(0xff08);
+
+					if (bracket < 0)
+						chunks->sFilePath2 = sLine.Trim();
+					else
+						chunks->sFilePath2 = sLine.Left(bracket-1).Trim();
+					if (chunks->sFilePath2.Find('\t')>=0)
+					{
+						chunks->sFilePath2 = chunks->sFilePath2.Left(chunks->sFilePath2.Find('\t'));
+					}
+					if( chunks->sFilePath2.Find(_T("a/")) == 0 )
+						chunks->sFilePath2=chunks->sFilePath2.Mid(2);
+
+					chunks->sFilePath2.Replace(_T('/'),_T('\\'));
+				}
+				
+				//@@ -xxx,xxx +xxx,xxx @@
+				if( sLine.Find(_T("@@")) == 0 )
+				{
+					sLine = sLine.Mid(2);
+					sLine = sLine.Trim();
+					chunk = new Chunk();
+					CString sRemove = sLine.Left(sLine.Find(' '));
+					CString sAdd = sLine.Mid(sLine.Find(' '));
+					chunk->lRemoveStart = (-_ttol(sRemove));
+					if (sRemove.Find(',')>=0)
+					{
+						sRemove = sRemove.Mid(sRemove.Find(',')+1);
+						chunk->lRemoveLength = _ttol(sRemove);
+					}
+					else
+					{
+						chunk->lRemoveStart = 0;
+						chunk->lRemoveLength = (-_ttol(sRemove));
+					}
+					chunk->lAddStart = _ttol(sAdd);
+					if (sAdd.Find(',')>=0)
+					{
+						sAdd = sAdd.Mid(sAdd.Find(',')+1);
+						chunk->lAddLength = _ttol(sAdd);
+					}
+					else
+					{
+						chunk->lAddStart = 1;
+						chunk->lAddLength = _ttol(sAdd);
+					}
+					
+					state =5;
+				}
+			} 
+		break;
+		
+		
+		case 5: //[ |+|-] <sourceline>
+			{
+				//this line is either a context line (with a ' ' in front)
+				//a line added (with a '+' in front)
+				//or a removed line (with a '-' in front)
+				TCHAR type;
+				if (sLine.IsEmpty())
+					type = ' ';
+				else
+					type = sLine.GetAt(0);
+				if (type == ' ')
+				{
+					//it's a context line - we don't use them here right now
+					//but maybe in the future the patch algorithm can be
+					//extended to use those in case the file to patch has
+					//already changed and no base file is around...
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
+					chunk->arLinesStates.Add(PATCHSTATE_CONTEXT);
+					chunk->arEOLs.push_back(ending);
+					nContextLineCount++;
+				}
+				else if (type == '\\')
+				{
+					//it's a context line (sort of): 
+					//warnings start with a '\' char (e.g. "\ No newline at end of file")
+					//so just ignore this...
+				}
+				else if (type == '-')
+				{
+					//a removed line
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
+					chunk->arLinesStates.Add(PATCHSTATE_REMOVED);
+					chunk->arEOLs.push_back(ending);
+					nRemoveLineCount++;
+				}
+				else if (type == '+')
+				{
+					//an added line
+					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
+					chunk->arLinesStates.Add(PATCHSTATE_ADDED);
+					chunk->arEOLs.push_back(ending);
+					nAddLineCount++;
+				}
+				else
+				{
+					//none of those lines! what the hell happened here?
+					m_sErrorMessage.Format(IDS_ERR_PATCH_UNKOWNLINETYPE, nIndex);
+					goto errorcleanup;
+				}
+				if ((chunk->lAddLength == (nAddLineCount + nContextLineCount)) &&
+					chunk->lRemoveLength == (nRemoveLineCount + nContextLineCount))
+				{
+					//chunk is finished
+					if (chunks)
+						chunks->chunks.Add(chunk);
+					else
+						delete chunk;
+					chunk = NULL;
+					nAddLineCount = 0;
+					nContextLineCount = 0;
+					nRemoveLineCount = 0;
+					state = 0;
+				}
+			} 
+		break;
+		default:
+			ASSERT(FALSE);
+		} // switch (state) 
+	} // for ( ;nIndex<m_PatchLines.GetCount(); nIndex++) 
+	if (chunk)
+	{
+		m_sErrorMessage.LoadString(IDS_ERR_PATCH_CHUNKMISMATCH);
+		goto errorcleanup;
+	}
+	if (chunks)
+		m_arFileDiffs.Add(chunks);
+	return TRUE;
+
+errorcleanup:
+	if (chunk)
+		delete chunk;
+	if (chunks)
+	{
+		for (int i=0; i<chunks->chunks.GetCount(); i++)
+		{
+			delete chunks->chunks.GetAt(i);
+		}
+		chunks->chunks.RemoveAll();
+		delete chunks;
+	}
+	FreeMemory();
+	return FALSE;
+}
+
 BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 {
 	CString sLine;
@@ -90,29 +337,37 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	//first, skip possible garbage at the beginning
 	//garbage is finished when a line starts with "Index: "
 	//and the next line consists of only "=" characters
-	for (nIndex=0; nIndex<PatchLines.GetCount(); nIndex++)
+	if( !m_IsGitPatch )
 	{
-		sLine = PatchLines.GetAt(nIndex);
-		if (sLine.Left(4).Compare(_T("--- "))==0)
-			break;
-		if ((nIndex+1)<PatchLines.GetCount())
+		for (nIndex=0; nIndex<PatchLines.GetCount(); nIndex++)
 		{
-			sLine = PatchLines.GetAt(nIndex+1);
+			sLine = PatchLines.GetAt(nIndex);
 
-			if(sLine.IsEmpty()&&m_IsGitPatch)
-				continue;
-
-			sLine.Replace(_T("="), _T(""));
-			if (sLine.IsEmpty())
+			if (sLine.Left(4).Compare(_T("--- "))==0)
 				break;
+			if ((nIndex+1)<PatchLines.GetCount())
+			{
+				sLine = PatchLines.GetAt(nIndex+1);
+
+				if(sLine.IsEmpty()&&m_IsGitPatch)
+					continue;
+
+				sLine.Replace(_T("="), _T(""));
+				if (sLine.IsEmpty())
+					break;
+			}
 		}
 	}
+
 	if ((PatchLines.GetCount()-nIndex) < 2)
 	{
 		//no file entry found.
 		m_sErrorMessage.LoadString(IDS_ERR_PATCH_NOINDEX);
 		return FALSE;
 	}
+
+	if( m_IsGitPatch )
+		return ParserGitPatch(PatchLines,nIndex);
 
 	//from this point on we have the real unified diff data
 	int state = 0;
