@@ -645,7 +645,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	proc += key;
 	proc += _T("\"");
 
-    return LaunchApplication(proc, IDS_ERR_EXTDIFFSTART, false);
+    return LaunchApplication(proc, IDS_ERR_PAGEANT, false);
 }
 bool CAppUtils::LaunchRemoteSetting()
 {
