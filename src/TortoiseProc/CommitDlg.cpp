@@ -462,6 +462,7 @@ void CCommitDlg::OnOK()
 	//	g_Git.Run(cmd,&out);
 	//}
 
+	BOOL bCloseCommitDlg=true;
 	//if(checkedfiles.GetLength()>0)
 	if(nchecked||m_bCommitAmend)
 	{
@@ -488,7 +489,13 @@ void CCommitDlg::OnOK()
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
 		progress.DoModal();
-	
+		
+		if(progress.m_GitStatus)
+		{
+			bCloseCommitDlg = false;
+			this->Refresh();
+		}
+
 		CFile::Remove(tempfile);
 	}else
 		CMessageBox::Show(this->m_hWnd, _T("Nothing Commit"), _T("Commit Finish"), MB_OK | MB_ICONINFORMATION);
@@ -630,7 +637,8 @@ void CCommitDlg::OnOK()
 
 	SaveSplitterPos();
 
-	CResizableStandAloneDialog::OnOK();
+	if( bCloseCommitDlg )
+		CResizableStandAloneDialog::OnOK();
 
 	CShellUpdater::Instance().Flush();
 }
