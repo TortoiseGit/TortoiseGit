@@ -31,8 +31,8 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	: ISettingsPropPage(CSetLookAndFeelPage::IDD)
 	, m_bBlock(false)
 {
-	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUCLONE | MENUPUSH | MENUPULL | MENUCOMMIT);
-	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), 0);
+	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
+	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
 
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
