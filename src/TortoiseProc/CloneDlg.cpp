@@ -83,6 +83,10 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CLONE_DIR_BROWSE, &CCloneDlg::OnBnClickedCloneDirBrowse)
     ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, &CCloneDlg::OnBnClickedPuttykeyfileBrowse)
     ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, &CCloneDlg::OnBnClickedPuttykeyAutoload)
+	ON_CBN_SELCHANGE(IDC_URLCOMBO, &CCloneDlg::OnCbnSelchangeUrlcombo)
+	ON_NOTIFY(CBEN_BEGINEDIT, IDC_URLCOMBO, &CCloneDlg::OnCbenBegineditUrlcombo)
+	ON_NOTIFY(CBEN_ENDEDIT, IDC_URLCOMBO, &CCloneDlg::OnCbenEndeditUrlcombo)
+	ON_CBN_EDITCHANGE(IDC_URLCOMBO, &CCloneDlg::OnCbnEditchangeUrlcombo)
 END_MESSAGE_MAP()
 
 
@@ -173,4 +177,87 @@ void CCloneDlg::OnBnClickedPuttykeyAutoload()
     this->GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
     this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 
+}
+
+void CCloneDlg::OnCbnSelchangeUrlcombo()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CCloneDlg::OnCbenBegineditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
+void CCloneDlg::OnCbenEndeditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
+void CCloneDlg::OnCbnEditchangeUrlcombo()
+{
+	// TODO: Add your control notification handler code here
+	this->UpdateData();
+	CString url;
+	m_URLCombo.GetWindowText(url);
+	//if(url.IsEmpty())
+	//	return;
+
+	CString old;
+	old=m_ModuleName;
+
+	url.Replace(_T('\\'),_T('/'));
+	int start=url.ReverseFind(_T('/'));
+	if(start<0)
+		start = 0;
+
+	CString temp;
+	temp=url.Mid(start+1);
+	
+	temp=temp.MakeLower();
+
+	int end;
+	end=temp.Find(_T(".git"));
+	if(end<0)
+		end=temp.GetLength();
+
+	//CString modulename;
+	m_ModuleName=url.Mid(start+1,end);
+	
+	start = m_Directory.ReverseFind(_T('\\'));
+	if(start <0 )
+		start = m_Directory.ReverseFind(_T('/'));
+	if(start <0 )
+		start =0;
+
+	int dirstart=m_Directory.Find(old,start);
+	if(dirstart>=0 && (dirstart+old.GetLength() == m_Directory.GetLength()) )
+	{
+		m_Directory=m_Directory.Left(dirstart);
+		m_Directory+=m_ModuleName;
+
+	}else
+	{
+		if(m_Directory.GetLength()>0 && 
+			(m_Directory[m_Directory.GetLength()-1] != _T('\\') ||
+			m_Directory[m_Directory.GetLength()-1] != _T('/') ) )
+		{
+			m_Directory+=_T('\\');
+		}
+		m_Directory += m_ModuleName;
+	}
+
+	if(m_Directory.GetLength()>0)
+	{
+		if( m_Directory[m_Directory.GetLength()-1] == _T('\\') ||
+			m_Directory[m_Directory.GetLength()-1] == _T('/')
+		   )
+		{
+			m_Directory=m_Directory.Left(m_Directory.GetLength()-1);
+		}
+
+	}
+	this->UpdateData(FALSE);
 }

@@ -24,6 +24,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	CString m_ModuleName;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -39,4 +40,9 @@ public:
     BOOL    m_bAutoloadPuttyKeyFile;
     afx_msg void OnBnClickedPuttykeyfileBrowse();
     afx_msg void OnBnClickedPuttykeyAutoload();
+	afx_msg void OnCbnSelchangeUrlcombo();
+	afx_msg void OnCbenBegineditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnCbenEndeditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnCbnEditchangeUrlcombo();
+
 };
