@@ -241,8 +241,8 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 
 		m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
 		m_ListRefLeafs.SetItemText(indexItem,0,refNamePrefix+pTree->m_csName);
-		m_ListRefLeafs.SetItemText(indexItem,1,refNamePrefix+pTree->m_csDate);
-		m_ListRefLeafs.SetItemText(indexItem,2,refNamePrefix+pTree->m_csSubject);
+		m_ListRefLeafs.SetItemText(indexItem,1,pTree->m_csDate);
+		m_ListRefLeafs.SetItemText(indexItem,2,pTree->m_csSubject);
 		m_ListRefLeafs.SetItemText(indexItem,3,pTree->m_csRef);
 	}
 	else
