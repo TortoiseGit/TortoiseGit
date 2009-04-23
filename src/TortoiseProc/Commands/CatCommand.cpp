@@ -21,26 +21,37 @@
 
 #include "PathUtils.h"
 #include "Git.h"
+#include "MessageBox.h"
 
 bool CatCommand::Execute()
 {
-#if 0
+
 	CString savepath = CPathUtils::GetLongPathname(parser.GetVal(_T("savepath")));
 	CString revision = parser.GetVal(_T("revision"));
 	CString pegrevision = parser.GetVal(_T("pegrevision"));
-	SVNRev rev = SVNRev(revision);
-	if (!rev.IsValid())
-		rev = SVNRev::REV_HEAD;
-	SVNRev pegrev = SVNRev(pegrevision);
-	if (!pegrev.IsValid())
-		pegrev = SVNRev::REV_HEAD;
-	SVN svn;
-	if (!svn.Cat(cmdLinePath, pegrev, rev, CTSVNPath(savepath)))
+
+	CString cmd,output;
+	cmd.Format(_T("git.exe cat-file -t %s"),revision);
+
+	if( g_Git.Run(cmd,&output,CP_ACP) )
 	{
-		::MessageBox(NULL, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
-		::DeleteFile(savepath);
+		CMessageBox::Show(NULL, output, _T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}
-#endif
+	
+	if(output.Find(_T("blob")) == 0)
+	{
+		cmd.Format(_T("git.exe cat-file -p %s"),revision);
+	}
+	else
+	{
+		cmd.Format(_T("git.exe show %s -- \"%s\""),revision,this->cmdLinePath);
+	}
+
+	if(g_Git.RunLogFile(cmd,savepath))
+	{
+		CMessageBox::Show(NULL,_T("Cat file fail"),_T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
 	return true;
 }

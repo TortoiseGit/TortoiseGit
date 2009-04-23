@@ -60,11 +60,12 @@
 #include "SubmoduleCommand.h"
 #include "ReflogCommand.h"
 #include "SendMailCommand.h"
+#include "CatCommand.h"
 
 #if 0
 
 
-#include "CatCommand.h"
+
 #include "CheckoutCommand.h"
 
 
@@ -356,11 +357,11 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SubmoduleSyncCommand;
 	case cmdSendMail:
 		return new SendMailCommand;
-
-#if 0
-
 	case cmdCat:
 		return new CatCommand;
+#if 0
+
+	
 	case cmdCheckout:
 		return new CheckoutCommand;
 
