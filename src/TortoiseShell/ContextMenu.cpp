@@ -1655,7 +1655,12 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuSettings:
-				svnCmd += _T("settings");
+				svnCmd += _T("settings /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
 				break;
 			case ShellMenuHelp:
 				svnCmd += _T("help");
