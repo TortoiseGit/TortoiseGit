@@ -381,7 +381,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 }
 
 // Callback function
-BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch)
+BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,BOOL bIsReview)
 {
 	//first, do a "dry run" of patching...
 	if (!m_Patch.PatchFile(sFilePath))
@@ -399,7 +399,10 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch)
 		progDlg.SetShowProgressBar(false);
 		progDlg.SetAnimation(IDR_DOWNLOAD);
 		progDlg.SetTime(FALSE);
-		progDlg.ShowModeless(this);
+
+		if(!m_Patch.m_IsGitPatch)
+			progDlg.ShowModeless(this);
+
 		CString sBaseFile = m_TempFiles.GetTempFilePath();
 		if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, &progDlg, m_hWnd))
 		{
@@ -416,18 +419,36 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch)
 			MessageBox(m_Patch.GetErrorMessage(), NULL, MB_ICONERROR);
 			return FALSE;
 		}
+		
 		CString temp;
-		temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
-		m_Data.m_baseFile.SetFileName(sBaseFile);
-		m_Data.m_baseFile.SetDescriptiveName(temp);
-		temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
-		m_Data.m_theirFile.SetFileName(sTempFile);
-		m_Data.m_theirFile.SetDescriptiveName(temp);
-		m_Data.m_yourFile.SetFileName(sFilePath);
-		m_Data.m_yourFile.SetDescriptiveName(CPathUtils::GetFileNameFromPath(sFilePath));
-		m_Data.m_mergedFile.SetFileName(sFilePath);
-		m_Data.m_mergedFile.SetDescriptiveName(CPathUtils::GetFileNameFromPath(sFilePath));
+		if(bIsReview)
+		{
+			
+			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
+			m_Data.m_baseFile.SetFileName(sBaseFile);
+			m_Data.m_baseFile.SetDescriptiveName(temp);
+			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+			m_Data.m_yourFile.SetFileName(sTempFile);
+			m_Data.m_yourFile.SetDescriptiveName(temp);
+			m_Data.m_theirFile.SetOutOfUse();
+			m_Data.m_mergedFile.SetOutOfUse();
+		
+		}else
+		{
+			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
+			m_Data.m_baseFile.SetFileName(sBaseFile);
+			m_Data.m_baseFile.SetDescriptiveName(temp);
+			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+			m_Data.m_theirFile.SetFileName(sTempFile);
+			m_Data.m_theirFile.SetDescriptiveName(temp);
+			m_Data.m_yourFile.SetFileName(sFilePath);
+			m_Data.m_yourFile.SetDescriptiveName(CPathUtils::GetFileNameFromPath(sFilePath));
+			m_Data.m_mergedFile.SetFileName(sFilePath);
+			m_Data.m_mergedFile.SetDescriptiveName(CPathUtils::GetFileNameFromPath(sFilePath));
+		}
 		TRACE(_T("comparing %s and %s\nagainst the base file %s\n"), (LPCTSTR)sTempFile, (LPCTSTR)sFilePath, (LPCTSTR)sBaseFile);
+
+	
 	}
 	else
 	{

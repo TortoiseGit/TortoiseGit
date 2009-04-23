@@ -225,7 +225,7 @@ void CFilePatchesDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		if (m_arFileStates.GetAt(pNMLV->iItem)!=FPDLG_FILESTATE_PATCHED)
 		{
-			m_pCallBack->PatchFile(GetFullPath(pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem));
+			m_pCallBack->PatchFile(GetFullPath(pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),false,true);
 		}
 	}
 }
@@ -287,9 +287,13 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		UINT nFlags;
 		
 		nFlags = MF_STRING | (m_cFileList.GetSelectedCount()==1 ? MF_ENABLED : MF_DISABLED | MF_GRAYED);
+
+		temp.LoadString(IDS_PATCH_REVIEW);
+		popup.AppendMenu(nFlags, ID_PATCH_REVIEW, temp);
+		popup.SetDefaultItem(ID_PATCH_REVIEW, FALSE);
+
 		temp.LoadString(IDS_PATCH_PREVIEW);
-		popup.AppendMenu(nFlags, ID_PATCHPREVIEW, temp);
-		popup.SetDefaultItem(ID_PATCHPREVIEW, FALSE);
+		popup.AppendMenu(nFlags, ID_PATCHPREVIEW, temp);		
 
 		temp.LoadString(IDS_PATCH_ALL);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_PATCHALL, temp);
@@ -307,9 +311,14 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			point = rect.CenterPoint();
 		}
 
+		bool bReview=false;
+
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		switch (cmd)
 		{
+		case ID_PATCH_REVIEW:
+			bReview = true;
+			//go through case
 		case ID_PATCHPREVIEW:
 			{
 				if (m_pCallBack)
@@ -317,7 +326,7 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 					int nIndex = m_cFileList.GetSelectionMark();
 					if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
 					{
-						m_pCallBack->PatchFile(GetFullPath(nIndex), m_pPatch->GetRevision(nIndex));
+						m_pCallBack->PatchFile(GetFullPath(nIndex), m_pPatch->GetRevision(nIndex),false,bReview);
 					}
 				}
 			}

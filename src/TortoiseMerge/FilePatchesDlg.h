@@ -36,7 +36,7 @@ public:
 	 * \param sVersion the revision number of the file to patch
 	 * \return TRUE if patching was successful
 	 */
-	virtual BOOL PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch = FALSE) = 0;
+	virtual BOOL PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch = FALSE,BOOL bIsReview=FALSE) = 0;
 	
 	/**
 	 * Callback function. Called when the user double clicks on a
@@ -58,6 +58,7 @@ public:
 #define ID_PATCHALL					1
 #define ID_PATCHSELECTED			2
 #define ID_PATCHPREVIEW				3
+#define ID_PATCH_REVIEW				4
 /**
  * \ingroup TortoiseMerge
  *
