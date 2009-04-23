@@ -90,8 +90,9 @@ typedef std::map<CString,CString> MAP_STRING_STRING;
 
 void CBrowseRefsDlg::Refresh()
 {
-	m_RefMap.clear();
-	g_Git.GetMapHashToFriendName(m_RefMap);
+//	m_RefMap.clear();
+//	g_Git.GetMapHashToFriendName(m_RefMap);
+		
 
 	m_RefTreeCtrl.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
@@ -99,19 +100,46 @@ void CBrowseRefsDlg::Refresh()
 	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"Refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
+	CString allRefs;
+	g_Git.Run(L"git for-each-ref --format="
+			  L"%(refname)%04"
+			  L"%(objectname)%04"
+			  L"%(authordate:relative)%04"
+			  L"%(subject)%04"
+			  L"%(authorname)",
+			  &allRefs,CP_UTF8);
 
-	MAP_STRING_STRING refName;
+	int linePos=0;
+	CString singleRef;
+
+	MAP_STRING_STRING refMap;
 
 	//First sort on ref name
-	for(MAP_HASH_NAME::iterator iterRef=m_RefMap.begin();iterRef!=m_RefMap.end();++iterRef)
-		for(STRING_VECTOR::iterator iterRefName=iterRef->second.begin();iterRefName!=iterRef->second.end();++iterRefName)
-			refName[*iterRefName]=iterRef->first;
+	while(!(singleRef=allRefs.Tokenize(L"\r\n",linePos)).IsEmpty())
+	{
+		int valuePos=0;
+		CString refName=singleRef.Tokenize(L"\04",valuePos);
+		CString refRest=singleRef.Mid(valuePos);
+		refMap[refName]=refRest;
+	}
+
+
+
+//	for(MAP_HASH_NAME::iterator iterRef=m_RefMap.begin();iterRef!=m_RefMap.end();++iterRef)
+//		for(STRING_VECTOR::iterator iterRefName=iterRef->second.begin();iterRefName!=iterRef->second.end();++iterRefName)
+//			refName[*iterRefName]=iterRef->first;
 
 	//Populate ref tree
-	for(MAP_STRING_STRING::iterator iterRefName=refName.begin();iterRefName!=refName.end();++iterRefName)
+	for(MAP_STRING_STRING::iterator iterRefMap=refMap.begin();iterRefMap!=refMap.end();++iterRefMap)
 	{
-		CShadowTree& treeLeaf=GetTreeNode(iterRefName->first);
-		treeLeaf.m_csRef=iterRefName->second;
+		CShadowTree& treeLeaf=GetTreeNode(iterRefMap->first);
+		CString values=iterRefMap->second;
+
+		int valuePos=0;
+		treeLeaf.m_csRef=     values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csDate=    values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csSubject= values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csAuthor=  values.Tokenize(L"\04",valuePos);
 	}
 
 	CString currHead;
@@ -213,6 +241,8 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 
 		m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
 		m_ListRefLeafs.SetItemText(indexItem,0,refNamePrefix+pTree->m_csName);
+		m_ListRefLeafs.SetItemText(indexItem,1,refNamePrefix+pTree->m_csDate);
+		m_ListRefLeafs.SetItemText(indexItem,2,refNamePrefix+pTree->m_csSubject);
 		m_ListRefLeafs.SetItemText(indexItem,3,pTree->m_csRef);
 	}
 	else

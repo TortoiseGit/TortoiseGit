@@ -19,6 +19,9 @@ public:
 
 	CString			m_csName;
 	CString			m_csRef;
+	CString			m_csDate;
+	CString			m_csAuthor;
+	CString			m_csSubject;
 
 	HTREEITEM		m_hTree;
 
@@ -56,7 +59,7 @@ public:
 	bool			SelectRef(CString refName);
 
 private:
-	MAP_HASH_NAME	m_RefMap;
+//	MAP_HASH_NAME	m_RefMap;
 
 	CShadowTree		m_TreeRoot;
 	CTreeCtrl		m_RefTreeCtrl;
