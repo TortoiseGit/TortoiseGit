@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CImportPatchDlg, CResizableStandAloneDialog)
 CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CImportPatchDlg::IDD, pParent)
 {
-
+	m_cList.m_ContextMenuMask &=~ m_cList.GetMenuMask(CPatchListCtrl::MENU_APPLY);
 }
 
 CImportPatchDlg::~CImportPatchDlg()
@@ -43,11 +43,15 @@ BOOL CImportPatchDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 
 	m_PathList.SortByPathname(true);
+	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
 
 	for(int i=0;i<m_PathList.GetCount();i++)
 	{
 		m_cList.InsertItem(0,m_PathList[i].GetWinPath());
+		m_cList.SetCheck(0,true);
 	}
+
+	
 
 	//CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), nID);
 
@@ -102,7 +106,13 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 		pos=dlg.GetStartPosition();
 		while(pos)
 		{
-			m_cList.InsertItem(0,dlg.GetNextPathName(pos));
+			CString file=dlg.GetNextPathName(pos);
+			file.Trim();
+			if(!file.IsEmpty())
+			{
+				m_cList.InsertItem(0,file);
+				m_cList.SetCheck(0,true);
+			}
 		}
 	}
 

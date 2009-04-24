@@ -3,6 +3,7 @@
 #include "StandAloneDlg.h"
 // CImportPatchDlg dialog
 #include "TGitPath.h"
+#include "PatchListCtrl.h"
 
 class CImportPatchDlg : public CResizableStandAloneDialog
 {
@@ -19,7 +20,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 
-	CListCtrl m_cList;
+	CPatchListCtrl m_cList;
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLbnSelchangeListPatch();

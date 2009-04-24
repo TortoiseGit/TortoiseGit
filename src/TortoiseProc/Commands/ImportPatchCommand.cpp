@@ -34,7 +34,7 @@ bool ImportPatchCommand::Execute()
 	CString cmd;
 	CString output;
 
-	if(!this->orgCmdLinePath.IsAdminDir())
+	if(!this->orgCmdLinePath.HasAdminDir())
 	{
 		CString str=CAppUtils::ChooseRepository((CString*)&orgCmdLinePath.GetWinPathString());
 		CTGitPath path;
@@ -52,11 +52,11 @@ bool ImportPatchCommand::Execute()
 		g_Git.m_CurrentDir=str;
 	}
 
-	for(int i=0;i<this->pathList.GetCount();i++)
+	for(int i=0;i<this->orgPathList.GetCount();i++)
 	{
-		if(!pathList[i].IsDirectory())
+		if(!orgPathList[i].IsDirectory())
 		{
-			dlg.m_PathList.AddPath(pathList[i]);
+			dlg.m_PathList.AddPath(orgPathList[i]);
 		}
 	}
 
