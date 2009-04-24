@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "BrowseRefsDlg.h"
+#include "LogDlg.h"
 
 
 // CBrowseRefsDlg dialog
@@ -31,6 +32,7 @@ void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CBrowseRefsDlg::OnBnClickedOk)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_REF, &CBrowseRefsDlg::OnTvnSelchangedTreeRef)
+	ON_NOTIFY(NM_RCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMRClickListRefLeafs)
 END_MESSAGE_MAP()
 
 
@@ -255,5 +257,34 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		{
 			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
 		}
+	}
+}
+
+void CBrowseRefsDlg::OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	*pResult = 0;
+
+	CMenu popupMenu;
+	popupMenu.CreatePopupMenu();
+	popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
+
+	CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
+	if(pTree==NULL)
+		return;
+
+
+	const MSG* pCurrMsg=GetCurrentMessage();
+	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, pCurrMsg->pt.x, pCurrMsg->pt.y, this, 0);
+	switch(cmd)
+	{
+	case eCmd_ViewLog:
+		{
+			CLogDlg dlg;
+			theApp.m_pMainWnd = &dlg;
+			dlg.SetParams("", "", pTree->m_csRef, "", "");
+			dlg.DoModal();
+		}
+		break;
 	}
 }

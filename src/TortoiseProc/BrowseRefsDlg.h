@@ -37,6 +37,11 @@ public:
 	CBrowseRefsDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CBrowseRefsDlg();
 
+	enum eCmd
+	{
+		eCmd_ViewLog = WM_APP
+	};
+
 // Dialog Data
 	enum { IDD = IDD_DIALOG_BROWSE_REFS };
 
@@ -65,4 +70,6 @@ private:
 	CTreeCtrl		m_RefTreeCtrl;
 	CListCtrl		m_ListRefLeafs;
 	afx_msg void OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult);
+public:
+	afx_msg void OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 };
