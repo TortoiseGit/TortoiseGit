@@ -2683,10 +2683,18 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDSVNLC_ADD:
 				{	// The add went ok, but we now need to run through the selected items again
 					// and update their status
+					std::vector<int> selectIndex;
+
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index;
 					while ((index = GetNextSelectedItem(pos)) >= 0)
 					{
+						selectIndex.push_back(index);
+					}
+					for(int i=0;i<selectIndex.size();i++)
+					{
+						index=selectIndex[i];
+
 						CTGitPath * path=(CTGitPath*)GetItemData(index);
 						ASSERT(path);
 						if(path == NULL)
@@ -3172,7 +3180,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 									CTGitPath *path=(CTGitPath*)GetItemData(nItem);
 									if (path->GetGitPathString()==targetList[i].GetGitPathString())
 									{
-										RemoveListEntry(nItem);
+										if(path->m_Action & CTGitPath::LOGACTIONS_ADDED)
+										{
+											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
+											SetEntryCheck(path,nItem,false);
+											SetItemGroup(nItem,1);
+											this->m_StatusFileList.RemoveItem(*path);
+											this->m_UnRevFileList.AddPath(*path);
+											//this->m_IgnoreFileList.RemoveItem(*path);
+
+										}else
+										{
+											RemoveListEntry(nItem);
+										}
 										break;
 									}
 								}
