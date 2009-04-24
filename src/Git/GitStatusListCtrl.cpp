@@ -4000,13 +4000,16 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 	{
-		if(!g_Git.IsInitRepos())
+		if( g_Git.IsInitRepos())
+			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
+			        CString(GIT_REV_ZERO));			
+		else if( file1.m_Action&CTGitPath::LOGACTIONS_DELETED )
+			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
+					GitRev::GetHead(),false);				
+		else
 			CGitDiff::Diff(&file1,&file2,
 			        CString(GIT_REV_ZERO),
 					GitRev::GetHead());
-		else
-			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-			        CString(GIT_REV_ZERO));
 	}else
 	{
 		CGitDiff::Diff(&file1,&file2,

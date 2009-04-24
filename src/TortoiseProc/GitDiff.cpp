@@ -28,7 +28,7 @@ int CGitDiff::Parser(git_revnum_t &rev)
 	}
 	return 0;
 }
-int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1)
+int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -56,10 +56,17 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 	file.Close();
 	
 	CAppUtils::DiffFlags flags;
-	CAppUtils::StartExtDiff(tempfile,file1,
+
+	if(bIsAdd)
+		CAppUtils::StartExtDiff(tempfile,file1,
 							_T("NULL"),
 							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
 							,flags);
+	else
+		CAppUtils::StartExtDiff(file1,tempfile,
+							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
+							,_T("NULL"),flags);
+
 	return 0;
 }
 
