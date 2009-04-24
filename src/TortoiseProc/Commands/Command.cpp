@@ -178,6 +178,7 @@ typedef enum
 	cmdSubUpdate,
 	cmdSubSync,
 	cmdRefLog,
+	cmdTest
 	
 } TGitCommand;
 
@@ -251,10 +252,21 @@ static const struct CommandInfo
 	{	cmdSubAdd,			_T("subadd")			},
 	{	cmdSubUpdate,		_T("subupdate")			},
 	{	cmdSubSync,			_T("subsync")			},
-	{	cmdRefLog,			_T("reflog")			}
+	{	cmdRefLog,			_T("reflog")			},
+	{	cmdTest,			_T("test")				},
 };
 
 
+
+class TestCommand : public Command
+{
+	virtual bool Execute()
+	{
+		CBrowseRefsDlg().DoModal();
+		return true;
+	}
+};
+	
 
 
 Command * CommandServer::GetCommand(const CString& sCmd)
@@ -275,17 +287,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 		
 	// CBrowseRefsDlg dialog
-#if 1
-	class TestCommand : public Command
-	{
-		virtual bool Execute()
-		{
-			CBrowseRefsDlg().DoModal();
-			return true;
-		}
-	};
-	return new TestCommand;
-#endif
+
 
 	switch (command)
 	{
@@ -373,6 +375,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SendMailCommand;
 	case cmdCat:
 		return new CatCommand;
+	case cmdTest:
+		return new TestCommand;
 #if 0
 
 	
