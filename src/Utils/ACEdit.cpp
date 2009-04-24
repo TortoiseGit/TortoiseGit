@@ -450,8 +450,7 @@ int CACEdit::FindSepRightPos(int pos)
 }
 
 /*********************************************************************/
-
-LONG CACEdit::OnUpdateFromList(UINT lParam, LONG /*wParam*/)
+LRESULT CACEdit::OnUpdateFromList(WPARAM lParam, LPARAM /*wParam*/)
 {
 	UpdateData(true);
 

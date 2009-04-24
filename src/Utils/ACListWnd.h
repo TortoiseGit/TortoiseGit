@@ -77,7 +77,7 @@ protected:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

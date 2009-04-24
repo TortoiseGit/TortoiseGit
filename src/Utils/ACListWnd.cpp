@@ -835,7 +835,7 @@ void CACListWnd::OnMouseMove(UINT nFlags, CPoint point)
 
 /*********************************************************************/
 
-void CACListWnd::OnTimer(UINT nIDEvent) 
+void CACListWnd::OnTimer(UINT_PTR nIDEvent) 
 {
 	CWnd::OnTimer(nIDEvent);
 

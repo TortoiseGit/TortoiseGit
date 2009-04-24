@@ -92,7 +92,8 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnCloseList();
 	//}}AFX_MSG
-	afx_msg LONG OnUpdateFromList(UINT lParam, LONG wParam);
+	
+	afx_msg LRESULT OnUpdateFromList(WPARAM lParam, LPARAM wParam);
 	DECLARE_MESSAGE_MAP()
 
 
