@@ -23,6 +23,7 @@
 //#include "svn_version.h"
 #include "..\version.h"
 //#include "AppUtils.h"
+#include "git.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
@@ -54,6 +55,14 @@ BOOL CAboutDlg::OnInitDialog()
 	// set the version string
 	CString temp;
 
+	CString cmd,out;
+	cmd=_T("git.exe --version");
+	if(g_Git.Run(cmd,&out,CP_ACP))
+		out=_T("git not found");
+	int start =0;
+	out=out.Tokenize(_T("\n"),start);
+
+	temp.Format(IDS_ABOUTVERSION, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD,out);
 #if 0
 	const svn_version_t * svnver = svn_client_version();
 
@@ -64,8 +73,9 @@ BOOL CAboutDlg::OnInitDialog()
 		_T(NEON_VERSION),
 		_T(OPENSSL_VERSION_TEXT),
 		_T(ZLIB_VERSION));
-	SetDlgItemText(IDC_VERSIONABOUT, temp);
 #endif
+	SetDlgItemText(IDC_VERSIONABOUT, temp);
+
 	this->SetWindowText(_T("TortoiseGit"));
 
 	CPictureHolder tmpPic;

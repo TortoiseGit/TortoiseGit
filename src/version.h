@@ -1,10 +1,10 @@
-#define FILEVER        0,5,0,0
-#define PRODUCTVER     0,5,0,0
-#define STRFILEVER     "0, 5, 0, 0\0"
-#define STRPRODUCTVER  "0, 5, 0, 0\0"
+#define FILEVER        0,6,0,0
+#define PRODUCTVER     0,6,0,0
+#define STRFILEVER     "0, 6, 0, 0\0"
+#define STRPRODUCTVER  "0, 6, 0, 0\0"
 
 #define TSVN_VERMAJOR             0
-#define TSVN_VERMINOR             5
+#define TSVN_VERMINOR             6
 #define TSVN_VERMICRO             0
 #define TSVN_VERBUILD			  0
 #define TSVN_VERDATE			  "date unknown\n"
