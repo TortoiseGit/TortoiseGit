@@ -1503,7 +1503,7 @@ int CGitLogListBase::FillGitShortLog()
 //	if(this->m_bAllBranch)
 	mask |= m_ShowMask;
 
-	this->m_logEntries.FetchShortLog(path,hash,-1,mask);
+	this->m_logEntries.FetchShortLog(path,m_StartRef,-1,mask);
 	
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())

@@ -191,6 +191,12 @@ public:
 	{
 		return (AfxGetThread() == m_LoadingThread);
 	}
+
+	void SetStartRef(const CString& StartRef)
+	{
+		m_StartRef=StartRef;
+	}
+
 	
 	volatile bool		m_bExitThread;
 	CWinThread*			m_LoadingThread;
@@ -251,6 +257,8 @@ protected:
 
 	CString				m_CurrentBranch;
 	CString				m_HeadHash;
+
+	CString				m_StartRef; //Ref of the top-commit
 	
 	CString				m_ColumnRegKey;
 

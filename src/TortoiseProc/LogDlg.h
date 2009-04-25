@@ -91,6 +91,7 @@ public:
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
 	void SetMergePath(const CTGitPath& mergepath) {m_mergePath = mergepath;}
+	void SetStartRef(const CString& StartRef) {m_LogList.SetStartRef(StartRef);}
 	/**
 	 * Provides selected commit hash if available, call after OK return from here
 	 * Empty if none

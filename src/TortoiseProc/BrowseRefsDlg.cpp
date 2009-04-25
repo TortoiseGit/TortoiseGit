@@ -262,16 +262,33 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 
 void CBrowseRefsDlg::OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+//	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	*pResult = 0;
+
+	int selectedItemCount=m_ListRefLeafs.GetSelectedCount();
+
+
+	std::vector<CShadowTree*> selectedTrees;
+	selectedTrees.reserve(selectedItemCount);
+	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
+	while(pos)
+	{
+		selectedTrees.push_back(
+			(CShadowTree*)m_ListRefLeafs.GetItemData(
+				m_ListRefLeafs.GetNextSelectedItem(pos)));
+	}
 
 	CMenu popupMenu;
 	popupMenu.CreatePopupMenu();
-	popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
 
-	CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
-	if(pTree==NULL)
-		return;
+	if(selectedItemCount==1)
+	{
+		popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
+
+//		CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
+//		if(pTree==NULL)
+//			return;
+	}
 
 
 	const MSG* pCurrMsg=GetCurrentMessage();
@@ -281,8 +298,7 @@ void CBrowseRefsDlg::OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	case eCmd_ViewLog:
 		{
 			CLogDlg dlg;
-			theApp.m_pMainWnd = &dlg;
-			dlg.SetParams("", "", pTree->m_csRef, "", "");
+			dlg.SetStartRef(selectedTrees[0]->m_csRef);
 			dlg.DoModal();
 		}
 		break;
