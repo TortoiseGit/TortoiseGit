@@ -327,11 +327,11 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 	{
 		m_RefTreeCtrl.Select(hTreeItem,TVGN_CARET);
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreeItem);
-		if(wcsncmp(pTree->GetRefName(),L"refs/remotes",12)==0)
+		if(pTree->IsFrom(L"refs/remotes"))
 			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
-		else if(wcsncmp(pTree->GetRefName(),L"refs/heads",12)==0)
+		else if(pTree->IsFrom(L"refs/heads"))
 			popupMenu.AppendMenu(MF_STRING,eCmd_CreateBranch,L"Create Branch");
-		else if(wcsncmp(pTree->GetRefName(),L"refs/tags",12)==0)
+		else if(pTree->IsFrom(L"refs/tags"))
 			popupMenu.AppendMenu(MF_STRING,eCmd_CreateTag,L"Create Tag");
 	}
 
@@ -361,4 +361,34 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 		}
 		break;
 	}
+}
+
+BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+/*		case VK_RETURN:
+			{
+				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
+				{
+					if ( GetDlgItem(IDOK)->IsWindowEnabled() )
+					{
+						PostMessage(WM_COMMAND, IDOK);
+					}
+					return TRUE;
+				}
+			}
+			break;
+*/		case VK_F5:
+			{
+				Refresh();
+			}
+			break;
+		}
+	}
+
+
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

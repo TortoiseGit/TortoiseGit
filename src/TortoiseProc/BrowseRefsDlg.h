@@ -21,6 +21,10 @@ public:
 			return m_csRefName;
 		return m_pParent->GetRefName()+"/"+m_csRefName;
 	}
+	bool			IsFrom(const wchar_t* from)const
+	{
+		return wcsncmp(GetRefName(),from,wcslen(from))==0;
+	}
 
 	CString			m_csRefName;
 	CString			m_csRefHash;
@@ -83,4 +87,5 @@ public:
 
 	void		OnContextMenu_ListRefLeafs(CPoint point);
 	void		OnContextMenu_RefTreeCtrl(CPoint point);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
