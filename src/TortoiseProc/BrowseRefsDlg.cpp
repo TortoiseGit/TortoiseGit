@@ -5,6 +5,7 @@
 #include "TortoiseProc.h"
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
+#include "AddRemoteDlg.h"
 
 
 // CBrowseRefsDlg dialog
@@ -32,7 +33,7 @@ void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CBrowseRefsDlg::OnBnClickedOk)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_REF, &CBrowseRefsDlg::OnTvnSelchangedTreeRef)
-	ON_NOTIFY(NM_RCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMRClickListRefLeafs)
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 
@@ -83,7 +84,7 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft)
 		return NULL;
 
 	CShadowTree& nextNode=m_ShadowTree[nameSub];
-	nextNode.m_csName=nameSub;
+	nextNode.m_csRefName=nameSub;
 	nextNode.m_pParent=this;
 	return &nextNode;
 }
@@ -98,7 +99,8 @@ void CBrowseRefsDlg::Refresh()
 
 	m_RefTreeCtrl.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
-	m_TreeRoot.m_csName="Refs";
+	m_TreeRoot.m_csRefName="refs";
+//	m_TreeRoot.m_csShowName="Refs";
 	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"Refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
@@ -138,7 +140,7 @@ void CBrowseRefsDlg::Refresh()
 		CString values=iterRefMap->second;
 
 		int valuePos=0;
-		treeLeaf.m_csRef=     values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csRefHash= values.Tokenize(L"\04",valuePos);
 		treeLeaf.m_csDate=    values.Tokenize(L"\04",valuePos);
 		treeLeaf.m_csSubject= values.Tokenize(L"\04",valuePos);
 		treeLeaf.m_csAuthor=  values.Tokenize(L"\04",valuePos);
@@ -205,7 +207,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos)
 		if(pNextTree->m_hTree==NULL)
 		{
 			//New tree. Create node in control.
-			pNextTree->m_hTree=m_RefTreeCtrl.InsertItem(pNextTree->m_csName,pTreePos->m_hTree,NULL);
+			pNextTree->m_hTree=m_RefTreeCtrl.InsertItem(pNextTree->m_csRefName,pTreePos->m_hTree,NULL);
 			m_RefTreeCtrl.SetItemData(pNextTree->m_hTree,(DWORD_PTR)pNextTree);
 		}
 	}
@@ -242,17 +244,17 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		int indexItem=m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(),L"");
 
 		m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
-		m_ListRefLeafs.SetItemText(indexItem,0,refNamePrefix+pTree->m_csName);
+		m_ListRefLeafs.SetItemText(indexItem,0,refNamePrefix+pTree->m_csRefName);
 		m_ListRefLeafs.SetItemText(indexItem,1,pTree->m_csDate);
 		m_ListRefLeafs.SetItemText(indexItem,2,pTree->m_csSubject);
-		m_ListRefLeafs.SetItemText(indexItem,3,pTree->m_csRef);
+		m_ListRefLeafs.SetItemText(indexItem,3,pTree->m_csRefHash);
 	}
 	else
 	{
 
 		CString csThisName;
 		if(!isFirstLevel)
-			csThisName=refNamePrefix+pTree->m_csName+L"/";
+			csThisName=refNamePrefix+pTree->m_csRefName+L"/";
 		for(CShadowTree::TShadowTreeMap::iterator itSubTree=pTree->m_ShadowTree.begin(); itSubTree!=pTree->m_ShadowTree.end(); ++itSubTree)
 		{
 			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
@@ -260,10 +262,11 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	}
 }
 
-void CBrowseRefsDlg::OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 {
-//	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	*pResult = 0;
+
+	CPoint clientPoint=point;
+	m_RefTreeCtrl.ScreenToClient(&clientPoint);
 
 	int selectedItemCount=m_ListRefLeafs.GetSelectedCount();
 
@@ -291,15 +294,49 @@ void CBrowseRefsDlg::OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 
-	const MSG* pCurrMsg=GetCurrentMessage();
-	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, pCurrMsg->pt.x, pCurrMsg->pt.y, this, 0);
+	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
 	switch(cmd)
 	{
 	case eCmd_ViewLog:
 		{
 			CLogDlg dlg;
-			dlg.SetStartRef(selectedTrees[0]->m_csRef);
+			dlg.SetStartRef(selectedTrees[0]->m_csRefHash);
 			dlg.DoModal();
+		}
+		break;
+	}
+}
+
+void CBrowseRefsDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
+{
+	if(pWndFrom==&m_RefTreeCtrl)       OnContextMenu_RefTreeCtrl(point);
+	else if(pWndFrom==&m_ListRefLeafs) OnContextMenu_ListRefLeafs(point);
+}
+
+void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
+{
+	CMenu popupMenu;
+	popupMenu.CreatePopupMenu();
+
+	CPoint clientPoint=point;
+	m_RefTreeCtrl.ScreenToClient(&clientPoint);
+
+	HTREEITEM hTreeItem=m_RefTreeCtrl.HitTest(clientPoint);
+	if(hTreeItem!=NULL)
+	{
+		m_RefTreeCtrl.Select(hTreeItem,TVGN_CARET);
+		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreeItem);
+		if(wcsncmp(pTree->GetRefName(),L"refs/remotes",12)==0)
+			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
+	}
+
+	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
+	switch(cmd)
+	{
+	case eCmd_AddRemote:
+		{
+			CAddRemoteDlg(this).DoModal();
+			Refresh();
 		}
 		break;
 	}

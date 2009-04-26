@@ -10,15 +10,20 @@ class CShadowTree
 public:
 	typedef std::map<CString,CShadowTree> TShadowTreeMap;
 
-	CShadowTree():m_hTree(NULL){}
+	CShadowTree():m_hTree(NULL),m_pParent(NULL){}
 	
 	CShadowTree*	GetNextSub(CString& nameLeft);
 
 	bool			IsLeaf()const {return m_ShadowTree.empty();}
+	CString			GetRefName()const
+	{
+		if(m_pParent==NULL)
+			return m_csRefName;
+		return m_pParent->GetRefName()+"/"+m_csRefName;
+	}
 
-
-	CString			m_csName;
-	CString			m_csRef;
+	CString			m_csRefName;
+	CString			m_csRefHash;
 	CString			m_csDate;
 	CString			m_csAuthor;
 	CString			m_csSubject;
@@ -39,7 +44,8 @@ public:
 
 	enum eCmd
 	{
-		eCmd_ViewLog = WM_APP
+		eCmd_ViewLog = WM_APP,
+		eCmd_AddRemote
 	};
 
 // Dialog Data
@@ -64,12 +70,15 @@ public:
 	bool			SelectRef(CString refName);
 
 private:
-//	MAP_HASH_NAME	m_RefMap;
 
 	CShadowTree		m_TreeRoot;
 	CTreeCtrl		m_RefTreeCtrl;
 	CListCtrl		m_ListRefLeafs;
 	afx_msg void OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult);
 public:
-	afx_msg void OnNMRClickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
+
+	afx_msg void OnContextMenu(CWnd* pWndFrom, CPoint point);
+
+	void		OnContextMenu_ListRefLeafs(CPoint point);
+	void		OnContextMenu_RefTreeCtrl(CPoint point);
 };
