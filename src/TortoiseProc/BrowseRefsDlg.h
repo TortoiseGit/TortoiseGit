@@ -45,7 +45,9 @@ public:
 	enum eCmd
 	{
 		eCmd_ViewLog = WM_APP,
-		eCmd_AddRemote
+		eCmd_AddRemote,
+		eCmd_CreateBranch,
+		eCmd_CreateTag
 	};
 
 // Dialog Data

@@ -6,6 +6,7 @@
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
 #include "AddRemoteDlg.h"
+#include "CreateBranchTagDlg.h"
 
 
 // CBrowseRefsDlg dialog
@@ -328,6 +329,10 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreeItem);
 		if(wcsncmp(pTree->GetRefName(),L"refs/remotes",12)==0)
 			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
+		else if(wcsncmp(pTree->GetRefName(),L"refs/heads",12)==0)
+			popupMenu.AppendMenu(MF_STRING,eCmd_CreateBranch,L"Create Branch");
+		else if(wcsncmp(pTree->GetRefName(),L"refs/tags",12)==0)
+			popupMenu.AppendMenu(MF_STRING,eCmd_CreateTag,L"Create Tag");
 	}
 
 	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
@@ -336,6 +341,22 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 	case eCmd_AddRemote:
 		{
 			CAddRemoteDlg(this).DoModal();
+			Refresh();
+		}
+		break;
+	case eCmd_CreateBranch:
+		{
+			CCreateBranchTagDlg dlg(this);
+			dlg.m_bIsTag=false;
+			dlg.DoModal();
+			Refresh();
+		}
+		break;
+	case eCmd_CreateTag:
+		{
+			CCreateBranchTagDlg dlg(this);
+			dlg.m_bIsTag=true;
+			dlg.DoModal();
 			Refresh();
 		}
 		break;
