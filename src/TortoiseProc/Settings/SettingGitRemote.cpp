@@ -13,11 +13,12 @@
 
 IMPLEMENT_DYNAMIC(CSettingGitRemote, ISettingsPropPage)
 
-CSettingGitRemote::CSettingGitRemote()
+CSettingGitRemote::CSettingGitRemote(CString cmdPath)
 	: ISettingsPropPage(CSettingGitRemote::IDD)
     , m_strRemote(_T(""))
     , m_strUrl(_T(""))
     , m_strPuttyKeyfile(_T(""))
+	, m_cmdPath(cmdPath)
 {
 
 	m_ChangedMask = 0;
@@ -50,9 +51,9 @@ BOOL CSettingGitRemote::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
-	CString str=((CSettings*)GetParent())->m_CmdPath.GetWinPath();
+	//CString str=((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	CString proj;
-	if(	g_GitAdminDir.HasAdminDir(str,&proj) )
+	if(	g_GitAdminDir.HasAdminDir(m_cmdPath,&proj) )
 	{
 		this->SetWindowText(CString(_T("Config - "))+proj);
 	}

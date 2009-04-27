@@ -17,7 +17,7 @@ public:
 		REMOTE_URL		=0x2,
 		REMOTE_PUTTYKEY	=0x4,
 	};
-	CSettingGitRemote();
+	CSettingGitRemote(CString cmdPath);
 	virtual ~CSettingGitRemote();
 	UINT GetIconID() {return IDI_GITREMOTE;}
 // Dialog Data
@@ -38,7 +38,9 @@ protected:
 	int	 m_ChangedMask;
 
 public:
-    CListBox m_ctrlRemoteList;
+	CString m_cmdPath;
+
+	CListBox m_ctrlRemoteList;
     CString m_strRemote;
     CString m_strUrl;
     

@@ -262,7 +262,7 @@ class TestCommand : public Command
 {
 	virtual bool Execute()
 	{
-		CBrowseRefsDlg().DoModal();
+		CBrowseRefsDlg(orgCmdLinePath.GetWinPath()).DoModal();
 		return true;
 	}
 };

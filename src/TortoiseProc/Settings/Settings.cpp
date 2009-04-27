@@ -63,7 +63,7 @@ void CSettings::AddPropPages()
 	m_pBugTraqPage = new CSetBugTraq();
 	m_pTBlamePage = new CSettingsTBlame();
 	m_pGitConfig = new CSettingGitConfig();
-	m_pGitRemote = new CSettingGitRemote();
+	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
 
 
 	SetPageIcon(m_pMainPage, m_pMainPage->GetIconID());

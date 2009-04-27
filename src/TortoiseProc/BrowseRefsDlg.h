@@ -43,13 +43,14 @@ class CBrowseRefsDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CBrowseRefsDlg)
 
 public:
-	CBrowseRefsDlg(CWnd* pParent = NULL);   // standard constructor
+	CBrowseRefsDlg(CString cmdPath, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CBrowseRefsDlg();
 
 	enum eCmd
 	{
 		eCmd_ViewLog = WM_APP,
 		eCmd_AddRemote,
+		eCmd_ManageRemotes,
 		eCmd_CreateBranch,
 		eCmd_CreateTag
 	};
@@ -76,6 +77,7 @@ public:
 	bool			SelectRef(CString refName);
 
 private:
+	CString			m_cmdPath;
 
 	CShadowTree		m_TreeRoot;
 	CTreeCtrl		m_RefTreeCtrl;

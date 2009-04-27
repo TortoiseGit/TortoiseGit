@@ -7,14 +7,17 @@
 #include "LogDlg.h"
 #include "AddRemoteDlg.h"
 #include "CreateBranchTagDlg.h"
+#include "Settings\SettingGitRemote.h"
+#include "SinglePropSheetDlg.h"
 
 
 // CBrowseRefsDlg dialog
 
 IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
 
-CBrowseRefsDlg::CBrowseRefsDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent)
+CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
+:	CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent),
+	m_cmdPath(cmdPath)
 {
 
 }
@@ -328,7 +331,10 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 		m_RefTreeCtrl.Select(hTreeItem,TVGN_CARET);
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreeItem);
 		if(pTree->IsFrom(L"refs/remotes"))
-			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
+		{
+//			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
+			popupMenu.AppendMenu(MF_STRING,eCmd_ManageRemotes,L"Manage Remotes");
+		}
 		else if(pTree->IsFrom(L"refs/heads"))
 			popupMenu.AppendMenu(MF_STRING,eCmd_CreateBranch,L"Create Branch");
 		else if(pTree->IsFrom(L"refs/tags"))
@@ -342,6 +348,13 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 		{
 			CAddRemoteDlg(this).DoModal();
 			Refresh();
+		}
+		break;
+	case eCmd_ManageRemotes:
+		{
+			CSinglePropSheetDlg(L"Git Remote Settings",new CSettingGitRemote(m_cmdPath),this).DoModal();
+//			CSettingGitRemote W_Remotes(m_cmdPath);
+//			W_Remotes.DoModal();
 		}
 		break;
 	case eCmd_CreateBranch:

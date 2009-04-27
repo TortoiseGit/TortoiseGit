@@ -438,6 +438,14 @@
 				RelativePath="..\TortoiseShell\resource.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SinglePropSheetDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SinglePropSheetDlg.h"
+				>
+			</File>
 			<Filter
 				Name="General"
 				>
