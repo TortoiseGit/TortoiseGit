@@ -1023,10 +1023,17 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 	CString cmd;
 	if(rev1 == GitRev::GetWorkingCopy())
 	{
-		cmd.Format(_T("git.exe diff --stat -p %s"),rev2);
+		cmd.Format(_T("git.exe diff --stat -p %s "),rev2);
 	}else
 	{	
 		cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),rev1,rev2);
+	}
+
+	if( !url1.IsEmpty() )
+	{
+		cmd+=_T(" \"");
+		cmd+=url1.GetGitPathString();
+		cmd+=_T("\" ");
 	}
 	g_Git.RunLogFile(cmd,tempfile);
 	CAppUtils::StartUnifiedDiffViewer(tempfile,rev1.Left(6)+_T(":")+rev2.Left(6));
