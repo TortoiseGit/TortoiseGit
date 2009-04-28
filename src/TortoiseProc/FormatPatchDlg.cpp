@@ -16,6 +16,7 @@ CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=NULL*/)
 {
 	m_Num=1;
 	this->m_bSendMail = m_regSendMail;
+	this->m_Radio = IDC_RADIO_SINCE;
 }
 
 CFormatPatchDlg::~CFormatPatchDlg()
@@ -84,13 +85,22 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL);
 	m_cSince.AddString(list);
 
+	if(!m_Since.IsEmpty())
+		m_cSince.SetWindowText(m_Since);
+
 	m_cFrom.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchFromURLS"), _T("ver"));
 	m_cFrom.SetCurSel(0);
+
+	if(!m_From.IsEmpty())
+		m_cFrom.SetWindowText(m_From);
 
 	m_cTo.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchToURLS"), _T("ver"));
 	m_cTo.SetCurSel(0);
 
-	this->CheckRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE,IDC_RADIO_SINCE);
+	if(!m_To.IsEmpty())
+		m_cTo.SetWindowText(m_To);
+
+	this->CheckRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE,this->m_Radio);
 	
 	OnBnClickedRadio();
 

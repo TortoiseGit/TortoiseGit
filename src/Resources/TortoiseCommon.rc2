@@ -76,6 +76,7 @@ BEGIN
 	IDS_COMBINE_TO_ONE			"*Combine to one commit"
 	IDS_CHERRY_PICK_VERSION		"Cherry Pick this version..."
 	IDS_COPY_COMMIT_HASH		"Copy Commit Hash"
+	IDS_CREATE_PATCH			"Format Patch..."
 	
 END 
 

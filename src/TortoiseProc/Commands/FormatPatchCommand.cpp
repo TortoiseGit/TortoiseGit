@@ -33,7 +33,21 @@ bool FormatPatchCommand::Execute()
 {
 	CFormatPatchDlg dlg;
 //	dlg.m_bIsTag=TRUE;
-	
+	CString startval = parser.GetVal(_T("startrev"));
+	CString endval = parser.GetVal(_T("endrev"));
+
+	if( endval.IsEmpty() && (!startval.IsEmpty()))
+	{
+		dlg.m_Since=startval;
+		dlg.m_Radio = IDC_RADIO_SINCE;
+
+	}else if( (!endval.IsEmpty()) && (!startval.IsEmpty()))
+	{
+		dlg.m_From=startval;
+		dlg.m_To=endval;
+		dlg.m_Radio = IDC_RADIO_RANGE;
+	}
+
 	if(dlg.DoModal()==IDOK)
 	{
 		CString cmd;

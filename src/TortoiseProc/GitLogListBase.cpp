@@ -1191,6 +1191,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
 				popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
+
+			if(GetSelectedCount()<=2)
+				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH))
+					popup.AppendMenuIcon(ID_CREATE_PATCH, IDS_CREATE_PATCH, IDI_PATCH);
+			
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 	
 		}

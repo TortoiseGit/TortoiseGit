@@ -143,6 +143,7 @@ public:
 	ID_STASH_APPLY,
 	ID_REFLOG_DEL,
 	ID_REBASE_TO_VERSION,
+	ID_CREATE_PATCH,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();

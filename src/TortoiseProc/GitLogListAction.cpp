@@ -437,6 +437,38 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				}
 			}
 			break;
+		case ID_CREATE_PATCH:
+			{
+				int select=this->GetSelectedCount();
+				CString cmd;
+				cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
+				cmd += _T(" /command:formatpatch");
+
+				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev * r2 = NULL;
+				if(select == 1)
+				{
+					cmd += _T(" /startrev:")+r1->m_CommitHash;
+				}
+				else 
+				{
+					r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+					if( this->m_IsOldFirst )
+					{	
+						cmd += _T(" /startrev:")+r1->m_CommitHash;
+						cmd += _T(" /endrev:")+r2->m_CommitHash;
+	
+					}else
+					{	
+						cmd += _T(" /startrev:")+r2->m_CommitHash;
+						cmd += _T(" /endrev:")+r1->m_CommitHash;	
+					}				
+					
+				}
+
+				CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
+			}
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;
