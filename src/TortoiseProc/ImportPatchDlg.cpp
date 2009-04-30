@@ -174,9 +174,12 @@ void CImportPatchDlg::OnBnClickedOk()
 
 	for(int i=0;i<m_cList.GetItemCount();i++)
 	{
-		CTGitPath path;
-		path.SetFromWin(m_cList.GetItemText(i,0));
-		m_PathList.AddPath(path);
+		if(m_cList.GetCheck(i))
+		{
+			CTGitPath path;
+			path.SetFromWin(m_cList.GetItemText(i,0));
+			m_PathList.AddPath(path);
+		}
 	}
 	OnOK();
 }
