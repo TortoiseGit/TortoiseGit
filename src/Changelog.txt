@@ -1,3 +1,27 @@
+Version 0.6.1.0 version(internal)
+Features:
+	*TortoiseMerge Support git format patch file. 
+	TortoiseMerge can open git patch file and review diff and merge change.
+
+	*SendMail support
+	Right click .patch or .diff file, click "send mail..." to send patch out.
+
+	*improve clone dialog
+	Add auto fill module name at directory when change URL. Fix tab order.
+
+	        
+Fix:
+	Issue 73:  Error while reading/writing the registry key MSysGit Access is denied
+	Issue 11:  Show differences as unified diff does not use selected item
+	Issue 77:  "Show differencess" against a deleted file will cause TortoiseMerge to error
+	Issue 74:  Add multiple files from commit dialog only adds first two in multi-selection
+	Issue 75:  About box does not show version information
+	Wrong error message when fail launch pageant
+	Setup will launch old version msi to remove old version. Directly update to new version without remove old version
+	Double click conflict item to launch diffview, not conflict edit.
+	Issue 66 in tortoisegit: Some log lines lose color or disappear after you click on them
+	
+
 Version 0.5.1.0 version(internal)
 Fix:
 	Issue 52:  TortoiseMerge crashes on x64  
