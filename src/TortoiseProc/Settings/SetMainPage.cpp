@@ -43,7 +43,7 @@ CSetMainPage::CSetMainPage()
 	CString temp=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);;
 	if(!temp.IsEmpty())
 		temp+=_T("bin");
-	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE,HKEY_LOCAL_MACHINE);
+	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE);
 	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
 	m_regLastCommitTime = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\use-commit-times"), _T(""));
 	if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))

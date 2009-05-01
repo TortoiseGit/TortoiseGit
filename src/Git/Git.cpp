@@ -801,7 +801,7 @@ BOOL CGit::CheckMsysGitDir()
 
 	// add git/bin path to PATH
 
-	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE,HKEY_LOCAL_MACHINE);
+	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE);
 	CString str=msysdir;
 	if(str.IsEmpty())
 	{
