@@ -1,3 +1,7 @@
+Version 0.6.2.0 version(internal)
+        *Improve fetch overlay speed 
+        rebase igit.exe to msysgit 1.6.2.2, which is major application to get git status.  
+
 Version 0.6.1.0 version(internal)
 Features:
 	*TortoiseMerge Support git format patch file. 
@@ -20,9 +24,9 @@ Fix:
 	Setup will launch old version msi to remove old version. Directly update to new version without remove old version
 	Double click conflict item to launch diffview, not conflict edit.
 	Issue 66 in tortoisegit: Some log lines lose color or disappear after you click on them
-	
+	Issue 81:  Cannot have x86 and x64 versions installed at the same time.  	
 
-Version 0.5.1.0 version(internal)
+Version 0.5.1.0 version(external)
 Fix:
 	Issue 52:  TortoiseMerge crashes on x64  
 
