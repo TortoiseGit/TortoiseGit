@@ -52,7 +52,9 @@ public:
 		eCmd_AddRemote,
 		eCmd_ManageRemotes,
 		eCmd_CreateBranch,
-		eCmd_CreateTag
+		eCmd_CreateTag,
+		eCmd_DeleteBranch,
+		eCmd_DeleteTag
 	};
 
 // Dialog Data

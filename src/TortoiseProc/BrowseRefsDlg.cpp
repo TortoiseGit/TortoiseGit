@@ -9,6 +9,7 @@
 #include "CreateBranchTagDlg.h"
 #include "Settings\SettingGitRemote.h"
 #include "SinglePropSheetDlg.h"
+#include "ConfirmDelRefDlg.h"
 
 
 // CBrowseRefsDlg dialog
@@ -272,11 +273,9 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 	CPoint clientPoint=point;
 	m_RefTreeCtrl.ScreenToClient(&clientPoint);
 
-	int selectedItemCount=m_ListRefLeafs.GetSelectedCount();
-
 
 	std::vector<CShadowTree*> selectedTrees;
-	selectedTrees.reserve(selectedItemCount);
+	selectedTrees.reserve(m_ListRefLeafs.GetSelectedCount());
 	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
 	while(pos)
 	{
@@ -288,9 +287,13 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 	CMenu popupMenu;
 	popupMenu.CreatePopupMenu();
 
-	if(selectedItemCount==1)
+	if(selectedTrees.size()==1)
 	{
 		popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
+		if(selectedTrees[0]->IsFrom(L"refs/heads"))
+			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteBranch,L"Delete Branch");
+		else if(selectedTrees[0]->IsFrom(L"refs/tags"))
+			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteTag,L"Delete Tag");
 
 //		CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
 //		if(pTree==NULL)
@@ -306,6 +309,18 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 			CLogDlg dlg;
 			dlg.SetStartRef(selectedTrees[0]->m_csRefHash);
 			dlg.DoModal();
+		}
+		break;
+	case eCmd_DeleteBranch:
+		{
+			CConfirmDelRefDlg(selectedTrees[0]->GetRefName(),this).DoModal();
+			Refresh();
+		}
+		break;
+	case eCmd_DeleteTag:
+		{
+			CConfirmDelRefDlg(selectedTrees[0]->GetRefName(),this).DoModal();
+			Refresh();
 		}
 		break;
 	}
@@ -355,6 +370,7 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 			CSinglePropSheetDlg(L"Git Remote Settings",new CSettingGitRemote(m_cmdPath),this).DoModal();
 //			CSettingGitRemote W_Remotes(m_cmdPath);
 //			W_Remotes.DoModal();
+			Refresh();
 		}
 		break;
 	case eCmd_CreateBranch:
