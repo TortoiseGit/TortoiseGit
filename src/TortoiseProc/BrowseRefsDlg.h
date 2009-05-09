@@ -12,7 +12,7 @@ public:
 
 	CShadowTree():m_hTree(NULL),m_pParent(NULL){}
 	
-	CShadowTree*	GetNextSub(CString& nameLeft);
+	CShadowTree*	GetNextSub(CString& nameLeft, bool bCreateIfNotExist);
 
 	bool			IsLeaf()const {return m_ShadowTree.empty();}
 	CString			GetRefName()const
@@ -68,9 +68,9 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 
-	void			Refresh();
+	void			Refresh(bool bSelectCurHead=false);
 
-	CShadowTree&	GetTreeNode(CString refName, CShadowTree* pTreePos=NULL);
+	CShadowTree&	GetTreeNode(CString refName, CShadowTree* pTreePos=NULL, bool bCreateIfNotExist=false);
 
 	void			FillListCtrlForTreeNode(HTREEITEM treeNode);
 

@@ -65,13 +65,13 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
-	Refresh();
+	Refresh(true);
 
 
 	return TRUE;
 }
 
-CShadowTree* CShadowTree::GetNextSub(CString& nameLeft)
+CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
 {
 	int posSlash=nameLeft.Find('/');
 	CString nameSub;
@@ -88,6 +88,9 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft)
 	if(nameSub.IsEmpty())
 		return NULL;
 
+	if(!bCreateIfNotExist && m_ShadowTree.find(nameSub)==m_ShadowTree.end())
+		return NULL;
+
 	CShadowTree& nextNode=m_ShadowTree[nameSub];
 	nextNode.m_csRefName=nameSub;
 	nextNode.m_pParent=this;
@@ -96,13 +99,41 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft)
 
 typedef std::map<CString,CString> MAP_STRING_STRING;
 
-void CBrowseRefsDlg::Refresh()
+void CBrowseRefsDlg::Refresh(bool bSelectCurHead)
 {
 //	m_RefMap.clear();
 //	g_Git.GetMapHashToFriendName(m_RefMap);
 		
+	CString selectRef;
+	if(bSelectCurHead)
+	{
+		g_Git.Run(L"git symbolic-ref HEAD",&selectRef,CP_UTF8);
+		selectRef.Trim(L"\r\n\t ");
+	}
+	else
+	{
+		POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
+		//List ctrl selection?
+		if(pos)
+		{
+			CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(
+					m_ListRefLeafs.GetNextSelectedItem(pos));
+			selectRef=pTree->GetRefName();
+		}
+		else
+		{
+			//Tree ctrl selection?
+			HTREEITEM hTree=m_RefTreeCtrl.GetSelectedItem();
+			if(hTree!=NULL)
+			{
+				CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
+				selectRef=pTree->GetRefName();
+			}
+		}
+	}
 
 	m_RefTreeCtrl.DeleteAllItems();
+	m_ListRefLeafs.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
 	m_TreeRoot.m_csRefName="refs";
 //	m_TreeRoot.m_csShowName="Refs";
@@ -141,7 +172,7 @@ void CBrowseRefsDlg::Refresh()
 	//Populate ref tree
 	for(MAP_STRING_STRING::iterator iterRefMap=refMap.begin();iterRefMap!=refMap.end();++iterRefMap)
 	{
-		CShadowTree& treeLeaf=GetTreeNode(iterRefMap->first);
+		CShadowTree& treeLeaf=GetTreeNode(iterRefMap->first,NULL,true);
 		CString values=iterRefMap->second;
 
 		int valuePos=0;
@@ -151,12 +182,8 @@ void CBrowseRefsDlg::Refresh()
 		treeLeaf.m_csAuthor=  values.Tokenize(L"\04",valuePos);
 	}
 
-	CString currHead;
-	g_Git.Run(L"git symbolic-ref HEAD",&currHead,CP_UTF8);
 
-	currHead.Trim(L"\r\n\t ");
-
-	if(!SelectRef(currHead))
+	if(selectRef.IsEmpty() || !SelectRef(selectRef))
 		//Probably not on a branch. Select root node.
 		m_RefTreeCtrl.Expand(m_TreeRoot.m_hTree,TVE_EXPAND);
 
@@ -167,7 +194,14 @@ bool CBrowseRefsDlg::SelectRef(CString refName)
 	if(wcsnicmp(refName,L"refs/",5)!=0)
 		return false; // Not a ref name
 
-	CShadowTree& treeLeafHead=GetTreeNode(refName);
+	CShadowTree& treeLeafHead=GetTreeNode(refName,NULL,false);
+	if(treeLeafHead.m_hTree != NULL)
+	{
+		//Not a leaf. Select tree node and return
+		m_RefTreeCtrl.Select(treeLeafHead.m_hTree,TVGN_CARET);
+		return true;
+	}
+
 	if(treeLeafHead.m_pParent==NULL)
 		return false; //Weird... should not occur.
 
@@ -180,13 +214,14 @@ bool CBrowseRefsDlg::SelectRef(CString refName)
 		if(pCurrShadowTree == &treeLeafHead)
 		{
 			m_ListRefLeafs.SetItemState(indexPos,LVIS_SELECTED,LVIS_SELECTED);
+			m_ListRefLeafs.EnsureVisible(indexPos,FALSE);
 		}
 	}
 
 	return true;
 }
 
-CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos)
+CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos, bool bCreateIfNotExist)
 {
 	if(pTreePos==NULL)
 	{
@@ -197,11 +232,11 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos)
 	if(refName.IsEmpty())
 		return *pTreePos;//Found leaf
 
-	CShadowTree* pNextTree=pTreePos->GetNextSub(refName);
+	CShadowTree* pNextTree=pTreePos->GetNextSub(refName,bCreateIfNotExist);
 	if(pNextTree==NULL)
 	{
-		//Should not occur when all ref-names are valid.
-		ASSERT(FALSE);
+		//Should not occur when all ref-names are valid and bCreateIfNotExist is true.
+		ASSERT(!bCreateIfNotExist);
 		return *pTreePos;
 	}
 
@@ -217,7 +252,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos)
 		}
 	}
 
-	return GetTreeNode(refName,pNextTree);
+	return GetTreeNode(refName, pNextTree, bCreateIfNotExist);
 }
 
 
