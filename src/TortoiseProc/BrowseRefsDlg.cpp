@@ -9,7 +9,6 @@
 #include "CreateBranchTagDlg.h"
 #include "Settings\SettingGitRemote.h"
 #include "SinglePropSheetDlg.h"
-#include "ConfirmDelRefDlg.h"
 #include "MessageBox.h"
 
 // CBrowseRefsDlg dialog
