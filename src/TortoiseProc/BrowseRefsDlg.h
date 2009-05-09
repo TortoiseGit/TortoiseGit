@@ -78,6 +78,9 @@ public:
 
 	bool			SelectRef(CString refName);
 
+	bool			ConfirmDeleteRef(CString completeRefName);
+	bool			DoDeleteRef(CString completeRefName, bool bForce);
+
 private:
 	CString			m_cmdPath;
 

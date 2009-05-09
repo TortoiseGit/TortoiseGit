@@ -10,7 +10,7 @@
 #include "Settings\SettingGitRemote.h"
 #include "SinglePropSheetDlg.h"
 #include "ConfirmDelRefDlg.h"
-
+#include "MessageBox.h"
 
 // CBrowseRefsDlg dialog
 
@@ -313,17 +313,97 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 		break;
 	case eCmd_DeleteBranch:
 		{
-			CConfirmDelRefDlg(selectedTrees[0]->GetRefName(),this).DoModal();
+			if(ConfirmDeleteRef(selectedTrees[0]->GetRefName()))
+				DoDeleteRef(selectedTrees[0]->GetRefName(), true);
 			Refresh();
 		}
 		break;
 	case eCmd_DeleteTag:
 		{
-			CConfirmDelRefDlg(selectedTrees[0]->GetRefName(),this).DoModal();
+			if(ConfirmDeleteRef(selectedTrees[0]->GetRefName()))
+				DoDeleteRef(selectedTrees[0]->GetRefName(), true);
 			Refresh();
 		}
 		break;
 	}
+}
+
+bool CBrowseRefsDlg::ConfirmDeleteRef(CString completeRefName)
+{
+	CString csMessage;
+	CString csTitle;
+
+	UINT mbIcon=MB_ICONQUESTION;
+	csMessage=L"Are you sure you want to delete the ";
+	if(wcsncmp(completeRefName,L"refs/heads",10)==0)
+	{
+		CString branchToDelete = completeRefName.Mid(11);
+		csTitle.Format(L"Confirm deletion of branch %s", branchToDelete);
+		csMessage += "branch:\r\n\r\n<b>";
+		csMessage += branchToDelete;
+		csMessage += "</b>";
+
+		//Check if branch is fully merged in HEAD
+		CString branchHash = g_Git.GetHash(completeRefName);
+		CString commonAncestor;
+		CString cmd;
+		cmd.Format(L"git.exe merge-base HEAD %s",completeRefName);
+		g_Git.Run(cmd,&commonAncestor,CP_UTF8);
+
+		branchHash=branchHash.Left(40);
+		commonAncestor=commonAncestor.Left(40);
+		
+		if(commonAncestor != branchHash)
+		{
+			csMessage += L"\r\n\r\n<b>Warning:\r\nThis branch is not fully merged into HEAD.</b>";
+			mbIcon=MB_ICONWARNING;
+		}
+	}
+	else if(wcsncmp(completeRefName,L"refs/tags",9)==0)
+	{
+		CString tagToDelete = completeRefName.Mid(10);
+		csTitle.Format(L"Confirm deletion of tag %s", tagToDelete);
+		csMessage += "tag:\r\n\r\n<b>";
+		csMessage += tagToDelete;
+		csMessage += "</b>";
+	}
+
+	return CMessageBox::Show(m_hWnd,csMessage,csTitle,MB_YESNO|mbIcon)==IDYES;
+
+}
+
+
+bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
+{
+	if(wcsncmp(completeRefName,L"refs/heads",10)==0)
+	{
+		CString branchToDelete = completeRefName.Mid(11);
+		CString cmd;
+		cmd.Format(L"git.exe branch -%c %s",bForce?L'D':L'd',branchToDelete);
+		CString resultDummy;
+		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
+		{
+			CString errorMsg;
+			errorMsg.Format(L"Could not delete branch %s. Message from git:\r\n\r\n%s",branchToDelete,resultDummy);
+			CMessageBox::Show(m_hWnd,errorMsg,L"Error deleting branch",MB_OK|MB_ICONERROR);
+			return false;
+		}
+	}
+	else if(wcsncmp(completeRefName,L"refs/tags",9)==0)
+	{
+		CString tagToDelete = completeRefName.Mid(10);
+		CString cmd;
+		cmd.Format(L"git.exe tag -d %s",tagToDelete);
+		CString resultDummy;
+		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
+		{
+			CString errorMsg;
+			errorMsg.Format(L"Could not delete tag %s. Message from git:\r\n\r\n%s",tagToDelete,resultDummy);
+			CMessageBox::Show(m_hWnd,errorMsg,L"Error deleting tag",MB_OK|MB_ICONERROR);
+			return false;
+		}
+	}
+	return true;
 }
 
 void CBrowseRefsDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
