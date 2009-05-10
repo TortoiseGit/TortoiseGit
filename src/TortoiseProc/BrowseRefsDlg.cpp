@@ -6,7 +6,7 @@
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
 #include "AddRemoteDlg.h"
-#include "CreateBranchTagDlg.h"
+#include "AppUtils.h"
 #include "Settings\SettingGitRemote.h"
 #include "SinglePropSheetDlg.h"
 #include "MessageBox.h"
@@ -489,17 +489,13 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 		break;
 	case eCmd_CreateBranch:
 		{
-			CCreateBranchTagDlg dlg(this);
-			dlg.m_bIsTag=false;
-			dlg.DoModal();
+			CAppUtils::CreateBranchTag(false);
 			Refresh();
 		}
 		break;
 	case eCmd_CreateTag:
 		{
-			CCreateBranchTagDlg dlg(this);
-			dlg.m_bIsTag=true;
-			dlg.DoModal();
+			CAppUtils::CreateBranchTag(true);
 			Refresh();
 		}
 		break;
