@@ -301,67 +301,6 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	}
 }
 
-void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
-{
-
-	CPoint clientPoint=point;
-	m_RefTreeCtrl.ScreenToClient(&clientPoint);
-
-
-	std::vector<CShadowTree*> selectedTrees;
-	selectedTrees.reserve(m_ListRefLeafs.GetSelectedCount());
-	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
-	while(pos)
-	{
-		selectedTrees.push_back(
-			(CShadowTree*)m_ListRefLeafs.GetItemData(
-				m_ListRefLeafs.GetNextSelectedItem(pos)));
-	}
-
-	CMenu popupMenu;
-	popupMenu.CreatePopupMenu();
-
-	if(selectedTrees.size()==1)
-	{
-		popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
-		if(selectedTrees[0]->IsFrom(L"refs/heads"))
-			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteBranch,L"Delete Branch");
-		else if(selectedTrees[0]->IsFrom(L"refs/tags"))
-			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteTag,L"Delete Tag");
-
-//		CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
-//		if(pTree==NULL)
-//			return;
-	}
-
-
-	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
-	switch(cmd)
-	{
-	case eCmd_ViewLog:
-		{
-			CLogDlg dlg;
-			dlg.SetStartRef(selectedTrees[0]->m_csRefHash);
-			dlg.DoModal();
-		}
-		break;
-	case eCmd_DeleteBranch:
-		{
-			if(ConfirmDeleteRef(selectedTrees[0]->GetRefName()))
-				DoDeleteRef(selectedTrees[0]->GetRefName(), true);
-			Refresh();
-		}
-		break;
-	case eCmd_DeleteTag:
-		{
-			if(ConfirmDeleteRef(selectedTrees[0]->GetRefName()))
-				DoDeleteRef(selectedTrees[0]->GetRefName(), true);
-			Refresh();
-		}
-		break;
-	}
-}
-
 bool CBrowseRefsDlg::ConfirmDeleteRef(CString completeRefName)
 {
 	CString csMessage;
@@ -448,17 +387,53 @@ void CBrowseRefsDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
 
 void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 {
-	CMenu popupMenu;
-	popupMenu.CreatePopupMenu();
-
 	CPoint clientPoint=point;
 	m_RefTreeCtrl.ScreenToClient(&clientPoint);
 
 	HTREEITEM hTreeItem=m_RefTreeCtrl.HitTest(clientPoint);
 	if(hTreeItem!=NULL)
-	{
 		m_RefTreeCtrl.Select(hTreeItem,TVGN_CARET);
-		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreeItem);
+
+	ShowContextMenu(point,hTreeItem,VectorPShadowTree());
+}
+
+
+void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
+{
+	std::vector<CShadowTree*> selectedLeafs;
+	selectedLeafs.reserve(m_ListRefLeafs.GetSelectedCount());
+	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
+	while(pos)
+	{
+		selectedLeafs.push_back(
+			(CShadowTree*)m_ListRefLeafs.GetItemData(
+				m_ListRefLeafs.GetNextSelectedItem(pos)));
+	}
+
+	ShowContextMenu(point,m_RefTreeCtrl.GetSelectedItem(),selectedLeafs);
+}
+
+void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs)
+{
+	CMenu popupMenu;
+	popupMenu.CreatePopupMenu();
+
+	if(selectedLeafs.size()==1)
+	{
+		popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
+		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
+			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteBranch,L"Delete Branch");
+		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
+			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteTag,L"Delete Tag");
+
+//		CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
+//		if(pTree==NULL)
+//			return;
+	}
+
+	if(hTreePos!=NULL)
+	{
+		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreePos);
 		if(pTree->IsFrom(L"refs/remotes"))
 		{
 //			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
@@ -470,9 +445,31 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 			popupMenu.AppendMenu(MF_STRING,eCmd_CreateTag,L"Create Tag");
 	}
 
+
 	eCmd cmd=(eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
 	switch(cmd)
 	{
+	case eCmd_ViewLog:
+		{
+			CLogDlg dlg;
+			dlg.SetStartRef(selectedLeafs[0]->m_csRefHash);
+			dlg.DoModal();
+		}
+		break;
+	case eCmd_DeleteBranch:
+		{
+			if(ConfirmDeleteRef(selectedLeafs[0]->GetRefName()))
+				DoDeleteRef(selectedLeafs[0]->GetRefName(), true);
+			Refresh();
+		}
+		break;
+	case eCmd_DeleteTag:
+		{
+			if(ConfirmDeleteRef(selectedLeafs[0]->GetRefName()))
+				DoDeleteRef(selectedLeafs[0]->GetRefName(), true);
+			Refresh();
+		}
+		break;
 	case eCmd_AddRemote:
 		{
 			CAddRemoteDlg(this).DoModal();

@@ -37,6 +37,7 @@ public:
 	TShadowTreeMap	m_ShadowTree;
 	CShadowTree*	m_pParent;
 };
+typedef std::vector<CShadowTree*> VectorPShadowTree;
 
 class CBrowseRefsDlg : public CResizableStandAloneDialog
 {
@@ -94,5 +95,7 @@ public:
 
 	void		OnContextMenu_ListRefLeafs(CPoint point);
 	void		OnContextMenu_RefTreeCtrl(CPoint point);
+
+	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
