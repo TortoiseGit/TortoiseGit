@@ -90,6 +90,8 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	pHead->GetWindowText( HeadText ); 
 	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
 	EnableSaveRestore(_T("BranchTagDlg"));
+
+	OnCbnSelchangeComboboxexBranch();
 	return TRUE;
 
 
@@ -115,7 +117,7 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 {
 	// TODO: Add your control notification handler code here
 	
-	if(this->m_ChooseVersioinBranch.GetString().Left(6)==_T("origin"))
+	if(this->m_ChooseVersioinBranch.GetString().Left(8)==_T("remotes/"))
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
 	else
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
