@@ -476,6 +476,9 @@ int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, 
 	if(mask& CGit::LOG_INFO_FOLLOW)
 		param += _T(" --follow ");
 
+	if(mask& CGit::LOG_INFO_SHOW_MERGEDFILE)
+		param += _T(" -c ");
+
 	if(from != NULL && to != NULL)
 	{
 		CString range;

@@ -988,6 +988,11 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 
 		if(log[pos]==':')
 		{
+			bool merged=false;
+			if(log[pos+1] ==';')
+			{
+				merged=true;
+			}
 			int end=log.find(0,pos);
 			int actionstart=-1;
 			int numfile=1;

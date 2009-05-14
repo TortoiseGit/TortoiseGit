@@ -8,7 +8,7 @@
 #define LOG_DATA_MAGIC		0x99aa00FF
 #define LOG_DATA_ITEM_MAGIC 0x0F8899CC
 #define LOG_DATA_FILE_MAGIC 0x19999FFF
-#define LOG_INDEX_VERSION   0x3 
+#define LOG_INDEX_VERSION   0x4 
 
 struct SLogCacheIndexHeader 
 {

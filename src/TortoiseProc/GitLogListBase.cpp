@@ -1731,6 +1731,7 @@ void CGitLogListBase::FetchFullLogInfo(CString &from, CString &to)
 		CGit::LOG_INFO_STAT|
 		CGit::LOG_INFO_FILESTATE|
 		CGit::LOG_INFO_DETECT_COPYRENAME|
+		CGit::LOG_INFO_SHOW_MERGEDFILE |
 		m_ShowMask;
 
 	CTGitPath *path;

@@ -145,6 +145,10 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 					else
 						break;
 				}
+				if(m_ParentHash.size()>1)
+				{
+					int a=1;
+				}
 				break;
 			case LOG_REV_COMMIT_FILE:
 				break;
@@ -176,6 +180,7 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 	
 	if(filebegin>=0)
 	{
+		
 		filelist.append(log,filebegin,pos);	
 		this->m_Files.ParserFromLog(filelist);
 		this->m_Action=this->m_Files.GetAction();
@@ -248,7 +253,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		BYTE_VECTOR onelog;
 		TCHAR oldmark=this->m_Mark;
 	
-		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME);
+		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME|CGit::LOG_INFO_SHOW_MERGEDFILE);
 		CString oldhash=m_CommitHash;
 		GIT_REV_LIST oldlist=this->m_ParentHash;
 		ParserFromLog(onelog);

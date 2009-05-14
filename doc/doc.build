@@ -20,6 +20,7 @@ All user/site specific configuration is stored in doc.build.user.
 	
 	<!-- default: we don't clean first -->
 	<property name="cleanup" value="" overwrite="false" />
+	<property name="nant.settings.currentframework" value="net-3.5" />
 
 	<include buildfile="doc.build.include"/>
 

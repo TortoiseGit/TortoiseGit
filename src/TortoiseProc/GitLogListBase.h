@@ -152,7 +152,7 @@ public:
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  FillGitShortLog();
-	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE,CString *from=NULL,CString *to=NULL);
+	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);
