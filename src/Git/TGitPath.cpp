@@ -989,7 +989,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 		if(log[pos]==':')
 		{
 			bool merged=false;
-			if(log[pos+1] ==';')
+			if(log[pos+1] ==':')
 			{
 				merged=true;
 			}
@@ -1038,16 +1038,20 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 
 			if(GitPath)
 			{
-				this->m_Action|=GitPath->ParserAction( log[actionstart] );	
-							
+				GitPath->ParserAction( log[actionstart] );	
+				GitPath->m_Action |=merged?CTGitPath::LOGACTIONS_MERGED:0;
+				m_Action |=GitPath->m_Action;
+
 			}else
 			{	
 				int ac=path.ParserAction(log[actionstart] );
+				ac |= merged?CTGitPath::LOGACTIONS_MERGED:0;	
 
 				path.SetFromGit(pathname1,&pathname2);
 				path.m_Action=ac;
 					//action must be set after setfromgit. SetFromGit will clear all status. 
 				this->m_Action|=ac;
+				
 				AddPath(path);
 				
 			}
@@ -1906,6 +1910,9 @@ CString CTGitPath::GetActionName(int action)
 		return _T("Added");
 	if(action  & CTGitPath::LOGACTIONS_DELETED)
 		return _T("Deleted");
+	if(action  & CTGitPath::LOGACTIONS_MERGED )
+		return _T("Merged");
+
 	if(action  & CTGitPath::LOGACTIONS_MODIFIED)
 		return _T("Modified");
 	if(action  & CTGitPath::LOGACTIONS_REPLACED)

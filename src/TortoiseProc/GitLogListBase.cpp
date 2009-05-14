@@ -1630,8 +1630,8 @@ public:
 		m_ByteCollector.append(data,size);
 
 		//Find loginfo endmarker
-		static const BYTE dataToFind[]={0,0};
-		int found=m_ByteCollector.findData(dataToFind,2);
+		static const BYTE dataToFind[]={0,0,'#','<'};
+		int found=m_ByteCollector.findData(dataToFind,4);
 		if(found<0)
 			return m_ploglist->m_bExitThread;//Not found
 		found+=2;//Position after loginfo end-marker
