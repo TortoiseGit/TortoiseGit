@@ -4,7 +4,7 @@
 	<?include VersionNumberInclude.wxi ?>
 
 	<!-- General ..................................................................... -->
-	<?define VersionNumberInternal="$(var.MajorVersion).$(var.MinorVersion).$(var.BuildVersion)" ?>
+	<?define VersionNumberInternal="$(var.MajorVersion).$(var.MinorVersion).$(var.MicroVersion).$(var.BuildVersion)" ?>
 	<?define VersionNumberUserVisible="$(var.MajorVersion).$(var.MinorVersion).$(var.MicroVersion).$(var.BuildVersion)" ?>
 	<?define ProductName="TortoiseGit" ?>
 
