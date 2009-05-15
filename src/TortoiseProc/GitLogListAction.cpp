@@ -107,7 +107,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 
 	theApp.DoWaitCursor(1);
 	bool bOpenWith = false;
-	switch (cmd)
+	switch (cmd&0xFFFF)
 		{
 			case ID_GNUDIFF1:
 			{
@@ -467,6 +467,55 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				}
 
 				CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
+			}
+			break;
+		case ID_DELETE:
+			{
+				int index = cmd>>16;
+				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) == m_HashMap.end() )
+				{
+					CMessageBox::Show(NULL,IDS_ERROR_NOREF,IDS_APPNAME,MB_OK|MB_ICONERROR);
+					return;
+				}
+				if( index >= m_HashMap[pSelLogEntry->m_CommitHash].size())
+				{
+					CMessageBox::Show(NULL,IDS_ERROR_INDEX,IDS_APPNAME,MB_OK|MB_ICONERROR);
+					return;				
+				}
+				CString ref,msg;
+				ref=m_HashMap[pSelLogEntry->m_CommitHash][index];
+				
+				msg=CString(_T("<ct=0x0000FF>Delete</ct> <b>"))+ref;
+				msg+=_T("</b>\n\n Are you sure?");
+				if( CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_YESNO) == IDYES )
+				{
+					CString shortname;
+					CString cmd;
+					if(this->GetShortName(ref,shortname,_T("refs/heads/")))
+					{
+						cmd.Format(_T("git.exe branch -D %s"),shortname);
+					}
+
+					if(this->GetShortName(ref,shortname,_T("refs/remotes/")))
+					{
+						cmd.Format(_T("git.exe branch -r -D %s"),shortname);
+					}
+
+					if(this->GetShortName(ref,shortname,_T("refs/tags/")))
+					{
+						cmd.Format(_T("git.exe tag -d %s"),shortname);
+					}
+
+					CString out;
+					if(g_Git.Run(cmd,&out,CP_UTF8))
+					{
+						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					}
+					this->ReloadHashMap();
+					CRect rect;
+					this->GetItemRect(FirstSelect,&rect,LVIR_BOUNDS);
+					this->InvalidateRect(rect);
+				}
 			}
 			break;
 		default:

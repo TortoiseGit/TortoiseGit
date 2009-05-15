@@ -1039,6 +1039,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
+	CIconMenu submenu;
 	if (popup.CreatePopupMenu())
 	{
 
@@ -1228,6 +1229,38 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
 			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
+
+
+		if (GetSelectedCount() == 1)
+		{
+			if(m_ContextMenuMask &GetContextMenuBit(ID_DELETE))
+			{
+				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
+				{
+					CString str;
+					str.LoadString(IDS_DELETE_BRANCHTAG);
+					if( m_HashMap[pSelLogEntry->m_CommitHash].size() == 1 )
+					{
+						str+=_T(" ");
+						str+=m_HashMap[pSelLogEntry->m_CommitHash].at(0);
+						popup.AppendMenuIcon(ID_DELETE,str+_T("..."),IDI_DELETE);
+					}
+					else if( m_HashMap[pSelLogEntry->m_CommitHash].size() > 1 )
+					{
+						
+						submenu.CreatePopupMenu();
+						for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
+						{
+							submenu.AppendMenuIcon(ID_DELETE+(i<<16),m_HashMap[pSelLogEntry->m_CommitHash][i]+_T("..."));
+						}
+
+						popup.AppendMenu(MF_BYPOSITION|MF_POPUP|MF_STRING,(UINT) submenu.m_hMenu,str); 
+
+					}
+					
+				}
+			}
+		}
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);

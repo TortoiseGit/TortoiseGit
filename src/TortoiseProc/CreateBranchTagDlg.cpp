@@ -18,6 +18,7 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
 {
 	m_bIsTag=0;
 	m_bSwitch = 0;	// default switch to checkbox not selected
+	m_bTrack=0;
 }
 
 CCreateBranchTagDlg::~CCreateBranchTagDlg()
