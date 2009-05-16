@@ -128,7 +128,9 @@ BOOL CTortoiseProcApp::InitInstance()
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
 
-	
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken,&gdiplusStartupInput,NULL);
+
 	if(!CheckMsysGitDir())
 	{
 		if(CMessageBox::Show(NULL,_T("MSysGit(http://code.google.com/p/msysgit) have not installed Correctly\n\
@@ -616,6 +618,8 @@ void CTortoiseProcApp::EnableCrashHandler()
 
 int CTortoiseProcApp::ExitInstance()
 {
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
+
 	CWinAppEx::ExitInstance();
 	if (retSuccess)
 		return 0;

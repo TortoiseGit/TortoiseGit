@@ -60,6 +60,7 @@ public:
 	void CheckUpgrade();
 	void EnableCrashHandler();
 
+	ULONG_PTR m_gdiplusToken;
 // Implementation
 
 private:

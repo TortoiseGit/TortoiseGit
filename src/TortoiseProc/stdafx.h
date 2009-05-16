@@ -46,6 +46,7 @@
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
 #include <atlbase.h>
+#include <gdiplus.h>
 
 #ifndef LVS_EX_DOUBLEBUFFER
 #define LVS_EX_DOUBLEBUFFER     0x00010000
