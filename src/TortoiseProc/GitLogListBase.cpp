@@ -469,7 +469,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 }
 
 void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
-                                      const COLORREF& col,int top
+                                      const COLORREF& col,const COLORREF& activeColor, int top
 									  )  
 {
 	int h = laneHeight / 2;
@@ -649,16 +649,37 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 
 	std::vector<int>& lanes=data->m_Lanes;
 	UINT laneNum = lanes.size();
-	UINT mergeLane = 0;
+	UINT activeLane = 0;
 	for (UINT i = 0; i < laneNum; i++)
 		if (Lanes::isMerge(lanes[i])) {
-			mergeLane = i;
+			activeLane = i;
 			break;
 		}
 
 	int x1 = 0, x2 = 0;
 	int maxWidth = rect.Width();
 	int lw = 3 * rect.Height() / 4; //laneWidth() 
+
+	COLORREF activeColor = m_LineColors[activeLane % Lanes::COLORS_NUM];
+	//if (opt.state & QStyle::State_Selected)
+	//	activeColor = blend(activeColor, opt.palette.highlightedText().color(), 208);
+	
+
+	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; i++) 
+	{
+
+		x1 = x2;
+		x2 += lw;
+
+		int ln = lanes[i];
+		if (ln == Lanes::EMPTY)
+			continue;
+
+		COLORREF color = i == activeLane ? activeColor : m_LineColors[i % Lanes::COLORS_NUM];
+		paintGraphLane(hdc, rect.Height(),ln, x1, x2, color,activeColor, rect.top);
+	}
+
+#if 0
 	for (UINT i = 0; i < laneNum && x2 < maxWidth; i++) {
 
 		x1 = x2;
@@ -669,14 +690,15 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 			continue;
 
 		UINT col = (  Lanes:: isHead(ln) ||Lanes:: isTail(ln) || Lanes::isJoin(ln)
-		            || ln ==Lanes:: CROSS_EMPTY) ? mergeLane : i;
+		            || ln ==Lanes:: CROSS_EMPTY) ? activeLane : i;
 
 		if (ln == Lanes::CROSS) {
 			paintGraphLane(hdc, rect.Height(),Lanes::NOT_ACTIVE, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
-			paintGraphLane(hdc, rect.Height(),Lanes::CROSS, x1, x2, m_LineColors[mergeLane % Lanes::COLORS_NUM],rect.top);
+			paintGraphLane(hdc, rect.Height(),Lanes::CROSS, x1, x2, m_LineColors[activeLane % Lanes::COLORS_NUM],rect.top);
 		} else
 			paintGraphLane(hdc, rect.Height(),ln, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
 	}
+#endif
 
 	TRACE(_T("index %d %d\r\n"),index,data->m_Lanes.size());
 }
