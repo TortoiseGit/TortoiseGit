@@ -170,7 +170,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_LOGDLG));
 
-	
+
 	// use the state of the "stop on copy/rename" option from the last time
 	UpdateData(FALSE);
 	

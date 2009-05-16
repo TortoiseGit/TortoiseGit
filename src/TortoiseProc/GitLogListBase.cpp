@@ -167,7 +167,24 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_MESSAGE(MSG_LOADED,OnLoad)
+	ON_WM_MEASUREITEM()
+	ON_WM_MEASUREITEM_REFLECT()
 END_MESSAGE_MAP()
+
+void CGitLogListBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CListCtrl::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+}
+
+void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	//if (m_nRowHeight>0)
+	{
+		lpMeasureItemStruct->itemHeight = 50;
+	}
+}
 
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -468,6 +485,18 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	
 }
 
+static COLORREF blend(const COLORREF& col1, const COLORREF& col2, int amount = 128) {
+
+	// Returns ((256 - amount)*col1 + amount*col2) / 256;
+	return RGB(((256 - amount)*GetRValue(col1)   + amount*GetRValue(col2)  ) / 256,
+	              ((256 - amount)*GetGValue(col1) + amount*GetGValue(col2) ) / 256,
+	              ((256 - amount)*GetBValue(col1)  + amount*GetBValue(col2) ) / 256);
+}
+
+Gdiplus::Color GetGdiColor(COLORREF col)
+{
+	return Gdiplus::Color(GetRValue(col),GetGValue(col),GetBValue(col));
+}
 void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
                                       const COLORREF& col,const COLORREF& activeColor, int top
 									  )  
@@ -484,11 +513,96 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	#define P_270    m , 2 * h+top
 	#define R_CENTER m - r, h - r+top, m - r+d, h - r+top+d
 
+
+	#define DELTA_UR_B 2*(x1 - m), 2*h +top 
+	#define DELTA_UR_E 0*16, 90*16 +top  // -,
+
+	#define DELTA_DR_B 2*(x1 - m), 2*-h +top
+	#define DELTA_DR_E 270*16, 90*16 +top  // -'
+
+	#define DELTA_UL_B 2*(x2 - m), 2*h +top
+	#define DELTA_UL_E 90*16, 90*16 +top //  ,-
+
+	#define DELTA_DL_B 2*(x2 - m),2*-h +top 
+	#define DELTA_DL_E 180*16, 90*16  //  '-
+
+	#define CENTER_UR x1, 2*h, 225
+	#define CENTER_DR x1, 0  , 135
+	#define CENTER_UL x2, 2*h, 315
+	#define CENTER_DL x2, 0  ,  45
+
+
+	Gdiplus::Graphics graphics( hdc );
+
+	// arc
+	switch (type) {
+	case Lanes::JOIN:
+	case Lanes::JOIN_R:
+	case Lanes::HEAD:
+	case Lanes::HEAD_R: 
+	{
+		Gdiplus::LinearGradientBrush gradient(
+								Gdiplus::Point(x1-2, h+top-2),
+								Gdiplus::Point(P_270),
+								GetGdiColor(activeColor),GetGdiColor(col));
+
+		
+		Gdiplus::Pen mypen(&gradient,2);
+		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
+		
+		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
+		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top+h-1, x2-x1+1,laneHeight+1,270,90);
+		//graphics.DrawLine(&mypen,x1-1,h+top,P_270);
+
+		break;
+	}
+	case Lanes::JOIN_L: 
+	{
+	
+		Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
+
+		
+		graphics.DrawArc(&mypen,x1,top+h, x2-x1,laneHeight,270,90);
+
+		break;
+	}
+	case Lanes::TAIL:
+	case Lanes::TAIL_R: 
+	{
+		
+		Gdiplus::LinearGradientBrush gradient(
+								Gdiplus::Point(x1-2, h+top-2),
+								Gdiplus::Point(P_90),
+								GetGdiColor(activeColor),GetGdiColor(col));
+
+		
+		Gdiplus::Pen mypen(&gradient,2);
+
+		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top-h-1, x2-x1+1,laneHeight+1,0,90);
+
+
+#if 0
+		QConicalGradient gradient(CENTER_DR);
+		gradient.setColorAt(0.375, activeCol);
+		gradient.setColorAt(0.625, col);
+		myPen.setBrush(gradient);
+		p->setPen(myPen);
+		p->drawArc(P_CENTER, DELTA_DR);
+#endif
+		break;
+	}
+	default:
+		break;
+	}
+
+
 	//static QPen myPen(Qt::black, 2); // fast path here
 	CPen pen;
 	pen.CreatePen(PS_SOLID,2,col);
 	//myPen.setColor(col);
 	HPEN oldpen=(HPEN)::SelectObject(hdc,(HPEN)pen);
+
+	Gdiplus::Pen myPen(GetGdiColor(col),2);
 
 	//p->setPen(myPen);
 
@@ -502,30 +616,32 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::JOIN:
 	case Lanes::JOIN_R:
 	case Lanes::JOIN_L:
-		DrawLine(hdc,P_90,P_270);
+	case Lanes::CROSS:
+		//DrawLine(hdc,P_90,P_270);
+		graphics.DrawLine(&myPen,P_90,P_270);
 		//p->drawLine(P_90, P_270);
 		break;
-	case Lanes::HEAD:
-	case Lanes::HEAD_R:
 	case Lanes::HEAD_L:
 	case Lanes::BRANCH:
-		DrawLine(hdc,P_CENTER,P_270);
+		//DrawLine(hdc,P_CENTER,P_270);
+		graphics.DrawLine(&myPen,P_CENTER,P_270);
 		//p->drawLine(P_CENTER, P_270);
 		break;
-	case Lanes::TAIL:
-	case Lanes::TAIL_R:
 	case Lanes::TAIL_L:
 	case Lanes::INITIAL:
 	case Lanes::BOUNDARY:
 	case Lanes::BOUNDARY_C:
 	case Lanes::BOUNDARY_R:
 	case Lanes::BOUNDARY_L:
-		DrawLine(hdc,P_90, P_CENTER);
+		//DrawLine(hdc,P_90, P_CENTER);
+		graphics.DrawLine(&myPen,P_90,P_CENTER);
 		//p->drawLine(P_90, P_CENTER);
 		break;
 	default:
 		break;
 	}
+
+	myPen.SetColor(GetGdiColor(activeColor));
 
 	// horizontal line
 	switch (type) {
@@ -536,23 +652,22 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::CROSS:
 	case Lanes::CROSS_EMPTY:
 	case Lanes::BOUNDARY_C:
-		DrawLine(hdc,P_180,P_0);
+		//DrawLine(hdc,P_180,P_0);
+		graphics.DrawLine(&myPen,P_180,P_0);
 		//p->drawLine(P_180, P_0);
 		break;
 	case Lanes::MERGE_FORK_R:
-	case Lanes::JOIN_R:
-	case Lanes::HEAD_R:
-	case Lanes::TAIL_R:
 	case Lanes::BOUNDARY_R:
-		DrawLine(hdc,P_180,P_CENTER);
+		//DrawLine(hdc,P_180,P_CENTER);
+		graphics.DrawLine(&myPen,P_180,P_CENTER);
 		//p->drawLine(P_180, P_CENTER);
 		break;
 	case Lanes::MERGE_FORK_L:
-	case Lanes::JOIN_L:
 	case Lanes::HEAD_L:
 	case Lanes::TAIL_L:
 	case Lanes::BOUNDARY_L:
-		DrawLine(hdc,P_CENTER,P_0);
+		//DrawLine(hdc,P_CENTER,P_0);
+		graphics.DrawLine(&myPen,P_CENTER,P_0);
 		//p->drawLine(P_CENTER, P_0);
 		break;
 	default:

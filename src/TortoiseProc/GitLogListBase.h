@@ -70,6 +70,8 @@ public:
 	BOOL m_IsOldFirst;
 	BOOL m_IsRebaseReplaceGraph;
 
+	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+	void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
