@@ -59,6 +59,8 @@ public:
 	                                        x == BOUNDARY_R || x == BOUNDARY_L); }
 	static inline bool isMerge(int x) { return (x == MERGE_FORK || x == MERGE_FORK_R ||
 	                                     x == MERGE_FORK_L || isBoundary(x)); }
+	static inline bool isActive(int x) { return (x == ACTIVE || x == INITIAL || x == BRANCH ||
+	                                      isMerge(x)); }
 
 	Lanes() {} // init() will setup us later, when data is available
 	bool isEmpty() { return typeVec.empty(); }
