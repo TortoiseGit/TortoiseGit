@@ -45,6 +45,7 @@ public:
 	static CStringA GetUTF8(const CStringA& string);
 	static CString GetUnicode(const CStringA& string);
 	static CStringA ConvertWCHARStringToUTF8(const CString& string);
+	static int GetCPCode(CString & codename);
 #endif
 #ifdef UNICODE
 	static std::string StdGetUTF8(const wide_string& wide);
