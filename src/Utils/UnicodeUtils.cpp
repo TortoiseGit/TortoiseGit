@@ -194,9 +194,13 @@ int CUnicodeUtils::GetCPCode(CString &codename)
 		
 	};
 	static CodeMap *p=map;
+	codename=codename.MakeLower();
 	while(p->m_CodeName != NULL)
 	{
-		if(CString(p->m_CodeName).MakeLower() == codename)
+		CString str = p->m_CodeName;
+		str=str.MakeLower();
+
+		if( str == codename)
 			return p->m_Code;
 		p++;
 	}

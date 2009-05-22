@@ -470,11 +470,10 @@ void CCommitDlg::OnOK()
 	//	g_Git.Run(cmd,&out);
 
 		CString tempfile=::GetTempFile();
-		CFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
-		CStringA log=CUnicodeUtils::GetUTF8( m_sLogMessage);
-		file.Write(log,log.GetLength());
+		
+		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);
 		//file.WriteString(m_sLogMessage);
-		file.Close();
+				
 	
 		out =_T("");
 		CString amend;

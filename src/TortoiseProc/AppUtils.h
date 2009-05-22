@@ -195,6 +195,8 @@ public:
 	static CString ChooseRepository(CString *path);
 
 	static bool SendPatchMail(CTGitPathList &pathlist,bool autoclose=false);
+
+	static int  SaveCommitUnicodeFile(CString &filename, CString &mesage);
 	
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);

@@ -1989,3 +1989,31 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 	}
 	return false;
 }
+
+int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
+{
+	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
+	CString cmd,output;
+	int cp=CP_UTF8;
+
+	cmd=_T("git.exe config i18n.commitencoding");
+	if(g_Git.Run(cmd,&output,CP_ACP))
+		cp=CP_UTF8;
+	
+	int start=0;
+	output=output.Tokenize(_T("\n"),start);
+	cp=CUnicodeUtils::GetCPCode(output);	
+
+	int len=message.GetLength();
+
+	char * buf;
+	buf = new char[len*4 + 4];
+	SecureZeroMemory(buf, (len*4 + 4));
+
+	int lengthIncTerminator = WideCharToMultiByte(cp, 0, message, -1, buf, len*4, NULL, NULL);
+
+	file.Write(buf,lengthIncTerminator-1);
+	file.Close();
+	delete buf;
+	return 0;
+}
