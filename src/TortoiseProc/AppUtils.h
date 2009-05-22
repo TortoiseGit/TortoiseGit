@@ -197,7 +197,9 @@ public:
 	static bool SendPatchMail(CTGitPathList &pathlist,bool autoclose=false);
 
 	static int  SaveCommitUnicodeFile(CString &filename, CString &mesage);
-	
+
+	static int  GetLogOutputEncode();
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

@@ -7,6 +7,7 @@
 #include <map>
 #include "UnicodeUtils.h"
 
+int CGit::m_LogEncode=CP_UTF8;
 
 static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
 {

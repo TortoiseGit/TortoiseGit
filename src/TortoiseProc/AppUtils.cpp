@@ -1989,7 +1989,27 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 	}
 	return false;
 }
+int CAppUtils::GetLogOutputEncode()
+{
+	CString cmd,output;
+	int start=0;
+	cmd=_T("git.exe config i18n.logOutputEncoding");
+	if(g_Git.Run(cmd,&output,CP_ACP))
+	{
+		cmd=_T("git.exe config i18n.commitencoding");
+		if(g_Git.Run(cmd,&output,CP_ACP))
+			return CP_UTF8;
+	
+		int start=0;
+		output=output.Tokenize(_T("\n"),start);
+		return CUnicodeUtils::GetCPCode(output);	
 
+	}else
+	{
+		output=output.Tokenize(_T("\n"),start);
+		return CUnicodeUtils::GetCPCode(output);
+	}
+}
 int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 {
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );

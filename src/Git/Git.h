@@ -33,7 +33,7 @@ private:
 public:
 	static BOOL CheckMsysGitDir();
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
-
+	static int m_LogEncode;
 //	static CString m_MsysGitPath;
 	CGit(void);
 	~CGit(void);

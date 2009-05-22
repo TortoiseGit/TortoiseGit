@@ -423,6 +423,8 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
+		
+		CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
 
 		retSuccess = cmd->Execute();
 		delete cmd;
