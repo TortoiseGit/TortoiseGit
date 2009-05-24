@@ -11,6 +11,28 @@
 #include "SinglePropSheetDlg.h"
 #include "MessageBox.h"
 
+void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
+{
+	if (control == NULL)
+		return;
+	// set the sort arrow
+	CHeaderCtrl * pHeader = control->GetHeaderCtrl();
+	HDITEM HeaderItem = {0};
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i=0; i<pHeader->GetItemCount(); ++i)
+	{
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
+	}
+	if (nColumn >= 0)
+	{
+		pHeader->GetItem(nColumn, &HeaderItem);
+		HeaderItem.fmt |= (bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(nColumn, &HeaderItem);
+	}
+}
+
 // CBrowseRefsDlg dialog
 
 IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
@@ -271,6 +293,9 @@ void CBrowseRefsDlg::OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult)
 void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 {
 	m_ListRefLeafs.DeleteAllItems();
+	m_currSortCol = -1;
+	m_currSortDesc = false;
+	SetSortArrow(&m_ListRefLeafs,-1,false);
 
 	CShadowTree* pTree=(CShadowTree*)(m_RefTreeCtrl.GetItemData(treeNode));
 	if(pTree==NULL)
@@ -578,6 +603,7 @@ public:
 
 };
 
+
 void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -593,4 +619,7 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 
 	CRefLeafListCompareFunc compareFunc(&m_ListRefLeafs, m_currSortCol, m_currSortDesc);
 	m_ListRefLeafs.SortItemsEx(&CRefLeafListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
+
+	SetSortArrow(&m_ListRefLeafs,m_currSortCol,!m_currSortDesc);
 }
+
