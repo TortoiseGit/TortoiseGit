@@ -17,7 +17,9 @@ IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
 
 CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 :	CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent),
-	m_cmdPath(cmdPath)
+	m_cmdPath(cmdPath),
+	m_currSortCol(-1),
+	m_currSortDesc(false)
 {
 
 }
@@ -535,7 +537,7 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 class CRefLeafListCompareFunc
 {
 public:
-	CRefLeafListCompareFunc(CListCtrl* pList, int col):m_col(col),m_pList(pList){}
+	CRefLeafListCompareFunc(CListCtrl* pList, int col, bool desc):m_col(col),m_desc(desc),m_pList(pList){}
 
 	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	{
@@ -551,21 +553,26 @@ public:
 
 	int Compare(CShadowTree* pLeft, CShadowTree* pRight)
 	{
+		int result=CompareNoDesc(pLeft,pRight);
+		if(m_desc)
+			return -result;
+		return result;
+	}
+
+	int CompareNoDesc(CShadowTree* pLeft, CShadowTree* pRight)
+	{
 		switch(m_col)
 		{
 		case CBrowseRefsDlg::eCol_Name:	return pLeft->GetRefName().CompareNoCase(pRight->GetRefName());
-			break;
 		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
-			break;
 		case CBrowseRefsDlg::eCol_Msg:	return pLeft->m_csSubject.CompareNoCase(pRight->m_csSubject);
-			break;
 		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
-			break;
 		}
 		return 0;
 	}
 
 	int m_col;
+	bool m_desc;
 	CListCtrl* m_pList;
 
 
@@ -576,6 +583,14 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
 
-	CRefLeafListCompareFunc compareFunc(&m_ListRefLeafs,pNMLV->iSubItem);
+	if(m_currSortCol == pNMLV->iSubItem)
+		m_currSortDesc = !m_currSortDesc;
+	else
+	{
+		m_currSortCol  = pNMLV->iSubItem;
+		m_currSortDesc = false;
+	}
+
+	CRefLeafListCompareFunc compareFunc(&m_ListRefLeafs, m_currSortCol, m_currSortDesc);
 	m_ListRefLeafs.SortItemsEx(&CRefLeafListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
 }

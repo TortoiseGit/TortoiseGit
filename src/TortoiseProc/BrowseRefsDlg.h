@@ -97,6 +97,9 @@ private:
 	CShadowTree		m_TreeRoot;
 	CTreeCtrl		m_RefTreeCtrl;
 	CListCtrl		m_ListRefLeafs;
+
+	int				m_currSortCol;
+	bool			m_currSortDesc;
 	afx_msg void OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult);
 public:
 
