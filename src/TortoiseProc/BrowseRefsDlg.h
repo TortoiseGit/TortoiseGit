@@ -29,6 +29,7 @@ public:
 	CString			m_csRefName;
 	CString			m_csRefHash;
 	CString			m_csDate;
+	CString			m_csDate_Iso8601;
 	CString			m_csAuthor;
 	CString			m_csSubject;
 
@@ -56,6 +57,14 @@ public:
 		eCmd_CreateTag,
 		eCmd_DeleteBranch,
 		eCmd_DeleteTag
+	};
+
+	enum eCol
+	{
+		eCol_Name,
+		eCol_Date,
+		eCol_Msg,
+		eCol_Hash
 	};
 
 // Dialog Data
@@ -98,4 +107,5 @@ public:
 
 	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 };

@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CBrowseRefsDlg::OnBnClickedOk)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_REF, &CBrowseRefsDlg::OnTvnSelchangedTreeRef)
 	ON_WM_CONTEXTMENU()
+	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnColumnclickListRefLeafs)
 END_MESSAGE_MAP()
 
 
@@ -56,10 +57,10 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
-	m_ListRefLeafs.InsertColumn(0,L"Name",0,150);
-	m_ListRefLeafs.InsertColumn(1,L"Date Last Commit",0,100);
-	m_ListRefLeafs.InsertColumn(2,L"Last Commit",0,300);
-	m_ListRefLeafs.InsertColumn(3,L"Hash",0,80);
+	m_ListRefLeafs.InsertColumn(eCol_Name,	L"Name",0,150);
+	m_ListRefLeafs.InsertColumn(eCol_Date,	L"Date Last Commit",0,100);
+	m_ListRefLeafs.InsertColumn(eCol_Msg,	L"Last Commit",0,300);
+	m_ListRefLeafs.InsertColumn(eCol_Hash,	L"Hash",0,80);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -145,7 +146,8 @@ void CBrowseRefsDlg::Refresh(bool bSelectCurHead)
 			  L"%(objectname)%04"
 			  L"%(authordate:relative)%04"
 			  L"%(subject)%04"
-			  L"%(authorname)",
+			  L"%(authorname)%04"
+			  L"%(authordate:iso8601)",
 			  &allRefs,CP_UTF8);
 
 	int linePos=0;
@@ -175,10 +177,11 @@ void CBrowseRefsDlg::Refresh(bool bSelectCurHead)
 		CString values=iterRefMap->second;
 
 		int valuePos=0;
-		treeLeaf.m_csRefHash= values.Tokenize(L"\04",valuePos);
-		treeLeaf.m_csDate=    values.Tokenize(L"\04",valuePos);
-		treeLeaf.m_csSubject= values.Tokenize(L"\04",valuePos);
-		treeLeaf.m_csAuthor=  values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csDate=			values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csDate_Iso8601=	values.Tokenize(L"\04",valuePos);
 	}
 
 
@@ -283,10 +286,10 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		int indexItem=m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(),L"");
 
 		m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
-		m_ListRefLeafs.SetItemText(indexItem,0,refNamePrefix+pTree->m_csRefName);
-		m_ListRefLeafs.SetItemText(indexItem,1,pTree->m_csDate);
-		m_ListRefLeafs.SetItemText(indexItem,2,pTree->m_csSubject);
-		m_ListRefLeafs.SetItemText(indexItem,3,pTree->m_csRefHash);
+		m_ListRefLeafs.SetItemText(indexItem,eCol_Name,	refNamePrefix+pTree->m_csRefName);
+		m_ListRefLeafs.SetItemText(indexItem,eCol_Date,	pTree->m_csDate);
+		m_ListRefLeafs.SetItemText(indexItem,eCol_Msg,	pTree->m_csSubject);
+		m_ListRefLeafs.SetItemText(indexItem,eCol_Hash,	pTree->m_csRefHash);
 	}
 	else
 	{
@@ -527,4 +530,52 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+class CRefLeafListCompareFunc
+{
+public:
+	CRefLeafListCompareFunc(CListCtrl* pList, int col):m_col(col),m_pList(pList){}
+
+	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+	{
+		return ((CRefLeafListCompareFunc*)lParamSort)->Compare(lParam1,lParam2);
+	}
+
+	int Compare(LPARAM lParam1, LPARAM lParam2)
+	{
+		return Compare(
+			(CShadowTree*)m_pList->GetItemData(lParam1), 
+			(CShadowTree*)m_pList->GetItemData(lParam2));
+	}
+
+	int Compare(CShadowTree* pLeft, CShadowTree* pRight)
+	{
+		switch(m_col)
+		{
+		case CBrowseRefsDlg::eCol_Name:	return pLeft->GetRefName().CompareNoCase(pRight->GetRefName());
+			break;
+		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
+			break;
+		case CBrowseRefsDlg::eCol_Msg:	return pLeft->m_csSubject.CompareNoCase(pRight->m_csSubject);
+			break;
+		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
+			break;
+		}
+		return 0;
+	}
+
+	int m_col;
+	CListCtrl* m_pList;
+
+
+};
+
+void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+
+	CRefLeafListCompareFunc compareFunc(&m_ListRefLeafs,pNMLV->iSubItem);
+	m_ListRefLeafs.SortItemsEx(&CRefLeafListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
 }
