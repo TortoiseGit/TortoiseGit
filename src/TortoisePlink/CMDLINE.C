@@ -306,7 +306,7 @@ int cmdline_process_param(char *p, char *value, int need_save, Config *cfg)
 	cfg->remote_cmd_ptr2 = NULL;
 	cfg->nopty = TRUE;      /* command => no terminal */
     }
-    if (!strcmp(p, "-P")) {
+    if ((!strcmp(p, "-P"))||(!strcmp(p, "-p"))) {
 	RETURN(2);
 	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
 	SAVEABLE(1);		       /* lower priority than -ssh,-telnet */
