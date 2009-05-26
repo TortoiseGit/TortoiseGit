@@ -78,7 +78,9 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 
-	void			Refresh(bool bSelectCurHead=false);
+	CString			GetSelectedRef(bool onlyIfLeaf);
+
+	void			Refresh(CString selectRef = CString());
 
 	CShadowTree&	GetTreeNode(CString refName, CShadowTree* pTreePos=NULL, bool bCreateIfNotExist=false);
 
@@ -111,4 +113,13 @@ public:
 	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDestroy();
+	afx_msg void OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
+
+
+public:
+	CString m_initialRef;
+	CString m_pickedRef;
+
+	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString()); 
 };

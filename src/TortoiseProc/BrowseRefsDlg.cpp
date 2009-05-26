@@ -41,7 +41,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 :	CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent),
 	m_cmdPath(cmdPath),
 	m_currSortCol(-1),
-	m_currSortDesc(false)
+	m_currSortDesc(false),
+	m_initialRef(L"HEAD")
 {
 
 }
@@ -63,6 +64,8 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_REF, &CBrowseRefsDlg::OnTvnSelchangedTreeRef)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnColumnclickListRefLeafs)
+	ON_WM_DESTROY()
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMDblclkListRefLeafs)
 END_MESSAGE_MAP()
 
 
@@ -89,7 +92,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
-	Refresh(true);
+	Refresh(m_initialRef);
 
 
 	return TRUE;
@@ -123,37 +126,47 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
 
 typedef std::map<CString,CString> MAP_STRING_STRING;
 
-void CBrowseRefsDlg::Refresh(bool bSelectCurHead)
+CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf)
+{
+	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
+	//List ctrl selection?
+	if(pos)
+	{
+		//A leaf is selected
+		CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(
+				m_ListRefLeafs.GetNextSelectedItem(pos));
+		return pTree->GetRefName();
+	}
+	else if(!onlyIfLeaf)
+	{
+		//Tree ctrl selection?
+		HTREEITEM hTree=m_RefTreeCtrl.GetSelectedItem();
+		if(hTree!=NULL)
+		{
+			CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
+			return pTree->GetRefName();
+		}
+	}
+	return CString();//None
+}
+
+void CBrowseRefsDlg::Refresh(CString selectRef)
 {
 //	m_RefMap.clear();
 //	g_Git.GetMapHashToFriendName(m_RefMap);
 		
-	CString selectRef;
-	if(bSelectCurHead)
+	if(!selectRef.IsEmpty())
 	{
-		g_Git.Run(L"git symbolic-ref HEAD",&selectRef,CP_UTF8);
-		selectRef.Trim(L"\r\n\t ");
+		if(selectRef == "HEAD")
+		{
+			selectRef.Empty();
+			g_Git.Run(L"git symbolic-ref HEAD",&selectRef,CP_UTF8);
+			selectRef.Trim(L"\r\n\t ");
+		}
 	}
 	else
 	{
-		POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
-		//List ctrl selection?
-		if(pos)
-		{
-			CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(
-					m_ListRefLeafs.GetNextSelectedItem(pos));
-			selectRef=pTree->GetRefName();
-		}
-		else
-		{
-			//Tree ctrl selection?
-			HTREEITEM hTree=m_RefTreeCtrl.GetSelectedItem();
-			if(hTree!=NULL)
-			{
-				CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTree);
-				selectRef=pTree->GetRefName();
-			}
-		}
+		selectRef = GetSelectedRef(false);
 	}
 
 	m_RefTreeCtrl.DeleteAllItems();
@@ -467,7 +480,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(pTree->IsFrom(L"refs/remotes"))
 		{
 //			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
-			popupMenu.AppendMenu(MF_STRING,eCmd_ManageRemotes,L"Manage Remotes");
+			if(!m_cmdPath.IsEmpty())
+				popupMenu.AppendMenu(MF_STRING,eCmd_ManageRemotes,L"Manage Remotes");
 		}
 		else if(pTree->IsFrom(L"refs/heads"))
 			popupMenu.AppendMenu(MF_STRING,eCmd_CreateBranch,L"Create Branch");
@@ -621,5 +635,32 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 	m_ListRefLeafs.SortItemsEx(&CRefLeafListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
 
 	SetSortArrow(&m_ListRefLeafs,m_currSortCol,!m_currSortDesc);
+}
+
+void CBrowseRefsDlg::OnDestroy()
+{
+	m_pickedRef = GetSelectedRef(true);
+
+	CResizableStandAloneDialog::OnDestroy();
+}
+
+void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	*pResult = 0;
+
+	EndDialog(IDOK);
+}
+
+CString CBrowseRefsDlg::PickRef(bool returnAsHash, CString initialRef)
+{
+	CBrowseRefsDlg dlg(CString(),NULL);
+	
+	dlg.m_initialRef = initialRef;
+
+	if(dlg.DoModal() != IDOK)
+		return CString();
+
+	return dlg.m_pickedRef;
 }
 
