@@ -95,7 +95,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	Refresh(m_initialRef);
 
 
-	return TRUE;
+	m_ListRefLeafs.SetFocus();
+	return FALSE;
 }
 
 CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
@@ -123,6 +124,34 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
 	nextNode.m_pParent=this;
 	return &nextNode;
 }
+
+CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
+{
+	if(IsLeaf())
+	{
+		if(m_csRefName.GetLength() > partialRefName.GetLength())
+			return NULL;
+		if(partialRefName.Right(m_csRefName.GetLength()) == m_csRefName)
+		{
+			//Match of leaf name. Try match on total name.
+			CString totalRefName = GetRefName();
+			if(totalRefName.Right(partialRefName.GetLength()) == partialRefName)
+				return this; //Also match. Found.
+		}
+	}
+	else
+	{
+		//Not a leaf. Search all nodes.
+		for(TShadowTreeMap::iterator itShadowTree = m_ShadowTree.begin(); itShadowTree != m_ShadowTree.end(); ++itShadowTree)
+		{
+			CShadowTree* pSubtree = itShadowTree->second.FindLeaf(partialRefName);
+			if(pSubtree != NULL)
+				return pSubtree; //Found
+		}
+	}
+	return NULL;//Not found
+}
+
 
 typedef std::map<CString,CString> MAP_STRING_STRING;
 
@@ -222,14 +251,16 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	}
 
 
-	if(selectRef.IsEmpty() || !SelectRef(selectRef))
+	if(selectRef.IsEmpty() || !SelectRef(selectRef, false))
 		//Probably not on a branch. Select root node.
 		m_RefTreeCtrl.Expand(m_TreeRoot.m_hTree,TVE_EXPAND);
 
 }
 
-bool CBrowseRefsDlg::SelectRef(CString refName)
+bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 {
+	if(!bExactMatch)
+		refName = GetFullRefName(refName);
 	if(wcsnicmp(refName,L"refs/",5)!=0)
 		return false; // Not a ref name
 
@@ -421,6 +452,15 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 	}
 	return true;
 }
+
+CString CBrowseRefsDlg::GetFullRefName(CString partialRefName)
+{
+	CShadowTree* pLeaf = m_TreeRoot.FindLeaf(partialRefName);
+	if(pLeaf == NULL)
+		return CString();
+	return pLeaf->GetRefName();
+}
+
 
 void CBrowseRefsDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
 {

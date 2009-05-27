@@ -26,6 +26,8 @@ public:
 		return wcsncmp(GetRefName(),from,wcslen(from))==0;
 	}
 
+	CShadowTree*	FindLeaf(CString partialRefName);
+
 	CString			m_csRefName;
 	CString			m_csRefHash;
 	CString			m_csDate;
@@ -88,10 +90,12 @@ public:
 
 	void			FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel);
 
-	bool			SelectRef(CString refName);
+	bool			SelectRef(CString refName, bool bExactMatch);
 
 	bool			ConfirmDeleteRef(CString completeRefName);
 	bool			DoDeleteRef(CString completeRefName, bool bForce);
+
+	CString			GetFullRefName(CString partialRefName);
 
 private:
 	CString			m_cmdPath;
