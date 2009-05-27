@@ -131,4 +131,5 @@ public:
 	int  m_CurrentRebaseIndex;
 	int  StateAction();
 	int  GoNext();
+	afx_msg void OnBnClickedButtonBrowse();
 };

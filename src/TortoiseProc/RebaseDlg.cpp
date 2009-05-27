@@ -7,6 +7,7 @@
 #include "AppUtils.h"
 #include "MessageBox.h"
 #include "UnicodeUtils.h"
+#include "BrowseRefsDlg.h"
 // CRebaseDlg dialog
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
@@ -54,6 +55,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -1205,4 +1207,19 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 	__super::OnCancel();
+}
+
+void CRebaseDlg::OnBnClickedButtonBrowse()
+{
+	CString origRef;
+	m_UpstreamCtrl.GetLBText(m_UpstreamCtrl.GetCurSel(), origRef);
+	CString resultRef = CBrowseRefsDlg::PickRef(false,origRef);
+	if(resultRef.IsEmpty())
+		return;
+	if(wcsncmp(resultRef,L"refs/",5)==0)
+		resultRef = resultRef.Mid(5);
+	if(wcsncmp(resultRef,L"heads/",6)==0)
+		resultRef = resultRef.Mid(6);
+	m_UpstreamCtrl.SetCurSel(m_UpstreamCtrl.FindStringExact(0,resultRef));
+
 }
