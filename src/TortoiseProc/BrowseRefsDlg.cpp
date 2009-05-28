@@ -542,7 +542,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_ViewLog:
 		{
 			CLogDlg dlg;
-			dlg.SetStartRef(selectedLeafs[0]->m_csRefHash);
+			dlg.SetStartRef(selectedLeafs[0]->GetRefName());
 			dlg.DoModal();
 		}
 		break;

@@ -91,7 +91,8 @@ public:
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
 	void SetMergePath(const CTGitPath& mergepath) {m_mergePath = mergepath;}
-	void SetStartRef(const CString& StartRef) {m_LogList.SetStartRef(StartRef);}
+	void SetStartRef(const CString& StartRef);
+	void ShowStartRef();
 	/**
 	 * Provides selected commit hash if available, call after OK return from here
 	 * Empty if none
@@ -137,6 +138,7 @@ protected:
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
+	afx_msg void OnBnClickedBrowseRef();
 	afx_msg void OnBnClickedCheckStoponcopy();
 	
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);

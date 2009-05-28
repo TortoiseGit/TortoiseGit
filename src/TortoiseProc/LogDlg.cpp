@@ -45,7 +45,7 @@
 //#include "RepositoryInfo.h"
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
-
+#include "BrowseRefsDlg.h"
 
 const UINT CLogDlg::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 
@@ -144,6 +144,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_LOG_FIRSTPARENT, &CLogDlg::OnBnClickedFirstParent)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnRefresh)
 	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER,&CLogDlg::OnFocusFilter)
@@ -236,6 +237,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_DateTo.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
 
 	// resizable stuff
+	AddAnchor(IDC_STATIC_REF, TOP_LEFT);
+	AddAnchor(IDC_BUTTON_BROWSE_REF, TOP_LEFT);
 	AddAnchor(IDC_FROMLABEL, TOP_LEFT);
 	AddAnchor(IDC_DATEFROM, TOP_LEFT);
 	AddAnchor(IDC_TOLABEL, TOP_LEFT);
@@ -331,6 +334,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.FetchLogAsync(this);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
+
+	ShowStartRef();
 	return FALSE;
 }
 
@@ -2923,6 +2928,7 @@ void CLogDlg::OnSize(UINT nType, int cx, int cy)
 void CLogDlg::OnRefresh()
 {
 	//if (GetDlgItem(IDC_GETALL)->IsWindowEnabled())
+	ShowStartRef();
 	{
 		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
@@ -3041,6 +3047,54 @@ void CLogDlg::OnBnClickedAllBranch()
 
 	FillLogMessageCtrl(false);
 }
+
+void CLogDlg::OnBnClickedBrowseRef()
+{
+	CString newRef = CBrowseRefsDlg::PickRef(false,m_LogList.GetStartRef());	
+	if(newRef.IsEmpty())
+		return;
+
+	SetStartRef(newRef);
+	((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(0);
+
+	OnBnClickedAllBranch();
+}
+
+void CLogDlg::ShowStartRef()
+{
+	//Show ref name on top
+	if(!::IsWindow(m_hWnd))
+		return;
+	if(m_bAllBranch)
+	{
+		GetDlgItem(IDC_STATIC_REF)->SetWindowText(L"<All Branches>");
+		return;
+	}
+
+	CString showStartRef = m_LogList.GetStartRef();
+	if(showStartRef.IsEmpty())
+	{
+		//Ref name is HEAD
+		g_Git.Run(L"git symbolic-ref HEAD",&showStartRef,CP_UTF8);
+		showStartRef.Trim(L"\r\n\t ");
+	}
+
+
+	if(wcsncmp(showStartRef,L"refs/",5) == 0)
+		showStartRef = showStartRef.Mid(5);
+	if(wcsncmp(showStartRef,L"heads/",6) == 0)
+		showStartRef = showStartRef.Mid(6);
+
+	GetDlgItem(IDC_STATIC_REF)->SetWindowText(showStartRef);
+}
+
+void CLogDlg::SetStartRef(const CString& StartRef)
+{
+	m_LogList.SetStartRef(StartRef);
+
+	ShowStartRef();
+}
+
 
 
 void CLogDlg::OnBnClickedFirstParent()

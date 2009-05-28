@@ -201,6 +201,8 @@ public:
 		m_StartRef=StartRef;
 	}
 
+	CString GetStartRef() const {return m_StartRef;}
+
 	
 	volatile bool		m_bExitThread;
 	CWinThread*			m_LoadingThread;
