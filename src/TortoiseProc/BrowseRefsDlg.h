@@ -5,6 +5,13 @@
 #include "afxcmn.h"
 #include "StandAloneDlg.h"
 
+
+const int gPickRef_Head		= 1;
+const int gPickRef_Tag		= 2;
+const int gPickRef_Remote	= 4;
+const int gPickRef_All		= gPickRef_Head | gPickRef_Tag | gPickRef_Remote;
+const int gPickRef_NoTag	= gPickRef_All & ~gPickRef_Tag;
+
 class CShadowTree
 {
 public:
@@ -123,7 +130,8 @@ public:
 
 public:
 	CString m_initialRef;
+	int		m_pickRef_Kind;
 	CString m_pickedRef;
 
-	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString()); 
+	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All); 
 };

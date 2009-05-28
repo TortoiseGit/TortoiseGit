@@ -1213,7 +1213,7 @@ void CRebaseDlg::OnBnClickedButtonBrowse()
 {
 	CString origRef;
 	m_UpstreamCtrl.GetLBText(m_UpstreamCtrl.GetCurSel(), origRef);
-	CString resultRef = CBrowseRefsDlg::PickRef(false,origRef);
+	CString resultRef = CBrowseRefsDlg::PickRef(false,origRef,gPickRef_NoTag);
 	if(resultRef.IsEmpty())
 		return;
 	if(wcsncmp(resultRef,L"refs/",5)==0)

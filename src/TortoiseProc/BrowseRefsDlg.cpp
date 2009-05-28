@@ -42,7 +42,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_cmdPath(cmdPath),
 	m_currSortCol(-1),
 	m_currSortDesc(false),
-	m_initialRef(L"HEAD")
+	m_initialRef(L"HEAD"),
+	m_pickRef_Kind(gPickRef_All)
 {
 
 }
@@ -227,14 +228,19 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		int valuePos=0;
 		CString refName=singleRef.Tokenize(L"\04",valuePos);
 		CString refRest=singleRef.Mid(valuePos);
-		refMap[refName]=refRest;
+
+		//Use ref based on m_pickRef_Kind
+		if(wcsncmp(refName,L"refs/heads",10)==0 && !(m_pickRef_Kind & gPickRef_Head) )
+			continue; //Skip
+		if(wcsncmp(refName,L"refs/tags",9)==0 && !(m_pickRef_Kind & gPickRef_Tag) )
+			continue; //Skip
+		if(wcsncmp(refName,L"refs/remotes",12)==0 && !(m_pickRef_Kind & gPickRef_Remote) )
+			continue; //Skip
+
+		refMap[refName] = refRest; //Use
 	}
 
 
-
-//	for(MAP_HASH_NAME::iterator iterRef=m_RefMap.begin();iterRef!=m_RefMap.end();++iterRef)
-//		for(STRING_VECTOR::iterator iterRefName=iterRef->second.begin();iterRefName!=iterRef->second.end();++iterRefName)
-//			refName[*iterRefName]=iterRef->first;
 
 	//Populate ref tree
 	for(MAP_STRING_STRING::iterator iterRefMap=refMap.begin();iterRefMap!=refMap.end();++iterRefMap)
@@ -692,11 +698,12 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	EndDialog(IDOK);
 }
 
-CString CBrowseRefsDlg::PickRef(bool returnAsHash, CString initialRef)
+CString CBrowseRefsDlg::PickRef(bool returnAsHash, CString initialRef, int pickRef_Kind)
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
 	
 	dlg.m_initialRef = initialRef;
+	dlg.m_pickRef_Kind = pickRef_Kind;
 
 	if(dlg.DoModal() != IDOK)
 		return CString();
