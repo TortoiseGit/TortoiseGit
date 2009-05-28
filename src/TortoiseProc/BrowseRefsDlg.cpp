@@ -711,3 +711,35 @@ CString CBrowseRefsDlg::PickRef(bool returnAsHash, CString initialRef, int pickR
 	return dlg.m_pickedRef;
 }
 
+bool CBrowseRefsDlg::PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind)
+{
+	CString origRef;
+	pComboBox->GetLBText(pComboBox->GetCurSel(), origRef);
+	CString resultRef = PickRef(false,origRef,pickRef_Kind);
+	if(resultRef.IsEmpty())
+		return false;
+	if(wcsncmp(resultRef,L"refs/",5)==0)
+		resultRef = resultRef.Mid(5);
+//	if(wcsncmp(resultRef,L"heads/",6)==0)
+//		resultRef = resultRef.Mid(6);
+
+	//Find closest match of choice in combobox
+	int ixFound = -1;
+	int matchLength = 0;
+	CString comboRefName;
+	for(int i = 0; i < pComboBox->GetCount(); ++i)
+	{
+		pComboBox->GetLBText(i, comboRefName);
+		if(matchLength < comboRefName.GetLength() && resultRef.Right(comboRefName.GetLength()) == comboRefName)
+		{
+			matchLength = comboRefName.GetLength();
+			ixFound = i;
+		}
+	}
+	if(ixFound >= 0)
+		pComboBox->SetCurSel(ixFound);
+	else
+		ASSERT(FALSE);//No match found. So either pickRef_Kind is wrong or the combobox does not contain the ref specified in the picker (which it should unless the repo has changed before creating the CBrowseRef dialog)
+
+	return true;
+}

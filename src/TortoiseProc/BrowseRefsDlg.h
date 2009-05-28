@@ -134,4 +134,5 @@ public:
 	CString m_pickedRef;
 
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All); 
+	static bool		PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind = gPickRef_All); 
 };

@@ -8,6 +8,7 @@
 #include "Git.h"
 #include "registry.h"
 #include "AppUtils.h"
+#include "BrowseRefsDlg.h"
 
 // CPushDlg dialog
 
@@ -44,6 +45,8 @@ BEGIN_MESSAGE_MAP(CPushDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_BRANCH_SOURCE, &CPushDlg::OnCbnSelchangeBranchSource)
 	ON_BN_CLICKED(IDOK, &CPushDlg::OnBnClickedOk)
     ON_BN_CLICKED(IDC_REMOTE_MANAGE, &CPushDlg::OnBnClickedRemoteManage)
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE_DEST_BRANCH, &CPushDlg::OnBnClickedButtonBrowseDestBranch)
 END_MESSAGE_MAP()
 
 BOOL CPushDlg::OnInitDialog()
@@ -57,7 +60,9 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_STATIC_SOURCE, TOP_LEFT);
 
 	AddAnchor(IDC_BRANCH_REMOTE, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_BROWSE_DEST_BRANCH, TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_SOURCE, TOP_LEFT);
+	AddAnchor(IDC_BUTTON_BROWSE_SOURCE_BRANCH, TOP_LEFT);
 
 	AddAnchor(IDC_URL_GROUP, TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_RD_REMOTE, TOP_LEFT);
@@ -184,4 +189,23 @@ void CPushDlg::OnBnClickedRemoteManage()
 {
     // TODO: Add your control notification handler code here
     CAppUtils::LaunchRemoteSetting();
+}
+
+void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
+{
+	if(CBrowseRefsDlg::PickRefForCombo(&m_BranchSource, gPickRef_Head))
+		OnCbnSelchangeBranchSource();
+}
+
+void CPushDlg::OnBnClickedButtonBrowseDestBranch()
+{
+	CString remoteBranchName;
+	m_BranchRemote.GetWindowText(remoteBranchName);
+	remoteBranchName = CBrowseRefsDlg::PickRef(false, remoteBranchName, gPickRef_Remote);
+	if(remoteBranchName.IsEmpty())
+		return; //Canceled
+	remoteBranchName = remoteBranchName.Mid(13);//Strip 'refs/remotes/'
+	remoteBranchName = remoteBranchName.Mid(remoteBranchName.Find('/') + 1); //Strip remote name (for example 'origin/')
+
+	m_BranchRemote.SetWindowText(remoteBranchName);
 }

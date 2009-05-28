@@ -41,4 +41,6 @@ public:
 	afx_msg void OnCbnSelchangeBranchSource();
 	afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedRemoteManage();
+	afx_msg void OnBnClickedButtonBrowseSourceBranch();
+	afx_msg void OnBnClickedButtonBrowseDestBranch();
 };
