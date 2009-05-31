@@ -25,6 +25,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	CString m_ModuleName;
+	CString m_OldURL;
 
 	DECLARE_MESSAGE_MAP()
 

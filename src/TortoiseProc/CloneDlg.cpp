@@ -202,6 +202,11 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	this->UpdateData();
 	CString url;
 	m_URLCombo.GetWindowText(url);
+	if(m_OldURL == url )
+		return;
+
+	m_OldURL=url;
+
 	//if(url.IsEmpty())
 	//	return;
 
@@ -211,8 +216,14 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	url.Replace(_T('\\'),_T('/'));
 	int start=url.ReverseFind(_T('/'));
 	if(start<0)
-		start = 0;
+	{
+		start = url.ReverseFind(_T(':'));
+		if(start <0)
+			start = url.ReverseFind(_T('@'));
 
+		if(start<0)
+			start = 0;
+	}
 	CString temp;
 	temp=url.Mid(start+1);
 	
