@@ -462,6 +462,19 @@ void CCommitDlg::OnOK()
 	//	cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
 	//	g_Git.Run(cmd,&out);
 	//}
+	
+	m_sBugID.Trim();
+	if (!m_sBugID.IsEmpty())
+	{
+		m_sBugID.Replace(_T(", "), _T(","));
+		m_sBugID.Replace(_T(" ,"), _T(","));
+		CString sBugID = m_ProjectProperties.sMessage;
+		sBugID.Replace(_T("%BUGID%"), m_sBugID);
+		if (m_ProjectProperties.bAppend)
+			m_sLogMessage += _T("\n") + sBugID + _T("\n");
+		else
+			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
+	}
 
 	BOOL bCloseCommitDlg=true;
 	//if(checkedfiles.GetLength()>0)
@@ -620,18 +633,7 @@ void CCommitDlg::OnOK()
 	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
 		m_bKeepChangeList = FALSE;
 	InterlockedExchange(&m_bBlock, FALSE);
-	m_sBugID.Trim();
-	if (!m_sBugID.IsEmpty())
-	{
-		m_sBugID.Replace(_T(", "), _T(","));
-		m_sBugID.Replace(_T(" ,"), _T(","));
-		CString sBugID = m_ProjectProperties.sMessage;
-		sBugID.Replace(_T("%BUGID%"), m_sBugID);
-		if (m_ProjectProperties.bAppend)
-			m_sLogMessage += _T("\n") + sBugID + _T("\n");
-		else
-			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
-	}
+
 	m_History.AddEntry(m_sLogMessage);
 	m_History.Save();
 

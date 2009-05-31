@@ -22,27 +22,27 @@
 #include "TGitPath.h"
 using namespace std;
 
-#define BUGTRAQPROPNAME_LABEL             _T("bugtraq:label")
-#define BUGTRAQPROPNAME_MESSAGE           _T("bugtraq:message")
-#define BUGTRAQPROPNAME_NUMBER            _T("bugtraq:number")
-#define BUGTRAQPROPNAME_LOGREGEX		  _T("bugtraq:logregex")
-#define BUGTRAQPROPNAME_URL               _T("bugtraq:url")
-#define BUGTRAQPROPNAME_WARNIFNOISSUE     _T("bugtraq:warnifnoissue")
-#define BUGTRAQPROPNAME_APPEND		      _T("bugtraq:append")
+#define BUGTRAQPROPNAME_LABEL             _T("bugtraq.label")
+#define BUGTRAQPROPNAME_MESSAGE           _T("bugtraq.message")
+#define BUGTRAQPROPNAME_NUMBER            _T("bugtraq.number")
+#define BUGTRAQPROPNAME_LOGREGEX		  _T("bugtraq.logregex")
+#define BUGTRAQPROPNAME_URL               _T("bugtraq.url")
+#define BUGTRAQPROPNAME_WARNIFNOISSUE     _T("bugtraq.warnifnoissue")
+#define BUGTRAQPROPNAME_APPEND		      _T("bugtraq.append")
 
-#define PROJECTPROPNAME_LOGTEMPLATE		  _T("tsvn:logtemplate")
-#define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tsvn:logwidthmarker")
-#define PROJECTPROPNAME_LOGMINSIZE		  _T("tsvn:logminsize")
-#define PROJECTPROPNAME_LOCKMSGMINSIZE	  _T("tsvn:lockmsgminsize")
-#define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn:logfilelistenglish")
-#define PROJECTPROPNAME_LOGSUMMARY		  _T("tsvn:logsummary")
-#define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tsvn:projectlanguage")
-#define PROJECTPROPNAME_USERFILEPROPERTY  _T("tsvn:userfileproperties")
-#define PROJECTPROPNAME_USERDIRPROPERTY   _T("tsvn:userdirproperties")
-#define PROJECTPROPNAME_AUTOPROPS		  _T("tsvn:autoprops")
+#define PROJECTPROPNAME_LOGTEMPLATE		  _T("tsvn.logtemplate")
+#define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tsvn.logwidthmarker")
+#define PROJECTPROPNAME_LOGMINSIZE		  _T("tsvn.logminsize")
+#define PROJECTPROPNAME_LOCKMSGMINSIZE	  _T("tsvn.lockmsgminsize")
+#define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
+#define PROJECTPROPNAME_LOGSUMMARY		  _T("tsvn.logsummary")
+#define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tsvn.projectlanguage")
+#define PROJECTPROPNAME_USERFILEPROPERTY  _T("tsvn.userfileproperties")
+#define PROJECTPROPNAME_USERDIRPROPERTY   _T("tsvn.userdirproperties")
+#define PROJECTPROPNAME_AUTOPROPS		  _T("tsvn.autoprops")
 
-#define PROJECTPROPNAME_WEBVIEWER_REV     _T("webviewer:revision")
-#define PROJECTPROPNAME_WEBVIEWER_PATHREV _T("webviewer:pathrevision")
+#define PROJECTPROPNAME_WEBVIEWER_REV     _T("webviewer.revision")
+#define PROJECTPROPNAME_WEBVIEWER_PATHREV _T("webviewer.pathrevision")
 
 class CTSVNPathList;
 struct svn_config_t;
@@ -65,6 +65,8 @@ public:
 	 * \param path path to a file or a folder
 	 */
 	BOOL ReadProps(CTGitPath path);
+	BOOL GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR=true);
+	BOOL GetBOOLProps(BOOL &b, TCHAR*key);
 	/**
 	 * Reads the properties from all paths found in a path list.
 	 * This method calls ReadProps() for each path .

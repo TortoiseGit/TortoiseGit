@@ -23,6 +23,7 @@
 //#include "GitProperties.h"
 #include "TGitPath.h"
 #include <regex>
+#include "git.h"
 
 using namespace std;
 
@@ -56,8 +57,68 @@ BOOL ProjectProperties::ReadPropsPathList(const CTGitPathList& pathList)
 	return FALSE;
 }
 
+BOOL ProjectProperties::GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR)
+{
+	CString cmd,output;
+	output.Empty();
+
+	cmd.Format(_T("git.exe config %s"),key);
+	int start = 0;
+	if(g_Git.Run(cmd,&output,CP_ACP))
+	{
+		return FALSE;
+	}
+	if(bRemoveCR)
+		prop = output.Tokenize(_T("\n"),start);	
+	else
+		prop = output;
+
+	return TRUE;
+
+}
+
+BOOL ProjectProperties::GetBOOLProps(BOOL &b,TCHAR *key)
+{
+	CString str,low;
+	if(!GetStringProps(str,key))
+		return FALSE;
+
+	low=str.MakeLower();
+	if(low == _T("true"))
+		b=true;
+	else
+		b=false;
+
+	return true;
+
+}
 BOOL ProjectProperties::ReadProps(CTGitPath path)
 {
+	CString sPropVal;
+
+	GetStringProps(this->sLabel,BUGTRAQPROPNAME_LABEL);
+	GetStringProps(this->sMessage,BUGTRAQPROPNAME_MESSAGE);
+
+	GetBOOLProps(this->bWarnIfNoIssue,BUGTRAQPROPNAME_WARNIFNOISSUE);
+	GetBOOLProps(this->bNumber,BUGTRAQPROPNAME_NUMBER);
+	GetBOOLProps(this->bAppend,BUGTRAQPROPNAME_APPEND);
+
+	GetStringProps(sPropVal,BUGTRAQPROPNAME_LOGREGEX,false);
+
+	sCheckRe = sPropVal;
+	if (sCheckRe.Find('\n')>=0)
+	{
+		sBugIDRe = sCheckRe.Mid(sCheckRe.Find('\n')).Trim();
+		sCheckRe = sCheckRe.Left(sCheckRe.Find('\n')).Trim();
+	}
+	if (!sCheckRe.IsEmpty())
+	{
+		sCheckRe = sCheckRe.Trim();
+	}
+	return TRUE;
+
+
+#if 0
 	BOOL bFoundBugtraqLabel = FALSE;
 	BOOL bFoundBugtraqMessage = FALSE;
 	BOOL bFoundBugtraqNumber = FALSE;
@@ -80,7 +141,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 
 	if (!path.IsDirectory())
 		path = path.GetContainingDirectory();
-#if 0		
+		
 	for (;;)
 	{
 		GitProperties props(path, GitRev::REV_WC, false);
