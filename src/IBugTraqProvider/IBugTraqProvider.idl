@@ -73,13 +73,34 @@ interface IBugTraqProvider2 : IBugTraqProvider
 	HRESULT GetCommitMessage2 (
 		[in] HWND hParentWnd,					// Parent window for your provider's UI.
 		[in] BSTR parameters,					// Parameters for your provider.
-		[in] BSTR commonURL,					// the common url of the commit
+		[in] BSTR commonURL,					// the common url of all items in the commit dialog (checked or unchecked!), 
+												// with the url of the item that was selected to bring up the commit dialog having precedence.
 		[in] BSTR commonRoot,
 		[in] SAFEARRAY(BSTR) pathList,
 		[in] BSTR originalMessage,				// The text already present in the commit message.
 												// Your provider should include this text in the new message, where appropriate.
-		[out, retval] BSTR *newMessage			// The new text for the commit message. This replaces the original message.
+		// you can assign custom revision properties to a commit by setting the next two params.
+		// note: both safearrays must be of the same length. For every property name there must be a property value!
+		[in] BSTR bugID,						// the content of the bugID field (if shown)
+		[out] BSTR * bugIDOut,					// modified content of the bugID field
+		[out] SAFEARRAY(BSTR) * revPropNames,	// a list of revision property names which are applied to the commit
+		[out] SAFEARRAY(BSTR) * revPropValues,	// a list of revision property values which are applied to the commit
+		[out, retval] BSTR * newMessage			// The new text for the commit message. This replaces the original message.
 	);			
+
+	/** Called right before the commit dialog is dismissed. This is the last chance to reject
+	 * a commit. You can check the commit log message here and return an error message if it does not
+	 * match your specification. An empty error string means the commit is allowed.
+	 */
+	HRESULT CheckCommit (
+		[in] HWND hParentWnd,
+		[in] BSTR parameters,
+		[in] BSTR commonURL,
+		[in] BSTR commonRoot,
+		[in] SAFEARRAY(BSTR) pathList,
+		[in] BSTR commitMessage,
+		[out, retval] BSTR * errorMessage
+		);
 
 	HRESULT	OnCommitFinished (
 		[in] HWND hParentWnd,					// Parent window for any (error) UI that needs to be displayed.

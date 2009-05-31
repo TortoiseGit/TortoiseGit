@@ -68,6 +68,7 @@ public:
 	void RemoveByPath(const CTGitPath &path);
 
 	bool FindProvider(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const;
+	bool FindProvider(const CString &path, CBugTraqAssociation *assoc) const;
 
 	typedef inner_t::const_iterator const_iterator;
 	const_iterator begin() const { return m_inner.begin(); }

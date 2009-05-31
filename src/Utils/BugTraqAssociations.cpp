@@ -86,6 +86,14 @@ bool CBugTraqAssociations::FindProvider(const CTGitPathList &pathList, CBugTraqA
 	return FindProviderForPathList(pathList, assoc);
 }
 
+bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc) const
+{
+
+	CTGitPath gitpath;
+	gitpath.SetFromUnknown(path);
+	return FindProviderForPath(gitpath,assoc);
+
+}
 bool CBugTraqAssociations::FindProviderForPathList(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const
 {
 	for (int i = 0; i < pathList.GetCount(); ++i)

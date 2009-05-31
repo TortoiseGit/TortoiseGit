@@ -28,7 +28,7 @@
 #include "PathWatcher.h"
 #include "BugTraqAssociations.h"
 #include "Tooltip.h"
-//#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
+#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "Git.h"
 
 #include <regex>
@@ -110,7 +110,7 @@ public:
 	BOOL				m_bCommitAmend;
 	INT_PTR				m_itemsCount;
 	bool				m_bSelectFilesForCommit;
-//	CComPtr<IBugTraqProvider> m_BugTraqProvider;
+	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 	CString				m_NoAmendStr;
 	CString				m_AmendStr;
 
@@ -138,11 +138,12 @@ private:
 	CRect				m_LogMsgOrigRect;
 	CPathWatcher		m_pathwatcher;
 
-//	CBugTraqAssociation m_bugtraq_association;
+	CBugTraqAssociation m_bugtraq_association;
 
 public:
 	afx_msg void OnBnClickedSignOff();
 	afx_msg void OnStnClickedCommitlabel();
 	afx_msg void OnBnClickedCommitAmend();
     afx_msg void OnBnClickedWholeProject();
+	afx_msg void OnStnClickedBugidlabel();
 };

@@ -21,7 +21,7 @@
 #include "CommitDlg.h"
 #include "DirFileEnum.h"
 //#include "GitConfig.h"
-//#include "GitProperties.h"
+#include "ProjectProperties.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
@@ -101,6 +101,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_STN_CLICKED(IDC_COMMITLABEL, &CCommitDlg::OnStnClickedCommitlabel)
     ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
     ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
+	ON_STN_CLICKED(IDC_BUGIDLABEL, &CCommitDlg::OnStnClickedBugidlabel)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -129,7 +130,8 @@ BOOL CCommitDlg::OnInitDialog()
 	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
 	
 	//this->DialogEnableWindow(IDC_COMMIT_AMEND,FALSE);
-//	m_ProjectProperties.ReadPropsPathList(m_pathList);
+	m_ProjectProperties.ReadPropsPathList(m_pathList);
+
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.RegisterContextMenuHandler(this);
@@ -143,11 +145,11 @@ BOOL CCommitDlg::OnInitDialog()
 	
 	m_SelectAll.SetCheck(BST_INDETERMINATE);
 
-#if 0
+
 	CBugTraqAssociations bugtraq_associations;
 	bugtraq_associations.Load();
 
-	if (bugtraq_associations.FindProvider(m_pathList, &m_bugtraq_association))
+	if (bugtraq_associations.FindProvider(g_Git.m_CurrentDir, &m_bugtraq_association))
 	{
 		GetDlgItem(IDC_BUGID)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_BUGIDLABEL)->ShowWindow(SW_HIDE);
@@ -186,7 +188,6 @@ BOOL CCommitDlg::OnInitDialog()
 		}
 	}
 	else
-#endif
 	{
 		GetDlgItem(IDC_BUGID)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_BUGIDLABEL)->ShowWindow(SW_HIDE);
@@ -1349,7 +1350,6 @@ void CCommitDlg::OnBnClickedHistory()
 
 void CCommitDlg::OnBnClickedBugtraqbutton()
 {
-#if 0
 	m_tooltips.Pop();	// hide the tooltips
 	CString sMsg = m_cLogMessage.GetText();
 
@@ -1357,7 +1357,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		return;
 
 	BSTR parameters = m_bugtraq_association.GetParameters().AllocSysString();
-	BSTR commonRoot = SysAllocString(m_pathList.GetCommonRoot().GetDirectory().GetWinPath());
+	BSTR commonRoot = SysAllocString(g_Git.m_CurrentDir);
 	SAFEARRAY *pathList = SafeArrayCreateVector(VT_BSTR, 0, m_pathList.GetCount());
 
 	for (LONG index = 0; index < m_pathList.GetCount(); ++index)
@@ -1365,28 +1365,68 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 
 	BSTR originalMessage = sMsg.AllocSysString();
 	BSTR temp = NULL;
+//	m_revProps.clear();
 
 	// first try the IBugTraqProvider2 interface
 	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
 	HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
 	if (SUCCEEDED(hr))
 	{
-		CString common = m_ListCtrl.GetCommonURL(false).GetGitPathString();
-		BSTR repositoryRoot = common.AllocSysString();
-		if (FAILED(hr = pProvider2->GetCommitMessage2(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, originalMessage, &temp)))
+		//CString common = m_ListCtrl.GetCommonURL(false).GetGitPathString();
+		BSTR repositoryRoot = g_Git.m_CurrentDir.AllocSysString();
+		BSTR bugIDOut = NULL;
+		GetDlgItemText(IDC_BUGID, m_sBugID);
+		BSTR bugID = m_sBugID.AllocSysString();
+		SAFEARRAY * revPropNames = NULL;
+		SAFEARRAY * revPropValues = NULL;
+		if (FAILED(hr = pProvider2->GetCommitMessage2(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, originalMessage, bugID, &bugIDOut, &revPropNames, &revPropValues, &temp)))
 		{
 			CString sErr;
 			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
 		}
 		else
+		{
+			if (bugIDOut)
+			{
+				m_sBugID = bugIDOut;
+				SysFreeString(bugIDOut);
+				SetDlgItemText(IDC_BUGID, m_sBugID);
+			}
+			SysFreeString(bugID);
+			SysFreeString(repositoryRoot);
 			m_cLogMessage.SetText(temp);
+			BSTR HUGEP *pbRevNames;
+			BSTR HUGEP *pbRevValues;
+
+			HRESULT hr1 = SafeArrayAccessData(revPropNames, (void HUGEP**)&pbRevNames);
+			if (SUCCEEDED(hr1))
+			{
+				HRESULT hr2 = SafeArrayAccessData(revPropValues, (void HUGEP**)&pbRevValues);
+				if (SUCCEEDED(hr2))
+				{
+					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
+					{
+						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; i++)
+						{
+//							m_revProps[pbRevNames[i]] = pbRevValues[i];
+						}
+					}
+					SafeArrayUnaccessData(revPropValues);
+				}
+				SafeArrayUnaccessData(revPropNames);
+			}
+			if (revPropNames)
+				SafeArrayDestroy(revPropNames);
+			if (revPropValues)
+				SafeArrayDestroy(revPropValues);
+		}
 	}
 	else
 	{
 		// if IBugTraqProvider2 failed, try IBugTraqProvider
 		CComPtr<IBugTraqProvider> pProvider = NULL;
-		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider);
+		hr = m_BugTraqProvider.QueryInterface(&pProvider);
 		if (FAILED(hr))
 		{
 			CString sErr;
@@ -1404,11 +1444,24 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		else
 			m_cLogMessage.SetText(temp);
 	}
+	m_sLogMessage = m_cLogMessage.GetText();
+	if (!m_ProjectProperties.sMessage.IsEmpty())
+	{
+		CString sBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
+		if (!sBugID.IsEmpty())
+		{
+			SetDlgItemText(IDC_BUGID, sBugID);
+		}
+	}
 
 	m_cLogMessage.SetFocus();
 
+	SysFreeString(parameters);
+	SysFreeString(commonRoot);
+	SafeArrayDestroy(pathList);
+	SysFreeString(originalMessage);
 	SysFreeString(temp);
-#endif
+
 }
 
 LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
@@ -1576,4 +1629,9 @@ void CCommitDlg::OnBnClickedWholeProject()
     else
 	    SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
+}
+
+void CCommitDlg::OnStnClickedBugidlabel()
+{
+	// TODO: Add your control notification handler code here
 }
