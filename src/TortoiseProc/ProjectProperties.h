@@ -84,6 +84,7 @@ public:
 	BOOL FindBugID(const CString& msg, CWnd * pWnd);
 
 	CString FindBugID(const CString& msg);
+	std::set<CString> FindBugIDs(const CString& msg);
 	/**
 	 * Searches for the BugID inside a log message. If one is found,
 	 * that BugID is returned. If none is found, an empty string is returned.
@@ -128,6 +129,12 @@ public:
 	 */
 	CString GetLogSummary(const CString& sMessage);
 
+    /**
+     * Transform the log message using \ref GetLogSummary and post-process it
+     * to be suitable for 1-line controls.
+     */
+    CString MakeShortMessage(const CString& message);
+
 	/**
 	 * Returns the path from which the properties were read.
 	 */
@@ -164,6 +171,14 @@ public:
 	/** If set to FALSE, then the bug tracking entry is inserted at the top of the
 	   log message instead of at the bottom. Default is TRUE */
 	BOOL		bAppend;
+
+	/** the COM uuid of the bugtraq provider which implements the IBugTraqProvider
+	   interface. */
+	CString		sProviderUuid;
+
+	/** the parameters passed to the COM bugtraq provider which implements the
+	    IBugTraqProvider interface */
+	CString		sProviderParams;
 
 	/** The number of chars the width marker should be shown at. If the property
 	 * is not set, then this value is 80 by default. */
@@ -205,6 +220,11 @@ public:
 	 * is the first matching regex group.
 	 */
 	CString		sLogSummaryRe;
+
+	/**
+	 * A regex string to extract revisions from a log message.
+	 */
+	CString		sLogRevRegex;
 private:
 	CString		sAutoProps;
 	CTGitPath	propsPath;

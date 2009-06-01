@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSVN - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseGit
 
@@ -98,6 +98,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 
 	GetStringProps(this->sLabel,BUGTRAQPROPNAME_LABEL);
 	GetStringProps(this->sMessage,BUGTRAQPROPNAME_MESSAGE);
+	GetStringProps(this->sUrl,BUGTRAQPROPNAME_URL);
 
 	GetBOOLProps(this->bWarnIfNoIssue,BUGTRAQPROPNAME_WARNIFNOISSUE);
 	GetBOOLProps(this->bNumber,BUGTRAQPROPNAME_NUMBER);
@@ -433,7 +434,7 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 					{
 						ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
 						ptrdiff_t matchposID = it2->position(0);
-						CHARRANGE range = {matchpos+matchposID, matchpos+matchposID+(*it2)[0].str().size()};
+						CHARRANGE range = {(LONG)(matchpos+matchposID), (LONG)(matchpos+matchposID+(*it2)[0].str().size())};
 						pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
 						CHARFORMAT2 format;
 						SecureZeroMemory(&format, sizeof(CHARFORMAT2));
@@ -462,7 +463,7 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 					if (match.size() >= 2)
 					{
 						ATLTRACE(_T("matched id : %s\n"), wstring(match[1]).c_str());
-						CHARRANGE range = {match[1].first-s.begin(), match[1].second-s.begin()};
+						CHARRANGE range = {(LONG)(match[1].first-s.begin()), (LONG)(match[1].second-s.begin())};
 						pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
 						CHARFORMAT2 format;
 						SecureZeroMemory(&format, sizeof(CHARFORMAT2));
@@ -554,14 +555,11 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 	return FALSE;
 }
 
-CString ProjectProperties::FindBugID(const CString& msg)
+std::set<CString> ProjectProperties::FindBugIDs(const CString& msg)
 {
 	size_t offset1 = 0;
 	size_t offset2 = 0;
 	bool bFound = false;
-
-	CString sRet;
-
 	std::set<CString> bugIDs;
 
 	// first use the checkre string to find bug ID's in the message
@@ -618,7 +616,7 @@ CString ProjectProperties::FindBugID(const CString& msg)
 		CString sLastPart;
 		BOOL bTop = FALSE;
 		if (sMessage.Find(_T("%BUGID%"))<0)
-			goto finish;
+			return bugIDs;
 		sFirstPart = sMessage.Left(sMessage.Find(_T("%BUGID%")));
 		sLastPart = sMessage.Mid(sMessage.Find(_T("%BUGID%"))+7);
 		CString sMsg = msg;
@@ -650,10 +648,10 @@ CString ProjectProperties::FindBugID(const CString& msg)
 			bTop = TRUE;
 		}
 		if (sBugLine.IsEmpty())
-			goto finish;
+			return bugIDs;
 		CString sBugIDPart = sBugLine.Mid(sFirstPart.GetLength(), sBugLine.GetLength() - sFirstPart.GetLength() - sLastPart.GetLength());
 		if (sBugIDPart.IsEmpty())
-			goto finish;
+			return bugIDs;
 		//the bug id part can contain several bug id's, separated by commas
 		if (!bTop)
 			offset1 = sMsg.GetLength() - sBugLine.GetLength() + sFirstPart.GetLength();
@@ -672,7 +670,16 @@ CString ProjectProperties::FindBugID(const CString& msg)
 		CHARRANGE range = {(LONG)offset1, (LONG)offset2};
 		bugIDs.insert(msg.Mid(range.cpMin, range.cpMax-range.cpMin));
 	}
-finish:
+
+	return bugIDs;
+}
+
+CString ProjectProperties::FindBugID(const CString& msg)
+{
+	CString sRet;
+
+	std::set<CString> bugIDs = FindBugIDs(msg);
+
 	for (std::set<CString>::iterator it = bugIDs.begin(); it != bugIDs.end(); ++it)
 	{
 		sRet += *it;
@@ -864,6 +871,32 @@ CString ProjectProperties::GetLogSummary(const CString& sMessage)
 	sRet.Trim();
 
 	return sRet;
+}
+
+CString ProjectProperties::MakeShortMessage(const CString& message)
+{
+	bool bFoundShort = true;
+	CString sShortMessage = GetLogSummary(message);
+	if (sShortMessage.IsEmpty())
+	{
+		bFoundShort = false;
+		sShortMessage = message;
+	}
+	// Remove newlines and tabs 'cause those are not shown nicely in the list control
+	sShortMessage.Replace(_T("\r"), _T(""));
+	sShortMessage.Replace(_T("\t"), _T(" "));
+	
+	// Suppose the first empty line separates 'summary' from the rest of the message.
+	int found = sShortMessage.Find(_T("\n\n"));
+	// To avoid too short 'short' messages 
+	// (e.g. if the message looks something like "Bugfix:\n\n*done this\n*done that")
+	// only use the empty newline as a separator if it comes after at least 15 chars.
+	if ((!bFoundShort)&&(found >= 15))
+	{
+		sShortMessage = sShortMessage.Left(found);
+	}
+	sShortMessage.Replace('\n', ' ');
+	return sShortMessage;
 }
 
 #ifdef DEBUG

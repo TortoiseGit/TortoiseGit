@@ -515,10 +515,17 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		}else
 		{
 			// set the log message text
-			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n*")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
+			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n* ")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
-			m_ProjectProperties.FindBugID(pLogEntry->m_Body, pMsgView);
+
+			CString text;
+			pMsgView->GetWindowText(text);
+			// the rich edit control doesn't count the CR char!
+			// to be exact: CRLF is treated as one char.
+			text.Replace(_T("\r"), _T(""));
+
+			m_ProjectProperties.FindBugID(text, pMsgView);
 			CAppUtils::FormatTextInRichEditControl(pMsgView);
 
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
