@@ -359,6 +359,17 @@
 				<citetitle>TortoiseGit repository</citetitle>
 			</ulink>.
 			(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
+			A summary of the API is also given in <xref linkend="tsvn-ibugtraqprovider"/>
+			
+			Another (working) example plugin in C# is 
+			<ulink url="http://code.google.com/p/gurtle/">
+				<citetitle>Gurtle</citetitle>
+			</ulink>
+			which implements the required COM interface to interact with the 
+			<ulink url="http://code.google.com/hosting/">
+				<citetitle>Google Code</citetitle>
+			</ulink>
+			issue tracker.
 		</para>
 		<para>
 			For illustration purposes, let's suppose that your system administrator
@@ -374,13 +385,6 @@
 			In this example you can select one or more open issues. The plugin
 			can then generate specially formatted text which it adds to your log
 			message.
-		</para>
-		<para>
-			If you work with the Google Code repository, you can use the ready-made
-			<ulink url="http://code.google.com/p/gurtle/">
-				<citetitle>Gurtle</citetitle>
-			</ulink>
-			plugin.
 		</para>
 	</sect2>
 </sect1>
