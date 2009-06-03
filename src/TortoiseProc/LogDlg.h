@@ -35,6 +35,7 @@
 #include <regex>
 #include "GitLogList.h"
 #include "GitStatusListCtrl.h"
+#include "HyperLink.h"
 
 using namespace std;
 
@@ -224,6 +225,7 @@ private:
 	CGitLogList			m_LogList;
 	CGitStatusListCtrl  m_ChangedFileListCtrl;
 	CFilterEdit			m_cFilter;
+	CHyperLink			m_staticRef;
 	CProgressCtrl		m_LogProgress;
 	CMenuButton			m_btnShow;
 	CMenuButton			m_btnShowWholeProject;
