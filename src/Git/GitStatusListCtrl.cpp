@@ -5125,7 +5125,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 		//if(m_UnRevFileList.GetCount()>0)
 		{
-			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("No Version Control"), 1023);
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
 			grp.pszHeader = groupname;
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
@@ -5134,7 +5134,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 		//if(m_IgnoreFileList.GetCount()>0)
 		{
-			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Ignored File"), 1023);
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Ignored"), 1023);
 			grp.pszHeader = groupname;
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
