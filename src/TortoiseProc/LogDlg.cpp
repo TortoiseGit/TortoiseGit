@@ -108,6 +108,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
+	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 }
 
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
@@ -144,7 +145,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_LOG_FIRSTPARENT, &CLogDlg::OnBnClickedFirstParent)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
-	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
+//	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
+	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnRefresh)
 	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER,&CLogDlg::OnFocusFilter)
@@ -236,9 +238,11 @@ BOOL CLogDlg::OnInitDialog()
 	m_DateFrom.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
 	m_DateTo.SendMessage(DTM_SETMCSTYLE, 0, MCS_WEEKNUMBERS|MCS_NOTODAY|MCS_NOTRAILINGDATES|MCS_NOSELCHANGEONNAV);
 
+	m_staticRef.SetURL(CString());
+
 	// resizable stuff
 	AddAnchor(IDC_STATIC_REF, TOP_LEFT);
-	AddAnchor(IDC_BUTTON_BROWSE_REF, TOP_LEFT);
+	//AddAnchor(IDC_BUTTON_BROWSE_REF, TOP_LEFT);
 	AddAnchor(IDC_FROMLABEL, TOP_LEFT);
 	AddAnchor(IDC_DATEFROM, TOP_LEFT);
 	AddAnchor(IDC_TOLABEL, TOP_LEFT);
@@ -3074,7 +3078,8 @@ void CLogDlg::ShowStartRef()
 		return;
 	if(m_bAllBranch)
 	{
-		GetDlgItem(IDC_STATIC_REF)->SetWindowText(L"<All Branches>");
+		m_staticRef.SetWindowText(L"<All Branches>");
+		m_staticRef.Invalidate(TRUE);
 		return;
 	}
 
@@ -3092,7 +3097,8 @@ void CLogDlg::ShowStartRef()
 	if(wcsncmp(showStartRef,L"heads/",6) == 0)
 		showStartRef = showStartRef.Mid(6);
 
-	GetDlgItem(IDC_STATIC_REF)->SetWindowText(showStartRef);
+	m_staticRef.SetWindowText(showStartRef);
+	m_staticRef.Invalidate(TRUE);
 }
 
 void CLogDlg::SetStartRef(const CString& StartRef)
