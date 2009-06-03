@@ -76,17 +76,21 @@
 			Git project and explains the different approaches to version
 			control, and how Git works.
 		</para>
+    <!--
 		<para>
 			Even most Git users will never have to set up a server themselves.
 			The next chapter deals with how to set up such a server, and is useful
 			for administrators.
 		</para>
+    -->
+    <!--
 		<para>
 			The chapter on <xref linkend="tsvn-repository"/> explains how to set up
 			a local repository, which is useful for testing Git and TortoiseGit
 			using a single PC. It also explains a bit about repository administration
 			which is also relevant to repositories located on a server.
 		</para>
+    -->
 		<para>
 			The <xref linkend="tsvn-dug"/> is the most important section as
 			it explains all the main features of TortoiseGit and how to use them.
@@ -111,9 +115,8 @@
 			for scripting where you still need user interaction.
 		</para>
 		<para>
-			The <xref linkend="tsvn-cli"/> give a correlation
-			between TortoiseGit commands and their equivalents in the Git
-			command line client <literal>svn.exe</literal>.
+			The <xref linkend="git(1)"/> give git official document about
+			command line client <literal>git.exe</literal>.
 		</para>
 	</sect1>
 	<!-- =================================================================== -->

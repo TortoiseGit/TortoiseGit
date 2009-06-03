@@ -1,4 +1,26 @@
-Version 0.6.2.0 version(internal)
+version 0.7.1.0 (internal)
+Features:
+	*Add bug track plug-in support
+	Compatible with TortoiseSVN. The typical plug in is gurtl(google code issue plug-in).
+	http://code.google.com/p/gurtle/.
+	
+	*Support browse reference. 
+	Show all branch, tags information. Support add remote, del branch\tag. 
+
+	*Show merged file at log dialog. 
+	
+	*Update version graphic tree. 
+	Update graphic tree to qgit2.3
+	
+	*Add option -p for TortoisePLink. 
+	-p is the same as -P. So it is compatible with OpenSSH port option. 
+
+Fix:	*Fix Issue 91:  clone dialog generates bad directory name based on URL, ignores overrid
+	*Fix Issue 85:  Installer: warns of downgrade when running 0.6.2.0 on top of 0.6.1.0
+	*Fix i18n.logOutputEncoding doesn't work at log\commit dialog.
+
+
+Version 0.6.2.0 version(external)
         *Improve fetch overlay speed 
         rebase igit.exe to msysgit 1.6.2.2, which is major application to get git status.  
 
