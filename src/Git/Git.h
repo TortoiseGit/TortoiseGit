@@ -97,7 +97,7 @@ public:
 
 	BOOL EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
 
-	git_revnum_t GetHash(CString &friendname);
+	git_revnum_t GetHash(const CString &friendname);
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
