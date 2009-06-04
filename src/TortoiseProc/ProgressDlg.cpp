@@ -173,6 +173,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			{
 				GetDlgItem(IDCANCEL)->SetWindowText(m_changeAbortButtonOnSuccessTo);
 			}
+			else
+				DialogEnableWindow(IDCANCEL, FALSE);
 		}
 		else
 			DialogEnableWindow(IDCANCEL, FALSE);
