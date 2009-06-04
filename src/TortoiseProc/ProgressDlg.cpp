@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false)
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false)
 {
 
 }
@@ -131,7 +131,7 @@ UINT CProgressDlg::ProgressThread()
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		
 		DWORD status=0;
-		if(!GetExitCodeProcess(pi.hProcess,&status))
+		if(!GetExitCodeProcess(pi.hProcess,&status) || m_bAbort)
 		{
 			CloseHandle(pi.hProcess);
 
@@ -164,8 +164,17 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
-		if(m_bAutoCloseOnSuccess && wParam == MSG_PROGRESSDLG_END)
-			EndDialog(IDOK);
+		if(wParam == MSG_PROGRESSDLG_END)
+		{
+			if(m_bAutoCloseOnSuccess)
+				EndDialog(IDOK);
+			if(m_changeAbortButtonOnSuccessTo.IsEmpty())
+			{
+				GetDlgItem(IDCANCEL)->SetWindowText(m_changeAbortButtonOnSuccessTo);
+			}
+		}
+		else
+			DialogEnableWindow(IDCANCEL, FALSE);
 	}
 
 	if(lParam != 0)
@@ -243,4 +252,9 @@ void CProgressDlg::OnBnClickedOk()
 	// TODO: Add your control notification handler code here
 	m_Log.GetWindowText(this->m_LogText);
 	OnOK();
+}
+
+void CProgressDlg::OnCancel()
+{
+	m_bAbort = true;
 }
