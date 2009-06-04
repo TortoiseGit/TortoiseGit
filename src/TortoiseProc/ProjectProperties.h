@@ -19,6 +19,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <set>
 #include "TGitPath.h"
 using namespace std;
 

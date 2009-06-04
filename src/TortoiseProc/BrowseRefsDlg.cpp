@@ -10,6 +10,7 @@
 #include "Settings\SettingGitRemote.h"
 #include "SinglePropSheetDlg.h"
 #include "MessageBox.h"
+#include "RefLogDlg.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -509,11 +510,27 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 	if(selectedLeafs.size()==1)
 	{
+		bool bShowReflogOption = false;
 		popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
 		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
+		{
 			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteBranch,L"Delete Branch");
+			bShowReflogOption = true;
+		}
+		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
+		{
+			bShowReflogOption = true;
+		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
+		{
 			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteTag,L"Delete Tag");
+		}
+
+		if(bShowReflogOption)
+			popupMenu.AppendMenu(MF_STRING, eCmd_ShowReflog, L"Show Reflog");
+
+
+
 
 //		CShadowTree* pTree = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMHDR->idFrom);
 //		if(pTree==NULL)
@@ -558,6 +575,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			if(ConfirmDeleteRef(selectedLeafs[0]->GetRefName()))
 				DoDeleteRef(selectedLeafs[0]->GetRefName(), true);
 			Refresh();
+		}
+		break;
+	case eCmd_ShowReflog:
+		{
+			CRefLogDlg refLogDlg(this);
+			refLogDlg.m_CurrentBranch = selectedLeafs[0]->GetRefName();
+			refLogDlg.DoModal();
 		}
 		break;
 	case eCmd_AddRemote:

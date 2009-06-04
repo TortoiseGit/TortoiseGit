@@ -424,7 +424,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		case ID_REFLOG_DEL:
 			{	
 				CString str;
-				str.Format(_T("Warning: %s will be deleted. It can <ct=0x0000FF><b>NOT</b></ct> recovered,\r\n \r\n Are you sure delete these?"),pSelLogEntry->m_Ref);
+				str.Format(_T("Warning: %s will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n \r\n Are you sure you want to continue?"),pSelLogEntry->m_Ref);
 				if(CMessageBox::Show(NULL,str,_T("TortoiseGit"),MB_YESNO|MB_ICONWARNING) == IDYES)
 				{
 					CString cmd,out;

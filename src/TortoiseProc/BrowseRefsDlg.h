@@ -65,7 +65,8 @@ public:
 		eCmd_CreateBranch,
 		eCmd_CreateTag,
 		eCmd_DeleteBranch,
-		eCmd_DeleteTag
+		eCmd_DeleteTag,
+		eCmd_ShowReflog
 	};
 
 	enum eCol
