@@ -34,6 +34,7 @@
 #include "UnicodeUtils.h"
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
+#include "Commands/PushCommand.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -501,12 +502,19 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
-		progress.DoModal();
+		progress.m_changeAbortButtonOnSuccessTo = "Push";
+		DWORD userResponse = progress.DoModal();
 		
 		if(progress.m_GitStatus)
 		{
 			bCloseCommitDlg = false;
 			this->Refresh();
+		}
+		else if(userResponse == IDCANCEL)
+		{
+			//User pressed 'Push' button after successful commit.
+			PushCommand cmdPush;
+			cmdPush.Execute();
 		}
 
 		CFile::Remove(tempfile);
