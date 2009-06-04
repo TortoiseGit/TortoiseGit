@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true)
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false)
 {
 
 }
@@ -133,6 +133,11 @@ UINT CProgressDlg::ProgressThread()
 		DWORD status=0;
 		if(!GetExitCodeProcess(pi.hProcess,&status))
 		{
+			CloseHandle(pi.hProcess);
+
+			CloseHandle(hRead);
+
+			this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_FAILED,0);
 			return GIT_ERROR_GET_EXIT_CODE;
 		}
 		m_GitStatus |= status;
@@ -154,11 +159,13 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Animate.Play(0,-1,-1);
 		this->DialogEnableWindow(IDOK,FALSE);
 	}
-	if(wParam == MSG_PROGRESSDLG_END)
+	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
+		if(m_bAutoCloseOnSuccess && wParam == MSG_PROGRESSDLG_END)
+			EndDialog(IDOK);
 	}
 
 	if(lParam != 0)

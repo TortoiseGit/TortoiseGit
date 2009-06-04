@@ -39,12 +39,20 @@ bool PullCommand::Execute()
 		CString hashOld = g_Git.GetHash(L"HEAD");
 		cmd.Format(_T("git.exe pull \"%s\" %s"),url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
+		progress.m_GitCmd = cmd;
+		progress.m_bAutoCloseOnSuccess = true;
 		if(progress.DoModal()==IDOK)
 		{
 			CString hashNew = g_Git.GetHash(L"HEAD");
+
+			if(hashOld == hashNew)
+			{
+				CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
+				return TRUE;
+			}
+
 			CFileDiffDlg dlg;
-			dlg.SetDiff(NULL,hashOld,hashNew);
+			dlg.SetDiff(NULL, hashNew, hashOld);
 			dlg.DoModal();
 
 			return TRUE;

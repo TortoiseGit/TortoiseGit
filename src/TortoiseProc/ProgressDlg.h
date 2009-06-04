@@ -7,6 +7,7 @@
 #define MSG_PROGRESSDLG_START 0
 #define MSG_PROGRESSDLG_RUN   50
 #define MSG_PROGRESSDLG_END   110
+#define MSG_PROGRESSDLG_FAILED 111
 
 class CProgressDlg : public CResizableStandAloneDialog
 {
@@ -20,6 +21,7 @@ public:
 	enum { IDD = IDD_GITPROGRESS };
 	CString m_GitCmd;
 	std::vector<CString> m_GitCmdList;
+	bool m_bAutoCloseOnSuccess;
 
 	CString m_LogFile;
 
