@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false)
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false)
 {
 
 }
@@ -161,14 +161,15 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	}
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		m_bDone = true;
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
-		if(wParam == MSG_PROGRESSDLG_END)
+		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
 			if(m_bAutoCloseOnSuccess)
 				EndDialog(IDOK);
-			if(m_changeAbortButtonOnSuccessTo.IsEmpty())
+			if(!m_changeAbortButtonOnSuccessTo.IsEmpty())
 			{
 				GetDlgItem(IDCANCEL)->SetWindowText(m_changeAbortButtonOnSuccessTo);
 			}
@@ -256,5 +257,11 @@ void CProgressDlg::OnBnClickedOk()
 
 void CProgressDlg::OnCancel()
 {
+	if(m_bDone)
+	{
+		CResizableStandAloneDialog::OnCancel();
+		return;
+	}
+
 	m_bAbort = true;
 }

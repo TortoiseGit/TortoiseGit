@@ -40,6 +40,7 @@ public:
 	CString		  m_LogText;
 
 	bool			m_bAbort;
+	bool			m_bDone;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	static UINT ProgressThreadEntry(LPVOID pVoid);

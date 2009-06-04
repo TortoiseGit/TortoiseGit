@@ -47,7 +47,8 @@ bool PullCommand::Execute()
 
 			if(hashOld == hashNew)
 			{
-				CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
+				if(progress.m_GitStatus == 0)
+					CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
 				return TRUE;
 			}
 
