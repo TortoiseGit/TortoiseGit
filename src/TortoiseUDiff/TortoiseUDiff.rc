@@ -80,6 +80,9 @@ IDC_TORTOISEUDIFF MENU
 BEGIN
     POPUP "&File"
     BEGIN
+        MENUITEM "&Open",                       ID_FILE_OPEN
+        MENUITEM "&Save as",                    ID_FILE_SAVEAS
+        MENUITEM SEPARATOR
         MENUITEM "&Exit",                       ID_FILE_EXIT
     END
 END
@@ -112,6 +115,9 @@ STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "TortoiseUDiff"
     IDS_COMMANDLINEHELP     "TortoiseUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer"""
+    IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All (*.*)|*.*||"
+    IDS_OPENPATCH           "Open patch file"
+    IDS_SAVEPATCH           "Save patch file"
     IDC_TORTOISEUDIFF       "TORTOISEUDIFF"
 END
 
@@ -146,12 +152,13 @@ BEGIN
     "#ifndef APSTUDIO_INVOKED\r\n"
     "#include ""TortoiseUDiff.rc2""\r\n"
     "#endif\r\n"
-    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n\0"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
 END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\r\0"
+    "\r\n\0"
 END
 
 #endif    // APSTUDIO_INVOKED

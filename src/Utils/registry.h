@@ -855,6 +855,7 @@ typedef CRegStringCommon<CRegBase> CRegString;
 
 CRegDWORDCommon<CRegStdBase>;
 typedef CRegDWORDCommon<CRegStdBase> CRegStdWORD;
+typedef CRegDWORDCommon<CRegStdBase> CRegStdDWORD;
 CRegStringCommon<CRegStdBase>;
 typedef CRegStringCommon<CRegStdBase> CRegStdString;
 
