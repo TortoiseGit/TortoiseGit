@@ -45,6 +45,7 @@
 #include "ChangedDlg.h"
 #include "SendMailDlg.h"
 #include "SVNProgressDlg.h"
+#include "PushDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2036,4 +2037,47 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	file.Close();
 	delete buf;
 	return 0;
+}
+
+bool CAppUtils::Push()
+{
+	CPushDlg dlg;
+//	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
+	if(dlg.DoModal()==IDOK)
+	{
+//		CString dir=dlg.m_Directory;
+//		CString url=dlg.m_URL;
+		CString cmd;
+		CString force;
+		CString tags;
+		CString thin;
+
+		if(dlg.m_bAutoLoad)
+		{
+			CAppUtils::LaunchPAgent(NULL,&dlg.m_URL);
+		}
+
+		if(dlg.m_bPack)
+			thin=_T("--thin");
+		if(dlg.m_bTags)
+			tags=_T("--tags");
+		if(dlg.m_bForce)
+			force=_T("--force");
+		
+		cmd.Format(_T("git.exe push %s %s %s \"%s\" %s"),
+				thin,tags,force,
+				dlg.m_URL,
+				dlg.m_BranchSourceName);
+		if (!dlg.m_BranchRemoteName.IsEmpty())
+		{
+			cmd += _T(":") + dlg.m_BranchRemoteName;
+		}
+
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		if(progress.DoModal()==IDOK)
+			return TRUE;
+		
+	}
+	return FALSE;
 }

@@ -114,6 +114,8 @@ public:
 	CString				m_NoAmendStr;
 	CString				m_AmendStr;
 
+	BOOL				m_bPushAfterCommit;
+
 private:
 	CWinThread*			m_pThread;
 	std::set<CString>	m_autolist;

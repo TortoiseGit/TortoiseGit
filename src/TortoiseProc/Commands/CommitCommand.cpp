@@ -24,6 +24,7 @@
 #include "StringUtils.h"
 #include "Hooks.h"
 #include "MessageBox.h"
+#include "AppUtils.h"
 
 CString CommitCommand::LoadLogMessage()
 {
@@ -101,6 +102,11 @@ bool CommitCommand::Execute()
 			pathList = dlg.m_updatedPathList;
 			sLogMsg = dlg.m_sLogMessage;
 			bSelectFilesForCommit = true;
+
+			if( dlg.m_bPushAfterCommit )
+			{
+				CAppUtils::Push();
+			}
 //			CGitProgressDlg progDlg;
 //			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);
 //			if (parser.HasVal(_T("closeonend")))

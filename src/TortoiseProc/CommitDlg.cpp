@@ -59,6 +59,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelectFilesForCommit(TRUE)
 {
 	this->m_bCommitAmend=FALSE;
+	m_bPushAfterCommit = FALSE;
 }
 
 CCommitDlg::~CCommitDlg()
@@ -513,8 +514,7 @@ void CCommitDlg::OnOK()
 		else if(userResponse == IDCANCEL)
 		{
 			//User pressed 'Push' button after successful commit.
-			PushCommand cmdPush;
-			cmdPush.Execute();
+			m_bPushAfterCommit=true;
 		}
 
 		CFile::Remove(tempfile);
