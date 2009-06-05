@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "LogDlg.h"
+#include "BrowseRefsDlg.h"
 
 class CChooseVersion
 {
@@ -79,6 +80,38 @@ protected:
 		OnBnClickedChooseRadio();
 	}
 
+	void OnBnClickedButtonBrowseRef()
+	{
+		CString origRef;
+		UpdateRevsionName();
+		CString resultRef = CBrowseRefsDlg::PickRef(false, m_VersionName, gPickRef_All);
+		if(resultRef.IsEmpty())
+			return;
+		if(wcsncmp(resultRef,L"refs/",5)==0)
+			resultRef = resultRef.Mid(5);
+		if(wcsncmp(resultRef,L"heads/",6)==0)
+		{
+			resultRef = resultRef.Mid(6);
+			SetDefaultChoose(IDC_RADIO_BRANCH);
+			m_ChooseVersioinBranch.SetCurSel(
+				m_ChooseVersioinBranch.FindStringExact(-1, resultRef));
+		}
+		else if(wcsncmp(resultRef,L"remotes/",8)==0)
+		{
+			SetDefaultChoose(IDC_RADIO_BRANCH);
+			m_ChooseVersioinBranch.SetCurSel(
+				m_ChooseVersioinBranch.FindStringExact(-1, resultRef));
+		}
+		else if(wcsncmp(resultRef,L"tags/",5)==0)
+		{
+			resultRef = resultRef.Mid(5);
+			SetDefaultChoose(IDC_RADIO_TAGS);
+			m_ChooseVersioinTags.SetCurSel(
+				m_ChooseVersioinTags.FindStringExact(-1, resultRef));
+		}
+	}
+
+
 	void Init()
 	{	
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
@@ -116,7 +149,8 @@ public:
 	ON_BN_CLICKED(IDC_RADIO_BRANCH,		OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_RADIO_TAGS,		OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_BUTTON_SHOW, 		OnBnClickedShow)\
-	ON_BN_CLICKED(IDC_RADIO_VERSION,	OnBnClickedChooseRadioHost)
+	ON_BN_CLICKED(IDC_RADIO_VERSION,	OnBnClickedChooseRadioHost)\
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF,	OnBnClickedButtonBrowseRefHost)
 
 #define CHOOSE_VERSION_ADDANCHOR								\
 	{															\
@@ -125,8 +159,10 @@ public:
 		AddAnchor(IDC_COMBOBOXEX_VERSION, TOP_LEFT, TOP_RIGHT);	\
 		AddAnchor(IDC_GROUP_BASEON, TOP_LEFT, TOP_RIGHT);		\
 		AddAnchor(IDC_BUTTON_SHOW,TOP_RIGHT);		\
+		AddAnchor(IDC_BUTTON_BROWSE_REF,TOP_RIGHT);		\
 	}	
 
 #define CHOOSE_EVENT_RADIO() \
 	afx_msg void OnBnClickedChooseRadioHost(){OnBnClickedChooseRadio();}\
-	afx_msg void OnBnClickedShow(){OnBnClickedChooseVersion();}
+	afx_msg void OnBnClickedShow(){OnBnClickedChooseVersion();}\
+	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}

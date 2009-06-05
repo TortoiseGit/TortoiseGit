@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CCreateBranchTagDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDOK, &CCreateBranchTagDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch)
+//	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CCreateBranchTagDlg::OnBnClickedButtonBrowseRef)
 END_MESSAGE_MAP()
 
 BOOL CCreateBranchTagDlg::OnInitDialog()

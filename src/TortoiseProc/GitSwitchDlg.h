@@ -30,6 +30,7 @@ protected:
 
 	afx_msg void OnBnClickedChooseRadioHost();
 	afx_msg void OnBnClickedShow();
+	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}
 
 	DECLARE_MESSAGE_MAP()
 public:
