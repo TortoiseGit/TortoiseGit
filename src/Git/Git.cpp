@@ -603,7 +603,7 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 //	return 0;
 }
 
-git_revnum_t CGit::GetHash(CString &friendname)
+git_revnum_t CGit::GetHash(const CString &friendname)
 {
 	CString cmd;
 	CString out;

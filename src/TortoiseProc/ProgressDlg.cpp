@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true)
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false)
 {
 
 }
@@ -131,8 +131,13 @@ UINT CProgressDlg::ProgressThread()
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		
 		DWORD status=0;
-		if(!GetExitCodeProcess(pi.hProcess,&status))
+		if(!GetExitCodeProcess(pi.hProcess,&status) || m_bAbort)
 		{
+			CloseHandle(pi.hProcess);
+
+			CloseHandle(hRead);
+
+			this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_FAILED,0);
 			return GIT_ERROR_GET_EXIT_CODE;
 		}
 		m_GitStatus |= status;
@@ -154,11 +159,25 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Animate.Play(0,-1,-1);
 		this->DialogEnableWindow(IDOK,FALSE);
 	}
-	if(wParam == MSG_PROGRESSDLG_END)
+	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		m_bDone = true;
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
+		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
+		{
+			if(m_bAutoCloseOnSuccess)
+				EndDialog(IDOK);
+			if(!m_changeAbortButtonOnSuccessTo.IsEmpty())
+			{
+				GetDlgItem(IDCANCEL)->SetWindowText(m_changeAbortButtonOnSuccessTo);
+			}
+			else
+				DialogEnableWindow(IDCANCEL, FALSE);
+		}
+		else
+			DialogEnableWindow(IDCANCEL, FALSE);
 	}
 
 	if(lParam != 0)
@@ -236,4 +255,15 @@ void CProgressDlg::OnBnClickedOk()
 	// TODO: Add your control notification handler code here
 	m_Log.GetWindowText(this->m_LogText);
 	OnOK();
+}
+
+void CProgressDlg::OnCancel()
+{
+	if(m_bDone)
+	{
+		CResizableStandAloneDialog::OnCancel();
+		return;
+	}
+
+	m_bAbort = true;
 }

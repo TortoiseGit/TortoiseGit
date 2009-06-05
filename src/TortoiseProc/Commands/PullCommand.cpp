@@ -25,6 +25,7 @@
 #include "MessageBox.h"
 #include "PullFetchDlg.h"
 #include "ProgressDlg.h"
+#include "FileDiffDlg.h"
 
 bool PullCommand::Execute()
 {
@@ -35,11 +36,28 @@ bool PullCommand::Execute()
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;
+		CString hashOld = g_Git.GetHash(L"HEAD");
 		cmd.Format(_T("git.exe pull \"%s\" %s"),url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
+		progress.m_GitCmd = cmd;
+		progress.m_bAutoCloseOnSuccess = true;
 		if(progress.DoModal()==IDOK)
+		{
+			CString hashNew = g_Git.GetHash(L"HEAD");
+
+			if(hashOld == hashNew)
+			{
+				if(progress.m_GitStatus == 0)
+					CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
+				return TRUE;
+			}
+
+			CFileDiffDlg dlg;
+			dlg.SetDiff(NULL, hashNew, hashOld);
+			dlg.DoModal();
+
 			return TRUE;
+		}
 	}
 #if 0
 	CCloneDlg dlg;
