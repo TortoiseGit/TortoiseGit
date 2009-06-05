@@ -165,13 +165,17 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
+
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
 			if(m_bAutoCloseOnSuccess)
 				EndDialog(IDOK);
+
 			if(!m_changeAbortButtonOnSuccessTo.IsEmpty())
 			{
 				GetDlgItem(IDCANCEL)->SetWindowText(m_changeAbortButtonOnSuccessTo);
+				//Set default button is "close" rather than "push"
+				this->SendMessage(WM_NEXTDLGCTL, (WPARAM)GetDlgItem(IDOK)->m_hWnd, TRUE);
 			}
 			else
 				DialogEnableWindow(IDCANCEL, FALSE);
