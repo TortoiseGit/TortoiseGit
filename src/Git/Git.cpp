@@ -757,17 +757,19 @@ BOOL CGit::CheckMsysGitDir()
 	}
 
 	TCHAR *oldpath,*home;
-	size_t size;
+	size_t homesize,size;
 
 	// set HOME if not set already
-	_tgetenv_s(&size, NULL, 0, _T("HOME"));
-	if (!size)
+	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
+	if (!homesize)
 	{
 		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
 		_tputenv_s(_T("HOME"),home);
 		free(home);
 	}
+	CString str;
 
+#ifndef _TORTOISESHELL
 	//setup ssh client
 	CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
 
@@ -806,7 +808,7 @@ BOOL CGit::CheckMsysGitDir()
 	// add git/bin path to PATH
 
 	CRegString msysdir=CRegString(REG_MSYSGIT_PATH,_T(""),FALSE);
-	CString str=msysdir;
+	str=msysdir;
 	if(str.IsEmpty())
 	{
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
@@ -822,6 +824,7 @@ BOOL CGit::CheckMsysGitDir()
 			return false;
 		}
 	}
+#endif
 	//CGit::m_MsysGitPath=str;
 
 	//set path
@@ -847,6 +850,10 @@ BOOL CGit::CheckMsysGitDir()
 		l_processEnv = GetEnvironmentStrings();
 		// updated environment is now duplicated for use in CreateProcess, restore original PATH for current process
 		_tputenv_s(_T("PATH"),sOldPath);
+		if(!homesize)
+		{
+			_tputenv_s(_T("HOME"),_T(""));
+		}
 #endif
 
 		bInitialized = TRUE;
