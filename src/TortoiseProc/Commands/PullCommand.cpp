@@ -26,6 +26,7 @@
 #include "PullFetchDlg.h"
 #include "ProgressDlg.h"
 #include "FileDiffDlg.h"
+#include "AppUtils.h"
 
 bool PullCommand::Execute()
 {
@@ -35,6 +36,12 @@ bool PullCommand::Execute()
 	{
 		CString url;
 		url=dlg.m_RemoteURL;
+
+		if(dlg.m_bAutoLoad)
+		{
+			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
+		}
+		
 		CString cmd;
 		CString hashOld = g_Git.GetHash(L"HEAD");
 		cmd.Format(_T("git.exe pull \"%s\" %s"),url,dlg.m_RemoteBranchName);
