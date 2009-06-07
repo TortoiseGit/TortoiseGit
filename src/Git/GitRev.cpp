@@ -193,32 +193,31 @@ CTime GitRev::ConverFromString(CString input)
 	// pick up date from string
 	try
 	{
-		CTime tm(_wtoi(input.Mid(0,4)),
+		COleDateTime tm(_wtoi(input.Mid(0,4)),
 				 _wtoi(input.Mid(5,2)),
 				 _wtoi(input.Mid(8,2)),
 				 _wtoi(input.Mid(11,2)),
 				 _wtoi(input.Mid(14,2)),
-				 _wtoi(input.Mid(17,2)),
-				 0);
-		if(tm.GetTime()<=1)
+				 _wtoi(input.Mid(17,2)));
+		if( tm.GetStatus() != COleDateTime::valid )
 			return CTime();//Error parsing time-string
 
 		// pick up utc offset
 		CString sign = input.Mid(20,1);		// + or -
 		int hoursOffset =  _wtoi(input.Mid(21,2));
 		int minsOffset = _wtoi(input.Mid(23,2));
+		// convert to a fraction of a day
+		double offset = (hoursOffset*60 + minsOffset) / 1440.0;  	// 1440 mins = 1 day
 		if ( sign == "-" )
 		{
-			hoursOffset = -hoursOffset;
-			minsOffset = -minsOffset;
+			offset = -offset;
 		}
-		// make a timespan object with this value
-		CTimeSpan offset( 0, hoursOffset, minsOffset, 0 );
 		// we have to subtract this from the time given to get UTC
 		tm -= offset;
-		// get local timezone
+		// get utc time as a SYSTEMTIME
 		SYSTEMTIME sysTime;
 		tm.GetAsSystemTime( sysTime );
+		// and convert to users local time
 		SYSTEMTIME local;
 		if ( SystemTimeToTzSpecificLocalTime( &m_TimeZone, &sysTime, &local ) )
 		{
@@ -226,10 +225,10 @@ CTime GitRev::ConverFromString(CString input)
 		}
 		else
 		{
-			ASSERT(false);
+			ASSERT(false);	// this should not happen but leave time in utc if it does
 		}
-		tm = CTime( sysTime, 0 );
-		return tm;
+		// convert to CTime and return
+		return CTime( sysTime, -1 );;
 	}
 	catch(CException* e)
 	{
