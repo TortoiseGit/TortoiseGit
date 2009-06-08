@@ -5607,6 +5607,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 
 	out.Format(_T("%d files revert to %s"),count,m_CurrentVersion.Left(6));
 	CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+	return 0;
 }
 
 void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
