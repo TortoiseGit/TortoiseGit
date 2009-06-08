@@ -2475,6 +2475,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							popup.AppendMenuIcon(IDSVNLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
 						}
 					}
+
+					if (m_dwContextMenus & SVNSLC_POPDELETE)
+					{
+						popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
+					}
 				//}
 				//if ( (wcStatus == git_wc_status_unversioned) || (wcStatus == git_wc_status_deleted) )
 				//{
@@ -2714,6 +2719,67 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 					}
 					
+				}
+				break;
+
+			case IDSVNLC_DELETE:
+				{
+					//Collect paths
+					std::vector<int> selectIndex;
+
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+					{
+						selectIndex.push_back(index);
+					}
+
+					//Create file-list ('\0' separated) for SHFileOperation
+					CString filelist;
+					for(int i=0;i<selectIndex.size();i++)
+					{
+						index=selectIndex[i];
+
+						CTGitPath * path=(CTGitPath*)GetItemData(index);
+						ASSERT(path);
+						if(path == NULL)
+							continue;
+
+						filelist += path->GetWinPathString();
+						filelist += _T("|");
+					}
+					filelist += _T("|");
+					int len = filelist.GetLength();
+					TCHAR * buf = new TCHAR[len+2];
+					_tcscpy_s(buf, len+2, filelist);
+					for (int i=0; i<len; ++i)
+						if (buf[i] == '|')
+							buf[i] = 0;
+					SHFILEOPSTRUCT fileop;
+					fileop.hwnd = this->m_hWnd;
+					fileop.wFunc = FO_DELETE;
+					fileop.pFrom = buf;
+					fileop.pTo = NULL;
+					fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | ((GetAsyncKeyState(VK_SHIFT) & 0x8000) ? 0 : FOF_ALLOWUNDO);
+					fileop.lpszProgressTitle = _T("deleting file");
+					int result = SHFileOperation(&fileop);
+					delete [] buf;
+
+					if ( (result==0) && (!fileop.fAnyOperationsAborted) )
+					{
+						SetRedraw(FALSE);
+						POSITION pos = NULL;
+						while ((pos = GetFirstSelectedItemPosition()) != 0)
+						{
+							int index = GetNextSelectedItem(pos);
+							if (GetCheck(index))
+								m_nSelected--;
+							m_nTotal--;
+
+							RemoveListEntry(index);
+						}
+						SetRedraw(TRUE);
+					}
 				}
 				break;
 
