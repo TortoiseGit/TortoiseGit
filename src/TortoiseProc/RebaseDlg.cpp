@@ -1211,5 +1211,6 @@ void CRebaseDlg::OnBnClickedAbort()
 
 void CRebaseDlg::OnBnClickedButtonBrowse()
 {
-	CBrowseRefsDlg::PickRefForCombo(&m_UpstreamCtrl, gPickRef_NoTag);
+	if(CBrowseRefsDlg::PickRefForCombo(&m_UpstreamCtrl, gPickRef_NoTag))
+		OnCbnSelchangeUpstream();
 }
