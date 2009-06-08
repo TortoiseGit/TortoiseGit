@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "ATLComTime.h"
 #include "GitRev.h"
 #include "Git.h"
 
