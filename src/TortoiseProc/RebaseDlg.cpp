@@ -383,7 +383,7 @@ void CRebaseDlg::FetchLogList()
 	m_CommitList.Clear();
 	this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
 	if( m_CommitList.GetItemCount() == 0 )
-		m_CommitList.ShowText(_T("Nothing Rebase"));
+		m_CommitList.ShowText(_T("Nothing to Rebase"));
 
 	CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
 	
