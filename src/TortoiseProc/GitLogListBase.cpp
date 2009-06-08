@@ -1181,7 +1181,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
-			popup.AppendMenuIcon(ID_REBASE_PICK,  IDS_REBASE_SKIP,   IDI_PICK);
+			popup.AppendMenuIcon(ID_REBASE_PICK,  IDS_REBASE_PICK,   IDI_PICK);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
 			popup.AppendMenuIcon(ID_REBASE_SQUASH,IDS_REBASE_SQUASH, IDI_SQUASH);
