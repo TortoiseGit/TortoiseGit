@@ -1173,7 +1173,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return;
 	}
 
-	if(CMessageBox::Show(NULL,_T("Are you sure abort rebase"),_T("TortoiseGit"),MB_YESNO) != IDYES)
+	if(CMessageBox::Show(NULL,_T("Are you sure you want to abort the rebase process?"),_T("TortoiseGit"),MB_YESNO) != IDYES)
 		return;
 
 	cmd.Format(_T("git.exe checkout -f %s"),this->m_UpstreamCtrl.GetString());
