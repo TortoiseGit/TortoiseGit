@@ -11,6 +11,7 @@
 #include "SinglePropSheetDlg.h"
 #include "MessageBox.h"
 #include "RefLogDlg.h"
+#include "IconMenu.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -507,17 +508,22 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 
 void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs)
 {
-	CMenu popupMenu;
+	CIconMenu popupMenu;
 	popupMenu.CreatePopupMenu();
 
+	bool bAddSeparator = false;
 	if(selectedLeafs.size()==1)
 	{
+		bAddSeparator = true;
+
 		bool bShowReflogOption = false;
-		popupMenu.AppendMenu(MF_STRING,eCmd_ViewLog,L"View log");
+		bool bShowDeleteBranchOption = false;
+		bool bShowDeleteTagOption = false;
+
 		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
 		{
-			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteBranch,L"Delete Branch");
 			bShowReflogOption = true;
+			bShowDeleteBranchOption = true;
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
 		{
@@ -525,12 +531,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
 		{
-			popupMenu.AppendMenu(MF_STRING,eCmd_DeleteTag,L"Delete Tag");
+			bShowDeleteTagOption = true;
 		}
 
-		if(bShowReflogOption)
-			popupMenu.AppendMenu(MF_STRING, eCmd_ShowReflog, L"Show Reflog");
-
+									popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
+		if(bShowReflogOption)		popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
+		if(bShowDeleteTagOption)	popupMenu.AppendMenuIcon(eCmd_DeleteTag, L"Delete Tag", IDI_DELETE);
+		if(bShowDeleteBranchOption) popupMenu.AppendMenuIcon(eCmd_DeleteBranch, L"Delete Branch", IDI_DELETE);
 
 
 
@@ -539,19 +546,20 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 //			return;
 	}
 
+	if(bAddSeparator) popupMenu.AppendMenu(MF_SEPARATOR);
+
 	if(hTreePos!=NULL)
 	{
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreePos);
 		if(pTree->IsFrom(L"refs/remotes"))
 		{
 //			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
-			if(!m_cmdPath.IsEmpty())
-				popupMenu.AppendMenu(MF_STRING,eCmd_ManageRemotes,L"Manage Remotes");
+			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, L"Manage Remotes", IDI_SETTINGS);
 		}
 		else if(pTree->IsFrom(L"refs/heads"))
-			popupMenu.AppendMenu(MF_STRING,eCmd_CreateBranch,L"Create Branch");
+			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create Branch", IDI_COPY);
 		else if(pTree->IsFrom(L"refs/tags"))
-			popupMenu.AppendMenu(MF_STRING,eCmd_CreateTag,L"Create Tag");
+			popupMenu.AppendMenuIcon(eCmd_CreateTag, L"Create Tag", IDI_TAG);
 	}
 
 
@@ -594,7 +602,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_ManageRemotes:
 		{
-			CSinglePropSheetDlg(L"Git Remote Settings",new CSettingGitRemote(m_cmdPath),this).DoModal();
+			CSinglePropSheetDlg(L"Git Remote Settings",new CSettingGitRemote(g_Git.m_CurrentDir),this).DoModal();
 //			CSettingGitRemote W_Remotes(m_cmdPath);
 //			W_Remotes.DoModal();
 			Refresh();
