@@ -96,6 +96,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 	Refresh(m_initialRef);
 
+	EnableSaveRestore(L"BrowseRefs");
+
 
 	m_ListRefLeafs.SetFocus();
 	return FALSE;
