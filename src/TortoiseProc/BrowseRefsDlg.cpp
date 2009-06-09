@@ -391,14 +391,24 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(CString completeRefName)
 	CString csTitle;
 
 	UINT mbIcon=MB_ICONQUESTION;
-	csMessage=L"Are you sure you want to delete the ";
-	if(wcsncmp(completeRefName,L"refs/heads",10)==0)
+	csMessage = L"Are you sure you want to delete the ";
+
+	bool bIsRemoteBranch = false;
+	bool bIsBranch = false;
+	if		(wcsncmp(completeRefName, L"refs/remotes",12)==0)	{bIsBranch = true; bIsRemoteBranch = true;}
+	else if	(wcsncmp(completeRefName, L"refs/heads",10)==0)		{bIsBranch = true;}
+
+	if(bIsBranch)
 	{
-		CString branchToDelete = completeRefName.Mid(11);
-		csTitle.Format(L"Confirm deletion of branch %s", branchToDelete);
-		csMessage += "branch:\r\n\r\n<b>";
+		CString branchToDelete = completeRefName.Mid(bIsRemoteBranch ? 13 : 11);
+		csTitle.Format(L"Confirm deletion of %sbranch %s", 
+			bIsRemoteBranch? L"remote ": L"", 
+			branchToDelete);
+		if(bIsRemoteBranch)
+			csMessage += L"<ct=0x0000FF><i>remote</i></ct> "; 
+		csMessage += L"branch:\r\n\r\n<b>";
 		csMessage += branchToDelete;
-		csMessage += "</b>";
+		csMessage += L"</b>";
 
 		//Check if branch is fully merged in HEAD
 		CString branchHash = g_Git.GetHash(completeRefName);
@@ -413,7 +423,12 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(CString completeRefName)
 		if(commonAncestor != branchHash)
 		{
 			csMessage += L"\r\n\r\n<b>Warning:\r\nThis branch is not fully merged into HEAD.</b>";
-			mbIcon=MB_ICONWARNING;
+			mbIcon = MB_ICONWARNING;
+		}
+		if(bIsRemoteBranch)
+		{
+			csMessage += L"\r\n\r\n<b>Warning:\r\nThis action will remove the branch on the remote.</b>";
+			mbIcon = MB_ICONWARNING;
 		}
 	}
 	else if(wcsncmp(completeRefName,L"refs/tags",9)==0)
@@ -432,11 +447,26 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(CString completeRefName)
 
 bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 {
-	if(wcsncmp(completeRefName,L"refs/heads",10)==0)
+	bool bIsRemoteBranch = false;
+	bool bIsBranch = false;
+	if		(wcsncmp(completeRefName, L"refs/remotes",12)==0)	{bIsBranch = true; bIsRemoteBranch = true;}
+	else if	(wcsncmp(completeRefName, L"refs/heads",10)==0)		{bIsBranch = true;}
+
+	if(bIsBranch)
 	{
-		CString branchToDelete = completeRefName.Mid(11);
+		CString branchToDelete = completeRefName.Mid(bIsRemoteBranch ? 13 : 11);
 		CString cmd;
-		cmd.Format(L"git.exe branch -%c %s",bForce?L'D':L'd',branchToDelete);
+		if(bIsRemoteBranch)
+		{
+			int slash = branchToDelete.Find(L'/');
+			if(slash < 0)
+				return false;
+			CString remoteName = branchToDelete.Left(slash);
+			CString remoteBranchToDelete = branchToDelete.Mid(slash + 1);
+			cmd.Format(L"git.exe push \"%s\" :%s", remoteName, remoteBranchToDelete);
+		}
+		else
+			cmd.Format(L"git.exe branch -%c %s",bForce?L'D':L'd',branchToDelete);
 		CString resultDummy;
 		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
 		{
@@ -519,6 +549,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bool bShowReflogOption = false;
 		bool bShowDeleteBranchOption = false;
 		bool bShowDeleteTagOption = false;
+		bool bShowDeleteRemoteBranchOption = false;
 
 		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
 		{
@@ -528,16 +559,18 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
 		{
 			bShowReflogOption = true;
+			bShowDeleteRemoteBranchOption = true;
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
 		{
 			bShowDeleteTagOption = true;
 		}
 
-									popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
-		if(bShowReflogOption)		popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
-		if(bShowDeleteTagOption)	popupMenu.AppendMenuIcon(eCmd_DeleteTag, L"Delete Tag", IDI_DELETE);
-		if(bShowDeleteBranchOption) popupMenu.AppendMenuIcon(eCmd_DeleteBranch, L"Delete Branch", IDI_DELETE);
+											popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
+		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
+		if(bShowDeleteTagOption)			popupMenu.AppendMenuIcon(eCmd_DeleteTag, L"Delete Tag", IDI_DELETE);
+		if(bShowDeleteBranchOption)			popupMenu.AppendMenuIcon(eCmd_DeleteBranch, L"Delete Branch", IDI_DELETE);
+		if(bShowDeleteRemoteBranchOption)	popupMenu.AppendMenuIcon(eCmd_DeleteRemoteBranch, L"Delete Remote Branch", IDI_DELETE);
 
 
 
@@ -574,6 +607,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		}
 		break;
 	case eCmd_DeleteBranch:
+	case eCmd_DeleteRemoteBranch:
 		{
 			if(ConfirmDeleteRef(selectedLeafs[0]->GetRefName()))
 				DoDeleteRef(selectedLeafs[0]->GetRefName(), true);

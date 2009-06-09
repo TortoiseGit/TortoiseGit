@@ -65,6 +65,7 @@ public:
 		eCmd_CreateBranch,
 		eCmd_CreateTag,
 		eCmd_DeleteBranch,
+		eCmd_DeleteRemoteBranch,
 		eCmd_DeleteTag,
 		eCmd_ShowReflog
 	};
