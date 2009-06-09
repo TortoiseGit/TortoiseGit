@@ -127,3 +127,12 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 	if(this->m_bIsTag)
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 }
+
+void CCreateBranchTagDlg::OnVersionChanged()
+{
+	int radio=GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
+	if (radio == IDC_RADIO_BRANCH)
+		OnCbnSelchangeComboboxexBranch();
+	else
+		GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
+}

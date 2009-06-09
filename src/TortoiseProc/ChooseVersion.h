@@ -14,6 +14,9 @@ protected:
 	CHistoryCombo m_ChooseVersioinTags;    
 	CHistoryCombo m_ChooseVersioinVersion; 
 
+	//Notification when version changed. Can be implemented in derived classes.
+	virtual void OnVersionChanged(){}
+
 	afx_msg void OnBnClickedChooseRadio() 
 	{
 		this->m_ChooseVersioinTags.EnableWindow(FALSE);													
@@ -36,6 +39,7 @@ protected:
 		}
 		// enable version browse button if Version is selected
 		m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(radio == IDC_RADIO_VERSION);
+		OnVersionChanged();
 	}
 
 	void OnBnClickedChooseVersion()
@@ -52,6 +56,7 @@ protected:
 			CString selectedHash = dlg.GetSelectedHash();
 			// load into window, do this even if empty so that it is clear that nothing has been selected
 			m_ChooseVersioinVersion.SetWindowText( selectedHash );
+			OnVersionChanged();
 		}
 	}
 
@@ -109,6 +114,7 @@ protected:
 			m_ChooseVersioinTags.SetCurSel(
 				m_ChooseVersioinTags.FindStringExact(-1, resultRef));
 		}
+		OnVersionChanged();
 	}
 
 
@@ -128,6 +134,7 @@ protected:
 		m_ChooseVersioinBranch.SetCurSel(current);
 
 
+		OnVersionChanged();
 	}
 public:					
 	CString m_VersionName;
