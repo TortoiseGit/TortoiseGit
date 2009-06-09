@@ -736,6 +736,8 @@ CString CBrowseRefsDlg::PickRef(bool returnAsHash, CString initialRef, int pickR
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
 	
+	if(initialRef.IsEmpty())
+		initialRef = L"HEAD";
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
 
