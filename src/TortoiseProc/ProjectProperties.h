@@ -66,8 +66,8 @@ public:
 	 * \param path path to a file or a folder
 	 */
 	BOOL ReadProps(CTGitPath path);
-	BOOL GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR=true);
-	BOOL GetBOOLProps(BOOL &b, TCHAR*key);
+	static BOOL GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR=true);
+	static BOOL GetBOOLProps(BOOL &b, TCHAR*key);
 	/**
 	 * Reads the properties from all paths found in a path list.
 	 * This method calls ReadProps() for each path .
