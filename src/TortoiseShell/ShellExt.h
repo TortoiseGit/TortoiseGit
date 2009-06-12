@@ -134,6 +134,7 @@ protected:
 		ShellMenuIgnoreCaseSensitive,
 		ShellMenuIgnoreCaseInsensitive,
 		ShellMenuRefLog,
+		ShellMenuRefBrowse,
 		ShellMenuBlame,
 		ShellMenuApplyPatch,
 		ShellMenuCreatePatch,
