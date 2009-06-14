@@ -196,7 +196,9 @@ void CGitLogListBase::PreSubclassWindow()
 {
 	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
-	m_Theme.SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
+//	m_Theme.Open(m_hWnd, L"ListView");
+	m_Theme.Open(m_hWnd, L"Explorer::ListView;ListView");
+	m_Theme.SetWindowTheme(m_hWnd, L"Explorer", NULL);
 	CHintListCtrl::PreSubclassWindow();
 }
 
@@ -323,6 +325,7 @@ BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefi
 	}
 	return FALSE;
 }
+
 void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 {	
 //	HBRUSH brush;
@@ -334,12 +337,11 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	GetItem(&rItem);
 
 	GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(Index);
-	HBRUSH brush;
+	HBRUSH brush = NULL;
 
 	
 	if (m_Theme.IsAppThemed() && m_bVista)
 	{
-		m_Theme.Open(m_hWnd, L"Explorer");
 		int state = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
 		{
@@ -354,19 +356,26 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
 			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
-
-			if (brush == NULL)
-				return;
-
-			::FillRect(hdc, &rect, brush);
-			::DeleteObject(brush);
-
 		}
 
-		if (m_Theme.IsBackgroundPartiallyTransparent(LVP_LISTDETAIL, state))
-			m_Theme.DrawParentBackground(m_hWnd, hdc, &rect);
+		if (brush != NULL)
+		{
+			::FillRect(hdc, &rect, brush);
+			::DeleteObject(brush);
+		}
 		else
-			m_Theme.DrawBackground(hdc, LVP_LISTDETAIL, state, &rect, NULL);
+		{
+			if (m_Theme.IsBackgroundPartiallyTransparent(LVP_LISTITEM, state))
+				m_Theme.DrawParentBackground(m_hWnd, hdc, &rect);
+
+			CRect rectDraw = rect;
+			if(rItem.state & LVIS_SELECTED)
+				rectDraw.InflateRect(1,0);
+			else
+				rectDraw.InflateRect(1,1);
+
+			m_Theme.DrawBackground(hdc, LVP_LISTITEM, state, rectDraw, &rect);
+		}
 	}
 	else
 	{
@@ -449,14 +458,26 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
 			rt.right+=4;
 			::FillRect(hdc, &rt, brush);
-			if (rItem.state & LVIS_SELECTED)
+			if (m_Theme.IsAppThemed() && m_bVista)
 			{
-				COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
-				::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER);
-				::SetTextColor(hdc,clrOld);   
-			}else
+				int txtState = LISS_NORMAL;
+				if (rItem.state & LVIS_SELECTED)
+					txtState = LISS_SELECTED;
+
+				m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, shortname, -1, DT_CENTER | DT_SINGLELINE | DT_VCENTER, 0, &rt);
+			}
+			else
 			{
-				::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER);
+				if (rItem.state & LVIS_SELECTED)
+				{
+					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+					COLORREF   clrOld   = ::SetTextColor(hdc,clrNew);   
+					::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+					::SetTextColor(hdc,clrOld);
+				}else
+				{
+					::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+				}
 			}
 
 			
@@ -473,16 +494,26 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	}		
 	rt.right=rect.right;
 
-	if (rItem.state & LVIS_SELECTED)
+	if (m_Theme.IsAppThemed() && m_bVista)
 	{
-		COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
-		::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT);
-		::SetTextColor(hdc,clrOld);   
-	}else
-	{
-		::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT);
+		int txtState = LISS_NORMAL;
+		if (rItem.state & LVIS_SELECTED)
+			txtState = LISS_SELECTED;
+
+		m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, data->m_Subject, -1, DT_LEFT | DT_SINGLELINE | DT_VCENTER, 0, &rt);
 	}
-	
+	else
+	{
+		if (rItem.state & LVIS_SELECTED)
+		{
+			COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
+			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+			::SetTextColor(hdc,clrOld);   
+		}else
+		{
+			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+		}
+	}
 }
 
 static COLORREF blend(const COLORREF& col1, const COLORREF& col2, int amount = 128) {
