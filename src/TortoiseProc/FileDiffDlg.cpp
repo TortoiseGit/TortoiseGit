@@ -865,7 +865,8 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 			fd.m_Action = CTGitPath::LOGACTIONS_DELETED;
 		else if (fd.m_Action == CTGitPath::LOGACTIONS_DELETED)
 			fd.m_Action = CTGitPath::LOGACTIONS_ADDED;
-		( CTGitPath)m_arFileList[i] = ( CTGitPath)fd;
+		std::swap(fd.m_StatAdd, fd.m_StatDel);
+		(CTGitPath&)m_arFileList[i] = fd;
 	}
 	Filter(sFilterString);
 
