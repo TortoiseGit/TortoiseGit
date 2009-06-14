@@ -28,6 +28,7 @@
 #include "XPImageButton.h"
 #include "FilterEdit.h"
 #include "Tooltip.h"
+#include "ProgressDlg.h"
 
 
 #define IDT_FILTER		101

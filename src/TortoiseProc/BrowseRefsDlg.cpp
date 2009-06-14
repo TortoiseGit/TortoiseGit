@@ -12,6 +12,7 @@
 #include "MessageBox.h"
 #include "RefLogDlg.h"
 #include "IconMenu.h"
+#include "FileDiffDlg.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -160,11 +161,11 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 
 typedef std::map<CString,CString> MAP_STRING_STRING;
 
-CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf)
+CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMultiSel)
 {
 	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
 	//List ctrl selection?
-	if(pos)
+	if(pos && (pickFirstSelIfMultiSel || m_ListRefLeafs.GetSelectedCount() == 1))
 	{
 		//A leaf is selected
 		CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(
@@ -200,7 +201,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	}
 	else
 	{
-		selectRef = GetSelectedRef(false);
+		selectRef = GetSelectedRef(false, true);
 	}
 
 	m_RefTreeCtrl.DeleteAllItems();
@@ -578,6 +579,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 //		if(pTree==NULL)
 //			return;
 	}
+	else if(selectedLeafs.size() == 2)
+	{
+		bAddSeparator = true;
+		
+		popupMenu.AppendMenuIcon(eCmd_Diff, L"Diff These Commits", IDI_DIFF);
+	}
 
 	if(bAddSeparator) popupMenu.AppendMenu(MF_SEPARATOR);
 
@@ -652,6 +659,16 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CAppUtils::CreateBranchTag(true);
 			Refresh();
+		}
+		break;
+	case eCmd_Diff:
+		{
+			CFileDiffDlg dlg;
+			dlg.SetDiff(
+				NULL, 
+				selectedLeafs[0]->m_csRefHash, 
+				selectedLeafs[1]->m_csRefHash);
+			dlg.DoModal();
 		}
 		break;
 	}
@@ -753,7 +770,7 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 
 void CBrowseRefsDlg::OnDestroy()
 {
-	m_pickedRef = GetSelectedRef(true);
+	m_pickedRef = GetSelectedRef(true, false);
 
 	CResizableStandAloneDialog::OnDestroy();
 }

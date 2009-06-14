@@ -67,7 +67,8 @@ public:
 		eCmd_DeleteBranch,
 		eCmd_DeleteRemoteBranch,
 		eCmd_DeleteTag,
-		eCmd_ShowReflog
+		eCmd_ShowReflog,
+		eCmd_Diff
 	};
 
 	enum eCol
@@ -89,7 +90,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 
-	CString			GetSelectedRef(bool onlyIfLeaf);
+	CString			GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMultiSel = false);
 
 	void			Refresh(CString selectRef = CString());
 
