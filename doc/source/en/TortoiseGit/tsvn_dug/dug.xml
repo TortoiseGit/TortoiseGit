@@ -62,6 +62,8 @@
 	<!--
 	<xi:include href="./dug_import.xml"/>
 	-->
+  <xi:include href="./dug_create.xml"/>
+  <xi:include href="./dug_clone.xml"/>
 	<xi:include href="./dug_checkout.xml"/>
 	<xi:include href="./dug_commit.xml"/>
 	<!--

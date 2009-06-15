@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-create">
+  <title>Create Repository</title>
+  <indexterm>
+    <primary>Create Repository</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Repository</primary>
+  </indexterm>
+  <para>
+    This section talk about how to create a git repository.
+    Create git repository is very simple.At none git repository directory, 
+    just use the explorer context menu and select
+    <menuchoice>
+      <guimenu>Git Create Repository hearguimenu
+      </guimenu>
+    </menuchoice>. 
+  </para>
+  <para>
+    After repository created, ".git" directory will be created. And messagebox will prompt.
+    <graphic fileref="../images/GitCreateMsg.png"/>
+  </para>
+</sect1>
