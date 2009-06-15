@@ -25,7 +25,7 @@
 	<!-- include external files -->
 	<xi:include href="./tsvn_preface.xml"/>
 	<xi:include href="./tsvn_introduction.xml"/>
-	<xi:include href="./tsvn_basics.xml"/>
+	<xi:include href="./git_book/git_basics.xml"/>
 	<!--
 	<xi:include href="./tsvn_server/server.xml"/>
 	<xi:include href="./tsvn_repository/repository.xml"/>
