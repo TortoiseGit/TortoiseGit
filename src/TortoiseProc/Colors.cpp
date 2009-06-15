@@ -99,3 +99,31 @@ void CColors::SetColor(Colors col, COLORREF cr)
 		i++;
 	}
 }
+
+
+COLORREF CColors::MixColors(COLORREF baseColor, COLORREF newColor, unsigned char mixFactor)
+{
+	short colRed;
+	short colGreen;
+	short colBlue;
+	colRed	 = ((float)( baseColor&0x000000FF)     -(float)( newColor&0x000000FF)     )*mixFactor/0xFF;//red
+	colGreen = ((float)((baseColor&0x0000FF00)>>8) -(float)((newColor&0x0000FF00)>>8 ))*mixFactor/0xFF;//green
+	colBlue  = ((float)((baseColor&0x00FF0000)>>16)-(float)((newColor&0x00FF0000)>>16))*mixFactor/0xFF;//blue
+	
+	colRed   = ( baseColor&0x000000FF)		-colRed;
+	colGreen = ((baseColor&0x0000FF00)>>8)	-colGreen;
+	colBlue  = ((baseColor&0x00FF0000)>>16) -colBlue;
+	baseColor=(int)colRed|((int)colGreen<<8)|((int)colBlue<<16);
+	return baseColor;
+}
+
+COLORREF CColors::Lighten(COLORREF baseColor, unsigned char amount)
+{
+	return MixColors(baseColor, RGB(255,255,255), amount);
+}
+
+COLORREF CColors::Darken(COLORREF baseColor, unsigned char amount)
+{
+	return MixColors(baseColor, RGB(0,0,0), amount);
+}
+

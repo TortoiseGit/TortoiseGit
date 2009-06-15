@@ -425,28 +425,31 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		str=m_HashMap[data->m_CommitHash][i];
 		
 		CString shortname;
-		HBRUSH brush=0;
-		shortname=_T("");
+		HBRUSH brush = 0;
+		shortname = _T("");
+		COLORREF colRef = 0;
+
 		if(GetShortName(str,shortname,_T("refs/heads/")))
 		{
 			if( shortname == m_CurrentBranch )
-				brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::CurrentBranch));
+				colRef = m_Colors.GetColor(CColors::CurrentBranch);
 			else
-				brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::LocalBranch));
+				colRef = m_Colors.GetColor(CColors::LocalBranch);
 
 		}else if(GetShortName(str,shortname,_T("refs/remotes/")))
 		{
-			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::RemoteBranch));
+			colRef = m_Colors.GetColor(CColors::RemoteBranch);
 		}
 		else if(GetShortName(str,shortname,_T("refs/tags/")))
 		{
-			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::Tag));
+			colRef = m_Colors.GetColor(CColors::Tag);
 		}
 		else if(GetShortName(str,shortname,_T("refs/stash")))
 		{
-			brush = ::CreateSolidBrush(m_Colors.GetColor(CColors::Stash));
+			colRef = m_Colors.GetColor(CColors::Stash);
 			shortname=_T("stash");
 		}
+		brush = ::CreateSolidBrush(colRef);
 		
 
 		if(!shortname.IsEmpty())
@@ -456,8 +459,24 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			GetTextExtentPoint32(hdc, shortname,shortname.GetLength(),&size);
 		
 			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
-			rt.right+=4;
+			rt.right+=8;
+
+			//Fill interior of ref label
 			::FillRect(hdc, &rt, brush);
+
+			//Draw edge of label
+			CDC W_Dc;
+			W_Dc.Attach(hdc);
+
+			CRect rectEdge = rt;
+
+			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,100), m_Colors.Darken(colRef,100));
+			rectEdge.DeflateRect(1,1);
+			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
+
+			W_Dc.Detach();
+
+			//Draw text inside label
 			if (m_Theme.IsAppThemed() && m_bVista)
 			{
 				int txtState = LISS_NORMAL;
@@ -481,13 +500,14 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			}
 
 			
-			::MoveToEx(hdc,rt.left,rt.top,NULL);
-			::LineTo(hdc,rt.right,rt.top);
-			::LineTo(hdc,rt.right,rt.bottom);
-			::LineTo(hdc,rt.left,rt.bottom);
-			::LineTo(hdc,rt.left,rt.top);
+			//::MoveToEx(hdc,rt.left,rt.top,NULL);
+			//::LineTo(hdc,rt.right,rt.top);
+			//::LineTo(hdc,rt.right,rt.bottom);
+			//::LineTo(hdc,rt.left,rt.bottom);
+			//::LineTo(hdc,rt.left,rt.top);
+
 				
-			rt.left=rt.right+3;
+			rt.left=rt.right+1;
 		}
 		if(brush)
 			::DeleteObject(brush);

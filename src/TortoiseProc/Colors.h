@@ -63,6 +63,12 @@ public:
 	COLORREF GetColor(Colors col, bool bDefault = false);
 	void SetColor(Colors col, COLORREF cr);
 
+	//mixFactor: 0 -> baseColor, 255 -> newColor
+	COLORREF MixColors(COLORREF baseColor, COLORREF newColor, unsigned char mixFactor);
+
+	COLORREF Lighten(COLORREF baseColor, unsigned char amount = 100);
+	COLORREF Darken(COLORREF baseColor, unsigned char amount = 100);
+
 	struct COLOR_DATA
 	{
 		Colors		Color;
