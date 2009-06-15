@@ -20,6 +20,7 @@
 #include <string>
 #include <memory>
 #include "shlwapi.h"
+#include "tstring.h"
 
 #ifndef ASSERT
 #define ASSERT(x)

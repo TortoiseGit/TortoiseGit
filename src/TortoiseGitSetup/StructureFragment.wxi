@@ -340,7 +340,7 @@ out everything for now, leaving these enabled as they are would make the install
               <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
            </Component>
             
-<!--
+
             <Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
 
               <File Id="F__TortoiseIDiff" ShortName="TIDIFF.EXE" Name="TortoiseIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseIDiff.exe" KeyPath="yes" />
@@ -353,7 +353,7 @@ out everything for now, leaving these enabled as they are would make the install
               <Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" ShortName="TIDIFF" Name="TortoiseIDiff" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseIDiff.exe" Description="View Diff's of image files" Show="normal" />
             </Component>
--->
+
             <Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseUDiff" ShortName="TUDIFF.EXE" Name="TortoiseUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseUDiff.exe" KeyPath="yes" />
             </Component>
