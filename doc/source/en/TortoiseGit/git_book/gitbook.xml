@@ -1,14 +1,11 @@
 <?xml version='1.0'?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<article>
-<articleinfo>
-<title></title>
-</articleinfo>
-
+<chapter id="git-book">
+<title>Git Basic</title>
 
 <sect1 id="Git_Community_Boo"><title>Git Community Book</title>
-<sect2 id=""><title></title>
+<sect2 id="Git_Book_Preface"><title>Preface</title>
 <para>The open Git resource pulled together by the whole
 community</para>
 
@@ -139,18 +136,18 @@ simply the size of the contents, the contents depend on what type
 of object it is, and there are four different types of objects:
 "blob", "tree", "commit", and "tag".</para>
 <itemizedlist>
-<listitem>A <para><emphasis>"blob"</emphasis></para> is used to
+<listitem>A <emphasis>"blob"</emphasis> is used to
 store file data - it is generally a file.</listitem>
-<listitem>A <para><emphasis>"tree"</emphasis></para> is basically
+<listitem>A <emphasis>"tree"</emphasis> is basically
 like a directory - it references a bunch of other trees and/or
 blobs (i.e. files and sub-directories)</listitem>
-<listitem>A <para><emphasis>"commit"</emphasis></para> points to a
+<listitem>A <emphasis>"commit"</emphasis> points to a
 single tree, marking it as what the project looked like at a
 certain point in time. It contains meta-information about that
 point in time, such as a timestamp, the author of the changes since
 the last commit, a pointer to the previous commit(s),
 etc.</listitem>
-<listitem>A <para><emphasis>"tag"</emphasis></para> is a way to
+<listitem>A <emphasis>"tag"</emphasis>is a way to
 mark a specific commit as special in some way. It is normally used
 to tag certain commits as specific releases or something along
 those lines.</listitem>
@@ -172,7 +169,7 @@ understand when using Git.</para>
 </sect3><sect3 id="Blob_Objec"><title>Blob Object</title>
 <para>A blob generally stores the contents of a file.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/object-blob.png"/>
+<imagedata fileref="../images/object-blob.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -204,7 +201,7 @@ file is associated with.</para>
 blobs and other trees - it generally represents the contents of a
 directory or subdirectory.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/object-tree.png"/>
+<imagedata fileref="../images/object-tree.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -249,7 +246,7 @@ only pays attention to the executable bit.</para>
 <para>The "commit" object links a physical state of a tree with a
 description of how we got there and why.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/object-commit.png"/>
+<imagedata fileref="../images/object-commit.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -274,10 +271,10 @@ committer Junio C Hamano &lt;gitster@pobox.com&gt; 1187591163 -0700
 
 <para>As you can see, a commit is defined by:</para>
 <itemizedlist>
-<listitem>a <para><emphasis>tree</emphasis></para>: The SHA1 name
+<listitem>a <emphasis>tree</emphasis>: The SHA1 name
 of a tree object (as defined below), representing the contents of a
 directory at a certain point in time.</listitem>
-<listitem><para><emphasis>parent(s)</emphasis></para>: The SHA1
+<listitem><emphasis>parent(s)</emphasis>: The SHA1
 name of some number of commits which represent the immediately
 previous step(s) in the history of the project. The example above
 has one parent; merge commits may have more than one. A commit with
@@ -285,15 +282,15 @@ no parents is called a "root" commit, and represents the initial
 revision of a project. Each project must have at least one root. A
 project can also have multiple roots, though that isn't common (or
 necessarily a good idea).</listitem>
-<listitem>an <para><emphasis>author</emphasis></para>: The name of
+<listitem>an <emphasis>author</emphasis>: The name of
 the person responsible for this change, together with its
 date.</listitem>
-<listitem>a <para><emphasis>committer</emphasis></para>: The name
+<listitem>a <emphasis>committer</emphasis>: The name
 of the person who actually created the commit, with the date it was
 done. This may be different from the author; for example, if the
 author wrote a patch and emailed it to another person who used the
 patch to create the commit.</listitem>
-<listitem>a <para><emphasis>comment</emphasis></para> describing
+<listitem>a <emphasis>comment</emphasis> describing
 this commit.</listitem>
 </itemizedlist>
 <para>Note that a commit does not itself contain any information
@@ -332,7 +329,7 @@ structure:</para>
 <para>And we committed this to a Git repository, it would be
 represented like this:</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/objects-example.png"/>
+<imagedata fileref="../images/objects-example.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -343,7 +340,7 @@ object for each directory (including the root) and a
 track what our project looked like when it was committed.</para>
 </sect3><sect3 id="Tag_Objec"><title>Tag Object</title>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/object-tag.png"/>
+<imagedata fileref="../images/object-tag.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -1652,7 +1649,7 @@ remote-tracking branch "origin".</para>
 </programlisting>
 
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/rebase0.png"/>
+<imagedata fileref="../images/rebase0.png"/>
 </imageobject></inlinemediaobject>
 
 
@@ -1670,7 +1667,7 @@ $ git commit
 commits on the origin branch too. This means both 'origin' and
 'mywork' has advanced, which means the work has diverged.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/rebase1.png"/>
+<imagedata fileref="../images/rebase1.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -1678,7 +1675,7 @@ commits on the origin branch too. This means both 'origin' and
 back in; the result would create a new merge commit, like
 this:</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/rebase2.png"/>
+<imagedata fileref="../images/rebase2.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -1698,7 +1695,7 @@ temporarily saving them as patches (in a directory named
 origin, then apply each of the saved patches to the new
 mywork.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/rebase3.png"/>
+<imagedata fileref="../images/rebase3.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -1709,14 +1706,14 @@ will likely be removed if you run a pruning garbage collection.
 <ulink url="http://www.kernel.org/pub/software/scm/git/docs/git-gc.html">git
 gc</ulink>)</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/rebase4.png"/>
+<imagedata fileref="../images/rebase4.png"/>
 </imageobject></inlinemediaobject>
 
  
 <para>So now we can look at the difference in our history between
 running a merge and running a rebase:</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/rebase5.png"/>
+<imagedata fileref="../images/rebase5.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -4115,7 +4112,7 @@ compressed data can be copied directly from pack to pack during
 repacking without undetected data corruption. Version 2 indexes can
 also handle packfiles larger than 4 Gb.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/packfile-index.png"/>
+<imagedata fileref="../images/packfile-index.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -4160,7 +4157,7 @@ thier SHAs which each consist of an object header and object
 contents. At the end of the packfile is a 20-byte SHA1 sum of all
 the shas (in sorted order) in that packfile.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/packfile-format.png"/>
+<imagedata fileref="../images/packfile-format.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -4179,7 +4176,7 @@ the first specifies that the following data is a commit, and the
 remainder of the first and the last 7 bits of the second specifies
 that the data will be 144 bytes when expanded.</para>
 <inlinemediaobject><imageobject>
-<imagedata fileref="images/packfile-logic.png"/>
+<imagedata fileref="../images/packfile-logic.png"/>
 </imageobject></inlinemediaobject>
 
  
@@ -5349,4 +5346,4 @@ that you have made but not yet committed.
 
 
 
-</sect2></sect1></article>
+</sect2></sect1></chapter>

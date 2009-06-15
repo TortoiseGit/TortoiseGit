@@ -25,7 +25,8 @@
 	<!-- include external files -->
 	<xi:include href="./tsvn_preface.xml"/>
 	<xi:include href="./tsvn_introduction.xml"/>
-	<xi:include href="./git_book/git_basics.xml"/>
+	<xi:include href="./git_book/gitbook.xml"/>	
+
 	<!--
 	<xi:include href="./tsvn_server/server.xml"/>
 	<xi:include href="./tsvn_repository/repository.xml"/>
@@ -38,6 +39,7 @@
 	<xi:include href="./tsvn_app_howto.xml"/>
 	<xi:include href="./tsvn_app_admins.xml" />
 	<xi:include href="./tsvn_app_automation.xml"/>	
+	
 	<!--
 	<xi:include href="./tsvn_app_cli.xml"/>
 	-->
