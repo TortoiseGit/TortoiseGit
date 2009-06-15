@@ -1199,7 +1199,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			{
-				if (m_hasWC)
+				//if (m_hasWC)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE))
 						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
