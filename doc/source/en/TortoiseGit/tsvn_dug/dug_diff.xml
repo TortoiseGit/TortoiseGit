@@ -38,6 +38,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+      <!--
 			<varlistentry>
 				<term>Difference to another branch/tag</term>
 				<listitem>
@@ -63,6 +64,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+      -->
 			<varlistentry>
 				<term>Difference from a previous revision</term>
 				<listitem>
@@ -139,6 +141,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+      <!--
 			<varlistentry>
 				<term>Difference between WC file/folder and a URL</term>
 				<listitem>
@@ -159,6 +162,8 @@
 					</para>
 				</listitem>
 			</varlistentry>
+      -->
+      <!--
 			<varlistentry>
 				<term>Difference with blame information</term>
 				<listitem>
@@ -170,6 +175,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+      -->
 			<varlistentry>
 				<term>Difference between folders</term>
 				<listitem>
@@ -490,6 +496,10 @@
 							<citetitle>here</citetitle>
 						</ulink>.
 					</para>
+          <para>
+            Notepad2 have been included at TortoiseGit Setup MSI.
+            You can launch it by command line "notepad2". 
+          </para>
 				</listitem>
 			</varlistentry>
 		</variablelist>

@@ -546,7 +546,7 @@
 							files shown as <emphasis>modified</emphasis>.
 						</para>
 					</listitem>
-				</varlistentry>
+				</varlistentry> 
 				<varlistentry>
 					<term>Blame changes</term>
 					<listitem>
@@ -558,6 +558,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
+        -->
+       
 				<varlistentry>
 					<term>Show as unified diff</term>
 					<listitem>
@@ -568,7 +570,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
-				-->
+			
 				<varlistentry>
 					<term>Open / Open with...</term>
 					<listitem>
@@ -587,15 +589,89 @@
 						</para>
 					</listitem>
 				</varlistentry>
-				<!--
+				
 				<varlistentry>
-					<term>Revert changes from this revision</term>
+					<term>Revert changes to this revision</term>
 					<listitem>
 						<para>
-							Revert the changes made to the selected file in that revision.
+							Revert chosen file to this revision.
 						</para>
-					</listitem>
+					</listitem>          
 				</varlistentry>
+        <varlistentry>
+          <term>Save revision to...</term>
+          <listitem>
+            <para>
+              Save the selected revision to a file so you
+              have an older version of that file.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>Show log</term>
+          <listitem>
+            <para>
+              Show the revision log for the selected single file.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>Compare with base</term>
+          <listitem>
+            <para>
+              Compare chosen file with base version.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>Compare with working copy</term>
+          <listitem>
+            <para>
+              Compare chosen file with working copy.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>View revision in Notepad2</term>
+          <listitem>
+            <para>
+              Show chosen file with notepad2 with chosen commit.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>Explore to</term>
+          <listitem>
+            <para>
+              Open directory of file with Explore.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>Copy paths to clipboard</term>
+          <listitem>
+            <para>
+              Copy paths to clipboard
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term>Copy all information to clipboard</term>
+          <listitem>
+            <para>
+              Copy all information to clipboard, include version info.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <!--
 				<varlistentry>
 					<term>Show properties</term>
 					<listitem>
@@ -606,14 +682,7 @@
 				</varlistentry>
 				-->
 				<!--
-				<varlistentry>
-					<term>Show log</term>
-					<listitem>
-						<para>
-							Show the revision log for the selected single file.
-						</para>
-					</listitem>
-				</varlistentry>
+			
 				<varlistentry>
 					<term>Get merge logs</term>
 					<listitem>
@@ -624,15 +693,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
-				<varlistentry>
-					<term>Save revision to...</term>
-					<listitem>
-						<para>
-							Save the selected revision to a file so you
-							have an older version of that file.
-						</para>
-					</listitem>
-				</varlistentry>
+			
 				-->
 			</variablelist>
 		</para>
@@ -906,7 +967,20 @@
 			The checkbox is tristate: you can show all paths, grey out the
 			unrelated ones, or hide the unrelated paths completely.
 		</para>
-		<para>
+
+    <para>
+      You can show all branches history by click <guilabel>All branches</guilabel>
+    </para>
+    <para>
+      You can show whole project history, no choose directory or file by click
+      <guilabel>Show Whole Project</guilabel>
+    </para>
+    <para>
+      <guilabel>First Parent</guilabel> just follow up first parent commit. This will
+    help understand overwhole history. 
+    </para>  
+    <!--
+      <para>
 			Sometimes your working practices will require log messages to follow
 			a particular format, which means that the text describing the changes
 			is not visible in the abbreviated summary shown in the top pane.
@@ -924,6 +998,7 @@
 				so you will not see this feature in action from the repo browser.
 			</para>
 		</tip>
+    -->
 	</sect2>
 	<sect2 id="tsvn-dug-showlog-5">
 		<?dbhh topicname="HIDD_STATGRAPH"?>

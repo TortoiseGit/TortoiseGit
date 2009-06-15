@@ -85,18 +85,8 @@
 			</menuchoice> so that Git doesn't have to guess what
 			you really want to do.
 		</para>
-		<para>
-			If a <emphasis>folder</emphasis> is deleted via the explorer instead 
-			of using the TortoiseGit context menu,  your working copy will be broken
-			and you will be unable to commit. If you update your working copy,
-			Git will replace the missing folder with the latest version
-			from the repository and you can then delete it the correct way
-			using
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Delete</guimenuitem>
-			</menuchoice>.
-		</para>
+    
+    
 		<tip>
 			<title>Getting a deleted file or folder back</title>
 			<para>
@@ -113,10 +103,8 @@
 				the file or folder you deleted, right-click and select
 				<menuchoice>
 					<guimenu>Context Menu</guimenu>
-					<guimenuitem>Copy to...</guimenuitem>
+					<guimenuitem>Switch/Checkout...</guimenuitem>
 				</menuchoice>
-				as the target for that copy operation select the path to your
-				working copy.
 			</para>
 		</tip>
 	</sect2>
@@ -164,7 +152,7 @@
 						in the popup menu select
 						<menuchoice>
 							<guimenu>Context Menu</guimenu>
-							<guimenuitem>SVN Move versioned files here</guimenuitem>
+							<guimenuitem>Git Move versioned files here</guimenuitem>
 						</menuchoice>
 					</para>
 				</listitem>
@@ -188,26 +176,32 @@
 				working copy can get really messed up.
 			</para>
 		</caution>
+    <!--
 		<para>
 			You can also use the repository browser to move items around.
 			Read <xref linkend="tsvn-dug-repobrowser"/> to find out more.
 		</para>
+    -->
 		<caution>
-			<title>Do Not SVN Move Externals</title>
+			<title>Do Not Git Move Submodule</title>
 			<para>
 				You should <emphasis>not</emphasis> use the TortoiseGit
 				<guilabel>Move</guilabel> or <guilabel>Rename</guilabel>
 				commands on a folder which has been created using
-				<literal>svn:externals</literal>.
+				<literal>git submodule</literal>.
+        <!--
 				This action would cause the external item to be deleted from
 				its parent repository, probably upsetting many other people.
 				If you need to move an externals folder you should use an
 				ordinary shell move, then adjust the
 				<literal>svn:externals</literal> properties of the source
-				and destination parent folders.
+				and destination parent folders
+        -->
+        
 			</para>
 		</caution>
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-renameincase">
 		<title>Changing case in a filename</title>
 		<indexterm>
@@ -247,6 +241,7 @@
 				</listitem>
 			</orderedlist>
 		</para>
+
 		<para>
 			Solution B)
 			<orderedlist>
@@ -274,6 +269,8 @@
 			</orderedlist>
 		</para>
 	</sect2>
+	-->
+	<!--
 	<sect2 id="tsvn-dug-rename-case-conflict">
 		<title>Dealing with filename case conflicts</title>
 		<para>
@@ -306,6 +303,8 @@
 			</para>
 		</tip>
 	</sect2>
+	-->
+	
 	<sect2 id="tsvn-dug-rename-repair">
 		<title>Repairing File Renames</title>
 		<para>

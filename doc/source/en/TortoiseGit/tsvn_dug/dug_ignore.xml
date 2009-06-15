@@ -47,13 +47,14 @@
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Remove from Ignore List</guimenuitem>
 		</menuchoice>
-		You can also access a folder's <literal>svn:ignore</literal>
-		property directly. That allows you to specify more general
+		You can also access a folder's <literal>.gitignore</literal>
+		file directly. That allows you to specify more general
 		patterns using filename globbing, described in the section below.
-		Read <xref linkend="tsvn-dug-propertypage"/> for more information
-		on setting properties directly. Please be aware that each ignore pattern 
+		Read <xref linkend="gitignore(5)"/> for more information. 
+    Please be aware that each ignore pattern 
 		has to be placed on a separate line. Separating them by spaces does not work.
 	</para>
+  <!--
 	<tip>
 		<title>The Global Ignore List</title>
 		<para>
@@ -68,6 +69,8 @@
 			<xref linkend="tsvn-dug-settings-main"/> for more information. 
 		</para>
 	</tip>
+  -->
+  <!--
 	<tip>
 		<title>Ignoring Versioned Items</title>
 		<para>
@@ -77,6 +80,7 @@
 			<quote>unversion</quote> it.
 		</para>
 	</tip>
+  -->
 	<sect2 id="tsvn-dug-ignore-glob">
 		<title>Pattern Matching in Ignore Lists</title>
 		<indexterm>
@@ -132,6 +136,7 @@
 			regardless of case, you could use a pattern like
 			<literal>*.[Tt][Mm][Pp]</literal>.
 		</para>
+    <!--
 		<para>
 			If you want an official definition for globbing, you can find
 			it in the IEEE specifications for the shell command language
@@ -139,6 +144,7 @@
 				<citetitle>Pattern Matching Notation</citetitle>
 			</ulink>.
 		</para>
+    
 		<tip>
 			<title>No Paths in Global Ignore List</title>
 			<para>
@@ -156,5 +162,6 @@
 				reliable way to achieve this using global ignore patterns.
 			</para>
 		</tip>
+    -->
 	</sect2>
 </sect1>

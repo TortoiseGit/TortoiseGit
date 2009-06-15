@@ -9,9 +9,6 @@
 		<primary>tag</primary>
 	</indexterm>
 	<indexterm>
-		<primary>copy</primary>
-	</indexterm>
-	<indexterm>
 		<primary>mark release</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_COPY"?>
@@ -23,7 +20,7 @@
 		disturbing the main line of development with compiler
 		errors and bugs. As soon as the new feature is stable enough
 		then the development branch is <firstterm>merged</firstterm>
-		back into the main branch (trunk).
+		back into the main branch.
 	</para>
 	<para>
 		Another feature of version control systems is the ability

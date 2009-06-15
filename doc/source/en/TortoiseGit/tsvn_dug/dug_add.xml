@@ -66,7 +66,7 @@
 					select
 					<menuchoice>
 						<guimenu>Context Menu</guimenu>
-						<guimenuitem>SVN Add files to this WC</guimenuitem>
+						<guimenuitem>Git Add files to this WC</guimenuitem>
 					</menuchoice>.
 					The files will then be copied to the working copy and
 					added to version control.
