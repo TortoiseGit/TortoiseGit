@@ -33,6 +33,9 @@
     You can click <guilabel>...</guilabel> to browse putty key file.
   </para>
   <para>
+    Clone will checkout currrent HEAD to work space automatically. 
+  </para>
+  <para>
     Git clone support http, git and ssh protocol. <xref linkend="git-choose-ssh"/>Show how to choose SSH client.
     OpenSSH, PLink or TortoisePlink. 
   </para>

@@ -66,11 +66,11 @@
   <xi:include href="./dug_clone.xml"/>
 	<xi:include href="./dug_checkout.xml"/>
 	<xi:include href="./dug_commit.xml"/>
+  <xi:include href="./dug_wcstatus.xml"/>
 	<!--
 	<xi:include href="./dug_update.xml"/>
 	-->
-	<xi:include href="./dug_conflicts.xml"/>
-	<xi:include href="./dug_wcstatus.xml"/>
+	
 	<!--
 	<xi:include href="./dug_changelist.xml"/>
 	-->
@@ -89,6 +89,9 @@
 	-->
 	<xi:include href="./dug_branchtag.xml"/>
 	<xi:include href="./dug_merge.xml"/>
+  
+  <xi:include href="./dug_conflicts.xml"/>
+
 	<!--
 	<xi:include href="./dug_locking.xml"/>
 	-->

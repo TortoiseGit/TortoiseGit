@@ -200,7 +200,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
-				-->
+				
 				<varlistentry>
 					<term>Open / Open with...</term>
 					<listitem>
@@ -218,6 +218,7 @@
 						</para>
 					</listitem>
 				</varlistentry>
+        -->
 				<!--
 				<varlistentry>
 					<term>Browse repository</term>
@@ -229,6 +230,29 @@
 					</listitem>
 				</varlistentry>
 				-->
+        <varlistentry>
+					<term>Reset (current branch) to this</term>
+					<listitem>
+						<para>
+							Reset current branch HEAD to selected commit. 
+							<!-- todo refer reset -->
+						</para>
+					</listitem>
+				</varlistentry>
+          
+       <varlistentry>
+					<term>Switch\Checkout to revision</term>
+					<listitem>
+						<para>
+							Update your working copy to the selected revision.
+							Useful if you want to have your working copy reflect
+							a time in the past, or if there have been further commits to
+							the repository and you want to update your working copy one
+							step at a time. 
+						</para>
+					</listitem>
+				</varlistentry>
+            
 				<varlistentry>
 					<term>Create branch from revision</term>
 					<listitem>
@@ -247,27 +271,8 @@
 						</para>
 					</listitem>
 				</varlistentry>
-				<varlistentry>
-					<term>Switch\Checkout to revision</term>
-					<listitem>
-						<para>
-							Update your working copy to the selected revision.
-							Useful if you want to have your working copy reflect
-							a time in the past, or if there have been further commits to
-							the repository and you want to update your working copy one
-							step at a time. 
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Reset (current branch) to this</term>
-					<listitem>
-						<para>
-							Reset current branch HEAD to selected commit. 
-							<!-- todo refer reset -->
-						</para>
-					</listitem>
-				</varlistentry>
+				
+				
 				<varlistentry>
 					<term>Rebase (current branch) to this</term>
 					<listitem>
@@ -354,7 +359,7 @@
 				</varlistentry>
 				-->
 				<varlistentry>
-					<term>Export...</term>
+					<term>Export this version...</term>
 					<listitem>
 						<para>
 							Export the selected file/folder at the selected
@@ -407,6 +412,14 @@
 						</para>
 					</listitem>
 				</varlistentry>
+        <varlistentry>
+					<term>Format Patch...</term>
+					<listitem>
+						<para>
+							Create Patchs from this commit.
+						</para>
+					</listitem>
+				</varlistentry>
 			</variablelist>
 		</para>
 		<para>
@@ -454,6 +467,30 @@
 						<para>
 							View the differences between the two selected revisions
 							as a Unified-Diff file. This works for files and folders.
+						</para>
+					</listitem>
+				</varlistentry>
+        <varlistentry>
+          <term>Combine to one commit</term>
+          <listitem>
+            <para>
+              Combine continuous commits to one commit.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+					<term>Cherry Pick this version</term>
+					<listitem>
+						<para>
+							Cherry Pick Chosen Commits. 
+						</para>
+					</listitem>
+				</varlistentry>
+        <varlistentry>
+					<term>Fomat Patch...</term>
+					<listitem>
+						<para>
+							Create patchs between chosen two commits.
 						</para>
 					</listitem>
 				</varlistentry>
