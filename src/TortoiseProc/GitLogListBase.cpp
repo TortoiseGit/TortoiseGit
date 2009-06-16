@@ -429,6 +429,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		shortname = _T("");
 		COLORREF colRef = 0;
 
+		//Determine label color
 		if(GetShortName(str,shortname,_T("refs/heads/")))
 		{
 			if( shortname == m_CurrentBranch )
@@ -449,6 +450,12 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			colRef = m_Colors.GetColor(CColors::Stash);
 			shortname=_T("stash");
 		}
+
+		//When row selected, ajust label color
+		if (!(m_Theme.IsAppThemed() && m_bVista))
+			if (rItem.state & LVIS_SELECTED)
+				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
+
 		brush = ::CreateSolidBrush(colRef);
 		
 
