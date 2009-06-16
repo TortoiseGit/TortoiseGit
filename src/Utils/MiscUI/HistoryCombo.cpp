@@ -152,6 +152,8 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos)
 	{
 		DeleteItem(nIndex);
 		m_arEntries.RemoveAt(nIndex);
+		//nRet is now (potentially) invalid. Reset it.
+		nRet = FindStringExact(0, str);
 	}
 
 	//truncate list to m_nMaxHistoryItems

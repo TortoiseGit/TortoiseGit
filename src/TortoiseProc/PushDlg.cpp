@@ -157,7 +157,7 @@ void CPushDlg::OnBnClickedRd()
 void CPushDlg::OnCbnSelchangeBranchSource()
 {
 	// TODO: Add your control notification handler code here
-	m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
+	m_BranchRemote.AddString(m_BranchSource.GetString());
 }
 
 void CPushDlg::OnBnClickedOk()
@@ -200,12 +200,23 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 {
 	CString remoteBranchName;
+	CString remoteName;
 	m_BranchRemote.GetWindowText(remoteBranchName);
+	remoteName = m_Remote.GetString();
+	remoteBranchName = remoteName + '/' + remoteBranchName;
 	remoteBranchName = CBrowseRefsDlg::PickRef(false, remoteBranchName, gPickRef_Remote);
 	if(remoteBranchName.IsEmpty())
 		return; //Canceled
 	remoteBranchName = remoteBranchName.Mid(13);//Strip 'refs/remotes/'
-	remoteBranchName = remoteBranchName.Mid(remoteBranchName.Find('/') + 1); //Strip remote name (for example 'origin/')
+	int slashPlace = remoteBranchName.Find('/');
+	remoteName = remoteBranchName.Left(slashPlace);
+	remoteBranchName = remoteBranchName.Mid(slashPlace + 1); //Strip remote name (for example 'origin/')
 
-	m_BranchRemote.SetWindowText(remoteBranchName);
+	//Select remote
+	int remoteSel = m_Remote.FindStringExact(0,remoteName);
+	if(remoteSel >= 0)
+		m_Remote.SetCurSel(remoteSel);
+
+	//Select branch
+	m_BranchRemote.AddString(remoteBranchName);
 }
