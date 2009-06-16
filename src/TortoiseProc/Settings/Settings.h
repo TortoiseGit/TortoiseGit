@@ -42,6 +42,7 @@
 #include "TreePropSheet/TreePropSheet.h"
 #include "SettingGitConfig.h"
 #include "SettingGitRemote.h"
+#include "SettingsBugtraqConfig.h"
 
 using namespace TreePropSheet;
 
@@ -90,6 +91,7 @@ private:
 	CSettingsTBlame *		m_pTBlamePage;
 	CSettingGitConfig *		m_pGitConfig;
 	CSettingGitRemote *		m_pGitRemote;
+	CSettingsBugtraqConfig * m_pBugtraqConfig;
 
 	HICON					m_hIcon;
 public:

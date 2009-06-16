@@ -64,6 +64,7 @@ void CSettings::AddPropPages()
 	m_pTBlamePage = new CSettingsTBlame();
 	m_pGitConfig = new CSettingGitConfig();
 	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
+	m_pBugtraqConfig = new CSettingsBugtraqConfig(m_CmdPath.GetWinPath());
 
 
 	SetPageIcon(m_pMainPage, m_pMainPage->GetIconID());
@@ -89,6 +90,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pGitConfig, m_pGitConfig->GetIconID());
 	SetPageIcon(m_pGitRemote, m_pGitRemote->GetIconID());
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
+	SetPageIcon(m_pBugtraqConfig, m_pBugtraqConfig->GetIconID());
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
 
 	AddPage(m_pMainPage);
@@ -117,6 +119,10 @@ void CSettings::AddPropPages()
 //    AddPage(m_pLogCacheListPage);
 //	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
+	if(	g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) )
+	{
+		AddPage(m_pBugtraqConfig);
+	}
 	AddPage(m_pTBlamePage);
 }
 
@@ -145,6 +151,7 @@ void CSettings::RemovePropPages()
 
 	delete m_pGitConfig;
 	delete m_pGitRemote;
+	delete m_pBugtraqConfig;
 
 }
 
@@ -174,6 +181,7 @@ void CSettings::HandleRestart()
 
 	restart |= m_pGitConfig->GetRestart();
 	restart |= m_pGitRemote->GetRestart();
+	restart |= m_pBugTraqPage->GetRestart();
 
 	if (restart & ISettingsPropPage::Restart_System)
 	{

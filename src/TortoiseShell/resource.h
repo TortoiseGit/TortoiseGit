@@ -195,6 +195,8 @@
 #define IDI_MENUSYNC                    321
 #define IDS_MENUSENDMAIL                321
 #define IDS_MENUDESSENDMAIL             322
+#define IDS_MENUREFBROWSE				333
+#define IDS_MENUDESCREFBROWSE			334
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
 #define IDC_REPOURL                     1003

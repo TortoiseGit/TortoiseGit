@@ -270,7 +270,9 @@ BEGIN
     IDS_MENUSUBADD          "Submodule Add"
     IDS_MENUSUBSYNC         "Submodule Sync"
     IDS_MENUREFLOG          "Show &Reflog"
+    IDS_MENUREFBROWSE       "Browse Reference"
     IDS_MENUDESCREFLOG      "Shows reference log"
+    IDS_MENUDESCREFBROWSE   "Browse reference"
     IDS_MENUSTASHLIST       "Stash List"
 END
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-clone">
+  <title>Clone Repository</title>
+  <indexterm>
+    <primary>Clone Repository</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Repository</primary>
+  </indexterm>
+  <para>
+    This section talk about how to clone a git repository from other repository.
+    Clone git repository is very simple.At none git repository directory, 
+    just use the explorer context menu and select
+    <menuchoice>
+      <guimenu>Git Clone...
+      </guimenu>
+    </menuchoice>. 
+  </para>
+  <para>
+    Clone Dialog will show. <graphic fileref="../images/GitClone.png"/>
+  </para>
+  <para>
+    <guilabel>Url:</guilabel>Input repository URL address, which you will clone <emphasis>from</emphasis>.
+    You can click <guilabel>Browse</guilabel> to browse diectory.
+  </para>
+  <para>
+    <guilabel>Directory:</guilabel>Input your local directory, which you will clone <emphasis>to</emphasis>.
+    You can click <guilabel>Browse</guilabel> to browse diectory. 
+  </para>
+  <para>
+    If you check<guilabel>Load Putty Key</guilabel> the box, clone will auto load putty key file with Pageant.
+    You can click <guilabel>...</guilabel> to browse putty key file.
+  </para>
+  <para>
+    Clone will checkout currrent HEAD to work space automatically. 
+  </para>
+  <para>
+    Git clone support http, git and ssh protocol. <xref linkend="git-choose-ssh"/>Show how to choose SSH client.
+    OpenSSH, PLink or TortoisePlink. 
+  </para>
+</sect1>

@@ -1691,6 +1691,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Settings\SettingsBugtraqConfig.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingsBugtraqConfig.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SettingsColors.cpp"
 					>
 				</File>
@@ -1960,6 +1968,14 @@
 				</File>
 				<File
 					RelativePath=".\Commands\StashCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="RefBrowse"
+				>
+				<File
+					RelativePath=".\Commands\RefBrowseCommand.h"
 					>
 				</File>
 			</Filter>

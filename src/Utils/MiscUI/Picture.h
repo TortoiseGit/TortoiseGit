@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #pragma once
+#include "tstring.h"
 #include <string>
 #include "ocidl.h"
 #include <GdiPlus.h>

@@ -17,3 +17,7 @@ IBugTraqProvider_?.?
 /src/*/[Dd]ebug_static
 /Languages/[Rr]elease
 /Languages/[Dd]ebug
+/ext/build/x64/
+Thumbs.db
+*.cache
+/doc/xsl/db_*.xsl

@@ -97,7 +97,7 @@
 					-->
 					<listitem>
 						<para>
-							add the file to the <literal>git:ignore</literal> list
+							add the file to the <literal>.gitignore</literal> list
 							using
 							<menuchoice>
 								<guimenu>TortoiseGit</guimenu>

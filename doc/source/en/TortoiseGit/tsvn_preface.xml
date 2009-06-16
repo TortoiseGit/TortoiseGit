@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE preface SYSTEM "../../dtd/dblite.dtd">
 <preface id="tsvn-preface">
 	<title>Preface</title>
@@ -70,9 +70,9 @@
 			on your PC.
 		</para>
 		<para>
-			In <xref linkend="tsvn-basics"/> we give a short introduction
-			to the <emphasis>Git</emphasis> revision control system which
-			underlies TortoiseGit. This is borrowed from the documentation for the
+			In <xref linkend="git-book"/> we give a short introduction
+			to the <emphasis>Git</emphasis> revision control system. 
+			This is borrowed from the documentation for the
 			Git project and explains the different approaches to version
 			control, and how Git works.
 		</para>

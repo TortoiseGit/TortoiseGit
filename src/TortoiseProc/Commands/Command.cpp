@@ -61,8 +61,8 @@
 #include "ReflogCommand.h"
 #include "SendMailCommand.h"
 #include "CatCommand.h"
+#include "RefBrowseCommand.h"
 
-#include "BrowseRefsDlg.h"
 
 #if 0
 
@@ -178,7 +178,7 @@ typedef enum
 	cmdSubUpdate,
 	cmdSubSync,
 	cmdRefLog,
-	cmdTest
+	cmdRefBrowse
 	
 } TGitCommand;
 
@@ -253,20 +253,8 @@ static const struct CommandInfo
 	{	cmdSubUpdate,		_T("subupdate")			},
 	{	cmdSubSync,			_T("subsync")			},
 	{	cmdRefLog,			_T("reflog")			},
-	{	cmdTest,			_T("test")				},
+	{	cmdRefBrowse,		_T("refbrowse")			},
 };
-
-
-
-class TestCommand : public Command
-{
-	virtual bool Execute()
-	{
-		CBrowseRefsDlg(orgCmdLinePath.GetWinPath()).DoModal();
-		return true;
-	}
-};
-	
 
 
 Command * CommandServer::GetCommand(const CString& sCmd)
@@ -375,8 +363,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SendMailCommand;
 	case cmdCat:
 		return new CatCommand;
-	case cmdTest:
-		return new TestCommand;
+	case cmdRefBrowse:
+		return new RefBrowseCommand;
 #if 0
 
 	
