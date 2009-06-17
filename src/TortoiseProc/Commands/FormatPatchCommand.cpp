@@ -59,7 +59,7 @@ bool FormatPatchCommand::Execute()
 			range=dlg.m_Since;
 			break;
 		case IDC_RADIO_NUM:
-			range.Format(_T("-n%d"),dlg.m_Num);
+			range.Format(_T("-%d"),dlg.m_Num);
 			break;
 		case IDC_RADIO_RANGE:
 			range.Format(_T("%s..%s"),dlg.m_From,dlg.m_To);
