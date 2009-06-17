@@ -122,7 +122,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	if(m_ChangedMask)
 	{
 		if(CMessageBox::Show(NULL,_T("Remote Config Changed\nDo you want to save change now or discard change"),
-								 _T("TortoiseGit"),MB_YESNO) == IDYES)
+								 _T("TortoiseGit"),1,NULL,_T("Save"),_T("Discard")) == 1)
 		{
 			OnApply();
 		}
