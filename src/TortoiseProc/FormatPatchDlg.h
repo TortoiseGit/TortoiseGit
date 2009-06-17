@@ -43,4 +43,5 @@ public:
 	afx_msg void OnBnClickedButtonTo();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedRadio();
+	afx_msg void OnBnClickedButtonRef();
 };

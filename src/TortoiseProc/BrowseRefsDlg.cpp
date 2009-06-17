@@ -817,6 +817,8 @@ bool CBrowseRefsDlg::PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind)
 	for(int i = 0; i < pComboBox->GetCount(); ++i)
 	{
 		pComboBox->GetLBText(i, comboRefName);
+		if(comboRefName.Find(L'/') < 0 && !comboRefName.IsEmpty())
+			comboRefName.Insert(0,L"heads/"); // If combo contains single level ref name, it is usualy from 'heads/'
 		if(matchLength < comboRefName.GetLength() && resultRef.Right(comboRefName.GetLength()) == comboRefName)
 		{
 			matchLength = comboRefName.GetLength();

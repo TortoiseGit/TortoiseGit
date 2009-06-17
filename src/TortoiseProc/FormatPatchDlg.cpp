@@ -6,6 +6,8 @@
 #include "FormatPatchDlg.h"
 #include "git.h"
 #include "BrowseFolder.h"
+#include "LogDlg.h"
+#include "BrowseRefsDlg.h"
 // CFormatPatchDlg dialog
 
 IMPLEMENT_DYNAMIC(CFormatPatchDlg, CResizableStandAloneDialog)
@@ -51,6 +53,7 @@ BEGIN_MESSAGE_MAP(CFormatPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_RADIO_SINCE, &CFormatPatchDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_RADIO_NUM, &CFormatPatchDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_RADIO_RANGE, &CFormatPatchDlg::OnBnClickedRadio)
+	ON_BN_CLICKED(IDC_BUTTON_REF, &CFormatPatchDlg::OnBnClickedButtonRef)
 END_MESSAGE_MAP()
 
 BOOL CFormatPatchDlg::OnInitDialog()
@@ -83,6 +86,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	STRING_VECTOR list;
 	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL);
+	m_cSince.SetMaxHistoryItems(list.size());
 	m_cSince.AddString(list);
 
 	if(!m_Since.IsEmpty())
@@ -126,12 +130,38 @@ void CFormatPatchDlg::OnBnClickedButtonDir()
 
 void CFormatPatchDlg::OnBnClickedButtonFrom()
 {
-	// TODO: Add your control notification handler code here
+	CLogDlg dlg;
+	// tell the dialog to use mode for selecting revisions
+	dlg.SetSelect(true);
+	// only one revision must be selected however
+	dlg.SingleSelection(true);
+	if ( dlg.DoModal() == IDOK )
+	{
+		// get selected hash if any
+		CString selectedHash = dlg.GetSelectedHash();
+		// load into window, do this even if empty so that it is clear that nothing has been selected
+		m_cFrom.AddString(selectedHash);
+		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
+		OnBnClickedRadio();
+	}
 }
 
 void CFormatPatchDlg::OnBnClickedButtonTo()
 {
-	// TODO: Add your control notification handler code here
+	CLogDlg dlg;
+	// tell the dialog to use mode for selecting revisions
+	dlg.SetSelect(true);
+	// only one revision must be selected however
+	dlg.SingleSelection(true);
+	if ( dlg.DoModal() == IDOK )
+	{
+		// get selected hash if any
+		CString selectedHash = dlg.GetSelectedHash();
+		// load into window, do this even if empty so that it is clear that nothing has been selected
+		m_cTo.AddString(selectedHash);
+		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_RANGE);
+		OnBnClickedRadio();
+	}
 }
 
 void CFormatPatchDlg::OnBnClickedOk()
@@ -167,5 +197,14 @@ void CFormatPatchDlg::OnBnClickedRadio()
 	case IDC_RADIO_RANGE:
 		m_cFrom.EnableWindow(TRUE);
 		m_cTo.EnableWindow(TRUE);
+	}
+}
+
+void CFormatPatchDlg::OnBnClickedButtonRef()
+{
+	if(CBrowseRefsDlg::PickRefForCombo(&m_cSince, gPickRef_NoTag))
+	{
+		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_SINCE);
+		OnBnClickedRadio();
 	}
 }
