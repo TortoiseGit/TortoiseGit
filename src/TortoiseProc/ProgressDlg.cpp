@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false)
 {
-
+	m_pThread = NULL;
 }
 
 CProgressDlg::~CProgressDlg()
