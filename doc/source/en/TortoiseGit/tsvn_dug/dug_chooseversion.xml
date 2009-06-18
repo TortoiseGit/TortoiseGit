@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE variablelist SYSTEM "../../../dtd/dblite.dtd">
+<variablelist>
+	<varlistentry>
+		<term><guilabel>HEAD</guilabel></term>
+		<listitem>
+			<para>
+				Current branch latest commit. 
+			</para>
+		</listitem>
+	</varlistentry>
+				
+	<varlistentry>
+		<term><guilabel>Branch</guilabel></term>
+		<listitem>
+			<para>
+				The latest commit of chosen branch
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><guilabel>Tags</guilabel></term>
+		<listitem>
+			<para>
+				The commit of chosen Tag
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><guilabel>Version</guilabel></term>
+		<listitem>
+			<para>
+				Any commit, you click <guilabel>...</guilabel> to launch log
+				dialog to choose commit. You also can input commit hash, or 
+				friend version name, such as HEAD~4. 
+			</para>
+		</listitem>
+	</varlistentry>
+	
+</variablelist>
