@@ -657,10 +657,16 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 		while( pos>=0 )
 		{
 			one=output.Tokenize(_T("\n"),pos);
-			list.push_back(one.Right(one.GetLength()-2));
+			one.Trim(L" \r\n\t");
+			if(one.Find(L" -> ") >= 0 || one.IsEmpty())
+				continue; // skip something like: refs/origin/HEAD -> refs/origin/master
 			if(one[0] == _T('*'))
+			{
 				if(current)
 					*current=i;
+				one = one.Mid(2);
+			}
+			list.push_back(one);
 			i++;
 		}
 	}
