@@ -86,6 +86,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 	m_ListRefLeafs.InsertColumn(eCol_Name,	L"Name",0,150);

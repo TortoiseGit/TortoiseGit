@@ -80,6 +80,7 @@ BOOL CPushDlg::OnInitDialog()
     AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
 
     AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
 

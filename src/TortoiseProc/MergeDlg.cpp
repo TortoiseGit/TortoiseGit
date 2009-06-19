@@ -53,6 +53,7 @@ BOOL CMergeDlg::OnInitDialog()
 	
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
 

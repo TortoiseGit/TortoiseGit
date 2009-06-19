@@ -55,6 +55,7 @@ BOOL CPullFetchDlg::OnInitDialog()
     AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,BOTTOM_RIGHT);
     AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
     AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
     this->AddOthersToAnchor();
 

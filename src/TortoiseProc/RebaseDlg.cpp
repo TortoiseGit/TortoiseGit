@@ -74,6 +74,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_COMBOXEX_BRANCH,TOP_LEFT);
 	AddAnchor(IDC_REBASE_STATIC_UPSTREAM,TOP_LEFT);
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	this->AddOthersToAnchor();
 }
 

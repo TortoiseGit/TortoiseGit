@@ -68,6 +68,7 @@ BOOL CSendMailDlg::OnInitDialog()
 	AddAnchor(IDC_SENDMAIL_PATCHS,TOP_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
 	EnableSaveRestore(_T("SendMailDlg"));
