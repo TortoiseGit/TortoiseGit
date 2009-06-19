@@ -451,6 +451,75 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						<row>
+							<entry condition="pot">:pull</entry>
+							<entry>
+								Pull change from remote repository
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:push</entry>
+							<entry>
+								Push change to remote repository
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:rebase</entry>
+							<entry>
+								Rebase commits to special commit.
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:stashsave</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:stashapply</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:stashapply</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:subadd</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:subupdate</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:subsync</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:reflog</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
+						<row>
+							<entry condition="pot">:refbrowse</entry>
+							<entry>
+								<option>/path</option>.
+							</entry>
+						</row>
 						<!--
 						<row>
 							<entry condition="pot">:revisiongraph</entry>

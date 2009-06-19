@@ -223,6 +223,10 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 							<entry>Rename</entry>
 						</row>
 						<row>
+							<entry condition="pot">0x0000000000008000</entry>
+							<entry>Submodule Update</entry>
+						</row>
+						<row>
 							<entry condition="pot">0x0000000000010000</entry>
 							<entry>Diff</entry>
 						</row>
@@ -235,12 +239,21 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 							<entry>Edit Conflicts</entry>
 						</row>
 						<row>
+							<entry condition="pot">0x0000000000080000</entry>
+							<entry>Refence Browse</entry>
+						</row>
+						
+						<row>
 							<entry condition="pot">0x0000000000100000</entry>
 							<entry>Check for modifications</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000200000</entry>
 							<entry>Ignore</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000400000</entry>
+							<entry>RefLog</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000800000</entry>
@@ -255,12 +268,12 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 							<entry>Apply Patch</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000004000000</entry>
-							<entry>Revision graph</entry>
+							<entry condition="pot">0x0000000080000000</entry>
+							<entry>Delete unversion</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000020000000</entry>
-							<entry>Properties</entry>
+							<entry condition="pot">0x0000000200000000</entry>
+							<entry>Rev Diff</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000800000000</entry>
@@ -297,6 +310,26 @@ msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
 						<row>
 							<entry condition="pot">0x0000080000000000</entry>
 							<entry>Rebase</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000100000000000</entry>
+							<entry>Stash Save</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000200000000000</entry>
+							<entry>Stash Apply</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000400000000000</entry>
+							<entry>Stash List</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000800000000000</entry>
+							<entry>Submodule Add</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0001000000000000</entry>
+							<entry>Submodule Sync</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x2000000000000000</entry>
