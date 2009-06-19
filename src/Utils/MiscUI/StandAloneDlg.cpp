@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CResizableStandAloneDialog, CStandAloneDialogTmpl<CResizableDi
 	ON_WM_MOVING()
 	ON_WM_NCMBUTTONUP()
 	ON_WM_NCRBUTTONUP()
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
 void CResizableStandAloneDialog::OnSizing(UINT fwSide, LPRECT pRect)

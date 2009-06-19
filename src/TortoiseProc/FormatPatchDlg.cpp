@@ -78,6 +78,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_BUTTON_REF,TOP_RIGHT);
 
 	this->AddOthersToAnchor();
 
