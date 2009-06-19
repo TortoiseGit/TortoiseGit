@@ -36,12 +36,12 @@
 			where you can either choose
 			<menuchoice>
 				<guimenu>Context Menu</guimenu>
-				<guimenuitem>SVN Copy versioned files here</guimenuitem>
+				<guimenuitem>Git Copy versioned files here</guimenuitem>
 			</menuchoice>.
 			or
 			<menuchoice>
 				<guimenu>Context Menu</guimenu>
-				<guimenuitem>SVN Move versioned files here</guimenuitem>
+				<guimenuitem>Git Move versioned files here</guimenuitem>
 			</menuchoice>.
 		</para>
 		<para>

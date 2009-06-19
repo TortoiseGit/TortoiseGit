@@ -6,7 +6,11 @@ The only valid XML solution I found was to place the wishlist inside a sidebar,
 not pretty but it works.
 -->
 <sidebar>
-	<title>Donate!</title>
+	<title>
+		<ulink url="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=GJGTG75GV5PL6&amp;lc=C2&amp;item_name=TortoiseGit&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">
+				<citetitle>Donate!</citetitle>
+		</ulink>
+	</title>
 	<para>
 		Even though TortoiseGit and TortoiseMerge are free, you can support the
 		developers by sending in patches and play an active role in the development.
@@ -14,12 +18,6 @@ not pretty but it works.
 		of our computers.
 	</para>
 	<para>
-		While working on TortoiseGit we love to listen to music. And since we spend
-		many hours on the project we need a <emphasis>lot</emphasis> of music.
-		Therefore we have set up some wish-lists with our favourite music CDs and DVDs:
-		<ulink url="http://TortoiseGit.tigris.org/donate.html">
-			<citetitle>http://TortoiseGit.tigris.org/donate.html</citetitle>
-		</ulink>
 		Please also have a look at the list of people who contributed to the project by
 		sending in patches or translations.
 	</para>

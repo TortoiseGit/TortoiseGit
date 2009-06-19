@@ -29,42 +29,16 @@
 	<sect2 id="tsvn-dug-blame-simple">
 		<title>Blame for Files</title>
 		<para>
-			<figure id="tsvn-dug-blame-dia-1">
-				<title>The Annotate / Blame Dialog</title>
-				<graphic fileref="../images/BlameDialog.png"/>
-			</figure>
-			If you're not interested in changes from earlier revisions you can
-			set the revision from which the blame should start. Set this to <literal>1</literal>,
-			if you want the blame for <emphasis>every</emphasis> revision.
-		</para>
-		<para>
-			By default the blame file is viewed using <firstterm>TortoiseBlame</firstterm>,
+			By default the blame file is viewed using <firstterm>TortoiseGitBlame</firstterm>,
 			which highlights the different revisions to make it easier to read.
-			If you wish to print or edit the blame file, select
-			<guilabel>Use Text viewer to view blames</guilabel>
-		</para>
-		<para>
-			You can specify the way that line ending and whitespace changes are handled.
-			These options are described in <xref linkend="tsvn-dug-diff-eol-whitespace"/>.
-			The default behaviour is to treat all whitespace and line-end differences
-			as real changes, but if you want to ignore an indentation change and find
-			the original author, you can choose an appropriate option here.
-		</para>
-		<para>
-			Once you press <guibutton>OK</guibutton> TortoiseGit starts retrieving
-			the data to create the blame file. Please note: This can take several
-			minutes to finish, depending on how much the file has changed and
-			of course your network connection to the repository. Once the blame
-			process has finished the result is written into a temporary file and
-			you can view the results.
 		</para>
 		<para>
 			<figure id="tsvn-dug-blame-dia-2">
-				<title>TortoiseBlame</title>
+				<title>TortoiseGitBlame</title>
 				<graphic fileref="../images/TortoiseBlame.png"/>
 			</figure>
-			TortoiseBlame, which is included with TortoiseGit, makes the blame file
-			easier to read. When you hover the mouse over a line in the blame info
+			TortoiseGitBlame, which is included with TortoiseGit. 
+			When you hover the mouse over a line in the blame info
 			column, all lines with the same revision are shown with a darker
 			background. Lines from other revisions which were changed by the same author
 			are shown with a light background.
@@ -101,6 +75,7 @@
 				<guimenuitem>Go To Line...</guimenuitem>
 			</menuchoice>.
 		</para>
+		<!--
 		<para>
 			When the mouse is over the blame info columns, a context menu is
 			available which helps with comparing revisions and examining history,
@@ -159,7 +134,9 @@
 			on the TortoiseBlame tab. Refer to 
 			<xref linkend="tsvn-dug-settings-tortoiseblame"/>.
 		</para>
+		-->
 	</sect2>
+	<!--
 	<sect2 id="tsvn-dug-blame-diffs">
 		<title>Blame Differences</title>
 		<para>
@@ -220,4 +197,5 @@
 			</variablelist>
 		</para>
 	</sect2>
+	-->
 </sect1>

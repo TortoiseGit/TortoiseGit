@@ -67,25 +67,19 @@
 			gather status, it may take a few seconds before the overlay
 			updates.
 		</para>
+		
 		<para>
 			<graphic fileref="images/ReadOnlyIcon.png"/> 
-			The <emphasis>Needs Lock</emphasis> overlay is used to
-			indicate when a file has the <literal>svn:needs-lock</literal>
-			property set. For working copies which were created using
-			Git 1.4.0 and later, the <literal>svn:needs-lock</literal>
-			status is cached locally by Git and this is used to
-			determine when to show this overlay. For working copies which
-			are in pre-1.4.x format, TortoiseGit shows this overlay when the
-			file has read-only status. Note that Git automatically
-			upgrades working copies when you update them, although the
-			caching of the <literal>svn:needs-lock</literal> property
-			may not happen until the file itself is updated.
+			The <emphasis>stage</emphasis> overlay is used to file which staged.
+			But it still has not commited. 			
 		</para>
+		<!--
 		<para>
 			<graphic fileref="images/LockedIcon.png"/> 
 			The <emphasis>Locked</emphasis> overlay is used when the local
 			working copy holds a lock for that file.
 		</para>
+		-->
 		<para>
 			<graphic fileref="images/IgnoredIcon.png"/>
 			The <emphasis>Ignored</emphasis> overlay is used to
@@ -152,11 +146,12 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis>Read-Only</emphasis>
+					<emphasis>Stage</emphasis>
 					is loaded if possible, but falls back to
-					<emphasis>Normal</emphasis> if there are not enough slots.
+					<emphasis>Modified</emphasis> if there are not enough slots.
 				</para>
 			</listitem>
+			<!--
 			<listitem>
 				<para>
 					<emphasis>Locked</emphasis>
@@ -165,6 +160,7 @@
 					if there are not enough slots.
 				</para>
 			</listitem>
+			-->
 			<listitem>
 				<para>
 					<emphasis>Added</emphasis>

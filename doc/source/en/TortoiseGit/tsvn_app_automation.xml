@@ -138,18 +138,18 @@ Don't touch these lines:
 								file or folder for which the log should be shown.
 								Three additional options can be set:
 								<option>/startrev:xxx</option>, 
-								<option>/endrev:xxx</option> and
-								<option>/strict</option>
+								<option>/endrev:xxx</option> 
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">:checkout</entry>
 							<entry>
 								Opens the checkout dialog. The <option>/path</option>
-								specifies the target directory and the <option>/url</option>
-								specifies the URL to checkout from.
+								specifies the working directory and the <option>/rev</option>
+								specifies the commit to checkout from.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:import</entry>
 							<entry>
@@ -157,6 +157,8 @@ Don't touch these lines:
 								specifies the directory with the data to import.
 							</entry>
 						</row>
+						-->
+						<!--
 						<row>
 							<entry condition="pot">:update</entry>
 							<entry>
@@ -169,6 +171,7 @@ Don't touch these lines:
 								<option>/ignoreexternals</option>.
 							</entry>
 						</row>
+						-->
 						<row>
 							<entry condition="pot">:commit</entry>
 							<entry>
@@ -218,12 +221,14 @@ Don't touch these lines:
 								should be done.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:repocreate</entry>
 							<entry>
 								Creates a repository in <option>/path</option>
 							</entry>
 						</row>
+						-->
 						<row>
 							<entry condition="pot">:switch</entry>
 							<entry>
@@ -256,6 +261,7 @@ Don't touch these lines:
 								These pre-fill the relevant fields in the merge dialog.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:mergeall</entry>
 							<entry>
@@ -263,6 +269,8 @@ Don't touch these lines:
 								target directory.
 							</entry>
 						</row>
+						-->
+						<!--
 						<row>
 							<entry condition="pot">:copy</entry>
 							<entry>
@@ -279,6 +287,7 @@ Don't touch these lines:
 								points to a file containing the log message.
 							</entry>
 						</row>
+						-->
 						<row>
 							<entry condition="pot">:settings</entry>
 							<entry>
@@ -320,6 +329,7 @@ Don't touch these lines:
 								the files with the given revisions.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:showcompare</entry>
 							<entry>
@@ -339,6 +349,7 @@ Don't touch these lines:
 								</para>
 							</entry>
 						</row>
+						-->
 						<row>
 							<entry condition="pot">:conflicteditor</entry>
 							<entry>
@@ -347,6 +358,7 @@ Don't touch these lines:
 								file in <option>/path</option>.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:relocate</entry>
 							<entry>
@@ -354,12 +366,14 @@ Don't touch these lines:
 								specifies the working copy path to relocate.
 							</entry>
 						</row>
+						-->
 						<row>
 							<entry condition="pot">:help</entry>
 							<entry>
 								Opens the help file.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:repostatus</entry>
 							<entry>
@@ -367,6 +381,8 @@ Don't touch these lines:
 								specifies the working copy directory.
 							</entry>
 						</row>
+						-->
+						<!--
 						<row>
 							<entry condition="pot">:repobrowser</entry>
 							<entry>
@@ -383,6 +399,7 @@ Don't touch these lines:
 								the path from where to read and use the project properties.
 							</entry>
 						</row>
+						-->
 						<row>
 							<entry condition="pot">:ignore</entry>
 							<entry>
@@ -434,6 +451,7 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						<!--
 						<row>
 							<entry condition="pot">:revisiongraph</entry>
 							<entry>
@@ -441,6 +459,8 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						-->
+						<!--
 						<row>
 							<entry condition="pot">:lock</entry>
 							<entry>
@@ -450,6 +470,8 @@ Don't touch these lines:
 								user can enter a comment for the lock.
 							</entry>
 						</row>
+						-->
+						<!--
 						<row>
 							<entry condition="pot">:unlock</entry>
 							<entry>
@@ -457,6 +479,8 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						-->
+						<!--
 						<row>
 							<entry condition="pot">:rebuildiconcache</entry>
 							<entry>
@@ -474,6 +498,7 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						-->
 					</tbody>
 				</tgroup>
 			</table>

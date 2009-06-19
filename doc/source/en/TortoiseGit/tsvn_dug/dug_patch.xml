@@ -40,7 +40,7 @@
 			on the parent folder, you select
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Create Patch...</guimenuitem>
+				<guimenuitem>Create Patch Serial...</guimenuitem>
 			</menuchoice>
 		</para>
 		<figure id="tsvn-dug-patch-dia-1">
@@ -48,35 +48,22 @@
 			<graphic fileref="../images/CreatePatch.png"/>
 		</figure>
 		<para>
-			you can now select the files you want included in the patch,
-			just as you would with a full commit. This will produce a single
-			file containing a summary of all the changes you have made to the
-			selected files since the last update from the repository.
+			<guilabel>Directory</guilabel> is output directory of patch.
+			Patch file name will be created by commit subject. 
+		<para>
+			<guilabel>Since</guidlabel> create patch from point. You can click
+			<guibutton>...</guibutton> to launch refbrowse dialog to choose branch or tag.
 		</para>
 		<para>
-			The columns in this dialog can be customized in the same way as the
-			columns in the <guilabel>Check for modifications</guilabel> dialog.
-			Read <xref linkend="tsvn-dug-wcstatus-2"/> for further details.
+			<guilabel>Number Commits</guilabel> is limited how much patch will created.
 		</para>
 		<para>
-			You can produce separate patches containing changes to different
-			sets of files. Of course, if you create a patch file, make some more changes
-			to the <emphasis>same</emphasis> files and then create another patch, the
-			second patch file will include <emphasis>both</emphasis> sets of changes.
+			<guilabel>Range</guilabel> is choose range of <guilabel>from</guilabel> commit 
+			to <guilabel>to</guilabel>. You can click <guibutton>...</guibutton> to launch
+			log dialog to choose commit.
 		</para>
 		<para>
-			Just save the file using a filename of your choice.
-			Patch files can have any extension you like, but by convention they
-			should use the <filename>.patch</filename> or
-			<filename>.diff</filename> extension.
-			You are now ready to submit your patch file.
-		</para>
-		<para>
-			You can also save the patch to the clipboard instead of to a file.
-			You might want to do this so that you can paste it into an email for
-			review by others. Or if you have two working copies on one machine and
-			you want to transfer changes from one to the other, a patch on the
-			clipboard is a convenient way of doing this.
+			<guilabel>Send Mail after create</guilabel> launch send mail dialog after patches created.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-patch-2">
@@ -95,6 +82,7 @@
 			pick the wrong folder level, TortoiseGit will notice and suggest the
 			correct level.
 		</para>
+		<!--
 		<para>
 			In order to apply a patch file to your working copy, you need
 			to have at least read access to the repository.
@@ -102,19 +90,17 @@
 			reference the changes back to the revision against
 			which they were made by the remote developer.
 		</para>
+		-->
 		<para>
 			From the context menu for that folder, click on
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Apply Patch...</guimenuitem>
+				<guimenuitem>Apply Patch Serial...</guimenuitem>
 			</menuchoice>
-			This will bring up a file open dialog allowing you to select the
-			patch file to apply. By default only <filename>.patch</filename>
-			or <filename>.diff</filename>
-			files are shown, but you can opt for <quote>All files</quote>.
-			If you previously saved a patch to the clipboard, you can use
-			<guibutton>Open from clipboard...</guibutton> in the file
-			open dialog.
+			<figure id="tsvn-dug-apply-patch">
+				<title>The Apply Patch Dialog</title>
+				<graphic fileref="../images/ApplyPatch.png"/>
+			</figure>
 		</para>
 		<para>
 			Alternatively, if the patch file has a <filename>.patch</filename>
@@ -125,23 +111,25 @@
 				<guimenuitem>Apply Patch...</guimenuitem>
 			</menuchoice>.
 			In this case you will be prompted to enter a working copy location.
+			<figure id="tsvn-dug-choose-repository">
+				<title>The Choose Repository Dialog</title>
+				<graphic fileref="../images/ChooseRepository.png"/>
+			</figure>
 		</para>
 		<para>
-			These two methods just offer different ways of doing the same thing.
-			With the first method you select the WC and browse to the patch file.
-			With the second you select the patch file and browse to the WC.
+			<guibutton>Add</guibutton> insert patch
 		</para>
 		<para>
-			Once you have selected the patch file and working copy location,
-			TortoiseMerge runs to merge the changes from the patch file
-			with your working copy. A small window lists the files which have
-			been changed. Double click on each one in turn, review the changes
-			and save the merged files.
+			<guibutton>Up</guibutton> Move chosen patch up.
 		</para>
 		<para>
-			The remote developer's patch has now been applied to your working copy,
-			so you need to commit to allow everyone else to access the changes
-			from the repository.
+			<guibutton>Down</guibutton> Move Chosen patch down.
+		</para>
+		<para>
+			<guibutton>Remove</guibutton> Remove Chosen patch.
+		</para>
+		<para>
+			<guibutton>Apply</guibutton> start apply patch one by one
 		</para>
 	</sect2>
 </sect1>

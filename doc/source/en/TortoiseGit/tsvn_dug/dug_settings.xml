@@ -17,7 +17,6 @@
 	<xi:include href="./dug_settings_network.xml"/>
 	<xi:include href="./dug_settings_progs.xml"/>
 	<xi:include href="./dug_settings_saved.xml"/>
-	<xi:include href="./dug_settings_logcache.xml"/>
 	<xi:include href="./dug_settings_hooks.xml"/>
 	<xi:include href="./dug_settings_blame.xml"/>
 	<xi:include href="./dug_settings_registry.xml"/>

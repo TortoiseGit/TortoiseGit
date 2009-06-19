@@ -9,10 +9,12 @@
 		<para>
 			Because TortoiseGit is being developed all the time
 			it is sometimes hard to keep the documentation completely
-			up to date. We maintain an  
-			<ulink url="http://TortoiseGit.tigris.org/faq.html">
+			up to date. 
+			
+			<ulink url="http://code.google.com/p/tortoisegit/wiki/FAQ">
 				<citetitle>online FAQ</citetitle>
 			</ulink>
+			
 			which contains a selection of the questions we are asked
 			the most on the TortoiseGit mailing lists
 			<email>tortoisegit-dev@googlegroups.com </email> and
@@ -20,7 +22,7 @@
 		</para>
 		<para>
 			We also maintain a project
-			<ulink url="http://issues.TortoiseGit.net">
+			<ulink url="http://code.google.com/p/tortoisegit/issues/list">
 				<citetitle>Issue Tracker</citetitle>
 			</ulink>
 			which tells you about some of the things we have on our To-Do list,
