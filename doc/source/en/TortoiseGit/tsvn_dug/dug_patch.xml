@@ -51,8 +51,9 @@
 		<para>
 			<guilabel>Directory</guilabel> is output directory of patch.
 			Patch file name will be created by commit subject. 
+		</para>
 		<para>
-			<guilabel>Since</guidlabel> create patch from point. You can click
+			<guilabel>Since</guilabel> create patch from point. You can click
 			<guibutton>...</guibutton> to launch refbrowse dialog to choose branch or tag.
 		</para>
 		<para>
