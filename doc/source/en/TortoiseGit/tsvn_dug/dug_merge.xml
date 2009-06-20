@@ -2,7 +2,7 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-merge" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Merging</title>
-	<?dbhh topicname="HIDD_MERGEWIZARD_START"?>
+	<?dbhh topicname="HIDD_MERGE"?>
 	<indexterm>
 		<primary>merge</primary>
 	</indexterm>

@@ -2,6 +2,7 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-export" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Exporting a Git Working Copy</title>
+	<?dbhh topicname="HIDD_EXPORT"?>
 	<indexterm>
 		<primary>export</primary>
 	</indexterm>
