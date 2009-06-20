@@ -2,6 +2,7 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-clone">
   <title>Clone Repository</title>
+  <?dbhh topicname="HIDD_CLONE"?>
   <indexterm>
     <primary>Clone Repository</primary>
   </indexterm>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-pull">
+  <title>Pull and Fetch change</title>
+  <?dbhh topicname="HIDD_PULLFETCH"?>
+  <indexterm>
+    <primary>Pull</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Fetch</primary>
+  </indexterm>
+  <para>
+    This section talk about how to Fetch or pull change from the other
+	repository. The difference of Pull and fetch is:
+  </para>
+  <para>
+	Pull will merge remote branch change to local branch which tracked with 
+	remote branch. Fetch just get change from remote branch and never merge.
+  </para>
+  <para>
+    <menuchoice>
+      <guimenu>TortoiseGit
+      </guimenu>
+	  <guimenuitem>Pull...
+	  </guimenuitem>
+    </menuchoice>. 
+  </para>
+  <para>
+    <menuchoice>
+      <guimenu>TortoiseGit
+      </guimenu>
+	  <guimenuitem>Fetch...
+	  </guimenuitem>
+    </menuchoice>. 
+  </para>
+  <para>
+    Pull\fetch Dialog will show. <graphic fileref="../images/GitPull.png"/>
+  </para>
+  <para>
+    <guilabel>Remote:</guilabel>Choose Remote
+  </para>
+  <para>
+    <guilabel>Other:</guilabel> Input Other URL or local directory
+    You can click <guilabel>Browse</guilabel> to browse diectory. 
+  </para>
+  <para>
+    If you check<guilabel>Autoload Putty Key</guilabel> the check box, Putty key
+	will auto load by pagaent.
+  </para>
+  <para>
+    <guilabel>Manage Remotes</guilabel> to add or modify remote configuration.
+  </para>
+  <para>
+    Git clone support http, git and ssh protocol. <xref linkend="git-choose-ssh"/>Show how to choose SSH client.
+    OpenSSH, PLink or TortoisePlink. 
+  </para>
+</sect1>
