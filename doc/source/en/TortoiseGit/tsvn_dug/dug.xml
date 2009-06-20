@@ -68,6 +68,7 @@
   <xi:include href="./dug_commit.xml"/>
   <xi:include href="./dug_wcstatus.xml"/>
   <xi:include href="./dug_pullfetch.xml"/>
+  <xi:include href="./dug_push.xml"/>
 	<!--
 	<xi:include href="./dug_update.xml"/>
 	-->
@@ -90,8 +91,8 @@
 	-->
 	<xi:include href="./dug_branchtag.xml"/>
 	<xi:include href="./dug_merge.xml"/>
-  
-  <xi:include href="./dug_conflicts.xml"/>
+    <xi:include href="./dug_rebase.xml"/>
+    <xi:include href="./dug_conflicts.xml"/>
 
 	<!--
 	<xi:include href="./dug_locking.xml"/>

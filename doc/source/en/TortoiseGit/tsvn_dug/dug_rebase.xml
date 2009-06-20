@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-rebase">
+  <title>Rebase</title>
+  <?dbhh topicname="HIDD_REBASE"?>
+  <indexterm>
+    <primary>Rebase</primary>
+  </indexterm>
+  <para>
+	Rebase is quite complex. Please read <xref linked="Rebasin"/> to
+	understand git rebase.
+  </para>
+  <para>
+	<menuchoice>
+		<guimenu>TortoiseGit</guimenu>
+		<guimenuitem>Rebase</guimenuitem>
+	</menuchoice>
+  </para>
+  <para>
+	Rebase dialog will be shown. <graphic fileref="../images/GitRebase.png"/>
+  </para>
+</sect1>
