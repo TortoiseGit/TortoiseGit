@@ -253,6 +253,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	{
 		CShadowTree& treeLeaf=GetTreeNode(iterRefMap->first,NULL,true);
 		CString values=iterRefMap->second;
+		values.Replace(L"\04" L"\04",L"\04 \04");//Workaround Tokenize problem (treating 2 tokens as one)
 
 		int valuePos=0;
 		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos);
