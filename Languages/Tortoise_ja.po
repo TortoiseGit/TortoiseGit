@@ -1,24 +1,15 @@
 #
-# Japanese translation for TortoiseSVN
-# Copyright (C) 2004-2008 the TortoiseSVN team
-# This file is distributed under the same license as TortoiseSVN
+# Japanese translation for TortoiseGit
 #
-# Last commit by:
-# $Author: steveking $
-# $Date: 2009-01-08 02:53:20 +0800 (Thu, 08 Jan 2009) $
-# $Rev: 15039 $
-#
-# Authors:
-# Daisuke Deguchi <ddeguchi@suenaga.m.is.nagoya-u.ac.jp>
-#
+
 msgid ""
 msgstr ""
-"Project-Id-Version: TortoiseSVN\n"
+"Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2008-12-29 23:24+0900\n"
-"Last-Translator: Daisuke Deguchi <ddeguchi@is.nagoya-u.ac.jp>\n"
-"Language-Team: TortoiseSVN translation team <dev@tortoisesvn.tigris.org>\n"
+"PO-Revision-Date: 2009-06-05 00:00+0900\n"
+"Last-Translator: Hiromichi Matsushima (hylom) <hylom@users.sourceforge.jp>\n"
+"Language-Team: "
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
