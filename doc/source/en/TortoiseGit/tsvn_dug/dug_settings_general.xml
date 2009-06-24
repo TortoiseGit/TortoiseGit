@@ -509,7 +509,7 @@
 	</sect3>
 	<sect3 id="tsvn-dug-settings-colours">
 		<title>TortoiseGit Colour Settings</title>
-		<?dbhh topicname="HIDD_SETTINGSCOLORS"?>
+		<?dbhh topicname="HIDD_SETTINGSCOLORS_1"?>
 		<para>
 			<figure id="tsvn-dug-settings-dia-colors">
 				<title>The Settings Dialog, Colours Page</title>
@@ -604,5 +604,29 @@
 				</listitem>
 			</varlistentry>
 		</variablelist>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-colours2">
+		<title>TortoiseGit Colour Settings 2</title>
+		<?dbhh topicname="HIDD_SETTINGSCOLORS_2"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-colors2">
+				<title>The Settings Dialog, Colours Page</title>
+				<graphic fileref="../images/SettingsColors2.png"/>
+			</figure>
+			This dialog allows you to configure the text colours
+			used in TortoiseGit's dialogs the way you like them.
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-colours3">
+		<title>TortoiseGit Colour Settings 3</title>
+		<?dbhh topicname="HIDD_SETTINGSCOLORS_3"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-colors-3">
+				<title>The Settings Dialog, Colours Page</title>
+				<graphic fileref="../images/SettingsColors3.png"/>
+			</figure>
+			This dialog allows you to configure the text colours
+			used in TortoiseGit's dialogs the way you like them.
+		</para>
 	</sect3>
 </sect2>

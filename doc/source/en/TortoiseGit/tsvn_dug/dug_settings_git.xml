@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-git">
+	<title>Git</title>
+	<sect3 id="tsvn-dug-settings-config">
+		<title>Config</title>
+		<?dbhh topicname="HIDD_SETTINGIT_CONFIG"?>
+		<para>
+			<figure id="tsvn-dug-settings-git-config">
+				<title>The Settings Dialog, Config</title>
+				<graphic fileref="../images/SettingsGitConfig.png"/>
+			</figure>
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-remote">
+		<title>Remote</title>
+		<?dbhh topicname="HIDD_SETTINREMOTE"?>
+		<para>
+			<figure id="tsvn-dug-settings-git-remote">
+				<title>The Settings Dialog, Remote</title>
+				<graphic fileref="../images/SettingsGitRemote.png"/>
+			</figure>
+		</para>
+	</sect3>
+</sect2>

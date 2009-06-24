@@ -4,6 +4,7 @@
 	<title>Client Side Hook Scripts</title>
 	<?dbhh topicname="HIDD_SETTINGSHOOKS"?>
 	<?dbhh topicname="HIDD_SETTINGSHOOKCONFIG"?>
+	<!--
 	<indexterm>
 		<primary>client hooks</primary>
 	</indexterm>
@@ -319,6 +320,7 @@
 		</ulink>.
 		(<xref linkend="tsvn-preface-source"/> explains how to access the repository).
 	</para>
+	-->
 	<sect3 id="tsvn-dug-settings-hooks-issuetracker">
 		<title>Issue Tracker Integration</title>
 		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ"?>
@@ -370,6 +372,16 @@
 			</variablelist>
 			Please check the documentation of your IBugTraqProvider plugin to find out what
 			to specify in these two properties.
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-hooks-issuetracker-config">
+	<title>Config</title>
+		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ_CONFIG"?>
+		<para>
+			<figure id="tsvn-dug-settings-hooks-issuetrack-config">
+				<title>The Settings Dialog, issue track config</title>
+				<graphic fileref="../images/SettingsIssueTrackerConfig.png"/>
+			</figure>
 		</para>
 	</sect3>
 </sect2>
