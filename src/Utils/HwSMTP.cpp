@@ -93,8 +93,8 @@ CHwSMTP::CHwSMTP () :
 	m_nSmtpSrvPort ( 25 ),
 	m_bMustAuth ( TRUE )
 {
-	m_csMIMEContentType = _T( "multipart/mixed");
 	m_csPartBoundary = _T( "WC_MAIL_PaRt_BoUnDaRy_05151998" );
+	m_csMIMEContentType = FormatString ( _T( "multipart/mixed; boundary=%s" ), m_csPartBoundary);
 	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
 	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
 
@@ -289,7 +289,7 @@ BOOL CHwSMTP::SendEmail (
 		m_StrAryAttach.Append ( *pStrAryAttach );
 	}
 	if ( m_StrAryAttach.GetSize() < 1 )
-		m_csMIMEContentType = _T( "text/plain");
+		m_csMIMEContentType = FormatString ( _T( "text/plain; %s" ), m_csCharSet);
 
 	// ´´½¨Socket
 	m_SendSock.Close();
@@ -526,7 +526,7 @@ BOOL CHwSMTP::SendSubject()
 	COleDateTime tNow = COleDateTime::GetCurrentTime();
 	if ( tNow > 1 )
 	{
-		csSubject += GetCompatibleString(FormatDateTime (tNow, _T("%a, %d %b %y %H:%M:%S %Z")).GetBuffer(0),FALSE);
+		csSubject += FormatDateTime (tNow, _T("%a, %d %b %y %H:%M:%S %Z"));
 	}
 	csSubject += _T("\r\n");
 	csSubject += FormatString ( _T("From: %s\r\n"), this->m_csAddrFrom);
@@ -546,8 +546,10 @@ BOOL CHwSMTP::SendSubject()
 	CString m_csToList;
 
 	csSubject += FormatString ( _T("Subject: %s\r\n"), m_csSubject );
-	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s; %s boundary=%s\r\n\r\n") , 
-		m_csMIMEContentType, m_csCharSet, m_csPartBoundary );
+
+    
+	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"),
+		m_csMIMEContentType );
 
 	return Send ( csSubject );
 }
