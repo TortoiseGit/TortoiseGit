@@ -583,7 +583,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 		bAddSeparator = true;
 		
-		popupMenu.AppendMenuIcon(eCmd_Diff, L"Diff These Commits", IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_Diff, L"Compare These Refs", IDI_DIFF);
 	}
 
 	if(bAddSeparator) popupMenu.AppendMenu(MF_SEPARATOR);
