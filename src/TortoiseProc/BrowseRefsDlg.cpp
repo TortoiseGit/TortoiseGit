@@ -195,9 +195,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	{
 		if(selectRef == "HEAD")
 		{
-			selectRef.Empty();
-			g_Git.Run(L"git symbolic-ref HEAD",&selectRef,CP_UTF8);
-			selectRef.Trim(L"\r\n\t ");
+			selectRef = g_Git.GetSymbolicRef(selectRef, false);
 		}
 	}
 	else
