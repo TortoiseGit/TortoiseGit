@@ -44,9 +44,11 @@ public:
 
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, CString &filename);
+	CString GetConfigValue(CString name);
 	CString GetUserName(void);
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);
+	CString GetSymbolicRef(const wchar_t* symbolicRefName = L"HEAD", bool bStripRefsHeads = true);
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
 	int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut);
 	BOOL CheckCleanWorkTree();
@@ -106,6 +108,10 @@ public:
 	BOOL IsInitRepos();
 	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
 	int GetRefList(STRING_VECTOR &list);
+
+
+	//Removes 'refs/heads/' or just 'refs'
+	static CString StripRefName(CString refName);
 	
 };
 extern void GetTempPath(CString &path);

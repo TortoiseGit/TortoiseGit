@@ -304,18 +304,23 @@ int CGit::Run(CString cmd, CString* output,int code)
 
 CString CGit::GetUserName(void)
 {
-	CString UserName;
-	Run(_T("git.exe config user.name"),&UserName,CP_UTF8);
-	int start = 0;
-	return UserName.Tokenize(_T("\n"),start);
+	return GetConfigValue(L"user.name");
 }
 CString CGit::GetUserEmail(void)
 {
-	CString UserName;
-	Run(_T("git.exe config user.email"),&UserName,CP_UTF8);
-	int start = 0;
-	return UserName.Tokenize(_T("\n"),start);
+	return GetConfigValue(L"user.email");
 }
+
+CString CGit::GetConfigValue(CString name)
+{
+	CString configValue;
+	CString cmd;
+	cmd.Format(L"git.exe config %s", name);
+	Run(cmd,&configValue,CP_UTF8);
+	int start = 0;
+	return configValue.Tokenize(_T("\n"),start);
+}
+
 
 CString CGit::GetCurrentBranch(void)
 {
@@ -337,6 +342,29 @@ CString CGit::GetCurrentBranch(void)
 		}
 	}
 	return CString("");
+}
+
+CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHeads)
+{
+	CString refName;
+	CString cmd;
+	cmd.Format(L"git symbolic-ref %s", symbolicRefName);
+	if(Run(cmd, &refName, CP_UTF8) != 0)
+		return CString();//Error
+	int iStart = 0;
+	refName = refName.Tokenize(L"\n", iStart);
+	if(bStripRefsHeads)
+		refName = StripRefName(refName);
+	return refName;
+}
+
+CString CGit::StripRefName(CString refName)
+{
+	if(wcsncmp(refName, L"refs/heads/", 11) == 0)
+		refName = refName.Mid(11);
+	else if(wcsncmp(refName, L"refs/", 5) == 0)
+		refName = refName.Mid(5);
+	return refName;
 }
 
 int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut)
