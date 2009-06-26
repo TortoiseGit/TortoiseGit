@@ -367,6 +367,24 @@ void CRebaseDlg::LoadBranchInfo()
 		m_UpstreamCtrl.AddString(m_Upstream);
 		m_UpstreamCtrl.SetCurSel(m_UpstreamCtrl.GetCount()-1);
 	}
+	else
+	{
+		//Select pull-remote from current branch
+		CString currentBranch = g_Git.GetSymbolicRef();
+		CString configName;
+		configName.Format(L"branch.%s.remote", currentBranch);
+		CString pullRemote = g_Git.GetConfigValue(configName);
+
+		//Select pull-branch from current branch
+		configName.Format(L"branch.%s.merge", currentBranch);
+		CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+
+		CString defaultUpstream;
+		defaultUpstream.Format(L"remotes/%s/%s", pullRemote, pullBranch);
+		int found = m_UpstreamCtrl.FindStringExact(0, defaultUpstream);
+		if(found >= 0)
+			m_UpstreamCtrl.SetCurSel(found);
+	}
 }
 
 void CRebaseDlg::OnCbnSelchangeBranch()
