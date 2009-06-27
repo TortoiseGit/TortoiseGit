@@ -110,7 +110,9 @@ public:
 	int GetRefList(STRING_VECTOR &list);
 
 
-	//Removes 'refs/heads/' or just 'refs'
+	//Example: master -> refs/heads/master
+	CString GetFullRefName(CString shortRefName);
+	//Removes 'refs/heads/' or just 'refs'. Example: refs/heads/master -> master
 	static CString StripRefName(CString refName);
 	
 };

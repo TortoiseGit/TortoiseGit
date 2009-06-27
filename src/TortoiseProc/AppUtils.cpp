@@ -1194,17 +1194,19 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
 	return FALSE;
 }
 
-bool CAppUtils::Switch(CString *CommitHash)
+bool CAppUtils::Switch(CString *CommitHash, CString initialRefName)
 {
 	CGitSwitchDlg dlg;
 	if(CommitHash)
 		dlg.m_Base=*CommitHash;
+	if(!initialRefName.IsEmpty())
+		dlg.m_initialRefName = initialRefName;
 	
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
 		CString track;
-		CString base;
+//		CString base;
 		CString force;
 		CString branch;
 

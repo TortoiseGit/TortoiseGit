@@ -554,6 +554,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bool bShowDeleteTagOption			= false;
 		bool bShowDeleteRemoteBranchOption	= false;
 		bool bShowFetchOption				= false;
+		bool bShowSwitchOption				= false;
 
 		CString fetchFromCmd;
 
@@ -561,6 +562,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			bShowReflogOption = true;
 			bShowDeleteBranchOption = true;
+			bShowSwitchOption = true;
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
 		{
@@ -582,6 +584,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 											popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
 		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
 		if(bShowFetchOption)				popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
+		if(bShowSwitchOption)				popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
 		if(bShowDeleteTagOption)			popupMenu.AppendMenuIcon(eCmd_DeleteTag, L"Delete Tag", IDI_DELETE);
 		if(bShowDeleteBranchOption)			popupMenu.AppendMenuIcon(eCmd_DeleteBranch, L"Delete Branch", IDI_DELETE);
 		if(bShowDeleteRemoteBranchOption)	popupMenu.AppendMenuIcon(eCmd_DeleteRemoteBranch, L"Delete Remote Branch", IDI_DELETE);
@@ -669,6 +672,11 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			progress.m_GitCmd=cmd;
 			progress.DoModal();
 			Refresh();
+		}
+		break;
+	case eCmd_Switch:
+		{
+			CAppUtils::Switch(NULL, selectedLeafs[0]->GetRefName());
 		}
 		break;
 	case eCmd_AddRemote:

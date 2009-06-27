@@ -358,6 +358,17 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	return refName;
 }
 
+CString CGit::GetFullRefName(CString shortRefName)
+{
+	CString refName;
+	CString cmd;
+	cmd.Format(L"git rev-parse --symbolic-full-name %s", shortRefName);
+	if(Run(cmd, &refName, CP_UTF8) != 0)
+		return CString();//Error
+	int iStart = 0;
+	return refName.Tokenize(L"\n", iStart);
+}
+
 CString CGit::StripRefName(CString refName)
 {
 	if(wcsncmp(refName, L"refs/heads/", 11) == 0)

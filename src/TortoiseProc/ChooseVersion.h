@@ -6,6 +6,7 @@
 class CChooseVersion
 {
 public:
+	CString m_initialRefName;
 	
 private:
 	CWnd *	m_pWin;
@@ -92,27 +93,40 @@ protected:
 		CString resultRef = CBrowseRefsDlg::PickRef(false, m_VersionName, gPickRef_All);
 		if(resultRef.IsEmpty())
 			return;
-		if(wcsncmp(resultRef,L"refs/",5)==0)
-			resultRef = resultRef.Mid(5);
-		if(wcsncmp(resultRef,L"heads/",6)==0)
+		SelectRef(resultRef, false);
+	}
+
+	void SelectRef(CString refName, bool bRefNameIsPossiblyNotFullName = true)
+	{
+		if(bRefNameIsPossiblyNotFullName)
 		{
-			resultRef = resultRef.Mid(6);
+			//Make sure refName is a full ref name first
+			CString fullRefName = g_Git.GetFullRefName(refName);
+			if(!fullRefName.IsEmpty())
+				refName = fullRefName;
+		}
+
+		if(wcsncmp(refName,L"refs/",5)==0)
+			refName = refName.Mid(5);
+		if(wcsncmp(refName,L"heads/",6)==0)
+		{
+			refName = refName.Mid(6);
 			SetDefaultChoose(IDC_RADIO_BRANCH);
 			m_ChooseVersioinBranch.SetCurSel(
-				m_ChooseVersioinBranch.FindStringExact(-1, resultRef));
+				m_ChooseVersioinBranch.FindStringExact(-1, refName));
 		}
-		else if(wcsncmp(resultRef,L"remotes/",8)==0)
+		else if(wcsncmp(refName,L"remotes/",8)==0)
 		{
 			SetDefaultChoose(IDC_RADIO_BRANCH);
 			m_ChooseVersioinBranch.SetCurSel(
-				m_ChooseVersioinBranch.FindStringExact(-1, resultRef));
+				m_ChooseVersioinBranch.FindStringExact(-1, refName));
 		}
-		else if(wcsncmp(resultRef,L"tags/",5)==0)
+		else if(wcsncmp(refName,L"tags/",5)==0)
 		{
-			resultRef = resultRef.Mid(5);
+			refName = refName.Mid(5);
 			SetDefaultChoose(IDC_RADIO_TAGS);
 			m_ChooseVersioinTags.SetCurSel(
-				m_ChooseVersioinTags.FindStringExact(-1, resultRef));
+				m_ChooseVersioinTags.FindStringExact(-1, refName));
 		}
 		OnVersionChanged();
 	}
@@ -134,7 +148,10 @@ protected:
 		m_ChooseVersioinBranch.SetCurSel(current);
 
 
-		OnVersionChanged();
+		if(m_initialRefName.IsEmpty())
+			OnVersionChanged();
+		else
+			SelectRef(m_initialRefName);
 	}
 public:					
 	CString m_VersionName;

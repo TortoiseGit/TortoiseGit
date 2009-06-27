@@ -69,7 +69,8 @@ public:
 		eCmd_DeleteTag,
 		eCmd_ShowReflog,
 		eCmd_Diff,
-		eCmd_Fetch
+		eCmd_Fetch,
+		eCmd_Switch
 	};
 
 	enum eCol
