@@ -195,9 +195,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	{
 		if(selectRef == "HEAD")
 		{
-			selectRef.Empty();
-			g_Git.Run(L"git symbolic-ref HEAD",&selectRef,CP_UTF8);
-			selectRef.Trim(L"\r\n\t ");
+			selectRef = g_Git.GetSymbolicRef(selectRef, false);
 		}
 	}
 	else
@@ -253,6 +251,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	{
 		CShadowTree& treeLeaf=GetTreeNode(iterRefMap->first,NULL,true);
 		CString values=iterRefMap->second;
+		values.Replace(L"\04" L"\04",L"\04 \04");//Workaround Tokenize problem (treating 2 tokens as one)
 
 		int valuePos=0;
 		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos);
@@ -544,14 +543,19 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	popupMenu.CreatePopupMenu();
 
 	bool bAddSeparator = false;
+	CString remoteName;
+
 	if(selectedLeafs.size()==1)
 	{
 		bAddSeparator = true;
 
-		bool bShowReflogOption = false;
-		bool bShowDeleteBranchOption = false;
-		bool bShowDeleteTagOption = false;
-		bool bShowDeleteRemoteBranchOption = false;
+		bool bShowReflogOption				= false;
+		bool bShowDeleteBranchOption		= false;
+		bool bShowDeleteTagOption			= false;
+		bool bShowDeleteRemoteBranchOption	= false;
+		bool bShowFetchOption				= false;
+
+		CString fetchFromCmd;
 
 		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
 		{
@@ -562,6 +566,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			bShowReflogOption = true;
 			bShowDeleteRemoteBranchOption = true;
+			bShowFetchOption = true;
+
+			int dummy = 0;//Needed for tokenize
+			remoteName = selectedLeafs[0]->GetRefName();
+			remoteName = remoteName.Mid(13);
+			remoteName = remoteName.Tokenize(L"/", dummy);
+			fetchFromCmd.Format(L"Fetch from %s", remoteName);
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
 		{
@@ -570,6 +581,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 											popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
 		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
+		if(bShowFetchOption)				popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
 		if(bShowDeleteTagOption)			popupMenu.AppendMenuIcon(eCmd_DeleteTag, L"Delete Tag", IDI_DELETE);
 		if(bShowDeleteBranchOption)			popupMenu.AppendMenuIcon(eCmd_DeleteBranch, L"Delete Branch", IDI_DELETE);
 		if(bShowDeleteRemoteBranchOption)	popupMenu.AppendMenuIcon(eCmd_DeleteRemoteBranch, L"Delete Remote Branch", IDI_DELETE);
@@ -584,7 +596,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 		bAddSeparator = true;
 		
-		popupMenu.AppendMenuIcon(eCmd_Diff, L"Diff These Commits", IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_Diff, L"Compare These Refs", IDI_DIFF);
 	}
 
 	if(bAddSeparator) popupMenu.AppendMenu(MF_SEPARATOR);
@@ -596,6 +608,19 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 //			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
 			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, L"Manage Remotes", IDI_SETTINGS);
+			if(selectedLeafs.empty())
+			{
+				int dummy = 0;//Needed for tokenize
+				remoteName = pTree->GetRefName();
+				remoteName = remoteName.Mid(13);
+				remoteName = remoteName.Tokenize(L"/", dummy);
+				if(!remoteName.IsEmpty())
+				{
+					CString fetchFromCmd;
+					fetchFromCmd.Format(L"Fetch from %s", remoteName);
+					popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
+				}
+			}
 		}
 		else if(pTree->IsFrom(L"refs/heads"))
 			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create Branch", IDI_COPY);
@@ -634,6 +659,16 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CRefLogDlg refLogDlg(this);
 			refLogDlg.m_CurrentBranch = selectedLeafs[0]->GetRefName();
 			refLogDlg.DoModal();
+		}
+		break;
+	case eCmd_Fetch:
+		{
+			CString cmd;
+			cmd.Format(_T("git.exe fetch %s"), remoteName);
+			CProgressDlg progress;
+			progress.m_GitCmd=cmd;
+			progress.DoModal();
+			Refresh();
 		}
 		break;
 	case eCmd_AddRemote:

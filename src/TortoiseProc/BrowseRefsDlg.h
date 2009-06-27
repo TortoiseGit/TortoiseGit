@@ -68,7 +68,8 @@ public:
 		eCmd_DeleteRemoteBranch,
 		eCmd_DeleteTag,
 		eCmd_ShowReflog,
-		eCmd_Diff
+		eCmd_Diff,
+		eCmd_Fetch
 	};
 
 	enum eCol

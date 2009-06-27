@@ -29,6 +29,7 @@ protected:
 public:
 	BOOL        m_IsPull;
     BOOL        m_bAutoLoad;
+	BOOL		m_bRebase;
     BOOL        m_bAutoLoadEnable;
     CHyperLink  m_RemoteManage;
 
@@ -37,4 +38,5 @@ public:
 	CString m_RemoteURL;
 	CString m_RemoteBranchName;
     afx_msg void OnStnClickedRemoteManage();
+	afx_msg void OnBnClickedButtonBrowseRef();
 };
