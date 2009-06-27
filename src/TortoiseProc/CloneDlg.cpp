@@ -16,6 +16,14 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	, m_Directory(_T(""))
 {
     m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
+
+	m_bSVN = FALSE;
+	m_bSVNTrunk = FALSE;
+	m_bSVNTags = FALSE;
+	m_bSVNBranch = FALSE;;
+	m_strSVNTrunk = _T("trunk");
+	m_strSVNTags = _T("tags");
+	m_strSVNBranchs = _T("branches");
 }
 
 CCloneDlg::~CCloneDlg()
@@ -30,6 +38,15 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_CLONE_DIR, m_Directory);
     DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD, m_bAutoloadPuttyKeyFile);
 
+	DDX_Check(pDX,IDC_CHECK_SVN, m_bSVN);
+	DDX_Check(pDX,IDC_CHECK_SVN_TRUNK, m_bSVNTrunk);
+	DDX_Check(pDX,IDC_CHECK_SVN_TAG, m_bSVNTags);
+	DDX_Check(pDX,IDC_CHECK_SVN_BRANCH, m_bSVNBranch);
+
+	DDX_Text(pDX, IDC_EDIT_SVN_TRUNK, m_strSVNTrunk);
+	DDX_Text(pDX, IDC_EDIT_SVN_TAG, m_strSVNTags);
+	DDX_Text(pDX, IDC_EDIT_SVN_BRANCH, m_strSVNBranchs);
+
 }
 
 BOOL CCloneDlg::OnInitDialog()
@@ -42,10 +59,11 @@ BOOL CCloneDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
-    AddAnchor(IDC_GROUP_CLONE,TOP_LEFT,BOTTOM_RIGHT);
-    AddAnchor(IDC_PUTTYKEYFILE_BROWSE,BOTTOM_RIGHT);
-    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
-    AddAnchor(IDC_PUTTYKEYFILE,BOTTOM_LEFT,BOTTOM_RIGHT);
+    AddAnchor(IDC_GROUP_CLONE,TOP_LEFT,TOP_RIGHT);
+    AddAnchor(IDC_PUTTYKEYFILE_BROWSE,TOP_RIGHT);
+    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
+    AddAnchor(IDC_PUTTYKEYFILE,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_CLONE_GROUP_SVN,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
@@ -76,6 +94,9 @@ BOOL CCloneDlg::OnInitDialog()
     this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
        
     EnableSaveRestore(_T("CloneDlg"));
+	
+	OnBnClickedCheckSvn();
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -88,6 +109,10 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(CBEN_BEGINEDIT, IDC_URLCOMBO, &CCloneDlg::OnCbenBegineditUrlcombo)
 	ON_NOTIFY(CBEN_ENDEDIT, IDC_URLCOMBO, &CCloneDlg::OnCbenEndeditUrlcombo)
 	ON_CBN_EDITCHANGE(IDC_URLCOMBO, &CCloneDlg::OnCbnEditchangeUrlcombo)
+	ON_BN_CLICKED(IDC_CHECK_SVN, &CCloneDlg::OnBnClickedCheckSvn)
+	ON_BN_CLICKED(IDC_CHECK_SVN_TRUNK, &CCloneDlg::OnBnClickedCheckSvnTrunk)
+	ON_BN_CLICKED(IDC_CHECK_SVN_TAG, &CCloneDlg::OnBnClickedCheckSvnTag)
+	ON_BN_CLICKED(IDC_CHECK_SVN_BRANCH, &CCloneDlg::OnBnClickedCheckSvnBranch)
 END_MESSAGE_MAP()
 
 
@@ -272,4 +297,36 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 
 	}
 	this->UpdateData(FALSE);
+}
+
+void CCloneDlg::OnBnClickedCheckSvn()
+{
+	// TODO: Add your control notification handler code here
+	OnBnClickedCheckSvnTrunk();
+	OnBnClickedCheckSvnTag();
+	OnBnClickedCheckSvnBranch();
+}
+
+void CCloneDlg::OnBnClickedCheckSvnTrunk()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_CHECK_SVN_TRUNK)->EnableWindow(this->m_bSVN);
+	this->GetDlgItem(IDC_EDIT_SVN_TRUNK)->EnableWindow(this->m_bSVNTrunk&&this->m_bSVN);
+}
+
+void CCloneDlg::OnBnClickedCheckSvnTag()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_CHECK_SVN_TAG)->EnableWindow(this->m_bSVN);
+	this->GetDlgItem(IDC_EDIT_SVN_TAG)->EnableWindow(this->m_bSVNTags&&this->m_bSVN);
+}
+
+void CCloneDlg::OnBnClickedCheckSvnBranch()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_CHECK_SVN_BRANCH)->EnableWindow(this->m_bSVN);
+	this->GetDlgItem(IDC_EDIT_SVN_BRANCH)->EnableWindow(this->m_bSVNBranch&&this->m_bSVN);
 }

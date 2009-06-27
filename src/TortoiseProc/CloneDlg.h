@@ -39,6 +39,14 @@ public:
     CString m_strPuttyKeyFile;
 	CString m_URL;
     BOOL    m_bAutoloadPuttyKeyFile;
+	BOOL	m_bSVN;
+	BOOL	m_bSVNTrunk;
+	BOOL	m_bSVNTags;
+	BOOL	m_bSVNBranch;
+	CString	m_strSVNTrunk;
+	CString m_strSVNTags;
+	CString m_strSVNBranchs;
+
     afx_msg void OnBnClickedPuttykeyfileBrowse();
     afx_msg void OnBnClickedPuttykeyAutoload();
 	afx_msg void OnCbnSelchangeUrlcombo();
@@ -46,4 +54,8 @@ public:
 	afx_msg void OnCbenEndeditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnCbnEditchangeUrlcombo();
 
+	afx_msg void OnBnClickedCheckSvn();
+	afx_msg void OnBnClickedCheckSvnTrunk();
+	afx_msg void OnBnClickedCheckSvnTag();
+	afx_msg void OnBnClickedCheckSvnBranch();
 };

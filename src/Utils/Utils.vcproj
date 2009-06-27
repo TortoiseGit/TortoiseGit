@@ -401,6 +401,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DirFileEnum.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DragDropImpl.cpp"
 				>
 			</File>

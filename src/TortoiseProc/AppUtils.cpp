@@ -2081,3 +2081,36 @@ bool CAppUtils::Push()
 	}
 	return FALSE;
 }
+
+bool CAppUtils::CreateMultipleDirectory(CString& szPath)
+{
+    CString strDir(szPath);
+    if (strDir.GetAt(strDir.GetLength()-1)!=_T('\\'))
+    {
+        strDir.AppendChar(_T('\\'));
+    }
+    std::vector<CString> vPath;
+    CString strTemp;
+    bool bSuccess = false;
+    
+    for (int i=0;i<strDir.GetLength();++i)
+    {
+        if (strDir.GetAt(i) != _T('\\')) 
+        {
+            strTemp.AppendChar(strDir.GetAt(i));
+        }
+        else 
+        {
+            vPath.push_back(strTemp);
+            strTemp.AppendChar(_T('\\'));
+        }
+    }
+
+    std::vector<CString>::const_iterator vIter;
+    for (vIter = vPath.begin(); vIter != vPath.end(); vIter++) 
+    {
+        bSuccess = CreateDirectory(*vIter, NULL) ? true : false;    
+    }
+
+    return bSuccess;
+}

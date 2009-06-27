@@ -51,6 +51,56 @@ bool CloneCommand::Execute()
 		cmd.Format(_T("git.exe clone -v \"%s\" \"%s\""),
 						url,
 						dir);
+
+		// Handle Git SVN-clone
+		if(dlg.m_bSVN)
+		{
+			WIN32_FILE_ATTRIBUTE_DATA attribs;
+			if(GetFileAttributesEx(dlg.m_Directory, GetFileExInfoStandard, &attribs))
+			{
+				if(!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				{
+					CString errstr;
+					errstr.Format(_T("%s is not valid direcotry"),dlg.m_Directory);
+					CMessageBox::Show(NULL,errstr,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					return FALSE;
+				}
+			}	
+			else
+			{
+				DWORD err = GetLastError();
+				if(err == ERROR_PATH_NOT_FOUND)
+				{
+					if(!CAppUtils::CreateMultipleDirectory(dlg.m_Directory))
+					{
+						CString errstr;
+						errstr.Format(_T("Fail create dir: %s"),dlg.m_Directory);
+						CMessageBox::Show(NULL,errstr,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						return FALSE;
+					}
+
+				}
+				else
+				{
+					CMessageBox::Show(NULL,_T("Unknow ERROR"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					return FALSE;
+				}
+			}
+
+			g_Git.m_CurrentDir=dlg.m_Directory;
+			cmd.Format(_T("git.exe svn clone \"%s\" "),
+						url);
+
+			if(dlg.m_bSVNTrunk)
+				cmd+=_T(" -T ")+dlg.m_strSVNTrunk;
+
+			if(dlg.m_bSVNBranch)
+				cmd+=_T(" -b ")+dlg.m_strSVNBranchs;
+
+			if(dlg.m_bSVNTags)
+				cmd+=_T(" -t ")+dlg.m_strSVNTags;
+
+		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)
