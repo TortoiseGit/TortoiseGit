@@ -62,7 +62,8 @@
 #include "SendMailCommand.h"
 #include "CatCommand.h"
 #include "RefBrowseCommand.h"
-
+#include "SVNDCommitCommand.h"
+#include "SVNRebaseCommand.h"
 
 #if 0
 
@@ -178,7 +179,9 @@ typedef enum
 	cmdSubUpdate,
 	cmdSubSync,
 	cmdRefLog,
-	cmdRefBrowse
+	cmdRefBrowse,
+	cmdSVNDCommit,
+	cmdSVNRebase,
 	
 } TGitCommand;
 
@@ -254,6 +257,8 @@ static const struct CommandInfo
 	{	cmdSubSync,			_T("subsync")			},
 	{	cmdRefLog,			_T("reflog")			},
 	{	cmdRefBrowse,		_T("refbrowse")			},
+	{	cmdSVNDCommit,		_T("svndcommit")		},
+	{	cmdSVNRebase,		_T("svnrebase")			},
 };
 
 
@@ -365,6 +370,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CatCommand;
 	case cmdRefBrowse:
 		return new RefBrowseCommand;
+	case cmdSVNDCommit:
+		return new SVNDCommitCommand;
+	case cmdSVNRebase:
+		return new SVNRebaseCommand;
 #if 0
 
 	
