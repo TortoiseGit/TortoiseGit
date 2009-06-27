@@ -104,7 +104,8 @@ public:
 
 	bool			SelectRef(CString refName, bool bExactMatch);
 
-	bool			ConfirmDeleteRef(CString completeRefName);
+	bool			ConfirmDeleteRef(VectorPShadowTree& leafs);
+	bool			DoDeleteRefs(VectorPShadowTree& leafs, bool bForce);
 	bool			DoDeleteRef(CString completeRefName, bool bForce);
 
 	CString			GetFullRefName(CString partialRefName);
@@ -126,6 +127,7 @@ public:
 	void		OnContextMenu_ListRefLeafs(CPoint point);
 	void		OnContextMenu_RefTreeCtrl(CPoint point);
 
+	bool		AreAllFrom(VectorPShadowTree& leafs, const wchar_t* from);
 	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
