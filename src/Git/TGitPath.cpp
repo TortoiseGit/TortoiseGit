@@ -765,6 +765,18 @@ bool CTGitPath::HasSubmodules() const
 	return !g_GitAdminDir.GetSuperProjectRoot(GetWinPathString()).IsEmpty();
 }
 
+bool CTGitPath::HasGitSVNDir() const
+{
+	CString topdir;
+	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	{
+		return false;
+	}
+	topdir+=_T("\\");
+	topdir+=g_GitAdminDir.GetAdminDirName();
+	topdir+=_T("\\svn");
+	return PathFileExists(topdir);
+}
 bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const
 {
 	if (m_bHasAdminDirKnown)

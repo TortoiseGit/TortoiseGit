@@ -270,9 +270,7 @@ BEGIN
     IDS_MENUSUBADD          "Submodule Add"
     IDS_MENUSUBSYNC         "Submodule Sync"
     IDS_MENUREFLOG          "Show &Reflog"
-    IDS_MENUREFBROWSE       "Browse Reference"
     IDS_MENUDESCREFLOG      "Shows reference log"
-    IDS_MENUDESCREFBROWSE   "Browse reference"
     IDS_MENUSTASHLIST       "Stash List"
 END
 
@@ -281,6 +279,9 @@ BEGIN
     IDS_REFLOG_DEL          "Delete Ref..."
     IDS_MENUSENDMAIL        "Send Mail..."
     IDS_MENUDESSENDMAIL     "Send Patch by Email"
+    IDS_MENUREFBROWSE       "Browse Reference"
+    IDS_MENUDESCREFBROWSE   "Browse reference"
+    IDS_MENUSVNREBASE       "SVN Rebase..."
 END
 
 STRINGTABLE 
@@ -425,6 +426,13 @@ BEGIN
     IDS_git_DEPTH_IMMEDIATE "Immediate children, including folders"
     IDS_git_DEPTH_FILES     "Only file children"
     IDS_git_DEPTH_EMPTY     "Only this item"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUSVNREBASE_DESC  "Git SVN Rebase"
+    IDS_MENUSVNDCOMMIT      "SVN DCommit"
+    IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
 END
 
 #endif    // English (U.S.) resources

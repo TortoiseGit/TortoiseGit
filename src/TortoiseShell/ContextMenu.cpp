@@ -41,7 +41,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuFetch,						MENUFETCH,			IDI_PULL,				IDS_MENUFETCH,			IDS_MENUFETCH,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuPush,						MENUPUSH,			IDI_PUSH,				IDS_MENUPUSH,			IDS_MENUPULL,
+	{ ShellMenuPush,						MENUPUSH,			IDI_PUSH,				IDS_MENUPUSH,			IDS_MENUPUSH,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
 //	{ ShellMenuCheckout,					MENUCHECKOUT,		IDI_CHECKOUT,			IDS_MENUCHECKOUT,			IDS_MENUDESCCHECKOUT,
@@ -50,9 +50,16 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 //	{ ShellMenuUpdate,					MENUSUBUPDATE,			IDI_UPDATE,				IDS_MENUUPDATE,				IDS_MENUDESCUPDATE,				
 //	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
+	{ ShellSeparator, ITEMIS_GITSVN, 0, 0, 0, 0, 0, 0, 0},
 
 	{ ShellMenuCommit,						MENUCOMMIT,			IDI_COMMIT,				IDS_MENUCOMMIT,				IDS_MENUDESCCOMMIT,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
+	{ ShellMenuGitSVNDCommit,				MENUSVNDCOMMIT,			IDI_COMMIT,			IDS_MENUSVNDCOMMIT,			IDS_MENUSVNDCOMMIT_DESC,
+	ITEMIS_INSVN|ITEMIS_GITSVN, 0, ITEMIS_FOLDERINSVN|ITEMIS_GITSVN, 0, 0, 0, 0, 0 },
+
+	{ ShellMenuGitSVNRebase,				MENUSVNREBASE,		IDI_REBASE,				IDS_MENUSVNREBASE,				IDS_MENUSVNREBASE_DESC,
+	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_GITSVN, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE|ITEMIS_GITSVN, 0, 0, 0, 0, 0},
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
@@ -627,6 +634,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		if (askedpath.HasSubmodules())
 		{
 			itemStatesFolder |= ITEMIS_SUBMODULE;
+		}
+		if (askedpath.HasGitSVNDir())
+		{
+			itemStatesFolder |= ITEMIS_GITSVN;
 		}
 		if (status == git_wc_status_ignored)
 			itemStatesFolder |= ITEMIS_IGNORED;
@@ -1817,6 +1828,22 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRelocate:
 				svnCmd += _T("relocate /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+			case ShellMenuGitSVNRebase:
+				svnCmd += _T("svnrebase /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+			case ShellMenuGitSVNDCommit:
+				svnCmd += _T("svndcommit /path:\"");
 				if (files_.size() > 0)
 					svnCmd += files_.front();
 				else
