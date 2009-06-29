@@ -39,4 +39,7 @@ public:
 	CString m_RemoteBranchName;
     afx_msg void OnStnClickedRemoteManage();
 	afx_msg void OnBnClickedButtonBrowseRef();
+
+	CString		m_configPullRemote;
+	CString		m_configPullBranch;
 };

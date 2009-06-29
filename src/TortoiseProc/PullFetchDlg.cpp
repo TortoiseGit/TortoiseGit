@@ -103,11 +103,11 @@ BOOL CPullFetchDlg::OnInitDialog()
 	CString currentBranch = g_Git.GetSymbolicRef();
 	CString configName;
 	configName.Format(L"branch.%s.remote", currentBranch);
-	CString pullRemote = g_Git.GetConfigValue(configName);
+	CString pullRemote = m_configPullRemote = g_Git.GetConfigValue(configName);
 
 	//Select pull-branch from current branch
 	configName.Format(L"branch.%s.merge", currentBranch);
-	CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+	CString pullBranch = m_configPullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
 	m_RemoteBranch.AddString(pullBranch);
 
 	if(pullRemote.IsEmpty())
@@ -158,7 +158,10 @@ void CPullFetchDlg::OnBnClickedOk()
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_REMOTE_RD)
 	{
 		m_RemoteURL=m_Remote.GetString();
-		if(!m_IsPull)
+		if( !m_IsPull ||
+			(m_configPullRemote == m_RemoteURL && m_configPullBranch == m_RemoteBranch.GetString() ))
+			//When fetching or when pulling from the configured tracking branch, dont explicitly set the remote branch name,
+			//because otherwise git will not update the remote tracking branches.
 			m_RemoteBranchName.Empty();
 		else
 			m_RemoteBranchName=m_RemoteBranch.GetString();
