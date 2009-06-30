@@ -1992,15 +1992,15 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 	}
 	return false;
 }
-int CAppUtils::GetLogOutputEncode()
+int CAppUtils::GetLogOutputEncode(CGit *pGit)
 {
 	CString cmd,output;
 	int start=0;
 	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if(g_Git.Run(cmd,&output,CP_ACP))
+	if(pGit->Run(cmd,&output,CP_ACP))
 	{
 		cmd=_T("git.exe config i18n.commitencoding");
-		if(g_Git.Run(cmd,&output,CP_ACP))
+		if(pGit->Run(cmd,&output,CP_ACP))
 			return CP_UTF8;
 	
 		int start=0;

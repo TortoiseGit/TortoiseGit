@@ -2,7 +2,9 @@
 #include "GitDiff.h"
 #include "AppUtils.h"
 #include "git.h"
+#include "gittype.h"
 #include "resource.h"
+#include "MessageBox.h"
 
 CGitDiff::CGitDiff(void)
 {
@@ -79,6 +81,60 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 	CString file1;
 	CString title1;
 	CString cmd;
+
+	if(pPath->IsDirectory() || pPath2->IsDirectory())
+	{
+		cmd.Format(_T("git.exe diff-tree -r -z %s %s -- \"%s\""),
+			rev2,rev1,pPath->GetGitPathString());
+		
+		BYTE_VECTOR bytes;
+		if(g_Git.Run(cmd,&bytes))
+		{
+			CString err;
+			g_Git.StringAppend(&err,&bytes[0],CP_ACP);
+			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		}
+		
+		CString oldhash;
+		g_Git.StringAppend(&oldhash,&bytes[15],CP_ACP,40);
+		CString newhash;
+		g_Git.StringAppend(&newhash,&bytes[15+41],CP_ACP,40);
+
+		CString oldsub;
+		CString newsub;
+
+		CGit subgit; 
+		subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+
+		CString cmd;
+		if(pPath->HasAdminDir())
+		{
+			int encode=CAppUtils::GetLogOutputEncode(&subgit);
+
+			if(oldhash != GIT_REV_ZERO)
+			{
+				cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),oldhash);
+				subgit.Run(cmd,&oldsub,encode);
+			}
+
+			if(newsub != GIT_REV_ZERO)
+			{
+				cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),newhash);
+				subgit.Run(cmd,&newsub,encode);
+			}
+		}
+		CString msg;
+		msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To:</b>     %s\r\n\t\t%s"),
+				   pPath->GetWinPath(),
+				   oldhash,
+				   oldsub ,
+				   newhash,
+				   newsub);
+		CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
+
+		return 0;
+	}
+
 	if(rev1 != GIT_REV_ZERO )
 	{
 		file1.Format(_T("%s%s_%s%s"),

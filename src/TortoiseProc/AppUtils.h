@@ -198,7 +198,7 @@ public:
 
 	static int  SaveCommitUnicodeFile(CString &filename, CString &mesage);
 
-	static int  GetLogOutputEncode();
+	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
 	static bool Push();
 
