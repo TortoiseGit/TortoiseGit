@@ -873,7 +873,6 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	}
 #endif
 
-	TRACE(_T("index %d %d\r\n"),index,data->m_Lanes.size());
 }
 
 void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -978,7 +977,14 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					CRect rect;
 					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+					if(pLVCD->iSubItem == 0)
+					{
+						CRect second;
+						GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem+1, LVIR_BOUNDS, second);
+						rect.right=second.left;
+					}
 					
+					TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
 					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 					DrawGraph(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
 
@@ -1035,6 +1041,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec));
 				CRect rect;
 				GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+				TRACE(_T("Action left %d right %d\r\n"),rect.left,rect.right);
 				// Get the selected state of the
 				// item being drawn.							
 
