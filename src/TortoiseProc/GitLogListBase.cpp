@@ -849,7 +849,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 			continue;
 
 		COLORREF color = i == activeLane ? activeColor : m_LineColors[i % Lanes::COLORS_NUM];
-		paintGraphLane(hdc, rect.Height(),ln, x1, x2, color,activeColor, rect.top);
+		paintGraphLane(hdc, rect.Height(),ln, x1+rect.left, x2+rect.left, color,activeColor, rect.top);
 	}
 
 #if 0
