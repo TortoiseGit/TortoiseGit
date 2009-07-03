@@ -1,3 +1,76 @@
+= Release 0.8.1.0 =
+== Features ==
+
+ * Improve work flow and reduce click
+   Commit: Made user able to push after successful commit
+   Show Push Dialog after close commit dialog
+   Add messagebox to ask if stash change when rebase at dirty work space
+   Show GUI friendly diffstat after pull
+
+ * Rebase: Select default upstream based on current tracked remote
+
+ * Improve BrowseRef Dialog
+   Add Option to delete multiple refs
+   Added 'Switch to this Ref' option
+   Fetch context menu item added.
+   Add "BrowseRef" to shell extension command.
+   Add ability to diff two commits
+   Added option to delete remote branch
+   Always set initial ref
+   Show context menu icons
+   Save / Restore window size
+
+ * Add Basic Git-SVN Operation
+   Add SVN DCommit Command
+   Add "SVN Rebase" and "SVN DCommit" command at shell contextmenu
+   Support Git svn-clone at clone dialog.
+ 
+ * Help Document Updated
+   Add git basic book. 
+   
+ * Add Help button at many dialog
+
+ * Improve Format Patch
+   May also select 'format patch...' if selection is continuous.
+   Implemented browse buttons and added browsebutton for 'since'.
+
+ * Add TortoiseIDiff to compare picture
+
+ * Enable Bugtraq setting dialog  
+
+ * Improve Log dialog
+   Ajust label colors when selected. (Not on Vista with themes enabled)
+   Add compare with working copy at log dialog  
+   Ref label borders
+
+ * FileDiffDlg: Make shift right-left button work  
+
+ * Branch/Tag dlg: Update 'track' option after browse-refs
+
+ * StatusListCtrl: Implemented delete unversioned file.
+
+ * RebaseDlg: Update rebase lines after browserefs
+
+ 
+== BugFix ==
+
+ * Fix Issue 64:  When the graph column is small, the graph sometimes appears through the text of the next column on Vista
+ * Fix log graph tree mass when dragon scroll bar from left to right
+ * Fix Issue 104:  Doubleclicking changed submodule dir in Check For Modifications dlg, crashes TGit
+ * Pull: Fixed bug that when pulling from the configured remote branch, git did not update the remote tracking branches.
+ * Fix stash problem when svn dcommit at dirty working space
+ * Modify Create repository error message
+ * Fix Issue #102:  Invalid patch e-mails generated
+ * Fix submodule update Crash when repository have not submodule
+ * Fixed issue #88: Ambiguous dialog message
+ * Correct format patch command -num argument
+ * PushDlg: Fix: Wrong remote selected after selection via ref-browser.
+ * Rebase: Skip in context-menu appeared twice. First one should be pick.
+ * Fix Issue #89: Can't locate msysgit on x64
+ * Fix Issue #95:  TortoiseBlame Icon disappears when selected in the settings treeview
+ * Fix Issue 94 Commit log showing incorrect timestamps
+ * Fix pull don't launch putty key file
+
 = Release 0.7.2.0 =
 == Features ==
 
