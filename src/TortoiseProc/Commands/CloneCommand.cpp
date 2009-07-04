@@ -61,7 +61,7 @@ bool CloneCommand::Execute()
 				if(!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 				{
 					CString errstr;
-					errstr.Format(_T("%s is not valid direcotry"),dlg.m_Directory);
+					errstr.Format(_T("%s is not valid directory"),dlg.m_Directory);
 					CMessageBox::Show(NULL,errstr,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return FALSE;
 				}
