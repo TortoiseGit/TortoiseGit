@@ -76,13 +76,14 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t &
 {
 	CString oldhash;
 	CString newhash;
-	oldhash = GIT_REV_ZERO;
-	newhash = GIT_REV_ZERO;
 	CString cmd,err;
 	CString workingcopy;
 
 	if( rev2 == GIT_REV_ZERO || rev1 == GIT_REV_ZERO )
 	{
+		oldhash = GIT_REV_ZERO;
+		newhash = GIT_REV_ZERO;
+
 		CString rev;
 		if( rev2 != GIT_REV_ZERO )
 			rev = rev2;
