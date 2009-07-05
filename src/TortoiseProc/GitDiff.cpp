@@ -72,6 +72,104 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd)
 	return 0;
 }
 
+int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, git_revnum_t & rev2, bool /*blame*/, bool /*unified*/)
+{
+	CString oldhash;
+	CString newhash;
+	oldhash = GIT_REV_ZERO;
+	newhash = GIT_REV_ZERO;
+	CString cmd,err;
+	CString workingcopy;
+
+	if( rev2 == GIT_REV_ZERO || rev1 == GIT_REV_ZERO )
+	{
+		CString rev;
+		if( rev2 != GIT_REV_ZERO )
+			rev = rev2;
+		if( rev1 != GIT_REV_ZERO )
+			rev = rev1;
+		
+		workingcopy = _T("(Work Copy)");
+
+		cmd.Format(_T("git.exe diff %s -- \"%s\""),
+		rev,pPath->GetGitPathString());
+
+		CString output;
+		if(g_Git.Run(cmd,&output,CP_ACP))
+		{
+			CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return -1;
+		}
+		int start =0;
+		int oldstart = output.Find(_T("-Subproject commit"),start);
+		if(oldstart<0)
+		{
+			CMessageBox::Show(NULL,_T("Subproject Diff Format error") ,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return -1;
+		}
+		oldhash = output.Mid(oldstart+ CString(_T("-Subproject commit")).GetLength()+1,40);
+		start = 0;
+		int newstart = output.Find(_T("+Subproject commit"),start);
+		if(oldstart<0)
+		{
+			CMessageBox::Show(NULL,_T("Subproject Diff Format error") ,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return -1;
+		}
+		newhash = output.Mid(newstart+ CString(_T("+Subproject commit")).GetLength()+1,40);
+		
+	}else
+	{
+		cmd.Format(_T("git.exe diff-tree -r -z %s %s -- \"%s\""),
+		rev2,rev1,pPath->GetGitPathString());
+		
+		BYTE_VECTOR bytes;
+		if(g_Git.Run(cmd,&bytes))
+		{
+			CString err;
+			g_Git.StringAppend(&err,&bytes[0],CP_ACP);
+			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return -1;
+		}
+
+		g_Git.StringAppend(&oldhash,&bytes[15],CP_ACP,40);
+		g_Git.StringAppend(&newhash,&bytes[15+41],CP_ACP,40);
+		
+	}
+		
+	CString oldsub;
+	CString newsub;
+
+	CGit subgit; 
+	subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+
+	if(pPath->HasAdminDir())
+	{
+		int encode=CAppUtils::GetLogOutputEncode(&subgit);
+
+		if(oldhash != GIT_REV_ZERO)
+		{
+			cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),oldhash);
+			subgit.Run(cmd,&oldsub,encode);
+		}
+		if(newsub != GIT_REV_ZERO)
+		{
+			cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),newhash);
+			subgit.Run(cmd,&newsub,encode);
+		}
+	}
+	CString msg;
+	msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
+			   pPath->GetWinPath(),
+			   oldhash,
+			   oldsub ,
+			   workingcopy,
+			   newhash,
+			   newsub);
+	CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
+
+	return 0;
+}
+
 int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, git_revnum_t & rev2, bool /*blame*/, bool /*unified*/)
 {
 	CString temppath;
@@ -84,55 +182,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 
 	if(pPath->IsDirectory() || pPath2->IsDirectory())
 	{
-		cmd.Format(_T("git.exe diff-tree -r -z %s %s -- \"%s\""),
-			rev2,rev1,pPath->GetGitPathString());
-		
-		BYTE_VECTOR bytes;
-		if(g_Git.Run(cmd,&bytes))
-		{
-			CString err;
-			g_Git.StringAppend(&err,&bytes[0],CP_ACP);
-			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-		}
-		
-		CString oldhash;
-		g_Git.StringAppend(&oldhash,&bytes[15],CP_ACP,40);
-		CString newhash;
-		g_Git.StringAppend(&newhash,&bytes[15+41],CP_ACP,40);
-
-		CString oldsub;
-		CString newsub;
-
-		CGit subgit; 
-		subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
-
-		CString cmd;
-		if(pPath->HasAdminDir())
-		{
-			int encode=CAppUtils::GetLogOutputEncode(&subgit);
-
-			if(oldhash != GIT_REV_ZERO)
-			{
-				cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),oldhash);
-				subgit.Run(cmd,&oldsub,encode);
-			}
-
-			if(newsub != GIT_REV_ZERO)
-			{
-				cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),newhash);
-				subgit.Run(cmd,&newsub,encode);
-			}
-		}
-		CString msg;
-		msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To:</b>     %s\r\n\t\t%s"),
-				   pPath->GetWinPath(),
-				   oldhash,
-				   oldsub ,
-				   newhash,
-				   newsub);
-		CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
-
-		return 0;
+		return SubmoduleDiff(pPath,pPath2,rev1,rev2);
 	}
 
 	if(rev1 != GIT_REV_ZERO )

@@ -12,5 +12,6 @@ public:
 
 	// Use two path to handle rename cases
 	static int Diff(CTGitPath * pPath1, CTGitPath *pPath2 ,git_revnum_t & rev1, git_revnum_t & rev2, bool blame=false, bool unified=false);
+	static int SubmoduleDiff(CTGitPath * pPath1, CTGitPath *pPath2 ,git_revnum_t & rev1, git_revnum_t & rev2, bool blame=false, bool unified=false);
 	static int DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd=true);
 };
