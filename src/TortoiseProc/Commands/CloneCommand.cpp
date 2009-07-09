@@ -38,8 +38,13 @@ bool CloneCommand::Execute()
 		{
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
 		}
+	
+		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
+		CAppUtils::RemoveTrailSlash(dlg.m_URL);
+
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
+
 		// is this a windows format UNC path, ie starts with \\ 
 		if (url.Find(_T("\\\\")) == 0)
 		{

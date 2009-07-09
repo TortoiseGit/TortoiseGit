@@ -2116,3 +2116,16 @@ bool CAppUtils::CreateMultipleDirectory(CString& szPath)
 
     return bSuccess;
 }
+
+void CAppUtils::RemoveTrailSlash(CString &path)
+{
+	if(path.IsEmpty())
+		return ;
+	
+	while(path[path.GetLength()-1] == _T('\\') || path[path.GetLength()-1] == _T('/' ) )
+	{
+		path=path.Left(path.GetLength()-1);
+		if(path.IsEmpty())
+			return;
+	}
+}

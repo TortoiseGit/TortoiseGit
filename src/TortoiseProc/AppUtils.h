@@ -204,6 +204,8 @@ public:
 
 	static bool CreateMultipleDirectory(CString &dir);
 
+	static void RemoveTrailSlash(CString &path);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
