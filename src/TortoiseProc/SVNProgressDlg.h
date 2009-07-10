@@ -74,6 +74,7 @@ typedef enum
 	git_wc_notify_sendmail_retry,
 	git_wc_notify_sendmail_done,
 	git_wc_notify_resolved,
+	git_wc_notify_revert,
 
 }git_wc_notify_action_t;
 typedef enum

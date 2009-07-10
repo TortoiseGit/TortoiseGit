@@ -20,7 +20,7 @@
 #include "RevertCommand.h"
 
 #include "RevertDlg.h"
-//#include "SVNProgressDlg.h"
+#include "SVNProgressDlg.h"
 #include "MessageBox.h"
 
 bool RevertCommand::Execute()
@@ -30,22 +30,9 @@ bool RevertCommand::Execute()
 	if (dlg.DoModal() == IDOK)
 	{
 
-		if (dlg.m_selectedPathList.GetCount() == 0)
-			return FALSE;
-		CString cmd;
-		CString out;
-		for(int i=0;i< dlg.m_selectedPathList.GetCount() ;i++)
-		{
-			cmd.Format(_T("git.exe checkout -f -- \"%s\""),dlg.m_selectedPathList[i].GetGitPathString());
-			if(g_Git.Run(cmd,&out,CP_ACP))
-			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-			}
-		}
-#if 0
-		CSVNProgressDlg progDlg;
+		CGitProgressDlg progDlg;
 		theApp.m_pMainWnd = &progDlg;
-		progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Revert);
+		progDlg.SetCommand(CGitProgressDlg::GitProgress_Revert);
 		if (parser.HasVal(_T("closeonend")))
 			progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 		progDlg.SetOptions(dlg.m_bRecursive ? ProgOptRecursive : ProgOptNonRecursive);
@@ -53,7 +40,7 @@ bool RevertCommand::Execute()
 		progDlg.SetItemCount(dlg.m_selectedPathList.GetCount());
 		progDlg.SetSelectedList(dlg.m_selectedPathList);
 		progDlg.DoModal();
-#endif
+
 		return true;
 	}
 	return false;

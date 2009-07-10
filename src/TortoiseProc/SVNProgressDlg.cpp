@@ -306,6 +306,10 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 		data->sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
 		break;
 
+	case git_wc_notify_revert:
+		data->sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
+		break;
+
 #if 0
 	case svn_wc_notify_commit_added:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_ADDING);
@@ -331,9 +335,7 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 	case svn_wc_notify_restore:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_RESTORE);
 		break;
-	case svn_wc_notify_revert:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
-		break;
+
 	case svn_wc_notify_update_replace:
 	case svn_wc_notify_commit_replaced:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_REPLACED);
@@ -2457,7 +2459,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 
 bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 {
-#if 0
+
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_REVERT);
 	SetWindowText(sWindowTitle);
@@ -2468,13 +2470,19 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 		delList.DeleteAllFiles(true);
 
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
-	if (!Revert(m_targetPathList, CStringArray(), !!(m_options & ProgOptRecursive)))
+	for(int i=0;i<m_selectedPaths.GetCount();i++)
 	{
-		ReportSVNError();
-		return false;
+		if(g_Git.Revert((CTGitPath&)m_selectedPaths[i],true))
+		{
+			CMessageBox::Show(NULL,_T("Revert Fail"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			m_bErrorsOccurred=true;
+			return false;
+		}
+		Notify(m_selectedPaths[i],git_wc_notify_revert);
 	}
+
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
-#endif
+
 	return true;
 }
 
