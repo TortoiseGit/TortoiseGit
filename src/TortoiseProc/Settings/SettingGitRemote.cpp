@@ -104,7 +104,14 @@ void CSettingGitRemote::OnBnClickedButtonBrowse()
 void CSettingGitRemote::OnBnClickedButtonAdd()
 {
     // TODO: Add your control notification handler code here
-	this->m_strRemote.Empty();
+	if( this->m_ctrlRemoteList.GetCount() == 0)
+	{
+		this->m_strRemote = _T("origin");
+	}
+	else
+	{ 
+		this->m_strRemote.Empty();
+	}
 	this->m_strUrl.Empty();
 	this->m_strPuttyKeyfile.Empty();
 	this->UpdateData(FALSE);
