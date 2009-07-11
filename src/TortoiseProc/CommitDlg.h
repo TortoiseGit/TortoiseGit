@@ -77,6 +77,7 @@ protected:
 	afx_msg void OnBnClickedBugtraqbutton();
 	afx_msg void OnEnChangeLogmessage();
 	afx_msg void OnStnClickedExternalwarning();
+	afx_msg void OnFocusMessage();
 	afx_msg LRESULT OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);
@@ -141,6 +142,7 @@ private:
 	CPathWatcher		m_pathwatcher;
 
 	CBugTraqAssociation m_bugtraq_association;
+	HACCEL				m_hAccel;
 
 public:
 	afx_msg void OnBnClickedSignOff();

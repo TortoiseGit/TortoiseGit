@@ -104,6 +104,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
     ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
     ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
 	ON_STN_CLICKED(IDC_BUGIDLABEL, &CCommitDlg::OnStnClickedBugidlabel)
+	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -117,6 +118,8 @@ BOOL CCommitDlg::OnInitDialog()
 
 	m_regKeepChangelists = CRegDWORD(_T("Software\\TortoiseGit\\KeepChangeLists"), FALSE);
 	m_bKeepChangeList = m_regKeepChangelists;
+
+	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_COMMITDLG));
 
 //	GitConfig config;
 //	m_bWholeProject = config.KeepLocks();
@@ -860,6 +863,14 @@ BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (!m_bBlock)
 		m_tooltips.RelayEvent(pMsg);
+	
+	if (m_hAccel)
+	{
+		int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
+		if (ret)
+			return TRUE;
+	}
+
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)
@@ -1653,4 +1664,9 @@ void CCommitDlg::OnBnClickedWholeProject()
 void CCommitDlg::OnStnClickedBugidlabel()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void CCommitDlg::OnFocusMessage()
+{
+	m_cLogMessage.SetFocus();
 }
