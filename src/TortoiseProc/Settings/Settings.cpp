@@ -274,6 +274,74 @@ BOOL CSettings::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
+
+	if(this->m_DefaultPage == _T("gitremote"))
+	{
+		this->SetActivePage(this->m_pGitRemote);
+	}
+	if(this->m_DefaultPage == _T("main"))
+	{
+		this->SetActivePage(this->m_pMainPage);
+	}
+	if(this->m_DefaultPage == _T("overlay"))
+	{
+		this->SetActivePage(this->m_pOverlayPage);
+	}
+	if(this->m_DefaultPage == _T("overlays"))
+	{
+		this->SetActivePage(this->m_pOverlaysPage);
+	}
+	if(this->m_DefaultPage == _T("proxy"))
+	{
+		this->SetActivePage(this->m_pProxyPage);
+	}
+	
+	if(this->m_DefaultPage == _T("diff"))
+	{
+		this->SetActivePage(this->m_pProgsDiffPage);
+	}
+	if(this->m_DefaultPage == _T("merge"))
+	{
+		this->SetActivePage(this->m_pProgsMergePage);
+	}
+	if(this->m_DefaultPage == _T("unidiff"))
+	{
+		this->SetActivePage(this->m_pProgsUniDiffPage);
+	}
+	if(this->m_DefaultPage == _T("look"))
+	{
+		this->SetActivePage(this->m_pLookAndFeelPage);
+	}
+	if(this->m_DefaultPage == _T("dialog"))
+	{
+		this->SetActivePage(this->m_pDialogsPage);
+	}
+	if(this->m_DefaultPage == _T("misc"))
+	{
+		this->SetActivePage(this->m_pMiscPage);
+	}
+	if(this->m_DefaultPage == _T("graph"))
+	{
+		this->SetActivePage(this->m_pRevisionGraphPage);
+	}
+
+	if(this->m_DefaultPage == _T("color1"))
+	{
+		this->SetActivePage(this->m_pColorsPage);
+	}
+	if(this->m_DefaultPage == _T("color2"))
+	{
+		this->SetActivePage(this->m_pColorsPage2);
+	}
+	if(this->m_DefaultPage == _T("color3"))
+	{
+		this->SetActivePage(this->m_pColorsPage3);
+	}
+	if(this->m_DefaultPage == _T("save"))
+	{
+		this->SetActivePage(this->m_pSavedPage);
+	}
+
 	return bResult;
 }
 

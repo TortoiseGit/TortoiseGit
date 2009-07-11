@@ -23,10 +23,14 @@
 
 bool SettingsCommand::Execute()
 {
+
+	CString defaultpage = parser.GetVal(_T("page"));
+	
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
 	dlg.SetTreeWidth(220);
-	
+	dlg.m_DefaultPage = defaultpage;
+
 	dlg.DoModal();
 	dlg.HandleRestart();
 	return true;

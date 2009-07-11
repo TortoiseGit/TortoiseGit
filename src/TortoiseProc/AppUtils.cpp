@@ -654,7 +654,7 @@ bool CAppUtils::LaunchRemoteSetting()
     proc += _T("TortoiseProc.exe /command:settings");
     proc += _T(" /path:\"");
     proc += g_Git.m_CurrentDir;
-    proc += _T("\" /page:remote");
+    proc += _T("\" /page:gitremote");
     return LaunchApplication(proc, IDS_ERR_EXTDIFFSTART, false);
 }
 /**
