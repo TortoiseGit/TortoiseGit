@@ -519,7 +519,10 @@ void CCommitDlg::OnOK()
 
 		CFile::Remove(tempfile);
 	}else
-		CMessageBox::Show(this->m_hWnd, _T("Nothing Commit"), _T("Commit Finish"), MB_OK | MB_ICONINFORMATION);
+	{
+		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
+		bCloseCommitDlg=false;
+	}
 #if 0
 	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
 	{
