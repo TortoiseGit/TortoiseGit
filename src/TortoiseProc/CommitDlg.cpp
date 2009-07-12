@@ -1273,6 +1273,11 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTELASTMESSAGE);
 		m_nPopupPasteLastMessage = nCmd++;
 		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteLastMessage, sMenuItemText);
+
+		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_LOGHISTORY);
+		m_nPopupRecentMessage = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupRecentMessage, sMenuItemText);
+
 	}
 	
 }
@@ -1320,6 +1325,12 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 		pSciEdit->InsertText(logmsg);
 		return true;
 	}
+
+	if(cmd == m_nPopupRecentMessage )
+	{
+		OnBnClickedHistory();
+		return true;
+	}
 	return false;
 }
 
@@ -1353,7 +1364,7 @@ void CCommitDlg::OnBnClickedHistory()
 	m_tooltips.Pop();	// hide the tooltips
 	if (m_pathList.GetCount() == 0)
 		return;
-#if 0
+
 	CHistoryDlg historyDlg;
 	historyDlg.SetHistory(m_History);
 	if (historyDlg.DoModal() != IDOK)
@@ -1375,7 +1386,7 @@ void CCommitDlg::OnBnClickedHistory()
 
 	UpdateOKButton();
 	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
-#endif
+
 }
 
 void CCommitDlg::OnBnClickedBugtraqbutton()

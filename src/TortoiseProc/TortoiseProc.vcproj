@@ -453,6 +453,14 @@
 					RelativePath=".\DeleteConflictDlg.h"
 					>
 				</File>
+				<File
+					RelativePath=".\HistoryDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\HistoryDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="UI"

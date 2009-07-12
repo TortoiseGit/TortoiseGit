@@ -134,6 +134,7 @@ private:
 	static UINT			WM_AUTOLISTREADY;
 	int					m_nPopupPasteListCmd;
 	int					m_nPopupPasteLastMessage;
+	int					m_nPopupRecentMessage;
 	CRegHistory			m_History;
 	bool				m_bCancelled;
 	CSplitterControl	m_wndSplitter;
