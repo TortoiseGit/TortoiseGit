@@ -108,6 +108,8 @@ UINT CRevertDlg::RevertThread()
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 
+	m_RevertList.Clear();
+
 	if (!m_RevertList.GetStatus(&m_pathList))
 	{
 		m_RevertList.SetEmptyString(m_RevertList.GetLastErrorMessage());

@@ -2465,9 +2465,9 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_REVERT_BKG);
 
-	CTGitPathList delList = m_selectedPaths;
-	if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
-		delList.DeleteAllFiles(true);
+	//CTGitPathList delList = m_selectedPaths;
+	//if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
+	//	delList.DeleteAllFiles(true);
 
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 	for(int i=0;i<m_selectedPaths.GetCount();i++)
@@ -2481,7 +2481,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 		Notify(m_selectedPaths[i],git_wc_notify_revert);
 	}
 
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+	CShellUpdater::Instance().AddPathsForUpdate(m_selectedPaths);
 
 	return true;
 }
