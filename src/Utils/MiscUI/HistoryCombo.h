@@ -73,6 +73,8 @@ public:
 	 * itself is deleted.
 	 */
 	void ClearHistory(BOOL bDeleteRegistryEntries = TRUE);
+
+	void Reset(){	ResetContent(); m_arEntries.RemoveAll(); };
 	/**
 	 * When \a bURLHistory is TRUE, treat the combo box entries
 	 * as URLs. This activates Shell URL auto completion and

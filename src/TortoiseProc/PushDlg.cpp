@@ -102,10 +102,29 @@ BOOL CPushDlg::OnInitDialog()
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
-	STRING_VECTOR list;
+
+	Refresh();
+
+	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
+	m_BranchRemote.SetCurSel(0);
+
+	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
+
+	
+	return TRUE;
+}
+
+void CPushDlg::Refresh()
+{
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'),_T('_'));
+
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
 	m_RemoteReg = remote;
 	int sel=0;
+
+	STRING_VECTOR list;
+	m_Remote.Reset();
 
 	if(!g_Git.GetRemoteList(list))
 	{	
@@ -120,22 +139,15 @@ BOOL CPushDlg::OnInitDialog()
 
 	int current=0;
 	list.clear();
+	m_BranchSource.Reset();
 	if(!g_Git.GetBranchList(list,&current))
 	{
 		for(unsigned int i=0;i<list.size();i++)
 			m_BranchSource.AddString(list[i]);
 	}
 	m_BranchSource.SetCurSel(current);
-	
-	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
-	m_BranchRemote.SetCurSel(0);
 
-	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
-
-	
-	return TRUE;
 }
-
 // CPushDlg message handlers
 
 void CPushDlg::OnBnClickedRd()
@@ -220,4 +232,21 @@ void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 
 	//Select branch
 	m_BranchRemote.AddString(remoteBranchName);
+}
+
+BOOL CPushDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+		case VK_F5:
+			{
+				Refresh();
+			}
+			break;
+		}
+	}
+
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

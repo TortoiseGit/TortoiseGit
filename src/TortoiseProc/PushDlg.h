@@ -43,4 +43,6 @@ public:
     afx_msg void OnBnClickedRemoteManage();
 	afx_msg void OnBnClickedButtonBrowseSourceBranch();
 	afx_msg void OnBnClickedButtonBrowseDestBranch();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	void Refresh();
 };
