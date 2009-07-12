@@ -523,7 +523,8 @@ void CCommitDlg::OnOK()
 		else if(userResponse == IDCANCEL)
 		{
 			//User pressed 'Push' button after successful commit.
-			m_bPushAfterCommit=true;
+			if(progress.m_bAltAbortPress)
+				m_bPushAfterCommit=true;
 		}
 
 		CFile::Remove(tempfile);

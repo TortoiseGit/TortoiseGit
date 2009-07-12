@@ -41,6 +41,7 @@ public:
 
 	bool			m_bAbort;
 	bool			m_bDone;
+	bool			m_bAltAbortPress;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	static UINT ProgressThreadEntry(LPVOID pVoid);
@@ -58,4 +59,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedCancel();
 };

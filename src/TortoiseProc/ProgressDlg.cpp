@@ -14,6 +14,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false)
 {
 	m_pThread = NULL;
+	m_bAltAbortPress=false;
 }
 
 CProgressDlg::~CProgressDlg()
@@ -37,6 +38,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL,&CProgressDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
@@ -261,6 +263,22 @@ void CProgressDlg::OnBnClickedOk()
 	OnOK();
 }
 
+void CProgressDlg::OnBnClickedCancel()
+{
+	if(!this->m_changeAbortButtonOnSuccessTo.IsEmpty())
+	{
+		CString text;
+		GetDlgItem(IDCANCEL)->GetWindowText(text);
+		if(m_changeAbortButtonOnSuccessTo == text)
+		{
+			m_bAltAbortPress=true;
+		}
+	
+	}
+	
+	OnCancel();
+	
+}
 void CProgressDlg::OnCancel()
 {
 	if(m_bDone)
