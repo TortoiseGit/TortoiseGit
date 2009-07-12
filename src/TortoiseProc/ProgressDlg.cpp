@@ -38,7 +38,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL,&CProgressDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDC_PROGRESS_BUTTON1,&CProgressDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
@@ -51,7 +51,9 @@ BOOL CProgressDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDC_PROGRESS_BUTTON1,BOTTOM_RIGHT);
 
+	this->GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_HIDE);
 	m_Animate.Open(IDR_DOWNLOAD);
 	
 	CString InitialText;
@@ -175,7 +177,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 			if(!m_changeAbortButtonOnSuccessTo.IsEmpty())
 			{
-				GetDlgItem(IDCANCEL)->SetWindowText(m_changeAbortButtonOnSuccessTo);
+				GetDlgItem(IDC_PROGRESS_BUTTON1)->SetWindowText(m_changeAbortButtonOnSuccessTo);
+				GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
+				GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 				//Set default button is "close" rather than "push"
 				this->SendMessage(WM_NEXTDLGCTL, (WPARAM)GetDlgItem(IDOK)->m_hWnd, TRUE);
 			}
@@ -263,20 +267,9 @@ void CProgressDlg::OnBnClickedOk()
 	OnOK();
 }
 
-void CProgressDlg::OnBnClickedCancel()
+void CProgressDlg::OnBnClickedButton1()
 {
-	if(!this->m_changeAbortButtonOnSuccessTo.IsEmpty())
-	{
-		CString text;
-		GetDlgItem(IDCANCEL)->GetWindowText(text);
-		if(m_changeAbortButtonOnSuccessTo == text)
-		{
-			m_bAltAbortPress=true;
-		}
-	
-	}
-	
-	OnCancel();
+	this->EndDialog(IDC_PROGRESS_BUTTON1);
 	
 }
 void CProgressDlg::OnCancel()
@@ -286,6 +279,6 @@ void CProgressDlg::OnCancel()
 		CResizableStandAloneDialog::OnCancel();
 		return;
 	}
-
+	
 	m_bAbort = true;
 }

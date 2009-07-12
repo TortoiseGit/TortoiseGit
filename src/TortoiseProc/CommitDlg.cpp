@@ -512,7 +512,7 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
-		progress.m_changeAbortButtonOnSuccessTo = "Push";
+		progress.m_changeAbortButtonOnSuccessTo = "&Push";
 		DWORD userResponse = progress.DoModal();
 		
 		if(progress.m_GitStatus)
@@ -520,11 +520,10 @@ void CCommitDlg::OnOK()
 			bCloseCommitDlg = false;
 			this->Refresh();
 		}
-		else if(userResponse == IDCANCEL)
+		else if(userResponse == IDC_PROGRESS_BUTTON1)
 		{
 			//User pressed 'Push' button after successful commit.
-			if(progress.m_bAltAbortPress)
-				m_bPushAfterCommit=true;
+			m_bPushAfterCommit=true;
 		}
 
 		CFile::Remove(tempfile);
