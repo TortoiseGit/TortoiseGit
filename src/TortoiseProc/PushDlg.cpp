@@ -105,8 +105,6 @@ BOOL CPushDlg::OnInitDialog()
 
 	Refresh();
 
-	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
-	m_BranchRemote.SetCurSel(0);
 
 	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
 
@@ -122,6 +120,29 @@ void CPushDlg::Refresh()
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
 	m_RemoteReg = remote;
 	int sel=0;
+
+	CString currentBranch = g_Git.GetSymbolicRef();
+	CString configName;
+
+	configName.Format(L"branch.%s.pushremote", currentBranch);
+	CString pushRemote = g_Git.GetConfigValue(configName);
+	if( pushRemote.IsEmpty() )
+	{
+		configName.Format(L"branch.%s.remote", currentBranch);
+		pushRemote = g_Git.GetConfigValue(configName);
+	}
+
+	if( !pushRemote.IsEmpty() )
+		remote=pushRemote;
+
+	//Select pull-branch from current branch
+	configName.Format(L"branch.%s.pushbranch", currentBranch);
+	CString pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+	if( pushBranch.IsEmpty() )
+	{
+		configName.Format(L"branch.%s.merge", currentBranch);
+		pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));		
+	}
 
 	STRING_VECTOR list;
 	m_Remote.Reset();
@@ -146,6 +167,12 @@ void CPushDlg::Refresh()
 			m_BranchSource.AddString(list[i]);
 	}
 	m_BranchSource.SetCurSel(current);
+
+	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
+	if( !pushBranch.IsEmpty() )
+		m_BranchRemote.AddString(pushBranch);
+
+	m_BranchRemote.SetCurSel(0);
 
 }
 // CPushDlg message handlers
