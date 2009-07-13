@@ -146,7 +146,12 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 		if(PathFileExists(sDirName + _T("\\.git")))
 		{
 			if(ProjectTopDir)
+			{
 				*ProjectTopDir=sDirName;
+				// Make sure to add the trailing slash to root paths such as 'C:'
+				if (sDirName.GetLength() == 2 && sDirName[1] == ':')
+					(*ProjectTopDir) += _T("\\");
+			}
 			return true;
 		}
 		sDirName = sDirName.Left(sDirName.ReverseFind('\\'));

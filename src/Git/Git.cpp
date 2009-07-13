@@ -1063,10 +1063,27 @@ BOOL CGit::EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsig
 		sMode = _T("-");
 	}
 
+	// NOTE: there seems to be some issue with msys based app receiving backslash on commandline, at least
+	// if followed by " like for example 'igit "C:\"', the commandline igit receives is 'igit.exe C:" status' with
+	// the 'C:" status' part as a single arg, Maybe it uses unix style processing. In order to avoid this just
+	// use forward slashes for supplied project and sub paths
+
+	CString sProjectPath = pszProjectPath;
+	sProjectPath.Replace(_T('\\'), _T('/'));
+
 	if (pszSubPath)
-		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), pszProjectPath, sMode, pszSubPath);
+	{
+		CString sSubPath = pszSubPath;
+		sSubPath.Replace(_T('\\'), _T('/'));
+
+		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), sProjectPath, sMode, sSubPath);
+	}
 	else
-		cmd.Format(_T("igit.exe \"%s\" status %s"), pszProjectPath, sMode);
+	{
+		cmd.Format(_T("igit.exe %s status %s"), sProjectPath, sMode);
+	}
+
+	//OutputDebugStringA("---");OutputDebugStringW(cmd);OutputDebugStringA("\r\n");
 
 	W_GitCall.SetCmd(cmd);
 	// NOTE: should igit get added as a part of msysgit then use below line instead of the above one
