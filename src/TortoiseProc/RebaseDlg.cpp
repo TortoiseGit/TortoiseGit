@@ -8,6 +8,7 @@
 #include "MessageBox.h"
 #include "UnicodeUtils.h"
 #include "BrowseRefsDlg.h"
+#include "ProgressDlg.h"
 // CRebaseDlg dialog
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
@@ -174,6 +175,14 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_CommitList.InsertGitColumn();
 
 	this->SetControlEnable();
+
+	if(!this->m_PreCmd.IsEmpty())
+	{
+		CProgressDlg progress;
+		progress.m_GitCmd=m_PreCmd;
+		progress.m_bAutoCloseOnSuccess=true;
+		progress.DoModal();
+	}
 
 	if(m_IsCherryPick)
 	{

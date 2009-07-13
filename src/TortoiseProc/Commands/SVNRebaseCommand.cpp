@@ -51,7 +51,7 @@ bool SVNRebaseCommand::Execute()
 
 	CRebaseDlg dlg;
 	
-	dlg.m_PreCmd=_T("git.exe fetch");
+	dlg.m_PreCmd=_T("git.exe svn fetch");
 	dlg.m_Upstream=_T("remotes/trunk");
 
 	if(dlg.DoModal() == IDOK)
