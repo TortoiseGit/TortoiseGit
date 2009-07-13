@@ -105,6 +105,8 @@ public:
     CStatic m_CtrlStatusText;
 	CBalloon			m_tooltips;
 
+	CString m_PreCmd;
+
     BOOL m_bPickAll;
     BOOL m_bSquashAll;
     BOOL m_bEditAll;

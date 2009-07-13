@@ -25,8 +25,38 @@
 #include "RenameDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"
+#include "rebasedlg.h"
 
 bool SVNRebaseCommand::Execute()
 {
-	return true;
+	bool bRet =false;
+	
+	if(!g_Git.CheckCleanWorkTree())
+	{
+		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+		{
+			CString cmd,out;
+			cmd=_T("git.exe stash");
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				return false;
+			}
+
+		}else
+		{
+			return false;
+		}
+	}
+
+	CRebaseDlg dlg;
+	
+	dlg.m_PreCmd=_T("git.exe fetch");
+	dlg.m_Upstream=_T("remotes/trunk");
+
+	if(dlg.DoModal() == IDOK)
+	{
+		bRet=true;
+	}
+	return bRet;
 }
