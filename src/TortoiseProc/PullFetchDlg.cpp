@@ -12,12 +12,12 @@
 IMPLEMENT_DYNAMIC(CPullFetchDlg, CResizableStandAloneDialog)
 
 CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CPullFetchDlg::IDD, pParent),
-	  m_bRebase(false)
+	: CResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
     m_bAutoLoad = CAppUtils::IsSSHPutty();
     m_bAutoLoadEnable=true;
+	m_regRebase = false;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -61,6 +61,17 @@ BOOL CPullFetchDlg::OnInitDialog()
     AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'),_T('_'));
+
+	CString regkey ;
+	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase"),WorkingDir,this->m_IsPull);
+	m_regRebase=CRegDWORD(regkey,false);
+
+	this->m_bRebase = m_regRebase;
+
+	this->UpdateData(FALSE);
+
     this->AddOthersToAnchor();
 
     this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoadEnable);
@@ -71,8 +82,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!m_IsPull)
 		m_RemoteBranch.EnableWindow(FALSE);
 
-//	if(!m_IsPull)
-		//Todo: implement rebase option sometime with rebase dialog
+	if(m_IsPull)
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 
 	m_Other.SetURLHistory(TRUE);
@@ -85,8 +95,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	m_RemoteBranch.LoadHistory(_T("Software\\TortoiseGit\\History\\PullRemoteBranch"), _T("br"));
 	m_RemoteBranch.SetCurSel(0);
-
-	CString WorkingDir=g_Git.m_CurrentDir;
 
 	if(m_IsPull)
 		this->SetWindowTextW(CString(_T("Pull - "))+WorkingDir);
@@ -154,6 +162,7 @@ void CPullFetchDlg::OnBnClickedRd()
 
 void CPullFetchDlg::OnBnClickedOk()
 {
+	this->UpdateData();
 	// TODO: Add your control notification handler code here
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_REMOTE_RD)
 	{
@@ -173,11 +182,13 @@ void CPullFetchDlg::OnBnClickedOk()
 		m_RemoteBranchName=m_RemoteBranch.GetString();
 		
 	}
-
+	
 	m_RemoteReg = m_Remote.GetString();
 
 	m_Other.SaveHistory();
 	m_RemoteBranch.SaveHistory();
+	this->m_regRebase=this->m_bRebase;
+
 	this->OnOK();
 }
 

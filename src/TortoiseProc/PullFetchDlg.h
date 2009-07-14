@@ -24,7 +24,8 @@ protected:
 	CHistoryCombo	m_RemoteBranch;
 	virtual BOOL OnInitDialog();
 	CRegString m_RemoteReg;
-	
+	CRegDWORD	m_regRebase;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL        m_IsPull;

@@ -26,6 +26,7 @@
 #include "PullFetchDlg.h"
 #include "ProgressDlg.h"
 #include "AppUtils.h"
+#include "RebaseDlg.h"
 
 bool FetchCommand::Execute()
 {
@@ -46,7 +47,18 @@ bool FetchCommand::Execute()
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)
+		{
+			if( progress.m_GitStatus ==0 && dlg.m_bRebase)
+			{
+					CRebaseDlg dlg;
+					if(dlg.DoModal() == IDOK)
+					{
+						return TRUE;
+					}
+
+			}
 			return TRUE;
+		}
 	}
 #if 0
 	CCloneDlg dlg;
