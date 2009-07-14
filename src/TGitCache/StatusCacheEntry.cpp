@@ -258,6 +258,12 @@ void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& r
 		response.m_status = m_GitStatus;
 		responseLength = sizeof(response.m_status);
 	}
+
+	// directories that are empty or only contain unversioned files will be git_wc_status_incomplete, report as unversioned
+	if (response.m_status.text_status == git_wc_status_incomplete)
+	{
+		response.m_status.text_status = response.m_status.prop_status = git_wc_status_unversioned;
+	}
 }
 
 bool CStatusCacheEntry::IsVersioned() const
