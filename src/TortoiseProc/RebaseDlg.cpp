@@ -60,6 +60,8 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
+	ON_STN_CLICKED(IDC_STATUS_STATIC, &CRebaseDlg::OnStnClickedStatusStatic)
+	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -80,6 +82,8 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_CHECK_FORCE,TOP_RIGHT);
+	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);
+	
 	this->AddOthersToAnchor();
 }
 
@@ -133,6 +137,9 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_tooltips.Create(this);
 	
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
+	m_tooltips.AddTool(IDC_REBASE_ABORT,IDS_REBASE_ABORT_TT);
+	
+
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
 
@@ -441,46 +448,45 @@ void CRebaseDlg::FetchLogList()
 			fmt.LoadString(IDS_REBASE_UPTODATE_FMT);
 			text.Format(fmt,m_BranchCtrl.GetString());
 			m_CommitList.ShowText(text);
+			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
+			return;
 		}
-		
-	}else
-	{
-		m_CommitList.Clear();
-		this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
-		if( m_CommitList.GetItemCount() == 0 )
-			m_CommitList.ShowText(_T("Nothing to Rebase"));
-
-		CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
-	
-#if 0
-		if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
-		{
-			if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
-			{
-				m_CommitList.Clear();
-				m_CommitList.ShowText(_T("Nothing Rebase"));
-			}
-		}
-#endif
-
-		m_tooltips.Pop();
-		AddBranchToolTips(&this->m_BranchCtrl);
-		AddBranchToolTips(&this->m_UpstreamCtrl);
-	
-		for(int i=0;i<m_CommitList.m_logEntries.size();i++)
-		{
-			m_CommitList.m_logEntries[i].m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
-		}
-	
-		m_CommitList.Invalidate();
-
-		if(m_CommitList.m_IsOldFirst)
-			this->m_CurrentRebaseIndex = -1;
-		else
-			this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
-	
 	}
 
+	m_CommitList.Clear();
+	this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
+	if( m_CommitList.GetItemCount() == 0 )
+		m_CommitList.ShowText(_T("Nothing to Rebase"));
+
+	CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
+	
+#if 0
+	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
+	{
+		if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
+		{
+			m_CommitList.Clear();
+			m_CommitList.ShowText(_T("Nothing Rebase"));
+		}
+	}
+#endif
+
+	m_tooltips.Pop();
+	AddBranchToolTips(&this->m_BranchCtrl);
+	AddBranchToolTips(&this->m_UpstreamCtrl);
+	
+	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
+	{
+		m_CommitList.m_logEntries[i].m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
+	}
+
+	m_CommitList.Invalidate();
+
+	if(m_CommitList.m_IsOldFirst)
+		this->m_CurrentRebaseIndex = -1;
+	else
+		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
+	
 	this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
 }
 
@@ -913,6 +919,13 @@ void CRebaseDlg::SetControlEnable()
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP));
+
+		if( m_RebaseStage == REBASE_DONE && (!this->m_PostButtonText.IsEmpty()) )
+		{
+			this->GetDlgItem(IDC_STATUS_STATIC)->ShowWindow(SW_HIDE);
+			this->GetDlgItem(IDC_REBASE_POST_BUTTON)->ShowWindow(SW_SHOWNORMAL);
+			this->GetDlgItem(IDC_REBASE_POST_BUTTON)->SetWindowText(this->m_PostButtonText);
+		}
 		break;
 	}
 
@@ -1288,4 +1301,18 @@ void CRebaseDlg::OnBnClickedRebaseCheckForce()
 	// TODO: Add your control notification handler code here
 	this->UpdateData();
 	this->FetchLogList();
+}
+
+void CRebaseDlg::OnStnClickedStatusStatic()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CRebaseDlg::OnBnClickedRebasePostButton()
+{
+	// TODO: Add your control notification handler code here
+	this->m_Upstream=this->m_UpstreamCtrl.GetString();
+	this->m_Branch=this->m_BranchCtrl.GetString();
+
+	this->EndDialog(IDC_REBASE_POST_BUTTON);
 }

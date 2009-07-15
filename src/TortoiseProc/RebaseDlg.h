@@ -112,6 +112,7 @@ public:
     BOOL m_bEditAll;
 	
 	BOOL m_bForce;
+	CString m_PostButtonText;
 
 	CSplitterControl	m_wndSplitter;
 	CMFCTabCtrl m_ctrlTabCtrl;
@@ -124,6 +125,8 @@ public:
 	CHistoryCombo m_UpstreamCtrl;
 	
 	CString		  m_Upstream;
+	CString		  m_Branch;
+
 	BOOL		  m_IsCherryPick;
 
 	REBASE_STAGE	   m_RebaseStage;
@@ -137,4 +140,6 @@ public:
 	int  GoNext();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
+	afx_msg void OnStnClickedStatusStatic();
+	afx_msg void OnBnClickedRebasePostButton();
 };

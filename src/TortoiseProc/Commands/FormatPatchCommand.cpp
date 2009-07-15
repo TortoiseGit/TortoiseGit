@@ -81,25 +81,7 @@ bool FormatPatchCommand::Execute()
 		{
 			if(dlg.m_bSendMail)
 			{
-				CTGitPathList list;
-				CString log=progress.m_LogText;
-				int start=log.Find(cmd);
-				if(start >=0)
-					CString one=log.Tokenize(_T("\n"),start);
-
-				while(start>=0)
-				{
-					CString one=log.Tokenize(_T("\n"),start);
-					one=one.Trim();
-					if(one.IsEmpty())
-						continue;
-					one.Replace(_T('/'),_T('\\'));
-					CTGitPath path;
-					path.SetFromWin(one);
-					list.AddPath(path);
-				}
-
-				CAppUtils::SendPatchMail(list);
+				CAppUtils::SendPatchMail(cmd,progress.m_LogText);
 			}
 		}
 		return !progress.m_GitStatus;

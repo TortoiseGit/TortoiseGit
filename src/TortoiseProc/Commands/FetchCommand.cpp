@@ -60,9 +60,25 @@ bool FetchCommand::Execute()
 		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
 		{
 			CRebaseDlg dlg;
-			if(dlg.DoModal() == IDOK)
+			dlg.m_PostButtonText=_T("Email &Patch...");
+			int response = dlg.DoModal();
+			if(response == IDOK)
 			{
 				return TRUE;
+			}
+			if(response == IDC_REBASE_POST_BUTTON)
+			{
+				CString cmd,out;
+				cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+					g_Git.m_CurrentDir,
+					dlg.m_Upstream,dlg.m_Branch);
+				if(g_Git.Run(cmd,&out,CP_ACP))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					return FALSE;
+				}
+
+				CAppUtils::SendPatchMail(cmd,out);
 			}
 			return TRUE;
 		}

@@ -1992,6 +1992,32 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 	}
 	return false;
 }
+
+bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoclose)
+{
+	CTGitPathList list;
+	CString log=formatpatchoutput;
+	int start=log.Find(cmd);
+	if(start >=0)
+		CString one=log.Tokenize(_T("\n"),start);
+	else
+		start = 0;
+
+	while(start>=0)
+	{
+		CString one=log.Tokenize(_T("\n"),start);
+		one=one.Trim();
+		if(one.IsEmpty())
+			continue;
+		one.Replace(_T('/'),_T('\\'));
+		CTGitPath path;
+		path.SetFromWin(one);
+		list.AddPath(path);
+	}
+	return SendPatchMail(list,autoclose);
+}
+
+
 int CAppUtils::GetLogOutputEncode(CGit *pGit)
 {
 	CString cmd,output;
