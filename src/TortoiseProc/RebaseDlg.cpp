@@ -23,6 +23,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	m_CurrentRebaseIndex=-1;
 	m_bThreadRunning =FALSE;
 	this->m_IsCherryPick = FALSE;
+	m_bForce=FALSE;
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -41,6 +42,7 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX,IDC_COMMIT_LIST,m_CommitList);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_UPSTREAM,   this->m_UpstreamCtrl);
+	DDX_Check(pDX, IDC_REBASE_CHECK_FORCE,m_bForce);
 
 }
 
@@ -57,6 +59,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
+	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -76,6 +79,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_STATIC_UPSTREAM,TOP_LEFT);
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_REBASE_CHECK_FORCE,TOP_RIGHT);
 	this->AddOthersToAnchor();
 }
 
@@ -127,6 +131,8 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
 	
 	m_tooltips.Create(this);
+	
+	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
 
@@ -408,40 +414,74 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 
 void CRebaseDlg::FetchLogList()
 {
-	m_CommitList.Clear();
-	this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
-	if( m_CommitList.GetItemCount() == 0 )
-		m_CommitList.ShowText(_T("Nothing to Rebase"));
-
-	CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
-	
-#if 0
-	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
+	if(!this->m_bForce)
 	{
-		if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
+		CString base,hash;
+		CString cmd;
+		cmd.Format(_T("git.exe merge-base %s %s"), m_UpstreamCtrl.GetString(),m_BranchCtrl.GetString());
+		if(g_Git.Run(cmd,&base,CP_ACP))
+		{
+			CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return;
+		}
+		base=base.Left(40);
+
+		cmd.Format(_T("git.exe rev-parse %s"), m_UpstreamCtrl.GetString());
+		if( g_Git.Run(cmd,&hash,CP_ACP))
+		{
+			CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return;
+		}
+		hash=hash.Left(40);
+		
+		if( base == hash )
 		{
 			m_CommitList.Clear();
-			m_CommitList.ShowText(_T("Nothing Rebase"));
+			CString text,fmt;
+			fmt.LoadString(IDS_REBASE_UPTODATE_FMT);
+			text.Format(fmt,m_BranchCtrl.GetString());
+			m_CommitList.ShowText(text);
 		}
-	}
+		
+	}else
+	{
+		m_CommitList.Clear();
+		this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
+		if( m_CommitList.GetItemCount() == 0 )
+			m_CommitList.ShowText(_T("Nothing to Rebase"));
+
+		CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
+	
+#if 0
+		if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
+		{
+			if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
+			{
+				m_CommitList.Clear();
+				m_CommitList.ShowText(_T("Nothing Rebase"));
+			}
+		}
 #endif
 
-	m_tooltips.Pop();
-	AddBranchToolTips(&this->m_BranchCtrl);
-	AddBranchToolTips(&this->m_UpstreamCtrl);
+		m_tooltips.Pop();
+		AddBranchToolTips(&this->m_BranchCtrl);
+		AddBranchToolTips(&this->m_UpstreamCtrl);
 	
-	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
-	{
-		m_CommitList.m_logEntries[i].m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
-	}
+		for(int i=0;i<m_CommitList.m_logEntries.size();i++)
+		{
+			m_CommitList.m_logEntries[i].m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
+		}
 	
-	m_CommitList.Invalidate();
+		m_CommitList.Invalidate();
 
-	if(m_CommitList.m_IsOldFirst)
-		this->m_CurrentRebaseIndex = -1;
-	else
-		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
+		if(m_CommitList.m_IsOldFirst)
+			this->m_CurrentRebaseIndex = -1;
+		else
+			this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
 	
+	}
+
+	this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
 }
 
 void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
@@ -1241,4 +1281,11 @@ void CRebaseDlg::OnBnClickedButtonBrowse()
 {
 	if(CBrowseRefsDlg::PickRefForCombo(&m_UpstreamCtrl, gPickRef_NoTag))
 		OnCbnSelchangeUpstream();
+}
+
+void CRebaseDlg::OnBnClickedRebaseCheckForce()
+{
+	// TODO: Add your control notification handler code here
+	this->UpdateData();
+	this->FetchLogList();
 }

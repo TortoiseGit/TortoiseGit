@@ -110,6 +110,8 @@ public:
     BOOL m_bPickAll;
     BOOL m_bSquashAll;
     BOOL m_bEditAll;
+	
+	BOOL m_bForce;
 
 	CSplitterControl	m_wndSplitter;
 	CMFCTabCtrl m_ctrlTabCtrl;
@@ -134,4 +136,5 @@ public:
 	int  StateAction();
 	int  GoNext();
 	afx_msg void OnBnClickedButtonBrowse();
+	afx_msg void OnBnClickedRebaseCheckForce();
 };

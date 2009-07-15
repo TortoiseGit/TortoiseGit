@@ -45,17 +45,24 @@ bool FetchCommand::Execute()
 		CString cmd;
 		cmd.Format(_T("git.exe fetch \"%s\" %s"),url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-		{
-			if( progress.m_GitStatus ==0 && dlg.m_bRebase)
-			{
-					CRebaseDlg dlg;
-					if(dlg.DoModal() == IDOK)
-					{
-						return TRUE;
-					}
 
+		if(!dlg.m_bRebase)
+		{
+			progress.m_changeAbortButtonOnSuccessTo=_T("&Rebase");
+		}else
+		{
+			progress.m_bAutoCloseOnSuccess = true;
+		}
+
+		progress.m_GitCmd=cmd;
+		int userResponse=progress.DoModal();
+
+		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
+		{
+			CRebaseDlg dlg;
+			if(dlg.DoModal() == IDOK)
+			{
+				return TRUE;
 			}
 			return TRUE;
 		}
