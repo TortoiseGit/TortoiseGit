@@ -1080,7 +1080,7 @@ BOOL CGit::EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsig
 	}
 	else
 	{
-		cmd.Format(_T("igit.exe %s status %s"), sProjectPath, sMode);
+		cmd.Format(_T("igit.exe \"%s\" status %s"), sProjectPath, sMode);
 	}
 
 	//OutputDebugStringA("---");OutputDebugStringW(cmd);OutputDebugStringA("\r\n");
