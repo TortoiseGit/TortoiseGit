@@ -240,6 +240,9 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 			CString s = filepath.GetWinPathString();
 			if (s.GetLength() > sProjectRoot.GetLength())
 			{
+				if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
+					sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
+				else
 					sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 			}
 
@@ -256,8 +259,11 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 			CString s = filepath.GetDirectory().GetWinPathString();
 			if (s.GetLength() > sProjectRoot.GetLength())
 			{
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
 				lpszSubPath = sSubPath;
+				// skip initial slash if necessary
+				if (*lpszSubPath == _T('\\'))
+					lpszSubPath++;
 			}
 
 //if (lpszSubPath) MessageBoxA(NULL, lpszSubPath, "BuildCache", MB_OK);

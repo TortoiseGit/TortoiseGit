@@ -409,8 +409,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			CString s = m_directoryPath.GetDirectory().GetWinPathString();
 			if (s.GetLength() > sProjectRoot.GetLength())
 			{
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
 				lpszSubPath = sSubPath;
+				// skip initial slash if necessary
+				if (*lpszSubPath == _T('\\'))
+					lpszSubPath++;
 			}
 //MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
 //OutputDebugStringA("###");OutputDebugStringW(sProjectRoot);OutputDebugStringA(" - ");OutputDebugStringA(sSubPath);OutputDebugStringA("\r\n");

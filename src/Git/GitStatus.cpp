@@ -234,7 +234,10 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 		CString s = path.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = CStringA(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+			if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
+			else
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 		}
 
 		err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&statuskind);
@@ -246,8 +249,11 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 		CString s = path.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
 			lpszSubPath = sSubPath;
+			// skip initial slash if necessary
+			if (*lpszSubPath == _T('\\'))
+				lpszSubPath++;
 		}
 
 #if 1
@@ -383,7 +389,10 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 		CString s = path.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = CString(s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/));
+			if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
+			else
+				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 		}
 
 		m_status.prop_status = m_status.text_status = git_wc_status_none;
@@ -397,8 +406,11 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 		CString s = path.GetWinPathString();
 		if (s.GetLength() > sProjectRoot.GetLength())
 		{
-			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
 			lpszSubPath = sSubPath;
+			// skip initial slash if necessary
+			if (*lpszSubPath == _T('\\'))
+				lpszSubPath++;
 		}
 
 		// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
