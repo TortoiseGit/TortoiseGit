@@ -217,7 +217,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENUSWITCH          "S&witch..."
+    IDS_MENUSWITCH          "S&witch/Checkout..."
     IDS_MENUMERGE           "&Merge..."
     IDS_MENUBRANCH          "Create Branch..."
     IDS_MENUIMPORT          "&Import..."
@@ -232,7 +232,7 @@ BEGIN
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
     IDS_MENUDESCCLEANUP     "Cleanup interrupted operations, locked files, ..."
     IDS_MENUDESCRESOLVE     "Resolves conflicted files"
-    IDS_MENUDESCSWITCH      "Switch working copy to another branch / tag"
+    IDS_MENUDESCSWITCH      "Switch/Checkout working copy to another branch / tag"
 END
 
 STRINGTABLE 
