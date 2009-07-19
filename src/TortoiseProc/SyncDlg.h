@@ -27,9 +27,11 @@
 #include "registry.h"
 #include "Balloon.h"
 #include "BranchCombox.h"
+#include "GitLoglist.h"
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
-
+#define IDC_OUT_LOGLIST 0x1
+#define IDC_OUT_CHANGELIST 0x2
 class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
 	DECLARE_DYNAMIC(CSyncDlg)
@@ -50,6 +52,15 @@ protected:
 	CMFCTabCtrl m_ctrlTabCtrl;
 	CBalloon			m_tooltips;
 	
+	CGitLogList	m_OutLogList;
+	CGitLogList m_InLogList;
+
+	CGitStatusListCtrl m_OutChangeFileList;
+	CGitStatusListCtrl m_InChangeFileList;
+	CGitStatusListCtrl m_ConflictFileList;
+
+	void FetchOutList();
+
 	void SetRemote(CString remote)
 	{
 		if(!remote.IsEmpty())

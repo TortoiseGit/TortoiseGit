@@ -108,6 +108,29 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 
+	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP;
+
+	if( !m_OutLogList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_OUT_LOGLIST))
+	{
+		TRACE0("Failed to create output commits window\n");
+		return FALSE;      // fail to create
+
+	}
+	m_ctrlTabCtrl.InsertTab(&m_OutLogList,_T("Out Commits"),0);
+
+	m_OutLogList.InsertGitColumn();
+
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	
+	if( !m_OutChangeFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_OUT_CHANGELIST))
+	{
+		TRACE0("Failed to create output change files window\n");
+		return FALSE;      // fail to create
+	}
+	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList,_T("Out ChangeList"),1);
+
+	m_OutChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
+
 	this->m_tooltips.Create(this);
 
 	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
@@ -163,6 +186,8 @@ BOOL CSyncDlg::OnInitDialog()
 	EnableSaveRestore(_T("SyncDlg"));
 
 	this->LoadBranchInfo();
+
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -178,4 +203,8 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 	// TODO: Add your specialized code here and/or call the base class
 	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
+}
+void CSyncDlg::FetchOutList()
+{
+	
 }
