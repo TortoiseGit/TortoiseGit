@@ -74,6 +74,13 @@ bool CloneCommand::Execute()
 			if(dlg.m_bSVNTags)
 				cmd+=_T(" -t ")+dlg.m_strSVNTags;
 
+			if(dlg.m_bSVNFrom)
+			{
+				CString str;
+				str.Format(_T("%d:HEAD"),dlg.m_nSVNFrom);
+				cmd+=_T(" -r ")+str;
+			}
+
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;

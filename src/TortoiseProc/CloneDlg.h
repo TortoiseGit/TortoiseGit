@@ -43,9 +43,12 @@ public:
 	BOOL	m_bSVNTrunk;
 	BOOL	m_bSVNTags;
 	BOOL	m_bSVNBranch;
+	BOOL	m_bSVNFrom;
+
 	CString	m_strSVNTrunk;
 	CString m_strSVNTags;
 	CString m_strSVNBranchs;
+	int m_nSVNFrom;
 
     afx_msg void OnBnClickedPuttykeyfileBrowse();
     afx_msg void OnBnClickedPuttykeyAutoload();
@@ -58,4 +61,5 @@ public:
 	afx_msg void OnBnClickedCheckSvnTrunk();
 	afx_msg void OnBnClickedCheckSvnTag();
 	afx_msg void OnBnClickedCheckSvnBranch();
+	afx_msg void OnBnClickedCheckSvnFrom();
 };

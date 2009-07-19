@@ -24,6 +24,8 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_strSVNTrunk = _T("trunk");
 	m_strSVNTags = _T("tags");
 	m_strSVNBranchs = _T("branches");
+
+	m_nSVNFrom = 0;
 }
 
 CCloneDlg::~CCloneDlg()
@@ -42,10 +44,12 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_SVN_TRUNK, m_bSVNTrunk);
 	DDX_Check(pDX,IDC_CHECK_SVN_TAG, m_bSVNTags);
 	DDX_Check(pDX,IDC_CHECK_SVN_BRANCH, m_bSVNBranch);
+	DDX_Check(pDX,IDC_CHECK_SVN_FROM, m_bSVNFrom);
 
 	DDX_Text(pDX, IDC_EDIT_SVN_TRUNK, m_strSVNTrunk);
 	DDX_Text(pDX, IDC_EDIT_SVN_TAG, m_strSVNTags);
 	DDX_Text(pDX, IDC_EDIT_SVN_BRANCH, m_strSVNBranchs);
+	DDX_Text(pDX, IDC_EDIT_SVN_FROM, this->m_nSVNFrom);
 
 }
 
@@ -113,6 +117,7 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_SVN_TRUNK, &CCloneDlg::OnBnClickedCheckSvnTrunk)
 	ON_BN_CLICKED(IDC_CHECK_SVN_TAG, &CCloneDlg::OnBnClickedCheckSvnTag)
 	ON_BN_CLICKED(IDC_CHECK_SVN_BRANCH, &CCloneDlg::OnBnClickedCheckSvnBranch)
+	ON_BN_CLICKED(IDC_CHECK_SVN_FROM, &CCloneDlg::OnBnClickedCheckSvnFrom)
 END_MESSAGE_MAP()
 
 
@@ -228,6 +233,7 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	this->UpdateData();
 	CString url;
 	m_URLCombo.GetWindowText(url);
+
 	if(m_OldURL == url )
 		return;
 
@@ -301,10 +307,36 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 
 void CCloneDlg::OnBnClickedCheckSvn()
 {
+	this->UpdateData();
+
+	if(this->m_bSVN)
+	{
+		CString str;
+		m_URLCombo.GetWindowText(str);
+
+		while(str.GetLength()>=1 && 
+			str[str.GetLength()-1] == _T('\\') &&
+			str[str.GetLength()-1] == _T('/'))
+		{
+			str=str.Left(str.GetLength()-1);
+		}
+		if(str.GetLength()>=5 && (str.Right(5).MakeLower() == _T("trunk") ))
+		{
+			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = FALSE;
+			this->UpdateData(FALSE);
+		}else
+		{
+			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = TRUE;
+			this->UpdateData(FALSE);
+		}
+
+	}
+
 	// TODO: Add your control notification handler code here
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
+	OnBnClickedCheckSvnFrom();
 }
 
 void CCloneDlg::OnBnClickedCheckSvnTrunk()
@@ -329,4 +361,12 @@ void CCloneDlg::OnBnClickedCheckSvnBranch()
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_CHECK_SVN_BRANCH)->EnableWindow(this->m_bSVN);
 	this->GetDlgItem(IDC_EDIT_SVN_BRANCH)->EnableWindow(this->m_bSVNBranch&&this->m_bSVN);
+}
+
+void CCloneDlg::OnBnClickedCheckSvnFrom()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_CHECK_SVN_FROM)->EnableWindow(this->m_bSVN);
+	this->GetDlgItem(IDC_EDIT_SVN_FROM)->EnableWindow(this->m_bSVNFrom&&this->m_bSVN);
 }
