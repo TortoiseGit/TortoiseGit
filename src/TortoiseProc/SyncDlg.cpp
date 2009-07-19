@@ -27,10 +27,10 @@
 
 // CSyncDlg dialog
 
-IMPLEMENT_DYNAMIC(CSyncDlg, CDialog)
+IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 
 CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CSyncDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
 	, m_bAutoLoadPuttyKey(FALSE)
 {
 
@@ -56,7 +56,7 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSyncDlg, CDialog)
+BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_PULL, &CSyncDlg::OnBnClickedButtonPull)
 	ON_BN_CLICKED(IDC_BUTTON_PUSH, &CSyncDlg::OnBnClickedButtonPush)
 	ON_BN_CLICKED(IDC_BUTTON_APPLY, &CSyncDlg::OnBnClickedButtonApply)
@@ -84,4 +84,31 @@ void CSyncDlg::OnBnClickedButtonApply()
 void CSyncDlg::OnBnClickedButtonEmail()
 {
 	// TODO: Add your control notification handler code here
+}
+
+BOOL CSyncDlg::OnInitDialog()
+{
+	CResizableStandAloneDialog::OnInitDialog();
+
+	AddAnchor(IDC_STATIC_REMOTE_BRANCH,TOP_RIGHT);
+	AddAnchor(IDC_COMBOBOXEX_REMOTE_BRANCH,TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_REMOTE_BRANCH,TOP_RIGHT);
+	AddAnchor(IDC_GROUP_INFO,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_COMBOBOXEX_URL,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_MANAGE,TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_PULL,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_PUSH,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_APPLY,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_EMAIL,BOTTOM_LEFT);
+	AddAnchor(IDC_PROGRESS_SYNC,BOTTOM_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDHELP,BOTTOM_RIGHT);
+	AddAnchor(IDC_STATIC_STATUS,BOTTOM_LEFT);
+	AddAnchor(IDC_ANIMATE_SYNC,TOP_RIGHT);
+
+	this->AddOthersToAnchor();
+	// TODO:  Add extra initialization here
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// EXCEPTION: OCX Property Pages should return FALSE
 }

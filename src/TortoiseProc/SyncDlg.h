@@ -21,10 +21,12 @@
 #include "afxcmn.h"
 #include "afxwin.h"
 
+#include "StandAloneDlg.h"
+#include "HistoryCombo.h"
 
 // CSyncDlg dialog
 
-class CSyncDlg : public CDialog
+class CSyncDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CSyncDlg)
 
@@ -54,4 +56,5 @@ public:
 	afx_msg void OnBnClickedButtonEmail();
 	CProgressCtrl m_ctrlProgress;
 	CAnimateCtrl m_ctrlAnimate;
+	virtual BOOL OnInitDialog();
 };
