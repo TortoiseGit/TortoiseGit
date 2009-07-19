@@ -64,6 +64,7 @@
 #include "RefBrowseCommand.h"
 #include "SVNDCommitCommand.h"
 #include "SVNRebaseCommand.h"
+#include "SyncCommand.h"
 
 #if 0
 
@@ -182,6 +183,7 @@ typedef enum
 	cmdRefBrowse,
 	cmdSVNDCommit,
 	cmdSVNRebase,
+	cmdSync,
 	
 } TGitCommand;
 
@@ -259,6 +261,7 @@ static const struct CommandInfo
 	{	cmdRefBrowse,		_T("refbrowse")			},
 	{	cmdSVNDCommit,		_T("svndcommit")		},
 	{	cmdSVNRebase,		_T("svnrebase")			},
+	{	cmdSync,			_T("sync")				},
 };
 
 
@@ -374,6 +377,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SVNDCommitCommand;
 	case cmdSVNRebase:
 		return new SVNRebaseCommand;
+	case cmdSync:
+		return new SyncCommand;
 #if 0
 
 	
