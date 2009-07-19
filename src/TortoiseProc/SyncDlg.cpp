@@ -69,11 +69,14 @@ END_MESSAGE_MAP()
 void CSyncDlg::OnBnClickedButtonPull()
 {
 	// TODO: Add your control notification handler code here
+	this->m_regPullButton =this->m_ctrlPull.GetCurrentEntry();
 }
 
 void CSyncDlg::OnBnClickedButtonPush()
 {
 	// TODO: Add your control notification handler code here
+	this->m_regPushButton=this->m_ctrlPush.GetCurrentEntry();
+
 }
 
 void CSyncDlg::OnBnClickedButtonApply()
@@ -108,6 +111,33 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 	// TODO:  Add extra initialization here
+
+	this->m_ctrlPush.AddEntry(CString(_T("Push")));
+	this->m_ctrlPush.AddEntry(CString(_T("Push tags")));
+	this->m_ctrlPush.AddEntry(CString(_T("Push All")));
+
+	this->m_ctrlPull.AddEntry(CString(_T("&Pull")));
+	this->m_ctrlPull.AddEntry(CString(_T("&Fetch")));
+	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Rebase")));
+
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'),_T('_'));
+
+	CString regkey ;
+	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\Sync\\%s"),WorkingDir);
+
+	this->m_regPullButton = CRegDWORD(regkey+_T("\\Pull"),0);
+	this->m_regPushButton = CRegDWORD(regkey+_T("\\Push"),0);
+
+	this->m_ctrlPull.SetCurrentEntry(this->m_regPullButton);
+	this->m_ctrlPush.SetCurrentEntry(this->m_regPushButton);
+
+	CString str;
+	this->GetWindowText(str);
+	str += _T(" - ") + g_Git.m_CurrentDir;
+	this->SetWindowText(str);
+
+	EnableSaveRestore(_T("SyncDlg"));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

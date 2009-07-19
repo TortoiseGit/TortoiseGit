@@ -23,7 +23,8 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
-
+#include "MenuButton.h"
+#include "registry.h"
 // CSyncDlg dialog
 
 class CSyncDlg : public CResizableStandAloneDialog
@@ -40,6 +41,9 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
+	CRegDWORD m_regPullButton;
+	CRegDWORD m_regPushButton;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL m_bAutoLoadPuttyKey;
@@ -47,9 +51,9 @@ public:
 	CComboBoxEx m_ctrlRemoteBranch;
 	CComboBoxEx m_ctrlURL;
 	CButton m_ctrlDumyButton;
-	CButton m_ctrlPull;
-	CButton m_ctrlPush;
-	CStatic m_ctrlStatus;
+	CMenuButton m_ctrlPull;
+	CMenuButton m_ctrlPush;
+	CMenuButton m_ctrlStatus;
 	afx_msg void OnBnClickedButtonPull();
 	afx_msg void OnBnClickedButtonPush();
 	afx_msg void OnBnClickedButtonApply();
