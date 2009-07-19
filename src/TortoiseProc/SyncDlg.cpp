@@ -33,7 +33,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
 	, m_bAutoLoadPuttyKey(FALSE)
 {
-
+	m_pTooltip=&this->m_tooltips;
 }
 
 CSyncDlg::~CSyncDlg()
@@ -44,8 +44,6 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_CHECK_PUTTY_KEY, m_bAutoLoadPuttyKey);
-	DDX_Control(pDX, IDC_COMBOBOXEX_LOCAL_BRANCH, m_ctrlLocalBranch);
-	DDX_Control(pDX, IDC_COMBOBOXEX_REMOTE_BRANCH, m_ctrlRemoteBranch);
 	DDX_Control(pDX, IDC_COMBOBOXEX_URL, m_ctrlURL);
 	DDX_Control(pDX, IDC_BUTTON_TABCTRL, m_ctrlDumyButton);
 	DDX_Control(pDX, IDC_BUTTON_PULL, m_ctrlPull);
@@ -53,6 +51,8 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_STATUS, m_ctrlStatus);
 	DDX_Control(pDX, IDC_PROGRESS_SYNC, m_ctrlProgress);
 	DDX_Control(pDX, IDC_ANIMATE_SYNC, m_ctrlAnimate);
+
+	BRANCH_COMBOX_DDX;
 }
 
 
@@ -61,6 +61,8 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_PUSH, &CSyncDlg::OnBnClickedButtonPush)
 	ON_BN_CLICKED(IDC_BUTTON_APPLY, &CSyncDlg::OnBnClickedButtonApply)
 	ON_BN_CLICKED(IDC_BUTTON_EMAIL, &CSyncDlg::OnBnClickedButtonEmail)
+	ON_BN_CLICKED(IDC_BUTTON_MANAGE, &CSyncDlg::OnBnClickedButtonManage)
+	BRANCH_COMBOX_EVENT
 END_MESSAGE_MAP()
 
 
@@ -93,9 +95,23 @@ BOOL CSyncDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	AddAnchor(IDC_STATIC_REMOTE_BRANCH,TOP_RIGHT);
-	AddAnchor(IDC_COMBOBOXEX_REMOTE_BRANCH,TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_REMOTE_BRANCH,TOP_RIGHT);
+	//Create Tabctrl
+	CWnd *pwnd=this->GetDlgItem(IDC_BUTTON_TABCTRL);
+	CRect rectDummy;
+	pwnd->GetWindowRect(&rectDummy);
+	this->ScreenToClient(rectDummy);
+
+	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_SYNC_TAB))
+	{
+		TRACE0("Failed to create output tab window\n");
+		return FALSE;      // fail to create
+	}
+	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
+
+	this->m_tooltips.Create(this);
+
+	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
+
 	AddAnchor(IDC_GROUP_INFO,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_URL,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_MANAGE,TOP_RIGHT);
@@ -108,6 +124,13 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDHELP,BOTTOM_RIGHT);
 	AddAnchor(IDC_STATIC_STATUS,BOTTOM_LEFT);
 	AddAnchor(IDC_ANIMATE_SYNC,TOP_RIGHT);
+	
+	BRANCH_COMBOX_ADD_ANCHOR();
+
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'),_T('_'));
+	m_RegKeyRemoteBranch = CString(_T("Software\\TortoiseGit\\History\\SyncBranch\\"))+WorkingDir;
+
 
 	this->AddOthersToAnchor();
 	// TODO:  Add extra initialization here
@@ -120,7 +143,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(_T("&Fetch")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Rebase")));
 
-	CString WorkingDir=g_Git.m_CurrentDir;
+	
 	WorkingDir.Replace(_T(':'),_T('_'));
 
 	CString regkey ;
@@ -139,6 +162,20 @@ BOOL CSyncDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("SyncDlg"));
 
+	this->LoadBranchInfo();
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CSyncDlg::OnBnClickedButtonManage()
+{
+	// TODO: Add your control notification handler code here
+	CAppUtils::LaunchRemoteSetting();
+}
+
+BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	m_tooltips.RelayEvent(pMsg);
+	return __super::PreTranslateMessage(pMsg);
 }

@@ -25,9 +25,12 @@
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
+#include "Balloon.h"
+#include "BranchCombox.h"
 // CSyncDlg dialog
+#define IDC_SYNC_TAB 0x1000000
 
-class CSyncDlg : public CResizableStandAloneDialog
+class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
 	DECLARE_DYNAMIC(CSyncDlg)
 
@@ -40,16 +43,25 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	BRANCH_COMBOX_EVENT_HANDLE();
 
 	CRegDWORD m_regPullButton;
 	CRegDWORD m_regPushButton;
-
+	CMFCTabCtrl m_ctrlTabCtrl;
+	CBalloon			m_tooltips;
+	
+	void SetRemote(CString remote)
+	{
+		if(!remote.IsEmpty())
+		{
+			this->m_ctrlURL.AddString(remote);
+		}
+	}
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL m_bAutoLoadPuttyKey;
-	CComboBoxEx m_ctrlLocalBranch;
-	CComboBoxEx m_ctrlRemoteBranch;
-	CComboBoxEx m_ctrlURL;
+	
+	CHistoryCombo m_ctrlURL;
 	CButton m_ctrlDumyButton;
 	CMenuButton m_ctrlPull;
 	CMenuButton m_ctrlPush;
@@ -61,4 +73,6 @@ public:
 	CProgressCtrl m_ctrlProgress;
 	CAnimateCtrl m_ctrlAnimate;
 	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedButtonManage();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

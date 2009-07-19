@@ -2032,6 +2032,10 @@
 			Name="Utility Dialogs"
 			>
 			<File
+				RelativePath=".\BranchCombox.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ChangedDlg.cpp"
 				>
 			</File>
