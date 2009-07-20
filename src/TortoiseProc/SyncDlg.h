@@ -59,7 +59,12 @@ protected:
 	CGitStatusListCtrl m_InChangeFileList;
 	CGitStatusListCtrl m_ConflictFileList;
 
+	virtual void LocalBranchChange(){FetchOutList();};
+	virtual void RemoteBranchChange(){FetchOutList();};
+
 	void FetchOutList();
+
+	bool IsURL();
 
 	void SetRemote(CString remote)
 	{
@@ -68,6 +73,10 @@ protected:
 			this->m_ctrlURL.AddString(remote);
 		}
 	}
+	
+	CString m_OutLocalBranch;
+	CString m_OutRemoteBranch;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL m_bAutoLoadPuttyKey;
@@ -86,4 +95,6 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButtonManage();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnCbnEditchangeComboboxexUrl();
 };

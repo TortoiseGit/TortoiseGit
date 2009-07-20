@@ -63,6 +63,8 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_EMAIL, &CSyncDlg::OnBnClickedButtonEmail)
 	ON_BN_CLICKED(IDC_BUTTON_MANAGE, &CSyncDlg::OnBnClickedButtonManage)
 	BRANCH_COMBOX_EVENT
+	ON_NOTIFY(CBEN_ENDEDIT, IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbenEndeditComboboxexUrl)
+	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxexUrl)
 END_MESSAGE_MAP()
 
 
@@ -206,5 +208,69 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 }
 void CSyncDlg::FetchOutList()
 {
+	m_OutChangeFileList.Clear();
+	this->m_OutLogList.Clear();
+
+	CString remote;
+	this->m_ctrlURL.GetWindowText(remote);
+	CString remotebranch;
+	this->m_ctrlRemoteBranch.GetWindowText(remotebranch);
+	remotebranch=remote+_T("/")+remotebranch;
+
+	if(IsURL())
+	{
+		CString str;
+		str=_T("Don't know what will push befause you enter URL");
+		m_OutLogList.ShowText(str);
+		this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
+		m_OutLocalBranch.Empty();
+		m_OutRemoteBranch.Empty();
+		return ;
 	
+	}else if(g_Git.GetHash(remotebranch).GetLength()<40)
+	{
+		CString str;
+		str.Format(_T("Don't know what will push befause unkown \"%s\""),remotebranch);
+		m_OutLogList.ShowText(str);
+		this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
+		m_OutLocalBranch.Empty();
+		m_OutRemoteBranch.Empty();
+		return ;
+	}
+	else
+	{
+		CString localbranch;
+		localbranch=this->m_ctrlLocalBranch.GetString();
+
+		if(localbranch != m_OutLocalBranch && m_OutRemoteBranch != remotebranch)
+		{
+			m_OutLogList.ClearText();
+			m_OutLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
+				&remotebranch,&localbranch);
+		}
+		this->m_OutLocalBranch=localbranch;
+		this->m_OutRemoteBranch=remotebranch;
+	}
+
+}
+
+bool CSyncDlg::IsURL()
+{
+	CString str;
+	this->m_ctrlURL.GetWindowText(str);
+	if(str.Find(_T('\\'))>=0 || str.Find(_T('/'))>=0)
+		return true;
+	else
+		return false;
+}
+void CSyncDlg::OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
+void CSyncDlg::OnCbnEditchangeComboboxexUrl()
+{
+	this->FetchOutList();
+	// TODO: Add your control notification handler code here
 }
