@@ -52,12 +52,15 @@ protected:
 	CMFCTabCtrl m_ctrlTabCtrl;
 	CBalloon			m_tooltips;
 	
+	BOOL		m_bInited;
+	
 	CGitLogList	m_OutLogList;
 	CGitLogList m_InLogList;
 
 	CGitStatusListCtrl m_OutChangeFileList;
 	CGitStatusListCtrl m_InChangeFileList;
 	CGitStatusListCtrl m_ConflictFileList;
+	CTGitPathList	m_arOutChangeList;
 
 	virtual void LocalBranchChange(){FetchOutList();};
 	virtual void RemoteBranchChange(){FetchOutList();};

@@ -252,24 +252,9 @@ UINT CFileDiffDlg::DiffThread()
 //		return 0;
 //	}
 #endif
-	CString cmd;
-	CString rev1=m_rev1.m_CommitHash;
-	if(this->m_rev1.m_CommitHash == GIT_REV_ZERO || this->m_rev2.m_CommitHash == GIT_REV_ZERO)
-	{
-		rev1=+_T("");
-		if(this->m_rev1.m_CommitHash == GIT_REV_ZERO)
-			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s"),m_rev2.m_CommitHash);
-		else
-			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s"),m_rev1.m_CommitHash);
-	}else
-	{
-		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s"),m_rev2.m_CommitHash,rev1);
-	}
 
-	BYTE_VECTOR out;
-	g_Git.Run(cmd,&out);
-	this->m_arFileList.ParserFromLog(out);
-	
+	g_Git.GetCommitDiffList(m_rev1.m_CommitHash,m_rev2.m_CommitHash,m_arFileList);
+		
 	CString sFilterText;
 	m_cFilter.GetWindowText(sFilterText);
 	m_cFileList.SetRedraw(false);

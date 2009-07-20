@@ -34,6 +34,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	, m_bAutoLoadPuttyKey(FALSE)
 {
 	m_pTooltip=&this->m_tooltips;
+	m_bInited=false;
 }
 
 CSyncDlg::~CSyncDlg()
@@ -189,6 +190,8 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->LoadBranchInfo();
 
+	this->m_bInited=true;
+	FetchOutList();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -208,6 +211,8 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 }
 void CSyncDlg::FetchOutList()
 {
+	if(!m_bInited)
+		return;
 	m_OutChangeFileList.Clear();
 	this->m_OutLogList.Clear();
 
@@ -242,11 +247,29 @@ void CSyncDlg::FetchOutList()
 		CString localbranch;
 		localbranch=this->m_ctrlLocalBranch.GetString();
 
-		if(localbranch != m_OutLocalBranch && m_OutRemoteBranch != remotebranch)
+		if(localbranch != m_OutLocalBranch || m_OutRemoteBranch != remotebranch)
 		{
 			m_OutLogList.ClearText();
 			m_OutLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
 				&remotebranch,&localbranch);
+			
+			CString str;
+			if(m_OutLogList.GetItemCount() == 0)
+			{			
+				str.Format(_T("No commits ahead \"%s\""),remotebranch);
+				m_OutLogList.ShowText(str);
+				this->m_ctrlStatus.SetWindowText(str);
+				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
+			}
+			else
+			{
+				str.Format(_T("%d commits ahead \"%s\""),m_OutLogList.GetItemCount(),remotebranch);
+				this->m_ctrlStatus.SetWindowText(str);
+				g_Git.GetCommitDiffList(localbranch,remotebranch,m_arOutChangeList);
+				m_OutChangeFileList.Show(0,this->m_arOutChangeList);
+				m_OutChangeFileList.SetEmptyString(CString(_T("No changed file")));
+				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
+			}
 		}
 		this->m_OutLocalBranch=localbranch;
 		this->m_OutRemoteBranch=remotebranch;

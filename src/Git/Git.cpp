@@ -655,6 +655,30 @@ git_revnum_t CGit::GetHash(const CString &friendname)
 	return out;
 }
 
+int CGit::GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outputlist)
+{
+	CString cmd;
+	
+	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
+	{
+		//rev1=+_T("");
+		if(rev1 == GIT_REV_ZERO)
+			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s"),rev2);
+		else
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s"),rev1);
+	}else
+	{
+		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s"),rev2,rev1);
+	}
+
+	BYTE_VECTOR out;
+	if(g_Git.Run(cmd,&out))
+		return -1;
+
+	outputlist.ParserFromLog(out);
+
+}
+
 int CGit::GetTagList(STRING_VECTOR &list)
 {
 	int ret;

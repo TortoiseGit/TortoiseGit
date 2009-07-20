@@ -1252,6 +1252,9 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 
 void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bool bShowFolders /* = true */)
 {
+	DeleteAllItems();
+	for(int i=0;i<checkedList.GetCount();i++)
+		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
 	return ;
 #if 0
 

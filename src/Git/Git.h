@@ -119,6 +119,8 @@ public:
 	CString GetFullRefName(CString shortRefName);
 	//Removes 'refs/heads/' or just 'refs'. Example: refs/heads/master -> master
 	static CString StripRefName(CString refName);
+
+	int GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outpathlist);
 	
 };
 extern void GetTempPath(CString &path);
