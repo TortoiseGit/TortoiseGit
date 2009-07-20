@@ -23,6 +23,7 @@
 #include "GitConfig.h"
 #include "Colors.h"
 #include "XPTheme.h"
+#include "CommonResource.h"
 
 #define SVN_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -199,6 +200,8 @@ public:
 		IDSVNLC_REVERTTOREV		,
 		IDSVNLC_VIEWREV			,
 		IDSVNLC_FINDENTRY       ,
+		IDSVNLC_COMPARETWO		,
+		IDSVNLC_GNUDIFF2		,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where 
 // the submenu items get command ID's sequent to this number
 		IDSVNLC_MOVETOCS		,
@@ -233,6 +236,9 @@ public:
 
 	CGitStatusListCtrl(void);
 	~CGitStatusListCtrl(void);
+
+	CString m_Rev1;
+	CString m_Rev2;
 
 	/**
 	 * \ingroup TortoiseProc
@@ -781,6 +787,7 @@ private:
 	bool BuildStatistics();	///< build the statistics and correct the case of files/folders
 	void StartDiff(int fileindex);	///< start the external diff program
 	void StartDiffWC(int fileindex);	///< start the external diff program
+	void StartDiffTwo(int fileindex);
 	
 	enum
 	{

@@ -132,7 +132,9 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList,_T("Out ChangeList"),1);
 
-	m_OutChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
+	m_OutChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
+		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF2)),false);
 
 	this->m_tooltips.Create(this);
 
@@ -266,6 +268,8 @@ void CSyncDlg::FetchOutList()
 				str.Format(_T("%d commits ahead \"%s\""),m_OutLogList.GetItemCount(),remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);
 				g_Git.GetCommitDiffList(localbranch,remotebranch,m_arOutChangeList);
+				m_OutChangeFileList.m_Rev1=localbranch;
+				m_OutChangeFileList.m_Rev2=remotebranch;
 				m_OutChangeFileList.Show(0,this->m_arOutChangeList);
 				m_OutChangeFileList.SetEmptyString(CString(_T("No changed file")));
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);

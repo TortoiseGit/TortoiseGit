@@ -2321,10 +2321,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					//	{
 					//		if ((m_dwContextMenus & SVNSLC_POPGNUDIFF)&&(wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing))
 					//		{
-					if(!g_Git.IsInitRepos())
+					if(!g_Git.IsInitRepos() && (m_dwContextMenus&SVNSLC_POPGNUDIFF))
+					{
 						popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 
-					bEntryAdded = true;
+						bEntryAdded = true;
+					}
 					//		}
 					//	}
 					//
@@ -2356,6 +2358,21 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//}
 			}
 			
+			if( (!this->m_Rev1.IsEmpty()) || (!this->m_Rev1.IsEmpty()) )
+			{
+				if(GetSelectedCount() == 1)
+				{
+					if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPARETWO))
+					{	
+						popup.AppendMenuIcon(IDSVNLC_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+						popup.SetDefaultItem(IDSVNLC_COMPARETWO, FALSE);
+					}
+					if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_GNUDIFF2))
+					{	
+						popup.AppendMenuIcon(IDSVNLC_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					}
+				}
+			}
 	
 			///Select Multi item
 			//if (GetSelectedCount() > 0)
@@ -2672,6 +2689,16 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
+			case IDSVNLC_COMPARETWO:
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					while ( pos )
+					{
+						int index = GetNextSelectedItem(pos);
+						StartDiffTwo(index);
+					}
+				}
+				break;
 			case IDSVNLC_GNUDIFF1:
 				{
 				//	SVNDiff diff(NULL, this->m_hWnd, true);
@@ -2688,6 +2715,20 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 															*filepath,m_CurrentVersion+_T("~1"));
 				}
 				break;
+			case IDSVNLC_GNUDIFF2:
+				{
+				//	SVNDiff diff(NULL, this->m_hWnd, true);
+				//
+				//	if (entry->remotestatus <= git_wc_status_normal)
+				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_BASE, entry->path, SVNRev::REV_WC);
+				//	else
+				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_WC, entry->path, SVNRev::REV_HEAD);
+					
+					CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_Rev1,
+															*filepath,m_Rev2);
+				}
+				break;
+			
 			case IDSVNLC_ADD:
 				{	// The add went ok, but we now need to run through the selected items again
 					// and update their status
@@ -4031,8 +4072,23 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 
 	}else
 	{
-		StartDiff(pNMLV->iItem);
+		if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty()))
+			StartDiffTwo(pNMLV->iItem);
+		else
+			StartDiff(pNMLV->iItem);
 	}
+
+}
+void CGitStatusListCtrl::StartDiffTwo(int fileindex)
+{
+	if(fileindex<0)
+		return;
+
+	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+
+	CGitDiff::Diff(&file1,&file1,
+			        m_Rev1,
+					m_Rev2);
 
 }
 void CGitStatusListCtrl::StartDiffWC(int fileindex)
