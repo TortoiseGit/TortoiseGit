@@ -79,6 +79,11 @@ protected:
 	
 	CString m_OutLocalBranch;
 	CString m_OutRemoteBranch;
+	
+	void ShowProgressCtrl(bool bShow=true);
+	void ShowInputCtrl(bool bShow=true);
+	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);}
+	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
 
 	DECLARE_MESSAGE_MAP()
 public:
