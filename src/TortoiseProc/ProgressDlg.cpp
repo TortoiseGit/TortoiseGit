@@ -61,10 +61,12 @@ BOOL CProgressDlg::OnInitDialog()
 	{
 		InitialText = m_PreText + _T("\r\n");
 	}
+#if 0
 	if (m_bShowCommand && (!m_GitCmd.IsEmpty() ))
 	{
 		InitialText += m_GitCmd+_T("\r\n\r\n");
 	}
+#endif
 	m_Log.SetWindowTextW(InitialText);
 	m_CurrentWork.SetWindowTextW(_T(""));
 
@@ -89,37 +91,30 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 	return ((CProgressDlg*)pVoid)->ProgressThread();
 }
 
-UINT CProgressDlg::ProgressThread()
+//static function, Share with SyncDialog
+UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort)
 {
+	UINT ret=0;
+
 	PROCESS_INFORMATION pi;
 	HANDLE hRead;
 
-	this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
+	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
 
-	CString *pfilename;
-	if(m_LogFile.IsEmpty())
-		pfilename=NULL;
-	else
-		pfilename=&m_LogFile;
-
-	m_GitCmdList.push_back(m_GitCmd);
-
-	m_GitStatus =0;
-
-	for(int i=0;i<m_GitCmdList.size();i++)
+	for(int i=0;i<cmdlist.size();i++)
 	{
-		if(m_GitCmdList[i].IsEmpty())
+		if(cmdlist[i].IsEmpty())
 			continue;
 
-		if (m_bShowCommand && m_GitCmdList[i]!= m_GitCmd)
+		if (bShowCommand)
 		{
 			CString str;
-			str+= m_GitCmdList[i]+_T("\r\n\r\n");
+			str+= cmdlist[i]+_T("\r\n\r\n");
 			for(int j=0;j<str.GetLength();j++)
-				this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
+				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
 		}
 
-		g_Git.RunAsync(this->m_GitCmdList[i],&pi, &hRead,pfilename);
+		g_Git.RunAsync(cmdlist[i],&pi, &hRead,pfilename);
 
 		DWORD readnumber;
 		char buffer[2];
@@ -127,7 +122,7 @@ UINT CProgressDlg::ProgressThread()
 		while(ReadFile(hRead,buffer,1,&readnumber,NULL))
 		{
 			buffer[readnumber]=0;
-			this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,(TCHAR)buffer[0]);
+			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,(TCHAR)buffer[0]);
 		}
 	
 		CloseHandle(pi.hThread);
@@ -135,24 +130,41 @@ UINT CProgressDlg::ProgressThread()
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		
 		DWORD status=0;
-		if(!GetExitCodeProcess(pi.hProcess,&status) || m_bAbort)
+		if(!GetExitCodeProcess(pi.hProcess,&status) || *bAbort)
 		{
 			CloseHandle(pi.hProcess);
 
 			CloseHandle(hRead);
 
-			this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_FAILED,0);
+			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_FAILED,0);
 			return GIT_ERROR_GET_EXIT_CODE;
 		}
-		m_GitStatus |= status;
+		ret |= status;
 	}
 
 	CloseHandle(pi.hProcess);
 
 	CloseHandle(hRead);
 
-	this->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_END,0);
+	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_END,0);
 
+	return ret;
+
+}
+
+UINT CProgressDlg::ProgressThread()
+{
+	
+	m_GitCmdList.push_back(m_GitCmd);
+
+	CString *pfilename;
+
+	if(m_LogFile.IsEmpty())
+		pfilename=NULL;
+	else
+		pfilename=&m_LogFile;	
+
+	m_GitStatus = RunCmdList(this,m_GitCmdList,m_bShowCommand,pfilename,&m_bAbort);;
 	return 0;
 }
 
@@ -195,6 +207,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 	return 0;
 }
+
+//static function, Share with SyncDialog
 int CProgressDlg::FindPercentage(CString &log)
 {
 	int s1=log.Find(_T('%'));
