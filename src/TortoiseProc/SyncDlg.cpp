@@ -188,7 +188,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	// -------------Create Command Log Ctrl ---------
 	DWORD dwStyle;
-	dwStyle= ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE;
+	dwStyle= ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_AUTOVSCROLL |WS_VSCROLL  ;
 
 	if( !m_ctrlCmdOut.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_CMD_LOG))
 	{
@@ -404,6 +404,12 @@ UINT CSyncDlg::ProgressThread()
 
 LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 {
+	if(wParam == MSG_PROGRESSDLG_START)
+	{
+		m_ctrlAnimate.Play(0,-1,-1);
+		this->m_ctrlProgress.SetPos(0);
+	}
+
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
 		//m_bDone = true;

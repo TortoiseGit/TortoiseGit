@@ -94,7 +94,7 @@ protected:
 	
 	void ShowProgressCtrl(bool bShow=true);
 	void ShowInputCtrl(bool bShow=true);
-	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);}
+	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);EnableControlButton(false);}
 	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
