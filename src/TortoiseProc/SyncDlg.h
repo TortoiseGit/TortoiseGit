@@ -65,6 +65,10 @@ protected:
 
 	CTGitPathList	m_arOutChangeList;
 
+	CWinThread*				m_pThread;	
+
+	void		ParserCmdOutput(TCHAR ch);
+
 	virtual void LocalBranchChange(){FetchOutList();};
 	virtual void RemoteBranchChange(){FetchOutList();};
 
@@ -79,7 +83,12 @@ protected:
 			this->m_ctrlURL.AddString(remote);
 		}
 	}
+
+	std::vector<CString> m_GitCmdList;
+	bool m_bAbort;
+	int  m_GitCmdStatus;
 	
+	CString m_LogText;
 	CString m_OutLocalBranch;
 	CString m_OutRemoteBranch;
 	
@@ -87,10 +96,16 @@ protected:
 	void ShowInputCtrl(bool bShow=true);
 	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);}
 	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
+	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
+
 
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL m_bAutoLoadPuttyKey;
+	CString m_strURL;
+
+	static UINT ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
+	UINT		ProgressThread();
 	
 	CHistoryCombo m_ctrlURL;
 	CButton m_ctrlDumyButton;
@@ -108,4 +123,6 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnCbnEditchangeComboboxexUrl();
+
+	void EnableControlButton(bool bEnabled=true);
 };

@@ -23,7 +23,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SyncDlg.h"
-
+#include "progressdlg.h"
 
 // CSyncDlg dialog
 
@@ -66,9 +66,18 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	BRANCH_COMBOX_EVENT
 	ON_NOTIFY(CBEN_ENDEDIT, IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbenEndeditComboboxexUrl)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxexUrl)
+	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 END_MESSAGE_MAP()
 
 
+void CSyncDlg::EnableControlButton(bool bEnabled)
+{
+	GetDlgItem(IDC_BUTTON_PULL)->EnableWindow(bEnabled);
+	GetDlgItem(IDC_BUTTON_PUSH)->EnableWindow(bEnabled);
+	GetDlgItem(IDC_BUTTON_APPLY)->EnableWindow(bEnabled);
+	GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(bEnabled);
+	GetDlgItem(IDOK)->EnableWindow(bEnabled);
+}
 // CSyncDlg message handlers
 
 void CSyncDlg::OnBnClickedButtonPull()
@@ -82,6 +91,40 @@ void CSyncDlg::OnBnClickedButtonPush()
 	// TODO: Add your control notification handler code here
 	this->m_regPushButton=this->m_ctrlPush.GetCurrentEntry();
 	this->SwitchToRun();
+	this->m_bAbort=false;
+	this->m_GitCmdList.clear();
+
+	CString cmd;
+	CString tags;
+	CString force;
+	this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
+	this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
+	this->m_ctrlURL.GetWindowText(this->m_strURL);
+	m_strRemoteBranch=m_strRemoteBranch.Trim();
+	
+	cmd.Format(_T("git.exe push %s %s \"%s\" %s"),
+				tags,force,
+				m_strURL,
+				m_strLocalBranch);
+
+	if (!m_strRemoteBranch.IsEmpty())
+	{
+		cmd += _T(":") + m_strRemoteBranch;
+	}
+	
+	m_GitCmdList.push_back(cmd);
+
+	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
+	if (m_pThread==NULL)
+	{
+//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+	}
+	else
+	{
+		m_pThread->m_bAutoDelete = TRUE;
+		m_pThread->ResumeThread();
+	}
+	
 }
 
 void CSyncDlg::OnBnClickedButtonApply()
@@ -350,4 +393,71 @@ void CSyncDlg::OnCbnEditchangeComboboxexUrl()
 {
 	this->FetchOutList();
 	// TODO: Add your control notification handler code here
+}
+
+UINT CSyncDlg::ProgressThread()
+{
+	m_GitCmdStatus=CProgressDlg::RunCmdList(this,m_GitCmdList,true,NULL,&this->m_bAbort);
+	return 0;
+}
+
+
+LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
+{
+	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
+	{
+		//m_bDone = true;
+		m_ctrlAnimate.Stop();
+		m_ctrlProgress.SetPos(100);
+		//this->DialogEnableWindow(IDOK,TRUE);
+
+		if(wParam == MSG_PROGRESSDLG_END)
+		{
+			EnableControlButton(true);
+			SwitchToInput();
+		}
+	}
+
+	if(lParam != 0)
+		ParserCmdOutput((TCHAR)lParam);
+
+	return 0;
+}
+
+void CSyncDlg::ParserCmdOutput(TCHAR ch)
+{
+	TRACE(_T("%c"),ch);
+	if( ch == _T('\r') || ch == _T('\n'))
+	{
+		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
+		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
+
+		int linenum = this->m_ctrlCmdOut.GetLineCount();
+		int index = this->m_ctrlCmdOut.LineIndex(linenum-1);
+		if(linenum == 0)
+			index = 0;
+
+		this->m_ctrlCmdOut.SetSel(index,-1);
+			
+		this->m_ctrlCmdOut.ReplaceSel(m_LogText);
+		
+		this->m_ctrlCmdOut.LineScroll(linenum-1);
+		
+		int s1=m_LogText.Find(_T(':'));
+		int s2=m_LogText.Find(_T('%'));
+		if(s1>0 && s2>0)
+		{
+		//	this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
+			int pos=CProgressDlg::FindPercentage(m_LogText);
+			TRACE(_T("Pos %d\r\n"),pos);
+			if(pos>0)
+				this->m_ctrlProgress.SetPos(pos);
+		}
+
+		m_LogText=_T("");
+
+	}else
+	{
+		m_LogText+=ch;
+	}
 }
