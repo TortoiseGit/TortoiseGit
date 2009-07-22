@@ -433,13 +433,23 @@ void CSyncDlg::ParserCmdOutput(TCHAR ch)
 		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
 
 		int linenum = this->m_ctrlCmdOut.GetLineCount();
-		int index = this->m_ctrlCmdOut.LineIndex(linenum-1);
-		if(linenum == 0)
-			index = 0;
+		int index ;
+		if(ch == _T('\r'))
+		{
+			index = this->m_ctrlCmdOut.LineIndex(linenum-1);
+			
+			if(linenum == 0)
+				index = 0;
+		}
+		else
+		{
+			index=-1;
+		}
+		
 
 		this->m_ctrlCmdOut.SetSel(index,-1);
 			
-		this->m_ctrlCmdOut.ReplaceSel(m_LogText);
+		this->m_ctrlCmdOut.ReplaceSel(CString(_T("\n"))+m_LogText);
 		
 		this->m_ctrlCmdOut.LineScroll(linenum-1);
 		

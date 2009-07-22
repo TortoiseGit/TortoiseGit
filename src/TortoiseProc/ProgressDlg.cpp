@@ -109,7 +109,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		if (bShowCommand)
 		{
 			CString str;
-			str+= cmdlist[i]+_T("\r\n\r\n");
+			str+= cmdlist[i]+_T("\n\n");
 			for(int j=0;j<str.GetLength();j++)
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
 		}
