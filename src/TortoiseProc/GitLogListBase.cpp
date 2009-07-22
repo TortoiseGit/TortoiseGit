@@ -206,7 +206,7 @@ void CGitLogListBase::InsertGitColumn()
 {
 	CString temp;
 
-	int c = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
+	int c = GetHeaderCtrl()->GetItemCount()-1;
 	
 	while (c>=0)
 		DeleteColumn(c--);

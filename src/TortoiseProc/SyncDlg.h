@@ -30,8 +30,9 @@
 #include "GitLoglist.h"
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
-#define IDC_OUT_LOGLIST 0x1
-#define IDC_OUT_CHANGELIST 0x2
+#define IDC_CMD_LOG		0x1
+#define IDC_OUT_LOGLIST 0x2
+#define IDC_OUT_CHANGELIST 0x3
 class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
 	DECLARE_DYNAMIC(CSyncDlg)
@@ -60,6 +61,8 @@ protected:
 	CGitStatusListCtrl m_OutChangeFileList;
 	CGitStatusListCtrl m_InChangeFileList;
 	CGitStatusListCtrl m_ConflictFileList;
+	CRichEditCtrl	   m_ctrlCmdOut;
+
 	CTGitPathList	m_arOutChangeList;
 
 	virtual void LocalBranchChange(){FetchOutList();};

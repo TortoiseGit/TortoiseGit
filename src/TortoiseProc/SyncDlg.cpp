@@ -130,7 +130,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlAnimate.Play(0,-1,-1);
     */
 
-	//Create Tabctrl
+	// ------------------ Create Tabctrl -----------
 	CWnd *pwnd=this->GetDlgItem(IDC_BUTTON_TABCTRL);
 	CRect rectDummy;
 	pwnd->GetWindowRect(&rectDummy);
@@ -143,7 +143,22 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 
-	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP;
+	// -------------Create Command Log Ctrl ---------
+	DWORD dwStyle;
+	dwStyle= ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE;
+
+	if( !m_ctrlCmdOut.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_CMD_LOG))
+	{
+		TRACE0("Failed to create Log commits window\n");
+		return FALSE;      // fail to create
+	}
+
+	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut,_T("Log"),-1);
+	m_ctrlCmdOut.ReplaceSel(_T("Hello"));
+
+	//----------  Create Commit List Ctrl---------------
+			
+	dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;;
 
 	if( !m_OutLogList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_OUT_LOGLIST))
 	{
@@ -151,9 +166,12 @@ BOOL CSyncDlg::OnInitDialog()
 		return FALSE;      // fail to create
 
 	}
-	m_ctrlTabCtrl.InsertTab(&m_OutLogList,_T("Out Commits"),0);
+
+	m_ctrlTabCtrl.InsertTab(&m_OutLogList,_T("Out Commits"),-1);
 
 	m_OutLogList.InsertGitColumn();
+
+	//------------- Create Change File List Control ----------------
 
 	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 	
@@ -162,7 +180,7 @@ BOOL CSyncDlg::OnInitDialog()
 		TRACE0("Failed to create output change files window\n");
 		return FALSE;      // fail to create
 	}
-	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList,_T("Out ChangeList"),1);
+	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList,_T("Out ChangeList"),-1);
 
 	m_OutChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
 		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
