@@ -433,47 +433,40 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 void CSyncDlg::ParserCmdOutput(TCHAR ch)
 {
 	TRACE(_T("%c"),ch);
-	if( ch == _T('\r') || ch == _T('\n'))
+	int linenum;
+	int index;
+
+	if( ch == _T('\r') )
 	{
-		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
-		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
-
-		int linenum = this->m_ctrlCmdOut.GetLineCount();
-		int index ;
-		if(ch == _T('\r'))
-		{
+		linenum = this->m_ctrlCmdOut.GetLineCount();
+		if(linenum>0)
 			index = this->m_ctrlCmdOut.LineIndex(linenum-1);
-			
-			if(linenum == 0)
-				index = 0;
-		}
 		else
-		{
-			index=-1;
-		}
-		
+			index = 0;
 
-		this->m_ctrlCmdOut.SetSel(index,-1);
+	}else
+		index = -1;
+
+	this->m_ctrlCmdOut.SetSel(index,-1);
 			
-		this->m_ctrlCmdOut.ReplaceSel(CString(_T("\n"))+m_LogText);
+	this->m_ctrlCmdOut.ReplaceSel(CString(ch));
 		
-		this->m_ctrlCmdOut.LineScroll(linenum-1);
-		
+	this->m_ctrlCmdOut.LineScroll(linenum-1);
+
+	if( ch == _T('\r') || ch == _T('\n') )
+	{
 		int s1=m_LogText.Find(_T(':'));
 		int s2=m_LogText.Find(_T('%'));
 		if(s1>0 && s2>0)
 		{
-		//	this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
+			//	this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
 			int pos=CProgressDlg::FindPercentage(m_LogText);
 			TRACE(_T("Pos %d\r\n"),pos);
 			if(pos>0)
 				this->m_ctrlProgress.SetPos(pos);
 		}
-
-		m_LogText=_T("");
-
-	}else
-	{
-		m_LogText+=ch;
+		m_LogText=_T("");	
 	}
+	m_LogText+=ch;
+
 }
