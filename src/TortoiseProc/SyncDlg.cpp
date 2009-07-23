@@ -432,7 +432,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 void CSyncDlg::ParserCmdOutput(TCHAR ch)
 {
-	TRACE(_T("%c"),ch);
+	//TRACE(_T("%c"),ch);
 	int linenum;
 	int index;
 	linenum = this->m_ctrlCmdOut.GetLineCount();
@@ -444,14 +444,16 @@ void CSyncDlg::ParserCmdOutput(TCHAR ch)
 		else
 			index = 0;
 
-		TRACE(_T("line %d\n"),linenum);
+		//TRACE(_T("line %d - %d\n"),index,m_ctrlCmdOut.GetTextLength());
 	}else
-		index = -1;
+		index = m_ctrlCmdOut.GetTextLength();
 
-	this->m_ctrlCmdOut.SetSel(index,-1);
+	this->m_ctrlCmdOut.SetSel(index,m_ctrlCmdOut.GetTextLength()-1);
 	
 	if( ch != _T('\r') )
 		this->m_ctrlCmdOut.ReplaceSel(CString(ch));
+	else
+		this->m_ctrlCmdOut.ReplaceSel(CString(_T("")));
 	
 	int firstline = m_ctrlCmdOut.GetFirstVisibleLine();
 	if( linenum - firstline > 4 )
