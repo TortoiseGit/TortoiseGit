@@ -435,23 +435,27 @@ void CSyncDlg::ParserCmdOutput(TCHAR ch)
 	TRACE(_T("%c"),ch);
 	int linenum;
 	int index;
+	linenum = this->m_ctrlCmdOut.GetLineCount();
 
 	if( ch == _T('\r') )
 	{
-		linenum = this->m_ctrlCmdOut.GetLineCount();
 		if(linenum>0)
 			index = this->m_ctrlCmdOut.LineIndex(linenum-1);
 		else
 			index = 0;
 
+		TRACE(_T("line %d\n"),linenum);
 	}else
 		index = -1;
 
 	this->m_ctrlCmdOut.SetSel(index,-1);
-			
-	this->m_ctrlCmdOut.ReplaceSel(CString(ch));
-		
-	this->m_ctrlCmdOut.LineScroll(linenum-1);
+	
+	if( ch != _T('\r') )
+		this->m_ctrlCmdOut.ReplaceSel(CString(ch));
+	
+	int firstline = m_ctrlCmdOut.GetFirstVisibleLine();
+	if( linenum - firstline > 4 )
+		this->m_ctrlCmdOut.LineScroll(linenum - firstline -4);
 
 	if( ch == _T('\r') || ch == _T('\n') )
 	{
