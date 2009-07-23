@@ -51,6 +51,7 @@ protected:
 	CRegDWORD m_regPullButton;
 	CRegDWORD m_regPushButton;
 	CMFCTabCtrl m_ctrlTabCtrl;
+
 	CBalloon			m_tooltips;
 	
 	BOOL		m_bInited;
@@ -64,6 +65,7 @@ protected:
 	CRichEditCtrl	   m_ctrlCmdOut;
 
 	CTGitPathList	m_arOutChangeList;
+	int				m_CmdOutCurrentPos;
 
 	CWinThread*				m_pThread;	
 

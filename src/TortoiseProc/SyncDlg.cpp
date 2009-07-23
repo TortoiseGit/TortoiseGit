@@ -35,6 +35,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 {
 	m_pTooltip=&this->m_tooltips;
 	m_bInited=false;
+	m_CmdOutCurrentPos=0;
 }
 
 CSyncDlg::~CSyncDlg()
@@ -440,20 +441,18 @@ void CSyncDlg::ParserCmdOutput(TCHAR ch)
 	if( ch == _T('\r') )
 	{
 		if(linenum>0)
-			index = this->m_ctrlCmdOut.LineIndex(linenum-1);
+			m_CmdOutCurrentPos = this->m_ctrlCmdOut.LineIndex(linenum-1);
 		else
-			index = 0;
+			m_CmdOutCurrentPos = 0;
 
 		//TRACE(_T("line %d - %d\n"),index,m_ctrlCmdOut.GetTextLength());
 	}else
-		index = m_ctrlCmdOut.GetTextLength();
-
-	this->m_ctrlCmdOut.SetSel(index,m_ctrlCmdOut.GetTextLength()-1);
+		m_CmdOutCurrentPos++;
+		
+	this->m_ctrlCmdOut.SetSel(m_CmdOutCurrentPos,m_CmdOutCurrentPos+1);
 	
 	if( ch != _T('\r') )
 		this->m_ctrlCmdOut.ReplaceSel(CString(ch));
-	else
-		this->m_ctrlCmdOut.ReplaceSel(CString(_T("")));
 	
 	int firstline = m_ctrlCmdOut.GetFirstVisibleLine();
 	if( linenum - firstline > 4 )
