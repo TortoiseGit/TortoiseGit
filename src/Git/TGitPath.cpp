@@ -897,6 +897,8 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool staged)
 	CString one;
 	CTGitPath path;
 	CString part;
+	this->Clear();
+
 	while(pos>=0 && pos<out.size())
 	{
 		one.Empty();
