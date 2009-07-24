@@ -24,6 +24,7 @@
 #include "TortoiseProc.h"
 #include "SyncDlg.h"
 #include "progressdlg.h"
+#include "MessageBox.h"
 
 // CSyncDlg dialog
 
@@ -164,6 +165,23 @@ void CSyncDlg::OnBnClickedButtonApply()
 void CSyncDlg::OnBnClickedButtonEmail()
 {
 	// TODO: Add your control notification handler code here
+	CString cmd,out;
+	
+	this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
+	this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
+	
+	cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+					g_Git.m_CurrentDir,
+					m_strRemoteBranch,m_strLocalBranch);
+	
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return ;
+	}
+
+	CAppUtils::SendPatchMail(cmd,out);	
+
 }
 void CSyncDlg::ShowProgressCtrl(bool bShow)
 {
@@ -358,6 +376,8 @@ void CSyncDlg::FetchOutList(bool force)
 		this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 		m_OutLocalBranch.Empty();
 		m_OutRemoteBranch.Empty();
+
+		this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 		return ;
 	
 	}else if(g_Git.GetHash(remotebranch).GetLength()<40)
@@ -368,6 +388,8 @@ void CSyncDlg::FetchOutList(bool force)
 		this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 		m_OutLocalBranch.Empty();
 		m_OutRemoteBranch.Empty();
+
+		this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 		return ;
 	}
 	else
@@ -388,6 +410,7 @@ void CSyncDlg::FetchOutList(bool force)
 				m_OutLogList.ShowText(str);
 				this->m_ctrlStatus.SetWindowText(str);
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
+				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 			}
 			else
 			{
@@ -399,6 +422,7 @@ void CSyncDlg::FetchOutList(bool force)
 				m_OutChangeFileList.Show(0,this->m_arOutChangeList);
 				m_OutChangeFileList.SetEmptyString(CString(_T("No changed file")));
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
+				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(TRUE);
 			}
 		}
 		this->m_OutLocalBranch=localbranch;
