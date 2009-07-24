@@ -169,10 +169,13 @@ void CSyncDlg::OnBnClickedButtonEmail()
 	
 	this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
 	this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
+	this->m_ctrlURL.GetWindowText(this->m_strURL);
+	m_strURL=m_strURL.Trim();
+	m_strRemoteBranch=m_strRemoteBranch.Trim();
 	
 	cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
-					m_strRemoteBranch,m_strLocalBranch);
+					m_strURL+_T('/')+m_strRemoteBranch,m_strLocalBranch);
 	
 	if(g_Git.Run(cmd,&out,CP_ACP))
 	{
