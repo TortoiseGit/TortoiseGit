@@ -31,11 +31,11 @@ IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 
 CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
-	, m_bAutoLoadPuttyKey(FALSE)
 {
 	m_pTooltip=&this->m_tooltips;
 	m_bInited=false;
 	m_CmdOutCurrentPos=0;
+	m_bAutoLoadPuttyKey = CAppUtils::IsSSHPutty();
 }
 
 CSyncDlg::~CSyncDlg()
@@ -46,6 +46,7 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_CHECK_PUTTY_KEY, m_bAutoLoadPuttyKey);
+	DDX_Check(pDX, IDC_CHECK_FORCE,m_bForce);
 	DDX_Control(pDX, IDC_COMBOBOXEX_URL, m_ctrlURL);
 	DDX_Control(pDX, IDC_BUTTON_TABCTRL, m_ctrlDumyButton);
 	DDX_Control(pDX, IDC_BUTTON_PULL, m_ctrlPull);
@@ -90,21 +91,41 @@ void CSyncDlg::OnBnClickedButtonPull()
 void CSyncDlg::OnBnClickedButtonPush()
 {
 	// TODO: Add your control notification handler code here
+	this->UpdateData();
+
 	this->m_regPushButton=this->m_ctrlPush.GetCurrentEntry();
 	this->SwitchToRun();
 	this->m_bAbort=false;
 	this->m_GitCmdList.clear();
 
+	ShowTab(IDC_CMD_LOG);
+
 	CString cmd;
 	CString tags;
 	CString force;
+	CString all;
 	this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
 	this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
 	this->m_ctrlURL.GetWindowText(this->m_strURL);
 	m_strRemoteBranch=m_strRemoteBranch.Trim();
 	
-	cmd.Format(_T("git.exe push %s %s \"%s\" %s"),
-				tags,force,
+	this->GetDlgItem(IDC_CHECK_PUTTY_KEY)->EnableWindow(this->m_bAutoLoadPuttyKey);
+
+	switch (m_ctrlPush.GetCurrentEntry())
+	{
+	case 1:
+		tags = _T(" --tags ");
+		break;
+	case 2:
+		all = _T(" --all ");
+		break;
+	}
+
+	if(this->m_bForce)
+		force = _T(" --force ");
+
+	cmd.Format(_T("git.exe push %s %s %s \"%s\" %s"),
+				tags,force,all,
 				m_strURL,
 				m_strLocalBranch);
 
@@ -114,6 +135,13 @@ void CSyncDlg::OnBnClickedButtonPush()
 	}
 	
 	m_GitCmdList.push_back(cmd);
+
+	m_CurrentCmd = GIT_COMMAND_PUSH;
+
+	if(this->m_bAutoLoadPuttyKey)
+	{
+		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
+	}
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
 	if (m_pThread==NULL)
@@ -198,7 +226,8 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut,_T("Log"),-1);
-	m_ctrlCmdOut.ReplaceSel(_T("Hello"));
+	
+	//m_ctrlCmdOut.ReplaceSel(_T("Hello"));
 
 	//----------  Create Commit List Ctrl---------------
 			
@@ -212,6 +241,7 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 
 	m_ctrlTabCtrl.InsertTab(&m_OutLogList,_T("Out Commits"),-1);
+	
 
 	m_OutLogList.InsertGitColumn();
 
@@ -259,7 +289,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->m_ctrlPush.AddEntry(CString(_T("Push")));
 	this->m_ctrlPush.AddEntry(CString(_T("Push tags")));
-	this->m_ctrlPush.AddEntry(CString(_T("Push All")));
+	///this->m_ctrlPush.AddEntry(CString(_T("Push All")));
 
 	this->m_ctrlPull.AddEntry(CString(_T("&Pull")));
 	this->m_ctrlPull.AddEntry(CString(_T("&Fetch")));
@@ -289,6 +319,8 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_bInited=true;
 	FetchOutList();
 	
+	m_ctrlTabCtrl.ShowTab(IDC_CMD_LOG-1,false);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -305,7 +337,7 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
-void CSyncDlg::FetchOutList()
+void CSyncDlg::FetchOutList(bool force)
 {
 	if(!m_bInited)
 		return;
@@ -343,7 +375,7 @@ void CSyncDlg::FetchOutList()
 		CString localbranch;
 		localbranch=this->m_ctrlLocalBranch.GetString();
 
-		if(localbranch != m_OutLocalBranch || m_OutRemoteBranch != remotebranch)
+		if(localbranch != m_OutLocalBranch || m_OutRemoteBranch != remotebranch || force)
 		{
 			m_OutLogList.ClearText();
 			m_OutLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
@@ -418,10 +450,11 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_ctrlProgress.SetPos(100);
 		//this->DialogEnableWindow(IDOK,TRUE);
 
-		if(wParam == MSG_PROGRESSDLG_END)
+		//if(wParam == MSG_PROGRESSDLG_END)
 		{
 			EnableControlButton(true);
 			SwitchToInput();
+			this->FetchOutList(true);
 		}
 	}
 

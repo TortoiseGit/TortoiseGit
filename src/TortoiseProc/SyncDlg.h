@@ -44,9 +44,14 @@ public:
 // Dialog Data
 	enum { IDD = IDD_SYNC };
 
+	enum { GIT_COMMAND_PUSH,
+		   GIT_COMMAND_PULL,
+		};
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BRANCH_COMBOX_EVENT_HANDLE();
+
+	int m_CurrentCmd;
 
 	CRegDWORD m_regPullButton;
 	CRegDWORD m_regPushButton;
@@ -73,8 +78,13 @@ protected:
 
 	virtual void LocalBranchChange(){FetchOutList();};
 	virtual void RemoteBranchChange(){FetchOutList();};
+	void ShowTab(int windowid)
+	{
+		this->m_ctrlTabCtrl.ShowTab(windowid-1);
+		this->m_ctrlTabCtrl.SetActiveTab(windowid-1);
+	}
 
-	void FetchOutList();
+	void FetchOutList(bool force=false);
 
 	bool IsURL();
 
@@ -87,7 +97,9 @@ protected:
 	}
 
 	std::vector<CString> m_GitCmdList;
+	
 	bool m_bAbort;
+
 	int  m_GitCmdStatus;
 	
 	CString m_LogText;
@@ -104,6 +116,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL m_bAutoLoadPuttyKey;
+	BOOL m_bForce;
 	CString m_strURL;
 
 	static UINT ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
