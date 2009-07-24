@@ -25,7 +25,7 @@
 #include "SyncDlg.h"
 #include "progressdlg.h"
 #include "MessageBox.h"
-
+#include "ImportPatchDlg.h"
 // CSyncDlg dialog
 
 IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
@@ -160,6 +160,58 @@ void CSyncDlg::OnBnClickedButtonPush()
 void CSyncDlg::OnBnClickedButtonApply()
 {
 	// TODO: Add your control notification handler code here
+	CString oldhash;
+	oldhash=g_Git.GetHash(CString(_T("HEAD")));
+	
+	CImportPatchDlg dlg;
+	CString cmd,output;
+
+	if(dlg.DoModal() == IDOK)
+	{
+		int err=0;
+		for(int i=0;i<dlg.m_PathList.GetCount();i++)
+		{			
+			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
+			
+			if(g_Git.Run(cmd,&output,CP_ACP))
+			{
+				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
+
+				err=1;
+				break;
+			}
+		}
+		this->m_ctrlCmdOut.SetSel(-1,-1);
+		this->m_ctrlCmdOut.ReplaceSel(output);
+
+		CString newhash=g_Git.GetHash(CString(_T("HEAD")));		
+
+		this->m_InLogList.Clear();
+		this->m_InChangeFileList.Clear();
+
+		if(newhash == oldhash)
+		{
+			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
+			this->m_InLogList.ShowText(_T("No commits get from patch"));
+			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
+
+		}else
+		{
+			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
+			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
+			
+			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,oldhash);
+		}
+
+		if(err)
+		{
+			this->ShowTab(IDC_CMD_LOG);
+
+		}else
+		{
+			this->ShowTab(IDC_IN_LOGLIST);
+		}
+	}
 }
 
 void CSyncDlg::OnBnClickedButtonEmail()
@@ -249,6 +301,35 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut,_T("Log"),-1);
 	
 	//m_ctrlCmdOut.ReplaceSel(_T("Hello"));
+
+	//----------  Create in coming list ctrl -----------
+	dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;;
+
+	if( !m_InLogList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_IN_LOGLIST))
+	{
+		TRACE0("Failed to create output commits window\n");
+		return FALSE;      // fail to create
+
+	}
+
+	m_ctrlTabCtrl.InsertTab(&m_InLogList,_T("In Commits"),-1);
+
+	m_InLogList.InsertGitColumn();
+
+	//----------- Create In Change file list -----------
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	
+	if( !m_InChangeFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_IN_CHANGELIST))
+	{
+		TRACE0("Failed to create output change files window\n");
+		return FALSE;      // fail to create
+	}
+	m_ctrlTabCtrl.InsertTab(&m_InChangeFileList,_T("Out ChangeList"),-1);
+
+	m_InChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
+		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF2)),false);
+
 
 	//----------  Create Commit List Ctrl---------------
 			
@@ -341,7 +422,9 @@ BOOL CSyncDlg::OnInitDialog()
 	FetchOutList();
 	
 	m_ctrlTabCtrl.ShowTab(IDC_CMD_LOG-1,false);
-
+	m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,false);
+	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -419,11 +502,9 @@ void CSyncDlg::FetchOutList(bool force)
 			{
 				str.Format(_T("%d commits ahead \"%s\""),m_OutLogList.GetItemCount(),remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);
-				g_Git.GetCommitDiffList(localbranch,remotebranch,m_arOutChangeList);
-				m_OutChangeFileList.m_Rev1=localbranch;
-				m_OutChangeFileList.m_Rev2=remotebranch;
-				m_OutChangeFileList.Show(0,this->m_arOutChangeList);
-				m_OutChangeFileList.SetEmptyString(CString(_T("No changed file")));
+
+				AddDiffFileList(&m_OutChangeFileList,&m_arOutChangeList,localbranch,remotebranch);
+				
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(TRUE);
 			}

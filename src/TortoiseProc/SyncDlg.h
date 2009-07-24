@@ -30,9 +30,13 @@
 #include "GitLoglist.h"
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
-#define IDC_CMD_LOG		0x1
-#define IDC_OUT_LOGLIST 0x2
-#define IDC_OUT_CHANGELIST 0x3
+
+#define IDC_CMD_LOG			0x1
+#define IDC_IN_LOGLIST		0x2
+#define IDC_IN_CHANGELIST	0x3
+#define IDC_OUT_LOGLIST		0x4
+#define IDC_OUT_CHANGELIST	0x5
+
 class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
 	DECLARE_DYNAMIC(CSyncDlg)
@@ -70,6 +74,8 @@ protected:
 	CRichEditCtrl	   m_ctrlCmdOut;
 
 	CTGitPathList	m_arOutChangeList;
+	CTGitPathList	m_arInChangeList;
+
 	int				m_CmdOutCurrentPos;
 
 	CWinThread*				m_pThread;	
@@ -110,8 +116,19 @@ protected:
 	void ShowInputCtrl(bool bShow=true);
 	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);EnableControlButton(false);}
 	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
+	
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
+	void AddDiffFileList(CGitStatusListCtrl *pCtrlList, CTGitPathList *pGitList,
+							CString &rev1,CString &rev2)
+	{
+		g_Git.GetCommitDiffList(rev1,rev2,*pGitList);
+		pCtrlList->m_Rev1=rev1;
+		pCtrlList->m_Rev2=rev2;
+		pCtrlList->Show(0,*pGitList);
+		pCtrlList->SetEmptyString(CString(_T("No changed file")));
+		return;
+	}
 
 	DECLARE_MESSAGE_MAP()
 public:
