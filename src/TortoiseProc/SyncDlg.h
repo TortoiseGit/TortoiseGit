@@ -34,8 +34,9 @@
 #define IDC_CMD_LOG			0x1
 #define IDC_IN_LOGLIST		0x2
 #define IDC_IN_CHANGELIST	0x3
-#define IDC_OUT_LOGLIST		0x4
-#define IDC_OUT_CHANGELIST	0x5
+#define IDC_IN_CONFLICT		0x4
+#define IDC_OUT_LOGLIST		0x5
+#define IDC_OUT_CHANGELIST	0x6
 
 class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
@@ -71,6 +72,7 @@ protected:
 	CGitStatusListCtrl m_OutChangeFileList;
 	CGitStatusListCtrl m_InChangeFileList;
 	CGitStatusListCtrl m_ConflictFileList;
+	
 	CRichEditCtrl	   m_ctrlCmdOut;
 
 	CTGitPathList	m_arOutChangeList;
@@ -112,12 +114,22 @@ protected:
 	CString m_OutLocalBranch;
 	CString m_OutRemoteBranch;
 	
+	CString m_oldHash;
+
 	void ShowProgressCtrl(bool bShow=true);
 	void ShowInputCtrl(bool bShow=true);
 	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);EnableControlButton(false);}
 	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
 	
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
+
+	void UpateCombox()
+	{
+		this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
+		this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
+		this->m_ctrlURL.GetWindowText(this->m_strURL);
+		m_strRemoteBranch=m_strRemoteBranch.Trim();
+	}
 
 	void AddDiffFileList(CGitStatusListCtrl *pCtrlList, CTGitPathList *pGitList,
 							CString &rev1,CString &rev2)
@@ -129,6 +141,8 @@ protected:
 		pCtrlList->SetEmptyString(CString(_T("No changed file")));
 		return;
 	}
+
+	void PullComplete();
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -157,4 +171,5 @@ public:
 	afx_msg void OnCbnEditchangeComboboxexUrl();
 
 	void EnableControlButton(bool bEnabled=true);
+	afx_msg void OnBnClickedButtonCommit();
 };
