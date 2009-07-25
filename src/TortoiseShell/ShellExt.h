@@ -166,6 +166,7 @@ protected:
 		ShellMenuSendMail,
 		ShellMenuGitSVNRebase,
 		ShellMenuGitSVNDCommit,
+		ShellMenuSync,
 		ShellMenuLastEntry			// used to mark the menu array end
 	};
 

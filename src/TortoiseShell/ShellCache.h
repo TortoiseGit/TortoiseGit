@@ -84,8 +84,8 @@ public:
 		getlocktopticker = cachetypeticker;
 		excludedasnormalticker = cachetypeticker;
 		excontextticker = cachetypeticker;
-		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
-		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
+		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
+		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
 		menumasklow_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumaskhigh_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumasklow_cu = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);

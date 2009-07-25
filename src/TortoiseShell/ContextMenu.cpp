@@ -44,6 +44,10 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuPush,						MENUPUSH,			IDI_PUSH,				IDS_MENUPUSH,			IDS_MENUPUSH,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
+	{ ShellMenuSync,						MENUSYNC,			IDI_RELOCATE,				IDS_MENUSYNC,			IDS_MENUDESCSYNC,
+	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
+
 //	{ ShellMenuCheckout,					MENUCHECKOUT,		IDI_CHECKOUT,			IDS_MENUCHECKOUT,			IDS_MENUDESCCHECKOUT,
 //	ITEMIS_FOLDER, ITEMIS_INSVN|ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0, 0 },
 
@@ -1505,6 +1509,11 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			switch (id_it->second)
 			{
 				//#region case
+			case ShellMenuSync:
+				svnCmd += _T("sync /path:\"");
+				svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
 			case ShellMenuCheckout:
 				svnCmd += _T("checkout /path:\"");
 				svnCmd += folder_;
