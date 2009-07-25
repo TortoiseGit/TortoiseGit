@@ -433,7 +433,7 @@ BEGIN
     IDS_MENUSVNREBASE_DESC  "Git SVN Rebase"
     IDS_MENUSVNDCOMMIT      "SVN DCommit"
     IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
-    IDS_MENUSYNC            "Git Sync..."
+    IDS_MENUSYNC            "Sync..."
     IDS_MENUDESCSYNC        "Sync remote Remote Repostory, include pull, push,email patch and so on"
 END
 

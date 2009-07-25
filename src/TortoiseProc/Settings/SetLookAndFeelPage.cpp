@@ -31,8 +31,8 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	: ISettingsPropPage(CSetLookAndFeelPage::IDD)
 	, m_bBlock(false)
 {
-	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
-	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
+	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
+	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
 
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
@@ -67,7 +67,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
-	m_tooltips.AddTool(IDC_GETLOCKTOP, IDS_SETTINGS_GETLOCKTOP_TT);
+	//m_tooltips.AddTool(IDC_GETLOCKTOP, IDS_SETTINGS_GETLOCKTOP_TT);
 	m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
 
 	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
@@ -86,8 +86,8 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
-	InsertItem(IDS_MENUCLONE, IDI_CLONE, MENUCLONE);
-//	InsertItem(IDS_MENUUPDATE, IDI_UPDATE, MENUUPDATE);
+	InsertItem(IDS_MENUCLONE,IDI_CLONE, MENUCLONE);
+	InsertItem(IDS_MENUSYNC, IDI_RELOCATE, MENUSYNC);
 	InsertItem(IDS_MENUPULL, IDI_PULL, MENUPULL);
 	InsertItem(IDS_MENUFETCH, IDI_PULL, MENUFETCH);
 	InsertItem(IDS_MENUPUSH, IDI_PUSH, MENUPUSH);
@@ -186,6 +186,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 		int i=0;
 		m_topmenu = 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLONE : 0;
+		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUSYNC : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPULL : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUFETCH : 0;
 		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPUSH : 0;
