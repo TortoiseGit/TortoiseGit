@@ -293,6 +293,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 {
 	// TODO: Add your control notification handler code here
 	this->UpdateData();
+	UpdateCombox();
 
 	if(this->m_strURL.IsEmpty())
 	{
@@ -312,7 +313,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	CString force;
 	CString all;
 
-	UpdateCombox();
+
 
 	switch (m_ctrlPush.GetCurrentEntry())
 	{

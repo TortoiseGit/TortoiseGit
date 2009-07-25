@@ -26,16 +26,31 @@
 #include "GitAdminDir.h"
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
+#include "CleanTypeDlg.h"
 
 bool CleanupCommand::Execute()
 {
 	bool bRet = false;
-	CString temp;
-	temp.Format(_T("Are you sure clean all untracked files"));
-	if(CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_YESNO)==IDYES)
-	{
+
+	CCleanTypeDlg dlg;
+	if( dlg.DoModal() == IDOK)
+	{	
 		CProgressDlg progress;
-		progress.m_GitCmd.Format(_T("git clean -d -x -f "));
+		progress.m_GitCmd.Format(_T("git clean "));
+		if(dlg.m_bDir)
+			progress.m_GitCmd += _T(" -d ");
+		switch(dlg.m_CleanType)
+		{
+		case 0:
+			progress.m_GitCmd += _T(" -fx");
+			break;
+		case 1:
+			progress.m_GitCmd += _T(" -f");
+			break;
+		case 2:
+			progress.m_GitCmd += _T(" -fX");
+			break;
+		}
 		if(progress.DoModal()==IDOK)
 			return TRUE;
 	}

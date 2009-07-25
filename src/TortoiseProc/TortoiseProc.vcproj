@@ -1359,6 +1359,14 @@
 				Name="Clean"
 				>
 				<File
+					RelativePath=".\CleanTypeDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CleanTypeDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\CleanupCommand.cpp"
 					>
 				</File>

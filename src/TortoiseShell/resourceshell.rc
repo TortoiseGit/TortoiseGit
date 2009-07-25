@@ -211,7 +211,7 @@ BEGIN
     IDS_MENUCREATEREPOS     "Create repositor&y here"
     IDS_MENUADD             "&Add..."
     IDS_MENUREVERT          "Re&vert..."
-    IDS_MENUCLEANUP         "&Clean up"
+    IDS_MENUCLEANUP         "&Clean up..."
     IDS_MENURESOLVE         "Res&olved..."
 END
 
