@@ -180,9 +180,12 @@ void CSyncDlg::OnBnClickedButtonApply()
 				err=1;
 				break;
 			}
+			this->m_ctrlCmdOut.SetSel(-1,-1);
+			this->m_ctrlCmdOut.ReplaceSel(cmd+_T("\n"));
+			this->m_ctrlCmdOut.SetSel(-1,-1);
+			this->m_ctrlCmdOut.ReplaceSel(output);
 		}
-		this->m_ctrlCmdOut.SetSel(-1,-1);
-		this->m_ctrlCmdOut.ReplaceSel(output);
+		
 
 		CString newhash=g_Git.GetHash(CString(_T("HEAD")));		
 
@@ -201,7 +204,11 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 			
 			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,oldhash);
+			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
+				&oldhash,&newhash);
 		}
+
+		this->m_ctrlTabCtrl.ShowTab(IDC_CMD_LOG-1,true);
 
 		if(err)
 		{
@@ -324,7 +331,7 @@ BOOL CSyncDlg::OnInitDialog()
 		TRACE0("Failed to create output change files window\n");
 		return FALSE;      // fail to create
 	}
-	m_ctrlTabCtrl.InsertTab(&m_InChangeFileList,_T("Out ChangeList"),-1);
+	m_ctrlTabCtrl.InsertTab(&m_InChangeFileList,_T("In ChangeList"),-1);
 
 	m_InChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
 		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
