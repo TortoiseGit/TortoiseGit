@@ -140,8 +140,8 @@ protected:
 		
 	void LoadBranchInfo()
 	{
-		m_ctrlLocalBranch.SetMaxHistoryItems(0x7FFFFFFF);
-		m_ctrlRemoteBranch.SetMaxHistoryItems(0x7FFFFFFF);
+		m_ctrlLocalBranch.SetMaxHistoryItems(0x0FFFFFFF);
+		m_ctrlRemoteBranch.SetMaxHistoryItems(0x0FFFFFFF);
 
 		STRING_VECTOR list;
 		list.clear();
@@ -190,6 +190,15 @@ protected:
 public:
 	CString m_strLocalBranch;
 	CString m_strRemoteBranch;
+
+	void SaveHistory()
+	{
+		if(!this->m_RegKeyRemoteBranch.IsEmpty())
+		{
+			m_ctrlRemoteBranch.AddString(m_strRemoteBranch);
+			m_ctrlRemoteBranch.SaveHistory();
+		}
+	}
 };
 
 #define BRANCH_COMBOX_DDX \

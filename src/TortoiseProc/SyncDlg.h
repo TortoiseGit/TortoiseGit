@@ -51,6 +51,8 @@ public:
 
 	enum { GIT_COMMAND_PUSH,
 		   GIT_COMMAND_PULL,
+		   GIT_COMMAND_FETCH,
+		   GIT_COMMAND_FETCHANDREBASE
 		};
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -123,7 +125,7 @@ protected:
 	
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
-	void UpateCombox()
+	void UpdateCombox()
 	{
 		this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
 		this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
@@ -143,6 +145,7 @@ protected:
 	}
 
 	void PullComplete();
+	void FetchComplete();
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -172,4 +175,6 @@ public:
 
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();
+protected:
+	virtual void OnOK();
 };

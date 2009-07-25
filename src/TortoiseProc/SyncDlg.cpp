@@ -27,6 +27,8 @@
 #include "MessageBox.h"
 #include "ImportPatchDlg.h"
 #include "PathUtils.h"
+#include "RebaseDlg.h"
+
 // CSyncDlg dialog
 
 IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
@@ -97,7 +99,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->m_GitCmdList.clear();
 
 	this->UpdateData();
-	UpateCombox();
+	UpdateCombox();
 
 	m_oldHash = g_Git.GetHash(CString(_T("HEAD")));
 
@@ -160,6 +162,33 @@ void CSyncDlg::OnBnClickedButtonPull()
 		}
 
 	}
+
+	///Fetch
+	if(CurrentEntry == 1 || CurrentEntry ==2 ) //Fetch
+	{
+		cmd.Format(_T("git.exe fetch %s \"%s\" %s"),
+				force,
+				m_strURL,
+				this->m_strRemoteBranch);
+		if(CurrentEntry == 1) 
+			m_CurrentCmd = GIT_COMMAND_FETCH;
+		else
+			m_CurrentCmd = GIT_COMMAND_FETCHANDREBASE;
+		m_GitCmdList.push_back(cmd);
+
+		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
+		if (m_pThread==NULL)
+		{
+		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+		}
+		else
+		{
+			m_pThread->m_bAutoDelete = TRUE;
+			m_pThread->ResumeThread();
+		}
+	}
+
+
 	
 }
 
@@ -226,11 +255,50 @@ void CSyncDlg::PullComplete()
 	}
 }
 
+void CSyncDlg::FetchComplete()
+{
+	EnableControlButton(true);
+	SwitchToInput();
+	this->FetchOutList(true);
+
+	ShowTab(IDC_CMD_LOG);
+	if( (!this->m_GitCmdStatus) && this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
+	{
+		CRebaseDlg dlg;
+		dlg.m_PostButtonText=_T("Email &Patch...");
+		int response = dlg.DoModal();
+		if(response == IDOK)
+		{
+			return ;
+		}
+
+		if(response == IDC_REBASE_POST_BUTTON)
+		{
+			CString cmd,out;
+			cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+					g_Git.m_CurrentDir,
+					dlg.m_Upstream,dlg.m_Branch);
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				return ;
+			}
+
+			CAppUtils::SendPatchMail(cmd,out);
+		}
+	}
+}
 
 void CSyncDlg::OnBnClickedButtonPush()
 {
 	// TODO: Add your control notification handler code here
 	this->UpdateData();
+
+	if(this->m_strURL.IsEmpty())
+	{
+		CMessageBox::Show(NULL,_T("URL can't Empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return;
+	}
 
 	this->m_regPushButton=this->m_ctrlPush.GetCurrentEntry();
 	this->SwitchToRun();
@@ -244,7 +312,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	CString force;
 	CString all;
 
-	UpateCombox();
+	UpdateCombox();
 
 	switch (m_ctrlPush.GetCurrentEntry())
 	{
@@ -552,13 +620,13 @@ BOOL CSyncDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 	// TODO:  Add extra initialization here
 
-	this->m_ctrlPush.AddEntry(CString(_T("Push")));
-	this->m_ctrlPush.AddEntry(CString(_T("Push tags")));
+	this->m_ctrlPush.AddEntry(CString(_T("Pus&h")));
+	this->m_ctrlPush.AddEntry(CString(_T("Push ta&gs")));
 	///this->m_ctrlPush.AddEntry(CString(_T("Push All")));
 
 	this->m_ctrlPull.AddEntry(CString(_T("&Pull")));
-	this->m_ctrlPull.AddEntry(CString(_T("&Fetch")));
-	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Rebase")));
+	this->m_ctrlPull.AddEntry(CString(_T("Fetc&h")));
+	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base")));
 
 	
 	WorkingDir.Replace(_T(':'),_T('_'));
@@ -578,6 +646,11 @@ BOOL CSyncDlg::OnInitDialog()
 	this->SetWindowText(str);
 
 	EnableSaveRestore(_T("SyncDlg"));
+
+	this->m_ctrlURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\SyncURL\\"))+WorkingDir, _T("url"));
+		
+	m_ctrlURL.SetCurSel(0);
+	m_ctrlRemoteBranch.SetCurSel(0);
 
 	this->LoadBranchInfo();
 
@@ -733,6 +806,10 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			PullComplete();
 		}
+		if(this->m_CurrentCmd == GIT_COMMAND_FETCH || this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
+		{
+			FetchComplete();
+		}
 	}
 
 	if(lParam != 0)
@@ -795,4 +872,13 @@ void CSyncDlg::OnBnClickedButtonCommit()
     proc += g_Git.m_CurrentDir;
     
 	CAppUtils::LaunchApplication(proc,IDS_ERROR_CANNON_FIND_TORTOISEPROC,false);
+}
+
+void CSyncDlg::OnOK()
+{
+	// TODO: Add your specialized code here and/or call the base class
+	UpdateCombox();
+	m_ctrlURL.SaveHistory();
+	SaveHistory();
+	__super::OnOK();
 }
