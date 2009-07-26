@@ -92,7 +92,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort)
+UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<TCHAR>*pdata)
 {
 	UINT ret=0;
 
@@ -101,6 +101,9 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
 
+	if(pdata)
+		pdata->clear();
+		 
 	for(int i=0;i<cmdlist.size();i++)
 	{
 		if(cmdlist[i].IsEmpty())
@@ -111,7 +114,14 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 			CString str;
 			str+= cmdlist[i]+_T("\n\n");
 			for(int j=0;j<str.GetLength();j++)
-				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
+			{
+				if(pdata)
+					pdata->push_back(str[j]);
+				else
+					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
+			}
+			if(pdata)
+				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
 		g_Git.RunAsync(cmdlist[i],&pi, &hRead,pfilename);
@@ -122,7 +132,15 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		while(ReadFile(hRead,buffer,1,&readnumber,NULL))
 		{
 			buffer[readnumber]=0;
-			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,(TCHAR)buffer[0]);
+			
+			if(pdata)
+			{
+				pdata->push_back((TCHAR)buffer[0]);
+
+				if(buffer[0] == '\r' || buffer[0] == '\n')
+					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
+			}else
+				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,buffer[0]);
 		}
 	
 		CloseHandle(pi.hThread);
@@ -164,7 +182,7 @@ UINT CProgressDlg::ProgressThread()
 	else
 		pfilename=&m_LogFile;	
 
-	m_GitStatus = RunCmdList(this,m_GitCmdList,m_bShowCommand,pfilename,&m_bAbort);;
+	m_GitStatus = RunCmdList(this,m_GitCmdList,m_bShowCommand,pfilename,&m_bAbort,&this->m_Databuf);;
 	return 0;
 }
 
@@ -172,11 +190,15 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 {
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
+		m_BufStart = 0 ;
 		m_Animate.Play(0,-1,-1);
 		this->DialogEnableWindow(IDOK,FALSE);
 	}
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		m_BufStart=0;
+		this->m_Databuf.clear();
+
 		m_bDone = true;
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
@@ -202,7 +224,14 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			DialogEnableWindow(IDCANCEL, FALSE);
 	}
 
-	if(lParam != 0)
+	if(lParam == 0)
+	{
+		for(int i=this->m_BufStart;i<this->m_Databuf.size();i++)
+		{
+			ParserCmdOutput(this->m_Databuf[m_BufStart]);
+			m_BufStart++;
+		}
+	}else
 		ParserCmdOutput((TCHAR)lParam);
 
 	return 0;

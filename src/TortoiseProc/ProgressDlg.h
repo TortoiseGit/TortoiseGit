@@ -55,13 +55,15 @@ protected:
 
 	void		OnCancel();
 
+	std::vector<TCHAR> m_Databuf;
+	int			m_BufStart;
 	
 	DECLARE_MESSAGE_MAP()
 public:
 
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
-	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort);
+	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<TCHAR> *pdata=NULL);
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
