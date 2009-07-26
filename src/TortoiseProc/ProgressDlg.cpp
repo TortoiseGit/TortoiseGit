@@ -15,6 +15,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 {
 	m_pThread = NULL;
 	m_bAltAbortPress=false;
+	m_bBufferAll=false;
 }
 
 CProgressDlg::~CProgressDlg()
@@ -196,6 +197,12 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	}
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		if(m_bBufferAll)
+		{
+			m_Databuf.push_back(0);
+			InsertCRLF();
+			m_Log.SetWindowText(&m_Databuf[0]);
+		}
 		m_BufStart=0;
 		this->m_Databuf.clear();
 
@@ -224,16 +231,18 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			DialogEnableWindow(IDCANCEL, FALSE);
 	}
 
-	if(lParam == 0)
+	if(!m_bBufferAll)
 	{
-		for(int i=this->m_BufStart;i<this->m_Databuf.size();i++)
+		if(lParam == 0)
 		{
-			ParserCmdOutput(this->m_Databuf[m_BufStart]);
-			m_BufStart++;
-		}
-	}else
-		ParserCmdOutput((TCHAR)lParam);
-
+			for(int i=this->m_BufStart;i<this->m_Databuf.size();i++)
+			{
+				ParserCmdOutput(this->m_Databuf[m_BufStart]);
+				m_BufStart++;
+			}
+		}else
+			ParserCmdOutput((TCHAR)lParam);
+	}
 	return 0;
 }
 
@@ -324,4 +333,19 @@ void CProgressDlg::OnCancel()
 	}
 	
 	m_bAbort = true;
+}
+
+void CProgressDlg::InsertCRLF()
+{
+	for(int i=0;i<m_Databuf.size();i++)
+	{
+		if(m_Databuf[i]==_T('\n'))
+		{
+			if(i==0 || m_Databuf[i-1]!= _T('\r'))
+			{
+				m_Databuf.insert(m_Databuf.begin()+i,_T('\r'));
+				i++;
+			}
+		}
+	}
 }

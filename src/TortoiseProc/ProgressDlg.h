@@ -42,6 +42,7 @@ public:
 	bool			m_bAbort;
 	bool			m_bDone;
 	bool			m_bAltAbortPress;
+	bool			m_bBufferAll;   // Buffer All to improve speed when there are many file add at commit 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	static UINT ProgressThreadEntry(LPVOID pVoid);
@@ -58,6 +59,8 @@ protected:
 	std::vector<TCHAR> m_Databuf;
 	int			m_BufStart;
 	
+	void InsertCRLF(); //Insert \r before \n
+
 	DECLARE_MESSAGE_MAP()
 public:
 

@@ -509,6 +509,7 @@ void CCommitDlg::OnOK()
 		cmd.Format(_T("git.exe commit %s -F \"%s\""),amend, tempfile);
 		
 		CProgressDlg progress;
+		progress.m_bBufferAll=true; // improve show speed when there are many file added. 
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
