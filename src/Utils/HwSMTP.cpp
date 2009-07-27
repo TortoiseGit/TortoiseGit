@@ -208,11 +208,11 @@ BOOL CHwSMTP::SendSpeedEmail
 		pNext=pDnsRecord;
 		while(pNext)
 		{
-		
-			if(SendEmail(pNext->Data.MX.pNameExchange,NULL,NULL,false,
-				lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
-				25,pSend,lpszAddrTo))
-				break;
+			if(pNext->wType == DNS_TYPE_MX) 
+				if(SendEmail(pNext->Data.MX.pNameExchange,NULL,NULL,false,
+					lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
+					25,pSend,lpszAddrTo))
+					break;
 			pNext=pNext->pNext;
 		}
 		if(pNext == NULL)
@@ -960,23 +960,23 @@ CString FormatDateTime ( COleDateTime &DateTime, LPCTSTR pFormat )
 	{
 		return _T("");
 	}
+
+	TCHAR *weeks[]={_T("Sun"),_T("Mon"),_T("Tue"),_T("Wen"),_T("Thu"),_T("Fri"),_T("Sat")};
+	TCHAR *month[]={_T("JAN"),_T("FEB"),_T("MAR"),_T("APR"),
+				   _T("MAY"),_T("JUN"),_T("JUL"),_T("AUG"),
+				   _T("SEP"),_T("OCT"),_T("NOV"),_T("DEC")};
 	
-	struct tm tmTemp;
-	tmTemp.tm_sec	= ud.st.wSecond;
-	tmTemp.tm_min	= ud.st.wMinute;
-	tmTemp.tm_hour	= ud.st.wHour;
-	tmTemp.tm_mday	= ud.st.wDay;
-	tmTemp.tm_mon	= ud.st.wMonth - 1;
-	tmTemp.tm_year	= ud.st.wYear - 1900;
-	tmTemp.tm_wday	= ud.st.wDayOfWeek;
-	tmTemp.tm_yday	= ud.wDayOfYear - 1;
-	tmTemp.tm_isdst	= 0;
+	TIME_ZONE_INFORMATION stTimeZone;
+	GetTimeZoneInformation(&stTimeZone);
 	
 	CString strDate;
-	LPTSTR lpszTemp = strDate.GetBufferSetLength(256);
-	_tcsftime(lpszTemp, strDate.GetLength(), pFormat, &tmTemp);
-	strDate.ReleaseBuffer();
-	
+	strDate.Format(_T("%s, %d %s %02d %d:%d:%d %c%04d")
+		,weeks[ud.st.wDayOfWeek],
+		ud.st.wDay,month[ud.st.wMonth-1],ud.st.wYear%100,ud.st.wHour,
+		ud.st.wMinute,ud.st.wSecond,
+		stTimeZone.Bias>0?_T('-'):_T('+'),
+		abs(stTimeZone.Bias*10/6)
+		);
 	return strDate;
 }
 
