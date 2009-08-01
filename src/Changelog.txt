@@ -1,3 +1,49 @@
+= Release 0.9.1.0 =
+== Features ==
+ 
+ * Add Sync Dialog like TortoiseHg. 
+   Put pull, fetch, push, apply patch and email patch together. You can Know what change pull and push. Show changed file list. 
+ 
+ * Enhance Rebase dialog. Add force rebase checkbox. Disable start button when no item rebase. Don't show merge commit
+ 
+ * Add post action button for rebase dialog. Such as send patch by email
+   After rebase, you can click button to send patch email directly. 
+ 
+ * Add  launch rebase option at fetch dialog.
+ 
+ * Improve push dialog.
+   Default settings from local repositories pushing to remote repository Choose track remote and remote branch! Add short-cut at push dialog
+   Add "F5" refresh remote and branch info at push dialog
+ 
+ * Add Clean Untracked version type
+   User can choose clean untracked file, clean ignore file, clean all.
+   
+ * Enhancement: "Git Clone" from SVN repository with additional start revision number option (-r xxx:HEAD) 
+ 
+ * Improve Commit dialog
+   Add recent message back to context menu.
+   The "Message" field of the Commit dialog should have a shortcut key (Alt-M is a good choice)
+   Make "Whole project" directory checked by default when the user commits in the root of the project. 
+   When using "Commit" to also add files, if you forget to check the new files and press "Ok", you get the dialog "Nothing Commit" and then the whole Commit dialog closes. Keep the dialog open after this message.
+
+   
+ * Improve setting dialog
+   Settings: Git -> Remote: When creating the first remote, the "Remote" should have "origin" as default.
+   Fix setting dialog remote page tab order 
+   Push: When you press "Manage" under Destinations, the Settings dialog opening should have "Git -> Remote" selected by default.
+      
+== Bug Fix ==
+ * Fixed issue #124: Incorrect Date header in patch e-mail
+ * Fixed issue #122: Garbage text in "Git Command Progress" / suspected buffer overflow Improve commit speed when many added files.
+ * Fixed issue #121: Refresh in "Check for modifications" dialog duplicates added state entries when new repository
+ * Fixed issue #71: (TortoiseProc problem)Icon Overlays don't work in root of drive When m_CurrentDir =C:\, not C:,  pathlist calulate wrong.
+ * Fixed issue #116: SVN Rebase doesn't work
+ * Fixed issue #115: Windows XP: Initial "Git Clone..." from SVN Repository doesn't work
+ * Fix "ESC" = "push" when after commit and Add Alt-P  for Push
+ * Fixed issue #111: Undo Add does not work (keep added file) and enable "F5" at revert dialog
+ * Fixed issue #109: clone on bare local repository fails Clear trail slash \ or/
+ * Fixed issue #104: Doubleclicking changed submodule dir in Check For Modifications dlg, crashes TGit Fix log dialog double click submodule problem
+ 
 = Release 0.8.1.0 =
 == Features ==
 
