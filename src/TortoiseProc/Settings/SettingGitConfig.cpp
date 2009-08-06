@@ -8,6 +8,7 @@
 #include "Settings.h"
 #include "GitAdminDir.h"
 #include "MessageBox.h"
+#include "ProjectProperties.h"
 // CSettingGitConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
@@ -17,6 +18,8 @@ CSettingGitConfig::CSettingGitConfig()
     , m_UserName(_T(""))
     , m_UserEmail(_T(""))
     , m_bGlobal(FALSE)
+	, m_bAutoCrlf(FALSE)
+	, m_bSafeCrLf(FALSE)
 {
 
 }
@@ -27,10 +30,12 @@ CSettingGitConfig::~CSettingGitConfig()
 
 void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 {
-    CPropertyPage::DoDataExchange(pDX);
-    DDX_Text(pDX, IDC_GIT_USERNAME, m_UserName);
-    DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
-    DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
+	CPropertyPage::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_GIT_USERNAME, m_UserName);
+	DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
+	DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
+	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
+	DDX_Check(pDX, IDC_CHECK_SAFECRLF, m_bSafeCrLf);
 }
 
 
@@ -38,6 +43,8 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
     ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
     ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnEnChangeGitUsername)
     ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
+	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
+	ON_BN_CLICKED(IDC_CHECK_SAFECRLF, &CSettingGitConfig::OnBnClickedCheckSafecrlf)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitConfig::OnInitDialog()
@@ -46,7 +53,10 @@ BOOL CSettingGitConfig::OnInitDialog()
 
 	m_UserName=g_Git.GetUserName();
 	m_UserEmail=g_Git.GetUserEmail();
-	
+
+	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf,_T("core.autocrlf"));
+	ProjectProperties::GetBOOLProps(this->m_bSafeCrLf, _T("core.safecrlf"));
+
 	CString str=((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	CString proj;
 	if(	g_GitAdminDir.HasAdminDir(str,&proj) )
@@ -115,6 +125,32 @@ BOOL CSettingGitConfig::OnApply()
 		return FALSE;
 	}
 
+	out.Empty();
+	cmd.Format(_T("git.exe config %s core.autocrlf \"%s\""),global,this->m_bAutoCrlf?_T("true"):_T("false"));
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return FALSE;
+	}
+
+	out.Empty();
+	cmd.Format(_T("git.exe config %s core.safecrlf \"%s\""),global,this->m_bSafeCrLf?_T("true"):_T("false"));
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return FALSE;
+	}
     SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
+}
+void CSettingGitConfig::OnBnClickedCheckAutocrlf()
+{
+	// TODO: Add your control notification handler code here
+	SetModified();
+}
+
+void CSettingGitConfig::OnBnClickedCheckSafecrlf()
+{
+	// TODO: Add your control notification handler code here
+	SetModified();
 }

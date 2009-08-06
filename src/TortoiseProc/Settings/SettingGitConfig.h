@@ -30,4 +30,8 @@ public:
     afx_msg void OnBnClickedCheckGlobal();
     afx_msg void OnEnChangeGitUsername();
     afx_msg void OnEnChangeGitUseremail();
+	BOOL m_bAutoCrlf;
+	BOOL m_bSafeCrLf;
+	afx_msg void OnBnClickedCheckAutocrlf();
+	afx_msg void OnBnClickedCheckSafecrlf();
 };
