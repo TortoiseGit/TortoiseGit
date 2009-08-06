@@ -2291,8 +2291,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				if ((m_dwContextMenus & SVNSLC_POPRESOLVE)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
-					//popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
-					//popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
+					popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
+					popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
 				}
 				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)||(m_dwContextMenus & SVNSLC_POPRESOLVE))
 					popup.AppendMenu(MF_SEPARATOR);
@@ -2852,6 +2852,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				CAppUtils::ConflictEdit(*filepath);
 				break;
 			}
+			case IDSVNLC_RESOLVETHEIRS: //follow up 
+			case IDSVNLC_RESOLVEMINE:   //follow up
 			case IDSVNLC_RESOLVECONFLICT:
 			{
 				if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
@@ -2864,14 +2866,35 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CTGitPath * fentry =(CTGitPath*) this->GetItemData(index);
 						if(fentry == NULL)
 							continue;
+						CString gitcmd,output;
+						output.Empty();
+						if ( cmd == IDSVNLC_RESOLVETHEIRS)
+						{
+							gitcmd.Format(_T("git.exe cat-file blob \":3:%s\""),fentry->GetGitPathString());
+							if(g_Git.RunLogFile(gitcmd,(CString&)fentry->GetWinPathString()))
+							{
+								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
+								continue;
+							}
+						}
+						output.Empty();
+						if ( cmd == IDSVNLC_RESOLVEMINE)
+						{
+							gitcmd.Format(_T("git.exe cat-file blob \":2:%s\""),fentry->GetGitPathString());
+							if(g_Git.RunLogFile(gitcmd,(CString&)fentry->GetWinPathString()))
+							{
+								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
+								continue;
+							}
 
+						}
+						output.Empty();
 						if ( fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 						{
-							CString cmd,output;
-							cmd.Format(_T("git.exe add \"%s\""),fentry->GetGitPathString());
-							if(g_Git.Run(cmd,&output,CP_ACP))
+							gitcmd.Format(_T("git.exe add \"%s\""),fentry->GetGitPathString());
+							if(g_Git.Run(gitcmd,&output,CP_ACP))
 							{
-								CMessageBox::Show(m_hWnd, output, _T("TortoiseSVN"), MB_ICONERROR);
+								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
 							}else
 							{
 								fentry->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
