@@ -1,9 +1,9 @@
-[submodule "ext/igit"]
-	path = ext/igit
-	url = git://repo.or.cz/git/mingw/4msysgit/wingit-dll.git
 [submodule "ext/apr-util"]
 	path = ext/apr-util
 	url = git://git.apache.org/apr-util.git
 [submodule "ext/apr"]
 	path = ext/apr
 	url = git://git.apache.org/apr.git
+[submodule "ext/tgit"]
+	path = ext/tgit
+	url = git://repo.or.cz/tgit.git
