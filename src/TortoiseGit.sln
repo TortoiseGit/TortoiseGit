@@ -105,6 +105,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libaprutil", "..\ext\build\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseIDiff", "TortoiseIDiff\TortoiseIDiff.vcproj", "{6D95829D-AE04-47A7-B66B-DC2F581DDF01}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TGit", "TGit", "{2CB340C3-B2ED-46F4-981E-847747E0A3BF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit", "..\ext\tgit\contrib\vcbuild\libgit\libgit.vcproj", "{F6DEC8C3-B803-4A86-8848-430F08B499E3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "git", "..\ext\tgit\contrib\vcbuild\git\git.vcproj", "{E3E30E51-C5AD-407B-AB43-985E4111474A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3} = {F6DEC8C3-B803-4A86-8848-430F08B499E3}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		debug_static|Win32 = debug_static|Win32
@@ -450,8 +459,36 @@ Global
 		{6D95829D-AE04-47A7-B66B-DC2F581DDF01}.Release|Win32.Build.0 = Release|Win32
 		{6D95829D-AE04-47A7-B66B-DC2F581DDF01}.Release|x64.ActiveCfg = Release|x64
 		{6D95829D-AE04-47A7-B66B-DC2F581DDF01}.Release|x64.Build.0 = Release|x64
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.debug_static|Win32.ActiveCfg = Debug|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.debug_static|Win32.Build.0 = Debug|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.debug_static|x64.ActiveCfg = Debug|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.Debug|Win32.Build.0 = Debug|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.Debug|x64.ActiveCfg = Debug|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.release_static|Win32.ActiveCfg = Release|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.release_static|Win32.Build.0 = Release|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.release_static|x64.ActiveCfg = Release|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.Release|Win32.ActiveCfg = Release|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.Release|Win32.Build.0 = Release|Win32
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3}.Release|x64.ActiveCfg = Release|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.debug_static|Win32.ActiveCfg = Debug|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.debug_static|Win32.Build.0 = Debug|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.debug_static|x64.ActiveCfg = Debug|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.Debug|Win32.Build.0 = Debug|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.Debug|x64.ActiveCfg = Debug|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.release_static|Win32.ActiveCfg = Release|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.release_static|Win32.Build.0 = Release|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.release_static|x64.ActiveCfg = Release|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.Release|Win32.ActiveCfg = Release|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.Release|Win32.Build.0 = Release|Win32
+		{E3E30E51-C5AD-407B-AB43-985E4111474A}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F6DEC8C3-B803-4A86-8848-430F08B499E3} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
+		{E3E30E51-C5AD-407B-AB43-985E4111474A} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
 	EndGlobalSection
 EndGlobal

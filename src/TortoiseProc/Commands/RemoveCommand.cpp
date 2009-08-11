@@ -130,7 +130,7 @@ bool RemoveCommand::Execute()
 		format= _T("git.exe update-index --force-remove -- \"%s\"");
 	}else
 	{
-		format=_T("git.exe rm -r -f \"%s\"");
+		format=_T("git.exe rm -r -f -- \"%s\"");
 	}
 
 	CString output;

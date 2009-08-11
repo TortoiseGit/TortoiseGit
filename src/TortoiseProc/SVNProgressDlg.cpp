@@ -1816,7 +1816,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
 		CString cmd,out;
-		cmd.Format(_T("git.exe add -f \"%s\""),m_targetPathList[i].GetGitPathString());
+		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -2367,7 +2367,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
 		CString cmd,out,tempmergefile;
-		cmd.Format(_T("git.exe add -f \"%s\""),m_targetPathList[i].GetGitPathString());
+		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);

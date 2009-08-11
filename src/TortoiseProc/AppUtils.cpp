@@ -1449,9 +1449,9 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 			CString cmd,out;
 			if(dlg.m_bIsDelete)
 			{
-				cmd.Format(_T("git.exe rm \"%s\""),merge.GetGitPathString());
+				cmd.Format(_T("git.exe rm -- \"%s\""),merge.GetGitPathString());
 			}else
-				cmd.Format(_T("git.exe add \"%s\""),merge.GetGitPathString());
+				cmd.Format(_T("git.exe add -- \"%s\""),merge.GetGitPathString());
 
 			if(g_Git.Run(cmd,&out,CP_ACP))
 			{

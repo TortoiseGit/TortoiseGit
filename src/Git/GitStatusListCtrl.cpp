@@ -2749,7 +2749,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if(path == NULL)
 							continue;
 						CString cmd;
-						cmd.Format(_T("git.exe add \"%s\""),path->GetGitPathString());
+						cmd.Format(_T("git.exe add -- \"%s\""),path->GetGitPathString());
 						CString output;
 						if(!g_Git.Run(cmd,&output,CP_ACP))
 						{
@@ -2891,7 +2891,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						output.Empty();
 						if ( fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 						{
-							gitcmd.Format(_T("git.exe add \"%s\""),fentry->GetGitPathString());
+							gitcmd.Format(_T("git.exe add -- \"%s\""),fentry->GetGitPathString());
 							if(g_Git.Run(gitcmd,&output,CP_ACP))
 							{
 								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
@@ -3317,6 +3317,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										{
 											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
 											SetEntryCheck(path,nItem,false);
+											PrepareGroups(true);
 											SetItemGroup(nItem,1);
 											this->m_StatusFileList.RemoveItem(*path);
 											this->m_UnRevFileList.AddPath(*path);
