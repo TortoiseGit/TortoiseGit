@@ -378,7 +378,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		case ID_CHERRY_PICK:
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(NULL,_T("Cherry Pick Require Clean Working Tree"),_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(NULL,_T("Cherry Pick requires a clean working tree"),_T("TortoiseGit"),MB_OK);
 			
 			}else
 			{
@@ -402,7 +402,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		case ID_REBASE_TO_VERSION:
 			if(!g_Git.CheckCleanWorkTree())
 			{
-				CMessageBox::Show(NULL,_T("Rebase Require Clean Working Tree"),_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(NULL,_T("Rebase requires a clean working tree"),_T("TortoiseGit"),MB_OK);
 			
 			}else
 			{
