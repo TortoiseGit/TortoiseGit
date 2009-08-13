@@ -1165,7 +1165,7 @@ int CGit::Revert(CTGitPath &path,bool keep)
 	}
 	else if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED )
 	{
-		cmd.Format(_T("git.exe mv \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
+		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 		

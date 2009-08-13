@@ -52,7 +52,7 @@ bool RenameCommand::Execute()
 
 	CString cmd;
 	CString output;
-	cmd.Format(_T("git.exe mv \"%s\" \"%s\""),
+	cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),
 					cmdLinePath.GetGitPathString(),
 					sNewName);
 									

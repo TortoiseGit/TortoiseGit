@@ -92,7 +92,7 @@ bool DropMoveCommand::Execute()
 		} 
 		CString cmd,out;
 		
-		cmd.Format(_T("git.exe mv \"%s\" \"%s\""),pathList[nPath].GetGitPathString(),destPath.GetGitPathString());
+		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),pathList[nPath].GetGitPathString(),destPath.GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 		{
 			if (CMessageBox::Show(hwndExplorer, out, _T("TortoiseGit"), MB_YESNO)==IDYES)
