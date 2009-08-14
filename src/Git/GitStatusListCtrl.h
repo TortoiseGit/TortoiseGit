@@ -519,6 +519,14 @@ public:
         bool operator() ( const CTGitPath* entry1
                         , const CTGitPath* entry2) const;
 
+		static int A2L(const CString &str)
+		{
+			if(str==_T("-"))
+				return -1;
+			else
+				return _ttol(str);
+		}
+
     private:
 
         ColumnManager* columnManager;

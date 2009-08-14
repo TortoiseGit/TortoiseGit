@@ -970,84 +970,86 @@ bool CGitStatusListCtrl::CSorter::operator()
 //				result = entry1->last_commit_author.CompareNoCase(entry2->last_commit_author);
 			}
 		}
-	case 11:
+	case 11: //Del Number
 		{
 			if (result == 0)
 			{
 //				result = entry1->lock_comment.CompareNoCase(entry2->lock_comment);
+				result = A2L(entry1->m_StatDel)-A2L(entry2->m_StatDel);
 			}
 		}
-	case 10:
+	case 10: //Add Number
 		{
 			if (result == 0)
 			{
-//				result = entry1->lock_owner.CompareNoCase(entry2->lock_owner);
+				//result = entry1->lock_owner.CompareNoCase(entry2->lock_owner);
+				result = A2L(entry1->m_StatAdd)-A2L(entry2->m_StatAdd);
 			}
 		}
-	case 9:
+	case 9:  //Modification Data
 		{
 			if (result == 0)
 			{
 //				result = entry1->url.CompareNoCase(entry2->url);
 			}
 		}
-	case 8:
+	case 8: //Data
 		{
 			if (result == 0)
 			{
 //				result = entry1->remotepropstatus - entry2->remotepropstatus;
 			}
 		}
-	case 7:
+	case 7: // Version
 		{
 			if (result == 0)
 			{
 //				result = entry1->remotetextstatus - entry2->remotetextstatus;
 			}
 		}
-	case 6:
+	case 6:  // Author
 		{
 			if (result == 0)
 			{
 //				result = entry1->propstatus - entry2->propstatus;
 			}
 		}
-	case 5:
+	case 5: //Prop Status
 		{
 			if (result == 0)
 			{
 //				result = entry1->textstatus - entry2->textstatus;
 			}
-		}
-	case 4:
+		} 
+	case 4: //Text Status
 		{
 			if (result == 0)
 			{
 	//			result = entry1->remotestatus - entry2->remotestatus;
 			}
 		}
-	case 3:
+	case 3: // Status
 		{
 			if (result == 0)
 			{
-	//			result = entry1->status - entry2->status;
+				result = entry1->GetActionName(entry1->m_Action).CompareNoCase(entry2->GetActionName(entry2->m_Action));
 			}
 		}
-	case 2:
+	case 2:  //Ext file 
 		{
 			if (result == 0)
 			{
 				result = entry1->GetFileExtension().CompareNoCase(entry2->GetFileExtension());
 			}
 		}
-	case 1:
+	case 1:    // File name
 		{
 			if (result == 0)
 			{
 				result = entry1->GetFileOrDirectoryName().CompareNoCase(entry2->GetFileOrDirectoryName());
 			}
 		}
-	case 0:		// path column
+	case 0:		// Full path column
 		{
 			if (result == 0)
 			{

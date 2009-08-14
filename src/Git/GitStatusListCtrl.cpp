@@ -1047,6 +1047,13 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
 		}
 	}
+
+	if( m_nSortedColumn )
+	{
+		CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
+		std::sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
+	}
+
 	int index =0;
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
