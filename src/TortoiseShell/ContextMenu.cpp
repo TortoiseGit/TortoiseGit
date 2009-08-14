@@ -63,7 +63,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	ITEMIS_INSVN|ITEMIS_GITSVN, 0, ITEMIS_FOLDERINSVN|ITEMIS_GITSVN, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuGitSVNRebase,				MENUSVNREBASE,		IDI_REBASE,				IDS_MENUSVNREBASE,				IDS_MENUSVNREBASE_DESC,
-	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_GITSVN, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE|ITEMIS_GITSVN, 0, 0, 0, 0, 0},
+	ITEMIS_INSVN|ITEMIS_GITSVN, 0, ITEMIS_FOLDERINSVN|ITEMIS_GITSVN, 0, 0, 0, 0, 0},
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
@@ -93,7 +93,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	ITEMIS_INSVN|ITEMIS_ONLYONE, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0},
 
 	{ ShellMenuRebase,					    MENUREBASE,			IDI_REBASE,				IDS_MENUREBASE,				IDS_MENUREBASE,
-	ITEMIS_INSVN|ITEMIS_ONLYONE, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, 0, 0, 0, 0, 0},
+	ITEMIS_INSVN, 0, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0},
 
 //	{ ShellMenuRevisionGraph,				MENUREVISIONGRAPH,	IDI_REVISIONGRAPH,		IDS_MENUREVISIONGRAPH,		IDS_MENUDESCREVISIONGRAPH,
 //	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, ITEMIS_FOLDER|ITEMIS_FOLDERINSVN|ITEMIS_ONLYONE, ITEMIS_ADDED, 0, 0, 0, 0},
@@ -393,6 +393,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									itemStates |= ITEMIS_SUBMODULE;
 								}
 							}
+							if (askedpath.HasGitSVNDir())
+								itemStates |= ITEMIS_GITSVN;
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
@@ -506,6 +508,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									itemStates |= ITEMIS_SUBMODULE;
 								}
 							}
+							
+							if (strpath.HasGitSVNDir())
+								itemStates |= ITEMIS_GITSVN;		
+
 							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 								itemStates |= ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
@@ -527,6 +533,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 //									}
 //								}
 							}
+					
 							if (status == git_wc_status_normal)
 								itemStates |= ITEMIS_NORMAL;
 							if (status == git_wc_status_conflicted)
@@ -609,6 +616,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				}
 				
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+				if (askedpath.HasGitSVNDir())
+					itemStatesFolder |= ITEMIS_GITSVN;							
 				if (askedpath.HasAdminDir())
 					itemStatesFolder |= ITEMIS_INSVN;
 				if (status == git_wc_status_normal)
@@ -700,6 +709,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 				if (askedpath.HasAdminDir())
 					itemStates |= ITEMIS_FOLDERINSVN;
+				if (askedpath.HasGitSVNDir())
+					itemStates |= ITEMIS_GITSVN;
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
 				itemStates |= ITEMIS_FOLDER;
@@ -707,6 +718,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					itemStates |= ITEMIS_ADDED;
 				if (status == git_wc_status_deleted)
 					itemStates |= ITEMIS_DELETED;
+
 			}
 		}
 	
