@@ -845,6 +845,14 @@ BOOL CGit::CheckMsysGitDir()
 	if(!sshclient.IsEmpty())
 	{
 		_tputenv_s(_T("GIT_SSH"),sshclient);
+		
+		//Setup SVN_SSH
+		CString ssh=sshclient;
+		ssh.Replace(_T("/"),_T("\\"));
+		ssh.Replace(_T("\\"),_T("\\\\"));
+		ssh=CString(_T("\""))+ssh+_T('\"');
+		_tputenv_s(_T("SVN_SSH"),ssh);
+
 	}else
 	{
 		TCHAR sPlink[MAX_PATH];
@@ -853,6 +861,13 @@ BOOL CGit::CheckMsysGitDir()
 		if (ptr) {
 			_tcscpy(ptr + 1, _T("TortoisePlink.exe"));
 			_tputenv_s(_T("GIT_SSH"), sPlink);
+
+			//Setup SVN_SSH
+			CString ssh=sPlink;
+			ssh.Replace(_T("/"),_T("\\"));
+			ssh.Replace(_T("\\"),_T("\\\\"));
+			ssh=CString(_T("\""))+ssh+_T('\"');
+			_tputenv_s(_T("SVN_SSH"),ssh);
 		}
 	}
 
