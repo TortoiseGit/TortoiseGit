@@ -444,6 +444,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
 				cmd += _T(" /command:formatpatch");
 
+				cmd += _T(" /path:")+g_Git.m_CurrentDir+_T(" ");
+
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = NULL;
 				if(select == 1)
