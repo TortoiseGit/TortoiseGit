@@ -839,6 +839,32 @@ BOOL CGit::CheckMsysGitDir()
 	CString str;
 
 #ifndef _TORTOISESHELL
+	//set http_proxy
+	CString regServeraddress_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-host"), _T(""));
+	CString regServerport_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-port"), _T(""));
+	CString regUsername_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-username"), _T(""));
+	CString regPassword_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-password"), _T(""));
+	CString regTimeout_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-timeout"), _T(""));
+	CString regExceptions_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-exceptions"), _T(""));
+
+	CString http_proxy;
+	if(!regServeraddress_copy.IsEmpty())
+	{
+		http_proxy=_T("http://");
+		if(!regUsername_copy.IsEmpty())
+		{
+			http_proxy += regUsername_copy;
+			http_proxy += _T(":")+regPassword_copy;
+			http_proxy += _T("@");
+		}
+		http_proxy+=regServeraddress_copy;
+		if(!regServerport_copy.IsEmpty())
+		{
+			http_proxy +=_T(":")+regServerport_copy;
+		}
+		_tputenv_s(_T("http_proxy"),http_proxy);
+	}
+	
 	//setup ssh client
 	CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
 
