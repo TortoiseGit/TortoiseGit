@@ -2976,7 +2976,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							CString temp;
 							temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
-							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 							break;
 						}
 						if (GetCheck(selIndex))
@@ -3147,7 +3147,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							CString temp;
 							temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
-							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
 						}
 						else
 						{
@@ -3301,7 +3301,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						if (g_Git.Revert(targetList))
 						{
-							CMessageBox::Show(this->m_hWnd, _T("Revert Fail"), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(this->m_hWnd, _T("Revert Fail"), _T("TortoiseGit"), MB_ICONERROR);
 						}
 						else
 						{
@@ -3478,19 +3478,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							yes.LoadString(IDS_MSGBOX_YES);
 							no.LoadString(IDS_MSGBOX_NO);
 							yestoall.LoadString(IDS_PROC_YESTOALL);
-							UINT ret = CMessageBox::Show(m_hWnd, msg, _T("TortoiseSVN"), 2, IDI_ERROR, yes, no, yestoall);
+							UINT ret = CMessageBox::Show(m_hWnd, msg, _T("TortoiseGit"), 2, IDI_ERROR, yes, no, yestoall);
 							if ((ret == 1)||(ret==3))
 							{
 								if (!git.Remove(itemsToRemove, TRUE, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000)))
 								{
-									CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+									CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 								}
 								else
 									bSuccess = true;
 							}
 						}
 						else
-							CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 					if (bSuccess)
 					{
@@ -3624,7 +3624,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 					else
 					{
-						CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 					SaveColumnWidths();
 					Show(m_dwShow, 0, m_bShowFolders);
@@ -3696,7 +3696,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										SVN git;
 										if (!git.Move(CTSVNPathList(entry1->GetPath()), entry2->GetPath(), TRUE))
 										{
-											CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+											CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 										}
 										else
 										{
@@ -3772,7 +3772,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 					else
 					{
-						CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 					SetRedraw(TRUE);
 				}
@@ -3835,7 +3835,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 						else
 						{
-							CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 						}
 					}
 					SetRedraw(TRUE);
@@ -5618,7 +5618,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 					}
 					else
 					{
-						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 				}
 				else
@@ -5648,7 +5648,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 					}
 					else
 					{
-						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(m_pSVNStatusListCtrl->m_hWnd, git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 				}
 			}

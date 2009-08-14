@@ -146,7 +146,7 @@ bool RenameCommand::Execute()
 				if (!svn.Move(CTSVNPathList(cmdLinePath), destinationPath, TRUE, sMsg))
 				{
 					TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-					CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 				}
 				else
 					bRet = true;
@@ -170,7 +170,7 @@ bool RenameCommand::Execute()
 					if (!svn.Move(CTSVNPathList(cmdLinePath), destinationPath, TRUE, sMsg))
 					{
 						TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 					}
 					else
 					{
@@ -194,7 +194,7 @@ bool RenameCommand::Execute()
 					}
 					CString sRenameMultipleQuestion;
 					sRenameMultipleQuestion.Format(IDS_PROC_MULTIRENAME, (LPCTSTR)sRenList);
-					UINT idret = CMessageBox::Show(hwndExplorer, sRenameMultipleQuestion, _T("TortoiseSVN"), MB_ICONQUESTION|MB_YESNOCANCEL);
+					UINT idret = CMessageBox::Show(hwndExplorer, sRenameMultipleQuestion, _T("TortoiseGit"), MB_ICONQUESTION|MB_YESNOCANCEL);
 					if (idret == IDYES)
 					{
 						CProgressDlg progress;
@@ -217,7 +217,7 @@ bool RenameCommand::Execute()
 								else
 								{
 									TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-									CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+									CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 									bRet = false;
 								}
 							}
@@ -235,7 +235,7 @@ bool RenameCommand::Execute()
 						if (!svn.Move(CTSVNPathList(cmdLinePath), destinationPath, TRUE, sMsg))
 						{
 							TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 						}
 						else
 						{

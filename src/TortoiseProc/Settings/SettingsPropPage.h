@@ -71,6 +71,6 @@ protected:
     {
     	registryKey = value;
 	    if (registryKey.LastError != ERROR_SUCCESS)
-		    CMessageBox::Show (m_hWnd, registryKey.getErrorString(), _T("TortoiseSVN"), MB_ICONERROR);
+		    CMessageBox::Show (m_hWnd, registryKey.getErrorString(), _T("TortoiseGit"), MB_ICONERROR);
     }
 };

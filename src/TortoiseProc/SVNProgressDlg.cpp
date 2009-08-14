@@ -1577,7 +1577,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 								SVN svn;
 								if (!svn.Cat(data->path, SVNRev(SVNRev::REV_WC), rev, basefile))
 								{
-									CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+									CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 									DialogEnableWindow(IDOK, TRUE);
 									break;
 								}
@@ -1610,7 +1610,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 								SVN svn;
 								if (!svn.Cat(data->path, SVNRev(SVNRev::REV_WC), rev, tempfile))
 								{
-									CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+									CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 									DialogEnableWindow(IDOK, TRUE);
 									break;
 								}
@@ -1663,7 +1663,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 									{
 										if (!svn.Resolve(data->path, result, FALSE))
 										{
-											CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+											CMessageBox::Show(m_hWnd, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 											DialogEnableWindow(IDOK, TRUE);
 											break;
 										}
@@ -1698,7 +1698,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							{
 								CString msg;
 								msg.Format(IDS_SVNPROGRESS_RESOLVED, (LPCTSTR)sResolvedPaths);
-								CMessageBox::Show(m_hWnd, msg, _T("TortoiseSVN"), MB_OK | MB_ICONINFORMATION);
+								CMessageBox::Show(m_hWnd, msg, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 							}
 						}
 						break;

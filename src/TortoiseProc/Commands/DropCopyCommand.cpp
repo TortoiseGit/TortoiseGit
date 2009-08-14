@@ -91,7 +91,7 @@ bool DropCopyCommand::Execute()
 		if (!svn.Copy(CTSVNPathList(sourcePath), fullDropPath, SVNRev::REV_WC, SVNRev()))
 		{
 			TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-			CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 			return FALSE;		//get out of here
 		}
 		else

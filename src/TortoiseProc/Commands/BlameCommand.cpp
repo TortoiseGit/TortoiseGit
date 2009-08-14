@@ -102,7 +102,7 @@ bool BlameCommand::Execute()
 		}
 		else
 		{
-			CMessageBox::Show(hwndExplorer, blame.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(hwndExplorer, blame.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 		}
 	}
 #endif

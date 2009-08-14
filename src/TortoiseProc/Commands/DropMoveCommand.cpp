@@ -100,7 +100,7 @@ bool DropMoveCommand::Execute()
 #if 0
 					if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))
 					{
-						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+						CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 						return FALSE;		//get out of here
 					}
 					CShellUpdater::Instance().AddPathForUpdate(destPath);

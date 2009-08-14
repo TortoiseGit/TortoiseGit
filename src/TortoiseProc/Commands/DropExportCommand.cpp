@@ -40,7 +40,7 @@ bool DropExportCommand::Execute()
 		// remove all svn admin dirs, effectively unversion the 'exported' folder.
 		CString msg;
 		msg.Format(IDS_PROC_EXPORTUNVERSION, (LPCTSTR)droppath);
-		if (CMessageBox::Show(hwndExplorer, msg, _T("TortoiseSVN"), MB_ICONQUESTION|MB_YESNO) == IDYES)
+		if (CMessageBox::Show(hwndExplorer, msg, _T("TortoiseGit"), MB_ICONQUESTION|MB_YESNO) == IDYES)
 		{
 			CProgressDlg progress;
 			progress.SetTitle(IDS_PROC_UNVERSION);
@@ -86,7 +86,7 @@ bool DropExportCommand::Execute()
 				CString sBtn2(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_RENAME));
 				CString sBtn3(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_CANCEL));
 				sMsg.Format(IDS_PROC_OVERWRITEEXPORT, (LPCTSTR)dropper);
-				UINT ret = CMessageBox::Show(hwndExplorer, sMsg, _T("TortoiseSVN"), MB_DEFBUTTON1, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
+				UINT ret = CMessageBox::Show(hwndExplorer, sMsg, _T("TortoiseGit"), MB_DEFBUTTON1, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
 				if (ret==2)
 				{
 					dropper.Format(IDS_PROC_EXPORTFOLDERNAME, (LPCTSTR)droppath, (LPCTSTR)pathList[nPath].GetFileOrDirectoryName());
@@ -101,7 +101,7 @@ bool DropExportCommand::Execute()
 			}
 			if (!svn.Export(pathList[nPath], CTSVNPath(dropper), SVNRev::REV_WC ,SVNRev::REV_WC, FALSE, FALSE, svn_depth_infinity, hwndExplorer, parser.HasKey(_T("extended"))))
 			{
-				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_OK | MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				bRet = false;
 			}
 		}

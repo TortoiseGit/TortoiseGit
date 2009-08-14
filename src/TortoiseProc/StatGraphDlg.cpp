@@ -1290,7 +1290,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 	{
 		// save the graph as an enhanced meta file
 		CMyMetaFileDC wmfDC;
-		wmfDC.CreateEnhanced(NULL, sFilename, NULL, _T("TortoiseSVN\0Statistics\0\0"));
+		wmfDC.CreateEnhanced(NULL, sFilename, NULL, _T("TortoiseGit\0Statistics\0\0"));
 		wmfDC.SetAttribDC(GetDC()->GetSafeHdc());
 		RedrawGraph();
 		m_graph.DrawGraph(wmfDC);
@@ -1421,14 +1421,14 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			dc.DeleteDC();
 			if (!sErrormessage.IsEmpty())
 			{
-				CMessageBox::Show(m_hWnd, sErrormessage, _T("TortoiseSVN"), MB_ICONERROR);
+				CMessageBox::Show(m_hWnd, sErrormessage, _T("TortoiseGit"), MB_ICONERROR);
 			}
 		}
 		catch (CException * pE)
 		{
 			TCHAR szErrorMsg[2048];
 			pE->GetErrorMessage(szErrorMsg, 2048);
-			CMessageBox::Show(m_hWnd, szErrorMsg, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);
 		}
 	}
 }

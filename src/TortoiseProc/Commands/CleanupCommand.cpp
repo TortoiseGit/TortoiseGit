@@ -120,7 +120,7 @@ bool CleanupCommand::Execute()
 		strMessage += tmp;
 		bRet = false;
 	}
-	CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseSVN"), MB_OK | (strFailedPaths.IsEmpty()?MB_ICONINFORMATION:MB_ICONERROR));
+	CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | (strFailedPaths.IsEmpty()?MB_ICONINFORMATION:MB_ICONERROR));
 #endif
 	CShellUpdater::Instance().Flush();
 	return bRet;

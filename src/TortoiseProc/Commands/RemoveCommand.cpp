@@ -54,7 +54,7 @@ bool RemoveCommand::Execute()
 		{
 			if (!svn.Remove(pathList, TRUE, parser.HasKey(_T("keep")), dlg.GetLogMessage()))
 			{
-				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 				return FALSE;
 			}
 			return true;
@@ -93,7 +93,7 @@ bool RemoveCommand::Execute()
 					yes.LoadString(IDS_MSGBOX_YES);
 					no.LoadString(IDS_MSGBOX_NO);
 					yestoall.LoadString(IDS_PROC_YESTOALL);
-					UINT ret = CMessageBox::Show(hwndExplorer, msg, _T("TortoiseSVN"), 2, IDI_ERROR, yes, no, yestoall);
+					UINT ret = CMessageBox::Show(hwndExplorer, msg, _T("TortoiseGit"), 2, IDI_ERROR, yes, no, yestoall);
 					if (ret == 3)
 						bForce = TRUE;
 					if ((ret == 1)||(ret==3))
@@ -102,14 +102,14 @@ bool RemoveCommand::Execute()
 						delPath.Delete(true);
 						if (!svn.Remove(removePathList, TRUE, parser.HasKey(_T("keep"))))
 						{
-							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 						}
 						else
 							bRet = true;
 					}
 				}
 				else
-					CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 			}
 		}
 	}

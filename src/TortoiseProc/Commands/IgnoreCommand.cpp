@@ -89,7 +89,7 @@ bool IgnoreCommand::Execute()
 			temp.Format(IDS_ERR_FAILEDIGNOREPROPERTY, (LPCTSTR)name);
 			temp += _T("\n");
 			temp += props.GetLastErrorMsg().c_str();
-			CMessageBox::Show(hwndExplorer, temp, _T("TortoiseSVN"), MB_ICONERROR);
+			CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONERROR);
 			err = TRUE;
 			break;
 		}
@@ -98,7 +98,7 @@ bool IgnoreCommand::Execute()
 	{
 		CString temp;
 		temp.Format(IDS_PROC_IGNORESUCCESS, (LPCTSTR)filelist);
-		CMessageBox::Show(hwndExplorer, temp, _T("TortoiseSVN"), MB_ICONINFORMATION);
+		CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_ICONINFORMATION);
 		return true;
 	}
 #endif

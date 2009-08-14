@@ -42,7 +42,7 @@ bool DropCopyAddCommand::Execute()
 			{
 				CString strMessage;
 				strMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)(droppath+_T("\\")+name));
-				int ret = CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseSVN"), MB_YESNOCANCEL | MB_ICONQUESTION);
+				int ret = CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_YESNOCANCEL | MB_ICONQUESTION);
 				if (ret == IDYES)
 				{
 					if (!::CopyFile(pathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
@@ -61,7 +61,7 @@ bool DropCopyAddCommand::Execute()
 							);
 						CString strMessage;
 						strMessage.Format(IDS_ERR_COPYFILES, (LPTSTR)lpMsgBuf);
-						CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseSVN"), MB_OK | MB_ICONINFORMATION);
+						CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 						LocalFree( lpMsgBuf );
 						return FALSE;
 					}
@@ -87,7 +87,7 @@ bool DropCopyAddCommand::Execute()
 					);
 				CString strMessage;
 				strMessage.Format(IDS_ERR_COPYFILES, lpMsgBuf);
-				CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseSVN"), MB_OK | MB_ICONINFORMATION);
+				CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 				LocalFree( lpMsgBuf );
 				return FALSE;
 			}
