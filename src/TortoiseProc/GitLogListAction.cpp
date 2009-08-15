@@ -457,12 +457,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 					r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 					if( this->m_IsOldFirst )
 					{	
-						cmd += _T(" /startrev:")+r1->m_CommitHash;
+						cmd += _T(" /startrev:")+r1->m_CommitHash+_T("~1");
 						cmd += _T(" /endrev:")+r2->m_CommitHash;
 	
 					}else
 					{	
-						cmd += _T(" /startrev:")+r2->m_CommitHash;
+						cmd += _T(" /startrev:")+r2->m_CommitHash+_T("~1");
 						cmd += _T(" /endrev:")+r1->m_CommitHash;	
 					}				
 					
