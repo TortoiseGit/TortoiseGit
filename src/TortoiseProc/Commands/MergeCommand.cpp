@@ -30,6 +30,7 @@ bool MergeCommand::Execute()
 		CString cmd;
 		CString noff;
 		CString squash;
+		CString msg;
 
 		if(dlg.m_bNoFF)
 			noff=_T("--no-ff");
@@ -37,7 +38,12 @@ bool MergeCommand::Execute()
 		if(dlg.m_bSquash)
 			squash=_T("--squash");
 
-		cmd.Format(_T("git.exe merge %s %s %s"),
+		if(!dlg.m_strLogMesage.IsEmpty())
+		{	
+			msg+=_T("-m \"")+dlg.m_strLogMesage+_T("\"");
+		}
+		cmd.Format(_T("git.exe merge %s %s %s %s"),
+			msg,
 			noff,
 			squash,
 			dlg.m_VersionName);
