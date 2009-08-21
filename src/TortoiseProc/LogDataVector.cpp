@@ -205,6 +205,8 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 		if(ref<0)
 			continue;
 
+		rev.Clear();
+
 		rev.m_CommitHash=one.Left(ref);
 		int action=one.Find(_T(' '),ref+1);
 		int message;

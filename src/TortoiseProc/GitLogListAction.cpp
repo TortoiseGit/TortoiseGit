@@ -508,6 +508,15 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 						cmd.Format(_T("git.exe tag -d %s"),shortname);
 					}
 
+					if(this->GetShortName(ref,shortname,_T("refs/stash")))
+					{
+						if(CMessageBox::Show(NULL,_T("<ct=0x0000FF>Are you sure remove <b>ALL</b> stash?</ct>"),
+											   _T("TortoiseGit"),MB_YESNO)==IDYES)
+							cmd.Format(_T("git.exe stash clear"));
+						else
+							return;
+					}
+
 					CString out;
 					if(g_Git.Run(cmd,&out,CP_UTF8))
 					{

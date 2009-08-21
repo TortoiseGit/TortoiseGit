@@ -48,6 +48,8 @@ void GitRev::Clear()
 	m_Body.Empty();
 	m_Subject.Empty();
 	m_CommitHash.Empty();
+	m_Ref.Empty();
+	m_RefAction.Empty();
 	m_Mark=0;
 
 }
