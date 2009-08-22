@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
+	ON_NOTIFY(SCN_UPDATEUI, IDC_LOGMESSAGE, OnScnUpdateUI)
 //	ON_BN_CLICKED(IDC_HISTORY, OnBnClickedHistory)
 	ON_BN_CLICKED(IDC_BUGTRAQBUTTON, OnBnClickedBugtraqbutton)
 	ON_EN_CHANGE(IDC_LOGMESSAGE, OnEnChangeLogmessage)
@@ -235,6 +236,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
 	AddAnchor(IDC_EXTERNALWARNING, BOTTOM_RIGHT);
 	AddAnchor(IDC_STATISTICS, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_TEXT_INFO,  TOP_RIGHT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_KEEPLISTS, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -1567,12 +1569,16 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_COMMIT_AMEND);
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
+	RemoveAnchor(IDC_TEXT_INFO);
+
 	CSplitterControl::ChangeHeight(&m_cLogMessage, delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MESSAGEGROUP), delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(&m_ListCtrl, -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LISTGROUP), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
+
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
@@ -1580,6 +1586,7 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
+	AddAnchor(IDC_TEXT_INFO,TOP_RIGHT);
 	ArrangeLayout();
 	// adjust the minimum size of the dialog to prevent the resizing from
 	// moving the list control too far down.
@@ -1683,4 +1690,20 @@ void CCommitDlg::OnStnClickedBugidlabel()
 void CCommitDlg::OnFocusMessage()
 {
 	m_cLogMessage.SetFocus();
+}
+
+void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	SCNotification *pHead =(SCNotification *)pNMHDR;
+	
+	int pos=this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
+	int line=this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
+	int column=this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
+
+	CString str;
+	str.Format(_T("%d/%d"),line+1,column+1);
+	this->GetDlgItem(IDC_TEXT_INFO)->SetWindowText(str);
+
+	if(*pResult)
+		*pResult=0;
 }

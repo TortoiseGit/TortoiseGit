@@ -151,4 +151,5 @@ public:
 	afx_msg void OnBnClickedCommitAmend();
     afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnStnClickedBugidlabel();
+	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 };
