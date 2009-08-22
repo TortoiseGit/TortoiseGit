@@ -810,9 +810,11 @@ UINT CCommitDlg::StatusThread()
 void CCommitDlg::OnCancel()
 {
 	m_bCancelled = true;
+	m_pathwatcher.Stop();
+
 	if (m_bBlock)
 		return;
-	m_pathwatcher.Stop();
+	
 	if (m_bThreadRunning)
 	{
 		InterlockedExchange(&m_bRunThread, FALSE);

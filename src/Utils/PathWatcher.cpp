@@ -70,9 +70,15 @@ void CPathWatcher::Stop()
 	{
 		PostQueuedCompletionStatus(m_hCompPort, 0, NULL, NULL);
 	}
+	
 	if (m_hThread != INVALID_HANDLE_VALUE)
+	{
+		if( WaitForSingleObject(m_hThread, 1000) != WAIT_OBJECT_0 )
+		{
+			TerminateThread(m_hThread, (DWORD)-1);
+		}
 		CloseHandle(m_hThread);
-
+	}
 	m_hThread = INVALID_HANDLE_VALUE;
 	m_hCompPort = INVALID_HANDLE_VALUE;
 }
