@@ -826,7 +826,7 @@ BOOL CGit::CheckMsysGitDir()
 	}
 
 	TCHAR *oldpath,*home;
-	size_t homesize,size;
+	size_t homesize,size,httpsize;
 
 	// set HOME if not set already
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
@@ -840,31 +840,36 @@ BOOL CGit::CheckMsysGitDir()
 
 #ifndef _TORTOISESHELL
 	//set http_proxy
-	CString regServeraddress_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-host"), _T(""));
-	CString regServerport_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-port"), _T(""));
-	CString regUsername_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-username"), _T(""));
-	CString regPassword_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-password"), _T(""));
-	CString regTimeout_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-timeout"), _T(""));
-	CString regExceptions_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-exceptions"), _T(""));
-
-	CString http_proxy;
-	if(!regServeraddress_copy.IsEmpty())
+	_tgetenv_s(&httpsize, NULL, 0, _T("http_proxy"));
+	if (!httpsize)
 	{
-		http_proxy=_T("http://");
-		if(!regUsername_copy.IsEmpty())
+		CString regServeraddress_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-host"), _T(""));
+		CString regServerport_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-port"), _T(""));
+		CString regUsername_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-username"), _T(""));
+		CString regPassword_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-password"), _T(""));
+		CString regTimeout_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-timeout"), _T(""));
+		CString regExceptions_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-exceptions"), _T(""));
+
+		CString http_proxy;
+		if(!regServeraddress_copy.IsEmpty())
 		{
-			http_proxy += regUsername_copy;
-			http_proxy += _T(":")+regPassword_copy;
-			http_proxy += _T("@");
+			if(regServeraddress_copy.Left(4) != _T("http"))
+				http_proxy=_T("http://");
+
+			if(!regUsername_copy.IsEmpty())
+			{
+				http_proxy += regUsername_copy;
+				http_proxy += _T(":")+regPassword_copy;
+				http_proxy += _T("@");
+			}
+			http_proxy+=regServeraddress_copy;
+			if(!regServerport_copy.IsEmpty())
+			{
+				http_proxy +=_T(":")+regServerport_copy;
+			}
+			_tputenv_s(_T("http_proxy"),http_proxy);
 		}
-		http_proxy+=regServeraddress_copy;
-		if(!regServerport_copy.IsEmpty())
-		{
-			http_proxy +=_T(":")+regServerport_copy;
-		}
-		_tputenv_s(_T("http_proxy"),http_proxy);
 	}
-	
 	//setup ssh client
 	CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
 
