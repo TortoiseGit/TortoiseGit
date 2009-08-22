@@ -466,7 +466,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	// and also populate the changed files list control
 	// according to the selected revision(s).
 
-	CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
+	CRichEditCtrl * pMsgView = (CRichEditCtrl*)GetDlgItem(IDC_MSGVIEW);
 	// empty the log message view
 	pMsgView->SetWindowText(_T(" "));
 	// empty the changed files list
@@ -519,9 +519,29 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		}else
 		{
 			// set the log message text
-			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n* ")+pLogEntry->m_Subject+_T("\n\n")+pLogEntry->m_Body);
+			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n"));
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
+			
+			pMsgView->SetSel(-1,-1);
+			CHARFORMAT2 format;
+			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
+			format.cbSize = sizeof(CHARFORMAT2);
+			format.dwMask = CFM_BOLD;
+			format.dwEffects = CFE_BOLD;
+			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			
+			CString msg=_T("* ");
+			msg+=pLogEntry->m_Subject;
+			pMsgView->ReplaceSel(msg);
+
+			pMsgView->SetSel(-1,-1);
+			format.dwEffects = 0;
+			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			
+			msg=_T("\n\n");
+			msg+=pLogEntry->m_Body;
+			pMsgView->ReplaceSel(msg);
 
 			CString text;
 			pMsgView->GetWindowText(text);
