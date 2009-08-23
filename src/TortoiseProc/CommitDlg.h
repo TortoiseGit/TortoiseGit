@@ -30,6 +30,7 @@
 #include "Tooltip.h"
 #include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "Git.h"
+#include "HyperLink.h"
 
 #include <regex>
 using namespace std;
@@ -141,6 +142,7 @@ private:
 	CRect				m_DlgOrigRect;
 	CRect				m_LogMsgOrigRect;
 	CPathWatcher		m_pathwatcher;
+	CHyperLink			m_ctrlShowPatch;
 
 	CBugTraqAssociation m_bugtraq_association;
 	HACCEL				m_hAccel;
@@ -152,4 +154,5 @@ public:
     afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnStnClickedBugidlabel();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnStnClickedViewPatch();
 };

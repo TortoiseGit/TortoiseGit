@@ -82,6 +82,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
+	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -106,6 +107,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
     ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
 	ON_STN_CLICKED(IDC_BUGIDLABEL, &CCommitDlg::OnStnClickedBugidlabel)
 	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
+	ON_STN_CLICKED(IDC_VIEW_PATCH, &CCommitDlg::OnStnClickedViewPatch)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -229,6 +231,7 @@ BOOL CCommitDlg::OnInitDialog()
 //	AddAnchor(IDC_HISTORY, TOP_LEFT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SIGNOFF,   TOP_RIGHT);
+	AddAnchor(IDC_VIEW_PATCH,TOP_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
@@ -302,6 +305,8 @@ BOOL CCommitDlg::OnInitDialog()
 	//this->UpdateData(TRUE);
 	//this->m_bCommitAmend=FALSE;
 	//this->UpdateData(FALSE);
+
+	this->m_ctrlShowPatch.SetURL(CString());
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -1570,6 +1575,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	RemoveAnchor(IDC_TEXT_INFO);
+	RemoveAnchor(IDC_VIEW_PATCH);
 
 	CSplitterControl::ChangeHeight(&m_cLogMessage, delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MESSAGEGROUP), delta, CW_TOPALIGN);
@@ -1578,7 +1584,9 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
-
+	CSplitterControl::ChangePos(GetDlgItem(IDC_VIEW_PATCH),0,delta);
+	
+	AddAnchor(IDC_VIEW_PATCH,TOP_RIGHT);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
@@ -1706,4 +1714,9 @@ void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if(*pResult)
 		*pResult=0;
+}
+void CCommitDlg::OnStnClickedViewPatch()
+{
+	// TODO: Add your control notification handler code here
+	this->m_ctrlShowPatch.SetWindowText(_T("Hide Patch<<"));
 }
