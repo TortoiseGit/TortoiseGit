@@ -82,6 +82,8 @@ BOOL CPatchViewDlg::OnInitDialog()
 	m_ctrlPatchView.Call(SCI_SETUNDOCOLLECTION, 0);
 
 	m_ctrlPatchView.Call(SCI_SETUNDOCOLLECTION, 1);
+	m_ctrlPatchView.Call(SCI_SETWRAPMODE,SC_WRAP_NONE);
+	
 	//::SetFocus(m_hWndEdit);
 	m_ctrlPatchView.Call(EM_EMPTYUNDOBUFFER);
 	m_ctrlPatchView.Call(SCI_SETSAVEPOINT);

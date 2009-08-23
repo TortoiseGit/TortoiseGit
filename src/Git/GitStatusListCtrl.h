@@ -234,6 +234,8 @@ public:
 	 */
 	static const UINT SVNSLNM_CHECKCHANGED;
 
+	static const UINT SVNSLNM_ITEMCHANGED;
+
 	CGitStatusListCtrl(void);
 	~CGitStatusListCtrl(void);
 

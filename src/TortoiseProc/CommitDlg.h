@@ -90,6 +90,8 @@ protected:
 	afx_msg LRESULT OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);
+	afx_msg LRESULT OnGitStatusListCtrlItemChanged(WPARAM, LPARAM);
+	
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -167,4 +169,5 @@ public:
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
+	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 };

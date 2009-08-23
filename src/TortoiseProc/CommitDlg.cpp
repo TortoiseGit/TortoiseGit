@@ -98,6 +98,8 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_CHECKCHANGED, &CCommitDlg::OnGitStatusListCtrlCheckChanged)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCHANGED, &CCommitDlg::OnGitStatusListCtrlItemChanged)
+	
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady) 
 	ON_WM_TIMER()
     ON_WM_SIZE()
@@ -112,6 +114,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_WM_MOVE()
 	ON_WM_MOVING()
 	ON_WM_SIZING()
+	ON_NOTIFY(HDN_ITEMCHANGED, 0, &CCommitDlg::OnHdnItemchangedFilelist)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -1518,6 +1521,36 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	SysFreeString(temp);
 
 }
+LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM wparam, LPARAM lparam)
+{
+	TRACE("OnGitStatusListCtrlItemChanged %d\r\n", wparam);
+	if(::IsWindow(this->m_patchViewdlg.m_hWnd))
+	{
+		m_patchViewdlg.m_ctrlPatchView.SetText(CString());
+
+		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
+		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, FALSE);
+		while(pos)
+		{
+			int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
+			CTGitPath * p=(CTGitPath*)m_ListCtrl.GetItemData(nSelect);
+			if(p)
+			{
+				CString cmd,out;
+				cmd.Format(_T("git.exe diff -- \"%s\""),p->GetGitPathString());
+				g_Git.Run(cmd,&out,CP_ACP);
+
+				m_patchViewdlg.m_ctrlPatchView.SetText(out);
+			}
+
+		}
+		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
+		m_patchViewdlg.m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
+
+	}
+	return 0;
+}
+
 
 LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 {
@@ -1803,4 +1836,12 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 		}
 	}
 	// TODO: Add your message handler code here
+}
+
+void CCommitDlg::OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+	TRACE("Item Changed\r\n");
 }

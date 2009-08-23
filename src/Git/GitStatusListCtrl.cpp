@@ -62,6 +62,8 @@ const UINT CGitStatusListCtrl::SVNSLNM_ADDFILE
 					= ::RegisterWindowMessage(_T("GITSLNM_ADDFILE"));
 const UINT CGitStatusListCtrl::SVNSLNM_CHECKCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_CHECKCHANGED"));
+const UINT CGitStatusListCtrl::SVNSLNM_ITEMCHANGED
+					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCHANGED"));
 
 
 
@@ -1797,6 +1799,12 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
+	CWnd* pParent = GetParent();
+	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+	{
+		pParent->SendMessage(SVNSLNM_ITEMCHANGED, pNMLV->iItem);
+	}
+
 	if ((pNMLV->uNewState==0)||(pNMLV->uNewState & LVIS_SELECTED)||(pNMLV->uNewState & LVIS_FOCUSED))
 		return FALSE;
 
