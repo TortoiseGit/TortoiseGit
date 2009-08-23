@@ -31,6 +31,7 @@
 #include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "Git.h"
 #include "HyperLink.h"
+#include "PatchViewDlg.h"
 
 #include <regex>
 using namespace std;
@@ -55,6 +56,13 @@ public:
 	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
 	virtual bool		HandleMenuItemClick(int cmd, CSciEdit * pSciEdit);
 
+	void ShowViewPatchText(bool b=true)
+	{
+		if(b)
+			this->m_ctrlShowPatch.SetWindowText(_T("View Patch>>"));
+		else
+			this->m_ctrlShowPatch.SetWindowText(_T("Hide Patch<<"));
+	}
 private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
@@ -143,6 +151,7 @@ private:
 	CRect				m_LogMsgOrigRect;
 	CPathWatcher		m_pathwatcher;
 	CHyperLink			m_ctrlShowPatch;
+	CPatchViewDlg		m_patchViewdlg;
 
 	CBugTraqAssociation m_bugtraq_association;
 	HACCEL				m_hAccel;
@@ -155,4 +164,7 @@ public:
 	afx_msg void OnStnClickedBugidlabel();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnStnClickedViewPatch();
+	afx_msg void OnMove(int x, int y);
+	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

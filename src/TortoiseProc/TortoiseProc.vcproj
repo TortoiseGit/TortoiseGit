@@ -419,14 +419,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PatchViewDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PatchViewDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ProjectProperties.cpp"
 				>
 			</File>
@@ -1148,6 +1140,14 @@
 				</File>
 				<File
 					RelativePath=".\Commands\CreateRepositoryCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PatchViewDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PatchViewDlg.h"
 					>
 				</File>
 			</Filter>

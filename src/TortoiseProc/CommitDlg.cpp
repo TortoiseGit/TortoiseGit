@@ -35,6 +35,7 @@
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
 #include "Commands/PushCommand.h"
+#include "PatchViewDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -108,6 +109,9 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_STN_CLICKED(IDC_BUGIDLABEL, &CCommitDlg::OnStnClickedBugidlabel)
 	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
 	ON_STN_CLICKED(IDC_VIEW_PATCH, &CCommitDlg::OnStnClickedViewPatch)
+	ON_WM_MOVE()
+	ON_WM_MOVING()
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -1614,6 +1618,7 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 
     //set range
     SetSplitterRange();
+
 }
 
 
@@ -1718,5 +1723,84 @@ void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
 void CCommitDlg::OnStnClickedViewPatch()
 {
 	// TODO: Add your control notification handler code here
-	this->m_ctrlShowPatch.SetWindowText(_T("Hide Patch<<"));
+	
+	m_patchViewdlg.m_pProjectProperties = &this->m_ProjectProperties;
+	m_patchViewdlg.m_ParentCommitDlg = this;
+	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
+	{
+		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
+		CRect rect;
+		this->GetWindowRect(&rect);
+		rect.left=rect.right;
+		rect.right=rect.left+200;
+		m_patchViewdlg.MoveWindow(rect);
+		m_patchViewdlg.ShowWindow(SW_SHOW);
+		m_patchViewdlg.MoveWindow(rect);
+		ShowViewPatchText(false);
+	}
+	else
+	{
+		m_patchViewdlg.ShowWindow(SW_HIDE);
+		m_patchViewdlg.DestroyWindow();
+		ShowViewPatchText(true);
+	}
+}
+
+void CCommitDlg::OnMove(int x, int y)
+{
+	__super::OnMove(x, y);
+
+	// TODO: Add your message handler code here
+}
+
+void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
+{
+	__super::OnMoving(fwSide, pRect);
+
+	// TODO: Add your message handler code here
+	if (::IsWindow(m_patchViewdlg.m_hWnd))
+	{
+		RECT patchrect;
+		m_patchViewdlg.GetWindowRect(&patchrect);
+		if (::IsWindow(m_hWnd))
+		{
+			RECT thisrect;
+			GetWindowRect(&thisrect);
+			if (patchrect.left == thisrect.right)
+			{
+				m_patchViewdlg.SetWindowPos(NULL, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top), 
+					0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
+			}
+		}
+	}
+
+}
+
+void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	__super::OnSizing(fwSide, pRect);
+
+	if(::IsWindow(this->m_patchViewdlg.m_hWnd))
+	{
+		CRect thisrect, patchrect;
+		this->GetWindowRect(thisrect);
+		this->m_patchViewdlg.GetWindowRect(patchrect);
+		if(thisrect.right==patchrect.left)
+		{
+			int width = patchrect.Width();
+			patchrect.left -= (thisrect.right - pRect->right);
+			patchrect.right-= (thisrect.right - pRect->right);
+
+			if(	patchrect.bottom == thisrect.bottom)
+			{
+				patchrect.bottom -= (thisrect.bottom - pRect->bottom);
+			}
+			if(	patchrect.top == thisrect.top)
+			{
+				patchrect.top -=  thisrect.top-pRect->top;
+			}
+			m_patchViewdlg.MoveWindow(patchrect);
+		}
+	}
+	// TODO: Add your message handler code here
 }
