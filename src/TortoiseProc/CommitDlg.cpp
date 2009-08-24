@@ -1521,33 +1521,41 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	SysFreeString(temp);
 
 }
-LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM wparam, LPARAM lparam)
+
+void CCommitDlg::FillPatchView()
 {
-	TRACE("OnGitStatusListCtrlItemChanged %d\r\n", wparam);
-	if(::IsWindow(this->m_patchViewdlg.m_hWnd))
+		if(::IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
 		m_patchViewdlg.m_ctrlPatchView.SetText(CString());
 
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, FALSE);
+		CString cmd,out;
+
 		while(pos)
 		{
 			int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
 			CTGitPath * p=(CTGitPath*)m_ListCtrl.GetItemData(nSelect);
-			if(p)
+			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
-				CString cmd,out;
 				cmd.Format(_T("git.exe diff -- \"%s\""),p->GetGitPathString());
 				g_Git.Run(cmd,&out,CP_ACP);
 
-				m_patchViewdlg.m_ctrlPatchView.SetText(out);
 			}
 
 		}
+
+		m_patchViewdlg.m_ctrlPatchView.SetText(out);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
 
 	}
+
+}
+LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM wparam, LPARAM lparam)
+{
+	TRACE("OnGitStatusListCtrlItemChanged %d\r\n", wparam);
+	this->FillPatchView();
 	return 0;
 }
 
@@ -1764,12 +1772,15 @@ void CCommitDlg::OnStnClickedViewPatch()
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
 		CRect rect;
 		this->GetWindowRect(&rect);
-		rect.left=rect.right;
-		rect.right=rect.left+200;
-		m_patchViewdlg.MoveWindow(rect);
+		
+		m_patchViewdlg.SetWindowPos(NULL,rect.right,rect.top,rect.Width(),rect.Height(),
+				SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+		
+		m_patchViewdlg.m_ctrlPatchView.MoveWindow(0,0,rect.Width(),rect.Height());
 		m_patchViewdlg.ShowWindow(SW_SHOW);
-		m_patchViewdlg.MoveWindow(rect);
+		
 		ShowViewPatchText(false);
+		FillPatchView();
 	}
 	else
 	{
@@ -1777,6 +1788,7 @@ void CCommitDlg::OnStnClickedViewPatch()
 		m_patchViewdlg.DestroyWindow();
 		ShowViewPatchText(true);
 	}
+	this->m_ctrlShowPatch.Invalidate();
 }
 
 void CCommitDlg::OnMove(int x, int y)

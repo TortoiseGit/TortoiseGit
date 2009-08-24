@@ -67,7 +67,7 @@ private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
 	void UpdateOKButton();
-
+	void FillPatchView();
 // Dialog Data
 	enum { IDD = IDD_COMMITDLG };
 
