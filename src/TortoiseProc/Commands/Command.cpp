@@ -175,6 +175,7 @@ typedef enum
 	cmdUrlDiff,	
 	cmdStashSave,	
 	cmdStashApply,
+	cmdStashPop,
 	cmdStashList,
 	cmdSubAdd,		
 	cmdSubUpdate,
@@ -253,6 +254,7 @@ static const struct CommandInfo
 	{	cmdUrlDiff,			_T("urldiff")			},
 	{	cmdStashSave,		_T("stashsave")			},
 	{	cmdStashApply,		_T("stashapply")		},
+	{	cmdStashPop,		_T("stashpop")			},
 	{	cmdStashList,		_T("stashlist")			},
 	{	cmdSubAdd,			_T("subadd")			},
 	{	cmdSubUpdate,		_T("subupdate")			},
@@ -359,6 +361,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new StashSaveCommand;
 	case cmdStashApply:
 		return new StashApplyCommand;
+	case cmdStashPop:
+		return new StashPopCommand;
 	case cmdSubAdd:
 		return new SubmoduleAddCommand;
 	case cmdSubUpdate:

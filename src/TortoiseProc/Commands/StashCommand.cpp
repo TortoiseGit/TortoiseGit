@@ -46,9 +46,18 @@ bool StashSaveCommand::Execute()
 	return bRet;
 }
 
+
 bool StashApplyCommand::Execute()
 {
 	if(CAppUtils::StashApply(_T("")))
+		return false;
+	return true;
+	
+}
+
+bool StashPopCommand::Execute()
+{
+	if(CAppUtils::StashPop())
 		return false;
 	return true;
 	

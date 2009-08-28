@@ -161,6 +161,7 @@ protected:
 		ShellMenuStashSave,
 		ShellMenuStashApply,
 		ShellMenuStashList,
+		ShellMenuStashPop,
 		ShellMenuSubAdd,
 		ShellMenuSubSync,
 		ShellMenuSendMail,

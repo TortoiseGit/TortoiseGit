@@ -183,7 +183,8 @@ public:
 	static CString ToRelativeTimeString(CTime time);
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
-	static int	   StashApply(CString ref);
+	static int	StashApply(CString ref);
+	static int	StashPop();
 
     static bool IsSSHPutty();
 

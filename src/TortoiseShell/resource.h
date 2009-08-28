@@ -203,6 +203,7 @@
 #define IDS_MENUSVNDCOMMIT_DESC         338
 #define IDS_MENUSYNC                    339
 #define IDS_MENUDESCSYNC                340
+#define IDS_MENUSTASHPOP                341
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
 #define IDC_REPOURL                     1003

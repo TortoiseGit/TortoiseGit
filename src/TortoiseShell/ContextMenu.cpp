@@ -101,7 +101,9 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuStashSave,				    MENUSTASHSAVE,		IDI_COMMIT,				IDS_MENUSTASHSAVE,				IDS_MENUSTASHSAVE,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 	{ ShellMenuStashApply,				    MENUSTASHAPPLY,	    IDI_RELOCATE,			IDS_MENUSTASHAPPLY,				IDS_MENUSTASHAPPLY,
-	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+	ITEMIS_INSVN|ITEMIS_STASH, 0, ITEMIS_FOLDERINSVN|ITEMIS_STASH, 0, 0, 0, 0, 0 },
+	{ ShellMenuStashPop,				    MENUSTASHPOP,	    IDI_RELOCATE,			IDS_MENUSTASHPOP,				IDS_MENUSTASHPOP,
+	ITEMIS_INSVN|ITEMIS_STASH, 0, ITEMIS_FOLDERINSVN|ITEMIS_STASH, 0, 0, 0, 0, 0 },
 	{ ShellMenuStashList,				    MENUSTASHAPPLY,	    IDI_LOG,				IDS_MENUSTASHLIST,				IDS_MENUSTASHLIST,
 	ITEMIS_INSVN|ITEMIS_EXTENDED, 0, ITEMIS_FOLDERINSVN|ITEMIS_EXTENDED, 0, 0, 0, 0, 0 },
 
@@ -384,19 +386,11 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 
 							// TODO: should we really assume any sub-directory to be versioned
 							//       or only if it contains versioned files
-							if ( askedpath.IsDirectory() )
-							{
-								if (askedpath.HasAdminDir())
-									itemStates |= ITEMIS_INSVN;
-								if (askedpath.HasSubmodules())
-								{
-									itemStates |= ITEMIS_SUBMODULE;
-								}
-							}
-							if (askedpath.HasGitSVNDir())
-								itemStates |= ITEMIS_GITSVN;
-							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-								itemStates |= ITEMIS_INSVN;
+							itemStates |= askedpath.GetAdminDirMask();
+							
+							if ((status == git_wc_status_unversioned) || (status == git_wc_status_ignored) || (status == git_wc_status_none))
+								itemStates &= ~ITEMIS_INSVN;
+
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
 							if (status == git_wc_status_normal)
@@ -497,23 +491,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 							}
 
-							// TODO: should we really assume any sub-directory to be versioned
-							//       or only if it contains versioned files
-							if ( strpath.IsDirectory() )
-							{
-								if (strpath.HasAdminDir())
-									itemStates |= ITEMIS_INSVN;
-								if (strpath.HasSubmodules())
-								{
-									itemStates |= ITEMIS_SUBMODULE;
-								}
-							}
+							itemStates |= strpath.GetAdminDirMask();		
 							
-							if (strpath.HasGitSVNDir())
-								itemStates |= ITEMIS_GITSVN;		
-
-							if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-								itemStates |= ITEMIS_INSVN;
+							if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
+								itemStates &= ~ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
 							{
 								itemStates |= ITEMIS_IGNORED;
@@ -616,10 +597,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				}
 				
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-				if (askedpath.HasGitSVNDir())
-					itemStatesFolder |= ITEMIS_GITSVN;							
-				if (askedpath.HasAdminDir())
-					itemStatesFolder |= ITEMIS_INSVN;
+				itemStatesFolder |= askedpath.GetAdminDirMask();							
+				
 				if (status == git_wc_status_normal)
 					itemStatesFolder |= ITEMIS_NORMAL;
 				if (status == git_wc_status_conflicted)
@@ -640,18 +619,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			status = fetchedstatus;
 		}
 		//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-		if (askedpath.HasAdminDir())
-		{
-			itemStatesFolder |= ITEMIS_FOLDERINSVN;
-		}
-		if (askedpath.HasSubmodules())
-		{
-			itemStatesFolder |= ITEMIS_SUBMODULE;
-		}
-		if (askedpath.HasGitSVNDir())
-		{
-			itemStatesFolder |= ITEMIS_GITSVN;
-		}
+		itemStatesFolder |= askedpath.GetAdminDirMask();
+		
 		if (status == git_wc_status_ignored)
 			itemStatesFolder |= ITEMIS_IGNORED;
 		itemStatesFolder |= ITEMIS_FOLDER;
@@ -707,10 +676,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					status = fetchedstatus;
 				}
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-				if (askedpath.HasAdminDir())
-					itemStates |= ITEMIS_FOLDERINSVN;
-				if (askedpath.HasGitSVNDir())
-					itemStates |= ITEMIS_GITSVN;
+				itemStates |= askedpath.GetAdminDirMask();
+				
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
 				itemStates |= ITEMIS_FOLDER;
@@ -1932,6 +1899,16 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
+
+			case ShellMenuStashPop:
+				svnCmd += _T("stashpop /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+
 
 			case ShellMenuStashList:
 				svnCmd += _T("reflog /path:\"");

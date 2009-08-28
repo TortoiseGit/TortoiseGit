@@ -37,4 +37,12 @@ public:
 	virtual bool			Execute();
 };
 
+class StashPopCommand : public Command
+{
+public:
+	/**
+	 * Executes the command.
+	 */
+	virtual bool			Execute();
+};
 

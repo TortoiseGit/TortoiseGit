@@ -23,6 +23,8 @@
 #include "PathUtils.h"
 #include <regex>
 #include "git.h"
+#include "Globals.h"
+
 #if defined(_MFC_VER)
 //#include "MessageBox.h"
 //#include "AppUtils.h"
@@ -765,6 +767,51 @@ bool CTGitPath::HasSubmodules() const
 	return !g_GitAdminDir.GetSuperProjectRoot(GetWinPathString()).IsEmpty();
 }
 
+int CTGitPath::GetAdminDirMask() const
+{
+	int status = 0;
+	CString topdir,path;
+	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	{
+		return status;
+	}
+
+	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN;
+
+	path=topdir;
+	path+=_T("\\");
+	path+=g_GitAdminDir.GetAdminDirName();
+	path+=_T("\\refs\\stash");
+	if( PathFileExists(path) )
+		status |= ITEMIS_STASH;
+	
+	path=topdir;
+	path+=_T("\\");
+	path+=g_GitAdminDir.GetAdminDirName();
+	path+=_T("\\svn");
+	if( PathFileExists(path) )
+		status |= ITEMIS_GITSVN;
+
+	path=topdir;
+	path+=_T("\\.gitmodules");
+	if( PathFileExists(path) )
+		status |= ITEMIS_SUBMODULE;
+
+	return status;
+}
+
+bool CTGitPath::HasStashDir() const
+{
+	CString topdir;
+	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	{
+		return false;
+	}
+	topdir+=_T("\\");
+	topdir+=g_GitAdminDir.GetAdminDirName();
+	topdir+=_T("\\refs\stash");
+	return PathFileExists(topdir);
+}
 bool CTGitPath::HasGitSVNDir() const
 {
 	CString topdir;

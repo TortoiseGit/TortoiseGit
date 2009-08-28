@@ -435,6 +435,7 @@ BEGIN
     IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
     IDS_MENUSYNC            "Sync..."
     IDS_MENUDESCSYNC        "Sync remote Remote Repostory, include pull, push,email patch and so on"
+    IDS_MENUSTASHPOP        "Stash Pop"
 END
 
 #endif    // English (U.S.) resources
