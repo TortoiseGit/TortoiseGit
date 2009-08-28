@@ -55,9 +55,10 @@ protected:
 		{
 			m_ctrlRemoteBranch.AddString(pullBranch);
 		}
-		else if(!this->m_RegKeyRemoteBranch.IsEmpty())
+		//else if(!this->m_RegKeyRemoteBranch.IsEmpty())
+		else
 		{
-			m_ctrlRemoteBranch.AddString(currentBranch);
+			m_ctrlRemoteBranch.SetCurSel(-1);
 		}
 		
 		this->AddBranchToolTips(&this->m_ctrlLocalBranch,this->m_pTooltip);

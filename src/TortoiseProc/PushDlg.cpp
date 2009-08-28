@@ -170,9 +170,12 @@ void CPushDlg::Refresh()
 
 	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
 	if( !pushBranch.IsEmpty() )
+	{
 		m_BranchRemote.AddString(pushBranch);
-
-	m_BranchRemote.SetCurSel(0);
+		m_BranchRemote.SetCurSel(0);	
+	}
+	else
+		m_BranchRemote.SetCurSel(-1);
 
 }
 // CPushDlg message handlers
