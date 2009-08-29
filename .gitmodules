@@ -7,3 +7,9 @@
 [submodule "ext/tgit"]
 	path = ext/tgit
 	url = git://repo.or.cz/tgit.git
+[submodule "ext/zlib"]
+	path = ext/zlib
+	url = git://repo.or.cz/zlib.git
+[submodule "ext/libcurl"]
+	path = ext/libcurl
+	url = git://repo.or.cz/libcurl.git
