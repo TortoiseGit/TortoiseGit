@@ -1,3 +1,41 @@
+= Release 1.0.1.0 =
+== Features ==
+ 
+ * Improve Commit Dialog
+   Show line and column number
+   Add view/hide patch windows
+   
+ * Improve Log Dialog
+   Bolad subject at log dialog
+   
+ * Setting Config Dialog
+   Add core.autocrlf and core.safecrlf
+ 
+ * Add more option to resolve conflict 
+   Add Resolve "Their" and Resolve "Mine" at conflict item.
+ 
+ * Improve Merge dialog
+   Add message box to allow input message when merge 
+ 
+ * Improve Stash
+   Add Stash pop. 
+   Add delete stash at logview.   
+   
+== Bug Fix ==
+ * Fix don't show "push" after commit
+ * Fixed issue #133: Command fails on folder with leading dash And -- to separate file and git options
+ * Fixed issue #133: (mv\rename  problem) Command fails on folder with leading dash And -- to separate file and git options
+ * Fixed issue #140: Incorrect treatment of "Cancel" action on "Apply patch serial" command
+ * Fixed Issue #135:  Taskbar text says "TortoiseSVN"
+ * Fix Issue #142:  TortoiseGit Clone of SVN repo does not use PuTTY session for non-standard SSH port
+ * Fixed Issue #138:  "Format patch" in "Show log" dialog doesn't work
+ * Fixed Issue #141:  Bizarre ordering in commit dialog
+ * Fixed Issue #137:  Proxy Authentification fails
+ * Fixed issue #131: Missing SVN DCommit Command
+ * Fixed issue #139: "Format patch" with a range of revisions doesn't export the first revision in the range
+ * Fix Pathwatcher thread can't stop when commitdlg exit.
+ * Fixed issue #150: When pushing, 'remote' should default to the tracked branch, or empty
+ 
 = Release 0.9.1.0 =
 == Features ==
  
