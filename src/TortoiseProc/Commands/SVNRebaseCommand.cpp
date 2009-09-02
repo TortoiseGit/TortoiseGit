@@ -52,7 +52,17 @@ bool SVNRebaseCommand::Execute()
 	CRebaseDlg dlg;
 	
 	dlg.m_PreCmd=_T("git.exe svn fetch");
-	dlg.m_Upstream=_T("remotes/trunk");
+
+	CString cmd,out;
+	cmd = _T("git.exe config svn-remote.svn.fetch");
+
+	if(!g_Git.Run(cmd,&out,CP_ACP))
+	{
+		if(out.Left(5) == _T(":refs"))
+			out=out.Mid(6);
+		int start = 0;
+		out=out.Tokenize(_T("\n"),start);
+	}
 
 	if(dlg.DoModal() == IDOK)
 	{
