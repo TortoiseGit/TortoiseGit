@@ -64,6 +64,8 @@ bool SVNRebaseCommand::Execute()
 		out=out.Tokenize(_T("\n"),start);
 	}
 
+	dlg.m_Upstream=out;
+
 	if(dlg.DoModal() == IDOK)
 	{
 		bRet=true;
