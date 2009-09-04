@@ -77,6 +77,8 @@ protected:
 	static UINT RebaseThreadEntry(LPVOID pVoid){return ((CRebaseDlg *)pVoid)->RebaseThread();};
 	BOOL IsEnd();
 
+	BOOL m_IsFastForward;
+
 	CString m_OrigBranchHash;
 	CString m_OrigUpstreamHash;
 

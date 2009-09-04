@@ -24,6 +24,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	m_bThreadRunning =FALSE;
 	this->m_IsCherryPick = FALSE;
 	m_bForce=FALSE;
+	m_IsFastForward=FALSE;
 }
 
 CRebaseDlg::~CRebaseDlg()
@@ -421,18 +422,43 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 
 void CRebaseDlg::FetchLogList()
 {
+	CString base,hash;
+	CString cmd;
+	m_IsFastForward=FALSE;
+	cmd.Format(_T("git.exe merge-base %s %s"), m_UpstreamCtrl.GetString(),m_BranchCtrl.GetString());
+	if(g_Git.Run(cmd,&base,CP_ACP))
+	{
+		CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return;
+	}
+	base=base.Left(40);
+
+	hash=g_Git.GetHash(m_BranchCtrl.GetString());
+
+	hash=hash.Left(40);
+	
+	if(hash == base )
+	{
+		//fast forword
+		this->m_IsFastForward=TRUE;
+
+		m_CommitList.Clear();
+		CString text,fmt;
+		fmt.LoadString(IDS_REBASE_FASTFORWARD_FMT);
+		text.Format(fmt,m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString(),
+						m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString());
+
+		m_CommitList.ShowText(text);
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(true);
+		SetContinueButtonText();
+		
+		return ;
+	}
+
+	hash.Empty();
+
 	if(!this->m_bForce)
 	{
-		CString base,hash;
-		CString cmd;
-		cmd.Format(_T("git.exe merge-base %s %s"), m_UpstreamCtrl.GetString(),m_BranchCtrl.GetString());
-		if(g_Git.Run(cmd,&base,CP_ACP))
-		{
-			CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return;
-		}
-		base=base.Left(40);
-
 		cmd.Format(_T("git.exe rev-parse %s"), m_UpstreamCtrl.GetString());
 		if( g_Git.Run(cmd,&hash,CP_ACP))
 		{
@@ -449,6 +475,7 @@ void CRebaseDlg::FetchLogList()
 			text.Format(fmt,m_BranchCtrl.GetString());
 			m_CommitList.ShowText(text);
 			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
+			SetContinueButtonText();
 			return;
 		}
 	}
@@ -458,7 +485,7 @@ void CRebaseDlg::FetchLogList()
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(_T("Nothing to Rebase"));
 
-	CString hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
+	hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
 	
 #if 0
 	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
@@ -488,6 +515,7 @@ void CRebaseDlg::FetchLogList()
 		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
 	
 	this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
+	SetContinueButtonText();
 }
 
 void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
@@ -651,6 +679,41 @@ int CRebaseDlg::FinishRebase()
 }
 void CRebaseDlg::OnBnClickedContinue()
 {
+	if( m_RebaseStage == REBASE_DONE)
+	{
+		OnOK();
+	}
+
+	if( this->m_IsFastForward )
+	{
+		m_OrigBranchHash = g_Git.GetHash(m_BranchCtrl.GetString());
+		m_OrigUpstreamHash = g_Git.GetHash(this->m_UpstreamCtrl.GetString());
+			
+		if(!g_Git.IsFastForward(this->m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString()))
+		{
+			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+			AddLogString(_T("No fast forward\r\nMaybe repository changed"));
+			return;
+		}
+		CString cmd,out;
+		cmd.Format(_T("git.exe reset --hard %s"),this->m_UpstreamCtrl.GetString());
+		this->AddLogString(CString(_T("Fast forward to "))+m_UpstreamCtrl.GetString());
+
+		AddLogString(cmd);
+		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			AddLogString(_T("Fail"));
+			AddLogString(out);
+			return;
+		}
+		AddLogString(out);
+		AddLogString(_T("Done"));
+		m_RebaseStage = REBASE_DONE;
+		UpdateCurrentStatus();
+		return;
+
+	}
 	if( m_RebaseStage == CHOOSE_BRANCH|| m_RebaseStage == CHOOSE_COMMIT_PICK_MODE )
 	{
 		if(CheckRebaseCondition())
@@ -658,10 +721,6 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_START;
 	}
 
-	if( m_RebaseStage == REBASE_DONE)
-	{
-		OnOK();
-	}
 
 	if( m_RebaseStage == REBASE_FINISH )
 	{
@@ -847,7 +906,10 @@ void CRebaseDlg::SetContinueButtonText()
 	{
 	case CHOOSE_BRANCH:
 	case CHOOSE_COMMIT_PICK_MODE:
-		Text = _T("Start");
+		if(this->m_IsFastForward)
+			Text = _T("Start(FastFwd)");
+		else
+			Text = _T("Start");
 		break;
 
 	case REBASE_START:
@@ -1257,6 +1319,17 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(CMessageBox::Show(NULL,_T("Are you sure you want to abort the rebase process?"),_T("TortoiseGit"),MB_YESNO) != IDYES)
 		return;
 
+	if(this->m_IsFastForward)
+	{
+		cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.Left(40));
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			AddLogString(out);
+			return ;
+		}
+		__super::OnCancel();
+		return;
+	}
 	cmd.Format(_T("git.exe checkout -f %s"),this->m_UpstreamCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{

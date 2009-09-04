@@ -1247,3 +1247,23 @@ int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 
 	return 0;
 }
+
+bool CGit::IsFastForward(CString &from, CString &to)
+{
+	CString base,hash;
+	CString cmd;
+	cmd.Format(_T("git.exe merge-base %s %s"), to,from);
+
+	if(g_Git.Run(cmd,&base,CP_ACP))
+	{
+		//CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return false;
+	}
+	base=base.Left(40);
+
+	hash=g_Git.GetHash(from);
+
+	hash=hash.Left(40);
+	
+	return hash == base;
+}

@@ -44,6 +44,8 @@ public:
 
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, CString &filename);
+
+	bool IsFastForward(CString &from, CString &to);
 	CString GetConfigValue(CString name);
 	CString GetUserName(void);
 	CString GetUserEmail(void);
