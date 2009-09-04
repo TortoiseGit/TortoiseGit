@@ -435,6 +435,18 @@ void CRebaseDlg::FetchLogList()
 
 	hash=g_Git.GetHash(m_BranchCtrl.GetString());
 
+	if(hash == g_Git.GetHash(this->m_UpstreamCtrl.GetString()))
+	{
+		m_CommitList.Clear();
+		CString text,fmt;
+		fmt.LoadString(IDS_REBASE_EQUAL_FMT);
+		text.Format(fmt,m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString());
+
+		m_CommitList.ShowText(text);
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
+
 	hash=hash.Left(40);
 	
 	if(hash == base )
