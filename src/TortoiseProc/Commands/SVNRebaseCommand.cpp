@@ -51,7 +51,7 @@ bool SVNRebaseCommand::Execute()
 
 	CRebaseDlg dlg;
 	
-	dlg.m_PreCmd=_T("git.exe svn fetch");
+//	dlg.m_PreCmd=_T("git.exe svn fetch");
 
 	CString cmd,out;
 	cmd = _T("git.exe config svn-remote.svn.fetch");
@@ -62,10 +62,53 @@ bool SVNRebaseCommand::Execute()
 			out=out.Mid(6);
 		int start = 0;
 		out=out.Tokenize(_T("\n"),start);
+	}else
+	{
+		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return false;
 	}
 
 	dlg.m_Upstream=out;
 
+	CString UpStreamOldHash,HeadHash,UpStreamNewHash;
+	UpStreamOldHash=g_Git.GetHash(out);
+	HeadHash = g_Git.GetHash(_T("HEAD"));
+	CProgressDlg progress; 
+	progress.m_GitCmd=_T("git.exe svn fetch");
+	progress.m_bAutoCloseOnSuccess = true;
+
+	if(progress.DoModal()!=IDOK)
+		return false;
+
+	if(progress.m_GitStatus)
+		return false;
+	
+	UpStreamNewHash=g_Git.GetHash(out);
+
+	//everything updated
+	if(UpStreamNewHash==HeadHash)
+	{
+		CMessageBox::Show(NULL,_T("Everything Updated"),_T("TortoiseGit"),MB_OK);
+		return true;
+	}
+	
+	//fast forward;
+	CString ff;
+	if(g_Git.IsFastForward(CString(_T("HEAD")),out))
+	{
+		cmd.Format(_T("git.exe reset --hard %s"),out);
+		if(g_Git.Run(cmd,&ff,CP_ACP))
+		{
+			CMessageBox::Show(NULL,ff,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return false;
+		}else
+		{
+			CMessageBox::Show(NULL,CString(_T("Fast Forward:"))+ff,_T("TortoiseGit"),MB_OK);
+			return true;
+		}
+	}
+
+	//need rebase
 	if(dlg.DoModal() == IDOK)
 	{
 		bRet=true;
