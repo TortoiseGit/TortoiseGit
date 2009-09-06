@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
+#include "CommonResource.h"
 #include "..\version.h"
 #include "MessageBox.h"
 #include ".\checkforupdatesdlg.h"
@@ -32,7 +33,8 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	, m_bShowInfo(FALSE)
 	, m_bVisible(FALSE)
 {
-	m_sUpdateDownloadLink = _T("http://tortoisesvn.tigris.org");
+	m_sUpdateDownloadLink = _T("http://code.google.com/p/tortoisegit/downloads");
+	m_sUpdateChangeLogLink = _T("http://code.google.com/p/tortoisegit/wiki/ReleaseNotes");
 }
 
 CCheckForUpdatesDlg::~CCheckForUpdatesDlg()
@@ -43,6 +45,7 @@ void CCheckForUpdatesDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LINK, m_link);
+	DDX_Control(pDX, IDC_LINK_CHANGE_LOG, m_ChangeLogLink);
 }
 
 
@@ -105,8 +108,9 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	{
 		sCheckURL = checkurlmachine;
 		if (sCheckURL.IsEmpty())
-			sCheckURL = _T("http://tortoisesvn.tigris.org/version.txt");
+			sCheckURL = _T("http://code.google.com/p/tortoisegit/downloads/list");
 	}
+	CoInitialize(NULL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
 	if (res == S_OK)
 	{
@@ -114,16 +118,54 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		{
 			CStdioFile file(tempfile, CFile::modeRead | CFile::shareDenyWrite);
 			CString ver;
-			if (file.ReadString(ver))
+			int major,minor,micro,build;
+			major=minor=micro=build=0;
+			unsigned __int64 version=0;
+
+			if(file.GetLength()>100)
+			{
+				while(file.ReadString(ver))
+				{
+					int start;
+					while( (start=ver.Find(_T("TortoiseGit-"))) > 0 )
+					{
+						ver = ver.Mid(start+CString(_T("TortoiseGit-")).GetLength());
+						int x1,x2,x3,x4;
+						x1=_ttoi(ver)&0xFFFF;
+						ver = ver.Mid(ver.Find('.')+1);
+						x2=_ttoi(ver)&0xFFFF;
+						ver = ver.Mid(ver.Find('.')+1);
+						x3=_ttoi(ver)&0xFFFF;
+						ver = ver.Mid(ver.Find('.')+1);
+						x4=_ttoi(ver)&0xFFFF;
+						
+						unsigned __int64 newversion;
+						newversion = (x1<<48) + (x2<<32) + (x3<<16)+x4;
+						if(newversion>version)
+						{
+							major=x1;
+							minor=x2;
+							micro=x3;
+							build=x4;
+							version = newversion;
+						}
+					}
+				}
+
+			}else if (file.ReadString(ver))
 			{
 				CString vertemp = ver;
-				int major = _ttoi(vertemp);
+				major = _ttoi(vertemp);
 				vertemp = vertemp.Mid(vertemp.Find('.')+1);
-				int minor = _ttoi(vertemp);
+				minor = _ttoi(vertemp);
 				vertemp = vertemp.Mid(vertemp.Find('.')+1);
-				int micro = _ttoi(vertemp);
+				micro = _ttoi(vertemp);
 				vertemp = vertemp.Mid(vertemp.Find('.')+1);
-				int build = _ttoi(vertemp);
+				build = _ttoi(vertemp);
+				version = (major<<48) + (minor<<32) + (micro<<16)+build;
+			}
+
+			{
 				BOOL bNewer = FALSE;
 				if (major > TSVN_VERMAJOR)
 					bNewer = TRUE;
@@ -134,14 +176,15 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				else if ((build > TSVN_VERBUILD)&&(micro == TSVN_VERMICRO)&&(minor == TSVN_VERMINOR)&&(major == TSVN_VERMAJOR))
 					bNewer = TRUE;
 
-				if (_ttoi(ver)!=0)
+				if (version != 0)
 				{
+					ver.Format(_T("%d.%d.%d.%d"),major,minor,micro,build);
 					temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)ver);
 					SetDlgItemText(IDC_CURRENTVERSION, temp);
 					temp.Format(_T("%d.%d.%d.%d"), TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD);
 				}
 
-				if (_ttoi(ver)==0)
+				if (version == 0)
 				{
 					temp.LoadString(IDS_CHECKNEWER_NETERROR);
 					SetDlgItemText(IDC_CHECKRESULT, temp);
@@ -180,6 +223,8 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	}
 	else
 	{
+		// Try to cache web page;
+
 		temp.LoadString(IDS_CHECKNEWER_NETERROR);
 		SetDlgItemText(IDC_CHECKRESULT, temp);
 	}
@@ -187,6 +232,11 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	{
 		m_link.ShowWindow(SW_SHOW);
 		m_link.SetURL(m_sUpdateDownloadLink);
+	}
+	if (!m_sUpdateDownloadLink.IsEmpty())
+	{
+		m_ChangeLogLink.ShowWindow(SW_SHOW);
+		m_ChangeLogLink.SetURL(m_sUpdateChangeLogLink);
 	}
 
 	DeleteFile(tempfile);

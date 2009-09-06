@@ -19,6 +19,7 @@
 #include "StdAfx.h"
 #include "Registry.h"
 #include "TempFile.h"
+#include "TGitPath.h"
 
 CTempFiles::CTempFiles(void)
 {
@@ -35,31 +36,31 @@ CTempFiles& CTempFiles::Instance()
 	return instance;
 }
 
-CTSVNPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTSVNPath& path /* = CTSVNPath() */, const SVNRev revision /* = SVNRev() */)
+CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /* = CTGitPath() */, const GitRev revision /* = GitRev() */)
 {
 	DWORD len = ::GetTempPath(0, NULL);
 	TCHAR * temppath = new TCHAR[len+1];
 	TCHAR * tempF = new TCHAR[len+50];
 	::GetTempPath (len+1, temppath);
-	CTSVNPath tempfile;
+	CTGitPath tempfile;
 	CString possibletempfile;
 	if (path.IsEmpty())
 	{
-		::GetTempFileName (temppath, TEXT("svn"), 0, tempF);
-		tempfile = CTSVNPath(tempF);
+		::GetTempFileName (temppath, TEXT("git"), 0, tempF);
+		tempfile = CTGitPath(tempF);
 	}
 	else
 	{
 		int i=0;
 		do
 		{
-			if (revision.IsValid())
+			if (!revision.m_CommitHash.IsEmpty())
 			{
-				possibletempfile.Format(_T("%s%s-rev%s.svn%3.3x.tmp%s"), temppath, (LPCTSTR)path.GetFileOrDirectoryName(), (LPCTSTR)revision.ToString(), i, (LPCTSTR)path.GetFileExtension());
+				possibletempfile.Format(_T("%s%s-rev%s.git%3.3x.tmp%s"), temppath, (LPCTSTR)path.GetFileOrDirectoryName(), (LPCTSTR)revision.m_CommitHash.Left(7), i, (LPCTSTR)path.GetFileExtension());
 			}
 			else
 			{
-				possibletempfile.Format(_T("%s%s.svn%3.3x.tmp%s"), temppath, (LPCTSTR)path.GetFileOrDirectoryName(), i, (LPCTSTR)path.GetFileExtension());
+				possibletempfile.Format(_T("%s%s.git%3.3x.tmp%s"), temppath, (LPCTSTR)path.GetFileOrDirectoryName(), i, (LPCTSTR)path.GetFileExtension());
 			}
 			tempfile.SetFromWin(possibletempfile);
 			i++;

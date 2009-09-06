@@ -513,6 +513,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TempFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TempFile.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UnicodeUtils.cpp"
 				>
 			</File>

@@ -59,6 +59,8 @@ public:
 
 private:
 	CString		m_sUpdateDownloadLink;			///< Where to send a user looking to download a update
+	CString		m_sUpdateChangeLogLink;			///< Where to send a user looking to change log
 	CHyperLink	m_link;
+	CHyperLink	m_ChangeLogLink;
 };
 

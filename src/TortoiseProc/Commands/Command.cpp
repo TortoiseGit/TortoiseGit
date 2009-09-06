@@ -65,6 +65,7 @@
 #include "SVNDCommitCommand.h"
 #include "SVNRebaseCommand.h"
 #include "SyncCommand.h"
+#include "UpdateCheckCommand.h"
 
 #if 0
 
@@ -109,7 +110,7 @@
 
 #include "UnIgnoreCommand.h"
 #include "UnLockCommand.h"
-#include "UpdateCheckCommand.h"
+
 #include "UpdateCommand.h"
 #include "UrlDiffCommand.h"
 #endif
@@ -383,6 +384,9 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SVNRebaseCommand;
 	case cmdSync:
 		return new SyncCommand;
+	case cmdUpdateCheck:
+		return new UpdateCheckCommand;
+
 #if 0
 
 	
@@ -434,8 +438,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new UnLockCommand;
 	case cmdUpdate:
 		return new UpdateCommand;
-	case cmdUpdateCheck:
-		return new UpdateCheckCommand;
 	case cmdUrlDiff:
 		return new UrlDiffCommand;
 #endif

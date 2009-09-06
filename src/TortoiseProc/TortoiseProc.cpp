@@ -363,7 +363,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 					GetModuleFileName(NULL, com, MAX_PATH);
 					_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck"));
 
-					//CAppUtils::LaunchApplication(com, 0, false);
+					CAppUtils::LaunchApplication(com, 0, false);
 				}
 			}
 		}
