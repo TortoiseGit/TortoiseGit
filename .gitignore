@@ -21,3 +21,7 @@ IBugTraqProvider_?.?
 Thumbs.db
 *.cache
 /doc/xsl/db_*.xsl
+Debug
+Release
+Debug64
+Release64
