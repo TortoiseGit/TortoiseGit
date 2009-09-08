@@ -694,10 +694,26 @@ void CRebaseDlg::OnBnClickedContinue()
 	if( m_RebaseStage == REBASE_DONE)
 	{
 		OnOK();
+		return;
 	}
 
 	if( this->m_IsFastForward )
 	{
+		CString cmd,out;
+		CString oldbranch = g_Git.GetCurrentBranch();
+		if( oldbranch != m_BranchCtrl.GetString() )
+		{
+			cmd.Format(_T("git.exe checkout %s"),m_BranchCtrl.GetString());
+			AddLogString(cmd);
+			if( g_Git.Run(cmd,&out,CP_ACP) )
+			{
+				this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
+				AddLogString(out);
+				return;
+			}
+		}
+		AddLogString(out);
+		out.Empty();
 		m_OrigBranchHash = g_Git.GetHash(m_BranchCtrl.GetString());
 		m_OrigUpstreamHash = g_Git.GetHash(this->m_UpstreamCtrl.GetString());
 			
@@ -707,7 +723,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			AddLogString(_T("No fast forward\r\nMaybe repository changed"));
 			return;
 		}
-		CString cmd,out;
+		
 		cmd.Format(_T("git.exe reset --hard %s"),this->m_UpstreamCtrl.GetString());
 		this->AddLogString(CString(_T("Fast forward to "))+m_UpstreamCtrl.GetString());
 
