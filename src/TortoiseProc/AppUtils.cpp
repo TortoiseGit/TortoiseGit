@@ -609,7 +609,7 @@ bool CAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessage
 
 	CString cleanCommandLine(sCommandLine);
 
-	if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, sOrigCWD, &startup, &process)==0)
+	if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, g_Git.m_CurrentDir, &startup, &process)==0)
 	{
 		if(idErrMessageFormat != 0)
 		{

@@ -106,7 +106,6 @@ CTortoiseProcApp::~CTortoiseProcApp()
 // The one and only CTortoiseProcApp object
 CTortoiseProcApp theApp;
 HWND hWndExplorer;
-CString sOrigCWD;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
 {
@@ -325,8 +324,8 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 			TCHAR * originalCurrentDirectory = new TCHAR[len];
 			if (GetCurrentDirectory(len, originalCurrentDirectory))
 			{
-				sOrigCWD = originalCurrentDirectory;
-				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
+				//sOrigCWD = originalCurrentDirectory;
+				//sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 			delete [] originalCurrentDirectory;
 		}
