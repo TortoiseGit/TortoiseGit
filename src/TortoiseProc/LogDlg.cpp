@@ -3107,7 +3107,8 @@ void CLogDlg::ShowStartRef()
 	if(showStartRef.IsEmpty())
 	{
 		//Ref name is HEAD
-		g_Git.Run(L"git symbolic-ref HEAD",&showStartRef,CP_UTF8);
+		if( g_Git.Run(L"git symbolic-ref HEAD",&showStartRef,CP_UTF8) )
+			showStartRef = _T("<No branch>");
 		showStartRef.Trim(L"\r\n\t ");
 	}
 
