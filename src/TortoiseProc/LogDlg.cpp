@@ -2241,6 +2241,7 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	if (this->IsThreadRunning())
 		return;		//no sorting while the arrays are filled
+#if 0
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	const int nColumn = pNMLV->iSubItem;
 	m_bAscending = nColumn == m_nSortColumn ? !m_bAscending : TRUE;
@@ -2250,7 +2251,7 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 	SortShownListArray();
 	m_LogList.Invalidate();
 	UpdateLogInfoLabel();
-	
+#endif
 	*pResult = 0;
 }
 
