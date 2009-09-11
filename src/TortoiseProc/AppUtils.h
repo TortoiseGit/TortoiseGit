@@ -161,7 +161,7 @@ public:
 //	static bool IgnoreFile(CTGitPath &file, bool IsMask);
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
-	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false);
+	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false,bool revertTheirMy=false);
 	/**
 	 * FUNCTION    :   FormatDateAndTime
 	 * DESCRIPTION :   Generates a displayable string from a CTime object in

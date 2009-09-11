@@ -580,7 +580,7 @@ int CRebaseDlg::CheckRebaseCondition()
 int CRebaseDlg::StartRebase()
 {
 	CString cmd,out;
-
+	m_FileListCtrl.m_bIsRevertTheirMy = !m_IsCherryPick;
 	if(!this->m_IsCherryPick)
 	{
 		//Todo call comment_for_reflog
@@ -1287,6 +1287,8 @@ void CRebaseDlg::ListConflictFile()
 	CTGitPathList list;
 	CTGitPath path;
 	list.AddPath(path);
+
+	m_FileListCtrl.m_bIsRevertTheirMy = !m_IsCherryPick;
 
 	this->m_FileListCtrl.GetStatus(&list,true);
 	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,

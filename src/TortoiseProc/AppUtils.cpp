@@ -1368,7 +1368,7 @@ CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 	return file;
 }
 
-bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
+bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool,bool revertTheirMy)
 {
 	bool bRet = false;
 
@@ -1455,7 +1455,10 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool)
 	if(b_local && b_remote )
 	{
 		merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
-		bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+		if( revertTheirMy )
+			bRet = !!CAppUtils::StartExtMerge(base,mine, theirs,  merge,_T("BASE"),_T("LOCAL"),_T("REMOTE"));
+		else
+			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
 	
 	}else
 	{

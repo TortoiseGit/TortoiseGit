@@ -126,6 +126,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 {
 	m_FileLoaded=0;
 	m_critSec.Init();
+	m_bIsRevertTheirMy = false;
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -2864,7 +2865,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDSVNLC_EDITCONFLICT:
 			{
-				CAppUtils::ConflictEdit(*filepath);
+				CAppUtils::ConflictEdit(*filepath,false,this->m_bIsRevertTheirMy);
 				break;
 			}
 			case IDSVNLC_RESOLVETHEIRS: //follow up 
@@ -2883,7 +2884,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							continue;
 						CString gitcmd,output;
 						output.Empty();
-						if ( cmd == IDSVNLC_RESOLVETHEIRS)
+						int stage=0;
+						
+						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) ||
+							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) )
 						{
 							gitcmd.Format(_T("git.exe cat-file blob \":3:%s\""),fentry->GetGitPathString());
 							if(g_Git.RunLogFile(gitcmd,(CString&)fentry->GetWinPathString()))
@@ -2893,7 +2897,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 						}
 						output.Empty();
-						if ( cmd == IDSVNLC_RESOLVEMINE)
+						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) ||
+							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) )
 						{
 							gitcmd.Format(_T("git.exe cat-file blob \":2:%s\""),fentry->GetGitPathString());
 							if(g_Git.RunLogFile(gitcmd,(CString&)fentry->GetWinPathString()))
@@ -4107,7 +4112,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
 	{
-		CAppUtils::ConflictEdit(*file,false);
+		CAppUtils::ConflictEdit(*file,false,m_bIsRevertTheirMy);
 
 	}else
 	{
