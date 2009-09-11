@@ -242,7 +242,11 @@ out everything for now, leaving these enabled as they are would make the install
 
             <Component Id="C__wingit" Guid="$(var.GuidGitLib)" Win64="$(var.Win64YesNo)">
               <File Id="F__wingit" ShortName="IGIT.EXE" Name="igit.exe" DiskId="1" Source="..\..\ext\gitexe\igit.exe" KeyPath="yes" />
-			  <File Id="F__libiconv2" ShortName="LIBICONV.DLL" Name="libiconv2.dll" DiskId="1" Source="..\..\ext\gitexe\libiconv2.dll" />
+			        <File Id="F__libiconv2" ShortName="LIBICONV.DLL" Name="libiconv2.dll" DiskId="1" Source="..\..\ext\gitexe\libiconv2.dll" />
+              <File Id="F__tgit" ShortName="TGIT.EXE"  Name="tgit.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgit.exe" />
+              <File Id="F__gitdll" ShortName="GITDLL.DLL"  Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" />
+              <File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
+              <File Id="F__curl" ShortName="libcurl.DLL" Name="libcurl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl.dll" />
             </Component>
             
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
