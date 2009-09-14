@@ -52,7 +52,8 @@ public:
 	enum { GIT_COMMAND_PUSH,
 		   GIT_COMMAND_PULL,
 		   GIT_COMMAND_FETCH,
-		   GIT_COMMAND_FETCHANDREBASE
+		   GIT_COMMAND_FETCHANDREBASE,
+		   GIT_COMMAND_SUBMODULE,
 		};
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -62,6 +63,8 @@ protected:
 
 	CRegDWORD m_regPullButton;
 	CRegDWORD m_regPushButton;
+	CRegDWORD m_regSubmoduleButton;
+
 	CMFCTabCtrl m_ctrlTabCtrl;
 
 	CBalloon			m_tooltips;
@@ -161,6 +164,7 @@ public:
 	CMenuButton m_ctrlPull;
 	CMenuButton m_ctrlPush;
 	CMenuButton m_ctrlStatus;
+	CMenuButton m_ctrlSubmodule;
 	afx_msg void OnBnClickedButtonPull();
 	afx_msg void OnBnClickedButtonPush();
 	afx_msg void OnBnClickedButtonApply();
@@ -177,4 +181,6 @@ public:
 	afx_msg void OnBnClickedButtonCommit();
 protected:
 	virtual void OnOK();
+public:
+	afx_msg void OnBnClickedButtonSubmodule();
 };

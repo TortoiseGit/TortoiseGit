@@ -58,7 +58,7 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_STATUS, m_ctrlStatus);
 	DDX_Control(pDX, IDC_PROGRESS_SYNC, m_ctrlProgress);
 	DDX_Control(pDX, IDC_ANIMATE_SYNC, m_ctrlAnimate);
-
+	DDX_Control(pDX, IDC_BUTTON_SUBMODULE,m_ctrlSubmodule);
 	BRANCH_COMBOX_DDX;
 }
 
@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxexUrl)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDC_BUTTON_COMMIT, &CSyncDlg::OnBnClickedButtonCommit)
+	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
 END_MESSAGE_MAP()
 
 
@@ -84,6 +85,7 @@ void CSyncDlg::EnableControlButton(bool bEnabled)
 	GetDlgItem(IDC_BUTTON_APPLY)->EnableWindow(bEnabled);
 	GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(bEnabled);
 	GetDlgItem(IDOK)->EnableWindow(bEnabled);
+	GetDlgItem(IDC_BUTTON_SUBMODULE)->EnableWindow(bEnabled);
 }
 // CSyncDlg message handlers
 
@@ -600,15 +602,16 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_MANAGE,TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_PULL,BOTTOM_LEFT);
 	AddAnchor(IDC_BUTTON_PUSH,BOTTOM_LEFT);
-	AddAnchor(IDC_BUTTON_APPLY,BOTTOM_LEFT);
-	AddAnchor(IDC_BUTTON_EMAIL,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_SUBMODULE,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_APPLY,BOTTOM_RIGHT);
+	AddAnchor(IDC_BUTTON_EMAIL,BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS_SYNC,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDHELP,BOTTOM_RIGHT);
 	AddAnchor(IDC_STATIC_STATUS,BOTTOM_LEFT);
 	AddAnchor(IDC_ANIMATE_SYNC,TOP_LEFT);
 	AddAnchor(IDC_BUTTON_COMMIT,BOTTOM_LEFT);
-	
+
 	BRANCH_COMBOX_ADD_ANCHOR();
 
 	this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_HIDE);
@@ -629,6 +632,9 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(_T("Fetc&h")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base")));
 
+	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Update")));
+	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Init")));
+	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Sync")));
 	
 	WorkingDir.Replace(_T(':'),_T('_'));
 
@@ -637,9 +643,11 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->m_regPullButton = CRegDWORD(regkey+_T("\\Pull"),0);
 	this->m_regPushButton = CRegDWORD(regkey+_T("\\Push"),0);
+	this->m_regSubmoduleButton = CRegDWORD(regkey+_T("\\Submodule"));
 
 	this->m_ctrlPull.SetCurrentEntry(this->m_regPullButton);
 	this->m_ctrlPush.SetCurrentEntry(this->m_regPushButton);
+	this->m_ctrlSubmodule.SetCurrentEntry(this->m_regSubmoduleButton);
 
 	CString str;
 	this->GetWindowText(str);
@@ -811,6 +819,14 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			FetchComplete();
 		}
+		if(this->m_CurrentCmd == GIT_COMMAND_SUBMODULE)
+		{
+			//this->m_ctrlCmdOut.SetSel(-1,-1);
+			//this->m_ctrlCmdOut.ReplaceSel(_T("Done\r\n"));
+			//this->m_ctrlCmdOut.SetSel(-1,-1);
+			EnableControlButton(true);
+			SwitchToInput();
+		}
 	}
 
 	if(lParam != 0)
@@ -882,4 +898,53 @@ void CSyncDlg::OnOK()
 	m_ctrlURL.SaveHistory();
 	SaveHistory();
 	__super::OnOK();
+}
+
+void CSyncDlg::OnBnClickedButtonSubmodule()
+{
+	// TODO: Add your control notification handler code here
+		// TODO: Add your control notification handler code here
+	this->UpdateData();
+	UpdateCombox();
+
+	this->m_regSubmoduleButton = this->m_ctrlSubmodule.GetCurrentEntry();
+
+	this->SwitchToRun();
+	
+	this->m_bAbort=false;
+	this->m_GitCmdList.clear();
+
+	ShowTab(IDC_CMD_LOG);
+
+	CString cmd;
+
+	switch (m_ctrlSubmodule.GetCurrentEntry())
+	{
+	case 0:
+		cmd=_T("git.exe submodule update");
+		break;
+	case 1:
+		cmd=_T("git.exe submodule init");
+		break;
+	case 2:
+		cmd=_T("git.exe submodule sync");
+		break;
+	}
+
+	
+	m_GitCmdList.push_back(cmd);
+
+	m_CurrentCmd = GIT_COMMAND_SUBMODULE;
+
+	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
+	if (m_pThread==NULL)
+	{
+//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+	}
+	else
+	{
+		m_pThread->m_bAutoDelete = TRUE;
+		m_pThread->ResumeThread();
+	}
+
 }
