@@ -58,9 +58,14 @@ bool SVNRebaseCommand::Execute()
 
 	if(!g_Git.Run(cmd,&out,CP_ACP))
 	{
+		int start = out.Find(_T(':'));
+		if( start >=0 )
+			out=out.Mid(start);
+
 		if(out.Left(5) == _T(":refs"))
 			out=out.Mid(6);
-		int start = 0;
+		
+		start = 0;
 		out=out.Tokenize(_T("\n"),start);
 	}else
 	{
