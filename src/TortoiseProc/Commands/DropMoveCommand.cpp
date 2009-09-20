@@ -30,7 +30,7 @@ bool DropMoveCommand::Execute()
 {
 	CString droppath = parser.GetVal(_T("droptarget"));
 	CString ProjectTop;
-	if (CTGitPath(droppath).HasAdminDir(&ProjectTop))
+	if (!CTGitPath(droppath).HasAdminDir(&ProjectTop))
 		return FALSE;
 	
 	if (ProjectTop != g_Git.m_CurrentDir )
@@ -39,7 +39,7 @@ bool DropMoveCommand::Execute()
 		return FALSE;
 	}
 
-	droppath.Right(droppath.GetLength()-ProjectTop.GetLength()-1);
+	droppath = droppath.Right(droppath.GetLength()-ProjectTop.GetLength()-1);
 
 	unsigned long count = 0;
 	pathList.RemoveAdminPaths();
