@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008 - TortoiseSVN
+// Copyright (C) 2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,41 +19,46 @@
 #include "StdAfx.h"
 #include "PasteMoveCommand.h"
 
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 #include "MessageBox.h"
-#include "SVN.h"
-#include "SVNStatus.h"
+#include "Git.h"
+#include "GitStatus.h"
 #include "RenameDlg.h"
 #include "ShellUpdater.h"
+#include "ProjectProperties.h"
+#include "CommonResource.h"
 
 bool PasteMoveCommand::Execute()
 {
 	CString sDroppath = parser.GetVal(_T("droptarget"));
-	CTSVNPath dropPath(sDroppath);
+	CTGitPath dropPath(sDroppath);
 	ProjectProperties props;
 	props.ReadProps(dropPath);
 	if (dropPath.IsAdminDir())
 		return FALSE;
-	SVN svn;
-	SVNStatus status;
+
+	if(!dropPath.HasAdminDir(&g_Git.m_CurrentDir))
+		return FALSE;
+
+	GitStatus status;
 	unsigned long count = 0;
-	pathList.RemoveAdminPaths();
+	orgPathList.RemoveAdminPaths();
 	CString sNewName;
-	CProgressDlg progress;
+	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_MOVING);
 	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
-	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	for(int nPath = 0; nPath < orgPathList.GetCount(); nPath++)
 	{
-		CTSVNPath destPath;
+		CTGitPath destPath;
 		if (sNewName.IsEmpty())
-			destPath = CTSVNPath(sDroppath+_T("\\")+pathList[nPath].GetFileOrDirectoryName());
+			destPath = CTGitPath(sDroppath+_T("\\")+orgPathList[nPath].GetFileOrDirectoryName());
 		else
-			destPath = CTSVNPath(sDroppath+_T("\\")+sNewName);
+			destPath = CTGitPath(sDroppath+_T("\\")+sNewName);
 		if (destPath.Exists())
 		{
-			CString name = pathList[nPath].GetFileOrDirectoryName();
+			CString name = orgPathList[nPath].GetFileOrDirectoryName();
 			if (!sNewName.IsEmpty())
 				name = sNewName;
 			progress.Stop();
@@ -66,45 +71,56 @@ bool PasteMoveCommand::Execute()
 			}
 			destPath.SetFromWin(sDroppath+_T("\\")+dlg.m_name);
 		}
-		svn_wc_status_kind s = status.GetAllStatus(pathList[nPath]);
-		if ((s == svn_wc_status_none)||(s == svn_wc_status_unversioned)||(s == svn_wc_status_ignored))
+		CString top;
+		top.Empty();
+		orgPathList[nPath].HasAdminDir(&top);
+		git_wc_status_kind s = status.GetAllStatus(orgPathList[nPath]);
+		if ((s == git_wc_status_none)||(s == git_wc_status_unversioned)||(s == git_wc_status_ignored)||top != g_Git.m_CurrentDir)
 		{
 			// source file is unversioned: move the file to the target, then add it
-			MoveFile(pathList[nPath].GetWinPath(), destPath.GetWinPath());
-			if (!svn.Add(CTSVNPathList(destPath), &props, svn_depth_infinity, true, false, true))
+			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());
+			CString cmd,output;
+			cmd.Format(_T("git.exe add \"%s\""),destPath.GetWinPath());
+			if(g_Git.Run(cmd,&output,CP_ACP))
+			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
-				TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-				CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+				TRACE(_T("%s\n"), output);
+				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 			CShellUpdater::Instance().AddPathForUpdate(destPath);
 		}
 		else
 		{
-			if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, FALSE))
+			CString cmd,output;
+			cmd.Format(_T("git.exe mv \"%s\" \"%s\""),orgPathList[nPath].GetGitPathString(),destPath.GetGitPathString());
+			if(g_Git.Run(cmd,&output,CP_ACP))
+			//if (!Git.Move(CTGitorgPathList(orgPathList[nPath]), destPath, FALSE))
 			{
-				if (svn.Err && (svn.Err->apr_err == SVN_ERR_UNVERSIONED_RESOURCE ||
-					svn.Err->apr_err == SVN_ERR_CLIENT_MODIFIED))
+#if 0
+				if (Git.Err && (Git.Err->apr_err == Git_ERR_UNVERSIONED_RESOURCE ||
+					Git.Err->apr_err == Git_ERR_CLIENT_MODIFIED))
 				{
 					// file/folder seems to have local modifications. Ask the user if
 					// a force is requested.
-					CString temp = svn.GetLastErrorMessage();
+					CString temp = Git.GetLastErrorMessage();
 					CString sQuestion(MAKEINTRESOURCE(IDS_PROC_FORCEMOVE));
 					temp += _T("\n") + sQuestion;
-					if (CMessageBox::Show(hwndExplorer, temp, _T("TortoiseSVN"), MB_YESNO)==IDYES)
+					if (CMessageBox::Show(hwndExplorer, temp, _T("TortoiseGit"), MB_YESNO)==IDYES)
 					{
-						if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))
+						if (!Git.Move(CTGitPathList(pathList[nPath]), destPath, TRUE))
 						{
-							CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+							CMessageBox::Show(hwndExplorer, Git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
 							return FALSE;		//get out of here
 						}
 						CShellUpdater::Instance().AddPathForUpdate(destPath);
 					}
 				}
 				else
+#endif
 				{
-					TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-					CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseSVN"), MB_ICONERROR);
+					TRACE(_T("%s\n"), (LPCTSTR)output);
+					CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
 					return FALSE;		//get out of here
 				}
 			} 
@@ -114,9 +130,9 @@ bool PasteMoveCommand::Execute()
 		count++;
 		if (progress.IsValid())
 		{
-			progress.FormatPathLine(1, IDS_PROC_MOVINGPROG, pathList[nPath].GetWinPath());
+			progress.FormatPathLine(1, IDS_PROC_MOVINGPROG, orgPathList[nPath].GetWinPath());
 			progress.FormatPathLine(2, IDS_PROC_CPYMVPROG2, destPath.GetWinPath());
-			progress.SetProgress(count, pathList.GetCount());
+			progress.SetProgress(count, orgPathList.GetCount());
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
 		{

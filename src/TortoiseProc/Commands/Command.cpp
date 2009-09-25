@@ -66,6 +66,8 @@
 #include "SVNRebaseCommand.h"
 #include "SyncCommand.h"
 #include "UpdateCheckCommand.h"
+#include "PasteCopyCommand.h"
+#include "PasteMoveCommand.h"
 
 #if 0
 
@@ -91,8 +93,6 @@
 
 
 #include "MergeAllCommand.h"
-#include "PasteCopyCommand.h"
-#include "PasteMoveCommand.h"
 
 #include "PropertiesCommand.h"
 #include "RebuildIconCacheCommand.h"
@@ -386,6 +386,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SyncCommand;
 	case cmdUpdateCheck:
 		return new UpdateCheckCommand;
+	case cmdPasteCopy:
+		return new PasteCopyCommand;
+	case cmdPasteMove:
+		return new PasteMoveCommand;
 
 #if 0
 
@@ -412,10 +416,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new LockCommand;
 	case cmdMergeAll:
 		return new MergeAllCommand;
-	case cmdPasteCopy:
-		return new PasteCopyCommand;
-	case cmdPasteMove:
-		return new PasteMoveCommand;
 	case cmdPrevDiff:
 		return new PrevDiffCommand;
 	case cmdProperties:
