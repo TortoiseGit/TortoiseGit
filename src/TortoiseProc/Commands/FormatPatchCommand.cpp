@@ -65,6 +65,7 @@ bool FormatPatchCommand::Execute()
 			range.Format(_T("%s..%s"),dlg.m_From,dlg.m_To);
 			break;
 		}
+		dlg.m_Dir.Replace(_T('\\'),_T('/'));
 		cmd.Format(_T("git.exe format-patch -o \"%s\" %s"),
 			dlg.m_Dir,
 			range
