@@ -25,19 +25,22 @@
 bool DropCopyAddCommand::Execute()
 {
 	bool bRet = false;
-#if 0
+
 	CString droppath = parser.GetVal(_T("droptarget"));
-	if (CTSVNPath(droppath).IsAdminDir())
+	if (CTGitPath(droppath).IsAdminDir())
 		return FALSE;
 
-	pathList.RemoveAdminPaths();
-	CTSVNPathList copiedFiles;
-	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	if(!CTGitPath(droppath).HasAdminDir(&g_Git.m_CurrentDir))
+		return FALSE;
+
+	orgPathList.RemoveAdminPaths();
+	CTGitPathList copiedFiles;
+	for(int nPath = 0; nPath < orgPathList.GetCount(); nPath++)
 	{
-		if (!pathList[nPath].IsEquivalentTo(CTSVNPath(droppath)))
+		if (!orgPathList[nPath].IsEquivalentTo(CTGitPath(droppath)))
 		{
 			//copy the file to the new location
-			CString name = pathList[nPath].GetFileOrDirectoryName();
+			CString name = orgPathList[nPath].GetFileOrDirectoryName();
 			if (::PathFileExists(droppath+_T("\\")+name))
 			{
 				CString strMessage;
@@ -45,7 +48,7 @@ bool DropCopyAddCommand::Execute()
 				int ret = CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_YESNOCANCEL | MB_ICONQUESTION);
 				if (ret == IDYES)
 				{
-					if (!::CopyFile(pathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
+					if (!::CopyFile(orgPathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
 					{
 						//the copy operation failed! Get out of here!
 						LPVOID lpMsgBuf;
@@ -71,7 +74,7 @@ bool DropCopyAddCommand::Execute()
 					return FALSE;		//cancel the whole operation
 				}
 			}
-			else if (!CopyFile(pathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
+			else if (!CopyFile(orgPathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
 			{
 				//the copy operation failed! Get out of here!
 				LPVOID lpMsgBuf;
@@ -91,13 +94,13 @@ bool DropCopyAddCommand::Execute()
 				LocalFree( lpMsgBuf );
 				return FALSE;
 			}
-			copiedFiles.AddPath(CTSVNPath(droppath+_T("\\")+name));		//add the new filepath
+			copiedFiles.AddPath(CTGitPath(droppath+_T("\\")+name));		//add the new filepath
 		}
 	}
 	//now add all the newly copied files to the working copy
-	CSVNProgressDlg progDlg;
+	CGitProgressDlg progDlg;
 	theApp.m_pMainWnd = &progDlg;
-	progDlg.SetCommand(CSVNProgressDlg::SVNProgress_Add);
+	progDlg.SetCommand(CGitProgressDlg::GitProgress_Add);
 	if (parser.HasVal(_T("closeonend")))
 		progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 	progDlg.SetPathList(copiedFiles);
@@ -106,6 +109,6 @@ bool DropCopyAddCommand::Execute()
 	progDlg.SetProjectProperties(props);
 	progDlg.DoModal();
 	bRet = !progDlg.DidErrorsOccur();
-#endif
+
 	return bRet;
 }
