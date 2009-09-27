@@ -74,7 +74,9 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	else
 	{
 		bkpath=this->orgPathList[0].GetWinPathString();
-		bkpath=bkpath.Left(bkpath.ReverseFind(_T('\\')));
+		int start = bkpath.ReverseFind(_T('\\'));
+		if( start >= 0 )
+			bkpath=bkpath.Left(start);
 	}
 
 	CString super=g_GitAdminDir.GetSuperProjectRoot( bkpath );
