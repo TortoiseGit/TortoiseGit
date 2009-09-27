@@ -436,6 +436,8 @@ BEGIN
     IDS_MENUSYNC            "Sync..."
     IDS_MENUDESCSYNC        "Sync remote Remote Repostory, include pull, push,email patch and so on"
     IDS_MENUSTASHPOP        "Stash Pop"
+    IDS_MENUSVNIGNORE       "Import SVN Ignore ..."
+    IDS_MENUSVNIGNORE_DESC  "Import SVN Ignore"
 END
 
 #endif    // English (U.S.) resources

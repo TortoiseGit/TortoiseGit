@@ -68,6 +68,7 @@
 #include "UpdateCheckCommand.h"
 #include "PasteCopyCommand.h"
 #include "PasteMoveCommand.h"
+#include "SVNIgnoreCommand.h"
 
 #if 0
 
@@ -185,6 +186,7 @@ typedef enum
 	cmdRefBrowse,
 	cmdSVNDCommit,
 	cmdSVNRebase,
+	cmdSVNIgnore,
 	cmdSync,
 	
 } TGitCommand;
@@ -264,6 +266,7 @@ static const struct CommandInfo
 	{	cmdRefBrowse,		_T("refbrowse")			},
 	{	cmdSVNDCommit,		_T("svndcommit")		},
 	{	cmdSVNRebase,		_T("svnrebase")			},
+	{	cmdSVNIgnore,		_T("svnignore")			},
 	{	cmdSync,			_T("sync")				},
 };
 
@@ -390,6 +393,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new PasteCopyCommand;
 	case cmdPasteMove:
 		return new PasteMoveCommand;
+	case cmdSVNIgnore:
+		return new SVNIgnoreCommand;
 
 #if 0
 

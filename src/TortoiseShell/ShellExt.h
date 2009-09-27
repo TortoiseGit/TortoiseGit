@@ -167,6 +167,7 @@ protected:
 		ShellMenuSendMail,
 		ShellMenuGitSVNRebase,
 		ShellMenuGitSVNDCommit,
+		ShellMenuGitSVNIgnore,      //import svn ignore
 		ShellMenuSync,
 		ShellMenuLastEntry			// used to mark the menu array end
 	};

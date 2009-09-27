@@ -204,6 +204,9 @@
 #define IDS_MENUSYNC                    339
 #define IDS_MENUDESCSYNC                340
 #define IDS_MENUSTASHPOP                341
+#define IDS_MENUSVNIGNORE               342
+#define IDS_MENUSVNIGNORE_DEST          343
+#define IDS_MENUSVNIGNORE_DESC          343
 #define IDC_REVISION                    1001
 #define IDC_LOCKED                      1002
 #define IDC_REPOURL                     1003

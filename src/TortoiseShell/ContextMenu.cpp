@@ -65,6 +65,9 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuGitSVNRebase,				MENUSVNREBASE,		IDI_REBASE,				IDS_MENUSVNREBASE,				IDS_MENUSVNREBASE_DESC,
 	ITEMIS_INSVN|ITEMIS_GITSVN, 0, ITEMIS_FOLDERINSVN|ITEMIS_GITSVN, 0, 0, 0, 0, 0},
 
+	{ ShellMenuGitSVNIgnore,				MENUSVNIGNORE,		IDI_IGNORE,				IDS_MENUSVNIGNORE,				IDS_MENUSVNIGNORE_DESC,
+	ITEMIS_INSVN|ITEMIS_GITSVN|ITEMIS_EXTENDED, 0, ITEMIS_FOLDERINSVN|ITEMIS_GITSVN|ITEMIS_EXTENDED, 0, 0, 0, 0, 0},
+
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
 	{ ShellMenuDiff,						MENUDIFF,			IDI_DIFF,				IDS_MENUDIFF,				IDS_MENUDESCDIFF,
@@ -1838,6 +1841,14 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
+			case ShellMenuGitSVNIgnore:
+				svnCmd += _T("svnignore /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;	
 			case ShellMenuRebase:
 				svnCmd += _T("rebase /path:\"");
 				if (files_.size() > 0)
