@@ -43,7 +43,7 @@ bool FetchCommand::Execute()
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;
-		cmd.Format(_T("git.exe fetch \"%s\" %s"),url, dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe fetch -v \"%s\" %s"),url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 
 		if(!dlg.m_bRebase)

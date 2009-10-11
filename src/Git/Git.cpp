@@ -174,7 +174,9 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 	
 	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password. 
-	dwFlags |= DETACHED_PROCESS; 
+	dwFlags |= DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP; 
+
+	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
@@ -185,6 +187,8 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 			0,NULL);
 		return GIT_ERROR_CREATE_PROCESS;
 	}
+	
+	m_CurrentGitPi = pi;
 	
 	CloseHandle(hWrite);
 	if(piOut)

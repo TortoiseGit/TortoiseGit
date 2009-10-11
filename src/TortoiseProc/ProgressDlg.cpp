@@ -326,13 +326,34 @@ void CProgressDlg::OnBnClickedButton1()
 }
 void CProgressDlg::OnCancel()
 {
+	m_bAbort = true;
 	if(m_bDone)
 	{
 		CResizableStandAloneDialog::OnCancel();
 		return;
 	}
+
+	if( g_Git.m_CurrentGitPi.hProcess )
+	{
+		if(::GenerateConsoleCtrlEvent(CTRL_C_EVENT,0))
+		{
+			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+		}else
+		{
+			int error=::GetLastError();
+		}
+
+		HANDLE	hProcessHandle = ::OpenProcess( PROCESS_TERMINATE, FALSE,g_Git.m_CurrentGitPi.dwProcessId);
+		if( hProcessHandle )
+			if(!::TerminateProcess(hProcessHandle,-1) )
+			{
+				int error =::GetLastError();
+			}
+	}
 	
-	m_bAbort = true;
+	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+	CResizableStandAloneDialog::OnCancel();
+
 }
 
 void CProgressDlg::InsertCRLF()

@@ -47,7 +47,7 @@ bool PullCommand::Execute()
 		CString cmdRebase;
 		if(dlg.m_bRebase)
 			cmdRebase = "--rebase ";
-		cmd.Format(_T("git.exe pull %s\"%s\" %s"),cmdRebase, url, dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull -v %s\"%s\" %s"),cmdRebase, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 		progress.m_bAutoCloseOnSuccess = true;
