@@ -267,7 +267,7 @@ void CSyncDlg::FetchComplete()
 	if( (!this->m_GitCmdStatus) && this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
 	{
 		CRebaseDlg dlg;
-		dlg.m_PostButtonText=_T("Email &Patch...");
+		dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
 		int response = dlg.DoModal();
 		if(response == IDOK)
 		{

@@ -61,6 +61,12 @@ bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 	return true;
 }
 
+void CMenuButton::RemoveAll()
+{
+	m_sEntries.RemoveAll();
+	m_currentEntry = -1;
+}
+
 INT_PTR CMenuButton::AddEntry(const CString& sEntry)
 {
 	INT_PTR ret = m_sEntries.Add(sEntry);

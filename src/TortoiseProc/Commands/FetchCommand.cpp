@@ -60,7 +60,7 @@ bool FetchCommand::Execute()
 		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
 		{
 			CRebaseDlg dlg;
-			dlg.m_PostButtonText=_T("Email &Patch...");
+			dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
 			int response = dlg.DoModal();
 			if(response == IDOK)
 			{

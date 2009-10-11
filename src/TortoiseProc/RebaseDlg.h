@@ -8,6 +8,7 @@
 #include "HistoryCombo.h"
 #include "Balloon.h"
 #include "GitLogList.h"
+#include "MenuButton.h"
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
 
@@ -91,6 +92,8 @@ protected:
 	int GetCurrentCommitID();
 	int FinishRebase();
 
+	CMenuButton m_PostButton;
+
 public:
    
     afx_msg void OnBnClickedPickAll();
@@ -114,7 +117,7 @@ public:
     BOOL m_bEditAll;
 	
 	BOOL m_bForce;
-	CString m_PostButtonText;
+	CStringArray m_PostButtonTexts;
 
 	CSplitterControl	m_wndSplitter;
 	CMFCTabCtrl m_ctrlTabCtrl;

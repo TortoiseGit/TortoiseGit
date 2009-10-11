@@ -44,7 +44,7 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_UPSTREAM,   this->m_UpstreamCtrl);
 	DDX_Check(pDX, IDC_REBASE_CHECK_FORCE,m_bForce);
-
+	DDX_Control(pDX,IDC_REBASE_POST_BUTTON,m_PostButton);
 }
 
 
@@ -1014,11 +1014,13 @@ void CRebaseDlg::SetControlEnable()
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP));
 
-		if( m_RebaseStage == REBASE_DONE && (!this->m_PostButtonText.IsEmpty()) )
+		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
 			this->GetDlgItem(IDC_STATUS_STATIC)->ShowWindow(SW_HIDE);
 			this->GetDlgItem(IDC_REBASE_POST_BUTTON)->ShowWindow(SW_SHOWNORMAL);
-			this->GetDlgItem(IDC_REBASE_POST_BUTTON)->SetWindowText(this->m_PostButtonText);
+			this->m_PostButton.RemoveAll();
+			this->m_PostButton.AddEntries(m_PostButtonTexts);
+			//this->GetDlgItem(IDC_REBASE_POST_BUTTON)->SetWindowText(this->m_PostButtonText);
 		}
 		break;
 	}

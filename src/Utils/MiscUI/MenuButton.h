@@ -74,6 +74,8 @@ public:
 	 */
 	void	UseThemes(bool bUseThemes);
 
+	void	RemoveAll();
+
 public:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 protected:

@@ -50,10 +50,21 @@ bool RebaseCommand::Execute()
 		}
 	}
 
-	CRebaseDlg dlg;
-	if(dlg.DoModal() == IDOK)
+	while(1)
 	{
-		bRet=true;
+		CRebaseDlg dlg;
+		dlg.m_PostButtonTexts.Add(_T("Restart Rebase"));
+		int ret = dlg.DoModal();
+		if( ret == IDOK)
+		{
+			bRet=true;
+			return bRet;
+		}
+		if( ret == IDCANCEL)
+		{
+			bRet=false;
+			return bRet;
+		}
 	}
 	return bRet;
 }
