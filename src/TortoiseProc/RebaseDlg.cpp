@@ -980,10 +980,12 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(TRUE);
+		
 		if(!m_IsCherryPick)
 		{
 			this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(TRUE);
 			this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(TRUE);
+			this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(TRUE);			
 		}
 		//this->m_CommitList.m_IsEnableRebaseMenu=TRUE;
 		this->m_CommitList.m_ContextMenuMask |= m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
@@ -1005,6 +1007,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_BRANCH)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_REBASE_COMBOXEX_UPSTREAM)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(FALSE);
 		//this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
 		this->m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
