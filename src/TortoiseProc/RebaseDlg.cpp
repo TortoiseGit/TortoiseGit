@@ -1423,5 +1423,5 @@ void CRebaseDlg::OnBnClickedRebasePostButton()
 	this->m_Upstream=this->m_UpstreamCtrl.GetString();
 	this->m_Branch=this->m_BranchCtrl.GetString();
 
-	this->EndDialog(IDC_REBASE_POST_BUTTON);
+	this->EndDialog(IDC_REBASE_POST_BUTTON+this->m_PostButton.GetCurrentEntry());
 }

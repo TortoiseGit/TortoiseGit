@@ -59,26 +59,37 @@ bool FetchCommand::Execute()
 
 		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
 		{
-			CRebaseDlg dlg;
-			dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
-			int response = dlg.DoModal();
-			if(response == IDOK)
+			while(1)
 			{
-				return TRUE;
-			}
-			if(response == IDC_REBASE_POST_BUTTON)
-			{
-				CString cmd,out;
-				cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
-					g_Git.m_CurrentDir,
-					dlg.m_Upstream,dlg.m_Branch);
-				if(g_Git.Run(cmd,&out,CP_ACP))
+				CRebaseDlg dlg;
+				dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
+				dlg.m_PostButtonTexts.Add(_T("Restart Rebase"));
+				int response = dlg.DoModal();
+				if(response == IDOK)
 				{
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					return FALSE;
+					return TRUE;
 				}
+				if(response == IDC_REBASE_POST_BUTTON ) 
+				{
+					CString cmd,out;
+					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+						g_Git.m_CurrentDir,
+						dlg.m_Upstream,dlg.m_Branch);
+					if(g_Git.Run(cmd,&out,CP_ACP))
+					{
+						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						return FALSE;
+					}
 
-				CAppUtils::SendPatchMail(cmd,out);
+					CAppUtils::SendPatchMail(cmd,out);
+					return TRUE;
+				}
+				
+				if(response == IDC_REBASE_POST_BUTTON +1 )
+					continue;
+
+				if(response == IDCANCEL)
+					return FALSE;
 			}
 			return TRUE;
 		}
