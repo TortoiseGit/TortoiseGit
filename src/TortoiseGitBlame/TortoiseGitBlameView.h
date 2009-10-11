@@ -36,6 +36,27 @@ const int blockSize = 128 * 1024;
 #define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
 #endif
 
+class CSciEditBlame: public CSciEdit
+{
+	DECLARE_DYNAMIC(CSciEditBlame)
+public:
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		switch (nChar)
+		{
+			case (VK_ESCAPE):
+			{
+				if ((Call(SCI_AUTOCACTIVE)==0)&&(Call(SCI_CALLTIPACTIVE)==0))
+				{
+					::SendMessage(::AfxGetApp()->GetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);
+					return;
+				}
+			}
+			break;
+		}
+		CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
+	}
+};
 
 class CTortoiseGitBlameView : public CView
 {
@@ -111,7 +132,7 @@ public:
 	void UpdateInfo();
 	void FocusOn(GitRev *pRev);
 
-	CSciEdit			m_TextView;
+	CSciEditBlame		m_TextView;
 	CBalloon			m_ToolTip;
 
 	HINSTANCE hInstance;

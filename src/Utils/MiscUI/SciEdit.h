@@ -145,7 +145,7 @@ protected:
 	DWORD		GetStyleAt(int pos) { return (DWORD)Call(SCI_GETSTYLEAT, pos) & 0x1f; }
 	bool		IsUrl(const CStringA& sText);
 
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 	DECLARE_MESSAGE_MAP()
 };

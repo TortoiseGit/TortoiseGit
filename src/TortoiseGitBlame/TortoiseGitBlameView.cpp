@@ -36,6 +36,7 @@
 UINT CTortoiseGitBlameView::m_FindDialogMessage;
 
 // CTortoiseGitBlameView
+IMPLEMENT_DYNAMIC(CSciEditBlame,CSciEdit)
 
 IMPLEMENT_DYNCREATE(CTortoiseGitBlameView, CView)
 
