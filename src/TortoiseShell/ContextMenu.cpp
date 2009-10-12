@@ -1516,8 +1516,9 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T(" /deletepathfile");
 				if(itemStatesFolder&ITEMIS_SUBMODULE)
 				{
-					svnCmd += _T(" /bkpath:");
+					svnCmd += _T(" /bkpath:\"");
 					svnCmd += folder_;
+					svnCmd += _T("\"");
 				}
 				break;
 			case ShellMenuUpdateExt:
@@ -1528,8 +1529,9 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T(" /deletepathfile");
 				if(itemStatesFolder&ITEMIS_SUBMODULE)
 				{
-					svnCmd += _T(" /bkpath:");
+					svnCmd += _T(" /bkpath:\"");
 					svnCmd += folder_;
+					svnCmd += _T("\"");
 				}
 				break;
 			case ShellMenuCommit:
