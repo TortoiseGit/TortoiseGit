@@ -1,3 +1,44 @@
+= Release 1.1.1.0 =
+== Features ==
+ 
+ * Improve Rebase Dialog
+   Allow lanuch new rebase dialog again after finish rebase dialog
+   Disable "force rebase" checkbox during rebase.
+
+ * Git SVN
+   Append svn:ignore settings to the default git exclude file Add shell extension command to import svn ignore settings. 
+   Need press "Shift" key to show "import svn ignore" command.
+   
+ * Drag-drop copy\move support
+   File only
+  
+ * Add paste command at shell extension
+   Copy and paste file is okay. But there are problems when including directory. 
+   Cut and paste working
+ 
+ * Update notepad2 to 4.022
+
+ * Sync Dialog
+   Ability to sync submodules in TGit sync dialog
+ 
+ * Statics
+   Sort commits by dates before processed by StatGraphDlg
+ 
+ * Log Dialog
+   Show <No branch> replace ref error message at log dialog
+   
+ * Add Check software updater support. 
+ 
+== Bug Fix ==
+ * Fixed issue #185. "Can't find Super-project" when pathname include space.
+ * Fixed issue #190: Access violation in Blame and wrong path name when root dir is git repository
+ * Fixed issue #180: Create patch serial doesn't work when there is "\" at end of path
+ * Fixed issue #173: SVN Rebase does not work The correct handle below case git config svn-remote.svn.fetch myproject/trunk:refs/remotes/trunk
+ * Fixed issue #169: Force rebase checkbox is fixed
+ * Fixed issue #163: Conflict "theirs" and "mine" are reversed during a rebase
+ * Fixed issue #165: Incorect path to Notepad2
+ * Fixed issue #158: Rebase can act on the wrong branch
+ 
 = Release 1.0.2.0 =
 == Bug Fix ==
  * Fixed issue #155: Fix SVN Rebase sets upstream as remotes/trunk
