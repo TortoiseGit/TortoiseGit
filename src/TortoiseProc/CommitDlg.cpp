@@ -36,6 +36,7 @@
 #include "ShellUpdater.h"
 #include "Commands/PushCommand.h"
 #include "PatchViewDlg.h"
+#include "COMError.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -358,6 +359,7 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
+	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 #if 0
 	CRegDWORD regUnversionedRecurse (_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
 	if (!(DWORD)regUnversionedRecurse)
@@ -390,6 +392,44 @@ void CCommitDlg::OnOK()
 	CTGitPathList itemsToRemove;
 	//std::set<CString> checkedLists;
 	//std::set<CString> uncheckedLists;
+
+		// now let the bugtraq plugin check the commit message
+	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
+	if (m_BugTraqProvider)
+	{
+		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
+		if (SUCCEEDED(hr))
+		{
+			BSTR temp = NULL;
+			CString common = g_Git.m_CurrentDir;
+			BSTR repositoryRoot = common.AllocSysString();
+			BSTR parameters = m_bugtraq_association.GetParameters().AllocSysString();
+			BSTR commonRoot = SysAllocString(m_pathList.GetCommonRoot().GetDirectory().GetWinPath());
+			BSTR commitMessage = m_sLogMessage.AllocSysString();
+			SAFEARRAY *pathList = SafeArrayCreateVector(VT_BSTR, 0, m_selectedPathList.GetCount());
+
+			for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
+				SafeArrayPutElement(pathList, &index, m_selectedPathList[index].GetGitPathString().AllocSysString());
+
+			if (FAILED(hr = pProvider2->CheckCommit(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, commitMessage, &temp)))
+			{
+				COMError ce(hr);
+				CString sErr;
+				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
+				CMessageBox::Show(m_hWnd, sErr, _T("TortoiseSVN"), MB_ICONERROR);
+			}
+			else
+			{
+				CString sError = temp;
+				if (!sError.IsEmpty())
+				{
+					CMessageBox::Show(m_hWnd, sError, _T("TortoiseSVN"), MB_ICONERROR);
+					return;
+				}
+				SysFreeString(temp);
+			}
+		}
+	}
 
 	//CString checkedfiles;
 	//CString uncheckedfiles;
@@ -540,8 +580,49 @@ void CCommitDlg::OnOK()
 			//User pressed 'Push' button after successful commit.
 			m_bPushAfterCommit=true;
 		}
-
+		
 		CFile::Remove(tempfile);
+
+		if (m_BugTraqProvider && progress.m_GitStatus == 0)
+		{
+			CComPtr<IBugTraqProvider2> pProvider = NULL;
+			HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider);
+			if (SUCCEEDED(hr))
+			{
+				BSTR commonRoot = SysAllocString(g_Git.m_CurrentDir);
+				SAFEARRAY *pathList = SafeArrayCreateVector(VT_BSTR, 0,this->m_selectedPathList.GetCount());
+
+				for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
+					SafeArrayPutElement(pathList, &index, m_selectedPathList[index].GetGitPathString().AllocSysString());
+
+				BSTR logMessage = m_sLogMessage.AllocSysString();
+
+				CString hash=g_Git.GetHash(CString(_T("HEAD")));
+				LONG version = g_Git.Hash2int(hash);
+
+				BSTR temp = NULL;
+				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(), 
+					commonRoot,
+					pathList,
+					logMessage,
+					(LONG)version,
+					&temp)))
+				{
+					CString sErr = temp;
+					if (!sErr.IsEmpty())
+						CMessageBox::Show(NULL,(sErr),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					else
+					{
+						COMError ce(hr);
+						sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, ce.GetSource().c_str(), ce.GetMessageAndDescription().c_str());
+						CMessageBox::Show(NULL,(sErr),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					}
+				}
+
+				SysFreeString(temp);
+			}
+		}
+		
 	}else
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
@@ -646,7 +727,7 @@ void CCommitDlg::OnOK()
 		//save only the files the user has checked into the temporary file
 		m_ListCtrl.WriteCheckedNamesToPathList(m_pathList);
 	}
-	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
+	
 	// the item count is used in the progress dialog to show the overall commit
 	// progress.
 	// deleted items only send one notification event, all others send two

@@ -34,6 +34,7 @@ public:
 	static BOOL CheckMsysGitDir();
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;
+	unsigned int Hash2int(CString &hash);
 //	static CString m_MsysGitPath;
 	
 	PROCESS_INFORMATION m_CurrentGitPi;

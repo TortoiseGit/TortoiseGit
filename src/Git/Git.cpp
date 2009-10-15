@@ -1271,3 +1271,20 @@ bool CGit::IsFastForward(CString &from, CString &to)
 	
 	return hash == base;
 }
+
+unsigned int CGit::Hash2int(CString &hash)
+{
+	int ret=0;
+	for(int i=0;i<8;i++)
+	{
+		ret =ret <<4;
+		if(hash[i]>=_T('a'))
+			ret |= (hash[i]-_T('a')+10)&0xFF;
+		else if(hash[i]>=_T('A'))
+			ret |= (hash[i]-_T('A')+10)&0xFF;
+		else
+			ret |= (hash[i]-_T('0'))&0xFF;		
+		
+	}
+	return ret;
+}

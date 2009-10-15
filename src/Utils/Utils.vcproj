@@ -353,6 +353,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\COMError.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CSmtp.cpp"
 				>
 				<FileConfiguration
