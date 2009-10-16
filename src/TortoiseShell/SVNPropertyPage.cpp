@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseSVN - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseGit
 
@@ -219,6 +219,7 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 
 void CGitPropertyPage::InitWorkfileView()
 {
+#if 0
 	GitStatus svn = GitStatus();
 	TCHAR tbuf[MAX_STRING_LENGTH];
 	if (filenames.size() == 1)
@@ -361,7 +362,72 @@ void CGitPropertyPage::InitWorkfileView()
 				ShowWindow(GetDlgItem(m_hwnd, IDC_REPOURLUNESCAPED), SW_HIDE);
 			}
 		}
-	} 
+	}
+#endif
 }
 
+
+// CShellExt member functions (needed for IShellPropSheetExt)
+STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
+                                  LPARAM lParam)
+{
+
+	CString ProjectTopDir;
+
+	for (std::vector<stdstring>::iterator I = files_.begin(); I != files_.end(); ++I)
+	{
+		/*
+		GitStatus svn = GitStatus();
+		if (svn.GetStatus(CTGitPath(I->c_str())) == (-2))
+			return NOERROR;			// file/directory not under version control
+
+		if (svn.status->entry == NULL)
+			return NOERROR;
+		*/
+		if( CTGitPath(I->c_str()).HasAdminDir(&ProjectTopDir))
+			break;
+		else
+			return NOERROR;
+	}
+
+	if (files_.size() == 0)
+		return NOERROR;
+
+	LoadLangDll();
+    PROPSHEETPAGE psp;
+	SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
+	HPROPSHEETPAGE hPage;
+	CGitPropertyPage *sheetpage = new CGitPropertyPage(files_);
+
+    psp.dwSize = sizeof (psp);
+    psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;	
+	psp.hInstance = g_hResInst;
+	psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
+    psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
+    psp.pszTitle = _T("Git");
+    psp.pfnDlgProc = (DLGPROC) PageProc;
+    psp.lParam = (LPARAM) sheetpage;
+    psp.pfnCallback = PropPageCallbackProc;
+    psp.pcRefParent = &g_cRefThisDll;
+
+    hPage = CreatePropertySheetPage (&psp);
+
+	if (hPage != NULL)
+	{
+        if (!lpfnAddPage (hPage, lParam))
+        {
+            delete sheetpage;
+            DestroyPropertySheetPage (hPage);
+        }
+	}
+
+    return NOERROR;
+}
+
+
+
+STDMETHODIMP CShellExt::ReplacePage (UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lpfnReplaceWith*/, LPARAM /*lParam*/)
+{
+    return E_FAIL;
+}
 

@@ -555,6 +555,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\SVNPropertyPage.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Git\TGitPath.cpp"
 				>
 			</File>
