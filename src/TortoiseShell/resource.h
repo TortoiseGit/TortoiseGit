@@ -205,18 +205,26 @@
 #define IDS_MENUDESCSYNC                340
 #define IDS_MENUSTASHPOP                341
 #define IDS_MENUSVNIGNORE               342
-#define IDS_MENUSVNIGNORE_DEST          343
 #define IDS_MENUSVNIGNORE_DESC          343
 #define IDC_REVISION                    1001
+#define IDC_HEAD_HASH                   1001
 #define IDC_LOCKED                      1002
+#define IDC_LAST_HASH                   1002
 #define IDC_REPOURL                     1003
+#define IDC_CURRENT_BRANCH              1003
 #define IDC_CREVISION                   1004
+#define IDC_HEAD_SUBJECT                1004
 #define IDC_CDATE                       1005
+#define IDC_LAST_SUBJECT                1005
 #define IDC_AUTHOR                      1006
 #define IDC_TEXTSTATUS                  1007
+#define IDC_HEAD_AUTHOR                 1007
 #define IDC_TEXTDATE                    1008
+#define IDC_LAST_AUTHOR                 1008
 #define IDC_PROPSTATUS                  1009
+#define IDC_HEAD_DATE                   1009
 #define IDC_PROPDATE                    1010
+#define IDC_LAST_DATE                   1010
 #define IDC_PROPLIST                    1011
 #define IDC_SWITCHED                    1011
 #define IDC_ADDBUTTON                   1012
@@ -255,12 +263,17 @@
 #define IDI_MENUSENDMAIL                5175
 #define IDC_LOCKOWNER                   11019
 #define IDC_LOCKDATE                    11020
+#define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
+#define IDC_REMOTE_BRANCH               11022
 #define IDC_ESCAPEDURLLABEL             11023
 #define IDC_REPOUUID                    11024
+#define IDC_CONFIG_SAFECRLF             11024
 #define IDC_CHANGELIST                  11025
+#define IDC_CONFIG_USERNAME             11025
 #define IDC_DEPTHEDIT                   11026
+#define IDC_CONFIG_USEREMAIL            11026
 #define IDC_CHECKSUM                    11027
 
 // Next default values for new objects

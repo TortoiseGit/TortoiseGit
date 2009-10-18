@@ -219,6 +219,80 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 
 void CGitPropertyPage::InitWorkfileView()
 {
+	CString username;
+	//can't git.exe when create process
+	g_Git.Run(_T("tgit config user.name"),&username,CP_ACP);
+	CString useremail;
+	g_Git.Run(_T("tgit config user.email"),&useremail,CP_ACP);
+	CString autocrlf;
+	g_Git.Run(_T("tgit config core.autocrlf"),&autocrlf,CP_ACP);
+	CString safecrlf;
+	g_Git.Run(_T("tgit config core.safecrlf"),&safecrlf,CP_ACP);
+
+	CString branch;
+	CString headhash;
+
+	BYTE_VECTOR logout;
+
+	CString cmd,log;
+	cmd=_T("tgit log -z --topo-order -n1 --parents --pretty=format:\"");
+	
+	g_Git.BuildOutputFormat(log,true);
+
+	cmd += log;
+	cmd += CString(_T("\"  "));
+
+	g_Git.Run(cmd,&logout);
+	GitRev rev;
+	rev.ParserFromLog(logout);
+
+	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username);
+	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail);
+	SetDlgItemText(m_hwnd,IDC_CONFIG_AUTOCRLF,autocrlf);
+	SetDlgItemText(m_hwnd,IDC_CONFIG_SAFECRLF,safecrlf);
+
+	SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash);
+	SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.m_Subject);
+	SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.m_AuthorName);
+	SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+
+	if (filenames.size() == 1)
+	{
+		CTGitPath path(filenames.front().c_str());
+		CTGitPath relatepath;
+		CString strpath=path.GetWinPathString();
+		CString ProjectTopDir;
+
+		if(!path.HasAdminDir(&ProjectTopDir))
+			return;
+		
+		if(ProjectTopDir[ProjectTopDir.GetLength()-1] == _T('\\'))
+		{
+			relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()));
+		}else
+		{
+			relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
+		}
+
+		cmd+=_T("-- \"");
+		cmd+=relatepath.GetGitPathString();	
+		cmd+=_T("\"");
+
+		logout.clear();
+		g_Git.Run(cmd,&logout);
+		rev.Clear();
+		rev.ParserFromLog(logout);
+
+		SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash);
+		SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.m_Subject);
+		SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.m_AuthorName);
+		SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+
+	}else
+	{
+
+	}
+
 #if 0
 	GitStatus svn = GitStatus();
 	TCHAR tbuf[MAX_STRING_LENGTH];
