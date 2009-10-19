@@ -231,10 +231,37 @@ void CGitPropertyPage::InitWorkfileView()
 
 	CString branch;
 	CString headhash;
+	CString remotebranch;
+
+	g_Git.Run(_T("tgit symbolic-ref HEAD"),&branch,CP_ACP);
+	CString cmd,log;
+
+	if(!branch.IsEmpty())
+	{
+		if( branch.Find(_T("refs/heads/"),0) >=0 )
+		{
+			CString remote;
+			branch=branch.Mid(11);
+			int start=0;
+			branch=branch.Tokenize(_T("\n"),start);
+			start=0;
+			branch=branch.Tokenize(_T("\r"),start);
+			cmd.Format(_T("tgit config branch.%s.merge"),branch);
+			g_Git.Run(cmd,&remotebranch,CP_ACP);
+			cmd.Format(_T("tgit config branch.%s.remote"),branch);
+			g_Git.Run(cmd,&remote,CP_ACP);
+			if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
+			{
+				remotebranch=remotebranch.Mid(11);
+				remotebranch=remote+_T("/")+remotebranch;
+			}
+		}
+	}
+
 
 	BYTE_VECTOR logout;
 
-	CString cmd,log;
+	
 	cmd=_T("tgit log -z --topo-order -n1 --parents --pretty=format:\"");
 	
 	g_Git.BuildOutputFormat(log,true);
@@ -250,6 +277,9 @@ void CGitPropertyPage::InitWorkfileView()
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail);
 	SetDlgItemText(m_hwnd,IDC_CONFIG_AUTOCRLF,autocrlf);
 	SetDlgItemText(m_hwnd,IDC_CONFIG_SAFECRLF,safecrlf);
+
+	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch);
+	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH,remotebranch);
 
 	SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash);
 	SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.m_Subject);

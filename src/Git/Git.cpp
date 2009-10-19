@@ -331,7 +331,7 @@ CString CGit::GetCurrentBranch(void)
 	CString output;
 	//Run(_T("git.exe branch"),&branch);
 
-	int ret=g_Git.Run(_T("git.exe branch"),&output,CP_UTF8);
+	int ret=g_Git.Run(_T("git.exe branch --no-color"),&output,CP_UTF8);
 	if(!ret)
 	{		
 		int pos=0;
@@ -708,7 +708,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
 	CString cmd,output;
-	cmd=_T("git.exe branch");
+	cmd=_T("git.exe branch --no-color");
 
 	if(type==(BRANCH_LOCAL|BRANCH_REMOTE))
 		cmd+=_T(" -a");
