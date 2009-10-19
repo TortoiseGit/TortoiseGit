@@ -211,7 +211,7 @@
 #define IDC_LOCKED                      1002
 #define IDC_LAST_HASH                   1002
 #define IDC_REPOURL                     1003
-#define IDC_CURRENT_BRANCH              1003
+#define IDC_SHELL_CURRENT_BRANCH              1003
 #define IDC_CREVISION                   1004
 #define IDC_HEAD_SUBJECT                1004
 #define IDC_CDATE                       1005
@@ -266,7 +266,7 @@
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
-#define IDC_REMOTE_BRANCH               11022
+#define IDC_SHELL_REMOTE_BRANCH               11022
 #define IDC_ESCAPEDURLLABEL             11023
 #define IDC_REPOUUID                    11024
 #define IDC_CONFIG_SAFECRLF             11024

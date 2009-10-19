@@ -53,6 +53,7 @@ void CMergeDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Check(pDX,IDC_CHECK_NOFF,this->m_bNoFF);
 	DDX_Check(pDX,IDC_CHECK_SQUASH,this->m_bSquash);
+	DDX_Check(pDX,IDC_CHECK_NOCOMMIT,this->m_bNoCommit);
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 }
 

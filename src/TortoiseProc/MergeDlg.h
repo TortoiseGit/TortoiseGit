@@ -39,7 +39,7 @@ public:
 
 	BOOL m_bSquash;
 	BOOL m_bNoFF;
-
+	BOOL m_bNoCommit;
 	//CString m_Base;
 
 
