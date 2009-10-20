@@ -961,6 +961,10 @@ BOOL CGit::CheckMsysGitDir()
 
     if( !FindGitPath() )
 	{
+		if(!homesize)
+		{
+			_tputenv_s(_T("HOME"),_T(""));
+		}
 		return false;
 	}
 	else
