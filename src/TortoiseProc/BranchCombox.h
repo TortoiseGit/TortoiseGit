@@ -53,7 +53,11 @@ protected:
 		}
 		else if(!pullBranch.IsEmpty())
 		{
-			m_ctrlRemoteBranch.AddString(pullBranch);
+			int index=m_ctrlRemoteBranch.FindStringExact(0,pullBranch);
+			if( index<0 )
+				m_ctrlRemoteBranch.AddString(pullBranch);
+			else
+				m_ctrlRemoteBranch.SetCurSel(index);
 		}
 		//else if(!this->m_RegKeyRemoteBranch.IsEmpty())
 		else

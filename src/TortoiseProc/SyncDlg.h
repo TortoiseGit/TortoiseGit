@@ -105,6 +105,8 @@ protected:
 	{
 		if(!remote.IsEmpty())
 		{
+			if(this->m_ctrlURL.FindStringExact(0,remote)>=0)
+				return;
 			this->m_ctrlURL.AddString(remote);
 		}
 	}

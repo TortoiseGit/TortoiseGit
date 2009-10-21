@@ -657,7 +657,16 @@ BOOL CSyncDlg::OnInitDialog()
 	EnableSaveRestore(_T("SyncDlg"));
 
 	this->m_ctrlURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\SyncURL\\"))+WorkingDir, _T("url"));
-		
+
+	STRING_VECTOR list;
+	
+	if(!g_Git.GetRemoteList(list))
+	{	
+		for(unsigned int i=0;i<list.size();i++)
+		{
+			m_ctrlURL.AddString(list[i]);
+		}
+	}	
 	m_ctrlURL.SetCurSel(0);
 	m_ctrlRemoteBranch.SetCurSel(0);
 
