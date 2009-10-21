@@ -161,6 +161,7 @@ void CPushDlg::Refresh()
 	int current=0;
 	list.clear();
 	m_BranchSource.Reset();
+	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
 	if(!g_Git.GetBranchList(list,&current))
 	{
 		for(unsigned int i=0;i<list.size();i++)
