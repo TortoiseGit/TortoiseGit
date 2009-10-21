@@ -105,8 +105,12 @@ protected:
 	{
 		if(!remote.IsEmpty())
 		{
-			if(this->m_ctrlURL.FindStringExact(0,remote)>=0)
+			int index=this->m_ctrlURL.FindStringExact(0,remote);
+			if(index>=0)
+			{
+				m_ctrlURL.SetCurSel(index);
 				return;
+			}
 			this->m_ctrlURL.AddString(remote);
 		}
 	}

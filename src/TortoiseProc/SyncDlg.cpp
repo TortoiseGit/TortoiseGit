@@ -669,7 +669,8 @@ BOOL CSyncDlg::OnInitDialog()
 	}	
 	m_ctrlURL.SetCurSel(0);
 	m_ctrlRemoteBranch.SetCurSel(0);
-
+	m_ctrlURL.SetURLHistory(true);
+	
 	this->LoadBranchInfo();
 
 	this->m_bInited=true;
