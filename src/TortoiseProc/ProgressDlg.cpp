@@ -274,6 +274,17 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 
 		CString text;
 		m_Log.GetWindowTextW(text);
+		int count=0;
+		for( int i=0;i<text.GetLength();i++)
+		{
+			if(text[i]==_T('\n'))
+				count++;
+		}
+		if(count > 500)
+		{
+			int start=text.Find(_T('\n'),0);
+			text = text.Mid(start+1);
+		}
 		if(ch == _T('\r'))
 		{
 			RemoveLastLine(text);
