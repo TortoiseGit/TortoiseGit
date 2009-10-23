@@ -288,9 +288,10 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 			m_Log.ReplaceSel(CString(_T("\r\n"))+m_LogText);
 		}
 		
-		if( lines >500 ) //limited log length
+		if( lines > 500 ) //limited log length
 		{
-			m_Log.SetSel(0,m_Log.LineLength(0));
+			int end=m_Log.LineIndex(1);
+			m_Log.SetSel(0,end);
 			m_Log.ReplaceSel(_T(""));
 		}
 		m_Log.LineScroll(m_Log.GetLineCount());
