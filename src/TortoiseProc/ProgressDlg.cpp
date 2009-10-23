@@ -272,26 +272,27 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
 		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
 
-		CString text;
-		m_Log.GetWindowTextW(text);
-		int count=0;
-		for( int i=0;i<text.GetLength();i++)
-		{
-			if(text[i]==_T('\n'))
-				count++;
-		}
-		if(count > 500)
-		{
-			int start=text.Find(_T('\n'),0);
-			text = text.Mid(start+1);
-		}
+		int lines=m_Log.GetLineCount();
+
 		if(ch == _T('\r'))
+		{	
+			int start=m_Log.LineIndex(lines-1);
+			int length=m_Log.LineLength(lines-1);
+			m_Log.SetSel( start,start+length);
+			m_Log.ReplaceSel(m_LogText);
+
+		}else
 		{
-			RemoveLastLine(text);
+			m_Log.SetSel(m_Log.GetWindowTextLength(),
+					     m_Log.GetWindowTextLength());
+			m_Log.ReplaceSel(CString(_T("\r\n"))+m_LogText);
 		}
-		text+=_T("\r\n")+m_LogText;
-		m_Log.SetWindowTextW(text);
 		
+		if( lines >500 ) //limited log length
+		{
+			m_Log.SetSel(0,m_Log.LineLength(0));
+			m_Log.ReplaceSel(_T(""));
+		}
 		m_Log.LineScroll(m_Log.GetLineCount());
 
 		int s1=m_LogText.Find(_T(':'));
