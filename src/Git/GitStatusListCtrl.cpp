@@ -1063,6 +1063,8 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 		//set default checkbox status
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck)
 			((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
+		else
+			((CTGitPath*)m_arStatusArray[i])->m_Checked=false;
 
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
 		{
