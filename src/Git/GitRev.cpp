@@ -255,7 +255,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		BYTE_VECTOR onelog;
 		TCHAR oldmark=this->m_Mark;
 	
-		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME|CGit::LOG_INFO_SHOW_MERGEDFILE);
+		git->GetLog(onelog,m_CommitHash,NULL,1,CGit::LOG_INFO_FULL_DIFF|CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_DETECT_COPYRENAME|CGit::LOG_INFO_SHOW_MERGEDFILE);
 		CString oldhash=m_CommitHash;
 		GIT_REV_LIST oldlist=this->m_ParentHash;
 		ParserFromLog(onelog);

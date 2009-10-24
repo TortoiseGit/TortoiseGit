@@ -1963,6 +1963,7 @@ void CGitLogListBase::FetchFullLogInfo(CString &from, CString &to)
 {
 	CGitCall_FetchFullLogInfo fetcher(this);
 	int mask=
+		CGit::LOG_INFO_FULL_DIFF|
 		CGit::LOG_INFO_STAT|
 		CGit::LOG_INFO_FILESTATE|
 		CGit::LOG_INFO_DETECT_COPYRENAME|

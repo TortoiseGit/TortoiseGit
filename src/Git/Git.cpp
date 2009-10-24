@@ -523,6 +523,9 @@ int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, 
 	if(mask& CGit::LOG_INFO_SHOW_MERGEDFILE)
 		param += _T(" -c ");
 
+	if(mask& CGit::LOG_INFO_FULL_DIFF)
+		param += _T(" --full-diff ");
+
 	if(from != NULL && to != NULL)
 	{
 		CString range;

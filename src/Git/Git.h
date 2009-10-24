@@ -93,7 +93,8 @@ public:
 		LOG_INFO_FIRST_PARENT = 0x200,
 		LOG_INFO_NO_MERGE = 0x400,
 		LOG_INFO_FOLLOW = 0x800,
-		LOG_INFO_SHOW_MERGEDFILE=0x1000
+		LOG_INFO_SHOW_MERGEDFILE=0x1000,
+		LOG_INFO_FULL_DIFF = 0x2000,
 	}LOG_INFO_MASK;
 
 	int GetRemoteList(STRING_VECTOR &list);
@@ -103,9 +104,9 @@ public:
 	
 	//hash is empty means all. -1 means all
 
-	int GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
+	int GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
 								CString *from=NULL,CString *to=NULL);
-	int GetLog(BYTE_VECTOR& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
+	int GetLog(BYTE_VECTOR& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
 								CString *from=NULL,CString *to=NULL);
 
 	BOOL EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
