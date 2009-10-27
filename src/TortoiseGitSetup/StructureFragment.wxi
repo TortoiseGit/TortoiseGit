@@ -146,10 +146,11 @@
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseMerge.exe" Type="string" />
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
+<!--
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\SubWCRev.exe" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\SubWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
             <Registry Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\SubWCRev.exe" Value="[INSTALLDIR]bin\SubWCRev.exe" Type="string" />
-
+-->
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Action="createKey" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
             <Registry Root="HKLM" Key="Software\TortoiseOverlays\Modified" Action="createKey" />
