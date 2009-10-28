@@ -148,6 +148,7 @@ public:
 	ID_REBASE_TO_VERSION,
 	ID_CREATE_PATCH,
 	ID_DELETE,
+	ID_COMMIT,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();
@@ -185,6 +186,8 @@ public:
 		g_Git.GetMapHashToFriendName(m_HashMap);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 		this->m_HeadHash=g_Git.GetHash(CString(_T("HEAD"))).Left(40);
+		m_wcRev.m_ParentHash.clear();
+		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 	}
 	void TerminateThread()
 	{

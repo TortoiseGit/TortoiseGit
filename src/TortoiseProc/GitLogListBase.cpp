@@ -1000,7 +1000,10 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					
 					TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
 					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
-					DrawGraph(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
+					
+					GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
+					if( data ->m_CommitHash != GIT_REV_ZERO)
+						DrawGraph(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
 
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
@@ -1278,8 +1281,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if (GetSelectedCount() == 1)
 		{
+			
 			{
-				//if (m_hasWC)
+				if(pSelLogEntry->m_CommitHash != GIT_REV_ZERO)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE))
 						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
@@ -1290,6 +1294,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					// But until that's implemented, the context menu entry for
 					// this feature is commented out.
 					//popup.AppendMenu(ID_BLAMECOMPARE, IDS_LOG_POPUP_BLAMECOMPARE, IDI_BLAME);
+				}else
+				{
+					if(m_ContextMenuMask&GetContextMenuBit(ID_COMMIT))
+						popup.AppendMenuIcon(ID_COMMIT, IDS_LOG_POPUP_COMMIT, IDI_COMMIT);
 				}
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1))
 					popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
@@ -1325,30 +1333,33 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			format.LoadString(IDS_RESET_TO_THIS_FORMAT);
 			str.Format(format,g_Git.GetCurrentBranch());
 
-			if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
-				popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
+			if(pSelLogEntry->m_CommitHash != GIT_REV_ZERO)
+			{
+				if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
+					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
-			if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
-				popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
+					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
 
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
-				popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS , IDI_COPY);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
+					popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS , IDI_COPY);
 
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
-				popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_COPY);
+				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
+					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_COPY);
 			
-			format.LoadString(IDS_REBASE_THIS_FORMAT);
-			str.Format(format,g_Git.GetCurrentBranch());
+				format.LoadString(IDS_REBASE_THIS_FORMAT);
+				str.Format(format,g_Git.GetCurrentBranch());
 
-			if(pSelLogEntry->m_CommitHash != m_HeadHash)
-				if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
-					popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);			
+				if(pSelLogEntry->m_CommitHash != m_HeadHash)
+					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
+						popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);			
 
-			if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
-				popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);	
+				if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
+					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);	
 			
 
-			popup.AppendMenu(MF_SEPARATOR, NULL);
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+			}
 
 		}
 
@@ -1387,7 +1398,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if ( GetSelectedCount() >0 )
+		if ( GetSelectedCount() >0 && pSelLogEntry->m_CommitHash != GIT_REV_ZERO)
 		{
 			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
 			{
@@ -2070,7 +2081,17 @@ UINT CGitLogListBase::LogThread()
 	for(int i=0;i<m_logEntries.size();i++)
 	{
 		if( i==0 && m_logEntries[i].m_CommitHash == GIT_REV_ZERO)
+		{
+			m_logEntries[i].m_Files.Clear();
+			m_logEntries[i].m_ParentHash.clear();
+			m_logEntries[i].m_ParentHash.push_back(m_HeadHash);
+			g_Git.GetCommitDiffList(m_logEntries[i].m_CommitHash,this->m_HeadHash,m_logEntries[i].m_Files);
+			m_logEntries[i].m_Action =0;
+			for(int j=0;j< m_logEntries[i].m_Files.GetCount();j++)
+				m_logEntries[i].m_Action |= m_logEntries[i].m_Files[j].m_Action;
+
 			continue;
+		}
 
 		start=this->m_logEntries[i].ParserFromLog(m_logEntries.m_RawlogData,start);
 		m_logEntries.m_HashMap[m_logEntries[i].m_CommitHash]=i;

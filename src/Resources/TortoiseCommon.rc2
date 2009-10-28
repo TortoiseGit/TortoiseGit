@@ -78,6 +78,7 @@ BEGIN
 	IDS_COPY_COMMIT_HASH		"Copy Commit Hash"
 	IDS_CREATE_PATCH			"Format Patch..."
 	IDS_DELETE_BRANCHTAG		"Del"
+	IDS_LOG_POPUP_COMMIT		"Commit..."
 END 
 
 
