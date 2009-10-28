@@ -58,6 +58,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_pStoreSelection(NULL)
 	, m_nSelectedFilter(LOGFILTER_ALL)
 	, m_bVista(false)
+	, m_bShowWC(false)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -73,7 +74,11 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_IsIDReplaceAction=FALSE;
 
 	m_wcRev.m_CommitHash=GIT_REV_ZERO;
-	m_wcRev.m_Subject=_T("Working Copy");
+	m_wcRev.m_Subject=_T("Working dir changes");
+	m_wcRev.m_ParentHash.clear();
+	m_wcRev.m_Mark=_T('-');
+	m_wcRev.m_IsUpdateing=FALSE;
+	m_wcRev.m_IsFull = TRUE;
 
 	m_hModifiedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
@@ -356,6 +361,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
 			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
+
+			if(pLogEntry->m_CommitHash == GIT_REV_ZERO)
+				brush = ::CreateSolidBrush(RGB(200,200,128));
 		}
 
 		if (brush != NULL)
@@ -396,7 +404,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
 			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
-			else 
+			else if(pLogEntry->m_CommitHash == GIT_REV_ZERO)
+				brush = ::CreateSolidBrush(RGB(200,200,128));
+			else
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
 		}
 		if (brush == NULL)
@@ -928,7 +938,9 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						pLVCD->clrTextBk = RGB(156,156,156);
 					else if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
 						pLVCD->clrTextBk  = RGB(200,200,128);
-					else 
+					else if(data->m_CommitHash == GIT_REV_ZERO)
+						pLVCD->clrTextBk  = RGB(200,200,128);
+					else
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
 					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_CURRENT)
@@ -945,13 +957,15 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 //					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
 //						crText = GetSysColor(COLOR_GRAYTEXT);
-//					if (data->Rev == m_wcRev)
-//					{
-//						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+//					
+					if (data->m_CommitHash == GIT_REV_ZERO)
+					{
+						//crText = GetSysColor(COLOR_GRAYTEXT);
+						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						// We changed the font, so we're returning CDRF_NEWFONT. This
 						// tells the control to recalculate the extent of the text.
-//						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
-//					}
+						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+					}
 				}
 			}
 			if (m_arShownList.GetCount() == (INT_PTR)pLVCD->nmcd.dwItemSpec)
@@ -1019,7 +1033,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						return;
 
 					}
-				}
+
+				}	
 			}
 			
 			if (pLVCD->iSubItem == 1)
@@ -1742,9 +1757,12 @@ int CGitLogListBase::FillGitShortLog()
 	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)
 	mask |= m_ShowMask;
+	
+	if(m_bShowWC)
+		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev);
 
 	this->m_logEntries.FetchShortLog(path,m_StartRef,-1,mask);
-	
+
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
 		PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
@@ -1755,7 +1773,9 @@ int CGitLogListBase::FillGitShortLog()
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
-		m_logEntries[i].m_Subject=_T("parser...");
+		if(i>0 || m_logEntries[i].m_CommitHash != GIT_REV_ZERO)
+			m_logEntries[i].m_Subject=_T("parser...");
+
 		if(this->m_IsOldFirst)
 		{
 			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-1-i]);
@@ -2049,6 +2069,9 @@ UINT CGitLogListBase::LogThread()
 	int update=0;
 	for(int i=0;i<m_logEntries.size();i++)
 	{
+		if( i==0 && m_logEntries[i].m_CommitHash == GIT_REV_ZERO)
+			continue;
+
 		start=this->m_logEntries[i].ParserFromLog(m_logEntries.m_RawlogData,start);
 		m_logEntries.m_HashMap[m_logEntries[i].m_CommitHash]=i;
 

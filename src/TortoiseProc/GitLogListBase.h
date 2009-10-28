@@ -80,6 +80,7 @@ public:
 	unsigned __int64 m_ContextMenuMask;
 
 	bool				m_hasWC;
+	bool				m_bShowWC;
 	GitRev				m_wcRev;
 	volatile LONG 		m_bThreadRunning;
 	CLogCache			m_LogCache;
