@@ -320,9 +320,9 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 
 void CProgressDlg::ParserCmdOutput(TCHAR ch)
 {
-	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogText,ch);
+	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogText,ch,&this->m_CurrentWork);
 }
-void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch)
+void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch, CWnd *CurrentWork)
 {
 	//TRACE(_T("%c"),ch);
 	TRACE(_T("%c"),ch);
@@ -359,7 +359,9 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		int s2=oneline.Find(_T('%'));
 		if(s1>0 && s2>0)
 		{
-			//this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
+			if(CurrentWork)
+				CurrentWork->SetWindowTextW(oneline.Left(s1));
+
 			int pos=FindPercentage(oneline);
 			TRACE(_T("Pos %d\r\n"),pos);
 			if(pos>0)

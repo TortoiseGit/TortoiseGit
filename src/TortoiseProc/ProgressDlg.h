@@ -65,7 +65,7 @@ public:
 
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
-	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch);
+	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch,CWnd *CurrentWork=NULL);
 
 	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<TCHAR> *pdata=NULL);
 
