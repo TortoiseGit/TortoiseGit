@@ -367,6 +367,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
+		
 
 	}else if( cur == GITLOG_END)
 	{
@@ -388,8 +389,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		m_DateFrom.SetTime(&begin);
 		m_DateTo.SetTime(&end);
 		
-		
-	
 	}else
 	{
 		if(this->m_LogList.HasText())
@@ -626,6 +625,7 @@ void CLogDlg::OnBnClickedRefresh()
 void CLogDlg::Refresh (bool /*autoGoOnline*/)
 {
 	m_LogList.Refresh();
+	FillLogMessageCtrl(false);
 }
 
 

@@ -361,9 +361,6 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
 			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
-
-			if(pLogEntry->m_CommitHash == GIT_REV_ZERO)
-				brush = ::CreateSolidBrush(RGB(200,200,128));
 		}
 
 		if (brush != NULL)
@@ -403,8 +400,6 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 			if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
 			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
-				brush = ::CreateSolidBrush(RGB(200,200,128));
-			else if(pLogEntry->m_CommitHash == GIT_REV_ZERO)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
 			else
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
@@ -938,8 +933,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						pLVCD->clrTextBk = RGB(156,156,156);
 					else if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
 						pLVCD->clrTextBk  = RGB(200,200,128);
-					else if(data->m_CommitHash == GIT_REV_ZERO)
-						pLVCD->clrTextBk  = RGB(200,200,128);
 					else
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
@@ -960,8 +953,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 //					
 					if (data->m_CommitHash == GIT_REV_ZERO)
 					{
-						//crText = GetSysColor(COLOR_GRAYTEXT);
-						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						//crText = GetSysColor(RGB(200,200,0));
+						//SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						// We changed the font, so we're returning CDRF_NEWFONT. This
 						// tells the control to recalculate the extent of the text.
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
@@ -1158,7 +1151,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorName, pItem->cchTextMax);
 		break;
 	case this->LOGLIST_DATE: //Date
-		if (pLogEntry)
+		if (pLogEntry && pLogEntry->m_CommitHash != GIT_REV_ZERO)
 			lstrcpyn(pItem->pszText,
 				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, m_bRelativeTimes ), 
 				pItem->cchTextMax);
@@ -1776,9 +1769,13 @@ int CGitLogListBase::FillGitShortLog()
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
+	{
 		PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+	}
 	else
+	{
 		SetItemCountEx(this->m_logEntries.size());
+	}
 
 	this->m_arShownList.RemoveAll();
 
@@ -2091,6 +2088,7 @@ UINT CGitLogListBase::LogThread()
 				m_logEntries[i].m_Action |= m_logEntries[i].m_Files[j].m_Action;
 			
 			m_logEntries[i].m_Body.Format(_T("%d files changed"),m_logEntries[i].m_Files.GetCount());
+			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 			continue;
 		}
 
@@ -2506,6 +2504,11 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
 	int i=(int)wParam;
 	this->GetItemRect(i,&rect,LVIR_BOUNDS);
 	this->InvalidateRect(rect);
+
+	if(this->GetItemState(i,LVIF_STATE) & LVIS_SELECTED)
+	{
+		int i=0;
+	}
 	return 0;
 }
 
