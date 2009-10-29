@@ -115,8 +115,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
 				CAppUtils::Commit(CString(),true,CString(),
 								  pathlist,pathlist,bSelectFilesForCommit);
-				this->Refresh();
-								  
+				//this->Refresh();
+				this->GetParent()->PostMessage(WM_COMMAND,ID_LOGDLG_REFRESH,0);
 			}
 			break;
 			case ID_GNUDIFF1:
