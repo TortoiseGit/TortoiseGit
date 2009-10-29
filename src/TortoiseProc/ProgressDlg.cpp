@@ -264,6 +264,7 @@ int CProgressDlg::FindPercentage(CString &log)
 	return _ttol(log.Mid(s2,s1-s2));
 }
 
+#if 0
 void CProgressDlg::ParserCmdOutput(TCHAR ch)
 {
 	TRACE(_T("%c"),ch);
@@ -312,6 +313,64 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 	}else
 	{
 		m_LogText+=ch;
+	}
+
+}
+#endif
+
+void CProgressDlg::ParserCmdOutput(TCHAR ch)
+{
+	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogText,ch);
+}
+void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch)
+{
+	//TRACE(_T("%c"),ch);
+	TRACE(_T("%c"),ch);
+	if( ch == _T('\r') || ch == _T('\n'))
+	{
+		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
+		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
+
+		int lines=log.GetLineCount();
+
+		if(ch == _T('\r'))
+		{	
+			int start=log.LineIndex(lines-1);
+			int length=log.LineLength(lines-1);
+			log.SetSel( start,start+length);
+			log.ReplaceSel(oneline);
+
+		}else
+		{
+			log.SetSel(log.GetWindowTextLength(),
+					     log.GetWindowTextLength());
+			log.ReplaceSel(CString(_T("\r\n"))+oneline);
+		}
+		
+		if( lines > 500 ) //limited log length
+		{
+			int end=log.LineIndex(1);
+			log.SetSel(0,end);
+			log.ReplaceSel(_T(""));
+		}
+		log.LineScroll(log.GetLineCount());
+
+		int s1=oneline.Find(_T(':'));
+		int s2=oneline.Find(_T('%'));
+		if(s1>0 && s2>0)
+		{
+			//this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
+			int pos=FindPercentage(oneline);
+			TRACE(_T("Pos %d\r\n"),pos);
+			if(pos>0)
+				progressctrl.SetPos(pos);
+		}
+
+		oneline=_T("");
+
+	}else
+	{
+		oneline+=ch;
 	}
 
 }

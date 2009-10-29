@@ -28,7 +28,7 @@ public:
 
 	CProgressCtrl m_Progress;
 	
-	CEdit		  m_Log;
+	CRichEditCtrl  m_Log;
 	CString m_Title;
 	CAnimateCtrl  m_Animate;
 	CStatic		  m_CurrentWork;
@@ -49,7 +49,6 @@ protected:
 	UINT		ProgressThread();
 
 	void		ParserCmdOutput(TCHAR ch);
-	
 	void        RemoveLastLine(CString &str);
 
 	LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
@@ -66,6 +65,8 @@ public:
 
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
+	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch);
+
 	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<TCHAR> *pdata=NULL);
 
 	afx_msg void OnBnClickedOk();

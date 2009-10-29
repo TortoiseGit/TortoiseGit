@@ -848,47 +848,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 void CSyncDlg::ParserCmdOutput(TCHAR ch)
 {
-	//TRACE(_T("%c"),ch);
-	int linenum;
-	int index;
-	linenum = this->m_ctrlCmdOut.GetLineCount();
-
-	if( ch == _T('\r') )
-	{
-		if(linenum>0)
-			m_CmdOutCurrentPos = this->m_ctrlCmdOut.LineIndex(linenum-1);
-		else
-			m_CmdOutCurrentPos = 0;
-
-		//TRACE(_T("line %d - %d\n"),index,m_ctrlCmdOut.GetTextLength());
-	}else
-		m_CmdOutCurrentPos++;
-		
-	this->m_ctrlCmdOut.SetSel(m_CmdOutCurrentPos,m_CmdOutCurrentPos+1);
-	
-	if( ch != _T('\r') )
-		this->m_ctrlCmdOut.ReplaceSel(CString(ch));
-	
-	int firstline = m_ctrlCmdOut.GetFirstVisibleLine();
-	if( linenum - firstline > 4 )
-		this->m_ctrlCmdOut.LineScroll(linenum - firstline -4);
-
-	if( ch == _T('\r') || ch == _T('\n') )
-	{
-		int s1=m_LogText.Find(_T(':'));
-		int s2=m_LogText.Find(_T('%'));
-		if(s1>0 && s2>0)
-		{
-			//	this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
-			int pos=CProgressDlg::FindPercentage(m_LogText);
-			TRACE(_T("Pos %d\r\n"),pos);
-			if(pos>0)
-				this->m_ctrlProgress.SetPos(pos);
-		}
-		m_LogText=_T("");	
-	}
-	m_LogText+=ch;
-
+	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_LogText,ch);
 }
 void CSyncDlg::OnBnClickedButtonCommit()
 {
