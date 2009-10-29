@@ -618,12 +618,13 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 void CLogDlg::OnBnClickedRefresh()
 {
-	m_limit = 0;
+	
 	Refresh (true);
 }
 
 void CLogDlg::Refresh (bool /*autoGoOnline*/)
 {
+	m_limit = 0;
 	m_LogList.Refresh();
 	FillLogMessageCtrl(false);
 }

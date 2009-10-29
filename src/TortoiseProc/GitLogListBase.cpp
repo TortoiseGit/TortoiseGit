@@ -2178,7 +2178,8 @@ void CGitLogListBase::Refresh()
 		if(ret == WAIT_TIMEOUT)
 			TerminateThread();
 	}
-
+	
+	this->SetItemCountEx(0);
 	this->Clear();
 
 	//Update branch and Tag info
@@ -2186,7 +2187,7 @@ void CGitLogListBase::Refresh()
 	//Assume Thread have exited
 	//if(!m_bThreadRunning)
 	{
-		this->SetItemCountEx(0);
+		
 		m_logEntries.clear();
 		m_bExitThread=FALSE;
 		InterlockedExchange(&m_bThreadRunning, TRUE);
