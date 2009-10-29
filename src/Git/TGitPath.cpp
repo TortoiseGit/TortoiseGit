@@ -1384,6 +1384,9 @@ CTGitPath CTGitPathList::GetCommonRoot() const
 	int searchStartPos = 0;
 	while (bEqual)
 	{
+		if(m_paths.empty())
+			break;
+
 		for (it = m_paths.begin(); it != m_paths.end(); ++it)
 		{
 			if (backSlashPos == 0)

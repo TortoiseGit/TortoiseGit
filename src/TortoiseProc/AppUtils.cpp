@@ -46,6 +46,7 @@
 #include "SendMailDlg.h"
 #include "SVNProgressDlg.h"
 #include "PushDlg.h"
+#include "CommitDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2181,4 +2182,68 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 		if(path.IsEmpty())
 			return;
 	}
+}
+
+BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
+					CTGitPathList &pathList,
+					CTGitPathList &selectedList,
+					BOOL bSelectFilesForCommit)
+{
+	bool bFailed = true;
+	while (bFailed)
+	{
+		bFailed = false;
+		CCommitDlg dlg;
+		dlg.m_sBugID = bugid;
+        
+        dlg.m_bWholeProject = bWholeProject;
+		
+		dlg.m_sLogMessage = sLogMsg;
+		dlg.m_pathList = pathList;
+		dlg.m_checkedPathList = selectedList;
+		dlg.m_bSelectFilesForCommit = bSelectFilesForCommit;
+		if (dlg.DoModal() == IDOK)
+		{
+			if (dlg.m_pathList.GetCount()==0)
+				return false;
+			// if the user hasn't changed the list of selected items
+			// we don't use that list. Because if we would use the list
+			// of pre-checked items, the dialog would show different
+			// checked items on the next startup: it would only try
+			// to check the parent folder (which might not even show)
+			// instead, we simply use an empty list and let the
+			// default checking do its job.
+			if (!dlg.m_pathList.IsEqual(pathList))
+				selectedList = dlg.m_pathList;
+			pathList = dlg.m_updatedPathList;
+			sLogMsg = dlg.m_sLogMessage;
+			bSelectFilesForCommit = true;
+
+			if( dlg.m_bPushAfterCommit )
+			{
+				CAppUtils::Push();
+			}
+//			CGitProgressDlg progDlg;
+//			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);
+//			if (parser.HasVal(_T("closeonend")))
+//				progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
+//			progDlg.SetCommand(CGitProgressDlg::GitProgress_Commit);
+//			progDlg.SetOptions(dlg.m_bKeepLocks ? ProgOptKeeplocks : ProgOptNone);
+//			progDlg.SetPathList(dlg.m_pathList);
+//			progDlg.SetCommitMessage(dlg.m_sLogMessage);
+//			progDlg.SetDepth(dlg.m_bRecursive ? Git_depth_infinity : svn_depth_empty);
+//			progDlg.SetSelectedList(dlg.m_selectedPathList);
+//			progDlg.SetItemCount(dlg.m_itemsCount);
+//			progDlg.SetBugTraqProvider(dlg.m_BugTraqProvider);
+//			progDlg.DoModal();
+//			CRegDWORD err = CRegDWORD(_T("Software\\TortoiseGit\\ErrorOccurred"), FALSE);
+//			err = (DWORD)progDlg.DidErrorsOccur();
+//			bFailed = progDlg.DidErrorsOccur();
+//			bRet = progDlg.DidErrorsOccur();
+//			CRegDWORD bFailRepeat = CRegDWORD(_T("Software\\TortoiseGit\\CommitReopen"), FALSE);
+//			if (DWORD(bFailRepeat)==0)
+//				bFailed = false;		// do not repeat if the user chose not to in the settings.
+		}
+	}
+	return true;
 }

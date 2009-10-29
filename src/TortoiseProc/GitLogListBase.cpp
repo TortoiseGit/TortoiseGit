@@ -2089,7 +2089,8 @@ UINT CGitLogListBase::LogThread()
 			m_logEntries[i].m_Action =0;
 			for(int j=0;j< m_logEntries[i].m_Files.GetCount();j++)
 				m_logEntries[i].m_Action |= m_logEntries[i].m_Files[j].m_Action;
-
+			
+			m_logEntries[i].m_Body.Format(_T("%d files changed"),m_logEntries[i].m_Files.GetCount());
 			continue;
 		}
 

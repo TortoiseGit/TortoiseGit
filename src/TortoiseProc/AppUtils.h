@@ -208,6 +208,11 @@ public:
 
 	static void RemoveTrailSlash(CString &path);
 
+	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
+					CTGitPathList &pathList,
+					CTGitPathList &selectedList,
+					BOOL bSelectFilesForCommit);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

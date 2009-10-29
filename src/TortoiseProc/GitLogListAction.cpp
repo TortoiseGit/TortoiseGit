@@ -109,6 +109,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 	bool bOpenWith = false;
 	switch (cmd&0xFFFF)
 		{
+			case ID_COMMIT:
+			{
+				CTGitPathList pathlist;
+				bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+				CAppUtils::Commit(CString(),true,CString(),
+								  pathlist,pathlist,bSelectFilesForCommit);
+				this->Refresh();
+								  
+			}
+			break;
 			case ID_GNUDIFF1:
 			{
 				CString tempfile=GetTempFile();
@@ -132,7 +142,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 
 			}
 			break;
-
+  
 		case ID_COMPARETWO:
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
