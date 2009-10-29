@@ -107,13 +107,27 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	
 	BYTE_VECTOR logout;
 
-	g_Git.GetLog(logout,hash1,path,1,0);
-	m_rev1.ParserFromLog(logout);
+	if(hash1 == GIT_REV_ZERO)
+	{
+		m_rev1.m_CommitHash=GIT_REV_ZERO;
+		m_rev1.m_Subject=_T("Working Copy");
+	}else
+	{
+		g_Git.GetLog(logout,hash1,path,1,0);
+		m_rev1.ParserFromLog(logout);
+	}
 
 	logout.clear();
 
-	g_Git.GetLog(logout,hash2,path,1,0);
-	m_rev2.ParserFromLog(logout);
+	if(hash2 == GIT_REV_ZERO)
+	{
+		m_rev2.m_CommitHash = GIT_REV_ZERO;
+		m_rev2.m_Subject=_T("Working Copy");
+	}else
+	{
+		g_Git.GetLog(logout,hash2,path,1,0);
+		m_rev2.ParserFromLog(logout);
+	}
 }
 void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 {

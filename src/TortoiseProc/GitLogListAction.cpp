@@ -124,7 +124,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				CString tempfile=GetTempFile();
 				CString cmd;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash);
+				if(r1->m_CommitHash != GIT_REV_ZERO)
+				{
+					cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash);
+				}else
+					cmd.Format(_T("git.exe diff -r -p --stat"));
+
 				g_Git.RunLogFile(cmd,tempfile);
 				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r1->m_Subject);
 			}
@@ -136,7 +141,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				CString cmd;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
+				
+				if( r1->m_CommitHash == GIT_REV_ZERO)
+				{
+					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash);
+				}else if( r2->m_CommitHash == GIT_REV_ZERO)
+				{
+					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash);
+				}else
+					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
+
 				g_Git.RunLogFile(cmd,tempfile);
 				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r2->m_CommitHash.Left(6));
 
