@@ -211,6 +211,11 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
 
+		if(this->m_GitStatus)
+			InsertColorText(this->m_Log,_T("\r\nFailed\r\n"),RGB(255,0,0));
+		else
+			InsertColorText(this->m_Log,_T("\r\nSuccess\r\n"),RGB(0,0,255));
+
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
 			if(m_bAutoCloseOnSuccess)
@@ -444,3 +449,22 @@ void CProgressDlg::InsertCRLF()
 		}
 	}
 }
+
+void CProgressDlg::InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb)
+{
+	CHARFORMAT old,cf;
+	edit.GetDefaultCharFormat(cf);
+	old=cf;
+	cf.dwMask|=CFM_COLOR;
+	cf.crTextColor=rgb;
+	cf.dwEffects|=CFE_BOLD;
+	cf.dwEffects &= ~CFE_AUTOCOLOR ;
+	edit.SetSel(edit.GetTextLength()-1,edit.GetTextLength());
+	edit.ReplaceSel(text);
+	edit.SetSel(edit.LineIndex(edit.GetLineCount()-2),edit.GetTextLength());
+	edit.SetSelectionCharFormat(cf);
+	edit.SetSel(edit.GetTextLength(),edit.GetTextLength());
+	edit.SetDefaultCharFormat(old);
+	edit.LineScroll(edit.GetLineCount());
+}
+
