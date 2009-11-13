@@ -1,3 +1,33 @@
+= Release 1.2.1.0 =
+== Features ==
+ * Add color success and fail at ProgressDlg
+ 
+ * Log Dialog
+   Show work copy to log dialog. User can commit change at log dialog.
+   Easy to compare with working copy difference
+  
+ * Allow Alt+O in commit dialog for OK 
+ 
+ * Sync Dialog remote URL support save history
+   
+ * Add remote branch and current branch at proptery page  
+ 
+ * Add no-commit option at merge dialog
+  
+ * Enable IBugTraqProvide CheckCommit and OnCommitFinished
+ 
+== Bug Fix ==
+ * Fixed issue #219: Blame Error when git repository is at root directory and path use "/"
+ * Fixed issue #214: installer inserts unused or faulty registry key
+ * Fixed issue #179: Log dialog lacks information about changed files
+ * Fixed issue #209: High CPU usage in tortoiseproc.exe & limit line number
+ * Fixed issue #212: Disable the "Select items automaticlly" option has no effect to commit files dialog
+ * Fixed issue #209: High CPU usage in tortoiseproc.exe & Append text to edit ctrl
+ * Fixed Issue #203:  Remote URL select box in sync dialog is not populated with remotes.
+ * Fixed Issue #208:  During push (from context menu), branches missing from drop down list.
+ * Fixed issue #86: Globally sets HOME affecting third-party applications (GNU Emacs) 
+ * Fixed issue #188: Add Git Properties tab into Windows File Properties
+
 = Release 1.1.1.0 =
 == Features ==
  
