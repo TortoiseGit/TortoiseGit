@@ -112,7 +112,7 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int
 	return 0;
 
 }
-int CLogDataVector::FetchShortLog(CTGitPath *path ,CString &hash,int count ,int mask )
+int CLogDataVector::FetchShortLog(CTGitPath *path ,CString &hash,int count ,int mask, int ShowWC )
 {
 	//BYTE_VECTOR log;
 	m_RawlogData.clear();
@@ -152,7 +152,7 @@ int CLogDataVector::FetchShortLog(CTGitPath *path ,CString &hash,int count ,int 
 		//next=log.find(0,next);
 	}
 
-	resize(m_RawLogStart.size());
+	resize(m_RawLogStart.size() + ShowWC);
 
 	t2=GetTickCount();
 

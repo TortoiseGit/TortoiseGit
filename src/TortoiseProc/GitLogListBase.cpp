@@ -1765,7 +1765,7 @@ int CGitLogListBase::FillGitShortLog()
 	if(m_bShowWC)
 		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev);
 
-	this->m_logEntries.FetchShortLog(path,m_StartRef,-1,mask);
+	this->m_logEntries.FetchShortLog(path,m_StartRef,-1,mask,m_bShowWC?1:0);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
