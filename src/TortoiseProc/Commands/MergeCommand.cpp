@@ -39,7 +39,7 @@ bool MergeCommand::Execute()
 		if(dlg.m_bSquash)
 			squash=_T("--squash");
 
-		if(dlg.m_bNoCommit);
+		if(dlg.m_bNoCommit)
 			nocommit=_T("--no-commit");
 
 		if(!dlg.m_strLogMesage.IsEmpty())
