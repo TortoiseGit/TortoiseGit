@@ -747,7 +747,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	int ret;
 	CString cmd,output;
-	cmd=_T("git.exe config  --get-regexp remote.*.url");
+	cmd=_T("git.exe config  --get-regexp \"^^remote[.].*[.]url\"");
 	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
 	{
