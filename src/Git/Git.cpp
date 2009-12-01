@@ -1295,3 +1295,11 @@ unsigned int CGit::Hash2int(CString &hash)
 	}
 	return ret;
 }
+
+int CGit::RefreshGitIndex()
+{
+	CString cmd,output;
+	cmd=_T("git.exe update-index --refresh");
+	return Run(cmd,&output,CP_ACP);
+}
+

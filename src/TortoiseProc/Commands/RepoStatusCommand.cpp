@@ -23,6 +23,8 @@
 
 bool RepoStatusCommand::Execute()
 {
+	g_Git.RefreshGitIndex();
+
 	CChangedDlg dlg;
 	dlg.m_pathList = pathList;
 	dlg.DoModal();

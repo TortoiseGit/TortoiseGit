@@ -121,6 +121,7 @@ public:
 	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
 	int GetRefList(STRING_VECTOR &list);
 
+	int RefreshGitIndex();
 
 	//Example: master -> refs/heads/master
 	CString GetFullRefName(CString shortRefName);
