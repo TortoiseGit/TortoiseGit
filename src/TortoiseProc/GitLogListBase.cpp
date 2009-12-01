@@ -2107,6 +2107,8 @@ UINT CGitLogListBase::LogThread()
 			InterlockedExchange(&m_logEntries[i].m_IsFull,TRUE);
 			update++;
 		}
+		::PostMessage(m_hWnd,MSG_LOADED,(WPARAM) i, 0);
+
 		if(start<0)
 			break;
 		if(start>=m_logEntries.m_RawlogData.size())
@@ -2115,7 +2117,6 @@ UINT CGitLogListBase::LogThread()
 		int percent=i*30/m_logEntries.size() + GITLOG_START+1;
 
 		::PostMessage(GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent, 0);
-		::PostMessage(m_hWnd,MSG_LOADED,(WPARAM) i, 0);
 
 		if(this->m_bExitThread)
 		{	
