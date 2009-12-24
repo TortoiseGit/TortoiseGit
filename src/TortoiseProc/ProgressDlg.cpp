@@ -211,8 +211,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
 
+		CString err;
+		err.Format(_T("\r\nFailed 0x%x(git return wrong reture code at sometime )\r\n"),m_GitStatus);
 		if(this->m_GitStatus)
-			InsertColorText(this->m_Log,_T("\r\nFailed\r\n"),RGB(255,0,0));
+			InsertColorText(this->m_Log,err,RGB(255,0,0));
 		else
 			InsertColorText(this->m_Log,_T("\r\nSuccess\r\n"),RGB(0,0,255));
 
