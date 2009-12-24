@@ -1157,11 +1157,11 @@ BOOL CGit::EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsig
 		CString sSubPath = pszSubPath;
 		sSubPath.Replace(_T('\\'), _T('/'));
 
-		cmd.Format(_T("igit.exe \"%s\" status %s \"%s\""), sProjectPath, sMode, sSubPath);
+		cmd.Format(_T("tgit.exe statusex \"%s\" status %s \"%s\""), sProjectPath, sMode, sSubPath);
 	}
 	else
 	{
-		cmd.Format(_T("igit.exe \"%s\" status %s"), sProjectPath, sMode);
+		cmd.Format(_T("tgit.exe statusex \"%s\" status %s"), sProjectPath, sMode);
 	}
 
 	//OutputDebugStringA("---");OutputDebugStringW(cmd);OutputDebugStringA("\r\n");
