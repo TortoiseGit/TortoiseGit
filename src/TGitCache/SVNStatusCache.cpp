@@ -314,7 +314,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 	}
 	cdir->m_childDirectories.clear();
 	m_directoryCache.erase(cdir->m_directoryPath);
-	ATLTRACE(_T("removed path %s from cache\n"), cdir->m_directoryPath);
+	ATLTRACE(_T("removed path %s from cache\n"), cdir->m_directoryPath.GetWinPathString());
 	delete cdir;
 	cdir = NULL;
 	return true;
