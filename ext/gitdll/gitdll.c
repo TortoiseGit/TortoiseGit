@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "gitdll.h"
-
+#include "cache.h"
 #if 0
 
 // This is an example of an exported variable
@@ -45,4 +45,36 @@ void dll_entry()
 int git_get_sha1(const char *name, unsigned char *sha1)
 {
 	return get_sha1(name,sha1);
+}
+
+static int convert_slash(char * path)
+{
+	while(*path)
+	{
+		if(*path == '\\' )
+			*path = '/';
+		path++;
+	}
+}
+int git_init()
+{
+	char *home;
+	char path[MAX_PATH+1];
+	char *prefix;
+	size_t homesize,size,httpsize;
+
+	// set HOME if not set already
+	getenv_s(&homesize, NULL, 0, "HOME");
+	if (!homesize)
+	{
+		_dupenv_s(&home,&size,"USERPROFILE"); 
+		_putenv_s("HOME",home);
+		free(home);
+	}
+	GetModuleFileName(NULL, path, MAX_PATH);
+	convert_slash(path);
+
+	git_extract_argv0_path(path);
+	prefix = setup_git_directory();
+	git_config(git_default_config, NULL);
 }

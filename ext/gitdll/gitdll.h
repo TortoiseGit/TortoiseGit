@@ -31,3 +31,4 @@ GITDLL_API int fngitdll(void);
 
 GITDLL_API char * get_git_last_error();
 GITDLL_API int git_get_sha1(const char *name, unsigned char *sha1);
+GITDLL_API int git_init();
