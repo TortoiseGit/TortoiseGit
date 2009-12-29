@@ -28,7 +28,22 @@ int _tmain(int argc, _TCHAR* argv[])
 	output(ret,"git_get_sha1");
 	ret=git_get_commit_from_hash(&commit, hash);
 	output(ret,"git_get_commit_from_hash");
-
+	
+	GIT_HANDLE handle;
+	ret=git_open_log(&handle,"--stat -c -- \"build.txt\"");
+	output(ret,"git_open_log");
+	ret=git_get_log_firstcommit(handle);
+	output(ret,"git_get_log_firstcommit");
+	int count = 0;
+	while( git_get_log_nextcommit(handle,&commit) == 0)
+	{
+		//printf("%s\r\n",commit.m_Subject);
+		count ++;
+		git_free_commit(&commit);
+	}
+	printf("commit number %d\r\n",count);
+	ret=git_close_log(handle);
+	output(ret,"git_close_log");
 	return ret;
 }
 

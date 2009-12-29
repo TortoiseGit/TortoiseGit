@@ -166,10 +166,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\..\bin\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

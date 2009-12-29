@@ -80,14 +80,31 @@ GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
 GITDLL_API int git_init();
 
 GITDLL_API int git_open_log(GIT_LOG * handle, char * arg);
-GITDLL_API int git_get_log_count(GIT_LOG handle);
-GITDLL_API int git_get_log_firstcommit(GIT_LOG handle, GIT_COMMIT *commit);
-GITDLL_API int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int skip);
+GITDLL_API int git_get_log_firstcommit(GIT_LOG handle);
+
+/**
+ *	Get Next Commit
+ *  @param handle	[IN]handle  Get handle from git_open_log
+ *	@param commit	[OUT]commit	Caller need prepare buffer for this call
+ *  @return			0	success
+ *	@remark			Caller need call git_free_commit to free internal buffer after use it;
+ */
+GITDLL_API int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit);
+
 GITDLL_API int git_close_log(GIT_LOG handle);
 
+/**
+ *	Get Commit information from commit hash
+ *	@param  commit	[OUT] output commit information
+ *  @param	hash	[in] hash 
+ *	@return		0	success
+ */
 GITDLL_API int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash);
+GITDLL_API int git_parse_commit(GIT_COMMIT *commit);
+GITDLL_API int git_free_commit(GIT_COMMIT *commit);
 
-GITDLL_API int git_get_diff(GIT_COMMIT commit, GIT_DIFF *diff);
+GITDLL_API int git_get_diff(GIT_COMMIT *commit, GIT_DIFF *diff);
+
 GITDLL_API int git_get_diff_firstfile(GIT_DIFF diff, GIT_FILE * file);
 GITDLL_API int git_get_diff_nextfile(GIT_DIFF diff, GIT_FILE *file);
 GITDLL_API int git_get_diff_status(GIT_DIFF diff, int * status);

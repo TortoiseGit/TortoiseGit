@@ -2,9 +2,16 @@
 //
 
 #include "stdafx.h"
+#include "git-compat-util.h"
+#include "msvc.h"
 #include "gitdll.h"
 #include "cache.h"
 #include "commit.h"
+#include "diff.h"
+#include "revision.h"
+
+const char git_version_string[] = GIT_VERSION;
+
 #if 0
 
 // This is an example of an exported variable
@@ -26,6 +33,7 @@ Cgitdll::Cgitdll()
 
 #define MAX_ERROR_STR_SIZE 512
 char g_last_error[MAX_ERROR_STR_SIZE]={0};
+void * g_prefix;
 
 char * get_git_last_error()
 {
@@ -77,7 +85,7 @@ int git_init()
 	convert_slash(path);
 
 	git_extract_argv0_path(path);
-	prefix = setup_git_directory();
+	g_prefix = prefix = setup_git_directory();
 	return git_config(git_default_config, NULL);
 }
 
@@ -114,7 +122,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff
 	return 0;
 }
 
-static int git_parse_commit(GIT_COMMIT *commit)
+int git_parse_commit(GIT_COMMIT *commit)
 {
 	int ret = 0;
 	char *pbuf;
@@ -176,7 +184,7 @@ int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
 {
 	int ret = 0;
 	
-	struct commit *p = (struct commit*)commit;
+	struct commit *p;
 	commit->m_pGitCommit = p = lookup_commit(hash);
 
 	if(commit == NULL)
@@ -192,3 +200,128 @@ int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
 	return git_parse_commit(commit);
 }
 
+int git_free_commit(GIT_COMMIT *commit)
+{
+	struct commit *p = commit->m_pGitCommit;
+
+	if( p->parents)
+		free_commit_list(p->parents);	
+
+	if( p->buffer )
+	{
+		free(p->buffer);
+	}
+	memset(commit,0,sizeof(GIT_COMMIT));
+	return 0;
+}
+
+int git_get_diff(GIT_COMMIT *commit, GIT_DIFF *diff)
+{
+
+}
+
+char **strtoargv(char *arg, int *size)
+{
+	int count=0;
+	char *p=arg;
+	char **argv;
+	int i=0;
+	while(*p)
+	{
+		if(*p == ' ')
+			count ++;
+		p++;
+	}
+	
+	argv=malloc(strlen(arg)+1 + (count +2)*sizeof(void*));
+	p=(char*)(argv+count+2);
+
+	while(*arg)
+	{
+		if(*arg == '"')
+		{
+			argv[i] = p;
+			arg++;
+			*p=*arg;
+			while(*arg && *arg!= '"')
+				*p++=*arg++;
+			*p++=0;
+			arg++;
+			i++;
+			if(*arg == 0)
+				break;
+		}
+		if(*arg != ' ')
+		{
+			argv[i]=p;
+			while(*arg && *arg !=' ')
+				*p++ = *arg++;
+			i++;
+			*p++=0;
+		}
+		arg++;
+	}
+	argv[i]=NULL;
+	*size = i;
+	return argv;
+}
+int git_open_log(GIT_LOG * handle, char * arg)
+{
+	struct rev_info *p_Rev;
+	int size;
+	char ** argv=0;
+	int argc=0;
+	
+	if(arg != NULL)
+		argv = strtoargv(arg,&argc);
+
+	p_Rev = malloc(sizeof(struct rev_info));
+	memset(p_Rev,0,sizeof(struct rev_info));
+
+	if(p_Rev == NULL)
+		return -1;
+
+	init_revisions(p_Rev, g_prefix);
+	p_Rev->diff = 1;
+	p_Rev->simplify_history = 0;
+	
+	cmd_log_init(argc, argv, g_prefix,p_Rev);
+
+	p_Rev->pPrivate = argv;
+	*handle = p_Rev;
+	return 0;
+
+}
+int git_get_log_firstcommit(GIT_LOG handle)
+{
+	return prepare_revision_walk(handle);
+}
+
+int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
+{
+	int ret =0;
+
+	commit->m_pGitCommit = get_revision(handle);
+	if( commit->m_pGitCommit == NULL)
+		return -2;
+	
+	ret=git_parse_commit(commit);
+	if(ret)
+		return ret;
+
+	return 0;
+}
+
+int git_close_log(GIT_LOG handle)
+{
+	if(handle)
+	{
+		struct rev_info *p_Rev;
+		p_Rev=(struct rev_info *)handle;
+		if(p_Rev->pPrivate)
+			free(p_Rev->pPrivate);
+		free(handle);
+	}
+	
+	return 0;
+}

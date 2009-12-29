@@ -118,6 +118,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\tgit;..\tgit\compat;..\tgit\compat\vcbuild;;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\zlib;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GITDLL_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -170,7 +171,7 @@
 			OutputDirectory="$(SolutionDir)\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -192,6 +193,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\tgit;..\tgit\compat;..\tgit\compat\vcbuild;;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\zlib;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GITDLL_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -268,6 +270,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\tgit;..\tgit\compat;..\tgit\compat\vcbuild;;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\zlib;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GITDLL_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
