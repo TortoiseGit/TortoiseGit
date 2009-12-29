@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "gitdll.h"
 #include "cache.h"
+#include "commit.h"
 #if 0
 
 // This is an example of an exported variable
@@ -42,7 +43,7 @@ void dll_entry()
 	set_die_routine(die_dll);
 }
 
-int git_get_sha1(const char *name, unsigned char *sha1)
+int git_get_sha1(const char *name, GIT_HASH sha1)
 {
 	return get_sha1(name,sha1);
 }
@@ -56,6 +57,7 @@ static int convert_slash(char * path)
 		path++;
 	}
 }
+
 int git_init()
 {
 	char *home;
@@ -76,5 +78,117 @@ int git_init()
 
 	git_extract_argv0_path(path);
 	prefix = setup_git_directory();
-	git_config(git_default_config, NULL);
+	return git_config(git_default_config, NULL);
 }
+
+static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff)
+{
+	char *end;
+
+	author->Name=pbuff;
+	end=strchr(pbuff,'<');
+	if( end == 0)
+	{
+		return -1;
+	}
+	author->NameSize = end - pbuff - 1;
+
+	pbuff = end +1;
+	end = strchr(pbuff, '>');
+	if( end == 0)
+		return -1;
+
+	author->Email = pbuff ;
+	author->EmailSize = end - pbuff;
+
+	pbuff = end + 2;
+
+	author->Date = atol(pbuff);
+	end =  strchr(pbuff, ' ');
+	if( end == 0 )
+		return -1;
+
+	pbuff=end;
+	author->TimeZone = atol(pbuff);
+
+	return 0;
+}
+
+static int git_parse_commit(GIT_COMMIT *commit)
+{
+	int ret = 0;
+	char *pbuf;
+	char *end;
+	struct commit *p;
+
+	p= (struct commit *)commit->m_pGitCommit;
+
+	memcpy(commit->m_hash,p->object.sha1,GIT_HASH_SIZE);
+
+	if(p->buffer == NULL)
+		return -1;
+
+	pbuf = p->buffer;
+	while(pbuf)
+	{
+		if( strncmp(pbuf,"author",6) == 0)
+		{
+			ret = git_parse_commit_author(&commit->m_Author,pbuf + 7);
+			if(ret)
+				return ret;
+		}
+		if( strncmp(pbuf, "committer",9) == 0)
+		{
+			ret =  git_parse_commit_author(&commit->m_Committer,pbuf + 10);
+			if(ret)
+				return ret;
+
+			pbuf = strchr(pbuf,'\n');
+			if(pbuf == NULL)
+				return -1;
+
+			while((*pbuf) && (*pbuf == '\n'))
+				pbuf ++;
+
+			commit->m_Subject=pbuf;
+			end = strchr(pbuf,'\n');
+			if( end == 0)
+				commit->m_SubjectSize = strlen(pbuf);
+			else
+			{
+				commit->m_SubjectSize = end - pbuf;
+				pbuf = end +1;
+				commit->m_Body = pbuf;
+				commit->m_BodySize = strlen(pbuf);
+				return 0;
+			}
+
+		}
+
+		pbuf = strchr(pbuf,'\n');
+		if(pbuf)
+			pbuf ++;
+	}
+
+}
+
+int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
+{
+	int ret = 0;
+	
+	struct commit *p = (struct commit*)commit;
+	commit->m_pGitCommit = p = lookup_commit(hash);
+
+	if(commit == NULL)
+		return -1;
+	
+	if(p == NULL)
+		return -1;
+	
+	ret = parse_commit(p);
+	if( ret )
+		return ret;
+
+	return git_parse_commit(commit);
+}
+

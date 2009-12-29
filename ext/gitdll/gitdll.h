@@ -25,10 +25,71 @@ public:
 };
 #endif
 
+#define GIT_HASH_SIZE 20
+
+typedef unsigned char GIT_HASH[GIT_HASH_SIZE];
+typedef unsigned int  GIT_HANDLE;
+typedef unsigned int  GIT_LOG;
+
+typedef unsigned int  GIT_DIFF;
+typedef unsigned int  GIT_FILE;
+
+struct GIT_COMMIT_AUTHOR
+{
+	char *Name;
+	int	  NameSize;
+	char *Email;
+	int	  EmailSize;
+	int	  Date;
+	int   TimeZone;
+	
+};
+typedef struct GIT_COMMIT_DATA
+{
+	GIT_HASH m_hash;
+	struct GIT_COMMIT_AUTHOR m_Author;
+	struct GIT_COMMIT_AUTHOR m_Committer;
+	char *	 m_Subject;
+	int		 m_SubjectSize;
+	char *	 m_Body;
+	int		 m_BodySize;
+	void *   m_pGitCommit; /** internal used */
+
+} GIT_COMMIT;
+
+
 GITDLL_API int ngitdll;
 
 GITDLL_API int fngitdll(void);
-
+/**
+ *	Get Git Last Error string. 
+ */
 GITDLL_API char * get_git_last_error();
-GITDLL_API int git_get_sha1(const char *name, unsigned char *sha1);
+/**
+ *	Get hash value. 
+ *	@param	name	[IN] Reference name, such as HEAD, master, ...
+ *	@param	sha1	[OUT] char[20] hash value. Caller prepare char[20] buffer.
+ *	@return			0	success. 
+ */
+GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
+/**
+ *	Init git dll
+ *  @remark, this function must be call before other function. 
+ *	@return			0	success
+ */
 GITDLL_API int git_init();
+
+GITDLL_API int git_open_log(GIT_LOG * handle, char * arg);
+GITDLL_API int git_get_log_count(GIT_LOG handle);
+GITDLL_API int git_get_log_firstcommit(GIT_LOG handle, GIT_COMMIT *commit);
+GITDLL_API int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int skip);
+GITDLL_API int git_close_log(GIT_LOG handle);
+
+GITDLL_API int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash);
+
+GITDLL_API int git_get_diff(GIT_COMMIT commit, GIT_DIFF *diff);
+GITDLL_API int git_get_diff_firstfile(GIT_DIFF diff, GIT_FILE * file);
+GITDLL_API int git_get_diff_nextfile(GIT_DIFF diff, GIT_FILE *file);
+GITDLL_API int git_get_diff_status(GIT_DIFF diff, int * status);
+GITDLL_API int git_get_diff_stat(GIT_FILE file, int *inc, int *dec, int *mode);
+GITDLL_API int git_get_diff_file(GIT_FILE file, char *newname, int newsize,  char *oldname, int oldsize, int *mode);
