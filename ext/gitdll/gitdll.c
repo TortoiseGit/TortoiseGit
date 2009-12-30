@@ -9,8 +9,9 @@
 #include "commit.h"
 #include "diff.h"
 #include "revision.h"
-
+#include "diffcore.h"
 const char git_version_string[] = GIT_VERSION;
+
 
 #if 0
 
@@ -215,11 +216,6 @@ int git_free_commit(GIT_COMMIT *commit)
 	return 0;
 }
 
-int git_get_diff(GIT_COMMIT *commit, GIT_DIFF *diff)
-{
-
-}
-
 char **strtoargv(char *arg, int *size)
 {
 	int count=0;
@@ -325,3 +321,74 @@ int git_close_log(GIT_LOG handle)
 	
 	return 0;
 }
+
+int git_open_diff(GIT_DIFF *diff, char * arg)
+{
+	struct rev_info *p_Rev;
+	int size;
+	char ** argv=0;
+	int argc=0;
+		
+	if(arg != NULL)
+		argv = strtoargv(arg,&argc);
+
+	p_Rev = malloc(sizeof(struct rev_info));
+	memset(p_Rev,0,sizeof(struct rev_info));
+
+	p_Rev->pPrivate = argv;
+	*diff = (GIT_DIFF)p_Rev;
+
+	init_revisions(p_Rev, g_prefix);
+	git_config(git_diff_basic_config, NULL); /* no "diff" UI options */
+	p_Rev->abbrev = 0;
+	p_Rev->diff = 1;
+	argc = setup_revisions(argc, argv, p_Rev, NULL);
+
+	return 0;
+}
+int git_diff_flush(struct diff_options *options)
+{
+	struct diff_queue_struct *q = &diff_queued_diff;
+	int i;
+	for (i = 0; i < q->nr; i++)
+		diff_free_filepair(q->queue[i]);
+
+	if(q->queue)
+	{
+		free(q->queue);
+		q->queue = NULL;
+		q->nr = q->alloc = 0;
+	}
+
+	if (options->close_file)
+		fclose(options->file);
+
+}
+int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2)
+{
+	struct rev_info *p_Rev;
+	int ret;
+	int i;
+	struct diff_queue_struct *q = &diff_queued_diff;
+	
+	p_Rev = (struct rev_info *)diff;
+
+	git_diff_flush(&p_Rev->diffopt);
+
+	ret = diff_tree_sha1(hash1,hash2,"",&p_Rev->diffopt);
+	if( ret )
+		return ret;
+	
+	diffcore_std(&p_Rev->diffopt);
+
+	memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
+	for (i = 0; i < q->nr; i++) {
+		struct diff_filepair *p = q->queue[i];
+		if (check_pair_status(p))
+				diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+	}
+	free_diffstat_info(&p_Rev->diffstat);
+
+	return 0;
+}
+
