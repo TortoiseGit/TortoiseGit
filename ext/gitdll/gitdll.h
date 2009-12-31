@@ -28,11 +28,13 @@ public:
 #define GIT_HASH_SIZE 20
 
 typedef unsigned char GIT_HASH[GIT_HASH_SIZE];
+
 typedef unsigned int  GIT_HANDLE;
 typedef unsigned int  GIT_LOG;
 
 typedef unsigned int GIT_DIFF;
 typedef unsigned int GIT_FILE;
+typedef unsigned int GIT_COMMIT_LIST;
 
 struct GIT_COMMIT_AUTHOR
 {
@@ -101,14 +103,16 @@ GITDLL_API int git_close_log(GIT_LOG handle);
  */
 GITDLL_API int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash);
 GITDLL_API int git_parse_commit(GIT_COMMIT *commit);
+
+GITDLL_API int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list);
+GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
+
 GITDLL_API int git_free_commit(GIT_COMMIT *commit);
 
 GITDLL_API int git_open_diff(GIT_DIFF *diff, char * arg);
-GITDLL_API int git_diff(GIT_DIFF diff, GIT_HASH hash1,GIT_HASH hash2);
+GITDLL_API int git_diff(GIT_DIFF diff, GIT_HASH hash1,GIT_HASH hash2, GIT_FILE * file, int *count);
+GITDLL_API int git_diff_flush(GIT_DIFF diff);
 GITDLL_API int git_close_diff(GIT_DIFF diff);
 
-GITDLL_API int git_get_diff_firstfile(GIT_DIFF diff, GIT_FILE * file);
-GITDLL_API int git_get_diff_nextfile(GIT_DIFF diff, GIT_FILE *file);
-GITDLL_API int git_get_diff_status(GIT_DIFF diff, int * status);
-GITDLL_API int git_get_diff_stat(GIT_FILE file, int *inc, int *dec, int *mode);
-GITDLL_API int git_get_diff_file(GIT_FILE file, char *newname, int newsize,  char *oldname, int oldsize, int *mode);
+
+GITDLL_API int git_get_diff_file(GIT_DIFF diff,GIT_FILE file, int i,char **newname, char **oldname,  int *mode, int *IsBin, int *inc, int *dec);

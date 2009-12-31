@@ -201,6 +201,31 @@ int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
 	return git_parse_commit(commit);
 }
 
+int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list)
+{
+	struct commit *p = commit->m_pGitCommit;
+
+	if(list == NULL)
+		return -1;
+	
+	*list = (GIT_COMMIT_LIST*)p->parents;
+	return 0;
+}
+int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
+{
+	struct commit_list *l = *(struct commit_list **)list;
+	if(list == NULL)
+		return -1;
+
+	if(hash)
+		memcpy(hash, l->item->object.sha1, GIT_HASH_SIZE);
+
+	*list = (GIT_COMMIT_LIST *)l->next;
+	return 0;
+
+}
+
+
 int git_free_commit(GIT_COMMIT *commit)
 {
 	struct commit *p = commit->m_pGitCommit;
@@ -211,6 +236,10 @@ int git_free_commit(GIT_COMMIT *commit)
 	if( p->buffer )
 	{
 		free(p->buffer);
+		p->buffer=NULL;
+		p->object.parsed=0;
+		p->parents=0;
+		p->tree=0;
 	}
 	memset(commit,0,sizeof(GIT_COMMIT));
 	return 0;
@@ -346,10 +375,14 @@ int git_open_diff(GIT_DIFF *diff, char * arg)
 
 	return 0;
 }
-int git_diff_flush(struct diff_options *options)
+int git_diff_flush(GIT_DIFF diff)
 {
 	struct diff_queue_struct *q = &diff_queued_diff;
+	struct rev_info *p_Rev;
 	int i;
+	p_Rev = (struct rev_info *)diff;
+	
+	
 	for (i = 0; i < q->nr; i++)
 		diff_free_filepair(q->queue[i]);
 
@@ -360,11 +393,12 @@ int git_diff_flush(struct diff_options *options)
 		q->nr = q->alloc = 0;
 	}
 
-	if (options->close_file)
-		fclose(options->file);
+	if (p_Rev->diffopt.close_file)
+		fclose(p_Rev->diffopt.close_file);
 
+	free_diffstat_info(&p_Rev->diffstat);
 }
-int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2)
+int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count)
 {
 	struct rev_info *p_Rev;
 	int ret;
@@ -372,8 +406,6 @@ int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2)
 	struct diff_queue_struct *q = &diff_queued_diff;
 	
 	p_Rev = (struct rev_info *)diff;
-
-	git_diff_flush(&p_Rev->diffopt);
 
 	ret = diff_tree_sha1(hash1,hash2,"",&p_Rev->diffopt);
 	if( ret )
@@ -384,11 +416,44 @@ int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2)
 	memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
 	for (i = 0; i < q->nr; i++) {
 		struct diff_filepair *p = q->queue[i];
-		if (check_pair_status(p))
-				diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+		//if (check_pair_status(p))
+		diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
 	}
-	free_diffstat_info(&p_Rev->diffstat);
 
+	if(file)
+		*file = q;
+	if(count)
+		*count = q->nr;
 	return 0;
 }
 
+int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char ** oldname,  int *status, int *IsBin, int *inc, int *dec)
+{
+	struct diff_queue_struct *q = &diff_queued_diff;
+	struct rev_info *p_Rev;
+	p_Rev = (struct rev_info *)diff;
+	
+	q = (struct diff_queue_struct *)file;
+	if(file == 0)
+		return -1;
+	if(i>=q->nr)
+		return -1;
+
+	if(newname)
+		*newname = q->queue[i]->one->path;
+
+	if(oldname)
+		*oldname = q->queue[i]->two->path;
+
+	if(status)
+		*status = q->queue[i]->status;
+
+	if(IsBin)
+		*IsBin = p_Rev->diffstat.files[i]->is_binary;
+	if(inc)
+		*inc = p_Rev->diffstat.files[i]->added;
+	if(dec)
+		*dec = p_Rev->diffstat.files[i]->deleted;
+
+	return 0;
+}
