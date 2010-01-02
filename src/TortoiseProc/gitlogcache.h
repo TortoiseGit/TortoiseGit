@@ -3,12 +3,13 @@
 #include "Git.h"
 #include "TGitPath.h"
 #include "GitRev.h"
+#include "GitHash.h"
 
 #define LOG_INDEX_MAGIC		0x88445566
 #define LOG_DATA_MAGIC		0x99aa00FF
 #define LOG_DATA_ITEM_MAGIC 0x0F8899CC
 #define LOG_DATA_FILE_MAGIC 0x19999FFF
-#define LOG_INDEX_VERSION   0x6 
+#define LOG_INDEX_VERSION   0x7
 
 struct SLogCacheIndexHeader 
 {
@@ -19,7 +20,7 @@ struct SLogCacheIndexHeader
 
 struct SLogCacheItem
 {
-	BYTE  m_Hash[40];
+	CGitHash  m_Hash;
 	ULONGLONG m_Offset;
 };
 
@@ -34,6 +35,15 @@ struct SLogCacheRevItemHeader
 	DWORD m_Magic;
 	DWORD m_Version;
 	DWORD m_FileCount;
+};
+
+class CGitHashMap:public std::map<CGitHash,GitRev>
+{
+public:
+	bool IsExist(CGitHash &hash)
+	{
+		return find(hash) != end();
+	}
 };
 
 #define INDEX_FILE_NAME _T("tortoisegit.index")
@@ -89,8 +99,10 @@ public:
 	CLogCache();
 	~CLogCache();
 	int FetchCacheIndex(CString GitDir);
-	std::vector<GitRev> m_NewCacheEntry;
-	std::map<CString, ULONGLONG> m_HashMapIndex;
+
+	CGitHashMap m_HashMap;
+	std::map<CGitHash, ULONGLONG> m_HashMapIndex;
+
 	int GetCacheData(GitRev &Rev);
 	int AddCacheEntry(GitRev &Rev);
 	int SaveCache();

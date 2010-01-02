@@ -23,7 +23,8 @@
 #include "ILogReceiver.h"
 #include "lanes.h"
 #include <set> 
-
+#include "GitHash.h"
+#include "GitLogCache.h"
 class CLogDlg;
 
 /**
@@ -49,13 +50,20 @@ protected:
  * Helper class for the log dialog, handles all the log entries, including
  * sorting.
  */
-class CLogDataVector : 	public std::vector<GitRev>
+class CLogDataVector : 	public std::vector<CGitHash>
 {
 public:
+	CLogCache *m_pLogCache;
 	/// De-allocates log items.
-	CLogDataVector()
+	CLogDataVector(CLogCache *pLogCache)
 	{
+		m_pLogCache=pLogCache;
 		m_FirstFreeLane=0;
+	}
+	GitRev & GetGitRevAt(int i)
+	{
+		ASSERT(i<size());
+		return 	m_pLogCache->m_HashMap[(*this)[i]];
 	}
 	void ClearAll();
 	int  ParserFromLog(CTGitPath *path =NULL,int count = -1,int infomask=CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_SHOW_MERGEDFILE,

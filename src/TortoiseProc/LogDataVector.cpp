@@ -62,6 +62,8 @@
 //#include "RepositoryInfo.h"
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
+#include "GitHash.h"
+CGitHashMap a;
 
 void CLogDataVector::ClearAll()
 {

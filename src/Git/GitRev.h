@@ -2,8 +2,9 @@
 #include "gittype.h"
 #include "GitStatus.h"
 #include "AtlTime.h"
+#include "GitHash.h"
 
-typedef std::vector<git_revnum_t> GIT_REV_LIST;
+typedef std::vector<CGitHash> GIT_REV_LIST;
 
 #define LOG_REV_AUTHOR_NAME 	_T('0')
 #define LOG_REV_AUTHOR_EMAIL 	_T('1')
@@ -50,7 +51,7 @@ public:
 	CTime m_CommitterDate;
 	CString m_Subject;
 	CString m_Body;
-	git_revnum_t m_CommitHash;
+	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
 	CTGitPathList m_Files;
 	int	m_Action;

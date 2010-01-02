@@ -13,7 +13,7 @@ CLogCache::~CLogCache()
 }
 int CLogCache::AddCacheEntry(GitRev &Rev)
 {
-	this->m_NewCacheEntry.push_back(Rev);
+	this->m_HashMap[Rev.m_CommitHash] = Rev;
 	return 0;
 }
 
@@ -21,13 +21,10 @@ int CLogCache::GetCacheData(GitRev &Rev)
 {
 	if(this->m_HashMapIndex.find(Rev.m_CommitHash)==m_HashMapIndex.end())
 	{
-		for(int i=0;i<this->m_NewCacheEntry.size();i++)
+		if(this->m_HashMap.IsExist(Rev.m_CommitHash))
 		{
-			if(m_NewCacheEntry[i].m_CommitHash==Rev.m_CommitHash)
-			{
-				Rev.CopyFrom(m_NewCacheEntry[i],true);
-				return 0;
-			}
+			Rev.CopyFrom(m_HashMap[Rev.m_CommitHash]);
+			return 0;
 		}
 		return -1;
 	}
@@ -78,9 +75,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		if( count != sizeof(SLogCacheItem) )
 			break;
 
-		CString str;
-		g_Git.StringAppend(&str,Item.m_Hash,CP_UTF8,40);
-		this->m_HashMapIndex[str]=Item.m_Offset;
+		this->m_HashMapIndex[Item.m_Hash]=Item.m_Offset;
 	}
 
 	return 0;
@@ -225,7 +220,7 @@ int CLogCache::RebuildCacheFile()
 }
 int CLogCache::SaveCache()
 {
-	if( this->m_NewCacheEntry.size() == 0 )
+	if( this->m_HashMap.size() == 0 )
 		return 0;
 
 	bool bIsRebuild=false;
@@ -283,19 +278,22 @@ int CLogCache::SaveCache()
 
 	m_DataFile.SeekToEnd();
 	m_IndexFile.SeekToEnd();
-	for(int i=0;i<this->m_NewCacheEntry.size();i++)
+	CGitHashMap::iterator i;
+	for(i=m_HashMap.begin();i!=m_HashMap.end();i++)
 	{
-		if(this->m_HashMapIndex.find(m_NewCacheEntry[i].m_CommitHash) == m_HashMapIndex.end() || bIsRebuild)
+		if(this->m_HashMapIndex.find((*i).second.m_CommitHash) == m_HashMapIndex.end() || bIsRebuild)
 		{
-			ULONGLONG offset = m_DataFile.GetPosition();
-			this->SaveOneItem(m_NewCacheEntry[i],offset);
+			if((*i).second.m_IsFull)
+			{
+				ULONGLONG offset = m_DataFile.GetPosition();
+				this->SaveOneItem((*i).second,offset);
 
-			SLogCacheItem item;
-			for(int j=0; j<40;j++)
-				item.m_Hash[j]=(BYTE)m_NewCacheEntry[i].m_CommitHash[j];
-			item.m_Offset=offset;
+				SLogCacheItem item;
+				item.m_Hash = (*i).second.m_CommitHash;
+				item.m_Offset=offset;
 
-			m_IndexFile.Write(&item,sizeof(SLogCacheItem));
+				m_IndexFile.Write(&item,sizeof(SLogCacheItem));
+			}
 		}
 	}
 	m_IndexFile.Close();

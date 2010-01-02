@@ -281,7 +281,7 @@ void CGitPropertyPage::InitWorkfileView()
 	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch);
 	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH,remotebranch);
 
-	SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash);
+	SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash.ToString());
 	SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.m_Subject);
 	SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.m_AuthorName);
 	SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
@@ -313,7 +313,7 @@ void CGitPropertyPage::InitWorkfileView()
 		rev.Clear();
 		rev.ParserFromLog(logout);
 
-		SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash);
+		SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());
 		SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.m_Subject);
 		SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.m_AuthorName);
 		SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));

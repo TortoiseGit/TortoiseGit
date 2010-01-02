@@ -53,7 +53,7 @@ IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
 int CGitLogList::CherryPickFrom(CString from, CString to)
 {
-	CLogDataVector logs;
+	CLogDataVector logs(&m_LogCache);
 	if(logs.ParserFromLog(NULL,-1,0,&from,&to))
 		return -1;
 
@@ -73,8 +73,8 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	{
 		if (progress.IsValid())
 		{
-			progress.FormatPathLine(1, _T("Pick up %s"), logs[i].m_CommitHash);
-			progress.FormatPathLine(2, _T("%s"), logs[i].m_Subject);
+			progress.FormatPathLine(1, _T("Pick up %s"), logs.GetGitRevAt(i).m_CommitHash);
+			progress.FormatPathLine(2, _T("%s"), logs.GetGitRevAt(i).m_Subject);
 			progress.SetProgress(logs.size()-i, logs.size());
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
@@ -84,7 +84,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 			return -1;
 		}
 		CString cmd,out;
-		cmd.Format(_T("git.exe cherry-pick %s"),logs[i].m_CommitHash);
+		cmd.Format(_T("git.exe cherry-pick %s"),logs.GetGitRevAt(i).m_CommitHash);
 		out.Empty();
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
@@ -124,14 +124,14 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				CString tempfile=GetTempFile();
 				CString cmd;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
-				if(r1->m_CommitHash != GIT_REV_ZERO)
+				if(!r1->m_CommitHash.IsEmpty())
 				{
 					cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash);
 				}else
 					cmd.Format(_T("git.exe diff -r -p --stat"));
 
 				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r1->m_Subject);
+				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r1->m_Subject);
 			}
 			break;
 
@@ -142,17 +142,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 				
-				if( r1->m_CommitHash == GIT_REV_ZERO)
+				if( r1->m_CommitHash.IsEmpty())
 				{
 					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash);
-				}else if( r2->m_CommitHash == GIT_REV_ZERO)
+				}else if( r2->m_CommitHash.IsEmpty())
 				{
 					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash);
 				}else
 					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
 
 				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r2->m_CommitHash.Left(6));
+				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r2->m_CommitHash.ToString().Left(6));
 
 			}
 			break;
@@ -198,7 +198,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				if(pSelLogEntry->m_ParentHash.size()>0)
 				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
 				{
-					dlg.SetDiff(NULL,pSelLogEntry->m_CommitHash,pSelLogEntry->m_ParentHash[0]);
+					dlg.SetDiff(NULL,pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[0].ToString());
 					dlg.DoModal();
 				}else
 				{
@@ -226,25 +226,25 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			}
 			break;
 		case ID_EXPORT:
-			CAppUtils::Export(&pSelLogEntry->m_CommitHash);
+			CAppUtils::Export(&pSelLogEntry->m_CommitHash.ToString());
 			break;
 		case ID_CREATE_BRANCH:
-			CAppUtils::CreateBranchTag(FALSE,&pSelLogEntry->m_CommitHash);
+			CAppUtils::CreateBranchTag(FALSE,&pSelLogEntry->m_CommitHash.ToString());
 			ReloadHashMap();
 			Invalidate();			
 			break;
 		case ID_CREATE_TAG:
-			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash);
+			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash.ToString());
 			ReloadHashMap();
 			Invalidate();
 			break;
 		case ID_SWITCHTOREV:
-			CAppUtils::Switch(&pSelLogEntry->m_CommitHash);
+			CAppUtils::Switch(&pSelLogEntry->m_CommitHash.ToString());
 			ReloadHashMap();
 			Invalidate();
 			break;
 		case ID_RESET:
-			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash);
+			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash.ToString());
 			ReloadHashMap();
 			Invalidate();
 			break;
@@ -413,8 +413,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				while(pos)
 				{
 					int indexNext = GetNextSelectedItem(pos);
-					dlg.m_CommitList.m_logEntries.push_back(*(GitRev*)m_arShownList[indexNext]);
-					dlg.m_CommitList.m_logEntries.at(dlg.m_CommitList.m_logEntries.size()-1).m_Action |= CTGitPath::LOGACTIONS_REBASE_PICK;
+					dlg.m_CommitList.m_logEntries.push_back( ((GitRev*)m_arShownList[indexNext])->m_CommitHash );
+					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size()-1).m_Action |= CTGitPath::LOGACTIONS_REBASE_PICK;
 				}
 	
 				if(dlg.DoModal() == IDOK)
@@ -474,20 +474,20 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				GitRev * r2 = NULL;
 				if(select == 1)
 				{
-					cmd += _T(" /startrev:")+r1->m_CommitHash;
+					cmd += _T(" /startrev:")+r1->m_CommitHash.ToString();
 				}
 				else 
 				{
 					r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 					if( this->m_IsOldFirst )
 					{	
-						cmd += _T(" /startrev:")+r1->m_CommitHash+_T("~1");
-						cmd += _T(" /endrev:")+r2->m_CommitHash;
+						cmd += _T(" /startrev:")+r1->m_CommitHash.ToString()+_T("~1");
+						cmd += _T(" /endrev:")+r2->m_CommitHash.ToString();
 	
 					}else
 					{	
-						cmd += _T(" /startrev:")+r2->m_CommitHash+_T("~1");
-						cmd += _T(" /endrev:")+r1->m_CommitHash;	
+						cmd += _T(" /startrev:")+r2->m_CommitHash.ToString()+_T("~1");
+						cmd += _T(" /endrev:")+r1->m_CommitHash.ToString();	
 					}				
 					
 				}
