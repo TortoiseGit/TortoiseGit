@@ -252,6 +252,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 {
 	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
 	{
+#if 0
 		//GitRev rev;
 		BYTE_VECTOR onelog;
 		TCHAR oldmark=this->m_Mark;
@@ -269,6 +270,105 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsFull,TRUE);
 		return 0;
+#endif
+		git->CheckAndInitDll();
+		GIT_COMMIT commit;
+		GIT_COMMIT_LIST list;
+		GIT_HASH   parent;
+		if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
+			return -1;
+
+		int i=0;
+		git_get_commit_first_parent(&commit,&list);
+		while(git_get_commit_next_parent(&list,parent))
+		{
+			GIT_FILE file;
+			int count;
+			git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count);
+			CTGitPath path;
+			CString strnewname;
+			CString stroldname;
+			
+			for(int j=0;j<count;j++)
+			{
+				path.Reset();
+				char *newname;
+				char *oldname;
+				
+				strnewname.Empty();
+				stroldname.Empty();
+
+				int mode,IsBin,inc,dec;
+				git_get_diff_file(git->GetGitDiff(),file,j,&newname,&oldname,
+						&mode,&IsBin,&inc,&dec);
+				
+				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
+				git->StringAppend(&stroldname,(BYTE*)oldname,CP_ACP);
+
+				path.m_ParentNo = i;
+				path.SetFromGit(strnewname,&stroldname);
+				path.ParserAction((BYTE)mode);
+
+				this->m_Action|=path.m_Action;
+
+				if(IsBin)
+				{
+					path.m_StatAdd=_T("-");
+					path.m_StatDel=_T("-");
+				}else
+				{
+					path.m_StatAdd.Format(_T("%d"),inc);
+					path.m_StatDel.Format(_T("%d"),dec);
+				}
+			}
+			git_diff_flush(git->GetGitDiff());
+			i++;
+		}
+
+		InterlockedExchange(&m_IsUpdateing,FALSE);
+		InterlockedExchange(&m_IsFull,TRUE);
+
 	}
 	return -1;
+}
+
+int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
+{
+	this->m_ParentHash.clear();
+	GIT_COMMIT_LIST list;
+	GIT_HASH   parent;
+	
+	git_get_commit_first_parent(commit,&list);
+	while(git_get_commit_next_parent(&list,parent))
+	{
+		m_ParentHash.push_back(CGitHash((char *)parent));
+	}
+	return 0;
+}
+
+int GitRev::ParserFromCommit(GIT_COMMIT *commit)
+{
+	this->m_AuthorDate = commit->m_Author.Date;
+	
+	this->m_AuthorEmail.Empty();
+	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,CP_ACP,commit->m_Author.EmailSize);
+
+	this->m_AuthorName.Empty();
+	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,CP_ACP,commit->m_Author.NameSize);
+	
+	this->m_Body.Empty();
+	g_Git.StringAppend(&m_Body,(BYTE*)commit->m_Body,CP_ACP,commit->m_BodySize);
+
+	this->m_CommitterDate = commit->m_Committer.Date;
+	
+	this->m_CommitterEmail.Empty();
+	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,CP_ACP, commit->m_Committer.EmailSize);
+
+	this->m_CommitterName.Empty();
+	g_Git.StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name,CP_ACP, commit->m_Committer.NameSize);
+
+	this->m_Subject.Empty();
+	g_Git.StringAppend(&m_Subject, (BYTE*)commit->m_Subject,CP_ACP,commit->m_SubjectSize);
+	
+	return 0;
 }

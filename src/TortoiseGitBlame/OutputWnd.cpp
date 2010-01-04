@@ -194,7 +194,7 @@ void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			CMainFrame *pMain=DYNAMIC_DOWNCAST(CMainFrame,AfxGetApp()->GetMainWnd());
 			POSITION pos=pMain->GetActiveDocument()->GetFirstViewPosition();
 			CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,pMain->GetActiveDocument()->GetNextView(pos));
-			pView->FocusOn(&this->m_LogList.m_logEntries[pNMLV->iItem]);
+			pView->FocusOn(&this->m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem));
 		}
 	}
 }

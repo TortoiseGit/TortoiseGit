@@ -2471,7 +2471,7 @@ void CTortoiseGitBlameView::UpdateInfo()
 		if(id>=0 && id <(int)GetLogData()->size())
 		{
 			m_ID.push_back(pRevs->size()-id);
-			m_Authors.push_back(pRevs->at(id).m_AuthorName);
+			m_Authors.push_back(pRevs->GetGitRevAt(id).m_AuthorName);
 		}else
 		{
 			m_ID.push_back(id);
@@ -2539,7 +2539,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 															LVIS_SELECTED);
 
 				GitRev *pRev;
-				pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
+				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
 				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 			}else
 			{
@@ -2591,7 +2591,7 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 	int i;
 	for(i=0;i<m_CommitHash.size();i++)
 	{
-		if( pRev->m_CommitHash == m_CommitHash[i] )
+		if( pRev->m_CommitHash.ToString() == m_CommitHash[i] )
 			break;
 	}
 	this->GotoLine(i);
@@ -2618,7 +2618,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 
 			}else
 			{
-				pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
+				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
 			}
 
 			this->ClientToScreen(&point);

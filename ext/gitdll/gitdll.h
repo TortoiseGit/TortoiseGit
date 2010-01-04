@@ -4,6 +4,9 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // GITDLL_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
+#ifndef __GITDLL__
+#define __GITDLL__
+
 #ifdef __cplusplus
 #define EXTERN extern "C"
 #else
@@ -11,9 +14,9 @@
 #endif
 
 #ifdef GITDLL_EXPORTS
-#define GITDLL_API __declspec(dllexport) EXTERN
+#define GITDLL_API EXTERN __declspec(dllexport) 
 #else
-#define GITDLL_API __declspec(dllimport) EXTERN
+#define GITDLL_API EXTERN __declspec(dllimport) 
 #endif
 
 #if 0
@@ -116,3 +119,5 @@ GITDLL_API int git_close_diff(GIT_DIFF diff);
 
 
 GITDLL_API int git_get_diff_file(GIT_DIFF diff,GIT_FILE file, int i,char **newname, char **oldname,  int *mode, int *IsBin, int *inc, int *dec);
+
+#endif

@@ -3,6 +3,7 @@
 #include "GitRev.h"
 #include "GitStatus.h"
 #include "GitAdminDir.h"
+#include "gitdll.h"
 
 class CGitCall
 {
@@ -30,7 +31,27 @@ class CGit
 {
 private:
 	GitAdminDir m_GitDir;
+protected:
+	bool m_IsGitDllInited;
+	GIT_DIFF m_GitDiff;
 public:
+	void CheckAndInitDll()
+	{ 
+		if(!m_IsGitDllInited) 
+		{
+			git_init();
+			m_IsGitDllInited=true;
+		} 
+	}
+
+	GIT_DIFF GetGitDiff()
+	{
+		if(m_GitDiff)
+			return m_GitDiff;
+		else
+			git_open_diff(&m_GitDiff,"-C -M");
+	}
+
 	static BOOL CheckMsysGitDir();
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;
@@ -132,6 +153,7 @@ public:
 	static CString StripRefName(CString refName);
 
 	int GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outpathlist);
+
 	
 };
 extern void GetTempPath(CString &path);

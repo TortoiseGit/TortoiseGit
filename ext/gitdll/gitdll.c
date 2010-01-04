@@ -382,7 +382,9 @@ int git_diff_flush(GIT_DIFF diff)
 	int i;
 	p_Rev = (struct rev_info *)diff;
 	
-	
+	if(q->nr == 0)
+		return 0;
+
 	for (i = 0; i < q->nr; i++)
 		diff_free_filepair(q->queue[i]);
 

@@ -9,6 +9,7 @@
 
 int CGit::m_LogEncode=CP_UTF8;
 
+
 static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
 {
 	LPCTSTR orgsrc;
@@ -126,7 +127,7 @@ CGit::CGit(void)
 {
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
 	m_CurrentDir.ReleaseBuffer();
-
+	m_IsGitDllInited = false;
 	CheckMsysGitDir();
 }
 

@@ -20,6 +20,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseUDiff", "TortoiseUDiff\TortoiseUDiff.vcproj", "{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseShell", "TortoiseShell\TortoiseShell.vcproj", "{E873DD32-5A31-4DE1-8341-A56A2A5489EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4F0A55DE-DAFD-4A0B-A03D-2C14CB77E08F} = {4F0A55DE-DAFD-4A0B-A03D-2C14CB77E08F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcproj", "{A2C38606-3D96-4A2C-B5C5-22CEAC523B37}"
 EndProject
@@ -60,6 +63,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TGitCache", "TGitCache\TSVNCache.vcproj", "{A00D2EDC-B4F5-4B41-94BA-13961DE5D296}"
 	ProjectSection(ProjectDependencies) = postProject
 		{13BC1836-2726-45C4-9249-5BA2BBBF8328} = {13BC1836-2726-45C4-9249-5BA2BBBF8328}
+		{4F0A55DE-DAFD-4A0B-A03D-2C14CB77E08F} = {4F0A55DE-DAFD-4A0B-A03D-2C14CB77E08F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrashRpt", "crashrpt\CrashRpt.vcproj", "{13BC1836-2726-45C4-9249-5BA2BBBF8328}"

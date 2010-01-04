@@ -17,6 +17,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "StdAfx.h"
+#include <tchar.h>
+#include <vector>
 #include "SVNLineDiff.h"
 
 const svn_diff_fns_t SVNLineDiff::SVNLineDiff_vtable =

@@ -350,7 +350,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 {
 	if(rev)
 	{
-		m_CommitHash->SetValue(rev->m_CommitHash);
+		m_CommitHash->SetValue(rev->m_CommitHash.ToString());
 		m_AuthorName->SetValue(rev->m_AuthorName);
 		m_AuthorDate->SetValue(rev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")));
 		m_AuthorEmail->SetValue(rev->m_AuthorEmail);	
@@ -383,12 +383,12 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 				index=pLogEntry->m_HashMap[rev->m_ParentHash[i]];
 			}
 			if(index>=0)
-				parentsubject=pLogEntry->at(index).m_Subject;
+				parentsubject=pLogEntry->GetGitRevAt(index).m_Subject;
 
 			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i],parentsubject);
 			
 			CMFCPropertyGridProperty*p=new CMFCPropertyGridProperty(
-											rev->m_ParentHash[i].Left(8), 
+											rev->m_ParentHash[i].ToString().Left(8), 
 												parentsubject,
 												str
 											);

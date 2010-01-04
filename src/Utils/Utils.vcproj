@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -112,7 +112,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -175,7 +175,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -239,7 +239,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

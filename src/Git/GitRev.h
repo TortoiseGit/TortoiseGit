@@ -3,6 +3,7 @@
 #include "GitStatus.h"
 #include "AtlTime.h"
 #include "GitHash.h"
+#include "GitDll.h"
 
 typedef std::vector<CGitHash> GIT_REV_LIST;
 
@@ -74,6 +75,8 @@ public:
 	
 	int SafeFetchFullInfo(CGit *git);
 
+	int ParserFromCommit(GIT_COMMIT *commit);
+	int ParserParentFromCommit(GIT_COMMIT *commit);
 private:
 	TIME_ZONE_INFORMATION m_TimeZone;
 };

@@ -24,7 +24,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 	procCmd+=_T("/path:\"");
 	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd+=_T("\" ");
-	procCmd+=_T(" /rev:")+this->m_logEntries[indexNext].m_CommitHash;
+	procCmd+=_T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
 
 	procCmd+=_T(" /command:");
 
@@ -83,7 +83,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 			break;
 #endif
 		case ID_COMPARE:
-			procCmd+=CString(_T("diff \rev1:"))+CString(GIT_REV_ZERO)+CString(_T(" \rev2:"))+this->m_logEntries[indexNext].m_CommitHash;
+			procCmd+=CString(_T("diff \rev1:"))+CString(GIT_REV_ZERO)+CString(_T(" \rev2:"))+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
 			break;
 		case ID_COMPAREWITHPREVIOUS:
 			procCmd+=_T("prevdiff");

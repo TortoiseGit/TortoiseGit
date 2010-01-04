@@ -8,6 +8,7 @@ public:
 	~CTGitPath(void);
 	CTGitPath(const CString& sUnknownPath);
 	int m_Stage;
+	int m_ParentNo;
 public:
 	enum
 	{	

@@ -6,8 +6,9 @@
 
 class CGitHash
 {
-	unsigned char m_hash[GIT_HASH_SIZE];
 public:
+	unsigned char m_hash[GIT_HASH_SIZE];
+
 	CGitHash()
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
