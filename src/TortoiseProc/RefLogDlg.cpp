@@ -104,6 +104,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	CLogDataVector *plog;
 	plog = &m_RefList.m_RefMap[ref];
+	plog->SetLogCache(&this->m_RefList.m_LogCache);
 
 	m_RefList.SetItemCountEx(plog->size());
 
@@ -111,7 +112,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	for(unsigned int i=0;i<m_RefList.m_RefMap[ref].size();i++)
 	{
-		plog->at(i).m_IsFull=TRUE;
+		plog->GetGitRevAt(i).m_IsFull=TRUE;
 		this->m_RefList.m_arShownList.Add(&(plog->at(i)));
 		
 	}

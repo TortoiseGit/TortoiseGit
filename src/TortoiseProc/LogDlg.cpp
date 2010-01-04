@@ -519,7 +519,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		}else
 		{
 			// set the log message text
-			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash+_T("\r\n\r\n"));
+			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash.ToString()+_T("\r\n\r\n"));
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
 			
@@ -1340,14 +1340,14 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool b
 	file1.Format(_T("%s%s_%s%s"),
 				temppath,						
 				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				rev1->m_CommitHash.Left(6),
+				rev1->m_CommitHash.ToString().Left(6),
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString file2;
 	file2.Format(_T("%s\\%s_%s%s"),
 				temppath,						
 				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				rev2->m_CommitHash.Left(6),
+				rev2->m_CommitHash.ToString().Left(6),
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString cmd;

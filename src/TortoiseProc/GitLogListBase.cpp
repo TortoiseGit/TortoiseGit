@@ -824,7 +824,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 
 
 	if (data->m_Lanes.size() == 0)
-		m_logEntries.setLane(data->m_CommitHash.ToString());
+		m_logEntries.setLane(data->m_CommitHash);
 
 	std::vector<int>& lanes=data->m_Lanes;
 	UINT laneNum = lanes.size();
@@ -943,7 +943,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 
-					if(data->m_CommitHash == m_HeadHash)
+					if(data->m_CommitHash.ToString() == m_HeadHash)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
@@ -1407,7 +1407,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						CString hash=g_Git.GetHash(head);
 						hash=hash.Left(40);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-						if(pLastEntry->m_CommitHash == hash)
+						if(pLastEntry->m_CommitHash.ToString() == hash)
 							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
 					}
 				}
@@ -2083,7 +2083,7 @@ UINT CGitLogListBase::LogThread()
 			m_logEntries.GetGitRevAt(i).m_Files.Clear();
 			m_logEntries.GetGitRevAt(i).m_ParentHash.clear();
 			m_logEntries.GetGitRevAt(i).m_ParentHash.push_back(m_HeadHash);
-			g_Git.GetCommitDiffList(m_logEntries.GetGitRevAt(i).m_CommitHash,this->m_HeadHash,m_logEntries.GetGitRevAt(i).m_Files);
+			g_Git.GetCommitDiffList(m_logEntries.GetGitRevAt(i).m_CommitHash.ToString(),this->m_HeadHash,m_logEntries.GetGitRevAt(i).m_Files);
 			m_logEntries.GetGitRevAt(i).m_Action =0;
 			for(int j=0;j< m_logEntries.GetGitRevAt(i).m_Files.GetCount();j++)
 				m_logEntries.GetGitRevAt(i).m_Action |= m_logEntries.GetGitRevAt(i).m_Files[j].m_Action;
@@ -2094,13 +2094,13 @@ UINT CGitLogListBase::LogThread()
 		}
 
 		start=this->m_logEntries.GetGitRevAt(i).ParserFromLog(m_logEntries.m_RawlogData,start);
-		m_logEntries.m_HashMap[m_logEntries[i].m_CommitHash]=i;
+		m_logEntries.m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash.ToString()]=i;
 
 		if(m_LogCache.GetCacheData(m_logEntries.GetGitRevAt(i)))
 		{
 			if(firstcommit.IsEmpty())
-				firstcommit=m_logEntries[i].m_CommitHash;
-			lastcommit=m_logEntries[i].m_CommitHash;
+				firstcommit=m_logEntries.GetGitRevAt(i).m_CommitHash.ToString();
+			lastcommit=m_logEntries.GetGitRevAt(i).m_CommitHash.ToString();
 
 		}else
 		{
@@ -2247,17 +2247,17 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 #endif
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 			{
-				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries[i].m_Subject);
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i].m_Subject), pat, flags)&&IsEntryInDateRange(i))
+				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).m_Subject);
+				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).m_Subject), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->Add(&m_logEntries[i]);
 					continue;
 				}
 
-				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries[i].m_Body);
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i].m_Body), pat, flags)&&IsEntryInDateRange(i))
+				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).m_Body);
+				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).m_Body), pat, flags)&&IsEntryInDateRange(i))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 			}
@@ -2295,18 +2295,18 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 #endif
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
 			{
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i].m_AuthorName), pat, flags)&&IsEntryInDateRange(i))
+				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).m_AuthorName), pat, flags)&&IsEntryInDateRange(i))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 			{
-				sRev.Format(_T("%s"), m_logEntries[i].m_CommitHash);
+				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash);
 				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 			}
@@ -2330,15 +2330,15 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 #endif
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 			{
-				CString msg = m_logEntries[i].m_Subject;
+				CString msg = m_logEntries.GetGitRevAt(i).m_Subject;
 
 				msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
-				msg = m_logEntries[i].m_Body;
+				msg = m_logEntries.GetGitRevAt(i).m_Body;
 
 				msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
@@ -2385,20 +2385,20 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 #endif
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
 			{
-				CString msg = m_logEntries[i].m_AuthorName;
+				CString msg = m_logEntries.GetGitRevAt(i).m_AuthorName;
 				msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 			{
-				sRev.Format(_T("%s"), m_logEntries[i].m_CommitHash);
+				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash);
 				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 			}
@@ -2409,7 +2409,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 
 BOOL CGitLogListBase::IsEntryInDateRange(int i)
 {
-	__time64_t time = m_logEntries[i].m_AuthorDate.GetTime();
+	__time64_t time = m_logEntries.GetGitRevAt(i).m_AuthorDate.GetTime();
 	if ((time >= m_From.GetTime())&&(time <= m_To.GetTime()))
 		return TRUE;
 
@@ -2545,7 +2545,7 @@ int CGitLogListBase::GetHeadIndex()
 		GitRev *pRev = (GitRev*)m_arShownList[i];
 		if(pRev)
 		{
-			if(pRev->m_CommitHash == m_HeadHash )
+			if(pRev->m_CommitHash.ToString() == m_HeadHash )
 				return i;
 		}
 	}

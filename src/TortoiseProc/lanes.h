@@ -7,14 +7,14 @@
 #ifndef LANES_H
 #define LANES_H
 
-//#include <QString>
+//#include <CGitHash>
 //#include <QVector>
+#include "githash.h"
 
-#define QString CString
 #define QVector vector
 using namespace std;
 
-typedef vector<CString> QStringList ;
+typedef vector<CGitHash> CGitHashList ;
 
 class Lanes {
 public:
@@ -64,31 +64,31 @@ public:
 
 	Lanes() {} // init() will setup us later, when data is available
 	bool isEmpty() { return typeVec.empty(); }
-	void init(const QString& expectedSha);
+	void init(const CGitHash& expectedSha);
 	void clear();
-	bool isFork(const QString& sha, bool& isDiscontinuity);
+	bool isFork(const CGitHash& sha, bool& isDiscontinuity);
 	void setBoundary(bool isBoundary);
-	void setFork(const QString& sha);
-	void setMerge(const QStringList& parents);
+	void setFork(const CGitHash& sha);
+	void setMerge(const CGitHashList& parents);
 	void setInitial();
 	void setApplied();
-	void changeActiveLane(const QString& sha);
+	void changeActiveLane(const CGitHash& sha);
 	void afterMerge();
 	void afterFork();
 	bool isBranch();
 	void afterBranch();
 	void afterApplied();
-	void nextParent(const QString& sha);
+	void nextParent(const CGitHash& sha);
 	void getLanes(QVector<int> &ln) { ln = typeVec; } // O(1) vector is implicitly shared
 
 private:
-	int findNextSha(const QString& next, int pos);
+	int findNextSha(const CGitHash& next, int pos);
 	int findType(int type, int pos);
-	int add(int type, const QString& next, int pos);
+	int add(int type, const CGitHash& next, int pos);
 
 	int activeLane;
 	QVector<int> typeVec;
-	QVector<QString> nextShaVec;
+	QVector<CGitHash> nextShaVec;
 	bool boundary;
 	int NODE, NODE_L, NODE_R;
 };

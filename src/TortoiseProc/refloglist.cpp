@@ -73,7 +73,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->REFLOG_HASH:	//Graphic
 		if (pLogEntry)
 		{
-			lstrcpyn(pItem->pszText,pLogEntry->m_CommitHash, pItem->cchTextMax);
+			lstrcpyn(pItem->pszText,pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax);
 		}
 		break;
 	case REFLOG_REF: //action -- no text in the column

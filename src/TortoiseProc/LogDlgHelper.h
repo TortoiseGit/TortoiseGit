@@ -32,7 +32,7 @@ class CLogDlg;
  * Instances of CStoreSelection save the selection of the CLogDlg. When the instance
  * is deleted the destructor restores the selection.
  */
-typedef std::map<CString, int> MAP_HASH_REV;
+typedef std::map<CGitHash, int> MAP_HASH_REV;
 
 class CStoreSelection
 {
@@ -60,6 +60,15 @@ public:
 		m_pLogCache=pLogCache;
 		m_FirstFreeLane=0;
 	}
+	CLogDataVector()
+	{
+		m_pLogCache=NULL;
+		m_FirstFreeLane=0;
+	}
+	void SetLogCache(CLogCache *pLogCache)
+	{
+		m_pLogCache = pLogCache;
+	}
 	GitRev & GetGitRevAt(int i)
 	{
 		ASSERT(i<size());
@@ -80,8 +89,8 @@ public:
 	Lanes m_Lns;
 	int	 m_FirstFreeLane;
 	MAP_HASH_REV m_HashMap;
-	void updateLanes(GitRev& c, Lanes& lns, CString &sha) ;
-	void setLane(CString& sha) ;
+	void updateLanes(GitRev& c, Lanes& lns, CGitHash &sha) ;
+	void setLane(CGitHash& sha) ;
 
 	BYTE_VECTOR		 m_RawlogData;
 	std::vector<int> m_RawLogStart;

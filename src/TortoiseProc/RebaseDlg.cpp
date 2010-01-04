@@ -274,7 +274,7 @@ void CRebaseDlg::SetAllRebaseAction(int action)
 {
 	for(int i=0;i<this->m_CommitList.m_logEntries.size();i++)
 	{
-		m_CommitList.m_logEntries[i].m_Action=action;
+		m_CommitList.m_logEntries.GetGitRevAt(i).m_Action=action;
 	}
 	m_CommitList.Invalidate();
 }
@@ -517,7 +517,7 @@ void CRebaseDlg::FetchLogList()
 	
 	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
 	{
-		m_CommitList.m_logEntries[i].m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
+		m_CommitList.m_logEntries.GetGitRevAt(i).m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
 	}
 
 	m_CommitList.Invalidate();

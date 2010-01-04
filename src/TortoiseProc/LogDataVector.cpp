@@ -105,7 +105,15 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int
 		next=rev.ParserFromLog(log,next);
 
 		rev.m_Subject=_T("Load .................................");
-		this->push_back(rev);
+		this->push_back(rev.m_CommitHash);
+
+		if(this->m_pLogCache->m_HashMap.IsExist(rev.m_CommitHash))
+		{
+			if(!this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull)
+				this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+		}else
+			this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+
 		m_HashMap[rev.m_CommitHash]=size()-1;
 
 		//next=log.find(0,next);
@@ -162,7 +170,7 @@ int CLogDataVector::FetchShortLog(CTGitPath *path ,CString &hash,int count ,int 
 }
 int CLogDataVector::FetchFullInfo(int i)
 {
-	return at(i).SafeFetchFullInfo(&g_Git);
+	return GetGitRevAt(i).SafeFetchFullInfo(&g_Git);
 }
 //CLogDataVector Class
 int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CString *from,CString *to)
@@ -184,7 +192,14 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	while( next>=0 )
 	{
 		next=rev.ParserFromLog(log,next);
-		this->push_back(rev);
+
+		if(this->m_pLogCache->m_HashMap.IsExist(rev.m_CommitHash))
+		{
+			if(!this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull)
+				this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+		}else
+			this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+
 		m_HashMap[rev.m_CommitHash]=size()-1;		
 	}
 
@@ -209,7 +224,7 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 
 		rev.Clear();
 
-		rev.m_CommitHash=one.Left(ref);
+		rev.m_CommitHash=g_Git.GetHash(one.Left(ref));
 		int action=one.Find(_T(' '),ref+1);
 		int message;
 		if(action>0)
@@ -222,12 +237,19 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 				rev.m_Subject=one.Right(one.GetLength()-message-1);
 			}
 		}
-		this->push_back(rev);
+
+		if(this->m_pLogCache->m_HashMap.IsExist(rev.m_CommitHash))
+		{
+			if(!this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull)
+				this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+		}else
+			this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+
 	}
 	return 0;
 }
 
-void CLogDataVector::setLane(CString& sha) 
+void CLogDataVector::setLane(CGitHash& sha) 
 {
 	Lanes* l = &(this->m_Lns);
 	int i = m_FirstFreeLane;
@@ -238,8 +260,8 @@ void CLogDataVector::setLane(CString& sha)
 
 	for (int cnt = size(); i < cnt; ++i) {
 
-		GitRev* r = &(*this)[i]; 
-		CString &curSha=r->m_CommitHash;
+		GitRev* r = & this->GetGitRevAt(i); 
+		CGitHash curSha=r->m_CommitHash;
 
 		if (r->m_Lanes.size() == 0)
 			updateLanes(*r, *l, curSha);
@@ -272,7 +294,7 @@ void CLogDataVector::setLane(CString& sha)
 }
 
 
-void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CString &sha) 
+void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CGitHash &sha) 
 {
 // we could get third argument from c.sha(), but we are in fast path here
 // and c.sha() involves a deep copy, so we accept a little redundancy
@@ -302,7 +324,9 @@ void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CString &sha)
 
 	lns.getLanes(c.m_Lanes); // here lanes are snapshotted
 
-	CString nextSha = (isInitial) ? CString(_T("")) : QString(c.m_ParentHash[0]);
+	CGitHash nextSha;
+	if( !isInitial) 
+		nextSha = c.m_ParentHash[0];
 
 	lns.nextParent(nextSha);
 

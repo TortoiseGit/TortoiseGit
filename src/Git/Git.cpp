@@ -472,10 +472,8 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 	return GetLog(&gitCall,hash,path,count,mask,from,to);
 }
 
-//int CGit::GetLog(CGitCall* pgitCall, CString &hash,  CTGitPath *path ,int count,int mask)
-int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
+CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
 {
-
 	CString cmd;
 	CString log;
 	CString num;
@@ -542,31 +540,16 @@ int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, 
 	cmd += log;
 	cmd += CString(_T("\"  "))+hash+file;
 
-	pgitCall->SetCmd(cmd);
+	return cmd;
+}
+//int CGit::GetLog(CGitCall* pgitCall, CString &hash,  CTGitPath *path ,int count,int mask)
+int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
+{
+	pgitCall->SetCmd( GetLogCmd(hash,path,count,mask,from,to) );
 
 	return Run(pgitCall);
 //	return Run(cmd,&logOut);
 }
-
-#if 0
-int CGit::GetShortLog(CString &logOut,CTGitPath * path, int count)
-{
-	CString cmd;
-	CString log;
-	int n;
-	if(count<0)
-		n=100;
-	else
-		n=count;
-	cmd.Format(_T("git.exe log --left-right --boundary --topo-order -n%d --pretty=format:\""),n);
-	BuildOutputFormat(log,false);
-	cmd += log+_T("\"");
-	if (path)
-		cmd+= _T("  -- \"")+path->GetGitPathString()+_T("\"");
-	//cmd += CString(_T("\" HEAD~40..HEAD"));
-	return Run(cmd,&logOut);
-}
-#endif
 
 #define BUFSIZE 512
 void GetTempPath(CString &path)

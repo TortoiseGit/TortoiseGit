@@ -109,7 +109,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 
 	if(hash1 == GIT_REV_ZERO)
 	{
-		m_rev1.m_CommitHash=GIT_REV_ZERO;
+		m_rev1.m_CommitHash.Empty();
 		m_rev1.m_Subject=_T("Working Copy");
 	}else
 	{
@@ -121,7 +121,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 
 	if(hash2 == GIT_REV_ZERO)
 	{
-		m_rev2.m_CommitHash = GIT_REV_ZERO;
+		m_rev2.m_CommitHash.Empty();
 		m_rev2.m_Subject=_T("Working Copy");
 	}else
 	{
@@ -137,7 +137,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 		m_path2 = *path;
 	}
 	m_rev1 = rev1;
-	m_rev2.m_CommitHash = _T("");
+	m_rev2.m_CommitHash.Empty();
 	m_rev2.m_Subject = _T("Previou Version");
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
@@ -267,7 +267,7 @@ UINT CFileDiffDlg::DiffThread()
 //	}
 #endif
 
-	g_Git.GetCommitDiffList(m_rev1.m_CommitHash,m_rev2.m_CommitHash,m_arFileList);
+	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(),m_rev2.m_CommitHash.ToString(),m_arFileList);
 		
 	CString sFilterText;
 	m_cFilter.GetWindowText(sFilterText);
@@ -325,7 +325,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 
 	CGitDiff diff;
 	CTGitPath* fd = m_arFilteredList[selIndex];
-	diff.Diff(fd, fd,this->m_rev1.m_CommitHash, this->m_rev2.m_CommitHash, blame, FALSE);
+	diff.Diff(fd, fd,this->m_rev1.m_CommitHash.ToString(), this->m_rev2.m_CommitHash.ToString(), blame, FALSE);
 
 #if 0
 	CFileDiffDlg::CTGitPath* fd = m_arFilteredList[selIndex];
@@ -883,8 +883,8 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 void CFileDiffDlg::SetURLLabels()
 {
 
-	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.Left(6));
-	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.Left(6));
+	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.ToString().Left(6));
+	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.ToString().Left(6));
 
 	SetDlgItemText(IDC_FIRSTURL, m_rev1.m_Subject+CString(_T("\r\n"))+m_rev1.m_CommitHash);
 	SetDlgItemText(IDC_SECONDURL,m_rev2.m_Subject+CString(_T("\r\n"))+m_rev2.m_CommitHash);

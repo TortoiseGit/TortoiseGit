@@ -12,7 +12,7 @@
 #define IS_NODE(x) (x == NODE || x == NODE_R || x == NODE_L)
 
 
-void Lanes::init(const QString& expectedSha) {
+void Lanes::init(const CGitHash& expectedSha) {
 
 	clear();
 	activeLane = 0;
@@ -38,7 +38,7 @@ void Lanes::setBoundary(bool b) {
 		typeVec[activeLane] = BOUNDARY;
 }
 
-bool Lanes::isFork(const QString& sha, bool& isDiscontinuity) {
+bool Lanes::isFork(const CGitHash& sha, bool& isDiscontinuity) {
 
 	int pos = findNextSha(sha, 0);
 	isDiscontinuity = (activeLane != pos);
@@ -58,7 +58,7 @@ bool Lanes::isFork(const QString& sha, bool& isDiscontinuity) {
 */
 }
 
-void Lanes::setFork(const QString& sha) {
+void Lanes::setFork(const CGitHash& sha) {
 
 	int rangeStart, rangeEnd, idx;
 	rangeStart = rangeEnd = idx = findNextSha(sha, 0);
@@ -97,7 +97,7 @@ void Lanes::setFork(const QString& sha) {
 	}
 }
 
-void Lanes::setMerge(const QStringList& parents) {
+void Lanes::setMerge(const CGitHashList& parents) {
 // setFork() must be called before setMerge()
 
 	if (boundary)
@@ -112,7 +112,7 @@ void Lanes::setMerge(const QStringList& parents) {
 	t = NODE;
 
 	int rangeStart = activeLane, rangeEnd = activeLane;
-	QStringList::const_iterator it(parents.begin());
+	CGitHashList::const_iterator it(parents.begin());
 	for (++it; it != parents.end(); ++it) { // skip first parent
 
 		int idx = findNextSha(*it, 0);
@@ -183,7 +183,7 @@ void Lanes::setApplied() {
 	typeVec[activeLane] = APPLIED; // TODO test with boundaries
 }
 
-void Lanes::changeActiveLane(const QString& sha) {
+void Lanes::changeActiveLane(const CGitHash& sha) {
 
 	int& t = typeVec[activeLane];
 	if (t == INITIAL || isBoundary(t))
@@ -256,12 +256,15 @@ void Lanes::afterApplied() {
 	typeVec[activeLane] = ACTIVE; // TODO test with boundaries
 }
 
-void Lanes::nextParent(const QString& sha) {
+void Lanes::nextParent(const CGitHash& sha) {
 
-	nextShaVec[activeLane] = (boundary ? QString(_T("")) : sha);
+	if(boundary)
+		nextShaVec[activeLane].Empty();
+	else
+		nextShaVec[activeLane] = sha;
 }
 
-int Lanes::findNextSha(const QString& next, int pos) {
+int Lanes::findNextSha(const CGitHash& next, int pos) {
 
 	for (unsigned int i = pos; i < nextShaVec.size(); i++)
 		if (nextShaVec[i] == next)
@@ -277,7 +280,7 @@ int Lanes::findType(int type, int pos) {
 	return -1;
 }
 
-int Lanes::add(int type, const QString& next, int pos) {
+int Lanes::add(int type, const CGitHash& next, int pos) {
 
 	// first check empty lanes starting from pos
 	if (pos < (int)typeVec.size()) {

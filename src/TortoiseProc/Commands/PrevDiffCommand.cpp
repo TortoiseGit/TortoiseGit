@@ -60,13 +60,13 @@ bool PrevDiffCommand::Execute()
 			if( revs.size() == 1 )
 			{
 				CGitDiff diff;
-				bRet = (diff.DiffNull(&cmdLinePath,revs[0].m_CommitHash) != 0);
+				bRet = (diff.DiffNull(&cmdLinePath,revs.GetGitRevAt(0).m_CommitHash.ToString()) != 0);
 			}
 
 			if( revs.size() == 2 )
 			{
 				CGitDiff diff;
-				bRet = diff.Diff(&cmdLinePath,&cmdLinePath, revs[0].m_CommitHash, revs[1].m_CommitHash, false);
+				bRet = diff.Diff(&cmdLinePath,&cmdLinePath, revs.GetGitRevAt(0).m_CommitHash.ToString(), revs.GetGitRevAt(1).m_CommitHash.ToString(), false);
 			}
 		}
 		else

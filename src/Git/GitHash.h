@@ -15,7 +15,13 @@ public:
 	CGitHash(char *p)
 	{
 		memcpy(m_hash,p,GIT_HASH_SIZE);
-	}	
+	}
+	CGitHash & operator = (CString &str)
+	{
+		CGitHash hash(str);
+		*this = hash;
+		return *this;
+	}
 	CGitHash(CString &str)
 	{
 		for(int i=0;i<GIT_HASH_SIZE;i++)
@@ -67,7 +73,7 @@ public:
 		return ToString(); 
 	} 
 
-	bool operator == (CGitHash &hash)
+	bool operator == (const CGitHash &hash)
 	{
 		return memcmp(m_hash,hash.m_hash,GIT_HASH_SIZE) == 0;
 	}
