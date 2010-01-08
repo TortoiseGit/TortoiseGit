@@ -473,7 +473,7 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 	return GetLog(&gitCall,hash,path,count,mask,from,to);
 }
 
-CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
+CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly)
 {
 	CString cmd;
 	CString log;
@@ -533,13 +533,23 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 	}
 	param+=hash;
 
-	cmd.Format(_T("git.exe log %s -z --topo-order %s --parents --pretty=format:\""),
+	if(paramonly)
+		cmd.Format(_T("%s -z --topo-order %s --parents "),
+				num,param);
+	else
+		cmd.Format(_T("git.exe log %s -z --topo-order %s --parents --pretty=format:\""),
 				num,param);
 
 	BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
 
-	cmd += log;
-	cmd += CString(_T("\"  "))+hash+file;
+	if(paramonly)
+	{
+		cmd += hash+file;
+	}else
+	{
+		cmd += log;
+		cmd += CString(_T("\"  "))+hash+file;
+	}
 
 	return cmd;
 }

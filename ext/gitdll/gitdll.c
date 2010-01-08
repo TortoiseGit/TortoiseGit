@@ -214,7 +214,7 @@ int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list)
 int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 {
 	struct commit_list *l = *(struct commit_list **)list;
-	if(list == NULL)
+	if(list == NULL || l==NULL)
 		return -1;
 
 	if(hash)

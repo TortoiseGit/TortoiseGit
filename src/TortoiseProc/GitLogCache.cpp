@@ -25,7 +25,8 @@ GitRev * CLogCache::GetCacheData(CGitHash &hash)
 		{
 			return &m_HashMap[hash];
 		}
-		return NULL;
+		m_HashMap[hash].m_CommitHash=hash;
+		return &m_HashMap[hash];
 	}
 	else
 	{
@@ -37,7 +38,8 @@ GitRev * CLogCache::GetCacheData(CGitHash &hash)
 			return &m_HashMap[hash];
 		}
 	}
-	return NULL;
+	m_HashMap[hash].m_CommitHash=hash;
+	return &m_HashMap[hash];
 }
 int CLogCache::FetchCacheIndex(CString GitDir)
 {

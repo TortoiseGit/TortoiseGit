@@ -1748,6 +1748,7 @@ int CGitLogListBase::BeginFetchLog()
 	ClearText();
 
 	this->m_logEntries.ClearAll();
+	git_init();
 
 	m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
 
@@ -1763,10 +1764,16 @@ int CGitLogListBase::BeginFetchLog()
 //	if(this->m_bAllBranch)
 	mask |= m_ShowMask;
 	
-	if(m_bShowWC)
-		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev.m_CommitHash);
+	this->m_arShownList.RemoveAll();
 
-	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask);
+	if(m_bShowWC)
+	{
+		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev.m_CommitHash);
+		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
+		m_arShownList.Add(&m_wcRev);
+	}
+
+	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,NULL,NULL,true);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -1777,8 +1784,6 @@ int CGitLogListBase::BeginFetchLog()
 	{
 		SetItemCountEx(this->m_logEntries.size());
 	}
-
-	this->m_arShownList.RemoveAll();
 	
 	if(git_open_log(&m_DllGitLog,CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
 	{
@@ -2071,6 +2076,7 @@ UINT CGitLogListBase::LogThread()
 		}
 	}
 
+	git_get_log_firstcommit(m_DllGitLog);
 	GIT_COMMIT commit;
 	t1=GetTickCount();
 
@@ -2105,14 +2111,14 @@ UINT CGitLogListBase::LogThread()
 		{
 			//update UI
 			oldsize = m_logEntries.size();
-			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
-			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+			//PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+			//::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 		}		
 	}
 	
 	//Update UI;
-	PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
-	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+	//PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+	//::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 
