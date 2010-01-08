@@ -42,6 +42,7 @@ public:
 	~CUnicodeUtils(void);
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 	static CStringA GetUTF8(const CStringW& string);
+	static CStringA GetMulti(const CStringW& string, int acp);
 	static CStringA GetUTF8(const CStringA& string);
 	static CString GetUnicode(const CStringA& string);
 	static CStringA ConvertWCHARStringToUTF8(const CString& string);

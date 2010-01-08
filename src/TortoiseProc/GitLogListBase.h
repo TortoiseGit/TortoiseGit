@@ -156,7 +156,7 @@ public:
 	void CopySelectionToClipBoard(bool hashonly=FALSE);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
-	int  FillGitShortLog();
+	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
@@ -275,6 +275,7 @@ protected:
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool				m_bRelativeTimes;	// Show relative times
+	GIT_LOG				m_DllGitLog;
 };
 
 

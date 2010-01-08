@@ -17,22 +17,27 @@ int CLogCache::AddCacheEntry(GitRev &Rev)
 	return 0;
 }
 
-int CLogCache::GetCacheData(GitRev &Rev)
+GitRev * CLogCache::GetCacheData(CGitHash &hash)
 {
-	if(this->m_HashMapIndex.find(Rev.m_CommitHash)==m_HashMapIndex.end())
+	if(this->m_HashMapIndex.find(hash)==m_HashMapIndex.end())
 	{
-		if(this->m_HashMap.IsExist(Rev.m_CommitHash))
+		if(this->m_HashMap.IsExist(hash))
 		{
-			Rev.CopyFrom(m_HashMap[Rev.m_CommitHash]);
-			return 0;
+			return &m_HashMap[hash];
 		}
-		return -1;
+		return NULL;
 	}
 	else
 	{
-		return LoadOneItem(Rev,m_HashMapIndex[Rev.m_CommitHash]);
+		GitRev rev;
+		if(!LoadOneItem(rev,m_HashMapIndex[hash]))
+		{
+			rev.m_IsFull=true;
+			m_HashMap[hash].CopyFrom(rev);
+			return &m_HashMap[hash];
+		}
 	}
-	return 0;
+	return NULL;
 }
 int CLogCache::FetchCacheIndex(CString GitDir)
 {
@@ -283,7 +288,7 @@ int CLogCache::SaveCache()
 	{
 		if(this->m_HashMapIndex.find((*i).second.m_CommitHash) == m_HashMapIndex.end() || bIsRebuild)
 		{
-			if((*i).second.m_IsFull)
+			if((*i).second.m_IsFull && !(*i).second.m_CommitHash.IsEmpty())
 			{
 				ULONGLONG offset = m_DataFile.GetPosition();
 				this->SaveOneItem((*i).second,offset);

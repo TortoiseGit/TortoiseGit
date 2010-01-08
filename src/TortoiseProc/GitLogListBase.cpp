@@ -1743,7 +1743,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 
 }
 
-int CGitLogListBase::FillGitShortLog()
+int CGitLogListBase::BeginFetchLog()
 {
 	ClearText();
 
@@ -1766,7 +1766,7 @@ int CGitLogListBase::FillGitShortLog()
 	if(m_bShowWC)
 		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev.m_CommitHash);
 
-	this->m_logEntries.FetchShortLog(path,m_StartRef,-1,mask,m_bShowWC?1:0);
+	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -1779,21 +1779,12 @@ int CGitLogListBase::FillGitShortLog()
 	}
 
 	this->m_arShownList.RemoveAll();
-
-	for(unsigned int i=0;i<m_logEntries.size();i++)
+	
+	if(git_open_log(&m_DllGitLog,CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
 	{
-		if(i>0 || !m_logEntries.GetGitRevAt(i).m_CommitHash.IsEmpty())
-			m_logEntries.GetGitRevAt(i).m_Subject=_T("parser...");
-
-		if(this->m_IsOldFirst)
-		{
-			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-1-i]);
-
-		}else
-		{
-			this->m_arShownList.Add(&m_logEntries[i]);
-		}
+		return -1;
 	}
+
 	return 0;
 }
 
@@ -1936,11 +1927,12 @@ public:
 		if(revInVector->m_IsFull)
 			return;
 
-		if(!m_ploglist->m_LogCache.GetCacheData(m_ploglist->m_logEntries.GetGitRevAt(rev)))
+		GitRev *pRev= m_ploglist->m_LogCache.GetCacheData(m_ploglist->m_logEntries[rev]);
+		if(pRev)
 		{
 			++m_CollectedCount;
-			InterlockedExchange(&m_ploglist->m_logEntries.GetGitRevAt(rev).m_IsUpdateing,FALSE);
-			InterlockedExchange(&m_ploglist->m_logEntries.GetGitRevAt(rev).m_IsFull,TRUE);
+			InterlockedExchange(&pRev->m_IsUpdateing,FALSE);
+			InterlockedExchange(&pRev->m_IsFull,TRUE);
 			::PostMessage(m_ploglist->m_hWnd,MSG_LOADED,(WPARAM)rev,0);
 			return;
 		}
@@ -2019,7 +2011,8 @@ void CGitLogListBase::FetchLastLogInfo()
 			if(m_logEntries.GetGitRevAt(i).m_IsFull)
 				continue;
 
-			if(m_LogCache.GetCacheData(m_logEntries.GetGitRevAt(i)))
+			GitRev *pRev = m_LogCache.GetCacheData(m_logEntries[i]);
+			if(pRev == NULL)
 			{
 				if(!m_logEntries.FetchFullInfo(i))
 				{
@@ -2030,8 +2023,8 @@ void CGitLogListBase::FetchLastLogInfo()
 			}else
 			{
 				updated++;
-				InterlockedExchange(&m_logEntries.GetGitRevAt(i).m_IsUpdateing,FALSE);
-				InterlockedExchange(&m_logEntries.GetGitRevAt(i).m_IsFull,TRUE);
+				InterlockedExchange(&pRev->m_IsUpdateing,FALSE);
+				InterlockedExchange(&pRev->m_IsFull,TRUE);
 			}
 			
 			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)i,0);
@@ -2048,7 +2041,82 @@ void CGitLogListBase::FetchLastLogInfo()
 
 UINT CGitLogListBase::LogThread()
 {
+	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START,0);
+	
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 
+	ULONGLONG  t1,t2;
+	
+	if(BeginFetchLog())
+		return -1;
+
+	//Update work copy item;
+	if( m_logEntries.size() > 0)
+	{
+		GitRev *pRev = &m_logEntries.GetGitRevAt(0);
+		if( pRev->m_CommitHash.IsEmpty() )
+		{
+			pRev->m_Files.Clear();
+			pRev->m_ParentHash.clear();
+			pRev->m_ParentHash.push_back(m_HeadHash);
+			g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash, pRev->m_Files);
+			pRev->m_Action =0;
+		
+			for(int j=0;j< pRev->m_Files.GetCount();j++)
+			pRev->m_Action |= pRev->m_Files[j].m_Action;
+			
+			pRev->m_Body.Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).m_Files.GetCount());
+			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
+		}
+	}
+
+	GIT_COMMIT commit;
+	t1=GetTickCount();
+
+	int oldsize=m_logEntries.size();
+	while( git_get_log_nextcommit(this->m_DllGitLog,&commit) == 0)
+	{
+		//printf("%s\r\n",commit.m_Subject);
+		if(m_bExitThread)
+			break;
+
+		CGitHash hash = (char*)commit.m_hash ;
+
+		m_logEntries.push_back(hash);
+		
+		GitRev *pRev = m_LogCache.GetCacheData(hash);
+		
+		if(pRev == NULL || !pRev->m_IsFull)
+		{
+			pRev->ParserFromCommit(&commit);
+			pRev->ParserParentFromCommit(&commit);
+
+			pRev->SafeFetchFullInfo(&g_Git);
+			git_free_commit(&commit);
+			
+		}else
+		{
+			ASSERT(pRev->m_CommitHash == hash);
+			pRev->ParserParentFromCommit(&commit);
+		}
+
+		if(t2-t1>500 && m_logEntries.size()<(oldsize+100) )
+		{
+			//update UI
+			oldsize = m_logEntries.size();
+			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+		}		
+	}
+	
+	//Update UI;
+	PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+
+#if 0
 //	if(m_ProcCallBack)
 //		m_ProcCallBack(m_ProcData,GITLOG_START);
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START,0);
@@ -2167,7 +2235,7 @@ UINT CGitLogListBase::LogThread()
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
-
+#endif
 	return 0;
 }
 

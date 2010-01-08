@@ -103,7 +103,7 @@ public:
 	CGitHashMap m_HashMap;
 	std::map<CGitHash, ULONGLONG> m_HashMapIndex;
 
-	int GetCacheData(GitRev &Rev);
+	GitRev * GetCacheData(CGitHash &Rev);
 	int AddCacheEntry(GitRev &Rev);
 	int SaveCache();
 

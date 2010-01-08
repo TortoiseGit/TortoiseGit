@@ -67,6 +67,7 @@ int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
 	m_CommitHash	=rev.m_CommitHash	;
 	m_Files			=rev.m_Files			;	
 	m_Action		=rev.m_Action		;
+	m_IsFull		=rev.m_IsFull;
 
 	if(!OmitParentAndMark)
 	{

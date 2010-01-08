@@ -207,7 +207,13 @@ int CUnicodeUtils::GetCPCode(CString &codename)
 
 	return CP_UTF8;
 }
+
 CStringA CUnicodeUtils::GetUTF8(const CStringW& string)
+{
+	return GetMulti(string,CP_UTF8);
+}
+
+CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
 	char * buf;
 	CStringA retVal;
@@ -216,10 +222,11 @@ CStringA CUnicodeUtils::GetUTF8(const CStringW& string)
 		return retVal;
 	buf = retVal.GetBuffer(len*4 + 1);
 //	SecureZeroMemory(buf, (string.GetLength()*4 + 1)*sizeof(char));
-	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, string, -1, buf, len*4, NULL, NULL);
+	int lengthIncTerminator = WideCharToMultiByte(acp, 0, string, -1, buf, len*4, NULL, NULL);
 	retVal.ReleaseBuffer(lengthIncTerminator-1);
 	return retVal;
 }
+
 
 CStringA CUnicodeUtils::GetUTF8(const CStringA& string)
 {
