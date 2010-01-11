@@ -272,6 +272,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		InterlockedExchange(&m_IsFull,TRUE);
 		return 0;
 #endif
+		this->m_Files.Clear();
 		git->CheckAndInitDll();
 		GIT_COMMIT commit;
 		GIT_COMMIT_LIST list;
@@ -281,7 +282,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 
 		int i=0;
 		git_get_commit_first_parent(&commit,&list);
-		while(git_get_commit_next_parent(&list,parent))
+		while(git_get_commit_next_parent(&list,parent) == 0)
 		{
 			GIT_FILE file;
 			int count;
@@ -321,6 +322,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 					path.m_StatAdd.Format(_T("%d"),inc);
 					path.m_StatDel.Format(_T("%d"),dec);
 				}
+				m_Files.AddPath(path);
 			}
 			git_diff_flush(git->GetGitDiff());
 			i++;
@@ -340,7 +342,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 	GIT_HASH   parent;
 	
 	git_get_commit_first_parent(commit,&list);
-	while(git_get_commit_next_parent(&list,parent))
+	while(git_get_commit_next_parent(&list,parent)==0)
 	{
 		m_ParentHash.push_back(CGitHash((char *)parent));
 	}

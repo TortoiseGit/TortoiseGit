@@ -372,6 +372,12 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 	}else if( cur == GITLOG_END)
 	{
 		
+		if(this->m_LogList.HasText())
+		{
+			this->m_LogList.ClearText();
+			UpdateLogInfoLabel();
+		}
+
 		//if (!m_bShowedAll)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 

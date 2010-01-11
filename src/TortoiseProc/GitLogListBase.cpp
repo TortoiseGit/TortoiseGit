@@ -1770,7 +1770,6 @@ int CGitLogListBase::BeginFetchLog()
 	{
 		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev.m_CommitHash);
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
-		m_arShownList.Add(&m_wcRev);
 	}
 
 	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,NULL,NULL,true);
@@ -1868,6 +1867,9 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 	latest=CTime(1971,1,2,0,0,0);
 	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
+		if(m_logEntries[i].IsEmpty())
+			continue;
+
 		if(m_logEntries.GetGitRevAt(i).m_AuthorDate.GetTime() < oldest.GetTime())
 			oldest = m_logEntries.GetGitRevAt(i).m_AuthorDate.GetTime();
 
@@ -2060,6 +2062,9 @@ UINT CGitLogListBase::LogThread()
 	if( m_logEntries.size() > 0)
 	{
 		GitRev *pRev = &m_logEntries.GetGitRevAt(0);
+		
+		m_arShownList.Add(pRev);
+
 		if( pRev->m_CommitHash.IsEmpty() )
 		{
 			pRev->m_Files.Clear();
@@ -2075,6 +2080,8 @@ UINT CGitLogListBase::LogThread()
 			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 		}
 	}
+
+	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 	git_get_log_firstcommit(m_DllGitLog);
 	GIT_COMMIT commit;
@@ -2107,18 +2114,20 @@ UINT CGitLogListBase::LogThread()
 			pRev->ParserParentFromCommit(&commit);
 		}
 
+		m_arShownList.Add(pRev);
+
 		if(t2-t1>500 && m_logEntries.size()<(oldsize+100) )
 		{
 			//update UI
 			oldsize = m_logEntries.size();
-			//PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
-			//::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 		}		
 	}
 	
 	//Update UI;
-	//PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
-	//::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+	PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL);
+	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 

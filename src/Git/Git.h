@@ -49,7 +49,10 @@ public:
 		if(m_GitDiff)
 			return m_GitDiff;
 		else
-			git_open_diff(&m_GitDiff,"-C -M");
+		{
+			git_open_diff(&m_GitDiff,"-C -M -r");
+			return m_GitDiff;
+		}
 	}
 
 	static BOOL CheckMsysGitDir();

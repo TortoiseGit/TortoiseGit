@@ -450,12 +450,33 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 	if(status)
 		*status = q->queue[i]->status;
 
-	if(IsBin)
-		*IsBin = p_Rev->diffstat.files[i]->is_binary;
-	if(inc)
-		*inc = p_Rev->diffstat.files[i]->added;
-	if(dec)
-		*dec = p_Rev->diffstat.files[i]->deleted;
+	if(p_Rev->diffstat.files)
+	{
+		int j;
+		for(j=0;j<p_Rev->diffstat.nr;j++)
+		{
+			if(strcmp(*newname,p_Rev->diffstat.files[j]->name)==0)
+				break;
+		}
+		if( j== p_Rev->diffstat.nr)
+		{
+			*IsBin=1;
+			*inc=0;
+			*dec=0;
+			return 0;
+		}
+		if(IsBin)
+			*IsBin = p_Rev->diffstat.files[j]->is_binary;
+		if(inc)
+			*inc = p_Rev->diffstat.files[j]->added;
+		if(dec)
+			*dec = p_Rev->diffstat.files[j]->deleted;
+	}else
+	{
+		*IsBin=1;
+		*inc=0;
+		*dec=0;
+	}
 
 	return 0;
 }
