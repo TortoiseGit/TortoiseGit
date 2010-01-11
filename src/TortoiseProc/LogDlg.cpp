@@ -375,9 +375,10 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if(this->m_LogList.HasText())
 		{
 			this->m_LogList.ClearText();
-			UpdateLogInfoLabel();
+			//UpdateLogInfoLabel();
 		}
 
+#if 0
 		//if (!m_bShowedAll)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
@@ -394,7 +395,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		m_LogList.GetTimeRange(begin,end);
 		m_DateFrom.SetTime(&begin);
 		m_DateTo.SetTime(&end);
-		
+#endif
+
 	}else
 	{
 		if(this->m_LogList.HasText())
