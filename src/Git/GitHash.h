@@ -64,7 +64,7 @@ public:
 		CString a;
 		for(int i=0;i<GIT_HASH_SIZE;i++)
 		{
-			a.Format(_T("%02X"),m_hash[i]);
+			a.Format(_T("%02x"),m_hash[i]);
 			str+=a;
 		}
 		return str;
