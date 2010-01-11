@@ -281,12 +281,19 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			return -1;
 
 		int i=0;
+		bool isRoot = this->m_ParentHash.size()==0;
 		git_get_commit_first_parent(&commit,&list);
-		while(git_get_commit_next_parent(&list,parent) == 0)
+		while(git_get_commit_next_parent(&list,parent) == 0 || isRoot)
 		{
 			GIT_FILE file;
 			int count;
-			git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count);
+			if(isRoot)
+				git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count);
+			else
+				git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count);
+			
+			isRoot = false;
+
 			CTGitPath path;
 			CString strnewname;
 			CString stroldname;

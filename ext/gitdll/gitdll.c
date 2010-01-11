@@ -423,6 +423,38 @@ int git_diff_flush(GIT_DIFF diff)
 
 	free_diffstat_info(&p_Rev->diffstat);
 }
+
+int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count)
+{
+	int ret;
+	struct rev_info *p_Rev;
+	int i;
+	struct diff_queue_struct *q = &diff_queued_diff;
+
+	p_Rev = (struct rev_info *)diff;
+
+	ret=diff_root_tree_sha1(hash, "", &p_Rev->diffopt);
+
+	if(ret)
+		return ret;
+
+	diffcore_std(&p_Rev->diffopt);
+
+	memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
+	for (i = 0; i < q->nr; i++) {
+		struct diff_filepair *p = q->queue[i];
+		//if (check_pair_status(p))
+		diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+	}
+
+	if(file)
+		*file = q;
+	if(count)
+		*count = q->nr;
+
+	return 0;
+}
+
 int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count)
 {
 	struct rev_info *p_Rev;
