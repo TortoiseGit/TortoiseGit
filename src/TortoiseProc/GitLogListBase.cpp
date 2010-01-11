@@ -2116,7 +2116,7 @@ UINT CGitLogListBase::LogThread()
 
 		m_arShownList.Add(pRev);
 
-		if(t2-t1>500 && m_logEntries.size()<(oldsize+100) )
+		if(t2-t1>500 && m_logEntries.size()>(oldsize+100) )
 		{
 			//update UI
 			oldsize = m_logEntries.size();
