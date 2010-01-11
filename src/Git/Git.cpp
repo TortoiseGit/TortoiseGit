@@ -6,6 +6,7 @@
 #include "GitConfig.h"
 #include <map>
 #include "UnicodeUtils.h"
+#include "gitdll.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 
@@ -133,6 +134,11 @@ CGit::CGit(void)
 
 CGit::~CGit(void)
 {
+	if(this->m_GitDiff)
+	{
+		git_close_diff(m_GitDiff);
+		m_GitDiff=0;
+	}
 }
 
 static char g_Buffer[4096];

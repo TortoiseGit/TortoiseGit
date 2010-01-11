@@ -375,6 +375,19 @@ int git_open_diff(GIT_DIFF *diff, char * arg)
 
 	return 0;
 }
+int git_close_diff(GIT_DIFF handle)
+{
+	git_diff_flush(handle);
+	if(handle)
+	{
+		struct rev_info *p_Rev;
+		p_Rev=(struct rev_info *)handle;
+		if(p_Rev->pPrivate)
+			free(p_Rev->pPrivate);
+		free(handle);
+	}
+	return 0;
+}
 int git_diff_flush(GIT_DIFF diff)
 {
 	struct diff_queue_struct *q = &diff_queued_diff;
