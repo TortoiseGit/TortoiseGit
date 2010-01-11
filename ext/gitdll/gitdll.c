@@ -296,7 +296,17 @@ int git_open_log(GIT_LOG * handle, char * arg)
 	int size;
 	char ** argv=0;
 	int argc=0;
-	
+	int i=0;
+
+	/* clear flags */
+	unsigned int obj_size = get_max_object_index();
+	for(i =0; i<obj_size; i++)
+	{
+		struct object *ob= get_indexed_object(i);
+		if(ob)
+			ob->flags=0;
+	}
+
 	if(arg != NULL)
 		argv = strtoargv(arg,&argc);
 
