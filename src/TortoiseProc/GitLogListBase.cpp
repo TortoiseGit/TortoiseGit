@@ -1763,7 +1763,7 @@ int CGitLogListBase::BeginFetchLog()
 	int mask;
 	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)
-	mask |= m_ShowMask |CGit::LOG_INFO_ALL_BRANCH;
+	mask |= m_ShowMask ;
 	
 	this->m_arShownList.RemoveAll();
 

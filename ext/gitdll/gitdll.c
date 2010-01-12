@@ -134,6 +134,9 @@ int git_parse_commit(GIT_COMMIT *commit)
 
 	memcpy(commit->m_hash,p->object.sha1,GIT_HASH_SIZE);
 
+	commit->m_Encode = NULL;
+	commit->m_EncodeSize = 0;
+
 	if(p->buffer == NULL)
 		return -1;
 
@@ -159,6 +162,17 @@ int git_parse_commit(GIT_COMMIT *commit)
 			while((*pbuf) && (*pbuf == '\n'))
 				pbuf ++;
 
+			if( strncmp(pbuf, "encoding",8) == 0 )
+			{
+				pbuf += 9;
+				commit->m_Encode=pbuf;
+				end = strchr(pbuf,'\n');
+				commit->m_EncodeSize=end -pbuf;
+
+				pbuf = end +1;
+				while((*pbuf) && (*pbuf == '\n'))
+					pbuf ++;
+			}
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
 			if( end == 0)
@@ -186,6 +200,9 @@ int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
 	int ret = 0;
 	
 	struct commit *p;
+	
+	memset(commit,0,sizeof(GIT_COMMIT));
+
 	commit->m_pGitCommit = p = lookup_commit(hash);
 
 	if(commit == NULL)

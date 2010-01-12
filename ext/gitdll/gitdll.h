@@ -59,6 +59,8 @@ typedef struct GIT_COMMIT_DATA
 	char *	 m_Body;
 	int		 m_BodySize;
 	void *   m_pGitCommit; /** internal used */
+	char *   m_Encode;
+	int		 m_EncodeSize;
 
 } GIT_COMMIT;
 

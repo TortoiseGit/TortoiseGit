@@ -3,6 +3,7 @@
 #include "GitRev.h"
 #include "Git.h"
 #include "GitDLL.h"
+#include "UnicodeUtils.h"
 
 class CException; //Just in case afx.h is not included (cannot be included in every project which uses this file)
 
@@ -358,27 +359,36 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 
 int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 {
+	int encode =CP_UTF8;
+	
+	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
+	{
+		CString str;
+		g_Git.StringAppend(&str, (BYTE*)commit->m_Encode, CP_UTF8, commit->m_EncodeSize);
+		encode = CUnicodeUtils::GetCPCode(str);
+	}
+
 	this->m_AuthorDate = commit->m_Author.Date;
 	
 	this->m_AuthorEmail.Empty();
-	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,CP_ACP,commit->m_Author.EmailSize);
+	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,CP_UTF8,commit->m_Author.EmailSize);
 
 	this->m_AuthorName.Empty();
-	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,CP_ACP,commit->m_Author.NameSize);
+	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,CP_UTF8,commit->m_Author.NameSize);
 	
 	this->m_Body.Empty();
-	g_Git.StringAppend(&m_Body,(BYTE*)commit->m_Body,CP_ACP,commit->m_BodySize);
+	g_Git.StringAppend(&m_Body,(BYTE*)commit->m_Body,encode,commit->m_BodySize);
 
 	this->m_CommitterDate = commit->m_Committer.Date;
 	
 	this->m_CommitterEmail.Empty();
-	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,CP_ACP, commit->m_Committer.EmailSize);
+	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,CP_UTF8, commit->m_Committer.EmailSize);
 
 	this->m_CommitterName.Empty();
-	g_Git.StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name,CP_ACP, commit->m_Committer.NameSize);
+	g_Git.StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name,CP_UTF8, commit->m_Committer.NameSize);
 
 	this->m_Subject.Empty();
-	g_Git.StringAppend(&m_Subject, (BYTE*)commit->m_Subject,CP_ACP,commit->m_SubjectSize);
+	g_Git.StringAppend(&m_Subject, (BYTE*)commit->m_Subject,encode,commit->m_SubjectSize);
 	
 	return 0;
 }
