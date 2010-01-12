@@ -332,6 +332,14 @@ int git_get_log_firstcommit(GIT_LOG handle)
 	return prepare_revision_walk(handle);
 }
 
+int git_get_log_estimate_commit_count(GIT_LOG handle)
+{
+	struct rev_info *p_Rev;
+	p_Rev=(struct rev_info *)handle;
+
+	return estimate_commit_count(p_Rev, p_Rev->commits);
+}
+
 int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
 {
 	int ret =0;

@@ -86,6 +86,7 @@ GITDLL_API int git_init();
 
 GITDLL_API int git_open_log(GIT_LOG * handle, char * arg);
 GITDLL_API int git_get_log_firstcommit(GIT_LOG handle);
+GITDLL_API int git_get_log_estimate_commit_count(GIT_LOG handle);
 
 /**
  *	Get Next Commit

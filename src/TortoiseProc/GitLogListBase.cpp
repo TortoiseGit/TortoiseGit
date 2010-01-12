@@ -2085,6 +2085,7 @@ UINT CGitLogListBase::LogThread()
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 	git_get_log_firstcommit(m_DllGitLog);
+	int total = git_get_log_estimate_commit_count(m_DllGitLog);
 	GIT_COMMIT commit;
 	t1=GetTickCount();
 
@@ -2122,9 +2123,13 @@ UINT CGitLogListBase::LogThread()
 		if(t2-t1>500 )
 		{
 			//update UI
+			int percent=m_logEntries.size()*100/total + GITLOG_START+1;
+			if(percent > 99)
+				percent =99;
+
 			oldsize = m_logEntries.size();
 			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
-			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
+			::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
 		}		
 	}
 	
