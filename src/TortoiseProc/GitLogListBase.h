@@ -243,6 +243,8 @@ protected:
 
 	int GetHeadIndex();
 
+	CComCriticalSection			m_critSec;
+
 	bool				m_bFilterWithRegex;
 
 	

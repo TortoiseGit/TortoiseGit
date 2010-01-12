@@ -74,6 +74,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_IsIDReplaceAction=FALSE;
 
+	this->m_critSec.Init();
 	m_wcRev.m_CommitHash.Empty();
 	m_wcRev.m_Subject=_T("Working dir changes");
 	m_wcRev.m_ParentHash.clear();
@@ -2096,8 +2097,7 @@ UINT CGitLogListBase::LogThread()
 
 		CGitHash hash = (char*)commit.m_hash ;
 
-		m_logEntries.push_back(hash);
-		
+			
 		GitRev *pRev = m_LogCache.GetCacheData(hash);
 		
 		if(pRev == NULL || !pRev->m_IsFull)
@@ -2114,9 +2114,12 @@ UINT CGitLogListBase::LogThread()
 			pRev->ParserParentFromCommit(&commit);
 		}
 
+		this->m_critSec.Lock();
+		m_logEntries.push_back(hash);
 		m_arShownList.Add(pRev);
+		this->m_critSec.Unlock();
 
-		if(t2-t1>500 && m_logEntries.size()>(oldsize+100) )
+		if(t2-t1>500 )
 		{
 			//update UI
 			oldsize = m_logEntries.size();

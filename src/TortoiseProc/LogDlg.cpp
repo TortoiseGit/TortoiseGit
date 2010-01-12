@@ -375,8 +375,9 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if(this->m_LogList.HasText())
 		{
 			this->m_LogList.ClearText();
-			//UpdateLogInfoLabel();
+			
 		}
+		UpdateLogInfoLabel();
 
 #if 0
 		//if (!m_bShowedAll)
@@ -2518,15 +2519,18 @@ void CLogDlg::UpdateLogInfoLabel()
 	git_revnum_t rev2 ;
 	long selectedrevs = 0;
 	int count =m_LogList.m_arShownList.GetCount();
+	int start = 0;
 	if (count)
 	{
-		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(0)))->m_CommitHash;
+		if(this->m_LogList.m_bShowWC)
+			start = 1;
+		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(start)))->m_CommitHash;
 		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_arShownList.GetCount()-1));
 		rev2 =  (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(count-1)))->m_CommitHash;
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected"), count, rev2.Left(6), rev1.Left(6), selectedrevs);
+	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected"), count - start, rev2.Left(6), rev1.Left(6), selectedrevs);
 	m_sLogInfo = sTemp;
 
 	UpdateData(FALSE);
