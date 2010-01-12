@@ -1763,7 +1763,7 @@ int CGitLogListBase::BeginFetchLog()
 	int mask;
 	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)
-	mask |= m_ShowMask;
+	mask |= m_ShowMask |CGit::LOG_INFO_ALL_BRANCH;
 	
 	this->m_arShownList.RemoveAll();
 
@@ -2341,7 +2341,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).m_Subject);
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).m_Subject), pat, flags)&&IsEntryInDateRange(i))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 
@@ -2394,7 +2394,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 			{
-				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash);
+				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
 				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
@@ -2434,7 +2434,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 				msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
-					pShownlist->Add(&m_logEntries[i]);
+					pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
 			}

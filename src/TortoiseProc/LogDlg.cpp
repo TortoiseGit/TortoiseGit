@@ -2515,14 +2515,15 @@ void CLogDlg::OnBnClickedCheckStoponcopy()
 void CLogDlg::UpdateLogInfoLabel()
 {
 
-	git_revnum_t rev1 ;
-	git_revnum_t rev2 ;
+	CGitHash rev1 ;
+	CGitHash rev2 ;
 	long selectedrevs = 0;
 	int count =m_LogList.m_arShownList.GetCount();
 	int start = 0;
 	if (count)
 	{
-		if(this->m_LogList.m_bShowWC)
+		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(0)))->m_CommitHash;
+		if(this->m_LogList.m_bShowWC && rev1.IsEmpty())
 			start = 1;
 		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(start)))->m_CommitHash;
 		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_arShownList.GetCount()-1));
@@ -2530,7 +2531,10 @@ void CLogDlg::UpdateLogInfoLabel()
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected"), count - start, rev2.Left(6), rev1.Left(6), selectedrevs);
+	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected"), 
+		count - start,
+		rev2.ToString().Left(6), rev1.ToString().Left(6), selectedrevs);
+
 	m_sLogInfo = sTemp;
 
 	UpdateData(FALSE);
