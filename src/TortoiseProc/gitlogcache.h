@@ -107,5 +107,6 @@ public:
 	int AddCacheEntry(GitRev &Rev);
 	int SaveCache();
 
+	int ClearAllParent();
 
 };

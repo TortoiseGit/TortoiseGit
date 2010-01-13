@@ -322,7 +322,7 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 
 BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefix)
 {
-	TRACE(_T("%s %s\r\n"),ref,prefix);
+	//TRACE(_T("%s %s\r\n"),ref,prefix);
 	if(ref.Left(prefix.GetLength()) ==  prefix)
 	{
 		shortname = ref.Right(ref.GetLength()-prefix.GetLength());
@@ -993,7 +993,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						rect.right=second.left;
 					}
 					
-					TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
+					//TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
 					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 					
 					GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
@@ -1054,7 +1054,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec));
 				CRect rect;
 				GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
-				TRACE(_T("Action left %d right %d\r\n"),rect.left,rect.right);
+				//TRACE(_T("Action left %d right %d\r\n"),rect.left,rect.right);
 				// Get the selected state of the
 				// item being drawn.							
 
@@ -1751,6 +1751,8 @@ int CGitLogListBase::BeginFetchLog()
 	this->m_logEntries.ClearAll();
 	git_init();
 
+	this->m_LogCache.ClearAllParent();
+
 	m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
 
     CTGitPath *path;
@@ -2059,6 +2061,7 @@ UINT CGitLogListBase::LogThread()
 	if(BeginFetchLog())
 		return -1;
 
+	TRACE(_T("\n===Begin===\n"));
 	//Update work copy item;
 	if( m_logEntries.size() > 0)
 	{
@@ -2097,7 +2100,6 @@ UINT CGitLogListBase::LogThread()
 			break;
 
 		CGitHash hash = (char*)commit.m_hash ;
-
 			
 		GitRev *pRev = m_LogCache.GetCacheData(hash);
 		
@@ -2105,15 +2107,18 @@ UINT CGitLogListBase::LogThread()
 		{
 			pRev->ParserFromCommit(&commit);
 			pRev->ParserParentFromCommit(&commit);
-
 			pRev->SafeFetchFullInfo(&g_Git);
-			git_free_commit(&commit);
-			
+						
 		}else
 		{
 			ASSERT(pRev->m_CommitHash == hash);
 			pRev->ParserParentFromCommit(&commit);
 		}
+#ifdef DEBUG		
+		pRev->DbgPrint();
+		TRACE(_T("\n"));
+#endif
+		git_free_commit(&commit);
 
 		this->m_critSec.Lock();
 		m_logEntries.push_back(hash);

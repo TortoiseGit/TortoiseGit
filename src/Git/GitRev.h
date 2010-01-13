@@ -77,6 +77,8 @@ public:
 
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);
+public:
+	void DbgPrint();
 private:
 	TIME_ZONE_INFORMATION m_TimeZone;
 };

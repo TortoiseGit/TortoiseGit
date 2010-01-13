@@ -33,8 +33,9 @@ GitRev * CLogCache::GetCacheData(CGitHash &hash)
 		GitRev rev;
 		if(!LoadOneItem(rev,m_HashMapIndex[hash]))
 		{
-			rev.m_IsFull=true;
 			m_HashMap[hash].CopyFrom(rev);
+			rev.m_IsFull=true;
+			
 			return &m_HashMap[hash];
 		}
 	}
@@ -305,5 +306,16 @@ int CLogCache::SaveCache()
 	}
 	m_IndexFile.Close();
 	m_DataFile.Close();
+	return 0;
+}
+
+int CLogCache::ClearAllParent()
+{
+	CGitHashMap::iterator i;
+	for(i=m_HashMap.begin();i!=m_HashMap.end();i++)
+	{
+		(*i).second.m_ParentHash.clear();
+		(*i).second.m_Lanes.clear();
+	}
 	return 0;
 }

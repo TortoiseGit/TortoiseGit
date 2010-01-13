@@ -392,3 +392,13 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	
 	return 0;
 }
+
+void GitRev::DbgPrint()
+{
+	TRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
+	for(int i=0;i<this->m_ParentHash.size();i++)
+	{
+		TRACE(_T("Parent %i %s"),i, m_ParentHash[i].ToString());
+	}
+	TRACE(_T("\n"));
+}
