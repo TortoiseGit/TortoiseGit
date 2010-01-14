@@ -79,14 +79,25 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_hAccel(NULL)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
-	m_bAllBranch=FALSE;
+
+	CString str;
+	str=g_Git.m_CurrentDir;
+	str.Replace(_T(":"),_T("_"));
+	str=CString(_T("Software\\TortoiseGit\\LogDialog\\AllBranch\\"))+str;
+	
+	m_regbAllBranch=CRegDWORD(str,FALSE);
+
+	m_bAllBranch=m_regbAllBranch;
+
 	m_bFirstParent=FALSE;
 	m_bWholeProject=FALSE;
 }
 
 CLogDlg::~CLogDlg()
 {
-	
+
+	m_regbAllBranch=m_bAllBranch;
+
     m_CurrentFilteredChangedArray.RemoveAll();
 	
 }
@@ -269,6 +280,11 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
+	if(this->m_bAllBranch)
+		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
+	else
+		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
 //	SetPromptParentWindow(m_hWnd);
 
