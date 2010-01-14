@@ -365,9 +365,13 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
 		//DialogEnableWindow(IDC_LOG_FIRSTPARENT, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
-		DialogEnableWindow(IDC_REFRESH, FALSE);
+		//DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
-		
+
+		DialogEnableWindow(IDC_DATEFROM,FALSE);
+		DialogEnableWindow(IDC_DATETO,FALSE);
+
+		DialogEnableWindow(IDC_SEARCHEDIT,FALSE);
 
 	}else if( cur == GITLOG_END)
 	{
@@ -388,6 +392,11 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
+
+		DialogEnableWindow(IDC_DATEFROM,TRUE);
+		DialogEnableWindow(IDC_DATETO,TRUE);
+
+		DialogEnableWindow(IDC_SEARCHEDIT,TRUE);
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);

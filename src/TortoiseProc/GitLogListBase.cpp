@@ -2125,7 +2125,7 @@ UINT CGitLogListBase::LogThread()
 		m_arShownList.Add(pRev);
 		this->m_critSec.Unlock();
 
-		if(t2-t1>500 )
+		if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
 		{
 			//update UI
 			int percent=m_logEntries.size()*100/total + GITLOG_START+1;

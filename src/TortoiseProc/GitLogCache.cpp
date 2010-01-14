@@ -34,7 +34,7 @@ GitRev * CLogCache::GetCacheData(CGitHash &hash)
 		if(!LoadOneItem(rev,m_HashMapIndex[hash]))
 		{
 			m_HashMap[hash].CopyFrom(rev);
-			rev.m_IsFull=true;
+			m_HashMap[hash].m_IsFull=true;
 			
 			return &m_HashMap[hash];
 		}
