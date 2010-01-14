@@ -522,10 +522,10 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 		return -1;
 
 	if(newname)
-		*newname = q->queue[i]->one->path;
+		*newname = q->queue[i]->two->path;
 
 	if(oldname)
-		*oldname = q->queue[i]->two->path;
+		*oldname = q->queue[i]->one->path;
 
 	if(status)
 		*status = q->queue[i]->status;
