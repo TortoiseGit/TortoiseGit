@@ -1,5 +1,21 @@
 = Release 1.3.1.0=
+== Features ==
+ * Improve Log Dialog. Speed up log fetch speed. 
+   Build Git source as a DLL. LogDialog will call gitdll to fetch log instead of capture git.exe output.
+   Improve refresh and all branch user experience. refresh can abort runing fetch log commit.
 
+ * Improve icon-overlay
+   Give up igit.exe and use tgit which build from git source by VS. 
+   use tgit.exe statusex to get file status. 
+   Don't list all untracked files. 
+
+== Bug Fix ==
+ * Fixed issue #234: First log(first commit in history) was missing...
+ * Fixed issue #232: "No Commit" Option always acitve
+ * Fix Issue 236:	CGit::GetRemoteList uses bad regular expression
+ * Fix blame show wrong when first char is '^'
+ * Workaround show "fail" even git run success at sometime by remove "fail" message.
+ * Issue 265:	Log dialog: Date picker throws multiple error messages when date is before 1.1.1970
 
 = Release 1.2.1.0 =
 == Features ==
