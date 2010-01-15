@@ -392,7 +392,9 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	
 	return 0;
 }
-
+#ifndef TRACE
+#define TRACE(x) 1?0:(x)
+#endif
 void GitRev::DbgPrint()
 {
 	TRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
