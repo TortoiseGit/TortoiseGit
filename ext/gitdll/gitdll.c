@@ -267,7 +267,16 @@ char **strtoargv(char *arg, int *size)
 	int count=0;
 	char *p=arg;
 	char **argv;
+	
 	int i=0;
+	while(*p)
+	{
+		if(*p == '\\')
+			*p='/';
+		p++;
+	}
+	p=arg;
+
 	while(*p)
 	{
 		if(*p == ' ')
@@ -335,8 +344,7 @@ int git_open_log(GIT_LOG * handle, char * arg)
 
 	init_revisions(p_Rev, g_prefix);
 	p_Rev->diff = 1;
-	p_Rev->simplify_history = 0;
-	
+		
 	cmd_log_init(argc, argv, g_prefix,p_Rev);
 
 	p_Rev->pPrivate = argv;
