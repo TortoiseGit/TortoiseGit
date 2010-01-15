@@ -428,6 +428,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if(this->m_LogList.HasText())
 		{
 			this->m_LogList.ClearText();
+			this->m_LogList.Invalidate();
 		}
 		UpdateLogInfoLabel();
 		m_LogProgress.SetPos(cur);

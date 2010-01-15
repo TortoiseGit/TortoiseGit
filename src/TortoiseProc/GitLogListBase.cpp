@@ -2131,6 +2131,8 @@ UINT CGitLogListBase::LogThread()
 			int percent=m_logEntries.size()*100/total + GITLOG_START+1;
 			if(percent > 99)
 				percent =99;
+			if(percent < GITLOG_START)
+				percent = GITLOG_START +1;
 
 			oldsize = m_logEntries.size();
 			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
