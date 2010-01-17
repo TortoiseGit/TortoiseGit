@@ -74,6 +74,11 @@ int git_init()
 	char *prefix;
 	size_t homesize,size,httpsize;
 
+	_fmode = _O_BINARY; 
+	_setmode(_fileno(stdin), _O_BINARY); 
+	_setmode(_fileno(stdout), _O_BINARY); 
+	_setmode(_fileno(stderr), _O_BINARY); 
+
 	// set HOME if not set already
 	getenv_s(&homesize, NULL, 0, "HOME");
 	if (!homesize)

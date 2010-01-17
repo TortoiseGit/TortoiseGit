@@ -248,7 +248,7 @@
 			OutputDirectory="$(SolutionDir)\..\bin\$(ConfigurationName)64\bin"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

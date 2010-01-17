@@ -32,12 +32,12 @@ public:
 
 typedef unsigned char GIT_HASH[GIT_HASH_SIZE];
 
-typedef unsigned int  GIT_HANDLE;
-typedef unsigned int  GIT_LOG;
+typedef void *  GIT_HANDLE;
+typedef void *  GIT_LOG;
 
-typedef unsigned int GIT_DIFF;
-typedef unsigned int GIT_FILE;
-typedef unsigned int GIT_COMMIT_LIST;
+typedef void * GIT_DIFF;
+typedef void * GIT_FILE;
+typedef void * GIT_COMMIT_LIST;
 
 struct GIT_COMMIT_AUTHOR
 {
