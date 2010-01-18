@@ -18,7 +18,7 @@ class CTortoiseGitBlameApp : public CWinAppEx
 {
 public:
 	CTortoiseGitBlameApp();
-
+	ULONG_PTR m_gdiplusToken;
 
 // Overrides
 public:
@@ -35,6 +35,7 @@ public:
 	CString m_Rev;
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+	virtual int ExitInstance();
 };
 
 extern CTortoiseGitBlameApp theApp;

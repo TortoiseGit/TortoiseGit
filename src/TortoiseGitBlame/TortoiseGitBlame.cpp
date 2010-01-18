@@ -62,6 +62,9 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 
 	CWinAppEx::InitInstance();
 
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken,&gdiplusStartupInput,NULL);
+
 	// Initialize OLE libraries
 	if (!AfxOleInit())
 	{
@@ -182,3 +185,10 @@ void CTortoiseGitBlameApp::SaveCustomState()
 
 
 
+
+int CTortoiseGitBlameApp::ExitInstance()
+{
+	// TODO: Add your specialized code here and/or call the base class
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
+	return CWinAppEx::ExitInstance();
+}
