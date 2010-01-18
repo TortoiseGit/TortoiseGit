@@ -2074,7 +2074,7 @@ UINT CGitLogListBase::LogThread()
 			pRev->m_Files.Clear();
 			pRev->m_ParentHash.clear();
 			pRev->m_ParentHash.push_back(m_HeadHash);
-			g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash, pRev->m_Files);
+			g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->m_Files);
 			pRev->m_Action =0;
 		
 			for(int j=0;j< pRev->m_Files.GetCount();j++)

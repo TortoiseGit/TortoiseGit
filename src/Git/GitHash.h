@@ -91,6 +91,10 @@ public:
 		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) > 0;
 	}
 
+	friend bool operator != (const CGitHash& left, const CGitHash& right)
+	{
+		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) != 0;
+	}
 #if defined(_MFC_VER)
 	friend CArchive& AFXAPI operator<<(CArchive& ar, CGitHash& hash)
 	{

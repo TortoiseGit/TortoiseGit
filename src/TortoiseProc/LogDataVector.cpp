@@ -178,6 +178,8 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	BYTE_VECTOR log;
 	GitRev rev;
 	CString emptyhash;
+	this->m_pLogCache->ClearAllParent();
+
 	g_Git.GetLog(log,emptyhash,path,count,infomask,from,to);
 
 	CString begin;

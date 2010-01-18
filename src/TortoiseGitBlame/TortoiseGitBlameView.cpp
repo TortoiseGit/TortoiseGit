@@ -1086,11 +1086,11 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				oldfont = (HFONT)::SelectObject(hDC, m_font);
 			::SetBkColor(hDC, m_windowcolor);
 			::SetTextColor(hDC, m_textcolor);
-			if (m_CommitHash[i].GetLength()>0)
+			if (!m_CommitHash[i].IsEmpty())
 			{
 				//if (m_CommitHash[i].Compare(m_MouseHash)==0)
 				//	::SetBkColor(hDC, m_mouseauthorcolor);
-				if (m_CommitHash[i].Compare(m_SelectedHash)==0)
+				if (m_CommitHash[i] == m_SelectedHash )
 				{
 					::SetBkColor(hDC, m_selectedauthorcolor);
 					::SetTextColor(hDC, m_texthighlightcolor);
@@ -2591,7 +2591,7 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 	int i;
 	for(i=0;i<m_CommitHash.size();i++)
 	{
-		if( pRev->m_CommitHash.ToString() == m_CommitHash[i] )
+		if( pRev->m_CommitHash == m_CommitHash[i] )
 			break;
 	}
 	this->GotoLine(i);
@@ -2721,7 +2721,7 @@ void CTortoiseGitBlameView::OnViewPrev()
 	FindNextLine(this->m_SelectedHash,true);
 }
 
-int CTortoiseGitBlameView::FindNextLine(CString CommitHash,bool bUpOrDown)
+int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
 {
 	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
 	LONG_PTR startline =line;

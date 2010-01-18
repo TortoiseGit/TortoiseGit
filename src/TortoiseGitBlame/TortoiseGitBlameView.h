@@ -110,8 +110,8 @@ protected:
 	afx_msg void OnViewNext();
 	afx_msg void OnViewPrev();
 	
-	int FindNextLine(CString commithash, bool bUpOrDown=false);
-	int FindFirstLine(CString commithash, int line)
+	int FindNextLine(CGitHash commithash, bool bUpOrDown=false);
+	int FindFirstLine(CGitHash commithash, int line)
 	{
 		while(line>=0)
 		{
@@ -189,8 +189,8 @@ public:
 	LONG						m_MouseLine;
 	LONG						m_selectedrev;
 	LONG						m_selectedorigrev;
-	CString						m_SelectedHash;
-	CString						m_selecteddate;
+	CGitHash					m_SelectedHash;
+	CGitHash					m_selecteddate;
 	static long					m_gotoline;
 	long						m_lowestrev;
 	long						m_highestrev;
@@ -202,7 +202,7 @@ public:
 //	std::vector<LONG>		m_Origrevs;
 	std::vector<CString>	m_Dates;
 	std::vector<CString>	m_Authors;
-	std::vector<CString>	m_CommitHash;
+	std::vector<CGitHash>	m_CommitHash;
 
 	std::map<CString,GitRev> m_NoListCommit;
 

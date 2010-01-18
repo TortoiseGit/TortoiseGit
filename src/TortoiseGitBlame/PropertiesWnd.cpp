@@ -374,25 +374,27 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 			CString parentsubject;
 			int index;
 
-			if( pLogEntry->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_HashMap.end() )
+			GitRev *p =NULL;
+			
+			if( pLogEntry->m_pLogCache->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
 			{ 
-				index = -1;
+				p=NULL;
 			}
 			else
 			{
-				index=pLogEntry->m_HashMap[rev->m_ParentHash[i]];
+				p= &pLogEntry->m_pLogCache->m_HashMap[rev->m_ParentHash[i]] ;
 			}
-			if(index>=0)
-				parentsubject=pLogEntry->GetGitRevAt(index).m_Subject;
+			if(p)
+				parentsubject=p->m_Subject;
 
 			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i].ToString(),parentsubject);
 			
-			CMFCPropertyGridProperty*p=new CMFCPropertyGridProperty(
+			CMFCPropertyGridProperty*pProtery=new CMFCPropertyGridProperty(
 											rev->m_ParentHash[i].ToString().Left(8), 
 												parentsubject,
 												str
 											);
-			m_ParentGroup->AddSubItem(p);
+			m_ParentGroup->AddSubItem(pProtery);
 			m_ParentGroup->Expand();
 		}
 		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)

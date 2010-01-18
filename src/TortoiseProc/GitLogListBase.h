@@ -268,7 +268,7 @@ protected:
 	CColors				m_Colors;
 
 	CString				m_CurrentBranch;
-	CString				m_HeadHash;
+	CGitHash			m_HeadHash;
 
 	CString				m_StartRef; //Ref of the top-commit
 	
