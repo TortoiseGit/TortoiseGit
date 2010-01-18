@@ -231,6 +231,9 @@ int CLogCache::SaveCache()
 	if( this->m_HashMap.size() == 0 )
 		return 0;
 
+	if( this->m_GitDir.IsEmpty())
+		return 0;
+
 	bool bIsRebuild=false;
 	if(this->m_DataFile.m_hFile != CFile::hFileNull)
 		m_DataFile.Close();
