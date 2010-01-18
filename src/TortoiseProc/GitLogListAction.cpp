@@ -73,7 +73,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	{
 		if (progress.IsValid())
 		{
-			progress.FormatPathLine(1, _T("Pick up %s"), logs.GetGitRevAt(i).m_CommitHash);
+			progress.FormatPathLine(1, _T("Pick up %s"), logs.GetGitRevAt(i).m_CommitHash.ToString());
 			progress.FormatPathLine(2, _T("%s"), logs.GetGitRevAt(i).m_Subject);
 			progress.SetProgress(logs.size()-i, logs.size());
 		}
@@ -84,7 +84,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 			return -1;
 		}
 		CString cmd,out;
-		cmd.Format(_T("git.exe cherry-pick %s"),logs.GetGitRevAt(i).m_CommitHash);
+		cmd.Format(_T("git.exe cherry-pick %s"),logs.GetGitRevAt(i).m_CommitHash.ToString());
 		out.Empty();
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
@@ -126,7 +126,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				if(!r1->m_CommitHash.IsEmpty())
 				{
-					cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash);
+					cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash.ToString());
 				}else
 					cmd.Format(_T("git.exe diff -r -p --stat"));
 
@@ -144,12 +144,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				
 				if( r1->m_CommitHash.IsEmpty())
 				{
-					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash);
+					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash.ToString());
 				}else if( r2->m_CommitHash.IsEmpty())
 				{
-					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash);
+					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash.ToString());
 				}else
-					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
+					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash.ToString(),r2->m_CommitHash.ToString());
 
 				g_Git.RunLogFile(cmd,tempfile);
 				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r2->m_CommitHash.ToString().Left(6));
@@ -299,7 +299,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			//Use throw to abort this process (reset back to original HEAD)
 			try
 			{
-				cmd.Format(_T("git.exe reset --hard  %s"),pFirstEntry->m_CommitHash);
+				cmd.Format(_T("git.exe reset --hard  %s"),pFirstEntry->m_CommitHash.ToString());
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
@@ -340,7 +340,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 						//
 						//Later the progress dialog could be used to execute these steps.
 
-						if(CherryPickFrom(pFirstEntry->m_CommitHash,headhash))
+						if(CherryPickFrom(pFirstEntry->m_CommitHash.ToString(),headhash))
 						{
 							CString msg;
 							msg.Format(_T("Error while cherry pick commits on top of combined commits. Aborting.\r\n\r\n"));

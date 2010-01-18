@@ -1387,9 +1387,9 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool b
 
 	CString cmd;
 
-	cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
+	cmd.Format(_T("git.exe cat-file -p %s:%s"),rev1->m_CommitHash.ToString(),(*m_currentChangedArray)[selIndex].GetGitPathString());
 	g_Git.RunLogFile(cmd,file1);
-	cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2->m_CommitHash,(*m_currentChangedArray)[selIndex].GetGitPathString());
+	cmd.Format(_T("git.exe cat-file -p %s:%s"),rev2->m_CommitHash.ToString(),(*m_currentChangedArray)[selIndex].GetGitPathString());
 	g_Git.RunLogFile(cmd,file2);
 
 	CAppUtils::DiffFlags flags;

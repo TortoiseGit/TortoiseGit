@@ -542,7 +542,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		GitRev rev;
 		rev.ParserFromLog(data);
 		tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
-			rev.m_CommitHash,
+			rev.m_CommitHash.ToString(),
 			rev.m_AuthorName,
 			CAppUtils::FormatDateAndTime(rev.m_AuthorDate,DATE_LONGDATE),
 			rev.m_Subject,
@@ -787,7 +787,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		
 		CString out =_T("");
 		CString cmd;
-		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash);
+		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash.ToString());
 
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
@@ -1161,10 +1161,10 @@ int CRebaseDlg::DoRebase()
 		nocommit=_T(" --no-commit ");
 
 	CString log;
-	log.Format(_T("%s %d:%s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash);
+	log.Format(_T("%s %d:%s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());
 	AddLogString(log);
 	AddLogString(pRev->m_Subject);
-	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash);
+	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash.ToString());
 
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{

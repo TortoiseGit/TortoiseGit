@@ -2493,7 +2493,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 			{
-				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash);
+				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
 				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))
 				{
 					pShownlist->Add(&m_logEntries.GetGitRevAt(i));

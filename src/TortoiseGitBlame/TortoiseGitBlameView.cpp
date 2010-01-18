@@ -2624,7 +2624,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			this->ClientToScreen(&point);
 
 			CString str;
-			str.Format(_T("%s\n<b>%s</b>\n%s %s\n%s"),pRev->m_CommitHash,
+			str.Format(_T("%s\n<b>%s</b>\n%s %s\n%s"),pRev->m_CommitHash.ToString(),
 													   pRev->m_Subject,
 													   pRev->m_AuthorName,
 													   CAppUtils::FormatDateAndTime( pRev->m_AuthorDate, m_DateFormat ), 
