@@ -263,8 +263,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		case ID_COMBINE_COMMIT:
 		{
 			CString head;
-			CString headhash;
-			CString hashFirst,hashLast;
+			CGitHash headhash;
+			CGitHash hashFirst,hashLast;
 
 			int headindex=GetHeadIndex();
 			if(headindex>=0) //incase show all branch, head is not the first commits. 
@@ -305,7 +305,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to first commit (first step) aborting...\r\n\r\n")+out));
 				}
-				cmd.Format(_T("git.exe reset --mixed  %s"),hashLast);
+				cmd.Format(_T("git.exe reset --mixed  %s"),hashLast.ToString());
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
@@ -388,7 +388,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			catch(std::exception& e)
 			{
 				CMessageBox::Show(NULL,CUnicodeUtils::GetUnicode(CStringA(e.what())),_T("TortoiseGit: Combine error"),MB_OK|MB_ICONERROR);
-				cmd.Format(_T("git.exe reset --hard  %s"),headhash);
+				cmd.Format(_T("git.exe reset --hard  %s"),headhash.ToString());
 				out.Empty();
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{

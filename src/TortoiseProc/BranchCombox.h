@@ -131,7 +131,7 @@ protected:
 			GitRev rev;
 			rev.ParserFromLog(data);
 			tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
-				rev.m_CommitHash,
+				rev.m_CommitHash.ToString(),
 				rev.m_AuthorName,
 				CAppUtils::FormatDateAndTime(rev.m_AuthorDate,DATE_LONGDATE),
 				rev.m_Subject,
