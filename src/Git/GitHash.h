@@ -29,17 +29,18 @@ public:
 		{
 			unsigned char a;
 			a=0;
-			for(int j=2*i;j<2*i+1;j++)
+			for(int j=2*i;j<=2*i+1;j++)
 			{
+				a =a<<4;
+
 				TCHAR ch = str[j];
 				if(ch >= _T('0') && ch <= _T('9'))
 					a |= (ch - _T('0'))&0xF;
 				else if(ch >=_T('A') && ch <= _T('F'))
-					a |= (ch - _T('A'))&0xF;
+					a |= ((ch - _T('A'))&0xF) + 10 ;
 				else if(ch >=_T('a') && ch <= _T('f'))
-					a |= (ch - _T('a'))&0xF;
+					a |= ((ch - _T('a'))&0xF) + 10;		
 				
-				a =a<<4;
 			}
 			m_hash[i]=a;
 		}
