@@ -8,6 +8,10 @@
    Give up igit.exe and use tgit which build from git source by VS. 
    use tgit.exe statusex to get file status. 
    Don't list all untracked files. 
+ 
+ * Improve commit and checkout modify dialog
+   Don't show file that is only time stamp change and no context change. 
+   Run git-update-index first when open commit and checkout out modify dialog. 
 
 == Bug Fix ==
  * Fixed issue #234: First log(first commit in history) was missing...
