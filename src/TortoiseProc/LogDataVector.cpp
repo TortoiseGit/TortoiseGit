@@ -196,9 +196,15 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 		if(this->m_pLogCache->m_HashMap.IsExist(rev.m_CommitHash))
 		{
 			if(!this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull)
+			{
 				this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+			}
 		}else
 			this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+
+		this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull=true;
+
+		this->push_back(rev.m_CommitHash);
 
 		m_HashMap[rev.m_CommitHash]=size()-1;		
 	}

@@ -1729,12 +1729,12 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 		if(m_IsOldFirst)
 		{
 			m_logEntries.GetGitRevAt(m_logEntries.size()-i-1).m_IsFull=TRUE;
-			this->m_arShownList.Add(&m_logEntries[m_logEntries.size()-i-1]);
+			this->m_arShownList.Add(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
 		
 		}else
 		{
 			m_logEntries.GetGitRevAt(i).m_IsFull=TRUE;
-			this->m_arShownList.Add(&m_logEntries[i]);
+			this->m_arShownList.Add(&m_logEntries.GetGitRevAt(i));
 		}
 	}
 
