@@ -96,7 +96,7 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)64"
 			ConfigurationType="2"
 			CharacterSet="1"
 			>
@@ -246,7 +246,7 @@
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="$(SolutionDir)\..\bin\$(ConfigurationName)64\bin"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)64"
 			ConfigurationType="2"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
