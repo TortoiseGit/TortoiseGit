@@ -2,8 +2,8 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
-
-
+#include "MenuButton.h"
+#include "registry.h"
 
 // CCloneDlg dialog
 
@@ -49,6 +49,9 @@ public:
 	CString m_strSVNTags;
 	CString m_strSVNBranchs;
 	int m_nSVNFrom;
+
+	CMenuButton m_BrowseUrl;
+	CRegDWORD	m_regBrowseUrl;
 
     afx_msg void OnBnClickedPuttykeyfileBrowse();
     afx_msg void OnBnClickedPuttykeyAutoload();

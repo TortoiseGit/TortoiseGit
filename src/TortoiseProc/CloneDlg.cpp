@@ -25,6 +25,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_strSVNTags = _T("tags");
 	m_strSVNBranchs = _T("branches");
 
+	m_regBrowseUrl = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneBrowse"),0);
 	m_nSVNFrom = 0;
 }
 
@@ -37,6 +38,7 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_URLCOMBO, m_URLCombo);
     DDX_Control(pDX, IDC_PUTTYKEYFILE, m_PuttyKeyCombo);
+	DDX_Control(pDX, IDC_CLONE_BROWSE_URL, m_BrowseUrl);
 	DDX_Text(pDX, IDC_CLONE_DIR, m_Directory);
     DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD, m_bAutoloadPuttyKeyFile);
 
@@ -88,6 +90,10 @@ BOOL CCloneDlg::OnInitDialog()
 	CWnd *window=this->GetDlgItem(IDC_CLONE_DIR);
 	if(window)
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
+
+	this->m_BrowseUrl.AddEntry(CString(_T("Dir...")));
+	this->m_BrowseUrl.AddEntry(CString(_T("Web")));
+	m_BrowseUrl.SetCurrentEntry(m_regBrowseUrl);
 
     m_PuttyKeyCombo.SetPathHistory(TRUE);
     m_PuttyKeyCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\puttykey"), _T("key"));
@@ -154,6 +160,18 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 	CBrowseFolder browseFolder;
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory;
+
+	int sel = this->m_BrowseUrl.GetCurrentEntry();
+	this->m_regBrowseUrl = sel;
+
+	if( sel == 1 )
+	{
+		CString str;
+		m_URLCombo.GetWindowText(str);
+		ShellExecute(NULL, _T("open"), str, NULL,NULL, SW_SHOW);
+		return ;
+	}
+
 	this->m_URLCombo.GetWindowTextW(strCloneDirectory);
 	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK) 
 	{
