@@ -49,7 +49,9 @@ bool PrevDiffCommand::Execute()
 			CString logout;
 		
 			CLogDataVector revs;
-	
+			CLogCache cache;
+			revs.m_pLogCache=&cache;
+			
 			revs.ParserShortLog(&cmdLinePath,hash,2);
 			if( revs.size() == 0)
 			{
