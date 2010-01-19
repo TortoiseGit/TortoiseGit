@@ -2256,10 +2256,11 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	CTime _time;
-	m_DateTo.GetTime(_time);
 	try
 	{
+		CTime _time;
+		m_DateTo.GetTime(_time);
+	
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
 		if (time.GetTime() != m_LogList.m_To.GetTime())
 		{
@@ -2267,8 +2268,9 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			SetTimer(LOGFILTER_TIMER, 10, NULL);
 		}
 	}
-	catch (CAtlException)
+	catch (...)
 	{
+		CMessageBox::Show(NULL,_T("Invalidate Parameter"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
 	
 	*pResult = 0;
@@ -2276,10 +2278,12 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	CTime _time;
-	m_DateFrom.GetTime(_time);
+	
 	try
 	{
+		CTime _time;
+		m_DateFrom.GetTime(_time);
+		
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
 		if (time.GetTime() != m_LogList.m_From.GetTime())
 		{
@@ -2287,8 +2291,9 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 			SetTimer(LOGFILTER_TIMER, 10, NULL);
 		}
 	}
-	catch (CAtlException)
+	catch (...)
 	{
+		CMessageBox::Show(NULL,_T("Invalidate Parameter"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
 	
 	*pResult = 0;
