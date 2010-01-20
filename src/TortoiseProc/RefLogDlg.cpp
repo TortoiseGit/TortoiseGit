@@ -95,6 +95,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	CString ref=m_ChooseRef.GetString();
 	if(m_RefList.m_RefMap.find(ref) == m_RefList.m_RefMap.end())
 	{
+		m_RefList.m_RefMap[ref].m_pLogCache = &m_RefList.m_LogCache;
 		m_RefList.m_RefMap[ref].ParserFromRefLog(ref);
 	}
 	m_RefList.ClearText();
@@ -104,7 +105,6 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	CLogDataVector *plog;
 	plog = &m_RefList.m_RefMap[ref];
-	plog->SetLogCache(&this->m_RefList.m_LogCache);
 
 	m_RefList.SetItemCountEx(plog->size());
 
@@ -113,7 +113,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	for(unsigned int i=0;i<m_RefList.m_RefMap[ref].size();i++)
 	{
 		plog->GetGitRevAt(i).m_IsFull=TRUE;
-		this->m_RefList.m_arShownList.Add(&(plog->at(i)));
+		this->m_RefList.m_arShownList.Add(&(plog->GetGitRevAt(i)));
 		
 	}
 

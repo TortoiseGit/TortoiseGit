@@ -246,12 +246,9 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 			}
 		}
 
-		if(this->m_pLogCache->m_HashMap.IsExist(rev.m_CommitHash))
-		{
-			if(!this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull)
-				this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
-		}else
-			this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
+		this->m_pLogCache->m_HashMap[rev.m_CommitHash]=rev;
+
+		this->push_back(rev.m_CommitHash);
 
 	}
 	return 0;
