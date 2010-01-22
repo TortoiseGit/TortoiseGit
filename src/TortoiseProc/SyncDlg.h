@@ -54,6 +54,7 @@ public:
 		   GIT_COMMAND_FETCH,
 		   GIT_COMMAND_FETCHANDREBASE,
 		   GIT_COMMAND_SUBMODULE,
+		   GIT_COMMAND_REMOTE
 		};
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

@@ -190,7 +190,24 @@ void CSyncDlg::OnBnClickedButtonPull()
 		}
 	}
 
+	///Remote Update
+	if(CurrentEntry == 3)
+	{
+		m_CurrentCmd = GIT_COMMAND_REMOTE;
+		cmd=_T("git.exe remote update");
+		m_GitCmdList.push_back(cmd);
 
+		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
+		if (m_pThread==NULL)
+		{
+		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+		}
+		else
+		{
+			m_pThread->m_bAutoDelete = TRUE;
+			m_pThread->ResumeThread();
+		}
+	}
 	
 }
 
@@ -631,6 +648,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(_T("&Pull")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetc&h")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base")));
+	this->m_ctrlPull.AddEntry(CString(_T("Remote Update")));
 
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Update")));
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Init")));
@@ -834,6 +852,12 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			//this->m_ctrlCmdOut.SetSel(-1,-1);
 			//this->m_ctrlCmdOut.ReplaceSel(_T("Done\r\n"));
 			//this->m_ctrlCmdOut.SetSel(-1,-1);
+			EnableControlButton(true);
+			SwitchToInput();
+		}
+		if(this->m_CurrentCmd == GIT_COMMAND_REMOTE)
+		{
+			this->FetchOutList(true);
 			EnableControlButton(true);
 			SwitchToInput();
 		}
