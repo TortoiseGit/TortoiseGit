@@ -1,9 +1,9 @@
 = Release 1.3.2.0 =
 == Bug Fix ==
-* Fixed issue #276: Crash on seeing diff with previous version
-* Fixed issue #275: Load gitweb for 'Browse' button
-* Fixed issue #265: Log dialog: Date picker throws multiple error messages when date is before 1.1.1970
-* Fix RefLogDlg crash
+ * Fixed issue #276: Crash on seeing diff with previous version
+ * Fixed issue #275: Load gitweb for 'Browse' button
+ * Fixed issue #265: Log dialog: Date picker throws multiple error messages when date is before 1.1.1970
+ * Fix RefLogDlg crash
 
 = Release 1.3.1.0 =
 == Features ==
