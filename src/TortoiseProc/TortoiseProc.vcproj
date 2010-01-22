@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -138,7 +138,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;SVN_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -224,7 +224,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -319,7 +319,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/Subversion/subversion/libsvn_client;../../ext/apr/include;../../ext/boost;..\Utils;..\SVN;..\..\ext\ResizableLib;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\ColourPickerXP;..\Utils\NewMenu;..\Utils\MiscUI;..\LogCache;&quot;../../ext/cyrus-sasl/include&quot;;../../../common/openssl/inc32;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -588,11 +588,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\copy.ico"
+				RelativePath="..\Resources\copy.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\copy.ico"
+				RelativePath=".\copy.ico"
 				>
 			</File>
 			<File
@@ -620,11 +620,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\explorer.ico"
+				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\explorer.ico"
+				RelativePath="..\Resources\explorer.ico"
 				>
 			</File>
 			<File
@@ -868,11 +868,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
+				RelativePath="..\Resources\newfolder.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\newfolder.ico"
+				RelativePath=".\newfolder.ico"
 				>
 			</File>
 			<File
@@ -904,11 +904,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\refresh.ico"
+				RelativePath="..\Resources\refresh.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\refresh.ico"
+				RelativePath=".\refresh.ico"
 				>
 			</File>
 			<File
@@ -984,11 +984,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\save.ico"
+				RelativePath=".\save.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\save.ico"
+				RelativePath="..\Resources\save.ico"
 				>
 			</File>
 			<File
@@ -1088,11 +1088,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\up.ico"
+				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\up.ico"
+				RelativePath=".\up.ico"
 				>
 			</File>
 			<File

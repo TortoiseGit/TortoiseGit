@@ -1,20 +1,9 @@
-//
-// TortoiseGitBlame.RC2 - resources Microsoft Visual C++ does not edit directly
+// Microsoft Visual C++ generated resource script.
 //
 
 #ifdef APSTUDIO_INVOKED
 #error this file is not editable by Microsoft Visual C++
 #endif //APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-// Add manually edited resources here...
-
-/////////////////////////////////////////////////////////////////////////////
-#include "..\version.h"
-#include "..\\TortoiseShell\\resourceshell.rc"
-#include "..\Resources\TortoiseCommon.rc2"
-/////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
 // Add manually edited resources here...
@@ -22,7 +11,7 @@
 //
 // Version
 //
-#include "..\version.h"
+#include "..\..\src\version.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER
@@ -41,12 +30,12 @@ BEGIN
         BLOCK "040004e4"
         BEGIN
 			VALUE "CompanyName", "http://code.google.com/p/tortoisegit\0"
-            VALUE "FileDescription", "TortoiseGitBlame\0"
+            VALUE "FileDescription", "git dll\0"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGitBlame.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2008 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseGitBlame.exe\0"
-            VALUE "ProductName", "TortoiseGitBlame\0"
+            VALUE "InternalName", "gitdll.dll\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2010 - TortoiseGit\0"
+            VALUE "OriginalFilename", "gitdll.dll\0"
+            VALUE "ProductName", "TortoiseGit\0"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
