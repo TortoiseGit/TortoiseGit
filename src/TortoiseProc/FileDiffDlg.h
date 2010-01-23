@@ -30,7 +30,7 @@
 #include "Tooltip.h"
 #include "ProgressDlg.h"
 #include "MenuButton.h"
-
+#include "ACEdit.h"
 #define IDT_FILTER		101
 
 /**
@@ -101,7 +101,7 @@ protected:
 	void				Filter(CString sFilterText);
 	void				CopySelectionToClipboard();
 	
-	void				ClickRevButton(CMenuButton *button,GitRev *rev, CEdit *edit);
+	void				ClickRevButton(CMenuButton *button,GitRev *rev, CACEdit *edit);
 
 	void				EnableInputControl(bool b=true);
 
@@ -166,8 +166,8 @@ private:
 	static BOOL			m_bAscending;
 	static int			m_nSortedColumn;
 
-	CEdit				m_ctrRev1Edit;
-	CEdit				m_ctrRev2Edit;
+	CACEdit				m_ctrRev1Edit;
+	CACEdit				m_ctrRev2Edit;
 
 	CString				m_FileListText;
 public:

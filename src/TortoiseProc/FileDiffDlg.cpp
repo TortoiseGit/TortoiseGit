@@ -157,6 +157,9 @@ BOOL CFileDiffDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CString temp;
 
+	this->m_ctrRev1Edit.Init();
+	this->m_ctrRev2Edit.Init();
+
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SWITCHLEFTRIGHT, IDS_FILEDIFF_SWITCHLEFTRIGHT_TT);
 
@@ -1090,7 +1093,7 @@ void CFileDiffDlg::OnBnClickedRev1btn()
 
 }
 
-void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CEdit *edit)
+void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edit)
 {
 	int entry=button->GetCurrentEntry();
 	if(entry == 0) /* Browse Refence*/
