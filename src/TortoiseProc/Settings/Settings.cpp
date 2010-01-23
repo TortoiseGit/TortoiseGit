@@ -50,6 +50,9 @@ void CSettings::AddPropPages()
 	m_pProgsMergePage = new CSettingsProgsMerge();
 	m_pProgsUniDiffPage = new CSettingsProgsUniDiff();
 	m_pLookAndFeelPage = new CSetLookAndFeelPage();
+	
+	m_pExtMenu	= new CSetExtMenu();
+
 	m_pDialogsPage = new CSetDialogs();
 	m_pMiscPage = new CSetMisc();
 	m_pRevisionGraphPage = new CSettingsRevisionGraph();
@@ -66,6 +69,8 @@ void CSettings::AddPropPages()
 	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
 	m_pBugtraqConfig = new CSettingsBugtraqConfig(m_CmdPath.GetWinPath());
 
+
+	SetPageIcon(m_pExtMenu,m_pExtMenu->GetIconID());
 
 	SetPageIcon(m_pMainPage, m_pMainPage->GetIconID());
 	SetPageIcon(m_pOverlayPage, m_pOverlayPage->GetIconID());
@@ -101,6 +106,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pProgsMergePage);
 	AddPage(m_pProgsUniDiffPage);
 	AddPage(m_pLookAndFeelPage);
+	AddPage(m_pExtMenu);
 	AddPage(m_pDialogsPage);
 	AddPage(m_pMiscPage);
 	AddPage(m_pRevisionGraphPage);
@@ -152,6 +158,7 @@ void CSettings::RemovePropPages()
 	delete m_pGitConfig;
 	delete m_pGitRemote;
 	delete m_pBugtraqConfig;
+	delete m_pExtMenu;
 
 }
 
@@ -182,6 +189,7 @@ void CSettings::HandleRestart()
 	restart |= m_pGitConfig->GetRestart();
 	restart |= m_pGitRemote->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
+	restart |= m_pExtMenu->GetRestart();
 
 	if (restart & ISettingsPropPage::Restart_System)
 	{

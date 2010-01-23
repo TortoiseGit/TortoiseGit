@@ -608,7 +608,7 @@ private:
 		BOOL bHasAdminDir;
 		stdstring sProjectRoot;
 	};
-
+public:
 	CRegStdWORD cachetype;
 	CRegStdWORD blockstatus;
 	CRegStdWORD langid;

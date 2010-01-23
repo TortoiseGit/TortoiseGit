@@ -1624,6 +1624,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Commands\SetExtMenu.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SetLookAndFeelPage.cpp"
 					>
 				</File>

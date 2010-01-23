@@ -26,6 +26,7 @@
 #include "MessageBox.h"
 #include "XPTheme.h"
 #include "MenuInfo.h"
+#include "ShellCache.h"
 
 extern MenuInfo menuInfo[];
 
@@ -88,8 +89,9 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	: ISettingsPropPage(CSetLookAndFeelPage::IDD)
 	, m_bBlock(false)
 {
-	m_regTopmenu = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"), MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
-	m_regTopmenuhigh = CRegDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
+	ShellCache cache;
+	m_regTopmenu = cache.menulayoutlow;
+	m_regTopmenuhigh = cache.menulayouthigh;
 
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
@@ -173,9 +175,11 @@ BOOL CSetLookAndFeelPage::PreTranslateMessage(MSG* pMsg)
 BOOL CSetLookAndFeelPage::OnApply()
 {
 	UpdateData();
-    Store ((DWORD)(m_topmenu & 0xFFFFFFFF),	m_regTopmenu);
-    Store ((DWORD)(m_topmenu >> 32), m_regTopmenuhigh);
 
+	m_regTopmenu = m_topmenu & 0xFFFFFFFF;
+	m_regTopmenuhigh = (m_topmenu >> 32);
+	
+	m_regTopmenu.getErrorString();
 	m_sNoContextPaths.Replace(_T("\r"), _T(""));
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
 		m_sNoContextPaths += _T("\n");
@@ -184,20 +188,6 @@ BOOL CSetLookAndFeelPage::OnApply()
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
-}
-
-void CSetLookAndFeelPage::InsertItem(UINT nTextID, UINT nIconID, unsigned __int64 dwFlags)
-{
-	HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
-		MAKEINTRESOURCE(nIconID),
-		IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT ));
-	int nImage = m_imgList.Add(hIcon);
-	CString temp;
-	temp.LoadString(nTextID);
-	CStringUtils::RemoveAccelerators(temp);
-	int nIndex = m_cMenuList.GetItemCount();
-	m_cMenuList.InsertItem(nIndex, temp, nImage);
-	m_cMenuList.SetCheck(nIndex, !!(m_topmenu & dwFlags));
 }
 
 void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
@@ -222,3 +212,119 @@ void CSetLookAndFeelPage::OnEnChangeNocontextpaths()
 	SetModified();
 }
 
+
+
+// Set Extmenu class
+#include "SetExtMenu.h"
+
+IMPLEMENT_DYNAMIC(CSetExtMenu, ISettingsPropPage)
+CSetExtMenu::CSetExtMenu()
+	: ISettingsPropPage(CSetExtMenu::IDD)
+{
+	ShellCache shell;
+
+	m_regExtmenu = shell.menuextlow;
+	m_regExtmenuhigh = shell.menuexthigh;
+
+	m_extmenu = unsigned __int64(DWORD(m_regExtmenuhigh))<<32;
+	m_extmenu |= unsigned __int64(DWORD(m_regExtmenu));
+
+}
+
+CSetExtMenu::~CSetExtMenu()
+{
+}
+
+void CSetExtMenu::DoDataExchange(CDataExchange* pDX)
+{
+	ISettingsPropPage::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_MENULIST, m_cMenuList);
+}
+
+
+BEGIN_MESSAGE_MAP(CSetExtMenu, ISettingsPropPage)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
+	ON_BN_CLICKED(IDC_GETLOCKTOP, OnChange)
+END_MESSAGE_MAP()
+
+
+BOOL CSetExtMenu::OnInitDialog()
+{
+	ISettingsPropPage::OnInitDialog();
+
+	m_tooltips.Create(this);
+	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
+	//m_tooltips.AddTool(IDC_GETLOCKTOP, IDS_SETTINGS_GETLOCKTOP_TT);
+	//m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
+
+	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
+
+	m_cMenuList.DeleteAllItems();
+	int c = ((CHeaderCtrl*)(m_cMenuList.GetDlgItem(0)))->GetItemCount()-1;
+	while (c>=0)
+		m_cMenuList.DeleteColumn(c--);
+	m_cMenuList.InsertColumn(0, _T(""));
+
+	CXPTheme theme;
+	theme.SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", NULL);
+
+	m_cMenuList.SetRedraw(false);
+
+	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
+
+	m_bBlock = true;
+
+	InsertMenuItemToList(&m_cMenuList,&m_imgList);
+	SetMenuItemCheck(&m_cMenuList,m_extmenu);
+
+	m_bBlock = false;
+
+	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
+	int mincol = 0;
+	int maxcol = ((CHeaderCtrl*)(m_cMenuList.GetDlgItem(0)))->GetItemCount()-1;
+	int col;
+	for (col = mincol; col <= maxcol; col++)
+	{
+		m_cMenuList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
+	}
+	m_cMenuList.SetRedraw(true);
+
+	UpdateData(FALSE);
+
+	return TRUE;
+}
+
+BOOL CSetExtMenu::PreTranslateMessage(MSG* pMsg)
+{
+	m_tooltips.RelayEvent(pMsg);
+	return ISettingsPropPage::PreTranslateMessage(pMsg);
+}
+
+BOOL CSetExtMenu::OnApply()
+{
+	UpdateData();
+
+	m_regExtmenu = (DWORD)(m_extmenu & 0xFFFFFFFF);
+	m_regExtmenuhigh = (DWORD)(m_extmenu >> 32);
+
+	SetModified(FALSE);
+	return ISettingsPropPage::OnApply();
+}
+
+void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
+{
+	if( m_bBlock )
+		return;
+
+	SetModified(TRUE);
+	if (m_cMenuList.GetItemCount() > 0)
+	{
+		m_extmenu = GetMenuListMask(&m_cMenuList);
+	}
+	*pResult = 0;
+}
+
+void CSetExtMenu::OnChange()
+{
+	SetModified();
+}

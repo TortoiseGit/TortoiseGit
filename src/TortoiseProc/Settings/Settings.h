@@ -43,6 +43,7 @@
 #include "SettingGitConfig.h"
 #include "SettingGitRemote.h"
 #include "SettingsBugtraqConfig.h"
+#include "SetExtMenu.h"
 
 using namespace TreePropSheet;
 
@@ -92,6 +93,8 @@ private:
 	CSettingGitConfig *		m_pGitConfig;
 	CSettingGitRemote *		m_pGitRemote;
 	CSettingsBugtraqConfig * m_pBugtraqConfig;
+
+	CSetExtMenu	*			m_pExtMenu;
 
 	HICON					m_hIcon;
 public:
