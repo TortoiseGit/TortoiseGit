@@ -27,6 +27,7 @@ public:
 	CString m_CurrentBranch;
 public:
 	CRefLogList m_RefList;
+	CString m_SelectedHash;
 public:
 	afx_msg void OnBnClickedOk();
 };

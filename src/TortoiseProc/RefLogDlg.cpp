@@ -87,6 +87,20 @@ BOOL CRefLogDlg::OnInitDialog()
 void CRefLogDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
+	if (m_RefList.GetSelectedCount() == 1)
+	{
+		// get the selected row
+		POSITION pos = m_RefList.GetFirstSelectedItemPosition();
+		int selIndex = m_RefList.GetNextSelectedItem(pos);
+		if (selIndex < m_RefList.m_arShownList.GetCount())
+		{
+			// all ok, pick up the revision
+			GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_RefList.m_arShownList.GetAt(selIndex));
+			// extract the hash
+			m_SelectedHash = pLogEntry->m_CommitHash;
+		}
+	}
+
 	OnOK();
 }
 

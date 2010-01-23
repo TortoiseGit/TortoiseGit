@@ -529,7 +529,7 @@ CString CTGitPath::GetRootPathString() const
 
 CString CTGitPath::GetFilename() const
 {
-	ATLASSERT(!IsDirectory());
+	//ATLASSERT(!IsDirectory());
 	return GetFileOrDirectoryName();
 }
 

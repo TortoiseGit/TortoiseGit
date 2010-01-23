@@ -34,6 +34,7 @@
 #include "CommonResource.h"
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
+#include "RefLogDlg.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -287,6 +288,7 @@ UINT CFileDiffDlg::DiffThread()
 	bool bSuccess = true;
 	RefreshCursor();
 	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
+	m_cFileList.DeleteAllItems();
 	m_arFileList.Clear();
 #if 0
 	if (m_bDoPegDiff)
@@ -1112,9 +1114,27 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CEdit *edit)
 
 	if(entry == 2) /*RefLog*/
 	{
+		CRefLogDlg dlg;
+		if(dlg.DoModal() == IDOK)
+		{
+			if(FillRevFromString(rev,dlg.m_SelectedHash))
+				return;
+
+			edit->SetWindowText(dlg.m_SelectedHash);
+
+		}else
+			return;
+		
 	}
 
 	SetURLLabels();
+
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	if (AfxBeginThread(DiffThreadEntry, this)==NULL)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
 }
 
 void CFileDiffDlg::OnBnClickedRev2btn()

@@ -129,6 +129,7 @@ CGit::CGit(void)
 	GetCurrentDirectory(MAX_DIRBUFFER,m_CurrentDir.GetBuffer(MAX_DIRBUFFER));
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
+	m_GitDiff=0;
 	CheckMsysGitDir();
 }
 
