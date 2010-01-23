@@ -290,6 +290,7 @@ UINT CFileDiffDlg::DiffThread()
 	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
 	m_cFileList.DeleteAllItems();
 	m_arFileList.Clear();
+	EnableInputControl(false);
 #if 0
 	if (m_bDoPegDiff)
 	{
@@ -334,6 +335,7 @@ UINT CFileDiffDlg::DiffThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	InvalidateRect(NULL);
 	RefreshCursor();
+	EnableInputControl(true);
 	return 0;
 }
 
@@ -358,6 +360,17 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 		m_cFileList.SetItemText(index, 3, ((CTGitPath*)fd)->m_StatDel);
 	}
 	return ret;
+}
+
+void CFileDiffDlg::EnableInputControl(bool b)
+{
+	this->m_ctrRev1Edit.EnableWindow(b);
+	this->m_ctrRev2Edit.EnableWindow(b);
+	this->m_cRev1Btn.EnableWindow(b);
+	this->m_cRev2Btn.EnableWindow(b);
+	m_cFilter.EnableWindow(b);
+	m_SwitchButton.EnableWindow(b);
+	
 }
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)

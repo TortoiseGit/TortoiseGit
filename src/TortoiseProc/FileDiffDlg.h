@@ -103,6 +103,8 @@ protected:
 	
 	void				ClickRevButton(CMenuButton *button,GitRev *rev, CEdit *edit);
 
+	void				EnableInputControl(bool b=true);
+
 	int					FillRevFromString(GitRev *rev, CString str)
 	{
 		GitRev gitrev;
