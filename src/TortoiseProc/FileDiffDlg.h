@@ -29,7 +29,7 @@
 #include "FilterEdit.h"
 #include "Tooltip.h"
 #include "ProgressDlg.h"
-
+#include "MenuButton.h"
 
 #define IDT_FILTER		101
 
@@ -110,8 +110,8 @@ private:
 
 	CToolTips			m_tooltips;
 
-	CButton				m_cRev1Btn;
-	CButton				m_cRev2Btn;
+	CMenuButton			m_cRev1Btn;
+	CMenuButton			m_cRev2Btn;
 	CFilterEdit			m_cFilter;
 
 	CXPImageButton		m_SwitchButton;
@@ -146,4 +146,16 @@ private:
 
 	static BOOL			m_bAscending;
 	static int			m_nSortedColumn;
+
+	CEdit				m_ctrRev1Edit;
+	CEdit				m_ctrRev2Edit;
+
+	CString				m_FileListText;
+public:
+	CString				m_strRev1;
+	CString				m_strRev2;
+
+public:
+	afx_msg void OnEnChangeRev1edit();
+	afx_msg void OnEnChangeRev2edit();
 };

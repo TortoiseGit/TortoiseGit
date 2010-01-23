@@ -65,6 +65,8 @@ void CFileDiffDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REV1BTN, m_cRev1Btn);
 	DDX_Control(pDX, IDC_REV2BTN, m_cRev2Btn);
 	DDX_Control(pDX, IDC_FILTER, m_cFilter);
+	DDX_Control(pDX, IDC_REV1EDIT, m_ctrRev1Edit);
+	DDX_Control(pDX, IDC_REV2EDIT, m_ctrRev2Edit);
 }
 
 
@@ -83,6 +85,8 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 	ON_EN_CHANGE(IDC_FILTER, &CFileDiffDlg::OnEnChangeFilter)
 	ON_WM_TIMER()
+	ON_EN_CHANGE(IDC_REV1EDIT, &CFileDiffDlg::OnEnChangeRev1edit)
+	ON_EN_CHANGE(IDC_REV2EDIT, &CFileDiffDlg::OnEnChangeRev2edit)
 END_MESSAGE_MAP()
 
 
@@ -199,15 +203,39 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_SWITCHLEFTRIGHT, TOP_RIGHT);
 	AddAnchor(IDC_FIRSTURL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_REV1BTN, TOP_RIGHT);
-	AddAnchor(IDC_DIFFSTATIC2, TOP_LEFT, TOP_RIGHT);
+	//AddAnchor(IDC_DIFFSTATIC2, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SECONDURL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_REV2BTN, TOP_RIGHT);
 	AddAnchor(IDC_FILTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_REV1GROUP,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_REV2GROUP,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_REV1EDIT,TOP_LEFT);
+	AddAnchor(IDC_REV2EDIT,TOP_LEFT);
 	
-	SetURLLabels();
-
 	EnableSaveRestore(_T("FileDiffDlg"));
+
+	if(this->m_strRev1.IsEmpty())
+		this->m_ctrRev1Edit.SetWindowText(this->m_rev1.m_CommitHash.ToString());
+	else
+	{
+		if(m_rev1.GetCommit(this->m_strRev1))
+			this->m_FileListText+=this->m_strRev1 + _T(" is wrong");
+
+		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
+	}
+
+	if(this->m_strRev2.IsEmpty())
+		this->m_ctrRev2Edit.SetWindowText(this->m_rev2.m_CommitHash.ToString());
+	else
+	{
+		if(m_rev2.GetCommit(this->m_strRev2))
+			this->m_FileListText+=this->m_strRev2 + _T(" is wrong");
+
+		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
+	}
+
+	SetURLLabels();
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	if (AfxBeginThread(DiffThreadEntry, this)==NULL)
@@ -215,6 +243,14 @@ BOOL CFileDiffDlg::OnInitDialog()
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
+
+	this->m_cRev1Btn.AddEntry(_T("RefBrowse"));
+	this->m_cRev1Btn.AddEntry(_T("Log"));
+	this->m_cRev1Btn.AddEntry(_T("RefLog"));
+
+	this->m_cRev2Btn.AddEntry(_T("RefBrowse"));
+	this->m_cRev2Btn.AddEntry(_T("Log"));
+	this->m_cRev2Btn.AddEntry(_T("RefLog"));
 
 	// Start with focus on file list
 	GetDlgItem(IDC_FILELIST)->SetFocus();
@@ -876,6 +912,14 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 	GitRev rev = m_rev1;
 	m_rev1 = m_rev2;
 	m_rev2 = rev;
+
+	CString str1,str2;
+	this->m_ctrRev1Edit.GetWindowText(str1);
+	this->m_ctrRev2Edit.GetWindowText(str2);
+
+	this->m_ctrRev1Edit.SetWindowText(str2);
+	this->m_ctrRev2Edit.SetWindowText(str1);
+
 	SetURLLabels();
 
 }
@@ -883,11 +927,11 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 void CFileDiffDlg::SetURLLabels()
 {
 
-	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.ToString().Left(6));
-	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.ToString().Left(6));
+//	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.ToString().Left(6));
+//	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.ToString().Left(6));
 
-	SetDlgItemText(IDC_FIRSTURL, m_rev1.m_Subject+CString(_T("\r\n"))+m_rev1.m_CommitHash);
-	SetDlgItemText(IDC_SECONDURL,m_rev2.m_Subject+CString(_T("\r\n"))+m_rev2.m_CommitHash);
+	SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.m_Subject);
+	SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.m_Subject);
 
 	m_tooltips.AddTool(IDC_FIRSTURL,  
 		CAppUtils::FormatDateAndTime( m_rev1.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev1.m_AuthorName);
@@ -1159,3 +1203,23 @@ void CFileDiffDlg::CopySelectionToClipboard()
 	CStringUtils::WriteAsciiStringToClipboard(sTextForClipboard);
 }
 
+
+void CFileDiffDlg::OnEnChangeRev1edit()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+void CFileDiffDlg::OnEnChangeRev2edit()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}

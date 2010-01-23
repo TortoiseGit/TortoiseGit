@@ -32,7 +32,7 @@ bool DiffCommand::Execute()
 //	bool bBlame = !!parser.HasKey(_T("blame"));
 	if (path2.IsEmpty())
 	{
-		if (cmdLinePath.IsDirectory())
+		if (this->orgCmdLinePath.IsDirectory())
 		{
 			CChangedDlg dlg;
 			dlg.m_pathList = CTGitPathList(cmdLinePath);

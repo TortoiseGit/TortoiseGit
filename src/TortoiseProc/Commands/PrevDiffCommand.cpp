@@ -24,15 +24,20 @@
 #include "ChangedDlg.h"
 #include "LogDlgHelper.h"
 #include "CommonResource.h"
+#include "FileDiffDlg.h"
 
 bool PrevDiffCommand::Execute()
 {
 	bool bRet = false;
 	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
-	if (cmdLinePath.IsDirectory())
+	if (this->orgCmdLinePath.IsDirectory())
 	{
-		CChangedDlg dlg;
-		dlg.m_pathList = CTGitPathList(cmdLinePath);
+		CFileDiffDlg dlg;
+		
+		dlg.m_strRev1 = _T("HEAD") ;
+		dlg.m_strRev2 = _T("HEAD~1");
+
+		//dlg.m_pathList = CTGitPathList(cmdLinePath);
 		dlg.DoModal();
 		bRet = true;
 	}

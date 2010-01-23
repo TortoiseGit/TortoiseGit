@@ -404,3 +404,33 @@ void GitRev::DbgPrint()
 	}
 	TRACE(_T("\n"));
 }
+
+int GitRev::GetCommitFromHash(CGitHash &hash)
+{
+	g_Git.CheckAndInitDll();
+
+	GIT_COMMIT commit;
+	if(git_get_commit_from_hash( &commit, hash.m_hash))
+		return -1;
+
+	this->ParserFromCommit(&commit);
+	git_free_commit(&commit);
+
+	this->m_CommitHash=hash;
+
+	return 0;
+	
+}
+
+int GitRev::GetCommit(CString &refname)
+{
+	g_Git.CheckAndInitDll();
+	CStringA rev;
+	rev= CUnicodeUtils::GetUTF8(refname);
+	GIT_HASH sha;
+
+	if(git_get_sha1(rev.GetBuffer(),sha))
+		return -1;
+
+	GetCommitFromHash(CGitHash((char*)sha));
+}
