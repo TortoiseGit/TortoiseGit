@@ -100,6 +100,23 @@ protected:
 	void				SetURLLabels();
 	void				Filter(CString sFilterText);
 	void				CopySelectionToClipboard();
+	
+	void				ClickRevButton(CMenuButton *button,GitRev *rev, CEdit *edit);
+
+	int					FillRevFromString(GitRev *rev, CString str)
+	{
+		GitRev gitrev;
+		if(gitrev.GetCommit(str))
+		{
+			CString msg;
+			msg.Format(_T("Reference %s is wrong"),str);
+			CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return -1;
+		}
+		*rev=gitrev;
+		return 0;
+	}
+
 private:
 	static UINT			DiffThreadEntry(LPVOID pVoid);
 	UINT				DiffThread();

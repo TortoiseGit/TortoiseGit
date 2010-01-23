@@ -32,6 +32,8 @@
 #include ".\filediffdlg.h"
 #include "gitdiff.h"
 #include "CommonResource.h"
+#include "BrowseRefsDlg.h"
+#include "LogDlg.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -1068,33 +1070,56 @@ bool CFileDiffDlg::SortCompare(const CTGitPath*& Data1, const CTGitPath*& Data2)
 
 void CFileDiffDlg::OnBnClickedRev1btn()
 {
-#if 0
-	if (m_bThreadRunning)
-		return;	// do nothing as long as the thread is still running
+	
+	ClickRevButton(&this->m_cRev1Btn,&this->m_rev1, &this->m_ctrRev1Edit);
 
-	// show a dialog where the user can enter a revision
-	CRevisionDlg dlg(this);
-	dlg.AllowWCRevs(false);
-	*((GitRev*)&dlg) = m_rev1;
+}
 
-	if (dlg.DoModal() == IDOK)
+void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CEdit *edit)
+{
+	int entry=button->GetCurrentEntry();
+	if(entry == 0) /* Browse Refence*/
 	{
-		m_rev1 = dlg;
-		m_cRev1Btn.SetWindowText(m_rev1.ToString());
-		m_cFileList.DeleteAllItems();
-		// start a new thread to re-fetch the diff
-		InterlockedExchange(&m_bThreadRunning, TRUE);
-		if (AfxBeginThread(DiffThreadEntry, this)==NULL)
 		{
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			CString str = CBrowseRefsDlg::PickRef();
+			if(str.IsEmpty())
+				return;
+			
+			if(FillRevFromString(rev,str))
+				return;
+
+			edit->SetWindowText(str);
 		}
 	}
-#endif
+
+	if(entry == 1) /*Log*/
+	{
+		CLogDlg dlg;
+		dlg.SetSelect(true);
+		if(dlg.DoModal() == IDOK)
+		{
+			if( dlg.GetSelectedHash().IsEmpty() )
+				return;
+
+			if(FillRevFromString(rev,dlg.GetSelectedHash()))
+				return;
+
+			edit->SetWindowText(dlg.GetSelectedHash());
+
+		}else
+			return;
+	}
+
+	if(entry == 2) /*RefLog*/
+	{
+	}
+
+	SetURLLabels();
 }
 
 void CFileDiffDlg::OnBnClickedRev2btn()
 {
+	ClickRevButton(&this->m_cRev2Btn,&this->m_rev2, &this->m_ctrRev2Edit);
 #if 0
 	if (m_bThreadRunning)
 		return;	// do nothing as long as the thread is still running
