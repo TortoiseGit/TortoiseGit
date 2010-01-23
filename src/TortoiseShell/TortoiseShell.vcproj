@@ -487,6 +487,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MenuInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\PathUtils.cpp"
 				>
 			</File>
