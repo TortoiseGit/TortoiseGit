@@ -54,7 +54,7 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 //	{ ShellMenuUpdate,					MENUSUBUPDATE,			IDI_UPDATE,				IDS_MENUUPDATE,				IDS_MENUDESCUPDATE,				
 //	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
-	{ ShellSeparator, ITEMIS_GITSVN, 0, 0, 0, 0, 0, 0, 0},
+	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
 	{ ShellMenuCommit,						MENUCOMMIT,			IDI_COMMIT,				IDS_MENUCOMMIT,				IDS_MENUDESCCOMMIT,
 	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
@@ -73,9 +73,13 @@ CShellExt::MenuInfo CShellExt::menuInfo[] =
 	{ ShellMenuDiff,						MENUDIFF,			IDI_DIFF,				IDS_MENUDIFF,				IDS_MENUDESCDIFF,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_NORMAL, ITEMIS_TWO, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuPrevDiff,					MENUPREVDIFF,			IDI_DIFF,				IDS_MENUPREVDIFF,			IDS_MENUDESCPREVDIFF,
+	{ ShellMenuPrevDiff,					MENUPREVDIFF,			IDI_DIFF,			IDS_MENUPREVDIFF,			IDS_MENUDESCPREVDIFF,
 	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER, 0, 0, 0, 0, 0, 0 },
 
+	{ ShellMenuDiffTwo,						MENUDIFFTWO,		IDI_DIFF,				IDS_MENUDIFFTWO,			IDS_MENUDESCDIFFTWO,
+	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
+
+	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 //	{ ShellMenuUrlDiff,						MENUURLDIFF,		IDI_DIFF,				IDS_MENUURLDIFF,			IDS_MENUDESCURLDIFF,
 //	ITEMIS_INSVN|ITEMIS_ONLYONE|ITEMIS_EXTENDED, 0, ITEMIS_FOLDERINSVN|ITEMIS_EXTENDED|ITEMIS_ONLYONE, 0, 0, 0, 0, 0 },
 
@@ -1334,8 +1338,9 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 			{
 				if (bInsertMenu)
 				{
+					bool bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
 					// insert a separator
-					if ((bMenuEntryAdded)&&(bAddSeparator))
+					if ((bMenuEntryAdded)&&(bAddSeparator)&&(!bIsTop))
 					{
 						bAddSeparator = false;
 						bMenuEntryAdded = false;
@@ -1735,6 +1740,14 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuUrlDiff:
 				svnCmd += _T("urldiff /path:\"");
+				if (files_.size() == 1)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\"");
+				break;
+			case ShellMenuDiffTwo:
+				svnCmd += _T("diffcommits /path:\"");
 				if (files_.size() == 1)
 					svnCmd += files_.front();
 				else

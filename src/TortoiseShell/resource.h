@@ -206,6 +206,8 @@
 #define IDS_MENUSTASHPOP                341
 #define IDS_MENUSVNIGNORE               342
 #define IDS_MENUSVNIGNORE_DESC          343
+#define IDS_MENUDIFFTWO					344
+#define IDS_MENUDESCDIFFTWO				345
 #define IDC_REVISION                    1001
 #define IDC_HEAD_HASH                   1001
 #define IDC_LOCKED                      1002

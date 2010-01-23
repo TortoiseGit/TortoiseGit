@@ -115,6 +115,7 @@ protected:
 		ShellMenuDiff,
 		ShellMenuPrevDiff,
 		ShellMenuUrlDiff,
+		ShellMenuDiffTwo,
 		ShellMenuDropCopyAdd,
 		ShellMenuDropMoveAdd,
 		ShellMenuDropMove,
