@@ -86,6 +86,11 @@ public:
 		excontextticker = cachetypeticker;
 		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
 		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
+
+		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUDELUNVERSIONED|MENUSUBSYNC|MENUCREATEPATCH);
+		menuextlow	= CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
+		menuexthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
+
 		menumasklow_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumaskhigh_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumasklow_cu = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);
@@ -176,6 +181,20 @@ public:
 		temp |= unsigned __int64(DWORD(menulayoutlow));
 		return temp;
 	}
+
+	unsigned __int64 GetMenuExt()
+	{
+		if ((GetTickCount() - REGISTRYTIMEOUT) > exticker)
+		{
+			exticker = GetTickCount();
+			menuextlow.read();
+			menuexthigh.read();
+		}
+		unsigned __int64 temp = unsigned __int64(DWORD(menuexthigh))<<32;
+		temp |= unsigned __int64(DWORD(menuextlow));
+		return temp;
+	}
+
 	unsigned __int64 GetMenuMask()
 	{
 		if ((GetTickCount() - REGISTRYTIMEOUT) > menumaskticker)
@@ -603,8 +622,10 @@ private:
 	CRegStdWORD drivefloppy;
 	CRegStdWORD driveram;
 	CRegStdWORD driveunknown;
-	CRegStdWORD menulayoutlow;
+	CRegStdWORD menulayoutlow; /* Fist level mask */
 	CRegStdWORD menulayouthigh;
+	CRegStdWORD menuextlow;	   /* ext menu mask */
+	CRegStdWORD menuexthigh;
 	CRegStdWORD simplecontext;
 	CRegStdWORD menumasklow_lm;
 	CRegStdWORD menumaskhigh_lm;
@@ -628,6 +649,7 @@ private:
 	DWORD driveticker;
 	DWORD drivetypeticker;
 	DWORD layoutticker;
+	DWORD exticker;
 	DWORD menumaskticker;
 	DWORD langticker;
 	DWORD blockstatusticker;
