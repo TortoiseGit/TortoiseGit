@@ -1596,6 +1596,10 @@
 				Name="setting"
 				>
 				<File
+					RelativePath="..\TortoiseShell\MenuInfo.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SetBugTraq.cpp"
 					>
 				</File>

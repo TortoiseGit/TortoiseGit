@@ -25,6 +25,63 @@
 #include ".\setlookandfeelpage.h"
 #include "MessageBox.h"
 #include "XPTheme.h"
+#include "MenuInfo.h"
+
+extern MenuInfo menuInfo[];
+
+void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
+{
+	int i=0;
+	while(menuInfo[i].command != ShellMenuLastEntry)
+	{
+		if(menuInfo[i].command != ShellSeparator &&
+		   menuInfo[i].command != ShellSubMenu &&
+		   menuInfo[i].command != ShellSubMenuFile &&
+		   menuInfo[i].command != ShellSubMenuFolder &&
+		   menuInfo[i].command != ShellSubMenuLink &&
+		   menuInfo[i].command != ShellSubMenuMultiple)
+		{
+			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
+					MAKEINTRESOURCE(menuInfo[i].iconID),IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT ));
+
+			int nImage = imagelist -> Add(hIcon);
+
+			CString temp;
+			temp.LoadString(menuInfo[i].menuTextID);
+			CStringUtils::RemoveAccelerators(temp);
+		
+			int nIndex = list->GetItemCount();
+			list->InsertItem(nIndex,temp,nImage);
+			list->SetItemData(nIndex,i);
+		}
+		i++;
+	}
+}
+
+void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask)
+{
+	for(int i=0;i<list->GetItemCount();i++)
+	{
+		int data = list->GetItemData(i);
+		
+		list->SetCheck(i,(menuInfo[data].menuID & mask) == menuInfo[data].menuID);
+	}
+}
+
+unsigned __int64 GetMenuListMask(CListCtrl *list)
+{
+	unsigned __int64 mask = 0;
+
+	for(int i=0;i<list->GetItemCount();i++)
+	{		
+		if(list->GetCheck(i))
+		{
+			int data = list->GetItemData(i);
+			mask |= menuInfo[data].menuID ;
+		}
+	}
+	return mask;
+}
 
 IMPLEMENT_DYNAMIC(CSetLookAndFeelPage, ISettingsPropPage)
 CSetLookAndFeelPage::CSetLookAndFeelPage()
@@ -86,43 +143,10 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
-	InsertItem(IDS_MENUCLONE,IDI_CLONE, MENUCLONE);
-	InsertItem(IDS_MENUSYNC, IDI_RELOCATE, MENUSYNC);
-	InsertItem(IDS_MENUPULL, IDI_PULL, MENUPULL);
-	InsertItem(IDS_MENUFETCH, IDI_PULL, MENUFETCH);
-	InsertItem(IDS_MENUPUSH, IDI_PUSH, MENUPUSH);
-	InsertItem(IDS_MENUCOMMIT, IDI_COMMIT, MENUCOMMIT);
-	InsertItem(IDS_MENUDIFF, IDI_DIFF, MENUDIFF);
-	InsertItem(IDS_MENUPREVDIFF, IDI_DIFF, MENUPREVDIFF);
-//	InsertItem(IDS_MENUURLDIFF, IDI_DIFF, MENUURLDIFF);
-	InsertItem(IDS_MENULOG, IDI_LOG, MENULOG);
-//	InsertItem(IDS_MENUREPOBROWSE, IDI_REPOBROWSE, MENUREPOBROWSE);
-	InsertItem(IDS_MENUSHOWCHANGED, IDI_SHOWCHANGED, MENUSHOWCHANGED);
-//	InsertItem(IDS_MENUREVISIONGRAPH, IDI_REVISIONGRAPH, MENUREVISIONGRAPH);
-	InsertItem(IDS_MENUCONFLICT, IDI_CONFLICT, MENUCONFLICTEDITOR);
-//	InsertItem(IDS_MENURESOLVE, IDI_RESOLVE, MENURESOLVE);
-//	InsertItem(IDS_MENUUPDATEEXT, IDI_UPDATE, MENUUPDATEEXT);
-	InsertItem(IDS_MENURENAME, IDI_RENAME, MENURENAME);
-	InsertItem(IDS_MENUREMOVE, IDI_DELETE, MENUREMOVE);
-	InsertItem(IDS_MENUREVERT, IDI_REVERT, MENUREVERT);
-	InsertItem(IDS_MENUDELUNVERSIONED, IDI_DELUNVERSIONED, MENUDELUNVERSIONED);
-	InsertItem(IDS_MENUCLEANUP, IDI_CLEANUP, MENUCLEANUP);
-//	InsertItem(IDS_MENU_LOCK, IDI_LOCK, MENULOCK);
-//	InsertItem(IDS_MENU_UNLOCK, IDI_UNLOCK, MENUUNLOCK);
-	InsertItem(IDS_MENUBRANCH, IDI_COPY, MENUCOPY);
-	InsertItem(IDS_MENUSWITCH, IDI_SWITCH, MENUSWITCH);
-	InsertItem(IDS_MENUMERGE, IDI_MERGE, MENUMERGE);
-	InsertItem(IDS_MENUEXPORT, IDI_EXPORT, MENUEXPORT);
-//	InsertItem(IDS_MENURELOCATE, IDI_RELOCATE, MENURELOCATE);
-	InsertItem(IDS_MENUCREATEREPOS, IDI_CREATEREPOS, MENUCREATEREPOS);
-	InsertItem(IDS_MENUADD, IDI_ADD, MENUADD);
-//	InsertItem(IDS_MENUIMPORT, IDI_IMPORT, MENUIMPORT);
-	InsertItem(IDS_MENUBLAME, IDI_BLAME, MENUBLAME);
-	InsertItem(IDS_MENUIGNORE, IDI_IGNORE, MENUIGNORE);
-	InsertItem(IDS_MENUCREATEPATCH, IDI_CREATEPATCH, MENUCREATEPATCH);
-	InsertItem(IDS_MENUAPPLYPATCH, IDI_PATCH, MENUAPPLYPATCH);
-	InsertItem(IDS_MENUPROPERTIES, IDI_PROPERTIES, MENUPROPERTIES);
-//	InsertItem(IDS_MENUCLIPPASTE, IDI_CLIPPASTE, MENUCLIPPASTE);
+	
+	InsertMenuItemToList(&m_cMenuList,&m_imgList);
+	SetMenuItemCheck(&m_cMenuList,m_topmenu);
+
 	m_bBlock = false;
 
 	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
@@ -183,45 +207,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
 	{
-		int i=0;
-		m_topmenu = 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLONE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUSYNC : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPULL : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUFETCH : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPUSH : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCOMMIT : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUDIFF : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPREVDIFF : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUURLDIFF : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENULOG : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREPOBROWSE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUSHOWCHANGED : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREVISIONGRAPH : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCONFLICTEDITOR : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURESOLVE : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUPDATEEXT : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURENAME : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREMOVE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUREVERT : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUDELUNVERSIONED : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLEANUP : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENULOCK : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUUNLOCK : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCOPY : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUSWITCH : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUMERGE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUEXPORT : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENURELOCATE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCREATEREPOS : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUADD : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUIMPORT : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUBLAME : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUIGNORE : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCREATEPATCH : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUAPPLYPATCH : 0;
-		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUPROPERTIES : 0;
-//		m_topmenu |= m_cMenuList.GetCheck(i++) ? MENUCLIPPASTE : 0;
+		m_topmenu = GetMenuListMask(&m_cMenuList);
 	}
 	*pResult = 0;
 }
