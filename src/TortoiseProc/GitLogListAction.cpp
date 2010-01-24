@@ -48,6 +48,7 @@
 #include "FileDiffDlg.h"
 #include "CommitDlg.h"
 #include "RebaseDlg.h"
+#include "GitDiff.h"
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
@@ -161,9 +162,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				CFileDiffDlg dlg;
-				dlg.SetDiff(NULL,*r1,*r2);
-				dlg.DoModal();
+				CGitDiff::DiffCommit(this->m_Path, r1,r2);
 				
 			}
 			break;
@@ -173,9 +172,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			{
 				GitRev * r1 = &m_wcRev;
 				GitRev * r2 = pSelLogEntry;
-				CFileDiffDlg dlg;
-				dlg.SetDiff(NULL,*r1,*r2);
-				dlg.DoModal();
+
+				CGitDiff::DiffCommit(this->m_Path, r1,r2);
 
 				//user clicked on the menu item "compare with working copy"
 				//if (PromptShown())
@@ -198,8 +196,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				if(pSelLogEntry->m_ParentHash.size()>0)
 				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
 				{
-					dlg.SetDiff(NULL,pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[0].ToString());
-					dlg.DoModal();
+					CGitDiff::DiffCommit(this->m_Path, pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[0].ToString());
+
 				}else
 				{
 					CMessageBox::Show(NULL,_T("No previous version"),_T("TortoiseGit"),MB_OK);	

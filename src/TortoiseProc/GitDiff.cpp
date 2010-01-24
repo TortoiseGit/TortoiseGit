@@ -5,6 +5,7 @@
 #include "gittype.h"
 #include "resource.h"
 #include "MessageBox.h"
+#include "FileDiffDlg.h"
 
 CGitDiff::CGitDiff(void)
 {
@@ -230,3 +231,30 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 	return 0;
 }
 
+int CGitDiff::DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2)
+{
+	if( path.GetWinPathString().IsEmpty() || path.IsDirectory() )
+	{
+		CFileDiffDlg dlg;
+		dlg.SetDiff(NULL,*r1,*r2);
+		dlg.DoModal();
+	}else
+	{
+		Diff(&path,&path,r1->m_CommitHash.ToString(),r2->m_CommitHash.ToString());
+	}
+	return 0;
+}
+
+int CGitDiff::DiffCommit(CTGitPath &path, CString &r1, CString &r2)
+{
+	if( path.GetWinPathString().IsEmpty() || path.IsDirectory() )
+	{
+		CFileDiffDlg dlg;
+		dlg.SetDiff(NULL,r1,r2);
+		dlg.DoModal();
+	}else
+	{
+		Diff(&path,&path,r1,r2);
+	}
+	return 0;
+}
