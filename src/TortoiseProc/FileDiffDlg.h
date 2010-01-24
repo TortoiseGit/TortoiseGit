@@ -39,6 +39,8 @@
  * repository. It shows a list of files/folders which were changed in those
  * two revisions.
  */
+#define MSG_REF_LOADED	(WM_USER+120)
+
 class CFileDiffDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CFileDiffDlg)
@@ -72,6 +74,7 @@ protected:
 	virtual void OnCancel();
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg LRESULT OnRefLoad(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -125,6 +128,15 @@ private:
 	static UINT			ExportThreadEntry(LPVOID pVoid);
 	UINT				ExportThread();
 
+	static UINT			LoadRefThreadEntry(LPVOID pVoid)
+	{
+		return ((CFileDiffDlg *)pVoid)->LoadRefThread();
+	};
+
+	UINT				LoadRefThread();
+
+	STRING_VECTOR		m_Reflist;
+
 	virtual BOOL		Cancel() {return m_bCancelled;}
 
 	CToolTips			m_tooltips;
@@ -157,6 +169,8 @@ private:
 	bool				m_bIgnoreancestry;
 	bool				m_bDoPegDiff;
 	volatile LONG		m_bThreadRunning;
+
+	volatile LONG		m_bLoadingRef;
 
 	bool				m_bCancelled;
 

@@ -53,6 +53,7 @@ CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
 	m_pProgDlg(NULL),
 	m_bCancelled(false)
 {
+	m_bLoadingRef=FALSE;
 }
 
 CFileDiffDlg::~CFileDiffDlg()
@@ -90,6 +91,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_EN_CHANGE(IDC_REV1EDIT, &CFileDiffDlg::OnEnChangeRev1edit)
 	ON_EN_CHANGE(IDC_REV2EDIT, &CFileDiffDlg::OnEnChangeRev2edit)
+	ON_MESSAGE(MSG_REF_LOADED, OnRefLoad)
 END_MESSAGE_MAP()
 
 
@@ -250,6 +252,14 @@ BOOL CFileDiffDlg::OnInitDialog()
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
+	InterlockedExchange(&m_bLoadingRef, TRUE);
+	if (AfxBeginThread(LoadRefThreadEntry, this)==NULL)
+	{
+		InterlockedExchange(&m_bLoadingRef, FALSE);
+		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
+
+
 	this->m_cRev1Btn.AddEntry(_T("RefBrowse"));
 	this->m_cRev1Btn.AddEntry(_T("Log"));
 	this->m_cRev1Btn.AddEntry(_T("RefLog"));
@@ -373,7 +383,6 @@ void CFileDiffDlg::EnableInputControl(bool b)
 	this->m_cRev2Btn.EnableWindow(b);
 	m_cFilter.EnableWindow(b);
 	m_SwitchButton.EnableWindow(b);
-	
 }
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
@@ -666,6 +675,16 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		// Store the color back in the NMLVCUSTOMDRAW struct.
 		pLVCD->clrText = crText;
 	}
+}
+
+UINT CFileDiffDlg::LoadRefThread()
+{
+	g_Git.GetBranchList(m_Reflist,NULL,CGit::BRANCH_ALL);
+	g_Git.GetTagList(m_Reflist);
+
+	this->PostMessage(MSG_REF_LOADED);
+	InterlockedExchange(&m_bLoadingRef, FALSE);
+	return 0;
 }
 
 void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -1283,4 +1302,19 @@ void CFileDiffDlg::OnEnChangeRev2edit()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+LRESULT CFileDiffDlg::OnRefLoad(WPARAM wParam, LPARAM lParam)
+{
+	for(int i=0;i<m_Reflist.size();i++)
+	{
+		CString str=m_Reflist[i];
+		
+		if(str.Find(_T("remotes/")) == 0)
+			str=str.Mid(8);
+
+		m_ctrRev1Edit.AddSearchString(str);
+		m_ctrRev2Edit.AddSearchString(str);
+	}
+	return 0;
 }
