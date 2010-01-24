@@ -928,6 +928,8 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 
 	if (m_bThreadRunning)
 		return;
+
+#if 0
 	CString sFilterString;
 	m_cFilter.GetWindowText(sFilterString);
 
@@ -944,6 +946,7 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 		(CTGitPath&)m_arFileList[i] = fd;
 	}
 	Filter(sFilterString);
+#endif
 
 	m_cFileList.SetRedraw(true);
 	CTGitPath path = m_path1;
@@ -961,7 +964,7 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 	this->m_ctrRev2Edit.SetWindowText(str1);
 
 	SetURLLabels();
-
+	//KillTimer(IDT_INPUT);
 }
 
 void CFileDiffDlg::SetURLLabels(int mask)
