@@ -425,6 +425,14 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 int GitRev::GetCommit(CString &refname)
 {
 	g_Git.CheckAndInitDll();
+
+	if(refname.GetLength() >= 8)
+		if(refname.Find(_T("00000000") == 0))
+		{
+			this->m_CommitHash.Empty();
+			this->m_Subject=_T("Working Copy");
+			return 0;
+		}
 	CStringA rev;
 	rev= CUnicodeUtils::GetUTF8(refname);
 	GIT_HASH sha;
