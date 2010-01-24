@@ -32,6 +32,7 @@
 #include "MenuButton.h"
 #include "ACEdit.h"
 #define IDT_FILTER		101
+#define IDT_INPUT		102
 
 /**
  * \ingroup TortoiseProc
@@ -87,6 +88,7 @@ protected:
 	afx_msg void OnBnClickedRev1btn();
 	afx_msg void OnBnClickedRev2btn();
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnEnUpdate(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnEnChangeFilter();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
@@ -100,7 +102,8 @@ protected:
 	int					AddEntry(const CTGitPath * fd);
 	void				DoDiff(int selIndex, bool blame);
 	void				DiffProps(int selIndex);
-	void				SetURLLabels();
+	void				SetURLLabels(int mask=0x3);
+	void				ClearURLabels(int mask);
 	void				Filter(CString sFilterText);
 	void				CopySelectionToClipboard();
 	
@@ -191,4 +194,6 @@ public:
 public:
 	afx_msg void OnEnChangeRev1edit();
 	afx_msg void OnEnChangeRev2edit();
+	virtual BOOL DestroyWindow();
+	void OnTextUpdate(CACEdit *pEdit);
 };

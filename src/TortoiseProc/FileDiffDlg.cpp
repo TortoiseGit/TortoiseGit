@@ -89,8 +89,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 	ON_EN_CHANGE(IDC_FILTER, &CFileDiffDlg::OnEnChangeFilter)
 	ON_WM_TIMER()
-	ON_EN_CHANGE(IDC_REV1EDIT, &CFileDiffDlg::OnEnChangeRev1edit)
-	ON_EN_CHANGE(IDC_REV2EDIT, &CFileDiffDlg::OnEnChangeRev2edit)
+	ON_MESSAGE(ENAC_UPDATE, &CFileDiffDlg::OnEnUpdate)
 	ON_MESSAGE(MSG_REF_LOADED, OnRefLoad)
 END_MESSAGE_MAP()
 
@@ -273,6 +272,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	if(m_rev2.m_CommitHash.IsEmpty())
 		m_SwitchButton.EnableWindow(FALSE);
+
+	KillTimer(IDT_INPUT);
 	return FALSE;
 }
 
@@ -963,22 +964,44 @@ void CFileDiffDlg::OnBnClickedSwitchleftright()
 
 }
 
-void CFileDiffDlg::SetURLLabels()
+void CFileDiffDlg::SetURLLabels(int mask)
 {
 
 //	m_cRev1Btn.SetWindowText(m_rev1.m_CommitHash.ToString().Left(6));
 //	m_cRev2Btn.SetWindowText(m_rev2.m_CommitHash.ToString().Left(6));
 
-	SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.m_Subject);
-	SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.m_Subject);
+	if(mask &0x1)
+	{
+		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.m_Subject);
+		m_tooltips.AddTool(IDC_FIRSTURL,  
+			CAppUtils::FormatDateAndTime( m_rev1.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev1.m_AuthorName);
+	
+	}
 
-	m_tooltips.AddTool(IDC_FIRSTURL,  
-		CAppUtils::FormatDateAndTime( m_rev1.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev1.m_AuthorName);
-	m_tooltips.AddTool(IDC_SECONDURL, 
-		CAppUtils::FormatDateAndTime( m_rev2.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev2.m_AuthorName);
+	if(mask &0x2)
+	{
+		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.m_Subject);
+
+		m_tooltips.AddTool(IDC_SECONDURL, 
+			CAppUtils::FormatDateAndTime( m_rev2.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev2.m_AuthorName);
+	}
 
 }
 
+void CFileDiffDlg::ClearURLabels(int mask)
+{
+	if(mask&0x1)
+	{
+		SetDlgItemText(IDC_FIRSTURL, _T(""));
+		m_tooltips.AddTool(IDC_FIRSTURL,  _T(""));
+	}
+
+	if(mask&0x2)
+	{
+		SetDlgItemText(IDC_SECONDURL, _T(""));
+		m_tooltips.AddTool(IDC_SECONDURL,  _T(""));
+	}
+}
 BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);
@@ -1109,6 +1132,7 @@ void CFileDiffDlg::OnBnClickedRev1btn()
 {
 	
 	ClickRevButton(&this->m_cRev1Btn,&this->m_rev1, &this->m_ctrRev1Edit);
+	
 
 }
 
@@ -1170,6 +1194,7 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
+	KillTimer(IDT_INPUT);
 }
 
 void CFileDiffDlg::OnBnClickedRev2btn()
@@ -1230,18 +1255,58 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 	if (m_bThreadRunning)
 		return;
 
-	CString sFilterText;
-	KillTimer(IDT_FILTER);
-	m_cFilter.GetWindowText(sFilterText);
+	if( nIDEvent == IDT_FILTER)
+	{
 
-	m_cFileList.SetRedraw(FALSE);
-	m_cFileList.DeleteAllItems();
+		CString sFilterText;
+		KillTimer(IDT_FILTER);
+		m_cFilter.GetWindowText(sFilterText);
 
-	Filter(sFilterText);
+		m_cFileList.SetRedraw(FALSE);
+		m_cFileList.DeleteAllItems();
 
-	m_cFileList.SetRedraw(TRUE);
+		Filter(sFilterText);
 
-	__super::OnTimer(nIDEvent);
+		m_cFileList.SetRedraw(TRUE);
+
+		__super::OnTimer(nIDEvent);
+	}
+
+	if( nIDEvent == IDT_INPUT)
+	{
+		KillTimer(IDT_INPUT);
+		TRACE(_T("Input Timer\r\n"));
+
+		GitRev gitrev;
+		CString str;
+		int mask = 0;
+		this->m_ctrRev1Edit.GetWindowText(str);
+		if( !gitrev.GetCommit(str) )
+		{
+			this->m_rev1=gitrev;
+			mask |= 0x1;
+			this->SetURLLabels(0x1);
+		}
+
+		this->m_ctrRev2Edit.GetWindowText(str);
+
+		if( !gitrev.GetCommit(str) )
+		{
+			this->m_rev2=gitrev;
+			mask |= 0x2;
+			this->SetURLLabels(0x2);
+		}
+		
+		if(mask == 0x3)
+		{
+			InterlockedExchange(&m_bThreadRunning, TRUE);
+			if (AfxBeginThread(DiffThreadEntry, this)==NULL)
+			{
+				InterlockedExchange(&m_bThreadRunning, FALSE);
+				CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			}
+		}
+	}
 }
 
 void CFileDiffDlg::Filter(CString sFilterText)
@@ -1317,4 +1382,30 @@ LRESULT CFileDiffDlg::OnRefLoad(WPARAM wParam, LPARAM lParam)
 		m_ctrRev2Edit.AddSearchString(str);
 	}
 	return 0;
+}
+
+BOOL CFileDiffDlg::DestroyWindow()
+{
+	return CResizableStandAloneDialog::DestroyWindow();
+}
+
+LRESULT CFileDiffDlg::OnEnUpdate(WPARAM wParam, LPARAM lParam)
+{
+	if(lParam == IDC_REV1EDIT)
+	{
+		OnTextUpdate(&this->m_ctrRev1Edit);
+		ClearURLabels(1);
+	}
+	if(lParam == IDC_REV2EDIT)
+	{
+		OnTextUpdate(&this->m_ctrRev2Edit);
+		ClearURLabels(1<<1);
+	}
+	return 0;
+}
+
+void CFileDiffDlg::OnTextUpdate(CACEdit *pEdit)
+{
+	SetTimer(IDT_INPUT, 1000, NULL);
+	this->m_cFileList.ShowText(_T("Wait For input validate version"));
 }
