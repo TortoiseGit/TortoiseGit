@@ -168,10 +168,27 @@ void CSyncDlg::OnBnClickedButtonPull()
 	///Fetch
 	if(CurrentEntry == 1 || CurrentEntry ==2 ) //Fetch
 	{
+		CString remotebranch;
+		if(this->IsURL() || m_strRemoteBranch.IsEmpty())
+		{
+			remotebranch=this->m_strRemoteBranch;
+
+		}else
+		{
+			
+			remotebranch.Format(_T("remotes/%s/%s"),
+								m_strURL,m_strRemoteBranch);
+			if(g_Git.GetHash(remotebranch).IsEmpty())
+				remotebranch=m_strRemoteBranch;
+			else
+				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
+		}
+
 		cmd.Format(_T("git.exe fetch %s \"%s\" %s"),
 				force,
 				m_strURL,
-				this->m_strRemoteBranch);
+				remotebranch);
+
 		if(CurrentEntry == 1) 
 			m_CurrentCmd = GIT_COMMAND_FETCH;
 		else
