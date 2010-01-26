@@ -25,6 +25,14 @@ public:
 	}
 	CGitHash(CString &str)
 	{
+		if(str.GetLength()<GIT_HASH_SIZE)
+		{
+#ifdef ASSERT
+			ASSERT(FALSE);
+#endif
+			return;
+		}
+
 		for(int i=0;i<GIT_HASH_SIZE;i++)
 		{
 			unsigned char a;
@@ -33,7 +41,7 @@ public:
 			{
 				a =a<<4;
 
-				TCHAR ch = str[j];
+					TCHAR ch = str[j];
 				if(ch >= _T('0') && ch <= _T('9'))
 					a |= (ch - _T('0'))&0xF;
 				else if(ch >=_T('A') && ch <= _T('F'))
