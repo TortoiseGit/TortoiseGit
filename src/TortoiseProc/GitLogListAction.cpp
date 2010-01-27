@@ -412,6 +412,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				{
 					int indexNext = GetNextSelectedItem(pos);
 					dlg.m_CommitList.m_logEntries.push_back( ((GitRev*)m_arShownList[indexNext])->m_CommitHash );
+					dlg.m_CommitList.m_LogCache.m_HashMap[((GitRev*)m_arShownList[indexNext])->m_CommitHash]=*(GitRev*)m_arShownList[indexNext];
 					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size()-1).m_Action |= CTGitPath::LOGACTIONS_REBASE_PICK;
 				}
 	
