@@ -551,11 +551,11 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 
 	if(paramonly)
 	{
-		cmd += hash+file;
+		cmd += _T("-- ")+file;
 	}else
 	{
 		cmd += log;
-		cmd += CString(_T("\"  "))+hash+file;
+		cmd += CString(_T("\"  -- "))+file;
 	}
 
 	return cmd;
