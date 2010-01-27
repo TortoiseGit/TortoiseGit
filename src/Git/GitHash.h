@@ -53,6 +53,29 @@ public:
 			m_hash[i]=a;
 		}
 	}
+
+	void ConvertFromStrA(char *str)
+	{
+		for(int i=0;i<GIT_HASH_SIZE;i++)
+		{
+			unsigned char a;
+			a=0;
+			for(int j=2*i;j<=2*i+1;j++)
+			{
+				a =a<<4;
+
+				char ch = str[j];
+				if(ch >= '0' && ch <= '9')
+					a |= (ch - ('0'))&0xF;
+				else if(ch >=('A') && ch <= ('F'))
+					a |= ((ch - ('A'))&0xF) + 10 ;
+				else if(ch >=_T('a') && ch <= ('f'))
+					a |= ((ch - ('a'))&0xF) + 10;		
+				
+			}
+			m_hash[i]=a;
+		}
+	}
 	void Empty()
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);

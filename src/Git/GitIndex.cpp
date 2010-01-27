@@ -16,7 +16,8 @@
 	g_Git.StringAppend(&m_FileName,(BYTE*)entry->name,CP_ACP,Big2lit(entry->flags)&CE_NAMEMASK);\
 	m_FileName.Replace(_T('/'),_T('\\'));\
 	this->m_Flags=Big2lit(entry->flags);\
-	this->m_ModifyTime=Big2lit(entry->mtime.sec);
+	this->m_ModifyTime=Big2lit(entry->mtime.sec);\
+	this->m_IndexHash=(char*)(entry->sha1);
 	
 int CGitIndex::FillData(ondisk_cache_entry * entry)
 {
@@ -28,6 +29,17 @@ int CGitIndex::FillData(ondisk_cache_entry_extended * entry)
 {
 	FILL_DATA();
 	this->m_Flags |= ((int)Big2lit(entry->flags2))<<16;
+	return 0;
+}
+
+int CGitIndex::Print()
+{
+	_tprintf(_T("0x%08X  0x%08X %s %s\n"),
+		(int)this->m_ModifyTime,
+		this->m_Flags,
+		this->m_IndexHash.ToString(),
+		this->m_FileName);
+	
 	return 0;
 }
 
@@ -297,4 +309,113 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 		return -1;
 	}
 	return 0;
+}
+
+int CGitHeadFileList::ReadHeadHash(CString gitdir)
+{
+	struct __stat64 buf;
+	CString HeadFile = gitdir;
+	HeadFile += _T("\\.git\\HEAD");
+	HANDLE hfile;
+
+	m_HeadFile = HeadFile;
+
+	memset(&buf,0,sizeof(struct __stat64));
+	if(_tstat64(HeadFile,&buf))
+		return -1;
+
+	this->m_LastModifyTimeHead = buf.st_mtime;
+
+	hfile = CreateFile(HeadFile,
+						GENERIC_READ,
+						FILE_SHARE_READ,
+						NULL,
+						OPEN_EXISTING,
+						FILE_ATTRIBUTE_NORMAL,
+						NULL);
+
+	if(hfile == INVALID_HANDLE_VALUE)
+		return -1;
+	
+	DWORD size=0,filesize=0;
+	unsigned char buffer[40] ;		
+	ReadFile(hfile,buffer,4,&size,NULL);
+	if(size !=4)
+		return -1;
+
+	buffer[4]=0;
+	if(strcmp((const char*)buffer,"ref:") == 0)
+	{
+		filesize = GetFileSize(hfile,NULL);
+
+		unsigned char *p = (unsigned char*)malloc(filesize -4);
+
+		ReadFile(hfile,p,filesize-4,&size,NULL);
+
+		m_HeadRefFile.Empty();
+		g_Git.StringAppend(&this->m_HeadRefFile,p,CP_ACP,filesize-4);
+		free(p);
+		m_HeadRefFile=gitdir+_T("\\.git\\")+m_HeadRefFile.Trim();
+		m_HeadRefFile.Replace(_T('/'),_T('\\'));
+
+		if(_tstat64(m_HeadRefFile,&buf))
+			return -1;
+
+
+		HANDLE href;
+		href = CreateFile(m_HeadRefFile,
+						GENERIC_READ,
+						FILE_SHARE_READ,
+						NULL,
+						OPEN_EXISTING,
+						FILE_ATTRIBUTE_NORMAL,
+						NULL);
+
+		if(href == INVALID_HANDLE_VALUE)
+			return -1;
+
+		ReadFile(href,buffer,40,&size,NULL);
+		if(size != 40)
+			return -1;
+
+		this->m_Head.ConvertFromStrA((char*)buffer);
+		CloseHandle(href);
+		this->m_LastModifyTimeRef = buf.st_mtime;
+
+	}else
+	{
+		ReadFile(hfile,buffer+4,40-4,&size,NULL);
+		if(size !=36)
+			return -1;
+
+		m_HeadRefFile.Empty();
+
+		this->m_Head.ConvertFromStrA((char*)buffer);
+	}
+
+	CloseHandle(hfile);		
+}
+
+bool CGitHeadFileList::CheckHeadUpdate()
+{
+	if(this->m_HeadFile.IsEmpty())
+		return true;
+
+	struct __stat64 buf;
+	if(_tstat64(m_HeadFile,&buf))
+		return true;
+
+	if(buf.st_mtime != this->m_LastModifyTimeHead)
+		return true;
+
+	if(!this->m_HeadRefFile.IsEmpty())
+	{
+		if(_tstat64(m_HeadRefFile,&buf))
+			return true;
+
+		if(buf.st_mtime != this->m_LastModifyTimeRef)
+			return true;
+	}
+
+	return false;
 }

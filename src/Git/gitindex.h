@@ -1,3 +1,5 @@
+#include "GitHash.h"
+
 /* Copy from Git cache.h*/
 #define FLEX_ARRAY 4
 
@@ -153,14 +155,16 @@ class CGitIndex
 {
 public:
 	CString    m_FileName;
-	__time64_t m_ModifyTime;
-	int		   m_Flags;
+	__time64_t	m_ModifyTime;
+	int			m_Flags;
 	//int		 m_Status;
+	CGitHash	m_IndexHash;
 	
 	int FillData(ondisk_cache_entry* entry);
 	int FillData(ondisk_cache_entry_extended* entry);
-};
+	int Print();
 
+};
 
 typedef void (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,void *pdata);
 
@@ -170,13 +174,41 @@ protected:
 	
 public:
 	std::map<CString,int> m_Map;
-	__time64_t m_LastModifyTime;
+	__time64_t  m_LastModifyTime;
+		
 	CGitIndexList();
 	int ReadIndex(CString file);
 	int GetStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);	
 protected:
 	int GetFileStatus(CString &gitdir,CString &path, git_wc_status_kind * status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 
+};
+
+class CGitTreeItem
+{
+public:
+	CString	m_FileName;
+	CGitHash	m_Hash;
+	int			m_Flags;
+};
+
+class CGitHeadFileList:public std::vector<CGitTreeItem>
+{
+public:
+	std::map<CString,int> m_Map;
+	__time64_t  m_LastModifyTimeHead;
+	__time64_t  m_LastModifyTimeRef;
+	CString		m_HeadRefFile;
+	CGitHash	m_Head;
+	CString		m_HeadFile;
+
+	CGitHeadFileList()
+	{
+		m_LastModifyTimeHead=0;
+		m_LastModifyTimeRef=0;
+	}
+	int ReadHeadHash(CString gitdir);
+	bool CheckHeadUpdate();
 };
 
 class CGitIndexFileMap:public std::map<CString,CGitIndexList> 
