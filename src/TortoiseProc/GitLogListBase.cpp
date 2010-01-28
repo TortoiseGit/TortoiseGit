@@ -98,7 +98,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
     m_ShowMask = 0;
 	m_LoadingThread = NULL;
 
-	m_bExitThread=FALSE;
+	InterlockedExchange(&m_bExitThread,FALSE);
 	m_IsOldFirst = FALSE;
 	m_IsRebaseReplaceGraph = FALSE;
 
@@ -158,7 +158,7 @@ CGitLogListBase::~CGitLogListBase()
 
 	if(this->m_bThreadRunning)
 	{
-		m_bExitThread=true;
+		InterlockedExchange(&m_bExitThread,TRUE);
 		WaitForSingleObject(m_LoadingThread->m_hThread,1000);
 		TerminateThread();
 	}
@@ -2050,7 +2050,7 @@ void CGitLogListBase::FetchLastLogInfo()
 }
 
 UINT CGitLogListBase::LogThread()
-{
+ {
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START,0);
 	
 	InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -2271,7 +2271,7 @@ UINT CGitLogListBase::LogThread()
 
 void CGitLogListBase::Refresh()
 {	
-	m_bExitThread=TRUE;
+	InterlockedExchange(&m_bExitThread,TRUE);
 	if(m_LoadingThread!=NULL)
 	{
 		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
@@ -2289,7 +2289,8 @@ void CGitLogListBase::Refresh()
 	{
 		
 		m_logEntries.clear();
-		m_bExitThread=FALSE;
+		InterlockedExchange(&m_bExitThread,FALSE);
+
 		InterlockedExchange(&m_bThreadRunning, TRUE);
 		InterlockedExchange(&m_bNoDispUpdates, TRUE);
 		if (AfxBeginThread(LogThreadEntry, this)==NULL)
@@ -2585,7 +2586,7 @@ void CGitLogListBase::OnDestroy()
 
 	if(this->m_bThreadRunning)
 	{
-		this->m_bExitThread=true;
+		InterlockedExchange(&m_bExitThread,TRUE);
 		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
 		if(ret == WAIT_TIMEOUT)
 			TerminateThread();

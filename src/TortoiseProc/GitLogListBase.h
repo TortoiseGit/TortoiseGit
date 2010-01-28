@@ -191,8 +191,13 @@ public:
 	}
 	void TerminateThread()
 	{
-		if(this->m_LoadingThread)
-			AfxTermThread((HINSTANCE)m_LoadingThread->m_hThread);
+		if(m_LoadingThread!=NULL)
+		{
+			InterlockedExchange(&m_bExitThread,TRUE);
+			DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
+			if(ret == WAIT_TIMEOUT)
+				TerminateThread();
+		}
 	};
 
 	bool IsInWorkingThread()
@@ -208,7 +213,7 @@ public:
 	CString GetStartRef() const {return m_StartRef;}
 
 	
-	volatile bool		m_bExitThread;
+	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
 protected:
 	DECLARE_MESSAGE_MAP()
