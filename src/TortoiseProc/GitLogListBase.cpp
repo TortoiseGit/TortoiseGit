@@ -1552,7 +1552,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 				}
 				sPaths.Trim();
 				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
-					(LPCTSTR)sRev, pLogEntry->m_CommitHash,
+					(LPCTSTR)sRev, pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->m_AuthorName,
 					(LPCTSTR)sDate, 
 					(LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, m_bRelativeTimes ),
