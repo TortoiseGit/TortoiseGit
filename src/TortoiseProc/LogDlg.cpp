@@ -692,7 +692,7 @@ void CLogDlg::OnCancel()
 	// canceling means stopping the working thread if it's still running.
 	if (this->IsThreadRunning())
 	{
-		m_LogList.TerminateThread();
+		m_LogList.SafeTerminateThread();
 	}
 	UpdateData();
 	
@@ -1118,7 +1118,7 @@ void CLogDlg::OnOK()
 	
 	if (this->IsThreadRunning())
 	{
-		m_LogList.TerminateThread();
+		m_LogList.SafeTerminateThread();
 	}
 	UpdateData();
 	// check that one and only one row is selected

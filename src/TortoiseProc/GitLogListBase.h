@@ -189,14 +189,15 @@ public:
 		m_wcRev.m_ParentHash.clear();
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 	}
-	void TerminateThread()
+	void SafeTerminateThread()
 	{
 		if(m_LoadingThread!=NULL)
 		{
 			InterlockedExchange(&m_bExitThread,TRUE);
 			DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
 			if(ret == WAIT_TIMEOUT)
-				TerminateThread();
+				::TerminateThread(m_LoadingThread,0);
+			m_LoadingThread = NULL;
 		}
 	};
 

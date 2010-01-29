@@ -156,12 +156,7 @@ CGitLogListBase::~CGitLogListBase()
 		m_pStoreSelection = NULL;
 	}
 
-	if(this->m_bThreadRunning)
-	{
-		InterlockedExchange(&m_bExitThread,TRUE);
-		WaitForSingleObject(m_LoadingThread->m_hThread,1000);
-		TerminateThread();
-	}
+	SafeTerminateThread();
 }
 
 
@@ -2271,13 +2266,7 @@ UINT CGitLogListBase::LogThread()
 
 void CGitLogListBase::Refresh()
 {	
-	InterlockedExchange(&m_bExitThread,TRUE);
-	if(m_LoadingThread!=NULL)
-	{
-		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
-		if(ret == WAIT_TIMEOUT)
-			TerminateThread();
-	}
+	SafeTerminateThread();
 	
 	this->SetItemCountEx(0);
 	this->Clear();
@@ -2293,7 +2282,7 @@ void CGitLogListBase::Refresh()
 
 		InterlockedExchange(&m_bThreadRunning, TRUE);
 		InterlockedExchange(&m_bNoDispUpdates, TRUE);
-		if (AfxBeginThread(LogThreadEntry, this)==NULL)
+		if ( (m_LoadingThread=AfxBeginThread(LogThreadEntry, this)) ==NULL)
 		{
 			InterlockedExchange(&m_bThreadRunning, FALSE);
 			InterlockedExchange(&m_bNoDispUpdates, FALSE);
@@ -2584,13 +2573,8 @@ void CGitLogListBase::OnDestroy()
 	// save the column widths to the registry
 	SaveColumnWidths();
 
-	if(this->m_bThreadRunning)
-	{
-		InterlockedExchange(&m_bExitThread,TRUE);
-		DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
-		if(ret == WAIT_TIMEOUT)
-			TerminateThread();
-	}
+	SafeTerminateThread();
+
 	while(m_LogCache.SaveCache())
 	{
 		if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."),_T("TortoiseGit"),
