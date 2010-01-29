@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "gitstatus.h"
 #include "gitindex.h"
+#include "gitdll.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -23,6 +24,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	filelist.ReadHeadHash(_T("d:\\gitest"));
 	_tprintf(_T("update %d\n"), filelist.CheckHeadUpdate());
+
+	git_init();
+	filelist.ReadTree();
 	return 0;
 }
 

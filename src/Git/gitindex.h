@@ -209,6 +209,9 @@ public:
 	}
 	int ReadHeadHash(CString gitdir);
 	bool CheckHeadUpdate();
+
+	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
+	int ReadTree();
 };
 
 class CGitIndexFileMap:public std::map<CString,CGitIndexList> 

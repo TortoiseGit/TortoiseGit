@@ -573,3 +573,14 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 
 	return 0;
 }
+
+int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context)
+{
+	struct tree * root;
+	root = parse_tree_indirect(hash);
+
+	if (!root)
+		return -1;
+
+	return read_tree_recursive(root,NULL,NULL,0,NULL,fn,context);
+}

@@ -419,3 +419,26 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	return false;
 }
+
+int CGitHeadFileList::ReadTree()
+{
+	if( this->m_Head.IsEmpty())
+		return -1;
+
+	return git_read_tree(this->m_Head.m_hash,CGitHeadFileList::CallBack,this);
+}
+
+int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
+		const char *pathname, unsigned mode, int stage, void *context)
+{
+	CGitHeadFileList *p = (CGitHeadFileList*)context;
+
+	unsigned int cur = p->size();
+	p->resize(p->size()+1);
+	p->at(cur).m_Hash = (char*)sha1;
+	p->at(cur).m_FileName.Empty();
+	g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)pathname,CP_ACP);
+	p->m_Map[p->at(cur).m_FileName]=cur;
+	
+	return READ_TREE_RECURSIVE;
+}
