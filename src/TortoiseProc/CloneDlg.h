@@ -4,7 +4,7 @@
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
-
+#include "tooltip.h"
 // CCloneDlg dialog
 
 class CCloneDlg : public CResizableStandAloneDialog
@@ -44,6 +44,9 @@ public:
 	BOOL	m_bSVNTags;
 	BOOL	m_bSVNBranch;
 	BOOL	m_bSVNFrom;
+	BOOL	m_bDepth;
+
+	int		m_nDepth;
 
 	CString	m_strSVNTrunk;
 	CString m_strSVNTags;
@@ -65,4 +68,8 @@ public:
 	afx_msg void OnBnClickedCheckSvnTag();
 	afx_msg void OnBnClickedCheckSvnBranch();
 	afx_msg void OnBnClickedCheckSvnFrom();
+	afx_msg void OnBnClickedCheckDepth();
+
+	CToolTips			m_tooltips;
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

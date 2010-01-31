@@ -27,6 +27,9 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 
 	m_regBrowseUrl = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneBrowse"),0);
 	m_nSVNFrom = 0;
+
+	m_nDepth = 0;
+	m_bDepth = false;
 }
 
 CCloneDlg::~CCloneDlg()
@@ -52,7 +55,9 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_SVN_TAG, m_strSVNTags);
 	DDX_Text(pDX, IDC_EDIT_SVN_BRANCH, m_strSVNBranchs);
 	DDX_Text(pDX, IDC_EDIT_SVN_FROM, this->m_nSVNFrom);
-
+	
+	DDX_Check(pDX, IDC_CHECK_DEPTH, m_bDepth);
+	DDX_Text(pDX, IDC_EDIT_DEPTH,m_nDepth);
 }
 
 BOOL CCloneDlg::OnInitDialog()
@@ -71,6 +76,12 @@ BOOL CCloneDlg::OnInitDialog()
     AddAnchor(IDC_PUTTYKEYFILE,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_CLONE_GROUP_SVN,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
+	m_tooltips.Create(this);
+	CString tt;
+	tt.LoadString(IDS_CLONE_DEPTH_TT);
+	m_tooltips.AddTool(IDC_EDIT_DEPTH,tt);
+	m_tooltips.AddTool(IDC_CHECK_DEPTH,tt);
 
 	this->AddOthersToAnchor();
 
@@ -106,7 +117,7 @@ BOOL CCloneDlg::OnInitDialog()
     EnableSaveRestore(_T("CloneDlg"));
 	
 	OnBnClickedCheckSvn();
-
+	OnBnClickedCheckDepth();
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -124,6 +135,7 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_SVN_TAG, &CCloneDlg::OnBnClickedCheckSvnTag)
 	ON_BN_CLICKED(IDC_CHECK_SVN_BRANCH, &CCloneDlg::OnBnClickedCheckSvnBranch)
 	ON_BN_CLICKED(IDC_CHECK_SVN_FROM, &CCloneDlg::OnBnClickedCheckSvnFrom)
+	ON_BN_CLICKED(IDC_CHECK_DEPTH, &CCloneDlg::OnBnClickedCheckDepth)
 END_MESSAGE_MAP()
 
 
@@ -387,4 +399,17 @@ void CCloneDlg::OnBnClickedCheckSvnFrom()
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_CHECK_SVN_FROM)->EnableWindow(this->m_bSVN);
 	this->GetDlgItem(IDC_EDIT_SVN_FROM)->EnableWindow(this->m_bSVNFrom&&this->m_bSVN);
+}
+
+void CCloneDlg::OnBnClickedCheckDepth()
+{
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_EDIT_DEPTH)->EnableWindow(this->m_bDepth);
+}
+BOOL CCloneDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	m_tooltips.RelayEvent(pMsg);
+
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

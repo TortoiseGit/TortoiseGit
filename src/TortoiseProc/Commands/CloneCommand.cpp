@@ -52,11 +52,21 @@ bool CloneCommand::Execute()
 			// this should not be necessary but msysgit does not support the use \ here yet
 			url.Replace( _T('\\'), _T('/'));
 		}
+		
+		CString depth; 
+		if (dlg.m_bDepth)
+		{
+			
+			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
+		}
+
 		CString cmd;
-		cmd.Format(_T("git.exe clone -v \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone -v %s \"%s\" \"%s\""),
+						depth,
 						url,
 						dir);
 
+		
 		// Handle Git SVN-clone
 		if(dlg.m_bSVN)
 		{
