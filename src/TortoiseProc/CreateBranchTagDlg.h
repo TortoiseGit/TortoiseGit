@@ -23,6 +23,7 @@ public:
 
 	CString m_Base;
 	CString m_BranchTagName;
+	CString m_Message;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();

@@ -35,6 +35,7 @@ void CCreateBranchTagDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
 	DDX_Check(pDX,IDC_CHECK_SWITCH,this->m_bSwitch);
+	DDX_Text(pDX, IDC_EDIT_MESSAGE,this->m_Message);
 
 }
 
@@ -59,6 +60,8 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_GROUP_MESSAGE,TOP_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_EDIT_MESSAGE,TOP_LEFT,BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
 
@@ -85,6 +88,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	{
 		this->SetWindowTextW(_T("Create Branch"));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
+		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(false);
 	}
 	// show the switch checkbox if we are a create branch dialog
 	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );

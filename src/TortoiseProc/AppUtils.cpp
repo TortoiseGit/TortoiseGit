@@ -1189,7 +1189,13 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
 				dlg.m_BranchTagName,
 				dlg.m_VersionName
 				);
-
+			
+			CString tempfile=::GetTempFile();
+			if(!dlg.m_Message.Trim().IsEmpty())
+			{
+				CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_Message);
+				cmd += _T(" -F ")+tempfile;
+			}
 	
 		}else
 		{
