@@ -21,6 +21,7 @@
 #include "git.h"
 #include "MergeDlg.h"
 #include "MessageBox.h"
+#include "Progressdlg.h"
 
 bool MergeCommand::Execute()
 {
@@ -53,10 +54,12 @@ bool MergeCommand::Execute()
 			nocommit,
 			dlg.m_VersionName);
 
-		CString output;
-		g_Git.Run(cmd,&output,CP_ACP);
+		CProgressDlg Prodlg;
+		Prodlg.m_GitCmd = cmd;
 
-		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
+		Prodlg.DoModal();
+
+		return !Prodlg.m_GitStatus;
 	}
 	return false;
 }
