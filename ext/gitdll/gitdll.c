@@ -10,6 +10,8 @@
 #include "diff.h"
 #include "revision.h"
 #include "diffcore.h"
+#include "dir.h"
+
 const char git_version_string[] = GIT_VERSION;
 
 
@@ -583,4 +585,38 @@ int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context)
 		return -1;
 
 	return read_tree_recursive(root,NULL,NULL,0,NULL,fn,context);
+}
+
+int git_add_exclude(const char *string, const char *base,
+					int baselen, struct exclude_list *which)
+{
+	add_exclude(string, base, baselen, which);
+	return 0;
+}
+
+int git_create_exclude_list(EXCLUDE_LIST *which)
+{
+	*which = malloc(sizeof(struct exclude_list));
+	memset(which,0,sizeof(struct exclude_list));
+	return 0;
+}
+
+int git_free_exclude_list(EXCLUDE_LIST which)
+{
+	int i=0;
+	struct exclude_list *p = (struct exclude_list *) which;
+	
+	for(i=0; i<p->nr;i++)
+	{
+		free(p->excludes[i]);
+	}
+	free(p->excludes);
+	free(p);
+}
+
+int git_check_excluded_1(const char *pathname,
+							int pathlen, const char *basename, int *dtype,
+							EXCLUDE_LIST el)
+{
+	return excluded_1(pathname, pathlen, basename,dtype,el);
 }

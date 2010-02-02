@@ -442,3 +442,72 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	
 	return READ_TREE_RECURSIVE;
 }
+
+int CGitIgnoreItem::FetchIgnoreList(CString &file)
+{
+	if(this->m_pExcludeList)
+	{
+		free(m_pExcludeList);
+		m_pExcludeList=NULL;
+	}
+
+	struct __stat64 buf;
+	if(_tstat64(file,&buf))
+		return -1;
+
+	this->m_LastModifyTime = buf.st_mtime;
+
+	if(git_create_exclude_list(&this->m_pExcludeList))
+		return -1;
+
+
+	HANDLE hfile = CreateFile(file,
+									GENERIC_READ,
+									FILE_SHARE_READ,
+									NULL,
+									OPEN_EXISTING,
+									FILE_ATTRIBUTE_NORMAL,
+									NULL);
+
+
+	if(hfile == INVALID_HANDLE_VALUE)
+	{
+		return -1 ;
+	}
+
+	DWORD size=0,filesize=0;
+			
+	filesize=GetFileSize(hfile,NULL);
+
+	if(filesize == INVALID_FILE_SIZE )
+	{
+		return -1;
+	}
+
+	BYTE *buffer = new BYTE[filesize+1];
+	
+	if(buffer == NULL)
+	{
+		return -1;
+	}
+
+	if(! ReadFile( hfile, buffer,filesize,&size,NULL) )
+	{
+		return GetLastError();
+	}
+	
+	BYTE *p = buffer;
+	for(int i;i<size;i++)
+	{
+		if( buffer[i] == '\n' || buffer[i] =='\r' || i==(size-1) )
+		{
+			if( i== size-1)
+				buffer[size]=0;
+			else
+				buffer[i]=0;
+
+			git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
+			p=buffer+i+1;
+		}		
+	}
+}

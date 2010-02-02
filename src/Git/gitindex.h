@@ -1,4 +1,5 @@
 #include "GitHash.h"
+#include "gitdll.h"
 
 /* Copy from Git cache.h*/
 #define FLEX_ARRAY 4
@@ -220,3 +221,30 @@ public:
 	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 };
 
+class CGitIgnoreItem
+{
+public:
+	CGitIgnoreItem()
+	{
+		m_LastModifyTime =0;
+		m_pExcludeList =NULL;
+	}
+	~CGitIgnoreItem()
+	{
+		if(m_pExcludeList)
+			git_free_exclude_list(m_pExcludeList);
+		m_pExcludeList=NULL;
+	}
+	__time64_t  m_LastModifyTime;
+	EXCLUDE_LIST m_pExcludeList;
+	int FetchIgnoreList(CString &file);
+};
+
+class CGitIgnoreList
+{
+public:
+	std::map<CString, CGitIgnoreItem> m_Map;
+
+	bool CheckIgnoreChanged(CString &path, CString &projectRoot);
+	bool IsIgnore(CString &path, CString &projectRoot);
+};

@@ -129,4 +129,18 @@ typedef int (*read_tree_fn_t)(const unsigned char *, const char *, int, const ch
 
 GITDLL_API int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context);
 
+
+typedef void * EXCLUDE_LIST;
+
+GITDLL_API int git_create_exclude_list(EXCLUDE_LIST *which);
+
+GITDLL_API int git_add_exclude(const char *string, const char *base,
+					int baselen, EXCLUDE_LIST which);
+
+GITDLL_API int git_check_excluded_1(const char *pathname,
+							int pathlen, const char *basename, int *dtype,
+							EXCLUDE_LIST el);
+
+GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
+
 #endif
