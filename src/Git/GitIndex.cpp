@@ -313,18 +313,14 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
-	struct __stat64 buf;
 	CString HeadFile = gitdir;
 	HeadFile += _T("\\.git\\HEAD");
 	HANDLE hfile;
 
 	m_HeadFile = HeadFile;
 
-	memset(&buf,0,sizeof(struct __stat64));
-	if(_tstat64(HeadFile,&buf))
+	if( g_Git.GetFileModifyTime(m_HeadFile,&m_LastModifyTimeHead))
 		return -1;
-
-	this->m_LastModifyTimeHead = buf.st_mtime;
 
 	hfile = CreateFile(HeadFile,
 						GENERIC_READ,
@@ -358,7 +354,8 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 		m_HeadRefFile=gitdir+_T("\\.git\\")+m_HeadRefFile.Trim();
 		m_HeadRefFile.Replace(_T('/'),_T('\\'));
 
-		if(_tstat64(m_HeadRefFile,&buf))
+		__int64 time;
+		if(g_Git.GetFileModifyTime(m_HeadRefFile,&time))
 			return -1;
 
 
@@ -380,7 +377,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 		this->m_Head.ConvertFromStrA((char*)buffer);
 		CloseHandle(href);
-		this->m_LastModifyTimeRef = buf.st_mtime;
+		this->m_LastModifyTimeRef = time;
 
 	}else
 	{
@@ -401,19 +398,20 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	if(this->m_HeadFile.IsEmpty())
 		return true;
 
-	struct __stat64 buf;
-	if(_tstat64(m_HeadFile,&buf))
+	__int64 mtime=0;
+	 
+	if( g_Git.GetFileModifyTime(m_HeadFile,&mtime))
 		return true;
 
-	if(buf.st_mtime != this->m_LastModifyTimeHead)
+	if(mtime != this->m_LastModifyTimeHead)
 		return true;
 
 	if(!this->m_HeadRefFile.IsEmpty())
 	{
-		if(_tstat64(m_HeadRefFile,&buf))
+		if(g_Git.GetFileModifyTime(m_HeadRefFile,&mtime))
 			return true;
-
-		if(buf.st_mtime != this->m_LastModifyTimeRef)
+		
+		if(mtime != this->m_LastModifyTimeRef)
 			return true;
 	}
 
@@ -451,11 +449,8 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 		m_pExcludeList=NULL;
 	}
 
-	struct __stat64 buf;
-	if(_tstat64(file,&buf))
+	if(g_Git.GetFileModifyTime(file,&m_LastModifyTime))
 		return -1;
-
-	this->m_LastModifyTime = buf.st_mtime;
 
 	if(git_create_exclude_list(&this->m_pExcludeList))
 		return -1;

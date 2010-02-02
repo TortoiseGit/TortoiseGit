@@ -157,7 +157,24 @@ public:
 
 	int GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outpathlist);
 
-	
+	__int64 filetime_to_time_t(const FILETIME *ft)
+	{
+		long long winTime = ((long long)ft->dwHighDateTime << 32) + ft->dwLowDateTime;
+		winTime -= 116444736000000000LL; /* Windows to Unix Epoch conversion */
+		winTime /= 10000000;		 /* Nano to seconds resolution */
+		return (time_t)winTime;
+	}
+
+	int GetFileModifyTime(LPCTSTR filename, __int64 *time)
+	{
+		WIN32_FILE_ATTRIBUTE_DATA fdata;
+		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
+		{
+			*time = filetime_to_time_t(&fdata.ftLastWriteTime);
+			return 0;
+		}
+		return -1;
+	}
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
