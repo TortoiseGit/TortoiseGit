@@ -2085,7 +2085,7 @@ UINT CGitLogListBase::LogThread()
 	git_get_log_firstcommit(m_DllGitLog);
 	int total = git_get_log_estimate_commit_count(m_DllGitLog);
 	GIT_COMMIT commit;
-	t1=GetTickCount();
+	t2=t1=GetTickCount();
 	int oldprecentage = 0;
 	int oldsize=m_logEntries.size();
 	while( git_get_log_nextcommit(this->m_DllGitLog,&commit) == 0)
@@ -2120,6 +2120,8 @@ UINT CGitLogListBase::LogThread()
 		m_arShownList.Add(pRev);
 		this->m_critSec.Unlock();
 
+		t2=GetTickCount();	
+
 		if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
 		{
 			//update UI
@@ -2132,11 +2134,12 @@ UINT CGitLogListBase::LogThread()
 			oldsize = m_logEntries.size();
 			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
 
-			if( percent > oldprecentage )
+			//if( percent > oldprecentage )
 			{
 				::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
 				oldprecentage = percent;
 			}
+			t1 = t2;
 		}		
 	}
 	
