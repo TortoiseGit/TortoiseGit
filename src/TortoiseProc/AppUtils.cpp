@@ -2080,6 +2080,19 @@ int CAppUtils::GetCommitTemplate(CString &temp)
 	if( g_Git.Run(cmd,&output,CP_ACP) )
 		return -1;
 
+	if( output.GetLength()<1)
+		return -1;
+
+	if( output[0] == _T('/'))
+	{
+		if(output.GetLength()>=3)
+			if(output[2] == _T('/'))
+			{
+				output.GetBuffer()[0] = output[1];
+				output.GetBuffer()[1] = _T(':');
+			}
+	}
+
 	int start=0;
 	output=output.Tokenize(_T("\n"),start);
 
