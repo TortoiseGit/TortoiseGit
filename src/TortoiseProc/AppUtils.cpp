@@ -2073,6 +2073,35 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 		return CUnicodeUtils::GetCPCode(output);
 	}
 }
+int CAppUtils::GetCommitTemplate(CString &temp)
+{
+	CString cmd,output;
+	cmd = _T("git.exe config commit.template");
+	if( g_Git.Run(cmd,&output,CP_ACP) )
+		return -1;
+
+	int start=0;
+	output=output.Tokenize(_T("\n"),start);
+
+	output.Replace(_T('/'),_T('\\'));
+
+	try
+	{
+		CStdioFile file(output,CFile::modeRead|CFile::typeText);
+		CString str;
+		while(file.ReadString(str))
+		{
+			temp+=str+_T("\n");
+		}
+		
+	}catch(...)
+	{
+		return -1;
+	}
+	return 0;
+	
+
+}
 int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 {
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
