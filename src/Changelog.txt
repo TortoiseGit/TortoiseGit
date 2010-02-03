@@ -1,3 +1,35 @@
+= Release 1.3.5.0 =
+== Features ==
+ * Support Annotated tags
+   Implemented issue #274: Enhancement: Annotated tags
+
+ * shallow clones support --depth at clone dialog
+   Fixed issue #290: Shallow clones support --depth at clone dialog
+
+ * Improve Diff Dialog
+   Change commit at diff dialog
+   Diff commit context menu show in git repository
+
+ * Log Dialog
+   Direct Launch external diff when open dialog at file
+   Log can refresh when Click Rev button.
+ 
+ * Context menu
+   Use setting dialog to control which menuitem is external menu.
+
+ * Sync Dialog
+   Add remote update at sync dialog
+
+== Bug Fix ==
+ * Fixed issue #294: commit template not supported and support msysgit unix path
+ * Fixed issue #282: Fom/To/Messages/Authors/Paths filters are eventually disabled
+ * Fixed issue #292: Very large dialog when merging
+ * Fixed issue #291: Blame makes empty "UserImages.bmp" file
+ * Fix crash when copy several log message to clipboards
+ * Fixed issue #284: Show Log crashes when switching branches wait for log thread exit
+ * Fixed issue #285: Cherry picking no longer works
+ * Fix fetch command can't sync remote branch at sync dialog
+
 = Release 1.3.2.0 =
 == Bug Fix ==
  * Fixed issue #276: Crash on seeing diff with previous version
