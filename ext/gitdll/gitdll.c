@@ -375,6 +375,11 @@ int git_get_log_estimate_commit_count(GIT_LOG handle)
 int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
 {
 	int ret =0;
+	
+	if(commit == NULL)
+		return -1;
+
+	memset(commit, 0, sizeof(GIT_COMMIT));
 
 	commit->m_pGitCommit = get_revision(handle);
 	if( commit->m_pGitCommit == NULL)
