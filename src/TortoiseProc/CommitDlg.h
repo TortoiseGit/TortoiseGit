@@ -39,7 +39,6 @@ using namespace std;
 #define ENDDIALOGTIMER 100
 #define REFRESHTIMER   101
 
-
 /**
  * \ingroup TortoiseProc
  * Dialog to enter log messages used in a commit.
@@ -62,6 +61,8 @@ public:
 			this->m_ctrlShowPatch.SetWindowText(_T("View Patch>>"));
 		else
 			this->m_ctrlShowPatch.SetWindowText(_T("Hide Patch<<"));
+
+		m_ctrlShowPatch.Invalidate();
 	}
 private:
 	static UINT StatusThreadEntry(LPVOID pVoid);

@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CPatchViewDlg, CDialog)
 	ON_WM_SIZE()
 	ON_WM_MOVING()
 	ON_WM_DESTROY()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 void CPatchViewDlg::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face) 
@@ -143,4 +144,11 @@ void CPatchViewDlg::OnDestroy()
 
 	this->m_ParentCommitDlg->ShowViewPatchText(true);
 	// TODO: Add your message handler code here
+}
+
+void CPatchViewDlg::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+	CDialog::OnClose();
+	this->DestroyWindow();
 }
