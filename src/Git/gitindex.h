@@ -242,9 +242,13 @@ public:
 
 class CGitIgnoreList
 {
+private:
+	bool CheckFileChanged(CString &path);
+
 public:
 	std::map<CString, CGitIgnoreItem> m_Map;
 
-	bool CheckIgnoreChanged(CString &path, CString &projectRoot);
-	bool IsIgnore(CString &path, CString &projectRoot);
+	bool CheckIgnoreChanged(CString &path);
+	int  LoadAllIgnoreFile(CString &path);
+	bool IsIgnore(CString &path,CString &root);
 };

@@ -166,12 +166,17 @@ public:
 		return (time_t)winTime;
 	}
 
-	int GetFileModifyTime(LPCTSTR filename, __int64 *time)
+	int GetFileModifyTime(LPCTSTR filename, __int64 *time, bool * isDir=NULL)
 	{
 		WIN32_FILE_ATTRIBUTE_DATA fdata;
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
 		{
-			*time = filetime_to_time_t(&fdata.ftLastWriteTime);
+			if(time)
+				*time = filetime_to_time_t(&fdata.ftLastWriteTime);
+
+			if(isDir)
+				*isDir == !!( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+
 			return 0;
 		}
 		return -1;

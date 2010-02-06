@@ -141,6 +141,11 @@ GITDLL_API int git_check_excluded_1(const char *pathname,
 							int pathlen, const char *basename, int *dtype,
 							EXCLUDE_LIST el);
 
+#define DT_UNKNOWN	0
+#define DT_DIR		1
+#define DT_REG		2
+#define DT_LNK		3
+
 GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
 
 #endif

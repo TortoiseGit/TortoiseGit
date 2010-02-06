@@ -355,7 +355,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 		m_HeadRefFile.Replace(_T('/'),_T('\\'));
 
 		__int64 time;
-		if(g_Git.GetFileModifyTime(m_HeadRefFile,&time))
+		if(g_Git.GetFileModifyTime(m_HeadRefFile,&time,NULL))
 			return -1;
 
 
@@ -447,62 +447,212 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 	{
 		free(m_pExcludeList);
 		m_pExcludeList=NULL;
-	}
-
-	if(g_Git.GetFileModifyTime(file,&m_LastModifyTime))
-		return -1;
-
-	if(git_create_exclude_list(&this->m_pExcludeList))
-		return -1;
 
 
-	HANDLE hfile = CreateFile(file,
-									GENERIC_READ,
-									FILE_SHARE_READ,
-									NULL,
-									OPEN_EXISTING,
-									FILE_ATTRIBUTE_NORMAL,
-									NULL);
+		if(g_Git.GetFileModifyTime(file,&m_LastModifyTime))
+			return -1;
+
+		if(git_create_exclude_list(&this->m_pExcludeList))
+			return -1;
 
 
-	if(hfile == INVALID_HANDLE_VALUE)
-	{
-		return -1 ;
-	}
+		HANDLE hfile = CreateFile(file,
+			GENERIC_READ,
+			FILE_SHARE_READ,
+			NULL,
+			OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL,
+			NULL);
 
-	DWORD size=0,filesize=0;
-			
-	filesize=GetFileSize(hfile,NULL);
 
-	if(filesize == INVALID_FILE_SIZE )
-	{
-		return -1;
-	}
-
-	BYTE *buffer = new BYTE[filesize+1];
-	
-	if(buffer == NULL)
-	{
-		return -1;
-	}
-
-	if(! ReadFile( hfile, buffer,filesize,&size,NULL) )
-	{
-		return GetLastError();
-	}
-	
-	BYTE *p = buffer;
-	for(int i;i<size;i++)
-	{
-		if( buffer[i] == '\n' || buffer[i] =='\r' || i==(size-1) )
+		if(hfile == INVALID_HANDLE_VALUE)
 		{
-			if( i== size-1)
-				buffer[size]=0;
-			else
-				buffer[i]=0;
+			return -1 ;
+		}
 
-			git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
-			p=buffer+i+1;
-		}		
+		DWORD size=0,filesize=0;
+
+		filesize=GetFileSize(hfile,NULL);
+
+		if(filesize == INVALID_FILE_SIZE )
+		{
+			return -1;
+		}
+
+		BYTE *buffer = new BYTE[filesize+1];
+
+		if(buffer == NULL)
+		{
+			return -1;
+		}
+
+		if(! ReadFile( hfile, buffer,filesize,&size,NULL) )
+		{
+			return GetLastError();
+		}
+
+		BYTE *p = buffer;
+		for(int i;i<size;i++)
+		{
+			if( buffer[i] == '\n' || buffer[i] =='\r' || i==(size-1) )
+			{
+				if( i== size-1)
+					buffer[size]=0;
+				else
+					buffer[i]=0;
+
+				git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
+				p=buffer+i+1;
+			}		
+		}
 	}
+}
+
+bool CGitIgnoreList::CheckFileChanged(CString &path)
+{
+	__int64 time=0;
+	int ret=g_Git.GetFileModifyTime(path, &time);
+
+	bool cacheExist = (m_Map.find(path) != m_Map.end());
+	// both cache and file is not exist  
+	if( (ret != 0) && (!cacheExist))
+		return false;
+
+	// file exist but cache miss
+	if( (ret == 0) && (!cacheExist))
+		return true;
+
+	// file not exist but cache exist
+	if( (ret != 0) && (cacheExist))
+		return true;
+
+	// file exist and cache exist
+	if( m_Map[path].m_LastModifyTime == time )
+		return false;
+
+	return true;
+
+}
+
+bool CGitIgnoreList::CheckIgnoreChanged(CString &path)
+{
+	CString temp;
+	temp=path;
+
+	while(!temp.IsEmpty())
+	{
+		temp+=_T("\\.git");
+
+		if(PathFileExists(temp))
+		{
+			temp+=_T("\\info\\exclude");
+
+			if( CheckFileChanged(temp) )
+				return true;
+			else
+				return false;
+		}else
+		{
+			temp+=_T("ignore");
+			if( CheckFileChanged(temp) )
+				return true;
+		}
+
+		int found=0;
+		int i;
+		for( i=temp.GetLength() -1;i>=0;i++)
+		{
+			if(temp[i] == _T('\\'))
+				found ++;
+
+			if(found == 2)
+				break;
+		}
+
+		temp = temp.Left(i);
+	}
+	return true;
+}
+
+int CGitIgnoreList::LoadAllIgnoreFile(CString &path)
+{
+	CString temp;
+	temp=path;
+
+	while(!temp.IsEmpty())
+	{
+		temp+=_T("\\.git");
+
+		if(PathFileExists(temp))
+		{
+			temp+=_T("\\info\\exclude");
+
+			if( CheckFileChanged(temp) )
+			{
+				return m_Map[temp].FetchIgnoreList(temp);
+			}
+
+		}else
+		{
+			temp+=_T("ignore");
+			if( CheckFileChanged(temp) )
+			{
+				m_Map[temp].FetchIgnoreList(temp);
+			}
+		}
+
+		int found=0;
+		int i;
+		for( i=temp.GetLength() -1;i>=0;i++)
+		{
+			if(temp[i] == _T('\\'))
+				found ++;
+
+			if(found == 2)
+				break;
+		}
+
+		temp = temp.Left(i);
+	}
+	return true;
+}
+
+bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
+{
+	__int64 time=0;
+	bool dir=0;
+	CString temp=path;
+
+	if(g_Git.GetFileModifyTime(path,&time,&dir))
+		return false;
+
+	while(!temp.IsEmpty())
+	{
+		int x;
+		if(this->m_Map.find(temp) == m_Map.end() )
+		{
+		}else
+		{
+			int type=0;
+			if( dir )
+				type = DT_DIR;
+			else
+				type = DT_REG;
+
+			CStringA stra = CUnicodeUtils::GetMulti(temp,CP_ACP) ;
+			stra=stra.Mid(projectroot.GetLength());
+			int ret=git_check_excluded_1( stra, stra.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
+			if(ret == 1)
+				return true;
+			if(ret == 0)
+				return false;
+		}
+		
+		x=temp.ReverseFind(_T('\\'));
+		if(x<0)	x=0;
+			temp=temp.Left(x);
+
+	}
+	
+	return false;
 }
