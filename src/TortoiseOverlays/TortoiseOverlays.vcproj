@@ -271,6 +271,7 @@
 				ProgramDataBaseFileName="..\..\obj\TortoiseOverlays\Release/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -379,6 +380,7 @@
 				ProgramDataBaseFileName="..\..\obj\TortoiseOverlays\Release64/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 				CompileAs="2"
 			/>
 			<Tool
