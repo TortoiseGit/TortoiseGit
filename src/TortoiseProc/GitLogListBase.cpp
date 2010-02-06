@@ -1782,6 +1782,11 @@ int CGitLogListBase::BeginFetchLog()
 		SetItemCountEx(this->m_logEntries.size());
 	}
 	
+	git_init();
+
+	if(g_Git.IsInitRepos())
+		return 0;
+
 	if(git_open_log(&m_DllGitLog,CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
 	{
 		return -1;
@@ -1875,6 +1880,9 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 			latest = m_logEntries.GetGitRevAt(i).m_AuthorDate.GetTime();
 
 	}
+
+	if(latest<oldest)
+		latest=oldest;
 }
 
 //Helper class for FetchFullLogInfo()
@@ -2069,7 +2077,14 @@ UINT CGitLogListBase::LogThread()
 			pRev->m_Files.Clear();
 			pRev->m_ParentHash.clear();
 			pRev->m_ParentHash.push_back(m_HeadHash);
-			g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->m_Files);
+			if(g_Git.IsInitRepos())
+			{
+				g_Git.GetInitAddList(pRev->m_Files);
+
+			}else
+			{
+				g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->m_Files);
+			}			
 			pRev->m_Action =0;
 		
 			for(int j=0;j< pRev->m_Files.GetCount();j++)
@@ -2082,67 +2097,70 @@ UINT CGitLogListBase::LogThread()
 
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
-	git_get_log_firstcommit(m_DllGitLog);
-	int total = git_get_log_estimate_commit_count(m_DllGitLog);
-	GIT_COMMIT commit;
-	t2=t1=GetTickCount();
-	int oldprecentage = 0;
-	int oldsize=m_logEntries.size();
-	while( git_get_log_nextcommit(this->m_DllGitLog,&commit) == 0)
+	if(!g_Git.IsInitRepos())
 	{
-		//printf("%s\r\n",commit.m_Subject);
-		if(m_bExitThread)
-			break;
-
-		CGitHash hash = (char*)commit.m_hash ;
-			
-		GitRev *pRev = m_LogCache.GetCacheData(hash);
-		
-		if(pRev == NULL || !pRev->m_IsFull)
+		git_get_log_firstcommit(m_DllGitLog);
+		int total = git_get_log_estimate_commit_count(m_DllGitLog);
+		GIT_COMMIT commit;
+		t2=t1=GetTickCount();
+		int oldprecentage = 0;
+		int oldsize=m_logEntries.size();
+		while( git_get_log_nextcommit(this->m_DllGitLog,&commit) == 0)
 		{
-			pRev->ParserFromCommit(&commit);
-			pRev->ParserParentFromCommit(&commit);
-			pRev->SafeFetchFullInfo(&g_Git);
-						
-		}else
-		{
-			ASSERT(pRev->m_CommitHash == hash);
-			pRev->ParserParentFromCommit(&commit);
-		}
-#ifdef DEBUG		
-		pRev->DbgPrint();
-		TRACE(_T("\n"));
-#endif
-		git_free_commit(&commit);
+			//printf("%s\r\n",commit.m_Subject);
+			if(m_bExitThread)
+				break;
 
-		this->m_critSec.Lock();
-		m_logEntries.push_back(hash);
-		m_arShownList.Add(pRev);
-		this->m_critSec.Unlock();
+			CGitHash hash = (char*)commit.m_hash ;
 
-		t2=GetTickCount();	
+			GitRev *pRev = m_LogCache.GetCacheData(hash);
 
-		if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
-		{
-			//update UI
-			int percent=m_logEntries.size()*100/total + GITLOG_START+1;
-			if(percent > 99)
-				percent =99;
-			if(percent < GITLOG_START)
-				percent = GITLOG_START +1;
-
-			oldsize = m_logEntries.size();
-			PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
-
-			//if( percent > oldprecentage )
+			if(pRev == NULL || !pRev->m_IsFull)
 			{
-				::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
-				oldprecentage = percent;
+				pRev->ParserFromCommit(&commit);
+				pRev->ParserParentFromCommit(&commit);
+				pRev->SafeFetchFullInfo(&g_Git);
+
+			}else
+			{
+				ASSERT(pRev->m_CommitHash == hash);
+				pRev->ParserParentFromCommit(&commit);
 			}
-			t1 = t2;
-		}		
+#ifdef DEBUG		
+			pRev->DbgPrint();
+			TRACE(_T("\n"));
+#endif
+			git_free_commit(&commit);
+
+			this->m_critSec.Lock();
+			m_logEntries.push_back(hash);
+			m_arShownList.Add(pRev);
+			this->m_critSec.Unlock();
+
+			t2=GetTickCount();	
+
+			if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
+			{
+				//update UI
+				int percent=m_logEntries.size()*100/total + GITLOG_START+1;
+				if(percent > 99)
+					percent =99;
+				if(percent < GITLOG_START)
+					percent = GITLOG_START +1;
+
+				oldsize = m_logEntries.size();
+				PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
+
+				//if( percent > oldprecentage )
+				{
+					::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
+					oldprecentage = percent;
+				}
+				t1 = t2;
+			}		
+		}
+
 	}
-	
 	//Update UI;
 	PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);

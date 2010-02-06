@@ -156,6 +156,7 @@ public:
 	static CString StripRefName(CString refName);
 
 	int GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outpathlist);
+	int GetInitAddList(CTGitPathList &outpathlist);
 
 	__int64 filetime_to_time_t(const FILETIME *ft)
 	{

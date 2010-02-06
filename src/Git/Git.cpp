@@ -663,6 +663,22 @@ git_revnum_t CGit::GetHash(const CString &friendname)
 	return out;
 }
 
+int CGit::GetInitAddList(CTGitPathList &outputlist)
+{
+	CString cmd;
+	BYTE_VECTOR cmdout;
+
+	cmd=_T("git.exe ls-files -s -t -z");
+	outputlist.Clear();
+	if(g_Git.Run(cmd,&cmdout))
+		return -1;
+
+	outputlist.ParserFromLsFile(cmdout);
+	for(int i=0;i<outputlist.GetCount();i++)
+		((int)outputlist[i].m_Action) = CTGitPath::LOGACTIONS_ADDED;
+
+	return 0;
+}
 int CGit::GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outputlist)
 {
 	CString cmd;

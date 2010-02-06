@@ -2554,7 +2554,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	if (count)
 	{
 		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(0)))->m_CommitHash;
-		if(this->m_LogList.m_bShowWC && rev1.IsEmpty())
+		if(this->m_LogList.m_bShowWC && rev1.IsEmpty()&&(count>1))
 			start = 1;
 		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(start)))->m_CommitHash;
 		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_arShownList.GetCount()-1));
