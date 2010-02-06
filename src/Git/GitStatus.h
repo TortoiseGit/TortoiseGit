@@ -167,6 +167,7 @@ inline static git_revnum_t ConvertHashToRevnum(const BYTE *sha1)
 	return CString(s);
 }
 
+typedef void (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,void *pdata);
 
 /**
  * \ingroup Git
@@ -174,6 +175,9 @@ inline static git_revnum_t ConvertHashToRevnum(const BYTE *sha1)
  */
 class GitStatus
 {
+protected:
+	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+
 public:
 	GitStatus(bool * pbCanceled = NULL);
 	~GitStatus(void);

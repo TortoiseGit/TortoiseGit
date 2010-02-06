@@ -41,6 +41,8 @@
 #include "gitindex.h"
 
 CGitIndexFileMap g_IndexFileMap;
+CGitHeadFileMap g_HeadFileMap;
+CGitIgnoreList  g_IgnoreList;
 
 GitStatus::GitStatus(bool * pbCanceled)
 	: status(NULL)
@@ -963,3 +965,94 @@ void GitStatus::ClearFilter()
 
 #endif // _MFC_VER
 
+int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
+{
+	if(status)
+	{
+		git_wc_status_kind st = git_wc_status_none;
+		CGitHash hash;
+
+		g_IndexFileMap.GetFileStatus(gitdir,path,&st,IsFull,false, NULL,NULL,&hash);
+		
+		if( st == git_wc_status_conflicted )
+		{
+			*status =st;
+			if(callback)
+				callback(path,st,pData);
+			return 0;
+		}
+
+		if( st == git_wc_status_unversioned )
+		{
+			if( g_IgnoreList.CheckIgnoreChanged(path))
+			{
+				g_IgnoreList.LoadAllIgnoreFile(path);
+			}
+			if( g_IgnoreList.IsIgnore(path, gitdir) )
+			{
+				*status = st = git_wc_status_ignored;
+
+				if(callback)
+					callback(path,st,pData);
+				return 0;
+			}
+		}
+
+		if( st == git_wc_status_normal )
+		{
+			if(g_HeadFileMap[gitdir].CheckHeadUpdate())
+			{
+				g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
+				// Init Repository
+				if( g_HeadFileMap[gitdir].m_HeadFile.IsEmpty() )
+				{
+					*status =st=git_wc_status_added;
+					if(callback)
+						callback(path,st,pData);
+					return 0;
+				}
+				if(g_HeadFileMap[gitdir].ReadTree())
+				{
+					g_HeadFileMap[gitdir].m_LastModifyTimeHead = 0;
+					*status = st;
+					if(callback)
+						callback(path,st,pData);
+					return 0;
+				}
+
+			}else // Check Head Tree Hash;
+			{
+				//add item
+				LPTSTR relatepath = path.GetBuffer() + gitdir.GetLength() + 1; 
+				
+				if(g_HeadFileMap[gitdir].m_Map.find(relatepath) 
+					== g_HeadFileMap[gitdir].m_Map.end())
+				{
+					*status =st=git_wc_status_added;
+					if(callback)
+						callback(path,st,pData);
+					return 0;
+				}
+
+				//staged and not commit
+				int index=g_HeadFileMap[gitdir].m_Map[relatepath];
+				if( g_HeadFileMap[gitdir].at(index).m_Hash != hash )
+				{
+					*status = st= git_wc_status_modified;
+					*status =st=git_wc_status_added;
+					if(callback)
+						callback(path,st,pData);
+					return 0;
+				}
+			}
+		}
+
+		*status =st=git_wc_status_added;
+		if(callback)
+			callback(path,st,pData);
+		return 0;
+	}	
+
+	return 0;
+
+}

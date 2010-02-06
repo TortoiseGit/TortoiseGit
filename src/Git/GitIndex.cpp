@@ -155,7 +155,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	return ret;
 }
 
-int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind *status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback,void *pData)
+int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind *status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
 {
 
 	if(status)
@@ -163,6 +163,10 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 		if(m_Map.find(path) == m_Map.end() )
 		{
 			*status = git_wc_status_unversioned;
+
+			if(pHash)
+				pHash->Empty();
+
 		}else
 		{
  			int index = m_Map[path];
@@ -184,6 +188,8 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 			else if(at(index).m_Flags & CE_INTENT_TO_ADD)
 				*status = git_wc_status_added;
 
+			if(pHash)
+				*pHash = at(index).m_IndexHash;
 		}
 		if(callback)
 			callback(gitdir+_T("\\")+path,*status,pData);
@@ -193,7 +199,8 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 
 int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *status,
 							 BOOL IsFull, BOOL IsRecursive,
-							 FIll_STATUS_CALLBACK callback,void *pData)
+							 FIll_STATUS_CALLBACK callback,void *pData,
+							 CGitHash *pHash)
 {
 	int result;
 	struct __stat64 buf;
@@ -270,14 +277,15 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 
 		}else
 		{
-			GetFileStatus(gitdir,path,status,buf,callback,pData);
+			GetFileStatus(gitdir,path,status,buf,callback,pData,pHash);
 		}
 	}	
 	return 0;
 }
 
 int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
-									FIll_STATUS_CALLBACK callback,void *pData)
+									FIll_STATUS_CALLBACK callback,void *pData,
+									CGitHash *pHash)
 {
 	struct __stat64 buf;
 	int result;
@@ -302,7 +310,7 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 		}
 		(*this)[IndexFile].m_LastModifyTime = buf.st_mtime;
 
-		(*this)[IndexFile].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData);
+		(*this)[IndexFile].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
 				
 	}catch(...)
 	{
@@ -656,3 +664,123 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 	
 	return false;
 }
+
+#if 0
+int CGitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL)
+{
+	if(status)
+	{
+		git_wc_status_kind st = git_wc_status_none;
+
+		m_IndexFilesMap.GetFileStatus(gitdir,path,&st,IsFull,false, NULL,NULL);
+		
+		if( st == git_wc_status_conflicted )
+		{
+			*status =st;
+			if(callback)
+				callback(path,pData);
+			return 0;
+		}
+
+		if( st == git_wc_status_normal )
+		{
+
+		}
+	}	
+
+	return 0;
+}
+
+int CGitStatus::GetStatus(CString &gitdir, CString &path, git_wc_status_kind *status, BOOL IsFull, BOOL IsRecursive , FIll_STATUS_CALLBACK callback , void *pData)
+{
+	int result;
+	__int64 time;
+	bool	dir;
+
+	git_wc_status_kind dirstatus = git_wc_status_none;
+	if(status)
+	{
+		g_Git.GetFileModifyTime(path,&time,&dir);
+		if( dir)
+		{
+		}else
+		{
+			
+		}
+		if(path.IsEmpty())
+			result = _tstat64( gitdir, &buf );
+		else
+			result = _tstat64( gitdir+_T("\\")+path, &buf );
+
+		if(result)
+			return -1;
+
+		if(buf.st_mode & _S_IFDIR)
+		{
+			if(!path.IsEmpty())
+			{
+				if( path.Right(1) != _T("\\"))
+					path+=_T("\\");
+			}
+			int len =path.GetLength();
+
+			for(int i=0;i<size();i++)
+			{
+				if( at(i).m_FileName.GetLength() > len )
+				{
+					if(at(i).m_FileName.Left(len) == path)
+					{
+						if( !IsFull )
+						{
+							*status = git_wc_status_normal; 
+							if(callback)
+								callback(gitdir+_T("\\")+path,*status,pData);
+							return 0;
+
+						}else
+						{	
+							result = _tstat64( gitdir+_T("\\")+at(i).m_FileName, &buf );
+							if(result)
+								continue;
+							
+							*status = git_wc_status_none;
+							GetFileStatus(gitdir,at(i).m_FileName,status,buf,callback,pData);
+							if( *status != git_wc_status_none )
+							{
+								if( dirstatus == git_wc_status_none)
+								{
+									dirstatus = git_wc_status_normal;
+								}
+								if( *status != git_wc_status_normal )
+								{
+									dirstatus = git_wc_status_modified;
+								}
+							}
+							
+						}
+					}
+				}
+			}
+
+			if( dirstatus != git_wc_status_none )
+			{
+				*status = dirstatus;
+			}
+			else
+			{
+				*status = git_wc_status_unversioned;
+			}
+			if(callback)
+				callback(gitdir+_T("\\")+path,*status,pData);
+							
+			return 0;
+
+		}else
+		{
+			GetFileStatus(gitdir,path,status,buf,callback,pData);
+		}
+	}	
+	return 0;
+
+}
+#endif
