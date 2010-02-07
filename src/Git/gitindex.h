@@ -182,7 +182,7 @@ public:
 	int GetStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
 protected:
 	int GetFileStatus(CString &gitdir,CString &path, git_wc_status_kind * status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
-
+	int GetDirStatus(CString &gitdir,CString &path, git_wc_status_kind * status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
 
 class CGitTreeItem
@@ -219,12 +219,15 @@ class CGitHeadFileMap:public std::map<CString,CGitHeadFileList>
 {
 public:
 	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+
 };
 
 
 class CGitIndexFileMap:public std::map<CString,CGitIndexList> 
 {
 public:
+	int CheckAndUpdateIndex(CString &gitdir,bool *loaded=NULL);
+
 	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
 
@@ -260,6 +263,86 @@ public:
 	bool IsIgnore(CString &path,CString &root);
 };
 
+template<class T>
+int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, int pos)
+{
+	if( pos < 0)
+	{
+		return -1;
+	}
+	if(start == 0 || end == NULL)
+		return -1;
+
+	*start=*end=-1;
+	if( _tstrncmp(vector[pos].m_FileName, pstr,len) != 0)
+	{
+		for(int i=0;i< vector.size();i++)
+		{
+			if( _tstrncmp(vector[i].m_FileName, pstr,len) == 0 )
+			{
+				if(*start<0)
+					*start =i;
+				*end =i;
+			}
+		}
+		return -1;
+	}else
+	{
+		*start =0;
+		*end = vector.size();
+
+		for(int i=pos;i<vector.size();i++)
+		{
+			if( _tstrncmp(vector[i].m_FileName, pstr,len) != 0 )
+			{
+				*end=i;
+			}else
+			{
+				break;
+			}
+		}
+		for(int i=pos;i>=0;i--)
+		{
+			if( _tstrncmp(vector[i].m_FileName, pstr,len) != 0 )
+			{
+				*start=i;
+			}else
+			{
+				break;
+			}
+		}
+	}
+}
+
+template<class T>
+int SearchInSortVector(T &vector, LPTSTR pstr, int len)
+{
+	int end=vector.size()-1;
+	int start = 0;
+	int mid = (start+end)/2;
+
+	while(!( start == end && start==mid))
+	{
+		int cmp;
+		cmp = _tstrncmp( vector[mid].m_FileName,pstr,len );
+
+		if(cmp ==0)
+			return mid;
+
+		if(cmp > 0)
+		{
+			start = mid+1;
+		}
+
+		if(cmp < 0)
+		{
+			end=mid;
+		}
+		mid=(start +end ) /2;
+
+	}
+	return -1;
+};
 #if 0
 
 class CGitStatus

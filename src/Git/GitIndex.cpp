@@ -283,6 +283,44 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 	return 0;
 }
 
+int CGitIndexFileMap::CheckAndUpdateIndex(CString &gitdir,bool *loaded)
+{
+	__int64 time;
+	int result;
+
+	try
+	{
+		CString IndexFile;
+		IndexFile=gitdir+_T("\\.git\\index");
+		/* Get data associated with "crt_stat.c": */
+		result = g_Git.GetFileModifyTime( IndexFile, &time );
+
+//		WIN32_FILE_ATTRIBUTE_DATA FileInfo;
+//		GetFileAttributesEx(_T("D:\\tortoisegit\\src\\gpl.txt"),GetFileExInfoStandard,&FileInfo);
+//		result = _tstat64( _T("D:\\tortoisegit\\src\\gpl.txt"), &buf );
+		
+		if(loaded)
+			*loaded = false;
+
+		if(result)
+		   return result;
+
+		if((*this)[gitdir].m_LastModifyTime != time )
+		{
+			if((*this)[gitdir].ReadIndex(IndexFile))
+				return -1;
+			if(loaded)
+				*loaded =true;
+		}
+		(*this)[gitdir].m_LastModifyTime = time;
+				
+	}catch(...)
+	{
+		return -1;
+	}
+	return 0;
+}
+
 int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
 									FIll_STATUS_CALLBACK callback,void *pData,
 									CGitHash *pHash)
@@ -291,26 +329,8 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 	int result;
 	try
 	{
-		CString IndexFile;
-		IndexFile=gitdir+_T("\\.git\\index");
-		/* Get data associated with "crt_stat.c": */
-		result = _tstat64( IndexFile, &buf );
-
-//		WIN32_FILE_ATTRIBUTE_DATA FileInfo;
-//		GetFileAttributesEx(_T("D:\\tortoisegit\\src\\gpl.txt"),GetFileExInfoStandard,&FileInfo);
-//		result = _tstat64( _T("D:\\tortoisegit\\src\\gpl.txt"), &buf );
-
-		if(result)
-		   return result;
-
-		if((*this)[IndexFile].m_LastModifyTime != buf.st_mtime )
-		{
-			if((*this)[IndexFile].ReadIndex(IndexFile))
-				return -1;
-		}
-		(*this)[IndexFile].m_LastModifyTime = buf.st_mtime;
-
-		(*this)[IndexFile].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
+		CheckAndUpdateIndex(gitdir);
+		(*this)[gitdir].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
 				
 	}catch(...)
 	{
@@ -666,30 +686,6 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 }
 
 #if 0
-int CGitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL)
-{
-	if(status)
-	{
-		git_wc_status_kind st = git_wc_status_none;
-
-		m_IndexFilesMap.GetFileStatus(gitdir,path,&st,IsFull,false, NULL,NULL);
-		
-		if( st == git_wc_status_conflicted )
-		{
-			*status =st;
-			if(callback)
-				callback(path,pData);
-			return 0;
-		}
-
-		if( st == git_wc_status_normal )
-		{
-
-		}
-	}	
-
-	return 0;
-}
 
 int CGitStatus::GetStatus(CString &gitdir, CString &path, git_wc_status_kind *status, BOOL IsFull, BOOL IsRecursive , FIll_STATUS_CALLBACK callback , void *pData)
 {
