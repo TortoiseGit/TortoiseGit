@@ -2568,10 +2568,10 @@ void CGitLogListBase::RemoveFilter()
 	{
 		if(this->m_IsOldFirst)
 		{
-			m_arShownList.Add(&m_logEntries[m_logEntries.size()-i-1]);
+			m_arShownList.Add(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
 		}else
 		{
-			m_arShownList.Add(&m_logEntries[i]);
+			m_arShownList.Add(&m_logEntries.GetGitRevAt(i));
 		}
 	}
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
