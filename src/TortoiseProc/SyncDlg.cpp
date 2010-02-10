@@ -748,7 +748,7 @@ void CSyncDlg::FetchOutList(bool force)
 	if(IsURL())
 	{
 		CString str;
-		str=_T("Don't know what will push befause you enter URL");
+		str=_T("Don't know what will push because you enter URL");
 		m_OutLogList.ShowText(str);
 		this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 		m_OutLocalBranch.Empty();
@@ -760,7 +760,7 @@ void CSyncDlg::FetchOutList(bool force)
 	}else if(g_Git.GetHash(remotebranch).GetLength()<40)
 	{
 		CString str;
-		str.Format(_T("Don't know what will push befause unkown \"%s\""),remotebranch);
+		str.Format(_T("Don't know what will push because unknown \"%s\""),remotebranch);
 		m_OutLogList.ShowText(str);
 		this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 		m_OutLocalBranch.Empty();
