@@ -1017,7 +1017,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */,BOOL UpdateStatusList)
+void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -1061,10 +1061,11 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
 		//set default checkbox status
-		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck)
-			((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
-		else
-			((CTGitPath*)m_arStatusArray[i])->m_Checked=false;
+		if(!UseStoredCheckStatus)
+			if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck)
+				((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
+			else
+				((CTGitPath*)m_arStatusArray[i])->m_Checked=false;
 
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
 		{
@@ -1738,7 +1739,7 @@ void CGitStatusListCtrl::Sort()
 
 	std::sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
 	SaveColumnWidths();
-	Show(m_dwShow, 0, m_bShowFolders);
+	Show(m_dwShow, 0, m_bShowFolders,false,true);
 
 }
 
@@ -2773,11 +2774,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							path->m_Action = CTGitPath::LOGACTIONS_ADDED;
 							SetEntryCheck(path,index,true);
+							
 							SetItemGroup(index,0);
 							this->m_StatusFileList.AddPath(*path);
 							this->m_UnRevFileList.RemoveItem(*path);
 							this->m_IgnoreFileList.RemoveItem(*path);
-							Show(this->m_dwShow,0,true,true);
+							
+							Show(this->m_dwShow,0,true,true,true);
 						}
 					}
 					
@@ -2925,7 +2928,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 						
 					}
-					Show(m_dwShow, 0, m_bShowFolders);
+					Show(m_dwShow, 0, m_bShowFolders,0,true);
 				}
 			}
 			break;
@@ -3355,7 +3358,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 							SetRedraw(TRUE);
 							SaveColumnWidths();
-							Show(m_dwShow, 0, m_bShowFolders);
+							Show(m_dwShow, 0, m_bShowFolders,false,true);
 							NotifyCheck();
 						}
 					}
