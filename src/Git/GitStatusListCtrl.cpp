@@ -5404,19 +5404,29 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 	
 				if(g_Git.Run(cmd,&cmdout))
 				{
-					cmdout.clear();
-					CString strout;
-					if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&strout,CP_UTF8))
+					int last = cmdout.RevertFind(0,-1);
+					if(last >0)
 					{
+						CString str;
+						g_Git.StringAppend(&str, &cmdout[last+1], CP_ACP,cmdout.size()-last -1);
+						CMessageBox::Show(NULL,str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+						cmdout.resize(last+1);
+
+					}else
+					{
+						cmdout.clear();
+						CString strout;
+						if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&strout,CP_UTF8))
+						{
+							CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
+							return -1;
+						}
+						if(strout.IsEmpty())
+							break; //this is initial repositoyr, there are no any history
+
 						CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
 						return -1;
 					}
-					if(strout.IsEmpty())
-						break; //this is initial repositoyr, there are no any history
-
-					CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
-					return -1;
-
 				}
 				
 				if(list == NULL)

@@ -439,6 +439,9 @@ void CCommitDlg::OnOK()
 	CString cmd;
 	CString out;
 
+	bool bAddSuccess=true;
+	bool bCloseCommitDlg=false;
+
 	for (int j=0; j<nListItems; j++)
 	{
 		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
@@ -474,7 +477,12 @@ void CCommitDlg::OnOK()
 			else
 				cmd.Format(_T("git.exe update-index  -- \"%s\""),entry->GetGitPathString());
 
-			g_Git.Run(cmd,&out,CP_ACP);
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				bAddSuccess = false ;
+				break;
+			}
 			nchecked++;
 
 			//checkedLists.insert(entry->GetGitPathString());
@@ -486,12 +494,25 @@ void CCommitDlg::OnOK()
 			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
 			{	//To init git repository, there are not HEAD, so we can use git reset command
 				cmd.Format(_T("git.exe rm --cache -- \"%s\""),entry->GetGitPathString());
-				g_Git.Run(cmd,&out,CP_ACP);	
+				if(g_Git.Run(cmd,&out,CP_ACP))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					bAddSuccess = false ;
+					bCloseCommitDlg=false;
+					break;
+				}
+				
 			}
 			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
 			{
 				cmd.Format(_T("git.exe reset -- \"%s\""),entry->GetGitPathString());
-				g_Git.Run(cmd,&out,CP_ACP);
+				if(g_Git.Run(cmd,&out,CP_ACP))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					bAddSuccess = false ;
+					bCloseCommitDlg=false;
+					break;
+				}
 			}
 
 		//	uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
@@ -543,9 +564,8 @@ void CCommitDlg::OnOK()
 			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
 	}
 
-	BOOL bCloseCommitDlg=true;
 	//if(checkedfiles.GetLength()>0)
-	if(nchecked||m_bCommitAmend)
+	if( bAddSuccess && (nchecked||m_bCommitAmend) )
 	{
 	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
 	//	g_Git.Run(cmd,&out);
@@ -625,7 +645,7 @@ void CCommitDlg::OnOK()
 			}
 		}
 		
-	}else
+	}else if(bAddSuccess)
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
 		bCloseCommitDlg=false;

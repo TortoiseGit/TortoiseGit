@@ -20,6 +20,19 @@ public:
 				return i;
 		return -1;
 	}
+	int RevertFind(BYTE data, int start=-1)
+	{
+		if(start == -1)
+			start=size()-1;
+
+		if(start<0)
+			return -1;
+
+		for(int i=start; i>=0;i--)
+			if( at(i) == data )
+				return i;
+		return -1;
+	}
 	int findNextString(int start=0)
 	{
 		int pos=start;
