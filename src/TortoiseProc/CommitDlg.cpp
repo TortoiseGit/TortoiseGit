@@ -888,7 +888,7 @@ UINT CCommitDlg::StatusThread()
 	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
 
     if(this->m_bWholeProject)   
-        SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
+        SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString() + CString(_T("(Whole Project)")));
     else
 	    SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
