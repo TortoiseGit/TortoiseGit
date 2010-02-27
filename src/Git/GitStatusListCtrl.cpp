@@ -5743,7 +5743,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 	CString cmd,out;		
 	if(dlg.DoModal()==IDOK)
 	{
-		filename = dlg.GetFileName();
+		filename = dlg.GetPathName();
 		if(m_CurrentVersion == GIT_REV_ZERO)
 		{
 			cmd.Format(_T("copy /Y \"%s\" \"%s\""),path->GetWinPath(),filename);
