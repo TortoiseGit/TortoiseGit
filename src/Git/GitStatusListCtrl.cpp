@@ -127,6 +127,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	m_FileLoaded=0;
 	m_critSec.Init();
 	m_bIsRevertTheirMy = false;
+	this->m_nLineAdded =this->m_nLineDeleted =0;
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -1122,6 +1123,8 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	
 	m_dwShow = dwShow;
 
+	this->BuildStatistics();
+
 #if 0
 
 	CWinApp * pApp = AfxGetApp();
@@ -2045,10 +2048,16 @@ bool CGitStatusListCtrl::BuildStatistics()
 	m_nConflicted = 0;
 	m_nTotal = 0;
 	m_nSelected = 0;
-	
+	m_nLineAdded = 0;
+	m_nLineDeleted = 0;
+	m_nRenamed = 0;
+
 	for (int i=0; i < (int)m_arStatusArray.size(); ++i)
 	{
 		int status=((CTGitPath*)m_arStatusArray[i])->m_Action;
+
+		m_nLineAdded += _tstol(((CTGitPath*)m_arStatusArray[i])->m_StatAdd);
+		m_nLineDeleted += _tstol(((CTGitPath*)m_arStatusArray[i])->m_StatDel);
 
 		if(status&(CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 			m_nAdded++;
@@ -2065,7 +2074,8 @@ bool CGitStatusListCtrl::BuildStatistics()
 		if(status&(CTGitPath::LOGACTIONS_IGNORE|CTGitPath::LOGACTIONS_UNVER))
 			m_nUnversioned++;
 	
-	
+		if(status&(CTGitPath::LOGACTIONS_REPLACED))
+			m_nRenamed++;
 
 //			} // switch (entry->status)
 //		} // if (entry)
@@ -4218,10 +4228,10 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 #endif
 }
 
-CString CGitStatusListCtrl::GetStatisticsString()
+CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 {
 
-	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned;
+	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned, sRenamed;
 	WORD langID = (WORD)(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR buf[MAX_STATUS_STRING_LENGTH];
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, buf, sizeof(buf)/sizeof(TCHAR), langID);
@@ -4236,15 +4246,30 @@ CString CGitStatusListCtrl::GetStatisticsString()
 	sConflicted = buf;
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_unversioned, buf, sizeof(buf)/sizeof(TCHAR), langID);
 	sUnversioned = buf;
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_replaced, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	sRenamed = buf;
 	CString sToolTip;
-	sToolTip.Format(_T("%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"),
-		(LPCTSTR)sNormal, m_nNormal,
-		(LPCTSTR)sUnversioned, m_nUnversioned,
-		(LPCTSTR)sModified, m_nModified,
-		(LPCTSTR)sAdded, m_nAdded,
-		(LPCTSTR)sDeleted, m_nDeleted,
-		(LPCTSTR)sConflicted, m_nConflicted
-		);
+	if(simple)
+	{
+		sToolTip.Format(_T("line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d"),
+			this->m_nLineAdded,this->m_nLineDeleted,
+				(LPCTSTR)sModified, m_nModified,
+				(LPCTSTR)sAdded, m_nAdded,
+				(LPCTSTR)sDeleted, m_nDeleted,
+				(LPCTSTR)sRenamed, m_nRenamed
+			);
+	}else
+	{
+		sToolTip.Format(_T("line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"),
+			this->m_nLineAdded,this->m_nLineDeleted,
+				(LPCTSTR)sNormal, m_nNormal,
+				(LPCTSTR)sUnversioned, m_nUnversioned,
+				(LPCTSTR)sModified, m_nModified,
+				(LPCTSTR)sAdded, m_nAdded,
+				(LPCTSTR)sDeleted, m_nDeleted,
+				(LPCTSTR)sConflicted, m_nConflicted
+			);
+	}
 	CString sStats;
 	sStats.Format(IDS_COMMITDLG_STATISTICSFORMAT, m_nSelected, GetItemCount());
 	if (m_pStatLabel)

@@ -648,7 +648,7 @@ public:
 	 * Returns a String containing some statistics like number of modified, normal, deleted,...
 	 * files.
 	 */
-	CString GetStatisticsString();
+	CString GetStatisticsString(bool simple=false);
 
 	/**
 	 * Set a static control which will be updated automatically with
@@ -937,6 +937,9 @@ private:
 	LONG						m_nConflicted;
 	LONG						m_nTotal;
 	LONG						m_nSelected;
+	LONG						m_nLineAdded;
+	LONG						m_nLineDeleted;
+	LONG						m_nRenamed;
 
 	DWORD						m_dwDefaultColumns;
 	DWORD						m_dwShow;

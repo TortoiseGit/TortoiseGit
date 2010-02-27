@@ -2562,10 +2562,16 @@ void CLogDlg::UpdateLogInfoLabel()
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected"), 
+	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\n"), 
 		count - start,
 		rev2.ToString().Left(6), rev1.ToString().Left(6), selectedrevs);
 
+	if(selectedrevs == 1)
+	{
+		CString str=m_ChangedFileListCtrl.GetStatisticsString(true);
+		str.Replace(_T('\n'), _T(' '));
+		sTemp += str;
+	}
 	m_sLogInfo = sTemp;
 
 	UpdateData(FALSE);
