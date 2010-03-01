@@ -274,11 +274,11 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 		return -1;
 
 	*start=*end=-1;
-	if( _tstrncmp(vector[pos].m_FileName, pstr,len) != 0)
+	if( _tcsnccmp(vector[pos].m_FileName, pstr,len) != 0)
 	{
 		for(int i=0;i< vector.size();i++)
 		{
-			if( _tstrncmp(vector[i].m_FileName, pstr,len) == 0 )
+			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
 			{
 				if(*start<0)
 					*start =i;
@@ -293,7 +293,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 
 		for(int i=pos;i<vector.size();i++)
 		{
-			if( _tstrncmp(vector[i].m_FileName, pstr,len) != 0 )
+			if( _tcsnccmp(vector[i].m_FileName, pstr,len) != 0 )
 			{
 				*end=i;
 			}else
@@ -303,7 +303,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 		}
 		for(int i=pos;i>=0;i--)
 		{
-			if( _tstrncmp(vector[i].m_FileName, pstr,len) != 0 )
+			if( _tcsnccmp(vector[i].m_FileName, pstr,len) != 0 )
 			{
 				*start=i;
 			}else
@@ -324,7 +324,7 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 	while(!( start == end && start==mid))
 	{
 		int cmp;
-		cmp = _tstrncmp( vector[mid].m_FileName,pstr,len );
+		cmp = _tcsnccmp( vector[mid].m_FileName,pstr,len );
 
 		if(cmp ==0)
 			return mid;
