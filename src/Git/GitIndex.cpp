@@ -155,7 +155,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	return ret;
 }
 
-int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind *status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
+int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
 {
 
 	if(status)
@@ -175,7 +175,7 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 			if(index >= size() )
 				return -1;
 		
-			if( buf.st_mtime ==  at(index).m_ModifyTime )
+			if( time ==  at(index).m_ModifyTime )
 			{
 				*status = git_wc_status_normal;
 			}else
@@ -203,19 +203,21 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 							 CGitHash *pHash)
 {
 	int result;
-	struct __stat64 buf;
 	git_wc_status_kind dirstatus = git_wc_status_none;
+	__int64 time;
+	bool isDir=false;
+
 	if(status)
 	{
 		if(path.IsEmpty())
-			result = _tstat64( gitdir, &buf );
+			result = g_Git.GetFileModifyTime(gitdir,&time,&isDir);
 		else
-			result = _tstat64( gitdir+_T("\\")+path, &buf );
+			result = g_Git.GetFileModifyTime( gitdir+_T("\\")+path, &time, &isDir );
 
 		if(result)
 			return -1;
 
-		if(buf.st_mode & _S_IFDIR)
+		if(isDir)
 		{
 			if(!path.IsEmpty())
 			{
@@ -239,12 +241,12 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 
 						}else
 						{	
-							result = _tstat64( gitdir+_T("\\")+at(i).m_FileName, &buf );
+							result = g_Git.GetFileModifyTime( gitdir+_T("\\")+at(i).m_FileName , &time);
 							if(result)
 								continue;
 							
 							*status = git_wc_status_none;
-							GetFileStatus(gitdir,at(i).m_FileName,status,buf,callback,pData);
+							GetFileStatus(gitdir,at(i).m_FileName,status,time,callback,pData);
 							if( *status != git_wc_status_none )
 							{
 								if( dirstatus == git_wc_status_none)
@@ -277,7 +279,7 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 
 		}else
 		{
-			GetFileStatus(gitdir,path,status,buf,callback,pData,pHash);
+			GetFileStatus(gitdir,path,status,time,callback,pData,pHash);
 		}
 	}	
 	return 0;
@@ -475,7 +477,8 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 	{
 		free(m_pExcludeList);
 		m_pExcludeList=NULL;
-
+	}
+	{
 
 		if(g_Git.GetFileModifyTime(file,&m_LastModifyTime))
 			return -1;
@@ -520,7 +523,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 		}
 
 		BYTE *p = buffer;
-		for(int i;i<size;i++)
+		for(int i=0;i<size;i++)
 		{
 			if( buffer[i] == '\n' || buffer[i] =='\r' || i==(size-1) )
 			{
@@ -562,10 +565,12 @@ bool CGitIgnoreList::CheckFileChanged(CString &path)
 
 }
 
-bool CGitIgnoreList::CheckIgnoreChanged(CString &path)
+bool CGitIgnoreList::CheckIgnoreChanged(CString &gitdir,CString &path)
 {
 	CString temp;
-	temp=path;
+	temp=gitdir;
+	temp+=_T("\\");
+	temp+=path;
 
 	while(!temp.IsEmpty())
 	{
@@ -573,6 +578,11 @@ bool CGitIgnoreList::CheckIgnoreChanged(CString &path)
 
 		if(PathFileExists(temp))
 		{
+			CString gitignore=temp;
+			gitignore += _T("ignore");
+			if( CheckFileChanged(gitignore) )
+				return true;
+
 			temp+=_T("\\info\\exclude");
 
 			if( CheckFileChanged(temp) )
@@ -588,7 +598,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(CString &path)
 
 		int found=0;
 		int i;
-		for( i=temp.GetLength() -1;i>=0;i++)
+		for( i=temp.GetLength() -1;i>=0;i--)
 		{
 			if(temp[i] == _T('\\'))
 				found ++;
@@ -602,10 +612,13 @@ bool CGitIgnoreList::CheckIgnoreChanged(CString &path)
 	return true;
 }
 
-int CGitIgnoreList::LoadAllIgnoreFile(CString &path)
+int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 {
 	CString temp;
-	temp=path;
+	
+	temp=gitdir;
+	temp+=_T("\\");
+	temp+=path;
 
 	while(!temp.IsEmpty())
 	{
@@ -613,6 +626,13 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &path)
 
 		if(PathFileExists(temp))
 		{
+			CString gitignore = temp;
+			gitignore += _T("ignore");
+			if( CheckFileChanged(gitignore) )
+			{
+				m_Map[temp].FetchIgnoreList(gitignore);
+			}
+
 			temp+=_T("\\info\\exclude");
 
 			if( CheckFileChanged(temp) )
@@ -631,7 +651,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &path)
 
 		int found=0;
 		int i;
-		for( i=temp.GetLength() -1;i>=0;i++)
+		for( i=temp.GetLength() -1;i>=0;i--)
 		{
 			if(temp[i] == _T('\\'))
 				found ++;

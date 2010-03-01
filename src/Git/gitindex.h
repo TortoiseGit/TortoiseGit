@@ -181,8 +181,8 @@ public:
 	int ReadIndex(CString file);
 	int GetStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
 protected:
-	int GetFileStatus(CString &gitdir,CString &path, git_wc_status_kind * status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
-	int GetDirStatus(CString &gitdir,CString &path, git_wc_status_kind * status,struct __stat64 &buf,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetFileStatus(CString &gitdir,CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetDirStatus(CString &gitdir,CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
 
 class CGitTreeItem
@@ -258,8 +258,8 @@ private:
 public:
 	std::map<CString, CGitIgnoreItem> m_Map;
 
-	bool CheckIgnoreChanged(CString &path);
-	int  LoadAllIgnoreFile(CString &path);
+	bool CheckIgnoreChanged(CString &gitdir,CString &path);
+	int  LoadAllIgnoreFile(CString &gitdir,CString &path);
 	bool IsIgnore(CString &path,CString &root);
 };
 

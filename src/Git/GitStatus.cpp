@@ -273,7 +273,17 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 			nFlags |= WGEFF_NoRecurse;
 #endif
 
-		err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getallstatus, &statuskind);
+		//err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getallstatus, &statuskind);
+
+		if(isDir)
+		{
+			err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&statuskind, true,bIsRecursive,NULL, NULL);
+
+		}else
+		{
+			err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&statuskind,true, false,NULL,NULL);
+		}
+		
 
 		/*err = git_client_status4 (&youngest,
 							path.GetSVNApiPath(pool),
@@ -424,7 +434,15 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 		m_status.prop_status = m_status.text_status = git_wc_status_none;
 
 		// NOTE: currently wgEnumFiles will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
-		m_err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getstatus, &m_status);
+		//m_err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getstatus, &m_status);
+		if(path.IsDirectory())
+		{
+			m_err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status , false,false,NULL, NULL);
+
+		}else
+		{
+			m_err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status ,false, false,NULL,NULL);
+		}
 
 		/*m_err = git_client_status4 (&youngest,
 							path.GetGitApiPath(m_pool),
@@ -984,9 +1002,9 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 		if( st == git_wc_status_unversioned )
 		{
-			if( g_IgnoreList.CheckIgnoreChanged(path))
+			if( g_IgnoreList.CheckIgnoreChanged(gitdir,path))
 			{
-				g_IgnoreList.LoadAllIgnoreFile(path);
+				g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
 			}
 			if( g_IgnoreList.IsIgnore(path, gitdir) )
 			{
@@ -1073,8 +1091,8 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 			
 			}else
 			{
-				if(::g_IgnoreList.CheckIgnoreChanged(path))
-					g_IgnoreList.LoadAllIgnoreFile(path);
+				if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
+					g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
 				
 				if(g_IgnoreList.IsIgnore(path,gitdir))
 					*status = git_wc_status_ignored;

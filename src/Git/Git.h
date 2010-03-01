@@ -175,7 +175,7 @@ public:
 				*time = filetime_to_time_t(&fdata.ftLastWriteTime);
 
 			if(isDir)
-				*isDir == !!( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+				*isDir = !!( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 
 			return 0;
 		}
@@ -188,4 +188,7 @@ extern CString GetTempFile();
 
 extern CGit g_Git;
 
-inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) { return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); }
+inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) 
+{
+	return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); 
+}
