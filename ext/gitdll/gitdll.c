@@ -597,7 +597,7 @@ int git_add_exclude(const char *string, const char *base,
 int git_create_exclude_list(EXCLUDE_LIST *which)
 {
 	*which = malloc(sizeof(struct exclude_list));
-	memset(which,0,sizeof(struct exclude_list));
+	memset(*which,0,sizeof(struct exclude_list));
 	return 0;
 }
 

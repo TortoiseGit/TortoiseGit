@@ -532,10 +532,14 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 				else
 					buffer[i]=0;
 
-				git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
+				if(p[0] != '#' && p[0] != 0)
+					git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
+
 				p=buffer+i+1;
 			}		
 		}
+		//delete buffer;
+		//buffer=NULL;
 	}
 }
 
@@ -630,7 +634,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			gitignore += _T("ignore");
 			if( CheckFileChanged(gitignore) )
 			{
-				m_Map[temp].FetchIgnoreList(gitignore);
+				m_Map[gitignore].FetchIgnoreList(gitignore);
 			}
 
 			temp+=_T("\\info\\exclude");
@@ -669,37 +673,57 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 {
 	__int64 time=0;
 	bool dir=0;
-	CString temp=path;
+	CString temp=projectroot+_T("\\")+path;
+	CStringA patha;
+
+	patha = CUnicodeUtils::GetMulti(path,CP_ACP) ;
+	patha=patha.Mid(projectroot.GetLength());
+	patha.Replace('\\','/');
 
 	if(g_Git.GetFileModifyTime(path,&time,&dir))
 		return false;
 
+	int type=0;
+	if( dir )
+		type = DT_DIR;
+	else
+		type = DT_REG;
+
 	while(!temp.IsEmpty())
 	{
 		int x;
+		x=temp.ReverseFind(_T('\\'));
+		if(x<0)	x=0;
+			temp=temp.Left(x);
+
+		temp+=_T("\\.gitignore");
 		if(this->m_Map.find(temp) == m_Map.end() )
 		{
+
 		}else
 		{
-			int type=0;
-			if( dir )
-				type = DT_DIR;
-			else
-				type = DT_REG;
-
-			CStringA stra = CUnicodeUtils::GetMulti(temp,CP_ACP) ;
-			stra=stra.Mid(projectroot.GetLength());
-			int ret=git_check_excluded_1( stra, stra.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
+			int ret=git_check_excluded_1( patha, patha.GetLength(), "",&type, m_Map[temp].m_pExcludeList);
 			if(ret == 1)
 				return true;
 			if(ret == 0)
 				return false;
 		}
-		
-		x=temp.ReverseFind(_T('\\'));
-		if(x<0)	x=0;
-			temp=temp.Left(x);
 
+		temp = temp.Left(temp.GetLength()-11);
+		temp +=_T("\\.git\\info\\exclude");
+
+		if(this->m_Map.find(temp) == m_Map.end() )
+		{
+
+		}else
+		{
+			int ret=git_check_excluded_1( patha, patha.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
+			if(ret == 1)
+				return true;
+	
+			return false;
+		}
+		temp = temp.Left(temp.GetLength()-18);
 	}
 	
 	return false;

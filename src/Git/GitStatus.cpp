@@ -1009,11 +1009,11 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 			if( g_IgnoreList.IsIgnore(path, gitdir) )
 			{
 				*status = st = git_wc_status_ignored;
-
-				if(callback)
-					callback(path,st,pData);
-				return 0;
 			}
+
+			if(callback)
+				callback(path,st,pData);
+			return 0;
 		}
 
 		if( st == git_wc_status_normal )
