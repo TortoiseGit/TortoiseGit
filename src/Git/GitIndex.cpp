@@ -459,16 +459,29 @@ int CGitHeadFileList::ReadTree()
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int stage, void *context)
 {
+#define S_IFGITLINK	0160000
+
 	CGitHeadFileList *p = (CGitHeadFileList*)context;
+	if( mode&S_IFDIR )
+	{
+		if( (mode&S_IFMT) != S_IFGITLINK)
+			return READ_TREE_RECURSIVE;
+	}
 
 	unsigned int cur = p->size();
 	p->resize(p->size()+1);
 	p->at(cur).m_Hash = (char*)sha1;
 	p->at(cur).m_FileName.Empty();
+	
+	if(base)
+		g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)base,CP_ACP,baselen);
+
 	g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)pathname,CP_ACP);
+
+	p->at(cur).m_FileName.Replace(_T('/'),_T('\\'));
+
 	p->m_Map[p->at(cur).m_FileName]=cur;
 
-#define S_IFGITLINK	0160000
 	if( (mode&S_IFMT) == S_IFGITLINK)
 		return 0;
 

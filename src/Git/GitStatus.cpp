@@ -1104,7 +1104,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 		{
 			
 			int start;int end;
-			if(path == gitdir)
+			if(path.IsEmpty())
 			{
 				start=0;
 				end=g_IndexFileMap[gitdir].size()-1;
@@ -1175,7 +1175,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 						hit = g_HeadFileMap[gitdir].begin()+start;
 						for(int i=hstart;i<=hend;i++)
 						{
-							if( ::g_IndexFileMap.find((*hit).m_FileName) == g_IndexFileMap.end())
+							if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
 							{
 								*status = git_wc_status_deleted;
 								break;

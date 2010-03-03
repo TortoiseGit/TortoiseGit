@@ -293,7 +293,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 
 		for(int i=pos;i<vector.size();i++)
 		{
-			if( _tcsnccmp(vector[i].m_FileName, pstr,len) != 0 )
+			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
 			{
 				*end=i;
 			}else
@@ -303,7 +303,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 		}
 		for(int i=pos;i>=0;i--)
 		{
-			if( _tcsnccmp(vector[i].m_FileName, pstr,len) != 0 )
+			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
 			{
 				*start=i;
 			}else
