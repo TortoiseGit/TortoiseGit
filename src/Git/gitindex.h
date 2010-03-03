@@ -329,12 +329,12 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 		if(cmp ==0)
 			return mid;
 
-		if(cmp > 0)
+		if(cmp < 0)
 		{
 			start = mid+1;
 		}
 
-		if(cmp < 0)
+		if(cmp > 0)
 		{
 			end=mid;
 		}

@@ -677,7 +677,6 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 	CStringA patha;
 
 	patha = CUnicodeUtils::GetMulti(path,CP_ACP) ;
-	patha=patha.Mid(projectroot.GetLength());
 	patha.Replace('\\','/');
 
 	if(g_Git.GetFileModifyTime(path,&time,&dir))
@@ -702,7 +701,13 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 
 		}else
 		{
-			int ret=git_check_excluded_1( patha, patha.GetLength(), "",&type, m_Map[temp].m_pExcludeList);
+			char *base;
+			
+			patha.Replace('\\', '/');
+			int pos=patha.ReverseFind('/');
+			base = pos>=0? patha.GetBuffer()+pos:patha.GetBuffer();
+
+			int ret=git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
 			if(ret == 1)
 				return true;
 			if(ret == 0)
