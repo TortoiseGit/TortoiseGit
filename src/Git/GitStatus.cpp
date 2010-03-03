@@ -1038,12 +1038,12 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 					return 0;
 				}
 
-			}else // Check Head Tree Hash;
+			}
+			// Check Head Tree Hash;
 			{
 				//add item
-				LPTSTR relatepath = path.GetBuffer() + gitdir.GetLength() + 1; 
-				
-				if(g_HeadFileMap[gitdir].m_Map.find(relatepath) 
+							
+				if(g_HeadFileMap[gitdir].m_Map.find(path) 
 					== g_HeadFileMap[gitdir].m_Map.end())
 				{
 					*status =st=git_wc_status_added;
@@ -1053,7 +1053,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 				}
 
 				//staged and not commit
-				int index=g_HeadFileMap[gitdir].m_Map[relatepath];
+				int index=g_HeadFileMap[gitdir].m_Map[path];
 				if( g_HeadFileMap[gitdir].at(index).m_Hash != hash )
 				{
 					*status = st= git_wc_status_modified;
@@ -1065,7 +1065,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 			}
 		}
 
-		*status =st=git_wc_status_added;
+		*status =st;
 		if(callback)
 			callback(path,st,pData);
 		return 0;

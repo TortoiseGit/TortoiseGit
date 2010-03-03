@@ -467,7 +467,11 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	p->at(cur).m_FileName.Empty();
 	g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)pathname,CP_ACP);
 	p->m_Map[p->at(cur).m_FileName]=cur;
-	
+
+#define S_IFGITLINK	0160000
+	if( (mode&S_IFMT) == S_IFGITLINK)
+		return 0;
+
 	return READ_TREE_RECURSIVE;
 }
 
