@@ -35,6 +35,7 @@ protected:
 	bool m_IsGitDllInited;
 	GIT_DIFF m_GitDiff;
 public:
+	CComCriticalSection			m_critGitDllSec;
 	void CheckAndInitDll()
 	{ 
 		if(!m_IsGitDllInited) 

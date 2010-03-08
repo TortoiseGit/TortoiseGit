@@ -985,6 +985,19 @@ void GitStatus::ClearFilter()
 
 int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
+	
+	TCHAR oldpath[MAX_PATH+1];
+	memset(oldpath,0,MAX_PATH+1);
+
+	g_Git.m_critGitDllSec.Lock();
+
+	if(gitdir != g_Git.m_CurrentDir)
+	{
+		g_Git.SetCurrentDir(gitdir);
+		::GetCurrentDirectory(MAX_PATH,oldpath);
+		::SetCurrentDirectory(g_Git.m_CurrentDir);
+		
+	}
 	if(status)
 	{
 		git_wc_status_kind st = git_wc_status_none;
@@ -1069,14 +1082,32 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 		if(callback)
 			callback(path,st,pData);
 		return 0;
-	}	
+	}
+	
+	if(*oldpath!=0)
+		::SetCurrentDirectory(oldpath);
 
+	g_Git.m_critGitDllSec.Unlock();
 	return 0;
 
 }
 
 int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
+	g_Git.m_critGitDllSec.Lock();
+	TCHAR oldpath[MAX_PATH+1];
+	memset(oldpath,0,MAX_PATH+1);
+
+	g_Git.m_critGitDllSec.Lock();
+
+	if(gitdir != g_Git.m_CurrentDir)
+	{
+		g_Git.SetCurrentDir(gitdir);
+		::GetCurrentDirectory(MAX_PATH,oldpath);
+		::SetCurrentDirectory(g_Git.m_CurrentDir);
+		
+	}
+
 	if(status)
 	{
 		g_IndexFileMap.CheckAndUpdateIndex(gitdir);
@@ -1211,5 +1242,10 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 
 		if(callback) callback(path,*status,pData);	
 	}
+	
+	if(*oldpath!=0)
+		::SetCurrentDirectory(oldpath);
+
+	g_Git.m_critGitDllSec.Unlock();
 	return 0;
 }

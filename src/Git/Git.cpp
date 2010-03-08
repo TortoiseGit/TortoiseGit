@@ -131,6 +131,7 @@ CGit::CGit(void)
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
 	CheckMsysGitDir();
+	m_critGitDllSec.Init();
 }
 
 CGit::~CGit(void)
