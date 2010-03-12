@@ -1381,7 +1381,10 @@ void CRebaseDlg::OnBnClickedAbort()
 	}
 	
 	if(this->m_IsCherryPick) //there are not "branch" at cherry pick mode
+	{
+		__super::OnCancel();
 		return;
+	}
 
 	cmd.Format(_T("git checkout -f %s"),this->m_BranchCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
