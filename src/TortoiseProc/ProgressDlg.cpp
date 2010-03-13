@@ -6,6 +6,7 @@
 #include "ProgressDlg.h"
 #include "Git.h"
 #include "atlconv.h"
+#include "UnicodeUtils.h"
 // CProgressDlg dialog
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
@@ -93,7 +94,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<TCHAR>*pdata)
+UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<char>*pdata)
 {
 	UINT ret=0;
 
@@ -128,20 +129,21 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		g_Git.RunAsync(cmdlist[i],&pi, &hRead,pfilename);
 
 		DWORD readnumber;
-		char buffer[2];
+		char byte;
 		CString output;
-		while(ReadFile(hRead,buffer,1,&readnumber,NULL))
+		while(ReadFile(hRead,&byte,1,&readnumber,NULL))
 		{
-			buffer[readnumber]=0;
-			
 			if(pdata)
 			{
-				pdata->push_back((TCHAR)buffer[0]);
+				if(byte == 0)
+					byte = '\n';
 
-				if(buffer[0] == '\r' || buffer[0] == '\n')
+				pdata->push_back( byte);
+
+				if(byte == '\r' || byte == '\n')
 					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 			}else
-				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,buffer[0]);
+				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,byte);
 		}
 	
 		CloseHandle(pi.hThread);
@@ -201,7 +203,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			m_Databuf.push_back(0);
 			InsertCRLF();
-			m_Log.SetWindowText(&m_Databuf[0]);
+			m_Log.SetWindowText(Convert2UnionCode(&m_Databuf[0]));
 			m_Log.LineScroll(m_Log.GetLineCount() - m_Log.GetFirstVisibleLine() - 4);
 		}
 		m_BufStart=0;
@@ -251,7 +253,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_BufStart++;
 			}
 		}else
-			ParserCmdOutput((TCHAR)lParam);
+			ParserCmdOutput((char)lParam);
 	}
 	return 0;
 }
@@ -328,33 +330,35 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 }
 #endif
 
-void CProgressDlg::ParserCmdOutput(TCHAR ch)
+void CProgressDlg::ParserCmdOutput(char ch)
 {
-	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogText,ch,&this->m_CurrentWork);
+	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogTextA,ch,&this->m_CurrentWork);
 }
-void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch, CWnd *CurrentWork)
+void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CStringA &oneline, char ch, CWnd *CurrentWork)
 {
 	//TRACE(_T("%c"),ch);
 	TRACE(_T("%c"),ch);
-	if( ch == _T('\r') || ch == _T('\n'))
+	CString str;
+	if( ch == ('\r') || ch == ('\n'))
 	{
 		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
 		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
 
 		int lines=log.GetLineCount();
+		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
 
-		if(ch == _T('\r'))
+		if(ch == ('\r'))
 		{	
 			int start=log.LineIndex(lines-1);
 			int length=log.LineLength(lines-1);
-			log.SetSel( start,start+length);
-			log.ReplaceSel(oneline);
+			log.SetSel( start,start+length);			
+			log.ReplaceSel(str);
 
 		}else
 		{
 			log.SetSel(log.GetWindowTextLength(),
 					     log.GetWindowTextLength());
-			log.ReplaceSel(CString(_T("\r\n"))+oneline);
+			log.ReplaceSel(CString(_T("\r\n"))+str);
 		}
 		
 		if( lines > 500 ) //limited log length
@@ -370,15 +374,15 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		if(s1>0 && s2>0)
 		{
 			if(CurrentWork)
-				CurrentWork->SetWindowTextW(oneline.Left(s1));
+				CurrentWork->SetWindowTextW(str.Left(s1));
 
-			int pos=FindPercentage(oneline);
+			int pos=FindPercentage(str);
 			TRACE(_T("Pos %d\r\n"),pos);
 			if(pos>0)
 				progressctrl.SetPos(pos);
 		}
 
-		oneline=_T("");
+		oneline="";
 
 	}else
 	{
@@ -444,11 +448,11 @@ void CProgressDlg::InsertCRLF()
 {
 	for(int i=0;i<m_Databuf.size();i++)
 	{
-		if(m_Databuf[i]==_T('\n'))
+		if(m_Databuf[i]==('\n'))
 		{
-			if(i==0 || m_Databuf[i-1]!= _T('\r'))
+			if(i==0 || m_Databuf[i-1]!= ('\r'))
 			{
-				m_Databuf.insert(m_Databuf.begin()+i,_T('\r'));
+				m_Databuf.insert(m_Databuf.begin()+i,('\r'));
 				i++;
 			}
 		}
@@ -473,3 +477,40 @@ void CProgressDlg::InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb
 	edit.LineScroll(edit.GetLineCount() - edit.GetFirstVisibleLine() - 4);
 }
 
+CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
+{
+	CString str;
+
+	CString cmd,output;
+	int cp=CP_UTF8;
+
+	cmd=_T("git.exe config i18n.logOutputEncoding");
+	if(g_Git.Run(cmd,&output,CP_ACP))
+		cp=CP_UTF8;
+	
+	int start=0;
+	output=output.Tokenize(_T("\n"),start);
+	cp=CUnicodeUtils::GetCPCode(output);
+
+	start =0;
+	if(size == -1)
+		size=strlen(buff);
+
+	for(int i=0;i<size;i++)
+	{
+		if(buff[i] == ']')
+			start = i;
+		if( start >0 && buff[i] =='\n' )
+		{
+			start =i;
+			break;
+		}
+	}
+
+	str.Empty();
+	g_Git.StringAppend(&str, (BYTE*)buff, cp, start);
+	g_Git.StringAppend(&str, (BYTE*)buff+start, CP_ACP,size - start);
+
+	return str;
+	
+}

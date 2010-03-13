@@ -887,7 +887,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 }
 
 
-void CSyncDlg::ParserCmdOutput(TCHAR ch)
+void CSyncDlg::ParserCmdOutput(char ch)
 {
 	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_LogText,ch);
 }

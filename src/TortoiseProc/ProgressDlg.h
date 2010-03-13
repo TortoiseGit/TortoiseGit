@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-
+#include "git.h"
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 // CProgressDlg dialog
 #define MSG_PROGRESSDLG_START 0
@@ -48,14 +48,23 @@ protected:
 	static UINT ProgressThreadEntry(LPVOID pVoid);
 	UINT		ProgressThread();
 
-	void		ParserCmdOutput(TCHAR ch);
+	CStringA		  m_LogTextA;
+
+	void		ParserCmdOutput(char ch);
 	void        RemoveLastLine(CString &str);
 
 	LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
 	void		OnCancel();
 
-	std::vector<TCHAR> m_Databuf;
+	std::vector<char> m_Databuf;
+	virtual CString Convert2UnionCode(char *buff, int size=-1)
+	{
+		CString str;
+		g_Git.StringAppend(&str,(BYTE*)buff, CP_ACP,size);
+		return str;
+	}
+
 	int			m_BufStart;
 	
 	void InsertCRLF(); //Insert \r before \n
@@ -65,11 +74,24 @@ public:
 
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
-	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CString &oneline, TCHAR ch,CWnd *CurrentWork=NULL);
+	
+	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,
+									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
+
 	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
 
-	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<TCHAR> *pdata=NULL);
+	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<char> *pdata=NULL);
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
+};
+
+
+class CCommitProgressDlg:public CProgressDlg
+{
+public:
+	CCommitProgressDlg(CWnd* pParent = NULL):CProgressDlg(pParent)
+	{
+	}
+	virtual CString Convert2UnionCode(char *buff, int size=-1);
 };

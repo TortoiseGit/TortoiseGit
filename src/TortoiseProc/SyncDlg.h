@@ -88,7 +88,7 @@ protected:
 
 	CWinThread*				m_pThread;	
 
-	void		ParserCmdOutput(TCHAR ch);
+	void		ParserCmdOutput(char ch);
 
 	virtual void LocalBranchChange(){FetchOutList();};
 	virtual void RemoteBranchChange(){FetchOutList();};
@@ -122,7 +122,7 @@ protected:
 
 	int  m_GitCmdStatus;
 	
-	CString m_LogText;
+	CStringA m_LogText;
 	CString m_OutLocalBranch;
 	CString m_OutRemoteBranch;
 	
