@@ -61,7 +61,7 @@ bool CloneCommand::Execute()
 		}
 
 		CString cmd;
-		cmd.Format(_T("git.exe clone -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone --progress -v %s \"%s\" \"%s\""),
 						depth,
 						url,
 						dir);
