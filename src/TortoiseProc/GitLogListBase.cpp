@@ -594,6 +594,8 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 	Gdiplus::Graphics graphics( hdc );
 
+	graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+	
 	// arc
 	switch (type) {
 	case Lanes::JOIN:
@@ -611,7 +613,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
 		
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
-		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top+h-1, x2-x1+1,laneHeight+1,270,90);
+		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top+h-1, x2-x1,laneHeight,270,90);
 		//graphics.DrawLine(&mypen,x1-1,h+top,P_270);
 
 		break;
@@ -638,7 +640,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		
 		Gdiplus::Pen mypen(&gradient,2);
 
-		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top-h-1, x2-x1+1,laneHeight+1,0,90);
+		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top-h-1, x2-x1,laneHeight,0,90);
 
 
 #if 0
@@ -663,6 +665,8 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	HPEN oldpen=(HPEN)::SelectObject(hdc,(HPEN)pen);
 
 	Gdiplus::Pen myPen(GetGdiColor(col),2);
+	
+	graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
 
 	//p->setPen(myPen);
 
@@ -734,6 +738,8 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		break;
 	}
 
+	graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+
 	CBrush brush;
 	brush.CreateSolidBrush(col);
 	HBRUSH oldbrush=(HBRUSH)::SelectObject(hdc,(HBRUSH)brush);
@@ -745,6 +751,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
 		::Ellipse(hdc, R_CENTER);
 		//p->drawEllipse(R_CENTER);
 		break;
@@ -754,6 +761,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
 		//p->drawRect(R_CENTER);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
 		Rectangle(hdc,R_CENTER);
 		break;
 	case Lanes::UNAPPLIED:
@@ -761,6 +769,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(Qt::red);
 		//p->drawRect(m - r, h - 1, d, 2);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
 		::Rectangle(hdc,m-r,h-1,d,2);
 		break;
 	case Lanes::APPLIED:
@@ -769,12 +778,14 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(DARK_GREEN);
 		//p->drawRect(m - r, h - 1, d, 2);
 		//p->drawRect(m - 1, h - r, 2, d);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
 		::Rectangle(hdc,m-r,h-1,d,2);
 		::Rectangle(hdc,m-1,h-r,2,d);
 		break;
 	case Lanes::BOUNDARY:
 		//p->setBrush(back);
 		//p->drawEllipse(R_CENTER);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
 		::Ellipse(hdc, R_CENTER);
 		break;
 	case Lanes::BOUNDARY_C:
@@ -782,6 +793,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::BOUNDARY_L:
 		//p->setBrush(back);
 		//p->drawRect(R_CENTER);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
 		::Rectangle(hdc,R_CENTER);
 		break;
 	default:
