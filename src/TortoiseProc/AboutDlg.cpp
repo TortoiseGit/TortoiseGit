@@ -22,7 +22,7 @@
 #include "AboutDlg.h"
 //#include "svn_version.h"
 #include "..\version.h"
-//#include "AppUtils.h"
+#include "AppUtils.h"
 #include "git.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
@@ -147,5 +147,5 @@ void CAboutDlg::OnBnClickedUpdate()
 	GetModuleFileName(NULL, com, MAX_PATH);
 	_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck /visible"));
 
-//	CAppUtils::LaunchApplication(com, 0, false);
+	CAppUtils::LaunchApplication(com, 0, false);
 }
