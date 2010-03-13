@@ -570,6 +570,8 @@ void CCommitDlg::OnOK()
 	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
 	//	g_Git.Run(cmd,&out);
 
+		bCloseCommitDlg = true;
+
 		CString tempfile=::GetTempFile();
 		
 		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);

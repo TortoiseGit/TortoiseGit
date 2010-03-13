@@ -202,6 +202,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			m_Databuf.push_back(0);
 			InsertCRLF();
 			m_Log.SetWindowText(&m_Databuf[0]);
+			m_Log.LineScroll(m_Log.GetLineCount() - m_Log.GetFirstVisibleLine() - 4);
 		}
 		m_BufStart=0;
 		this->m_Databuf.clear();
@@ -362,7 +363,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 			log.SetSel(0,end);
 			log.ReplaceSel(_T(""));
 		}
-		log.LineScroll(log.GetLineCount());
+		log.LineScroll(log.GetLineCount() - log.GetFirstVisibleLine() - 4);
 
 		int s1=oneline.Find(_T(':'));
 		int s2=oneline.Find(_T('%'));
@@ -469,6 +470,6 @@ void CProgressDlg::InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb
 	edit.SetSelectionCharFormat(cf);
 	edit.SetSel(edit.GetTextLength(),edit.GetTextLength());
 	edit.SetDefaultCharFormat(old);
-	edit.LineScroll(edit.GetLineCount());
+	edit.LineScroll(edit.GetLineCount() - edit.GetFirstVisibleLine() - 4);
 }
 
