@@ -1072,7 +1072,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
             else
 			    m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
-		m_ListCtrl.Show(dwShow);
+		m_ListCtrl.Show(dwShow,0,true,0,true);
 	}
 }
 
