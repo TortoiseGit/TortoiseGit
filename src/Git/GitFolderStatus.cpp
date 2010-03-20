@@ -100,7 +100,7 @@ GitFolderStatus::GitFolderStatus(void)
 	sCacheKey.reserve(MAX_PATH);
 
 	//rootpool = svn_pool_create (NULL);
-
+	g_Git.SetCurrentDir(_T(""));
 	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent"));
 }
 

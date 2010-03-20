@@ -996,6 +996,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 		g_Git.SetCurrentDir(gitdir);
 		::GetCurrentDirectory(MAX_PATH,oldpath);
 		::SetCurrentDirectory(g_Git.m_CurrentDir);
+		git_init();
 		
 	}
 	if(status)
@@ -1102,7 +1103,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 		g_Git.SetCurrentDir(gitdir);
 		::GetCurrentDirectory(MAX_PATH,oldpath);
 		::SetCurrentDirectory(g_Git.m_CurrentDir);
-		
+		git_init();	
 	}
 
 	if(status)
@@ -1155,72 +1156,80 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 				it++;
 			}
 
-			if( IsFul && g_HeadFileMap[gitdir].m_Map.size()>0)
+			if( IsFul)
 			{
 				*status = git_wc_status_normal;
 
 				if(g_HeadFileMap[gitdir].CheckHeadUpdate())
 				{
 					g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
-					g_HeadFileMap[gitdir].ReadTree();
+					if(g_HeadFileMap[gitdir].ReadTree())
+					{
+						//try again
+						g_Git.SetCurrentDir(gitdir);
+						::GetCurrentDirectory(MAX_PATH,oldpath);
+						::SetCurrentDirectory(g_Git.m_CurrentDir);
+						git_init();	
+						g_HeadFileMap[gitdir].ReadTree();
+					}
 				}
 				//Check Add
 				it = ::g_IndexFileMap[gitdir].begin()+start;
 				
-				for(int i=start;i<=end;i++)
+				if( g_HeadFileMap[gitdir].size() > 0 )
 				{
-					if( g_HeadFileMap[gitdir].m_Map.find((*it).m_FileName) == g_HeadFileMap[gitdir].m_Map.end())
+					for(int i=start;i<=end;i++)
 					{
-						pos = -1;
-					}else
-						pos = g_HeadFileMap[gitdir].m_Map[(*it).m_FileName];
-					 
-					if(pos < 0)
-					{
-						*status = git_wc_status_added;
-						break;
-					}
-
-					if( g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
-					{
-						*status == git_wc_status_modified;
-						break;
-					}
-
-					it++;
-				}
-
-				//Check Delete
-				if( *status == git_wc_status_normal )
-				{
-					pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
-					if(pos <0)
-					{
-						*status = git_wc_status_added;
-
-					}else
-					{
-						int hstart,hend;
-						GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
-						CGitHeadFileList::iterator hit;
-						hit = g_HeadFileMap[gitdir].begin()+start;
-						for(int i=hstart;i<=hend;i++)
+						if( g_HeadFileMap[gitdir].m_Map.find((*it).m_FileName) == g_HeadFileMap[gitdir].m_Map.end())
 						{
-							if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+							pos = -1;
+						}else
+							pos = g_HeadFileMap[gitdir].m_Map[(*it).m_FileName];
+
+						if(pos < 0)
+						{
+							*status = git_wc_status_added;
+							break;
+						}
+
+						if( g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
+						{
+							*status == git_wc_status_modified;
+							break;
+						}
+
+						it++;
+					}
+
+					//Check Delete
+					if( *status == git_wc_status_normal )
+					{
+						pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
+						if(pos <0)
+						{
+							*status = git_wc_status_added;
+
+						}else
+						{
+							int hstart,hend;
+							GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
+							CGitHeadFileList::iterator hit;
+							hit = g_HeadFileMap[gitdir].begin()+start;
+							for(int i=hstart;i<=hend;i++)
 							{
-								*status = git_wc_status_deleted;
-								break;
+								if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+								{
+									*status = git_wc_status_deleted;
+									break;
+								}
+								hit++;
 							}
-							hit++;
 						}
 					}
 				}
-			}
-
-			if( IsFul)
 				//Check File Time;
 				//if(IsRecursive)
-			{
+				{
 					it = g_IndexFileMap[gitdir].begin()+start;
 					for(int i=start;i<=end;i++)
 					{
@@ -1239,7 +1248,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 						}
 						it++;
 					}
-
+				}
 			}
 		}
 
