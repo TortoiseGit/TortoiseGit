@@ -1130,8 +1130,10 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 
 		}else  // In version control
 		{
-			
-			int start;int end;
+			*status = git_wc_status_normal;
+
+			int start=0;
+			int end=0;
 			if(path.IsEmpty())
 			{
 				start=0;
@@ -1145,7 +1147,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 			// Check Conflict;
 			for(int i=start;i<=end;i++)
 			{
-				if( (*it).m_Flags & CE_STAGEMASK !=0)
+				if( ((*it).m_Flags & CE_STAGEMASK) !=0)
 				{
 					*status = git_wc_status_conflicted;
 					break;
@@ -1153,7 +1155,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 				it++;
 			}
 
-			if( IsFul)
+			if( IsFul && g_HeadFileMap[gitdir].m_Map.size()>0)
 			{
 				*status = git_wc_status_normal;
 
@@ -1164,6 +1166,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 				}
 				//Check Add
 				it = ::g_IndexFileMap[gitdir].begin()+start;
+				
 				for(int i=start;i<=end;i++)
 				{
 					if( g_HeadFileMap[gitdir].m_Map.find((*it).m_FileName) == g_HeadFileMap[gitdir].m_Map.end())
@@ -1212,15 +1215,20 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 						}
 					}
 				}
+			}
 
+			if( IsFul)
 				//Check File Time;
 				//if(IsRecursive)
-				{
+			{
 					it = g_IndexFileMap[gitdir].begin()+start;
 					for(int i=start;i<=end;i++)
 					{
 						__int64 time;
-						if( g_Git.GetFileModifyTime((*it).m_FileName,&time) )
+						CString fullpath=gitdir;
+						fullpath += _T("\\");
+						fullpath += (*it).m_FileName;
+						if( g_Git.GetFileModifyTime(fullpath,&time) )
 						{
 							*status = git_wc_status_deleted;
 						}
@@ -1231,8 +1239,6 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 						}
 						it++;
 					}
-
-				}
 
 			}
 		}
