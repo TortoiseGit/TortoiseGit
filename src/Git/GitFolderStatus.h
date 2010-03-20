@@ -111,6 +111,8 @@ public:
 	const FileStatusCacheEntry *	GetCachedItem(const CTGitPath& filepath);
 
 	FileStatusCacheEntry		invalidstatus;
+	
+	GitStatus	m_GitStatus;
 
 private:
 	const FileStatusCacheEntry * BuildCache(const CTGitPath& filepath, const CString& sProjectRoot, BOOL bIsFolder, BOOL bDirectFolder = FALSE);

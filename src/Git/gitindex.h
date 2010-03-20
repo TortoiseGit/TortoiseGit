@@ -321,6 +321,9 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 	int start = 0;
 	int mid = (start+end)/2;
 
+	if(vector.size() == 0)
+		return -1;
+
 	while(!( start == end && start==mid))
 	{
 		int cmp;

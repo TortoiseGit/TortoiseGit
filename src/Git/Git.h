@@ -189,7 +189,9 @@ extern CString GetTempFile();
 
 extern CGit g_Git;
 
+#if 0
 inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) 
 {
 	return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); 
 }
+#endif

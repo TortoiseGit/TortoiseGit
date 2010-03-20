@@ -983,13 +983,27 @@ void GitStatus::ClearFilter()
 
 #endif // _MFC_VER
 
+class CAutoLock
+{
+	CComCriticalSection *m_lock;
+public:
+	CAutoLock(CComCriticalSection *lock)
+	{
+		m_lock=lock;
+		m_lock->Lock();
+	}
+	~CAutoLock()
+	{
+		m_lock->Unlock();
+	}
+};
 int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
 	
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
 
-	g_Git.m_critGitDllSec.Lock();
+	CAutoLock lock(&g_Git.m_critGitDllSec);
 
 	if(gitdir != g_Git.m_CurrentDir)
 	{
@@ -1087,7 +1101,6 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 	if(*oldpath!=0)
 		::SetCurrentDirectory(oldpath);
 
-	g_Git.m_critGitDllSec.Unlock();
 	return 0;
 
 }
@@ -1097,8 +1110,6 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 	g_Git.m_critGitDllSec.Lock();
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
-
-	g_Git.m_critGitDllSec.Lock();
 
 	if(gitdir != g_Git.m_CurrentDir)
 	{
@@ -1193,7 +1204,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 				//Check Delete
 				if( *status == git_wc_status_normal )
 				{
-					pos = SearchInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(), path.GetLength());
+					pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
 					if(pos <0)
 					{
 						*status = git_wc_status_added;
