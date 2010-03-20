@@ -40,6 +40,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_bInited=false;
 	m_CmdOutCurrentPos=0;
 	m_bAutoLoadPuttyKey = CAppUtils::IsSSHPutty();
+	m_bForce=false;
 }
 
 CSyncDlg::~CSyncDlg()
