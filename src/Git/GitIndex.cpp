@@ -696,7 +696,7 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 	patha = CUnicodeUtils::GetMulti(path,CP_ACP) ;
 	patha.Replace('\\','/');
 
-	if(g_Git.GetFileModifyTime(path,&time,&dir))
+	if(g_Git.GetFileModifyTime(temp,&time,&dir))
 		return false;
 
 	int type=0;
