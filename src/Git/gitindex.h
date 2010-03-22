@@ -333,7 +333,7 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 			return mid;
 
 		if(cmp < 0)
-		{
+		{ 
 			start = mid+1;
 		}
 
@@ -344,6 +344,10 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 		mid=(start +end ) /2;
 
 	}
+
+	if(_tcsnccmp( vector[mid].m_FileName,pstr,len ) == 0)
+		return mid;
+
 	return -1;
 };
 #if 0

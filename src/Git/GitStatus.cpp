@@ -991,6 +991,8 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 	AutoLocker lock(g_Git.m_critGitDllSec);
 
+	path.Replace(_T('\\'),_T('/'));
+
 	if(gitdir != g_Git.m_CurrentDir)
 	{
 		g_Git.SetCurrentDir(gitdir);
@@ -1097,6 +1099,8 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 	g_Git.m_critGitDllSec.Lock();
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
+
+	path.Replace(_T('\\'),_T('/'));
 
 	if(gitdir != g_Git.m_CurrentDir)
 	{
