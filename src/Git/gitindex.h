@@ -254,6 +254,8 @@ class CGitIgnoreList
 {
 private:
 	bool CheckFileChanged(CString &path);
+	
+	int  CheckIgnore(CString &path,CString &root);
 
 public:
 	std::map<CString, CGitIgnoreItem> m_Map;

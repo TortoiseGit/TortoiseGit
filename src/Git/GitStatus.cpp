@@ -983,6 +983,8 @@ void GitStatus::ClearFilter()
 
 #endif // _MFC_VER
 
+typedef CComCritSecLock<CComCriticalSection> AutoLocker;
+
 int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
 	
@@ -1160,7 +1162,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 				it++;
 			}
 
-			if( IsFul)
+			if( IsFul && (*status != git_wc_status_conflicted))
 			{
 				*status = git_wc_status_normal;
 

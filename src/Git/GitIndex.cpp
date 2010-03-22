@@ -684,8 +684,27 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 	}
 	return true;
 }
-
 bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
+{
+	CString str=path;
+	
+	str.Replace(_T('\\'),_T('/'));
+
+	int ret;
+	ret = CheckIgnore(path, projectroot);
+	while(ret < 0)
+	{
+		int start=str.ReverseFind(_T('/'));
+		if(start<0)
+			return (ret == 1);
+		
+		str=str.Left(start);
+		ret = CheckIgnore(str, projectroot);
+	}
+
+	return (ret == 1);
+}
+int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 {
 	__int64 time=0;
 	bool dir=0;
@@ -696,7 +715,7 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 	patha.Replace('\\','/');
 
 	if(g_Git.GetFileModifyTime(temp,&time,&dir))
-		return false;
+		return -1;
 
 	int type=0;
 	if( dir )
@@ -721,13 +740,13 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 			
 			patha.Replace('\\', '/');
 			int pos=patha.ReverseFind('/');
-			base = pos>=0? patha.GetBuffer()+pos:patha.GetBuffer();
+			base = pos>=0? patha.GetBuffer()+pos+1:patha.GetBuffer();
 
 			int ret=git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
 			if(ret == 1)
-				return true;
+				return 1;
 			if(ret == 0)
-				return false;
+				return 0;
 		}
 
 		temp = temp.Left(temp.GetLength()-11);
@@ -740,14 +759,16 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 		{
 			int ret=git_check_excluded_1( patha, patha.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
 			if(ret == 1)
-				return true;
-	
-			return false;
+				return 1;
+			if(ret == 0)
+				return 0;
+
+			return -1;
 		}
 		temp = temp.Left(temp.GetLength()-18);
 	}
 	
-	return false;
+	return -1;
 }
 
 #if 0
