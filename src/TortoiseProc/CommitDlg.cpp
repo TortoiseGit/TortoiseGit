@@ -508,10 +508,12 @@ void CCommitDlg::OnOK()
 				cmd.Format(_T("git.exe reset -- \"%s\""),entry->GetGitPathString());
 				if(g_Git.Run(cmd,&out,CP_ACP))
 				{
+					/* when reset a unstage file will report error. 
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					bAddSuccess = false ;
 					bCloseCommitDlg=false;
 					break;
+					*/
 				}
 			}
 
