@@ -1133,6 +1133,12 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 					*status = git_wc_status_ignored;
 				else
 					*status = git_wc_status_unversioned;
+				
+				g_HeadFileMap[gitdir].CheckHeadUpdate();
+
+				//Check init repository
+				if(g_HeadFileMap[gitdir].m_Head.IsEmpty())
+					*status = git_wc_status_normal;
 			}
 
 		}else  // In version control
@@ -1182,7 +1188,8 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 				//Check Add
 				it = ::g_IndexFileMap[gitdir].begin()+start;
 				
-				if( g_HeadFileMap[gitdir].size() > 0 )
+														//Check if new init repository
+				if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
 				{
 					for(int i=start;i<=end;i++)
 					{
