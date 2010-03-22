@@ -1,9 +1,8 @@
 // TortoiseOverlays - an overlay handler for Tortoise clients
-// Copyright (C) 2007 - TortoiseSVN
+// Copyright (C) 2007, 2010 - TortoiseSVN
 #include "stdafx.h"
 #include "ShellExt.h"
 #include "ShellExtClassFactory.h"
-
 
 CShellExtClassFactory::CShellExtClassFactory(FileState state)
 {
@@ -11,17 +10,20 @@ CShellExtClassFactory::CShellExtClassFactory(FileState state)
 
     m_cRef = 0L;
 	
-    g_cRefThisDll++; 
+	InterlockedIncrement(g_cRefThisDll);
 }
 
 CShellExtClassFactory::~CShellExtClassFactory()          
 {
-    g_cRefThisDll--;
+	InterlockedDecrement(g_cRefThisDll);
 }
 
 STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
                                                    LPVOID FAR *ppv)
 {
+	if(ppv == 0)
+		return E_POINTER;
+
     *ppv = NULL;
 
     // Any interface on this object is the object pointer
@@ -57,7 +59,10 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 												   REFIID riid,
 												   LPVOID *ppvObj)
 {
-    *ppvObj = NULL;
+	if(ppvObj == 0)
+		return E_POINTER;
+
+	*ppvObj = NULL;
 	
     // Shell extensions typically don't support aggregation (inheritance)
 	
@@ -68,14 +73,15 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
     // QueryInterface with IID_IShellExtInit--this is how shell extensions are
     // initialized.
 	
-    CShellExt* pShellExt = new CShellExt(m_StateToMake);  //Create the CShellExt object
+    CShellExt* pShellExt = new (std::nothrow) CShellExt(m_StateToMake);  //Create the CShellExt object
 		
     if (NULL == pShellExt)
         return E_OUTOFMEMORY;
-	
-    return pShellExt->QueryInterface(riid, ppvObj);
+	const HRESULT hr = pShellExt->QueryInterface(riid, ppvObj);
+	if(FAILED(hr))
+		delete pShellExt;
+	return hr;
 }
-
 
 STDMETHODIMP CShellExtClassFactory::LockServer(BOOL /*fLock*/)
 {

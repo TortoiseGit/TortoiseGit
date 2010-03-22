@@ -28,6 +28,9 @@
 #include <algorithm> 
 #pragma warning(pop)
 
+#include <atlbase.h>
+#include <atlexcept.h>
+#include <atlstr.h>
 
 #include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
 #ifndef _AFX_NO_AFXCMN_SUPPORT

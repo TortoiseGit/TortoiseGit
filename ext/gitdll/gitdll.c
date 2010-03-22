@@ -34,8 +34,7 @@ Cgitdll::Cgitdll()
 }
 #endif
 
-#define MAX_ERROR_STR_SIZE 512
-char g_last_error[MAX_ERROR_STR_SIZE]={0};
+extern char g_last_error[];
 void * g_prefix;
 
 char * get_git_last_error()
@@ -43,11 +42,7 @@ char * get_git_last_error()
 	return g_last_error;
 }
 
-static void die_dll(const char *err, va_list params)
-{
-	memset(g_last_error,0,MAX_ERROR_STR_SIZE);
-	vsnprintf(g_last_error, MAX_ERROR_STR_SIZE-1, err, params);	
-}
+extern void die_dll(const char *err, va_list params);
 
 void dll_entry()
 {
@@ -602,7 +597,7 @@ int git_add_exclude(const char *string, const char *base,
 int git_create_exclude_list(EXCLUDE_LIST *which)
 {
 	*which = malloc(sizeof(struct exclude_list));
-	memset(which,0,sizeof(struct exclude_list));
+	memset(*which,0,sizeof(struct exclude_list));
 	return 0;
 }
 

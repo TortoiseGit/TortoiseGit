@@ -27,7 +27,7 @@
 
 extern ShellCache g_ShellCache;
 
-extern CGitIndexFileMap g_IndexFileMap;
+//extern CGitIndexFileMap g_IndexFileMap;
 
 // get / auto-alloc a string "copy"
 
@@ -100,7 +100,7 @@ GitFolderStatus::GitFolderStatus(void)
 	sCacheKey.reserve(MAX_PATH);
 
 	//rootpool = svn_pool_create (NULL);
-
+	g_Git.SetCurrentDir(_T(""));
 	m_hInvalidationEvent = CreateEvent(NULL, FALSE, FALSE, _T("TortoiseGitCacheInvalidationEvent"));
 }
 
@@ -151,7 +151,6 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	urls.clear();
 	owners.clear();
 	
-	ATLTRACE2(_T("building cache for %s\n"), filepath);
 	if (bIsFolder)
 	{
 		if (bDirectFolder)
@@ -229,66 +228,28 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //	git_revnum_t youngest = GIT_INVALID_REVNUM;
 //	git_opt_revision_t rev;
 //	rev.kind = git_opt_revision_unspecified;
+	
+	git_wc_status_kind status;
+	int t1,t2;
+	t2=t1=0;
 	try
-	{
+	{	
+		git_depth_t depth = git_depth_infinity;
+
 		if (g_ShellCache.GetCacheType() == ShellCache::dll)
 		{
-			// gitindex.h based status
-
-			// extract the sub-path (relative to project root)
-			CString sSubPath;
-			CString s = filepath.GetWinPathString();
-			if (s.GetLength() > sProjectRoot.GetLength())
-			{
-				if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
-					sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
-				else
-					sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
-			}
-
-			git_wc_status_kind status;
-
-			err = g_IndexFileMap.GetFileStatus((CString&)sProjectRoot,sSubPath,&status,true,true,fillstatusmap_idx,this);
+			depth = git_depth_infinity;	
 		}
-		else
-		{
-			// extract the sub-path (relative to project root)
-//MessageBox(NULL, filepath.GetDirectory().GetWinPathString(), sProjectRoot, MB_OK);
-			LPCTSTR lpszSubPath = NULL;
-			CString sSubPath;
-			CString s = filepath.GetDirectory().GetWinPathString();
-			if (s.GetLength() > sProjectRoot.GetLength())
-			{
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
-				lpszSubPath = sSubPath;
-				// skip initial slash if necessary
-				if (*lpszSubPath == _T('\\'))
-					lpszSubPath++;
-			}
-
-//if (lpszSubPath) MessageBoxA(NULL, lpszSubPath, "BuildCache", MB_OK);
-//MessageBoxA(NULL, CStringA(sProjectRoot), sSubPath, MB_OK);
-//OutputDebugStringA("---");OutputDebugStringW(sProjectRoot);OutputDebugStringA(" = ");OutputDebugStringW(filepath.GetWinPathString());OutputDebugStringA(" - ");OutputDebugStringW(sSubPath);OutputDebugStringA("\r\n");
-			err = !wgEnumFiles(sProjectRoot, lpszSubPath, WGEFF_NoRecurse|WGEFF_FullPath|WGEFF_DirStatusAll, &fillstatusmap, this);
-
-			/*err = svn_client_status4 (&youngest,
-				filepath.GetDirectory().GetSVNApiPath(pool),
-				&rev,
-				fillstatusmap,
-				this,
-				svn_depth_immediates,		//depth
-				TRUE,		//getall
-				FALSE,		//update
-				TRUE,		//noignore
-				FALSE,		//ignore externals
-				NULL,
-				localctx,
-				pool);*/
-		}
+		
+		t1 = ::GetCurrentTime();
+		status = m_GitStatus.GetAllStatus(filepath, depth);
+		t2 = ::GetCurrentTime();
 	}
 	catch ( ... )
 	{
 	}
+
+	ATLTRACE2(_T("building cache for %s - time %d\n"), filepath.GetWinPath(), t2 -t1);
 
 	// Error present if function is not under version control
 	if (err != NULL)
@@ -301,7 +262,20 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //	svn_error_clear(err);
 //	svn_pool_destroy (pool);				//free allocated memory
 	m_TimeStamp = GetTickCount();
-	const FileStatusCacheEntry * ret = NULL;
+	FileStatusCacheEntry * ret = NULL;
+
+	if (_tcslen(filepath.GetWinPath())==3)
+		ret = &m_cache[(LPCTSTR)filepath.GetWinPathString().Left(2)];
+	else
+		ret = &m_cache[filepath.GetWinPath()];
+
+	//memset(ret, 0, sizeof(FileStatusCacheEntry));
+	ret->status = status;
+
+	m_mostRecentPath = filepath;
+	m_mostRecentStatus = ret;
+
+#if 0
 	FileStatusMap::const_iterator iter;
 	if ((iter = m_cache.find(filepath.GetWinPath())) != m_cache.end())
 	{
@@ -326,6 +300,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 			}
 		}		
 	}
+#endif
 	if (ret)
 		return ret;
 	return &invalidstatus;

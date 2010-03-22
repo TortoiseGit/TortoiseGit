@@ -17,19 +17,20 @@ CShellExt::CShellExt(FileState state)
     m_State = state;
 
     m_cRef = 0L;
-    g_cRefThisDll++;
-	
+	InterlockedIncrement(g_cRefThisDll);	
 }
 
 CShellExt::~CShellExt()
 {
-	g_cRefThisDll--;
+	InterlockedDecrement(g_cRefThisDll);
 }
 
 
 STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
-    *ppv = NULL; 
+    if(ppv == 0)
+		return E_POINTER;
+	*ppv = NULL; 
 
     if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
     {

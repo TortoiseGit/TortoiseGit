@@ -35,6 +35,7 @@ protected:
 	bool m_IsGitDllInited;
 	GIT_DIFF m_GitDiff;
 public:
+	CComCriticalSection			m_critGitDllSec;
 	void CheckAndInitDll()
 	{ 
 		if(!m_IsGitDllInited) 
@@ -166,12 +167,17 @@ public:
 		return (time_t)winTime;
 	}
 
-	int GetFileModifyTime(LPCTSTR filename, __int64 *time)
+	int GetFileModifyTime(LPCTSTR filename, __int64 *time, bool * isDir=NULL)
 	{
 		WIN32_FILE_ATTRIBUTE_DATA fdata;
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
 		{
-			*time = filetime_to_time_t(&fdata.ftLastWriteTime);
+			if(time)
+				*time = filetime_to_time_t(&fdata.ftLastWriteTime);
+
+			if(isDir)
+				*isDir = !!( fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+
 			return 0;
 		}
 		return -1;
@@ -183,4 +189,9 @@ extern CString GetTempFile();
 
 extern CGit g_Git;
 
-inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) { return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); }
+#if 0
+inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) 
+{
+	return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); 
+}
+#endif

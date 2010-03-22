@@ -5,28 +5,61 @@
 #include "gitstatus.h"
 #include "gitindex.h"
 #include "gitdll.h"
+#include "TGitPath.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	if(argc != 2)
+	CTGitPath path;
+	CString root;
+	TCHAR buff[256];
+	
+	GetCurrentDirectory(256,buff);
+	path.SetFromWin(buff);
+
+	if(!path.HasAdminDir(&root))
 	{
-		_tprintf(_T("argument error \n"));
-		return 0;
+		printf("not in git repository\n");
+		return -1;
 	}
 
 	CGitIndexList list;
-	list.ReadIndex(argv[1]);
-	for(int i=0;i<list.size();i++)
-		list[i].Print();
+	list.ReadIndex(root+_T("\\.git\\index"));
 
 	CGitHeadFileList filelist;
-	CString str;
-	
-	filelist.ReadHeadHash(_T("d:\\gitest"));
+	filelist.ReadHeadHash(buff);
 	_tprintf(_T("update %d\n"), filelist.CheckHeadUpdate());
 
 	git_init();
-	filelist.ReadTree();
+//	filelist.ReadTree();
+
+	WIN32_FIND_DATA data;
+	CString str(buff);
+	str+=_T("\\*.*");
+	GitStatus status;
+
+	HANDLE handle = FindFirstFile(str,&data);
+	while(FindNextFile(handle,&data))
+	{
+		if( _tcsnccmp(data.cFileName, _T(".."),2) ==0) 
+			continue;
+		if( _tcsnccmp(data.cFileName, _T("."),1) ==0 ) 
+			continue;
+
+		CString spath(buff);
+		spath += _T("\\");
+		spath += data.cFileName;
+		CTGitPath path(spath);
+
+		TCHAR name[100];
+		int t1,t2;
+		t1 = ::GetCurrentTime();
+		status.GetStatusString(status.GetAllStatus(path), 100,name);
+		t2 = ::GetCurrentTime();
+
+		_tprintf(_T("%s - %s - %d\n"),data.cFileName, name, t2-t1);
+		
+	}
+
 	return 0;
 }
 
