@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "TSVNPath.h"
+#include "TGitPath.h"
 
 // CCacheDlg dialog
 class CCacheDlg : public CDialog
@@ -56,7 +56,7 @@ protected:
 	UINT TestThread();
 	void ClosePipe();
 	bool EnsurePipeOpen();
-	bool GetStatusFromRemoteCache(const CTSVNPath& Path, bool bRecursive);
+	bool GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive);
 	void RemoveFromCache(const CString& path);
 
 	void TouchFile(const CString& path);

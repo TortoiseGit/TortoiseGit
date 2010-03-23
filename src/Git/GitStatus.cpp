@@ -983,7 +983,7 @@ void GitStatus::ClearFilter()
 
 #endif // _MFC_VER
 
-typedef CComCritSecLock<CComCriticalSection> AutoLocker;
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
@@ -991,7 +991,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
 
-	AutoLocker lock(g_Git.m_critGitDllSec);
+	CAutoLocker lock(g_Git.m_critGitDllSec);
 
 	path.Replace(_T('\\'),_T('/'));
 
@@ -1250,6 +1250,12 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 						CString fullpath=gitdir;
 						fullpath += _T("\\");
 						fullpath += (*it).m_FileName;
+						if( !IsRecursive )
+						{
+							//skip child directory
+							if((*it).m_FileName.Find(_T('/'), path.GetLength()) + 1>0)
+								continue;
+						}
 						if( g_Git.GetFileModifyTime(fullpath,&time) )
 						{
 							*status = git_wc_status_deleted;

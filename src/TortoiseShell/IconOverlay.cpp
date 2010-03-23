@@ -137,9 +137,20 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		{
 		case ShellCache::exe:
 			{
+				CTGitPath tpath(pPath);
+				if(!tpath.HasAdminDir())
+				{
+					status = git_wc_status_none;
+					break;
+				}
+				if(tpath.IsAdminDir())
+				{
+					status = git_wc_status_none;
+					break;
+				}
 				TSVNCacheResponse itemStatus;
 				SecureZeroMemory(&itemStatus, sizeof(itemStatus));
-				if (m_remoteCacheLink.GetStatusFromRemoteCache(CTGitPath(pPath), &itemStatus, true))
+				if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 				{
 					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
 /*					if ((itemStatus.m_kind == git_node_file)&&(status == git_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))

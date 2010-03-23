@@ -124,7 +124,8 @@ UINT CCacheDlg::TestThread()
 	CString filepath;
 	bool bIsDir = false;
 	while (direnum.NextFile(filepath, &bIsDir))
-		m_filelist.Add(filepath);
+		if(filepath.Find(_T(".git"))<0)
+			m_filelist.Add(filepath);
 
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(_T("%H:%M:%S")));
@@ -134,14 +135,14 @@ UINT CCacheDlg::TestThread()
 
 	CString sNumber;
 	srand(GetTickCount());
-	for (int i=0; i < 100000; ++i)
+	for (int i=0; i < 1; ++i)
 	{
 		CString filepath;
-		do {
+		//do {
 			filepath = m_filelist.GetAt(rand() % m_filelist.GetCount());
-		} while(filepath.Find(_T(".svn"))>=0);
+		//}while(filepath.Find(_T(".git"))>=0);
 		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath);
-		GetStatusFromRemoteCache(CTSVNPath(filepath), true);
+		GetStatusFromRemoteCache(CTGitPath(filepath), true);
 		sNumber.Format(_T("%d"), i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
 		if ((GetTickCount()%10)==1)
@@ -241,7 +242,7 @@ void CCacheDlg::ClosePipe()
 	}
 }
 
-bool CCacheDlg::GetStatusFromRemoteCache(const CTSVNPath& Path, bool bRecursive)
+bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 {
 	if(!EnsurePipeOpen())
 	{
@@ -423,7 +424,7 @@ UINT CCacheDlg::WatchTestThread()
 	CString sNumber;
 	srand(GetTickCount());
 	filepath = m_filelist.GetAt(rand() % m_filelist.GetCount());
-	GetStatusFromRemoteCache(CTSVNPath(m_sRootPath), false);
+	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
 	for (int i=0; i < 10000; ++i)
 	{
 		filepath = m_filelist.GetAt(rand() % m_filelist.GetCount());

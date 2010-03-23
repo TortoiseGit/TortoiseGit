@@ -67,10 +67,5 @@ using namespace ATL;
 #include <deque>
 #pragma warning(pop)
 
-#include "svn_wc.h"
-#include "svn_client.h"
-#include "svn_path.h"
-#include "svn_pools.h"
-
 
 typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;

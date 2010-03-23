@@ -49,6 +49,7 @@ public:
 	static bool SaveCache();
 
 public:
+	GitStatus m_GitStatus;
 	/// Refreshes the cache.
 	void Refresh();
 

@@ -175,7 +175,7 @@ typedef void (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,voi
  */
 class GitStatus
 {
-protected:
+public:
 	static int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 	static int GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 
