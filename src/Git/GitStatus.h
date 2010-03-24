@@ -167,7 +167,7 @@ inline static git_revnum_t ConvertHashToRevnum(const BYTE *sha1)
 	return CString(s);
 }
 
-typedef void (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,void *pdata);
+typedef BOOL (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,bool isDir, void *pdata);
 
 /**
  * \ingroup Git

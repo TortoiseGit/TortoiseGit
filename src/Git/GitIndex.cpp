@@ -191,7 +191,7 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 				*pHash = at(index).m_IndexHash;
 		}
 		if(callback)
-			callback(gitdir+_T("\\")+path,*status,pData);
+			callback(gitdir+_T("\\")+path,*status,false, pData);
 	}
 	return 0;
 }
@@ -235,7 +235,7 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 						{
 							*status = git_wc_status_normal; 
 							if(callback)
-								callback(gitdir+_T("\\")+path,*status,pData);
+								callback(gitdir+_T("\\")+path,*status,false, pData);
 							return 0;
 
 						}else
@@ -272,7 +272,7 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 				*status = git_wc_status_unversioned;
 			}
 			if(callback)
-				callback(gitdir+_T("\\")+path,*status,pData);
+				callback(gitdir+_T("\\")+path,*status,false, pData);
 							
 			return 0;
 

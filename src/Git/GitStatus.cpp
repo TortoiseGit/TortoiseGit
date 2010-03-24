@@ -1014,7 +1014,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 		{
 			*status =st;
 			if(callback)
-				callback(path,st,pData);
+				callback(path,st,false,pData);
 			return 0;
 		}
 
@@ -1030,7 +1030,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 			}
 			*status = st;
 			if(callback)
-				callback(path,st,pData);
+				callback(path,st, false, pData);
 			return 0;
 		}
 
@@ -1044,7 +1044,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 				{
 					*status =st=git_wc_status_added;
 					if(callback)
-						callback(path,st,pData);
+						callback(path,st,false,pData);
 					return 0;
 				}
 				if(g_HeadFileMap[gitdir].ReadTree())
@@ -1052,7 +1052,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 					g_HeadFileMap[gitdir].m_LastModifyTimeHead = 0;
 					*status = st;
 					if(callback)
-						callback(path,st,pData);
+						callback(path,st,false,pData);
 					return 0;
 				}
 
@@ -1066,7 +1066,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 				{
 					*status =st=git_wc_status_added;
 					if(callback)
-						callback(path,st,pData);
+						callback(path,st,false, pData);
 					return 0;
 				}
 
@@ -1077,7 +1077,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 					*status = st= git_wc_status_modified;
 					*status =st=git_wc_status_added;
 					if(callback)
-						callback(path,st,pData);
+						callback(path,st, false, pData);
 					return 0;
 				}
 			}
@@ -1085,7 +1085,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 		*status =st;
 		if(callback)
-			callback(path,st,pData);
+			callback(path,st,false, pData);
 		return 0;
 	}
 	
@@ -1271,7 +1271,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 			}
 		}
 
-		if(callback) callback(path,*status,pData);	
+		if(callback) callback(path,*status,false, pData);	
 	}
 	
 	if(*oldpath!=0)
