@@ -1250,21 +1250,32 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * s
 						CString fullpath=gitdir;
 						fullpath += _T("\\");
 						fullpath += (*it).m_FileName;
+						CString subpath;
 						if( !IsRecursive )
 						{
 							//skip child directory
-							if((*it).m_FileName.Find(_T('/'), path.GetLength()) + 1>0)
+							int pos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+							if( pos > 0)
+							{
+								if( callback && subpath != (*it).m_FileName.Left(pos))
+								{
+									subpath = (*it).m_FileName.Left(pos);
+									if(callback) callback(subpath,git_wc_status_normal,false, pData);
+								}
 								continue;
+							}
 						}
 						if( g_Git.GetFileModifyTime(fullpath,&time) )
 						{
-							*status = git_wc_status_deleted;
+							*status = git_wc_status_deleted;	
 						}
 						if( (*it).m_ModifyTime != time)
 						{
 							*status = git_wc_status_modified;
 							break;
 						}
+
+						if(callback) callback((*it).m_FileName,*status,false, pData);	
 						it++;
 					}
 				}

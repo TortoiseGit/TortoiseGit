@@ -25,3 +25,6 @@ Debug
 Release
 Debug64
 Release64
+*.patch
+*.patch
+*.patch
