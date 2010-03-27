@@ -30,7 +30,7 @@ CRWSection::CRWSection()
 CRWSection::~CRWSection()
 {
 #ifdef _DEBUG
-	if (m_nActive != 0)
+	if (m_nActive > 0)
 		DebugBreak();
 #endif
 

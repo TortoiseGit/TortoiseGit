@@ -473,35 +473,60 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		{
 			return itMap->second;
 		}
+		else
+		{
+			EnumFiles((CTGitPath*)&path);
+		}
+	
+		//try again
+		itMap = m_entryCache.find(strCacheKey);
+		if(itMap != m_entryCache.end())
+		{
+			return itMap->second;
+		}
 	}
 
 	AddEntry(path, NULL);
 	return CStatusCacheEntry();
 }
 
-int CCachedDirectory::EnumFiles()
+int CCachedDirectory::EnumFiles(CTGitPath *path )
 {
 	CString sProjectRoot;
-	m_directoryPath.HasAdminDir(&sProjectRoot);
+	if(path)
+		path->HasAdminDir(&sProjectRoot);
+	else
+		m_directoryPath.HasAdminDir(&sProjectRoot);	
+
 	ATLASSERT( !m_directoryPath.IsEmpty() );
 
 	LPCTSTR lpszSubPath = NULL;
 	CString sSubPath;
-	CString s = m_directoryPath.GetDirectory().GetWinPathString();
+	
+	CString s;
+	if(path)
+		s=path->GetWinPath();
+	else
+		s=m_directoryPath.GetDirectory().GetWinPathString();
+
 	if (s.GetLength() > sProjectRoot.GetLength())
 	{
-		sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
-		lpszSubPath = sSubPath;
 		// skip initial slash if necessary
-		if (*lpszSubPath == _T('\\'))
-			lpszSubPath++;
+		if(s[sProjectRoot.GetLength()] == _T('\\'))
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() -1);
+		else 
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() );
 	}
 	
 	GitStatus *pStatus = &CGitStatusCache::Instance().m_GitStatus;
 	git_wc_status_kind status;
 
-	pStatus->GetDirStatus(sProjectRoot, sSubPath, &status, true, false, GetStatusCallback,this);
+	if(path)
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, true, false, GetStatusCallback,this);
+	else
+		pStatus->GetDirStatus(sProjectRoot, sSubPath, &status, true, false, GetStatusCallback,this);
 
+	m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 /*
 	WIN32_FIND_DATA data;
 	CString str = m_directoryPath.GetWinPathString() + _T("\\*.*");
