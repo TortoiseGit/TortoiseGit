@@ -1140,7 +1140,8 @@ int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
 }
 int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
-	g_Git.m_critGitDllSec.Lock();
+	CAutoLocker lock(g_Git.m_critGitDllSec);
+
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
 	
@@ -1290,9 +1291,9 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 				//Check File Time;
 				//if(IsRecursive)
 				{
-					CString subpath, currentPath;
+					CString sub, currentPath;
 					it = g_IndexFileMap[gitdir].begin()+start;
-					for(int i=start;i<=end;i++)
+					for(int i=start;i<=end;i++,it++)
 					{
 						__int64 time;
 						CString fullpath=gitdir;
@@ -1303,13 +1304,15 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 						{
 							//skip child directory
 							int pos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+							
 							if( pos > 0)
 							{
 								currentPath = (*it).m_FileName.Left(pos);
-								if( callback && (subpath != currentPath) )
+								if( callback && (sub != currentPath) )
 								{
-									subpath = currentPath;
-									if(callback) callback(gitdir + _T("\\")+subpath,
+									sub = currentPath;
+									ATLTRACE(_T("index subdir %s\n"),sub);
+									if(callback) callback(gitdir + _T("\\")+sub,
 													git_wc_status_normal,true, pData);
 								}
 								continue;
@@ -1322,11 +1325,10 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 						if( (*it).m_ModifyTime != time)
 						{
 							*status = git_wc_status_modified;
-							break;
 						}
 
 						if(callback) callback(fullpath,*status,false, pData);	
-						it++;
+						
 					}
 				}
 			}
@@ -1338,6 +1340,5 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 	if(*oldpath!=0)
 		::SetCurrentDirectory(oldpath);
 
-	g_Git.m_critGitDllSec.Unlock();
 	return 0;
 }

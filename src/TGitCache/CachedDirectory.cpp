@@ -648,6 +648,12 @@ BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind stat
 		{
 			if ( !gitPath.IsEquivalentToWithoutCase(pThis->m_directoryPath) )
 			{
+				if (!gitPath.Exists())
+				{
+					ATLTRACE(_T("Miss dir %s \n"), gitPath.GetWinPath());
+					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_deleted);
+				}
+
 				if (pThis->m_bRecursive)
 				{
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
