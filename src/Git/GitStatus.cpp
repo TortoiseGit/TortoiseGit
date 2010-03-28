@@ -991,18 +991,8 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
 
-	CAutoLocker lock(g_Git.m_critGitDllSec);
-
 	path.Replace(_T('\\'),_T('/'));
 
-	if(gitdir != g_Git.m_CurrentDir)
-	{
-		g_Git.SetCurrentDir(gitdir);
-		::GetCurrentDirectory(MAX_PATH,oldpath);
-		::SetCurrentDirectory(g_Git.m_CurrentDir);
-		git_init();
-		
-	}
 	if(status)
 	{
 		git_wc_status_kind st = git_wc_status_none;
@@ -1031,6 +1021,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 			*status = st;
 			if(callback)
 				callback(gitdir+_T("/")+path,st, false, pData);
+
 			return 0;
 		}
 
@@ -1089,9 +1080,6 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 		return 0;
 	}
 	
-	if(*oldpath!=0)
-		::SetCurrentDirectory(oldpath);
-
 	return 0;
 
 }
@@ -1140,8 +1128,6 @@ int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
 }
 int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
-	CAutoLocker lock(g_Git.m_critGitDllSec);
-
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
 	
@@ -1151,14 +1137,6 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 	if(!path.IsEmpty())
 		if(path[path.GetLength()-1] !=  _T('/'))
 			path += _T('/'); //Add trail / to show it is directory, not file name.
-
-	if(gitdir != g_Git.m_CurrentDir)
-	{
-		g_Git.SetCurrentDir(gitdir);
-		::GetCurrentDirectory(MAX_PATH,oldpath);
-		::SetCurrentDirectory(g_Git.m_CurrentDir);
-		git_init();	
-	}
 
 	if(status)
 	{
@@ -1223,6 +1201,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 				if(g_HeadFileMap[gitdir].CheckHeadUpdate())
 				{
 					g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
+					
 					if(g_HeadFileMap[gitdir].ReadTree())
 					{
 						//try again

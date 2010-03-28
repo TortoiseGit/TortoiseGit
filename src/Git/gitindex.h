@@ -202,6 +202,7 @@ public:
 	CString		m_HeadRefFile;
 	CGitHash	m_Head;
 	CString		m_HeadFile;
+	CString		m_Gitdir;
 
 	CGitHeadFileList()
 	{

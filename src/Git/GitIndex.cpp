@@ -11,6 +11,8 @@
 #include <sys/types.h> 
 #include <sys/stat.h>
 
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+
 #define FILL_DATA() \
 	m_FileName.Empty();\
 	g_Git.StringAppend(&m_FileName,(BYTE*)entry->name,CP_ACP,Big2lit(entry->flags)&CE_NAMEMASK);\
@@ -374,6 +376,8 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	CString HeadFile = gitdir;
 	HeadFile += _T("\\.git\\HEAD");
 	HANDLE hfile;
+	
+	m_Gitdir = gitdir;
 
 	m_HeadFile = HeadFile;
 
@@ -481,6 +485,14 @@ int CGitHeadFileList::ReadTree()
 	if( this->m_Head.IsEmpty())
 		return -1;
 
+	CAutoLocker lock(g_Git.m_critGitDllSec);
+
+	if(m_Gitdir != g_Git.m_CurrentDir)
+	{
+		g_Git.SetCurrentDir(m_Gitdir);
+		SetCurrentDirectory(g_Git.m_CurrentDir);
+		git_init();	
+	}
 	return git_read_tree(this->m_Head.m_hash,CGitHeadFileList::CallBack,this);
 }
 
