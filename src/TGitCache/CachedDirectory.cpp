@@ -413,7 +413,9 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		}
 //		SVNPool subPool(CGitStatusCache::Instance().m_svnHelp.Pool());
 //		Clear Current Status
+		if(bFetch)
 		{
+			ATLTRACE(_T("Clear Dir %s mostImportantFileStatus\n"), path.GetWinPath());
 			AutoLocker lock(m_critSec);
 			m_mostImportantFileStatus = git_wc_status_none;
 			m_childDirectories.clear();
@@ -665,15 +667,18 @@ BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind stat
 					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
 					AutoLocker lock(pThis->m_critSec);
 					pThis->m_childDirectories[gitPath] = st;
+					ATLTRACE(_T("call 1 Update dir %s %d\n"), gitPath.GetWinPath(), st);
 				}
 				else
 				{
+					AutoLocker lock(pThis->m_critSec);
 					// the child directory is not in the cache. Create a new entry for it in the cache which is
 					// initially 'unversioned'. But we added that directory to the crawling list above, which
 					// means the cache will be updated soon.
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
-					AutoLocker lock(pThis->m_critSec);
+				
 					pThis->m_childDirectories[gitPath] = s;
+					ATLTRACE(_T("call 2 Update dir %s %d\n"), gitPath.GetWinPath(), s);
 				}
 			}
 		}
