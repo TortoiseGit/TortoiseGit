@@ -1096,6 +1096,48 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 }
 
+bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
+{
+	if( mode & GIT_MODE_INDEX)
+	{
+		bool load = true;
+		g_IndexFileMap.CheckAndUpdateIndex(gitdir,&load);
+		return load;
+	}
+
+	if( mode & GIT_MODE_HEAD)
+	{
+		if(g_HeadFileMap[gitdir].CheckHeadUpdate())
+			return true;
+	}
+
+	if( mode & GIT_MODE_IGNORE)
+	{
+		if(g_IgnoreList.CheckIgnoreChanged(gitdir,subpaths))
+			return true;
+	}
+	return false;
+}
+
+int GitStatus::IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion)
+{
+	return g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion);
+}
+
+__int64 GitStatus::GetIndexFileTime(CString &gitdir)
+{
+	return g_IndexFileMap[gitdir].m_LastModifyTime;
+}
+
+int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
+{
+	if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
+		g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
+				
+	 *isIgnore = g_IgnoreList.IsIgnore(path,gitdir);
+	
+	return 0;
+}
 int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
 {
 	g_Git.m_critGitDllSec.Lock();

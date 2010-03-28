@@ -181,12 +181,13 @@ void CFolderCrawler::WorkerThread()
 			if (bFirstRunAfterWakeup)
 			{
 				Sleep(2000);
+				ATLTRACE("Crawl bFirstRunAfterWakeup\n");
 				bFirstRunAfterWakeup = false;
 				continue;
 			}
 			if ((m_blockReleasesAt < GetTickCount())&&(!m_blockedPath.IsEmpty()))
 			{
-				ATLTRACE(_T("stop blocking path %s\n"), m_blockedPath.GetWinPath());
+				ATLTRACE(_T("Crawl stop blocking path %s\n"), m_blockedPath.GetWinPath());
 				m_blockedPath.Reset();
 			}
 	
@@ -218,7 +219,10 @@ void CFolderCrawler::WorkerThread()
 						// to avoid that, we go through the list again and crawl the first one which is valid
 						// to crawl. That way, we still reduce the size of the list.
 						if (m_pathsToUpdate.size() > 10)
+						{
 							ATLTRACE("attention: the list of paths to update is now %ld big!\n", m_pathsToUpdate.size());
+						}
+
 						for (std::deque<CTGitPath>::iterator it = m_pathsToUpdate.begin(); it != m_pathsToUpdate.end(); ++it)
 						{
 							workingPath = *it;
@@ -233,6 +237,7 @@ void CFolderCrawler::WorkerThread()
 				if (DWORD(workingPath.GetCustomData()) >= currentTicks)
 				{
 					Sleep(50);
+					ATLTRACE(_T("Crawl sleep 50\n"));
 					continue;
 				}
 				if ((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath)))
@@ -446,7 +451,10 @@ void CFolderCrawler::WorkerThread()
 				if (!CGitStatusCache::Instance().IsPathWatched(workingPath))
 				{
 					if (workingPath.HasAdminDir())
+					{
+						ATLTRACE(_T("Add watch path %s\n"), workingPath.GetWinPath());
 						CGitStatusCache::Instance().AddPathToWatch(workingPath);
+					}
 					if (cachedDir)
 						cachedDir->Invalidate();
 					else

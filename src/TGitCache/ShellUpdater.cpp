@@ -72,6 +72,7 @@ void CShellUpdater::Initialise()
 
 void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 {
+	ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
 	{
 		AutoLocker lock(m_critSec);
 		m_pathsToUpdate.push_back(path);

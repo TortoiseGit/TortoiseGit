@@ -326,7 +326,6 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 									FIll_STATUS_CALLBACK callback,void *pData,
 									CGitHash *pHash)
 {
-	struct __stat64 buf;
 	int result;
 	try
 	{
@@ -340,6 +339,36 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 	return 0;
 }
 
+int CGitIndexFileMap::IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion)
+{
+	try
+	{	
+		if(path.IsEmpty())
+		{
+			*isVersion =true;
+			return 0;
+		}
+		CString subpath=path;
+		subpath.Replace(_T('\\'), _T('/'));
+		if(isDir)
+			subpath+=_T('/');
+		
+		CheckAndUpdateIndex(gitdir);
+		if(isDir)
+		{
+			*isVersion = (SearchInSortVector((*this)[gitdir], subpath.GetBuffer(), subpath.GetLength()) >= 0);
+		}
+		else
+		{
+			*isVersion = ((*this)[gitdir].m_Map.find(subpath) != (*this)[gitdir].m_Map.end());
+		}
+
+	}catch(...)
+	{
+		return -1;
+	}
+	return 0;
+}
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
 	CString HeadFile = gitdir;

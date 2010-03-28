@@ -337,7 +337,7 @@ void CGitStatusCache::RemoveCacheForPath(const CTGitPath& path)
 	RemoveCacheForDirectory(dirtoremove);
 }
 
-CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path)
+CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path, bool isAddToWatch)
 {
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
@@ -388,8 +388,24 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 				if (newcdir)
 				{
 					CCachedDirectory * cdir = m_directoryCache.insert(m_directoryCache.lower_bound(path), std::make_pair(path, newcdir))->second;
-					if ((!path.IsEmpty())&&(path.HasAdminDir()))
-						watcher.AddPath(path);
+					CString gitdir;
+					if ((!path.IsEmpty())&&(path.HasAdminDir(&gitdir))&&isAddToWatch)
+					{
+						bool isVersion = true;
+						CString subpaths;
+						if(subpaths.GetLength() > gitdir.GetLength())
+						{		
+							if(subpaths[gitdir.GetLength()] == _T('\\'))
+								subpaths=subpaths.Right(subpaths.GetLength() - gitdir.GetLength()-1);
+							else
+								subpaths=subpaths.Right(subpaths.GetLength() - gitdir.GetLength());
+						}
+						CGitStatusCache::Instance().m_GitStatus.IsUnderVersionControl(gitdir, subpaths, true, &isVersion);
+
+						/* Just watch version path */
+						if(isVersion) 
+							watcher.AddPath(path);
+					}
 					return cdir;		
 				}
 				m_bClearMemory = true;
@@ -413,6 +429,8 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 	return NULL;
 }
 
+/* Fetch is true, means fetch status from */
+/* Fetch is false, means fetch status from cache */
 CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags,  bool bFetch /* = true */)
 {
 	bool bRecursive = !!(flags & TSVNCACHE_FLAGS_RECUSIVE_STATUS);

@@ -176,8 +176,18 @@ typedef BOOL (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,boo
 class GitStatus
 {
 public:
+
+#define GIT_MODE_INDEX 0x1
+#define GIT_MODE_HEAD 0x2
+#define GIT_MODE_IGNORE 0x4
+#define GIT_MODE_ALL (GIT_MODE_INDEX|GIT_MODE_HEAD|GIT_MODE_IGNORE)
+
 	static int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 	static int GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	static bool IsGitReposChanged(CString &gitdir, CString &subpaths, int mode=GIT_MODE_ALL);
+	static int IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion);
+	static int IsIgnore(CString &gitdir, CString &path, bool *isIgnore);
+	static __int64 GetIndexFileTime(CString &gitdir);
 
 public:
 	GitStatus(bool * pbCanceled = NULL);

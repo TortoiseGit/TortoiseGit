@@ -57,7 +57,7 @@ public:
 	CStatusCacheEntry GetStatusForPath(const CTGitPath& path, DWORD flags,  bool bFetch = true);
 
 	/// Find a directory in the cache (a new entry will be created if there isn't an existing entry)
-	CCachedDirectory * GetDirectoryCacheEntry(const CTGitPath& path);
+	CCachedDirectory * GetDirectoryCacheEntry(const CTGitPath& path, bool IsAddtoWatch=true);
 	CCachedDirectory * GetDirectoryCacheEntryNoCreate(const CTGitPath& path);
 
 	/// Add a folder to the background crawler's work list

@@ -229,6 +229,8 @@ public:
 	int CheckAndUpdateIndex(CString &gitdir,bool *loaded=NULL);
 
 	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	
+	int IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion);
 };
 
 class CGitIgnoreItem
