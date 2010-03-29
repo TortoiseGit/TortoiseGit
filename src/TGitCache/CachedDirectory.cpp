@@ -334,8 +334,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 					if ((m_currentStatusFetchingPath.IsAncestorOf(path))&&((m_currentStatusFetchingPathTicks + 1000)<GetTickCount()))
 					{
 						ATLTRACE(_T("returning empty status (status fetch in progress) for %s\n"), path.GetWinPath());
-						m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
-						return CStatusCacheEntry();
+						m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_normal;
+						return CStatusCacheEntry(git_wc_status_normal);
 					}
 				}
 			}
@@ -372,8 +372,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			if ((m_currentStatusFetchingPath.IsAncestorOf(path))&&((m_currentStatusFetchingPathTicks + 1000)<GetTickCount()))
 			{
 				ATLTRACE(_T("returning empty status (status fetch in progress) for %s\n"), path.GetWinPath());
-				m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
-				return CStatusCacheEntry();
+				m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_normal;
+				return CStatusCacheEntry(git_wc_status_normal);
 			}
 		}
 		// if we're fetching the status for the explorer,
@@ -406,8 +406,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				if ((m_currentStatusFetchingPath.IsAncestorOf(path))&&((m_currentStatusFetchingPathTicks + 1000)<GetTickCount()))
 				{
 					ATLTRACE(_T("returning empty status (status fetch in progress) for %s\n"), path.GetWinPath());
-					m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
-					return CStatusCacheEntry();
+					m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_normal;
+					return CStatusCacheEntry(git_wc_status_normal);
 				}
 			}
 		}
@@ -417,7 +417,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		{
 			ATLTRACE(_T("Clear Dir %s mostImportantFileStatus\n"), path.GetWinPath());
 			AutoLocker lock(m_critSec);
-			m_mostImportantFileStatus = git_wc_status_none;
+			m_mostImportantFileStatus = git_wc_status_normal; /* unverstion file have handle at begin */
 			m_childDirectories.clear();
 			m_entryCache.clear();
 			m_ownStatus.SetStatus(NULL);
@@ -463,8 +463,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				// - reverting a move/copy --> results in "not a working copy" (as above)
 				if (!m_directoryPath.HasAdminDir())
 				{
-					m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
-					return CStatusCacheEntry();
+					m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_normal;
+					return CStatusCacheEntry(git_wc_status_normal);
 				}
 				else
 				{
@@ -500,11 +500,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 
 		// If the status *still* isn't valid here, it means that 
 		// the current directory is unversioned, and we shall need to ask its children for info about themselves
-		if (dirEntry)
-			return dirEntry->GetStatusForMember(path,bRecursive);
+		//if (dirEntry)
+		//	return dirEntry->GetStatusForMember(path,bRecursive);
 
 		CGitStatusCache::Instance().AddFolderForCrawling(path);
-		return CStatusCacheEntry();
+		return CStatusCacheEntry(git_wc_status_normal);;
 	}
 	else
 	{
@@ -515,7 +515,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		}
 		else
 		{
-			EnumFiles((CTGitPath*)&path);
+			EnumFiles((CTGitPath*)&path, bFetch);
 		}
 	
 		//try again
@@ -527,7 +527,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	}
 
 	AddEntry(path, NULL);
-	return CStatusCacheEntry();
+	return CStatusCacheEntry(git_wc_status_normal);
 }
 
 int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)

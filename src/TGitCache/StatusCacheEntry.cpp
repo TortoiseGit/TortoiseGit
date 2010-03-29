@@ -34,6 +34,17 @@ CStatusCacheEntry::CStatusCacheEntry()
 	SetAsUnversioned();
 }
 
+CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
+	: m_bSet(true)
+	, m_bSVNEntryFieldSet(false)
+	, m_kind(git_node_unknown)
+	, m_bReadOnly(false)
+	, m_highestPriorityLocalStatus(status)
+{
+	m_GitStatus.prop_status=m_GitStatus.text_status = status;
+	m_discardAtTime = GetTickCount()+cachetimeout;
+}
+
 CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_bSVNEntryFieldSet(false)

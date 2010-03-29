@@ -32,6 +32,7 @@ class CStatusCacheEntry
 {
 public:
 	CStatusCacheEntry();
+	CStatusCacheEntry(const git_wc_status_kind status);
 	CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil = 0);
 	bool HasExpired(long now) const;
 	void BuildCacheResponse(TSVNCacheResponse& response, DWORD& responseLength) const;
