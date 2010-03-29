@@ -79,12 +79,17 @@ void CFolderCrawler::Initialise()
 
 void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 {
+	/* Index file changing*/
+	if( GitStatus::IsExistIndexLockFile((CString&)path.GetWinPathString()))
+		return; 
+
 	if (!CGitStatusCache::Instance().IsPathGood(path))
 		return;
 	{
 		AutoLocker lock(m_critSec);
 		m_foldersToUpdate.push_back(path);
 		m_foldersToUpdate.back().SetCustomData(GetTickCount()+10);
+	
 		ATLASSERT(path.IsDirectory() || !path.Exists());
 		// set this flag while we are sync'ed 
 		// with the worker thread
@@ -96,8 +101,13 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 
 void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 {
+	/* Index file changing*/
+	if( GitStatus::IsExistIndexLockFile((CString&)path.GetWinPathString()))
+		return;
+
 	if (!CGitStatusCache::Instance().IsPathGood(path))
 		return;
+
 	{
 		AutoLocker lock(m_critSec);
 		m_pathsToUpdate.push_back(path);
@@ -246,8 +256,9 @@ void CFolderCrawler::WorkerThread()
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
 					continue;
 				// check if the changed path is inside an .git folder
-				if ((workingPath.HasAdminDir()&&workingPath.IsDirectory()) || workingPath.IsAdminDir())
-				{
+				CString projectroot;
+				if ((workingPath.HasAdminDir(&projectroot)&&workingPath.IsDirectory()) || workingPath.IsAdminDir())
+				{    
 					// we don't crawl for paths changed in a tmp folder inside an .git folder.
 					// Because we also get notifications for those even if we just ask for the status!
 					// And changes there don't affect the file status at all, so it's safe

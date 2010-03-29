@@ -1321,3 +1321,27 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 
 	return 0;
 }
+
+bool GitStatus::IsExistIndexLockFile(CString &gitdir)
+{
+	CString sDirName= gitdir;
+
+	for (;;)
+	{
+		if(PathFileExists(sDirName + _T("\\.git")))
+		{
+			if(PathFileExists(sDirName + _T("\\.git\\index.lock")))
+				return true;
+			else
+				return false;
+		}
+
+		int x = sDirName.ReverseFind(_T('\\'));
+		if (x < 2)
+			return false;
+
+		sDirName = sDirName.Left(x);
+	}
+
+	return false;
+}

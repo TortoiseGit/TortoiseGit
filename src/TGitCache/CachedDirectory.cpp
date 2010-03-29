@@ -645,7 +645,7 @@ BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind stat
 			svnPath.SetFromGit(path);*/
 
 		if (isDir)
-		{
+		{	/*gitpath is directory*/
 			if ( !gitPath.IsEquivalentToWithoutCase(pThis->m_directoryPath) )
 			{
 				if (!gitPath.Exists())
@@ -659,7 +659,9 @@ BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind stat
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
 //OutputDebugStringA("AddFolderCrawl: ");OutputDebugStringW(svnPath.GetWinPathString());OutputDebugStringA("\r\n");
 					if(status >= git_wc_status_normal)
-						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
+						if(status != git_wc_status_missing)
+							if(status != git_wc_status_deleted)
+								CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}
 
 				// Make sure we know about this child directory
@@ -688,7 +690,7 @@ BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind stat
 				}
 			}
 		}
-		else
+		else /* gitpath is file*/
 		{
 			// Keep track of the most important status of all the files in this directory
 			// Don't include subdirectories in this figure, because they need to provide their 

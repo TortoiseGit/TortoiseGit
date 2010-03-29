@@ -188,6 +188,7 @@ public:
 	static int IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion);
 	static int IsIgnore(CString &gitdir, CString &path, bool *isIgnore);
 	static __int64 GetIndexFileTime(CString &gitdir);
+	static bool IsExistIndexLockFile(CString &gitdir);
 
 public:
 	GitStatus(bool * pbCanceled = NULL);
