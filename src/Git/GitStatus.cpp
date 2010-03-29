@@ -998,7 +998,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 		git_wc_status_kind st = git_wc_status_none;
 		CGitHash hash;
 
-		g_IndexFileMap.GetFileStatus(gitdir,path,&st,IsFull,false, NULL,NULL,&hash);
+		g_IndexFileMap.GetFileStatus(gitdir,path,&st,IsFull,false,callback,pData,&hash);
 		
 		if( st == git_wc_status_conflicted )
 		{
@@ -1274,11 +1274,6 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 					it = g_IndexFileMap[gitdir].begin()+start;
 					for(int i=start;i<=end;i++,it++)
 					{
-						__int64 time;
-						CString fullpath=gitdir;
-						fullpath += _T("\\");
-						fullpath += (*it).m_FileName;
-						
 						if( !IsRecursive )
 						{
 							//skip child directory
@@ -1297,17 +1292,12 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 								continue;
 							}
 						}
-						if( g_Git.GetFileModifyTime(fullpath,&time) )
-						{
-							*status = git_wc_status_deleted;	
-						}
-						if( (*it).m_ModifyTime != time)
-						{
-							*status = git_wc_status_modified;
-						}
-
-						if(callback) callback(fullpath,*status,false, pData);	
 						
+						git_wc_status_kind filestatus = git_wc_status_none;
+
+						GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,callback,pData);
+
+						*status = max(filestatus, *status) ;					
 					}
 				}
 			}

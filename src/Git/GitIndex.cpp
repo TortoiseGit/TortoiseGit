@@ -216,8 +216,13 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 			result = g_Git.GetFileModifyTime( gitdir+_T("\\")+path, &time, &isDir );
 
 		if(result)
-			return -1;
+		{
+			*status = git_wc_status_deleted;
+			if(callback)
+				callback(gitdir+_T("\\")+path,git_wc_status_deleted,false, pData);
 
+			return 0;
+		}
 		if(isDir)
 		{
 			if(!path.IsEmpty())
