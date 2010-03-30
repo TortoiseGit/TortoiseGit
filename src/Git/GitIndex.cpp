@@ -613,6 +613,7 @@ bool CGitIgnoreList::CheckFileChanged(CString &path)
 	int ret=g_Git.GetFileModifyTime(path, &time);
 
 	bool cacheExist = (m_Map.find(path) != m_Map.end());
+
 	// both cache and file is not exist  
 	if( (ret != 0) && (!cacheExist))
 		return false;
@@ -623,8 +624,9 @@ bool CGitIgnoreList::CheckFileChanged(CString &path)
 
 	// file not exist but cache exist
 	if( (ret != 0) && (cacheExist))
+	{
 		return true;
-
+	}
 	// file exist and cache exist
 	if( m_Map[path].m_LastModifyTime == time )
 		return false;
@@ -698,14 +700,23 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			gitignore += _T("ignore");
 			if( CheckFileChanged(gitignore) )
 			{
-				m_Map[gitignore].FetchIgnoreList(gitignore);
+				if(PathFileExists(temp)) //if .gitignore remove, we need remote cache
+					m_Map[gitignore].FetchIgnoreList(gitignore);
+				else
+					m_Map.erase(gitignore);
 			}
 
 			temp+=_T("\\info\\exclude");
 
 			if( CheckFileChanged(temp) )
 			{
-				return m_Map[temp].FetchIgnoreList(temp);
+				if(PathFileExists(temp)) //if .gitignore remove, we need remote cache
+					return m_Map[temp].FetchIgnoreList(temp);
+				else
+				{
+					m_Map.erase(temp);
+					return 0;
+				}
 			}
 
 			return 0;
@@ -715,7 +726,10 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			temp+=_T("ignore");
 			if( CheckFileChanged(temp) )
 			{
-				m_Map[temp].FetchIgnoreList(temp);
+				if(PathFileExists(temp)) //if .gitignore remove, we need remote cache
+					m_Map[temp].FetchIgnoreList(temp);
+				else
+					m_Map.erase(temp);
 			}
 		}
 
@@ -792,7 +806,11 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 			int pos=patha.ReverseFind('/');
 			base = pos>=0? patha.GetBuffer()+pos+1:patha.GetBuffer();
 
-			int ret=git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
+			int ret=-1;
+
+			if(m_Map[temp].m_pExcludeList)
+				git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
+			
 			if(ret == 1)
 				return 1;
 			if(ret == 0)
@@ -807,7 +825,11 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 
 		}else
 		{
-			int ret=git_check_excluded_1( patha, patha.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
+			int ret=-1;
+			
+			if(m_Map[temp].m_pExcludeList)
+				git_check_excluded_1( patha, patha.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
+
 			if(ret == 1)
 				return 1;
 			if(ret == 0)
