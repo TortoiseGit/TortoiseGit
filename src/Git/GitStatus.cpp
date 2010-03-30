@@ -1267,6 +1267,12 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 						}
 					}
 				}
+			}
+			// If define callback, it need update each file status.
+			// If not define callback, status == git_wc_status_conflicted, needn't check each file status
+			// because git_wc_status_conflicted is highest.s
+			if(callback || (*status != git_wc_status_conflicted))
+			{
 				//Check File Time;
 				//if(IsRecursive)
 				{
