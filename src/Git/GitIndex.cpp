@@ -584,6 +584,8 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 			return GetLastError();
 		}
 
+		CloseHandle(hfile);
+
 		BYTE *p = buffer;
 		for(int i=0;i<size;i++)
 		{
