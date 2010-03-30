@@ -1,3 +1,35 @@
+= Release 1.4.0.0 =
+== Features ==
+ * Improve Icon Overlay
+   Rewrite icon overlay implement. TGitCache will call gitdll.dll to get HEAD tree. And direct read index files. Read .gitignore file and call gitdll.dll to judge ignore files.
+   Can't watch untracked directroy to reduce TGitCache loading.
+
+ * Git Clone
+   Add --progress at clone dialog
+
+ * Log Dialog
+   Add antiAlias when draw cycle at log dialog
+
+ * Add minimize and maximize button at rebase and sync dialog
+
+== Bug Fix ==
+ * Fixed Issue #344:  Force is the default in the sync dialog
+ * Fixed issue #343: Wrong behaviour of Show Unversioned Files checkbox at Commit dialog
+ * Fixed issue #281: show wrong character after finish commit
+ * Fix commitdlg can close after commit and progress scroll too much
+ * Fixed Issue #299: Do nothing "Check For Updates..."  at about dialog
+ * Fixed Issue #333:  Can't abort CherryPick
+ * Fixed Issue #336:  Text of context menu slightly wrong; replace svn with git
+ * Fixed Issue #340:  OpenSSH password dialog focus
+ * Fixed issue #312: The number of changed files in 'Show log' window
+ * Fixed issue #325: Would be nice to see current directory in the commit dialog
+ * Fixed issue #329: path wrong at "Save revision to... 
+ * Fixed issue #327: Crash in the commit dialog after you changed a file for Linux formatted
+ * Fixed issue #321: Wrong Company/Product name in Metadata
+ * Fixed Issue  Issue 309:	Mispelled words in the Git Synchronization dialog
+ * Fixed  Issue 304:	Adding a file in the commit dialog resets selection
+ * Fixed issue #305: Filtering showlog make crash
+
 = Release 1.3.6.0 =
 == Bug Fix ==
  * Fixed log crash when no body message at commit
