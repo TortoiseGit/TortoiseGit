@@ -706,6 +706,8 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 				return m_Map[temp].FetchIgnoreList(temp);
 			}
 
+			return 0;
+
 		}else
 		{
 			temp+=_T("ignore");
@@ -728,7 +730,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 
 		temp = temp.Left(i);
 	}
-	return true;
+	return 0;
 }
 bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 {
