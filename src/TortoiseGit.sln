@@ -2378,7 +2378,6 @@ Global
 		{948733DE-FC5A-46C2-8CD6-429017508D63}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{948733DE-FC5A-46C2-8CD6-429017508D63}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{948733DE-FC5A-46C2-8CD6-429017508D63}.Release|Win32.ActiveCfg = Release|Win32
-		{948733DE-FC5A-46C2-8CD6-429017508D63}.Release|Win32.Build.0 = Release|Win32
 		{948733DE-FC5A-46C2-8CD6-429017508D63}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

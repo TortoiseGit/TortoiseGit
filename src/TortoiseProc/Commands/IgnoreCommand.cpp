@@ -22,6 +22,7 @@
 #include "MessageBox.h"
 #include "PathUtils.h"
 #include "AppUtils.h"
+#include "ShellUpdater.h"
 //#include "SVNProperties.h"
 
 bool IgnoreCommand::Execute()
@@ -33,9 +34,9 @@ bool IgnoreCommand::Execute()
 		bmask=true;
 	}
 
-	bool ret = CAppUtils::IgnoreFile(pathList,bmask))
+	bool ret = CAppUtils::IgnoreFile(pathList,bmask);
 		
-	CShellUpdater::Instance().AddPathsForUpdate(m_pathList);
+	CShellUpdater::Instance().AddPathsForUpdate(orgPathList);
 	CShellUpdater::Instance().Flush();
 
 	return ret;
