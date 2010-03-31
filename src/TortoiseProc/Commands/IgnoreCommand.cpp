@@ -33,10 +33,12 @@ bool IgnoreCommand::Execute()
 		bmask=true;
 	}
 
-	if(CAppUtils::IgnoreFile(pathList,bmask))
-		return false;
+	bool ret = CAppUtils::IgnoreFile(pathList,bmask))
+		
+	CShellUpdater::Instance().AddPathsForUpdate(m_pathList);
+	CShellUpdater::Instance().Flush();
 
-	return true;
+	return ret;
 #if 0
 	CString filelist;
 	BOOL err = FALSE;
