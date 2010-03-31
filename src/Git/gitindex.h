@@ -258,11 +258,12 @@ class CGitIgnoreList
 private:
 	bool CheckFileChanged(CString &path);
 	
+	
 	int  CheckIgnore(CString &path,CString &root);
 
 public:
 	std::map<CString, CGitIgnoreItem> m_Map;
-
+	int	 GetIgnoreFileChangeTimeList(CString &dir, std::vector<__int64> &timelist);
 	bool CheckIgnoreChanged(CString &gitdir,CString &path);
 	int  LoadAllIgnoreFile(CString &gitdir,CString &path);
 	bool IsIgnore(CString &path,CString &root);

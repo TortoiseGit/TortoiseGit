@@ -243,7 +243,36 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	{	
 		/* if path is not under version control */
 		/* Just need check if it is ignore, it is very quick */
-		bool isIgnoreFileChanged = pGitStatus->IsGitReposChanged(sProjectRoot, subpaths, GIT_MODE_IGNORE);
+		bool isIgnoreFileChanged=false;
+		
+		isIgnoreFileChanged = pGitStatus->IsGitReposChanged(sProjectRoot, subpaths, GIT_MODE_IGNORE);
+
+		if( isIgnoreFileChanged)
+		{
+			pGitStatus->LoadIgnoreFile(sProjectRoot, subpaths);
+		}
+
+		std::vector<__int64> timelist;
+		pGitStatus->GetIgnoreFileChangeTimeList((CString &)this->m_directoryPath.GetWinPathString(), timelist);
+		
+		if(timelist.size() != this->m_IgnoreFileTimeList.size())
+			isIgnoreFileChanged =true;
+
+		if(!isIgnoreFileChanged)
+			for(int i=0;i<timelist.size();i++)
+				if(timelist[i] != m_IgnoreFileTimeList[i])
+				{
+					isIgnoreFileChanged =true;
+					break;
+				}
+
+		m_IgnoreFileTimeList = timelist;
+
+		if(isIgnoreFileChanged)
+			m_entryCache.clear();
+
+		ATLTRACE(_T("Ignore Changed %d for %s\n"), isIgnoreFileChanged, path.GetWinPath());
+
 		if(path.IsDirectory())
 		{
 

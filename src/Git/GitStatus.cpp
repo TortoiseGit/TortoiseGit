@@ -1107,6 +1107,10 @@ bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
 	return false;
 }
 
+int GitStatus::LoadIgnoreFile(CString &gitdir,CString &subpaths)
+{
+	return g_IgnoreList.LoadAllIgnoreFile(gitdir,subpaths);
+}
 int GitStatus::IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion)
 {
 	return g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion);
@@ -1117,6 +1121,10 @@ __int64 GitStatus::GetIndexFileTime(CString &gitdir)
 	return g_IndexFileMap[gitdir].m_LastModifyTime;
 }
 
+int GitStatus::GetIgnoreFileChangeTimeList(CString &dir, std::vector<__int64> &timelist)
+{
+	return g_IgnoreList.GetIgnoreFileChangeTimeList(dir,timelist);
+}
 int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
 {
 	if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))

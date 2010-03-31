@@ -748,6 +748,54 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 	}
 	return 0;
 }
+int CGitIgnoreList::GetIgnoreFileChangeTimeList(CString &path, std::vector<__int64> &timelist)
+{
+	CString temp=path;
+	CString ignore=temp;
+	int start =0;
+
+	do{
+		ignore=temp;
+		ignore+=_T("\\.gitignore");
+		std::map<CString, CGitIgnoreItem>::iterator itMap;
+		itMap = m_Map.find(ignore);
+		if(itMap == m_Map.end())
+		{
+			timelist.push_back(0);
+
+		}else
+		{
+			timelist.push_back(itMap->second.m_LastModifyTime);
+		}
+
+		ignore =temp;
+		ignore += _T("\\.git\\info\\exclude");
+		
+		itMap = m_Map.find(ignore);
+		if(itMap == m_Map.end())
+		{
+
+		}else
+		{
+			timelist.push_back(itMap->second.m_LastModifyTime);
+			return 0;
+		}
+
+		ignore=temp;
+		ignore+=_T("\\.git");
+
+		if(PathFileExists(ignore))
+			return 0;
+
+		start = temp.ReverseFind(_T('\\'));
+		if(start>0)
+			temp=temp.Left(start);
+
+	}while(start>0);
+
+	return -1;
+
+}
 bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 {
 	CString str=path;
@@ -809,7 +857,7 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 			int ret=-1;
 
 			if(m_Map[temp].m_pExcludeList)
-				git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
+				ret = git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
 			
 			if(ret == 1)
 				return 1;
