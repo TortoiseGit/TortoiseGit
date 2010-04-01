@@ -37,7 +37,7 @@ protected:
 public:
 	CComCriticalSection			m_critGitDllSec;
 
-	static bool GitPathFileExists(CString &path)
+	static BOOL GitPathFileExists(CString &path)
 	{
 		if(path[0] == _T('\\') && path[1] == _T('\\')) 
 		//it is netshare \\server\sharefoldername

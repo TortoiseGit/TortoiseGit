@@ -158,6 +158,10 @@ public:
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
+	
+	CFindReplaceDialog *m_pFindDialog;
+	static const UINT	m_FindDialogMessage;
+	void OnFind();
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);
@@ -221,6 +225,7 @@ protected:
 	afx_msg void OnDestroy();
 	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	virtual afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
@@ -284,6 +289,8 @@ protected:
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool				m_bRelativeTimes;	// Show relative times
 	GIT_LOG				m_DllGitLog;
+
+
 };
 
 

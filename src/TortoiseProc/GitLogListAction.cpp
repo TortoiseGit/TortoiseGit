@@ -552,6 +552,23 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				}
 			}
 			break;
+
+		case ID_FINDENTRY:
+			{
+				m_nSearchIndex = GetSelectionMark();
+				if (m_nSearchIndex < 0)
+					m_nSearchIndex = 0;
+				if (m_pFindDialog)
+				{
+					break;
+				}
+				else
+				{
+					m_pFindDialog = new CFindReplaceDialog();
+					m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
+				}
+			}
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;
@@ -783,22 +800,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				CAppUtils::LaunchApplication(sCmd, NULL, false);
 			}
 			break;
-		case ID_FINDENTRY:
-			{
-				m_nSearchIndex = GetSelectionMark();
-				if (m_nSearchIndex < 0)
-					m_nSearchIndex = 0;
-				if (m_pFindDialog)
-				{
-					break;
-				}
-				else
-				{
-					m_pFindDialog = new CFindReplaceDialog();
-					m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
-				}
-			}
-			break;
+		
 		case ID_REPOBROWSE:
 			{
 				CString sCmd;

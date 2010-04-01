@@ -47,8 +47,6 @@
 #include "FileDiffDlg.h"
 #include "BrowseRefsDlg.h"
 
-const UINT CLogDlg::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
-
 
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
@@ -66,7 +64,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_lowestRev(_T(""))
 	
 	, m_sLogInfo(_T(""))
-	, m_pFindDialog(NULL)
+	
 	, m_bCancelled(FALSE)
 	, m_pNotifyWindow(NULL)
 	
@@ -123,7 +121,6 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
-	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
 	//ON_BN_CLICKED(IDC_GETALL, OnBnClickedGetall)
 	//ON_NOTIFY(NM_DBLCLK, IDC_LOGMSG, OnNMDblclkChangedFileList)
 	ON_WM_CONTEXTMENU()
@@ -973,140 +970,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 }
 
 
-LRESULT CLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
-{
-#if 0
-    ASSERT(m_pFindDialog != NULL);
 
-    if (m_pFindDialog->IsTerminating())
-    {
-	    // invalidate the handle identifying the dialog box.
-        m_pFindDialog = NULL;
-        return 0;
-    }
-
-    if(m_pFindDialog->FindNext())
-    {
-        //read data from dialog
-        CString FindText = m_pFindDialog->GetFindString();
-        bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
-		bool bFound = false;
-		tr1::wregex pat;
-		bool bRegex = ValidateRegexp(FindText, pat, bMatchCase);
-
-		tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_not_null;
-
-		int i;
-		for (i = this->m_nSearchIndex; i<m_arShownList.GetCount()&&!bFound; i++)
-		{
-			if (bRegex)
-			{
-				PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(i));
-
-				if (regex_search(wstring((LPCTSTR)pLogEntry->sMessage), pat, flags))
-				{
-					bFound = true;
-					break;
-				}
-				LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount(); ++cpPathIndex)
-				{
-					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-					if (regex_search(wstring((LPCTSTR)cpath->sCopyFromPath), pat, flags))
-					{
-						bFound = true;
-						--i;
-						break;
-					}
-					if (regex_search(wstring((LPCTSTR)cpath->sPath), pat, flags))
-					{
-						bFound = true;
-						--i;
-						break;
-					}
-				}
-			}
-			else
-			{
-				if (bMatchCase)
-				{
-					if (m_logEntries[i]->sMessage.Find(FindText) >= 0)
-					{
-						bFound = true;
-						break;
-					}
-					PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(i));
-					LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-					for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount(); ++cpPathIndex)
-					{
-						LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-						if (cpath->sCopyFromPath.Find(FindText)>=0)
-						{
-							bFound = true;
-							--i;
-							break;
-						}
-						if (cpath->sPath.Find(FindText)>=0)
-						{
-							bFound = true;
-							--i;
-							break;
-						}
-					}
-				}
-				else
-				{
-				    PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(i));
-					CString msg = pLogEntry->sMessage;
-					msg = msg.MakeLower();
-					CString find = FindText.MakeLower();
-					if (msg.Find(find) >= 0)
-					{
-						bFound = TRUE;
-						break;
-					}
-					LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-					for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount(); ++cpPathIndex)
-					{
-						LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-						CString lowerpath = cpath->sCopyFromPath;
-						lowerpath.MakeLower();
-						if (lowerpath.Find(find)>=0)
-						{
-							bFound = TRUE;
-							--i;
-							break;
-						}
-						lowerpath = cpath->sPath;
-						lowerpath.MakeLower();
-						if (lowerpath.Find(find)>=0)
-						{
-							bFound = TRUE;
-							--i;
-							break;
-						}
-					}
-				} 
-			}
-		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; i++)
-		if (bFound)
-		{
-			this->m_nSearchIndex = (i+1);
-			m_LogList.EnsureVisible(i, FALSE);
-			m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED);
-			m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-			m_LogList.SetSelectionMark(i);
-			FillLogMessageCtrl();
-			UpdateData(FALSE);
-			m_nSearchIndex++;
-			if (m_nSearchIndex >= m_arShownList.GetCount())
-				m_nSearchIndex = (int)m_arShownList.GetCount()-1;
-		}
-    } // if(m_pFindDialog->FindNext()) 
-	UpdateLogInfoLabel();
-#endif
-    return 0;
-}
 
 void CLogDlg::OnOK()
 {
@@ -3152,14 +3016,7 @@ void CLogDlg::OnRefresh()
 	}
 }
 
-void CLogDlg::OnFind()
-{
-	if (!m_pFindDialog)
-	{
-		m_pFindDialog = new CFindReplaceDialog();
-		m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
-	}
-}
+
 
 void CLogDlg::OnFocusFilter()
 {

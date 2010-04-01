@@ -105,6 +105,13 @@ public:
 // Dialog Data
 	enum { IDD = IDD_LOGMESSAGE };
 
+	void	FillLogMessageCtrl(bool bShow = true);
+	void UpdateLogInfoLabel();
+
+	afx_msg void OnFind()
+	{
+		m_LogList.OnFind();
+	}
 protected:
 	//implement the virtual methods from Git base class
 	virtual BOOL Log(git_revnum_t rev, const CString& author, const CString& date, const CString& message, LogChangedPathArray * cpaths,  int filechanges, BOOL copies, DWORD actions, BOOL haschildren);
@@ -113,7 +120,7 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
+
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnLogListLoading(WPARAM wParam, LPARAM lParam);
@@ -148,7 +155,6 @@ protected:
 	afx_msg void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
 	afx_msg void OnRefresh();
-	afx_msg void OnFind();
 	afx_msg void OnFocusFilter();
 	afx_msg void OnEditCopy();
 
@@ -157,7 +163,6 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-	void	FillLogMessageCtrl(bool bShow = true);
 	void	DoDiffFromLog(INT_PTR selIndex, GitRev *rev1, GitRev *rev2, bool blame, bool unified);
 
 	static  void LogCallBack(void *data, int cur){((CLogDlg*)data)->LogRunStatus(cur);}
@@ -190,7 +195,7 @@ private:
 	
 	void EnableOKButton();
 	void GetAll(bool bIsShowProjectOrBranch = false);
-	void UpdateLogInfoLabel();
+	
 	void SaveSplitterPos();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase);
 	void CheckRegexpTooltip();
@@ -258,8 +263,8 @@ private:
 	bool				m_hasWC;
 	int					m_nSearchIndex;
 	bool				m_bFilterWithRegex;
-	static const UINT	m_FindDialogMessage;
-	CFindReplaceDialog *m_pFindDialog;
+
+	
 	CFont				m_logFont;
 	CString				m_sMessageBuf;
 	CSplitterControl	m_wndSplitter1;

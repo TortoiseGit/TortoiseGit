@@ -46,6 +46,7 @@
 #include "FileDiffDlg.h"
 #include "..\\TortoiseShell\\Resource.h"
 
+const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 
 IMPLEMENT_DYNAMIC(CGitLogListBase, CHintListCtrl)
 
@@ -60,6 +61,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bVista(false)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
+	, m_pFindDialog(NULL)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -161,6 +163,7 @@ CGitLogListBase::~CGitLogListBase()
 
 
 BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
+	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoLoglist)
 	ON_WM_CONTEXTMENU()
@@ -2671,4 +2674,116 @@ int CGitLogListBase::GetHeadIndex()
 		}
 	}
 	return -1;
+}
+void CGitLogListBase::OnFind()
+{
+	if (!m_pFindDialog)
+	{
+		m_pFindDialog = new CFindReplaceDialog();
+		m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
+	}
+}
+
+LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+
+    ASSERT(m_pFindDialog != NULL);
+
+    if (m_pFindDialog->IsTerminating())
+    {
+	    // invalidate the handle identifying the dialog box.
+        m_pFindDialog = NULL;
+        return 0;
+    }
+
+    if(m_pFindDialog->FindNext())
+    {
+        //read data from dialog
+        CString FindText = m_pFindDialog->GetFindString();
+        bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
+		bool bFound = false;
+		tr1::wregex pat;
+		bool bRegex = ValidateRegexp(FindText, pat, bMatchCase);
+
+		tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_not_null;
+
+		int i;
+		for (i = this->m_nSearchIndex; i<m_arShownList.GetCount()&&!bFound; i++)
+		{
+			GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(i);
+				
+			CString str; 
+			str+=pLogEntry->m_CommitHash.ToString();
+			str+=_T("\n");
+			str+=pLogEntry->m_AuthorEmail;
+			str+=_T("\n");
+			str+=pLogEntry->m_AuthorName;
+			str+=_T("\n");
+			str+=pLogEntry->m_Body;
+			str+=_T("\n");
+			str+=pLogEntry->m_CommitterEmail;
+			str+=_T("\n");
+			str+=pLogEntry->m_CommitterName;
+			str+=_T("\n");
+			str+=pLogEntry->m_Subject;
+			str+=_T("\n");
+
+			for(int i=0;i<pLogEntry->m_Files.GetCount();i++)
+			{
+				str+=pLogEntry->m_Files[i].GetWinPath();
+				str+=_T("\n");
+				str+=pLogEntry->m_Files[i].GetGitOldPathString();
+				str+=_T("\n");
+			}
+
+			if (bRegex)
+			{
+				
+				if (regex_search(wstring(str), pat, flags))
+				{
+					bFound = true;
+					break;
+				}				
+			}
+			else
+			{
+				if (bMatchCase)
+				{
+					if (str.Find(FindText) >= 0)
+					{
+						bFound = true;
+						break;
+					}
+
+				}
+				else
+				{
+				    CString msg = str;
+					msg = msg.MakeLower();
+					CString find = FindText.MakeLower();
+					if (msg.Find(find) >= 0)
+					{
+						bFound = TRUE;
+						break;
+					}
+				} 
+			}
+		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; i++)
+		if (bFound)
+		{
+			this->m_nSearchIndex = (i+1);
+			EnsureVisible(i, FALSE);
+			SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
+			SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+			SetSelectionMark(i);
+			//FillLogMessageCtrl();
+			UpdateData(FALSE);
+			m_nSearchIndex++;
+			if (m_nSearchIndex >= m_arShownList.GetCount())
+				m_nSearchIndex = (int)m_arShownList.GetCount()-1;
+		}
+    } // if(m_pFindDialog->FindNext()) 
+	//UpdateLogInfoLabel();
+
+    return 0;
 }
