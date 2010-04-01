@@ -2077,6 +2077,9 @@ bool CGitStatusListCtrl::BuildStatistics()
 		if(status&(CTGitPath::LOGACTIONS_REPLACED))
 			m_nRenamed++;
 
+		if(((CTGitPath*)m_arStatusArray[i])->m_Checked)
+			m_nSelected++;
+
 //			} // switch (entry->status)
 //		} // if (entry)
 	} // for (int i=0; i < (int)m_arStatusArray.size(); ++i)
