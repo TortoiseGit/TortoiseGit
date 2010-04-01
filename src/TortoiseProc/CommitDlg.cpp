@@ -37,6 +37,7 @@
 #include "Commands/PushCommand.h"
 #include "PatchViewDlg.h"
 #include "COMError.h"
+#include "Globals.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -578,8 +579,11 @@ void CCommitDlg::OnOK()
 		
 		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);
 		//file.WriteString(m_sLogMessage);
-				
-	
+		
+		CTGitPath path=g_Git.m_CurrentDir;
+
+		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
+
 		out =_T("");
 		CString amend;
 		if(this->m_bCommitAmend)
@@ -593,7 +597,11 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
-		progress.m_changeAbortButtonOnSuccessTo = _T("&Push");
+
+		progress.m_changeAbortButtonOnSuccessTo = IsGitSVN? _T("&DCommit"): _T("&Push");
+		
+		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
+
 		DWORD userResponse = progress.DoModal();
 		
 		if(progress.m_GitStatus)

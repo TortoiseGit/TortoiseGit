@@ -2272,7 +2272,14 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 
 			if( dlg.m_bPushAfterCommit )
 			{
-				CAppUtils::Push();
+				switch(dlg.m_PostCmd)
+				{
+				case GIT_POST_CMD_DCOMMIT:
+					CAppUtils::SVNDCommit();
+					break;
+				default:
+					CAppUtils::Push();
+				}
 			}
 //			CGitProgressDlg progDlg;
 //			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);
@@ -2297,4 +2304,32 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 		}
 	}
 	return true;
+}
+
+
+BOOL CAppUtils::SVNDCommit()
+{
+	if(!g_Git.CheckCleanWorkTree())
+	{
+		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+		{
+			CString cmd,out;
+			cmd=_T("git.exe stash");
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				return false;
+			}
+
+		}else
+		{
+			return false;
+		}
+	}
+
+	CProgressDlg progress;
+	progress.m_GitCmd=_T("git.exe svn dcommit");
+	if(progress.DoModal()==IDOK)
+		return TRUE;
+
 }

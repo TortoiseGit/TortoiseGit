@@ -22,6 +22,11 @@
 
 class CTGitPath;
 
+enum GIT_POST_CMD
+{
+	GIT_POST_CMD_PUSH,
+	GIT_POST_CMD_DCOMMIT
+};
 /**
  * \ingroup TortoiseProc
  * An utility class with static functions.
@@ -214,6 +219,8 @@ public:
 					BOOL bSelectFilesForCommit);
 
 	static int GetCommitTemplate(CString &temp);
+
+	static BOOL SVNDCommit();
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);

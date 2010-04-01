@@ -26,31 +26,9 @@
 #include "Git.h"
 #include "ShellUpdater.h"
 #include "CommonResource.h"
+#include "AppUtils.h"
 
 bool SVNDCommitCommand::Execute()
 {
-	if(!g_Git.CheckCleanWorkTree())
-	{
-		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
-		{
-			CString cmd,out;
-			cmd=_T("git.exe stash");
-			if(g_Git.Run(cmd,&out,CP_ACP))
-			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-				return false;
-			}
-
-		}else
-		{
-			return false;
-		}
-	}
-
-	CProgressDlg progress;
-	progress.m_GitCmd=_T("git.exe svn dcommit");
-	if(progress.DoModal()==IDOK)
-		return TRUE;
-
-	return true;
+	return CAppUtils::SVNDCommit();
 }

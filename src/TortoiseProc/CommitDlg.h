@@ -129,6 +129,8 @@ public:
 
 	BOOL				m_bPushAfterCommit;
 
+	int		m_PostCmd;
+
 private:
 	CWinThread*			m_pThread;
 	std::set<CString>	m_autolist;
