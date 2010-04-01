@@ -18,7 +18,7 @@
 #include "StdAfx.h"
 #include "UnicodeUtils.h"
 #include "GitAdminDir.h"
-
+#include "Git.h"
 GitAdminDir g_GitAdminDir;
 
 GitAdminDir::GitAdminDir()
@@ -71,7 +71,7 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 		
 	do
 	{
-		if(PathFileExists(projectroot + _T("\\.gitmodules")))
+		if(CGit::GitPathFileExists(projectroot + _T("\\.gitmodules")))
 		{
 			return projectroot;
 		}		
@@ -143,7 +143,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 
 	for (;;)
 	{
-		if(PathFileExists(sDirName + _T("\\.git")))
+		if(CGit::GitPathFileExists(sDirName + _T("\\.git")))
 		{
 			if(ProjectTopDir)
 			{

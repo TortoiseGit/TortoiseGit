@@ -646,7 +646,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(CString &gitdir,CString &path)
 	{
 		temp+=_T("\\.git");
 
-		if(PathFileExists(temp))
+		if(CGit::GitPathFileExists(temp))
 		{
 			CString gitignore=temp;
 			gitignore += _T("ignore");
@@ -694,13 +694,13 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 	{
 		temp+=_T("\\.git");
 
-		if(PathFileExists(temp))
+		if(CGit::GitPathFileExists(temp))
 		{
 			CString gitignore = temp;
 			gitignore += _T("ignore");
 			if( CheckFileChanged(gitignore) )
 			{
-				if(PathFileExists(temp)) //if .gitignore remove, we need remote cache
+				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
 					m_Map[gitignore].FetchIgnoreList(gitignore);
 				else
 					m_Map.erase(gitignore);
@@ -710,7 +710,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 
 			if( CheckFileChanged(temp) )
 			{
-				if(PathFileExists(temp)) //if .gitignore remove, we need remote cache
+				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
 					return m_Map[temp].FetchIgnoreList(temp);
 				else
 				{
@@ -726,7 +726,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			temp+=_T("ignore");
 			if( CheckFileChanged(temp) )
 			{
-				if(PathFileExists(temp)) //if .gitignore remove, we need remote cache
+				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
 					m_Map[temp].FetchIgnoreList(temp);
 				else
 					m_Map.erase(temp);
@@ -784,7 +784,7 @@ int CGitIgnoreList::GetIgnoreFileChangeTimeList(CString &path, std::vector<__int
 		ignore=temp;
 		ignore+=_T("\\.git");
 
-		if(PathFileExists(ignore))
+		if(CGit::GitPathFileExists(ignore))
 			return 0;
 
 		start = temp.ReverseFind(_T('\\'));

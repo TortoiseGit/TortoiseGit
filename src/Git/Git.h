@@ -36,6 +36,32 @@ protected:
 	GIT_DIFF m_GitDiff;
 public:
 	CComCriticalSection			m_critGitDllSec;
+
+	static bool GitPathFileExists(CString &path)
+	{
+		if(path[0] == _T('\\') && path[1] == _T('\\')) 
+		//it is netshare \\server\sharefoldername
+		// \\server\.git will create smb error log.
+		{
+			int length = path.GetLength();
+
+			if(length<2)
+				return false;
+
+			int start = path.Find(_T('\\'),2);
+			if(start<0)
+				return false;
+			
+			start = path.Find(_T('\\'),start+1);
+			if(start<0)
+				return false;
+
+			return PathFileExists(path);
+
+		}
+		else
+			return PathFileExists(path);
+	}
 	void CheckAndInitDll()
 	{ 
 		if(!m_IsGitDllInited) 
