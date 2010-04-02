@@ -182,8 +182,8 @@ public:
 #define GIT_MODE_IGNORE 0x4
 #define GIT_MODE_ALL (GIT_MODE_INDEX|GIT_MODE_HEAD|GIT_MODE_IGNORE)
 
-	static int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
-	static int GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	static int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	static int GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
 	static bool IsGitReposChanged(CString &gitdir, CString &subpaths, int mode=GIT_MODE_ALL);
 	static int LoadIgnoreFile(CString &gitdir, CString &subpaths);
 	static int IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion);

@@ -39,6 +39,7 @@
 #endif
 #include "git.h"
 #include "gitindex.h"
+#include "shellcache.h"
 
 CGitIndexFileMap g_IndexFileMap;
 CGitHeadFileMap g_HeadFileMap;
@@ -224,92 +225,34 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 
 	const BOOL bIsRecursive = (depth == git_depth_infinity || depth == git_depth_unknown); // taken from SVN source
 
-#ifdef _TORTOISESHELL
-	if (g_ShellCache.GetCacheType() == ShellCache::dll)
-#else
-	if ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1) == 2)
-#endif
+	CString sSubPath;
+	CString s = path.GetWinPathString();
+	if (s.GetLength() > sProjectRoot.GetLength())
 	{
-		// gitindex.h based status
-
-		CString sSubPath;
-		CString s = path.GetWinPathString();
-		if (s.GetLength() > sProjectRoot.GetLength())
-		{
-			if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
-			else
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
-		}
-
-		err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&statuskind);
-	}
-	else
-	{
-		LPCTSTR lpszSubPath = NULL;
-		CString sSubPath;
-		CString s = path.GetWinPathString();
-		if (s.GetLength() > sProjectRoot.GetLength())
-		{
+		if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
-			lpszSubPath = sSubPath;
-			// skip initial slash if necessary
-			if (*lpszSubPath == _T('\\'))
-				lpszSubPath++;
-		}
+		else
+			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
+	}
 
-#if 1
-		// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
-		UINT nFlags = WGEFF_SingleFile;
-		if (!bIsRecursive)
-			nFlags |= WGEFF_NoRecurse;
-		if (!lpszSubPath)
-			// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
-			nFlags |= WGEFF_EmptyAsNormal;
+	bool isfull;
+
+#ifdef _TORTOISESHELL
+	isfull = (g_ShellCache.GetCacheType() == ShellCache::dllFull);
 #else
-		// enumerate all files, recursively if requested
-		UINT nFlags = 0;
-		if (!bIsRecursive)
-			nFlags |= WGEFF_NoRecurse;
+	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), 
+				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 #endif
-
-		//err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getallstatus, &statuskind);
-
-		if(isDir)
-		{
-			err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&statuskind, true,bIsRecursive,NULL, NULL);
-
-		}else
-		{
-			err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&statuskind,true, false,NULL,NULL);
-		}
-		
-
-		/*err = git_client_status4 (&youngest,
-							path.GetSVNApiPath(pool),
-							&rev,
-							getallstatus,
-							&statuskind,
-							depth,
-							TRUE,		//getall
-							FALSE,		//update
-							TRUE,		//noignore
-							FALSE,		//ignore externals
-							NULL,
-							ctx,
-							pool);*/
-	}
-
-	// Error present
-	if (err != NULL)
+	
+	if(isDir)
 	{
-//		git_error_clear(err);
-//		git_pool_destroy (pool);				//free allocated memory
-		return git_wc_status_none;	
+		err = GetDirStatus(sProjectRoot,sSubPath,&statuskind, isfull,bIsRecursive,isfull,NULL, NULL);
+
+	}else
+	{
+		err = GetFileStatus(sProjectRoot,sSubPath,&statuskind,isfull, false,isfull, NULL,NULL);
 	}
-
-//	git_pool_destroy (pool);				//free allocated memory
-
+		
 	return statuskind;
 }
 
@@ -389,29 +332,15 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 //	hashbaton.exthash = exthash;
 	hashbaton.pThis = this;
 
+	bool isfull;
+
 #ifdef _TORTOISESHELL
-	if (g_ShellCache.GetCacheType() == ShellCache::dll)
+	isfull = (g_ShellCache.GetCacheType() == ShellCache::dllFull);
 #else
-	if ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1) == 2)
+	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), 
+				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 #endif
-	{
-		// gitindex.h based status
-
-		CString sSubPath;
-		CString s = path.GetWinPathString();
-		if (s.GetLength() > sProjectRoot.GetLength())
-		{
-			if (sProjectRoot.GetLength() == 3 && sProjectRoot[1] == _T(':'))
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength());
-			else
-				sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
-		}
-
-		m_status.prop_status = m_status.text_status = git_wc_status_none;
-
-		m_err = g_IndexFileMap.GetFileStatus(sProjectRoot,sSubPath,&m_status.text_status);
-	}
-	else
+	
 	{
 		LPCTSTR lpszSubPath = NULL;
 		CString sSubPath;
@@ -425,45 +354,22 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 				lpszSubPath++;
 		}
 
-		// when recursion enabled, let wingit determine the recursive status for folders instead of enumerating all files here
-		UINT nFlags = WGEFF_SingleFile | WGEFF_NoRecurse;
-		if (!lpszSubPath)
-			// report root dir as normal (otherwise it could be considered git_wc_status_unversioned, which would be wrong?)
-			nFlags |= WGEFF_EmptyAsNormal;
-
 		m_status.prop_status = m_status.text_status = git_wc_status_none;
 
-		// NOTE: currently wgEnumFiles will not enumerate file if it isn't versioned (so status will be git_wc_status_none)
-		//m_err = !wgEnumFiles(sProjectRoot, lpszSubPath, nFlags, &getstatus, &m_status);
 		if(path.IsDirectory())
 		{
-			m_err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status , false,false,NULL, NULL);
+			m_err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status , isfull, false,!noignore, NULL, NULL);
 
 		}else
 		{
-			m_err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status ,false, false,NULL,NULL);
+			m_err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status ,isfull, false,!noignore, NULL,NULL);
 		}
-
-		/*m_err = git_client_status4 (&youngest,
-							path.GetGitApiPath(m_pool),
-							&rev,
-							getstatushash,
-							&hashbaton,
-							git_depth_empty,		//depth
-							TRUE,		//getall
-							update,		//update
-							noignore,		//noignore
-							noexternals,
-							NULL,
-							ctx,
-							m_pool);*/
 	}
 
 	// Error present if function is not under version control
 	if (m_err) /*|| (apr_hash_count(statushash) == 0)*/
 	{
 		status = NULL;
-//		return -2;	
 		return GIT_INVALID_REVNUM;
 	}
 
@@ -985,7 +891,7 @@ void GitStatus::ClearFilter()
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData)
 {
 	
 	TCHAR oldpath[MAX_PATH+1];
@@ -1010,6 +916,14 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 		if( st == git_wc_status_unversioned )
 		{
+			if(!IsIgnore)
+			{
+				*status = git_wc_status_unversioned;
+				if(callback)
+					callback(gitdir+_T("/")+path, *status, false,pData);
+				return 0;
+			}
+
 			if( g_IgnoreList.CheckIgnoreChanged(gitdir,path))
 			{
 				g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
@@ -1025,7 +939,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 			return 0;
 		}
 
-		if( st == git_wc_status_normal )
+		if( st == git_wc_status_normal && IsFull)
 		{
 			if(g_HeadFileMap[gitdir].CheckHeadUpdate())
 			{
@@ -1134,7 +1048,7 @@ int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
 	
 	return 0;
 }
-int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,BOOL IsIgnore,FIll_STATUS_CALLBACK callback,void *pData)
 {
 	TCHAR oldpath[MAX_PATH+1];
 	memset(oldpath,0,MAX_PATH+1);
@@ -1151,14 +1065,25 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 		g_IndexFileMap.CheckAndUpdateIndex(gitdir);
 		int pos=SearchInSortVector(g_IndexFileMap[gitdir],path.GetBuffer(),path.GetLength());
 		
+		if(subpath.IsEmpty() && pos<0)
+		{ // for new init repository
+			*status = git_wc_status_normal;
+			if(callback)
+					callback(gitdir+_T("/")+path, *status, false,pData);
+			return 0;
+		}
+
 		//Not In Version Contorl
 		if(pos<0)
 		{
-			if(!IsFul)
+			if(!IsIgnore)
 			{
 				*status = git_wc_status_unversioned;
-			
-			}else
+				if(callback)
+					callback(gitdir+_T("/")+path, *status, false,pData);
+				return 0;
+			}
+			//Check ignore always.
 			{
 				if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
 					g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
@@ -1309,7 +1234,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 						
 						git_wc_status_kind filestatus = git_wc_status_none;
 
-						GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,callback,pData);
+						GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
 
 						*status = max(filestatus, *status) ;					
 					}

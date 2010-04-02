@@ -238,7 +238,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 		if (g_ShellCache.GetCacheType() == ShellCache::dll)
 		{
-			depth = git_depth_infinity;	
+			depth = git_depth_empty;	
 		}
 		
 		t1 = ::GetCurrentTime();

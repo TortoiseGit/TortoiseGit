@@ -210,16 +210,14 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						status = s->status;
 					}
 				}
+#if 0
 				if ((s)&&(status == git_wc_status_normal)&&(s->needslock)&&(s->owner[0]==0))
 					readonlyoverlay = true;
 				if ((s)&&(s->owner[0]!=0))
 					lockedoverlay = true;
+#endif
 			}
 
-			// index based version does not enumerate unversioned files, so default to unversioned
-			if (g_ShellCache.GetCacheType() == ShellCache::dll
-				&& status == git_wc_status_none && g_ShellCache.HasSVNAdminDir(pPath, true))
-				status = git_wc_status_unversioned;
 			break;
 		default:
 		case ShellCache::none:

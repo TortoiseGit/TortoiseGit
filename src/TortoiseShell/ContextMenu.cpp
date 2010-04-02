@@ -117,7 +117,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							try
 							{
 								GitStatus stat;
-								stat.GetStatus(CTGitPath(str.c_str()), false, true, true);
+								stat.GetStatus(CTGitPath(str.c_str()), false, false, true);
 								if (stat.status)
 								{
 									statuspath = str;
@@ -216,7 +216,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								{
 									GitStatus stat;
 									if (strpath.HasAdminDir())
-										stat.GetStatus(strpath, false, true, true);
+										stat.GetStatus(strpath, false, false, true);
 									statuspath = str;
 									if (stat.status)
 									{
@@ -341,7 +341,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 			try
 			{
 				GitStatus stat;
-				stat.GetStatus(CTGitPath(folder_.c_str()), false, true, true);
+				stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
 				if (stat.status)
 				{
 					status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
@@ -420,7 +420,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					try
 					{
 						GitStatus stat;
-						stat.GetStatus(CTGitPath(folder_.c_str()), false, true, true);
+						stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
 						if (stat.status)
 						{
 							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
