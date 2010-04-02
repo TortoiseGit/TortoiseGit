@@ -591,9 +591,9 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	git_wc_status_kind status;
 
 	if(path)
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false, GetStatusCallback,this);
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false,true, GetStatusCallback,this);
 	else
-		pStatus->GetDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, GetStatusCallback,this);
+		pStatus->GetDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 
 	m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
@@ -609,8 +609,20 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		if (childDir)
 		{
 			if ((childDir->GetCurrentFullStatus() != git_wc_status_missing)||(pGitStatus==NULL)||(pGitStatus->text_status != git_wc_status_unversioned))
+			{
+				if(pGitStatus)
+				{
+					if(childDir->GetCurrentFullStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
+					{
+						CGitStatusCache::Instance().UpdateShell(path);
+						ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+					}
+				}
 				childDir->m_ownStatus.SetStatus(pGitStatus);
+			}
 			childDir->m_ownStatus.SetKind(git_node_dir);
+
+			
 		}
 	}
 	else

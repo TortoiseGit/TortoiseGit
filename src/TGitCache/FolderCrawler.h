@@ -54,6 +54,9 @@ private:
 	HANDLE m_hThread;
 	std::deque<CTGitPath> m_foldersToUpdate;
 	std::deque<CTGitPath> m_pathsToUpdate;
+	
+	void RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath &path);
+
 	HANDLE m_hTerminationEvent;
 	HANDLE m_hWakeEvent;
 	

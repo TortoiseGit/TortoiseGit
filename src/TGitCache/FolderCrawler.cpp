@@ -77,6 +77,20 @@ void CFolderCrawler::Initialise()
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE);
 }
 
+void CFolderCrawler::RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath &path)
+{
+	std::deque<CTGitPath>::iterator it, lastit;
+	for(it = list.begin(); it != list.end(); ++it)
+	{
+		if(*it == path)
+		{	
+			list.erase(it);
+			it = list.begin(); /* search again*/
+			if(it == list.end())
+				break;
+		}
+	}
+}
 void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 {
 	/* Index file changing*/
@@ -87,6 +101,9 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 		return;
 	{
 		AutoLocker lock(m_critSec);
+		
+		RemoveDuplicate(m_foldersToUpdate, path);
+
 		m_foldersToUpdate.push_back(path);
 		m_foldersToUpdate.back().SetCustomData(GetTickCount()+10);
 	
@@ -110,6 +127,8 @@ void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 
 	{
 		AutoLocker lock(m_critSec);
+
+		RemoveDuplicate(m_pathsToUpdate, path);
 		m_pathsToUpdate.push_back(path);
 		m_pathsToUpdate.back().SetCustomData(GetTickCount()+1000);
 		m_bPathsAddedSinceLastCrawl = true;
@@ -212,6 +231,8 @@ void CFolderCrawler::WorkerThread()
 				{
 					AutoLocker lock(m_critSec);
 
+					m_bPathsAddedSinceLastCrawl = false;
+#if 0
 					if (m_bPathsAddedSinceLastCrawl)
 					{
 						// The queue has changed - it's worth sorting and de-duping
@@ -219,9 +240,11 @@ void CFolderCrawler::WorkerThread()
 						m_pathsToUpdate.erase(std::unique(m_pathsToUpdate.begin(), m_pathsToUpdate.end(), &CTGitPath::PredLeftSameWCPathAsRight), m_pathsToUpdate.end());
 						m_bPathsAddedSinceLastCrawl = false;
 					}
-					workingPath = m_pathsToUpdate.front();
+#endif
+					workingPath = m_pathsToUpdate.back(); /*we update latest requirement firstly*/
+
 					if ((DWORD(workingPath.GetCustomData()) < currentTicks)||(DWORD(workingPath.GetCustomData()) > (currentTicks + 200000)))
-						m_pathsToUpdate.pop_front();
+						m_pathsToUpdate.pop_back();
 					else
 					{
 						// since we always sort the whole list, we risk adding tons of new paths to m_pathsToUpdate
@@ -401,7 +424,9 @@ void CFolderCrawler::WorkerThread()
 			{
 				{
 					AutoLocker lock(m_critSec);
+					m_bPathsAddedSinceLastCrawl = false;
 
+#if 0
 					if (m_bItemsAddedSinceLastCrawl)
 					{
 						// The queue has changed - it's worth sorting and de-duping
@@ -409,13 +434,14 @@ void CFolderCrawler::WorkerThread()
 						m_foldersToUpdate.erase(std::unique(m_foldersToUpdate.begin(), m_foldersToUpdate.end(), &CTGitPath::PredLeftEquivalentToRight), m_foldersToUpdate.end());
 						m_bItemsAddedSinceLastCrawl = false;
 					}
+#endif
 					// create a new CTGitPath object to make sure the cached flags are requested again.
 					// without this, a missing file/folder is still treated as missing even if it is available
 					// now when crawling.
-					workingPath = CTGitPath(m_foldersToUpdate.front().GetWinPath());
-					workingPath.SetCustomData(m_foldersToUpdate.front().GetCustomData());
+					workingPath = CTGitPath(m_foldersToUpdate.back().GetWinPath());
+					workingPath.SetCustomData(m_foldersToUpdate.back().GetCustomData());
 					if ((DWORD(workingPath.GetCustomData()) < currentTicks)||(DWORD(workingPath.GetCustomData()) > (currentTicks + 200000)))
-						m_foldersToUpdate.pop_front();
+						m_foldersToUpdate.pop_back();
 					else
 					{
 						// since we always sort the whole list, we risk adding tons of new paths to m_pathsToUpdate
@@ -478,6 +504,7 @@ void CFolderCrawler::WorkerThread()
 				if (cachedDir)
 					cachedDir->RefreshStatus(bRecursive);
 
+#if 0
 				// While refreshing the status, we could get another crawl request for the same folder.
 				// This can happen if the crawled folder has a lower status than one of the child folders
 				// (recursively). To avoid double crawlings, remove such a crawl request here
@@ -490,6 +517,7 @@ void CFolderCrawler::WorkerThread()
 						m_bItemsAddedSinceLastCrawl = false;
 					}
 				}
+#endif
 				CGitStatusCache::Instance().Done();
 			}
 		}
