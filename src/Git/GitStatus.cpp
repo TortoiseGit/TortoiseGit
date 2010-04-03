@@ -998,6 +998,12 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 }
 
+int GitStatus::GetHeadHash(CString &gitdir, CGitHash &hash)
+{
+	g_HeadFileMap[gitdir].CheckHeadUpdate();
+	hash = g_HeadFileMap[gitdir].m_Head;
+	return 0;
+}
 bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
 {
 	if( mode & GIT_MODE_INDEX)

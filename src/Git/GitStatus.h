@@ -15,6 +15,7 @@ typedef std::basic_string<wchar_t> wide_string;
 #pragma warning (pop)
 
 #include "TGitPath.h"
+#include "GitHash.h"
 
 typedef enum type_git_wc_status_kind
 {
@@ -191,6 +192,8 @@ public:
 	static __int64 GetIndexFileTime(CString &gitdir);
 	static bool IsExistIndexLockFile(CString &gitdir);
 	static int GetIgnoreFileChangeTimeList(CString &path, std::vector<__int64> &timelist);
+
+	static int GetHeadHash(CString &gitdir, CGitHash &hash);
 
 public:
 	GitStatus(bool * pbCanceled = NULL);

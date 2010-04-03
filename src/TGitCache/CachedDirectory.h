@@ -83,6 +83,7 @@ private:
 	// The timestamp of the .git\index file.  For an unversioned directory, this will be zero
 	__int64 m_indexFileTime;
 	bool	m_FullStatusFetched;
+	CGitHash m_Head;
 
 	std::vector<__int64> m_IgnoreFileTimeList;
 	// The timestamp of the .SVN\props dir.  For an unversioned directory, this will be zero

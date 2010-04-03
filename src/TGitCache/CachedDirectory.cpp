@@ -233,7 +233,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	
 	
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
-	bool IsIndexHeadChanged = pGitStatus->IsGitReposChanged(sProjectRoot, subpaths, GIT_MODE_INDEX|GIT_MODE_HEAD);
+	bool IsIndexHeadChanged = pGitStatus->IsGitReposChanged(sProjectRoot, subpaths, GIT_MODE_INDEX);
+
+	CGitHash head;
+	
+	pGitStatus->GetHeadHash(sProjectRoot,head);
 
 	bool isVersion =true;
 	pGitStatus->IsUnderVersionControl(sProjectRoot, subpaths, path.IsDirectory(), &isVersion);
@@ -326,7 +330,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 /// Handle track file and directory
 //==================================
 	/* Get Status from git */
-	if( (m_indexFileTime==pGitStatus->GetIndexFileTime(sProjectRoot)))
+	if( (head == m_Head) && (m_indexFileTime==pGitStatus->GetIndexFileTime(sProjectRoot)))
 	{	
 		if(bFetch && !m_FullStatusFetched)
 		{
@@ -427,6 +431,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		}
 		
 		m_indexFileTime = pGitStatus->GetIndexFileTime(sProjectRoot);
+		m_Head = head;
 		m_FullStatusFetched  = false;
 
 		AutoLocker lock(m_critSec);
@@ -437,6 +442,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 
 		git_wc_status2_t status2;
 		status2.prop_status = status2.text_status = git_wc_status_normal;
+		this->m_mostImportantFileStatus = this->m_currentFullStatus = git_wc_status_normal;
 		m_ownStatus.SetStatus(&status2);
 	}
 
