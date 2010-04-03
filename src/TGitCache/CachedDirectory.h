@@ -26,6 +26,8 @@
  * Holds the status for a folder and all files and folders directly inside
  * that folder.
  */
+#define GIT_CACHE_VERSION 2
+
 class CCachedDirectory
 {
 public:

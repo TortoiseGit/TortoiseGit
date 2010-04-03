@@ -54,7 +54,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	AutoLocker lock(m_critSec);
 #define WRITEVALUETOFILE(x) if (fwrite(&x, sizeof(x), 1, pFile)!=1) return false;
 
-	unsigned int value = 1;
+	unsigned int value = GIT_CACHE_VERSION;
 	WRITEVALUETOFILE(value);	// 'version' of this save-format
 	value = (int)m_entryCache.size();
 	WRITEVALUETOFILE(value);	// size of the cache map
@@ -88,6 +88,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		}
 	}
 	WRITEVALUETOFILE(m_indexFileTime);
+	WRITEVALUETOFILE(m_Head.m_hash);
 //	WRITEVALUETOFILE(m_propsFileTime);
 	value = m_directoryPath.GetWinPathString().GetLength();
 	WRITEVALUETOFILE(value);
@@ -111,7 +112,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 	{
 		unsigned int value = 0;
 		LOADVALUEFROMFILE(value);
-		if (value != 1)
+		if (value != GIT_CACHE_VERSION)
 			return false;		// not the correct version
 		int mapsize = 0;
 		LOADVALUEFROMFILE(mapsize);
@@ -156,6 +157,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			}
 		}
 		LOADVALUEFROMFILE(m_indexFileTime);
+		LOADVALUEFROMFILE(m_Head.m_hash);
 //		LOADVALUEFROMFILE(m_propsFileTime);
 		LOADVALUEFROMFILE(value);
 		if (value > MAX_PATH)
