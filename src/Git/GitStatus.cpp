@@ -1122,7 +1122,13 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 				if( ((*it).m_Flags & CE_STAGEMASK) !=0)
 				{
 					*status = git_wc_status_conflicted;
-					break;
+					if(callback)
+					{
+						int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+						if(dirpos<0 || IsRecursive)
+							callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_conflicted,false,pData);
+					}else
+						break;
 				}
 				it++;
 			}
@@ -1161,14 +1167,28 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 
 						if(pos < 0)
 						{
-							*status = git_wc_status_added;
-							break;
+							*status = *status = max(git_wc_status_added, *status) ;	
+							if(callback)
+							{
+								int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+								if(dirpos<0 || IsRecursive)
+									callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_added,false, pData);
+
+							}else
+								break;
 						}
 
-						if( g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
+						if( pos>=0 && g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
 						{
-							*status == git_wc_status_modified;
-							break;
+							*status = *status = max(git_wc_status_modified, *status) ;	
+							if(callback)
+							{
+								int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+								if(dirpos<0 || IsRecursive)
+									callback(gitdir+_T("\\")+ it->m_FileName, git_wc_status_modified,false, pData);
+
+							}else
+								break;
 						}
 
 						it++;

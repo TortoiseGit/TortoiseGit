@@ -30,6 +30,7 @@ CCachedDirectory::CCachedDirectory(void)
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
 	m_bRecursive = true;
 	m_indexFileTime = 0;
+	m_FullStatusFetched = false;
 }
 
 CCachedDirectory::~CCachedDirectory(void)
@@ -282,7 +283,9 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			if(dirEntry)
 			{
 				AutoLocker lock(dirEntry->m_critSec);
-				if(dirEntry->GetCurrentFullStatus() == git_wc_status_none || isIgnoreFileChanged)
+
+				git_wc_status_kind dirstatus = dirEntry->GetCurrentFullStatus() ;
+				if( dirstatus == git_wc_status_none || dirstatus >= git_wc_status_normal || isIgnoreFileChanged )
 				{/* status have not initialized*/
 					git_wc_status2_t status2;
 					bool isignore = false;
@@ -324,12 +327,19 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 //==================================
 	/* Get Status from git */
 	if( (m_indexFileTime==pGitStatus->GetIndexFileTime(sProjectRoot)))
-	{	/* Repository not changed*/
-		
+	{	
+		if(bFetch && !m_FullStatusFetched)
+		{
+			/* If crawl, fetch new updated status any way*/
+			EnumFiles();
+			m_FullStatusFetched = true;
+		}
+
 		if(path.IsDirectory())
 		{
 			// We don't have directory status in our cache
 			// Ask the directory if it knows its own status
+			
 			CCachedDirectory * dirEntry = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
 			if( dirEntry)
 			{
@@ -415,14 +425,19 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			CGitStatusCache::Instance().AddFolderForCrawling(path.GetDirectory());
 			
 		}
-		AutoLocker lock(m_critSec);
-
+		
 		m_indexFileTime = pGitStatus->GetIndexFileTime(sProjectRoot);
+		m_FullStatusFetched  = false;
 
+		AutoLocker lock(m_critSec);
 //		m_indexFileTime = indexFilePath.GetLastWriteTime();
 //		m_propsFileTime = propsDirPath.GetLastWriteTime();
 		m_entryCache.clear();
 		strCacheKey = GetCacheKey(path);
+
+		git_wc_status2_t status2;
+		status2.prop_status = status2.text_status = git_wc_status_normal;
+		m_ownStatus.SetStatus(&status2);
 	}
 
 // Fetch is true, or cache status have been invalidate
@@ -676,6 +691,7 @@ BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind stat
 	status2->prop_status = status2->text_status = status;
 
 	CTGitPath gitPath;
+
 
 //	if(status->entry)
 	{

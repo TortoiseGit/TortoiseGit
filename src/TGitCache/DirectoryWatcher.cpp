@@ -204,6 +204,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path)
 
 bool CDirectoryWatcher::IsPathWatched(const CTGitPath& path)
 {
+	AutoLocker lock(m_critSec);
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
 	{
 		if (watchedPaths[i].IsAncestorOf(path))

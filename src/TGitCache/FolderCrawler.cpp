@@ -100,6 +100,8 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 	if (!CGitStatusCache::Instance().IsPathGood(path))
 		return;
 	{
+		ATLTRACE(_T("AddDirectoryForUpdate %s\n"),path.GetWinPath());
+
 		AutoLocker lock(m_critSec);
 		
 		RemoveDuplicate(m_foldersToUpdate, path);
@@ -112,7 +114,7 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 		// with the worker thread
 		m_bItemsAddedSinceLastCrawl = true;
 	}
-	if (SetHoldoff())
+	//if (SetHoldoff())
 		SetEvent(m_hWakeEvent);
 }
 
@@ -133,7 +135,7 @@ void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 		m_pathsToUpdate.back().SetCustomData(GetTickCount()+1000);
 		m_bPathsAddedSinceLastCrawl = true;
 	}
-	if (SetHoldoff())
+	//if (SetHoldoff())
 		SetEvent(m_hWakeEvent);
 }
 
