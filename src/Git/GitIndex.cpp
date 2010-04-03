@@ -487,6 +487,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 int CGitHeadFileList::ReadTree()
 {
+	int ret;
 	if( this->m_Head.IsEmpty())
 		return -1;
 
@@ -498,7 +499,15 @@ int CGitHeadFileList::ReadTree()
 		SetCurrentDirectory(g_Git.m_CurrentDir);
 		git_init();	
 	}
-	return git_read_tree(this->m_Head.m_hash,CGitHeadFileList::CallBack,this);
+	
+	this->m_Map.clear();
+	this->clear();
+
+	ret = git_read_tree(this->m_Head.m_hash,CGitHeadFileList::CallBack,this);
+	if(!ret)
+		m_TreeHash = m_Head;
+
+	return ret;
 }
 
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,

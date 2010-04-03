@@ -941,7 +941,8 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 		if( st == git_wc_status_normal && IsFull)
 		{
-			if(g_HeadFileMap[gitdir].CheckHeadUpdate())
+			if(g_HeadFileMap[gitdir].CheckHeadUpdate() || 
+				g_HeadFileMap[gitdir].m_Head != g_HeadFileMap[gitdir].m_TreeHash)
 			{
 				g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
 				// Init Repository
@@ -955,9 +956,10 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 				if(g_HeadFileMap[gitdir].ReadTree())
 				{
 					g_HeadFileMap[gitdir].m_LastModifyTimeHead = 0;
-					*status = st;
+					//Check if init repository
+					*status = g_HeadFileMap[gitdir].m_Head.IsEmpty()? git_wc_status_added: st;
 					if(callback)
-						callback(gitdir+_T("/")+path,st,false,pData);
+						callback(gitdir+_T("/")+path,*status,false,pData);
 					return 0;
 				}
 
@@ -965,9 +967,9 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 			// Check Head Tree Hash;
 			{
 				//add item
-							
-				if(g_HeadFileMap[gitdir].m_Map.find(path) 
-					== g_HeadFileMap[gitdir].m_Map.end())
+				std::map<CString,int>::iterator it=g_HeadFileMap[gitdir].m_Map.find(path);
+
+				if(it == g_HeadFileMap[gitdir].m_Map.end())
 				{
 					*status =st=git_wc_status_added;
 					if(callback)
@@ -976,11 +978,9 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 				}
 
 				//staged and not commit
-				int index=g_HeadFileMap[gitdir].m_Map[path];
-				if( g_HeadFileMap[gitdir].at(index).m_Hash != hash )
+				if( g_HeadFileMap[gitdir].at(it->second).m_Hash != hash )
 				{
-					*status = st= git_wc_status_modified;
-					*status =st=git_wc_status_added;
+					*status =st=git_wc_status_modified;
 					if(callback)
 						callback(gitdir+_T("/")+path,st, false, pData);
 					return 0;
@@ -1000,7 +1000,9 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 int GitStatus::GetHeadHash(CString &gitdir, CGitHash &hash)
 {
-	g_HeadFileMap[gitdir].CheckHeadUpdate();
+	if(g_HeadFileMap[gitdir].CheckHeadUpdate())
+		g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
+
 	hash = g_HeadFileMap[gitdir].m_Head;
 	return 0;
 }
@@ -1053,6 +1055,171 @@ int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
 	 *isIgnore = g_IgnoreList.IsIgnore(path,gitdir);
 	
 	return 0;
+}
+
+int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul,  BOOL IsRecursive, BOOL IsIgnore, FIll_STATUS_CALLBACK callback, void *pData)
+{
+	TCHAR oldpath[MAX_PATH+1];
+	memset(oldpath,0,MAX_PATH+1);
+	
+	CString path =subpath;
+
+	path.Replace(_T('\\'),_T('/'));
+	if(!path.IsEmpty())
+		if(path[path.GetLength()-1] !=  _T('/'))
+			path += _T('/'); //Add trail / to show it is directory, not file name.
+
+	if(status)
+	{
+		g_IndexFileMap.CheckAndUpdateIndex(gitdir);
+		int pos=SearchInSortVector(g_IndexFileMap[gitdir],path.GetBuffer(),path.GetLength());
+		
+		if(subpath.IsEmpty() && pos<0)
+		{ // for new init repository
+			*status = git_wc_status_normal;
+			if(callback)
+					callback(gitdir+_T("/")+path, *status, false,pData);
+			return 0;
+		}
+
+		//Not In Version Contorl
+		if(pos<0)
+		{
+			if(!IsIgnore)
+			{
+				*status = git_wc_status_unversioned;
+				if(callback)
+					callback(gitdir+_T("/")+path, *status, false,pData);
+				return 0;
+			}
+			//Check ignore always.
+			{
+				if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
+					g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
+				
+				if(g_IgnoreList.IsIgnore(path,gitdir))
+					*status = git_wc_status_ignored;
+				else
+					*status = git_wc_status_unversioned;
+				
+				g_HeadFileMap[gitdir].CheckHeadUpdate();
+
+				//Check init repository
+				if(g_HeadFileMap[gitdir].m_Head.IsEmpty() && path.IsEmpty())
+					*status = git_wc_status_normal;
+			}
+
+		}else  // In version control
+		{
+			*status = git_wc_status_normal;
+
+			int start=0;
+			int end=0;
+			if(path.IsEmpty())
+			{
+				start=0;
+				end=g_IndexFileMap[gitdir].size()-1;
+			}
+			GetRangeInSortVector(g_IndexFileMap[gitdir],path.GetBuffer(),path.GetLength(),&start,&end,pos);
+			CGitIndexList::iterator it;
+			
+			it = g_IndexFileMap[gitdir].begin()+start;
+
+			CString sub, currentPath;
+
+			for(int i=start;i<=end;i++,it++)
+			{
+				if( ((*it).m_Flags & CE_STAGEMASK) !=0)
+				{
+					*status = git_wc_status_conflicted;
+				}
+
+				if( !IsRecursive )
+				{
+					//skip child directory
+					int pos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+						
+					if( pos > 0)
+					{
+						currentPath = (*it).m_FileName.Left(pos);
+						if( callback && (sub != currentPath) )
+						{
+							sub = currentPath;
+							ATLTRACE(_T("index subdir %s\n"),sub);
+							if(callback) callback(gitdir + _T("\\")+sub,
+										git_wc_status_normal,true, pData);
+						}
+						continue;
+					}
+				}
+				
+				git_wc_status_kind filestatus = git_wc_status_none;
+
+				GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
+
+				*status = max(filestatus, *status) ;
+			}
+
+			//Check Miss file in index "git rm file"
+			if( IsFul && (*status != git_wc_status_conflicted))
+			{
+				if(g_HeadFileMap[gitdir].CheckHeadUpdate() || 
+					g_HeadFileMap[gitdir].m_Head != g_HeadFileMap[gitdir].m_TreeHash)
+				{
+					g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
+					
+					if(g_HeadFileMap[gitdir].ReadTree())
+					{
+						//try again
+						g_Git.SetCurrentDir(gitdir);
+						::GetCurrentDirectory(MAX_PATH,oldpath);
+						::SetCurrentDirectory(g_Git.m_CurrentDir);
+						git_init();	
+						g_HeadFileMap[gitdir].ReadTree();
+					}
+				}
+				//Check Add
+				it = ::g_IndexFileMap[gitdir].begin()+start;
+				
+				//Check if new init repository
+				if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+				{
+					//Check Delete
+					if( *status == git_wc_status_normal )
+					{
+						pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
+						if(pos <0)
+						{
+							*status =  max(git_wc_status_added, *status) ;
+
+						}else
+						{
+							int hstart,hend;
+							GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
+							CGitHeadFileList::iterator hit;
+							hit = g_HeadFileMap[gitdir].begin()+hstart;
+							for(int i=hstart;i<=hend;i++)
+							{
+								if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+								{
+									*status =max(git_wc_status_deleted, *status);
+									break;
+								}
+								hit++;
+							}
+						}
+					} // endif if( *status == git_wc_status_normal )
+				}// endif if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+			}//if( IsFul && (*status != git_wc_status_conflicted))
+		}// end inversion control
+		if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);	
+	}//endi if status
+	
+	if(*oldpath!=0)
+		::SetCurrentDirectory(oldpath);
+
+	return 0;
+
 }
 int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,BOOL IsIgnore,FIll_STATUS_CALLBACK callback,void *pData)
 {

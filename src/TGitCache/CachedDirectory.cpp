@@ -421,6 +421,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				return CStatusCacheEntry(git_wc_status_normal);
 			}
 		}
+
 		// if we're fetching the status for the explorer,
 		// we don't refresh the status but use the one
 		// we already have (to save time and make the explorer
@@ -446,6 +447,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		status2.prop_status = status2.text_status = git_wc_status_normal;
 		this->m_mostImportantFileStatus = this->m_currentFullStatus = git_wc_status_normal;
 		m_ownStatus.SetStatus(&status2);
+		
+		
 	}
 
 // Fetch is true, or cache status have been invalidate
@@ -616,7 +619,7 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	if(path)
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false,true, GetStatusCallback,this);
 	else
-		pStatus->GetDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
+		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 
 	m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 

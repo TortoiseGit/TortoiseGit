@@ -204,6 +204,8 @@ public:
 	CString		m_HeadFile;
 	CString		m_Gitdir;
 
+	CGitHash	m_TreeHash; /* buffered tree hash value */
+
 	CGitHeadFileList()
 	{
 		m_LastModifyTimeHead=0;
