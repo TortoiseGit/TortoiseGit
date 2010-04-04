@@ -361,10 +361,31 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 						CGitStatusCache::Instance().AddFolderForCrawling(it->first);
 					}
 				}
+			
 			}
+			if(bFetch)
+			{
+				ATLTRACE(_T("Clear Dir %s mostImportantFileStatus\n"), path.GetWinPath());
+				AutoLocker lock(m_critSec);
+				m_mostImportantFileStatus = git_wc_status_normal; /* unverstion file have handle at begin */
+				m_childDirectories.clear();
+				m_entryCache.clear();
+				m_ownStatus.SetStatus(NULL);
+				m_bRecursive = bRecursive;
+
+				EnumFiles();
+				m_FullStatusFetched = true;
+			}else
+			{
+				CGitStatusCache::Instance().AddFolderForCrawling(path);
+			}
+			return CStatusCacheEntry(this->m_ownStatus);
 		}
 		else
 		{
+			// Get File status;
+			// because all untrack file have handle at first, only tracked file status got to here
+			git_wc_status_kind status = git_wc_status_normal;
 			{
 				// if we currently are fetching the status of the directory
 				// we want the status for, we just return an empty entry here
@@ -405,6 +426,22 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 					}
 				}
 			}
+
+			if(bFetch)
+			{
+				//update single full file status
+				ATLTRACE(_T("Fetch file status %s\n"), path);
+				pGitStatus->GetFileStatus(sProjectRoot, subpaths, &status, true, false,true, GetStatusCallback,this);
+			}else
+			{
+				/* get status very quickly
+				   Full status may load Head Tree.
+				*/ 
+				pGitStatus->GetFileStatus(sProjectRoot, subpaths, &status, false, false,true, NULL,NULL);
+				CGitStatusCache::Instance().AddFolderForCrawling(path.GetContainingDirectory());
+				m_FullStatusFetched = false;
+			}			
+			return CStatusCacheEntry(status);
 		}
 	}
 	else /* Index or Head file changed*/
@@ -451,7 +488,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		
 	}
 
-// Fetch is true, or cache status have been invalidate
+//  Cache status have been invalidate, head or index changed.
 // =====================================================
 	{
 		{
@@ -466,76 +503,22 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 				}
 			}
 		}
-//		SVNPool subPool(CGitStatusCache::Instance().m_svnHelp.Pool());
-//		Clear Current Status
-		if(bFetch)
-		{
-			ATLTRACE(_T("Clear Dir %s mostImportantFileStatus\n"), path.GetWinPath());
-			AutoLocker lock(m_critSec);
-			m_mostImportantFileStatus = git_wc_status_normal; /* unverstion file have handle at begin */
-			m_childDirectories.clear();
-			m_entryCache.clear();
-			m_ownStatus.SetStatus(NULL);
-			m_bRecursive = bRecursive;
-		}
 
-		if(!bThisDirectoryIsUnversioned)
-		{
-			{
-				AutoLocker pathlock(m_critSecPath);
-				m_currentStatusFetchingPath = m_directoryPath;
-				m_currentStatusFetchingPathTicks = GetTickCount();
-			}
-			
-			/* If bFetch false, means get basic status as soon as possible.
+		
+		/* If bFetch false, means get basic status as soon as possible.
 			   If bFetch false, means get full status from crawl thread
 			   when bfetch false, just fetch status according to index file.
 			   can't fetch HEAD tree. fetch HEAD tree will take some long time
-			*/
-			BOOL pErr = EnumFiles(NULL, bFetch);
+		*/
+		BOOL pErr = EnumFiles(NULL, bFetch);
 
-			{
-				AutoLocker pathlock(m_critSecPath);
-				m_currentStatusFetchingPath.Reset();
-			}
-
-			ATLTRACE(_T("git_enum_files finished for '%s'\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
-			if(pErr)
-			{
-				// Handle an error
-				// The most likely error on a folder is that it's not part of a WC
-				// In most circumstances, this will have been caught earlier,
-				// but in some situations, we'll get this error.
-				// If we allow ourselves to fall on through, then folders will be asked
-				// for their own status, and will set themselves as unversioned, for the 
-				// benefit of future requests
-//				ATLTRACE("git_enum_files err: '%s'\n", pErr->message);
-//				svn_error_clear(pErr);
-				// No assert here! Since we _can_ get here, an assertion is not an option!
-				// Reasons to get here: 
-				// - renaming a folder with many sub folders --> results in "not a working copy" if the revert
-				//   happens between our checks and the svn_client_status() call.
-				// - reverting a move/copy --> results in "not a working copy" (as above)
-				if (!m_directoryPath.HasAdminDir())
-				{
-					m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_normal;
-					return CStatusCacheEntry(git_wc_status_normal);
-				}
-				else
-				{
-					ATLTRACE("git_enum_files error, assume none status\n");
-					// Since we only assume a none status here due to svn_client_status()
-					// returning an error, make sure that this status times out soon.
-					CGitStatusCache::Instance().m_folderCrawler.BlockPath(m_directoryPath, 2000);
-					CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
-					return CStatusCacheEntry();
-				}
-			}
-		}
-		else
 		{
-			ATLTRACE("Skipped git status for unversioned folder\n");
+			AutoLocker pathlock(m_critSecPath);
+			m_currentStatusFetchingPath.Reset();
 		}
+
+		ATLTRACE(_T("git_enum_files finished for '%s'\n"), m_directoryPath.GetWinPath(), path.GetWinPath());
+
 	}
 	// Now that we've refreshed our SVN status, we can see if it's 
 	// changed the 'most important' status value for this directory.
@@ -568,20 +551,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		{
 			return itMap->second;
 		}
-		else
-		{
-			EnumFiles((CTGitPath*)&path, bFetch);
-		}
-	
-		//try again
-		itMap = m_entryCache.find(strCacheKey);
-		if(itMap != m_entryCache.end())
-		{
-			return itMap->second;
-		}
 	}
 
-	AddEntry(path, NULL);
 	return CStatusCacheEntry(git_wc_status_normal);
 }
 
@@ -653,6 +624,10 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 	}
 	else
 	{
+		if(!(this->m_directoryPath == path.GetContainingDirectory()))
+		{
+			ATLTRACE(_T("parent path miss\n"));
+		}
 		CString cachekey = GetCacheKey(path);
 		CacheEntryMap::iterator entry_it = m_entryCache.lower_bound(cachekey);
 		if (entry_it != m_entryCache.end() && entry_it->first == cachekey)
@@ -674,6 +649,8 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), path.IsReadOnly(), validuntil);
 		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
 		entry_it->second.SetKind(git_node_file);
+
+		ATLTRACE(_T("Path Entry Add %s %s %s %d\n"), path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
 	}
 }
 

@@ -972,6 +972,7 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 				if(it == g_HeadFileMap[gitdir].m_Map.end())
 				{
 					*status =st=git_wc_status_added;
+					ATLTRACE(_T("File miss in head tree %s"), path);
 					if(callback)
 						callback(gitdir+_T("/")+path,st,false, pData);
 					return 0;
