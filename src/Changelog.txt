@@ -3,14 +3,15 @@
  * #349:  Offer "DCommit" instead of "Push" when working as SVN client
 
 == Bug Fix ==
- * Fix clone fail if msysgit version below 1.7.0.2
- * Fix Folder keep "X" delete icon after commit
- * Fix some small repository can't reflect "add"
- * Fix show "?" at second level directory when icon overlay using "shell"
- * Fixed Issue #351:  "Search log messages..." in Log context menu does nothing
+ * Fixed clone fail if msysgit version below 1.7.0.2
+ * Fixed Folder keep "X" delete icon after commit
+ * Fixed some small repository can't reflect "add"
+ * Fixed show "?" at second level directory when icon overlay using "shell"
+ * Fixed Issue #351: "Search log messages..." in Log context menu does nothing
  * Fixed Issue #226: tortoisegit is searching for .git share on network drives
- * Fix number of files selected is wrong at commit dialog
- 
+ * Fixed number of files selected is wrong at commit dialog
+ * Fixed Issue 353: Fix Help button in the git sync dialog 
+
 = Release 1.4.0.0 =
 == Features ==
  * Improve Icon Overlay
