@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-push">
+  <title>Sync</title>
+  <?dbhh topicname="HIDD_SYNC"?>
+  <indexterm>
+    <primary>Sync</primary>
+  </indexterm>
+  <para>
+	Sync Dialog collect all operation related with remote respository to one dialog. 
+	Sync Dialog included push, pull, fetch, remote upate, send patch ...
+  </para>
+  <para>
+	<menuchoice>
+      <guimenu>TortoiseGit
+      </guimenu>
+	  <guimenuitem>Sync...
+	  </guimenuitem>
+    </menuchoice>. 
+  </para>
+  <para>
+	Sync Dialog will show. <graphic fileref="../images/GitSync.png"/>
+  </para>
+  <sect2>
+	<title>Branch</title>
+	<para>
+		<guilabel>Local Source:</guilabel> The source branch which will push\pull to\from other repository
+	</para>
+	<para>
+		<guilabel>Remotes branchs</guilabel> The remote branch of the other repository. 
+	</para>
+  </sect2>
+  <sect2>
+	<title>Destination</title>
+	<para>
+		<guilabel>Remotes URL</guilabel> Choose remote repository or input remote repository URL.
+	</para>
+	<para>
+		<guilabel>Manage</guilabel> Add new remote name
+	</para>
+  </sect2>
+  <sect2>
+	<title>Options</title>
+	<para>
+		<guilabel>Force</guilabel> 
+		Force Overwrite Existing Branch(May discard changeds)
+	</para>
+	<para>
+		<guilabel>Autoload putty key</guilabel> 
+		Autoload putty key when push or pull
+	</para>
+  </sect2>
+</sect1>

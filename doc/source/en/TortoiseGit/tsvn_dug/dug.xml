@@ -69,6 +69,7 @@
   <xi:include href="./dug_wcstatus.xml"/>
   <xi:include href="./dug_pullfetch.xml"/>
   <xi:include href="./dug_push.xml"/>
+  <xi:include href="./dug_sync.xml"/>
 	<!--
 	<xi:include href="./dug_update.xml"/>
 	-->
