@@ -211,7 +211,7 @@ void CFolderCrawler::WorkerThread()
 			}
 			if (bFirstRunAfterWakeup)
 			{
-				Sleep(2000);
+				Sleep(50);
 				ATLTRACE("Crawl bFirstRunAfterWakeup\n");
 				bFirstRunAfterWakeup = false;
 				continue;
