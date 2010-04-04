@@ -335,70 +335,75 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		CTGitPath askedpath;
 		askedpath.SetFromWin(folder_.c_str());
 
-		if ((folder_.compare(statuspath)!=0)&&(g_ShellCache.IsContextPathAllowed(folder_.c_str())))
+		if (g_ShellCache.IsContextPathAllowed(folder_.c_str()))
 		{
-			
-			try
+			if (folder_.compare(statuspath)!=0)
 			{
-				GitStatus stat;
-				stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
-				if (stat.status)
-				{
-					status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-//					if ((stat.status->entry)&&(stat.status->entry->lock_token))
-//						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-//					if ((stat.status->entry)&&(stat.status->entry->present_props))
-//					{
-//						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-//							itemStatesFolder |= ITEMIS_NEEDSLOCK;
-//					}
-//					if ((stat.status->entry)&&(stat.status->entry->uuid))
-//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-				
-				}
-				else
-				{
-					// sometimes, git_client_status() returns with an error.
-					// in that case, we have to check if the working copy is versioned
-					// anyway to show the 'correct' context menu
-					if (askedpath.HasAdminDir())
-						status = git_wc_status_normal;
-				}
-				
-				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-				itemStatesFolder |= askedpath.GetAdminDirMask();							
-				
-				if (status == git_wc_status_normal)
-					itemStatesFolder |= ITEMIS_NORMAL;
-				if (status == git_wc_status_conflicted)
-					itemStatesFolder |= ITEMIS_CONFLICTED;
-				if (status == git_wc_status_added)
-					itemStatesFolder |= ITEMIS_ADDED;
-				if (status == git_wc_status_deleted)
-					itemStatesFolder |= ITEMIS_DELETED;
 
+				try
+				{
+					GitStatus stat;
+					stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
+					if (stat.status)
+					{
+						status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+						//					if ((stat.status->entry)&&(stat.status->entry->lock_token))
+						//						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+						//					if ((stat.status->entry)&&(stat.status->entry->present_props))
+						//					{
+						//						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+						//							itemStatesFolder |= ITEMIS_NEEDSLOCK;
+						//					}
+						//					if ((stat.status->entry)&&(stat.status->entry->uuid))
+						//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+
+					}
+					else
+					{
+						// sometimes, git_client_status() returns with an error.
+						// in that case, we have to check if the working copy is versioned
+						// anyway to show the 'correct' context menu
+						if (askedpath.HasAdminDir())
+							status = git_wc_status_normal;
+					}
+
+					//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+					itemStatesFolder |= askedpath.GetAdminDirMask();							
+
+					if (status == git_wc_status_normal)
+						itemStatesFolder |= ITEMIS_NORMAL;
+					if (status == git_wc_status_conflicted)
+						itemStatesFolder |= ITEMIS_CONFLICTED;
+					if (status == git_wc_status_added)
+						itemStatesFolder |= ITEMIS_ADDED;
+					if (status == git_wc_status_deleted)
+						itemStatesFolder |= ITEMIS_DELETED;
+
+				}
+				catch ( ... )
+				{
+					ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
+				}
 			}
-			catch ( ... )
+			else
 			{
-				ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
+				status = fetchedstatus;
 			}
-		}
-		else
+			//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+			itemStatesFolder |= askedpath.GetAdminDirMask();
+
+			if (status == git_wc_status_ignored)
+				itemStatesFolder |= ITEMIS_IGNORED;
+			itemStatesFolder |= ITEMIS_FOLDER;
+			if (files_.size() == 0)
+				itemStates |= ITEMIS_ONLYONE;
+			if (m_State != FileStateDropHandler)
+				itemStates |= itemStatesFolder;
+		}else
 		{
+			folder_.clear();
 			status = fetchedstatus;
 		}
-		//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-		itemStatesFolder |= askedpath.GetAdminDirMask();
-		
-		if (status == git_wc_status_ignored)
-			itemStatesFolder |= ITEMIS_IGNORED;
-		itemStatesFolder |= ITEMIS_FOLDER;
-		if (files_.size() == 0)
-			itemStates |= ITEMIS_ONLYONE;
-		if (m_State != FileStateDropHandler)
-			itemStates |= itemStatesFolder;
-		
-
 	}
 	if (files_.size() == 2)
 		itemStates |= ITEMIS_TWO;
