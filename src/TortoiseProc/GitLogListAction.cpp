@@ -569,6 +569,15 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				}
 			}
 			break;
+		case ID_MERGEREV:
+			{
+				// we need an URL to complete this command, so error out if we can't get an URL
+				if(CAppUtils::Merge(&pSelLogEntry->m_CommitHash.ToString()))
+				{
+					this->Refresh();
+				}
+			}
+		break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;

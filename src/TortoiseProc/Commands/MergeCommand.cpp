@@ -22,44 +22,9 @@
 #include "MergeDlg.h"
 #include "MessageBox.h"
 #include "Progressdlg.h"
+#include "AppUtils.h"
 
 bool MergeCommand::Execute()
 {
-	CMergeDlg dlg;
-	if(dlg.DoModal()==IDOK)
-	{
-		CString cmd;
-		CString noff;
-		CString squash;
-		CString nocommit;
-		CString msg;
-
-		if(dlg.m_bNoFF)
-			noff=_T("--no-ff");
-
-		if(dlg.m_bSquash)
-			squash=_T("--squash");
-
-		if(dlg.m_bNoCommit)
-			nocommit=_T("--no-commit");
-
-		if(!dlg.m_strLogMesage.IsEmpty())
-		{	
-			msg+=_T("-m \"")+dlg.m_strLogMesage+_T("\"");
-		}
-		cmd.Format(_T("git.exe merge %s %s %s %s %s"),
-			msg,
-			noff,
-			squash,
-			nocommit,
-			dlg.m_VersionName);
-
-		CProgressDlg Prodlg;
-		Prodlg.m_GitCmd = cmd;
-
-		Prodlg.DoModal();
-
-		return !Prodlg.m_GitStatus;
-	}
-	return false;
+	return CAppUtils::Merge();
 }

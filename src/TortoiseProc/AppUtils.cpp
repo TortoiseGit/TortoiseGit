@@ -47,6 +47,7 @@
 #include "SVNProgressDlg.h"
 #include "PushDlg.h"
 #include "CommitDlg.h"
+#include "MergeDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2332,4 +2333,48 @@ BOOL CAppUtils::SVNDCommit()
 	if(progress.DoModal()==IDOK)
 		return TRUE;
 
+}
+
+BOOL CAppUtils::Merge(CString *commit, int mode)
+{
+	CMergeDlg dlg;
+	if(commit)
+		dlg.m_initialRefName = *commit;
+
+	if(dlg.DoModal()==IDOK)
+	{
+		CString cmd;
+		CString noff;
+		CString squash;
+		CString nocommit;
+		CString msg;
+
+		if(dlg.m_bNoFF)
+			noff=_T("--no-ff");
+
+		if(dlg.m_bSquash)
+			squash=_T("--squash");
+
+		if(dlg.m_bNoCommit)
+			nocommit=_T("--no-commit");
+
+		if(!dlg.m_strLogMesage.IsEmpty())
+		{	
+			msg+=_T("-m \"")+dlg.m_strLogMesage+_T("\"");
+		}
+		cmd.Format(_T("git.exe merge %s %s %s %s %s"),
+			msg,
+			noff,
+			squash,
+			nocommit,
+			dlg.m_VersionName);
+
+		CProgressDlg Prodlg;
+		Prodlg.m_GitCmd = cmd;
+
+		Prodlg.DoModal();
+
+		return !Prodlg.m_GitStatus;
+	}
+	return false;
 }

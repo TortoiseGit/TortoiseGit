@@ -85,10 +85,11 @@ BOOL CMergeDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 
 	CheckRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION,IDC_RADIO_BRANCH);
+	this->SetDefaultChoose(IDC_RADIO_BRANCH);
 
 	Init();
 	
-	this->SetDefaultChoose(IDC_RADIO_BRANCH);
+	
 
 	m_ProjectProperties.ReadProps(CTGitPath(g_Git.m_CurrentDir));
 

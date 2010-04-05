@@ -33,7 +33,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_POPUP_REVERTREVS "&Revert changes from these revisions"
+    IDS_LOG_POPUP_REVERTREVS "&Revert changes of this commits"
     IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
     IDS_LOG_POPUP_BLAMECOMPARE "Compare and &blame with working BASE"
@@ -46,8 +46,8 @@ BEGIN
     IDS_LOG_POPUP_BLAME     "Blame"
     IDS_LOG_POPUP_GNUDIFF_CH "Show changes as &unified diff"
     IDS_LOG_POPUP_GETMERGELOGS "Get merge logs"
-    IDS_LOG_POPUP_MERGEREV  "Merge revision to..."
-    IDS_LOG_POPUP_MERGEREVS "Merge revisions to..."
+    IDS_LOG_POPUP_MERGEREV  "Merge commit to %s..."
+    IDS_LOG_POPUP_MERGEREVS "Merge commits to %s..."
 END
 
 STRINGTABLE 
