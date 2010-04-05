@@ -1,3 +1,16 @@
+= Release 1.4.2.0 =
+== Features ==
+ * Log dialog find support search tag and branch
+ * #354: impliment revert of this commit at log dialog
+ * Add Merge command at log context menu
+ * #350: Implement "Copy and rename" from context menu
+
+== Bug Fix ==
+ * Fixed issue #346: can't remove remote repos
+ * Fixed issue #280: "Use recycle bin when reverting" does not work
+ * Fix ignore over lay show wrong when second level directory exist .gitignore file
+ * Fixed issue #240: Setting "Do not show the context menu for following paths:" not working properly
+
 = Release 1.4.1.0 =
 == Features ==
  * #349:  Offer "DCommit" instead of "Push" when working as SVN client
