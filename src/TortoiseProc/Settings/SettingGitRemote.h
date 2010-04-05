@@ -31,6 +31,8 @@ protected:
 	BOOL OnInitDialog();
     BOOL OnApply();
 
+	BOOL IsRemoteExist(CString &remote);
+
 protected:
 
 	void Save(CString key, CString value);
@@ -51,4 +53,5 @@ public:
     afx_msg void OnEnChangeEditRemote();
     afx_msg void OnEnChangeEditUrl();
     afx_msg void OnEnChangeEditPuttyKey();
+	afx_msg void OnBnClickedButtonRemove();
 };

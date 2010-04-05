@@ -45,6 +45,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
     ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
     ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
     ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
+	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitRemote::OnInitDialog()
@@ -76,7 +77,7 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	}while(start>=0);
 	
-	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
+	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
 	return TRUE;
 }
@@ -104,21 +105,46 @@ void CSettingGitRemote::OnBnClickedButtonBrowse()
 void CSettingGitRemote::OnBnClickedButtonAdd()
 {
     // TODO: Add your control notification handler code here
-	if( this->m_ctrlRemoteList.GetCount() == 0)
+	this->UpdateData();
+
+	if(m_strRemote.IsEmpty())
 	{
-		this->m_strRemote = _T("origin");
+		CMessageBox::Show(NULL, _T("Remote name can't empty"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return;
 	}
-	else
-	{ 
-		this->m_strRemote.Empty();
+	if(m_strUrl.IsEmpty())
+	{
+		CMessageBox::Show(NULL, _T("Remote URL can't empty"),_T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		return;
 	}
-	this->m_strUrl.Empty();
-	this->m_strPuttyKeyfile.Empty();
-	this->UpdateData(FALSE);
-	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(TRUE);
-	this->m_ChangedMask |= REMOTE_NAME;
-	this->m_ctrlRemoteList.SetCurSel(-1);
-	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(FALSE);
+
+	m_ChangedMask = REMOTE_NAME	|REMOTE_URL	|REMOTE_PUTTYKEY;
+	if(IsRemoteExist(m_strRemote))
+	{
+		if(CMessageBox::Show(NULL, m_strRemote + _T(" is existed\n Do you want to overwrite it"),
+						_T("TortoiseGit"), MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2) == IDYES)
+		{
+			m_ChangedMask &= ~REMOTE_NAME;
+		}else
+			return;
+	}
+	
+	this->OnApply();
+
+}
+
+BOOL CSettingGitRemote::IsRemoteExist(CString &remote)
+{
+	CString str;
+	for(int i=0;i<m_ctrlRemoteList.GetCount();i++)
+	{
+		m_ctrlRemoteList.GetText(i,str);
+		if(str == remote)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void CSettingGitRemote::OnLbnSelchangeListRemote()
@@ -140,8 +166,13 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	int index;
 	index = this->m_ctrlRemoteList.GetCurSel();
 	if(index<0)
+	{
+		m_strUrl.Empty();
+		m_strRemote.Empty();
+		m_strPuttyKeyfile.Empty();
+		this->UpdateData(FALSE);
 		return;
-
+	}
 	CString remote;
 	m_ctrlRemoteList.GetText(index,remote);
 	this->m_strRemote=remote;
@@ -172,6 +203,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	m_ChangedMask=0;
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
+	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
 	this->UpdateData(FALSE);
 
 }
@@ -256,9 +288,33 @@ BOOL CSettingGitRemote::OnApply()
 		Save(_T("puttykeyfile"),this->m_strPuttyKeyfile);
 	}
 
-	this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
-    SetModified(FALSE);
+	SetModified(FALSE);
 
 	m_ChangedMask = 0;
 	return ISettingsPropPage::OnApply();
+}
+void CSettingGitRemote::OnBnClickedButtonRemove()
+{
+	// TODO: Add your control notification handler code here
+	int index;
+	index=m_ctrlRemoteList.GetCurSel();
+	if(index>=0)
+	{
+		CString str;
+		m_ctrlRemoteList.GetText(index,str);
+		if(CMessageBox::Show(NULL,str + _T(" will be removed\n Are you sure?"),_T("TortoiseGit"),
+						MB_YESNO|MB_ICONQUESTION) == IDYES)
+		{
+			CString cmd,out;
+			cmd.Format(_T("git.exe remote rm %s"),str);
+			if(g_Git.Run(cmd, &out, CP_ACP))
+			{
+				CMessageBox::Show(NULL, out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				return;
+			}
+			
+			m_ctrlRemoteList.DeleteString(index);
+			OnLbnSelchangeListRemote();
+		}
+	}
 }
