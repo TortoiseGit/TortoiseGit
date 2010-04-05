@@ -651,6 +651,8 @@ bool CGitIgnoreList::CheckIgnoreChanged(CString &gitdir,CString &path)
 	temp+=_T("\\");
 	temp+=path;
 
+	temp.Replace(_T('/'), _T('\\'));
+
 	while(!temp.IsEmpty())
 	{
 		temp+=_T("\\.git");
@@ -698,6 +700,8 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 	temp=gitdir;
 	temp+=_T("\\");
 	temp+=path;
+
+	temp.Replace(_T('/'), _T('\\'));
 
 	while(!temp.IsEmpty())
 	{
@@ -830,6 +834,8 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 	__int64 time=0;
 	bool dir=0;
 	CString temp=projectroot+_T("\\")+path;
+	temp.Replace(_T('/'), _T('\\'));
+
 	CStringA patha;
 
 	patha = CUnicodeUtils::GetMulti(path,CP_ACP) ;
