@@ -52,7 +52,6 @@ IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
 	, m_logcounter(0)
-	, m_nSearchIndex(0)
 	, m_wParam(0)
 	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
@@ -1637,7 +1636,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (pNMLV->iItem >= 0)
 	{
-		m_nSearchIndex = pNMLV->iItem;
+		this->m_LogList.m_nSearchIndex = pNMLV->iItem;
 		if (pNMLV->iSubItem != 0)
 			return;
 		if ((pNMLV->iItem == m_LogList.m_arShownList.GetCount()))

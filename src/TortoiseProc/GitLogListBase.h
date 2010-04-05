@@ -217,7 +217,8 @@ public:
 
 	CString GetStartRef() const {return m_StartRef;}
 
-	
+	int					m_nSearchIndex;
+
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
 protected:
@@ -270,7 +271,7 @@ protected:
 	HFONT				m_boldFont;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
-	int					m_nSearchIndex;
+	
 	
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;

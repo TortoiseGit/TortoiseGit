@@ -261,7 +261,7 @@ private:
 	CTGitPathList		m_currentChangedPathList;
 	//CPtrArray			m_arShownList;
 	bool				m_hasWC;
-	int					m_nSearchIndex;
+	
 	bool				m_bFilterWithRegex;
 
 	

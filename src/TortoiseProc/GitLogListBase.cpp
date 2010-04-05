@@ -2719,6 +2719,13 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			CString str; 
 			str+=pLogEntry->m_CommitHash.ToString();
 			str+=_T("\n");
+
+			for(int j=0;j<this->m_HashMap[pLogEntry->m_CommitHash].size();j++)
+			{
+				str+=m_HashMap[pLogEntry->m_CommitHash][j];
+				str+=_T("\n");
+			}
+			
 			str+=pLogEntry->m_AuthorEmail;
 			str+=_T("\n");
 			str+=pLogEntry->m_AuthorName;
@@ -2775,7 +2782,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; i++)
 		if (bFound)
 		{
-			this->m_nSearchIndex = (i+1);
+			this->m_nSearchIndex = i;
 			EnsureVisible(i, FALSE);
 			SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
 			SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
