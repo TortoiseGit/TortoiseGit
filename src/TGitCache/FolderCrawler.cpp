@@ -211,7 +211,7 @@ void CFolderCrawler::WorkerThread()
 			}
 			if (bFirstRunAfterWakeup)
 			{
-				Sleep(50);
+				Sleep(20);
 				ATLTRACE("Crawl bFirstRunAfterWakeup\n");
 				bFirstRunAfterWakeup = false;
 				continue;
@@ -234,49 +234,22 @@ void CFolderCrawler::WorkerThread()
 					AutoLocker lock(m_critSec);
 
 					m_bPathsAddedSinceLastCrawl = false;
-#if 0
-					if (m_bPathsAddedSinceLastCrawl)
-					{
-						// The queue has changed - it's worth sorting and de-duping
-						std::sort(m_pathsToUpdate.begin(), m_pathsToUpdate.end());
-						m_pathsToUpdate.erase(std::unique(m_pathsToUpdate.begin(), m_pathsToUpdate.end(), &CTGitPath::PredLeftSameWCPathAsRight), m_pathsToUpdate.end());
-						m_bPathsAddedSinceLastCrawl = false;
-					}
-#endif
-					workingPath = m_pathsToUpdate.back(); /*we update latest requirement firstly*/
 
-					if ((DWORD(workingPath.GetCustomData()) < currentTicks)||(DWORD(workingPath.GetCustomData()) > (currentTicks + 200000)))
-						m_pathsToUpdate.pop_back();
-					else
+					workingPath = m_pathsToUpdate.front();
+                    //m_pathsToUpdateUnique.erase (workingPath);
+					m_pathsToUpdate.pop_front();
+					if ((DWORD(workingPath.GetCustomData()) >= currentTicks) ||
+						((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath))))
 					{
-						// since we always sort the whole list, we risk adding tons of new paths to m_pathsToUpdate
-						// until the last one in the sorted list finally times out.
-						// to avoid that, we go through the list again and crawl the first one which is valid
-						// to crawl. That way, we still reduce the size of the list.
-						if (m_pathsToUpdate.size() > 10)
-						{
-							ATLTRACE("attention: the list of paths to update is now %ld big!\n", m_pathsToUpdate.size());
-						}
-
-						for (std::deque<CTGitPath>::iterator it = m_pathsToUpdate.begin(); it != m_pathsToUpdate.end(); ++it)
-						{
-							workingPath = *it;
-							if ((DWORD(workingPath.GetCustomData()) < currentTicks)||(DWORD(workingPath.GetCustomData()) > (currentTicks + 200000)))
-							{
-								m_pathsToUpdate.erase(it);
-								break;
-							}
-						}
+						// move the path to the end of the list
+                        //m_pathsToUpdateUnique.insert (workingPath);
+						m_pathsToUpdate.push_back(workingPath);
+						if (m_pathsToUpdate.size() < 3)
+							Sleep(50);
+						continue;
 					}
 				}
-				if (DWORD(workingPath.GetCustomData()) >= currentTicks)
-				{
-					Sleep(50);
-					ATLTRACE(_T("Crawl sleep 50\n"));
-					continue;
-				}
-				if ((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath)))
-					continue;
+				
 				// don't crawl paths that are excluded
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
 					continue;
@@ -426,41 +399,24 @@ void CFolderCrawler::WorkerThread()
 			{
 				{
 					AutoLocker lock(m_critSec);
-					m_bPathsAddedSinceLastCrawl = false;
+					m_bItemsAddedSinceLastCrawl = false;
 
-#if 0
-					if (m_bItemsAddedSinceLastCrawl)
-					{
-						// The queue has changed - it's worth sorting and de-duping
-						std::sort(m_foldersToUpdate.begin(), m_foldersToUpdate.end());
-						m_foldersToUpdate.erase(std::unique(m_foldersToUpdate.begin(), m_foldersToUpdate.end(), &CTGitPath::PredLeftEquivalentToRight), m_foldersToUpdate.end());
-						m_bItemsAddedSinceLastCrawl = false;
-					}
-#endif
-					// create a new CTGitPath object to make sure the cached flags are requested again.
+                    // create a new CTSVNPath object to make sure the cached flags are requested again.
 					// without this, a missing file/folder is still treated as missing even if it is available
 					// now when crawling.
-					workingPath = CTGitPath(m_foldersToUpdate.back().GetWinPath());
-					workingPath.SetCustomData(m_foldersToUpdate.back().GetCustomData());
-					if ((DWORD(workingPath.GetCustomData()) < currentTicks)||(DWORD(workingPath.GetCustomData()) > (currentTicks + 200000)))
-						m_foldersToUpdate.pop_back();
-					else
+                    CTGitPath& folderToUpdate = m_foldersToUpdate.front();
+                    workingPath = CTGitPath(folderToUpdate.GetWinPath());
+					workingPath.SetCustomData(folderToUpdate.GetCustomData());
+					m_foldersToUpdate.pop_front();
+
+					if ((DWORD(workingPath.GetCustomData()) >= currentTicks) ||
+						((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath))))
 					{
-						// since we always sort the whole list, we risk adding tons of new paths to m_pathsToUpdate
-						// until the last one in the sorted list finally times out.
-						// to avoid that, we go through the list again and crawl the first one which is valid
-						// to crawl. That way, we still reduce the size of the list.
-						if (m_foldersToUpdate.size() > 10)
-							ATLTRACE("attention: the list of folders to update is now %ld big!\n", m_foldersToUpdate.size());
-						for (std::deque<CTGitPath>::iterator it = m_foldersToUpdate.begin(); it != m_foldersToUpdate.end(); ++it)
-						{
-							workingPath = *it;
-							if ((DWORD(workingPath.GetCustomData()) < currentTicks)||(DWORD(workingPath.GetCustomData()) > (currentTicks + 200000)))
-							{
-								m_foldersToUpdate.erase(it);
-								break;
-							}
-						}
+						// move the path to the end of the list
+						m_foldersToUpdate.push_back (workingPath);
+						if (m_foldersToUpdate.size() < 3)
+							Sleep(50);
+						continue;
 					}
 				}
 				if (DWORD(workingPath.GetCustomData()) >= currentTicks)
