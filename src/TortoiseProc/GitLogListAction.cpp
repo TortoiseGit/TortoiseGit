@@ -578,108 +578,36 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				}
 			}
 		break;
+		case ID_REVERTREV:
+			{
+				if(!g_Git.CheckCleanWorkTree())
+				{	
+					CMessageBox::Show(NULL,_T("Revert requires a clean working tree"),_T("TortoiseGit"),MB_OK);
+			
+				}else
+				{
+					CString cmd, output;
+					cmd.Format(_T("git.exe revert --no-edit --no-commit %s"), pSelLogEntry->m_CommitHash.ToString());
+					if(g_Git.Run(cmd, &output, CP_ACP))
+					{
+						CString str;
+						str=_T("Revert fail\n");
+						str+= cmd;
+						str+= _T("\n")+output;
+						CMessageBox::Show(NULL,str, _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					}
+					else
+					{
+						Refresh();
+					}
+				}
+			}
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;
-#if 0
-	
-		case ID_REVERTREV:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
-				CString msg;
-				msg.Format(IDS_LOG_REVERT_CONFIRM, m_path.GetWinPath());
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					CGitProgressDlg dlg;
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(m_path));
-					dlg.SetUrl(pathURL);
-					dlg.SetSecondUrl(pathURL);
-					revisionRanges.AdjustForMerge(true);
-					dlg.SetRevisionRanges(revisionRanges);
-					dlg.SetPegRevision(m_LogRevision);
-					dlg.DoModal();
-				}
-			}
-			break;
-		case ID_MERGEREV:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
-
-				CString path = m_path.GetWinPathString();
-				bool bGotSavePath = false;
-				if ((GetSelectedCount() == 1)&&(!m_path.IsDirectory()))
-				{
-					bGotSavePath = CAppUtils::FileOpenSave(path, NULL, IDS_LOG_MERGETO, IDS_COMMONFILEFILTER, true, GetSafeHwnd());
-				}
-				else
-				{
-					CBrowseFolder folderBrowser;
-					folderBrowser.SetInfo(CString(MAKEINTRESOURCE(IDS_LOG_MERGETO)));
-					bGotSavePath = (folderBrowser.Show(GetSafeHwnd(), path, path) == CBrowseFolder::OK);
-				}
-				if (bGotSavePath)
-				{
-					CGitProgressDlg dlg;
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(CTGitPath(path)));
-					dlg.SetUrl(pathURL);
-					dlg.SetSecondUrl(pathURL);
-					revisionRanges.AdjustForMerge(false);
-					dlg.SetRevisionRanges(revisionRanges);
-					dlg.SetPegRevision(m_LogRevision);
-					dlg.DoModal();
-				}
-			}
-			break;
-		case ID_REVERTTOREV:
-			{
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if (pathURL.IsEmpty())
-				{
-					CString strMessage;
-					strMessage.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)(m_path.GetUIPathString()));
-					CMessageBox::Show(this->m_hWnd, strMessage, _T("TortoiseGit"), MB_ICONERROR);
-					TRACE(_T("could not retrieve the URL of the folder!\n"));
-					break;		//exit
-				}
-
-				CString msg;
-				msg.Format(IDS_LOG_REVERTTOREV_CONFIRM, m_path.GetWinPath());
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					CGitProgressDlg dlg;
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(m_path));
-					dlg.SetUrl(pathURL);
-					dlg.SetSecondUrl(pathURL);
-					GitRevRangeArray revarray;
-					revarray.AddRevRange(GitRev::REV_HEAD, revSelected);
-					dlg.SetRevisionRanges(revarray);
-					dlg.SetPegRevision(m_LogRevision);
-					dlg.DoModal();
-				}
-			}
-			break;
-	
-
-	
+#if 0	
+		
 		case ID_BLAMECOMPARE:
 			{
 				//user clicked on the menu item "compare with working copy"

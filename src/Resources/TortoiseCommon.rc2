@@ -53,7 +53,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_LOG_POPUP_DIFF      "Show &changes"
-    IDS_LOG_POPUP_REVERTREV "&Revert changes from this revision"
+    IDS_LOG_POPUP_REVERTREV "&Revert change of this commit"
     IDS_LOG_POPUP_GNUDIFF   "Show differences as &unified diff"
     IDS_LOG_POPUP_FIND      "Search &log messages..."
     IDS_LOG_POPUP_OPEN      "&Open"

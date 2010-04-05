@@ -1330,21 +1330,18 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			CString str,format;
 			//if (m_hasWC)
 			//	popup.AppendMenuIcon(ID_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
-			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
-				popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-			
-			format.LoadString(IDS_LOG_POPUP_MERGEREV);
-			str.Format(format,g_Git.GetCurrentBranch());
-
-			if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV))
-				popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
-			
-			
-			format.LoadString(IDS_RESET_TO_THIS_FORMAT);
-			str.Format(format,g_Git.GetCurrentBranch());
-
+					
 			if(!pSelLogEntry->m_CommitHash.IsEmpty())
 			{
+				format.LoadString(IDS_LOG_POPUP_MERGEREV);
+				str.Format(format,g_Git.GetCurrentBranch());
+
+				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV))
+					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
+
+				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
+				str.Format(format,g_Git.GetCurrentBranch());
+
 				if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
@@ -1367,6 +1364,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);	
 			
+				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
+					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
 
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
