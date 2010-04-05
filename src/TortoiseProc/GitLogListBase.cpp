@@ -1403,6 +1403,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 //					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
 				bAddSeparator = true;
 			}
+
+			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
+					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
+
+
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}

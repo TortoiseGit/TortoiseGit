@@ -33,7 +33,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_POPUP_REVERTREVS "&Revert changes of this commits"
+    IDS_LOG_POPUP_REVERTREVS "&Revert changes of these commits"
     IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
     IDS_LOG_POPUP_BLAMECOMPARE "Compare and &blame with working BASE"

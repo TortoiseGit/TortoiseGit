@@ -10,6 +10,7 @@ protected:
 	
 	void SetSelectedAction(int action);
 	int	 CherryPickFrom(CString from, CString to);
+	int  RevertSelectedCommits();
 
 public:
 	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect);

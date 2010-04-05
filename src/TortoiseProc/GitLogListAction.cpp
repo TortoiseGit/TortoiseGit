@@ -52,6 +52,73 @@
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
+int CGitLogList::RevertSelectedCommits()
+{
+	CSysProgressDlg progress;
+	int ret = -1;
+
+#if 0	
+	if(!g_Git.CheckCleanWorkTree())
+	{	
+		CMessageBox::Show(NULL,_T("Revert requires a clean working tree"),_T("TortoiseGit"),MB_OK);
+			
+	}
+#endif
+
+	if (progress.IsValid() && (this->GetSelectedCount() > 1) )
+	{
+		progress.SetTitle(_T("Revert Commit"));
+		progress.SetAnimation(IDR_MOVEANI);
+		progress.SetTime(true);
+		progress.ShowModeless(this);
+	}
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int i=0;
+	while(pos)
+	{
+		int index = GetNextSelectedItem(pos);
+		GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(index));
+		
+		if (progress.IsValid() && (this->GetSelectedCount() > 1) )
+		{
+			progress.FormatPathLine(1, _T("Revert %s"), r1->m_CommitHash.ToString());
+			progress.FormatPathLine(2, _T("%s"),        r1->m_Subject);
+			progress.SetProgress(i,         this->GetSelectedCount());
+		}
+		i++;
+		
+		if(r1->m_CommitHash.IsEmpty())
+			continue;
+		
+		CString cmd, output;
+		cmd.Format(_T("git.exe revert --no-edit --no-commit %s"), r1->m_CommitHash.ToString());
+		if(g_Git.Run(cmd, &output, CP_ACP))
+		{
+			CString str;
+			str=_T("Revert fail\n");
+			str+= cmd;
+			str+= _T("\n")+output;
+			if( GetSelectedCount() == 1)
+				CMessageBox::Show(NULL,str, _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			else
+			{
+				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"),2, IDI_ERROR, _T("Skip"), _T("Abort")) ==2)
+				{
+					return ret;
+				}
+			}
+		}
+		else
+		{
+			ret =0;
+		}
+		
+		if ((progress.IsValid())&&(progress.HasUserCancelled()))
+			break;
+	}
+	return ret;
+}
 int CGitLogList::CherryPickFrom(CString from, CString to)
 {
 	CLogDataVector logs(&m_LogCache);
@@ -580,27 +647,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		break;
 		case ID_REVERTREV:
 			{
-				if(!g_Git.CheckCleanWorkTree())
-				{	
-					CMessageBox::Show(NULL,_T("Revert requires a clean working tree"),_T("TortoiseGit"),MB_OK);
-			
-				}else
-				{
-					CString cmd, output;
-					cmd.Format(_T("git.exe revert --no-edit --no-commit %s"), pSelLogEntry->m_CommitHash.ToString());
-					if(g_Git.Run(cmd, &output, CP_ACP))
-					{
-						CString str;
-						str=_T("Revert fail\n");
-						str+= cmd;
-						str+= _T("\n")+output;
-						CMessageBox::Show(NULL,str, _T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					}
-					else
-					{
-						Refresh();
-					}
-				}
+				if(!this->RevertSelectedCommits())
+					this->Refresh();
 			}
 			break;
 		default:
