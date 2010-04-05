@@ -20,19 +20,23 @@
 #include "DropCopyCommand.h"
 
 #include "SysProgressDlg.h"
-#include "ProgressDlg.h"
+#include "SysProgressDlg.h"
 #include "MessageBox.h"
 #include "RenameDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"
+#include "CommonResource.h"
 
 bool DropCopyCommand::Execute()
 {
-#if 0
+
 	CString sDroppath = parser.GetVal(_T("droptarget"));
 	if (CTGitPath(sDroppath).IsAdminDir())
+	{
+		CMessageBox::Show(NULL,_T("Can't drop to .git repository directory\n"),
+							   _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return FALSE;
-	
+	}
 	unsigned long count = 0;
 	CString sNewName;
 	pathList.RemoveAdminPaths();
@@ -51,16 +55,17 @@ bool DropCopyCommand::Execute()
 			sNewName = renDlg.m_name;
 		} while(sNewName.IsEmpty() || PathFileExists(sDroppath+_T("\\")+sNewName));
 	}
-	CProgressDlg progress;
+	CSysProgressDlg progress;
 	progress.SetTitle(IDS_PROC_COPYING);
 	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
 	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
 	{
-		const CTSVNPath& sourcePath = pathList[nPath];
+		const CTGitPath& sourcePath = orgPathList[nPath];
 
-		CTSVNPath fullDropPath(sDroppath);
+		CTGitPath fullDropPath(sDroppath);
+
 		if (sNewName.IsEmpty())
 			fullDropPath.AppendPathString(sourcePath.GetFileOrDirectoryName());
 		else
@@ -88,14 +93,43 @@ bool DropCopyCommand::Execute()
 			fullDropPath.SetFromUnknown(sDroppath);
 			fullDropPath.AppendPathString(dlg.m_name);
 		} 
-		if (!svn.Copy(CTSVNPathList(sourcePath), fullDropPath, SVNRev::REV_WC, SVNRev()))
+		
+		if( CopyFile( sourcePath.GetWinPath(), fullDropPath.GetWinPath(), true))
 		{
-			TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-			CMessageBox::Show(hwndExplorer, svn.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-			return FALSE;		//get out of here
+			CString ProjectTopDir;
+			if(fullDropPath.HasAdminDir(&ProjectTopDir))
+			{
+				g_Git.SetCurrentDir(ProjectTopDir);	
+				SetCurrentDirectory(ProjectTopDir);
+				CString cmd;
+				cmd = _T("git.exe add \"");
+				
+				CString path;
+				path=fullDropPath.GetGitPathString().Left(ProjectTopDir.GetLength());
+				if(path.GetLength()>0)
+					if(path[0]==_T('\\'))
+						path=path.Mid(1);
+				cmd += path;
+				cmd +=_T('\"');
+
+				CString output;
+				if(g_Git.Run(cmd,&output,CP_ACP))
+				{
+					CMessageBox::Show(NULL, output, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+				}else
+					CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
+			}
+			
+		}else
+		{
+			CString str;
+			str+=_T("Copy file fail:");
+			str+=sourcePath.GetWinPath();
+
+			CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		}
-		else
-			CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
+		
+		
 		count++;
 		if (progress.IsValid())
 		{
@@ -109,6 +143,6 @@ bool DropCopyCommand::Execute()
 			return false;
 		}
 	}
-#endif
+
 	return true;
 }

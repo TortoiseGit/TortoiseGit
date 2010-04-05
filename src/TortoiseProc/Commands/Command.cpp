@@ -353,8 +353,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ResolveCommand;
 	case cmdDropMove:
 		return new DropMoveCommand;
-//	case cmdDropCopy:
-//		return new DropCopyCommand;
+	case cmdDropCopy:
+		return new DropCopyCommand;
 	case cmdDropCopyAdd:
 		return new DropCopyAddCommand;
 //	case cmdDropExport:
