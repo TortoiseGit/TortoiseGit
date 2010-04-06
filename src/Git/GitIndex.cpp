@@ -51,7 +51,7 @@ CGitIndexList::CGitIndexList()
 
 int CGitIndexList::ReadIndex(CString IndexFile)
 {
-	HANDLE hfile=0;
+	HANDLE hfile=INVALID_HANDLE_VALUE;
 	int ret=0;
 	BYTE *buffer=NULL,*p;
 	CGitIndex GitIndex;
@@ -380,8 +380,11 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
 	CString HeadFile = gitdir;
 	HeadFile += _T("\\.git\\HEAD");
-	HANDLE hfile;
 	
+	HANDLE hfile=INVALID_HANDLE_VALUE;
+	HANDLE href = INVALID_HANDLE_VALUE;
+
+	int ret = 0;
 	m_Gitdir = gitdir;
 
 	m_HeadFile = HeadFile;
@@ -389,75 +392,101 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	if( g_Git.GetFileModifyTime(m_HeadFile,&m_LastModifyTimeHead))
 		return -1;
 
-	hfile = CreateFile(HeadFile,
-						GENERIC_READ,
-						FILE_SHARE_READ,
-						NULL,
-						OPEN_EXISTING,
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-
-	if(hfile == INVALID_HANDLE_VALUE)
-		return -1;
-	
-	DWORD size=0,filesize=0;
-	unsigned char buffer[40] ;		
-	ReadFile(hfile,buffer,4,&size,NULL);
-	if(size !=4)
-		return -1;
-
-	buffer[4]=0;
-	if(strcmp((const char*)buffer,"ref:") == 0)
+	try
 	{
-		filesize = GetFileSize(hfile,NULL);
+		do
+		{
+			hfile = CreateFile(HeadFile,
+				GENERIC_READ,
+				FILE_SHARE_READ,
+				NULL,
+				OPEN_EXISTING,
+				FILE_ATTRIBUTE_NORMAL,
+				NULL);
 
-		unsigned char *p = (unsigned char*)malloc(filesize -4);
+			if(hfile == INVALID_HANDLE_VALUE)
+			{
+				ret = -1;
+				break;
+			}
 
-		ReadFile(hfile,p,filesize-4,&size,NULL);
+			DWORD size=0,filesize=0;
+			unsigned char buffer[40] ;		
+			ReadFile(hfile,buffer,4,&size,NULL);
+			if(size !=4)
+			{
+				ret = -1;
+				break;
+			}
+			buffer[4]=0;
+			if(strcmp((const char*)buffer,"ref:") == 0)
+			{
+				filesize = GetFileSize(hfile,NULL);
 
-		m_HeadRefFile.Empty();
-		g_Git.StringAppend(&this->m_HeadRefFile,p,CP_ACP,filesize-4);
-		free(p);
-		m_HeadRefFile=gitdir+_T("\\.git\\")+m_HeadRefFile.Trim();
-		m_HeadRefFile.Replace(_T('/'),_T('\\'));
+				unsigned char *p = (unsigned char*)malloc(filesize -4);
 
-		__int64 time;
-		if(g_Git.GetFileModifyTime(m_HeadRefFile,&time,NULL))
-			return -1;
+				ReadFile(hfile,p,filesize-4,&size,NULL);
 
+				m_HeadRefFile.Empty();
+				g_Git.StringAppend(&this->m_HeadRefFile,p,CP_ACP,filesize-4);
+				free(p);
+				m_HeadRefFile=gitdir+_T("\\.git\\")+m_HeadRefFile.Trim();
+				m_HeadRefFile.Replace(_T('/'),_T('\\'));
 
-		HANDLE href;
-		href = CreateFile(m_HeadRefFile,
-						GENERIC_READ,
-						FILE_SHARE_READ,
-						NULL,
-						OPEN_EXISTING,
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
+				__int64 time;
+				if(g_Git.GetFileModifyTime(m_HeadRefFile,&time,NULL))
+				{
+					ret = -1;
+					break;
+				}
 
-		if(href == INVALID_HANDLE_VALUE)
-			return -1;
+				href = CreateFile(m_HeadRefFile,
+					GENERIC_READ,
+					FILE_SHARE_READ,
+					NULL,
+					OPEN_EXISTING,
+					FILE_ATTRIBUTE_NORMAL,
+					NULL);
 
-		ReadFile(href,buffer,40,&size,NULL);
-		if(size != 40)
-			return -1;
+				if(href == INVALID_HANDLE_VALUE)
+				{
+					ret = -1;
+					break;
+				}
+				ReadFile(href,buffer,40,&size,NULL);
+				if(size != 40)
+				{
+					ret =-1;
+					break;
+				}
+				this->m_Head.ConvertFromStrA((char*)buffer);
 
-		this->m_Head.ConvertFromStrA((char*)buffer);
-		CloseHandle(href);
-		this->m_LastModifyTimeRef = time;
+				this->m_LastModifyTimeRef = time;
 
-	}else
+			}else
+			{
+				ReadFile(hfile,buffer+4,40-4,&size,NULL);
+				if(size !=36)
+				{
+					ret =-1;
+					break;
+				}
+				m_HeadRefFile.Empty();
+
+				this->m_Head.ConvertFromStrA((char*)buffer);
+			}
+		}while(0);
+	}catch(...)
 	{
-		ReadFile(hfile,buffer+4,40-4,&size,NULL);
-		if(size !=36)
-			return -1;
-
-		m_HeadRefFile.Empty();
-
-		this->m_Head.ConvertFromStrA((char*)buffer);
+		ret = -1;
 	}
 
-	CloseHandle(hfile);		
+	if(hfile != INVALID_HANDLE_VALUE)
+		CloseHandle(hfile);		
+	if(href != INVALID_HANDLE_VALUE)
+		CloseHandle(href);
+
+	return ret;
 }
 
 bool CGitHeadFileList::CheckHeadUpdate()
