@@ -65,7 +65,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 
 			hfile = CreateFile(IndexFile,
 									GENERIC_READ,
-									FILE_SHARE_READ,
+									FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 									NULL,
 									OPEN_EXISTING,
 									FILE_ATTRIBUTE_NORMAL,
@@ -101,6 +101,9 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 				ret = GetLastError();
 				break;
 			}
+			
+			CloseHandle(hfile);
+			hfile = INVALID_HANDLE_VALUE; /* close early to above lock time long*/
 
 			if (size != filesize)
 			{
@@ -398,7 +401,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 		{
 			hfile = CreateFile(HeadFile,
 				GENERIC_READ,
-				FILE_SHARE_READ,
+				FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 				NULL,
 				OPEN_EXISTING,
 				FILE_ATTRIBUTE_NORMAL,
@@ -442,7 +445,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 				href = CreateFile(m_HeadRefFile,
 					GENERIC_READ,
-					FILE_SHARE_READ,
+					FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 					NULL,
 					OPEN_EXISTING,
 					FILE_ATTRIBUTE_NORMAL,
@@ -589,7 +592,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 
 		HANDLE hfile = CreateFile(file,
 			GENERIC_READ,
-			FILE_SHARE_READ,
+			FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 			NULL,
 			OPEN_EXISTING,
 			FILE_ATTRIBUTE_NORMAL,
