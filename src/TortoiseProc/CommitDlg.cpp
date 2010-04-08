@@ -484,6 +484,12 @@ void CCommitDlg::OnOK()
 				bAddSuccess = false ;
 				break;
 			}
+
+			if( entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
+
+			g_Git.Run(cmd,&out,CP_ACP);
+
 			nchecked++;
 
 			//checkedLists.insert(entry->GetGitPathString());
