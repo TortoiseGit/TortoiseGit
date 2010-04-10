@@ -574,12 +574,28 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	return READ_TREE_RECURSIVE;
 }
 
-int CGitIgnoreItem::FetchIgnoreList(CString &file)
+int CGitIgnoreItem::FetchIgnoreList(CString &projectroot, CString &file)
 {
 	if(this->m_pExcludeList)
 	{
 		free(m_pExcludeList);
 		m_pExcludeList=NULL;
+	}
+
+	this->m_BaseDir.Empty();
+	if( projectroot.GetLength() < file.GetLength())
+	{
+		CString base = file.Mid(projectroot.GetLength()+1);
+		base.Replace(_T('\\'), _T('/'));
+		if(base != _T(".git/info/exclude"))
+		{
+.			int start=base.ReverseFind(_T('/'));
+			if(start>=0)
+			{
+				base=base.Left(start);
+				this->m_BaseDir = CUnicodeUtils::GetMulti(base,CP_ACP) ;
+			}
+		}
 	}
 	{
 
@@ -641,7 +657,10 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 					buffer[size]=0;
 				
 				if(p[0] != '#' && p[0] != 0)
-					git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
+					git_add_exclude((const char*)p, 
+										this->m_BaseDir.GetBuffer(), 
+										m_BaseDir.GetLength(),
+										this->m_pExcludeList);
 
 				p=buffer+i+1;
 			}		
@@ -751,7 +770,9 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			if( CheckFileChanged(gitignore) )
 			{
 				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
-					m_Map[gitignore].FetchIgnoreList(gitignore);
+				{
+					m_Map[gitignore].FetchIgnoreList(gitdir,gitignore);
+				}
 				else
 					m_Map.erase(gitignore);
 			}
@@ -761,7 +782,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			if( CheckFileChanged(temp) )
 			{
 				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
-					return m_Map[temp].FetchIgnoreList(temp);
+					return m_Map[temp].FetchIgnoreList(gitdir,temp);
 				else
 				{
 					m_Map.erase(temp);
@@ -777,7 +798,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			if( CheckFileChanged(temp) )
 			{
 				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
-					m_Map[temp].FetchIgnoreList(temp);
+					m_Map[temp].FetchIgnoreList(gitdir,temp);
 				else
 					m_Map.erase(temp);
 			}

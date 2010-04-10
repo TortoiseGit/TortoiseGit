@@ -251,8 +251,9 @@ public:
 		m_pExcludeList=NULL;
 	}
 	__time64_t  m_LastModifyTime;
+	CStringA m_BaseDir;
 	EXCLUDE_LIST m_pExcludeList;
-	int FetchIgnoreList(CString &file);
+	int FetchIgnoreList(CString &projectroot, CString &file);
 };
 
 class CGitIgnoreList
