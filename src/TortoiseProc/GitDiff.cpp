@@ -150,12 +150,12 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t &
 
 		if(oldhash != GIT_REV_ZERO)
 		{
-			cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),oldhash);
+			cmd.Format(_T("git log -n1  --pretty=format:\"%%s\" %s"),oldhash);
 			subgit.Run(cmd,&oldsub,encode);
 		}
 		if(newsub != GIT_REV_ZERO)
 		{
-			cmd.Format(_T("git log -n1 HEAD --pretty=format:\"%%s\" %s"),newhash);
+			cmd.Format(_T("git log -n1  --pretty=format:\"%%s\" %s"),newhash);
 			subgit.Run(cmd,&newsub,encode);
 		}
 	}
