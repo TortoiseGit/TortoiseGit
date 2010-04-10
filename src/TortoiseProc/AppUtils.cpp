@@ -1371,7 +1371,7 @@ void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
 CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 {
 	CString file;
-	file=g_Git.m_CurrentDir+_T("\\")+merge.GetDirectory().GetWinPathString()+_T("\\")+merge.GetFilename()+_T(".")+type+merge.GetFileExtension();
+	file=g_Git.m_CurrentDir+_T("\\")+ type + merge.GetWinPathString();
 
 	return file;
 }
@@ -1418,13 +1418,14 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool,bool revertTh
 	CTGitPath base;
 
 	
-	mine.SetFromGit(GetMergeTempFile(_T("LOCAL"),merge));
-	theirs.SetFromGit(GetMergeTempFile(_T("REMOTE"),merge));
-	base.SetFromGit(GetMergeTempFile(_T("BASE"),merge));
+	mine.SetFromGit(GetMergeTempFile(_T("LOCAL."),merge));
+	theirs.SetFromGit(GetMergeTempFile(_T("REMOTE."),merge));
+	base.SetFromGit(GetMergeTempFile(_T("BASE."),merge));
 
 	CString format;
 
-	format=_T("git.exe cat-file blob \":%d:%s\"");
+	//format=_T("git.exe cat-file blob \":%d:%s\"");
+	format = _T("git checkout-index -f --prefix=%s --stage=%d -- \"%s\"");
 	CFile tempfile;
 	//create a empty file, incase stage is not three
 	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
@@ -1440,24 +1441,27 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool,bool revertTh
 	{
 		CString cmd;
 		CString outfile;
-		cmd.Format(format,list[i].m_Stage,list[i].GetGitPathString());
 		
 		if( list[i].m_Stage == 1)
 		{
+			cmd.Format(format,_T("BASE."), list[i].m_Stage, list[i].GetGitPathString());
 			b_base = true;
-			outfile=base.GetWinPathString();
+			
 		}
 		if( list[i].m_Stage == 2 )
 		{
+			cmd.Format(format,_T("LOCAL."), list[i].m_Stage, list[i].GetGitPathString());
 			b_local = true;
-			outfile=mine.GetWinPathString();
+			
 		}
 		if( list[i].m_Stage == 3 )
 		{
+			cmd.Format(format,_T("REMOTE."), list[i].m_Stage, list[i].GetGitPathString());
 			b_remote = true;
-			outfile=theirs.GetWinPathString();
+			
 		}	
-		g_Git.RunLogFile(cmd,outfile);
+		CString output;
+		g_Git.Run(cmd,&output,CP_ACP);
 	}
 
 	if(b_local && b_remote )

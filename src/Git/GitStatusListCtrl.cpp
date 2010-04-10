@@ -2907,8 +2907,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) ||
 							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) )
 						{
-							gitcmd.Format(_T("git.exe cat-file blob \":3:%s\""),fentry->GetGitPathString());
-							if(g_Git.RunLogFile(gitcmd,(CString&)fentry->GetWinPathString()))
+							gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""),fentry->GetGitPathString());
+							if(g_Git.Run(gitcmd,&output,CP_ACP))
 							{
 								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
 								continue;
@@ -2918,8 +2918,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) ||
 							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) )
 						{
-							gitcmd.Format(_T("git.exe cat-file blob \":2:%s\""),fentry->GetGitPathString());
-							if(g_Git.RunLogFile(gitcmd,(CString&)fentry->GetWinPathString()))
+							gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""),fentry->GetGitPathString());
+							if(g_Git.Run(gitcmd,&output,CP_ACP))
 							{
 								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
 								continue;
