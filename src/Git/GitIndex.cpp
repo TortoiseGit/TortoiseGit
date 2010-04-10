@@ -635,11 +635,11 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 		{
 			if( buffer[i] == '\n' || buffer[i] =='\r' || i==(size-1) )
 			{
+				if (buffer[i] == '\n' || buffer[i] =='\r')
+					buffer[i]=0;
 				if( i== size-1)
 					buffer[size]=0;
-				else
-					buffer[i]=0;
-
+				
 				if(p[0] != '#' && p[0] != 0)
 					git_add_exclude((const char*)p, 0,0,this->m_pExcludeList);
 
