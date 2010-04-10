@@ -76,7 +76,7 @@ public:
 	 * method!
 	 */
 	void		Init(const ProjectProperties& props);
-	void		Init(LONG lLanguage = 0);
+	void		Init(LONG lLanguage = 0,BOOL bLoadSpellCheck=TRUE);
 	/**
 	 * Execute a scintilla command, e.g. SCI_GETLINE.
 	 */

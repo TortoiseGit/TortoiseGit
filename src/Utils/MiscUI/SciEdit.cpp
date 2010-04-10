@@ -86,7 +86,7 @@ CSciEdit::~CSciEdit(void)
 		delete pThesaur;
 }
 
-void CSciEdit::Init(LONG lLanguage)
+void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 {
 	//Setup the direct access data
 	m_DirectFunction = SendMessage(SCI_GETDIRECTFUNCTION, 0, 0);
@@ -123,24 +123,27 @@ void CSciEdit::Init(LONG lLanguage)
 	// look for dictionary files and use them if found
 	long langId = GetUserDefaultLCID();
 
-	if ((lLanguage != 0)||(((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE))==FALSE))
+	if(bLoadSpellCheck)
 	{
-		if (!((lLanguage)&&(!LoadDictionaries(lLanguage))))
+		if ((lLanguage != 0)||(((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE))==FALSE))
 		{
-			do
+			if (!((lLanguage)&&(!LoadDictionaries(lLanguage))))
 			{
-				LoadDictionaries(langId);
-				DWORD lid = SUBLANGID(langId);
-				lid--;
-				if (lid > 0)
+				do
 				{
-					langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-				}
-				else if (langId == 1033)
-					langId = 0;
-				else
-					langId = 1033;
-			} while ((langId)&&((pChecker==NULL)||(pThesaur==NULL)));
+					LoadDictionaries(langId);
+					DWORD lid = SUBLANGID(langId);
+					lid--;
+					if (lid > 0)
+					{
+						langId = MAKELANGID(PRIMARYLANGID(langId), lid);
+					}
+					else if (langId == 1033)
+						langId = 0;
+					else
+						langId = 1033;
+				} while ((langId)&&((pChecker==NULL)||(pThesaur==NULL)));
+			}
 		}
 	}
 	Call(SCI_SETEDGEMODE, EDGE_NONE);

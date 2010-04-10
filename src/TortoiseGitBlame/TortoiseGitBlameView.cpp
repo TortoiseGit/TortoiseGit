@@ -141,7 +141,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	rect.top=0;
 	rect.bottom=rect.Height();
 	BOOL b=m_TextView.Create(_T("Scintilla"),_T("source"),0,rect,this,0,0);
-	m_TextView.Init(0);
+	m_TextView.Init(0,FALSE);
 	m_TextView.ShowWindow( SW_SHOW);
 	//m_TextView.InsertText(_T("Abdadfasdf"));
 	m_wEditor = m_TextView.m_hWnd;
