@@ -610,6 +610,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 
 		if(filesize == INVALID_FILE_SIZE )
 		{
+			CloseHandle(hfile);
 			return -1;
 		}
 
@@ -617,11 +618,13 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 
 		if(buffer == NULL)
 		{
+			CloseHandle(hfile);
 			return -1;
 		}
 
 		if(! ReadFile( hfile, buffer,filesize,&size,NULL) )
 		{
+			CloseHandle(hfile);
 			return GetLastError();
 		}
 
