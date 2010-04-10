@@ -1,3 +1,13 @@
+= Release 1.4.3.0 =
+ * Fix explore crash when there are ignore patten at .git/info/exclude
+ * Fixed issue #367: Last line of .gitignore ignored
+ * Fixed issue #368: TortoiseGitBlame should not spell check by default
+ * Fixed issue #369: TortoiseGitBlame should expand its menu items by default
+ * Fixed issue: Compare submodule dialog show wrong subject at log dialog
+ * Fixed issue #365: Log - enter closes dialog
+ * Fixed issue #358: Renamed files are not properly committed, after refreshing the commit dialog
+ * Fixed issue .git\* locked when remove git repository
+
 = Release 1.4.2.0 =
 == Features ==
  * Log dialog find support search tag and branch

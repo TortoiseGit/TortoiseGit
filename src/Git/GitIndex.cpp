@@ -589,7 +589,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &projectroot, CString &file)
 		base.Replace(_T('\\'), _T('/'));
 		if(base != _T(".git/info/exclude"))
 		{
-.			int start=base.ReverseFind(_T('/'));
+			int start=base.ReverseFind(_T('/'));
 			if(start>=0)
 			{
 				base=base.Left(start);
