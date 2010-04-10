@@ -649,6 +649,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 		//delete buffer;
 		//buffer=NULL;
 	}
+	return 0;
 }
 
 bool CGitIgnoreList::CheckFileChanged(CString &path)

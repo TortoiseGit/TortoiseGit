@@ -320,6 +320,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 			}
 		}
 	}
+	return 0;
 }
 
 template<class T>
