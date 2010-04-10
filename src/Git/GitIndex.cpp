@@ -646,6 +646,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &file)
 				p=buffer+i+1;
 			}		
 		}
+		/* Can't free buffer, exluced list will use this buffer*/
 		//delete buffer;
 		//buffer=NULL;
 	}
@@ -894,17 +895,18 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 			temp=temp.Left(x);
 
 		temp+=_T("\\.gitignore");
+
+		char *base;
+			
+		patha.Replace('\\', '/');
+		int pos=patha.ReverseFind('/');
+		base = pos>=0? patha.GetBuffer()+pos+1:patha.GetBuffer();
+
 		if(this->m_Map.find(temp) == m_Map.end() )
 		{
 
 		}else
 		{
-			char *base;
-			
-			patha.Replace('\\', '/');
-			int pos=patha.ReverseFind('/');
-			base = pos>=0? patha.GetBuffer()+pos+1:patha.GetBuffer();
-
 			int ret=-1;
 
 			if(m_Map[temp].m_pExcludeList)
@@ -927,7 +929,7 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 			int ret=-1;
 			
 			if(m_Map[temp].m_pExcludeList)
-				git_check_excluded_1( patha, patha.GetLength(), NULL,&type, m_Map[temp].m_pExcludeList);
+				git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
 
 			if(ret == 1)
 				return 1;
