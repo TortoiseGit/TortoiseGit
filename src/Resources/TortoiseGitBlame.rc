@@ -100,9 +100,9 @@ BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_FILE_SAVE
-	SEPARATOR
-	BUTTON		ID_VIEW_PREV 
-	BUTTON		ID_VIEW_NEXT
+    SEPARATOR
+    BUTTON      ID_VIEW_PREV
+    BUTTON      ID_VIEW_NEXT
     SEPARATOR
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
@@ -118,9 +118,9 @@ BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_FILE_SAVE
-	SEPARATOR
-	BUTTON		ID_VIEW_PREV
-	BUTTON		ID_VIEW_NEXT
+    SEPARATOR
+    BUTTON      ID_VIEW_PREV
+    BUTTON      ID_VIEW_NEXT
     SEPARATOR
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
@@ -162,12 +162,12 @@ BEGIN
         MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
         MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
         MENUITEM "&Find\tCtrl+F",               ID_EDIT_FIND
-        MENUITEM "Go to\tCtrl+G",               ID_EDIT_GOTO
+        MENUITEM "&Go to\tCtrl+G",              ID_EDIT_GOTO
     END
     POPUP "&View"
-    BEGIN		
-		MENUITEM "Next"							ID_VIEW_NEXT
-		MENUITEM "Previous"						ID_VIEW_PREV
+    BEGIN
+        MENUITEM "Next",                        ID_VIEW_NEXT
+        MENUITEM "Previous",                    ID_VIEW_PREV
         POPUP "&Toolbars and Docking Windows"
         BEGIN
             MENUITEM "<placeholder>",               ID_VIEW_TOOLBAR
@@ -238,7 +238,7 @@ BEGIN
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
-    "F",            ID_EDIT_FIND,        VIRTKEY, CONTROL
+    "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL
     "G",            ID_EDIT_GOTO,           VIRTKEY, CONTROL
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
@@ -278,8 +278,6 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,7,31,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,70,31,50,14
 END
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -357,8 +355,14 @@ BEGIN
     ID_HELP_USING           "Display instructions about how to use help\nHelp"
     ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
     ID_HELP                 "Display help for current task or command\nHelp"
-	ID_VIEW_NEXT			"Show next change of selected commit\nShow next"
-	ID_VIEW_PREV			"Show previous change of selected commit\nShow previous"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EDIT_MENU           "Edit"
+    IDS_GIT_LOG_TAB         "Git Log"
+    ID_VIEW_NEXT            "Show next change of selected commit\nShow next"
+    ID_VIEW_PREV            "Show previous change of selected commit\nShow previous"
 END
 
 STRINGTABLE 
@@ -457,40 +461,24 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_EDIT_MENU           "Edit"
-    IDS_GIT_LOG_TAB         "Git Log"
+    IDS_YEAR_AGO            "%1!d! Year ago"
+    IDS_YEARS_AGO           "%1!d! Years ago"
+    IDS_MONTH_AGO           "%1!d! Month ago"
+    IDS_MONTHS_AGO          "%1!d! Months ago"
+    IDS_WEEK_AGO            "%1!d! Week ago"
+    IDS_WEEKS_AGO           "%1!d! Weeks ago"
+    IDS_DAY_AGO             "%1!d! Day ago"
+    IDS_DAYS_AGO            "%1!d! Days ago"
+    IDS_HOUR_AGO            "%1!d! Hour ago"
+    IDS_HOURS_AGO           "%1!d! Hours ago"
+    IDS_MINUTE_AGO          "%1!d! Minute ago"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_YEAR_AGO
-                            "%1!d! Year ago"
-    IDS_YEARS_AGO
-                            "%1!d! Years ago"
-    IDS_MONTH_AGO
-                            "%1!d! Month ago"
-    IDS_MONTHS_AGO
-                            "%1!d! Months ago"
-    IDS_WEEK_AGO
-                            "%1!d! Week ago"
-    IDS_WEEKS_AGO
-                            "%1!d! Weeks ago"
-    IDS_DAY_AGO
-                            "%1!d! Day ago"
-    IDS_DAYS_AGO
-                            "%1!d! Days ago"
-    IDS_HOUR_AGO
-                            "%1!d! Hour ago"
-    IDS_HOURS_AGO
-                            "%1!d! Hours ago"
-    IDS_MINUTE_AGO
-                            "%1!d! Minute ago"
-    IDS_MINUTES_AGO
-                            "%1!d! minutes ago"
-    IDS_SECOND_AGO
-                            "%1!d! Second ago"
-    IDS_SECONDS_AGO
-                            "%1!d! Seconds ago"
+    IDS_MINUTES_AGO         "%1!d! minutes ago"
+    IDS_SECOND_AGO          "%1!d! Second ago"
+    IDS_SECONDS_AGO         "%1!d! Seconds ago"
 END
 
 #endif    // English (U.S.) resources

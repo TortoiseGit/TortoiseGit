@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by d:\build\x64\TortoiseGit\src\Resources\TortoiseGitBlame.rc
+// Used by d:\TortoiseGit\src\Resources\TortoiseGitBlame.rc
 //
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME 1
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 2
@@ -39,7 +39,6 @@
 #define ID_EDIT_GOTO                    220
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222
-
 #define IDS_YEAR_AGO                    9605
 #define IDS_YEARS_AGO                   9606
 #define IDS_MONTH_AGO                   9607
@@ -54,7 +53,6 @@
 #define IDS_MINUTES_AGO                 9616
 #define IDS_SECOND_AGO                  9617
 #define IDS_SECONDS_AGO                 9618
-
 #define IDS_STATUS_PANE1                20122
 #define IDS_STATUS_PANE2                20123
 #define IDS_TOOLBAR_STANDARD            20124
@@ -66,8 +64,8 @@
 #define IDS_FIND_TAB                    20302
 #define IDS_EDIT_MENU                   20306
 #define IDS_GIT_LOG_TAB                 20307
-#define ID_VIEW_NEXT					20308
-#define ID_VIEW_PREV					20309
+#define ID_VIEW_NEXT                    20308
+#define ID_VIEW_PREV                    20309
 
 // Next default values for new objects
 // 
