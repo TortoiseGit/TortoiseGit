@@ -126,21 +126,36 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 	
 	if(this->m_ChooseVersioinBranch.GetString().Left(8)==_T("remotes/"))
 	{
-		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
-
-		m_BranchTagName= m_ChooseVersioinBranch.GetString();
-		int start =0;
-		start = m_BranchTagName.ReverseFind(_T('/'));
+		bool isDefault = false;
+		this->UpdateData();
+		
+		CString str = this->m_OldSelectBranch;
+		int start = str.ReverseFind(_T('/'));
 		if(start>=0)
-			m_BranchTagName = m_BranchTagName.Mid(start+1);
+			str=str.Mid(start+1);
+		if(str == m_BranchTagName)
+			isDefault =true;
+	
+		if( m_BranchTagName.IsEmpty() ||  isDefault)
+		{
+			this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
 
-		UpdateData(FALSE);
+			m_BranchTagName= m_ChooseVersioinBranch.GetString();
+			int start =0;
+			start = m_BranchTagName.ReverseFind(_T('/'));
+			if(start>=0)
+				m_BranchTagName = m_BranchTagName.Mid(start+1);
+
+			UpdateData(FALSE);
+		}
 	}
 	else
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
 	if(this->m_bIsTag)
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
+
+	m_OldSelectBranch = m_ChooseVersioinBranch.GetString();
 }
 
 void CCreateBranchTagDlg::OnVersionChanged()
