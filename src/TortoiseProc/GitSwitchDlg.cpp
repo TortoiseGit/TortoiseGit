@@ -118,7 +118,17 @@ void CGitSwitchDlg::OnBnClickedCheckBranch()
 	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
 	this->UpdateRevsionName();
-	GetDlgItem(IDC_EDIT_BRANCH)->SetWindowTextW(CString(_T("Branch_"))+this->m_VersionName);
+
+	CString version = m_ChooseVersioinBranch.GetString();
+	if((version.Left(7)==_T("origin/") || version.Left(8)==_T("remotes/")))
+	{
+		int start=0;
+		start = version.ReverseFind(_T('/'));
+		if(start>=0)
+			version = version.Mid(start+1);
+		GetDlgItem(IDC_EDIT_BRANCH)->SetWindowTextW(version);
+	}else
+		GetDlgItem(IDC_EDIT_BRANCH)->SetWindowTextW(CString(_T("Branch_"))+this->m_VersionName);
 
 #if 0	
 	int radio=GetCheckedRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION);
@@ -141,8 +151,18 @@ void CGitSwitchDlg::OnCbnSelchangeComboboxexBranch()
 {
 	// TODO: Add your control notification handler code here
 	int radio=GetCheckedRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION);
-	if(this->m_ChooseVersioinBranch.GetString().Left(6)==_T("origin") && radio==IDC_RADIO_BRANCH )
+
+	CString version = m_ChooseVersioinBranch.GetString();
+	if((version.Left(7)==_T("origin/") || version.Left(8)==_T("remotes/"))
+		&& radio==IDC_RADIO_BRANCH )
+	{
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
+		int start=0;
+		start = version.ReverseFind(_T('/'));
+		if(start>=0)
+			version = version.Mid(start+1);
+		GetDlgItem(IDC_EDIT_BRANCH)->SetWindowTextW(version);
+	}
 	else
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 }

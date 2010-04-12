@@ -125,7 +125,17 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 	// TODO: Add your control notification handler code here
 	
 	if(this->m_ChooseVersioinBranch.GetString().Left(8)==_T("remotes/"))
+	{
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
+
+		m_BranchTagName= m_ChooseVersioinBranch.GetString();
+		int start =0;
+		start = m_BranchTagName.ReverseFind(_T('/'));
+		if(start>=0)
+			m_BranchTagName = m_BranchTagName.Mid(start+1);
+
+		UpdateData(FALSE);
+	}
 	else
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
