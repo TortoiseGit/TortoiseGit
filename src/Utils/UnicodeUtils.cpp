@@ -82,7 +82,10 @@ int CUnicodeUtils::GetCPCode(CString &codename)
 		{1200, _T("utf-16")},// Unicode UTF-16, little endian byte order (BMP of ISO 10646); available only to managed applications 
 		{1201, _T("unicodeFFFE")},// Unicode UTF-16, big endian byte order; available only to managed applications 
 		{1250, _T("windows-1250")},// ANSI Central European; Central European (Windows) 
-		{1251, _T("windows-1251")},// ANSI Cyrillic; Cyrillic (Windows) 
+		{1251, _T("windows-1251")},// ANSI Cyrillic; Cyrillic (Windows)
+		{1251, _T("cp1251")},
+		{1251, _T("cp-1251")},
+		{1251, _T("cp_1251")},
 		{1252, _T("windows-1252")},// ANSI Latin 1; Western European (Windows) 
 		{1253, _T("windows-1253")},// ANSI Greek; Greek (Windows) 
 		{1254, _T("windows-1254")},// ANSI Turkish; Turkish (Windows) 
