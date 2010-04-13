@@ -1,3 +1,11 @@
+= Release 1.4.4.0 =
+== Features ==
+ * #379:  Create Branch for remote branch do not set branch name
+
+== Bug Fix ==
+ * Fix log show mass when encode is cp1251
+ * Fixed issue #357: Fix line endings merging issue
+
 = Release 1.4.3.0 =
  * Fix explore crash when there are ignore patten at .git/info/exclude
  * Fixed issue #367: Last line of .gitignore ignored
