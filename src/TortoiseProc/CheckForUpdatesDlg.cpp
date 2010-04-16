@@ -140,7 +140,14 @@ UINT CCheckForUpdatesDlg::CheckThread()
 						x4=_ttoi(ver)&0xFFFF;
 						
 						unsigned __int64 newversion;
-						newversion = (x1<<48) + (x2<<32) + (x3<<16)+x4;
+						newversion = x1;
+						newversion <<= 16;
+						newversion += x2;
+						newversion <<= 16;
+						newversion += x3;
+						newversion <<=16;
+						newversion += build;
+
 						if(newversion>version)
 						{
 							major=x1;

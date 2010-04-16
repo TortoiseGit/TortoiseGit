@@ -62,7 +62,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LANGUAGECOMBO, m_LanguageCombo);
 	m_dwLanguage = (DWORD)m_LanguageCombo.GetItemData(m_LanguageCombo.GetCurSel());
 	DDX_Text(pDX, IDC_MSYSGIT_PATH, m_sMsysGitPath);
-//	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
+	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
 //	DDX_Check(pDX, IDC_COMMITFILETIMES, m_bLastCommitTime);
 //	DDX_Check(pDX, IDC_ASPDOTNETHACK, m_bUseDotNetHack);
 }
@@ -87,8 +87,6 @@ BOOL CSetMainPage::OnInitDialog()
 	ISettingsPropPage::OnInitDialog();
 
 	// disable features that have not yet been implemented
-	GetDlgItem(IDC_CHECKNEWERVERSION)->EnableWindow( FALSE );
-	GetDlgItem(IDC_CHECKNEWERBUTTON)->EnableWindow( FALSE );
 	GetDlgItem(IDC_SOUNDS)->EnableWindow( FALSE );
 	GetDlgItem(IDC_SOUNDS_TEXT)->EnableWindow( FALSE );
 	
@@ -104,7 +102,7 @@ BOOL CSetMainPage::OnInitDialog()
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
-	//m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
+	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
 	//m_tooltips.AddTool(IDC_COMMITFILETIMES, IDS_SETTINGS_COMMITFILETIMES_TT);
 	//m_tooltips.AddTool(IDC_ASPDOTNETHACK, IDS_SETTINGS_DOTNETHACK_TT);
 
