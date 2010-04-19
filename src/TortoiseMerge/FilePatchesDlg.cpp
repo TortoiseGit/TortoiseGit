@@ -62,6 +62,9 @@ CString CFilePatchesDlg::GetFullPath(int nIndex)
 	CString temp = m_pPatch->GetFilename(nIndex);
 	temp.Replace('/', '\\');
 	//temp = temp.Mid(temp.Find('\\')+1);
+	if(temp == _T("NUL"))
+		return temp;
+
 	if (PathIsRelative(temp))
 		temp = m_sPath + temp;
 	return temp;
@@ -114,14 +117,32 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 
 	for(int i=0; i<m_pPatch->GetNumberOfFiles(); i++)
 	{
-		CString sFile = CPathUtils::GetFileNameFromPath(m_pPatch->GetFilename(i));
+		CString sFile = CPathUtils::GetFileNameFromPath(m_pPatch->GetFilename2(i));
+		if(sFile == _T("NUL"))
+			sFile = CPathUtils::GetFileNameFromPath(m_pPatch->GetFilename(i));
+
 		DWORD state;
 		if (m_sPath.IsEmpty())
 			state = FPDLG_FILESTATE_GOOD;
 		else
 		{
+			if(m_pPatch->GetFilename(i) != m_pPatch->GetFilename2(i))
+			{
+				if( m_pPatch->GetFilename(i) == _T("NUL"))
+					state = FPDLG_FILESTATE_NEW;
+				else if (m_pPatch->GetFilename2(i) == _T("NUL"))
+					state = FPDLG_FILESTATE_DELETE;
+				else
+					state = FPDLG_FILESTATE_RENAME;
+			}
+
 			if (m_pPatch->PatchFile(GetFullPath(i)))
+			{
+				if(state != FPDLG_FILESTATE_NEW &&
+				   state != FPDLG_FILESTATE_RENAME &&
+				   state != FPDLG_FILESTATE_DELETE)
 				state = FPDLG_FILESTATE_GOOD;
+			}
 			else
 				state = FPDLG_FILESTATE_CONFLICTED;
 		}
@@ -258,6 +279,22 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			{
 				crText = RGB(200, 0, 0);
 			}
+		
+			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_DELETE)
+			{
+				crText = RGB(200, 0, 0);
+			}
+		
+			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_RENAME)
+			{
+				crText = RGB(0, 200, 200);
+			}
+
+			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_NEW)
+			{
+				crText = RGB(0, 0, 200);
+			}
+		
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_PATCHED)
 			{
 				crText = ::GetSysColor(COLOR_GRAYTEXT);

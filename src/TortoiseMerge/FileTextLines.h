@@ -96,6 +96,8 @@ public:
 	void		SetLineEnding(int index, EOL ending) {m_endings[index] = ending;}
 	
 	void		RemoveAll() {CStdCStringArray::RemoveAll(); m_endings.clear();}
+
+	CFileTextLines::UnicodeType CheckUnicodeType(LPVOID pBuffer, int cb);
 private:
 	/**
 	 * Checks the line endings in a text buffer
@@ -108,7 +110,7 @@ private:
 	 * \param pBuffer pointer to the buffer containing text
 	 * \param cd size of the text buffer in bytes
 	 */
-	CFileTextLines::UnicodeType CheckUnicodeType(LPVOID pBuffer, int cb); 
+	 
 
 	void		SetErrorString();
 

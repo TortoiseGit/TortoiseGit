@@ -2663,7 +2663,11 @@ svn_io_file_open(apr_file_t **new_file, const char *fname,
   apr_status_t status;
 
   SVN_ERR(cstring_from_utf8(&fname_apr, fname, pool));
-  status = file_open(new_file, fname_apr, flag | APR_BINARY, perm, TRUE,
+  if( strcmp(fname, "NUL") == 0)
+	  status = file_open(new_file, fname_apr, flag | APR_BINARY |APR_FILE_NOCLEANUP, perm, TRUE,
+                     pool);
+  else
+	status = file_open(new_file, fname_apr, flag | APR_BINARY, perm, TRUE,
                      pool);
 
   if (status)

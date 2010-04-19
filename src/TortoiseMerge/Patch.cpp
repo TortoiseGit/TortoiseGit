@@ -145,6 +145,9 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 						chunks->sFilePath=chunks->sFilePath.Mid(2);
 
 					chunks->sFilePath.Replace(_T('/'),_T('\\'));
+
+					if(chunks->sFilePath == _T("\\dev\\null"))
+						chunks->sFilePath  = _T("NUL");
 				}
 				
 				// +++
@@ -171,6 +174,9 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 						chunks->sFilePath2=chunks->sFilePath2.Mid(2);
 
 					chunks->sFilePath2.Replace(_T('/'),_T('\\'));
+
+					if(chunks->sFilePath2 == _T("\\dev\\null"))
+						chunks->sFilePath2  = _T("NUL");
 				}
 				
 				//@@ -xxx,xxx +xxx,xxx @@

@@ -228,8 +228,15 @@ datasource_open(void *baton, svn_diff_datasource_e datasource)
   SVN_ERR(svn_io_file_open(&file_baton->file[idx], file_baton->path[idx],
                            APR_READ, APR_OS_DEFAULT, file_baton->pool));
 
-  SVN_ERR(svn_io_file_info_get(&finfo, APR_FINFO_SIZE,
+  if( strcmp(file_baton->path[idx], "NUL") == 0)
+  {
+	  memset(&finfo, 0, sizeof(apr_finfo_t));
+
+  }else
+  {
+	SVN_ERR(svn_io_file_info_get(&finfo, APR_FINFO_SIZE,
                                file_baton->file[idx], file_baton->pool));
+  }
 
   file_baton->size[idx] = finfo.size;
   length = finfo.size > CHUNK_SIZE ? CHUNK_SIZE : finfo.size;
