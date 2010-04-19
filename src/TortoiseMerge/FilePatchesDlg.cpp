@@ -57,9 +57,14 @@ BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
 	return FALSE;
 }
 
-CString CFilePatchesDlg::GetFullPath(int nIndex)
+CString CFilePatchesDlg::GetFullPath(int nIndex,int fileno)
 {
-	CString temp = m_pPatch->GetFilename(nIndex);
+	CString temp;
+	if( fileno == 0)
+		temp= m_pPatch->GetFilename(nIndex);
+	else
+		temp= m_pPatch->GetFilename2(nIndex);
+
 	temp.Replace('/', '\\');
 	//temp = temp.Mid(temp.Find('\\')+1);
 	if(temp == _T("NUL"))
@@ -126,6 +131,7 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 			state = FPDLG_FILESTATE_GOOD;
 		else
 		{
+			state = 0;
 			if(m_pPatch->GetFilename(i) != m_pPatch->GetFilename2(i))
 			{
 				if( m_pPatch->GetFilename(i) == _T("NUL"))
@@ -246,7 +252,7 @@ void CFilePatchesDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		if (m_arFileStates.GetAt(pNMLV->iItem)!=FPDLG_FILESTATE_PATCHED)
 		{
-			m_pCallBack->PatchFile(GetFullPath(pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),false,true);
+			m_pCallBack->PatchFile(GetFullPath(pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),false,true,&m_pPatch->GetFilename2(pNMLV->iItem));
 		}
 	}
 }

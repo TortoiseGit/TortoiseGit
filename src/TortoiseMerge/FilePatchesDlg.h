@@ -36,7 +36,7 @@ public:
 	 * \param sVersion the revision number of the file to patch
 	 * \return TRUE if patching was successful
 	 */
-	virtual BOOL PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch = FALSE,BOOL bIsReview=FALSE) = 0;
+	virtual BOOL PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch = FALSE,BOOL bIsReview=FALSE,CString *Path2=NULL) = 0;
 	
 	/**
 	 * Callback function. Called when the user double clicks on a
@@ -110,5 +110,5 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	CString GetFullPath(int nIndex);
+	CString GetFullPath(int nIndex, int fileno=0);
 };
