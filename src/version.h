@@ -7,12 +7,12 @@
 #define TSVN_VERMINOR             4
 #define TSVN_VERMICRO             4
 #define TSVN_VERBUILD			  0
-#define TSVN_VERDATE			  "date unknown\n"
+#define TSVN_VERDATE			  __DATE__
 
 #ifdef _WIN64
-#define TSVN_PLATFORM		"64 Bit $DEVBUILD$"
+#define TSVN_PLATFORM		"64 Bit"
 #else
-#define TSVN_PLATFORM		"32 Bit $DEVBUILD$"
+#define TSVN_PLATFORM		"32 Bit"
 #endif
 
 
