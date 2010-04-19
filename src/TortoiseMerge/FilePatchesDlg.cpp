@@ -231,7 +231,19 @@ void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 
 	CString temp = GetFullPath(pGetInfoTip->iItem);
-	_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax);
+	CString temp2 = GetFullPath(pGetInfoTip->iItem, 1);
+
+	if(temp != temp2)
+	{
+		if(temp == _T("NUL"))
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("New File:"))+temp2, pGetInfoTip->cchTextMax);	
+		else if(temp2 == _T("NUL"))
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("Del File:"))+temp, pGetInfoTip->cchTextMax);	
+		else
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("Rename File:"))+temp+ _T(" > ")+temp2, pGetInfoTip->cchTextMax);	
+
+	}else
+		_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax);
 	*pResult = 0;
 }
 
