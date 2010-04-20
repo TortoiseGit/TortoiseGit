@@ -67,7 +67,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	CTortoiseGitBlameDoc* GetDocument() const;
-
+	int GetEncode(unsigned char * buffer, int size, int *bomoffset);
 // Operations
 public:
 
@@ -254,6 +254,8 @@ protected:
 	CGitBlameLogList * GetLogList();
 
     CFindReplaceDialog          *m_pFindDialog;
+
+	char						*m_Buffer;
 
 	DWORD						m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 };

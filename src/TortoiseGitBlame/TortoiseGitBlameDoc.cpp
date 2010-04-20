@@ -108,12 +108,35 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		CString cmd;
 		
 		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
-		m_BlameData.Empty();
-		if(g_Git.Run(cmd,&m_BlameData,CP_UTF8))
+		m_BlameData.clear();
+		if(g_Git.Run(cmd,&m_BlameData))
 		{
-			CMessageBox::Show(NULL,CString(_T("Blame Error"))+m_BlameData,_T("TortoiseGitBlame"),MB_OK);
+			CString str;
+			g_Git.StringAppend(&str, &m_BlameData[0], CP_ACP);
+			CMessageBox::Show(NULL,CString(_T("Blame Error")) + str,_T("TortoiseGitBlame"),MB_OK);
 
 		}
+		
+		if(!m_TempFileName.IsEmpty())
+		{
+			::DeleteFile(m_TempFileName);
+			m_TempFileName.Empty();		
+		}
+
+		m_TempFileName=GetTempFile();
+
+		if(Rev.IsEmpty())
+			Rev=_T("HEAD");
+
+		cmd.Format(_T("git.exe cat-file blob %s:\"%s\""),Rev,path.GetGitPathString());
+
+		if(g_Git.RunLogFile(cmd, m_TempFileName))
+		{
+			CString str;
+			str.Format(_T("Fail get file %s"), path.GetGitPathString());
+			CMessageBox::Show(NULL,CString(_T("Blame Error")) + str,_T("TortoiseGitBlame"),MB_OK);
+		}
+
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
 		if(pView == NULL)
 		{

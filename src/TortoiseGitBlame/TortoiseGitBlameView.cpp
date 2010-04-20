@@ -28,6 +28,8 @@
 #include "Balloon.h"
 #include "EditGotoDlg.h"
 #include "TortoiseGitBlameAppUtils.h"
+#include "FileTextLines.h"
+#include "UniCodeUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -120,6 +122,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	{
 		m_DateFormat = DATE_LONGDATE;
 	}
+
+	m_Buffer = NULL;
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -128,6 +132,12 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 		DeleteObject(m_font);
 	if (m_italicfont)
 		DeleteObject(m_italicfont);
+
+	if(m_Buffer)
+	{
+		delete m_Buffer;
+		m_Buffer=NULL;
+	}
 }
 
 
@@ -2410,10 +2420,31 @@ void CTortoiseGitBlameView::SetupCppLexer()
 	SetAStyle(SCE_C_OPERATOR, RGB(0x80, 0x80, 0));
 }
 
+int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffset)
+{
+	CFileTextLines textlines;
+	CFileTextLines::UnicodeType type = textlines.CheckUnicodeType(buff, size);
+
+	if(type == CFileTextLines::UTF8BOM)
+	{
+		*bomoffset = 3;
+		return CP_UTF8;
+	}
+	if(type == CFileTextLines::UTF8)
+		return CP_UTF8;
+
+	if(type == CFileTextLines::UNICODE_LE)
+	{
+		*bomoffset = 2;
+		return 1200;
+	}
+	
+	return GetACP();
+}
 
 void CTortoiseGitBlameView::UpdateInfo()
 {
-	CString &data = GetDocument()->m_BlameData;
+	BYTE_VECTOR &data = GetDocument()->m_BlameData;
 	CString one;
 	int pos=0;
 	
@@ -2435,35 +2466,81 @@ void CTortoiseGitBlameView::UpdateInfo()
 	SendEditor(SCI_CANCEL);
 	SendEditor(SCI_SETUNDOCOLLECTION, 0);
 
-	while( pos>=0 )
+	SendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
+	
+	int current = 0;
+	int encoding = 0;
+	while( pos>=0 && current >=0 && pos<data.size() )
 	{
-		one=data.Tokenize(_T("\n"),pos);
+		current = data.findData((const BYTE*)"\n",1,pos);
+		//one=data.Tokenize(_T("\n"),pos);
 		
-		if(one.GetLength()>1 && one[0] == _T('^'))
-			one=one.Mid(1);
+		if( (data.size() - pos) >1 && data[pos] == _T('^'))
+			pos ++;
 
-		if(one.IsEmpty())
+		if( data[pos] == 0)
 			continue;
-		m_CommitHash.push_back(one.Left(40));
+
+		CGitHash hash;
+		hash.ConvertFromStrA((char*)&data[pos]);
+		m_CommitHash.push_back(hash);
+
 		int start=0;
-		start=one.Find(_T(')'),40);
+		start=data.findData((const BYTE*)")",1,pos + 40);
 		if(start>0)
-		{
-			line=one.Right(one.GetLength()-start-2);
-			this->m_TextView.InsertText(line,true);
+		{	
+			
+			int bomoffset = 0;
+			CStringA stra;
+			stra.Empty();
+			data[current] = 0;
+
+			if( pos <40 )
+			{ 
+				// first line
+				encoding = GetEncode( &data[start+2], data.size() - start -2, &bomoffset);
+			}
+			{
+				if(encoding == 1200)
+				{
+					CString strw;
+					int size = ((current - start -2 - bomoffset)/2);
+					TCHAR *buffer = strw.GetBuffer(size);
+					memcpy(buffer, &data[start + 2 + bomoffset],sizeof(TCHAR)*size);
+					strw.ReleaseBuffer();
+
+					stra = CUnicodeUtils::GetUTF8(strw);
+
+				}else if(encoding == CP_UTF8)
+				{
+					stra =  &data[start + 2 + bomoffset ];
+				}
+				else
+				{
+					CString strw;
+					strw = CUnicodeUtils::GetUnicode(CStringA(&data[start + 2 + bomoffset ]), encoding);
+					stra = CUnicodeUtils::GetUTF8(strw);
+				}
+			}
+			
+			
+			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)stra);
+			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n\0\0\0");
+
 		}
+
 		int id;
-		if(pRevs->m_HashMap.find(one.Left(40))!=pRevs->m_HashMap.end())
+		if(pRevs->m_HashMap.find(hash)!=pRevs->m_HashMap.end())
 		{
-			id=pRevs->m_HashMap[one.Left(40)];	
+			id=pRevs->m_HashMap[hash];	
 		}
 		else
 		{
 			id=-1;
-			if(this->m_NoListCommit.find(one.Left(40)) == m_NoListCommit.end() )
+			if(this->m_NoListCommit.find(hash) == m_NoListCommit.end() )
 			{
-				g_Git.GetLog(vector,one.Left(40),NULL,1);
-				this->m_NoListCommit[one.Left(40)].ParserFromLog(vector);
+				g_Git.GetLog(vector,hash.ToString(),NULL,1);
+				this->m_NoListCommit[hash].ParserFromLog(vector);
 			}
 			
 		}
@@ -2475,10 +2552,39 @@ void CTortoiseGitBlameView::UpdateInfo()
 		}else
 		{
 			m_ID.push_back(id);
-			m_Authors.push_back(one.Left(6));
+			m_Authors.push_back(hash.ToString().Left(6));
 		}
+
+		pos = current+1;
 	}
 
+#if 0	
+	if(m_Buffer)
+	{
+		delete m_Buffer;
+		m_Buffer=NULL;
+	}
+
+	CFile file;
+	file.Open(this->GetDocument()->m_TempFileName,CFile::modeRead);
+	
+	m_Buffer = new char[file.GetLength()+4];
+	m_Buffer[file.GetLength()] =0;
+	m_Buffer[file.GetLength()+1] =0;
+	m_Buffer[file.GetLength()+2] =0;
+	m_Buffer[file.GetLength()+3] =0;
+
+	file.Read(m_Buffer, file.GetLength());
+	
+	
+	int bomoffset =0;
+	int encoding = GetEncode( (unsigned char *)m_Buffer, file.GetLength(), &bomoffset);
+	
+	file.Close();
+	//SendEditor(SCI_SETCODEPAGE, encoding);	
+
+	//SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)(m_Buffer + bomoffset));
+#endif
 	SetupLexer(GetDocument()->m_CurrentFileName);
 
 	SendEditor(SCI_SETUNDOCOLLECTION, 1);

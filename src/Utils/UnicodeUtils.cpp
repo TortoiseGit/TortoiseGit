@@ -245,7 +245,7 @@ CStringA CUnicodeUtils::GetUTF8(const CStringA& string)
 	return (CUnicodeUtils::GetUTF8(temp));
 }
 
-CString CUnicodeUtils::GetUnicode(const CStringA& string)
+CString CUnicodeUtils::GetUnicode(const CStringA& string, int acp)
 {
 	WCHAR * buf;
 	int len = string.GetLength();
@@ -253,7 +253,7 @@ CString CUnicodeUtils::GetUnicode(const CStringA& string)
 		return CString();
 	buf = new WCHAR[len*4 + 1];
 	SecureZeroMemory(buf, (len*4 + 1)*sizeof(WCHAR));
-	MultiByteToWideChar(CP_UTF8, 0, string, -1, buf, len*4);
+	MultiByteToWideChar(acp, 0, string, -1, buf, len*4);
 	CString ret = CString(buf);
 	delete [] buf;
 	return ret;
