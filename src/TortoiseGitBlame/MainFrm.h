@@ -56,6 +56,7 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };
 
 

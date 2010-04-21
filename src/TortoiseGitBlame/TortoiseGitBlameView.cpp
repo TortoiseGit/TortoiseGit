@@ -30,6 +30,7 @@
 #include "TortoiseGitBlameAppUtils.h"
 #include "FileTextLines.h"
 #include "UniCodeUtils.h"
+#include "MenuEncode.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +53,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_EDIT_COPY,CopySelectedLogToClipboard)
 	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
+	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, 2*IDM_FORMAT_ENCODE, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_MOUSEMOVE()
@@ -140,7 +142,10 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 	}
 }
 
+void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
+{
 
+}
 int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 {
 
@@ -2861,4 +2866,10 @@ int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
 			line++;
 	}
 	return -1;
+}
+BOOL CTortoiseGitBlameView::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	return CView::OnCommand(wParam, lParam);
 }

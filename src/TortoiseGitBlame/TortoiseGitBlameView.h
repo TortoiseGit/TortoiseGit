@@ -93,6 +93,7 @@ protected:
 // Generated message map functions
 protected:
 	BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnChangeEncode(UINT nID);
 	afx_msg void OnEditFind();
 	afx_msg void OnEditGoto();
 	afx_msg void OnFilePrintPreview();
@@ -258,6 +259,7 @@ protected:
 	char						*m_Buffer;
 
 	DWORD						m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };
 
 #ifndef _DEBUG  // debug version in TortoiseGitBlameView.cpp

@@ -66,13 +66,17 @@
 #define IDS_GIT_LOG_TAB                 20307
 #define ID_VIEW_NEXT                    20308
 #define ID_VIEW_PREV                    20309
+#define ID_EDIT_ENCODING                32771
+#define ID_EDIT_ENCODE                  32772
+#define ID_EDIT_ENCODE32773             32773
+#define ID_ENCODE_AUTO                  32774
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

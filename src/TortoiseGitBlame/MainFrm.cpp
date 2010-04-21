@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "TortoiseGitBlame.h"
-
+#include "MenuEncode.h"
 #include "MainFrm.h"
 
 #ifdef _DEBUG
@@ -170,8 +170,64 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail(ID_VIEW_APPLOOK_OFF_2007_BLACK);
 	lstBasicCommands.AddTail(ID_VIEW_APPLOOK_OFF_2007_AQUA);
 
+	int ids[]={
+	IDM_FORMAT_WIN_1250	        , 
+	IDM_FORMAT_WIN_1251        ,
+	IDM_FORMAT_WIN_1252        ,
+	IDM_FORMAT_WIN_1253        ,
+	IDM_FORMAT_WIN_1254        ,
+	IDM_FORMAT_WIN_1255        ,
+	IDM_FORMAT_WIN_1256        ,
+	IDM_FORMAT_WIN_1257        ,
+	IDM_FORMAT_WIN_1258        ,
+	IDM_FORMAT_ISO_8859_1      ,
+	IDM_FORMAT_ISO_8859_2      ,
+	IDM_FORMAT_ISO_8859_3      ,
+	IDM_FORMAT_ISO_8859_4      ,
+	IDM_FORMAT_ISO_8859_5      ,
+	IDM_FORMAT_ISO_8859_6      ,
+	IDM_FORMAT_ISO_8859_7      ,
+	IDM_FORMAT_ISO_8859_8      ,
+	IDM_FORMAT_ISO_8859_9      ,
+	IDM_FORMAT_ISO_8859_10     ,
+	IDM_FORMAT_ISO_8859_11     ,
+	IDM_FORMAT_ISO_8859_13     ,
+	IDM_FORMAT_ISO_8859_14     ,
+	IDM_FORMAT_ISO_8859_15     ,
+	IDM_FORMAT_ISO_8859_16     ,
+	IDM_FORMAT_DOS_437         ,
+	IDM_FORMAT_DOS_720         ,
+	IDM_FORMAT_DOS_737         ,
+	IDM_FORMAT_DOS_775         ,
+	IDM_FORMAT_DOS_850         ,
+	IDM_FORMAT_DOS_852         ,
+	IDM_FORMAT_DOS_855         ,
+	IDM_FORMAT_DOS_857         ,
+	IDM_FORMAT_DOS_858         ,
+	IDM_FORMAT_DOS_860         ,
+	IDM_FORMAT_DOS_861         ,
+	IDM_FORMAT_DOS_862         ,
+	IDM_FORMAT_DOS_863         ,
+	IDM_FORMAT_DOS_865         ,
+	IDM_FORMAT_DOS_866         ,
+	IDM_FORMAT_DOS_869         ,
+	IDM_FORMAT_BIG5            ,
+	IDM_FORMAT_GB2312          ,
+	IDM_FORMAT_SHIFT_JIS       ,
+	IDM_FORMAT_KOREAN_WIN      ,
+	IDM_FORMAT_EUC_KR          ,
+	IDM_FORMAT_TIS_620         ,
+	IDM_FORMAT_MAC_CYRILLIC    ,
+	IDM_FORMAT_KOI8U_CYRILLIC  ,
+	IDM_FORMAT_KOI8R_CYRILLIC  ,
+	};
+	
+	for(int i=0;i<sizeof(ids)/sizeof(int);i++)
+	{
+		lstBasicCommands.AddTail(ids[i]);
+	}
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
-
+	
 	return 0;
 }
 
@@ -359,3 +415,10 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
+
+BOOL CMainFrame::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	return CFrameWndEx::OnCommand(wParam, lParam);
+}

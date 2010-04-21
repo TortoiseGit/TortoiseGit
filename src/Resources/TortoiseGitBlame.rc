@@ -11,6 +11,7 @@
 #include "targetver.h"
 #endif
 #include "afxres.h"
+#include "..\TortoiseGitBlame\MenuEncode.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -41,6 +42,7 @@ BEGIN
     "#include ""targetver.h""\r\n"
     "#endif\r\n"
     "#include ""afxres.h""\r\n"
+    "#include ""..\\TortoiseGitBlame\\MenuEncode.h""\r\n"
     "\0"
 END
 
@@ -163,6 +165,106 @@ BEGIN
         MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
         MENUITEM "&Find\tCtrl+F",               ID_EDIT_FIND
         MENUITEM "&Go to\tCtrl+G",              ID_EDIT_GOTO
+        MENUITEM SEPARATOR
+        POPUP "Encode"
+        BEGIN
+            POPUP "Arabic"
+            BEGIN
+                MENUITEM "ISO 8859-6",                  IDM_FORMAT_ISO_8859_6
+                MENUITEM "OEM 720",                     IDM_FORMAT_DOS_720
+                MENUITEM "Windows-1256",                IDM_FORMAT_WIN_1256
+            END
+            POPUP "Baltic"
+            BEGIN
+                MENUITEM "ISO 8859-4",                  IDM_FORMAT_ISO_8859_4
+                MENUITEM "ISO 8859-13",                 IDM_FORMAT_ISO_8859_13
+                MENUITEM "OEM 775",                     IDM_FORMAT_DOS_775
+                MENUITEM "Windows-1257",                IDM_FORMAT_WIN_1257
+            END
+            POPUP "Celtic"
+            BEGIN
+                MENUITEM "ISO 8859-14",                 IDM_FORMAT_ISO_8859_14
+            END
+            POPUP "Cyrillic"
+            BEGIN
+                MENUITEM "ISO 8859-5",                  IDM_FORMAT_ISO_8859_5
+                MENUITEM "KOI8-R",                      IDM_FORMAT_KOI8R_CYRILLIC
+                MENUITEM "KOI8-U",                      IDM_FORMAT_KOI8U_CYRILLIC
+                MENUITEM "Macintosh",                   IDM_FORMAT_MAC_CYRILLIC
+                MENUITEM "OEM 855",                     IDM_FORMAT_DOS_855
+                MENUITEM "OEM 866",                     IDM_FORMAT_DOS_866
+                MENUITEM "Windows-1251",                IDM_FORMAT_WIN_1251
+            END
+            POPUP "Central European"
+            BEGIN
+                MENUITEM "ISO 8859-16",                 IDM_FORMAT_ISO_8859_16
+                MENUITEM "OEM 852",                     IDM_FORMAT_DOS_852
+                MENUITEM "Windows-1250",                IDM_FORMAT_WIN_1250
+            END
+            POPUP "Chinese"
+            BEGIN
+                MENUITEM "Big5 (Traditional)",          IDM_FORMAT_BIG5
+                MENUITEM "GB2312 (Simplified)",         IDM_FORMAT_GB2312
+            END
+            POPUP "Eastern European"
+            BEGIN
+                MENUITEM "ISO 8859-2",                  IDM_FORMAT_ISO_8859_2
+            END
+            POPUP "Greek"
+            BEGIN
+                MENUITEM "ISO 8859-7",                  IDM_FORMAT_ISO_8859_7
+                MENUITEM "OEM 737",                     IDM_FORMAT_DOS_737
+                MENUITEM "OEM 869",                     IDM_FORMAT_DOS_869
+                MENUITEM "Windows-1253",                IDM_FORMAT_WIN_1253
+            END
+            POPUP "Hebrew"
+            BEGIN
+                MENUITEM "ISO 8859-8",                  IDM_FORMAT_ISO_8859_8
+                MENUITEM "OEM 862",                     IDM_FORMAT_DOS_862
+                MENUITEM "Windows-1255",                IDM_FORMAT_WIN_1255
+            END
+            POPUP "Japanese"
+            BEGIN
+                MENUITEM "Shift-JIS",                   IDM_FORMAT_SHIFT_JIS
+            END
+            POPUP "Korean"
+            BEGIN
+                MENUITEM "EUC-KR",                      IDM_FORMAT_EUC_KR
+            END
+            POPUP "North European"
+            BEGIN
+                MENUITEM "OEM 861 : Icelandic",         IDM_FORMAT_DOS_861
+                MENUITEM "OEM 865 : Nordic",            IDM_FORMAT_DOS_865
+            END
+            POPUP "Thai"
+            BEGIN
+                MENUITEM "ISO 8859-11",                 IDM_FORMAT_ISO_8859_11
+                MENUITEM "TIS-620",                     IDM_FORMAT_TIS_620
+            END
+            POPUP "Turkish"
+            BEGIN
+                MENUITEM "ISO 8859-3",                  IDM_FORMAT_ISO_8859_3
+                MENUITEM "ISO 8859-9",                  IDM_FORMAT_ISO_8859_9
+                MENUITEM "OEM 857",                     IDM_FORMAT_DOS_857
+                MENUITEM "Windows-1254",                IDM_FORMAT_WIN_1254
+            END
+            POPUP "Western European"
+            BEGIN
+                MENUITEM "ISO 8859-1",                  IDM_FORMAT_ISO_8859_1
+                MENUITEM "ISO 8859-10",                 IDM_FORMAT_ISO_8859_10
+                MENUITEM "ISO 8859-15",                 IDM_FORMAT_ISO_8859_15
+                MENUITEM "OEM 850",                     IDM_FORMAT_DOS_850
+                MENUITEM "OEM 858",                     IDM_FORMAT_DOS_858
+                MENUITEM "OEM 860 : Portuguese",        IDM_FORMAT_DOS_860
+                MENUITEM "OEM 863 : French",            IDM_FORMAT_DOS_863
+                MENUITEM "OEM-US",                      IDM_FORMAT_DOS_437
+                MENUITEM "Windows-1252",                IDM_FORMAT_WIN_1252
+            END
+            POPUP "Vietnamese"
+            BEGIN
+                MENUITEM "Windows-1258",                IDM_FORMAT_WIN_1258
+            END
+        END
     END
     POPUP "&View"
     BEGIN
