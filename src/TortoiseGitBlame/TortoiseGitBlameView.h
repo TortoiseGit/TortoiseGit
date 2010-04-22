@@ -130,7 +130,7 @@ protected:
     static UINT m_FindDialogMessage;
 public:
 
-	void UpdateInfo();
+	void UpdateInfo(int encode = 0);
 	void FocusOn(GitRev *pRev);
 
 	CSciEditBlame		m_TextView;

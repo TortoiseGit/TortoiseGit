@@ -2,6 +2,8 @@
 
 // Copyright (C) 2003-2008 - TortoiseSVN
 
+// Copyright (C)2003 Don HO <donho@altern.org>
+
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
@@ -53,7 +55,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_EDIT_COPY,CopySelectedLogToClipboard)
 	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
-	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, 2*IDM_FORMAT_ENCODE, OnChangeEncode)
+	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_MOUSEMOVE()
@@ -141,10 +143,69 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 		m_Buffer=NULL;
 	}
 }
+struct EncodingUnit
+{
+	int id;
+	char *name;
+};
 
 void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
 {
+	
+	static EncodingUnit encodings[] = {
+    {1250,  "windows-1250"},                                                                    //IDM_FORMAT_WIN_1250
+    {1251,  "windows-1251"},                                                                    //IDM_FORMAT_WIN_1251
+    {1252,  "windows-1252"},                                                                    //IDM_FORMAT_WIN_1252
+    {1253,  "windows-1253"},                                                                    //IDM_FORMAT_WIN_1253
+    {1254,  "windows-1254"},                                                                    //IDM_FORMAT_WIN_1254
+    {1255,  "windows-1255"},                                                                    //IDM_FORMAT_WIN_1255
+    {1256,  "windows-1256"},                                                                    //IDM_FORMAT_WIN_1256
+    {1257,  "windows-1257"},                                                                    //IDM_FORMAT_WIN_1257
+    {1258,  "windows-1258"},                                                                    //IDM_FORMAT_WIN_1258
+    {28591, "latin1 ISO_8859-1 ISO-8859-1 CP819 IBM819 csISOLatin1 iso-ir-100 l1"},             //IDM_FORMAT_ISO_8859_1 
+    {28592, "latin2 ISO_8859-2 ISO-8859-2 csISOLatin2 iso-ir-101 l2"},                          //IDM_FORMAT_ISO_8859_2 
+    {28593, "latin3 ISO_8859-3 ISO-8859-3 csISOLatin3 iso-ir-109 l3"},                          //IDM_FORMAT_ISO_8859_3 
+    {28594, "latin4 ISO_8859-4 ISO-8859-4 csISOLatin4 iso-ir-110 l4"},                          //IDM_FORMAT_ISO_8859_4 
+    {28595, "cyrillic ISO_8859-5 ISO-8859-5 csISOLatinCyrillic iso-ir-144"},                    //IDM_FORMAT_ISO_8859_5 
+    {28596, "arabic ISO_8859-6 ISO-8859-6 csISOLatinArabic iso-ir-127 ASMO-708 ECMA-114"},      //IDM_FORMAT_ISO_8859_6 
+    {28597, "greek ISO_8859-7 ISO-8859-7 csISOLatinGreek greek8 iso-ir-126 ELOT_928 ECMA-118"}, //IDM_FORMAT_ISO_8859_7 
+    {28598, "hebrew ISO_8859-8 ISO-8859-8 csISOLatinHebrew iso-ir-138"},                        //IDM_FORMAT_ISO_8859_8 
+    {28599, "latin5 ISO_8859-9 ISO-8859-9 csISOLatin5 iso-ir-148 l5"},                          //IDM_FORMAT_ISO_8859_9 
+    {28600, "latin6 ISO_8859-10 ISO-8859-10 csISOLatin6 iso-ir-157 l6"},                        //IDM_FORMAT_ISO_8859_10
+    {28601, "ISO_8859-11 ISO-8859-11"},                                                         //IDM_FORMAT_ISO_8859_11
+    {28603, "ISO_8859-13 ISO-8859-13"},                                                         //IDM_FORMAT_ISO_8859_13
+    {28604, "iso-celtic latin8 ISO_8859-14 ISO-8859-14 18 iso-ir-199"},                         //IDM_FORMAT_ISO_8859_14
+    {28605, "Latin-9 ISO_8859-15 ISO-8859-15"},                                                 //IDM_FORMAT_ISO_8859_15
+    {28606, "latin10 ISO_8859-16 ISO-8859-16 110 iso-ir-226"},                                  //IDM_FORMAT_ISO_8859_16
+    {437,   "IBM437 cp437 437 csPC8CodePage437"},                                               //IDM_FORMAT_DOS_437
+	{720,   "IBM720 cp720 oem720 720"},                                                         //IDM_FORMAT_DOS_720
+	{737,   "IBM737 cp737 oem737 737"},                                                         //IDM_FORMAT_DOS_737
+	{775,   "IBM775 cp775 oem775 775"},                                                         //IDM_FORMAT_DOS_775
+	{850,   "IBM850 cp850 oem850 850"},                                                         //IDM_FORMAT_DOS_850
+	{852,   "IBM852 cp852 oem852 852"},                                                         //IDM_FORMAT_DOS_852
+	{855,   "IBM855 cp855 oem855 855 csIBM855"},                                                //IDM_FORMAT_DOS_855
+	{857,   "IBM857 cp857 oem857 857"},                                                         //IDM_FORMAT_DOS_857
+	{858,   "IBM858 cp858 oem858 858"},                                                         //IDM_FORMAT_DOS_858
+	{860,   "IBM860 cp860 oem860 860"},                                                         //IDM_FORMAT_DOS_860
+	{861,   "IBM861 cp861 oem861 861"},                                                         //IDM_FORMAT_DOS_861
+	{862,   "IBM862 cp862 oem862 862"},                                                         //IDM_FORMAT_DOS_862
+	{863,   "IBM863 cp863 oem863 863"},                                                         //IDM_FORMAT_DOS_863
+	{865,   "IBM865 cp865 oem865 865"},                                                         //IDM_FORMAT_DOS_865
+	{866,   "IBM866 cp866 oem866 866"},                                                         //IDM_FORMAT_DOS_866
+	{869,   "IBM869 cp869 oem869 869"},                                                         //IDM_FORMAT_DOS_869
+    {950,   "big5 csBig5"},                                                                     //IDM_FORMAT_BIG5
+    {936,   "gb2312 gbk csGB2312"},                                                             //IDM_FORMAT_GB2312
+    {932,   "Shift_JIS MS_Kanji csShiftJIS csWindows31J"},                                      //IDM_FORMAT_SHIFT_JIS
+    {949,   "windows-949 korean"},                                                              //IDM_FORMAT_KOREAN_WIN
+    {51949, "euc-kr csEUCKR"},                                                                  //IDM_FORMAT_EUC_KR
+    {874,   "tis-620"},                                                                         //IDM_FORMAT_TIS_620
+    {10007, "x-mac-cyrillic xmaccyrillic"},                                                     //IDM_FORMAT_MAC_CYRILLIC
+    {21866, "koi8_u"},                                                                          //IDM_FORMAT_KOI8U_CYRILLIC
+    {20866, "koi8_r csKOI8R"}                                                                   //IDM_FORMAT_KOI8R_CYRILLIC
 
+};
+	if(nId >= IDM_FORMAT_ENCODE && nId <= IDM_FORMAT_ENCODE_END)
+		this->UpdateInfo(encodings[nId - IDM_FORMAT_ENCODE].id);
 }
 int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 {
@@ -1125,7 +1186,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			//}
 
 			CString str;
-			if(m_ID[i]>=0)
+			if(i<m_ID.size() && m_ID[i]>=0)
 				str.Format(_T("%d"),m_ID[i]);
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
@@ -2447,7 +2508,7 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 	return GetACP();
 }
 
-void CTortoiseGitBlameView::UpdateInfo()
+void CTortoiseGitBlameView::UpdateInfo(int Encode)
 {
 	BYTE_VECTOR &data = GetDocument()->m_BlameData;
 	CString one;
@@ -2474,7 +2535,7 @@ void CTortoiseGitBlameView::UpdateInfo()
 	SendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
 	
 	int current = 0;
-	int encoding = 0;
+	int encoding = Encode;
 	while( pos>=0 && current >=0 && pos<data.size() )
 	{
 		current = data.findData((const BYTE*)"\n",1,pos);
@@ -2488,7 +2549,7 @@ void CTortoiseGitBlameView::UpdateInfo()
 
 		CGitHash hash;
 		hash.ConvertFromStrA((char*)&data[pos]);
-		m_CommitHash.push_back(hash);
+		
 
 		int start=0;
 		start=data.findData((const BYTE*)")",1,pos + 40);
@@ -2498,9 +2559,13 @@ void CTortoiseGitBlameView::UpdateInfo()
 			int bomoffset = 0;
 			CStringA stra;
 			stra.Empty();
-			data[current] = 0;
 
-			if( pos <40 )
+			if(current>=0)
+				data[current] = 0;
+			else
+				data.push_back(0);
+
+			if( pos <40 && encoding==0)
 			{ 
 				// first line
 				encoding = GetEncode( &data[start+2], data.size() - start -2, &bomoffset);
@@ -2532,6 +2597,9 @@ void CTortoiseGitBlameView::UpdateInfo()
 			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)stra);
 			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n\0\0\0");
 
+			if(current>=0)
+				data[current] = '\n';
+			
 		}
 
 		int id;
@@ -2560,6 +2628,7 @@ void CTortoiseGitBlameView::UpdateInfo()
 			m_Authors.push_back(hash.ToString().Left(6));
 		}
 
+		m_CommitHash.push_back(hash);
 		pos = current+1;
 	}
 
