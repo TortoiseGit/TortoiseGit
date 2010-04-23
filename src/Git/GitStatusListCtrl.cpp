@@ -5027,9 +5027,11 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 	TCHAR buf[100];
 	if (GetSelectedCount() == 0)
 		return false;
+	
 	// first add the column titles as the first line
-	temp.LoadString(IDS_STATUSLIST_COLFILE);
-	sClipboard = temp;
+	// We needn't head when only path copy
+	//temp.LoadString(IDS_STATUSLIST_COLFILE);
+	//sClipboard = temp;
 
     DWORD selection = 0;
     for (int i = 0, count = m_ColumnManager.GetColumnCount(); i < count; ++i)
@@ -5042,7 +5044,8 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
                 selection += 1 << i;
         }
 
-	sClipboard += _T("\r\n");
+	if(dwCols)
+		sClipboard += _T("\r\n");
 
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
