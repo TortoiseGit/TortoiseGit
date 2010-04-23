@@ -207,6 +207,23 @@
 			the box at the bottom.
 		</para>
 	</sect3>
+	
+	<sect3 id="tsvn-dug-settings-look-feel">
+		<title>Set Extend Menu Item</title>
+		<?dbhh topicname="HIDD_SETTINGSEXTMENU"?>
+		<para>
+			<figure id="tsvn-dug-settings-ext-menu">
+				<title>The Settings Dialog, Set Extend Menu Item</title>
+				<graphic fileref="../images/SettingsExtendMenu.png"/>
+			</figure>
+			This page allows you to specify which of the TortoiseGit context menu
+			entries will show up in the extend context menu(press shift to show it), 
+			and which will appear in the normal context menu. 
+			This config will help reduce the context menu number at normal usage case
+			according to your usage module. 
+		</para>
+	</sect3>
+	
 	<sect3 id="tsvn-dug-settings-dialogs">
 		<title>TortoiseGit Dialog Settings 1</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS"?>
