@@ -11,6 +11,28 @@
 				<graphic fileref="../images/SettingsGitConfig.png"/>
 			</figure>
 		</para>
+		<para> Set git basic configuration </para>
+		<para> <guilabel>AutoCrlf</guilabel>
+			If true, makes git convert CRLF at the end of lines in text files
+			to LF when reading from the filesystem, and convert in reverse when
+			writing to the filesystem. The variable can be set to input,
+			in which case the conversion happens only while reading from
+			the filesystem but files are written out with LF at the end of lines. 
+			A file is considered "text" (i.e. be subjected to the autocrlf mechanism) 
+			based on the file's crlf attribute, or if crlf is unspecified, 
+			based on the file's contents.
+		</para>
+		<para> <guilabel>SafeCrlf</guilabel>
+			If true, makes git check if converting CRLF as controlled by core.autocrlf is reversible.
+			Git will verify if a command modifies a file in the work tree either directly or indirectly. 
+			For example, committing a file followed by checking out the same file should yield the original file in the work tree. 
+			If this is not the case for the current setting of core.autocrlf, git will reject the file. 
+			The variable can be set to "warn", 
+			in which case git will only warn about an irreversible conversion but continue the operation.
+		</para>
+		<para> <guilabel>Save as Global</guilabel>
+			For writing options: write to global ~/.gitconfig file rather than the repository .git/config.
+		</para>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-remote">
 		<title>Remote</title>
