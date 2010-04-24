@@ -88,6 +88,8 @@ protected:
 
 	CWinThread*				m_pThread;	
 
+	volatile LONG		m_bBlock;
+
 	void		ParserCmdOutput(char ch);
 
 	virtual void LocalBranchChange(){FetchOutList();};
@@ -188,6 +190,7 @@ public:
 	afx_msg void OnBnClickedButtonCommit();
 protected:
 	virtual void OnOK();
+	void	Refresh();
 public:
 	afx_msg void OnBnClickedButtonSubmodule();
 };

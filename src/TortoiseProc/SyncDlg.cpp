@@ -41,6 +41,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_CmdOutCurrentPos=0;
 	m_bAutoLoadPuttyKey = CAppUtils::IsSSHPutty();
 	m_bForce=false;
+	m_bBlock = false;
 }
 
 CSyncDlg::~CSyncDlg()
@@ -215,10 +216,13 @@ void CSyncDlg::OnBnClickedButtonPull()
 		cmd=_T("git.exe remote update");
 		m_GitCmdList.push_back(cmd);
 
+		InterlockedExchange(&m_bBlock, TRUE);
+
 		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
 		if (m_pThread==NULL)
 		{
 		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+			InterlockedExchange(&m_bBlock, FALSE);
 		}
 		else
 		{
@@ -727,9 +731,30 @@ void CSyncDlg::OnBnClickedButtonManage()
 	CAppUtils::LaunchRemoteSetting();
 }
 
+void CSyncDlg::Refresh()
+{
+	theApp.DoWaitCursor(1);
+	m_OutLogList.ShowText(_T("Refresh ..."));
+	this->FetchOutList(true);
+	theApp.DoWaitCursor(-1);
+}
+
 BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+		case VK_F5:
+			{
+				if (m_bBlock)
+					return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+				Refresh();
+			}
+			break;
+		}
+	}
 	m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
 }
@@ -831,6 +856,7 @@ void CSyncDlg::OnCbnEditchangeComboboxexUrl()
 UINT CSyncDlg::ProgressThread()
 {
 	m_GitCmdStatus=CProgressDlg::RunCmdList(this,m_GitCmdList,true,NULL,&this->m_bAbort);
+	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }
 
