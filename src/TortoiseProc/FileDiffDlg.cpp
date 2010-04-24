@@ -300,6 +300,7 @@ UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
 UINT CFileDiffDlg::DiffThread()
 {
 	bool bSuccess = true;
+	
 	RefreshCursor();
 	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
 	m_cFileList.DeleteAllItems();
@@ -989,6 +990,17 @@ void CFileDiffDlg::SetURLLabels(int mask)
 			CAppUtils::FormatDateAndTime( m_rev2.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev2.m_AuthorName);
 	}
 
+	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base)"));
+	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1"));
+
+	if( (mask&0x3) == 0x3)
+		if(m_rev2.m_CommitterDate > m_rev1.m_CommitterDate)
+		{
+			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base) (Commit Date New)"));
+		}else
+		{
+			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1(Commit Data New)"));	
+		}
 }
 
 void CFileDiffDlg::ClearURLabels(int mask)
@@ -1288,7 +1300,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			this->m_rev1=gitrev;
 			mask |= 0x1;
-			this->SetURLLabels(0x1);
+			
 		}
 
 		this->m_ctrRev2Edit.GetWindowText(str);
@@ -1297,11 +1309,13 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			this->m_rev2=gitrev;
 			mask |= 0x2;
-			this->SetURLLabels(0x2);
 		}
+
+		this->SetURLLabels(mask);
 		
 		if(mask == 0x3)
 		{
+			
 			InterlockedExchange(&m_bThreadRunning, TRUE);
 			if (AfxBeginThread(DiffThreadEntry, this)==NULL)
 			{
