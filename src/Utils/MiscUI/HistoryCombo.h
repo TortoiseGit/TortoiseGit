@@ -44,6 +44,7 @@ public:
 	CHistoryCombo(BOOL bAllowSortStyle = FALSE);
 	virtual ~CHistoryCombo();
 
+	BOOL m_bWantReturn;
 // Operations
 public:
 	/**
@@ -52,6 +53,7 @@ public:
 	 * position, otherwise add it to the end of the list.
 	 */
 	int AddString(CString str, INT_PTR pos = -1);
+
 	void DisableTooltip(){m_bDyn = FALSE;} //because rebase need disable combox tooltip to show version info
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -124,7 +126,7 @@ protected:
 	 * It must return true to prevent the default processing for the
 	 * return key. The default implementation returns false.
 	 */
-	virtual bool OnReturnKeyPressed() { return false; }
+	virtual bool OnReturnKeyPressed() { return m_bWantReturn; }
 
 	/**
 	 * Removes the selected item from the combo box and updates

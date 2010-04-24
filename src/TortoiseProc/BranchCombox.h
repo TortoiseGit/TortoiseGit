@@ -151,7 +151,11 @@ protected:
 		STRING_VECTOR list;
 		list.clear();
 		int current;
+		m_ctrlLocalBranch.Reset();
+		m_ctrlRemoteBranch.Reset();
+
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_LOCAL);
+		
 		m_ctrlLocalBranch.AddString(list);
 
 		CString currentBranch = g_Git.GetSymbolicRef();

@@ -721,6 +721,10 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
 		
+
+	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
+	m_ctrlURL.m_bWantReturn = TRUE;
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -734,6 +738,20 @@ void CSyncDlg::OnBnClickedButtonManage()
 void CSyncDlg::Refresh()
 {
 	theApp.DoWaitCursor(1);
+	
+	CString local;
+	CString remote;
+	CString url;
+	this->m_ctrlLocalBranch.GetWindowText(local);
+	this->m_ctrlRemoteBranch.GetWindowText(remote);
+	this->m_ctrlURL.GetWindowText(url);
+
+	this->LoadBranchInfo();
+
+	this->m_ctrlLocalBranch.AddString(local);
+	this->m_ctrlRemoteBranch.AddString(remote);
+	this->m_ctrlURL.AddString(url);
+
 	m_OutLogList.ShowText(_T("Refresh ..."));
 	this->FetchOutList(true);
 	theApp.DoWaitCursor(-1);
@@ -746,6 +764,7 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		switch (pMsg->wParam)
 		{
+		
 		case VK_F5:
 			{
 				if (m_bBlock)

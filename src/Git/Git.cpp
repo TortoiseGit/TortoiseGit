@@ -388,7 +388,8 @@ CString CGit::StripRefName(CString refName)
 		refName = refName.Mid(11);
 	else if(wcsncmp(refName, L"refs/", 5) == 0)
 		refName = refName.Mid(5);
-	return refName;
+	int start =0;
+	return refName.Tokenize(_T("\n"),start);
 }
 
 int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut)

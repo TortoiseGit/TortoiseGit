@@ -35,6 +35,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	m_hWndToolTip = NULL;
 	m_ttShown = FALSE;
 	m_bDyn = FALSE;
+	m_bWantReturn = FALSE;
 }
 
 CHistoryCombo::~CHistoryCombo()
