@@ -38,6 +38,9 @@
 #define IDC_OUT_LOGLIST		0x5
 #define IDC_OUT_CHANGELIST	0x6
 
+#define IDT_INPUT		108
+
+
 class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
 	DECLARE_DYNAMIC(CSyncDlg)
@@ -178,13 +181,14 @@ public:
 	afx_msg void OnBnClickedButtonPush();
 	afx_msg void OnBnClickedButtonApply();
 	afx_msg void OnBnClickedButtonEmail();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CProgressCtrl m_ctrlProgress;
 	CAnimateCtrl m_ctrlAnimate;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButtonManage();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnCbnEditchangeComboboxexUrl();
+	afx_msg void OnCbnEditchangeComboboxex();
 
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();

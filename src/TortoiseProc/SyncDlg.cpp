@@ -73,10 +73,12 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_MANAGE, &CSyncDlg::OnBnClickedButtonManage)
 	BRANCH_COMBOX_EVENT
 	ON_NOTIFY(CBEN_ENDEDIT, IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbenEndeditComboboxexUrl)
-	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxexUrl)
+	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxex)
+	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_REMOTE_BRANCH, &CSyncDlg::OnCbnEditchangeComboboxex)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDC_BUTTON_COMMIT, &CSyncDlg::OnBnClickedButtonCommit)
 	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -866,9 +868,12 @@ void CSyncDlg::OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CSyncDlg::OnCbnEditchangeComboboxexUrl()
+void CSyncDlg::OnCbnEditchangeComboboxex()
 {
-	this->FetchOutList();
+	SetTimer(IDT_INPUT, 1000, NULL);
+	this->m_OutLogList.ShowText(_T("Wait for input"));
+
+	//this->FetchOutList();
 	// TODO: Add your control notification handler code here
 }
 
@@ -1004,4 +1009,14 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 		m_pThread->ResumeThread();
 	}
 
+}
+
+
+void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if( nIDEvent == IDT_INPUT)
+	{
+		KillTimer(IDT_INPUT);
+		this->FetchOutList(true);
+	}
 }
