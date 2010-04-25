@@ -220,20 +220,31 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 void CGitPropertyPage::InitWorkfileView()
 {
 	CString username;
+	CGit git;
+	if( filenames.size() ==0)
+		return;
+
+	CTGitPath path(filenames.front().c_str());
+	CString ProjectTopDir;
+
+	if(!path.HasAdminDir(&ProjectTopDir))
+		return;
+
+	git.SetCurrentDir(ProjectTopDir);
 	//can't git.exe when create process
-	g_Git.Run(_T("tgit config user.name"),&username,CP_ACP);
+	git.Run(_T("git.exe config user.name"),&username,CP_ACP);
 	CString useremail;
-	g_Git.Run(_T("tgit config user.email"),&useremail,CP_ACP);
+	git.Run(_T("git.exe config user.email"),&useremail,CP_ACP);
 	CString autocrlf;
-	g_Git.Run(_T("tgit config core.autocrlf"),&autocrlf,CP_ACP);
+	git.Run(_T("git.exe config core.autocrlf"),&autocrlf,CP_ACP);
 	CString safecrlf;
-	g_Git.Run(_T("tgit config core.safecrlf"),&safecrlf,CP_ACP);
+	git.Run(_T("git.exe config core.safecrlf"),&safecrlf,CP_ACP);
 
 	CString branch;
 	CString headhash;
 	CString remotebranch;
 
-	g_Git.Run(_T("tgit symbolic-ref HEAD"),&branch,CP_ACP);
+	git.Run(_T("git.exe symbolic-ref HEAD"),&branch,CP_ACP);
 	CString cmd,log;
 
 	if(!branch.IsEmpty())
@@ -246,10 +257,10 @@ void CGitPropertyPage::InitWorkfileView()
 			branch=branch.Tokenize(_T("\n"),start);
 			start=0;
 			branch=branch.Tokenize(_T("\r"),start);
-			cmd.Format(_T("tgit config branch.%s.merge"),branch);
-			g_Git.Run(cmd,&remotebranch,CP_ACP);
-			cmd.Format(_T("tgit config branch.%s.remote"),branch);
-			g_Git.Run(cmd,&remote,CP_ACP);
+			cmd.Format(_T("git.exe config branch.%s.merge"),branch);
+			git.Run(cmd,&remotebranch,CP_ACP);
+			cmd.Format(_T("git.exe config branch.%s.remote"),branch);
+			git.Run(cmd,&remote,CP_ACP);
 			if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
 			{
 				remotebranch=remotebranch.Mid(11);
@@ -262,14 +273,14 @@ void CGitPropertyPage::InitWorkfileView()
 	BYTE_VECTOR logout;
 
 	
-	cmd=_T("tgit log -z --topo-order -n1 --parents --pretty=format:\"");
+	cmd=_T("git.exe log -z --topo-order -n1 --parents --pretty=format:\"");
 	
-	g_Git.BuildOutputFormat(log,true);
+	git.BuildOutputFormat(log,true);
 
 	cmd += log;
 	cmd += CString(_T("\"  "));
 
-	g_Git.Run(cmd,&logout);
+	git.Run(cmd,&logout);
 	GitRev rev;
 	rev.ParserFromLog(logout);
 
@@ -308,10 +319,13 @@ void CGitPropertyPage::InitWorkfileView()
 		cmd+=relatepath.GetGitPathString();	
 		cmd+=_T("\"");
 
-		logout.clear();
-		g_Git.Run(cmd,&logout);
-		rev.Clear();
-		rev.ParserFromLog(logout);
+		if(! relatepath.GetGitPathString().IsEmpty())
+		{
+			logout.clear();
+			git.Run(cmd,&logout);
+			rev.Clear();
+			rev.ParserFromLog(logout);
+		}
 
 		SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());
 		SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.m_Subject);
@@ -323,151 +337,6 @@ void CGitPropertyPage::InitWorkfileView()
 
 	}
 
-#if 0
-	GitStatus svn = GitStatus();
-	TCHAR tbuf[MAX_STRING_LENGTH];
-	if (filenames.size() == 1)
-	{
-		if (svn.GetStatus(CTGitPath(filenames.front().c_str()))>(-2))
-		{
-			TCHAR buf[MAX_STRING_LENGTH];
-			__time64_t	time;
-			if (svn.status->entry != NULL)
-			{
-				LoadLangDll();
-				if (svn.status->text_status == svn_wc_status_added)
-				{
-					// disable the "show log" button for added files
-					HWND showloghwnd = GetDlgItem(m_hwnd, IDC_SHOWLOG);
-					if (GetFocus() == showloghwnd)
-						::SendMessage(m_hwnd, WM_NEXTDLGCTL, 0, FALSE);
-					::EnableWindow(showloghwnd, FALSE);
-				}
-				else
-				{
-					_stprintf_s(buf, MAX_STRING_LENGTH, _T("%d"), svn.status->entry->revision);
-					SetDlgItemText(m_hwnd, IDC_REVISION, buf);
-				}
-				if (svn.status->entry->url)
-				{
-					size_t len = strlen(svn.status->entry->url);
-					char * unescapedurl = new char[len+1];
-					strcpy_s(unescapedurl, len+1, svn.status->entry->url);
-					CPathUtils::Unescape(unescapedurl);
-					SetDlgItemText(m_hwnd, IDC_REPOURL, UTF8ToWide(unescapedurl).c_str());
-					if (strcmp(unescapedurl, svn.status->entry->url))
-					{
-						ShowWindow(GetDlgItem(m_hwnd, IDC_ESCAPEDURLLABEL), SW_SHOW);
-						ShowWindow(GetDlgItem(m_hwnd, IDC_REPOURLUNESCAPED), SW_SHOW);
-						SetDlgItemText(m_hwnd, IDC_REPOURLUNESCAPED, UTF8ToWide(svn.status->entry->url).c_str());
-					}
-					else
-					{
-						ShowWindow(GetDlgItem(m_hwnd, IDC_ESCAPEDURLLABEL), SW_HIDE);
-						ShowWindow(GetDlgItem(m_hwnd, IDC_REPOURLUNESCAPED), SW_HIDE);
-					}
-					delete [] unescapedurl;
-				}
-				else
-				{
-					ShowWindow(GetDlgItem(m_hwnd, IDC_ESCAPEDURLLABEL), SW_HIDE);
-					ShowWindow(GetDlgItem(m_hwnd, IDC_REPOURLUNESCAPED), SW_HIDE);
-				}
-				if (svn.status->text_status != svn_wc_status_added)
-				{
-					_stprintf_s(buf, MAX_STRING_LENGTH, _T("%d"), svn.status->entry->cmt_rev);
-					SetDlgItemText(m_hwnd, IDC_CREVISION, buf);
-					time = (__time64_t)svn.status->entry->cmt_date/1000000L;
-					Time64ToTimeString(time, buf, MAX_STRING_LENGTH);
-					SetDlgItemText(m_hwnd, IDC_CDATE, buf);
-				}
-				if (svn.status->entry->cmt_author)
-					SetDlgItemText(m_hwnd, IDC_AUTHOR, UTF8ToWide(svn.status->entry->cmt_author).c_str());
-				GitStatus::GetStatusString(g_hResInst, svn.status->text_status, buf, sizeof(buf)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
-				SetDlgItemText(m_hwnd, IDC_TEXTSTATUS, buf);
-				GitStatus::GetStatusString(g_hResInst, svn.status->prop_status, buf, sizeof(buf)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
-				SetDlgItemText(m_hwnd, IDC_PROPSTATUS, buf);
-				time = (__time64_t)svn.status->entry->text_time/1000000L;
-				Time64ToTimeString(time, buf, MAX_STRING_LENGTH);
-				SetDlgItemText(m_hwnd, IDC_TEXTDATE, buf);
-				time = (__time64_t)svn.status->entry->prop_time/1000000L;
-				Time64ToTimeString(time, buf, MAX_STRING_LENGTH);
-				SetDlgItemText(m_hwnd, IDC_PROPDATE, buf);
-
-				if (svn.status->entry->lock_owner)
-					SetDlgItemText(m_hwnd, IDC_LOCKOWNER, UTF8ToWide(svn.status->entry->lock_owner).c_str());
-				time = (__time64_t)svn.status->entry->lock_creation_date/1000000L;
-				Time64ToTimeString(time, buf, MAX_STRING_LENGTH);
-				SetDlgItemText(m_hwnd, IDC_LOCKDATE, buf);
-	
-				if (svn.status->entry->uuid)
-					SetDlgItemText(m_hwnd, IDC_REPOUUID, UTF8ToWide(svn.status->entry->uuid).c_str());
-				if (svn.status->entry->changelist)
-					SetDlgItemText(m_hwnd, IDC_CHANGELIST, UTF8ToWide(svn.status->entry->changelist).c_str());
-				GitStatus::GetDepthString(g_hResInst, svn.status->entry->depth, buf, sizeof(buf)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
-				SetDlgItemText(m_hwnd, IDC_DEPTHEDIT, buf);
-
-				if (svn.status->entry->checksum)
-					SetDlgItemText(m_hwnd, IDC_CHECKSUM, UTF8ToWide(svn.status->entry->checksum).c_str());
-
-				if (svn.status->locked)
-					MAKESTRING(IDS_YES);
-				else
-					MAKESTRING(IDS_NO);
-				SetDlgItemText(m_hwnd, IDC_LOCKED, stringtablebuffer);
-
-				if (svn.status->copied)
-					MAKESTRING(IDS_YES);
-				else
-					MAKESTRING(IDS_NO);
-				SetDlgItemText(m_hwnd, IDC_COPIED, stringtablebuffer);
-
-				if (svn.status->switched)
-					MAKESTRING(IDS_YES);
-				else
-					MAKESTRING(IDS_NO);
-				SetDlgItemText(m_hwnd, IDC_SWITCHED, stringtablebuffer);
-			} // if (svn.status->entry != NULL)
-		} // if (svn.GetStatus(CTGitPath(filenames.front().c_str()))>(-2))
-	} // if (filenames.size() == 1) 
-	else if (filenames.size() != 0)
-	{
-		//deactivate the show log button
-		HWND logwnd = GetDlgItem(m_hwnd, IDC_SHOWLOG);
-		if (GetFocus() == logwnd)
-			::SendMessage(m_hwnd, WM_NEXTDLGCTL, 0, FALSE);
-		::EnableWindow(logwnd, FALSE);
-		//get the handle of the list view
-		if (svn.GetStatus(CTGitPath(filenames.front().c_str()))>(-2))
-		{
-			if (svn.status->entry != NULL)
-			{
-				LoadLangDll();
-				if (svn.status->entry->url)
-				{
-					CPathUtils::Unescape((char*)svn.status->entry->url);
-					_tcsncpy_s(tbuf, MAX_STRING_LENGTH, UTF8ToWide(svn.status->entry->url).c_str(), 4095);
-					TCHAR * ptr = _tcsrchr(tbuf, '/');
-					if (ptr != 0)
-					{
-						*ptr = 0;
-					}
-					SetDlgItemText(m_hwnd, IDC_REPOURL, tbuf);
-				}
-				SetDlgItemText(m_hwnd, IDC_LOCKED, _T(""));
-				SetDlgItemText(m_hwnd, IDC_COPIED, _T(""));
-				SetDlgItemText(m_hwnd, IDC_SWITCHED, _T(""));
-
-				SetDlgItemText(m_hwnd, IDC_DEPTHEDIT, _T(""));
-				SetDlgItemText(m_hwnd, IDC_CHECKSUM, _T(""));
-				SetDlgItemText(m_hwnd, IDC_REPOUUID, _T(""));
-
-				ShowWindow(GetDlgItem(m_hwnd, IDC_ESCAPEDURLLABEL), SW_HIDE);
-				ShowWindow(GetDlgItem(m_hwnd, IDC_REPOURLUNESCAPED), SW_HIDE);
-			}
-		}
-	}
-#endif
 }
 
 

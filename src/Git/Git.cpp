@@ -118,11 +118,6 @@ static BOOL FindGitPath()
 CString CGit::ms_LastMsysGitDir;
 CGit g_Git;
 
-// contains system environment that should be used by child processes (RunAsync)
-// initialized by CheckMsysGitDir
-static LPTSTR l_processEnv = NULL;
-
-
 
 CGit::CGit(void)
 {
@@ -130,6 +125,7 @@ CGit::CGit(void)
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
+	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
 }
@@ -179,13 +175,16 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
-	LPTSTR pEnv = l_processEnv;
+	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 	
 	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password. 
 	dwFlags |= DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP; 
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
+
+	if(cmd.Find(_T("git") == 0))
+		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
@@ -633,7 +632,13 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 	si.hStdOutput   =   houtfile; 
 	
-	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,NULL,NULL,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
+	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
+	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
+
+	if(cmd.Find(_T("git") == 0))
+		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
+
+	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;
 		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
@@ -844,12 +849,13 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 BOOL CGit::CheckMsysGitDir()
 {
-	static BOOL bInitialized = FALSE;
-
-	if (bInitialized)
+	if (m_bInitialized)
 	{
 		return TRUE;
 	}
+
+	this->m_Environment.clear();
+	m_Environment.CopyProcessEnvironment();
 
 	TCHAR *oldpath,*home;
 	size_t homesize,size,httpsize;
@@ -859,12 +865,11 @@ BOOL CGit::CheckMsysGitDir()
 	if (!homesize)
 	{
 		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
-		_tputenv_s(_T("HOME"),home);
+		m_Environment.SetEnv(_T("HOME"),home);
 		free(home);
 	}
 	CString str;
 
-#ifndef _TORTOISESHELL
 	//set http_proxy
 	_tgetenv_s(&httpsize, NULL, 0, _T("http_proxy"));
 	if (!httpsize)
@@ -893,7 +898,7 @@ BOOL CGit::CheckMsysGitDir()
 			{
 				http_proxy +=_T(":")+regServerport_copy;
 			}
-			_tputenv_s(_T("http_proxy"),http_proxy);
+			m_Environment.SetEnv(_T("http_proxy"),(LPTSTR)http_proxy.GetBuffer());
 		}
 	}
 	//setup ssh client
@@ -901,14 +906,14 @@ BOOL CGit::CheckMsysGitDir()
 
 	if(!sshclient.IsEmpty())
 	{
-		_tputenv_s(_T("GIT_SSH"),sshclient);
+		m_Environment.SetEnv(_T("GIT_SSH"),sshclient.GetBuffer());
 		
 		//Setup SVN_SSH
 		CString ssh=sshclient;
 		ssh.Replace(_T("/"),_T("\\"));
 		ssh.Replace(_T("\\"),_T("\\\\"));
 		ssh=CString(_T("\""))+ssh+_T('\"');
-		_tputenv_s(_T("SVN_SSH"),ssh);
+		m_Environment.SetEnv(_T("SVN_SSH"),ssh.GetBuffer());
 
 	}else
 	{
@@ -917,14 +922,14 @@ BOOL CGit::CheckMsysGitDir()
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
 			_tcscpy(ptr + 1, _T("TortoisePlink.exe"));
-			_tputenv_s(_T("GIT_SSH"), sPlink);
+			m_Environment.SetEnv(_T("GIT_SSH"), sPlink);
 
 			//Setup SVN_SSH
 			CString ssh=sPlink;
 			ssh.Replace(_T("/"),_T("\\"));
 			ssh.Replace(_T("\\"),_T("\\\\"));
 			ssh=CString(_T("\""))+ssh+_T('\"');
-			_tputenv_s(_T("SVN_SSH"),ssh);
+			m_Environment.SetEnv(_T("SVN_SSH"),ssh.GetBuffer());
 		}
 	}
 
@@ -935,15 +940,9 @@ BOOL CGit::CheckMsysGitDir()
 		if (ptr) 
 		{
 			_tcscpy(ptr + 1, _T("SshAskPass.exe"));
-			_tputenv_s(_T("DISPLAY"),_T(":9999"));
-			_tputenv_s(_T("SSH_ASKPASS"),sAskPass);
+			m_Environment.SetEnv(_T("DISPLAY"),_T(":9999"));
+			m_Environment.SetEnv(_T("SSH_ASKPASS"),sAskPass);
 		}
-	}
-	// search PATH if git/bin directory is alredy present
-	if ( FindGitPath() )
-	{
-		bInitialized = TRUE;
-		return TRUE;
 	}
 
 	// add git/bin path to PATH
@@ -958,16 +957,24 @@ BOOL CGit::CheckMsysGitDir()
 		{
 			str += (str[str.GetLength()-1] != '\\') ? "\\bin" : "bin";
 			msysdir=str;
+			CGit::ms_LastMsysGitDir = str;
 			msysdir.write();
 		}
 		else
 		{
+			// search PATH if git/bin directory is alredy present
+			if ( FindGitPath() )
+			{
+				m_bInitialized = TRUE;
+				return TRUE;
+			}
+
 			return false;
 		}
+	}else
+	{
+		CGit::ms_LastMsysGitDir = str;
 	}
-#endif
-	//CGit::m_MsysGitPath=str;
-
 	//set path
 
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
@@ -975,35 +982,16 @@ BOOL CGit::CheckMsysGitDir()
 	CString path;
 	path.Format(_T("%s;%s"),oldpath,str);
 
-	_tputenv_s(_T("PATH"),path);
+	m_Environment.SetEnv(_T("PATH"),path.GetBuffer());
+
+	CString str1 = m_Environment.GetEnv(_T("PATH"));
 
 	CString sOldPath = oldpath;
 	free(oldpath);
 
+ 	m_bInitialized = TRUE;
+	return true;
 
-    if( !FindGitPath() )
-	{
-		if(!homesize)
-		{
-			_tputenv_s(_T("HOME"),_T(""));
-		}
-		return false;
-	}
-	else
-	{
-#ifdef _TORTOISESHELL
-		l_processEnv = GetEnvironmentStrings();
-		// updated environment is now duplicated for use in CreateProcess, restore original PATH for current process
-		_tputenv_s(_T("PATH"),sOldPath);
-		if(!homesize)
-		{
-			_tputenv_s(_T("HOME"),_T(""));
-		}
-#endif
-
-		bInitialized = TRUE;
-		return true;
-	}
 }
 
 
@@ -1322,3 +1310,81 @@ int CGit::RefreshGitIndex()
 	return Run(cmd,&output,CP_ACP);
 }
 
+void CEnvironment::CopyProcessEnvironment()
+{
+	TCHAR *p = GetEnvironmentStrings();
+	while(*p !=0 || *(p+1) !=0)
+		this->push_back(*p++);
+
+	push_back(_T('\0'));
+	push_back(_T('\0'));
+}
+
+CString CEnvironment::GetEnv(TCHAR *name)
+{
+	CString str;
+	for(int i=0;i<size();i++)
+	{
+		str = &(*this)[i];
+		int start =0;
+		CString sname = str.Tokenize(_T("="),start);
+		if(sname.CompareNoCase(name) == 0)
+		{
+			return &(*this)[i+start+1];
+		}
+		i+=str.GetLength();
+	}
+	return _T("");
+}
+
+void CEnvironment::SetEnv(TCHAR *name, TCHAR* value)
+{
+	int i;
+	for( i=0;i<size();i++)
+	{
+		CString str = &(*this)[i];
+		int start =0;
+		CString sname = str.Tokenize(_T("="),start);
+		if(sname.CompareNoCase(name) == 0)
+		{
+			break;
+		}
+		i+=str.GetLength();
+	}
+
+	if(i == size())
+	{
+		i -= 1; // roll back terminate \0\0
+		this->push_back(_T('\0'));
+	}
+
+	CEnvironment::iterator it;
+	it=this->begin();
+	it += i;
+
+	while(*it && i<size())
+	{
+		this->erase(it);
+		it=this->begin();
+		it += i;
+	}
+
+	while(*name)
+	{
+		this->insert(it,*name++);
+		i++;
+		it= begin()+i;
+	}
+
+	this->insert(it, _T('='));
+	i++;
+	it= begin()+i;
+
+	while(*value)
+	{
+		this->insert(it,*value++);
+		i++;
+		it= begin()+i;
+	}
+
+}

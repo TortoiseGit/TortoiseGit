@@ -26,7 +26,13 @@ private:
 };
 
 class CTGitPath;
-
+class CEnvironment:public std::vector<TCHAR> 
+{
+public:
+	void CopyProcessEnvironment();
+	CString GetEnv(TCHAR *name);
+	void SetEnv(TCHAR* name, TCHAR* value);
+};
 class CGit
 {
 private:
@@ -36,6 +42,8 @@ protected:
 	GIT_DIFF m_GitDiff;
 public:
 	CComCriticalSection			m_critGitDllSec;
+
+	CEnvironment m_Environment;
 
 	static BOOL GitPathFileExists(CString &path)
 	{
@@ -82,7 +90,9 @@ public:
 		}
 	}
 
-	static BOOL CheckMsysGitDir();
+	BOOL CheckMsysGitDir();
+	BOOL m_bInitialized;
+
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;
 	unsigned int Hash2int(CString &hash);

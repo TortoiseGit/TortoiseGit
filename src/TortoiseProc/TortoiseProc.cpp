@@ -114,7 +114,7 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 	//CTGitPath path;
 	//path.SetFromGit(_T("src/gpl.txt"));
 	//map.GetFileStatus(_T("D:\\TortoiseGit"),&path, &status);
-	return CGit::CheckMsysGitDir();	
+	return g_Git.CheckMsysGitDir();	
 }
 CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
