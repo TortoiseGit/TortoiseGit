@@ -213,7 +213,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.DeleteAllItems();
 	m_LogList.InsertGitColumn();
 
-	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("LogDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT|SVNSLC_POPREVERT)),false);
+	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("LogDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT)),false);
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 
