@@ -69,6 +69,7 @@ int git_init()
 	char *home;
 	char path[MAX_PATH+1];
 	char *prefix;
+	int ret;
 	size_t homesize,size,httpsize;
 
 	_fmode = _O_BINARY; 
@@ -89,7 +90,14 @@ int git_init()
 
 	git_extract_argv0_path(path);
 	g_prefix = prefix = setup_git_directory();
-	return git_config(git_default_config, NULL);
+	ret = git_config(git_default_config, NULL);
+
+	if (!homesize)
+	{
+		_putenv_s("HOME","");/* clear home evironment to avoid affact third part software*/
+	}
+
+	return ret;
 }
 
 static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR *author, char *pbuff)
