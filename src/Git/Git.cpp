@@ -864,9 +864,15 @@ BOOL CGit::CheckMsysGitDir()
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
 	if (!homesize)
 	{
-		_tdupenv_s(&home,&size,_T("USERPROFILE")); 
-		m_Environment.SetEnv(_T("HOME"),home);
-		free(home);
+		if (   (!_tdupenv_s(&home,&size,_T("USERPROFILE"))) && (home != NULL)  )
+		{
+			m_Environment.SetEnv(_T("HOME"),home);
+			free(home);
+		}
+		else
+		{
+			ATLTRACE("CGit::CheckMsysGitDir Unable to SetEnv HOME\n");
+		}
 	}
 	CString str;
 
