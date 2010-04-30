@@ -32,8 +32,6 @@ bool DiffCommand::Execute()
 //	bool bBlame = !!parser.HasKey(_T("blame"));
 	if (path2.IsEmpty())
 	{
-		g_Git.RefreshGitIndex();
-
 		if (this->orgCmdLinePath.IsDirectory())
 		{
 			CChangedDlg dlg;

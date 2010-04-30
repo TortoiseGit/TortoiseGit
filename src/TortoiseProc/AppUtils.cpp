@@ -2244,8 +2244,6 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 {
 	bool bFailed = true;
 	
-	g_Git.RefreshGitIndex();
-
 	while (bFailed)
 	{
 		bFailed = false;

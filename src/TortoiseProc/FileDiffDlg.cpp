@@ -323,6 +323,9 @@ UINT CFileDiffDlg::DiffThread()
 //	}
 #endif
 
+	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
+		g_Git.RefreshGitIndex();
+
 	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(),m_rev2.m_CommitHash.ToString(),m_arFileList);
 		
 	CString sFilterText;

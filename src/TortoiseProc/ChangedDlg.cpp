@@ -129,6 +129,9 @@ UINT CChangedDlg::ChangedStatusThreadEntry(LPVOID pVoid)
 UINT CChangedDlg::ChangedStatusThread()
 {
 	InterlockedExchange(&m_bBlock, TRUE);
+	
+	g_Git.RefreshGitIndex();
+	
 	m_bCanceled = false;
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 	DialogEnableWindow(IDC_REFRESH, FALSE);
