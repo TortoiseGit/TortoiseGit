@@ -121,7 +121,25 @@ bool CloneCommand::Execute()
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
+		int ret = progress.DoModal();
+
+		if( progress.m_GitStatus == 0)
+		{
+			if(dlg.m_bAutoloadPuttyKeyFile)
+			{
+				g_Git.m_CurrentDir = dlg.m_Directory;
+				CString cmd,out;
+				cmd.Format(_T("git.exe config remote.origin.puttykeyfile \"%s\""),dlg.m_strPuttyKeyFile);
+				if(g_Git.Run(cmd,&out,CP_ACP))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					return FALSE;
+				}
+	
+			}
+			
+		}
+		if(ret == IDOK)
 			return TRUE;
 		
 	}
