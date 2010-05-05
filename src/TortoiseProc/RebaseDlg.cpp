@@ -226,6 +226,12 @@ BOOL CRebaseDlg::OnInitDialog()
 	else
 		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
 
+	
+	if(this->CheckRebaseCondition())
+	{
+		/* Disable Start Rebase */
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
+	}
 
 	return TRUE;
 }
@@ -555,6 +561,19 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 
 BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 {
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+		
+		case VK_F5:
+			{
+				Refresh();
+				return TRUE;
+			}
+			break;
+		}
+	}
 	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
@@ -564,8 +583,19 @@ int CRebaseDlg::CheckRebaseCondition()
 
 	if( !g_Git.CheckCleanWorkTree()  )
 	{
-		CMessageBox::Show(NULL,_T("Rebase Need Clean Working Tree"),_T("TortoiseGit"),MB_OK);
-		return -1;
+		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+		{
+			CString cmd,out;
+			cmd=_T("git.exe stash");
+			this->AddLogString(cmd);
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				return -1;
+			}
+
+		}else
+			return -1;
 	}
 	//Todo Check $REBASE_ROOT
 	//Todo Check $DOTEST
@@ -1413,6 +1443,11 @@ void CRebaseDlg::OnBnClickedRebaseCheckForce()
 	// TODO: Add your control notification handler code here
 	this->UpdateData();
 	this->FetchLogList();
+	if(this->CheckRebaseCondition())
+	{
+		/* Disable Start Rebase */
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
+	}
 }
 
 void CRebaseDlg::OnStnClickedStatusStatic()
@@ -1427,4 +1462,21 @@ void CRebaseDlg::OnBnClickedRebasePostButton()
 	this->m_Branch=this->m_BranchCtrl.GetString();
 
 	this->EndDialog(IDC_REBASE_POST_BUTTON+this->m_PostButton.GetCurrentEntry());
+}
+
+void CRebaseDlg::Refresh()
+{
+	if(this->m_IsCherryPick)
+		return ;
+
+	if(this->m_RebaseStage == CHOOSE_BRANCH )
+	{
+		this->UpdateData();
+		this->FetchLogList();
+		if(this->CheckRebaseCondition())
+		{
+			/* Disable Start Rebase */
+			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
+		}
+	}
 }

@@ -73,6 +73,7 @@ protected:
 	void UpdateCurrentStatus();
 	void ListConflictFile();
 	int  DoRebase();
+	void Refresh();
 	volatile LONG 		m_bThreadRunning;
 	int  RebaseThread();
 	static UINT RebaseThreadEntry(LPVOID pVoid){return ((CRebaseDlg *)pVoid)->RebaseThread();};
