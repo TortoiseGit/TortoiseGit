@@ -2469,8 +2469,13 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	for(int i=0;i<m_selectedPaths.GetCount();i++)
 	{
 		CTGitPath path;
+		int action;
 		path.SetFromWin(g_Git.m_CurrentDir+_T("\\")+m_selectedPaths[i].GetWinPath());
-		delList.AddPath(path);
+		action = m_selectedPaths[i].m_Action;
+		/* rename file can't delete because it needs original file*/
+		if((!(action & CTGitPath::LOGACTIONS_ADDED)) &&
+			(!(action & CTGitPath::LOGACTIONS_REPLACED)))
+			delList.AddPath(path);
 	}
 	if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
 		delList.DeleteAllFiles(true);

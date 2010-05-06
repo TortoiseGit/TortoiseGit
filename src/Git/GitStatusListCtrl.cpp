@@ -3331,8 +3331,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						while ((index = GetNextSelectedItem(pos)) >= 0)
 						{
 							CTGitPath *entry=(CTGitPath *)GetItemData(index);
-							if (entry&&(!(entry->m_Action& CTGitPath::LOGACTIONS_ADDED)))
-								delList.AddPath(*entry);
+							if (entry&&(!(entry->m_Action& CTGitPath::LOGACTIONS_ADDED)) 
+									&& (!(entry->m_Action& CTGitPath::LOGACTIONS_REPLACED)))
+							{
+								CTGitPath fullpath;
+								fullpath.SetFromWin(g_Git.m_CurrentDir+_T("\\")+entry->GetWinPath());
+								delList.AddPath(fullpath);
+							}
 						}
 						if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
 							delList.DeleteAllFiles(true);
