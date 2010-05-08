@@ -574,7 +574,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	#define P_90     m , 0+top
 	#define P_180    x1, h+top
 	#define P_270    m , 2 * h+top
-	#define R_CENTER m - r, h - r+top, m - r+d, h - r+top+d
+	#define R_CENTER m - r, h - r+top, d, d
 
 
 	#define DELTA_UR_B 2*(x1 - m), 2*h +top 
@@ -746,6 +746,8 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	CBrush brush;
 	brush.CreateSolidBrush(col);
 	HBRUSH oldbrush=(HBRUSH)::SelectObject(hdc,(HBRUSH)brush);
+
+	Gdiplus::SolidBrush myBrush(GetGdiColor(col));
 	// center symbol, e.g. rect or ellipse
 	switch (type) {
 	case Lanes::ACTIVE:
@@ -755,7 +757,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
-		::Ellipse(hdc, R_CENTER);
+		graphics.FillEllipse(&myBrush, R_CENTER);
 		//p->drawEllipse(R_CENTER);
 		break;
 	case Lanes::MERGE_FORK:
@@ -765,7 +767,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(col);
 		//p->drawRect(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
-		Rectangle(hdc,R_CENTER);
+		graphics.FillRectangle(&myBrush, R_CENTER);
 		break;
 	case Lanes::UNAPPLIED:
 		// Red minus sign
@@ -773,7 +775,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(Qt::red);
 		//p->drawRect(m - r, h - 1, d, 2);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
-		::Rectangle(hdc,m-r,h-1,d,2);
+		graphics.FillRectangle(&myBrush,m-r,h-1,d,2);
 		break;
 	case Lanes::APPLIED:
 		// Green plus sign
@@ -782,14 +784,14 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->drawRect(m - r, h - 1, d, 2);
 		//p->drawRect(m - 1, h - r, 2, d);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
-		::Rectangle(hdc,m-r,h-1,d,2);
-		::Rectangle(hdc,m-1,h-r,2,d);
+		graphics.FillRectangle(&myBrush,m-r,h-1,d,2);
+		graphics.FillRectangle(&myBrush,m-1,h-r,2,d);
 		break;
 	case Lanes::BOUNDARY:
 		//p->setBrush(back);
 		//p->drawEllipse(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
-		::Ellipse(hdc, R_CENTER);
+		graphics.DrawEllipse(&myPen, R_CENTER);
 		break;
 	case Lanes::BOUNDARY_C:
 	case Lanes::BOUNDARY_R:
@@ -797,7 +799,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(back);
 		//p->drawRect(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
-		::Rectangle(hdc,R_CENTER);
+		graphics.FillRectangle(&myBrush,R_CENTER);
 		break;
 	default:
 		break;
