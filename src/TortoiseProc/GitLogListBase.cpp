@@ -571,9 +571,9 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 	#define P_CENTER m , h+top
 	#define P_0      x2, h+top
-	#define P_90     m , 0+top
+	#define P_90     m , 0+top-1
 	#define P_180    x1, h+top
-	#define P_270    m , 2 * h+top
+	#define P_270    m , 2 * h+top +1
 	#define R_CENTER m - r, h - r+top, d, d
 
 
