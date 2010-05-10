@@ -379,10 +379,126 @@ int CGitIndexFileMap::IsUnderVersionControl(CString &gitdir, CString &path, bool
 	}
 	return 0;
 }
+
+int CGitHeadFileList::GetPackRef(CString &gitdir)
+{
+	CString PackRef =  gitdir;
+	PackRef += _T("\\.git\\packed-refs");
+
+	__int64 mtime;
+	if( g_Git.GetFileModifyTime(PackRef, &mtime))
+	{
+		//packed refs is not existed
+		this->m_PackRefFile.Empty();
+		this->m_PackRefMap.clear();
+		return 0;
+
+	}else if(mtime == m_LastModifyTimePackRef)
+	{
+		return 0;
+
+	}else
+	{
+		this->m_PackRefFile = PackRef;
+		this->m_LastModifyTimePackRef = mtime;
+	}
+
+	this->m_PackRefMap.clear();
+
+	int ret =0;
+	HANDLE hfile = CreateFile(PackRef,
+				GENERIC_READ,
+				FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
+				NULL,
+				OPEN_EXISTING,
+				FILE_ATTRIBUTE_NORMAL,
+				NULL);
+	do
+	{
+		if(hfile == INVALID_HANDLE_VALUE)
+		{
+			ret = -1;
+			break;
+		}
+		
+		int filesize = GetFileSize(hfile,NULL);
+		DWORD size =0;
+		char *buff;
+		buff = new char[filesize];
+
+		ReadFile(hfile,buff,filesize,&size,NULL);
+
+		if(size != filesize)
+		{
+			ret = -1;
+			break;
+		}
+
+		CString hash;
+		CString ref;
+		
+		for(int i=0;i<filesize;i++)
+		{
+			hash.Empty();
+			ref.Empty();
+			if(buff[i] == '#')
+			{
+				while(buff[i] != '\n')
+				{	i++;
+					if( i==filesize)
+						break;
+				}
+				i++;
+			}
+
+			if( i== filesize)
+				break;
+
+			while(buff[i] != ' ')
+			{
+				hash.AppendChar(buff[i]);
+				i++;
+				if(i==filesize)
+					break;
+			}
+
+			i++;
+			if( i== filesize)
+				break;
+
+			while(buff[i] != '\n')
+			{
+				ref.AppendChar(buff[i]);
+				i++;
+				if( i== filesize)
+					break;
+			}
+			
+			i++;
+
+			if( !ref.IsEmpty() )
+			{
+				this->m_PackRefMap[ref] = hash;
+			}
+
+			
+		}
+
+		delete buff;
+
+	}while(0);
+
+	if( hfile != INVALID_HANDLE_VALUE)
+		CloseHandle(hfile);
+
+	return ret;
+
+}
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
 	CString HeadFile = gitdir;
 	HeadFile += _T("\\.git\\HEAD");
+
 	
 	HANDLE hfile=INVALID_HANDLE_VALUE;
 	HANDLE href = INVALID_HANDLE_VALUE;
@@ -432,6 +548,10 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 				m_HeadRefFile.Empty();
 				g_Git.StringAppend(&this->m_HeadRefFile,p,CP_ACP,filesize-4);
+				CString ref = this->m_HeadRefFile;
+				ref=ref.Trim();
+				int start =0;
+				ref=ref.Tokenize(_T("\n"),start);
 				free(p);
 				m_HeadRefFile=gitdir+_T("\\.git\\")+m_HeadRefFile.Trim();
 				m_HeadRefFile.Replace(_T('/'),_T('\\'));
@@ -439,7 +559,18 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 				__int64 time;
 				if(g_Git.GetFileModifyTime(m_HeadRefFile,&time,NULL))
 				{
-					ret = -1;
+					if( GetPackRef(gitdir))
+					{
+						ret = -1;
+						break;
+					}
+					if(this->m_PackRefMap.find(ref) == m_PackRefMap.end())
+					{
+						ret = -1;
+						break;
+					}
+					this ->m_Head = m_PackRefMap[ref];
+					ret =0;
 					break;
 				}
 
@@ -453,7 +584,19 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 				if(href == INVALID_HANDLE_VALUE)
 				{
-					ret = -1;
+					if( GetPackRef(gitdir))
+					{
+						ret = -1;
+						break;
+					}
+
+					if(this->m_PackRefMap.find(ref) == m_PackRefMap.end())
+					{
+						ret = -1;
+						break;
+					}
+					this ->m_Head = m_PackRefMap[ref];
+					ret =0;
 					break;
 				}
 				ReadFile(href,buffer,40,&size,NULL);
@@ -514,6 +657,14 @@ bool CGitHeadFileList::CheckHeadUpdate()
 			return true;
 	}
 
+	if(!this->m_PackRefFile.IsEmpty())
+	{
+		if(g_Git.GetFileModifyTime(m_PackRefFile,&mtime))
+			return true;
+
+		if(mtime != this->m_LastModifyTimePackRef)
+			return true;
+	}
 	return false;
 }
 

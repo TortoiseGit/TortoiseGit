@@ -195,14 +195,23 @@ public:
 
 class CGitHeadFileList:public std::vector<CGitTreeItem>
 {
+private:
+	
+	int GetPackRef(CString &gitdir);
+
 public:
 	std::map<CString,int> m_Map;
 	__time64_t  m_LastModifyTimeHead;
 	__time64_t  m_LastModifyTimeRef;
+	__time64_t	m_LastModifyTimePackRef;
+
 	CString		m_HeadRefFile;
 	CGitHash	m_Head;
 	CString		m_HeadFile;
 	CString		m_Gitdir;
+	CString		m_PackRefFile;
+
+	std::map<CString,CGitHash> m_PackRefMap;
 
 	CGitHash	m_TreeHash; /* buffered tree hash value */
 
@@ -210,7 +219,9 @@ public:
 	{
 		m_LastModifyTimeHead=0;
 		m_LastModifyTimeRef=0;
+		m_LastModifyTimePackRef = 0;
 	}
+
 	int ReadHeadHash(CString gitdir);
 	bool CheckHeadUpdate();
 
