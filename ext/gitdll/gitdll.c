@@ -587,12 +587,18 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context)
 {
 	struct tree * root;
+	int ret;
+	reprepare_packed_git();
 	root = parse_tree_indirect(hash);
 
 	if (!root)
+	{
+		free_all_pack();
 		return -1;
-
-	return read_tree_recursive(root,NULL,NULL,0,NULL,fn,context);
+	}
+	ret = read_tree_recursive(root,NULL,NULL,0,NULL,fn,context);
+	free_all_pack();
+	return ret;
 }
 
 int git_add_exclude(const char *string, const char *base,

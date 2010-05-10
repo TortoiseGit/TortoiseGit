@@ -430,7 +430,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			if(bFetch)
 			{
 				//update single full file status
-				ATLTRACE(_T("Fetch file status %s\n"), path);
+				ATLTRACE(_T("Fetch file status %s\n"), path.GetWinPathString());
 				pGitStatus->GetFileStatus(sProjectRoot, subpaths, &status, true, false,true, GetStatusCallback,this);
 			}else
 			{
