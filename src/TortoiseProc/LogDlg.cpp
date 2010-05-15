@@ -1579,11 +1579,6 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 				return TRUE;
 			}
 		}
-		if (GetFocus()==GetDlgItem(IDC_LOGMSG))
-		{
-			DiffSelectedFile();
-			return TRUE;
-		}
 	}
 	if (m_hAccel && !bSkipAccelerator)
 	{
