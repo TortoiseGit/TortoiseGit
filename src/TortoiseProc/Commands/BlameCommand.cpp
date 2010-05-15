@@ -34,7 +34,8 @@ bool BlameCommand::Execute()
 //	CString options;
 //	dlg.DoModal();
 //	dlg.EndRev = GitRev::REV_HEAD;
-	CAppUtils::LaunchTortoiseBlame(orgCmdLinePath.GetWinPath(), _T(""),_T(""));
+
+	CAppUtils::LaunchTortoiseBlame(orgCmdLinePath.GetWinPath(), parser.GetVal(_T("endrev")) ,_T(""));
 #if 0
 	if (parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")))
 	{
