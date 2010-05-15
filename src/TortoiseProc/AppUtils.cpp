@@ -1972,10 +1972,16 @@ CString CAppUtils::GetClipboardLink()
 CString CAppUtils::ChooseRepository(CString *path)
 {
 	CBrowseFolder browseFolder;
+	CRegString  regLastResopitory = CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\LastRepo"),_T(""));
+
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory;
 	if(path)
 		strCloneDirectory=*path;
+	else
+	{
+		strCloneDirectory = regLastResopitory;
+	}
 
 	CString title;
 	title.LoadString(IDS_CHOOSE_REPOSITORY);
@@ -1984,6 +1990,7 @@ CString CAppUtils::ChooseRepository(CString *path)
 
 	if (browseFolder.Show(NULL, strCloneDirectory) == CBrowseFolder::OK) 
 	{
+		regLastResopitory = strCloneDirectory;
 		return strCloneDirectory;
 		
 	}else

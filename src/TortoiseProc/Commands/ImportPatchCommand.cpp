@@ -34,9 +34,9 @@ bool ImportPatchCommand::Execute()
 	CString cmd;
 	CString output;
 
-	if(!this->orgCmdLinePath.HasAdminDir())
+	if( orgPathList.GetCount() > 0 && !orgPathList[0].HasAdminDir())
 	{
-		CString str=CAppUtils::ChooseRepository((CString*)&orgCmdLinePath.GetWinPathString());
+		CString str=CAppUtils::ChooseRepository(NULL);
 		if(str.IsEmpty())
 			return FALSE;
 
