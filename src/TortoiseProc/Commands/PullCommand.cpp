@@ -50,7 +50,8 @@ bool PullCommand::Execute()
 		cmd.Format(_T("git.exe pull -v %s\"%s\" %s"),cmdRebase, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
-		progress.m_bAutoCloseOnSuccess = true;
+		
+		//progress.m_bAutoCloseOnSuccess = true;
 		if(progress.DoModal()==IDOK)
 		{
 			CString hashNew = g_Git.GetHash(L"HEAD");

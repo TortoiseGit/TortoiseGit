@@ -604,7 +604,7 @@ void CCommitDlg::OnOK()
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
 
-		progress.m_changeAbortButtonOnSuccessTo = IsGitSVN? _T("&DCommit"): _T("&Push");
+		progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
 		
 		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
 

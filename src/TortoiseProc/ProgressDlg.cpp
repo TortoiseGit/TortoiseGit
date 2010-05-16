@@ -34,6 +34,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TITLE_ANIMATE, this->m_Animate);
 	DDX_Control(pDX, IDC_RUN_PROGRESS, this->m_Progress);
 	DDX_Control(pDX, IDC_LOG, this->m_Log);
+	DDX_Control(pDX, IDC_PROGRESS_BUTTON1, this->m_ctrlPostCmd);
 }
 
 
@@ -85,6 +86,10 @@ BOOL CProgressDlg::OnInitDialog()
 
 	if(!m_Title.IsEmpty())
 		this->SetWindowText(m_Title);
+
+	if(m_PostCmdList.GetCount()>0)
+		m_ctrlPostCmd.AddEntries(m_PostCmdList);
+
 	return TRUE;
 }
 
@@ -228,11 +233,11 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			if(m_bAutoCloseOnSuccess)
 				EndDialog(IDOK);
 
-			if(!m_changeAbortButtonOnSuccessTo.IsEmpty())
+			if(m_PostCmdList.GetCount() > 0)
 			{
-				GetDlgItem(IDC_PROGRESS_BUTTON1)->SetWindowText(m_changeAbortButtonOnSuccessTo);
+				//GetDlgItem(IDC_PROGRESS_BUTTON1)->SetWindowText(m_changeAbortButtonOnSuccessTo);
 				GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
-				GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+				//GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 				//Set default button is "close" rather than "push"
 				this->SendMessage(WM_NEXTDLGCTL, (WPARAM)GetDlgItem(IDOK)->m_hWnd, TRUE);
 			}
@@ -409,7 +414,7 @@ void CProgressDlg::OnBnClickedOk()
 
 void CProgressDlg::OnBnClickedButton1()
 {
-	this->EndDialog(IDC_PROGRESS_BUTTON1);
+	this->EndDialog(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry());
 	
 }
 void CProgressDlg::OnCancel()

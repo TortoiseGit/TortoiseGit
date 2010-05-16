@@ -2,6 +2,8 @@
 
 #include "StandAloneDlg.h"
 #include "git.h"
+#include "MenuButton.h"
+
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 // CProgressDlg dialog
 #define MSG_PROGRESSDLG_START 0
@@ -22,7 +24,9 @@ public:
 	CString m_GitCmd;
 	std::vector<CString> m_GitCmdList;
 	bool m_bAutoCloseOnSuccess;
-	CString m_changeAbortButtonOnSuccessTo;
+	CStringArray m_PostCmdList;
+
+	CMenuButton m_ctrlPostCmd;
 
 	CString m_LogFile;
 

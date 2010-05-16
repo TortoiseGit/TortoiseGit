@@ -48,7 +48,7 @@ bool FetchCommand::Execute()
 
 		if(!dlg.m_bRebase)
 		{
-			progress.m_changeAbortButtonOnSuccessTo=_T("&Rebase");
+			progress.m_PostCmdList.Add(_T("&Rebase"));
 		}else
 		{
 			progress.m_bAutoCloseOnSuccess = true;
