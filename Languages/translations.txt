@@ -1,30 +1,30 @@
 ﻿Translations
 ------------
 
-TortoiseSVN is still in development so translations of all resources is
+TortoiseGIT is still in development so translations of all resources is
 also a work 'in progress'.
 
 General
 -------
-The TortoiseSVN project uses gettext PO (portable object) files for its
+The TortoiseGIT project uses gettext PO (portable object) files for its
 translation. PO files are plain text, so you can even translate using a
 normal text editor. The only thing you have to take care of is that the
 editor can handle the UTF-8 charset. There is a wide range of tools out
 there that can handle and manipulate PO files.
 We recommend that you use poEdit (http://poedit.sourceforge.net) on Windows
-or kbabel (http://i18n.kde.org/tools/kbabel/) on Linux.
+or lokalize (http://userbase.kde.org/Lokalize) on Linux.
 
 This description assumes that you use poEdit.
 
 Getting started
 ---------------
-If you want to implement a new language for TortoiseSVN do the following.
+If you want to implement a new language for TortoiseGIT do the following.
 
-1) Use TortoiseSVN (or any other SubVersion client) to check out:
-   http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/Languages/
+1) Use TortoiseGIT (or any other GIT client) to clone:
+   git clone http://repo.or.cz/r/TortoiseGit.git
    (You will get more than one file)
    or point your browser to:
-   http://tortoisesvn.tigris.org/svn/tortoisesvn/trunk/Languages/
+   http://repo.or.cz/w/TortoiseGit.git/tree/HEAD:/Languages
    right-click on Tortoise.pot and save this file to your local harddisk.
    Tortoise.pot is the portable object template (hence .pot) for the
    translation.
@@ -54,7 +54,7 @@ If you want to implement a new language for TortoiseSVN do the following.
    tor that explains which language you translated and the terminology
    you used, like:
    #
-   # German translations for TortoiseSVN
+   # German translations for TortoiseGIT
    # This file is distributed under the same license as the subversion package.
    #
    # Translation dictionary:
@@ -87,12 +87,12 @@ Adding to an existing translation
    top of the list.
 
 5) Translate what you can and send the resulting PO file back to the
-   mailing list (patches@tortoisesvn.tigris.org).
+   mailing list (tortoisegit-dev@googlegroups.com).
 
 Format your translation
 --------------------------
 Please format your translation before send Tortoise_xx.po to the
-mailing list, or commit to the TortoiseSVN repository. You can do it
+mailing list, or commit to the TortoiseGIT repository. You can do it
 like this:
     $ msgmerge --no-wrap -o Tortoise_xx.po.new Tortoise_xx.po Tortoise.pot
     $ mv -f Tortoise_xx.po.new Tortoise_xx.po
@@ -109,13 +109,13 @@ Building your own dlls
 If you want to test the translations you made yourself, before you release
 them, you need four things:
 
-#The Below is tortoiseSVN document. 
+#The Below is tortoiseGIT document. 
 
-- The "raw" resource dlls for your version of TortoiseSVN. Other dlls
+- The "raw" resource dlls for your version of TortoiseGIT. Other dlls
   won't work. Take a look at:
   http://tortoisesvn.tigris.org/servlets/ProjectDocumentList?folderID=1847
   and pick your language dlls e.g. Languages_1.0.8.zip for TortoiseSVN 1.0.8.
-- The pot file for your version of TortoiseSVN e.g:
+- The pot file for your version of TortoiseGIT e.g:
   http://tortoisesvn.tigris.org/svn/tortoisesvn/tags/version_1.0.8/...
 - Any po file for your language. Either pick one from tags or the latest
   po file from trunk
@@ -136,6 +136,6 @@ http://www.microsoft.com/globaldev/reference/lcid-all.mspx
 under the column LCID dec.
 
 After successfully creating your dlls, copy them into:
-C:\Program Files\TortoiseSVN\Languages
+C:\Program Files\TortoiseGit\Languages
 Now you should be able to select your language from the combobox on the
-TortoiseSVN main setting page.
+TortoiseGIT main setting page.
