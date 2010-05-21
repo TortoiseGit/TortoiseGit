@@ -33,7 +33,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_POPUP_REVERTREVS "&Revert changes of these commits"
+    IDS_LOG_POPUP_REVERTREVS "&Revert changes by these commits"
     IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
     IDS_LOG_POPUP_BLAMECOMPARE "Compare and &blame with working BASE"
@@ -46,14 +46,14 @@ BEGIN
     IDS_LOG_POPUP_BLAME     "Blame"
     IDS_LOG_POPUP_GNUDIFF_CH "Show changes as &unified diff"
     IDS_LOG_POPUP_GETMERGELOGS "Get merge logs"
-    IDS_LOG_POPUP_MERGEREV  "Merge commit to %s..."
-    IDS_LOG_POPUP_MERGEREVS "Merge commits to %s..."
+    IDS_LOG_POPUP_MERGEREV  "Merge to %s..."
+    IDS_LOG_POPUP_MERGEREVS "Merge to %s..."
 END
 
 STRINGTABLE 
 BEGIN
     IDS_LOG_POPUP_DIFF      "Show &changes"
-    IDS_LOG_POPUP_REVERTREV "&Revert change of this commit"
+    IDS_LOG_POPUP_REVERTREV "&Revert change by this commit"
     IDS_LOG_POPUP_GNUDIFF   "Show differences as &unified diff"
     IDS_LOG_POPUP_FIND      "Search &log messages..."
     IDS_LOG_POPUP_OPEN      "&Open"
@@ -70,11 +70,11 @@ BEGIN
 	IDS_SWITCH_TO_THIS			"Switch/Checkout to this..."
 	IDS_CREATE_BRANCH_AT_THIS	"Create Branch at this version..."
 	IDS_CREATE_TAG_AT_THIS		"Create Tag at this version..."
-	IDS_REBASE_THIS_FORMAT		"*Rebase %s to this..."
+	IDS_REBASE_THIS_FORMAT		"*Rebase %s onto this..."
 	IDS_EXPORT_TO_THIS			    "Export this version..."	
 	IDS_RESET_TO_THIS_FORMAT	"Reset %s to this..."
 	IDS_COMBINE_TO_ONE			"*Combine to one commit"
-	IDS_CHERRY_PICK_VERSION		"Cherry Pick this version..."
+	IDS_CHERRY_PICK_VERSION		"Cherry Pick this commit..."
 	IDS_COPY_COMMIT_HASH		"Copy Commit Hash"
 	IDS_CREATE_PATCH			"Format Patch..."
 	IDS_DELETE_BRANCHTAG		"Del"
