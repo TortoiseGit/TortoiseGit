@@ -219,7 +219,11 @@ void CSettingGitRemote::OnEnChangeEditRemote()
 
 	m_ChangedMask|=REMOTE_NAME;
 
-	this->SetModified();
+	this->UpdateData();
+	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
+		this->SetModified();
+	else
+		this->SetModified(0);
 }
 
 void CSettingGitRemote::OnEnChangeEditUrl()
@@ -231,7 +235,12 @@ void CSettingGitRemote::OnEnChangeEditUrl()
 
     // TODO:  Add your control notification handler code here
 	m_ChangedMask|=REMOTE_URL;
-	this->SetModified();
+
+	this->UpdateData();
+	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
+		this->SetModified();
+	else
+		this->SetModified(0);
 }
 
 void CSettingGitRemote::OnEnChangeEditPuttyKey()
@@ -243,7 +252,12 @@ void CSettingGitRemote::OnEnChangeEditPuttyKey()
 
     // TODO:  Add your control notification handler code here
 	m_ChangedMask|=REMOTE_PUTTYKEY;
-	this->SetModified();
+
+	this->UpdateData();
+	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
+		this->SetModified();
+	else
+		this->SetModified(0);
 }
 void CSettingGitRemote::Save(CString key,CString value)
 {
