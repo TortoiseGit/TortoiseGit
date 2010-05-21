@@ -27,6 +27,8 @@
 #include "ProgressDlg.h"
 #include "FileDiffDlg.h"
 #include "AppUtils.h"
+#include "LogDlg.h"
+#include "ChangedDlg.h"
 
 bool PullCommand::Execute()
 {
@@ -50,12 +52,17 @@ bool PullCommand::Execute()
 		cmd.Format(_T("git.exe pull -v %s\"%s\" %s"),cmdRebase, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
+		progress.m_PostCmdList.Add(_T("Pulled Diff"));
+		progress.m_PostCmdList.Add(_T("Pulled Log"));
+		//progress.m_PostCmdList.Add(_T("Show Conflict"));
 		
 		//progress.m_bAutoCloseOnSuccess = true;
-		if(progress.DoModal()==IDOK)
+		int ret = progress.DoModal();
+		
+		CString hashNew = g_Git.GetHash(L"HEAD");
+		
+		if( ret == IDC_PROGRESS_BUTTON1)
 		{
-			CString hashNew = g_Git.GetHash(L"HEAD");
-
 			if(hashOld == hashNew)
 			{
 				if(progress.m_GitStatus == 0)
@@ -68,6 +75,32 @@ bool PullCommand::Execute()
 			dlg.DoModal();
 
 			return TRUE;
+		}
+		else if ( ret == IDC_PROGRESS_BUTTON1 +1 )
+		{
+			if(hashOld == hashNew)
+			{
+				if(progress.m_GitStatus == 0)
+					CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
+				return TRUE;
+			}
+
+
+			CLogDlg dlg;
+			
+			//dlg.SetParams(cmdLinePath);
+			dlg.SetParams(CTGitPath(_T("")),_T(""), hashOld, hashNew, 0);
+			//	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
+			//	val = parser.GetVal(_T("propspath"));
+			//	if (!val.IsEmpty())
+			//		dlg.SetProjectPropertiesPath(CTSVNPath(val));
+			dlg.DoModal();
+
+			
+		}else if ( ret == IDC_PROGRESS_BUTTON1 +2 )
+		{
+			CChangedDlg dlg;
+			dlg.DoModal();
 		}
 	}
 #if 0

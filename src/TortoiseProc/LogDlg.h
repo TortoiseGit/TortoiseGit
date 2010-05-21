@@ -83,7 +83,7 @@ public:
 		FILELIST_PATH
 	};
 
-	void SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit);
+	void SetParams(const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit);
 	void SetIncludeMerge(bool bInclude = true) {m_bIncludeMerges = bInclude;}
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
@@ -237,10 +237,10 @@ private:
 	CMenuButton			m_btnShowWholeProject;
 	CTGitPath			m_path;
 	CTGitPath			m_mergePath;
-	GitRev				m_pegrev;
-	GitRev				m_startrev;
-	GitRev				m_LogRevision;
-	GitRev				m_endrev;
+	CString				m_pegrev;
+
+	CString				m_LogRevision;
+
 	//GitRev				m_wcRev;
 //	GitRevRangeArray	m_selectedRevs;
 //	GitRevRangeArray	m_selectedRevsOneRange;

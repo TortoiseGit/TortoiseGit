@@ -85,6 +85,9 @@ public:
 	volatile LONG 		m_bThreadRunning;
 	CLogCache			m_LogCache;
 
+	CString m_startrev;
+	CString m_endrev;
+
 	enum
 	{
 		LOGLIST_GRAPH,

@@ -32,14 +32,14 @@ bool LogCommand::Execute()
 		// support deprecated parameter prior 1.5.0
 		val = parser.GetVal(_T("revstart"));
 	}
-	GitRev revstart ;
+	CString revstart =val;
 	val = parser.GetVal(_T("endrev"));
 	if ( val.IsEmpty() )
 	{
 		// support deprecated parameter prior 1.5.0
 		val = parser.GetVal(_T("revend"));
 	}
-	GitRev revend ;
+	CString revend =val;
 	val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
 	val = parser.GetVal(_T("pegrev"));
@@ -49,7 +49,7 @@ bool LogCommand::Execute()
 		val = parser.GetVal(_T("revpeg"));
 	}
 
-	GitRev pegrev;
+	CString pegrev = val;
 
 #if 0
 	SVNRev pegrev = val.IsEmpty() ? SVNRev() : SVNRev(val);

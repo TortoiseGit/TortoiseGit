@@ -160,13 +160,13 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
 END_MESSAGE_MAP()
 
-void CLogDlg::SetParams(const CTGitPath& path, GitRev pegrev, GitRev startrev, GitRev endrev, int limit /* = FALSE */)
+void CLogDlg::SetParams(const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
 {
 	m_path = path;
 	m_pegrev = pegrev;
-	m_startrev = startrev;
+	this->m_LogList.m_startrev = startrev;
 	m_LogRevision = startrev;
-	m_endrev = endrev;
+	this->m_LogList.m_endrev = endrev;
 	m_hasWC = !path.IsUrl();
 	m_limit = limit;
 	if (::IsWindow(m_hWnd))

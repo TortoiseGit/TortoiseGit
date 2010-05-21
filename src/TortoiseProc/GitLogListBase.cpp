@@ -1796,7 +1796,17 @@ int CGitLogListBase::BeginFetchLog()
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
 	}
 
-	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,NULL,NULL,true);
+	CString *pFrom, *pTo;
+	pFrom = pTo = NULL;
+	if(!this->m_startrev.IsEmpty())
+	{
+		pFrom = &this->m_startrev;
+		if(!this->m_endrev.IsEmpty())
+			pTo = &this->m_endrev;
+		else
+			pTo = &CString(_T("HEAD"));
+	}
+	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
