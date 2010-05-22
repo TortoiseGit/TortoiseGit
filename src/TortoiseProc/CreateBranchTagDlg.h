@@ -38,4 +38,5 @@ public:
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	
 	virtual void OnVersionChanged();
+	afx_msg void OnDestroy();
 };

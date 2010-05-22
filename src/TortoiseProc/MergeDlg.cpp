@@ -64,6 +64,7 @@ void CMergeDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMergeDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDOK, &CMergeDlg::OnBnClickedOk)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -121,4 +122,12 @@ void CMergeDlg::OnBnClickedOk()
 	}
 
 	OnOK();
+}
+
+void CMergeDlg::OnDestroy()
+{
+	WaitForFinishLoading();
+	__super::OnDestroy();
+
+	// TODO: Add your message handler code here
 }

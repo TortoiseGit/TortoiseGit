@@ -83,4 +83,5 @@ public:
 	CFileDropEdit	m_cCheckoutEdit;
 	CLogDlg	*		m_pLogDlg;
 	//svn_depth_t		m_depth;
+	afx_msg void OnDestroy();
 };

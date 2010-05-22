@@ -62,6 +62,7 @@ BEGIN_MESSAGE_MAP(CExportDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 
 	CHOOSE_VERSION_EVENT
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 BOOL CExportDlg::OnInitDialog()
@@ -225,4 +226,12 @@ void CExportDlg::OnCbnEditchangeUrlcombo()
 	CString name = CAppUtils::GetProjectNameFromURL(m_URL);
 	m_strExportDirectory = m_sExportDirOrig+_T('\\')+name;
 	UpdateData(FALSE);
+}
+
+void CExportDlg::OnDestroy()
+{
+	WaitForFinishLoading();
+	__super::OnDestroy();
+
+	// TODO: Add your message handler code here
 }

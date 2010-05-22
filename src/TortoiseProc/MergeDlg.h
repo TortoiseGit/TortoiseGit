@@ -58,4 +58,5 @@ public:
 	CString m_strLogMesage;
 
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnDestroy();
 };

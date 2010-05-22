@@ -36,4 +36,5 @@ protected:
 public:
 	afx_msg void OnBnClickedCheckBranch();
 	afx_msg void OnCbnSelchangeComboboxexBranch();
+	afx_msg void OnDestroy();
 };

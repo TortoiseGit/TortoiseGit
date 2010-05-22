@@ -45,6 +45,7 @@ BEGIN_MESSAGE_MAP(CCreateBranchTagDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CCreateBranchTagDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch)
 //	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CCreateBranchTagDlg::OnBnClickedButtonBrowseRef)
+ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 BOOL CCreateBranchTagDlg::OnInitDialog()
@@ -165,4 +166,12 @@ void CCreateBranchTagDlg::OnVersionChanged()
 		OnCbnSelchangeComboboxexBranch();
 	else
 		GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
+}
+
+void CCreateBranchTagDlg::OnDestroy()
+{
+	WaitForFinishLoading();
+	__super::OnDestroy();
+
+	// TODO: Add your message handler code here
 }

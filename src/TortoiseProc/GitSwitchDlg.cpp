@@ -45,6 +45,7 @@ BEGIN_MESSAGE_MAP(CGitSwitchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_BRANCH, &CGitSwitchDlg::OnBnClickedCheckBranch)
 	ON_BN_CLICKED(IDOK, &CGitSwitchDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CGitSwitchDlg::OnCbnSelchangeComboboxexBranch)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 BOOL CGitSwitchDlg::OnInitDialog()
@@ -165,4 +166,12 @@ void CGitSwitchDlg::OnCbnSelchangeComboboxexBranch()
 	}
 	else
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
+}
+
+void CGitSwitchDlg::OnDestroy()
+{
+	WaitForFinishLoading();
+	__super::OnDestroy();
+
+	// TODO: Add your message handler code here
 }

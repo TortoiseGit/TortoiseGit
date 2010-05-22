@@ -88,7 +88,7 @@ BEGIN_MESSAGE_MAP(CHistoryCombo, CComboBoxEx)
 	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
-int CHistoryCombo::AddString(CString str, INT_PTR pos)
+int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 {
 	if (str.IsEmpty())
 		return -1;
@@ -165,7 +165,8 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos)
 		m_arEntries.RemoveAt(m_nMaxHistoryItems);
 	}
 
-	SetCurSel(nRet);
+	if(isSel)
+		SetCurSel(nRet);
 	return nRet;
 }
 
@@ -320,11 +321,11 @@ void CHistoryCombo::SetMaxHistoryItems(int nMaxItems)
 	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
 		DeleteString(m_nMaxHistoryItems);
 }
-void CHistoryCombo::AddString(STRING_VECTOR &list)
+void CHistoryCombo::AddString(STRING_VECTOR &list,BOOL isSel)
 {
 	for(unsigned int i=0;i<list.size();i++)
 	{
-		AddString(list[i]);
+		AddString(list[i], -1, isSel);
 	}
 }
 CString CHistoryCombo::GetString() const

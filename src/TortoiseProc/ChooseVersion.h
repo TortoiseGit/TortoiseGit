@@ -2,6 +2,7 @@
 #include "afxwin.h"
 #include "LogDlg.h"
 #include "BrowseRefsDlg.h"
+#include "MessageBox.h"
 
 class CChooseVersion
 {
@@ -10,10 +11,19 @@ public:
 	
 private:
 	CWnd *	m_pWin;
+	CWinThread*			m_pLoadingThread;
+	static UINT LoadingThreadEntry(LPVOID pVoid)
+	{
+		return ((CChooseVersion*)pVoid)->LoadingThread();
+	};
+	volatile LONG 		m_bLoadingThreadRunning;
+
 protected:
 	CHistoryCombo m_ChooseVersioinBranch;  
 	CHistoryCombo m_ChooseVersioinTags;    
 	CHistoryCombo m_ChooseVersioinVersion; 
+	CButton		  m_RadioBranch;
+	CButton		  m_RadioTag;
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -135,27 +145,56 @@ protected:
 		OnVersionChanged();
 	}
 
-
-	void Init()
-	{	
-		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
-		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
-
+	UINT LoadingThread()
+	{
 		STRING_VECTOR list;
-		g_Git.GetTagList(list);
-		m_ChooseVersioinTags.AddString(list);
-
-		list.clear();
+		
 		int current;
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
-		m_ChooseVersioinBranch.AddString(list);
+		m_ChooseVersioinBranch.AddString(list, false);
 		m_ChooseVersioinBranch.SetCurSel(current);
 
+		m_RadioBranch.EnableWindow(TRUE);
+
+		list.clear();
+		g_Git.GetTagList(list);
+		m_ChooseVersioinTags.AddString(list, false);
+		m_ChooseVersioinTags.SetCurSel(0);
+
+		m_RadioTag.EnableWindow(TRUE);
 
 		if(m_initialRefName.IsEmpty())
 			OnVersionChanged();
 		else
 			SelectRef(m_initialRefName);
+
+		InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
+		return 0;
+	}
+	void Init()
+	{	
+		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
+		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
+		
+		m_RadioBranch.EnableWindow(FALSE);
+		m_RadioTag.EnableWindow(FALSE);
+
+		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
+		
+		if ( (m_pLoadingThread=AfxBeginThread(LoadingThreadEntry, this)) ==NULL)
+		{
+			InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
+			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		}
+	}
+	void WaitForFinishLoading()
+	{
+		if(m_bLoadingThreadRunning && m_pLoadingThread)
+		{
+			DWORD ret =::WaitForSingleObject(m_pLoadingThread->m_hThread,20000);
+			if(ret == WAIT_TIMEOUT)
+				::TerminateThread(m_pLoadingThread,0);
+		}
 	}
 public:					
 	CString m_VersionName;
@@ -170,7 +209,9 @@ public:
 #define CHOOSE_VERSION_DDX \
 	DDX_Control(pDX, IDC_COMBOBOXEX_BRANCH,		m_ChooseVersioinBranch); \
 	DDX_Control(pDX, IDC_COMBOBOXEX_TAGS,		m_ChooseVersioinTags);     \
-	DDX_Control(pDX, IDC_COMBOBOXEX_VERSION,	m_ChooseVersioinVersion);
+	DDX_Control(pDX, IDC_COMBOBOXEX_VERSION,	m_ChooseVersioinVersion); \
+	DDX_Control(pDX, IDC_RADIO_BRANCH, m_RadioBranch);\
+	DDX_Control(pDX, IDC_RADIO_TAGS, m_RadioTag);
 
 #define CHOOSE_VERSION_EVENT\
 	ON_BN_CLICKED(IDC_RADIO_HEAD,		OnBnClickedChooseRadioHost)\
