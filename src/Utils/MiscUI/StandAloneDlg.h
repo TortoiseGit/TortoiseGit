@@ -52,6 +52,26 @@ protected:
 		return FALSE;
 	}
 
+	virtual BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		if (pMsg->message == WM_KEYDOWN)
+		{
+			int nVirtKey = (int) pMsg->wParam;
+
+			if (nVirtKey == 'A' && (GetKeyState(VK_CONTROL) & 0x8000 ) )
+			{
+				TCHAR buffer[129];
+				::GetClassName(pMsg->hwnd, buffer,128);
+
+				if(_tcsnicmp(buffer,_T("EDIT"),128) == 0)
+				{
+					::PostMessage(pMsg->hwnd,EM_SETSEL,0,-1);
+					return TRUE;
+				}
+			}
+		}
+		return BaseType::PreTranslateMessage(pMsg);
+	}
 	afx_msg void OnPaint()
 	{
 		if (IsIconic())

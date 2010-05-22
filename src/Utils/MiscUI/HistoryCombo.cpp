@@ -66,6 +66,12 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 			RemoveSelectedItem();
 			return TRUE;
 		}
+
+		if (nVirtKey == 'A' && (GetKeyState(VK_CONTROL) & 0x8000 ) )
+		{
+			GetEditCtrl()->SetSel(0, -1);
+			return TRUE;
+		}
 	}
 	if (pMsg->message == WM_MOUSEMOVE && this->m_bDyn ) 
 	{
