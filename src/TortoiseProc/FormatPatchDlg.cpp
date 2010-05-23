@@ -84,7 +84,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	m_cDir.SetPathHistory(TRUE);
 	m_cDir.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchURLS"), _T("path"));
-	m_cDir.SetCurSel(0);
+	m_cDir.AddString(g_Git.m_CurrentDir);
 
 	STRING_VECTOR list;
 	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL);
