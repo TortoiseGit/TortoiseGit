@@ -181,7 +181,7 @@ MenuInfo menuInfo[] =
 //	ITEMIS_FOLDER, ITEMIS_INSVN, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellMenuBlame,						MENUBLAME,			IDI_BLAME,				IDS_MENUBLAME,				IDS_MENUDESCBLAME,
-	ITEMIS_NORMAL|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
+	ITEMIS_INSVN|ITEMIS_ONLYONE, ITEMIS_FOLDER|ITEMIS_ADDED, 0, 0, 0, 0, 0, 0 },
 	// TODO: original code is ITEMIS_INSVN|ITEMIS_ONLYONE, makes sense to only allow blaming of versioned files
 	//       why was this changed, is this related to GitStatus?
 
