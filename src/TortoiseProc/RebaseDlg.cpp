@@ -572,6 +572,23 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 				return TRUE;
 			}
 			break;
+		/* Avoid TAB control destroy but dialog exist*/
+		case VK_ESCAPE:
+		case VK_CANCEL:
+			{
+				TCHAR buff[128];
+				::GetClassName(pMsg->hwnd,buff,128);
+				
+				
+				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0 ||
+				   _tcsnicmp(buff,_T("Scintilla"),128)==0 ||
+				   _tcsnicmp(buff,_T("SysListView32"),128)==0||
+				   ::GetParent(pMsg->hwnd) == this->m_ctrlTabCtrl.m_hWnd)	
+				{
+					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
+					return TRUE;
+				}
+			}		
 		}
 	}
 	m_tooltips.RelayEvent(pMsg);

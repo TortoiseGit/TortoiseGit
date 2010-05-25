@@ -762,6 +762,7 @@ void CSyncDlg::Refresh()
 BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
+
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)
@@ -773,7 +774,21 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 					return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 				Refresh();
 			}
-			break;
+		break;
+
+		/* Avoid TAB control destroy but dialog exist*/
+		case VK_ESCAPE:
+		case VK_CANCEL:
+			{
+				TCHAR buff[128];
+				::GetClassName(pMsg->hwnd,buff,128);
+				
+				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0)
+				{
+					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
+					return TRUE;
+				}
+			}
 		}
 	}
 	m_tooltips.RelayEvent(pMsg);
