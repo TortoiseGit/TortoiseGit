@@ -2943,6 +2943,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								fentry->m_Action &=~CTGitPath::LOGACTIONS_UNMERGED;
 							}
 						}
+
+						CAppUtils::RemoveTempMergeFile(*fentry);
 						
 					}
 					Show(m_dwShow, 0, m_bShowFolders,0,true);

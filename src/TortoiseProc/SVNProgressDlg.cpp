@@ -2375,31 +2375,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 		
-
-		try
-		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("LOCAL"),(CTGitPath &)m_targetPathList[i]);
-			CFile::Remove(tempmergefile);
-		}catch(...)
-		{
-		}
-		
-		try
-		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("REMOTE"),(CTGitPath &)m_targetPathList[i]);
-			CFile::Remove(tempmergefile);
-		}catch(...)
-		{
-		}
-
-		try
-		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("BASE"),(CTGitPath &)m_targetPathList[i]);
-			CFile::Remove(tempmergefile);
-		}catch(...)
-		{
-		}
-		
+		CAppUtils::RemoveTempMergeFile((CTGitPath &)m_targetPathList[i]);
 
 		Notify(m_targetPathList[i],git_wc_notify_resolved);
 	}

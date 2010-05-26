@@ -1368,6 +1368,33 @@ void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
 	return;
 }
 
+void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
+{
+		CString tempmergefile;
+		try
+		{
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("LOCAL."),path);
+			CFile::Remove(tempmergefile);
+		}catch(...)
+		{
+		}
+		
+		try
+		{
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("REMOTE."),path);
+			CFile::Remove(tempmergefile);
+		}catch(...)
+		{
+		}
+
+		try
+		{
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("BASE."),path);
+			CFile::Remove(tempmergefile);
+		}catch(...)
+		{
+		}
+}
 CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 {
 	CString file;
