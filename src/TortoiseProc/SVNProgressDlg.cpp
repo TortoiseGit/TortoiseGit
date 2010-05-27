@@ -548,6 +548,8 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 CString CGitProgressDlg::BuildInfoString()
 {
 	CString infotext;
+	if(this->m_Command == GitProgress_Resolve)
+		infotext = _T("You need commit your change after resolve conflict");
 #if 0
 	
 	CString temp;
@@ -1027,6 +1029,22 @@ UINT CGitProgressDlg::ProgressThread()
 
 void CGitProgressDlg::OnBnClickedLogbutton()
 {
+	switch(this->m_Command)
+	{
+	case GitProgress_Add:
+	case GitProgress_Resolve:
+		{
+			CString cmd;
+			cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
+			cmd += _T(" /command:commit");
+
+			cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\"");
+
+			CAppUtils::LaunchApplication(cmd,NULL,false);
+			this->EndDialog(IDOK);
+			break;
+		}
+	}
 #if 0
 	if (m_targetPathList.GetCount() != 1)
 		return;
@@ -1834,6 +1852,9 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 #endif
 	//CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 	m_bErrorsOccurred=false;
+
+	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
+	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 	return true;
 }
 
@@ -2429,6 +2450,9 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	}
 #endif
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+
+	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
+	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 
 	return true;
 }
