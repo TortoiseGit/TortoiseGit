@@ -1373,7 +1373,7 @@ void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
 		CString tempmergefile;
 		try
 		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("LOCAL."),path);
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("LOCAL"),path);
 			CFile::Remove(tempmergefile);
 		}catch(...)
 		{
@@ -1381,7 +1381,7 @@ void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
 		
 		try
 		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("REMOTE."),path);
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("REMOTE"),path);
 			CFile::Remove(tempmergefile);
 		}catch(...)
 		{
@@ -1389,7 +1389,7 @@ void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
 
 		try
 		{
-			tempmergefile = CAppUtils::GetMergeTempFile(_T("BASE."),path);
+			tempmergefile = CAppUtils::GetMergeTempFile(_T("BASE"),path);
 			CFile::Remove(tempmergefile);
 		}catch(...)
 		{
@@ -1398,7 +1398,7 @@ void CAppUtils::RemoveTempMergeFile(CTGitPath &path)
 CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 {
 	CString file;
-	file=g_Git.m_CurrentDir+_T("\\")+ type + merge.GetWinPathString();
+	file=g_Git.m_CurrentDir+_T("\\") + merge.GetWinPathString()+_T(".")+type+merge.GetFileExtension();
 
 	return file;
 }
@@ -1445,14 +1445,14 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool,bool revertTh
 	CTGitPath base;
 
 	
-	mine.SetFromGit(GetMergeTempFile(_T("LOCAL."),merge));
-	theirs.SetFromGit(GetMergeTempFile(_T("REMOTE."),merge));
-	base.SetFromGit(GetMergeTempFile(_T("BASE."),merge));
+	mine.SetFromGit(GetMergeTempFile(_T("LOCAL"),merge));
+	theirs.SetFromGit(GetMergeTempFile(_T("REMOTE"),merge));
+	base.SetFromGit(GetMergeTempFile(_T("BASE"),merge));
 
 	CString format;
 
 	//format=_T("git.exe cat-file blob \":%d:%s\"");
-	format = _T("git checkout-index -f --prefix=%s --stage=%d -- \"%s\"");
+	format = _T("git checkout-index --temp --stage=%d -- \"%s\"");
 	CFile tempfile;
 	//create a empty file, incase stage is not three
 	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
@@ -1468,27 +1468,42 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool,bool revertTh
 	{
 		CString cmd;
 		CString outfile;
-		
+		cmd.Empty();
+		outfile.Empty();
+
 		if( list[i].m_Stage == 1)
 		{
-			cmd.Format(format,_T("BASE."), list[i].m_Stage, list[i].GetGitPathString());
+			cmd.Format(format, list[i].m_Stage, list[i].GetGitPathString());
 			b_base = true;
+			outfile = base.GetWinPathString();
 			
 		}
 		if( list[i].m_Stage == 2 )
 		{
-			cmd.Format(format,_T("LOCAL."), list[i].m_Stage, list[i].GetGitPathString());
+			cmd.Format(format, list[i].m_Stage, list[i].GetGitPathString());
 			b_local = true;
+			outfile = mine.GetWinPathString();
 			
 		}
 		if( list[i].m_Stage == 3 )
 		{
-			cmd.Format(format,_T("REMOTE."), list[i].m_Stage, list[i].GetGitPathString());
+			cmd.Format(format, list[i].m_Stage, list[i].GetGitPathString());
 			b_remote = true;
-			
+			outfile = theirs.GetWinPathString();
 		}	
 		CString output;
-		g_Git.Run(cmd,&output,CP_ACP);
+		if(!outfile.IsEmpty())
+			if(!g_Git.Run(cmd,&output,CP_ACP))
+			{
+				CString file;
+				int start =0 ;
+				file = output.Tokenize(_T("\t"), start);
+				::MoveFileEx(file,outfile,MOVEFILE_REPLACE_EXISTING|MOVEFILE_COPY_ALLOWED);
+			}
+			else
+			{
+				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			}
 	}
 
 	if(b_local && b_remote )
