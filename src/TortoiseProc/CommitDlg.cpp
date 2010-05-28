@@ -125,6 +125,20 @@ BOOL CCommitDlg::OnInitDialog()
 	
 	CAppUtils::GetCommitTemplate(this->m_sLogMessage);
 
+	if(PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_MSG")))
+	{
+		CStdioFile file;
+		if(file.Open(g_Git.m_CurrentDir+_T("\\.git\\MERGE_MSG"), CFile::modeRead))
+		{
+			CString str;
+			while(file.ReadString(str))
+			{
+				m_sLogMessage += str;
+				str.Empty();
+				m_sLogMessage += _T("\n");
+			}
+		}
+	}
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
