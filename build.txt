@@ -58,12 +58,13 @@ You only have to do this once.
 .
 (\b 1) Above 3.0 version
 
+\section get external source code
+git submodule update --init
+
 \section build32 Building 32 bit packages
 
 Open TortoiseGit.sln
-Build TortoiseProc
-BUild TortoiseShell
-Build TortoiseUDiff
+Build all projects.
 
 \section Create MSI Package
 
