@@ -2155,18 +2155,22 @@ UINT CGitLogListBase::LogThread()
 			{
 				pRev->ParserFromCommit(&commit);
 				pRev->ParserParentFromCommit(&commit);
+				git_free_commit(&commit);
+				//Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log. 
+				//file list will wrong if parent rewrite.
 				pRev->SafeFetchFullInfo(&g_Git);
 
 			}else
 			{
 				ASSERT(pRev->m_CommitHash == hash);
 				pRev->ParserParentFromCommit(&commit);
+				git_free_commit(&commit);
 			}
 #ifdef DEBUG		
 			pRev->DbgPrint();
 			TRACE(_T("\n"));
 #endif
-			git_free_commit(&commit);
+			
 
 			this->m_critSec.Lock();
 			m_logEntries.push_back(hash);

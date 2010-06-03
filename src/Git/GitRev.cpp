@@ -278,6 +278,8 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		GIT_COMMIT commit;
 		GIT_COMMIT_LIST list;
 		GIT_HASH   parent;
+		memset(&commit,0,sizeof(GIT_COMMIT));
+
 		if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
 			return -1;
 
@@ -336,11 +338,13 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			i++;
 		}
 
+		
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsFull,TRUE);
-
+		git_free_commit(&commit);
 	}
-	return -1;
+
+	return 0;
 }
 
 int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
