@@ -1,3 +1,72 @@
+= Release 1.5.1.0 =
+== Features ==
+ * TortoiseMerege
+   Tip show "new file" "delete file" "rename file" status at tortoisemerge
+
+ * TortoiseGitBlame
+   Add encode support for blame
+
+ * Sync Dialog
+   issue #392: refresh branch info when press "F5"
+   Improve user experience when input remote branch and url
+
+ * Log Dialog
+   issue #371: Log offer per-file "revert ..." of working dir changes
+   Add AntiAlias at show log
+   Fix version tree graphic line break at Win 7
+   issue #427: Implement enter operation to open a file in the 'Show Log' window
+
+ * issue #355: Implement Show log like history in the Changed Files window after a git pull operation
+
+ * ProgressDlg Post Cmd support menubutton
+
+ * Update the translations.txt for translators
+
+ * issue #421: Implement ctrl+a standard 'Select all' facility
+
+ * Change FormatPatch dialog default output directory is project root
+
+ * issue #431: Implement commit button in the git add dialog
+
+
+== Bug Fix ==
+ * *Fixed issue #401: TGitCache.exe keeps open pack-xxx.idx on git repo*
+ * *Fix issue review patch fail when there are new FilePatchesDlg.cpp*
+ * *Fix all file show "+" icon after run git gc*
+ * *Fixed issue #449: Files not in the Commit dialog are committed if in index*
+ * *Fixed issue #450: Log Messages file list wrong when choose children dir firstly.*
+ * Fixed issue #387: "Automatically check for newer versions every week" remains disabled
+ * Show correct file when Add new file at tortoisemerge
+ * Fixed issue #381: About screen of TortoiseMerge shows invalid build information
+ * Fixed issue #382: TGitBlame encoding problem
+ * Fixed issue #400: CrLf options are missing in the help file
+ * Fixed issue #397: Settings/Set Extended menu/Help button doesn't work
+ * Fixed issue #396: Fix 'Copy paths to clipboard' option
+ * Fixed issue #398: Settings/Revision Graph/Help button doesn't work
+ * Fixed Issue 392:  Implement refresh button in sync dialog
+ * Fixed Issue #395:  [BUG] Infomation error when "Switch the comparison"
+ * Fixed issue #385: Bug In properties->Git dialog
+ * Clear HOME at gitdll dll after load git config
+ * Fixed issue #403: Diff Show changes, but commit not
+ * Fix Issue #404:	GetOpenFileName does not work in Cygwin
+ * Fixed issue #411: Fix the refresh button operation in 'Check for modifications' when only file time change.
+ * Fixed issue #406: Putty key can't save when clone
+ * Fix Issue #419:	wrong error message for empty commit
+ * Fixed issue #418: Misleading button title in Sync dialog leads to loss of uncommitted changes
+ * Fixed issue #402: Revert Renamed File Fail
+ * Fixed issue #429: When applying patches, tortoise doesn't remember last file location
+ * Fixed issue #428: Blame of an old version
+ * Fixed issue #410: Change some menu item name to make it clear
+ * Fixed issue #440: Don't enable 'Apply' button until the data are ok in Settings/Git/Remote
+ * Fixed issue #439: Fix the Help action in the TortoiseGitBlame window
+ * Fixed issue #438: Slow load Switch/Checkout dialog
+ * Fixed issue #221: After resolving all merge conflicts, it's not obvious the project needs a commit
+ * Fixed issue #437: Blame should be available when there are local changes
+ * Fixed issue #444: Crash rebase  dialog when press ESC and move split bar
+ * Fixed issue #445: Resolve conflict does not delete temporary files
+ * Fixed issue #446: TortoiseMerge crash when "Edit Conflicts"
+ * Fixed issue #405: Merge commit message when there is a conflict
+
 = Release 1.4.4.0 =
 == Features ==
  * #379:  Create Branch for remote branch do not set branch name
