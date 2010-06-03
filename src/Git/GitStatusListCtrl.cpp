@@ -5471,10 +5471,11 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 					}
 				}
 				
-				if(list == NULL)
-					cmd=(_T("git.exe diff-index --cached --raw HEAD --numstat -C -M -z"));
-				else
-					cmd.Format(_T("git.exe diff-index  --cached --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+				//if(list == NULL)
+				//We will list all stage file anyway because commit will commit thats
+				cmd=(_T("git.exe diff-index --cached --raw HEAD --numstat -C -M -z"));
+				//else
+				//	cmd.Format(_T("git.exe diff-index  --cached --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
 				g_Git.Run(cmd,&cmdout);
 				//out+=cmdout;
@@ -5482,10 +5483,11 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			}
 			else // Init Repository
 			{
-				if(list == NULL)
-					cmd=_T("git.exe ls-files -s -t -z");
-				else
-					cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
+				//We will list all added file for init repository because commit will comit these
+				//if(list == NULL)
+				cmd=_T("git.exe ls-files -s -t -z");
+				//else
+				//	cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
 
 				g_Git.Run(cmd,&cmdout);
 				//out+=cmdout;
