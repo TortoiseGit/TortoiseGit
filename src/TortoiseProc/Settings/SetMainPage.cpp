@@ -267,7 +267,6 @@ void CSetMainPage::OnBrowseDir()
 	if (browseFolder.Show(GetSafeHwnd(), dir) == CBrowseFolder::OK) 
 	{
 		m_sMsysGitPath=dir;
-		Store (m_sMsysGitPath, m_regMsysGitPath);
 		this->UpdateData(FALSE);
 	}
 	SetModified(TRUE);
@@ -275,6 +274,13 @@ void CSetMainPage::OnBrowseDir()
 
 void CSetMainPage::OnCheck()
 {
+	this->UpdateData(TRUE);
+
+	CString oldpath = m_regMsysGitPath;
+	Store (m_sMsysGitPath, m_regMsysGitPath);
+
+	g_Git.m_bInitialized = false;
+
 	if(g_Git.CheckMsysGitDir())
 	{
 		CString cmd;
@@ -286,6 +292,8 @@ void CSetMainPage::OnCheck()
 	{
 		CMessageBox::Show(NULL,_T("Msys Git Install Path Error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
+
+	Store (oldpath, m_regMsysGitPath);
 }
 
 

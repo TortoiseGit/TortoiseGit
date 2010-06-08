@@ -73,7 +73,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
-	if(!CGit::CheckMsysGitDir())
+	if(!g_Git.CheckMsysGitDir())
 	{
 		CMessageBox::Show(NULL,_T("MsysGit have not install or config fail"),_T("TortoiseGitBlame"),MB_OK);
 		return FALSE;
