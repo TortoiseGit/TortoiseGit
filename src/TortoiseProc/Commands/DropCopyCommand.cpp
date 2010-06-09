@@ -38,6 +38,7 @@ bool DropCopyCommand::Execute()
 		return FALSE;
 	}
 	unsigned long count = 0;
+
 	CString sNewName;
 	pathList.RemoveAdminPaths();
 	if ((parser.HasKey(_T("rename")))&&(pathList.GetCount()==1))
@@ -105,9 +106,9 @@ bool DropCopyCommand::Execute()
 				cmd = _T("git.exe add \"");
 				
 				CString path;
-				path=fullDropPath.GetGitPathString().Left(ProjectTopDir.GetLength());
+				path=fullDropPath.GetGitPathString().Mid(ProjectTopDir.GetLength());
 				if(path.GetLength()>0)
-					if(path[0]==_T('\\'))
+					if(path[0]==_T('\\') || path[0]==_T('/'))
 						path=path.Mid(1);
 				cmd += path;
 				cmd +=_T('\"');
