@@ -210,17 +210,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 				
-				if( r1->m_CommitHash.IsEmpty())
-				{
+				if( r1->m_CommitHash.IsEmpty()) {
 					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash.ToString());
-				}else if( r2->m_CommitHash.IsEmpty())
-				{
+				}else if( r2->m_CommitHash.IsEmpty()) {
 					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash.ToString());
-				}else
-					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash.ToString(),r2->m_CommitHash.ToString());
+				}else {
+					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r2->m_CommitHash.ToString(),r1->m_CommitHash.ToString());
+				}
 
 				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r2->m_CommitHash.ToString().Left(6));
+				CAppUtils::StartUnifiedDiffViewer(tempfile,r2->m_CommitHash.ToString().Left(6)+_T(":")+r1->m_CommitHash.ToString().Left(6));
 
 			}
 			break;
