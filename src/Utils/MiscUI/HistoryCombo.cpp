@@ -112,6 +112,7 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	CString combostring = str;
 	combostring.Replace('\r', ' ');
 	combostring.Replace('\n', ' ');
+	str=combostring=combostring.Trim();
 	cbei.pszText = const_cast<LPTSTR>(combostring.GetString());
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
@@ -154,13 +155,13 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	//search the Combo for another string like this
 	//and delete it if one is found
 	str.Trim();
-	int nIndex = FindStringExact(0, combostring);
+	int nIndex = FindStringExact(-1, combostring);
 	if (nIndex != -1 && nIndex != nRet)
 	{
 		DeleteItem(nIndex);
 		m_arEntries.RemoveAt(nIndex);
 		//nRet is now (potentially) invalid. Reset it.
-		nRet = FindStringExact(0, str);
+		nRet = FindStringExact(-1, str);
 	}
 
 	//truncate list to m_nMaxHistoryItems
