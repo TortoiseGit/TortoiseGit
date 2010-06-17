@@ -5790,10 +5790,15 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		filename = dlg.GetPathName();
 		if(m_CurrentVersion == GIT_REV_ZERO)
 		{
-			cmd.Format(_T("copy /Y \"%s\" \"%s\""),path->GetWinPath(),filename);
-			if(g_Git.Run(cmd,&out,CP_ACP))
+			if(!CopyFile(g_Git.m_CurrentDir +_T("\\") + path->GetWinPath(),filename,false))
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+				LPVOID lpMsgBuf=NULL;
+				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+					NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+					(LPTSTR)&lpMsgBuf,
+					0,NULL);
+				CMessageBox::Show(NULL,(TCHAR *)lpMsgBuf,_T("TortoiseGit"),MB_OK);
+				LocalFree(lpMsgBuf);
 				return;
 			}
 
