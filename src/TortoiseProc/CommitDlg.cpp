@@ -587,8 +587,13 @@ void CCommitDlg::OnOK()
 			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
 	}
 
+	BOOL bIsMerge=false;
+	if(PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_HEAD")))
+	{
+		bIsMerge=true;
+	}
 	//if(checkedfiles.GetLength()>0)
-	if( bAddSuccess && (nchecked||m_bCommitAmend) )
+	if( bAddSuccess && (nchecked||m_bCommitAmend||bIsMerge) )
 	{
 	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
 	//	g_Git.Run(cmd,&out);
@@ -908,7 +913,8 @@ UINT CCommitDlg::StatusThread()
 			m_ListCtrl.SetEmptyString(m_ListCtrl.GetLastErrorMessage());
 		m_ListCtrl.Show(dwShow);
 	}
-	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems()))
+	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
+		 && !PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_HEAD")))
 	{
 		if (CMessageBox::Show(m_hWnd, IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED, IDS_APPNAME, MB_ICONINFORMATION | MB_YESNO)==IDYES)
 		{
