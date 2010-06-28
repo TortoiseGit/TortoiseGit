@@ -224,6 +224,8 @@ public:
 
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
+	MAP_HASH_NAME		m_HashMap;
+
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
@@ -278,7 +280,6 @@ protected:
 	
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;
-	MAP_HASH_NAME		m_HashMap;
 
 	CColors				m_Colors;
 

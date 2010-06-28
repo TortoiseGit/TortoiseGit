@@ -491,6 +491,41 @@ void CLogDlg::EnableOKButton()
 		DialogEnableWindow(IDOK, TRUE);
 }
 
+CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
+{
+	CString cmd;
+	CString output;
+	
+	if(m_LogList.m_HashMap.find(pLogEntry->m_CommitHash) != m_LogList.m_HashMap.end())
+	{
+		STRING_VECTOR &vector = m_LogList.m_HashMap[pLogEntry->m_CommitHash];
+		for(int i=0;i<vector.size();i++)
+		{
+			if(vector[i].Find(_T("refs/tags/")) == 0 )
+			{
+				CString tag= vector[i];
+				int start = vector[i].Find(_T("^{}"));
+				if(start>0)
+					tag=tag.Left(start);
+				else
+					continue;
+
+				cmd.Format(_T("git.exe cat-file	tag %s"), tag);
+				
+				if(g_Git.Run(cmd, &output, CP_UTF8) == 0 )
+					output+=_T("\n");			
+			}
+		}
+	}
+
+	if(!output.IsEmpty())
+	{
+		output = _T("\n*Tag Info*\n\n") + output;
+	}
+
+	return output;
+}
+
 void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 {
 	// we fill here the log message rich edit control,
@@ -572,6 +607,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			
 			msg=_T("\n\n");
 			msg+=pLogEntry->m_Body;
+
+			msg+=GetTagInfo(pLogEntry);
+
 			pMsgView->ReplaceSel(msg);
 
 			CString text;
@@ -601,6 +639,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 						((CTGitPath&)pLogEntry->m_Files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
+
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
