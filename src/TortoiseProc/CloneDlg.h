@@ -45,12 +45,15 @@ public:
 	BOOL	m_bSVNBranch;
 	BOOL	m_bSVNFrom;
 	BOOL	m_bDepth;
+	BOOL	m_bSVNUserName;
 
 	int		m_nDepth;
 
 	CString	m_strSVNTrunk;
 	CString m_strSVNTags;
 	CString m_strSVNBranchs;
+	CString m_strUserName;
+
 	int m_nSVNFrom;
 
 	CMenuButton m_BrowseUrl;
@@ -72,4 +75,5 @@ public:
 
 	CToolTips			m_tooltips;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedCheckUsername();
 };

@@ -20,7 +20,9 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_bSVN = FALSE;
 	m_bSVNTrunk = FALSE;
 	m_bSVNTags = FALSE;
-	m_bSVNBranch = FALSE;;
+	m_bSVNBranch = FALSE;
+	m_bSVNUserName = FALSE;
+
 	m_strSVNTrunk = _T("trunk");
 	m_strSVNTags = _T("tags");
 	m_strSVNBranchs = _T("branches");
@@ -50,14 +52,17 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_SVN_TAG, m_bSVNTags);
 	DDX_Check(pDX,IDC_CHECK_SVN_BRANCH, m_bSVNBranch);
 	DDX_Check(pDX,IDC_CHECK_SVN_FROM, m_bSVNFrom);
+	DDX_Check(pDX,IDC_CHECK_USERNAME, m_bSVNUserName);
 
 	DDX_Text(pDX, IDC_EDIT_SVN_TRUNK, m_strSVNTrunk);
 	DDX_Text(pDX, IDC_EDIT_SVN_TAG, m_strSVNTags);
 	DDX_Text(pDX, IDC_EDIT_SVN_BRANCH, m_strSVNBranchs);
 	DDX_Text(pDX, IDC_EDIT_SVN_FROM, this->m_nSVNFrom);
-	
+	DDX_Text(pDX, IDC_EDIT_USERNAME,m_strUserName);
+
 	DDX_Check(pDX, IDC_CHECK_DEPTH, m_bDepth);
 	DDX_Text(pDX, IDC_EDIT_DEPTH,m_nDepth);
+
 }
 
 BOOL CCloneDlg::OnInitDialog()
@@ -136,6 +141,7 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_SVN_BRANCH, &CCloneDlg::OnBnClickedCheckSvnBranch)
 	ON_BN_CLICKED(IDC_CHECK_SVN_FROM, &CCloneDlg::OnBnClickedCheckSvnFrom)
 	ON_BN_CLICKED(IDC_CHECK_DEPTH, &CCloneDlg::OnBnClickedCheckDepth)
+	ON_BN_CLICKED(IDC_CHECK_USERNAME, &CCloneDlg::OnBnClickedCheckUsername)
 END_MESSAGE_MAP()
 
 
@@ -367,6 +373,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
 	OnBnClickedCheckSvnFrom();
+	OnBnClickedCheckUsername();
 }
 
 void CCloneDlg::OnBnClickedCheckSvnTrunk()
@@ -412,4 +419,12 @@ BOOL CCloneDlg::PreTranslateMessage(MSG* pMsg)
 	m_tooltips.RelayEvent(pMsg);
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CCloneDlg::OnBnClickedCheckUsername()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_CHECK_USERNAME)->EnableWindow(this->m_bSVN);
+	this->GetDlgItem(IDC_EDIT_USERNAME)->EnableWindow(this->m_bSVNUserName && this->m_bSVN);
 }

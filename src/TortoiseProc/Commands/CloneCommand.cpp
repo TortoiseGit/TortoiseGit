@@ -118,6 +118,11 @@ bool CloneCommand::Execute()
 				cmd+=_T(" -r ")+str;
 			}
 
+			if(dlg.m_bSVNUserName)
+			{
+				cmd+= _T(" --username ");
+				cmd+=dlg.m_strUserName;
+			}
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
