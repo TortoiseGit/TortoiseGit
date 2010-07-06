@@ -488,7 +488,7 @@ void CCommitDlg::OnOK()
 			if( entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 				cmd.Format(_T("git.exe add -f -- \"%s\""),entry->GetGitPathString());
 			else if ( entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-				cmd.Format(_T("git.exe update-index --remove -- \"%s\""),entry->GetGitPathString());
+				cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""),entry->GetGitPathString());
 			else
 				cmd.Format(_T("git.exe update-index  -- \"%s\""),entry->GetGitPathString());
 
