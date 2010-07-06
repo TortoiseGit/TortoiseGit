@@ -173,7 +173,7 @@ void CPushDlg::Refresh()
 	if( !pushBranch.IsEmpty() )
 	{
 		m_BranchRemote.AddString(pushBranch);
-		m_BranchRemote.SetCurSel(0);	
+
 	}
 	else
 		m_BranchRemote.SetCurSel(-1);
