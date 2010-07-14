@@ -44,6 +44,12 @@ CSetMainPage::CSetMainPage()
 	if(!temp.IsEmpty())
 		temp+=_T("bin");
 	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE);
+	
+	m_regMsysGitExtranPath =CRegString(REG_MSYSGIT_EXTRA_PATH);
+
+	m_sMsysGitPath = m_regMsysGitPath;
+	m_sMsysGitExtranPath = m_regMsysGitExtranPath;
+
 	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
 	m_regLastCommitTime = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\use-commit-times"), _T(""));
 	if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))
@@ -62,6 +68,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LANGUAGECOMBO, m_LanguageCombo);
 	m_dwLanguage = (DWORD)m_LanguageCombo.GetItemData(m_LanguageCombo.GetCurSel());
 	DDX_Text(pDX, IDC_MSYSGIT_PATH, m_sMsysGitPath);
+	DDX_Text(pDX, IDC_MSYSGIT_EXTERN_PATH, m_sMsysGitExtranPath);
 	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
 //	DDX_Check(pDX, IDC_COMMITFILETIMES, m_bLastCommitTime);
 //	DDX_Check(pDX, IDC_ASPDOTNETHACK, m_bUseDotNetHack);
@@ -79,7 +86,8 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ASPDOTNETHACK, OnASPHACK)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
-	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnModified)
+	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnMsysGitPathModify)
+	ON_EN_CHANGE(IDC_MSYSGIT_EXTERN_PATH, OnModified)
 END_MESSAGE_MAP()
 
 BOOL CSetMainPage::OnInitDialog()
@@ -92,7 +100,7 @@ BOOL CSetMainPage::OnInitDialog()
 	
 	EnableToolTips();
 
-	m_sMsysGitPath = m_regMsysGitPath;
+	
 	m_dwLanguage = m_regLanguage;
 	m_bCheckNewer = m_regCheckNewer;
 
@@ -158,6 +166,33 @@ void CSetMainPage::OnModified()
 	SetModified();
 }
 
+void CSetMainPage::OnMsysGitPathModify()
+{
+	this->UpdateData();
+	CString str=this->m_sMsysGitPath;
+	if(!str.IsEmpty())
+	{
+		if(str[str.GetLength()-1]==_T('\'') || str[str.GetLength()-1]==_T('/'))
+			str=str.Left(str.GetLength()-1);
+
+		if(str.GetLength()>=3 && str.Find(_T("bin"), str.GetLength()-3) >=0)
+		{
+			str=str.Left(str.GetLength()-3);
+			str += _T("mingw\\bin");
+			if(::PathFileExists(str))
+			{
+				str+=_T(";");
+				if(this->m_sMsysGitExtranPath.Find(str)<0)
+				{
+					m_sMsysGitExtranPath = str + m_sMsysGitExtranPath;
+					this->UpdateData(FALSE);
+				}
+			}
+		}
+	}
+	SetModified();
+}
+
 void CSetMainPage::OnASPHACK()
 {
 	if (CMessageBox::Show(m_hWnd, IDS_SETTINGS_ASPHACKWARNING, IDS_APPNAME, MB_ICONWARNING|MB_YESNO) == IDYES)
@@ -176,9 +211,11 @@ BOOL CSetMainPage::OnApply()
 {
 	UpdateData();
 	Store (m_dwLanguage, m_regLanguage);
-	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)))
+	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) || 
+		this->m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)))
 	{
 		Store (m_sMsysGitPath, m_regMsysGitPath);
+		Store (m_sMsysGitExtranPath, m_regMsysGitExtranPath);
 		m_restart = Restart_Cache;
 	}
 	Store (m_bCheckNewer, m_regCheckNewer);
@@ -268,6 +305,7 @@ void CSetMainPage::OnBrowseDir()
 	{
 		m_sMsysGitPath=dir;
 		this->UpdateData(FALSE);
+		OnMsysGitPathModify();
 	}
 	SetModified(TRUE);
 }
@@ -277,7 +315,10 @@ void CSetMainPage::OnCheck()
 	this->UpdateData(TRUE);
 
 	CString oldpath = m_regMsysGitPath;
-	Store (m_sMsysGitPath, m_regMsysGitPath);
+	CString oldextranpath = this->m_regMsysGitExtranPath;
+
+	Store(m_sMsysGitPath, m_regMsysGitPath);
+	Store(m_sMsysGitExtranPath, m_regMsysGitExtranPath);
 
 	g_Git.m_bInitialized = false;
 
@@ -294,6 +335,7 @@ void CSetMainPage::OnCheck()
 	}
 
 	Store (oldpath, m_regMsysGitPath);
+	Store (oldextranpath, m_regMsysGitExtranPath);
 }
 
 

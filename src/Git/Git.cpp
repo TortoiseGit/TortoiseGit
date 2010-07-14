@@ -986,7 +986,7 @@ BOOL CGit::CheckMsysGitDir()
 	_tdupenv_s(&oldpath,&size,_T("PATH")); 
 
 	CString path;
-	path.Format(_T("%s;%s"),oldpath,str);
+	path.Format(_T("%s;%s"),oldpath,str + _T(";")+ (CString)CRegString(REG_MSYSGIT_EXTRA_PATH,_T(""),FALSE));
 
 	m_Environment.SetEnv(_T("PATH"),path.GetBuffer());
 

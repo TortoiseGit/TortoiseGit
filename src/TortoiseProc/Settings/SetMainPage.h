@@ -48,7 +48,9 @@ protected:
 
 private:
 	CRegString		m_regMsysGitPath;
+	CRegString		m_regMsysGitExtranPath;
 	CString			m_sMsysGitPath;
+	CString			m_sMsysGitExtranPath;
 	CToolTips		m_tooltips;
 	CComboBox		m_LanguageCombo;
 	CRegDWORD		m_regLanguage;
@@ -65,6 +67,7 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnModified();
+	afx_msg void OnMsysGitPathModify();
 	afx_msg void OnASPHACK();
 	afx_msg void OnBnClickedEditconfig();
 	afx_msg void OnBnClickedChecknewerbutton();
