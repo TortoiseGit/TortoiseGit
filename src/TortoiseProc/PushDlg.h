@@ -28,6 +28,8 @@ public:
 	BOOL			m_bPack;
     BOOL            m_bAutoLoad;
 
+	CRegDWORD		m_regAutoLoad;
+
 	virtual BOOL OnInitDialog();
 // Dialog Data
 	enum { IDD = IDD_PUSH };

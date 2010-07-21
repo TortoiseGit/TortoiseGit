@@ -84,7 +84,7 @@ BOOL CPushDlg::OnInitDialog()
 
 	AddOthersToAnchor();
 
-    this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoad);
+	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
 
 	EnableSaveRestore(_T("PushDlg"));
 
@@ -103,12 +103,18 @@ BOOL CPushDlg::OnInitDialog()
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 
+	this->m_regAutoLoad = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushDlgAutoLoad\\"))+WorkingDir, 
+									m_bAutoLoad);
+	m_bAutoLoad = this->m_regAutoLoad;
+	if(!CAppUtils::IsSSHPutty())
+		m_bAutoLoad = false;
+
 	Refresh();
 
 
 	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
 
-	
+	this->UpdateData(false);
 	return TRUE;
 }
 
@@ -225,6 +231,8 @@ void CPushDlg::OnBnClickedOk()
 	this->m_BranchRemote.SaveHistory();
 	
 	m_RemoteReg = m_Remote.GetString();
+
+	this->m_regAutoLoad = m_bAutoLoad ;
 
 	CResizableStandAloneDialog::OnOK();
 }

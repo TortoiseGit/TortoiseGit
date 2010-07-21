@@ -693,6 +693,8 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->UpdateData();
 	this->m_bAutoLoadPuttyKey  = m_regAutoLoadPutty;
+	if(!CAppUtils::IsSSHPutty())
+		m_bAutoLoadPuttyKey = false;
 	this->UpdateData(FALSE);
 
 	this->m_ctrlPull.SetCurrentEntry(this->m_regPullButton);

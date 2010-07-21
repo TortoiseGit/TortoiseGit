@@ -72,6 +72,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_regAutoLoadPutty = CRegDWORD(regkey,this->m_bAutoLoad);
 	m_bAutoLoad = m_regAutoLoadPutty;
 
+	if(!CAppUtils::IsSSHPutty())
+		m_bAutoLoad = false;
+
 	this->m_bRebase = m_regRebase;
 
 	this->UpdateData(FALSE);
