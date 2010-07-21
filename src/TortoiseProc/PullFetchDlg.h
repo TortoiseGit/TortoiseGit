@@ -25,6 +25,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	CRegString m_RemoteReg;
 	CRegDWORD	m_regRebase;
+	CRegDWORD	m_regAutoLoadPutty;
 
 	DECLARE_MESSAGE_MAP()
 public:

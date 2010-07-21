@@ -16,7 +16,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 {
 	m_IsPull=TRUE;
     m_bAutoLoad = CAppUtils::IsSSHPutty();
-    m_bAutoLoadEnable=true;
+    m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
 }
 
@@ -67,6 +67,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 	CString regkey ;
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase"),WorkingDir,this->m_IsPull);
 	m_regRebase=CRegDWORD(regkey,false);
+	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\autoload"),WorkingDir,this->m_IsPull);
+	
+	m_regAutoLoadPutty = CRegDWORD(regkey,this->m_bAutoLoad);
+	m_bAutoLoad = m_regAutoLoadPutty;
 
 	this->m_bRebase = m_regRebase;
 
@@ -188,6 +192,8 @@ void CPullFetchDlg::OnBnClickedOk()
 	m_Other.SaveHistory();
 	m_RemoteBranch.SaveHistory();
 	this->m_regRebase=this->m_bRebase;
+
+	m_regAutoLoadPutty = m_bAutoLoad;
 
 	this->OnOK();
 }
