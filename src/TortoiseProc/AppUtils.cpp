@@ -1953,7 +1953,7 @@ CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
 
 bool CAppUtils::IsSSHPutty()
 {
-    CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
+	CString sshclient=g_Git.m_Environment.GetEnv(_T("GIT_SSH"));
     sshclient=sshclient.MakeLower();
     if(sshclient.Find(_T("plink.exe"),0)>=0)
     {

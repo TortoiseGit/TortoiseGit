@@ -68,6 +68,7 @@ protected:
 	CRegDWORD m_regPullButton;
 	CRegDWORD m_regPushButton;
 	CRegDWORD m_regSubmoduleButton;
+	CRegDWORD m_regAutoLoadPutty;
 
 	CMFCTabCtrl m_ctrlTabCtrl;
 

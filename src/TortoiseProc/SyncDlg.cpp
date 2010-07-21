@@ -525,6 +525,9 @@ BOOL CSyncDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
+
+	this->GetDlgItem(IDC_CHECK_PUTTY_KEY)->EnableWindow(CAppUtils::IsSSHPutty());
+
 	/*
 	this->m_ctrlAnimate.ShowWindow(SW_NORMAL);
 	this->m_ctrlAnimate.Open(IDR_DOWNLOAD);
@@ -686,6 +689,11 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_regPullButton = CRegDWORD(regkey+_T("\\Pull"),0);
 	this->m_regPushButton = CRegDWORD(regkey+_T("\\Push"),0);
 	this->m_regSubmoduleButton = CRegDWORD(regkey+_T("\\Submodule"));
+	this->m_regAutoLoadPutty = CRegDWORD(regkey + _T("\\AutoLoadPutty"), CAppUtils::IsSSHPutty());
+
+	this->UpdateData();
+	this->m_bAutoLoadPuttyKey  = m_regAutoLoadPutty;
+	this->UpdateData(FALSE);
 
 	this->m_ctrlPull.SetCurrentEntry(this->m_regPullButton);
 	this->m_ctrlPush.SetCurrentEntry(this->m_regPushButton);
@@ -972,8 +980,10 @@ void CSyncDlg::OnOK()
 {
 	// TODO: Add your specialized code here and/or call the base class
 	UpdateCombox();
+	this->UpdateData();
 	m_ctrlURL.SaveHistory();
 	SaveHistory();
+	m_regAutoLoadPutty = this->m_bAutoLoadPuttyKey;
 	__super::OnOK();
 }
 
