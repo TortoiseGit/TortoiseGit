@@ -1101,7 +1101,7 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 			int ret=-1;
 			
 			if(m_Map[temp].m_pExcludeList)
-				git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
+				ret = git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
 
 			if(ret == 1)
 				return 1;
