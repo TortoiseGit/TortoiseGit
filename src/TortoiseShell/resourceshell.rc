@@ -200,7 +200,7 @@ BEGIN
     IDS_MENUADD             "&Add..."
     IDS_MENUREVERT          "Re&vert..."
     IDS_MENUCLEANUP         "&Clean up..."
-    IDS_MENURESOLVE         "Res&olved..."
+    IDS_MENURESOLVE         "Res&olve..."
 END
 
 STRINGTABLE 
@@ -216,7 +216,7 @@ BEGIN
     IDS_MENUDESCCHECKOUT    "Check out a working copy from a repository"
     IDS_MENUDESCUPDATE      "Updates the working copy to the current revision"
     IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
-    IDS_MENUDESCADD         "Adds file(s) to Subversion control"
+    IDS_MENUDESCADD         "Adds file(s) to Git control"
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
     IDS_MENUDESCCLEANUP     "Cleanup interrupted operations, locked files, ..."
     IDS_MENUDESCRESOLVE     "Resolves conflicted files"
@@ -270,6 +270,7 @@ BEGIN
     IDS_MENUREFBROWSE       "Browse Reference"
     IDS_MENUDESCREFBROWSE   "Browse reference"
     IDS_MENUSVNREBASE       "SVN Rebase..."
+	IDS_MENUDESCIMPORTPATCH	"Apply a series of patches from a mailbox"
 END
 
 STRINGTABLE 
