@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
-<sect1 id="tsvn-dug-push">
+<sect1 id="tsvn-dug-sync">
   <title>Sync</title>
   <?dbhh topicname="HIDD_SYNC"?>
   <indexterm>

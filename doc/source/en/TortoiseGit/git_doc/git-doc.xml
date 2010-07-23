@@ -6,7 +6,7 @@
 		<title>Git User Manual</title>
 		<xi:include href="./user-manual.xml"/>
 	</chapter>
-	<chapter id="Git-Tutuial"  xmlns:xi="http://www.w3.org/2001/XInclude">		<title>Git Tuturial</title>				<xi:include href="./gittutorial.html.xml"/>		<xi:include href="./gittutorial-2.html.xml"/>		<xi:include href="./gitcore-tutorial.html.xml"/>
+	<chapter id="Git-Tutuial"  xmlns:xi="http://www.w3.org/2001/XInclude">		<title>Git Tutorial</title>				<xi:include href="./gittutorial.html.xml"/>		<xi:include href="./gittutorial-2.html.xml"/>		<xi:include href="./gitcore-tutorial.html.xml"/>
 		<xi:include href="./gitcvs-migration.html.xml"/>		
 		<xi:include href="./everyday.xml"/>
 			</chapter>
