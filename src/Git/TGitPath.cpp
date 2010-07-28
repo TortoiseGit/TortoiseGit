@@ -776,7 +776,7 @@ int CTGitPath::GetAdminDirMask() const
 		return status;
 	}
 
-	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN;
+	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN|ITEMIS_INVERSIONEDFOLDER;
 
 	path=topdir;
 	path+=_T("\\");

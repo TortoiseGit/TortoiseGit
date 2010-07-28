@@ -370,6 +370,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 					itemStatesFolder |= askedpath.GetAdminDirMask();							
 
+					if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
+						itemStates &= ~ITEMIS_INSVN;
+
 					if (status == git_wc_status_normal)
 						itemStatesFolder |= ITEMIS_NORMAL;
 					if (status == git_wc_status_conflicted)
@@ -452,6 +455,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 				itemStates |= askedpath.GetAdminDirMask();
 				
+				if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
+					itemStates &= ~ITEMIS_INSVN;
+
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
 				itemStates |= ITEMIS_FOLDER;
