@@ -149,10 +149,26 @@ void CSyncDlg::OnBnClickedButtonPull()
 	///Pull 
 	if(CurrentEntry == 0) //Pull
 	{
+		CString remotebranch;
+		remotebranch = m_strRemoteBranch;
+
+		if(!IsURL())
+		{
+			CString configName;
+			configName.Format(L"branch.%s.merge", this->m_strLocalBranch);
+			CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+
+			configName.Format(L"branch.%s.remote", m_strLocalBranch);
+			CString pullRemote = g_Git.GetConfigValue(configName);
+
+			if(pullBranch == remotebranch && pullRemote == this->m_strURL)
+				remotebranch.Empty();
+		}
+
 		cmd.Format(_T("git.exe pull %s \"%s\" %s"),
 				force,
 				m_strURL,
-				this->m_strRemoteBranch);
+				remotebranch);
 
 		m_CurrentCmd = GIT_COMMAND_PULL;
 		m_GitCmdList.push_back(cmd);
