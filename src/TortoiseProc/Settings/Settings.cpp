@@ -62,7 +62,7 @@ void CSettings::AddPropPages()
     m_pColorsPage2 = new CSettingsColors2();
     m_pColorsPage3 = new CSettingsColors3();
 	m_pSavedPage = new CSetSavedDataPage();
-//	m_pHooksPage = new CSetHooks();
+	m_pHooksPage = new CSetHooks();
 	m_pBugTraqPage = new CSetBugTraq();
 	m_pTBlamePage = new CSettingsTBlame();
 	m_pGitConfig = new CSettingGitConfig();
@@ -90,7 +90,7 @@ void CSettings::AddPropPages()
     SetPageIcon(m_pColorsPage3, m_pColorsPage3->GetIconID());
 
 	SetPageIcon(m_pSavedPage, m_pSavedPage->GetIconID());
-//	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
+	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
 
 	SetPageIcon(m_pGitConfig, m_pGitConfig->GetIconID());
 	SetPageIcon(m_pGitRemote, m_pGitRemote->GetIconID());
@@ -123,7 +123,7 @@ void CSettings::AddPropPages()
 	}
 //	AddPage(m_pGitRemotem_pLogCachePage);
 //    AddPage(m_pLogCacheListPage);
-//	AddPage(m_pHooksPage);
+	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
 	if(	g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) )
 	{
@@ -151,7 +151,7 @@ void CSettings::RemovePropPages()
 	delete m_pColorsPage2;
 	delete m_pColorsPage3;
 	delete m_pSavedPage;
-//	delete m_pHooksPage;
+	delete m_pHooksPage;
 	delete m_pBugTraqPage;
 	delete m_pTBlamePage;
 
@@ -182,7 +182,7 @@ void CSettings::HandleRestart()
 	restart |= m_pColorsPage2->GetRestart();
 	restart |= m_pColorsPage3->GetRestart();
 	restart |= m_pSavedPage->GetRestart();
-////	restart |= m_pHooksPage->GetRestart();
+	restart |= m_pHooksPage->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
 	restart |= m_pTBlamePage->GetRestart();
 

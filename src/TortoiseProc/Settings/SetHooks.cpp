@@ -112,7 +112,7 @@ void CSetHooks::RebuildHookList()
 
 void CSetHooks::OnBnClickedRemovebutton()
 {
-#if 0
+
 	// traversing from the end to the beginning so that the indices are not skipped
 	int index = m_cHookList.GetItemCount()-1;
 	while (index >= 0)
@@ -121,19 +121,19 @@ void CSetHooks::OnBnClickedRemovebutton()
 		{
 			hookkey key;
 			key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
-			key.path = CTSVNPath(m_cHookList.GetItemText(index, 1));
+			key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 			CHooks::Instance().Remove(key);		
 			m_cHookList.DeleteItem(index);
 			SetModified();
 		}
 		index--;
 	}
-#endif
+
 }
 
 void CSetHooks::OnBnClickedEditbutton()
 {
-#if 0
+
 	if (m_cHookList.GetSelectedCount() > 1)
 		return;
 	POSITION pos = m_cHookList.GetFirstSelectedItemPosition();
@@ -142,7 +142,7 @@ void CSetHooks::OnBnClickedEditbutton()
 		CSetHooksAdv dlg;
 		int index = m_cHookList.GetNextSelectedItem(pos);
 		dlg.key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
-		dlg.key.path = CTSVNPath(m_cHookList.GetItemText(index, 1));
+		dlg.key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(_T("true"))==0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(_T("show"))==0);
@@ -155,7 +155,7 @@ void CSetHooks::OnBnClickedEditbutton()
 			SetModified();
 		}
 	}
-#endif
+
 }
 
 void CSetHooks::OnBnClickedAddbutton()

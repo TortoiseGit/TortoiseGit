@@ -48,6 +48,7 @@
 #include "PushDlg.h"
 #include "CommitDlg.h"
 #include "MergeDlg.h"
+#include "hooks.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2201,6 +2202,22 @@ bool CAppUtils::Push()
 {
 	CPushDlg dlg;
 //	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
+	CString error;
+	DWORD exitcode = -1;
+	CTGitPathList list;
+	list.AddPath(CTGitPath(g_Git.m_CurrentDir));
+	if (CHooks::Instance().PrePush(list,exitcode, error))
+	{
+		if (exitcode)
+		{
+			CString temp;
+			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+			//ReportError(temp);
+			CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return false;
+		}
+	}
+
 	if(dlg.DoModal()==IDOK)
 	{
 //		CString dir=dlg.m_Directory;
@@ -2233,9 +2250,25 @@ bool CAppUtils::Push()
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-			return TRUE;
+		progress.DoModal();
 		
+		if(!progress.m_GitStatus)
+		{
+			if (CHooks::Instance().PostPush(list,exitcode, error))
+			{
+				if (exitcode)
+				{
+					CString temp;
+					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+					//ReportError(temp);
+					CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					return false;
+				}
+			}
+
+			return TRUE;
+		}
+
 	}
 	return FALSE;
 }

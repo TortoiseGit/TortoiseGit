@@ -417,6 +417,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Hooks.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Hooks.h"
+				>
+			</File>
+			<File
 				RelativePath=".\HwSMTP.cpp"
 				>
 			</File>

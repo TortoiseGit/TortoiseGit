@@ -87,7 +87,7 @@ private:
 //	CSetLogCache *			m_pLogCachePage;
 //    CSettingsLogCaches*     m_pLogCacheListPage;
 	CSetSavedDataPage *		m_pSavedPage;
-//	CSetHooks *				m_pHooksPage;
+	CSetHooks *				m_pHooksPage;
 	CSetBugTraq *			m_pBugTraqPage;
 	CSettingsTBlame *		m_pTBlamePage;
 	CSettingGitConfig *		m_pGitConfig;

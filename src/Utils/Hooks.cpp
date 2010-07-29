@@ -61,7 +61,7 @@ bool CHooks::Create()
 		if ((pos = strhooks.Find('\n')) >= 0)
 		{
 			// line 2
-			key.path = CTSVNPath(strhooks.Mid(0, pos));
+			key.path = CTGitPath(strhooks.Mid(0, pos));
 			if (pos+1 < strhooks.GetLength())
 				strhooks = strhooks.Mid(pos+1);
 			else
@@ -141,7 +141,7 @@ bool CHooks::Remove(hookkey key)
 	return (erase(key) > 0);
 }
 
-void CHooks::Add(hooktype ht, const CTSVNPath& Path, LPCTSTR szCmd, bool bWait, bool bShow)
+void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow)
 {
 	hookkey key;
 	key.htype = ht;
@@ -173,6 +173,10 @@ CString CHooks::GetHookTypeString(hooktype t)
 		return _T("pre_update_hook");
 	case post_update_hook:
 		return _T("post_update_hook");
+	case pre_push_hook:
+		return _T("pre_push_hook");
+	case post_push_hook:
+		return _T("post_push_hook");
 	}
 	return _T("");
 }
@@ -191,6 +195,11 @@ hooktype CHooks::GetHookType(const CString& s)
 		return pre_update_hook;
 	if (s.Compare(_T("post_update_hook"))==0)
 		return post_update_hook;
+	if (s.Compare(_T("pre_push_hook"))==0)
+		return pre_push_hook;
+	if (s.Compare(_T("post_push_hook"))==0)
+		return post_push_hook;
+
 	return unknown_hook;
 }
 
@@ -201,19 +210,19 @@ void CHooks::AddParam(CString& sCmd, const CString& param)
 	sCmd += _T("\"");
 }
 
-void CHooks::AddPathParam(CString& sCmd, const CTSVNPathList& pathList)
+void CHooks::AddPathParam(CString& sCmd, const CTGitPathList& pathList)
 {
-	CTSVNPath temppath = CTempFiles::Instance().GetTempFilePath(true);
+	CTGitPath temppath = CTempFiles::Instance().GetTempFilePath(true);
 	pathList.WriteToFile(temppath.GetWinPathString(), true);
 	AddParam(sCmd, temppath.GetWinPathString());
 }
 
-void CHooks::AddCWDParam(CString& sCmd, const CTSVNPathList& pathList)
+void CHooks::AddCWDParam(CString& sCmd, const CTGitPathList& pathList)
 {
 	AddParam(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPathString());
 }
 
-void CHooks::AddDepthParam(CString& sCmd, svn_depth_t depth)
+void CHooks::AddDepthParam(CString& sCmd, git_depth_t depth)
 {
 	CString sTemp;
 	sTemp.Format(_T("%d"), depth);
@@ -222,29 +231,29 @@ void CHooks::AddDepthParam(CString& sCmd, svn_depth_t depth)
 
 void CHooks::AddErrorParam(CString& sCmd, const CString& error)
 {
-	CTSVNPath tempPath;
+	CTGitPath tempPath;
 	tempPath = CTempFiles::Instance().GetTempFilePath(true);
 	CStringUtils::WriteStringToTextFile(tempPath.GetWinPath(), (LPCTSTR)error);
 	AddParam(sCmd, tempPath.GetWinPathString());
 }
 
-CTSVNPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
+CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 {
-	CTSVNPath tempPath;
+	CTGitPath tempPath;
 	tempPath = CTempFiles::Instance().GetTempFilePath(true);
 	CStringUtils::WriteStringToTextFile(tempPath.GetWinPath(), (LPCTSTR)message);
 	AddParam(sCmd, tempPath.GetWinPathString());
 	return tempPath;
 }
 
-bool CHooks::StartCommit(const CTSVNPathList& pathList, CString& message, DWORD& exitcode, CString& error)
+bool CHooks::StartCommit(const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(start_commit_hook, pathList);
 	if (it == end())
 		return false;
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
-	CTSVNPath temppath = AddMessageFileParam(sCmd, message);
+	CTGitPath temppath = AddMessageFileParam(sCmd, message);
 	AddCWDParam(sCmd, pathList);
 	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
 	if (!exitcode && !temppath.IsEmpty())
@@ -254,7 +263,7 @@ bool CHooks::StartCommit(const CTSVNPathList& pathList, CString& message, DWORD&
 	return true;
 }
 
-bool CHooks::PreCommit(const CTSVNPathList& pathList, svn_depth_t depth, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PreCommit(const CTGitPathList& pathList, git_depth_t depth, const CString& message, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(pre_commit_hook, pathList);
 	if (it == end())
@@ -268,7 +277,7 @@ bool CHooks::PreCommit(const CTSVNPathList& pathList, svn_depth_t depth, const C
 	return true;
 }
 
-bool CHooks::PostCommit(const CTSVNPathList& pathList, svn_depth_t depth, SVNRev rev, const CString& message, DWORD& exitcode, CString& error)
+bool CHooks::PostCommit(const CTGitPathList& pathList, git_depth_t depth, GitRev rev, const CString& message, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(post_commit_hook, pathList);
 	if (it == end())
@@ -277,14 +286,14 @@ bool CHooks::PostCommit(const CTSVNPathList& pathList, svn_depth_t depth, SVNRev
 	AddPathParam(sCmd, pathList);
 	AddDepthParam(sCmd, depth);
 	AddMessageFileParam(sCmd, message);
-	AddParam(sCmd, rev.ToString());
+	AddParam(sCmd, rev.m_CommitHash.ToString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, pathList);
 	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::StartUpdate(const CTSVNPathList& pathList, DWORD& exitcode, CString& error)
+bool CHooks::StartUpdate(const CTGitPathList& pathList, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(start_update_hook, pathList);
 	if (it == end())
@@ -296,7 +305,7 @@ bool CHooks::StartUpdate(const CTSVNPathList& pathList, DWORD& exitcode, CString
 	return true;
 }
 
-bool CHooks::PreUpdate(const CTSVNPathList& pathList, svn_depth_t depth, SVNRev rev, DWORD& exitcode, CString& error)
+bool CHooks::PreUpdate(const CTGitPathList& pathList, git_depth_t depth, GitRev rev, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(pre_update_hook, pathList);
 	if (it == end())
@@ -304,13 +313,13 @@ bool CHooks::PreUpdate(const CTSVNPathList& pathList, svn_depth_t depth, SVNRev 
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
 	AddDepthParam(sCmd, depth);
-	AddParam(sCmd, rev.ToString());
+	AddParam(sCmd, rev.m_CommitHash.ToString());
 	AddCWDParam(sCmd, pathList);
 	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-bool CHooks::PostUpdate(const CTSVNPathList& pathList, svn_depth_t depth, SVNRev rev, DWORD& exitcode, CString& error)
+bool CHooks::PostUpdate(const CTGitPathList& pathList, git_depth_t depth, GitRev rev, DWORD& exitcode, CString& error)
 {
 	hookiterator it = FindItem(post_update_hook, pathList);
 	if (it == end())
@@ -318,19 +327,45 @@ bool CHooks::PostUpdate(const CTSVNPathList& pathList, svn_depth_t depth, SVNRev
 	CString sCmd = it->second.commandline;
 	AddPathParam(sCmd, pathList);
 	AddDepthParam(sCmd, depth);
-	AddParam(sCmd, rev.ToString());
+	AddParam(sCmd, rev.m_CommitHash.ToString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, pathList);
 	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
 	return true;
 }
 
-hookiterator CHooks::FindItem(hooktype t, const CTSVNPathList& pathList)
+bool CHooks::PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error)
+{
+	hookiterator it = FindItem(pre_push_hook, pathList);
+	if (it == end())
+		return false;
+	CString sCmd = it->second.commandline;
+	AddPathParam(sCmd, pathList);
+	AddErrorParam(sCmd, error);
+	AddCWDParam(sCmd, pathList);
+	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	return true;
+}
+
+bool CHooks::PostPush(const CTGitPathList& pathList,DWORD& exitcode, CString& error)
+{
+	hookiterator it = FindItem(post_push_hook, pathList);
+	if (it == end())
+		return false;
+	CString sCmd = it->second.commandline;
+	AddPathParam(sCmd, pathList);
+	AddErrorParam(sCmd, error);
+	AddCWDParam(sCmd, pathList);
+	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
+	return true;
+
+}
+hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList)
 {
 	hookkey key;
 	for (int i=0; i<pathList.GetCount(); ++i)
 	{
-		CTSVNPath path = pathList[i];
+		CTGitPath path = pathList[i];
 		do 
 		{
 			key.htype = t;
@@ -345,7 +380,7 @@ hookiterator CHooks::FindItem(hooktype t, const CTSVNPathList& pathList)
 	}
 	// look for a script with a path as '*'
 	key.htype = t;
-	key.path = CTSVNPath(_T("*"));
+	key.path = CTGitPath(_T("*"));
 	hookiterator it = find(key);
 	if (it != end())
 	{

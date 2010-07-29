@@ -60,7 +60,9 @@ BOOL CSetHooksAdv::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 
 	// initialize the combo box with all the hook types we have
-	int index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_STARTCOMMIT)));
+	int index;
+	/*
+	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_STARTCOMMIT)));
 	m_cHookTypeCombo.SetItemData(index, start_commit_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PRECOMMIT)));
 	m_cHookTypeCombo.SetItemData(index, pre_commit_hook);
@@ -72,6 +74,12 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_cHookTypeCombo.SetItemData(index, pre_update_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTUPDATE)));
 	m_cHookTypeCombo.SetItemData(index, post_update_hook);
+	*/
+	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREPUSH)));
+	m_cHookTypeCombo.SetItemData(index, pre_push_hook);
+	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTPUSH)));
+	m_cHookTypeCombo.SetItemData(index, post_push_hook);
+	
 	// preselect the right hook type in the combobox
 	for (int i=0; i<m_cHookTypeCombo.GetCount(); ++i)
 	{
@@ -110,14 +118,14 @@ BOOL CSetHooksAdv::OnInitDialog()
 
 void CSetHooksAdv::OnOK()
 {
-#if 0
+
 	UpdateData();
 	int cursel = m_cHookTypeCombo.GetCurSel();
 	key.htype = unknown_hook;
 	if (cursel != CB_ERR)
 	{
 		key.htype = (hooktype)m_cHookTypeCombo.GetItemData(cursel);
-		key.path = CTSVNPath(m_sPath);
+		key.path = CTGitPath(m_sPath);
 		cmd.commandline = m_sCommandLine;
 		cmd.bWait = !!m_bWait;
 		cmd.bShow = !m_bHide;
@@ -137,13 +145,13 @@ void CSetHooksAdv::OnOK()
 		ShowBalloon(IDC_HOOKCOMMANDLINE, IDS_ERR_NOHOOKCOMMANDPECIFIED);
 		return;
 	}
-#endif
+
 	CResizableStandAloneDialog::OnOK();
 }
 
 void CSetHooksAdv::OnBnClickedHookbrowse()
 {
-#if 0
+
 	UpdateData();
 	CBrowseFolder browser;
 	CString sPath;
@@ -154,7 +162,7 @@ void CSetHooksAdv::OnBnClickedHookbrowse()
 		m_sPath = sPath;
 		UpdateData(FALSE);
 	}
-#endif
+
 }
 
 void CSetHooksAdv::OnBnClickedHookcommandbrowse()

@@ -36,7 +36,9 @@ typedef enum hooktype
 	start_update_hook,
 	pre_update_hook,
 	post_update_hook,
-	issue_tracker_hook
+	issue_tracker_hook,
+	pre_push_hook,
+	post_push_hook,
 } hooktype;
 
 /**
@@ -222,6 +224,8 @@ public:
 									GitRev rev, const CString& message, 
 									DWORD& exitcode, CString& error);
 
+	bool	PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error);
+	bool	PostPush(const CTGitPathList& pathList,DWORD& exitcode, CString& error);
 private:
 	/**
 	 * Starts a new process, specified in \c cmd.

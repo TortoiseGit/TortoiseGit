@@ -28,6 +28,7 @@
 #include "ImportPatchDlg.h"
 #include "PathUtils.h"
 #include "RebaseDlg.h"
+#include "hooks.h"
 
 // CSyncDlg dialog
 
@@ -356,6 +357,22 @@ void CSyncDlg::OnBnClickedButtonPush()
 	CString force;
 	CString all;
 
+	CString error;
+	DWORD exitcode;
+	CTGitPathList list;
+	list.AddPath(CTGitPath(g_Git.m_CurrentDir));
+
+	if (CHooks::Instance().PrePush(list,exitcode, error))
+	{
+		if (exitcode)
+		{
+			CString temp;
+			temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+			//ReportError(temp);
+			CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return ;
+		}
+	}
 
 
 	switch (m_ctrlPush.GetCurrentEntry())
@@ -928,6 +945,25 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		//if(wParam == MSG_PROGRESSDLG_END)
 		if(this->m_CurrentCmd == GIT_COMMAND_PUSH )
 		{
+			if(!m_GitCmdStatus)
+			{
+				CTGitPathList list;
+				list.AddPath(CTGitPath(g_Git.m_CurrentDir));  
+				DWORD exitcode;
+				CString error;
+				if (CHooks::Instance().PostPush(list,exitcode, error))
+				{
+					if (exitcode)
+					{
+						CString temp;
+						temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+						//ReportError(temp);
+						CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						return false;
+					}
+				}
+
+			}
 			EnableControlButton(true);
 			SwitchToInput();
 			this->FetchOutList(true);

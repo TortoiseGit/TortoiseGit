@@ -72,7 +72,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 //	apr_app_initialize(&argc, &argv, NULL);
 //	svn_dso_initialize2();
 	SYS_IMAGE_LIST();
-//	CHooks::Create();
+	CHooks::Create();
 	g_GitAdminDir.Init();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
@@ -98,7 +98,7 @@ CTortoiseProcApp::~CTortoiseProcApp()
 	// destroyed, we tell it to destroy the memory pools and terminate apr
 	// *now* instead of later when the object itself is destroyed.
 	g_GitAdminDir.Close();
-//	CHooks::Destroy();
+	CHooks::Destroy();
 	SYS_IMAGE_LIST().Cleanup();
 	//apr_terminate();
 }
