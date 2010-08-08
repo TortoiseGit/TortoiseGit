@@ -658,18 +658,6 @@ int CRebaseDlg::StartRebase()
 		return -1;
 	}
 	
-	if( !this->m_IsCherryPick )
-	{
-		cmd.Format(_T("git.exe checkout %s"),this->m_UpstreamCtrl.GetString());
-		this->AddLogString(cmd);
-
-		out.Empty();
-		if(g_Git.Run(cmd,&out,CP_UTF8))
-		{
-			return -1;
-		}
-	}
-	
 	m_OrigUpstreamHash.Empty();
 	m_OrigUpstreamHash= g_Git.GetHash(this->m_UpstreamCtrl.GetString());
 	if(m_OrigUpstreamHash.IsEmpty())
@@ -678,6 +666,20 @@ int CRebaseDlg::StartRebase()
 		return -1;
 	}
 
+	if( !this->m_IsCherryPick )
+	{
+		cmd.Format(_T("git.exe checkout -f %s"), m_OrigUpstreamHash);
+		this->AddLogString(cmd);
+
+		out.Empty();
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			this->AddLogString(out);
+			return -1;
+		}
+	}
+	
+	
 	if( !this->m_IsCherryPick )
 	{
 		cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
@@ -714,27 +716,29 @@ int CRebaseDlg::FinishRebase()
 	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
 		return 0;
 
-	CString cmd,out;
-	cmd.Format(_T("git.exe branch -f %s"),this->m_BranchCtrl.GetString());
-	if(g_Git.Run(cmd,&out,CP_UTF8))
-	{
-		AddLogString(out);
-		return -1;
-	}
-	out.Empty();
-	cmd.Format(_T("git.exe reset --hard %s"),this->m_OrigUpstreamHash);
-	if(g_Git.Run(cmd,&out,CP_UTF8))
-	{
-		AddLogString(out);
-		return -1;
-	}
+	git_revnum_t head = g_Git.GetHash(CString(_T("HEAD")));
+	CString out,cmd;
+
 	out.Empty();
 	cmd.Format(_T("git.exe checkout -f %s"),this->m_BranchCtrl.GetString());
+	AddLogString(cmd);
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
 		return -1;
 	}
+	AddLogString(out);
+
+	out.Empty();
+	cmd.Format(_T("git.exe reset --hard %s"),head);
+	AddLogString(cmd);
+	if(g_Git.Run(cmd,&out,CP_UTF8))
+	{
+		AddLogString(out);
+		return -1;
+	}
+	AddLogString(out);
+
 	return 0;
 }
 void CRebaseDlg::OnBnClickedContinue()
@@ -836,8 +840,11 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString cmd;
 		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash.ToString());
 
+		AddLogString(cmd);
+
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
+			AddLogString(out);
 			if(!g_Git.CheckCleanWorkTree())
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
