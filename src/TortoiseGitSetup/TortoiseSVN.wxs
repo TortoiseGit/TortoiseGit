@@ -116,7 +116,6 @@
           
       <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
       
-			<ScheduleReboot After="RegisterProduct" />
 		</InstallExecuteSequence>
 
 		<!-- UI Sequencing ...................................................................................................... -->
