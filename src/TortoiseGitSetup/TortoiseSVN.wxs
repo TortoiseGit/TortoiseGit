@@ -51,7 +51,12 @@
 
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
-		
+
+    <!-- a: force all files to be reinstalled, regardless of version -->
+    <!-- m: Rewrite all registry keys that go to HKEY_LOCAL_MACHINE or HKEY_CLASSES_ROOT -->
+    <!-- a: Rewrite all registry keys that go to HKEY_CURRENT_USER or HKEY_USERS -->
+    <Property Id='REINSTALLMODE'>amu</Property>
+    
 		<Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
 		<Condition Message="[ProductName] requires Windows 2000 or later."><![CDATA[VersionNT >= 500]]></Condition>
 
