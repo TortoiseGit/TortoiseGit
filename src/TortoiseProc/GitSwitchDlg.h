@@ -37,4 +37,6 @@ public:
 	afx_msg void OnBnClickedCheckBranch();
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	afx_msg void OnDestroy();
+	afx_msg void OnCbenEndeditComboboxexVersion(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnCbnEditchangeComboboxexVersion();
 };
