@@ -7,7 +7,7 @@
     <primary>Rebase</primary>
   </indexterm>
   <para>
-	Rebase is quite complex. Please read <xref linked="Rebasin"/> to
+	Rebase is quite complex. Please read <xref linkend="Rebasin"/> to
 	understand git rebase.
   </para>
   <para>

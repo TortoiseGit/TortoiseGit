@@ -9,11 +9,11 @@
     <primary>Repository</primary>
   </indexterm>
   <para>
-    This section talk about how to create a git repository.
-    Create git repository is very simple.At none git repository directory, 
+    This section talks about how to create a git repository.
+    Create git repository is very simple. At none git repository directory, 
     just use the explorer context menu and select
     <menuchoice>
-      <guimenu>Git Create Repository hearguimenu
+      <guimenu>Git Create Repository here
       </guimenu>
     </menuchoice>. 
   </para>

@@ -10,8 +10,8 @@
     <primary>Repository</primary>
   </indexterm>
   <para>
-    This section talk about how to clone a git repository from other repository.
-    Clone git repository is very simple.At none git repository directory, 
+    This section talks about how to clone a git repository from other repository.
+    Clone git repository is very simple. At none git repository directory, 
     just use the explorer context menu and select
     <menuchoice>
       <guimenu>Git Clone...
@@ -22,22 +22,22 @@
     Clone Dialog will show. <graphic fileref="../images/GitClone.png"/>
   </para>
   <para>
-    <guilabel>Url:</guilabel>Input repository URL address, which you will clone <emphasis>from</emphasis>.
-    You can click <guilabel>Browse</guilabel> to browse diectory.
+    <guilabel>Url:</guilabel> Input repository URL address, which you will clone <emphasis>from</emphasis>.
+    You can click <guilabel>Browse</guilabel> to browse directory.
   </para>
   <para>
     <guilabel>Directory:</guilabel>Input your local directory, which you will clone <emphasis>to</emphasis>.
-    You can click <guilabel>Browse</guilabel> to browse diectory. 
+    You can click <guilabel>Browse</guilabel> to browse directory. 
   </para>
   <para>
-    If you check<guilabel>Load Putty Key</guilabel> the box, clone will auto load putty key file with Pageant.
+    If you check the <guilabel>Load Putty Key</guilabel> checkbox, clone will auto load putty key file with Pageant.
     You can click <guilabel>...</guilabel> to browse putty key file.
   </para>
   <para>
     Clone will checkout currrent HEAD to work space automatically. 
   </para>
-  <para>
-    Git clone support http, git and ssh protocol. <xref linkend="git-choose-ssh"/>Show how to choose SSH client.
+  <para> <!-- FIXME command git-choose-ssh does not exist -->
+    Git clone supports http, git and ssh protocol. <xref linkend="git-choose-ssh"/> shows how to choose SSH client.
     OpenSSH, PLink or TortoisePlink. 
   </para>
 </sect1>

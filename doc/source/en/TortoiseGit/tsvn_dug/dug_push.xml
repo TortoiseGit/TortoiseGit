@@ -24,19 +24,19 @@
   <sect2>
 	<title>Branch</title>
 	<para>
-		<guilabel>Source:</guilabel> The source branch which will push to other repository
+		<guilabel>Local:</guilabel> The source branch which will push to other repository.
 	</para>
 	<para>
-		<guilabel>Remotes:</guilabel> The remote branch of the other repository. 
+		<guilabel>Remote:</guilabel> The remote branch of the other repository. 
 	</para>
   </sect2>
   <sect2>
 	<title>Destination</title>
 	<para>
-		<guilabel>Remotes</guilabel> Choose remote repository.
+		<guilabel>Remote:</guilabel> Choose remote repository.
 	</para>
 	<para>
-		<guilabel>Arbitary URL:</guilabel> The remote repository url. 
+		<guilabel>Arbitrary URL:</guilabel> The remote repository url. 
 	</para>
   </sect2>
   <sect2>

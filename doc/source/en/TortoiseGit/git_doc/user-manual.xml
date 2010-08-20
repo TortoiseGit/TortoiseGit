@@ -3,7 +3,7 @@
 
 <article lang="en">
 <articleinfo>
-    <title>Git User&#8217;s Manual (for version 1.5.3 or newer)</title>
+    <title>Git User's Manual (for version 1.5.3 or newer)</title>
 </articleinfo>
 <simpara>Git is a fast distributed revision control system.</simpara>
 <simpara>This manual is designed to be readable by someone with basic UNIX

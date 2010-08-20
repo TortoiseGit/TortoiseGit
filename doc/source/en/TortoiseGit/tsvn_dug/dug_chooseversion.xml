@@ -14,7 +14,7 @@
 		<term><guilabel>Branch</guilabel></term>
 		<listitem>
 			<para>
-				The latest commit of chosen branch
+				The latest commit of chosen branch.
 			</para>
 		</listitem>
 	</varlistentry>
@@ -23,7 +23,7 @@
 		<term><guilabel>Tags</guilabel></term>
 		<listitem>
 			<para>
-				The commit of chosen Tag
+				The commit of chosen Tag.
 			</para>
 		</listitem>
 	</varlistentry>

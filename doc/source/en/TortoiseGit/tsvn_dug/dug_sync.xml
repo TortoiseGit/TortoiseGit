@@ -24,19 +24,19 @@
   <sect2>
 	<title>Branch</title>
 	<para>
-		<guilabel>Local Source:</guilabel> The source branch which will push\pull to\from other repository
+		<guilabel>Local Branch:</guilabel> The source branch which will push\pull to\from other repository.
 	</para>
 	<para>
-		<guilabel>Remotes branchs</guilabel> The remote branch of the other repository. 
+		<guilabel>Remote Branch:</guilabel> The remote branch of the other repository.
 	</para>
   </sect2>
   <sect2>
 	<title>Destination</title>
 	<para>
-		<guilabel>Remotes URL</guilabel> Choose remote repository or input remote repository URL.
+		<guilabel>Remote URL:</guilabel> Choose remote repository or input remote repository URL.
 	</para>
 	<para>
-		<guilabel>Manage</guilabel> Add new remote name
+		<guilabel>Manage</guilabel> Add new remote name.
 	</para>
   </sect2>
   <sect2>

@@ -485,7 +485,7 @@ Don't touch these lines:
 							</entry>
 						</row>
 						<row>
-							<entry condition="pot">:stashapply</entry>
+							<entry condition="pot">:stashpop</entry>
 							<entry>
 								<option>/path</option>.
 							</entry>

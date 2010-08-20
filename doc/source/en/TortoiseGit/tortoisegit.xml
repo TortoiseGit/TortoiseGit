@@ -50,7 +50,6 @@
 	<xi:include href="./git_doc/git-doc.xml"/>
 
 	<xi:include href="../glossary.xml"/>
-	<appendix id="appendix" xmlns:xi="http://www.w3.org/2001/XInclude">
-	</appendix>
+
 	<index id="tsvn-index"/>
 </book>

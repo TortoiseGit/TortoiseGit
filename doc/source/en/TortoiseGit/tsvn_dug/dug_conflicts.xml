@@ -109,7 +109,7 @@
 		if you right click on the parent folder and select
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Resolved...</guimenuitem>
+			<guimenuitem>Resolve...</guimenuitem>
 		</menuchoice>
 		This will bring up a dialog listing all conflicted files
 		in that folder, and you can select which ones to mark

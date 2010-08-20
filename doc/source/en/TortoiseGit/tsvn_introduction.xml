@@ -212,7 +212,7 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Toolkit design.</term>
+				<term>Toolkit design</term>
 				<listitem>
 					<para>
 						Following the Unix tradition, Git is a collection of many small 

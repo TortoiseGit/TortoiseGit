@@ -10,8 +10,8 @@
     <primary>Fetch</primary>
   </indexterm>
   <para>
-    This section talk about how to Fetch or pull change from the other
-	repository. The difference of Pull and fetch is:
+    This section talks about how to fetch or pull change from the other
+	repository. The difference between pull and fetch is:
   </para>
   <para>
 	Pull will merge remote branch change to local branch which tracked with 
@@ -37,21 +37,21 @@
     Pull\fetch Dialog will show. <graphic fileref="../images/GitPull.png"/>
   </para>
   <para>
-    <guilabel>Remote:</guilabel>Choose Remote
+    <guilabel>Remote:</guilabel> Choose Remote
   </para>
   <para>
     <guilabel>Other:</guilabel> Input Other URL or local directory
-    You can click <guilabel>Browse</guilabel> to browse diectory. 
+    You can click <guilabel>Browse</guilabel> to browse directory. 
   </para>
   <para>
-    If you check<guilabel>Autoload Putty Key</guilabel> the check box, Putty key
-	will auto load by pagaent.
+    If you check the <guilabel>Autoload Putty Key</guilabel> checkbox, Putty key
+	will auto load by Pageant.
   </para>
   <para>
     <guilabel>Manage Remotes</guilabel> to add or modify remote configuration.
   </para>
-  <para>
-    Git clone support http, git and ssh protocol. <xref linkend="git-choose-ssh"/>Show how to choose SSH client.
+  <para> <!-- FIXME command git-choose-ssh does not exist -->
+    Git clone supports http, git and ssh protocol. <xref linkend="git-choose-ssh"/> shows how to choose SSH client.
     OpenSSH, PLink or TortoisePlink. 
   </para>
 </sect1>

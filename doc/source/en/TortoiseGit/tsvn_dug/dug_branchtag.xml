@@ -29,7 +29,7 @@
 		environment. This process is known as <firstterm>tagging</firstterm>.
 	</para>
 	<para>
-		Git is very powerfull at branch and tag. It is very easy to Create branch
+		Git is very powerfull at branch and tag. It is very easy to create branch
 		and tag. 
 	</para>
 	<sect2 id="tsvn-dug-branch-1">
@@ -59,10 +59,10 @@
 			
 		</para>
 		<para>
-			<guilabel>branch</guilabel> input your branch name. 
+			<guilabel>Branch:</guilabel> input your branch name. 
 		</para>
 		<para>
-			<guilabel>tag</guilabel> input your tag name. 
+			<guilabel>Tag:</guilabel> input your tag name. 
 		</para>
 		<para>
 			You can choose one commit that base on. 
@@ -89,7 +89,7 @@
 		</para>
 		<para>
 			How to switch working copy to tag\branch,
-			Please refer <xref linked="tsvn-dug-checkout"/> 
+			please refer to <xref linkend="tsvn-dug-checkout"/> 
 		</para>
 	</sect2>
 	

@@ -220,7 +220,7 @@
 	<important>
 		<para>
 			If you checkout\switch to <guilabel>Tags</guilabel> or <guilabel>Version</guilabel>
-			Prefer you create new branch for it, otherwise you will work at "no branch".
+			prefer you create new branch for it, otherwise you will work at "no branch".
 		</para>
 	</important>
 	

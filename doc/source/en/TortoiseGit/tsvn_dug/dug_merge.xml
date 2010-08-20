@@ -59,6 +59,6 @@
 	</para>
 	<para>
 		Although major merge working is done by git automatically, conflict maybe happen during merge, 
-		please see <xref linked="tsvn-dug-conflicts"/> to how to resolve conflict.
+		please see <xref linkend="tsvn-dug-conflicts"/> to how to resolve conflict.
 	</para>
 </sect1>
