@@ -23,15 +23,15 @@
   </para>
   <para>
     <guilabel>Url:</guilabel> Input repository URL address, which you will clone <emphasis>from</emphasis>.
-    You can click <guilabel>Browse</guilabel> to browse directory.
+    You can click <guibutton>Browse</guibutton> to browse directory.
   </para>
   <para>
     <guilabel>Directory:</guilabel>Input your local directory, which you will clone <emphasis>to</emphasis>.
-    You can click <guilabel>Browse</guilabel> to browse directory. 
+    You can click <guibutton>Browse</guibutton> to browse directory. 
   </para>
   <para>
     If you check the <guilabel>Load Putty Key</guilabel> checkbox, clone will auto load putty key file with Pageant.
-    You can click <guilabel>...</guilabel> to browse putty key file.
+    You can click <guibutton>...</guibutton> to browse putty key file.
   </para>
   <para>
     Clone will checkout currrent HEAD to work space automatically. 

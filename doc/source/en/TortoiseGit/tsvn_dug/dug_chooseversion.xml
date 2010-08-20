@@ -32,7 +32,7 @@
 		<term><guilabel>Version</guilabel></term>
 		<listitem>
 			<para>
-				Any commit, you click <guilabel>...</guilabel> to launch log
+				Any commit, you click <guibutton>...</guibutton> to launch log
 				dialog to choose commit. You also can input commit hash, or 
 				friend version name, such as HEAD~4. 
 			</para>

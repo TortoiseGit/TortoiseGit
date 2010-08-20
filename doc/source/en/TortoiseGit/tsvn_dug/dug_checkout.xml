@@ -32,7 +32,7 @@
 		If you enter a branch name at <guilabel>Create New Branch</guilabel>, new branch created and switch to new branchs.
 	</para>
   <para>
-    You can click <guilabel>...</guilabel> to browse git log and choose special version. 
+    You can click <guibutton>...</guibutton> to browse git log and choose special version. 
   </para>
   <para>
     Check <guilabel>Force</guilabel> will overwrite working copy with repository version.

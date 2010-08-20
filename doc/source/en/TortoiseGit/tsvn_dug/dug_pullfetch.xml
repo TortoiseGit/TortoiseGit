@@ -40,8 +40,8 @@
     <guilabel>Remote:</guilabel> Choose Remote
   </para>
   <para>
-    <guilabel>Other:</guilabel> Input Other URL or local directory
-    You can click <guilabel>Browse</guilabel> to browse directory. 
+    <guilabel>Other:</guilabel> Input Other URL or local directory.
+    You can click <guibutton>...</guibutton> to browse directory. 
   </para>
   <para>
     If you check the <guilabel>Autoload Putty Key</guilabel> checkbox, Putty key
