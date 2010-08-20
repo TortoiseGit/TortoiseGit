@@ -252,6 +252,7 @@ BEGIN
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
     IDS_MENUCHERRYPICK      "Cherry Pick..."
     IDS_MENUFETCH           "Fetch..."
+    IDS_MENUDESCFETCH       "Fetch"
     IDS_MENUREBASE          "*Rebase..."
     IDS_MENUSTASHSAVE       "Stash Save"
     IDS_MENUSTASHAPPLY      "Stash Apply"
@@ -351,8 +352,11 @@ BEGIN
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore items by &extension"
     IDS_MENUPULL            "Pull..."
+    IDS_MENUDESCPULL        "Pull"
     IDS_MENUPUSH            "Push..."
+    IDS_MENUDESCPUSH        "Push"
     IDS_MENUCLONE           "Clone..."
+    IDS_MENUDESCCLONE       "Clone a repository"
 END
 
 STRINGTABLE 
