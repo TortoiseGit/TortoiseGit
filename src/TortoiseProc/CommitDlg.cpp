@@ -870,14 +870,18 @@ UINT CCommitDlg::StatusThread()
     // Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
+	CTGitPathList *pList;
+
     if(m_bWholeProject)
-        success=m_ListCtrl.GetStatus(NULL);
+		pList=NULL;
     else
-        success=m_ListCtrl.GetStatus(&m_pathList);
+		pList = &m_pathList;
+    
+	success=m_ListCtrl.GetStatus(pList);
 
 	//m_ListCtrl.UpdateFileList(git_revnum_t(GIT_REV_ZERO));
 	if(this->m_bShowUnversioned)
-		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER,true,&m_pathList);
+		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER,true,pList);
 	
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
