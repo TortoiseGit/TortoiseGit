@@ -2412,6 +2412,7 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 
 BOOL CAppUtils::SVNDCommit()
 {
+	BOOL IsStash = false;
 	if(!g_Git.CheckCleanWorkTree())
 	{
 		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
@@ -2423,6 +2424,7 @@ BOOL CAppUtils::SVNDCommit()
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
 			}
+			IsStash =true;
 
 		}else
 		{
@@ -2432,9 +2434,28 @@ BOOL CAppUtils::SVNDCommit()
 
 	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn dcommit");
-	if(progress.DoModal()==IDOK)
-		return TRUE;
+	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
+	{
+		if( IsStash)
+		{
+			if(CMessageBox::Show(NULL,IDS_DCOMMIT_STASH_POP,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+			{
+				CString cmd,out;
+				cmd=_T("git.exe stash pop");
+				if(g_Git.Run(cmd,&out,CP_ACP))
+				{
+					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+					return false;
+				}
 
+			}else
+			{
+				return false;
+			}
+		}
+		return TRUE;
+	}
+	return FALSE;
 }
 
 BOOL CAppUtils::Merge(CString *commit, int mode)
