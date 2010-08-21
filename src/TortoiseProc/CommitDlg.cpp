@@ -624,14 +624,21 @@ void CCommitDlg::OnOK()
 		progress.m_PreText = out;			// show any output already generated in log window
 
 		progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
+		progress.m_PostCmdList.Add(_T("&ReCommit"));
 		
 		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
 
 		DWORD userResponse = progress.DoModal();
 		
-		if(progress.m_GitStatus)
+		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1+1))
 		{
 			bCloseCommitDlg = false;
+			if( userResponse == (IDC_PROGRESS_BUTTON1+1 ))
+			{
+				this->m_sLogMessage.Empty();
+				m_cLogMessage.SetText(m_sLogMessage);
+			}
+
 			this->Refresh();
 		}
 		else if(userResponse == IDC_PROGRESS_BUTTON1)
