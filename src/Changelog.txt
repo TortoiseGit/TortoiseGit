@@ -1,3 +1,35 @@
+= Release 1.5.3.0 =
+== Features ==
+ * Add pre and post push hook support
+ * Don't show remote branch name if remote branch is track branch at syncdlg
+ * RebaseDlg: working at no branch, not upstream branch.
+ 
+== Bug Fix ==
+ * Fixed issue #475: Fix 'Save revision to' for 'Working copy'
+ * Fixed Issue #486: Resolving conflicts can result in nothing to commit
+ * Fixed issue #493: Add username option at clone dialog
+ * Fixed issue #482: View message details of a tag
+ * Fixed issue #495: Push dialog does not select remote branch correctly
+ * Fixed issue #505: Delete (keep local) results in commit error
+ * Fixed issue #503: remote branch drop down doesn't allow enough characters at sync dialog
+ * Fixed issue #506: TortoiseGit-1.5.2.0-32bit.msi does not recognize msysGit-fullinstall-1.7.1-preview20100612.exe
+ * Fixed issue #492: Remember AutoLoad Putty Key status in Sync dialog
+ * Fixed issue #492: Remember AutoLoad Putty Key status in Pull dialog
+ * Fixed issue #492: Fix AutoLoad Putty Key operation in push dialog
+ * Fixed issue #513: Remember "Git Command Progress" window size
+ * Fixed issue #519: Icon overlay not working for exclude files
+ * Fixed issue #507: Help Spell error and push wrongly link to sync
+ * Fixed issue #507: context menu spell error and description error
+ * Fixed issue #517: Context menu for folder does not contain "Add to ignore list"
+ * Fixed issue #380: TortoiseMerge "Created unified diff file" doesn't work
+ * Fixed issue #528: Whole repository context menu actions not visible in Win 7 folders in libraries
+ * Fixed issue #412: Create new branch default check at switch\checkout dialog.
+ * Fixed issue #477: Commit from "GitShowLog" doesn`t show not versioned files
+ * Fixed issue #527: Fix the dialog after commit for us to be able to continue committing
+ * Fixed issue #472: TortoiseGit allows to commit without setting up a username + email
+ * Fixed issue #464: Push and pull missing from context menu
+ * Fixed issue #470: auto stash apply/pop for SVN dcommit
+ 
 = Release 1.5.2.0 =
 == Bug Fix == 
  * Fixed issue #454: Fix "check Now" can't work at setting dialog
