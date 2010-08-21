@@ -87,7 +87,7 @@ public:
 		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
 		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
 
-		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUDELUNVERSIONED|MENUSUBSYNC|MENUCREATEPATCH|MENUPULL|MENUPUSH|MENUFETCH);
+		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUDELUNVERSIONED|MENUSUBSYNC|MENUCREATEPATCH);
 		menuextlow	= CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
 		menuexthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
 
