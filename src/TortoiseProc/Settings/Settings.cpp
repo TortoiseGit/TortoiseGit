@@ -287,6 +287,10 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pGitRemote);
 	}
+	if(this->m_DefaultPage == _T("gitconfig"))
+	{
+		this->SetActivePage(this->m_pGitConfig);
+	}
 	if(this->m_DefaultPage == _T("main"))
 	{
 		this->SetActivePage(this->m_pMainPage);

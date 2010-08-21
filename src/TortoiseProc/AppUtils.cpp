@@ -49,6 +49,7 @@
 #include "CommitDlg.h"
 #include "MergeDlg.h"
 #include "hooks.h"
+#include "..\Settings\Settings.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2325,7 +2326,24 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					BOOL bSelectFilesForCommit)
 {
 	bool bFailed = true;
-	
+
+	while(g_Git.GetConfigValue(_T("user.name")).IsEmpty() || g_Git.GetConfigValue(_T("user.email")).IsEmpty())
+	{
+		if(CMessageBox::Show(NULL,_T("User name and email must be set before commit.\r\n Do you want to set these now?\r\n"),
+							_T("TortoiseGit"),MB_YESNO| MB_ICONERROR) == IDYES)
+		{
+			CSettings dlg(IDS_PROC_SETTINGS_TITLE,&CTGitPath(g_Git.m_CurrentDir));
+			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
+			dlg.SetTreeWidth(220);
+			dlg.m_DefaultPage = _T("gitconfig");
+
+			dlg.DoModal();
+			dlg.HandleRestart();
+
+		}else
+			return false;
+	}
+
 	while (bFailed)
 	{
 		bFailed = false;
