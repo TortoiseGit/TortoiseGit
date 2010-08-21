@@ -52,12 +52,7 @@
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
 
-    <!-- a: force all files to be reinstalled, regardless of version -->
-    <!-- m: Rewrite all registry keys that go to HKEY_LOCAL_MACHINE or HKEY_CLASSES_ROOT -->
-    <!-- a: Rewrite all registry keys that go to HKEY_CURRENT_USER or HKEY_USERS -->
-    <Property Id='REINSTALLMODE'>amu</Property>
-    
-		<Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
+    <Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
 		<Condition Message="[ProductName] requires Windows 2000 or later."><![CDATA[VersionNT >= 500]]></Condition>
 
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
@@ -112,7 +107,7 @@
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
       
-			<RemoveExistingProducts After="InstallFinalize"><![CDATA[PREVIOUSVERSIONSINSTALLED OR (NOT NEWERVERSIONDETECTED AND OKTODOWNGRADE = 1)]]></RemoveExistingProducts>
+			<RemoveExistingProducts After="InstallValidate"><![CDATA[PREVIOUSVERSIONSINSTALLED OR (NOT NEWERVERSIONDETECTED AND OKTODOWNGRADE = 1)]]></RemoveExistingProducts>
           
       <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
       
