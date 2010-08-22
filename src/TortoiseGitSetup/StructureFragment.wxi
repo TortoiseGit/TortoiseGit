@@ -269,7 +269,7 @@
             <?if $(var.Platform) = "x64" ?>
             <RegistryKey Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" Action="createAndRemoveOnUninstall" />
             <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" Name="CanonicalName" Value="SVNWCs.Library" Type="string" />
-            <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" Name="Parent" Value="$(var.GuidFolderTypeSVN)" Type="string" />
+            <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)" Name="Parent" Value="$(var.GuidFolderTypeGit)" Type="string" />
             <RegistryKey Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Action="createAndRemoveOnUninstall" />
             <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="ChildViewID" Value="$(var.GuidTopView6)" Type="string" />
             <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryTypeGit)\TopViews\$(var.GuidTopView1)" Name="ColumnList" Value="prop:0System.ItemNameDisplay;0System.DateModified;0System.Size;0System.FileCount;0System.ItemTypeText" Type="string" />
