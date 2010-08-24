@@ -55,6 +55,7 @@ BOOL CProgressDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS_BUTTON1,BOTTOM_LEFT);
+	AddAnchor(IDC_CURRENT,TOP_LEFT);
 
 	this->GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_HIDE);
 	m_Animate.Open(IDR_DOWNLOAD);
