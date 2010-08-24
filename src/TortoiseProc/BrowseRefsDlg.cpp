@@ -271,7 +271,12 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 {
 	if(!bExactMatch)
-		refName = GetFullRefName(refName);
+	{
+		CString newRefName = GetFullRefName(refName);
+		if(!newRefName.IsEmpty())
+			refName = newRefName;
+		//else refName is not a valid ref. Try to select as good as possible.
+	}
 	if(wcsnicmp(refName,L"refs/",5)!=0)
 		return false; // Not a ref name
 
