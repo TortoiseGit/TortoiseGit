@@ -23,8 +23,8 @@
 #include <iterator>
 // assign property list
 #if 0
-CGitStatusListCtrl::PropertyList& 
-CGitStatusListCtrl::PropertyList::operator= (const char* rhs)
+PropertyList& 
+PropertyList::operator= (const char* rhs)
 {
 	// do you really want to replace the property list?
 
@@ -50,7 +50,7 @@ CGitStatusListCtrl::PropertyList::operator= (const char* rhs)
 
 // collect property names in a set
 
-void CGitStatusListCtrl::PropertyList::GetPropertyNames (std::set<CString>& names)
+void PropertyList::GetPropertyNames (std::set<CString>& names)
 {
 	for ( CIT iter = properties.begin(), end = properties.end()
 		; iter != end
@@ -62,7 +62,7 @@ void CGitStatusListCtrl::PropertyList::GetPropertyNames (std::set<CString>& name
 
 // get a property value. 
 
-CString CGitStatusListCtrl::PropertyList::operator[](const CString& name) const
+CString PropertyList::operator[](const CString& name) const
 {
 	CIT iter = properties.find (name);
 
@@ -73,21 +73,21 @@ CString CGitStatusListCtrl::PropertyList::operator[](const CString& name) const
 
 // set a property value.
 
-CString& CGitStatusListCtrl::PropertyList::operator[](const CString& name)
+CString& PropertyList::operator[](const CString& name)
 {
 	return properties[name];
 }
 
 /// check whether that property has been set on this item.
 
-bool CGitStatusListCtrl::PropertyList::HasProperty (const CString& name) const
+bool PropertyList::HasProperty (const CString& name) const
 {
 	return properties.find (name) != properties.end();
 }
 
 // due to frequent use: special check for svn:needs-lock
 
-bool CGitStatusListCtrl::PropertyList::IsNeedsLockSet() const
+bool PropertyList::IsNeedsLockSet() const
 {
 	static const CString svnNeedsLock = _T("svn:needs-lock");
 	return HasProperty (svnNeedsLock);
@@ -96,16 +96,17 @@ bool CGitStatusListCtrl::PropertyList::IsNeedsLockSet() const
 #endif
 // registry access
 
-void CGitStatusListCtrl::ColumnManager::ReadSettings 
+void ColumnManager::ReadSettings 
     ( DWORD defaultColumns
-    , const CString& containerName)
+    , const CString& containerName
+	, int maxsize)
 {
     // defaults
 
     DWORD selectedStandardColumns = defaultColumns;
 
-    columns.resize (SVNSLC_NUMCOLUMNS);
-    for (size_t i = 0; i < SVNSLC_NUMCOLUMNS; ++i)
+    columns.resize (maxsize);
+    for (size_t i = 0; i < maxsize; ++i)
     {
         columns[i].index = static_cast<int>(i);
         columns[i].width = 0;
@@ -180,7 +181,7 @@ void CGitStatusListCtrl::ColumnManager::ReadSettings
 		    control->SetColumnWidth (i, GetVisibleWidth (i, true));
 }
 
-void CGitStatusListCtrl::ColumnManager::WriteSettings() const
+void ColumnManager::WriteSettings() const
 {
     // we are version 2
 
@@ -213,12 +214,12 @@ void CGitStatusListCtrl::ColumnManager::WriteSettings() const
 
 // read column definitions
 
-int CGitStatusListCtrl::ColumnManager::GetColumnCount() const
+int ColumnManager::GetColumnCount() const
 {
     return static_cast<int>(columns.size());
 }
 
-bool CGitStatusListCtrl::ColumnManager::IsVisible (int column) const
+bool ColumnManager::IsVisible (int column) const
 {
     size_t index = static_cast<size_t>(column);
     assert (columns.size() > index);
@@ -226,7 +227,7 @@ bool CGitStatusListCtrl::ColumnManager::IsVisible (int column) const
     return columns[index].visible;
 }
 
-int CGitStatusListCtrl::ColumnManager::GetInvisibleCount() const
+int ColumnManager::GetInvisibleCount() const
 {
 	int invisibleCount = 0;
 	for (std::vector<ColumnInfo>::const_iterator it = columns.begin(); it != columns.end(); ++it)
@@ -237,7 +238,7 @@ int CGitStatusListCtrl::ColumnManager::GetInvisibleCount() const
 	return invisibleCount;
 }
 
-bool CGitStatusListCtrl::ColumnManager::IsRelevant (int column) const
+bool ColumnManager::IsRelevant (int column) const
 {
     size_t index = static_cast<size_t>(column);
     assert (columns.size() > index);
@@ -245,7 +246,7 @@ bool CGitStatusListCtrl::ColumnManager::IsRelevant (int column) const
     return columns[index].relevant;
 }
 
-bool CGitStatusListCtrl::ColumnManager::IsUserProp (int column) const
+bool ColumnManager::IsUserProp (int column) const
 {
     size_t index = static_cast<size_t>(column);
     assert (columns.size() > index);
@@ -253,45 +254,25 @@ bool CGitStatusListCtrl::ColumnManager::IsUserProp (int column) const
     return columns[index].index >= SVNSLC_USERPROPCOLOFFSET;
 }
 
-CString CGitStatusListCtrl::ColumnManager::GetName (int column) const
+int ColumnManager::SetNames(UINT* buffer, int size)
 {
-    static const UINT standardColumnNames[SVNSLC_NUMCOLUMNS] 
-        = { IDS_STATUSLIST_COLFILE
+	itemName.clear();
+	for(int i=0;i<size;i++)
+		itemName.push_back(*buffer++);
+	return 0;
+}
 
-          , IDS_STATUSLIST_COLFILENAME
-          , IDS_STATUSLIST_COLEXT
-		  , IDS_STATUSLIST_COLSTATUS
-
-//		  , IDS_STATUSLIST_COLREMOTESTATUS
-		  , IDS_STATUSLIST_COLTEXTSTATUS
-		  , IDS_STATUSLIST_COLPROPSTATUS
-
-//		  , IDS_STATUSLIST_COLREMOTETEXTSTATUS
-//		  , IDS_STATUSLIST_COLREMOTEPROPSTATUS
-//		  , IDS_STATUSLIST_COLURL
-
-//		  , IDS_STATUSLIST_COLLOCK
-//		  , IDS_STATUSLIST_COLLOCKCOMMENT
-		  , IDS_STATUSLIST_COLAUTHOR
-
-		  , IDS_STATUSLIST_COLREVISION
-//		  , IDS_STATUSLIST_COLREMOTEREVISION
-		  , IDS_STATUSLIST_COLDATE
-//		  , IDS_STATUSLIST_COLSVNLOCK
-
-//		  , IDS_STATUSLIST_COLCOPYFROM
-          , IDS_STATUSLIST_COLMODIFICATIONDATE
-		  , IDS_STATUSLIST_COLADD
-		  , IDS_STATUSLIST_COLDEL
-		};
-
+CString ColumnManager::GetName (int column) const
+{
+    
+	
     // standard columns
 
     size_t index = static_cast<size_t>(column);
-    if (index < SVNSLC_NUMCOLUMNS)
+    if (index < itemName.size())
     {
         CString result;
-        result.LoadString (standardColumnNames[index]);
+        result.LoadString (itemName[index]);
         return result;
     }
 
@@ -305,7 +286,7 @@ CString CGitStatusListCtrl::ColumnManager::GetName (int column) const
     return CString();
 }
 
-int CGitStatusListCtrl::ColumnManager::GetWidth (int column, bool useDefaults) const
+int ColumnManager::GetWidth (int column, bool useDefaults) const
 {
     size_t index = static_cast<size_t>(column);
     assert (columns.size() > index);
@@ -317,7 +298,7 @@ int CGitStatusListCtrl::ColumnManager::GetWidth (int column, bool useDefaults) c
     return width;
 }
 
-int CGitStatusListCtrl::ColumnManager::GetVisibleWidth (int column, bool useDefaults) const
+int ColumnManager::GetVisibleWidth (int column, bool useDefaults) const
 {
     return IsVisible (column)
         ? GetWidth (column, useDefaults)
@@ -326,7 +307,7 @@ int CGitStatusListCtrl::ColumnManager::GetVisibleWidth (int column, bool useDefa
 
 // switch columns on and off
 
-void CGitStatusListCtrl::ColumnManager::SetVisible 
+void ColumnManager::SetVisible 
     ( int column
     , bool visible)
 {
@@ -349,7 +330,7 @@ void CGitStatusListCtrl::ColumnManager::SetVisible
 
 // tracking column modifications
 
-void CGitStatusListCtrl::ColumnManager::ColumnMoved (int column, int position)
+void ColumnManager::ColumnMoved (int column, int position)
 {
     // in front of what column has it been inserted?
 
@@ -385,7 +366,7 @@ void CGitStatusListCtrl::ColumnManager::ColumnMoved (int column, int position)
     ApplyColumnOrder();
 }
 
-void CGitStatusListCtrl::ColumnManager::ColumnResized (int column)
+void ColumnManager::ColumnResized (int column)
 {
     size_t index = static_cast<size_t>(column);
     assert (index < columns.size());
@@ -404,7 +385,7 @@ void CGitStatusListCtrl::ColumnManager::ColumnResized (int column)
 // call these to update the user-prop list
 // (will also auto-insert /-remove new list columns)
 #if 0
-void CGitStatusListCtrl::ColumnManager::UpdateUserPropList 
+void ColumnManager::UpdateUserPropList 
     (const std::vector<FileEntry*>& files)
 {
     // collect all user-defined props
@@ -510,7 +491,7 @@ void CGitStatusListCtrl::ColumnManager::UpdateUserPropList
 }
 #endif
 #if 0
-void CGitStatusListCtrl::ColumnManager::UpdateRelevance 
+void ColumnManager::UpdateRelevance 
     ( const std::vector<FileEntry*>& files
     , const std::vector<size_t>& visibleFiles)
 {
@@ -536,12 +517,12 @@ void CGitStatusListCtrl::ColumnManager::UpdateRelevance
 #endif
 // don't clutter the context menu with irrelevant prop info
 
-bool CGitStatusListCtrl::ColumnManager::AnyUnusedProperties() const
+bool ColumnManager::AnyUnusedProperties() const
 {
     return columns.size() < userProps.size() + SVNSLC_NUMCOLUMNS;
 }
 
-void CGitStatusListCtrl::ColumnManager::RemoveUnusedProps()
+void ColumnManager::RemoveUnusedProps()
 {
     // determine what column indexes / IDs to keep.
     // map them onto new IDs (we may delete some IDs in between)
@@ -609,7 +590,7 @@ void CGitStatusListCtrl::ColumnManager::RemoveUnusedProps()
 
 // bring everything back to its "natural" order
 
-void CGitStatusListCtrl::ColumnManager::ResetColumns (DWORD defaultColumns)
+void ColumnManager::ResetColumns (DWORD defaultColumns)
 {
     // update internal data
 
@@ -636,7 +617,7 @@ void CGitStatusListCtrl::ColumnManager::ResetColumns (DWORD defaultColumns)
 
 // initialization utilities
 
-void CGitStatusListCtrl::ColumnManager::ParseUserPropSettings 
+void ColumnManager::ParseUserPropSettings 
     ( const CString& userPropList
     , const CString& shownUserProps)
 {
@@ -689,7 +670,7 @@ void CGitStatusListCtrl::ColumnManager::ParseUserPropSettings
     }
 }
 
-void CGitStatusListCtrl::ColumnManager::ParseWidths (const CString& widths)
+void ColumnManager::ParseWidths (const CString& widths)
 {
     for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
     {
@@ -721,7 +702,7 @@ void CGitStatusListCtrl::ColumnManager::ParseWidths (const CString& widths)
     }
 }
 
-void CGitStatusListCtrl::ColumnManager::SetStandardColumnVisibility 
+void ColumnManager::SetStandardColumnVisibility 
     (DWORD visibility)
 {
     for (size_t i = 0; i < SVNSLC_NUMCOLUMNS; ++i)
@@ -731,7 +712,7 @@ void CGitStatusListCtrl::ColumnManager::SetStandardColumnVisibility
     }
 }
 
-void CGitStatusListCtrl::ColumnManager::ParseColumnOrder 
+void ColumnManager::ParseColumnOrder 
     (const CString& widths)
 {
     std::set<int> alreadyPlaced;
@@ -765,7 +746,7 @@ void CGitStatusListCtrl::ColumnManager::ParseColumnOrder
 // map internal column order onto visible column order
 // (all invisibles in front)
 
-std::vector<int> CGitStatusListCtrl::ColumnManager::GetGridColumnOrder()
+std::vector<int> ColumnManager::GetGridColumnOrder()
 {
     // extract order of used columns from order of all columns
 
@@ -797,7 +778,7 @@ std::vector<int> CGitStatusListCtrl::ColumnManager::GetGridColumnOrder()
     return result;
 }
 
-void CGitStatusListCtrl::ColumnManager::ApplyColumnOrder()
+void ColumnManager::ApplyColumnOrder()
 {
     // extract order of used columns from order of all columns
 
@@ -819,7 +800,7 @@ void CGitStatusListCtrl::ColumnManager::ApplyColumnOrder()
 
 // utilities used when writing data to the registry
 
-DWORD CGitStatusListCtrl::ColumnManager::GetSelectedStandardColumns() const
+DWORD ColumnManager::GetSelectedStandardColumns() const
 {
     DWORD result = 0;
     for (size_t i = SVNSLC_NUMCOLUMNS; i > 0; --i)
@@ -828,7 +809,7 @@ DWORD CGitStatusListCtrl::ColumnManager::GetSelectedStandardColumns() const
     return result;
 }
 
-CString CGitStatusListCtrl::ColumnManager::GetUserPropList() const
+CString ColumnManager::GetUserPropList() const
 {
     CString result;
 
@@ -838,7 +819,7 @@ CString CGitStatusListCtrl::ColumnManager::GetUserPropList() const
     return result;
 }
 
-CString CGitStatusListCtrl::ColumnManager::GetShownUserProps() const
+CString ColumnManager::GetShownUserProps() const
 {
     CString result;
 
@@ -853,7 +834,7 @@ CString CGitStatusListCtrl::ColumnManager::GetShownUserProps() const
     return result;
 }
 
-CString CGitStatusListCtrl::ColumnManager::GetWidthString() const
+CString ColumnManager::GetWidthString() const
 {
     CString result;
 
@@ -881,7 +862,7 @@ CString CGitStatusListCtrl::ColumnManager::GetWidthString() const
     return result;
 }
 
-CString CGitStatusListCtrl::ColumnManager::GetColumnOrderString() const
+CString ColumnManager::GetColumnOrderString() const
 {
     CString result;
 
@@ -897,7 +878,7 @@ CString CGitStatusListCtrl::ColumnManager::GetColumnOrderString() const
 
 // sorter utility class
 
-CGitStatusListCtrl::CSorter::CSorter ( ColumnManager* columnManager
+CSorter::CSorter ( ColumnManager* columnManager
 									  , int sortedColumn
 									  , bool ascending)
 									  : columnManager (columnManager)
@@ -906,7 +887,7 @@ CGitStatusListCtrl::CSorter::CSorter ( ColumnManager* columnManager
 {
 }
 
-bool CGitStatusListCtrl::CSorter::operator()
+bool CSorter::operator()
 ( const CTGitPath* entry1
  , const CTGitPath* entry2) const
 {

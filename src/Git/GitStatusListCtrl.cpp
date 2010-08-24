@@ -227,7 +227,38 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
-    m_ColumnManager.ReadSettings (m_dwDefaultColumns, sColumnInfoContainer);
+   static UINT standardColumnNames[SVNSLC_NUMCOLUMNS]
+        = { IDS_STATUSLIST_COLFILE
+
+          , IDS_STATUSLIST_COLFILENAME
+          , IDS_STATUSLIST_COLEXT
+                 , IDS_STATUSLIST_COLSTATUS
+
+//               , IDS_STATUSLIST_COLREMOTESTATUS
+                 , IDS_STATUSLIST_COLTEXTSTATUS
+                 , IDS_STATUSLIST_COLPROPSTATUS
+
+//               , IDS_STATUSLIST_COLREMOTETEXTSTATUS
+//               , IDS_STATUSLIST_COLREMOTEPROPSTATUS
+//               , IDS_STATUSLIST_COLURL
+
+//               , IDS_STATUSLIST_COLLOCK
+//               , IDS_STATUSLIST_COLLOCKCOMMENT
+                 , IDS_STATUSLIST_COLAUTHOR
+
+                 , IDS_STATUSLIST_COLREVISION
+//               , IDS_STATUSLIST_COLREMOTEREVISION
+                 , IDS_STATUSLIST_COLDATE
+//               , IDS_STATUSLIST_COLSVNLOCK
+
+//               , IDS_STATUSLIST_COLCOPYFROM
+				 , IDS_STATUSLIST_COLMODIFICATIONDATE
+                 , IDS_STATUSLIST_COLADD
+                 , IDS_STATUSLIST_COLDEL
+               };
+	
+	m_ColumnManager.SetNames(standardColumnNames,SVNSLC_NUMCOLUMNS);
+    m_ColumnManager.ReadSettings (m_dwDefaultColumns, sColumnInfoContainer, SVNSLC_NUMCOLUMNS);
 
 	// enable file drops
 #if 0
@@ -1865,33 +1896,14 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CGitStatusListCtrl::OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
-    if (   (header != NULL) 
-        && (header->iItem >= 0) 
-        && (header->iItem < m_ColumnManager.GetColumnCount()))
-    {
-        m_ColumnManager.ColumnResized (header->iItem);
-    }
-
+	m_ColumnManager.OnColumnResized(pNMHDR,pResult);
+	
     *pResult = FALSE;
 }
 
 void CGitStatusListCtrl::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
-	*pResult = TRUE;
-    if (   (header != NULL) 
-        && (header->iItem >= 0) 
-        && (header->iItem < m_ColumnManager.GetColumnCount())
-		// only allow the reordering if the column was not moved left of the first
-		// visible item - otherwise the 'invisible' columns are not at the far left
-		// anymore and we get all kinds of redrawing problems.
-		&& (header->pitem)
-		&& (header->pitem->iOrder > m_ColumnManager.GetInvisibleCount()))
-    {
-        m_ColumnManager.ColumnMoved (header->iItem, header->pitem->iOrder);
-		*pResult = FALSE;
-    }
+	m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
 
     Invalidate(FALSE);
 }
@@ -3958,16 +3970,8 @@ void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)
 		popup.AppendMenu(MF_SEPARATOR);
 
 		// standard columns
-
-		for (int i = 1; i < SVNSLC_NUMCOLUMNS; ++i)
-		{
-			popup.AppendMenu ( m_ColumnManager.IsVisible(i) 
-				? uCheckedFlags 
-				: uUnCheckedFlags
-				, i
-				, m_ColumnManager.GetName(i));
-		}
-
+		m_ColumnManager.AddMenuItem(&popup);
+		
 		// user-prop columns:
 		// find relevant ones and sort 'em
 
@@ -4861,55 +4865,14 @@ void CGitStatusListCtrl::OnPaint()
 // prevent users from extending our hidden (size 0) columns
 void CGitStatusListCtrl::OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-	*pResult = 0;
-	if ((phdr->iItem < 0)||(phdr->iItem >= SVNSLC_NUMCOLUMNS))
-		return;
-
-    if (m_ColumnManager.IsVisible (phdr->iItem))
-	{
-		return;
-	}
-	*pResult = 1;
+	m_ColumnManager.OnHdnBegintrack(pNMHDR, pResult);
 }
 
 // prevent any function from extending our hidden (size 0) columns
 void CGitStatusListCtrl::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-	*pResult = 0;
-    if ((phdr->iItem < 0)||(phdr->iItem >= m_ColumnManager.GetColumnCount()))
-	{
+	if(!m_ColumnManager.OnHdnItemchanging(pNMHDR, pResult))
 		Default();
-		return;
-	}
-
-    // visible columns may be modified 
-
-    if (m_ColumnManager.IsVisible (phdr->iItem))
-	{
-		Default();
-		return;
-	}
-
-    // columns already marked as "invisible" internally may be (re-)sized to 0
-
-    if (   (phdr->pitem != NULL) 
-        && (phdr->pitem->mask == HDI_WIDTH)
-        && (phdr->pitem->cxy == 0))
-	{
-		Default();
-		return;
-	}
-
-	if (   (phdr->pitem != NULL) 
-		&& (phdr->pitem->mask != HDI_WIDTH))
-	{
-		Default();
-		return;
-	}
-
-    *pResult = 1;
 }
 
 void CGitStatusListCtrl::OnDestroy()
