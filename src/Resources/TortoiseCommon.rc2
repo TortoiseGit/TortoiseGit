@@ -21,6 +21,7 @@ BEGIN
 	IDS_LOG_MESSAGE         "Message"
     IDS_LOG_REVISION        "Revision"
     IDS_LOG_AUTHOR          "Author"
+	IDS_LOG_EMAIL		"Email"
     IDS_LOG_DATE            "Date"
 	IDS_LOG_BUGIDS          "Bug-ID"
 	IDS_LOG_ID				"ID"
@@ -28,6 +29,10 @@ BEGIN
     IDS_LOG_POPUP_SAVE      "Save revision &to..."
     IDS_LOG_POPUP_COMPARETWO "&Compare revisions"
     IDS_LOG_POPUP_UPDATE    "&Update item to revision"
+	IDS_LOG_REBASE		"REBASE"
+	IDS_LOG_COMMIT_NAME	"Commit Name"
+	IDS_LOG_COMMIT_EMAIL	"Commit Email"
+	IDS_LOG_COMMIT_DATE	"Commit Date"
 END
 
 

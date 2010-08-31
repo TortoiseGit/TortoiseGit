@@ -19,6 +19,8 @@
 #include "lanes.h"
 #include "GitLogCache.h"
 #include <regex>
+#include <GitStatusListCtrl.h>
+
 // CGitLogList
 #if (NTDDI_VERSION < NTDDI_LONGHORN)
 
@@ -30,6 +32,9 @@ enum LISTITEMSTATES_MINE {
 	LISS_SELECTEDNOTFOCUS = 5,
 	LISS_HOTSELECTED = 6,
 };
+
+// these defines must be in the order the columns are inserted!
+
 
 #define MCS_NOTRAILINGDATES  0x0040
 #define MCS_SHORTDAYSOFWEEK  0x0080
@@ -91,13 +96,32 @@ public:
 	enum
 	{
 		LOGLIST_GRAPH,
+		LOGLIST_REBASE,
+		LOGLIST_ID,
 		LOGLIST_ACTION,
 		LOGLIST_MESSAGE,
 		LOGLIST_AUTHOR,
 		LOGLIST_DATE,
+		LOGLIST_EMAIL,
+		LOGLIST_COMMIT_NAME,
+		LOGLIST_COMMIT_EMAIL,
+		LOGLIST_COMMIT_DATE,
 		LOGLIST_BUG,
 		LOGLIST_MESSAGE_MAX=300,
-		LOGLIST_MESSAGE_MIN=200
+		LOGLIST_MESSAGE_MIN=200,
+		
+		GIT_LOG_GRAPH	=		1<< LOGLIST_GRAPH,
+		GIT_LOG_REBASE	=		1<< LOGLIST_REBASE,
+		GIT_LOG_ID		=		1<< LOGLIST_ID,
+		GIT_LOG_ACTIONS	=		1<< LOGLIST_ACTION,
+		GIT_LOG_MESSAGE	=		1<< LOGLIST_MESSAGE,
+		GIT_LOG_AUTHOR	=		1<< LOGLIST_AUTHOR,
+		GIT_LOG_DATE	=		1<< LOGLIST_DATE,
+		GIT_LOG_EMAIL	=		1<< LOGLIST_EMAIL,
+		GIT_LOG_COMMIT_NAME	=	1<< LOGLIST_COMMIT_NAME,
+		GIT_LOG_COMMIT_EMAIL=	1<< LOGLIST_COMMIT_EMAIL,
+		GIT_LOG_COMMIT_DATE	=	1<< LOGLIST_COMMIT_DATE,
+		GIT_LOGLIST_BUG		=	1<< LOGLIST_BUG,
 	};
 
 	enum 
@@ -295,7 +319,8 @@ protected:
 	bool				m_bRelativeTimes;	// Show relative times
 	GIT_LOG				m_DllGitLog;
 
-
+	ColumnManager		m_ColumnManager;
+	DWORD				m_dwDefaultColumns;
 };
 
 

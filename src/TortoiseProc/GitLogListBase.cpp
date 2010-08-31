@@ -62,6 +62,8 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
 	, m_pFindDialog(NULL)
+	, m_ColumnManager(this)
+	, m_dwDefaultColumns(0)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -211,63 +213,41 @@ void CGitLogListBase::InsertGitColumn()
 {
 	CString temp;
 
-	int c = GetHeaderCtrl()->GetItemCount()-1;
-	
-	while (c>=0)
-		DeleteColumn(c--);
-	temp.LoadString(IDS_LOG_GRAPH);
+	static UINT normal[] =
+	{
+		IDS_LOG_GRAPH,
+		IDS_LOG_REBASE,
+		IDS_LOG_ID,
+		IDS_LOG_ACTIONS,
+		IDS_LOG_MESSAGE,
+		IDS_LOG_AUTHOR,
+		IDS_LOG_DATE,
+		IDS_LOG_EMAIL,
+		IDS_LOG_COMMIT_NAME,
+		IDS_LOG_COMMIT_EMAIL,
+		IDS_LOG_COMMIT_DATE,
+		IDS_LOG_BUGIDS,
+	};
 
-	if(m_IsRebaseReplaceGraph)
-	{
-		temp=_T("Rebase");
-	}
-	else
-	{
-		temp.LoadString(IDS_LOG_GRAPH);
-	}
-	InsertColumn(this->LOGLIST_GRAPH, temp);
 	
-#if 0	
-	// make the revision column right aligned
-	LVCOLUMN Column;
-	Column.mask = LVCF_FMT;
-	Column.fmt = LVCFMT_RIGHT;
-	SetColumn(0, &Column); 
-#endif	
-//	CString log;
-//	g_Git.GetLog(log);
+	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
-	if(m_IsIDReplaceAction)
+	if(this->m_IsRebaseReplaceGraph)
 	{
-		temp.LoadString(IDS_LOG_ID);
-		InsertColumn(this->LOGLIST_ACTION, temp);
+		m_dwDefaultColumns &= ~GIT_LOG_GRAPH;
+		m_dwDefaultColumns |= IDS_LOG_REBASE;
 	}
-	else
-	{
-		temp.LoadString(IDS_LOG_ACTIONS);
-		InsertColumn(this->LOGLIST_ACTION, temp);
-	}
-	temp.LoadString(IDS_LOG_MESSAGE);
-	InsertColumn(this->LOGLIST_MESSAGE, temp);
-	
-	temp.LoadString(IDS_LOG_AUTHOR);
-	InsertColumn(this->LOGLIST_AUTHOR, temp);
-	
-	temp.LoadString(IDS_LOG_DATE);
-	InsertColumn(this->LOGLIST_DATE, temp);
-	
 
-	if (m_bShowBugtraqColumn)
+	if(this->m_IsIDReplaceAction)
 	{
-//		temp = m_ProjectProperties.sLabel;
-		if (temp.IsEmpty())
-			temp.LoadString(IDS_LOG_BUGIDS);
-		InsertColumn(this->LOGLIST_BUG, temp);
-
+		m_dwDefaultColumns &= ~GIT_LOG_ACTIONS;
+		m_dwDefaultColumns |= IDS_LOG_ID;
 	}
-	
 	SetRedraw(false);
-	ResizeAllListCtrlCols();
+
+	m_ColumnManager.SetNames(normal, sizeof(normal)/sizeof(UINT));
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT));
+	
 	SetRedraw(true);
 
 }
@@ -1001,8 +981,14 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if(pLVCD->iSubItem == 0)
 					{
 						CRect second;
-						GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem+1, LVIR_BOUNDS, second);
-						rect.right=second.left;
+						for(int i=1;i< m_ColumnManager.GetColumnCount();i++)
+						{
+							if( m_ColumnManager.IsVisible(i))
+							{
+								GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem+i, LVIR_BOUNDS, second);
+								rect.right=second.left;
+							}
+						}
 					}
 					
 					//TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
@@ -1047,7 +1033,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				}	
 			}
 			
-			if (pLVCD->iSubItem == 1)
+			if (pLVCD->iSubItem == LOGLIST_ACTION)
 			{
 				if(this->m_IsIDReplaceAction)
 				{
@@ -1141,18 +1127,20 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	switch (pItem->iSubItem)
 	{
 	case this->LOGLIST_GRAPH:	//Graphic
-		if (pLogEntry)
+		break;
+	case this->LOGLIST_REBASE:
 		{
 			if(this->m_IsRebaseReplaceGraph)
-			{
+			{	
 				CTGitPath path;
 				path.m_Action=pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
-
 				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
 			}
 		}
 		break;
-	case this->LOGLIST_ACTION: //action -- no text in the column
+	case this->LOGLIST_ACTION:
+		break;
+	case this->LOGLIST_ID: //action -- no text in the column
 		if(this->m_IsIDReplaceAction)
 			lstrcpyn(pItem->pszText, temp, pItem->cchTextMax);
 		break;
@@ -1170,10 +1158,31 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, m_bRelativeTimes ), 
 				pItem->cchTextMax);
 		break;
-		
-	case 5:
-
+	
+	case this->LOGLIST_EMAIL: 
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_AuthorEmail, pItem->cchTextMax);
 		break;
+	
+	case this->LOGLIST_COMMIT_NAME: //Commit
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_CommitterName, pItem->cchTextMax);
+		break;
+	
+	case this->LOGLIST_COMMIT_EMAIL: //Commit Email
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_CommitterEmail, pItem->cchTextMax);
+		break;
+	
+	case this->LOGLIST_COMMIT_DATE: //Commit Date
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText,
+				CAppUtils::FormatDateAndTime( pLogEntry->m_CommitterDate, m_DateFormat, true, m_bRelativeTimes ),
+				pItem->cchTextMax);
+		break;
+	case this->LOGLIST_BUG: //Bug
+		break;
+	
 	default:
 		ASSERT(false);
 	}

@@ -705,7 +705,7 @@ void ColumnManager::ParseWidths (const CString& widths)
 void ColumnManager::SetStandardColumnVisibility 
     (DWORD visibility)
 {
-    for (size_t i = 0; i < SVNSLC_NUMCOLUMNS; ++i)
+    for (size_t i = 0; i < itemName.size(); ++i)
     {
         columns[i].visible = (visibility & 1) > 0;
         visibility /= 2;
