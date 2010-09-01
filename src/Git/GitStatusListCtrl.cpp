@@ -20,9 +20,9 @@
 //
 
 #include "StdAfx.h"
-#include "GitStatusListCtrl.h"
 #include "resource.h"
 #include "..\\TortoiseShell\resource.h"
+#include "GitStatusListCtrl.h"
 #include "MessageBox.h"
 #include "MyMemDC.h"
 #include "UnicodeUtils.h"
@@ -3924,101 +3924,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)
 {
-	bool XPorLater = false;
-	OSVERSIONINFOEX inf;
-	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&inf);
-	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-	if (fullver >= 0x0501)
-		XPorLater = true;
-
-	CHeaderCtrl * pHeaderCtrl = (CHeaderCtrl *)pWnd;
-	if ((point.x == -1) && (point.y == -1))
-	{
-		CRect rect;
-		pHeaderCtrl->GetItemRect(0, &rect);
-		ClientToScreen(&rect);
-		point = rect.CenterPoint();
-	}
 	Locker lock(m_critSec);
-	CMenu popup;
-	if (popup.CreatePopupMenu())
-	{
-		int columnCount = m_ColumnManager.GetColumnCount();
-
-		CString temp;
-		UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;
-		UINT uUnCheckedFlags = MF_STRING | MF_ENABLED;
-
-		// build control menu
-
-		if (XPorLater)
-		{
-			temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
-			popup.AppendMenu(IsGroupViewEnabled() ? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
-		}
-
-		if (m_ColumnManager.AnyUnusedProperties())
-		{
-			temp.LoadString(IDS_STATUSLIST_REMOVEUNUSEDPROPS);
-			popup.AppendMenu(uUnCheckedFlags, columnCount+1, temp);
-		}
-
-		temp.LoadString(IDS_STATUSLIST_RESETCOLUMNORDER);
-		popup.AppendMenu(uUnCheckedFlags, columnCount+2, temp);
-		popup.AppendMenu(MF_SEPARATOR);
-
-		// standard columns
-		m_ColumnManager.AddMenuItem(&popup);
-		
-		// user-prop columns:
-		// find relevant ones and sort 'em
-
-		std::map<CString, int> sortedProps;
-		for (int i = SVNSLC_NUMCOLUMNS; i < columnCount; ++i)
-			if (m_ColumnManager.IsRelevant(i))
-				sortedProps[m_ColumnManager.GetName(i)] = i;
-
-		if (!sortedProps.empty())
-		{
-			// add 'em to the menu
-
-			popup.AppendMenu(MF_SEPARATOR);
-
-			typedef std::map<CString, int>::const_iterator CIT;
-			for ( CIT iter = sortedProps.begin(), end = sortedProps.end()
-				; iter != end
-				; ++iter)
-			{
-				popup.AppendMenu ( m_ColumnManager.IsVisible(iter->second) 
-					? uCheckedFlags 
-					: uUnCheckedFlags
-					, iter->second
-					, iter->first);
-			}
-		}
-
-		// show menu & let user pick an entry
-
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
-		if ((cmd >= 1)&&(cmd < columnCount))
-		{
-			m_ColumnManager.SetVisible (cmd, !m_ColumnManager.IsVisible(cmd));
-		} 
-		else if (cmd == columnCount)
-		{
-			EnableGroupView(!IsGroupViewEnabled());
-		} 
-		else if (cmd == columnCount+1)
-		{
-			m_ColumnManager.RemoveUnusedProps();
-		} 
-		else if (cmd == columnCount+2)
-		{
-			m_ColumnManager.ResetColumns (m_dwDefaultColumns);
-		}
-	}
+	m_ColumnManager.OnContextMenuHeader(pWnd,point,IsGroupViewEnabled());
 }
 
 void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)

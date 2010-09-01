@@ -177,6 +177,7 @@ public:
 	ColumnManager (CListCtrl* control) : control (control) {};
 	~ColumnManager() {};
 
+	DWORD m_dwDefaultColumns;
 	/// registry access
 
 	void ReadSettings (DWORD defaultColumns, const CString& containerName, int ReadSettings);
@@ -296,6 +297,106 @@ public:
 		*pResult = 1;
 		return 1;
 	}
+	void OnContextMenuHeader(CWnd * pWnd, CPoint point, bool isGroundEnable=false)
+	{
+		bool XPorLater = false;
+		OSVERSIONINFOEX inf;
+		SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
+		inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+		GetVersionEx((OSVERSIONINFO *)&inf);
+		WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
+		if (fullver >= 0x0501)
+			XPorLater = true;
+
+		CHeaderCtrl * pHeaderCtrl = (CHeaderCtrl *)pWnd;
+		if ((point.x == -1) && (point.y == -1))
+		{
+			CRect rect;
+			pHeaderCtrl->GetItemRect(0, &rect);
+			pHeaderCtrl->ClientToScreen(&rect);
+			point = rect.CenterPoint();
+		}
+
+		CMenu popup;
+		if (popup.CreatePopupMenu())
+		{
+			int columnCount = GetColumnCount();
+
+			CString temp;
+			UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;
+			UINT uUnCheckedFlags = MF_STRING | MF_ENABLED;
+
+			// build control menu
+
+			if (XPorLater)
+			{
+				temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
+				popup.AppendMenu(isGroundEnable? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
+			}
+
+			if (AnyUnusedProperties())
+			{
+				temp.LoadString(IDS_STATUSLIST_REMOVEUNUSEDPROPS);
+				popup.AppendMenu(uUnCheckedFlags, columnCount+1, temp);
+			}
+
+			temp.LoadString(IDS_STATUSLIST_RESETCOLUMNORDER);
+			popup.AppendMenu(uUnCheckedFlags, columnCount+2, temp);
+			popup.AppendMenu(MF_SEPARATOR);
+
+			// standard columns
+			AddMenuItem(&popup);
+		
+			// user-prop columns:
+			// find relevant ones and sort 'em
+
+			std::map<CString, int> sortedProps;
+			for (int i = itemName.size(); i < columnCount; ++i)
+			if (IsRelevant(i))
+				sortedProps[GetName(i)] = i;
+
+			if (!sortedProps.empty())
+			{
+				// add 'em to the menu
+
+				popup.AppendMenu(MF_SEPARATOR);
+
+				typedef std::map<CString, int>::const_iterator CIT;
+				for ( CIT iter = sortedProps.begin(), end = sortedProps.end()
+					; iter != end
+					; ++iter)
+				{
+					popup.AppendMenu ( IsVisible(iter->second) 
+						? uCheckedFlags 
+						: uUnCheckedFlags
+						, iter->second
+						, iter->first);
+				}
+			}
+
+			// show menu & let user pick an entry
+
+			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, pWnd, 0);
+			if ((cmd >= 1)&&(cmd < columnCount))
+			{
+				SetVisible (cmd, !IsVisible(cmd));
+			} 
+			else if (cmd == columnCount)
+			{
+				pWnd->GetParent()->SendMessage(LVM_ENABLEGROUPVIEW, !isGroundEnable, NULL);
+				//EnableGroupView(!isGroundEnable);
+			} 
+			else if (cmd == columnCount+1)
+			{
+				RemoveUnusedProps();
+			} 
+			else if (cmd == columnCount+2)
+			{
+				ResetColumns (m_dwDefaultColumns);
+			}
+		}
+	}
+
 	void AddMenuItem(CMenu *pop)
 	{
 		UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;

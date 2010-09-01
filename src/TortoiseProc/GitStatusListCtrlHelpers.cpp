@@ -102,8 +102,8 @@ void ColumnManager::ReadSettings
 	, int maxsize)
 {
     // defaults
-
     DWORD selectedStandardColumns = defaultColumns;
+	m_dwDefaultColumns = defaultColumns;
 
     columns.resize (maxsize);
     for (size_t i = 0; i < maxsize; ++i)

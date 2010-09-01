@@ -9,6 +9,7 @@
 
 */
 #include "stdafx.h"
+#include "resource.h"
 #include "GitLogListBase.h"
 #include "GitRev.h"
 //#include "VssStyle.h"
@@ -1190,6 +1191,11 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 {
+
+	 if (pWnd == GetHeaderCtrl())
+	 {
+		 return m_ColumnManager.OnContextMenuHeader(pWnd,point,IsGroupViewEnabled());
+	 }
 
 	int selIndex = GetSelectionMark();
 	if (selIndex < 0)
