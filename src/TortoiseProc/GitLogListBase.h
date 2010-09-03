@@ -259,6 +259,10 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);	
+	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	void PreSubclassWindow();

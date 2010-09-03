@@ -177,6 +177,12 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_MESSAGE(MSG_LOADED,OnLoad)
 	ON_WM_MEASUREITEM()
 	ON_WM_MEASUREITEM_REFLECT()
+	ON_NOTIFY(HDN_BEGINTRACKA, 0, OnHdnBegintrack)
+	ON_NOTIFY(HDN_BEGINTRACKW, 0, OnHdnBegintrack)
+	ON_NOTIFY(HDN_ITEMCHANGINGA, 0, OnHdnItemchanging)
+	ON_NOTIFY(HDN_ITEMCHANGINGW, 0, OnHdnItemchanging)
+	ON_NOTIFY(HDN_ENDTRACK, 0, OnColumnResized)
+	ON_NOTIFY(HDN_ENDDRAG, 0, OnColumnMoved)
 END_MESSAGE_MAP()
 
 void CGitLogListBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
@@ -213,6 +219,12 @@ void CGitLogListBase::PreSubclassWindow()
 void CGitLogListBase::InsertGitColumn()
 {
 	CString temp;
+
+	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
+	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
+	if (DWORD(regFullRowSelect))
+		exStyle |= LVS_EX_FULLROWSELECT;
+	SetExtendedStyle(exStyle);
 
 	static UINT normal[] =
 	{
@@ -2685,18 +2697,13 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
 void CGitLogListBase::SaveColumnWidths()
 {
 	CHeaderCtrl* pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
-	if (pHdrCtrl)
-	{
-		int numcols = pHdrCtrl->GetItemCount();
-		for (int col = 0; col < numcols; col++)
-		{
-			int width = GetColumnWidth( col );
-			CString regentry;
-			regentry.Format( _T("Software\\TortoiseGit\\%s\\ColWidth%d"),m_ColumnRegKey, col);
-			CRegDWORD regwidth(regentry, 0);
-			regwidth = width;	// this writes it to reg
-		}
-	}
+	int maxcol;
+	
+	for (int col = 0; col <= maxcol; col++)
+        if (m_ColumnManager.IsVisible (col))
+            m_ColumnManager.ColumnResized (col);
+
+	m_ColumnManager.WriteSettings();
 }
 
 int CGitLogListBase::GetHeadIndex()
@@ -2723,7 +2730,15 @@ void CGitLogListBase::OnFind()
 		m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
 	}
 }
-
+void CGitLogListBase::OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	m_ColumnManager.OnHdnBegintrack(pNMHDR, pResult);
+}
+void CGitLogListBase::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	if(!m_ColumnManager.OnHdnItemchanging(pNMHDR, pResult))
+		Default();
+}
 LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 
@@ -2833,4 +2848,18 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	//UpdateLogInfoLabel();
 
     return 0;
+}
+
+void CGitLogListBase::OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	m_ColumnManager.OnColumnResized(pNMHDR,pResult);
+	
+    *pResult = FALSE;
+}
+
+void CGitLogListBase::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
+
+    Invalidate(FALSE);
 }
