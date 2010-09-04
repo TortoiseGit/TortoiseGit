@@ -99,7 +99,8 @@ bool PropertyList::IsNeedsLockSet() const
 void ColumnManager::ReadSettings 
     ( DWORD defaultColumns
     , const CString& containerName
-	, int maxsize)
+	, int maxsize
+	, int * widthlist)
 {
     // defaults
     DWORD selectedStandardColumns = defaultColumns;
@@ -109,7 +110,10 @@ void ColumnManager::ReadSettings
     for (size_t i = 0; i < maxsize; ++i)
     {
         columns[i].index = static_cast<int>(i);
-        columns[i].width = 0;
+		if(widthlist==NULL)
+			columns[i].width = 0;
+		else
+			columns[i].width = widthlist[i];
         columns[i].visible = true;
         columns[i].relevant = true;
     }

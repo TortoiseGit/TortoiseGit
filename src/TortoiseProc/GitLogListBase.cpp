@@ -242,7 +242,22 @@ void CGitLogListBase::InsertGitColumn()
 		IDS_LOG_BUGIDS,
 	};
 
-	
+	static int with[] =
+	{
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		LOGLIST_MESSAGE_MIN,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+	};
 	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
 	if(this->m_IsRebaseReplaceGraph)
@@ -259,7 +274,7 @@ void CGitLogListBase::InsertGitColumn()
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, sizeof(normal)/sizeof(UINT));
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT));
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
 	
 	SetRedraw(true);
 
@@ -2608,9 +2623,6 @@ void CGitLogListBase::StartFilter()
 	DeleteAllItems();
 	SetItemCountEx(ShownCountWithStopped());
 	RedrawItems(0, ShownCountWithStopped());
-	SetRedraw(false);
-	//ResizeAllListCtrlCols();
-	SetRedraw(true);
 	Invalidate();
 
 }
@@ -2645,9 +2657,6 @@ void CGitLogListBase::RemoveFilter()
 	DeleteAllItems();
 	SetItemCountEx(ShownCountWithStopped());
 	RedrawItems(0, ShownCountWithStopped());
-//	SetRedraw(false);
-//	ResizeAllListCtrlCols();
-//	SetRedraw(true);
 
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 }

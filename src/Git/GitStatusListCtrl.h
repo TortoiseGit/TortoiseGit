@@ -180,7 +180,7 @@ public:
 	DWORD m_dwDefaultColumns;
 	/// registry access
 
-	void ReadSettings (DWORD defaultColumns, const CString& containerName, int ReadSettings);
+	void ReadSettings (DWORD defaultColumns, const CString& containerName, int ReadSettings, int *withlist=NULL);
 	void WriteSettings() const;
 
 	/// read column definitions
