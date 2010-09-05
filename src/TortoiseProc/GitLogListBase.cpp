@@ -1396,7 +1396,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS , IDI_COPY);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
-					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_COPY);
+					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_TAG);
 			
 				format.LoadString(IDS_REBASE_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
@@ -1410,6 +1410,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
+
+				if (m_ContextMenuMask&GetContextMenuBit(ID_EDITNOTE))
+					popup.AppendMenuIcon(ID_EDITNOTE, IDS_EDIT_NOTES, IDI_EDIT);
 
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}

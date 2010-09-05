@@ -973,6 +973,9 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		int selIndex = -1;
 		if (pos)
 			selIndex = m_LogList.GetNextSelectedItem(pos);
+
+		GitRev *pRev = ((GitRev*)m_LogList.m_arShownList[selIndex]);
+
 		if ((point.x == -1) && (point.y == -1))
 		{
 			CRect rect;
@@ -981,7 +984,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			point = rect.CenterPoint();
 		}
 		CString sMenuItemText;
-		CMenu popup;
+		CIconMenu popup;
 		if (popup.CreatePopupMenu())
 		{
 			// add the 'default' entries
@@ -989,6 +992,8 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenu(MF_STRING | MF_ENABLED, WM_COPY, sMenuItemText);
 			sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
+			sMenuItemText.LoadString(IDS_EDIT_NOTES);
+			popup.AppendMenuIcon( CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
 
 			//if (selIndex >= 0)
 			//{
@@ -1006,8 +1011,8 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			case WM_COPY:
 				::SendMessage(GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), cmd, 0, -1);
 				break;
-			case CGitLogList::ID_EDITAUTHOR:
-				EditLogMessage(selIndex);
+			case CGitLogList::ID_EDITNOTE:
+				CAppUtils::EditNote(pRev);
 				break;
 			}
 		}
@@ -1531,6 +1536,7 @@ void CLogDlg::EditAuthor(const CLogDataVector& /*logs*/)
 
 void CLogDlg::EditLogMessage(int /*index*/)
 {
+
 #if 0
 	CString url;
 	CString name;

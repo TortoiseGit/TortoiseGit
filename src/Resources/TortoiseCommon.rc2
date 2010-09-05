@@ -102,6 +102,7 @@ BEGIN
     IDS_SCIEDIT_SELECTALL   "Select &All"
     IDS_SCIEDIT_ADDWORD     "Add '%s' to dictionary"
     IDS_SCIEDIT_SPLITLINES  "Split lines"
+	IDS_EDIT_NOTES			"Edit Notes"
 END
 
 

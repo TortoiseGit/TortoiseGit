@@ -223,6 +223,7 @@ public:
 	static BOOL SVNDCommit();
 	static BOOL Merge(CString *commit =NULL, int mode = 0);
 	static void RemoveTempMergeFile(CTGitPath &path);
+	static void EditNote(GitRev *hash);
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);

@@ -652,6 +652,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 					this->Refresh();
 			}
 			break;
+		case ID_EDITNOTE:
+			{
+				CAppUtils::EditNote(pSelLogEntry);
+			}
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;

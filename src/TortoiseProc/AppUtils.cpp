@@ -50,6 +50,7 @@
 #include "MergeDlg.h"
 #include "hooks.h"
 #include "..\Settings\Settings.h"
+#include "InputDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2500,4 +2501,32 @@ BOOL CAppUtils::Merge(CString *commit, int mode)
 		return !Prodlg.m_GitStatus;
 	}
 	return false;
+}
+
+void CAppUtils::EditNote(GitRev *rev)
+{
+	CInputDlg dlg;
+	dlg.m_sHintText=_T("Edit Notes");
+	dlg.m_sInputText = rev->m_Notes;
+	dlg.m_sTitle=_T("Edit Notes");
+	//dlg.m_pProjectProperties = &m_ProjectProperties;
+	dlg.m_bUseLogWidth = true;
+	if(dlg.DoModal() == IDOK)
+	{
+		CString cmd,output;
+		cmd=_T("git.exe notes add -f -F ");
+
+		CString tempfile=::GetTempFile();
+		CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_sInputText);
+		cmd+=tempfile;
+		cmd+=_T("\ ");
+		cmd+=rev->m_CommitHash.ToString();
+
+		if(g_Git.Run(cmd, &output, CP_UTF8))
+		{
+			CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		}
+		CFile::Remove(tempfile);
+		
+	}
 }
