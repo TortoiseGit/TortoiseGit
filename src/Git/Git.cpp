@@ -316,19 +316,19 @@ int CGit::Run(CString cmd, CString* output,int code)
 
 CString CGit::GetUserName(void)
 {
-	return GetConfigValue(L"user.name");
+	return GetConfigValue(L"user.name", CP_ACP);
 }
 CString CGit::GetUserEmail(void)
 {
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(CString name)
+CString CGit::GetConfigValue(CString name,int encoding)
 {
 	CString configValue;
 	CString cmd;
 	cmd.Format(L"git.exe config %s", name);
-	Run(cmd,&configValue,CP_UTF8);
+	Run(cmd,&configValue,encoding);
 	int start = 0;
 	return configValue.Tokenize(_T("\n"),start);
 }

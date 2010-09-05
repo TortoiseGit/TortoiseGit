@@ -111,7 +111,7 @@ public:
 	int RunLogFile(CString cmd, CString &filename);
 
 	bool IsFastForward(CString &from, CString &to);
-	CString GetConfigValue(CString name);
+	CString GetConfigValue(CString name, int encoding=CP_UTF8);
 	CString GetUserName(void);
 	CString GetUserEmail(void);
 	CString GetCurrentBranch(void);

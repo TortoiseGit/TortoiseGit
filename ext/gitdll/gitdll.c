@@ -632,5 +632,5 @@ int git_check_excluded_1(const char *pathname,
 							int pathlen, const char *basename, int *dtype,
 							EXCLUDE_LIST el)
 {
-	return excluded_1(pathname, pathlen, basename,dtype,el);
+	return excluded_from_list(pathname, pathlen, basename,dtype,el);
 }
