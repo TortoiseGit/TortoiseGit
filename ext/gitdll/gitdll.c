@@ -333,6 +333,7 @@ int git_open_log(GIT_LOG * handle, char * arg)
 	char ** argv=0;
 	int argc=0;
 	int i=0;
+	struct setup_revision_opt opt;
 
 	/* clear flags */
 	unsigned int obj_size = get_max_object_index();
@@ -355,7 +356,10 @@ int git_open_log(GIT_LOG * handle, char * arg)
 	init_revisions(p_Rev, g_prefix);
 	p_Rev->diff = 1;
 		
-	cmd_log_init(argc, argv, g_prefix,p_Rev);
+	memset(&opt, 0, sizeof(opt));
+	opt.def = "HEAD";
+
+	cmd_log_init(argc, argv, g_prefix,p_Rev,&opt);
 
 	p_Rev->pPrivate = argv;
 	*handle = p_Rev;
