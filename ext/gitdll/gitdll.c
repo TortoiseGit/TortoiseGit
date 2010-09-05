@@ -399,6 +399,7 @@ int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
 	return 0;
 }
 
+struct notes_tree **display_notes_trees;
 int git_close_log(GIT_LOG handle)
 {
 	if(handle)
@@ -409,7 +410,9 @@ int git_close_log(GIT_LOG handle)
 			free(p_Rev->pPrivate);
 		free(handle);
 	}
-	
+
+	free_notes(*display_notes_trees);
+	display_notes_trees = 0;
 	return 0;
 }
 
@@ -637,4 +640,15 @@ int git_check_excluded_1(const char *pathname,
 							EXCLUDE_LIST el)
 {
 	return excluded_from_list(pathname, pathlen, basename,dtype,el);
+}
+
+int git_get_notes(GIT_HASH hash, char **p_note)
+{
+	struct strbuf sb;
+	size_t size;
+	strbuf_init(&sb,0);
+	format_display_notes(hash, &sb, "utf-8", 0);
+	*p_note = strbuf_detach(&sb,&size);
+		
+	return 0;
 }

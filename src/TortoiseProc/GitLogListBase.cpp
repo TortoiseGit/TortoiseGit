@@ -2193,6 +2193,14 @@ UINT CGitLogListBase::LogThread()
 
 			GitRev *pRev = m_LogCache.GetCacheData(hash);
 
+			char *note=NULL;
+			git_get_notes(commit.m_hash,&note);
+			if(note)
+			{
+				pRev->m_Notes.Empty();
+				g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
+			}
+
 			if(pRev == NULL || !pRev->m_IsFull)
 			{
 				pRev->ParserFromCommit(&commit);
@@ -2208,6 +2216,8 @@ UINT CGitLogListBase::LogThread()
 				pRev->ParserParentFromCommit(&commit);
 				git_free_commit(&commit);
 			}
+			
+			
 #ifdef DEBUG		
 			pRev->DbgPrint();
 			TRACE(_T("\n"));
@@ -2241,6 +2251,7 @@ UINT CGitLogListBase::LogThread()
 				t1 = t2;
 			}		
 		}
+		git_close_log(m_DllGitLog);
 
 	}
 	//Update UI;
@@ -2248,6 +2259,8 @@ UINT CGitLogListBase::LogThread()
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
+
+
 
 #if 0
 //	if(m_ProcCallBack)

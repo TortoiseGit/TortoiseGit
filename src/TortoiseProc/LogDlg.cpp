@@ -608,6 +608,13 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			msg=_T("\n\n");
 			msg+=pLogEntry->m_Body;
 
+			if(!pLogEntry->m_Notes.IsEmpty())
+			{
+				msg+= _T("\n*Notes* ");
+				msg+= pLogEntry->m_Notes;
+				msg+= _T("\n\n");
+			}
+
 			msg+=GetTagInfo(pLogEntry);
 
 			pMsgView->ReplaceSel(msg);
