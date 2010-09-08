@@ -1013,6 +1013,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				break;
 			case CGitLogList::ID_EDITNOTE:
 				CAppUtils::EditNote(pRev);
+				this->FillLogMessageCtrl(true);
 				break;
 			}
 		}

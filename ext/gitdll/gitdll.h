@@ -151,5 +151,6 @@ GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
 //caller need free p_note
 GITDLL_API int git_get_notes(GIT_HASH hash, char **p_note);
 
+GITDLL_API int git_run_cmd(char *cmd, char *arg);
 
 #endif

@@ -655,6 +655,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 		case ID_EDITNOTE:
 			{
 				CAppUtils::EditNote(pSelLogEntry);
+				this->SetItemState(FirstSelect,  0, LVIS_SELECTED);
+				this->SetItemState(FirstSelect,  LVIS_SELECTED, LVIS_SELECTED);
 			}
 			break;
 		default:

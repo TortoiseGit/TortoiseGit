@@ -2514,17 +2514,28 @@ void CAppUtils::EditNote(GitRev *rev)
 	if(dlg.DoModal() == IDOK)
 	{
 		CString cmd,output;
-		cmd=_T("git.exe notes add -f -F ");
+		cmd=_T("notes add -f -F \"");
 
 		CString tempfile=::GetTempFile();
 		CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_sInputText);
 		cmd+=tempfile;
-		cmd+=_T("\ ");
+		cmd+=_T("\" ");
 		cmd+=rev->m_CommitHash.ToString();
 
-		if(g_Git.Run(cmd, &output, CP_UTF8))
+		try
 		{
-			CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			if(git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
+			{
+				CMessageBox::Show(NULL,_T("Edit Note Fail"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				
+			}
+			else
+			{
+				rev->m_Notes = dlg.m_sInputText;
+			}
+		}catch(...)
+		{
+			CMessageBox::Show(NULL,_T("Edit Note Fail"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		}
 		CFile::Remove(tempfile);
 		

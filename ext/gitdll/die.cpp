@@ -13,3 +13,9 @@ extern "C" void die_dll(const char *err, va_list params)
 	close_all();
 	throw g_last_error;
 }
+
+extern "C" void vc_exit(int code)
+{
+	close_all();
+	throw code;
+}
