@@ -33,6 +33,7 @@
 #include "FileTextLines.h"
 #include "UniCodeUtils.h"
 #include "MenuEncode.h"
+#include "gitdll.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2541,6 +2542,8 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		current = data.findData((const BYTE*)"\n",1,pos);
 		//one=data.Tokenize(_T("\n"),pos);
 		
+		bool isbound = ( data[pos] == _T('^') );
+
 		if( (data.size() - pos) >1 && data[pos] == _T('^'))
 			pos ++;
 
@@ -2548,7 +2551,17 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 			continue;
 
 		CGitHash hash;
-		hash.ConvertFromStrA((char*)&data[pos]);
+		if(isbound)
+		{
+			git_init();
+			data[pos+39]=0;
+			if(git_get_sha1((const char*)&data[pos], hash.m_hash))
+			{
+				::MessageBox(NULL, _T("Can't get hash"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			}
+
+		}else
+			hash.ConvertFromStrA((char*)&data[pos]);
 		
 
 		int start=0;

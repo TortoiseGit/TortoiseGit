@@ -2722,9 +2722,9 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
 void CGitLogListBase::SaveColumnWidths()
 {
 	CHeaderCtrl* pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
-	int maxcol;
+	int maxcol = m_ColumnManager.GetColumnCount();
 	
-	for (int col = 0; col <= maxcol; col++)
+	for (int col = 0; col < maxcol; col++)
         if (m_ColumnManager.IsVisible (col))
             m_ColumnManager.ColumnResized (col);
 
