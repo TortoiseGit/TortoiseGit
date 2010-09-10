@@ -40,6 +40,7 @@ CStringA CBase64::Encode( IN const char* szEncoding, IN int nSize )
 	int nNumBits = 6;
 	UINT nDigit;
 	int lp = 0;
+	int count = 0;
 
 	ASSERT( szEncoding != NULL );
 	if( szEncoding == NULL )
@@ -53,6 +54,10 @@ CStringA CBase64::Encode( IN const char* szEncoding, IN int nSize )
 	{
 		sOutput += m_sBase64Alphabet[ (int)nDigit ];
 		nDigit = read_bits( nNumBits, &nNumBits, lp );
+		count++;
+		
+		if(count % 80 == 0)
+			sOutput += '\n';
 	}
 	// Pad with '=' as per RFC 1521
 	while( sOutput.GetLength() % 4 != 0 )
@@ -92,6 +97,8 @@ int CBase64::Decode ( IN const char* szDecoding, char* szOutput )
 	{
 		nDecode[ m_sBase64Alphabet[ i ] ] = i;
 		nDecode[ m_sBase64Alphabet[ i ] | 0x80 ] = i; // Ignore 8th bit
+		nDecode[ '\r' ] = -1; 
+		nDecode[ '\n' ] = -1; 
 		nDecode[ '=' ] = -1; 
 		nDecode[ '=' | 0x80 ] = -1; // Ignore MIME padding char
     }
