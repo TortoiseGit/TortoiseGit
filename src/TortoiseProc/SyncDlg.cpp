@@ -590,6 +590,13 @@ BOOL CSyncDlg::OnInitDialog()
 		return FALSE;      // fail to create
 	}
 
+	CHARFORMAT m_Format;
+	memset(&m_Format, 0, sizeof(CHARFORMAT));
+	m_Format.cbSize = sizeof(CHARFORMAT);
+	m_Format.dwMask = CFM_FACE | CFM_BOLD;
+	wcsncpy(m_Format.szFaceName, L"Courier New", LF_FACESIZE - 1);
+	m_ctrlCmdOut.SetDefaultCharFormat(m_Format);
+
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut,_T("Log"),-1);
 	
 	//m_ctrlCmdOut.ReplaceSel(_T("Hello"));
