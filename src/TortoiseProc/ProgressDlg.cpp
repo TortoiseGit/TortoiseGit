@@ -102,7 +102,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<char>*pdata)
+UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata)
 {
 	UINT ret=0;
 
@@ -126,7 +126,11 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 			for(int j=0;j<str.GetLength();j++)
 			{
 				if(pdata)
+				{
+					pdata->m_critSec.Lock();
 					pdata->push_back(str[j]);
+					pdata->m_critSec.Unlock();
+				}
 				else
 					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,str[j]);
 			}
@@ -146,7 +150,9 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 				if(byte == 0)
 					byte = '\n';
 
+				pdata->m_critSec.Lock();
 				pdata->push_back( byte);
+				pdata->m_critSec.Unlock();
 
 				if(byte == '\r' || byte == '\n')
 					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
@@ -209,13 +215,19 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	{
 		if(m_bBufferAll)
 		{
+			m_Databuf.m_critSec.Lock();
 			m_Databuf.push_back(0);
+			m_Databuf.m_critSec.Unlock();
 			InsertCRLF();
-			m_Log.SetWindowText(Convert2UnionCode(&m_Databuf[0]));
+			m_Databuf.m_critSec.Lock();
+			m_Log.SetWindowText(Convert2UnionCode((char*)&m_Databuf[0]));
+			m_Databuf.m_critSec.Unlock();
 			m_Log.LineScroll(m_Log.GetLineCount() - m_Log.GetFirstVisibleLine() - 4);
 		}
 		m_BufStart=0;
+		m_Databuf.m_critSec.Lock();
 		this->m_Databuf.clear();
+		m_Databuf.m_critSec.Unlock();
 
 		m_bDone = true;
 		m_Animate.Stop();
@@ -255,11 +267,20 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	{
 		if(lParam == 0)
 		{
+			m_Databuf.m_critSec.Lock();
 			for(int i=this->m_BufStart;i<this->m_Databuf.size();i++)
 			{
 				ParserCmdOutput(this->m_Databuf[m_BufStart]);
 				m_BufStart++;
 			}
+
+			if(m_BufStart>1000)
+			{
+				m_Databuf.empty();
+				m_BufStart =0;
+			}
+			m_Databuf.m_critSec.Unlock();
+
 		}else
 			ParserCmdOutput((char)lParam);
 	}
@@ -454,6 +475,7 @@ void CProgressDlg::OnCancel()
 
 void CProgressDlg::InsertCRLF()
 {
+	m_Databuf.m_critSec.Lock();
 	for(int i=0;i<m_Databuf.size();i++)
 	{
 		if(m_Databuf[i]==('\n'))
@@ -465,6 +487,7 @@ void CProgressDlg::InsertCRLF()
 			}
 		}
 	}
+	m_Databuf.m_critSec.Unlock();
 }
 
 void CProgressDlg::InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb)

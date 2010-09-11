@@ -61,7 +61,7 @@ protected:
 
 	void		OnCancel();
 
-	std::vector<char> m_Databuf;
+	CGitByteArray m_Databuf;
 	virtual CString Convert2UnionCode(char *buff, int size=-1)
 	{
 		CString str;
@@ -84,7 +84,7 @@ public:
 
 	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
 
-	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,std::vector<char> *pdata=NULL);
+	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata=NULL);
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();

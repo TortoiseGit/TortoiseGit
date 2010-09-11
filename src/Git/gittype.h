@@ -13,6 +13,9 @@ extern BOOL g_IsWingitDllload;
 class CGitByteArray:public std::vector<BYTE>
 {
 public:
+	CGitByteArray(){ m_critSec.Init(); }
+	CComCriticalSection			m_critSec;
+
 	int find(BYTE data,int start=0)
 	{
 		for(int i=start;i<size();i++)
