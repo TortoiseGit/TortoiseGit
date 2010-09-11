@@ -35,6 +35,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedCheckBranch();
+	void SetDefaultName(BOOL isUpdateCreateBranch);
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	afx_msg void OnDestroy();
 	afx_msg void OnCbenEndeditComboboxexVersion(NMHDR *pNMHDR, LRESULT *pResult);

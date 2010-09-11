@@ -44,8 +44,8 @@ BEGIN_MESSAGE_MAP(CGitSwitchDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDC_CHECK_BRANCH, &CGitSwitchDlg::OnBnClickedCheckBranch)
 	ON_BN_CLICKED(IDOK, &CGitSwitchDlg::OnBnClickedOk)
-	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CGitSwitchDlg::OnBnClickedCheckBranch)
-	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnBnClickedCheckBranch)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_WM_DESTROY()
 	ON_NOTIFY(CBEN_ENDEDIT, IDC_COMBOBOXEX_VERSION, &CGitSwitchDlg::OnCbenEndeditComboboxexVersion)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_VERSION, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
@@ -77,7 +77,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 		SetDefaultChoose(IDC_RADIO_VERSION);
 	}
 
-	OnBnClickedCheckBranch();
+	SetDefaultName(TRUE);
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
 	return TRUE;
@@ -90,7 +90,7 @@ void CGitSwitchDlg::OnBnClickedChooseRadioHost()
 {
 	// TODO: Add your control notification handler code here
 	OnBnClickedChooseRadio();
-	OnBnClickedCheckBranch();
+	SetDefaultName(TRUE);
 	
 }
 
@@ -116,7 +116,7 @@ void CGitSwitchDlg::OnBnClickedOk()
 		OnOK();
 	}
 }
-void CGitSwitchDlg::OnBnClickedCheckBranch()
+void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 {
 	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
@@ -132,23 +132,31 @@ void CGitSwitchDlg::OnBnClickedCheckBranch()
 			version = version.Mid(start+1);
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
 		this->m_NewBranch=version;
-		this->m_bBranch=TRUE;
+		
+		if(isUpdateCreateBranch)
+			this->m_bBranch=TRUE;
+		
 		this->m_bTrack=TRUE;
 
 	}else
 	{
 		m_NewBranch = CString(_T("Branch_"))+this->m_VersionName;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
-		this->m_bBranch=FALSE;
+		
+		if(isUpdateCreateBranch)
+			this->m_bBranch=FALSE;
+
 		this->m_bTrack=FALSE;
 	}
 	
 	int radio=GetCheckedRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION);
 	if(radio==IDC_RADIO_TAGS || radio==IDC_RADIO_VERSION)
 	{
-		this->m_bBranch=TRUE;
+		if(isUpdateCreateBranch)
+			this->m_bBranch=TRUE;
 	}
 
+	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
 	this->UpdateData(FALSE);
 }
 
@@ -169,6 +177,11 @@ void CGitSwitchDlg::OnCbenEndeditComboboxexVersion(NMHDR *pNMHDR, LRESULT *pResu
 
 void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 {
-	OnBnClickedCheckBranch();
+	SetDefaultName(TRUE);
 	// TODO: Add your control notification handler code here
+}
+
+void CGitSwitchDlg::OnBnClickedCheckBranch()
+{
+	SetDefaultName(FALSE);
 }
