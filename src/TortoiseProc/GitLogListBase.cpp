@@ -631,11 +631,20 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	}
 	case Lanes::JOIN_L: 
 	{
-	
-		Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
+
+		Gdiplus::LinearGradientBrush gradient(
+								Gdiplus::Point(P_270),
+								Gdiplus::Point(x2+1, h+top-1),
+								GetGdiColor(col),GetGdiColor(activeColor));
 
 		
-		graphics.DrawArc(&mypen,x1,top+h, x2-x1,laneHeight,270,90);
+		Gdiplus::Pen mypen(&gradient,2);
+		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
+		
+		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
+		graphics.DrawArc(&mypen,x1+(x2-x1)/2,top+h-1, x2-x1,laneHeight,180,90);
+		//graphics.DrawLine(&mypen,x1-1,h+top,P_270);
+
 
 		break;
 	}
