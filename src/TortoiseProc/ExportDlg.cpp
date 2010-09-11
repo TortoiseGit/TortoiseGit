@@ -122,6 +122,21 @@ void CExportDlg::OnOK()
 //	m_URLCombo.SaveHistory();
 //	m_URL = m_URLCombo.GetString();
 
+	
+	if(::PathFileExists(this->m_strExportDirectory))
+	{
+		if(::PathIsDirectory(m_strExportDirectory))
+		{
+			CMessageBox::Show(NULL,_T("The folder is invalidate\r\n Export file must be a zip file\r\n"),
+				_T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			return;
+		}
+		if( CMessageBox::Show(NULL,m_strExportDirectory+_T(" is exist\r\nDo you want to overwire it?"),
+				_T("TortoiseGit"), MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2) != IDYES)
+		{
+			return ;
+		}
+	}
 
 	UpdateData(FALSE);
 	CResizableStandAloneDialog::OnOK();
