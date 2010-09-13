@@ -218,7 +218,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			  L"%(authordate:relative)%04"
 			  L"%(subject)%04"
 			  L"%(authorname)%04"
-			  L"%(authordate:iso8601)",
+			  L"%(authordate:iso8601)%03",
 			  &allRefs,CP_UTF8);
 
 	int linePos=0;
@@ -227,11 +227,15 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	MAP_STRING_STRING refMap;
 
 	//First sort on ref name
-	while(!(singleRef=allRefs.Tokenize(L"\r\n",linePos)).IsEmpty())
+	while(!(singleRef=allRefs.Tokenize(L"\03",linePos)).IsEmpty())
 	{
+		singleRef.TrimLeft(L"\r\n");
 		int valuePos=0;
 		CString refName=singleRef.Tokenize(L"\04",valuePos);
+		if(refName.IsEmpty())
+			continue;
 		CString refRest=singleRef.Mid(valuePos);
+
 
 		//Use ref based on m_pickRef_Kind
 		if(wcsncmp(refName,L"refs/heads",10)==0 && !(m_pickRef_Kind & gPickRef_Head) )
@@ -254,10 +258,10 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		values.Replace(L"\04" L"\04",L"\04 \04");//Workaround Tokenize problem (treating 2 tokens as one)
 
 		int valuePos=0;
-		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos);
-		treeLeaf.m_csDate=			values.Tokenize(L"\04",valuePos);
-		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos);
-		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos);
+		treeLeaf.m_csRefHash=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
+		treeLeaf.m_csDate=			values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
+		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
+		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csDate_Iso8601=	values.Tokenize(L"\04",valuePos);
 	}
 
