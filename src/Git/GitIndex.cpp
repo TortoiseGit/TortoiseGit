@@ -60,8 +60,11 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	{
 		do
 		{
-			this->clear();
-			this->m_Map.clear();
+			{
+				CAutoWriteLock lock(&this->m_SharedMutex);
+				this->clear();
+				this->m_Map.clear();
+			}
 
 			hfile = CreateFile(IndexFile,
 									GENERIC_READ,
@@ -119,32 +122,37 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 			p+= sizeof(cache_header);
 
 			int entries = Big2lit(header->hdr_entries);
-			for(int i=0;i<entries;i++)
+
 			{
-				ondisk_cache_entry *entry;
-				ondisk_cache_entry_extended *entryex;
-				entry=(ondisk_cache_entry*)p;
-				entryex=(ondisk_cache_entry_extended*)p;
-				int flags=Big2lit(entry->flags);
-				if( flags & CE_EXTENDED)
-				{
-					GitIndex.FillData(entryex);
-					p+=ondisk_ce_size(entryex);
+				CAutoWriteLock lock(&this->m_SharedMutex);
 
-				}else
+				for(int i=0;i<entries;i++)
 				{
-					GitIndex.FillData(entry);
-					p+=ondisk_ce_size(entry);
-				}
-				
-				if(p>buffer+filesize)
-				{
-					ret = -1;
-					break;
-				}
-				this->push_back(GitIndex);
-				this->m_Map[GitIndex.m_FileName]=this->size()-1;
+					ondisk_cache_entry *entry;
+					ondisk_cache_entry_extended *entryex;
+					entry=(ondisk_cache_entry*)p;
+					entryex=(ondisk_cache_entry_extended*)p;
+					int flags=Big2lit(entry->flags);
+					if( flags & CE_EXTENDED)
+					{
+						GitIndex.FillData(entryex);
+						p+=ondisk_ce_size(entryex);
 
+					}else
+					{
+						GitIndex.FillData(entry);
+						p+=ondisk_ce_size(entry);
+					}
+
+					if(p>buffer+filesize)
+					{
+						ret = -1;
+						break;
+					}
+
+					this->push_back(GitIndex);
+					this->m_Map[GitIndex.m_FileName]=this->size()-1;
+				}
 			}
 		}while(0);
 	}catch(...)
@@ -164,6 +172,8 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 
 	if(status)
 	{
+		CAutoReadLock lock(&this->m_SharedMutex);
+
 		if(m_Map.find(path) == m_Map.end() )
 		{
 			*status = git_wc_status_unversioned;
@@ -195,9 +205,11 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 			if(pHash)
 				*pHash = at(index).m_IndexHash;
 		}
-		if(callback)
-			callback(gitdir+_T("\\")+path,*status,false, pData);
+		
 	}
+
+	if(callback && status)
+			callback(gitdir+_T("\\")+path,*status,false, pData);
 	return 0;
 }
 
@@ -235,43 +247,48 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 			}
 			int len =path.GetLength();
 
-			for(int i=0;i<size();i++)
 			{
-				if( at(i).m_FileName.GetLength() > len )
-				{
-					if(at(i).m_FileName.Left(len) == path)
-					{
-						if( !IsFull )
-						{
-							*status = git_wc_status_normal; 
-							if(callback)
-								callback(gitdir+_T("\\")+path,*status,false, pData);
-							return 0;
+				CAutoReadLock lock(&this->m_SharedMutex);
 
-						}else
-						{	
-							result = g_Git.GetFileModifyTime( gitdir+_T("\\")+at(i).m_FileName , &time);
-							if(result)
-								continue;
-							
-							*status = git_wc_status_none;
-							GetFileStatus(gitdir,at(i).m_FileName,status,time,callback,pData);
-							if( *status != git_wc_status_none )
+				for(int i=0;i<size();i++)
+				{
+					if( at(i).m_FileName.GetLength() > len )
+					{
+						if(at(i).m_FileName.Left(len) == path)
+						{
+							if( !IsFull )
 							{
-								if( dirstatus == git_wc_status_none)
+								*status = git_wc_status_normal; 
+								if(callback)
+									callback(gitdir+_T("\\")+path,*status,false, pData);
+								return 0;
+
+							}else
+							{	
+								result = g_Git.GetFileModifyTime( gitdir+_T("\\")+at(i).m_FileName , &time);
+								if(result)
+									continue;
+
+								*status = git_wc_status_none;
+								GetFileStatus(gitdir,at(i).m_FileName,status,time,callback,pData);
+								if( *status != git_wc_status_none )
 								{
-									dirstatus = git_wc_status_normal;
+									if( dirstatus == git_wc_status_none)
+									{
+										dirstatus = git_wc_status_normal;
+									}
+									if( *status != git_wc_status_normal )
+									{
+										dirstatus = git_wc_status_modified;
+									}
 								}
-								if( *status != git_wc_status_normal )
-								{
-									dirstatus = git_wc_status_modified;
-								}
+
 							}
-							
 						}
 					}
-				}
-			}
+				} /* End For */
+
+			} /* End Auto Lock */
 
 			if( dirstatus != git_wc_status_none )
 			{
@@ -316,14 +333,35 @@ int CGitIndexFileMap::CheckAndUpdateIndex(CString &gitdir,bool *loaded)
 		if(result)
 		   return result;
 
-		if((*this)[gitdir].m_LastModifyTime != time )
 		{
-			if((*this)[gitdir].ReadIndex(IndexFile))
-				return -1;
-			if(loaded)
-				*loaded =true;
+			this->m_SharedMutex.AcquireShared();
+			if( this->find(gitdir) == this->end() )
+			{
+
+				m_SharedMutex.ReleaseShared();
+
+				m_SharedMutex.AcquireExclusive();
+				(*this)[gitdir].m_LastModifyTime = 0; /* insert new item*/
+				(*this)[gitdir].m_SharedMutex.Init();
+				m_SharedMutex.ReleaseExclusive();
+				m_SharedMutex.AcquireShared();
+			}
+
+			if((*this)[gitdir].m_LastModifyTime != time )
+			{
+				if((*this)[gitdir].ReadIndex(IndexFile))
+				{
+					m_SharedMutex.ReleaseShared();
+					return -1;
+				}
+				if(loaded)
+					*loaded =true;
+			}
+
+			(*this)[gitdir].m_LastModifyTime = time;
+
+			m_SharedMutex.ReleaseShared();
 		}
-		(*this)[gitdir].m_LastModifyTime = time;
 				
 	}catch(...)
 	{
@@ -340,7 +378,11 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 	try
 	{
 		CheckAndUpdateIndex(gitdir);
-		(*this)[gitdir].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
+
+		{
+			CAutoReadLock lock(&this->m_SharedMutex);
+			(*this)[gitdir].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
+		}
 				
 	}catch(...)
 	{
@@ -366,10 +408,16 @@ int CGitIndexFileMap::IsUnderVersionControl(CString &gitdir, CString &path, bool
 		CheckAndUpdateIndex(gitdir);
 		if(isDir)
 		{
+			CAutoReadLock lock(&this->m_SharedMutex);
+			CAutoReadLock lock1(&(*this)[gitdir].m_SharedMutex);
+
 			*isVersion = (SearchInSortVector((*this)[gitdir], subpath.GetBuffer(), subpath.GetLength()) >= 0);
 		}
 		else
 		{
+			CAutoReadLock lock(&this->m_SharedMutex);
+			CAutoReadLock lock1(&(*this)[gitdir].m_SharedMutex);
+
 			*isVersion = ((*this)[gitdir].m_Map.find(subpath) != (*this)[gitdir].m_Map.end());
 		}
 
@@ -513,6 +561,8 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 	try
 	{
+		CAutoWriteLock lock(&this->m_SharedMutex);
+
 		do
 		{
 			hfile = CreateFile(HeadFile,
@@ -559,6 +609,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 				__int64 time;
 				if(g_Git.GetFileModifyTime(m_HeadRefFile,&time,NULL))
 				{
+					m_HeadRefFile.Empty();
 					if( GetPackRef(gitdir))
 					{
 						ret = -1;
@@ -584,6 +635,8 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 				if(href == INVALID_HANDLE_VALUE)
 				{
+					m_HeadRefFile.Empty();
+
 					if( GetPackRef(gitdir))
 					{
 						ret = -1;
@@ -675,6 +728,7 @@ int CGitHeadFileList::ReadTree()
 		return -1;
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
+	CAutoWriteLock lock1(&this->m_SharedMutex);
 
 	if(m_Gitdir != g_Git.m_CurrentDir)
 	{
@@ -826,9 +880,12 @@ int CGitIgnoreItem::FetchIgnoreList(CString &projectroot, CString &file)
 bool CGitIgnoreList::CheckFileChanged(CString &path)
 {
 	__int64 time=0;
+
 	int ret=g_Git.GetFileModifyTime(path, &time);
 
+	this->m_SharedMutex.AcquireShared();
 	bool cacheExist = (m_Map.find(path) != m_Map.end());
+	this->m_SharedMutex.ReleaseShared();
 
 	// both cache and file is not exist  
 	if( (ret != 0) && (!cacheExist))
@@ -844,9 +901,16 @@ bool CGitIgnoreList::CheckFileChanged(CString &path)
 		return true;
 	}
 	// file exist and cache exist
-	if( m_Map[path].m_LastModifyTime == time )
-		return false;
-
+	if (! cacheExist )
+	{
+		CAutoWriteLock lock(&this->m_SharedMutex);
+		m_Map[path].m_LastModifyTime = 0;
+	}
+	{
+		CAutoReadLock lock(&this->m_SharedMutex);
+		if( m_Map[path].m_LastModifyTime == time )
+			return false;
+	}
 	return true;
 
 }
@@ -922,10 +986,14 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			{
 				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
 				{
+					CAutoWriteLock lock(&this->m_SharedMutex);
 					m_Map[gitignore].FetchIgnoreList(gitdir,gitignore);
 				}
 				else
+				{
+					CAutoWriteLock lock(&this->m_SharedMutex);
 					m_Map.erase(gitignore);
+				}
 			}
 
 			temp+=_T("\\info\\exclude");
@@ -933,9 +1001,13 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			if( CheckFileChanged(temp) )
 			{
 				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
+				{
+					CAutoWriteLock lock(&this->m_SharedMutex);
 					return m_Map[temp].FetchIgnoreList(gitdir,temp);
+				}
 				else
 				{
+					CAutoWriteLock lock(&this->m_SharedMutex);
 					m_Map.erase(temp);
 					return 0;
 				}
@@ -949,9 +1021,15 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 			if( CheckFileChanged(temp) )
 			{
 				if(CGit::GitPathFileExists(temp)) //if .gitignore remove, we need remote cache
+				{
+					CAutoWriteLock lock(&this->m_SharedMutex);
 					m_Map[temp].FetchIgnoreList(gitdir,temp);
+				}
 				else
+				{
+					CAutoWriteLock lock(&this->m_SharedMutex);
 					m_Map.erase(temp);
+				}
 			}
 		}
 
@@ -977,6 +1055,8 @@ int CGitIgnoreList::GetIgnoreFileChangeTimeList(CString &path, std::vector<__int
 	int start =0;
 
 	do{
+		CAutoReadLock lock(&this->m_SharedMutex);
+
 		ignore=temp;
 		ignore+=_T("\\.gitignore");
 		std::map<CString, CGitIgnoreItem>::iterator itMap;
@@ -1074,6 +1154,8 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 		int pos=patha.ReverseFind('/');
 		base = pos>=0? patha.GetBuffer()+pos+1:patha.GetBuffer();
 
+		CAutoReadLock lock(&this->m_SharedMutex);
+
 		if(this->m_Map.find(temp) == m_Map.end() )
 		{
 
@@ -1116,6 +1198,42 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 	return -1;
 }
 
+int CGitHeadFileMap::CheckHeadUpdate(CString &gitdir)
+{
+	m_SharedMutex.AcquireShared();
+	if( find(gitdir) == end())
+	{
+		m_SharedMutex.ReleaseShared();
+		m_SharedMutex.AcquireExclusive();
+		(*this)[gitdir].m_LastModifyTimeRef = 0; /* Insert new item*/
+		(*this)[gitdir].m_SharedMutex.Init();
+		m_SharedMutex.ReleaseExclusive();
+	}else
+	{
+		m_SharedMutex.ReleaseShared();
+	}
+
+	m_SharedMutex.AcquireShared();
+	int ret= (*this)[gitdir].CheckHeadUpdate();
+	m_SharedMutex.ReleaseShared();
+
+	return ret;
+}
+
+int CGitHeadFileMap::GetHeadHash(CString &gitdir, CGitHash &hash)
+{
+	if(CheckHeadUpdate(gitdir))
+	{
+		CAutoReadLock(&this->m_SharedMutex);
+		(*this)[gitdir].ReadHeadHash(gitdir);
+	
+	}else
+	{
+		CAutoReadLock(&this->m_SharedMutex);
+		hash = (*this)[gitdir].m_Head;
+	}
+	return 0;
+}
 #if 0
 
 int CGitStatus::GetStatus(CString &gitdir, CString &path, git_wc_status_kind *status, BOOL IsFull, BOOL IsRecursive , FIll_STATUS_CALLBACK callback , void *pData)

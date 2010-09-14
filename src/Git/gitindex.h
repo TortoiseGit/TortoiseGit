@@ -1,6 +1,7 @@
 #include "GitHash.h"
 #include "gitdll.h"
 #include "gitstatus.h"
+#include "SharedMutex.h"
 
 /* Copy from Git cache.h*/
 #define FLEX_ARRAY 4
@@ -168,6 +169,35 @@ public:
 
 };
 
+class CAutoReadLock
+{
+	SharedMutex *m_Lock;
+public:
+	CAutoReadLock(SharedMutex * lock)
+	{
+		m_Lock = lock;
+		lock->AcquireShared();
+	}
+	~CAutoReadLock()
+	{
+		m_Lock->ReleaseShared();
+	}
+};
+
+class CAutoWriteLock
+{
+	SharedMutex *m_Lock;
+public:
+	CAutoWriteLock(SharedMutex * lock)
+	{
+		m_Lock = lock;
+		lock->AcquireExclusive();
+	}
+	~CAutoWriteLock()
+	{
+		m_Lock->ReleaseExclusive();
+	}
+};
 
 class CGitIndexList:public std::vector<CGitIndex>
 {
@@ -176,7 +206,9 @@ protected:
 public:
 	std::map<CString,int> m_Map;
 	__time64_t  m_LastModifyTime;
-		
+	
+	SharedMutex  m_SharedMutex;
+
 	CGitIndexList();
 	int ReadIndex(CString file);
 	int GetStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
@@ -211,6 +243,8 @@ public:
 	CString		m_Gitdir;
 	CString		m_PackRefFile;
 
+	SharedMutex	m_SharedMutex;
+
 	std::map<CString,CGitHash> m_PackRefMap;
 
 	CGitHash	m_TreeHash; /* buffered tree hash value */
@@ -232,14 +266,36 @@ public:
 class CGitHeadFileMap:public std::map<CString,CGitHeadFileList> 
 {
 public:
-	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 
+	SharedMutex  m_SharedMutex;
+
+	CGitHeadFileMap(){ m_SharedMutex.Init(); }
+	~CGitHeadFileMap() { m_SharedMutex.Release(); }
+
+	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	int CheckHeadUpdate(CString &gitdir);
+	int GetHeadHash(CString &gitdir, CGitHash &hash);
+
+	bool IsHashChanged(CString &gitdir)
+	{
+		CAutoReadLock lock(&m_SharedMutex);
+		if( find(gitdir) == end())
+			return false;
+		
+		CAutoReadLock lock1(&(*this).m_SharedMutex);
+		return (*this)[gitdir].m_Head != (*this)[gitdir].m_TreeHash;
+	}
 };
 
 
 class CGitIndexFileMap:public std::map<CString,CGitIndexList> 
 {
 public:
+	SharedMutex  m_SharedMutex;
+
+	CGitIndexFileMap(){ m_SharedMutex.Init(); }
+	~CGitIndexFileMap() { m_SharedMutex.Release(); }
+
 	int CheckAndUpdateIndex(CString &gitdir,bool *loaded=NULL);
 
 	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
@@ -276,7 +332,13 @@ private:
 	int  CheckIgnore(CString &path,CString &root);
 
 public:
-	std::map<CString, CGitIgnoreItem> m_Map;
+	SharedMutex		m_SharedMutex;
+	
+	CGitIgnoreList(){ m_SharedMutex.Init(); }
+	~CGitIgnoreList() { m_SharedMutex.Release(); }
+
+	std::map<CString, CGitIgnoreItem> m_Map;	
+
 	int	 GetIgnoreFileChangeTimeList(CString &dir, std::vector<__int64> &timelist);
 	bool CheckIgnoreChanged(CString &gitdir,CString &path);
 	int  LoadAllIgnoreFile(CString &gitdir,CString &path);

@@ -943,54 +943,57 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 			if( st == git_wc_status_normal && IsFull)
 			{
-				if(g_HeadFileMap[gitdir].CheckHeadUpdate() || 
-					g_HeadFileMap[gitdir].m_Head != g_HeadFileMap[gitdir].m_TreeHash)
 				{
-					g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
-					// Init Repository
-					if( g_HeadFileMap[gitdir].m_HeadFile.IsEmpty() )
-					{
-						*status =st=git_wc_status_added;
-						if(callback)
-							callback(gitdir+_T("/")+path,st,false,pData);
-						return 0;
-					}
-					if(g_HeadFileMap[gitdir].ReadTree())
-					{
-						g_HeadFileMap[gitdir].m_LastModifyTimeHead = 0;
-						//Check if init repository
-						*status = g_HeadFileMap[gitdir].m_Head.IsEmpty()? git_wc_status_added: st;
-						if(callback)
-							callback(gitdir+_T("/")+path,*status,false,pData);
-						return 0;
-					}
+					CAutoReadLock(&g_HeadFileMap[gitdir].m_SharedMutex);
 
-				}
-				// Check Head Tree Hash;
-				{
-					//add item
-					std::map<CString,int>::iterator it=g_HeadFileMap[gitdir].m_Map.find(path);
-
-					if(it == g_HeadFileMap[gitdir].m_Map.end())
+					if(g_HeadFileMap[gitdir].CheckHeadUpdate() || 
+						g_HeadFileMap[gitdir].m_Head != g_HeadFileMap[gitdir].m_TreeHash)
 					{
-						*status =st=git_wc_status_added;
-						ATLTRACE(_T("File miss in head tree %s"), path);
-						if(callback)
-							callback(gitdir+_T("/")+path,st,false, pData);
-						return 0;
+						g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
+						// Init Repository
+						if( g_HeadFileMap[gitdir].m_HeadFile.IsEmpty() )
+						{
+							*status =st=git_wc_status_added;
+							if(callback)
+								callback(gitdir+_T("/")+path,st,false,pData);
+							return 0;
+						}
+						if(g_HeadFileMap[gitdir].ReadTree())
+						{
+							g_HeadFileMap[gitdir].m_LastModifyTimeHead = 0;
+							//Check if init repository
+							*status = g_HeadFileMap[gitdir].m_Head.IsEmpty()? git_wc_status_added: st;
+							if(callback)
+								callback(gitdir+_T("/")+path,*status,false,pData);
+							return 0;
+						}
+
 					}
-
-					//staged and not commit
-					if( g_HeadFileMap[gitdir].at(it->second).m_Hash != hash )
+					// Check Head Tree Hash;
 					{
-						*status =st=git_wc_status_modified;
-						if(callback)
-							callback(gitdir+_T("/")+path,st, false, pData);
-						return 0;
+						//add item
+						std::map<CString,int>::iterator it=g_HeadFileMap[gitdir].m_Map.find(path);
+
+						if(it == g_HeadFileMap[gitdir].m_Map.end())
+						{
+							*status =st=git_wc_status_added;
+							ATLTRACE(_T("File miss in head tree %s"), path);
+							if(callback)
+								callback(gitdir+_T("/")+path,st,false, pData);
+							return 0;
+						}
+
+						//staged and not commit
+						if( g_HeadFileMap[gitdir].at(it->second).m_Hash != hash )
+						{
+							*status =st=git_wc_status_modified;
+							if(callback)
+								callback(gitdir+_T("/")+path,st, false, pData);
+							return 0;
+						}
 					}
 				}
 			}
-
 			*status =st;
 			if(callback)
 				callback(gitdir+_T("/")+path,st,false, pData);
@@ -1010,12 +1013,9 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 int GitStatus::GetHeadHash(CString &gitdir, CGitHash &hash)
 {
-	if(g_HeadFileMap[gitdir].CheckHeadUpdate())
-		g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
-
-	hash = g_HeadFileMap[gitdir].m_Head;
-	return 0;
+	return g_HeadFileMap.GetHeadHash(gitdir, hash);
 }
+
 bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
 {
 	if( mode & GIT_MODE_INDEX)
@@ -1027,7 +1027,7 @@ bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
 
 	if( mode & GIT_MODE_HEAD)
 	{
-		if(g_HeadFileMap[gitdir].CheckHeadUpdate())
+		if(g_HeadFileMap.CheckHeadUpdate(gitdir))
 			return true;
 	}
 
@@ -1050,6 +1050,11 @@ int GitStatus::IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,
 
 __int64 GitStatus::GetIndexFileTime(CString &gitdir)
 {
+	CAutoReadLock lock(&g_IndexFileMap.m_SharedMutex);
+	
+	if(g_IndexFileMap.find(gitdir) ==  g_IndexFileMap.end())
+		return 0;
+
 	return g_IndexFileMap[gitdir].m_LastModifyTime;
 }
 
@@ -1084,6 +1089,10 @@ int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdateIndex(gitdir);
+
+			CAutoReadLock lock(&g_IndexFileMap.m_SharedMutex);
+			CAutoReadLock lock1(&g_IndexFileMap[gitdir].m_SharedMutex);
+
 			int pos=SearchInSortVector(g_IndexFileMap[gitdir],path.GetBuffer(),path.GetLength());
 
 			if(subpath.IsEmpty() && pos<0)
@@ -1114,7 +1123,7 @@ int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind
 					else
 						*status = git_wc_status_unversioned;
 
-					g_HeadFileMap[gitdir].CheckHeadUpdate();
+					g_HeadFileMap.CheckHeadUpdate(gitdir);
 
 					//Check init repository
 					if(g_HeadFileMap[gitdir].m_Head.IsEmpty() && path.IsEmpty())
@@ -1175,9 +1184,10 @@ int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind
 				//Check Miss file in index "git rm file"
 				if( IsFul && (*status != git_wc_status_conflicted))
 				{
-					if(g_HeadFileMap[gitdir].CheckHeadUpdate() || 
-						g_HeadFileMap[gitdir].m_Head != g_HeadFileMap[gitdir].m_TreeHash)
+					if(g_HeadFileMap.CheckHeadUpdate(gitdir) || g_HeadFileMap.IsHashChanged(gitdir))
 					{
+						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
+
 						g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
 
 						if(g_HeadFileMap[gitdir].ReadTree())
@@ -1192,36 +1202,41 @@ int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind
 					}
 					//Check Add
 					it = ::g_IndexFileMap[gitdir].begin()+start;
-
-					//Check if new init repository
-					if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+					
 					{
-						//Check Delete
-						if( *status == git_wc_status_normal )
-						{
-							pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
-							if(pos <0)
-							{
-								*status =  max(git_wc_status_added, *status) ;
+						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
+						CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
 
-							}else
+						//Check if new init repository
+						if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+						{
+							//Check Delete
+							if( *status == git_wc_status_normal )
 							{
-								int hstart,hend;
-								GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
-								CGitHeadFileList::iterator hit;
-								hit = g_HeadFileMap[gitdir].begin()+hstart;
-								for(int i=hstart;i<=hend;i++)
+								pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
+								if(pos <0)
 								{
-									if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+									*status =  max(git_wc_status_added, *status) ;
+
+								}else
+								{
+									int hstart,hend;
+									GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
+									CGitHeadFileList::iterator hit;
+									hit = g_HeadFileMap[gitdir].begin()+hstart;
+									for(int i=hstart;i<=hend;i++)
 									{
-										*status =max(git_wc_status_deleted, *status);
-										break;
+										if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+										{
+											*status =max(git_wc_status_deleted, *status);
+											break;
+										}
+										hit++;
 									}
-									hit++;
 								}
-							}
-						} // endif if( *status == git_wc_status_normal )
-					}// endif if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+							} // endif if( *status == git_wc_status_normal )
+						}// endif if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+					}
 				}//if( IsFul && (*status != git_wc_status_conflicted))
 			}// end inversion control
 			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);	
@@ -1255,6 +1270,10 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdateIndex(gitdir);
+
+			CAutoReadLock lock(&g_IndexFileMap.m_SharedMutex);
+			CAutoReadLock lock1(&g_IndexFileMap[gitdir].m_SharedMutex);
+
 			int pos=SearchInSortVector(g_IndexFileMap[gitdir],path.GetBuffer(),path.GetLength());
 
 			if(subpath.IsEmpty() && pos<0)
@@ -1285,8 +1304,10 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 					else
 						*status = git_wc_status_unversioned;
 
-					g_HeadFileMap[gitdir].CheckHeadUpdate();
-
+					g_HeadFileMap.CheckHeadUpdate(gitdir);
+					
+					CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
+					CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
 					//Check init repository
 					if(g_HeadFileMap[gitdir].m_Head.IsEmpty() && path.IsEmpty())
 						*status = git_wc_status_normal;
@@ -1329,8 +1350,11 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 				{
 					*status = git_wc_status_normal;
 
-					if(g_HeadFileMap[gitdir].CheckHeadUpdate())
+					if(g_HeadFileMap.CheckHeadUpdate(gitdir))
 					{
+						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
+						CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
+
 						g_HeadFileMap[gitdir].ReadHeadHash(gitdir);
 
 						if(g_HeadFileMap[gitdir].ReadTree())
@@ -1346,72 +1370,79 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 					//Check Add
 					it = ::g_IndexFileMap[gitdir].begin()+start;
 
-					//Check if new init repository
-					if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+					
 					{
-						for(int i=start;i<=end;i++)
+						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
+						CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
+
+
+						//Check if new init repository
+						if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
 						{
-							if( g_HeadFileMap[gitdir].m_Map.find((*it).m_FileName) == g_HeadFileMap[gitdir].m_Map.end())
+							for(int i=start;i<=end;i++)
 							{
-								pos = -1;
-							}else
-								pos = g_HeadFileMap[gitdir].m_Map[(*it).m_FileName];
-
-							if(pos < 0)
-							{
-								*status = *status = max(git_wc_status_added, *status) ;	
-								if(callback)
+								if( g_HeadFileMap[gitdir].m_Map.find((*it).m_FileName) == g_HeadFileMap[gitdir].m_Map.end())
 								{
-									int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
-									if(dirpos<0 || IsRecursive)
-										callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_added,false, pData);
-
+									pos = -1;
 								}else
-									break;
-							}
+									pos = g_HeadFileMap[gitdir].m_Map[(*it).m_FileName];
 
-							if( pos>=0 && g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
-							{
-								*status = *status = max(git_wc_status_modified, *status) ;	
-								if(callback)
+								if(pos < 0)
 								{
-									int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
-									if(dirpos<0 || IsRecursive)
-										callback(gitdir+_T("\\")+ it->m_FileName, git_wc_status_modified,false, pData);
-
-								}else
-									break;
-							}
-
-							it++;
-						}
-
-						//Check Delete
-						if( *status == git_wc_status_normal )
-						{
-							pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
-							if(pos <0)
-							{
-								*status = git_wc_status_added;
-
-							}else
-							{
-								int hstart,hend;
-								GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
-								CGitHeadFileList::iterator hit;
-								hit = g_HeadFileMap[gitdir].begin()+start;
-								for(int i=hstart;i<=hend;i++)
-								{
-									if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+									*status = *status = max(git_wc_status_added, *status) ;	
+									if(callback)
 									{
-										*status = git_wc_status_deleted;
+										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+										if(dirpos<0 || IsRecursive)
+											callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_added,false, pData);
+
+									}else
 										break;
+								}
+
+								if( pos>=0 && g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
+								{
+									*status = *status = max(git_wc_status_modified, *status) ;	
+									if(callback)
+									{
+										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
+										if(dirpos<0 || IsRecursive)
+											callback(gitdir+_T("\\")+ it->m_FileName, git_wc_status_modified,false, pData);
+
+									}else
+										break;
+								}
+
+								it++;
+							}
+
+							//Check Delete
+							if( *status == git_wc_status_normal )
+							{
+								pos = SearchInSortVector(g_HeadFileMap[gitdir], path.GetBuffer(), path.GetLength());
+								if(pos <0)
+								{
+									*status = git_wc_status_added;
+
+								}else
+								{
+									int hstart,hend;
+									GetRangeInSortVector(g_HeadFileMap[gitdir],path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
+									CGitHeadFileList::iterator hit;
+									hit = g_HeadFileMap[gitdir].begin()+start;
+									for(int i=hstart;i<=hend;i++)
+									{
+										if( ::g_IndexFileMap[gitdir].m_Map.find((*hit).m_FileName) == g_IndexFileMap[gitdir].m_Map.end())
+										{
+											*status = git_wc_status_deleted;
+											break;
+										}
+										hit++;
 									}
-									hit++;
 								}
 							}
 						}
-					}
+					}/* End lock*/
 				}
 				// If define callback, it need update each file status.
 				// If not define callback, status == git_wc_status_conflicted, needn't check each file status

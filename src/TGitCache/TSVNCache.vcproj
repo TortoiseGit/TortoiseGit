@@ -417,6 +417,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Git\SharedMutex.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ShellUpdater.cpp"
 				>
 			</File>

@@ -310,6 +310,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SharedMutex.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
