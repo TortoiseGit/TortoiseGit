@@ -62,28 +62,10 @@ bool CloneCommand::Execute()
 
 		CString cmd;
 		CString progressarg; 
-		CString version;
-		cmd = _T("git.exe --version");
-		if(g_Git.Run(cmd, &version, CP_ACP))
-		{
-			CMessageBox::Show(NULL,_T("git have not installed"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-			return false;
-		}
 		
-		int start=0;
-		int ver;
+		int ver = CAppUtils::GetMsysgitVersion();
 		
-		CString str=version.Tokenize(_T("."),start);
-		int space = str.ReverseFind(_T(' '));
-		str=str.Mid(space+1,start);
-		ver = _ttol(str);
-		ver <<=16;
-		version = version.Mid(start);
-		start = 0;
-		str = version.Tokenize(_T("."),start);
-		ver |= _ttol(str)&0xFFFF;
-
-		if(ver >= 0x10007) //above 1.7.0.2
+		if(ver >= 0x01070002) //above 1.7.0.2
 			progressarg = _T("--progress");
 
 	

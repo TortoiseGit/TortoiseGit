@@ -49,7 +49,13 @@ bool PullCommand::Execute()
 		CString cmdRebase;
 		if(dlg.m_bRebase)
 			cmdRebase = "--rebase ";
-		cmd.Format(_T("git.exe pull -v %s\"%s\" %s"),cmdRebase, url, dlg.m_RemoteBranchName);
+
+		int ver = CAppUtils::GetMsysgitVersion();
+		
+		if(ver >= 0x01070203) //above 1.7.0.2
+			cmdRebase += _T("--progress ");
+
+		cmd.Format(_T("git.exe pull -v %s \"%s\" %s"),cmdRebase, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 		progress.m_PostCmdList.Add(_T("Pulled Diff"));

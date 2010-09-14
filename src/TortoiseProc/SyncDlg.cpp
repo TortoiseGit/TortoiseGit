@@ -165,6 +165,11 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
+		int ver = CAppUtils::GetMsysgitVersion();
+		
+		if(ver >= 0x01070203) //above 1.7.0.2
+			force += _T("--progress ");
+
 		cmd.Format(_T("git.exe pull %s \"%s\" %s"),
 				force,
 				m_strURL,
@@ -204,6 +209,11 @@ void CSyncDlg::OnBnClickedButtonPull()
 			else
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
 		}
+
+		int ver = CAppUtils::GetMsysgitVersion();
+		
+		if(ver >= 0x01070203) //above 1.7.0.2
+			force += _T("--progress ");
 
 		cmd.Format(_T("git.exe fetch %s \"%s\" %s"),
 				force,
@@ -369,10 +379,8 @@ void CSyncDlg::OnBnClickedButtonPush()
 	ShowTab(IDC_CMD_LOG);
 
 	CString cmd;
-	CString tags;
-	CString force;
-	CString all;
-
+	CString arg;
+	
 	CString error;
 	DWORD exitcode;
 	CTGitPathList list;
@@ -394,18 +402,23 @@ void CSyncDlg::OnBnClickedButtonPush()
 	switch (m_ctrlPush.GetCurrentEntry())
 	{
 	case 1:
-		tags = _T(" --tags ");
+		arg  += _T(" --tags ");
 		break;
 	case 2:
-		all = _T(" --all ");
+		arg += _T(" --all ");
 		break;
 	}
 
 	if(this->m_bForce)
-		force = _T(" --force ");
+		arg += _T(" --force ");
 
-	cmd.Format(_T("git.exe push %s %s %s \"%s\" %s"),
-				tags,force,all,
+	int ver = CAppUtils::GetMsysgitVersion();
+		
+	if(ver >= 0x01070203) //above 1.7.0.2
+		arg += _T("--progress ");
+
+	cmd.Format(_T("git.exe push %s \"%s\" %s"),
+				arg,
 				m_strURL,
 				m_strLocalBranch);
 

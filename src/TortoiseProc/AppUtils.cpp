@@ -2225,24 +2225,28 @@ bool CAppUtils::Push()
 //		CString dir=dlg.m_Directory;
 //		CString url=dlg.m_URL;
 		CString cmd;
-		CString force;
-		CString tags;
-		CString thin;
-
+		CString arg;
+		
 		if(dlg.m_bAutoLoad)
 		{
 			CAppUtils::LaunchPAgent(NULL,&dlg.m_URL);
 		}
 
 		if(dlg.m_bPack)
-			thin=_T("--thin");
+			arg +=_T("--thin ");
 		if(dlg.m_bTags)
-			tags=_T("--tags");
+			arg +=_T("--tags ");
 		if(dlg.m_bForce)
-			force=_T("--force");
+			arg +=_T("--force ");
 		
-		cmd.Format(_T("git.exe push %s %s %s \"%s\" %s"),
-				thin,tags,force,
+		int ver = CAppUtils::GetMsysgitVersion();
+		
+		if(ver >= 0x01070203) //above 1.7.0.2
+			arg += _T("--progress ");
+
+
+		cmd.Format(_T("git.exe push %s \"%s\" %s"),
+				arg, 
 				dlg.m_URL,
 				dlg.m_BranchSourceName);
 		if (!dlg.m_BranchRemoteName.IsEmpty())
@@ -2540,4 +2544,40 @@ void CAppUtils::EditNote(GitRev *rev)
 		CFile::Remove(tempfile);
 		
 	}
+}
+
+int CAppUtils::GetMsysgitVersion()
+{
+	CString cmd;
+	CString progressarg; 
+	CString version;
+	cmd = _T("git.exe --version");
+	if(g_Git.Run(cmd, &version, CP_ACP))
+	{
+		CMessageBox::Show(NULL,_T("git have not installed"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		return false;
+	}
+		
+	int start=0;
+	int ver;
+		
+	CString str=version.Tokenize(_T("."),start);
+	int space = str.ReverseFind(_T(' '));
+	str=str.Mid(space+1,start);
+	ver = _ttol(str);
+	ver <<=24;
+
+	version = version.Mid(start);
+	start = 0;
+	str = version.Tokenize(_T("."),start);
+	
+	ver |= (_ttol(str)&0xFF)<<16;
+
+	str = version.Tokenize(_T("."),start);
+	ver |= (_ttol(str)&0xFF)<<8;
+
+	str = version.Tokenize(_T("."),start);
+	ver |= (_ttol(str)&0xFF);
+
+	return ver;
 }

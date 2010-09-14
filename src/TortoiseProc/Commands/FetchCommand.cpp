@@ -43,7 +43,14 @@ bool FetchCommand::Execute()
 		CString url;
 		url=dlg.m_RemoteURL;
 		CString cmd;
-		cmd.Format(_T("git.exe fetch -v \"%s\" %s"),url, dlg.m_RemoteBranchName);
+		CString arg;
+
+		int ver = CAppUtils::GetMsysgitVersion();
+		
+		if(ver >= 0x01070203) //above 1.7.0.2
+			arg = _T("--progress ");
+
+		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 
 		if(!dlg.m_bRebase)
