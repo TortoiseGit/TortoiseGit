@@ -99,7 +99,9 @@ int GitRev::ParserFromLog(BYTE_VECTOR &log,int start)
 		{
 			//text = one.Right(one.GetLength()-4);
 			text.Empty();
-			g_Git.StringAppend(&text,&log[pos+4],CGit::m_LogEncode);
+			if(log.size()>4)
+				g_Git.StringAppend(&text,&log[pos+4],CGit::m_LogEncode);
+
 			mode = log[pos+2];
 			
 			switch(mode)
