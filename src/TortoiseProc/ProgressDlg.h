@@ -78,7 +78,9 @@ public:
 
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
-	
+
+	static void ClearESC(CStringA &str);
+
 	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,
 									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
 

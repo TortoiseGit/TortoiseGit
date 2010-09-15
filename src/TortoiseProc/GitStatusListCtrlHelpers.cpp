@@ -21,6 +21,10 @@
 #include ".\resource.h"
 #include "GitStatusListCtrl.h"
 #include <iterator>
+
+#ifndef assert
+#define assert(x) ATLASSERT(x)
+#endif
 // assign property list
 #if 0
 PropertyList& 
@@ -226,7 +230,7 @@ int ColumnManager::GetColumnCount() const
 bool ColumnManager::IsVisible (int column) const
 {
     size_t index = static_cast<size_t>(column);
-    assert (columns.size() > index);
+	assert (columns.size() > index);
 
     return columns[index].visible;
 }

@@ -270,8 +270,13 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			m_Databuf.m_critSec.Lock();
 			for(int i=this->m_BufStart;i<this->m_Databuf.size();i++)
 			{
-				ParserCmdOutput(this->m_Databuf[m_BufStart]);
+				char c = this->m_Databuf[m_BufStart];
 				m_BufStart++;
+				m_Databuf.m_critSec.Unlock();
+
+				ParserCmdOutput(c);
+
+				m_Databuf.m_critSec.Lock();
 			}
 
 			if(m_BufStart>1000)
@@ -363,6 +368,11 @@ void CProgressDlg::ParserCmdOutput(char ch)
 {
 	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogTextA,ch,&this->m_CurrentWork);
 }
+void CProgressDlg::ClearESC(CStringA &str)
+{
+	int start=0;
+	str.Replace("\033[K","");
+}
 void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CStringA &oneline, char ch, CWnd *CurrentWork)
 {
 	//TRACE(_T("%c"),ch);
@@ -372,6 +382,8 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 	{
 		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
 		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
+
+		ClearESC(oneline);
 
 		int lines=log.GetLineCount();
 		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
