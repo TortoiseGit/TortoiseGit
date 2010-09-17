@@ -296,11 +296,12 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 
 	// add all directories to the watcher
+	/*
 	for (int i=0; i<m_pathList.GetCount(); ++i)
 	{
 		if (m_pathList[i].IsDirectory())
 			m_pathwatcher.AddPath(m_pathList[i]);
-	}
+	}*/
 
 	m_updatedPathList = m_pathList;
 
@@ -853,6 +854,8 @@ UINT CCommitDlg::StatusThread()
 	InterlockedExchange(&m_bThreadRunning, TRUE);// so the main thread knows that this thread is still running
 	InterlockedExchange(&m_bRunThread, TRUE);	// if this is set to FALSE, the thread should stop
 	
+	m_pathwatcher.Stop();
+
 	g_Git.RefreshGitIndex();
 
 	m_bCancelled = false;
