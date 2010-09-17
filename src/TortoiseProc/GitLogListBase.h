@@ -250,6 +250,9 @@ public:
 	CWinThread*			m_LoadingThread;
 	MAP_HASH_NAME		m_HashMap;
 
+public:
+	CString				m_ColumnRegKey;
+
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
@@ -316,7 +319,6 @@ protected:
 
 	CString				m_StartRef; //Ref of the top-commit
 	
-	CString				m_ColumnRegKey;
 
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE

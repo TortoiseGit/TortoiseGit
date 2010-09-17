@@ -97,6 +97,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_LogList.m_IsIDReplaceAction=TRUE;
 	m_LogList.DeleteAllItems();
+	m_LogList.m_ColumnRegKey=_T("Blame");
 	m_LogList.InsertGitColumn();
 
 

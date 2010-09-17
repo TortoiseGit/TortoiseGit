@@ -626,6 +626,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	m_ctrlTabCtrl.InsertTab(&m_InLogList,_T("In Commits"),-1);
 
+	m_InLogList.m_ColumnRegKey=_T("SyncIn");
 	m_InLogList.InsertGitColumn();
 
 	//----------- Create In Change file list -----------
@@ -672,7 +673,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	m_ctrlTabCtrl.InsertTab(&m_OutLogList,_T("Out Commits"),-1);
 	
-
+	m_OutLogList.m_ColumnRegKey = _T("SyncOut");
 	m_OutLogList.InsertGitColumn();
 
 	//------------- Create Change File List Control ----------------

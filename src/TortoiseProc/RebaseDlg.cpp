@@ -181,7 +181,8 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 	}
-
+	
+	m_CommitList.m_ColumnRegKey = _T("Rebase");
 	m_CommitList.m_IsIDReplaceAction = TRUE;
 //	m_CommitList.m_IsOldFirst = TRUE;
 	m_CommitList.m_IsRebaseReplaceGraph = TRUE;
