@@ -122,52 +122,6 @@ int CLogDataVector::ParserShortLog(CTGitPath *path ,CString &hash,int count ,int
 	return 0;
 
 }
-int CLogDataVector::FetchShortLog(CTGitPath *path ,CString &hash,int count ,int mask, int ShowWC )
-{
-	//BYTE_VECTOR log;
-	m_RawlogData.clear();
-	m_RawLogStart.clear();
-
-	GitRev rev;
-	
-	if(g_Git.IsInitRepos())
-		return 0;
-
-	CString begin;
-	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
-
-	//g_Git.GetShortLog(log,path,count);
-	ULONGLONG  t1,t2;
-	t1=GetTickCount();
-	g_Git.GetLog(m_RawlogData, hash,path,count,mask);
-	t2=GetTickCount();
-
-	TRACE(_T("GetLog Time %ld\r\n"),t2-t1);
-
-	if(m_RawlogData.size()==0)
-		return 0;
-	
-	int start=4;
-	int length;
-	int next =0;
-	t1=GetTickCount();
-	int a1=0,b1=0;
-
-	while( next>=0 && next<m_RawlogData.size())
-	{
-		static const BYTE dataToFind[]={0,0};
-		m_RawLogStart.push_back(next);
-		//this->at(i).m_Subject=_T("parser...");
-		next=m_RawlogData.findData(dataToFind,2,next+1);
-		//next=log.find(0,next);
-	}
-
-	resize(m_RawLogStart.size() + ShowWC);
-
-	t2=GetTickCount();
-
-	return 0;
-}
 int CLogDataVector::FetchFullInfo(int i)
 {
 	return GetGitRevAt(i).SafeFetchFullInfo(&g_Git);
@@ -175,41 +129,65 @@ int CLogDataVector::FetchFullInfo(int i)
 //CLogDataVector Class
 int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CString *from,CString *to)
 {
-	BYTE_VECTOR log;
-	GitRev rev;
-	CString emptyhash;
-	this->m_pLogCache->ClearAllParent();
+	CString hash;
+	CString cmd=g_Git.GetLogCmd(hash,path,count,infomask,from,to,true);
 
-	g_Git.GetLog(log,emptyhash,path,count,infomask,from,to);
-
-	CString begin;
-	begin.Format(_T("#<%c>"),LOG_REV_ITEM_BEGIN);
-	
-	if(log.size()==0)
+	if(g_Git.IsInitRepos())
 		return 0;
-	
-	int start=4;
-	int length;
-	int next =0;
-	while( next>=0 )
+
+	git_init();
+
+	GIT_LOG handle;
+	if(git_open_log(&handle,CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
 	{
-		next=rev.ParserFromLog(log,next);
+		return -1;
+	}
 
-		if(this->m_pLogCache->m_HashMap.IsExist(rev.m_CommitHash))
+	git_get_log_firstcommit(handle);
+		
+	GIT_COMMIT commit;
+	
+	GitRev rev;
+
+	while( git_get_log_nextcommit(handle,&commit) == 0)
+	{
+	
+		CGitHash hash = (char*)commit.m_hash ;
+		rev.Clear();
+
+		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
+
+		char *note=NULL;
+		git_get_notes(commit.m_hash,&note);
+		if(note)
 		{
-			if(!this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull)
-			{
-				this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
-			}
+			pRev->m_Notes.Empty();
+			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
+		}
+
+		if(pRev == NULL || !pRev->m_IsFull)
+		{
+			pRev->ParserFromCommit(&commit);
+			pRev->ParserParentFromCommit(&commit);
+			git_free_commit(&commit);
+			//Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log. 
+			//file list will wrong if parent rewrite.
+			pRev->SafeFetchFullInfo(&g_Git);
+
 		}else
-			this->m_pLogCache->m_HashMap[rev.m_CommitHash].CopyFrom(rev);
-
-		this->m_pLogCache->m_HashMap[rev.m_CommitHash].m_IsFull=true;
-
-		this->push_back(rev.m_CommitHash);
+		{
+			ASSERT(pRev->m_CommitHash == hash);
+			pRev->ParserParentFromCommit(&commit);
+			git_free_commit(&commit);
+		}
+		
+		this->push_back(pRev->m_CommitHash);
 
 		m_HashMap[rev.m_CommitHash]=size()-1;		
+
 	}
+		
+	git_close_log(handle);
 
 	return 0;
 }
