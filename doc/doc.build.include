@@ -12,7 +12,7 @@ You can override these settings by defining them on the command line or by
 defining them in doc.build.user which is included here if it exists.
 
 Example content of doc.build.user:
-<property name="applications" value="TortoiseGit" />
+<property name="applications" value="TortoiseGit, TortoiseMerge" />
 <property name="docformats" value="chm" />
 <property name="languages" value="en" />
 
