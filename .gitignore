@@ -5,10 +5,16 @@ obj
 *.suo
 *.chm
 *.aps
+*.log
+*.cd
+*.zip
+*.diff
+*.patch
 ext/scintilla/vcbuild/Release
 IBugTraqProvider_?.?
 /Tools
 /doc/output
+/doc/source/*.h
 /src/[Rr]elease
 /src/[Dd]ebug
 /src/*/[Rr]elease
