@@ -165,12 +165,10 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
-		int ver = CAppUtils::GetMsysgitVersion();
-		
-		if(ver >= 0x01070203) //above 1.7.0.2
+		if(m_Gitverion >= 0x01070203) //above 1.7.0.2
 			force += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull %s \"%s\" %s"),
+		cmd.Format(_T("git.exe pull -v %s \"%s\" %s"),
 				force,
 				m_strURL,
 				remotebranch);
@@ -210,12 +208,10 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
 		}
 
-		int ver = CAppUtils::GetMsysgitVersion();
-		
-		if(ver >= 0x01070203) //above 1.7.0.2
+		if(m_Gitverion >= 0x01070203) //above 1.7.0.2
 			force += _T("--progress ");
 
-		cmd.Format(_T("git.exe fetch %s \"%s\" %s"),
+		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),
 				force,
 				m_strURL,
 				remotebranch);
@@ -412,12 +408,10 @@ void CSyncDlg::OnBnClickedButtonPush()
 	if(this->m_bForce)
 		arg += _T(" --force ");
 
-	int ver = CAppUtils::GetMsysgitVersion();
-		
-	if(ver >= 0x01070203) //above 1.7.0.2
+	if(m_Gitverion >= 0x01070203) //above 1.7.0.2
 		arg += _T("--progress ");
 
-	cmd.Format(_T("git.exe push %s \"%s\" %s"),
+	cmd.Format(_T("git.exe push -v %s \"%s\" %s"),
 				arg,
 				m_strURL,
 				m_strLocalBranch);
@@ -790,6 +784,8 @@ BOOL CSyncDlg::OnInitDialog()
 
 	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
 	m_ctrlURL.m_bWantReturn = TRUE;
+
+	this->m_Gitverion = CAppUtils::GetMsysgitVersion();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

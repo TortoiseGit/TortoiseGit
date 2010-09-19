@@ -168,6 +168,7 @@ public:
 	BOOL m_bAutoLoadPuttyKey;
 	BOOL m_bForce;
 	CString m_strURL;
+	int  m_Gitverion;
 
 	static UINT ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
 	UINT		ProgressThread();
