@@ -306,6 +306,8 @@ public:
 class CGitIgnoreItem
 {
 public:
+	SharedMutex  m_SharedMutex;
+
 	CGitIgnoreItem()
 	{
 		m_LastModifyTime =0;
@@ -327,7 +329,7 @@ class CGitIgnoreList
 {
 private:
 	bool CheckFileChanged(CString &path);
-	
+	int	 FetchIgnoreFile(CString &gitdir, CString &gitignore);
 	
 	int  CheckIgnore(CString &path,CString &root);
 
