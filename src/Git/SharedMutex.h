@@ -41,12 +41,20 @@ public:
     ~SharedMutex();
 
     // 获取共享访问权
+#ifdef DEBUG
     bool AcquireShared(DWORD waitTime = INFINITE);
+#else
+	bool AcquireShared(DWORD waitTime = 500);
+#endif
     // 释放共享访问权
     void ReleaseShared();
 
     // 获取独占访问权
+#ifdef DEBUG
     bool AcquireExclusive(DWORD waitTime = INFINITE);
+#else
+	bool AcquireExclusive(DWORD waitTime = 500);
+#endif
     // 释放独占访问权
     void ReleaseExclusive();
 };
