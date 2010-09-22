@@ -42,6 +42,7 @@ protected:
 	GIT_DIFF m_GitDiff;
 public:
 	CComCriticalSection			m_critGitDllSec;
+	bool	m_IsUseGitDLL;
 
 	CEnvironment m_Environment;
 

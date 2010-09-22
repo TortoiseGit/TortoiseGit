@@ -153,4 +153,8 @@ GITDLL_API int git_get_notes(GIT_HASH hash, char **p_note);
 
 GITDLL_API int git_run_cmd(char *cmd, char *arg);
 
+typedef int each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data);
+GITDLL_API int git_head_ref(each_ref_fn, void *);
+GITDLL_API int git_for_each_ref_in(const char *, each_ref_fn, void *);
+
 #endif

@@ -527,7 +527,7 @@ void ColumnManager::UpdateRelevance
 
 bool ColumnManager::AnyUnusedProperties() const
 {
-    return columns.size() < userProps.size() + SVNSLC_NUMCOLUMNS;
+    return columns.size() < userProps.size() + itemName.size();
 }
 
 void ColumnManager::RemoveUnusedProps()
@@ -683,7 +683,7 @@ void ColumnManager::ParseWidths (const CString& widths)
     for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
     {
 		long width = _tcstol (widths.Mid (i*8, 8), NULL, 16);
-        if (i < SVNSLC_NUMCOLUMNS)
+        if (i < itemName.size())
         {
             // a standard column
 
@@ -732,7 +732,7 @@ void ColumnManager::ParseColumnOrder
     for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
     {
 		int index = _tcstol (widths.Mid (i*2, 2), NULL, 16);
-        if (   (index < SVNSLC_NUMCOLUMNS)
+        if (   (index < itemName.size())
             || ((index >= SVNSLC_USERPROPCOLOFFSET) && (index < limit)))
         {
             alreadyPlaced.insert (index);
@@ -742,7 +742,7 @@ void ColumnManager::ParseColumnOrder
 
     // place the remaining colums behind it
 
-    for (int i = 0; i < SVNSLC_NUMCOLUMNS; ++i)
+    for (int i = 0; i < itemName.size(); ++i)
         if (alreadyPlaced.find (i) == alreadyPlaced.end())
             columnOrder.push_back (i);
 
@@ -811,7 +811,7 @@ void ColumnManager::ApplyColumnOrder()
 DWORD ColumnManager::GetSelectedStandardColumns() const
 {
     DWORD result = 0;
-    for (size_t i = SVNSLC_NUMCOLUMNS; i > 0; --i)
+    for (size_t i = itemName.size(); i > 0; --i)
         result = result * 2 + (columns[i-1].visible ? 1 : 0);
 
     return result;
@@ -849,7 +849,7 @@ CString ColumnManager::GetWidthString() const
     // regular columns
 
 	TCHAR buf[10];
-    for (size_t i = 0; i < SVNSLC_NUMCOLUMNS; ++i)
+    for (size_t i = 0; i < itemName.size(); ++i)
 	{
 		_stprintf_s (buf, 10, _T("%08X"), columns[i].width);
 		result += buf;
@@ -857,7 +857,7 @@ CString ColumnManager::GetWidthString() const
 
     // range with no column IDs
 
-    result += CString ('0', 8 * (SVNSLC_USERPROPCOLOFFSET - SVNSLC_NUMCOLUMNS));
+    result += CString ('0', 8 * (SVNSLC_USERPROPCOLOFFSET - itemName.size()));
 
     // user-prop columns
 

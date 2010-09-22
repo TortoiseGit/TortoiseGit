@@ -125,6 +125,7 @@ CGit::CGit(void)
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
+	m_IsUseGitDLL = true;
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
@@ -710,22 +711,39 @@ int CGit::GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outputlis
 
 }
 
+int addto_list_each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data)
+{
+	STRING_VECTOR *list = (STRING_VECTOR*)cb_data;
+	CString str;
+	g_Git.StringAppend(&str,(BYTE*)refname,CP_ACP);
+	list->push_back(str);
+	return 0;
+}
+
 int CGit::GetTagList(STRING_VECTOR &list)
 {
 	int ret;
-	CString cmd,output;
-	cmd=_T("git.exe tag -l");
-	int i=0;
-	ret=g_Git.Run(cmd,&output,CP_UTF8);
-	if(!ret)
-	{		
-		int pos=0;
-		CString one;
-		while( pos>=0 )
-		{
-			i++;
-			one=output.Tokenize(_T("\n"),pos);
-			list.push_back(one);
+
+	if(this->m_IsUseGitDLL)
+	{
+		return git_for_each_ref_in("refs/tags/",addto_list_each_ref_fn, &list);
+
+	}else
+	{
+		CString cmd,output;
+		cmd=_T("git.exe tag -l");
+		int i=0;
+		ret=g_Git.Run(cmd,&output,CP_UTF8);
+		if(!ret)
+		{		
+			int pos=0;
+			CString one;
+			while( pos>=0 )
+			{
+				i++;
+				one=output.Tokenize(_T("\n"),pos);
+				list.push_back(one);
+			}
 		}
 	}
 	return ret;
@@ -797,50 +815,76 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 int CGit::GetRefList(STRING_VECTOR &list)
 {
 	int ret;
-	CString cmd,output;
-	cmd=_T("git show-ref -d");
-	ret=g_Git.Run(cmd,&output,CP_UTF8);
-	if(!ret)
+	if(this->m_IsUseGitDLL)
 	{
-		int pos=0;
-		CString one;
-		while( pos>=0 )
+		return git_for_each_ref_in("",addto_list_each_ref_fn, &list);
+
+	}else
+	{
+		CString cmd,output;
+		cmd=_T("git.exe show-ref -d");
+		ret=g_Git.Run(cmd,&output,CP_UTF8);
+		if(!ret)
 		{
-			one=output.Tokenize(_T("\n"),pos);
-			int start=one.Find(_T(" "),0);
-			if(start>0)
+			int pos=0;
+			CString one;
+			while( pos>=0 )
 			{
-				CString name;
-				name=one.Right(one.GetLength()-start-1);
-				list.push_back(name);
+				one=output.Tokenize(_T("\n"),pos);
+				int start=one.Find(_T(" "),0);
+				if(start>0)
+				{
+					CString name;
+					name=one.Right(one.GetLength()-start-1);
+					list.push_back(name);
+				}
 			}
 		}
 	}
 	return ret;
 }
+
+int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data)
+{
+	MAP_HASH_NAME *map = (MAP_HASH_NAME*)cb_data;
+	CString str;
+	g_Git.StringAppend(&str,(BYTE*)refname,CP_ACP);
+	CGitHash hash((char*)sha1);
+	
+	(*map)[hash].push_back(str);
+	return 0;
+}
+
 int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
 	int ret;
-	CString cmd,output;
-	cmd=_T("git show-ref -d");
-	ret=g_Git.Run(cmd,&output,CP_UTF8);
-	if(!ret)
+	if(this->m_IsUseGitDLL)
 	{
-		int pos=0;
-		CString one;
-		while( pos>=0 )
+		return git_for_each_ref_in("",addto_map_each_ref_fn, &map);
+
+	}else
+	{
+		CString cmd,output;
+		cmd=_T("git.exe show-ref -d");
+		ret=g_Git.Run(cmd,&output,CP_UTF8);
+		if(!ret)
 		{
-			one=output.Tokenize(_T("\n"),pos);
-			int start=one.Find(_T(" "),0);
-			if(start>0)
+			int pos=0;
+			CString one;
+			while( pos>=0 )
 			{
-				CString name;
-				name=one.Right(one.GetLength()-start-1);
+				one=output.Tokenize(_T("\n"),pos);
+				int start=one.Find(_T(" "),0);
+				if(start>0)
+				{
+					CString name;
+					name=one.Right(one.GetLength()-start-1);
 
-				CString hash;
-				hash=one.Left(start);
+					CString hash;
+					hash=one.Left(start);
 
-				map[hash].push_back(name);
+					map[CGitHash(hash)].push_back(name);
+				}
 			}
 		}
 	}

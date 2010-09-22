@@ -1,4 +1,5 @@
 #pragma once
+#include "GitHash.h"
 
 enum
 {
@@ -103,6 +104,6 @@ public:
 	}
 };
 typedef std::vector<CString> STRING_VECTOR;
-typedef std::map<CString, STRING_VECTOR> MAP_HASH_NAME;
+typedef std::map<CGitHash, STRING_VECTOR> MAP_HASH_NAME;
 typedef CGitByteArray BYTE_VECTOR;
 
