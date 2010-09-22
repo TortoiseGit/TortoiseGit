@@ -125,7 +125,7 @@ CGit::CGit(void)
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
-	m_IsUseGitDLL = true;
+	m_IsUseGitDLL = CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
@@ -360,14 +360,30 @@ CString CGit::GetCurrentBranch(void)
 CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHeads)
 {
 	CString refName;
-	CString cmd;
-	cmd.Format(L"git symbolic-ref %s", symbolicRefName);
-	if(Run(cmd, &refName, CP_UTF8) != 0)
-		return CString();//Error
-	int iStart = 0;
-	refName = refName.Tokenize(L"\n", iStart);
-	if(bStripRefsHeads)
-		refName = StripRefName(refName);
+	if(this->m_IsUseGitDLL)
+	{
+		unsigned char sha1[20];
+		int flag;
+
+		const char *refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(symbolicRefName), sha1, 0, &flag);
+		if(refs_heads_master && (flag&REF_ISSYMREF))
+		{
+			g_Git.StringAppend(&refName,(BYTE*)refs_heads_master);
+			if(bStripRefsHeads)
+				refName = StripRefName(refName);
+		}
+
+	}else
+	{
+		CString cmd;
+		cmd.Format(L"git symbolic-ref %s", symbolicRefName);
+		if(Run(cmd, &refName, CP_UTF8) != 0)
+			return CString();//Error
+		int iStart = 0;
+		refName = refName.Tokenize(L"\n", iStart);
+		if(bStripRefsHeads)
+			refName = StripRefName(refName);
+	}
 	return refName;
 }
 

@@ -836,3 +836,8 @@ int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
 {
 	return for_each_ref_in(refname, fn, data);
 }
+
+const char *git_resolve_ref(const char *ref, unsigned char *sha1, int reading, int *flag)
+{
+	return resolve_ref(ref,sha1,reading, flag);
+}
