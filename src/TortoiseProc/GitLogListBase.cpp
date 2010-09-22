@@ -1014,20 +1014,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{
 					CRect rect;
-					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
-					if(pLVCD->iSubItem == 0)
-					{
-						CRect second;
-						for(int i=1;i< m_ColumnManager.GetColumnCount();i++)
-						{
-							if( m_ColumnManager.IsVisible(i))
-							{
-								GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem+i, LVIR_BOUNDS, second);
-								rect.right=second.left;
-							}
-						}
-					}
-					
+					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_LABEL, rect);
+										
 					//TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
 					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 					
