@@ -55,8 +55,9 @@ BOOL CRefLogDlg::OnInitDialog()
 	this->EnableSaveRestore(_T("RefLogDlg"));
 
 	STRING_VECTOR list;
+	list.push_back(_T("HEAD"));
 	g_Git.GetRefList(list);
-
+	
 	if(this->m_CurrentBranch.IsEmpty())
 	{
 		m_CurrentBranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
@@ -69,14 +70,7 @@ BOOL CRefLogDlg::OnInitDialog()
 	this->m_RefList.InsertRefLogColumn();
 	//m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
 	
-	for(int i=0;i<list.size();i++)
-	{
-		if(list[i] == m_CurrentBranch)
-		{
-			m_ChooseRef.SetCurSel(i);
-			break;
-		}
-	}
+	m_ChooseRef.SetCurSel(0); /* Choose HEAD */
 
 	OnCbnSelchangeRef();
 

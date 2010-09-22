@@ -16,27 +16,37 @@ void CRefLogList::InsertRefLogColumn()
 {
 	CString temp;
 
-	int c = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	
-	while (c>=0)
-		DeleteColumn(c--);
-	
-	temp=_T("Hash");
-	InsertColumn(REFLOG_HASH, temp);
-	
-	temp=_T("Ref");
-	InsertColumn(REFLOG_REF, temp);
-	
-	temp=_T("Action");
-	InsertColumn(REFLOG_ACTION, temp);
-	
-	temp=_T("Message");
-	InsertColumn(REFLOG_MESSAGE, temp);
+	CRegDWORD regFullRowSelect(_T("Software\\TortoiseGit\\FullRowSelect"), TRUE);
+	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
+	if (DWORD(regFullRowSelect))
+		exStyle |= LVS_EX_FULLROWSELECT;
+	SetExtendedStyle(exStyle);
 
+	static UINT normal[] =
+	{
+		IDS_HASH,
+		IDS_REF,
+		IDS_ACTION,
+		IDS_MESSAGE,
+	};
 
+	static int with[] =
+	{
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		ICONITEMBORDER+16*4,
+		LOGLIST_MESSAGE_MIN,
+	};
+	m_dwDefaultColumns = 0xFFFF;
+
+	
 	SetRedraw(false);
-	ResizeAllListCtrlCols();
+
+	m_ColumnManager.SetNames(normal, sizeof(normal)/sizeof(UINT));
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
+	
 	SetRedraw(true);
+
 }
 
 void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)

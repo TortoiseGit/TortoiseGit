@@ -192,42 +192,76 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	return 0;
 }
 
+int AddTolist(unsigned char *osha1, unsigned char *nsha1, const char * name, unsigned long time, int sz, const char *msg, void *data)
+{
+	CLogDataVector *vector = (CLogDataVector*)data;
+	GitRev rev;
+	rev.m_CommitHash=(char*)nsha1;
+
+	CString one;
+	g_Git.StringAppend(&one, (BYTE *)msg);
+
+	int message=one.Find(_T(":"),0);
+	if(message>0)
+	{
+		rev.m_RefAction=one.Left(message);
+		rev.m_Subject=one.Mid(message+1);
+	}
+
+	vector->m_pLogCache->m_HashMap[rev.m_CommitHash]=rev;
+	vector->insert(vector->begin(),rev.m_CommitHash);
+
+	return 0;
+}
+
 int CLogDataVector::ParserFromRefLog(CString ref)
 {
-	CString cmd,out;
-	GitRev rev;
-	cmd.Format(_T("git.exe reflog show %s"),ref);
-	if(g_Git.Run(cmd,&out,CP_UTF8))
-		return -1;
-	
-	int pos=0;
-	while(pos>=0)
+	if(g_Git.m_IsUseGitDLL)
 	{
-		CString one=out.Tokenize(_T("\n"),pos);
-		int ref=one.Find(_T(' '),0);
-		if(ref<0)
-			continue;
-
-		rev.Clear();
-
-		rev.m_CommitHash=g_Git.GetHash(one.Left(ref));
-		int action=one.Find(_T(' '),ref+1);
-		int message;
-		if(action>0)
+		int ret = git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref),AddTolist,this);
+		for(int i=0;i<size();i++)
 		{
-			rev.m_Ref=one.Mid(ref+1,action-ref-2);
-			message=one.Find(_T(":"),action);
-			if(message>0)
-			{
-				rev.m_RefAction=one.Mid(action+1,message-action-1);
-				rev.m_Subject=one.Right(one.GetLength()-message-1);
-			}
+			m_pLogCache->m_HashMap[at(i)].m_Ref.Format(_T("%s{%d}"), ref,i);
 		}
 
-		this->m_pLogCache->m_HashMap[rev.m_CommitHash]=rev;
+	}else
+	{
 
-		this->push_back(rev.m_CommitHash);
+		CString cmd,out;
+		GitRev rev;
+		cmd.Format(_T("git.exe reflog show %s"),ref);
+		if(g_Git.Run(cmd,&out,CP_UTF8))
+			return -1;
 
+		int pos=0;
+		while(pos>=0)
+		{
+			CString one=out.Tokenize(_T("\n"),pos);
+			int ref=one.Find(_T(' '),0);
+			if(ref<0)
+				continue;
+
+			rev.Clear();
+
+			rev.m_CommitHash=g_Git.GetHash(one.Left(ref));
+			int action=one.Find(_T(' '),ref+1);
+			int message;
+			if(action>0)
+			{
+				rev.m_Ref=one.Mid(ref+1,action-ref-2);
+				message=one.Find(_T(":"),action);
+				if(message>0)
+				{
+					rev.m_RefAction=one.Mid(action+1,message-action-1);
+					rev.m_Subject=one.Right(one.GetLength()-message-1);
+				}
+			}
+
+			this->m_pLogCache->m_HashMap[rev.m_CommitHash]=rev;
+
+			this->push_back(rev.m_CommitHash);
+
+		}
 	}
 	return 0;
 }

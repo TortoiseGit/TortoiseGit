@@ -841,3 +841,7 @@ const char *git_resolve_ref(const char *ref, unsigned char *sha1, int reading, i
 {
 	return resolve_ref(ref,sha1,reading, flag);
 }
+int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
+{
+	return for_each_reflog_ent(ref,fn,cb_data);
+}
