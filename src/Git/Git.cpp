@@ -365,7 +365,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 		unsigned char sha1[20];
 		int flag;
 
-		const char *refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(symbolicRefName), sha1, 0, &flag);
+		const char *refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(CString(symbolicRefName)), sha1, 0, &flag);
 		if(refs_heads_master && (flag&REF_ISSYMREF))
 		{
 			g_Git.StringAppend(&refName,(BYTE*)refs_heads_master);
