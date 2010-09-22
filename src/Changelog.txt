@@ -1,3 +1,35 @@
+= Release 1.5.5.0 =
+== Features ==
+ * Support msysgit 1.7.2.3
+
+ * Upgrade gitdll.dll to 1.7.2.3
+   Use gitdll to fetch reflog, branch, tag information.
+
+ * Enhance Column manage for commit list.
+   At log, rebase, sync dialog, reflog, blame. User can customize column position. User can show\hide column. Add commiter date, commiter name, email.
+
+ * BrowseRefs: Put focus on a tree node after a branch is deleted.s
+ 
+ * Add Note Support
+
+ * Icon Overlay (TGitCache)
+   Add RW Lock to reduce tgitcache crash.
+
+ * SyncDlg: Log output is now in Courier font. This way characters are aligned like in the console.
+
+
+== Bug Fix ==
+ * Fixed issue #535: Wandering label when drag top of progress dialog
+ * Fixed issue #478: Fix Blame timing because it shows wrong date and 00000.... commit hash
+ * Fix outlook can't get correct attachment send by TortoiseGit-1.5.3.0-32bit.msi
+ * Fixed issue #537: Glitch at "merge to the right" in graph display at log dialog
+ * Fixed issue #546: Exporting without specifying a zip filename sends all zip output to stdout and confuses the GUI
+ * Fixed issue #545: Switch/Checkout Dialog: Checkbox "Create New Branch" not responding
+ * Fixed issue #160: Browse Refs dialog: Parameter is incorrect.
+ * Fix Sync dialog crash when using msysgit 1.7.2.3
+ * Fixed issue #191: No Progress Indicator making one believe a hang or some failure.
+
+
 = Release 1.5.3.0 =
 == Features ==
  * Add pre and post push hook support
