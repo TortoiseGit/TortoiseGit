@@ -337,7 +337,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	//now we got all the lines of the patch file
 	//in our array - parsing can start...
 
-	for(nIndex=0;PatchLines.GetCount();nIndex++)
+	for(nIndex=0;nIndex<PatchLines.GetCount();nIndex++)
 	{
 		sLine = PatchLines.GetAt(nIndex);
 		if(sLine.Left(10).Compare(_T("diff --git")) == 0)
