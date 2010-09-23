@@ -31,6 +31,55 @@ int CGitDiff::Parser(git_revnum_t &rev)
 	}
 	return 0;
 }
+
+int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
+{
+	CString oldhash = GIT_REV_ZERO;
+	CString oldsub ;
+	CString newsub;
+	CString newhash;
+	CString workingcopy;
+
+	CString cmd;
+	cmd.Format(_T("git.exe ls-tree  HEAD -- \"%s\""), pPath->GetGitPathString());
+	CString output;
+	if(g_Git.Run(cmd,&output,CP_ACP))
+	{
+		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		return -1;
+	}
+	
+	int start=0;
+	start=output.Find(_T(' '),start);
+	if(start>0)
+	{
+		start=output.Find(_T(' '),start+1);
+		if(start>0)
+			newhash=output.Mid(start+1, 40);
+
+		CGit subgit; 
+		subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+		int encode=CAppUtils::GetLogOutputEncode(&subgit);
+
+		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s"),newhash);
+		subgit.Run(cmd,&newsub,encode);
+		
+		CString msg;
+		msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
+			   pPath->GetWinPath(),
+			   oldhash,
+			   oldsub ,
+			   workingcopy,
+			   newhash,
+			   newsub);
+		CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
+		return 0;
+	}
+
+	CMessageBox::Show(NULL,_T("ls-tree output format error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+	return -1;
+}
+
 int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd)
 {
 	CString temppath;
@@ -39,6 +88,13 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd)
 	CString file1;
 	CString nullfile;
 	CString cmd;
+
+	if(pPath->IsDirectory())
+	{
+		git_revnum_t rev2;
+		return SubmoduleDiffNull(pPath,rev1);
+	}
+
 	if(rev1 != GIT_REV_ZERO )
 	{
 		file1.Format(_T("%s%s_%s%s"),

@@ -4121,9 +4121,17 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					GitRev::GetHead());
 	}else
 	{
-		CGitDiff::Diff(&file1,&file2,
+		GitRev rev;
+		if(rev.GetCommit(m_CurrentVersion+_T("~1")))
+		{
+			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
+
+		}else
+		{
+			CGitDiff::Diff(&file1,&file2,
 			        m_CurrentVersion,
 					m_CurrentVersion+_T("~1"));
+		}
 	}
 #if 0
 	if (fileindex < 0)
