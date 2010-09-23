@@ -1848,10 +1848,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
 	{
 		GitRev rev;
-		BYTE_VECTOR vector;
-		CString head(_T("HEAD"));
-		g_Git.GetLog(vector,head,NULL,1);
-		rev.ParserFromLog(vector);
+		rev.GetCommit(CString(_T("HEAD")));
 		m_AmendStr=rev.m_Subject+_T("\n\n")+rev.m_Body;
 	}
 

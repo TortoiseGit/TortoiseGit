@@ -57,7 +57,8 @@ bool PrevDiffCommand::Execute()
 			CLogCache cache;
 			revs.m_pLogCache=&cache;
 			
-			revs.ParserShortLog(&cmdLinePath,hash,2);
+			revs.ParserFromLog(&cmdLinePath,2,CGit::LOG_INFO_ONLY_HASH);
+
 			if( revs.size() == 0)
 			{
 				CMessageBox::Show(hWndExplorer, IDS_ERR_NOPREVREVISION, IDS_APPNAME, MB_ICONERROR);

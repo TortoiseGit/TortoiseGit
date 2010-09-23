@@ -544,10 +544,10 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 	{
 		CString text=pBranch->GetString();
 		CString tooltip;
-		BYTE_VECTOR data;
-		g_Git.GetLog(data,text,NULL,1,0);
+		
 		GitRev rev;
-		rev.ParserFromLog(data);
+		rev.GetCommit(text);
+
 		tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
 			rev.m_CommitHash.ToString(),
 			rev.m_AuthorName,

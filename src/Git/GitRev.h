@@ -65,7 +65,7 @@ public:
 	BOOL IsBoundary(){return m_Mark == _T('-');}
 
 	void Clear();
-	int ParserFromLog(BYTE_VECTOR &log,int start=0);
+	//int ParserFromLog(BYTE_VECTOR &log,int start=0);
 	CTime ConverFromString(CString input);
 	inline int ParentsCount(){return m_ParentHash.size();}
 	

@@ -121,8 +121,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 		m_rev1.m_Subject=_T("Working Copy");
 	}else
 	{
-		g_Git.GetLog(logout,hash1,path,1,0);
-		m_rev1.ParserFromLog(logout);
+		m_rev1.GetCommit(hash1);
 	}
 
 	logout.clear();
@@ -133,8 +132,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 		m_rev2.m_Subject=_T("Working Copy");
 	}else
 	{
-		g_Git.GetLog(logout,hash2,path,1,0);
-		m_rev2.ParserFromLog(logout);
+		m_rev2.GetCommit(hash2);
 	}
 }
 void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
