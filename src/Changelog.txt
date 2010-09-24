@@ -3,6 +3,7 @@
  * Fixed issue #556: "bad revision" in log of "Submodule Add"
  * Fix "amend last commit" can't get last commit message.
  * Fix icons were just white when using 125% display magnification mode
+ * Fix ref is not updated when refresh at log dialog
 
 = Release 1.5.5.0 =
 == Features ==

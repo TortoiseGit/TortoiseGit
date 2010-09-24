@@ -2625,8 +2625,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 			id=-1;
 			if(this->m_NoListCommit.find(hash) == m_NoListCommit.end() )
 			{
-				g_Git.GetLog(vector,hash.ToString(),NULL,1);
-				this->m_NoListCommit[hash].ParserFromLog(vector);
+				this->m_NoListCommit[hash].GetCommitFromHash(hash);
 			}
 			
 		}
