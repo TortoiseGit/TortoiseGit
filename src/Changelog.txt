@@ -1,3 +1,9 @@
+= Release 1.5.6.0 =
+== Bug Fix ==
+ * Fixed issue #556: "bad revision" in log of "Submodule Add"
+ * Fix "amend last commit" can't get last commit message.
+ * Fix icons were just white when using 125% display magnification mode
+
 = Release 1.5.5.0 =
 == Features ==
  * Support msysgit 1.7.2.3
