@@ -834,11 +834,13 @@ static struct cmd_struct commands[] = {
 
 int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
 {
+	invalidate_cached_refs();
 	return for_each_ref_in(refname, fn, data);
 }
 
 const char *git_resolve_ref(const char *ref, unsigned char *sha1, int reading, int *flag)
 {
+	invalidate_cached_refs();
 	return resolve_ref(ref,sha1,reading, flag);
 }
 int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
