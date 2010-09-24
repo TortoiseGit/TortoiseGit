@@ -269,20 +269,14 @@ void CGitPropertyPage::InitWorkfileView()
 		}
 	}
 
+	TCHAR oldpath[MAX_PATH+1];
 
-	BYTE_VECTOR logout;
+	::GetCurrentDirectory(MAX_PATH, oldpath);
 
-	
-	cmd=_T("git.exe log -z --topo-order -n1 --parents --pretty=format:\"");
-	
-	git.BuildOutputFormat(log,true);
+	::SetCurrentDirectory(ProjectTopDir);
 
-	cmd += log;
-	cmd += CString(_T("\"  "));
-
-	git.Run(cmd,&logout);
 	GitRev rev;
-	rev.ParserFromLog(logout);
+		
 
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username);
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail);
@@ -292,50 +286,74 @@ void CGitPropertyPage::InitWorkfileView()
 	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch);
 	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH,remotebranch);
 
-	SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash.ToString());
-	SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.m_Subject);
-	SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.m_AuthorName);
-	SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
-
-	if (filenames.size() == 1)
+	try
 	{
-		CTGitPath path(filenames.front().c_str());
-		CTGitPath relatepath;
-		CString strpath=path.GetWinPathString();
-		CString ProjectTopDir;
-
-		if(!path.HasAdminDir(&ProjectTopDir))
-			return;
+		AutoLocker lock(g_Git.m_critGitDllSec);
+		g_Git.CheckAndInitDll();
+		rev.GetCommit(CString(_T("HEAD")));
 		
-		if(ProjectTopDir[ProjectTopDir.GetLength()-1] == _T('\\'))
+		SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash.ToString());
+		SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.m_Subject);
+		SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.m_AuthorName);
+		SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+
+		if (filenames.size() == 1)
 		{
-			relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()));
+			CTGitPath path(filenames.front().c_str());
+			CTGitPath relatepath;
+			CString strpath=path.GetWinPathString();
+			CString ProjectTopDir;
+
+			if(!path.HasAdminDir(&ProjectTopDir))
+				return;
+
+			if(ProjectTopDir[ProjectTopDir.GetLength()-1] == _T('\\'))
+			{
+				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()));
+			}else
+			{
+				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
+			}
+
+
+			if(! relatepath.GetGitPathString().IsEmpty())
+			{
+				cmd=_T("-z --topo-order -n1 --parents -- \"");
+				cmd+=relatepath.GetGitPathString();	
+				cmd+=_T("\"");
+
+				GIT_LOG handle;
+				do
+				{
+					if(git_open_log(&handle, CUnicodeUtils::GetUTF8(cmd).GetBuffer()))
+						break;
+					if(git_get_log_firstcommit(handle))
+						break;
+
+					GIT_COMMIT commit;
+					if(git_get_log_nextcommit(handle,&commit))
+						break;
+
+					git_close_log(handle);
+					rev.ParserFromCommit(&commit);
+					git_free_commit(&commit);
+
+				}while(0);
+			}
+
+			SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());
+			SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.m_Subject);
+			SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.m_AuthorName);
+			SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+
 		}else
 		{
-			relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
+
 		}
-
-		cmd+=_T("-- \"");
-		cmd+=relatepath.GetGitPathString();	
-		cmd+=_T("\"");
-
-		if(! relatepath.GetGitPathString().IsEmpty())
-		{
-			logout.clear();
-			git.Run(cmd,&logout);
-			rev.Clear();
-			rev.ParserFromLog(logout);
-		}
-
-		SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());
-		SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.m_Subject);
-		SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.m_AuthorName);
-		SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
-
-	}else
+	}catch(...)
 	{
-
 	}
+	::SetCurrentDirectory(oldpath);
 
 }
 
