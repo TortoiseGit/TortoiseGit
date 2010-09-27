@@ -1,9 +1,14 @@
+= Release 1.5.7.0 =
+== Bug Fix ==
+ * Fix progressdlg show mass data when clone
+
 = Release 1.5.6.0 =
 == Bug Fix ==
  * Fixed issue #556: "bad revision" in log of "Submodule Add"
  * Fix "amend last commit" can't get last commit message.
  * Fix icons were just white when using 125% display magnification mode
  * Fix ref is not updated when refresh at log dialog
+ * Fix Git property page information show wrong
 
 = Release 1.5.5.0 =
 == Features ==
