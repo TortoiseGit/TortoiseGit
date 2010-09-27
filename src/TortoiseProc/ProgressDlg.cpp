@@ -273,7 +273,6 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				char c = this->m_Databuf[m_BufStart];
 				m_BufStart++;
 				m_Databuf.m_critSec.Unlock();
-
 				ParserCmdOutput(c);
 
 				m_Databuf.m_critSec.Lock();
@@ -281,7 +280,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 			if(m_BufStart>1000)
 			{
-				m_Databuf.empty();
+				m_Databuf.erase(m_Databuf.begin(), m_Databuf.begin()+m_BufStart);
 				m_BufStart =0;
 			}
 			m_Databuf.m_critSec.Unlock();
@@ -368,25 +367,28 @@ void CProgressDlg::ParserCmdOutput(char ch)
 {
 	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogTextA,ch,&this->m_CurrentWork);
 }
-void CProgressDlg::ClearESC(CStringA &str)
+int CProgressDlg::ClearESC(CStringA &str)
 {
-	int start=0;
-	str.Replace("\033[K","");
+	return str.Replace("\033[K","");
 }
 void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CStringA &oneline, char ch, CWnd *CurrentWork)
 {
 	//TRACE(_T("%c"),ch);
-	TRACE(_T("%c"),ch);
-	CString str;
 	if( ch == ('\r') || ch == ('\n'))
 	{
-		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
-		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
+		CString str;
 
-		ClearESC(oneline);
-
+//		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
+//		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
+		
+		if(ClearESC(oneline))
+		{
+			ch = ('\r');
+		}
+		
 		int lines=log.GetLineCount();
 		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
+//		TRACE(_T("%s"), str);
 
 		if(ch == ('\r'))
 		{	
@@ -410,7 +412,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		}
 		log.LineScroll(log.GetLineCount() - log.GetFirstVisibleLine() - 4);
 
-		int s1=oneline.Find(_T(':'));
+		int s1=oneline.ReverseFind(_T(':'));
 		int s2=oneline.Find(_T('%'));
 		if(s1>0 && s2>0)
 		{
