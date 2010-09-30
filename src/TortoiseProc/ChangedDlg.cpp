@@ -157,7 +157,7 @@ UINT CChangedDlg::ChangedStatusThread()
 
 
 	CTGitPath commonDir = m_FileListCtrl.GetCommonDirectory(false);
-	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsDirectory()));
+	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
 		SetWindowText(m_sTitle + _T(" - ") + m_pathList[0].GetWinPathString());
 	else
@@ -167,8 +167,8 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_REFRESH, TRUE);
 	DialogEnableWindow(IDC_CHECKREPO, TRUE);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, !bSingleFile);
-	DialogEnableWindow(IDC_SHOWUNMODIFIED, !bSingleFile);
-	DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
+	//DialogEnableWindow(IDC_SHOWUNMODIFIED, !bSingleFile);
+	//DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
     DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
@@ -232,8 +232,20 @@ DWORD CChangedDlg::UpdateShowFlags()
 void CChangedDlg::OnBnClickedShowunversioned()
 {
 	UpdateData();
-	m_FileListCtrl.Show(UpdateShowFlags());
-	m_regAddBeforeCommit = m_bShowUnversioned;
+	if(m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_UNVER)
+	{
+		m_FileListCtrl.Show(UpdateShowFlags());
+		m_regAddBeforeCommit = m_bShowUnversioned;
+	}else
+	{
+		if(m_bShowUnversioned)
+		{
+			if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
+			{
+				CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			}
+		}
+	}
 	UpdateStatistics();
 }
 
