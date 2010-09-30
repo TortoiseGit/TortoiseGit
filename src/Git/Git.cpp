@@ -1383,9 +1383,23 @@ unsigned int CGit::Hash2int(CString &hash)
 
 int CGit::RefreshGitIndex()
 {
-	CString cmd,output;
-	cmd=_T("git.exe update-index --refresh");
-	return Run(cmd,&output,CP_ACP);
+	if(g_Git.m_IsUseGitDLL)
+	{
+		try
+		{
+			return git_run_cmd("update-index","update-index -q --refresh");
+			
+		}catch(...)
+		{
+			return -1;
+		}
+		
+	}else
+	{
+		CString cmd,output;
+		cmd=_T("git.exe update-index --refresh");
+		return Run(cmd,&output,CP_ACP);
+	}
 }
 
 void CEnvironment::CopyProcessEnvironment()
