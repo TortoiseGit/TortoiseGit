@@ -868,6 +868,16 @@ int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int fl
 	CGitHash hash((char*)sha1);
 	
 	(*map)[hash].push_back(str);
+
+	const char *hex = NULL;
+	if(strncmp(refname, "refs/tags", 9) == 0) 
+	{
+		GIT_HASH refhash;
+		if(!git_deref_tag(sha1, refhash))
+		{
+			(*map)[(char*)refhash].push_back(str);
+		}
+	}
 	return 0;
 }
 
