@@ -865,6 +865,5 @@ int git_deref_tag(unsigned char *tagsha1, GIT_HASH refhash)
 			return 0;
 	}
 
-	memcpy(refhash, tagsha1, sizeof(GIT_HASH));
-	return 0;
+	return -1;
 }

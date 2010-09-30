@@ -875,7 +875,7 @@ int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int fl
 		GIT_HASH refhash;
 		if(!git_deref_tag(sha1, refhash))
 		{
-			(*map)[(char*)refhash].push_back(str);
+			(*map)[(char*)refhash].push_back(str+_T("^{}"));
 		}
 	}
 	return 0;
