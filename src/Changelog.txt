@@ -1,3 +1,11 @@
+= Release 1.5.8.0 =
+== Bug Fix ==
+ * Fixed issue #571: missing annotated  tags display in log dialog
+ * Fix don't show tag info at log dialog 
+ * Fixed issue #570: Check for modifications dialog's controls not functioning correctly
+ * Fixed issue #573: Upgrading to 1.5.7.0 removes gitdll.dll
+ * Fixed issue #572: Commit dialog becomes unresponsive after hitting F5 to refresh
+
 = Release 1.5.7.0 =
 == Bug Fix ==
  * Fix progressdlg show mass data when clone
