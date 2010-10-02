@@ -675,7 +675,35 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	proc += key;
 	proc += _T("\"");
 
-    return LaunchApplication(proc, IDS_ERR_PAGEANT, false);
+	CString tempfile = GetTempFile();
+	::DeleteFile(tempfile);
+
+	proc +=_T(" -c \"");
+	proc += CPathUtils::GetAppDirectory();
+	proc += _T("touch.exe\"");
+	proc +=_T(" \"");
+	proc +=tempfile;
+	proc +=_T("\"");
+
+    bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true);
+	if(!b)
+		return b;
+
+	int i=0;
+	while(!::PathFileExists(tempfile))
+	{
+		Sleep(100);
+		i++;
+		if(i>10*60*5)
+			break; //timeout 5 minutes
+	}
+
+	if( i== 10*60*5)
+	{
+		CMessageBox::Show(NULL, _T("Fail wait for pageant finish load key"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+	}
+	::DeleteFile(tempfile);
+	return true;
 }
 bool CAppUtils::LaunchRemoteSetting()
 {

@@ -117,7 +117,7 @@
   <?define GuidFolderTypeCmd1="{13732517-1006-43ba-A895-9A4961C94DE1}"?>
   <?define GuidFolderTypeCmd2="{51826E14-2906-4e3b-9677-4DCF778C9E21}"?>
   <?define GuidFolderTypeCmd3="{0B9D41AB-361E-4a6f-B72E-D79C69C3A5E4}"?>
-  
+  <?define GuidTouch="{049D92F9-F0FD-4540-A250-0DF9A7BB86B0}"?>
 	<?else?>
 
 	<?define GuidInfoFiles="424219CC-2F91-49ad-B0EF-DB6A61575C99"?>
@@ -180,7 +180,7 @@
   <?define GuidFolderTypeCmd1="{A40D37EE-F8C1-42ec-AAAF-05BBD196CCD6}"?>
   <?define GuidFolderTypeCmd2="{3BC677A5-FBFE-4423-9836-457522019974}"?>
   <?define GuidFolderTypeCmd3="{65E9EE9F-A9D3-4EAC-82AD-448379A7E4BB}"?>
-  
+  <?define GuidTouch="{ABC9CE77-824F-40b4-AA07-6706E94AEFDD}"?>
 	<?endif?>
 
 </Include>

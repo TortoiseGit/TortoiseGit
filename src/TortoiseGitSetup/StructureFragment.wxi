@@ -432,6 +432,10 @@ out everything for now, leaving these enabled as they are would make the install
              <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libaprutil_tsvn.dll" />
           </Component>
 
+          <Component Id="C__touch" Guid="$(var.GuidTouch)" Win64="$(var.Win64YesNo)">
+            <File Id="F__touch" ShortName="touch.exe" Name="touch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\touch.exe" KeyPath="yes" />     
+          </Component>
+
 <!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
              <File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
               <File Id="F__saslANONYMOUS" ShortName="saslANON.DLL" Name="saslANONYMOUS.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslANONYMOUS.dll" />

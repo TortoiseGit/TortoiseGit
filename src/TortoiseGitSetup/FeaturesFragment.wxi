@@ -32,6 +32,7 @@
 			<ComponentRef Id="C__ProgramMenuFolder" />
 			<ComponentRef Id="C__Sounds" />
 			<ComponentRef Id="C__DiffScripts" />
+      <ComponentRef Id="C__touch"/>
 
 			<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden" >
 				<MergeRef Id="CRT" />
