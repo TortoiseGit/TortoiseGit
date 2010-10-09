@@ -22,6 +22,8 @@
 #include "MessageBox.h"
 #include "CommonResource.h"
 #include "git.h"
+
+#include "CreateRepoDlg.h"
 /**
  * \ingroup TortoiseProc
  * Creates a repository
@@ -34,20 +36,31 @@ public:
 	 */
 	virtual bool			Execute()
 	{
-		CGit git;
-		git.m_CurrentDir=this->orgCmdLinePath.GetWinPath();
-		CString output;
+		CCreateRepoDlg dlg;
+		if(dlg.DoModal()==IDOK)
+		{
+			CGit git;
+			git.m_CurrentDir=this->orgCmdLinePath.GetWinPath();
+			CString output;
+			int Ret;
 
-		if (git.Run(_T("git.exe init-db"),&output,CP_UTF8))
-		{
-			CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
-			return false;
+			if (dlg.m_bBare) Ret = git.Run(_T("git.exe init-db --bare"),&output,CP_UTF8);
+			else Ret = git.Run(_T("git.exe init-db"),&output,CP_UTF8);
+
+			if (output.IsEmpty()) output = _T("git.Run() had no output");
+
+			if (Ret)
+			{
+				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
+				return false;
+			}
+			else
+			{
+				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			}
+			return true;
 		}
-		else
-		{
-			CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-		}
-		return true;
+		return false;
 	}
 };
 

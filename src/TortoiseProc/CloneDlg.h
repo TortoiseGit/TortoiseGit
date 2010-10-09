@@ -46,6 +46,7 @@ public:
 	BOOL	m_bSVNFrom;
 	BOOL	m_bDepth;
 	BOOL	m_bSVNUserName;
+	BOOL	m_bBare;
 
 	int		m_nDepth;
 
@@ -66,6 +67,7 @@ public:
 	afx_msg void OnCbenEndeditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnCbnEditchangeUrlcombo();
 
+	afx_msg void OnBnClickedCheckBare();
 	afx_msg void OnBnClickedCheckSvn();
 	afx_msg void OnBnClickedCheckSvnTrunk();
 	afx_msg void OnBnClickedCheckSvnTag();

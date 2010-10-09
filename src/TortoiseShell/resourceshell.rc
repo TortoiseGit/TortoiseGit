@@ -196,7 +196,7 @@ BEGIN
     IDS_MENUCHECKOUT        "Switch/Chec&kout..."
     IDS_MENUUPDATE          "Submodule &Update"
     IDS_MENUCOMMIT          "&Commit..."
-    IDS_MENUCREATEREPOS     "Create repositor&y here"
+    IDS_MENUCREATEREPOS     "Create repositor&y here..."
     IDS_MENUADD             "&Add..."
     IDS_MENUREVERT          "Re&vert..."
     IDS_MENUCLEANUP         "&Clean up..."

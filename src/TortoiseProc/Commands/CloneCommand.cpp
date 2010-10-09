@@ -34,6 +34,12 @@ bool CloneCommand::Execute()
 	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
 	if(dlg.DoModal()==IDOK)
 	{
+		CString BareStr;
+		if(dlg.m_bBare)
+			BareStr = _T("--bare");
+		else
+			BareStr = _T("");
+
 		if(dlg.m_bAutoloadPuttyKeyFile)
 		{
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
@@ -69,7 +75,8 @@ bool CloneCommand::Execute()
 			progressarg = _T("--progress");
 
 	
-		cmd.Format(_T("git.exe clone %s -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone %s %s -v %s \"%s\" \"%s\""),
+						BareStr,
 						progressarg, 
 						depth,
 						url,

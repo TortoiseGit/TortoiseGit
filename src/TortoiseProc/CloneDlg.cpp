@@ -17,6 +17,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 {
     m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
 
+	m_bBare = FALSE;
 	m_bSVN = FALSE;
 	m_bSVNTrunk = FALSE;
 	m_bSVNTags = FALSE;
@@ -61,6 +62,7 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_USERNAME,m_strUserName);
 
 	DDX_Check(pDX, IDC_CHECK_DEPTH, m_bDepth);
+	DDX_Check(pDX, IDC_CHECK_BARE, m_bBare);
 	DDX_Text(pDX, IDC_EDIT_DEPTH,m_nDepth);
 
 }
@@ -141,6 +143,7 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_SVN_BRANCH, &CCloneDlg::OnBnClickedCheckSvnBranch)
 	ON_BN_CLICKED(IDC_CHECK_SVN_FROM, &CCloneDlg::OnBnClickedCheckSvnFrom)
 	ON_BN_CLICKED(IDC_CHECK_DEPTH, &CCloneDlg::OnBnClickedCheckDepth)
+	ON_BN_CLICKED(IDC_CHECK_BARE, &CCloneDlg::OnBnClickedCheckBare)
 	ON_BN_CLICKED(IDC_CHECK_USERNAME, &CCloneDlg::OnBnClickedCheckUsername)
 END_MESSAGE_MAP()
 
@@ -408,6 +411,10 @@ void CCloneDlg::OnBnClickedCheckSvnFrom()
 	this->GetDlgItem(IDC_EDIT_SVN_FROM)->EnableWindow(this->m_bSVNFrom&&this->m_bSVN);
 }
 
+void CCloneDlg::OnBnClickedCheckBare()
+{
+	UpdateData(TRUE);
+}
 void CCloneDlg::OnBnClickedCheckDepth()
 {
 	UpdateData(TRUE);
