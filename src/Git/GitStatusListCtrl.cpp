@@ -122,6 +122,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
     , m_ColumnManager(this)
     , m_bAscending(false)
     , m_nSortedColumn(-1)
+	, m_bHasExternalsFromDifferentRepos(false)
 	, m_sNoPropValueText(MAKEINTRESOURCE(IDS_STATUSLIST_NOPROPVALUE))
 {
 	m_FileLoaded=0;
