@@ -1424,7 +1424,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							subbranchmenu.SetMenuItemData(ID_SWITCHBRANCH+(i<<16), (ULONG_PTR) branchs[i]);
 						}
 						
-						popup.AppendMenu(MF_BYPOSITION|MF_POPUP|MF_STRING,(UINT) subbranchmenu.m_hMenu,str); 
+						popup.AppendMenuIcon(ID_SWITCHBRANCH, str, IDI_SWITCH, subbranchmenu.m_hMenu);
 
 					}
 					
@@ -1584,7 +1584,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							submenu.AppendMenuIcon(ID_DELETE+(i<<16),m_HashMap[pSelLogEntry->m_CommitHash][i]+_T("..."));
 						}
 
-						popup.AppendMenu(MF_BYPOSITION|MF_POPUP|MF_STRING,(UINT) submenu.m_hMenu,str); 
+						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu); 
 
 					}
 					

@@ -50,7 +50,7 @@ CIconMenu::~CIconMenu(void)
 	bitmaps.clear();
 }
 
-BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon /* = 0 */)
+BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon /* = 0 */,  HMENU hsubmenu)
 {
 	TCHAR menutextbuffer[255] = {0};
 	_tcscpy_s(menutextbuffer, 255, lpszNewItem);
@@ -62,6 +62,14 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 	info.cbSize = sizeof(info);
 	info.fMask = MIIM_STRING | MIIM_FTYPE | MIIM_ID;
 	info.fType = MFT_STRING;
+	
+	if(hsubmenu)
+	{
+		info.fMask |= MIIM_SUBMENU;
+		info.hSubMenu = hsubmenu;
+	}
+
+	
 	info.wID = nIDNewItem;
 	info.dwTypeData = menutextbuffer;
 	if (winVersion >= 0x600)
@@ -78,12 +86,12 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 	return InsertMenuItem(nIDNewItem, &info);
 }
 
-BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIcon /* = 0 */)
+BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIcon /* = 0 */,  HMENU hsubmenu)
 {
 	CString temp;
 	temp.LoadString(nNewItem);
 
-	return AppendMenuIcon(nIDNewItem, temp, uIcon);
+	return AppendMenuIcon(nIDNewItem, temp, uIcon, hsubmenu);
 }
 
 void CIconMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
