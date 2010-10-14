@@ -540,18 +540,18 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		if (rItem.state & LVIS_SELECTED)
 			txtState = LISS_SELECTED;
 
-		m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, data->m_Subject, -1, DT_LEFT | DT_SINGLELINE | DT_VCENTER, 0, &rt);
+		m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, data->m_Subject, -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER, 0, &rt);
 	}
 	else
 	{
 		if (rItem.state & LVIS_SELECTED)
 		{
 			COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
-			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 			::SetTextColor(hdc,clrOld);   
 		}else
 		{
-			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 		}
 	}
 }
