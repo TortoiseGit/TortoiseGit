@@ -1305,7 +1305,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
-	CIconMenu submenu;
+	CIconMenu subbranchmenu, submenu;
+
 	if (popup.CreatePopupMenu())
 	{
 
@@ -1385,6 +1386,49 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
+
+
+				// Add Switch Branch express Menu
+				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
+				{
+					std::vector<CString *> branchs;
+					CString ref;
+
+					for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
+					{
+						ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
+						if(ref.Find(_T("refs/heads/")) == 0)
+						{
+							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
+						}
+					}
+					
+					CString str;
+					str.LoadString(IDS_SWITCH_BRANCH);
+					
+					if(branchs.size() == 1)
+					{
+						str+=_T(" ");
+						str+= branchs[0]->Mid(11);
+						popup.AppendMenuIcon(ID_SWITCHBRANCH,str,IDI_SWITCH);
+						
+						popup.SetMenuItemData(ID_SWITCHBRANCH,(ULONG_PTR)branchs[0]);
+
+					}
+					else if( branchs.size() > 1 )
+					{
+						subbranchmenu.CreatePopupMenu();
+						for(int i=0;i<branchs.size();i++)
+						{
+							subbranchmenu.AppendMenuIcon(ID_SWITCHBRANCH+(i<<16), branchs[i]->Mid(11));
+							subbranchmenu.SetMenuItemData(ID_SWITCHBRANCH+(i<<16), (ULONG_PTR) branchs[i]);
+						}
+						
+						popup.AppendMenu(MF_BYPOSITION|MF_POPUP|MF_STRING,(UINT) subbranchmenu.m_hMenu,str); 
+
+					}
+					
+				}
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
 					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
@@ -1552,7 +1596,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 //		DialogEnableWindow(IDOK, FALSE);
 //		SetPromptApp(&theApp);
 	
-		this->ContextMenuAction(cmd, FirstSelect, LastSelect);
+		this->ContextMenuAction(cmd, FirstSelect, LastSelect, &popup);
 		
 //		EnableOKButton();
 	} // if (popup.CreatePopupMenu())
@@ -1652,7 +1696,7 @@ void CGitLogListBase::DiffSelectedRevWithPrevious()
 		LastSelect = GetNextSelectedItem(pos);
 	}
 
-	ContextMenuAction(ID_COMPAREWITHPREVIOUS,FirstSelect,LastSelect);
+	ContextMenuAction(ID_COMPAREWITHPREVIOUS,FirstSelect,LastSelect, NULL);
 
 #if 0
 	UpdateLogInfoLabel();

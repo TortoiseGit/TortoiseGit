@@ -164,7 +164,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	return 0;
 }
 
-void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
+void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu *popmenu)
 {	
 	POSITION pos = GetFirstSelectedItemPosition();
 	int indexNext = GetNextSelectedItem(pos);
@@ -303,11 +303,35 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
 			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash.ToString());
 			ReloadHashMap();
 			Invalidate();
+			::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
 			break;
 		case ID_SWITCHTOREV:
 			CAppUtils::Switch(&pSelLogEntry->m_CommitHash.ToString());
 			ReloadHashMap();
 			Invalidate();
+			::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
+			break;
+		case ID_SWITCHBRANCH:
+			if(popmenu)
+			{
+				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
+				if(branch)
+				{
+					
+					CProgressDlg progress;
+					CString name;
+					if(branch->Find(_T("refs/heads/")) ==0 )
+						name = branch->Mid(11);
+					else
+						name = *branch;
+
+					progress.m_GitCmd.Format(_T("git.exe checkout %s"), name.GetString());
+					progress.DoModal();
+				}
+				ReloadHashMap();
+				Invalidate();
+				::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
+			}
 			break;
 		case ID_RESET:
 			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash.ToString());

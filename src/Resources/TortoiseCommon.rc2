@@ -84,6 +84,7 @@ BEGIN
 	IDS_CREATE_PATCH			"Format Patch..."
 	IDS_DELETE_BRANCHTAG		"Del"
 	IDS_LOG_POPUP_COMMIT		"Commit..."
+	IDS_SWITCH_BRANCH		"Switch/Checkout to"
 END 
 
 

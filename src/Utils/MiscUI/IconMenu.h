@@ -42,6 +42,9 @@ public:
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
+	BOOL SetMenuItemData(UINT_PTR nIDNewItem, LONG_PTR data);
+	LONG_PTR GetMenuItemData(UINT_PTR nIDNewItem);
+
 private:
 	HBITMAP IconToBitmapPARGB32(UINT uIcon);
 	HRESULT Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **ppvBits, __out HBITMAP* phBmp);

@@ -94,6 +94,7 @@ public:
 	void SetMergePath(const CTGitPath& mergepath) {m_mergePath = mergepath;}
 	void SetStartRef(const CString& StartRef);
 	void ShowStartRef();
+	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
 	/**
 	 * Provides selected commit hash if available, call after OK return from here
 	 * Empty if none

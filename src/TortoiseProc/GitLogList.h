@@ -13,5 +13,5 @@ protected:
 	int  RevertSelectedCommits();
 
 public:
-	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect);
+	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu);
 };

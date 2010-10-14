@@ -295,3 +295,25 @@ HRESULT CIconMenu::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB *pargb, HBITM
 
 	return hr;
 }
+
+BOOL CIconMenu::SetMenuItemData(UINT_PTR nIDNewItem, LONG_PTR data)
+{
+
+	MENUITEMINFO menuinfo ={0};
+	menuinfo.cbSize = sizeof(menuinfo);
+	GetMenuItemInfo(nIDNewItem,&menuinfo);
+	menuinfo.dwItemData =data;
+	menuinfo.fMask |= MIIM_DATA;
+	return SetMenuItemInfo(nIDNewItem ,&menuinfo);
+
+}
+
+LONG_PTR CIconMenu::GetMenuItemData(UINT_PTR nIDNewItem)
+{
+	MENUITEMINFO menuinfo ={0};
+	menuinfo.fMask |= MIIM_DATA;
+	menuinfo.cbSize = sizeof(menuinfo);
+	GetMenuItemInfo(nIDNewItem,&menuinfo);
+
+	return menuinfo.dwItemData;
+}

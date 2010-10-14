@@ -158,6 +158,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER,&CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
+	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
 END_MESSAGE_MAP()
 
 void CLogDlg::SetParams(const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
@@ -3254,4 +3255,10 @@ void CLogDlg::OnBnClickShowWholeProject()
 
 	FillLogMessageCtrl(false);
 
+}
+
+LRESULT CLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
+{
+	ShowStartRef();
+	return 0;
 }

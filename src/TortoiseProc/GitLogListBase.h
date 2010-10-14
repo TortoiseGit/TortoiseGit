@@ -164,6 +164,7 @@ public:
 	ID_CREATE_BRANCH,
 	ID_CREATE_TAG,
 	ID_SWITCHTOREV,
+	ID_SWITCHBRANCH,
 	ID_RESET,
 	ID_REBASE_PICK,
 	ID_REBASE_EDIT,
@@ -210,7 +211,7 @@ public:
     int					m_ShowMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
-	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect)=0;
+	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
 	void ReloadHashMap()
 	{	
 		m_HashMap.clear();
