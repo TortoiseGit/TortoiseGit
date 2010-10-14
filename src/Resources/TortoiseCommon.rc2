@@ -50,6 +50,7 @@ BEGIN
     IDS_LOG_POPUP_BLAMEWITHPREVIOUS "Compare and blame with previous revision"
     IDS_LOG_POPUP_BLAME     "Blame"
     IDS_LOG_POPUP_GNUDIFF_CH "Show changes as &unified diff"
+    IDS_LOG_POPUP_GNUDIFF_PARENT "&Unified diff with"
     IDS_LOG_POPUP_GETMERGELOGS "Get merge logs"
     IDS_LOG_POPUP_MERGEREV  "Merge to %s..."
     IDS_LOG_POPUP_MERGEREVS "Merge to %s..."

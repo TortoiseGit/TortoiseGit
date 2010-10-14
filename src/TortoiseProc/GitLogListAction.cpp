@@ -192,15 +192,34 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			case ID_GNUDIFF1:
 			{
 				CString tempfile=GetTempFile();
-				CString cmd;
+				CString command;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				if(!r1->m_CommitHash.IsEmpty())
 				{
-					cmd.Format(_T("git.exe diff-tree -r -p --stat %s"),r1->m_CommitHash.ToString());
+					CString merge;
+					CString hash2;
+					cmd >>= 16;
+					if( (cmd&0xFFFF) == 0xFFFF)
+					{
+						merge=_T("-m");
+					}else
+					{
+						if(cmd > r1->m_ParentHash.size())
+						{
+							CString str;
+							str.Format(_T("%d parent does not exist"), cmd);
+							CMessageBox::Show(NULL,str,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+							return;
+						}else
+						{
+							hash2 = r1->m_ParentHash[cmd-1].ToString();
+						}
+					}
+					command.Format(_T("git.exe diff-tree %s -r -p --stat %s %s"),merge, r1->m_CommitHash.ToString(), hash2);
 				}else
-					cmd.Format(_T("git.exe diff -r -p --stat"));
+					command.Format(_T("git.exe diff -r -p --stat"));
 
-				g_Git.RunLogFile(cmd,tempfile);
+				g_Git.RunLogFile(command,tempfile);
 				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r1->m_Subject);
 			}
 			break;

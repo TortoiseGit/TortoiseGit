@@ -1318,7 +1318,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
-	CIconMenu subbranchmenu, submenu;
+	CIconMenu subbranchmenu, submenu, gnudiffmenu;
 
 	if (popup.CreatePopupMenu())
 	{
@@ -1360,7 +1360,29 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_COMMIT, IDS_LOG_POPUP_COMMIT, IDI_COMMIT);
 				}
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1))
-					popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
+				{
+					GitRev *pRev=pSelLogEntry;
+					if(pSelLogEntry->m_ParentHash.size()==0)
+					{
+					}
+					if(pRev->m_ParentHash.size()<=1)
+					{
+						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
+
+					}else
+					{
+						gnudiffmenu.CreatePopupMenu();
+						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
+						
+						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+(0xFFFF<<16),_T("All parents"));
+						for(int i=0;i<pRev->m_ParentHash.size();i++)
+						{
+							CString str;
+							str.Format(_T("%d parent"), i+1);
+							gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+((i+1)<<16),str);
+						}
+					}
+				}
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPAREWITHPREVIOUS))
 					popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
@@ -1402,7 +1424,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 
 				// Add Switch Branch express Menu
-				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
+				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() 
+					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH))
+					)
 				{
 					std::vector<CString *> branchs;
 					CString ref;
