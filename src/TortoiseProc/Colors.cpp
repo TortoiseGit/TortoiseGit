@@ -47,6 +47,8 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{BranchLine6,_T("Software\\TortoiseGit\\Colors\\BranchLine6"), RGB(128,128,0)},
 	{BranchLine7,_T("Software\\TortoiseGit\\Colors\\BranchLine7"), RGB(0,128,128)},
 	{BranchLine8,_T("Software\\TortoiseGit\\Colors\\BranchLine8"), RGB(128,0,128)},
+	{BisectGood,_T("Software\\TortoiseGit\\Colors\\BisectGood"), RGB(0,100,200)},
+	{BisectBad, _T("Software\\TortoiseGit\\Colors\\BisectBad"),  RGB(255,0,0)},
 	{COLOR_END,_T("Software\\TortoiseGit\\Colors\\END"),RGB(0,0,0)},
 
 };

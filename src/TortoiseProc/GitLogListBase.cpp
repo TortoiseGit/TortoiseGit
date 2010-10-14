@@ -462,6 +462,19 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		{
 			colRef = m_Colors.GetColor(CColors::Stash);
 			shortname=_T("stash");
+		}else if(GetShortName(str,shortname,_T("refs/bisect/")))
+		{
+			if(shortname.Find(_T("good")) == 0)
+			{
+				colRef = m_Colors.GetColor(CColors::BisectGood);
+				shortname = _T("good");
+			}
+
+			if(shortname.Find(_T("bad")) == 0)
+			{
+				colRef = m_Colors.GetColor(CColors::BisectBad);
+				shortname = _T("bad");
+			}
 		}
 
 		//When row selected, ajust label color

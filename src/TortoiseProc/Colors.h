@@ -57,6 +57,8 @@ public:
 		BranchLine6,
 		BranchLine7,
 		BranchLine8,
+		BisectGood,
+		BisectBad,
 		COLOR_END=-1
 	};
 	
