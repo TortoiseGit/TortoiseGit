@@ -58,19 +58,27 @@ BOOL CRefLogDlg::OnInitDialog()
 	list.push_back(_T("HEAD"));
 	g_Git.GetRefList(list);
 	
-	if(this->m_CurrentBranch.IsEmpty())
-	{
-		m_CurrentBranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
-	}
-
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 	this->m_ChooseRef.AddString(list);
 	
-
 	this->m_RefList.InsertRefLogColumn();
 	//m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
+	if(this->m_CurrentBranch.IsEmpty())
+	{
+		m_CurrentBranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
+		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
+	}else
+	{
+		for(int i=0;i<list.size();i++)
+		{
+			if(list[i] == m_CurrentBranch)
+			{
+				m_ChooseRef.SetCurSel(i);
+				break;
+			}
+		}
+	}
 	
-	m_ChooseRef.SetCurSel(0); /* Choose HEAD */
 
 	OnCbnSelchangeRef();
 
