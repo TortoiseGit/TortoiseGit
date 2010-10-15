@@ -1364,6 +1364,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRev *pRev=pSelLogEntry;
 					if(pSelLogEntry->m_ParentHash.size()==0)
 					{
+						pRev->GetParentFromHash(pRev->m_CommitHash);
 					}
 					if(pRev->m_ParentHash.size()<=1)
 					{
@@ -1392,6 +1393,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRev *pRev=pSelLogEntry;
 					if(pSelLogEntry->m_ParentHash.size()==0)
 					{
+						pRev->GetParentFromHash(pRev->m_CommitHash);
 					}
 					if(pRev->m_ParentHash.size()<=1)
 					{

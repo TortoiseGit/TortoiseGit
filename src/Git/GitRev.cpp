@@ -274,6 +274,21 @@ void GitRev::DbgPrint()
 	TRACE(_T("\n"));
 }
 
+int GitRev::GetParentFromHash(CGitHash &hash)
+{
+	g_Git.CheckAndInitDll();
+
+	GIT_COMMIT commit;
+	if(git_get_commit_from_hash( &commit, hash.m_hash))
+		return -1;
+
+	this->ParserParentFromCommit(&commit);
+	git_free_commit(&commit);
+
+	this->m_CommitHash=hash;
+
+	return 0;
+}
 int GitRev::GetCommitFromHash(CGitHash &hash)
 {
 	g_Git.CheckAndInitDll();
@@ -290,6 +305,7 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 	return 0;
 	
 }
+
 
 int GitRev::GetCommit(CString &refname)
 {

@@ -80,6 +80,7 @@ public:
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);
 
+	int GetParentFromHash(CGitHash &hash);
 	int GetCommitFromHash(CGitHash &hash);
 	int GetCommit(CString &Rev);
 

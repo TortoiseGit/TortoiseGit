@@ -215,7 +215,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							return;
 						}else
 						{
-							hash2 = r1->m_ParentHash[cmd-1].ToString();
+							if(cmd>0)
+								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
 					command.Format(_T("git.exe diff-tree %s -r -p --stat %s %s"),merge, r1->m_CommitHash.ToString(), hash2);
