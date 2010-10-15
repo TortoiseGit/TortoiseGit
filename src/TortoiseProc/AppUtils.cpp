@@ -2466,7 +2466,7 @@ BOOL CAppUtils::SVNDCommit()
 	}
 
 	CProgressDlg progress;
-	progress.m_GitCmd=_T("git.exe svn dcommit");
+	progress.m_GitCmd=_T("git.exe svn dcommit --rmdir");
 	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
 	{
 		if( IsStash)
