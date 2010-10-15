@@ -202,6 +202,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if( (cmd&0xFFFF) == 0xFFFF)
 					{
 						merge=_T("-m");
+					} else if((cmd&0xFFFF) == 0xFFFE)
+					{
+						merge=_T("-c");
 					}else
 					{
 						if(cmd > r1->m_ParentHash.size())
