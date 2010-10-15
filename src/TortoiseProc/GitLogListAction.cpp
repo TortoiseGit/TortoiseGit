@@ -286,7 +286,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if(pSelLogEntry->m_ParentHash.size()>0)
 				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
 				{
-					CGitDiff::DiffCommit(this->m_Path, pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[0].ToString());
+					cmd>>=16;
+					cmd&=0xFFFF;
+
+					CGitDiff::DiffCommit(this->m_Path, pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[cmd-1].ToString());
 
 				}else
 				{

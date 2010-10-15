@@ -1318,7 +1318,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
-	CIconMenu subbranchmenu, submenu, gnudiffmenu;
+	CIconMenu subbranchmenu, submenu, gnudiffmenu,diffmenu;
 
 	if (popup.CreatePopupMenu())
 	{
@@ -1387,7 +1387,29 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPAREWITHPREVIOUS))
-					popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
+				{
+
+					GitRev *pRev=pSelLogEntry;
+					if(pSelLogEntry->m_ParentHash.size()==0)
+					{
+					}
+					if(pRev->m_ParentHash.size()<=1)
+					{
+						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
+
+					}else
+					{
+						diffmenu.CreatePopupMenu();
+						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF, diffmenu.m_hMenu);
+						for(int i=0;i<pRev->m_ParentHash.size();i++)
+						{
+							CString str;
+							str.Format(_T("%d Parent"), i+1);
+							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS +((i+1)<<16),str);
+						}
+					}
+					
+				}
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
