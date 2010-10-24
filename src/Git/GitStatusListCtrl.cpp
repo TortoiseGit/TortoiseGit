@@ -2349,7 +2349,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
 			{
-				if (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE)
+				if ( (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE) && GetSelectedCount()>0)
 				{
 					if(filepath->m_ParentNo & MERGE_MASK)
 						popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_TREE_DIFF, IDI_DIFF);
@@ -2359,7 +2359,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
 				}
 
-				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPAREWC))
+				if ((m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPAREWC)) && GetSelectedCount()>0)
 				{
 					if( (!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
 						popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
