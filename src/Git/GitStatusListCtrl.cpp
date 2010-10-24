@@ -2759,8 +2759,18 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetWorkingCopy(),
 															*filepath,GitRev::GetHead());
 					else
-						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
+					{
+						if(filepath->m_ParentNo ==0)
+							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
 															*filepath,m_CurrentVersion+_T("~1"));
+						else
+						{
+							CString str;
+							str.Format(_T("%s^%d"),m_CurrentVersion,filepath->m_ParentNo+1);
+							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
+															*filepath,str);
+						}
+					}
 				}
 				break;
 			case IDSVNLC_GNUDIFF2:
@@ -4132,9 +4142,17 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 		}else
 		{
+			CString str;
+			if( file1.m_ParentNo == 0)
+			{
+				str = _T("~1");
+			}else
+			{
+				str.Format(_T("^%d"), file1.m_ParentNo+1);
+			}
 			CGitDiff::Diff(&file1,&file2,
 			        m_CurrentVersion,
-					m_CurrentVersion+_T("~1"));
+					m_CurrentVersion+str);
 		}
 	}
 #if 0
