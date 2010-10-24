@@ -2157,7 +2157,10 @@ UINT CGitLogListBase::LogThread()
 				git_free_commit(&commit);
 			}
 			
-			
+			if(pRev->m_ParentHash.size())
+			{
+				pRev->AddMergeFiles();
+			}
 #ifdef DEBUG		
 			pRev->DbgPrint();
 			TRACE(_T("\n"));

@@ -1496,7 +1496,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 		SetItemGroup(index,1);
 	else
 	{
-		SetItemGroup(index, GitPath->m_ParentNo);
+		SetItemGroup(index, GitPath->m_ParentNo&(PARENT_MASK|MERGE_MASK));
 	}
 
 	m_bBlock = FALSE;
@@ -2760,13 +2760,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 															*filepath,GitRev::GetHead());
 					else
 					{
-						if(filepath->m_ParentNo ==0)
+						if((filepath->m_ParentNo&PARENT_MASK) ==0)
 							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
 															*filepath,m_CurrentVersion+_T("~1"));
 						else
 						{
 							CString str;
-							str.Format(_T("%s^%d"),m_CurrentVersion,filepath->m_ParentNo+1);
+							str.Format(_T("%s^%d"),m_CurrentVersion,(filepath->m_ParentNo&PARENT_MASK)+1);
 							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
 															*filepath,str);
 						}
@@ -4143,12 +4143,12 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		}else
 		{
 			CString str;
-			if( file1.m_ParentNo == 0)
+			if( (file1.m_ParentNo&PARENT_MASK) == 0)
 			{
 				str = _T("~1");
 			}else
 			{
-				str.Format(_T("^%d"), file1.m_ParentNo+1);
+				str.Format(_T("^%d"), (file1.m_ParentNo&PARENT_MASK)+1);
 			}
 			CGitDiff::Diff(&file1,&file2,
 			        m_CurrentVersion,
@@ -4440,6 +4440,9 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 				{
 					crText = m_Colors.GetColor(CColors::RenamedNode);
+				}else if(entry->m_Action & CTGitPath::LOGACTIONS_MERGED)
+				{
+					crText = m_Colors.GetColor(CColors::Merged);
 				}else
 				{
 					crText = GetSysColor(COLOR_WINDOWTEXT);
@@ -5219,8 +5222,9 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 	for(int i=0;i< this->m_arStatusArray.size(); i++)
 	{
-		if(m_arStatusArray[i]->m_ParentNo>max);
-			max=m_arStatusArray[i]->m_ParentNo;
+		int ParentNo = m_arStatusArray[i]->m_ParentNo&PARENT_MASK;
+		if( ParentNo > max)
+			max=m_arStatusArray[i]->m_ParentNo&PARENT_MASK;
 	}
 
 	if ( this->m_UnRevFileList.GetCount()>0 || 
@@ -5246,6 +5250,11 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		//if(m_UnRevFileList.GetCount()>0)
 		if(max >0)
 		{
+			grp.pszHeader = _T("Merged Files");
+			grp.iGroupId = MERGE_MASK;
+			grp.uAlign = LVGA_HEADER_LEFT;
+			InsertGroup(0, &grp);
+
 			for(int i=0;i<=max;i++)
 			{
 				CString str;
@@ -5254,7 +5263,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 				grp.pszHeader = str.GetBuffer();
 				grp.iGroupId = i;
 				grp.uAlign = LVGA_HEADER_LEFT;
-				InsertGroup(i, &grp);
+				InsertGroup(i+1, &grp);
 			}
 		}else
 		{

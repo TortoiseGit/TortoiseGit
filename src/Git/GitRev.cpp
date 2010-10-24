@@ -328,3 +328,35 @@ int GitRev::GetCommit(CString &refname)
 	GetCommitFromHash(CGitHash((char*)sha));
 	return 0;
 }
+
+int GitRev::AddMergeFiles()
+{
+	std::map<CString, int> map;
+	std::map<CString, int>::iterator it;
+
+	for(int i=0;i<m_Files.GetCount();i++)
+	{
+		if(map.find(m_Files[i].GetGitPathString()) == map.end())
+		{
+			map[m_Files[i].GetGitPathString()]=0;
+		}else
+		{
+			map[m_Files[i].GetGitPathString()]++;
+		}
+	}
+
+	for(it=map.begin();it!=map.end();it++)
+	{
+		if(it->second)
+		{
+			CTGitPath path;
+			path.SetFromGit(it->first);
+			path.m_ParentNo = MERGE_MASK;
+			path.m_StatAdd=_T("-");
+			path.m_StatDel=_T("-");
+			path.m_Action = CTGitPath::LOGACTIONS_MERGED;
+			m_Files.AddPath(path);
+		}
+	}
+	return 0;
+}

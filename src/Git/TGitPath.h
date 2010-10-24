@@ -1,6 +1,9 @@
 #pragma once
 #include "gittype.h"
 
+#define PARENT_MASK   0xFFFFFF
+#define MERGE_MASK	(0x1000000)
+
 class CTGitPath
 {
 public:

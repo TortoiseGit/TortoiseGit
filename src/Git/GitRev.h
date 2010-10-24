@@ -80,12 +80,14 @@ public:
 	int ParserFromCommit(GIT_COMMIT *commit);
 	int ParserParentFromCommit(GIT_COMMIT *commit);
 
+
 	int GetParentFromHash(CGitHash &hash);
 	int GetCommitFromHash(CGitHash &hash);
 	int GetCommit(CString &Rev);
 
 public:
 	void DbgPrint();
+	int	AddMergeFiles();
 private:
 	TIME_ZONE_INFORMATION m_TimeZone;
 };
