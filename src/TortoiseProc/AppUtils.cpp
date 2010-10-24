@@ -1074,7 +1074,7 @@ CString CAppUtils::GetProjectNameFromURL(CString url)
 bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git_revnum_t& rev1, 
 												const CTGitPath& url2, const git_revnum_t& rev2, 
 									 //const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,  
-												bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool /* blame = false */)
+												bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool /* blame = false */, bool bMerge)
 {
 
 	CString tempfile=GetTempFile();
@@ -1084,7 +1084,11 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 		cmd.Format(_T("git.exe diff --stat -p %s "),rev2);
 	}else
 	{	
-		cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),rev1,rev2);
+		CString merge;
+		if(bMerge)
+				merge = _T("-c");
+
+		cmd.Format(_T("git.exe diff-tree -r -p %s --stat %s %s"),merge, rev1,rev2);
 	}
 
 	if( !url1.IsEmpty() )

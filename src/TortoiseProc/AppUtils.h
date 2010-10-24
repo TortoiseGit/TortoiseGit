@@ -148,7 +148,8 @@ public:
 												//const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
 												bool bAlternateDiff = false,
 												bool bIgnoreAncestry = false,
-												bool /* blame */ = false);
+												bool blame  = false,
+												bool bMerge = false);
 
 	/**
 	 * Replacement for GitDiff::ShowCompare(), but started as a separate process.

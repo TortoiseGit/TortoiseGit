@@ -2760,15 +2760,22 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 															*filepath,GitRev::GetHead());
 					else
 					{
-						if((filepath->m_ParentNo&PARENT_MASK) ==0)
+						if((filepath->m_ParentNo&(PARENT_MASK|MERGE_MASK)) ==0)
 							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
 															*filepath,m_CurrentVersion+_T("~1"));
 						else
 						{
 							CString str;
-							str.Format(_T("%s^%d"),m_CurrentVersion,(filepath->m_ParentNo&PARENT_MASK)+1);
+							if(filepath->m_ParentNo & MERGE_MASK)
+							{
+							}else
+							{
+								str.Format(_T("%s^%d"),m_CurrentVersion,(filepath->m_ParentNo&PARENT_MASK)+1);
+							}
+							
 							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
-															*filepath,str);
+															*filepath,str, false,false,false,
+															filepath->m_ParentNo & MERGE_MASK);
 						}
 					}
 				}
