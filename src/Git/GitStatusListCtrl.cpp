@@ -1495,7 +1495,10 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	else if( GitPath->m_Action & CTGitPath::LOGACTIONS_UNVER)
 		SetItemGroup(index,1);
 	else
-		SetItemGroup(index,0);
+	{
+		SetItemGroup(index, GitPath->m_ParentNo);
+	}
+
 	m_bBlock = FALSE;
 
 
@@ -5194,8 +5197,17 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 {
 
 	bool bHasGroups=false;
+	int	max =0;
+
+	for(int i=0;i< this->m_arStatusArray.size(); i++)
+	{
+		if(m_arStatusArray[i]->m_ParentNo>max);
+			max=m_arStatusArray[i]->m_ParentNo;
+	}
+
 	if ( this->m_UnRevFileList.GetCount()>0 || 
-		this->m_IgnoreFileList.GetCount()>0 || bForce)
+		this->m_IgnoreFileList.GetCount()>0 || 
+		max>0 || bForce)
 	{
 		bHasGroups = true;
 	}
@@ -5211,31 +5223,48 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		LVGROUP grp = {0};
 		grp.cbSize = sizeof(LVGROUP);
 		grp.mask = LVGF_ALIGN | LVGF_GROUPID | LVGF_HEADER;
-		CString sUnassignedName(_T("Modified File"));
-		_tcsncpy_s(groupname, 1024, (LPCTSTR)sUnassignedName, 1023);
-		grp.pszHeader = groupname;
-		grp.iGroupId = groupindex;
-		grp.uAlign = LVGA_HEADER_LEFT;
-		InsertGroup(groupindex++, &grp);
+		groupindex=0;
 
 		//if(m_UnRevFileList.GetCount()>0)
+		if(max >0)
 		{
-			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
+			for(int i=0;i<=max;i++)
+			{
+				CString str;
+				str.Format(_T("Diff with %d Parent"), i+1);
+				//_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
+				grp.pszHeader = str.GetBuffer();
+				grp.iGroupId = i;
+				grp.uAlign = LVGA_HEADER_LEFT;
+				InsertGroup(i, &grp);
+			}
+		}else
+		{
+			CString sUnassignedName(_T("Modified File"));
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)sUnassignedName, 1023);
 			grp.pszHeader = groupname;
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
 			InsertGroup(groupindex++, &grp);
-		}
 
-		//if(m_IgnoreFileList.GetCount()>0)
-		{
-			_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Ignored"), 1023);
-			grp.pszHeader = groupname;
-			grp.iGroupId = groupindex;
-			grp.uAlign = LVGA_HEADER_LEFT;
-			InsertGroup(groupindex++, &grp);
-		}
 
+			{
+				_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
+				grp.pszHeader = groupname;
+				grp.iGroupId = groupindex;
+				grp.uAlign = LVGA_HEADER_LEFT;
+				InsertGroup(groupindex++, &grp);
+			}
+
+			//if(m_IgnoreFileList.GetCount()>0)
+			{
+				_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Ignored"), 1023);
+				grp.pszHeader = groupname;
+				grp.iGroupId = groupindex;
+				grp.uAlign = LVGA_HEADER_LEFT;
+				InsertGroup(groupindex++, &grp);
+			}
+		}
 	}
 
 #if 0

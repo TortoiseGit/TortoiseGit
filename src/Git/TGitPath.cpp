@@ -56,6 +56,7 @@ CTGitPath::CTGitPath(void) :
 	m_bIsSpecialDirectory(false)
 {
 	m_Action=0;
+	m_ParentNo=0;
 }
 
 CTGitPath::~CTGitPath(void)
@@ -84,6 +85,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
 	m_Stage=0;
+	m_ParentNo=0;
 }
 
 int CTGitPath::ParserAction(BYTE action)
@@ -479,6 +481,7 @@ void CTGitPath::Reset()
 	this->m_Action=0;
 	this->m_StatAdd=_T("");
 	this->m_StatDel=_T("");
+	m_ParentNo=0;
 	ATLASSERT(IsEmpty());
 }
 

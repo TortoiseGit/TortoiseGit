@@ -182,9 +182,9 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
 				git->StringAppend(&stroldname,(BYTE*)oldname,CP_ACP);
 
-				path.m_ParentNo = i;
 				path.SetFromGit(strnewname,&stroldname);
 				path.ParserAction((BYTE)mode);
+				path.m_ParentNo = i;
 
 				this->m_Action|=path.m_Action;
 

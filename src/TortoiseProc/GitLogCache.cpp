@@ -137,6 +137,7 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 		ar<<Rev.m_Files[i].m_Stage;
 		ar<<Rev.m_Files[i].m_StatAdd;
 		ar<<Rev.m_Files[i].m_StatDel;
+		ar<<Rev.m_Files[i].m_ParentNo;
 		
 	}
 	return 0;
@@ -198,7 +199,7 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		ar>>path.m_Stage;
 		ar>>path.m_StatAdd;
 		ar>>path.m_StatDel;
-		
+		ar>>path.m_ParentNo;
 		
 		Rev.m_Files.AddPath(path);
 	}
