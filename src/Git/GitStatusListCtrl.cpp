@@ -53,6 +53,7 @@
 //#include "CreateChangelistDlg.h"
 #include "XPTheme.h"
 #include "CommonResource.h"
+#include "AppUtils.h"
 
 const UINT CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
@@ -2350,7 +2351,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			{
 				if (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE)
 				{
-					popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
+					if(filepath->m_ParentNo & MERGE_MASK)
+						popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_TREE_DIFF, IDI_DIFF);
+					else
+						popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
+					
 					popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
 				}
 
@@ -4149,17 +4154,115 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 		}else
 		{
-			CString str;
-			if( (file1.m_ParentNo&PARENT_MASK) == 0)
+			if( file1.m_ParentNo & MERGE_MASK)
 			{
-				str = _T("~1");
+
+				CTGitPath base,theirs, mine;
+
+				CTGitPath merge=file1;
+				CTGitPath directory = merge.GetDirectory();
+	
+				mine.SetFromGit(CAppUtils::GetMergeTempFile(_T("LOCAL"),merge));
+				theirs.SetFromGit(CAppUtils::GetMergeTempFile(_T("REMOTE"),merge));
+				base.SetFromGit(CAppUtils::GetMergeTempFile(_T("BASE"),merge));
+
+				CFile tempfile;
+				//create a empty file, incase stage is not three
+				tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
+				tempfile.Close();
+				tempfile.Open(theirs.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
+				tempfile.Close();
+				tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
+				tempfile.Close();
+
+				merge.SetFromGit(merge.GetGitPathString()+_T("Merged"));
+
+				int parent1=-1, parent2 =-1;
+				for(int i=0;i<this->m_arStatusArray.size();i++)
+				{
+					if(m_arStatusArray[i]->GetGitPathString() == file1.GetGitPathString())
+					{
+						if(m_arStatusArray[i]->m_ParentNo & MERGE_MASK)
+						{
+						}else
+						{
+							if(parent1<0)
+							{
+								parent1 = m_arStatusArray[i]->m_ParentNo & PARENT_MASK;
+							}else if (parent2 <0)
+							{
+								parent2 = m_arStatusArray[i]->m_ParentNo & PARENT_MASK;
+							}
+						}
+					}
+				}
+				
+				CString format;
+				format = _T("git.exe cat-file blob \"%s:%s\"");
+				
+				CString cmd;
+				cmd.Format(format, this->m_CurrentVersion, file1.GetGitPathString());
+
+				if(g_Git.RunLogFile(cmd, (CString&)merge.GetWinPathString()))
+				{
+					CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				}
+
+				if(parent1>=0)
+				{
+					CString str;
+					str.Format(_T("%s^%d"),this->m_CurrentVersion, parent1+1);
+					cmd.Format(format, str, file1.GetGitPathString());
+					if(g_Git.RunLogFile(cmd, (CString&)mine.GetWinPathString()))
+					{
+						CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					}
+				}
+
+				if(parent2>=0)
+				{
+					CString str;
+					str.Format(_T("%s^%d"),this->m_CurrentVersion, parent2+1);
+					cmd.Format(format, str, file1.GetGitPathString());
+					if(g_Git.RunLogFile(cmd, (CString&)theirs.GetWinPathString()))
+					{
+						CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					}
+				}
+
+				if(parent1>=0 && parent2>=0)
+				{
+					CString cmd,output;
+					cmd.Format(_T("git.exe merge-base %s^%d %s^%d"), this->m_CurrentVersion, parent1+1, 
+						this->m_CurrentVersion,parent2+1);
+					
+					if(g_Git.Run(cmd,&output, CP_ACP))
+					{
+					}else
+					{
+						cmd.Format(format,output.Left(40), file1.GetGitPathString());
+						if(g_Git.RunLogFile(cmd,(CString&)base.GetWinPathString()))
+						{
+							CMessageBox::Show(NULL, _T("Fail to get base file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						}
+					}
+				}
+				CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+
 			}else
 			{
-				str.Format(_T("^%d"), (file1.m_ParentNo&PARENT_MASK)+1);
-			}
-			CGitDiff::Diff(&file1,&file2,
-			        m_CurrentVersion,
+				CString str;
+				if( (file1.m_ParentNo&PARENT_MASK) == 0)
+				{
+					str = _T("~1");
+				}else
+				{
+					str.Format(_T("^%d"), (file1.m_ParentNo&PARENT_MASK)+1);
+				}
+				CGitDiff::Diff(&file1,&file2,
+					m_CurrentVersion,
 					m_CurrentVersion+str);
+			}
 		}
 	}
 #if 0
