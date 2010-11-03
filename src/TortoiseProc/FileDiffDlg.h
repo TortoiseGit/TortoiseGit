@@ -178,7 +178,7 @@ private:
 	bool				m_bCancelled;
 
 	void				Sort();
-//	static bool			SortCompare(const FileDiff& Data1, const FileDiff& Data2);
+	static bool			SortCompare(const CTGitPath& Data1, const CTGitPath& Data2);
 
 	static BOOL			m_bAscending;
 	static int			m_nSortedColumn;

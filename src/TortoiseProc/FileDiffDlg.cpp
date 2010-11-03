@@ -35,6 +35,7 @@
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
 #include "RefLogDlg.h"
+#include "GitStatusListCtrl.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -1120,20 +1121,31 @@ void CFileDiffDlg::Sort()
 		return;
 	}
 
-//	std::sort(m_arFileList.begin(), m_arFileList.end(), &CFileDiffDlg::SortCompare);
+	std::sort(m_arFileList.m_paths.begin(), m_arFileList.m_paths.end(), &CFileDiffDlg::SortCompare);
 }
-#if 0
-bool CFileDiffDlg::SortCompare(const CTGitPath*& Data1, const CTGitPath*& Data2)
+
+bool CFileDiffDlg::SortCompare(const CTGitPath& Data1, const CTGitPath& Data2)
 {
 	int result = 0;
+	int d1, d2;
 	switch (m_nSortedColumn)
 	{
 	case 0:		//path column
-		result = Data1.path.GetWinPathString().Compare(Data2.path.GetWinPathString());
+		result = Data1.GetWinPathString().Compare(Data2.GetWinPathString());
 		break;
 	case 1:		//action column
-		result = Data1.kind - Data2.kind;
+		result = Data1.m_Action - Data2.m_Action;
 		break;
+	case 2:
+		d1 = CSorter::A2L(Data1.m_StatAdd);
+		d2 = CSorter::A2L(Data2.m_StatAdd);
+		result = d1 - d2;
+		break;
+	case 3: 
+		d1 = CSorter::A2L(Data1.m_StatDel);;
+		d2 = CSorter::A2L(Data2.m_StatDel);
+		result = d1 - d2;
+		break;		
 	default:
 		break;
 	}
@@ -1142,7 +1154,7 @@ bool CFileDiffDlg::SortCompare(const CTGitPath*& Data1, const CTGitPath*& Data2)
 		result = -result;
 	return result < 0;
 }
-#endif
+
 
 void CFileDiffDlg::OnBnClickedRev1btn()
 {

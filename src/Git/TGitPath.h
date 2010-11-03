@@ -382,7 +382,6 @@ public:
 	/** Convert into the Git API parameter format */
 //	apr_array_header_t * MakePathArray (apr_pool_t *pool) const;
 
-private:
 	typedef std::vector<CTGitPath> PathVector;
 	PathVector m_paths;
 	// If the list contains just files in one directory, then
