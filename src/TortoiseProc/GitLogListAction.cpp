@@ -290,6 +290,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					cmd>>=16;
 					cmd&=0xFFFF;
 
+					if(cmd == 0)
+						cmd=1;
+
 					CGitDiff::DiffCommit(this->m_Path, pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[cmd-1].ToString());
 
 				}else
