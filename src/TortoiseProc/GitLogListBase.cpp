@@ -432,6 +432,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
+	CDC W_Dc;
+	W_Dc.Attach(hdc);
+
 	for(unsigned int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
 	{
 		CString str;
@@ -498,17 +501,13 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			::FillRect(hdc, &rt, brush);
 
 			//Draw edge of label
-			CDC W_Dc;
-			W_Dc.Attach(hdc);
 
 			CRect rectEdge = rt;
-
+			
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,100), m_Colors.Darken(colRef,100));
 			rectEdge.DeflateRect(1,1);
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
-
-			W_Dc.Detach();
-
+	
 			//Draw text inside label
 			if (m_Theme.IsAppThemed() && m_bVista)
 			{
@@ -520,6 +519,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			}
 			else
 			{
+				W_Dc.SetBkMode(TRANSPARENT);
 				if (rItem.state & LVIS_SELECTED)
 				{
 					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
@@ -567,6 +567,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			::DrawText(hdc,data->m_Subject,data->m_Subject.GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 		}
 	}
+
+	W_Dc.Detach();
 }
 
 static COLORREF blend(const COLORREF& col1, const COLORREF& col2, int amount = 128) {
