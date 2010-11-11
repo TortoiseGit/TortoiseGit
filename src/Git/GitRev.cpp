@@ -240,10 +240,10 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	this->m_AuthorDate = commit->m_Author.Date;
 	
 	this->m_AuthorEmail.Empty();
-	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,CP_UTF8,commit->m_Author.EmailSize);
+	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,encode,commit->m_Author.EmailSize);
 
 	this->m_AuthorName.Empty();
-	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,CP_UTF8,commit->m_Author.NameSize);
+	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,encode,commit->m_Author.NameSize);
 	
 	this->m_Body.Empty();
 	g_Git.StringAppend(&m_Body,(BYTE*)commit->m_Body,encode,commit->m_BodySize);
@@ -251,10 +251,10 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	this->m_CommitterDate = commit->m_Committer.Date;
 	
 	this->m_CommitterEmail.Empty();
-	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,CP_UTF8, commit->m_Committer.EmailSize);
+	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,encode, commit->m_Committer.EmailSize);
 
 	this->m_CommitterName.Empty();
-	g_Git.StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name,CP_UTF8, commit->m_Committer.NameSize);
+	g_Git.StringAppend(&m_CommitterName, (BYTE*)commit->m_Committer.Name,encode, commit->m_Committer.NameSize);
 
 	this->m_Subject.Empty();
 	g_Git.StringAppend(&m_Subject, (BYTE*)commit->m_Subject,encode,commit->m_SubjectSize);
