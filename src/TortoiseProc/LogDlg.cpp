@@ -168,6 +168,10 @@ void CLogDlg::SetParams(const CTGitPath& path, CString pegrev, CString startrev,
 	this->m_LogList.m_startrev = startrev;
 	m_LogRevision = startrev;
 	this->m_LogList.m_endrev = endrev;
+
+	if(!endrev.IsEmpty())
+		this->SetStartRef(endrev);
+
 	m_hasWC = !path.IsUrl();
 	m_limit = limit;
 	if (::IsWindow(m_hWnd))

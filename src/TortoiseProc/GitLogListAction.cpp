@@ -581,6 +581,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 			}
 			break;
+		case ID_LOG:
+			{
+				CString cmd;
+				cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
+				cmd += _T(" /command:log");
+				cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\" ");
+				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				cmd += _T(" /endrev:")+r1->m_CommitHash.ToString();
+				CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
+			}
+			break;
 		case ID_CREATE_PATCH:
 			{
 				int select=this->GetSelectedCount();
@@ -588,7 +599,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
 				cmd += _T(" /command:formatpatch");
 
-				cmd += _T(" /path:")+g_Git.m_CurrentDir+_T(" ");
+				cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\" ");
 
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = NULL;

@@ -9,7 +9,7 @@ IMPLEMENT_DYNAMIC(CRefLogList, CGitLogList)
 CRefLogList::CRefLogList()
 {
 	m_ColumnRegKey=_T("reflog");
-
+	this->m_ContextMenuMask |= this->GetContextMenuBit(ID_LOG);
 }
 
 void CRefLogList::InsertRefLogColumn()

@@ -131,6 +131,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SQUASH);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_LOG);
 
 	OSVERSIONINFOEX inf;
 	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
@@ -1446,6 +1447,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					
 			if(!pSelLogEntry->m_CommitHash.IsEmpty())
 			{
+				if((m_ContextMenuMask&GetContextMenuBit(ID_LOG)) &&
+					GetSelectedCount() == 1)
+						popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
+				
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
 				str.Format(format,g_Git.GetCurrentBranch());
 
@@ -2090,8 +2095,12 @@ UINT CGitLogListBase::LogThread()
 	ULONGLONG  t1,t2;
 	
 	if(BeginFetchLog())
-		return -1;
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
+		return -1;
+	}
 	TRACE(_T("\n===Begin===\n"));
 	//Update work copy item;
 	if( m_logEntries.size() > 0)

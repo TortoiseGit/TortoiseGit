@@ -118,5 +118,6 @@ BEGIN
     IDS_STATUSLIST_SHOWGROUPS "Group changelists"
     IDS_STATUSLIST_REMOVEUNUSEDPROPS "Shorten property list"
     IDS_STATUSLIST_RESETCOLUMNORDER "Reset columns"
+	IDS_LOG_POPUP_LOG	"Show log..."
 END
 
