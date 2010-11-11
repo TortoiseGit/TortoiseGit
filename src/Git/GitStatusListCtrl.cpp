@@ -231,33 +231,12 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 
    static UINT standardColumnNames[SVNSLC_NUMCOLUMNS]
         = { IDS_STATUSLIST_COLFILE
-
           , IDS_STATUSLIST_COLFILENAME
           , IDS_STATUSLIST_COLEXT
-                 , IDS_STATUSLIST_COLSTATUS
-
-//               , IDS_STATUSLIST_COLREMOTESTATUS
-                 , IDS_STATUSLIST_COLTEXTSTATUS
-                 , IDS_STATUSLIST_COLPROPSTATUS
-
-//               , IDS_STATUSLIST_COLREMOTETEXTSTATUS
-//               , IDS_STATUSLIST_COLREMOTEPROPSTATUS
-//               , IDS_STATUSLIST_COLURL
-
-//               , IDS_STATUSLIST_COLLOCK
-//               , IDS_STATUSLIST_COLLOCKCOMMENT
-                 , IDS_STATUSLIST_COLAUTHOR
-
-                 , IDS_STATUSLIST_COLREVISION
-//               , IDS_STATUSLIST_COLREMOTEREVISION
-                 , IDS_STATUSLIST_COLDATE
-//               , IDS_STATUSLIST_COLSVNLOCK
-
-//               , IDS_STATUSLIST_COLCOPYFROM
-				 , IDS_STATUSLIST_COLMODIFICATIONDATE
-                 , IDS_STATUSLIST_COLADD
-                 , IDS_STATUSLIST_COLDEL
-               };
+          , IDS_STATUSLIST_COLSTATUS
+          , IDS_STATUSLIST_COLADD
+          , IDS_STATUSLIST_COLDEL
+         };
 	
 	m_ColumnManager.SetNames(standardColumnNames,SVNSLC_NUMCOLUMNS);
     m_ColumnManager.ReadSettings (m_dwDefaultColumns, sColumnInfoContainer, SVNSLC_NUMCOLUMNS);

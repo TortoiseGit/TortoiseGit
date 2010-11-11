@@ -129,10 +129,10 @@ void ColumnManager::ReadSettings
     registryPrefix 
         = _T("Software\\TortoiseGit\\StatusColumns\\") + containerName;
 
-    // we accept settings version 2 only
+    // we accept settings version 3 only
     // (version 1 used different placement of hidden columns)
 
-	bool valid = (DWORD)CRegDWORD (registryPrefix + _T("Version"), 0xff) == 2;
+	bool valid = (DWORD)CRegDWORD (registryPrefix + _T("Version"), 0xff) == 3;
     if (valid)
     {
         // read (possibly different) column selection
@@ -191,10 +191,10 @@ void ColumnManager::ReadSettings
 
 void ColumnManager::WriteSettings() const
 {
-    // we are version 2
+    // we are version 3
 
 	CRegDWORD regVersion (registryPrefix + _T("Version"), 0, TRUE);
-    regVersion = 2;
+    regVersion = 3;
 
     // write (possibly different) column selection
 
