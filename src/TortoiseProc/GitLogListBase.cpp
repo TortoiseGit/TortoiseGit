@@ -488,7 +488,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		brush = ::CreateSolidBrush(colRef);
 		
 
-		if(!shortname.IsEmpty())
+		if(!shortname.IsEmpty() && (rt.left<rect.right) )
 		{
 			SIZE size;
 			memset(&size,0,sizeof(SIZE));
@@ -496,6 +496,14 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		
 			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
 			rt.right+=8;
+			
+			int textpos = DT_CENTER;
+
+			if(rt.right > rect.right)
+			{
+				rt.right = rect.right;
+				textpos =0;
+			}
 
 			//Fill interior of ref label
 			::FillRect(hdc, &rt, brush);
@@ -515,7 +523,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 				if (rItem.state & LVIS_SELECTED)
 					txtState = LISS_SELECTED;
 
-				m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, shortname, -1, DT_CENTER | DT_SINGLELINE | DT_VCENTER, 0, &rt);
+				m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, 0, &rt);
 			}
 			else
 			{
@@ -524,11 +532,11 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 				{
 					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
 					COLORREF   clrOld   = ::SetTextColor(hdc,clrNew);   
-					::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc,clrOld);
 				}else
 				{
-					::DrawText(hdc,shortname,shortname.GetLength(),&rt,DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
 				}
 			}
 
