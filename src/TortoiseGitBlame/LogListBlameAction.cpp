@@ -8,7 +8,7 @@
 
 IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 
-void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect)
+void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu)
 {	
 	POSITION pos = GetFirstSelectedItemPosition();
 	int indexNext = GetNextSelectedItem(pos);
