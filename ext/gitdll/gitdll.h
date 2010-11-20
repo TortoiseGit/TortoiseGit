@@ -164,4 +164,6 @@ GITDLL_API const char *git_resolve_ref(const char *path, unsigned char *sha1, in
 typedef int each_reflog_ent_fn(unsigned char *osha1, unsigned char *nsha1, const char *, unsigned long, int, const char *, void *);
 GITDLL_API int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data);
 GITDLL_API int git_deref_tag(const unsigned char *tagsha1,GIT_HASH refhash);
+
+GITDLL_API int git_checkout_file(const char *ref, const char *path, const char *outputpath);
 #endif

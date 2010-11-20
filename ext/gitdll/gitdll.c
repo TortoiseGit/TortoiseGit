@@ -867,3 +867,61 @@ int git_deref_tag(unsigned char *tagsha1, GIT_HASH refhash)
 
 	return -1;
 }
+
+static int update_some(const unsigned char *sha1, const char *base, int baselen,
+		const char *pathname, unsigned mode, int stage, void *context)
+{
+	struct cache_entry *ce;
+
+	ce = (struct cache_entry *)context;
+	
+	if (S_ISDIR(mode))
+		return READ_TREE_RECURSIVE;
+
+	hashcpy(ce->sha1, sha1);
+	memcpy(ce->name, base, baselen);
+	memcpy(ce->name + baselen, pathname, strlen(pathname));
+	ce->ce_flags = create_ce_flags(strlen(pathname)+baselen, 0);
+	ce->ce_mode = create_ce_mode(mode);
+	
+	return 0;
+}
+
+int git_checkout_file(const char *ref, const char *path, const char *outputpath)
+{
+	struct cache_entry *ce;
+	int ret;
+	GIT_HASH sha1;
+	struct tree * root;
+	struct checkout state;
+	char *match[2];
+	int start;
+	ret = get_sha1(ref, sha1);
+	if(ret)
+		return ret;
+
+	reprepare_packed_git();
+	root = parse_tree_indirect(sha1);
+
+	if(!root)
+		return -1;
+
+	ce = xcalloc(1, cache_entry_size(strlen(path)));
+	
+	match[0] = path;
+	match[1] = NULL;
+	ret = read_tree_recursive(root,"",0,0,match,update_some,ce);
+
+	if(ret)
+	{
+		free(ce);
+		return ret;
+	}
+	memset(&state, 0, sizeof(state));
+	state.force = 1;
+	state.refresh_cache = 0;
+
+	ret = write_entry(ce, outputpath, &state, 0);
+	free(ce);
+	return ret;
+}

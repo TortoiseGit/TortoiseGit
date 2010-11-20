@@ -4176,13 +4176,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					}
 				}
 				
-				CString format;
-				format = _T("git.exe cat-file blob \"%s:%s\"");
-				
-				CString cmd;
-				cmd.Format(format, this->m_CurrentVersion, file1.GetGitPathString());
-
-				if(g_Git.RunLogFile(cmd, (CString&)merge.GetWinPathString()))
+				if(g_Git.GetOneFile(m_CurrentVersion, file1, (CString&)merge.GetWinPathString()))
 				{
 					CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 				}
@@ -4191,8 +4185,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				{
 					CString str;
 					str.Format(_T("%s^%d"),this->m_CurrentVersion, parent1+1);
-					cmd.Format(format, str, file1.GetGitPathString());
-					if(g_Git.RunLogFile(cmd, (CString&)mine.GetWinPathString()))
+					
+					if(g_Git.GetOneFile(str, file1, (CString&)mine.GetWinPathString()))
 					{
 						CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					}
@@ -4202,8 +4196,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				{
 					CString str;
 					str.Format(_T("%s^%d"),this->m_CurrentVersion, parent2+1);
-					cmd.Format(format, str, file1.GetGitPathString());
-					if(g_Git.RunLogFile(cmd, (CString&)theirs.GetWinPathString()))
+					
+					if(g_Git.GetOneFile(str, file1, (CString&)theirs.GetWinPathString()))
 					{
 						CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					}
@@ -4219,8 +4213,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					{
 					}else
 					{
-						cmd.Format(format,output.Left(40), file1.GetGitPathString());
-						if(g_Git.RunLogFile(cmd,(CString&)base.GetWinPathString()))
+						if(g_Git.GetOneFile(output.Left(40), file1, (CString&)base.GetWinPathString()))
 						{
 							CMessageBox::Show(NULL, _T("Fail to get base file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 						}
@@ -5828,9 +5821,9 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 
 		}else
 		{
-			cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),m_CurrentVersion,path->GetGitPathString());
-			if(g_Git.RunLogFile(cmd,filename))
+			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
 			{
+				out.Format(_T("Fail checkout one file %s;%s"),m_CurrentVersion, path->GetWinPath());
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return;
 			}
@@ -5883,9 +5876,9 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 					m_CurrentVersion.Left(6),
 					filepath->GetFileExtension());
 		CString cmd,out;
-		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""),m_CurrentVersion,filepath->GetGitPathString());
-		if(g_Git.RunLogFile(cmd,file))
+		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
+			out.Format(_T("Fail checkout file %s to %s\n", filepath->GetGitPathString(), file));
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 			return;
 		}

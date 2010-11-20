@@ -1402,6 +1402,30 @@ int CGit::RefreshGitIndex()
 	}
 }
 
+int CGit::GetOneFile(CString Refname, CTGitPath &path, CString &outputfile)
+{
+	if(g_Git.m_IsUseGitDLL)
+	{
+		try
+		{
+			CStringA ref, patha, outa;
+			ref = CUnicodeUtils::GetMulti(Refname,CP_ACP);
+			patha = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_ACP);
+			outa = CUnicodeUtils::GetMulti(outputfile,CP_ACP);
+			::DeleteFile(outputfile);
+			return git_checkout_file((const char*)ref.GetBuffer(),(const char*)patha.GetBuffer(),(const char*)outa.GetBuffer());
+
+		}catch(...)
+		{
+			return -1;
+		}
+	}else
+	{
+		CString cmd;
+		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), Refname, path.GetGitPathString());
+		return g_Git.RunLogFile(cmd,outputfile);
+	}
+}
 void CEnvironment::CopyProcessEnvironment()
 {
 	TCHAR *p = GetEnvironmentStrings();
