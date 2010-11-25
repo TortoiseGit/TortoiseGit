@@ -225,7 +225,7 @@ public:
 	static BOOL Merge(CString *commit =NULL, int mode = 0);
 	static void RemoveTempMergeFile(CTGitPath &path);
 	static void EditNote(GitRev *hash);
-	static int GetMsysgitVersion();
+	static int GetMsysgitVersion(CString *versionstring=NULL);
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);

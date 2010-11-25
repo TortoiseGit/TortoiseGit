@@ -2578,18 +2578,38 @@ void CAppUtils::EditNote(GitRev *rev)
 	}
 }
 
-int CAppUtils::GetMsysgitVersion()
+int CAppUtils::GetMsysgitVersion(CString *versionstr)
 {
 	CString cmd;
 	CString progressarg; 
 	CString version;
-	cmd = _T("git.exe --version");
-	if(g_Git.Run(cmd, &version, CP_ACP))
+
+	CRegDWORD regTime =   CRegDWORD(_T("Software\\TortoiseGit\\git_file_time"));
+	CRegDWORD regVersion =CRegDWORD(_T("Software\\TortoiseGit\\git_cached_version")); 
+
+	CString gitpath = CGit::ms_LastMsysGitDir+_T("\\git.exe");
+	
+	__int64 time=0;
+	if(!g_Git.GetFileModifyTime(gitpath, &time) && !versionstr)
 	{
-		CMessageBox::Show(NULL,_T("git have not installed"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-		return false;
+		if((DWORD)time == regTime)
+		{
+			return regVersion;
+		}
 	}
-		
+
+	if(versionstr)
+		version = *versionstr;
+	else
+	{
+		cmd = _T("git.exe --version");
+		if(g_Git.Run(cmd, &version, CP_ACP))
+		{
+			CMessageBox::Show(NULL,_T("git have not installed"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			return false;
+		}
+	}
+
 	int start=0;
 	int ver;
 		
@@ -2610,6 +2630,9 @@ int CAppUtils::GetMsysgitVersion()
 
 	str = version.Tokenize(_T("."),start);
 	ver |= (_ttol(str)&0xFF);
+
+	regTime = time;
+	regVersion = ver;
 
 	return ver;
 }
