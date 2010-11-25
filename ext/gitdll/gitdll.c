@@ -925,3 +925,123 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	free(ce);
 	return ret;
 }
+struct config_buf
+{
+	char *buf;
+	char *key;
+	char *size;
+	int seen;
+};
+
+static int get_config(const char *key_, const char *value_, void *cb)
+{
+	struct config_buf *buf;
+	buf=(struct config_buf*)cb;
+	if(strcmp(key_, buf->key))
+		return 0;
+
+	strncpy(buf->buf,value_,buf->size);
+	return 0;
+	
+}
+int git_get_config(const char *key, char *buffer, int size, char *git_path)
+{
+	char *local,*global,*system_wide,*p;
+	struct config_buf buf;
+	buf.buf=buffer;
+	buf.size=size;
+	buf.seen = 0;
+	buf.key = key;
+
+	local=global=system_wide=NULL;
+	
+	//local = config_exclusive_filename;
+	if (!local) {
+		const char *home = getenv("HOME");
+		if(!home)
+			home=getenv("USERPROFILE");
+
+		local=p= git_pathdup("config");
+		if(git_path)
+		{	
+			local=xstrdup(mkpath("%s/%s", git_path, p));
+			free(p);
+		}
+		if (git_config_global() && home)
+			global = xstrdup(mkpath("%s/.gitconfig", home));
+		if (git_config_system())
+			system_wide = git_etc_gitconfig();
+	}
+
+	if ( !buf.seen)
+		git_config_from_file(get_config, local, &buf);
+	if (!buf.seen && global)
+		git_config_from_file(get_config, global, &buf);
+	if (!buf.seen && system_wide)
+		git_config_from_file(get_config, system_wide, &buf);
+
+	if(local)
+		free(local);
+	if(global)
+		free(global);
+	if(system_wide)
+		free(system_wide);
+
+	return !buf.seen;
+}
+
+int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
+{
+	char *local,*global,*system_wide,*p;
+	int ret;
+	local=global=system_wide=NULL;
+	
+	//local = config_exclusive_filename;
+	if (!local) {
+		char *home = getenv("HOME");
+		
+		if(!home)
+			home=getenv("USERPROFILE");
+
+		local=p= git_pathdup("config");
+		if(git_path)
+		{	
+			local=xstrdup(mkpath("%s/%s", git_path, p));
+			free(p);
+		}
+		if (git_config_global() && home)
+			global = xstrdup(mkpath("%s/.gitconfig", home));
+		if (git_config_system())
+			system_wide = git_etc_gitconfig();
+	}
+
+	switch(type)
+	{
+	case CONFIG_LOCAL:
+		config_exclusive_filename  = local;
+		break;
+	case CONFIG_GLOBAL:
+		config_exclusive_filename = global;
+		break;
+	case CONFIG_SYSTEM:
+		config_exclusive_filename = system_wide;
+		break;
+	default:
+		config_exclusive_filename = NULL;
+		break;
+	}
+
+	if(!config_exclusive_filename)
+		return -1;
+
+	ret = git_config_set(key, value);
+	
+	if(local)
+		free(local);
+	if(global)
+		free(global);
+	if(system_wide)
+		free(system_wide);
+
+	return ret;
+}

@@ -324,14 +324,72 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(CString name,int encoding)
+CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath)
 {
 	CString configValue;
-	CString cmd;
-	cmd.Format(L"git.exe config %s", name);
-	Run(cmd,&configValue,encoding);
 	int start = 0;
-	return configValue.Tokenize(_T("\n"),start);
+	if(this->m_IsUseGitDLL)
+	{
+		CheckAndInitDll();
+		CStringA key, value;
+		key =  CUnicodeUtils::GetMulti(name, encoding);
+		CStringA p;
+		if(GitPath)
+			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
+
+		if(git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096, p.GetBuffer()))
+			return _T("");
+		else
+		{
+			g_Git.StringAppend(&configValue,(BYTE*)value.GetBuffer(),encoding);
+		}
+
+	}else
+	{
+		CString cmd;
+		cmd.Format(L"git.exe config %s", name);
+		Run(cmd,&configValue,encoding);
+		return configValue.Tokenize(_T("\n"),start);
+	}
+}
+
+int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encoding, CString *GitPath)
+{
+	if(this->m_IsUseGitDLL)
+	{
+		CheckAndInitDll();	
+		CStringA keya, valuea;
+		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
+		valuea = CUnicodeUtils::GetMulti(value, encoding);
+		CStringA p;
+		if(GitPath)
+			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
+
+		return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type, p.GetBuffer());
+
+	}else
+	{
+		CString cmd;
+		CString option;
+		switch(type)
+		{
+		case CONFIG_GLOBAL:
+			option = _T("--global");
+			break;
+		case CONFIG_SYSTEM:
+			option = _T("--system");
+			break;
+		default:
+			break;
+		}
+		cmd.Format(_T("git.exe config %s %s \"%s\""), option, key, value);
+		CString out;
+		if(Run(cmd,&out,encoding))
+		{
+			return -1;
+		}
+	}
+	return 0;
 }
 
 

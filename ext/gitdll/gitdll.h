@@ -166,4 +166,17 @@ GITDLL_API int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, v
 GITDLL_API int git_deref_tag(const unsigned char *tagsha1,GIT_HASH refhash);
 
 GITDLL_API int git_checkout_file(const char *ref, const char *path, const char *outputpath);
+
+GITDLL_API int git_get_config(const char *key, char *buffer, int size, char* git_path);
+
+typedef enum
+{
+	CONFIG_LOCAL,
+	CONFIG_GLOBAL,
+	CONFIG_SYSTEM,
+
+}CONFIG_TYPE;
+
+GITDLL_API int get_set_config(const char *key, char *value, CONFIG_TYPE type, char *git_path);
+
 #endif
