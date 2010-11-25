@@ -110,6 +110,8 @@ public:
 
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, CString &filename);
+	
+	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(CString &from, CString &to);
 	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL);

@@ -941,6 +941,7 @@ static int get_config(const char *key_, const char *value_, void *cb)
 		return 0;
 
 	strncpy(buf->buf,value_,buf->size);
+	buf->seen = 1;
 	return 0;
 	
 }
@@ -962,7 +963,7 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 			home=getenv("USERPROFILE");
 
 		local=p= git_pathdup("config");
-		if(git_path)
+		if(git_path&&strlen(git_path))
 		{	
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
@@ -984,8 +985,8 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 		free(local);
 	if(global)
 		free(global);
-	if(system_wide)
-		free(system_wide);
+	//if(system_wide)
+	//	free(system_wide);
 
 	return !buf.seen;
 }
@@ -1004,7 +1005,7 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 			home=getenv("USERPROFILE");
 
 		local=p= git_pathdup("config");
-		if(git_path)
+		if(git_path&&strlen(git_path))
 		{	
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
@@ -1040,8 +1041,8 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		free(local);
 	if(global)
 		free(global);
-	if(system_wide)
-		free(system_wide);
+	//if(system_wide)
+	//	free(system_wide);
 
 	return ret;
 }

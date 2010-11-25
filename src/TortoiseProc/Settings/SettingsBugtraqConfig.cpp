@@ -82,69 +82,62 @@ BOOL CSettingsBugtraqConfig::OnApply()
 	CString cmd,out;
 	if(m_ChangeMask & BUG_URL)
 	{
-		cmd.Format(_T("git.exe config bugtraq.url \"%s\""),m_URL);
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.url"),m_URL,CONFIG_LOCAL,CP_ACP))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 	}
-	out.Empty();
+	
 	if(m_ChangeMask & BUG_WARNING)
 	{
-		cmd.Format(_T("git.exe config bugtraq.warnifnoissue \"%s\""),(!this->m_bNWarningifnoissue)?_T("true"):_T("false"));
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.warnifnoissue"),(!this->m_bNWarningifnoissue)?_T("true"):_T("false")))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 
 	}
-	out.Empty();
+
 	if(m_ChangeMask & BUG_MESSAGE)
 	{
-		cmd.Format(_T("git.exe config bugtraq.message \"%s\""),this->m_Message);
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.message"),m_Message,CONFIG_LOCAL,g_Git.GetGitEncode(L"i18n.commitencoding")))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 
 	}
-	out.Empty();
+
 	if(m_ChangeMask & BUG_APPEND )
 	{
-		cmd.Format(_T("git.exe config bugtraq.append \"%s\""),(!this->m_bNAppend)?_T("true"):_T("false"));
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.append"),(!this->m_bNAppend)?_T("true"):_T("false")))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 
 	}
-	out.Empty();
+
 	if(m_ChangeMask & BUG_LABEL )
 	{
-		cmd.Format(_T("git.exe config bugtraq.label \"%s\""),this->m_Label);
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.label"),m_Label))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 
 	}
-	out.Empty();
+
 	if(m_ChangeMask &BUG_NUMBER )
 	{
-		cmd.Format(_T("git.exe config bugtraq.number \"%s\""),(!this->m_bNNumber)?_T("true"):_T("false"));
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.number"),(!this->m_bNNumber)?_T("true"):_T("false")))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 
 	}
-	out.Empty();
+
 	if(m_ChangeMask & BUG_LOGREGEX)
 	{
-		cmd.Format(_T("git.exe config bugtraq.logregex \"%s\""),this->m_Logregex);
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if(g_Git.SetConfigValue(_T("bugtraq.logregex"),m_Logregex))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 
 	}

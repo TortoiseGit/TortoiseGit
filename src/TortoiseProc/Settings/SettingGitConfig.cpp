@@ -21,7 +21,7 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_bAutoCrlf(FALSE)
 	, m_bSafeCrLf(FALSE)
 {
-
+	m_ChangeMask=0;
 }
 
 CSettingGitConfig::~CSettingGitConfig()
@@ -89,6 +89,7 @@ void CSettingGitConfig::OnEnChangeGitUsername()
     // with the ENM_CHANGE flag ORed into the mask.
 
     // TODO:  Add your control notification handler code here
+	m_ChangeMask|=GIT_NAME;
     SetModified();
 }
 
@@ -100,57 +101,61 @@ void CSettingGitConfig::OnEnChangeGitUseremail()
     // with the ENM_CHANGE flag ORed into the mask.
 
     // TODO:  Add your control notification handler code here
+	m_ChangeMask|=GIT_EMAIL;
     SetModified();
 }
 
 BOOL CSettingGitConfig::OnApply()
 {
-    CString cmd, out,global;
+    CString cmd, out;
+	CONFIG_TYPE type=CONFIG_LOCAL;
     this->UpdateData(FALSE);
 	
 	if(this->m_bGlobal)
-		global = _T(" --global ");
+		type = CONFIG_GLOBAL;
 
-    cmd.Format(_T("git.exe config %s user.name \"%s\""),global,this->m_UserName);
-	if(g_Git.Run(cmd,&out,CP_ACP))
-	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-		return FALSE;
-	}
-	out.Empty();
-    cmd.Format(_T("git.exe config %s user.email \"%s\""),global,this->m_UserEmail);
-	if(g_Git.Run(cmd,&out,CP_ACP))
-	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-		return FALSE;
-	}
+	if(m_ChangeMask&GIT_NAME)
+		if(g_Git.SetConfigValue(_T("user.name"), this->m_UserName,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
+		{
+			CMessageBox::Show(NULL,_T("Fail to save user name"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+	
+	if(m_ChangeMask&GIT_EMAIL)
+		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))	
+		{
+			CMessageBox::Show(NULL,_T("Fail to save user email"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
 
-	out.Empty();
-	cmd.Format(_T("git.exe config %s core.autocrlf \"%s\""),global,this->m_bAutoCrlf?_T("true"):_T("false"));
-	if(g_Git.Run(cmd,&out,CP_ACP))
-	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-		return FALSE;
-	}
+	if(m_ChangeMask&GIT_CRLF)
+		if(g_Git.SetConfigValue(_T("core.autocrlf"), this->m_bAutoCrlf?_T("true"):_T("false"),type))
+		{
+			CMessageBox::Show(NULL,_T("Fail to save autocrlf"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
 
-	out.Empty();
-	cmd.Format(_T("git.exe config %s core.safecrlf \"%s\""),global,this->m_bSafeCrLf?_T("true"):_T("false"));
-	if(g_Git.Run(cmd,&out,CP_ACP))
-	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-		return FALSE;
-	}
+	if(m_ChangeMask&GIT_SAFECRLF)
+		if(g_Git.SetConfigValue(_T("core.safecrlf"), this->m_bSafeCrLf?_T("true"):_T("false"),type))
+		{
+			CMessageBox::Show(NULL,_T("Fail to save safecrlf"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+
+	m_ChangeMask=0;
     SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
 void CSettingGitConfig::OnBnClickedCheckAutocrlf()
 {
 	// TODO: Add your control notification handler code here
+	m_ChangeMask|=GIT_CRLF;
 	SetModified();
 }
 
 void CSettingGitConfig::OnBnClickedCheckSafecrlf()
 {
 	// TODO: Add your control notification handler code here
+	m_ChangeMask|=GIT_SAFECRLF;
 	SetModified();
 }

@@ -317,7 +317,7 @@ int CGit::Run(CString cmd, CString* output,int code)
 
 CString CGit::GetUserName(void)
 {
-	return GetConfigValue(L"user.name", CP_ACP);
+	return GetConfigValue(L"user.name", this->GetGitEncode(L"i18n.commitencoding"));
 }
 CString CGit::GetUserEmail(void)
 {
@@ -338,10 +338,11 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath)
 			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
 
 		if(git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096, p.GetBuffer()))
-			return _T("");
+			return CString();
 		else
 		{
 			g_Git.StringAppend(&configValue,(BYTE*)value.GetBuffer(),encoding);
+			return configValue.Tokenize(_T("\n"),start);
 		}
 
 	}else
@@ -1560,5 +1561,16 @@ void CEnvironment::SetEnv(TCHAR *name, TCHAR* value)
 		i++;
 		it= begin()+i;
 	}
+
+}
+
+int CGit::GetGitEncode(TCHAR* configkey)
+{
+	CString str=GetConfigValue(configkey);
+
+	if(str.IsEmpty())
+			return CP_UTF8;
+	
+	return CUnicodeUtils::GetCPCode(str);	
 
 }

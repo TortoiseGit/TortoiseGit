@@ -21,7 +21,15 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
     BOOL OnApply();
-
+	
+	int m_ChangeMask;
+	enum
+	{
+		GIT_NAME=0x1,
+		GIT_EMAIL=0x2,
+		GIT_CRLF=0x4,
+		GIT_SAFECRLF=0x8,
+	};
 	DECLARE_MESSAGE_MAP()
 public:
     CString m_UserName;
