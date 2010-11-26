@@ -1079,7 +1079,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	switch (m_ctrlSubmodule.GetCurrentEntry())
 	{
 	case 0:
-		cmd=_T("git.exe submodule update");
+		cmd=_T("git.exe submodule update --init");
 		break;
 	case 1:
 		cmd=_T("git.exe submodule init");
