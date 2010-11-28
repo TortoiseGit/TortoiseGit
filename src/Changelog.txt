@@ -1,3 +1,45 @@
+= Release 1.5.9.0 =
+== Features ==
+
+ * #220: Enhancement, support creating bare repositories
+
+ * Improve log dialog
+   Add "checkout to branch" menu at log dialog
+   Show icon for sub menu at log dialog
+   Show bisect flag at log dialog
+ 
+ * Support multi-parent diff
+   Enhance GNU Diff for merge commit by choose Parent.
+   Add gnu diff combine option for merge commit
+   Support compare 1st parent, 2nd parent at merge commit
+   Show diff with multi parent at merge commit at log dialog
+   Support multi parent compare with udiff and view diff
+   Show merged file group at log dialog
+   show combine udiff at merged files
+   Add Three way diff for merge commit at log dialog
+
+ * Compare multi parent at reflog log dialog
+
+ * Add "Show log" in reflog context menu
+ 
+ * Add --init in Submodule update from sync dialog
+
+== Bug Fix ==
+ * Fixed issue #270: Clone fails: bash: X.X.X.X: command not found
+ * Fixed issue #568: push using ssh private key with a password fails the first time
+ * Fixed issue #577: Commit warning "svn:externals"
+ * Fixed issue #586: Ampersand in log description underlines next character
+ * Fixed issue #323: GIT SVN dcommit --rmdir
+ * Fix stash list can't show stash at reflog default
+ * Fixed issue #603: Columns not sorted in Compare revisions dialog box
+ * Fixed issue #598: Background color of log messages changed when mouse is over tag or branch indicator
+ * Fixed issue #616: Problem encoding Cyrillic characters in Author name
+ * Fixed issue #612: "Copy all information to clipboard" copies incorrect header
+ * Fixed issue #602: Rebase shows overlapping branches
+ * Fixed issue #542: Difference between line endings in compared files (external Diff Viewer)
+ * Fixed issue #468: Non-ASCII characters in user info aren't stored correctly
+ * Fixed issue #593: Fetch and push fails with TortoiseGit but succeeds with git bash
+
 = Release 1.5.8.0 =
 == Bug Fix ==
  * Fixed issue #571: missing annotated  tags display in log dialog
