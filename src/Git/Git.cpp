@@ -330,11 +330,22 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath)
 	int start = 0;
 	if(this->m_IsUseGitDLL)
 	{
-		CheckAndInitDll();
+		CString *git_path=NULL;
+	
+		try
+		{
+			CTGitPath path;
+
+			CheckAndInitDll();
+			git_path = GitPath;
+
+		}catch(...)
+		{
+		}
 		CStringA key, value;
 		key =  CUnicodeUtils::GetMulti(name, encoding);
 		CStringA p;
-		if(GitPath)
+		if(git_path)
 			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
 
 		if(git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096, p.GetBuffer()))
