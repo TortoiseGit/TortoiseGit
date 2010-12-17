@@ -1,3 +1,8 @@
+= Release 1.6.0.0 =
+== Bug Fix ==
+ * Fixed issue #639: Tortoise Git crashes on Settings | Git | Config dialogue
+ * Fixed issue #640: Sentence is grammatically poor on Windows installer
+
 = Release 1.5.9.0 =
 == Features ==
 
