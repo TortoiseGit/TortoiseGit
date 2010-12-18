@@ -1478,6 +1478,7 @@ int CGit::GetOneFile(CString Refname, CTGitPath &path, CString &outputfile)
 	{
 		try
 		{
+			g_Git.CheckAndInitDll();
 			CStringA ref, patha, outa;
 			ref = CUnicodeUtils::GetMulti(Refname,CP_ACP);
 			patha = CUnicodeUtils::GetMulti(path.GetGitPathString(), CP_ACP);
