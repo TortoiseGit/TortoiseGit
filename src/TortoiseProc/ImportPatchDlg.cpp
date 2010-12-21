@@ -25,23 +25,92 @@ void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PATCH,m_cList);
+	DDX_Control(pDX, IDC_AM_SPLIT, m_wndSplitter);
+}
+void CImportPatchDlg::AddAmAnchor()
+{
+	AddAnchor(IDC_AM_TAB,TOP_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_LIST_PATCH, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_AM_SPLIT, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_ADD, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_UP, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_DOWN, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_REMOVE, TOP_RIGHT);
+	
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
+	AddAnchor(IDC_AM_DUMY_TAB, TOP_LEFT, BOTTOM_RIGHT);
+
+	this->AddOthersToAnchor();
+}
+
+void CImportPatchDlg::SetSplitterRange()
+{
+	if ((m_cList)&&(m_ctrlTabCtrl))
+	{
+		CRect rcTop;
+		m_cList.GetWindowRect(rcTop);
+		ScreenToClient(rcTop);
+		CRect rcMiddle;
+		m_ctrlTabCtrl.GetWindowRect(rcMiddle);
+		ScreenToClient(rcMiddle);
+		if (rcMiddle.Height() && rcMiddle.Width())
+			m_wndSplitter.SetRange(rcTop.top+160, rcMiddle.bottom-160);
+	}
 }
 
 BOOL CImportPatchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	
+	CRect rectDummy;
 
-	AddAnchor(IDC_LIST_PATCH, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_BUTTON_ADD, TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_UP, TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_DOWN, TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_REMOVE, TOP_RIGHT);
+	GetClientRect(m_DlgOrigRect);
+	m_cList.GetClientRect(m_PatchListOrigRect);
 
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	CWnd *pwnd=this->GetDlgItem(IDC_AM_DUMY_TAB);
+	pwnd->GetWindowRect(&rectDummy);
+	this->ScreenToClient(rectDummy);
 
-	this->AddOthersToAnchor();
+	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_AM_TAB))
+	{
+		TRACE0("Failed to create output tab window\n");
+		return FALSE;      // fail to create
+	}
+	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
+	// Create output panes:
+	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+
+	if( ! this->m_PatchCtrl.Create(_T("Scintilla"),_T("source"),0,rectDummy,&m_ctrlTabCtrl,0,0) )
+	{
+		TRACE0("Failed to create log message control");
+		return FALSE;
+	}
+	m_PatchCtrl.Init(0);
+	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
+
+	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+
+	if (!m_wndOutput.Create(_T("Scintilla"),_T("source"),0,rectDummy, &m_ctrlTabCtrl, 0,0) )
+	{
+		TRACE0("Failed to create output windows\n");
+		return -1;      // fail to create
+	}
+	m_wndOutput.Init(0);
+	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
+	
+	m_tooltips.Create(this);
+	
+	//m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
+	//m_tooltips.AddTool(IDC_REBASE_ABORT,IDS_REBASE_ABORT_TT);
+	
+	m_ctrlTabCtrl.AddTab(&m_PatchCtrl,_T("Patch"),1);
+	m_ctrlTabCtrl.AddTab(&m_wndOutput,_T("Log"),2);
+
+	AddAmAnchor();
 
 	m_PathList.SortByPathname(true);
 	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
@@ -52,7 +121,25 @@ BOOL CImportPatchDlg::OnInitDialog()
 		m_cList.SetCheck(0,true);
 	}
 
-	
+	DWORD yPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
+	RECT rcDlg, rcLogMsg, rcFileList;
+	GetClientRect(&rcDlg);
+	m_cList.GetWindowRect(&rcLogMsg);
+	ScreenToClient(&rcLogMsg);
+	this->m_ctrlTabCtrl.GetWindowRect(&rcFileList);
+	ScreenToClient(&rcFileList);
+	if (yPos)
+	{
+		RECT rectSplitter;
+		m_wndSplitter.GetWindowRect(&rectSplitter);
+		ScreenToClient(&rectSplitter);
+		int delta = yPos - rectSplitter.top;
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
+		{
+			m_wndSplitter.SetWindowPos(NULL, 0, yPos, 0, 0, SWP_NOSIZE);
+			DoSize(delta);
+		}
+	}
 
 	//CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), nID);
 
@@ -60,6 +147,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	this->GetWindowText(title);
 	this->SetWindowText(title+_T(" - ")+g_Git.m_CurrentDir);
 	EnableSaveRestore(_T("ImportDlg"));
+
+	SetSplitterRange();
 
 	return TRUE;
 }
@@ -71,6 +160,8 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN, &CImportPatchDlg::OnBnClickedButtonDown)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CImportPatchDlg::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
+	ON_STN_CLICKED(IDC_AM_SPLIT, &CImportPatchDlg::OnStnClickedAmSplit)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -173,6 +264,8 @@ void CImportPatchDlg::OnBnClickedOk()
 {
 	m_PathList.Clear();
 
+	SaveSplitterPos();
+
 	for(int i=0;i<m_cList.GetItemCount();i++)
 	{
 		if(m_cList.GetCheck(i))
@@ -183,4 +276,74 @@ void CImportPatchDlg::OnBnClickedOk()
 		}
 	}
 	OnOK();
+}
+
+void CImportPatchDlg::OnStnClickedAmSplit()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CImportPatchDlg::DoSize(int delta)
+{
+	this->RemoveAllAnchors();
+
+	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LIST_PATCH), delta, CW_TOPALIGN);
+	//CSplitterControl::ChangeHeight(GetDlgItem(), delta, CW_TOPALIGN);
+	CSplitterControl::ChangeHeight(GetDlgItem(IDC_AM_TAB), -delta, CW_BOTTOMALIGN);
+	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_WHITE_SPACE),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_AUTORETRY),0,delta);
+	
+	this->AddAmAnchor();
+	// adjust the minimum size of the dialog to prevent the resizing from
+	// moving the list control too far down.
+	CRect rcLogMsg;
+	m_cList.GetClientRect(rcLogMsg);
+	SetMinTrackSize(CSize(m_DlgOrigRect.Width(), m_DlgOrigRect.Height()-m_PatchListOrigRect.Height()+rcLogMsg.Height()));
+
+	SetSplitterRange();
+//	m_CommitList.Invalidate();
+
+//	GetDlgItem(IDC_LOGMESSAGE)->Invalidate();
+
+	this->m_ctrlTabCtrl.Invalidate();
+	
+}
+
+void CImportPatchDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CResizableStandAloneDialog::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+	SetSplitterRange();
+}
+
+LRESULT CImportPatchDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	switch (message) {
+	case WM_NOTIFY:
+		if (wParam == IDC_AM_SPLIT)
+		{ 
+			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+			DoSize(pHdr->delta);
+		}
+		break;
+	}
+
+	return CResizableStandAloneDialog::DefWindowProc(message, wParam, lParam);
+}
+
+void CImportPatchDlg::SaveSplitterPos()
+{
+	if (!IsIconic())
+	{
+		CRegDWORD regPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
+		RECT rectSplitter;
+		m_wndSplitter.GetWindowRect(&rectSplitter);
+		ScreenToClient(&rectSplitter);
+		regPos = rectSplitter.top;
+	}
 }
