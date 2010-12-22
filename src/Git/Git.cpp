@@ -369,7 +369,13 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 {
 	if(this->m_IsUseGitDLL)
 	{
-		CheckAndInitDll();	
+		try
+		{
+			CheckAndInitDll();
+
+		}catch(...)
+		{
+		}
 		CStringA keya, valuea;
 		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
 		valuea = CUnicodeUtils::GetMulti(value, encoding);
