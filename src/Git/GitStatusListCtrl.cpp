@@ -1447,7 +1447,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	}
 	// relative path
 	CString rename;
-	rename.Format(_T("(from %s)"),GitPath->GetGitOldPathString());
+	rename.Format(_T(" (from %s)"),GitPath->GetGitOldPathString());
 	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 		entryname+=rename;
 	
