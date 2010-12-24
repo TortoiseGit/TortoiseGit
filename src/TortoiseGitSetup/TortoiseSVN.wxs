@@ -25,7 +25,7 @@
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
 
 			<!-- flag is set if the install will trigger an upgrade of an existing install -->
-			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" />
+			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
     </Upgrade>
 
 		<Media Id="1" Cabinet="TSVN.cab" EmbedCab="yes" CompressionLevel="high" />

@@ -23,7 +23,7 @@
 
     <Upgrade Id="E973E6F7-CB9B-4f9e-9C04-52FE03F19BF2" >
       <!-- flag is set if the install will trigger an upgrade of an existing install -->
-      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" />
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
     </Upgrade>
 
 	<Property Id="TSVN">
