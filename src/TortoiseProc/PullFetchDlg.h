@@ -37,6 +37,7 @@ public:
 
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnBnClickedOk();
+	void Refresh();
 	CString m_RemoteURL;
 	CString m_RemoteBranchName;
     afx_msg void OnStnClickedRemoteManage();
