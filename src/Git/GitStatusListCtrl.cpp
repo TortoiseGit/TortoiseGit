@@ -4127,10 +4127,12 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	}else
 	{
 		GitRev rev;
-		if(rev.GetCommit(m_CurrentVersion+_T("~1")))
+		if(rev.GetCommit(m_CurrentVersion+_T("~1")) || (file1.m_Action == file1.LOGACTIONS_ADDED))
 		{
 			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
 
+		} else if (file1.m_Action == file1.LOGACTIONS_DELETED) {
+			CGitDiff::DiffNull(&file1,m_CurrentVersion+_T("~1"),false);
 		}else
 		{
 			if( file1.m_ParentNo & MERGE_MASK)
