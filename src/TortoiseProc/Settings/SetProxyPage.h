@@ -49,7 +49,6 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedEnable();
 	afx_msg void OnBnClickedSshbrowse();
-	afx_msg void OnBnClickedEditservers();
 
 	void EnableGroup(BOOL b);
 
