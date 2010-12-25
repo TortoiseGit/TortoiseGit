@@ -9,6 +9,8 @@
 #include "GitAdminDir.h"
 #include "MessageBox.h"
 #include "ProjectProperties.h"
+#include "AppUtils.h"
+#include "PathUtils.h"
 // CSettingGitConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
@@ -45,6 +47,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
     ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
 	ON_BN_CLICKED(IDC_CHECK_SAFECRLF, &CSettingGitConfig::OnBnClickedCheckSafecrlf)
+	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitConfig::OnInitDialog()
@@ -158,4 +161,17 @@ void CSettingGitConfig::OnBnClickedCheckSafecrlf()
 	// TODO: Add your control notification handler code here
 	m_ChangeMask|=GIT_SAFECRLF;
 	SetModified();
+}
+
+void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
+{
+	TCHAR buf[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, buf);
+	CString path = buf;
+	path += _T("\\.gitconfig");
+	CString sCmd;
+	// use Notepad2 because of LineEndings
+	sCmd.Format(_T("\"%s\" \"%s\""),
+		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("notepad2.exe")), path);
+	CAppUtils::LaunchApplication(sCmd, NULL, false);
 }
