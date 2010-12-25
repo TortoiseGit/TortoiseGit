@@ -213,6 +213,7 @@ void CPullFetchDlg::OnStnClickedRemoteManage()
 {
     // TODO: Add your control notification handler code here
     CAppUtils::LaunchRemoteSetting();
+	Refresh();
 }
 
 void CPullFetchDlg::OnBnClickedButtonBrowseRef()

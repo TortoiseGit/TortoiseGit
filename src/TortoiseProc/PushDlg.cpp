@@ -241,6 +241,7 @@ void CPushDlg::OnBnClickedRemoteManage()
 {
     // TODO: Add your control notification handler code here
     CAppUtils::LaunchRemoteSetting();
+	Refresh();
 }
 
 void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
