@@ -5,6 +5,7 @@
 #include "TortoiseProc.h"
 #include "ImportPatchDlg.h"
 #include "git.h"
+#include "MessageBox.h"
 
 // CImportPatchDlg dialog
 
@@ -14,6 +15,11 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CImportPatchDlg::IDD, pParent)
 {
 	m_cList.m_ContextMenuMask &=~ m_cList.GetMenuMask(CPatchListCtrl::MENU_APPLY);
+
+	m_CurrentItem =0;
+
+	m_bExitThread = false;
+	m_bThreadRunning =false;
 }
 
 CImportPatchDlg::~CImportPatchDlg()
@@ -260,22 +266,49 @@ void CImportPatchDlg::OnBnClickedButtonRemove()
 	}
 }
 
+UINT CImportPatchDlg::PatchThread()
+{
+	for(int i=m_CurrentItem;i<m_cList.GetItemCount();i++)
+	{
+		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING);
+
+		{
+			Sleep(1000);
+		}
+
+		if(m_cList.GetCheck(i))
+		{
+			m_cList.SetItemData(i, i&1? CPatchListCtrl::STATUS_APPLY_SUCCESS:CPatchListCtrl::STATUS_APPLY_FAIL);
+
+		}else
+		{
+			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
+		}
+
+		m_CurrentItem++;
+
+		CRect rect;
+		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
+		this->m_cList.InvalidateRect(rect);
+	}
+	
+	EnableInputCtrl(true);
+
+	return 0;
+}
+
 void CImportPatchDlg::OnBnClickedOk()
 {
 	m_PathList.Clear();
 
 	SaveSplitterPos();
 
-	for(int i=0;i<m_cList.GetItemCount();i++)
+	EnableInputCtrl(false);
+	if ( (m_LoadingThread=AfxBeginThread(ThreadEntry, this)) ==NULL)
 	{
-		if(m_cList.GetCheck(i))
-		{
-			CTGitPath path;
-			path.SetFromWin(m_cList.GetItemText(i,0));
-			m_PathList.AddPath(path);
-		}
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
-	OnOK();
 }
 
 void CImportPatchDlg::OnStnClickedAmSplit()
@@ -346,4 +379,16 @@ void CImportPatchDlg::SaveSplitterPos()
 		ScreenToClient(&rectSplitter);
 		regPos = rectSplitter.top;
 	}
+	
+}
+
+
+void CImportPatchDlg::EnableInputCtrl(BOOL b)
+{
+	this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(b);
+	this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(b);
+	this->GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(b);
+	this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(b);
+	this->GetDlgItem(IDOK)->EnableWindow(b);
+
 }

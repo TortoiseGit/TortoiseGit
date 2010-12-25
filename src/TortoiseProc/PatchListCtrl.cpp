@@ -16,16 +16,26 @@ IMPLEMENT_DYNAMIC(CPatchListCtrl, CListCtrl)
 CPatchListCtrl::CPatchListCtrl()
 {
 	m_ContextMenuMask=0xFFFFFFFF;
+	
+	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+	LOGFONT lf = {0};
+	GetObject(hFont, sizeof(LOGFONT), &lf);
+	lf.lfWeight = FW_BOLD;
+	m_boldFont = CreateFontIndirect(&lf);
+
 }
 
 CPatchListCtrl::~CPatchListCtrl()
 {
+	if (m_boldFont)
+		DeleteObject(m_boldFont);
 }
 
 
 BEGIN_MESSAGE_MAP(CPatchListCtrl, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, &CPatchListCtrl::OnNMDblclk)
 	ON_WM_CONTEXTMENU()
+	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, &CPatchListCtrl::OnNMCustomdraw)
 END_MESSAGE_MAP()
 
 
@@ -147,4 +157,60 @@ int CPatchListCtrl::LaunchProc(CString& command)
 	cmd += _T("\" /deletepathfile");
 	CAppUtils::LaunchApplication(cmd, IDS_ERR_PROC,false);
 	return 0;
+}
+
+void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	NMLVCUSTOMDRAW *pNMCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+
+	switch (pNMCD->nmcd.dwDrawStage)
+	{
+	case CDDS_PREPAINT:
+		{
+			*pResult = CDRF_NOTIFYITEMDRAW;
+			return;
+		}
+		break;
+	case CDDS_ITEMPREPAINT:
+		{
+			// This is the prepaint stage for an item. Here's where we set the
+			// item's text color. 
+			
+			// Tell Windows to send draw notifications for each subitem.
+			*pResult = CDRF_NOTIFYSUBITEMDRAW;
+
+			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
+
+			DWORD data = this->GetItemData(pNMCD->nmcd.dwItemSpec);
+			if(data == STATUS_APPLY_FAIL || data ==	STATUS_APPLY_SUCCESS || data == STATUS_APPLY_SKIP)
+			{
+				pNMCD->clrTextBk = RGB(225,225,225);
+			}
+
+			switch(data)
+			{
+			case STATUS_APPLY_SUCCESS:
+				pNMCD->clrText = RGB(0,128,0);
+				break;
+			case STATUS_APPLY_FAIL:
+				pNMCD->clrText = RGB(255,0,0);
+				break;
+			case STATUS_APPLY_SKIP:
+				pNMCD->clrText = RGB(128,64,0	);
+				break;
+			}
+
+			if(data == STATUS_APPLYING)
+			{
+				SelectObject(pNMCD->nmcd.hdc, m_boldFont);
+				*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+			}
+
+		}
+		break;
+	}
+	*pResult = CDRF_DODEFAULT;
 }

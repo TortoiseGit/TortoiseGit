@@ -21,6 +21,19 @@ public:
 	CImportPatchDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CImportPatchDlg();
 
+	int m_CurrentItem;
+
+	volatile LONG		m_bExitThread;
+	volatile LONG 		m_bThreadRunning;
+	CWinThread*			m_LoadingThread;
+
+	static UINT ThreadEntry(LPVOID pVoid)
+	{
+		return ((CImportPatchDlg*)pVoid)->PatchThread();
+	}
+
+	UINT PatchThread();
+
 // Dialog Data
 	enum { IDD = IDD_APPLY_PATCH_LIST };
 
@@ -54,6 +67,8 @@ public:
 	afx_msg void OnBnClickedButtonDown();
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedOk();
+
+	void EnableInputCtrl(BOOL b);
 
 	CTGitPathList m_PathList;
 	afx_msg void OnStnClickedAmSplit();
