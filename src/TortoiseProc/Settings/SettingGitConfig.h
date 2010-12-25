@@ -42,4 +42,6 @@ public:
 	BOOL m_bSafeCrLf;
 	afx_msg void OnBnClickedCheckAutocrlf();
 	afx_msg void OnBnClickedCheckSafecrlf();
+	afx_msg void OnBnClickedEditglobalgitconfig();
+	afx_msg void OnBnClickedEditlocalgitconfig();
 };
