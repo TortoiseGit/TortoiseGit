@@ -18,7 +18,7 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
-TCHAR g_Promptphrase[] = _T("Entry your OpenSSH passphrase:");
+TCHAR g_Promptphrase[] = _T("Enter your OpenSSH passphrase:");
 TCHAR *g_Prompt = NULL;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
