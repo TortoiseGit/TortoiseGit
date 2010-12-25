@@ -83,7 +83,6 @@ BEGIN_MESSAGE_MAP(CSetProxyPage, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_EXCEPTIONS, OnChange)
 	ON_BN_CLICKED(IDC_ENABLE, OnBnClickedEnable)
 	ON_BN_CLICKED(IDC_SSHBROWSE, OnBnClickedSshbrowse)
-	ON_BN_CLICKED(IDC_EDITSERVERS, OnBnClickedEditservers)
 END_MESSAGE_MAP()
 
 
@@ -239,16 +238,4 @@ void CSetProxyPage::OnBnClickedSshbrowse()
 		UpdateData(FALSE);
 		SetModified();
 	}
-}
-
-void CSetProxyPage::OnBnClickedEditservers()
-{
-#if 0
-	TCHAR buf[MAX_PATH];
-	SVN::EnsureConfigFile();
-	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
-	CString path = buf;
-	path += _T("\\Subversion\\servers");
-	CAppUtils::StartTextViewer(path);
-#endif
 }
