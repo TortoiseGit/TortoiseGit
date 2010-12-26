@@ -104,9 +104,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_RemoteBranch.SetCurSel(0);
 
 	if(m_IsPull)
-		this->SetWindowTextW(CString(_T("Pull - "))+WorkingDir);
+		this->SetWindowTextW(CString(_T("Pull - ")) + g_Git.m_CurrentDir);
 	else
-		this->SetWindowTextW(CString(_T("Fetch - "))+WorkingDir);
+		this->SetWindowTextW(CString(_T("Fetch - ")) + g_Git.m_CurrentDir);
 
 	Refresh();
 
