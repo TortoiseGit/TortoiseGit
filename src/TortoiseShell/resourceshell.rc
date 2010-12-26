@@ -350,7 +350,11 @@ BEGIN
     IDS_COLDESCMIMETYPE     "Shows the mime type of the versioned file"
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
-    IDS_MENUIGNOREMULTIPLEMASK "Ignore items by &extension"
+    IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"
+    IDS_MENUDELETEIGNOREMULTIPLE "Delete and &ignore %d items by name"
+    IDS_MENUDELETEIGNOREMULTIPLEMASK 
+                            "Delete and ignore %d items by &extension"
+    IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
     IDS_MENUPULL            "Pull..."
     IDS_MENUDESCPULL        "Pull"
     IDS_MENUPUSH            "Push..."
@@ -361,6 +365,8 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_MENUDESCDELETEIGNORE 
+                            "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
     IDS_MENUCLIPPASTE       "&Paste"
     IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."

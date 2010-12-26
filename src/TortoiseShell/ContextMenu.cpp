@@ -1122,7 +1122,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					}
 					
 					// handle special cases (sub menus)
-					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub))
+					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
 					{
 						InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags);
 						bMenuEntryAdded = true;
@@ -1346,6 +1346,21 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			case ShellMenuIgnoreCaseSensitive:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("ignore /pathfile:\"");
+				svnCmd += tempfile;
+				svnCmd += _T("\"");
+				svnCmd += _T(" /deletepathfile");
+				svnCmd += _T(" /onlymask");
+				break;
+			case ShellMenuDeleteIgnore:
+				tempfile = WriteFileListToTempFile();
+				svnCmd += _T("ignore /delete /pathfile:\"");
+				svnCmd += tempfile;
+				svnCmd += _T("\"");
+				svnCmd += _T(" /deletepathfile");
+				break;
+			case ShellMenuDeleteIgnoreCaseSensitive:
+				tempfile = WriteFileListToTempFile();
+				svnCmd += _T("ignore /delete /pathfile:\"");
 				svnCmd += tempfile;
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
@@ -2336,16 +2351,90 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		ignoresubmenu = CreateMenu();
 		if (itemStates & ITEMIS_ONLYONE)
 		{
-			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-			myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
-			myIDMap[idCmd++] = ShellMenuIgnore;
-
-			_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
-			if (_tcsrchr(ignorepath, '.'))
+			if (itemStates & ITEMIS_INSVN)
 			{
-				_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
-				stdstring verb = stdstring(maskbuf);
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
+				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
+
+				_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
+				if (_tcsrchr(ignorepath, '.'))
+				{
+					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					stdstring verb = stdstring(maskbuf);
+					myVerbsMap[verb] = idCmd - idCmdFirst;
+					myVerbsMap[verb] = idCmd;
+					myVerbsIDMap[idCmd - idCmdFirst] = verb;
+					myVerbsIDMap[idCmd] = verb;
+					myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnoreCaseSensitive;
+					myIDMap[idCmd++] = ShellMenuDeleteIgnoreCaseSensitive;
+				}
+			}
+			else
+			{
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
+				myIDMap[idCmd++] = ShellMenuIgnore;
+
+				_tcscpy_s(maskbuf, MAX_PATH, _T("*"));
+				if (_tcsrchr(ignorepath, '.'))
+				{
+					_tcscat_s(maskbuf, MAX_PATH, _tcsrchr(ignorepath, '.'));
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					stdstring verb = stdstring(maskbuf);
+					myVerbsMap[verb] = idCmd - idCmdFirst;
+					myVerbsMap[verb] = idCmd;
+					myVerbsIDMap[idCmd - idCmdFirst] = verb;
+					myVerbsIDMap[idCmd] = verb;
+					myIDMap[idCmd - idCmdFirst] = ShellMenuIgnoreCaseSensitive;
+					myIDMap[idCmd++] = ShellMenuIgnoreCaseSensitive;
+				}
+			}
+		}
+		else
+		{
+			if (itemStates & ITEMIS_INSVN)
+			{
+				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLE);
+				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				stdstring verb = stdstring(ignorepath);
+				myVerbsMap[verb] = idCmd - idCmdFirst;
+				myVerbsMap[verb] = idCmd;
+				myVerbsIDMap[idCmd - idCmdFirst] = verb;
+				myVerbsIDMap[idCmd] = verb;
+				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
+				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
+
+				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLEMASK);
+				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				verb = stdstring(ignorepath);
+				myVerbsMap[verb] = idCmd - idCmdFirst;
+				myVerbsMap[verb] = idCmd;
+				myVerbsIDMap[idCmd - idCmdFirst] = verb;
+				myVerbsIDMap[idCmd] = verb;
+				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnoreCaseSensitive;
+				myIDMap[idCmd++] = ShellMenuDeleteIgnoreCaseSensitive;
+			}
+			else
+			{
+				MAKESTRING(IDS_MENUIGNOREMULTIPLE);
+				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				stdstring verb = stdstring(ignorepath);
+				myVerbsMap[verb] = idCmd - idCmdFirst;
+				myVerbsMap[verb] = idCmd;
+				myVerbsIDMap[idCmd - idCmdFirst] = verb;
+				myVerbsIDMap[idCmd] = verb;
+				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
+				myIDMap[idCmd++] = ShellMenuIgnore;
+
+				MAKESTRING(IDS_MENUIGNOREMULTIPLEMASK);
+				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				verb = stdstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
 				myVerbsIDMap[idCmd - idCmdFirst] = verb;
@@ -2353,30 +2442,6 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnoreCaseSensitive;
 				myIDMap[idCmd++] = ShellMenuIgnoreCaseSensitive;
 			}
-		}
-		else
-		{
-			MAKESTRING(IDS_MENUIGNOREMULTIPLE);
-			_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
-			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-			stdstring verb = stdstring(ignorepath);
-			myVerbsMap[verb] = idCmd - idCmdFirst;
-			myVerbsMap[verb] = idCmd;
-			myVerbsIDMap[idCmd - idCmdFirst] = verb;
-			myVerbsIDMap[idCmd] = verb;
-			myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
-			myIDMap[idCmd++] = ShellMenuIgnore;
-
-			MAKESTRING(IDS_MENUIGNOREMULTIPLEMASK);
-			_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
-			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
-			verb = stdstring(ignorepath);
-			myVerbsMap[verb] = idCmd - idCmdFirst;
-			myVerbsMap[verb] = idCmd;
-			myVerbsIDMap[idCmd - idCmdFirst] = verb;
-			myVerbsIDMap[idCmd] = verb;
-			myIDMap[idCmd - idCmdFirst] = ShellMenuIgnoreCaseSensitive;
-			myIDMap[idCmd++] = ShellMenuIgnoreCaseSensitive;
 		}
 	}
 
@@ -2411,6 +2476,8 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		SecureZeroMemory(stringtablebuffer, sizeof(stringtablebuffer));
 		if (itemStates & ITEMIS_IGNORED)
 			GetMenuTextFromResource(ShellMenuUnIgnoreSub);
+		else if (itemStates & ITEMIS_INSVN)
+			GetMenuTextFromResource(ShellMenuDeleteIgnoreSub);
 		else
 			GetMenuTextFromResource(ShellMenuIgnoreSub);
 		menuiteminfo.dwTypeData = stringtablebuffer;

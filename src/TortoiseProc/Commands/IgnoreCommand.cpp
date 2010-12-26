@@ -35,7 +35,45 @@ bool IgnoreCommand::Execute()
 	}
 
 	bool ret = CAppUtils::IgnoreFile(pathList,bmask);
+
+	if (parser.HasKey(_T("delete")))
+	{
+		int key;
+
+		CString format;
+
+		if(parser.HasKey(_T("keep")))
+		{
+			// 2bd
+			format= _T("git.exe update-index --force-remove -- \"%s\"");
+		}else
+		{
+			format=_T("git.exe rm -r -f -- \"%s\"");
+		}
+
+		CString output;
+		CString cmd;
+		int nPath;
+		for(nPath = 0; nPath < pathList.GetCount(); nPath++)
+		{
+
+			cmd.Format(format,pathList[nPath].GetGitPathString());
+			if(g_Git.Run(cmd,&output,CP_ACP))
+			{
+				key=CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR|MB_OKCANCEL);
+				if(key == IDCANCEL)
+					return FALSE;
+
+			}
+		}
+
+		output.Format(_T("%d files removed"),nPath);
 		
+		CShellUpdater::Instance().AddPathsForUpdate(pathList);
+
+		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION|MB_OK);
+	}
+
 	CShellUpdater::Instance().AddPathsForUpdate(orgPathList);
 	CShellUpdater::Instance().Flush();
 

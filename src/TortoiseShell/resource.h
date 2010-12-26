@@ -213,6 +213,10 @@
 #define IDS_MENUDESCPUSH                348
 #define IDS_MENUDESCCLONE               349
 #define IDS_MENUDESCFETCH               350
+#define IDS_MENUDELETEIGNOREMULTIPLE    351
+#define IDS_MENUDELETEIGNOREMULTIPLEMASK 352
+#define IDS_MENUDELETEIGNORE            353
+#define IDS_MENUDESCDELETEIGNORE        354
 #define IDC_REVISION                    1001
 #define IDC_HEAD_HASH                   1001
 #define IDC_LOCKED                      1002
