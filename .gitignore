@@ -33,3 +33,5 @@ Debug64
 Release64
 *.patch
 bin-*
+/src/TortoiseShell/register.reg
+/src/TortoiseShell/register_recover.reg
