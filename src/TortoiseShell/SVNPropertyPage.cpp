@@ -278,13 +278,14 @@ void CGitPropertyPage::InitWorkfileView()
 	GitRev rev;
 		
 
-	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username);
-	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail);
-	SetDlgItemText(m_hwnd,IDC_CONFIG_AUTOCRLF,autocrlf);
-	SetDlgItemText(m_hwnd,IDC_CONFIG_SAFECRLF,safecrlf);
+	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username.Trim());
+	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail.Trim());
+	SetDlgItemText(m_hwnd,IDC_CONFIG_AUTOCRLF,autocrlf.Trim());
+	SetDlgItemText(m_hwnd,IDC_CONFIG_SAFECRLF,safecrlf.Trim());
 
-	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch);
-	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH,remotebranch);
+	SetDlgItemText(m_hwnd,IDC_SHELL_CURRENT_BRANCH,branch.Trim());
+	remotebranch.Trim().Replace(_T("\n"), _T("; "));
+	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH, remotebranch);
 
 	try
 	{
