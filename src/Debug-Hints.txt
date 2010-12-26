@@ -1,6 +1,6 @@
 Debugging hints
 
-Since TortoiseSVN is a shell extension it's not
+Since TortoiseGit is a shell extension it's not
 as easy to debug as normal applications. The
 TortoiseShell part is only a dll which is 
 loaded by the windows explorer. So the first
@@ -21,11 +21,11 @@ thing you need to do is:
   files so that the paths in it reflects
   your source paths exactly.
   Now if you doubleclick on register.reg 
-  the debug version of the TortoiseSVN.dll
+  the debug version of the TortoiseGit.dll
   get's registered. registerrelease.reg 
   registers the release version of the
-  TortoiseSVN.dll. Don't do it right now!
-- Start VS.NET and load the TortoiseSVN
+  TortoiseGit.dll. Don't do it right now!
+- Start VS.NET and load the TortoiseGit
   solution file. Set the TortoiseShell
   project as "startup project".
 - Close all running instances of windows
@@ -42,7 +42,7 @@ thing you need to do is:
   debugging via menu). The first time
   you do that VS.NET will ask you to
   enter an application to use with the
-  TortoiseSVN.dll - enter c:\windows\explorer.exe
+  TortoiseGit.dll - enter c:\windows\explorer.exe
   (or whatever path it is on your system).
 - Now you can set breakpoints and debug
   as you like.
@@ -62,13 +62,13 @@ thing you need to do is:
   explorer - this includes already running
   applications to open dialogs like "save as"!
 
-To debug the TortoiseProc part of TortoiseSVN
+To debug the TortoiseProc part of TortoiseGit
 proceed as with any normal application.
 
-To debug the TSVNCache exit the TSVNCache.exe
+To debug the TGitCache exit the TGitCache.exe
 process and proceed as with any normal
-application. Exiting TSVNCache.exe is necessary
-because only one instance of TSVNCache may run
-at a time. To exit the TSVNCache process set
-HKCU\Software\TortoiseSVN\CacheTrayIcon to 1 and
+application. Exiting TGitCache.exe is necessary
+because only one instance of TGitCache may run
+at a time. To exit the TGitCache process set
+HKCU\Software\TortoiseGit\CacheTrayIcon to 1 and
 call "Exit" in the context menu of the tray icon.

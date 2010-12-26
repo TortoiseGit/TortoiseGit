@@ -1,6 +1,3 @@
-// To build this file, execute "nant APIDocs"
-// After that, you can read the compiled version at TortoiseSVN\doc\output\TortoiseSVNAPI.chm
-
 /** 
 \page build Build instructions
 
@@ -32,7 +29,7 @@ You only have to do this once.
    This will allow you to build the subversion libraries and the
    SubWCRev, TortoiseBlame, TortoiseUDiff, TortoiseIDiff, CrashRpt
    and ResText projects only. You can not build the main parts of
-   TortoiseGit(shell extension, TortoiseProc, TSVNCache, TortoiseMerge)
+   TortoiseGit(shell extension, TortoiseProc, TGitCache, TortoiseMerge)
    with the Express Edition!
    - Install Visual C++ 2008 Express Edition.
      Download it from http://msdn.microsoft.com/vstudio/express/visualc/
