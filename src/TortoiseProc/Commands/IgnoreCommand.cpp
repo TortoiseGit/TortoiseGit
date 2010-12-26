@@ -42,9 +42,8 @@ bool IgnoreCommand::Execute()
 
 		CString format;
 
-		if(parser.HasKey(_T("keep")))
+		if(CMessageBox::Show(hwndExplorer, _T("Keep file locally?"), _T("TortoiseGit"), MB_ICONERROR|MB_YESNO) == IDYES)
 		{
-			// 2bd
 			format= _T("git.exe update-index --force-remove -- \"%s\"");
 		}else
 		{
