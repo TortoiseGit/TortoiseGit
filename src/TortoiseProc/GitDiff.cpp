@@ -118,13 +118,13 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd)
 
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
-							_T("NULL"),
+							pPath->GetGitPathString(),
 							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
 							,flags);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
 							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
-							,_T("NULL"),flags);
+							,pPath->GetGitPathString(),flags);
 
 	return 0;
 }
