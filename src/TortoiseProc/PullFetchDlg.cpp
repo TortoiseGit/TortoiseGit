@@ -108,17 +108,27 @@ BOOL CPullFetchDlg::OnInitDialog()
 	else
 		this->SetWindowTextW(CString(_T("Fetch - "))+WorkingDir);
 
-	STRING_VECTOR list;
-	
+	Refresh();
+
+	EnableSaveRestore(_T("PullFetchDlg"));
+    this->m_RemoteManage.SetURL(CString());
+	return TRUE;
+}
+
+void CPullFetchDlg::Refresh()
+{
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'),_T('_'));
+
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PullRemote\\")+WorkingDir));
-	m_RemoteReg = remote;
+	this->m_RemoteReg = remote;
 	int sel=0;
 
 	//Select pull-remote from current branch
 	CString currentBranch = g_Git.GetSymbolicRef();
 	CString configName;
 	configName.Format(L"branch.%s.remote", currentBranch);
-	CString pullRemote = m_configPullRemote = g_Git.GetConfigValue(configName);
+	CString pullRemote = this->m_configPullRemote = g_Git.GetConfigValue(configName);
 
 	//Select pull-branch from current branch
 	configName.Format(L"branch.%s.merge", currentBranch);
@@ -127,6 +137,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	if(pullRemote.IsEmpty())
 		pullRemote = remote;
+
+	STRING_VECTOR list;
 
 	if(!g_Git.GetRemoteList(list))
 	{	
@@ -138,10 +150,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 		}
 	}
 	m_Remote.SetCurSel(sel);
-
-	EnableSaveRestore(_T("PullFetchDlg"));
-    this->m_RemoteManage.SetURL(CString());
-	return TRUE;
 }
 // CPullFetchDlg message handlers
 
@@ -205,6 +213,7 @@ void CPullFetchDlg::OnStnClickedRemoteManage()
 {
     // TODO: Add your control notification handler code here
     CAppUtils::LaunchRemoteSetting();
+	Refresh();
 }
 
 void CPullFetchDlg::OnBnClickedButtonBrowseRef()

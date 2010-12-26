@@ -795,6 +795,7 @@ void CSyncDlg::OnBnClickedButtonManage()
 {
 	// TODO: Add your control notification handler code here
 	CAppUtils::LaunchRemoteSetting();
+	Refresh();
 }
 
 void CSyncDlg::Refresh()

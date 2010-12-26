@@ -707,12 +707,14 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 }
 bool CAppUtils::LaunchRemoteSetting()
 {
-    CString proc=CPathUtils::GetAppDirectory();
-    proc += _T("TortoiseProc.exe /command:settings");
-    proc += _T(" /path:\"");
-    proc += g_Git.m_CurrentDir;
-    proc += _T("\" /page:gitremote");
-    return LaunchApplication(proc, IDS_ERR_EXTDIFFSTART, false);
+	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &CTGitPath(g_Git.m_CurrentDir));
+	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
+	//dlg.SetTreeWidth(220);
+	dlg.m_DefaultPage = _T("gitremote");
+
+	dlg.DoModal();
+	dlg.HandleRestart();
+	return true;
 }
 /**
 * Launch the external blame viewer
