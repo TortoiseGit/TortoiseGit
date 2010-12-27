@@ -2532,9 +2532,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
 					}
-				//}
-				//if ( (wcStatus == git_wc_status_unversioned) || (wcStatus == git_wc_status_deleted) )
-				//{
+				}
+				if ( (wcStatus & CTGitPath::LOGACTIONS_UNVER || wcStatus & CTGitPath::LOGACTIONS_DELETED) )
+				{
 					if (m_dwContextMenus & SVNSLC_POPIGNORE)
 					{
 
