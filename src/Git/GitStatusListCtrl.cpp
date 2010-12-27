@@ -3152,6 +3152,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					SetRedraw(FALSE);
 
 					CAppUtils::IgnoreFile(ignorelist,true);
+					// TODO: add .gitignore to list if it's not already there
 					common=ignorelist.GetCommonRoot().GetGitPathString();
 
 					for (int i=0; i< GetItemCount(); ++i)
@@ -4061,7 +4062,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 
 	}else
 	{
-		if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty()))
+		if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty())) // m_Rev1 twice???
 			StartDiffTwo(pNMLV->iItem);
 		else
 			StartDiff(pNMLV->iItem);
