@@ -3152,7 +3152,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					SetRedraw(FALSE);
 
 					CAppUtils::IgnoreFile(ignorelist,true);
-					// TODO: add .gitignore to list if it's not already there
+
 					common=ignorelist.GetCommonRoot().GetGitPathString();
 
 					for (int i=0; i< GetItemCount(); ++i)
@@ -3169,7 +3169,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 						}
 					}
-					
+
+					CWnd* pParent = GetParent();
+					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+					{
+						pParent->SendMessage(SVNSLNM_NEEDSREFRESH);
+					}
+
 					SetRedraw(TRUE);
 				}
 #if 0
