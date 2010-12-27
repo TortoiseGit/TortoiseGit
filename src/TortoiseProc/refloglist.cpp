@@ -96,7 +96,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case REFLOG_MESSAGE: //Author
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_Subject, pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_Subject.Trim(), pItem->cchTextMax);
 		break;
 		
 	default:
