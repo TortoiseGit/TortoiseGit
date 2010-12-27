@@ -1397,12 +1397,13 @@ CTGitPath CTGitPathList::GetCommonRoot() const
 				backSlashPos = it->GetWinPathString().Find('\\', searchStartPos+1);
 				if ((backSlashPos < 0)&&(searchStartPos != it->GetWinPathString().GetLength()))
 					backSlashPos = it->GetWinPathString().GetLength();
+				sTempRoot = it->GetWinPathString().Left(backSlashPos+1);
 			}
-			else if (it->GetWinPathString().Find('\\', searchStartPos+1) != backSlashPos)
+			else if (it->GetWinPathString().Find('\\', searchStartPos+1) != backSlashPos || it->GetWinPathString().Left(backSlashPos+1) != sTempRoot.Left(backSlashPos+1))
 			{
 				if (it->GetWinPathString().Find('\\', searchStartPos+1) < 0)
 				{
-					if (it->GetWinPathString().GetLength() != backSlashPos)
+					if (it->GetWinPathString().GetLength() != backSlashPos || it->GetWinPathString().Left(backSlashPos+1) != sTempRoot.Left(backSlashPos+1))
 					{
 						bEqual = false;
 						break;
