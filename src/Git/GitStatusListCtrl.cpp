@@ -4056,6 +4056,9 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 
 	CTGitPath *file=(CTGitPath*)GetItemData(pNMLV->iItem);
 
+	if (file->m_Action == CTGitPath::LOGACTIONS_UNVER) {
+		return;
+	}
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
 	{
 		CAppUtils::ConflictEdit(*file,false,m_bIsRevertTheirMy);
