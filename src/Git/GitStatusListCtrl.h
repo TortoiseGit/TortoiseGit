@@ -330,8 +330,8 @@ public:
 
 			if (XPorLater)
 			{
-				temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
-				popup.AppendMenu(isGroundEnable? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
+				//temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
+				//popup.AppendMenu(isGroundEnable? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
 			}
 
 			if (AnyUnusedProperties())
