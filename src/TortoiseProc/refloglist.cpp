@@ -80,21 +80,21 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// Which column?
 	switch (pItem->iSubItem)
 	{
-	case this->REFLOG_HASH:	//Graphic
+	case this->REFLOG_HASH:
 		if (pLogEntry)
 		{
 			lstrcpyn(pItem->pszText,pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax);
 		}
 		break;
-	case REFLOG_REF: //action -- no text in the column
+	case REFLOG_REF:
 		if(pLogEntry)
 			lstrcpyn(pItem->pszText, pLogEntry->m_Ref, pItem->cchTextMax);
 		break;
-	case REFLOG_ACTION: //Message
+	case REFLOG_ACTION:
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_RefAction, pItem->cchTextMax);
 		break;
-	case REFLOG_MESSAGE: //Author
+	case REFLOG_MESSAGE:
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->m_Subject.Trim(), pItem->cchTextMax);
 		break;
