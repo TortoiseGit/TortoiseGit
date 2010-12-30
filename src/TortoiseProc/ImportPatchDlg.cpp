@@ -168,6 +168,7 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
 	ON_STN_CLICKED(IDC_AM_SPLIT, &CImportPatchDlg::OnStnClickedAmSplit)
 	ON_WM_SIZE()
+	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -272,6 +273,9 @@ UINT CImportPatchDlg::PatchThread()
 	{
 		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING);
 
+		if(m_bExitThread)
+			break;
+
 		{
 			Sleep(1000);
 		}
@@ -290,10 +294,14 @@ UINT CImportPatchDlg::PatchThread()
 		CRect rect;
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
+
+		UpdateOkCancelText();
+		
 	}
 	
 	EnableInputCtrl(true);
-
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+	UpdateOkCancelText();
 	return 0;
 }
 
@@ -303,12 +311,21 @@ void CImportPatchDlg::OnBnClickedOk()
 
 	SaveSplitterPos();
 
+	if(IsFinish())
+	{
+		this->OnOK();
+		return;
+	}
+
 	EnableInputCtrl(false);
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	InterlockedExchange(&this->m_bExitThread, FALSE);
 	if ( (m_LoadingThread=AfxBeginThread(ThreadEntry, this)) ==NULL)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
+
 }
 
 void CImportPatchDlg::OnStnClickedAmSplit()
@@ -391,4 +408,33 @@ void CImportPatchDlg::EnableInputCtrl(BOOL b)
 	this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(b);
 	this->GetDlgItem(IDOK)->EnableWindow(b);
 
+}
+
+void CImportPatchDlg::UpdateOkCancelText()
+{
+	if( !IsFinish() )
+	{
+		this->GetDlgItem(IDOK)->SetWindowText(_T("Apply"));
+		
+	}else
+	{
+		this->GetDlgItem(IDOK)->SetWindowText(_T("Ok"));
+		
+	}
+	
+	if(this->m_bThreadRunning)
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Abort"));
+	else	
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Cancel"));
+
+}
+void CImportPatchDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	if(this->m_bThreadRunning)
+	{
+		InterlockedExchange(&m_bExitThread,TRUE);
+
+	}else
+		OnCancel();
 }
