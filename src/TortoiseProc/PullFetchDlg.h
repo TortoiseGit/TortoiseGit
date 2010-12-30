@@ -32,6 +32,7 @@ public:
 	BOOL        m_IsPull;
     BOOL        m_bAutoLoad;
 	BOOL		m_bRebase;
+	BOOL		m_bPrune;
     BOOL        m_bAutoLoadEnable;
     CHyperLink  m_RemoteManage;
 

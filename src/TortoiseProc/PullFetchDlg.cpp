@@ -33,7 +33,7 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX,IDC_REMOTE_MANAGE, this->m_RemoteManage);
     DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
     DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
-
+	DDX_Check(pDX,IDC_CHECK_PRUNE,m_bPrune);
 }
 
 
@@ -57,6 +57,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
     AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,BOTTOM_RIGHT);
     AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
+	AddAnchor(IDC_CHECK_PRUNE,BOTTOM_LEFT);
 	AddAnchor(IDC_CHECK_REBASE,BOTTOM_LEFT);
     AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -89,8 +90,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!m_IsPull)
 		m_RemoteBranch.EnableWindow(FALSE);
 
-	if(m_IsPull)
+	if(m_IsPull) {
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
+	}
 
 	m_Other.SetURLHistory(TRUE);
 	m_Other.LoadHistory(_T("Software\\TortoiseGit\\History\\PullURLS"), _T("url"));

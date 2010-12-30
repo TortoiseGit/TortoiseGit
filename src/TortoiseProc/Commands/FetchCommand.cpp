@@ -50,6 +50,10 @@ bool FetchCommand::Execute()
 		if(ver >= 0x01070203) //above 1.7.0.2
 			arg = _T("--progress ");
 
+		if (dlg.m_bPrune) {
+			arg += _T("--prune ");
+		}
+
 		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 
