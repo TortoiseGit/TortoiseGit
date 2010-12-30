@@ -2493,6 +2493,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDSVNLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 					popup.AppendMenuIcon(IDSVNLC_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+					if (wcStatus &CTGitPath::LOGACTIONS_UNVER) {
+						popup.SetDefaultItem(IDSVNLC_OPEN, FALSE);
+					}
 				}
 				
 				if (m_dwContextMenus & SVNSLC_POPEXPLORE)
@@ -4063,6 +4066,7 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	CTGitPath *file=(CTGitPath*)GetItemData(pNMLV->iItem);
 
 	if (file->m_Action == CTGitPath::LOGACTIONS_UNVER) {
+		OpenFile(file, OPEN);
 		return;
 	}
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
