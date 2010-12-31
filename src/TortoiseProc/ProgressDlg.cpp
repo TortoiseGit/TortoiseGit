@@ -240,8 +240,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			//InsertColorText(this->m_Log,err,RGB(255,0,0));
 		}
-		else
+		else {
 			InsertColorText(this->m_Log,_T("\r\nSuccess\r\n"),RGB(0,0,255));
+			this->DialogEnableWindow(IDCANCEL,FALSE);
+		}
 
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
@@ -256,11 +258,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				//Set default button is "close" rather than "push"
 				this->SendMessage(WM_NEXTDLGCTL, (WPARAM)GetDlgItem(IDOK)->m_hWnd, TRUE);
 			}
-			else
-				DialogEnableWindow(IDCANCEL, FALSE);
 		}
-		else
-			DialogEnableWindow(IDCANCEL, FALSE);
 	}
 
 	if(!m_bBufferAll)
