@@ -62,7 +62,8 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	
+	AddAnchor(IDHELP,BOTTOM_RIGHT);
+
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
 
