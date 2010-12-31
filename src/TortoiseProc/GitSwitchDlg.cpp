@@ -159,6 +159,10 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	}
 
 	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
+	GetDlgItem(IDC_CHECK_BRANCHOVERRIDE)->EnableWindow(m_bBranch);
+	if (!m_bBranch) {
+		this->m_bBranchOverride=FALSE;
+	}
 	this->UpdateData(FALSE);
 }
 
