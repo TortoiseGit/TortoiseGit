@@ -1279,8 +1279,13 @@ bool CAppUtils::Switch(CString *CommitHash, CString initialRefName)
 		CString force;
 		CString branch;
 
-		if(dlg.m_bBranch)
-			branch.Format(_T("-b %s"),dlg.m_NewBranch);
+		if(dlg.m_bBranch){
+			if (dlg.m_bBranchOverride) {
+				branch.Format(_T("-B %s"),dlg.m_NewBranch);
+			} else {
+				branch.Format(_T("-b %s"),dlg.m_NewBranch);
+			}
+		}
 		if(dlg.m_bForce)
 			force=_T("-f");
 		if(dlg.m_bTrack)

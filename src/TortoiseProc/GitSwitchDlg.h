@@ -20,6 +20,7 @@ public:
 	BOOL m_bForce;
 	BOOL m_bTrack;
 	BOOL m_bBranch;
+	BOOL m_bBranchOverride;
 	CString m_NewBranch;
 	CString m_Base;
 

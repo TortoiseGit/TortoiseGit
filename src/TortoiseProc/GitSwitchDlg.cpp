@@ -34,6 +34,7 @@ void CGitSwitchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
 	DDX_Check(pDX,IDC_CHECK_BRANCH,this->m_bBranch);
+	DDX_Check(pDX,IDC_CHECK_BRANCHOVERRIDE,this->m_bBranchOverride);
 
 	DDX_Text(pDX,IDC_EDIT_BRANCH,this->m_NewBranch);
 }
