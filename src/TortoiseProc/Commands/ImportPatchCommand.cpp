@@ -65,18 +65,6 @@ bool ImportPatchCommand::Execute()
 
 	if(dlg.DoModal()==IDOK)
 	{
-		for(int i=0;i<dlg.m_PathList.GetCount();i++)
-		{			
-			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
-			
-			if(g_Git.Run(cmd,&output,CP_ACP))
-			{
-				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
-				return FALSE;
-			}
-		}
-		
-		CMessageBox::Show(NULL,CString(_T("Patch applied: "))+output,_T("TortoiseGit"),MB_OK);
 		return TRUE;
 	}
 	

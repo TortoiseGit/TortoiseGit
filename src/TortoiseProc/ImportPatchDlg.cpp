@@ -5,6 +5,7 @@
 #include "TortoiseProc.h"
 #include "ImportPatchDlg.h"
 #include "git.h"
+#include "MessageBox.h"
 
 // CImportPatchDlg dialog
 
@@ -14,6 +15,14 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CImportPatchDlg::IDD, pParent)
 {
 	m_cList.m_ContextMenuMask &=~ m_cList.GetMenuMask(CPatchListCtrl::MENU_APPLY);
+
+	m_CurrentItem =0;
+
+	m_bExitThread = false;
+	m_bThreadRunning =false;
+
+	m_b3Way = 1; 
+	m_bIgnoreSpace = 1;
 }
 
 CImportPatchDlg::~CImportPatchDlg()
@@ -25,23 +34,95 @@ void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PATCH,m_cList);
+	DDX_Control(pDX, IDC_AM_SPLIT, m_wndSplitter);
+	DDX_Check(pDX, IDC_CHECK_3WAY, m_b3Way);
+    DDX_Check(pDX, IDC_CHECK_IGNORE_SPACE, m_bIgnoreSpace);
+}
+
+void CImportPatchDlg::AddAmAnchor()
+{
+	AddAnchor(IDC_AM_TAB,TOP_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_LIST_PATCH, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_AM_SPLIT, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_ADD, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_UP, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_DOWN, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_REMOVE, TOP_RIGHT);
+	
+	AddAnchor(IDOK,BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
+	AddAnchor(IDC_AM_DUMY_TAB, TOP_LEFT, BOTTOM_RIGHT);
+
+	this->AddOthersToAnchor();
+}
+
+void CImportPatchDlg::SetSplitterRange()
+{
+	if ((m_cList)&&(m_ctrlTabCtrl))
+	{
+		CRect rcTop;
+		m_cList.GetWindowRect(rcTop);
+		ScreenToClient(rcTop);
+		CRect rcMiddle;
+		m_ctrlTabCtrl.GetWindowRect(rcMiddle);
+		ScreenToClient(rcMiddle);
+		if (rcMiddle.Height() && rcMiddle.Width())
+			m_wndSplitter.SetRange(rcTop.top+160, rcMiddle.bottom-160);
+	}
 }
 
 BOOL CImportPatchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	
+	CRect rectDummy;
 
-	AddAnchor(IDC_LIST_PATCH, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_BUTTON_ADD, TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_UP, TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_DOWN, TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_REMOVE, TOP_RIGHT);
+	GetClientRect(m_DlgOrigRect);
+	m_cList.GetClientRect(m_PatchListOrigRect);
 
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	CWnd *pwnd=this->GetDlgItem(IDC_AM_DUMY_TAB);
+	pwnd->GetWindowRect(&rectDummy);
+	this->ScreenToClient(rectDummy);
 
-	this->AddOthersToAnchor();
+	if (!m_ctrlTabCtrl.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, IDC_AM_TAB))
+	{
+		TRACE0("Failed to create output tab window\n");
+		return FALSE;      // fail to create
+	}
+	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
+	// Create output panes:
+	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+
+	if( ! this->m_PatchCtrl.Create(_T("Scintilla"),_T("source"),0,rectDummy,&m_ctrlTabCtrl,0,0) )
+	{
+		TRACE0("Failed to create log message control");
+		return FALSE;
+	}
+	m_PatchCtrl.Init(0);
+	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
+
+	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+
+	if (!m_wndOutput.Create(_T("Scintilla"),_T("source"),0,rectDummy, &m_ctrlTabCtrl, 0,0) )
+	{
+		TRACE0("Failed to create output windows\n");
+		return -1;      // fail to create
+	}
+	m_wndOutput.Init(0);
+	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
+	
+	m_tooltips.Create(this);
+	
+	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);
+	m_tooltips.AddTool(IDC_CHECK_IGNORE_SPACE,IDS_AM_IGNORE_SPACE_TT);
+	
+	m_ctrlTabCtrl.AddTab(&m_PatchCtrl,_T("Patch"),0);
+	m_ctrlTabCtrl.AddTab(&m_wndOutput,_T("Log"),1);
+
+	AddAmAnchor();
 
 	m_PathList.SortByPathname(true);
 	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
@@ -52,7 +133,25 @@ BOOL CImportPatchDlg::OnInitDialog()
 		m_cList.SetCheck(0,true);
 	}
 
-	
+	DWORD yPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
+	RECT rcDlg, rcLogMsg, rcFileList;
+	GetClientRect(&rcDlg);
+	m_cList.GetWindowRect(&rcLogMsg);
+	ScreenToClient(&rcLogMsg);
+	this->m_ctrlTabCtrl.GetWindowRect(&rcFileList);
+	ScreenToClient(&rcFileList);
+	if (yPos)
+	{
+		RECT rectSplitter;
+		m_wndSplitter.GetWindowRect(&rectSplitter);
+		ScreenToClient(&rectSplitter);
+		int delta = yPos - rectSplitter.top;
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
+		{
+			m_wndSplitter.SetWindowPos(NULL, 0, yPos, 0, 0, SWP_NOSIZE);
+			DoSize(delta);
+		}
+	}
 
 	//CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), nID);
 
@@ -60,6 +159,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	this->GetWindowText(title);
 	this->SetWindowText(title+_T(" - ")+g_Git.m_CurrentDir);
 	EnableSaveRestore(_T("ImportDlg"));
+
+	SetSplitterRange();
 
 	return TRUE;
 }
@@ -71,6 +172,9 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN, &CImportPatchDlg::OnBnClickedButtonDown)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CImportPatchDlg::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
+	ON_STN_CLICKED(IDC_AM_SPLIT, &CImportPatchDlg::OnStnClickedAmSplit)
+	ON_WM_SIZE()
+	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -169,18 +273,297 @@ void CImportPatchDlg::OnBnClickedButtonRemove()
 	}
 }
 
+UINT CImportPatchDlg::PatchThread()
+{
+	CTGitPath path;
+	path.SetFromWin(g_Git.m_CurrentDir);
+
+	int i=0;
+
+	for(i=m_CurrentItem;i<m_cList.GetItemCount();i++)
+	{
+		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
+
+		if(m_bExitThread)
+			break;
+
+		if(m_cList.GetCheck(i))
+		{
+			CString cmd;
+			
+			while(path.HasRebaseApply())
+			{
+				int ret = CMessageBox::Show(NULL, _T("<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n\n Do you want to"),
+												  _T("TortoiseGit"),
+												   1,IDI_ERROR ,_T("Abort"), _T("Skip"),_T("Resolved"));
+				
+				switch(ret)
+				{
+				case 1: 
+					cmd=_T("git.exe am --abort");
+					break;
+				case 2:
+					cmd=_T("git.exe am --skip");
+					break;
+				case 3:
+					cmd=_T("git.exe am --resolved");
+					break;
+				default:
+					cmd.Empty();
+				}
+				if(cmd.IsEmpty())
+				{
+					m_bExitThread = TRUE;
+					break;			
+				}
+
+				this->AddLogString(cmd);
+				CString output;
+				if(g_Git.Run(cmd,&output,CP_ACP))
+				{
+					this->AddLogString(output);
+					this->AddLogString(_T("Fail"));
+				}else
+				{
+					this->AddLogString(_T("Done"));
+				}
+			}
+
+			if(m_bExitThread)
+				break;
+
+			cmd=_T("git.exe am ");
+
+			if(this->m_b3Way)
+				cmd+=_T("--3way ");
+
+			if(this->m_bIgnoreSpace)
+				cmd+=_T("--ignore-space-change ");
+
+			cmd +=_T("\"");
+			cmd += m_cList.GetItemText(i,0);
+			cmd +=_T("\"");
+
+			this->AddLogString(cmd);
+			CString output;
+			if(g_Git.Run(cmd,&output,CP_ACP))
+			{
+				//keep STATUS_APPLYING to let user retry failed patch
+				m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_FAIL|CPatchListCtrl::STATUS_APPLYING);
+				this->AddLogString(output);
+				this->AddLogString(_T("Fail"));
+				break;
+
+			}else
+			{
+				m_cList.SetItemData(i,  CPatchListCtrl::STATUS_APPLY_SUCCESS);
+				this->AddLogString(_T("Success"));
+			}			
+			
+		}else
+		{
+			AddLogString(CString(_T("Skip Patch:"))+m_cList.GetItemText(i,0));
+			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
+		}
+
+		m_cList.SetItemData(m_CurrentItem, (~CPatchListCtrl::STATUS_APPLYING)&m_cList.GetItemData(i));
+		m_CurrentItem++;
+		m_cList.SetItemData(m_CurrentItem, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
+		
+		CRect rect;
+		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
+		this->m_cList.InvalidateRect(rect);
+
+		this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
+		this->m_cList.InvalidateRect(rect);
+
+		UpdateOkCancelText();
+		
+	}
+	
+	//in case am fail, need refresh finial item status
+	CRect rect;
+	this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
+	this->m_cList.InvalidateRect(rect);
+
+	this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
+	this->m_cList.InvalidateRect(rect);
+
+	EnableInputCtrl(true);
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+	UpdateOkCancelText();
+	return 0;
+}
+
 void CImportPatchDlg::OnBnClickedOk()
 {
 	m_PathList.Clear();
+	this->UpdateData();
 
-	for(int i=0;i<m_cList.GetItemCount();i++)
+	SaveSplitterPos();
+
+	if(IsFinish())
 	{
-		if(m_cList.GetCheck(i))
+		this->OnOK();
+		return;
+	}
+
+	m_ctrlTabCtrl.SetActiveTab(1);
+
+	EnableInputCtrl(false);
+	InterlockedExchange(&m_bThreadRunning, TRUE);
+	InterlockedExchange(&this->m_bExitThread, FALSE);
+	if ( (m_LoadingThread=AfxBeginThread(ThreadEntry, this)) ==NULL)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+	}
+
+}
+
+void CImportPatchDlg::OnStnClickedAmSplit()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CImportPatchDlg::DoSize(int delta)
+{
+	this->RemoveAllAnchors();
+
+	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LIST_PATCH), delta, CW_TOPALIGN);
+	//CSplitterControl::ChangeHeight(GetDlgItem(), delta, CW_TOPALIGN);
+	CSplitterControl::ChangeHeight(GetDlgItem(IDC_AM_TAB), -delta, CW_BOTTOMALIGN);
+	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE),0,delta);
+		
+	this->AddAmAnchor();
+	// adjust the minimum size of the dialog to prevent the resizing from
+	// moving the list control too far down.
+	CRect rcLogMsg;
+	m_cList.GetClientRect(rcLogMsg);
+	SetMinTrackSize(CSize(m_DlgOrigRect.Width(), m_DlgOrigRect.Height()-m_PatchListOrigRect.Height()+rcLogMsg.Height()));
+
+	SetSplitterRange();
+//	m_CommitList.Invalidate();
+
+//	GetDlgItem(IDC_LOGMESSAGE)->Invalidate();
+
+	this->m_ctrlTabCtrl.Invalidate();
+	
+}
+
+void CImportPatchDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CResizableStandAloneDialog::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+	SetSplitterRange();
+}
+
+LRESULT CImportPatchDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	switch (message) {
+	case WM_NOTIFY:
+		if (wParam == IDC_AM_SPLIT)
+		{ 
+			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+			DoSize(pHdr->delta);
+		}
+		break;
+	}
+
+	return CResizableStandAloneDialog::DefWindowProc(message, wParam, lParam);
+}
+
+void CImportPatchDlg::SaveSplitterPos()
+{
+	if (!IsIconic())
+	{
+		CRegDWORD regPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
+		RECT rectSplitter;
+		m_wndSplitter.GetWindowRect(&rectSplitter);
+		ScreenToClient(&rectSplitter);
+		regPos = rectSplitter.top;
+	}
+	
+}
+
+
+void CImportPatchDlg::EnableInputCtrl(BOOL b)
+{
+	this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(b);
+	this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(b);
+	this->GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(b);
+	this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(b);
+	this->GetDlgItem(IDOK)->EnableWindow(b);
+
+}
+
+void CImportPatchDlg::UpdateOkCancelText()
+{
+	if( !IsFinish() )
+	{
+		this->GetDlgItem(IDOK)->SetWindowText(_T("Apply"));
+		
+	}else
+	{
+		this->GetDlgItem(IDOK)->SetWindowText(_T("Ok"));
+		
+	}
+	
+	if(this->m_bThreadRunning)
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Abort"));
+	else	
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Cancel"));
+
+}
+void CImportPatchDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	if(this->m_bThreadRunning)
+	{
+		InterlockedExchange(&m_bExitThread,TRUE);
+
+	}else
+		OnCancel();
+}
+
+void CImportPatchDlg::AddLogString(CString str)
+{
+	this->m_wndOutput.SendMessage(SCI_SETREADONLY, FALSE);
+	CStringA sTextA = m_wndOutput.StringForControl(str);//CUnicodeUtils::GetUTF8(str);
+	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
+	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
+	this->m_wndOutput.SendMessage(SCI_SETREADONLY, TRUE);
+	//this->m_wndOutput.SendMessage(SCI_LINESCROLL,0,0x7FFFFFFF);
+}
+BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
 		{
-			CTGitPath path;
-			path.SetFromWin(m_cList.GetItemText(i,0));
-			m_PathList.AddPath(path);
+		
+		/* Avoid TAB control destroy but dialog exist*/
+		case VK_ESCAPE:
+		case VK_CANCEL:
+			{
+				TCHAR buff[128];
+				::GetClassName(pMsg->hwnd,buff,128);
+				
+				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0 ||
+				   _tcsnicmp(buff,_T("Scintilla"),128)==0 ||
+				   _tcsnicmp(buff,_T("SysListView32"),128)==0||
+				   ::GetParent(pMsg->hwnd) == this->m_ctrlTabCtrl.m_hWnd)	
+				{
+					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
+					return TRUE;
+				}
+			}		
 		}
 	}
-	OnOK();
+	m_tooltips.RelayEvent(pMsg);
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

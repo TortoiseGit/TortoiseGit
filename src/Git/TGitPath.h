@@ -224,6 +224,7 @@ public:
 	bool HasSubmodules() const;
 	bool HasGitSVNDir() const;
 	bool HasStashDir() const;
+	bool HasRebaseApply() const;
 
 	int  GetAdminDirMask() const;
 	
