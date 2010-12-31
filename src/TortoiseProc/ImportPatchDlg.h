@@ -50,6 +50,7 @@ public:
 		}
 	};
 
+	void AddLogString(CString str);
 
 // Dialog Data
 	enum { IDD = IDD_APPLY_PATCH_LIST };
@@ -76,6 +77,9 @@ protected:
 
 	CSplitterControl	m_wndSplitter;
 
+	BOOL m_b3Way;
+	BOOL m_bIgnoreSpace;
+
 	BOOL IsFinish()
 	{
 		return !(m_CurrentItem < this->m_cList.GetItemCount());
@@ -100,4 +104,5 @@ protected:
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnBnClickedCancel();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

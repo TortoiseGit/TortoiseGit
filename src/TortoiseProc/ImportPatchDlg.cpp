@@ -20,6 +20,9 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 
 	m_bExitThread = false;
 	m_bThreadRunning =false;
+
+	m_b3Way = 1; 
+	m_bIgnoreSpace = 1;
 }
 
 CImportPatchDlg::~CImportPatchDlg()
@@ -32,7 +35,10 @@ void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PATCH,m_cList);
 	DDX_Control(pDX, IDC_AM_SPLIT, m_wndSplitter);
+	DDX_Check(pDX, IDC_CHECK_3WAY, m_b3Way);
+    DDX_Check(pDX, IDC_CHECK_IGNORE_SPACE, m_bIgnoreSpace);
 }
+
 void CImportPatchDlg::AddAmAnchor()
 {
 	AddAnchor(IDC_AM_TAB,TOP_LEFT,BOTTOM_RIGHT);
@@ -110,11 +116,11 @@ BOOL CImportPatchDlg::OnInitDialog()
 	
 	m_tooltips.Create(this);
 	
-	//m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
-	//m_tooltips.AddTool(IDC_REBASE_ABORT,IDS_REBASE_ABORT_TT);
+	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);
+	m_tooltips.AddTool(IDC_CHECK_IGNORE_SPACE,IDS_AM_IGNORE_SPACE_TT);
 	
-	m_ctrlTabCtrl.AddTab(&m_PatchCtrl,_T("Patch"),1);
-	m_ctrlTabCtrl.AddTab(&m_wndOutput,_T("Log"),2);
+	m_ctrlTabCtrl.AddTab(&m_PatchCtrl,_T("Patch"),0);
+	m_ctrlTabCtrl.AddTab(&m_wndOutput,_T("Log"),1);
 
 	AddAmAnchor();
 
@@ -269,36 +275,120 @@ void CImportPatchDlg::OnBnClickedButtonRemove()
 
 UINT CImportPatchDlg::PatchThread()
 {
-	for(int i=m_CurrentItem;i<m_cList.GetItemCount();i++)
+	CTGitPath path;
+	path.SetFromWin(g_Git.m_CurrentDir);
+
+	int i=0;
+
+	for(i=m_CurrentItem;i<m_cList.GetItemCount();i++)
 	{
-		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING);
+		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
 
 		if(m_bExitThread)
 			break;
 
-		{
-			Sleep(1000);
-		}
-
 		if(m_cList.GetCheck(i))
 		{
-			m_cList.SetItemData(i, i&1? CPatchListCtrl::STATUS_APPLY_SUCCESS:CPatchListCtrl::STATUS_APPLY_FAIL);
+			CString cmd;
+			
+			while(path.HasRebaseApply())
+			{
+				int ret = CMessageBox::Show(NULL, _T("<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n\n Do you want to"),
+												  _T("TortoiseGit"),
+												   1,IDI_ERROR ,_T("Abort"), _T("Skip"),_T("Resolved"));
+				
+				switch(ret)
+				{
+				case 1: 
+					cmd=_T("git.exe am --abort");
+					break;
+				case 2:
+					cmd=_T("git.exe am --skip");
+					break;
+				case 3:
+					cmd=_T("git.exe am --resolved");
+					break;
+				default:
+					cmd.Empty();
+				}
+				if(cmd.IsEmpty())
+				{
+					m_bExitThread = TRUE;
+					break;			
+				}
 
+				this->AddLogString(cmd);
+				CString output;
+				if(g_Git.Run(cmd,&output,CP_ACP))
+				{
+					this->AddLogString(output);
+					this->AddLogString(_T("Fail"));
+				}else
+				{
+					this->AddLogString(_T("Done"));
+				}
+			}
+
+			if(m_bExitThread)
+				break;
+
+			cmd=_T("git.exe am ");
+
+			if(this->m_b3Way)
+				cmd+=_T("--3way ");
+
+			if(this->m_bIgnoreSpace)
+				cmd+=_T("--ignore-space-change ");
+
+			cmd +=_T("\"");
+			cmd += m_cList.GetItemText(i,0);
+			cmd +=_T("\"");
+
+			this->AddLogString(cmd);
+			CString output;
+			if(g_Git.Run(cmd,&output,CP_ACP))
+			{
+				//keep STATUS_APPLYING to let user retry failed patch
+				m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_FAIL|CPatchListCtrl::STATUS_APPLYING);
+				this->AddLogString(output);
+				this->AddLogString(_T("Fail"));
+				break;
+
+			}else
+			{
+				m_cList.SetItemData(i,  CPatchListCtrl::STATUS_APPLY_SUCCESS);
+				this->AddLogString(_T("Success"));
+			}			
+			
 		}else
 		{
+			AddLogString(CString(_T("Skip Patch:"))+m_cList.GetItemText(i,0));
 			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
 		}
 
+		m_cList.SetItemData(m_CurrentItem, (~CPatchListCtrl::STATUS_APPLYING)&m_cList.GetItemData(i));
 		m_CurrentItem++;
-
+		m_cList.SetItemData(m_CurrentItem, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
+		
 		CRect rect;
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
+		this->m_cList.InvalidateRect(rect);
+
+		this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
 
 		UpdateOkCancelText();
 		
 	}
 	
+	//in case am fail, need refresh finial item status
+	CRect rect;
+	this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
+	this->m_cList.InvalidateRect(rect);
+
+	this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
+	this->m_cList.InvalidateRect(rect);
+
 	EnableInputCtrl(true);
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	UpdateOkCancelText();
@@ -308,6 +398,7 @@ UINT CImportPatchDlg::PatchThread()
 void CImportPatchDlg::OnBnClickedOk()
 {
 	m_PathList.Clear();
+	this->UpdateData();
 
 	SaveSplitterPos();
 
@@ -316,6 +407,8 @@ void CImportPatchDlg::OnBnClickedOk()
 		this->OnOK();
 		return;
 	}
+
+	m_ctrlTabCtrl.SetActiveTab(1);
 
 	EnableInputCtrl(false);
 	InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -343,9 +436,7 @@ void CImportPatchDlg::DoSize(int delta)
 	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_WHITE_SPACE),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_AUTORETRY),0,delta);
-	
+		
 	this->AddAmAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from
 	// moving the list control too far down.
@@ -437,4 +528,42 @@ void CImportPatchDlg::OnBnClickedCancel()
 
 	}else
 		OnCancel();
+}
+
+void CImportPatchDlg::AddLogString(CString str)
+{
+	this->m_wndOutput.SendMessage(SCI_SETREADONLY, FALSE);
+	CStringA sTextA = m_wndOutput.StringForControl(str);//CUnicodeUtils::GetUTF8(str);
+	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
+	this->m_wndOutput.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
+	this->m_wndOutput.SendMessage(SCI_SETREADONLY, TRUE);
+	//this->m_wndOutput.SendMessage(SCI_LINESCROLL,0,0x7FFFFFFF);
+}
+BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+		
+		/* Avoid TAB control destroy but dialog exist*/
+		case VK_ESCAPE:
+		case VK_CANCEL:
+			{
+				TCHAR buff[128];
+				::GetClassName(pMsg->hwnd,buff,128);
+				
+				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0 ||
+				   _tcsnicmp(buff,_T("Scintilla"),128)==0 ||
+				   _tcsnicmp(buff,_T("SysListView32"),128)==0||
+				   ::GetParent(pMsg->hwnd) == this->m_ctrlTabCtrl.m_hWnd)	
+				{
+					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
+					return TRUE;
+				}
+			}		
+		}
+	}
+	m_tooltips.RelayEvent(pMsg);
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
