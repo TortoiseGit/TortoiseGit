@@ -2144,7 +2144,12 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 		path.SetFromWin(one);
 		list.AddPath(path);
 	}
-	return SendPatchMail(list,autoclose);
+	if (list.GetCount() > 0) { 
+		return SendPatchMail(list, autoclose);
+	} else {
+		CMessageBox::Show(NULL, _T("Not patches generated."), _T("TortoiseGit"), MB_ICONINFORMATION);
+		return true;
+	}
 }
 
 
