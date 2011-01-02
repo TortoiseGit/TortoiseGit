@@ -147,7 +147,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t &
 		if( rev1 != GIT_REV_ZERO )
 			rev = rev1;
 		
-		workingcopy = _T("(Work Copy)");
+		workingcopy = _T(" (Work Copy)");
 
 		cmd.Format(_T("git.exe diff %s -- \"%s\""),
 		rev,pPath->GetGitPathString());
