@@ -2137,7 +2137,7 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 	{
 		CString one=log.Tokenize(_T("\n"),start);
 		one=one.Trim();
-		if(one.IsEmpty())
+		if(one.IsEmpty() || one == _T("Success"))
 			continue;
 		one.Replace(_T('/'),_T('\\'));
 		CTGitPath path;
