@@ -1050,14 +1050,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	
 	TCHAR buf[MAX_PATH];
 
-	int maxnum=0;
-	for (unsigned int i=0;i<this->m_ID.size();i++)
-	{
-		if(m_ID[i]>maxnum)
-			maxnum=m_ID[i];
-	}
-	_stprintf_s(buf, MAX_PATH, _T("%d."), maxnum);
-	::GetTextExtentPoint(hDC, buf, _tcslen(buf), &width);
+	::GetTextExtentPoint32(hDC, _T("fffffff"), 7, &width);
 	m_revwidth = width.cx + BLAMESPACE;
 	blamewidth += m_revwidth;
 
@@ -1187,8 +1180,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			//}
 
 			CString str;
-			if(i<m_ID.size() && m_ID[i]>=0)
-				str.Format(_T("%d"),m_ID[i]);
+			str = m_CommitHash[i].ToString().Left(6);
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
 			rc.top=Y;
@@ -2633,12 +2625,13 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		if(id>=0 && id <(int)GetLogData()->size())
 		{
 			m_ID.push_back(pRevs->size()-id);
-			m_Authors.push_back(pRevs->GetGitRevAt(id).m_AuthorName);
+			//m_Authors.push_back(pRevs->GetGitRevAt(id).m_AuthorName);
 		}else
 		{
 			m_ID.push_back(id);
-			m_Authors.push_back(hash.ToString().Left(6));
+			//m_Authors.push_back(hash.ToString().Left(6));
 		}
+		m_Authors.push_back(m_NoListCommit[hash].m_AuthorName);
 
 		m_CommitHash.push_back(hash);
 		pos = current+1;
