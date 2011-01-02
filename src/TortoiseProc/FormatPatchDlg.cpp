@@ -33,6 +33,7 @@ void CFormatPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBOBOXEX_FROM,	m_cFrom);
 	DDX_Control(pDX, IDC_COMBOBOXEX_TO,		m_cTo);
 	DDX_Control(pDX, IDC_EDIT_NUM,			m_cNum);
+	DDX_Control(pDX, IDC_SPIN_NUM,			m_spinNum);
 
 	DDX_Text(pDX,IDC_EDIT_NUM,m_Num);
 
@@ -109,6 +110,8 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	this->CheckRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE,this->m_Radio);
 	
 	OnBnClickedRadio();
+
+	m_spinNum.SetRange32(1, MAXSHORT);
 
 	EnableSaveRestore(_T("FormatPatchDlg"));
 	return TRUE;

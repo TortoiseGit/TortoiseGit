@@ -25,6 +25,7 @@ protected:
 	CHistoryCombo m_cSince;
 	CHistoryCombo m_cFrom;
 	CHistoryCombo m_cTo;
+	CSpinButtonCtrl		m_spinNum;
 	CEdit		  m_cNum;
 	CRegDWORD	m_regSendMail;
 
