@@ -360,7 +360,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 		m_CommitterDate->SetValue(rev->m_CommitterDate.Format(_T("%Y-%m-%d %H:%M")));
 
 		m_Subject->SetValue(rev->m_Subject);
-		m_Body->SetValue(rev->m_Body);
+		m_Body->SetValue(rev->m_Body.Trim());
 
 		RemoveParent();
 
