@@ -25,6 +25,7 @@ BEGIN
     IDS_LOG_DATE            "Date"
 	IDS_LOG_BUGIDS          "Bug-ID"
 	IDS_LOG_ID				"ID"
+	IDS_LOG_HASH			"HASH"
     IDS_LOG_POPUP_COMPARE   "Compare with &working copy"
     IDS_LOG_POPUP_SAVE      "Save revision &to..."
     IDS_LOG_POPUP_COMPARETWO "&Compare revisions"

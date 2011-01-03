@@ -6,6 +6,7 @@
 #define IDS_LOG_DATE                    20004
 #define IDS_LOG_BUGIDS                  20006
 #define IDS_LOG_ID						20007
+#define IDS_LOG_HASH					20008
 #define IDS_LOG_POPUP_COMPARE			20009
 #define IDS_LOG_POPUP_BLAMECOMPARE		20010
 #define IDS_LOG_POPUP_GNUDIFF_CH        20011

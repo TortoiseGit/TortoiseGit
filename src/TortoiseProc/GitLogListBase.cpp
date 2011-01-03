@@ -231,7 +231,7 @@ void CGitLogListBase::InsertGitColumn()
 	{
 		IDS_LOG_GRAPH,
 		IDS_LOG_REBASE,
-		IDS_LOG_ID,
+		IDS_LOG_HASH,
 		IDS_LOG_ACTIONS,
 		IDS_LOG_MESSAGE,
 		IDS_LOG_AUTHOR,
@@ -270,7 +270,7 @@ void CGitLogListBase::InsertGitColumn()
 	if(this->m_IsIDReplaceAction)
 	{
 		m_dwDefaultColumns &= ~GIT_LOG_ACTIONS;
-		m_dwDefaultColumns |= IDS_LOG_ID;
+		m_dwDefaultColumns |= IDS_LOG_HASH;
 	}
 	SetRedraw(false);
 
@@ -1163,15 +1163,8 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
 
 	CString temp;
-	if(m_IsOldFirst)
-	{
-		temp.Format(_T("%d"),pItem->iItem+1);
+	temp = pLogEntry->m_CommitHash.ToString().Left(6);
 
-	}else
-	{
-		temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
-	}
-	    
 	// Which column?
 	switch (pItem->iSubItem)
 	{
