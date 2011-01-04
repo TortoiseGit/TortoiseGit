@@ -69,7 +69,6 @@
 #include <Shlwapi.h>
 #include <shlguid.h>
 #include <uxtheme.h>
-#include <tmschema.h>
 #include <dlgs.h>
 #include <wininet.h>
 #include <assert.h>
