@@ -1193,7 +1193,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case this->LOGLIST_HASH:
 		if(this->m_IsIDReplaceAction)
-			lstrcpyn(pItem->pszText, pLogEntry->m_CommitHash.ToString().Left(6), pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax);
 		break;
 	case this->LOGLIST_ID: //action -- no text in the column
 		if(this->m_IsIDReplaceAction)
