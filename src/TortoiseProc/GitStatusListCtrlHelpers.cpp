@@ -23,7 +23,7 @@
 #include <iterator>
 
 // registry version number of column-settings of GitLogListBase
-#define BLAME_COLUMN_VERSION 3
+#define BLAME_COLUMN_VERSION 4
 
 #ifndef assert
 #define assert(x) ATLASSERT(x)
