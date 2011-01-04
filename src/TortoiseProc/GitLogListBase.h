@@ -93,6 +93,7 @@ public:
 	CString m_startrev;
 	CString m_endrev;
 
+	// don't forget to bump BLAME_COLUMN_VERSION in GitStatusListCtrlHelpers.cpp if you change columns
 	enum
 	{
 		LOGLIST_GRAPH,

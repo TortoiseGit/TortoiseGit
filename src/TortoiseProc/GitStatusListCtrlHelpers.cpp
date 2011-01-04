@@ -22,6 +22,9 @@
 #include "GitStatusListCtrl.h"
 #include <iterator>
 
+// registry version number of column-settings of GitLogListBase
+#define BLAME_COLUMN_VERSION 3
+
 #ifndef assert
 #define assert(x) ATLASSERT(x)
 #endif
@@ -129,10 +132,8 @@ void ColumnManager::ReadSettings
     registryPrefix 
         = _T("Software\\TortoiseGit\\StatusColumns\\") + containerName;
 
-    // we accept settings version 3 only
-    // (version 1 used different placement of hidden columns)
-
-	bool valid = (DWORD)CRegDWORD (registryPrefix + _T("Version"), 0xff) == 3;
+    // we accept settings of current version only
+	bool valid = (DWORD)CRegDWORD (registryPrefix + _T("Version"), 0xff) == BLAME_COLUMN_VERSION;
     if (valid)
     {
         // read (possibly different) column selection
@@ -191,10 +192,8 @@ void ColumnManager::ReadSettings
 
 void ColumnManager::WriteSettings() const
 {
-    // we are version 3
-
 	CRegDWORD regVersion (registryPrefix + _T("Version"), 0, TRUE);
-    regVersion = 3;
+    regVersion = BLAME_COLUMN_VERSION;
 
     // write (possibly different) column selection
 
