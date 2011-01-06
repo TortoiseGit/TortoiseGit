@@ -2048,6 +2048,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\SVNDCommitDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SVNDCommitDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\SVNIgnoreCommand.cpp"
 					>
 				</File>
