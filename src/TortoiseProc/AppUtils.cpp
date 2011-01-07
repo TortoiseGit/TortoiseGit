@@ -51,6 +51,7 @@
 #include "hooks.h"
 #include "..\Settings\Settings.h"
 #include "InputDlg.h"
+#include "SVNDCommitDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2461,6 +2462,11 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 
 BOOL CAppUtils::SVNDCommit()
 {
+	CSVNDCommitDlg dcommitdlg;
+	if (dcommitdlg.DoModal() != IDOK) {
+		return false;
+	}
+
 	BOOL IsStash = false;
 	if(!g_Git.CheckCleanWorkTree())
 	{
@@ -2482,7 +2488,11 @@ BOOL CAppUtils::SVNDCommit()
 	}
 
 	CProgressDlg progress;
-	progress.m_GitCmd=_T("git.exe svn dcommit --rmdir");
+	if (dcommitdlg.m_rmdir) {
+		progress.m_GitCmd=_T("git.exe svn dcommit --rmdir");
+	} else {
+		progress.m_GitCmd=_T("git.exe svn dcommit");
+	}
 	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
 	{
 		if( IsStash)
