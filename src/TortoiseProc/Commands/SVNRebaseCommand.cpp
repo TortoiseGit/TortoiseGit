@@ -29,8 +29,6 @@
 
 bool SVNRebaseCommand::Execute()
 {
-	bool bRet =false;
-	
 	if(!g_Git.CheckCleanWorkTree())
 	{
 		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
@@ -116,7 +114,7 @@ bool SVNRebaseCommand::Execute()
 	//need rebase
 	if(dlg.DoModal() == IDOK)
 	{
-		bRet=true;
+		return true;
 	}
-	return bRet;
+	return false;
 }
