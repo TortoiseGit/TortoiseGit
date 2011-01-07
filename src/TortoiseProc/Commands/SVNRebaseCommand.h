@@ -25,6 +25,9 @@
  */
 class SVNRebaseCommand : public Command
 {
+private:
+	void	askIfUserWantsToStashPop();
+
 public:
 	/**
 	 * Executes the command.

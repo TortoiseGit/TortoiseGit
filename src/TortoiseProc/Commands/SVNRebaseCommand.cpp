@@ -94,15 +94,9 @@ bool SVNRebaseCommand::Execute()
 	if(UpStreamNewHash==HeadHash)
 	{
 		CMessageBox::Show(NULL,_T("Everything Updated"),_T("TortoiseGit"),MB_OK);
-		if(isStash && CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
-		{
-			CString cmd,out;
-			cmd=_T("git.exe stash pop");
-			if(g_Git.Run(cmd,&out,CP_ACP))
-			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"), MB_OK);
-			}
-		}
+		if(isStash)
+			askIfUserWantsToStashPop();
+
 		return true;
 	}
 	
@@ -118,6 +112,9 @@ bool SVNRebaseCommand::Execute()
 		}else
 		{
 			CMessageBox::Show(NULL,CString(_T("Fast Forward: "))+ff,_T("TortoiseGit"),MB_OK);
+			if(isStash)
+				askIfUserWantsToStashPop();
+
 			return true;
 		}
 	}
@@ -128,4 +125,17 @@ bool SVNRebaseCommand::Execute()
 		return true;
 	}
 	return false;
+}
+
+void SVNRebaseCommand::askIfUserWantsToStashPop()
+{
+	if(CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
+	{
+		CString cmd,out;
+		cmd=_T("git.exe stash pop");
+		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			CMessageBox::Show(NULL,out,_T("TortoiseGit"), MB_OK);
+		}
+	}
 }
