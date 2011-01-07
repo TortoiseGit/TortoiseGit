@@ -43,7 +43,7 @@ void CRefLogList::InsertRefLogColumn()
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, sizeof(normal)/sizeof(UINT));
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns,0, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
 	
 	SetRedraw(true);
 
