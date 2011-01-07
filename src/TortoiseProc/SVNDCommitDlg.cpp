@@ -24,10 +24,10 @@
 #include "TortoiseProc.h"
 #include "SVNDCommitDlg.h"
 
-IMPLEMENT_DYNAMIC(CSVNDCommitDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CSVNDCommitDlg, CStandAloneDialog)
 
 CSVNDCommitDlg::CSVNDCommitDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CSVNDCommitDlg::IDD, pParent)
+	: CStandAloneDialog(CSVNDCommitDlg::IDD, pParent)
 {
 }
 
@@ -37,26 +37,18 @@ CSVNDCommitDlg::~CSVNDCommitDlg()
 
 void CSVNDCommitDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CResizableStandAloneDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Check(pDX,IDC_RADIO_GIT_COMMIT,m_rmdir);
 }
 
 
-BEGIN_MESSAGE_MAP(CSVNDCommitDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CSVNDCommitDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CSVNDCommitDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 BOOL CSVNDCommitDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
-
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
-	AddAnchor(IDC_GROUP_INFO, TOP_LEFT, BOTTOM_RIGHT);
-
-	AddOthersToAnchor();
+	CStandAloneDialog::OnInitDialog();
 
 	CheckRadioButton(IDC_RADIO_SVN_COMMIT, IDC_RADIO_GIT_COMMIT, IDC_RADIO_SVN_COMMIT);
 
@@ -66,7 +58,7 @@ BOOL CSVNDCommitDlg::OnInitDialog()
 
 void CSVNDCommitDlg::OnBnClickedOk()
 {
-	CResizableStandAloneDialog::UpdateData(TRUE);
+	CStandAloneDialog::UpdateData(TRUE);
 
-	CResizableStandAloneDialog::OnOK();
+	CStandAloneDialog::OnOK();
 }

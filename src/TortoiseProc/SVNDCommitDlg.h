@@ -24,7 +24,7 @@
 
 #include "StandAloneDlg.h"
 
-class CSVNDCommitDlg : public CResizableStandAloneDialog
+class CSVNDCommitDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CSVNDCommitDlg)
 
