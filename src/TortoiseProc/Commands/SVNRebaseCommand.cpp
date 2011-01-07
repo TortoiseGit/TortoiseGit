@@ -117,7 +117,7 @@ bool SVNRebaseCommand::Execute()
 			return false;
 		}else
 		{
-			CMessageBox::Show(NULL,CString(_T("Fast Forward:"))+ff,_T("TortoiseGit"),MB_OK);
+			CMessageBox::Show(NULL,CString(_T("Fast Forward: "))+ff,_T("TortoiseGit"),MB_OK);
 			return true;
 		}
 	}
