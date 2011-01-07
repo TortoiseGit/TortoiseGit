@@ -29,6 +29,8 @@
 
 bool SVNRebaseCommand::Execute()
 {
+	bool isStash = false;
+
 	if(!g_Git.CheckCleanWorkTree())
 	{
 		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
@@ -40,7 +42,7 @@ bool SVNRebaseCommand::Execute()
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
 			}
-
+			isStash = true;
 		}else
 		{
 			return false;
@@ -92,6 +94,15 @@ bool SVNRebaseCommand::Execute()
 	if(UpStreamNewHash==HeadHash)
 	{
 		CMessageBox::Show(NULL,_T("Everything Updated"),_T("TortoiseGit"),MB_OK);
+		if(isStash && CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
+		{
+			CString cmd,out;
+			cmd=_T("git.exe stash pop");
+			if(g_Git.Run(cmd,&out,CP_ACP))
+			{
+				CMessageBox::Show(NULL,out,_T("TortoiseGit"), MB_OK);
+			}
+		}
 		return true;
 	}
 	
