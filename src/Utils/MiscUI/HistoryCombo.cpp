@@ -148,20 +148,25 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 		cbei.mask |= CBEIF_IMAGE | CBEIF_SELECTEDIMAGE;
 	}
 #endif
+
+	//search the Combo for another string like this
+	//and do not insert if found
+	int nIndex = FindStringExact(-1, combostring);
+	if (nIndex != -1)
+	{
+		if (nIndex > cbei.iItem) {
+			DeleteItem(nIndex);
+			m_arEntries.RemoveAt(nIndex);
+		} else {
+			if(isSel)
+				SetCurSel(nIndex);
+			return nIndex;
+		}
+	}
+
 	int nRet = InsertItem(&cbei);
 	if (nRet >= 0)
 		m_arEntries.InsertAt(nRet, str);
-
-	//search the Combo for another string like this
-	//and delete it if one is found
-	int nIndex = FindStringExact(-1, combostring);
-	if (nIndex != -1 && nIndex != nRet)
-	{
-		DeleteItem(nIndex);
-		m_arEntries.RemoveAt(nIndex);
-		//nRet is now (potentially) invalid. Reset it.
-		nRet = FindStringExact(-1, str);
-	}
 
 	//truncate list to m_nMaxHistoryItems
 	int nNumItems = GetCount();
