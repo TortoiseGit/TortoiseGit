@@ -265,14 +265,14 @@ void CGitLogListBase::InsertGitColumn()
 	if(this->m_IsRebaseReplaceGraph)
 	{
 		m_dwDefaultColumns &= ~GIT_LOG_GRAPH;
-		m_dwDefaultColumns |= IDS_LOG_REBASE;
+		m_dwDefaultColumns |= GIT_LOG_REBASE;
 	}
 
 	if(this->m_IsIDReplaceAction)
 	{
 		m_dwDefaultColumns &= ~GIT_LOG_ACTIONS;
-		m_dwDefaultColumns |= IDS_LOG_ID;
-		m_dwDefaultColumns |= IDS_LOG_HASH;
+		m_dwDefaultColumns |= GIT_LOG_ID;
+		m_dwDefaultColumns |= GIT_LOG_HASH;
 	}
 	SetRedraw(false);
 
