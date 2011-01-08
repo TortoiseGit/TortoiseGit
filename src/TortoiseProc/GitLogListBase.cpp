@@ -1588,13 +1588,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
 
-
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
 		if ( GetSelectedCount() >0 && (!pSelLogEntry->m_CommitHash.IsEmpty()))
 		{
+			bool bAddSeparator = false;
 			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
 			{
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
@@ -1608,20 +1608,26 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						CString hash=g_Git.GetHash(head);
 						hash=hash.Left(40);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-						if(pLastEntry->m_CommitHash.ToString() == hash)
+						if(pLastEntry->m_CommitHash.ToString() == hash) {
 							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
+							bAddSeparator = true;
+						}
 					}
 				}
 			}
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK)) {
 				popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
+				bAddSeparator = true;
+			}
 
 			if(GetSelectedCount()<=2 || (IsSelectionContinuous() && GetSelectedCount() > 0))
-				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH)) {
 					popup.AppendMenuIcon(ID_CREATE_PATCH, IDS_CREATE_PATCH, IDI_PATCH);
-			
-			popup.AppendMenu(MF_SEPARATOR, NULL);
-	
+					bAddSeparator = true;
+				}
+
+			if (bAddSeparator)
+				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
 		
