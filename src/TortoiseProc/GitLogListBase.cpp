@@ -132,6 +132,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_LOG);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAME);
 
 	OSVERSIONINFOEX inf;
 	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
@@ -1438,6 +1439,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 					
 				}
+
+				if(m_ContextMenuMask&GetContextMenuBit(ID_BLAME))
+					popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
+
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
