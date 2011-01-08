@@ -463,6 +463,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 	memset(&process, 0, sizeof(process));
 	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
 	
+	procCmd = tortoiseProcPath + _T(" ") + procCmd;
+
 	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);
