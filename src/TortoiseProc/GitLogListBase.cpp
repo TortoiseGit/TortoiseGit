@@ -272,23 +272,28 @@ void CGitLogListBase::InsertGitColumn()
 	};
 	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
+	DWORD hideColumns = 0;
 	if(this->m_IsRebaseReplaceGraph)
 	{
-		m_dwDefaultColumns &= ~GIT_LOG_GRAPH;
+		hideColumns |= GIT_LOG_GRAPH;
 		m_dwDefaultColumns |= GIT_LOG_REBASE;
+	} else {
+		hideColumns |= GIT_LOG_REBASE;
 	}
 
 	if(this->m_IsIDReplaceAction)
 	{
-		m_dwDefaultColumns &= ~GIT_LOG_ACTIONS;
+		hideColumns |= GIT_LOG_ACTIONS;
 		m_dwDefaultColumns |= GIT_LOG_ID;
 		m_dwDefaultColumns |= GIT_LOG_HASH;
+	} else {
+		hideColumns |= GIT_LOG_ID;
 	}
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, sizeof(normal)/sizeof(UINT));
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
-	
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
+
 	SetRedraw(true);
 
 }
