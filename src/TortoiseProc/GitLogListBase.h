@@ -73,6 +73,7 @@ public:
 	volatile LONG		m_bNoDispUpdates;
 	BOOL m_IsIDReplaceAction;
 	BOOL m_IsOldFirst;
+	void hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow);
 	BOOL m_IsRebaseReplaceGraph;
 
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);

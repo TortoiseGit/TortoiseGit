@@ -143,6 +143,15 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ColumnRegKey=_T("log");
 }
 
+void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
+{
+	if (exclusivelyShow) {
+		m_ContextMenuMask &= hideMask;
+	} else {
+		m_ContextMenuMask &= ~hideMask;
+	}
+}
+
 CGitLogListBase::~CGitLogListBase()
 {
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
