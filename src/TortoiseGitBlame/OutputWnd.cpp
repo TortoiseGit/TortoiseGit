@@ -100,6 +100,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_LogList.m_ColumnRegKey=_T("Blame");
 	m_LogList.InsertGitColumn();
 
+	m_LogList.hideUnimplementedCommands();
 
 #if 0
 	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);

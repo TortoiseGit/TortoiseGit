@@ -8,6 +8,21 @@
 
 IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 
+void CGitBlameLogList::hideUnimplementedCommands()
+{
+	hideFromContextMenu(
+		GetContextMenuBit(ID_GNUDIFF1) |
+		GetContextMenuBit(ID_COMPARE) |
+		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
+		GetContextMenuBit(ID_COPYCLIPBOARD) |
+		GetContextMenuBit(ID_COPYHASH) |
+		GetContextMenuBit(ID_EXPORT) |
+		GetContextMenuBit(ID_CREATE_BRANCH) |
+		GetContextMenuBit(ID_CREATE_TAG) |
+		GetContextMenuBit(ID_SWITCHTOREV)
+		, true);
+}
+
 void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu)
 {	
 	POSITION pos = GetFirstSelectedItemPosition();
