@@ -132,6 +132,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_EDIT);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_LOG);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAME);
 
 	OSVERSIONINFOEX inf;
 	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
@@ -141,6 +142,15 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bVista = (fullver >= 0x0600);
 
 	m_ColumnRegKey=_T("log");
+}
+
+void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
+{
+	if (exclusivelyShow) {
+		m_ContextMenuMask &= hideMask;
+	} else {
+		m_ContextMenuMask &= ~hideMask;
+	}
 }
 
 CGitLogListBase::~CGitLogListBase()
@@ -250,8 +260,8 @@ void CGitLogListBase::InsertGitColumn()
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
-		LOGLIST_MESSAGE_MIN,
 		ICONITEMBORDER+16*4,
+		LOGLIST_MESSAGE_MIN,
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
@@ -265,14 +275,14 @@ void CGitLogListBase::InsertGitColumn()
 	if(this->m_IsRebaseReplaceGraph)
 	{
 		m_dwDefaultColumns &= ~GIT_LOG_GRAPH;
-		m_dwDefaultColumns |= IDS_LOG_REBASE;
+		m_dwDefaultColumns |= GIT_LOG_REBASE;
 	}
 
 	if(this->m_IsIDReplaceAction)
 	{
 		m_dwDefaultColumns &= ~GIT_LOG_ACTIONS;
-		m_dwDefaultColumns |= IDS_LOG_ID;
-		m_dwDefaultColumns |= IDS_LOG_HASH;
+		m_dwDefaultColumns |= GIT_LOG_ID;
+		m_dwDefaultColumns |= GIT_LOG_HASH;
 	}
 	SetRedraw(false);
 
@@ -1189,13 +1199,13 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 		}
 		break;
-	case this->LOGLIST_ACTION:
+	case this->LOGLIST_ACTION: //action -- no text in the column
 		break;
 	case this->LOGLIST_HASH:
-		if(this->m_IsIDReplaceAction)
+		if(pLogEntry)
 			lstrcpyn(pItem->pszText, pLogEntry->m_CommitHash.ToString(), pItem->cchTextMax);
 		break;
-	case this->LOGLIST_ID: //action -- no text in the column
+	case this->LOGLIST_ID:
 		if(this->m_IsIDReplaceAction)
 			lstrcpyn(pItem->pszText, temp, pItem->cchTextMax);
 		break;
@@ -1429,6 +1439,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 					
 				}
+
+				if(m_ContextMenuMask&GetContextMenuBit(ID_BLAME))
+					popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
+
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 			}
@@ -1579,13 +1593,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
 
-
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
 		if ( GetSelectedCount() >0 && (!pSelLogEntry->m_CommitHash.IsEmpty()))
 		{
+			bool bAddSeparator = false;
 			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
 			{
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
@@ -1599,20 +1613,26 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						CString hash=g_Git.GetHash(head);
 						hash=hash.Left(40);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-						if(pLastEntry->m_CommitHash.ToString() == hash)
+						if(pLastEntry->m_CommitHash.ToString() == hash) {
 							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
+							bAddSeparator = true;
+						}
 					}
 				}
 			}
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK))
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK)) {
 				popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
+				bAddSeparator = true;
+			}
 
 			if(GetSelectedCount()<=2 || (IsSelectionContinuous() && GetSelectedCount() > 0))
-				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH)) {
 					popup.AppendMenuIcon(ID_CREATE_PATCH, IDS_CREATE_PATCH, IDI_PATCH);
-			
-			popup.AppendMenu(MF_SEPARATOR, NULL);
-	
+					bAddSeparator = true;
+				}
+
+			if (bAddSeparator)
+				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
 		

@@ -8,6 +8,22 @@
 
 IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 
+void CGitBlameLogList::hideUnimplementedCommands()
+{
+	hideFromContextMenu(
+		GetContextMenuBit(ID_GNUDIFF1) |
+		GetContextMenuBit(ID_COMPARE) |
+		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
+		GetContextMenuBit(ID_COPYCLIPBOARD) |
+		GetContextMenuBit(ID_COPYHASH) |
+		GetContextMenuBit(ID_EXPORT) |
+		GetContextMenuBit(ID_CREATE_BRANCH) |
+		GetContextMenuBit(ID_CREATE_TAG) |
+		GetContextMenuBit(ID_SWITCHTOREV)
+		, true);
+	m_ContextMenuMask |= GetContextMenuBit(ID_BLAME);
+}
+
 void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu)
 {	
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -110,7 +126,10 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 		case ID_SWITCHTOREV:
 			procCmd+=_T("switch");
 			break;
-
+		case ID_BLAME:
+			procCmd+=_T("blame");
+			procCmd+=_T(" /endrev:") + this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			return;
@@ -444,6 +463,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 	memset(&process, 0, sizeof(process));
 	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
 	
+	procCmd = tortoiseProcPath + _T(" ") + procCmd;
+
 	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);
