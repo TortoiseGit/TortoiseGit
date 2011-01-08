@@ -105,15 +105,17 @@ bool PropertyList::IsNeedsLockSet() const
 
 void ColumnManager::ReadSettings 
     ( DWORD defaultColumns
+	, DWORD hideColumns
     , const CString& containerName
 	, int maxsize
 	, int * widthlist)
 {
     // defaults
-    DWORD selectedStandardColumns = defaultColumns;
-	m_dwDefaultColumns = defaultColumns;
+    DWORD selectedStandardColumns = defaultColumns & ~hideColumns;
+	m_dwDefaultColumns = defaultColumns & ~hideColumns;
 
     columns.resize (maxsize);
+	int power = 1;
     for (size_t i = 0; i < maxsize; ++i)
     {
         columns[i].index = static_cast<int>(i);
@@ -122,7 +124,8 @@ void ColumnManager::ReadSettings
 		else
 			columns[i].width = widthlist[i];
         columns[i].visible = true;
-        columns[i].relevant = true;
+        columns[i].relevant = !(hideColumns & power);
+		power *= 2;
     }
 
 //    userProps.clear();
@@ -139,7 +142,7 @@ void ColumnManager::ReadSettings
         // read (possibly different) column selection
 
 		selectedStandardColumns 
-            = CRegDWORD (registryPrefix, selectedStandardColumns);
+            = CRegDWORD (registryPrefix, selectedStandardColumns) & ~hideColumns;
 
         // read user-prop lists
 
@@ -171,7 +174,7 @@ void ColumnManager::ReadSettings
     // create columns
 
     for (int i = 0, count = GetColumnCount(); i < count; ++i)
-		control->InsertColumn (i, GetName(i), LVCFMT_LEFT, IsVisible(i) ? -1 : GetVisibleWidth(i, false));
+		control->InsertColumn (i, GetName(i), LVCFMT_LEFT, IsVisible(i)&&IsRelevant(i) ? -1 : GetVisibleWidth(i, false));
 
     // restore column ordering
 

@@ -180,7 +180,7 @@ public:
 	DWORD m_dwDefaultColumns;
 	/// registry access
 
-	void ReadSettings (DWORD defaultColumns, const CString& containerName, int ReadSettings, int *withlist=NULL);
+	void ReadSettings (DWORD defaultColumns, DWORD hideColumns, const CString& containerName, int ReadSettings, int *withlist=NULL);
 	void WriteSettings() const;
 
 	/// read column definitions
@@ -404,11 +404,12 @@ public:
 
 		for (int i = 1; i < itemName.size(); ++i)
 		{
-			pop->AppendMenu ( IsVisible(i) 
-				? uCheckedFlags 
-				: uUnCheckedFlags
-				, i
-				, GetName(i));
+			if(IsRelevant(i))
+				pop->AppendMenu ( IsVisible(i) 
+					? uCheckedFlags 
+					: uUnCheckedFlags
+					, i
+					, GetName(i));
 		}
 	}
 private:

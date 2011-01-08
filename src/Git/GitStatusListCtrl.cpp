@@ -239,7 +239,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
          };
 	
 	m_ColumnManager.SetNames(standardColumnNames,SVNSLC_NUMCOLUMNS);
-    m_ColumnManager.ReadSettings (m_dwDefaultColumns, sColumnInfoContainer, SVNSLC_NUMCOLUMNS);
+    m_ColumnManager.ReadSettings (m_dwDefaultColumns, 0, sColumnInfoContainer, SVNSLC_NUMCOLUMNS);
 
 	// enable file drops
 #if 0
