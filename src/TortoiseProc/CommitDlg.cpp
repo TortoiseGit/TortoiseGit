@@ -160,7 +160,7 @@ BOOL CCommitDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 	
-	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS | SVNSLC_COLADD |SVNSLC_COLDEL, _T("CommitDlg"));
+	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS | SVNSLC_COLADD |SVNSLC_COLDEL, _T("CommitDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT | SVNSLC_POPSAVEAS)));
 	m_ListCtrl.SetSelectButton(&m_SelectAll);
 	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
 	m_ListCtrl.SetCancelBool(&m_bCancelled);
