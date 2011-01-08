@@ -2475,7 +2475,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDSVNLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
-				if (m_dwContextMenus & SVNSLC_POPBLAME)
+				if (m_dwContextMenus & SVNSLC_POPBLAME && ! filepath->IsDirectory())
 				{
 					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 				}
@@ -2483,12 +2483,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
 			if ( (GetSelectedCount() == 1) )
 			{
-				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) ) 
+				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) && ! filepath->IsDirectory()) 
 				{
 					popup.AppendMenuIcon(IDSVNLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				}
 
-				if (m_dwContextMenus & SVNSLC_POPOPEN)
+				if (m_dwContextMenus & SVNSLC_POPOPEN && ! filepath->IsDirectory())
 				{
 					popup.AppendMenuIcon(IDSVNLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
