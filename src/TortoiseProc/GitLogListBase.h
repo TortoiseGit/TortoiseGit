@@ -203,6 +203,7 @@ public:
 	void Clear();
 
 	int					m_nSelectedFilter;
+	bool				m_bFilterWithRegex;
 	CLogDataVector		m_logEntries;
 	void RemoveFilter();
 	void StartFilter();
@@ -298,9 +299,6 @@ protected:
 
 	CComCriticalSection			m_critSec;
 
-	bool				m_bFilterWithRegex;
-
-	
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;
 	
