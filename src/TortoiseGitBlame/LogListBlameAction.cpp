@@ -11,9 +11,6 @@ IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 void CGitBlameLogList::hideUnimplementedCommands()
 {
 	hideFromContextMenu(
-		GetContextMenuBit(ID_GNUDIFF1) |
-		GetContextMenuBit(ID_COMPARE) |
-		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
 		GetContextMenuBit(ID_COPYCLIPBOARD) |
 		GetContextMenuBit(ID_COPYHASH) |
 		GetContextMenuBit(ID_EXPORT) |
