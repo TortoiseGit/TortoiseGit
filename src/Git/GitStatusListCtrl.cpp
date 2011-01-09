@@ -3380,6 +3380,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 						else
 						{
+							bool updateStatusList = false;
 							for(int i=0;i<targetList.GetCount();i++)
 							{	
 								int nListboxEntries = GetItemCount();
@@ -3392,7 +3393,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										{
 											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
 											SetEntryCheck(path,nItem,false);
-											PrepareGroups(true);
+											updateStatusList = true;
 											SetItemGroup(nItem,1);
 											this->m_StatusFileList.RemoveItem(*path);
 											this->m_UnRevFileList.AddPath(*path);
@@ -3408,7 +3409,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 							SetRedraw(TRUE);
 							SaveColumnWidths();
-							Show(m_dwShow, 0, m_bShowFolders,false,true);
+							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
 						}
 					}
