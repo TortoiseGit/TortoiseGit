@@ -276,7 +276,11 @@ void CGitPropertyPage::InitWorkfileView()
 	::SetCurrentDirectory(ProjectTopDir);
 
 	GitRev rev;
-		
+
+	if (autocrlf.Trim().IsEmpty())
+		autocrlf = _T("false");
+	if (safecrlf.Trim().IsEmpty())
+		safecrlf = _T("false");
 
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username.Trim());
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail.Trim());
