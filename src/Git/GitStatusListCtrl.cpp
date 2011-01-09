@@ -1042,7 +1042,6 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
 	DeleteAllItems();
-	PrepareGroups();
 	m_nSelected = 0;
 
 	if(UpdateStatusList)
@@ -1063,7 +1062,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
 		}
 	}
-
+	PrepareGroups();
 	if( m_nSortedColumn )
 	{
 		CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
