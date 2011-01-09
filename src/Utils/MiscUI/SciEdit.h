@@ -71,6 +71,10 @@ class CSciEdit : public CWnd
 public:
 	CSciEdit(void);
 	~CSciEdit(void);
+
+		void				SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, const char *face=0);
+	void SetUDiffStyle();
+
 	/**
 	 * Initialize the scintilla control. Must be called prior to any other
 	 * method!
@@ -112,8 +116,10 @@ public:
 	
 	CStringA	StringForControl(const CString& text);
 	CString		StringFromControl(const CStringA& text);
-	
+	int			LoadFromFile(CString &filename);
+
 private:
+	bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb);
 	HMODULE		m_hModule;
 	LRESULT		m_DirectFunction;
 	LRESULT		m_DirectPointer;

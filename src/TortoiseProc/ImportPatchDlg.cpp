@@ -103,6 +103,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	}
 	m_PatchCtrl.Init(0);
 	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
+	m_PatchCtrl.SetUDiffStyle();
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
@@ -175,6 +176,7 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_STN_CLICKED(IDC_AM_SPLIT, &CImportPatchDlg::OnStnClickedAmSplit)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATCH, &CImportPatchDlg::OnHdnItemchangedListPatch)
 END_MESSAGE_MAP()
 
 
@@ -566,4 +568,40 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 	}
 	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	if(this->m_cList.GetSelectedCount() != 1)
+	{
+		m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
+		m_PatchCtrl.SetText(CString());
+		m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
+	}else 
+	{
+		CString text;
+
+		POSITION pos;
+		pos = m_cList.GetFirstSelectedItemPosition();
+		int selected = m_cList.GetNextSelectedItem(pos);
+		
+		if(selected>=0&& selected< m_cList.GetItemCount())
+		{
+			CString str = m_cList.GetItemText(selected,0);
+			m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
+			m_PatchCtrl.SetText(text);
+			m_PatchCtrl.LoadFromFile(str);
+			m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
+
+		}else
+		{
+			m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
+			m_PatchCtrl.SetText(text);
+			m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
+		}
+	}
 }

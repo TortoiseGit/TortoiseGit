@@ -1272,3 +1272,162 @@ bool CSciEdit::IsUrl(const CStringA& sText)
 		return true;
 	return false;
 }
+
+bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb)
+{
+	if (cb < 2)
+		return true;
+	UINT16 * pVal = (UINT16 *)pBuffer;
+	UINT8 * pVal2 = (UINT8 *)(pVal+1);
+	// scan the whole buffer for a 0x0000 sequence
+	// if found, we assume a binary file
+	for (size_t i=0; i<(cb-2); i=i+2)
+	{
+		if (0x0000 == *pVal++)
+			return false;
+	}
+	pVal = (UINT16 *)pBuffer;
+	if (*pVal == 0xFEFF)
+		return false;
+	if (cb < 3)
+		return false;
+	if (*pVal == 0xBBEF)
+	{
+		if (*pVal2 == 0xBF)
+			return true;
+	}
+	// check for illegal UTF8 chars
+	pVal2 = (UINT8 *)pBuffer;
+	for (size_t i=0; i<cb; ++i)
+	{
+		if ((*pVal2 == 0xC0)||(*pVal2 == 0xC1)||(*pVal2 >= 0xF5))
+			return false;
+		pVal2++;
+	}
+	pVal2 = (UINT8 *)pBuffer;
+	bool bUTF8 = false;
+	for (size_t i=0; i<(cb-3); ++i)
+	{
+		if ((*pVal2 & 0xE0)==0xC0)
+		{
+			pVal2++;i++;
+			if ((*pVal2 & 0xC0)!=0x80)
+				return false;
+			bUTF8 = true;
+		}
+		if ((*pVal2 & 0xF0)==0xE0)
+		{
+			pVal2++;i++;
+			if ((*pVal2 & 0xC0)!=0x80)
+				return false;
+			pVal2++;i++;
+			if ((*pVal2 & 0xC0)!=0x80)
+				return false;
+			bUTF8 = true;
+		}
+		if ((*pVal2 & 0xF8)==0xF0)
+		{
+			pVal2++;i++;
+			if ((*pVal2 & 0xC0)!=0x80)
+				return false;
+			pVal2++;i++;
+			if ((*pVal2 & 0xC0)!=0x80)
+				return false;
+			pVal2++;i++;
+			if ((*pVal2 & 0xC0)!=0x80)
+				return false;
+			bUTF8 = true;
+		}
+		pVal2++;
+	}
+	if (bUTF8)
+		return true;
+	return false;
+}
+
+void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face) 
+{
+	Call(SCI_STYLESETFORE, style, fore);
+	Call(SCI_STYLESETBACK, style, back);
+	if (size >= 1)
+		Call(SCI_STYLESETSIZE, style, size);
+	if (face) 
+		Call(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
+}
+
+
+void CSciEdit::SetUDiffStyle()
+{
+	SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
+		// Reusing TortoiseBlame's setting which already have an user friendly
+		// pane in TortoiseSVN's Settings dialog, while there is no such
+		// pane for TortoiseUDiff.
+		CRegStdDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
+		WideToMultibyte(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str());
+
+	Call(SCI_SETTABWIDTH, 4);
+	Call(SCI_SETREADONLY, TRUE);
+	//LRESULT pix = Call(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"_99999");
+	//Call(SCI_SETMARGINWIDTHN, 0, pix);
+	//Call(SCI_SETMARGINWIDTHN, 1);
+	//Call(SCI_SETMARGINWIDTHN, 2);
+	//Set the default windows colors for edit controls
+	Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT));
+	Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOW));
+	Call(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
+	Call(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
+	Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+
+	//SendEditor(SCI_SETREADONLY, FALSE);
+	Call(SCI_CLEARALL);
+	Call(EM_EMPTYUNDOBUFFER);
+	Call(SCI_SETSAVEPOINT);
+	Call(SCI_CANCEL);
+	Call(SCI_SETUNDOCOLLECTION, 0);
+
+	Call(SCI_SETUNDOCOLLECTION, 1);
+	Call(SCI_SETWRAPMODE,SC_WRAP_NONE);
+	
+	//::SetFocus(m_hWndEdit);
+	Call(EM_EMPTYUNDOBUFFER);
+	Call(SCI_SETSAVEPOINT);
+	Call(SCI_GOTOPOS, 0);
+
+	Call(SCI_CLEARDOCUMENTSTYLE, 0, 0);
+	Call(SCI_SETSTYLEBITS, 5, 0);
+
+	//SetAStyle(SCE_DIFF_DEFAULT, RGB(0, 0, 0));
+	SetAStyle(SCE_DIFF_COMMAND, RGB(0x0A, 0x24, 0x36));
+	SetAStyle(SCE_DIFF_POSITION, RGB(0xFF, 0, 0));
+	SetAStyle(SCE_DIFF_HEADER, RGB(0x80, 0, 0), RGB(0xFF, 0xFF, 0x80));
+	SetAStyle(SCE_DIFF_COMMENT, RGB(0, 0x80, 0));
+	Call(SCI_STYLESETBOLD, SCE_DIFF_COMMENT, TRUE);
+	SetAStyle(SCE_DIFF_DELETED, ::GetSysColor(COLOR_WINDOWTEXT), RGB(0xFF, 0x80, 0x80));
+	SetAStyle(SCE_DIFF_ADDED, ::GetSysColor(COLOR_WINDOWTEXT), RGB(0x80, 0xFF, 0x80));
+
+	Call(SCI_SETLEXER, SCLEX_DIFF);
+	Call(SCI_SETKEYWORDS, 0, (LPARAM)"revision");
+	Call(SCI_COLOURISE, 0, -1);
+}
+
+int CSciEdit::LoadFromFile(CString &filename)
+{
+	FILE *fp = NULL;
+	_tfopen_s(&fp, filename, _T("rb"));
+	if (fp) 
+	{
+		//SetTitle();
+				char data[4096];
+				size_t lenFile = fread(data, 1, sizeof(data), fp);
+				bool bUTF8 = IsUTF8(data, lenFile);
+				while (lenFile > 0) 
+				{
+					Call(SCI_ADDTEXT, lenFile,
+						reinterpret_cast<LPARAM>(static_cast<char *>(data)));
+					lenFile = fread(data, 1, sizeof(data), fp);
+				}
+				fclose(fp);
+				Call(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
+	}else
+		return -1;
+}
