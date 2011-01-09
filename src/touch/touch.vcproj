@@ -400,6 +400,10 @@
 				RelativePath=".\touch.rc"
 				>
 			</File>
+			<File
+				RelativePath=".\touch.rc2"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
