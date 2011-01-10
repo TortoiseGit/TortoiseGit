@@ -767,6 +767,7 @@
 #define IDC_REBASE_POST_BUTTON          1383
 #define IDC_BUTTON_REMOTE_BRANCH        1383
 #define IDC_EDITLOCALGITCONFIG          1383
+#define IDC_COMMIT                      1383
 #define IDC_TOURLLABEL                  1384
 #define IDC_BUTTON_DIR                  1384
 #define IDC_BUTTON_DOWN                 1384

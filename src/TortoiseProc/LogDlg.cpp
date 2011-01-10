@@ -2048,6 +2048,8 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 				m_bFilterWithRegex = !m_bFilterWithRegex;
 				CRegDWORD b = CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 				b = m_bFilterWithRegex;
+				m_LogList.m_bFilterWithRegex = m_bFilterWithRegex;
+				SetFilterCueText();
 				CheckRegexpTooltip();
 			}
 			else

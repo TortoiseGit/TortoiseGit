@@ -2341,38 +2341,28 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 					continue;
 				}
 			}
-#if 0
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
 			{
-				LogChangedPathArray * cpatharray = m_logEntries[i]->pArChangedPaths;
+				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).m_Files;
 
 				bool bGoing = true;
-				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount() && bGoing; ++cpPathIndex)
+				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
 				{
-					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-					if (regex_search(wstring((LPCTSTR)cpath->sCopyFromPath), pat, flags)&&IsEntryInDateRange(i))
+					CTGitPath cpath = pathList[cpPathIndex];
+					if (regex_search(wstring((LPCTSTR)cpath.GetGitPathString()), pat, flags)&&IsEntryInDateRange(i))
 					{
-						pShownlist->Add(m_logEntries[i]);
+						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
 						continue;
 					}
-					if (regex_search(wstring((LPCTSTR)cpath->sPath), pat, flags)&&IsEntryInDateRange(i))
+					if (regex_search(wstring((LPCTSTR)cpath.GetActionName()), pat, flags)&&IsEntryInDateRange(i))
 					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-					if (regex_search(wstring((LPCTSTR)cpath->GetAction()), pat, flags)&&IsEntryInDateRange(i))
-					{
-						pShownlist->Add(m_logEntries[i]);
+						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
 						continue;
 					}
 				}
-				if (!bGoing)
-					continue;
 			}
-#endif
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
 			{
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).m_AuthorName), pat, flags)&&IsEntryInDateRange(i))
@@ -2427,42 +2417,32 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 					continue;
 				}
 			}
-#if 0
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
 			{
-				LogChangedPathArray * cpatharray = m_logEntries[i]->pArChangedPaths;
+				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).m_Files;
 
 				bool bGoing = true;
-				for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount() && bGoing; ++cpPathIndex)
+				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
 				{
-					LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
-					CString path = cpath->sCopyFromPath;
+					CTGitPath cpath = pathList[cpPathIndex];
+					CString path = cpath.GetGitPathString();
 					path.MakeLower();
 					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
 					{
-						pShownlist->Add(m_logEntries[i]);
+						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
 						continue;
 					}
-					path = cpath->sPath;
+					path = cpath.GetActionName();
 					path.MakeLower();
 					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
 					{
-						pShownlist->Add(m_logEntries[i]);
-						bGoing = false;
-						continue;
-					}
-					path = cpath->GetAction();
-					path.MakeLower();
-					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
-					{
-						pShownlist->Add(m_logEntries[i]);
+						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
 						continue;
 					}
 				}
 			}
-#endif
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).m_AuthorName;

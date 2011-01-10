@@ -400,6 +400,10 @@
 				RelativePath=".\SshAskPass.rc"
 				>
 			</File>
+			<File
+				RelativePath=".\SshAskPass.rc2"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

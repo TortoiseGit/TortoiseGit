@@ -276,7 +276,11 @@ void CGitPropertyPage::InitWorkfileView()
 	::SetCurrentDirectory(ProjectTopDir);
 
 	GitRev rev;
-		
+
+	if (autocrlf.Trim().IsEmpty())
+		autocrlf = _T("false");
+	if (safecrlf.Trim().IsEmpty())
+		safecrlf = _T("false");
 
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USERNAME,username.Trim());
 	SetDlgItemText(m_hwnd,IDC_CONFIG_USEREMAIL,useremail.Trim());
@@ -336,10 +340,14 @@ void CGitPropertyPage::InitWorkfileView()
 						break;
 
 					git_close_log(handle);
+					handle = NULL;
 					rev.ParserFromCommit(&commit);
 					git_free_commit(&commit);
 
 				}while(0);
+				if (handle != NULL) {
+					git_close_log(handle);
+				}
 			}
 
 			SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());

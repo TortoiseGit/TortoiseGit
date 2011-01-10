@@ -1,11 +1,18 @@
 //
-// TortoiseProc.RC2 - resources Microsoft Visual C++ does not edit directly
+// touch.RC2 - resources Microsoft Visual C++ does not edit directly
 //
 
 #ifdef APSTUDIO_INVOKED
 #error this file is not editable by Microsoft Visual C++
 #endif //APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+
+/////////////////////////////////////////////////////////////////////////////
+#include "..\version.h"
+/////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
 // Add manually edited resources here...
@@ -24,20 +31,20 @@ VS_VERSION_INFO VERSIONINFO
  FILEFLAGS 0x0L
 #endif
  FILEOS 0x4L
- FILETYPE VFT_DLL
+ FILETYPE VFT_APP
  FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://code.google.com/p/tortoisegit\0"
-            VALUE "FileDescription", "TortoiseGit shell extension client\0"
+			VALUE "CompanyName", "http://code.google.com/p/tortoisegit\0"
+            VALUE "FileDescription", "Creates a file.\0"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGit.dll\0"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2011 - TortoiseGit\0"
-            VALUE "OriginalFilename", "TortoiseGit.dll\0"
-            VALUE "ProductName", "TortoiseGit\0"
+            VALUE "InternalName", "touch.exe\0"
+            VALUE "LegalCopyright", "Copyright (C) 2010-2011 - TortoiseGit\0"
+            VALUE "OriginalFilename", "touch.exe\0"
+            VALUE "ProductName", "touch\0"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END
@@ -48,3 +55,4 @@ BEGIN
 END
 
 /////////////////////////////////////////////////////////////////////////////
+

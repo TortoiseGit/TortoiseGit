@@ -125,6 +125,7 @@ SVNSLC_SHOWINCOMPLETE|SVNSLC_SHOWEXTERNAL|SVNSLC_SHOWINEXTERNALS)
 #define SVNSLC_POPREPAIRMOVE			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_REPAIRMOVE)
 #define SVNSLC_POPCHANGELISTS			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_CHECKGROUP)
 #define SVNSLC_POPBLAME					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_BLAME)
+#define SVNSLC_POPSAVEAS				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_SAVEAS)
 
 #define SVNSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 

@@ -11,9 +11,6 @@ IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 void CGitBlameLogList::hideUnimplementedCommands()
 {
 	hideFromContextMenu(
-		GetContextMenuBit(ID_GNUDIFF1) |
-		GetContextMenuBit(ID_COMPARE) |
-		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
 		GetContextMenuBit(ID_COPYCLIPBOARD) |
 		GetContextMenuBit(ID_COPYHASH) |
 		GetContextMenuBit(ID_EXPORT) |
@@ -37,7 +34,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 
 	bool bOpenWith = false;
 
-	procCmd+=_T("/path:\"");
+	procCmd+=_T(" /path:\"");
 	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd+=_T("\" ");
 	procCmd+=_T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
@@ -463,8 +460,6 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 	memset(&process, 0, sizeof(process));
 	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
 	
-	procCmd = tortoiseProcPath + _T(" ") + procCmd;
-
 	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);

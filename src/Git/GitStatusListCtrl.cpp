@@ -1042,7 +1042,6 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
 	DeleteAllItems();
-	PrepareGroups();
 	m_nSelected = 0;
 
 	if(UpdateStatusList)
@@ -1063,7 +1062,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
 		}
 	}
-
+	PrepareGroups();
 	if( m_nSortedColumn )
 	{
 		CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
@@ -2475,7 +2474,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDSVNLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
-				if (m_dwContextMenus & SVNSLC_POPBLAME)
+				if (m_dwContextMenus & SVNSLC_POPBLAME && ! filepath->IsDirectory())
 				{
 					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 				}
@@ -2483,12 +2482,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
 			if ( (GetSelectedCount() == 1) )
 			{
-				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) ) 
+				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) && ! filepath->IsDirectory()) 
 				{
 					popup.AppendMenuIcon(IDSVNLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				}
 
-				if (m_dwContextMenus & SVNSLC_POPOPEN)
+				if (m_dwContextMenus & SVNSLC_POPOPEN && ! filepath->IsDirectory())
 				{
 					popup.AppendMenuIcon(IDSVNLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
@@ -3381,6 +3380,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 						else
 						{
+							bool updateStatusList = false;
 							for(int i=0;i<targetList.GetCount();i++)
 							{	
 								int nListboxEntries = GetItemCount();
@@ -3393,7 +3393,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										{
 											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
 											SetEntryCheck(path,nItem,false);
-											PrepareGroups(true);
+											updateStatusList = true;
 											SetItemGroup(nItem,1);
 											this->m_StatusFileList.RemoveItem(*path);
 											this->m_UnRevFileList.AddPath(*path);
@@ -3409,7 +3409,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 							SetRedraw(TRUE);
 							SaveColumnWidths();
-							Show(m_dwShow, 0, m_bShowFolders,false,true);
+							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
 						}
 					}

@@ -119,7 +119,7 @@ END
 3 TEXTINCLUDE
 BEGIN
     "\r\n"
-    "\0"
+    "#include ""touch.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -145,6 +145,8 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
+
+#include "touch.rc2"  // non-Microsoft Visual C++ edited resources
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

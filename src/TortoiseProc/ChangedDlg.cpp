@@ -21,6 +21,8 @@
 #include "ChangedDlg.h"
 #include "messagebox.h"
 #include "cursor.h"
+#include "AppUtils.h"
+#include "PathUtils.h"
 #include ".\changeddlg.h"
 
 #include "GitStatusListCtrl.h"
@@ -67,6 +69,7 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOWIGNORED, &CChangedDlg::OnBnClickedShowignored)
 	ON_BN_CLICKED(IDC_REFRESH, &CChangedDlg::OnBnClickedRefresh)
 //	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
+	ON_BN_CLICKED(IDC_COMMIT, &CChangedDlg::OnBnClickedCommit)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -82,7 +85,7 @@ BOOL CChangedDlg::OnInitDialog()
 	UpdateData(FALSE);
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS, _T("ChangedDlg"),
-						SVNSLC_POPALL, false);
+						(SVNSLC_POPALL ^ SVNSLC_POPSAVEAS), false);
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
 	m_FileListCtrl.SetEmptyString(IDS_REPOSTATUS_EMPTYFILELIST);
@@ -101,6 +104,7 @@ BOOL CChangedDlg::OnInitDialog()
 //	AddAnchor(IDC_SHOWEXTERNALS, BOTTOM_LEFT);
 //	AddAnchor(IDC_SHOWUSERPROPS, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
+	AddAnchor(IDC_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REFRESH, BOTTOM_RIGHT);
 	AddAnchor(IDC_CHECKREPO, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -356,4 +360,16 @@ void CChangedDlg::UpdateStatistics()
 
 }
 
+void CChangedDlg::OnBnClickedCommit()
+{
+	CString proc = CPathUtils::GetAppDirectory();
+	proc += _T("TortoiseProc.exe /command:commit");
+	proc += _T(" /path:\"");
+	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
+	if (bSingleFile)
+		proc += m_pathList[0].GetWinPathString();
+	else
+		proc += m_FileListCtrl.GetCommonDirectory(false);
 
+	CAppUtils::LaunchApplication(proc, IDS_ERROR_CANNON_FIND_TORTOISEPROC, false);
+}
