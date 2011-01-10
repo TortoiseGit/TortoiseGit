@@ -2349,6 +2349,12 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
 				{
 					CTGitPath cpath = pathList[cpPathIndex];
+					if (regex_search(wstring((LPCTSTR)cpath.GetGitOldPathString()), pat, flags)&&IsEntryInDateRange(i))
+					{
+						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
+						bGoing = false;
+						continue;
+					}
 					if (regex_search(wstring((LPCTSTR)cpath.GetGitPathString()), pat, flags)&&IsEntryInDateRange(i))
 					{
 						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
@@ -2425,7 +2431,15 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
 				{
 					CTGitPath cpath = pathList[cpPathIndex];
-					CString path = cpath.GetGitPathString();
+					CString path = cpath.GetGitOldPathString();
+					path.MakeLower();
+					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
+					{
+						pShownlist->Add(&m_logEntries.GetGitRevAt(i));
+						bGoing = false;
+						continue;
+					}
+					path = cpath.GetGitPathString();
 					path.MakeLower();
 					if ((path.Find(find)>=0)&&(IsEntryInDateRange(i)))
 					{
