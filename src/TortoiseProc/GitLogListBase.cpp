@@ -75,7 +75,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
 	
-	m_bShowBugtraqColumn=0;
+	m_bShowBugtraqColumn=false;
 
 	m_IsIDReplaceAction=FALSE;
 
@@ -288,6 +288,12 @@ void CGitLogListBase::InsertGitColumn()
 		m_dwDefaultColumns |= GIT_LOG_HASH;
 	} else {
 		hideColumns |= GIT_LOG_ID;
+	}
+	if(this->m_bShowBugtraqColumn)
+	{
+		m_dwDefaultColumns |= GIT_LOGLIST_BUG;
+	} else {
+		hideColumns |= GIT_LOGLIST_BUG;
 	}
 	SetRedraw(false);
 

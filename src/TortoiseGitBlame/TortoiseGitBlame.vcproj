@@ -432,6 +432,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\TortoiseProc\ProjectProperties.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PropertiesWnd.cpp"
 				>
 			</File>

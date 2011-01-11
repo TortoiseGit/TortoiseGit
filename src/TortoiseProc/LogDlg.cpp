@@ -211,6 +211,8 @@ BOOL CLogDlg::OnInitDialog()
 	if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
 		m_bShowBugtraqColumn = true;
 
+	m_LogList.m_bShowBugtraqColumn = m_bShowBugtraqColumn;
+
 	//theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	//theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
@@ -593,7 +595,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash.ToString()+_T("\r\n\r\n"));
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
-			
+
 			pMsgView->SetSel(-1,-1);
 			CHARFORMAT2 format;
 			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
@@ -2030,8 +2032,10 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_AUTHORS), LOGFILTER_AUTHORS, temp);
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
-		temp.LoadString(IDS_LOG_FILTER_BUGIDS);
-		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
+		if (m_bShowBugtraqColumn == true) {
+			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
+			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
+		}
 		
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 

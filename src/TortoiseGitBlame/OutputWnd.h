@@ -2,6 +2,7 @@
 #pragma once
 
 #include "GitBlameLogList.h"
+#include "ProjectProperties.h"
 /////////////////////////////////////////////////////////////////////////////
 // COutputList window
 
@@ -59,7 +60,10 @@ protected:
 	void FillFindWindow();
 
 	void AdjustHorzScroll(CListBox& wndListBox);
-	
+
+private:
+	ProjectProperties	m_ProjectProperties;
+
 // Implementation
 public:
 	virtual ~COutputWnd();
