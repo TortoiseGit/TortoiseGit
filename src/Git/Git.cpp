@@ -881,7 +881,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	int ret;
 	CString cmd,output;
-	cmd=_T("git.exe config  --get-regexp \"^^remote[.].*[.]url\"");
+	cmd=_T("git.exe remote");
 	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
 	{
@@ -890,15 +890,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		while( pos>=0 )
 		{
 			one=output.Tokenize(_T("\n"),pos);
-			int start=one.Find(_T("."),0);
-			if(start>0)
-			{
-				CString url;
-				url=one.Right(one.GetLength()-start-1);
-				one=url;
-				one=one.Left(one.Find(_T("."),0));
-				list.push_back(one);
-			}
+			list.push_back(one);
 		}
 	}
 	return ret;
