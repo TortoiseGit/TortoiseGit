@@ -185,9 +185,9 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			COLORREF crText = GetSysColor(COLOR_WINDOWTEXT);
 
 			DWORD data = this->GetItemData(pNMCD->nmcd.dwItemSpec);
-			if(data & STATUS_APPLY_FAIL | STATUS_APPLY_SUCCESS | STATUS_APPLY_SKIP)
+			if(data & (STATUS_APPLY_FAIL | STATUS_APPLY_SUCCESS | STATUS_APPLY_SKIP))
 			{
-				pNMCD->clrTextBk = RGB(225,225,225);
+				pNMCD->clrTextBk = RGB(200,200,200);
 			}
 
 			switch(data & STATUS_MASK)
