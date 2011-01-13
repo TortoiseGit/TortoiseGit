@@ -1280,12 +1280,18 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				//#region case
 			case ShellMenuSync:
 				svnCmd += _T("sync /path:\"");
-				svnCmd += folder_;
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuCheckout:
 				svnCmd += _T("checkout /path:\"");
-				svnCmd += folder_;
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuUpdate:
@@ -1424,12 +1430,18 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuImport:
 				svnCmd += _T("import /path:\"");
-				svnCmd += folder_;
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuExport:
 				svnCmd += _T("export /path:\"");
-				svnCmd += folder_;
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuAbout:
@@ -1437,7 +1449,10 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuCreateRepos:
 				svnCmd += _T("repocreate /path:\"");
-				svnCmd += folder_;
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuMerge:
@@ -1906,7 +1921,10 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuClone:
 				svnCmd += _T("clone /path:\"");
-				svnCmd += folder_;
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
 			case ShellMenuPull:

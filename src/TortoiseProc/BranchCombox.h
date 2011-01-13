@@ -155,7 +155,7 @@ protected:
 
 		STRING_VECTOR list;
 		list.clear();
-		int current;
+		int current=0;
 		m_ctrlLocalBranch.Reset();
 		m_ctrlRemoteBranch.Reset();
 
