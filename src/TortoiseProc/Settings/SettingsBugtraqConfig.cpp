@@ -59,13 +59,18 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 	ProjectProperties::GetStringProps(this->m_URL,_T("bugtraq.url"));
-	ProjectProperties::GetStringProps(this->m_Logregex,_T("bugtraq.logregex"));
+	ProjectProperties::GetStringProps(this->m_Logregex,_T("bugtraq.logregex"),false);
 	ProjectProperties::GetStringProps(this->m_Label,_T("bugtraq.label"));
 	ProjectProperties::GetStringProps(this->m_Message,_T("bugtraq.message"));
 
 	ProjectProperties::GetBOOLProps(this->m_bNAppend,_T("bugtraq.append"));
 	ProjectProperties::GetBOOLProps(this->m_bNNumber,_T("bugtraq.number"));
 	ProjectProperties::GetBOOLProps(this->m_bNWarningifnoissue,_T("bugtraq.warnifnoissue"));
+
+	m_Logregex.Replace(_T("\n"),_T("\r\n"));
+	if(m_Logregex.GetLength())
+		if(m_Logregex[m_Logregex.GetLength()-1] == _T('\n'))
+			m_Logregex=m_Logregex.Left(m_Logregex.GetLength()-1);
 	
 	m_bNAppend = !m_bNAppend;
 	m_bNNumber = !m_bNNumber;
@@ -135,6 +140,7 @@ BOOL CSettingsBugtraqConfig::OnApply()
 
 	if(m_ChangeMask & BUG_LOGREGEX)
 	{
+		m_Logregex.Replace(_T("\r\n"),_T("\n"));
 		if(g_Git.SetConfigValue(_T("bugtraq.logregex"),m_Logregex))
 		{
 			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
