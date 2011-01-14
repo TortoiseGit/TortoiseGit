@@ -237,12 +237,7 @@ void CGitLogListBase::InsertGitColumn()
 		exStyle |= LVS_EX_FULLROWSELECT;
 	SetExtendedStyle(exStyle);
 
-	m_ProjectProperties.ReadProps(this->m_Path);
-
-	if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
-		m_bShowBugtraqColumn = true;
-	else
-		m_bShowBugtraqColumn = false;
+	UpdateProjectProperties();
 
 	static UINT normal[] =
 	{

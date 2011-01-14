@@ -95,15 +95,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndTabs.AddTab(&m_LogList, strTabName, (UINT)0);
 
-	// if there is a working copy, load the project properties
-	// to get information about the bugtraq: integration
-	if (!m_LogList.m_Path.IsUrl())
-		m_ProjectProperties.ReadProps(m_LogList.m_Path);
-
-	// the bugtraq issue id column is only shown if the bugtraq:url or bugtraq:regex is set
-	if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
-			m_LogList.m_bShowBugtraqColumn = true;
-
 	m_LogList.m_IsIDReplaceAction=TRUE;
 	m_LogList.DeleteAllItems();
 	m_LogList.m_ColumnRegKey=_T("Blame");
@@ -185,7 +176,7 @@ int COutputWnd::LoadHistory(CString filename)
 	
 	m_LogList.Clear();
 	m_LogList.FillGitLog(&path,0/*CGit::LOG_INFO_FOLLOW*/);
-
+	m_LogList.UpdateProjectProperties();
 	return 0;
 
 }

@@ -71,6 +71,17 @@ public:
 	CGitLogListBase();
 	virtual ~CGitLogListBase();
 	ProjectProperties	m_ProjectProperties;
+
+	void UpdateProjectProperties()
+	{
+		m_ProjectProperties.ReadProps(this->m_Path);
+
+		if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
+			m_bShowBugtraqColumn = true;
+		else
+			m_bShowBugtraqColumn = false;
+	}
+
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 
 	volatile LONG		m_bNoDispUpdates;

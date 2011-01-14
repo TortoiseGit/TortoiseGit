@@ -62,8 +62,7 @@ protected:
 	void AdjustHorzScroll(CListBox& wndListBox);
 
 private:
-	ProjectProperties	m_ProjectProperties;
-
+	
 // Implementation
 public:
 	virtual ~COutputWnd();
