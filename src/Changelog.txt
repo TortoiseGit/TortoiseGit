@@ -4,6 +4,7 @@
  * Improved log dialog
    Fixed issue #662: Allow to filter for paths
    Added hash column
+   Show BugID when user config bugtraq.logregex
  
  * Improved commit dialog
    Removed useless options from the contextmenu (e.g. file operations for directories/submodules)
