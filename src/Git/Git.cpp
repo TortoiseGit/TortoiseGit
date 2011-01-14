@@ -183,6 +183,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	dwFlags |= DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP; 
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
+	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
 	if(cmd.Find(_T("git") == 0))
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
