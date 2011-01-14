@@ -70,6 +70,9 @@ class CGitLogListBase : public CHintListCtrl
 public:
 	CGitLogListBase();
 	virtual ~CGitLogListBase();
+	ProjectProperties	m_ProjectProperties;
+	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
+
 	volatile LONG		m_bNoDispUpdates;
 	BOOL m_IsIDReplaceAction;
 	BOOL m_IsOldFirst;

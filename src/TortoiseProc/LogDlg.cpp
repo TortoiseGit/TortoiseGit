@@ -59,7 +59,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelect(false)
 	
 	, m_bSelectionMustBeContinuous(false)
-	, m_bShowBugtraqColumn(false)
 	, m_lowestRev(_T(""))
 	
 	, m_sLogInfo(_T(""))
@@ -202,22 +201,14 @@ BOOL CLogDlg::OnInitDialog()
 	m_cHidePaths.SetCheck(BST_INDETERMINATE);
 
 	
-	// if there is a working copy, load the project properties
-	// to get information about the bugtraq: integration
-	if (m_hasWC)
-		m_ProjectProperties.ReadProps(m_path);
-
-	// the bugtraq issue id column is only shown if the bugtraq:url or bugtraq:regex is set
-	if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
-		m_bShowBugtraqColumn = true;
-
-	m_LogList.m_bShowBugtraqColumn = m_bShowBugtraqColumn;
-
 	//theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	//theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
 	// set up the columns
 	m_LogList.DeleteAllItems();
+
+	m_LogList.m_Path=m_path;
+	m_LogList.m_bShowWC = true;
 	m_LogList.InsertGitColumn();
 
 	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("LogDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT)),false);
@@ -353,8 +344,7 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tTo = 0;
 	//m_tFrom = (DWORD)-1;
 
-	m_LogList.m_Path=m_path;
-	m_LogList.m_bShowWC = true;
+	
 	m_LogList.FetchLogAsync(this);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
@@ -632,7 +622,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			// to be exact: CRLF is treated as one char.
 			text.Replace(_T("\r"), _T(""));
 
-			m_ProjectProperties.FindBugID(text, pMsgView);
+			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
 			CAppUtils::FormatTextInRichEditControl(pMsgView);
 
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
@@ -752,7 +742,7 @@ void CLogDlg::OnCancel()
 CString CLogDlg::MakeShortMessage(const CString& message)
 {
 	bool bFoundShort = true;
-	CString sShortMessage = m_ProjectProperties.GetLogSummary(message);
+	CString sShortMessage = m_LogList.m_ProjectProperties.GetLogSummary(message);
 	if (sShortMessage.IsEmpty())
 	{
 		bFoundShort = false;
@@ -1731,7 +1721,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax-pEnLink->chrg.cpMin);
 		if (!::PathIsURL(url))
 		{
-			url = m_ProjectProperties.GetBugIDUrl(url);
+			url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
 			url = GetAbsoluteUrlFromRelativeUrl(url);
 		}
 		if (!url.IsEmpty())
@@ -2032,7 +2022,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_AUTHORS), LOGFILTER_AUTHORS, temp);
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
-		if (m_bShowBugtraqColumn == true) {
+		if (m_LogList.m_bShowBugtraqColumn == true) {
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}

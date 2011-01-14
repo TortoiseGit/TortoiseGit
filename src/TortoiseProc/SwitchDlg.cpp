@@ -205,7 +205,6 @@ void CSwitchDlg::OnBnClickedLog()
 		m_pLogDlg->m_wParam = 0;
 //		m_pLogDlg->SetParams(CTGitPath(m_URL), GitRev::REV_HEAD, GitRev::REV_HEAD, 1, limit, TRUE);
 		m_pLogDlg->ContinuousSelection(true);
-		m_pLogDlg->SetProjectPropertiesPath(CTGitPath(m_path));
 		m_pLogDlg->Create(IDD_LOGMESSAGE, this);
 		m_pLogDlg->ShowWindow(SW_SHOW);
 	}

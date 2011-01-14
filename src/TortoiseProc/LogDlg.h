@@ -85,7 +85,6 @@ public:
 
 	void SetParams(const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit);
 	void SetIncludeMerge(bool bInclude = true) {m_bIncludeMerges = bInclude;}
-	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetDialogTitle(const CString& sTitle) {m_sTitle = sTitle;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
@@ -222,7 +221,6 @@ private:
 	void ShowContextMenuForChangedpaths(CWnd* pWnd, CPoint point);
 public:
 	CWnd *				m_pNotifyWindow;
-	ProjectProperties	m_ProjectProperties;
 	WORD				m_wParam;
 private:
 	//HFONT				m_boldFont;
@@ -291,7 +289,7 @@ private:
 	bool				m_bShowedAll;
 	CString				m_sTitle;
 	bool				m_bSelect;
-	bool				m_bShowBugtraqColumn;
+	//bool				m_bShowBugtraqColumn;
 	CString				m_sLogInfo;
 	std::set<git_revnum_t> m_mergedRevs;
 

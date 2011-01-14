@@ -237,6 +237,13 @@ void CGitLogListBase::InsertGitColumn()
 		exStyle |= LVS_EX_FULLROWSELECT;
 	SetExtendedStyle(exStyle);
 
+	m_ProjectProperties.ReadProps(this->m_Path);
+
+	if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
+		m_bShowBugtraqColumn = true;
+	else
+		m_bShowBugtraqColumn = false;
+
 	static UINT normal[] =
 	{
 		IDS_LOG_GRAPH,
@@ -1256,7 +1263,9 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				CAppUtils::FormatDateAndTime( pLogEntry->m_CommitterDate, m_DateFormat, true, m_bRelativeTimes ),
 				pItem->cchTextMax);
 		break;
-	case this->LOGLIST_BUG: //Bug
+	case this->LOGLIST_BUG: //Bug ID
+		if(pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->m_Subject), pItem->cchTextMax);
 		break;
 	
 	default:
