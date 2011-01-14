@@ -1,3 +1,57 @@
+= Release 1.6.3.0 =
+== Features ==
+ 
+ * Improved log dialog
+   Fixed issue #662: Allow to filter for paths
+   Added hash column
+ 
+ * Improved commit dialog
+   Removed useless options from the contextmenu (e.g. file operations for directories/submodules)
+   allow to ignore deleted or unversioned files
+ 
+ * Improved changed files dialog
+   Removed useless options from the contextmenu (e.g. file operations for directories/submodules)
+   Fixed issue #618: Added a commit button
+   allow to ignore deleted or unversioned files
+ 
+ * Rewrite patch import dialog
+   Patch import dialog look like sync dialog.
+   User can know which patch fail import easily.
+   Show patch import progress.
+   Add 3way and ignore space option.
+   Fix many issues about patch import dialog(issue 252, issue 324, issue 332, issue 430)
+
+ * Include version information for all executables
+ 
+ * Improved TortoiseBlame
+   Fixed issues #490 and #436: Allow to blame older revisions in TortoiseGitBlame
+   Removed useless options from the contextmenu (e.g. compare to working copy)
+   Fixed issue #658: Added author column
+ 
+ * Fixed issue #323: implement DCommit type
+ 
+ * ask user if he wants to stash pop after "SVN fetch"
+ 
+ * allow to override branch on switch/checkout dialog
+ 
+ * allow to prune on fetch
+ 
+ * allow to edit global and local .gitconfig
+ 
+ * Fixed issue #655: remember previously selected features on upgrade
+
+== Bug Fix ==
+ * Fixed issues #663, #656 and #77: allow to diff added or deleted files
+ * Commit and changed files dialog
+   Fixed possible hangs
+   double-click default to open files for unversioned files
+   make double-click on newly added file for diff work
+ * TortoiseShell
+   Fixed an assertion (when executed on ignored files)
+ * Optical and smaller optimizations/fixes (missing spaces and typos, issues: #654, #595)
+ * Fixed issue #666: Remote names with dots (e.g., john.doe) do not show properly in fetch dialog box
+ * Fixed issue #661: TProc crash when choose file and Git Sync dialog loads
+
 = Release 1.6.2.0 =
 == Bug Fix ==
  * Fixed issue #650: Settings crashes on setting user name and email address
