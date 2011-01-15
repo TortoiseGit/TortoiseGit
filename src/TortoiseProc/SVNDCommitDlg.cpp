@@ -39,6 +39,7 @@ void CSVNDCommitDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Check(pDX,IDC_RADIO_GIT_COMMIT,m_rmdir);
+	DDX_Check(pDX,IDC_REMEMBER,m_remember);
 }
 
 

@@ -1169,6 +1169,7 @@
 #define IDC_AM_SPLIT                    1658
 #define IDC_AM_DUMY_TAB                 1659
 #define IDS_REPOBROWSE_INITWAIT         1660
+#define IDC_REMEMBER                    1660
 #define IDS_REPOBROWSE_WAIT             1661
 #define IDS_REPOBROWSE_MULTIIMPORT      1670
 #define IDS_REPOBROWSE_MULTICOPY        1671

@@ -42,6 +42,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL        m_rmdir;
+	BOOL		m_remember;
 
 	afx_msg void OnBnClickedOk();
 };

@@ -2466,8 +2466,22 @@ BOOL CAppUtils::SVNDCommit()
 {
 	CSVNDCommitDlg dcommitdlg;
 	CString gitSetting = g_Git.GetConfigValue(_T("svn.rmdir"));
-	if (gitSetting == _T("") && dcommitdlg.DoModal() != IDOK) {
-		return false;
+	if (gitSetting == _T("")) {
+		if (dcommitdlg.DoModal() != IDOK) {
+			return false;
+		} else {
+			if (dcommitdlg.m_remember) {
+				if (dcommitdlg.m_rmdir) {
+					gitSetting = _T("true");
+				} else {
+					gitSetting = _T("false");
+				}
+				if(g_Git.SetConfigValue(_T("svn.rmdir"),gitSetting))
+				{
+					CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
+				}
+			}
+		}
 	}
 
 	BOOL IsStash = false;
