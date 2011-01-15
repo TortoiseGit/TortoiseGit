@@ -417,21 +417,12 @@ CString CGit::GetCurrentBranch(void)
 	CString output;
 	//Run(_T("git.exe branch"),&branch);
 
-	int ret=g_Git.Run(_T("git.exe branch --no-color"),&output,CP_UTF8);
-	if(!ret)
-	{		
-		int pos=0;
-		CString one;
-		while( pos>=0 )
-		{
-			//i++;
-			one=output.Tokenize(_T("\n"),pos);
-			//list.push_back(one.Right(one.GetLength()-2));
-			if(one[0] == _T('*'))
-				return one.Right(one.GetLength()-2);
-		}
-	}
-	return CString("");
+	if(this->GetCurrentBranchFromFile(this->m_CurrentDir,output))
+	{
+		return _T("(no branch)");
+	}else
+		return output;
+
 }
 
 CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHeads)

@@ -1202,10 +1202,12 @@ bool CAppUtils::Export(CString *BashHash)
 	return bRet;
 }
 
-bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash)
+bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_brach)
 {
 	CCreateBranchTagDlg dlg;
 	dlg.m_bIsTag=IsTag;
+	dlg.m_bSwitch=switch_new_brach;
+
 	if(CommitHash)
 		dlg.m_Base = *CommitHash;
 

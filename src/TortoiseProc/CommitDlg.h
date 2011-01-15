@@ -129,6 +129,8 @@ public:
 
 	BOOL				m_bPushAfterCommit;
 
+	int					CheckHeadDetach();
+
 	int		m_PostCmd;
 
 private:

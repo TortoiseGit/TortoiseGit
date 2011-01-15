@@ -161,7 +161,7 @@ public:
 								bool blame = false);
 	
 	static bool Export(CString *BashHash=NULL);
-	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL);
+	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
 	static bool Switch(CString *CommitHash, CString initialRefName = CString());
 
 //	static bool IgnoreFile(CTGitPath &file, bool IsMask);

@@ -617,6 +617,8 @@ void CCommitDlg::OnOK()
 			amend=_T("--amend");
 		}
 		cmd.Format(_T("git.exe commit %s -F \"%s\""),amend, tempfile);
+
+		CheckHeadDetach();
 		
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added. 
@@ -2011,4 +2013,20 @@ void CCommitDlg::OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 	TRACE("Item Changed\r\n");
+}
+
+int CCommitDlg::CheckHeadDetach()
+{
+	CString output;
+	if(g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir,output))
+	{
+		if(CMessageBox::Show(NULL,_T("<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch)\nDo you want create branch now?"),
+						_T("TortoiseGit"),MB_YESNO|MB_ICONWARNING) == IDYES)
+		{
+			CAppUtils::CreateBranchTag(FALSE,NULL,true);
+		}
+
+	}
+	return 0;
+
 }
