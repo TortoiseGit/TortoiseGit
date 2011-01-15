@@ -2465,7 +2465,8 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 BOOL CAppUtils::SVNDCommit()
 {
 	CSVNDCommitDlg dcommitdlg;
-	if (dcommitdlg.DoModal() != IDOK) {
+	CString gitSetting = g_Git.GetConfigValue(_T("svn.rmdir"));
+	if (gitSetting == _T("") && dcommitdlg.DoModal() != IDOK) {
 		return false;
 	}
 
