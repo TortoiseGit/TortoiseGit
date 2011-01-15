@@ -67,11 +67,9 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 	ProjectProperties::GetBOOLProps(this->m_bNNumber,_T("bugtraq.number"));
 	ProjectProperties::GetBOOLProps(this->m_bNWarningifnoissue,_T("bugtraq.warnifnoissue"));
 
+	m_Logregex.Trim();
 	m_Logregex.Replace(_T("\n"),_T("\r\n"));
-	if(m_Logregex.GetLength())
-		if(m_Logregex[m_Logregex.GetLength()-1] == _T('\n'))
-			m_Logregex=m_Logregex.Left(m_Logregex.GetLength()-1);
-	
+
 	m_bNAppend = !m_bNAppend;
 	m_bNNumber = !m_bNNumber;
 	m_bNWarningifnoissue = !m_bNWarningifnoissue;
