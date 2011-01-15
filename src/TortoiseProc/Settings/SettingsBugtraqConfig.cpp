@@ -145,7 +145,7 @@ BOOL CSettingsBugtraqConfig::OnApply()
 		{
 			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
-
+		m_Logregex.Replace(_T("\n"),_T("\r\n"));
 	}
 
 	m_ChangeMask= 0;
