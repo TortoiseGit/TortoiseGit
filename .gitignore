@@ -35,3 +35,6 @@ Release64
 bin-*
 /src/TortoiseShell/register.reg
 /src/TortoiseShell/register_recover.reg
+/doc/source/en/pubdate.xml
+/doc/source/en/version.xml
+/doc/Aspell/aspell.bat
