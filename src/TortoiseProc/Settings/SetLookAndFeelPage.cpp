@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008+2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,6 +88,7 @@ IMPLEMENT_DYNAMIC(CSetLookAndFeelPage, ISettingsPropPage)
 CSetLookAndFeelPage::CSetLookAndFeelPage()
 	: ISettingsPropPage(CSetLookAndFeelPage::IDD)
 	, m_bBlock(false)
+	, m_bHideMenus(false)
 {
 	ShellCache cache;
 	m_regTopmenu = cache.menulayoutlow;
@@ -95,6 +96,9 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
+
+	m_regHideMenus = CRegDWORD(_T("Software\\TortoiseSVN\\HideMenusForUnversionedItems"), FALSE);
+	m_bHideMenus = m_regHideMenus;
 
 	m_regNoContextPaths = CRegString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
 	m_sNoContextPaths = m_regNoContextPaths;
@@ -109,6 +113,7 @@ void CSetLookAndFeelPage::DoDataExchange(CDataExchange* pDX)
 {
 	ISettingsPropPage::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MENULIST, m_cMenuList);
+	DDX_Check(pDX, IDC_HIDEMENUS, m_bHideMenus);
 	DDX_Text(pDX, IDC_NOCONTEXTPATHS, m_sNoContextPaths);
 }
 
@@ -116,6 +121,7 @@ void CSetLookAndFeelPage::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetLookAndFeelPage, ISettingsPropPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
 	ON_BN_CLICKED(IDC_GETLOCKTOP, OnChange)
+	ON_BN_CLICKED(IDC_HIDEMENUS, OnChange)
 	ON_EN_CHANGE(IDC_NOCONTEXTPATHS, &CSetLookAndFeelPage::OnEnChangeNocontextpaths)
 END_MESSAGE_MAP()
 
@@ -127,6 +133,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
 	//m_tooltips.AddTool(IDC_GETLOCKTOP, IDS_SETTINGS_GETLOCKTOP_TT);
+	m_tooltips.AddTool(IDC_HIDEMENUS, IDS_SETTINGS_HIDEMENUS_TT);
 	m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
 
 	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
@@ -184,6 +191,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
 		m_sNoContextPaths += _T("\n");
 
+	Store (m_bHideMenus, m_regHideMenus);
 	Store (m_sNoContextPaths, m_regNoContextPaths);
 
 	SetModified(FALSE);

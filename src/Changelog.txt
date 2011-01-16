@@ -41,6 +41,8 @@
  
  * Fixed issue #655: remember previously selected features on upgrade
 
+ * Fixed issue #674: The context menu can be hidden completely for unversioned items.
+
 == Bug Fix ==
  * Fixed issues #663, #656 and #77: allow to diff added or deleted files
  * Commit and changed files dialog

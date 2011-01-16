@@ -62,6 +62,7 @@ public:
 		includelist = CRegStdString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
 		simplecontext = CRegStdWORD(_T("Software\\TortoiseGit\\SimpleContext"), FALSE);
 		unversionedasmodified = CRegStdWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
+		hidemenusforunversioneditems = CRegStdDWORD(_T("Software\\TortoiseGit\\HideMenusForUnversionedItems"), FALSE);
 		showunversionedoverlay = CRegStdWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
 		showignoredoverlay = CRegStdWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
 		getlocktop = CRegStdWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
@@ -83,6 +84,7 @@ public:
 		columnseverywhereticker = cachetypeticker;
 		getlocktopticker = cachetypeticker;
 		excludedasnormalticker = cachetypeticker;
+		hidemenusforunversioneditemsticker = cachetypeticker;
 		excontextticker = cachetypeticker;
 		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),		  MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT);
 		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), (MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT)>>32);
@@ -139,6 +141,7 @@ public:
 		showunversionedoverlay.read();
 		showignoredoverlay.read();
 		excludedasnormal.read();
+		hidemenusforunversioneditems.read();
 		menulayoutlow.read();
 		menulayouthigh.read();
 		langid.read();
@@ -282,6 +285,15 @@ public:
 			excludedasnormal.read();
 		}
 		return (excludedasnormal);
+	}
+	BOOL ShellCache::HideMenusForUnversionedItems()
+	{
+	if ((GetTickCount() - hidemenusforunversioneditemsticker)>REGISTRYTIMEOUT)
+		{
+			hidemenusforunversioneditemsticker = GetTickCount();
+			hidemenusforunversioneditems.read();
+		}
+		return (hidemenusforunversioneditems);
 	}
 	BOOL IsRemote()
 	{
@@ -636,6 +648,7 @@ public:
 	CRegStdWORD showignoredoverlay;
 	CRegStdWORD excludedasnormal;
 	CRegStdString excludelist;
+	CRegStdDWORD hidemenusforunversioneditems;
 	CRegStdWORD columnseverywhere;
 	stdstring excludeliststr;
 	std::vector<stdstring> exvector;
@@ -661,6 +674,7 @@ public:
 	DWORD showunversionedoverlayticker;
 	DWORD showignoredoverlayticker;
 	DWORD excludedasnormalticker;
+	DWORD hidemenusforunversioneditemsticker;
 	DWORD columnseverywhereticker;
 	UINT  drivetypecache[27];
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.

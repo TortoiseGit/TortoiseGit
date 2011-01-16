@@ -904,8 +904,9 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Cascaded context menu",IDC_STATIC,7,7,286,210
     CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,19,274,121
-    GROUPBOX        "Do not show the context menu for the following paths:",IDC_STATIC,7,147,286,70
-    EDITTEXT        IDC_NOCONTEXTPATHS,12,159,274,50,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "Hide Menus for unversioned paths",IDC_HIDEMENUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,148,274,10
+    GROUPBOX        "Do not show the context menu for the following paths:",IDC_STATIC,7,161,286,56
+    EDITTEXT        IDC_NOCONTEXTPATHS,12,173,274,36,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
 END
 
 IDD_SETTINGSDIALOGS DIALOGEX 0, 0, 300, 217
@@ -4346,6 +4347,8 @@ BEGIN
     IDS_SETTINGS_CLEARACTIONLOG_TT "Deletes the action log file"
     IDS_SETTINGS_MAXACTIONLOGLINES_TT 
                             "The maximum number of action log lines to keep.\nAny lines added over this limit will remove the oldest lines from the file."
+    IDS_SETTINGS_HIDEMENUS_TT 
+                            "When activated, hold down the SHIFT key when right-clicking to get the TortoiseGit menus added to the context menu"
 END
 
 STRINGTABLE 
