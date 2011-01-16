@@ -2305,7 +2305,7 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	bool bShowIgnoreMenu = false;
 	TCHAR maskbuf[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
 	TCHAR ignorepath[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
-	if (files_.size() == 0)
+	if (files_.size() == 0 || (files_.size() == 1 && g_GitAdminDir.GetGitTopDir(folder_.c_str()) == folder_.c_str()))
 		return;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
 
