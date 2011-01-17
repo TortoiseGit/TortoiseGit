@@ -42,7 +42,7 @@ const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
 STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 {
 	PreserveChdir preserveChdir;
-	if (dwIndex > 5) // TODO: keep for now to be able to hide unimplemented columns
+	if (dwIndex > 0) // TODO: keep for now to be able to hide unimplemented columns
 		return S_FALSE;
 
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
