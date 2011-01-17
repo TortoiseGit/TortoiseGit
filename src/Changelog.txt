@@ -62,7 +62,7 @@
    make double-click on newly added file for diff work
  * TortoiseShell
    Fixed an assertion (when executed on ignored files)
- * Optical and smaller optimizations/fixes (missing spaces and typos, issues: #654, #595)
+ * Optical and smaller optimizations/fixes (missing spaces and typos, issues: #654, #595, #543)
  * Fixed issue #666: Remote names with dots (e.g., john.doe) do not show properly in fetch dialog box
  * Fixed issue #661: TProc crash when choose file and Git Sync dialog loads
 
