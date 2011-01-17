@@ -42,7 +42,7 @@ const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
 STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 {
 	PreserveChdir preserveChdir;
-	if (dwIndex > 6) // TODO: keep for now to be able to hide unimplemented columns
+	if (dwIndex > 5) // TODO: keep for now to be able to hide unimplemented columns
 		return S_FALSE;
 
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
@@ -64,19 +64,20 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 		case 3:	// Git Short Url
 			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLESHORTURL, IDS_COLDESCSHORTURL);
 			break;
-		case 4:	// Author
+		case 4:	// Author and Git Author
 			psci->scid.fmtid = FMTID_SummaryInformation;	// predefined FMTID
 			psci->scid.pid   = PIDSI_AUTHOR;				// Predefined - author
 			psci->vt         = VT_LPSTR;					// We'll return the data as a string
 			psci->fmt        = LVCFMT_LEFT;					// Text will be left-aligned in the column
 			psci->csFlags    = SHCOLSTATE_TYPE_STR;			// Data should be sorted as strings
 			psci->cChars     = 32;							// Default col width in chars
+			MAKESTRING(IDS_COLTITLEAUTHOR);
+			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
+			MAKESTRING(IDS_COLDESCAUTHOR);
+			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 			break;
 		case 5:	// SVN eol-style
 			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLEEOLSTYLE, IDS_COLDESCEOLSTYLE);
-			break;
-		case 6:	// Git Author
-			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLEAUTHOR, IDS_COLDESCAUTHOR);
 			break;
 		default:
 			return S_FALSE;
@@ -109,7 +110,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 	}
 	LoadLangDll();
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
-	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE && pscid->pid < 6) 
+	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE) 
 	{
 		stdstring szInfo;
 		const TCHAR * path = (TCHAR *)pscd->wszFile;
@@ -169,7 +170,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 		V_BSTR(pvarData) = SysAllocString(wsInfo);
 		return S_OK;
 	}
-	if ((pscid->fmtid == FMTID_SummaryInformation)||(pscid->pid == 6))
+	if (pscid->fmtid == FMTID_SummaryInformation)
 	{
 		stdstring szInfo;
 		const TCHAR * path = pscd->wszFile;
@@ -178,8 +179,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 			return S_FALSE;
 		switch (pscid->pid)
 		{
-		case PIDSI_AUTHOR:			// author
-		case 6:
+		case PIDSI_AUTHOR:			// Author and Git Author
 			GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 			szInfo = columnauthor;
 			break;
