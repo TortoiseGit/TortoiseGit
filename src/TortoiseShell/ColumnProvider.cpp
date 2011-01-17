@@ -42,77 +42,29 @@ const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
 STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 {
 	PreserveChdir preserveChdir;
-	if (dwIndex > 6)
+	if (dwIndex > 6) // TODO: keep for now to be able to hide unimplemented columns
 		return S_FALSE;
 
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
+	if (cachetype == ShellCache::none)
+		return S_FALSE;
+
 	LoadLangDll();
-	wide_string ws;
 	switch (dwIndex)
 	{
 		case 0:	// Git Status
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 15;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLESTATUS);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCSTATUS);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
+			GetColumnInfo(dwIndex, psci, 15, IDS_COLTITLESTATUS, IDS_COLDESCSTATUS);
 			break;
 		case 1:	// Git Revision
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 40;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLEREV);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCREV);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
+			GetColumnInfo(dwIndex, psci, 40, IDS_COLTITLEREV, IDS_COLDESCREV);
 			break;
 		case 2:	// Git Url
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 30;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLEURL);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCURL);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
+			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLEURL, IDS_COLDESCURL);
 			break;
 		case 3:	// Git Short Url
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 30;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLESHORTURL);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCSHORTURL);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
+			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLESHORTURL, IDS_COLDESCSHORTURL);
 			break;
 		case 4:	// Author
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
 			psci->scid.fmtid = FMTID_SummaryInformation;	// predefined FMTID
 			psci->scid.pid   = PIDSI_AUTHOR;				// Predefined - author
 			psci->vt         = VT_LPSTR;					// We'll return the data as a string
@@ -121,38 +73,31 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 			psci->cChars     = 32;							// Default col width in chars
 			break;
 		case 5:	// SVN eol-style
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 30;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLEEOLSTYLE);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCEOLSTYLE);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
+			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLEEOLSTYLE, IDS_COLDESCEOLSTYLE);
 			break;
 		case 6:	// Git Author
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 30;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLEAUTHOR);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCAUTHOR);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
+			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLEAUTHOR, IDS_COLDESCAUTHOR);
 			break;
+		default:
+			return S_FALSE;
 	}
 
 	return S_OK;
+}
+
+void CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci, UINT characterCount, UINT title, UINT description)
+{
+			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
+			psci->scid.pid = dwIndex;
+			psci->vt = VT_BSTR;
+			psci->fmt = LVCFMT_LEFT;
+			psci->cChars = characterCount;
+			psci->csFlags = ColumnFlags;
+
+			MAKESTRING(title);
+			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
+			MAKESTRING(description);
+			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 }
 
 STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, VARIANT *pvarData)
