@@ -37,16 +37,12 @@ const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
 // Because shorter strings will be extended to have exactly MAX_REV_STRING_LEN 
 // characters, large numbers will produce large strings. These, in turn, will
 // affect column auto sizing. This setting is a reasonable compromise.
-//
-// Max rev correctly sorted: 99,999,999 for MAX_REV_STRING_LEN == 10
-
-#define MAX_REV_STRING_LEN 10
 
 // IColumnProvider members
 STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 {
 	PreserveChdir preserveChdir;
-	if (dwIndex > 8)
+	if (dwIndex > 6)
 		return S_FALSE;
 
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
@@ -54,7 +50,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 	wide_string ws;
 	switch (dwIndex)
 	{
-		case 0:	// SVN Status
+		case 0:	// Git Status
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
 			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
@@ -69,22 +65,22 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 			MAKESTRING(IDS_COLDESCSTATUS);
 			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 			break;
-		case 1:	// SVN Revision
+		case 1:	// Git Revision
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
 			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
 			psci->scid.pid = dwIndex;
-			psci->vt = VT_I4;
-			psci->fmt = LVCFMT_RIGHT;
-			psci->cChars = 15;
-			psci->csFlags = SHCOLSTATE_TYPE_INT | SHCOLSTATE_ONBYDEFAULT;
+			psci->vt = VT_BSTR;
+			psci->fmt = LVCFMT_LEFT;
+			psci->cChars = 40;
+			psci->csFlags = ColumnFlags;
 
 			MAKESTRING(IDS_COLTITLEREV);
 			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
 			MAKESTRING(IDS_COLDESCREV);
 			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 			break;
-		case 2:	// SVN Url
+		case 2:	// Git Url
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
 			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
@@ -99,7 +95,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 			MAKESTRING(IDS_COLDESCURL);
 			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 			break;
-		case 3:	// SVN Short Url
+		case 3:	// Git Short Url
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
 			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
@@ -124,37 +120,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 			psci->csFlags    = SHCOLSTATE_TYPE_STR;			// Data should be sorted as strings
 			psci->cChars     = 32;							// Default col width in chars
 			break;
-		case 5:	// SVN mime-type
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 30;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLEMIMETYPE);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCMIMETYPE);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
-			break;
-		case 6:	// SVN Lock Owner
-			if (cachetype == ShellCache::none)
-				return S_FALSE;
-			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
-			psci->scid.pid = dwIndex;
-			psci->vt = VT_BSTR;
-			psci->fmt = LVCFMT_LEFT;
-			psci->cChars = 30;
-			psci->csFlags = ColumnFlags;
-
-			MAKESTRING(IDS_COLTITLEOWNER);
-			lstrcpynW(psci->wszTitle, stringtablebuffer, MAX_COLUMN_NAME_LEN);
-			MAKESTRING(IDS_COLDESCOWNER);
-			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
-			break;
-		case 7:	// SVN eol-style
+		case 5:	// SVN eol-style
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
 			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
@@ -169,7 +135,7 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 			MAKESTRING(IDS_COLDESCEOLSTYLE);
 			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 			break;
-		case 8:	// SVN Author
+		case 6:	// Git Author
 			if (cachetype == ShellCache::none)
 				return S_FALSE;
 			psci->scid.fmtid = CLSID_Tortoisegit_UPTODATE;
@@ -198,7 +164,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 	}
 	LoadLangDll();
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
-	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE && pscid->pid < 8) 
+	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE && pscid->pid < 6) 
 	{
 		stdstring szInfo;
 		const TCHAR * path = (TCHAR *)pscd->wszFile;
@@ -209,12 +175,12 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 		SecureZeroMemory(buf, MAX_STATUS_STRING_LENGTH);
 		switch (pscid->pid) 
 		{
-			case 0:	// SVN Status
+			case 0:	// Git Status
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				GitStatus::GetStatusString(g_hResInst, filestatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)));
 				szInfo = buf;
 				break;
-			case 1:	// SVN Revision
+			case 1:	// Git Revision
 #if 0
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				if (columnrev >= 0)
@@ -225,36 +191,15 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 #endif
 				return S_OK;
 				break;
-			case 2:	// SVN Url
+			case 2:	// Git Url
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				szInfo = itemurl;
 				break;
-			case 3:	// SVN Short Url
+			case 3:	// Git Short Url
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				szInfo = itemshorturl;
 				break;
-			case 5:	// SVN mime-type
-#if 0
-				if (cachetype == ShellCache::none)
-					return S_FALSE;
-				if (g_ShellCache.IsPathAllowed(path))
-				{
-					SVNProperties props = SVNProperties(CTSVNPath(path), false);
-					for (int i=0; i<props.GetCount(); i++)
-					{
-						if (props.GetItemName(i).compare(_T("svn:mime-type"))==0)
-						{
-							szInfo = MultibyteToWide((char *)props.GetItemValue(i).c_str());
-						}
-					}
-				}
-#endif
-				break;
-			case 6:	// SVN Lock Owner
-				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
-				szInfo = owner;
-				break;
-			case 7:	// SVN eol-style
+			case 5:	// Git eol-style
 #if 0
 				if (cachetype == ShellCache::none)
 					return S_FALSE;
@@ -279,7 +224,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 		V_BSTR(pvarData) = SysAllocString(wsInfo);
 		return S_OK;
 	}
-	if ((pscid->fmtid == FMTID_SummaryInformation)||(pscid->pid == 8))
+	if ((pscid->fmtid == FMTID_SummaryInformation)||(pscid->pid == 6))
 	{
 		stdstring szInfo;
 		const TCHAR * path = pscd->wszFile;
@@ -289,7 +234,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 		switch (pscid->pid)
 		{
 		case PIDSI_AUTHOR:			// author
-		case 8:
+		case 6:
 			GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 			szInfo = columnauthor;
 			break;
