@@ -1,6 +1,7 @@
 = Release 1.6.4.0 =
 == Features ==
  * Fixed issue #674: The context menu can be hidden completely for unversioned items.
+ * enable git status column in TortoiseShell
 
 = Release 1.6.3.0 =
 == Features ==

@@ -325,7 +325,6 @@ STDMETHODIMP CShellExt::Initialize(LPCSHCOLUMNINIT psci)
 
 void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 {
-#if 0
 	PreserveChdir preserveChdir;
 	if (_tcscmp(path, columnfilepath.c_str())==0)
 		return;
@@ -399,6 +398,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			owner = UTF8ToWide(status->owner);
 		}
 	}
+#if 0
 	TCHAR urlpath[INTERNET_MAX_URL_LENGTH+1];
 
 	URL_COMPONENTS urlComponents;
