@@ -1,7 +1,15 @@
 = Release 1.6.4.0 =
 == Features ==
- * Fixed issue #674: The context menu can be hidden completely for unversioned items.
+ * Implemented issue #664: Warn when committing to detached HEAD
+ * The context menu can be hidden completely for unversioned items (issue 674)
+ * Only show DCommit type dialog if "svn.rmdir" is unset
+ * Optionally remember DCommit type setting
  * enable git status column in TortoiseShell
+
+== Bug Fix ==
+ * Fixed issue #669: cannot open help from clean window
+ * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
+ * Do not allow to delete-ignore working copy root-directory
 
 = Release 1.6.3.0 =
 == Features ==
@@ -25,7 +33,7 @@
    User can know which patch fail import easily.
    Show patch import progress.
    Add 3way and ignore space option.
-   Fix many issues about patch import dialog(issue 252, issue 324, issue 332, issue 430)
+   Fix many issues about patch import dialog (issue #252, issue #324, issue #332, issue #430)
 
  * Include version information for all executables
  
