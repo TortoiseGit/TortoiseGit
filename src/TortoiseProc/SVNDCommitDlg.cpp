@@ -45,6 +45,7 @@ void CSVNDCommitDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSVNDCommitDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CSVNDCommitDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDHELP, &CSVNDCommitDlg::OnBnClickedHelp)
 END_MESSAGE_MAP()
 
 BOOL CSVNDCommitDlg::OnInitDialog()
@@ -62,4 +63,10 @@ void CSVNDCommitDlg::OnBnClickedOk()
 	CStandAloneDialog::UpdateData(TRUE);
 
 	CStandAloneDialog::OnOK();
+}
+
+void CSVNDCommitDlg::OnBnClickedHelp()
+{
+	// TODO: Add your control notification handler code here
+	OnHelp();
 }

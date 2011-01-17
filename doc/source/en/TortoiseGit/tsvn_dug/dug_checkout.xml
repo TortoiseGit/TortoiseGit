@@ -11,7 +11,7 @@
 	<indexterm>
 		<primary>create working copy</primary>
 	</indexterm>
-	<?dbhh topicname="HIDD_CHECKOUT"?>
+	<?dbhh topicname="HIDD_GITSWITCH"?>
 	<para>
 		To obtain a special version working copy you need to do a <firstterm>checkout</firstterm>
 		from a local repository.

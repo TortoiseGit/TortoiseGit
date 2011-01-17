@@ -114,6 +114,7 @@
 	<xi:include href="./dug_repoviewer.xml"/>
 	-->
 	<xi:include href="./dug_settings.xml"/>
+	<xi:include href="./dug_gitsvn.xml"/>
 	<sect1 id="tsvn-dug-donate">
 		<title>Final Step</title>
 		<xi:include href="../../wishlist.xml"/>
