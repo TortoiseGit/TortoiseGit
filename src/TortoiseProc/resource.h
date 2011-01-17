@@ -379,7 +379,6 @@
 #define IDC_GRAPH                       1131
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132
-#define IDC_CHECKREPO                   1132
 #define IDC_SELECTOVERLAYSET            1132
 #define IDC_LOG                         1132
 #define IDC_GRAPHCOMBO                  1133

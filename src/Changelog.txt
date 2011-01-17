@@ -5,6 +5,7 @@
  * Only show DCommit type dialog if "svn.rmdir" is unset
  * Optionally remember DCommit type setting
  * enable git status column in TortoiseShell
+ * Fixed issue #644: Dropped "Check repository" button on check for modifications dialog
 
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window

@@ -46,7 +46,6 @@ protected:
 	virtual void			OnOK();
 	virtual void			OnCancel();
 	virtual BOOL			PreTranslateMessage(MSG* pMsg);
-	afx_msg void			OnBnClickedCheckrepo();
 	afx_msg void			OnBnClickedRefresh();
 	afx_msg void			OnBnClickedCommit();
 	afx_msg void			OnBnClickedShowunversioned();

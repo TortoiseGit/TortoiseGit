@@ -60,7 +60,6 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
-	ON_BN_CLICKED(IDC_CHECKREPO, OnBnClickedCheckrepo)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
 	ON_BN_CLICKED(IDC_SHOWUNMODIFIED, OnBnClickedShowUnmodified)
 //    ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
@@ -106,7 +105,6 @@ BOOL CChangedDlg::OnInitDialog()
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REFRESH, BOTTOM_RIGHT);
-	AddAnchor(IDC_CHECKREPO, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 //	SetPromptParentWindow(m_hWnd);
 	if (hWndExplorer)
@@ -139,7 +137,6 @@ UINT CChangedDlg::ChangedStatusThread()
 	m_bCanceled = false;
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 	DialogEnableWindow(IDC_REFRESH, FALSE);
-	DialogEnableWindow(IDC_CHECKREPO, FALSE);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, FALSE);
 	DialogEnableWindow(IDC_SHOWUNMODIFIED, FALSE);
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
@@ -169,7 +166,6 @@ UINT CChangedDlg::ChangedStatusThread()
 
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)));
 	DialogEnableWindow(IDC_REFRESH, TRUE);
-	DialogEnableWindow(IDC_CHECKREPO, TRUE);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, !bSingleFile);
 	//DialogEnableWindow(IDC_SHOWUNMODIFIED, !bSingleFile);
 	//DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
@@ -199,15 +195,6 @@ void CChangedDlg::OnCancel()
 		return;
 	}
 	__super::OnCancel();
-}
-
-void CChangedDlg::OnBnClickedCheckrepo()
-{
-	m_bRemote = TRUE;
-	if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
-	{
-		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-	}
 }
 
 DWORD CChangedDlg::UpdateShowFlags()
