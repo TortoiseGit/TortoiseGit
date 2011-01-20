@@ -2607,30 +2607,11 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 			
 		}
 
-		int id;
-		if(pRevs->m_HashMap.find(hash)!=pRevs->m_HashMap.end())
+		if(this->m_NoListCommit.find(hash) == m_NoListCommit.end() )
 		{
-			id=pRevs->m_HashMap[hash];	
+			this->m_NoListCommit[hash].GetCommitFromHash(hash);
 		}
-		else
-		{
-			id=-1;
-			if(this->m_NoListCommit.find(hash) == m_NoListCommit.end() )
-			{
-				this->m_NoListCommit[hash].GetCommitFromHash(hash);
-			}
-			
-		}
-
-		if(id>=0 && id <(int)GetLogData()->size())
-		{
-			m_ID.push_back(pRevs->size()-id);
-			//m_Authors.push_back(pRevs->GetGitRevAt(id).m_AuthorName);
-		}else
-		{
-			m_ID.push_back(id);
-			//m_Authors.push_back(hash.ToString().Left(6));
-		}
+		m_ID.push_back(-1); // m_ID is calculated lazy on demand
 		m_Authors.push_back(m_NoListCommit[hash].m_AuthorName);
 
 		m_CommitHash.push_back(hash);
