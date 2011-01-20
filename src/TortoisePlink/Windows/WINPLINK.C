@@ -13,7 +13,6 @@
 #include "tree234.h"
 
 #include "LoginDialog.h"
-
 #define WM_AGENT_CALLBACK (WM_APP + 4)
 
 struct agent_callback {
@@ -288,11 +287,10 @@ int main(int argc, char **argv)
     int skcount, sksize;
     int exitcode;
     int errors;
-	int got_host = FALSE;
+    int got_host = FALSE;
     int use_subsystem = 0;
     long now, next;
 
-	_set_printf_count_output(1);
     sklist = NULL;
     skcount = sksize = 0;
     /*
@@ -316,15 +314,11 @@ int main(int argc, char **argv)
 	 * Override the default protocol if PLINK_PROTOCOL is set.
 	 */
 	char *p = getenv("PLINK_PROTOCOL");
-	int i;
 	if (p) {
-	    for (i = 0; backends[i].backend != NULL; i++) {
-		if (!strcmp(backends[i].name, p)) {
-		    default_protocol = cfg.protocol = backends[i].protocol;
-		    default_port = cfg.port =
-			backends[i].backend->default_port;
-		    break;
-		}
+	    const Backend *b = backend_from_name(p);
+	    if (b) {
+		default_protocol = cfg.protocol = b->protocol;
+		default_port = cfg.port = b->default_port;
 	    }
 	}
     }
@@ -382,7 +376,7 @@ int main(int argc, char **argv)
 			cfg.port = -1;
 		    strncpy(cfg.host, q, sizeof(cfg.host) - 1);
 		    cfg.host[sizeof(cfg.host) - 1] = '\0';
-			got_host = TRUE;
+		    got_host = TRUE;
 		} else {
 		    char *r, *user, *host;
 		    /*
@@ -392,19 +386,14 @@ int main(int argc, char **argv)
 		     */
 		    r = strchr(p, ',');
 		    if (r) {
-			int i, j;
-			for (i = 0; backends[i].backend != NULL; i++) {
-			    j = strlen(backends[i].name);
-			    if (j == r - p &&
-				!memcmp(backends[i].name, p, j)) {
-				default_protocol = cfg.protocol =
-				    backends[i].protocol;
-				portnumber =
-				    backends[i].backend->default_port;
-				p = r + 1;
-				break;
-			    }
+			const Backend *b;
+			*r = '\0';
+			b = backend_from_name(p);
+			if (b) {
+			    default_protocol = cfg.protocol = b->protocol;
+			    portnumber = b->default_port;
 			}
+			p = r + 1;
 		    }
 
 		    /*
@@ -436,10 +425,10 @@ int main(int argc, char **argv)
 			    strncpy(cfg.host, host, sizeof(cfg.host) - 1);
 			    cfg.host[sizeof(cfg.host) - 1] = '\0';
 			    cfg.port = default_port;
-				got_host = TRUE;
+			    got_host = TRUE;
 			} else {
 			    cfg = cfg2;
-				loaded_session = TRUE;
+			    loaded_session = TRUE;
 			}
 		    }
 
@@ -549,19 +538,11 @@ int main(int argc, char **argv)
      * Select protocol. This is farmed out into a table in a
      * separate file to enable an ssh-free variant.
      */
-    {
-	int i;
-	back = NULL;
-	for (i = 0; backends[i].backend != NULL; i++)
-	    if (backends[i].protocol == cfg.protocol) {
-		back = backends[i].backend;
-		break;
-	    }
-	if (back == NULL) {
-	    fprintf(stderr,
-		    "Internal fault: Unsupported protocol found\n");
-	    return 1;
-	}
+    back = backend_from_proto(cfg.protocol);
+    if (back == NULL) {
+	fprintf(stderr,
+		"Internal fault: Unsupported protocol found\n");
+	return 1;
     }
 
     /*

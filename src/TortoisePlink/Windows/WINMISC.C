@@ -5,16 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "putty.h"
+#include <security.h>
 
 OSVERSIONINFO osVersion;
-
-void platform_get_x11_auth(char *display, int *proto,
-                           unsigned char *data, int *datalen)
-{
-    /* We don't support this at all under Windows. */
-}
-
-const char platform_x11_best_transport[] = "localhost";
 
 char *platform_get_x_display(void) {
     /* We may as well check for DISPLAY in case it's useful. */
@@ -48,28 +41,95 @@ char *get_username(void)
 {
     DWORD namelen;
     char *user;
+    int got_username = FALSE;
+    DECL_WINDOWS_FUNCTION(static, BOOLEAN, GetUserNameExA,
+			  (EXTENDED_NAME_FORMAT, LPSTR, PULONG));
 
-    namelen = 0;
-    if (GetUserName(NULL, &namelen) == FALSE) {
-	/*
-	 * Apparently this doesn't work at least on Windows XP SP2.
-	 * Thus assume a maximum of 256. It will fail again if it
-	 * doesn't fit.
-	 */
-	namelen = 256;
+    {
+	static int tried_usernameex = FALSE;
+	if (!tried_usernameex) {
+	    /* Not available on Win9x, so load dynamically */
+	    HMODULE secur32 = load_system32_dll("secur32.dll");
+	    GET_WINDOWS_FUNCTION(secur32, GetUserNameExA);
+	    tried_usernameex = TRUE;
+	}
     }
 
-    user = snewn(namelen, char);
-    GetUserName(user, &namelen);
+    if (p_GetUserNameExA) {
+	/*
+	 * If available, use the principal -- this avoids the problem
+	 * that the local username is case-insensitive but Kerberos
+	 * usernames are case-sensitive.
+	 */
 
-    return user;
+	/* Get the length */
+	namelen = 0;
+	(void) p_GetUserNameExA(NameUserPrincipal, NULL, &namelen);
+
+	user = snewn(namelen, char);
+	got_username = p_GetUserNameExA(NameUserPrincipal, user, &namelen);
+	if (got_username) {
+	    char *p = strchr(user, '@');
+	    if (p) *p = 0;
+	} else {
+	    sfree(user);
+	}
+    }
+
+    if (!got_username) {
+	/* Fall back to local user name */
+	namelen = 0;
+	if (GetUserName(NULL, &namelen) == FALSE) {
+	    /*
+	     * Apparently this doesn't work at least on Windows XP SP2.
+	     * Thus assume a maximum of 256. It will fail again if it
+	     * doesn't fit.
+	     */
+	    namelen = 256;
+	}
+
+	user = snewn(namelen, char);
+	got_username = GetUserName(user, &namelen);
+	if (!got_username) {
+	    sfree(user);
+	}
+    }
+
+    return got_username ? user : NULL;
 }
 
 BOOL init_winver(void)
 {
-    SecureZeroMemory(&osVersion, sizeof(osVersion));
+    ZeroMemory(&osVersion, sizeof(osVersion));
     osVersion.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
     return GetVersionEx ( (OSVERSIONINFO *) &osVersion);
+}
+
+HMODULE load_system32_dll(const char *libname)
+{
+    /*
+     * Wrapper function to load a DLL out of c:\windows\system32
+     * without going through the full DLL search path. (Hence no
+     * attack is possible by placing a substitute DLL earlier on that
+     * path.)
+     */
+    static char *sysdir = NULL;
+    char *fullpath;
+    HMODULE ret;
+
+    if (!sysdir) {
+	int size = 0, len;
+	do {
+	    size = 3*size/2 + 512;
+	    sysdir = sresize(sysdir, size, char);
+	    len = GetSystemDirectory(sysdir, size);
+	} while (len >= size);
+    }
+
+    fullpath = dupcat(sysdir, "\\", libname, NULL);
+    ret = LoadLibrary(fullpath);
+    sfree(fullpath);
+    return ret;
 }
 
 #ifdef DEBUG

@@ -56,19 +56,29 @@ static void cmdline_save_param(char *p, char *value, int pri)
     saves[pri].nsaved++;
 }
 
+static char *cmdline_password = NULL;
+
 void cmdline_cleanup(void)
 {
     int pri;
 
-    for (pri = 0; pri < NPRIORITIES; pri++)
+    if (cmdline_password) {
+	memset(cmdline_password, 0, strlen(cmdline_password));
+	sfree(cmdline_password);
+	cmdline_password = NULL;
+    }
+    
+    for (pri = 0; pri < NPRIORITIES; pri++) {
 	sfree(saves[pri].params);
+	saves[pri].params = NULL;
+	saves[pri].savesize = 0;
+	saves[pri].nsaved = 0;
+    }
 }
 
 #define SAVEABLE(pri) do { \
     if (need_save) { cmdline_save_param(p, value, pri); return ret; } \
 } while (0)
-
-static char *cmdline_password = NULL;
 
 /*
  * Similar interface to get_userpass_input(), except that here a -1
@@ -99,6 +109,8 @@ int cmdline_get_passwd_input(prompts_t *p, unsigned char *in, int inlen) {
 	    p->prompts[0]->result_len);
     p->prompts[0]->result[p->prompts[0]->result_len-1] = '\0';
     memset(cmdline_password, 0, strlen(cmdline_password));
+    sfree(cmdline_password);
+    cmdline_password = NULL;
     tried_once = 1;
     return 1;
 
@@ -192,6 +204,16 @@ int cmdline_process_param(char *p, char *value, int need_save, Config *cfg)
 	SAVEABLE(0);
 	default_protocol = cfg->protocol = PROT_RAW;
     }
+    if (!strcmp(p, "-serial")) {
+	RETURN(1);
+	/* Serial is not NONNETWORK in an odd sense of the word */
+	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+	default_protocol = cfg->protocol = PROT_SERIAL;
+	/* The host parameter will already be loaded into cfg->host, so copy it across */
+	strncpy(cfg->serline, cfg->host, sizeof(cfg->serline) - 1);
+	cfg->serline[sizeof(cfg->serline) - 1] = '\0';
+    }
     if (!strcmp(p, "-v")) {
 	RETURN(1);
 	flags |= FLAG_VERBOSE;
@@ -202,6 +224,13 @@ int cmdline_process_param(char *p, char *value, int need_save, Config *cfg)
 	SAVEABLE(0);
 	strncpy(cfg->username, value, sizeof(cfg->username));
 	cfg->username[sizeof(cfg->username) - 1] = '\0';
+    }
+    if (!strcmp(p, "-loghost")) {
+	RETURN(2);
+	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+	SAVEABLE(0);
+	strncpy(cfg->loghost, value, sizeof(cfg->loghost));
+	cfg->loghost[sizeof(cfg->loghost) - 1] = '\0';
     }
     if ((!strcmp(p, "-L") || !strcmp(p, "-R") || !strcmp(p, "-D"))) {
 	char *fwd, *ptr, *q, *qq;
@@ -263,8 +292,8 @@ int cmdline_process_param(char *p, char *value, int need_save, Config *cfg)
 	    unsigned len = portp - host;
 	    if (len >= sizeof(cfg->ssh_nc_host))
 		len = sizeof(cfg->ssh_nc_host) - 1;
-	    strncpy(cfg->ssh_nc_host, value, len);
-	    cfg->ssh_nc_host[sizeof(cfg->ssh_nc_host) - 1] = '\0';
+	    memcpy(cfg->ssh_nc_host, value, len);
+	    cfg->ssh_nc_host[len] = '\0';
 	    cfg->ssh_nc_port = atoi(portp+1);
 	} else {
 	    cmdline_error("-nc expects argument of form 'host:port'");
@@ -305,8 +334,9 @@ int cmdline_process_param(char *p, char *value, int need_save, Config *cfg)
 	cfg->remote_cmd_ptr = command;
 	cfg->remote_cmd_ptr2 = NULL;
 	cfg->nopty = TRUE;      /* command => no terminal */
+	fclose(fp);
     }
-    if ((!strcmp(p, "-P"))||(!strcmp(p, "-p"))) {
+    if (!strcmp(p, "-P")) {
 	RETURN(2);
 	UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
 	SAVEABLE(1);		       /* lower priority than -ssh,-telnet */
@@ -428,7 +458,100 @@ int cmdline_process_param(char *p, char *value, int need_save, Config *cfg)
 	SAVEABLE(1);
 	cfg->addressfamily = ADDRTYPE_IPV6;
     }
+    if (!strcmp(p, "-sercfg")) {
+	char* nextitem;
+	RETURN(2);
+	UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
+	SAVEABLE(1);
+	if (cfg->protocol != PROT_SERIAL)
+	    cmdline_error("the -sercfg option can only be used with the "
+			  "serial protocol");
+	/* Value[0] contains one or more , separated values, like 19200,8,n,1,X */
+	nextitem = value;
+	while (nextitem[0] != '\0') {
+	    int length, skip;
+	    char *end = strchr(nextitem, ',');
+	    if (!end) {
+		length = strlen(nextitem);
+		skip = 0;
+	    } else {
+		length = end - nextitem;
+		nextitem[length] = '\0';
+		skip = 1;
+	    }
+	    if (length == 1) {
+		switch (*nextitem) {
+		  case '1':
+		    cfg->serstopbits = 2;
+		    break;
+		  case '2':
+		    cfg->serstopbits = 4;
+		    break;
 
+		  case '5':
+		    cfg->serdatabits = 5;
+		    break;
+		  case '6':
+		    cfg->serdatabits = 6;
+		    break;
+		  case '7':
+		    cfg->serdatabits = 7;
+		    break;
+		  case '8':
+		    cfg->serdatabits = 8;
+		    break;
+		  case '9':
+		    cfg->serdatabits = 9;
+		    break;
+
+		  case 'n':
+		    cfg->serparity = SER_PAR_NONE;
+		    break;
+		  case 'o':
+		    cfg->serparity = SER_PAR_ODD;
+		    break;
+		  case 'e':
+		    cfg->serparity = SER_PAR_EVEN;
+		    break;
+		  case 'm':
+		    cfg->serparity = SER_PAR_MARK;
+		    break;
+		  case 's':
+		    cfg->serparity = SER_PAR_SPACE;
+		    break;
+
+		  case 'N':
+		    cfg->serflow = SER_FLOW_NONE;
+		    break;
+		  case 'X':
+		    cfg->serflow = SER_FLOW_XONXOFF;
+		    break;
+		  case 'R':
+		    cfg->serflow = SER_FLOW_RTSCTS;
+		    break;
+		  case 'D':
+		    cfg->serflow = SER_FLOW_DSRDTR;
+		    break;
+
+		  default:
+		    cmdline_error("Unrecognised suboption \"-sercfg %c\"",
+				  *nextitem);
+		}
+	    } else if (length == 3 && !strncmp(nextitem,"1.5",3)) {
+		/* Messy special case */
+		cfg->serstopbits = 3;
+	    } else {
+		int serspeed = atoi(nextitem);
+		if (serspeed != 0) {
+		    cfg->serspeed = serspeed;
+		} else {
+		    cmdline_error("Unrecognised suboption \"-sercfg %s\"",
+				  nextitem);
+		}
+	    }
+	    nextitem += length + skip;
+	}
+    }
     return ret;			       /* unrecognised */
 }
 

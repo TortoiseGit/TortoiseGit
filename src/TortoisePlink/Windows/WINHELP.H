@@ -1,6 +1,10 @@
 /*
- * winhelp.h - define Windows Help context names. These match up with
- * the \cfg{winhelp-topic} directives in the Halibut source.
+ * winhelp.h - define Windows Help context names.
+ * Each definition has the form "winhelp-topic:halibut-topic", where:
+ *  - "winhelp-topic" matches up with the \cfg{winhelp-topic} directives
+ *    in the Halibut source, and is used for WinHelp;
+ *  - "halibut-topic" matches up with the Halibut keywords in the source,
+ *    and is used for HTML Help.
  */
 
 /* Maximum length for WINHELP_CTX_foo strings */
@@ -42,6 +46,7 @@
 #define WINHELP_CTX_terminal_autowrap "terminal.autowrap:config-autowrap"
 #define WINHELP_CTX_terminal_decom "terminal.decom:config-decom"
 #define WINHELP_CTX_terminal_lfhascr "terminal.lfhascr:config-crlf"
+#define WINHELP_CTX_terminal_crhaslf "terminal.crhaslf:config-lfcr"
 #define WINHELP_CTX_terminal_bce "terminal.bce:config-erase"
 #define WINHELP_CTX_terminal_blink "terminal.blink:config-blink"
 #define WINHELP_CTX_terminal_answerback "terminal.answerback:config-answerback"
@@ -69,10 +74,12 @@
 #define WINHELP_CTX_connection_termtype "connection.termtype:config-termtype"
 #define WINHELP_CTX_connection_termspeed "connection.termspeed:config-termspeed"
 #define WINHELP_CTX_connection_username "connection.username:config-username"
+#define WINHELP_CTX_connection_username_from_env "connection.usernamefromenv:config-username-from-env"
 #define WINHELP_CTX_connection_keepalive "connection.keepalive:config-keepalive"
 #define WINHELP_CTX_connection_nodelay "connection.nodelay:config-nodelay"
 #define WINHELP_CTX_connection_ipversion "connection.ipversion:config-address-family"
 #define WINHELP_CTX_connection_tcpkeepalive "connection.tcpkeepalive:config-tcp-keepalives"
+#define WINHELP_CTX_connection_loghost "connection.loghost:config-loghost"
 #define WINHELP_CTX_proxy_type "proxy.type:config-proxy-type"
 #define WINHELP_CTX_proxy_main "proxy.main:config-proxy"
 #define WINHELP_CTX_proxy_exclude "proxy.exclude:config-proxy-exclude"
@@ -119,17 +126,20 @@
 #define WINHELP_CTX_translation_linedraw "translation.linedraw:config-linedraw"
 #define WINHELP_CTX_ssh_tunnels_x11 "ssh.tunnels.x11:config-ssh-x11"
 #define WINHELP_CTX_ssh_tunnels_x11auth "ssh.tunnels.x11auth:config-ssh-x11auth"
+#define WINHELP_CTX_ssh_tunnels_xauthority "ssh.tunnels.xauthority:config-ssh-xauthority"
 #define WINHELP_CTX_ssh_tunnels_portfwd "ssh.tunnels.portfwd:config-ssh-portfwd"
 #define WINHELP_CTX_ssh_tunnels_portfwd_localhost "ssh.tunnels.portfwd.localhost:config-ssh-portfwd-localhost"
 #define WINHELP_CTX_ssh_tunnels_portfwd_ipversion "ssh.tunnels.portfwd.ipversion:config-ssh-portfwd-address-family"
 #define WINHELP_CTX_ssh_bugs_ignore1 "ssh.bugs.ignore1:config-ssh-bug-ignore1"
 #define WINHELP_CTX_ssh_bugs_plainpw1 "ssh.bugs.plainpw1:config-ssh-bug-plainpw1"
 #define WINHELP_CTX_ssh_bugs_rsa1 "ssh.bugs.rsa1:config-ssh-bug-rsa1"
+#define WINHELP_CTX_ssh_bugs_ignore2 "ssh.bugs.ignore2:config-ssh-bug-ignore2"
 #define WINHELP_CTX_ssh_bugs_hmac2 "ssh.bugs.hmac2:config-ssh-bug-hmac2"
 #define WINHELP_CTX_ssh_bugs_derivekey2 "ssh.bugs.derivekey2:config-ssh-bug-derivekey2"
 #define WINHELP_CTX_ssh_bugs_rsapad2 "ssh.bugs.rsapad2:config-ssh-bug-sig"
 #define WINHELP_CTX_ssh_bugs_pksessid2 "ssh.bugs.pksessid2:config-ssh-bug-pksessid2"
 #define WINHELP_CTX_ssh_bugs_rekey2 "ssh.bugs.rekey2:config-ssh-bug-rekey"
+#define WINHELP_CTX_ssh_bugs_maxpkt2 "ssh.bugs.maxpkt2:config-ssh-bug-maxpkt2"
 #define WINHELP_CTX_serial_line "serial.line:config-serial-line"
 #define WINHELP_CTX_serial_speed "serial.speed:config-serial-speed"
 #define WINHELP_CTX_serial_databits "serial.databits:config-serial-databits"

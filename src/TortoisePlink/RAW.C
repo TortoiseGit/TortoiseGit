@@ -139,6 +139,22 @@ static const char *raw_init(void *frontend_handle, void **backend_handle,
     if ((err = sk_socket_error(raw->s)) != NULL)
 	return err;
 
+    if (*cfg->loghost) {
+	char *colon;
+
+	sfree(*realhost);
+	*realhost = dupstr(cfg->loghost);
+	colon = strrchr(*realhost, ':');
+	if (colon) {
+	    /*
+	     * FIXME: if we ever update this aspect of ssh.c for
+	     * IPv6 literal management, this should change in line
+	     * with it.
+	     */
+	    *colon++ = '\0';
+	}
+    }
+
     return NULL;
 }
 
@@ -278,5 +294,7 @@ Backend raw_backend = {
     raw_provide_logctx,
     raw_unthrottle,
     raw_cfg_info,
-    1
+    "raw",
+    PROT_RAW,
+    0
 };

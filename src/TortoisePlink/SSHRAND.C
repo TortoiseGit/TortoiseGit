@@ -4,6 +4,7 @@
 
 #include "putty.h"
 #include "ssh.h"
+#include <assert.h>
 
 /* Collect environmental noise every 5 minutes */
 #define NOISE_REGULAR_INTERVAL (5*60*TICKSPERSEC)
@@ -225,6 +226,10 @@ void random_ref(void)
 void random_unref(void)
 {
     random_active--;
+    assert(random_active >= 0);
+    if (random_active) return;
+
+    expire_timer_context(&pool);
 }
 
 int random_byte(void)

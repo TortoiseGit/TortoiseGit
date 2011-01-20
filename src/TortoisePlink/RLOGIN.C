@@ -182,12 +182,14 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
     {
 	char z = 0;
 	char *p;
+	char ruser[sizeof(cfg->username)];
+	(void) get_remote_username(cfg, ruser, sizeof(ruser));
 	sk_write(rlogin->s, &z, 1);
 	sk_write(rlogin->s, cfg->localusername,
 		 strlen(cfg->localusername));
 	sk_write(rlogin->s, &z, 1);
-	sk_write(rlogin->s, cfg->username,
-		 strlen(cfg->username));
+	sk_write(rlogin->s, ruser,
+		 strlen(ruser));
 	sk_write(rlogin->s, &z, 1);
 	sk_write(rlogin->s, cfg->termtype,
 		 strlen(cfg->termtype));
@@ -195,6 +197,22 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
 	for (p = cfg->termspeed; isdigit((unsigned char)*p); p++) continue;
 	sk_write(rlogin->s, cfg->termspeed, p - cfg->termspeed);
 	rlogin->bufsize = sk_write(rlogin->s, &z, 1);
+    }
+
+    if (*cfg->loghost) {
+	char *colon;
+
+	sfree(*realhost);
+	*realhost = dupstr(cfg->loghost);
+	colon = strrchr(*realhost, ':');
+	if (colon) {
+	    /*
+	     * FIXME: if we ever update this aspect of ssh.c for
+	     * IPv6 literal management, this should change in line
+	     * with it.
+	     */
+	    *colon++ = '\0';
+	}
     }
 
     return NULL;
@@ -349,5 +367,7 @@ Backend rlogin_backend = {
     rlogin_provide_logctx,
     rlogin_unthrottle,
     rlogin_cfg_info,
-    1
+    "rlogin",
+    PROT_RLOGIN,
+    513
 };

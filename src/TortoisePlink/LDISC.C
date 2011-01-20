@@ -147,7 +147,7 @@ void ldisc_send(void *handle, char *buf, int len, int interactive)
     if (EDITING) {
 	while (len--) {
 	    int c;
-	    c = *buf++ + keyflag;
+	    c = (unsigned char)(*buf++) + keyflag;
 	    if (!interactive && c == '\r')
 		c += KCTRL('@');
 	    switch (ldisc->quotenext ? ' ' : c) {

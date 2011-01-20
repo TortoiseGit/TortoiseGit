@@ -25,7 +25,7 @@ char sshver[] = "PuTTY-Release-" STR(RELEASE);
 
 #elif defined SVN_REV
 
-char ver[] = "Custom build r" STR(SVN_REV);
+char ver[] = "Custom build r" STR(SVN_REV) ", " __DATE__ " " __TIME__;
 char sshver[] = "PuTTY-Custom-r" STR(SVN_REV);
 
 #else

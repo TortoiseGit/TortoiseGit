@@ -36,6 +36,9 @@ struct FontSpec {
     (fq) == FQ_NONANTIALIASED ? NONANTIALIASED_QUALITY : \
     CLEARTYPE_QUALITY)
 
+#define PLATFORM_IS_UTF16 /* enable UTF-16 processing when exchanging
+			   * wchar_t strings with environment */
+
 /*
  * Where we can, we use GetWindowLongPtr and friends because they're
  * more useful on 64-bit platforms, but they're a relatively recent
@@ -69,6 +72,33 @@ struct FontSpec {
 #define BOXFLAGS DLGWINDOWEXTRA
 #define BOXRESULT (DLGWINDOWEXTRA + sizeof(LONG_PTR))
 #define DF_END 0x0001
+
+/*
+ * Dynamically linked functions. These come in two flavours:
+ *
+ *  - GET_WINDOWS_FUNCTION does not expose "name" to the preprocessor,
+ *    so will always dynamically link against exactly what is specified
+ *    in "name". If you're not sure, use this one.
+ *
+ *  - GET_WINDOWS_FUNCTION_PP allows "name" to be redirected via
+ *    preprocessor definitions like "#define foo bar"; this is principally
+ *    intended for the ANSI/Unicode DoSomething/DoSomethingA/DoSomethingW.
+ *    If your function has an argument of type "LPTSTR" or similar, this
+ *    is the variant to use.
+ *    (However, it can't always be used, as it trips over more complicated
+ *    macro trickery such as the WspiapiGetAddrInfo wrapper for getaddrinfo.)
+ *
+ * (DECL_WINDOWS_FUNCTION works with both these variants.)
+ */
+#define DECL_WINDOWS_FUNCTION(linkage, rettype, name, params) \
+    typedef rettype (WINAPI *t_##name) params; \
+    linkage t_##name p_##name
+#define STR1(x) #x
+#define STR(x) STR1(x)
+#define GET_WINDOWS_FUNCTION_PP(module, name) \
+    p_##name = module ? (t_##name) GetProcAddress(module, STR(name)) : NULL
+#define GET_WINDOWS_FUNCTION(module, name) \
+    p_##name = module ? (t_##name) GetProcAddress(module, #name) : NULL
 
 /*
  * Global variables. Most modules declare these `extern', but
@@ -107,6 +137,25 @@ typedef struct terminal_tag Terminal;
 #define DEFAULT_CODEPAGE CP_ACP
 
 typedef HDC Context;
+
+typedef unsigned int uint32; /* int is 32-bits on Win32 and Win64. */
+#define PUTTY_UINT32_DEFINED
+
+#ifndef NO_GSSAPI
+/*
+ * GSS-API stuff
+ */
+#define GSS_CC CALLBACK
+/*
+typedef struct Ssh_gss_buf {
+    size_t length;
+    char *value;
+} Ssh_gss_buf;
+
+#define SSH_GSS_EMPTY_BUF (Ssh_gss_buf) {0,NULL}
+typedef void *Ssh_gss_name;
+*/
+#endif
 
 /*
  * Window handles for the windows that can be running during a
@@ -189,16 +238,16 @@ GLOBAL void *logctx;
  * that module must be exported from it as function pointers. So
  * here they are.
  */
-extern int (WINAPI *p_WSAAsyncSelect)
-    (SOCKET s, HWND hWnd, u_int wMsg, long lEvent);
-extern int (WINAPI *p_WSAEventSelect)
-    (SOCKET s, WSAEVENT hEventObject, long lNetworkEvents);
-extern int (WINAPI *p_select)
-    (int nfds, fd_set FAR * readfds, fd_set FAR * writefds,
-     fd_set FAR *exceptfds, const struct timeval FAR * timeout);
-extern int (WINAPI *p_WSAGetLastError)(void);
-extern int (WINAPI *p_WSAEnumNetworkEvents)
-    (SOCKET s, WSAEVENT hEventObject, LPWSANETWORKEVENTS lpNetworkEvents);
+DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAAsyncSelect,
+		      (SOCKET, HWND, u_int, long));
+DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAEventSelect,
+		      (SOCKET, WSAEVENT, long));
+DECL_WINDOWS_FUNCTION(GLOBAL, int, select,
+		      (int, fd_set FAR *, fd_set FAR *,
+		       fd_set FAR *, const struct timeval FAR *));
+DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAGetLastError, (void));
+DECL_WINDOWS_FUNCTION(GLOBAL, int, WSAEnumNetworkEvents,
+		      (SOCKET, WSAEVENT, LPWSANETWORKEVENTS));
 
 extern int socket_writable(SOCKET skt);
 
@@ -397,6 +446,7 @@ void show_help(HWND hwnd);
  */
 extern OSVERSIONINFO osVersion;
 BOOL init_winver(void);
+HMODULE load_system32_dll(const char *libname);
 
 /*
  * Exports from sizetip.c.

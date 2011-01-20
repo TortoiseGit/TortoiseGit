@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "puttymem.h"
+#include "tree234.h"
 #include "network.h"
 #include "int64.h"
 #include "misc.h"
@@ -70,8 +71,12 @@ unsigned char *rsa_public_blob(struct RSAKey *key, int *len);
 int rsa_public_blob_len(void *data, int maxlen);
 void freersakey(struct RSAKey *key);
 
-typedef unsigned int word32;
+#ifndef PUTTY_UINT32_DEFINED
+/* This makes assumptions about the int type. */
 typedef unsigned int uint32;
+#define PUTTY_UINT32_DEFINED
+#endif
+typedef uint32 word32;
 
 unsigned long crc32_compute(const void *s, size_t len);
 unsigned long crc32_update(unsigned long crc_input, const void *s, size_t len);
@@ -81,6 +86,17 @@ void *crcda_make_context(void);
 void crcda_free_context(void *handle);
 int detect_attack(void *handle, unsigned char *buf, uint32 len,
 		  unsigned char *IV);
+
+/*
+ * SSH2 RSA key exchange functions
+ */
+struct ssh_hash;
+void *ssh_rsakex_newkey(char *data, int len);
+void ssh_rsakex_freekey(void *key);
+int ssh_rsakex_klen(void *key);
+void ssh_rsakex_encrypt(const struct ssh_hash *h, unsigned char *in, int inlen,
+                        unsigned char *out, int outlen,
+                        void *key);
 
 typedef struct {
     uint32 h[4];
@@ -178,8 +194,14 @@ struct ssh_mac {
     void *(*make_context)(void);
     void (*free_context)(void *);
     void (*setkey) (void *, unsigned char *key);
+    /* whole-packet operations */
     void (*generate) (void *, unsigned char *blk, int len, unsigned long seq);
     int (*verify) (void *, unsigned char *blk, int len, unsigned long seq);
+    /* partial-packet operations */
+    void (*start) (void *);
+    void (*bytes) (void *, unsigned char const *, int);
+    void (*genresult) (void *, unsigned char *);
+    int (*verresult) (void *, unsigned char const *);
     char *name;
     int len;
     char *text_name;
@@ -194,15 +216,10 @@ struct ssh_hash {
 };   
 
 struct ssh_kex {
-    /*
-     * Plugging in another KEX algorithm requires structural chaos,
-     * so it's hard to abstract them into nice little structures
-     * like this. Fortunately, all our KEXes are basically
-     * Diffie-Hellman at the moment, so in this structure I simply
-     * parametrise the DH exchange a bit.
-     */
     char *name, *groupname;
-    const unsigned char *pdata, *gdata;/* NULL means use group exchange */
+    enum { KEXTYPE_DH, KEXTYPE_RSA } main_type;
+    /* For DH */
+    const unsigned char *pdata, *gdata; /* NULL means group exchange */
     int plen, glen;
     const struct ssh_hash *hash;
 };
@@ -268,6 +285,7 @@ extern const struct ssh_hash ssh_sha256;
 extern const struct ssh_kexes ssh_diffiehellman_group1;
 extern const struct ssh_kexes ssh_diffiehellman_group14;
 extern const struct ssh_kexes ssh_diffiehellman_gex;
+extern const struct ssh_kexes ssh_rsa_kex;
 extern const struct ssh_signkey ssh_dss;
 extern const struct ssh_signkey ssh_rsa;
 extern const struct ssh_mac ssh_hmac_md5;
@@ -276,6 +294,14 @@ extern const struct ssh_mac ssh_hmac_sha1_buggy;
 extern const struct ssh_mac ssh_hmac_sha1_96;
 extern const struct ssh_mac ssh_hmac_sha1_96_buggy;
 
+void *aes_make_context(void);
+void aes_free_context(void *handle);
+void aes128_key(void *handle, unsigned char *key);
+void aes192_key(void *handle, unsigned char *key);
+void aes256_key(void *handle, unsigned char *key);
+void aes_iv(void *handle, unsigned char *iv);
+void aes_ssh2_encrypt_blk(void *handle, unsigned char *blk, int len);
+void aes_ssh2_decrypt_blk(void *handle, unsigned char *blk, int len);
 
 /*
  * PuTTY version number formatted as an SSH version string. 
@@ -320,27 +346,85 @@ extern void pfd_unthrottle(Socket s);
 extern void pfd_override_throttle(Socket s, int enable);
 
 /* Exports from x11fwd.c */
-extern const char *x11_init(Socket *, char *, void *, void *, const char *,
-			    int, const Config *);
+enum {
+    X11_TRANS_IPV4 = 0, X11_TRANS_IPV6 = 6, X11_TRANS_UNIX = 256
+};
+struct X11Display {
+    /* Broken-down components of the display name itself */
+    int unixdomain;
+    char *hostname;
+    int displaynum;
+    int screennum;
+    /* OSX sometimes replaces all the above with a full Unix-socket pathname */
+    char *unixsocketpath;
+
+    /* PuTTY networking SockAddr to connect to the display, and associated
+     * gubbins */
+    SockAddr addr;
+    int port;
+    char *realhost;
+
+    /* Auth details we invented for the virtual display on the SSH server. */
+    int remoteauthproto;
+    unsigned char *remoteauthdata;
+    int remoteauthdatalen;
+    char *remoteauthprotoname;
+    char *remoteauthdatastring;
+
+    /* Our local auth details for talking to the real X display. */
+    int localauthproto;
+    unsigned char *localauthdata;
+    int localauthdatalen;
+
+    /*
+     * Used inside x11fwd.c to remember recently seen
+     * XDM-AUTHORIZATION-1 strings, to avoid replay attacks.
+     */
+    tree234 *xdmseen;
+};
+/*
+ * x11_setup_display() parses the display variable and fills in an
+ * X11Display structure. Some remote auth details are invented;
+ * the supplied authtype parameter configures the preferred
+ * authorisation protocol to use at the remote end. The local auth
+ * details are looked up by calling platform_get_x11_auth.
+ */
+extern struct X11Display *x11_setup_display(char *display, int authtype,
+					    const Config *);
+void x11_free_display(struct X11Display *disp);
+extern const char *x11_init(Socket *, struct X11Display *, void *,
+			    const char *, int, const Config *);
 extern void x11_close(Socket);
 extern int x11_send(Socket, char *, int);
-extern void *x11_invent_auth(char *, int, char *, int, int);
-extern void x11_free_auth(void *);
 extern void x11_unthrottle(Socket s);
 extern void x11_override_throttle(Socket s, int enable);
-extern int x11_get_screen_number(char *display);
-void x11_get_real_auth(void *authv, char *display);
 char *x11_display(const char *display);
-
 /* Platform-dependent X11 functions */
-extern void platform_get_x11_auth(char *display, int *proto,
-                                  unsigned char *data, int *datalen);
-extern const char platform_x11_best_transport[];
-/* best X11 hostname for this platform if none specified */
-SockAddr platform_get_x11_unix_address(int displaynum, char **canonicalname);
-/* make up a SockAddr naming the address for displaynum */
+extern void platform_get_x11_auth(struct X11Display *display,
+				  const Config *);
+    /* examine a mostly-filled-in X11Display and fill in localauth* */
+extern const int platform_uses_x11_unix_by_default;
+    /* choose default X transport in the absence of a specified one */
+SockAddr platform_get_x11_unix_address(const char *path, int displaynum);
+    /* make up a SockAddr naming the address for displaynum */
 char *platform_get_x_display(void);
-/* allocated local X display string, if any */
+    /* allocated local X display string, if any */
+/* Callbacks in x11.c usable _by_ platform X11 functions */
+/*
+ * This function does the job of platform_get_x11_auth, provided
+ * it is told where to find a normally formatted .Xauthority file:
+ * it opens that file, parses it to find an auth record which
+ * matches the display details in "display", and fills in the
+ * localauth fields.
+ *
+ * It is expected that most implementations of
+ * platform_get_x11_auth() will work by finding their system's
+ * .Xauthority file, adjusting the display details if necessary
+ * for local oddities like Unix-domain socket transport, and
+ * calling this function to do the rest of the work.
+ */
+void x11_get_auth_from_authfile(struct X11Display *display,
+				const char *authfilename);
 
 Bignum copybn(Bignum b);
 Bignum bn_power_2(int n);
