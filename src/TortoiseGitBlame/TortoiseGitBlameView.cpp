@@ -2716,16 +2716,26 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		if (m_CommitHash[line] != m_SelectedHash)
 		{
 			m_SelectedHash = m_CommitHash[line];
-			
+
+			// lazy calculate m_ID
+			if (m_ID[line] == -1)
+			{
+				m_ID[line] = -2; // don't do this lazy calculation again and again for unfindable hashes
+				for(int i = 0; i<this->GetLogData()->size(); i++)
+				{
+					if(m_SelectedHash == this->GetLogData()->at(i))
+					{
+						m_ID[line] = this->GetLogData()->size()-i;
+						break;
+					}
+				}
+			}
+
 			if(m_ID[line]>=0)
 			{
 				this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
 															LVIS_SELECTED,
 															LVIS_SELECTED);
-
-				GitRev *pRev;
-				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
-				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 			}else
 			{
 				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&m_NoListCommit[m_CommitHash[line]]);
@@ -2765,23 +2775,21 @@ void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* result)
 
 void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 {
-	m_SelectedHash = pRev->m_CommitHash;
-
-	//GitRev *pRev;
-	//pRev=&this->GetLogData()->at(this->GetLogList()->GetItemCount()-m_ID[line]);
 	this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 
 	this->Invalidate();
 
-	int i;
-	for(i=0;i<m_CommitHash.size();i++)
-	{
-		if( pRev->m_CommitHash == m_CommitHash[i] )
-			break;
+	if (m_SelectedHash != pRev->m_CommitHash) {
+		m_SelectedHash = pRev->m_CommitHash;
+		int i;
+		for(i=0;i<m_CommitHash.size();i++)
+		{
+			if( pRev->m_CommitHash == m_CommitHash[i] )
+				break;
+		}
+		this->GotoLine(i);
+		this->m_TextView.Invalidate();
 	}
-	this->GotoLine(i);
-	this->m_TextView.Invalidate();
-
 }
 
 void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
