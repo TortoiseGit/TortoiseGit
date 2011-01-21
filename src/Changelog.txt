@@ -10,6 +10,7 @@
  * TortoiseGitBlame
    Clicking on a line automatically selects the log entry in the loglist
    Allow to diff to previous revision of a file
+   Added new context menu
 
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window

@@ -34,6 +34,7 @@
 #include "UniCodeUtils.h"
 #include "MenuEncode.h"
 #include "gitdll.h"
+#include "PathUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,6 +57,12 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_EDIT_COPY,CopySelectedLogToClipboard)
 	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
+	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
+	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
+	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
+	ON_COMMAND(ID_BLAMEPOPUP_DIFFPREVIOUS, DiffPreviousRevision)
+	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, OnUpdateBlamePopupBlamePrevious)
+	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_DIFFPREVIOUS, OnUpdateBlamePopupDiffPrevious)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -64,6 +71,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_MOUSELEAVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
 	ON_NOTIFY(SCN_PAINTED,0,OnSciPainted)
 	ON_NOTIFY(SCN_GETBKCOLOR,0,OnSciGetBkColor)
     ON_REGISTERED_MESSAGE(m_FindDialogMessage,   OnFindDialogMessage)  
@@ -293,15 +301,44 @@ void CTortoiseGitBlameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 void CTortoiseGitBlameView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
+	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
+	line = line + (point.y/height);
+	if (line < (LONG)m_CommitHash.size())
+	{
+		if(m_ID[line] >= 0) // only show context menu if we have log data for it
+		{
+			m_MouseLine = line;
+			ClientToScreen(&point);
+			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_BLAME_POPUP, point.x, point.y, this, TRUE);
+		}
+	}
 }
 
-void CTortoiseGitBlameView::OnContextMenu(CWnd* pWnd, CPoint point)
+void CTortoiseGitBlameView::OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI)
 {
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+	if (m_ID[m_MouseLine] <= 1)
+	{
+		pCmdUI->Enable(false);
+	} else {
+		pCmdUI->Enable(true);
+	}
 }
 
+void CTortoiseGitBlameView::OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI)
+{
+	if (m_ID[m_MouseLine] <= 1)
+	{
+		pCmdUI->Enable(false);
+	} else {
+		pCmdUI->Enable(true);
+	}
+}
+
+void CTortoiseGitBlameView::CopyHashToClipboard()
+{
+	this->GetLogList()->CopySelectionToClipBoard(TRUE);
+}
 
 // CTortoiseGitBlameView diagnostics
 
@@ -830,110 +867,49 @@ void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 
 void CTortoiseGitBlameView::BlamePreviousRevision()
 {
-#if 0
-	LONG nRevisionTo = m_selectedorigrev - 1;
-	if ( nRevisionTo<1 )
-	{
-		return;
-	}
-
-	// We now determine the smallest revision number in the blame file (but ignore "-1")
-	// We do this for two reasons:
-	// 1. we respect the "From revision" which the user entered
-	// 2. we speed up the call of "svn blame" because previous smaller revision numbers don't have any effect on the result
-	LONG nSmallestRevision = -1;
-	for (LONG line=0;line<(LONG)app.revs.size();line++)
-	{
-		const LONG nRevision = app.revs[line];
-		if ( nRevision > 0 )
-		{
-			if ( nSmallestRevision < 1 )
-			{
-				nSmallestRevision = nRevision;
-			}
-			else
-			{
-				nSmallestRevision = min(nSmallestRevision,nRevision);
-			}
-		}
-	}
-
-	char bufStartRev[20];
-	_stprintf_s(bufStartRev, 20, _T("%d"), nSmallestRevision);
-
-	char bufEndRev[20];
-	_stprintf_s(bufEndRev, 20, _T("%d"), nRevisionTo);
-
-	char bufLine[20];
-	_stprintf_s(bufLine, 20, _T("%d"), m_SelectedLine+1); //using the current line is a good guess.
+	CString  procCmd;
+	procCmd+=_T(" /path:\"");
+	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	procCmd+=_T("\" ");
+	procCmd+=_T(" /command:blame");
+	procCmd+=_T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
 
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
 	memset(&startup, 0, sizeof(startup));
 	startup.cb = sizeof(startup);
 	memset(&process, 0, sizeof(process));
-	stdstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseProc.exe");
-	stdstring svnCmd = _T(" /command:blame ");
-	svnCmd += _T(" /path:\"");
-	svnCmd += szOrigPath;
-	svnCmd += _T("\"");
-	svnCmd += _T(" /startrev:");
-	svnCmd += bufStartRev;
-	svnCmd += _T(" /endrev:");
-	svnCmd += bufEndRev;
-	svnCmd += _T(" /line:");
-	svnCmd += bufLine;
-	if (bIgnoreEOL)
-		svnCmd += _T(" /ignoreeol");
-	if (bIgnoreSpaces)
-		svnCmd += _T(" /ignorespaces");
-	if (bIgnoreAllSpaces)
-		svnCmd += _T(" /ignoreallspaces");
-    if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+
+	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);
 		CloseHandle(process.hProcess);
 	}
-#endif
 }
 
 void CTortoiseGitBlameView::DiffPreviousRevision()
 {
-#if 0
-	LONG nRevisionTo = m_selectedorigrev;
-	if ( nRevisionTo<1 )
-	{
-		return;
-	}
-
-	LONG nRevisionFrom = nRevisionTo-1;
-
-	char bufStartRev[20];
-	_stprintf_s(bufStartRev, 20, _T("%d"), nRevisionFrom);
-
-	char bufEndRev[20];
-	_stprintf_s(bufEndRev, 20, _T("%d"), nRevisionTo);
+	CString  procCmd;
+	procCmd+=_T(" /path:\"");
+	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	procCmd+=_T("\" ");
+	procCmd+=_T(" /command:diff");
+	procCmd+=_T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
+	procCmd+=_T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
 
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
 	memset(&startup, 0, sizeof(startup));
 	startup.cb = sizeof(startup);
 	memset(&process, 0, sizeof(process));
-	stdstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseProc.exe");
-	stdstring svnCmd = _T(" /command:diff ");
-	svnCmd += _T(" /path:\"");
-	svnCmd += szOrigPath;
-	svnCmd += _T("\"");
-	svnCmd += _T(" /startrev:");
-	svnCmd += bufStartRev;
-	svnCmd += _T(" /endrev:");
-	svnCmd += bufEndRev;
-	if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+
+	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);
 		CloseHandle(process.hProcess);
 	}
-#endif
 }
 
 void CTortoiseGitBlameView::ShowLog()

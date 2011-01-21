@@ -98,7 +98,6 @@ protected:
 	afx_msg void OnEditGoto();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg int OnCreate(LPCREATESTRUCT lpcs);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnSciPainted(NMHDR*, LRESULT*);
@@ -110,6 +109,9 @@ protected:
     afx_msg LRESULT OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam);
 	afx_msg void OnViewNext();
 	afx_msg void OnViewPrev();
+	afx_msg void CopyHashToClipboard();
+	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
 	
 	int FindNextLine(CGitHash commithash, bool bUpOrDown=false);
 	int FindFirstLine(CGitHash commithash, int line)

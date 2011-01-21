@@ -166,11 +166,7 @@ void CTortoiseGitBlameApp::OnAppAbout()
 
 void CTortoiseGitBlameApp::PreLoadState()
 {
-	BOOL bNameValid;
-	CString strName;
-	bNameValid = strName.LoadString(IDS_EDIT_MENU);
-	ASSERT(bNameValid);
-	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
+	GetContextMenuManager()->AddMenu(IDR_BLAME_POPUP, IDR_BLAME_POPUP);
 }
 
 void CTortoiseGitBlameApp::LoadCustomState()

@@ -299,16 +299,6 @@ BEGIN
     END
 END
 
-IDR_POPUP_EDIT MENU 
-BEGIN
-    POPUP "Edit"
-    BEGIN
-        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
-        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
-        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-    END
-END
-
 IDR_OUTPUT_POPUP MENU 
 BEGIN
     POPUP "Popup"
@@ -326,6 +316,17 @@ BEGIN
     MENUITEM "Office 2007 (B&lack Style)",  ID_VIEW_APPLOOK_OFF_2007_BLACK
     MENUITEM "Office 2007 (&Silver Style)", ID_VIEW_APPLOOK_OFF_2007_SILVER
     MENUITEM "Office 2007 (&Aqua Style)",   ID_VIEW_APPLOOK_OFF_2007_AQUA
+END
+
+IDR_BLAME_POPUP MENU 
+BEGIN
+    POPUP "BlAMEPOPUP"
+    BEGIN
+        MENUITEM "Blame previous revision",     ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION
+        MENUITEM "Diff previous revision",      ID_BLAMEPOPUP_DIFFPREVIOUS
+        MENUITEM "Copy hash to clipboard",      ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD
+        MENUITEM "Copy log to clipboard",       ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD
+    END
 END
 
 

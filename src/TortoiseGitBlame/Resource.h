@@ -6,7 +6,6 @@
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 2
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
-#define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
 #define ID_VIEW_CUSTOMIZE               126
@@ -39,6 +38,7 @@
 #define ID_EDIT_GOTO                    220
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222
+#define IDR_BLAME_POPUP                 311
 #define IDS_YEAR_AGO                    9605
 #define IDS_YEARS_AGO                   9606
 #define IDS_MONTH_AGO                   9607
@@ -70,13 +70,18 @@
 #define ID_EDIT_ENCODE                  32772
 #define ID_EDIT_ENCODE32773             32773
 #define ID_ENCODE_AUTO                  32774
+#define ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION 32776
+#define ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD 32777
+#define ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD 32778
+#define ID_BLAMEPOPUP_PROCCMD           32779
+#define ID_BLAMEPOPUP_DIFFPREVIOUS      32780
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32775
+#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_COMMAND_VALUE         32781
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
