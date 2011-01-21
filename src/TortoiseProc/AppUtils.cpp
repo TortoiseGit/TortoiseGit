@@ -722,9 +722,9 @@ bool CAppUtils::LaunchRemoteSetting()
 */
 bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile,CString Rev,const CString& sParams)
 {
-	CString viewer = CPathUtils::GetAppDirectory();
+	CString viewer = _T("\"") + CPathUtils::GetAppDirectory();
 	viewer += _T("TortoiseGitBlame.exe");
-	viewer += _T(" \"") + sBlameFile + _T("\"");
+	viewer += _T("\" \"") + sBlameFile + _T("\"");
 	//viewer += _T(" \"") + sLogFile + _T("\"");
 	//viewer += _T(" \"") + sOriginalFile + _T("\"");
 	if(!Rev.IsEmpty())
