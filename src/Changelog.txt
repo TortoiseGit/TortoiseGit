@@ -6,11 +6,13 @@
  * Optionally remember DCommit type setting
  * enable git status column in TortoiseShell
  * Fixed issue #644: Dropped "Check repository" button on check for modifications dialog
+ * Clicking on a line in TortoiseGitBlame automatically selects the log entry in the loglist
 
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window
  * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
  * Do not allow to delete-ignore working copy root-directory
+ * Fixed issue #448: Do not hide only one item in the help menu in TortoiseGitBlame
 
 = Release 1.6.3.0 =
 == Features ==
