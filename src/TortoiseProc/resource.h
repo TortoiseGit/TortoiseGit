@@ -236,6 +236,7 @@
 #define IDC_LOGMSG                      1015
 #define IDC_TOURL                       1015
 #define IDC_EXTDIFF                     1015
+#define IDS_ERR_TGITBLAME               1015
 #define IDC_EXTMERGE                    1016
 #define IDC_EXTDIFFPROPS                1016
 #define IDC_MESSAGE                     1017

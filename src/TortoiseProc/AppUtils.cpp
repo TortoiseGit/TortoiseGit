@@ -731,7 +731,7 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile,CString Rev,const 
 		viewer += CString(_T(" /rev:"))+Rev;
 	viewer += _T(" ")+sParams;
 	
-	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, false);
+	return LaunchApplication(viewer, IDS_ERR_TGITBLAME, false);
 }
 
 bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
