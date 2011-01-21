@@ -31,8 +31,7 @@ END_MESSAGE_MAP()
 
 CTortoiseGitBlameDoc::CTortoiseGitBlameDoc()
 {
-	// TODO: add one-time construction code here
-
+	m_bFirstStartup = true;
 }
 
 CTortoiseGitBlameDoc::~CTortoiseGitBlameDoc()
@@ -52,9 +51,10 @@ BOOL CTortoiseGitBlameDoc::OnNewDocument()
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
-	if(parser.HasVal(_T("rev")))
+	if(parser.HasVal(_T("rev")) && m_bFirstStartup)
 	{
 		m_Rev=parser.GetVal(_T("rev"));
+		m_bFirstStartup = false;
 	}else
 	{
 		m_Rev.Empty();

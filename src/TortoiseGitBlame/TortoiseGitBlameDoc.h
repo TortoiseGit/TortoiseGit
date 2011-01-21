@@ -15,6 +15,7 @@ class CTortoiseGitBlameDoc : public CDocument
 protected: // create from serialization only
 	CTortoiseGitBlameDoc();
 	DECLARE_DYNCREATE(CTortoiseGitBlameDoc)
+	bool m_bFirstStartup;
 
 // Attributes
 public:

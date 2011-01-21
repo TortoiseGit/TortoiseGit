@@ -12,7 +12,10 @@
  * Fixed issue #669: cannot open help from clean window
  * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
  * Do not allow to delete-ignore working copy root-directory
- * Fixed issue #448: Do not hide only one item in the help menu in TortoiseGitBlame
+
+ * TortoiseGitBlame
+   Fixed issue #448: Do not hide only one item in the help menu in TortoiseGitBlame
+   After blaming an older revision, TortoiseGitBlame was fixed to this.
 
 = Release 1.6.3.0 =
 == Features ==
