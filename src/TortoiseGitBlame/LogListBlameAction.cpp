@@ -11,6 +11,7 @@ IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 void CGitBlameLogList::hideUnimplementedCommands()
 {
 	hideFromContextMenu(
+		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
 		GetContextMenuBit(ID_COPYCLIPBOARD) |
 		GetContextMenuBit(ID_COPYHASH) |
 		GetContextMenuBit(ID_EXPORT) |
@@ -94,12 +95,19 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				//	CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_WC, m_path, revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
-#endif
 		case ID_COMPARE:
 			procCmd+=CString(_T("diff \rev1:"))+CString(GIT_REV_ZERO)+CString(_T(" \rev2:"))+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
 			break;
+#endif
 		case ID_COMPAREWITHPREVIOUS:
-			procCmd+=_T("prevdiff");
+			if (indexNext + 1 < m_logEntries.size()) // cannot diff previous revision in first revision
+			{
+				procCmd+=CString(_T("diff /startrev:"))+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString()+CString(_T(" /endrev:"))+this->m_logEntries.GetGitRevAt(indexNext+1).m_CommitHash.ToString();
+			}
+			else
+			{
+				return;
+			}
 			break;
 		case ID_COPYCLIPBOARD:
 			{
