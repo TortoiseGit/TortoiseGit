@@ -7,6 +7,7 @@
  * enable git status column in TortoiseShell
  * Fixed issue #644: Dropped "Check repository" button on check for modifications dialog
  * Clicking on a line in TortoiseGitBlame automatically selects the log entry in the loglist
+ * Allow to diff two revisions of a file by calling TortoiseProc
 
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window
