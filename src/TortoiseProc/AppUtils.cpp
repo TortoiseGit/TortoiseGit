@@ -660,8 +660,8 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	}
 	if(keyfile == NULL)
 	{
-		cmd.Format(_T("git.exe config remote.%s.puttykeyfile"),remote);
-		g_Git.Run(cmd,&key,CP_ACP);
+		cmd.Format(_T("remote.%s.puttykeyfile"),remote);
+		key = g_Git.GetConfigValue(cmd);
 		int start=0;
 		key = key.Tokenize(_T("\n"),start);
 	}
@@ -2160,11 +2160,12 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 {
 	CString cmd,output;
 	int start=0;
-	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if(pGit->Run(cmd,&output,CP_ACP))
+
+	output = pGit->GetConfigValue(_T("i18n.logOutputEncoding"));
+	if(output.IsEmpty())
 	{
-		cmd=_T("git.exe config i18n.commitencoding");
-		if(pGit->Run(cmd,&output,CP_ACP))
+		output =  pGit->GetConfigValue(_T("i18n.commitencoding"));
+		if(output.IsEmpty())
 			return CP_UTF8;
 	
 		int start=0;
@@ -2180,8 +2181,9 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 int CAppUtils::GetCommitTemplate(CString &temp)
 {
 	CString cmd,output;
-	cmd = _T("git.exe config commit.template");
-	if( g_Git.Run(cmd,&output,CP_ACP) )
+
+	output= g_Git.GetConfigValue(_T("commit.template"),CP_ACP);
+	if( output.IsEmpty() )
 		return -1;
 
 	if( output.GetLength()<1)
@@ -2225,8 +2227,8 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	CString cmd,output;
 	int cp=CP_UTF8;
 
-	cmd=_T("git.exe config i18n.commitencoding");
-	if(g_Git.Run(cmd,&output,CP_ACP))
+	output= g_Git.GetConfigValue(_T("i18n.commitencoding"));
+	if(output.IsEmpty())
 		cp=CP_UTF8;
 	
 	int start=0;
