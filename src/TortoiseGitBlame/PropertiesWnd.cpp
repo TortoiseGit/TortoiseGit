@@ -239,7 +239,6 @@ void CPropertiesWnd::InitPropList()
 	m_BaseInfoGroup=pGroup1;
 
 	m_ParentGroup=new CMFCPropertyGridProperty(_T("Parent"));
-	m_ParentGroup->AllowEdit(FALSE);
 
 	m_wndPropList.AddProperty(m_ParentGroup);
 #if 0
@@ -340,6 +339,7 @@ void CPropertiesWnd::SetPropListFont()
 }
 void CPropertiesWnd::RemoveParent()
 {
+	m_ParentGroup->Expand(false);
 	for(int i=0;i<m_ParentGroup->GetSubItemsCount();i++)
 	{
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
@@ -395,9 +395,10 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 												parentsubject,
 												str
 											);
+			pProtery->AllowEdit(FALSE);
 			m_ParentGroup->AddSubItem(pProtery);
-			m_ParentGroup->Expand();
 		}
+		m_ParentGroup->Expand();
 		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(m_BaseInfoGroup->GetSubItem(i)->GetValue());
 
@@ -416,10 +417,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 		m_Body->SetValue(_T(""));
 
 		RemoveParent();
-		//m_ParentGroup;
 
-		//m_ParentHash->SetValue(_T(""));
-		//m_ParentSubject->SetValue(_T(""));		
 		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(_T(""));
 	}
