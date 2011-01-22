@@ -19,6 +19,7 @@
  * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
  * Do not allow to delete-ignore working copy root-directory
  * Starting TortoiseGitBlame might fail to start if folder contains spaces
+ * Fixed window titles of log and statistics window
 
  * TortoiseGitBlame
    Fixed issue #448: Disable personalized menu behaviour

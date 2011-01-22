@@ -160,8 +160,9 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
 END_MESSAGE_MAP()
 
-void CLogDlg::SetParams(const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
 {
+	m_orgPath = orgPath;
 	m_path = path;
 	m_pegrev = pegrev;
 	this->m_LogList.m_startrev = startrev;
@@ -436,24 +437,24 @@ void CLogDlg::SetDlgTitle(bool bOffline)
 	if (bOffline)
 	{
 		CString sTemp;
-		if (m_path.IsUrl())
-			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_path.GetUIPathString());
-		else if (m_path.IsDirectory())
-			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_path.GetWinPathString());
+		if (m_orgPath.IsUrl())
+			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_orgPath.GetUIPathString());
+		else if (m_orgPath.IsDirectory())
+			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_orgPath.GetWinPathString());
 		else
-			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_path.GetFilename());
+			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_orgPath.GetFilename());
 		SetWindowText(sTemp);
 	}
 	else
 	{
-		if (m_path.IsUrl())
-			SetWindowText(m_sTitle + _T(" - ") + m_path.GetUIPathString());
-		else if (m_path.IsEmpty())
+		if (m_orgPath.IsUrl())
+			SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetUIPathString());
+		else if (m_orgPath.IsEmpty())
 			SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
-		else if (m_path.IsDirectory())
-			SetWindowText(m_sTitle + _T(" - ") + m_path.GetWinPathString());
+		else if (m_orgPath.IsDirectory())
+			SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetWinPathString());
 		else
-			SetWindowText(m_sTitle + _T(" - ") + m_path.GetFilename());
+			SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetFilename());
 	}
 }
 
@@ -1889,7 +1890,7 @@ void CLogDlg::OnBnClickedStatbutton()
 	dlg.m_parAuthors = &m_arAuthorsFiltered;
 	dlg.m_parDates = &m_arDatesFiltered;
 	dlg.m_parFileChanges = &m_arFileChangesFiltered;
-	dlg.m_path = m_path;
+	dlg.m_path = m_orgPath;
 	dlg.DoModal();
 	// restore the previous sorting
 	SortByColumn(m_nSortColumn, m_bAscending);

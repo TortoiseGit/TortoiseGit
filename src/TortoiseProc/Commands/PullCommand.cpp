@@ -95,7 +95,7 @@ bool PullCommand::Execute()
 			CLogDlg dlg;
 			
 			//dlg.SetParams(cmdLinePath);
-			dlg.SetParams(CTGitPath(_T("")),_T(""), hashOld, hashNew, 0);
+			dlg.SetParams(CTGitPath(_T("")),CTGitPath(_T("")),_T(""), hashOld, hashNew, 0);
 			//	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
 			//	val = parser.GetVal(_T("propspath"));
 			//	if (!val.IsEmpty())

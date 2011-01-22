@@ -68,7 +68,7 @@ bool LogCommand::Execute()
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	//dlg.SetParams(cmdLinePath);
-	dlg.SetParams(cmdLinePath, pegrev, revstart, revend, limit);
+	dlg.SetParams(orgCmdLinePath, cmdLinePath, pegrev, revstart, revend, limit);
 //	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
 //	val = parser.GetVal(_T("propspath"));
 //	if (!val.IsEmpty())
