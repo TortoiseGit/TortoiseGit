@@ -62,16 +62,15 @@ BOOL ProjectProperties::GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR)
 	CString cmd,output;
 	output.Empty();
 
-	cmd.Format(_T("git.exe config %s"),key);
+	output = g_Git.GetConfigValue(key,CP_UTF8,NULL, bRemoveCR);
+	
 	int start = 0;
-	if(g_Git.Run(cmd,&output,CP_ACP))
+	if(output.IsEmpty())
 	{
 		return FALSE;
 	}
-	if(bRemoveCR)
-		prop = output.Tokenize(_T("\n"),start);	
-	else
-		prop = output;
+	
+	prop = output;
 
 	return TRUE;
 

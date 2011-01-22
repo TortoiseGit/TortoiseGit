@@ -325,7 +325,7 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath)
+CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL RemoveCR)
 {
 	CString configValue;
 	int start = 0;
@@ -354,7 +354,9 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath)
 		else
 		{
 			g_Git.StringAppend(&configValue,(BYTE*)value.GetBuffer(),encoding);
-			return configValue.Tokenize(_T("\n"),start);
+			if(RemoveCR)
+				return configValue.Tokenize(_T("\n"),start);
+			return configValue;
 		}
 
 	}else
@@ -362,7 +364,9 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath)
 		CString cmd;
 		cmd.Format(L"git.exe config %s", name);
 		Run(cmd,&configValue,encoding);
-		return configValue.Tokenize(_T("\n"),start);
+		if(RemoveCR)
+			return configValue.Tokenize(_T("\n"),start);
+		return configValue;
 	}
 }
 

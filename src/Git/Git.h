@@ -114,7 +114,7 @@ public:
 	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(CString &from, CString &to);
-	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL);
+	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL,BOOL RemoveCR=TRUE);
 	
 	int SetConfigValue(CString key, CString value, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
 
