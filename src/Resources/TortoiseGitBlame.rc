@@ -290,6 +290,7 @@ BEGIN
                 MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
             END
         END
+        MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
     END
     POPUP "&Help"
     BEGIN
