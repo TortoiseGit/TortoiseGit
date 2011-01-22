@@ -2474,7 +2474,7 @@ void CLogDlg::UpdateLogInfoLabel()
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\n"), 
+	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"), 
 		count - start,
 		rev2.ToString().Left(6), rev1.ToString().Left(6), selectedrevs);
 
