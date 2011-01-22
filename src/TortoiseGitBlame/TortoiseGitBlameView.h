@@ -109,6 +109,7 @@ protected:
     afx_msg LRESULT OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam);
 	afx_msg void OnViewNext();
 	afx_msg void OnViewPrev();
+	afx_msg void OnViewToggleAuthor();
 	afx_msg void CopyHashToClipboard();
 	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
