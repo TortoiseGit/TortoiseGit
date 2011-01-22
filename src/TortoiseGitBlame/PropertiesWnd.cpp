@@ -239,6 +239,7 @@ void CPropertiesWnd::InitPropList()
 	m_BaseInfoGroup=pGroup1;
 
 	m_ParentGroup=new CMFCPropertyGridProperty(_T("Parent"));
+	m_ParentGroup->AllowEdit(FALSE);
 
 	m_wndPropList.AddProperty(m_ParentGroup);
 #if 0
