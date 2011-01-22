@@ -21,7 +21,7 @@
  * Starting TortoiseGitBlame might fail to start if folder contains spaces
 
  * TortoiseGitBlame
-   Fixed issue #448: Do not hide only one item in the help menu in TortoiseGitBlame
+   Fixed issue #448: Disable personalized menu behaviour
    After blaming an older revision, TortoiseGitBlame was fixed to this.
 
 = Release 1.6.3.0 =
