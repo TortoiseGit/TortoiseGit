@@ -121,7 +121,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_bShowLine=true;
 
-	m_bShowAuthor=true;
+	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
 	m_bShowDate=false;
 
     m_FindDialogMessage   =   ::RegisterWindowMessage(FINDMSGSTRING);   
@@ -2875,6 +2875,8 @@ void CTortoiseGitBlameView::OnViewPrev()
 void CTortoiseGitBlameView::OnViewToggleAuthor()
 {
 	m_bShowAuthor = ! m_bShowAuthor;
+
+	theApp.WriteInt(_T("ShowAuthor"), m_bShowAuthor);
 
 	UINT uCheck = MF_BYCOMMAND;
 	uCheck |= m_bShowAuthor ? MF_CHECKED : MF_UNCHECKED;
