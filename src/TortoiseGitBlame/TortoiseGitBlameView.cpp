@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
 	ON_COMMAND(ID_VIEW_SHOWAUTHOR, OnViewToggleAuthor)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
@@ -2878,15 +2879,16 @@ void CTortoiseGitBlameView::OnViewToggleAuthor()
 
 	theApp.WriteInt(_T("ShowAuthor"), m_bShowAuthor);
 
-	UINT uCheck = MF_BYCOMMAND;
-	uCheck |= m_bShowAuthor ? MF_CHECKED : MF_UNCHECKED;
-	CheckMenuItem(GetMenu()->m_hMenu, ID_VIEW_SHOWAUTHOR, uCheck);
-
 	CRect rect;
 	this->GetClientRect(&rect);
 	rect.left=GetBlameWidth();
 
 	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleAuthor(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowAuthor);
 }
 
 int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
