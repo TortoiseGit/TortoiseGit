@@ -2325,6 +2325,22 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenu(MF_SEPARATOR);
 			}
 
+			if (GetSelectedCount() > 0)
+			{
+				if (wcStatus & CTGitPath::LOGACTIONS_UNVER)
+					if (m_dwContextMenus & SVNSLC_POPADD)
+					{
+						//if ( entry->IsFolder() )
+						//{
+						//	popup.AppendMenuIcon(IDSVNLC_ADD_RECURSIVE, IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE, IDI_ADD);
+						//}
+						//else
+						{
+							popup.AppendMenuIcon(IDSVNLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
+						}
+					}
+			}			
+
 			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
 			{
 				if ( (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE) && GetSelectedCount()>0)
@@ -2518,18 +2534,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //				}
 				if ((wcStatus & CTGitPath::LOGACTIONS_UNVER)/*||(wcStatus == git_wc_status_deleted)*/)
 				{
-					if (m_dwContextMenus & SVNSLC_POPADD)
-					{
-						//if ( entry->IsFolder() )
-						//{
-						//	popup.AppendMenuIcon(IDSVNLC_ADD_RECURSIVE, IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE, IDI_ADD);
-						//}
-						//else
-						{
-							popup.AppendMenuIcon(IDSVNLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
-						}
-					}
-
 					if (m_dwContextMenus & SVNSLC_POPDELETE)
 					{
 						popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
