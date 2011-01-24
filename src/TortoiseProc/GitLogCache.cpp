@@ -106,7 +106,7 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 
 	header.m_Magic=LOG_DATA_ITEM_MAGIC;
 	header.m_Version=LOG_INDEX_VERSION;
-	header.m_FileCount=Rev.m_Files.GetCount();
+	header.m_FileCount=Rev.GetFiles().GetCount();
 
 	m_DataFile.Write(&header,sizeof(SLogCacheRevItemHeader));
 	
@@ -121,9 +121,9 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 	ar<<Rev.GetSubject();
 	ar<<Rev.GetBody();
 	ar<<Rev.m_CommitHash;
-	ar<<Rev.m_Action;
+	ar<<Rev.GetAction();
 
-	for(int i=0;i<Rev.m_Files.GetCount();i++)
+	for(int i=0;i<Rev.GetFiles().GetCount();i++)
 	{
 		SLogCacheRevFileHeader header;
 		header.m_Magic=LOG_DATA_FILE_MAGIC;
@@ -131,13 +131,13 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 
 		ar<<header.m_Magic;
 		ar<<header.m_Version;
-		ar<<Rev.m_Files[i].GetGitPathString();
-		ar<<Rev.m_Files[i].GetGitOldPathString();
-		ar<<Rev.m_Files[i].m_Action;
-		ar<<Rev.m_Files[i].m_Stage;
-		ar<<Rev.m_Files[i].m_StatAdd;
-		ar<<Rev.m_Files[i].m_StatDel;
-		ar<<Rev.m_Files[i].m_ParentNo;
+		ar<<Rev.GetFiles()[i].GetGitPathString();
+		ar<<Rev.GetFiles()[i].GetGitOldPathString();
+		ar<<Rev.GetFiles()[i].m_Action;
+		ar<<Rev.GetFiles()[i].m_Stage;
+		ar<<Rev.GetFiles()[i].m_StatAdd;
+		ar<<Rev.GetFiles()[i].m_StatDel;
+		ar<<Rev.GetFiles()[i].m_ParentNo;
 		
 	}
 	return 0;
@@ -175,9 +175,9 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 	ar>>Rev.GetSubject();
 	ar>>Rev.GetBody();
 	ar>>Rev.m_CommitHash;
-	ar>>Rev.m_Action;
+	ar>>Rev.GetAction();
 
-	Rev.m_Files.Clear();
+	Rev.GetFiles().Clear();
 
 	for(int i=0;i<header.m_FileCount;i++)
 	{
@@ -201,7 +201,7 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		ar>>path.m_StatDel;
 		ar>>path.m_ParentNo;
 		
-		Rev.m_Files.AddPath(path);
+		Rev.GetFiles().AddPath(path);
 	}
 	return 0;
 }

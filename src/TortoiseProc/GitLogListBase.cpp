@@ -391,9 +391,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 		}
 		else
 		{
-			if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+			if(pLogEntry->GetAction()&CTGitPath::LOGACTIONS_REBASE_SQUASH)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
-			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+			else if(pLogEntry->GetAction()&CTGitPath::LOGACTIONS_REBASE_EDIT)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
 		}
 
@@ -431,9 +431,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 			//if (pLogEntry->bCopiedSelf)
 			//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
 			//else
-			if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+			if(pLogEntry->GetAction()&CTGitPath::LOGACTIONS_REBASE_SQUASH)
 				brush = ::CreateSolidBrush(RGB(156,156,156));
-			else if(pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+			else if(pLogEntry->GetAction()&CTGitPath::LOGACTIONS_REBASE_EDIT)
 				brush = ::CreateSolidBrush(RGB(200,200,128));
 			else
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
@@ -1006,17 +1006,17 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (data->bCopies)
 						crText = m_Colors.GetColor(CColors::Modified);
 #endif
-					if (data->m_Action& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) ) 
+					if (data->GetAction()& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) ) 
 						crText = RGB(128,128,128);
 
-					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+					if(data->GetAction()&CTGitPath::LOGACTIONS_REBASE_SQUASH)
 						pLVCD->clrTextBk = RGB(156,156,156);
-					else if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_EDIT)
+					else if(data->GetAction()&CTGitPath::LOGACTIONS_REBASE_EDIT)
 						pLVCD->clrTextBk  = RGB(200,200,128);
 					else
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
-					if(data->m_Action&CTGitPath::LOGACTIONS_REBASE_CURRENT)
+					if(data->GetAction()&CTGitPath::LOGACTIONS_REBASE_CURRENT)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
@@ -1134,19 +1134,19 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 				
 				// Draw the icon(s) into the compatible DC
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_MODIFIED)
+				if (pLogEntry->GetAction() & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY) )
+				if (pLogEntry->GetAction() & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY) )
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+				if (pLogEntry->GetAction() & CTGitPath::LOGACTIONS_DELETED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 
-				if (pLogEntry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				if (pLogEntry->GetAction() & CTGitPath::LOGACTIONS_REPLACED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
 				*pResult = CDRF_SKIPDEFAULT;
@@ -1207,7 +1207,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			if(this->m_IsRebaseReplaceGraph)
 			{	
 				CTGitPath path;
-				path.m_Action=pLogEntry->m_Action&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+				path.m_Action=pLogEntry->GetAction()&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
 				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
 			}
 		}
@@ -1773,12 +1773,12 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 
 			if(!HashOnly)
 			{
-				//pLogEntry->m_Files
+				//pLogEntry->GetFiles()
 				//LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
 			
-				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->m_Files.GetCount(); ++cpPathIndex)
+				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->GetFiles().GetCount(); ++cpPathIndex)
 				{
-					sPaths += ((CTGitPath&)pLogEntry->m_Files[cpPathIndex]).GetActionName() + _T(" : ") + pLogEntry->m_Files[cpPathIndex].GetGitPathString();
+					sPaths += ((CTGitPath&)pLogEntry->GetFiles()[cpPathIndex]).GetActionName() + _T(" : ") + pLogEntry->GetFiles()[cpPathIndex].GetGitPathString();
 					sPaths += _T("\r\n");
 				}
 				sPaths.Trim();
@@ -2087,7 +2087,7 @@ int CGitLogListBase::FetchLogAsync(void * data)
 	m_bExitThread=FALSE;
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	m_LoadingThread = AfxBeginThread(LogThreadEntry, this);
+	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, IDLE_PRIORITY_CLASS);
 	if (m_LoadingThread ==NULL)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
@@ -2144,6 +2144,7 @@ UINT CGitLogListBase::LogThread()
 	}
 	TRACE(_T("\n===Begin===\n"));
 	//Update work copy item;
+
 	if( m_logEntries.size() > 0)
 	{
 		GitRev *pRev = &m_logEntries.GetGitRevAt(0);
@@ -2152,39 +2153,51 @@ UINT CGitLogListBase::LogThread()
 
 		if( pRev->m_CommitHash.IsEmpty() )
 		{
-			pRev->m_Files.Clear();
+			pRev->GetFiles().Clear();
 			pRev->m_ParentHash.clear();
 			pRev->m_ParentHash.push_back(m_HeadHash);
 			if(g_Git.IsInitRepos())
 			{
-				g_Git.GetInitAddList(pRev->m_Files);
+				g_Git.GetInitAddList(pRev->GetFiles());
 
 			}else
 			{
-				//g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->m_Files);
+				//g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles());
 			}			
-			pRev->m_Action =0;
+			pRev->GetAction() =0;
 		
-			for(int j=0;j< pRev->m_Files.GetCount();j++)
-			pRev->m_Action |= pRev->m_Files[j].m_Action;
+			for(int j=0;j< pRev->GetFiles().GetCount();j++)
+			pRev->GetAction() |= pRev->GetFiles()[j].m_Action;
 			
-			pRev->GetBody().Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).m_Files.GetCount());
+			pRev->GetBody().Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).GetFiles().GetCount());
 			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 		}
 	}
+
 
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 	if(!g_Git.IsInitRepos())
 	{
+		g_Git.m_critGitDllSec.Lock();
 		git_get_log_firstcommit(m_DllGitLog);
 		int total = git_get_log_estimate_commit_count(m_DllGitLog);
+		g_Git.m_critGitDllSec.Unlock();
+
 		GIT_COMMIT commit;
 		t2=t1=GetTickCount();
 		int oldprecentage = 0;
 		int oldsize=m_logEntries.size();
-		while( git_get_log_nextcommit(this->m_DllGitLog,&commit) == 0)
+		int ret=0;
+		while( ret== 0)
 		{
+			g_Git.m_critGitDllSec.Lock();
+			ret=git_get_log_nextcommit(this->m_DllGitLog,&commit);
+			g_Git.m_critGitDllSec.Unlock();
+
+			if(ret)
+				break;
+
 			//printf("%s\r\n",commit.GetSubject());
 			if(m_bExitThread)
 				break;
@@ -2196,7 +2209,10 @@ UINT CGitLogListBase::LogThread()
 			InterlockedExchange(&pRev->m_IsCommitParsed, FALSE);
 
 			char *note=NULL;
+			g_Git.m_critGitDllSec.Lock();
 			git_get_notes(commit.m_hash,&note);
+			g_Git.m_critGitDllSec.Unlock();
+
 			if(note)
 			{
 				pRev->m_Notes.Empty();
@@ -2238,7 +2254,9 @@ UINT CGitLogListBase::LogThread()
 				t1 = t2;
 			}		
 		}
+		g_Git.m_critGitDllSec.Lock();
 		git_close_log(m_DllGitLog);
+		g_Git.m_critGitDllSec.Unlock();
 
 	}
 	//Update UI;
@@ -2337,7 +2355,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
 			{
-				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).m_Files;
+				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).GetFiles();
 
 				bool bGoing = true;
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
@@ -2419,7 +2437,7 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 			}
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
 			{
-				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).m_Files;
+				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).GetFiles();
 
 				bool bGoing = true;
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
@@ -2671,11 +2689,11 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=pLogEntry->GetSubject();
 			str+=_T("\n");
 
-			for(int i=0;i<pLogEntry->m_Files.GetCount();i++)
+			for(int i=0;i<pLogEntry->GetFiles().GetCount();i++)
 			{
-				str+=pLogEntry->m_Files[i].GetWinPath();
+				str+=pLogEntry->GetFiles()[i].GetWinPath();
 				str+=_T("\n");
-				str+=pLogEntry->m_Files[i].GetGitOldPathString();
+				str+=pLogEntry->GetFiles()[i].GetGitOldPathString();
 				str+=_T("\n");
 			}
 

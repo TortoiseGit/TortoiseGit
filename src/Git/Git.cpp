@@ -631,10 +631,10 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 	param+=hash;
 
 	if(paramonly)
-		cmd.Format(_T("%s -z --topo-order %s --parents "),
+		cmd.Format(_T("%s -z  %s --parents "),
 				num,param);
 	else
-		cmd.Format(_T("git.exe log %s -z --topo-order %s --parents --pretty=format:\""),
+		cmd.Format(_T("git.exe log %s -z  %s --parents --pretty=format:\""),
 				num,param);
 
 	BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));

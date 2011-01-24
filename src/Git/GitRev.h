@@ -4,6 +4,7 @@
 #include "AtlTime.h"
 #include "GitHash.h"
 #include "GitDll.h"
+#include "git.h"
 
 typedef std::vector<CGitHash> GIT_REV_LIST;
 
@@ -22,6 +23,7 @@ typedef std::vector<CGitHash> GIT_REV_LIST;
 #define LOG_REV_ITEM_END		_T('C')
 
 class CGit;
+extern CGit g_Git;
 
 class GitRev
 {
@@ -36,8 +38,36 @@ protected:
 	CString m_Subject;
 	CString m_Body;
 
+	CTGitPathList m_Files;
+	int	m_Action;
+
 public:
 	GitRev(void);
+
+	void CheckAndDiff()
+	{
+		if(!m_IsDiffFiles && !m_CommitHash.IsEmpty())
+		{
+			SafeFetchFullInfo(&g_Git);
+			InterlockedExchange(&m_IsDiffFiles, TRUE);
+			if(m_IsDiffFiles && m_IsCommitParsed)
+				InterlockedExchange(&m_IsFull, TRUE);
+		}
+	}
+	int & GetAction()
+	{
+		CheckAndParser();
+		CheckAndDiff();
+		return m_Action;
+	}
+
+	CTGitPathList & GetFiles()
+	{
+		CheckAndParser();
+		CheckAndDiff();
+		return m_Files;
+	}
+
 //	GitRev(GitRev &rev);
 //	GitRev &operator=(GitRev &rev);
 	void CheckAndParser()
@@ -47,6 +77,8 @@ public:
 			ParserFromCommit(&m_GitCommit);
 			InterlockedExchange(&m_IsCommitParsed, TRUE);
 			git_free_commit(&m_GitCommit);
+			if(m_IsDiffFiles && m_IsCommitParsed)
+				InterlockedExchange(&m_IsFull, TRUE);
 		}
 	}
 	
@@ -121,8 +153,7 @@ public:
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
 
-	CTGitPathList m_Files;
-	int	m_Action;
+
 	TCHAR m_Mark;
 	CString m_Ref;
 	CString m_RefAction;
@@ -140,6 +171,7 @@ public:
 	volatile LONG m_IsFull;
 	volatile LONG m_IsUpdateing;
 	volatile LONG m_IsCommitParsed;
+	volatile LONG m_IsDiffFiles;
 	
 	int SafeFetchFullInfo(CGit *git);
 
