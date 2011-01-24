@@ -119,7 +119,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	if(hash1 == GIT_REV_ZERO)
 	{
 		m_rev1.m_CommitHash.Empty();
-		m_rev1.m_Subject=_T("Working Copy");
+		m_rev1.GetSubject()=_T("Working Copy");
 	}else
 	{
 		m_rev1.GetCommit(hash1);
@@ -130,7 +130,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	if(hash2 == GIT_REV_ZERO)
 	{
 		m_rev2.m_CommitHash.Empty();
-		m_rev2.m_Subject=_T("Working Copy");
+		m_rev2.GetSubject()=_T("Working Copy");
 	}else
 	{
 		m_rev2.GetCommit(hash2);
@@ -145,7 +145,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 	}
 	m_rev1 = rev1;
 	m_rev2.m_CommitHash.Empty();
-	m_rev2.m_Subject = _T("Previou Version");
+	m_rev2.GetSubject() = _T("Previou Version");
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
 	
@@ -978,25 +978,25 @@ void CFileDiffDlg::SetURLLabels(int mask)
 
 	if(mask &0x1)
 	{
-		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.m_Subject);
+		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.GetSubject());
 		m_tooltips.AddTool(IDC_FIRSTURL,  
-			CAppUtils::FormatDateAndTime( m_rev1.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev1.m_AuthorName);
+			CAppUtils::FormatDateAndTime( m_rev1.GetAuthorDate(), DATE_SHORTDATE, false )+_T("  ")+m_rev1.GetAuthorName());
 	
 	}
 
 	if(mask &0x2)
 	{
-		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.m_Subject);
+		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.GetSubject());
 
 		m_tooltips.AddTool(IDC_SECONDURL, 
-			CAppUtils::FormatDateAndTime( m_rev2.m_AuthorDate, DATE_SHORTDATE, false )+_T("  ")+m_rev2.m_AuthorName);
+			CAppUtils::FormatDateAndTime( m_rev2.GetAuthorDate(), DATE_SHORTDATE, false )+_T("  ")+m_rev2.GetAuthorName());
 	}
 
 	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base)"));
 	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1"));
 
 	if( (mask&0x3) == 0x3)
-		if(m_rev2.m_CommitterDate > m_rev1.m_CommitterDate)
+		if(m_rev2.GetCommitterDate() > m_rev1.GetCommitterDate())
 		{
 			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base) (Commit Date New)"));
 		}else

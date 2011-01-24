@@ -19,6 +19,10 @@ GitRev::GitRev(void)
 	m_Action=0;
 	m_IsFull = 0;
 	m_IsUpdateing = 0;
+	m_IsCommitParsed = 0;
+
+	memset(&this->m_GitCommit,0,sizeof(GIT_COMMIT));
+
 	// fetch local machine timezone info
 	if ( GetTimeZoneInformation( &m_TimeZone ) == TIME_ZONE_ID_INVALID )
 	{

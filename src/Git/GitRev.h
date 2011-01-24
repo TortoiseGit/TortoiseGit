@@ -25,12 +25,84 @@ class CGit;
 
 class GitRev
 {
+
+protected:
+	CString m_AuthorName;
+	CString m_AuthorEmail;
+	CTime	m_AuthorDate;
+	CString m_CommitterName;
+	CString m_CommitterEmail;
+	CTime   m_CommitterDate;
+	CString m_Subject;
+	CString m_Body;
+
 public:
 	GitRev(void);
 //	GitRev(GitRev &rev);
 //	GitRev &operator=(GitRev &rev);
+	void CheckAndParser()
+	{
+		if(!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
+		{
+			ParserFromCommit(&m_GitCommit);
+			InterlockedExchange(&m_IsCommitParsed, TRUE);
+			git_free_commit(&m_GitCommit);
+		}
+	}
+	
+	CString & GetAuthorName()
+	{
+		CheckAndParser();
+		return m_AuthorName;
+	}
+
+	CString & GetAuthorEmail()
+	{
+		CheckAndParser();
+		return m_AuthorEmail;
+	}
+
+	CTime & GetAuthorDate()
+	{
+		CheckAndParser();
+		return m_AuthorDate;
+	}
+
+	CString & GetCommitterName()
+	{
+		CheckAndParser();
+		return m_CommitterName;
+	}
+
+	CString &GetCommitterEmail()
+	{
+		CheckAndParser();
+		return m_CommitterEmail;
+	}
+
+	CTime &GetCommitterDate()
+	{
+		CheckAndParser();
+		return m_CommitterDate;
+	}
+	
+	CString & GetSubject()
+	{
+		CheckAndParser();
+		return m_Subject;
+	}
+
+	CString & GetBody()
+	{
+		CheckAndParser();
+		return m_Body;
+	}
+
+
 	~GitRev(void);
 	
+	GIT_COMMIT m_GitCommit;
+
 	enum
 	{
 		REV_HEAD = -1,			///< head revision
@@ -46,16 +118,9 @@ public:
 	
 	CString m_Notes;
 
-	CString m_AuthorName;
-	CString m_AuthorEmail;
-	CTime	m_AuthorDate;
-	CString m_CommitterName;
-	CString m_CommitterEmail;
-	CTime m_CommitterDate;
-	CString m_Subject;
-	CString m_Body;
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
+
 	CTGitPathList m_Files;
 	int	m_Action;
 	TCHAR m_Mark;
@@ -74,6 +139,7 @@ public:
 
 	volatile LONG m_IsFull;
 	volatile LONG m_IsUpdateing;
+	volatile LONG m_IsCommitParsed;
 	
 	int SafeFetchFullInfo(CGit *git);
 

@@ -112,14 +112,14 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 	
 	CArchive ar(&m_DataFile, CArchive::store);
 
-	ar<<Rev.m_AuthorName;
-	ar<<Rev.m_AuthorEmail;
-	ar<<Rev.m_AuthorDate;
-	ar<<Rev.m_CommitterName;
-	ar<<Rev.m_CommitterEmail;
-	ar<<Rev.m_CommitterDate;
-	ar<<Rev.m_Subject;
-	ar<<Rev.m_Body;
+	ar<<Rev.GetAuthorName();
+	ar<<Rev.GetAuthorEmail();
+	ar<<Rev.GetAuthorDate();
+	ar<<Rev.GetCommitterName();
+	ar<<Rev.GetCommitterEmail();
+	ar<<Rev.GetCommitterDate();
+	ar<<Rev.GetSubject();
+	ar<<Rev.GetBody();
 	ar<<Rev.m_CommitHash;
 	ar<<Rev.m_Action;
 
@@ -166,14 +166,14 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 
 	CArchive ar(&m_DataFile, CArchive::load);
 
-	ar>>Rev.m_AuthorName;
-	ar>>Rev.m_AuthorEmail;
-	ar>>Rev.m_AuthorDate;
-	ar>>Rev.m_CommitterName;
-	ar>>Rev.m_CommitterEmail;
-	ar>>Rev.m_CommitterDate;
-	ar>>Rev.m_Subject;
-	ar>>Rev.m_Body;
+	ar>>Rev.GetAuthorName();
+	ar>>Rev.GetAuthorEmail();
+	ar>>Rev.GetAuthorDate();
+	ar>>Rev.GetCommitterName();
+	ar>>Rev.GetCommitterEmail();
+	ar>>Rev.GetCommitterDate();
+	ar>>Rev.GetSubject();
+	ar>>Rev.GetBody();
 	ar>>Rev.m_CommitHash;
 	ar>>Rev.m_Action;
 

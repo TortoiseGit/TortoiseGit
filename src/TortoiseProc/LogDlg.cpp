@@ -596,7 +596,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 			
 			CString msg=_T("* ");
-			msg+=pLogEntry->m_Subject;
+			msg+=pLogEntry->GetSubject();
 			pMsgView->ReplaceSel(msg);
 
 			pMsgView->SetSel(-1,-1);
@@ -604,7 +604,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 			
 			msg=_T("\n\n");
-			msg+=pLogEntry->m_Body;
+			msg+=pLogEntry->GetBody();
 
 			if(!pLogEntry->m_Notes.IsEmpty())
 			{
@@ -1870,13 +1870,13 @@ void CLogDlg::OnBnClickedStatbutton()
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.GetAt(i));
-		CString strAuthor = pLogEntry->m_AuthorName;
+		CString strAuthor = pLogEntry->GetAuthorName();
 		if ( strAuthor.IsEmpty() )
 		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
 		m_arAuthorsFiltered.Add(strAuthor);
-		m_arDatesFiltered.Add(pLogEntry->m_AuthorDate.GetTime());
+		m_arDatesFiltered.Add(pLogEntry->GetAuthorDate().GetTime());
 		m_arFileChangesFiltered.Add(pLogEntry->m_Files.GetCount());
 	}
 
