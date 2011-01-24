@@ -941,6 +941,13 @@ struct ssh_tag {
      * Fully qualified host name, which we need if doing GSSAPI.
      */
     char *fullhostname;
+
+#ifndef NO_GSSAPI
+    /*
+     * GSSAPI libraries for this session.
+     */
+    struct ssh_gss_liblist *gsslibs;
+#endif
 };
 
 #define logevent(s) logevent(ssh->frontend, s)
@@ -2855,6 +2862,7 @@ static int ssh_do_close(Ssh ssh, int notify_exit)
 		x11_close(c->u.x11.s);
 		break;
 	      case CHAN_SOCKDATA:
+	      case CHAN_SOCKDATA_DORMANT:
 		pfd_close(c->u.pfd.s);
 		break;
 	    }
@@ -7187,12 +7195,14 @@ static void ssh2_msg_channel_open(Ssh ssh, struct Packet *pktin)
 }
 
 /*
- * Buffer banner messages for later display at some convenient point.
+ * Buffer banner messages for later display at some convenient point,
+ * if we're going to display them.
  */
 static void ssh2_msg_userauth_banner(Ssh ssh, struct Packet *pktin)
 {
     /* Arbitrary limit to prevent unbounded inflation of buffer */
-    if (bufchain_size(&ssh->banner) <= 131072) {
+    if (ssh->cfg.ssh_show_banner &&
+	bufchain_size(&ssh->banner) <= 131072) {
 	char *banner = NULL;
 	int size = 0;
 	ssh_pkt_getstring(pktin, &banner, &size);
@@ -7645,11 +7655,12 @@ static void do_ssh2_authconn(Ssh ssh, unsigned char *in, int inlen,
 		    in_commasep_string("password", methods, methlen);
 		s->can_keyb_inter = ssh->cfg.try_ki_auth &&
 		    in_commasep_string("keyboard-interactive", methods, methlen);
-#ifndef NO_GSSAPI		
-		ssh_gss_init();
+#ifndef NO_GSSAPI
+		if (!ssh->gsslibs)
+		    ssh->gsslibs = ssh_gss_setup(&ssh->cfg);
 		s->can_gssapi = ssh->cfg.try_gssapi_auth &&
 		    in_commasep_string("gssapi-with-mic", methods, methlen) &&
-		    n_ssh_gss_libraries > 0;
+		    ssh->gsslibs->nlibraries > 0;
 #endif
 	    }
 
@@ -8001,9 +8012,9 @@ static void do_ssh2_authconn(Ssh ssh, unsigned char *in, int inlen,
 		    s->gsslib = NULL;
 		    for (i = 0; i < ngsslibs; i++) {
 			int want_id = ssh->cfg.ssh_gsslist[i];
-			for (j = 0; j < n_ssh_gss_libraries; j++)
-			    if (ssh_gss_libraries[j].id == want_id) {
-				s->gsslib = &ssh_gss_libraries[j];
+			for (j = 0; j < ssh->gsslibs->nlibraries; j++)
+			    if (ssh->gsslibs->libraries[j].id == want_id) {
+				s->gsslib = &ssh->gsslibs->libraries[j];
 				goto got_gsslib;   /* double break */
 			    }
 		    }
@@ -9283,6 +9294,10 @@ static const char *ssh_init(void *frontend_handle, void **backend_handle,
     ssh->max_data_size = parse_blocksize(ssh->cfg.ssh_rekey_data);
     ssh->kex_in_progress = FALSE;
 
+#ifndef NO_GSSAPI
+    ssh->gsslibs = NULL;
+#endif
+
     p = connect_to_host(ssh, host, port, realhost, nodelay, keepalive);
     if (p != NULL)
 	return p;
@@ -9343,6 +9358,7 @@ static void ssh_free(void *handle)
 		    x11_close(c->u.x11.s);
 		break;
 	      case CHAN_SOCKDATA:
+	      case CHAN_SOCKDATA_DORMANT:
 		if (c->u.pfd.s != NULL)
 		    pfd_close(c->u.pfd.s);
 		break;
@@ -9379,6 +9395,10 @@ static void ssh_free(void *handle)
     if (ssh->pinger)
 	pinger_free(ssh->pinger);
     bufchain_clear(&ssh->queued_incoming_data);
+#ifndef NO_GSSAPI
+    if (ssh->gsslibs)
+	ssh_gss_cleanup(ssh->gsslibs);
+#endif
     sfree(ssh);
 
     random_unref();
