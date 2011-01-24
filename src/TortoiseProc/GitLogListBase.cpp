@@ -2087,7 +2087,7 @@ int CGitLogListBase::FetchLogAsync(void * data)
 	m_bExitThread=FALSE;
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, IDLE_PRIORITY_CLASS);
+	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
 	if (m_LoadingThread ==NULL)
 	{
 		InterlockedExchange(&m_bThreadRunning, FALSE);
