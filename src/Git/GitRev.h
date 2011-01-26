@@ -24,6 +24,9 @@ typedef std::vector<CGitHash> GIT_REV_LIST;
 
 class CGit;
 extern CGit g_Git;
+class GitRev;
+
+typedef int CALL_UPDATE_DIFF_ASYNC(GitRev *pRev, void *data);
 
 class GitRev
 {
@@ -44,6 +47,7 @@ protected:
 public:
 	GitRev(void);
 
+	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
 	void CheckAndDiff()
 	{
 		if(!m_IsDiffFiles && !m_CommitHash.IsEmpty())
@@ -54,17 +58,24 @@ public:
 				InterlockedExchange(&m_IsFull, TRUE);
 		}
 	}
-	int & GetAction()
+	
+	int & GetAction(void * data)
 	{
 		CheckAndParser();
-		CheckAndDiff();
+		if(!m_IsDiffFiles && m_CallDiffAsync)
+			m_CallDiffAsync(this, data);
+		else
+			CheckAndDiff();
 		return m_Action;
 	}
 
-	CTGitPathList & GetFiles()
+	CTGitPathList & GetFiles(void * data)
 	{
 		CheckAndParser();
-		CheckAndDiff();
+		if(!m_IsDiffFiles && m_CallDiffAsync)
+			m_CallDiffAsync(this, data);
+		else
+			CheckAndDiff();
 		return m_Files;
 	}
 

@@ -22,6 +22,7 @@ GitRev::GitRev(void)
 	m_IsUpdateing = 0;
 	m_IsCommitParsed = 0;
 	m_IsDiffFiles = 0;
+	m_CallDiffAsync = NULL;
 
 	memset(&this->m_GitCommit,0,sizeof(GIT_COMMIT));
 

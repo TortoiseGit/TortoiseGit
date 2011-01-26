@@ -629,23 +629,23 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
-			for(int i=0;i<pLogEntry->GetFiles().GetCount() && (!matchpath.IsEmpty());i++)
+			for(int i=0;i<pLogEntry->GetFiles(&m_LogList).GetCount() && (!matchpath.IsEmpty());i++)
 			{
 				if( m_bWholeProject )
 					break;
 
-				((CTGitPath&)pLogEntry->GetFiles()[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
+				((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
 				
-				if(pLogEntry->GetFiles()[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
+				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
 				{
 					if(HidePaths==BST_CHECKED)
-						((CTGitPath&)pLogEntry->GetFiles()[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 					if(HidePaths==BST_INDETERMINATE)
-						((CTGitPath&)pLogEntry->GetFiles()[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
+						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
 
-			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles());
+			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
 
@@ -1877,7 +1877,7 @@ void CLogDlg::OnBnClickedStatbutton()
 		}
 		m_arAuthorsFiltered.Add(strAuthor);
 		m_arDatesFiltered.Add(pLogEntry->GetAuthorDate().GetTime());
-		m_arFileChangesFiltered.Add(pLogEntry->GetFiles().GetCount());
+		m_arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
 	}
 
 	CDateSorter W_Sorter;

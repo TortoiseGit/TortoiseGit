@@ -281,7 +281,7 @@ void CRebaseDlg::SetAllRebaseAction(int action)
 {
 	for(int i=0;i<this->m_CommitList.m_logEntries.size();i++)
 	{
-		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction()=action;
+		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList)=action;
 	}
 	m_CommitList.Invalidate();
 }
@@ -524,7 +524,7 @@ void CRebaseDlg::FetchLogList()
 	
 	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
 	{
-		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction() = CTGitPath::LOGACTIONS_REBASE_PICK;
+		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_PICK;
 	}
 
 	m_CommitList.Invalidate();
@@ -825,7 +825,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		}
 		m_RebaseStage=REBASE_CONTINUE;
-		curRev->GetAction()|=CTGitPath::LOGACTIONS_REBASE_DONE;
+		curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 
 	}
@@ -855,7 +855,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		AddLogString(out);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-		if( curRev->GetAction() & CTGitPath::LOGACTIONS_REBASE_EDIT)
+		if( curRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_EDIT)
 		{
 			m_RebaseStage=REBASE_EDIT;
 			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
@@ -865,7 +865,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		else
 		{
 			m_RebaseStage=REBASE_CONTINUE;
-			curRev->GetAction()|=CTGitPath::LOGACTIONS_REBASE_DONE;
+			curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 			this->UpdateCurrentStatus();
 		}
 		
@@ -910,7 +910,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		AddLogString(out);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage=REBASE_CONTINUE;
-		curRev->GetAction()|=CTGitPath::LOGACTIONS_REBASE_DONE;
+		curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
 
@@ -943,9 +943,9 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 
 		curRev=(GitRev*)m_CommitList.m_arShownList[index];
 		
-		if( curRev->GetAction()&CTGitPath::LOGACTIONS_REBASE_SQUASH )
+		if( curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SQUASH )
 			return 0;
-		if( curRev->GetAction()&CTGitPath::LOGACTIONS_REBASE_SKIP)
+		if( curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP)
 		{
 			if(m_CommitList.m_IsOldFirst)
 				index++;
@@ -954,7 +954,7 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 		}else
 			return -1;		
 
-	}while(curRev->GetAction()&CTGitPath::LOGACTIONS_REBASE_SKIP);
+	}while(curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP);
 	
 	return -1;
 
@@ -1123,9 +1123,9 @@ void CRebaseDlg::UpdateProgress()
 	for(int i=0;i<m_CommitList.m_arShownList.GetSize();i++)
 	{
 		prevRev=(GitRev*)m_CommitList.m_arShownList[i];
-		if(prevRev->GetAction() & CTGitPath::LOGACTIONS_REBASE_CURRENT)
+		if(prevRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_CURRENT)
 		{	
-			prevRev->GetAction() &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
+			prevRev->GetAction(&m_CommitList) &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
 			m_CommitList.GetItemRect(i,&rect,LVIR_BOUNDS);
 			m_CommitList.InvalidateRect(rect);
 		}
@@ -1133,7 +1133,7 @@ void CRebaseDlg::UpdateProgress()
 
 	if(curRev)
 	{
-		curRev->GetAction() |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
+		curRev->GetAction(&m_CommitList) |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
 		m_CommitList.GetItemRect(m_CurrentRebaseIndex,&rect,LVIR_BOUNDS);
 		m_CommitList.InvalidateRect(rect);
 	}
@@ -1194,12 +1194,12 @@ int CRebaseDlg::DoRebase()
 		return 0;
 
 	GitRev *pRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-	int mode=pRev->GetAction() & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+	int mode=pRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
 	CString nocommit;
 
 	if( mode== CTGitPath::LOGACTIONS_REBASE_SKIP)
 	{
-		pRev->GetAction()|= CTGitPath::LOGACTIONS_REBASE_DONE;
+		pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 		return 0;
 	}
 	
@@ -1234,7 +1234,7 @@ int CRebaseDlg::DoRebase()
 		{
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
-				pRev->GetAction()|= CTGitPath::LOGACTIONS_REBASE_DONE;
+				pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 				return 0;
 			}
 			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
@@ -1261,7 +1261,7 @@ int CRebaseDlg::DoRebase()
 		AddLogString(out);
 		if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 		{
-			pRev->GetAction()|= CTGitPath::LOGACTIONS_REBASE_DONE;
+			pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 			return 0;
 		}
 		if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
