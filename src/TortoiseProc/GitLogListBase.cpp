@@ -91,6 +91,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hFetchIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
@@ -142,8 +143,77 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bVista = (fullver >= 0x0600);
 
 	m_ColumnRegKey=_T("log");
+	
+	m_AsyncThreadExit = FALSE;
+	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
+	m_AysnDiffListLock.Init();
+
+	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
+	if (m_DiffingThread ==NULL)
+	{
+		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return;
+	}
+
 }
 
+int CGitLogListBase::AsyncDiffThread()
+{
+	while(1)
+	{
+		::WaitForSingleObject(m_AsyncDiffEvent, INFINITE);
+		if(m_AsyncThreadExit)
+			break;
+		
+		GitRev *pRev = NULL;
+		while(1)
+		{
+			if(m_AsynDiffList.size() == 0)
+				break;
+
+			if(m_AsyncThreadExit)
+				break;
+
+			m_AysnDiffListLock.Lock();
+			pRev = m_AsynDiffList.back();
+			m_AsynDiffList.pop_back();
+			m_AysnDiffListLock.Unlock();
+
+			if(!pRev->CheckAndDiff())
+			{	// fetch change file list
+				for(int i=GetTopIndex();i <= GetTopIndex()+GetCountPerPage(); i++)
+				{
+					if(i< m_arShownList.GetCount())
+					{
+						GitRev* data = (GitRev*)m_arShownList.GetAt(i);
+						if(data->m_CommitHash == pRev->m_CommitHash)
+						{
+							::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)i,0);
+							break;
+						}
+					}
+				}
+
+				if(GetSelectedCount() == 1)
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					int nItem = GetNextSelectedItem(pos);
+
+					if(nItem>=0)
+					{
+						GitRev* data = (GitRev*)m_arShownList[nItem];
+						if(data)
+							if(data->m_CommitHash == pRev->m_CommitHash)
+							{
+								this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
+							}
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
 void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
 {
 	if (exclusivelyShow) {
@@ -173,6 +243,9 @@ CGitLogListBase::~CGitLogListBase()
 	}
 
 	SafeTerminateThread();
+
+	if(m_AsyncDiffEvent)
+		CloseHandle(m_AsyncDiffEvent);
 }
 
 
@@ -1134,6 +1207,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 				
 				// Draw the icon(s) into the compatible DC
+				pLogEntry->GetAction(this);
+
+				if (!pLogEntry->m_IsDiffFiles)
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);		
+			
 				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
@@ -1979,7 +2057,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	this->m_LogCache.ClearAllParent();
 
-	m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
+	//m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
 
     CTGitPath *path;
     if(this->m_Path.IsEmpty())
@@ -2217,6 +2295,11 @@ UINT CGitLogListBase::LogThread()
 			{
 				pRev->m_Notes.Empty();
 				g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
+			}
+
+			if(!pRev->m_IsDiffFiles)
+			{
+				pRev->m_CallDiffAsync = DiffAsync;
 			}
 
 			pRev->ParserParentFromCommit(&commit);

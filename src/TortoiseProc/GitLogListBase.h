@@ -14,7 +14,6 @@
 #include "FilterEdit.h"
 #include "GitRev.h"
 #include "Tooltip.h"
-#include "HintListCtrl.h"
 //#include "GitLogList.h"
 #include "lanes.h"
 #include "GitLogCache.h"
@@ -62,6 +61,7 @@ enum LISTITEMSTATES_MINE {
 #define MSG_LOADED				(WM_USER+110)
 #define MSG_LOAD_PERCENTAGE		(WM_USER+111)
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
+#define MSG_FETCHED_DIFF		(WM_USER+113)
 
 class CGitLogListBase : public CHintListCtrl
 {
@@ -311,6 +311,29 @@ protected:
 
 	int GetHeadIndex();
 
+	std::vector<GitRev*> m_AsynDiffList;
+	CComCriticalSection m_AysnDiffListLock;
+	HANDLE	m_AsyncDiffEvent;
+	volatile LONG m_AsyncThreadExit;
+	CWinThread*			m_DiffingThread;
+
+	static int DiffAsync(GitRev *rev, void *data)
+	{
+		((CGitLogListBase*)data)->m_AysnDiffListLock.Lock();
+		((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
+		((CGitLogListBase*)data)->m_AysnDiffListLock.Unlock();
+		::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+
+		return 0;
+	}
+
+	static UINT AsyncThread(LPVOID data)
+	{
+		return ((CGitLogListBase*)data)->AsyncDiffThread();
+	}
+
+	int AsyncDiffThread();
+
 	CComCriticalSection			m_critSec;
 
 	CXPTheme			m_Theme;
@@ -320,6 +343,7 @@ protected:
 	HICON				m_hReplacedIcon;
 	HICON				m_hAddedIcon;
 	HICON				m_hDeletedIcon;
+	HICON				m_hFetchIcon;
 
 	HFONT				m_boldFont;
 

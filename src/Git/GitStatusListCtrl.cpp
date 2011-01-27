@@ -5906,7 +5906,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		CString cmd,out;
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
-			out.Format(_T("Fail checkout file %s to %s\n", filepath->GetGitPathString(), file));
+			out.Format(_T("Fail checkout file %s to %s\n"), filepath->GetGitPathString(), file);
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 			return;
 		}

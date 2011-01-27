@@ -24,6 +24,7 @@
 #include "Colors.h"
 #include "XPTheme.h"
 #include "CommonResource.h"
+#include "HintListCtrl.h"
 
 #define SVN_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
@@ -991,6 +992,9 @@ public:
 	BOOL						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert. 
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	void SetBusy(BOOL b) {m_bBusy = b; Invalidate();}
 
 private:
 	void SaveColumnWidths(bool bSaveToRegistry = false);

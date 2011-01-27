@@ -48,7 +48,7 @@ public:
 	GitRev(void);
 
 	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
-	void CheckAndDiff()
+	int CheckAndDiff()
 	{
 		if(!m_IsDiffFiles && !m_CommitHash.IsEmpty())
 		{
@@ -56,7 +56,9 @@ public:
 			InterlockedExchange(&m_IsDiffFiles, TRUE);
 			if(m_IsDiffFiles && m_IsCommitParsed)
 				InterlockedExchange(&m_IsFull, TRUE);
+			return 0;
 		}
+		return 1;
 	}
 	
 	int & GetAction(void * data)
@@ -81,7 +83,7 @@ public:
 
 //	GitRev(GitRev &rev);
 //	GitRev &operator=(GitRev &rev);
-	void CheckAndParser()
+	int CheckAndParser()
 	{
 		if(!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
 		{
@@ -90,7 +92,9 @@ public:
 			git_free_commit(&m_GitCommit);
 			if(m_IsDiffFiles && m_IsCommitParsed)
 				InterlockedExchange(&m_IsFull, TRUE);
+			return 0;
 		}
+		return 1;
 	}
 	
 	CString & GetAuthorName()

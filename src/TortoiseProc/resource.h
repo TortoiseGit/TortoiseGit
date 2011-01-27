@@ -211,6 +211,7 @@
 #define IDD_SVNIGNORE                   329
 #define IDD_CREATEREPO                  330
 #define IDD_SVNDCOMMITTYPE              331
+#define IDI_ACTIONFETCHING				332
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002

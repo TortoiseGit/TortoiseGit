@@ -144,6 +144,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST	, OnLvnColumnclick)
 	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
+	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH,OnBnClickedAllBranch)
 	
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
@@ -577,10 +578,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		}
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
 
-		if(!pLogEntry->m_IsFull)
-		{
-			pMsgView->SetWindowText(_T("load ..."));
-		}else
 		{
 			// set the log message text
 			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash.ToString()+_T("\r\n\r\n"));
@@ -629,6 +626,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
+			
 			for(int i=0;i<pLogEntry->GetFiles(&m_LogList).GetCount() && (!matchpath.IsEmpty());i++)
 			{
 				if( m_bWholeProject )
@@ -649,6 +647,13 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
 
+			m_ChangedFileListCtrl.SetBusyString(_T("Fetch Changed File..."));
+
+			if(!pLogEntry->m_IsDiffFiles)
+				m_ChangedFileListCtrl.SetBusy(TRUE);
+			else
+				m_ChangedFileListCtrl.SetBusy(FALSE);
+		
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
