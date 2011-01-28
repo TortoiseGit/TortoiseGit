@@ -2226,7 +2226,7 @@ UINT CGitLogListBase::LogThread()
 	if( m_logEntries.size() > 0)
 	{
 		GitRev *pRev = &m_logEntries.GetGitRevAt(0);
-		
+
 		m_arShownList.Add(pRev);
 
 		if( pRev->m_CommitHash.IsEmpty() )
@@ -2241,12 +2241,12 @@ UINT CGitLogListBase::LogThread()
 			}else
 			{
 				//g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
-			}			
+			}
 			pRev->GetAction(this) =0;
-		
+
 			for(int j=0;j< pRev->GetFiles(this).GetCount();j++)
-			pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
-			
+				pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
+
 			pRev->GetBody().Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).GetFiles(this).GetCount());
 			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 		}
