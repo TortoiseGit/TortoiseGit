@@ -298,9 +298,9 @@ void CGitPropertyPage::InitWorkfileView()
 		rev.GetCommit(CString(_T("HEAD")));
 		
 		SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash.ToString());
-		SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.m_Subject);
-		SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.m_AuthorName);
-		SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+		SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.GetSubject());
+		SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.GetAuthorName());
+		SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
 
 		if (filenames.size() == 1)
 		{
@@ -351,9 +351,9 @@ void CGitPropertyPage::InitWorkfileView()
 			}
 
 			SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());
-			SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.m_Subject);
-			SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.m_AuthorName);
-			SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.m_AuthorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+			SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.GetSubject());
+			SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.GetAuthorName());
+			SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
 
 		}else
 		{
