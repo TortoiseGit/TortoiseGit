@@ -603,7 +603,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			format.dwEffects = 0;
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 			
-			msg=_T("\n\n");
+			msg=_T("\n");
 			msg+=pLogEntry->m_Body;
 
 			if(!pLogEntry->m_Notes.IsEmpty())

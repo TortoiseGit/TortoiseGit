@@ -18,6 +18,7 @@
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window
  * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
+ * Fixed issue #690: Superfluous line in displayed commit message
  * Do not allow to delete-ignore working copy root-directory
  * Starting TortoiseGitBlame might fail to start if folder contains spaces
  * Fixed window titles of log and statistics window

@@ -1851,7 +1851,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	{
 		GitRev rev;
 		rev.GetCommit(CString(_T("HEAD")));
-		m_AmendStr=rev.m_Subject+_T("\n\n")+rev.m_Body;
+		m_AmendStr=rev.m_Subject+_T("\n")+rev.m_Body;
 	}
 
 	if(this->m_bCommitAmend)
