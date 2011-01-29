@@ -25,11 +25,14 @@ typedef std::vector<CGitHash> GIT_REV_LIST;
 class CGit;
 extern CGit g_Git;
 class GitRev;
+class CLogCache;
 
 typedef int CALL_UPDATE_DIFF_ASYNC(GitRev *pRev, void *data);
 
 class GitRev
 {
+public:
+	friend class CLogCache;
 
 protected:
 	CString m_AuthorName;

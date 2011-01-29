@@ -8,9 +8,10 @@
 #define LOG_INDEX_MAGIC		0x88445566
 #define LOG_DATA_MAGIC		0x99aa0FFF
 #define LOG_DATA_ITEM_MAGIC 0x0F889ACC
-#define LOG_DATA_FILE_MAGIC 0x19999CFF
-#define LOG_INDEX_VERSION   0xA
+#define LOG_DATA_FILE_MAGIC 0x19999DFF
+#define LOG_INDEX_VERSION   0xD
 
+#pragma pack (1)
 struct SLogCacheIndexHeader 
 {
 	DWORD m_Magic;
@@ -18,23 +19,44 @@ struct SLogCacheIndexHeader
 	DWORD m_ItemCount;
 };
 
-struct SLogCacheItem
+struct SLogCacheIndexItem
 {
 	CGitHash  m_Hash;
 	ULONGLONG m_Offset;
+};
+
+struct SLogCacheIndexFile
+{
+	struct SLogCacheIndexHeader m_Header;
+	struct SLogCacheIndexItem	m_Item[1]; //dynmatic size
 };
 
 struct SLogCacheRevFileHeader
 {
 	DWORD m_Magic;
 	DWORD m_Version;
+	DWORD m_Action;
+	DWORD m_Stage;
+	DWORD m_ParentNo;
+	DWORD m_Add;
+	DWORD m_Del;
+	DWORD m_FileNameSize;
+	DWORD m_OldFileNameSize;
+	TCHAR m_FileName[1];
 };
+# pragma pack ()
 
 struct SLogCacheRevItemHeader
 {
 	DWORD m_Magic;
 	DWORD m_Version;
 	DWORD m_FileCount;
+};
+
+struct SLogCacheDataFileHeader
+{
+	DWORD m_Magic;
+	DWORD m_Version;
 };
 
 class CGitHashMap:public std::map<CGitHash,GitRev>
@@ -50,48 +72,72 @@ public:
 #define DATA_FILE_NAME _T("tortoisegit.data")
 #define LOCK_FILE_NAME _T("tortoisegit.lock")
 
+
 class CLogCache
 {
+public:
+	
 protected:
-	CFile m_IndexFile;
-	CFile m_DataFile;
-	CFile m_LockFile;
+	HANDLE m_IndexFile;
+	HANDLE m_IndexFileMap;
+	SLogCacheIndexFile *m_pCacheIndex;
 
-	BOOL CheckHeader(SLogCacheIndexHeader &header)
+
+
+	HANDLE m_DataFile;
+	HANDLE m_DataFileMap;
+	BYTE  *m_pCacheData;
+
+	void CloseDataHandles();
+	void CloseIndexHandles();
+	void Sort();
+
+	BOOL CheckHeader(SLogCacheIndexHeader *header)
 	{
-		if(header.m_Magic != LOG_INDEX_MAGIC)
+		if(header->m_Magic != LOG_INDEX_MAGIC)
 			return FALSE;
 
-		if(header.m_Version != LOG_INDEX_VERSION)
+		if(header->m_Version != LOG_INDEX_VERSION)
 			return FALSE;
 
 		return TRUE;
 	}
 
-	BOOL CheckHeader(SLogCacheRevFileHeader &header)
+	BOOL CheckHeader(SLogCacheRevFileHeader *header)
 	{
-		if(header.m_Magic != LOG_DATA_MAGIC)
+		if(header->m_Magic != LOG_DATA_FILE_MAGIC)
 			return FALSE;
 
-		if(header.m_Version != LOG_INDEX_VERSION)
+		if(header->m_Version != LOG_INDEX_VERSION)
 			return FALSE;
 
 		return TRUE;
 	}
 
-	BOOL CheckHeader(SLogCacheRevItemHeader &header)
+	BOOL CheckHeader(SLogCacheRevItemHeader *header)
 	{
-		if(header.m_Magic != LOG_DATA_ITEM_MAGIC)
+		if(header->m_Magic != LOG_DATA_ITEM_MAGIC)
 			return FALSE;
 
-		if(header.m_Version != LOG_INDEX_VERSION)
+		if(header->m_Version != LOG_INDEX_VERSION)
+			return FALSE;
+		
+		return TRUE;
+	}
+
+	BOOL CheckHeader(SLogCacheDataFileHeader *header)
+	{
+		if(header->m_Magic != LOG_DATA_MAGIC)
+			return FALSE;
+
+		if(header->m_Version != LOG_INDEX_VERSION)
 			return FALSE;
 		
 		return TRUE;
 	}
 
 	int SaveOneItem(GitRev &Rev,ULONGLONG offset);
-	int LoadOneItem(GitRev &Rev,ULONGLONG offset);
+	
 	CString m_GitDir;
 	int RebuildCacheFile();
 
@@ -99,10 +145,11 @@ public:
 	CLogCache();
 	~CLogCache();
 	int FetchCacheIndex(CString GitDir);
+	int LoadOneItem(GitRev &Rev,ULONGLONG offset);
+	ULONGLONG GetOffset(CGitHash &hash, SLogCacheIndexFile *pData =NULL);
 
 	CGitHashMap m_HashMap;
-	std::map<CGitHash, ULONGLONG> m_HashMapIndex;
-
+	
 	GitRev * GetCacheData(CGitHash &Rev);
 	int AddCacheEntry(GitRev &Rev);
 	int SaveCache();

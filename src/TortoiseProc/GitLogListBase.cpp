@@ -2057,7 +2057,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	this->m_LogCache.ClearAllParent();
 
-	//m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
+	m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
 
     CTGitPath *path;
     if(this->m_Path.IsEmpty())
