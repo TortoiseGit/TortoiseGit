@@ -280,11 +280,19 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		if(!CheckHeader(fileheader))
 			return -1;
 
-		path.m_Action = fileheader ->m_Action;
-		Rev.m_Action |= path.m_Action;
+		_tcsncpy(file.GetBufferSetLength(fileheader->m_FileNameSize), fileheader->m_FileName, fileheader->m_FileNameSize);
+		if(fileheader->m_OldFileNameSize)
+		{
+			_tcsncpy(oldfile.GetBufferSetLength(fileheader->m_FileNameSize), 
+					fileheader->m_FileName+fileheader->m_FileNameSize,
+					fileheader->m_OldFileNameSize);
+		}
+		path.SetFromGit(file,&oldfile);		
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
 		path.m_Stage = fileheader ->m_Stage;
+		path.m_Action = fileheader ->m_Action;
+		Rev.m_Action |= path.m_Action;
 
 		if(fileheader->m_Add == 0xFFFFFFFF)
 			path.m_StatAdd=_T("-");
@@ -296,14 +304,6 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		else
 			path.m_StatDel.Format(_T("%d"), fileheader->m_Del);
 
-		_tcsncpy(file.GetBufferSetLength(fileheader->m_FileNameSize), fileheader->m_FileName, fileheader->m_FileNameSize);
-		if(fileheader->m_OldFileNameSize)
-		{
-			_tcsncpy(oldfile.GetBufferSetLength(fileheader->m_FileNameSize), 
-					fileheader->m_FileName+fileheader->m_FileNameSize,
-					fileheader->m_OldFileNameSize);
-		}
-		path.SetFromGit(file,&oldfile);		
 		Rev.m_Files.AddPath(path);
 
 		fileheader = (SLogCacheRevFileHeader *)
@@ -359,8 +359,9 @@ int CLogCache::SaveCache()
 		if(pIndex ==NULL)
 			return -1;
 
-		memcpy(pIndex,m_pCacheData, sizeof(SLogCacheIndexFile)
-			+sizeof(SLogCacheIndexItem) *( m_pCacheIndex->m_Header.m_ItemCount-1));
+		memcpy(pIndex,this->m_pCacheIndex, 
+			sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) *( m_pCacheIndex->m_Header.m_ItemCount-1)
+			);
 	}
 
 	this->CloseDataHandles();

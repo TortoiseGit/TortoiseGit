@@ -626,8 +626,8 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
-			
-			for(int i=0;i<pLogEntry->GetFiles(&m_LogList).GetCount() && (!matchpath.IsEmpty());i++)
+			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
+			for(int i=0;i<count && (!matchpath.IsEmpty());i++)
 			{
 				if( m_bWholeProject )
 					break;

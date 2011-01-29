@@ -328,7 +328,13 @@ protected:
 			::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
 		}else
 		{
-			((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev,offset);
+			if(((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev,offset))
+			{
+				((CGitLogListBase*)data)->m_AysnDiffListLock.Lock();
+				((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
+				((CGitLogListBase*)data)->m_AysnDiffListLock.Unlock();
+				::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+			}
 			InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
 			if(rev->m_IsDiffFiles && rev->m_IsCommitParsed)
 				InterlockedExchange(&rev->m_IsFull, TRUE);
