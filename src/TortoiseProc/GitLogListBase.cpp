@@ -1782,12 +1782,14 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 					sPaths += _T("\r\n");
 				}
 				sPaths.Trim();
+				CString body = pLogEntry->m_Body;
+				body.Replace(_T("\n"), _T("\r\n"));
 				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
 					(LPCTSTR)sRev, pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->m_AuthorName,
 					(LPCTSTR)sDate, 
 					(LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->m_AuthorDate, m_DateFormat, true, m_bRelativeTimes ),
-					(LPCTSTR)sMessage, pLogEntry->m_Subject+_T("\r\n")+pLogEntry->m_Body,
+					(LPCTSTR)sMessage, pLogEntry->m_Subject.Trim() + _T("\r\n\r\n") + body.Trim(),
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
 			}else
