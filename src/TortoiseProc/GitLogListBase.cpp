@@ -99,8 +99,9 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_CurrentBranch=g_Git.GetCurrentBranch();
 	this->m_HeadHash=g_Git.GetHash(CString(_T("HEAD"))).Left(40);
 
-	m_From=CTime(1970,1,2,0,0,0);
-	m_To=CTime::GetCurrentTime();
+	m_From=-1;;
+	m_To=-1;
+
     m_ShowMask = 0;
 	m_LoadingThread = NULL;
 
@@ -2089,7 +2090,7 @@ int CGitLogListBase::BeginFetchLog()
 		else
 			pTo = &CString(_T("HEAD"));
 	}
-	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true);
+	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true,m_From,m_To);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2351,7 +2352,7 @@ UINT CGitLogListBase::LogThread()
 	return 0;
 }
 
-void CGitLogListBase::Refresh()
+void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 {	
 	SafeTerminateThread();
 	
@@ -2365,6 +2366,14 @@ void CGitLogListBase::Refresh()
 	{
 		
 		m_logEntries.clear();
+
+		if(IsCleanFilter)
+		{
+			m_sFilterText.Empty();
+			m_From=-1;
+			m_To=-1;
+		}
+
 		InterlockedExchange(&m_bExitThread,FALSE);
 
 		InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -2375,9 +2384,7 @@ void CGitLogListBase::Refresh()
 			InterlockedExchange(&m_bNoDispUpdates, FALSE);
 			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
-		m_sFilterText.Empty();
-		m_From=CTime(1970,1,2,0,0,0);
-		m_To=CTime::GetCurrentTime();
+		
 	}
 }
 bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
@@ -2578,11 +2585,21 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 
 BOOL CGitLogListBase::IsEntryInDateRange(int i)
 {
+	/*
 	__time64_t time = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
-	if ((time >= m_From.GetTime())&&(time <= m_To.GetTime()))
-		return TRUE;
 
-	return FALSE;
+	if(m_From == -1)
+		if(m_To == -1)
+			return true;
+		else
+			return time <= m_To;
+	else
+		if(m_To == -1)
+			return time >= m_From;
+		else 
+			return ((time >= m_From)&&(time <= m_To));
+	*/	
+	return TRUE; /* git dll will filter time range */
 
 //	return TRUE;
 }

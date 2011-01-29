@@ -212,7 +212,7 @@ public:
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);
 	CPtrArray			m_arShownList;
-	void Refresh();
+	void Refresh(BOOL IsCleanFilter=TRUE);
 	void RecalculateShownList(CPtrArray * pShownlist);
 	void Clear();
 
@@ -223,8 +223,9 @@ public:
 	void StartFilter();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
-	CTime			m_From;
-	CTime			m_To;
+	
+	__time64_t			m_From;
+	__time64_t			m_To;
     
     CTGitPath           m_Path;
     int					m_ShowMask;

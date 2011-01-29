@@ -379,11 +379,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
 
-		DialogEnableWindow(IDC_DATEFROM,FALSE);
-		DialogEnableWindow(IDC_DATETO,FALSE);
-
-		DialogEnableWindow(IDC_SEARCHEDIT,FALSE);
-
 	}else if( cur == GITLOG_END)
 	{
 		
@@ -399,23 +394,21 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
 		//DialogEnableWindow(IDC_GETALL, TRUE);
-		DialogEnableWindow(IDC_LOG_FIRSTPARENT, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
-
-		DialogEnableWindow(IDC_DATEFROM,TRUE);
-		DialogEnableWindow(IDC_DATETO,TRUE);
-
-		DialogEnableWindow(IDC_SEARCHEDIT,TRUE);
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 		//CTime time=m_LogList.GetOldestTime();
 		CTime begin,end;
 		m_LogList.GetTimeRange(begin,end);
-		m_DateFrom.SetTime(&begin);
-		m_DateTo.SetTime(&end);
+		
+		if(m_LogList.m_From == -1)
+			m_DateFrom.SetTime(&begin);
+
+		if(m_LogList.m_To == -1)
+			m_DateTo.SetTime(&end);
 
 
 	}else
@@ -2128,6 +2121,14 @@ bool CLogDlg::Validate(LPCTSTR string)
 
 void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 {
+	if (nIDEvent == LOGFTIME_TIMER)
+	{
+		KillTimer(LOGFTIME_TIMER);
+		m_limit = 0;
+		m_LogList.Refresh(FALSE);
+		FillLogMessageCtrl(false);
+	}
+
 	if (nIDEvent == LOGFILTER_TIMER)
 	{
 		if (this->IsThreadRunning())
@@ -2179,10 +2180,10 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		m_DateTo.GetTime(_time);
 	
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
-		if (time.GetTime() != m_LogList.m_To.GetTime())
+		if (time.GetTime() != m_LogList.m_To)
 		{
 			m_LogList.m_To = (DWORD)time.GetTime();
-			SetTimer(LOGFILTER_TIMER, 10, NULL);
+			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
 	catch (...)
@@ -2202,10 +2203,10 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		m_DateFrom.GetTime(_time);
 		
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
-		if (time.GetTime() != m_LogList.m_From.GetTime())
+		if (time.GetTime() != m_LogList.m_From)
 		{
 			m_LogList.m_From = (DWORD)time.GetTime();
-			SetTimer(LOGFILTER_TIMER, 10, NULL);
+			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
 	catch (...)

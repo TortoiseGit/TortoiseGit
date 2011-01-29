@@ -47,6 +47,7 @@ using namespace std;
 
 
 #define LOGFILTER_TIMER		101
+#define LOGFTIME_TIMER 102
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
