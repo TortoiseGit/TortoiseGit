@@ -269,7 +269,9 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 
 	Rev.m_Action = 0;
 	SLogCacheRevFileHeader *fileheader;
-	fileheader =(SLogCacheRevFileHeader *)( this->m_pCacheData + offset + sizeof(SLogCacheRevItemHeader));
+
+	offset += sizeof(SLogCacheRevItemHeader);
+	fileheader =(SLogCacheRevFileHeader *)(this->m_pCacheData + offset);
 
 	for(int i=0;i<header->m_FileCount;i++)
 	{
@@ -306,14 +308,8 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 
 		Rev.m_Files.AddPath(path);
 
-		fileheader = (SLogCacheRevFileHeader *)
-					 (this->m_pCacheData + offset + sizeof(SLogCacheRevItemHeader)
-							+ (i+1)*( sizeof(fileheader)
-									 + fileheader->m_OldFileNameSize*sizeof(TCHAR) 
-									 + fileheader->m_FileNameSize*sizeof(TCHAR) 
-									 - sizeof(TCHAR)
-									 )
-					  );
+		offset += sizeof(*fileheader) + fileheader->m_OldFileNameSize*sizeof(TCHAR) + fileheader->m_FileNameSize*sizeof(TCHAR) - sizeof(TCHAR);
+		fileheader = (SLogCacheRevFileHeader *) (this->m_pCacheData + offset);
 	}
 	return 0;
 }
