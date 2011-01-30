@@ -13,12 +13,19 @@ class CException; //Just in case afx.h is not included (cannot be included in ev
 	#define ASSERT(x) _ASSERTE(x)
 #endif
 
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 GitRev::GitRev(void)
 {
 	m_Action=0;
 	m_IsFull = 0;
 	m_IsUpdateing = 0;
+	m_IsCommitParsed = 0;
+	m_IsDiffFiles = 0;
+	m_CallDiffAsync = NULL;
+
+	memset(&this->m_GitCommit,0,sizeof(GIT_COMMIT));
+
 	// fetch local machine timezone info
 	if ( GetTimeZoneInformation( &m_TimeZone ) == TIME_ZONE_ID_INVALID )
 	{
@@ -144,6 +151,8 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		GIT_COMMIT_LIST list;
 		GIT_HASH   parent;
 		memset(&commit,0,sizeof(GIT_COMMIT));
+
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 
 		if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
 			return -1;
@@ -277,6 +286,8 @@ void GitRev::DbgPrint()
 int GitRev::GetParentFromHash(CGitHash &hash)
 {
 	g_Git.CheckAndInitDll();
+
+	CAutoLocker lock(g_Git.m_critGitDllSec);
 
 	GIT_COMMIT commit;
 	if(git_get_commit_from_hash( &commit, hash.m_hash))

@@ -144,6 +144,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST	, OnLvnColumnclick)
 	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
+	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH,OnBnClickedAllBranch)
 	
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
@@ -153,7 +154,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 //	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
-	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnRefresh)
+	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnBnClickedRefresh)
 	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER,&CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
@@ -378,11 +379,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
 
-		DialogEnableWindow(IDC_DATEFROM,FALSE);
-		DialogEnableWindow(IDC_DATETO,FALSE);
-
-		DialogEnableWindow(IDC_SEARCHEDIT,FALSE);
-
 	}else if( cur == GITLOG_END)
 	{
 		
@@ -398,23 +394,21 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
 		//DialogEnableWindow(IDC_GETALL, TRUE);
-		DialogEnableWindow(IDC_LOG_FIRSTPARENT, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, TRUE);
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
-
-		DialogEnableWindow(IDC_DATEFROM,TRUE);
-		DialogEnableWindow(IDC_DATETO,TRUE);
-
-		DialogEnableWindow(IDC_SEARCHEDIT,TRUE);
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 		//CTime time=m_LogList.GetOldestTime();
 		CTime begin,end;
 		m_LogList.GetTimeRange(begin,end);
-		m_DateFrom.SetTime(&begin);
-		m_DateTo.SetTime(&end);
+		
+		if(m_LogList.m_From == -1)
+			m_DateFrom.SetTime(&begin);
+
+		if(m_LogList.m_To == -1)
+			m_DateTo.SetTime(&end);
 
 
 	}else
@@ -577,10 +571,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		}
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
 
-		if(!pLogEntry->m_IsFull)
-		{
-			pMsgView->SetWindowText(_T("load ..."));
-		}else
 		{
 			// set the log message text
 			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash.ToString()+_T("\r\n\r\n"));
@@ -596,7 +586,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 			
 			CString msg=_T("* ");
-			msg+=pLogEntry->m_Subject;
+			msg+=pLogEntry->GetSubject();
 			pMsgView->ReplaceSel(msg);
 
 			pMsgView->SetSel(-1,-1);
@@ -604,7 +594,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
 			
 			msg=_T("\n");
-			msg+=pLogEntry->m_Body;
+			msg+=pLogEntry->GetBody();
 
 			if(!pLogEntry->m_Notes.IsEmpty())
 			{
@@ -629,26 +619,34 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
-			for(int i=0;i<pLogEntry->m_Files.GetCount() && (!matchpath.IsEmpty());i++)
+			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
+			for(int i=0;i<count && (!matchpath.IsEmpty());i++)
 			{
 				if( m_bWholeProject )
 					break;
 
-				((CTGitPath&)pLogEntry->m_Files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
+				((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
 				
-				if(pLogEntry->m_Files[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
+				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
 				{
 					if(HidePaths==BST_CHECKED)
-						((CTGitPath&)pLogEntry->m_Files[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
+						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
 					if(HidePaths==BST_INDETERMINATE)
-						((CTGitPath&)pLogEntry->m_Files[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
+						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
 
-			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->m_Files);
+			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
 
+			m_ChangedFileListCtrl.SetBusyString(_T("Fetch Changed File..."));
+
+			if(!pLogEntry->m_IsDiffFiles)
+				m_ChangedFileListCtrl.SetBusy(TRUE);
+			else
+				m_ChangedFileListCtrl.SetBusy(FALSE);
+		
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
@@ -697,10 +695,10 @@ void CLogDlg::OnBnClickedRefresh()
 	Refresh (true);
 }
 
-void CLogDlg::Refresh (bool /*autoGoOnline*/)
+void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
 	m_limit = 0;
-	m_LogList.Refresh();
+	m_LogList.Refresh(clearfilter);
 	FillLogMessageCtrl(false);
 }
 
@@ -730,6 +728,7 @@ void CLogDlg::SaveSplitterPos()
 void CLogDlg::OnCancel()
 {
 	// canceling means stopping the working thread if it's still running.
+	m_LogList.SafeTerminateAsyncDiffThread();
 	if (this->IsThreadRunning())
 	{
 		m_LogList.SafeTerminateThread();
@@ -1028,7 +1027,7 @@ void CLogDlg::OnOK()
 	if (GetFocus() != GetDlgItem(IDOK))
 		return;	// if the "OK" button doesn't have the focus, do nothing: this prevents closing the dialog when pressing enter
 
-	
+	m_LogList.SafeTerminateAsyncDiffThread();
 	if (this->IsThreadRunning())
 	{
 		m_LogList.SafeTerminateThread();
@@ -1870,14 +1869,14 @@ void CLogDlg::OnBnClickedStatbutton()
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.GetAt(i));
-		CString strAuthor = pLogEntry->m_AuthorName;
+		CString strAuthor = pLogEntry->GetAuthorName();
 		if ( strAuthor.IsEmpty() )
 		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
 		m_arAuthorsFiltered.Add(strAuthor);
-		m_arDatesFiltered.Add(pLogEntry->m_AuthorDate.GetTime());
-		m_arFileChangesFiltered.Add(pLogEntry->m_Files.GetCount());
+		m_arDatesFiltered.Add(pLogEntry->GetAuthorDate().GetTime());
+		m_arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
 	}
 
 	CDateSorter W_Sorter;
@@ -2017,17 +2016,22 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		
 		temp.LoadString(IDS_LOG_FILTER_MESSAGES);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_MESSAGES), LOGFILTER_MESSAGES, temp);
+/*
+		//Path support because we use git grep to filter message
 		temp.LoadString(IDS_LOG_FILTER_PATHS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_PATHS), LOGFILTER_PATHS, temp);
+*/
 		temp.LoadString(IDS_LOG_FILTER_AUTHORS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_AUTHORS), LOGFILTER_AUTHORS, temp);
+
+/*		//We use git grep to filter message
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
 		if (m_LogList.m_bShowBugtraqColumn == true) {
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}
-		
+*/		
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		temp.LoadString(IDS_LOG_FILTER_REGEX);
@@ -2123,8 +2127,23 @@ bool CLogDlg::Validate(LPCTSTR string)
 
 void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 {
+	if (nIDEvent == LOGFTIME_TIMER)
+	{
+		KillTimer(LOGFTIME_TIMER);
+		m_limit = 0;
+		m_LogList.Refresh(FALSE);
+		FillLogMessageCtrl(false);
+	}
+
 	if (nIDEvent == LOGFILTER_TIMER)
 	{
+		KillTimer(LOGFILTER_TIMER);
+		m_limit = 0;
+		m_LogList.Refresh(FALSE);
+		FillLogMessageCtrl(false);
+
+#if 0
+		/* we will use git built-in grep to filter log */
 		if (this->IsThreadRunning())
 		{
 			// thread still running! So just restart the timer.
@@ -2161,6 +2180,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		if (bSetFocusToFilterControl)
 			GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 		UpdateLogInfoLabel();
+#endif
 	} // if (nIDEvent == LOGFILTER_TIMER)
 	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
 	__super::OnTimer(nIDEvent);
@@ -2174,10 +2194,10 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		m_DateTo.GetTime(_time);
 	
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
-		if (time.GetTime() != m_LogList.m_To.GetTime())
+		if (time.GetTime() != m_LogList.m_To)
 		{
 			m_LogList.m_To = (DWORD)time.GetTime();
-			SetTimer(LOGFILTER_TIMER, 10, NULL);
+			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
 	catch (...)
@@ -2197,10 +2217,10 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		m_DateFrom.GetTime(_time);
 		
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
-		if (time.GetTime() != m_LogList.m_From.GetTime())
+		if (time.GetTime() != m_LogList.m_From)
 		{
 			m_LogList.m_From = (DWORD)time.GetTime();
-			SetTimer(LOGFILTER_TIMER, 10, NULL);
+			SetTimer(LOGFTIME_TIMER, 10, NULL);
 		}
 	}
 	catch (...)
@@ -3060,7 +3080,7 @@ void CLogDlg::OnRefresh()
 		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
 		
-		Refresh (true);
+		Refresh (false);
 	}
 }
 
@@ -3123,7 +3143,9 @@ void CLogDlg::OnEnChangeSearchedit()
 		theApp.DoWaitCursor(1);
 		KillTimer(LOGFILTER_TIMER);
 		FillLogMessageCtrl(false);
-		m_LogList.StartFilter();
+
+		Refresh();
+		//m_LogList.StartFilter();
 #if 0
 		InterlockedExchange(&m_bNoDispUpdates, TRUE);
 		m_arShownList.RemoveAll();

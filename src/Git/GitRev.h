@@ -4,6 +4,7 @@
 #include "AtlTime.h"
 #include "GitHash.h"
 #include "GitDll.h"
+#include "git.h"
 
 typedef std::vector<CGitHash> GIT_REV_LIST;
 
@@ -22,15 +23,136 @@ typedef std::vector<CGitHash> GIT_REV_LIST;
 #define LOG_REV_ITEM_END		_T('C')
 
 class CGit;
+extern CGit g_Git;
+class GitRev;
+class CLogCache;
+
+typedef int CALL_UPDATE_DIFF_ASYNC(GitRev *pRev, void *data);
 
 class GitRev
 {
 public:
+	friend class CLogCache;
+
+protected:
+	CString m_AuthorName;
+	CString m_AuthorEmail;
+	CTime	m_AuthorDate;
+	CString m_CommitterName;
+	CString m_CommitterEmail;
+	CTime   m_CommitterDate;
+	CString m_Subject;
+	CString m_Body;
+
+	CTGitPathList m_Files;
+	int	m_Action;
+
+public:
 	GitRev(void);
+
+	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
+	int CheckAndDiff()
+	{
+		if(!m_IsDiffFiles && !m_CommitHash.IsEmpty())
+		{
+			SafeFetchFullInfo(&g_Git);
+			InterlockedExchange(&m_IsDiffFiles, TRUE);
+			if(m_IsDiffFiles && m_IsCommitParsed)
+				InterlockedExchange(&m_IsFull, TRUE);
+			return 0;
+		}
+		return 1;
+	}
+	
+	int & GetAction(void * data)
+	{
+		CheckAndParser();
+		if(!m_IsDiffFiles && m_CallDiffAsync)
+			m_CallDiffAsync(this, data);
+		else
+			CheckAndDiff();
+		return m_Action;
+	}
+
+	CTGitPathList & GetFiles(void * data)
+	{
+		CheckAndParser();
+		if(!m_IsDiffFiles && m_CallDiffAsync)
+			m_CallDiffAsync(this, data);
+		else
+			CheckAndDiff();
+		return m_Files;
+	}
+
 //	GitRev(GitRev &rev);
 //	GitRev &operator=(GitRev &rev);
+	int CheckAndParser()
+	{
+		if(!m_IsCommitParsed && m_GitCommit.m_pGitCommit)
+		{
+			ParserFromCommit(&m_GitCommit);
+			InterlockedExchange(&m_IsCommitParsed, TRUE);
+			git_free_commit(&m_GitCommit);
+			if(m_IsDiffFiles && m_IsCommitParsed)
+				InterlockedExchange(&m_IsFull, TRUE);
+			return 0;
+		}
+		return 1;
+	}
+	
+	CString & GetAuthorName()
+	{
+		CheckAndParser();
+		return m_AuthorName;
+	}
+
+	CString & GetAuthorEmail()
+	{
+		CheckAndParser();
+		return m_AuthorEmail;
+	}
+
+	CTime & GetAuthorDate()
+	{
+		CheckAndParser();
+		return m_AuthorDate;
+	}
+
+	CString & GetCommitterName()
+	{
+		CheckAndParser();
+		return m_CommitterName;
+	}
+
+	CString &GetCommitterEmail()
+	{
+		CheckAndParser();
+		return m_CommitterEmail;
+	}
+
+	CTime &GetCommitterDate()
+	{
+		CheckAndParser();
+		return m_CommitterDate;
+	}
+	
+	CString & GetSubject()
+	{
+		CheckAndParser();
+		return m_Subject;
+	}
+
+	CString & GetBody()
+	{
+		CheckAndParser();
+		return m_Body;
+	}
+
+
 	~GitRev(void);
 	
+	GIT_COMMIT m_GitCommit;
+
 	enum
 	{
 		REV_HEAD = -1,			///< head revision
@@ -46,18 +168,10 @@ public:
 	
 	CString m_Notes;
 
-	CString m_AuthorName;
-	CString m_AuthorEmail;
-	CTime	m_AuthorDate;
-	CString m_CommitterName;
-	CString m_CommitterEmail;
-	CTime m_CommitterDate;
-	CString m_Subject;
-	CString m_Body;
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
-	CTGitPathList m_Files;
-	int	m_Action;
+
+
 	TCHAR m_Mark;
 	CString m_Ref;
 	CString m_RefAction;
@@ -74,6 +188,8 @@ public:
 
 	volatile LONG m_IsFull;
 	volatile LONG m_IsUpdateing;
+	volatile LONG m_IsCommitParsed;
+	volatile LONG m_IsDiffFiles;
 	
 	int SafeFetchFullInfo(CGit *git);
 

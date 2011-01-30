@@ -2590,7 +2590,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 			this->m_NoListCommit[hash].GetCommitFromHash(hash);
 		}
 		m_ID.push_back(-1); // m_ID is calculated lazy on demand
-		m_Authors.push_back(m_NoListCommit[hash].m_AuthorName);
+		m_Authors.push_back(m_NoListCommit[hash].GetAuthorName());
 
 		m_CommitHash.push_back(hash);
 		pos = current+1;
@@ -2777,10 +2777,10 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 
 			CString str;
 			str.Format(_T("%s\n<b>%s</b>\n%s %s\n%s"),pRev->m_CommitHash.ToString(),
-													   pRev->m_Subject,
-													   pRev->m_AuthorName,
-													   CAppUtils::FormatDateAndTime( pRev->m_AuthorDate, m_DateFormat ), 
-													   pRev->m_Body);
+													   pRev->GetSubject(),
+													   pRev->GetAuthorName(),
+													   CAppUtils::FormatDateAndTime( pRev->GetAuthorDate(), m_DateFormat ), 
+													   pRev->GetBody());
 			m_ToolTip.AddTool(this,str);
 			m_ToolTip.DisplayToolTip(&point);
 	

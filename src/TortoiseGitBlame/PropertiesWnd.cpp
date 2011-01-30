@@ -352,16 +352,16 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 	if(rev)
 	{
 		m_CommitHash->SetValue(rev->m_CommitHash.ToString());
-		m_AuthorName->SetValue(rev->m_AuthorName);
-		m_AuthorDate->SetValue(rev->m_AuthorDate.Format(_T("%Y-%m-%d %H:%M")));
-		m_AuthorEmail->SetValue(rev->m_AuthorEmail);	
+		m_AuthorName->SetValue(rev->GetAuthorName());
+		m_AuthorDate->SetValue(rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M")));
+		m_AuthorEmail->SetValue(rev->GetAuthorEmail());	
 
-		m_CommitterName->SetValue(rev->m_CommitterName);
-		m_CommitterEmail->SetValue(rev->m_CommitterEmail);
-		m_CommitterDate->SetValue(rev->m_CommitterDate.Format(_T("%Y-%m-%d %H:%M")));
+		m_CommitterName->SetValue(rev->GetAuthorName());
+		m_CommitterEmail->SetValue(rev->GetCommitterEmail());
+		m_CommitterDate->SetValue(rev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M")));
 
-		m_Subject->SetValue(rev->m_Subject);
-		m_Body->SetValue(rev->m_Body.Trim());
+		m_Subject->SetValue(rev->GetSubject());
+		m_Body->SetValue(rev->GetBody().Trim());
 
 		RemoveParent();
 
@@ -386,7 +386,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 				p= &pLogEntry->m_pLogCache->m_HashMap[rev->m_ParentHash[i]] ;
 			}
 			if(p)
-				parentsubject=p->m_Subject;
+				parentsubject=p->GetSubject();
 
 			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i].ToString(),parentsubject);
 			

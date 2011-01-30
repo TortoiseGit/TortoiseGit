@@ -281,7 +281,7 @@ void CRebaseDlg::SetAllRebaseAction(int action)
 {
 	for(int i=0;i<this->m_CommitList.m_logEntries.size();i++)
 	{
-		m_CommitList.m_logEntries.GetGitRevAt(i).m_Action=action;
+		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList)=action;
 	}
 	m_CommitList.Invalidate();
 }
@@ -524,7 +524,7 @@ void CRebaseDlg::FetchLogList()
 	
 	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
 	{
-		m_CommitList.m_logEntries.GetGitRevAt(i).m_Action = CTGitPath::LOGACTIONS_REBASE_PICK;
+		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_PICK;
 	}
 
 	m_CommitList.Invalidate();
@@ -550,10 +550,10 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 
 		tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
 			rev.m_CommitHash.ToString(),
-			rev.m_AuthorName,
-			CAppUtils::FormatDateAndTime(rev.m_AuthorDate,DATE_LONGDATE),
-			rev.m_Subject,
-			rev.m_Body);
+			rev.GetAuthorName(),
+			CAppUtils::FormatDateAndTime(rev.GetAuthorDate(),DATE_LONGDATE),
+			rev.GetSubject(),
+			rev.GetBody());
 
 		pBranch->DisableTooltip();
 		this->m_tooltips.AddTool(pBranch->GetComboBoxCtrl(),tooltip);
@@ -825,7 +825,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		}
 		m_RebaseStage=REBASE_CONTINUE;
-		curRev->m_Action|=CTGitPath::LOGACTIONS_REBASE_DONE;
+		curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 
 	}
@@ -855,7 +855,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		AddLogString(out);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-		if( curRev->m_Action & CTGitPath::LOGACTIONS_REBASE_EDIT)
+		if( curRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_EDIT)
 		{
 			m_RebaseStage=REBASE_EDIT;
 			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
@@ -865,7 +865,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		else
 		{
 			m_RebaseStage=REBASE_CONTINUE;
-			curRev->m_Action|=CTGitPath::LOGACTIONS_REBASE_DONE;
+			curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 			this->UpdateCurrentStatus();
 		}
 		
@@ -910,7 +910,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		AddLogString(out);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage=REBASE_CONTINUE;
-		curRev->m_Action|=CTGitPath::LOGACTIONS_REBASE_DONE;
+		curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
 
@@ -943,9 +943,9 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 
 		curRev=(GitRev*)m_CommitList.m_arShownList[index];
 		
-		if( curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SQUASH )
+		if( curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SQUASH )
 			return 0;
-		if( curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SKIP)
+		if( curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP)
 		{
 			if(m_CommitList.m_IsOldFirst)
 				index++;
@@ -954,7 +954,7 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 		}else
 			return -1;		
 
-	}while(curRev->m_Action&CTGitPath::LOGACTIONS_REBASE_SKIP);
+	}while(curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP);
 	
 	return -1;
 
@@ -1123,9 +1123,9 @@ void CRebaseDlg::UpdateProgress()
 	for(int i=0;i<m_CommitList.m_arShownList.GetSize();i++)
 	{
 		prevRev=(GitRev*)m_CommitList.m_arShownList[i];
-		if(prevRev->m_Action & CTGitPath::LOGACTIONS_REBASE_CURRENT)
+		if(prevRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_CURRENT)
 		{	
-			prevRev->m_Action &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
+			prevRev->GetAction(&m_CommitList) &= ~ CTGitPath::LOGACTIONS_REBASE_CURRENT;
 			m_CommitList.GetItemRect(i,&rect,LVIR_BOUNDS);
 			m_CommitList.InvalidateRect(rect);
 		}
@@ -1133,7 +1133,7 @@ void CRebaseDlg::UpdateProgress()
 
 	if(curRev)
 	{
-		curRev->m_Action |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
+		curRev->GetAction(&m_CommitList) |= CTGitPath::LOGACTIONS_REBASE_CURRENT;
 		m_CommitList.GetItemRect(m_CurrentRebaseIndex,&rect,LVIR_BOUNDS);
 		m_CommitList.InvalidateRect(rect);
 	}
@@ -1194,20 +1194,20 @@ int CRebaseDlg::DoRebase()
 		return 0;
 
 	GitRev *pRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-	int mode=pRev->m_Action & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+	int mode=pRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
 	CString nocommit;
 
 	if( mode== CTGitPath::LOGACTIONS_REBASE_SKIP)
 	{
-		pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+		pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 		return 0;
 	}
 	
 	if( mode != CTGitPath::LOGACTIONS_REBASE_PICK )
 	{
-		this->m_SquashMessage+= pRev->m_Subject;
+		this->m_SquashMessage+= pRev->GetSubject();
 		this->m_SquashMessage+= _T("\n");
-		this->m_SquashMessage+= pRev->m_Body;
+		this->m_SquashMessage+= pRev->GetBody();
 	}
 	else
 		this->m_SquashMessage.Empty();
@@ -1218,7 +1218,7 @@ int CRebaseDlg::DoRebase()
 	CString log;
 	log.Format(_T("%s %d:%s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());
 	AddLogString(log);
-	AddLogString(pRev->m_Subject);
+	AddLogString(pRev->GetSubject());
 	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash.ToString());
 
 	if(g_Git.Run(cmd,&out,CP_UTF8))
@@ -1234,7 +1234,7 @@ int CRebaseDlg::DoRebase()
 		{
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
-				pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+				pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 				return 0;
 			}
 			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
@@ -1261,7 +1261,7 @@ int CRebaseDlg::DoRebase()
 		AddLogString(out);
 		if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 		{
-			pRev->m_Action|= CTGitPath::LOGACTIONS_REBASE_DONE;
+			pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 			return 0;
 		}
 		if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
@@ -1375,11 +1375,11 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	case REBASE_SQUASH_CONFLICT:
 		ListConflictFile();			
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
-		this->m_LogMessageCtrl.SetText(curRev->m_Subject+_T("\n")+curRev->m_Body);
+		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		break;
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
-		this->m_LogMessageCtrl.SetText(curRev->m_Subject+_T("\n")+curRev->m_Body);
+		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);

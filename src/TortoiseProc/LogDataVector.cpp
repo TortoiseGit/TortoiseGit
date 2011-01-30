@@ -158,7 +158,7 @@ int AddTolist(unsigned char *osha1, unsigned char *nsha1, const char * name, uns
 	if(message>0)
 	{
 		rev.m_RefAction=one.Left(message);
-		rev.m_Subject=one.Mid(message+1);
+		rev.GetSubject()=one.Mid(message+1);
 	}
 
 	vector->m_pLogCache->m_HashMap[rev.m_CommitHash]=rev;
@@ -206,7 +206,7 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 				if(message>0)
 				{
 					rev.m_RefAction=one.Mid(action+1,message-action-1);
-					rev.m_Subject=one.Right(one.GetLength()-message-1);
+					rev.GetSubject()=one.Right(one.GetLength()-message-1);
 				}
 			}
 

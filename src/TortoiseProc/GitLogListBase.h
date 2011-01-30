@@ -14,7 +14,6 @@
 #include "FilterEdit.h"
 #include "GitRev.h"
 #include "Tooltip.h"
-#include "HintListCtrl.h"
 //#include "GitLogList.h"
 #include "lanes.h"
 #include "GitLogCache.h"
@@ -62,6 +61,8 @@ enum LISTITEMSTATES_MINE {
 #define MSG_LOADED				(WM_USER+110)
 #define MSG_LOAD_PERCENTAGE		(WM_USER+111)
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
+#define MSG_FETCHED_DIFF		(WM_USER+113)
+
 
 class CGitLogListBase : public CHintListCtrl
 {
@@ -71,6 +72,8 @@ public:
 	CGitLogListBase();
 	virtual ~CGitLogListBase();
 	ProjectProperties	m_ProjectProperties;
+
+	CFilterData m_Filter;
 
 	void UpdateProjectProperties()
 	{
@@ -82,6 +85,12 @@ public:
 			m_bShowBugtraqColumn = false;
 	}
 
+	void ResetWcRev()
+	{
+		m_wcRev.GetBody()=_T("Fetching Status...");
+		m_wcRev.m_CallDiffAsync = DiffAsync;
+		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);		
+	}
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 
 	volatile LONG		m_bNoDispUpdates;
@@ -212,7 +221,7 @@ public:
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);
 	CPtrArray			m_arShownList;
-	void Refresh();
+	void Refresh(BOOL IsCleanFilter=TRUE);
 	void RecalculateShownList(CPtrArray * pShownlist);
 	void Clear();
 
@@ -223,8 +232,9 @@ public:
 	void StartFilter();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
-	CTime			m_From;
-	CTime			m_To;
+	
+	__time64_t			m_From;
+	__time64_t			m_To;
     
     CTGitPath           m_Path;
     int					m_ShowMask;
@@ -311,6 +321,62 @@ protected:
 
 	int GetHeadIndex();
 
+	std::vector<GitRev*> m_AsynDiffList;
+	CComCriticalSection m_AysnDiffListLock;
+	HANDLE	m_AsyncDiffEvent;
+	volatile LONG m_AsyncThreadExit;
+	CWinThread*			m_DiffingThread;
+
+	static int DiffAsync(GitRev *rev, void *data)
+	{
+		ULONGLONG offset=((CGitLogListBase*)data)->m_LogCache.GetOffset(rev->m_CommitHash);
+		if(!offset)
+		{
+			((CGitLogListBase*)data)->m_AysnDiffListLock.Lock();
+			((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
+			((CGitLogListBase*)data)->m_AysnDiffListLock.Unlock();
+			::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+		}else
+		{
+			if(((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev,offset))
+			{
+				((CGitLogListBase*)data)->m_AysnDiffListLock.Lock();
+				((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
+				((CGitLogListBase*)data)->m_AysnDiffListLock.Unlock();
+				::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
+			}
+			InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
+			if(rev->m_IsDiffFiles && rev->m_IsCommitParsed)
+				InterlockedExchange(&rev->m_IsFull, TRUE);
+		}
+		return 0;
+	}
+
+	static UINT AsyncThread(LPVOID data)
+	{
+		return ((CGitLogListBase*)data)->AsyncDiffThread();
+	}
+
+	int AsyncDiffThread();
+public:
+	void SafeTerminateAsyncDiffThread()
+	{
+		if(m_DiffingThread!=NULL)
+		{
+			m_AsyncThreadExit = TRUE;
+			::SetEvent(m_AsyncDiffEvent);
+			DWORD ret = WAIT_TIMEOUT;
+			// do not block here, but process messages and ask until the thread ends
+			while (ret == WAIT_TIMEOUT)
+			{
+				AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
+				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
+			}
+			m_DiffingThread = NULL;
+		}
+	};
+
+protected:
 	CComCriticalSection			m_critSec;
 
 	CXPTheme			m_Theme;
@@ -320,6 +386,7 @@ protected:
 	HICON				m_hReplacedIcon;
 	HICON				m_hAddedIcon;
 	HICON				m_hDeletedIcon;
+	HICON				m_hFetchIcon;
 
 	HFONT				m_boldFont;
 

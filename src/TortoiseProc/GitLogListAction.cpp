@@ -83,7 +83,7 @@ int CGitLogList::RevertSelectedCommits()
 		if (progress.IsValid() && (this->GetSelectedCount() > 1) )
 		{
 			progress.FormatPathLine(1, _T("Revert %s"), r1->m_CommitHash.ToString());
-			progress.FormatPathLine(2, _T("%s"),        r1->m_Subject);
+			progress.FormatPathLine(2, _T("%s"),        r1->GetSubject());
 			progress.SetProgress(i,         this->GetSelectedCount());
 		}
 		i++;
@@ -142,7 +142,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 		if (progress.IsValid())
 		{
 			progress.FormatPathLine(1, _T("Pick up %s"), logs.GetGitRevAt(i).m_CommitHash.ToString());
-			progress.FormatPathLine(2, _T("%s"), logs.GetGitRevAt(i).m_Subject);
+			progress.FormatPathLine(2, _T("%s"), logs.GetGitRevAt(i).GetSubject());
 			progress.SetProgress(logs.size()-i, logs.size());
 		}
 		if ((progress.IsValid())&&(progress.HasUserCancelled()))
@@ -224,7 +224,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					command.Format(_T("git.exe diff -r -p --stat"));
 
 				g_Git.RunLogFile(command,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r1->m_Subject);
+				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r1->GetSubject());
 			}
 			break;
 
@@ -434,7 +434,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				for(int i=FirstSelect;i<=LastSelect;i++)
 				{
 					GitRev* pRev = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
-					dlg.m_sLogMessage+=pRev->m_Subject+_T("\n")+pRev->m_Body;
+					dlg.m_sLogMessage+=pRev->GetSubject()+_T("\n")+pRev->GetBody();
 					dlg.m_sLogMessage+=_T("\n");
 				}
 				dlg.m_bWholeProject=true;
@@ -534,7 +534,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					int indexNext = GetNextSelectedItem(pos);
 					dlg.m_CommitList.m_logEntries.push_back( ((GitRev*)m_arShownList[indexNext])->m_CommitHash );
 					dlg.m_CommitList.m_LogCache.m_HashMap[((GitRev*)m_arShownList[indexNext])->m_CommitHash]=*(GitRev*)m_arShownList[indexNext];
-					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size()-1).m_Action |= CTGitPath::LOGACTIONS_REBASE_PICK;
+					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size()-1).GetAction(this) |= CTGitPath::LOGACTIONS_REBASE_PICK;
 				}
 	
 				if(dlg.DoModal() == IDOK)
@@ -945,7 +945,7 @@ void CGitLogList::SetSelectedAction(int action)
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		((GitRev*)m_arShownList[index])->m_Action = action;
+		((GitRev*)m_arShownList[index])->GetAction(this) = action;
 		CRect rect;
 		this->GetItemRect(index,&rect,LVIR_BOUNDS);
 		this->InvalidateRect(rect);

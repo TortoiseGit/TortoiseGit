@@ -109,6 +109,7 @@ IDI_EXPLORER            ICON                    "explorer.ico"
 IDI_OPEN                ICON                    "open.ico"
 IDI_GITCONFIG           ICON                    "gitconfig.ico"
 IDI_GITREMOTE           ICON                    "gitremote.ico"
+IDI_ACTIONFETCHING      ICON                    "..\\resources\\actionfetching.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3448,6 +3449,20 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_ERR_PROVIDER_VALIDATE_FAILED 
+                            "The issue-tracker provider was unable to validate the parameter string"
+    IDS_ERR_NO_AVAILABLE_BUGTRAQ_PROVIDERS 
+                            "There are no issue-tracker providers available."
+    IDS_SETTINGS_BUGTRAQ_SELECTFOLDERPATH 
+                            "Select folder to associate with this issue tracker"
+    IDS_FILEDIFF_STATADD    "Add"
+    IDS_FILEDIFF_STATDEL    "Del"
+    IDS_LOG_FILE_LINE_ADD   "Add"
+    1014                    "Del"
+END
+
+STRINGTABLE 
+BEGIN
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
     IDS_WARN_SHAREFILEACCESS 
                             "You are trying to access a repository via file:// on\na shared network drive.\nThis could lead to severe repository corruption!\nDo you really want to do that?"
@@ -3971,7 +3986,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_FILTER_ALL      "Messages, authors and paths"
+    IDS_LOG_FILTER_ALL      "Messages, authors"
     IDS_LOG_FILTER_PATHS    "Paths"
     IDS_LOG_FILTER_AUTHORS  "Authors"
     IDS_LOG_FILTER_MESSAGES "Messages"
@@ -4688,19 +4703,6 @@ BEGIN
                             "Apply 'Power User' defaults. Those will provide a smoother experience.\nYou should know the meaning of all the settings above."
 END
 
-STRINGTABLE 
-BEGIN
-    IDS_ERR_PROVIDER_VALIDATE_FAILED 
-                            "The issue-tracker provider was unable to validate the parameter string"
-    IDS_ERR_NO_AVAILABLE_BUGTRAQ_PROVIDERS 
-                            "There are no issue-tracker providers available."
-    IDS_SETTINGS_BUGTRAQ_SELECTFOLDERPATH 
-                            "Select folder to associate with this issue tracker"
-    IDS_FILEDIFF_STATADD    "Add"
-    IDS_FILEDIFF_STATDEL    "Del"
-    IDS_LOG_FILE_LINE_ADD   "Add"
-    1014                    "Del"
-END
 
 STRINGTABLE 
 BEGIN
