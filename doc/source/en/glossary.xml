@@ -76,16 +76,10 @@
 		<glossterm>Cleanup</glossterm>
 		<glossdef>
 			<para>
-				To quote from the Git book:
-				<quote>
-					Recursively clean up the working copy, removing locks and resuming
-					unfinished operations. If you ever get a
-					<emphasis>working copy locked</emphasis> error,
-					run this command to remove stale locks and get your working copy
-					into a usable state again.
-				</quote>
-				Note that in this context <emphasis>lock</emphasis> refers to local filesystem
-				locking, not repository locking.
+				Remove untracked files from the working tree.
+			</para>
+			<para>
+				<emphasis>It is difference with tortoisesvn cleanup</emphasis>
 			</para>
 		</glossdef>
 	</glossentry>

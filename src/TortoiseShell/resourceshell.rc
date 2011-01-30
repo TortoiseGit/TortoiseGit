@@ -218,7 +218,7 @@ BEGIN
     IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
     IDS_MENUDESCADD         "Adds file(s) to Git control"
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
-    IDS_MENUDESCCLEANUP     "Cleanup interrupted operations, locked files, ..."
+    IDS_MENUDESCCLEANUP     "Remove untracked files from the working tree, ..."
     IDS_MENUDESCRESOLVE     "Resolves conflicted files"
     IDS_MENUDESCSWITCH      "Switch/Checkout working copy to another branch / tag"
 END
