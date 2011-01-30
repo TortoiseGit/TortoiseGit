@@ -180,6 +180,35 @@ int CGitLogListBase::AsyncDiffThread()
 			m_AsynDiffList.pop_back();
 			m_AysnDiffListLock.Unlock();
 
+			if( pRev->m_CommitHash.IsEmpty() )
+			{	
+				if(pRev->m_IsDiffFiles)
+					continue;
+
+				pRev->GetFiles(this).Clear();
+				pRev->m_ParentHash.clear();
+				pRev->m_ParentHash.push_back(m_HeadHash);
+				if(g_Git.IsInitRepos())
+				{
+					g_Git.GetInitAddList(pRev->GetFiles(this));
+
+				}else
+				{	
+					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
+				}
+				pRev->GetAction(this) =0;
+
+				for(int j=0;j< pRev->GetFiles(this).GetCount();j++)
+					pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
+
+				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
+				InterlockedExchange(&pRev->m_IsFull, TRUE);
+
+				pRev->GetBody().Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).GetFiles(this).GetCount());
+				::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
+				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
+			}
+
 			if(!pRev->CheckAndDiff())
 			{	// fetch change file list
 				for(int i=GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex()+GetCountPerPage(); i++)
@@ -2078,6 +2107,7 @@ int CGitLogListBase::BeginFetchLog()
 	if(m_bShowWC)
 	{
 		this->m_logEntries.insert(m_logEntries.begin(),this->m_wcRev.m_CommitHash);
+		ResetWcRev();
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
 	}
 
@@ -2230,28 +2260,6 @@ UINT CGitLogListBase::LogThread()
 		GitRev *pRev = &m_logEntries.GetGitRevAt(0);
 
 		m_arShownList.Add(pRev);
-
-		if( pRev->m_CommitHash.IsEmpty() )
-		{
-			pRev->GetFiles(this).Clear();
-			pRev->m_ParentHash.clear();
-			pRev->m_ParentHash.push_back(m_HeadHash);
-			if(g_Git.IsInitRepos())
-			{
-				g_Git.GetInitAddList(pRev->GetFiles(this));
-
-			}else
-			{
-				//g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
-			}
-			pRev->GetAction(this) =0;
-
-			for(int j=0;j< pRev->GetFiles(this).GetCount();j++)
-				pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
-
-			pRev->GetBody().Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).GetFiles(this).GetCount());
-			::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
-		}
 	}
 
 
@@ -2359,7 +2367,9 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	
 	this->SetItemCountEx(0);
 	this->Clear();
-
+	
+	ResetWcRev();
+	
 	//Update branch and Tag info
 	ReloadHashMap();
 	//Assume Thread have exited

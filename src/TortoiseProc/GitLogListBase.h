@@ -82,6 +82,12 @@ public:
 			m_bShowBugtraqColumn = false;
 	}
 
+	void ResetWcRev()
+	{
+		m_wcRev.GetBody()=_T("Fetching Status...");
+		m_wcRev.m_CallDiffAsync = DiffAsync;
+		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);		
+	}
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 
 	volatile LONG		m_bNoDispUpdates;
