@@ -2016,17 +2016,22 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		
 		temp.LoadString(IDS_LOG_FILTER_MESSAGES);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_MESSAGES), LOGFILTER_MESSAGES, temp);
+/*
+		//Path support because we use git grep to filter message
 		temp.LoadString(IDS_LOG_FILTER_PATHS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_PATHS), LOGFILTER_PATHS, temp);
+*/
 		temp.LoadString(IDS_LOG_FILTER_AUTHORS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_AUTHORS), LOGFILTER_AUTHORS, temp);
+
+/*		//We use git grep to filter message
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
 		if (m_LogList.m_bShowBugtraqColumn == true) {
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}
-		
+*/		
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		temp.LoadString(IDS_LOG_FILTER_REGEX);
@@ -2132,6 +2137,13 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 
 	if (nIDEvent == LOGFILTER_TIMER)
 	{
+		KillTimer(LOGFILTER_TIMER);
+		m_limit = 0;
+		m_LogList.Refresh(FALSE);
+		FillLogMessageCtrl(false);
+
+#if 0
+		/* we will use git built-in grep to filter log */
 		if (this->IsThreadRunning())
 		{
 			// thread still running! So just restart the timer.
@@ -2168,6 +2180,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		if (bSetFocusToFilterControl)
 			GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 		UpdateLogInfoLabel();
+#endif
 	} // if (nIDEvent == LOGFILTER_TIMER)
 	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
 	__super::OnTimer(nIDEvent);
@@ -3130,7 +3143,9 @@ void CLogDlg::OnEnChangeSearchedit()
 		theApp.DoWaitCursor(1);
 		KillTimer(LOGFILTER_TIMER);
 		FillLogMessageCtrl(false);
-		m_LogList.StartFilter();
+
+		Refresh();
+		//m_LogList.StartFilter();
 #if 0
 		InterlockedExchange(&m_bNoDispUpdates, TRUE);
 		m_arShownList.RemoveAll();

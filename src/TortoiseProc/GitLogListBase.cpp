@@ -2121,7 +2121,20 @@ int CGitLogListBase::BeginFetchLog()
 		else
 			pTo = &CString(_T("HEAD"));
 	}
-	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true,m_From,m_To);
+
+	CFilterData data;
+	data.m_From = m_From;
+	data.m_To =m_To;
+	
+	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
+		data.m_Author = this->m_sFilterText;
+
+	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_MESSAGES) 
+		data.m_MessageFilter = this->m_sFilterText;
+
+	data.m_IsRegex = m_bFilterWithRegex;
+	
+	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true,&data);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())

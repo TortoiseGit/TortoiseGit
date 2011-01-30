@@ -63,6 +63,7 @@ enum LISTITEMSTATES_MINE {
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
 #define MSG_FETCHED_DIFF		(WM_USER+113)
 
+
 class CGitLogListBase : public CHintListCtrl
 {
 	DECLARE_DYNAMIC(CGitLogListBase)
@@ -71,6 +72,8 @@ public:
 	CGitLogListBase();
 	virtual ~CGitLogListBase();
 	ProjectProperties	m_ProjectProperties;
+
+	CFilterData m_Filter;
 
 	void UpdateProjectProperties()
 	{

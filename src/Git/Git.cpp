@@ -571,7 +571,7 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 }
 
 CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
-						__time64_t start, __time64_t end)
+						struct CFilterData *Filter)
 {
 	CString cmd;
 	CString log;
@@ -633,18 +633,48 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 
 	CString st1,st2;
 
-	if(start != -1)
+	if( Filter && (Filter->m_From != -1))
 	{
-		st1.Format(_T(" --max-age=%I64u "), start);
+		st1.Format(_T(" --max-age=%I64u "), Filter->m_From);
 		param += st1;
 	}
 
-	if(end != -1)
+	if( Filter && (Filter->m_To != -1))
 	{
-		st2.Format(_T(" --min-age=%I64u "), end);
+		st2.Format(_T(" --min-age=%I64u "), Filter->m_To);
 		param += st2;
 	}
 
+	bool isgrep = false;
+	if( Filter && (!Filter->m_Author.IsEmpty()))
+	{
+		st1.Format(_T(" --author=%s" ),Filter->m_Author);
+		param += st1;
+		isgrep = true;
+	}
+
+	if( Filter && (!Filter->m_Committer.IsEmpty()))
+	{
+		st1.Format(_T(" --committer=%s" ),Filter->m_Author);
+		param += st1;
+		isgrep = true;
+	}
+
+	if( Filter && (!Filter->m_MessageFilter.IsEmpty()))
+	{
+		st1.Format(_T(" --grep=%s" ),Filter->m_MessageFilter);
+		param += st1;
+		isgrep = true;
+	}
+
+	if(Filter && isgrep)
+	{
+		if(!Filter->m_IsRegex)
+			param+=_T(" --fixed-strings ");
+		
+		param += _T(" --regexp-ignore-case --extended-regexp ");
+	}
+	
 	if(paramonly)
 		cmd.Format(_T("%s -z  %s --parents "),
 				num,param);
