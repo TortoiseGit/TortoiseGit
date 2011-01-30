@@ -748,7 +748,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 	Gdiplus::Graphics graphics( hdc );
 
-	graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 	
 	// arc
 	switch (type) {
@@ -829,7 +829,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 	Gdiplus::Pen myPen(GetGdiColor(col),2);
 	
-	graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
+	graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 
 	//p->setPen(myPen);
 
@@ -901,7 +901,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		break;
 	}
 
-	graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
 	CBrush brush;
 	brush.CreateSolidBrush(col);
@@ -916,7 +916,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
-		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 		graphics.FillEllipse(&myBrush, R_CENTER);
 		//p->drawEllipse(R_CENTER);
 		break;
@@ -926,7 +926,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
 		//p->drawRect(R_CENTER);
-		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 		graphics.FillRectangle(&myBrush, R_CENTER);
 		break;
 	case Lanes::UNAPPLIED:
@@ -934,7 +934,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(Qt::red);
 		//p->drawRect(m - r, h - 1, d, 2);
-		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 		graphics.FillRectangle(&myBrush,m-r,h-1,d,2);
 		break;
 	case Lanes::APPLIED:
@@ -943,14 +943,14 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(DARK_GREEN);
 		//p->drawRect(m - r, h - 1, d, 2);
 		//p->drawRect(m - 1, h - r, 2, d);
-		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 		graphics.FillRectangle(&myBrush,m-r,h-1,d,2);
 		graphics.FillRectangle(&myBrush,m-1,h-r,2,d);
 		break;
 	case Lanes::BOUNDARY:
 		//p->setBrush(back);
 		//p->drawEllipse(R_CENTER);
-		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 		graphics.DrawEllipse(&myPen, R_CENTER);
 		break;
 	case Lanes::BOUNDARY_C:
@@ -958,7 +958,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::BOUNDARY_L:
 		//p->setBrush(back);
 		//p->drawRect(R_CENTER);
-		graphics.SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeNone);
+		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 		graphics.FillRectangle(&myBrush,R_CENTER);
 		break;
 	default:
