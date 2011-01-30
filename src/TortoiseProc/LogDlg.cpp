@@ -154,7 +154,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 //	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
-	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnRefresh)
+	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnBnClickedRefresh)
 	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER,&CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
@@ -695,10 +695,10 @@ void CLogDlg::OnBnClickedRefresh()
 	Refresh (true);
 }
 
-void CLogDlg::Refresh (bool /*autoGoOnline*/)
+void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
 	m_limit = 0;
-	m_LogList.Refresh();
+	m_LogList.Refresh(clearfilter);
 	FillLogMessageCtrl(false);
 }
 
@@ -3066,7 +3066,7 @@ void CLogDlg::OnRefresh()
 		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
 		
-		Refresh (true);
+		Refresh (false);
 	}
 }
 

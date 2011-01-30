@@ -177,7 +177,7 @@ private:
 	
 	CRegDWORD m_regbAllBranch;
 	
-	void Refresh (bool autoGoOnline = false);
+	void Refresh (bool clearfilter = false);
 	BOOL IsDiffPossible(LogChangedPath * changedpath, git_revnum_t rev);
 	BOOL Open(bool bOpenWith, CString changedpath, git_revnum_t rev);
 	void EditAuthor(const CLogDataVector& logs);
