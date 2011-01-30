@@ -53,5 +53,5 @@ typedef struct tagTHREADNAME_INFO
  * Inside the current thread you can use -1 for dwThreadID.
  * \param dwThreadID The Thread ID
  * \param szThreadName A name for the thread.
- */   
+ */
 void SetThreadName(DWORD dwThreadID, LPCTSTR szThreadName);

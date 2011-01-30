@@ -24,7 +24,6 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 	, m_bRunning(TRUE)
 {
 	// enable the required privileges for this process
-	
 	LPCTSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
 									SE_RESTORE_NAME,
 									SE_CHANGE_NOTIFY_NAME
@@ -32,10 +31,10 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 
 	for (int i=0; i<(sizeof(arPrivelegeNames)/sizeof(LPCTSTR)); ++i)
 	{
-		HANDLE hToken;    
-		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken)) 	
-		{        
-			TOKEN_PRIVILEGES tp = { 1 };        
+		HANDLE hToken;
+		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
+		{
+			TOKEN_PRIVILEGES tp = { 1 };
 
 			if (LookupPrivilegeValue(NULL, arPrivelegeNames[i],  &tp.Privileges[0].Luid))
 			{
@@ -43,8 +42,8 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 
 				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL);
 			}
-			CloseHandle(hToken);	
-		}	
+			CloseHandle(hToken);
+		}
 	}
 
 	unsigned int threadId;
@@ -70,7 +69,7 @@ void CPathWatcher::Stop()
 	{
 		PostQueuedCompletionStatus(m_hCompPort, 0, NULL, NULL);
 	}
-	
+
 	if (m_hThread != INVALID_HANDLE_VALUE)
 	{
 		if( WaitForSingleObject(m_hThread, 1000) != WAIT_OBJECT_0 )
@@ -108,7 +107,7 @@ bool CPathWatcher::AddPath(const CTGitPath& path)
 		if (watchedPaths[i].IsAncestorOf(path))
 			return false;		// already watched (recursively)
 	}
-	
+
 	// now check if with the new path we might have a new root
 	CTGitPath newroot;
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
@@ -224,8 +223,8 @@ void CPathWatcher::WorkerThread()
 				m_hCompPort = NULL;
 				for (int i=0; i<watchedPaths.GetCount(); ++i)
 				{
-					HANDLE hDir = CreateFile(watchedPaths[i].GetWinPath(), 
-											FILE_LIST_DIRECTORY, 
+					HANDLE hDir = CreateFile(watchedPaths[i].GetWinPath(),
+											FILE_LIST_DIRECTORY,
 											FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
 											NULL, //security attributes
 											OPEN_EXISTING,
@@ -242,7 +241,7 @@ void CPathWatcher::WorkerThread()
 						i--; if (i<0) i=0;
 						break;
 					}
-					
+
 					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir, watchedPaths[i]);
 					m_hCompPort = CreateIoCompletionPort(hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
 					if (m_hCompPort == NULL)
@@ -283,7 +282,7 @@ void CPathWatcher::WorkerThread()
 					return;
 				// NOTE: the longer this code takes to execute until ReadDirectoryChangesW
 				// is called again, the higher the chance that we miss some
-				// changes in the file system! 
+				// changes in the file system!
 				if (pdi)
 				{
 					if (numBytes == 0)
@@ -294,7 +293,7 @@ void CPathWatcher::WorkerThread()
 					if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 						goto continuewatching;
 					DWORD nOffset = pnotify->NextEntryOffset;
-					do 
+					do
 					{
 						nOffset = pnotify->NextEntryOffset;
 						SecureZeroMemory(buf, MAX_PATH*4*sizeof(TCHAR));
@@ -360,7 +359,7 @@ CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& Directo
 	m_hDir(hDir),
 	m_DirName(DirectoryName)
 {
-	ATLASSERT( hDir != INVALID_HANDLE_VALUE 
+	ATLASSERT( hDir != INVALID_HANDLE_VALUE
 		&& !DirectoryName.IsEmpty());
 	memset(&m_Overlapped, 0, sizeof(m_Overlapped));
 	m_DirPath = m_DirName.GetWinPathString();
@@ -383,11 +382,4 @@ bool CPathWatcher::CDirWatchInfo::CloseDirectoryHandle()
 	}
 	return b;
 }
-
-
-
-
-
-
-
 

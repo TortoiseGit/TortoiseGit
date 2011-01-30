@@ -36,8 +36,8 @@
 #include <regex>
 using namespace std;
 
-#define ENDDIALOGTIMER 100
-#define REFRESHTIMER   101
+#define ENDDIALOGTIMER	100
+#define REFRESHTIMER	101
 
 /**
  * \ingroup TortoiseProc
@@ -48,7 +48,7 @@ class CCommitDlg : public CResizableStandAloneDialog, public CSciEditContextMenu
 	DECLARE_DYNAMIC(CCommitDlg)
 
 public:
-	CCommitDlg(CWnd* pParent = NULL);   // standard constructor
+	CCommitDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CCommitDlg();
 
 	// CSciEditContextMenuInterface
@@ -73,7 +73,7 @@ private:
 	enum { IDD = IDD_COMMITDLG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

@@ -128,7 +128,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 		m_pToolTip->Activate(TRUE);
 	}
-	
+
 	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive")));
 	m_bSortByCommitCount = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount")));
 	UpdateData(FALSE);
@@ -219,7 +219,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	EnableSaveRestore(_T("StatGraphDlg"));
 
-	// gather statistics data, only needs to be updated when the checkbox with 
+	// gather statistics data, only needs to be updated when the checkbox with
 	// the case sensitivity of author names is changed
 	GatherData();
 
@@ -242,23 +242,23 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	int statspage = lastStatsPage % 10;
 	switch (statspage) {
-		case 1 : 
+		case 1 :
 			m_GraphType = MyGraph::Bar;
 			m_bStacked = true;
 			break;
-		case 2 : 
+		case 2 :
 			m_GraphType = MyGraph::Bar;
 			m_bStacked = false;
 			break;
-		case 3 : 
+		case 3 :
 			m_GraphType = MyGraph::Line;
 			m_bStacked = true;
 			break;
-		case 4 : 
+		case 4 :
 			m_GraphType = MyGraph::Line;
 			m_bStacked = false;
 			break;
-		case 5 : 
+		case 5 :
 			m_GraphType = MyGraph::PieChart;
 			break;
 
@@ -347,7 +347,7 @@ void CStatGraphDlg::UpdateWeekCount()
 	__time64_t min_date = (__time64_t)m_parDates->GetAt(0);
 	__time64_t max_date = min_date;
 	INT_PTR count = m_parDates->GetCount();
-	for (INT_PTR i=0; i<count; ++i) 
+	for (INT_PTR i=0; i<count; ++i)
 	{
 		__time64_t d = (__time64_t)m_parDates->GetAt(i);
 		if (d < min_date)		min_date = d;
@@ -357,7 +357,7 @@ void CStatGraphDlg::UpdateWeekCount()
 	// Store start date of the interval in the member variable m_minDate
 	m_minDate = min_date;
 	m_maxDate = max_date;
-	
+
 	// How many weeks does the time period cover?
 
 	// Get time difference between start and end date
@@ -376,7 +376,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 	// is Monday, march 31, 0:30:00, then the returned week is one week less than
 	// the real week.
 	// TODO: ?
-	// write a function 
+	// write a function
 	// getDSTOffset(const CTime& time)
 	// which returns the DST offset for a given time/date. Then we can use this offset
 	// to correct our GetDays() calculation to get the correct week again
@@ -515,7 +515,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 	return iWeekOfYear;
 }
 
-void CStatGraphDlg::GatherData() 
+void CStatGraphDlg::GatherData()
 {
 	// Sanity check
 	if ((m_parAuthors==NULL)||(m_parDates==NULL)||(m_parFileChanges==NULL))
@@ -535,7 +535,7 @@ void CStatGraphDlg::GatherData()
 	__time64_t d = (__time64_t)m_parDates->GetAt(0);
 	int nLastUnit = GetUnit(d);
 	// Now loop over all weeks and gather the info
-	for (LONG i=0; i<m_nTotalCommits; ++i) 
+	for (LONG i=0; i<m_nTotalCommits; ++i)
 	{
 		// Find the interval number
 		__time64_t commitDate = (__time64_t)m_parDates->GetAt(i);
@@ -561,7 +561,7 @@ void CStatGraphDlg::GatherData()
 	}
 
 	// Find first and last interval number.
-	if (!m_commitsPerUnitAndAuthor.empty()) 
+	if (!m_commitsPerUnitAndAuthor.empty())
 	{
 		IntervalDataMap::iterator interval_it = m_commitsPerUnitAndAuthor.begin();
 		m_firstInterval = interval_it->first;
@@ -569,7 +569,7 @@ void CStatGraphDlg::GatherData()
 		--interval_it;
 		m_lastInterval = interval_it->first;
 		// Sanity check - if m_lastInterval is too large it could freeze TSVN and take up all memory!!!
-		assert(m_lastInterval >= 0 && m_lastInterval < 10000); 
+		assert(m_lastInterval >= 0 && m_lastInterval < 10000);
 	}
 	else
 	{
@@ -581,8 +581,8 @@ void CStatGraphDlg::GatherData()
 	m_authorNames.clear();
 	if (m_commitsPerAuthor.size())
 	{
-		for (std::map<stdstring, LONG>::iterator it = m_commitsPerAuthor.begin(); 
-			it != m_commitsPerAuthor.end(); ++it) 
+		for (std::map<stdstring, LONG>::iterator it = m_commitsPerAuthor.begin();
+			it != m_commitsPerAuthor.end(); ++it)
 		{
 			m_authorNames.push_back(it->first);
 		}
@@ -591,11 +591,11 @@ void CStatGraphDlg::GatherData()
 	// Sort the list of authors based on commit count
 	m_authorNames.sort( MoreCommitsThan(&m_commitsPerAuthor) );
 
-	// All done, now the statistics pages can retrieve the data and 
+	// All done, now the statistics pages can retrieve the data and
 	// extract the information to be shown.
 }
 
-void CStatGraphDlg::FilterSkippedAuthors(std::list<stdstring>& included_authors, 
+void CStatGraphDlg::FilterSkippedAuthors(std::list<stdstring>& included_authors,
 										 std::list<stdstring>& skipped_authors)
 {
 	included_authors.clear();
@@ -603,12 +603,12 @@ void CStatGraphDlg::FilterSkippedAuthors(std::list<stdstring>& included_authors,
 
 	unsigned int included_authors_count = m_Skipper.GetPos();
 	// if we only leave out one author, still include him with his name
-	if (included_authors_count + 1 == m_authorNames.size()) 
+	if (included_authors_count + 1 == m_authorNames.size())
 		++included_authors_count;
 
 	// add the included authors first
 	std::list<stdstring>::iterator author_it = m_authorNames.begin();
-	while (included_authors_count > 0 && author_it != m_authorNames.end()) 
+	while (included_authors_count > 0 && author_it != m_authorNames.end())
 	{
 		// Add him/her to the included list
 		included_authors.push_back(*author_it);
@@ -621,7 +621,7 @@ void CStatGraphDlg::FilterSkippedAuthors(std::list<stdstring>& included_authors,
 	std::copy(author_it, m_authorNames.end(), std::back_inserter(skipped_authors) );
 
 	// Sort authors alphabetically if user wants that.
-	if (!m_bSortByCommitCount) 
+	if (!m_bSortByCommitCount)
 	{
 		included_authors.sort();
 	}
@@ -634,8 +634,8 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 	ShowLabels(FALSE);
 	ClearGraph();
 
-	// This function relies on a previous call of GatherData(). 
-	// This can be detected by checking the week count. 
+	// This function relies on a previous call of GatherData().
+	// This can be detected by checking the week count.
 	// If the week count is equal to -1, it hasn't been called before.
 	if (m_nWeeks == -1)
 		GatherData();
@@ -644,7 +644,7 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 		return;
 
 	// We need at least one author
-	if (m_authorNames.empty()) 
+	if (m_authorNames.empty())
 		return;
 
 	// Add a single series to the chart
@@ -668,7 +668,7 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 	std::list<stdstring> others;
 	FilterSkippedAuthors(authors, others);
 
-	// Loop over all authors in the authors list and 
+	// Loop over all authors in the authors list and
 	// add them to the graph.
 
 	if (authors.size())
@@ -708,8 +708,8 @@ void CStatGraphDlg::ShowCommitsByDate()
 	ShowLabels(FALSE);
 	ClearGraph();
 
-	// This function relies on a previous call of GatherData(). 
-	// This can be detected by checking the week count. 
+	// This function relies on a previous call of GatherData().
+	// This can be detected by checking the week count.
 	// If the week count is equal to -1, it hasn't been called before.
 	if (m_nWeeks == -1)
 		GatherData();
@@ -743,7 +743,7 @@ void CStatGraphDlg::ShowCommitsByDate()
 	// If we have skipped authors, add a graph series for all those.
 	CString sOthers(MAKEINTRESOURCE(IDS_STATGRAPH_OTHERGROUP));
 	stdstring othersName;
-	if (!others.empty()) 
+	if (!others.empty())
 	{
 		temp.Format(_T(" (%ld)"), others.size());
 		sOthers += temp;
@@ -765,7 +765,7 @@ void CStatGraphDlg::ShowCommitsByDate()
 			{
 				// Do we have some data for the current author in the current interval?
 				AuthorDataMap::const_iterator data_it = m_commitsPerUnitAndAuthor[i].find(*it);
-				if (data_it == m_commitsPerUnitAndAuthor[i].end()) 
+				if (data_it == m_commitsPerUnitAndAuthor[i].end())
 					continue;
 				commitCount[*it] += data_it->second;
 			}
@@ -777,7 +777,7 @@ void CStatGraphDlg::ShowCommitsByDate()
 			{
 				// Do we have some data for the author in the current interval?
 				AuthorDataMap::const_iterator data_it = m_commitsPerUnitAndAuthor[i].find(*it);
-				if (data_it == m_commitsPerUnitAndAuthor[i].end()) 
+				if (data_it == m_commitsPerUnitAndAuthor[i].end())
 					continue;
 				commitCount[othersName] += data_it->second;
 			}
@@ -788,7 +788,7 @@ void CStatGraphDlg::ShowCommitsByDate()
 		// Loop over all created graphs and set the corresponding data.
 		if (authorGraphMap.size())
 		{
-			for (AuthorDataMap::const_iterator it = authorGraphMap.begin(); it != authorGraphMap.end(); ++it) 
+			for (AuthorDataMap::const_iterator it = authorGraphMap.begin(); it != authorGraphMap.end(); ++it)
 			{
 				graphData->SetData(it->second, commitCount[it->first]);
 			}
@@ -811,8 +811,8 @@ void CStatGraphDlg::ShowStats()
 		return;
 	ShowLabels(TRUE);
 
-	// This function relies on a previous call of GatherData(). 
-	// This can be detected by checking the week count. 
+	// This function relies on a previous call of GatherData().
+	// This can be detected by checking the week count.
 	// If the week count is equal to -1, it hasn't been called before.
 	if (m_nWeeks == -1)
 		GatherData();
@@ -826,7 +826,7 @@ void CStatGraphDlg::ShowStats()
 	// Find most and least active author names.
 	stdstring mostActiveAuthor;
 	stdstring leastActiveAuthor;
-	if (nAuthors > 0) 
+	if (nAuthors > 0)
 	{
 		mostActiveAuthor = m_authorNames.front();
 		leastActiveAuthor = m_authorNames.back();
@@ -845,7 +845,7 @@ void CStatGraphDlg::ShowStats()
 
 	// Loop over all intervals and find min and max values for commit count and file changes.
 	// Also store the stats for the most and least active authors.
-	for (int i=m_firstInterval; i<=m_lastInterval; ++i) 
+	for (int i=m_firstInterval; i<=m_lastInterval; ++i)
 	{
 		// Loop over all commits in this interval and count the number of commits by all authors.
 		int commitCount = 0;
@@ -874,7 +874,7 @@ void CStatGraphDlg::ShowStats()
 			nFileChangesMax = fileChangeCount;
 
 		// also get min/max data for most and least active authors
-		if (nAuthors > 0) 
+		if (nAuthors > 0)
 		{
 			// check if author is present in this interval
 			AuthorDataMap::iterator author_it = m_commitsPerUnitAndAuthor[i].find(mostActiveAuthor);
@@ -1122,7 +1122,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 	{
 		size_t included_authors_count = m_Skipper.GetPos();
 		// if we only leave out one author, still include him with his name
-		if (included_authors_count + 1 == m_authorNames.size()) 
+		if (included_authors_count + 1 == m_authorNames.size())
 			++included_authors_count;
 
 		// find the minimum number of commits that the shown authors have
@@ -1140,20 +1140,20 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 	}
 }
 
-void CStatGraphDlg::AuthorsCaseSensitiveChanged() 
+void CStatGraphDlg::AuthorsCaseSensitiveChanged()
 {
 	UpdateData();	// update checkbox state
 	GatherData();	// first regenerate the statistics data
 	RedrawGraph();	// then update the current statistics page
 }
 
-void CStatGraphDlg::SortModeChanged() 
+void CStatGraphDlg::SortModeChanged()
 {
 	UpdateData();	// update checkbox state
 	RedrawGraph();	// then update the current statistics page
 }
 
-void CStatGraphDlg::ClearGraph() 
+void CStatGraphDlg::ClearGraph()
 {
 	m_graph.Clear();
 	for (int j=0; j<m_graphDataArray.GetCount(); ++j)
@@ -1300,7 +1300,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 	else
 	{
 		// to save the graph as a pixel picture (e.g. gif, png, jpeg, ...)
-		// the user needs to have GDI+ installed. So check if GDI+ is 
+		// the user needs to have GDI+ installed. So check if GDI+ is
 		// available before we start using it.
 		TCHAR gdifindbuf[MAX_PATH];
 		_tcscpy_s(gdifindbuf, MAX_PATH, _T("gdiplus.dll"));
@@ -1324,9 +1324,9 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			if (!dc.CreateCompatibleDC(&ddc))
 			{
 				LPVOID lpMsgBuf;
-				if (!FormatMessage( 
-					FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-					FORMAT_MESSAGE_FROM_SYSTEM | 
+				if (!FormatMessage(
+					FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					FORMAT_MESSAGE_FROM_SYSTEM |
 					FORMAT_MESSAGE_IGNORE_INSERTS,
 					NULL,
 					GetLastError(),
@@ -1347,9 +1347,9 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			if (hbm==0)
 			{
 				LPVOID lpMsgBuf;
-				if (!FormatMessage( 
-					FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-					FORMAT_MESSAGE_FROM_SYSTEM | 
+				if (!FormatMessage(
+					FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					FORMAT_MESSAGE_FROM_SYSTEM |
 					FORMAT_MESSAGE_IGNORE_INSERTS,
 					NULL,
 					GetLastError(),
@@ -1369,12 +1369,12 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			RedrawGraph();
 			m_graph.DrawGraph(dc);
 			// now use GDI+ to save the picture
-			CLSID   encoderClsid;
-			GdiplusStartupInput gdiplusStartupInput;
-			ULONG_PTR           gdiplusToken;
+			CLSID encoderClsid;
+			GdiplusStartupInput	gdiplusStartupInput;
+			ULONG_PTR			gdiplusToken;
 			CString sErrormessage;
 			if (GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, NULL )==Ok)
-			{   
+			{
 				{
 					Bitmap bitmap(hbm, NULL);
 					if (bitmap.GetLastStatus()==Ok)
@@ -1435,8 +1435,8 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 
 int CStatGraphDlg::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 {
-	UINT  num = 0;          // number of image encoders
-	UINT  size = 0;         // size of the image encoder array in bytes
+	UINT  num = 0;	// number of image encoders
+	UINT  size = 0;	// size of the image encoder array in bytes
 
 	ImageCodecInfo* pImageCodecInfo = NULL;
 
@@ -1491,7 +1491,7 @@ void CStatGraphDlg::StoreCurrentGraphType()
 	{
 		statspage += 5;
 	}
-	
+
 	// store current chart type in registry
 	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 	lastStatsPage = statspage;

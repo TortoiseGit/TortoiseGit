@@ -31,7 +31,7 @@
 
           <?if $(var.Platform) = "x64" ?>
 		  <Merge Id='ATL' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_ATL_x86_x64.msm' DiskId='1' />
-		  <Merge Id='ATL Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_ATL_x86_x64.msm' DiskId='1' />		  
+		  <Merge Id='ATL Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_ATL_x86_x64.msm' DiskId='1' />
           <Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_CRT_x86_x64.msm' DiskId='1' />
           <Merge Id='CRT Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86_x64.msm' DiskId='1' />
           <Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86_x64.msm' DiskId='1' />
@@ -45,9 +45,9 @@
          <?endif ?>
 
           <?if $(var.Platform) = "x64" ?>
-          
+
           <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-x64.msm' DiskId='1' />
-         
+
           <?endif ?>
 
           <Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
@@ -146,15 +146,15 @@
             <Registry Root="HKMU" Key="Software\Classes\*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
             <Registry Root="HKMU" Key="Software\Classes\Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
           </Component>
-		  
+
 		  <Component Id="C_SSHCLIENT_PLINK" Guid="$(var.RegSSHPLINK)" Win64="$(var.Win64YesNo)">
 			<Registry Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoisePLink.exe" Type="string" />
 		  </Component>
-		  
+
 		  <Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)">
 			<Registry Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="ssh.exe" Type="string" />
 		  </Component>
-		  
+
           <Component Id="C__machineregistry" Guid="$(var.GuidMachineRegistry)" Win64="$(var.Win64YesNo)">
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Action="createKeyAndRemoveKeyOnUninstall" />
             <Registry Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
@@ -433,7 +433,7 @@ out everything for now, leaving these enabled as they are would make the install
           </Component>
 
           <Component Id="C__touch" Guid="$(var.GuidTouch)" Win64="$(var.Win64YesNo)">
-            <File Id="F__touch" ShortName="touch.exe" Name="touch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\touch.exe" KeyPath="yes" />     
+            <File Id="F__touch" ShortName="touch.exe" Name="touch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\touch.exe" KeyPath="yes" />
           </Component>
 
 <!--             <Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
@@ -445,11 +445,11 @@ out everything for now, leaving these enabled as they are would make the install
               <File Id="F__saslNTLM" ShortName="saslNTLM.DLL" Name="saslNTLM.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslNTLM.dll" />
               <File Id="F__saslPLAIN" ShortName="saslPLAI.DLL" Name="saslPLAIN.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslPLAIN.dll" />
            </Component>
---> 
+-->
             <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
               <File Id="F__intl" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn.dll" KeyPath="yes" />
             </Component>
-            
+
             <?if $(var.IncludeCrashReportDll) = 1 ?>
             <Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
               <File Id="F__crashrpt" ShortName="CRASHRPT.DLL" Name="CrashRpt.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\CrashRpt.dll" KeyPath="yes" />
@@ -471,10 +471,10 @@ out everything for now, leaving these enabled as they are would make the install
               <File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
               <File Id="F__curl" ShortName="libcurl.DLL" Name="libcurl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl.dll" />
             </Component>
-            
+
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
-              <File Id="F__TortoiseShell" ShortName="TORTGIT.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />		  
+              <File Id="F__TortoiseShell" ShortName="TORTGIT.DLL" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
 <!--              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
 -->
 			  <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
@@ -482,8 +482,8 @@ out everything for now, leaving these enabled as they are would make the install
 			  <File Id="F__pageant"       ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
 			  <File Id="F__notepad2"      ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2.exe" />
 			  <File Id="F__askpass"       ShortName="askpass.EXE"  Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
- 	
-			  
+
+
               <File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
               <File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
               <File Id="F__websiteurl" ShortName="WEBSITE.URL" Name="Website.url" Source="include\Website.url" DiskId="1" />
@@ -535,15 +535,15 @@ out everything for now, leaving these enabled as they are would make the install
 -->
             <Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no"
               Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
-            
+
 			<Shortcut Id="S__puttykeygen" Directory="D_TortoisePrgMenu" Name="Puttygen" Advertise="no"
               Target="[INSTALLDIR]bin\puttygen.exe" Description="putty key generate" Show="normal" />
-            
+
 			<Shortcut Id="S__pageant" Directory="D_TortoisePrgMenu" Name="Pageant" Advertise="no"
               Target="[INSTALLDIR]bin\pageant.exe" Description="putty ageant" Show="normal" />
-         
+
 			</Component>
-			
+
             <Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
             </Component>
@@ -561,12 +561,12 @@ out everything for now, leaving these enabled as they are would make the install
             </Component>
 
             <Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
-             
+
               <File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
               <File Id="F__TortoiseBlame_help" ShortName="TBLAME_H.CHM" Name="TortoiseGitBlame.chm" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.chm"/>
               <File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
            </Component>
-            
+
 
             <Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
 

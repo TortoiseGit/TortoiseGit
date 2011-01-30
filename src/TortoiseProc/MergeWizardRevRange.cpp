@@ -82,7 +82,7 @@ LRESULT CMergeWizardRevRange::OnWizardNext()
 	((CMergeWizard*)GetParent())->URL2 = m_URLCombo.GetString();
 	// if the revision range has HEAD as a revision specified, we have to
 	// ask the server what the HEAD revision is: the SVNRevList can only deal
-	// with numerical revisions because we have to sort the list to get the 
+	// with numerical revisions because we have to sort the list to get the
 	// ranges correctly
 	if (m_sRevRange.Find(_T("HEAD")) >= 0)
 	{
@@ -202,7 +202,7 @@ void CMergeWizardRevRange::OnBnClickedBrowse()
 
 BOOL CMergeWizardRevRange::OnSetActive()
 {
-	CPropertySheet* psheet = (CPropertySheet*) GetParent();   
+	CPropertySheet* psheet = (CPropertySheet*) GetParent();
 	psheet->SetWizardButtons(PSWIZB_NEXT|PSWIZB_BACK);
 	SetButtonTexts();
 

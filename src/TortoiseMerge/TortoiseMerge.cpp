@@ -203,7 +203,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	pFrame->m_Data.m_sDiffFile = parser.GetVal(_T("diff"));
 	pFrame->m_Data.m_sDiffFile.Replace('/', '\\');
 	if (parser.HasKey(_T("oneway")))
-        pFrame->m_bOneWay = TRUE;
+		pFrame->m_bOneWay = TRUE;
 	if (parser.HasKey(_T("diff")))
 		pFrame->m_bOneWay = FALSE;
 	if (parser.HasKey(_T("reversedpatch")))
@@ -482,7 +482,7 @@ CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam,
 				size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
 				if (size == patchlen)
 				{
-					CommDlg_OpenSave_SetControlText(hFileDialog, edt1, sTempFile.c_str());   
+					CommDlg_OpenSave_SetControlText(hFileDialog, edt1, sTempFile.c_str());
 					PostMessage(hFileDialog, WM_COMMAND, MAKEWPARAM(IDOK, BM_CLICK), (LPARAM)(GetDlgItem(hDlg, IDOK)));
 				}
 				fclose(outFile);

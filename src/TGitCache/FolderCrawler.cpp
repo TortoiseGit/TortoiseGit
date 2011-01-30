@@ -66,9 +66,9 @@ void CFolderCrawler::Initialise()
 	// Don't call Initialize more than once
 	ATLASSERT(m_hThread == INVALID_HANDLE_VALUE);
 
-	// Just start the worker thread. 
+	// Just start the worker thread.
 	// It will wait for event being signaled.
-	// If m_hWakeEvent is already signaled the worker thread 
+	// If m_hWakeEvent is already signaled the worker thread
 	// will behave properly (with normal priority at worst).
 
 	m_bRun = true;
@@ -83,7 +83,7 @@ void CFolderCrawler::RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath
 	for(it = list.begin(); it != list.end(); ++it)
 	{
 		if(*it == path)
-		{	
+		{
 			list.erase(it);
 			it = list.begin(); /* search again*/
 			if(it == list.end())
@@ -95,7 +95,7 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 {
 	/* Index file changing*/
 	if( GitStatus::IsExistIndexLockFile((CString&)path.GetWinPathString()))
-		return; 
+		return;
 
 	if (!CGitStatusCache::Instance().IsPathGood(path))
 		return;
@@ -103,14 +103,14 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 		ATLTRACE(_T("AddDirectoryForUpdate %s\n"),path.GetWinPath());
 
 		AutoLocker lock(m_critSec);
-		
+
 		RemoveDuplicate(m_foldersToUpdate, path);
 
 		m_foldersToUpdate.push_back(path);
 		m_foldersToUpdate.back().SetCustomData(GetTickCount()+10);
-	
+
 		ATLASSERT(path.IsDirectory() || !path.Exists());
-		// set this flag while we are sync'ed 
+		// set this flag while we are sync'ed
 		// with the worker thread
 		m_bItemsAddedSinceLastCrawl = true;
 	}
@@ -148,7 +148,7 @@ unsigned int CFolderCrawler::ThreadEntry(void* pContext)
 void CFolderCrawler::WorkerThread()
 {
 	HANDLE hWaitHandles[2];
-	hWaitHandles[0] = m_hTerminationEvent;	
+	hWaitHandles[0] = m_hTerminationEvent;
 	hWaitHandles[1] = m_hWakeEvent;
 	CTGitPath workingPath;
 	bool bFirstRunAfterWakeup = false;
@@ -170,7 +170,7 @@ void CFolderCrawler::WorkerThread()
 			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
 		}
 		DWORD waitResult = WaitForMultipleObjects(sizeof(hWaitHandles)/sizeof(hWaitHandles[0]), hWaitHandles, FALSE, INFINITE);
-		
+
 		// exit event/working loop if the first event (m_hTerminationEvent)
 		// has been signaled or if one of the events has been abandoned
 		// (i.e. ~CFolderCrawler() is being executed)
@@ -188,7 +188,6 @@ void CFolderCrawler::WorkerThread()
 		// If we get here, we've been woken up by something being added to the queue.
 		// However, it's important that we don't do our crawling while
 		// the shell is still asking for items
-		// 
 		bFirstRunAfterWakeup = true;
 		for(;;)
 		{
@@ -204,7 +203,7 @@ void CFolderCrawler::WorkerThread()
 			}
 			if(m_lCrawlInhibitSet > 0)
 			{
-				// We're in crawl hold-off 
+				// We're in crawl hold-off
 				ATLTRACE("Crawl hold-off\n");
 				Sleep(50);
 				continue;
@@ -221,10 +220,10 @@ void CFolderCrawler::WorkerThread()
 				ATLTRACE(_T("Crawl stop blocking path %s\n"), m_blockedPath.GetWinPath());
 				m_blockedPath.Reset();
 			}
-	
+
 			if ((m_foldersToUpdate.empty())&&(m_pathsToUpdate.empty()))
 			{
-				// Nothing left to do 
+				// Nothing left to do
 				break;
 			}
 			currentTicks = GetTickCount();
@@ -236,27 +235,27 @@ void CFolderCrawler::WorkerThread()
 					m_bPathsAddedSinceLastCrawl = false;
 
 					workingPath = m_pathsToUpdate.front();
-                    //m_pathsToUpdateUnique.erase (workingPath);
+					//m_pathsToUpdateUnique.erase (workingPath);
 					m_pathsToUpdate.pop_front();
 					if ((DWORD(workingPath.GetCustomData()) >= currentTicks) ||
 						((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath))))
 					{
 						// move the path to the end of the list
-                        //m_pathsToUpdateUnique.insert (workingPath);
+						//m_pathsToUpdateUnique.insert (workingPath);
 						m_pathsToUpdate.push_back(workingPath);
 						if (m_pathsToUpdate.size() < 3)
 							Sleep(50);
 						continue;
 					}
 				}
-				
+
 				// don't crawl paths that are excluded
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
 					continue;
 				// check if the changed path is inside an .git folder
 				CString projectroot;
 				if ((workingPath.HasAdminDir(&projectroot)&&workingPath.IsDirectory()) || workingPath.IsAdminDir())
-				{    
+				{
 					// we don't crawl for paths changed in a tmp folder inside an .git folder.
 					// Because we also get notifications for those even if we just ask for the status!
 					// And changes there don't affect the file status at all, so it's safe
@@ -292,9 +291,9 @@ void CFolderCrawler::WorkerThread()
 						continue;
 					}
 
-					do 
+					do
 					{
-						workingPath = workingPath.GetContainingDirectory();	
+						workingPath = workingPath.GetContainingDirectory();
 					} while(workingPath.IsAdminDir());
 
 					ATLTRACE(_T("Invalidating and refreshing folder: %s\n"), workingPath.GetWinPath());
@@ -401,11 +400,11 @@ void CFolderCrawler::WorkerThread()
 					AutoLocker lock(m_critSec);
 					m_bItemsAddedSinceLastCrawl = false;
 
-                    // create a new CTSVNPath object to make sure the cached flags are requested again.
+					// create a new CTSVNPath object to make sure the cached flags are requested again.
 					// without this, a missing file/folder is still treated as missing even if it is available
 					// now when crawling.
-                    CTGitPath& folderToUpdate = m_foldersToUpdate.front();
-                    workingPath = CTGitPath(folderToUpdate.GetWinPath());
+					CTGitPath& folderToUpdate = m_foldersToUpdate.front();
+					workingPath = CTGitPath(folderToUpdate.GetWinPath());
 					workingPath.SetCustomData(folderToUpdate.GetCustomData());
 					m_foldersToUpdate.pop_front();
 

@@ -26,26 +26,26 @@
 /** Remove all "copy-from" nodes.
 */
 
-class CExactCopyFroms 
-    : public CModificationOptionImpl
-                < IModificationOption
-                , 50
-                , ID_VIEW_EXACTCOPYSOURCE
-                , true          // fold branches first
-                , true          // root first      
-                , true>         // this is a cyclic option
+class CExactCopyFroms
+	: public CModificationOptionImpl
+				< IModificationOption
+				, 50
+				, ID_VIEW_EXACTCOPYSOURCE
+				, true	// fold branches first
+				, true	// root first
+				, true>	// this is a cyclic option
 {
 public:
 
-    /// construction
+	/// construction
 
-    CExactCopyFroms (CRevisionGraphOptionList& list);
+	CExactCopyFroms (CRevisionGraphOptionList& list);
 
-    /// implement IRevisionGraphOption: This option must always be applied.
+	/// implement IRevisionGraphOption: This option must always be applied.
 
-    virtual bool IsActive() const; 
+	virtual bool IsActive() const;
 
-    /// implement IModificationOption
+	/// implement IModificationOption
 
-    virtual void Apply (CVisibleGraph* graph, CVisibleGraphNode* node);
+	virtual void Apply (CVisibleGraph* graph, CVisibleGraphNode* node);
 };

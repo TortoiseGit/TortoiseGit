@@ -101,8 +101,8 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_CHECKCHANGED, &CCommitDlg::OnGitStatusListCtrlCheckChanged)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCHANGED, &CCommitDlg::OnGitStatusListCtrlItemChanged)
-	
-	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady) 
+
+	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady)
 	ON_WM_TIMER()
 	ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
@@ -120,7 +120,7 @@ END_MESSAGE_MAP()
 BOOL CCommitDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-	
+
 	CAppUtils::GetCommitTemplate(this->m_sLogMessage);
 
 	if(PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_MSG")))
@@ -152,12 +152,12 @@ BOOL CCommitDlg::OnInitDialog()
 
 	if(this->m_pathList.GetCount() == 0)
 		m_bWholeProject =true;
-	
+
 	if(this->m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())
 		m_bWholeProject =true;
 
 	UpdateData(FALSE);
-	
+
 	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS | SVNSLC_COLADD |SVNSLC_COLDEL, _T("CommitDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT | SVNSLC_POPSAVEAS)));
 	m_ListCtrl.SetSelectButton(&m_SelectAll);
 	m_ListCtrl.SetStatLabel(GetDlgItem(IDC_STATISTICS));
@@ -165,7 +165,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_ListCtrl.SetEmptyString(IDS_COMMITDLG_NOTHINGTOCOMMIT);
 	m_ListCtrl.EnableFileDrop();
 	m_ListCtrl.SetBackgroundImage(IDI_COMMIT_BKG);
-	
+
 	//this->DialogEnableWindow(IDC_COMMIT_AMEND,FALSE);
 	m_ProjectProperties.ReadPropsPathList(m_pathList);
 
@@ -179,7 +179,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_tooltips.AddTool(IDC_EXTERNALWARNING, IDS_COMMITDLG_EXTERNALS);
 	m_tooltips.AddTool(IDC_COMMIT_AMEND,IDS_COMMIT_AMEND_TT);
 //	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
-	
+
 	m_SelectAll.SetCheck(BST_INDETERMINATE);
 
 
@@ -235,9 +235,9 @@ BOOL CCommitDlg::OnInitDialog()
 
 	if (!m_sLogMessage.IsEmpty())
 		m_cLogMessage.SetText(m_sLogMessage);
-		
+
 	GetWindowText(m_sWindowTitle);
-	
+
 	AdjustControlSize(IDC_SHOWUNVERSIONED);
 	AdjustControlSize(IDC_SELECTALL);
 	AdjustControlSize(IDC_WHOLE_PROJECT);
@@ -253,7 +253,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 //	AddAnchor(IDC_HISTORY, TOP_LEFT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_SIGNOFF,   TOP_RIGHT);
+	AddAnchor(IDC_SIGNOFF, TOP_RIGHT);
 	AddAnchor(IDC_VIEW_PATCH,TOP_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
@@ -262,14 +262,14 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
 	AddAnchor(IDC_EXTERNALWARNING, BOTTOM_RIGHT);
 	AddAnchor(IDC_STATISTICS, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_TEXT_INFO,  TOP_RIGHT);
+	AddAnchor(IDC_TEXT_INFO, TOP_RIGHT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_KEEPLISTS, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
-	
+
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("CommitDlg"));
@@ -521,14 +521,14 @@ void CCommitDlg::OnOK()
 					bCloseCommitDlg=false;
 					break;
 				}
-				
+
 			}
 			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
 			{
 				cmd.Format(_T("git.exe reset -- \"%s\""),entry->GetGitPathString());
 				if(g_Git.Run(cmd,&out,CP_ACP))
 				{
-					/* when reset a unstage file will report error. 
+					/* when reset a unstage file will report error.
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					bAddSuccess = false ;
 					bCloseCommitDlg=false;
@@ -572,7 +572,7 @@ void CCommitDlg::OnOK()
 	//	cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
 	//	g_Git.Run(cmd,&out);
 	//}
-	
+
 	m_sBugID.Trim();
 	if (!m_sBugID.IsEmpty())
 	{
@@ -600,10 +600,10 @@ void CCommitDlg::OnOK()
 		bCloseCommitDlg = true;
 
 		CString tempfile=::GetTempFile();
-		
+
 		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);
 		//file.WriteString(m_sLogMessage);
-		
+
 		CTGitPath path=g_Git.m_CurrentDir;
 
 		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
@@ -617,20 +617,20 @@ void CCommitDlg::OnOK()
 		cmd.Format(_T("git.exe commit %s -F \"%s\""),amend, tempfile);
 
 		CheckHeadDetach();
-		
+
 		CCommitProgressDlg progress;
-		progress.m_bBufferAll=true; // improve show speed when there are many file added. 
+		progress.m_bBufferAll=true; // improve show speed when there are many file added.
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
 
 		progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
 		progress.m_PostCmdList.Add(_T("&ReCommit"));
-		
+
 		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
 
 		DWORD userResponse = progress.DoModal();
-		
+
 		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1+1))
 		{
 			bCloseCommitDlg = false;
@@ -647,7 +647,7 @@ void CCommitDlg::OnOK()
 			//User pressed 'Push' button after successful commit.
 			m_bPushAfterCommit=true;
 		}
-		
+
 		CFile::Remove(tempfile);
 
 		if (m_BugTraqProvider && progress.m_GitStatus == 0)
@@ -668,7 +668,7 @@ void CCommitDlg::OnOK()
 				LONG version = g_Git.Hash2int(hash);
 
 				BSTR temp = NULL;
-				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(), 
+				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(),
 					commonRoot,
 					pathList,
 					logMessage,
@@ -689,7 +689,7 @@ void CCommitDlg::OnOK()
 				SysFreeString(temp);
 			}
 		}
-		
+
 	}else if(bAddSuccess)
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
@@ -726,7 +726,7 @@ void CCommitDlg::OnOK()
 					// check if the changed path would get committed by a recursive commit
 					if ((!entry->IsFromDifferentRepository()) &&
 						(!entry->IsInExternal()) &&
-						(!entry->IsNested()) && 
+						(!entry->IsNested()) &&
 						(!entry->IsChecked()))
 					{
 						m_bRecursive = false;
@@ -738,7 +738,7 @@ void CCommitDlg::OnOK()
 	}
 
 
-	// Now, do all the adds - make sure that the list is sorted so that parents 
+	// Now, do all the adds - make sure that the list is sorted so that parents
 	// are added before their children
 	itemsToAdd.SortByPathname();
 	Git Git;
@@ -755,7 +755,7 @@ void CCommitDlg::OnOK()
 	itemsToRemove.SortByPathname();
 	Git.Remove(itemsToRemove, TRUE);
 
-	//the next step: find all deleted files and check if they're 
+	//the next step: find all deleted files and check if they're
 	//inside a deleted folder. If that's the case, then remove those
 	//files from the list since they'll get deleted by the parent
 	//folder automatically.
@@ -786,7 +786,7 @@ void CCommitDlg::OnOK()
 				}
 			}
 		}
-	} 
+	}
 	m_ListCtrl.Block(FALSE, FALSE);
 
 	if ((nUnchecked != 0)||(bCheckedInExternal)||(bHasConflicted)||(!m_bRecursive))
@@ -794,7 +794,7 @@ void CCommitDlg::OnOK()
 		//save only the files the user has checked into the temporary file
 		m_ListCtrl.WriteCheckedNamesToPathList(m_pathList);
 	}
-	
+
 	// the item count is used in the progress dialog to show the overall commit
 	// progress.
 	// deleted items only send one notification event, all others send two
@@ -849,11 +849,11 @@ UINT CCommitDlg::StatusThread()
 {
 	//get the status of all selected file/folders recursively
 	//and show the ones which have to be committed to the user
-	//in a list control. 
+	//in a list control.
 	InterlockedExchange(&m_bBlock, TRUE);
 	InterlockedExchange(&m_bThreadRunning, TRUE);// so the main thread knows that this thread is still running
 	InterlockedExchange(&m_bRunThread, TRUE);	// if this is set to FALSE, the thread should stop
-	
+
 	m_pathwatcher.Stop();
 
 	g_Git.RefreshGitIndex();
@@ -862,12 +862,12 @@ UINT CCommitDlg::StatusThread()
 
 	DialogEnableWindow(IDOK, false);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, false);
-    DialogEnableWindow(IDC_WHOLE_PROJECT, false);
+	DialogEnableWindow(IDC_WHOLE_PROJECT, false);
 	DialogEnableWindow(IDC_SELECTALL, false);
 	GetDlgItem(IDC_EXTERNALWARNING)->ShowWindow(SW_HIDE);
 	DialogEnableWindow(IDC_EXTERNALWARNING, false);
-    // read the list of recent log entries before querying the WC for status
-    // -> the user may select one and modify / update it while we are crawling the WC
+	// read the list of recent log entries before querying the WC for status
+	// -> the user may select one and modify / update it while we are crawling the WC
 
 	if (m_History.GetCount()==0)
 	{
@@ -877,22 +877,22 @@ UINT CCommitDlg::StatusThread()
 		m_History.Load(reg, _T("logmsgs"));
 	}
 
-    // Initialise the list control with the status of the files/folders below us
+	// Initialise the list control with the status of the files/folders below us
 	m_ListCtrl.Clear();
 	BOOL success;
 	CTGitPathList *pList;
 
-    if(m_bWholeProject)
+	if(m_bWholeProject)
 		pList=NULL;
-    else
+	else
 		pList = &m_pathList;
-    
+
 	success=m_ListCtrl.GetStatus(pList);
 
 	//m_ListCtrl.UpdateFileList(git_revnum_t(GIT_REV_ZERO));
 	if(this->m_bShowUnversioned)
 		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER,true,pList);
-	
+
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
 	DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWINCHANGELIST;
@@ -904,7 +904,7 @@ UINT CCommitDlg::StatusThread()
 		else
 		{
 			DWORD dwCheck = m_bSelectFilesForCommit ? dwShow : 0;
-			dwCheck &=~(CTGitPath::LOGACTIONS_UNVER); //don't check unversion file default. 
+			dwCheck &=~(CTGitPath::LOGACTIONS_UNVER); //don't check unversion file default.
 			m_ListCtrl.Show(dwShow, dwCheck);
 			m_bSelectFilesForCommit = true;
 		}
@@ -914,7 +914,7 @@ UINT CCommitDlg::StatusThread()
 			GetDlgItem(IDC_EXTERNALWARNING)->ShowWindow(SW_SHOW);
 			DialogEnableWindow(IDC_EXTERNALWARNING, TRUE);
 		}
-		
+
 		SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch());
 		m_tooltips.AddTool(GetDlgItem(IDC_STATISTICS), m_ListCtrl.GetStatisticsString());
 	}
@@ -942,10 +942,10 @@ UINT CCommitDlg::StatusThread()
 
 	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
 
-    if(this->m_bWholeProject)   
-        SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString() + CString(_T(" (Whole Project)")));
-    else
-	    SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+	if(this->m_bWholeProject)
+		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString() + CString(_T(" (Whole Project)")));
+	else
+		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	m_autolist.clear();
 	// we don't have to block the commit dialog while we fetch the
@@ -961,7 +961,7 @@ UINT CCommitDlg::StatusThread()
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
-        DialogEnableWindow(IDC_WHOLE_PROJECT, true);
+		DialogEnableWindow(IDC_WHOLE_PROJECT, true);
 		DialogEnableWindow(IDC_SELECTALL, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
@@ -986,7 +986,7 @@ void CCommitDlg::OnCancel()
 
 	if (m_bBlock)
 		return;
-	
+
 	if (m_bThreadRunning)
 	{
 		InterlockedExchange(&m_bRunThread, FALSE);
@@ -1038,7 +1038,7 @@ BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (!m_bBlock)
 		m_tooltips.RelayEvent(pMsg);
-	
+
 	if (m_hAccel)
 	{
 		int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
@@ -1219,7 +1219,7 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM /*lParam*/)
 			}
 		}
 	}
-	
+
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, NULL);
 	ATLTRACE(_T("Item %s dropped, timer started\n"), path.GetWinPath());
@@ -1276,7 +1276,7 @@ void CCommitDlg::GetAutocompletionList()
 	// example:
 	// .h, .hpp = (?<=class[\s])\b\w+\b|(\b\w+(?=[\s ]?\(\);))
 	// .cpp = (?<=[^\s]::)\b\w+\b
-	
+
 	std::map<CString, CString> mapRegex;
 	CString sRegexFile = CPathUtils::GetAppDirectory();
 	CRegDWORD regtimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
@@ -1319,7 +1319,7 @@ void CCommitDlg::GetAutocompletionList()
 //		const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
 //		if (!entry)
 //			continue;
-		
+
 		// add the path parts to the auto completion list too
 //		CString sPartPath = entry->GetRelativeGitPath();
 //		m_autolist.insert(sPartPath);
@@ -1454,7 +1454,7 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupRecentMessage, sMenuItemText);
 
 	}
-	
+
 }
 
 bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
@@ -1481,7 +1481,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 				WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 				if (m_ProjectProperties.bFileListInEnglish)
 					langID = 1033;
-				
+
 				line.Format(_T("%-10s %s\r\n"),status , (LPCTSTR)m_ListCtrl.GetItemText(i,0));
 				logmsg += line;
 			}
@@ -1729,7 +1729,7 @@ void CCommitDlg::UpdateOKButton()
 #if 0
 	BOOL bValidLogSize = FALSE;
 
-    if (m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize)
+	if (m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize)
 		bValidLogSize = !m_bBlock;
 
 	LONG nSelectedItems = m_ListCtrl.GetSelected();
@@ -1743,7 +1743,7 @@ LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message) {
 	case WM_NOTIFY:
 		if (wParam == IDC_SPLITTER)
-		{ 
+		{
 			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
 			DoSize(pHdr->delta);
 		}
@@ -1788,7 +1788,7 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_VIEW_PATCH),0,delta);
-	
+
 	AddAnchor(IDC_VIEW_PATCH,TOP_RIGHT);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
@@ -1812,11 +1812,11 @@ void CCommitDlg::DoSize(int delta)
 
 void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 {
-    // first, let the resizing take place
-    __super::OnSize(nType, cx, cy);
+	// first, let the resizing take place
+	__super::OnSize(nType, cx, cy);
 
-    //set range
-    SetSplitterRange();
+	//set range
+	SetSplitterRange();
 
 }
 
@@ -1874,10 +1874,11 @@ void CCommitDlg::OnBnClickedWholeProject()
 
 	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
 
-	if(this->m_bWholeProject)   
+	if(this->m_bWholeProject)
 		SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
 	else
 		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+
 }
 
 void CCommitDlg::OnFocusMessage()
@@ -1888,7 +1889,7 @@ void CCommitDlg::OnFocusMessage()
 void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	SCNotification *pHead =(SCNotification *)pNMHDR;
-	
+
 	int pos=this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
 	int line=this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
 	int column=this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
@@ -1909,13 +1910,13 @@ void CCommitDlg::OnStnClickedViewPatch()
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
 		CRect rect;
 		this->GetWindowRect(&rect);
-		
+
 		m_patchViewdlg.SetWindowPos(NULL,rect.right,rect.top,rect.Width(),rect.Height(),
 				SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-		
+
 		m_patchViewdlg.m_ctrlPatchView.MoveWindow(0,0,rect.Width(),rect.Height());
 		m_patchViewdlg.ShowWindow(SW_SHOW);
-		
+
 		ShowViewPatchText(false);
 		FillPatchView();
 	}
@@ -1942,7 +1943,7 @@ void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
 			GetWindowRect(&thisrect);
 			if (patchrect.left == thisrect.right)
 			{
-				m_patchViewdlg.SetWindowPos(NULL, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top), 
+				m_patchViewdlg.SetWindowPos(NULL, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top),
 					0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 			}
 		}

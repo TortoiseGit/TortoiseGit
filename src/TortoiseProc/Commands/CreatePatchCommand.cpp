@@ -57,7 +57,7 @@ UINT_PTR CALLBACK CreatePatchCommand::CreatePatchFileOpenHook(HWND hDlg, UINT ui
 
 		CString strFilename = CTempFiles::Instance().GetTempFilePath(false).GetWinPathString() + PATCH_TO_CLIPBOARD_PSEUDO_FILENAME;
 
-		CommDlg_OpenSave_SetControlText(hFileDialog, edt1, (LPCTSTR)strFilename);   
+		CommDlg_OpenSave_SetControlText(hFileDialog, edt1, (LPCTSTR)strFilename);
 
 		PostMessage(hFileDialog, WM_COMMAND, MAKEWPARAM(IDOK, BM_CLICK), (LPARAM)(GetDlgItem(hDlg, IDOK)));
 	}
@@ -106,7 +106,7 @@ bool CreatePatchCommand::CreatePatch(const CTSVNPath& root, const CTSVNPathList&
 		}
 		ofn.lpstrFilter = pszFilters;
 		ofn.nFilterIndex = 1;
-		// Display the Open dialog box. 
+		// Display the Open dialog box.
 		if (GetSaveFileName(&ofn)==FALSE)
 		{
 			delete [] pszFilters;
@@ -125,7 +125,7 @@ bool CreatePatchCommand::CreatePatch(const CTSVNPath& root, const CTSVNPathList&
 		savePath = cmdLineSavePath;
 	}
 
-	// This is horrible and I should be ashamed of myself, but basically, the 
+	// This is horrible and I should be ashamed of myself, but basically, the
 	// the file-open dialog writes ".TSVNPatchToClipboard" to its file field if the user clicks
 	// the "Save To Clipboard" button.
 	bool bToClipboard = _tcsstr(savePath.GetWinPath(), PATCH_TO_CLIPBOARD_PSEUDO_FILENAME) != NULL;

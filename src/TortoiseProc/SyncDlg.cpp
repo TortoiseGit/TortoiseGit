@@ -144,7 +144,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 	this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_HIDE);
 
-	///Pull 
+	///Pull
 	if(CurrentEntry == 0) //Pull
 	{
 		CString remotebranch;
@@ -213,7 +213,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				m_strURL,
 				remotebranch);
 
-		if(CurrentEntry == 1) 
+		if(CurrentEntry == 1)
 			m_CurrentCmd = GIT_COMMAND_FETCH;
 		else
 			m_CurrentCmd = GIT_COMMAND_FETCHANDREBASE;
@@ -277,14 +277,14 @@ void CSyncDlg::PullComplete()
 
 		if(list.GetCount()>0)
 		{
-			this->m_ConflictFileList.Clear();	
+			this->m_ConflictFileList.Clear();
 			CTGitPathList list;
 			CTGitPath path;
 			list.AddPath(path);
 
 			this->m_ConflictFileList.GetStatus(&list,true);
 			this->m_ConflictFileList.Show(CTGitPath::LOGACTIONS_UNMERGED,
-									  CTGitPath::LOGACTIONS_UNMERGED);
+											CTGitPath::LOGACTIONS_UNMERGED);
 
 			this->ShowTab(IDC_IN_CONFLICT);
 
@@ -305,9 +305,9 @@ void CSyncDlg::PullComplete()
 		{
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
-			
+
 			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,m_oldHash);
-		
+
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
 				&this->m_oldHash,&newhash);
 		}
@@ -369,7 +369,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 	CString cmd;
 	CString arg;
-	
+
 	CString error;
 	DWORD exitcode;
 	CTGitPathList list;
@@ -386,7 +386,6 @@ void CSyncDlg::OnBnClickedButtonPush()
 			return ;
 		}
 	}
-
 
 	switch (m_ctrlPush.GetCurrentEntry())
 	{
@@ -413,7 +412,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	{
 		cmd += _T(":") + m_strRemoteBranch;
 	}
-	
+
 	m_GitCmdList.push_back(cmd);
 
 	m_CurrentCmd = GIT_COMMAND_PUSH;
@@ -449,7 +448,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 		for(int i=0;i<dlg.m_PathList.GetCount();i++)
 		{
 			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
-			
+
 			if(g_Git.Run(cmd,&output,CP_ACP))
 			{
 				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK);
@@ -463,7 +462,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlCmdOut.ReplaceSel(output);
 		}
 
-		CString newhash=g_Git.GetHash(CString(_T("HEAD")));		
+		CString newhash=g_Git.GetHash(CString(_T("HEAD")));
 
 		this->m_InLogList.Clear();
 		this->m_InChangeFileList.Clear();
@@ -518,7 +517,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 		return ;
 	}
 
-	CAppUtils::SendPatchMail(cmd,out);	
+	CAppUtils::SendPatchMail(cmd,out);
 
 }
 void CSyncDlg::ShowProgressCtrl(bool bShow)
@@ -546,7 +545,6 @@ void CSyncDlg::ShowInputCtrl(bool bShow)
 	this->GetDlgItem(IDC_CHECK_PUTTY_KEY)->ShowWindow(b);
 	this->GetDlgItem(IDC_CHECK_FORCE)->ShowWindow(b);
 	this->GetDlgItem(IDC_STATIC_REMOTE_URL)->ShowWindow(b);
-	
 }
 BOOL CSyncDlg::OnInitDialog()
 {
@@ -611,7 +609,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	//----------- Create In Change file list -----------
 	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
-	
+
 	if( !m_InChangeFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_IN_CHANGELIST))
 	{
 		TRACE0("Failed to create output change files window\n");
@@ -626,7 +624,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	//---------- Create Conflict List Ctrl -----------------
 	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
-	
+
 	if( !m_ConflictFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_IN_CONFLICT))
 	{
 		TRACE0("Failed to create output change files window\n");
@@ -641,7 +639,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 
 	//----------  Create Commit Out List Ctrl---------------
-			
+
 	dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;;
 
 	if( !m_OutLogList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_OUT_LOGLIST))
@@ -652,14 +650,14 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 
 	m_ctrlTabCtrl.InsertTab(&m_OutLogList,_T("Out Commits"),-1);
-	
+
 	m_OutLogList.m_ColumnRegKey = _T("SyncOut");
 	m_OutLogList.InsertGitColumn();
 
 	//------------- Create Change File List Control ----------------
 
 	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
-	
+
 	if( !m_OutChangeFileList.Create(dwStyle,rectDummy,&m_ctrlTabCtrl,IDC_OUT_CHANGELIST))
 	{
 		TRACE0("Failed to create output change files window\n");
@@ -713,7 +711,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Update")));
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Init")));
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Sync")));
-	
+
 	WorkingDir.Replace(_T(':'),_T('_'));
 
 	CString regkey ;
@@ -746,7 +744,7 @@ BOOL CSyncDlg::OnInitDialog()
 	STRING_VECTOR list;
 
 	if(!g_Git.GetRemoteList(list))
-	{	
+	{
 		for(unsigned int i=0;i<list.size();i++)
 		{
 			m_ctrlURL.AddString(list[i]);
@@ -861,7 +859,8 @@ void CSyncDlg::FetchOutList(bool force)
 		this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 		return ;
 
-	}else if(g_Git.GetHash(remotebranch).GetLength()<40)
+	}
+	else if(g_Git.GetHash(remotebranch).GetLength()<40)
 	{
 		CString str;
 		str.Format(_T("Don't know what will push because unknown \"%s\""),remotebranch);
@@ -961,7 +960,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			if(!m_GitCmdStatus)
 			{
 				CTGitPathList list;
-				list.AddPath(CTGitPath(g_Git.m_CurrentDir));  
+				list.AddPath(CTGitPath(g_Git.m_CurrentDir));
 				DWORD exitcode;
 				CString error;
 				if (CHooks::Instance().PostPush(list,exitcode, error))
@@ -1044,7 +1043,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	this->m_regSubmoduleButton = this->m_ctrlSubmodule.GetCurrentEntry();
 
 	this->SwitchToRun();
-	
+
 	this->m_bAbort=false;
 	this->m_GitCmdList.clear();
 

@@ -24,77 +24,76 @@ extern std::set<CShellExt *> g_exts;
 
 CShellExtClassFactory::CShellExtClassFactory(FileState state)
 {
-    m_StateToMake = state;
+	m_StateToMake = state;
 
-    m_cRef = 0L;
-	
-    g_cRefThisDll++; 
+	m_cRef = 0L;
+
+	g_cRefThisDll++;
 }
 
-CShellExtClassFactory::~CShellExtClassFactory()          
+CShellExtClassFactory::~CShellExtClassFactory()
 {
-    g_cRefThisDll--;
+	g_cRefThisDll--;
 }
 
 STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
-                                                   LPVOID FAR *ppv)
+													LPVOID FAR *ppv)
 {
-    *ppv = NULL;
+	*ppv = NULL;
 
-    // Any interface on this object is the object pointer
-	
-    if (IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_IClassFactory))
-    {
-        *ppv = (LPCLASSFACTORY)this;
-		
-        AddRef();
-		
-        return NOERROR;
-    }
-	
-    return E_NOINTERFACE;
-}  
+	// Any interface on this object is the object pointer
+
+	if (IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_IClassFactory))
+	{
+		*ppv = (LPCLASSFACTORY)this;
+
+		AddRef();
+
+		return NOERROR;
+	}
+
+	return E_NOINTERFACE;
+}
 
 STDMETHODIMP_(ULONG) CShellExtClassFactory::AddRef()
 {
-    return ++m_cRef;
+	return ++m_cRef;
 }
 
 STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
 {
-    if (--m_cRef)
-        return m_cRef;
+	if (--m_cRef)
+		return m_cRef;
 
-    delete this;
-	
-    return 0L;
+	delete this;
+
+	return 0L;
 }
 
 STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
-												   REFIID riid,
-												   LPVOID *ppvObj)
+													REFIID riid,
+													LPVOID *ppvObj)
 {
-    *ppvObj = NULL;
-	
-    // Shell extensions typically don't support aggregation (inheritance)
-	
-    if (pUnkOuter)
-        return CLASS_E_NOAGGREGATION;
-	
-    // Create the main shell extension object.  The shell will then call
-    // QueryInterface with IID_IShellExtInit--this is how shell extensions are
-    // initialized.
-	
-    CShellExt* pShellExt = new CShellExt(m_StateToMake);  //Create the CShellExt object
-		
-    if (NULL == pShellExt)
-        return E_OUTOFMEMORY;
-	
-    return pShellExt->QueryInterface(riid, ppvObj);
-}
+	*ppvObj = NULL;
 
+	// Shell extensions typically don't support aggregation (inheritance)
+
+	if (pUnkOuter)
+		return CLASS_E_NOAGGREGATION;
+
+	// Create the main shell extension object.  The shell will then call
+	// QueryInterface with IID_IShellExtInit--this is how shell extensions are
+	// initialized.
+
+	CShellExt* pShellExt = new CShellExt(m_StateToMake);  //Create the CShellExt object
+
+	if (NULL == pShellExt)
+		return E_OUTOFMEMORY;
+
+	return pShellExt->QueryInterface(riid, ppvObj);
+}
 
 STDMETHODIMP CShellExtClassFactory::LockServer(BOOL /*fLock*/)
 {
-    return E_NOTIMPL;
+	return E_NOTIMPL;
 }

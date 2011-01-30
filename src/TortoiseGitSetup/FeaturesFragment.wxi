@@ -13,9 +13,9 @@
 			<ComponentRef Id="C__TortoiseSVNShortcuts" />
 			<ComponentRef Id="C__TortoiseMerge" />
 			<ComponentRef Id="C__TortoiseMergeShortcuts" />
-			
+
       <ComponentRef Id="C__TortoiseBlame" />
-		
+
       <ComponentRef Id="C__TortoiseIDiff" />
 			<ComponentRef Id="C__TortoiseIDiffShortcuts" />
 
@@ -28,7 +28,7 @@
 <!--			<ComponentRef Id="C__svnprotocoll" />
 -->
 			<ComponentRef Id="C__approveshellcomponents" />
-      <ComponentRef Id="C__win7library" />      
+      <ComponentRef Id="C__win7library" />
 			<ComponentRef Id="C__ProgramMenuFolder" />
 			<ComponentRef Id="C__Sounds" />
 			<ComponentRef Id="C__DiffScripts" />
@@ -89,15 +89,15 @@ DO NOT INSTALL THIS FEATURE if you don't use VS.NET with Web Projects!!!"
 			</Feature>
 			<?endif ?>
 
-		
+
 		<Feature  Id="SSHPlink" Level="1" Title="SSH Plink" Description="SSH PLink" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
 				<ComponentRef  Id="C_SSHCLIENT_PLINK"/>
 		</Feature>
-		
-			
+
+
 		<Feature  Id="SSHOpenSSH" Level="1" Title="SSH OpenSSH" Description="SSH OpenSSH" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
 				<ComponentRef  Id="C_SSHCLIENT_OPENSSH"/>
 		</Feature>
-		
-		</Feature>	
+
+		</Feature>
 </Include>

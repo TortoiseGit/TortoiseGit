@@ -58,7 +58,7 @@ public:
 
 		if ( pStrAryAttach )
 			m_StrAryAttach.Append ( *pStrAryAttach );
-		
+
 		m_nSmtpSrvPort = nSmtpSrvPort;
 		m_hThread = NULL;
 	}
@@ -124,7 +124,7 @@ CString CHwSMTP::GetServerAddress(CString &email)
 {
 	CString str;
 	int start,end;
-	
+
 	start = email.Find(_T("<"));
 	end = email.Find(_T(">"));
 
@@ -144,15 +144,15 @@ CString CHwSMTP::GetServerAddress(CString &email)
 
 BOOL CHwSMTP::SendSpeedEmail
 		(
-			LPCTSTR lpszAddrFrom,
-			LPCTSTR lpszAddrTo,
-			LPCTSTR lpszSubject,
-			LPCTSTR lpszBody,
-			LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
+			LPCTSTR	lpszAddrFrom,
+			LPCTSTR	lpszAddrTo,
+			LPCTSTR	lpszSubject,
+			LPCTSTR	lpszBody,
+			LPCTSTR	lpszCharSet,
 			CStringArray *pStrAryAttach,
-			LPCTSTR pStrAryCC,
-			UINT    nSmtpSrvPort,
-			LPCTSTR pSend 
+			LPCTSTR	pStrAryCC,
+			UINT	nSmtpSrvPort,
+			LPCTSTR	pSend
 		)
 {
 
@@ -171,30 +171,29 @@ BOOL CHwSMTP::SendSpeedEmail
 		one=one.Trim();
 		if(one.IsEmpty())
 			continue;
-		
+
 		CString addr;
 		addr = GetServerAddress(one);
 		if(addr.IsEmpty())
 			continue;
-		
-		
-		Address[addr].push_back(one);		
+
+		Address[addr].push_back(one);
 
 	}
 
 	std::map<CString,std::vector<CString>>::iterator itr1  =  Address.begin();
-    for(  ;  itr1  !=  Address.end();  ++itr1 )
-    {
-        PDNS_RECORD pDnsRecord;
+	for(  ;  itr1  !=  Address.end();  ++itr1 )
+	{
+		PDNS_RECORD pDnsRecord;
 		PDNS_RECORD pNext;
-		
+
 		DnsQuery(itr1->first ,
-			            DNS_TYPE_MX,DNS_QUERY_STANDARD,
-					    NULL,                   //Contains DNS server IP address.
-                        &pDnsRecord,                //Resource record that contains the response.
-                        NULL
-						); 
-		
+						DNS_TYPE_MX,DNS_QUERY_STANDARD,
+						NULL,			//Contains DNS server IP address.
+						&pDnsRecord,	//Resource record that contains the response.
+						NULL
+						);
+
 		CString to;
 		to.Empty();
 		for(int i=0;i<itr1->second.size();i++)
@@ -208,7 +207,7 @@ BOOL CHwSMTP::SendSpeedEmail
 		pNext=pDnsRecord;
 		while(pNext)
 		{
-			if(pNext->wType == DNS_TYPE_MX) 
+			if(pNext->wType == DNS_TYPE_MX)
 				if(SendEmail(pNext->Data.MX.pNameExchange,NULL,NULL,false,
 					lpszAddrFrom,to,lpszSubject,lpszBody,lpszCharSet,pStrAryAttach,pStrAryCC,
 					25,pSend,lpszAddrTo))
@@ -220,7 +219,7 @@ BOOL CHwSMTP::SendSpeedEmail
 
 		//SendEmail(itr1.first,NULL,NULL,false,lpszAddrFrom,,lpszFromname);
 		DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
-    }	
+	}
 
 	return ret;
 }
@@ -267,7 +266,7 @@ BOOL CHwSMTP::SendEmail (
 //	m_csReceiverName = GET_SAFE_STRING ( lpszReceiverName );
 	m_csSubject = GET_SAFE_STRING ( lpszSubject );
 	m_csBody = GET_SAFE_STRING ( lpszBody );
-	
+
 	this->m_csSender = GET_SAFE_STRING(pSender);
 	this->m_csToList = GET_SAFE_STRING(pToList);
 
@@ -277,7 +276,7 @@ BOOL CHwSMTP::SendEmail (
 		m_csCharSet.Format ( _T("\r\n\tcharset=\"%s\"\r\n"), lpszCharSet );
 
 	if	(
-			m_csAddrFrom.GetLength() <= 0 || m_csAddrTo.GetLength() <= 0 
+			m_csAddrFrom.GetLength() <= 0 || m_csAddrTo.GetLength() <= 0
 		)
 	{
 		m_csLastError.Format ( _T("Parameter Error!") );
@@ -361,7 +360,7 @@ BOOL CHwSMTP::SendBuffer(char *buff,int size)
 		m_csLastError.Format ( _T("Socket send data failed") );
 		return FALSE;
 	}
-	
+
 	return TRUE;
 }
 // 利用socket发送数据，数据长度不能超过10M
@@ -374,14 +373,14 @@ BOOL CHwSMTP::Send(CString &str )
 	}
 
 	CMultiByteString cbsData ( str );
-	
+
 	TRACE ( _T("Send : %s\r\n"), cbsData.GetBuffer() );
 	if ( m_SendSock.Send ( cbsData.GetBuffer(), cbsData.GetLength() ) != cbsData.GetLength() )
 	{
 		m_csLastError.Format ( _T("Socket send data failed") );
 		return FALSE;
 	}
-	
+
 	return TRUE;
 }
 
@@ -447,7 +446,7 @@ BOOL CHwSMTP::auth()
 	if ( !GetResponse ( _T("334"), &nResponseCode ) ) return FALSE;
 	if ( nResponseCode != 334 )	// 不需要验证用户名和密码
 		return TRUE;
-	
+
 	CBase64 Base64Encode;
 	CMultiByteString cbsUserName ( m_csUserName ), cbsPasswd ( m_csPasswd );
 	CString csBase64_UserName = GetCompatibleString ( Base64Encode.Encode ( cbsUserName.GetBuffer(), cbsUserName.GetLength() ).GetBuffer(0), FALSE );
@@ -455,7 +454,7 @@ BOOL CHwSMTP::auth()
 
 	CString str;
 	str.Format( _T("%s\r\n"), csBase64_UserName );
-	if ( !Send ( str ) ) 
+	if ( !Send ( str ) )
 		return FALSE;
 
 	if ( !GetResponse ( _T("334") ) )
@@ -463,9 +462,9 @@ BOOL CHwSMTP::auth()
 		m_csLastError.Format ( _T("Authentication UserName failed") );
 		return FALSE;
 	}
-	
+
 	str.Format(_T("%s\r\n"), csBase64_Passwd );
-	if ( !Send ( str ) ) 
+	if ( !Send ( str ) )
 		return FALSE;
 
 	if ( !GetResponse ( _T("235") ) )
@@ -487,7 +486,7 @@ BOOL CHwSMTP::SendHead()
 	if ( !Send ( str  ) ) return FALSE;
 
 	if ( !GetResponse ( _T("250") ) ) return FALSE;
-	
+
 	int start=0;
 	while(start>=0)
 	{
@@ -496,9 +495,9 @@ BOOL CHwSMTP::SendHead()
 		if(one.IsEmpty())
 			continue;
 
-		
+
 		GetNameAddress(one,name,addr);
-		
+
 		str.Format(_T("RCPT TO: <%s>\r\n"), addr );
 		if ( !Send ( str ) ) return FALSE;
 		if ( !GetResponse ( _T("250") ) ) return FALSE;
@@ -514,7 +513,7 @@ BOOL CHwSMTP::SendHead()
 #endif
 
 	if ( !Send ( CString(_T("DATA\r\n") ) ) ) return FALSE;
-	if ( !GetResponse ( CString(_T("354") )) ) return FALSE;	
+	if ( !GetResponse ( CString(_T("354") )) ) return FALSE;
 
 	return TRUE;
 }
@@ -530,24 +529,23 @@ BOOL CHwSMTP::SendSubject()
 	}
 	csSubject += _T("\r\n");
 	csSubject += FormatString ( _T("From: %s\r\n"), this->m_csAddrFrom);
-	
+
 	csSubject += FormatString ( _T("CC: %s\r\n"), this->m_StrCC);
-	
+
 	if(m_csSender.IsEmpty())
 		m_csSender =  this->m_csAddrFrom;
-	
+
 	csSubject += FormatString ( _T("Sender: %s\r\n"), this->m_csSender);
-	
+
 	if(this->m_csToList.IsEmpty())
 		m_csToList = m_csReceiverName;
-	
+
 	csSubject += FormatString ( _T("To: %s\r\n"), this->m_csToList);
 
 	CString m_csToList;
 
 	csSubject += FormatString ( _T("Subject: %s\r\n"), m_csSubject );
 
-    
 	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"),
 		m_csMIMEContentType );
 
@@ -562,10 +560,10 @@ BOOL CHwSMTP::SendBody()
 	{
 		csTemp.Format ( _T("%s\r\n\r\n"), m_csNoMIMEText );
 		csBody += csTemp;
-		
+
 		csTemp.Format ( _T("--%s\r\n"), m_csPartBoundary );
 		csBody += csTemp;
-		
+
 		csTemp.Format ( _T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: 7Bit\r\n\r\n"),
 			m_csCharSet );
 		csBody += csTemp;
@@ -620,7 +618,7 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		return FALSE;
 	}
 	char *pBuf = new char[dwFileSize+1];
-	if ( !pBuf ) 
+	if ( !pBuf )
 	{
 		::AfxThrowMemoryException ();
 		return FALSE;
@@ -656,7 +654,7 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 
 
 	delete[] pBuf;
-	
+
 	return TRUE;
 	//return Send ( csAttach );
 }
@@ -804,8 +802,7 @@ CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=
 	m_nDataSize = 0;
 	m_nCharactersNumber = 0;
 	if ( !lpszOrg ) return;
-	
-	// 判断原始字符串的编码方式
+
 	BOOL bOrgIsUnicode = FALSE;
 	if ( nOrgStringEncodeType == STRING_IS_MULTICHARS ) bOrgIsUnicode = FALSE;
 	else if ( nOrgStringEncodeType == STRING_IS_UNICODE ) bOrgIsUnicode = TRUE;
@@ -817,8 +814,7 @@ CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=
 		bOrgIsUnicode = FALSE;
 #endif
 	}
-	
-	// 计算字符串个数和需要的目标缓冲大小
+
 	if ( bOrgIsUnicode )
 	{
 		m_nCharactersNumber = (int)wcslen((WCHAR*)lpszOrg);
@@ -829,14 +825,12 @@ CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=
 		m_nCharactersNumber = (int)strlen((char*)lpszOrg);
 		m_nDataSize = (m_nCharactersNumber + 1) * sizeof(char);
 	}
-	
-	// 使用调用者传入的缓冲
+
 	if ( pOutBuf && nOutBufSize > 0 )
 	{
 		m_pszData = pOutBuf;
 		m_nDataSize = nOutBufSize;
 	}
-	// 自己申请内存缓冲
 	else
 	{
 		m_pszData = (char*)new BYTE[m_nDataSize];
@@ -848,7 +842,7 @@ CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=
 		m_bNewBuffer = TRUE;
 	}
 	memset ( m_pszData, 0, m_nDataSize );
-	
+
 	if ( bOrgIsUnicode )
 	{
 		m_nCharactersNumber = WideCharToMultiByte ( CP_ACP, 0, (LPCWSTR)lpszOrg, m_nCharactersNumber, (LPSTR)m_pszData, m_nDataSize/sizeof(char)-1, NULL, NULL );
@@ -871,13 +865,10 @@ CMultiByteString::~CMultiByteString ()
 	}
 }
 
-//
-// 将 lpszOrg 转换为该程序使用的编码字符串，如果该程序是 UNICODE 就转为 UNICODE，如果是 ANSI 就转为 ANSI 的
-//
 CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength/*=-1*/ )
 {
 	if ( !lpszOrg ) return _T("");
-	
+
 	TRY
 	{
 #ifdef UNICODE
@@ -898,7 +889,7 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 			else
 				return (LPCTSTR)lpszOrg;
 		}
-		
+
 		if ( nOrgLength < 0 )
 			nOrgLength = (int)strlen((const char*)lpszOrg);
 		int nWideCount = nOrgLength + 1;
@@ -927,7 +918,7 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 			else
 				return (LPCTSTR)lpszOrg;
 		}
-		
+
 		if ( nOrgLength < 0 )
 			nOrgLength = (int)wcslen((WCHAR*)lpszOrg);
 		int nMultiByteCount = nOrgLength + 1;
@@ -945,16 +936,16 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 		THROW_LAST ();
 	}
 	END_CATCH_ALL
-		
-		return _T("");
+
+	return _T("");
 }
 
 CString FormatDateTime ( COleDateTime &DateTime, LPCTSTR pFormat )
-{	
+{
 	// If null, return empty string
 	if ( DateTime.GetStatus() == COleDateTime::null || DateTime.GetStatus() == COleDateTime::invalid )
 		return _T("");
-	
+
 	UDATE ud;
 	if (S_OK != VarUdateFromDate(DateTime.m_dt, 0, &ud))
 	{
@@ -963,12 +954,12 @@ CString FormatDateTime ( COleDateTime &DateTime, LPCTSTR pFormat )
 
 	TCHAR *weeks[]={_T("Sun"),_T("Mon"),_T("Tue"),_T("Wen"),_T("Thu"),_T("Fri"),_T("Sat")};
 	TCHAR *month[]={_T("JAN"),_T("FEB"),_T("MAR"),_T("APR"),
-				   _T("MAY"),_T("JUN"),_T("JUL"),_T("AUG"),
-				   _T("SEP"),_T("OCT"),_T("NOV"),_T("DEC")};
-	
+					_T("MAY"),_T("JUN"),_T("JUL"),_T("AUG"),
+					_T("SEP"),_T("OCT"),_T("NOV"),_T("DEC")};
+
 	TIME_ZONE_INFORMATION stTimeZone;
 	GetTimeZoneInformation(&stTimeZone);
-	
+
 	CString strDate;
 	strDate.Format(_T("%s, %d %s %02d %d:%d:%d %c%04d")
 		,weeks[ud.st.wDayOfWeek],
@@ -983,7 +974,6 @@ CString FormatDateTime ( COleDateTime &DateTime, LPCTSTR pFormat )
 CString FormatString ( LPCTSTR lpszStr, ... )
 {
 	TCHAR *buf = NULL;
-	// 循环格式化字符串，如果缓冲不够则将缓冲加大然后重试以保证缓冲够用同时又不浪费
 	for ( int nBufCount = 1024; nBufCount<5*1024*1024; nBufCount += 1024 )
 	{
 		buf = new TCHAR[nBufCount];
@@ -993,7 +983,7 @@ CString FormatString ( LPCTSTR lpszStr, ... )
 			return _T("");
 		}
 		memset ( buf, 0, nBufCount*sizeof(TCHAR) );
-		
+
 		va_list  va;
 		va_start (va, lpszStr);
 		int nLen = _vsnprintf_hw ((TCHAR*)buf, nBufCount-sizeof(TCHAR), lpszStr, va);
@@ -1006,23 +996,16 @@ CString FormatString ( LPCTSTR lpszStr, ... )
 	{
 		return _T("");
 	}
-	
+
 	CString csMsg = buf;
 	delete[] buf; buf = NULL;
 	return csMsg;
 }
 
-/********************************************************************************
-* Function Type	:	Global
-* Parameter		:	lpFileName	-	文件路径
-* Return Value	:	-1			-	失败
-*					>=0			-	文件大小
-* Description	:	获取文件属性 ( 文件大小、创建时间 )
-*********************************************************************************/
 int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus/*=NULL*/ )
 {
 	if ( !lpFileName || lstrlen(lpFileName) < 1 ) return -1;
-	
+
 	CFileStatus fileStatus;
 	fileStatus.m_attribute = 0;
 	fileStatus.m_size = 0;
@@ -1046,7 +1029,7 @@ int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus/*=NULL*/ )
 		bRet = FALSE;
 	}
 	END_CATCH_ALL;
-	
+
 	if ( pFileStatus )
 	{
 		pFileStatus->m_ctime = fileStatus.m_ctime;
@@ -1056,20 +1039,12 @@ int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus/*=NULL*/ )
 		pFileStatus->m_attribute = fileStatus.m_attribute;
 		pFileStatus->_m_padding = fileStatus._m_padding;
 		lstrcpy ( pFileStatus->m_szFullName, fileStatus.m_szFullName );
-		
+
 	}
-	
+
 	return (int)fileStatus.m_size;
 }
 
-//
-// 将一个表示字节的数用可读性好的字符串来表示，例如将 12345678 字节转换为：
-// 11.77M
-// nFlag	-	0 : 自动匹配单位
-//				1 : 以 Kb 为单位
-//				2 : 以 Mb 为单位
-//				3 : 以 Gb 为单位
-// 
 CString FormatBytes ( double fBytesNum, BOOL bShowUnit/*=TRUE*/, int nFlag/*=0*/ )
 {
 	CString csRes;
@@ -1096,7 +1071,7 @@ CString FormatBytes ( double fBytesNum, BOOL bShowUnit/*=TRUE*/, int nFlag/*=0*/
 	{
 		csRes.Format ( _T("%.2f%s"), fBytesNum / (1024.0*1024.0*1024.0), bShowUnit?_T(" G"):_T("") );
 	}
-	
+
 	return csRes;
 }
 

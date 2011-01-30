@@ -70,25 +70,25 @@ enum CSmptXPriority
 	XPRIORITY_LOW = 4
 };
 
-class CSmtp  
+class CSmtp
 {
 public:
 	CSmtp();
 	virtual ~CSmtp();
 	bool AddRecipient(const char *email, const char *name=NULL);
 	bool AddBCCRecipient(const char *email, const char *name=NULL);
-	bool AddCCRecipient(const char *email, const char *name=NULL);    
-	bool AddAttachment(const char *path);   
-	const unsigned int GetBCCRecipientCount();    
+	bool AddCCRecipient(const char *email, const char *name=NULL);
+	bool AddAttachment(const char *path);
+	const unsigned int GetBCCRecipientCount();
 	const unsigned int GetCCRecipientCount();
-	const unsigned int GetRecipientCount();    
+	const unsigned int GetRecipientCount();
 	const char* const GetLocalHostIP();
-	const char* const GetLocalHostName();    
-	const char* const GetMessageBody();    
+	const char* const GetLocalHostName();
+	const char* const GetMessageBody();
 	const char* const GetReplyTo();
 	const char* const GetMailFrom();
 	const char* const GetSenderName();
-	const char* const GetSubject();    
+	const char* const GetSubject();
 	const char* const GetXMailer();
 	CSmptXPriority GetXPriority();
 	CSmtpError GetLastError();
@@ -104,7 +104,7 @@ public:
 	void SetXPriority(CSmptXPriority);
 	void SetSMTPServer(const char* server,const unsigned short port=0);
 
-private:	
+private:
 	CSmtpError m_oError;
 	char* m_pcLocalHostName;
 	char* m_pcMailFrom;
@@ -122,8 +122,6 @@ private:
 	char *SendBuf;
 	char *RecvBuf;
 
-
-	
 	WSADATA wsaData;
 	SOCKET hSocket;
 
@@ -137,16 +135,15 @@ private:
 	std::vector<Recipent> CCRecipients;
 	std::vector<Recipent> BCCRecipients;
 	std::vector<std::string> Attachments;
- 
+
 	bool ReceiveData();
 	bool SendData();
 	bool FormatHeader(char*);
 	int SmtpXYZdigits();
 	SOCKET ConnectRemoteServer(const char* server, const unsigned short port=NULL);
-	
+
 	friend char* GetErrorText(CSmtpError);
 };
-
 
 #pragma warning(pop)
 

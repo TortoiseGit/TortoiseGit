@@ -39,12 +39,11 @@ void CRefLogList::InsertRefLogColumn()
 	};
 	m_dwDefaultColumns = 0xFFFF;
 
-	
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, sizeof(normal)/sizeof(UINT));
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns,0, m_ColumnRegKey+_T("loglist"), sizeof(normal)/sizeof(UINT), with);
-	
+
 	SetRedraw(true);
 
 }
@@ -64,7 +63,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
 
 	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
-	
+
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)
 		return;
@@ -76,7 +75,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(pItem->iItem));
 
 	CString temp;
-	    
+
 	// Which column?
 	switch (pItem->iSubItem)
 	{
@@ -98,7 +97,7 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject().Trim(), pItem->cchTextMax);
 		break;
-		
+
 	default:
 		ASSERT(false);
 	}

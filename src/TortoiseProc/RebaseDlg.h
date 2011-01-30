@@ -12,9 +12,9 @@
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
 
-#define REBASE_TAB_CONFLICT  0
-#define REBASE_TAB_MESSAGE   1
-#define REBASE_TAB_LOG		 2
+#define REBASE_TAB_CONFLICT	0
+#define REBASE_TAB_MESSAGE	1
+#define REBASE_TAB_LOG		2
 
 #define MSG_REBASE_UPDATE_UI	(WM_USER+151)
 
@@ -23,7 +23,7 @@ class CRebaseDlg : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRebaseDlg)
 
 public:
-	CRebaseDlg(CWnd* pParent = NULL);   // standard constructor
+	CRebaseDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CRebaseDlg();
 
 // Dialog Data
@@ -45,7 +45,7 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -56,7 +56,7 @@ protected:
 
 	void SetSplitterRange();
 	void SaveSplitterPos();
-	
+
 	void LoadBranchInfo();
 	void FetchLogList();
 	void SetAllRebaseAction(int action);
@@ -115,7 +115,7 @@ public:
 	BOOL m_bPickAll;
 	BOOL m_bSquashAll;
 	BOOL m_bEditAll;
-	
+
 	BOOL m_bForce;
 	CStringArray m_PostButtonTexts;
 
@@ -123,18 +123,18 @@ public:
 	CMFCTabCtrl m_ctrlTabCtrl;
 	CGitStatusListCtrl m_FileListCtrl;
 	CSciEdit m_LogMessageCtrl;
-	
-	CGitLogList m_CommitList;
 
-	CHistoryCombo m_BranchCtrl;
-	CHistoryCombo m_UpstreamCtrl;
-	
-	CString m_Upstream;
-	CString m_Branch;
+	CGitLogList		m_CommitList;
 
-	BOOL m_IsCherryPick;
+	CHistoryCombo	m_BranchCtrl;
+	CHistoryCombo	m_UpstreamCtrl;
 
-	REBASE_STAGE m_RebaseStage;
+	CString			m_Upstream;
+	CString			m_Branch;
+
+	BOOL			m_IsCherryPick;
+
+	REBASE_STAGE	m_RebaseStage;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);

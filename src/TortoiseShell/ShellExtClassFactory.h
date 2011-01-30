@@ -27,25 +27,24 @@
 class CShellExtClassFactory : public IClassFactory
 {
 protected:
-    ULONG m_cRef;
-    /// variable to contain class of object (i.e. not under source control, up to date)
-    FileState		m_StateToMake;
+	ULONG m_cRef;
+	/// variable to contain class of object (i.e. not under source control, up to date)
+	FileState				m_StateToMake;
 
-	
 public:
-    CShellExtClassFactory(FileState state);
-    virtual ~CShellExtClassFactory();
-	
+	CShellExtClassFactory(FileState state);
+	virtual ~CShellExtClassFactory();
+
 	//@{
-    /// IUnknown members
-    STDMETHODIMP         QueryInterface(REFIID, LPVOID FAR *);
-    STDMETHODIMP_(ULONG) AddRef();
-    STDMETHODIMP_(ULONG) Release();
+	/// IUnknown members
+	STDMETHODIMP			QueryInterface(REFIID, LPVOID FAR *);
+	STDMETHODIMP_(ULONG)	AddRef();
+	STDMETHODIMP_(ULONG)	Release();
 	//@}
-    
+
 	//@{
-    /// IClassFactory members
-    STDMETHODIMP      CreateInstance(LPUNKNOWN, REFIID, LPVOID FAR *);
-    STDMETHODIMP      LockServer(BOOL);
+	/// IClassFactory members
+	STDMETHODIMP			CreateInstance(LPUNKNOWN, REFIID, LPVOID FAR *);
+	STDMETHODIMP			LockServer(BOOL);
 	//@}
 };

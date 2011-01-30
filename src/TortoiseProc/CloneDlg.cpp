@@ -190,7 +190,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 	}
 
 	this->m_URLCombo.GetWindowTextW(strCloneDirectory);
-	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK)
 	{
 		this->m_URLCombo.SetWindowTextW(strCloneDirectory);
 	}
@@ -201,7 +201,7 @@ void CCloneDlg::OnBnClickedCloneDirBrowse()
 	CBrowseFolder browseFolder;
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory = this->m_Directory;
-	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK)
 	{
 		UpdateData(TRUE);
 		m_Directory = strCloneDirectory;
@@ -215,7 +215,7 @@ void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 					_T("Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"));
-	
+
 	this->UpdateData();
 	if(dlg.DoModal()==IDOK)
 	{
@@ -286,7 +286,7 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 
 	}else
 	{
-		if(m_Directory.GetLength()>0 && 
+		if(m_Directory.GetLength()>0 &&
 			(m_Directory[m_Directory.GetLength()-1] != _T('\\') ||
 			m_Directory[m_Directory.GetLength()-1] != _T('/') ) )
 		{
@@ -317,7 +317,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		CString str;
 		m_URLCombo.GetWindowText(str);
 
-		while(str.GetLength()>=1 && 
+		while(str.GetLength()>=1 &&
 			str[str.GetLength()-1] == _T('\\') &&
 			str[str.GetLength()-1] == _T('/'))
 		{

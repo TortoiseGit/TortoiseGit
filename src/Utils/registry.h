@@ -30,7 +30,7 @@
  * \ingroup Utils
  * Base class for the registry classes.
  *
- * \par requirements 
+ * \par requirements
  * - win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * - import library Shlwapi.lib
  */
@@ -40,18 +40,18 @@ class CRegBaseCommon
 {
 protected:
 
-    /**
-     * String type specific operations.
-     */
+	/**
+	 * String type specific operations.
+	 */
 
-    virtual LPCTSTR GetPlainString (const S& s) const = 0;
-    virtual DWORD GetLength (const S& s) const = 0;
+	virtual LPCTSTR GetPlainString (const S& s) const = 0;
+	virtual DWORD GetLength (const S& s) const = 0;
 
 public:	//methods
 
-    /** Default constructor.
-     */
-    CRegBaseCommon();
+	/** Default constructor.
+	 */
+	CRegBaseCommon();
 	/**
 	 * Constructor.
 	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -83,7 +83,7 @@ public:	//methods
 		LPVOID lpMsgBuf;
 
 		FormatMessage(
-			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+			FORMAT_MESSAGE_ALLOCATE_BUFFER |
 			FORMAT_MESSAGE_FROM_SYSTEM |
 			FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL,
@@ -95,67 +95,67 @@ public:	//methods
 		return (LPCTSTR)lpMsgBuf;
 	};
 
-public:	
-    
-    typedef S StringT;  ///< used in subclass templates to specify the correct string type
+public:
 
-    //members
+	typedef S StringT;  ///< used in subclass templates to specify the correct string type
+
+	//members
 	HKEY m_base;		///< handle to the registry base
-	S m_key;		    ///< the name of the value
-	S m_path;		    ///< the path to the key
+	S m_key;			///< the name of the value
+	S m_path;			///< the path to the key
 	LONG LastError;		///< the value of the last error occurred
 
 	bool m_read;		///< indicates if the value has already been read from the registry
 	bool m_force;		///< indicates if no cache should be used, i.e. always read and write directly from registry
-    bool m_exists;      ///< true, if the registry actually exists
+	bool m_exists;		///< true, if the registry actually exists
 };
 
 // implement CRegBaseCommon<> members
 
 template<class S>
 CRegBaseCommon<S>::CRegBaseCommon()
-    : m_base (HKEY_CURRENT_USER)
-    , m_key()
-    , m_path()
-    , LastError (ERROR_SUCCESS)
-    , m_read (false)
-    , m_force (false)
-    , m_exists (false)
+	: m_base (HKEY_CURRENT_USER)
+	, m_key()
+	, m_path()
+	, LastError (ERROR_SUCCESS)
+	, m_read (false)
+	, m_force (false)
+	, m_exists (false)
 {
 }
 
 template<class S>
 CRegBaseCommon<S>::CRegBaseCommon (const S& key, bool force, HKEY base)
-    : m_base (base)
+	: m_base (base)
 	, m_key (key)
-    , m_path()
-    , LastError (ERROR_SUCCESS)
-    , m_read (false)
-    , m_force (force)
-    , m_exists (false)
+	, m_path()
+	, LastError (ERROR_SUCCESS)
+	, m_read (false)
+	, m_force (force)
+	, m_exists (false)
 {
 }
 
 template<class S>
-DWORD CRegBaseCommon<S>::removeKey() 
-{ 
-    m_exists = false;
-    m_read = true;
+DWORD CRegBaseCommon<S>::removeKey()
+{
+	m_exists = false;
+	m_read = true;
 
-    HKEY hKey = NULL;
-    RegOpenKeyEx (m_base, GetPlainString (m_path), 0, KEY_WRITE, &hKey); 
-    return SHDeleteKey(m_base, GetPlainString (m_path)); 
+	HKEY hKey = NULL;
+	RegOpenKeyEx (m_base, GetPlainString (m_path), 0, KEY_WRITE, &hKey);
+	return SHDeleteKey(m_base, GetPlainString (m_path));
 }
 
 template<class S>
-LONG CRegBaseCommon<S>::removeValue() 
-{ 
-    m_exists = false;
-    m_read = true;
+LONG CRegBaseCommon<S>::removeValue()
+{
+	m_exists = false;
+	m_read = true;
 
-    HKEY hKey = NULL;
-    RegOpenKeyEx(m_base, GetPlainString (m_path), 0, KEY_WRITE, &hKey); 
-    return RegDeleteValue(hKey, GetPlainString (m_key)); 
+	HKEY hKey = NULL;
+	RegOpenKeyEx(m_base, GetPlainString (m_path), 0, KEY_WRITE, &hKey);
+	return RegDeleteValue(hKey, GetPlainString (m_key));
 }
 
 /**
@@ -168,18 +168,18 @@ class CRegBase : public CRegBaseCommon<CString>
 {
 protected:
 
-    /**
-     * String type specific operations.
-     */
+	/**
+	 * String type specific operations.
+	 */
 
-    virtual LPCTSTR GetPlainString (const CString& s) const {return (LPCTSTR)s;}
-    virtual DWORD GetLength (const CString& s) const {return s.GetLength();}
+	virtual LPCTSTR GetPlainString (const CString& s) const {return (LPCTSTR)s;}
+	virtual DWORD GetLength (const CString& s) const {return s.GetLength();}
 
 public:	//methods
 
-    /** Default constructor.
-     */
-    CRegBase();
+	/** Default constructor.
+	 */
+	CRegBase();
 	/**
 	 * Constructor.
 	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -193,7 +193,7 @@ public:	//methods
 	 */
 	CString getErrorString()
 	{
-        CString error = CRegBaseCommon<CString>::getErrorString();
+		CString error = CRegBaseCommon<CString>::getErrorString();
 #if defined IDS_REG_ERROR
 		CString sTemp;
 		sTemp.Format(IDS_REG_ERROR, (LPCTSTR)m_key, (LPCTSTR)error);
@@ -223,18 +223,18 @@ class CRegStdBase : public CRegBaseCommon<stdstring>
 {
 protected:
 
-    /**
-     * String type specific operations.
-     */
+	/**
+	 * String type specific operations.
+	 */
 
-    virtual LPCTSTR GetPlainString (const stdstring& s) const {return s.c_str();}
-    virtual DWORD GetLength (const stdstring& s) const {return static_cast<DWORD>(s.size());}
+	virtual LPCTSTR GetPlainString (const stdstring& s) const {return s.c_str();}
+	virtual DWORD GetLength (const stdstring& s) const {return static_cast<DWORD>(s.size());}
 
 public:	//methods
 
-    /** Default constructor.
-     */
-    CRegStdBase();
+	/** Default constructor.
+	 */
+	CRegStdBase();
 	/**
 	 * Constructor.
 	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -257,7 +257,7 @@ public:	//methods
  * \code
  * regvalue = CRegDWORD("Software\\Company\\SubKey\\MyValue", 100);
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occurred during read from the registry, a default
  * value of 100 is used when accessing the variable.
@@ -271,7 +271,7 @@ public:	//methods
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -290,20 +290,20 @@ private:
 	T m_value;					///< the cached value of the registry
 	T m_defaultvalue;			///< the default value to use
 
-    /**
-     * sub-classes must provide type-specific code to extract data from
-     * and write data to an open registry key.
-     */
+	/**
+	 * sub-classes must provide type-specific code to extract data from
+	 * and write data to an open registry key.
+	 */
 
-    virtual void InternalRead (HKEY hKey, T& value) = 0;
-    virtual void InternalWrite (HKEY hKey, const T& value) = 0;
+	virtual void InternalRead (HKEY hKey, T& value) = 0;
+	virtual void InternalWrite (HKEY hKey, const T& value) = 0;
 
 public:
 
-    /**
-     * We use this instead of a default constructor because not all 
-     * data types may provide an adequate default constructor.
-     */
+	/**
+	 * We use this instead of a default constructor because not all
+	 * data types may provide an adequate default constructor.
+	 */
 	CRegTypedBase(const T& def);
 
 	/**
@@ -313,21 +313,21 @@ public:
 	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
-    CRegTypedBase(const typename Base::StringT& key, const T& def, bool force = FALSE, HKEY base = HKEY_CURRENT_USER);
+	CRegTypedBase(const typename Base::StringT& key, const T& def, bool force = FALSE, HKEY base = HKEY_CURRENT_USER);
 
 	/**
 	 * reads the assigned value from the registry. Use this method only if you think the registry
 	 * value could have been altered without using the CRegDWORD object.
 	 * \return the read value
 	 */
-	void   	read();						///< reads the value from the registry
+	void	read();						///< reads the value from the registry
 	void	write();					///< writes the value to the registry
 
-    /**
-     * Data access.
-     */
+	/**
+	 * Data access.
+	 */
 
-    operator const T&();
+	operator const T&();
 	CRegTypedBase<T,Base>& operator=(const T& rhs);
 };
 
@@ -335,16 +335,16 @@ public:
 
 template<class T, class Base>
 CRegTypedBase<T, Base>::CRegTypedBase (const T& def)
-    : m_value (def)
-    , m_defaultvalue (def)
+	: m_value (def)
+	, m_defaultvalue (def)
 {
 }
 
 template<class T, class Base>
 CRegTypedBase<T, Base>::CRegTypedBase (const typename Base::StringT& key, const T& def, bool force, HKEY base)
-    : Base (key, force, base)
-    , m_value (def)
-    , m_defaultvalue (def)
+	: Base (key, force, base)
+	, m_value (def)
+	, m_defaultvalue (def)
 {
 }
 
@@ -352,42 +352,42 @@ template<class T, class Base>
 void CRegTypedBase<T, Base>::read()
 {
 	m_value = m_defaultvalue;
-    m_exists = false;
+	m_exists = false;
 
-    HKEY hKey = NULL;
+	HKEY hKey = NULL;
 	if ((LastError = RegOpenKeyEx (m_base, GetPlainString (m_path), 0, KEY_EXECUTE, &hKey))==ERROR_SUCCESS)
 	{
 		m_read = true;
 
-        T value = m_defaultvalue;
-        InternalRead (hKey, value);
+		T value = m_defaultvalue;
+		InternalRead (hKey, value);
 
 		if (LastError ==ERROR_SUCCESS)
 		{
-            m_exists = true;
+			m_exists = true;
 			m_value = value;
 		}
 
-        LastError = RegCloseKey(hKey);
+		LastError = RegCloseKey(hKey);
 	}
 }
 
 template<class T, class Base>
 void CRegTypedBase<T, Base>::write()
 {
-    HKEY hKey = NULL;
+	HKEY hKey = NULL;
 
-    DWORD disp = 0;
+	DWORD disp = 0;
 	if ((LastError = RegCreateKeyEx(m_base, GetPlainString (m_path), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &disp))!=ERROR_SUCCESS)
 	{
 		return;
 	}
 
-    InternalWrite (hKey, m_value);
+	InternalWrite (hKey, m_value);
 	if (LastError ==ERROR_SUCCESS)
 	{
 		m_read = true;
-        m_exists = true;
+		m_exists = true;
 	}
 	LastError = RegCloseKey(hKey);
 }
@@ -435,7 +435,7 @@ CRegTypedBase<T, Base>& CRegTypedBase<T, Base>::operator =(const T& d)
  * \code
  * regvalue = CRegDWORD("Software\\Company\\SubKey\\MyValue", 100);
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occurred during read from the registry, a default
  * value of 100 is used when accessing the variable.
@@ -449,7 +449,7 @@ CRegTypedBase<T, Base>& CRegTypedBase<T, Base>::operator =(const T& d)
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -465,12 +465,12 @@ class CRegDWORDCommon : public CRegTypedBase<DWORD,Base>
 {
 private:
 
-    /**
-     * provide type-specific code to extract data from and write data to an open registry key.
-     */
+	/**
+	 * provide type-specific code to extract data from and write data to an open registry key.
+	 */
 
-    virtual void InternalRead (HKEY hKey, DWORD& value);
-    virtual void InternalWrite (HKEY hKey, const DWORD& value);
+	virtual void InternalRead (HKEY hKey, DWORD& value);
+	virtual void InternalWrite (HKEY hKey, const DWORD& value);
 
 public:
 
@@ -482,9 +482,9 @@ public:
 	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
-    CRegDWORDCommon(const typename Base::StringT& key, DWORD def = 0, bool force = false, HKEY base = HKEY_CURRENT_USER);
+	CRegDWORDCommon(const typename Base::StringT& key, DWORD def = 0, bool force = false, HKEY base = HKEY_CURRENT_USER);
 
-    CRegDWORDCommon& operator=(DWORD rhs) {CRegTypedBase<DWORD, Base>::operator =(rhs); return *this;}
+	CRegDWORDCommon& operator=(DWORD rhs) {CRegTypedBase<DWORD, Base>::operator =(rhs); return *this;}
 	CRegDWORDCommon& operator+=(DWORD d) { return *this = *this + d;}
 	CRegDWORDCommon& operator-=(DWORD d) { return *this = *this - d;}
 	CRegDWORDCommon& operator*=(DWORD d) { return *this = *this * d;}
@@ -501,13 +501,13 @@ public:
 
 template<class Base>
 CRegDWORDCommon<Base>::CRegDWORDCommon(void)
-    : CRegTypedBase<DWORD, Base>(0)
+	: CRegTypedBase<DWORD, Base>(0)
 {
 }
 
 template<class Base>
 CRegDWORDCommon<Base>::CRegDWORDCommon(const typename Base::StringT& key, DWORD def, bool force, HKEY base)
-    : CRegTypedBase<DWORD, Base> (key, def, force, base)
+	: CRegTypedBase<DWORD, Base> (key, def, force, base)
 {
 	read();
 }
@@ -515,12 +515,12 @@ CRegDWORDCommon<Base>::CRegDWORDCommon(const typename Base::StringT& key, DWORD 
 template<class Base>
 void CRegDWORDCommon<Base>::InternalRead (HKEY hKey, DWORD& value)
 {
-    DWORD size = sizeof(value);
+	DWORD size = sizeof(value);
 	DWORD type = 0;
 	if ((LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, (BYTE*) &value, &size))==ERROR_SUCCESS)
-    {
+	{
 		ASSERT(type==REG_DWORD);
-    }
+	}
 }
 
 template<class Base>
@@ -542,7 +542,7 @@ void CRegDWORDCommon<Base>::InternalWrite (HKEY hKey, const DWORD& value)
  * \code
  * regvalue = CRegString("Software\\Company\\SubKey\\MyValue", "default");
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occurred during read from the registry, a default
  * value of "default" is used when accessing the variable.
@@ -564,7 +564,7 @@ void CRegDWORDCommon<Base>::InternalWrite (HKEY hKey, const DWORD& value)
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -580,12 +580,12 @@ class CRegStringCommon : public CRegTypedBase<typename Base::StringT, Base>
 {
 private:
 
-    /**
-     * provide type-specific code to extract data from and write data to an open registry key.
-     */
+	/**
+	 * provide type-specific code to extract data from and write data to an open registry key.
+	 */
 
-    virtual void InternalRead (HKEY hKey, typename Base::StringT& value);
-    virtual void InternalWrite (HKEY hKey, const typename Base::StringT& value);
+	virtual void InternalRead (HKEY hKey, typename Base::StringT& value);
+	virtual void InternalWrite (HKEY hKey, const typename Base::StringT& value);
 
 public:
 	CRegStringCommon();
@@ -596,9 +596,9 @@ public:
 	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
-    CRegStringCommon(const typename Base::StringT& key, const typename Base::StringT& def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER);
-	
-    CRegStringCommon& operator=(const typename Base::StringT& rhs) {CRegTypedBase<StringT, Base>::operator =(rhs); return *this;}
+	CRegStringCommon(const typename Base::StringT& key, const typename Base::StringT& def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER);
+
+	CRegStringCommon& operator=(const typename Base::StringT& rhs) {CRegTypedBase<StringT, Base>::operator =(rhs); return *this;}
 	CRegStringCommon& operator+=(const typename Base::StringT& s) { return *this = (typename Base::StringT)*this + s; }
 };
 
@@ -606,13 +606,13 @@ public:
 
 template<class Base>
 CRegStringCommon<Base>::CRegStringCommon(void)
-    : CRegTypedBase<typename Base::StringT, Base>(typename Base::StringT())
+	: CRegTypedBase<typename Base::StringT, Base>(typename Base::StringT())
 {
 }
 
 template<class Base>
 CRegStringCommon<Base>::CRegStringCommon(const typename Base::StringT& key, const typename Base::StringT& def, bool force, HKEY base)
-    : CRegTypedBase<typename Base::StringT, Base> (key, def, force, base)
+	: CRegTypedBase<typename Base::StringT, Base> (key, def, force, base)
 {
 	read();
 }
@@ -624,12 +624,12 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 	DWORD type = 0;
 	LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, NULL, &size);
 
-    std::auto_ptr<TCHAR> pStr (new TCHAR[size]);
+	std::auto_ptr<TCHAR> pStr (new TCHAR[size]);
 	if ((LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, (BYTE*) pStr.get(), &size))==ERROR_SUCCESS)
-    {
-        ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);
-        value = StringT (pStr.get());
-    }
+	{
+		ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);
+		value = StringT (pStr.get());
+	}
 }
 
 template<class Base>
@@ -651,7 +651,7 @@ void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::Stri
  * \code
  * regvalue = CRegRect("Software\\Company\\SubKey\\MyValue", CRect(100,100,200,200));
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occurred during read from the registry, a default
  * value of 100,100,200,200 is used when accessing the variable.
@@ -674,7 +674,7 @@ void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::Stri
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -686,17 +686,17 @@ void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::Stri
  * third parameter in the constructor.
  */
 
-#ifdef __ATLTYPES_H__   // defines CRect 
+#ifdef __ATLTYPES_H__ // defines CRect
 class CRegRect : public CRegTypedBase<CRect, CRegBase>
 {
 private:
 
-    /**
-     * provide type-specific code to extract data from and write data to an open registry key.
-     */
+	/**
+	 * provide type-specific code to extract data from and write data to an open registry key.
+	 */
 
-    virtual void InternalRead (HKEY hKey, CRect& value);
-    virtual void InternalWrite (HKEY hKey, const CRect& value);
+	virtual void InternalRead (HKEY hKey, CRect& value);
+	virtual void InternalWrite (HKEY hKey, const CRect& value);
 
 public:
 	CRegRect();
@@ -709,8 +709,8 @@ public:
 	 */
 	CRegRect(const CString& key, const CRect& def = CRect(), bool force = false, HKEY base = HKEY_CURRENT_USER);
 	~CRegRect(void);
-	
-    CRegRect& operator=(const CRect& rhs) {CRegTypedBase<CRect, CRegBase>::operator =(rhs); return *this;}
+
+	CRegRect& operator=(const CRect& rhs) {CRegTypedBase<CRect, CRegBase>::operator =(rhs); return *this;}
 	operator LPCRECT() { return (LPCRECT)(CRect)*this; }
 	operator LPRECT() { return (LPRECT)(CRect)*this; }
 	CRegRect& operator+=(POINT r) { return *this = (CRect)*this + r;}
@@ -719,7 +719,7 @@ public:
 	CRegRect& operator-=(POINT r) { return *this = (CRect)*this - r;}
 	CRegRect& operator-=(SIZE r) { return *this = (CRect)*this - r;}
 	CRegRect& operator-=(LPCRECT  r) { return *this = (CRect)*this - r;}
-	
+
 	CRegRect& operator&=(CRect r) { return *this = r & *this;}
 	CRegRect& operator|=(CRect r) { return *this = r | *this;}
 };
@@ -738,7 +738,7 @@ public:
  * \code
  * regvalue = CRegPoint("Software\\Company\\SubKey\\MyValue", CPoint(100,100));
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occurred during read from the registry, a default
  * value of 100,100 is used when accessing the variable.
@@ -760,7 +760,7 @@ public:
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -772,17 +772,17 @@ public:
  * third parameter in the constructor.
  */
 
-#ifdef __ATLTYPES_H__   // defines CPoint 
+#ifdef __ATLTYPES_H__ // defines CPoint
 class CRegPoint : public CRegTypedBase<CPoint, CRegBase>
 {
 private:
 
-    /**
-     * provide type-specific code to extract data from and write data to an open registry key.
-     */
+	/**
+	 * provide type-specific code to extract data from and write data to an open registry key.
+	 */
 
-    virtual void InternalRead (HKEY hKey, CPoint& value);
-    virtual void InternalWrite (HKEY hKey, const CPoint& value);
+	virtual void InternalRead (HKEY hKey, CPoint& value);
+	virtual void InternalWrite (HKEY hKey, const CPoint& value);
 
 public:
 	CRegPoint();
@@ -795,8 +795,8 @@ public:
 	 */
 	CRegPoint(const CString& key, const CPoint& def = CPoint(), bool force = false, HKEY base = HKEY_CURRENT_USER);
 	~CRegPoint(void);
-	
-    CRegPoint& operator=(const CPoint& rhs) {CRegTypedBase<CPoint, CRegBase>::operator =(rhs); return *this;}
+
+	CRegPoint& operator=(const CPoint& rhs) {CRegTypedBase<CPoint, CRegBase>::operator =(rhs); return *this;}
 	CRegPoint& operator+=(CPoint p) { return *this = p + *this; }
 	CRegPoint& operator-=(CPoint p) { return *this = p - *this; }
 };
@@ -808,7 +808,7 @@ public:
  * key and to query the list of values and sub keys.
  */
 
-#ifdef __AFXCOLL_H__   // defines CStringList 
+#ifdef __AFXCOLL_H__ // defines CStringList
 class CRegistryKey
 {
 public:	//methods

@@ -133,7 +133,7 @@ BOOL CMergeWizardOptions::OnWizardFinish()
 
 BOOL CMergeWizardOptions::OnSetActive()
 {
-	CPropertySheet* psheet = (CPropertySheet*) GetParent();   
+	CPropertySheet* psheet = (CPropertySheet*) GetParent();
 	psheet->SetWizardButtons(PSWIZB_BACK|PSWIZB_FINISH);
 	SetButtonTexts();
 	GetDlgItem(IDC_RECORDONLY)->EnableWindow(((CMergeWizard*)GetParent())->nRevRangeMerge != MERGEWIZARD_REINTEGRATE);

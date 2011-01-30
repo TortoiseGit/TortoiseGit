@@ -74,7 +74,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
-	
+
 	m_bShowBugtraqColumn=false;
 
 	m_IsIDReplaceAction=FALSE;
@@ -87,11 +87,11 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_wcRev.m_IsUpdateing=FALSE;
 	m_wcRev.m_IsFull = TRUE;
 
-	m_hModifiedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hReplacedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hAddedIcon    =  (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hDeletedIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
-	m_hFetchIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hModifiedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONMODIFIED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hReplacedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONREPLACED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hAddedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONADDED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hDeletedIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONDELETED), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	m_hFetchIcon	= (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ACTIONFETCHING), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
@@ -281,7 +281,7 @@ CGitLogListBase::~CGitLogListBase()
 
 
 BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
-	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
+	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoLoglist)
 	ON_WM_CONTEXTMENU()
@@ -463,9 +463,9 @@ BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefi
 }
 
 void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
-{	
+{
 //	HBRUSH brush;
-	LVITEM   rItem;
+	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
 	rItem.iItem = Index;
@@ -475,7 +475,6 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(Index);
 	HBRUSH brush = NULL;
 
-	
 	if (m_Theme.IsAppThemed() && m_bVista)
 	{
 		int state = LISS_NORMAL;
@@ -515,7 +514,6 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	}
 	else
 	{
-		
 		if (rItem.state & LVIS_SELECTED)
 		{
 			if (::GetFocus() == m_hWnd)
@@ -547,7 +545,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 {
 	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
 	CRect rt=rect;
-	LVITEM   rItem;
+	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
 	rItem.iItem = index;
@@ -608,17 +606,16 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
 
 		brush = ::CreateSolidBrush(colRef);
-		
 
 		if(!shortname.IsEmpty() && (rt.left<rect.right) )
 		{
 			SIZE size;
 			memset(&size,0,sizeof(SIZE));
 			GetTextExtentPoint32(hdc, shortname,shortname.GetLength(),&size);
-		
+
 			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
 			rt.right+=8;
-			
+
 			int textpos = DT_CENTER;
 
 			if(rt.right > rect.right)
@@ -633,11 +630,11 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			//Draw edge of label
 
 			CRect rectEdge = rt;
-			
+
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,100), m_Colors.Darken(colRef,100));
 			rectEdge.DeflateRect(1,1);
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
-	
+
 			//Draw text inside label
 			if (m_Theme.IsAppThemed() && m_bVista)
 			{
@@ -653,7 +650,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 				if (rItem.state & LVIS_SELECTED)
 				{
 					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-					COLORREF   clrOld   = ::SetTextColor(hdc,clrNew);   
+					COLORREF clrOld = ::SetTextColor(hdc,clrNew);
 					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc,clrOld);
 				}else
@@ -672,7 +669,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		}
 		if(brush)
 			::DeleteObject(brush);
-	}		
+	}
 	rt.right=rect.right;
 
 	if (m_Theme.IsAppThemed() && m_bVista)
@@ -687,9 +684,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	{
 		if (rItem.state & LVIS_SELECTED)
 		{
-			COLORREF   clrOld   = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));   
+			COLORREF clrOld = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));
 			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-			::SetTextColor(hdc,clrOld);   
+			::SetTextColor(hdc,clrOld);
 		}else
 		{
 			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
@@ -728,7 +725,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	#define R_CENTER	m - r, h - r+top, d, d
 
 
-	#define DELTA_UR_B 2*(x1 - m), 2*h +top 
+	#define DELTA_UR_B 2*(x1 - m), 2*h +top
 	#define DELTA_UR_E 0*16, 90*16 +top  // -,
 
 	#define DELTA_DR_B 2*(x1 - m), 2*-h +top
@@ -737,7 +734,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	#define DELTA_UL_B 2*(x2 - m), 2*h +top
 	#define DELTA_UL_E 90*16, 90*16 +top //  ,-
 
-	#define DELTA_DL_B 2*(x2 - m),2*-h +top 
+	#define DELTA_DL_B 2*(x2 - m),2*-h +top
 	#define DELTA_DL_E 180*16, 90*16  //  '-
 
 	#define CENTER_UR x1, 2*h, 225
@@ -749,30 +746,30 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	Gdiplus::Graphics graphics( hdc );
 
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
-	
+
 	// arc
 	switch (type) {
 	case Lanes::JOIN:
 	case Lanes::JOIN_R:
 	case Lanes::HEAD:
-	case Lanes::HEAD_R: 
+	case Lanes::HEAD_R:
 	{
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(x1-2, h+top-2),
 								Gdiplus::Point(P_270),
 								GetGdiColor(activeColor),GetGdiColor(col));
 
-		
+
 		Gdiplus::Pen mypen(&gradient,2);
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
-		
+
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
 		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top+h-1, x2-x1,laneHeight,270,90);
 		//graphics.DrawLine(&mypen,x1-1,h+top,P_270);
 
 		break;
 	}
-	case Lanes::JOIN_L: 
+	case Lanes::JOIN_L:
 	{
 
 		Gdiplus::LinearGradientBrush gradient(
@@ -780,10 +777,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								Gdiplus::Point(x2+1, h+top-1),
 								GetGdiColor(col),GetGdiColor(activeColor));
 
-		
+
 		Gdiplus::Pen mypen(&gradient,2);
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
-		
+
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
 		graphics.DrawArc(&mypen,x1+(x2-x1)/2,top+h-1, x2-x1,laneHeight,180,90);
 		//graphics.DrawLine(&mypen,x1-1,h+top,P_270);
@@ -792,19 +789,17 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		break;
 	}
 	case Lanes::TAIL:
-	case Lanes::TAIL_R: 
+	case Lanes::TAIL_R:
 	{
-		
+
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(x1-2, h+top-2),
 								Gdiplus::Point(P_90),
 								GetGdiColor(activeColor),GetGdiColor(col));
 
-		
 		Gdiplus::Pen mypen(&gradient,2);
 
 		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top-h-1, x2-x1,laneHeight,0,90);
-
 
 #if 0
 		QConicalGradient gradient(CENTER_DR);
@@ -828,7 +823,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	HPEN oldpen=(HPEN)::SelectObject(hdc,(HPEN)pen);
 
 	Gdiplus::Pen myPen(GetGdiColor(col),2);
-	
+
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 
 	//p->setPen(myPen);
@@ -977,24 +972,21 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 
 void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 {
-	//todo unfinished
+	// TODO: unfinished
 //	return;
 	GitRev* data = (GitRev*)m_arShownList.GetAt(index);
 	if(data->m_CommitHash.IsEmpty())
 		return;
 
 	CRect rt=rect;
-	LVITEM   rItem;
+	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
 	rItem.iItem = index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
-	
 //	p->translate(QPoint(opt.rect.left(), opt.rect.top()));
-
-
 
 	if (data->m_Lanes.size() == 0)
 		m_logEntries.setLane(data->m_CommitHash);
@@ -1010,14 +1002,13 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 
 	int x1 = 0, x2 = 0;
 	int maxWidth = rect.Width();
-	int lw = 3 * rect.Height() / 4; //laneWidth() 
+	int lw = 3 * rect.Height() / 4; //laneWidth()
 
 	COLORREF activeColor = m_LineColors[activeLane % Lanes::COLORS_NUM];
 	//if (opt.state & QStyle::State_Selected)
 	//	activeColor = blend(activeColor, opt.palette.highlightedText().color(), 208);
-	
 
-	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; i++) 
+	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; i++)
 	{
 
 		x1 = x2;
@@ -1042,7 +1033,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 			continue;
 
 		UINT col = (  Lanes:: isHead(ln) ||Lanes:: isTail(ln) || Lanes::isJoin(ln)
-		            || ln ==Lanes:: CROSS_EMPTY) ? activeLane : i;
+					|| ln ==Lanes:: CROSS_EMPTY) ? activeLane : i;
 
 		if (ln == Lanes::CROSS) {
 			paintGraphLane(hdc, rect.Height(),Lanes::NOT_ACTIVE, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
@@ -1077,8 +1068,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case CDDS_ITEMPREPAINT:
 		{
 			// This is the prepaint stage for an item. Here's where we set the
-			// item's text color. 
-			
+			// item's text color.
+
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
@@ -1100,7 +1091,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (data->bCopies)
 						crText = m_Colors.GetColor(CColors::Modified);
 #endif
-					if (data->GetAction(this)& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) ) 
+					if (data->GetAction(this)& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) )
 						crText = RGB(128,128,128);
 
 					if(data->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_SQUASH)
@@ -1124,7 +1115,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 //					if ((data->childStackDepth)||(m_mergedRevs.find(data->Rev) != m_mergedRevs.end()))
 //						crText = GetSysColor(COLOR_GRAYTEXT);
-//					
+
 					if (data->m_CommitHash.IsEmpty())
 					{
 						//crText = GetSysColor(RGB(200,200,0));
@@ -1158,17 +1149,16 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					CRect rect;
 					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_LABEL, rect);
-										
+
 					//TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
 					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
-					
+
 					GitRev* data = (GitRev*)m_arShownList.GetAt(pLVCD->nmcd.dwItemSpec);
 					if( !data ->m_CommitHash.IsEmpty())
 						DrawGraph(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
 
 					*pResult = CDRF_SKIPDEFAULT;
 					return;
-				
 				}
 			}
 
@@ -1189,7 +1179,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						CRect rect;
 
 						GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
-					
+
 						FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 						DrawTagBranch(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
 
@@ -1198,9 +1188,9 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 					}
 
-				}	
+				}
 			}
-			
+
 			if (pLVCD->iSubItem == LOGLIST_ACTION)
 			{
 				if(this->m_IsIDReplaceAction)
@@ -1222,17 +1212,17 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 				//TRACE(_T("Action left %d right %d\r\n"),rect.left,rect.right);
 				// Get the selected state of the
-				// item being drawn.							
+				// item being drawn.
 
 				// Fill the background
 				FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
-				
+
 				// Draw the icon(s) into the compatible DC
 				pLogEntry->GetAction(this);
 
 				if (!pLogEntry->m_IsDiffFiles)
-					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);		
-			
+					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
+
 				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				nIcons++;
@@ -1274,7 +1264,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	lstrcpyn(pItem->pszText, _T(""), pItem->cchTextMax);
 
 	bool bOutOfRange = pItem->iItem >= ShownCountWithStopped();
-	
+
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)
 		return;
@@ -1303,7 +1293,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_REBASE:
 		{
 			if(this->m_IsRebaseReplaceGraph)
-			{	
+			{
 				CTGitPath path;
 				path.m_Action=pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
 				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
@@ -1331,25 +1321,25 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_DATE: //Date
 		if ( pLogEntry && (!pLogEntry->m_CommitHash.IsEmpty()) )
 			lstrcpyn(pItem->pszText,
-				CAppUtils::FormatDateAndTime( pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes ), 
+				CAppUtils::FormatDateAndTime( pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes ),
 				pItem->cchTextMax);
 		break;
-	
-	case this->LOGLIST_EMAIL: 
+
+	case this->LOGLIST_EMAIL:
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetAuthorEmail(), pItem->cchTextMax);
 		break;
-	
+
 	case this->LOGLIST_COMMIT_NAME: //Commit
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetCommitterName(), pItem->cchTextMax);
 		break;
-	
+
 	case this->LOGLIST_COMMIT_EMAIL: //Commit Email
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetCommitterEmail(), pItem->cchTextMax);
 		break;
-	
+
 	case this->LOGLIST_COMMIT_DATE: //Commit Date
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText,
@@ -1360,7 +1350,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		if(pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject()), pItem->cchTextMax);
 		break;
-	
+
 	default:
 		ASSERT(false);
 	}
@@ -1464,24 +1454,24 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
-			popup.AppendMenuIcon(ID_REBASE_PICK,  IDS_REBASE_PICK,   IDI_PICK);
+			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SQUASH))
-			popup.AppendMenuIcon(ID_REBASE_SQUASH,IDS_REBASE_SQUASH, IDI_SQUASH);
+			popup.AppendMenuIcon(ID_REBASE_SQUASH, IDS_REBASE_SQUASH, IDI_SQUASH);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_EDIT))
-			popup.AppendMenuIcon(ID_REBASE_EDIT,  IDS_REBASE_EDIT,   IDI_EDIT);
+			popup.AppendMenuIcon(ID_REBASE_EDIT, IDS_REBASE_EDIT, IDI_EDIT);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_SKIP))
-			popup.AppendMenuIcon(ID_REBASE_SKIP,  IDS_REBASE_SKIP,   IDI_SKIP);
-		
+			popup.AppendMenuIcon(ID_REBASE_SKIP, IDS_REBASE_SKIP, IDI_SKIP);
+
 		if(m_ContextMenuMask&(GetContextMenuBit(ID_REBASE_SKIP)|GetContextMenuBit(ID_REBASE_EDIT)|
-			      GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
+			GetContextMenuBit(ID_REBASE_SQUASH)|GetContextMenuBit(ID_REBASE_PICK)))
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		if (GetSelectedCount() == 1)
 		{
-			
+
 			{
 				if( !pSelLogEntry->m_CommitHash.IsEmpty())
 				{
@@ -1514,7 +1504,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
-						
+
 						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+(0xFFFF<<16),_T("All Parents"));
 						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+(0xFFFE<<16),_T("Only Merged Files"));
 
@@ -1539,7 +1529,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 
-					}else
+					}
+					else
 					{
 						diffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF, diffmenu.m_hMenu);
@@ -1550,7 +1541,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS +((i+1)<<16),str);
 						}
 					}
-					
 				}
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_BLAME))
@@ -1598,7 +1588,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 
 				// Add Switch Branch express Menu
-				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() 
+				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end()
 					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH))
 					)
 				{
@@ -1634,11 +1624,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							subbranchmenu.AppendMenuIcon(ID_SWITCHBRANCH+(i<<16), branchs[i]->Mid(11));
 							subbranchmenu.SetMenuItemData(ID_SWITCHBRANCH+(i<<16), (ULONG_PTR) branchs[i]);
 						}
-						
-						popup.AppendMenuIcon(ID_SWITCHBRANCH, str, IDI_SWITCH, subbranchmenu.m_hMenu);
 
+						popup.AppendMenuIcon(ID_SWITCHBRANCH, str, IDI_SWITCH, subbranchmenu.m_hMenu);
 					}
-					
 				}
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
@@ -1658,7 +1646,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
-					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);	
+					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
@@ -1673,8 +1661,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if(!pSelLogEntry->m_Ref.IsEmpty() && GetSelectedCount() == 1)
 		{
-			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL,     IDI_DELETE);
-			popup.AppendMenuIcon(ID_STASH_APPLY,IDS_MENUSTASHAPPLY, IDI_RELOCATE);
+			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
+			popup.AppendMenuIcon(ID_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
@@ -1748,7 +1736,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		
 #if 0
 //		if ((selEntries.size() > 0)&&(bAllFromTheSameAuthor))
 //		{
@@ -1776,7 +1763,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
 			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
 
-
 		if (GetSelectedCount() == 1)
 		{
 			if(m_ContextMenuMask &GetContextMenuBit(ID_DELETE))
@@ -1800,12 +1786,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							submenu.AppendMenuIcon(ID_DELETE+(i<<16),m_HashMap[pSelLogEntry->m_CommitHash][i]+_T("..."));
 						}
 
-						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu); 
+						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);
 
 					}
 				}
-			}
-		}
+			} // m_ContextMenuMask &GetContextMenuBit(ID_DELETE)
+		} // GetSelectedCount() == 1
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);
@@ -1871,7 +1857,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 			{
 				//pLogEntry->GetFiles(this)
 				//LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
-			
+
 				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->GetFiles(this).GetCount(); ++cpPathIndex)
 				{
 					sPaths += ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetActionName() + _T(" : ") + pLogEntry->GetFiles(this)[cpPathIndex].GetGitPathString();
@@ -1883,7 +1869,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
 					(LPCTSTR)sRev, pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(),
-					(LPCTSTR)sDate, 
+					(LPCTSTR)sDate,
 					(LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes ),
 					(LPCTSTR)sMessage, pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim(),
 					(LPCTSTR)sPaths);
@@ -1944,12 +1930,12 @@ void CGitLogListBase::DiffSelectedRevWithPrevious()
 		}
 	}
 
-	if (m_path.IsDirectory() && nChanged == 1) 
+	if (m_path.IsDirectory() && nChanged == 1)
 	{
 		// We're looking at the log for a directory and only one file under dir was changed in the revision
 		// Do diff on that file instead of whole directory
 		path.AppendPathString(changed->sPath.Mid(m_sRelativeRoot.GetLength()));
-	} 
+	}
 
 	m_bCancelled = FALSE;
 	DialogEnableWindow(IDOK, FALSE);
@@ -1977,16 +1963,16 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVFINDITEM pFindInfo = reinterpret_cast<LPNMLVFINDITEM>(pNMHDR);
 	*pResult = -1;
-	
+
 	if (pFindInfo->lvfi.flags & LVFI_PARAM)
-		return;	
+		return;
 	if ((pFindInfo->iStart < 0)||(pFindInfo->iStart >= m_arShownList.GetCount()))
 		return;
 	if (pFindInfo->lvfi.psz == 0)
 		return;
 #if 0
 	CString sCmp = pFindInfo->lvfi.psz;
-	CString sRev;	
+	CString sRev;
 	for (int i=pFindInfo->iStart; i<m_arShownList.GetCount(); ++i)
 	{
 		GitRev * pLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
@@ -2054,7 +2040,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 		{
 			m_logEntries.GetGitRevAt(m_logEntries.size()-i-1).m_IsFull=TRUE;
 			this->m_arShownList.Add(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
-		
+
 		}else
 		{
 			m_logEntries.GetGitRevAt(i).m_IsFull=TRUE;
@@ -2062,8 +2048,8 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 		}
 	}
 
-    if(path)
-        m_Path=*path;
+	if(path)
+		m_Path=*path;
 	return 0;
 
 }
@@ -2079,18 +2065,18 @@ int CGitLogListBase::BeginFetchLog()
 
 	m_LogCache.FetchCacheIndex(g_Git.m_CurrentDir);
 
-    CTGitPath *path;
-    if(this->m_Path.IsEmpty())
-        path=NULL;
-    else
-        path=&this->m_Path;
+	CTGitPath *path;
+	if(this->m_Path.IsEmpty())
+		path=NULL;
+	else
+		path=&this->m_Path;
 
 	CString hash;
 	int mask;
 	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)
 	mask |= m_ShowMask ;
-	
+
 	this->m_arShownList.RemoveAll();
 
 	if(m_bShowWC)
@@ -2118,7 +2104,7 @@ int CGitLogListBase::BeginFetchLog()
 	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
 		data.m_Author = this->m_sFilterText;
 
-	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_MESSAGES) 
+	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_MESSAGES)
 		data.m_MessageFilter = this->m_sFilterText;
 
 	data.m_IsRegex = m_bFilterWithRegex;
@@ -2134,7 +2120,7 @@ int CGitLogListBase::BeginFetchLog()
 	{
 		SetItemCountEx(this->m_logEntries.size());
 	}
-	
+
 	git_init();
 
 	if(g_Git.IsInitRepos())
@@ -2178,7 +2164,7 @@ BOOL CGitLogListBase::PreTranslateMessage(MSG* pMsg)
 		if (ret)
 			return TRUE;
 	}
-	
+
 #endif
 	//m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
@@ -2239,9 +2225,9 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 }
 
 UINT CGitLogListBase::LogThread()
- {
+{
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_START,0);
-	
+
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 
@@ -2315,19 +2301,18 @@ UINT CGitLogListBase::LogThread()
 			}
 
 			pRev->ParserParentFromCommit(&commit);
-			
-#ifdef DEBUG		
+
+#ifdef DEBUG
 			pRev->DbgPrint();
 			TRACE(_T("\n"));
 #endif
-			
 
 			this->m_critSec.Lock();
 			m_logEntries.push_back(hash);
 			m_arShownList.Add(pRev);
 			this->m_critSec.Unlock();
 
-			t2=GetTickCount();	
+			t2=GetTickCount();
 
 			if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
 			{
@@ -2347,7 +2332,7 @@ UINT CGitLogListBase::LogThread()
 					oldprecentage = percent;
 				}
 				t1 = t2;
-			}		
+			}
 		}
 		g_Git.m_critGitDllSec.Lock();
 		git_close_log(m_DllGitLog);
@@ -2364,9 +2349,9 @@ UINT CGitLogListBase::LogThread()
 }
 
 void CGitLogListBase::Refresh(BOOL IsCleanFilter)
-{	
+{
 	SafeTerminateThread();
-	
+
 	this->SetItemCountEx(0);
 	this->Clear();
 
@@ -2589,8 +2574,8 @@ void CGitLogListBase::RecalculateShownList(CPtrArray * pShownlist)
 					continue;
 				}
 			}
-		} // else (from if (bRegex))	
-	} // for (DWORD i=0; i<m_logEntries.size(); ++i) 
+		} // else (from if (bRegex))
+	} // for (DWORD i=0; i<m_logEntries.size(); ++i)
 
 }
 
@@ -2607,7 +2592,7 @@ BOOL CGitLogListBase::IsEntryInDateRange(int i)
 	else
 		if(m_To == -1)
 			return time >= m_From;
-		else 
+		else
 			return ((time >= m_From)&&(time <= m_To));
 	*/
 	return TRUE; /* git dll will filter time range */
@@ -2704,7 +2689,7 @@ void CGitLogListBase::SaveColumnWidths()
 {
 	CHeaderCtrl* pHdrCtrl = (CHeaderCtrl*)(GetDlgItem(0));
 	int maxcol = m_ColumnManager.GetColumnCount();
-	
+
 	for (int col = 0; col < maxcol; col++)
 		if (m_ColumnManager.IsVisible (col))
 			m_ColumnManager.ColumnResized (col);
@@ -2772,8 +2757,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		for (i = this->m_nSearchIndex; i<m_arShownList.GetCount()&&!bFound; i++)
 		{
 			GitRev* pLogEntry = (GitRev*)m_arShownList.GetAt(i);
-				
-			CString str; 
+
+			CString str;
 			str+=pLogEntry->m_CommitHash.ToString();
 			str+=_T("\n");
 
@@ -2782,7 +2767,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				str+=m_HashMap[pLogEntry->m_CommitHash][j];
 				str+=_T("\n");
 			}
-			
+
 			str+=pLogEntry->GetAuthorEmail();
 			str+=_T("\n");
 			str+=pLogEntry->GetAuthorName();
@@ -2795,8 +2780,9 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=_T("\n");
 			str+=pLogEntry->GetSubject();
 			str+=_T("\n");
+
 #if 0
-			/*Because changed files list is loaded on demand when gui show, 
+			/*Because changed files list is loaded on demand when gui show,
 			  files will empty when files have not fetched.
 
 			  we can add it back by using one-way diff(with outnumber changed and rename detect.
@@ -2810,9 +2796,9 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				str+=_T("\n");
 			}
 #endif
+
 			if (bRegex)
 			{
-				
 				if (regex_search(wstring(str), pat, flags))
 				{
 					bFound = true;
@@ -2856,7 +2842,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			if (m_nSearchIndex >= m_arShownList.GetCount())
 				m_nSearchIndex = (int)m_arShownList.GetCount()-1;
 		}
-	}// if(m_pFindDialog->FindNext()) 
+	} // if(m_pFindDialog->FindNext())
 	//UpdateLogInfoLabel();
 
 	return 0;

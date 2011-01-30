@@ -8,7 +8,7 @@ class CChooseVersion
 {
 public:
 	CString m_initialRefName;
-	
+
 private:
 	CWnd *	m_pWin;
 	CWinThread*			m_pLoadingThread;
@@ -19,34 +19,34 @@ private:
 	volatile LONG 		m_bLoadingThreadRunning;
 
 protected:
-	CHistoryCombo m_ChooseVersioinBranch;  
-	CHistoryCombo m_ChooseVersioinTags;    
-	CHistoryCombo m_ChooseVersioinVersion; 
-	CButton		  m_RadioBranch;
-	CButton		  m_RadioTag;
+	CHistoryCombo	m_ChooseVersioinBranch;
+	CHistoryCombo	m_ChooseVersioinTags;
+	CHistoryCombo	m_ChooseVersioinVersion;
+	CButton			m_RadioBranch;
+	CButton			m_RadioTag;
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
 
-	afx_msg void OnBnClickedChooseRadio() 
+	afx_msg void OnBnClickedChooseRadio()
 	{
-		this->m_ChooseVersioinTags.EnableWindow(FALSE);													
-		this->m_ChooseVersioinBranch.EnableWindow(FALSE);					
-		this->m_ChooseVersioinVersion.EnableWindow(FALSE);				
+		this->m_ChooseVersioinTags.EnableWindow(FALSE);
+		this->m_ChooseVersioinBranch.EnableWindow(FALSE);
+		this->m_ChooseVersioinVersion.EnableWindow(FALSE);
 		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
-		switch (radio)											
-		{															
-		case IDC_RADIO_HEAD:										
-			break;													
-		case IDC_RADIO_BRANCH:										
-			this->m_ChooseVersioinBranch.EnableWindow(TRUE);						
-			break;													
-		case IDC_RADIO_TAGS:										
-			this->m_ChooseVersioinTags.EnableWindow(TRUE);						
-			break;													
-		case IDC_RADIO_VERSION:										
-			this->m_ChooseVersioinVersion.EnableWindow(TRUE);						
-		break;		
+		switch (radio)
+		{
+		case IDC_RADIO_HEAD:
+			break;
+		case IDC_RADIO_BRANCH:
+			this->m_ChooseVersioinBranch.EnableWindow(TRUE);
+			break;
+		case IDC_RADIO_TAGS:
+			this->m_ChooseVersioinTags.EnableWindow(TRUE);
+			break;
+		case IDC_RADIO_VERSION:
+			this->m_ChooseVersioinVersion.EnableWindow(TRUE);
+		break;
 		}
 		// enable version browse button if Version is selected
 		m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(radio == IDC_RADIO_VERSION);
@@ -72,24 +72,24 @@ protected:
 	}
 
 	void UpdateRevsionName()
-	{																			
-		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);		
-		switch (radio)															
-		{																		
-		case IDC_RADIO_HEAD:													
-			this->m_VersionName=_T("HEAD");											
-			break;																
-		case IDC_RADIO_BRANCH:													
-			this->m_VersionName=m_ChooseVersioinBranch.GetString();									
-			break;																
-		case IDC_RADIO_TAGS:													
-			this->m_VersionName=m_ChooseVersioinTags.GetString();									
-			break;																
-		case IDC_RADIO_VERSION:													
-			this->m_VersionName=m_ChooseVersioinVersion.GetString();									
-			break;	
+	{
+		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
+		switch (radio)
+		{
+		case IDC_RADIO_HEAD:
+			this->m_VersionName=_T("HEAD");
+			break;
+		case IDC_RADIO_BRANCH:
+			this->m_VersionName=m_ChooseVersioinBranch.GetString();
+			break;
+		case IDC_RADIO_TAGS:
+			this->m_VersionName=m_ChooseVersioinTags.GetString();
+			break;
+		case IDC_RADIO_VERSION:
+			this->m_VersionName=m_ChooseVersioinVersion.GetString();
+			break;
 		}
-	}			
+	}
 	void SetDefaultChoose(int id)
 	{
 		m_pWin->CheckRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION,id);
@@ -148,7 +148,7 @@ protected:
 	UINT LoadingThread()
 	{
 		STRING_VECTOR list;
-		
+
 		int current;
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
 		m_ChooseVersioinBranch.AddString(list, false);
@@ -172,15 +172,15 @@ protected:
 		return 0;
 	}
 	void Init()
-	{	
+	{
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
-		
+
 		m_RadioBranch.EnableWindow(FALSE);
 		m_RadioTag.EnableWindow(FALSE);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
-		
+
 		if ( (m_pLoadingThread=AfxBeginThread(LoadingThreadEntry, this)) ==NULL)
 		{
 			InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
@@ -196,7 +196,7 @@ protected:
 				::TerminateThread(m_pLoadingThread,0);
 		}
 	}
-public:					
+public:
 	CString m_VersionName;
 	CChooseVersion(CWnd *win)
 	{
@@ -208,17 +208,17 @@ public:
 
 #define CHOOSE_VERSION_DDX \
 	DDX_Control(pDX, IDC_COMBOBOXEX_BRANCH,		m_ChooseVersioinBranch); \
-	DDX_Control(pDX, IDC_COMBOBOXEX_TAGS,		m_ChooseVersioinTags);     \
+	DDX_Control(pDX, IDC_COMBOBOXEX_TAGS,		m_ChooseVersioinTags); \
 	DDX_Control(pDX, IDC_COMBOBOXEX_VERSION,	m_ChooseVersioinVersion); \
 	DDX_Control(pDX, IDC_RADIO_BRANCH, m_RadioBranch);\
 	DDX_Control(pDX, IDC_RADIO_TAGS, m_RadioTag);
 
 #define CHOOSE_VERSION_EVENT\
-	ON_BN_CLICKED(IDC_RADIO_HEAD,		OnBnClickedChooseRadioHost)\
-	ON_BN_CLICKED(IDC_RADIO_BRANCH,		OnBnClickedChooseRadioHost)\
-	ON_BN_CLICKED(IDC_RADIO_TAGS,		OnBnClickedChooseRadioHost)\
-	ON_BN_CLICKED(IDC_BUTTON_SHOW, 		OnBnClickedShow)\
-	ON_BN_CLICKED(IDC_RADIO_VERSION,	OnBnClickedChooseRadioHost)\
+	ON_BN_CLICKED(IDC_RADIO_HEAD,			OnBnClickedChooseRadioHost)\
+	ON_BN_CLICKED(IDC_RADIO_BRANCH,			OnBnClickedChooseRadioHost)\
+	ON_BN_CLICKED(IDC_RADIO_TAGS,			OnBnClickedChooseRadioHost)\
+	ON_BN_CLICKED(IDC_BUTTON_SHOW, 			OnBnClickedShow)\
+	ON_BN_CLICKED(IDC_RADIO_VERSION,		OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF,	OnBnClickedButtonBrowseRefHost)
 
 #define CHOOSE_VERSION_ADDANCHOR								\
@@ -227,9 +227,9 @@ public:
 		AddAnchor(IDC_COMBOBOXEX_TAGS, TOP_LEFT, TOP_RIGHT);	\
 		AddAnchor(IDC_COMBOBOXEX_VERSION, TOP_LEFT, TOP_RIGHT);	\
 		AddAnchor(IDC_GROUP_BASEON, TOP_LEFT, TOP_RIGHT);		\
-		AddAnchor(IDC_BUTTON_SHOW,TOP_RIGHT);		\
-		AddAnchor(IDC_BUTTON_BROWSE_REF,TOP_RIGHT);		\
-	}	
+		AddAnchor(IDC_BUTTON_SHOW,TOP_RIGHT);					\
+		AddAnchor(IDC_BUTTON_BROWSE_REF,TOP_RIGHT);				\
+	}
 
 #define CHOOSE_EVENT_RADIO() \
 	afx_msg void OnBnClickedChooseRadioHost(){OnBnClickedChooseRadio();}\

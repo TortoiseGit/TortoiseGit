@@ -137,7 +137,7 @@ private:
 	// merging these pools won't save memory
 	// but access will become slower
 	
-	StringPool		authors;       
+	StringPool		authors;
 	StringPool		urls;
 	StringPool		owners;
 	char			emptyString[1];

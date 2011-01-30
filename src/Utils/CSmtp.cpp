@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////
-// Original class CFastSmtp written by 
+// Original class CFastSmtp written by
 // christopher w. backen <immortal@cox.net>
 // More details at: http://www.codeproject.com/KB/IP/zsmtp.aspx
-// 
+//
 // Modifications:
 // 1. name of the class and some functions
 // 2. new functions added: SendData,ReceiveData and more
@@ -38,27 +38,27 @@ CSmtp::CSmtp()
 	m_pcLogin = NULL;
 	m_pcPassword = NULL;
 	m_pcSMTPSrvName = NULL;
-	
+
 	if((RecvBuf = new char[BUFFER_SIZE]) == NULL)
 	{
 		m_oError = CSMTP_LACK_OF_MEMORY;
 		return;
 	}
-	
+
 	if((SendBuf = new char[BUFFER_SIZE]) == NULL)
 	{
 		m_oError = CSMTP_LACK_OF_MEMORY;
 		return;
 	}
-	
+
 	// Initialize WinSock
-	WORD wVer = MAKEWORD(2,2);    
+	WORD wVer = MAKEWORD(2,2);
 	if (WSAStartup(wVer,&wsaData) != NO_ERROR)
 	{
 		m_oError = CSMTP_WSA_STARTUP;
 		return;
 	}
-	if (LOBYTE( wsaData.wVersion ) != 2 || HIBYTE( wsaData.wVersion ) != 2 ) 
+	if (LOBYTE( wsaData.wVersion ) != 2 || HIBYTE( wsaData.wVersion ) != 2 )
 	{
 		m_oError = CSMTP_WSA_VER;
 		WSACleanup();
@@ -97,7 +97,7 @@ CSmtp::~CSmtp()
 		delete[] SendBuf;
 	if(RecvBuf)
 		delete[] RecvBuf;
-	
+
 	// Cleanup
 	WSACleanup();
 }
@@ -116,7 +116,7 @@ bool CSmtp::AddAttachment(const char *path)
 bool CSmtp::AddRecipient(const char *email, const char *name)
 {
 	assert(email);
-	
+
 	if(!email)
 	{
 		m_oError = CSMTP_UNDEF_RECIPENT_MAIL;
@@ -129,13 +129,13 @@ bool CSmtp::AddRecipient(const char *email, const char *name)
 
 	Recipients.insert(Recipients.end(), recipent);
 
-	return true;    
+	return true;
 }
 
 bool CSmtp::AddCCRecipient(const char *email, const char *name)
 {
 	assert(email);
-	
+
 	if(!email)
 	{
 		m_oError = CSMTP_UNDEF_RECIPENT_MAIL;
@@ -154,7 +154,7 @@ bool CSmtp::AddCCRecipient(const char *email, const char *name)
 bool CSmtp::AddBCCRecipient(const char *email, const char *name)
 {
 	assert(email);
-	
+
 	if(!email)
 	{
 		m_oError = CSMTP_UNDEF_RECIPENT_MAIL;
@@ -182,7 +182,7 @@ bool CSmtp::Send()
 	assert(m_pcSMTPSrvName);
 
 	// connecting to remote host:
-	if( (hSocket = ConnectRemoteServer(m_pcSMTPSrvName, m_iSMTPSrvPort)) == INVALID_SOCKET ) 
+	if( (hSocket = ConnectRemoteServer(m_pcSMTPSrvName, m_iSMTPSrvPort)) == INVALID_SOCKET )
 	{
 		m_oError = CSMTP_WSA_INVALID_SOCKET;
 		return false;
@@ -256,7 +256,7 @@ bool CSmtp::Send()
 			m_oError = CSMTP_UNDEF_XYZ_RESPOMSE;
 			return false;
 	}
-	
+
 	// send password:
 	if(!m_pcPassword)
 	{
@@ -284,7 +284,7 @@ bool CSmtp::Send()
 	}
 
 	// ***** SENDING E-MAIL *****
-	
+
 	// MAIL <SP> FROM:<reverse-path> <CRLF>
 	if(m_pcMailFrom == NULL)
 	{
@@ -347,7 +347,7 @@ bool CSmtp::Send()
 		if(!ReceiveData())
 			return false;
 	}
-	
+
 	// DATA <CRLF>
 	strcpy(SendBuf,"DATA\r\n");
 	if(!SendData())
@@ -355,7 +355,7 @@ bool CSmtp::Send()
 	Sleep(DELAY_IN_MS);
 	if(!ReceiveData())
 		return false;
-	
+
 	switch(SmtpXYZdigits())
 	{
 		case 354:
@@ -364,7 +364,7 @@ bool CSmtp::Send()
 			m_oError = CSMTP_COMMAND_DATA;
 			return false;
 	}
-	
+
 	// send header(s)
 	if(!FormatHeader(SendBuf))
 	{
@@ -415,7 +415,7 @@ bool CSmtp::Send()
 			m_oError = CSMTP_FILE_NOT_EXIST;
 			break;
 		}
-		
+
 		// checking file size:
 		FileSize = 0;
 		while(!feof(hFile))
@@ -434,7 +434,7 @@ bool CSmtp::Send()
 			{
 				res = fread(FileBuf,sizeof(char),54,hFile);
 				MsgPart ? strcat(SendBuf,base64_encode(reinterpret_cast<const unsigned char*>(FileBuf),res).c_str())
-					      : strcpy(SendBuf,base64_encode(reinterpret_cast<const unsigned char*>(FileBuf),res).c_str());
+						  : strcpy(SendBuf,base64_encode(reinterpret_cast<const unsigned char*>(FileBuf),res).c_str());
 				strcat(SendBuf,"\r\n");
 				MsgPart += res + 2;
 				if(MsgPart >= BUFFER_SIZE/2)
@@ -464,7 +464,7 @@ bool CSmtp::Send()
 	}
 	delete[] FileBuf;
 	delete[] FileName;
-	
+
 	// sending last message block (if there is one or more attachments)
 	if(Attachments.size())
 	{
@@ -472,7 +472,7 @@ bool CSmtp::Send()
 		if(!SendData())
 			return false;
 	}
-	
+
 	// <CRLF> . <CRLF>
 	strcpy(SendBuf,"\r\n.\r\n");
 	if(!SendData())
@@ -491,7 +491,7 @@ bool CSmtp::Send()
 	}
 
 	// ***** CLOSING CONNECTION *****
-	
+
 	// QUIT <CRLF>
 	strcpy(SendBuf,"QUIT\r\n");
 	if(!SendData())
@@ -523,7 +523,7 @@ SOCKET CSmtp::ConnectRemoteServer(const char *server,const unsigned short port)
 	SOCKADDR_IN sockAddr;
 	SOCKET hServerSocket = INVALID_SOCKET;
 	struct in_addr addr;
-	
+
 	// If the user input is an alpha name for the host, use gethostbyname()
 	// If not, get host by addr (assume IPv4)
 	if(isalpha(server[0]))
@@ -531,11 +531,11 @@ SOCKET CSmtp::ConnectRemoteServer(const char *server,const unsigned short port)
 	else
 	{
 		addr.s_addr = inet_addr(server);
-    if(addr.s_addr == INADDR_NONE) 
+	if(addr.s_addr == INADDR_NONE)
 		{
 			m_oError = CSMTP_BAD_IPV4_ADDR;
 			return INVALID_SOCKET;
-		} 
+		}
 		else
 			lpHostEnt = gethostbyaddr((char *) &addr, 4, AF_INET);
 	}
@@ -551,10 +551,10 @@ SOCKET CSmtp::ConnectRemoteServer(const char *server,const unsigned short port)
 				lpServEnt = getservbyname("mail", 0);
 				if (lpServEnt == NULL)
 					nProtocolPort = htons(25);
-				else 
+				else
 					nProtocolPort = lpServEnt->s_port;
 			}
-			
+
 			sockAddr.sin_family = AF_INET;
 			sockAddr.sin_port = nProtocolPort;
 			sockAddr.sin_addr = *((LPIN_ADDR)*lpHostEnt->h_addr_list);
@@ -601,7 +601,7 @@ bool CSmtp::FormatHeader(char* header)
 	{
 		for (unsigned int i=s=0;i<Recipients.size();i++)
 			s += Recipients[i].Mail.size() + Recipients[i].Name.size() + 3;
-		if (s == 0) 
+		if (s == 0)
 			s = 1;
 		if((to = new char[s]) == NULL)
 		{
@@ -673,24 +673,24 @@ bool CSmtp::FormatHeader(char* header)
 			strcat(bcc,">");
 		}
 	}
-	
+
 	// Date: <SP> <dd> <SP> <mon> <SP> <yy> <SP> <hh> ":" <mm> ":" <ss> <SP> <zone> <CRLF>
 	SYSTEMTIME st={0};
 	::GetSystemTime(&st);
 	::GetDateFormatA(MAKELCID(0x0409,SORT_DEFAULT),0,&st,"ddd\',\' dd MMM yyyy",szDate,sizeof(szDate));
 	::GetTimeFormatA(MAKELCID(0x0409,SORT_DEFAULT),TIME_FORCE24HOURFORMAT,&st,"HH\':\'mm\':\'ss",sztTime,sizeof(sztTime));
-	sprintf(header,"Date: %s %s\r\n", szDate, sztTime); 
-	
+	sprintf(header,"Date: %s %s\r\n", szDate, sztTime);
+
 	// From: <SP> <sender>  <SP> "<" <sender-email> ">" <CRLF>
 	if(m_pcMailFrom == NULL)
 	{
 		m_oError = CSMTP_UNDEF_MAILFROM;
-    delete[] to;
-    delete[] cc;
-    delete[] bcc;
+	delete[] to;
+	delete[] cc;
+	delete[] bcc;
 		return false;
 	}
-	strcat(header,"From: ");	
+	strcat(header,"From: ");
 	if(m_pcNameFrom)
 		strcat(header, m_pcNameFrom);
 	strcat(header," <");
@@ -750,7 +750,7 @@ bool CSmtp::FormatHeader(char* header)
 	}
 
 	// Subject: <SP> <subject-text> <CRLF>
-	if(m_pcSubject == NULL) 
+	if(m_pcSubject == NULL)
 	{
 		m_oError = CSMTP_UNDEF_SUBJECT;
 		strcat(header, "Subject:  ");
@@ -761,7 +761,7 @@ bool CSmtp::FormatHeader(char* header)
 	  strcat(header, m_pcSubject);
 	}
 	strcat(header, "\r\n");
-	
+
 	// MIME-Version: <SP> 1.0 <CRLF>
 	strcat(header,"MIME-Version: 1.0\r\n");
 	if(!Attachments.size())
@@ -784,14 +784,14 @@ bool CSmtp::FormatHeader(char* header)
 		strcat(SendBuf,"Content-Transfer-Encoding: 7bit\r\n");
 		strcat(SendBuf,"\r\n");
 	}
-	
+
 	// clean up
 	delete[] to;
 	delete[] cc;
 	delete[] bcc;
-	
-	// done    
-	return true;    
+
+	// done
+	return true;
 }
 
 bool CSmtp::ReceiveData()
@@ -802,7 +802,7 @@ bool CSmtp::ReceiveData()
 
 	if(RecvBuf == NULL)
 		return false;
-	
+
 	if( (res = recv(hSocket,RecvBuf,BUFFER_SIZE,0)) == SOCKET_ERROR )
 	{
 		m_oError = CSMTP_WSA_RECV;
@@ -848,33 +848,33 @@ const char* const CSmtp::GetLocalHostIP()
 {
 	in_addr *iaHost = NULL;
 	HOSTENT *pHe = NULL;
-	
+
 	if (m_pcIPAddr)
 		delete[] m_pcIPAddr;
-	
+
 	if(gethostname(m_pcHostName,255) != SOCKET_ERROR)
 	{
 		pHe = gethostbyname(m_pcHostName);
-		if (pHe != NULL) 
+		if (pHe != NULL)
 		{
 			for (int i=0;pHe->h_addr_list[i] != 0;i++)
 			{
 				iaHost = (LPIN_ADDR)pHe->h_addr_list[i];
 				m_pcIPAddr = inet_ntoa(*iaHost);
 			}
-		}            
-	} 
-	else 
+		}
+	}
+	else
 	{
 		m_oError = CSMTP_WSA_GETHOSTBY_NAME_ADDR;
 		m_pcIPAddr = NULL;
 	}
-	
+
 	return m_pcIPAddr;
 }
 */
 
-const char* const CSmtp::GetLocalHostName() 
+const char* const CSmtp::GetLocalHostName()
 {
 	if(m_pcLocalHostName)
 		delete[] m_pcLocalHostName;
@@ -893,12 +893,12 @@ unsigned const int CSmtp::GetBCCRecipientCount()
 	return BCCRecipients.size();
 }
 
-unsigned const int CSmtp::GetCCRecipientCount() 
+unsigned const int CSmtp::GetCCRecipientCount()
 {
 	return CCRecipients.size();
 }
 
-const char* const CSmtp::GetMessageBody() 
+const char* const CSmtp::GetMessageBody()
 {
 	return m_pcMsgBody;
 }
@@ -908,27 +908,27 @@ unsigned const int CSmtp::GetRecipientCount()
 	return Recipients.size();
 }
 
-const char* const CSmtp::GetReplyTo()  
+const char* const CSmtp::GetReplyTo()
 {
 	return m_pcReplyTo;
 }
 
-const char* const CSmtp::GetMailFrom() 
+const char* const CSmtp::GetMailFrom()
 {
 	return m_pcMailFrom;
 }
 
-const char* const CSmtp::GetSenderName() 
+const char* const CSmtp::GetSenderName()
 {
 	return m_pcNameFrom;
 }
 
-const char* const CSmtp::GetSubject() 
+const char* const CSmtp::GetSubject()
 {
 	return m_pcSubject;
 }
 
-const char* const CSmtp::GetXMailer() 
+const char* const CSmtp::GetXMailer()
 {
 	return m_pcXMailer;
 }
@@ -954,7 +954,7 @@ void CSmtp::SetMessageBody(const char *body)
 		m_oError = CSMTP_LACK_OF_MEMORY;
 		return;
 	}
-	strcpy(m_pcMsgBody, body);    
+	strcpy(m_pcMsgBody, body);
 }
 
 void CSmtp::SetReplyTo(const char *replyto)
@@ -982,7 +982,7 @@ void CSmtp::SetSenderMail(const char *email)
 		m_oError = CSMTP_LACK_OF_MEMORY;
 		return;
 	}
-	strcpy(m_pcMailFrom, email);        
+	strcpy(m_pcMailFrom, email);
 }
 
 void CSmtp::SetSenderName(const char *name)

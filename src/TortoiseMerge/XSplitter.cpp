@@ -28,14 +28,13 @@ static char THIS_FILE[] = __FILE__;
 CXSplitter::CXSplitter()
 {
 	m_bBarLocked=FALSE;
-    m_nHiddenCol = -1;
-    m_nHiddenRow = -1;
+	m_nHiddenCol = -1;
+	m_nHiddenRow = -1;
 }
 
 CXSplitter::~CXSplitter()
 {
 }
-
 
 BEGIN_MESSAGE_MAP(CXSplitter, CSplitterWnd)
 	ON_WM_LBUTTONDOWN()
@@ -43,13 +42,13 @@ BEGIN_MESSAGE_MAP(CXSplitter, CSplitterWnd)
 	ON_WM_SETCURSOR()
 END_MESSAGE_MAP()
 
-void CXSplitter::OnLButtonDown(UINT nFlags, CPoint point) 
+void CXSplitter::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (!m_bBarLocked)
 		CSplitterWnd::OnLButtonDown(nFlags, point);
 }
 
-void CXSplitter::OnMouseMove(UINT nFlags, CPoint point) 
+void CXSplitter::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (!m_bBarLocked)
 		CSplitterWnd::OnMouseMove(nFlags, point);
@@ -57,7 +56,7 @@ void CXSplitter::OnMouseMove(UINT nFlags, CPoint point)
 		CWnd::OnMouseMove(nFlags, point);
 }
 
-BOOL CXSplitter::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CXSplitter::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (!m_bBarLocked)
 		return CWnd::OnSetCursor(pWnd, nHitTest, message);
@@ -73,7 +72,7 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 	if ((GetPane(row,col)->IsKindOf(pViewClass))==TRUE)
 		return FALSE;
 
-	// Get pointer to CDocument object so that it can be used in the creation 
+	// Get pointer to CDocument object so that it can be used in the creation
 	// process of the new view
 	CDocument * pDoc= ((CView *)GetPane(row,col))->GetDocument();
 	CView * pActiveView=GetParentFrame()->GetActiveView();
@@ -83,13 +82,13 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 		bSetActive=FALSE;
 
 	// set flag so that document will not be deleted when view is destroyed
-	pDoc->m_bAutoDelete=FALSE;    
-	// Delete existing view 
+	pDoc->m_bAutoDelete=FALSE;
+	// Delete existing view
 	((CView *) GetPane(row,col))->DestroyWindow();
-	// set flag back to default 
+	// set flag back to default
 	pDoc->m_bAutoDelete=TRUE;
 
-	// Create new view                      
+	// Create new view
 	context.m_pNewViewClass=pViewClass;
 	context.m_pCurrentDoc=pDoc;
 	context.m_pNewDocTemplate=NULL;
@@ -103,7 +102,7 @@ BOOL CXSplitter::ReplaceView(int row, int col,CRuntimeClass * pViewClass,SIZE si
 	if (bSetActive==TRUE)
 		GetParentFrame()->SetActiveView(pNewView);
 
-	RecalcLayout(); 
+	RecalcLayout();
 	GetPane(row,col)->SendMessage(WM_PAINT);
 
 	return TRUE;

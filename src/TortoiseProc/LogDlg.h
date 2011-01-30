@@ -40,29 +40,29 @@
 using namespace std;
 
 
-#define MERGE_REVSELECTSTART	 1
-#define MERGE_REVSELECTEND       2
-#define MERGE_REVSELECTSTARTEND  3		///< both
-#define MERGE_REVSELECTMINUSONE  4		///< first with N-1
+#define MERGE_REVSELECTSTART	1
+#define MERGE_REVSELECTEND		2
+#define MERGE_REVSELECTSTARTEND	3	///< both
+#define MERGE_REVSELECTMINUSONE	4	///< first with N-1
 
 
-#define LOGFILTER_TIMER		101
-#define LOGFTIME_TIMER 102
+#define LOGFILTER_TIMER	101
+#define LOGFTIME_TIMER	102
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
 /**
  * \ingroup TortoiseProc
- * Shows log messages of a single file or folder in a listbox. 
+ * Shows log messages of a single file or folder in a listbox.
  */
 class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator
 {
 	DECLARE_DYNAMIC(CLogDlg)
-	
+
 	friend class CStoreSelection;
 
 public:
-	CLogDlg(CWnd* pParent = NULL);   // standard constructor
+	CLogDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CLogDlg();
 #if 0
 	enum
@@ -121,7 +121,7 @@ protected:
 	virtual BOOL Cancel();
 	virtual bool Validate(LPCTSTR string);
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
@@ -151,7 +151,7 @@ protected:
 	afx_msg void OnBnClickedAllBranch();
 	afx_msg void OnBnClickedBrowseRef();
 	afx_msg void OnBnClickedCheckStoponcopy();
-	
+
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -174,9 +174,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	
 	CRegDWORD m_regbAllBranch;
-	
+
 	void Refresh (bool clearfilter = false);
 	BOOL IsDiffPossible(LogChangedPath * changedpath, git_revnum_t rev);
 	BOOL Open(bool bOpenWith, CString changedpath, git_revnum_t rev);
@@ -187,18 +186,18 @@ private:
 	void AdjustMinSize();
 	void SetSplitterRange();
 	void SetFilterCueText();
-	
+
 	void CopySelectionToClipBoard();
 	void CopyChangedSelectionToClipBoard();
 	CTGitPathList GetChangedPathsFromSelectedRevisions(bool bRelativePaths = false, bool bUseFilter = true);
-    void SortShownListArray();
-	
-    void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending);
+	void SortShownListArray();
+
+	void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending);
 	void SortByColumn(int nSortColumn, bool bAscending);
-	
+
 	void EnableOKButton();
 	void GetAll(bool bIsShowProjectOrBranch = false);
-	
+
 	void SaveSplitterPos();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase);
 	void CheckRegexpTooltip();
@@ -229,7 +228,7 @@ private:
 	CString				m_sRepositoryRoot;
 	CString				m_sSelfRelativeURL;
 	CString				m_sURL;
-	CString				m_sUUID;    ///< empty if the log cache is not used
+	CString				m_sUUID; ///< empty if the log cache is not used
 	CGitLogList			m_LogList;
 	CGitStatusListCtrl  m_ChangedFileListCtrl;
 	CFilterEdit			m_cFilter;
@@ -244,7 +243,7 @@ private:
 
 	CString				m_LogRevision;
 
-	//GitRev				m_wcRev;
+//	GitRev				m_wcRev;
 //	GitRevRangeArray	m_selectedRevs;
 //	GitRevRangeArray	m_selectedRevsOneRange;
 	CString				m_sSelectedHash;	// set to selected commit hash on OK if appropriate
@@ -252,7 +251,7 @@ private:
 	bool				m_bSelectionMustBeSingle;
 	long				m_logcounter;
 	bool				m_bCancelled;
-	
+
 	BOOL				m_bIncludeMerges;
 	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
@@ -264,10 +263,10 @@ private:
 	CTGitPathList		m_currentChangedPathList;
 	//CPtrArray			m_arShownList;
 	bool				m_hasWC;
-	
+
 	bool				m_bFilterWithRegex;
 
-	
+
 	CFont				m_logFont;
 	CString				m_sMessageBuf;
 	CSplitterControl	m_wndSplitter1;
@@ -277,14 +276,14 @@ private:
 	CRect				m_LogListOrigRect;
 	CRect				m_ChgOrigRect;
 //	CString				m_sFilterText;
-	
+
 	//volatile LONG		m_bNoDispUpdates;
 	CDateTimeCtrl		m_DateFrom;
 	CDateTimeCtrl		m_DateTo;
 	int					m_limit;
 	int					m_limitcounter;
-	int                 m_nSortColumn;
-	bool                m_bAscending;
+	int					m_nSortColumn;
+	bool				m_bAscending;
 	static int			m_nSortColumnPathList;
 	static bool			m_bAscendingPathList;
 	CButton				m_cHidePaths;
@@ -310,9 +309,6 @@ private:
 	DWORD				m_maxChild;
 	HACCEL				m_hAccel;
 
-
-    
-	
 	//CXPTheme			theme;
 	bool				m_bVista;
 };

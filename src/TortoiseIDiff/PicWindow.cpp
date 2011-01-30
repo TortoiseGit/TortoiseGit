@@ -27,9 +27,9 @@
 
 bool CPicWindow::RegisterAndCreateWindow(HWND hParent)
 {
-	WNDCLASSEX wcx; 
+	WNDCLASSEX wcx;
 
-	// Fill in the window class structure with default parameters 
+	// Fill in the window class structure with default parameters
 	wcx.cbSize = sizeof(WNDCLASSEX);
 	wcx.style = CS_HREDRAW | CS_VREDRAW;
 	wcx.lpfnWndProc = CWindow::stWinMsgHandler;
@@ -89,7 +89,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
 			hwndTT = CreateWindowEx(WS_EX_TOPMOST,
 				TOOLTIPS_CLASS,
 				NULL,
-				WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,		
+				WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
 				CW_USEDEFAULT,
 				CW_USEDEFAULT,
 				CW_USEDEFAULT,
@@ -117,12 +117,12 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
 			ti.uId = 0;
 			ti.lpszText = LPSTR_TEXTCALLBACK;
 			// ToolTip control will cover the whole window
-			ti.rect.left = rect.left;    
+			ti.rect.left = rect.left;
 			ti.rect.top = rect.top;
 			ti.rect.right = rect.right;
 			ti.rect.bottom = rect.bottom;
 
-			SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);	
+			SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
 			SendMessage(hwndTT, TTM_SETMAXTIPWIDTH, 0, 600);
 			nHSecondScrollPos = 0;
 			nVSecondScrollPos = 0;
@@ -266,7 +266,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
 			if (wParam & MK_LBUTTON)
 			{
 				// pan the image
-				int xPos = GET_X_LPARAM(lParam); 
+				int xPos = GET_X_LPARAM(lParam);
 				int yPos = GET_Y_LPARAM(lParam);
 				if (wParam & MK_CONTROL)
 				{
@@ -323,7 +323,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
 		break;
 	case WM_DROPFILES:
 		{
-			HDROP hDrop = (HDROP)wParam;		
+			HDROP hDrop = (HDROP)wParam;
 			TCHAR szFileName[MAX_PATH];
 			// we only use the first file dropped (if multiple files are dropped)
 			DragQueryFile(hDrop, 0, szFileName, sizeof(szFileName)/sizeof(TCHAR));
@@ -433,10 +433,10 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
 			{
 				if ((HWND)wParam == m_AlphaSlider.GetWindow())
 				{
-					LPTOOLTIPTEXT lpttt; 
+					LPTOOLTIPTEXT lpttt;
 
-					lpttt = (LPTOOLTIPTEXT) lParam; 
-					lpttt->hinst = hResource; 
+					lpttt = (LPTOOLTIPTEXT) lParam;
+					lpttt->hinst = hResource;
 					TCHAR stringbuf[MAX_PATH] = {0};
 					_stprintf_s(stringbuf, MAX_PATH, _T("%i%% alpha"), (int)(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS,0,0)/16.0f*100.0f));
 					lpttt->lpszText = stringbuf;
@@ -578,7 +578,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 	{
 		int nStringLength = stringsize.cx;
 		int texttop = pSecondPic ? textrect.top + (HEADER_HEIGHT/2) - stringsize.cy : textrect.top + (HEADER_HEIGHT/2) - stringsize.cy/2;
-		ExtTextOut(hDC, 
+		ExtTextOut(hDC,
 			max(textrect.left + ((textrect.right-textrect.left)-nStringLength)/2, 1),
 			texttop,
 			ETO_CLIPPED,
@@ -589,7 +589,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 		if (pSecondPic)
 		{
 			realtitle = (pictitle2.empty() ? picpath2 : pictitle2);
-			ExtTextOut(hDC, 
+			ExtTextOut(hDC,
 				max(textrect.left + ((textrect.right-textrect.left)-nStringLength)/2, 1),
 				texttop + stringsize.cy,
 				ETO_CLIPPED,
@@ -605,7 +605,7 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 		{
 			int nStringLength = stringsize.cx;
 
-			ExtTextOut(hDC, 
+			ExtTextOut(hDC,
 				max(textrect.left + ((textrect.right-textrect.left)-nStringLength)/2, 1),
 				textrect.top + HEADER_HEIGHT + (HEADER_HEIGHT/2) - stringsize.cy/2,
 				ETO_CLIPPED,
@@ -636,12 +636,12 @@ void CPicWindow::SetupScrollBars()
 		height = max(height, double(pSecondPic->m_Height)*pTheOtherPic->GetZoom());
 	}
 
-	bool bShowHScrollBar = (nHScrollPos > 0); // left of pic is left of window
-	bShowHScrollBar      = bShowHScrollBar || (width-nHScrollPos > rect.right); // right of pic is outside right of window
-	bShowHScrollBar      = bShowHScrollBar || (width+nHScrollPos > rect.right); // right of pic is outside right of window
-	bool bShowVScrollBar = (nVScrollPos > 0); // top of pic is above window
-	bShowVScrollBar      = bShowVScrollBar || (height-nVScrollPos+rect.top > rect.bottom); // bottom of pic is below window
-	bShowVScrollBar      = bShowVScrollBar || (height+nVScrollPos+rect.top > rect.bottom); // bottom of pic is below window
+	bool bShowHScrollBar	= (nHScrollPos > 0); // left of pic is left of window
+	bShowHScrollBar			= bShowHScrollBar || (width-nHScrollPos > rect.right); // right of pic is outside right of window
+	bShowHScrollBar			= bShowHScrollBar || (width+nHScrollPos > rect.right); // right of pic is outside right of window
+	bool bShowVScrollBar	= (nVScrollPos > 0); // top of pic is above window
+	bShowVScrollBar			= bShowVScrollBar || (height-nVScrollPos+rect.top > rect.bottom); // bottom of pic is below window
+	bShowVScrollBar			= bShowVScrollBar || (height+nVScrollPos+rect.top > rect.bottom); // bottom of pic is below window
 
 	// if the image is smaller than the window, we don't need the scrollbars
 	ShowScrollBar(*this, SB_HORZ, bShowHScrollBar);
@@ -1181,7 +1181,7 @@ void CPicWindow::Paint(HWND hwnd)
 					blender.BlendFlags = 0;
 					blender.BlendOp = AC_SRC_OVER;
 					blender.SourceConstantAlpha = (BYTE)(blendAlpha*255);
-					AlphaBlend(memDC, 
+					AlphaBlend(memDC,
 						rect.left,
 						rect.top,
 						rect.right-rect.left,
@@ -1195,7 +1195,7 @@ void CPicWindow::Paint(HWND hwnd)
 				}
 				else if (m_blend == BLEND_XOR)
 				{
-					BitBlt(memDC, 
+					BitBlt(memDC,
 						rect.left,
 						rect.top,
 						rect.right-rect.left,
@@ -1263,7 +1263,7 @@ void CPicWindow::Paint(HWND hwnd)
 			{
 				int nStringLength = stringsize.cx;
 
-				ExtTextOut(memDC, 
+				ExtTextOut(memDC,
 					max(rect.left + ((rect.right-rect.left)-nStringLength)/2, 1),
 					rect.top + ((rect.bottom-rect.top) - stringsize.cy)/2,
 					ETO_CLIPPED,
@@ -1280,60 +1280,60 @@ void CPicWindow::Paint(HWND hwnd)
 
 bool CPicWindow::CreateButtons()
 {
-	// Ensure that the common control DLL is loaded. 
+	// Ensure that the common control DLL is loaded.
 	INITCOMMONCONTROLSEX icex;
 	icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	icex.dwICC  = ICC_BAR_CLASSES | ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&icex);
 
-	hwndLeftBtn = CreateWindowEx(0, 
-								_T("BUTTON"), 
+	hwndLeftBtn = CreateWindowEx(0,
+								_T("BUTTON"),
 								(LPCTSTR)NULL,
-								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT, 
-								0, 0, 0, 0, 
+								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
+								0, 0, 0, 0,
 								(HWND)*this,
 								(HMENU)LEFTBUTTON_ID,
-								hResource, 
+								hResource,
 								NULL);
 	if (hwndLeftBtn == INVALID_HANDLE_VALUE)
 		return false;
 	hLeft = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_BACKWARD), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
 	SendMessage(hwndLeftBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hLeft);
-	hwndRightBtn = CreateWindowEx(0, 
-								_T("BUTTON"), 
+	hwndRightBtn = CreateWindowEx(0,
+								_T("BUTTON"),
 								(LPCTSTR)NULL,
-								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT, 
-								0, 0, 0, 0, 
+								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
+								0, 0, 0, 0,
 								*this,
 								(HMENU)RIGHTBUTTON_ID,
-								hResource, 
+								hResource,
 								NULL);
 	if (hwndRightBtn == INVALID_HANDLE_VALUE)
 		return false;
 	hRight = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_FORWARD), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
 	SendMessage(hwndRightBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hRight);
-	hwndPlayBtn = CreateWindowEx(0, 
-								_T("BUTTON"), 
+	hwndPlayBtn = CreateWindowEx(0,
+								_T("BUTTON"),
 								(LPCTSTR)NULL,
-								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT, 
-								0, 0, 0, 0, 
+								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
+								0, 0, 0, 0,
 								*this,
 								(HMENU)PLAYBUTTON_ID,
-								hResource, 
+								hResource,
 								NULL);
 	if (hwndPlayBtn == INVALID_HANDLE_VALUE)
 		return false;
 	hPlay = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_START), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
 	hStop = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_STOP), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
 	SendMessage(hwndPlayBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hPlay);
-	hwndAlphaToggleBtn = CreateWindowEx(0, 
-								_T("BUTTON"), 
+	hwndAlphaToggleBtn = CreateWindowEx(0,
+								_T("BUTTON"),
 								(LPCTSTR)NULL,
-								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT | BS_NOTIFY | BS_PUSHLIKE, 
-								0, 0, 0, 0, 
+								WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT | BS_NOTIFY | BS_PUSHLIKE,
+								0, 0, 0, 0,
 								(HWND)*this,
 								(HMENU)ALPHATOGGLEBUTTON_ID,
-								hResource, 
+								hResource,
 								NULL);
 	if (hwndAlphaToggleBtn == INVALID_HANDLE_VALUE)
 		return false;
@@ -1371,24 +1371,24 @@ bool CPicWindow::HasMultipleImages()
 }
 
 void CPicWindow::CreateTrackbar(HWND hwndParent)
-{ 
-	HWND hwndTrack = CreateWindowEx( 
-		0,									// no extended styles 
-		TRACKBAR_CLASS,						// class name 
-		_T("Trackbar Control"),				// title (caption) 
-		WS_CHILD | WS_VISIBLE | TBS_VERT | TBS_TOOLTIPS | TBS_AUTOTICKS,				// style 
-		10, 10,								// position 
-		200, 30,							// size 
-		hwndParent,							// parent window 
-		(HMENU)TRACKBAR_ID,					// control identifier 
-		hInst,								// instance 
-		NULL								// no WM_CREATE parameter 
+{
+	HWND hwndTrack = CreateWindowEx(
+		0,									// no extended styles
+		TRACKBAR_CLASS,						// class name
+		_T("Trackbar Control"),				// title (caption)
+		WS_CHILD | WS_VISIBLE | TBS_VERT | TBS_TOOLTIPS | TBS_AUTOTICKS,				// style
+		10, 10,								// position
+		200, 30,							// size
+		hwndParent,							// parent window
+		(HMENU)TRACKBAR_ID,					// control identifier
+		hInst,								// instance
+		NULL								// no WM_CREATE parameter
 		);
 
-	SendMessage(hwndTrack, TBM_SETRANGE, 
-		(WPARAM) TRUE,					// redraw flag 
-		(LPARAM) MAKELONG(0, 16));		// min. & max. positions 
-	SendMessage(hwndTrack, TBM_SETTIPSIDE, 
+	SendMessage(hwndTrack, TBM_SETRANGE,
+		(WPARAM) TRUE,					// redraw flag
+		(LPARAM) MAKELONG(0, 16));		// min. & max. positions
+	SendMessage(hwndTrack, TBM_SETTIPSIDE,
 		(WPARAM) TBTS_TOP,
 		(LPARAM) 0);
 
@@ -1406,7 +1406,7 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
 	// translation might then need two again.
 	if (pSecondPic)
 	{
-		_stprintf_s(buf, size, 
+		_stprintf_s(buf, size,
 			(TCHAR const *)ResString(hResource, bTooltip ? IDS_DUALIMAGEINFOTT : IDS_DUALIMAGEINFO),
 			picture.GetFileSizeAsText().c_str(), picture.GetFileSizeAsText(false).c_str(),
 			picture.m_Width, picture.m_Height,
@@ -1421,7 +1421,7 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
 	}
 	else
 	{
-		_stprintf_s(buf, size, 
+		_stprintf_s(buf, size,
 			(TCHAR const *)ResString(hResource, bTooltip ? IDS_IMAGEINFOTT : IDS_IMAGEINFO),
 			picture.GetFileSizeAsText().c_str(), picture.GetFileSizeAsText(false).c_str(),
 			picture.m_Width, picture.m_Height,

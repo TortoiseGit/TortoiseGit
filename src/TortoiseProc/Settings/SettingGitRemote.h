@@ -29,7 +29,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	BOOL OnInitDialog();
-    BOOL OnApply();
+	BOOL OnApply();
 
 	BOOL IsRemoteExist(CString &remote);
 
@@ -37,21 +37,21 @@ protected:
 
 	void Save(CString key, CString value);
 
-	int	 m_ChangedMask;
+	int m_ChangedMask;
 
 public:
 	CString m_cmdPath;
 
 	CListBox m_ctrlRemoteList;
-    CString m_strRemote;
-    CString m_strUrl;
-    
-    CString m_strPuttyKeyfile;
-    afx_msg void OnBnClickedButtonBrowse();
-    afx_msg void OnBnClickedButtonAdd();
-    afx_msg void OnLbnSelchangeListRemote();
-    afx_msg void OnEnChangeEditRemote();
-    afx_msg void OnEnChangeEditUrl();
-    afx_msg void OnEnChangeEditPuttyKey();
+	CString m_strRemote;
+	CString m_strUrl;
+
+	CString m_strPuttyKeyfile;
+	afx_msg void OnBnClickedButtonBrowse();
+	afx_msg void OnBnClickedButtonAdd();
+	afx_msg void OnLbnSelchangeListRemote();
+	afx_msg void OnEnChangeEditRemote();
+	afx_msg void OnEnChangeEditUrl();
+	afx_msg void OnEnChangeEditPuttyKey();
 	afx_msg void OnBnClickedButtonRemove();
 };

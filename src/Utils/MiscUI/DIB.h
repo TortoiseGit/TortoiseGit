@@ -20,7 +20,7 @@
 
 /**
  * \ingroup Utils
- * 
+ *
  * A wrapper class for DIB's. It provides only a very small
  * amount of methods (just the ones I need). Especially for
  * creating 32bit 'image fields' which can be used for
@@ -32,32 +32,32 @@ public:
 	CDib();
 	virtual ~CDib();
 
-    /**
-     * Clears all member variables and frees allocated memory.
-     */
-    void		DeleteObject();
-    /**
-     * Gets the number of bytes per horizontal line in the image.
-     * \param nWidth the width of the image
-     * \param nBitsPerPixel number of bits per pixel (color depth)
-     */
-    static int	BytesPerLine(int nWidth, int nBitsPerPixel);
-    /**
-     * Returns the height of the image in pixels
-     */
-    int			GetHeight() const { return m_BMinfo.bmiHeader.biHeight; } 
-    /**
-     * Returns the width of the image in pixels
-     */
-    int			GetWidth() const { return m_BMinfo.bmiHeader.biWidth; }
-    /**
-     * Returns the size of the image in pixels
-     */
-    CSize		GetSize() const { return CSize(GetWidth(), GetHeight()); }
-    /**
-     * Returns the image byte field which can be used to work on.
-     */
-    LPVOID		GetDIBits() { return m_pBits; }
+	/**
+	 * Clears all member variables and frees allocated memory.
+	 */
+	void		DeleteObject();
+	/**
+	 * Gets the number of bytes per horizontal line in the image.
+	 * \param nWidth the width of the image
+	 * \param nBitsPerPixel number of bits per pixel (color depth)
+	 */
+	static int	BytesPerLine(int nWidth, int nBitsPerPixel);
+	/**
+	 * Returns the height of the image in pixels
+	 */
+	int			GetHeight() const { return m_BMinfo.bmiHeader.biHeight; }
+	/**
+	 * Returns the width of the image in pixels
+	 */
+	int			GetWidth() const { return m_BMinfo.bmiHeader.biWidth; }
+	/**
+	 * Returns the size of the image in pixels
+	 */
+	CSize		GetSize() const { return CSize(GetWidth(), GetHeight()); }
+	/**
+	 * Returns the image byte field which can be used to work on.
+	 */
+	LPVOID		GetDIBits() { return m_pBits; }
 	/**
 	 * Creates a DIB from a CPictureHolder object with the specified width and height.
 	 * \param pPicture the CPictureHolder object
@@ -70,26 +70,26 @@ public:
 	 * Returns a 32-bit RGB color
 	 */
 	static COLORREF	FixColorRef		(COLORREF clr);
-    /**
-     * Sets the created Bitmap-image (from Create32BitFromPicture) to the internal
+	/**
+	 * Sets the created Bitmap-image (from Create32BitFromPicture) to the internal
 	 * member variables and fills in all required values for this class.
-     * \param lpBitmapInfo a pointer to a BITMAPINFO structure
-     * \param lpBits pointer to the image byte field
-     */
-    BOOL		SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits);   
+	 * \param lpBitmapInfo a pointer to a BITMAPINFO structure
+	 * \param lpBits pointer to the image byte field
+	 */
+	BOOL		SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits);
 
 public:
-    /**
-     * Draws the image on the specified device context at the specified point.
+	/**
+	 * Draws the image on the specified device context at the specified point.
 	 * No stretching is done!
-     * \param pDC the device context to draw on
-     * \param ptDest the upper left corner to where the picture should be drawn to
-     */
-    BOOL		Draw(CDC* pDC, CPoint ptDest);
+	 * \param pDC the device context to draw on
+	 * \param ptDest the upper left corner to where the picture should be drawn to
+	 */
+	BOOL		Draw(CDC* pDC, CPoint ptDest);
 
 protected:
-    HBITMAP		m_hBitmap;
-    BITMAPINFO  m_BMinfo;
-    VOID		*m_pBits;
+	HBITMAP		m_hBitmap;
+	BITMAPINFO  m_BMinfo;
+	VOID		*m_pBits;
 };
 

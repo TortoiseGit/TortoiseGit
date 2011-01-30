@@ -155,11 +155,11 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	{
 		return GIT_ERROR_OPEN_PIP;
 	}
-	
+
 	if(StdioFile)
 	{
-		hStdioFile=CreateFile(*StdioFile,GENERIC_WRITE,FILE_SHARE_READ   |   FILE_SHARE_WRITE,   
-			&sa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);  
+		hStdioFile=CreateFile(*StdioFile,GENERIC_WRITE,FILE_SHARE_READ | FILE_SHARE_WRITE,
+								&sa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
 	}
 
 	STARTUPINFO si;
@@ -178,9 +178,9 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 
 	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
-	
-	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password. 
-	dwFlags |= DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP; 
+
+	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password.
+	dwFlags |= DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
@@ -191,30 +191,30 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;
-		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-			NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			(LPTSTR)&lpMsgBuf,
-			0,NULL);
+		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+						NULL,GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+						(LPTSTR)&lpMsgBuf,
+						0,NULL);
 		return GIT_ERROR_CREATE_PROCESS;
 	}
-	
+
 	m_CurrentGitPi = pi;
-	
+
 	CloseHandle(hWrite);
 	if(piOut)
 		*piOut=pi;
 	if(hReadOut)
 		*hReadOut=hRead;
-	
+
 	return 0;
 
 }
 //Must use sperate function to convert ANSI str to union code string
-//Becuase A2W use stack as internal convert buffer. 
+//Becuase A2W use stack as internal convert buffer.
 void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 {
-     //USES_CONVERSION;
-	 //str->Append(A2W_CP((LPCSTR)p,code));
+	//USES_CONVERSION;
+	//str->Append(A2W_CP((LPCSTR)p,code));
 	if(str == NULL)
 		return ;
 
@@ -234,7 +234,7 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 	str->ReleaseBuffer();
 	//str->Append(buf);
 	//delete buf;
-}	
+}
 BOOL CGit::IsInitRepos()
 {
 	CString cmdout;
@@ -261,7 +261,7 @@ int CGit::Run(CGitCall* pcall)
 	bool bAborted=false;
 	while(ReadFile(hRead,data,CALL_OUTPUT_READ_CHUNK_SIZE,&readnumber,NULL))
 	{
-		//Todo: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
+		// TODO: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
 		if(!bAborted)//For now, flush output when command aborted.
 			if(pcall->OnOutputData(data,readnumber))
 				bAborted=true;
@@ -269,7 +269,6 @@ int CGit::Run(CGitCall* pcall)
 	if(!bAborted)
 		pcall->OnEnd();
 
-	
 	CloseHandle(pi.hThread);
 
 	WaitForSingleObject(pi.hProcess, INFINITE);
@@ -311,7 +310,7 @@ int CGit::Run(CString cmd, CString* output,int code)
 	ret=Run(cmd,&vector);
 
 	vector.push_back(0);
-	
+
 	StringAppend(output,&(vector[0]),code);
 	return ret;
 }
@@ -332,7 +331,7 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL R
 	if(this->m_IsUseGitDLL)
 	{
 		CString *git_path=NULL;
-	
+
 		try
 		{
 			CTGitPath path;
@@ -498,7 +497,7 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	}
 
 	char s[256] = {0};
-    fgets(s, sizeof(s), pFile);
+	fgets(s, sizeof(s), pFile);
 
 	fclose(pFile);
 
@@ -548,7 +547,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 		log.Format(_T("#<%c>%%b%%x00"),LOG_REV_COMMIT_BODY);
 		format += log;
 	}
-	
+
 	log.Format(_T("#<%c>%%m%%H%%x00"),LOG_REV_COMMIT_HASH);
 	format += log;
 	log.Format(_T("#<%c>%%P%%x00"),LOG_REV_COMMIT_PARENT);
@@ -582,7 +581,7 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 
 	if(path)
 		file.Format(_T(" -- \"%s\""),path->GetGitPathString());
-	
+
 	if(count>0)
 		num.Format(_T("-n%d"),count);
 
@@ -604,13 +603,13 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
 		param += _T(" -C ");
-	
+
 	if(mask& CGit::LOG_INFO_DETECT_RENAME )
 		param += _T(" -M ");
 
 	if(mask& CGit::LOG_INFO_FIRST_PARENT )
 		param += _T(" --first-parent ");
-	
+
 	if(mask& CGit::LOG_INFO_NO_MERGE )
 		param += _T(" --no-merges ");
 
@@ -671,10 +670,10 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 	{
 		if(!Filter->m_IsRegex)
 			param+=_T(" --fixed-strings ");
-		
+
 		param += _T(" --regexp-ignore-case --extended-regexp ");
 	}
-	
+
 	if(paramonly)
 		cmd.Format(_T("%s -z  %s --parents "),
 				num,param);
@@ -710,39 +709,39 @@ void GetTempPath(CString &path)
 	TCHAR lpPathBuffer[BUFSIZE];
 	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
-	dwRetVal = GetTempPath(dwBufSize,     // length of the buffer
-                           lpPathBuffer); // buffer for path 
-    if (dwRetVal > dwBufSize || (dwRetVal == 0))
-    {
-        path=_T("");
-    }
+	dwRetVal = GetTempPath(dwBufSize,		// length of the buffer
+							lpPathBuffer);	// buffer for path
+	if (dwRetVal > dwBufSize || (dwRetVal == 0))
+	{
+		path=_T("");
+	}
 	path.Format(_T("%s"),lpPathBuffer);
 }
 CString GetTempFile()
 {
 	TCHAR lpPathBuffer[BUFSIZE];
 	DWORD dwRetVal;
-    DWORD dwBufSize=BUFSIZE;
-	TCHAR szTempName[BUFSIZE];  
+	DWORD dwBufSize=BUFSIZE;
+	TCHAR szTempName[BUFSIZE];
 	UINT uRetVal;
 
-	dwRetVal = GetTempPath(dwBufSize,     // length of the buffer
-                           lpPathBuffer); // buffer for path 
-    if (dwRetVal > dwBufSize || (dwRetVal == 0))
-    {
-        return _T("");
-    }
-	 // Create a temporary file. 
-    uRetVal = GetTempFileName(lpPathBuffer, // directory for tmp files
-                              TEXT("Patch"),  // temp file name prefix 
-                              0,            // create unique name 
-                              szTempName);  // buffer for name 
+	dwRetVal = GetTempPath(dwBufSize,		// length of the buffer
+							lpPathBuffer);	// buffer for path
+	if (dwRetVal > dwBufSize || (dwRetVal == 0))
+	{
+		return _T("");
+	}
+	 // Create a temporary file.
+	uRetVal = GetTempFileName(lpPathBuffer,		// directory for tmp files
+								TEXT("Patch"),	// temp file name prefix
+								0,				// create unique name
+								szTempName);	// buffer for name
 
 
-    if (uRetVal == 0)
-    {
-        return _T("");
-    }
+	if (uRetVal == 0)
+	{
+		return _T("");
+	}
 
 	return CString(szTempName);
 
@@ -755,17 +754,16 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 	si.cb=sizeof(STARTUPINFO);
 	GetStartupInfo(&si);
 
-	SECURITY_ATTRIBUTES   psa={sizeof(psa),NULL,TRUE};;   
-	psa.bInheritHandle=TRUE;   
-    
-	HANDLE   houtfile=CreateFile(filename,GENERIC_WRITE,FILE_SHARE_READ   |   FILE_SHARE_WRITE,   
-			&psa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);   
+	SECURITY_ATTRIBUTES   psa={sizeof(psa),NULL,TRUE};;
+	psa.bInheritHandle=TRUE;
 
+	HANDLE houtfile=CreateFile(filename,GENERIC_WRITE,FILE_SHARE_READ | FILE_SHARE_WRITE,
+			&psa,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
 
-	si.wShowWindow=SW_HIDE;
-	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
-	si.hStdOutput   =   houtfile; 
-	
+	si.wShowWindow = SW_HIDE;
+	si.dwFlags = STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
+	si.hStdOutput = houtfile;
+
 	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
@@ -776,14 +774,14 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 	{
 		LPVOID lpMsgBuf;
 		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-			NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			(LPTSTR)&lpMsgBuf,
-			0,NULL);
+						NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+						(LPTSTR)&lpMsgBuf,
+						0,NULL);
 		return GIT_ERROR_CREATE_PROCESS;
 	}
-	
-	WaitForSingleObject(pi.hProcess,INFINITE);   
-  	
+
+	WaitForSingleObject(pi.hProcess,INFINITE);
+
 	CloseHandle(pi.hThread);
 	CloseHandle(pi.hProcess);
 	CloseHandle(houtfile);
@@ -823,7 +821,7 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 int CGit::GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outputlist)
 {
 	CString cmd;
-	
+
 	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
 	{
 		//rev1=+_T("");
@@ -868,7 +866,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 		int i=0;
 		ret=g_Git.Run(cmd,&output,CP_UTF8);
 		if(!ret)
-		{		
+		{
 			int pos=0;
 			CString one;
 			while( pos>=0 )
@@ -896,7 +894,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	int i=0;
 	ret=g_Git.Run(cmd,&output,CP_UTF8);
 	if(!ret)
-	{		
+	{
 		int pos=0;
 		CString one;
 		while( pos>=0 )
@@ -975,11 +973,11 @@ int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int fl
 	CString str;
 	g_Git.StringAppend(&str,(BYTE*)refname,CP_ACP);
 	CGitHash hash((char*)sha1);
-	
+
 	(*map)[hash].push_back(str);
 
 	const char *hex = NULL;
-	if(strncmp(refname, "refs/tags", 9) == 0) 
+	if(strncmp(refname, "refs/tags", 9) == 0)
 	{
 		GIT_HASH refhash;
 		if(!git_deref_tag(sha1, refhash))
@@ -1092,7 +1090,7 @@ BOOL CGit::CheckMsysGitDir()
 	if(!sshclient.IsEmpty())
 	{
 		m_Environment.SetEnv(_T("GIT_SSH"),sshclient.GetBuffer());
-		
+
 		//Setup SVN_SSH
 		CString ssh=sshclient;
 		ssh.Replace(_T("/"),_T("\\"));
@@ -1122,7 +1120,7 @@ BOOL CGit::CheckMsysGitDir()
 		TCHAR sAskPass[MAX_PATH];
 		GetModuleFileName(NULL, sAskPass, _countof(sAskPass));
 		LPTSTR ptr = _tcsrchr(sAskPass, _T('\\'));
-		if (ptr) 
+		if (ptr)
 		{
 			_tcscpy(ptr + 1, _T("SshAskPass.exe"));
 			m_Environment.SetEnv(_T("DISPLAY"),_T(":9999"));
@@ -1163,7 +1161,7 @@ BOOL CGit::CheckMsysGitDir()
 	}
 	//set path
 
-	_tdupenv_s(&oldpath,&size,_T("PATH")); 
+	_tdupenv_s(&oldpath,&size,_T("PATH"));
 
 	CString path;
 	path.Format(_T("%s;%s"),oldpath,str + _T(";")+ (CString)CRegString(REG_MSYSGIT_EXTRA_PATH,_T(""),FALSE));
@@ -1175,11 +1173,10 @@ BOOL CGit::CheckMsysGitDir()
 	CString sOldPath = oldpath;
 	free(oldpath);
 
- 	m_bInitialized = TRUE;
+	m_bInitialized = TRUE;
 	return true;
 
 }
-
 
 class CGitCall_EnumFiles : public CGitCall
 {
@@ -1396,7 +1393,7 @@ int CGit::Revert(CTGitPathList &list,bool keep)
 {
 	int ret;
 	for(int i=0;i<list.GetCount();i++)
-	{	
+	{
 		ret = Revert((CTGitPath&)list[i],keep);
 		if(ret)
 			return ret;
@@ -1406,17 +1403,17 @@ int CGit::Revert(CTGitPathList &list,bool keep)
 int CGit::Revert(CTGitPath &path,bool keep)
 {
 	CString cmd, out;
-	
+
 	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED )
 	{
 		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
-		
+
 		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
-	
+
 	}else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{	//To init git repository, there are not HEAD, so we can use git reset command
 		cmd.Format(_T("git.exe rm --cached -- \"%s\""),path.GetGitPathString());
@@ -1469,7 +1466,7 @@ bool CGit::IsFastForward(CString &from, CString &to)
 	hash=g_Git.GetHash(from);
 
 	hash=hash.Left(40);
-	
+
 	return hash == base;
 }
 
@@ -1484,8 +1481,8 @@ unsigned int CGit::Hash2int(CString &hash)
 		else if(hash[i]>=_T('A'))
 			ret |= (hash[i]-_T('A')+10)&0xFF;
 		else
-			ret |= (hash[i]-_T('0'))&0xFF;		
-		
+			ret |= (hash[i]-_T('0'))&0xFF;
+
 	}
 	return ret;
 }
@@ -1497,12 +1494,12 @@ int CGit::RefreshGitIndex()
 		try
 		{
 			return git_run_cmd("update-index","update-index -q --refresh");
-			
+
 		}catch(...)
 		{
 			return -1;
 		}
-		
+
 	}else
 	{
 		CString cmd,output;
@@ -1620,8 +1617,7 @@ int CGit::GetGitEncode(TCHAR* configkey)
 	CString str=GetConfigValue(configkey);
 
 	if(str.IsEmpty())
-			return CP_UTF8;
-	
-	return CUnicodeUtils::GetCPCode(str);	
+		return CP_UTF8;
 
+	return CUnicodeUtils::GetCPCode(str);
 }

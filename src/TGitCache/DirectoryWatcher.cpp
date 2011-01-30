@@ -29,7 +29,7 @@ CDirectoryWatcher::CDirectoryWatcher(void) : m_hCompPort(NULL)
 	, blockTickCount(0)
 {
 	// enable the required privileges for this process
-	
+
 	LPCTSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
 									SE_RESTORE_NAME,
 									SE_CHANGE_NOTIFY_NAME
@@ -37,10 +37,10 @@ CDirectoryWatcher::CDirectoryWatcher(void) : m_hCompPort(NULL)
 
 	for (int i=0; i<(sizeof(arPrivelegeNames)/sizeof(LPCTSTR)); ++i)
 	{
-		HANDLE hToken;    
-		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken)) 	
-		{        
-			TOKEN_PRIVILEGES tp = { 1 };        
+		HANDLE hToken;
+		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
+		{
+			TOKEN_PRIVILEGES tp = { 1 };
 
 			if (LookupPrivilegeValue(NULL, arPrivelegeNames[i],  &tp.Privileges[0].Luid))
 			{
@@ -48,8 +48,8 @@ CDirectoryWatcher::CDirectoryWatcher(void) : m_hCompPort(NULL)
 
 				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL);
 			}
-			CloseHandle(hToken);	
-		}	
+			CloseHandle(hToken);
+		}
 	}
 
 	unsigned int threadId;
@@ -127,7 +127,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path)
 		if (watchedPaths[i].IsAncestorOf(path))
 			return false;		// already watched (recursively)
 	}
-	
+
 	// now check if with the new path we might have a new root
 	CTGitPath newroot;
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
@@ -258,8 +258,8 @@ void CDirectoryWatcher::WorkerThread()
 				{
 					CTGitPath watchedPath = watchedPaths[i];
 
-					HANDLE hDir = CreateFile(watchedPath.GetWinPath(), 
-											FILE_LIST_DIRECTORY, 
+					HANDLE hDir = CreateFile(watchedPath.GetWinPath(),
+											FILE_LIST_DIRECTORY,
 											FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
 											NULL, //security attributes
 											OPEN_EXISTING,
@@ -277,7 +277,7 @@ void CDirectoryWatcher::WorkerThread()
 						i--; if (i<0) i=0;
 						break;
 					}
-					
+
 					DEV_BROADCAST_HANDLE NotificationFilter;
 					SecureZeroMemory(&NotificationFilter, sizeof(NotificationFilter));
 					NotificationFilter.dbch_size = sizeof(DEV_BROADCAST_HANDLE);
@@ -328,7 +328,7 @@ void CDirectoryWatcher::WorkerThread()
 					return;
 				// NOTE: the longer this code takes to execute until ReadDirectoryChangesW
 				// is called again, the higher the chance that we miss some
-				// changes in the file system! 
+				// changes in the file system!
 				if (pdi)
 				{
 					if (numBytes == 0)
@@ -339,7 +339,7 @@ void CDirectoryWatcher::WorkerThread()
 					if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 						goto continuewatching;
 					DWORD nOffset = pnotify->NextEntryOffset;
-					do 
+					do
 					{
 						nOffset = pnotify->NextEntryOffset;
 						if (pnotify->FileNameLength >= (READ_DIR_CHANGE_BUFFER_SIZE*sizeof(TCHAR)))
@@ -420,10 +420,10 @@ continuewatching:
 					}
 				}
 			}
-		}// if (watchedPaths.GetCount())
+		} // if (watchedPaths.GetCount())
 		else
 			Sleep(200);
-	}// while (m_bRunning)
+	} // while (m_bRunning)
 }
 
 void CDirectoryWatcher::ClearInfoMap()
@@ -495,7 +495,7 @@ CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& Di
 	m_hDir(hDir),
 	m_DirName(DirectoryName)
 {
-	ATLASSERT( hDir != INVALID_HANDLE_VALUE 
+	ATLASSERT( hDir != INVALID_HANDLE_VALUE
 		&& !DirectoryName.IsEmpty());
 	memset(&m_Overlapped, 0, sizeof(m_Overlapped));
 	m_DirPath = m_DirName.GetWinPathString();
@@ -523,11 +523,4 @@ bool CDirectoryWatcher::CDirWatchInfo::CloseDirectoryHandle()
 	}
 	return b;
 }
-
-
-
-
-
-
-
 

@@ -95,11 +95,11 @@ std::string TortoiseBlame::GetAppDirectory()
 	std::string path;
 	DWORD len = 0;
 	DWORD bufferlen = MAX_PATH;		// MAX_PATH is not the limit here!
-	do 
+	do
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
 		TCHAR * pBuf = new TCHAR[bufferlen];
-		len = GetModuleFileName(NULL, pBuf, bufferlen);	
+		len = GetModuleFileName(NULL, pBuf, bufferlen);
 		path = std::string(pBuf, len);
 		delete [] pBuf;
 	} while(len == bufferlen);
@@ -116,18 +116,18 @@ std::string TortoiseBlame::GetAppDirectory()
 COLORREF TortoiseBlame::InterColor(COLORREF c1, COLORREF c2, int Slider)
 {
 	int r, g, b;
-	
+
 	// Limit Slider to 0..100% range
 	if (Slider < 0)
 		Slider = 0;
 	if (Slider > 100)
 		Slider = 100;
-	
+
 	// The color components have to be treated individually.
 	r = (GetRValue(c2) * Slider + GetRValue(c1) * (100 - Slider)) / 100;
 	g = (GetGValue(c2) * Slider + GetGValue(c1) * (100 - Slider)) / 100;
 	b = (GetBValue(c2) * Slider + GetBValue(c1) * (100 - Slider)) / 100;
-	
+
 	return RGB(r, g, b);
 }
 
@@ -137,10 +137,10 @@ LRESULT TortoiseBlame::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
 	{
 		return ((SciFnDirect) m_directFunction)(m_directPointer, Msg, wParam, lParam);
 	}
-	return ::SendMessage(wEditor, Msg, wParam, lParam);	
+	return ::SendMessage(wEditor, Msg, wParam, lParam);
 }
 
-void TortoiseBlame::GetRange(int start, int end, char *text) 
+void TortoiseBlame::GetRange(int start, int end, char *text)
 {
 	TEXTRANGE tr;
 	tr.chrg.cpMin = start;
@@ -149,7 +149,7 @@ void TortoiseBlame::GetRange(int start, int end, char *text)
 	SendMessage(wEditor, EM_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&tr));
 }
 
-void TortoiseBlame::SetTitle() 
+void TortoiseBlame::SetTitle()
 {
 	char title[MAX_PATH + 100];
 	strcpy_s(title, MAX_PATH + 100, szTitle);
@@ -179,14 +179,14 @@ BOOL TortoiseBlame::OpenLogFile(const char *fileName)
 		if (len == 0)
 		{
 			fclose(File);
-            InitSize();
+			InitSize();
 			return TRUE;
 		}
 		len = fread(&slength, sizeof(int), 1, File);
 		if (len == 0)
 		{
 			fclose(File);
-            InitSize();
+			InitSize();
 			return FALSE;
 		}
 		if (slength > MAX_LOG_LENGTH)
@@ -200,7 +200,7 @@ BOOL TortoiseBlame::OpenLogFile(const char *fileName)
 		if (len < (size_t)slength)
 		{
 			fclose(File);
-            InitSize();
+			InitSize();
 			return FALSE;
 		}
 		msg = std::string(logmsgbuf, slength);
@@ -218,7 +218,7 @@ BOOL TortoiseBlame::OpenLogFile(const char *fileName)
 	}
 }
 
-BOOL TortoiseBlame::OpenFile(const char *fileName) 
+BOOL TortoiseBlame::OpenFile(const char *fileName)
 {
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
@@ -264,7 +264,7 @@ BOOL TortoiseBlame::OpenFile(const char *fileName)
 			// we made the column. We therefore have to step through the path
 			// string until we find a space
 			trimptr = lineptr;
-			do 
+			do
 			{
 				// TODO: how can we deal with the situation where the path has
 				// a space in it, but the space is after the 60 chars reserved
@@ -395,22 +395,22 @@ BOOL TortoiseBlame::OpenFile(const char *fileName)
 	return TRUE;
 }
 
-void TortoiseBlame::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face) 
+void TortoiseBlame::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face)
 {
 	SendEditor(SCI_STYLESETFORE, style, fore);
 	SendEditor(SCI_STYLESETBACK, style, back);
 	if (size >= 1)
 		SendEditor(SCI_STYLESETSIZE, style, size);
-	if (face) 
+	if (face)
 		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
 }
 
-void TortoiseBlame::InitialiseEditor() 
+void TortoiseBlame::InitialiseEditor()
 {
 	m_directFunction = SendMessage(wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
 	m_directPointer = SendMessage(wEditor, SCI_GETDIRECTPOINTER, 0, 0);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
-	SetAStyle(STYLE_DEFAULT, black, white, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10), 
+	SetAStyle(STYLE_DEFAULT, black, white, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
 		((stdstring)(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New")))).c_str());
 	SendEditor(SCI_SETTABWIDTH, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4));
 	SendEditor(SCI_SETREADONLY, TRUE);
@@ -472,7 +472,7 @@ bool TortoiseBlame::DoSearch(LPSTR what, DWORD flags)
 	}
 
 	std::string sWhat = std::string(szWhat);
-	
+
 	char buf[20];
 	int i=0;
 	for (i=line; (i<(int)authors.size())&&(!bFound); ++i)
@@ -689,7 +689,7 @@ void TortoiseBlame::BlamePreviousRevision()
 		svnCmd += _T(" /ignorespaces");
 	if (bIgnoreAllSpaces)
 		svnCmd += _T(" /ignoreallspaces");
-    if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+	if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);
 		CloseHandle(process.hProcess);
@@ -759,9 +759,9 @@ void TortoiseBlame::ShowLog()
 	}
 }
 
-void TortoiseBlame::Notify(SCNotification *notification) 
+void TortoiseBlame::Notify(SCNotification *notification)
 {
-	switch (notification->nmhdr.code) 
+	switch (notification->nmhdr.code)
 	{
 	case SCN_SAVEPOINTREACHED:
 		break;
@@ -783,7 +783,7 @@ void TortoiseBlame::Notify(SCNotification *notification)
 
 void TortoiseBlame::Command(int id)
 {
-	switch (id) 
+	switch (id)
 	{
 	case IDM_EXIT:
 		::PostQuitMessage(0);
@@ -1030,8 +1030,8 @@ void TortoiseBlame::DrawBlame(HDC hDC)
 				::LineTo(hDC, rc2.right, rc2.bottom);
 				::LineTo(hDC, rc2.left, rc2.bottom);
 				::LineTo(hDC, rc2.left, rc2.top);
-				SelectObject(hDC, hPenOld); 
-				DeleteObject(pen); 
+				SelectObject(hDC, hPenOld);
+				DeleteObject(pen);
 			}
 			Y += height;
 			::SelectObject(hDC, oldfont);
@@ -1175,10 +1175,10 @@ LRESULT CALLBACK	WndHeaderProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK	WndLocatorProc(HWND, UINT, WPARAM, LPARAM);
 UINT				uFindReplaceMsg;
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE /*hPrevInstance*/,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE	hInstance,
+					 HINSTANCE		/*hPrevInstance*/,
+					 LPTSTR			lpCmdLine,
+					 int			nCmdShow)
 {
 	app.hInstance = hInstance;
 	MSG msg;
@@ -1205,7 +1205,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MyRegisterLocatorClass(app.hResource);
 
 	// Perform application initialization:
-	if (!InitInstance (app.hResource, nCmdShow)) 
+	if (!InitInstance (app.hResource, nCmdShow))
 	{
 		langDLL.Close();
 		return FALSE;
@@ -1270,23 +1270,23 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	BOOL going = TRUE;
 	msg.wParam = 0;
-	while (going) 
+	while (going)
 	{
 		going = GetMessage(&msg, NULL, 0, 0);
-		if (app.currentDialog && going) 
+		if (app.currentDialog && going)
 		{
-			if (!IsDialogMessage(app.currentDialog, &msg)) 
+			if (!IsDialogMessage(app.currentDialog, &msg))
 			{
-				if (TranslateAccelerator(msg.hwnd, hAccelTable, &msg) == 0) 
+				if (TranslateAccelerator(msg.hwnd, hAccelTable, &msg) == 0)
 				{
 					TranslateMessage(&msg);
 					DispatchMessage(&msg);
 				}
 			}
-		} 
-		else if (going) 
+		}
+		else if (going)
 		{
-			if (TranslateAccelerator(app.wMain, hAccelTable, &msg) == 0) 
+			if (TranslateAccelerator(app.wMain, hAccelTable, &msg) == 0)
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
@@ -1301,7 +1301,7 @@ ATOM MyRegisterClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndProc;
@@ -1322,7 +1322,7 @@ ATOM MyRegisterBlameClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndBlameProc;
@@ -1343,7 +1343,7 @@ ATOM MyRegisterHeaderClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndHeaderProc;
@@ -1364,7 +1364,7 @@ ATOM MyRegisterLocatorClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndLocatorProc;
@@ -1383,115 +1383,115 @@ ATOM MyRegisterLocatorClass(HINSTANCE hResource)
 
 BOOL InitInstance(HINSTANCE hResource, int nCmdShow)
 {
-   app.wMain = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hResource, NULL);   
+	app.wMain = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+							CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hResource, NULL);
 
-   if (!app.wMain)
-   {
-      return FALSE;
-   }
+	if (!app.wMain)
+	{
+		return FALSE;
+	}
 
-   CRegStdWORD pos(_T("Software\\TortoiseGit\\TBlamePos"), 0);
-   CRegStdWORD width(_T("Software\\TortoiseGit\\TBlameSize"), 0);
-   CRegStdWORD state(_T("Software\\TortoiseGit\\TBlameState"), 0);
-   if (DWORD(pos) && DWORD(width))
-   {
-	   RECT rc;
-	   rc.left = LOWORD(DWORD(pos));
-	   rc.top = HIWORD(DWORD(pos));
-	   rc.right = rc.left + LOWORD(DWORD(width));
-	   rc.bottom = rc.top + HIWORD(DWORD(width));
-	   HMONITOR hMon = MonitorFromRect(&rc, MONITOR_DEFAULTTONULL);
-	   if (hMon)
-	   {
-		   // only restore the window position if the monitor is valid
-		   MoveWindow(app.wMain, LOWORD(DWORD(pos)), HIWORD(DWORD(pos)),
-			   LOWORD(DWORD(width)), HIWORD(DWORD(width)), FALSE);
-	   }
-   }
-   if (DWORD(state) == SW_MAXIMIZE)
-	   ShowWindow(app.wMain, SW_MAXIMIZE);
-   else
-	   ShowWindow(app.wMain, nCmdShow);
-   UpdateWindow(app.wMain);
+	CRegStdWORD pos(_T("Software\\TortoiseGit\\TBlamePos"), 0);
+	CRegStdWORD width(_T("Software\\TortoiseGit\\TBlameSize"), 0);
+	CRegStdWORD state(_T("Software\\TortoiseGit\\TBlameState"), 0);
+	if (DWORD(pos) && DWORD(width))
+	{
+		RECT rc;
+		rc.left = LOWORD(DWORD(pos));
+		rc.top = HIWORD(DWORD(pos));
+		rc.right = rc.left + LOWORD(DWORD(width));
+		rc.bottom = rc.top + HIWORD(DWORD(width));
+		HMONITOR hMon = MonitorFromRect(&rc, MONITOR_DEFAULTTONULL);
+		if (hMon)
+		{
+			// only restore the window position if the monitor is valid
+			MoveWindow(app.wMain, LOWORD(DWORD(pos)), HIWORD(DWORD(pos)),
+						LOWORD(DWORD(width)), HIWORD(DWORD(width)), FALSE);
+		}
+	}
+	if (DWORD(state) == SW_MAXIMIZE)
+		ShowWindow(app.wMain, SW_MAXIMIZE);
+	else
+		ShowWindow(app.wMain, nCmdShow);
+	UpdateWindow(app.wMain);
 
-   //Create the tooltips
+	//Create the tooltips
 
-   INITCOMMONCONTROLSEX iccex; 
-   app.hwndTT;                 // handle to the ToolTip control
-   TOOLINFO ti;
-   RECT rect;                  // for client area coordinates
-   iccex.dwICC = ICC_WIN95_CLASSES;
-   iccex.dwSize = sizeof(INITCOMMONCONTROLSEX);
-   InitCommonControlsEx(&iccex);
+	INITCOMMONCONTROLSEX iccex;
+	app.hwndTT; // handle to the ToolTip control
+	TOOLINFO ti;
+	RECT rect; // for client area coordinates
+	iccex.dwICC = ICC_WIN95_CLASSES;
+	iccex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	InitCommonControlsEx(&iccex);
 
-   /* CREATE A TOOLTIP WINDOW */
-   app.hwndTT = CreateWindowEx(WS_EX_TOPMOST,
-	   TOOLTIPS_CLASS,
-	   NULL,
-	   WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,		
-	   CW_USEDEFAULT,
-	   CW_USEDEFAULT,
-	   CW_USEDEFAULT,
-	   CW_USEDEFAULT,
-	   app.wBlame,
-	   NULL,
-	   app.hResource,
-	   NULL
-	   );
+	/* CREATE A TOOLTIP WINDOW */
+	app.hwndTT = CreateWindowEx(WS_EX_TOPMOST,
+								TOOLTIPS_CLASS,
+								NULL,
+								WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
+								CW_USEDEFAULT,
+								CW_USEDEFAULT,
+								CW_USEDEFAULT,
+								CW_USEDEFAULT,
+								app.wBlame,
+								NULL,
+								app.hResource,
+								NULL
+								);
 
-   SetWindowPos(app.hwndTT,
-	   HWND_TOPMOST,
-	   0,
-	   0,
-	   0,
-	   0,
-	   SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	SetWindowPos(app.hwndTT,
+				HWND_TOPMOST,
+				0,
+				0,
+				0,
+				0,
+				SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
-   /* GET COORDINATES OF THE MAIN CLIENT AREA */
-   GetClientRect (app.wBlame, &rect);
+	/* GET COORDINATES OF THE MAIN CLIENT AREA */
+	GetClientRect (app.wBlame, &rect);
 
-   /* INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE */
-   ti.cbSize = sizeof(TOOLINFO);
-   ti.uFlags = TTF_TRACK | TTF_ABSOLUTE;//TTF_SUBCLASS | TTF_PARSELINKS;
-   ti.hwnd = app.wBlame;
-   ti.hinst = app.hResource;
-   ti.uId = 0;
-   ti.lpszText = LPSTR_TEXTCALLBACK;
-   // ToolTip control will cover the whole window
-   ti.rect.left = rect.left;    
-   ti.rect.top = rect.top;
-   ti.rect.right = rect.right;
-   ti.rect.bottom = rect.bottom;
+	/* INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE */
+	ti.cbSize = sizeof(TOOLINFO);
+	ti.uFlags = TTF_TRACK | TTF_ABSOLUTE;//TTF_SUBCLASS | TTF_PARSELINKS;
+	ti.hwnd = app.wBlame;
+	ti.hinst = app.hResource;
+	ti.uId = 0;
+	ti.lpszText = LPSTR_TEXTCALLBACK;
+	// ToolTip control will cover the whole window
+	ti.rect.left = rect.left;
+	ti.rect.top = rect.top;
+	ti.rect.right = rect.right;
+	ti.rect.bottom = rect.bottom;
 
-   /* SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW */
-   SendMessage(app.hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);	
-   SendMessage(app.hwndTT, TTM_SETMAXTIPWIDTH, 0, 600);
-   //SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_AUTOPOP, MAKELONG(50000, 0));
-   //SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_RESHOW, MAKELONG(1000, 0));
-   
-   uFindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
-   
-   return TRUE;
+	/* SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW */
+	SendMessage(app.hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
+	SendMessage(app.hwndTT, TTM_SETMAXTIPWIDTH, 0, 600);
+	//SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_AUTOPOP, MAKELONG(50000, 0));
+	//SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_RESHOW, MAKELONG(1000, 0));
+
+	uFindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
+
+	return TRUE;
 }
 
 void TortoiseBlame::InitSize()
 {
-    RECT rc;
-    RECT blamerc;
-    RECT sourcerc;
-    ::GetClientRect(wMain, &rc);
-    ::SetWindowPos(wHeader, 0, rc.left, rc.top, rc.right-rc.left, HEADER_HEIGHT, 0);
-    rc.top += HEADER_HEIGHT;
-    blamerc.left = rc.left;
-    blamerc.top = rc.top;
+	RECT rc;
+	RECT blamerc;
+	RECT sourcerc;
+	::GetClientRect(wMain, &rc);
+	::SetWindowPos(wHeader, 0, rc.left, rc.top, rc.right-rc.left, HEADER_HEIGHT, 0);
+	rc.top += HEADER_HEIGHT;
+	blamerc.left = rc.left;
+	blamerc.top = rc.top;
 	LONG w = GetBlameWidth();
-    blamerc.right = w > abs(rc.right - rc.left) ? rc.right : w + rc.left;
-    blamerc.bottom = rc.bottom;
-    sourcerc.left = blamerc.right;
-    sourcerc.top = rc.top;
-    sourcerc.bottom = rc.bottom;
-    sourcerc.right = rc.right;
+	blamerc.right = w > abs(rc.right - rc.left) ? rc.right : w + rc.left;
+	blamerc.bottom = rc.bottom;
+	sourcerc.left = blamerc.right;
+	sourcerc.top = rc.top;
+	sourcerc.bottom = rc.bottom;
+	sourcerc.right = rc.right;
 	if (m_colorage)
 	{
 		::OffsetRect(&blamerc, LOCATOR_WIDTH, 0);
@@ -1499,7 +1499,7 @@ void TortoiseBlame::InitSize()
 		sourcerc.right -= LOCATOR_WIDTH;
 	}
 	InvalidateRect(wMain, NULL, FALSE);
-    ::SetWindowPos(wEditor, 0, sourcerc.left, sourcerc.top, sourcerc.right - sourcerc.left, sourcerc.bottom - sourcerc.top, 0);
+	::SetWindowPos(wEditor, 0, sourcerc.left, sourcerc.top, sourcerc.right - sourcerc.left, sourcerc.bottom - sourcerc.top, 0);
 	::SetWindowPos(wBlame, 0, blamerc.left, blamerc.top, blamerc.right - blamerc.left, blamerc.bottom - blamerc.top, 0);
 	if (m_colorage)
 		::SetWindowPos(wLocator, 0, 0, blamerc.top, LOCATOR_WIDTH, blamerc.bottom - blamerc.top, SWP_SHOWWINDOW);
@@ -1513,20 +1513,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		LPFINDREPLACE lpfr = (LPFINDREPLACE)lParam;
 
-		// If the FR_DIALOGTERM flag is set, 
-		// invalidate the handle identifying the dialog box. 
+		// If the FR_DIALOGTERM flag is set,
+		// invalidate the handle identifying the dialog box.
 		if (lpfr->Flags & FR_DIALOGTERM)
 		{
-			app.currentDialog = NULL; 
-			return 0; 
-		} 
+			app.currentDialog = NULL;
+			return 0;
+		}
 		if (lpfr->Flags & FR_FINDNEXT)
 		{
 			app.DoSearch(lpfr->lpstrFindWhat, lpfr->Flags);
 		}
-		return 0; 
+		return 0;
 	}
-	switch (message) 
+	switch (message)
 	{
 	case WM_CREATE:
 		app.wEditor = ::CreateWindow(
@@ -1543,44 +1543,44 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		::ShowWindow(app.wEditor, SW_SHOW);
 		::SetFocus(app.wEditor);
 		app.wBlame = ::CreateWindow(
-			_T("TortoiseBlameBlame"), 
-			_T("blame"), 
+			_T("TortoiseBlameBlame"),
+			_T("blame"),
 			WS_CHILD | WS_CLIPCHILDREN,
-			CW_USEDEFAULT, 0, 
-			CW_USEDEFAULT, 0, 
-			hWnd, 
-			NULL, 
-			app.hResource, 
+			CW_USEDEFAULT, 0,
+			CW_USEDEFAULT, 0,
+			hWnd,
+			NULL,
+			app.hResource,
 			NULL);
 		::ShowWindow(app.wBlame, SW_SHOW);
 		app.wHeader = ::CreateWindow(
-			_T("TortoiseBlameHeader"), 
-			_T("header"), 
+			_T("TortoiseBlameHeader"),
+			_T("header"),
 			WS_CHILD | WS_CLIPCHILDREN | WS_BORDER,
-			CW_USEDEFAULT, 0, 
-			CW_USEDEFAULT, 0, 
-			hWnd, 
-			NULL, 
-			app.hResource, 
+			CW_USEDEFAULT, 0,
+			CW_USEDEFAULT, 0,
+			hWnd,
+			NULL,
+			app.hResource,
 			NULL);
 		::ShowWindow(app.wHeader, SW_SHOW);
 		app.wLocator = ::CreateWindow(
-			_T("TortoiseBlameLocator"), 
-			_T("locator"), 
+			_T("TortoiseBlameLocator"),
+			_T("locator"),
 			WS_CHILD | WS_CLIPCHILDREN | WS_BORDER,
-			CW_USEDEFAULT, 0, 
-			CW_USEDEFAULT, 0, 
-			hWnd, 
-			NULL, 
-			app.hResource, 
+			CW_USEDEFAULT, 0,
+			CW_USEDEFAULT, 0,
+			hWnd,
+			NULL,
+			app.hResource,
 			NULL);
 		::ShowWindow(app.wLocator, SW_SHOW);
 		return 0;
 
 	case WM_SIZE:
-		if (wParam != 1) 
+		if (wParam != 1)
 		{
-            app.InitSize();
+			app.InitSize();
 		}
 		return 0;
 
@@ -1627,7 +1627,7 @@ LRESULT CALLBACK WndBlameProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 	PAINTSTRUCT ps;
 	TRACKMOUSEEVENT mevt;
 	HDC hDC;
-	switch (message) 
+	switch (message)
 	{
 	case WM_CREATE:
 		return 0;
@@ -1815,8 +1815,8 @@ LRESULT CALLBACK WndBlameProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 				// because we don't know which filename to pass to tortoiseproc.
 				EnableMenuItem(hPopMenu,ID_BLAME_PREVIOUS_REVISION, MF_DISABLED|MF_GRAYED);
 			}
-			
-			TrackPopupMenu(hPopMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, xPos, yPos, 0, app.wBlame, NULL); 
+
+			TrackPopupMenu(hPopMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, xPos, yPos, 0, app.wBlame, NULL);
 			DestroyMenu(hMenu);
 		}
 		break;
@@ -1830,7 +1830,7 @@ LRESULT CALLBACK WndHeaderProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 {
 	PAINTSTRUCT ps;
 	HDC hDC;
-	switch (message) 
+	switch (message)
 	{
 	case WM_CREATE:
 		return 0;
@@ -1855,7 +1855,7 @@ LRESULT CALLBACK WndLocatorProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 {
 	PAINTSTRUCT ps;
 	HDC hDC;
-	switch (message) 
+	switch (message)
 	{
 	case WM_PAINT:
 		hDC = BeginPaint(app.wLocator, &ps);
@@ -1867,7 +1867,7 @@ LRESULT CALLBACK WndLocatorProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		if (wParam & MK_LBUTTON)
 		{
 			RECT rect;
-			::GetClientRect(hWnd, &rect); 
+			::GetClientRect(hWnd, &rect);
 			int nLine = HIWORD(lParam)*app.revs.size()/(rect.bottom-rect.top);
 
 			if (nLine < 0)

@@ -88,7 +88,7 @@ public:
 	{
 		m_wcRev.GetBody()=_T("Fetching Status...");
 		m_wcRev.m_CallDiffAsync = DiffAsync;
-		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);		
+		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);
 	}
 	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 
@@ -149,7 +149,7 @@ public:
 		GIT_LOGLIST_BUG		=	1<< LOGLIST_BUG,
 	};
 
-	enum 
+	enum
 	{
 	// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
 	ID_COMPARE = 1,
@@ -211,7 +211,7 @@ public:
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
-	
+
 	CFindReplaceDialog *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
 	void OnFind();
@@ -240,7 +240,7 @@ public:
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
 	void ReloadHashMap()
-	{	
+	{
 		m_HashMap.clear();
 		g_Git.GetMapHashToFriendName(m_HashMap);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
@@ -292,7 +292,7 @@ protected:
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);	
+	afx_msg void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult);
 	void OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult);
 	afx_msg void OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -308,7 +308,7 @@ protected:
 
 	BOOL GetShortName(CString ref, CString &shortname,CString prefix);
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
-                                      const COLORREF& col,const COLORREF& activeColor, int top) ; 
+									  const COLORREF& col,const COLORREF& activeColor, int top) ;
 	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){::MoveToEx(hdc,x1,y1,NULL);::LineTo(hdc,x2,y2);}
 	/**
 	* Save column widths to the registry
@@ -379,7 +379,7 @@ protected:
 
 	CXPTheme			m_Theme;
 	BOOL				m_bVista;
-	
+
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;
 	HICON				m_hAddedIcon;
@@ -389,8 +389,7 @@ protected:
 	HFONT				m_boldFont;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
-	
-	
+
 	void				*m_ProcData;
 	CStoreSelection*	m_pStoreSelection;
 
@@ -400,7 +399,6 @@ protected:
 	CGitHash			m_HeadHash;
 
 	CString				m_StartRef; //Ref of the top-commit
-	
 
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE

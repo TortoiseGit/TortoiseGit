@@ -57,15 +57,15 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_nSortColumn(0)
 	, m_bShowedAll(false)
 	, m_bSelect(false)
-	
+
 	, m_bSelectionMustBeContinuous(false)
 	, m_lowestRev(_T(""))
-	
+
 	, m_sLogInfo(_T(""))
-	
+
 	, m_bCancelled(FALSE)
 	, m_pNotifyWindow(NULL)
-	
+
 	, m_bAscending(FALSE)
 
 	, m_limit(0)
@@ -80,7 +80,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	str=g_Git.m_CurrentDir;
 	str.Replace(_T(":"),_T("_"));
 	str=CString(_T("Software\\TortoiseGit\\LogDialog\\AllBranch\\"))+str;
-	
+
 	m_regbAllBranch=CRegDWORD(str,FALSE);
 
 	m_bAllBranch=m_regbAllBranch;
@@ -94,8 +94,8 @@ CLogDlg::~CLogDlg()
 
 	m_regbAllBranch=m_bAllBranch;
 
-    m_CurrentFilteredChangedArray.RemoveAll();
-	
+	m_CurrentFilteredChangedArray.RemoveAll();
+
 }
 
 void CLogDlg::DoDataExchange(CDataExchange* pDX)
@@ -128,12 +128,12 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
 
-	
+
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
 
 	ON_MESSAGE(MSG_LOAD_PERCENTAGE,OnLogListLoading)
-	
+
 	ON_EN_CHANGE(IDC_SEARCHEDIT, OnEnChangeSearchedit)
 	ON_WM_TIMER()
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETO, OnDtnDatetimechangeDateto)
@@ -141,12 +141,12 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
 	//ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGMSG, OnNMCustomdrawChangedFileList)
 	//ON_NOTIFY(LVN_GETDISPINFO, IDC_LOGMSG, OnLvnGetdispinfoChangedFileList)
-	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST	, OnLvnColumnclick)
+	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
 	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
-	ON_BN_CLICKED(IDC_LOG_ALLBRANCH,OnBnClickedAllBranch)
-	
+	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
+
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
 	ON_WM_SIZE()
@@ -154,11 +154,11 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 //	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
-	ON_COMMAND(ID_LOGDLG_REFRESH,&CLogDlg::OnBnClickedRefresh)
-	ON_COMMAND(ID_LOGDLG_FIND,&CLogDlg::OnFind)
-	ON_COMMAND(ID_LOGDLG_FOCUSFILTER,&CLogDlg::OnFocusFilter)
+	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
+	ON_COMMAND(ID_LOGDLG_FIND, &CLogDlg::OnFind)
+	ON_COMMAND(ID_LOGDLG_FOCUSFILTER, &CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
-	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
+	ON_MESSAGE(MSG_REFLOG_CHANGED, OnRefLogChanged)
 END_MESSAGE_MAP()
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
@@ -189,7 +189,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	// use the state of the "stop on copy/rename" option from the last time
 	UpdateData(FALSE);
-	
+
 	// set the font to use in the log message view, configured in the settings dialog
 	CAppUtils::CreateFontForLogs(m_logFont);
 	GetDlgItem(IDC_MSGVIEW)->SetFont(&m_logFont);
@@ -202,7 +202,7 @@ BOOL CLogDlg::OnInitDialog()
 	// the "hide unrelated paths" checkbox should be indeterminate
 	m_cHidePaths.SetCheck(BST_INDETERMINATE);
 
-	
+
 	//theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	//theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
@@ -227,12 +227,12 @@ BOOL CLogDlg::OnInitDialog()
 	CheckRegexpTooltip();
 
 	SetSplitterRange();
-	
+
 	// the filter control has a 'cancel' button (the red 'X'), we need to load its bitmap
 	m_cFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
 	m_cFilter.SetInfoIcon(IDI_LOGFILTER);
 	m_cFilter.SetValidator(this);
-	
+
 	AdjustControlSize(IDC_HIDEPATHS);
 	AdjustControlSize(IDC_LOG_FIRSTPARENT);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
@@ -257,15 +257,15 @@ BOOL CLogDlg::OnInitDialog()
 
 	SetFilterCueText();
 	AddAnchor(IDC_SEARCHEDIT, TOP_LEFT, TOP_RIGHT);
-	
+
 	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
 
-	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);	
-	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);	
+	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
 	//AddAnchor(IDC_GETALL, BOTTOM_LEFT);
@@ -323,7 +323,7 @@ BOOL CLogDlg::OnInitDialog()
 		}
 	}
 
-	
+
 	if (m_bSelect)
 	{
 		// the dialog is used to select revisions
@@ -338,7 +338,7 @@ BOOL CLogDlg::OnInitDialog()
 		SetDlgItemText(IDCANCEL, temp);
 		GetDlgItem(IDOK)->ShowWindow(SW_HIDE);
 	}
-	
+
 	m_mergedRevs.clear();
 
 	// first start a thread to obtain the log messages without
@@ -346,7 +346,7 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tTo = 0;
 	//m_tFrom = (DWORD)-1;
 
-	
+
 	m_LogList.FetchLogAsync(this);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
@@ -366,7 +366,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		this->m_LogList.ShowText(temp, true);
 
-		// We use a progress bar while getting the logs	
+		// We use a progress bar while getting the logs
 		m_LogProgress.SetRange32(0, 100);
 		m_LogProgress.SetPos(0);
 
@@ -379,13 +379,12 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
 		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
 
-	}else if( cur == GITLOG_END)
+	}
+	else if( cur == GITLOG_END)
 	{
-		
 		if(this->m_LogList.HasText())
 		{
 			this->m_LogList.ClearText();
-			
 		}
 		UpdateLogInfoLabel();
 
@@ -403,7 +402,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//CTime time=m_LogList.GetOldestTime();
 		CTime begin,end;
 		m_LogList.GetTimeRange(begin,end);
-		
+
 		if(m_LogList.m_From == -1)
 			m_DateFrom.SetTime(&begin);
 
@@ -487,7 +486,7 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 {
 	CString cmd;
 	CString output;
-	
+
 	if(m_LogList.m_HashMap.find(pLogEntry->m_CommitHash) != m_LogList.m_HashMap.end())
 	{
 		STRING_VECTOR &vector = m_LogList.m_HashMap[pLogEntry->m_CommitHash];
@@ -503,9 +502,9 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 					continue;
 
 				cmd.Format(_T("git.exe cat-file	tag %s"), tag);
-				
+
 				if(g_Git.Run(cmd, &output, CP_UTF8) == 0 )
-					output+=_T("\n");			
+					output+=_T("\n");
 			}
 		}
 	}
@@ -533,7 +532,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	m_currentChangedArray = NULL;
 	//m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
 	m_ChangedFileListCtrl.DeleteAllItems();
-	
+
 	// if we're not here to really show a selected revision, just
 	// get out of here after clearing the views, which is what is intended
 	// if that flag is not set.
@@ -584,7 +583,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			format.dwMask = CFM_BOLD;
 			format.dwEffects = CFE_BOLD;
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
-			
+
 			CString msg=_T("* ");
 			msg+=pLogEntry->GetSubject();
 			pMsgView->ReplaceSel(msg);
@@ -592,7 +591,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->SetSel(-1,-1);
 			format.dwEffects = 0;
 			pMsgView->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
-			
+
 			msg=_T("\n");
 			msg+=pLogEntry->GetBody();
 
@@ -626,7 +625,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					break;
 
 				((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE|CTGitPath::LOGACTIONS_GRAY);
-				
+
 				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath)
 				{
 					if(HidePaths==BST_CHECKED)
@@ -646,7 +645,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				m_ChangedFileListCtrl.SetBusy(TRUE);
 			else
 				m_ChangedFileListCtrl.SetBusy(FALSE);
-		
+
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
@@ -660,7 +659,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		// selected revisions, with 'doubles' removed
 		m_currentChangedPathList = GetChangedPathsFromSelectedRevisions(true);
 	}
-	
+
 	// redraw the views
 //	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 #if 0
@@ -691,7 +690,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 void CLogDlg::OnBnClickedRefresh()
 {
-	
 	Refresh (true);
 }
 
@@ -734,7 +732,7 @@ void CLogDlg::OnCancel()
 		m_LogList.SafeTerminateThread();
 	}
 	UpdateData();
-	
+
 	SaveSplitterPos();
 	__super::OnCancel();
 }
@@ -751,10 +749,10 @@ CString CLogDlg::MakeShortMessage(const CString& message)
 	// Remove newlines and tabs 'cause those are not shown nicely in the list control
 	sShortMessage.Replace(_T("\r"), _T(""));
 	sShortMessage.Replace(_T("\t"), _T(" "));
-	
+
 	// Suppose the first empty line separates 'summary' from the rest of the message.
 	int found = sShortMessage.Find(_T("\n\n"));
-	// To avoid too short 'short' messages 
+	// To avoid too short 'short' messages
 	// (e.g. if the message looks something like "Bugfix:\n\n*done this\n*done that")
 	// only use the empty newline as a separator if it comes after at least 15 chars.
 	if ((!bFoundShort)&&(found >= 15))
@@ -796,7 +794,7 @@ BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString
 	// Add as many characters from the log message to the list control
 	PLOGENTRYDATA pLogItem = new LOGENTRYDATA;
 	pLogItem->bCopies = !!copies;
-	
+
 	// find out if this item was copied in the revision
 	BOOL copiedself = FALSE;
 	if (copies)
@@ -827,7 +825,7 @@ BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString
 	if (haschildren)
 		m_childCounter++;
 	pLogItem->sBugIDs = m_ProjectProperties.FindBugID(message).Trim();
-	
+
 	// split multi line log entries and concatenate them
 	// again but this time with \r\n as line separators
 	// so that the edit control recognizes them
@@ -843,13 +841,13 @@ BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString
 		}
 		else
 			m_sMessageBuf.Empty();
-        pLogItem->sMessage = m_sMessageBuf;
-        pLogItem->Rev = rev;
+		pLogItem->sMessage = m_sMessageBuf;
+		pLogItem->Rev = rev;
 
-        // move-construct path array
+		// move-construct path array
 
-        pLogItem->pArChangedPaths = new LogChangedPathArray (*cpaths);
-        cpaths->RemoveAll();
+		pLogItem->pArChangedPaths = new LogChangedPathArray (*cpaths);
+		cpaths->RemoveAll();
 	}
 	catch (CException * e)
 	{
@@ -1017,9 +1015,6 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 }
 
-
-
-
 void CLogDlg::OnOK()
 {
 	// since the log dialog is also used to select revisions for other
@@ -1050,8 +1045,8 @@ void CLogDlg::OnOK()
 	UpdateData(FALSE);
 	SaveSplitterPos();
 	__super::OnOK();
-	
-	#if 0 
+
+	#if 0
 	if (!GetDlgItem(IDOK)->IsWindowVisible() && GetFocus() != GetDlgItem(IDCANCEL))
 		return; // the Cancel button works as the OK button. But if the cancel button has not the focus, do nothing.
 
@@ -1068,8 +1063,8 @@ void CLogDlg::OnOK()
 	{
 		int selIndex = m_LogList.GetSelectionMark();
 		if (selIndex >= 0)
-		{	
-		    PLOGENTRYDATA pLogEntry = NULL;
+		{
+			PLOGENTRYDATA pLogEntry = NULL;
 			POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
 			m_selectedRevs.AddRevision(pLogEntry->Rev);
@@ -1077,7 +1072,7 @@ void CLogDlg::OnOK()
 			git_revnum_t higherRev = lowerRev;
 			while (pos)
 			{
-			    pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+				pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
 				git_revnum_t rev = pLogEntry->Rev;
 				m_selectedRevs.AddRevision(pLogEntry->Rev);
 				if (lowerRev > rev)
@@ -1137,7 +1132,7 @@ void CLogDlg::OnOK()
 	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
 	reg = m_btnShow.GetCurrentEntry();
 	SaveSplitterPos();
-#endif 
+#endif
 }
 
 void CLogDlg::OnNMDblclkChangedFileList(NMHDR * /*pNMHDR*/, LRESULT *pResult)
@@ -1226,7 +1221,7 @@ void CLogDlg::DiffSelectedFile()
 			}
 			DoDiffFromLog(selIndex, rev1, rev2, false, false);
 		}
-		else 
+		else
 		{
 			CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(changedpath->sPath));
 			CTGitPath tempfile2 = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(changedpath->sPath));
@@ -1270,7 +1265,7 @@ void CLogDlg::DiffSelectedFile()
 				CAppUtils::StartExtDiff(tempfile2, tempfile, sName2, sName1, flags);
 		}
 	}
-#endif 
+#endif
 }
 
 
@@ -1282,17 +1277,17 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool b
 
 	CString temppath;
 	GetTempPath(temppath);
-	
+
 	CString file1;
 	file1.Format(_T("%s%s_%s%s"),
-				temppath,						
+				temppath,
 				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
 				rev1->m_CommitHash.ToString().Left(6),
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString file2;
 	file2.Format(_T("%s\\%s_%s%s"),
-				temppath,						
+				temppath,
 				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
 				rev2->m_CommitHash.ToString().Left(6),
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
@@ -1483,8 +1478,7 @@ void CLogDlg::EditAuthor(const CLogDataVector& /*logs*/)
 	{
 		dlg.m_sInputText.Replace(_T("\r"), _T(""));
 
-		LogCache::CCachedLogInfo* toUpdate 
-			= GetLogCache (CTGitPath (m_sRepositoryRoot));
+		LogCache::CCachedLogInfo* toUpdate = GetLogCache (CTGitPath (m_sRepositoryRoot));
 
 		CProgressDlg progDlg;
 		progDlg.SetTitle(IDS_APPNAME);
@@ -1506,7 +1500,7 @@ void CLogDlg::EditAuthor(const CLogDataVector& /*logs*/)
 				logs[i]->sAuthor = dlg.m_sInputText;
 				m_LogList.Invalidate();
 
-				// update the log cache 
+				// update the log cache
 
 				if (toUpdate != NULL)
 				{
@@ -1579,7 +1573,7 @@ void CLogDlg::EditLogMessage(int /*index*/)
 				dlg.m_sInputText.Replace(_T("\r\n"), _T("\n"));
 				if (dlg.m_sInputText.Right(1).Compare(_T("\n"))==0)
 					dlg.m_sInputText = dlg.m_sInputText.Left(dlg.m_sInputText.GetLength()-1);
-			} 
+			}
 			else
 				dlg.m_sInputText.Empty();
 			pLogEntry->sMessage = dlg.m_sInputText;
@@ -1589,25 +1583,23 @@ void CLogDlg::EditLogMessage(int /*index*/)
 			pMsgView->SetWindowText(dlg.m_sInputText);
 			m_ProjectProperties.FindBugID(dlg.m_sInputText, pMsgView);
 			m_LogList.Invalidate();
-        
-            // update the log cache 
 
-            LogCache::CCachedLogInfo* toUpdate 
-                = GetLogCache (CTGitPath (m_sRepositoryRoot));
-            if (toUpdate != NULL)
-            {
-                // log caching is active
+			// update the log cache
+			LogCache::CCachedLogInfo* toUpdate = GetLogCache(CTGitPath (m_sRepositoryRoot));
+			if (toUpdate != NULL)
+			{
+				// log caching is active
 
-                LogCache::CCachedLogInfo newInfo;
-                newInfo.Insert ( pLogEntry->Rev
-                               , ""
-                               , (const char*) CUnicodeUtils::GetUTF8 (pLogEntry->sMessage)
-                               , 0
-                               , LogCache::CRevisionInfoContainer::HAS_COMMENT);
+				LogCache::CCachedLogInfo newInfo;
+				newInfo.Insert( pLogEntry->Rev
+								, ""
+								, (const char*) CUnicodeUtils::GetUTF8 (pLogEntry->sMessage)
+								, 0
+								, LogCache::CRevisionInfoContainer::HAS_COMMENT);
 
-                toUpdate->Update (newInfo);
-            }
-        }
+				toUpdate->Update(newInfo);
+			}
+		}
 	}
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
@@ -1635,7 +1627,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		if (ret)
 			return TRUE;
 	}
-	
+
 	if(::IsWindow(m_tooltips.m_hWnd))
 		m_tooltips.RelayEvent(pMsg);
 	return __super::PreTranslateMessage(pMsg);
@@ -1751,7 +1743,7 @@ public:
 				(*m_cont->m_parFileChanges)[m_place]	= P_Right.GetChanges();
 				(*m_cont->m_parAuthors)[m_place]		= P_Right.GetAuthor();
 			}
-			else 
+			else
 			{
 				m_Date								= P_Right.GetDate();
 				m_Changes							= P_Right.GetChanges();
@@ -1952,22 +1944,22 @@ void CLogDlg::AdjustMinSize()
 	CRect rcLogList;
 	m_LogList.GetClientRect(rcLogList);
 
-	SetMinTrackSize(CSize(m_DlgOrigRect.Width(), 
+	SetMinTrackSize(CSize(m_DlgOrigRect.Width(),
 		m_DlgOrigRect.Height()-m_ChgOrigRect.Height()-m_LogListOrigRect.Height()-m_MsgViewOrigRect.Height()
 		+rcChgListView.Height()+rcLogList.Height()+60));
 }
 
-LRESULT CLogDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT CLogDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
 	case WM_NOTIFY:
 		if (wParam == IDC_SPLITTERTOP)
-		{ 
+		{
 			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
 			DoSizeV1(pHdr->delta);
 		}
 		else if (wParam == IDC_SPLITTERBOTTOM)
-		{ 
+		{
 			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
 			DoSizeV2(pHdr->delta);
 		}
@@ -2013,7 +2005,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_ALL), LOGFILTER_ALL, temp);
 
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		
+
 		temp.LoadString(IDS_LOG_FILTER_MESSAGES);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_MESSAGES), LOGFILTER_MESSAGES, temp);
 /*
@@ -2031,7 +2023,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}
-*/		
+*/
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		temp.LoadString(IDS_LOG_FILTER_REGEX);
@@ -2086,7 +2078,7 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 	UpdateLogInfoLabel();
 
-	return 0L;	
+	return 0L;
 }
 
 
@@ -2192,7 +2184,7 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	{
 		CTime _time;
 		m_DateTo.GetTime(_time);
-	
+
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 23, 59, 59);
 		if (time.GetTime() != m_LogList.m_To)
 		{
@@ -2204,18 +2196,18 @@ void CLogDlg::OnDtnDatetimechangeDateto(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	{
 		CMessageBox::Show(NULL,_T("Invalidate Parameter"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
-	
+
 	*pResult = 0;
 }
 
 void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	
+
 	try
 	{
 		CTime _time;
 		m_DateFrom.GetTime(_time);
-		
+
 		CTime time(_time.GetYear(), _time.GetMonth(), _time.GetDay(), 0, 0, 0);
 		if (time.GetTime() != m_LogList.m_From)
 		{
@@ -2227,7 +2219,7 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	{
 		CMessageBox::Show(NULL,_T("Invalidate Parameter"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
-	
+
 	*pResult = 0;
 }
 
@@ -2237,14 +2229,14 @@ CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool /*bRelativePath
 {
 	CTGitPathList pathList;
 #if 0
-	
+
 	if (m_sRepositoryRoot.IsEmpty() && (bRelativePaths == false))
 	{
 		m_sRepositoryRoot = GetRepositoryRoot(m_path);
 	}
 	if (m_sRepositoryRoot.IsEmpty() && (bRelativePaths == false))
 		return pathList;
-	
+
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	if (pos != NULL)
 	{
@@ -2268,7 +2260,7 @@ CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool /*bRelativePath
 					((m_cHidePaths.GetState() & 0x0003)!=BST_CHECKED)||
 					(cpath->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0))
 					pathList.AddPath(path);
-				
+
 			}
 		}
 	}
@@ -2360,13 +2352,13 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 void CLogDlg::SortShownListArray()
 {
 	// make sure the shown list still matches the filter after sorting.
-    OnTimer(LOGFILTER_TIMER);
-    // clear the selection states
+	OnTimer(LOGFILTER_TIMER);
+	// clear the selection states
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	while (pos)
 	{
 		m_LogList.SetItemState(m_LogList.GetNextSelectedItem(pos), 0, LVIS_SELECTED);
-	}    
+	}
 	m_LogList.SetSelectionMark(-1);
 }
 
@@ -2494,7 +2486,7 @@ void CLogDlg::UpdateLogInfoLabel()
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"), 
+	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"),
 		count - start,
 		rev2.ToString().Left(6), rev1.ToString().Left(6), selectedrevs);
 
@@ -2549,7 +2541,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				rev1 = max(rev1,(git_revnum_t)pLogEntry->Rev);
 				rev2 = min(rev2,(git_revnum_t)pLogEntry->Rev);
 				bOneRev = false;
-			}				
+			}
 		}
 		if (!bOneRev)
 			rev2--;
@@ -2641,9 +2633,9 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 				if (m_hasWC)
 					popup.AppendMenuIcon(CGitLogList::ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-				popup.AppendMenuIcon(CGitLogList::ID_POPPROPS, IDS_REPOBROWSE_SHOWPROP, IDI_PROPERTIES);			// "Show Properties"
-				popup.AppendMenuIcon(CGitLogList::ID_LOG, IDS_MENULOG, IDI_LOG);						// "Show Log"				
-				popup.AppendMenuIcon(CGitLogList::ID_GETMERGELOGS, IDS_LOG_POPUP_GETMERGELOGS, IDI_LOG);		// "Show merge log"
+				popup.AppendMenuIcon(CGitLogList::ID_POPPROPS, IDS_REPOBROWSE_SHOWPROP, IDI_PROPERTIES);	// "Show Properties"
+				popup.AppendMenuIcon(CGitLogList::ID_LOG, IDS_MENULOG, IDI_LOG);							// "Show Log"
+				popup.AppendMenuIcon(CGitLogList::ID_GETMERGELOGS, IDS_LOG_POPUP_GETMERGELOGS, IDI_LOG);	// "Show merge log"
 				popup.AppendMenuIcon(CGitLogList::ID_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				bEntryAdded = true;
 				if (!m_ProjectProperties.sWebViewerPathRev.IsEmpty())
@@ -2668,7 +2660,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		bool bOpenWith = false;
 		bool bMergeLog = false;
 		m_bCancelled = false;
-		
+
 		switch (cmd)
 		{
 		case CGitLogList::ID_DIFF:
@@ -2835,7 +2827,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					browseFolder.SetInfo(CString(MAKEINTRESOURCE(IDS_LOG_SAVEFOLDERTOHINT)));
 					browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 					CString strSaveAsDirectory;
-					if (browseFolder.Show(GetSafeHwnd(), strSaveAsDirectory) == CBrowseFolder::OK) 
+					if (browseFolder.Show(GetSafeHwnd(), strSaveAsDirectory) == CBrowseFolder::OK)
 					{
 						TargetPath = CTGitPath(strSaveAsDirectory);
 						bTargetSelected = true;
@@ -2843,7 +2835,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				}
 				else
 				{
-					// Display the Open dialog box. 
+					// Display the Open dialog box.
 					CString revFilename;
 					CString temp;
 					temp = CPathUtils::GetFileNameFromPath(changedpaths[0]);
@@ -2889,7 +2881,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 							// /folder2/file1
 							// in that case, the second 'file1' will overwrite
 							// the already saved 'file1'.
-							// 
+							//
 							// we could maybe find the common root of all selected
 							// items and then create sub folders to save those files
 							// there.
@@ -3035,7 +3027,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				relurl = relurl.Mid(relurl.Find('/'));
 				url.Replace(_T("%PATH1%"), relurl);
 				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
+					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
 			}
 			break;
 #endif
@@ -3079,7 +3071,7 @@ void CLogDlg::OnRefresh()
 	{
 		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
-		
+
 		Refresh (false);
 	}
 }
@@ -3088,7 +3080,7 @@ void CLogDlg::OnRefresh()
 
 void CLogDlg::OnFocusFilter()
 {
-	GetDlgItem(IDC_SEARCHEDIT)->SetFocus();	
+	GetDlgItem(IDC_SEARCHEDIT)->SetFocus();
 }
 
 void CLogDlg::OnEditCopy()
@@ -3192,7 +3184,7 @@ void CLogDlg::OnBnClickedAllBranch()
 
 void CLogDlg::OnBnClickedBrowseRef()
 {
-	CString newRef = CBrowseRefsDlg::PickRef(false,m_LogList.GetStartRef());	
+	CString newRef = CBrowseRefsDlg::PickRef(false,m_LogList.GetStartRef());
 	if(newRef.IsEmpty())
 		return;
 
@@ -3272,7 +3264,7 @@ void CLogDlg::OnBnClickShowWholeProject()
 		if(!m_path.IsEmpty())
 			SetWindowText(m_sTitle + _T(" - ") + m_path.GetGitPathString());
 	}
-	
+
 	OnRefresh();
 
 	FillLogMessageCtrl(false);

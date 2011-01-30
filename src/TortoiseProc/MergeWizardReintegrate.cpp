@@ -114,7 +114,7 @@ LRESULT CMergeWizardReintegrate::OnWizardBack()
 
 BOOL CMergeWizardReintegrate::OnSetActive()
 {
-	CPropertySheet* psheet = (CPropertySheet*) GetParent();   
+	CPropertySheet* psheet = (CPropertySheet*) GetParent();
 	psheet->SetWizardButtons(PSWIZB_NEXT|PSWIZB_BACK);
 	SetButtonTexts();
 

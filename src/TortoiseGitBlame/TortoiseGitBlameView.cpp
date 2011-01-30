@@ -76,7 +76,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_RBUTTONUP()
 	ON_NOTIFY(SCN_PAINTED,0,OnSciPainted)
 	ON_NOTIFY(SCN_GETBKCOLOR,0,OnSciGetBkColor)
-    ON_REGISTERED_MESSAGE(m_FindDialogMessage,   OnFindDialogMessage)  
+	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 END_MESSAGE_MAP()
 
 
@@ -124,7 +124,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
 	m_bShowDate=false;
 
-    m_FindDialogMessage   =   ::RegisterWindowMessage(FINDMSGSTRING);   
+	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 	m_pFindDialog = NULL;
 	// get short/long datetime setting from registry
 	DWORD RegUseShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
@@ -161,58 +161,57 @@ struct EncodingUnit
 
 void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
 {
-	
-	static EncodingUnit encodings[] = {
-    {1250,  "windows-1250"},                                                                    //IDM_FORMAT_WIN_1250
-    {1251,  "windows-1251"},                                                                    //IDM_FORMAT_WIN_1251
-    {1252,  "windows-1252"},                                                                    //IDM_FORMAT_WIN_1252
-    {1253,  "windows-1253"},                                                                    //IDM_FORMAT_WIN_1253
-    {1254,  "windows-1254"},                                                                    //IDM_FORMAT_WIN_1254
-    {1255,  "windows-1255"},                                                                    //IDM_FORMAT_WIN_1255
-    {1256,  "windows-1256"},                                                                    //IDM_FORMAT_WIN_1256
-    {1257,  "windows-1257"},                                                                    //IDM_FORMAT_WIN_1257
-    {1258,  "windows-1258"},                                                                    //IDM_FORMAT_WIN_1258
-    {28591, "latin1 ISO_8859-1 ISO-8859-1 CP819 IBM819 csISOLatin1 iso-ir-100 l1"},             //IDM_FORMAT_ISO_8859_1 
-    {28592, "latin2 ISO_8859-2 ISO-8859-2 csISOLatin2 iso-ir-101 l2"},                          //IDM_FORMAT_ISO_8859_2 
-    {28593, "latin3 ISO_8859-3 ISO-8859-3 csISOLatin3 iso-ir-109 l3"},                          //IDM_FORMAT_ISO_8859_3 
-    {28594, "latin4 ISO_8859-4 ISO-8859-4 csISOLatin4 iso-ir-110 l4"},                          //IDM_FORMAT_ISO_8859_4 
-    {28595, "cyrillic ISO_8859-5 ISO-8859-5 csISOLatinCyrillic iso-ir-144"},                    //IDM_FORMAT_ISO_8859_5 
-    {28596, "arabic ISO_8859-6 ISO-8859-6 csISOLatinArabic iso-ir-127 ASMO-708 ECMA-114"},      //IDM_FORMAT_ISO_8859_6 
-    {28597, "greek ISO_8859-7 ISO-8859-7 csISOLatinGreek greek8 iso-ir-126 ELOT_928 ECMA-118"}, //IDM_FORMAT_ISO_8859_7 
-    {28598, "hebrew ISO_8859-8 ISO-8859-8 csISOLatinHebrew iso-ir-138"},                        //IDM_FORMAT_ISO_8859_8 
-    {28599, "latin5 ISO_8859-9 ISO-8859-9 csISOLatin5 iso-ir-148 l5"},                          //IDM_FORMAT_ISO_8859_9 
-    {28600, "latin6 ISO_8859-10 ISO-8859-10 csISOLatin6 iso-ir-157 l6"},                        //IDM_FORMAT_ISO_8859_10
-    {28601, "ISO_8859-11 ISO-8859-11"},                                                         //IDM_FORMAT_ISO_8859_11
-    {28603, "ISO_8859-13 ISO-8859-13"},                                                         //IDM_FORMAT_ISO_8859_13
-    {28604, "iso-celtic latin8 ISO_8859-14 ISO-8859-14 18 iso-ir-199"},                         //IDM_FORMAT_ISO_8859_14
-    {28605, "Latin-9 ISO_8859-15 ISO-8859-15"},                                                 //IDM_FORMAT_ISO_8859_15
-    {28606, "latin10 ISO_8859-16 ISO-8859-16 110 iso-ir-226"},                                  //IDM_FORMAT_ISO_8859_16
-    {437,   "IBM437 cp437 437 csPC8CodePage437"},                                               //IDM_FORMAT_DOS_437
-	{720,   "IBM720 cp720 oem720 720"},                                                         //IDM_FORMAT_DOS_720
-	{737,   "IBM737 cp737 oem737 737"},                                                         //IDM_FORMAT_DOS_737
-	{775,   "IBM775 cp775 oem775 775"},                                                         //IDM_FORMAT_DOS_775
-	{850,   "IBM850 cp850 oem850 850"},                                                         //IDM_FORMAT_DOS_850
-	{852,   "IBM852 cp852 oem852 852"},                                                         //IDM_FORMAT_DOS_852
-	{855,   "IBM855 cp855 oem855 855 csIBM855"},                                                //IDM_FORMAT_DOS_855
-	{857,   "IBM857 cp857 oem857 857"},                                                         //IDM_FORMAT_DOS_857
-	{858,   "IBM858 cp858 oem858 858"},                                                         //IDM_FORMAT_DOS_858
-	{860,   "IBM860 cp860 oem860 860"},                                                         //IDM_FORMAT_DOS_860
-	{861,   "IBM861 cp861 oem861 861"},                                                         //IDM_FORMAT_DOS_861
-	{862,   "IBM862 cp862 oem862 862"},                                                         //IDM_FORMAT_DOS_862
-	{863,   "IBM863 cp863 oem863 863"},                                                         //IDM_FORMAT_DOS_863
-	{865,   "IBM865 cp865 oem865 865"},                                                         //IDM_FORMAT_DOS_865
-	{866,   "IBM866 cp866 oem866 866"},                                                         //IDM_FORMAT_DOS_866
-	{869,   "IBM869 cp869 oem869 869"},                                                         //IDM_FORMAT_DOS_869
-    {950,   "big5 csBig5"},                                                                     //IDM_FORMAT_BIG5
-    {936,   "gb2312 gbk csGB2312"},                                                             //IDM_FORMAT_GB2312
-    {932,   "Shift_JIS MS_Kanji csShiftJIS csWindows31J"},                                      //IDM_FORMAT_SHIFT_JIS
-    {949,   "windows-949 korean"},                                                              //IDM_FORMAT_KOREAN_WIN
-    {51949, "euc-kr csEUCKR"},                                                                  //IDM_FORMAT_EUC_KR
-    {874,   "tis-620"},                                                                         //IDM_FORMAT_TIS_620
-    {10007, "x-mac-cyrillic xmaccyrillic"},                                                     //IDM_FORMAT_MAC_CYRILLIC
-    {21866, "koi8_u"},                                                                          //IDM_FORMAT_KOI8U_CYRILLIC
-    {20866, "koi8_r csKOI8R"}                                                                   //IDM_FORMAT_KOI8R_CYRILLIC
 
+	static EncodingUnit	encodings[]	= {
+		{1250,	"windows-1250"},																	//IDM_FORMAT_WIN_1250
+		{1251,	"windows-1251"},																	//IDM_FORMAT_WIN_1251
+		{1252,	"windows-1252"},																	//IDM_FORMAT_WIN_1252
+		{1253,	"windows-1253"},																	//IDM_FORMAT_WIN_1253
+		{1254,	"windows-1254"},																	//IDM_FORMAT_WIN_1254
+		{1255,	"windows-1255"},																	//IDM_FORMAT_WIN_1255
+		{1256,	"windows-1256"},																	//IDM_FORMAT_WIN_1256
+		{1257,	"windows-1257"},																	//IDM_FORMAT_WIN_1257
+		{1258,	"windows-1258"},																	//IDM_FORMAT_WIN_1258
+		{28591,	"latin1	ISO_8859-1 ISO-8859-1 CP819	IBM819 csISOLatin1 iso-ir-100 l1"},				//IDM_FORMAT_ISO_8859_1
+		{28592,	"latin2	ISO_8859-2 ISO-8859-2 csISOLatin2 iso-ir-101 l2"},							//IDM_FORMAT_ISO_8859_2
+		{28593,	"latin3	ISO_8859-3 ISO-8859-3 csISOLatin3 iso-ir-109 l3"},							//IDM_FORMAT_ISO_8859_3
+		{28594,	"latin4	ISO_8859-4 ISO-8859-4 csISOLatin4 iso-ir-110 l4"},							//IDM_FORMAT_ISO_8859_4
+		{28595,	"cyrillic ISO_8859-5 ISO-8859-5	csISOLatinCyrillic iso-ir-144"},					//IDM_FORMAT_ISO_8859_5
+		{28596,	"arabic	ISO_8859-6 ISO-8859-6 csISOLatinArabic iso-ir-127 ASMO-708 ECMA-114"},		//IDM_FORMAT_ISO_8859_6
+		{28597,	"greek ISO_8859-7 ISO-8859-7 csISOLatinGreek greek8	iso-ir-126 ELOT_928	ECMA-118"},	//IDM_FORMAT_ISO_8859_7
+		{28598,	"hebrew	ISO_8859-8 ISO-8859-8 csISOLatinHebrew iso-ir-138"},						//IDM_FORMAT_ISO_8859_8
+		{28599,	"latin5	ISO_8859-9 ISO-8859-9 csISOLatin5 iso-ir-148 l5"},							//IDM_FORMAT_ISO_8859_9
+		{28600,	"latin6	ISO_8859-10	ISO-8859-10	csISOLatin6	iso-ir-157 l6"},						//IDM_FORMAT_ISO_8859_10
+		{28601,	"ISO_8859-11 ISO-8859-11"},															//IDM_FORMAT_ISO_8859_11
+		{28603,	"ISO_8859-13 ISO-8859-13"},															//IDM_FORMAT_ISO_8859_13
+		{28604,	"iso-celtic	latin8 ISO_8859-14 ISO-8859-14 18 iso-ir-199"},							//IDM_FORMAT_ISO_8859_14
+		{28605,	"Latin-9 ISO_8859-15 ISO-8859-15"},													//IDM_FORMAT_ISO_8859_15
+		{28606,	"latin10 ISO_8859-16 ISO-8859-16 110 iso-ir-226"},									//IDM_FORMAT_ISO_8859_16
+		{437,	"IBM437	cp437 437 csPC8CodePage437"},												//IDM_FORMAT_DOS_437
+		{720,	"IBM720	cp720 oem720 720"},															//IDM_FORMAT_DOS_720
+		{737,	"IBM737	cp737 oem737 737"},															//IDM_FORMAT_DOS_737
+		{775,	"IBM775	cp775 oem775 775"},															//IDM_FORMAT_DOS_775
+		{850,	"IBM850	cp850 oem850 850"},															//IDM_FORMAT_DOS_850
+		{852,	"IBM852	cp852 oem852 852"},															//IDM_FORMAT_DOS_852
+		{855,	"IBM855	cp855 oem855 855 csIBM855"},												//IDM_FORMAT_DOS_855
+		{857,	"IBM857	cp857 oem857 857"},															//IDM_FORMAT_DOS_857
+		{858,	"IBM858	cp858 oem858 858"},															//IDM_FORMAT_DOS_858
+		{860,	"IBM860	cp860 oem860 860"},															//IDM_FORMAT_DOS_860
+		{861,	"IBM861	cp861 oem861 861"},															//IDM_FORMAT_DOS_861
+		{862,	"IBM862	cp862 oem862 862"},															//IDM_FORMAT_DOS_862
+		{863,	"IBM863	cp863 oem863 863"},															//IDM_FORMAT_DOS_863
+		{865,	"IBM865	cp865 oem865 865"},															//IDM_FORMAT_DOS_865
+		{866,	"IBM866	cp866 oem866 866"},															//IDM_FORMAT_DOS_866
+		{869,	"IBM869	cp869 oem869 869"},															//IDM_FORMAT_DOS_869
+		{950,	"big5 csBig5"},																		//IDM_FORMAT_BIG5
+		{936,	"gb2312	gbk	csGB2312"},																//IDM_FORMAT_GB2312
+		{932,	"Shift_JIS MS_Kanji	csShiftJIS csWindows31J"},										//IDM_FORMAT_SHIFT_JIS
+		{949,	"windows-949 korean"},																//IDM_FORMAT_KOREAN_WIN
+		{51949,	"euc-kr	csEUCKR"},																	//IDM_FORMAT_EUC_KR
+		{874,	"tis-620"},																			//IDM_FORMAT_TIS_620
+		{10007,	"x-mac-cyrillic	xmaccyrillic"},														//IDM_FORMAT_MAC_CYRILLIC
+		{21866,	"koi8_u"},																			//IDM_FORMAT_KOI8U_CYRILLIC
+		{20866,	"koi8_r	csKOI8R"}																	//IDM_FORMAT_KOI8R_CYRILLIC
 };
 	if(nId >= IDM_FORMAT_ENCODE && nId <= IDM_FORMAT_ENCODE_END)
 		this->UpdateInfo(encodings[nId - IDM_FORMAT_ENCODE].id);
@@ -233,12 +232,12 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	m_wEditor = m_TextView.m_hWnd;
 	CreateFont();
 	InitialiseEditor();
-	m_ToolTip.Create(this->GetParent());	
+	m_ToolTip.Create(this->GetParent());
 	m_ToolTip.AddTool(this,_T("Test"));
-	
+
 	::AfxGetApp()->GetMainWnd();
 	return CView::OnCreate(lpcs);
-	
+
 }
 
 void CTortoiseGitBlameView::OnSize(UINT nType,int cx, int cy)
@@ -365,11 +364,11 @@ CString CTortoiseGitBlameView::GetAppDirectory()
 	CString path;
 	DWORD len = 0;
 	DWORD bufferlen = MAX_PATH;		// MAX_PATH is not the limit here!
-	do 
+	do
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
 		TCHAR * pBuf = new TCHAR[bufferlen];
-		len = GetModuleFileName(NULL, pBuf, bufferlen);	
+		len = GetModuleFileName(NULL, pBuf, bufferlen);
 		path = CString(pBuf, len);
 		delete [] pBuf;
 	} while(len == bufferlen);
@@ -388,18 +387,18 @@ CString CTortoiseGitBlameView::GetAppDirectory()
 COLORREF CTortoiseGitBlameView::InterColor(COLORREF c1, COLORREF c2, int Slider)
 {
 	int r, g, b;
-	
+
 	// Limit Slider to 0..100% range
 	if (Slider < 0)
 		Slider = 0;
 	if (Slider > 100)
 		Slider = 100;
-	
+
 	// The color components have to be treated individually.
 	r = (GetRValue(c2) * Slider + GetRValue(c1) * (100 - Slider)) / 100;
 	g = (GetGValue(c2) * Slider + GetGValue(c1) * (100 - Slider)) / 100;
 	b = (GetBValue(c2) * Slider + GetBValue(c1) * (100 - Slider)) / 100;
-	
+
 	return RGB(r, g, b);
 }
 
@@ -409,10 +408,10 @@ LRESULT CTortoiseGitBlameView::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam
 	{
 		return ((SciFnDirect) m_directFunction)(m_directPointer, Msg, wParam, lParam);
 	}
-	return ::SendMessage(m_wEditor, Msg, wParam, lParam);	
+	return ::SendMessage(m_wEditor, Msg, wParam, lParam);
 }
 
-void CTortoiseGitBlameView::GetRange(int start, int end, char *text) 
+void CTortoiseGitBlameView::GetRange(int start, int end, char *text)
 {
 #if 0
 	TEXTRANGE tr;
@@ -424,7 +423,7 @@ void CTortoiseGitBlameView::GetRange(int start, int end, char *text)
 #endif
 }
 
-void CTortoiseGitBlameView::SetTitle() 
+void CTortoiseGitBlameView::SetTitle()
 {
 #if 0
 	char title[MAX_PATH + 100];
@@ -457,14 +456,14 @@ BOOL CTortoiseGitBlameView::OpenLogFile(const char *fileName)
 		if (len == 0)
 		{
 			fclose(File);
-            InitSize();
+			InitSize();
 			return TRUE;
 		}
 		len = fread(&slength, sizeof(int), 1, File);
 		if (len == 0)
 		{
 			fclose(File);
-            InitSize();
+			InitSize();
 			return FALSE;
 		}
 		if (slength > MAX_LOG_LENGTH)
@@ -478,7 +477,7 @@ BOOL CTortoiseGitBlameView::OpenLogFile(const char *fileName)
 		if (len < (size_t)slength)
 		{
 			fclose(File);
-            InitSize();
+			InitSize();
 			return FALSE;
 		}
 		msg = CString(logmsgbuf, slength);
@@ -498,7 +497,7 @@ BOOL CTortoiseGitBlameView::OpenLogFile(const char *fileName)
 	return TRUE;
 }
 
-BOOL CTortoiseGitBlameView::OpenFile(const char *fileName) 
+BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 {
 #if 0
 	SendEditor(SCI_SETREADONLY, FALSE);
@@ -545,7 +544,7 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 			// we made the column. We therefore have to step through the path
 			// string until we find a space
 			trimptr = lineptr;
-			do 
+			do
 			{
 				// TODO: how can we deal with the situation where the path has
 				// a space in it, but the space is after the 60 chars reserved
@@ -677,26 +676,26 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 	return TRUE;
 }
 
-void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, CString *face) 
+void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, CString *face)
 {
 	SendEditor(SCI_STYLESETFORE, style, fore);
 	SendEditor(SCI_STYLESETBACK, style, back);
 	if (size >= 1)
 		SendEditor(SCI_STYLESETSIZE, style, size);
-	if (face) 
+	if (face)
 		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(this->m_TextView.StringForControl(*face).GetBuffer()));
 }
 
-void CTortoiseGitBlameView::InitialiseEditor() 
+void CTortoiseGitBlameView::InitialiseEditor()
 {
 
 	m_directFunction = ::SendMessage(m_wEditor, SCI_GETDIRECTFUNCTION, 0, 0);
 	m_directPointer = ::SendMessage(m_wEditor, SCI_GETDIRECTPOINTER, 0, 0);
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
-	SetAStyle(STYLE_DEFAULT, 
-			  black, 
-			  white, 
-			(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10), 
+	SetAStyle(STYLE_DEFAULT,
+			  black,
+			  white,
+			(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
 			&CString(((stdstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str())
 			);
 	SendEditor(SCI_SETTABWIDTH, (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4));
@@ -716,7 +715,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
 	m_regOldLinesColor = CRegStdWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
 	m_regNewLinesColor = CRegStdWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
-	
+
 	this->m_TextView.Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
 
 }
@@ -757,7 +756,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	}
 
 	//CString sWhat = CString(szWhat);
-	
+
 	//char buf[20];
 	//int i=0;
 	int i=line;
@@ -779,7 +778,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 			bFound = true;
 		else if (oneline.Find(what) >=0)
 			bFound = true;
-		
+
 		delete [] linebuf;
 
 		i++;
@@ -938,9 +937,9 @@ void CTortoiseGitBlameView::ShowLog()
 #endif
 }
 
-void CTortoiseGitBlameView::Notify(SCNotification *notification) 
+void CTortoiseGitBlameView::Notify(SCNotification *notification)
 {
-	switch (notification->nmhdr.code) 
+	switch (notification->nmhdr.code)
 	{
 	case SCN_SAVEPOINTREACHED:
 		break;
@@ -963,7 +962,7 @@ void CTortoiseGitBlameView::Notify(SCNotification *notification)
 void CTortoiseGitBlameView::Command(int id)
 {
 #if 0
-	switch (id) 
+	switch (id)
 	{
 //	case IDM_EXIT:
 //		::PostQuitMessage(0);
@@ -1021,7 +1020,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	CreateFont();
 	HDC hDC = this->GetDC()->m_hDC;
 	HFONT oldfont = (HFONT)::SelectObject(hDC, m_font);
-	
+
 	TCHAR buf[MAX_PATH];
 
 	::GetTextExtentPoint32(hDC, _T("fffffff"), 7, &width);
@@ -1033,7 +1032,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	::GetTextExtentPoint(hDC, buf, _tcslen(buf), &width);
 	m_linewidth = width.cx + BLAMESPACE;
 	blamewidth += m_revwidth;
-#endif 
+#endif
 
 	if (m_bShowDate)
 	{
@@ -1158,12 +1157,12 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
 			rc.top=Y;
-			rc.left=LOCATOR_WIDTH;		
+			rc.left=LOCATOR_WIDTH;
 			rc.bottom=Y+height;
 			rc.right = rc.left + m_blamewidth;
 			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 			int Left = m_revwidth;
-			
+
 			if (m_bShowAuthor)
 			{
 				rc.right = rc.left + Left + m_authorwidth;
@@ -1179,7 +1178,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
 				Left += m_datewidth;
 			}
-			
+
 #endif
 #if 0
 			if (ShowPath)
@@ -1206,8 +1205,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				::LineTo(hDC, rc2.right, rc2.bottom);
 				::LineTo(hDC, rc2.left, rc2.bottom);
 				::LineTo(hDC, rc2.left, rc2.top);
-				SelectObject(hDC, hPenOld); 
-				DeleteObject(pen); 
+				SelectObject(hDC, hPenOld);
+				DeleteObject(pen);
 			}
 			Y += height;
 			::SelectObject(hDC, oldfont);
@@ -1359,10 +1358,10 @@ LRESULT CALLBACK	WndLocatorProc(HWND, UINT, WPARAM, LPARAM);
 UINT				uFindReplaceMsg;
 
 #if 0
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE /*hPrevInstance*/,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE	hInstance,
+					 HINSTANCE		/*hPrevInstance*/,
+					 LPTSTR			lpCmdLine,
+					 int			nCmdShow)
 {
 	app.hInstance = hInstance;
 	MSG msg;
@@ -1389,7 +1388,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MyRegisterLocatorClass(app.hResource);
 
 	// Perform application initialization:
-	if (!InitInstance (app.hResource, nCmdShow)) 
+	if (!InitInstance (app.hResource, nCmdShow))
 	{
 		langDLL.Close();
 		return FALSE;
@@ -1454,23 +1453,23 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	BOOL going = TRUE;
 	msg.wParam = 0;
-	while (going) 
+	while (going)
 	{
 		going = GetMessage(&msg, NULL, 0, 0);
-		if (app.currentDialog && going) 
+		if (app.currentDialog && going)
 		{
-			if (!IsDialogMessage(app.currentDialog, &msg)) 
+			if (!IsDialogMessage(app.currentDialog, &msg))
 			{
-				if (TranslateAccelerator(msg.hwnd, hAccelTable, &msg) == 0) 
+				if (TranslateAccelerator(msg.hwnd, hAccelTable, &msg) == 0)
 				{
 					TranslateMessage(&msg);
 					DispatchMessage(&msg);
 				}
 			}
-		} 
-		else if (going) 
+		}
+		else if (going)
 		{
-			if (TranslateAccelerator(app.wMain, hAccelTable, &msg) == 0) 
+			if (TranslateAccelerator(app.wMain, hAccelTable, &msg) == 0)
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
@@ -1485,7 +1484,7 @@ ATOM MyRegisterClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndProc;
@@ -1506,7 +1505,7 @@ ATOM MyRegisterBlameClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndBlameProc;
@@ -1527,7 +1526,7 @@ ATOM MyRegisterHeaderClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndHeaderProc;
@@ -1548,7 +1547,7 @@ ATOM MyRegisterLocatorClass(HINSTANCE hResource)
 {
 	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndLocatorProc;
@@ -1567,115 +1566,115 @@ ATOM MyRegisterLocatorClass(HINSTANCE hResource)
 
 BOOL InitInstance(HINSTANCE hResource, int nCmdShow)
 {
-   app.wMain = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hResource, NULL);   
+	app.wMain = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+							CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hResource, NULL);
 
-   if (!app.wMain)
-   {
-      return FALSE;
-   }
+	if (!app.wMain)
+	{
+		return FALSE;
+	}
 
-   CRegStdWORD pos(_T("Software\\TortoiseGit\\TBlamePos"), 0);
-   CRegStdWORD width(_T("Software\\TortoiseGit\\TBlameSize"), 0);
-   CRegStdWORD state(_T("Software\\TortoiseGit\\TBlameState"), 0);
-   if (DWORD(pos) && DWORD(width))
-   {
-	   RECT rc;
-	   rc.left = LOWORD(DWORD(pos));
-	   rc.top = HIWORD(DWORD(pos));
-	   rc.right = rc.left + LOWORD(DWORD(width));
-	   rc.bottom = rc.top + HIWORD(DWORD(width));
-	   HMONITOR hMon = MonitorFromRect(&rc, MONITOR_DEFAULTTONULL);
-	   if (hMon)
-	   {
-		   // only restore the window position if the monitor is valid
-		   MoveWindow(app.wMain, LOWORD(DWORD(pos)), HIWORD(DWORD(pos)),
-			   LOWORD(DWORD(width)), HIWORD(DWORD(width)), FALSE);
-	   }
-   }
-   if (DWORD(state) == SW_MAXIMIZE)
-	   ShowWindow(app.wMain, SW_MAXIMIZE);
-   else
-	   ShowWindow(app.wMain, nCmdShow);
-   UpdateWindow(app.wMain);
+	CRegStdWORD pos(_T("Software\\TortoiseGit\\TBlamePos"), 0);
+	CRegStdWORD width(_T("Software\\TortoiseGit\\TBlameSize"), 0);
+	CRegStdWORD state(_T("Software\\TortoiseGit\\TBlameState"), 0);
+	if (DWORD(pos) && DWORD(width))
+	{
+		RECT rc;
+		rc.left = LOWORD(DWORD(pos));
+		rc.top = HIWORD(DWORD(pos));
+		rc.right = rc.left + LOWORD(DWORD(width));
+		rc.bottom = rc.top + HIWORD(DWORD(width));
+		HMONITOR hMon = MonitorFromRect(&rc, MONITOR_DEFAULTTONULL);
+		if (hMon)
+		{
+			// only restore the window position if the monitor is valid
+			MoveWindow(app.wMain, LOWORD(DWORD(pos)), HIWORD(DWORD(pos)),
+						LOWORD(DWORD(width)), HIWORD(DWORD(width)), FALSE);
+		}
+	}
+	if (DWORD(state) == SW_MAXIMIZE)
+		ShowWindow(app.wMain, SW_MAXIMIZE);
+	else
+		ShowWindow(app.wMain, nCmdShow);
+	UpdateWindow(app.wMain);
 
-   //Create the tooltips
+	//Create the tooltips
 
-   INITCOMMONCONTROLSEX iccex; 
-   app.hwndTT;                 // handle to the ToolTip control
-   TOOLINFO ti;
-   RECT rect;                  // for client area coordinates
-   iccex.dwICC = ICC_WIN95_CLASSES;
-   iccex.dwSize = sizeof(INITCOMMONCONTROLSEX);
-   InitCommonControlsEx(&iccex);
+	INITCOMMONCONTROLSEX iccex;
+	app.hwndTT; // handle to the ToolTip control
+	TOOLINFO ti;
+	RECT rect; // for client area coordinates
+	iccex.dwICC = ICC_WIN95_CLASSES;
+	iccex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	InitCommonControlsEx(&iccex);
 
-   /* CREATE A TOOLTIP WINDOW */
-   app.hwndTT = CreateWindowEx(WS_EX_TOPMOST,
-	   TOOLTIPS_CLASS,
-	   NULL,
-	   WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,		
-	   CW_USEDEFAULT,
-	   CW_USEDEFAULT,
-	   CW_USEDEFAULT,
-	   CW_USEDEFAULT,
-	   app.wBlame,
-	   NULL,
-	   app.hResource,
-	   NULL
-	   );
+	/* CREATE A TOOLTIP WINDOW */
+	app.hwndTT = CreateWindowEx(WS_EX_TOPMOST,
+								TOOLTIPS_CLASS,
+								NULL,
+								WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
+								CW_USEDEFAULT,
+								CW_USEDEFAULT,
+								CW_USEDEFAULT,
+								CW_USEDEFAULT,
+								app.wBlame,
+								NULL,
+								app.hResource,
+								NULL
+								);
 
-   SetWindowPos(app.hwndTT,
-	   HWND_TOPMOST,
-	   0,
-	   0,
-	   0,
-	   0,
-	   SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	SetWindowPos(app.hwndTT,
+				HWND_TOPMOST,
+				0,
+				0,
+				0,
+				0,
+				SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
-   /* GET COORDINATES OF THE MAIN CLIENT AREA */
-   GetClientRect (app.wBlame, &rect);
+	/* GET COORDINATES OF THE MAIN CLIENT AREA */
+	GetClientRect (app.wBlame, &rect);
 
-   /* INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE */
-   ti.cbSize = sizeof(TOOLINFO);
-   ti.uFlags = TTF_TRACK | TTF_ABSOLUTE;//TTF_SUBCLASS | TTF_PARSELINKS;
-   ti.hwnd = app.wBlame;
-   ti.hinst = app.hResource;
-   ti.uId = 0;
-   ti.lpszText = LPSTR_TEXTCALLBACK;
-   // ToolTip control will cover the whole window
-   ti.rect.left = rect.left;    
-   ti.rect.top = rect.top;
-   ti.rect.right = rect.right;
-   ti.rect.bottom = rect.bottom;
+	/* INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE */
+	ti.cbSize = sizeof(TOOLINFO);
+	ti.uFlags = TTF_TRACK | TTF_ABSOLUTE;//TTF_SUBCLASS | TTF_PARSELINKS;
+	ti.hwnd = app.wBlame;
+	ti.hinst = app.hResource;
+	ti.uId = 0;
+	ti.lpszText = LPSTR_TEXTCALLBACK;
+	// ToolTip control will cover the whole window
+	ti.rect.left = rect.left;
+	ti.rect.top = rect.top;
+	ti.rect.right = rect.right;
+	ti.rect.bottom = rect.bottom;
 
-   /* SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW */
-   SendMessage(app.hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);	
-   SendMessage(app.hwndTT, TTM_SETMAXTIPWIDTH, 0, 600);
-   //SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_AUTOPOP, MAKELONG(50000, 0));
-   //SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_RESHOW, MAKELONG(1000, 0));
-   
-   uFindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
-   
-   return TRUE;
+	/* SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW */
+	SendMessage(app.hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
+	SendMessage(app.hwndTT, TTM_SETMAXTIPWIDTH, 0, 600);
+	//SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_AUTOPOP, MAKELONG(50000, 0));
+	//SendMessage(app.hwndTT, TTM_SETDELAYTIME, TTDT_RESHOW, MAKELONG(1000, 0));
+
+	uFindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
+
+	return TRUE;
 }
 #endif
 void CTortoiseGitBlameView::InitSize()
 {
-    RECT rc;
-    RECT blamerc;
-    RECT sourcerc;
-    ::GetClientRect(wMain, &rc);
-    ::SetWindowPos(wHeader, 0, rc.left, rc.top, rc.right-rc.left, HEADER_HEIGHT, 0);
-    rc.top += HEADER_HEIGHT;
-    blamerc.left = rc.left;
-    blamerc.top = rc.top;
+	RECT rc;
+	RECT blamerc;
+	RECT sourcerc;
+	::GetClientRect(wMain, &rc);
+	::SetWindowPos(wHeader, 0, rc.left, rc.top, rc.right-rc.left, HEADER_HEIGHT, 0);
+	rc.top += HEADER_HEIGHT;
+	blamerc.left = rc.left;
+	blamerc.top = rc.top;
 	LONG w = GetBlameWidth();
-    blamerc.right = w > abs(rc.right - rc.left) ? rc.right : w + rc.left;
-    blamerc.bottom = rc.bottom;
-    sourcerc.left = blamerc.right;
-    sourcerc.top = rc.top;
-    sourcerc.bottom = rc.bottom;
-    sourcerc.right = rc.right;
+	blamerc.right = w > abs(rc.right - rc.left) ? rc.right : w + rc.left;
+	blamerc.bottom = rc.bottom;
+	sourcerc.left = blamerc.right;
+	sourcerc.top = rc.top;
+	sourcerc.bottom = rc.bottom;
+	sourcerc.right = rc.right;
 	if (m_colorage)
 	{
 		::OffsetRect(&blamerc, LOCATOR_WIDTH, 0);
@@ -1683,7 +1682,7 @@ void CTortoiseGitBlameView::InitSize()
 		sourcerc.right -= LOCATOR_WIDTH;
 	}
 	::InvalidateRect(wMain, NULL, FALSE);
-    ::SetWindowPos(m_wEditor, 0, sourcerc.left, sourcerc.top, sourcerc.right - sourcerc.left, sourcerc.bottom - sourcerc.top, 0);
+	::SetWindowPos(m_wEditor, 0, sourcerc.left, sourcerc.top, sourcerc.right - sourcerc.left, sourcerc.bottom - sourcerc.top, 0);
 	::SetWindowPos(wBlame, 0, blamerc.left, blamerc.top, blamerc.right - blamerc.left, blamerc.bottom - blamerc.top, 0);
 	if (m_colorage)
 		::SetWindowPos(wLocator, 0, 0, blamerc.top, LOCATOR_WIDTH, blamerc.bottom - blamerc.top, SWP_SHOWWINDOW);
@@ -1698,20 +1697,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		LPFINDREPLACE lpfr = (LPFINDREPLACE)lParam;
 
-		// If the FR_DIALOGTERM flag is set, 
-		// invalidate the handle identifying the dialog box. 
+		// If the FR_DIALOGTERM flag is set,
+		// invalidate the handle identifying the dialog box.
 		if (lpfr->Flags & FR_DIALOGTERM)
 		{
-			app.currentDialog = NULL; 
-			return 0; 
-		} 
+			app.currentDialog = NULL;
+			return 0;
+		}
 		if (lpfr->Flags & FR_FINDNEXT)
 		{
 			app.DoSearch(lpfr->lpstrFindWhat, lpfr->Flags);
 		}
-		return 0; 
+		return 0;
 	}
-	switch (message) 
+	switch (message)
 	{
 	case WM_CREATE:
 		app.m_wEditor = ::CreateWindow(
@@ -1728,44 +1727,44 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		::ShowWindow(app.m_wEditor, SW_SHOW);
 		::SetFocus(app.m_wEditor);
 		app.wBlame = ::CreateWindow(
-			_T("TortoiseGitBlameViewBlame"), 
-			_T("blame"), 
+			_T("TortoiseGitBlameViewBlame"),
+			_T("blame"),
 			WS_CHILD | WS_CLIPCHILDREN,
-			CW_USEDEFAULT, 0, 
-			CW_USEDEFAULT, 0, 
-			hWnd, 
-			NULL, 
-			app.hResource, 
+			CW_USEDEFAULT, 0,
+			CW_USEDEFAULT, 0,
+			hWnd,
+			NULL,
+			app.hResource,
 			NULL);
 		::ShowWindow(app.wBlame, SW_SHOW);
 		app.wHeader = ::CreateWindow(
-			_T("TortoiseGitBlameViewHeader"), 
-			_T("header"), 
+			_T("TortoiseGitBlameViewHeader"),
+			_T("header"),
 			WS_CHILD | WS_CLIPCHILDREN | WS_BORDER,
-			CW_USEDEFAULT, 0, 
-			CW_USEDEFAULT, 0, 
-			hWnd, 
-			NULL, 
-			app.hResource, 
+			CW_USEDEFAULT, 0,
+			CW_USEDEFAULT, 0,
+			hWnd,
+			NULL,
+			app.hResource,
 			NULL);
 		::ShowWindow(app.wHeader, SW_SHOW);
 		app.wLocator = ::CreateWindow(
-			_T("TortoiseGitBlameViewLocator"), 
-			_T("locator"), 
+			_T("TortoiseGitBlameViewLocator"),
+			_T("locator"),
 			WS_CHILD | WS_CLIPCHILDREN | WS_BORDER,
-			CW_USEDEFAULT, 0, 
-			CW_USEDEFAULT, 0, 
-			hWnd, 
-			NULL, 
-			app.hResource, 
+			CW_USEDEFAULT, 0,
+			CW_USEDEFAULT, 0,
+			hWnd,
+			NULL,
+			app.hResource,
 			NULL);
 		::ShowWindow(app.wLocator, SW_SHOW);
 		return 0;
 
 	case WM_SIZE:
-		if (wParam != 1) 
+		if (wParam != 1)
 		{
-            app.InitSize();
+			app.InitSize();
 		}
 		return 0;
 
@@ -1812,7 +1811,7 @@ LRESULT CALLBACK WndBlameProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 	PAINTSTRUCT ps;
 	TRACKMOUSEEVENT mevt;
 	HDC hDC;
-	switch (message) 
+	switch (message)
 	{
 	case WM_CREATE:
 		return 0;
@@ -1972,8 +1971,8 @@ LRESULT CALLBACK WndBlameProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 				// because we don't know which filename to pass to tortoiseproc.
 				EnableMenuItem(hPopMenu,ID_BLAME_PREVIOUS_REVISION, MF_DISABLED|MF_GRAYED);
 			}
-			
-			TrackPopupMenu(hPopMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, xPos, yPos, 0, app.wBlame, NULL); 
+
+			TrackPopupMenu(hPopMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, xPos, yPos, 0, app.wBlame, NULL);
 			DestroyMenu(hMenu);
 		}
 		break;
@@ -1987,7 +1986,7 @@ LRESULT CALLBACK WndHeaderProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 {
 	PAINTSTRUCT ps;
 	HDC hDC;
-	switch (message) 
+	switch (message)
 	{
 	case WM_CREATE:
 		return 0;
@@ -2012,7 +2011,7 @@ LRESULT CALLBACK WndLocatorProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 {
 	PAINTSTRUCT ps;
 	HDC hDC;
-	switch (message) 
+	switch (message)
 	{
 	case WM_PAINT:
 		hDC = BeginPaint(app.wLocator, &ps);
@@ -2024,7 +2023,7 @@ LRESULT CALLBACK WndLocatorProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		if (wParam & MK_LBUTTON)
 		{
 			RECT rect;
-			::GetClientRect(hWnd, &rect); 
+			::GetClientRect(hWnd, &rect);
 			int nLine = HIWORD(lParam)*app.revs.size()/(rect.bottom-rect.top);
 
 			if (nLine < 0)
@@ -2336,14 +2335,14 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 			// This light blue is found in the windows system palette so is safe to use even in 256 colour modes.
 			// Show the whole section of VBScript with light blue background
 			for (int bstyle=SCE_HB_DEFAULT; bstyle<=SCE_HB_STRINGEOL; bstyle++) {
-				SendEditor(SCI_STYLESETFONT, bstyle, 
+				SendEditor(SCI_STYLESETFONT, bstyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, bstyle, lightBlue);
 				// This call extends the backround colour of the last style on the line to the edge of the window
 				SendEditor(SCI_STYLESETEOLFILLED, bstyle, 1);
 			}
 			SendEditor(SCI_STYLESETBACK, SCE_HB_STRINGEOL, RGB(0x7F,0x7F,0xFF));
-			SendEditor(SCI_STYLESETFONT, SCE_HB_COMMENTLINE, 
+			SendEditor(SCI_STYLESETFONT, SCE_HB_COMMENTLINE,
 				reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 
 			SetAStyle(SCE_HBA_DEFAULT, black);
@@ -2356,14 +2355,14 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 
 			// Show the whole section of ASP VBScript with bright yellow background
 			for (int bastyle=SCE_HBA_DEFAULT; bastyle<=SCE_HBA_STRINGEOL; bastyle++) {
-				SendEditor(SCI_STYLESETFONT, bastyle, 
+				SendEditor(SCI_STYLESETFONT, bastyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, bastyle, RGB(0xFF, 0xFF, 0));
 				// This call extends the backround colour of the last style on the line to the edge of the window
 				SendEditor(SCI_STYLESETEOLFILLED, bastyle, 1);
 			}
 			SendEditor(SCI_STYLESETBACK, SCE_HBA_STRINGEOL, RGB(0xCF,0xCF,0x7F));
-			SendEditor(SCI_STYLESETFONT, SCE_HBA_COMMENTLINE, 
+			SendEditor(SCI_STYLESETFONT, SCE_HBA_COMMENTLINE,
 				reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 
 			// If there is no need to support embedded Javascript, the following code can be dropped.
@@ -2407,7 +2406,7 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 
 			// Show the whole section of Javascript with off white background
 			for (int jstyle=SCE_HJ_DEFAULT; jstyle<=SCE_HJ_SYMBOLS; jstyle++) {
-				SendEditor(SCI_STYLESETFONT, jstyle, 
+				SendEditor(SCI_STYLESETFONT, jstyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, jstyle, offWhite);
 				SendEditor(SCI_STYLESETEOLFILLED, jstyle, 1);
@@ -2417,7 +2416,7 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 
 			// Show the whole section of Javascript with brown background
 			for (int jastyle=SCE_HJA_DEFAULT; jastyle<=SCE_HJA_SYMBOLS; jastyle++) {
-				SendEditor(SCI_STYLESETFONT, jastyle, 
+				SendEditor(SCI_STYLESETFONT, jastyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, jastyle, RGB(0xDF, 0xDF, 0x7F));
 				SendEditor(SCI_STYLESETEOLFILLED, jastyle, 1);
@@ -2471,7 +2470,7 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 		*bomoffset = 2;
 		return 1200;
 	}
-	
+
 	return GetACP();
 }
 
@@ -2480,7 +2479,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	BYTE_VECTOR &data = GetDocument()->m_BlameData;
 	CString one;
 	int pos=0;
-	
+
 	BYTE_VECTOR vector;
 
 	CLogDataVector * pRevs= GetLogData();
@@ -2500,14 +2499,14 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	SendEditor(SCI_SETUNDOCOLLECTION, 0);
 
 	SendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
-	
+
 	int current = 0;
 	int encoding = Encode;
 	while( pos>=0 && current >=0 && pos<data.size() )
 	{
 		current = data.findData((const BYTE*)"\n",1,pos);
 		//one=data.Tokenize(_T("\n"),pos);
-		
+
 		bool isbound = ( data[pos] == _T('^') );
 
 		if( (data.size() - pos) >1 && data[pos] == _T('^'))
@@ -2528,13 +2527,13 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 		}else
 			hash.ConvertFromStrA((char*)&data[pos]);
-		
+
 
 		int start=0;
 		start=data.findData((const BYTE*)")",1,pos + 40);
 		if(start>0)
-		{	
-			
+		{
+
 			int bomoffset = 0;
 			CStringA stra;
 			stra.Empty();
@@ -2545,7 +2544,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 				data.push_back(0);
 
 			if( pos <40 && encoding==0)
-			{ 
+			{
 				// first line
 				encoding = GetEncode( &data[start+2], data.size() - start -2, &bomoffset);
 			}
@@ -2571,14 +2570,13 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 					stra = CUnicodeUtils::GetUTF8(strw);
 				}
 			}
-			
-			
+
 			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)stra);
 			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n\0\0\0");
 
 			if(current>=0)
 				data[current] = '\n';
-			
+
 		}
 
 		if(this->m_NoListCommit.find(hash) == m_NoListCommit.end() )
@@ -2592,7 +2590,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		pos = current+1;
 	}
 
-#if 0	
+#if 0
 	if(m_Buffer)
 	{
 		delete m_Buffer;
@@ -2601,7 +2599,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 	CFile file;
 	file.Open(this->GetDocument()->m_TempFileName,CFile::modeRead);
-	
+
 	m_Buffer = new char[file.GetLength()+4];
 	m_Buffer[file.GetLength()] =0;
 	m_Buffer[file.GetLength()+1] =0;
@@ -2609,13 +2607,12 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	m_Buffer[file.GetLength()+3] =0;
 
 	file.Read(m_Buffer, file.GetLength());
-	
-	
+
 	int bomoffset =0;
 	int encoding = GetEncode( (unsigned char *)m_Buffer, file.GetLength(), &bomoffset);
-	
+
 	file.Close();
-	//SendEditor(SCI_SETCODEPAGE, encoding);	
+	//SendEditor(SCI_SETCODEPAGE, encoding);
 
 	//SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)(m_Buffer + bomoffset));
 #endif
@@ -2664,7 +2661,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
 	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
 	line = line + (point.y/height);
-			
+
 	if (line < (LONG)m_CommitHash.size())
 	{
 		SetSelectedLine(line);
@@ -2703,13 +2700,13 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		//::InvalidateRect( NULL, FALSE);
 		this->Invalidate();
 		this->m_TextView.Invalidate();
-		
+
 	}
 	else
 	{
 		SetSelectedLine(-1);
 	}
-		
+
 	CView::OnLButtonDown(nFlags,point);
 }
 
@@ -2753,7 +2750,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
 	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
 	line = line + (point.y/height);
-			
+
 	if (line < (LONG)m_CommitHash.size())
 	{
 		if (line != m_MouseLine)
@@ -2773,13 +2770,13 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 
 			CString str;
 			str.Format(_T("%s\n<b>%s</b>\n%s %s\n%s"),pRev->m_CommitHash.ToString(),
-													   pRev->GetSubject(),
-													   pRev->GetAuthorName(),
-													   CAppUtils::FormatDateAndTime( pRev->GetAuthorDate(), m_DateFormat ), 
-													   pRev->GetBody());
+														pRev->GetSubject(),
+														pRev->GetAuthorName(),
+														CAppUtils::FormatDateAndTime( pRev->GetAuthorDate(), m_DateFormat ),
+														pRev->GetBody());
 			m_ToolTip.AddTool(this,str);
 			m_ToolTip.DisplayToolTip(&point);
-	
+
 			CRect rect;
 			this->ScreenToClient(&point);
 			rect.left=LOCATOR_WIDTH;
@@ -2815,50 +2812,50 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 
 void CTortoiseGitBlameView::OnEditFind()
 {
-    m_pFindDialog=new CFindReplaceDialog();
-	
-    m_pFindDialog->Create(TRUE,_T(""),NULL,FR_DOWN,this);  
+	m_pFindDialog=new CFindReplaceDialog();
+
+	m_pFindDialog->Create(TRUE,_T(""),NULL,FR_DOWN,this);
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
 {
-    CEditGotoDlg dlg;
-    if(dlg.DoModal()==IDOK)
-    {
-        this->GotoLine(dlg.m_LineNumber);
-    }
+	CEditGotoDlg dlg;
+	if(dlg.DoModal()==IDOK)
+	{
+		this->GotoLine(dlg.m_LineNumber);
+	}
 }
 
-LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam)//这个也是找那个程序改的，只不过换成了自己的类   
-{   
-    ASSERT(m_pFindDialog   !=   NULL);   
-    
-    //   If   the   FR_DIALOGTERM   flag   is   set,   
-          //   invalidate   the   handle   identifying   the   dialog   box.   
-    if   (m_pFindDialog->IsTerminating())   
-    {   
-            m_pFindDialog   =   NULL;   
-            return   0;   
-    }   
+LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM wParam, LPARAM lParam)
+{
+	ASSERT(m_pFindDialog != NULL);
 
-    //   If   the   FR_FINDNEXT   flag   is   set,   
-    //   call   the   application-defined   search   routine   
-    //   to   search   for   the   requested   string.   
-    if(m_pFindDialog->FindNext())   
-    {   
-            //read   data   from   dialog   
-        CString   FindName   =   m_pFindDialog->GetFindString();   
-        bool   bMatchCase   =   m_pFindDialog->MatchCase()   ==   TRUE;   
-        bool   bMatchWholeWord   =   m_pFindDialog->MatchWholeWord()   ==   TRUE;   
-        bool   bSearchDown   =   m_pFindDialog->SearchDown()   ==   TRUE;   
-		
+	// If the FR_DIALOGTERM flag is set,
+	// invalidate the handle identifying the dialog box.
+	if (m_pFindDialog->IsTerminating())
+	{
+			m_pFindDialog = NULL;
+			return 0;
+	}
+
+	// If the FR_FINDNEXT flag is set,
+	// call the application-defined search routine
+	// to search for the requested string.
+	if(m_pFindDialog->FindNext())
+	{
+		//read data from dialog
+		CString FindName = m_pFindDialog->GetFindString();
+		bool bMatchCase = m_pFindDialog->MatchCase() == TRUE;
+		bool bMatchWholeWord = m_pFindDialog->MatchWholeWord() == TRUE;
+		bool bSearchDown = m_pFindDialog->SearchDown() == TRUE;
+
 		DoSearch(FindName,m_pFindDialog->m_fr.Flags);
-            //with   given   name   do   search   
-    //        *FindWhatYouNeed(FindName,   bMatchCase,   bMatchWholeWord,   bSearchDown);   
-    }   
+		//with given name do search
+		// *FindWhatYouNeed(FindName, bMatchCase, bMatchWholeWord, bSearchDown);
+	}
 
-    return   0;   
-}   
+	return 0;
+}
 
 void CTortoiseGitBlameView::OnViewNext()
 {

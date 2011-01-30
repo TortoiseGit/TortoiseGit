@@ -24,7 +24,7 @@
 #include "PathUtils.h"
 #include "GitStatus.h"
 
-#define MAX_STRING_LENGTH		4096			//should be big enough
+#define MAX_STRING_LENGTH	4096	//should be big enough
 
 // Nonmember function prototypes
 BOOL CALLBACK PageProc (HWND, UINT, WPARAM, LPARAM);
@@ -35,35 +35,35 @@ UINT CALLBACK PropPageCallbackProc ( HWND hwnd, UINT uMsg, LPPROPSHEETPAGE ppsp 
 
 BOOL CALLBACK PageProc (HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
-    CGitPropertyPage * sheetpage;
+	CGitPropertyPage * sheetpage;
 
-    if (uMessage == WM_INITDIALOG)
-    {
-        sheetpage = (CGitPropertyPage*) ((LPPROPSHEETPAGE) lParam)->lParam;
-        SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) sheetpage);
-        sheetpage->SetHwnd(hwnd);
-    }
-    else
-    {
-        sheetpage = (CGitPropertyPage*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
-    }
+	if (uMessage == WM_INITDIALOG)
+	{
+		sheetpage = (CGitPropertyPage*) ((LPPROPSHEETPAGE) lParam)->lParam;
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) sheetpage);
+		sheetpage->SetHwnd(hwnd);
+	}
+	else
+	{
+		sheetpage = (CGitPropertyPage*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
+	}
 
-    if (sheetpage != 0L)
-        return sheetpage->PageProc(hwnd, uMessage, wParam, lParam);
-    else
-        return FALSE;
+	if (sheetpage != 0L)
+		return sheetpage->PageProc(hwnd, uMessage, wParam, lParam);
+	else
+		return FALSE;
 }
 
 UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE ppsp )
 {
-    // Delete the page before closing.
-    if (PSPCB_RELEASE == uMsg)
-    {
-        CGitPropertyPage* sheetpage = (CGitPropertyPage*) ppsp->lParam;
-        if (sheetpage != NULL)
-            delete sheetpage;
-    }
-    return 1;
+	// Delete the page before closing.
+	if (PSPCB_RELEASE == uMsg)
+	{
+		CGitPropertyPage* sheetpage = (CGitPropertyPage*) ppsp->lParam;
+		if (sheetpage != NULL)
+			delete sheetpage;
+	}
+	return 1;
 }
 
 // *********************** CGitPropertyPage *************************
@@ -79,7 +79,7 @@ CGitPropertyPage::~CGitPropertyPage(void)
 
 void CGitPropertyPage::SetHwnd(HWND newHwnd)
 {
-    m_hwnd = newHwnd;
+	m_hwnd = newHwnd;
 }
 
 BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LPARAM lParam)
@@ -97,12 +97,12 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			int code = point->code;
 			//
 			// Respond to notifications.
-			//    
+			//
 			if (code == PSN_APPLY)
 			{
 			}
 			SetWindowLongPtr (m_hwnd, DWLP_MSGRESULT, FALSE);
-			return TRUE;        
+			return TRUE;
 
 			}
 		case WM_DESTROY:
@@ -140,10 +140,10 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						stdstring retFilePath = stdstring(tempFile);
 
 						HANDLE file = ::CreateFile (tempFile,
-							GENERIC_WRITE, 
-							FILE_SHARE_READ, 
-							0, 
-							CREATE_ALWAYS, 
+							GENERIC_WRITE,
+							FILE_SHARE_READ,
+							0,
+							CREATE_ALWAYS,
 							FILE_ATTRIBUTE_TEMPORARY,
 							0);
 
@@ -178,8 +178,8 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						}
 					}
 					break;
-			} // switch (HIWORD(wParam)) 
-	} // switch (uMessage) 
+			} // switch (HIWORD(wParam))
+	} // switch (uMessage)
 	return FALSE;
 }
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
@@ -296,7 +296,7 @@ void CGitPropertyPage::InitWorkfileView()
 		AutoLocker lock(g_Git.m_critGitDllSec);
 		g_Git.CheckAndInitDll();
 		rev.GetCommit(CString(_T("HEAD")));
-		
+
 		SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash.ToString());
 		SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.GetSubject());
 		SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.GetAuthorName());
@@ -324,7 +324,7 @@ void CGitPropertyPage::InitWorkfileView()
 			if(! relatepath.GetGitPathString().IsEmpty())
 			{
 				cmd=_T("-z --topo-order -n1 --parents -- \"");
-				cmd+=relatepath.GetGitPathString();	
+				cmd+=relatepath.GetGitPathString();
 				cmd+=_T("\"");
 
 				GIT_LOG handle;
@@ -369,7 +369,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 // CShellExt member functions (needed for IShellPropSheetExt)
 STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
-                                  LPARAM lParam)
+									LPARAM lParam)
 {
 
 	CString ProjectTopDir;
@@ -394,40 +394,38 @@ STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
 		return NOERROR;
 
 	LoadLangDll();
-    PROPSHEETPAGE psp;
+	PROPSHEETPAGE psp;
 	SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
 	HPROPSHEETPAGE hPage;
 	CGitPropertyPage *sheetpage = new CGitPropertyPage(files_);
 
-    psp.dwSize = sizeof (psp);
-    psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;	
+	psp.dwSize = sizeof (psp);
+	psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
 	psp.hInstance = g_hResInst;
 	psp.pszTemplate = MAKEINTRESOURCE(IDD_PROPPAGE);
-    psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
-    psp.pszTitle = _T("Git");
-    psp.pfnDlgProc = (DLGPROC) PageProc;
-    psp.lParam = (LPARAM) sheetpage;
-    psp.pfnCallback = PropPageCallbackProc;
-    psp.pcRefParent = &g_cRefThisDll;
+	psp.pszIcon = MAKEINTRESOURCE(IDI_APPSMALL);
+	psp.pszTitle = _T("Git");
+	psp.pfnDlgProc = (DLGPROC) PageProc;
+	psp.lParam = (LPARAM) sheetpage;
+	psp.pfnCallback = PropPageCallbackProc;
+	psp.pcRefParent = &g_cRefThisDll;
 
-    hPage = CreatePropertySheetPage (&psp);
+	hPage = CreatePropertySheetPage (&psp);
 
 	if (hPage != NULL)
 	{
-        if (!lpfnAddPage (hPage, lParam))
-        {
-            delete sheetpage;
-            DestroyPropertySheetPage (hPage);
-        }
+		if (!lpfnAddPage (hPage, lParam))
+		{
+			delete sheetpage;
+			DestroyPropertySheetPage (hPage);
+		}
 	}
 
-    return NOERROR;
+	return NOERROR;
 }
-
-
 
 STDMETHODIMP CShellExt::ReplacePage (UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lpfnReplaceWith*/, LPARAM /*lParam*/)
 {
-    return E_FAIL;
+	return E_FAIL;
 }
 

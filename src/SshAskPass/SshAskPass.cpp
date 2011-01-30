@@ -23,10 +23,10 @@ TCHAR *g_Prompt = NULL;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE	hInstance,
+					 HINSTANCE		hPrevInstance,
+					 LPTSTR			lpCmdLine,
+					 int			nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -34,52 +34,52 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MSG msg;
 	HACCEL hAccelTable;
 
-    if( _tcslen(lpCmdLine) == 0 )
-    {
-        g_Prompt = g_Promptphrase;
-    }
-    else
-    {
-        g_Prompt = lpCmdLine;
-    }
+	if( _tcslen(lpCmdLine) == 0 )
+	{
+		g_Prompt = g_Promptphrase;
+	}
+	else
+	{
+		g_Prompt = lpCmdLine;
+	}
 
-    _tcslwr(lpCmdLine); //low case
+	_tcslwr(lpCmdLine); //low case
 
-    TCHAR *yesno=_T("(yes/no)");
-    int lens=_tcslen(yesno);
-    TCHAR *p = lpCmdLine;
-    BOOL bYesNo=FALSE;
+	TCHAR *yesno=_T("(yes/no)");
+	int lens=_tcslen(yesno);
+	TCHAR *p = lpCmdLine;
+	BOOL bYesNo=FALSE;
 
-    while(*p)
-    {
-        if(_tcsncmp(p,yesno,lens) == 0)
-        {
-            bYesNo = TRUE;
-        }
-        p++;
-    }
+	while(*p)
+	{
+		if(_tcsncmp(p,yesno,lens) == 0)
+		{
+			bYesNo = TRUE;
+		}
+		p++;
+	}
 
-    if(bYesNo)
-    {
-        if(::MessageBox(NULL,lpCmdLine,_T("OpenSSH"),MB_YESNO|MB_ICONQUESTION) == IDYES)
-        {
-            _tprintf(_T("yes"));
-
-        }else
-        {
-            _tprintf(_T("no"));
-        }
-        return 0;
-    }
-    else
-    {
-        if(DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), NULL, About) == IDOK)
-        {
-            _tprintf(g_PassWord);
-            return 0;
-        }
-        return -1;
-    }
+	if(bYesNo)
+	{
+		if(::MessageBox(NULL,lpCmdLine,_T("OpenSSH"),MB_YESNO|MB_ICONQUESTION) == IDYES)
+		{
+			_tprintf(_T("yes"));
+		}
+		else
+		{
+			_tprintf(_T("no"));
+		}
+		return 0;
+	}
+	else
+	{
+		if(DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), NULL, About) == IDOK)
+		{
+			_tprintf(g_PassWord);
+			return 0;
+		}
+		return -1;
+	}
 
 #if 0
 	// Initialize global strings
@@ -108,8 +108,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 #endif
 	return (int) 0;
 }
-
-
 
 //
 //  FUNCTION: MyRegisterClass()
@@ -157,22 +155,22 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   HWND hWnd;
+	HWND hWnd;
 
-   hInst = hInstance; // Store instance handle in our global variable
+	hInst = hInstance; // Store instance handle in our global variable
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+						CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 
-   return TRUE;
+	return TRUE;
 }
 
 //
@@ -230,21 +228,21 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_INITDIALOG:
-        {   
-            RECT rect;
-            ::GetWindowRect(hDlg,&rect);
-            DWORD dwWidth = GetSystemMetrics(SM_CXSCREEN);
-            DWORD dwHeight = GetSystemMetrics(SM_CYSCREEN);
+		{
+			RECT rect;
+			::GetWindowRect(hDlg,&rect);
+			DWORD dwWidth = GetSystemMetrics(SM_CXSCREEN);
+			DWORD dwHeight = GetSystemMetrics(SM_CYSCREEN);
 
-            DWORD x,y;
-            x=(dwWidth - (rect.right-rect.left))/2;
-            y=(dwHeight - (rect.bottom-rect.top))/2;
-            
-            ::MoveWindow(hDlg,x,y,rect.right-rect.left,rect.bottom-rect.top,TRUE);
-            HWND title=::GetDlgItem(hDlg,IDC_STATIC_TITLE);
-            if(g_Prompt)
-                ::SetWindowText(title,g_Prompt);
-        }
+			DWORD x,y;
+			x=(dwWidth - (rect.right-rect.left))/2;
+			y=(dwHeight - (rect.bottom-rect.top))/2;
+
+			::MoveWindow(hDlg,x,y,rect.right-rect.left,rect.bottom-rect.top,TRUE);
+			HWND title=::GetDlgItem(hDlg,IDC_STATIC_TITLE);
+			if(g_Prompt)
+				::SetWindowText(title,g_Prompt);
+		}
 		return (INT_PTR)TRUE;
 
 	case WM_COMMAND:
@@ -252,11 +250,11 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			if( LOWORD(wParam) == IDOK )
-            {
-                HWND password = ::GetDlgItem(hDlg,IDC_PASSWORD);
-                ::GetWindowText(password,g_PassWord,MAX_LOADSTRING);
-            }
-            EndDialog(hDlg, LOWORD(wParam));
+			{
+				HWND password = ::GetDlgItem(hDlg,IDC_PASSWORD);
+				::GetWindowText(password,g_PassWord,MAX_LOADSTRING);
+			}
+			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
 		}
 		break;
