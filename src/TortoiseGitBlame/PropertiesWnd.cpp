@@ -342,17 +342,16 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 		RemoveParent();
 
 		m_ParentGroup;
-	
+
 		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
 		for(unsigned int i=0;i<rev->m_ParentHash.size();i++)
 		{
 			CString str;
 			CString parentsubject;
-			int index;
 
 			GitRev *p =NULL;
-			
+
 			if( pLogEntry->m_pLogCache->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
 			{ 
 				p=NULL;
@@ -365,7 +364,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 				parentsubject=p->GetSubject();
 
 			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i].ToString(),parentsubject);
-			
+
 			CMFCPropertyGridProperty*pProtery=new CMFCPropertyGridProperty(
 											rev->m_ParentHash[i].ToString().Left(8), 
 												parentsubject,
