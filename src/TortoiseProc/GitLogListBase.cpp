@@ -243,6 +243,7 @@ CGitLogListBase::~CGitLogListBase()
 		m_pStoreSelection = NULL;
 	}
 
+	SafeTerminateAsyncDiffThread();
 	SafeTerminateThread();
 
 	if(m_AsyncDiffEvent)

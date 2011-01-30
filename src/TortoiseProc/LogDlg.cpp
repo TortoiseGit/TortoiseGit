@@ -728,6 +728,7 @@ void CLogDlg::SaveSplitterPos()
 void CLogDlg::OnCancel()
 {
 	// canceling means stopping the working thread if it's still running.
+	m_LogList.SafeTerminateAsyncDiffThread();
 	if (this->IsThreadRunning())
 	{
 		m_LogList.SafeTerminateThread();
@@ -1026,7 +1027,7 @@ void CLogDlg::OnOK()
 	if (GetFocus() != GetDlgItem(IDOK))
 		return;	// if the "OK" button doesn't have the focus, do nothing: this prevents closing the dialog when pressing enter
 
-	
+	m_LogList.SafeTerminateAsyncDiffThread();
 	if (this->IsThreadRunning())
 	{
 		m_LogList.SafeTerminateThread();

@@ -349,7 +349,25 @@ protected:
 	}
 
 	int AsyncDiffThread();
+public:
+	void SafeTerminateAsyncDiffThread()
+	{
+		if(m_DiffingThread!=NULL)
+		{
+			m_AsyncThreadExit = TRUE;
+			::SetEvent(m_AsyncDiffEvent);
+			DWORD ret = WAIT_TIMEOUT;
+			// do not block here, but process messages and ask until the thread ends
+			while (ret == WAIT_TIMEOUT)
+			{
+				AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
+				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
+			}
+			m_DiffingThread = NULL;
+		}
+	};
 
+protected:
 	CComCriticalSection			m_critSec;
 
 	CXPTheme			m_Theme;
