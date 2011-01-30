@@ -84,7 +84,6 @@ END_MESSAGE_MAP()
 
 CTortoiseGitBlameView::CTortoiseGitBlameView()
 {
-	// TODO: add construction code here
 	hInstance = 0;
 	hResource = 0;
 	currentDialog = 0;
@@ -256,9 +255,6 @@ void CTortoiseGitBlameView::OnSize(UINT nType,int cx, int cy)
 }
 BOOL CTortoiseGitBlameView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: Modify the Window class or styles here by modifying
-	//  the CREATESTRUCT cs
-
 	return CView::PreCreateWindow(cs);
 }
 
@@ -2925,10 +2921,4 @@ int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
 			line++;
 	}
 	return -1;
-}
-BOOL CTortoiseGitBlameView::OnCommand(WPARAM wParam, LPARAM lParam)
-{
-	// TODO: Add your specialized code here and/or call the base class
-
-	return CView::OnCommand(wParam, lParam);
 }

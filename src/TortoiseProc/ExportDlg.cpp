@@ -248,6 +248,4 @@ void CExportDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
-
-	// TODO: Add your message handler code here
 }

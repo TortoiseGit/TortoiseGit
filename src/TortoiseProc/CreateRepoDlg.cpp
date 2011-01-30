@@ -14,9 +14,7 @@ IMPLEMENT_DYNCREATE(CCreateRepoDlg, CResizableStandAloneDialog)
 CCreateRepoDlg::CCreateRepoDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CCreateRepoDlg::IDD, pParent)
 {
-
 	m_bBare = FALSE;
-
 }
 
 CCreateRepoDlg::~CCreateRepoDlg()
@@ -28,7 +26,6 @@ void CCreateRepoDlg::DoDataExchange(CDataExchange* pDX)
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 
 	DDX_Check(pDX,IDC_CHECK_BARE, m_bBare);
-
 }
 
 BOOL CCreateRepoDlg::OnInitDialog()
@@ -42,10 +39,10 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
-    //AddAnchor(IDC_GROUP_CLONE,TOP_LEFT,TOP_RIGHT);
-    //AddAnchor(IDC_PUTTYKEYFILE_BROWSE,TOP_RIGHT);
-    //AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
-    //AddAnchor(IDC_PUTTYKEYFILE,TOP_LEFT,TOP_RIGHT);
+	//AddAnchor(IDC_GROUP_CLONE,TOP_LEFT,TOP_RIGHT);
+	//AddAnchor(IDC_PUTTYKEYFILE_BROWSE,TOP_RIGHT);
+	//AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
+	//AddAnchor(IDC_PUTTYKEYFILE,TOP_LEFT,TOP_RIGHT);
 	//AddAnchor(IDC_CLONE_GROUP_SVN,TOP_LEFT,TOP_RIGHT);
 	//AddAnchor(IDHELP, BOTTOM_RIGHT);
 
@@ -61,8 +58,8 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	CWnd *window=this->GetDlgItem(IDC_CLONE_DIR);
 	if(window)
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
-  */     
-    EnableSaveRestore(_T("CreateRepoDlg"));
+*/
+	EnableSaveRestore(_T("CreateRepoDlg"));
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -93,7 +90,6 @@ void CCreateRepoDlg::OnBnClickedCheckBare()
 }
 BOOL CCreateRepoDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: Add your specialized code here and/or call the base class
 	m_tooltips.RelayEvent(pMsg);
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);

@@ -98,7 +98,6 @@ public:
 	void UpdateOkCancelText();
 
 	CTGitPathList m_PathList;
-	afx_msg void OnStnClickedAmSplit();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 protected:
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);

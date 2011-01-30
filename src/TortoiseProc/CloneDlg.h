@@ -32,13 +32,12 @@ protected:
 public:
 	afx_msg void OnBnClickedCloneBrowseUrl();
 	afx_msg void OnBnClickedCloneDirBrowse();
-	afx_msg void OnEnChangeCloneDir();
 	CString m_Directory;
 	CHistoryCombo	m_URLCombo;
-    CHistoryCombo   m_PuttyKeyCombo;
-    CString m_strPuttyKeyFile;
-	CString m_URL;
-    BOOL    m_bAutoloadPuttyKeyFile;
+	CHistoryCombo	m_PuttyKeyCombo;
+	CString	m_strPuttyKeyFile;
+	CString	m_URL;
+	BOOL	m_bAutoloadPuttyKeyFile;
 	BOOL	m_bSVN;
 	BOOL	m_bSVNTrunk;
 	BOOL	m_bSVNTags;
@@ -57,14 +56,11 @@ public:
 
 	int m_nSVNFrom;
 
-	CMenuButton m_BrowseUrl;
+	CMenuButton	m_BrowseUrl;
 	CRegDWORD	m_regBrowseUrl;
 
-    afx_msg void OnBnClickedPuttykeyfileBrowse();
-    afx_msg void OnBnClickedPuttykeyAutoload();
-	afx_msg void OnCbnSelchangeUrlcombo();
-	afx_msg void OnCbenBegineditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnCbenEndeditUrlcombo(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedPuttykeyfileBrowse();
+	afx_msg void OnBnClickedPuttykeyAutoload();
 	afx_msg void OnCbnEditchangeUrlcombo();
 
 	afx_msg void OnBnClickedCheckBare();
@@ -75,7 +71,7 @@ public:
 	afx_msg void OnBnClickedCheckSvnFrom();
 	afx_msg void OnBnClickedCheckDepth();
 
-	CToolTips			m_tooltips;
+	CToolTips	m_tooltips;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedCheckUsername();
 };

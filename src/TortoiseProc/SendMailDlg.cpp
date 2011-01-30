@@ -104,7 +104,6 @@ BOOL CSendMailDlg::OnInitDialog()
 }
 void CSendMailDlg::OnBnClickedSendmailCombine()
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData();
 	this->GetDlgItem(IDC_SENDMAIL_SUBJECT)->EnableWindow(this->m_bCombine);
 	if(m_bCombine)
@@ -115,7 +114,6 @@ void CSendMailDlg::OnBnClickedSendmailCombine()
 
 void CSendMailDlg::OnBnClickedOk()
 {
-	
 	this->UpdateData();
 
 	if(this->m_To.IsEmpty() && this->m_CC.IsEmpty())
@@ -154,7 +152,6 @@ void CSendMailDlg::OnBnClickedOk()
 	m_regCombine=m_bCombine;
 
 	OnOK();
-	// TODO: Add your control notification handler code here
 }
 
 void CSendMailDlg::UpdateSubject()
@@ -185,7 +182,6 @@ void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResul
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	
 	UpdateSubject();
-	// TODO: Add your control notification handler code here
 	
 	*pResult = 0;
 }
@@ -193,7 +189,7 @@ void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResul
 void CSendMailDlg::OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	// TODO: Add your control notification handler code here
+
 	CString path=this->m_ctrlList.GetItemText(pNMItemActivate->iItem,0);
 	CTGitPath gitpath;
 	gitpath.SetFromWin(path);
@@ -205,12 +201,6 @@ void CSendMailDlg::OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CSendMailDlg::OnEnChangeSendmailSubject()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
 	this->UpdateData();
 	if(this->m_bCombine)
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);

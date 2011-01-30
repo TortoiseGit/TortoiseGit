@@ -1379,26 +1379,6 @@ void CFileDiffDlg::CopySelectionToClipboard()
 }
 
 
-void CFileDiffDlg::OnEnChangeRev1edit()
-{
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-}
-
-void CFileDiffDlg::OnEnChangeRev2edit()
-{
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
-}
-
 LRESULT CFileDiffDlg::OnRefLoad(WPARAM wParam, LPARAM lParam)
 {
 	for(int i=0;i<m_Reflist.size();i++)

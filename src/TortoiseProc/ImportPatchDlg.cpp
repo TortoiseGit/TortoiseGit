@@ -173,7 +173,6 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN, &CImportPatchDlg::OnBnClickedButtonDown)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CImportPatchDlg::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDOK, &CImportPatchDlg::OnBnClickedOk)
-	ON_STN_CLICKED(IDC_AM_SPLIT, &CImportPatchDlg::OnStnClickedAmSplit)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATCH, &CImportPatchDlg::OnHdnItemchangedListPatch)
@@ -184,7 +183,6 @@ END_MESSAGE_MAP()
 
 void CImportPatchDlg::OnLbnSelchangeListPatch()
 {
-	// TODO: Add your control notification handler code here
 	if(m_cList.GetSelectedCount() == 0)
 	{
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(FALSE);
@@ -195,14 +193,11 @@ void CImportPatchDlg::OnLbnSelchangeListPatch()
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
-
 	}
-
 }
 
 void CImportPatchDlg::OnBnClickedButtonAdd()
 {
-	
 	CFileDialog dlg(TRUE,NULL,
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT|OFN_ALLOWMULTISELECT,
@@ -222,13 +217,10 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 			}
 		}
 	}
-
-	// TODO: Add your control notification handler code here
 }
 
 void CImportPatchDlg::OnBnClickedButtonUp()
 {
-	// TODO: Add your control notification handler code here
 	POSITION pos;
 	pos=m_cList.GetFirstSelectedItemPosition();
 	while(pos)
@@ -247,13 +239,12 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 
 void CImportPatchDlg::OnBnClickedButtonDown()
 {
-	// TODO: Add your control notification handler code here
 	POSITION pos;
 	pos=m_cList.GetFirstSelectedItemPosition();
 	while(pos)
 	{
 		int index=m_cList.GetNextSelectedItem(pos);
-		
+
 		CString old=m_cList.GetItemText(index,0);
 		m_cList.DeleteItem(index);
 
@@ -264,7 +255,6 @@ void CImportPatchDlg::OnBnClickedButtonDown()
 
 void CImportPatchDlg::OnBnClickedButtonRemove()
 {
-	// TODO: Add your control notification handler code here
 	POSITION pos;
 	pos=m_cList.GetFirstSelectedItemPosition();
 	while(pos)
@@ -292,13 +282,13 @@ UINT CImportPatchDlg::PatchThread()
 		if(m_cList.GetCheck(i))
 		{
 			CString cmd;
-			
+
 			while(path.HasRebaseApply())
 			{
 				int ret = CMessageBox::Show(NULL, _T("<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n\n Do you want to"),
 												  _T("TortoiseGit"),
 												   1,IDI_ERROR ,_T("Abort"), _T("Skip"),_T("Resolved"));
-				
+
 				switch(ret)
 				{
 				case 1: 
@@ -316,7 +306,7 @@ UINT CImportPatchDlg::PatchThread()
 				if(cmd.IsEmpty())
 				{
 					m_bExitThread = TRUE;
-					break;			
+					break;
 				}
 
 				this->AddLogString(cmd);
@@ -423,11 +413,6 @@ void CImportPatchDlg::OnBnClickedOk()
 
 }
 
-void CImportPatchDlg::OnStnClickedAmSplit()
-{
-	// TODO: Add your control notification handler code here
-}
-
 void CImportPatchDlg::DoSize(int delta)
 {
 	this->RemoveAllAnchors();
@@ -438,7 +423,7 @@ void CImportPatchDlg::DoSize(int delta)
 	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE),0,delta);
-		
+
 	this->AddAmAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from
 	// moving the list control too far down.
@@ -452,20 +437,17 @@ void CImportPatchDlg::DoSize(int delta)
 //	GetDlgItem(IDC_LOGMESSAGE)->Invalidate();
 
 	this->m_ctrlTabCtrl.Invalidate();
-	
 }
 
 void CImportPatchDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CResizableStandAloneDialog::OnSize(nType, cx, cy);
 
-	// TODO: Add your message handler code here
 	SetSplitterRange();
 }
 
 LRESULT CImportPatchDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	// TODO: Add your specialized code here and/or call the base class
 	switch (message) {
 	case WM_NOTIFY:
 		if (wParam == IDC_AM_SPLIT)
@@ -500,7 +482,6 @@ void CImportPatchDlg::EnableInputCtrl(BOOL b)
 	this->GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(b);
 	this->GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(b);
 	this->GetDlgItem(IDOK)->EnableWindow(b);
-
 }
 
 void CImportPatchDlg::UpdateOkCancelText()
@@ -508,13 +489,12 @@ void CImportPatchDlg::UpdateOkCancelText()
 	if( !IsFinish() )
 	{
 		this->GetDlgItem(IDOK)->SetWindowText(_T("Apply"));
-		
-	}else
+	}
+	else
 	{
 		this->GetDlgItem(IDOK)->SetWindowText(_T("Ok"));
-		
 	}
-	
+
 	if(this->m_bThreadRunning)
 		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Abort"));
 	else	
@@ -523,11 +503,9 @@ void CImportPatchDlg::UpdateOkCancelText()
 }
 void CImportPatchDlg::OnBnClickedCancel()
 {
-	// TODO: Add your control notification handler code here
 	if(this->m_bThreadRunning)
 	{
 		InterlockedExchange(&m_bExitThread,TRUE);
-
 	}else
 		OnCancel();
 }
@@ -573,7 +551,6 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-	// TODO: Add your control notification handler code here
 	*pResult = 0;
 
 	if(this->m_cList.GetSelectedCount() != 1)

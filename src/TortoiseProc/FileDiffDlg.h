@@ -192,8 +192,6 @@ public:
 	CString				m_strRev2;
 
 public:
-	afx_msg void OnEnChangeRev1edit();
-	afx_msg void OnEnChangeRev2edit();
 	virtual BOOL DestroyWindow();
 	void OnTextUpdate(CACEdit *pEdit);
 };

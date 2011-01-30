@@ -47,7 +47,7 @@ END_MESSAGE_MAP()
 void CPatchListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	// TODO: Add your control notification handler code here
+
 	CString path=GetItemText(pNMItemActivate->iItem,0);
 	CTGitPath gitpath;
 	gitpath.SetFromWin(path);
@@ -55,12 +55,10 @@ void CPatchListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
 
 	*pResult = 0;
-
 }
 
 void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
-	// TODO: Add your message handler code here
 	int selected=this->GetSelectedCount();
 	int index=0;
 	POSITION pos=this->GetFirstSelectedItemPosition();
@@ -162,7 +160,7 @@ int CPatchListCtrl::LaunchProc(CString& command)
 void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVCUSTOMDRAW *pNMCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);
-	// TODO: Add your control notification handler code here
+
 	*pResult = 0;
 
 
@@ -178,7 +176,7 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 		{
 			// This is the prepaint stage for an item. Here's where we set the
 			// item's text color. 
-			
+
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;
 

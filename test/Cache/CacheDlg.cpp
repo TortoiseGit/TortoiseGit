@@ -28,9 +28,6 @@
 #endif
 
 
-
-
-
 CCacheDlg::CCacheDlg(CWnd* pParent /*=NULL*/)
 : CDialog(CCacheDlg::IDD, pParent)
 , m_sRootPath(_T(""))
@@ -64,8 +61,6 @@ BOOL CCacheDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-
-	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

@@ -43,9 +43,7 @@ BOOL CTortoiseGitBlameDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
-
 	return TRUE;
 }
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
@@ -71,7 +69,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	m_CurrentFileName=lpszPathName;
 	m_Rev=Rev;
 
-	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 	if(!g_Git.CheckMsysGitDir())
 	{
@@ -150,7 +147,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 				return FALSE;
 			}
 		}
-		pView->UpdateInfo();		
+		pView->UpdateInfo();
 	}
 
 	return TRUE;

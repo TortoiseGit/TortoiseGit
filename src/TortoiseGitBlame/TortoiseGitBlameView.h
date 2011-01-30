@@ -190,16 +190,16 @@ public:
 
 	void SetSelectedLine(LONG line) { m_SelectedLine=line;};
 
-	LONG						m_mouserev;
-	LONG						m_MouseLine;
-	LONG						m_selectedrev;
-	LONG						m_selectedorigrev;
-	CGitHash					m_SelectedHash;
-	CGitHash					m_selecteddate;
-	static long					m_gotoline;
-	long						m_lowestrev;
-	long						m_highestrev;
-	bool						m_colorage;
+	LONG					m_mouserev;
+	LONG					m_MouseLine;
+	LONG					m_selectedrev;
+	LONG					m_selectedorigrev;
+	CGitHash				m_SelectedHash;
+	CGitHash				m_selecteddate;
+	static long				m_gotoline;
+	long					m_lowestrev;
+	long					m_highestrev;
+	bool					m_colorage;
 
 //	std::vector<bool>		m_Mergelines;
 	std::vector<LONG>		m_ID;
@@ -213,11 +213,11 @@ public:
 
 //	std::vector<CString>	m_Paths;
 //	std::map<LONG, CString>	logmessages;
-	char						m_szTip[MAX_LOG_LENGTH*2+6];
-	wchar_t						m_wszTip[MAX_LOG_LENGTH*2+6];
+	char					m_szTip[MAX_LOG_LENGTH*2+6];
+	wchar_t					m_wszTip[MAX_LOG_LENGTH*2+6];
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
-	BOOL						ttVisible;
+	BOOL					ttVisible;
 
 	CLogDataVector *		GetLogData();
 
@@ -229,41 +229,40 @@ protected:
 	void SetupCppLexer();
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CString GetAppDirectory();
-	std::vector<COLORREF>		colors;
-	HFONT						m_font;
-	HFONT						m_italicfont;
-	LONG						m_blamewidth;
-	LONG						m_revwidth;
-	LONG						m_datewidth;
-	LONG						m_authorwidth;
-	LONG						m_pathwidth;
-	LONG						m_linewidth;
-	LONG						m_SelectedLine; ///< zero-based
+	std::vector<COLORREF>	colors;
+	HFONT					m_font;
+	HFONT					m_italicfont;
+	LONG					m_blamewidth;
+	LONG					m_revwidth;
+	LONG					m_datewidth;
+	LONG					m_authorwidth;
+	LONG					m_pathwidth;
+	LONG					m_linewidth;
+	LONG					m_SelectedLine; ///< zero-based
 
-	COLORREF					m_mouserevcolor;
-	COLORREF					m_mouseauthorcolor;
-	COLORREF					m_selectedrevcolor;
-	COLORREF					m_selectedauthorcolor;
-	COLORREF					m_windowcolor;
-	COLORREF					m_textcolor;
-	COLORREF					m_texthighlightcolor;
+	COLORREF				m_mouserevcolor;
+	COLORREF				m_mouseauthorcolor;
+	COLORREF				m_selectedrevcolor;
+	COLORREF				m_selectedauthorcolor;
+	COLORREF				m_windowcolor;
+	COLORREF				m_textcolor;
+	COLORREF				m_texthighlightcolor;
 
-	LRESULT						m_directFunction;
-	LRESULT						m_directPointer;
-	FINDREPLACE					fr;
-	TCHAR						szFindWhat[80];
+	LRESULT					m_directFunction;
+	LRESULT					m_directPointer;
+	FINDREPLACE				fr;
+	TCHAR					szFindWhat[80];
 
-	CRegStdWORD					m_regOldLinesColor;
-	CRegStdWORD					m_regNewLinesColor;
+	CRegStdWORD				m_regOldLinesColor;
+	CRegStdWORD				m_regNewLinesColor;
 
 	CGitBlameLogList * GetLogList();
 
-    CFindReplaceDialog          *m_pFindDialog;
+    CFindReplaceDialog		*m_pFindDialog;
 
-	char						*m_Buffer;
+	char					*m_Buffer;
 
-	DWORD						m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	DWORD					m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 };
 
 #ifndef _DEBUG  // debug version in TortoiseGitBlameView.cpp

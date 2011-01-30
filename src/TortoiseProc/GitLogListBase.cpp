@@ -300,13 +300,6 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_NOTIFY(HDN_ENDDRAG, 0, OnColumnMoved)
 END_MESSAGE_MAP()
 
-void CGitLogListBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
-{
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-
-	CListCtrl::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
-}
-
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	//if (m_nRowHeight>0)
@@ -547,7 +540,6 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 
 		::FillRect(hdc, &rect, brush);
 		::DeleteObject(brush);
-		
 	}
 }
 
@@ -569,7 +561,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	{
 		CString str;
 		str=m_HashMap[data->m_CommitHash][i];
-		
+
 		CString shortname;
 		HBRUSH brush = 0;
 		shortname = _T("");
@@ -670,14 +662,12 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 				}
 			}
 
-			
 			//::MoveToEx(hdc,rt.left,rt.top,NULL);
 			//::LineTo(hdc,rt.right,rt.top);
 			//::LineTo(hdc,rt.right,rt.bottom);
 			//::LineTo(hdc,rt.left,rt.bottom);
 			//::LineTo(hdc,rt.left,rt.top);
 
-				
 			rt.left=rt.right+1;
 		}
 		if(brush)
@@ -723,7 +713,7 @@ Gdiplus::Color GetGdiColor(COLORREF col)
 }
 void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
                                       const COLORREF& col,const COLORREF& activeColor, int top
-									  )  
+									  )
 {
 	int h = laneHeight / 2;
 	int m = (x1 + x2) / 2;
@@ -2767,20 +2757,20 @@ void CGitLogListBase::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
 LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 
-    ASSERT(m_pFindDialog != NULL);
+	ASSERT(m_pFindDialog != NULL);
 
-    if (m_pFindDialog->IsTerminating())
-    {
-	    // invalidate the handle identifying the dialog box.
-        m_pFindDialog = NULL;
-        return 0;
-    }
+	if (m_pFindDialog->IsTerminating())
+	{
+		// invalidate the handle identifying the dialog box.
+		m_pFindDialog = NULL;
+		return 0;
+	}
 
-    if(m_pFindDialog->FindNext())
-    {
-        //read data from dialog
-        CString FindText = m_pFindDialog->GetFindString();
-        bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
+	if(m_pFindDialog->FindNext())
+	{
+		//read data from dialog
+		CString FindText = m_pFindDialog->GetFindString();
+		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 		bool bFound = false;
 		tr1::wregex pat;
 		bool bRegex = ValidateRegexp(FindText, pat, bMatchCase);
@@ -2875,22 +2865,22 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			if (m_nSearchIndex >= m_arShownList.GetCount())
 				m_nSearchIndex = (int)m_arShownList.GetCount()-1;
 		}
-    } // if(m_pFindDialog->FindNext()) 
+	} // if(m_pFindDialog->FindNext()) 
 	//UpdateLogInfoLabel();
 
-    return 0;
+	return 0;
 }
 
 void CGitLogListBase::OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	m_ColumnManager.OnColumnResized(pNMHDR,pResult);
 	
-    *pResult = FALSE;
+	*pResult = FALSE;
 }
 
 void CGitLogListBase::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
 
-    Invalidate(FALSE);
+	Invalidate(FALSE);
 }

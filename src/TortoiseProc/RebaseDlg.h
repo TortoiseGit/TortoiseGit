@@ -62,8 +62,8 @@ protected:
 	void SetAllRebaseAction(int action);
 	void OnCancel();
 
-	CRect				m_DlgOrigRect;
-	CRect				m_CommitListOrigRect;
+	CRect m_DlgOrigRect;
+	CRect m_CommitListOrigRect;
 	BOOL PreTranslateMessage(MSG* pMsg);
 
 	CSciEdit m_wndOutputRebase;
@@ -74,7 +74,7 @@ protected:
 	void ListConflictFile();
 	int  DoRebase();
 	void Refresh();
-	volatile LONG 		m_bThreadRunning;
+	volatile LONG m_bThreadRunning;
 	int  RebaseThread();
 	static UINT RebaseThreadEntry(LPVOID pVoid){return ((CRebaseDlg *)pVoid)->RebaseThread();};
 	BOOL IsEnd();
@@ -96,26 +96,25 @@ protected:
 	CMenuButton m_PostButton;
 
 public:
-   
-    afx_msg void OnBnClickedPickAll();
-    afx_msg void OnBnClickedSquashAll();
-    afx_msg void OnBnClickedEditAll();
-    afx_msg void OnBnClickedRebaseSplit();
+	afx_msg void OnBnClickedPickAll();
+	afx_msg void OnBnClickedSquashAll();
+	afx_msg void OnBnClickedEditAll();
+	afx_msg void OnBnClickedRebaseSplit();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnCbnSelchangeBranch();
 	afx_msg void OnCbnSelchangeUpstream();
 	afx_msg void OnBnClickedContinue();
 	afx_msg void OnBnClickedAbort();
 
-    CProgressCtrl m_ProgressBar;
-    CStatic m_CtrlStatusText;
-	CBalloon			m_tooltips;
+	CProgressCtrl m_ProgressBar;
+	CStatic m_CtrlStatusText;
+	CBalloon m_tooltips;
 
 	CString m_PreCmd;
 
-    BOOL m_bPickAll;
-    BOOL m_bSquashAll;
-    BOOL m_bEditAll;
+	BOOL m_bPickAll;
+	BOOL m_bSquashAll;
+	BOOL m_bEditAll;
 	
 	BOOL m_bForce;
 	CStringArray m_PostButtonTexts;
@@ -123,29 +122,28 @@ public:
 	CSplitterControl	m_wndSplitter;
 	CMFCTabCtrl m_ctrlTabCtrl;
 	CGitStatusListCtrl m_FileListCtrl;
-	CSciEdit		   m_LogMessageCtrl;
+	CSciEdit m_LogMessageCtrl;
 	
-	CGitLogList		   m_CommitList;
+	CGitLogList m_CommitList;
 
 	CHistoryCombo m_BranchCtrl;
 	CHistoryCombo m_UpstreamCtrl;
 	
-	CString		  m_Upstream;
-	CString		  m_Branch;
+	CString m_Upstream;
+	CString m_Branch;
 
-	BOOL		  m_IsCherryPick;
+	BOOL m_IsCherryPick;
 
-	REBASE_STAGE	   m_RebaseStage;
+	REBASE_STAGE m_RebaseStage;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);
-	int	 StartRebase();
-	int  CheckRebaseCondition();
-	int  m_CurrentRebaseIndex;
-	int  StateAction();
-	int  GoNext();
+	int StartRebase();
+	int CheckRebaseCondition();
+	int m_CurrentRebaseIndex;
+	int StateAction();
+	int GoNext();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
-	afx_msg void OnStnClickedStatusStatic();
 	afx_msg void OnBnClickedRebasePostButton();
 };

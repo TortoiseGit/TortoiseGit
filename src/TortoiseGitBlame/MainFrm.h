@@ -35,13 +35,13 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	COutputWnd        m_wndOutput;
-	CPropertiesWnd    m_wndProperties;
+	COutputWnd			m_wndOutput;
+	CPropertiesWnd		m_wndProperties;
 protected:  // control bar embedded members
-	CMFCMenuBar       m_wndMenuBar;
-	CMFCToolBar       m_wndToolBar;
-	CMFCStatusBar     m_wndStatusBar;
-	CMFCToolBarImages m_UserImages;
+	CMFCMenuBar			m_wndMenuBar;
+	CMFCToolBar			m_wndToolBar;
+	CMFCStatusBar		m_wndStatusBar;
+	CMFCToolBarImages	m_UserImages;
 	
 
 
@@ -56,7 +56,5 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };
-
 

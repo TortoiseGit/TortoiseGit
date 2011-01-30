@@ -38,7 +38,6 @@ BOOL CSVNIgnoreTypeDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-	// TODO:  Add extra initialization here
 	AddAnchor(IDC_RADIO_EXCLUDE,  TOP_LEFT);
 	AddAnchor(IDC_RADIO_GITIGNORE,TOP_LEFT);
 	AddAnchor(IDC_GROUP_TYPE,TOP_LEFT, BOTTOM_RIGHT);

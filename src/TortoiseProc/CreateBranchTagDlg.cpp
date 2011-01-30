@@ -108,7 +108,6 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 
 void CCreateBranchTagDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
 
 	this->m_BranchTagName.Trim();
@@ -123,8 +122,6 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 
 void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 {
-	// TODO: Add your control notification handler code here
-	
 	if(this->m_ChooseVersioinBranch.GetString().Left(8)==_T("remotes/"))
 	{
 		bool isDefault = false;
@@ -172,6 +169,4 @@ void CCreateBranchTagDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
-
-	// TODO: Add your message handler code here
 }

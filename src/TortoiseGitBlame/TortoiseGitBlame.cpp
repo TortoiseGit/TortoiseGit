@@ -36,9 +36,6 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 
 
 	m_bHiColorIcons = TRUE;
-
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
 }
 
 // The one and only CTortoiseGitBlameApp object
@@ -77,8 +74,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	// of your final executable, you should remove from the following
 	// the specific initialization routines you do not need
 	// Change the registry key under which our settings are stored
-	// TODO: You should modify this string to be something appropriate
-	// such as the name of your company or organization
+
 	SetRegistryKey(_T("TortoiseGit"));
 	LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 
@@ -122,8 +118,6 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	//  In an SDI app, this should occur after ProcessShellCommand
 	return TRUE;
 }
-
-
 
 // CAboutDlg dialog used for App About
 
@@ -179,12 +173,8 @@ void CTortoiseGitBlameApp::SaveCustomState()
 
 // CTortoiseGitBlameApp message handlers
 
-
-
-
 int CTortoiseGitBlameApp::ExitInstance()
 {
-	// TODO: Add your specialized code here and/or call the base class
 	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 	return CWinAppEx::ExitInstance();
 }

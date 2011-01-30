@@ -92,11 +92,11 @@ protected:
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlItemChanged(WPARAM, LPARAM);
-	
+
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	void Refresh();
 	void GetAutocompletionList();
 	void ScanFile(const CString& sFilePath, const CString& sRegex);
@@ -131,7 +131,7 @@ public:
 
 	int					CheckHeadDetach();
 
-	int		m_PostCmd;
+	int					m_PostCmd;
 
 private:
 	CWinThread*			m_pThread;
@@ -165,13 +165,10 @@ private:
 
 public:
 	afx_msg void OnBnClickedSignOff();
-	afx_msg void OnStnClickedCommitlabel();
 	afx_msg void OnBnClickedCommitAmend();
-    afx_msg void OnBnClickedWholeProject();
-	afx_msg void OnStnClickedBugidlabel();
+	afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnStnClickedViewPatch();
-	afx_msg void OnMove(int x, int y);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);

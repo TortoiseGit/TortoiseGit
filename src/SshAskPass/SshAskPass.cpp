@@ -31,10 +31,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: Place code here.
 	MSG msg;
 	HACCEL hAccelTable;
-
 
     if( _tcslen(lpCmdLine) == 0 )
     {
@@ -44,9 +42,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     {
         g_Prompt = lpCmdLine;
     }
-    
+
     _tcslwr(lpCmdLine); //low case
-    
+
     TCHAR *yesno=_T("(yes/no)");
     int lens=_tcslen(yesno);
     TCHAR *p = lpCmdLine;
@@ -213,7 +211,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code here...
+		// Add any drawing code here...
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:

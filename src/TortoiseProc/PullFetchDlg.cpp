@@ -15,8 +15,8 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
-    m_bAutoLoad = CAppUtils::IsSSHPutty();
-    m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
+	m_bAutoLoad = CAppUtils::IsSSHPutty();
+	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
 }
 
@@ -30,9 +30,9 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REMOTE_COMBO, this->m_Remote);
 	DDX_Control(pDX, IDC_OTHER, this->m_Other);
 	DDX_Control(pDX, IDC_REMOTE_BRANCH, this->m_RemoteBranch);
-    DDX_Control(pDX,IDC_REMOTE_MANAGE, this->m_RemoteManage);
-    DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
-    DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
+	DDX_Control(pDX,IDC_REMOTE_MANAGE, this->m_RemoteManage);
+	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
+	DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
 	DDX_Check(pDX,IDC_CHECK_PRUNE,m_bPrune);
 }
 
@@ -41,7 +41,7 @@ BEGIN_MESSAGE_MAP(CPullFetchDlg,CResizableStandAloneDialog )
 	ON_BN_CLICKED(IDC_REMOTE_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_OTHER_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDOK, &CPullFetchDlg::OnBnClickedOk)
-    ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
+	ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CPullFetchDlg::OnBnClickedButtonBrowseRef)
 END_MESSAGE_MAP()
 
@@ -56,11 +56,11 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-    AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,BOTTOM_RIGHT);
-    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
+	AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
 	AddAnchor(IDC_CHECK_PRUNE,BOTTOM_LEFT);
 	AddAnchor(IDC_CHECK_REBASE,BOTTOM_LEFT);
-    AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
+	AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	CString WorkingDir=g_Git.m_CurrentDir;
@@ -83,7 +83,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 
     this->AddOthersToAnchor();
 
-    this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoadEnable);
+	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoadEnable);
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
 	m_Remote.EnableWindow(TRUE);
@@ -159,8 +159,6 @@ void CPullFetchDlg::Refresh()
 
 void CPullFetchDlg::OnBnClickedRd()
 {
-
-	// TODO: Add your control notification handler code here
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_REMOTE_RD)
 	{
 		m_Remote.EnableWindow(TRUE);
@@ -175,14 +173,11 @@ void CPullFetchDlg::OnBnClickedRd()
 		if(!m_IsPull)
 			m_RemoteBranch.EnableWindow(TRUE);
 	}
-	
-
 }
 
 void CPullFetchDlg::OnBnClickedOk()
 {
 	this->UpdateData();
-	// TODO: Add your control notification handler code here
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_REMOTE_RD)
 	{
 		m_RemoteURL=m_Remote.GetString();
@@ -193,15 +188,13 @@ void CPullFetchDlg::OnBnClickedOk()
 			m_RemoteBranchName.Empty();
 		else
 			m_RemoteBranchName=m_RemoteBranch.GetString();
-		
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
 	{
 		m_Other.GetWindowTextW(m_RemoteURL);
 		m_RemoteBranchName=m_RemoteBranch.GetString();
-		
 	}
-	
+
 	m_RemoteReg = m_Remote.GetString();
 
 	m_Other.SaveHistory();
@@ -215,8 +208,7 @@ void CPullFetchDlg::OnBnClickedOk()
 
 void CPullFetchDlg::OnStnClickedRemoteManage()
 {
-    // TODO: Add your control notification handler code here
-    CAppUtils::LaunchRemoteSetting();
+	CAppUtils::LaunchRemoteSetting();
 	Refresh();
 }
 

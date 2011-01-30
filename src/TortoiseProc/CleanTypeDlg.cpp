@@ -52,7 +52,6 @@ BOOL CCleanTypeDlg::OnInitDialog()
 	this->AddAnchor(IDC_GROUP_CLEAN_TYPE,TOP_LEFT,TOP_RIGHT);
 
 	this->AddOthersToAnchor();
-	// TODO:  Add extra initialization here
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -60,7 +59,6 @@ BOOL CCleanTypeDlg::OnInitDialog()
 
 void CCleanTypeDlg::OnOK()
 {
-	// TODO: Add your specialized code here and/or call the base class
 	this->UpdateData();
 	
 	this->m_regDir = this->m_bDir;

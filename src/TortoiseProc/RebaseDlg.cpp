@@ -33,12 +33,12 @@ CRebaseDlg::~CRebaseDlg()
 
 void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialog::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_REBASE_PROGRESS, m_ProgressBar);
-    DDX_Control(pDX, IDC_STATUS_STATIC, m_CtrlStatusText);
-    DDX_Check(pDX, IDC_PICK_ALL, m_bPickAll);
-    DDX_Check(pDX, IDC_SQUASH_ALL, m_bSquashAll);
-    DDX_Check(pDX, IDC_EDIT_ALL, m_bEditAll);
+	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_REBASE_PROGRESS, m_ProgressBar);
+	DDX_Control(pDX, IDC_STATUS_STATIC, m_CtrlStatusText);
+	DDX_Check(pDX, IDC_PICK_ALL, m_bPickAll);
+	DDX_Check(pDX, IDC_SQUASH_ALL, m_bSquashAll);
+	DDX_Check(pDX, IDC_EDIT_ALL, m_bEditAll);
 	DDX_Control(pDX, IDC_REBASE_SPLIT, m_wndSplitter);
 	DDX_Control(pDX,IDC_COMMIT_LIST,m_CommitList);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
@@ -49,10 +49,10 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
-    ON_BN_CLICKED(IDC_PICK_ALL, &CRebaseDlg::OnBnClickedPickAll)
-    ON_BN_CLICKED(IDC_SQUASH_ALL, &CRebaseDlg::OnBnClickedSquashAll)
-    ON_BN_CLICKED(IDC_EDIT_ALL, &CRebaseDlg::OnBnClickedEditAll)
-    ON_BN_CLICKED(IDC_REBASE_SPLIT, &CRebaseDlg::OnBnClickedRebaseSplit)
+	ON_BN_CLICKED(IDC_PICK_ALL, &CRebaseDlg::OnBnClickedPickAll)
+	ON_BN_CLICKED(IDC_SQUASH_ALL, &CRebaseDlg::OnBnClickedSquashAll)
+	ON_BN_CLICKED(IDC_EDIT_ALL, &CRebaseDlg::OnBnClickedEditAll)
+	ON_BN_CLICKED(IDC_REBASE_SPLIT, &CRebaseDlg::OnBnClickedRebaseSplit)
 	ON_BN_CLICKED(IDC_REBASE_CONTINUE,OnBnClickedContinue)
 	ON_BN_CLICKED(IDC_REBASE_ABORT,  OnBnClickedAbort)
 	ON_WM_SIZE()
@@ -61,7 +61,6 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
-	ON_STN_CLICKED(IDC_STATUS_STATIC, &CRebaseDlg::OnStnClickedStatusStatic)
 	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
 END_MESSAGE_MAP()
 
@@ -240,7 +239,6 @@ BOOL CRebaseDlg::OnInitDialog()
 
 void CRebaseDlg::OnBnClickedPickAll()
 {
-    // TODO: Add your control notification handler code here
 	this->UpdateData();
 	if(this->m_bPickAll)
 		this->SetAllRebaseAction(CTGitPath::LOGACTIONS_REBASE_PICK);
@@ -248,12 +246,10 @@ void CRebaseDlg::OnBnClickedPickAll()
 	this->m_bEditAll=FALSE;
 	this->m_bSquashAll=FALSE;
 	this->UpdateData(FALSE);
-	
 }
 
 void CRebaseDlg::OnBnClickedSquashAll()
 {
-    // TODO: Add your control notification handler code here
 	this->UpdateData();
 	if(this->m_bSquashAll)
 		this->SetAllRebaseAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
@@ -261,12 +257,10 @@ void CRebaseDlg::OnBnClickedSquashAll()
 	this->m_bEditAll=FALSE;
 	this->m_bPickAll=FALSE;
 	this->UpdateData(FALSE);
-
 }
 
 void CRebaseDlg::OnBnClickedEditAll()
 {
-    // TODO: Add your control notification handler code here
 	this->UpdateData();
 	if( this->m_bEditAll )
 		this->SetAllRebaseAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
@@ -274,7 +268,6 @@ void CRebaseDlg::OnBnClickedEditAll()
 	this->m_bPickAll=FALSE;
 	this->m_bSquashAll=FALSE;
 	this->UpdateData(FALSE);
-
 }
 
 void CRebaseDlg::SetAllRebaseAction(int action)
@@ -289,7 +282,6 @@ void CRebaseDlg::SetAllRebaseAction(int action)
 void CRebaseDlg::OnBnClickedRebaseSplit()
 {
 	this->UpdateData();
-    // TODO: Add your control notification handler code here
 }
 
 LRESULT CRebaseDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -309,7 +301,6 @@ LRESULT CRebaseDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 void CRebaseDlg::DoSize(int delta)
 {
-	
 	this->RemoveAllAnchors();
 
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_COMMIT_LIST), delta, CW_TOPALIGN);
@@ -320,7 +311,7 @@ void CRebaseDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_PICK_ALL),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_EDIT_ALL),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_FORCE),0,delta);
-	
+
 	this->AddRebaseAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from
 	// moving the list control too far down.
@@ -358,10 +349,10 @@ void CRebaseDlg::SetSplitterRange()
 void CRebaseDlg::OnSize(UINT nType,int cx, int cy)
 {
 	 // first, let the resizing take place
-    __super::OnSize(nType, cx, cy);
+	__super::OnSize(nType, cx, cy);
 
-    //set range
-    SetSplitterRange();
+	//set range
+	SetSplitterRange();
 }
 
 void CRebaseDlg::SaveSplitterPos()
@@ -471,7 +462,7 @@ void CRebaseDlg::FetchLogList()
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(true);
 		SetContinueButtonText();
-		
+
 		return ;
 	}
 
@@ -544,7 +535,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 	{
 		CString text=pBranch->GetString();
 		CString tooltip;
-		
+
 		GitRev rev;
 		rev.GetCommit(text);
 
@@ -566,7 +557,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	{
 		switch (pMsg->wParam)
 		{
-		
+
 		case VK_F5:
 			{
 				Refresh();
@@ -589,7 +580,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
 					return TRUE;
 				}
-			}		
+			}
 		}
 	}
 	m_tooltips.RelayEvent(pMsg);
@@ -658,7 +649,7 @@ int CRebaseDlg::StartRebase()
 		AddLogString(_T("update ORIG_HEAD Fail"));
 		return -1;
 	}
-	
+
 	m_OrigUpstreamHash.Empty();
 	m_OrigUpstreamHash= g_Git.GetHash(this->m_UpstreamCtrl.GetString());
 	if(m_OrigUpstreamHash.IsEmpty())
@@ -679,8 +670,7 @@ int CRebaseDlg::StartRebase()
 			return -1;
 		}
 	}
-	
-	
+
 	if( !this->m_IsCherryPick )
 	{
 		cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
@@ -693,10 +683,10 @@ int CRebaseDlg::StartRebase()
 
 	}else
 		this->AddLogString(_T("Start Cherry-pick\r\n"));
-	
+
 	return 0;
 }
-int  CRebaseDlg::VerifyNoConflict()
+int CRebaseDlg::VerifyNoConflict()
 {
 	CTGitPathList list;
 	if(g_Git.ListConflictFile(list))
@@ -769,14 +759,14 @@ void CRebaseDlg::OnBnClickedContinue()
 		out.Empty();
 		m_OrigBranchHash = g_Git.GetHash(m_BranchCtrl.GetString());
 		m_OrigUpstreamHash = g_Git.GetHash(this->m_UpstreamCtrl.GetString());
-			
+
 		if(!g_Git.IsFastForward(this->m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString()))
 		{
 			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 			AddLogString(_T("No fast forward\r\nMaybe repository changed"));
 			return;
 		}
-		
+
 		cmd.Format(_T("git.exe reset --hard %s"),this->m_UpstreamCtrl.GetString());
 		this->AddLogString(CString(_T("Fast forward to "))+m_UpstreamCtrl.GetString());
 
@@ -801,7 +791,6 @@ void CRebaseDlg::OnBnClickedContinue()
 			return ;
 		m_RebaseStage = REBASE_START;
 	}
-
 
 	if( m_RebaseStage == REBASE_FINISH )
 	{
@@ -836,7 +825,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 
 		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-		
+
 		CString out =_T("");
 		CString cmd;
 		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash.ToString());
@@ -868,7 +857,6 @@ void CRebaseDlg::OnBnClickedContinue()
 			curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
 			this->UpdateCurrentStatus();
 		}
-		
 	}
 
 	if( m_RebaseStage == REBASE_EDIT ||  m_RebaseStage == REBASE_SQUASH_EDIT )
@@ -952,10 +940,10 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 			else
 				index--;
 		}else
-			return -1;		
+			return -1;
 
 	}while(curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP);
-	
+
 	return -1;
 
 }
@@ -981,7 +969,7 @@ int CRebaseDlg::StateAction()
 		break;
 	}
 
-	return 0;	
+	return 0;
 }
 void CRebaseDlg::SetContinueButtonText()
 {
@@ -1031,7 +1019,7 @@ void CRebaseDlg::SetControlEnable()
 	{
 	case CHOOSE_BRANCH:
 	case CHOOSE_COMMIT_PICK_MODE:
-		
+
 		this->GetDlgItem(IDC_PICK_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDIT_ALL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_SQUASH_ALL)->EnableWindow(TRUE);
@@ -1138,7 +1126,6 @@ void CRebaseDlg::UpdateProgress()
 		m_CommitList.InvalidateRect(rect);
 	}
 	m_CommitList.EnsureVisible(m_CurrentRebaseIndex,FALSE);
-
 }
 
 void CRebaseDlg::UpdateCurrentStatus()
@@ -1354,10 +1341,6 @@ void CRebaseDlg::ListConflictFile()
 	this->m_FileListCtrl.GetStatus(&list,true);
 	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
 							   CTGitPath::LOGACTIONS_UNMERGED);
-	if( this->m_FileListCtrl.GetItemCount() == 0 )
-	{
-		
-	}
 }
 
 LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
@@ -1368,7 +1351,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	if(m_CurrentRebaseIndex >= m_CommitList.GetItemCount() )
 		return 0;
 	GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
-	
+
 	switch(m_RebaseStage)
 	{
 	case REBASE_CONFLICT:
@@ -1387,7 +1370,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		break;
 	default:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-	}	
+	}
 	return 0;
 }
 void CRebaseDlg::OnCancel()
@@ -1401,7 +1384,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	{
 		__super::OnCancel();
 	}
-	
+
 	if(m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage== CHOOSE_COMMIT_PICK_MODE)
 	{
 		return;
@@ -1465,7 +1448,6 @@ void CRebaseDlg::OnBnClickedButtonBrowse()
 
 void CRebaseDlg::OnBnClickedRebaseCheckForce()
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData();
 	this->FetchLogList();
 	if(this->CheckRebaseCondition())
@@ -1475,14 +1457,8 @@ void CRebaseDlg::OnBnClickedRebaseCheckForce()
 	}
 }
 
-void CRebaseDlg::OnStnClickedStatusStatic()
-{
-	// TODO: Add your control notification handler code here
-}
-
 void CRebaseDlg::OnBnClickedRebasePostButton()
 {
-	// TODO: Add your control notification handler code here
 	this->m_Upstream=this->m_UpstreamCtrl.GetString();
 	this->m_Branch=this->m_BranchCtrl.GetString();
 

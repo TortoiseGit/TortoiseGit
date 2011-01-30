@@ -44,7 +44,6 @@ static UINT indicators[] =
 
 CMainFrame::CMainFrame()
 {
-	// TODO: add member initialization code here
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
 }
 
@@ -99,7 +98,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
-	// TODO: Delete these five lines if you don't want the toolbar and menubar to be dockable
+	// Delete these five lines if you don't want the toolbar and menubar to be dockable
 	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
@@ -363,7 +362,6 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 		return FALSE;
 	}
 
-
 	// enable customization button for all user toolbars
 	BOOL bNameValid;
 	CString strCustomize;
@@ -380,12 +378,4 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	}
 
 	return TRUE;
-}
-
-
-BOOL CMainFrame::OnCommand(WPARAM wParam, LPARAM lParam)
-{
-	// TODO: Add your specialized code here and/or call the base class
-
-	return CFrameWndEx::OnCommand(wParam, lParam);
 }

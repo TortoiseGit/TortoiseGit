@@ -159,7 +159,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 			}else
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,byte);
 		}
-	
+
 		CloseHandle(pi.hThread);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
@@ -443,7 +443,6 @@ void CProgressDlg::RemoveLastLine(CString &str)
 
 void CProgressDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	m_Log.GetWindowText(this->m_LogText);
 	OnOK();
 }
@@ -451,7 +450,6 @@ void CProgressDlg::OnBnClickedOk()
 void CProgressDlg::OnBnClickedButton1()
 {
 	this->EndDialog(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry());
-	
 }
 void CProgressDlg::OnCancel()
 {
@@ -530,7 +528,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	cmd=_T("git.exe config i18n.logOutputEncoding");
 	if(g_Git.Run(cmd,&output,CP_ACP))
 		cp=CP_UTF8;
-	
+
 	int start=0;
 	output=output.Tokenize(_T("\n"),start);
 	cp=CUnicodeUtils::GetCPCode(output);

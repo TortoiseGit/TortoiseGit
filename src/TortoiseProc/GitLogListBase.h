@@ -49,20 +49,19 @@ enum LISTITEMSTATES_MINE {
 #define GITLOG_START_ALL 1
 #define GITLOG_END   100
 
-#define LOGFILTER_ALL      1
-#define LOGFILTER_MESSAGES 2
-#define LOGFILTER_PATHS    3
-#define LOGFILTER_AUTHORS  4
-#define LOGFILTER_REVS	   5
-#define LOGFILTER_REGEX	   6
-#define LOGFILTER_BUGID    7
+#define LOGFILTER_ALL		1
+#define LOGFILTER_MESSAGES	2
+#define LOGFILTER_PATHS		3
+#define LOGFILTER_AUTHORS	4
+#define LOGFILTER_REVS		5
+#define LOGFILTER_REGEX		6
+#define LOGFILTER_BUGID		7
 
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)
 #define MSG_LOAD_PERCENTAGE		(WM_USER+111)
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
 #define MSG_FETCHED_DIFF		(WM_USER+113)
-
 
 class CGitLogListBase : public CHintListCtrl
 {
@@ -100,7 +99,6 @@ public:
 	BOOL m_IsRebaseReplaceGraph;
 
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-	void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	BOOL m_bStrictStopped;
 	BOOL m_bShowBugtraqColumn;
@@ -135,7 +133,7 @@ public:
 		LOGLIST_BUG,
 		LOGLIST_MESSAGE_MAX=300,
 		LOGLIST_MESSAGE_MIN=200,
-		
+
 		GIT_LOG_GRAPH	=		1<< LOGLIST_GRAPH,
 		GIT_LOG_REBASE	=		1<< LOGLIST_REBASE,
 		GIT_LOG_ID		=		1<< LOGLIST_ID,
@@ -232,12 +230,12 @@ public:
 	void StartFilter();
 	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
-	
+
 	__time64_t			m_From;
 	__time64_t			m_To;
-    
-    CTGitPath           m_Path;
-    int					m_ShowMask;
+
+	CTGitPath			m_Path;
+	int					m_ShowMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;

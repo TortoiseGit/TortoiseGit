@@ -36,8 +36,6 @@ END_MESSAGE_MAP()
 
 CCacheApp::CCacheApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
 }
 
 

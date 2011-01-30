@@ -96,11 +96,9 @@ void CSyncDlg::EnableControlButton(bool bEnabled)
 
 void CSyncDlg::OnBnClickedButtonPull()
 {
-	// TODO: Add your control notification handler code here
 	int CurrentEntry;
-	CurrentEntry = this->m_ctrlPull.GetCurrentEntry();                   
+	CurrentEntry = this->m_ctrlPull.GetCurrentEntry();
 	this->m_regPullButton = CurrentEntry;
-
 
 	this->m_bAbort=false;
 	this->m_GitCmdList.clear();
@@ -115,7 +113,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		if( g_Git.GetHash(this->m_strLocalBranch) != m_oldHash)
 		{
 			CMessageBox::Show(NULL,_T("Pull require local branch must be current branch"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return;							
+			return;
 		}
 	}
 
@@ -199,7 +197,6 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 		}else
 		{
-			
 			remotebranch.Format(_T("remotes/%s/%s"),
 								m_strURL,m_strRemoteBranch);
 			if(g_Git.GetHash(remotebranch).IsEmpty())
@@ -255,7 +252,6 @@ void CSyncDlg::OnBnClickedButtonPull()
 			m_pThread->ResumeThread();
 		}
 	}
-	
 }
 
 void CSyncDlg::PullComplete()
@@ -266,8 +262,6 @@ void CSyncDlg::PullComplete()
 
 	CString newhash;
 	newhash = g_Git.GetHash(CString(_T("HEAD")));
-
-	
 
 	if( this ->m_GitCmdStatus )
 	{
@@ -291,7 +285,7 @@ void CSyncDlg::PullComplete()
 			this->m_ConflictFileList.GetStatus(&list,true);
 			this->m_ConflictFileList.Show(CTGitPath::LOGACTIONS_UNMERGED,
 									  CTGitPath::LOGACTIONS_UNMERGED);
-			
+
 			this->ShowTab(IDC_IN_CONFLICT);
 
 			this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_NORMAL);
@@ -357,7 +351,6 @@ void CSyncDlg::FetchComplete()
 
 void CSyncDlg::OnBnClickedButtonPush()
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData();
 	UpdateCombox();
 
@@ -398,7 +391,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	switch (m_ctrlPush.GetCurrentEntry())
 	{
 	case 1:
-		arg  += _T(" --tags ");
+		arg += _T(" --tags ");
 		break;
 	case 2:
 		arg += _T(" --all ");
@@ -440,15 +433,13 @@ void CSyncDlg::OnBnClickedButtonPush()
 		m_pThread->m_bAutoDelete = TRUE;
 		m_pThread->ResumeThread();
 	}
-	
 }
 
 void CSyncDlg::OnBnClickedButtonApply()
 {
-	// TODO: Add your control notification handler code here
 	CString oldhash;
 	oldhash=g_Git.GetHash(CString(_T("HEAD")));
-	
+
 	CImportPatchDlg dlg;
 	CString cmd,output;
 
@@ -456,7 +447,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 	{
 		int err=0;
 		for(int i=0;i<dlg.m_PathList.GetCount();i++)
-		{			
+		{
 			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
 			
 			if(g_Git.Run(cmd,&output,CP_ACP))
@@ -471,7 +462,6 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlCmdOut.SetSel(-1,-1);
 			this->m_ctrlCmdOut.ReplaceSel(output);
 		}
-		
 
 		CString newhash=g_Git.GetHash(CString(_T("HEAD")));		
 
@@ -488,13 +478,12 @@ void CSyncDlg::OnBnClickedButtonApply()
 		{
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
-			
+
 			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,oldhash);
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
 				&oldhash,&newhash);
 
 			this->FetchOutList(true);
-
 		}
 
 		this->m_ctrlTabCtrl.ShowTab(IDC_CMD_LOG-1,true);
@@ -502,7 +491,6 @@ void CSyncDlg::OnBnClickedButtonApply()
 		if(err)
 		{
 			this->ShowTab(IDC_CMD_LOG);
-
 		}else
 		{
 			this->ShowTab(IDC_IN_LOGLIST);
@@ -512,19 +500,18 @@ void CSyncDlg::OnBnClickedButtonApply()
 
 void CSyncDlg::OnBnClickedButtonEmail()
 {
-	// TODO: Add your control notification handler code here
 	CString cmd,out;
-	
+
 	this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
 	this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
 	this->m_ctrlURL.GetWindowText(this->m_strURL);
 	m_strURL=m_strURL.Trim();
 	m_strRemoteBranch=m_strRemoteBranch.Trim();
-	
+
 	cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
 					m_strURL+_T('/')+m_strRemoteBranch,m_strLocalBranch);
-	
+
 	if(g_Git.Run(cmd,&out,CP_ACP))
 	{
 		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -572,7 +559,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlAnimate.ShowWindow(SW_NORMAL);
 	this->m_ctrlAnimate.Open(IDR_DOWNLOAD);
 	this->m_ctrlAnimate.Play(0,-1,-1);
-    */
+	*/
 
 	// ------------------ Create Tabctrl -----------
 	CWnd *pwnd=this->GetDlgItem(IDC_BUTTON_TABCTRL);
@@ -605,7 +592,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlCmdOut.SetDefaultCharFormat(m_Format);
 
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut,_T("Log"),-1);
-	
+
 	//m_ctrlCmdOut.ReplaceSel(_T("Hello"));
 
 	//----------  Create in coming list ctrl -----------
@@ -615,7 +602,6 @@ BOOL CSyncDlg::OnInitDialog()
 	{
 		TRACE0("Failed to create output commits window\n");
 		return FALSE;      // fail to create
-
 	}
 
 	m_ctrlTabCtrl.InsertTab(&m_InLogList,_T("In Commits"),-1);
@@ -634,7 +620,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_InChangeFileList,_T("In ChangeList"),-1);
 
 	m_InChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
-		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
+							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
 							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF2)),false);
 
 
@@ -649,7 +635,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_ConflictFileList,_T("Conflict"),-1);
 
 	m_ConflictFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
-		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
+							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
 							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF2)|
 							SVNSLC_POPCONFLICT|SVNSLC_POPRESOLVE),false);
 
@@ -682,7 +668,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList,_T("Out ChangeList"),-1);
 
 	m_OutChangeFileList.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("OutSyncDlg"),
-		                    (CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
+							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)|
 							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF2)),false);
 
 	this->m_tooltips.Create(this);
@@ -714,7 +700,6 @@ BOOL CSyncDlg::OnInitDialog()
 
 
 	this->AddOthersToAnchor();
-	// TODO:  Add extra initialization here
 
 	this->m_ctrlPush.AddEntry(CString(_T("Pus&h")));
 	this->m_ctrlPush.AddEntry(CString(_T("Push ta&gs")));
@@ -722,7 +707,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->m_ctrlPull.AddEntry(CString(_T("&Pull")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetc&h")));
-	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base")));
+	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base"))); // TODO: what's this?
 	this->m_ctrlPull.AddEntry(CString(_T("Remote Update")));
 
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Update")));
@@ -759,28 +744,27 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\SyncURL\\"))+WorkingDir, _T("url"));
 
 	STRING_VECTOR list;
-	
+
 	if(!g_Git.GetRemoteList(list))
 	{	
 		for(unsigned int i=0;i<list.size();i++)
 		{
 			m_ctrlURL.AddString(list[i]);
 		}
-	}	
+	}
 	m_ctrlURL.SetCurSel(0);
 	m_ctrlRemoteBranch.SetCurSel(0);
 	m_ctrlURL.SetURLHistory(true);
-	
+
 	this->LoadBranchInfo();
 
 	this->m_bInited=true;
 	FetchOutList();
-	
+
 	m_ctrlTabCtrl.ShowTab(IDC_CMD_LOG-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
-		
 
 	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
 	m_ctrlURL.m_bWantReturn = TRUE;
@@ -793,7 +777,6 @@ BOOL CSyncDlg::OnInitDialog()
 
 void CSyncDlg::OnBnClickedButtonManage()
 {
-	// TODO: Add your control notification handler code here
 	CAppUtils::LaunchRemoteSetting();
 	Refresh();
 }
@@ -801,7 +784,7 @@ void CSyncDlg::OnBnClickedButtonManage()
 void CSyncDlg::Refresh()
 {
 	theApp.DoWaitCursor(1);
-	
+
 	CString local;
 	CString remote;
 	CString url;
@@ -822,13 +805,11 @@ void CSyncDlg::Refresh()
 
 BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: Add your specialized code here and/or call the base class
-
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)
 		{
-		
+
 		case VK_F5:
 			{
 				if (m_bBlock)
@@ -843,7 +824,7 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				TCHAR buff[128];
 				::GetClassName(pMsg->hwnd,buff,128);
-				
+
 				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0)
 				{
 					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
@@ -879,7 +860,7 @@ void CSyncDlg::FetchOutList(bool force)
 
 		this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 		return ;
-	
+
 	}else if(g_Git.GetHash(remotebranch).GetLength()<40)
 	{
 		CString str;
@@ -902,10 +883,10 @@ void CSyncDlg::FetchOutList(bool force)
 			m_OutLogList.ClearText();
 			m_OutLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
 				&remotebranch,&localbranch);
-			
+
 			CString str;
 			if(m_OutLogList.GetItemCount() == 0)
-			{			
+			{
 				str.Format(_T("No commits ahead \"%s\""),remotebranch);
 				m_OutLogList.ShowText(str);
 				this->m_ctrlStatus.SetWindowText(str);
@@ -918,7 +899,7 @@ void CSyncDlg::FetchOutList(bool force)
 				this->m_ctrlStatus.SetWindowText(str);
 
 				AddDiffFileList(&m_OutChangeFileList,&m_arOutChangeList,localbranch,remotebranch);
-				
+
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(TRUE);
 			}
@@ -940,7 +921,6 @@ bool CSyncDlg::IsURL()
 }
 void CSyncDlg::OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	// TODO: Add your control notification handler code here
 	*pResult = 0;
 }
 
@@ -950,7 +930,6 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 	this->m_OutLogList.ShowText(_T("Wait for input"));
 
 	//this->FetchOutList();
-	// TODO: Add your control notification handler code here
 }
 
 UINT CSyncDlg::ProgressThread()
@@ -1039,18 +1018,16 @@ void CSyncDlg::ParserCmdOutput(char ch)
 }
 void CSyncDlg::OnBnClickedButtonCommit()
 {
-	// TODO: Add your control notification handler code here
-    CString proc=CPathUtils::GetAppDirectory();
-    proc += _T("TortoiseProc.exe /command:commit");
-    proc += _T(" /path:\"");
-    proc += g_Git.m_CurrentDir;
-    
+	CString proc=CPathUtils::GetAppDirectory();
+	proc += _T("TortoiseProc.exe /command:commit");
+	proc += _T(" /path:\"");
+	proc += g_Git.m_CurrentDir;
+
 	CAppUtils::LaunchApplication(proc,IDS_ERROR_CANNON_FIND_TORTOISEPROC,false);
 }
 
 void CSyncDlg::OnOK()
 {
-	// TODO: Add your specialized code here and/or call the base class
 	UpdateCombox();
 	this->UpdateData();
 	m_ctrlURL.SaveHistory();
@@ -1061,8 +1038,6 @@ void CSyncDlg::OnOK()
 
 void CSyncDlg::OnBnClickedButtonSubmodule()
 {
-	// TODO: Add your control notification handler code here
-		// TODO: Add your control notification handler code here
 	this->UpdateData();
 	UpdateCombox();
 
@@ -1090,7 +1065,6 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 		break;
 	}
 
-	
 	m_GitCmdList.push_back(cmd);
 
 	m_CurrentCmd = GIT_COMMAND_SUBMODULE;
@@ -1105,9 +1079,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 		m_pThread->m_bAutoDelete = TRUE;
 		m_pThread->ResumeThread();
 	}
-
 }
-
 
 void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 {

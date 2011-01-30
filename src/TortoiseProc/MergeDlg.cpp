@@ -41,7 +41,6 @@ CMergeDlg::CMergeDlg(CWnd* pParent /*=NULL*/)
 	m_bNoFF=false;
 	m_bSquash=false;
 	m_bNoCommit=false;
-	
 }
 
 CMergeDlg::~CMergeDlg()
@@ -72,7 +71,6 @@ BOOL CMergeDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
-
 	CHOOSE_VERSION_ADDANCHOR;
 
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
@@ -89,8 +87,6 @@ BOOL CMergeDlg::OnInitDialog()
 	this->SetDefaultChoose(IDC_RADIO_BRANCH);
 
 	Init();
-	
-	
 
 	m_ProjectProperties.ReadProps(CTGitPath(g_Git.m_CurrentDir));
 
@@ -110,9 +106,8 @@ BOOL CMergeDlg::OnInitDialog()
 
 void CMergeDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
-	
+
 	this->UpdateRevsionName();
 
 	this->m_strLogMesage = m_cLogMessage.GetText() ;
@@ -128,6 +123,4 @@ void CMergeDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
-
-	// TODO: Add your message handler code here
 }

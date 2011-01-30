@@ -15,9 +15,9 @@ IMPLEMENT_DYNAMIC(CSettingGitRemote, ISettingsPropPage)
 
 CSettingGitRemote::CSettingGitRemote(CString cmdPath)
 	: ISettingsPropPage(CSettingGitRemote::IDD)
-    , m_strRemote(_T(""))
-    , m_strUrl(_T(""))
-    , m_strPuttyKeyfile(_T(""))
+	, m_strRemote(_T(""))
+	, m_strUrl(_T(""))
+	, m_strPuttyKeyfile(_T(""))
 	, m_cmdPath(cmdPath)
 {
 
@@ -30,21 +30,21 @@ CSettingGitRemote::~CSettingGitRemote()
 
 void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 {
-    CPropertyPage::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_LIST_REMOTE, m_ctrlRemoteList);
-    DDX_Text(pDX, IDC_EDIT_REMOTE, m_strRemote);
-    DDX_Text(pDX, IDC_EDIT_URL, m_strUrl);
-    DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
+	CPropertyPage::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST_REMOTE, m_ctrlRemoteList);
+	DDX_Text(pDX, IDC_EDIT_REMOTE, m_strRemote);
+	DDX_Text(pDX, IDC_EDIT_URL, m_strUrl);
+	DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
 }
 
 
 BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
-    ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CSettingGitRemote::OnBnClickedButtonBrowse)
-    ON_BN_CLICKED(IDC_BUTTON_ADD, &CSettingGitRemote::OnBnClickedButtonAdd)
-    ON_LBN_SELCHANGE(IDC_LIST_REMOTE, &CSettingGitRemote::OnLbnSelchangeListRemote)
-    ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
-    ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
-    ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
+	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CSettingGitRemote::OnBnClickedButtonBrowse)
+	ON_BN_CLICKED(IDC_BUTTON_ADD, &CSettingGitRemote::OnBnClickedButtonAdd)
+	ON_LBN_SELCHANGE(IDC_LIST_REMOTE, &CSettingGitRemote::OnLbnSelchangeListRemote)
+	ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
+	ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
+	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 END_MESSAGE_MAP()
 
@@ -76,7 +76,7 @@ BOOL CSettingGitRemote::OnInitDialog()
 			this->m_ctrlRemoteList.AddString(one);
 
 	}while(start>=0);
-	
+
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -85,12 +85,11 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 void CSettingGitRemote::OnBnClickedButtonBrowse()
 {
-    // TODO: Add your control notification handler code here
 	CFileDialog dlg(TRUE,NULL,
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 					_T("Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"));
-	
+
 	this->UpdateData();
 	if(dlg.DoModal()==IDOK)
 	{
@@ -98,13 +97,10 @@ void CSettingGitRemote::OnBnClickedButtonBrowse()
 		this->UpdateData(FALSE);
 		OnEnChangeEditPuttyKey();
 	}
-	
-
 }
 
 void CSettingGitRemote::OnBnClickedButtonAdd()
 {
-    // TODO: Add your control notification handler code here
 	this->UpdateData();
 
 	if(m_strRemote.IsEmpty())
@@ -149,7 +145,6 @@ BOOL CSettingGitRemote::IsRemoteExist(CString &remote)
 
 void CSettingGitRemote::OnLbnSelchangeListRemote()
 {
-    // TODO: Add your control notification handler code here
 	CWaitCursor wait;
 
 	if(m_ChangedMask)
@@ -195,13 +190,6 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 void CSettingGitRemote::OnEnChangeEditRemote()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
-
 	m_ChangedMask|=REMOTE_NAME;
 
 	this->UpdateData();
@@ -213,12 +201,6 @@ void CSettingGitRemote::OnEnChangeEditRemote()
 
 void CSettingGitRemote::OnEnChangeEditUrl()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
 	m_ChangedMask|=REMOTE_URL;
 
 	this->UpdateData();
@@ -230,12 +212,6 @@ void CSettingGitRemote::OnEnChangeEditUrl()
 
 void CSettingGitRemote::OnEnChangeEditPuttyKey()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
 	m_ChangedMask|=REMOTE_PUTTYKEY;
 
 	this->UpdateData();
@@ -295,7 +271,6 @@ BOOL CSettingGitRemote::OnApply()
 }
 void CSettingGitRemote::OnBnClickedButtonRemove()
 {
-	// TODO: Add your control notification handler code here
 	int index;
 	index=m_ctrlRemoteList.GetCurSel();
 	if(index>=0)

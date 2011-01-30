@@ -30,10 +30,6 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL, OnUpdateExpandAllProperties)
 	ON_COMMAND(ID_SORTPROPERTIES, OnSortProperties)
 	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
-	ON_COMMAND(ID_PROPERTIES1, OnProperties1)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1, OnUpdateProperties1)
-	ON_COMMAND(ID_PROPERTIES2, OnProperties2)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 END_MESSAGE_MAP()
@@ -130,26 +126,6 @@ void CPropertiesWnd::OnSortProperties()
 void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
-}
-
-void CPropertiesWnd::OnProperties1()
-{
-	// TODO: Add your command handler code here
-}
-
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/)
-{
-	// TODO: Add your command update UI handler code here
-}
-
-void CPropertiesWnd::OnProperties2()
-{
-	// TODO: Add your command handler code here
-}
-
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/)
-{
-	// TODO: Add your command update UI handler code here
 }
 
 void CPropertiesWnd::InitPropList()

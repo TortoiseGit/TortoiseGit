@@ -120,7 +120,6 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 void CFormatPatchDlg::OnBnClickedButtonDir()
 {
-	// TODO: Add your control notification handler code here
 	CBrowseFolder browseFolder;
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory;
@@ -171,8 +170,6 @@ void CFormatPatchDlg::OnBnClickedButtonTo()
 
 void CFormatPatchDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
-
 	m_cDir.SaveHistory();
 	m_cFrom.SaveHistory();
 	m_cTo.SaveHistory();
@@ -185,7 +182,6 @@ void CFormatPatchDlg::OnBnClickedOk()
 
 void CFormatPatchDlg::OnBnClickedRadio()
 {
-	// TODO: Add your control notification handler code here
 	int radio=this->GetCheckedRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE);
 	m_cSince.EnableWindow(FALSE);
 	m_cNum.EnableWindow(FALSE);

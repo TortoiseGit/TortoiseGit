@@ -61,14 +61,12 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 
 void CDeleteConflictDlg::OnBnClickedDelete()
 {
-	// TODO: Add your control notification handler code here
 	m_bIsDelete = TRUE;
 	OnOK();
 }
 
 void CDeleteConflictDlg::OnBnClickedModify()
 {
-	// TODO: Add your control notification handler code here
 	m_bIsDelete = FALSE;
 	OnOK();
 }

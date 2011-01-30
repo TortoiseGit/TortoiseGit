@@ -17,9 +17,9 @@ IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
 
 CSettingGitConfig::CSettingGitConfig()
 	: ISettingsPropPage(CSettingGitConfig::IDD)
-    , m_UserName(_T(""))
-    , m_UserEmail(_T(""))
-    , m_bGlobal(FALSE)
+	, m_UserName(_T(""))
+	, m_UserEmail(_T(""))
+	, m_bGlobal(FALSE)
 	, m_bAutoCrlf(FALSE)
 	, m_bSafeCrLf(FALSE)
 {
@@ -42,9 +42,9 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
-    ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
-    ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnEnChangeGitUsername)
-    ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
+	ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
+	ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnEnChangeGitUsername)
+	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
 	ON_BN_CLICKED(IDC_CHECK_SAFECRLF, &CSettingGitConfig::OnBnClickedCheckSafecrlf)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
@@ -75,7 +75,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
 	}
-	
+
 	this->UpdateData(FALSE);
 	return TRUE;
 }
@@ -83,39 +83,26 @@ BOOL CSettingGitConfig::OnInitDialog()
 
 void CSettingGitConfig::OnBnClickedCheckGlobal()
 {
-    // TODO: Add your control notification handler code here
-    SetModified();
+	SetModified();
 }
 
 void CSettingGitConfig::OnEnChangeGitUsername()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
 	m_ChangeMask|=GIT_NAME;
-    SetModified();
+	SetModified();
 }
 
 void CSettingGitConfig::OnEnChangeGitUseremail()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the ISettingsPropPage::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
 	m_ChangeMask|=GIT_EMAIL;
-    SetModified();
+	SetModified();
 }
 
 BOOL CSettingGitConfig::OnApply()
 {
-    CString cmd, out;
+	CString cmd, out;
 	CONFIG_TYPE type=CONFIG_LOCAL;
-    this->UpdateData(FALSE);
+	this->UpdateData(FALSE);
 	
 	if(this->m_bGlobal)
 		type = CONFIG_GLOBAL;
@@ -149,19 +136,17 @@ BOOL CSettingGitConfig::OnApply()
 		}
 
 	m_ChangeMask=0;
-    SetModified(FALSE);
+	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
 void CSettingGitConfig::OnBnClickedCheckAutocrlf()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask|=GIT_CRLF;
 	SetModified();
 }
 
 void CSettingGitConfig::OnBnClickedCheckSafecrlf()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask|=GIT_SAFECRLF;
 	SetModified();
 }

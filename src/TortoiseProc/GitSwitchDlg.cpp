@@ -90,10 +90,8 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 void CGitSwitchDlg::OnBnClickedChooseRadioHost()
 {
-	// TODO: Add your control notification handler code here
 	OnBnClickedChooseRadio();
 	SetDefaultName(TRUE);
-	
 }
 
 void CGitSwitchDlg::OnBnClickedShow()
@@ -120,7 +118,6 @@ void CGitSwitchDlg::OnBnClickedOk()
 }
 void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 {
-	// TODO: Add your control notification handler code here
 	this->UpdateData(TRUE);
 	this->UpdateRevsionName();
 
@@ -137,20 +134,20 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		
 		if(isUpdateCreateBranch)
 			this->m_bBranch=TRUE;
-		
+
 		this->m_bTrack=TRUE;
 
 	}else
 	{
 		m_NewBranch = CString(_T("Branch_"))+this->m_VersionName;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
-		
+
 		if(isUpdateCreateBranch)
 			this->m_bBranch=FALSE;
 
 		this->m_bTrack=FALSE;
 	}
-	
+
 	int radio=GetCheckedRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION);
 	if(radio==IDC_RADIO_TAGS || radio==IDC_RADIO_VERSION)
 	{
@@ -170,21 +167,16 @@ void CGitSwitchDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
-
-	// TODO: Add your message handler code here
 }
 
 void CGitSwitchDlg::OnCbenEndeditComboboxexVersion(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	// TODO: Add your control notification handler code here
-	
 	*pResult = 0;
 }
 
 void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 {
 	SetDefaultName(TRUE);
-	// TODO: Add your control notification handler code here
 }
 
 void CGitSwitchDlg::OnBnClickedCheckBranch()

@@ -88,7 +88,6 @@ BOOL CRefLogDlg::OnInitDialog()
 
 void CRefLogDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	if (m_RefList.GetSelectedCount() == 1)
 	{
 		// get the selected row

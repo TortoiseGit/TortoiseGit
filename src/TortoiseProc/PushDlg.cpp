@@ -17,7 +17,7 @@ IMPLEMENT_DYNAMIC(CPushDlg, CResizableStandAloneDialog)
 CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CPushDlg::IDD, pParent)
 {
-    m_bAutoLoad = CAppUtils::IsSSHPutty();
+	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
 
 CPushDlg::~CPushDlg()
@@ -34,7 +34,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
 	DDX_Check(pDX,IDC_TAGS,this->m_bTags);
-    DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
+	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
 
 }
 
@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 BOOL CPushDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-	
+
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDC_BRANCH_GROUP, TOP_LEFT,TOP_RIGHT);
@@ -77,9 +77,9 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_FORCE, TOP_LEFT);
 	AddAnchor(IDC_PACK, TOP_LEFT);
 	AddAnchor(IDC_TAGS, TOP_LEFT);
-    AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
+	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
 
-    AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
+	AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
@@ -189,8 +189,6 @@ void CPushDlg::Refresh()
 
 void CPushDlg::OnBnClickedRd()
 {
-	// TODO: Add your control notification handler code here
-	// TODO: Add your control notification handler code here
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_REMOTE)
 	{
 		m_Remote.EnableWindow(TRUE);
@@ -206,13 +204,11 @@ void CPushDlg::OnBnClickedRd()
 
 void CPushDlg::OnCbnSelchangeBranchSource()
 {
-	// TODO: Add your control notification handler code here
 	m_BranchRemote.AddString(m_BranchSource.GetString());
 }
 
 void CPushDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CResizableStandAloneDialog::UpdateData(TRUE);
 
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_REMOTE)
@@ -239,7 +235,6 @@ void CPushDlg::OnBnClickedOk()
 
 void CPushDlg::OnBnClickedRemoteManage()
 {
-    // TODO: Add your control notification handler code here
     CAppUtils::LaunchRemoteSetting();
 	Refresh();
 }

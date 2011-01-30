@@ -40,7 +40,6 @@ BOOL CPatchViewDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  Add extra initialization here
 	m_ctrlPatchView.Init(*m_pProjectProperties);
 	m_ctrlPatchView.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 
@@ -54,7 +53,6 @@ void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 
-	// TODO: Add your message handler code here
 	if (this->IsWindowVisible())
 	{
 		CRect rect;
@@ -65,7 +63,6 @@ void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 
 void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
-	// TODO: Add your message handler code here
 #define STICKYSIZE 5
 	RECT parentRect;
 	this->m_ParentCommitDlg->GetWindowRect(&parentRect);
@@ -83,12 +80,10 @@ void CPatchViewDlg::OnDestroy()
 	CDialog::OnDestroy();
 
 	this->m_ParentCommitDlg->ShowViewPatchText(true);
-	// TODO: Add your message handler code here
 }
 
 void CPatchViewDlg::OnClose()
 {
-	// TODO: Add your message handler code here and/or call default
 	CDialog::OnClose();
 	this->DestroyWindow();
 }

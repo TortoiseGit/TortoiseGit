@@ -90,7 +90,7 @@ BOOL CSettingsBugtraqConfig::OnApply()
 			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
 	}
-	
+
 	if(m_ChangeMask & BUG_WARNING)
 	{
 		if(g_Git.SetConfigValue(_T("bugtraq.warnifnoissue"),(!this->m_bNWarningifnoissue)?_T("true"):_T("false")))
@@ -106,7 +106,6 @@ BOOL CSettingsBugtraqConfig::OnApply()
 		{
 			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
-
 	}
 
 	if(m_ChangeMask & BUG_APPEND )
@@ -124,7 +123,6 @@ BOOL CSettingsBugtraqConfig::OnApply()
 		{
 			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
-
 	}
 
 	if(m_ChangeMask &BUG_NUMBER )
@@ -133,7 +131,6 @@ BOOL CSettingsBugtraqConfig::OnApply()
 		{
 			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 		}
-
 	}
 
 	if(m_ChangeMask & BUG_LOGREGEX)
@@ -153,90 +150,60 @@ BOOL CSettingsBugtraqConfig::OnApply()
 
 void CSettingsBugtraqConfig::OnEnChangeBugtraqUrl()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the ISettingsPropPage::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
 	m_ChangeMask |= BUG_URL;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnBnClickedBugtraqWarningifnoissueTrue()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask |= BUG_WARNING;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnBnClickedBugtraqWarningifnoissueFalse()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask |= BUG_WARNING;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnEnChangeBugtraqMessage()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the ISettingsPropPage::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
 	m_ChangeMask |= BUG_MESSAGE;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnBnClickedBugtraqAppendTrue()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask |= BUG_APPEND;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnBnClickedBugtraqAppendFalse()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask |= BUG_APPEND;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnEnChangeBugtraqLabel()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the ISettingsPropPage::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
 	m_ChangeMask |= BUG_LABEL;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnBnClickedBugtraqNumberTrue()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask |= BUG_NUMBER;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnBnClickedBugtraqNumberFalse()
 {
-	// TODO: Add your control notification handler code here
 	m_ChangeMask |= BUG_NUMBER;
 	SetModified();
 }
 
 void CSettingsBugtraqConfig::OnEnChangeBugtraqLogregex()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the ISettingsPropPage::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
 	m_ChangeMask |= BUG_LOGREGEX;
 	SetModified();
 }

@@ -19,6 +19,5 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-    afx_msg void OnEnChangeLinenumber();
-    DWORD m_LineNumber;
+	DWORD m_LineNumber;
 };

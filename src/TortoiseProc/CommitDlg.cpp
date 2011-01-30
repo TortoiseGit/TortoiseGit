@@ -104,13 +104,11 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady) 
 	ON_WM_TIMER()
-    ON_WM_SIZE()
+	ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
-	ON_STN_CLICKED(IDC_COMMITLABEL, &CCommitDlg::OnStnClickedCommitlabel)
-    ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
-    ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
-	ON_STN_CLICKED(IDC_BUGIDLABEL, &CCommitDlg::OnStnClickedBugidlabel)
+	ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
+	ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
 	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
 	ON_STN_CLICKED(IDC_VIEW_PATCH, &CCommitDlg::OnStnClickedViewPatch)
 	ON_WM_MOVE()
@@ -1122,10 +1120,10 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			dwShow &= ~SVNSLC_SHOWUNVERSIONED;
 		if(dwShow & SVNSLC_SHOWUNVERSIONED)
 		{
-            if(m_bWholeProject)
-                m_ListCtrl.GetStatus(NULL,false,false,true);
-            else
-			    m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
+			if(m_bWholeProject)
+				m_ListCtrl.GetStatus(NULL,false,false,true);
+			else
+				m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
 		m_ListCtrl.Show(dwShow,0,true,0,true);
 	}
@@ -1825,7 +1823,6 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 
 void CCommitDlg::OnBnClickedSignOff()
 {
-	// TODO: Add your control notification handler code here
 	CString str;
 	CString username;
 	CString email;
@@ -1838,14 +1835,8 @@ void CCommitDlg::OnBnClickedSignOff()
 	m_cLogMessage.SetText(m_cLogMessage.GetText()+_T("\r\n\r\n")+str);
 }
 
-void CCommitDlg::OnStnClickedCommitlabel()
-{
-	// TODO: Add your control notification handler code here
-}
-
 void CCommitDlg::OnBnClickedCommitAmend()
 {
-    // TODO: Add your control notification handler code here
 	this->UpdateData();
 	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
 	{
@@ -1858,44 +1849,35 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	{
 		this->m_NoAmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_AmendStr);
-
-	}else
+	}
+	else
 	{
 		this->m_AmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_NoAmendStr);
-
 	}
-
 }
 
 void CCommitDlg::OnBnClickedWholeProject()
 {
-    // TODO: Add your control notification handler code here
-    m_tooltips.Pop();	// hide the tooltips
+	m_tooltips.Pop();	// hide the tooltips
 	UpdateData();
-    m_ListCtrl.Clear();
+	m_ListCtrl.Clear();
 	if (!m_bBlock)
 	{
-	    if(m_bWholeProject)
-            m_ListCtrl.GetStatus(NULL,true,false,true);
-        else
-		    m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
-		
+		if(m_bWholeProject)
+			m_ListCtrl.GetStatus(NULL,true,false,true);
+		else
+			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
+
 		m_ListCtrl.Show(m_ListCtrl.GetShowFlags());
 	}
 
-   	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
 
-    if(this->m_bWholeProject)   
-        SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
-    else
-	    SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
-
-}
-
-void CCommitDlg::OnStnClickedBugidlabel()
-{
-	// TODO: Add your control notification handler code here
+	if(this->m_bWholeProject)   
+		SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
+	else
+		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 }
 
 void CCommitDlg::OnFocusMessage()
@@ -1920,8 +1902,6 @@ void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
 }
 void CCommitDlg::OnStnClickedViewPatch()
 {
-	// TODO: Add your control notification handler code here
-	
 	m_patchViewdlg.m_pProjectProperties = &this->m_ProjectProperties;
 	m_patchViewdlg.m_ParentCommitDlg = this;
 	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
@@ -1948,18 +1928,10 @@ void CCommitDlg::OnStnClickedViewPatch()
 	this->m_ctrlShowPatch.Invalidate();
 }
 
-void CCommitDlg::OnMove(int x, int y)
-{
-	__super::OnMove(x, y);
-
-	// TODO: Add your message handler code here
-}
-
 void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
 	__super::OnMoving(fwSide, pRect);
 
-	// TODO: Add your message handler code here
 	if (::IsWindow(m_patchViewdlg.m_hWnd))
 	{
 		RECT patchrect;
@@ -2004,13 +1976,11 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 			m_patchViewdlg.MoveWindow(patchrect);
 		}
 	}
-	// TODO: Add your message handler code here
 }
 
 void CCommitDlg::OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-	// TODO: Add your control notification handler code here
 	*pResult = 0;
 	TRACE("Item Changed\r\n");
 }
@@ -2025,8 +1995,6 @@ int CCommitDlg::CheckHeadDetach()
 		{
 			CAppUtils::CreateBranchTag(FALSE,NULL,true);
 		}
-
 	}
 	return 0;
-
 }

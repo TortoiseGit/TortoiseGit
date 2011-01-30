@@ -67,6 +67,5 @@ void CSVNDCommitDlg::OnBnClickedOk()
 
 void CSVNDCommitDlg::OnBnClickedHelp()
 {
-	// TODO: Add your control notification handler code here
 	OnHelp();
 }
