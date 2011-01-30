@@ -28,6 +28,7 @@ void viewstate::AddLineFormView(CBaseView *pView, int nLine, bool bAddEmptyLine)
 		return;
 	difflines[nLine] = pView->m_pViewData->GetLine(nLine);
 	linestates[nLine] = pView->m_pViewData->GetState(nLine);
+	linesEOL[nLine] = pView->m_pViewData->GetLineEnding(nLine);
 	if (bAddEmptyLine)
 	{
 		addedlines.push_back(nLine + 1);
@@ -148,6 +149,13 @@ void CUndo::Undo(const viewstate& state, CBaseView * pView)
 		if (pView->m_pViewData)
 		{
 			pView->m_pViewData->SetState(it->first, (DiffStates)it->second);
+		}
+	}
+	for (std::map<int, EOL>::const_iterator it = state.linesEOL.begin(); it != state.linesEOL.end(); ++it)
+	{
+		if (pView->m_pViewData)
+		{
+			pView->m_pViewData->SetLineEnding(it->first, (EOL)it->second);
 		}
 	}
 	for (std::map<int, CString>::const_iterator it = state.difflines.begin(); it != state.difflines.end(); ++it)

@@ -8,6 +8,7 @@
  * Fixed issue #644: Dropped "Check repository" button on check for modifications dialog
  * Allow to diff two revisions of a file by calling TortoiseProc
  * Fixed issue #480: Implement text copying opportunities in the dialogs
+ * Allow to change EOL by pressing CTRL+Return in TortoiseMerge
 
  * TortoiseGitBlame
    Clicking on a line automatically selects the log entry in the loglist

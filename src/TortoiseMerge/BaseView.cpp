@@ -2722,6 +2722,26 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		m_ptCaretPos.x++;
 		UpdateGoalPos();
 	}
+	else if (nChar == 10)
+	{
+		AddUndoLine(m_ptCaretPos.y);
+		EOL eol = m_pViewData->GetLineEnding(m_ptCaretPos.y);
+		EOL newEOL = EOL_CRLF;
+		switch (eol) {
+			case EOL_CRLF:
+				newEOL = EOL_CR;
+				break;
+			case EOL_CR:
+				newEOL = EOL_LF;
+				break;
+			case EOL_LF:
+				newEOL = EOL_CRLF;
+				break;
+		}
+		m_pViewData->SetLineEnding(m_ptCaretPos.y, newEOL);
+		m_pViewData->SetState(m_ptCaretPos.y, DIFFSTATE_EDITED);
+		UpdateGoalPos();
+	}
 	else if (nChar == VK_RETURN)
 	{
 		// insert a new, fresh and empty line below the cursor

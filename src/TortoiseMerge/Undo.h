@@ -32,6 +32,7 @@ typedef struct viewstate
 	std::map<int, CString> difflines;
 	std::map<int, DWORD> linestates;
 	std::map<int, DWORD> linelines;
+	std::map<int, EOL> linesEOL;
 	std::list<int> addedlines;
 
 	std::map<int, viewdata> removedlines;
