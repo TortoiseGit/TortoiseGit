@@ -2799,7 +2799,13 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=_T("\n");
 			str+=pLogEntry->GetSubject();
 			str+=_T("\n");
+#if 0
+			/*Because changed files list is loaded on demand when gui show, 
+			  files will empty when files have not fetched.
 
+			  we can add it back by using one-way diff(with outnumber changed and rename detect.
+			  here just need changed filename list. one-way is much quicker.
+			*/
 			for(int i=0;i<pLogEntry->GetFiles(this).GetCount();i++)
 			{
 				str+=pLogEntry->GetFiles(this)[i].GetWinPath();
@@ -2807,7 +2813,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				str+=pLogEntry->GetFiles(this)[i].GetGitOldPathString();
 				str+=_T("\n");
 			}
-
+#endif
 			if (bRegex)
 			{
 				
