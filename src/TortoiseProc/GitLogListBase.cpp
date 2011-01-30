@@ -182,7 +182,7 @@ int CGitLogListBase::AsyncDiffThread()
 
 			if(!pRev->CheckAndDiff())
 			{	// fetch change file list
-				for(int i=GetTopIndex();i <= GetTopIndex()+GetCountPerPage(); i++)
+				for(int i=GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex()+GetCountPerPage(); i++)
 				{
 					if(i< m_arShownList.GetCount())
 					{
@@ -195,7 +195,7 @@ int CGitLogListBase::AsyncDiffThread()
 					}
 				}
 
-				if(GetSelectedCount() == 1)
+				if(!m_AsyncThreadExit && GetSelectedCount() == 1)
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					int nItem = GetNextSelectedItem(pos);
