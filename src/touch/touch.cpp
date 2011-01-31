@@ -25,12 +25,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 						int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	MSG msg;
-	HACCEL hAccelTable;
-	
-	if(_tcslen(lpCmdLine) ==0)
+	if(_tcslen(lpCmdLine) == 0)
 		return -1;
 
 	//GetLongPathName(lpCmdLine,longname,MAX_PATH);
@@ -38,7 +34,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	if(lpCmdLine[0] == '\"')
 	{
 		lpCmdLine ++;
-		for(int i=0;i<_tcslen(lpCmdLine);i++)
+		for(size_t i=0;i<_tcslen(lpCmdLine);i++)
 			if(lpCmdLine[i]== '\"')
 			{
 				lpCmdLine[i]=0;
@@ -53,7 +49,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	DWORD attr=GetFileAttributes(lpCmdLine);
 	SetFileAttributes(lpCmdLine,attr);
 	return 0;
-
 }
 
 //

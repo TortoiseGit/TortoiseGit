@@ -29,10 +29,6 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 					 int			nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
-
-	MSG msg;
-	HACCEL hAccelTable;
 
 	if( _tcslen(lpCmdLine) == 0 )
 	{
@@ -43,7 +39,7 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 		g_Prompt = lpCmdLine;
 	}
 
-	_tcslwr(lpCmdLine); //low case
+	_wcslwr_s(lpCmdLine, _tcslen(lpCmdLine)); // lower case
 
 	TCHAR *yesno=_T("(yes/no)");
 	int lens=_tcslen(yesno);
