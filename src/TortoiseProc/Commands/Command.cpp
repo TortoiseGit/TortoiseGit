@@ -451,7 +451,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new UrlDiffCommand;
 #endif
 	default:
-		CMessageBox::Show(hWndExplorer, _T("Have not implemented"), _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(hWndExplorer, _T("Command not implemented"), _T("TortoiseGit"), MB_ICONERROR);
 		return new AboutCommand;
 	}
 }
