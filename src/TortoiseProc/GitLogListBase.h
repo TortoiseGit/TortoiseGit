@@ -63,6 +63,51 @@ enum LISTITEMSTATES_MINE {
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
 #define MSG_FETCHED_DIFF		(WM_USER+113)
 
+class CThreadSafePtrArray: public CPtrArray
+{
+	CComCriticalSection *m_critSec;
+public:
+	CThreadSafePtrArray(CComCriticalSection *section){ m_critSec = section ;}
+	void * SafeGetAt(INT_PTR i)
+	{
+		if(m_critSec)
+			m_critSec->Lock();
+		
+		if( i<0 || i>=GetCount())
+		{	
+			if(m_critSec)
+				m_critSec->Unlock();
+			
+			return NULL;
+		}
+		
+		if(m_critSec)
+			m_critSec->Unlock();
+		
+		return GetAt(i);
+	}
+	INT_PTR SafeAdd(void *newElement)
+	{
+		INT_PTR ret;
+		if(m_critSec)
+			m_critSec->Lock();
+		ret = Add(newElement);
+		if(m_critSec)
+			m_critSec->Unlock();
+		return ret;
+	}
+
+	void  SafeRemoveAll()
+	{
+		if(m_critSec)
+			m_critSec->Lock();
+		RemoveAll();
+		if(m_critSec)
+			m_critSec->Unlock();
+	}
+
+};
+
 class CGitLogListBase : public CHintListCtrl
 {
 	DECLARE_DYNAMIC(CGitLogListBase)
@@ -218,9 +263,9 @@ public:
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);
-	CPtrArray			m_arShownList;
+	CThreadSafePtrArray			m_arShownList;
 	void Refresh(BOOL IsCleanFilter=TRUE);
-	void RecalculateShownList(CPtrArray * pShownlist);
+	void RecalculateShownList(CThreadSafePtrArray * pShownlist);
 	void Clear();
 
 	int					m_nSelectedFilter;

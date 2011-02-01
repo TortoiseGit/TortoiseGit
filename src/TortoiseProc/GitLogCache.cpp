@@ -79,6 +79,7 @@ GitRev * CLogCache::GetCacheData(CGitHash &hash)
 
 ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
 {
+
 	if(pData==NULL)
 		pData = m_pCacheIndex;
 
@@ -285,7 +286,7 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		_tcsncpy(file.GetBufferSetLength(fileheader->m_FileNameSize), fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
 		{
-			_tcsncpy(oldfile.GetBufferSetLength(fileheader->m_FileNameSize), 
+			_tcsncpy(oldfile.GetBufferSetLength(fileheader->m_OldFileNameSize), 
 					fileheader->m_FileName+fileheader->m_FileNameSize,
 					fileheader->m_OldFileNameSize);
 		}

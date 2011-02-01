@@ -568,7 +568,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
-		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
+		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(selIndex));
 
 		{
 			// set the log message text
@@ -801,7 +801,7 @@ BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString
 	{
 		for (INT_PTR cpPathIndex = 0; cpPathIndex < cpaths->GetCount(); ++cpPathIndex)
 		{
-			LogChangedPath * cpath = cpaths->GetAt(cpPathIndex);
+			LogChangedPath * cpath = cpaths->SafeGetAt(cpPathIndex);
 			if (!cpath->sCopyFromPath.IsEmpty() && (cpath->sPath.Compare(m_sSelfRelativeURL) == 0))
 			{
 				// note: this only works if the log is fetched top-to-bottom
@@ -876,7 +876,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 
 	CString sPaths;
 
-//	CGitRev* pLogEntry = reinterpret_cast<CGitRev* >(m_LogList.m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+//	CGitRev* pLogEntry = reinterpret_cast<CGitRev* >(m_LogList.m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 //	if (pos)
 	{
 		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
@@ -898,7 +898,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 		while (pos)
 		{
 			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			LogChangedPath * changedlogpath = pLogEntry->pArChangedPaths->GetAt(nItem);
+			LogChangedPath * changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(nItem);
 
 			if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
 			{
@@ -906,11 +906,11 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 				INT_PTR selRealIndex = -1;
 				for (INT_PTR hiddenindex=0; hiddenindex<pLogEntry->pArChangedPaths->GetCount(); ++hiddenindex)
 				{
-					if (pLogEntry->pArChangedPaths->GetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
+					if (pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
 						selRealIndex++;
 					if (selRealIndex == nItem)
 					{
-						changedlogpath = pLogEntry->pArChangedPaths->GetAt(hiddenindex);
+						changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex);
 						break;
 					}
 				}
@@ -1037,7 +1037,7 @@ void CLogDlg::OnOK()
 		if (selIndex < m_LogList.m_arShownList.GetCount())
 		{
 			// all ok, pick up the revision
-			GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(selIndex));
+			GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(selIndex));
 			// extract the hash
 			m_sSelectedHash = pLogEntry->m_CommitHash;
 		}
@@ -1066,13 +1066,13 @@ void CLogDlg::OnOK()
 		{
 			PLOGENTRYDATA pLogEntry = NULL;
 			POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 			m_selectedRevs.AddRevision(pLogEntry->Rev);
 			git_revnum_t lowerRev = pLogEntry->Rev;
 			git_revnum_t higherRev = lowerRev;
 			while (pos)
 			{
-				pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+				pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 				git_revnum_t rev = pLogEntry->Rev;
 				m_selectedRevs.AddRevision(pLogEntry->Rev);
 				if (lowerRev > rev)
@@ -1100,7 +1100,7 @@ void CLogDlg::OnOK()
 					sUrl = sUrl.Mid(m_sRepositoryRoot.GetLength());
 					for (int cp = 0; cp < pLogEntry->pArChangedPaths->GetCount(); ++cp)
 					{
-						LogChangedPath * pData = pLogEntry->pArChangedPaths->GetAt(cp);
+						LogChangedPath * pData = pLogEntry->pArChangedPaths->SafeGetAt(cp);
 						if (pData)
 						{
 							if (sUrl.Compare(pData->sPath) == 0)
@@ -1156,7 +1156,7 @@ void CLogDlg::DiffSelectedFile()
 		return;
 	// find out if there's an entry selected in the log list
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 	git_revnum_t rev1 = pLogEntry->Rev;
 	git_revnum_t rev2 = rev1;
 	if (pos)
@@ -1164,7 +1164,7 @@ void CLogDlg::DiffSelectedFile()
 		while (pos)
 		{
 			// there's at least a second entry selected in the log list: several revisions selected!
-			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 			if (pLogEntry)
 			{
 				rev1 = max(rev1,(long)pLogEntry->Rev);
@@ -1180,7 +1180,7 @@ void CLogDlg::DiffSelectedFile()
 	{
 		rev2 = rev1-1;
 		// nothing or only one revision selected in the log list
-		LogChangedPath * changedpath = pLogEntry->pArChangedPaths->GetAt(selIndex);
+		LogChangedPath * changedpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
 
 		if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
 		{
@@ -1188,12 +1188,12 @@ void CLogDlg::DiffSelectedFile()
 			INT_PTR selRealIndex = -1;
 			for (INT_PTR hiddenindex=0; hiddenindex<pLogEntry->pArChangedPaths->GetCount(); ++hiddenindex)
 			{
-				if (pLogEntry->pArChangedPaths->GetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
+				if (pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
 					selRealIndex++;
 				if (selRealIndex == selIndex)
 				{
 					selIndex = hiddenindex;
-					changedpath = pLogEntry->pArChangedPaths->GetAt(selIndex);
+					changedpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
 					break;
 				}
 			}
@@ -1211,11 +1211,11 @@ void CLogDlg::DiffSelectedFile()
 				CTGitPath cpath = CTGitPath(changedpath->sPath);
 				for (int flist = 0; flist < pLogEntry->pArChangedPaths->GetCount(); ++flist)
 				{
-					CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->GetAt(flist)->sPath);
+					CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->SafeGetAt(flist)->sPath);
 					if (p.IsAncestorOf(cpath))
 					{
-						if (!pLogEntry->pArChangedPaths->GetAt(flist)->sCopyFromPath.IsEmpty())
-							rev2 = pLogEntry->pArChangedPaths->GetAt(flist)->lCopyFromRev;
+						if (!pLogEntry->pArChangedPaths->SafeGetAt(flist)->sCopyFromPath.IsEmpty())
+							rev2 = pLogEntry->pArChangedPaths->SafeGetAt(flist)->lCopyFromRev;
 					}
 				}
 			}
@@ -1330,8 +1330,8 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool b
 	if (m_LogList.GetSelectedCount()==1)
 	{
 		int s = m_LogList.GetSelectionMark();
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(s));
-		LogChangedPath * changedpath = pLogEntry->pArChangedPaths->GetAt(selIndex);
+		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(s));
+		LogChangedPath * changedpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
 		firstfile = changedpath->sPath;
 		secondfile = firstfile;
 		if ((rev2 == rev1-1)&&(changedpath->lCopyFromRev > 0)) // is it an added file with history?
@@ -1542,7 +1542,7 @@ void CLogDlg::EditLogMessage(int /*index*/)
 	}
 	name = Git_PROP_REVISION_LOG;
 
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(index));
+	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(index));
 	m_bCancelled = FALSE;
 	CString value = RevPropertyGet(name, CTGitPath(url), pLogEntry->Rev);
 	CString sOldValue = value;
@@ -1852,7 +1852,7 @@ void CLogDlg::OnBnClickedStatbutton()
 		return;		// nothing is shown, so no statistics.
 	// the statistics dialog expects the log entries to be sorted by date
 	SortByColumn(3, false);
-	CPtrArray shownlist;
+	CThreadSafePtrArray shownlist(NULL);
 	m_LogList.RecalculateShownList(&shownlist);
 	// create arrays which are aware of the current filter
 	CStringArray m_arAuthorsFiltered;
@@ -1860,7 +1860,7 @@ void CLogDlg::OnBnClickedStatbutton()
 	CDWordArray m_arFileChangesFiltered;
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
-		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.GetAt(i));
+		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.SafeGetAt(i));
 		CString strAuthor = pLogEntry->GetAuthorName();
 		if ( strAuthor.IsEmpty() )
 		{
@@ -2245,11 +2245,11 @@ CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool /*bRelativePath
 			int nextpos = m_LogList.GetNextSelectedItem(pos);
 			if (nextpos >= m_arShownList.GetCount())
 				continue;
-			PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(nextpos));
+			PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(nextpos));
 			LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
 			for (INT_PTR cpPathIndex = 0; cpPathIndex<cpatharray->GetCount(); ++cpPathIndex)
 			{
-				LogChangedPath * cpath = cpatharray->GetAt(cpPathIndex);
+				LogChangedPath * cpath = cpatharray->SafeGetAt(cpPathIndex);
 				if (cpath == NULL)
 					continue;
 				CTGitPath path;
@@ -2477,12 +2477,12 @@ void CLogDlg::UpdateLogInfoLabel()
 	int start = 0;
 	if (count)
 	{
-		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(0)))->m_CommitHash;
+		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.SafeGetAt(0)))->m_CommitHash;
 		if(this->m_LogList.m_bShowWC && rev1.IsEmpty()&&(count>1))
 			start = 1;
-		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(start)))->m_CommitHash;
-		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_arShownList.GetCount()-1));
-		rev2 =  (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.GetAt(count-1)))->m_CommitHash;
+		rev1 = (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.SafeGetAt(start)))->m_CommitHash;
+		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_arShownList.GetCount()-1));
+		rev2 =  (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.SafeGetAt(count-1)))->m_CommitHash;
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
@@ -2526,16 +2526,16 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 
 	bool bOneRev = true;
 	int sel=m_LogList.GetNextSelectedItem(pos);
-	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(sel));
+	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(sel));
 	GitRev * rev1 = pLogEntry;
-	GitRev * rev2 = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.GetAt(sel+1));
+	GitRev * rev2 = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(sel+1));
 #if 0
 	bool bOneRev = true;
 	if (pos)
 	{
 		while (pos)
 		{
-			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetNextSelectedItem(pos)));
+			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
 			if (pLogEntry)
 			{
 				rev1 = max(rev1,(git_revnum_t)pLogEntry->Rev);
@@ -2562,7 +2562,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 		while (pos)
 		{
 			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			LogChangedPath * changedlogpath = pLogEntry->pArChangedPaths->GetAt(nItem);
+			LogChangedPath * changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(nItem);
 
 			if (m_ChangedFileListCtrl.GetSelectedCount() == 1)
 			{
@@ -2575,11 +2575,11 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 					CTGitPath cpath = CTGitPath(changedlogpath->sPath);
 					for (int flist = 0; flist < pLogEntry->pArChangedPaths->GetCount(); ++flist)
 					{
-						CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->GetAt(flist)->sPath);
+						CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->SafeGetAt(flist)->sPath);
 						if (p.IsAncestorOf(cpath))
 						{
-							if (!pLogEntry->pArChangedPaths->GetAt(flist)->sCopyFromPath.IsEmpty())
-								rev2 = pLogEntry->pArChangedPaths->GetAt(flist)->lCopyFromRev;
+							if (!pLogEntry->pArChangedPaths->SafeGetAt(flist)->sCopyFromPath.IsEmpty())
+								rev2 = pLogEntry->pArChangedPaths->SafeGetAt(flist)->lCopyFromRev;
 						}
 					}
 				}
@@ -2590,12 +2590,12 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 				INT_PTR selRealIndex = -1;
 				for (INT_PTR hiddenindex=0; hiddenindex<pLogEntry->pArChangedPaths->GetCount(); ++hiddenindex)
 				{
-					if (pLogEntry->pArChangedPaths->GetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
+					if (pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
 						selRealIndex++;
 					if (selRealIndex == nItem)
 					{
 						selIndex = hiddenindex;
-						changedlogpath = pLogEntry->pArChangedPaths->GetAt(selIndex);
+						changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
 						break;
 					}
 				}
@@ -2911,7 +2911,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 			bOpenWith = true;
 		case ID_OPEN:
 			{
-				GitRev getrev = pLogEntry->pArChangedPaths->GetAt(selIndex)->action == LOGACTIONS_DELETED ? rev2 : rev1;
+				GitRev getrev = pLogEntry->pArChangedPaths->SafeGetAt(selIndex)->action == LOGACTIONS_DELETED ? rev2 : rev1;
 				Open(bOpenWith,changedpaths[0],getrev);
 			}
 			break;
@@ -3018,7 +3018,7 @@ void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
 			break;
 		case ID_VIEWPATHREV:
 			{
-				PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.GetAt(m_LogList.GetSelectionMark()));
+				PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetSelectionMark()));
 				GitRev rev = pLogEntry->Rev;
 				CString relurl = changedpaths[0];
 				CString url = m_ProjectProperties.sWebViewerPathRev;
