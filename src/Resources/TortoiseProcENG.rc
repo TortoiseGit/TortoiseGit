@@ -3465,7 +3465,6 @@ BEGIN
     IDS_ERR_NOTUPTODATE     "The working copy is not up to date!\nPlease Update first."
     IDS_ERR_FAILEDIGNOREPROPERTY "Could not add %s to the ignore list!"
     IDS_ERR_DIFFVIEWSTART   "Could not start diff viewer!\n<hr=100%%>\n%s"
-    IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_ERR_SSL_VALIDATE    "Error validating server certificate for %s:"
     IDS_ERR_SSL_UNKNOWNCA   "Unknown certificate issuer.\n  Fingerprint: %s\n  Distinguished name: %s"
 END
@@ -3482,6 +3481,7 @@ BEGIN
     IDS_FILEDIFF_STATDEL    "Del"
     IDS_LOG_FILE_LINE_ADD   "Add"
     1014                    "Del"
+    IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
 END
 
 STRINGTABLE 
@@ -4725,7 +4725,6 @@ BEGIN
     IDS_SETTINGS_LOGCACHE_POWERDEFAULT 
                             "Apply 'Power User' defaults. Those will provide a smoother experience.\nYou should know the meaning of all the settings above."
 END
-
 
 STRINGTABLE 
 BEGIN
