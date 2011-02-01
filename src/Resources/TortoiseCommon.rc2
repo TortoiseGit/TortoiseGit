@@ -45,7 +45,7 @@ BEGIN
     IDS_LOG_POPUP_BLAMECOMPARE "Compare and &blame with working BASE"
     IDS_LOG_POPUP_BLAMEREVS "&Blame revisions"
     IDS_LOG_POPUP_BLAMEDIFF "&Blame changes"
-    IDS_LOG_POPUP_VIEWREV   "View revision in Notepad2"
+    IDS_LOG_POPUP_VIEWREV   "View revision in alternative editor"
     IDS_LOG_POPUP_VIEWPATHREV "View revision for path in &webviewer"
     IDS_LOG_POPUP_COMPAREWITHPREVIOUS "Compare with previous revision"
     IDS_LOG_POPUP_BLAMEWITHPREVIOUS "Compare and blame with previous revision"

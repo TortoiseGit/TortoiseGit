@@ -2689,7 +2689,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			switch (cmd)
 			{
 			case IDSVNLC_VIEWREV:
-				OpenFile(filepath,NOTEPAD2);
+				OpenFile(filepath, ALTERNATIVEEDITOR);
 				break;
 			case IDSVNLC_OPEN:
 				OpenFile(filepath,OPEN);
@@ -5910,9 +5910,9 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		}
 
 	}
-	if(mode == NOTEPAD2)
+	if(mode == ALTERNATIVEEDITOR)
 	{
-		CAppUtils::LaunchNotepad2(file);
+		CAppUtils::LaunchAlternativeEditor(file);
 		return;
 	}
 	int ret = HINSTANCE_ERROR;

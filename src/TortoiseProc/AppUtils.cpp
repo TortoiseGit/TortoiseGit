@@ -706,7 +706,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	::DeleteFile(tempfile);
 	return true;
 }
-bool CAppUtils::LaunchNotepad2(const CString& filename)
+bool CAppUtils::LaunchAlternativeEditor(const CString& filename)
 {
 	CString sCmd;
 	sCmd.Format(_T("\"%s\" \"%s\""),

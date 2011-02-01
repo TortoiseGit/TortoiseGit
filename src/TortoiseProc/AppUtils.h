@@ -120,9 +120,9 @@ public:
 		const CString& sBlameFile, CString Rev, const CString& sParams = CString());
 
 	/**
-	* Launch notepad2
+	* Launch alternative editor
 	*/
-	static bool LaunchNotepad2(const CString& filename);
+	static bool LaunchAlternativeEditor(const CString& filename);
 
 	/**
 	 * Formats text in a rich edit control (version 2).
