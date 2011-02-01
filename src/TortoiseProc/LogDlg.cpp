@@ -1845,7 +1845,6 @@ public:
 
 void CLogDlg::OnBnClickedStatbutton()
 {
-
 	if (this->IsThreadRunning())
 		return;
 	if (m_LogList.m_arShownList.IsEmpty())
@@ -1861,6 +1860,12 @@ void CLogDlg::OnBnClickedStatbutton()
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.SafeGetAt(i));
+
+		// do not take working dir changes into statistics
+		if (pLogEntry->m_CommitHash.IsEmpty()) {
+			continue;
+		}
+
 		CString strAuthor = pLogEntry->GetAuthorName();
 		if ( strAuthor.IsEmpty() )
 		{
@@ -1886,7 +1891,6 @@ void CLogDlg::OnBnClickedStatbutton()
 	// restore the previous sorting
 	SortByColumn(m_nSortColumn, m_bAscending);
 	OnTimer(LOGFILTER_TIMER);
-
 }
 
 void CLogDlg::DoSizeV1(int delta)
