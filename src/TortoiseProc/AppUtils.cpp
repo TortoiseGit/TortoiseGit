@@ -706,6 +706,19 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	::DeleteFile(tempfile);
 	return true;
 }
+bool CAppUtils::LaunchAlternativeEditor(const CString& filename)
+{
+	CString editTool = CRegString(_T("Software\\TortoiseGit\\AlternativeEditor"));
+	if (editTool.IsEmpty() || (editTool.Left(1).Compare(_T("#"))==0)) {
+		editTool = CPathUtils::GetAppDirectory() + _T("notepad2.exe");
+	}
+
+	CString sCmd;
+	sCmd.Format(_T("\"%s\" \"%s\""), editTool, filename);
+
+	LaunchApplication(sCmd, NULL, false);
+	return true;
+}
 bool CAppUtils::LaunchRemoteSetting()
 {
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &CTGitPath(g_Git.m_CurrentDir));

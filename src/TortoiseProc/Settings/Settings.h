@@ -23,6 +23,7 @@
 #include "SetProxyPage.h"
 #include "SetOverlayPage.h"
 #include "SettingsProgsDiff.h"
+#include "SettingsProgsAlternativeEditor.h"
 #include "SettingsProgsMerge.h"
 #include "SettingsProgsUniDiff.h"
 #include "SetOverlayIcons.h"
@@ -77,6 +78,7 @@ private:
 	CSettingsProgsDiff*		m_pProgsDiffPage;
 	CSettingsProgsMerge *	m_pProgsMergePage;
 	CSettingsProgsUniDiff * m_pProgsUniDiffPage;
+	CSettingsProgsAlternativeEditor * m_pProgsAlternativeEditor;
 	CSetLookAndFeelPage *	m_pLookAndFeelPage;
 	CSetDialogs *			m_pDialogsPage;
     CSettingsRevisionGraph* m_pRevisionGraphPage;

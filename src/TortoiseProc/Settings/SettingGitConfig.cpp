@@ -157,20 +157,14 @@ void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 	SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, buf);
 	CString path = buf;
 	path += _T("\\.gitconfig");
-	CString sCmd;
-	// use Notepad2 because of LineEndings
-	sCmd.Format(_T("\"%s\" \"%s\""),
-		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("notepad2.exe")), path);
-	CAppUtils::LaunchApplication(sCmd, NULL, false);
+	// use alternative editor because of LineEndings
+	CAppUtils::LaunchAlternativeEditor(path);
 }
 
 void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 {
 	CString path = g_Git.m_CurrentDir;
 	path += _T("\\.git\\config");
-	CString sCmd;
-	// use Notepad2 because of LineEndings
-	sCmd.Format(_T("\"%s\" \"%s\""),
-		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("notepad2.exe")), path);
-	CAppUtils::LaunchApplication(sCmd, NULL, false);
+	// use alternative editor because of LineEndings
+	CAppUtils::LaunchAlternativeEditor(path);
 }

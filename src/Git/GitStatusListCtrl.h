@@ -1008,7 +1008,7 @@ private:
 	
 	enum
 	{
-		NOTEPAD2,
+		ALTERNATIVEEDITOR,
 		OPEN,
 		OPEN_WITH,
 	};

@@ -118,7 +118,12 @@ public:
 	*/
 	static bool LaunchTortoiseBlame(
 		const CString& sBlameFile, CString Rev, const CString& sParams = CString());
-	
+
+	/**
+	* Launch alternative editor
+	*/
+	static bool LaunchAlternativeEditor(const CString& filename);
+
 	/**
 	 * Formats text in a rich edit control (version 2).
 	 * text in between * chars is formatted bold

@@ -49,6 +49,7 @@ void CSettings::AddPropPages()
 	m_pProgsDiffPage = new CSettingsProgsDiff();
 	m_pProgsMergePage = new CSettingsProgsMerge();
 	m_pProgsUniDiffPage = new CSettingsProgsUniDiff();
+	m_pProgsAlternativeEditor = new CSettingsProgsAlternativeEditor();
 	m_pLookAndFeelPage = new CSetLookAndFeelPage();
 	
 	m_pExtMenu	= new CSetExtMenu();
@@ -78,6 +79,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pProxyPage, m_pProxyPage->GetIconID());
 	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
 	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
+	SetPageIcon(m_pProgsAlternativeEditor, m_pProgsAlternativeEditor->GetIconID());
 	SetPageIcon(m_pProgsUniDiffPage, m_pProgsUniDiffPage->GetIconID());
 	SetPageIcon(m_pLookAndFeelPage, m_pLookAndFeelPage->GetIconID());
 	SetPageIcon(m_pDialogsPage, m_pDialogsPage->GetIconID());
@@ -105,6 +107,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pProgsDiffPage);
 	AddPage(m_pProgsMergePage);
 	AddPage(m_pProgsUniDiffPage);
+	AddPage(m_pProgsAlternativeEditor);
 	AddPage(m_pLookAndFeelPage);
 	AddPage(m_pExtMenu);
 	AddPage(m_pDialogsPage);
@@ -141,6 +144,7 @@ void CSettings::RemovePropPages()
 	delete m_pProgsDiffPage;
 	delete m_pProgsMergePage;
 	delete m_pProgsUniDiffPage;
+	delete m_pProgsAlternativeEditor;
 	delete m_pLookAndFeelPage;
 	delete m_pDialogsPage;
 //    delete m_pRevisionGraphPage;
@@ -172,6 +176,7 @@ void CSettings::HandleRestart()
 	restart |= m_pProgsDiffPage->GetRestart();
 	restart |= m_pProgsMergePage->GetRestart();
 	restart |= m_pProgsUniDiffPage->GetRestart();
+	restart |= m_pProgsAlternativeEditor->GetRestart();
 	restart |= m_pLookAndFeelPage->GetRestart();
 	restart |= m_pDialogsPage->GetRestart();
 //    restart |= m_pRevisionGraphPage->GetRestart();
@@ -319,6 +324,10 @@ BOOL CSettings::OnInitDialog()
 	if(this->m_DefaultPage == _T("unidiff"))
 	{
 		this->SetActivePage(this->m_pProgsUniDiffPage);
+	}
+	if(this->m_DefaultPage == _T("alternativeeditor"))
+	{
+		this->SetActivePage(this->m_pProgsAlternativeEditor);
 	}
 	if(this->m_DefaultPage == _T("look"))
 	{
