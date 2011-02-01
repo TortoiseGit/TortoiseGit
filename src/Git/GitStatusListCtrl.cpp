@@ -5912,12 +5912,8 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 	}
 	if(mode == NOTEPAD2)
 	{
-		CString sCmd;
-		sCmd.Format(_T("\"%s\" \"%s\""),
-			(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("notepad2.exe")), file);
-
-		CAppUtils::LaunchApplication(sCmd, NULL, false);
-		return ;
+		CAppUtils::LaunchNotepad2(file);
+		return;
 	}
 	int ret = HINSTANCE_ERROR;
 

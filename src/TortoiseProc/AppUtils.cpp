@@ -706,6 +706,15 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	::DeleteFile(tempfile);
 	return true;
 }
+bool CAppUtils::LaunchNotepad2(const CString& filename)
+{
+	CString sCmd;
+	sCmd.Format(_T("\"%s\" \"%s\""),
+		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("notepad2.exe")), filename);
+
+	LaunchApplication(sCmd, NULL, false);
+	return true;
+}
 bool CAppUtils::LaunchRemoteSetting()
 {
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &CTGitPath(g_Git.m_CurrentDir));
