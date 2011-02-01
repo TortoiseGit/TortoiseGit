@@ -1792,6 +1792,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Settings\SettingsProgsAlternativeEditor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingsProgsAlternativeEditor.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SettingsProgsDiff.cpp"
 					>
 				</File>

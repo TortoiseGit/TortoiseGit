@@ -2116,6 +2116,18 @@ BEGIN
     LTEXT           "If you plan to work inside this folder, leave this unchecked. Typically a bare repo can only have changes 'pushed' to it. (By convention, a bare repo folder should have a name that ends with '.git')",IDC_INIT_REPO_DESC,31,32,269,35
 END
 
+IDD_SETTINGSPROGSALTERNATIVEEDITOR DIALOGEX 0, 0, 300, 217
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "External Programs::Alternative editor"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Configure alternative editor. Preferably one which can handle *nix file endings.",IDC_STATIC,7,7,286,8
+    CONTROL         "&Notepad2",IDC_ALTERNATIVEEDITOR_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,23,74,10
+    CONTROL         "&Custom",IDC_ALTERNATIVEEDITOR_ON,"Button",BS_AUTORADIOBUTTON,89,23,74,10
+    EDITTEXT        IDC_ALTERNATIVEEDITOR,7,41,266,14,ES_AUTOHSCROLL | WS_GROUP
+    PUSHBUTTON      "...",IDC_ALTERNATIVEEDITORBROWSE,279,41,14,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3096,6 +3108,15 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 90
     END
+
+    IDD_SETTINGSPROGSALTERNATIVEEDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+        HORZGUIDE, 33
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -3410,6 +3431,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_PROC_SETTINGS_TITLE "Settings - TortoiseGit"
+    IDS_SETTINGS_ALTERNATIVEEDITOR_TT 
+                            "An alternative editor. Which should preferably support *nix line endings."
     IDS_PROC_OVERWRITE_CONFIRM 
                             "The file\n%s\nalready exists! Do you want to overwrite it?"
     IDS_PROC_REPOCREATEFINISHED "The repository was successfully created."
