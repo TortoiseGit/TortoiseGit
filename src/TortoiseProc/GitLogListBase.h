@@ -404,7 +404,7 @@ protected:
 public:
 	void SafeTerminateAsyncDiffThread()
 	{
-		if(m_DiffingThread!=NULL)
+		if(m_DiffingThread!=NULL && m_AsyncThreadExit != TRUE)
 		{
 			m_AsyncThreadExit = TRUE;
 			::SetEvent(m_AsyncDiffEvent);
