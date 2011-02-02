@@ -232,11 +232,13 @@ BOOL CMailMsg::MAPISend()
 
    nAttachments = (int)m_attachments.size();
    if (nAttachments)
-     pAttachments = new MapiFileDesc[nAttachments];
-   if(!pAttachments)
    {
-     m_sErrorMsg = _T("Error allocating memory");
-     return FALSE;
+     pAttachments = new MapiFileDesc[nAttachments];
+     if(!pAttachments)
+     {
+       m_sErrorMsg = _T("Error allocating memory");
+       return FALSE;
+     }
    }
 
    // set from
