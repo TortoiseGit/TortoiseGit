@@ -213,7 +213,7 @@ public:
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
-	static bool Push();
+	static bool Push(bool autoClose = false);
 
 	static bool CreateMultipleDirectory(CString &dir);
 

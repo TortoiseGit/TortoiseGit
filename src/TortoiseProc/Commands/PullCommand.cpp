@@ -62,7 +62,9 @@ bool PullCommand::Execute()
 		progress.m_PostCmdList.Add(_T("Pulled Log"));
 		//progress.m_PostCmdList.Add(_T("Show Conflict"));
 		
-		//progress.m_bAutoCloseOnSuccess = true;
+		if (parser.HasVal(_T("closeonend")))
+			progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+
 		int ret = progress.DoModal();
 		
 		CString hashNew = g_Git.GetHash(L"HEAD");

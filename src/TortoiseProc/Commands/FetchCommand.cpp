@@ -57,12 +57,12 @@ bool FetchCommand::Execute()
 		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 
+		if (parser.HasVal(_T("closeonend")))
+			progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+
 		if(!dlg.m_bRebase)
 		{
 			progress.m_PostCmdList.Add(_T("&Rebase"));
-		}else
-		{
-			progress.m_bAutoCloseOnSuccess = true;
 		}
 
 		progress.m_GitCmd=cmd;

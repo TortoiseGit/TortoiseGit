@@ -39,6 +39,7 @@
  * Do not allow to delete-ignore working copy root-directory
  * Starting TortoiseGitBlame might fail to start if folder contains spaces
  * Fixed window titles of log and statistics window
+ * Fixed issue #697: /CloseOnEnd was not working, fixed for fetch&pull
 
  * Fixed issues with the send mail dialog
    If all three attempts failed, do not show success

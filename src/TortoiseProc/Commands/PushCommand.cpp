@@ -30,5 +30,8 @@
 
 bool PushCommand::Execute()
 {
-	return CAppUtils::Push();
+	bool autoCloseOnSuccess = false;
+	if (parser.HasVal(_T("closeonend")))
+		autoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+	return CAppUtils::Push(autoCloseOnSuccess);
 }

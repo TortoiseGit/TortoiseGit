@@ -2254,7 +2254,7 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	return 0;
 }
 
-bool CAppUtils::Push()
+bool CAppUtils::Push(bool autoClose)
 {
 	CPushDlg dlg;
 //	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
@@ -2309,6 +2309,7 @@ bool CAppUtils::Push()
 		}
 
 		CProgressDlg progress;
+		progress.m_bAutoCloseOnSuccess=autoClose;
 		progress.m_GitCmd=cmd;
 		progress.DoModal();
 
