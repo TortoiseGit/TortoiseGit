@@ -1465,7 +1465,6 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 	if (cmd == m_nPopupPasteListCmd)
 	{
 		CString logmsg;
-		TCHAR buf[MAX_STATUS_STRING_LENGTH];
 		int nListItems = m_ListCtrl.GetItemCount();
 		for (int i=0; i<nListItems; ++i)
 		{
@@ -1888,8 +1887,6 @@ void CCommitDlg::OnFocusMessage()
 
 void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	SCNotification *pHead =(SCNotification *)pNMHDR;
-
 	int pos=this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
 	int line=this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
 	int column=this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
@@ -1962,7 +1959,6 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 		this->m_patchViewdlg.GetWindowRect(patchrect);
 		if(thisrect.right==patchrect.left)
 		{
-			int width = patchrect.Width();
 			patchrect.left -= (thisrect.right - pRect->right);
 			patchrect.right-= (thisrect.right - pRect->right);
 

@@ -442,7 +442,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				dlg.m_bCommitAmend=true;
 				dlg.m_AmendStr=dlg.m_sLogMessage;
 
-				bool abort=false;
 				if (dlg.DoModal() == IDOK)
 				{
 					if(pFirstEntry->m_CommitHash!=headhash)
