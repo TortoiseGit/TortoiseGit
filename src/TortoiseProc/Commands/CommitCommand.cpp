@@ -43,8 +43,6 @@ CString CommitCommand::LoadLogMessage()
 
 bool CommitCommand::Execute()
 {
-	bool bRet = false;
-	
 	CTGitPathList selectedList;
 	if (parser.HasKey(_T("logmsg")) && (parser.HasKey(_T("logmsgfile"))))
 	{
@@ -53,9 +51,9 @@ bool CommitCommand::Execute()
 	}
 	CString sLogMsg = LoadLogMessage();
 	bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+#if 0
 	DWORD exitcode = 0;
 	CString error;
-#if 0
 	if (CHooks::Instance().StartCommit(pathList, sLogMsg, exitcode, error))
 	{
 		if (exitcode)

@@ -44,7 +44,7 @@ public:
 	CHistoryCombo(BOOL bAllowSortStyle = FALSE);
 	virtual ~CHistoryCombo();
 
-	BOOL m_bWantReturn;
+	bool m_bWantReturn;
 // Operations
 public:
 	/**
