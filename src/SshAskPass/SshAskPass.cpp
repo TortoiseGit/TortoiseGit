@@ -39,7 +39,7 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 		g_Prompt = lpCmdLine;
 	}
 
-	_wcslwr_s(lpCmdLine, _tcslen(lpCmdLine)); // lower case
+	_tcslwr(lpCmdLine); //low case
 
 	TCHAR *yesno=_T("(yes/no)");
 	int lens=_tcslen(yesno);
