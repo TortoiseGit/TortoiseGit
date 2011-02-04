@@ -37,6 +37,7 @@ void CSendMailDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SENDMAIL_CC, m_CC);
 	DDX_Check(pDX, IDC_SENDMAIL_ATTACHMENT, m_bAttachment);
 	DDX_Check(pDX, IDC_SENDMAIL_COMBINE, m_bCombine);
+	DDX_Check(pDX, IDC_SENDMAIL_MAPI, m_bUseMAPI);
 	DDX_Control(pDX, IDC_SENDMAIL_PATCHS, m_ctrlList);
 	DDX_Control(pDX,IDC_SENDMAIL_SETUP, this->m_SmtpSetup);
 	DDX_Control(pDX,IDC_SENDMAIL_TO,m_ctrlTO);
@@ -50,6 +51,7 @@ BEGIN_MESSAGE_MAP(CSendMailDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnLvnItemchangedSendmailPatchs)
 	ON_NOTIFY(NM_DBLCLK, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnNMDblclkSendmailPatchs)
 	ON_EN_CHANGE(IDC_SENDMAIL_SUBJECT, &CSendMailDlg::OnEnChangeSendmailSubject)
+	ON_BN_CLICKED(IDC_SENDMAIL_MAPI, &CSendMailDlg::OnBnClickedSendmailMapi)
 END_MESSAGE_MAP()
 
 
@@ -204,4 +206,10 @@ void CSendMailDlg::OnEnChangeSendmailSubject()
 	this->UpdateData();
 	if(this->m_bCombine)
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
+}
+
+void CSendMailDlg::OnBnClickedSendmailMapi()
+{
+	this->UpdateData();
+	GetDlgItem(IDC_SENDMAIL_CC)->EnableWindow(!m_bUseMAPI);
 }

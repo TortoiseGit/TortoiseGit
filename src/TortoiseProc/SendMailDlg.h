@@ -39,10 +39,11 @@ public:
 	CString m_Subject;
 	BOOL m_bAttachment;
 	BOOL m_bCombine;
+	BOOL m_bUseMAPI;
 	CPatchListCtrl m_ctrlList;
 	CTGitPathList m_PathList;
 
-    CRegDWORD	m_regAttach;
+	CRegDWORD	m_regAttach;
 	CRegDWORD	m_regCombine;
 
 	std::map<int,CPatch> m_MapPatch;
@@ -52,4 +53,5 @@ public:
 	afx_msg void OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeSendmailSubject();
+	afx_msg void OnBnClickedSendmailMapi();
 };

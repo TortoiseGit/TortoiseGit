@@ -905,6 +905,7 @@
 #define IDC_SIGN_OFF                    1482
 #define IDC_SIGNOFF                     1482
 #define IDC_CHECK_NOCOMMIT              1482
+#define IDC_SENDMAIL_MAPI               1482
 #define IDC_MAXFAILUESUNTILDROP         1483
 #define IDC_BUTTON2                     1483
 #define IDC_BUTTON_BROWSE               1483
