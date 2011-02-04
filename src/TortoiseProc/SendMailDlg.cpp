@@ -8,6 +8,7 @@
 #include "commonresource.h"
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
+#include "MailMsg.h"
 // CSendMailDlg dialog
 
 IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
@@ -83,6 +84,14 @@ BOOL CSendMailDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 	EnableSaveRestore(_T("SendMailDlg"));
 
+	CString mailCient;
+	CMailMsg::DetectMailClient(mailCient);
+	if (mailCient.IsEmpty()) {
+		m_bUseMAPI = false;
+		GetDlgItem(IDC_SENDMAIL_MAPI)->EnableWindow(false);
+		GetDlgItem(IDC_SENDMAIL_MAPI)->SendMessage(BM_SETCHECK, BST_UNCHECKED);
+	}
+
 	m_ctrlCC.Init();
 	m_ctrlTO.Init();
 
@@ -118,8 +127,8 @@ BOOL CSendMailDlg::OnInitDialog()
 	}
 	else
 	{
-		m_ToolTip.SetMaxTipWidth(1024*8);
-		m_ToolTip.AddTool(GetDlgItem(IDC_SENDMAIL_MAPI), _T("Requires a local default mail client.\r\nBe warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."));
+		m_ToolTip.SetMaxTipWidth(1024*8); // make multiline tooltips possible
+		m_ToolTip.AddTool(GetDlgItem(IDC_SENDMAIL_MAPI), _T("Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."));
 		m_ToolTip.Activate(TRUE);
 	}
 
