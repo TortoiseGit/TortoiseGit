@@ -994,7 +994,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	void SetBusy(BOOL b) {m_bBusy = b; Invalidate();}
+	void SetBusy(bool b) {m_bBusy = b; Invalidate();}
 
 private:
 	void SaveColumnWidths(bool bSaveToRegistry = false);
