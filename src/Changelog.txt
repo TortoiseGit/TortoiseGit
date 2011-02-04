@@ -42,6 +42,7 @@
 
  * Fixed issues with the send mail dialog
    If all three attempts failed, do not show success
+   If all three attempts failed, do not go on sending more patches
 
  * TortoiseGitBlame
    Fixed issue #448: Disable personalized menu behaviour

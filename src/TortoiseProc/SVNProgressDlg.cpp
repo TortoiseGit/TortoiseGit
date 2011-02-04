@@ -2767,7 +2767,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 	}
 	else
 	{
-		for(int i=0;i<m_targetPathList.GetCount();i++)
+		for(int i=0;ret && i<m_targetPathList.GetCount();i++)
 		{
 			CPatch patch;
 			Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
