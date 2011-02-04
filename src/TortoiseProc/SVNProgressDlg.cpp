@@ -2755,6 +2755,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			}
 
 			retry++;
+			if (retry < 3)
+				Notify(path,git_wc_notify_sendmail_retry,ret,&err);
 			Sleep(2000);
 			if(m_bCancelled)
 			{
@@ -2785,9 +2787,9 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				{
 					break;
 				}
-				Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&patch.m_LastError);
-
 				retry++;
+				if (retry < 3)
+					Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&patch.m_LastError);
 				Sleep(2000);
 				if(m_bCancelled)
 				{
