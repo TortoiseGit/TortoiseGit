@@ -56,8 +56,14 @@ BEGIN_MESSAGE_MAP(CSendMailDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SENDMAIL_MAPI, &CSendMailDlg::OnBnClickedSendmailMapi)
 END_MESSAGE_MAP()
 
-
 // CSendMailDlg message handlers
+
+BOOL CSendMailDlg::PreTranslateMessage(MSG* pMsg)
+{
+	m_ToolTip.RelayEvent(pMsg);
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
 
 BOOL CSendMailDlg::OnInitDialog()
 {
@@ -104,6 +110,19 @@ BOOL CSendMailDlg::OnInitDialog()
 //	m_ctrlTO.AddSearchString(_T("Tortoisegit-dev@google.com"));
 	this->UpdateData(FALSE);
 	OnBnClickedSendmailCombine();
+
+	//Create the ToolTip control
+	if( !m_ToolTip.Create(this))
+	{
+		TRACE0("Unable to create the ToolTip!");
+	}
+	else
+	{
+		m_ToolTip.SetMaxTipWidth(1024*8);
+		m_ToolTip.AddTool(GetDlgItem(IDC_SENDMAIL_MAPI), _T("Requires a local default mail client.\r\nBe warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."));
+		m_ToolTip.Activate(TRUE);
+	}
+
 	return TRUE;
 }
 void CSendMailDlg::OnBnClickedSendmailCombine()

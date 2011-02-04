@@ -24,6 +24,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 
 	void UpdateSubject();
@@ -32,7 +33,8 @@ protected:
 
 	CACEdit		m_ctrlCC;
 	CACEdit		m_ctrlTO;
-	CRegHistory m_AddressReg;
+	CRegHistory	m_AddressReg;
+	CToolTipCtrl	m_ToolTip;
 public:
 	CString m_To;
 	CString m_CC;
