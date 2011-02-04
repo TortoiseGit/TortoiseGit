@@ -20,9 +20,11 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
 	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
+	, m_regUseMAPI(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"),0)
 {
 	m_bAttachment  = m_regAttach;
 	m_bCombine =     m_regCombine;
+	m_bUseMAPI = m_regUseMAPI;
 	this->m_ctrlList.m_ContextMenuMask &=~ m_ctrlList.GetMenuMask(CPatchListCtrl::MENU_SENDMAIL);
 }
 
@@ -152,6 +154,7 @@ void CSendMailDlg::OnBnClickedOk()
 
 	m_regAttach=m_bAttachment;
 	m_regCombine=m_bCombine;
+	m_regUseMAPI=m_bUseMAPI;
 
 	OnOK();
 }

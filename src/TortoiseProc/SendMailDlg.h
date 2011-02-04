@@ -45,6 +45,7 @@ public:
 
 	CRegDWORD	m_regAttach;
 	CRegDWORD	m_regCombine;
+	CRegDWORD	m_regUseMAPI;
 
 	std::map<int,CPatch> m_MapPatch;
 
