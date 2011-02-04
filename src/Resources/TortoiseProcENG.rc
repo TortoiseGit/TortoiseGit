@@ -4756,12 +4756,12 @@ BEGIN
     IDS_CHOOSE_REPOSITORY   "Choose Repository"
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
     IDS_ERR_ADDRESS_NO_EMPTY "Email Address To or CC can't empty"
-    IDS_SVNACTION_SENDMAIL_START "Send..."
+    IDS_SVNACTION_SENDMAIL_START "Sending..."
     IDS_PROGRS_TITLE_SENDMAIL "Send Patch by Email - TortoiseGit"
     IDS_PROGRS_CMD_SENDMAIL "Send Email"
     IDS_SVNACTION_SENDMAIL_ERROR "Error"
     IDS_SVNACTION_SENDMAIL_DONE "Done"
-    IDS_SVNACTION_SENDMAIL_RETRY "retry..."
+    IDS_SVNACTION_SENDMAIL_RETRY "Retrying..."
 END
 
 STRINGTABLE 
