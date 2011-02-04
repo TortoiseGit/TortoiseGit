@@ -1,5 +1,16 @@
 = Release 1.6.4.0 =
 == Features ==
+ * Significantly Improve Log fetch speed for big repository
+   Fetch modified file list asynchronous.
+   Time filter (From, to) use git built-in --max-age and --min-age.
+   Text filter use git grep.
+   Fixed issue #590: wasteful use of memory with very large repository
+   Fixed issue #531: Git synchronization UI opened so slowly
+   Fixed issue #541: show log is extremely slow
+
+ * Improve TortoisePLink 3x transfer perfomance
+   Update TortoisePlink to plink 9078
+
  * Implemented issue #664: Warn when committing to detached HEAD
  * The context menu can be hidden completely for unversioned items (issue 674)
  * Only show DCommit type dialog if "svn.rmdir" is unset
@@ -17,6 +28,9 @@
    Added new context menu
    Allow to toggle author column
 
+== Funcation changed ==
+ * Log dialog doesn't support search file name.
+ 
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window
  * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
