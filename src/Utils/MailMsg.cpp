@@ -46,13 +46,14 @@
 
 CMailMsg::CMailMsg()
 {
-   m_lpCmcLogon      = NULL;
-   m_lpCmcSend       = NULL;
-   m_lpCmcLogoff     = NULL;
-   m_lpMapiLogon     = NULL;
-   m_lpMapiSendMail  = NULL;
-   m_lpMapiLogoff    = NULL;
-   m_bReady          = FALSE;
+   m_lpCmcLogon         = NULL;
+   m_lpCmcSend          = NULL;
+   m_lpCmcLogoff        = NULL;
+   m_lpMapiLogon        = NULL;
+   m_lpMapiSendMail     = NULL;
+   m_lpMapiLogoff       = NULL;
+   m_bReady             = FALSE;
+   m_bShowComposeDialog = FALSE;
 }
 
 CMailMsg::~CMailMsg()
@@ -88,6 +89,11 @@ void CMailMsg::SetMessage(CString sMessage)
   strconv_t strconv;
   LPCSTR lpszMessage = strconv.t2a(sMessage.GetBuffer(0));
   m_sMessage = lpszMessage;
+};
+
+void CMailMsg::SetShowComposeDialog(BOOL showComposeDialog)
+{
+  m_bShowComposeDialog = showComposeDialog;
 };
 
 void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
@@ -284,7 +290,7 @@ BOOL CMailMsg::MAPISend()
     message.nFileCount                        = nAttachments;
     message.lpFiles                           = nAttachments ? pAttachments : NULL;
         
-    status = m_lpMapiSendMail(hMapiSession, 0, &message, 0/*MAPI_DIALOG*/, 0);    
+	status = m_lpMapiSendMail(hMapiSession, 0, &message, (m_bShowComposeDialog?MAPI_DIALOG|MAPI_LOGON_UI:0)/*MAPI_DIALOG*/, 0);    
 
     if(status!=SUCCESS_SUCCESS)
     {

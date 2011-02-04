@@ -87,6 +87,7 @@ public:
   void SetSubject(CString sSubject);
   void SetMessage(CString sMessage);
   void AddAttachment(CString sAttachment, CString sTitle = _T(""));
+  void SetShowComposeDialog(BOOL showComposeDialog);
 
   BOOL MAPIInitialize();
   void MAPIFinalize();
@@ -116,6 +117,7 @@ protected:
    LPMAPILOGOFF   m_lpMapiLogoff;               // Mapi func pointer
    
    BOOL           m_bReady;                     // MAPI is loaded
+   BOOL           m_bShowComposeDialog;
    CString        m_sEmailClientName;
 
    CString        m_sErrorMsg;
