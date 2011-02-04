@@ -2751,7 +2751,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			}
 			else
 			{
-				break;		
+				break;
 			}
 
 			retry++;
@@ -2762,9 +2762,10 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			    return false;
 			}
 		}
-		Notify(path,git_wc_notify_sendmail_done,ret);
-
-	}else
+		if (ret)
+			Notify(path,git_wc_notify_sendmail_done,ret);
+	}
+	else
 	{
 		for(int i=0;i<m_targetPathList.GetCount();i++)
 		{
@@ -2774,9 +2775,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			int retry=0;
 			while(retry<3)
 			{
-				int ret=patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
-				         this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,this->m_SendMailFlags&SENDMAIL_MAPI);
-				if(ret)
+				if(patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+								this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,this->m_SendMailFlags&SENDMAIL_MAPI))
 				{
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
 					ret = false;
@@ -2795,8 +2795,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				    return false;
 				}
 			}
-			Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
-			
+			if (ret)
+				Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
 		}
 	}
 	return ret;

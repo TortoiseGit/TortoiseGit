@@ -40,6 +40,9 @@
  * Starting TortoiseGitBlame might fail to start if folder contains spaces
  * Fixed window titles of log and statistics window
 
+ * Fixed issues with the send mail dialog
+   If all three attempts failed, do not show success
+
  * TortoiseGitBlame
    Fixed issue #448: Disable personalized menu behaviour
    After blaming an older revision, TortoiseGitBlame was fixed to this.
