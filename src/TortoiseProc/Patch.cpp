@@ -49,7 +49,10 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, boo
 		CMailMsg mapiSender;
 		BOOL bMAPIInit = mapiSender.MAPIInitialize();
 		if(!bMAPIInit)
+		{
+			m_LastError = mapiSender.GetLastErrorMsg();
 			return -1;
+		}
 
 		mapiSender.SetShowComposeDialog(TRUE);
 		mapiSender.SetFrom(g_Git.GetUserEmail());
@@ -146,7 +149,11 @@ int CPatch::Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,b
 		CMailMsg mapiSender;
 		BOOL bMAPIInit = mapiSender.MAPIInitialize();
 		if(!bMAPIInit)
+		{
+			if(errortext)
+				*errortext = mapiSender.GetLastErrorMsg();
 			return -1;
+		}
 
 		mapiSender.SetShowComposeDialog(TRUE);
 		mapiSender.SetFrom(g_Git.GetUserEmail());
