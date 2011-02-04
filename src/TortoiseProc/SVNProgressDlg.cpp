@@ -2760,8 +2760,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			Sleep(2000);
 			if(m_bCancelled)
 			{
-				Notify(path,git_wc_notify_sendmail_retry,ret,&CString("User Canceled"));
-			    return false;
+				Notify(path,git_wc_notify_sendmail_error,ret,&CString("User Canceled"));
+				return false;
 			}
 		}
 		if (ret)
@@ -2793,8 +2793,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				Sleep(2000);
 				if(m_bCancelled)
 				{
-					Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&CString("User Canceled"));
-				    return false;
+					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&CString("User Canceled"));
+					return false;
 				}
 			}
 			if (ret)
