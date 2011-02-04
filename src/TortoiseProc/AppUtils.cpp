@@ -2121,6 +2121,8 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 			flags |= SENDMAIL_ATTACHMENT;
 		if(dlg.m_bCombine)
 			flags |= SENDMAIL_COMBINED;
+		if(dlg.m_bUseMAPI)
+			flags |= SENDMAIL_MAPI;
 
 		progDlg.SetSendMailOption(dlg.m_To,dlg.m_CC,dlg.m_Subject,flags);
 

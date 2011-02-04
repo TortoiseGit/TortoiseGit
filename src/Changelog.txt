@@ -21,6 +21,7 @@
  * Fixed issue #480: Implement text copying opportunities in the dialogs
  * Allow to change EOL by pressing CTRL+Return in TortoiseMerge
  * Allow to replace (previously hardcoded) Notepad2 by any other editor
+ * Optionally send/mail patches via MAPI
 
  * TortoiseGitBlame
    Clicking on a line automatically selects the log entry in the loglist

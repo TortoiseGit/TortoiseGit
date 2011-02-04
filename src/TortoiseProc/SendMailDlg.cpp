@@ -20,9 +20,11 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
 	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
+	, m_regUseMAPI(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"),0)
 {
 	m_bAttachment  = m_regAttach;
 	m_bCombine =     m_regCombine;
+	m_bUseMAPI = m_regUseMAPI;
 	this->m_ctrlList.m_ContextMenuMask &=~ m_ctrlList.GetMenuMask(CPatchListCtrl::MENU_SENDMAIL);
 }
 
@@ -37,6 +39,7 @@ void CSendMailDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SENDMAIL_CC, m_CC);
 	DDX_Check(pDX, IDC_SENDMAIL_ATTACHMENT, m_bAttachment);
 	DDX_Check(pDX, IDC_SENDMAIL_COMBINE, m_bCombine);
+	DDX_Check(pDX, IDC_SENDMAIL_MAPI, m_bUseMAPI);
 	DDX_Control(pDX, IDC_SENDMAIL_PATCHS, m_ctrlList);
 	DDX_Control(pDX,IDC_SENDMAIL_SETUP, this->m_SmtpSetup);
 	DDX_Control(pDX,IDC_SENDMAIL_TO,m_ctrlTO);
@@ -50,6 +53,7 @@ BEGIN_MESSAGE_MAP(CSendMailDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnLvnItemchangedSendmailPatchs)
 	ON_NOTIFY(NM_DBLCLK, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnNMDblclkSendmailPatchs)
 	ON_EN_CHANGE(IDC_SENDMAIL_SUBJECT, &CSendMailDlg::OnEnChangeSendmailSubject)
+	ON_BN_CLICKED(IDC_SENDMAIL_MAPI, &CSendMailDlg::OnBnClickedSendmailMapi)
 END_MESSAGE_MAP()
 
 
@@ -150,6 +154,7 @@ void CSendMailDlg::OnBnClickedOk()
 
 	m_regAttach=m_bAttachment;
 	m_regCombine=m_bCombine;
+	m_regUseMAPI=m_bUseMAPI;
 
 	OnOK();
 }
@@ -204,4 +209,10 @@ void CSendMailDlg::OnEnChangeSendmailSubject()
 	this->UpdateData();
 	if(this->m_bCombine)
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
+}
+
+void CSendMailDlg::OnBnClickedSendmailMapi()
+{
+	this->UpdateData();
+	GetDlgItem(IDC_SENDMAIL_CC)->EnableWindow(!m_bUseMAPI);
 }

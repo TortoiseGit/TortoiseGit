@@ -437,6 +437,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MailMsg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MailMsg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PathUtils.cpp"
 				>
 			</File>
@@ -514,6 +522,10 @@
 			</File>
 			<File
 				RelativePath=".\StdioFileT.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\strconv.h"
 				>
 			</File>
 			<File

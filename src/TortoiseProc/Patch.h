@@ -18,9 +18,9 @@ public:
 	CPatch();
 	~CPatch(void);
 	int Parser(CString &pathfile);
-	int Send(CString &pathfile,CString &To, CString &CC,bool bAttachment);
+	int Send(CString &pathfile,CString &To, CString &CC,bool bAttachment, bool useMAPI);
 	
-	static int Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment,CString *errortext);
+	static int Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext);
 
 	CString m_LastError;
 	CString m_Author;

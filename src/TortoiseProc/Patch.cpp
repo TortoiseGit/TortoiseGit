@@ -4,6 +4,7 @@
 #include "registry.h"
 #include "unicodeutils.h"
 #include "hwsmtp.h"
+#include "mailmsg.h"
 #include "Windns.h"
 #include "Git.h"
 
@@ -29,29 +30,54 @@ void CPatch::ConvertToArray(CString &to,CStringArray &Array)
 	}
 }
 
-int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
+int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, bool useMAPI)
 {
-	CHwSMTP mail;
 	if(this->Parser(pathfile)	)
 		return -1;
 
-	CStringArray attachments,CCArray;
+	CStringArray attachments;
 	if(bAttachment)
 	{
 		attachments.Add(pathfile);
 	}
-	
-	//ConvertToArray(CC,CCArray);
 
 	CString sender;
 	sender.Format(_T("%s <%s> "),g_Git.GetUserName(),g_Git.GetUserEmail());
 
-	if(mail.SendSpeedEmail(this->m_Author,TO,this->m_Subject,this->m_strBody,NULL,&attachments,CC,25,sender))
-		return 0;
+	if (useMAPI)
+	{
+		CMailMsg mapiSender;
+		BOOL bMAPIInit = mapiSender.MAPIInitialize();
+		if(!bMAPIInit)
+			return -1;
+
+		mapiSender.SetShowComposeDialog(TRUE);
+		mapiSender.SetFrom(g_Git.GetUserEmail());
+		mapiSender.SetTo(TO);
+		mapiSender.SetSubject(m_Subject);
+		mapiSender.SetMessage(m_strBody);
+		if(bAttachment)
+			mapiSender.AddAttachment(pathfile);
+
+		BOOL bSend = mapiSender.Send();
+		if (bSend==TRUE)
+			return 0;
+		else
+		{
+			m_LastError = mapiSender.GetLastErrorMsg();
+			return -1;
+		}
+	}
 	else
 	{
-		this->m_LastError=mail.GetLastErrorText();
-		return -1;
+		CHwSMTP mail;	
+		if(mail.SendSpeedEmail(this->m_Author,TO,this->m_Subject,this->m_strBody,NULL,&attachments,CC,25,sender))
+			return 0;
+		else
+		{
+			this->m_LastError=mail.GetLastErrorText();
+			return -1;
+		}
 	}
 #if 0
 	CRegString server(REG_SMTP_SERVER);
@@ -91,7 +117,7 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment)
 
 
 }
-int CPatch::Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment,CString *errortext)
+int CPatch::Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext)
 {
 	CStringArray attachments;
 	CString body;
@@ -104,28 +130,56 @@ int CPatch::Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,b
 			attachments.Add(list[i].GetWinPathString());
 			body+=patch.m_Subject;
 			body+=_T("\r\n");
-
-		}else
+		}
+		else
 		{
 			g_Git.StringAppend(&body,(BYTE*)patch.m_Body.GetBuffer(),CP_ACP,patch.m_Body.GetLength());
 		}
 
 	}
 
-	CHwSMTP mail;
-	
 	CString sender;
 	sender.Format(_T("%s <%s> "),g_Git.GetUserName(),g_Git.GetUserEmail());
 
-	if(mail.SendSpeedEmail(sender,To,subject,body,NULL,&attachments,CC,25,sender))
-		return 0;
+	if (useMAPI)
+	{
+		CMailMsg mapiSender;
+		BOOL bMAPIInit = mapiSender.MAPIInitialize();
+		if(!bMAPIInit)
+			return -1;
+
+		mapiSender.SetShowComposeDialog(TRUE);
+		mapiSender.SetFrom(g_Git.GetUserEmail());
+		mapiSender.SetTo(To);
+		mapiSender.SetSubject(subject);
+		mapiSender.SetMessage(body);
+		for(int i=0; i < attachments.GetSize(); i++)
+		{
+			mapiSender.AddAttachment(attachments[i]);
+		}
+
+		BOOL bSend = mapiSender.Send();
+		if (bSend==TRUE)
+			return 0;
+		else
+		{
+			if(errortext)
+				*errortext = mapiSender.GetLastErrorMsg();
+			return -1;
+		}
+	}
 	else
 	{
-		if(errortext)
-			*errortext=mail.GetLastErrorText();
-		return -1;
+		CHwSMTP mail;
+		if(mail.SendSpeedEmail(sender,To,subject,body,NULL,&attachments,CC,25,sender))
+			return 0;
+		else
+		{
+			if(errortext)
+				*errortext=mail.GetLastErrorText();
+			return -1;
+		}
 	}
-
 }
 
 int CPatch::Parser(CString &pathfile)

@@ -79,8 +79,9 @@ typedef enum
 }git_wc_notify_action_t;
 typedef enum
 {
-	SENDMAIL_ATTACHMENT=0x1,
-	SENDMAIL_COMBINED =0x2
+	SENDMAIL_ATTACHMENT	=0x1,
+	SENDMAIL_COMBINED	=0x2,
+	SENDMAIL_MAPI		=0x4
 };
 /**
  * \ingroup TortoiseProc
