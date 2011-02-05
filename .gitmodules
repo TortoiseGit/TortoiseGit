@@ -13,3 +13,6 @@
 [submodule "ext/libcurl"]
 	path = ext/libcurl
 	url = git://repo.or.cz/libcurl.git
+[submodule "ext/libgit2"]
+	path = ext/libgit2
+	url = git://github.com/lznuaa/libgit2.git
