@@ -63,7 +63,7 @@ bool PullCommand::Execute()
 		//progress.m_PostCmdList.Add(_T("Show Conflict"));
 		
 		if (parser.HasVal(_T("closeonend")))
-			progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 
 		int ret = progress.DoModal();
 		

@@ -2763,7 +2763,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
 															*filepath,str, false,false,false,
-															filepath->m_ParentNo & MERGE_MASK);
+															!!filepath->m_ParentNo & MERGE_MASK);
 						}
 					}
 				}

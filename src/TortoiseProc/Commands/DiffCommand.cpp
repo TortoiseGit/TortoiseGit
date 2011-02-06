@@ -45,12 +45,12 @@ bool DiffCommand::Execute()
 			//diff.SetAlternativeTool(bAlternativeTool);
 			if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) )
 			{
-				bRet = diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(parser.GetVal(_T("startrev"))),git_revnum_t(parser.GetVal(_T("endrev"))));
+				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(parser.GetVal(_T("startrev"))),git_revnum_t(parser.GetVal(_T("endrev"))));
 			}
 			else
 			{
 				//git_revnum_t baseRev = 0;
-				bRet = diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
+				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
 			}
 		}
 	} 

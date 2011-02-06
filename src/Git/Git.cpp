@@ -125,7 +125,7 @@ CGit::CGit(void)
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
-	m_IsUseGitDLL = CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
+	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();

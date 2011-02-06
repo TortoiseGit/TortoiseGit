@@ -813,7 +813,7 @@ bool CTGitPath::HasStashDir() const
 	topdir+=_T("\\");
 	topdir+=g_GitAdminDir.GetAdminDirName();
 	topdir+=_T("\\refs\\stash");
-	return PathFileExists(topdir);
+	return !!PathFileExists(topdir);
 }
 bool CTGitPath::HasGitSVNDir() const
 {
@@ -825,7 +825,7 @@ bool CTGitPath::HasGitSVNDir() const
 	topdir+=_T("\\");
 	topdir+=g_GitAdminDir.GetAdminDirName();
 	topdir+=_T("\\svn");
-	return PathFileExists(topdir);
+	return !!PathFileExists(topdir);
 }
 
 bool CTGitPath::HasRebaseApply() const
@@ -838,7 +838,7 @@ bool CTGitPath::HasRebaseApply() const
 	topdir+=_T("\\");
 	topdir+=g_GitAdminDir.GetAdminDirName();
 	topdir+=_T("\\rebase-apply");
-	return PathFileExists(topdir);
+	return !!PathFileExists(topdir);
 }
 
 bool CTGitPath::HasAdminDir(CString *ProjectTopDir) const

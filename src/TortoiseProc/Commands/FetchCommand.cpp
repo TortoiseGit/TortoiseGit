@@ -58,7 +58,7 @@ bool FetchCommand::Execute()
 		CProgressDlg progress;
 
 		if (parser.HasVal(_T("closeonend")))
-			progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 
 		if(!dlg.m_bRebase)
 		{
