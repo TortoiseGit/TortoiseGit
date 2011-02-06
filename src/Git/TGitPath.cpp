@@ -812,7 +812,7 @@ bool CTGitPath::HasStashDir() const
 	}
 	topdir+=_T("\\");
 	topdir+=g_GitAdminDir.GetAdminDirName();
-	topdir+=_T("\\refs\stash");
+	topdir+=_T("\\refs\\stash");
 	return PathFileExists(topdir);
 }
 bool CTGitPath::HasGitSVNDir() const
