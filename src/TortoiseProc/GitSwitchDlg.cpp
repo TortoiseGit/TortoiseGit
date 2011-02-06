@@ -48,7 +48,6 @@ BEGIN_MESSAGE_MAP(CGitSwitchDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_WM_DESTROY()
-	ON_NOTIFY(CBEN_ENDEDIT, IDC_COMBOBOXEX_VERSION, &CGitSwitchDlg::OnCbenEndeditComboboxexVersion)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_VERSION, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 END_MESSAGE_MAP()
 
@@ -167,12 +166,6 @@ void CGitSwitchDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
-}
-
-void CGitSwitchDlg::OnCbenEndeditComboboxexVersion(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	UNREFERENCED_PARAMETER(pNMHDR);
-	*pResult = 0;
 }
 
 void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
