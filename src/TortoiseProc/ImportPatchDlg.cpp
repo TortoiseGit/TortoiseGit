@@ -550,7 +550,6 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 
 void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 	*pResult = 0;
 
 	if(this->m_cList.GetSelectedCount() != 1)

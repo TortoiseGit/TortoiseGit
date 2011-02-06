@@ -64,7 +64,6 @@ BOOL ProjectProperties::GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR)
 
 	output = g_Git.GetConfigValue(key,CP_UTF8,NULL, bRemoveCR);
 	
-	int start = 0;
 	if(output.IsEmpty())
 	{
 		return FALSE;
@@ -788,8 +787,8 @@ bool ProjectProperties::AddAutoProps(const CTGitPath& path)
 
 	bool bRet = true;
 
-	char buf[1024] = {0};
 #if 0
+	char buf[1024] = {0};
 	GitProperties props(path, GitRev::REV_WC, false);
 	if (!sLabel.IsEmpty())
 		bRet = props.Add(BUGTRAQPROPNAME_LABEL, WideToMultibyte((LPCTSTR)sLabel)) && bRet;

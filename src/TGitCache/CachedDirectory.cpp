@@ -192,7 +192,6 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bool bRecursive,  bool bFetch /* = true */)
 {
 	CString strCacheKey;
-	bool bThisDirectoryIsUnversioned = false;
 	bool bRequestForSelf = false;
 	if(path.IsEquivalentToWithoutCase(m_directoryPath))
 	{
@@ -232,10 +231,10 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		else
 			subpaths=subpaths.Right(subpaths.GetLength() - sProjectRoot.GetLength());
 	}
-	
-	
+
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
-	bool IsIndexHeadChanged = pGitStatus->IsGitReposChanged(sProjectRoot, subpaths, GIT_MODE_INDEX);
+	//bool IsIndexHeadChanged = pGitStatus->IsGitReposChanged(sProjectRoot, subpaths, GIT_MODE_INDEX);
+	UNREFERENCED_PARAMETER(pGitStatus);
 
 	CGitHash head;
 	
@@ -510,7 +509,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 			   when bfetch false, just fetch status according to index file.
 			   can't fetch HEAD tree. fetch HEAD tree will take some long time
 		*/
-		BOOL pErr = EnumFiles(NULL, bFetch);
+		EnumFiles(NULL, bFetch);
 
 		{
 			AutoLocker pathlock(m_critSecPath);
@@ -566,7 +565,6 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 
 	ATLASSERT( !m_directoryPath.IsEmpty() );
 
-	LPCTSTR lpszSubPath = NULL;
 	CString sSubPath;
 	
 	CString s;
@@ -585,6 +583,7 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	}
 	
 	GitStatus *pStatus = &CGitStatusCache::Instance().m_GitStatus;
+	UNREFERENCED_PARAMETER(pStatus);
 	git_wc_status_kind status;
 
 	if(path)

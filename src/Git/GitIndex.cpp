@@ -374,7 +374,6 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 									FIll_STATUS_CALLBACK callback,void *pData,
 									CGitHash *pHash)
 {
-	int result;
 	try
 	{
 		CheckAndUpdateIndex(gitdir);

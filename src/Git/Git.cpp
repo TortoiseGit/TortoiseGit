@@ -977,7 +977,6 @@ int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int fl
 
 	(*map)[hash].push_back(str);
 
-	const char *hex = NULL;
 	if(strncmp(refname, "refs/tags", 9) == 0)
 	{
 		GIT_HASH refhash;

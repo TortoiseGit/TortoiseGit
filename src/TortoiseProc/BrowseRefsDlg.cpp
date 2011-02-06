@@ -909,7 +909,6 @@ void CBrowseRefsDlg::OnDestroy()
 
 void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	*pResult = 0;
 
 	EndDialog(IDOK);

@@ -2266,7 +2266,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
 	if (fullver >= 0x0501)
 		XPorLater = true;
-	bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	//bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CTGitPath * filepath;
 
 	int selIndex = GetSelectionMark();
@@ -2684,8 +2684,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			m_bBlock = TRUE;
 			AfxGetApp()->DoWaitCursor(1);
-			int iItemCountBeforeMenuCmd = GetItemCount();
-			bool bForce = false;
+			//int iItemCountBeforeMenuCmd = GetItemCount();
+			//bool bForce = false;
 			switch (cmd)
 			{
 			case IDSVNLC_VIEWREV:
@@ -2927,7 +2927,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							continue;
 						CString gitcmd,output;
 						output.Empty();
-						int stage=0;
 
 						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) ||
 							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) )
@@ -3925,7 +3924,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			m_bBlock = FALSE;
 			AfxGetApp()->DoWaitCursor(-1);
 			GetStatisticsString();
-			int iItemCountAfterMenuCmd = GetItemCount();
+			//int iItemCountAfterMenuCmd = GetItemCount();
 			//if (iItemCountAfterMenuCmd != iItemCountBeforeMenuCmd)
 			//{
 			//	CWnd* pParent = GetParent();
@@ -4460,7 +4459,7 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool bIncludeNoCommits)
 
 void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
+//	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	*pResult = 0;
 	if (m_bBlock)
 		return;
@@ -5046,7 +5045,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 	CString sClipboard;
 	CString temp;
-	TCHAR buf[100];
+	//TCHAR buf[100];
 	if (GetSelectedCount() == 0)
 		return false;
 

@@ -29,7 +29,7 @@
 bool PrevDiffCommand::Execute()
 {
 	bool bRet = false;
-	bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
+	//bool bAlternativeTool = !!parser.HasKey(_T("alternative"));
 	if (this->orgCmdLinePath.IsDirectory())
 	{
 		CFileDiffDlg dlg;

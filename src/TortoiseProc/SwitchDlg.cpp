@@ -198,8 +198,8 @@ void CSwitchDlg::OnBnClickedLog()
 	{
 		delete m_pLogDlg;
 		m_pLogDlg = new CLogDlg();
-		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
-		int limit = (int)(LONG)reg;
+//		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
+//		int limit = (int)(LONG)reg;
 		m_pLogDlg->SetSelect(true);
 		m_pLogDlg->m_pNotifyWindow = this;
 		m_pLogDlg->m_wParam = 0;

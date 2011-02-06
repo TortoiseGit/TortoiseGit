@@ -105,8 +105,6 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CRefLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-
-	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
 }

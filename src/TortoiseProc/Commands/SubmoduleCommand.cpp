@@ -63,7 +63,6 @@ bool SubmoduleAddCommand::Execute()
 
 bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 {
-	bool bRet = false;
 	CProgressDlg progress;
 	CString bkpath;
 

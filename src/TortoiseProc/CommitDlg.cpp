@@ -1977,7 +1977,6 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 
 void CCommitDlg::OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 	*pResult = 0;
 	TRACE("Item Changed\r\n");
 }

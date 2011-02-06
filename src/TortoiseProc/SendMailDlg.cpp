@@ -212,8 +212,6 @@ void CSendMailDlg::UpdateSubject()
 
 void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	
 	UpdateSubject();
 	
 	*pResult = 0;

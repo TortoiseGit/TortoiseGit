@@ -17,8 +17,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	int count;
 	GIT_HASH hash;
 	GIT_COMMIT commit;
-	char *buf;
-	int size;
 	memset(&hash,0,sizeof(GIT_HASH));
 	int ret;
 	ret=git_init();

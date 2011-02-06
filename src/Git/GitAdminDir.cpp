@@ -114,7 +114,6 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 {
 	if (path.IsEmpty())
 		return false;
-	bool bHasAdminDir = false;
 	CString sDirName = path;
 	if (!bDir)
 	{

@@ -1035,7 +1035,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 		{
 			// N/A props are "less than" empty props
 
-			const CString& propName = columnManager->GetName (sortedColumn);
+//			const CString& propName = columnManager->GetName (sortedColumn);
 
 //			bool entry1HasProp = entry1->present_props.HasProperty (propName);
 //			bool entry2HasProp = entry2->present_props.HasProperty (propName);

@@ -198,9 +198,9 @@ int CPatch::Parser(CString &pathfile)
 	m_PathFile=pathfile;
 	if( ! PatchFile.Open(pathfile,CFile::modeRead) )
 		return -1;
-	
-	int i=0;
+
 #if 0
+	int i=0;
 	while(i<4)
 	{   PatchFile.ReadString(str);
 		if(i==1)

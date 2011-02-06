@@ -174,7 +174,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 	GitRev* pSelLogEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(indexNext));
 
 	theApp.DoWaitCursor(1);
-	bool bOpenWith = false;
 	switch (cmd&0xFFFF)
 		{
 			case ID_COMMIT:

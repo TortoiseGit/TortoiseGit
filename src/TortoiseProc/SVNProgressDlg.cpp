@@ -2383,7 +2383,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	SetWindowText(sWindowTitle);
 	SetBackgroundImage(IDI_RESOLVE_BKG);
 	// check if the file may still have conflict markers in it.
-	BOOL bMarkers = FALSE;
+	//BOOL bMarkers = FALSE;
 
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
