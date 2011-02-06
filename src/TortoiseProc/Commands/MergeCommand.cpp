@@ -26,5 +26,5 @@
 
 bool MergeCommand::Execute()
 {
-	return CAppUtils::Merge();
+	return !!CAppUtils::Merge();
 }

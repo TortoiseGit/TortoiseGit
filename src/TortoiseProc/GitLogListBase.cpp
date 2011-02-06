@@ -1363,7 +1363,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	if (pWnd == GetHeaderCtrl())
 	{
-		return m_ColumnManager.OnContextMenuHeader(pWnd,point,IsGroupViewEnabled());
+		return m_ColumnManager.OnContextMenuHeader(pWnd,point,!!IsGroupViewEnabled());
 	}
 
 	int selIndex = GetSelectionMark();

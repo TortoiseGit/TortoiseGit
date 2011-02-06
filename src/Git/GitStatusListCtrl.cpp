@@ -3941,7 +3941,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 void CGitStatusListCtrl::OnContextMenuHeader(CWnd * pWnd, CPoint point)
 {
 	Locker lock(m_critSec);
-	m_ColumnManager.OnContextMenuHeader(pWnd,point,IsGroupViewEnabled());
+	m_ColumnManager.OnContextMenuHeader(pWnd,point,!!IsGroupViewEnabled());
 }
 
 void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)

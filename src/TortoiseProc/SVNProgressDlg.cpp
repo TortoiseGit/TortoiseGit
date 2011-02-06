@@ -2744,7 +2744,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		int retry=0;
 		while(retry <3)
 		{
-			if(CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,this->m_SendMailFlags&SENDMAIL_MAPI,&err))
+			if(!!CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,this->m_SendMailFlags&SENDMAIL_MAPI,&err))
 			{
 				Notify(path,git_wc_notify_sendmail_error,ret,&err);
 				ret = false;
@@ -2777,7 +2777,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			int retry=0;
 			while(retry<3)
 			{
-				if(patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+				if(!!patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
 								this->m_SendMailCC,this->m_SendMailFlags&SENDMAIL_ATTACHMENT,this->m_SendMailFlags&SENDMAIL_MAPI))
 				{
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);

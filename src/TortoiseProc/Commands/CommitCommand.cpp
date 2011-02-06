@@ -66,7 +66,7 @@ bool CommitCommand::Execute()
 	}
 #endif
 
-	return CAppUtils::Commit(	parser.GetVal(_T("bugid")),
+	return !!CAppUtils::Commit(	parser.GetVal(_T("bugid")),
 								parser.HasKey(_T("wholeproject")),
 								sLogMsg,
 								pathList,

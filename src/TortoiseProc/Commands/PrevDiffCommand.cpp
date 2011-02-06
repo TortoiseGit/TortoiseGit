@@ -74,7 +74,7 @@ bool PrevDiffCommand::Execute()
 			if( revs.size() == 2 )
 			{
 				CGitDiff diff;
-				bRet = diff.Diff(&cmdLinePath,&cmdLinePath, revs.GetGitRevAt(0).m_CommitHash.ToString(), revs.GetGitRevAt(1).m_CommitHash.ToString(), false);
+				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath, revs.GetGitRevAt(0).m_CommitHash.ToString(), revs.GetGitRevAt(1).m_CommitHash.ToString(), false);
 			}
 		}
 		else
