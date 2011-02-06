@@ -570,7 +570,7 @@ int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count
 }
 
 CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
-						struct CFilterData *Filter)
+						CFilterData *Filter)
 {
 	CString cmd;
 	CString log;
