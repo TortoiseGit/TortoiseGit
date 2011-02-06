@@ -424,56 +424,67 @@ int CLogCache::SaveCache()
 		}
 
 
-	
-	}while(0);
+		SetFilePointer(m_DataFile,0,0,2);
+		SetFilePointer(m_IndexFile,0,0,2);
 
-
-	SetFilePointer(m_DataFile,0,0,2);
-	SetFilePointer(m_IndexFile,0,0,2);
-
-	CGitHashMap::iterator i;
-	for(i=m_HashMap.begin();i!=m_HashMap.end();i++)
-	{
-		if(this->GetOffset((*i).second.m_CommitHash,pIndex) ==0 || bIsRebuild)
+		CGitHashMap::iterator i;
+		for(i=m_HashMap.begin();i!=m_HashMap.end();i++)
 		{
-			if((*i).second.m_IsDiffFiles && !(*i).second.m_CommitHash.IsEmpty())
+			if(this->GetOffset((*i).second.m_CommitHash,pIndex) ==0 || bIsRebuild)
 			{
-				LARGE_INTEGER offset;
-				offset.LowPart=0;
-				offset.HighPart=0;
-				LARGE_INTEGER start;
-				start.QuadPart = 0;
-				SetFilePointerEx(this->m_DataFile,start,&offset,1);
-				if(this->SaveOneItem((*i).second,offset.QuadPart))
+				if((*i).second.m_IsDiffFiles && !(*i).second.m_CommitHash.IsEmpty())
 				{
-					TRACE(_T("Save one item error"));
-					SetFilePointerEx(this->m_DataFile,offset, &offset,0);
-					continue;
+					LARGE_INTEGER offset;
+					offset.LowPart=0;
+					offset.HighPart=0;
+					LARGE_INTEGER start;
+					start.QuadPart = 0;
+					SetFilePointerEx(this->m_DataFile,start,&offset,1);
+					if(this->SaveOneItem((*i).second,offset.QuadPart))
+					{
+						TRACE(_T("Save one item error"));
+						SetFilePointerEx(this->m_DataFile,offset, &offset,0);
+						continue;
+					}
+
+					SLogCacheIndexItem item;
+					item.m_Hash = (*i).second.m_CommitHash;
+					item.m_Offset=offset.QuadPart;
+
+					DWORD num;
+					WriteFile(m_IndexFile,&item,sizeof(SLogCacheIndexItem),&num,0);
+					header.m_ItemCount ++;
 				}
-
-				SLogCacheIndexItem item;
-				item.m_Hash = (*i).second.m_CommitHash;
-				item.m_Offset=offset.QuadPart;
-
-				DWORD num;
-				WriteFile(m_IndexFile,&item,sizeof(SLogCacheIndexItem),&num,0);
-				header.m_ItemCount ++;
 			}
 		}
-	}
-	FlushFileBuffers(m_IndexFile);
+		FlushFileBuffers(m_IndexFile);
 
-	m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READWRITE,0,0,NULL);
-	m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_WRITE,0,0,0);
-	m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;
-	Sort();
-	FlushViewOfFile(m_pCacheIndex,0);
+		m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READWRITE,0,0,NULL);
+		if(m_IndexFileMap == INVALID_HANDLE_VALUE)
+		{
+			ret =-1;
+			break;
+		}
+		
+		m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_WRITE,0,0,0);
+		if(m_pCacheIndex == NULL)
+		{
+			ret = -1;
+			break;
+		}
+
+		m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;
+		Sort();
+		FlushViewOfFile(m_pCacheIndex,0);
+		
+	}while(0);
 
 	this->CloseDataHandles();
 	this->CloseIndexHandles();
+
 	if(pIndex)
 		free(pIndex);
-	return 0;
+	return ret;
 }
 
 
