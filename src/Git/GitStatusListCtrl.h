@@ -989,7 +989,7 @@ public:
 
 	CString						m_sUUID;			///< the UUID of the associated repository
 
-	BOOL						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert. 
+	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert. 
 
 	DECLARE_MESSAGE_MAP()
 

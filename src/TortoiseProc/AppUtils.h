@@ -222,7 +222,7 @@ public:
 	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
-					BOOL bSelectFilesForCommit);
+					bool bSelectFilesForCommit);
 
 	static int GetCommitTemplate(CString &temp);
 

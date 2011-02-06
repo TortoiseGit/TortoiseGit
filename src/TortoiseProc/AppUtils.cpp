@@ -2383,7 +2383,7 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
-					BOOL bSelectFilesForCommit)
+					bool bSelectFilesForCommit)
 {
 	bool bFailed = true;
 
