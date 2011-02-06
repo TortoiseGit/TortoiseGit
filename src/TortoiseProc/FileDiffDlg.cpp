@@ -298,14 +298,13 @@ UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
 
 UINT CFileDiffDlg::DiffThread()
 {
-	bool bSuccess = true;
-	
 	RefreshCursor();
 	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
 	m_cFileList.DeleteAllItems();
 	m_arFileList.Clear();
 	EnableInputControl(false);
 #if 0
+	bool bSuccess = true;
 	if (m_bDoPegDiff)
 	{
 //		bSuccess = DiffSummarizePeg(m_path1, m_peg, m_rev1, m_rev2, m_depth, m_bIgnoreancestry);
