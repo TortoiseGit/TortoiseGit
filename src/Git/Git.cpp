@@ -185,7 +185,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
-	if(cmd.Find(_T("git") == 0))
+	if(cmd.Find(_T("git")) == 0)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
@@ -767,7 +767,7 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
-	if(cmd.Find(_T("git") == 0))
+	if(cmd.Find(_T("git")) == 0)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
