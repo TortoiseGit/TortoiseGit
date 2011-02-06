@@ -231,6 +231,7 @@ public:
 		{
 			ColumnResized (header->iItem);
 		}
+		*pResult = 0;
 	}
 
 	void OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)

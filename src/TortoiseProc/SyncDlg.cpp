@@ -73,7 +73,6 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_EMAIL, &CSyncDlg::OnBnClickedButtonEmail)
 	ON_BN_CLICKED(IDC_BUTTON_MANAGE, &CSyncDlg::OnBnClickedButtonManage)
 	BRANCH_COMBOX_EVENT
-	ON_NOTIFY(CBEN_ENDEDIT, IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbenEndeditComboboxexUrl)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxex)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_REMOTE_BRANCH, &CSyncDlg::OnCbnEditchangeComboboxex)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
@@ -918,11 +917,6 @@ bool CSyncDlg::IsURL()
 	else
 		return false;
 }
-void CSyncDlg::OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	*pResult = 0;
-}
-
 void CSyncDlg::OnCbnEditchangeComboboxex()
 {
 	SetTimer(IDT_INPUT, 1000, NULL);

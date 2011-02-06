@@ -2349,6 +2349,8 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 	SortShownListArray();
 	m_LogList.Invalidate();
 	UpdateLogInfoLabel();
+#else
+	UNREFERENCED_PARAMETER(pNMHDR);
 #endif
 	*pResult = 0;
 }
@@ -3277,6 +3279,8 @@ void CLogDlg::OnBnClickShowWholeProject()
 
 LRESULT CLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
 {
+	UNREFERENCED_PARAMETER(wParam);
+	UNREFERENCED_PARAMETER(lParam);
 	ShowStartRef();
 	return 0;
 }

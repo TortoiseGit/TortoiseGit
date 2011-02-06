@@ -227,7 +227,7 @@ public:
 	static int GetCommitTemplate(CString &temp);
 
 	static BOOL SVNDCommit();
-	static BOOL Merge(CString *commit =NULL, int mode = 0);
+	static BOOL Merge(CString *commit =NULL);
 	static void RemoveTempMergeFile(CTGitPath &path);
 	static void EditNote(GitRev *hash);
 	static int GetMsysgitVersion(CString *versionstring=NULL);

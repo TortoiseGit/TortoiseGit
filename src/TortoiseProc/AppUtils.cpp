@@ -2542,7 +2542,7 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
-BOOL CAppUtils::Merge(CString *commit, int mode)
+BOOL CAppUtils::Merge(CString *commit)
 {
 	CMergeDlg dlg;
 	if(commit)

@@ -189,7 +189,6 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButtonManage();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnCbenEndeditComboboxexUrl(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnCbnEditchangeComboboxex();
 
 	void EnableControlButton(bool bEnabled=true);

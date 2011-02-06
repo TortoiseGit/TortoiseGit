@@ -1887,6 +1887,7 @@ void CCommitDlg::OnFocusMessage()
 
 void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNREFERENCED_PARAMETER(pNMHDR);
 	int pos=this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
 	int line=this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
 	int column=this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
@@ -1977,6 +1978,7 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 
 void CCommitDlg::OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNREFERENCED_PARAMETER(pNMHDR);
 	*pResult = 0;
 	TRACE("Item Changed\r\n");
 }

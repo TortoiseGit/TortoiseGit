@@ -1381,6 +1381,8 @@ void CFileDiffDlg::CopySelectionToClipboard()
 
 LRESULT CFileDiffDlg::OnRefLoad(WPARAM wParam, LPARAM lParam)
 {
+	UNREFERENCED_PARAMETER(wParam);
+	UNREFERENCED_PARAMETER(lParam);
 	for(int i=0;i<m_Reflist.size();i++)
 	{
 		CString str=m_Reflist[i];

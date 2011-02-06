@@ -2678,6 +2678,7 @@ void CGitLogListBase::OnDestroy()
 
 LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
 {
+	UNREFERENCED_PARAMETER(lParam);
 	CRect rect;
 	int i=(int)wParam;
 	this->GetItemRect(i,&rect,LVIR_BOUNDS);

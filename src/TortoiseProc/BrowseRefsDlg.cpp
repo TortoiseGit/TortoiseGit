@@ -909,6 +909,7 @@ void CBrowseRefsDlg::OnDestroy()
 
 void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNREFERENCED_PARAMETER(pNMHDR);
 	*pResult = 0;
 
 	EndDialog(IDOK);

@@ -212,6 +212,7 @@ void CSendMailDlg::UpdateSubject()
 
 void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNREFERENCED_PARAMETER(pNMHDR);
 	UpdateSubject();
 	
 	*pResult = 0;

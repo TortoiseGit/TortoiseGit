@@ -171,6 +171,7 @@ void CGitSwitchDlg::OnDestroy()
 
 void CGitSwitchDlg::OnCbenEndeditComboboxexVersion(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNREFERENCED_PARAMETER(pNMHDR);
 	*pResult = 0;
 }
 

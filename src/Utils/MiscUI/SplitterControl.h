@@ -75,7 +75,7 @@ protected:
 	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 	afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam); 
-	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct){}; //avoid assert fail when alt press
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct){UNREFERENCED_PARAMETER(lpDrawItemStruct);}; //avoid assert fail when alt press
 	DECLARE_MESSAGE_MAP()
 public:
 };

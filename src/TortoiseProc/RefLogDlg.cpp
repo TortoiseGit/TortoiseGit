@@ -36,6 +36,8 @@ END_MESSAGE_MAP()
 
 LRESULT CRefLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
 {
+	UNREFERENCED_PARAMETER(wParam);
+	UNREFERENCED_PARAMETER(lParam);
 	m_RefList.m_RefMap.clear();
 	OnCbnSelchangeRef();
 	return 0;
