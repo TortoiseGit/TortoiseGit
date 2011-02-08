@@ -19,6 +19,7 @@
 #include "GitLogCache.h"
 #include <regex>
 #include <GitStatusListCtrl.h>
+#include "FindDlg.h"
 
 // CGitLogList
 #if (NTDDI_VERSION < NTDDI_LONGHORN)
@@ -257,7 +258,7 @@ public:
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
 
-	CFindReplaceDialog *m_pFindDialog;
+	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
 	void OnFind();
 

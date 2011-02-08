@@ -46,6 +46,7 @@
 //#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
 #include "..\\TortoiseShell\\Resource.h"
+#include "FindDlg.h"
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 
@@ -2721,8 +2722,8 @@ void CGitLogListBase::OnFind()
 {
 	if (!m_pFindDialog)
 	{
-		m_pFindDialog = new CFindReplaceDialog();
-		m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);
+		m_pFindDialog = new CFindDlg(this);
+		m_pFindDialog->Create(this);
 	}
 }
 void CGitLogListBase::OnHdnBegintrack(NMHDR *pNMHDR, LRESULT *pResult)
@@ -2738,6 +2739,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 {
 
 	ASSERT(m_pFindDialog != NULL);
+	bool bFound = false;
+	int i;
 
 	if (m_pFindDialog->IsTerminating())
 	{
@@ -2746,18 +2749,43 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		return 0;
 	}
 
+	if(m_pFindDialog->IsRef())
+	{
+		CString str;
+		str=m_pFindDialog->GetFindString();
+		
+		CGitHash hash;
+		
+		if(!str.IsEmpty())
+			hash = g_Git.GetHash(str);
+
+		if(!hash.IsEmpty())
+		{
+			for (i = 0; i<m_arShownList.GetCount(); i++)
+			{
+				GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
+				if(pLogEntry && pLogEntry->m_CommitHash == hash)
+				{
+					bFound = true;
+					break;
+				}
+			}
+		}
+
+	}
+
 	if(m_pFindDialog->FindNext())
 	{
 		//read data from dialog
 		CString FindText = m_pFindDialog->GetFindString();
 		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
-		bool bFound = false;
+
 		tr1::wregex pat;
 		bool bRegex = ValidateRegexp(FindText, pat, bMatchCase);
 
 		tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_not_null;
 
-		int i;
+
 		for (i = this->m_nSearchIndex; i<m_arShownList.GetCount()&&!bFound; i++)
 		{
 			GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
@@ -2833,21 +2861,23 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				}
 			}
 		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; i++)
-		if (bFound)
-		{
-			this->m_nSearchIndex = i;
-			EnsureVisible(i, FALSE);
-			SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
-			SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
-			SetSelectionMark(i);
-			//FillLogMessageCtrl();
-			UpdateData(FALSE);
-			m_nSearchIndex++;
-			if (m_nSearchIndex >= m_arShownList.GetCount())
-				m_nSearchIndex = (int)m_arShownList.GetCount()-1;
-		}
+		
 	} // if(m_pFindDialog->FindNext())
 	//UpdateLogInfoLabel();
+
+	if (bFound)
+	{
+		this->m_nSearchIndex = i;
+		EnsureVisible(i, FALSE);
+		SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
+		SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+		SetSelectionMark(i);
+		//FillLogMessageCtrl();
+		UpdateData(FALSE);
+		m_nSearchIndex++;
+		if (m_nSearchIndex >= m_arShownList.GetCount())
+			m_nSearchIndex = (int)m_arShownList.GetCount()-1;
+	}
 
 	return 0;
 }

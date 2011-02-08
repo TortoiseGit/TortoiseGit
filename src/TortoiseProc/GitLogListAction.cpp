@@ -694,8 +694,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				else
 				{
-					m_pFindDialog = new CFindReplaceDialog();
-					m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
+					m_pFindDialog = new CFindDlg();
+					m_pFindDialog->Create(this);									
 				}
 			}
 			break;
