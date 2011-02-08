@@ -7,6 +7,7 @@
    Fixed issue #590: wasteful use of memory with very large repository
    Fixed issue #531: Git synchronization UI opened so slowly
    Fixed issue #541: show log is extremely slow
+   Fixed issue #364: Log - hot key for "browse refs" dialog
 
  * Improve TortoisePLink 3x transfer perfomance
    Update TortoisePlink to plink 9078
@@ -50,6 +51,9 @@
  * TortoiseGitBlame
    Fixed issue #448: Disable personalized menu behaviour
    After blaming an older revision, TortoiseGitBlame was fixed to this.
+
+ * Fixed issue #704: cannot open help from diff from previous, browse refs
+ * Fixed issue #694: "Clean Up" executes on top level directory
 
 = Release 1.6.3.0 =
 == Features ==
