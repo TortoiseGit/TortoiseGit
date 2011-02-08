@@ -146,6 +146,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
 IDB_GIT                 BITMAP                  "..\\resources\\git.bmp"
+IDB_BITMAP_REFTYPE      BITMAP                  "..\\resources\\reftype.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

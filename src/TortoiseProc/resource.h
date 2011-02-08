@@ -214,6 +214,8 @@
 #define IDI_ACTIONFETCHING              332
 #define IDD_SETTINGSPROGSALTERNATIVEEDITOR 333
 #define IDD_FIND                        334
+#define IDB_BITMAP2                     336
+#define IDB_BITMAP_REFTYPE              336
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1873,7 +1875,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        335
+#define _APS_NEXT_RESOURCE_VALUE        337
 #define _APS_NEXT_COMMAND_VALUE         32840
 #define _APS_NEXT_CONTROL_VALUE         1669
 #define _APS_NEXT_SYMED_VALUE           201

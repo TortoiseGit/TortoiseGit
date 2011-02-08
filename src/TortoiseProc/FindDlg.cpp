@@ -120,6 +120,10 @@ BOOL CFindDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("FindDlg"));
 
+	CImageList *imagelist = new CImageList();
+	imagelist->Create(IDB_BITMAP_REFTYPE,16,3,RGB(255,255,255));
+	this->m_ctrlRefList.SetImageList(imagelist,LVSIL_SMALL);
+
 	CRect rect;
 	m_ctrlRefList.GetClientRect(&rect);
 
@@ -143,7 +147,16 @@ void CFindDlg::AddToList()
 
 	for(int i=0;i< m_RefList.size();i++)
 	{
-		m_ctrlRefList.InsertItem(i,m_RefList[i]);
+		int nImage = -1;
+		CString ref = m_RefList[i];
+		if(ref.Find(_T("refs/tags")) == 0)
+			nImage = 0;
+		else if(ref.Find(_T("refs/remotes"))==0)
+			nImage = 2;
+		else if(ref.Find(_T("refs/heads"))== 0)
+			nImage = 1;
+
+		m_ctrlRefList.InsertItem(i,ref,nImage);
 	}
 }
 void CFindDlg::OnNMDblclkListRef(NMHDR *pNMHDR, LRESULT *pResult)
