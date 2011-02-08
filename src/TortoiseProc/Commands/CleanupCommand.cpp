@@ -36,20 +36,33 @@ bool CleanupCommand::Execute()
 	if( dlg.DoModal() == IDOK)
 	{	
 		CProgressDlg progress;
-		progress.m_GitCmd.Format(_T("git clean "));
+		CString cmd;
+		cmd.Format(_T("git clean "));
 		if(dlg.m_bDir)
-			progress.m_GitCmd += _T(" -d ");
+			cmd += _T(" -d ");
 		switch(dlg.m_CleanType)
 		{
 		case 0:
-			progress.m_GitCmd += _T(" -fx");
+			cmd += _T(" -fx");
 			break;
 		case 1:
-			progress.m_GitCmd += _T(" -f");
+			cmd += _T(" -f");
 			break;
 		case 2:
-			progress.m_GitCmd += _T(" -fX");
+			cmd += _T(" -fX");
 			break;
+		}
+
+		for(int i=0;i<this->pathList.GetCount();i++)
+		{
+			CString path;
+			if(this->pathList[i].IsDirectory())
+				path = pathList[i].GetGitPathString();
+			else
+				path = pathList[i].GetContainingDirectory().GetGitPathString();
+		
+			progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
+
 		}
 		if(progress.DoModal()==IDOK)
 			return TRUE;
