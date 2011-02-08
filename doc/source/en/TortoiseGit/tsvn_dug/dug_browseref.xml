@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-browse-ref">
+  <title>Browse All Refs</title>
+  <?dbhh topicname="HIDD_DIALOG_BROWSE_REFS"?>
+  <indexterm>
+    <primary>Browse All Refs</primary>
+  </indexterm>
+  <indexterm>
+    <primary>refs</primary>
+  </indexterm>
+  <para>
+    This section talks about browse all refs(tag, branch, remote branch, stash and so on)
+    <menuchoice>
+      <guimenu>Browse Reference...
+      </guimenu>
+    </menuchoice>
+  </para>
+  <para>
+    Browse Ref Dialog will show. <graphic fileref="../images/BrowseRef.png"/>
+  </para>
+  <para>
+    Left panel is refs type, such as tags, heads(branch) and so on.
+  </para>
+  <para>
+    Right panel is refs list.
+  </para>
+  <para>
+	<menuchoice>
+		<guimenu>Context menu</guimenu>
+		<guimenuitem>Show log</guimenuitem>
+	</menuchoice>
+  </para>
+  <para>
+	<menuchoice>
+		<guimenu>Context menu</guimenu>
+		<guimenuitem>Show reflog</guimenuitem>
+	</menuchoice>
+  </para>
+  <para>
+	<menuchoice>
+		<guimenu>Context menu</guimenu>
+		<guimenuitem>Switch to this ref</guimenuitem>
+	</menuchoice>
+  </para>
+  <para>
+	<menuchoice>
+		<guimenu>Context menu</guimenu>
+		<guimenuitem>Delete branch</guimenuitem>
+	</menuchoice>
+  </para>
+  <para>
+	<menuchoice>
+		<guimenu>Context menu</guimenu>
+		<guimenuitem>Create branch</guimenuitem>
+	</menuchoice>
+  </para>
+</sect1>
