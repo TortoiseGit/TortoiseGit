@@ -237,29 +237,30 @@
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-compare-revs">
-		<title>Comparing Folders</title>
+		<title>Comparing Version</title>
 		<indexterm>
 			<primary>compare revisions</primary>
 		</indexterm>
 		<indexterm>
 			<primary>export changes</primary>
 		</indexterm>
+		<?dbhh topicname="HIDD_DIFFFILES"?>
 		<para>
 			<figure id="tsvn-dug-compare-revs-dia-1">
 				<title>The Compare Revisions Dialog</title>
 				<graphic fileref="../images/CompareRevisions.png"/>
 			</figure>
-			When you select two trees within the repository browser, or when
-			you select two revisions of a folder in the log dialog, you can
+			When you select two commits within the log dialog, or you can
 			<menuchoice>
 				<guimenu>Context menu</guimenu>
-				<guimenuitem>Compare revisions</guimenuitem>
+				<guimenuitem>Diff with previous version</guimenuitem>
 			</menuchoice>.
 		</para>
 		<para>
 			This dialog shows a list of all files which have changed and allows
-			you to compare or blame them individually using context menu.
+			you to compare them individually using context menu.
 		</para>
+		<!--
 		<para>
 			You can export a <emphasis>change tree</emphasis>, which is useful
 			if you need to send someone else your project tree structure, but
@@ -273,6 +274,7 @@
 			</menuchoice>.
 			You will be prompted for a location to save the change tree.
 		</para>
+		-->
 		<para>
 			You can also export the <emphasis>list</emphasis> of changed files
 			to a text file using
