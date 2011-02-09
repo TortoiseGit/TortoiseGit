@@ -1282,6 +1282,14 @@
 					RelativePath=".\LogDlgHelper.h"
 					>
 				</File>
+				<File
+					RelativePath=".\StatGraphDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\StatGraphDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="RefLog"
@@ -2209,14 +2217,6 @@
 			</File>
 			<File
 				RelativePath=".\ResetDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\StatGraphDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StatGraphDlg.h"
 				>
 			</File>
 			<File
