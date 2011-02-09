@@ -84,3 +84,12 @@
 #define IDS_LOG_POPUP_GNUDIFF_PARENT    20081
 #define IDS_LOG_POPUP_LOG				20082
 
+#define IDC_FINDCOMBO                   20083
+#define IDC_MATCHCASE                   20084
+#define IDC_WHOLEWORD                   20085
+#define IDC_STATIC_FIND                 20086
+#define IDC_STATIC_GROUP_REF			20087
+#define IDC_LIST_REF                    20089
+#define IDC_STATIC_FILTER               20090
+#define IDC_EDIT_FILTER                 20091
+#define IDD_FIND                        20100

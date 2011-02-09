@@ -4,6 +4,7 @@
 #include "afxcmn.h"
 #include "afxwin.h"
 #include "StandAloneDlg.h"
+#include "CommonResource.h"
 // CFindDlg dialog
 
 #define IDT_FILTER		101

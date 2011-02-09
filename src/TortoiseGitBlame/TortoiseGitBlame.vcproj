@@ -376,6 +376,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\TortoiseProc\FindDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GitBlameLogList.h"
 				>
 			</File>
@@ -445,6 +449,10 @@
 			</File>
 			<File
 				RelativePath="..\Utils\MiscUI\SciEdit.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\MiscUI\StandAloneDlg.cpp"
 				>
 			</File>
 			<File
@@ -564,19 +572,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\output_wnd.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\output_wnd.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\output_wnd_hc.ico"
+				RelativePath=".\res\output_wnd.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\blameres\output_wnd_hc.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\output_wnd_hc.ico"
 				>
 			</File>
 			<File
@@ -588,19 +596,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\properties_hc.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\res\properties_hc.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\properties_wnd.ico"
+				RelativePath="..\Resources\blameres\properties_hc.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\properties_wnd.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\blameres\properties_wnd.ico"
 				>
 			</File>
 			<File
@@ -612,19 +620,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\Toolbar.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\res\Toolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\Toolbar256.bmp"
+				RelativePath="..\Resources\blameres\Toolbar.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\Toolbar256.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\blameres\Toolbar256.bmp"
 				>
 			</File>
 			<File
@@ -672,11 +680,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
+				RelativePath=".\res\TortoiseGitBlameDoc.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\TortoiseGitBlameDoc.ico"
+				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
 				>
 			</File>
 			<File

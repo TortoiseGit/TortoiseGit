@@ -213,7 +213,6 @@
 #define IDD_SVNDCOMMITTYPE              331
 #define IDI_ACTIONFETCHING              332
 #define IDD_SETTINGSPROGSALTERNATIVEEDITOR 333
-#define IDD_FIND                        334
 #define IDB_BITMAP2                     336
 #define IDB_BITMAP_REFTYPE              336
 #define IDS_CHSTAT_FILECOL              1000
@@ -260,7 +259,6 @@
 #define IDC_USEREDIT                    1027
 #define IDC_REVNUM2                     1028
 #define IDC_URLCOMBO                    1029
-#define IDC_FINDCOMBO                   1029
 #define IDC_FONTNAMES                   1030
 #define IDC_LOGBUTTON                   1031
 #define IDC_FINDBRANCHSTART             1031
@@ -305,9 +303,7 @@
 #define IDC_CLEARAUTH                   1059
 #define IDC_UNKNOWN                     1061
 #define IDC_INPUTTEXT                   1064
-#define IDC_MATCHCASE                   1064
 #define IDC_HINTTEXT                    1065
-#define IDC_WHOLEWORD                   1066
 #define IDC_SELECTALL                   1067
 #define IDC_SSHCLIENT                   1068
 #define IDC_SSHBROWSE                   1069
@@ -741,7 +737,6 @@
 #define IDC_COMMIT_LIST                 1372
 #define IDC_LIST_REMOTE                 1372
 #define IDC_LIST_REF_LEAFS              1372
-#define IDC_LIST_REF                    1372
 #define IDC_DEPTH                       1373
 #define IDC_GROUPTOP                    1374
 #define IDC_GROUPBOTTOM                 1375
@@ -1187,10 +1182,6 @@
 #define IDC_ALTERNATIVEEDITOR_ON        1662
 #define IDC_ALTERNATIVEEDITOR           1663
 #define IDC_ALTERNATIVEEDITORBROWSE     1664
-#define IDC_EDIT_FILTER                 1665
-#define IDC_STATIC_GROUP_REF            1666
-#define IDC_STATIC_FIND                 1667
-#define IDC_STATIC_FILTER               1668
 #define IDS_REPOBROWSE_MULTIIMPORT      1670
 #define IDS_REPOBROWSE_MULTICOPY        1671
 #define IDS_REPOBROWSE_MULTIMOVE        1672
