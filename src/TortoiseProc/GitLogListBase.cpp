@@ -2667,11 +2667,18 @@ void CGitLogListBase::OnDestroy()
 	SafeTerminateThread();
 	SafeTerminateAsyncDiffThread();
 
+	int retry = 0;
 	while(m_LogCache.SaveCache())
 	{
-		if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."),_T("TortoiseGit"),
-							MB_YESNO) == IDNO)
-							break;
+		if(retry > 5)
+			break;
+		Sleep(1000);
+
+		retry++;
+
+		//if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."),_T("TortoiseGit"),
+		//					MB_YESNO) == IDNO)
+		//					break;
 	}
 
 	CHintListCtrl::OnDestroy();
