@@ -54,6 +54,7 @@
 
  * Fixed issue #704: cannot open help from diff from previous, browse refs
  * Fixed issue #694: "Clean Up" executes on top level directory
+ * Fixed issue #680: StatGraphDlg.cpp min-avg statistics are incorrect
 
 = Release 1.6.3.0 =
 == Features ==
