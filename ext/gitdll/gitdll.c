@@ -67,6 +67,7 @@ static int convert_slash(char * path)
 			*path = '/';
 		path++;
 	}
+	return 0;
 }
 
 int git_init()
@@ -75,7 +76,7 @@ int git_init()
 	char path[MAX_PATH+1];
 	char *prefix;
 	int ret;
-	size_t homesize,size,httpsize;
+	size_t homesize,size;
 
 	_fmode = _O_BINARY; 
 	_setmode(_fileno(stdin), _O_BINARY); 
@@ -207,7 +208,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 		if(pbuf)
 			pbuf ++;
 	}
-
+	return 0;
 }
 
 int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
@@ -325,7 +326,7 @@ char **strtoargv(char *arg, int *size)
 			i++;
 			*p++=0;
 		}
-		if(*arg == NULL)
+		if(*arg == 0)
 			break;
 		arg++;
 	}
@@ -336,10 +337,9 @@ char **strtoargv(char *arg, int *size)
 int git_open_log(GIT_LOG * handle, char * arg)
 {
 	struct rev_info *p_Rev;
-	int size;
 	char ** argv=0;
 	int argc=0;
-	int i=0;
+	unsigned int i=0;
 	struct setup_revision_opt opt;
 
 	/* clear flags */
@@ -426,7 +426,6 @@ int git_close_log(GIT_LOG handle)
 int git_open_diff(GIT_DIFF *diff, char * arg)
 {
 	struct rev_info *p_Rev;
-	int size;
 	char ** argv=0;
 	int argc=0;
 		
@@ -484,6 +483,7 @@ int git_diff_flush(GIT_DIFF diff)
 		fclose(p_Rev->diffopt.close_file);
 
 	free_diffstat_info(&p_Rev->diffstat);
+	return 0;
 }
 
 int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count)
@@ -640,6 +640,7 @@ int git_free_exclude_list(EXCLUDE_LIST which)
 	}
 	free(p->excludes);
 	free(p);
+	return 0;
 }
 
 int git_check_excluded_1(const char *pathname,
@@ -895,7 +896,6 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	struct tree * root;
 	struct checkout state;
 	char *match[2];
-	int start;
 	ret = get_sha1(ref, sha1);
 	if(ret)
 		return ret;
