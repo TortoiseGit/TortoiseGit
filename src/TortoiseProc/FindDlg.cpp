@@ -54,7 +54,6 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CFindDlg, CResizableStandAloneDialog)
 	ON_CBN_EDITCHANGE(IDC_FINDCOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
-	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF, &CFindDlg::OnNMDblclkListRef)
 	ON_NOTIFY(NM_CLICK, IDC_LIST_REF, &CFindDlg::OnNMClickListRef)
 	ON_EN_CHANGE(IDC_EDIT_FILTER, &CFindDlg::OnEnChangeEditFilter)
 	ON_WM_TIMER()
@@ -146,7 +145,7 @@ void CFindDlg::AddToList()
 	this->m_ctrlRefList.DeleteAllItems();
 	CString filter;
 	this->m_ctrlFilter.GetWindowText(filter);
-	
+
 	int item =0;
 	for(int i=0;i< m_RefList.size();i++)
 	{
@@ -158,22 +157,15 @@ void CFindDlg::AddToList()
 			nImage = 2;
 		else if(ref.Find(_T("refs/heads"))== 0)
 			nImage = 1;
-	
+
 		if(ref.Find(filter)>=0)
 			m_ctrlRefList.InsertItem(item++,ref,nImage);
 	}
-}
-void CFindDlg::OnNMDblclkListRef(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	// TODO: Add your control notification handler code here
-	*pResult = 0;
 }
 
 void CFindDlg::OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	// TODO: Add your control notification handler code here
 
 	this->m_FindString = this->m_ctrlRefList.GetItemText(pNMItemActivate->iItem,0);
 	this->m_bIsRef =true;
@@ -192,21 +184,13 @@ void CFindDlg::OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFindDlg::OnEnChangeEditFilter()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CResizableStandAloneDialog::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
 	SetTimer(IDT_FILTER, 1000, NULL);
 }
 
 void CFindDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: Add your message handler code here and/or call default
 	if( nIDEvent == IDT_FILTER)
 	{
-
 		KillTimer(IDT_FILTER);
 		this->AddToList();
 	}

@@ -55,7 +55,6 @@ protected:
 public:
 	CListCtrl m_ctrlRefList;
 	CEdit m_ctrlFilter;
-	afx_msg void OnNMDblclkListRef(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeEditFilter();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
