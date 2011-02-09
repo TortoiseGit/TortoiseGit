@@ -66,12 +66,12 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 		
 		CString msg;
 		msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
-			   pPath->GetWinPath(),
-			   oldhash,
-			   oldsub ,
-			   workingcopy,
-			   newhash,
-			   newsub);
+				pPath->GetWinPath(),
+				oldhash,
+				oldsub ,
+				workingcopy,
+				newhash,
+				newsub);
 		CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
 		return 0;
 	}
@@ -98,7 +98,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t &rev1,bool bIsAdd)
 	if(rev1 != GIT_REV_ZERO )
 	{
 		file1.Format(_T("%s%s_%s%s"),
-				temppath,						
+				temppath,
 				pPath->GetBaseFilename(),
 				rev1.Left(6),
 				pPath->GetFileExtension());
@@ -217,12 +217,12 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t &
 	}
 	CString msg;
 	msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
-			   pPath->GetWinPath(),
-			   oldhash,
-			   oldsub ,
-			   workingcopy,
-			   newhash,
-			   newsub);
+				pPath->GetWinPath(),
+				oldhash,
+				oldsub ,
+				workingcopy,
+				newhash,
+				newsub);
 	CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
 
 	return 0;
@@ -246,7 +246,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 	if(rev1 != GIT_REV_ZERO )
 	{
 		file1.Format(_T("%s%s_%s%s"),
-				temppath,						
+				temppath,
 				pPath->GetBaseFilename(),
 				rev1.Left(6),
 				pPath->GetFileExtension());
@@ -265,7 +265,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 	{
 		
 		file2.Format(_T("%s%s_%s%s"),
-				temppath,						
+				temppath,
 				pPath2->GetBaseFilename(),
 				rev2.Left(6),
 				pPath2->GetFileExtension());
