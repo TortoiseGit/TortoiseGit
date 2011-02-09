@@ -277,13 +277,23 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 		file2=g_Git.m_CurrentDir+_T("\\")+pPath2->GetWinPathString();
 		title2.Format( IDS_DIFF_WCNAME, pPath2->GetFileOrDirectoryName() );
 	}
-	
-	CAppUtils::DiffFlags flags;
-	CAppUtils::StartExtDiff(file2,file1,
-							title2,
-							title1
-							,flags);
 
+	if (pPath->m_Action == pPath->LOGACTIONS_ADDED)
+	{
+		CGitDiff::DiffNull(pPath, rev1, true);
+	}
+	else if (pPath->m_Action == pPath->LOGACTIONS_DELETED)
+	{
+		CGitDiff::DiffNull(pPath, rev2, false);
+	}
+	else
+	{
+		CAppUtils::DiffFlags flags;
+		CAppUtils::StartExtDiff(file2,file1,
+								title2,
+								title1
+								,flags);
+	}
 	return 0;
 }
 
