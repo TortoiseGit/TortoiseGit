@@ -955,7 +955,7 @@ void CStatGraphDlg::ShowStats()
     number.Format(_T("%ld"), m_nTotalCommits);
     SetDlgItemText(IDC_NUMCOMMITSVALUE, number);
     number.Format(_T("%ld"), m_nTotalFileChanges);
-    SetDlgItemText(IDC_NUMFILECHANGESVALUE, number);
+    //SetDlgItemText(IDC_NUMFILECHANGESVALUE, number);
 
     number.Format(_T("%ld"), m_parAuthors->GetCount() / nWeeks);
     SetDlgItemText(IDC_COMMITSEACHWEEKAVG, number);
@@ -965,11 +965,11 @@ void CStatGraphDlg::ShowStats()
     SetDlgItemText(IDC_COMMITSEACHWEEKMIN, number);
 
     number.Format(_T("%ld"), m_nTotalFileChanges / nWeeks);
-    SetDlgItemText(IDC_FILECHANGESEACHWEEKAVG, number);
+    //SetDlgItemText(IDC_FILECHANGESEACHWEEKAVG, number);
     number.Format(_T("%ld"), nFileChangesMax);
-    SetDlgItemText(IDC_FILECHANGESEACHWEEKMAX, number);
+    //SetDlgItemText(IDC_FILECHANGESEACHWEEKMAX, number);
     number.Format(_T("%ld"), nFileChangesMin);
-    SetDlgItemText(IDC_FILECHANGESEACHWEEKMIN, number);
+    //SetDlgItemText(IDC_FILECHANGESEACHWEEKMIN, number);
 
     if (nAuthors == 0)
     {
