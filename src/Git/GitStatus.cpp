@@ -388,7 +388,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 	{
 		// done to match TSVN functionality of this function (not sure if any code uses the reutrn val)
 		// if TGit does not need this, then change the return type of function
-		youngest = g_Git.GetHash(CString(_T("HEAD")));
+		youngest = g_Git.GetHash(_T("HEAD"));
 	}
 
 	return youngest;

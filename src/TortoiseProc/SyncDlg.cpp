@@ -105,7 +105,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->UpdateData();
 	UpdateCombox();
 
-	m_oldHash = g_Git.GetHash(CString(_T("HEAD")));
+	m_oldHash = g_Git.GetHash(_T("HEAD"));
 
 	if( CurrentEntry == 0)
 	{
@@ -260,7 +260,7 @@ void CSyncDlg::PullComplete()
 	this->FetchOutList(true);
 
 	CString newhash;
-	newhash = g_Git.GetHash(CString(_T("HEAD")));
+	newhash = g_Git.GetHash(_T("HEAD"));
 
 	if( this ->m_GitCmdStatus )
 	{
@@ -305,10 +305,10 @@ void CSyncDlg::PullComplete()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
-			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,m_oldHash);
+			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,m_oldHash.ToString());
 
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&this->m_oldHash,&newhash);
+				&this->m_oldHash.ToString(),&newhash);
 		}
 		this->ShowTab(IDC_IN_LOGLIST);
 	}
@@ -436,7 +436,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 void CSyncDlg::OnBnClickedButtonApply()
 {
 	CString oldhash;
-	oldhash=g_Git.GetHash(CString(_T("HEAD")));
+	oldhash=g_Git.GetHash(_T("HEAD"));
 
 	CImportPatchDlg dlg;
 	CString cmd,output;
@@ -461,7 +461,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlCmdOut.ReplaceSel(output);
 		}
 
-		CString newhash=g_Git.GetHash(CString(_T("HEAD")));
+		CString newhash=g_Git.GetHash(_T("HEAD"));
 
 		this->m_InLogList.Clear();
 		this->m_InChangeFileList.Clear();
@@ -859,7 +859,7 @@ void CSyncDlg::FetchOutList(bool force)
 		return ;
 
 	}
-	else if(g_Git.GetHash(remotebranch).GetLength()<40)
+	else if(g_Git.GetHash(remotebranch).IsEmpty())
 	{
 		CString str;
 		str.Format(_T("Don't know what will push because unknown \"%s\""),remotebranch);

@@ -75,7 +75,7 @@ bool SVNRebaseCommand::Execute()
 
 	dlg.m_Upstream=out;
 
-	CString UpStreamOldHash,HeadHash,UpStreamNewHash;
+	CGitHash UpStreamOldHash,HeadHash,UpStreamNewHash;
 	UpStreamOldHash=g_Git.GetHash(out);
 	HeadHash = g_Git.GetHash(_T("HEAD"));
 	CProgressDlg progress; 

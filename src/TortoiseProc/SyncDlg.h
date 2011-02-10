@@ -132,7 +132,7 @@ protected:
 	CString m_OutLocalBranch;
 	CString m_OutRemoteBranch;
 	
-	CString m_oldHash;
+	CGitHash m_oldHash;
 
 	void ShowProgressCtrl(bool bShow=true);
 	void ShowInputCtrl(bool bShow=true);

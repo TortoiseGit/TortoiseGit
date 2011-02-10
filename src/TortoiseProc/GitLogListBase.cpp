@@ -99,7 +99,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	g_Git.GetMapHashToFriendName(m_HashMap);
 	m_CurrentBranch=g_Git.GetCurrentBranch();
-	this->m_HeadHash=g_Git.GetHash(CString(_T("HEAD"))).Left(40);
+	this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
 
 	m_From=-1;;
 	m_To=-1;
@@ -1714,10 +1714,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(headindex>=0)
 					{
 						head.Format(_T("HEAD~%d"),LastSelect-headindex);
-						CString hash=g_Git.GetHash(head);
-						hash=hash.Left(40);
+						CGitHash hash=g_Git.GetHash(head);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
-						if(pLastEntry->m_CommitHash.ToString() == hash) {
+						if(pLastEntry->m_CommitHash == hash) {
 							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
 							bAddSeparator = true;
 						}

@@ -427,14 +427,14 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			csMessage += L"</b>";
 
 			//Check if branch is fully merged in HEAD
-			CString branchHash = g_Git.GetHash(leafs[0]->GetRefName());
-			CString commonAncestor;
+			CGitHash branchHash = g_Git.GetHash(leafs[0]->GetRefName());
+			CGitHash commonAncestor;
+			CString commonAncestorstr;
 			CString cmd;
 			cmd.Format(L"git.exe merge-base HEAD %s", leafs[0]->GetRefName());
-			g_Git.Run(cmd,&commonAncestor,CP_UTF8);
+			g_Git.Run(cmd,&commonAncestorstr,CP_UTF8);
 
-			branchHash=branchHash.Left(40);
-			commonAncestor=commonAncestor.Left(40);
+			commonAncestor=commonAncestorstr;
 			
 			if(commonAncestor != branchHash)
 			{

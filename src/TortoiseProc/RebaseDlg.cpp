@@ -421,16 +421,17 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 
 void CRebaseDlg::FetchLogList()
 {
-	CString base,hash;
+	CGitHash base,hash;
+	CString basestr;
 	CString cmd;
 	m_IsFastForward=FALSE;
 	cmd.Format(_T("git.exe merge-base %s %s"), m_UpstreamCtrl.GetString(),m_BranchCtrl.GetString());
-	if(g_Git.Run(cmd,&base,CP_ACP))
+	if(g_Git.Run(cmd,&basestr,CP_ACP))
 	{
-		CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL,basestr,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return;
 	}
-	base=base.Left(40);
+	base=basestr;
 
 	hash=g_Git.GetHash(m_BranchCtrl.GetString());
 
@@ -446,8 +447,6 @@ void CRebaseDlg::FetchLogList()
 		return;
 	}
 
-	hash=hash.Left(40);
-	
 	if(hash == base )
 	{
 		//fast forword
@@ -470,13 +469,7 @@ void CRebaseDlg::FetchLogList()
 
 	if(!this->m_bForce)
 	{
-		cmd.Format(_T("git.exe rev-parse %s"), m_UpstreamCtrl.GetString());
-		if( g_Git.Run(cmd,&hash,CP_ACP))
-		{
-			CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return;
-		}
-		hash=hash.Left(40);
+		hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
 		
 		if( base == hash )
 		{
@@ -673,10 +666,10 @@ int CRebaseDlg::StartRebase()
 
 	if( !this->m_IsCherryPick )
 	{
-		cmd.Format(_T("git.exe rev-parse %s"),this->m_BranchCtrl.GetString());
-		if(g_Git.Run(cmd,&this->m_OrigBranchHash,CP_UTF8))
+		m_OrigBranchHash = g_Git.GetHash(this->m_BranchCtrl.GetString());
+		if(m_OrigBranchHash.IsEmpty())
 		{
-			this->AddLogString(m_OrigBranchHash);
+			this->AddLogString(m_OrigBranchHash.ToString());
 			return -1;
 		}
 		this->AddLogString(_T("Start Rebase\r\n"));
@@ -707,7 +700,7 @@ int CRebaseDlg::FinishRebase()
 	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
 		return 0;
 
-	git_revnum_t head = g_Git.GetHash(CString(_T("HEAD")));
+	git_revnum_t head = g_Git.GetHash(_T("HEAD"));
 	CString out,cmd;
 
 	out.Empty();
@@ -1395,7 +1388,7 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	if(this->m_IsFastForward)
 	{
-		cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.Left(40));
+		cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.ToString());
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			AddLogString(out);
@@ -1411,7 +1404,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 
-	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.Left(40));
+	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.ToString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
@@ -1431,7 +1424,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return ;
 	}
 	
-	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.Left(40));
+	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.ToString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);

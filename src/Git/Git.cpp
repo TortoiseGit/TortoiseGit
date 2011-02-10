@@ -789,17 +789,34 @@ int CGit::RunLogFile(CString cmd,CString &filename)
 //	return 0;
 }
 
-git_revnum_t CGit::GetHash(const CString &friendname)
+CGitHash CGit::GetHash(TCHAR* friendname)
 {
-	CString cmd;
-	CString out;
-	cmd.Format(_T("git.exe rev-parse %s" ),friendname);
-	Run(cmd,&out,CP_UTF8);
-//	int pos=out.ReverseFind(_T('\n'));
-	int pos=out.FindOneOf(_T("\r\n"));
-	if(pos>0)
-		return out.Left(pos);
-	return out;
+	if(this->m_IsUseGitDLL)
+	{
+		this->CheckAndInitDll();
+
+		CGitHash hash;
+		CStringA ref;
+		ref = CUnicodeUtils::GetMulti(friendname,CP_ACP);
+		try
+		{
+			git_get_sha1(ref, hash.m_hash);
+		
+		}catch(...)
+		{
+		}
+		return hash;
+
+	}else
+	{
+		CString cmd;
+		CString out;
+		cmd.Format(_T("git.exe rev-parse %s" ),friendname);
+		Run(cmd,&out,CP_UTF8);
+	//	int pos=out.ReverseFind(_T('\n'));
+		int pos=out.FindOneOf(_T("\r\n"));
+		return CGitHash(out);
+	}
 }
 
 int CGit::GetInitAddList(CTGitPathList &outputlist)
@@ -1452,7 +1469,8 @@ int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 
 bool CGit::IsFastForward(CString &from, CString &to)
 {
-	CString base,hash;
+	CString base;
+	CGitHash basehash,hash;
 	CString cmd;
 	cmd.Format(_T("git.exe merge-base %s %s"), to,from);
 
@@ -1461,28 +1479,20 @@ bool CGit::IsFastForward(CString &from, CString &to)
 		//CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return false;
 	}
-	base=base.Left(40);
+	basehash = base.Left(40);
 
-	hash=g_Git.GetHash(from);
+	hash=g_Git.GetHash(from.GetBuffer());
 
-	hash=hash.Left(40);
-
-	return hash == base;
+	return hash == basehash;
 }
 
-unsigned int CGit::Hash2int(CString &hash)
+unsigned int CGit::Hash2int(CGitHash &hash)
 {
 	int ret=0;
-	for(int i=0;i<8;i++)
+	for(int i=0;i<4;i++)
 	{
-		ret =ret <<4;
-		if(hash[i]>=_T('a'))
-			ret |= (hash[i]-_T('a')+10)&0xFF;
-		else if(hash[i]>=_T('A'))
-			ret |= (hash[i]-_T('A')+10)&0xFF;
-		else
-			ret |= (hash[i]-_T('0'))&0xFF;
-
+		ret = ret << 8;
+		ret |= hash.m_hash[i];
 	}
 	return ret;
 }

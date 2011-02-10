@@ -664,7 +664,7 @@ void CCommitDlg::OnOK()
 
 				BSTR logMessage = m_sLogMessage.AllocSysString();
 
-				CString hash=g_Git.GetHash(CString(_T("HEAD")));
+				CGitHash hash=g_Git.GetHash(_T("HEAD"));
 				LONG version = g_Git.Hash2int(hash);
 
 				BSTR temp = NULL;

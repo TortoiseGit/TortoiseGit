@@ -112,7 +112,7 @@ public:
 
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;
-	unsigned int Hash2int(CString &hash);
+	unsigned int Hash2int(CGitHash &hash);
 //	static CString m_MsysGitPath;
 	
 	PROCESS_INFORMATION m_CurrentGitPi;
@@ -198,7 +198,8 @@ public:
 
 	BOOL EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
 
-	git_revnum_t GetHash(const CString &friendname);
+	CGitHash GetHash(TCHAR* friendname);
+	CGitHash GetHash(CString ref){return GetHash(ref.GetBuffer());}
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);

@@ -1269,7 +1269,7 @@ void CLogDlg::DiffSelectedFile()
 }
 
 
-void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool blame, bool unified)
+void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /*blame*/, bool /*unified*/)
 {
 	DialogEnableWindow(IDOK, FALSE);
 //	SetPromptApp(&theApp);

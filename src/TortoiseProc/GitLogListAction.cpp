@@ -405,7 +405,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				break;
 			}
 			
-			headhash=g_Git.GetHash(CString(_T("HEAD")));
+			headhash=g_Git.GetHash(_T("HEAD"));
 			
 			if(!g_Git.CheckCleanWorkTree())
 			{

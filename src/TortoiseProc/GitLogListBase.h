@@ -290,7 +290,7 @@ public:
 		m_HashMap.clear();
 		g_Git.GetMapHashToFriendName(m_HashMap);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
-		this->m_HeadHash=g_Git.GetHash(CString(_T("HEAD"))).Left(40);
+		this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
 		m_wcRev.m_ParentHash.clear();
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 	}

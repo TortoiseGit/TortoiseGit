@@ -81,8 +81,8 @@ protected:
 
 	BOOL m_IsFastForward;
 
-	CString m_OrigBranchHash;
-	CString m_OrigUpstreamHash;
+	CGitHash m_OrigBranchHash;
+	CGitHash m_OrigUpstreamHash;
 
 	int VerifyNoConflict();
 	CString GetRebaseModeName(int rebasemode);
