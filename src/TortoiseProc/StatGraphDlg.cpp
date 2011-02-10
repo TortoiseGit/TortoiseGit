@@ -156,8 +156,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 		m_pToolTip->Activate(TRUE);
 	}
 
-	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\StatAuthorsCaseSensitive")));
-	m_bSortByCommitCount = DWORD(CRegDWORD(_T("Software\\TortoiseSVN\\StatSortByCommitCount")));
+	m_bAuthorsCaseSensitive = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive")));
+	m_bSortByCommitCount = DWORD(CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount")));
 	UpdateData(FALSE);
 
 	//Load statistical queries
@@ -244,7 +244,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	SetSkipper (true);
 
 	// we use a stats page encoding here, 0 stands for the statistics dialog
-	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseSVN\\LastViewedStatsPage"), 0);
+	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 
 	// open last viewed statistics page as first page
 	int graphtype = lastStatsPage / 10;
@@ -278,9 +278,9 @@ BOOL CStatGraphDlg::OnInitDialog()
 		default : return TRUE;
 	}
 
-	LCID m_locale = MAKELCID((DWORD)CRegStdDWORD(_T("Software\\TortoiseSVN\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
+	LCID m_locale = MAKELCID((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
 
-	bool bUseSystemLocale = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseSVN\\UseSystemLocaleForDates"), TRUE);
+	bool bUseSystemLocale = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
 	TCHAR l = 0;
@@ -1339,7 +1339,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 	{
 		// save the graph as an enhanced meta file
 		CMyMetaFileDC wmfDC;
-		wmfDC.CreateEnhanced(NULL, sFilename, NULL, _T("TortoiseSVN\0Statistics\0\0"));
+		wmfDC.CreateEnhanced(NULL, sFilename, NULL, _T("TortoiseGit\0Statistics\0\0"));
 		wmfDC.SetAttribDC(GetDC()->GetSafeHdc());
 		RedrawGraph();
 		m_graph.DrawGraph(wmfDC);
@@ -1424,7 +1424,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			dc.DeleteDC();
 			if (!sErrormessage.IsEmpty())
 			{
-				::MessageBox(m_hWnd, sErrormessage, _T("TortoiseSVN"), MB_ICONERROR);
+				::MessageBox(m_hWnd, sErrormessage, _T("TortoiseGit"), MB_ICONERROR);
 			}
 		}
 		catch (CException * pE)
@@ -1432,7 +1432,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 			TCHAR szErrorMsg[2048];
 			pE->GetErrorMessage(szErrorMsg, 2048);
 			pE->Delete();
-			::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseSVN"), MB_ICONERROR);
+			::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);
 		}
 	}
 }
@@ -1497,13 +1497,13 @@ void CStatGraphDlg::StoreCurrentGraphType()
 	}
 
 	// store current chart type in registry
-	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseSVN\\LastViewedStatsPage"), 0);
+	CRegDWORD lastStatsPage = CRegDWORD(_T("Software\\TortoiseGit\\LastViewedStatsPage"), 0);
 	lastStatsPage = statspage;
 
-	CRegDWORD regAuthors = CRegDWORD(_T("Software\\TortoiseSVN\\StatAuthorsCaseSensitive"));
+	CRegDWORD regAuthors = CRegDWORD(_T("Software\\TortoiseGit\\StatAuthorsCaseSensitive"));
 	regAuthors = m_bAuthorsCaseSensitive;
 
-	CRegDWORD regSort = CRegDWORD(_T("Software\\TortoiseSVN\\StatSortByCommitCount"));
+	CRegDWORD regSort = CRegDWORD(_T("Software\\TortoiseGit\\StatSortByCommitCount"));
 	regSort = m_bSortByCommitCount;
 }
 
