@@ -307,7 +307,7 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 	GetDlgItem(IDC_NUMAUTHORVALUE)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMCOMMITS)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMCOMMITSVALUE)->ShowWindow(nCmdShow);
-	GetDlgItem(IDC_NUMFILECHANGES)->ShowWindow(nCmdShow);
+	//GetDlgItem(IDC_NUMFILECHANGES)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMFILECHANGESVALUE)->ShowWindow(nCmdShow);
 
 	GetDlgItem(IDC_AVG)->ShowWindow(nCmdShow);
@@ -318,7 +318,7 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 	GetDlgItem(IDC_LEASTACTIVEAUTHOR)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_MOSTACTIVEAUTHORNAME)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_LEASTACTIVEAUTHORNAME)->ShowWindow(nCmdShow);
-	GetDlgItem(IDC_FILECHANGESEACHWEEK)->ShowWindow(nCmdShow);
+	//GetDlgItem(IDC_FILECHANGESEACHWEEK)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_COMMITSEACHWEEKAVG)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_COMMITSEACHWEEKMIN)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_COMMITSEACHWEEKMAX)->ShowWindow(nCmdShow);
