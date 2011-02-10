@@ -21,5 +21,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-    int m_ResetType;
+	int m_ResetType;
+	CString m_ResetToVersion;
 };

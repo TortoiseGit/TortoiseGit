@@ -243,6 +243,7 @@
 #define IDS_ERR_TGITBLAME               1015
 #define IDC_EXTMERGE                    1016
 #define IDC_EXTDIFFPROPS                1016
+#define IDS_PROC_RESETBRANCH            1016
 #define IDC_MESSAGE                     1017
 #define IDC_DIFFVIEWER                  1017
 #define IDC_NEWEST                      1019
