@@ -1890,11 +1890,11 @@ BEGIN
     GROUPBOX        "Reset Type",IDC_GROUP_RESET_TYPE,7,18,247,60
     CONTROL         "Soft: Leave working tree and index untouched",IDC_RADIO_RESET_SOFT,
                     "Button",BS_AUTORADIOBUTTON,15,32,165,10
-    CONTROL         "Mixed:Leave working tree untouched, reset index",IDC_RADIO_RESET_MIXED,
-                    "Button",BS_AUTORADIOBUTTON,15,45,175,10
-    CONTROL         "Hard:Reset working tree and index (discard All Local Changes)",IDC_RADIO_RESET_HARD,
+    CONTROL         "Mixed: Leave working tree untouched, reset index",IDC_RADIO_RESET_MIXED,
+                    "Button",BS_AUTORADIOBUTTON,15,45,177,10
+    CONTROL         "Hard: Reset working tree and index (discard all local changes)",IDC_RADIO_RESET_HARD,
                     "Button",BS_AUTORADIOBUTTON,15,58,217,10
-    LTEXT           "Reset Branch master to                                                                                    ",IDC_RESET_BRANCH_NAME,8,6,244,8
+    LTEXT           "Reset Branch master to",IDC_RESET_BRANCH_NAME,8,6,244,8
 END
 
 IDD_REBASE DIALOGEX 0, 0, 380, 237
