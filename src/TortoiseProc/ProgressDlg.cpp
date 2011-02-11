@@ -122,7 +122,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		if (bShowCommand)
 		{
 			CString str;
-			str+= cmdlist[i]+_T("\n\n");
+			str+= cmdlist[i].Trim()+_T("\n\n");
 			for(int j=0;j<str.GetLength();j++)
 			{
 				if(pdata)
@@ -138,7 +138,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
-		g_Git.RunAsync(cmdlist[i],&pi, &hRead,pfilename);
+		g_Git.RunAsync(cmdlist[i].Trim(),&pi, &hRead,pfilename);
 
 		DWORD readnumber;
 		char byte;
@@ -553,5 +553,4 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	g_Git.StringAppend(&str, (BYTE*)buff+start, CP_ACP,size - start);
 
 	return str;
-	
 }
