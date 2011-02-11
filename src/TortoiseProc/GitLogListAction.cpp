@@ -393,15 +393,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				head.Format(_T("HEAD~%d"),LastSelect-headindex);
 				hashLast=g_Git.GetHash(head);
 			}
-						
+
 			GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 			GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 			if(pFirstEntry->m_CommitHash != hashFirst || pLastEntry->m_CommitHash != hashLast)
 			{
-				CMessageBox::Show(NULL,_T(
-					"Cannot combine commits now.\r\n\
-					Make sure you are viewing the log of your current branch and \
-					no filters are applied."),_T("TortoiseGit"),MB_OK);
+				CMessageBox::Show(NULL,_T("Cannot combine commits now.\r\nMake sure you are viewing the log of your current branch and no filters are applied."),_T("TortoiseGit"),MB_OK);
 				break;
 			}
 			
