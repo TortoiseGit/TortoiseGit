@@ -29,6 +29,7 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CResetDlg, CResizableStandAloneDialog)
+	ON_BN_CLICKED(IDHELP, &CResetDlg::OnBnClickedHelp)
 END_MESSAGE_MAP()
 
 
@@ -57,4 +58,9 @@ void CResetDlg::OnOK()
 {
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
 	return CResizableStandAloneDialog::OnOK();
+}
+
+void CResetDlg::OnBnClickedHelp()
+{
+	OnHelp();
 }

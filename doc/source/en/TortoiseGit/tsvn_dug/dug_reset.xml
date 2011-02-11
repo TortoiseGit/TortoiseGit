@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-reset">
+	<title>Reset</title>
+	<indexterm>
+		<primary>Reset</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_RESET"?>
+	<para>
+		 Reset current HEAD to the specified state.
+		Sets the current head to the specified commit and optionally resets the
+index and working tree to match.
+	</para>
+	<para>
+		<guilabel>Soft: Leave working tree and index untouched</guilabel>
+		Does not touch the index file nor the working tree at all (but resets the head to &lt;commit&gt;, just like all modes do). This leaves all your changed files "Changes to be committed", as git status would put it.
+	</para>
+	<para>
+		<guilabel>Mixed: Leave working tree untouched, reset index</guilabel>
+		Resets the index but not the working tree (i.e., the changed files are preserved but not marked for commit) and reports what has not been updated. This is the git default action.
+	</para>
+	<para>
+		<guilabel>Hard: Reset working tree and index (discard all local changes)</guilabel>
+		Resets the index and working tree. Any changes to tracked files in the working tree since &lt;commit&gt; are discarded.
+	</para>
+</sect1>
