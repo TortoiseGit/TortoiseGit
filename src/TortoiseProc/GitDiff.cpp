@@ -245,10 +245,13 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 
 	if(rev1 != GIT_REV_ZERO )
 	{
-		file1.Format(_T("%s%s_%s%s"),
-				temppath,
-				pPath->GetBaseFilename(),
-				rev1.Left(6),
+		TCHAR szTempName[MAX_PATH];
+		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
+		CString temp(szTempName);
+		DeleteFile(szTempName);
+		// use original file extension, an external diff tool might need it
+		file1.Format(_T("%s%s"),
+				temp.Left(temp.GetLength() - 4),
 				pPath->GetFileExtension());
 		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
 		g_Git.GetOneFile(rev1,*pPath,file1);
@@ -263,11 +266,13 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t & rev1, gi
 	CString title2;
 	if(rev2 != GIT_REV_ZERO)
 	{
-		
-		file2.Format(_T("%s%s_%s%s"),
-				temppath,
-				pPath2->GetBaseFilename(),
-				rev2.Left(6),
+		TCHAR szTempName[MAX_PATH];
+		GetTempFileName(temppath, pPath2->GetBaseFilename(), 0, szTempName);
+		CString temp(szTempName);
+		DeleteFile(szTempName);
+		// use original file extension, an external diff tool might need it
+		file2.Format(_T("%s%s"),
+				temp.Left(temp.GetLength() - 4),
 				pPath2->GetFileExtension());
 		title2 = pPath2->GetFileOrDirectoryName()+_T(":")+rev2.Left(6);
 		g_Git.GetOneFile(rev2,*pPath2,file2);
