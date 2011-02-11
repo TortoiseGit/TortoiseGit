@@ -1377,7 +1377,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	if(list.GetCount() == 0)
 		return FALSE;
 
-	TCHAR szTempName[512];
+	TCHAR szTempName[MAX_PATH];
 	GetTempFileName(_T(""),_T(""),0,szTempName);
 	CString temp(szTempName);
 	temp=temp.Mid(1,temp.GetLength()-5);
