@@ -653,7 +653,7 @@ int CRebaseDlg::StartRebase()
 
 	if( !this->m_IsCherryPick )
 	{
-		cmd.Format(_T("git.exe checkout -f %s"), m_OrigUpstreamHash);
+		cmd.Format(_T("git.exe checkout -f %s"), m_OrigUpstreamHash.ToString());
 		this->AddLogString(cmd);
 
 		out.Empty();
