@@ -314,6 +314,8 @@ void CRebaseDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SQUASH_ALL),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_PICK_ALL),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_EDIT_ALL),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_UP2),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_BUTTON_DOWN2),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_REBASE_CHECK_FORCE),0,delta);
 
 	this->AddRebaseAnchor();
