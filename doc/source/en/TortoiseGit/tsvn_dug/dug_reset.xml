@@ -23,4 +23,7 @@ index and working tree to match.
 		<guilabel>Hard: Reset working tree and index (discard all local changes)</guilabel>
 		Resets the index and working tree. Any changes to tracked files in the working tree since &lt;commit&gt; are discarded.
 	</para>
+	<para>
+		You can find more information at <xref linkend="git-reset(1)"/>
+	</para>
 </sect1>

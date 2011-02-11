@@ -92,5 +92,7 @@
 			please refer to <xref linkend="tsvn-dug-checkout"/> 
 		</para>
 	</sect2>
-	
+	<para>
+		You can find more information at <xref linkend="git-branch(1)"/> and <xref linkend="git-tag(1)"/>
+	</para>
 </sect1>

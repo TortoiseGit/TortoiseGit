@@ -50,4 +50,7 @@
 	<para>Autoload Putty Key
 	</para>
   </sect2>
+  <para>
+    You can find more information at <xref linkend="git-push(1)"/>
+  </para>
 </sect1>

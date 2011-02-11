@@ -40,4 +40,7 @@
     Git clone supports http, git and ssh protocol. <xref linkend="git-choose-ssh"/> shows how to choose SSH client.
     OpenSSH, PLink or TortoisePlink. 
   </para>
+  <para>
+    You can find more information at <xref linkend="git-clone(1)"/>
+  </para>
 </sect1>
