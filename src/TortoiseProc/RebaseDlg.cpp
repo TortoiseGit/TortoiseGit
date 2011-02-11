@@ -1485,6 +1485,7 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 {
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
+	bool changed = false;
 	while(pos)
 	{
 		int index=m_CommitList.GetNextSelectedItem(pos);
@@ -1493,16 +1494,21 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 			CGitHash old = m_CommitList.m_logEntries[index-1];
 			m_CommitList.m_logEntries[index-1] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
+			changed = true;
 		}
 	}
-	m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
-	m_CommitList.Invalidate();
+	if (changed)
+	{
+		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+		m_CommitList.Invalidate();
+	}
 }
 
 void CRebaseDlg::OnBnClickedButtonDown2()
 {
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
+	bool changed = false;
 	while(pos)
 	{
 		int index=m_CommitList.GetNextSelectedItem(pos);
@@ -1511,8 +1517,12 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 			CGitHash old = m_CommitList.m_logEntries[index+1];
 			m_CommitList.m_logEntries[index+1] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
+			changed = true;
 		}
 	}
-	m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
-	m_CommitList.Invalidate();
+	if (changed)
+	{
+		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+		m_CommitList.Invalidate();
+	}
 }
