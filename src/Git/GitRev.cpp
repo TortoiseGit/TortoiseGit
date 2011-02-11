@@ -318,7 +318,7 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 }
 
 
-int GitRev::GetCommit(CString &refname)
+int GitRev::GetCommit(CString refname)
 {
 	g_Git.CheckAndInitDll();
 

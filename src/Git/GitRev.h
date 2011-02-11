@@ -199,7 +199,7 @@ public:
 
 	int GetParentFromHash(CGitHash &hash);
 	int GetCommitFromHash(CGitHash &hash);
-	int GetCommit(CString &Rev);
+	int GetCommit(CString Rev);
 
 public:
 	void DbgPrint();

@@ -1,5 +1,3 @@
-
-
 // TortoiseSVN - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -271,7 +269,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 									, bool bUpdate /* = FALSE */
 									, bool bShowIgnores /* = false */
 									, bool bShowUnRev
-									, bool bShowUserProps /* = false */)
+									, bool /*bShowUserProps*/ /* = false */)
 {
 	Locker lock(m_critSec);
 	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
@@ -521,471 +519,6 @@ void CGitStatusListCtrl::FetchUserProperties()
 #endif
 }
 
-
-//
-// Work on a single item from the list of paths which is provided to us
-//
-bool CGitStatusListCtrl::FetchStatusForSingleTarget(
-							GitConfig& config,
-							GitStatus& status,
-							const CTGitPath& target,
-							bool bFetchStatusFromRepository,
-							CStringA& strCurrentRepositoryUUID,
-							CTGitPathList& arExtPaths,
-							bool bAllDirect,
-							git_depth_t depth,
-							bool bShowIgnores
-							)
-{
-#if 0
-	config.GetDefaultIgnores();
-
-	CTGitPath workingTarget(target);
-
-	git_wc_status2_t * s;
-	CTGitPath GitPath;
-	s = status.GetFirstFileStatus(workingTarget, GitPath, bFetchStatusFromRepository, depth, bShowIgnores);
-
-	m_HeadRev = SVNRev(status.headrev);
-	if (s!=0)
-	{
-		Git_wc_status_kind wcFileStatus = GitStatus::GetMoreImportant(s->text_status, s->prop_status);
-
-		// This one fixes a problem with externals:
-		// If a strLine is a file, Git:externals and its parent directory
-		// will also be returned by GetXXXFileStatus. Hence, we skip all
-		// status info until we find the one matching workingTarget.
-		if (!workingTarget.IsDirectory())
-		{
-			if (!workingTarget.IsEquivalentTo(GitPath))
-			{
-				while (s != 0)
-				{
-					s = status.GetNextFileStatus(GitPath);
-					if(workingTarget.IsEquivalentTo(GitPath))
-					{
-						break;
-					}
-				}
-				if (s == 0)
-				{
-					m_sLastError = status.GetLastErrorMsg();
-					return false;
-				}
-				// Now, set working target to be the base folder of this item
-				workingTarget = workingTarget.GetDirectory();
-			}
-		}
-		bool bEntryFromDifferentRepo = false;
-		// Is this a versioned item with an associated repos UUID?
-		if ((s->entry)&&(s->entry->uuid))
-		{
-			// Have we seen a repos UUID yet?
-			if (strCurrentRepositoryUUID.IsEmpty())
-			{
-				// This is the first repos UUID we've seen - record it
-				strCurrentRepositoryUUID = s->entry->uuid;
-				m_sUUID = strCurrentRepositoryUUID;
-			}
-			else
-			{
-				if (strCurrentRepositoryUUID.Compare(s->entry->uuid)!=0)
-				{
-					// This item comes from a different repository than our main one
-					m_bHasExternalsFromDifferentRepos = TRUE;
-					bEntryFromDifferentRepo = true;
-					if (s->entry->kind == Git_node_dir)
-						arExtPaths.AddPath(workingTarget);
-				}
-			}
-		}
-		else if (strCurrentRepositoryUUID.IsEmpty() && (s->text_status == Git_wc_status_added))
-		{
-			// An added entry doesn't have an UUID assigned to it yet.
-			// So we fetch the status of the parent directory instead and
-			// check if that one has an UUID assigned to it.
-			Git_wc_status2_t * sparent;
-			CTGitPath path = workingTarget;
-			do
-			{
-				CTGitPath GitParentPath;
-				GitStatus tempstatus;
-				sparent = tempstatus.GetFirstFileStatus(path.GetContainingDirectory(), GitParentPath, false, Git_depth_empty, false);
-				path = GitParentPath;
-			} while ( (sparent) && (sparent->entry) && (!sparent->entry->uuid) && (sparent->text_status==Git_wc_status_added) );
-			if (sparent && sparent->entry && sparent->entry->uuid)
-			{
-				strCurrentRepositoryUUID = sparent->entry->uuid;
-				m_sUUID = strCurrentRepositoryUUID;
-			}
-		}
-
-		if ((wcFileStatus == Git_wc_status_unversioned)&& GitPath.IsDirectory())
-		{
-			// check if the unversioned folder is maybe versioned. This
-			// could happen with nested layouts
-			Git_wc_status_kind st = GitStatus::GetAllStatus(workingTarget);
-			if ((st != Git_wc_status_unversioned)&&(st != Git_wc_status_none))
-			{
-				return true;	// ignore nested layouts
-			}
-		}
-		if (status.IsExternal(GitPath))
-		{
-			m_bHasExternals = TRUE;
-		}
-
-		AddNewFileEntry(s, GitPath, workingTarget, true, m_bHasExternals, bEntryFromDifferentRepo);
-
-		if (((wcFileStatus == Git_wc_status_unversioned)||(wcFileStatus == Git_wc_status_none)||((wcFileStatus == Git_wc_status_ignored)&&(m_bShowIgnores))) && GitPath.IsDirectory())
-		{
-			// we have an unversioned folder -> get all files in it recursively!
-			AddUnversionedFolder(GitPath, workingTarget.GetContainingDirectory(), &config);
-		}
-
-		// for folders, get all statuses inside it too
-		if(workingTarget.IsDirectory())
-		{
-			ReadRemainingItemsStatus(status, workingTarget, strCurrentRepositoryUUID, arExtPaths, &config, bAllDirect);
-		}
-
-	} // if (s!=0)
-	else
-	{
-		m_sLastError = status.GetLastErrorMsg();
-		return false;
-	}
-#endif
-	return true;
-}
-#if 0
-const CGitStatusListCtrl::FileEntry*
-CGitStatusListCtrl::AddNewFileEntry(
-			const git_wc_status2_t* pGitStatus,  // The return from the Git GetStatus functions
-			const CTGitPath& path,				// The path of the item we're adding
-			const CTGitPath& basePath,			// The base directory for this status build
-			bool bDirectItem,					// Was this item the first found by GetFirstFileStatus or by a subsequent GetNextFileStatus call
-			bool bInExternal,					// Are we in an 'external' folder
-			bool bEntryfromDifferentRepo		// if the entry is from a different repository
-			)
-{
-	FileEntry * entry = new FileEntry();
-
-	entry->path = path;
-	entry->basepath = basePath;
-	entry->status = GitStatus::GetMoreImportant(pGitStatus->text_status, pGitStatus->prop_status);
-	entry->textstatus = pGitStatus->text_status;
-	entry->propstatus = pGitStatus->prop_status;
-//	entry->remotestatus = GitStatus::GetMoreImportant(pGitStatus->repos_text_status, pGitStatus->repos_prop_status);
-//	entry->remotetextstatus = pGitStatus->repos_text_status;
-//	entry->remotepropstatus = pGitStatus->repos_prop_status;
-	entry->inexternal = bInExternal;
-	entry->differentrepo = bEntryfromDifferentRepo;
-	entry->direct = bDirectItem;
-//	entry->copied = !!pGitStatus->copied;
-//	entry->switched = !!pGitStatus->switched;
-
-	entry->last_commit_date = pGitStatus->ood_last_cmt_date;
-	if ((entry->last_commit_date == NULL)&&(pGitStatus->entry))
-		entry->last_commit_date = pGitStatus->entry->cmt_date;
-	entry->remoterev = pGitStatus->ood_last_cmt_rev;
-	if (pGitStatus->entry)
-		entry->last_commit_rev = pGitStatus->entry->cmt_rev;
-	if (pGitStatus->ood_last_cmt_author)
-		entry->last_commit_author = CUnicodeUtils::GetUnicode(pGitStatus->ood_last_cmt_author);
-	if ((entry->last_commit_author.IsEmpty())&&(pGitStatus->entry)&&(pGitStatus->entry->cmt_author))
-		entry->last_commit_author = CUnicodeUtils::GetUnicode(pGitStatus->entry->cmt_author);
-
-	if (pGitStatus->entry)
-		entry->isConflicted = (pGitStatus->entry->conflict_wrk && PathFileExists(CUnicodeUtils::GetUnicode(pGitStatus->entry->conflict_wrk))) ? true : false;
-
-	if ((entry->status == Git_wc_status_conflicted)||(entry->isConflicted))
-	{
-		entry->isConflicted = true;
-		if (pGitStatus->entry)
-		{
-			CTGitPath cpath;
-			if (pGitStatus->entry->conflict_wrk)
-			{
-				cpath = path.GetDirectory();
-				cpath.AppendPathString(CUnicodeUtils::GetUnicode(pGitStatus->entry->conflict_wrk));
-				m_ConflictFileList.AddPath(cpath);
-			}
-			if (pGitStatus->entry->conflict_old)
-			{
-				cpath = path.GetDirectory();
-				cpath.AppendPathString(CUnicodeUtils::GetUnicode(pGitStatus->entry->conflict_old));
-				m_ConflictFileList.AddPath(cpath);
-			}
-			if (pGitStatus->entry->conflict_new)
-			{
-				cpath = path.GetDirectory();
-				cpath.AppendPathString(CUnicodeUtils::GetUnicode(pGitStatus->entry->conflict_new));
-				m_ConflictFileList.AddPath(cpath);
-			}
-			if (pGitStatus->entry->prejfile)
-			{
-				cpath = path.GetDirectory();
-				cpath.AppendPathString(CUnicodeUtils::GetUnicode(pGitStatus->entry->prejfile));
-				m_ConflictFileList.AddPath(cpath);
-			}
-		}
-	}
-
-	if (pGitStatus->entry)
-	{
-		entry->isfolder = (pGitStatus->entry->kind == Git_node_dir);
-		entry->Revision = pGitStatus->entry->revision;
-		entry->keeplocal = !!pGitStatus->entry->keep_local;
-		entry->working_size = pGitStatus->entry->working_size;
-		entry->depth = pGitStatus->entry->depth;
-
-		if (pGitStatus->entry->url)
-		{
-			entry->url = CUnicodeUtils::GetUnicode(CPathUtils::PathUnescape(pGitStatus->entry->url));
-		}
-		if (pGitStatus->entry->copyfrom_url)
-		{
-			entry->copyfrom_url = CUnicodeUtils::GetUnicode(CPathUtils::PathUnescape(pGitStatus->entry->copyfrom_url));
-			entry->copyfrom_rev = pGitStatus->entry->copyfrom_rev;
-		}
-		else
-			entry->copyfrom_rev = 0;
-
-		if(bDirectItem)
-		{
-			if (m_sURL.IsEmpty())
-				m_sURL = entry->url;
-			else
-				m_sURL.LoadString(IDS_STATUSLIST_MULTIPLETARGETS);
-			m_StatusUrlList.AddPath(CTGitPath(entry->url));
-		}
-		if (pGitStatus->entry->lock_owner)
-			entry->lock_owner = CUnicodeUtils::GetUnicode(pGitStatus->entry->lock_owner);
-		if (pGitStatus->entry->lock_token)
-		{
-			entry->lock_token = CUnicodeUtils::GetUnicode(pGitStatus->entry->lock_token);
-			m_bHasLocks = true;
-		}
-		if (pGitStatus->entry->lock_comment)
-			entry->lock_comment = CUnicodeUtils::GetUnicode(pGitStatus->entry->lock_comment);
-
-		if (pGitStatus->entry->present_props)
-		{
-			entry->present_props = pGitStatus->entry->present_props;
-		}
-
-		if (pGitStatus->entry->changelist)
-		{
-			entry->changelist = CUnicodeUtils::GetUnicode(pGitStatus->entry->changelist);
-			m_changelists[entry->changelist] = -1;
-			m_bHasChangeLists = true;
-		}
-		entry->needslock = (pGitStatus->entry->present_props && (strstr(pGitStatus->entry->present_props, "Git:needs-lock")!=NULL) );
-	}
-	else
-	{
-		if (pGitStatus->ood_kind == Git_node_none)
-			entry->isfolder = path.IsDirectory();
-		else
-			entry->isfolder = (pGitStatus->ood_kind == Git_node_dir);
-	}
-	if (pGitStatus->repos_lock)
-	{
-		if (pGitStatus->repos_lock->owner)
-			entry->lock_remoteowner = CUnicodeUtils::GetUnicode(pGitStatus->repos_lock->owner);
-		if (pGitStatus->repos_lock->token)
-			entry->lock_remotetoken = CUnicodeUtils::GetUnicode(pGitStatus->repos_lock->token);
-		if (pGitStatus->repos_lock->comment)
-			entry->lock_comment = CUnicodeUtils::GetUnicode(pGitStatus->repos_lock->comment);
-	}
-
-	// Pass ownership of the entry to the array
-	m_arStatusArray.push_back(entry);
-
-	return entry;
-}
-#endif
-
-void CGitStatusListCtrl::AddUnversionedFolder(const CTGitPath& folderName,
-												const CTGitPath& basePath,
-												GitConfig * config)
-{
-#if 0
-	if (!m_bUnversionedRecurse)
-		return;
-	CSimpleFileFind filefinder(folderName.GetWinPathString());
-
-	CTGitPath filename;
-	m_bHasUnversionedItems = TRUE;
-	while (filefinder.FindNextFileNoDots())
-	{
-		filename.SetFromWin(filefinder.GetFilePath(), filefinder.IsDirectory());
-
-		bool bMatchIgnore = !!config->MatchIgnorePattern(filename.GetFileOrDirectoryName());
-		bMatchIgnore = bMatchIgnore || config->MatchIgnorePattern(filename.GetGitPathString());
-		if (((bMatchIgnore)&&(m_bShowIgnores))||(!bMatchIgnore))
-		{
-			FileEntry * entry = new FileEntry();
-			entry->path = filename;
-			entry->basepath = basePath;
-			entry->inunversionedfolder = true;
-			entry->isfolder = filefinder.IsDirectory();
-
-			m_arStatusArray.push_back(entry);
-			if (entry->isfolder)
-			{
-				if (!g_GitAdminDir.HasAdminDir(entry->path.GetWinPathString(), true))
-					AddUnversionedFolder(entry->path, basePath, config);
-			}
-		}
-	}
-#endif
-}
-
-
-void CGitStatusListCtrl::ReadRemainingItemsStatus(GitStatus& status, const CTGitPath& basePath,
-										  CStringA& strCurrentRepositoryUUID,
-										  CTGitPathList& arExtPaths, GitConfig * config, bool bAllDirect)
-{
-#if 0
-	git_wc_status2_t * s;
-
-	CTGitPath lastexternalpath;
-	CTGitPath GitPath;
-	while ((s = status.GetNextFileStatus(GitPath)) != NULL)
-	{
-		Git_wc_status_kind wcFileStatus = GitStatus::GetMoreImportant(s->text_status, s->prop_status);
-		if ((wcFileStatus == Git_wc_status_unversioned) && (GitPath.IsDirectory()))
-		{
-			// check if the unversioned folder is maybe versioned. This
-			// could happen with nested layouts
-			Git_wc_status_kind st = GitStatus::GetAllStatus(GitPath);
-			if ((st != Git_wc_status_unversioned)&&(st != Git_wc_status_none))
-			{
-				FileEntry * entry = new FileEntry();
-				entry->path = GitPath;
-				entry->basepath = basePath;
-				entry->inunversionedfolder = true;
-				entry->isfolder = true;
-				entry->isNested = true;
-				m_arStatusArray.push_back(entry);
-				continue;
-			}
-		}
-		bool bDirectoryIsExternal = false;
-		bool bEntryfromDifferentRepo = false;
-		if (s->entry)
-		{
-			if (s->entry->uuid)
-			{
-				if (strCurrentRepositoryUUID.IsEmpty())
-					strCurrentRepositoryUUID = s->entry->uuid;
-				else
-				{
-					if (strCurrentRepositoryUUID.Compare(s->entry->uuid)!=0)
-					{
-						bEntryfromDifferentRepo = true;
-						if (GitStatus::IsImportant(wcFileStatus))
-							m_bHasExternalsFromDifferentRepos = TRUE;
-						if (s->entry->kind == Git_node_dir)
-						{
-							if ((lastexternalpath.IsEmpty())||(!lastexternalpath.IsAncestorOf(GitPath)))
-							{
-								arExtPaths.AddPath(GitPath);
-								lastexternalpath = GitPath;
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				// we don't have an UUID - maybe an added file/folder
-				if (!strCurrentRepositoryUUID.IsEmpty())
-				{
-					if ((!lastexternalpath.IsEmpty())&&
-						(lastexternalpath.IsAncestorOf(GitPath)))
-					{
-						bEntryfromDifferentRepo = true;
-						m_bHasExternalsFromDifferentRepos = TRUE;
-					}
-				}
-			}
-		}
-		else
-		{
-			// if unversioned items lie around in external
-			// directories from different repos, we have to mark them
-			// as such too.
-			if (!strCurrentRepositoryUUID.IsEmpty())
-			{
-				if ((!lastexternalpath.IsEmpty())&&
-					(lastexternalpath.IsAncestorOf(GitPath)))
-				{
-					bEntryfromDifferentRepo = true;
-				}
-			}
-		}
-		if (status.IsExternal(GitPath))
-		{
-			arExtPaths.AddPath(GitPath);
-			m_bHasExternals = TRUE;
-		}
-		if ((!bEntryfromDifferentRepo)&&(status.IsInExternal(GitPath)))
-		{
-			// if the externals are inside an unversioned folder (this happens if
-			// the externals are specified with e.g. "ext\folder url" instead of just
-			// "folder url"), then a commit won't succeed.
-			// therefore, we treat those as if the externals come from a different
-			// repository
-			CTGitPath extpath = GitPath;
-			while (basePath.IsAncestorOf(extpath))
-			{
-				if (!extpath.HasAdminDir())
-				{
-					bEntryfromDifferentRepo = true;
-					break;
-				}
-				extpath = extpath.GetContainingDirectory();
-			}
-		}
-		// Do we have any external paths?
-		if(arExtPaths.GetCount() > 0)
-		{
-			// If do have external paths, we need to check if the current item belongs
-			// to one of them
-			for (int ix=0; ix<arExtPaths.GetCount(); ix++)
-			{
-				if (arExtPaths[ix].IsAncestorOf(GitPath))
-				{
-					bDirectoryIsExternal = true;
-					break;
-				}
-			}
-		}
-
-		if ((wcFileStatus == Git_wc_status_unversioned)&&(!bDirectoryIsExternal))
-			m_bHasUnversionedItems = TRUE;
-
-		const FileEntry* entry = AddNewFileEntry(s, GitPath, basePath, bAllDirect, bDirectoryIsExternal, bEntryfromDifferentRepo);
-
-		bool bMatchIgnore = !!config->MatchIgnorePattern(entry->path.GetFileOrDirectoryName());
-		bMatchIgnore = bMatchIgnore || config->MatchIgnorePattern(entry->path.GetGitPathString());
-		if ((((wcFileStatus == Git_wc_status_unversioned)||(wcFileStatus == Git_wc_status_none))&&(!bMatchIgnore))||
-			((wcFileStatus == Git_wc_status_ignored)&&(m_bShowIgnores))||
-			(((wcFileStatus == Git_wc_status_unversioned)||(wcFileStatus == Git_wc_status_none))&&(bMatchIgnore)&&(m_bShowIgnores)))
-		{
-			if (entry->isfolder)
-			{
-				// we have an unversioned folder -> get all files in it recursively!
-				AddUnversionedFolder(GitPath, basePath, config);
-			}
-		}
-	} // while ((s = status.GetNextFileStatus(GitPath)) != NULL)
-#endif
-}
-
 // Get the show-flags bitmap value which corresponds to a particular Git status
 DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 {
@@ -1028,7 +561,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFolders /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
+void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -1275,7 +808,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool bShowFold
 
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, const CTGitPathList& checkedList, bool bShowFolders /* = true */)
+void CGitStatusListCtrl::Show(DWORD /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
 	DeleteAllItems();
 	for(int i=0;i<checkedList.GetCount();i++)
@@ -1423,7 +956,7 @@ int CGitStatusListCtrl::GetColumnIndex(int mask)
 			mask=mask>>1;
 	return -1;
 }
-void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listIndex)
+void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
 {
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
@@ -1431,7 +964,6 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD langID, int listInde
 	CString path = GitPath->GetGitPathString();
 
 	m_bBlock = TRUE;
-	TCHAR buf[100];
 	int index = listIndex;
 	int nCol = 1;
 	CString entryname = GitPath->GetGitPathString();
@@ -1889,7 +1421,7 @@ void CGitStatusListCtrl::OnColumnMoved(NMHDR *pNMHDR, LRESULT *pResult)
 	Invalidate(FALSE);
 }
 
-void CGitStatusListCtrl::CheckEntry(int index, int nListItems)
+void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 {
 	Locker lock(m_critSec);
 	//FileEntry * entry = GetListEntry(index);
@@ -1964,7 +1496,7 @@ void CGitStatusListCtrl::CheckEntry(int index, int nListItems)
 	}
 }
 
-void CGitStatusListCtrl::UncheckEntry(int index, int nListItems)
+void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 {
 	Locker lock(m_critSec);
 	CTGitPath *path=(CTGitPath*)GetItemData(index);
@@ -2081,51 +1613,6 @@ bool CGitStatusListCtrl::BuildStatistics()
 	return FALSE;
 }
 
-void CGitStatusListCtrl::GetMinMaxRevisions(git_revnum_t& rMin, git_revnum_t& rMax, bool bShownOnly, bool bCheckedOnly)
-{
-#if 0
-	Locker lock(m_critSec);
-	rMin = LONG_MAX;
-	rMax = 0;
-
-	if ((bShownOnly)||(bCheckedOnly))
-	{
-		for (int i=0; i<GetItemCount(); ++i)
-		{
-			const FileEntry * entry = GetListEntry(i);
-
-			if ((entry)&&(entry->last_commit_rev))
-			{
-				if ((!bCheckedOnly)||(entry->IsChecked()))
-				{
-					if (entry->last_commit_rev >= 0)
-					{
-						rMin = min(rMin, entry->last_commit_rev);
-						rMax = max(rMax, entry->last_commit_rev);
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		for (int i=0; i < (int)m_arStatusArray.size(); ++i)
-		{
-			const FileEntry * entry = m_arStatusArray[i];
-			if ((entry)&&(entry->last_commit_rev))
-			{
-				if (entry->last_commit_rev >= 0)
-				{
-					rMin = min(rMin, entry->last_commit_rev);
-					rMax = max(rMax, entry->last_commit_rev);
-				}
-			}
-		}
-	}
-	if (rMin == LONG_MAX)
-		rMin = 0;
-#endif
-}
 
 int CGitStatusListCtrl::GetGroupFromPoint(POINT * ppt)
 {
@@ -2256,7 +1743,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 {
 
-	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+	//WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	bool XPorLater = false;
 	OSVERSIONINFOEX inf;
@@ -2763,7 +2250,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
 															*filepath,str, false,false,false,
-															!!filepath->m_ParentNo & MERGE_MASK);
+															!!(filepath->m_ParentNo & MERGE_MASK));
 						}
 					}
 				}
@@ -3957,51 +3444,6 @@ void CGitStatusListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 }
 
-void CGitStatusListCtrl::CreateChangeList(const CString& name)
-{
-#if 0
-	CTGitPathList changelistItems;
-	FillListOfSelectedItemPaths(changelistItems);
-	Git git;
-	if (git.AddToChangeList(changelistItems, name, git_depth_empty))
-	{
-		TCHAR groupname[1024];
-		LVGROUP grp = {0};
-		grp.cbSize = sizeof(LVGROUP);
-		grp.mask = LVGF_ALIGN | LVGF_GROUPID | LVGF_HEADER;
-		_tcsncpy_s(groupname, 1024, name, 1023);
-		grp.pszHeader = groupname;
-		grp.iGroupId = (int)m_changelists.size();
-		grp.uAlign = LVGA_HEADER_LEFT;
-		m_changelists[name] = InsertGroup(-1, &grp);
-
-		PrepareGroups(true);
-
-		POSITION pos = GetFirstSelectedItemPosition();
-		int index;
-		while ((index = GetNextSelectedItem(pos)) >= 0)
-		{
-			FileEntry * e = GetListEntry(index);
-			e->changelist = name;
-			SetEntryCheck(e, index, FALSE);
-		}
-
-		for (index = 0; index < GetItemCount(); ++index)
-		{
-			FileEntry * e = GetListEntry(index);
-			if (m_changelists.find(e->changelist)!=m_changelists.end())
-				SetItemGroup(index, m_changelists[e->changelist]);
-			else
-				SetItemGroup(index, 0);
-		}
-	}
-	else
-	{
-		CMessageBox::Show(m_hWnd, git.GetLastErrorMessage(), _T("Tortoisegit"), MB_ICONERROR);
-	}
-#endif
-}
-
 void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
 
@@ -4106,9 +3548,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 
 	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
 
-	CGitDiff::Diff(&file1,&file1,
-					CString(GIT_REV_ZERO),
-					m_CurrentVersion);
+	CGitDiff::Diff(&file1,&file1, GIT_REV_ZERO, m_CurrentVersion);
 
 }
 
@@ -4131,7 +3571,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	{
 		if( g_Git.IsInitRepos())
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-					CString(GIT_REV_ZERO));
+					GIT_REV_ZERO);
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_ADDED )
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
 					m_CurrentVersion,true);
@@ -4389,43 +3829,8 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 	return g_Git.m_CurrentDir+CString(_T("\\"))+commonBaseDirectory.GetWinPath();
 }
 
-CTGitPath CGitStatusListCtrl::GetCommonURL(bool bStrict)
-{
-	CTGitPath commonBaseURL;
 
-#if 0
-	if (!bStrict)
-	{
-		// not strict means that the selected folder has priority
-		if (!m_StatusUrlList.GetCommonDirectory().IsEmpty())
-			return m_StatusUrlList.GetCommonDirectory();
-	}
-
-	int nListItems = GetItemCount();
-	for (int i=0; i<nListItems; ++i)
-	{
-		const CTGitPath& baseURL = CTGitPath(GetListEntry(i)->GetURL());
-		if (baseURL.IsEmpty())
-			continue;			// item has no url
-		if(commonBaseURL.IsEmpty())
-		{
-			commonBaseURL = baseURL;
-		}
-		else
-		{
-			if (commonBaseURL.GetGitPathString().GetLength() > baseURL.GetGitPathString().GetLength())
-			{
-				if (baseURL.IsAncestorOf(commonBaseURL))
-					commonBaseURL = baseURL;
-			}
-		}
-	}
-#endif
-
-	return commonBaseURL;
-}
-
-void CGitStatusListCtrl::SelectAll(bool bSelect, bool bIncludeNoCommits)
+void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 {
 	CWaitCursor waitCursor;
 	// block here so the LVN_ITEMCHANGED messages
@@ -4650,7 +4055,7 @@ void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 
 
 /// Build a path list of all the selected items in the list (NOTE - SELECTED, not CHECKED)
-void CGitStatusListCtrl::FillListOfSelectedItemPaths(CTGitPathList& pathList, bool bNoIgnored)
+void CGitStatusListCtrl::FillListOfSelectedItemPaths(CTGitPathList& pathList, bool /*bNoIgnored*/)
 {
 	pathList.Clear();
 
@@ -4972,28 +4377,12 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
-#if 0
-	for (size_t i=0; i < m_arStatusArray.size(); i++)
-	{
-		FileEntry * entry = m_arStatusArray[i];
+#if 0	for (size_t i=0; i < m_arStatusArray.size(); i++)	
+	{		FileEntry * entry = m_arStatusArray[i];		
 		if (entry->GetPath().IsEquivalentTo(path))
-			return true;
+			return true;	
 	}
-#endif
-	return false;
-}
-
-bool CGitStatusListCtrl::IsPathShown(const CTGitPath& path)
-{
-#if 0
-	int itemCount = GetItemCount();
-	for (int i=0; i < itemCount; i++)
-	{
-		FileEntry * entry = GetListEntry(i);
-		if (entry->GetPath().IsEquivalentTo(path))
-			return true;
-	}
-#endif
+#endif	
 	return false;
 }
 
@@ -5041,7 +4430,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
-	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+//	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	CString sClipboard;
 	CString temp;

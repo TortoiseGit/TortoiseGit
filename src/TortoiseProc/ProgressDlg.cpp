@@ -107,7 +107,9 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 	UINT ret=0;
 
 	PROCESS_INFORMATION pi;
-	HANDLE hRead;
+	HANDLE hRead = 0;
+
+	memset(&pi,0,sizeof(PROCESS_INFORMATION));
 
 	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
 
@@ -128,7 +130,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 				if(pdata)
 				{
 					pdata->m_critSec.Lock();
-					pdata->push_back(str[j]);
+					pdata->push_back(str[j]&0xFF);
 					pdata->m_critSec.Unlock();
 				}
 				else
@@ -467,14 +469,14 @@ void CProgressDlg::OnCancel()
 			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
 		}else
 		{
-			int error=::GetLastError();
+			GetLastError();
 		}
 
 		HANDLE	hProcessHandle = ::OpenProcess( PROCESS_TERMINATE, FALSE,g_Git.m_CurrentGitPi.dwProcessId);
 		if( hProcessHandle )
 			if(!::TerminateProcess(hProcessHandle,-1) )
 			{
-				int error =::GetLastError();
+				GetLastError();
 			}
 	}
 	
