@@ -2171,6 +2171,14 @@
 				Name="requestpull"
 				>
 				<File
+					RelativePath=".\Commands\RequestPullCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RequestPullCommand.h"
+					>
+				</File>
+				<File
 					RelativePath=".\RequestPullDlg.cpp"
 					>
 				</File>

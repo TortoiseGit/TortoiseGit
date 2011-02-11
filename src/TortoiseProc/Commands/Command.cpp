@@ -65,6 +65,7 @@
 #include "SVNDCommitCommand.h"
 #include "SVNRebaseCommand.h"
 #include "SyncCommand.h"
+#include "RequestPullCommand.h"
 #include "UpdateCheckCommand.h"
 #include "PasteCopyCommand.h"
 #include "PasteMoveCommand.h"
@@ -188,7 +189,7 @@ typedef enum
 	cmdSVNRebase,
 	cmdSVNIgnore,
 	cmdSync,
-	
+	cmdRequestPull,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -268,6 +269,7 @@ static const struct CommandInfo
 	{	cmdSVNRebase,		_T("svnrebase")			},
 	{	cmdSVNIgnore,		_T("svnignore")			},
 	{	cmdSync,			_T("sync")				},
+	{	cmdRequestPull,		_T("requestpull")		},
 };
 
 
@@ -391,6 +393,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SVNRebaseCommand;
 	case cmdSync:
 		return new SyncCommand;
+	case cmdRequestPull:
+		return new RequestPullCommand;
 	case cmdUpdateCheck:
 		return new UpdateCheckCommand;
 	case cmdPasteCopy:
