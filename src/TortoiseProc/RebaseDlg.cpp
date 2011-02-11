@@ -1505,6 +1505,7 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 	{
 		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 		m_CommitList.Invalidate();
+		m_CommitList.SetFocus();
 	}
 }
 
@@ -1528,5 +1529,6 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	{
 		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 		m_CommitList.Invalidate();
+		m_CommitList.SetFocus();
 	}
 }
