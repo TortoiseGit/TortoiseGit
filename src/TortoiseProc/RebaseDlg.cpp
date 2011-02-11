@@ -62,6 +62,8 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
 	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
+	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
+	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -75,7 +77,9 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_PROGRESS,BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_PICK_ALL,TOP_LEFT);
 	AddAnchor(IDC_SQUASH_ALL,TOP_LEFT);
-	AddAnchor(IDC_EDIT_ALL,TOP_LEFT);	
+	AddAnchor(IDC_EDIT_ALL,TOP_LEFT);
+	AddAnchor(IDC_BUTTON_UP2,TOP_LEFT);
+	AddAnchor(IDC_BUTTON_DOWN2,TOP_LEFT);
 	AddAnchor(IDC_REBASE_COMBOXEX_UPSTREAM,TOP_LEFT);
 	AddAnchor(IDC_REBASE_COMBOXEX_BRANCH,TOP_LEFT);
 	AddAnchor(IDC_REBASE_STATIC_UPSTREAM,TOP_LEFT);
@@ -133,9 +137,9 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 	m_wndOutputRebase.Init(0);
 	m_wndOutputRebase.Call(SCI_SETREADONLY, TRUE);
-	
+
 	m_tooltips.Create(this);
-	
+
 	m_tooltips.AddTool(IDC_REBASE_CHECK_FORCE,IDS_REBASE_FORCE_TT);
 	m_tooltips.AddTool(IDC_REBASE_ABORT,IDS_REBASE_ABORT_TT);
 	
@@ -180,7 +184,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 	}
-	
+
 	m_CommitList.m_ColumnRegKey = _T("Rebase");
 	m_CommitList.m_IsIDReplaceAction = TRUE;
 //	m_CommitList.m_IsOldFirst = TRUE;
@@ -348,7 +352,7 @@ void CRebaseDlg::SetSplitterRange()
 
 void CRebaseDlg::OnSize(UINT nType,int cx, int cy)
 {
-	 // first, let the resizing take place
+	// first, let the resizing take place
 	__super::OnSize(nType, cx, cy);
 
 	//set range
@@ -1473,4 +1477,40 @@ void CRebaseDlg::Refresh()
 			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 		}
 	}
+}
+
+void CRebaseDlg::OnBnClickedButtonUp2()
+{
+	POSITION pos;
+	pos = m_CommitList.GetFirstSelectedItemPosition();
+	while(pos)
+	{
+		int index=m_CommitList.GetNextSelectedItem(pos);
+		if(index>=1)
+		{
+			CGitHash old = m_CommitList.m_logEntries[index-1];
+			m_CommitList.m_logEntries[index-1] = m_CommitList.m_logEntries[index];
+			m_CommitList.m_logEntries[index] = old;
+		}
+	}
+	m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+	m_CommitList.Invalidate();
+}
+
+void CRebaseDlg::OnBnClickedButtonDown2()
+{
+	POSITION pos;
+	pos = m_CommitList.GetFirstSelectedItemPosition();
+	while(pos)
+	{
+		int index=m_CommitList.GetNextSelectedItem(pos);
+		if(index<m_CommitList.GetItemCount()-1)
+		{
+			CGitHash old = m_CommitList.m_logEntries[index+1];
+			m_CommitList.m_logEntries[index+1] = m_CommitList.m_logEntries[index];
+			m_CommitList.m_logEntries[index] = old;
+		}
+	}
+	m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
+	m_CommitList.Invalidate();
 }
