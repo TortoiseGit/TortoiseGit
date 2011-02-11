@@ -779,8 +779,10 @@
 #define IDC_BUTTON_DOWN                 1384
 #define IDC_PUTTYKEYFILE_BROWSE         1384
 #define IDC_BUTTON_SHOW2                1384
+#define IDC_BUTTON_UP2                  1384
 #define IDC_FROMGROUP                   1385
 #define IDC_BUTTON_REMOVE               1385
+#define IDC_BUTTON_DOWN2                1385
 #define IDC_MSGGROUP                    1386
 #define IDC_FILTER                      1387
 #define IDC_COMPAREWHITESPACES          1390
