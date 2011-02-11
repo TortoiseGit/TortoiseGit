@@ -704,7 +704,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->m_ctrlPull.AddEntry(CString(_T("&Pull")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetc&h")));
-	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base"))); // TODO: what's this?
+	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base")));
 	this->m_ctrlPull.AddEntry(CString(_T("Remote Update")));
 
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Update")));
