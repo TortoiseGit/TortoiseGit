@@ -133,8 +133,6 @@ public:
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
 	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
 
-	static bool BrowseRepository(CHistoryCombo& combo, CWnd * pParent, GitRev& rev);
-
 	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
 
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
@@ -156,15 +154,6 @@ public:
 												bool blame  = false,
 												bool bMerge = false);
 
-	/**
-	 * Replacement for GitDiff::ShowCompare(), but started as a separate process.
-	 */
-	static bool StartShowCompare(HWND hWnd, const CTGitPath& url1, const GitRev& rev1, 
-								const CTGitPath& url2, const GitRev& rev2, 
-								const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
-								bool bAlternateDiff = false, bool ignoreancestry = false,
-								bool blame = false);
-	
 	static bool Export(CString *BashHash=NULL);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
 	static bool Switch(CString *CommitHash, CString initialRefName = CString());

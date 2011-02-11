@@ -108,7 +108,7 @@ int	 CAppUtils::StashPop()
 	return -1;
 }
 
-bool CAppUtils::GetMimeType(const CTGitPath& file, CString& mimetype)
+bool CAppUtils::GetMimeType(const CTGitPath& /*file*/, CString& /*mimetype*/)
 {
 #if 0
 	GitProperties props(file, GitRev::REV_WC, false);
@@ -721,7 +721,8 @@ bool CAppUtils::LaunchAlternativeEditor(const CString& filename)
 }
 bool CAppUtils::LaunchRemoteSetting()
 {
-	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &CTGitPath(g_Git.m_CurrentDir));
+	CTGitPath path(g_Git.m_CurrentDir);
+	CSettings dlg(IDS_PROC_SETTINGS_TITLE, &path);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
 	//dlg.SetTreeWidth(220);
 	dlg.m_DefaultPage = _T("gitremote");
@@ -857,83 +858,6 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 		i++;
 	}
 	return bFoundMarker;
-}
-
-bool CAppUtils::BrowseRepository(CHistoryCombo& combo, CWnd * pParent, GitRev& rev)
-{
-#if 0
-	CString strUrl;
-	combo.GetWindowText(strUrl);
-	strUrl.Replace('\\', '/');
-	strUrl.Replace(_T("%"), _T("%25"));
-	strUrl = CUnicodeUtils::GetUnicode(CPathUtils::PathEscape(CUnicodeUtils::GetUTF8(strUrl)));
-	if (strUrl.Left(7) == _T("file://"))
-	{
-		CString strFile(strUrl);
-		Git::UrlToPath(strFile);
-
-		Git svn;
-		if (svn.IsRepository(CTGitPath(strFile)))
-		{
-			// browse repository - show repository browser
-			Git::preparePath(strUrl);
-			CRepositoryBrowser browser(strUrl, rev, pParent);
-			if (browser.DoModal() == IDOK)
-			{
-				combo.SetCurSel(-1);
-				combo.SetWindowText(browser.GetPath());
-				rev = browser.GetRevision();
-				return true;
-			}
-		}
-		else
-		{
-			// browse local directories
-			CBrowseFolder folderBrowser;
-			folderBrowser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-			// remove the 'file:///' so the shell can recognize the local path
-			Git::UrlToPath(strUrl);
-			if (folderBrowser.Show(pParent->GetSafeHwnd(), strUrl) == CBrowseFolder::OK)
-			{
-				Git::PathToUrl(strUrl);
-
-				combo.SetCurSel(-1);
-				combo.SetWindowText(strUrl);
-				return true;
-			}
-		}
-	}
-	else if ((strUrl.Left(7) == _T("http://")
-		||(strUrl.Left(8) == _T("https://"))
-		||(strUrl.Left(6) == _T("svn://"))
-		||(strUrl.Left(4) == _T("svn+"))) && strUrl.GetLength() > 6)
-	{
-		// browse repository - show repository browser
-		CRepositoryBrowser browser(strUrl, rev, pParent);
-		if (browser.DoModal() == IDOK)
-		{
-			combo.SetCurSel(-1);
-			combo.SetWindowText(browser.GetPath());
-			rev = browser.GetRevision();
-			return true;
-		}
-	}
-	else
-	{
-		// browse local directories
-		CBrowseFolder folderBrowser;
-		folderBrowser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-		if (folderBrowser.Show(pParent->GetSafeHwnd(), strUrl) == CBrowseFolder::OK)
-		{
-			Git::PathToUrl(strUrl);
-
-			combo.SetCurSel(-1);
-			combo.SetWindowText(strUrl);
-			return true;
-		}
-	}
-#endif
-	return false;
 }
 
 bool CAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner)
@@ -1087,10 +1011,10 @@ CString CAppUtils::GetProjectNameFromURL(CString url)
 	return name;
 }
 
-bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git_revnum_t& rev1,
-												const CTGitPath& url2, const git_revnum_t& rev2,
+bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const git_revnum_t& rev1,
+												const CTGitPath& /*url2*/, const git_revnum_t& rev2,
 												//const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
-												bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool /* blame = false */, bool bMerge)
+												bool /*bAlternateDiff*/ /* = false */, bool /*bIgnoreAncestry*/ /* = false */, bool /* blame = false */, bool bMerge)
 {
 
 	CString tempfile=GetTempFile();
@@ -1151,44 +1075,6 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const git
 	return TRUE;
 }
 
-bool CAppUtils::StartShowCompare(HWND hWnd, const CTGitPath& url1, const GitRev& rev1,
-									const CTGitPath& url2, const GitRev& rev2,
-									const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
-									bool bAlternateDiff /* = false */, bool bIgnoreAncestry /* = false */, bool blame /* = false */)
-{
-#if 0
-	CString sCmd;
-	sCmd.Format(_T("%s /command:showcompare"),
-		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")));
-	sCmd += _T(" /url1:\"") + url1.GetGitPathString() + _T("\"");
-	if (rev1.IsValid())
-		sCmd += _T(" /revision1:") + rev1.ToString();
-	sCmd += _T(" /url2:\"") + url2.GetGitPathString() + _T("\"");
-	if (rev2.IsValid())
-		sCmd += _T(" /revision2:") + rev2.ToString();
-	if (peg.IsValid())
-		sCmd += _T(" /pegrevision:") + peg.ToString();
-	if (headpeg.IsValid())
-		sCmd += _T(" /headpegrevision:") + headpeg.ToString();
-	if (bAlternateDiff)
-		sCmd += _T(" /alternatediff");
-	if (bIgnoreAncestry)
-		sCmd += _T(" /ignoreancestry");
-	if (blame)
-		sCmd += _T(" /blame");
-
-	if (hWnd)
-	{
-		sCmd += _T(" /hwnd:");
-		TCHAR buf[30];
-		_stprintf_s(buf, 30, _T("%d"), hWnd);
-		sCmd += buf;
-	}
-
-	return CAppUtils::LaunchApplication(sCmd, NULL, false);
-#endif
-	return true;
-}
 
 bool CAppUtils::Export(CString *BashHash)
 {
@@ -1461,7 +1347,7 @@ CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 	return file;
 }
 
-bool CAppUtils::ConflictEdit(CTGitPath &path,bool bAlternativeTool,bool revertTheirMy)
+bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool revertTheirMy)
 {
 	bool bRet = false;
 
@@ -2260,7 +2146,7 @@ bool CAppUtils::Push(bool autoClose)
 	CPushDlg dlg;
 //	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
 	CString error;
-	DWORD exitcode = -1;
+	DWORD exitcode = 0xFFFFFFFF;
 	CTGitPathList list;
 	list.AddPath(CTGitPath(g_Git.m_CurrentDir));
 	if (CHooks::Instance().PrePush(list,exitcode, error))
@@ -2393,7 +2279,8 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 		if(CMessageBox::Show(NULL,_T("User name and email must be set before commit.\r\n Do you want to set these now?\r\n"),
 							_T("TortoiseGit"),MB_YESNO| MB_ICONERROR) == IDYES)
 		{
-			CSettings dlg(IDS_PROC_SETTINGS_TITLE,&CTGitPath(g_Git.m_CurrentDir));
+			CTGitPath path(g_Git.m_CurrentDir);
+			CSettings dlg(IDS_PROC_SETTINGS_TITLE,&path);
 			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
 			dlg.SetTreeWidth(220);
 			dlg.m_DefaultPage = _T("gitconfig");
@@ -2679,7 +2566,7 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	str = version.Tokenize(_T("."),start);
 	ver |= (_ttol(str)&0xFF);
 
-	regTime = time;
+	regTime = time&0xFFFFFFFF;
 	regVersion = ver;
 
 	return ver;
