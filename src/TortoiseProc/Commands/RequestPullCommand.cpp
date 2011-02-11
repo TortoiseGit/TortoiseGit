@@ -20,20 +20,8 @@
 #include "StdAfx.h"
 #include "RequestPullCommand.h"
 #include "AppUtils.h"
-#include "RequestPullDlg.h"
-#include "ProgressDlg.h"
 
 bool RequestPullCommand::Execute()
 {
-	CRequestPullDlg dlg;
-	if (dlg.DoModal()==IDOK)
-	{
-		CString cmd;
-		cmd.Format(_T("git.exe request-pull %s \"%s\" %s"), dlg.m_StartRevision, dlg.m_RepositoryURL, dlg.m_EndRevision);
-
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		progress.DoModal();
-	}
-	return true;
+	return CAppUtils::RequestPull();
 }

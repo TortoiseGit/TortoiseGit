@@ -52,6 +52,7 @@
 #include "..\Settings\Settings.h"
 #include "InputDlg.h"
 #include "SVNDCommitDlg.h"
+#include "requestpulldlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2333,6 +2334,21 @@ bool CAppUtils::Push(bool autoClose)
 
 	}
 	return FALSE;
+}
+
+bool CAppUtils::RequestPull()
+{
+	CRequestPullDlg dlg;
+	if (dlg.DoModal()==IDOK)
+	{
+		CString cmd;
+		cmd.Format(_T("git.exe request-pull %s \"%s\" %s"), dlg.m_StartRevision, dlg.m_RepositoryURL, dlg.m_EndRevision);
+
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		progress.DoModal();
+	}
+	return true;
 }
 
 bool CAppUtils::CreateMultipleDirectory(CString& szPath)

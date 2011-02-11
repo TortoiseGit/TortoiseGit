@@ -214,6 +214,7 @@ public:
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
 	static bool Push(bool autoClose = false);
+	static bool RequestPull();
 
 	static bool CreateMultipleDirectory(CString &dir);
 
