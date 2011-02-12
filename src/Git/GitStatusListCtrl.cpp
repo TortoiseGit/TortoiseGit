@@ -3864,20 +3864,23 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 
 void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 {
-//	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
+	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 	*pResult = 0;
 	if (m_bBlock)
 		return;
-#if 0
-	if (GetListEntry(pGetInfoTip->iItem >= 0))
-		if (pGetInfoTip->cchTextMax > GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString().GetLength())
+
+	CTGitPath *entry=(CTGitPath *)GetItemData(pGetInfoTip->iItem);
+
+	if (entry)
+		if (pGetInfoTip->cchTextMax > entry->GetGitPathString().GetLength() + g_Git.m_CurrentDir.GetLength())
 		{
-			if (GetListEntry(pGetInfoTip->iItem)->GetRelativeGitPath().Compare(GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString())!= 0)
-				_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString(), pGetInfoTip->cchTextMax);
-			else if (GetStringWidth(GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString()) > GetColumnWidth(pGetInfoTip->iItem))
-				_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, GetListEntry(pGetInfoTip->iItem)->path.GetGitPathString(), pGetInfoTip->cchTextMax);
+			CString str;
+			str += g_Git.m_CurrentDir;
+			str += _T("\\");
+			str += entry->GetWinPathString();
+
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, str.GetBuffer(), str.GetLength());
 		}
-#endif
 }
 
 void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
@@ -4198,7 +4201,7 @@ int CGitStatusListCtrl::CellRectFromPoint(CPoint& point, RECT *cellrect, int *co
 	return -1;
 }
 
-BOOL CGitStatusListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
+BOOL CGitStatusListCtrl::OnToolTipText(UINT /*id*/, NMHDR */*pNMHDR*/, LRESULT */*pResult*/)
 {
 #if 0
 	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
@@ -4377,12 +4380,12 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
-#if 0	for (size_t i=0; i < m_arStatusArray.size(); i++)	
-	{		FileEntry * entry = m_arStatusArray[i];		
-		if (entry->GetPath().IsEquivalentTo(path))
+	for (size_t i=0; i < m_arStatusArray.size(); i++)	
+	{
+		if (m_arStatusArray[i]->IsEquivalentTo(path))
 			return true;	
 	}
-#endif	
+
 	return false;
 }
 
