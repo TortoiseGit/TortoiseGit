@@ -29,7 +29,7 @@ class CRequestPullDlg : public CResizableStandAloneDialog
 public:
 	CRequestPullDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CRequestPullDlg();
-	
+
 	virtual BOOL OnInitDialog();
 
 	// Dialog Data
