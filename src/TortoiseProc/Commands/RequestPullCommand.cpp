@@ -23,5 +23,12 @@
 
 bool RequestPullCommand::Execute()
 {
-	return CAppUtils::RequestPull();
+	CString endrevision = _T("");;
+	CString reposirotyurl = _T("");;
+	if (parser.HasVal(_T("endrev")))
+		endrevision = parser.GetVal(_T("endrev"));
+	if (parser.HasVal(_T("url")))
+		reposirotyurl = parser.GetVal(_T("url"));
+
+	return CAppUtils::RequestPull(endrevision, reposirotyurl);
 }
