@@ -2194,7 +2194,7 @@ bool CAppUtils::Push(bool autoClose)
 		CProgressDlg progress;
 		progress.m_bAutoCloseOnSuccess=autoClose;
 		progress.m_GitCmd=cmd;
-		progress.m_PostCmdList.Add(_T("Request pull"));
+		progress.m_PostCmdList.Add(_T("&Request pull"));
 		int ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
