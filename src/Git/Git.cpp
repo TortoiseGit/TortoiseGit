@@ -647,21 +647,21 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 	bool isgrep = false;
 	if( Filter && (!Filter->m_Author.IsEmpty()))
 	{
-		st1.Format(_T(" --author=%s" ),Filter->m_Author);
+		st1.Format(_T(" --author=\"%s\"" ),Filter->m_Author);
 		param += st1;
 		isgrep = true;
 	}
 
 	if( Filter && (!Filter->m_Committer.IsEmpty()))
 	{
-		st1.Format(_T(" --committer=%s" ),Filter->m_Author);
+		st1.Format(_T(" --committer=\"%s\"" ),Filter->m_Author);
 		param += st1;
 		isgrep = true;
 	}
 
 	if( Filter && (!Filter->m_MessageFilter.IsEmpty()))
 	{
-		st1.Format(_T(" --grep=%s" ),Filter->m_MessageFilter);
+		st1.Format(_T(" --grep=\"%s\"" ),Filter->m_MessageFilter);
 		param += st1;
 		isgrep = true;
 	}

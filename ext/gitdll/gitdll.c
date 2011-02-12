@@ -305,24 +305,26 @@ char **strtoargv(char *arg, int *size)
 
 	while(*arg)
 	{
-		if(*arg == '"')
-		{
-			argv[i] = p;
-			arg++;
-			*p=*arg;
-			while(*arg && *arg!= '"')
-				*p++=*arg++;
-			*p++=0;
-			arg++;
-			i++;
-			if(*arg == 0)
-				break;
-		}
 		if(*arg != ' ')
 		{
+			char space=' ';
 			argv[i]=p;
-			while(*arg && *arg !=' ')
+			
+			while(*arg)
+			{
+				if(*arg == '"')
+				{
+					arg++;
+					if(space == ' ')
+						space = '"';
+					else
+						space = ' ';
+				}
+				if((*arg == space) || (*arg == 0))
+					break;
+
 				*p++ = *arg++;
+			}
 			i++;
 			*p++=0;
 		}
