@@ -74,11 +74,30 @@ BOOL CRequestPullDlg::OnInitDialog()
 		m_cStartRevision.AddString(list[i]);
 	}
 
+	CString WorkingDir=g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'), _T('_'));
+
+	m_RegStartRevision = CRegString(_T("Software\\TortoiseGit\\History\\RequestPull\\")+WorkingDir+_T("\\startrevision"));
+	if(m_StartRevision.IsEmpty()) {
+		m_StartRevision = m_RegStartRevision;
+	}
+	m_cStartRevision.SetWindowTextW(m_StartRevision);
+
+	// store URLs in global history, but save last used local url separately,
+	// because one normally has only one writable repository
 	m_cRepositoryURL.SetURLHistory(TRUE);
 	m_cRepositoryURL.LoadHistory(_T("Software\\TortoiseGit\\History\\RequestPull"), _T("url"));
-
-	m_cStartRevision.SetWindowTextW(m_StartRevision);
+	m_RegRepositoryURL = CRegString(_T("Software\\TortoiseGit\\History\\RequestPull\\")+WorkingDir+_T("\\repositoryurl"));
+	if(m_RepositoryURL.IsEmpty())
+	{
+		m_RepositoryURL = m_RegRepositoryURL;
+	}
 	m_cRepositoryURL.SetWindowTextW(m_RepositoryURL);
+
+	m_RegEndRevision = CRegString(_T("Software\\TortoiseGit\\History\\RequestPull\\")+WorkingDir+_T("\\endrevision"), _T("HEAD"));
+	if(m_EndRevision.IsEmpty()) {
+		m_EndRevision = m_RegEndRevision;
+	}
 	m_cEndRevision.SetWindowTextW(m_EndRevision);
 
 	this->UpdateData(FALSE);
@@ -92,9 +111,16 @@ void CRequestPullDlg::OnBnClickedOk()
 
 	m_cRepositoryURL.SaveHistory();
 
-	m_cStartRevision.GetWindowTextW(m_StartRevision);
+	m_StartRevision = m_cStartRevision.GetString();
 	m_RepositoryURL = m_cRepositoryURL.GetString();
 	m_cEndRevision.GetWindowTextW(m_EndRevision);
+
+	m_RegStartRevision = m_StartRevision;
+	m_RegRepositoryURL = m_RepositoryURL;
+	m_RegEndRevision = m_EndRevision;
+
+	if(m_StartRevision.Find(_T("remotes/")) == 0)
+		m_StartRevision = m_StartRevision.Mid(8);
 
 	CResizableStandAloneDialog::OnOK();
 }

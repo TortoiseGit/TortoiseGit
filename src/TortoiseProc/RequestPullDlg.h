@@ -21,6 +21,7 @@
 
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
+#include "registry.h"
 
 class CRequestPullDlg : public CResizableStandAloneDialog
 {
@@ -43,6 +44,9 @@ protected:
 	CHistoryCombo	m_cStartRevision;
 	CHistoryCombo	m_cRepositoryURL;
 	CEdit			m_cEndRevision;
+	CRegString		m_RegStartRevision;
+	CRegString		m_RegRepositoryURL;
+	CRegString		m_RegEndRevision;
 
 public:
 	CString		m_StartRevision;
