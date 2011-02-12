@@ -52,6 +52,7 @@
 #include "..\Settings\Settings.h"
 #include "InputDlg.h"
 #include "SVNDCommitDlg.h"
+#include "requestpulldlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2193,7 +2194,8 @@ bool CAppUtils::Push(bool autoClose)
 		CProgressDlg progress;
 		progress.m_bAutoCloseOnSuccess=autoClose;
 		progress.m_GitCmd=cmd;
-		progress.DoModal();
+		progress.m_PostCmdList.Add(_T("Request pull"));
+		int ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
 		{
@@ -2208,12 +2210,32 @@ bool CAppUtils::Push(bool autoClose)
 					return false;
 				}
 			}
-
+			if(ret == IDC_PROGRESS_BUTTON1)
+			{
+				RequestPull(dlg.m_BranchRemoteName);
+			}
 			return TRUE;
 		}
 
 	}
 	return FALSE;
+}
+
+bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
+{
+	CRequestPullDlg dlg;
+	dlg.m_RepositoryURL = repositoryUrl;
+	dlg.m_EndRevision = endrevision;
+	if (dlg.DoModal()==IDOK)
+	{
+		CString cmd;
+		cmd.Format(_T("git.exe request-pull %s \"%s\" %s"), dlg.m_StartRevision, dlg.m_RepositoryURL, dlg.m_EndRevision);
+
+		CProgressDlg progress;
+		progress.m_GitCmd=cmd;
+		progress.DoModal();
+	}
+	return true;
 }
 
 bool CAppUtils::CreateMultipleDirectory(CString& szPath)

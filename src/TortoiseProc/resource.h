@@ -213,6 +213,7 @@
 #define IDD_SVNDCOMMITTYPE              331
 #define IDI_ACTIONFETCHING              332
 #define IDD_SETTINGSPROGSALTERNATIVEEDITOR 333
+#define IDD_REQUESTPULL                 334
 #define IDB_BITMAP2                     336
 #define IDB_BITMAP_REFTYPE              336
 #define IDS_CHSTAT_FILECOL              1000
