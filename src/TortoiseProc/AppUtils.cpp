@@ -2331,7 +2331,7 @@ bool CAppUtils::Push(bool autoClose)
 			}
 			if(ret == IDC_PROGRESS_BUTTON1)
 			{
-				RequestPull();
+				RequestPull(dlg.m_BranchRemoteName);
 			}
 			return TRUE;
 		}
@@ -2340,9 +2340,11 @@ bool CAppUtils::Push(bool autoClose)
 	return FALSE;
 }
 
-bool CAppUtils::RequestPull()
+bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 {
 	CRequestPullDlg dlg;
+	dlg.m_RepositoryURL = repositoryUrl;
+	dlg.m_EndRevision = endrevision;
 	if (dlg.DoModal()==IDOK)
 	{
 		CString cmd;

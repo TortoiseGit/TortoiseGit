@@ -77,6 +77,10 @@ BOOL CRequestPullDlg::OnInitDialog()
 	m_cRepositoryURL.SetURLHistory(TRUE);
 	m_cRepositoryURL.LoadHistory(_T("Software\\TortoiseGit\\History\\RequestPull"), _T("url"));
 
+	m_cStartRevision.SetWindowTextW(m_StartRevision);
+	m_cRepositoryURL.SetWindowTextW(m_RepositoryURL);
+	m_cEndRevision.SetWindowTextW(m_EndRevision);
+
 	this->UpdateData(FALSE);
 
 	return TRUE;
