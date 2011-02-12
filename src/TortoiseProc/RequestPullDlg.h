@@ -40,7 +40,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	CComboBox		m_cStartRevision;
+	CHistoryCombo	m_cStartRevision;
 	CHistoryCombo	m_cRepositoryURL;
 	CEdit			m_cEndRevision;
 

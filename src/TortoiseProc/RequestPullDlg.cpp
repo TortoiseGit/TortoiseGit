@@ -68,6 +68,7 @@ BOOL CRequestPullDlg::OnInitDialog()
 	STRING_VECTOR list;
 	int current;
 	g_Git.GetBranchList(list, &current, CGit::BRANCH_ALL);
+	m_cStartRevision.SetMaxHistoryItems(0x7FFFFFFF);
 	for (unsigned int i = 0; i < list.size(); i++)
 	{
 		m_cStartRevision.AddString(list[i]);
