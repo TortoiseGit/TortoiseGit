@@ -32,9 +32,7 @@
    Added new context menu
    Allow to toggle author column
 
-== Funcation changed ==
- * Log dialog doesn't support search file name.
- 
+
 == Bug Fix ==
  * Fixed issue #669: cannot open help from clean window
  * Fixed issue #671: Help not working when choose switch dialog and dcommit dialog
