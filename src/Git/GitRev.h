@@ -201,6 +201,11 @@ public:
 	int GetCommitFromHash(CGitHash &hash);
 	int GetCommit(CString Rev);
 
+	int SafeGetSimpleList(CGit *git);
+	volatile LONG m_IsSimpleListReady; 
+	std::vector<CString> m_SimpleFileList;  /* use for find and filter*/
+										/* no rename detect and line num stat infor*/
+
 public:
 	void DbgPrint();
 	int	AddMergeFiles();

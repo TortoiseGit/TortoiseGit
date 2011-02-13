@@ -23,6 +23,7 @@ GitRev::GitRev(void)
 	m_IsCommitParsed = 0;
 	m_IsDiffFiles = 0;
 	m_CallDiffAsync = NULL;
+	m_IsSimpleListReady =0;
 
 	memset(&this->m_GitCommit,0,sizeof(GIT_COMMIT));
 
@@ -141,6 +142,69 @@ CTime GitRev::ConverFromString(CString input)
 	return CTime(); //Return an invalid time
 }
 
+int GitRev::SafeGetSimpleList(CGit *git)
+{
+	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
+	{
+		m_SimpleFileList.clear();
+		git->CheckAndInitDll();
+		GIT_COMMIT commit;
+		GIT_COMMIT_LIST list;
+		GIT_HASH   parent;
+		memset(&commit,0,sizeof(GIT_COMMIT));
+
+		CAutoLocker lock(g_Git.m_critGitDllSec);
+
+		if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
+			return -1;
+
+		int i=0;
+		bool isRoot = this->m_ParentHash.size()==0;
+		git_get_commit_first_parent(&commit,&list);
+		while(git_get_commit_next_parent(&list,parent) == 0 || isRoot)
+		{
+			GIT_FILE file;
+			int count;
+			if(isRoot)
+				git_root_diff(git->GetGitSimpleListDiff(), this->m_CommitHash.m_hash, &file, &count,0);
+			else
+				git_diff(git->GetGitSimpleListDiff(),parent,commit.m_hash,&file,&count,0);
+			
+			isRoot = false;
+
+			CTGitPath path;
+			CString strnewname;
+			CString stroldname;
+			
+			for(int j=0;j<count;j++)
+			{
+				path.Reset();
+				char *newname;
+				char *oldname;
+				
+				strnewname.Empty();
+				stroldname.Empty();
+
+				int mode,IsBin,inc,dec;
+				git_get_diff_file(git->GetGitSimpleListDiff(),file,j,&newname,&oldname,
+						&mode,&IsBin,&inc,&dec);
+				
+				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
+				
+				m_SimpleFileList.push_back(strnewname);
+				
+			}
+			git_diff_flush(git->GetGitSimpleListDiff());
+			i++;
+		}
+		
+		InterlockedExchange(&m_IsUpdateing,FALSE);
+		InterlockedExchange(&m_IsSimpleListReady, TRUE);
+		git_free_commit(&commit);
+	}
+
+	return 0;
+}
 int GitRev::SafeFetchFullInfo(CGit *git)
 {
 	if(InterlockedExchange(&m_IsUpdateing,TRUE) == FALSE)
@@ -165,9 +229,9 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			GIT_FILE file;
 			int count;
 			if(isRoot)
-				git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count);
+				git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count,1);
 			else
-				git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count);
+				git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count,1);
 			
 			isRoot = false;
 

@@ -116,8 +116,8 @@ GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
 GITDLL_API int git_free_commit(GIT_COMMIT *commit);
 
 GITDLL_API int git_open_diff(GIT_DIFF *diff, char * arg);
-GITDLL_API int git_diff(GIT_DIFF diff, GIT_HASH hash1,GIT_HASH hash2, GIT_FILE * file, int *count);
-GITDLL_API int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count);
+GITDLL_API int git_diff(GIT_DIFF diff, GIT_HASH hash1,GIT_HASH hash2, GIT_FILE * file, int *count, int isstat);
+GITDLL_API int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count,int isstat);
 GITDLL_API int git_diff_flush(GIT_DIFF diff);
 GITDLL_API int git_close_diff(GIT_DIFF diff);
 

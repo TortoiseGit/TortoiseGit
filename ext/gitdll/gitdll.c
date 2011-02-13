@@ -488,7 +488,7 @@ int git_diff_flush(GIT_DIFF diff)
 	return 0;
 }
 
-int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count)
+int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int isstat)
 {
 	int ret;
 	struct rev_info *p_Rev;
@@ -502,24 +502,26 @@ int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count)
 	if(ret)
 		return ret;
 
-	diffcore_std(&p_Rev->diffopt);
+	if(isstat)
+	{
+		diffcore_std(&p_Rev->diffopt);
 
-	memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
-	for (i = 0; i < q->nr; i++) {
-		struct diff_filepair *p = q->queue[i];
-		//if (check_pair_status(p))
-		diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+		memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
+		for (i = 0; i < q->nr; i++) {
+			struct diff_filepair *p = q->queue[i];
+			//if (check_pair_status(p))
+			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+		}
+
+		if(file)
+			*file = q;
+		if(count)
+			*count = q->nr;
 	}
-
-	if(file)
-		*file = q;
-	if(count)
-		*count = q->nr;
-
 	return 0;
 }
 
-int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count)
+int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count,int isstat)
 {
 	struct rev_info *p_Rev;
 	int ret;
@@ -531,16 +533,17 @@ int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int
 	ret = diff_tree_sha1(hash1,hash2,"",&p_Rev->diffopt);
 	if( ret )
 		return ret;
-	
-	diffcore_std(&p_Rev->diffopt);
 
-	memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
-	for (i = 0; i < q->nr; i++) {
-		struct diff_filepair *p = q->queue[i];
-		//if (check_pair_status(p))
-		diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+	if(isstat)
+	{
+		diffcore_std(&p_Rev->diffopt);
+		memset(&p_Rev->diffstat, 0, sizeof(struct diffstat_t));
+		for (i = 0; i < q->nr; i++) {
+			struct diff_filepair *p = q->queue[i];
+			//if (check_pair_status(p))
+			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
+		}
 	}
-
 	if(file)
 		*file = q;
 	if(count)

@@ -56,6 +56,7 @@ private:
 protected:
 	bool m_IsGitDllInited;
 	GIT_DIFF m_GitDiff;
+	GIT_DIFF m_GitSimpleListDiff;
 public:
 	CComCriticalSection			m_critGitDllSec;
 	bool	m_IsUseGitDLL;
@@ -104,6 +105,17 @@ public:
 		{
 			git_open_diff(&m_GitDiff,"-C -M -r");
 			return m_GitDiff;
+		}
+	}
+
+	GIT_DIFF GetGitSimpleListDiff()
+	{
+		if(m_GitSimpleListDiff)
+			return m_GitSimpleListDiff;
+		else
+		{
+			git_open_diff(&m_GitSimpleListDiff,"-r -r");
+			return m_GitSimpleListDiff;
 		}
 	}
 

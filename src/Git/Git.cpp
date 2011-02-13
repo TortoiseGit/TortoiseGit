@@ -125,6 +125,7 @@ CGit::CGit(void)
 	m_CurrentDir.ReleaseBuffer();
 	m_IsGitDllInited = false;
 	m_GitDiff=0;
+	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
@@ -137,6 +138,11 @@ CGit::~CGit(void)
 	{
 		git_close_diff(m_GitDiff);
 		m_GitDiff=0;
+	}
+	if(this->m_GitSimpleListDiff)
+	{
+		git_close_diff(m_GitSimpleListDiff);
+		m_GitSimpleListDiff=0;
 	}
 }
 

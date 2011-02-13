@@ -2464,6 +2464,39 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 				return TRUE;
 			}
 		}
+
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+		{
+			CTGitPathList *pathList=NULL;
+			if( pRev->m_IsDiffFiles)
+				pathList = &pRev->GetFiles(this);
+			else
+			{
+				if(!pRev->m_IsSimpleListReady)
+					pRev->SafeGetSimpleList(&g_Git);
+			}
+
+			if(pathList)
+				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount(); ++cpPathIndex)
+				{
+					if (regex_search(wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitOldPathString()), pat, flags))
+					{
+						return true;			
+					}
+					if (regex_search(wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitPathString()), pat, flags))
+					{
+						return true;	
+					}
+				}
+
+			for(INT_PTR i=0;i<pRev->m_SimpleFileList.size();i++)
+			{
+				if (regex_search(wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
+				{
+					return true;			
+				}
+			}
+		}
 	}		
 	else
 	{
@@ -2517,6 +2550,45 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			if ((sRev.Find(find) >= 0))
 			{
 				return TRUE;
+			}
+		}
+
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+		{
+			CTGitPathList *pathList=NULL;
+			if( pRev->m_IsDiffFiles)
+				pathList = &pRev->GetFiles(this);
+			else
+			{
+				if(!pRev->m_IsSimpleListReady)
+					pRev->SafeGetSimpleList(&g_Git);
+			}
+			if(pathList)
+				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount() ; ++cpPathIndex)
+				{
+					CTGitPath *cpath = &pathList->m_paths.at(cpPathIndex);
+					CString path = cpath->GetGitOldPathString();
+					path.MakeLower();
+					if ((path.Find(find)>=0))
+					{
+						return true;
+					}
+					path = cpath->GetGitPathString();
+					path.MakeLower();
+					if ((path.Find(find)>=0))
+					{
+						return true;			
+					}
+				}
+
+			for (INT_PTR i=0;i<pRev->m_SimpleFileList.size();i++)
+			{
+				CString path = pRev->m_SimpleFileList[i];
+				path.MakeLower();
+				if ((path.Find(find)>=0))
+				{
+					return true;			
+				}
 			}
 		}
 	} // else (from if (bRegex))
@@ -2707,7 +2779,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 
 }
 
-BOOL CGitLogListBase::IsEntryInDateRange(int i)
+BOOL CGitLogListBase::IsEntryInDateRange(int /*i*/)
 {
 	/*
 	__time64_t time = m_logEntries.GetGitRevAt(i).GetAuthorDate().GetTime();
@@ -2872,7 +2944,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 	ASSERT(m_pFindDialog != NULL);
 	bool bFound = false;
-	int i;
+	int i=0;
 
 	if (m_pFindDialog->IsTerminating())
 	{
@@ -2945,21 +3017,35 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=pLogEntry->GetSubject();
 			str+=_T("\n");
 
-#if 0
+
 			/*Because changed files list is loaded on demand when gui show,
 			  files will empty when files have not fetched.
 
 			  we can add it back by using one-way diff(with outnumber changed and rename detect.
 			  here just need changed filename list. one-way is much quicker.
 			*/
-			for(int i=0;i<pLogEntry->GetFiles(this).GetCount();i++)
+			if(pLogEntry->m_IsFull)
 			{
-				str+=pLogEntry->GetFiles(this)[i].GetWinPath();
-				str+=_T("\n");
-				str+=pLogEntry->GetFiles(this)[i].GetGitOldPathString();
-				str+=_T("\n");
+				for(int i=0;i<pLogEntry->GetFiles(this).GetCount();i++)
+				{
+					str+=pLogEntry->GetFiles(this)[i].GetWinPath();
+					str+=_T("\n");
+					str+=pLogEntry->GetFiles(this)[i].GetGitOldPathString();
+					str+=_T("\n");
+				}
+			}else
+			{
+				if(!pLogEntry->m_IsSimpleListReady)
+					pLogEntry->SafeGetSimpleList(&g_Git);
+
+				for(int i=0;i<pLogEntry->m_SimpleFileList.size();i++)
+				{
+					str+=pLogEntry->m_SimpleFileList[i];
+					str+=_T("\n");
+				}
+
 			}
-#endif
+
 
 			if (bRegex)
 			{
