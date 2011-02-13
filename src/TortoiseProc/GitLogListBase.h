@@ -257,6 +257,7 @@ public:
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
+	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat);
 
 	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;

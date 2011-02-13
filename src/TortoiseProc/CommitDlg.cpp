@@ -1709,7 +1709,7 @@ void CCommitDlg::FillPatchView()
 	}
 
 }
-LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM wparam, LPARAM lparam)
+LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM wparam, LPARAM /*lparam*/)
 {
 	TRACE("OnGitStatusListCtrlItemChanged %d\r\n", wparam);
 	this->FillPatchView();

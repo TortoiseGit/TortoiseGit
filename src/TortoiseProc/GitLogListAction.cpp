@@ -182,7 +182,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CTGitPathList selectedlist;
 				pathlist.AddPath(this->m_Path);
 				bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
-				CAppUtils::Commit(CString(),false,CString(),
+				CString str;
+				CAppUtils::Commit(CString(),false,str,
 								  pathlist,selectedlist,bSelectFilesForCommit);
 				//this->Refresh();
 				this->GetParent()->PostMessage(WM_COMMAND,ID_LOGDLG_REFRESH,0);

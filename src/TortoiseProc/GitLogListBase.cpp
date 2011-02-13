@@ -2104,13 +2104,15 @@ int CGitLogListBase::BeginFetchLog()
 	data.m_From = m_From;
 	data.m_To =m_To;
 
-	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
+#if 0 /* use tortoiegit filter */
+ 	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_AUTHORS)
 		data.m_Author = this->m_sFilterText;
 
 	if(this->m_nSelectedFilter == LOGFILTER_ALL || m_nSelectedFilter == LOGFILTER_MESSAGES)
 		data.m_MessageFilter = this->m_sFilterText;
 
 	data.m_IsRegex = m_bFilterWithRegex;
+#endif
 
 	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true,&data);
 
@@ -2241,6 +2243,12 @@ UINT CGitLogListBase::LogThread()
 
 		return -1;
 	}
+
+	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
+	bool bRegex = false;
+	if (m_bFilterWithRegex)
+		bRegex = ValidateRegexp(m_sFilterText, pat, false);
+
 	TRACE(_T("\n===Begin===\n"));
 	//Update work copy item;
 
@@ -2308,6 +2316,11 @@ UINT CGitLogListBase::LogThread()
 			TRACE(_T("\n"));
 #endif
 
+			if(!m_sFilterText.IsEmpty())
+			{
+				if(!IsMatchFilter(bRegex,pRev,pat))
+					continue;
+			}
 			this->m_critSec.Lock();
 			m_logEntries.push_back(hash);
 			m_arShownList.SafeAdd(pRev);
@@ -2397,6 +2410,119 @@ bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool 
 	catch (exception) {}
 	return false;
 }
+BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
+{
+
+	tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_any;
+	CString sRev;
+	
+	if ((bRegex)&&(m_bFilterWithRegex))
+	{
+#if 0
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+		{
+			ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)pRev->sBugIDs);
+			if (regex_search(wstring((LPCTSTR)pRev->sBugIDs), pat, flags))
+			{
+				return TRUE;
+			}
+		}
+#endif
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		{
+			ATLTRACE(_T("messge = \"%s\"\n"), pRev->GetSubject());
+			if (regex_search(wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
+			{
+				return TRUE;
+			}
+
+			ATLTRACE(_T("messge = \"%s\"\n"),pRev->GetBody());
+			if (regex_search(wstring((LPCTSTR)pRev->GetBody()), pat, flags))
+			{
+					return TRUE;
+			}
+		}
+		
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+		{
+			if (regex_search(wstring(pRev->GetAuthorName()), pat, flags))
+			{
+				return TRUE;
+			}
+
+			if (regex_search(wstring(pRev->GetCommitterName()), pat, flags))
+			{
+				return TRUE;
+			}
+		}
+	
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+		{
+			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
+			if (regex_search(wstring((LPCTSTR)sRev), pat, flags))
+			{
+				return TRUE;
+			}
+		}
+	}		
+	else
+	{
+		CString find = m_sFilterText;
+		find.MakeLower();
+#if 0
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+			{
+				CString sBugIDs = m_logEntries[i]->sBugIDs;
+
+				sBugIDs = sBugIDs.MakeLower();
+				if ((sBugIDs.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->SafeAdd(m_logEntries[i]);
+					continue;
+				}
+			}
+#endif
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		{
+			CString msg = pRev->GetSubject();
+
+			msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
+			{
+				return TRUE;
+			}
+			
+			msg = pRev->GetBody();
+
+			msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
+			{
+				return TRUE;			
+			}
+		}
+		
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+		{
+			CString msg = pRev->GetAuthorName();
+			msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
+			{
+				return TRUE;
+			}
+		}
+
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+		{
+			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
+			if ((sRev.Find(find) >= 0))
+			{
+				return TRUE;
+			}
+		}
+	} // else (from if (bRegex))
+	return FALSE;
+}
+
 
 void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 {
