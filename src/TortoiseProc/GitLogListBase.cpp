@@ -206,7 +206,7 @@ int CGitLogListBase::AsyncDiffThread()
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
 				InterlockedExchange(&pRev->m_IsFull, TRUE);
 
-				pRev->GetBody().Format(_T("%d files changed"),m_logEntries.GetGitRevAt(0).GetFiles(this).GetCount());
+				pRev->GetBody().Format(_T("%d files changed"),pRev->GetFiles(this).GetCount());
 				::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
