@@ -23,6 +23,8 @@
  * Allow to change EOL by pressing CTRL+Return in TortoiseMerge
  * Allow to replace (previously hardcoded) Notepad2 by any other editor
  * Optionally send/mail patches via MAPI, if a default mail client is set up
+ * Fixed issue #248: Allow to reorder commits on rebase
+ * Fixed issue #702: Added request-pull functionality
 
  * TortoiseGitBlame
    Clicking on a line automatically selects the log entry in the loglist

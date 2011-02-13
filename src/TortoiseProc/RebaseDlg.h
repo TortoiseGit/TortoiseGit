@@ -146,4 +146,6 @@ public:
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
 	afx_msg void OnBnClickedRebasePostButton();
+	afx_msg void OnBnClickedButtonUp2();
+	afx_msg void OnBnClickedButtonDown2();
 };

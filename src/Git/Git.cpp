@@ -573,7 +573,6 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 						CFilterData *Filter)
 {
 	CString cmd;
-	CString log;
 	CString num;
 	CString since;
 
@@ -675,22 +674,17 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 	}
 
 	if(paramonly)
-		cmd.Format(_T("%s -z  %s --parents "),
+		cmd.Format(_T("%s -z %s --parents "),
 				num,param);
 	else
-		cmd.Format(_T("git.exe log %s -z  %s --parents --pretty=format:\""),
-				num,param);
-
-	BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
-
-	if(paramonly)
 	{
-		cmd += _T("-- ")+file;
-	}else
-	{
-		cmd += log;
-		cmd += CString(_T("\"  -- "))+file;
+		CString log;
+		BuildOutputFormat(log,!(mask&CGit::LOG_INFO_ONLY_HASH));
+		cmd.Format(_T("git.exe log %s -z %s --parents --pretty=format:\"%s\""),
+				num,param,log);
 	}
+
+	cmd += file;
 
 	return cmd;
 }
