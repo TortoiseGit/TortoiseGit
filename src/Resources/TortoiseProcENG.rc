@@ -4040,7 +4040,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_FILTER_ALL      "Messages, authors"
+    IDS_LOG_FILTER_ALL      "Messages, authors, Paths, Revisions"
     IDS_LOG_FILTER_PATHS    "Paths"
     IDS_LOG_FILTER_AUTHORS  "Authors"
     IDS_LOG_FILTER_MESSAGES "Messages"

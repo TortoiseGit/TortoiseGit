@@ -2021,12 +2021,12 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
-/*
+
 		if (m_LogList.m_bShowBugtraqColumn == true) {
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
 		}
-*/
+
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		temp.LoadString(IDS_LOG_FILTER_REGEX);

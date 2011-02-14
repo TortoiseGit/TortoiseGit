@@ -2418,16 +2418,20 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 	
 	if ((bRegex)&&(m_bFilterWithRegex))
 	{
-#if 0
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
 		{
-			ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)pRev->sBugIDs);
-			if (regex_search(wstring((LPCTSTR)pRev->sBugIDs), pat, flags))
+			if(this->m_bShowBugtraqColumn)
 			{
-				return TRUE;
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject());
+
+				ATLTRACE(_T("bugID = \"%s\"\n"), sBugIds);
+				if (regex_search(wstring(sBugIds), pat, flags))
+				{
+					return TRUE;
+				}
 			}
 		}
-#endif
+
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"), pRev->GetSubject());
@@ -2502,19 +2506,21 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 	{
 		CString find = m_sFilterText;
 		find.MakeLower();
-#if 0
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
-			{
-				CString sBugIDs = m_logEntries[i]->sBugIDs;
 
-				sBugIDs = sBugIDs.MakeLower();
-				if ((sBugIDs.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+		{
+			if(this->m_bShowBugtraqColumn)
+			{
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject());
+
+				sBugIds.MakeLower();
+				if ((sBugIds.Find(find) >= 0))
 				{
-					pShownlist->SafeAdd(m_logEntries[i]);
-					continue;
+					return TRUE;
 				}
 			}
-#endif
+		}
+
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 		{
 			CString msg = pRev->GetSubject();
