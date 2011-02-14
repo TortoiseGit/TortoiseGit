@@ -327,9 +327,8 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 	err = FALSE;
 
-	//this->UpdateData(TRUE);
-	//this->m_bCommitAmend=FALSE;
-	//this->UpdateData(FALSE);
+	if(m_bCommitAmend)
+		GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
 
 	this->m_ctrlShowPatch.SetURL(CString());
 
