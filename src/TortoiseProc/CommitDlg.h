@@ -121,6 +121,7 @@ public:
 	CString				m_sChangeList;
 	BOOL				m_bKeepChangeList;
 	BOOL				m_bCommitAmend;
+	BOOL				m_bNoPostActions;
 	INT_PTR				m_itemsCount;
 	bool				m_bSelectFilesForCommit;
 	CComPtr<IBugTraqProvider> m_BugTraqProvider;

@@ -437,6 +437,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				dlg.m_bWholeProject=true;
 				dlg.m_bSelectFilesForCommit = true;
 				dlg.m_bCommitAmend=true;
+				dlg.m_bNoPostActions=true;
 				dlg.m_AmendStr=dlg.m_sLogMessage;
 
 				if (dlg.DoModal() == IDOK)

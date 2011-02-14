@@ -60,6 +60,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bKeepChangeList(TRUE)
 	, m_itemsCount(0)
 	, m_bSelectFilesForCommit(TRUE)
+	, m_bNoPostActions(FALSE)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -624,8 +625,11 @@ void CCommitDlg::OnOK()
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
 
-		progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
-		progress.m_PostCmdList.Add(_T("&ReCommit"));
+		if (!m_bNoPostActions)
+		{
+			progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
+			progress.m_PostCmdList.Add(_T("&ReCommit"));
+		}
 
 		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
 
