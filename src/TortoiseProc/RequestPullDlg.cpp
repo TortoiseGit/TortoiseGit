@@ -111,7 +111,7 @@ void CRequestPullDlg::OnBnClickedOk()
 
 	m_cRepositoryURL.SaveHistory();
 
-	m_StartRevision = m_cStartRevision.GetString();
+	m_cStartRevision.GetWindowTextW(m_StartRevision);
 	m_RepositoryURL = m_cRepositoryURL.GetString();
 	m_cEndRevision.GetWindowTextW(m_EndRevision);
 
