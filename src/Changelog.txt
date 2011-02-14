@@ -56,6 +56,7 @@
  * Fixed issue #694: "Clean Up" executes on top level directory
  * Fixed issue #680: StatGraphDlg.cpp min-avg statistics are incorrect
  * Fixed issue #705: Fixed comparing added/deleted files on diffing whole revisions
+ * Improved "Combine commits" process (prevents possible loss of data)
 
 = Release 1.6.3.0 =
 == Features ==
