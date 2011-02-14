@@ -4201,7 +4201,7 @@ int CGitStatusListCtrl::CellRectFromPoint(CPoint& point, RECT *cellrect, int *co
 	return -1;
 }
 
-BOOL CGitStatusListCtrl::OnToolTipText(UINT /*id*/, NMHDR */*pNMHDR*/, LRESULT */*pResult*/)
+BOOL CGitStatusListCtrl::OnToolTipText(UINT /*id*/, NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
 {
 #if 0
 	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
