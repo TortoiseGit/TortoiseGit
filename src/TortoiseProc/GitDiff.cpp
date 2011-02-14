@@ -109,7 +109,8 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 	}
 
-	CString tempfile=::GetTempFile();
+	// preserve FileExtension, needed especially for diffing deleted images (detection on new filename extension)
+	CString tempfile=::GetTempFile() + pPath->GetFileExtension();
 	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
 	//file.WriteString();
 	file.Close();
