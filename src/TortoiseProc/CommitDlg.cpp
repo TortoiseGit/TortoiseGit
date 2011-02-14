@@ -432,14 +432,14 @@ void CCommitDlg::OnOK()
 				COMError ce(hr);
 				CString sErr;
 				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
-				CMessageBox::Show(m_hWnd, sErr, _T("TortoiseSVN"), MB_ICONERROR);
+				CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
 			}
 			else
 			{
 				CString sError = temp;
 				if (!sError.IsEmpty())
 				{
-					CMessageBox::Show(m_hWnd, sError, _T("TortoiseSVN"), MB_ICONERROR);
+					CMessageBox::Show(m_hWnd, sError, _T("TortoiseGit"), MB_ICONERROR);
 					return;
 				}
 				SysFreeString(temp);
