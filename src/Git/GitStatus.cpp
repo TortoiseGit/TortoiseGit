@@ -891,10 +891,11 @@ void GitStatus::ClearFilter()
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData)
 {
 	try
 	{
+		CString path = pathParam;
 
 		TCHAR oldpath[MAX_PATH+1];
 		memset(oldpath,0,MAX_PATH+1);
@@ -1020,12 +1021,12 @@ int GitStatus::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * 
 
 }
 
-int GitStatus::GetHeadHash(CString &gitdir, CGitHash &hash)
+int GitStatus::GetHeadHash(const CString &gitdir, CGitHash &hash)
 {
 	return g_HeadFileMap.GetHeadHash(gitdir, hash);
 }
 
-bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
+bool GitStatus::IsGitReposChanged(const CString &gitdir,const CString &subpaths, int mode)
 {
 	if( mode & GIT_MODE_INDEX)
 	{
@@ -1048,16 +1049,16 @@ bool GitStatus::IsGitReposChanged(CString &gitdir,CString &subpaths, int mode)
 	return false;
 }
 
-int GitStatus::LoadIgnoreFile(CString &gitdir,CString &subpaths)
+int GitStatus::LoadIgnoreFile(const CString &gitdir,const CString &subpaths)
 {
 	return g_IgnoreList.LoadAllIgnoreFile(gitdir,subpaths);
 }
-int GitStatus::IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion)
+int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
 {
 	return g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion);
 }
 
-__int64 GitStatus::GetIndexFileTime(CString &gitdir)
+__int64 GitStatus::GetIndexFileTime(const CString &gitdir)
 {
 	CAutoReadLock lock(&g_IndexFileMap.m_SharedMutex);
 	
@@ -1067,11 +1068,11 @@ __int64 GitStatus::GetIndexFileTime(CString &gitdir)
 	return g_IndexFileMap[gitdir].m_LastModifyTime;
 }
 
-int GitStatus::GetIgnoreFileChangeTimeList(CString &dir, std::vector<__int64> &timelist)
+int GitStatus::GetIgnoreFileChangeTimeList(const CString &dir, std::vector<__int64> &timelist)
 {
 	return g_IgnoreList.GetIgnoreFileChangeTimeList(dir,timelist);
 }
-int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
+int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore)
 {
 	if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
 		g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
@@ -1081,7 +1082,7 @@ int GitStatus::IsIgnore(CString &gitdir, CString &path, bool *isIgnore)
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul,  BOOL IsRecursive, BOOL IsIgnore, FIll_STATUS_CALLBACK callback, void *pData)
+int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc_status_kind * status,BOOL IsFul,  BOOL IsRecursive, BOOL IsIgnore, FIll_STATUS_CALLBACK callback, void *pData)
 {
 	try
 	{
@@ -1290,7 +1291,7 @@ int GitStatus::EnumDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind
 	return 0;
 
 }
-int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,BOOL IsIgnore,FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,BOOL IsIgnore,FIll_STATUS_CALLBACK callback,void *pData)
 {
 	try
 	{
@@ -1538,7 +1539,7 @@ int GitStatus::GetDirStatus(CString &gitdir,CString &subpath,git_wc_status_kind 
 	return 0;
 }
 
-bool GitStatus::IsExistIndexLockFile(CString &gitdir)
+bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 {
 	CString sDirName= gitdir;
 

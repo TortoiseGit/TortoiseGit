@@ -668,7 +668,7 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return m_directoryPath.GetWinPathString() + _T("\\") + cacheKey;
 }
 
-BOOL CCachedDirectory::GetStatusCallback(CString & path, git_wc_status_kind status,bool isDir, void *pUserData)
+BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *pUserData)
 {
 	CCachedDirectory* pThis = (CCachedDirectory*)pUserData;
 

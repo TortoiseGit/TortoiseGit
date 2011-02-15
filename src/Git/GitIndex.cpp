@@ -167,7 +167,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	return ret;
 }
 
-int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
+int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
 {
 
 	if(status)
@@ -213,7 +213,7 @@ int CGitIndexList::GetFileStatus(CString &gitdir,CString &path,git_wc_status_kin
 	return 0;
 }
 
-int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *status,
+int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git_wc_status_kind *status,
 							 BOOL IsFull, BOOL IsRecursive,
 							 FIll_STATUS_CALLBACK callback,void *pData,
 							 CGitHash *pHash)
@@ -222,6 +222,7 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 	git_wc_status_kind dirstatus = git_wc_status_none;
 	__int64 time;
 	bool isDir=false;
+	CString path = pathParam;
 
 	if(status)
 	{
@@ -311,7 +312,7 @@ int CGitIndexList::GetStatus(CString &gitdir,CString &path, git_wc_status_kind *
 	return 0;
 }
 
-int CGitIndexFileMap::CheckAndUpdateIndex(CString &gitdir,bool *loaded)
+int CGitIndexFileMap::CheckAndUpdateIndex(const CString &gitdir,bool *loaded)
 {
 	__int64 time;
 	int result;
@@ -370,7 +371,7 @@ int CGitIndexFileMap::CheckAndUpdateIndex(CString &gitdir,bool *loaded)
 	return 0;
 }
 
-int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
+int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
 									FIll_STATUS_CALLBACK callback,void *pData,
 									CGitHash *pHash)
 {
@@ -390,7 +391,7 @@ int CGitIndexFileMap::GetFileStatus(CString &gitdir, CString &path, git_wc_statu
 	return 0;
 }
 
-int CGitIndexFileMap::IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion)
+int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
 {
 	try
 	{	
@@ -427,7 +428,7 @@ int CGitIndexFileMap::IsUnderVersionControl(CString &gitdir, CString &path, bool
 	return 0;
 }
 
-int CGitHeadFileList::GetPackRef(CString &gitdir)
+int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {
 	CString PackRef =  gitdir;
 	PackRef += _T("\\.git\\packed-refs");
@@ -789,7 +790,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	return READ_TREE_RECURSIVE;
 }
 
-int CGitIgnoreItem::FetchIgnoreList(CString &projectroot, CString &file)
+int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &file)
 {
 	CAutoWriteLock lock(&this->m_SharedMutex);
 
@@ -889,7 +890,7 @@ int CGitIgnoreItem::FetchIgnoreList(CString &projectroot, CString &file)
 	return 0;
 }
 
-bool CGitIgnoreList::CheckFileChanged(CString &path)
+bool CGitIgnoreList::CheckFileChanged(const CString &path)
 {
 	__int64 time=0;
 
@@ -929,7 +930,7 @@ bool CGitIgnoreList::CheckFileChanged(CString &path)
 
 }
 
-bool CGitIgnoreList::CheckIgnoreChanged(CString &gitdir,CString &path)
+bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir,const CString &path)
 {
 	CString temp;
 	temp=gitdir;
@@ -978,7 +979,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(CString &gitdir,CString &path)
 	return true;
 }
 
-int CGitIgnoreList::FetchIgnoreFile(CString &gitdir, CString &gitignore)
+int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitignore)
 {
 	if(CGit::GitPathFileExists(gitignore)) //if .gitignore remove, we need remote cache
 	{
@@ -999,7 +1000,7 @@ int CGitIgnoreList::FetchIgnoreFile(CString &gitdir, CString &gitignore)
 	return 0;
 }
 
-int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
+int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
 {
 	CString temp;
 	
@@ -1055,7 +1056,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(CString &gitdir,CString &path)
 	}
 	return 0;
 }
-int CGitIgnoreList::GetIgnoreFileChangeTimeList(CString &path, std::vector<__int64> &timelist)
+int CGitIgnoreList::GetIgnoreFileChangeTimeList(const CString &path, std::vector<__int64> &timelist)
 {
 	CString temp=path;
 	CString ignore=temp;
@@ -1105,7 +1106,7 @@ int CGitIgnoreList::GetIgnoreFileChangeTimeList(CString &path, std::vector<__int
 	return -1;
 
 }
-bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
+bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
 {
 	CString str=path;
 	
@@ -1125,7 +1126,7 @@ bool CGitIgnoreList::IsIgnore(CString &path,CString &projectroot)
 
 	return (ret == 1);
 }
-int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
+int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 {
 	__int64 time=0;
 	bool dir=0;
@@ -1205,7 +1206,7 @@ int CGitIgnoreList::CheckIgnore(CString &path,CString &projectroot)
 	return -1;
 }
 
-int CGitHeadFileMap::CheckHeadUpdate(CString &gitdir)
+int CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 {
 	m_SharedMutex.AcquireShared();
 	if( find(gitdir) == end())
@@ -1227,7 +1228,7 @@ int CGitHeadFileMap::CheckHeadUpdate(CString &gitdir)
 	return ret;
 }
 
-int CGitHeadFileMap::GetHeadHash(CString &gitdir, CGitHash &hash)
+int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 {
 	if(CheckHeadUpdate(gitdir))
 	{
@@ -1243,7 +1244,7 @@ int CGitHeadFileMap::GetHeadHash(CString &gitdir, CGitHash &hash)
 }
 #if 0
 
-int CGitStatus::GetStatus(CString &gitdir, CString &path, git_wc_status_kind *status, BOOL IsFull, BOOL IsRecursive , FIll_STATUS_CALLBACK callback , void *pData)
+int CGitStatus::GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status, BOOL IsFull, BOOL IsRecursive , FIll_STATUS_CALLBACK callback , void *pData)
 {
 	int result;
 	__int64 time;

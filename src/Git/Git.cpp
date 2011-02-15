@@ -569,13 +569,13 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-int CGit::GetLog(BYTE_VECTOR& logOut, CString &hash,  CTGitPath *path ,int count,int mask,CString *from,CString *to)
+int CGit::GetLog(BYTE_VECTOR& logOut, const CString &hash,  CTGitPath *path ,int count,int mask,CString *from,CString *to)
 {
 	CGitCall_ByteVector gitCall(CString(),&logOut);
 	return GetLog(&gitCall,hash,path,count,mask,from,to);
 }
 
-CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
+CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
 						CFilterData *Filter)
 {
 	CString cmd;
@@ -694,8 +694,8 @@ CString CGit::GetLogCmd( CString &hash, CTGitPath *path, int count, int mask,CSt
 
 	return cmd;
 }
-//int CGit::GetLog(CGitCall* pgitCall, CString &hash,  CTGitPath *path ,int count,int mask)
-int CGit::GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
+//int CGit::GetLog(CGitCall* pgitCall, const CString &hash,  CTGitPath *path ,int count,int mask)
+int CGit::GetLog(CGitCall* pgitCall, const CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
 {
 	pgitCall->SetCmd( GetLogCmd(hash,path,count,mask,from,to) );
 
@@ -747,7 +747,7 @@ CString GetTempFile()
 
 }
 
-int CGit::RunLogFile(CString cmd,CString &filename)
+int CGit::RunLogFile(CString cmd,const CString &filename)
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -835,7 +835,7 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 
 	return 0;
 }
-int CGit::GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outputlist)
+int CGit::GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathList &outputlist)
 {
 	CString cmd;
 
@@ -1467,7 +1467,7 @@ int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 	return 0;
 }
 
-bool CGit::IsFastForward(CString &from, CString &to)
+bool CGit::IsFastForward(const CString &from, const CString &to)
 {
 	CString base;
 	CGitHash basehash,hash;
@@ -1481,7 +1481,7 @@ bool CGit::IsFastForward(CString &from, CString &to)
 	}
 	basehash = base.Left(40);
 
-	hash=g_Git.GetHash(from.GetBuffer());
+	hash=g_Git.GetHash(from);
 
 	return hash == basehash;
 }
@@ -1518,7 +1518,7 @@ int CGit::RefreshGitIndex()
 	}
 }
 
-int CGit::GetOneFile(CString Refname, CTGitPath &path, CString &outputfile)
+int CGit::GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile)
 {
 	if(g_Git.m_IsUseGitDLL)
 	{

@@ -211,10 +211,10 @@ public:
 
 	CGitIndexList();
 	int ReadIndex(CString file);
-	int GetStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
+	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
 protected:
-	int GetFileStatus(CString &gitdir,CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
-	int GetDirStatus(CString &gitdir,CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetFileStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
 
 class CGitTreeItem
@@ -229,7 +229,7 @@ class CGitHeadFileList:public std::vector<CGitTreeItem>
 {
 private:
 	
-	int GetPackRef(CString &gitdir);
+	int GetPackRef(const CString &gitdir);
 
 public:
 	std::map<CString,int> m_Map;
@@ -272,11 +272,11 @@ public:
 	CGitHeadFileMap(){ m_SharedMutex.Init(); }
 	~CGitHeadFileMap() { m_SharedMutex.Release(); }
 
-	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
-	int CheckHeadUpdate(CString &gitdir);
-	int GetHeadHash(CString &gitdir, CGitHash &hash);
+	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	int CheckHeadUpdate(const CString &gitdir);
+	int GetHeadHash(const CString &gitdir, CGitHash &hash);
 
-	bool IsHashChanged(CString &gitdir)
+	bool IsHashChanged(const CString &gitdir)
 	{
 		CAutoReadLock lock(&m_SharedMutex);
 		if( find(gitdir) == end())
@@ -296,11 +296,11 @@ public:
 	CGitIndexFileMap(){ m_SharedMutex.Init(); }
 	~CGitIndexFileMap() { m_SharedMutex.Release(); }
 
-	int CheckAndUpdateIndex(CString &gitdir,bool *loaded=NULL);
+	int CheckAndUpdateIndex(const CString &gitdir,bool *loaded=NULL);
 
-	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 	
-	int IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion);
+	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
 };
 
 class CGitIgnoreItem
@@ -322,16 +322,16 @@ public:
 	__time64_t  m_LastModifyTime;
 	CStringA m_BaseDir;
 	EXCLUDE_LIST m_pExcludeList;
-	int FetchIgnoreList(CString &projectroot, CString &file);
+	int FetchIgnoreList(const CString &projectroot, const CString &file);
 };
 
 class CGitIgnoreList
 {
 private:
-	bool CheckFileChanged(CString &path);
-	int	 FetchIgnoreFile(CString &gitdir, CString &gitignore);
+	bool CheckFileChanged(const CString &path);
+	int	 FetchIgnoreFile(const CString &gitdir, const CString &gitignore);
 	
-	int  CheckIgnore(CString &path,CString &root);
+	int  CheckIgnore(const CString &path,const CString &root);
 
 public:
 	SharedMutex		m_SharedMutex;
@@ -341,10 +341,10 @@ public:
 
 	std::map<CString, CGitIgnoreItem> m_Map;	
 
-	int	 GetIgnoreFileChangeTimeList(CString &dir, std::vector<__int64> &timelist);
-	bool CheckIgnoreChanged(CString &gitdir,CString &path);
-	int  LoadAllIgnoreFile(CString &gitdir,CString &path);
-	bool IsIgnore(CString &path,CString &root);
+	int	 GetIgnoreFileChangeTimeList(const CString &dir, std::vector<__int64> &timelist);
+	bool CheckIgnoreChanged(const CString &gitdir,const CString &path);
+	int  LoadAllIgnoreFile(const CString &gitdir,const CString &path);
+	bool IsIgnore(const CString &path,const CString &root);
 };
 
 template<class T>
@@ -440,13 +440,13 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 class CGitStatus
 {
 protected:
-	int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);	
+	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);	
 public:
 	CGitIgnoreList m_IgnoreList;
 	CGitHeadFileMap m_HeadFilesMap;
 	CGitIndexFileMap m_IndexFilesMap;
 
-	int GetStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);	
+	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);	
 };
 
 #endif

@@ -168,7 +168,7 @@ inline static git_revnum_t ConvertHashToRevnum(const BYTE *sha1)
 	return CString(s);
 }
 
-typedef BOOL (*FIll_STATUS_CALLBACK)(CString &path,git_wc_status_kind status,bool isDir, void *pdata);
+typedef BOOL (*FIll_STATUS_CALLBACK)(const CString &path,git_wc_status_kind status,bool isDir, void *pdata);
 
 /**
  * \ingroup Git
@@ -183,18 +183,18 @@ public:
 #define GIT_MODE_IGNORE 0x4
 #define GIT_MODE_ALL (GIT_MODE_INDEX|GIT_MODE_HEAD|GIT_MODE_IGNORE)
 
-	static int GetFileStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
-	static int GetDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
-	static int EnumDirStatus(CString &gitdir,CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
-	static bool IsGitReposChanged(CString &gitdir, CString &subpaths, int mode=GIT_MODE_ALL);
-	static int LoadIgnoreFile(CString &gitdir, CString &subpaths);
-	static int IsUnderVersionControl(CString &gitdir, CString &path, bool isDir,bool *isVersion);
-	static int IsIgnore(CString &gitdir, CString &path, bool *isIgnore);
-	static __int64 GetIndexFileTime(CString &gitdir);
-	static bool IsExistIndexLockFile(CString &gitdir);
-	static int GetIgnoreFileChangeTimeList(CString &path, std::vector<__int64> &timelist);
+	static int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	static int GetDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
+	static int EnumDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
+	static bool IsGitReposChanged(const CString &gitdir, const CString &subpaths, int mode=GIT_MODE_ALL);
+	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths);
+	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
+	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore);
+	static __int64 GetIndexFileTime(const CString &gitdir);
+	static bool IsExistIndexLockFile(const CString &gitdir);
+	static int GetIgnoreFileChangeTimeList(const CString &path, std::vector<__int64> &timelist);
 
-	static int GetHeadHash(CString &gitdir, CGitHash &hash);
+	static int GetHeadHash(const CString &gitdir, CGitHash &hash);
 
 public:
 	GitStatus(bool * pbCanceled = NULL);

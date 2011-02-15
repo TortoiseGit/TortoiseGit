@@ -63,7 +63,7 @@ public:
 
 	CEnvironment m_Environment;
 
-	static BOOL GitPathFileExists(CString &path)
+	static BOOL GitPathFileExists(const CString &path)
 	{
 		if(path[0] == _T('\\') && path[1] == _T('\\')) 
 		//it is netshare \\server\sharefoldername
@@ -137,11 +137,11 @@ public:
 	int Run(CGitCall* pcall);
 
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
-	int RunLogFile(CString cmd, CString &filename);
+	int RunLogFile(CString cmd, const CString &filename);
 	
 	int GetGitEncode(TCHAR* configkey);
 
-	bool IsFastForward(CString &from, CString &to);
+	bool IsFastForward(const CString &from, const CString &to);
 	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL,BOOL RemoveCR=TRUE);
 	
 	int SetConfigValue(CString key, CString value, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
@@ -199,12 +199,12 @@ public:
 	
 	//hash is empty means all. -1 means all
 
-	int GetLog(CGitCall* pgitCall, CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
+	int GetLog(CGitCall* pgitCall, const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
 								CString *from=NULL,CString *to=NULL);
-	int GetLog(BYTE_VECTOR& logOut,CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
+	int GetLog(BYTE_VECTOR& logOut,const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
 								CString *from=NULL,CString *to=NULL);
 
-	CString GetLogCmd(CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
+	CString GetLogCmd(const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
 					  CString *from=NULL,CString *to=NULL, bool paramonly=false, 
 					  CFilterData * filter =NULL);
 
@@ -214,7 +214,7 @@ public:
 	CGitHash GetHash(CString ref){return GetHash(ref.GetBuffer());}
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
-	//int GetShortLog(CString &log,CTGitPath * path=NULL, int count =-1);
+	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);
 	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8,int length=-1);
 
 	BOOL IsInitRepos();
@@ -222,14 +222,14 @@ public:
 	int GetRefList(STRING_VECTOR &list);
 
 	int RefreshGitIndex();
-	int GetOneFile(CString Refname, CTGitPath &path, CString &outputfile);
+	int GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile);
 
 	//Example: master -> refs/heads/master
 	CString GetFullRefName(CString shortRefName);
 	//Removes 'refs/heads/' or just 'refs'. Example: refs/heads/master -> master
 	static CString StripRefName(CString refName);
 
-	int GetCommitDiffList(CString &rev1,CString &rev2,CTGitPathList &outpathlist);
+	int GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathList &outpathlist);
 	int GetInitAddList(CTGitPathList &outpathlist);
 
 	__int64 filetime_to_time_t(const FILETIME *ft)
