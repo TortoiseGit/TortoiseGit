@@ -105,7 +105,7 @@ protected:
 	void				SetURLLabels(int mask=0x3);
 	void				ClearURLabels(int mask);
 	void				Filter(CString sFilterText);
-	void				CopySelectionToClipboard();
+	void				CopySelectionToClipboard(BOOL isFull=FALSE);
 	
 	void				ClickRevButton(CMenuButton *button,GitRev *rev, CACEdit *edit);
 
