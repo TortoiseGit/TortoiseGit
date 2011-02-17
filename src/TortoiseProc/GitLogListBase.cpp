@@ -277,7 +277,7 @@ CGitLogListBase::~CGitLogListBase()
 
 	SafeTerminateThread();
 	SafeTerminateAsyncDiffThread();
-	
+
 	if(m_AsyncDiffEvent)
 		CloseHandle(m_AsyncDiffEvent);
 }
@@ -2028,7 +2028,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 {
 	ClearText();
 
-	
+
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
@@ -2415,7 +2415,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 
 	tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_any;
 	CString sRev;
-	
+
 	if ((bRegex)&&(m_bFilterWithRegex))
 	{
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
@@ -2446,7 +2446,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 					return TRUE;
 			}
 		}
-		
+
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
 		{
 			if (regex_search(wstring(pRev->GetAuthorName()), pat, flags))
@@ -2459,7 +2459,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 				return TRUE;
 			}
 		}
-	
+
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
 		{
 			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
@@ -2485,11 +2485,11 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 				{
 					if (regex_search(wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitOldPathString()), pat, flags))
 					{
-						return true;			
+						return true;
 					}
 					if (regex_search(wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitPathString()), pat, flags))
 					{
-						return true;	
+						return true;
 					}
 				}
 
@@ -2497,11 +2497,11 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			{
 				if (regex_search(wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
 				{
-					return true;			
+					return true;
 				}
 			}
 		}
-	}		
+	}
 	else
 	{
 		CString find = m_sFilterText;
@@ -2530,16 +2530,16 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			{
 				return TRUE;
 			}
-			
+
 			msg = pRev->GetBody();
 
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
-				return TRUE;			
+				return TRUE;
 			}
 		}
-		
+
 		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
 		{
 			CString msg = pRev->GetAuthorName();
@@ -2583,7 +2583,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 					path.MakeLower();
 					if ((path.Find(find)>=0))
 					{
-						return true;			
+						return true;
 					}
 				}
 
@@ -2593,7 +2593,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 				path.MakeLower();
 				if ((path.Find(find)>=0))
 				{
-					return true;			
+					return true;
 				}
 			}
 		}
@@ -2963,9 +2963,9 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 	{
 		CString str;
 		str=m_pFindDialog->GetFindString();
-		
+
 		CGitHash hash;
-		
+
 		if(!str.IsEmpty())
 			hash = g_Git.GetHash(str);
 
@@ -3085,7 +3085,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				}
 			}
 		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; i++)
-		
+
 	} // if(m_pFindDialog->FindNext())
 	//UpdateLogInfoLabel();
 

@@ -42,7 +42,7 @@ private:
 };
 
 class CTGitPath;
-class CEnvironment:public std::vector<TCHAR> 
+class CEnvironment:public std::vector<TCHAR>
 {
 public:
 	void CopyProcessEnvironment();
@@ -65,7 +65,7 @@ public:
 
 	static BOOL GitPathFileExists(const CString &path)
 	{
-		if(path[0] == _T('\\') && path[1] == _T('\\')) 
+		if(path[0] == _T('\\') && path[1] == _T('\\'))
 		//it is netshare \\server\sharefoldername
 		// \\server\.git will create smb error log.
 		{
@@ -77,7 +77,7 @@ public:
 			int start = path.Find(_T('\\'),2);
 			if(start<0)
 				return false;
-			
+
 			start = path.Find(_T('\\'),start+1);
 			if(start<0)
 				return false;
@@ -89,12 +89,12 @@ public:
 			return PathFileExists(path);
 	}
 	void CheckAndInitDll()
-	{ 
-		if(!m_IsGitDllInited) 
+	{
+		if(!m_IsGitDllInited)
 		{
 			git_init();
 			m_IsGitDllInited=true;
-		} 
+		}
 	}
 
 	GIT_DIFF GetGitDiff()
@@ -126,26 +126,26 @@ public:
 	static int m_LogEncode;
 	unsigned int Hash2int(CGitHash &hash);
 //	static CString m_MsysGitPath;
-	
+
 	PROCESS_INFORMATION m_CurrentGitPi;
 
 	CGit(void);
 	~CGit(void);
-	
+
 	int Run(CString cmd, CString* output,int code);
 	int Run(CString cmd, BYTE_VECTOR *byte_array);
 	int Run(CGitCall* pcall);
 
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, const CString &filename);
-	
+
 	int GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg=NULL);
 
 	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(const CString &from, const CString &to);
 	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL,BOOL RemoveCR=TRUE);
-	
+
 	int SetConfigValue(CString key, CString value, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
 
 	CString GetUserName(void);
@@ -198,7 +198,7 @@ public:
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
-	
+
 	//hash is empty means all. -1 means all
 
 	int GetLog(CGitCall* pgitCall, const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
@@ -207,7 +207,7 @@ public:
 								CString *from=NULL,CString *to=NULL);
 
 	CString GetLogCmd(const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
-					  CString *from=NULL,CString *to=NULL, bool paramonly=false, 
+					  CString *from=NULL,CString *to=NULL, bool paramonly=false,
 					  CFilterData * filter =NULL);
 
 	BOOL EnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData);
@@ -265,8 +265,8 @@ extern CString GetTempFile();
 extern CGit g_Git;
 
 #if 0
-inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData) 
+inline static BOOL wgEnumFiles(const TCHAR *pszProjectPath, const TCHAR *pszSubPath, unsigned int nFlags, WGENUMFILECB *pEnumCb, void *pUserData)
 {
-	return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData); 
+	return g_Git.EnumFiles(pszProjectPath, pszSubPath, nFlags, pEnumCb, pUserData);
 }
 #endif

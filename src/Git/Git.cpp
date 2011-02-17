@@ -801,7 +801,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		try
 		{
 			git_get_sha1(ref, hash.m_hash);
-		
+
 		}catch(...)
 		{
 		}
@@ -1659,33 +1659,33 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		ret = git_root_diff(diff, hash1->m_hash, &file, &count,isStat);
 	else
 		ret = git_diff(diff,hash2->m_hash,hash1->m_hash,&file,&count,isStat);
-			
+
 	if(ret)
 		return -1;
 
 	CTGitPath path;
 	CString strnewname;
 	CString stroldname;
-			
+
 	for(int j=0;j<count;j++)
 	{
 		path.Reset();
 		char *newname;
 		char *oldname;
-				
+
 		strnewname.Empty();
 		stroldname.Empty();
 
 		int mode,IsBin,inc,dec;
 		git_get_diff_file(diff,file,j,&newname,&oldname,
 					&mode,&IsBin,&inc,&dec);
-				
+
 		StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
 		StringAppend(&stroldname,(BYTE*)oldname,CP_ACP);
 
 		path.SetFromGit(strnewname,&stroldname);
 		path.ParserAction((BYTE)mode);
-	
+
 		if(IsBin)
 		{
 			path.m_StatAdd=_T("-");
@@ -1698,7 +1698,7 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		PathList->AddPath(path);
 	}
 	git_diff_flush(diff);
-	
+
 	if(arg)
 		git_close_diff(diff);
 
