@@ -1,3 +1,9 @@
+= Release 1.6.5.0 =
+== Bug Fix ==
+ * Fixed issue #715: Unable to show log when there are old version cache file
+ * Fixed issue #611: Add "copy all information" to "Changed Files" dialog
+ * Fixed new file miss when combine commits at log dialog
+
 = Release 1.6.4.0 =
 == Features ==
  * Significantly Improve Log fetch speed for big repository

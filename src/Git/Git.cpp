@@ -9,7 +9,7 @@
 #include "gitdll.h"
 
 int CGit::m_LogEncode=CP_UTF8;
-
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
 static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
 {
@@ -1630,4 +1630,77 @@ int CGit::GetGitEncode(TCHAR* configkey)
 		return CP_UTF8;
 
 	return CUnicodeUtils::GetCPCode(str);
+}
+
+
+int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg)
+{
+	GIT_FILE file=0;
+	int ret;
+	GIT_DIFF diff=0;
+
+	CAutoLocker lock(g_Git.m_critGitDllSec);
+
+	if(arg == NULL)
+		diff = GetGitDiff();
+	else
+		git_open_diff(&diff, arg);
+
+	if(diff ==NULL)
+		return -1;
+
+	bool isStat = 0;
+	if(arg == NULL)
+		isStat = true;
+	else
+		isStat = !!strstr(arg, "stat");
+	int count;
+	if(hash2 == NULL)
+		ret = git_root_diff(diff, hash1->m_hash, &file, &count,isStat);
+	else
+		ret = git_diff(diff,hash2->m_hash,hash1->m_hash,&file,&count,isStat);
+			
+	if(ret)
+		return -1;
+
+	CTGitPath path;
+	CString strnewname;
+	CString stroldname;
+			
+	for(int j=0;j<count;j++)
+	{
+		path.Reset();
+		char *newname;
+		char *oldname;
+				
+		strnewname.Empty();
+		stroldname.Empty();
+
+		int mode,IsBin,inc,dec;
+		git_get_diff_file(diff,file,j,&newname,&oldname,
+					&mode,&IsBin,&inc,&dec);
+				
+		StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
+		StringAppend(&stroldname,(BYTE*)oldname,CP_ACP);
+
+		path.SetFromGit(strnewname,&stroldname);
+		path.ParserAction((BYTE)mode);
+	
+		if(IsBin)
+		{
+			path.m_StatAdd=_T("-");
+			path.m_StatDel=_T("-");
+		}else
+		{
+			path.m_StatAdd.Format(_T("%d"),inc);
+			path.m_StatDel.Format(_T("%d"),dec);
+		}
+		PathList->AddPath(path);
+	}
+	git_diff_flush(diff);
+	
+	if(arg)
+		git_close_diff(diff);
+
+	return 0;
 }

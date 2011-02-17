@@ -139,6 +139,8 @@ public:
 	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
 	int RunLogFile(CString cmd, const CString &filename);
 	
+	int GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg=NULL);
+
 	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(const CString &from, const CString &to);
