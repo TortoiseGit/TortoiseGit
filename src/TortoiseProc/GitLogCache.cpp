@@ -196,6 +196,8 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 	if(ret)
 	{
 		CloseIndexHandles();
+		::DeleteFile(GitDir+_T("\\.git\\")+INDEX_FILE_NAME);
+		::DeleteFile(GitDir+_T("\\.git\\")+DATA_FILE_NAME);
 	}
 	return ret;
 	
@@ -329,6 +331,8 @@ int CLogCache::RebuildCacheFile()
 
 	::SetFilePointer(m_IndexFile,0,0,0);
 	::SetFilePointer(m_DataFile,0,0,0);
+	SetEndOfFile(this->m_IndexFile);
+	SetEndOfFile(this->m_DataFile);
 
 	DWORD num;
 	WriteFile(this->m_IndexFile,&Indexheader,sizeof(SLogCacheIndexHeader),&num,0);
@@ -423,6 +427,8 @@ int CLogCache::SaveCache()
 			}
 		}
 
+		if(bIsRebuild)
+			header.m_ItemCount=0;
 
 		SetFilePointer(m_DataFile,0,0,2);
 		SetFilePointer(m_IndexFile,0,0,2);

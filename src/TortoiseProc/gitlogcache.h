@@ -5,11 +5,11 @@
 #include "GitRev.h"
 #include "GitHash.h"
 
-#define LOG_INDEX_MAGIC		0x88445566
-#define LOG_DATA_MAGIC		0x99aa0FFF
-#define LOG_DATA_ITEM_MAGIC 0x0F889ACC
-#define LOG_DATA_FILE_MAGIC 0x19999DFF
-#define LOG_INDEX_VERSION   0xD
+#define LOG_INDEX_MAGIC		0x88AA5566
+#define LOG_DATA_MAGIC		0x99BB0FFF
+#define LOG_DATA_ITEM_MAGIC 0x0FCC9ACC
+#define LOG_DATA_FILE_MAGIC 0x19EE9DFF
+#define LOG_INDEX_VERSION   0xF
 
 #pragma pack (1)
 struct SLogCacheIndexHeader 
