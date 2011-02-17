@@ -440,7 +440,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_ADDED)
 					{
-						cmd.Format(_T("git.exe add \"%s\""), PathList[i].GetGitPathString());
+						cmd.Format(_T("git.exe add -- \"%s\""), PathList[i].GetGitPathString());
 						if(g_Git.Run(cmd,&out,CP_ACP))
 						{
 							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
@@ -450,7 +450,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					}
 					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_DELETED)
 					{
-						cmd.Format(_T("git.exe rm --cached \"%s\""), PathList[i].GetGitPathString());
+						cmd.Format(_T("git.exe rm --cached -- \"%s\""), PathList[i].GetGitPathString());
 						if(g_Git.Run(cmd,&out,CP_ACP))
 						{
 							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
