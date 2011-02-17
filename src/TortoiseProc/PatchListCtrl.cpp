@@ -114,12 +114,12 @@ void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			}
 		case MENU_SENDMAIL:
 			{
-				LaunchProc(CString(_T("sendmail")));
+				LaunchProc(_T("sendmail"));
 				break;
 			}
 		case MENU_APPLY:
 			{
-				LaunchProc(CString(_T("importpatch")));
+				LaunchProc(_T("importpatch"));
 
 				break;
 			}
