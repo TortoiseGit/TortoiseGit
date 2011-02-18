@@ -3,6 +3,7 @@
  * Fixed issue #715: Unable to show log when there are old version cache file
  * Fixed issue #611: Add "copy all information" to "Changed Files" dialog
  * Fixed new file miss when combine commits at log dialog
+ * Fixed issue #720: Infinite loop at search in Show Log when there are notes
 
 = Release 1.6.4.0 =
 == Features ==
