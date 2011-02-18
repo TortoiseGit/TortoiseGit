@@ -163,10 +163,10 @@ int GitRev::SafeGetSimpleList(CGit *git)
 		git_get_commit_first_parent(&commit,&list);
 		while(git_get_commit_next_parent(&list,parent) == 0 || isRoot)
 		{
-			GIT_FILE file;
-			int count;
+			GIT_FILE file=0;
+			int count=0;
 			if(isRoot)
-				git_root_diff(git->GetGitSimpleListDiff(), this->m_CommitHash.m_hash, &file, &count,0);
+				git_root_diff(git->GetGitSimpleListDiff(), commit.m_hash, &file, &count,0);
 			else
 				git_diff(git->GetGitSimpleListDiff(),parent,commit.m_hash,&file,&count,0);
 			
@@ -226,8 +226,9 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 		git_get_commit_first_parent(&commit,&list);
 		while(git_get_commit_next_parent(&list,parent) == 0 || isRoot)
 		{
-			GIT_FILE file;
-			int count;
+			GIT_FILE file=0;
+			int count=0;
+
 			if(isRoot)
 				git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count,1);
 			else

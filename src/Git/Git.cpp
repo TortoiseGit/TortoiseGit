@@ -1636,7 +1636,7 @@ int CGit::GetGitEncode(TCHAR* configkey)
 int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg)
 {
 	GIT_FILE file=0;
-	int ret;
+	int ret=0;
 	GIT_DIFF diff=0;
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
@@ -1654,7 +1654,9 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		isStat = true;
 	else
 		isStat = !!strstr(arg, "stat");
-	int count;
+	
+	int count=0;
+
 	if(hash2 == NULL)
 		ret = git_root_diff(diff, hash1->m_hash, &file, &count,isStat);
 	else
@@ -1676,7 +1678,7 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		strnewname.Empty();
 		stroldname.Empty();
 
-		int mode,IsBin,inc,dec;
+		int mode=0,IsBin=0,inc=0,dec=0;
 		git_get_diff_file(diff,file,j,&newname,&oldname,
 					&mode,&IsBin,&inc,&dec);
 
