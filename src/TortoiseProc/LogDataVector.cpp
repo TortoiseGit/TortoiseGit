@@ -145,7 +145,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	return 0;
 }
 
-int AddTolist(unsigned char *osha1, unsigned char *nsha1, const char * name, unsigned long time, int sz, const char *msg, void *data)
+int AddTolist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long /*time*/, int /*sz*/, const char *msg, void *data)
 {
 	CLogDataVector *vector = (CLogDataVector*)data;
 	GitRev rev;

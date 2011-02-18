@@ -491,7 +491,11 @@ void CRebaseDlg::FetchLogList()
 	}
 
 	m_CommitList.Clear();
-	this->m_CommitList.FillGitLog(NULL,0,&m_UpstreamCtrl.GetString(),&m_BranchCtrl.GetString());
+	CString from,to;
+	from = m_UpstreamCtrl.GetString();
+	to = m_BranchCtrl.GetString();
+	this->m_CommitList.FillGitLog(NULL,0,&from,&to);
+
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(_T("Nothing to Rebase"));
 

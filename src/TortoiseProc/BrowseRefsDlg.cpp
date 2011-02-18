@@ -915,7 +915,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	EndDialog(IDOK);
 }
 
-CString CBrowseRefsDlg::PickRef(bool returnAsHash, CString initialRef, int pickRef_Kind)
+CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind)
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
 	

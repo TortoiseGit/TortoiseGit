@@ -320,21 +320,33 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		case ID_EXPORT:
-			CAppUtils::Export(&pSelLogEntry->m_CommitHash.ToString());
+			{
+				CString str=pSelLogEntry->m_CommitHash.ToString();
+				CAppUtils::Export(&str);
+			}
 			break;
 		case ID_CREATE_BRANCH:
-			CAppUtils::CreateBranchTag(FALSE,&pSelLogEntry->m_CommitHash.ToString());
-			ReloadHashMap();
-			Invalidate();
+			{
+				CString str = pSelLogEntry->m_CommitHash.ToString();
+				CAppUtils::CreateBranchTag(FALSE,&str);
+				ReloadHashMap();
+				Invalidate();
+			}
 			break;
 		case ID_CREATE_TAG:
-			CAppUtils::CreateBranchTag(TRUE,&pSelLogEntry->m_CommitHash.ToString());
-			ReloadHashMap();
-			Invalidate();
-			::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
+			{
+				CString str = pSelLogEntry->m_CommitHash.ToString();
+				CAppUtils::CreateBranchTag(TRUE,&str);
+				ReloadHashMap();
+				Invalidate();
+				::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
+			}
 			break;
 		case ID_SWITCHTOREV:
-			CAppUtils::Switch(&pSelLogEntry->m_CommitHash.ToString());
+			{
+				CString str = pSelLogEntry->m_CommitHash.ToString();
+				CAppUtils::Switch(&str);
+			}
 			ReloadHashMap();
 			Invalidate();
 			::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
@@ -362,9 +374,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		case ID_RESET:
-			CAppUtils::GitReset(&pSelLogEntry->m_CommitHash.ToString());
-			ReloadHashMap();
-			Invalidate();
+			{
+				CString str = pSelLogEntry->m_CommitHash.ToString();
+				CAppUtils::GitReset(&str);
+				ReloadHashMap();
+				Invalidate();
+			}
 			break;
 		case ID_REBASE_PICK:
 			SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
@@ -732,8 +747,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_MERGEREV:
 			{
+				CString str = pSelLogEntry->m_CommitHash.ToString();
 				// we need an URL to complete this command, so error out if we can't get an URL
-				if(CAppUtils::Merge(&pSelLogEntry->m_CommitHash.ToString()))
+				if(CAppUtils::Merge(&str))
 				{
 					this->Refresh();
 				}

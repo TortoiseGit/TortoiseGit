@@ -2091,13 +2091,14 @@ int CGitLogListBase::BeginFetchLog()
 
 	CString *pFrom, *pTo;
 	pFrom = pTo = NULL;
+	CString head(_T("HEAD"));
 	if(!this->m_startrev.IsEmpty())
 	{
 		pFrom = &this->m_startrev;
 		if(!this->m_endrev.IsEmpty())
 			pTo = &this->m_endrev;
 		else
-			pTo = &CString(_T("HEAD"));
+			pTo = &head;
 	}
 
 	CFilterData data;
