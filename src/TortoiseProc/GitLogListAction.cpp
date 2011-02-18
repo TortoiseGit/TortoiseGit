@@ -444,7 +444,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if(g_Git.Run(cmd,&out,CP_ACP))
 						{
 							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could add new file aborting...\r\n\r\n")+out));
+							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not add new file aborting...\r\n\r\n")+out));
 
 						}
 					}
@@ -454,7 +454,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if(g_Git.Run(cmd,&out,CP_ACP))
 						{
 							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could add new file aborting...\r\n\r\n")+out));
+							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not rm file aborting...\r\n\r\n")+out));
 						}
 					}
 				}
