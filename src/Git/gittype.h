@@ -19,7 +19,7 @@ public:
 
 	int find(BYTE data,int start=0)
 	{
-		for(int i=start;i<size();i++)
+		for(unsigned int i=start;i<size();i++)
 			if( at(i) == data )
 				return i;
 		return -1;
@@ -39,7 +39,7 @@ public:
 	}
 	int findNextString(int start=0)
 	{
-		int pos=start;
+		unsigned int pos=start;
 		do
 		{
 			pos=find(0,pos);

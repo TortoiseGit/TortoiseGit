@@ -814,7 +814,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		cmd.Format(_T("git.exe rev-parse %s" ),friendname);
 		Run(cmd,&out,CP_UTF8);
 	//	int pos=out.ReverseFind(_T('\n'));
-		int pos=out.FindOneOf(_T("\r\n"));
+		out.FindOneOf(_T("\r\n"));
 		return CGitHash(out);
 	}
 }
@@ -860,7 +860,7 @@ int CGit::GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathLis
 	return 0;
 }
 
-int addto_list_each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data)
+int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, int /*flags*/, void *cb_data)
 {
 	STRING_VECTOR *list = (STRING_VECTOR*)cb_data;
 	CString str;
@@ -985,7 +985,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	return ret;
 }
 
-int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int flags, void *cb_data)
+int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int /*flags*/, void *cb_data)
 {
 	MAP_HASH_NAME *map = (MAP_HASH_NAME*)cb_data;
 	CString str;
@@ -1417,7 +1417,7 @@ int CGit::Revert(CTGitPathList &list,bool keep)
 	}
 	return 0;
 }
-int CGit::Revert(CTGitPath &path,bool keep)
+int CGit::Revert(CTGitPath &path,bool /*keep*/)
 {
 	CString cmd, out;
 
@@ -1479,7 +1479,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to)
 		//CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return false;
 	}
-	basehash = base.Left(40);
+	basehash = base;
 
 	hash=g_Git.GetHash(from);
 
@@ -1572,7 +1572,7 @@ CString CEnvironment::GetEnv(TCHAR *name)
 
 void CEnvironment::SetEnv(TCHAR *name, TCHAR* value)
 {
-	int i;
+	unsigned int i;
 	for( i=0;i<size();i++)
 	{
 		CString str = &(*this)[i];

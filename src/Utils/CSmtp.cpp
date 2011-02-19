@@ -589,7 +589,7 @@ int CSmtp::SmtpXYZdigits()
 
 bool CSmtp::FormatHeader(char* header)
 {
-	int i,s = 0;
+	unsigned int i,s = 0;
 	char szDate[500];
 	char sztTime[500];
 	char *to = NULL;
@@ -599,7 +599,7 @@ bool CSmtp::FormatHeader(char* header)
 	// check for at least one recipient
 	if(Recipients.size())
 	{
-		for (unsigned int i=s=0;i<Recipients.size();i++)
+		for (i=s=0;i<Recipients.size();i++)
 			s += Recipients[i].Mail.size() + Recipients[i].Name.size() + 3;
 		if (s == 0)
 			s = 1;

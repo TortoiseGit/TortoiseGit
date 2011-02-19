@@ -341,7 +341,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 void GitRev::DbgPrint()
 {
 	TRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
-	for(int i=0;i<this->m_ParentHash.size();i++)
+	for(unsigned int i=0;i<this->m_ParentHash.size();i++)
 	{
 		TRACE(_T("Parent %i %s"),i, m_ParentHash[i].ToString());
 	}
@@ -401,7 +401,8 @@ int GitRev::GetCommit(CString refname)
 	if(git_get_sha1(rev.GetBuffer(),sha))
 		return -1;
 
-	GetCommitFromHash(CGitHash((char*)sha));
+	CGitHash hash((char*)sha);
+	GetCommitFromHash(hash);
 	return 0;
 }
 

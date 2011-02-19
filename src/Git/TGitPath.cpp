@@ -955,9 +955,9 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
 	AddPath(firstEntry);
 }
-int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool staged)
+int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 {
-	int pos=0;
+	unsigned int pos=0;
 	CString one;
 	CTGitPath path;
 	CString part;

@@ -45,7 +45,7 @@ CGitIndexFileMap g_IndexFileMap;
 CGitHeadFileMap g_HeadFileMap;
 CGitIgnoreList  g_IgnoreList;
 
-GitStatus::GitStatus(bool * pbCanceled)
+GitStatus::GitStatus(bool * /*pbCanceled*/)
 	: status(NULL)
 {
 #if 0
@@ -305,7 +305,7 @@ int GitStatus::GetStatusRanking(git_wc_status_kind status)
 	return 0;
 }
 
-git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false */, bool noignore /* = false */, bool noexternals /* = false */)
+git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false */, bool noignore /* = false */, bool /*noexternals*/ /* = false */)
 {
 	// NOTE: unlike the SVN version this one does not cache the enumerated files, because in practice no code in all of
 	//       Tortoise uses this, all places that call GetStatus create a temp GitStatus object which gets destroyed right
@@ -394,7 +394,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 	return youngest;
 }
 
-git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& path, CTGitPath& retPath, bool update, git_depth_t depth, bool bNoIgnore /* = true */, bool bNoExternals /* = false */)
+git_wc_status2_t * GitStatus::GetFirstFileStatus(const CTGitPath& /*path*/, CTGitPath& /*retPath*/, bool /*update*/, git_depth_t /*depth*/, bool /*bNoIgnore*/ /* = true */, bool /*bNoExternals*/ /* = false */)
 {
 	static git_wc_status2 st;
 /*
@@ -491,7 +491,7 @@ unsigned int GitStatus::GetVersionedCount() const
 	return count;
 }
 
-git_wc_status2_t * GitStatus::GetNextFileStatus(CTGitPath& retPath)
+git_wc_status2_t * GitStatus::GetNextFileStatus(CTGitPath& /*retPath*/)
 {
 	static git_wc_status2 st;
 
@@ -525,7 +525,7 @@ git_wc_status2_t * GitStatus::GetNextFileStatus(CTGitPath& retPath)
 	return 0;
 }
 
-bool GitStatus::IsExternal(const CTGitPath& path) const
+bool GitStatus::IsExternal(const CTGitPath& /*path*/) const
 {
 #if 0
 	if (apr_hash_get(m_externalhash, path.GetGitApiPath(m_pool), APR_HASH_KEY_STRING))
@@ -534,7 +534,7 @@ bool GitStatus::IsExternal(const CTGitPath& path) const
 	return false;
 }
 
-bool GitStatus::IsInExternal(const CTGitPath& path) const
+bool GitStatus::IsInExternal(const CTGitPath& /*path*/) const
 {
 #if 0
 	if (apr_hash_count(m_statushash) == 0)
@@ -692,7 +692,7 @@ CString GitStatus::GetDepthString(git_depth_t depth)
 }
 #endif
 
-void GitStatus::GetDepthString(HINSTANCE hInst, git_depth_t depth, TCHAR * string, int size, WORD lang)
+void GitStatus::GetDepthString(HINSTANCE /*hInst*/, git_depth_t /*depth*/, TCHAR * /*string*/, int /*size*/, WORD /*lang*/)
 {
 #if 0
 	switch (depth)
@@ -853,7 +853,7 @@ int GitStatus::sort_compare_items_as_paths (const sort_item *a, const sort_item 
 }
 #endif
 
-git_error_t* GitStatus::cancel(void *baton)
+git_error_t* GitStatus::cancel(void * /*baton*/)
 {
 #if 0
 	volatile bool * canceled = (bool *)baton;
@@ -891,7 +891,7 @@ void GitStatus::ClearFilter()
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_wc_status_kind * status,BOOL IsFull, BOOL IsRecursive,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData)
 {
 	try
 	{

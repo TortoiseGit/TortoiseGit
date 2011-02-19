@@ -141,7 +141,7 @@ BOOL CGitProgressDlg::Cancel()
 	return m_bCancelled;
 }
 
-LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM lParam)
+LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 #if 0
 	CConflictResolveDlg dlg(this);
@@ -219,7 +219,7 @@ void CGitProgressDlg::AddItemToList()
 
 
 BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t action,
-							 int status ,
+							 int /*status*/ ,
 							 CString *strErr 
 							 /*
 							 svn_node_kind_t kind, const CString& mime_type, 
@@ -1182,7 +1182,7 @@ void CGitProgressDlg::OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 }
 
-void CGitProgressDlg::OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
+void CGitProgressDlg::OnNMDblclkSvnprogress(NMHDR * /*pNMHDR*/, LRESULT * /*pResult*/)
 {
 #if 0
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -1253,7 +1253,7 @@ bool CGitProgressDlg::NotificationDataIsAux(const NotificationData* pData)
 	return pData->bAuxItem;
 }
 
-LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM lParam)
+LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 #if 0
 	SVNProgress * pProgressData = (SVNProgress *)lParam;
@@ -1443,7 +1443,7 @@ BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
+void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 {
 #if 0
 	if (m_options & ProgOptDryRun)
@@ -1858,7 +1858,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CGitProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdCheckout(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -1908,7 +1908,7 @@ bool CGitProgressDlg::CmdCheckout(CString& sWindowTitle, bool& /*localoperation*
 	return true;
 }
 
-bool CGitProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdCommit(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COMMIT);
@@ -2040,7 +2040,7 @@ bool CGitProgressDlg::CmdCommit(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdCopy(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2086,7 +2086,7 @@ bool CGitProgressDlg::CmdCopy(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdExport(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2111,7 +2111,7 @@ bool CGitProgressDlg::CmdExport(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdImport(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2133,7 +2133,7 @@ bool CGitProgressDlg::CmdImport(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdLock(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_LOCK);
@@ -2181,7 +2181,7 @@ bool CGitProgressDlg::CmdLock(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdMerge(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	bool bFailed = false;
@@ -2265,7 +2265,7 @@ bool CGitProgressDlg::CmdMerge(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdMergeAll(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2321,7 +2321,7 @@ bool CGitProgressDlg::CmdMergeAll(CString& sWindowTitle, bool& /*localoperation*
 	return true;
 }
 
-bool CGitProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdMergeReintegrate(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2355,7 +2355,7 @@ bool CGitProgressDlg::CmdMergeReintegrate(CString& sWindowTitle, bool& /*localop
 	return true;
 }
 
-bool CGitProgressDlg::CmdRename(CString& sWindowTitle, bool& localoperation)
+bool CGitProgressDlg::CmdRename(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2497,7 +2497,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	return true;
 }
 
-bool CGitProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdSwitch(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
@@ -2538,7 +2538,7 @@ bool CGitProgressDlg::CmdSwitch(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdUnlock(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UNLOCK);
@@ -2555,7 +2555,7 @@ bool CGitProgressDlg::CmdUnlock(CString& sWindowTitle, bool& /*localoperation*/)
 	return true;
 }
 
-bool CGitProgressDlg::CmdUpdate(CString& sWindowTitle, bool& /*localoperation*/)
+bool CGitProgressDlg::CmdUpdate(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UPDATE);
@@ -2744,7 +2744,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		int retry=0;
 		while(retry <3)
 		{
-			if(!!CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,!!this->m_SendMailFlags&SENDMAIL_ATTACHMENT,!!this->m_SendMailFlags&SENDMAIL_MAPI,&err))
+			if(!!CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,!!this->m_SendMailFlags&SENDMAIL_ATTACHMENT,!!(this->m_SendMailFlags&SENDMAIL_MAPI),&err))
 			{
 				Notify(path,git_wc_notify_sendmail_error,ret,&err);
 				ret = false;
@@ -2760,7 +2760,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			Sleep(2000);
 			if(m_bCancelled)
 			{
-				Notify(path,git_wc_notify_sendmail_error,ret,&CString("User Canceled"));
+				CString str(_T("User Canceled"));
+				Notify(path,git_wc_notify_sendmail_error,ret,&str);
 				return false;
 			}
 		}
@@ -2778,7 +2779,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			while(retry<3)
 			{
 				if(!!patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
-								this->m_SendMailCC,!!this->m_SendMailFlags&SENDMAIL_ATTACHMENT,!!this->m_SendMailFlags&SENDMAIL_MAPI))
+								this->m_SendMailCC,!!(this->m_SendMailFlags&SENDMAIL_ATTACHMENT),!!(this->m_SendMailFlags&SENDMAIL_MAPI)))
 				{
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
 					ret = false;
@@ -2793,7 +2794,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				Sleep(2000);
 				if(m_bCancelled)
 				{
-					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&CString("User Canceled"));
+					CString str(_T("User Canceled"));
+					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&str);
 					return false;
 				}
 			}
