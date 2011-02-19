@@ -176,7 +176,7 @@ void CSwitchDlg::OnEnChangeRevisionNum()
 		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
 }
 
-void CSwitchDlg::SetRevision(const GitRev& rev)
+void CSwitchDlg::SetRevision(const GitRev& /*rev*/)
 {
 //	if (rev.IsHead())
 //		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_HEAD);

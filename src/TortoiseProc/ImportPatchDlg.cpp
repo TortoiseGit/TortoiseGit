@@ -548,7 +548,7 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
-void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR *pNMHDR, LRESULT *pResult)
+void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	*pResult = 0;
 

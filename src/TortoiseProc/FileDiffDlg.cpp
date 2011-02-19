@@ -1422,7 +1422,7 @@ BOOL CFileDiffDlg::DestroyWindow()
 	return CResizableStandAloneDialog::DestroyWindow();
 }
 
-LRESULT CFileDiffDlg::OnEnUpdate(WPARAM wParam, LPARAM lParam)
+LRESULT CFileDiffDlg::OnEnUpdate(WPARAM /*wParam*/, LPARAM lParam)
 {
 	if(lParam == IDC_REV1EDIT)
 	{
@@ -1437,7 +1437,7 @@ LRESULT CFileDiffDlg::OnEnUpdate(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void CFileDiffDlg::OnTextUpdate(CACEdit *pEdit)
+void CFileDiffDlg::OnTextUpdate(CACEdit * /*pEdit*/)
 {
 	SetTimer(IDT_INPUT, 1000, NULL);
 	this->m_cFileList.ShowText(_T("Wait For input validate version"));

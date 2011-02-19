@@ -305,10 +305,11 @@ void CSyncDlg::PullComplete()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
-			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,m_oldHash.ToString());
+			CString oldhash=m_oldHash.ToString();
+			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,oldhash);
 
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&this->m_oldHash.ToString(),&newhash);
+				&oldhash,&newhash);
 		}
 		this->ShowTab(IDC_IN_LOGLIST);
 	}
@@ -999,7 +1000,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	}
 
 	if(lParam != 0)
-		ParserCmdOutput((TCHAR)lParam);
+		ParserCmdOutput((char)lParam);
 
 	return 0;
 }

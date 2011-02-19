@@ -118,7 +118,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		{
 			CStdioFile file(tempfile, CFile::modeRead | CFile::shareDenyWrite);
 			CString ver;
-			int major,minor,micro,build;
+			__int64 major,minor,micro,build;
 			major=minor=micro=build=0;
 			unsigned __int64 version=0;
 

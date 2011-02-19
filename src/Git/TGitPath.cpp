@@ -432,7 +432,7 @@ void CTGitPath::UpdateAttributes() const
 	m_bExistsKnown = true;
 }
 
-CTGitPath CTGitPath::GetSubPath(CTGitPath &root)
+CTGitPath CTGitPath::GetSubPath(const CTGitPath &root)
 {
 	CTGitPath path;
 	

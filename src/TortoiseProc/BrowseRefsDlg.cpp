@@ -576,7 +576,8 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 	if(hTreeItem!=NULL)
 		m_RefTreeCtrl.Select(hTreeItem,TVGN_CARET);
 
-	ShowContextMenu(point,hTreeItem,VectorPShadowTree());
+	VectorPShadowTree tree;
+	ShowContextMenu(point,hTreeItem,tree);
 }
 
 

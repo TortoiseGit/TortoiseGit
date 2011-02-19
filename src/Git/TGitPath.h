@@ -104,7 +104,7 @@ public:
 	 */
 	bool IsDirectory() const;
 
-	CTGitPath GetSubPath(CTGitPath &root);
+	CTGitPath GetSubPath(const CTGitPath &root);
 
 	/**
 	 * Returns the directory. If the path points to a directory, then the path
