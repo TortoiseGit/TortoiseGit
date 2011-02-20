@@ -204,11 +204,8 @@ class CGitIndexList:public std::vector<CGitIndex>
 protected:
 	
 public:
-	std::map<CString,int> m_Map;
 	__time64_t  m_LastModifyTime;
 	
-	SharedMutex  m_SharedMutex;
-
 	CGitIndexList();
 	int ReadIndex(CString file);
 	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
@@ -216,6 +213,58 @@ protected:
 	int GetFileStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
+
+typedef std::tr1::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+
+class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
+{
+public:
+	CComCriticalSection			m_critGitDllSec;
+	
+	CGitIndexFileMap() { m_critGitDllSec.Init(); }
+	~CGitIndexFileMap() { m_critGitDllSec.Term(); }
+
+	SHARED_INDEX_PTR SafeGet(const CString &path)
+	{
+		CAutoLocker lock(m_critGitDllSec);
+		if(this->find(path) == end())
+			return SHARED_INDEX_PTR();
+		else
+			return (*this)[path];
+	}
+
+	void SafeSet(const CString &path, SHARED_INDEX_PTR ptr)
+	{
+		CAutoLocker lock(m_critGitDllSec);
+		(*this)[path] = ptr;
+	}
+
+	int Check(const CString &gitdir, bool *isChanged);
+	int LoadIndex(const CString &gitdir);
+
+	void CheckAndUpdate(const CString &gitdir,bool isLoadUpdatedIndex)
+	{
+		bool isChanged=false;
+		if(isLoadUpdatedIndex && Check(gitdir,&isChanged))
+			return ;
+
+		if(isChanged && isLoadUpdatedIndex)
+			LoadIndex(gitdir);
+	}
+	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
+							BOOL IsFull=false, BOOL IsRecursive=false,
+							FIll_STATUS_CALLBACK callback=NULL,
+							void *pData=NULL,CGitHash *pHash=NULL,
+							bool isLoadUpdatedIndex=true);
+	
+	int IsUnderVersionControl(const CString &gitdir, 
+							  const CString &path, 
+							  bool isDir,
+							  bool *isVersion,
+							  bool isLoadUpdateIndex=true);
+};
+
 
 class CGitTreeItem
 {
@@ -288,20 +337,6 @@ public:
 };
 
 
-class CGitIndexFileMap:public std::map<CString,CGitIndexList> 
-{
-public:
-	SharedMutex  m_SharedMutex;
-
-	CGitIndexFileMap(){ m_SharedMutex.Init(); }
-	~CGitIndexFileMap() { m_SharedMutex.Release(); }
-
-	int CheckAndUpdateIndex(const CString &gitdir,bool *loaded=NULL);
-
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
-	
-	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);
-};
 
 class CGitIgnoreItem
 {

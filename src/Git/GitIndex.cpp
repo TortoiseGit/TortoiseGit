@@ -11,7 +11,7 @@
 #include <sys/types.h> 
 #include <sys/stat.h>
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+
 
 #define FILL_DATA() \
 	m_FileName.Empty();\
@@ -52,6 +52,7 @@ CGitIndexList::CGitIndexList()
 int CGitIndexList::ReadIndex(CString IndexFile)
 {
 	HANDLE hfile=INVALID_HANDLE_VALUE;
+	HANDLE hmap = INVALID_HANDLE_VALUE;
 	int ret=0;
 	BYTE *buffer=NULL,*p;
 	CGitIndex GitIndex;
@@ -60,12 +61,8 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	{
 		do
 		{
-			{
-				CAutoWriteLock lock(&this->m_SharedMutex);
-				this->clear();
-				this->m_Map.clear();
-			}
-
+			this->clear();
+			
 			hfile = CreateFile(IndexFile,
 									GENERIC_READ,
 									FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
@@ -81,39 +78,23 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 				break;
 			}
 
-			cache_header *header;
-			DWORD size=0,filesize=0;
-			
-			filesize=GetFileSize(hfile,NULL);
-
-			if(filesize == INVALID_FILE_SIZE )
+			hmap = CreateFileMapping(hfile, NULL, PAGE_READONLY,0,0,NULL);
+			if(hmap == INVALID_HANDLE_VALUE)
 			{
-				ret =-1;
+				ret = -1;
 				break;
 			}
 
-			buffer = new BYTE[filesize];
-			p=buffer;
+			buffer = (BYTE*)MapViewOfFile(hmap,FILE_MAP_READ,0,0,0);
 			if(buffer == NULL)
 			{
 				ret = -1;
 				break;
 			}
-			if(! ReadFile( hfile, buffer,filesize,&size,NULL) )
-			{
-				ret = GetLastError();
-				break;
-			}
-			
-			CloseHandle(hfile);
-			hfile = INVALID_HANDLE_VALUE; /* close early to above lock time long*/
 
-			if (size != filesize)
-			{
-				ret = -1;
-				break;
-			}
+			cache_header *header;
 			header = (cache_header *) buffer;
+
 			if( Big2lit(header->hdr_signature) != CACHE_SIGNATURE )
 			{
 				ret = -1;
@@ -122,68 +103,61 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 			p+= sizeof(cache_header);
 
 			int entries = Big2lit(header->hdr_entries);
+			resize(entries);
 
+			for(int i=0;i<entries;i++)
 			{
-				CAutoWriteLock lock(&this->m_SharedMutex);
-
-				for(int i=0;i<entries;i++)
+				ondisk_cache_entry *entry;
+				ondisk_cache_entry_extended *entryex;
+				entry=(ondisk_cache_entry*)p;
+				entryex=(ondisk_cache_entry_extended*)p;
+				int flags=Big2lit(entry->flags);
+				if( flags & CE_EXTENDED)
 				{
-					ondisk_cache_entry *entry;
-					ondisk_cache_entry_extended *entryex;
-					entry=(ondisk_cache_entry*)p;
-					entryex=(ondisk_cache_entry_extended*)p;
-					int flags=Big2lit(entry->flags);
-					if( flags & CE_EXTENDED)
-					{
-						GitIndex.FillData(entryex);
-						p+=ondisk_ce_size(entryex);
-
-					}else
-					{
-						GitIndex.FillData(entry);
-						p+=ondisk_ce_size(entry);
-					}
-
-					if(p>buffer+filesize)
-					{
-						ret = -1;
-						break;
-					}
-
-					this->push_back(GitIndex);
-					this->m_Map[GitIndex.m_FileName]=this->size()-1;
+					GitIndex.FillData(entryex);
+					p+=ondisk_ce_size(entryex);
+				}else
+				{
+					GitIndex.FillData(entry);
+					p+=ondisk_ce_size(entry);
 				}
+
+				this->push_back(GitIndex);
 			}
 		}while(0);
 	}catch(...)
 	{
 		ret= -1;
 	}
+	
+	if(buffer)
+		UnmapViewOfFile(buffer);
+
+	if(hmap != INVALID_HANDLE_VALUE)
+		CloseHandle(hfile);
 
 	if(hfile != INVALID_HANDLE_VALUE)
 		CloseHandle(hfile);
-	if(buffer)
-		delete buffer;
+
 	return ret;
 }
 
 int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
 {
-
 	if(status)
 	{
-		CAutoReadLock lock(&this->m_SharedMutex);
-
-		if(m_Map.find(path) == m_Map.end() )
+		int start=SearchInSortVector(*this, ((CString&)path).GetBuffer(), path.GetLength());
+		((CString&)path).ReleaseBuffer();
+		
+		if( start<0 )
 		{
 			*status = git_wc_status_unversioned;
-
 			if(pHash)
 				pHash->Empty();
 
 		}else
 		{
- 			int index = m_Map[path];
+ 			int index = start;
 			if(index <0)
 				return -1;
 			if(index >= size() )
@@ -248,48 +222,43 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 			}
 			int len =path.GetLength();
 
+			for(int i=0;i<size();i++)
 			{
-				CAutoReadLock lock(&this->m_SharedMutex);
-
-				for(int i=0;i<size();i++)
+				if( at(i).m_FileName.GetLength() > len )
 				{
-					if( at(i).m_FileName.GetLength() > len )
+					if(at(i).m_FileName.Left(len) == path)
 					{
-						if(at(i).m_FileName.Left(len) == path)
+						if( !IsFull )
 						{
-							if( !IsFull )
+							*status = git_wc_status_normal; 
+							if(callback)
+								callback(gitdir+_T("\\")+path,*status,false, pData);
+							return 0;
+
+						}else
+						{	
+							result = g_Git.GetFileModifyTime( gitdir+_T("\\")+at(i).m_FileName , &time);
+							if(result)
+								continue;
+
+							*status = git_wc_status_none;
+							GetFileStatus(gitdir,at(i).m_FileName,status,time,callback,pData);
+							if( *status != git_wc_status_none )
 							{
-								*status = git_wc_status_normal; 
-								if(callback)
-									callback(gitdir+_T("\\")+path,*status,false, pData);
-								return 0;
-
-							}else
-							{	
-								result = g_Git.GetFileModifyTime( gitdir+_T("\\")+at(i).m_FileName , &time);
-								if(result)
-									continue;
-
-								*status = git_wc_status_none;
-								GetFileStatus(gitdir,at(i).m_FileName,status,time,callback,pData);
-								if( *status != git_wc_status_none )
+								if( dirstatus == git_wc_status_none)
 								{
-									if( dirstatus == git_wc_status_none)
-									{
-										dirstatus = git_wc_status_normal;
-									}
-									if( *status != git_wc_status_normal )
-									{
-										dirstatus = git_wc_status_modified;
-									}
+									dirstatus = git_wc_status_normal;
 								}
-
+								if( *status != git_wc_status_normal )
+								{
+									dirstatus = git_wc_status_modified;
+								}
 							}
+
 						}
 					}
-				} /* End For */
-
-			} /* End Auto Lock */
+				}
+			} /* End For */
 
 			if( dirstatus != git_wc_status_none )
 			{
@@ -312,57 +281,51 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 	return 0;
 }
 
-int CGitIndexFileMap::CheckAndUpdateIndex(const CString &gitdir,bool *loaded)
+int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 {
 	__int64 time;
 	int result;
 
+	CString IndexFile;
+	IndexFile=gitdir+_T("\\.git\\index");
+	/* Get data associated with "crt_stat.c": */
+	result = g_Git.GetFileModifyTime( IndexFile, &time );
+
+	if(result)
+		return result;
+
+	SHARED_INDEX_PTR pIndex;
+	pIndex = this->SafeGet(gitdir);
+
+	if(pIndex.get() == NULL)
+	{
+		if(isChanged)
+			*isChanged = true;
+	}
+
+	if(pIndex->m_LastModifyTime == time)
+	{
+		if(isChanged)
+			*isChanged = false;
+	}
+	else
+	{
+		if(isChanged)
+			*isChanged = true;	
+	}
+	return 0;
+}
+
+int CGitIndexFileMap::LoadIndex(const CString &gitdir)
+{
 	try
 	{
-		CString IndexFile;
-		IndexFile=gitdir+_T("\\.git\\index");
-		/* Get data associated with "crt_stat.c": */
-		result = g_Git.GetFileModifyTime( IndexFile, &time );
-
-//		WIN32_FILE_ATTRIBUTE_DATA FileInfo;
-//		GetFileAttributesEx(_T("D:\\tortoisegit\\src\\gpl.txt"),GetFileExInfoStandard,&FileInfo);
-//		result = _tstat64( _T("D:\\tortoisegit\\src\\gpl.txt"), &buf );
+		SHARED_INDEX_PTR pIndex(new CGitIndexList);
 		
-		if(loaded)
-			*loaded = false;
+		if(pIndex->ReadIndex(gitdir+_T("\\.git\\index")))
+			return -1;
 
-		if(result)
-		   return result;
-
-		{
-			this->m_SharedMutex.AcquireShared();
-			if( this->find(gitdir) == this->end() )
-			{
-
-				m_SharedMutex.ReleaseShared();
-
-				m_SharedMutex.AcquireExclusive();
-				(*this)[gitdir].m_LastModifyTime = 0; /* insert new item*/
-				(*this)[gitdir].m_SharedMutex.Init();
-				m_SharedMutex.ReleaseExclusive();
-				m_SharedMutex.AcquireShared();
-			}
-
-			if((*this)[gitdir].m_LastModifyTime != time )
-			{
-				if((*this)[gitdir].ReadIndex(IndexFile))
-				{
-					m_SharedMutex.ReleaseShared();
-					return -1;
-				}
-				if(loaded)
-					*loaded =true;
-			}
-
-			(*this)[gitdir].m_LastModifyTime = time;
-
-			m_SharedMutex.ReleaseShared();
-		}
+		this->SafeSet(gitdir,pIndex);
 				
 	}catch(...)
 	{
@@ -373,15 +336,17 @@ int CGitIndexFileMap::CheckAndUpdateIndex(const CString &gitdir,bool *loaded)
 
 int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
 									FIll_STATUS_CALLBACK callback,void *pData,
-									CGitHash *pHash)
+									CGitHash *pHash,
+									bool isLoadUpdatedIndex)
 {
 	try
 	{
-		CheckAndUpdateIndex(gitdir);
+		CheckAndUpdate(gitdir, isLoadUpdatedIndex);
 
+		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
+		if(pIndex.get() != NULL)
 		{
-			CAutoReadLock lock(&this->m_SharedMutex);
-			(*this)[gitdir].GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
+			pIndex->GetStatus(gitdir,path,status,IsFull,IsRecursive,callback,pData,pHash);
 		}
 				
 	}catch(...)
@@ -391,7 +356,7 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 	return 0;
 }
 
-int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
+int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion, bool isLoadUpdateIndex)
 {
 	try
 	{	
@@ -400,25 +365,19 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 			*isVersion =true;
 			return 0;
 		}
+
 		CString subpath=path;
 		subpath.Replace(_T('\\'), _T('/'));
 		if(isDir)
 			subpath+=_T('/');
 		
-		CheckAndUpdateIndex(gitdir);
-		if(isDir)
-		{
-			CAutoReadLock lock(&this->m_SharedMutex);
-			CAutoReadLock lock1(&(*this)[gitdir].m_SharedMutex);
+		CheckAndUpdate(gitdir, isLoadUpdateIndex);
+		
+		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 
-			*isVersion = (SearchInSortVector((*this)[gitdir], subpath.GetBuffer(), subpath.GetLength()) >= 0);
-		}
-		else
+		if(pIndex.get())
 		{
-			CAutoReadLock lock(&this->m_SharedMutex);
-			CAutoReadLock lock1(&(*this)[gitdir].m_SharedMutex);
-
-			*isVersion = ((*this)[gitdir].m_Map.find(subpath) != (*this)[gitdir].m_Map.end());
+			*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), subpath.GetLength()) >= 0);
 		}
 
 	}catch(...)
