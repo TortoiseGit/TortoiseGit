@@ -829,7 +829,18 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			break;
-*/		case VK_F5:
+*/		case VK_F2:
+			{
+				if(pMsg->hwnd == m_ListRefLeafs.m_hWnd)
+				{
+					POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
+					if(pos != NULL)
+						m_ListRefLeafs.EditLabel(m_ListRefLeafs.GetNextSelectedItem(pos));
+				}
+			}
+			break;
+
+		case VK_F5:
 			{
 				Refresh();
 			}
