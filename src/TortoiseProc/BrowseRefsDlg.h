@@ -70,7 +70,8 @@ public:
 		eCmd_ShowReflog,
 		eCmd_Diff,
 		eCmd_Fetch,
-		eCmd_Switch
+		eCmd_Switch,
+		eCmd_Rename
 	};
 
 	enum eCol
@@ -135,6 +136,7 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 
 
 public:

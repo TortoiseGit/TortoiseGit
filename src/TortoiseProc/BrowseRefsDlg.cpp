@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_WM_DESTROY()
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMDblclkListRefLeafs)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs)
+	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs)
 END_MESSAGE_MAP()
 
 
@@ -615,6 +616,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bool bShowReflogOption				= false;
 		bool bShowFetchOption				= false;
 		bool bShowSwitchOption				= false;
+		bool bShowRenameOption				= false;
 
 		CString fetchFromCmd;
 
@@ -622,11 +624,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			bShowReflogOption = true;
 			bShowSwitchOption = true;
+			bShowRenameOption = true;
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
 		{
 			bShowReflogOption = true;
-			bShowFetchOption = true;
+			bShowFetchOption  = true;
 
 			int dummy = 0;//Needed for tokenize
 			remoteName = selectedLeafs[0]->GetRefName();
@@ -642,6 +645,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
 		if(bShowFetchOption)				popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
 		if(bShowSwitchOption)				popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
+		if(bShowRenameOption)				popupMenu.AppendMenuIcon(eCmd_Rename, L"Rename", IDI_RENAME);
 	}
 
 	else if(selectedLeafs.size() == 2)
@@ -762,6 +766,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_Switch:
 		{
 			CAppUtils::Switch(NULL, selectedLeafs[0]->GetRefName());
+		}
+		break;
+	case eCmd_Rename:
+		{
+			POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
+			if(pos != NULL)
+				m_ListRefLeafs.EditLabel(m_ListRefLeafs.GetNextSelectedItem(pos));
 		}
 		break;
 	case eCmd_AddRemote:
@@ -1029,4 +1040,18 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	
 //	AfxMessageBox(W_csPopup);
 	
+}
+
+void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+	*pResult = FALSE;
+
+	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
+
+	if(!pTree->IsFrom(L"refs/heads"))
+	{
+		*pResult = TRUE; //Dont allow renaming any other things then branches at the moment.
+		return;
+	}
 }
