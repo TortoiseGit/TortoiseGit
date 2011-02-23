@@ -46,7 +46,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_currSortCol(-1),
 	m_currSortDesc(false),
 	m_initialRef(L"HEAD"),
-	m_pickRef_Kind(gPickRef_All)
+	m_pickRef_Kind(gPickRef_All),
+	m_pListCtrlRoot(NULL)
 {
 
 }
@@ -70,6 +71,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnColumnclickListRefLeafs)
 	ON_WM_DESTROY()
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMDblclkListRefLeafs)
+	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs)
 END_MESSAGE_MAP()
 
 
@@ -388,6 +390,8 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		CString csThisName;
 		if(!isFirstLevel)
 			csThisName=refNamePrefix+pTree->m_csRefName+L"/";
+		else
+			m_pListCtrlRoot = pTree;
 		for(CShadowTree::TShadowTreeMap::iterator itSubTree=pTree->m_ShadowTree.begin(); itSubTree!=pTree->m_ShadowTree.end(); ++itSubTree)
 		{
 			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
@@ -964,4 +968,54 @@ bool CBrowseRefsDlg::PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind)
 		ASSERT(FALSE);//No match found. So either pickRef_Kind is wrong or the combobox does not contain the ref specified in the picker (which it should unless the repo has changed before creating the CBrowseRef dialog)
 
 	return true;
+}
+
+void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+	*pResult = FALSE;
+
+	if(pDispInfo->item.pszText == NULL)
+		return; //User canceled changing
+	
+	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
+
+	if(!pTree->IsFrom(L"refs/heads"))
+	{
+		CMessageBox::Show(m_hWnd, L"At the moment, you can only rename branches.", L"Cannot Rename This Ref",MB_OK|MB_ICONERROR);
+		return;
+	}
+
+	CString origName = pTree->GetRefName().Mid(11);
+
+	CString newName;
+	if(m_pListCtrlRoot != NULL)
+		newName = m_pListCtrlRoot->GetRefName() + L'/';
+	newName += pDispInfo->item.pszText;
+
+	if(wcsncmp(newName,L"refs/heads/",11)!=0)
+	{
+		CMessageBox::Show(m_hWnd, L"You cannot change the type of this ref with a rename.", L"Cannot Change Ref Type",MB_OK|MB_ICONERROR);
+		return;
+	}
+
+	CString newNameTrunced = newName.Mid(11);
+
+	CString result;
+	if(g_Git.Run(L"git branch -m \"" + origName + L"\" \"" + newNameTrunced + L"\"", &result, CP_UTF8) != 0)
+	{
+		CString errorMsg;
+		errorMsg.Format(L"Could not rename branch %s. Message from git:\r\n\r\n%s",origName,result);
+		CMessageBox::Show(m_hWnd,errorMsg,L"Error Renaming Branch",MB_OK|MB_ICONERROR);
+		return;
+	}
+	//Do as if it failed to rename. Let Refresh() do the job.
+	//*pResult = TRUE;
+
+	Refresh(newName);
+
+//	CString W_csPopup;W_csPopup.Format8(L"Ref: %s. New name: %s. With path: %s", pTree->GetRefName(), pDispInfo->item.pszText, newName);
+	
+//	AfxMessageBox(W_csPopup);
+	
 }
