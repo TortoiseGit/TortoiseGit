@@ -1,4 +1,7 @@
 = Release 1.6.6.0 =
+== Features ==
+ * Fixed issue #724: BrowseRefs: Made branch renaming possible.
+
 == Bug Fix ==
  * Fixed tab indices (activation order)
 
