@@ -1124,9 +1124,14 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 
 		if(IsTag)
 		{
-			cmd.Format(_T("git.exe tag %s %s %s %s"),
+			CString sign;
+			if(dlg.m_bSign)
+				sign=_T("-s");
+
+			cmd.Format(_T("git.exe tag %s %s %s %s %s"),
 				track,
 				force,
+				sign,
 				dlg.m_BranchTagName,
 				dlg.m_VersionName
 				);

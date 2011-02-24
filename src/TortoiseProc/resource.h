@@ -992,6 +992,7 @@
 #define IDC_CHECK_FORCE                 1521
 #define IDC_GROUP_BASEON                1522
 #define IDC_CHECK_BRANCHOVERRIDE        1523
+#define IDC_CHECK_SIGN                  1523
 #define IDC_CHECK_SQUASH                1524
 #define IDC_CHECK_SWITCH                1525
 #define IDC_CHECK_BRANCH                1527

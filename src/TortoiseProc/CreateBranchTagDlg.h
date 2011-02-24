@@ -20,6 +20,7 @@ public:
 	BOOL m_bTrack;
 	BOOL m_bIsTag;
 	BOOL m_bSwitch;
+	BOOL m_bSign;
 
 	CString m_Base;
 	CString m_BranchTagName;
