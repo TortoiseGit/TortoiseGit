@@ -32,14 +32,19 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, boo
 	if(this->Parser(pathfile))
 		return -1;
 
+	CString body;
 	CStringArray attachments;
 	if(bAttachment)
 	{
 		attachments.Add(pathfile);
 	}
+	else
+	{
+		body = this->m_strBody;
+	}
 
 	CString errortext = _T("");
-	int ret = SendMail(TO, CC, this->m_Subject, this->m_strBody, attachments, useMAPI, &errortext);
+	int ret = SendMail(TO, CC, this->m_Subject, body, attachments, useMAPI, &errortext);
 	this->m_LastError=errortext;
 	return ret;
 }

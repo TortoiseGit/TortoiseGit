@@ -12,6 +12,7 @@
  * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
  * Fixed issue #728: Shell "Diff With Previous" doesn't work when there are more than 2 revisions for that file
  * Fixed 32/64-bit MAPI inconsistency-issues
+ * Do not include patch in mail if user selected attachment
 
 = Release 1.6.5.0 =
 == Bug Fix ==
