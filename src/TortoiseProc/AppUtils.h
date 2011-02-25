@@ -186,9 +186,9 @@ public:
 	static int	StashApply(CString ref);
 	static int	StashPop();
 
-    static bool IsSSHPutty();
+	static bool IsSSHPutty();
 
-    static bool LaunchRemoteSetting();
+	static bool LaunchRemoteSetting();
 
 	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
 
@@ -202,6 +202,7 @@ public:
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
+	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false, bool autoClose = false);
 	static bool Push(bool autoClose = false);
 	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""));
 

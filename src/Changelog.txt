@@ -1,11 +1,15 @@
 = Release 1.6.6.0 =
 == Features ==
  * Fixed issue #724: BrowseRefs: Made branch renaming possible.
+ * Use fetch-dialog for "Fetch" in BrowseRefs
  * Allow to sign tags
  * Allow to edit user signingkey in TortoiseGit->Settings->GitConfig
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
+ * Fixed missing putty-key for deleting a remote branch
+ * Do not add Signed-off-by if already included
+ * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
 
 = Release 1.6.5.0 =
 == Bug Fix ==

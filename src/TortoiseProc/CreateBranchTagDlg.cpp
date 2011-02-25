@@ -49,6 +49,13 @@ BEGIN_MESSAGE_MAP(CCreateBranchTagDlg, CResizableStandAloneDialog)
 ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
+BOOL CCreateBranchTagDlg::PreTranslateMessage(MSG* pMsg)
+{
+	m_ToolTip.RelayEvent(pMsg);
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
+
 BOOL CCreateBranchTagDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
@@ -102,10 +109,19 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
 	EnableSaveRestore(_T("BranchTagDlg"));
 
+	//Create the ToolTip control
+	if( !m_ToolTip.Create(this))
+	{
+		TRACE0("Unable to create the ToolTip!");
+	}
+	else
+	{
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), _T("Force creationg of branch/tag - even if already exists."));
+		m_ToolTip.Activate(TRUE);
+	}
+
 	OnCbnSelchangeComboboxexBranch();
 	return TRUE;
-
-
 }
 // CCreateBranchTagDlg message handlers
 

@@ -53,6 +53,8 @@
 #include "InputDlg.h"
 #include "SVNDCommitDlg.h"
 #include "requestpulldlg.h"
+#include "PullFetchDlg.h"
+#include "RebaseDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2140,6 +2142,87 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	file.Close();
 	delete buf;
 	return 0;
+}
+
+bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
+{
+	CPullFetchDlg dlg;
+	dlg.m_PreSelectRemote = remoteName;
+	dlg.m_bAllowRebase = allowRebase;
+	dlg.m_IsPull=FALSE;
+
+	if(dlg.DoModal()==IDOK)
+	{
+		if(dlg.m_bAutoLoad)
+		{
+			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
+		}
+
+		CString url;
+		url=dlg.m_RemoteURL;
+		CString cmd;
+		CString arg;
+
+		int ver = CAppUtils::GetMsysgitVersion();
+		
+		if(ver >= 0x01070203) //above 1.7.0.2
+			arg = _T("--progress ");
+
+		if (dlg.m_bPrune) {
+			arg += _T("--prune ");
+		}
+
+		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
+		CProgressDlg progress;
+
+		progress.m_bAutoCloseOnSuccess = autoClose;
+
+		if(!dlg.m_bRebase)
+		{
+			progress.m_PostCmdList.Add(_T("&Rebase"));
+		}
+
+		progress.m_GitCmd=cmd;
+		int userResponse=progress.DoModal();
+
+		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
+		{
+			while(1)
+			{
+				CRebaseDlg dlg;
+				dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
+				dlg.m_PostButtonTexts.Add(_T("Restart Rebase"));
+				int response = dlg.DoModal();
+				if(response == IDOK)
+				{
+					return TRUE;
+				}
+				if(response == IDC_REBASE_POST_BUTTON ) 
+				{
+					CString cmd,out;
+					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+						g_Git.m_CurrentDir,
+						dlg.m_Upstream,dlg.m_Branch);
+					if(g_Git.Run(cmd,&out,CP_ACP))
+					{
+						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						return FALSE;
+					}
+
+					CAppUtils::SendPatchMail(cmd,out);
+					return TRUE;
+				}
+				
+				if(response == IDC_REBASE_POST_BUTTON +1 )
+					continue;
+
+				if(response == IDCANCEL)
+					return FALSE;
+			}
+			return TRUE;
+		}
+	}
+	return FALSE;
 }
 
 bool CAppUtils::Push(bool autoClose)
