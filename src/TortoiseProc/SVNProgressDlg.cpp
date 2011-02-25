@@ -2786,6 +2786,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 
 				}else
 				{
+					ret = true;
 					break;
 				}
 				retry++;
