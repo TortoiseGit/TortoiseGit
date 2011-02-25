@@ -24,10 +24,11 @@ protected:
 	CRegDWORD m_regType;
 
 	DECLARE_MESSAGE_MAP()
+
+	virtual	BOOL OnInitDialog();
+	virtual	void OnOK();
+
 public:
-	BOOL m_bDir;
-	int  m_CleanType;
-	virtual BOOL OnInitDialog();
-protected:
-	virtual void OnOK();
+	BOOL	m_bDir;
+	int		m_CleanType;
 };

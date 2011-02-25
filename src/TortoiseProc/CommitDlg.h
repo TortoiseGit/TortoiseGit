@@ -51,10 +51,12 @@ public:
 	CCommitDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CCommitDlg();
 
+protected:
 	// CSciEditContextMenuInterface
 	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
 	virtual bool		HandleMenuItemClick(int cmd, CSciEdit * pSciEdit);
 
+public:
 	void ShowViewPatchText(bool b=true)
 	{
 		if(b)
@@ -107,32 +109,31 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-
 public:
-	CTGitPathList		m_pathList;
-	CTGitPathList		m_updatedPathList;
-	CTGitPathList		m_selectedPathList;
-	CTGitPathList		m_checkedPathList;
-	BOOL				m_bRecursive;
-	CSciEdit			m_cLogMessage;
 	CString				m_sLogMessage;
-	BOOL				m_bWholeProject;
-	CString				m_sBugID;
-	CString				m_sChangeList;
 	BOOL				m_bKeepChangeList;
 	BOOL				m_bCommitAmend;
 	BOOL				m_bNoPostActions;
-	INT_PTR				m_itemsCount;
 	bool				m_bSelectFilesForCommit;
-	CComPtr<IBugTraqProvider> m_BugTraqProvider;
-	CString				m_NoAmendStr;
 	CString				m_AmendStr;
-
+	CString				m_sBugID;
+	BOOL				m_bWholeProject;
+	CTGitPathList		m_pathList;
+	CTGitPathList		m_checkedPathList;
+	CTGitPathList		m_updatedPathList;
+	int					m_PostCmd;
 	BOOL				m_bPushAfterCommit;
 
-	int					CheckHeadDetach();
+protected:
+	CTGitPathList		m_selectedPathList;
+	BOOL				m_bRecursive;
+	CSciEdit			m_cLogMessage;
+	CString				m_sChangeList;
+	INT_PTR				m_itemsCount;
+	CComPtr<IBugTraqProvider> m_BugTraqProvider;
+	CString				m_NoAmendStr;
 
-	int					m_PostCmd;
+	int					CheckHeadDetach();
 
 private:
 	CWinThread*			m_pThread;
@@ -161,10 +162,10 @@ private:
 	CHyperLink			m_ctrlShowPatch;
 	CPatchViewDlg		m_patchViewdlg;
 
-	CBugTraqAssociation m_bugtraq_association;
+	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
 
-public:
+protected:
 	afx_msg void OnBnClickedSignOff();
 	afx_msg void OnBnClickedCommitAmend();
 	afx_msg void OnBnClickedWholeProject();

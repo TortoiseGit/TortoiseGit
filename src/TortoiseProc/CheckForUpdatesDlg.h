@@ -52,12 +52,14 @@ private:
 	static UINT CheckThreadEntry(LPVOID pVoid);
 	UINT		CheckThread();
 
-public:
 	BOOL		m_bThreadRunning;
+
+public:
 	BOOL		m_bShowInfo;
-	BOOL		m_bVisible;
 
 private:
+	BOOL		m_bVisible;
+
 	CString		m_sUpdateDownloadLink;			///< Where to send a user looking to download a update
 	CString		m_sUpdateChangeLogLink;			///< Where to send a user looking to change log
 	CHyperLink	m_link;

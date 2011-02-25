@@ -40,11 +40,12 @@ protected:
 	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
+
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
+	afx_msg void OnEnChangeName();
+
 public:
 	CString m_name;
 	CString m_windowtitle;
 	CString m_label;
-public:
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
-	afx_msg void OnEnChangeName();
 };

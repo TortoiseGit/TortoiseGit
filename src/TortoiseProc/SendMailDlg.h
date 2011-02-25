@@ -29,25 +29,28 @@ protected:
 
 	void UpdateSubject();
 
-	CHyperLink  m_SmtpSetup;
+	CHyperLink		m_SmtpSetup;
 
-	CACEdit		m_ctrlCC;
-	CACEdit		m_ctrlTO;
-	CRegHistory	m_AddressReg;
+	CACEdit			m_ctrlCC;
+	CACEdit			m_ctrlTO;
+	CRegHistory		m_AddressReg;
 	CToolTipCtrl	m_ToolTip;
-public:
-	CString m_To;
-	CString m_CC;
-	CString m_Subject;
-	BOOL m_bAttachment;
-	BOOL m_bCombine;
-	BOOL m_bUseMAPI;
-	CPatchListCtrl m_ctrlList;
-	CTGitPathList m_PathList;
 
-	CRegDWORD	m_regAttach;
-	CRegDWORD	m_regCombine;
-	CRegDWORD	m_regUseMAPI;
+public:
+	CString			m_To;
+	CString			m_CC;
+	CString			m_Subject;
+	BOOL			m_bAttachment;
+	BOOL			m_bCombine;
+	BOOL			m_bUseMAPI;
+	CTGitPathList	m_PathList;
+
+private:
+	CPatchListCtrl	m_ctrlList;
+
+	CRegDWORD		m_regAttach;
+	CRegDWORD		m_regCombine;
+	CRegDWORD		m_regUseMAPI;
 
 	std::map<int,CPatch> m_MapPatch;
 

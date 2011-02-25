@@ -19,6 +19,7 @@ CSettingGitConfig::CSettingGitConfig()
 	: ISettingsPropPage(CSettingGitConfig::IDD)
 	, m_UserName(_T(""))
 	, m_UserEmail(_T(""))
+	, m_UserSigningKey(_T(""))
 	, m_bGlobal(FALSE)
 	, m_bAutoCrlf(FALSE)
 	, m_bSafeCrLf(FALSE)
@@ -35,6 +36,7 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_GIT_USERNAME, m_UserName);
 	DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
+	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
 	DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
 	DDX_Check(pDX, IDC_CHECK_SAFECRLF, m_bSafeCrLf);
@@ -45,6 +47,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
 	ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnEnChangeGitUsername)
 	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
+	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnEnChangeGitUserSigningKey)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
 	ON_BN_CLICKED(IDC_CHECK_SAFECRLF, &CSettingGitConfig::OnBnClickedCheckSafecrlf)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
@@ -57,6 +60,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 
 	m_UserName=g_Git.GetUserName();
 	m_UserEmail=g_Git.GetUserEmail();
+	m_UserSigningKey=g_Git.GetConfigValue(_T("user.signingkey"));
 
 	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf,_T("core.autocrlf"));
 	ProjectProperties::GetBOOLProps(this->m_bSafeCrLf, _T("core.safecrlf"));
@@ -98,6 +102,12 @@ void CSettingGitConfig::OnEnChangeGitUseremail()
 	SetModified();
 }
 
+void CSettingGitConfig::OnEnChangeGitUserSigningKey()
+{
+	m_ChangeMask|=GIT_SIGNINGKEY;
+	SetModified();
+}
+
 BOOL CSettingGitConfig::OnApply()
 {
 	CString cmd, out;
@@ -118,6 +128,13 @@ BOOL CSettingGitConfig::OnApply()
 		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
 		{
 			CMessageBox::Show(NULL,_T("Fail to save user email"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+
+	if(m_ChangeMask&GIT_SIGNINGKEY)
+		if(g_Git.SetConfigValue(_T("user.signingkey"), this->m_UserSigningKey, type, g_Git.GetGitEncode(L"i18n.commitencoding")))
+		{
+			CMessageBox::Show(NULL,_T("Fail to save user signingkey"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
 

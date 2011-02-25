@@ -2,6 +2,8 @@
 == Features ==
  * Fixed issue #724: BrowseRefs: Made branch renaming possible.
  * Use fetch-dialog for "Fetch" in BrowseRefs
+ * Allow to sign tags (requires a key without passphrase)
+ * Allow to edit user signingkey in TortoiseGit->Settings->GitConfig
 
 == Bug Fix ==
  * Fixed tab indices (activation order)

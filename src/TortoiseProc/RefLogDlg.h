@@ -19,15 +19,16 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
-	afx_msg void OnCbnSelchangeRef();	
+	afx_msg void OnCbnSelchangeRef();
 	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
-	DECLARE_MESSAGE_MAP()
-public:
-	CHistoryCombo m_ChooseRef;
-	CString m_CurrentBranch;
-public:
-	CRefLogList m_RefList;
-	CString m_SelectedHash;
-public:
 	afx_msg void OnBnClickedOk();
+	DECLARE_MESSAGE_MAP()
+
+	CHistoryCombo	m_ChooseRef;
+
+	CRefLogList		m_RefList;
+
+public:	
+	CString			m_CurrentBranch;
+	CString			m_SelectedHash;
 };

@@ -28,6 +28,7 @@
 #include "Balloon.h"
 #include "BranchCombox.h"
 #include "GitLoglist.h"
+
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
 
@@ -40,7 +41,6 @@
 
 #define IDT_INPUT		108
 
-
 class CSyncDlg : public CResizableStandAloneDialog,public CBranchCombox
 {
 	DECLARE_DYNAMIC(CSyncDlg)
@@ -52,52 +52,63 @@ public:
 // Dialog Data
 	enum { IDD = IDD_SYNC };
 
-	enum { GIT_COMMAND_PUSH,
-		   GIT_COMMAND_PULL,
-		   GIT_COMMAND_FETCH,
-		   GIT_COMMAND_FETCHANDREBASE,
-		   GIT_COMMAND_SUBMODULE,
-		   GIT_COMMAND_REMOTE
+	enum {	GIT_COMMAND_PUSH,
+			GIT_COMMAND_PULL,
+			GIT_COMMAND_FETCH,
+			GIT_COMMAND_FETCHANDREBASE,
+			GIT_COMMAND_SUBMODULE,
+			GIT_COMMAND_REMOTE
 		};
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BRANCH_COMBOX_EVENT_HANDLE();
 
-	int m_CurrentCmd;
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedButtonManage();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnCbnEditchangeComboboxex();
+	afx_msg void OnBnClickedButtonPull();
+	afx_msg void OnBnClickedButtonPush();
+	afx_msg void OnBnClickedButtonApply();
+	afx_msg void OnBnClickedButtonEmail();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
-	CRegDWORD m_regPullButton;
-	CRegDWORD m_regPushButton;
-	CRegDWORD m_regSubmoduleButton;
-	CRegDWORD m_regAutoLoadPutty;
+	int					m_CurrentCmd;
 
-	CMFCTabCtrl m_ctrlTabCtrl;
+	CRegDWORD			m_regPullButton;
+	CRegDWORD			m_regPushButton;
+	CRegDWORD			m_regSubmoduleButton;
+	CRegDWORD			m_regAutoLoadPutty;
+
+	CMFCTabCtrl			m_ctrlTabCtrl;
 
 	CBalloon			m_tooltips;
-	
-	BOOL		m_bInited;
-	
-	CGitLogList	m_OutLogList;
-	CGitLogList m_InLogList;
 
-	CGitStatusListCtrl m_OutChangeFileList;
-	CGitStatusListCtrl m_InChangeFileList;
-	CGitStatusListCtrl m_ConflictFileList;
-	
-	CRichEditCtrl	   m_ctrlCmdOut;
+	BOOL				m_bInited;
 
-	CTGitPathList	m_arOutChangeList;
-	CTGitPathList	m_arInChangeList;
+	CGitLogList			m_OutLogList;
+	CGitLogList			m_InLogList;
 
-	int				m_CmdOutCurrentPos;
+	CGitStatusListCtrl	m_OutChangeFileList;
+	CGitStatusListCtrl	m_InChangeFileList;
+	CGitStatusListCtrl	m_ConflictFileList;
 
-	CWinThread*				m_pThread;	
+	CRichEditCtrl		m_ctrlCmdOut;
+
+	CTGitPathList		m_arOutChangeList;
+	CTGitPathList		m_arInChangeList;
+
+	int					m_CmdOutCurrentPos;
+
+	CWinThread*			m_pThread;
 
 	volatile LONG		m_bBlock;
 
-	void		ParserCmdOutput(char ch);
+	void				ParserCmdOutput(char ch);
 
 	virtual void LocalBranchChange(){FetchOutList();};
 	virtual void RemoteBranchChange(){FetchOutList();};
+
 	void ShowTab(int windowid)
 	{
 		this->m_ctrlTabCtrl.ShowTab(windowid-1);
@@ -123,16 +134,16 @@ protected:
 	}
 
 	std::vector<CString> m_GitCmdList;
-	
-	bool m_bAbort;
 
-	int  m_GitCmdStatus;
-	
-	CStringA m_LogText;
-	CString m_OutLocalBranch;
-	CString m_OutRemoteBranch;
-	
-	CGitHash m_oldHash;
+	bool			m_bAbort;
+
+	int				m_GitCmdStatus;
+
+	CStringA		m_LogText;
+	CString			m_OutLocalBranch;
+	CString			m_OutRemoteBranch;
+
+	CGitHash		m_oldHash;
 
 	void ShowProgressCtrl(bool bShow=true);
 	void ShowInputCtrl(bool bShow=true);
@@ -164,38 +175,32 @@ protected:
 	void FetchComplete();
 
 	DECLARE_MESSAGE_MAP()
-public:
-	BOOL m_bAutoLoadPuttyKey;
-	BOOL m_bForce;
-	CString m_strURL;
-	int  m_Gitverion;
 
-	static UINT ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
-	UINT		ProgressThread();
-	
-	CHistoryCombo m_ctrlURL;
-	CButton m_ctrlDumyButton;
-	CMenuButton m_ctrlPull;
-	CMenuButton m_ctrlPush;
-	CMenuButton m_ctrlStatus;
-	CMenuButton m_ctrlSubmodule;
-	afx_msg void OnBnClickedButtonPull();
-	afx_msg void OnBnClickedButtonPush();
-	afx_msg void OnBnClickedButtonApply();
-	afx_msg void OnBnClickedButtonEmail();
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	CProgressCtrl m_ctrlProgress;
-	CAnimateCtrl m_ctrlAnimate;
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedButtonManage();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnCbnEditchangeComboboxex();
+public:
+	BOOL			m_bAutoLoadPuttyKey;
+	BOOL			m_bForce;
+	CString			m_strURL;
+
+protected:
+	int				m_Gitverion;
+
+	static UINT		ProgressThreadEntry(LPVOID pVoid){ return ((CSyncDlg*)pVoid) ->ProgressThread(); };
+	UINT			ProgressThread();
+
+	CHistoryCombo	m_ctrlURL;
+	CButton			m_ctrlDumyButton;
+	CMenuButton		m_ctrlPull;
+	CMenuButton		m_ctrlPush;
+	CMenuButton		m_ctrlStatus;
+	CMenuButton		m_ctrlSubmodule;
+	CProgressCtrl	m_ctrlProgress;
+	CAnimateCtrl	m_ctrlAnimate;
 
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();
-protected:
+
 	virtual void OnOK();
 	void	Refresh();
-public:
+
 	afx_msg void OnBnClickedButtonSubmodule();
 };

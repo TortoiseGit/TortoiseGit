@@ -20,10 +20,11 @@ protected:
 
 public:
 	CSciEdit			m_ctrlPatchView;
-
-	DECLARE_MESSAGE_MAP()
-public:
 	ProjectProperties	*m_pProjectProperties;
+
+protected:
+	DECLARE_MESSAGE_MAP()
+
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);

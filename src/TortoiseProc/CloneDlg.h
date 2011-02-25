@@ -14,27 +14,31 @@ class CCloneDlg : public CResizableStandAloneDialog
 public:
 	CCloneDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CCloneDlg();
-// Overrides
-	virtual void OnOK();
-	virtual void OnCancel();
 
 // Dialog Data
 	enum { IDD = IDD_CLONE};
 
 protected:
+	// Overrides
+	virtual void OnOK();
+	virtual void OnCancel();
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+
 	CString m_ModuleName;
 	CString m_OldURL;
 
 	DECLARE_MESSAGE_MAP()
 
-public:
 	afx_msg void OnBnClickedCloneBrowseUrl();
 	afx_msg void OnBnClickedCloneDirBrowse();
-	CString m_Directory;
+
 	CHistoryCombo	m_URLCombo;
 	CHistoryCombo	m_PuttyKeyCombo;
+
+public:
+	CString	m_Directory;
 	CString	m_strPuttyKeyFile;
 	CString	m_URL;
 	BOOL	m_bAutoloadPuttyKeyFile;
@@ -50,12 +54,13 @@ public:
 	int		m_nDepth;
 
 	CString	m_strSVNTrunk;
-	CString m_strSVNTags;
-	CString m_strSVNBranchs;
-	CString m_strUserName;
+	CString	m_strSVNTags;
+	CString	m_strSVNBranchs;
+	CString	m_strUserName;
 
-	int m_nSVNFrom;
+	int		m_nSVNFrom;
 
+protected:
 	CMenuButton	m_BrowseUrl;
 	CRegDWORD	m_regBrowseUrl;
 

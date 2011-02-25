@@ -17,12 +17,12 @@ public:
 // Dialog Data
 	enum { IDD = IDD_GITSWITCH };
 
-	BOOL m_bForce;
-	BOOL m_bTrack;
-	BOOL m_bBranch;
-	BOOL m_bBranchOverride;
-	CString m_NewBranch;
-	CString m_Base;
+	BOOL	m_bForce;
+	BOOL	m_bTrack;
+	BOOL	m_bBranch;
+	BOOL	m_bBranchOverride;
+	CString	m_NewBranch;
+	CString	m_Base;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -34,7 +34,7 @@ protected:
 	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}
 
 	DECLARE_MESSAGE_MAP()
-public:
+
 	afx_msg void OnBnClickedCheckBranch();
 	void SetDefaultName(BOOL isUpdateCreateBranch);
 	afx_msg void OnCbnSelchangeComboboxexBranch();
