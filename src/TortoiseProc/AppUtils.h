@@ -202,6 +202,7 @@ public:
 
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
+	static BOOL Fetch(bool autoClose = false);
 	static bool Push(bool autoClose = false);
 	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""));
 
