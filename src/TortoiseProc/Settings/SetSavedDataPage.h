@@ -55,6 +55,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
+
 private:
 	CToolTips		m_tooltips;
 	CButton			m_btnUrlHistClear;

@@ -44,44 +44,43 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-	
-	CString GetVersionFromFile(const CString & p_strDateiname);
 
-private:
-	CToolTips		m_tooltips;
-	BOOL			m_bShortDateFormat;
-	BOOL			m_bRelativeTimes;
-	CRegDWORD		m_regShortDateFormat;
-	CRegDWORD		m_regRelativeTimes;
-	BOOL			m_bUseSystemLocaleForDates;
-	CRegDWORD		m_regUseSystemLocaleForDates;
-	CRegDWORD		m_regAutoClose;
-	DWORD_PTR		m_dwAutoClose;
-	CRegDWORD		m_regDefaultLogs;
-	CString			m_sDefaultLogs;
-	CMFCFontComboBox	m_cFontNames;
-	CComboBox		m_cFontSizes;
-	CRegDWORD		m_regFontSize;
-	DWORD			m_dwFontSize;
-	CRegString		m_regFontName;
-	CString			m_sFontName;
-	CComboBox		m_cAutoClose;
-	CRegDWORD		m_regUseWCURL;
-	BOOL			m_bUseWCURL;
-	CRegString		m_regDefaultCheckoutPath;
-	CString			m_sDefaultCheckoutPath;
-	CRegString		m_regDefaultCheckoutUrl;
-	CString			m_sDefaultCheckoutUrl;
-	CRegDWORD		m_regDiffByDoubleClick;
-	BOOL			m_bDiffByDoubleClick;
-	CRegDWORD		m_regUseRecycleBin;
-	BOOL			m_bUseRecycleBin;
-
-public:
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeAutoclosecombo();
 	afx_msg void OnBnClickedBrowsecheckoutpath();
+
+	CString GetVersionFromFile(const CString & p_strDateiname);
+
+private:
+	CToolTips			m_tooltips;
+	BOOL				m_bShortDateFormat;
+	BOOL				m_bRelativeTimes;
+	CRegDWORD			m_regShortDateFormat;
+	CRegDWORD			m_regRelativeTimes;
+	BOOL				m_bUseSystemLocaleForDates;
+	CRegDWORD			m_regUseSystemLocaleForDates;
+	CRegDWORD			m_regAutoClose;
+	DWORD_PTR			m_dwAutoClose;
+	CRegDWORD			m_regDefaultLogs;
+	CString				m_sDefaultLogs;
+	CMFCFontComboBox	m_cFontNames;
+	CComboBox			m_cFontSizes;
+	CRegDWORD			m_regFontSize;
+	DWORD				m_dwFontSize;
+	CRegString			m_regFontName;
+	CString				m_sFontName;
+	CComboBox			m_cAutoClose;
+	CRegDWORD			m_regUseWCURL;
+	BOOL				m_bUseWCURL;
+	CRegString			m_regDefaultCheckoutPath;
+	CString				m_sDefaultCheckoutPath;
+	CRegString			m_regDefaultCheckoutUrl;
+	CString				m_sDefaultCheckoutUrl;
+	CRegDWORD			m_regDiffByDoubleClick;
+	BOOL				m_bDiffByDoubleClick;
+	CRegDWORD			m_regUseRecycleBin;
+	BOOL				m_bUseRecycleBin;
 };

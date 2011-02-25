@@ -32,7 +32,7 @@ class CSetMisc : public ISettingsPropPage
 public:
 	CSetMisc();
 	virtual ~CSetMisc();
-	
+
 	UINT GetIconID() {return IDI_DIALOGS;}
 
 // Dialog Data
@@ -46,6 +46,7 @@ protected:
 	virtual BOOL OnApply();
 
 	DECLARE_MESSAGE_MAP()
+
 private:
 	CToolTips		m_tooltips;
 

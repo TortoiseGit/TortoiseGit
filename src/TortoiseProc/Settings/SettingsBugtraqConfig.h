@@ -33,16 +33,9 @@ protected:
 		BUG_LOGREGEX=0x20,
 		BUG_WARNING=0x40,
 	};
+
 	DECLARE_MESSAGE_MAP()
 
-public:
-	CString m_URL;
-	BOOL m_bNWarningifnoissue;
-	CString m_Message;
-	BOOL m_bNAppend;
-	CString m_Label;
-	BOOL m_bNNumber;
-	CString m_Logregex;
 	afx_msg void OnEnChangeBugtraqUrl();
 	afx_msg void OnBnClickedBugtraqWarningifnoissueTrue();
 	afx_msg void OnBnClickedBugtraqWarningifnoissueFalse();
@@ -53,4 +46,12 @@ public:
 	afx_msg void OnBnClickedBugtraqNumberTrue();
 	afx_msg void OnBnClickedBugtraqNumberFalse();
 	afx_msg void OnEnChangeBugtraqLogregex();
+
+	CString	m_URL;
+	BOOL	m_bNWarningifnoissue;
+	CString	m_Message;
+	BOOL	m_bNAppend;
+	CString	m_Label;
+	BOOL	m_bNNumber;
+	CString	m_Logregex;
 };

@@ -53,7 +53,6 @@ protected:
 
 	void			RebuildBugTraqList();
 
-protected:
 	CBugTraqAssociations m_associations;
 	CListCtrl m_cBugTraqList;
 };

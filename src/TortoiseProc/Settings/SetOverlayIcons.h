@@ -39,17 +39,17 @@ public:
 	enum { IDD = IDD_OVERLAYICONS };
 
 protected:
-	virtual void			DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL			OnInitDialog();
-	virtual BOOL			OnApply();
-	afx_msg void			OnBnClickedListradio();
-	afx_msg void			OnBnClickedSymbolradio();
-	afx_msg void			OnCbnSelchangeIconsetcombo();
+	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL	OnInitDialog();
+	virtual BOOL	OnApply();
+	afx_msg void	OnBnClickedListradio();
+	afx_msg void	OnBnClickedSymbolradio();
+	afx_msg void	OnCbnSelchangeIconsetcombo();
 
-	void					ShowIconSet(bool bSmallIcons);
-	void					AddFileTypeGroup(CString sFileType, bool bSmallIcons);
+	void			ShowIconSet(bool bSmallIcons);
+	void			AddFileTypeGroup(CString sFileType, bool bSmallIcons);
 	DECLARE_MESSAGE_MAP()
-protected:
+
 	int				m_selIndex;
 	CString			m_sIconSet;
 	CComboBox		m_cIconSet;

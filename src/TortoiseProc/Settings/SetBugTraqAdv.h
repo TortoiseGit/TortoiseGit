@@ -54,7 +54,6 @@ protected:
 
 	void CheckHasOptions();
 
-protected:
 	CString			m_sPath;
 	CLSID			m_provider_clsid;
 	CString			m_sParameters;

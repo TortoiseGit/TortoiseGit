@@ -49,7 +49,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	void			RebuildHookList();
-protected:
+	void RebuildHookList();
 	CListCtrl m_cHookList;
 };

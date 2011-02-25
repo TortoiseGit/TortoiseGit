@@ -47,18 +47,19 @@ protected:
 	afx_msg void OnBnClickedRestore();
 
 	DECLARE_MESSAGE_MAP()
+
 private:
-	CMFCColorButton m_cNewLinesColor;
-	CMFCColorButton m_cOldLinesColor;
-	CRegDWORD		m_regNewLinesColor;
-	CRegDWORD		m_regOldLinesColor;
+	CMFCColorButton		m_cNewLinesColor;
+	CMFCColorButton		m_cOldLinesColor;
+	CRegDWORD			m_regNewLinesColor;
+	CRegDWORD			m_regOldLinesColor;
 
 	CMFCFontComboBox	m_cFontNames;
-	CComboBox		m_cFontSizes;
-	CRegDWORD		m_regFontSize;
-	DWORD			m_dwFontSize;
-	CRegString		m_regFontName;
-	CString			m_sFontName;
-	DWORD			m_dwTabSize;
-	CRegDWORD		m_regTabSize;
+	CComboBox			m_cFontSizes;
+	CRegDWORD			m_regFontSize;
+	DWORD				m_dwFontSize;
+	CRegString			m_regFontName;
+	CString				m_sFontName;
+	DWORD				m_dwTabSize;
+	CRegDWORD			m_regTabSize;
 };

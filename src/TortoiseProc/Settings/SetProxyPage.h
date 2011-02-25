@@ -53,28 +53,29 @@ protected:
 	void EnableGroup(BOOL b);
 
 	DECLARE_MESSAGE_MAP()
+
 private:
-	CToolTips	m_tooltips;
-	CString		m_serveraddress;
-	CRegString	m_regServeraddress;
-	CRegString	m_regServeraddress_copy;
-	UINT		m_serverport;
-	CRegString	m_regServerport;
-	CRegString	m_regServerport_copy;
-	CString		m_username;
-	CRegString	m_regUsername;
-	CRegString	m_regUsername_copy;
-	CString		m_password;
-	CRegString	m_regPassword;
-	CRegString	m_regPassword_copy;
-	UINT		m_timeout;
-	CRegString	m_regTimeout;
-	CRegString	m_regTimeout_copy;
-	BOOL		m_isEnabled;
-	CRegString	m_regSSHClient;
-	CString		m_SSHClient;
-	CRegString	m_regExceptions;
-	CRegString	m_regExceptions_copy;
-	CString		m_Exceptions;
-	CFileDropEdit m_cSSHClientEdit;
+	CToolTips		m_tooltips;
+	CString			m_serveraddress;
+	CRegString		m_regServeraddress;
+	CRegString		m_regServeraddress_copy;
+	UINT			m_serverport;
+	CRegString		m_regServerport;
+	CRegString		m_regServerport_copy;
+	CString			m_username;
+	CRegString		m_regUsername;
+	CRegString		m_regUsername_copy;
+	CString			m_password;
+	CRegString		m_regPassword;
+	CRegString		m_regPassword_copy;
+	UINT			m_timeout;
+	CRegString		m_regTimeout;
+	CRegString		m_regTimeout_copy;
+	BOOL			m_isEnabled;
+	CRegString		m_regSSHClient;
+	CString			m_SSHClient;
+	CRegString		m_regExceptions;
+	CRegString		m_regExceptions_copy;
+	CString			m_Exceptions;
+	CFileDropEdit	m_cSSHClientEdit;
 };

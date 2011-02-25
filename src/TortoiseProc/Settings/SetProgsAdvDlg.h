@@ -31,10 +31,16 @@ class CSetProgsAdvDlg : public CDialog
 public:
 	CSetProgsAdvDlg(const CString& type, CWnd* pParent = NULL);
 	virtual ~CSetProgsAdvDlg();
+
+	enum { IDD = IDD_SETTINGSPROGSADV };
+
+private:
 	/**
 	 * Loads the tools from the registry.
 	 */
 	void LoadData();
+
+public:
 	/**
 	 * Saves the changed tools to the registry.
 	 * returns 0 if no restart is needed for the changes to take effect
@@ -44,11 +50,10 @@ public:
 	 */
 	int SaveData();
 
+private:
 	int AddExtension(const CString& ext, const CString& tool);
 	int FindExtension(const CString& ext);
 	void EnableBtns();
-
-	enum { IDD = IDD_SETTINGSPROGSADV };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);

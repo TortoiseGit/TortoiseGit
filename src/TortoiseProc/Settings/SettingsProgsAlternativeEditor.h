@@ -54,7 +54,7 @@ protected:
 private:
 	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != _T("#"); }
 	void CheckProgComment();
-private:
+
 	CString			m_sAlternativeEditorPath;
 	CRegString		m_regAlternativeEditorPath;
 	int				m_iAlternativeEditor;

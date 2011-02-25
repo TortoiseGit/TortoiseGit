@@ -48,7 +48,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-protected:
 	CString			m_sPath;
 	CString			m_sCommandLine;
 	BOOL			m_bWait;

@@ -4,6 +4,7 @@
 #include "Tooltip.h"
 #include "registry.h"
 #include "afxwin.h"
+
 // CSettingGitConfig dialog
 
 class CSettingGitConfig : public ISettingsPropPage
@@ -21,7 +22,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
 	BOOL OnApply();
-	
+
 	int m_ChangeMask;
 	enum
 	{
@@ -32,19 +33,20 @@ protected:
 		GIT_SIGNINGKEY=0x16,
 	};
 	DECLARE_MESSAGE_MAP()
-public:
-	CString m_UserName;
-	CString m_UserEmail;
-	CString m_UserSigningKey;
-	BOOL m_bGlobal;
+
 	afx_msg void OnBnClickedCheckGlobal();
 	afx_msg void OnEnChangeGitUsername();
 	afx_msg void OnEnChangeGitUseremail();
 	afx_msg void OnEnChangeGitUserSigningKey();
-	BOOL m_bAutoCrlf;
-	BOOL m_bSafeCrLf;
 	afx_msg void OnBnClickedCheckAutocrlf();
 	afx_msg void OnBnClickedCheckSafecrlf();
 	afx_msg void OnBnClickedEditglobalgitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
+
+	CString	m_UserName;
+	CString	m_UserEmail;
+	CString	m_UserSigningKey;
+	BOOL	m_bGlobal;
+	BOOL	m_bAutoCrlf;
+	BOOL	m_bSafeCrLf;
 };

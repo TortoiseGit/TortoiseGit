@@ -49,11 +49,10 @@ protected:
 	afx_msg void OnEnChangeNocontextpaths();
 
 	DECLARE_MESSAGE_MAP()
-public:
+
 	virtual BOOL OnInitDialog();
 
 private:
-
 	CToolTips			m_tooltips;
 	CRegStdWORD			m_regTopmenu;
 	CRegStdWORD			m_regTopmenuhigh;

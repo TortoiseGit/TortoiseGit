@@ -44,12 +44,12 @@ protected:
 	virtual BOOL OnApply();
 
 	DECLARE_MESSAGE_MAP()
+
 private:
-	CMFCColorButton m_cCurrentBranch;
-	CMFCColorButton m_cRemoteBranch;
-	CMFCColorButton m_cLocalBranch;
-	CMFCColorButton m_cTags;
-	
+	CMFCColorButton	m_cCurrentBranch;
+	CMFCColorButton	m_cRemoteBranch;
+	CMFCColorButton	m_cLocalBranch;
+	CMFCColorButton	m_cTags;
+
 	CColors			m_Colors;
-public:
 };

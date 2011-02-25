@@ -60,6 +60,7 @@ using namespace TreePropSheet;
 class CSettings : public CTreePropSheet
 {
 	DECLARE_DYNAMIC(CSettings)
+
 private:
 	/**
 	 * Adds all pages to this Settings-Dialog.
@@ -71,43 +72,43 @@ private:
 	void RemovePropPages();
 
 private:
-	CSetMainPage *			m_pMainPage;
-	CSetProxyPage *			m_pProxyPage;
-	CSetOverlayPage *		m_pOverlayPage;
-	CSetOverlayIcons *		m_pOverlaysPage;
-	CSettingsProgsDiff*		m_pProgsDiffPage;
-	CSettingsProgsMerge *	m_pProgsMergePage;
-	CSettingsProgsUniDiff * m_pProgsUniDiffPage;
-	CSettingsProgsAlternativeEditor * m_pProgsAlternativeEditor;
-	CSetLookAndFeelPage *	m_pLookAndFeelPage;
-	CSetDialogs *			m_pDialogsPage;
-    CSettingsRevisionGraph* m_pRevisionGraphPage;
-	CSettingsColors *		m_pColorsPage;
-    CSettingsColors2 *		m_pColorsPage2;
-    CSettingsColors3 *		m_pColorsPage3;
-	CSetMisc *				m_pMiscPage;
-//	CSetLogCache *			m_pLogCachePage;
-//    CSettingsLogCaches*     m_pLogCacheListPage;
-	CSetSavedDataPage *		m_pSavedPage;
-	CSetHooks *				m_pHooksPage;
-	CSetBugTraq *			m_pBugTraqPage;
-	CSettingsTBlame *		m_pTBlamePage;
-	CSettingGitConfig *		m_pGitConfig;
-	CSettingGitRemote *		m_pGitRemote;
-	CSettingsBugtraqConfig * m_pBugtraqConfig;
+	CSetMainPage *						m_pMainPage;
+	CSetProxyPage *						m_pProxyPage;
+	CSetOverlayPage *					m_pOverlayPage;
+	CSetOverlayIcons *					m_pOverlaysPage;
+	CSettingsProgsDiff*					m_pProgsDiffPage;
+	CSettingsProgsMerge *				m_pProgsMergePage;
+	CSettingsProgsUniDiff *				m_pProgsUniDiffPage;
+	CSettingsProgsAlternativeEditor *	m_pProgsAlternativeEditor;
+	CSetLookAndFeelPage *				m_pLookAndFeelPage;
+	CSetDialogs *						m_pDialogsPage;
+    CSettingsRevisionGraph*				m_pRevisionGraphPage;
+	CSettingsColors *					m_pColorsPage;
+    CSettingsColors2 *					m_pColorsPage2;
+    CSettingsColors3 *					m_pColorsPage3;
+	CSetMisc *							m_pMiscPage;
+	CSetSavedDataPage *					m_pSavedPage;
+	CSetHooks *							m_pHooksPage;
+	CSetBugTraq *						m_pBugTraqPage;
+	CSettingsTBlame *					m_pTBlamePage;
+	CSettingGitConfig *					m_pGitConfig;
+	CSettingGitRemote *					m_pGitRemote;
+	CSettingsBugtraqConfig *			m_pBugtraqConfig;
 
-	CSetExtMenu	*			m_pExtMenu;
+	CSetExtMenu	*						m_pExtMenu;
 
-	HICON					m_hIcon;
+	HICON								m_hIcon;
+
 public:
 	CSettings(UINT nIDCaption,CTGitPath *CmdPath=NULL, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
 	virtual ~CSettings();
-	CTGitPath m_CmdPath;
-	CString m_DefaultPage;
+	CTGitPath	m_CmdPath;
+	CString		m_DefaultPage;
 	/**
 	 * Calls the SaveData()-methods of each of the settings pages.
 	 */
 	void HandleRestart();
+
 protected:
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();

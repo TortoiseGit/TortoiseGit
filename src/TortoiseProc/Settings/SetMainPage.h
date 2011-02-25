@@ -34,7 +34,7 @@ class CSetMainPage : public ISettingsPropPage
 public:
 	CSetMainPage();
 	virtual ~CSetMainPage();
-	
+
 	UINT GetIconID() {return IDI_GENERAL;}
 
 	enum { IDD = IDD_SETTINGSMAIN };
@@ -43,7 +43,19 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-	
+
+	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnApply();
+	afx_msg void OnModified();
+	afx_msg void OnMsysGitPathModify();
+	afx_msg void OnASPHACK();
+	afx_msg void OnBnClickedEditconfig();
+	afx_msg void OnBnClickedChecknewerbutton();
+	afx_msg void OnBnClickedSounds();
+	afx_msg void OnBrowseDir();
+	afx_msg void OnCheck();
+
 	CString GetVersionFromFile(const CString & p_strDateiname);
 
 private:
@@ -61,17 +73,4 @@ private:
 	BOOL			m_bLastCommitTime;
 
 	BOOL			m_bUseDotNetHack;
-
-public:
-	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL OnApply();
-	afx_msg void OnModified();
-	afx_msg void OnMsysGitPathModify();
-	afx_msg void OnASPHACK();
-	afx_msg void OnBnClickedEditconfig();
-	afx_msg void OnBnClickedChecknewerbutton();
-	afx_msg void OnBnClickedSounds();
-	afx_msg void OnBrowseDir();
-	afx_msg void OnCheck();
 };

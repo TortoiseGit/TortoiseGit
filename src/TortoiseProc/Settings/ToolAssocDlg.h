@@ -42,11 +42,12 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+	bool		m_bAdd;
+	CToolTips	m_tooltips;
+	CString		m_sType;
+
 public:
-	CString     m_sType;
-	bool        m_bAdd;
 	CString		m_sExtension;
 	CString		m_sTool;
-	CToolTips	m_tooltips;
 };
 

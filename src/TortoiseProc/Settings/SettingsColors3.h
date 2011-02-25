@@ -44,8 +44,8 @@ protected:
 	virtual BOOL OnApply();
 
 	DECLARE_MESSAGE_MAP()
+
 private:
-	CMFCColorButton m_cLine[8];
+	CMFCColorButton	m_cLine[8];
 	CColors			m_Colors;
-public:
 };

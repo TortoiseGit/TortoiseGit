@@ -83,5 +83,4 @@ private:
 	DWORD			m_dwCacheType;
 
 	BOOL			m_bModified;
-public:
 };
