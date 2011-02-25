@@ -6,6 +6,7 @@
 == Bug Fix ==
  * Fixed tab indices (activation order)
  * Fixed missing putty-key for deleting a remote branch
+ * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
 
 = Release 1.6.5.0 =
 == Bug Fix ==
