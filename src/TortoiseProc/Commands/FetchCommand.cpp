@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,110 +18,13 @@
 //
 #include "StdAfx.h"
 #include "FetchCommand.h"
-
-//#include "SVNProgressDlg.h"
-#include "StringUtils.h"
-#include "Hooks.h"
-#include "MessageBox.h"
-#include "PullFetchDlg.h"
-#include "ProgressDlg.h"
 #include "AppUtils.h"
-#include "RebaseDlg.h"
 
 bool FetchCommand::Execute()
 {
-	CPullFetchDlg dlg;
-	dlg.m_IsPull=FALSE;
+	bool autoClose = false;
+	if (parser.HasVal(_T("closeonend")))
+		autoClose = !!parser.GetLongVal(_T("closeonend"));
 
-	if(dlg.DoModal()==IDOK)
-	{
-		if(dlg.m_bAutoLoad)
-		{
-			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
-		}
-
-		CString url;
-		url=dlg.m_RemoteURL;
-		CString cmd;
-		CString arg;
-
-		int ver = CAppUtils::GetMsysgitVersion();
-		
-		if(ver >= 0x01070203) //above 1.7.0.2
-			arg = _T("--progress ");
-
-		if (dlg.m_bPrune) {
-			arg += _T("--prune ");
-		}
-
-		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
-		CProgressDlg progress;
-
-		if (parser.HasVal(_T("closeonend")))
-			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
-
-		if(!dlg.m_bRebase)
-		{
-			progress.m_PostCmdList.Add(_T("&Rebase"));
-		}
-
-		progress.m_GitCmd=cmd;
-		int userResponse=progress.DoModal();
-
-		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
-		{
-			while(1)
-			{
-				CRebaseDlg dlg;
-				dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
-				dlg.m_PostButtonTexts.Add(_T("Restart Rebase"));
-				int response = dlg.DoModal();
-				if(response == IDOK)
-				{
-					return TRUE;
-				}
-				if(response == IDC_REBASE_POST_BUTTON ) 
-				{
-					CString cmd,out;
-					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
-						g_Git.m_CurrentDir,
-						dlg.m_Upstream,dlg.m_Branch);
-					if(g_Git.Run(cmd,&out,CP_ACP))
-					{
-						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-						return FALSE;
-					}
-
-					CAppUtils::SendPatchMail(cmd,out);
-					return TRUE;
-				}
-				
-				if(response == IDC_REBASE_POST_BUTTON +1 )
-					continue;
-
-				if(response == IDCANCEL)
-					return FALSE;
-			}
-			return TRUE;
-		}
-	}
-#if 0
-	CCloneDlg dlg;
-	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
-	if(dlg.DoModal()==IDOK)
-	{
-		CString dir=dlg.m_Directory;
-		CString url=dlg.m_URL;
-		CString cmd;
-		cmd.Format(_T("git.exe clone %s %s"),
-						url,
-						dir);
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-			return TRUE;
-		
-	}
-#endif
-	return FALSE;
+	return CAppUtils::Fetch(_T(""), true, autoClose);
 }

@@ -30,11 +30,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	BOOL        m_IsPull;
+	bool		m_bAllowRebase;
     BOOL        m_bAutoLoad;
 	BOOL		m_bRebase;
 	BOOL		m_bPrune;
     BOOL        m_bAutoLoadEnable;
     CHyperLink  m_RemoteManage;
+	CString		m_PreSelectRemote;
 
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnBnClickedOk();
