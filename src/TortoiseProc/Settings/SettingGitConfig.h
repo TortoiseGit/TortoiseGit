@@ -29,15 +29,18 @@ protected:
 		GIT_EMAIL=0x2,
 		GIT_CRLF=0x4,
 		GIT_SAFECRLF=0x8,
+		GIT_SIGNINGKEY=0x16,
 	};
 	DECLARE_MESSAGE_MAP()
 public:
     CString m_UserName;
     CString m_UserEmail;
+	CString m_UserSigningKey;
     BOOL m_bGlobal;
     afx_msg void OnBnClickedCheckGlobal();
     afx_msg void OnEnChangeGitUsername();
     afx_msg void OnEnChangeGitUseremail();
+	afx_msg void OnEnChangeGitUserSigningKey();
 	BOOL m_bAutoCrlf;
 	BOOL m_bSafeCrLf;
 	afx_msg void OnBnClickedCheckAutocrlf();

@@ -2,6 +2,7 @@
 == Features ==
  * Fixed issue #724: BrowseRefs: Made branch renaming possible.
  * Allow to sign tags
+ * Allow to edit user signingkey in TortoiseGit->Settings->GitConfig
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
