@@ -8,6 +8,7 @@
    * make it work with no attachments
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
+   * auto extract filenames of attachments
 
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
@@ -103,6 +104,18 @@ void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
 {
 	strconv_t strconv;
 	LPCSTR lpszAttachment = strconv.t2a(sAttachment.GetBuffer(0));
+	if (sTitle.IsEmpty())
+	{
+		int position = sAttachment.ReverseFind(_T('\\'));
+		if(position >=0)
+		{
+			sTitle = sAttachment.Mid(position+1);
+		}
+		else
+		{
+			sTitle = sAttachment;
+		}
+	}
 	LPCSTR lpszTitle = strconv.t2a(sTitle.GetBuffer(0));
 	m_attachments[lpszAttachment] = lpszTitle;
 }

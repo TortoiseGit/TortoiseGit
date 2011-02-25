@@ -13,6 +13,7 @@
  * Fixed issue #728: Shell "Diff With Previous" doesn't work when there are more than 2 revisions for that file
  * Fixed 32/64-bit MAPI inconsistency-issues
  * Do not include patch in mail if user selected attachment
+ * Fix attaching of patches to mails with some MAPI clients
 
 = Release 1.6.5.0 =
 == Bug Fix ==
