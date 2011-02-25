@@ -66,7 +66,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
 
-	CString regkey ;
+	m_RemoteReg = CRegString(CString(_T("Software\\TortoiseGit\\History\\PullRemote\\")+WorkingDir));
+	CString regkey;
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase"),WorkingDir,this->m_IsPull);
 	m_regRebase=CRegDWORD(regkey,false);
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\autoload"),WorkingDir,this->m_IsPull);
@@ -129,13 +130,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 void CPullFetchDlg::Refresh()
 {
-	CString WorkingDir=g_Git.m_CurrentDir;
-	WorkingDir.Replace(_T(':'),_T('_'));
-
-	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PullRemote\\")+WorkingDir));
-	this->m_RemoteReg = remote;
-	int sel=0;
-
 	//Select pull-remote from current branch
 	CString currentBranch = g_Git.GetSymbolicRef();
 	CString configName;
@@ -148,13 +142,13 @@ void CPullFetchDlg::Refresh()
 	m_RemoteBranch.AddString(pullBranch);
 
 	if(pullRemote.IsEmpty())
-		pullRemote = remote;
+		pullRemote = m_RemoteReg;
 
 	if (!m_PreSelectRemote.IsEmpty())
 		pullRemote = m_PreSelectRemote;
 
 	STRING_VECTOR list;
-
+	int sel=0;
 	if(!g_Git.GetRemoteList(list))
 	{	
 		for(unsigned int i=0;i<list.size();i++)
