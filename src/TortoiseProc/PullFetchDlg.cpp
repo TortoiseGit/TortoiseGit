@@ -77,7 +77,15 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!CAppUtils::IsSSHPutty())
 		m_bAutoLoad = false;
 
-	this->m_bRebase = m_regRebase;
+	if(m_bAllowRebase)
+	{
+		this->m_bRebase = m_regRebase;
+	}
+	else
+	{
+		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
+		this->m_bRebase = FALSE;
+	}
 
 	this->UpdateData(FALSE);
 
@@ -141,6 +149,9 @@ void CPullFetchDlg::Refresh()
 
 	if(pullRemote.IsEmpty())
 		pullRemote = remote;
+
+	if (!m_PreSelectRemote.IsEmpty())
+		pullRemote = m_PreSelectRemote;
 
 	STRING_VECTOR list;
 
