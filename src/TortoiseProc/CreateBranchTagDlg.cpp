@@ -19,6 +19,7 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
 	m_bIsTag=0;
 	m_bSwitch = 0;	// default switch to checkbox not selected
 	m_bTrack=0;
+	m_bSign=0;
 }
 
 CCreateBranchTagDlg::~CCreateBranchTagDlg()
@@ -35,8 +36,8 @@ void CCreateBranchTagDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
 	DDX_Check(pDX,IDC_CHECK_SWITCH,this->m_bSwitch);
+	DDX_Check(pDX,IDC_CHECK_SIGN,this->m_bSign);
 	DDX_Text(pDX, IDC_EDIT_MESSAGE,this->m_Message);
-
 }
 
 
@@ -91,12 +92,14 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	{
 		this->SetWindowTextW(_T("Create Tag"));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Tag"));
+		this->GetDlgItem(IDC_CHECK_SIGN)->EnableWindow(!g_Git.GetConfigValue(_T("user.signingkey")).IsEmpty());
 	}
 	else
 	{
 		this->SetWindowTextW(_T("Create Branch"));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
 		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(false);
+		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
 	}
 	// show the switch checkbox if we are a create branch dialog
 	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );
@@ -114,6 +117,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	else
 	{
 		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), _T("Force creationg of branch/tag - even if already exists."));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_SIGN), _T("Requires a key without passphrase."));
 		m_ToolTip.Activate(TRUE);
 	}
 
@@ -125,6 +129,12 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 void CCreateBranchTagDlg::OnBnClickedOk()
 {
 	this->UpdateData(TRUE);
+
+	if(this->m_bSign && this->m_Message.IsEmpty())
+	{
+		CMessageBox::Show(NULL, IDS_COMMITDLG_NOMESSAGE, IDS_TORTOISEGIT, MB_OK);
+		return;
+	}
 
 	this->m_BranchTagName.Trim();
 	if(this->m_BranchTagName.IsEmpty()  ||  this->m_BranchTagName.Find(' ') >= 0 )
