@@ -112,9 +112,7 @@ protected:
    LPCMCLOGON     m_lpCmcLogon;                 // Cmc func pointer
    LPCMCSEND      m_lpCmcSend;                  // Cmc func pointer
    LPCMCLOGOFF    m_lpCmcLogoff;                // Cmc func pointer
-   LPMAPILOGON    m_lpMapiLogon;                // Mapi func pointer
    LPMAPISENDMAIL m_lpMapiSendMail;             // Mapi func pointer
-   LPMAPILOGOFF   m_lpMapiLogoff;               // Mapi func pointer
    
    BOOL           m_bReady;                     // MAPI is loaded
    BOOL           m_bShowComposeDialog;

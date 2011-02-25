@@ -4,6 +4,11 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
  
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011
+   * make it work with no attachments
+   * added flag to show mail compose dialog
+   * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
  
@@ -49,9 +54,7 @@ CMailMsg::CMailMsg()
    m_lpCmcLogon         = NULL;
    m_lpCmcSend          = NULL;
    m_lpCmcLogoff        = NULL;
-   m_lpMapiLogon        = NULL;
    m_lpMapiSendMail     = NULL;
-   m_lpMapiLogoff       = NULL;
    m_bReady             = FALSE;
    m_bShowComposeDialog = FALSE;
 }
@@ -168,12 +171,10 @@ BOOL CMailMsg::MAPIInitialize()
    m_lpCmcSend = (LPCMCSEND)::GetProcAddress(m_hMapi, "cmc_send");
    m_lpCmcLogoff = (LPCMCLOGOFF)::GetProcAddress(m_hMapi, "cmc_logoff");
    
-   m_lpMapiLogon = (LPMAPILOGON)::GetProcAddress(m_hMapi, "MAPILogon");
    m_lpMapiSendMail = (LPMAPISENDMAIL)::GetProcAddress(m_hMapi, "MAPISendMail");
-   m_lpMapiLogoff = (LPMAPILOGOFF)::GetProcAddress(m_hMapi, "MAPILogoff");
 
    m_bReady = (m_lpCmcLogon && m_lpCmcSend && m_lpCmcLogoff) ||
-              (m_lpMapiLogon && m_lpMapiSendMail && m_lpMapiLogoff);
+              (m_lpMapiSendMail);
 
    if(!m_bReady)
    {
@@ -219,15 +220,6 @@ BOOL CMailMsg::MAPISend()
 
    if(!m_bReady && !MAPIInitialize())
      return FALSE;
-   
-   LHANDLE hMapiSession = 0;
-   status = m_lpMapiLogon(NULL, NULL, NULL, MAPI_LOGON_UI|MAPI_PASSWORD_UI, NULL, &hMapiSession);
-   if(status!=SUCCESS_SUCCESS)
-   {
-     m_sErrorMsg.Format(_T("MAPILogon has failed with code %X."), status);
-     return FALSE;
-   }
-
 
    pRecipients = new MapiRecipDesc[2];
    if(!pRecipients)
@@ -290,14 +282,12 @@ BOOL CMailMsg::MAPISend()
     message.nFileCount                        = nAttachments;
     message.lpFiles                           = nAttachments ? pAttachments : NULL;
         
-	status = m_lpMapiSendMail(hMapiSession, 0, &message, (m_bShowComposeDialog?MAPI_DIALOG|MAPI_LOGON_UI:0)/*MAPI_DIALOG*/, 0);    
+	status = m_lpMapiSendMail(NULL, 0, &message, (m_bShowComposeDialog?MAPI_DIALOG:0)|MAPI_LOGON_UI, 0);    
 
     if(status!=SUCCESS_SUCCESS)
     {
       m_sErrorMsg.Format(_T("MAPISendMail has failed with code %X."), status);      
     }
-
-    m_lpMapiLogoff(hMapiSession, NULL, 0, 0);
 
     if (pRecipients)
        delete [] pRecipients;
