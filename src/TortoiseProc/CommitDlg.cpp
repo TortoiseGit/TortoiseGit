@@ -1834,7 +1834,7 @@ void CCommitDlg::OnBnClickedSignOff()
 	email.Remove(_T('\n'));
 	str.Format(_T("Signed-off-by: %s <%s>\n"),username,email);
 
-	m_cLogMessage.SetText(m_cLogMessage.GetText()+_T("\r\n\r\n")+str);
+	m_cLogMessage.SetText(m_cLogMessage.GetText().TrimRight()+_T("\r\n\r\n")+str);
 }
 
 void CCommitDlg::OnBnClickedCommitAmend()
