@@ -28,15 +28,17 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	CToolTipCtrl m_ToolTip;
+
 	CHOOSE_EVENT_RADIO();
-	
+
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedRadio();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnCbnSelchangeComboboxexBranch();
-	
+
 	virtual void OnVersionChanged();
 	afx_msg void OnDestroy();
 };
