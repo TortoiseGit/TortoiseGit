@@ -113,6 +113,12 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 {
 	this->UpdateData(TRUE);
 
+	if(this->m_bSign && this->m_Message.IsEmpty())
+	{
+		CMessageBox::Show(NULL, IDS_COMMITDLG_NOMESSAGE, IDS_TORTOISEGIT, MB_OK);
+		return;
+	}
+
 	this->m_BranchTagName.Trim();
 	if(this->m_BranchTagName.IsEmpty()  ||  this->m_BranchTagName.Find(' ') >= 0 )
 	{
