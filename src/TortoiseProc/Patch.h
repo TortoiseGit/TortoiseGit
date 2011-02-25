@@ -29,5 +29,8 @@ public:
 	CString m_PathFile;
 	CStringA m_Body;
 	CString m_strBody;
+
+private:
 	void ConvertToArray(CString &to, CStringArray &Array);
+	static int SendMail(CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext);
 };

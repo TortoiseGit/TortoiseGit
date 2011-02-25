@@ -10,13 +10,10 @@
 
 CPatch::CPatch()
 {
-	
 }
 
 CPatch::~CPatch()
 {
-	
-
 }
 
 void CPatch::ConvertToArray(CString &to,CStringArray &Array)
@@ -32,7 +29,7 @@ void CPatch::ConvertToArray(CString &to,CStringArray &Array)
 
 int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, bool useMAPI)
 {
-	if(this->Parser(pathfile)	)
+	if(this->Parser(pathfile))
 		return -1;
 
 	CStringArray attachments;
@@ -41,85 +38,12 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, boo
 		attachments.Add(pathfile);
 	}
 
-	CString sender;
-	sender.Format(_T("%s <%s> "),g_Git.GetUserName(),g_Git.GetUserEmail());
-
-	if (useMAPI)
-	{
-		CMailMsg mapiSender;
-		BOOL bMAPIInit = mapiSender.MAPIInitialize();
-		if(!bMAPIInit)
-		{
-			m_LastError = mapiSender.GetLastErrorMsg();
-			return -1;
-		}
-
-		mapiSender.SetShowComposeDialog(TRUE);
-		mapiSender.SetFrom(g_Git.GetUserEmail());
-		mapiSender.SetTo(TO);
-		mapiSender.SetSubject(m_Subject);
-		mapiSender.SetMessage(m_strBody);
-		if(bAttachment)
-			mapiSender.AddAttachment(pathfile);
-
-		BOOL bSend = mapiSender.Send();
-		if (bSend==TRUE)
-			return 0;
-		else
-		{
-			m_LastError = mapiSender.GetLastErrorMsg();
-			return -1;
-		}
-	}
-	else
-	{
-		CHwSMTP mail;	
-		if(mail.SendSpeedEmail(this->m_Author,TO,this->m_Subject,this->m_strBody,NULL,&attachments,CC,25,sender))
-			return 0;
-		else
-		{
-			this->m_LastError=mail.GetLastErrorText();
-			return -1;
-		}
-	}
-#if 0
-	CRegString server(REG_SMTP_SERVER);
-	CRegDWORD  port(REG_SMTP_PORT,25);
-	CRegDWORD  bAuth(REG_SMTP_ISAUTH);
-	CRegString  user(REG_SMTP_USER);
-	CRegString  password(REG_SMTP_PASSWORD);
-
-	mail.SetSMTPServer(CUnicodeUtils::GetUTF8(server),port);
-
-	AddRecipient(mail,TO,false);
-	AddRecipient(mail,CC,true);
-
-	if( bAttachment )
-		mail.AddAttachment(CUnicodeUtils::GetUTF8(pathfile));
-
-	CString name,address;
-	GetNameAddress(this->m_Author,name,address);
-	mail.SetSenderName(CUnicodeUtils::GetUTF8(name));
-	mail.SetSenderMail(CUnicodeUtils::GetUTF8(address));
-
-	mail.SetXPriority(XPRIORITY_NORMAL);
-	mail.SetXMailer("The Bat! (v3.02) Professional");
-
-	mail.SetSubject(CUnicodeUtils::GetUTF8(this->m_Subject));
-
-	mail.SetMessageBody((char*)&this->m_Body[0]);
-
-	if(bAuth)
-	{
-		mail.SetLogin(CUnicodeUtils::GetUTF8((CString&)user));
-		mail.SetPassword(CUnicodeUtils::GetUTF8((CString&)password));
-	}
-
-	return !mail.Send();
-#endif
-
-
+	CString errortext = _T("");
+	int ret = SendMail(TO, CC, this->m_Subject, this->m_strBody, attachments, useMAPI, &errortext);
+	this->m_LastError=errortext;
+	return ret;
 }
+
 int CPatch::SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext)
 {
 	CStringArray attachments;
@@ -140,9 +64,13 @@ int CPatch::SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CSt
 		}
 
 	}
+	return SendMail(To, CC, subject, body, attachments, useMAPI, errortext);
+}
 
+int CPatch::SendMail(CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext)
+{
 	CString sender;
-	sender.Format(_T("%s <%s> "),g_Git.GetUserName(),g_Git.GetUserEmail());
+	sender.Format(_T("%s <%s>"), g_Git.GetUserName(), g_Git.GetUserEmail());
 
 	if (useMAPI)
 	{
