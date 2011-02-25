@@ -527,6 +527,12 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 				return false;
 			CString remoteName = branchToDelete.Left(slash);
 			CString remoteBranchToDelete = branchToDelete.Mid(slash + 1);
+
+			if(CAppUtils::IsSSHPutty())
+			{
+				CAppUtils::LaunchPAgent(NULL, &remoteName);
+			}
+
 			cmd.Format(L"git.exe push \"%s\" :%s", remoteName, remoteBranchToDelete);
 		}
 		else

@@ -5,6 +5,7 @@
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
+ * Fixed missing putty-key for deleting a remote branch
 
 = Release 1.6.5.0 =
 == Bug Fix ==
