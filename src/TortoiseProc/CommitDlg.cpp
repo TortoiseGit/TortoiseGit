@@ -1832,18 +1832,20 @@ void CCommitDlg::OnBnClickedSignOff()
 	email=g_Git.GetUserEmail();
 	username.Remove(_T('\n'));
 	email.Remove(_T('\n'));
-	str.Format(_T("Signed-off-by: %s <%s>\n"),username,email);
+	str.Format(_T("Signed-off-by: %s <%s>"),username,email);
 
-	m_cLogMessage.SetText(m_cLogMessage.GetText().TrimRight());
-	int lastNewline = m_cLogMessage.GetText().ReverseFind(_T('\n'));
-	int foundByLine = -1;
-	if (lastNewline > 0)
-		foundByLine = m_cLogMessage.GetText().Find(_T("-by: "), lastNewline);
+	if (m_cLogMessage.GetText().Find(str) == -1) {
+		m_cLogMessage.SetText(m_cLogMessage.GetText().TrimRight());
+		int lastNewline = m_cLogMessage.GetText().ReverseFind(_T('\n'));
+		int foundByLine = -1;
+		if (lastNewline > 0)
+			foundByLine = m_cLogMessage.GetText().Find(_T("-by: "), lastNewline);
 
-	if (foundByLine == -1 || foundByLine < lastNewline)
-		str = _T("\r\n") + str;
+		if (foundByLine == -1 || foundByLine < lastNewline)
+			str = _T("\r\n") + str;
 
-	m_cLogMessage.SetText(m_cLogMessage.GetText()+_T("\r\n")+str);
+		m_cLogMessage.SetText(m_cLogMessage.GetText()+_T("\r\n")+str+_T("\r\n"));
+	}
 }
 
 void CCommitDlg::OnBnClickedCommitAmend()
