@@ -2744,7 +2744,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		int retry=0;
 		while(retry <3)
 		{
-			if(!!CPatch::Send(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,!!this->m_SendMailFlags&SENDMAIL_ATTACHMENT,!!(this->m_SendMailFlags&SENDMAIL_MAPI),&err))
+			if(!!CPatch::SendPatchesCombined(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,!!this->m_SendMailFlags&SENDMAIL_ATTACHMENT,!!(this->m_SendMailFlags&SENDMAIL_MAPI),&err))
 			{
 				Notify(path,git_wc_notify_sendmail_error,ret,&err);
 				ret = false;

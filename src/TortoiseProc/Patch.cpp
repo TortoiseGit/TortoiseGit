@@ -120,7 +120,7 @@ int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, boo
 
 
 }
-int CPatch::Send(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext)
+int CPatch::SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext)
 {
 	CStringArray attachments;
 	CString body;
