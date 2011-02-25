@@ -2139,9 +2139,11 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	return 0;
 }
 
-BOOL CAppUtils::Fetch(bool autoClose)
+BOOL CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 {
 	CPullFetchDlg dlg;
+	dlg.m_PreSelectRemote = remoteName;
+	dlg.m_bAllowRebase = allowRebase;
 	dlg.m_IsPull=FALSE;
 
 	if(dlg.DoModal()==IDOK)

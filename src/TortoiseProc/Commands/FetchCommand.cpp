@@ -26,5 +26,5 @@ bool FetchCommand::Execute()
 	if (parser.HasVal(_T("closeonend")))
 		autoClose = !!parser.GetLongVal(_T("closeonend"));
 
-	return CAppUtils::Fetch(autoClose);
+	return CAppUtils::Fetch(_T(""), true, autoClose);
 }
