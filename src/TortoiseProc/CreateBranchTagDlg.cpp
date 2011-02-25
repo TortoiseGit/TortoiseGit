@@ -99,7 +99,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 		this->SetWindowTextW(_T("Create Branch"));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
 		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(false);
-		this->GetDlgItem(IDC_CHECK_SIGN)->EnableWindow(false);
+		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
 	}
 	// show the switch checkbox if we are a create branch dialog
 	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );
