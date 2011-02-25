@@ -20,7 +20,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
-    BOOL OnApply();
+	BOOL OnApply();
 	
 	int m_ChangeMask;
 	enum
@@ -32,12 +32,12 @@ protected:
 	};
 	DECLARE_MESSAGE_MAP()
 public:
-    CString m_UserName;
-    CString m_UserEmail;
-    BOOL m_bGlobal;
-    afx_msg void OnBnClickedCheckGlobal();
-    afx_msg void OnEnChangeGitUsername();
-    afx_msg void OnEnChangeGitUseremail();
+	CString m_UserName;
+	CString m_UserEmail;
+	BOOL m_bGlobal;
+	afx_msg void OnBnClickedCheckGlobal();
+	afx_msg void OnEnChangeGitUsername();
+	afx_msg void OnEnChangeGitUseremail();
 	BOOL m_bAutoCrlf;
 	BOOL m_bSafeCrLf;
 	afx_msg void OnBnClickedCheckAutocrlf();

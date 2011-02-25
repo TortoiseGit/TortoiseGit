@@ -186,9 +186,9 @@ public:
 	static int	StashApply(CString ref);
 	static int	StashPop();
 
-    static bool IsSSHPutty();
+	static bool IsSSHPutty();
 
-    static bool LaunchRemoteSetting();
+	static bool LaunchRemoteSetting();
 
 	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
 

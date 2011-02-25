@@ -115,7 +115,7 @@ BOOL CSettingGitConfig::OnApply()
 		}
 	
 	if(m_ChangeMask&GIT_EMAIL)
-		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))	
+		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
 		{
 			CMessageBox::Show(NULL,_T("Fail to save user email"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
