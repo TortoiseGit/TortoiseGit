@@ -89,7 +89,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
+
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 
@@ -122,7 +122,6 @@ private:
 	int				m_currSortCol;
 	bool			m_currSortDesc;
 	afx_msg void OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult);
-public:
 
 	afx_msg void OnContextMenu(CWnd* pWndFrom, CPoint point);
 
@@ -138,12 +137,11 @@ public:
 	afx_msg void OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 
-
-public:
 	CString m_initialRef;
 	int		m_pickRef_Kind;
 	CString m_pickedRef;
 
+public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All); 
 	static bool		PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind = gPickRef_All); 
 };

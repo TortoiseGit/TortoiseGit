@@ -95,7 +95,6 @@ protected:
 
 	CMenuButton m_PostButton;
 
-public:
 	afx_msg void OnBnClickedPickAll();
 	afx_msg void OnBnClickedSquashAll();
 	afx_msg void OnBnClickedEditAll();
@@ -106,35 +105,37 @@ public:
 	afx_msg void OnBnClickedContinue();
 	afx_msg void OnBnClickedAbort();
 
-	CProgressCtrl m_ProgressBar;
-	CStatic m_CtrlStatusText;
-	CBalloon m_tooltips;
+	CProgressCtrl		m_ProgressBar;
+	CStatic				m_CtrlStatusText;
+	CBalloon			m_tooltips;
 
-	CString m_PreCmd;
+	CString				m_PreCmd;
 
-	BOOL m_bPickAll;
-	BOOL m_bSquashAll;
-	BOOL m_bEditAll;
+	BOOL				m_bPickAll;
+	BOOL				m_bSquashAll;
+	BOOL				m_bEditAll;
 
-	BOOL m_bForce;
-	CStringArray m_PostButtonTexts;
+	BOOL				m_bForce;
 
+public:
+	CStringArray		m_PostButtonTexts;
+	CGitLogList			m_CommitList;
+
+	CString				m_Upstream;
+	CString				m_Branch;
+
+	BOOL				m_IsCherryPick;
+
+protected:
 	CSplitterControl	m_wndSplitter;
-	CMFCTabCtrl m_ctrlTabCtrl;
-	CGitStatusListCtrl m_FileListCtrl;
-	CSciEdit m_LogMessageCtrl;
+	CMFCTabCtrl			m_ctrlTabCtrl;
+	CGitStatusListCtrl	m_FileListCtrl;
+	CSciEdit			m_LogMessageCtrl;
 
-	CGitLogList		m_CommitList;
+	CHistoryCombo		m_BranchCtrl;
+	CHistoryCombo		m_UpstreamCtrl;
 
-	CHistoryCombo	m_BranchCtrl;
-	CHistoryCombo	m_UpstreamCtrl;
-
-	CString			m_Upstream;
-	CString			m_Branch;
-
-	BOOL			m_IsCherryPick;
-
-	REBASE_STAGE	m_RebaseStage;
+	REBASE_STAGE		m_RebaseStage;
 
 	void AddBranchToolTips(CHistoryCombo *pBranch);
 	void AddLogString(CString str);

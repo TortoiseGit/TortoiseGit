@@ -31,19 +31,20 @@ class CSVNDCommitDlg : public CStandAloneDialog
 public:
 	CSVNDCommitDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CSVNDCommitDlg();
-	
-	virtual BOOL OnInitDialog();
+
 // Dialog Data
 	enum { IDD = IDD_SVNDCOMMITTYPE };
 
 protected:
+	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
-	BOOL m_rmdir;
-	BOOL m_remember;
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedHelp();
+
+public:
+	BOOL m_rmdir;
+	BOOL m_remember;
 };
