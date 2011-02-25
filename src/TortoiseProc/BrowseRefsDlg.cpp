@@ -755,11 +755,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_Fetch:
 		{
-			CString cmd;
-			cmd.Format(_T("git.exe fetch %s"), remoteName);
-			CProgressDlg progress;
-			progress.m_GitCmd=cmd;
-			progress.DoModal();
+			CAppUtils::Fetch(remoteName);
 			Refresh();
 		}
 		break;
