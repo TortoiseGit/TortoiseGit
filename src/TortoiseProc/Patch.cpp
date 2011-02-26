@@ -137,15 +137,16 @@ int CPatch::Parser(CString &pathfile)
 #if 0
 	int i=0;
 	while(i<4)
-	{   PatchFile.ReadString(str);
+	{
+		PatchFile.ReadString(str);
 		if(i==1)
 			this->m_Author=str.Right( str.GetLength() - 6 );
 		if(i==2)
 			this->m_Date = str.Right( str.GetLength() - 6 );
 		if(i==3)
 			this->m_Subject = str.Right( str.GetLength() - 8 );
-		
-		i++;		
+
+		i++;
 	}
 
 	LONGLONG offset=PatchFile.GetPosition();
@@ -171,9 +172,9 @@ int CPatch::Parser(CString &pathfile)
 		g_Git.StringAppend(&m_Subject,(BYTE*)one.GetBuffer()+9,CP_ACP,one.GetLength()-9);
 
 	//one=m_Body.Tokenize("\n",start);
-	
+
 	g_Git.StringAppend(&m_strBody,(BYTE*)m_Body.GetBuffer()+start+1,CP_ACP,m_Body.GetLength()-start-1);
-	
+
 	return 0;
 }
 
@@ -191,37 +192,4 @@ void CPatch::GetNameAddress(CString &in, CString &name,CString &address)
 	else
 		address=in;
 }
-#if 0
-void CPatch::AddRecipient(CSmtp &mail, CString &tolist, bool isCC)
-{
-	int pos=0;
-	while(pos>=0)
-	{
-		CString one=tolist.Tokenize(_T(";"),pos);
-		int start=one.Find(_T('<'));
-		int end = one.Find(_T('>'));
-		CStringA name;
-		CStringA address;
-		if( start>=0 && end >=0)
-		{
-			name=CUnicodeUtils::GetUTF8(one.Left(start));
-			address=CUnicodeUtils::GetUTF8(one.Mid(start+1,end-start-1));
-			if(address.IsEmpty())
-				continue;
-			if(isCC)
-				mail.AddCCRecipient(address,name);
-			else
-				mail.AddRecipient(address,name);
 
-		}else
-		{
-			if(one.IsEmpty())
-				continue;
-			if(isCC)
-				mail.AddCCRecipient(CUnicodeUtils::GetUTF8(one));
-			else
-				mail.AddRecipient(CUnicodeUtils::GetUTF8(one));
-		}
-	}
-}
-#endif

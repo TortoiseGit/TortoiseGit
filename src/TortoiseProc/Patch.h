@@ -12,23 +12,23 @@
 class CPatch
 {
 protected:
-//	void AddRecipient(CSmtp &mail, CString &tolist, bool isCC= FALSE);
 	void GetNameAddress(CString &in, CString &name,CString &address);
+
 public:
 	CPatch();
 	~CPatch(void);
 	int Parser(CString &pathfile);
 	int Send(CString &pathfile,CString &To, CString &CC,bool bAttachment, bool useMAPI);
-	
+
 	static int SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext);
 
-	CString m_LastError;
-	CString m_Author;
-	CString m_Date;
-	CString m_Subject;
-	CString m_PathFile;
-	CStringA m_Body;
-	CString m_strBody;
+	CString		m_LastError;
+	CString		m_Author;
+	CString		m_Date;
+	CString		m_Subject;
+	CString		m_PathFile;
+	CStringA	m_Body;
+	CString		m_strBody;
 
 private:
 	void ConvertToArray(CString &to, CStringArray &Array);
