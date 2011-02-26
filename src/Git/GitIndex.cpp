@@ -57,6 +57,10 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	BYTE *buffer=NULL,*p;
 	CGitIndex GitIndex;
 
+#ifdef DEBUG
+	m_GitFile = IndexFile;
+#endif
+
 	try
 	{
 		do
@@ -395,7 +399,6 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	__int64 mtime;
 	if( g_Git.GetFileModifyTime(PackRef, &mtime))
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
 		//packed refs is not existed
 		this->m_PackRefFile.Empty();
 		this->m_PackRefMap.clear();
@@ -407,15 +410,12 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 
 	}else
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
 		this->m_PackRefFile = PackRef;
 		this->m_LastModifyTimePackRef = mtime;
 	}
 
 	int ret =0;
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
-
 		this->m_PackRefMap.clear();
 	
 		HANDLE hfile = CreateFile(PackRef,
@@ -525,8 +525,6 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 	try
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
-
 		do
 		{
 			hfile = CreateFile(HeadFile,

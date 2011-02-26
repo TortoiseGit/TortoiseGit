@@ -205,8 +205,17 @@ protected:
 	
 public:
 	__time64_t  m_LastModifyTime;
-	
+
+#ifdef DEBUG
+	CString m_GitFile;
+	~CGitIndexList()
+	{
+		TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
+	}
+#endif
+
 	CGitIndexList();
+	
 	int ReadIndex(CString file);
 	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);	
 protected:
@@ -220,14 +229,14 @@ typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
 {
 public:
-	CComCriticalSection			m_critGitDllSec;
+	CComCriticalSection			m_critIndexSec;
 	
-	CGitIndexFileMap() { m_critGitDllSec.Init(); }
-	~CGitIndexFileMap() { m_critGitDllSec.Term(); }
+	CGitIndexFileMap() { m_critIndexSec.Init(); }
+	~CGitIndexFileMap() { m_critIndexSec.Term(); }
 
 	SHARED_INDEX_PTR SafeGet(const CString &path)
 	{
-		CAutoLocker lock(m_critGitDllSec);
+		CAutoLocker lock(m_critIndexSec);
 		if(this->find(path) == end())
 			return SHARED_INDEX_PTR();
 		else
@@ -236,7 +245,7 @@ public:
 
 	void SafeSet(const CString &path, SHARED_INDEX_PTR ptr)
 	{
-		CAutoLocker lock(m_critGitDllSec);
+		CAutoLocker lock(m_critIndexSec);
 		(*this)[path] = ptr;
 	}
 
@@ -274,6 +283,9 @@ public:
 	int			m_Flags;
 };
 
+/* After object create, never change field agains 
+ * that needn't lock to get field
+*/
 class CGitHeadFileList:public std::vector<CGitTreeItem>
 {
 private:
@@ -281,7 +293,6 @@ private:
 	int GetPackRef(const CString &gitdir);
 
 public:
-	std::map<CString,int> m_Map;
 	__time64_t  m_LastModifyTimeHead;
 	__time64_t  m_LastModifyTimeRef;
 	__time64_t	m_LastModifyTimePackRef;
@@ -292,10 +303,6 @@ public:
 	CString		m_Gitdir;
 	CString		m_PackRefFile;
 
-	SharedMutex	m_SharedMutex;
-
-	std::map<CString,CGitHash> m_PackRefMap;
-
 	CGitHash	m_TreeHash; /* buffered tree hash value */
 
 	CGitHeadFileList()
@@ -305,26 +312,53 @@ public:
 		m_LastModifyTimePackRef = 0;
 	}
 
+#ifdef DEBUG
+	CString m_GitFile;
+	~CGitHeadFileList()
+	{
+		TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
+	}
+#endif
+
 	int ReadHeadHash(CString gitdir);
-	bool CheckHeadUpdate();
+	bool CheckHeadUpdate(bool loaded=false);
 
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
 	int ReadTree();
 };
 
+typedef std::tr1::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
 class CGitHeadFileMap:public std::map<CString,CGitHeadFileList> 
 {
 public:
 
-	SharedMutex  m_SharedMutex;
+	CComCriticalSection			m_critTreeSec;
+	
+	CGitHeadFileMap() { m_critTreeSec.Init(); }
+	~CGitHeadFileMap() { m_critTreeSec.Term(); }
 
-	CGitHeadFileMap(){ m_SharedMutex.Init(); }
-	~CGitHeadFileMap() { m_SharedMutex.Release(); }
+	SHARED_TREE_PTR SafeGet(const CString &path)
+	{
+		CAutoLocker lock(m_critTreeSec);
+		if(this->find(path) == end())
+			return SHARED_INDEX_PTR();
+		else
+			return (*this)[path];
+	}
 
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	void SafeSet(const CString &path, SHARED_TREE_PTR ptr)
+	{
+		CAutoLocker lock(m_critTreeSec);
+		(*this)[path] = ptr;
+	}
+
+	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
+						FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,
+						bool isLoaded=false);
 	int CheckHeadUpdate(const CString &gitdir);
 	int GetHeadHash(const CString &gitdir, CGitHash &hash);
 
+#if 0
 	bool IsHashChanged(const CString &gitdir)
 	{
 		CAutoReadLock lock(&m_SharedMutex);
@@ -334,6 +368,7 @@ public:
 		CAutoReadLock lock1(&(*this).m_SharedMutex);
 		return (*this)[gitdir].m_Head != (*this)[gitdir].m_TreeHash;
 	}
+#endif
 };
 
 
