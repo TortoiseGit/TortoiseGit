@@ -1130,9 +1130,11 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					// handle special cases (sub menus)
 					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
 					{
-						InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags);
-						bMenuEntryAdded = true;
-						bMenuEmpty = false;
+						if(InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
+						{
+							bMenuEntryAdded = true;
+							bMenuEmpty = false;
+						}
 					}
 					else
 					{
@@ -1152,6 +1154,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 						{
 							bMenuEntryAdded = true;
 							bMenuEmpty = false;
+							bAddSeparator = false;
 						}
 					}
 				}
@@ -2304,7 +2307,7 @@ bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 	return false;
 }
 
-void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags)
+bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags)
 {
 	HMENU ignoresubmenu = NULL;
 	int indexignoresub = 0;
@@ -2312,7 +2315,7 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	TCHAR maskbuf[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
 	TCHAR ignorepath[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
 	if (files_.size() == 0 || (files_.size() == 1 && g_GitAdminDir.GetGitTopDir(folder_.c_str()) == folder_.c_str()))
-		return;
+		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
 
 	std::vector<stdstring>::iterator I = files_.begin();
@@ -2519,6 +2522,7 @@ void CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			myIDMap[idCmd++] = ShellMenuIgnoreSub;
 		}
 	}
+	return bShowIgnoreMenu;
 }
 
 HBITMAP CShellExt::IconToBitmapPARGB32(UINT uIcon)
