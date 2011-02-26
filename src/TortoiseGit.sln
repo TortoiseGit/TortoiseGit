@@ -162,6 +162,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cache", "..\test\Cache\Cach
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "touch", "touch\touch.vcproj", "{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit2", "..\ext\libgit2\libgit2.vcproj", "{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		debug_static|Mixed Platforms = debug_static|Mixed Platforms
@@ -2441,6 +2443,66 @@ Global
 		{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}.Release|Win32.Build.0 = Release|Win32
 		{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}.Release|x64.ActiveCfg = Release|x64
 		{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}.Release|x64.Build.0 = Release|x64
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.debug_static|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.debug_static|Mixed Platforms.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.debug_static|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.debug_static|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.debug_static|x64.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Debug|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Debug|x64.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Debug|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Debug|x64.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Release|Mixed Platforms.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Release|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL ASM Release|x64.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Debug|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Debug|x64.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Release|Mixed Platforms.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Release|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.DLL Release|x64.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Debug|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Debug|x64.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Release|Mixed Platforms.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Release|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB ASM Release|x64.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Debug|Win32.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Debug|Win32.Build.0 = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Debug|x64.ActiveCfg = Debug|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Release|Mixed Platforms.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Release|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.LIB Release|x64.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.release_static|Mixed Platforms.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.release_static|Mixed Platforms.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.release_static|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.release_static|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.release_static|x64.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Release|Win32.ActiveCfg = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Release|Win32.Build.0 = Release|Win32
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2452,5 +2514,6 @@ Global
 		{F6DEC8C3-B803-4A86-8848-430F08B499E3} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
 		{4F0A55DE-DAFD-4A0B-A03D-2C14CB77E08F} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
 		{603B8D8B-240E-4B18-A750-CC3F7E301C76} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
+		{2B4F366C-93BA-491E-87AF-5EF7B37F75F7} = {2CB340C3-B2ED-46F4-981E-847747E0A3BF}
 	EndGlobalSection
 EndGlobal
