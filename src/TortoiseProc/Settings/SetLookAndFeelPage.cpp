@@ -194,6 +194,8 @@ BOOL CSetLookAndFeelPage::OnApply()
 	Store (m_bHideMenus, m_regHideMenus);
 	Store (m_sNoContextPaths, m_regNoContextPaths);
 
+	m_sNoContextPaths.Replace(_T("\n"), _T("\r\n"))
+
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
