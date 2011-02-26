@@ -16,6 +16,7 @@
  * Do not include patch in mail if user selected attachment
  * Fix attaching of patches to mails with some MAPI clients
  * Fixed sending patches combined in one mail w/o attachments (files were always attached)
+ * Make change setting "hide TGit menu" work
 
 = Release 1.6.5.0 =
 == Bug Fix ==

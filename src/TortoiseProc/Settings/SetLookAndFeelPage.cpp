@@ -97,7 +97,7 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	m_topmenu = unsigned __int64(DWORD(m_regTopmenuhigh))<<32;
 	m_topmenu |= unsigned __int64(DWORD(m_regTopmenu));
 
-	m_regHideMenus = CRegDWORD(_T("Software\\TortoiseSVN\\HideMenusForUnversionedItems"), FALSE);
+	m_regHideMenus = CRegDWORD(_T("Software\\TortoiseGit\\HideMenusForUnversionedItems"), FALSE);
 	m_bHideMenus = m_regHideMenus;
 
 	m_regNoContextPaths = CRegString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
