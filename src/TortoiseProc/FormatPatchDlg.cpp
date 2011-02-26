@@ -187,10 +187,14 @@ void CFormatPatchDlg::OnBnClickedRadio()
 	m_cNum.EnableWindow(FALSE);
 	m_cFrom.EnableWindow(FALSE);
 	m_cTo.EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_REF)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_FROM)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BUTTON_TO)->EnableWindow(FALSE);
 	switch(radio)
 	{
 	case IDC_RADIO_SINCE:
 		m_cSince.EnableWindow(TRUE);
+		GetDlgItem(IDC_BUTTON_REF)->EnableWindow(TRUE);
 		break;
 	case IDC_RADIO_NUM:
 		m_cNum.EnableWindow(TRUE);
@@ -198,6 +202,9 @@ void CFormatPatchDlg::OnBnClickedRadio()
 	case IDC_RADIO_RANGE:
 		m_cFrom.EnableWindow(TRUE);
 		m_cTo.EnableWindow(TRUE);
+		GetDlgItem(IDC_BUTTON_FROM)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BUTTON_TO)->EnableWindow(TRUE);
+		break;
 	}
 }
 

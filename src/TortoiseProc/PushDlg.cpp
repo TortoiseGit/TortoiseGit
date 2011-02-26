@@ -192,11 +192,13 @@ void CPushDlg::OnBnClickedRd()
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_REMOTE)
 	{
 		m_Remote.EnableWindow(TRUE);
-		m_RemoteURL.EnableWindow(FALSE);;
+		GetDlgItem(IDC_REMOTE_MANAGE)->EnableWindow(TRUE);
+		m_RemoteURL.EnableWindow(FALSE);
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
 	{
 		m_Remote.EnableWindow(FALSE);
+		GetDlgItem(IDC_REMOTE_MANAGE)->EnableWindow(FALSE);
 		m_RemoteURL.EnableWindow(TRUE);
 	}
 }

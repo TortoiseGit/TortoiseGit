@@ -33,6 +33,8 @@ protected:
 		this->m_ChooseVersioinTags.EnableWindow(FALSE);
 		this->m_ChooseVersioinBranch.EnableWindow(FALSE);
 		this->m_ChooseVersioinVersion.EnableWindow(FALSE);
+		m_pWin->GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
+		m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(FALSE);
 		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
 		switch (radio)
 		{
@@ -40,12 +42,14 @@ protected:
 			break;
 		case IDC_RADIO_BRANCH:
 			this->m_ChooseVersioinBranch.EnableWindow(TRUE);
+			m_pWin->GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(TRUE);
 			break;
 		case IDC_RADIO_TAGS:
 			this->m_ChooseVersioinTags.EnableWindow(TRUE);
 			break;
 		case IDC_RADIO_VERSION:
 			this->m_ChooseVersioinVersion.EnableWindow(TRUE);
+			m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(TRUE);
 		break;
 		}
 		// enable version browse button if Version is selected
