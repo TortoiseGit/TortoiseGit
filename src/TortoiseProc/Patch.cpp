@@ -167,8 +167,8 @@ int CPatch::Parser(CString &pathfile)
 		g_Git.StringAppend(&m_Date,(BYTE*)one.GetBuffer()+6,CP_ACP,one.GetLength()-6);
 
 	one=m_Body.Tokenize("\n",start);
-	if(one.GetLength()>8)
-		g_Git.StringAppend(&m_Subject,(BYTE*)one.GetBuffer()+8,CP_ACP,one.GetLength()-8);
+	if(one.GetLength()>9)
+		g_Git.StringAppend(&m_Subject,(BYTE*)one.GetBuffer()+9,CP_ACP,one.GetLength()-9);
 
 	//one=m_Body.Tokenize("\n",start);
 	
