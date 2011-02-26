@@ -117,7 +117,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	else
 	{
 		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), _T("Force creationg of branch/tag - even if already exists."));
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_SIGN), _T("Requires a key without passphrase."));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_SIGN), _T("Requires GPG and a key without passphrase."));
 		m_ToolTip.Activate(TRUE);
 	}
 
