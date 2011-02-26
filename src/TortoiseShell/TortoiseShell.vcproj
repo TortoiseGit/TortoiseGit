@@ -607,10 +607,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Utils\MiscUI\ProgressDlg.h"
-				>
-			</File>
-			<File
 				RelativePath="..\Utils\registry.h"
 				>
 			</File>
