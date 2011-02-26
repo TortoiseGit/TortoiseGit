@@ -91,6 +91,8 @@ int CPatch::SendMail(CString &To, CString &CC, CString &subject, CString &body, 
 		mapiSender.SetShowComposeDialog(TRUE);
 		mapiSender.SetFrom(g_Git.GetUserEmail());
 		mapiSender.SetTo(To);
+		if(!CC.IsEmpty())
+			mapiSender.AddCC(CC);
 		mapiSender.SetSubject(subject);
 		mapiSender.SetMessage(body);
 		for(int i=0; i < attachments.GetSize(); i++)

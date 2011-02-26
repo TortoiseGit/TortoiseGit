@@ -4,6 +4,7 @@
  * Use fetch-dialog for "Fetch" in BrowseRefs
  * Allow to sign tags (requires a key without passphrase)
  * Allow to edit user signingkey in TortoiseGit->Settings->GitConfig
+ * Allow to use CC with MAPI
 
 == Bug Fix ==
  * Fixed tab indices (activation order)

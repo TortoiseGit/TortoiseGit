@@ -9,6 +9,7 @@
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
    * auto extract filenames of attachments
+   * added AddCC
 
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
@@ -99,6 +100,13 @@ void CMailMsg::SetShowComposeDialog(BOOL showComposeDialog)
 {
 	m_bShowComposeDialog = showComposeDialog;
 };
+
+void CMailMsg::AddCC(CString sAddress)
+{
+	strconv_t strconv;
+	LPCSTR lpszAddress = strconv.t2a(sAddress.GetBuffer(0));
+	m_cc.push_back(lpszAddress);
+}
 
 void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
 {
@@ -233,7 +241,7 @@ BOOL CMailMsg::MAPISend()
 	if(!m_bReady && !MAPIInitialize())
 		return FALSE;
 
-	pRecipients = new MapiRecipDesc[2];
+	pRecipients = new MapiRecipDesc[2 + m_cc.size()];
 	if(!pRecipients)
 	{
 		m_sErrorMsg = _T("Error allocating memory");
@@ -267,8 +275,21 @@ BOOL CMailMsg::MAPISend()
 	pRecipients[1].ulEIDSize = 0;
 	pRecipients[1].lpEntryID = NULL;
 
-	// add attachments
+	// add cc receipients
+	nIndex = 2;
+	for(int i=0; i < m_cc.size(); i++)
+	{
+		pRecipients[nIndex].ulReserved = 0;
+		pRecipients[nIndex].ulRecipClass = MAPI_CC;
+		pRecipients[nIndex].lpszAddress = (LPSTR)m_cc.at(i).c_str();
+		pRecipients[nIndex].lpszName = (LPSTR)m_cc.at(i).c_str();
+		pRecipients[nIndex].ulEIDSize = 0;
+		pRecipients[nIndex].lpEntryID = NULL;
+		nIndex++;
+	}
+
 	nIndex=0;
+	// add attachments
 	for (p = m_attachments.begin(), nIndex = 0;
 		p != m_attachments.end(); p++, nIndex++)
 	{
@@ -288,7 +309,7 @@ BOOL CMailMsg::MAPISend()
 	message.lpszConversationID				= NULL;
 	message.flFlags							= 0;
 	message.lpOriginator					= pRecipients;
-	message.nRecipCount						= 1;
+	message.nRecipCount						= 1 + m_cc.size();
 	message.lpRecips						= &pRecipients[1];
 	message.nFileCount						= nAttachments;
 	message.lpFiles							= nAttachments ? pAttachments : NULL;
@@ -324,7 +345,7 @@ BOOL CMailMsg::CMCSend()
 	if (!m_bReady && !MAPIInitialize())
 		return FALSE;
 
-	pRecipients = new CMC_recipient[2];
+	pRecipients = new CMC_recipient[2 + m_cc.size()];
 	pAttachments = new CMC_attachment[m_attachments.size()];
 
 	// set to
@@ -340,8 +361,22 @@ BOOL CMailMsg::CMCSend()
 	pRecipients[nIndex+1].name_type = CMC_TYPE_INDIVIDUAL;
 	pRecipients[nIndex+1].address = (CMC_string)(LPCSTR)m_from.c_str();
 	pRecipients[nIndex+1].role = CMC_ROLE_ORIGINATOR;
-	pRecipients[nIndex+1].recip_flags = CMC_RECIP_LAST_ELEMENT;
+	pRecipients[nIndex+1].recip_flags = 0;
 	pRecipients[nIndex+1].recip_extensions = NULL;
+
+	// add cc receipients
+	nIndex = 2;
+	for(int i=0; i < m_cc.size(); i++)
+	{
+		pRecipients[nIndex].name = (LPSTR)m_cc.at(i).c_str();
+		pRecipients[nIndex].name_type = CMC_TYPE_INDIVIDUAL;
+		pRecipients[nIndex].address = (CMC_string)(LPCSTR)m_cc.at(i).c_str();
+		pRecipients[nIndex].role = CMC_ROLE_CC;
+		pRecipients[nIndex].recip_flags = 0;
+		pRecipients[nIndex].recip_extensions = NULL;
+		nIndex++;
+	}
+	pRecipients[nIndex-1].recip_flags = CMC_RECIP_LAST_ELEMENT;
 
 	// add attachments
 	for (p = m_attachments.begin(), nIndex = 0;

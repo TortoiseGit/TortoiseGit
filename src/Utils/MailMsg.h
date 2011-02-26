@@ -86,6 +86,7 @@ public:
 	void SetSubject(CString sSubject);
 	void SetMessage(CString sMessage);
 	void AddAttachment(CString sAttachment, CString sTitle = _T(""));
+	void AddCC(CString sAddress);
 	void SetShowComposeDialog(BOOL showComposeDialog);
 
 	BOOL MAPIInitialize();
@@ -99,24 +100,25 @@ public:
 	CString GetLastErrorMsg(){ return m_sErrorMsg; }
 
 protected:
-	std::string		m_from;                       // From <address,name>
-	std::string		m_to;                         // To <address,name>
-	TStrStrMap		m_attachments;                // Attachment <file,title>
-	std::string		m_sSubject;                   // EMail subject
-	std::string		m_sMessage;                   // EMail message
+	std::string					m_from;                       // From <address,name>
+	std::string					m_to;                         // To <address,name>
+	TStrStrMap					m_attachments;                // Attachment <file,title>
+	std::vector<std::string>	m_cc;                         // CC receipients
+	std::string					m_sSubject;                   // EMail subject
+	std::string					m_sMessage;                   // EMail message
 
-	HMODULE			m_hMapi;                      // Handle to MAPI32.DLL
-	LPCMCQUERY		m_lpCmcQueryConfiguration;    // Cmc func pointer
-	LPCMCLOGON		m_lpCmcLogon;                 // Cmc func pointer
-	LPCMCSEND		m_lpCmcSend;                  // Cmc func pointer
-	LPCMCLOGOFF		m_lpCmcLogoff;                // Cmc func pointer
-	LPMAPISENDMAIL	m_lpMapiSendMail;             // Mapi func pointer
+	HMODULE						m_hMapi;                      // Handle to MAPI32.DLL
+	LPCMCQUERY					m_lpCmcQueryConfiguration;    // Cmc func pointer
+	LPCMCLOGON					m_lpCmcLogon;                 // Cmc func pointer
+	LPCMCSEND					m_lpCmcSend;                  // Cmc func pointer
+	LPCMCLOGOFF					m_lpCmcLogoff;                // Cmc func pointer
+	LPMAPISENDMAIL				m_lpMapiSendMail;             // Mapi func pointer
 
-	BOOL			m_bReady;                     // MAPI is loaded
-	BOOL			m_bShowComposeDialog;
-	CString			m_sEmailClientName;
+	BOOL						m_bReady;                     // MAPI is loaded
+	BOOL						m_bShowComposeDialog;
+	CString						m_sEmailClientName;
 
-	CString			m_sErrorMsg;
+	CString						m_sErrorMsg;
 };
 
 #endif	// _MAILMSG_H_

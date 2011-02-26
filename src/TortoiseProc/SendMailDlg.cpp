@@ -91,7 +91,6 @@ BOOL CSendMailDlg::OnInitDialog()
 		GetDlgItem(IDC_SENDMAIL_MAPI)->EnableWindow(false);
 		GetDlgItem(IDC_SENDMAIL_MAPI)->SendMessage(BM_SETCHECK, BST_UNCHECKED);
 	}
-	GetDlgItem(IDC_SENDMAIL_CC)->EnableWindow(!m_bUseMAPI);
 
 	m_ctrlCC.Init();
 	m_ctrlTO.Init();
@@ -243,5 +242,4 @@ void CSendMailDlg::OnEnChangeSendmailSubject()
 void CSendMailDlg::OnBnClickedSendmailMapi()
 {
 	this->UpdateData();
-	GetDlgItem(IDC_SENDMAIL_CC)->EnableWindow(!m_bUseMAPI);
 }
