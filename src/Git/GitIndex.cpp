@@ -10,7 +10,7 @@
 #include "gitindex.h"
 #include <sys/types.h> 
 #include <sys/stat.h>
-
+#include "git2.h"
 
 
 #define FILL_DATA() \
@@ -682,7 +682,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	}
 	return false;
 }
-
+#if 0
 int CGitHeadFileList::ReadTree()
 {
 	int ret;
@@ -714,6 +714,7 @@ int CGitHeadFileList::ReadTree()
 	}
 	return ret;
 }
+#endif;
 
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int stage, void *context)
@@ -739,7 +740,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 
 	//p->at(cur).m_FileName.Replace(_T('/'),_T('\\'));
 
-	p->m_Map[p->at(cur).m_FileName]=cur;
+	//p->m_Map[p->at(cur).m_FileName]=cur;
 
 	if( (mode&S_IFMT) == S_IFGITLINK)
 		return 0;
@@ -747,6 +748,41 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	return READ_TREE_RECURSIVE;
 }
 
+int ReadTreeRecurive(git_tree * tree, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *)
+{
+	return 0;
+}
+
+int CGitHeadFileList::ReadTree()
+{
+	CStringA gitdir = CUnicodeUtils::GetMulti(m_Gitdir,CP_ACP) ;
+	git_repository *repository = NULL;
+	git_commit *commit = NULL;
+	git_tree * tree = NULL;
+	int ret =0;
+	do
+	{
+		ret = git_repository_open(&repository, gitdir.GetBuffer());
+		if(ret)
+			break;
+		ret = git_commit_lookup(&commit, repository, (const git_oid*)m_Head.m_hash);
+		if(ret)
+			break;
+		
+		tree = (git_tree*)git_commit_tree(commit);
+		
+		ret = ReadTreeRecurive(tree, CGitHeadFileList::CallBack,this);
+		if(ret)
+			break;
+	
+	}while(0);
+
+	if(repository)
+		git_repository_free(repository);
+	
+	return ret;
+
+}
 int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &file)
 {
 	CAutoWriteLock lock(&this->m_SharedMutex);
@@ -1165,38 +1201,31 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 
 int CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 {
-	m_SharedMutex.AcquireShared();
-	if( find(gitdir) == end())
+	SHARED_TREE_PTR ptr;
+	ptr = this->SafeGet(gitdir);
+
+	if( ptr.get())
 	{
-		m_SharedMutex.ReleaseShared();
-		m_SharedMutex.AcquireExclusive();
-		(*this)[gitdir].m_LastModifyTimeRef = 0; /* Insert new item*/
-		(*this)[gitdir].m_SharedMutex.Init();
-		m_SharedMutex.ReleaseExclusive();
-	}else
-	{
-		m_SharedMutex.ReleaseShared();
+		ptr->CheckHeadUpdate();			
 	}
-
-	m_SharedMutex.AcquireShared();
-	int ret= (*this)[gitdir].CheckHeadUpdate();
-	m_SharedMutex.ReleaseShared();
-
-	return ret;
+	else
+	{
+		SHARED_TREE_PTR ptr1(new CGitHeadFileList);
+		this->SafeSet(gitdir, ptr1);
+	}
+	return 0;
 }
 
 int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 {
-	if(CheckHeadUpdate(gitdir))
-	{
-		CAutoReadLock(&this->m_SharedMutex);
-		(*this)[gitdir].ReadHeadHash(gitdir);
+	SHARED_TREE_PTR ptr;
+	ptr = this->SafeGet(gitdir);
 	
-	}else
-	{
-		CAutoReadLock(&this->m_SharedMutex);
-		hash = (*this)[gitdir].m_Head;
-	}
+	if(ptr->CheckHeadUpdate())
+		ptr->ReadHeadHash(gitdir);
+
+	hash = ptr->m_Head;
+
 	return 0;
 }
 #if 0

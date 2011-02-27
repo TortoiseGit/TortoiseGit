@@ -305,6 +305,8 @@ public:
 
 	CGitHash	m_TreeHash; /* buffered tree hash value */
 
+	std::map<CString,CGitHash> m_PackRefMap;
+
 	CGitHeadFileList()
 	{
 		m_LastModifyTimeHead=0;
@@ -320,15 +322,15 @@ public:
 	}
 #endif
 
-	int ReadHeadHash(CString gitdir);
-	bool CheckHeadUpdate(bool loaded=false);
-
-	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
 	int ReadTree();
+	int ReadHeadHash(CString gitdir);
+	bool CheckHeadUpdate();
+	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
+	//int ReadTree();
 };
 
 typedef std::tr1::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
-class CGitHeadFileMap:public std::map<CString,CGitHeadFileList> 
+class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR> 
 {
 public:
 
@@ -341,7 +343,7 @@ public:
 	{
 		CAutoLocker lock(m_critTreeSec);
 		if(this->find(path) == end())
-			return SHARED_INDEX_PTR();
+			return SHARED_TREE_PTR();
 		else
 			return (*this)[path];
 	}
