@@ -132,21 +132,23 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if(!CheckMsysGitDir())
 	{
-		if(CMessageBox::Show(NULL,_T("MSysGit(http://code.google.com/p/msysgit) have not installed Correctly\n\
-or MSysGit Path setting error\n\
-Click Yes to open setting dialog to setup MSysGit Path"),
-							_T("TortoiseGit"),MB_YESNO|MB_ICONERROR)==IDYES)
+		UINT ret = CMessageBox::Show(NULL,_T("MSysGit (http://code.google.com/p/msysgit/) not found."),
+									_T("TortoiseGit"), 3, IDI_HAND, _T("&Set MSysGit path"), _T("&Goto WebSite"), _T("&Abort"));
+		if(ret == 2)
+		{
+			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
+		}
+		else if(ret == 1)
 		{
 			// open settings dialog
 			CSettings dlg(IDS_PROC_SETTINGS_TITLE);
 			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
 			dlg.SetTreeWidth(220);
-			
+
 			dlg.DoModal();
 			dlg.HandleRestart();
-			return TRUE;
 		}
-		return FALSE;	
+		return FALSE;
 	}
 
 	//set the resource dll for the required language
@@ -161,7 +163,7 @@ Click Yes to open setting dialog to setup MSysGit Path"),
 	do
 	{
 		langDll.Format(_T("..\\Languages\\TortoiseProc%d.dll"), langId);
-		
+
 		hInst = LoadLibrary(langDll);
 
 		CString sVer = _T(STRPRODUCTVER);
