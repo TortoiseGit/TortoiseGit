@@ -28,6 +28,8 @@ IMPLEMENT_DYNAMIC(CSVNDCommitDlg, CStandAloneDialog)
 
 CSVNDCommitDlg::CSVNDCommitDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CSVNDCommitDlg::IDD, pParent)
+	, m_remember(FALSE)
+	, m_rmdir(FALSE)
 {
 }
 
