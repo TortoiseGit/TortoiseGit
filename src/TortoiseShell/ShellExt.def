@@ -1,6 +1,6 @@
 ;shellext.def : Declares the module parameters for the DLL.
 
-LIBRARY      TORTOISESVN
+LIBRARY      TORTOISEGIT
 
 EXPORTS
     DllCanUnloadNow private

@@ -189,7 +189,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalDependencies="Crypt32.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib"
-				OutputFile="$(OutDir)/TortoiseSVN.dll"
+				OutputFile="$(OutDir)/TortoiseGit.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				IgnoreAllDefaultLibraries="false"
@@ -197,11 +197,11 @@
 				ModuleDefinitionFile=".\ShellExt.def"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TortoiseSVN.pdb"
+				ProgramDatabaseFile="$(OutDir)/TortoiseGit.pdb"
 				BaseAddress="0x5960000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseShell\Debug64/TortoiseSVN.lib"
+				ImportLibrary="..\..\obj\TortoiseShell\Debug64/TortoiseGit.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -306,7 +306,7 @@
 				BaseAddress="0x5960000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseShell\Release/TortoiseSVN.lib"
+				ImportLibrary="..\..\obj\TortoiseShell\Release/TortoiseGit.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -408,7 +408,7 @@
 				BaseAddress="0x5960000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseShell\Release64/TortoiseSVN.lib"
+				ImportLibrary="..\..\obj\TortoiseShell\Release64/TortoiseGit.lib"
 				TargetMachine="17"
 			/>
 			<Tool
