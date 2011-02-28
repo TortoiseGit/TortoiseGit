@@ -1,5 +1,7 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
+// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2010-2011 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
