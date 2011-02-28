@@ -191,7 +191,7 @@ protected:
 	CButton			m_ctrlDumyButton;
 	CMenuButton		m_ctrlPull;
 	CMenuButton		m_ctrlPush;
-	CMenuButton		m_ctrlStatus;
+	CStatic			m_ctrlStatus;
 	CMenuButton		m_ctrlSubmodule;
 	CProgressCtrl	m_ctrlProgress;
 	CAnimateCtrl	m_ctrlAnimate;
