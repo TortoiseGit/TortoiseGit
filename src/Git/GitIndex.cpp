@@ -748,8 +748,28 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	return READ_TREE_RECURSIVE;
 }
 
-int ReadTreeRecurive(git_tree * tree, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *)
+int ReadTreeRecurive(git_tree * tree, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
 {
+	size_t count = git_tree_entrycount(tree);
+	for(int i=0; i<count; i++)
+	{
+		git_tree_entry *entry = git_tree_entry_byindex(tree, i);
+		int mode = git_tree_entry_attributes(entry);
+		if( CallBack(git_tree_entry_id(entry)->id,
+			,
+			,
+			git_tree_entry_name(entry),
+			mode,
+			data) == READ_TREE_RECURSIVE
+		  )
+		{
+			git_object *object;
+			git_tree_entry_2object(&object, entry);
+			ReadTreeRecurive((git_tree*)object,CallBack,data);
+		}
+		
+	}
+
 	return 0;
 }
 
