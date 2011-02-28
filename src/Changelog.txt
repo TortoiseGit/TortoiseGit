@@ -18,6 +18,7 @@
  * Fixed sending patches combined in one mail w/o attachments (files were always attached)
  * Make change setting "hide TGit menu" work
  * Fixed issue #729: SVN DCommitt incorrectly executes with --rmdir
+ * Fixed issue #732: Synch-dialog layout broken
 
 = Release 1.6.5.0 =
 == Bug Fix ==
