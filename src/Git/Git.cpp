@@ -1187,21 +1187,25 @@ BOOL CGit::CheckMsysGitDir()
 		}
 		else
 		{
-			// search PATH if git/bin directory is alredy present
+			// search PATH if git/bin directory is already present
 			if ( FindGitPath() )
 			{
 				m_bInitialized = TRUE;
 				return TRUE;
 			}
 
-			return false;
+			return FALSE;
 		}
 	}else
 	{
 		CGit::ms_LastMsysGitDir = str;
 	}
-	//set path
 
+	// check for git.exe existance (maybe it was deinstalled in the meantime)
+	if (!FileExists(CGit::ms_LastMsysGitDir + _T("\\git.exe")))
+		return FALSE;
+
+	//set path
 	_tdupenv_s(&oldpath,&size,_T("PATH"));
 
 	CString path;
@@ -1216,7 +1220,6 @@ BOOL CGit::CheckMsysGitDir()
 
 	m_bInitialized = TRUE;
 	return true;
-
 }
 
 class CGitCall_EnumFiles : public CGitCall
