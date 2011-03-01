@@ -211,7 +211,13 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 
 	if(cmd.Find(_T("git")) == 0)
-		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
+	{
+		int firstSpace = cmd.Find(_T(" "));
+		if (firstSpace > 0)
+			cmd = _T('"')+CGit::ms_LastMsysGitDir+_T("\\")+ cmd.Left(firstSpace) + _T('"')+ cmd.Mid(firstSpace);
+		else
+			cmd=_T('"')+CGit::ms_LastMsysGitDir+_T("\\")+cmd+_T('"');
+	}
 
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{

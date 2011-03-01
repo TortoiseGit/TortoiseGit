@@ -19,6 +19,7 @@
  * Make change setting "hide TGit menu" work
  * Fixed issue #729: SVN DCommitt incorrectly executes with --rmdir
  * Fixed issue #732: Synch-dialog layout broken
+ * Fixed issue #734: git not found: Fixed possible problems with folders containing spaces
 
 = Release 1.6.5.0 =
 == Bug Fix ==
