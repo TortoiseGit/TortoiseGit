@@ -748,7 +748,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 	return READ_TREE_RECURSIVE;
 }
 
-int ReadTreeRecurive(git_tree * tree, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
+int ReadTreeRecurive(git_tree * tree, CStringA base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
 {
 	size_t count = git_tree_entrycount(tree);
 	for(int i=0; i<count; i++)
@@ -756,16 +756,17 @@ int ReadTreeRecurive(git_tree * tree, int (*CallBack) (const unsigned char *, co
 		git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		int mode = git_tree_entry_attributes(entry);
 		if( CallBack(git_tree_entry_id(entry)->id,
-			,
-			,
+			base,
+			base.GetLength(),
 			git_tree_entry_name(entry),
 			mode,
+			0,
 			data) == READ_TREE_RECURSIVE
 		  )
 		{
 			git_object *object;
 			git_tree_entry_2object(&object, entry);
-			ReadTreeRecurive((git_tree*)object,CallBack,data);
+			ReadTreeRecurive((git_tree*)object,base+git_tree_entry_name(entry), CallBack,data);
 		}
 		
 	}
@@ -791,7 +792,7 @@ int CGitHeadFileList::ReadTree()
 		
 		tree = (git_tree*)git_commit_tree(commit);
 		
-		ret = ReadTreeRecurive(tree, CGitHeadFileList::CallBack,this);
+		ret = ReadTreeRecurive(tree,"", CGitHeadFileList::CallBack,this);
 		if(ret)
 			break;
 	
