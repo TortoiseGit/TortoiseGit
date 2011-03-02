@@ -19,7 +19,9 @@
  * Make change setting "hide TGit menu" work
  * Fixed issue #729: SVN DCommitt incorrectly executes with --rmdir
  * Fixed issue #732: Synch-dialog layout broken
- * Fixed issue #734: git not found: Fixed possible problems with folders containing spaces
+ * Fixed issue #734: git not found: Fixed possible problems with folders containing spaces 
+ * Fixed issue #735: Log generates file stats from shown parent instead of actual parent
+
 
 = Release 1.6.5.0 =
 == Bug Fix ==
