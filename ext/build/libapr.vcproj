@@ -89,8 +89,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				BaseAddress="0x6EEC0000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(OutDir)\libapr_tsvn.lib"
 			/>
 			<Tool
@@ -189,8 +187,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				BaseAddress="0x6EEC0000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(OutDir)\libapr_tsvn.lib"
 				TargetMachine="17"
 			/>

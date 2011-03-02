@@ -261,9 +261,7 @@
 				SuppressStartupBanner="true"
 				GenerateMapFile="true"
 				MapFileName=".\Release/SciLexer.map"
-				OptimizeForWindows98="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -350,8 +348,6 @@
 				SuppressStartupBanner="true"
 				GenerateMapFile="true"
 				MapFileName=".\Release/SciLexer.map"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="17"
 			/>
 			<Tool

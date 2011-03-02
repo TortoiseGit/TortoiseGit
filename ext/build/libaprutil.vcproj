@@ -189,8 +189,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				BaseAddress="0x6EE60000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(OutDir)\libaprutil_tsvn.lib"
 			/>
 			<Tool
@@ -390,8 +388,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				BaseAddress="0x6EE60000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(OutDir)\libaprutil_tsvn.lib"
 				TargetMachine="17"
 			/>
