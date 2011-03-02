@@ -36,14 +36,14 @@ public:
 	 * do the same too.
 	 */
 	bool Close();
-	
+
 	/// Returns true if \a name is the admin dir name
 	bool IsAdminDirName(const CString& name) const;
-	
+
 	/// Returns true if the path points to or below an admin directory
 	bool IsAdminDirPath(const CString& path) const;
-	
-	/// Returns true if the path (file or folder) has an admin directory 
+
+	/// Returns true if the path (file or folder) has an admin directory
 	/// associated, i.e. if the path is in a working copy.
 	bool HasAdminDir(const CString& path) const;
 	bool HasAdminDir(const CString& path,CString * ProjectTopDir) const;
@@ -51,12 +51,13 @@ public:
 	CString GetSuperProjectRoot(const CString& path);
 
 	CString GetGitTopDir(const CString& path);
-	
+
 	/// Returns true if the admin dir name is set to "_svn".
 	bool IsVSNETHackActive() const {return m_bVSNETHack;}
-	
+
 	CString GetAdminDirName() const {return _T(".git");}
 	CString GetVSNETAdminDirName() const {return _T("_git");}
+
 private:
 	bool m_bVSNETHack;
 	int m_nInit;

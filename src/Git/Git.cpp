@@ -1681,7 +1681,7 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		isStat = true;
 	else
 		isStat = !!strstr(arg, "stat");
-	
+
 	int count=0;
 
 	if(hash2 == NULL)

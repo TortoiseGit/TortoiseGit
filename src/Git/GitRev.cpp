@@ -84,22 +84,22 @@ void GitRev::Clear()
 }
 int GitRev::CopyFrom(GitRev &rev,bool OmitParentAndMark)
 {
-	m_AuthorName	=rev.m_AuthorName	;
-	m_AuthorEmail	=rev.m_AuthorEmail	;
-	m_AuthorDate	=rev.m_AuthorDate	;
-	m_CommitterName	=rev.m_CommitterName	;
+	m_AuthorName	=rev.m_AuthorName;
+	m_AuthorEmail	=rev.m_AuthorEmail;
+	m_AuthorDate	=rev.m_AuthorDate;
+	m_CommitterName	=rev.m_CommitterName;
 	m_CommitterEmail=rev.m_CommitterEmail;
-	m_CommitterDate	=rev.m_CommitterDate	;
-	m_Subject		=rev.m_Subject		;
-	m_Body			=rev.m_Body			;
-	m_CommitHash	=rev.m_CommitHash	;
-	m_Files			=rev.m_Files			;	
-	m_Action		=rev.m_Action		;
+	m_CommitterDate	=rev.m_CommitterDate;
+	m_Subject		=rev.m_Subject;
+	m_Body			=rev.m_Body;
+	m_CommitHash	=rev.m_CommitHash;
+	m_Files			=rev.m_Files;
+	m_Action		=rev.m_Action;
 	m_IsFull		=rev.m_IsFull;
 
 	if(!OmitParentAndMark)
 	{
-		m_ParentHash	=rev.m_ParentHash	;
+		m_ParentHash	=rev.m_ParentHash;
 		m_Mark			=rev.m_Mark;
 	}
 	return 0;
@@ -124,7 +124,7 @@ CTime GitRev::ConverFromString(CString input)
 		int hoursOffset =  _wtoi(input.Mid(21,2));
 		int minsOffset = _wtoi(input.Mid(23,2));
 		// convert to a fraction of a day
-		double offset = (hoursOffset*60 + minsOffset) / 1440.0;  	// 1440 mins = 1 day
+		double offset = (hoursOffset*60 + minsOffset) / 1440.0; // 1440 mins = 1 day
 		if ( sign == "-" )
 		{
 			offset = -offset;
@@ -145,7 +145,7 @@ CTime GitRev::ConverFromString(CString input)
 			ASSERT(false);	// this should not happen but leave time in utc if it does
 		}
 		// convert to CTime and return
-		return CTime( sysTime, -1 );;
+		return CTime( sysTime, -1 );
 	}
 	catch(CException* e)
 	{
@@ -188,35 +188,35 @@ int GitRev::SafeGetSimpleList(CGit *git)
 				git_root_diff(git->GetGitSimpleListDiff(), commit.m_hash, &file, &count,0);
 			else
 				git_diff(git->GetGitSimpleListDiff(),parent,commit.m_hash,&file,&count,0);
-			
+
 			isRoot = false;
 
 			CTGitPath path;
 			CString strnewname;
 			CString stroldname;
-			
+
 			for(int j=0;j<count;j++)
 			{
 				path.Reset();
 				char *newname;
 				char *oldname;
-				
+
 				strnewname.Empty();
 				stroldname.Empty();
 
 				int mode,IsBin,inc,dec;
 				git_get_diff_file(git->GetGitSimpleListDiff(),file,j,&newname,&oldname,
 						&mode,&IsBin,&inc,&dec);
-				
+
 				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
-				
+
 				m_SimpleFileList.push_back(strnewname);
-				
+
 			}
 			git_diff_flush(git->GetGitSimpleListDiff());
 			i++;
 		}
-		
+
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsSimpleListReady, TRUE);
 		git_free_commit(&commit);
@@ -241,7 +241,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			return -1;
 
 		int i=0;
-		
+
 		git_get_commit_first_parent(&commit,&list);
 		bool isRoot = (list==NULL);
 
@@ -254,26 +254,26 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count,1);
 			else
 				git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count,1);
-			
+
 			isRoot = false;
 
 			CTGitPath path;
 			CString strnewname;
 			CString stroldname;
-			
+
 			for(int j=0;j<count;j++)
 			{
 				path.Reset();
 				char *newname;
 				char *oldname;
-				
+
 				strnewname.Empty();
 				stroldname.Empty();
 
 				int mode,IsBin,inc,dec;
 				git_get_diff_file(git->GetGitDiff(),file,j,&newname,&oldname,
 						&mode,&IsBin,&inc,&dec);
-				
+
 				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
 				git->StringAppend(&stroldname,(BYTE*)oldname,CP_ACP);
 
@@ -298,7 +298,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			i++;
 		}
 
-		
+
 		InterlockedExchange(&m_IsUpdateing,FALSE);
 		InterlockedExchange(&m_IsFull,TRUE);
 		git_free_commit(&commit);
@@ -312,7 +312,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 	this->m_ParentHash.clear();
 	GIT_COMMIT_LIST list;
 	GIT_HASH   parent;
-	
+
 	git_get_commit_first_parent(commit,&list);
 	while(git_get_commit_next_parent(&list,parent)==0)
 	{
@@ -324,7 +324,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 {
 	int encode =CP_UTF8;
-	
+
 	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
 	{
 		CString str;
@@ -333,18 +333,18 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 	}
 
 	this->m_AuthorDate = commit->m_Author.Date;
-	
+
 	this->m_AuthorEmail.Empty();
 	g_Git.StringAppend(&m_AuthorEmail,(BYTE*)commit->m_Author.Email,encode,commit->m_Author.EmailSize);
 
 	this->m_AuthorName.Empty();
 	g_Git.StringAppend(&m_AuthorName,(BYTE*)commit->m_Author.Name,encode,commit->m_Author.NameSize);
-	
+
 	this->m_Body.Empty();
 	g_Git.StringAppend(&m_Body,(BYTE*)commit->m_Body,encode,commit->m_BodySize);
 
 	this->m_CommitterDate = commit->m_Committer.Date;
-	
+
 	this->m_CommitterEmail.Empty();
 	g_Git.StringAppend(&m_CommitterEmail, (BYTE*)commit->m_Committer.Email,encode, commit->m_Committer.EmailSize);
 
@@ -353,7 +353,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 
 	this->m_Subject.Empty();
 	g_Git.StringAppend(&m_Subject, (BYTE*)commit->m_Subject,encode,commit->m_SubjectSize);
-	
+
 	return 0;
 }
 #ifndef TRACE
@@ -400,7 +400,6 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 	this->m_CommitHash=hash;
 
 	return 0;
-	
 }
 
 

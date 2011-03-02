@@ -33,7 +33,7 @@ public:
 	int m_ParentNo;
 public:
 	enum
-	{	
+	{
 		LOGACTIONS_ADDED	= 0x00000001,
 		LOGACTIONS_MODIFIED	= 0x00000002,
 		LOGACTIONS_REPLACED	= 0x00000004,
@@ -46,7 +46,7 @@ public:
 		LOGACTIONS_UNVER	= 0x80000000,
 		LOGACTIONS_IGNORE	= 0x40000000,
 		//LOGACTIONS_CONFLICT = 0x20000000,
-		
+
 		// For log filter only
 		LOGACTIONS_HIDE		= 0x20000000,
 		LOGACTIONS_GRAY		= 0x10000000,
@@ -77,7 +77,7 @@ public:
 	void SetFromGit(const char* pPath, bool bIsDirectory);
 	void SetFromGit(const TCHAR* pPath, bool bIsDirectory);
 	void SetFromGit(const CString& sPath,CString *OldPath=NULL);
-	
+
 	/**
 	 * Set the path as UNICODE with backslashes
 	 */
@@ -127,7 +127,7 @@ public:
 
 	/**
 	 * Returns the directory. If the path points to a directory, then the path
-	 * is returned unchanged. If the path points to a file, the path to the 
+	 * is returned unchanged. If the path points to a file, the path to the
 	 * parent directory is returned.
 	 */
 	CTGitPath GetDirectory() const;
@@ -139,7 +139,7 @@ public:
 	*/
 	CTGitPath GetContainingDirectory() const;
 	/**
-	 * Get the 'root path' (e.g. "c:\") - Used to pass to GetDriveType 
+	 * Get the 'root path' (e.g. "c:\") - Used to pass to GetDriveType
 	 */
 	CString GetRootPathString() const;
 	/**
@@ -170,15 +170,15 @@ public:
 	bool IsEquivalentTo(const CTGitPath& rhs) const;
 	bool IsEquivalentToWithoutCase(const CTGitPath& rhs) const;
 	bool operator==(const CTGitPath& x) const {return IsEquivalentTo(x);}
-	
+
 	/**
 	 * Checks if \c possibleDescendant is a child of this path.
 	 */
 	bool IsAncestorOf(const CTGitPath& possibleDescendant) const;
 	/**
-	 * Get a string representing the file path, optionally with a base 
+	 * Get a string representing the file path, optionally with a base
 	 * section stripped off the front
-	 * Returns a string with fwdslash paths 
+	 * Returns a string with fwdslash paths
 	 */
 	CString GetDisplayString(const CTGitPath* pOptionalBasePath = NULL) const;
 	/**
@@ -186,7 +186,7 @@ public:
 	 */
 	static int Compare(const CTGitPath& left, const CTGitPath& right);
 
-	/** As PredLeftLessThanRight, but for checking if paths are equivalent 
+	/** As PredLeftLessThanRight, but for checking if paths are equivalent
 	 */
 	static bool PredLeftEquivalentToRight(const CTGitPath& left, const CTGitPath& right);
 
@@ -196,11 +196,11 @@ public:
 	 * paths to crawl.
 	 */
 	static bool PredLeftSameWCPathAsRight(const CTGitPath& left, const CTGitPath& right);
-	
+
 	static bool CheckChild(const CTGitPath &parent, const CTGitPath& child);
 
 	/**
-	 * appends a string to this path. 
+	 * appends a string to this path.
 	 *\remark - missing slashes are not added - this is just a string concatenation, but with
 	 * preservation of the proper caching behavior.
 	 * If you want to join a file- or directory-name onto the path, you should use AppendPathString
@@ -208,9 +208,9 @@ public:
 	void AppendRawString(const CString& sAppend);
 
 	/**
-	* appends a part of a path to this path. 
+	* appends a part of a path to this path.
 	*\remark - missing slashes are dealt with properly. Don't use this to append a file extension, for example
-	* 
+	*
 	*/
 	void AppendPathString(const CString& sAppend);
 
@@ -219,14 +219,14 @@ public:
 	 * Returns a FILETIME structure cast to an __int64, for easy comparisons
 	 */
 	__int64 GetLastWriteTime() const;
-	
+
 	bool IsReadOnly() const;
-	
+
 	/**
 	 * Checks if the path really exists.
 	 */
 	bool Exists() const;
-	
+
 	/**
 	 * Deletes the file/folder
 	 * \param bTrash if true, uses the Windows trash bin when deleting.
@@ -246,7 +246,7 @@ public:
 	bool HasRebaseApply() const;
 
 	int  GetAdminDirMask() const;
-	
+
 	/**
 	 * Checks if the path point to or below a Subversion admin directory (.Git).
 	 */
@@ -260,7 +260,7 @@ public:
 	 * A path is valid if conforms to the specs in the windows API.
 	 * An URL is valid if the path checked out from it is valid
 	 * on windows. That means an URL which is valid according to the WWW specs
-	 * isn't necessarily valid as a windows path (e.g. http://myserver.com/repos/file:name 
+	 * isn't necessarily valid as a windows path (e.g. http://myserver.com/repos/file:name
 	 * is a valid URL, but the path is illegal on windows ("file:name" is illegal), so
 	 * this function would return \c false for that URL).
 	 */
@@ -274,9 +274,9 @@ public:
 private:
 	// All these functions are const, and all the data
 	// is mutable, in order that the hidden caching operations
-	// can be carried out on a const CTGitPath object, which is what's 
+	// can be carried out on a const CTGitPath object, which is what's
 	// likely to be passed between functions
-	// The public 'SetFromxxx' functions are not const, and so the proper 
+	// The public 'SetFromxxx' functions are not const, and so the proper
 	// const-correctness semantics are preserved
 	void SetFwdslashPath(const CString& sPath) const;
 	void SetBackslashPath(const CString& sPath) const;
@@ -289,14 +289,14 @@ private:
 	 */
 	static bool ArePathStringsEqual(const CString& sP1, const CString& sP2);
 	static bool ArePathStringsEqualWithCase(const CString& sP1, const CString& sP2);
-	
+
 	/**
 	 * Adds the required trailing slash to local root paths such as 'C:'
 	 */
 	void SanitizeRootPath(CString& sPath, bool bIsForwardPath) const;
 
 	void UpdateAttributes() const;
-	
+
 
 
 private:
@@ -346,7 +346,7 @@ private:
  * \ingroup Utils
  * This class represents a list of paths
  */
-class CTGitPathList 
+class CTGitPathList
 {
 public:
 	CTGitPathList();
@@ -378,7 +378,7 @@ public:
 	CTGitPath GetCommonDirectory() const;
 	CTGitPath GetCommonRoot() const;
 	void SortByPathname(bool bReverse = false);
-	/** 
+	/**
 	 * Delete all the files in the list, then clear the list.
 	 * \param bTrash if true, the items are deleted using the Windows trash bin
 	 */
@@ -389,7 +389,7 @@ public:
 	void RemoveAdminPaths();
 	void RemovePath(const CTGitPath& path);
 	void RemoveItem(CTGitPath &path);
-	/** 
+	/**
 	 * Removes all child items and leaves only the top folders. Useful if you
 	 * create the list to remove them (i.e. if you remove a parent folder, the
 	 * child files and folders don't have to be deleted anymore)

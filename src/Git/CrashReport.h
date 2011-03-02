@@ -24,7 +24,7 @@ typedef void (*AddEventLogEx)(LPVOID lpState, LPCSTR lpEventLog, LPCSTR lpDesc);
  * offers. To learn more about the CrashRpt-library go to
  * http://www.codeproject.com/debug/crash_report.asp \n
  * To compile the library you need the WTL. You can get the WTL
- * directly from Microsoft: 
+ * directly from Microsoft:
  * http://www.microsoft.com/downloads/details.aspx?FamilyID=128e26ee-2112-4cf7-b28e-7727d9a1f288&DisplayLang=en \n
  * \n
  * Many changes were made to the library so if you read the
@@ -57,7 +57,7 @@ typedef void (*AddEventLogEx)(LPVOID lpState, LPCSTR lpEventLog, LPCSTR lpDesc);
  *
  *
  * \remark the dll is dynamically linked at runtime. So the main application
- * will still work even if the dll is not shipped. 
+ * will still work even if the dll is not shipped.
  *
  */
 class CCrashReport
@@ -116,7 +116,7 @@ public:
 		}
 	}
 	/**
-	 * Adds a whole registry tree to the crash report. 
+	 * Adds a whole registry tree to the crash report.
 	 * \param lpFile the full registry path, e.g. "HKLM\\Software\\MyApplication"
 	 * \param lpDesc a description of the generated registry file, used in the crash report dialog
 	 */
@@ -131,8 +131,8 @@ public:
 	}
 	/**
 	 * Adds a system Event Log to the crash report.
-	 * \param lpFile 
-	 * \param lpDesc 
+	 * \param lpFile
+	 * \param lpDesc
 	 */
 	void AddEventLog(LPCSTR lpFile, LPCSTR lpDesc)
 	{

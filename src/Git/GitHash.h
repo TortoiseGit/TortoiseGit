@@ -66,8 +66,8 @@ public:
 				else if(ch >=_T('A') && ch <= _T('F'))
 					a |= ((ch - _T('A'))&0xF) + 10 ;
 				else if(ch >=_T('a') && ch <= _T('f'))
-					a |= ((ch - _T('a'))&0xF) + 10;		
-				
+					a |= ((ch - _T('a'))&0xF) + 10;
+
 			}
 			m_hash[i]=a;
 		}
@@ -89,8 +89,8 @@ public:
 				else if(ch >=('A') && ch <= ('F'))
 					a |= ((ch - ('A'))&0xF) + 10 ;
 				else if(ch >=_T('a') && ch <= ('f'))
-					a |= ((ch - ('a'))&0xF) + 10;		
-				
+					a |= ((ch - ('a'))&0xF) + 10;
+
 			}
 			m_hash[i]=a;
 		}
@@ -108,7 +108,7 @@ public:
 		}
 		return true;
 	}
-	
+
 	CString ToString()
 	{
 		CString str;
@@ -121,16 +121,16 @@ public:
 		return str;
 	}
 	operator CString ()
-	{ 
-		return ToString(); 
-	} 
+	{
+		return ToString();
+	}
 
 	bool operator == (const CGitHash &hash)
 	{
 		return memcmp(m_hash,hash.m_hash,GIT_HASH_SIZE) == 0;
 	}
-	
-	
+
+
 	friend bool operator<(const CGitHash& left, const CGitHash& right)
 	{
 		return memcmp(left.m_hash,right.m_hash,GIT_HASH_SIZE) < 0;

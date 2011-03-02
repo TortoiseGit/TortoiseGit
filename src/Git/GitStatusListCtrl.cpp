@@ -4382,10 +4382,10 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
-	for (size_t i=0; i < m_arStatusArray.size(); i++)	
+	for (size_t i=0; i < m_arStatusArray.size(); i++)
 	{
 		if (m_arStatusArray[i]->IsEquivalentTo(path))
-			return true;	
+			return true;
 	}
 
 	return false;

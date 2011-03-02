@@ -39,7 +39,7 @@ bool GitAdminDir::Init()
 {
 	if (m_nInit==0)
 	{
-#if 0	
+#if 0
 		m_bVSNETHack = false;
 		m_pool = svn_pool_create(NULL);
 		size_t ret = 0;
@@ -66,17 +66,17 @@ bool GitAdminDir::Close()
 	return true;
 }
 
-CString GitAdminDir::GetSuperProjectRoot(const CString& path) 
+CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 {
 	CString projectroot=path;
-		
+
 	do
 	{
 		if(CGit::GitPathFileExists(projectroot + _T("\\.gitmodules")))
 		{
 			return projectroot;
-		}		
-		
+		}
+
 		projectroot = projectroot.Left(projectroot.ReverseFind('\\'));
 
 	}while(projectroot.ReverseFind('\\')>0);
@@ -93,7 +93,7 @@ bool GitAdminDir::IsAdminDirName(const CString& name) const
 #endif
 	return name == ".git";
 }
-CString GitAdminDir::GetGitTopDir(const CString& path) 
+CString GitAdminDir::GetGitTopDir(const CString& path)
 {
 	CString str;
 	str=_T("");
@@ -120,7 +120,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 	{
 		sDirName = path.Left(path.ReverseFind(_T('\\')));
 	}
-	
+
 	// a .git dir or anything inside it should be left out, only interested in working copy files -- Myagi
 	{
 	int n = 0;
@@ -163,7 +163,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 	}
 
 	return false;
-	
+
 }
 
 bool GitAdminDir::IsAdminDirPath(const CString& path) const

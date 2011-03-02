@@ -56,7 +56,6 @@
 //#define SVNSLC_COLSVNNEEDSLOCK		0x000010000
 //#define SVNSLC_COLCOPYFROM			0x000020000
 
-		
 #define SVNSLC_SHOWUNVERSIONED	CTGitPath::LOGACTIONS_UNVER
 #define SVNSLC_SHOWNORMAL		0x000000000
 #define SVNSLC_SHOWMODIFIED		(CTGitPath::LOGACTIONS_MODIFIED)
@@ -107,10 +106,10 @@ SVNSLC_SHOWINCOMPLETE|SVNSLC_SHOWEXTERNAL|SVNSLC_SHOWINEXTERNALS)
 #define SVNSLC_SHOWALL (SVNSLC_SHOWVERSIONED|SVNSLC_SHOWUNVERSIONED)
 
 #define SVNSLC_POPALL					0xFFFFFFFFFFFFFFFF
-#define SVNSLC_POPCOMPAREWITHBASE		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARE) 
-#define SVNSLC_POPCOMPARE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPAREWC) 
-#define SVNSLC_POPGNUDIFF				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF1) 
-#define SVNSLC_POPREVERT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_REVERT) 
+#define SVNSLC_POPCOMPAREWITHBASE		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARE)
+#define SVNSLC_POPCOMPARE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPAREWC)
+#define SVNSLC_POPGNUDIFF				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_GNUDIFF1)
+#define SVNSLC_POPREVERT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_REVERT)
 #define SVNSLC_POPUPDATE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_UPDATE)
 #define SVNSLC_POPSHOWLOG				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_LOG)
 #define SVNSLC_POPOPEN					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_OPEN)
@@ -155,7 +154,7 @@ class CGitStatusListCtrlDropTarget;
 /**
 * \ingroup TortoiseProc
 * Helper class for CGitStatusListCtrl that represents
-* the columns visible and their order as well as 
+* the columns visible and their order as well as
 * persisting that data in the registry.
 *
 * It assigns logical index values to the (potential) columns:
@@ -227,8 +226,8 @@ public:
 	void OnColumnResized(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
-		if (   (header != NULL) 
-			&& (header->iItem >= 0) 
+		if (   (header != NULL)
+			&& (header->iItem >= 0)
 			&& (header->iItem < GetColumnCount()))
 		{
 			ColumnResized (header->iItem);
@@ -240,8 +239,8 @@ public:
 	{
 		LPNMHEADER header = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = TRUE;
-		if (   (header != NULL) 
-			&& (header->iItem >= 0) 
+		if (   (header != NULL)
+			&& (header->iItem >= 0)
 			&& (header->iItem < GetColumnCount())
 			// only allow the reordering if the column was not moved left of the first
 			// visible item - otherwise the 'invisible' columns are not at the far left
@@ -277,7 +276,7 @@ public:
 			return 0;
 		}
 
-		// visible columns may be modified 
+		// visible columns may be modified
 
 		if (IsVisible (phdr->iItem))
 		{
@@ -286,14 +285,14 @@ public:
 
 		// columns already marked as "invisible" internally may be (re-)sized to 0
 
-		if (   (phdr->pitem != NULL) 
+		if (   (phdr->pitem != NULL)
 			&& (phdr->pitem->mask == HDI_WIDTH)
 			&& (phdr->pitem->cxy == 0))
 		{
 			return 0;
 		}
 
-		if (   (phdr->pitem != NULL) 
+		if (   (phdr->pitem != NULL)
 			&& (phdr->pitem->mask != HDI_WIDTH))
 		{
 			return 0;
@@ -351,7 +350,7 @@ public:
 
 			// standard columns
 			AddMenuItem(&popup);
-		
+
 			// user-prop columns:
 			// find relevant ones and sort 'em
 
@@ -371,8 +370,8 @@ public:
 					; iter != end
 					; ++iter)
 				{
-					popup.AppendMenu ( IsVisible(iter->second) 
-						? uCheckedFlags 
+					popup.AppendMenu ( IsVisible(iter->second)
+						? uCheckedFlags
 						: uUnCheckedFlags
 						, iter->second
 						, iter->first);
@@ -385,16 +384,16 @@ public:
 			if ((cmd >= 1)&&(cmd < columnCount))
 			{
 				SetVisible (cmd, !IsVisible(cmd));
-			} 
+			}
 			else if (cmd == columnCount)
 			{
 				pWnd->GetParent()->SendMessage(LVM_ENABLEGROUPVIEW, !isGroundEnable, NULL);
 				//EnableGroupView(!isGroundEnable);
-			} 
+			}
 			else if (cmd == columnCount+1)
 			{
 				RemoveUnusedProps();
-			} 
+			}
 			else if (cmd == columnCount+2)
 			{
 				ResetColumns (m_dwDefaultColumns);
@@ -410,8 +409,8 @@ public:
 		for (int i = 1; i < itemName.size(); ++i)
 		{
 			if(IsRelevant(i))
-				pop->AppendMenu ( IsVisible(i) 
-					? uCheckedFlags 
+				pop->AppendMenu ( IsVisible(i)
+					? uCheckedFlags
 					: uUnCheckedFlags
 					, i
 					, GetName(i));
@@ -530,7 +529,7 @@ public:
 	{
 		IDSVNLC_REVERT = 1,
 		IDSVNLC_COMPARE,
-		IDSVNLC_OPEN,	
+		IDSVNLC_OPEN,
 		IDSVNLC_DELETE,
 		IDSVNLC_IGNORE,
 		IDSVNLC_GNUDIFF1		 ,
@@ -568,7 +567,7 @@ public:
 		IDSVNLC_FINDENTRY       ,
 		IDSVNLC_COMPARETWO		,
 		IDSVNLC_GNUDIFF2		,
-// the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where 
+// the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDSVNLC_MOVETOCS		,
 	};
@@ -708,17 +707,17 @@ public:
 		git_wc_status_kind		status;					///< local status
 		git_wc_status_kind		textstatus;				///< local text status
 		git_wc_status_kind		propstatus;				///< local property status
-		
+
 	private:
 		CTGitPath				path;					///< full path of the file
 		CTGitPath				basepath;				///< common ancestor path of all files
-		
+
 		CString					changelist;				///< the name of the changelist the item belongs to
-		
+
 		CString					last_commit_author;		///< the author which last committed this item
 		CTime					last_commit_date;		///< the date when this item was last committed
 		git_revnum_t			last_commit_rev;		///< the revision where this item was last committed
-		
+
 		git_revnum_t			remoterev;				///< the revision in HEAD of the repository
 		bool					copied;					///< if the file/folder is added-with-history
 		bool					switched;				///< if the file/folder is switched to another url
@@ -892,7 +891,7 @@ public:
 	/** fills in \a lMin and \a lMax with the lowest/highest revision of all
 	 * files/folders in the working copy.
 	 * \param bShownOnly if true, the min/max revisions are calculated only for shown items
-	 * \param bCheckedOnly if true, the min/max revisions are calculated only for items 
+	 * \param bCheckedOnly if true, the min/max revisions are calculated only for items
 	 *                   which are checked.
 	 * \remark Since an item can only be checked if it is visible/shown in the list control
 	 *         bShownOnly is automatically set to true if bCheckedOnly is true
@@ -992,7 +991,7 @@ public:
 
 	CString						m_sUUID;			///< the UUID of the associated repository
 
-	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert. 
+	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert.
 
 	DECLARE_MESSAGE_MAP()
 
@@ -1008,7 +1007,7 @@ private:
 	void StartDiff(int fileindex);	///< start the external diff program
 	void StartDiffWC(int fileindex);	///< start the external diff program
 	void StartDiffTwo(int fileindex);
-	
+
 	enum
 	{
 		ALTERNATIVEEDITOR,
@@ -1021,8 +1020,8 @@ private:
     void FetchUserProperties();
 
 	/// Process one line of the command file supplied to GetStatus
-	bool FetchStatusForSingleTarget(GitConfig& config, GitStatus& status, const CTGitPath& target, 
-		bool bFetchStatusFromRepository, CStringA& strCurrentRepositoryUUID, CTGitPathList& arExtPaths, 
+	bool FetchStatusForSingleTarget(GitConfig& config, GitStatus& status, const CTGitPath& target,
+		bool bFetchStatusFromRepository, CStringA& strCurrentRepositoryUUID, CTGitPathList& arExtPaths,
 		bool bAllDirect, git_depth_t depth = git_depth_infinity, bool bShowIgnores = false);
 
 	/// Create 'status' data for each item in an unversioned folder
@@ -1198,7 +1197,7 @@ public:
 	int UpdateFileList(int mask, bool once=true,CTGitPathList *List=NULL);
 	int UpdateUnRevFileList(CTGitPathList *List=NULL);
 	int UpdateIgnoreFileList(CTGitPathList *List=NULL);
-	
+
 	int UpdateWithGitPathList(CTGitPathList &list);
 
 	void AddEntry(CTGitPath* path, WORD langID, int ListIndex);

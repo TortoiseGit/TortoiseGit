@@ -50,9 +50,9 @@ GitStatus::GitStatus(bool * /*pbCanceled*/)
 {
 #if 0
 	m_pool = git_pool_create (NULL);
-	
+
 	git_error_clear(git_client_create_context(&ctx, m_pool));
-	
+
 	if (pbCanceled)
 	{
 		ctx->cancel_func = cancel;
@@ -61,7 +61,7 @@ GitStatus::GitStatus(bool * /*pbCanceled*/)
 
 #ifdef _MFC_VER
 	git_error_clear(git_config_ensure(NULL, m_pool));
-	
+
 	// set up authentication
 	m_prompt.Init(m_pool, ctx);
 
@@ -203,7 +203,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 {
 	git_wc_status_kind			statuskind;
 //	git_client_ctx_t * 			ctx;
-	
+
 //	apr_pool_t *				pool;
 //	git_error_t *				err;
 	BOOL						err;
@@ -240,10 +240,10 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 #ifdef _TORTOISESHELL
 	isfull = (g_ShellCache.GetCacheType() == ShellCache::dllFull);
 #else
-	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), 
+	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 #endif
-	
+
 	if(isDir)
 	{
 		err = GetDirStatus(sProjectRoot,sSubPath,&statuskind, isfull,bIsRecursive,isfull,NULL, NULL);
@@ -252,7 +252,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	{
 		err = GetFileStatus(sProjectRoot,sSubPath,&statuskind,isfull, false,isfull, NULL,NULL);
 	}
-		
+
 	return statuskind;
 }
 
@@ -315,7 +315,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 //	apr_hash_t *				exthash;
 //	apr_array_header_t *		statusarray;
 //	const sort_item*			item;
-	
+
 //	git_error_clear(m_err);
 //	statushash = apr_hash_make(m_pool);
 //	exthash = apr_hash_make(m_pool);
@@ -337,10 +337,10 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 #ifdef _TORTOISESHELL
 	isfull = (g_ShellCache.GetCacheType() == ShellCache::dllFull);
 #else
-	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), 
+	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 #endif
-	
+
 	{
 		LPCTSTR lpszSubPath = NULL;
 		CString sSubPath;
@@ -380,7 +380,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 
 	// only the first entry is needed (no recurse)
 //	item = &APR_ARRAY_IDX (statusarray, 0, const sort_item);
-	
+
 //	status = (git_wc_status2_t *) item->value;
 	status = &m_status;
 
@@ -453,7 +453,7 @@ MessageBox(NULL, path.GetWinPathString(), _T("GetFirstFile"), MB_OK);
 	// Error present if function is not under version control
 	if ((m_err != NULL) || (apr_hash_count(m_statushash) == 0))
 	{
-		return NULL;	
+		return NULL;
 	}
 
 	// Convert the unordered hash to an ordered, sorted array
@@ -484,7 +484,7 @@ unsigned int GitStatus::GetVersionedCount() const
 		if (item)
 		{
 			if (GitStatus::GetMoreImportant(((git_wc_status_t *)item->value)->text_status, git_wc_status_ignored)!=git_wc_status_ignored)
-				count++;				
+				count++;
 		}
 	}
 #endif
@@ -543,7 +543,7 @@ bool GitStatus::IsInExternal(const CTGitPath& /*path*/) const
 	GitPool localpool(m_pool);
 	apr_hash_index_t *hi;
 	const char* key;
-	for (hi = apr_hash_first(localpool, m_externalhash); hi; hi = apr_hash_next(hi)) 
+	for (hi = apr_hash_first(localpool, m_externalhash); hi; hi = apr_hash_next(hi))
 	{
 		apr_hash_this(hi, (const void**)&key, NULL, NULL);
 		if (key)
@@ -805,8 +805,8 @@ git_error_t * GitStatus::getstatushash(void * baton, const char * path, git_wc_s
 	}
 	if(filterList.size() > 0)
 	{
-		// We have a filter active - we're only interested in files which are in 
-		// the filter  
+		// We have a filter active - we're only interested in files which are in
+		// the filter
 		if(!binary_search(filterList.begin(), filterList.end(), path))
 		{
 			// This item is not in the filter - don't store it
@@ -864,7 +864,7 @@ git_error_t* GitStatus::cancel(void * /*baton*/)
 		return git_error_create(Git_ERR_CANCELLED, NULL, CUnicodeUtils::GetUTF8(temp));
 	}
 	return Git_NO_ERROR;
-#endif 
+#endif
 	return 0;
 }
 
@@ -949,7 +949,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 					bool b=false;
 
 					CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
-					
+
 					{
 						CAutoReadLock lock(&g_HeadFileMap[gitdir].m_SharedMutex);
 						b = g_HeadFileMap[gitdir].m_Head != g_HeadFileMap[gitdir].m_TreeHash;
@@ -1016,7 +1016,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 			*status = git_wc_status_none;
 		return -1;
 	}
-	
+
 	return 0;
 
 }
@@ -1061,7 +1061,7 @@ int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path,
 __int64 GitStatus::GetIndexFileTime(const CString &gitdir)
 {
 	CAutoReadLock lock(&g_IndexFileMap.m_SharedMutex);
-	
+
 	if(g_IndexFileMap.find(gitdir) ==  g_IndexFileMap.end())
 		return 0;
 
@@ -1076,9 +1076,9 @@ int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgno
 {
 	if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
 		g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
-				
+
 	 *isIgnore = g_IgnoreList.IsIgnore(path,gitdir);
-	
+
 	return 0;
 }
 
@@ -1140,7 +1140,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					g_HeadFileMap.CheckHeadUpdate(gitdir);
 
 					//Check init repository
-					
+
 					{
 						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
 						CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
@@ -1230,13 +1230,13 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 							g_Git.SetCurrentDir(gitdir);
 							::GetCurrentDirectory(MAX_PATH,oldpath);
 							::SetCurrentDirectory(g_Git.m_CurrentDir);
-							git_init();	
+							git_init();
 							g_HeadFileMap[gitdir].ReadTree();
 						}
 					}
 					//Check Add
 					it = ::g_IndexFileMap[gitdir].begin()+start;
-					
+
 					{
 						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
 						CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
@@ -1272,12 +1272,12 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						}// endif if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
 					}
 				}
-				
+
 				g_IndexFileMap[gitdir].m_SharedMutex.ReleaseShared();
-				g_IndexFileMap.m_SharedMutex.ReleaseShared();					
-				
+				g_IndexFileMap.m_SharedMutex.ReleaseShared();
+
 			}// end inversion control
-			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);	
+			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);
 		}//endi if status
 
 		if(*oldpath!=0)
@@ -1343,7 +1343,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 						*status = git_wc_status_unversioned;
 
 					g_HeadFileMap.CheckHeadUpdate(gitdir);
-					
+
 					CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
 					CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
 					//Check init repository
@@ -1401,14 +1401,14 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 							g_Git.SetCurrentDir(gitdir);
 							::GetCurrentDirectory(MAX_PATH,oldpath);
 							::SetCurrentDirectory(g_Git.m_CurrentDir);
-							git_init();	
+							git_init();
 							g_HeadFileMap[gitdir].ReadTree();
 						}
 					}
 					//Check Add
 					it = ::g_IndexFileMap[gitdir].begin()+start;
 
-					
+
 					{
 						CAutoReadLock lock(&g_HeadFileMap.m_SharedMutex);
 						CAutoReadLock lock1(&g_HeadFileMap[gitdir].m_SharedMutex);
@@ -1427,7 +1427,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 								if(pos < 0)
 								{
-									*status = *status = max(git_wc_status_added, *status) ;	
+									*status = *status = max(git_wc_status_added, *status) ;
 									if(callback)
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
@@ -1440,7 +1440,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 								if( pos>=0 && g_HeadFileMap[gitdir][pos].m_Hash != (*it).m_IndexHash)
 								{
-									*status = *status = max(git_wc_status_modified, *status) ;	
+									*status = *status = max(git_wc_status_modified, *status) ;
 									if(callback)
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
@@ -1517,13 +1517,13 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 							GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
 
-							*status = max(filestatus, *status) ;					
+							*status = max(filestatus, *status) ;
 						}
 					}
 				}
 			}
 
-			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);	
+			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);
 		}
 
 		if(*oldpath!=0)

@@ -35,7 +35,7 @@ extern ShellCache g_ShellCache;
 const char* StringPool::GetString (const char* value)
 {
 	// special case: NULL pointer
-	
+
 	if (value == NULL)
 	{
 		return emptyString;
@@ -49,9 +49,9 @@ const char* StringPool::GetString (const char* value)
 		// yes -> return it
 		return *iter;
 	}
-	
-	// no -> add one	
-	
+
+	// no -> add one
+
 	const char* newString =  _strdup (value);
 	if (newString)
 	{
@@ -59,9 +59,9 @@ const char* StringPool::GetString (const char* value)
 	}
 	else
 		return emptyString;
-	
+
 	// .. and return it
-	
+
 	return newString;
 }
 
@@ -75,9 +75,9 @@ void StringPool::clear()
 	{
 		free((void*)*iter);
 	}
-		
+
 	// remove pointers from pool
-		
+
 	pool.clear();
 }
 
@@ -124,7 +124,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	//access of the .git directory).
 	if (g_ShellCache.BlockStatus())
 	{
-		HANDLE TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));	
+		HANDLE TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 		if (TGitMutex != NULL)
 		{
 			if (::GetLastError() == ERROR_ALREADY_EXISTS)
@@ -147,11 +147,11 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //;//		svn_error_clear(svn_config_get_config (&(localctx->config), g_pConfigDir, pool));
 
 	// strings pools are unused, now -> we may clear them
-	
+
 	authors.clear();
 	urls.clear();
 	owners.clear();
-	
+
 	if (bIsFolder)
 	{
 		if (bDirectFolder)
@@ -216,10 +216,10 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //			svn_pool_destroy (pool);				//free allocated memory
 			return &dirstat;
 		}
-	} // if (bIsFolder) 
-	
+	} // if (bIsFolder)
+
 	m_nCounter = 0;
-	
+
 	//Fill in the cache with
 	//all files inside the same folder as the asked file/folder is
 	//since subversion can do this in one step
@@ -229,19 +229,19 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //	git_revnum_t youngest = GIT_INVALID_REVNUM;
 //	git_opt_revision_t rev;
 //	rev.kind = git_opt_revision_unspecified;
-	
+
 	git_wc_status_kind status;
 	int t1,t2;
 	t2=t1=0;
 	try
-	{	
+	{
 		git_depth_t depth = git_depth_infinity;
 
 		if (g_ShellCache.GetCacheType() == ShellCache::dll)
 		{
-			depth = git_depth_empty;	
+			depth = git_depth_empty;
 		}
-		
+
 		t1 = ::GetCurrentTime();
 		status = m_GitStatus.GetAllStatus(filepath, depth);
 		t2 = ::GetCurrentTime();
@@ -257,7 +257,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	{
 //		svn_error_clear(err);
 //		svn_pool_destroy (pool);				//free allocated memory
-		return &invalidstatus;	
+		return &invalidstatus;
 	}
 
 //	svn_error_clear(err);
@@ -299,7 +299,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 				m_mostRecentPath = filepath;
 				m_mostRecentStatus = ret;
 			}
-		}		
+		}
 	}
 #endif
 	if (ret)
@@ -322,7 +322,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& fil
 
 	CString sProjectRoot;
 	BOOL bHasAdminDir = g_ShellCache.HasSVNAdminDir(filepath.GetWinPath(), bIsFolder, &sProjectRoot);
-	
+
 	//no overlay for unversioned folders
 	if ((!bColumnProvider)&&(!bHasAdminDir))
 		return &invalidstatus;
@@ -551,7 +551,7 @@ void GitFolderStatus::ClearCache()
 	m_cache.clear();
 	m_mostRecentStatus = NULL;
 	m_mostRecentPath.Reset();
-	// If we're about to rebuild the cache, there's no point hanging on to 
+	// If we're about to rebuild the cache, there's no point hanging on to
 	// an event which tells us that it's invalid
 	ResetEvent(m_hInvalidationEvent);
 }

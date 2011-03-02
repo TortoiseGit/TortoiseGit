@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010 - TortoiseGit
+// Copyright (C) 2008-2010 - TortoiseGit
 // Copyright (C) 2010 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -199,7 +199,7 @@ LPCTSTR CTGitPath::GetWinPath() const
 	}
 	return m_sBackslashPath;
 }
-// This is a temporary function, to be used during the migration to 
+// This is a temporary function, to be used during the migration to
 // the path class.  Ultimately, functions consuming paths should take a CTGitPath&, not a CString
 const CString& CTGitPath::GetWinPathString() const
 {
@@ -229,8 +229,8 @@ const char* CTGitPath::GetGitApiPath(apr_pool_t *pool) const
 	// This funny-looking 'if' is to avoid a subtle problem with empty paths, whereby
 	// each call to GetGitApiPath returns a different pointer value.
 	// If you made multiple calls to GetGitApiPath on the same string, only the last
-	// one would give you a valid pointer to an empty string, because each 
-	// call would invalidate the previous call's return. 
+	// one would give you a valid pointer to an empty string, because each
+	// call would invalidate the previous call's return.
 	if(IsEmpty())
 	{
 		return "";
@@ -269,7 +269,7 @@ const CString& CTGitPath::GetUIPathString() const
 
 		}
 		else
-#endif 
+#endif
 		{
 			m_sUIPath = GetWinPathString();
 		}
@@ -283,7 +283,7 @@ void CTGitPath::SetFwdslashPath(const CString& sPath) const
 	m_sFwdslashPath.Replace('\\', '/');
 
 	// We don't leave a trailing /
-	m_sFwdslashPath.TrimRight('/');	
+	m_sFwdslashPath.TrimRight('/');
 
 	SanitizeRootPath(m_sFwdslashPath, true);
 
@@ -328,7 +328,7 @@ bool CTGitPath::IsUrl() const
 		m_bURLKnown = true;
 	}
 	return m_bIsURL;
-#endif 
+#endif
 	return false;
 }
 
@@ -436,7 +436,7 @@ void CTGitPath::UpdateAttributes() const
 CTGitPath CTGitPath::GetSubPath(const CTGitPath &root)
 {
 	CTGitPath path;
-	
+
 	if(GetWinPathString().Left(root.GetWinPathString().GetLength()) == root.GetWinPathString())
 	{
 		CString str=GetWinPathString();
@@ -672,15 +672,15 @@ bool CTGitPath::IsAncestorOf(const CTGitPath& possibleDescendant) const
 	bool bPathStringsEqual = ArePathStringsEqual(m_sBackslashPath, possibleDescendant.m_sBackslashPath.Left(m_sBackslashPath.GetLength()));
 	if (m_sBackslashPath.GetLength() >= possibleDescendant.GetWinPathString().GetLength())
 	{
-		return bPathStringsEqual;		
+		return bPathStringsEqual;
 	}
-	
-	return (bPathStringsEqual && 
+
+	return (bPathStringsEqual &&
 			((possibleDescendant.m_sBackslashPath[m_sBackslashPath.GetLength()] == '\\')||
 			(m_sBackslashPath.GetLength()==3 && m_sBackslashPath[1]==':')));
 }
 
-// Get a string representing the file path, optionally with a base 
+// Get a string representing the file path, optionally with a base
 // section stripped off the front.
 CString CTGitPath::GetDisplayString(const CTGitPath* pOptionalBasePath /* = NULL*/) const
 {
@@ -719,11 +719,11 @@ bool CTGitPath::PredLeftSameWCPathAsRight(const CTGitPath& left, const CTGitPath
 	{
 		CTGitPath l = left;
 		CTGitPath r = right;
-		do 
+		do
 		{
 			l = l.GetContainingDirectory();
 		} while(l.HasAdminDir());
-		do 
+		do
 		{
 			r = r.GetContainingDirectory();
 		} while(r.HasAdminDir());
@@ -788,7 +788,7 @@ int CTGitPath::GetAdminDirMask() const
 	path+=_T("\\refs\\stash");
 	if( PathFileExists(path) )
 		status |= ITEMIS_STASH;
-	
+
 	path=topdir;
 	path+=_T("\\");
 	path+=g_GitAdminDir.GetAdminDirName();
@@ -863,7 +863,7 @@ bool CTGitPath::IsAdminDir() const
 {
 	if (m_bIsAdminDirKnown)
 		return m_bIsAdminDir;
-	
+
 	EnsureBackslashPathSet();
 	m_bIsAdminDir = g_GitAdminDir.IsAdminDirPath(m_sBackslashPath);
 	m_bIsAdminDirKnown = true;
@@ -972,7 +972,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		g_Git.StringAppend(&one,&out[pos],CP_ACP);
 		int tabstart=0;
 		path.m_Action=path.ParserAction(out[pos]);
-		one.Tokenize(_T("\t"),tabstart); 
+		one.Tokenize(_T("\t"),tabstart);
 
 		if(tabstart>=0)
 			path.SetFromGit(one.Right(one.GetLength()-tabstart));
@@ -982,7 +982,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		part=one.Tokenize(_T(" "),tabstart); //Tag
 
 		part=one.Tokenize(_T(" "),tabstart); //Mode
-		
+
 		part=one.Tokenize(_T(" "),tabstart); //Hash
 
 		part=one.Tokenize(_T("\t"),tabstart); //Stage
@@ -1007,19 +1007,19 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 	else
 		count=list->GetCount();
 	for(int i=0;i<count;i++)
-	{	
+	{
 		CString cmd;
 		pos=0;
-		
+
 		CString ignored;
 		if(action & CTGitPath::LOGACTIONS_IGNORE)
 			ignored= _T(" --ignored");
-		
+
 		if(list==NULL)
 		{
 			cmd=_T("git.exe ls-files --exclude-standard --full-name --others -z");
 			cmd+=ignored;
-			
+
 		}
 		else
 		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others -z %s-- \"%s\""),
@@ -1030,7 +1030,7 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 		BYTE_VECTOR out;
 		out.clear();
 		g_Git.Run(cmd,&out);
-		
+
 		pos=0;
 		CString one;
 		while( pos>=0 && pos<out.size())
@@ -1104,7 +1104,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 
 				}
 			}
-			
+
 			CString pathname1;
 			CString pathname2;
 
@@ -1117,8 +1117,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 
 			if(GitPath)
 			{
-				GitPath->ParserAction( log[actionstart] );	
-				
+				GitPath->ParserAction( log[actionstart] );
+
 				if(merged)
 				{
 					GitPath->m_Action |= CTGitPath::LOGACTIONS_MERGED;
@@ -1127,21 +1127,21 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 				m_Action |=GitPath->m_Action;
 
 			}else
-			{	
+			{
 				int ac=path.ParserAction(log[actionstart] );
-				ac |= merged?CTGitPath::LOGACTIONS_MERGED:0;	
+				ac |= merged?CTGitPath::LOGACTIONS_MERGED:0;
 
 				path.SetFromGit(pathname1,&pathname2);
 				path.m_Action=ac;
-					//action must be set after setfromgit. SetFromGit will clear all status. 
+					//action must be set after setfromgit. SetFromGit will clear all status.
 				this->m_Action|=ac;
-				
+
 				AddPath(path);
-				
+
 			}
-	
+
 		}else
-		{			
+		{
 			int tabstart=0;
 			path.Reset();
 			CString StatAdd;
@@ -1161,11 +1161,11 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 			if(tabstart >=0)
 			{
 				log[tabstart]=0;
-				
+
 				g_Git.StringAppend(&StatDel,&log[pos],CP_UTF8);
 				pos=tabstart+1;
 			}
-			
+
 			if(log[pos] == 0) //rename
 			{
 				pos++;
@@ -1183,7 +1183,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 				g_Git.StringAppend(&file1,&log[pos],CP_ACP);
 			}
 			path.SetFromGit(file1,&file2);
-	
+
 			CTGitPath *GitPath=LookForGitPath(path.GetGitPathString());
 			if(GitPath)
 			{
@@ -1275,7 +1275,7 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false 
 			{
 				CStringA line = CStringA(it->GetGitPathString()) + '\n';
 				file.Write(line, line.GetLength());
-			} 
+			}
 			file.Close();
 		}
 		else
@@ -1285,7 +1285,7 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false 
 			for(it = m_paths.begin(); it != m_paths.end(); ++it)
 			{
 				file.WriteString(it->GetGitPathString()+_T("\n"));
-			} 
+			}
 			file.Close();
 		}
 	}
@@ -1311,7 +1311,7 @@ void CTGitPathList::LoadFromAsteriskSeparatedString(const CString& sPathString)
 			break;
 		}
 		AddPath(CTGitPath(CPathUtils::GetLongPathname(temp)));
-	} 
+	}
 }
 
 CString CTGitPathList::CreateAsteriskSeparatedString() const
@@ -1328,7 +1328,7 @@ CString CTGitPathList::CreateAsteriskSeparatedString() const
 }
 #endif // _MFC_VER
 
-bool 
+bool
 CTGitPathList::AreAllPathsFilesInOneDirectory() const
 {
 	// Check if all the paths are files and in the same directory
@@ -1385,7 +1385,7 @@ CTGitPath CTGitPathList::GetCommonDirectory() const
 			m_commonBaseDirectory = m_commonBaseDirectory.GetContainingDirectory();
 			break;
 		}
-	}	
+	}
 	return m_commonBaseDirectory;
 }
 
@@ -1655,7 +1655,7 @@ private:
 		ATLASSERT(!testPath.IsAdminDir());
 		testPath.SetFromUnknown(_T("c:\\.svn\\test"));
 		ATLASSERT(testPath.IsAdminDir());
-		
+
 		CTGitPathList pathList;
 		pathList.AddPath(CTGitPath(_T("c:\\.svndir")));
 		pathList.AddPath(CTGitPath(_T("c:\\.svn")));
@@ -1668,7 +1668,7 @@ private:
 		pathList.RemoveAdminPaths();
 		ATLASSERT(pathList.GetCount()==1);
 	}
-	
+
 	void SortTest()
 	{
 		CTGitPathList testList;
@@ -1731,7 +1731,7 @@ private:
 
 		ATLASSERT(list[2].IsEquivalentTo(list[3]));
 		ATLASSERT(list[2]==list[3]);
-		
+
 		ATLASSERT(list.GetCount() == 4);
 
 		list.RemoveDuplicates();
@@ -1742,7 +1742,7 @@ private:
 		ATLASSERT(list[1].GetWinPathString().Compare(_T("E")) == 0);
 		ATLASSERT(list[2].GetWinPathString() == _T("Z"));
 	}
-	
+
 	void RemoveChildrenTest()
 	{
 		CTGitPathList list;
@@ -1753,11 +1753,11 @@ private:
 		list.AddPath(CTGitPath(_T("c:\\parent\\child")));
 		list.AddPath(CTGitPath(_T("c:\\parent\\child1")));
 		list.AddPath(CTGitPath(_T("c:\\parent\\child2")));
-		
+
 		ATLASSERT(list.GetCount() == 7);
 
 		list.RemoveChildren();
-		
+
 		ATLTRACE("count = %d\n", list.GetCount());
 		ATLASSERT(list.GetCount() == 3);
 
@@ -1781,14 +1781,14 @@ private:
 		ATLASSERT(testList[0].GetWinPathString() == CString(buf) + _T("\\Path1"));
 		ATLASSERT(testList[1].GetWinPathString() == _T("c:\\path2 with spaces and stuff"));
 		ATLASSERT(testList[2].GetWinPathString() == _T("\\funnypath"));
-		
+
 		ATLASSERT(testList.GetCommonRoot().GetWinPathString() == _T(""));
 		testList.Clear();
 		sPathList = _T("c:\\path2 with spaces and stuff*c:\\funnypath\\*");
 		testList.LoadFromAsteriskSeparatedString(sPathList);
 		ATLASSERT(testList.GetCommonRoot().GetWinPathString() == _T("c:\\"));
 	}
-#endif 
+#endif
 
 	void ContainingDirectoryTest()
 	{
@@ -1810,7 +1810,7 @@ private:
 		ATLASSERT(dir.IsEmpty());
 		ATLASSERT(dir.GetWinPathString() == _T(""));
 	}
-	
+
 	void AncestorTest()
 	{
 		CTGitPath testPath;
@@ -1841,7 +1841,7 @@ private:
 		testPath.SetFromUnknown(_T("http://testing%20again"));
 		ATLASSERT(strcmp(testPath.GetGitApiPath(pool), "http://testing%20again") == 0);
 		testPath.SetFromUnknown(_T("http://testing special chars \344\366\374"));
-		ATLASSERT(strcmp(testPath.GetGitApiPath(pool), "http://testing%20special%20chars%20%c3%a4%c3%b6%c3%bc") == 0);		
+		ATLASSERT(strcmp(testPath.GetGitApiPath(pool), "http://testing%20special%20chars%20%c3%a4%c3%b6%c3%bc") == 0);
 #endif
 	}
 
@@ -1850,7 +1850,7 @@ private:
 		CTGitPath pathA (_T("C:\\Development\\LogDlg.cpp"));
 		CTGitPath pathB (_T("C:\\Development\\LogDlg.h"));
 		CTGitPath pathC (_T("C:\\Development\\SomeDir\\LogDlg.h"));
-		
+
 		CTGitPathList list;
 		list.AddPath(pathA);
 		ATLASSERT(list.GetCommonRoot().GetWinPathString().CompareNoCase(_T("C:\\Development\\LogDlg.cpp"))==0);
@@ -1885,7 +1885,7 @@ private:
 		ATLASSERT(list.GetCommonRoot().GetWinPathString().CompareNoCase(_T("c:\\"))==0);
 #endif
 	}
-	
+
 	void ValidPathAndUrlTest()
 	{
 		CTGitPath testPath;
@@ -1949,7 +1949,7 @@ private:
 		ATLASSERT(!testPath.IsValidOnWindows());
 		testPath.SetFromWin(_T("\\\\Share\\NUL"));
 		ATLASSERT(!testPath.IsValidOnWindows());
-		
+
 		// now come some URL tests
 		testPath.SetFromGit(_T("http://myserver.com/repos/trunk"));
 		ATLASSERT(testPath.IsValidOnWindows());
@@ -1974,7 +1974,7 @@ private:
 		ATLASSERT(!testPath.IsValidOnWindows());
 		testPath.SetFromGit(_T("http://localhost:90/repos/trunk/com1"));
 		ATLASSERT(!testPath.IsValidOnWindows());
-		
+
 	}
 
 } TGitPathTestobject;
