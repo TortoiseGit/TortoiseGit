@@ -21,6 +21,7 @@
  * Fixed issue #732: Synch-dialog layout broken
  * Fixed issue #734: git not found: Fixed possible problems with folders containing spaces
  * Fixed issue #735: Log generates file stats from shown parent instead of actual parent
+ * Do not show "Diff with previous" for added files
 
 = Release 1.6.5.0 =
 == Bug Fix ==
