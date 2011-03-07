@@ -252,14 +252,19 @@ public:
 	int Check(const CString &gitdir, bool *isChanged);
 	int LoadIndex(const CString &gitdir);
 
-	void CheckAndUpdate(const CString &gitdir,bool isLoadUpdatedIndex)
+	bool CheckAndUpdate(const CString &gitdir,bool isLoadUpdatedIndex)
 	{
 		bool isChanged=false;
 		if(isLoadUpdatedIndex && Check(gitdir,&isChanged))
-			return ;
+			return false;
 
 		if(isChanged && isLoadUpdatedIndex)
+		{
 			LoadIndex(gitdir);
+			return true;
+		}
+
+		return false;
 	}
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
 							BOOL IsFull=false, BOOL IsRecursive=false,
@@ -360,17 +365,17 @@ public:
 	int CheckHeadUpdate(const CString &gitdir);
 	int GetHeadHash(const CString &gitdir, CGitHash &hash);
 
-#if 0
+
 	bool IsHashChanged(const CString &gitdir)
 	{
-		CAutoReadLock lock(&m_SharedMutex);
-		if( find(gitdir) == end())
+		SHARED_TREE_PTR ptr = SafeGet(gitdir);
+
+		if( ptr.get() == NULL)
 			return false;
 		
-		CAutoReadLock lock1(&(*this).m_SharedMutex);
-		return (*this)[gitdir].m_Head != (*this)[gitdir].m_TreeHash;
+		return ptr->m_Head != ptr->m_TreeHash;
 	}
-#endif
+
 };
 
 
