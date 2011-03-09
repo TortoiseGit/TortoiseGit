@@ -210,7 +210,7 @@ public:
 	CString m_GitFile;
 	~CGitIndexList()
 	{
-		TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
+		//TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
 	}
 #endif
 
@@ -323,7 +323,7 @@ public:
 	CString m_GitFile;
 	~CGitHeadFileList()
 	{
-		TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
+		//TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
 	}
 #endif
 

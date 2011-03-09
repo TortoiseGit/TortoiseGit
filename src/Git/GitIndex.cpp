@@ -89,7 +89,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 				break;
 			}
 
-			buffer = (BYTE*)MapViewOfFile(hmap,FILE_MAP_READ,0,0,0);
+			p = buffer = (BYTE*)MapViewOfFile(hmap,FILE_MAP_READ,0,0,0);
 			if(buffer == NULL)
 			{
 				ret = -1;
@@ -128,6 +128,8 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 
 				this->push_back(GitIndex);
 			}
+
+			g_Git.GetFileModifyTime(IndexFile, &this->m_LastModifyTime);
 		}while(0);
 	}catch(...)
 	{
@@ -138,7 +140,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 		UnmapViewOfFile(buffer);
 
 	if(hmap != INVALID_HANDLE_VALUE)
-		CloseHandle(hfile);
+		CloseHandle(hmap);
 
 	if(hfile != INVALID_HANDLE_VALUE)
 		CloseHandle(hfile);
@@ -305,6 +307,7 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	{
 		if(isChanged)
 			*isChanged = true;
+		return 0;
 	}
 
 	if(pIndex->m_LastModifyTime == time)
@@ -1244,11 +1247,30 @@ int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 	SHARED_TREE_PTR ptr;
 	ptr = this->SafeGet(gitdir);
 	
-	if(ptr->CheckHeadUpdate())
-		ptr->ReadHeadHash(gitdir);
+	if(ptr.get() == NULL)
+	{
+		SHARED_TREE_PTR ptr1(new CGitHeadFileList());
+		if(ptr1->CheckHeadUpdate())
+			ptr1->ReadHeadHash(gitdir);
 
-	hash = ptr->m_Head;
+		hash = ptr1->m_Head;
 
+		this->SafeSet(gitdir, ptr1);
+		
+	}else
+	{
+		if(ptr->CheckHeadUpdate())
+		{
+			SHARED_TREE_PTR ptr1(new CGitHeadFileList());
+			if(ptr1->CheckHeadUpdate())
+				ptr1->ReadHeadHash(gitdir);
+
+			hash = ptr1->m_Head;
+			this->SafeSet(gitdir, ptr1);
+		}
+		
+		hash = ptr->m_Head;
+	}
 	return 0;
 }
 #if 0
