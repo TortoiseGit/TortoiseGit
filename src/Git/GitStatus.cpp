@@ -1093,12 +1093,14 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			if(path[path.GetLength()-1] !=  _T('/'))
 				path += _T('/'); //Add trail / to show it is directory, not file name.
 
-		SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
-
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdate(gitdir,true);
-			
+
+			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+			if( indexptr.get() == NULL)
+				return -1;
+
 			int pos;
 
 			{

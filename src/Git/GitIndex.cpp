@@ -118,15 +118,13 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 				int flags=Big2lit(entry->flags);
 				if( flags & CE_EXTENDED)
 				{
-					GitIndex.FillData(entryex);
+					this->at(i).FillData(entryex);
 					p+=ondisk_ce_size(entryex);
 				}else
 				{
-					GitIndex.FillData(entry);
+					this->at(i).FillData(entry);
 					p+=ondisk_ce_size(entry);
 				}
-
-				this->push_back(GitIndex);
 			}
 
 			g_Git.GetFileModifyTime(IndexFile, &this->m_LastModifyTime);
@@ -767,11 +765,14 @@ int ReadTreeRecurive(git_tree * tree, CStringA base, int (*CallBack) (const unsi
 			data) == READ_TREE_RECURSIVE
 		  )
 		{
-			git_object *object;
-			git_tree_entry_2object(&object, entry);
-			base += git_tree_entry_name(entry);
-			base += "/";
-			ReadTreeRecurive((git_tree*)object,base, CallBack,data);
+			if(mode&S_IFDIR)
+			{
+				git_object *object;
+				git_tree_entry_2object(&object, entry);
+				base += git_tree_entry_name(entry);
+				base += "/";
+				ReadTreeRecurive((git_tree*)object,base, CallBack,data);
+			}
 		}
 		
 	}
@@ -782,6 +783,7 @@ int ReadTreeRecurive(git_tree * tree, CStringA base, int (*CallBack) (const unsi
 int CGitHeadFileList::ReadTree()
 {
 	CStringA gitdir = CUnicodeUtils::GetMulti(m_Gitdir,CP_ACP) ;
+	gitdir += "\\.git";
 	git_repository *repository = NULL;
 	git_commit *commit = NULL;
 	git_tree * tree = NULL;
