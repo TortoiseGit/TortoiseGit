@@ -415,7 +415,7 @@ int GitRev::GetCommit(CString refname)
 			return 0;
 		}
 	CStringA rev;
-	rev= CUnicodeUtils::GetUTF8(refname);
+	rev= CUnicodeUtils::GetUTF8(g_Git.FixBranchName(refname));
 	GIT_HASH sha;
 
 	if(git_get_sha1(rev.GetBuffer(),sha))

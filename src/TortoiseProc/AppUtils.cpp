@@ -1093,7 +1093,7 @@ bool CAppUtils::Export(CString *BashHash)
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe archive --format=zip --verbose %s"),
-					dlg.m_VersionName);
+					g_Git.FixBranchName(dlg.m_VersionName));
 
 		//g_Git.RunLogFile(cmd,dlg.m_strExportDirectory);
 		CProgressDlg pro;
@@ -1136,7 +1136,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 				force,
 				sign,
 				dlg.m_BranchTagName,
-				dlg.m_VersionName
+				g_Git.FixBranchName(dlg.m_VersionName)
 				);
 
 			CString tempfile=::GetTempFile();
@@ -1152,7 +1152,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 				track,
 				force,
 				dlg.m_BranchTagName,
-				dlg.m_VersionName
+				g_Git.FixBranchName(dlg.m_VersionName)
 				);
 		}
 		CString out;
@@ -1205,7 +1205,7 @@ bool CAppUtils::Switch(CString *CommitHash, CString initialRefName)
 			 force,
 			 track,
 			 branch,
-			 dlg.m_VersionName);
+			 g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
@@ -2203,7 +2203,8 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 					CString cmd,out;
 					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 						g_Git.m_CurrentDir,
-						dlg.m_Upstream,dlg.m_Branch);
+						g_Git.FixBranchName(dlg.m_Upstream),
+						g_Git.FixBranchName(dlg.m_Branch));
 					if(g_Git.Run(cmd,&out,CP_ACP))
 					{
 						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -2568,7 +2569,7 @@ BOOL CAppUtils::Merge(CString *commit)
 			noff,
 			squash,
 			nocommit,
-			dlg.m_VersionName);
+			g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;

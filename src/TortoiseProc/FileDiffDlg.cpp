@@ -683,7 +683,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 UINT CFileDiffDlg::LoadRefThread()
 {
-	g_Git.GetBranchList(m_Reflist,NULL,CGit::BRANCH_ALL);
+	g_Git.GetBranchList(m_Reflist,NULL,CGit::BRANCH_ALL_F);
 	g_Git.GetTagList(m_Reflist);
 
 	this->PostMessage(MSG_REF_LOADED);

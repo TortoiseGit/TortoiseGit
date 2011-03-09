@@ -154,7 +154,7 @@ protected:
 		STRING_VECTOR list;
 
 		int current;
-		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
+		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
 		m_ChooseVersioinBranch.AddString(list, false);
 		m_ChooseVersioinBranch.SetCurSel(current);
 

@@ -56,7 +56,7 @@ bool FormatPatchCommand::Execute()
 		switch(dlg.m_Radio)
 		{
 		case IDC_RADIO_SINCE:
-			range=dlg.m_Since;
+			range=g_Git.FixBranchName(dlg.m_Since);
 			break;
 		case IDC_RADIO_NUM:
 			range.Format(_T("-%d"),dlg.m_Num);

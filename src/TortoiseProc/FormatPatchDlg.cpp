@@ -106,7 +106,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	m_cDir.AddString(g_Git.m_CurrentDir);
 
 	STRING_VECTOR list;
-	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL);
+	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL_F);
 	m_cSince.SetMaxHistoryItems(list.size());
 	m_cSince.AddString(list);
 

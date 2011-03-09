@@ -159,7 +159,7 @@ protected:
 		m_ctrlLocalBranch.Reset();
 		m_ctrlRemoteBranch.Reset();
 
-		g_Git.GetBranchList(list,&current,CGit::BRANCH_LOCAL);
+		g_Git.GetBranchList(list,&current,CGit::BRANCH_LOCAL_F);
 		
 		m_ctrlLocalBranch.AddString(list);
 

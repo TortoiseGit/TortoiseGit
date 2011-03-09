@@ -337,7 +337,8 @@ void CSyncDlg::FetchComplete()
 			CString cmd,out;
 			cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
-					dlg.m_Upstream,dlg.m_Branch);
+					g_Git.FixBranchName(dlg.m_Upstream),
+					g_Git.FixBranchName(dlg.m_Branch));
 			if(g_Git.Run(cmd,&out,CP_ACP))
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -406,7 +407,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	cmd.Format(_T("git.exe push -v %s \"%s\" %s"),
 				arg,
 				m_strURL,
-				m_strLocalBranch);
+				g_Git.FixBranchName(m_strLocalBranch));
 
 	if (!m_strRemoteBranch.IsEmpty())
 	{
@@ -509,7 +510,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 
 	cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
-					m_strURL+_T('/')+m_strRemoteBranch,m_strLocalBranch);
+					m_strURL+_T('/')+m_strRemoteBranch,g_Git.FixBranchName(m_strLocalBranch));
 
 	if(g_Git.Run(cmd,&out,CP_ACP))
 	{

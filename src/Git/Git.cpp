@@ -26,6 +26,7 @@
 #include <map>
 #include "UnicodeUtils.h"
 #include "gitdll.h"
+#include <fstream>
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
@@ -655,7 +656,7 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 	if(from != NULL && to != NULL)
 	{
 		CString range;
-		range.Format(_T(" %s..%s "),*from,*to);
+		range.Format(_T(" %s..%s "),FixBranchName(*from),FixBranchName(*to));
 		param += range;
 	}
 	param+=hash;
@@ -821,7 +822,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 
 		CGitHash hash;
 		CStringA ref;
-		ref = CUnicodeUtils::GetMulti(friendname,CP_ACP);
+		ref = CUnicodeUtils::GetMulti(FixBranchName(friendname),CP_ACP);
 		try
 		{
 			git_get_sha1(ref, hash.m_hash);
@@ -835,7 +836,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 	{
 		CString cmd;
 		CString out;
-		cmd.Format(_T("git.exe rev-parse %s" ),friendname);
+		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
 		Run(cmd,&out,CP_UTF8);
 	//	int pos=out.ReverseFind(_T('\n'));
 		out.FindOneOf(_T("\r\n"));
@@ -922,15 +923,65 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	return ret;
 }
 
+CString CGit::FixBranchName_Mod(CString& branchName)
+{
+	if(branchName == "FETCH_HEAD")
+		branchName = DerefFetchHead();
+	return branchName;
+}
+
+CString	CGit::FixBranchName(const CString& branchName)
+{
+	CString tempBranchName = branchName;
+	FixBranchName_Mod(tempBranchName);
+	return tempBranchName;
+}
+
+
+CString CGit::DerefFetchHead()
+{
+	using namespace std;
+	ifstream fetchHeadFile((m_CurrentDir + L"\\.git\\FETCH_HEAD").GetString(), ios::in | ios::binary);
+	int forMergeLineCount = 0;
+	string line;
+	string hashToReturn;
+	while(getline(fetchHeadFile, line))
+	{
+		//Tokenize this line
+		string::size_type prevPos = 0;
+		string::size_type pos = line.find('\t');
+		if(pos == string::npos)	continue; //invalid line
+		
+		string hash = line.substr(0, pos);
+		++pos; prevPos = pos; pos = line.find('\t', pos); if(pos == string::npos) continue;
+		
+		bool forMerge = pos == prevPos;
+		++pos; prevPos = pos; pos = line.size(); if(pos == string::npos) continue;
+
+		string remoteBranch = line.substr(prevPos, pos - prevPos);
+
+		//Process this line
+		if(forMerge)
+		{
+			hashToReturn = hash;
+			++forMergeLineCount;
+			if(forMergeLineCount > 1)
+				return L""; //More then 1 branch to merge found. Octopus merge needed. Cannot pick single ref from FETCH_HEAD
+		}
+	}
+
+	return CUnicodeUtils::GetUnicode(hashToReturn.c_str());
+}
+
 int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
 	CString cmd,output;
 	cmd=_T("git.exe branch --no-color");
 
-	if(type==(BRANCH_LOCAL|BRANCH_REMOTE))
+	if((type&BRANCH_ALL) == BRANCH_ALL)
 		cmd+=_T(" -a");
-	else if(type==BRANCH_REMOTE)
+	else if(type&BRANCH_REMOTE)
 		cmd+=_T(" -r");
 
 	int i=0;
@@ -955,6 +1006,10 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 			i++;
 		}
 	}
+
+	if(type & BRANCH_FETCH_HEAD && !DerefFetchHead().IsEmpty())
+		list.push_back(L"FETCH_HEAD");
+
 	return ret;
 }
 
@@ -1499,7 +1554,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to)
 	CString base;
 	CGitHash basehash,hash;
 	CString cmd;
-	cmd.Format(_T("git.exe merge-base %s %s"), to,from);
+	cmd.Format(_T("git.exe merge-base %s %s"), FixBranchName(to), FixBranchName(from));
 
 	if(g_Git.Run(cmd,&base,CP_ACP))
 	{

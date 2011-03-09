@@ -402,6 +402,8 @@ void CRebaseDlg::LoadBranchInfo()
 	int current;
 	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
 	m_BranchCtrl.AddString(list);
+	list.clear();
+	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
 	m_UpstreamCtrl.AddString(list);
 
 	m_BranchCtrl.SetCurSel(current);
@@ -450,7 +452,8 @@ void CRebaseDlg::FetchLogList()
 	CString basestr;
 	CString cmd;
 	m_IsFastForward=FALSE;
-	cmd.Format(_T("git.exe merge-base %s %s"), m_UpstreamCtrl.GetString(),m_BranchCtrl.GetString());
+	cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()),
+											   g_Git.FixBranchName(m_BranchCtrl.GetString()));
 	if(g_Git.Run(cmd,&basestr,CP_ACP))
 	{
 		CMessageBox::Show(NULL,basestr,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -789,7 +792,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 		}
 
-		cmd.Format(_T("git.exe reset --hard %s"),this->m_UpstreamCtrl.GetString());
+		cmd.Format(_T("git.exe reset --hard %s"),g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 		this->AddLogString(CString(_T("Fast forward to "))+m_UpstreamCtrl.GetString());
 
 		AddLogString(cmd);
@@ -1430,7 +1433,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		__super::OnCancel();
 		return;
 	}
-	cmd.Format(_T("git.exe checkout -f %s"),this->m_UpstreamCtrl.GetString());
+	cmd.Format(_T("git.exe checkout -f %s"),g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);

@@ -190,9 +190,12 @@ public:
 
 	typedef enum
 	{
-		BRANCH_LOCAL=0x1,
-		BRANCH_REMOTE=0x2,
-		BRANCH_ALL=BRANCH_LOCAL|BRANCH_REMOTE,
+		BRANCH_LOCAL		= 0x1,
+		BRANCH_REMOTE		= 0x2,
+		BRANCH_FETCH_HEAD	= 0x4,
+		BRANCH_LOCAL_F		= BRANCH_LOCAL	| BRANCH_FETCH_HEAD,
+		BRANCH_ALL			= BRANCH_LOCAL	| BRANCH_REMOTE,
+		BRANCH_ALL_F		= BRANCH_ALL	| BRANCH_FETCH_HEAD,
 	}BRANCH_TYPE;
 
 	typedef enum
@@ -217,6 +220,15 @@ public:
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
 	int GetMapHashToFriendName(MAP_HASH_NAME &map);
+
+	CString DerefFetchHead();
+
+	// FixBranchName():
+	// When branchName == FETCH_HEAD, derefrence it.
+	// A selected branch name got from GetBranchList(), with flag BRANCH_FETCH_HEAD enabled,
+	// should go through this function before it is used.
+	CString	FixBranchName_Mod(CString& branchName);
+	CString	FixBranchName(const CString& branchName);
 
 	//hash is empty means all. -1 means all
 
