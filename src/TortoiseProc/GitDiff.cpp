@@ -66,7 +66,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return -1;
 	}
-	
+
 	int start=0;
 	start=output.Find(_T(' '),start);
 	if(start>0)
@@ -81,7 +81,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 
 		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s"),newhash);
 		subgit.Run(cmd,&newsub,encode);
-		
+
 		CString msg;
 		msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
 				pPath->GetWinPath(),
@@ -138,7 +138,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
 	//file.WriteString();
 	file.Close();
-	
+
 	CAppUtils::DiffFlags flags;
 
 	if(bIsAdd)
@@ -171,7 +171,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 			rev = rev2;
 		if( rev1 != GIT_REV_ZERO )
 			rev = rev1;
-		
+
 		workingcopy = _T(" (Work Copy)");
 
 		cmd.Format(_T("git.exe diff %s -- \"%s\""),
@@ -200,11 +200,12 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		}
 		newhash = output.Mid(newstart+ CString(_T("+Subproject commit")).GetLength()+1,40);
 		
-	}else
+	}
+	else
 	{
 		cmd.Format(_T("git.exe diff-tree -r -z %s %s -- \"%s\""),
 		rev2,rev1,pPath->GetGitPathString());
-		
+
 		BYTE_VECTOR bytes;
 		if(g_Git.Run(cmd,&bytes))
 		{
@@ -216,9 +217,9 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 
 		g_Git.StringAppend(&oldhash,&bytes[15],CP_ACP,40);
 		g_Git.StringAppend(&newhash,&bytes[15+41],CP_ACP,40);
-		
+
 	}
-		
+
 	CString oldsub;
 	CString newsub;
 
@@ -284,7 +285,8 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
 		g_Git.GetOneFile(rev1,*pPath,file1);
 
-	}else
+	}
+	else
 	{
 		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 		title1.Format( IDS_DIFF_WCNAME, pPath->GetFileOrDirectoryName() );
@@ -340,7 +342,8 @@ int CGitDiff::DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2)
 		CFileDiffDlg dlg;
 		dlg.SetDiff(NULL,*r1,*r2);
 		dlg.DoModal();
-	}else
+	}
+	else
 	{
 		Diff(&path,&path,r1->m_CommitHash.ToString(),r2->m_CommitHash.ToString());
 	}
@@ -354,7 +357,8 @@ int CGitDiff::DiffCommit(CTGitPath &path, CString r1, CString r2)
 		CFileDiffDlg dlg;
 		dlg.SetDiff(NULL,r1,r2);
 		dlg.DoModal();
-	}else
+	}
+	else
 	{
 		Diff(&path,&path,r1,r2);
 	}
