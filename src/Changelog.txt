@@ -23,6 +23,7 @@
  * Fixed issue #735: Log generates file stats from shown parent instead of actual parent
  * Do not show "Diff with previous" for added files
  * Fixed issue #737: Diffing of added files does not work with Shell
+ * Fixed issue #738: Lost the commit id on file name when use a external diff tool
 
 = Release 1.6.5.0 =
 == Bug Fix ==

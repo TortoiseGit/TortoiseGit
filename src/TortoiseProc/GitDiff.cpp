@@ -268,9 +268,12 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
+		CreateDirectory(szTempName, NULL);
 		// use original file extension, an external diff tool might need it
-		file1.Format(_T("%s%s"),
-				temp.Left(temp.GetLength() - 4),
+		file1.Format(_T("%s\\%s-%s-right%s"),
+				temp,
+				pPath->GetBaseFilename(),
+				rev1.Left(6),
 				pPath->GetFileExtension());
 		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
 		g_Git.GetOneFile(rev1,*pPath,file1);
@@ -289,14 +292,17 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		GetTempFileName(temppath, pPath2->GetBaseFilename(), 0, szTempName);
 		CString temp(szTempName);
 		DeleteFile(szTempName);
+		CreateDirectory(szTempName, NULL);
 		// use original file extension, an external diff tool might need it
-		file2.Format(_T("%s%s"),
-				temp.Left(temp.GetLength() - 4),
+		file2.Format(_T("%s\\%s-%s-left%s"),
+				temp,
+				pPath2->GetBaseFilename(),
+				rev2.Left(6),
 				pPath2->GetFileExtension());
 		title2 = pPath2->GetFileOrDirectoryName()+_T(":")+rev2.Left(6);
 		g_Git.GetOneFile(rev2,*pPath2,file2);
-
-	}else
+	}
+	else
 	{
 		file2=g_Git.m_CurrentDir+_T("\\")+pPath2->GetWinPathString();
 		title2.Format( IDS_DIFF_WCNAME, pPath2->GetFileOrDirectoryName() );
