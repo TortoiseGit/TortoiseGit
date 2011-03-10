@@ -115,14 +115,20 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 
 	if(rev1 != GIT_REV_ZERO )
 	{
-		file1.Format(_T("%s%s_%s%s"),
-				temppath,
+		TCHAR szTempName[MAX_PATH];
+		GetTempFileName(temppath, pPath->GetBaseFilename(), 0, szTempName);
+		CString temp(szTempName);
+		DeleteFile(szTempName);
+		CreateDirectory(szTempName, NULL);
+		file1.Format(_T("%s\\%s-%s%s"),
+				temp,
 				pPath->GetBaseFilename(),
 				rev1.Left(6),
 				pPath->GetFileExtension());
-		
+
 		g_Git.GetOneFile(rev1,*pPath,file1);
-	}else
+	}
+	else
 	{
 		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 	}
