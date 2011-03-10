@@ -1,6 +1,8 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2011 - TortoiseGit
+// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,7 +51,14 @@ bool DiffCommand::Execute()
 			}
 			else
 			{
-				//git_revnum_t baseRev = 0;
+				// check if it is a newly added (but uncommitted) file
+				git_wc_status_kind status = git_wc_status_none;
+				CString topDir;
+				if (orgCmdLinePath.HasAdminDir(&topDir))
+					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);
+					if (status == git_wc_status_added)
+						cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
+
 				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
 			}
 		}
@@ -58,5 +67,6 @@ bool DiffCommand::Execute()
 		bRet = CAppUtils::StartExtDiff(
 			path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
 			CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
+
 	return bRet;
 }
