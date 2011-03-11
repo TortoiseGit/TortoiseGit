@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2010 - TortoiseGit
+// Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,11 +18,7 @@
 //
 
 #include "stdafx.h"
-#ifdef _TORTOISESHELL
-#include "ShellExt.h"
-#else
 #include "registry.h"
-#endif
 //#include "resource.h"
 #include "..\TortoiseShell\resource.h"
 //#include "git_config.h"
@@ -235,14 +231,8 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 	}
 
-	bool isfull;
-
-#ifdef _TORTOISESHELL
-	isfull = (g_ShellCache.GetCacheType() == ShellCache::dllFull);
-#else
-	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
+	bool isfull = ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
-#endif
 
 	if(isDir)
 	{
@@ -332,14 +322,8 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 //	hashbaton.exthash = exthash;
 	hashbaton.pThis = this;
 
-	bool isfull;
-
-#ifdef _TORTOISESHELL
-	isfull = (g_ShellCache.GetCacheType() == ShellCache::dllFull);
-#else
-	isfull =  ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
+	bool isfull = ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
-#endif
 
 	{
 		LPCTSTR lpszSubPath = NULL;
