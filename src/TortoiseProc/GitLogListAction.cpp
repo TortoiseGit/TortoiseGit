@@ -114,7 +114,7 @@ int CGitLogList::RevertSelectedCommits()
 				CMessageBox::Show(NULL,str, _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			else
 			{
-				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"),2, IDI_ERROR, _T("Skip"), _T("Abort")) ==2)
+				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"),2 , IDI_ERROR, _T("&Skip"), _T("&Abort")) == 2)
 				{
 					return ret;
 				}
@@ -623,8 +623,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_REFLOG_DEL:
 			{
 				CString str;
-				str.Format(_T("Warning: %s will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n \r\n Are you sure you want to continue?"),pSelLogEntry->m_Ref);
-				if(CMessageBox::Show(NULL,str,_T("TortoiseGit"),MB_YESNO|MB_ICONWARNING) == IDYES)
+				str.Format(_T("Warning: %s will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"),pSelLogEntry->m_Ref);
+				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"), 1, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
 				{
 					CString cmd,out;
 					cmd.Format(_T("git.exe reflog delete %s"),pSelLogEntry->m_Ref);
@@ -697,9 +697,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CString ref,msg;
 				ref=m_HashMap[pSelLogEntry->m_CommitHash][index];
 
-				msg=CString(_T("<ct=0x0000FF>Delete</ct> <b>"))+ref;
-				msg+=_T("</b>\n\n Are you sure?");
-				if( CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_YESNO) == IDYES )
+				msg=CString(_T("Do you really want to <ct=0x0000FF>delete</ct> <b>"))+ref;
+				msg+=_T("</b>?");
+				if( CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1 )
 				{
 					CString shortname;
 					CString cmd;
@@ -720,8 +720,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 					if(this->GetShortName(ref,shortname,_T("refs/stash")))
 					{
-						if(CMessageBox::Show(NULL,_T("<ct=0x0000FF>Are you sure remove <b>ALL</b> stash?</ct>"),
-											   _T("TortoiseGit"),MB_YESNO)==IDYES)
+						if(CMessageBox::Show(NULL, _T("<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"),
+											   _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 2)
 							cmd.Format(_T("git.exe stash clear"));
 						else
 							return;
