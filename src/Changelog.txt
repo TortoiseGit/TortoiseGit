@@ -2,9 +2,9 @@
 == Features ==
  * Fixed issue #724: BrowseRefs: Made branch renaming possible.
  * Use fetch-dialog for "Fetch" in BrowseRefs
- * Allow to sign tags (requires GPG and a key without passphrase)
  * Allow to edit user signingkey in TortoiseGit->Settings->GitConfig
- * Allow to use CC with MAPI
+ * Allow to sign tags (requires GPG and a key without passphrase)
+ * Allow to enter CC receipients with MAPI
  * Do not add Signed-off-by if already included
  * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
 
@@ -24,9 +24,9 @@
  * Do not show "Diff with previous" for added files
  * Fixed issue #737: Diffing of added files does not work with Shell
  * Fixed issue #738: Lost the commit id on file name when use a external diff tool
- * Fixed issue #714: add "FETCH_HEAD" to reference drop down list. 
+ * Fixed issue #714: add "FETCH_HEAD" to reference drop down list
  * Fixed issue #745: Unchanged submodules show up as changed in commit dialog
- * Fixed Issue 548:  tortoisegit use incorrect case sensitive comparison  
+ * Fixed Issue #548:  tortoisegit use incorrect case sensitive comparison
 
 = Release 1.6.5.0 =
 == Bug Fix ==
@@ -97,21 +97,21 @@
 
 = Release 1.6.3.0 =
 == Features ==
- 
+
  * Improved log dialog
    Fixed issue #662: Allow to filter for paths
    Added hash column
    Show BugID when user config bugtraq.logregex
- 
+
  * Improved commit dialog
    Removed useless options from the contextmenu (e.g. file operations for directories/submodules)
    allow to ignore deleted or unversioned files
- 
+
  * Improved changed files dialog
    Removed useless options from the contextmenu (e.g. file operations for directories/submodules)
    Fixed issue #618: Added a commit button
    allow to ignore deleted or unversioned files
- 
+
  * Rewrite patch import dialog
    Patch import dialog look like sync dialog.
    User can know which patch fail import easily.
@@ -120,22 +120,22 @@
    Fix many issues about patch import dialog (issue #252, issue #324, issue #332, issue #430)
 
  * Include version information for all executables
- 
+
  * Improved TortoiseBlame
    Fixed issues #490 and #436: Allow to blame older revisions in TortoiseGitBlame
    Removed useless options from the contextmenu (e.g. compare to working copy)
    Fixed issue #658: Added author column
- 
+
  * Fixed issue #323: implement DCommit type
- 
+
  * ask user if he wants to stash pop after "SVN fetch"
- 
+
  * allow to override branch on switch/checkout dialog
- 
+
  * allow to prune on fetch
- 
+
  * allow to edit global and local .gitconfig
- 
+
  * Fixed issue #655: remember previously selected features on upgrade
 
 == Bug Fix ==
@@ -173,7 +173,7 @@
    Add "checkout to branch" menu at log dialog
    Show icon for sub menu at log dialog
    Show bisect flag at log dialog
- 
+
  * Support multi-parent diff
    Enhance GNU Diff for merge commit by choose Parent.
    Add gnu diff combine option for merge commit
@@ -187,7 +187,7 @@
  * Compare multi parent at reflog log dialog
 
  * Add "Show log" in reflog context menu
- 
+
  * Add --init in Submodule update from sync dialog
 
 == Bug Fix ==
@@ -209,7 +209,7 @@
 = Release 1.5.8.0 =
 == Bug Fix ==
  * Fixed issue #571: missing annotated  tags display in log dialog
- * Fix don't show tag info at log dialog 
+ * Fix don't show tag info at log dialog
  * Fixed issue #570: Check for modifications dialog's controls not functioning correctly
  * Fixed issue #573: Upgrading to 1.5.7.0 removes gitdll.dll
  * Fixed issue #572: Commit dialog becomes unresponsive after hitting F5 to refresh
@@ -237,7 +237,7 @@
    At log, rebase, sync dialog, reflog, blame. User can customize column position. User can show\hide column. Add commiter date, commiter name, email.
 
  * BrowseRefs: Put focus on a tree node after a branch is deleted.s
- 
+
  * Add Note Support
 
  * Icon Overlay (TGitCache)
@@ -263,7 +263,7 @@
  * Add pre and post push hook support
  * Don't show remote branch name if remote branch is track branch at syncdlg
  * RebaseDlg: working at no branch, not upstream branch.
- 
+
 == Bug Fix ==
  * Fixed issue #475: Fix 'Save revision to' for 'Working copy'
  * Fixed Issue #486: Resolving conflicts can result in nothing to commit
@@ -289,9 +289,9 @@
  * Fixed issue #472: TortoiseGit allows to commit without setting up a username + email
  * Fixed issue #464: Push and pull missing from context menu
  * Fixed issue #470: auto stash apply/pop for SVN dcommit
- 
+
 = Release 1.5.2.0 =
-== Bug Fix == 
+== Bug Fix ==
  * Fixed issue #454: Fix "check Now" can't work at setting dialog
  * Fixed issue #457: Git copy versioned item(s) here adds all unversioned files
  * put pull, push and fetch to external manual.
@@ -330,11 +330,11 @@
 
 
 == Bug Fix ==
- * *Fixed issue #401: TGitCache.exe keeps open pack-xxx.idx on git repo*
- * *Fix issue review patch fail when there are new FilePatchesDlg.cpp*
- * *Fix all file show "+" icon after run git gc*
- * *Fixed issue #449: Files not in the Commit dialog are committed if in index*
- * *Fixed issue #450: Log Messages file list wrong when choose children dir firstly.*
+ * Fixed issue #401: TGitCache.exe keeps open pack-xxx.idx on git repo*
+ * Fix issue review patch fail when there are new FilePatchesDlg.cpp*
+ * Fix all file show "+" icon after run git gc*
+ * Fixed issue #449: Files not in the Commit dialog are committed if in index*
+ * Fixed issue #450: Log Messages file list wrong when choose children dir firstly.*
  * Fixed issue #387: "Automatically check for newer versions every week" remains disabled
  * Show correct file when Add new file at tortoisemerge
  * Fixed issue #381: About screen of TortoiseMerge shows invalid build information
@@ -410,7 +410,7 @@
  * Fixed Issue #351: "Search log messages..." in Log context menu does nothing
  * Fixed Issue #226: tortoisegit is searching for .git share on network drives
  * Fixed number of files selected is wrong at commit dialog
- * Fixed Issue 353: Fix Help button in the git sync dialog 
+ * Fixed Issue 353: Fix Help button in the git sync dialog
 
 = Release 1.4.0.0 =
 == Features ==
@@ -437,7 +437,7 @@
  * Fixed Issue #340:  OpenSSH password dialog focus
  * Fixed issue #312: The number of changed files in 'Show log' window
  * Fixed issue #325: Would be nice to see current directory in the commit dialog
- * Fixed issue #329: path wrong at "Save revision to... 
+ * Fixed issue #329: path wrong at "Save revision to...
  * Fixed issue #327: Crash in the commit dialog after you changed a file for Linux formatted
  * Fixed issue #321: Wrong Company/Product name in Metadata
  * Fixed Issue  Issue 309:	Mispelled words in the Git Synchronization dialog
@@ -465,7 +465,7 @@
  * Log Dialog
    Direct Launch external diff when open dialog at file
    Log can refresh when Click Rev button.
- 
+
  * Context menu
    Use setting dialog to control which menuitem is external menu.
 
@@ -491,18 +491,18 @@
 
 = Release 1.3.1.0 =
 == Features ==
- * Improve Log Dialog. Speed up log fetch speed. 
+ * Improve Log Dialog. Speed up log fetch speed.
    Build Git source as a DLL. LogDialog will call gitdll to fetch log instead of capture git.exe output.
    Improve refresh and all branch user experience. refresh can abort runing fetch log commit.
 
  * Improve icon-overlay
-   Give up igit.exe and use tgit which build from git source by VS. 
-   use tgit.exe statusex to get file status. 
-   Don't list all untracked files. 
- 
+   Give up igit.exe and use tgit which build from git source by VS.
+   use tgit.exe statusex to get file status.
+   Don't list all untracked files.
+
  * Improve commit and checkout modify dialog
-   Don't show file that is only time stamp change and no context change. 
-   Run git-update-index first when open commit and checkout out modify dialog. 
+   Don't show file that is only time stamp change and no context change.
+   Run git-update-index first when open commit and checkout out modify dialog.
 
 == Bug Fix ==
  * Fixed issue #234: First log(first commit in history) was missing...
@@ -515,21 +515,21 @@
 = Release 1.2.1.0 =
 == Features ==
  * Add color success and fail at ProgressDlg
- 
+
  * Log Dialog
    Show work copy to log dialog. User can commit change at log dialog.
    Easy to compare with working copy difference
-  
- * Allow Alt+O in commit dialog for OK 
- 
+
+ * Allow Alt+O in commit dialog for OK
+
  * Sync Dialog remote URL support save history
-   
- * Add remote branch and current branch at proptery page  
- 
+
+ * Add remote branch and current branch at proptery page
+
  * Add no-commit option at merge dialog
-  
+
  * Enable IBugTraqProvide CheckCommit and OnCommitFinished
- 
+
 == Bug Fix ==
  * Fixed issue #219: Blame Error when git repository is at root directory and path use "/"
  * Fixed issue #214: installer inserts unused or faulty registry key
@@ -539,40 +539,40 @@
  * Fixed issue #209: High CPU usage in tortoiseproc.exe & Append text to edit ctrl
  * Fixed Issue #203:  Remote URL select box in sync dialog is not populated with remotes.
  * Fixed Issue #208:  During push (from context menu), branches missing from drop down list.
- * Fixed issue #86: Globally sets HOME affecting third-party applications (GNU Emacs) 
+ * Fixed issue #86: Globally sets HOME affecting third-party applications (GNU Emacs)
  * Fixed issue #188: Add Git Properties tab into Windows File Properties
 
 = Release 1.1.1.0 =
 == Features ==
- 
+
  * Improve Rebase Dialog
    Allow lanuch new rebase dialog again after finish rebase dialog
    Disable "force rebase" checkbox during rebase.
 
  * Git SVN
-   Append svn:ignore settings to the default git exclude file Add shell extension command to import svn ignore settings. 
+   Append svn:ignore settings to the default git exclude file Add shell extension command to import svn ignore settings.
    Need press "Shift" key to show "import svn ignore" command.
-   
+
  * Drag-drop copy\move support
    File only
-  
+
  * Add paste command at shell extension
-   Copy and paste file is okay. But there are problems when including directory. 
+   Copy and paste file is okay. But there are problems when including directory.
    Cut and paste working
- 
+
  * Update notepad2 to 4.022
 
  * Sync Dialog
    Ability to sync submodules in TGit sync dialog
- 
+
  * Statics
    Sort commits by dates before processed by StatGraphDlg
- 
+
  * Log Dialog
    Show <No branch> replace ref error message at log dialog
-   
- * Add Check software updater support. 
- 
+
+ * Add Check software updater support.
+
 == Bug Fix ==
  * Fixed issue #185. "Can't find Super-project" when pathname include space.
  * Fixed issue #190: Access violation in Blame and wrong path name when root dir is git repository
@@ -582,7 +582,7 @@
  * Fixed issue #163: Conflict "theirs" and "mine" are reversed during a rebase
  * Fixed issue #165: Incorect path to Notepad2
  * Fixed issue #158: Rebase can act on the wrong branch
- 
+
 = Release 1.0.2.0 =
 == Bug Fix ==
  * Fixed issue #155: Fix SVN Rebase sets upstream as remotes/trunk
@@ -590,27 +590,27 @@
 
 = Release 1.0.1.0 =
 == Features ==
- 
+
  * Improve Commit Dialog
    Show line and column number
    Add view/hide patch windows
-   
+
  * Improve Log Dialog
    Bolad subject at log dialog
-   
+
  * Setting Config Dialog
    Add core.autocrlf and core.safecrlf
- 
- * Add more option to resolve conflict 
+
+ * Add more option to resolve conflict
    Add Resolve "Their" and Resolve "Mine" at conflict item.
- 
+
  * Improve Merge dialog
-   Add message box to allow input message when merge 
- 
+   Add message box to allow input message when merge
+
  * Improve Stash
-   Add Stash pop. 
-   Add delete stash at logview.   
-   
+   Add Stash pop.
+   Add delete stash at logview.
+
 == Bug Fix ==
  * Fix don't show "push" after commit
  * Fixed issue #133: Command fails on folder with leading dash And -- to separate file and git options
@@ -625,41 +625,41 @@
  * Fixed issue #139: "Format patch" with a range of revisions doesn't export the first revision in the range
  * Fix Pathwatcher thread can't stop when commitdlg exit.
  * Fixed issue #150: When pushing, 'remote' should default to the tracked branch, or empty
- 
+
 = Release 0.9.1.0 =
 == Features ==
- 
- * Add Sync Dialog like TortoiseHg. 
-   Put pull, fetch, push, apply patch and email patch together. You can Know what change pull and push. Show changed file list. 
- 
+
+ * Add Sync Dialog like TortoiseHg.
+   Put pull, fetch, push, apply patch and email patch together. You can Know what change pull and push. Show changed file list.
+
  * Enhance Rebase dialog. Add force rebase checkbox. Disable start button when no item rebase. Don't show merge commit
- 
+
  * Add post action button for rebase dialog. Such as send patch by email
-   After rebase, you can click button to send patch email directly. 
- 
+   After rebase, you can click button to send patch email directly.
+
  * Add  launch rebase option at fetch dialog.
- 
+
  * Improve push dialog.
    Default settings from local repositories pushing to remote repository Choose track remote and remote branch! Add short-cut at push dialog
    Add "F5" refresh remote and branch info at push dialog
- 
+
  * Add Clean Untracked version type
    User can choose clean untracked file, clean ignore file, clean all.
-   
- * Enhancement: "Git Clone" from SVN repository with additional start revision number option (-r xxx:HEAD) 
- 
+
+ * Enhancement: "Git Clone" from SVN repository with additional start revision number option (-r xxx:HEAD)
+
  * Improve Commit dialog
    Add recent message back to context menu.
    The "Message" field of the Commit dialog should have a shortcut key (Alt-M is a good choice)
-   Make "Whole project" directory checked by default when the user commits in the root of the project. 
+   Make "Whole project" directory checked by default when the user commits in the root of the project.
    When using "Commit" to also add files, if you forget to check the new files and press "Ok", you get the dialog "Nothing Commit" and then the whole Commit dialog closes. Keep the dialog open after this message.
 
-   
+
  * Improve setting dialog
    Settings: Git -> Remote: When creating the first remote, the "Remote" should have "origin" as default.
-   Fix setting dialog remote page tab order 
+   Fix setting dialog remote page tab order
    Push: When you press "Manage" under Destinations, the Settings dialog opening should have "Git -> Remote" selected by default.
-      
+
 == Bug Fix ==
  * Fixed issue #124: Incorrect Date header in patch e-mail
  * Fixed issue #122: Garbage text in "Git Command Progress" / suspected buffer overflow Improve commit speed when many added files.
@@ -671,7 +671,7 @@
  * Fixed issue #111: Undo Add does not work (keep added file) and enable "F5" at revert dialog
  * Fixed issue #109: clone on bare local repository fails Clear trail slash \ or/
  * Fixed issue #104: Doubleclicking changed submodule dir in Check For Modifications dlg, crashes TGit Fix log dialog double click submodule problem
- 
+
 = Release 0.8.1.0 =
 == Features ==
 
@@ -698,10 +698,10 @@
    Add SVN DCommit Command
    Add "SVN Rebase" and "SVN DCommit" command at shell contextmenu
    Support Git svn-clone at clone dialog.
- 
+
  * Help Document Updated
-   Add git basic book. 
-   
+   Add git basic book.
+
  * Add Help button at many dialog
 
  * Improve Format Patch
@@ -710,14 +710,14 @@
 
  * Add TortoiseIDiff to compare picture
 
- * Enable Bugtraq setting dialog  
+ * Enable Bugtraq setting dialog
 
  * Improve Log dialog
    Ajust label colors when selected. (Not on Vista with themes enabled)
-   Add compare with working copy at log dialog  
+   Add compare with working copy at log dialog
    Ref label borders
 
- * FileDiffDlg: Make shift right-left button work  
+ * FileDiffDlg: Make shift right-left button work
 
  * Branch/Tag dlg: Update 'track' option after browse-refs
 
@@ -725,7 +725,7 @@
 
  * RebaseDlg: Update rebase lines after browserefs
 
- 
+
 == BugFix ==
 
  * Fix Issue 64:  When the graph column is small, the graph sometimes appears through the text of the next column on Vista
@@ -753,14 +753,14 @@
    http://code.google.com/p/gurtle/.
 
  * Support browse reference.
-   Show all branch, tags information. Support add remote, del branch\tag. 
+   Show all branch, tags information. Support add remote, del branch\tag.
 
  * Show merged file at log dialog.
 
- * Update version graphic tree. 
+ * Update version graphic tree.
    Update graphic tree to qgit2.3
 
- * Add option -p for TortoisePLink. 
+ * Add option -p for TortoisePLink.
    -p is the same as -P. So it is compatible with OpenSSH port option
 
 == Bug Fix ==
@@ -772,15 +772,15 @@
 = Release 0.6.2.0 =
 == Feature ==
 
- * Improve fetch overlay speed 
+ * Improve fetch overlay speed
    rebase igit.exe to msysgit 1.6.2.2, which is major application to get git status.
 
- * TortoiseMerge Support git format patch file. 
+ * TortoiseMerge Support git format patch file.
    TortoiseMerge can open git patch file and review diff and merge change.
- 
+
  * SendMail support
    Right click .patch or .diff file, click "send mail..." to send patch out.
- 
+
  * improve clone dialog
    Add auto fill module name at directory when change URL. Fix tab order.
 
@@ -795,90 +795,90 @@
  * Setup will launch old version msi to remove old version. Directly update to new version without remove old version
  * Double click conflict item to launch diffview, not conflict edit.
  * Issue 66 in tortoisegit: Some log lines lose color or disappear after you click on them
- * Issue 81:  Cannot have x86 and x64 versions installed at the same time.  	
+ * Issue 81:  Cannot have x86 and x64 versions installed at the same time.
 
 = Release 0.5.1.0 =
 == Feature ==
 
  * Submodule Support.
-   Support submodule add, sync and update. 
+   Support submodule add, sync and update.
    "Submodule Sync" is located in explore context external menu, which need press "shift" key when right click.
-   
+
  * Improve show log speed at big repository, such as git.git
 
  * OpenSSH can prompt password dialog
 
- * Clone, pull push support both OpenSSH and Plink. 
-   Support both key and password mode. 
-   Show progress when clone at git and SSH protocol. 
+ * Clone, pull push support both OpenSSH and Plink.
+   Support both key and password mode.
+   Show progress when clone at git and SSH protocol.
 
  * Stash Save\Apply support
-	 
- * Reflog support. Need press "shift" to show reflog menu item at context menu. 
+
+ * Reflog support. Need press "shift" to show reflog menu item at context menu.
 
  * Add save special version to another file at file list, such as log dailog.
-	
+
  * Add external diff merge and undiff setting at settings page
 
- * Add Diff with workcopy at file list	
+ * Add Diff with workcopy at file list
 
  * Add MessageBox Tell user Revert Finished
-	
+
  * Add Notepad2 to setup script to view text file
-	
+
  * Add view in notepad2 at file list
-	
- * Add Copy File list to clipboard 
+
+ * Add Copy File list to clipboard
 
  * Choose Default SSH client when install TortoiseGit
-	
+
  * Add user config and remote manage at setting dialog
-	
- * Pull and push can autoload putty private key. 
 
-== Bug Fix ==	 
+ * Pull and push can autoload putty private key.
 
- * Fix Issue 52:  TortoiseMerge crashes on x64  
+== Bug Fix ==
+
+ * Fix Issue 52:  TortoiseMerge crashes on x64
  * Fixed Issue 55:  "resolved" function doesn't delete temporary files.
- * Fix: Issue 57:  Data duplication when Clicking Check repository in Check for modification dialog	
+ * Fix: Issue 57:  Data duplication when Clicking Check repository in Check for modification dialog
  * Fix GetString error when edit at HistoryCombo
  * win2k context menu fix (had an issue when shift key was pressed)
  * Fix crash in logviewer on invalid time strings
- * Issue 61:  Add/Commit of files with umlauts in filename not working  
+ * Issue 61:  Add/Commit of files with umlauts in filename not working
 
 = Release 0.4.2.0 =
 == Feature ==
 
  * Full Overlay Icon Support.
-   Show "Conflict, ignore file, untracked file, modified, Add, staged" icon according to file status. 
+   Show "Conflict, ignore file, untracked file, modified, Add, staged" icon according to file status.
 
  * Rebase Support.
-   Support "Pick" "Sqaush" "Edit" and "Skip" commit when rebase branch. 
+   Support "Pick" "Sqaush" "Edit" and "Skip" commit when rebase branch.
    Support abort.
- 	
+
  * Combine Multi-commits to one commit.
    Combine continous commits to one commit. The limition is the only single line(no merge point) above combined commit.
 
- * Cherry Pick multi commits. 
-   User can use multi commits at log dialog and then choose cherry pick these. Cherry Pick dialog guide you finish whole work. 
+ * Cherry Pick multi commits.
+   User can use multi commits at log dialog and then choose cherry pick these. Cherry Pick dialog guide you finish whole work.
    Support "Pick" "Squash" "Edit" and "Skip" commits.
-	
- * First x64 version. 
+
+ * First x64 version.
 
  * Support version "browse" at switch, export, new branch/tag and merge dialogs.
 
  * Add context menu item "Revert" at Commit dialog File List.
 
  * Show bold font for HEAD at log dialog.
-	
+
  * Add "Whole Project" checkbox at commit dialog
 
- * First Version Help Document. 
+ * First Version Help Document.
 
 == Bug Fix ==
 
- * Fix Shell menu disappear because ATL library have not installed. 
- * Fix Commit Dialog and Log Dialog default column is wrong 
+ * Fix Shell menu disappear because ATL library have not installed.
+ * Fix Commit Dialog and Log Dialog default column is wrong
  * Fix some dialog can't show after resize and close and open again
  * Fix ProgressDlg Sometime thread is dead blocked.
  * Fixed x64 build of TortoiseProc crashed due to received unexpected messages
@@ -891,41 +891,41 @@
  * Fix Issue 24,45, Commit results not in window with scroll bars
  * Fix for win2k context menu icons
  * Fix Issue 46, The about window title still displays TortoiseSVN
- * Fix Issue 37, When the file name contains Chinese char, Diff doesn't work. 
- * Fix Issue 28, "Add" status icon overlay is not correct.  
+ * Fix Issue 37, When the file name contains Chinese char, Diff doesn't work.
+ * Fix Issue 28, "Add" status icon overlay is not correct.
 
 = Release 0.3.3.0 =
 == Feature ==
 
  * Icon Overlay
-   Show different icon overlay at git repository. Support File and directory icon overlay. 
+   Show different icon overlay at git repository. Support File and directory icon overlay.
 
- * Show version tree in log dialog. 
-   Show version graphic tree at log list dialog. Use QGit style. 
-	
- * Enable log cache to improve log show speed. 
+ * Show version tree in log dialog.
+   Show version graphic tree at log list dialog. Use QGit style.
 
- * VS2008 Style Blame application. 
-   Show different back color according to line age. Show blame file log list to know which line is newer. 
-	
+ * Enable log cache to improve log show speed.
+
+ * VS2008 Style Blame application.
+   Show different back color according to line age. Show blame file log list to know which line is newer.
+
  * Enable conflict handle
-   Show conflict status at any file list, such as commit dialog. User just need right click and choose resolve conflict, tortoisemerge will be launch. 
-	
- * Related time show support. 
-	
- * Setting dialog support. 
-	
- * Enable TortoisePlink. 
-   Passwork dialog can prompt when use tortoiseplink as ssh client. 
-	
- * Git Reset support. 
-   User can right click log list at log dialog. Choose reset to reset current branch to chosen commit. 
-	
- * Current handle renamed file at file list. 
-	  
+   Show conflict status at any file list, such as commit dialog. User just need right click and choose resolve conflict, tortoisemerge will be launch.
+
+ * Related time show support.
+
+ * Setting dialog support.
+
+ * Enable TortoisePlink.
+   Passwork dialog can prompt when use tortoiseplink as ssh client.
+
+ * Git Reset support.
+   User can right click log list at log dialog. Choose reset to reset current branch to chosen commit.
+
+ * Current handle renamed file at file list.
+
 == Bug Fix ==
  * Disable file overlay icon at vista system to avoid explore crash
- * File overlay default is enable at XP system. User can disable it by setting dialog. 
+ * File overlay default is enable at XP system. User can disable it by setting dialog.
  * Issue 20:  Add To Ignore from Commit dialog not working
  * Fix Issue 31 in tortoisegit: Init Repository, Commit dialog can not show added file
  * Issue 30: Clone does not support UNC path to repository
@@ -937,19 +937,19 @@
  * Fix Issue 22 Error deleting file from context menu if filename contains spaces
  * Fix Issue 6 Add does not work.
  * Fix issue8. Clone of git via HTTP Creates repo in wrong location
- * Fix issue9. Error commit file with chinese filename. 
+ * Fix issue9. Error commit file with chinese filename.
  * Fix issue10. Switch and Create Branch drop-downs only display 25 items
  * Fix issue13. Create branch fail if branch name is invalidate
- * Fix issue14. Commit dialog don't report error when no message input 
+ * Fix issue14. Commit dialog don't report error when no message input
  * Fix issue16. Commit dialog, F5 don't work.
- * Fix "explore to" in context menu in commit dialog. 
+ * Fix "explore to" in context menu in commit dialog.
  * Fix redraw all when loading thread finish load log.
 
 = Release 0.2.0.0 =
 == Features ==
 
  * Add TortoisgeMerge as default compare tools
- * Pull, Fetch, Push 
+ * Pull, Fetch, Push
  * Create Branch\Tag
  * Switch branch \Chechout
  * Compare with previous version
@@ -964,22 +964,22 @@
 
 == Bug Fix ==
 
- * A2W cause stack overwrite bug when git output is long. 
+ * A2W cause stack overwrite bug when git output is long.
 
 == Known Issue ==
 
  * ProcessDlg will wait for ever when clone remote repository(ssh, http,git).
- * push fetch and pull don't support password mode. Just support public key problem. 
- * Just fetch first 100 log item. 
- * If install TortoiseGit before MsysGit, you need modify register 
+ * push fetch and pull don't support password mode. Just support public key problem.
+ * Just fetch first 100 log item.
+ * If install TortoiseGit before MsysGit, you need modify register
 	    HKEY_LOCAL_MACHINE\Software\TortoiseGit\\MsysGit\
 	   Let it point to correct msysgit install path.
- * Add File, please commit and show unversion file, the choose add file, then right clict, Choose Add file	 
+ * Add File, please commit and show unversion file, the choose add file, then right clict, Choose Add file
  * To new initial repository, You will not see add file again in commit dialog box if give up commit when choose add
-	 
+
 
 = Release 0.1.0.0 =
-== Features == 
+== Features ==
 
  * Context menu(subset of TortoiseSVN)
  * Icon Overlay(version controled\unversion controled at directory)
@@ -988,4 +988,4 @@
  * Commit change
  * Show Log
  * Create Repository
-	
+
