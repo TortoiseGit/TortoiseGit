@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../ext/gitdll;../../ext/apr-util/include&quot;../../ext/apr-util/xml/expat/lib;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\src;../../ext/zlib"
+				AdditionalIncludeDirectories="../../ext/gitdll;&quot;../../ext/apr-util/include&quot;;&quot;../../ext/apr-util/xml/expat/lib&quot;;../../ext/Subversion/subversion/include;../../ext/apr/include;../Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\src;../../ext/zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;UNICODE;_UNICODE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
