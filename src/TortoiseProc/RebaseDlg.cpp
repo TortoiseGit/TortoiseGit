@@ -1159,22 +1159,6 @@ void CRebaseDlg::UpdateProgress()
 
 void CRebaseDlg::UpdateCurrentStatus()
 {
-	if( m_CurrentRebaseIndex < 0 && m_RebaseStage!= REBASE_DONE)
-	{
-		if(m_CommitList.m_IsOldFirst)
-			m_RebaseStage = CRebaseDlg::REBASE_START;
-		else
-			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
-	}
-
-	if( m_CurrentRebaseIndex == m_CommitList.m_arShownList.GetSize() && m_RebaseStage!= REBASE_DONE)
-	{
-		if(m_CommitList.m_IsOldFirst)
-			m_RebaseStage = CRebaseDlg::REBASE_DONE;
-		else
-			m_RebaseStage = CRebaseDlg::REBASE_FINISH;
-	}
-
 	SetContinueButtonText();
 	SetControlEnable();
 	UpdateProgress();
