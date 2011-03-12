@@ -902,6 +902,9 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 
 		path.Replace(_T('\\'),_T('/'));
 
+		CString lowcasepath =path;
+		lowcasepath.MakeLower();
+
 		if(status)
 		{
 			git_wc_status_kind st = git_wc_status_none;
@@ -982,7 +985,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 					{
 						//add item
 
-						int start =SearchInSortVector(*treeptr,path.GetBuffer(),path.GetLength());
+						int start =SearchInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
 
 						if(start<0)
 						{
@@ -1093,6 +1096,9 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			if(path[path.GetLength()-1] !=  _T('/'))
 				path += _T('/'); //Add trail / to show it is directory, not file name.
 
+		CString lowcasepath = path;
+		lowcasepath.MakeLower();
+
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdate(gitdir,true);
@@ -1104,7 +1110,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			int pos;
 
 			{
-				pos=SearchInSortVector(*indexptr,path.GetBuffer(),path.GetLength());
+				pos=SearchInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
 			}
 
 			if(subpath.IsEmpty() && pos<0)
@@ -1157,7 +1163,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					end=indexptr->size()-1;
 				}
 
-				GetRangeInSortVector(*indexptr,path.GetBuffer(),path.GetLength(),&start,&end,pos);
+				GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos);
 				CGitIndexList::iterator it;
 
 				it = indexptr->begin()+start;
@@ -1226,7 +1232,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 							//Check Delete
 							if( *status == git_wc_status_normal )
 							{
-								pos = SearchInSortVector(*treeptr, path.GetBuffer(), path.GetLength());
+								pos = SearchInSortVector(*treeptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
 								if(pos <0)
 								{
 									*status =  max(git_wc_status_added, *status) ;
@@ -1234,7 +1240,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 								}else
 								{
 									int hstart,hend;
-									GetRangeInSortVector(*treeptr,path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
+									GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&hstart,&hend,pos);
 									CGitHeadFileList::iterator hit;
 									hit = treeptr->begin()+hstart;
 									for(int i=hstart;i<=hend;i++)
@@ -1281,13 +1287,16 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 			if(path[path.GetLength()-1] !=  _T('/'))
 				path += _T('/'); //Add trail / to show it is directory, not file name.
 
+		CString lowcasepath = path;
+		lowcasepath.MakeLower();
+
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdate(gitdir, true);
 			
 			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 
-			int pos=SearchInSortVector(*indexptr,path.GetBuffer(),path.GetLength());
+			int pos=SearchInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
 
 			if(subpath.IsEmpty() && pos<0)
 			{ // for new init repository
@@ -1336,7 +1345,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 					start=0;
 					end=indexptr->size()-1;
 				}
-				GetRangeInSortVector(*indexptr,path.GetBuffer(),path.GetLength(),&start,&end,pos);
+				GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos);
 				CGitIndexList::iterator it;
 
 				it = indexptr->begin()+start;
@@ -1424,7 +1433,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 							//Check Delete
 							if( *status == git_wc_status_normal )
 							{
-								pos = SearchInSortVector(*treeptr, path.GetBuffer(), path.GetLength());
+								pos = SearchInSortVector(*treeptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
 								if(pos <0)
 								{
 									*status = git_wc_status_added;
@@ -1432,7 +1441,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 								}else
 								{
 									int hstart,hend;
-									GetRangeInSortVector(*treeptr,path.GetBuffer(),path.GetLength(),&hstart,&hend,pos);
+									GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&hstart,&hend,pos);
 									CGitHeadFileList::iterator hit;
 									hit = treeptr->begin()+start;
 									for(int i=hstart;i<=hend;i++)

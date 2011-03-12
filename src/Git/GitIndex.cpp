@@ -16,6 +16,7 @@
 #define FILL_DATA() \
 	m_FileName.Empty();\
 	g_Git.StringAppend(&m_FileName,(BYTE*)entry->name,CP_ACP,Big2lit(entry->flags)&CE_NAMEMASK);\
+	m_FileName.MakeLower(); \
 	this->m_Flags=Big2lit(entry->flags);\
 	this->m_ModifyTime=Big2lit(entry->mtime.sec);\
 	this->m_IndexHash=(char*)(entry->sha1);
@@ -47,6 +48,16 @@ int CGitIndex::Print()
 CGitIndexList::CGitIndexList()
 {
 	this->m_LastModifyTime=0;
+}
+
+static bool SortIndex(CGitIndex &Item1, CGitIndex &Item2)
+{
+	return Item1.m_FileName.Compare(Item2.m_FileName)<0;
+}
+
+static bool SortTree(CGitTreeItem &Item1, CGitTreeItem &Item2)
+{
+	return Item1.m_FileName.Compare(Item2.m_FileName)<0;
 }
 
 int CGitIndexList::ReadIndex(CString IndexFile)
@@ -127,6 +138,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 				}
 			}
 
+			std::sort(this->begin(), this->end(), SortIndex);
 			g_Git.GetFileModifyTime(IndexFile, &this->m_LastModifyTime);
 		}while(0);
 	}catch(...)
@@ -146,10 +158,13 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 	return ret;
 }
 
-int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
+int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
 {
 	if(status)
 	{
+		CString path = pathorg;
+		path.MakeLower();
+
 		int start=SearchInSortVector(*this, ((CString&)path).GetBuffer(), path.GetLength());
 		((CString&)path).ReleaseBuffer();
 		
@@ -187,7 +202,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &path,git_w
 	}
 
 	if(callback && status)
-			callback(gitdir+_T("\\")+path,*status,false, pData);
+			callback(gitdir+_T("\\")+pathorg,*status,false, pData);
 	return 0;
 }
 
@@ -376,6 +391,8 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 		if(isDir)
 			subpath+=_T('/');
 		
+		subpath.MakeLower();
+
 		CheckAndUpdate(gitdir, isLoadUpdateIndex);
 		
 		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
@@ -434,7 +451,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				break;
 			}
 
-			int filesize = GetFileSize(hfile,NULL);
+			DWORD filesize = GetFileSize(hfile,NULL);
 			DWORD size =0;
 			char *buff;
 			buff = new char[filesize];
@@ -450,7 +467,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			CString hash;
 			CString ref;
 
-			for(int i=0;i<filesize;i++)
+			for(DWORD i=0;i<filesize;i++)
 			{
 				hash.Empty();
 				ref.Empty();
@@ -718,7 +735,7 @@ int CGitHeadFileList::ReadTree()
 #endif;
 
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
-		const char *pathname, unsigned mode, int stage, void *context)
+		const char *pathname, unsigned mode, int /*stage*/, void *context)
 {
 #define S_IFGITLINK	0160000
 
@@ -738,6 +755,8 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 		g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)base,CP_ACP,baselen);
 
 	g_Git.StringAppend(&p->at(cur).m_FileName,(BYTE*)pathname,CP_ACP);
+
+	p->at(cur).m_FileName.MakeLower();
 
 	//p->at(cur).m_FileName.Replace(_T('/'),_T('\\'));
 
@@ -803,6 +822,7 @@ int CGitHeadFileList::ReadTree()
 		if(ret)
 			break;
 
+		std::sort(this->begin(), this->end(), SortTree);
 		this->m_TreeHash = (char*)(git_commit_id(commit)->id);
 	
 	}while(0);
