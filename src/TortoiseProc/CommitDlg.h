@@ -116,6 +116,7 @@ public:
 	BOOL				m_bCommitAmend;
 	BOOL				m_bNoPostActions;
 	bool				m_bSelectFilesForCommit;
+	bool				m_bAutoClose;
 	CString				m_AmendStr;
 	CString				m_sBugID;
 	BOOL				m_bWholeProject;

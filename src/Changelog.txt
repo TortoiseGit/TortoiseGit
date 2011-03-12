@@ -28,6 +28,7 @@
  * Fixed issue #714: add "FETCH_HEAD" to reference drop down list
  * Fixed issue #745: Unchanged submodules show up as changed in commit dialog
  * Fixed Issue #548:  tortoisegit use incorrect case sensitive comparison
+ * Fixed issue #727: /CloseOnEnd not working for commit
 
 = Release 1.6.5.0 =
 == Bug Fix ==

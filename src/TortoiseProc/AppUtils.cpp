@@ -2377,7 +2377,8 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
-					bool bSelectFilesForCommit)
+					bool bSelectFilesForCommit,
+					bool autoClose)
 {
 	bool bFailed = true;
 
@@ -2411,6 +2412,7 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 		dlg.m_pathList = pathList;
 		dlg.m_checkedPathList = selectedList;
 		dlg.m_bSelectFilesForCommit = bSelectFilesForCommit;
+		dlg.m_bAutoClose = autoClose;
 		if (dlg.DoModal() == IDOK)
 		{
 			if (dlg.m_pathList.GetCount()==0)

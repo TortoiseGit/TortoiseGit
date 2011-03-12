@@ -62,6 +62,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_itemsCount(0)
 	, m_bSelectFilesForCommit(TRUE)
 	, m_bNoPostActions(FALSE)
+	, m_bAutoClose(false)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -624,8 +625,9 @@ void CCommitDlg::OnOK()
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
+		progress.m_bAutoCloseOnSuccess = m_bAutoClose;
 
-		if (!m_bNoPostActions)
+		if (!m_bNoPostActions || !m_bAutoClose)
 		{
 			progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
 			progress.m_PostCmdList.Add(_T("&ReCommit"));

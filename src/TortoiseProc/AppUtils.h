@@ -214,7 +214,8 @@ public:
 	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
-					bool bSelectFilesForCommit);
+					bool bSelectFilesForCommit,
+					bool autoClose = false);
 
 	static int GetCommitTemplate(CString &temp);
 
