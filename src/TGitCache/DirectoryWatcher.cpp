@@ -395,6 +395,15 @@ void CDirectoryWatcher::WorkerThread()
 									break;
 								continue;
 							}
+							if ((pFound = wcsstr(buf, L".git"))!=NULL)
+							{
+								// omit repository data change except .git/index
+								if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
+									break;
+
+								if( wcsstr(pFound, L".git\\index") == NULL)
+									continue;
+							}
 							ATLTRACE(_T("change notification: %s\n"), buf);
 							m_FolderCrawler->AddPathForUpdate(CTGitPath(buf));
 						}
