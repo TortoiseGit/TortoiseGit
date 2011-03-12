@@ -1797,15 +1797,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
 				{
 					CString str;
-					str.LoadString(IDS_DELETE_BRANCHTAG);
 					if( m_HashMap[pSelLogEntry->m_CommitHash].size() == 1 )
 					{
+						str.LoadString(IDS_DELETE_BRANCHTAG_SHORT);
 						str+=_T(" ");
 						str+=m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 						popup.AppendMenuIcon(ID_DELETE,str+_T("..."),IDI_DELETE);
 					}
 					else if( m_HashMap[pSelLogEntry->m_CommitHash].size() > 1 )
 					{
+						str.LoadString(IDS_DELETE_BRANCHTAG);
 						submenu.CreatePopupMenu();
 						for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
 						{

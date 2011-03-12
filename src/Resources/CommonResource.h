@@ -92,4 +92,5 @@
 #define IDC_LIST_REF                    20089
 #define IDC_STATIC_FILTER               20090
 #define IDC_EDIT_FILTER                 20091
+#define IDS_DELETE_BRANCHTAG_SHORT      20092
 #define IDD_FIND                        20100
