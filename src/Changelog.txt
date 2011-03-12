@@ -7,6 +7,7 @@
  * Allow to enter CC receipients with MAPI
  * Do not add Signed-off-by if already included
  * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
+ * Allow to start push dialog from log
 
 == Bug Fix ==
  * Fixed tab indices (activation order)

@@ -681,6 +681,10 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
 			}
 			break;
+		case ID_PUSH:
+			if (CAppUtils::Push())
+				Refresh();
+			break;
 		case ID_DELETE:
 			{
 				int index = cmd>>16;

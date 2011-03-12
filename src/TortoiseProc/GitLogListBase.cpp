@@ -1779,6 +1779,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if (GetSelectedCount() == 1)
 		{
+			if(m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && m_HashMap[pSelLogEntry->m_CommitHash].size() >= 1)
+			{
+				// show the push-option only if the log entry has an associated local branch
+				bool isLocal = false;
+				for(int i=0; isLocal == false && i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				{
+					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/heads/")) == 0)
+						isLocal = true;
+				}
+				if (isLocal)
+					popup.AppendMenuIcon(ID_PUSH, IDS_LOG_PUSH);
+			}
+
 			if(m_ContextMenuMask &GetContextMenuBit(ID_DELETE))
 			{
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
@@ -1793,7 +1806,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 					else if( m_HashMap[pSelLogEntry->m_CommitHash].size() > 1 )
 					{
-
 						submenu.CreatePopupMenu();
 						for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
 						{
@@ -1801,7 +1813,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						}
 
 						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);
-
 					}
 				}
 			} // m_ContextMenuMask &GetContextMenuBit(ID_DELETE)

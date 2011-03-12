@@ -268,6 +268,7 @@ public:
 	ID_CREATE_PATCH,
 	ID_DELETE,
 	ID_COMMIT,
+	ID_PUSH,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();

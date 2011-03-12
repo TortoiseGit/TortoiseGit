@@ -247,6 +247,7 @@
 #define IDS_PROC_RESETBRANCH            1016
 #define IDC_MESSAGE                     1017
 #define IDC_DIFFVIEWER                  1017
+#define IDS_LOG_PUSH                    1017
 #define IDC_NEWEST                      1019
 #define IDC_EXTDIFFBROWSE               1021
 #define IDC_EXTMERGEBROWSE              1022
