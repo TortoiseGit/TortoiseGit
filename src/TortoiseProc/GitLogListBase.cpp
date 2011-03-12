@@ -1802,7 +1802,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						str.LoadString(IDS_DELETE_BRANCHTAG_SHORT);
 						str+=_T(" ");
 						str+=m_HashMap[pSelLogEntry->m_CommitHash].at(0);
-						popup.AppendMenuIcon(ID_DELETE,str+_T("..."),IDI_DELETE);
+						popup.AppendMenuIcon(ID_DELETE, str, IDI_DELETE);
 					}
 					else if( m_HashMap[pSelLogEntry->m_CommitHash].size() > 1 )
 					{
@@ -1810,7 +1810,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						submenu.CreatePopupMenu();
 						for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
 						{
-							submenu.AppendMenuIcon(ID_DELETE+(i<<16),m_HashMap[pSelLogEntry->m_CommitHash][i]+_T("..."));
+							submenu.AppendMenuIcon(ID_DELETE+(i<<16),m_HashMap[pSelLogEntry->m_CommitHash][i]);
 						}
 
 						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);
