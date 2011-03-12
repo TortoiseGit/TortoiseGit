@@ -25,6 +25,8 @@
  * Fixed issue #737: Diffing of added files does not work with Shell
  * Fixed issue #738: Lost the commit id on file name when use a external diff tool
  * Fixed issue #714: add "FETCH_HEAD" to reference drop down list. 
+ * Fixed issue #745: Unchanged submodules show up as changed in commit dialog
+ * Fixed Issue 548:  tortoisegit use incorrect case sensitive comparison  
 
 = Release 1.6.5.0 =
 == Bug Fix ==
