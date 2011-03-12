@@ -802,6 +802,8 @@ int CGitHeadFileList::ReadTree()
 		ret = ReadTreeRecurive(tree,"", CGitHeadFileList::CallBack,this);
 		if(ret)
 			break;
+
+		this->m_TreeHash = (char*)(git_commit_id(commit)->id);
 	
 	}while(0);
 
