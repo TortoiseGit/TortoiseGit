@@ -788,9 +788,10 @@ int ReadTreeRecurive(git_tree * tree, CStringA base, int (*CallBack) (const unsi
 			{
 				git_object *object;
 				git_tree_entry_2object(&object, entry);
-				base += git_tree_entry_name(entry);
-				base += "/";
-				ReadTreeRecurive((git_tree*)object,base, CallBack,data);
+				CStringA parent = base;
+				parent += git_tree_entry_name(entry);
+				parent += "/";
+				ReadTreeRecurive((git_tree*)object,parent, CallBack,data);
 			}
 		}
 		
