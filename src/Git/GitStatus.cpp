@@ -969,7 +969,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 					{
 						//add item
 
-						int start =SearchInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
+						int start =SearchInSortVector(*treeptr,lowcasepath.GetBuffer(),-1);
 
 						if(start<0)
 						{
@@ -1229,7 +1229,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 									hit = treeptr->begin()+hstart;
 									for(int i=hstart;i<=hend;i++)
 									{
-										if( SearchInSortVector(*indexptr, (*hit).m_FileName.GetBuffer(),(*hit).m_FileName.GetLength())  <0 )
+										if( SearchInSortVector(*indexptr, (*hit).m_FileName.GetBuffer(),-1)  <0 )
 										{
 											*status =max(git_wc_status_deleted, *status);
 											break;
@@ -1383,7 +1383,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 						{
 							for(int i=start;i<=end;i++)
 							{
-								pos =SearchInSortVector(*treeptr, (*it).m_FileName.GetBuffer(), (*it).m_FileName.GetLength());
+								pos =SearchInSortVector(*treeptr, (*it).m_FileName.GetBuffer(), -1);
 
 								if(pos < 0)
 								{
@@ -1430,7 +1430,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									hit = treeptr->begin()+start;
 									for(int i=hstart;i<=hend;i++)
 									{
-										if( SearchInSortVector(*indexptr,(*hit).m_FileName.GetBuffer(),(*hit).m_FileName.GetLength()) < 0)
+										if( SearchInSortVector(*indexptr,(*hit).m_FileName.GetBuffer(),-1) < 0)
 										{
 											*status = git_wc_status_deleted;
 											break;

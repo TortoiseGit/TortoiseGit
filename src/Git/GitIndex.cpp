@@ -184,7 +184,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 		CString path = pathorg;
 		path.MakeLower();
 
-		int start=SearchInSortVector(*this, ((CString&)path).GetBuffer(), path.GetLength());
+		int start=SearchInSortVector(*this, ((CString&)path).GetBuffer(),-1);
 		((CString&)path).ReleaseBuffer();
 		
 		if( start<0 )
@@ -418,7 +418,10 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 
 		if(pIndex.get())
 		{
-			*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), subpath.GetLength()) >= 0);
+			if(isDir)
+				*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), subpath.GetLength()) >= 0);
+			else
+				*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), -1) >= 0);
 		}
 
 	}catch(...)

@@ -508,7 +508,10 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 	while(!( start == end && start==mid))
 	{
 		int cmp;
-		cmp = _tcsnccmp( vector[mid].m_FileName,pstr,len );
+		if(len < 0)
+			cmp = _tcscmp(vector[mid].m_FileName,pstr);
+		else
+			cmp = _tcsnccmp( vector[mid].m_FileName,pstr,len );
 
 		if(cmp ==0)
 			return mid;
@@ -525,10 +528,16 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 		mid=(start +end ) /2;
 
 	}
-
-	if(_tcsnccmp( vector[mid].m_FileName,pstr,len ) == 0)
-		return mid;
-
+	if(len <0)
+	{
+		if(_tcscmp(vector[mid].m_FileName,pstr) == 0)
+			return mid;
+	}
+	else
+	{
+		if(_tcsnccmp( vector[mid].m_FileName,pstr,len ) == 0)
+			return mid;
+	}
 	return -1;
 };
 #if 0
