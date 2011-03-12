@@ -46,7 +46,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	GIT_FILE file;
 
-	ret = git_diff(diff, outhash, commit.m_hash,&file, &count);
+	ret = git_diff(diff, outhash, commit.m_hash,&file, &count,0);
 	output(ret, "git_diff");
 
 	for(i =0;i<count;i++)
