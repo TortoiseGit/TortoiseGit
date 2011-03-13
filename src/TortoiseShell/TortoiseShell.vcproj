@@ -650,6 +650,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\copy.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\menuabout.ico"
 				>
 			</File>

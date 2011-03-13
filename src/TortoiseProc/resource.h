@@ -167,7 +167,6 @@
 #define IDD_SETTINGSBUGTRAQADV          284
 #define IDI_ICON6                       285
 #define IDI_UP                          286
-#define IDI_COPYCLIP                    288
 #define IDI_MKDIR                       289
 #define IDI_REFRESH                     290
 #define IDI_SAVE                        291

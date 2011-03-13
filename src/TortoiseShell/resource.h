@@ -272,6 +272,7 @@
 #define IDI_SQUASH                      5173
 #define IDI_PICK                        5174
 #define IDI_MENUSENDMAIL                5175
+#define IDI_COPYCLIP                    5176
 #define IDC_LOCKOWNER                   11019
 #define IDC_LOCKDATE                    11020
 #define IDC_CONFIG_AUTOCRLF             11020
@@ -291,7 +292,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5176
+#define _APS_NEXT_RESOURCE_VALUE        5177
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11026
 #define _APS_NEXT_SYMED_VALUE           5101
