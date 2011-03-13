@@ -1816,16 +1816,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
-				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH);
+				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
 		}
 		if (GetSelectedCount() != 0)
 		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
-				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
+				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD, IDI_COPYCLIP);
 		}
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
-			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
+			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND, IDI_FILTEREDIT);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);
