@@ -376,7 +376,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					else
 						name = *branch;
 
-					progress.m_GitCmd.Format(_T("git.exe checkout %s"), name.GetString());
+					progress.m_GitCmd.Format(_T("git.exe checkout -- %s"), name.GetString());
 					progress.DoModal();
 				}
 				ReloadHashMap();
@@ -440,13 +440,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			//Use throw to abort this process (reset back to original HEAD)
 			try
 			{
-				cmd.Format(_T("git.exe reset --hard  %s"),pFirstEntry->m_CommitHash.ToString());
+				cmd.Format(_T("git.exe reset --hard %s"),pFirstEntry->m_CommitHash.ToString());
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to first commit (first step) aborting...\r\n\r\n")+out));
 				}
-				cmd.Format(_T("git.exe reset --mixed  %s"),hashLast.ToString());
+				cmd.Format(_T("git.exe reset --mixed %s"),hashLast.ToString());
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
@@ -709,17 +709,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					CString cmd;
 					if(this->GetShortName(ref,shortname,_T("refs/heads/")))
 					{
-						cmd.Format(_T("git.exe branch -D %s"),shortname);
+						cmd.Format(_T("git.exe branch -D -- %s"),shortname);
 					}
 
 					if(this->GetShortName(ref,shortname,_T("refs/remotes/")))
 					{
-						cmd.Format(_T("git.exe branch -r -D %s"),shortname);
+						cmd.Format(_T("git.exe branch -r -D -- %s"),shortname);
 					}
 
 					if(this->GetShortName(ref,shortname,_T("refs/tags/")))
 					{
-						cmd.Format(_T("git.exe tag -d %s"),shortname);
+						cmd.Format(_T("git.exe tag -d -- %s"),shortname);
 					}
 
 					if(this->GetShortName(ref,shortname,_T("refs/stash")))

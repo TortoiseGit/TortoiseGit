@@ -536,7 +536,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 			cmd.Format(L"git.exe push \"%s\" :%s", remoteName, remoteBranchToDelete);
 		}
 		else
-			cmd.Format(L"git.exe branch -%c %s",bForce?L'D':L'd',branchToDelete);
+			cmd.Format(L"git.exe branch -%c -- %s",bForce?L'D':L'd',branchToDelete);
 		CString resultDummy;
 		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
 		{
@@ -550,7 +550,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 	{
 		CString tagToDelete = completeRefName.Mid(10);
 		CString cmd;
-		cmd.Format(L"git.exe tag -d %s",tagToDelete);
+		cmd.Format(L"git.exe tag -d -- %s",tagToDelete);
 		CString resultDummy;
 		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
 		{
