@@ -1777,7 +1777,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 				if (isLocal)
 				{
-					popup.AppendMenuIcon(ID_PUSH, IDS_LOG_PUSH);
+					popup.AppendMenuIcon(ID_PUSH, IDS_LOG_PUSH, IDI_PUSH);
 					bAddSeparator = true;
 				}
 			}
