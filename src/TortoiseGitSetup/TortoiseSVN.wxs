@@ -7,7 +7,8 @@
 	Id="*"
 	Version="$(var.VersionNumberInternal)"
 	Manufacturer="TortoiseGit"
-	Language="1033">
+	Language="1033"
+	Codepage="1252">
 		<Package
 		Id="*"
 		Keywords="$(var.PackageKeywords)"
@@ -18,7 +19,8 @@
 		Platform="$(var.PackagePlatforms)"
 		Languages="1033"
 		Compressed="yes"
-		SummaryCodepage="1252"/>
+		SummaryCodepage="1252"
+		InstallPrivileges="elevated" />
 
 		<Upgrade Id="$(var.UpgradeGuid)" >
 			<!-- upgrade is flagged if current-install is newer than or equal to package - TODO: should make a dialog appear asking user to confirm downgrade.  -->
