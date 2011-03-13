@@ -602,10 +602,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\copy.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\CopyBackground.ico"
 				>
 			</File>
@@ -631,10 +627,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\explorer.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\explorer.ico"
 				>
 			</File>
 			<File
@@ -882,15 +874,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\newfolder.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\open.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\open.ico"
 				>
 			</File>
 			<File
@@ -911,10 +895,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\pull1.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\refresh.ico"
 				>
 			</File>
 			<File
@@ -999,14 +979,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\save.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\save.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\saveas.ico"
 				>
 			</File>
 			<File
@@ -1103,10 +1075,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\up.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\up.ico"
 				>
 			</File>
 			<File

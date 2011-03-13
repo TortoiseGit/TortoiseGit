@@ -646,23 +646,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\clipcopy.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\clipcut.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\clippaste.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\icon1.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\icon2.ico"
 				>
 			</File>
 			<File
