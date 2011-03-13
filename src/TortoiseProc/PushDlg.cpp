@@ -28,6 +28,7 @@
 #include "registry.h"
 #include "AppUtils.h"
 #include "BrowseRefsDlg.h"
+#include "MessageBox.h"
 
 // CPushDlg dialog
 
@@ -241,8 +242,14 @@ void CPushDlg::OnBnClickedOk()
 		m_URL=m_RemoteURL.GetString();
 	}
 
-	this->m_BranchRemoteName=m_BranchRemote.GetString();
+	this->m_BranchRemoteName=m_BranchRemote.GetString().Trim();
 	this->m_BranchSourceName=m_BranchSource.GetString();
+
+	if(!g_Git.IsBranchNameValid(this->m_BranchRemoteName))
+	{
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+		return;
+	}
 
 	this->m_RemoteURL.SaveHistory();
 	this->m_BranchRemote.SaveHistory();

@@ -24,6 +24,7 @@
 #include "RequestPullDlg.h"
 #include "git.h"
 #include "LogDlg.h"
+#include "MessageBox.h"
 
 IMPLEMENT_DYNAMIC(CRequestPullDlg, CResizableStandAloneDialog)
 
@@ -117,7 +118,13 @@ void CRequestPullDlg::OnBnClickedOk()
 
 	m_RegStartRevision = m_StartRevision;
 	m_RegRepositoryURL = m_RepositoryURL;
-	m_RegEndRevision = m_EndRevision;
+	m_RegEndRevision = m_EndRevision.Trim();
+
+	if(!g_Git.IsBranchNameValid(m_EndRevision))
+	{
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+		return;
+	}
 
 	if(m_StartRevision.Find(_T("remotes/")) == 0)
 		m_StartRevision = m_StartRevision.Mid(8);
