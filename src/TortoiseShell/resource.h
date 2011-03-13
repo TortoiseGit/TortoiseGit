@@ -206,9 +206,9 @@
 #define IDS_MENUSTASHPOP                341
 #define IDS_MENUSVNIGNORE               342
 #define IDS_MENUSVNIGNORE_DESC          343
-#define IDS_MENUDIFFTWO					344
-#define IDS_MENUDESCDIFFTWO				345
-#define IDS_MENUDESCIMPORTPATCH			346
+#define IDS_MENUDIFFTWO                 344
+#define IDS_MENUDESCDIFFTWO             345
+#define IDS_MENUDESCIMPORTPATCH         346
 #define IDS_MENUDESCPULL                347
 #define IDS_MENUDESCPUSH                348
 #define IDS_MENUDESCCLONE               349
@@ -222,7 +222,7 @@
 #define IDC_LOCKED                      1002
 #define IDC_LAST_HASH                   1002
 #define IDC_REPOURL                     1003
-#define IDC_SHELL_CURRENT_BRANCH              1003
+#define IDC_SHELL_CURRENT_BRANCH        1003
 #define IDC_CREVISION                   1004
 #define IDC_HEAD_SUBJECT                1004
 #define IDC_CDATE                       1005
@@ -261,7 +261,6 @@
 #define IDI_DELUNVERSIONED              5159
 #define IDI_APPSMALL                    5160
 #define IDI_CLIPPASTE                   5164
-#define IDI_ICON1                       5165
 #define IDI_PUSH                        5166
 #define IDI_CLONE                       5167
 #define IDI_TAG                         5168
@@ -278,7 +277,7 @@
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
-#define IDC_SHELL_REMOTE_BRANCH               11022
+#define IDC_SHELL_REMOTE_BRANCH         11022
 #define IDC_ESCAPEDURLLABEL             11023
 #define IDC_REPOUUID                    11024
 #define IDC_CONFIG_SAFECRLF             11024
