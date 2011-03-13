@@ -154,7 +154,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 	}
 
 	this->m_BranchTagName.Trim();
-	if(this->m_BranchTagName.IsEmpty()  ||  this->m_BranchTagName.Find(' ') >= 0 )
+	if(!g_Git.IsBranchNameValid(this->m_BranchTagName))
 	{
 		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
 		return;

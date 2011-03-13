@@ -119,9 +119,10 @@ void CGitSwitchDlg::OnBnClickedShow()
 void CGitSwitchDlg::OnBnClickedOk()
 {
 	this->UpdateData(TRUE);
-	
+
 	// make sure a valid branch has been entered if a new branch is required
-	if ( m_bBranch  &&  ( m_NewBranch.Trim().IsEmpty() ||  m_NewBranch.Find(' ') >= 0 ) )
+	m_NewBranch.Trim();
+	if ( m_bBranch && (!g_Git.IsBranchNameValid(m_NewBranch)))
 	{
 		// new branch requested but name is empty or contains spaces
 		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
