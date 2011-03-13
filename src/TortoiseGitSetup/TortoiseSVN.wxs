@@ -53,7 +53,7 @@
 		<Property Id="ALLUSERS">1</Property>
 
     <Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
-		<Condition Message="[ProductName] requires Windows 2000 or later."><![CDATA[VersionNT >= 500]]></Condition>
+		<Condition Message="[ProductName] requires Windows 2000 SP4 or later."><![CDATA[(VersionNT > 500) OR ((VersionNT = 500) AND (ServicePackLevel >= 4))]]></Condition>
 
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
 		<Property Id="TEXTEDITOR">
