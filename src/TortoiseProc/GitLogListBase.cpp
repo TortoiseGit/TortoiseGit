@@ -1765,20 +1765,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if (GetSelectedCount() == 1)
 		{
-			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
-				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH);
-		}
-		if (GetSelectedCount() != 0)
-		{
-			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
-				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
-		}
-
-		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
-			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
-
-		if (GetSelectedCount() == 1)
-		{
+			bool bAddSeparator = false;
 			if(m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && m_HashMap[pSelLogEntry->m_CommitHash].size() >= 1)
 			{
 				// show the push-option only if the log entry has an associated local branch
@@ -1789,7 +1776,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						isLocal = true;
 				}
 				if (isLocal)
+				{
 					popup.AppendMenuIcon(ID_PUSH, IDS_LOG_PUSH);
+					bAddSeparator = true;
+				}
 			}
 
 			if(m_ContextMenuMask &GetContextMenuBit(ID_DELETE))
@@ -1803,6 +1793,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						str+=_T(" ");
 						str+=m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 						popup.AppendMenuIcon(ID_DELETE, str, IDI_DELETE);
+						bAddSeparator = true;
 					}
 					else if( m_HashMap[pSelLogEntry->m_CommitHash].size() > 1 )
 					{
@@ -1814,10 +1805,27 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						}
 
 						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);
+						bAddSeparator = true;
 					}
 				}
 			} // m_ContextMenuMask &GetContextMenuBit(ID_DELETE)
+			if (bAddSeparator)
+				popup.AppendMenu(MF_SEPARATOR, NULL);
 		} // GetSelectedCount() == 1
+
+		if (GetSelectedCount() == 1)
+		{
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
+				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH);
+		}
+		if (GetSelectedCount() != 0)
+		{
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
+				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD);
+		}
+
+		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
+			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);
