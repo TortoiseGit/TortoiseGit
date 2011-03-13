@@ -143,6 +143,7 @@ public:
 
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;
+	static bool IsBranchNameValid(CString branchname);
 	unsigned int Hash2int(CGitHash &hash);
 //	static CString m_MsysGitPath;
 

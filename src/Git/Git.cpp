@@ -166,6 +166,28 @@ CGit::~CGit(void)
 	}
 }
 
+bool CGit::IsBranchNameValid(CString branchname)
+{
+	if (branchname.IsEmpty())
+		return false;
+
+	for(int i=0; i < branchname.GetLength(); i++)
+	{
+		TCHAR c = branchname.GetAt(i);
+		if (c <= ' '  || c == '~' || c == '^' || c == ':' || c == '\\' || c == '?' || c == '[')
+			return false;
+	}
+
+	if (branchname.Find(L".") == 0 || branchname.Find(L"..") >= 0 || branchname.Find(L"@{") >= 0 || branchname.ReverseFind('*') >= 0 || branchname.ReverseFind('/') >= 0)
+		return false;
+
+	CString reverseBranchname = branchname.MakeReverse();
+	if (reverseBranchname.Find(L"kcol.") >= 0)
+		return false;
+
+	return true;
+}
+
 static char g_Buffer[4096];
 
 int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CString *StdioFile)
