@@ -24,6 +24,7 @@
 #include "TempFile.h"
 #include "ProgressDlg.h"
 #include "SysImageList.h"
+#include "IconMenu.h"
 //#include "GitProperties.h"
 #include "StringUtils.h"
 #include "PathUtils.h"
@@ -706,21 +707,16 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		m_cFileList.ClientToScreen(&rect);
 		point = rect.CenterPoint();
 	}
-	CMenu popup;
+	CIconMenu popup;
 	if (popup.CreatePopupMenu())
 	{
-		CString temp;
-		temp.LoadString(IDS_LOG_POPUP_COMPARETWO);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_COMPARE, temp);
-		temp.LoadString(IDS_FILEDIFF_POPBLAME);
-		//popup.AppendMenu(MF_STRING | MF_ENABLED, ID_BLAME, temp);
+		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+		//popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		temp.LoadString(IDS_FILEDIFF_POPSAVELIST);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_SAVEAS, temp);
-		temp.LoadString(IDS_STATUSLIST_CONTEXT_COPY);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_CLIPBOARD_PATH, temp);
-		temp.LoadString(IDS_STATUSLIST_CONTEXT_COPYEXT);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_CLIPBOARD_ALL, temp);
+
+		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
+		popup.AppendMenuIcon(ID_CLIPBOARD_PATH, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
+		popup.AppendMenuIcon(ID_CLIPBOARD_ALL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 		
 		//temp.LoadString(IDS_FILEDIFF_POPEXPORT);
 		//popup.AppendMenu(MF_STRING | MF_ENABLED, ID_EXPORT, temp);
