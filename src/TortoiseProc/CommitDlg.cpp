@@ -1703,21 +1703,16 @@ void CCommitDlg::FillPatchView()
 			{
 				cmd.Format(_T("git.exe diff -- \"%s\""),p->GetGitPathString());
 				g_Git.Run(cmd,&out,CP_ACP);
-
 			}
-
 		}
 
 		m_patchViewdlg.m_ctrlPatchView.SetText(out);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
-
 	}
-
 }
-LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM wparam, LPARAM /*lparam*/)
+LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
 {
-	TRACE("OnGitStatusListCtrlItemChanged %d\r\n", wparam);
 	this->FillPatchView();
 	return 0;
 }
@@ -1741,7 +1736,6 @@ void CCommitDlg::UpdateOKButton()
 	DialogEnableWindow(IDOK, bValidLogSize && nSelectedItems>0);
 #endif
 }
-
 
 LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
