@@ -106,7 +106,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	}
 	m_rev1 = rev1;
 	m_rev2 = rev2;
-	
+
 }
 void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 {
@@ -115,7 +115,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 		m_path1 = *path;
 		m_path2 = *path;
 	}
-	
+
 	BYTE_VECTOR logout;
 
 	if(hash1 == GIT_REV_ZERO)
@@ -150,8 +150,8 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 	m_rev2.GetSubject() = _T("Previous Version");
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
-	
-	
+
+
 }
 
 BOOL CFileDiffDlg::OnInitDialog()
@@ -186,7 +186,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	while (c>=0)
 		m_cFileList.DeleteColumn(c--);
 
-	
+
 	temp.LoadString(IDS_FILEDIFF_FILE);
 	m_cFileList.InsertColumn(0, temp);
 	temp.LoadString(IDS_FILEDIFF_ACTION);
@@ -196,7 +196,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	m_cFileList.InsertColumn(2, temp);
 	temp.LoadString(IDS_FILEDIFF_STATDEL);
 	m_cFileList.InsertColumn(3, temp);
-	
+
 	int mincol = 0;
 	int maxcol = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	int col;
@@ -204,9 +204,9 @@ BOOL CFileDiffDlg::OnInitDialog()
 	{
 		m_cFileList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
 	}
-	
+
 	m_cFileList.SetRedraw(true);
-	
+
 	AddAnchor(IDC_DIFFSTATIC1, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SWITCHLEFTRIGHT, TOP_RIGHT);
 	AddAnchor(IDC_FIRSTURL, TOP_LEFT, TOP_RIGHT);
@@ -220,7 +220,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_REV2GROUP,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_REV1EDIT,TOP_LEFT);
 	AddAnchor(IDC_REV2EDIT,TOP_LEFT);
-	
+
 	EnableSaveRestore(_T("FileDiffDlg"));
 
 	if(this->m_strRev1.IsEmpty())
@@ -279,8 +279,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 }
 
 #if 0
-svn_error_t* CFileDiffDlg::DiffSummarizeCallback(const CTGitPath& path, 
-												 svn_client_diff_summarize_kind_t kind, 
+svn_error_t* CFileDiffDlg::DiffSummarizeCallback(const CTGitPath& path,
+												 svn_client_diff_summarize_kind_t kind,
 												 bool propchanged, svn_node_kind_t node)
 {
 	CTGitPath* fd;
@@ -327,7 +327,7 @@ UINT CFileDiffDlg::DiffThread()
 		g_Git.RefreshGitIndex();
 
 	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(),m_rev2.m_CommitHash.ToString(),m_arFileList);
-		
+
 	CString sFilterText;
 	m_cFilter.GetWindowText(sFilterText);
 	m_cFileList.SetRedraw(false);
@@ -497,7 +497,7 @@ void CFileDiffDlg::DiffProps(int selIndex)
 
 	GitProperties propsurl1(url1, m_rev1, false);
 	GitProperties propsurl2(url2, m_rev2, false);
-	
+
 	// collect the properties of both revisions in a set
 	std::set<stdstring> properties;
 	for (int wcindex = 0; wcindex < propsurl1.GetCount(); ++wcindex)
@@ -521,7 +521,7 @@ void CFileDiffDlg::DiffProps(int selIndex)
 	for (std::set<stdstring>::iterator iter = properties.begin(), end = properties.end(); iter != end; ++iter)
 	{
 		stdstring url1name = *iter;
-		
+
 		stdstring url1value = _T(""); // CUnicodeUtils::StdGetUnicode((char *)propsurl1.GetItemValue(wcindex).c_str());
 		for (int url1index = 0; url1index < propsurl1.GetCount(); ++url1index)
 		{
@@ -529,8 +529,8 @@ void CFileDiffDlg::DiffProps(int selIndex)
 			{
 				url1value = CString((char *)propsurl1.GetItemValue(url1index).c_str());
 			}
-		}		
-		
+		}
+
 		stdstring url2value = _T("");
 		for (int url2index = 0; url2index < propsurl2.GetCount(); ++url2index)
 		{
@@ -613,8 +613,8 @@ void CFileDiffDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (selIndex < 0)
 		return;
 	if (selIndex >= (int)m_arFilteredList.size())
-		return;	
-	
+		return;
+
 	DoDiff(selIndex, m_bBlame);
 }
 
@@ -717,7 +717,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
 		popup.AppendMenuIcon(ID_CLIPBOARD_PATH, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
 		popup.AppendMenuIcon(ID_CLIPBOARD_ALL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
-		
+
 		//temp.LoadString(IDS_FILEDIFF_POPEXPORT);
 		//popup.AppendMenu(MF_STRING | MF_ENABLED, ID_EXPORT, temp);
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
@@ -731,7 +731,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
 					DoDiff(index, false);
-				}					
+				}
 			}
 			break;
 		case ID_BLAME:
@@ -772,7 +772,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							file.WriteString(_T("\n"));
 						}
 						file.Close();
-					} 
+					}
 					catch (CFileException* pE)
 					{
 						pE->ReportError();
@@ -797,7 +797,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				// export all changed files to a folder
 				CBrowseFolder browseFolder;
 				browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-				if (browseFolder.Show(GetSafeHwnd(), m_strExportDir) == CBrowseFolder::OK) 
+				if (browseFolder.Show(GetSafeHwnd(), m_strExportDir) == CBrowseFolder::OK)
 				{
 					m_arSelectedFileList.RemoveAll();
 					POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
@@ -815,7 +815,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
-#endif;				
+#endif;
 			}
 
 			break;
@@ -894,7 +894,7 @@ UINT CFileDiffDlg::ExportThread()
 		}
 		count++;
 		m_pProgDlg->SetProgress (count, static_cast<DWORD>(m_arSelectedFileList.GetCount()));
-	}					
+	}
 	m_pProgDlg->Stop();
 	SetAndClearProgressInfo(NULL, false);
 	delete m_pProgDlg;
@@ -984,16 +984,16 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	if(mask &0x1)
 	{
 		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.GetSubject());
-		m_tooltips.AddTool(IDC_FIRSTURL,  
+		m_tooltips.AddTool(IDC_FIRSTURL,
 			CAppUtils::FormatDateAndTime( m_rev1.GetAuthorDate(), DATE_SHORTDATE, false )+_T("  ")+m_rev1.GetAuthorName());
-	
+
 	}
 
 	if(mask &0x2)
 	{
 		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.GetSubject());
 
-		m_tooltips.AddTool(IDC_SECONDURL, 
+		m_tooltips.AddTool(IDC_SECONDURL,
 			CAppUtils::FormatDateAndTime( m_rev2.GetAuthorDate(), DATE_SHORTDATE, false )+_T("  ")+m_rev2.GetAuthorName());
 	}
 
@@ -1006,7 +1006,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base) (Commit Date New)"));
 		}else
 		{
-			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1(Commit Data New)"));	
+			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1(Commit Data New)"));
 		}
 }
 
@@ -1146,11 +1146,11 @@ bool CFileDiffDlg::SortCompare(const CTGitPath& Data1, const CTGitPath& Data2)
 		d2 = CSorter::A2L(Data2.m_StatAdd);
 		result = d1 - d2;
 		break;
-	case 3: 
+	case 3:
 		d1 = CSorter::A2L(Data1.m_StatDel);;
 		d2 = CSorter::A2L(Data2.m_StatDel);
 		result = d1 - d2;
-		break;		
+		break;
 	default:
 		break;
 	}
@@ -1163,9 +1163,9 @@ bool CFileDiffDlg::SortCompare(const CTGitPath& Data1, const CTGitPath& Data2)
 
 void CFileDiffDlg::OnBnClickedRev1btn()
 {
-	
+
 	ClickRevButton(&this->m_cRev1Btn,&this->m_rev1, &this->m_ctrRev1Edit);
-	
+
 
 }
 
@@ -1178,7 +1178,7 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 			CString str = CBrowseRefsDlg::PickRef();
 			if(str.IsEmpty())
 				return;
-			
+
 			if(FillRevFromString(rev,str))
 				return;
 
@@ -1216,7 +1216,7 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 
 		}else
 			return;
-		
+
 	}
 
 	SetURLLabels();
@@ -1318,7 +1318,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			this->m_rev1=gitrev;
 			mask |= 0x1;
-			
+
 		}
 
 		this->m_ctrRev2Edit.GetWindowText(str);
@@ -1330,10 +1330,10 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 
 		this->SetURLLabels(mask);
-		
+
 		if(mask == 0x3)
 		{
-			
+
 			InterlockedExchange(&m_bThreadRunning, TRUE);
 			if (AfxBeginThread(DiffThreadEntry, this)==NULL)
 			{
@@ -1350,7 +1350,7 @@ void CFileDiffDlg::Filter(CString sFilterText)
 	sFilterText.MakeLower();
 
 	m_arFilteredList.clear();
-	
+
 	for (int i=0;i<m_arFileList.GetCount();i++)
 	{
 		CString sPath = m_arFileList[i].GetGitPathString();
@@ -1377,7 +1377,7 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 	{
 		sTextForClipboard += m_cFileList.GetItemText(index, 0);
 		sTextForClipboard += _T("\t");
-			
+
 		if(!isFull)
 		{
 			sTextForClipboard += _T("\r\n");
@@ -1403,7 +1403,7 @@ LRESULT CFileDiffDlg::OnRefLoad(WPARAM wParam, LPARAM lParam)
 	for(int i=0;i<m_Reflist.size();i++)
 	{
 		CString str=m_Reflist[i];
-		
+
 		if(str.Find(_T("remotes/")) == 0)
 			str=str.Mid(8);
 
