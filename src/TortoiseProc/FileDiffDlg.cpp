@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseGit
+// Copyright (C) 2003-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,7 +147,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 	}
 	m_rev1 = rev1;
 	m_rev2.m_CommitHash.Empty();
-	m_rev2.GetSubject() = _T("Previou Version");
+	m_rev2.GetSubject() = _T("Previous Version");
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
 	
