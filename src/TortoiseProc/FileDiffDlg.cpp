@@ -1023,7 +1023,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base) (Commit Date New)"));
 		}else
 		{
-			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1(Commit Data New)"));
+			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1 (Commit Data New)"));
 		}
 }
 
