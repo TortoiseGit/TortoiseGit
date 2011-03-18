@@ -44,6 +44,7 @@
 #define ID_EXPORT 4
 #define ID_CLIPBOARD_PATH 5
 #define ID_CLIPBOARD_ALL 6
+#define ID_LOG 7
 
 BOOL	CFileDiffDlg::m_bAscending = FALSE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
@@ -712,6 +713,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
+		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
@@ -741,6 +743,21 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
 					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev2.m_CommitHash.ToString());
+				}
+			}
+			break;
+		case ID_LOG:
+			{
+				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
+				while (pos)
+				{
+					int index = m_cFileList.GetNextSelectedItem(pos);
+					CString cmd;
+					cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
+					cmd += _T(" /command:log");
+					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
+					cmd += _T(" /endrev:")+m_rev2.m_CommitHash.ToString();
+					CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
 				}
 			}
 			break;

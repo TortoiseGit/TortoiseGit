@@ -29,6 +29,7 @@
  * Fixed issue #745: Unchanged submodules show up as changed in commit dialog
  * Fixed Issue #548:  tortoisegit use incorrect case sensitive comparison
  * Fixed issue #727: /CloseOnEnd not working for commit
+ * Fixed issue #754: Allow to show log for files in "Changes files" dialog
 
 = Release 1.6.5.0 =
 == Bug Fix ==
