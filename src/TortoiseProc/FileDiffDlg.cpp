@@ -711,7 +711,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (popup.CreatePopupMenu())
 	{
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
-		//popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
+		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
 		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
@@ -740,8 +740,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
-					DoDiff(index, true);
-				}					
+					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev2.m_CommitHash.ToString());
+				}
 			}
 			break;
 		case ID_SAVEAS:
