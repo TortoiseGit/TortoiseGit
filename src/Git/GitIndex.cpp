@@ -838,9 +838,11 @@ int CGitHeadFileList::ReadTree()
 		ret = git_commit_lookup(&commit, repository, (const git_oid*)m_Head.m_hash);
 		if(ret)
 			break;
-		
-		tree = (git_tree*)git_commit_tree(commit);
-		
+
+		ret = git_commit_tree(&tree, commit);
+		if(ret)
+			break;
+
 		ret = ReadTreeRecurive(tree,"", CGitHeadFileList::CallBack,this);
 		if(ret)
 			break;
