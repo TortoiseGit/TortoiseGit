@@ -88,6 +88,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
+	DDX_Check(pDX,IDC_COMMIT_AMENDDIFF,m_bAmendDiffToLastCommit);
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
 }
 
@@ -118,6 +119,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_WM_MOVING()
 	ON_WM_SIZING()
 	ON_NOTIFY(HDN_ITEMCHANGED, 0, &CCommitDlg::OnHdnItemchangedFilelist)
+	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -184,7 +186,6 @@ BOOL CCommitDlg::OnInitDialog()
 //	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 
 	m_SelectAll.SetCheck(BST_INDETERMINATE);
-
 
 	CBugTraqAssociations bugtraq_associations;
 	bugtraq_associations.Load();
@@ -272,6 +273,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
@@ -330,7 +332,10 @@ BOOL CCommitDlg::OnInitDialog()
 	err = FALSE;
 
 	if(m_bCommitAmend)
+	{
 		GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+	}
 
 	this->m_ctrlShowPatch.SetURL(CString());
 
@@ -527,7 +532,14 @@ void CCommitDlg::OnOK()
 			}
 			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
 			{
-				cmd.Format(_T("git.exe reset -- \"%s\""),entry->GetGitPathString());
+				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+				{
+					cmd.Format(_T("git.exe reset HEAD~2 -- \"%s\""), entry->GetGitPathString());
+				}
+				else
+				{
+					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
+				}
 				if(g_Git.Run(cmd,&out,CP_ACP))
 				{
 					/* when reset a unstage file will report error.
@@ -537,6 +549,9 @@ void CCommitDlg::OnOK()
 					break;
 					*/
 				}
+				// && !entry->IsDirectory()
+				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+					continue;
 			}
 
 		//	uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
@@ -887,6 +902,7 @@ UINT CCommitDlg::StatusThread()
 	m_ListCtrl.Clear();
 	BOOL success;
 	CTGitPathList *pList;
+	m_ListCtrl.m_amend = (m_bCommitAmend==TRUE) && (m_bAmendDiffToLastCommit==FALSE);
 
 	if(m_bWholeProject)
 		pList=NULL;
@@ -1687,7 +1703,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 
 void CCommitDlg::FillPatchView()
 {
-		if(::IsWindow(this->m_patchViewdlg.m_hWnd))
+	if(::IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
 		m_patchViewdlg.m_ctrlPatchView.SetText(CString());
 
@@ -1701,7 +1717,10 @@ void CCommitDlg::FillPatchView()
 			CTGitPath * p=(CTGitPath*)m_ListCtrl.GetItemData(nSelect);
 			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
-				cmd.Format(_T("git.exe diff -- \"%s\""),p->GetGitPathString());
+				CString head;
+				if(m_bCommitAmend==TRUE && m_bAmendDiffToLastCommit==FALSE)
+					head = _T("HEAD~1 ");
+				cmd.Format(_T("git.exe diff %s-- \"%s\""), head, p->GetGitPathString());
 				g_Git.Run(cmd,&out,CP_ACP);
 			}
 		}
@@ -1774,6 +1793,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_SPLITTER);
 	RemoveAnchor(IDC_SIGNOFF);
 	RemoveAnchor(IDC_COMMIT_AMEND);
+	RemoveAnchor(IDC_COMMIT_AMENDDIFF);
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	RemoveAnchor(IDC_TEXT_INFO);
@@ -1785,6 +1805,7 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LISTGROUP), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMENDDIFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_VIEW_PATCH),0,delta);
 
@@ -1796,6 +1817,7 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
 	AddAnchor(IDC_TEXT_INFO,TOP_RIGHT);
 	ArrangeLayout();
 	// adjust the minimum size of the dialog to prevent the resizing from
@@ -1816,7 +1838,6 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 
 	//set range
 	SetSplitterRange();
-
 }
 
 
@@ -1859,12 +1880,15 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	{
 		this->m_NoAmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_AmendStr);
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 	}
 	else
 	{
 		this->m_AmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_NoAmendStr);
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
 	}
+	Refresh();
 }
 
 void CCommitDlg::OnBnClickedWholeProject()
@@ -2006,4 +2030,10 @@ int CCommitDlg::CheckHeadDetach()
 		}
 	}
 	return 0;
+}
+
+void CCommitDlg::OnBnClickedCommitAmenddiff()
+{
+	UpdateData();
+	Refresh();
 }

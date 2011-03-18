@@ -8,6 +8,7 @@
  * Do not add Signed-off-by if already included
  * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
  * Allow to start push dialog from log
+ * Show changes to revision before the last commit on amend and perform actions relatively to this revision (old behavior is still possible)
 
 == Bug Fix ==
  * Fixed tab indices (activation order)

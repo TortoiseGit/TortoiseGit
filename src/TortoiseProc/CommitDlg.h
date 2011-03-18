@@ -125,6 +125,7 @@ public:
 	CTGitPathList		m_updatedPathList;
 	int					m_PostCmd;
 	BOOL				m_bPushAfterCommit;
+	BOOL				m_bAmendDiffToLastCommit;
 
 protected:
 	CTGitPathList		m_selectedPathList;
@@ -176,4 +177,5 @@ protected:
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedCommitAmenddiff();
 };

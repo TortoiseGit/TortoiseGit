@@ -1034,6 +1034,7 @@
 #define IDC_GROUP_RESET_TYPE            1554
 #define IDC_COMMIT_AMEND                1555
 #define IDC_SOUNDS_TEXT                 1556
+#define IDC_COMMIT_AMENDDIFF            1556
 #define IDC_REBASE_PROGRESS             1557
 #define IDC_REBASE_SHEET                1558
 #define IDC_EDIT_ALL                    1559
