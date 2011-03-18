@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\src;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;UNICODE;_UNICODE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -134,7 +134,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\src;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN64;_DEBUG;_CONSOLE;UNICODE;_UNICODE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -218,7 +218,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\src;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;UNICODE;_UNICODE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -301,7 +301,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\src;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Utils;..\TortoiseShell;..\Git;..\..\ext\gettext\include;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN64;NDEBUG;_CONSOLE;UNICODE;_UNICODE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
