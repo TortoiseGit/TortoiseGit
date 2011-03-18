@@ -376,7 +376,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					else
 						name = *branch;
 
-					progress.m_GitCmd.Format(_T("git.exe checkout -- %s"), name.GetString());
+					progress.m_GitCmd.Format(_T("git.exe checkout %s"), name.GetString());
 					progress.DoModal();
 				}
 				ReloadHashMap();
