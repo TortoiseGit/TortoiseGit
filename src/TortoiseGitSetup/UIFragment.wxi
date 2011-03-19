@@ -494,40 +494,31 @@
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
       </Dialog>
 
-      <Dialog Id="LicenseAgreementDlg" Width="370" Height="270" Title="[ProductName] License Agreement" NoMinimize="yes">
+      <Dialog Id="LicenseAgreementDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
         <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
           <Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
-           <Publish Event="NewDialog" Value="SSHClient">"Yes"</Publish>
-           <Condition Action="disable"><![CDATA[IAgree <> "Yes"]]></Condition>
-           <Condition Action="enable">IAgree = "Yes"</Condition>
+           <Publish Event="NewDialog" Value="SSHClient">1</Publish>
         </Control>
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
           <Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
         </Control>
 
-        <Control Id="AgreementText" Type="ScrollableText" X="5" Y="60" Width="360" Height="120" Sunken="yes" TabSkip="no">
+        <Control Id="AgreementText" Type="ScrollableText" X="5" Y="60" Width="360" Height="160" Sunken="yes" TabSkip="no">
           <Text SourceFile="include\TSVN_eula.rtf" />
         </Control>
-        <Control Id="Buttons" Type="RadioButtonGroup" X="10" Y="187" Width="330" Height="40" Property="IAgree" />
-
+        
         <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="[BannerBitmap]" />
         <Control Id="Title" Type="Text" X="155" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
-          <Text>[DlgTitleFont]End-User License Agreement</Text>
+          <Text>[DlgTitleFont]Information</Text>
         </Control>
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
         <Control Id="DialogDescription" Type="Text" X="75" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
-          <Text>Please read the following license agreement carefully</Text>
+          <Text>Please read the following important information before continuing.</Text>
         </Control>
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
       </Dialog>
-
-      <RadioButtonGroup Property="IAgree">
-        <RadioButton Text="{\DlgFont8}I &amp;accept the terms in the License Agreement" Value="Yes" X="5" Y="0" Width="250" Height="15" />
-        <RadioButton Text="{\DlgFont8}I &amp;do not accept the terms in the License Agreement" Value="No" X="5" Y="20" Width="250" Height="15" />
-      </RadioButtonGroup>
-
 
       <Dialog Id="MaintenanceTypeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
         <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
