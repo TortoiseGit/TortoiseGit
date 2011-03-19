@@ -124,11 +124,25 @@ bool RemoveCommand::Execute()
 	int key;
 
 	CString format;
+	if (pathList.GetCount() > 1)
+	{
+		format = _T("Do you really want to remove the %d selected files/directories?");
+		format.Format(format, pathList.GetCount());
+	}
+	else
+	{
+		format = _T("Do you really want to remove \"%s\"?");
+		format.Format(format, pathList[0].GetGitPathString());
+	}
+	if (CMessageBox::Show(hwndExplorer, format, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Remove"), _T("&Abort")) == 2) {
+		return false;
+	}
 
 	if(parser.HasKey(_T("keep")))
 	{
 		format= _T("git.exe update-index --force-remove -- \"%s\"");
-	}else
+	}
+	else
 	{
 		format=_T("git.exe rm -r -f -- \"%s\"");
 	}
@@ -138,14 +152,12 @@ bool RemoveCommand::Execute()
 	int nPath;
 	for(nPath = 0; nPath < pathList.GetCount(); nPath++)
 	{
-
 		cmd.Format(format,pathList[nPath].GetGitPathString());
 		if(g_Git.Run(cmd,&output,CP_ACP))
 		{
 			key=CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR|MB_OKCANCEL);
 			if(key == IDCANCEL)
 				return FALSE;
-
 		}
 	}
 
