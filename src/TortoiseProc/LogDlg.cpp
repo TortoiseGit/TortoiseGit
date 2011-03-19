@@ -217,7 +217,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.m_bShowWC = true;
 	m_LogList.InsertGitColumn();
 
-	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("LogDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT)),false);
+	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("LogDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT|SVNSLC_POPIGNORE)),false);
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 
