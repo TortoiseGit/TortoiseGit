@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -2233,8 +2233,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//	else
 				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_WC, entry->path, SVNRev::REV_HEAD);
 					if(m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+					{
+						CString fromwhere;
+						if(m_amend)
+							fromwhere = _T("~1");
 						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetWorkingCopy(),
-															*filepath,GitRev::GetHead());
+															*filepath,GitRev::GetHead()+fromwhere);
+					}
 					else
 					{
 						if((filepath->m_ParentNo&(PARENT_MASK|MERGE_MASK)) ==0)
@@ -3563,28 +3568,34 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 	{
+		CString fromwhere;
+		if(m_amend)
+			fromwhere = _T("~1");
 		if( g_Git.IsInitRepos())
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
 					GIT_REV_ZERO);
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_ADDED )
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-					m_CurrentVersion,true);
+					m_CurrentVersion+fromwhere,true);
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_DELETED )
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
-					GitRev::GetHead(),false);
+					GitRev::GetHead()+fromwhere,false);
 		else
 			CGitDiff::Diff(&file1,&file2,
 					CString(GIT_REV_ZERO),
-					GitRev::GetHead());
+					GitRev::GetHead()+fromwhere);
 	}else
 	{
 		GitRev rev;
-		if(rev.GetCommit(m_CurrentVersion+_T("~1")) || (file1.m_Action == file1.LOGACTIONS_ADDED))
+		CString fromwhere = m_CurrentVersion+_T("~1");
+		if(m_amend)
+			fromwhere = m_CurrentVersion+_T("~2");
+		if(rev.GetCommit(fromwhere) || (file1.m_Action == file1.LOGACTIONS_ADDED))
 		{
 			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
 
 		} else if (file1.m_Action == file1.LOGACTIONS_DELETED) {
-			CGitDiff::DiffNull(&file1,m_CurrentVersion+_T("~1"),false);
+			CGitDiff::DiffNull(&file1,fromwhere,false);
 		}else
 		{
 			if( file1.m_ParentNo & MERGE_MASK)
@@ -4858,6 +4869,10 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 	else
 		count = list->GetCount();
 
+	CString head = _T("HEAD");
+	if(m_amend)
+		head = _T("HEAD~1");
+
 	if(hash == GIT_REV_ZERO)
 	{
 		for(int i=0;i<count;i++)
@@ -4868,9 +4883,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			if(!g_Git.IsInitRepos())
 			{
 				if(list == NULL)
-					cmd=(_T("git.exe diff-index --ignore-submodules=dirty --raw HEAD --numstat -C -M -z"));
+					cmd=(_T("git.exe diff-index --ignore-submodules=dirty --raw ") + head + _T("  --numstat -C -M -z"));
 				else
-					cmd.Format(_T("git.exe diff-index  --ignore-submodules=dirty --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+					cmd.Format(_T("git.exe diff-index  --ignore-submodules=dirty --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
 				if(g_Git.Run(cmd,&cmdout))
 				{
@@ -4886,7 +4901,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 					{
 						cmdout.clear();
 						CString strout;
-						if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&strout,CP_UTF8))
+						if(g_Git.Run(_T("git.exe rev-parse --revs-only ") + head,&strout,CP_UTF8))
 						{
 							CMessageBox::Show(NULL,strout,_T("TortoiseGit"),MB_OK);
 							return -1;
@@ -4901,9 +4916,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 				//if(list == NULL)
 				//We will list all stage file anyway because commit will commit thats
-				cmd=(_T("git.exe diff-index --cached --raw HEAD --numstat -C -M -z"));
+				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
 				//else
-				//	cmd.Format(_T("git.exe diff-index  --cached --raw HEAD --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+				//	cmd.Format(_T("git.exe diff-index  --cached --raw ") + head + _T(" --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
 				g_Git.Run(cmd,&cmdout);
 				//out+=cmdout;

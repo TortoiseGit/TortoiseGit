@@ -989,6 +989,8 @@ public:
 
 	GitRev						m_HeadRev;			///< the HEAD revision of the repository if bUpdate was TRUE
 
+	bool						m_amend;			///< if true show the changes to the revision before the last commit
+
 	CString						m_sUUID;			///< the UUID of the associated repository
 
 	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert.
