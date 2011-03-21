@@ -4883,9 +4883,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			if(!g_Git.IsInitRepos())
 			{
 				if(list == NULL)
-					cmd=(_T("git.exe diff-index --ignore-submodules=dirty --raw ") + head + _T("  --numstat -C -M -z"));
+					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z"));
 				else
-					cmd.Format(_T("git.exe diff-index  --ignore-submodules=dirty --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+					cmd.Format(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
 				if(g_Git.Run(cmd,&cmdout))
 				{
