@@ -2373,15 +2373,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDSVNLC_BLAME:
 				{
-					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:blame /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath());
-
-					if( (!this->m_CurrentVersion.IsEmpty()) && this->m_CurrentVersion != GIT_REV_ZERO)
-					{
-						sCmd += _T(" /endrev:") + m_CurrentVersion;
-					}
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
+					CAppUtils::LaunchTortoiseBlame(g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath(), m_CurrentVersion);
 				}
 				break;
 
