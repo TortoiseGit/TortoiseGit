@@ -1964,7 +1964,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 
 				if ((m_dwContextMenus & GetContextMenuBit(IDSVNLC_REVERTTOREV)) && ( !this->m_CurrentVersion.IsEmpty() )
-					&& this->m_CurrentVersion != GIT_REV_ZERO)
+					&& this->m_CurrentVersion != GIT_REV_ZERO && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDSVNLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 				}
@@ -1977,7 +1977,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDSVNLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
-				if (m_dwContextMenus & SVNSLC_POPBLAME && ! filepath->IsDirectory())
+				if (m_dwContextMenus & SVNSLC_POPBLAME && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 				}
@@ -1985,12 +1985,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
 			if ( (GetSelectedCount() == 1) )
 			{
-				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) && ! filepath->IsDirectory())
+				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDSVNLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				}
 
-				if (m_dwContextMenus & SVNSLC_POPOPEN && ! filepath->IsDirectory())
+				if (m_dwContextMenus & SVNSLC_POPOPEN && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDSVNLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
 					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
@@ -2000,7 +2000,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 
-				if (m_dwContextMenus & SVNSLC_POPEXPLORE)
+				if (m_dwContextMenus & SVNSLC_POPEXPLORE && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
 					popup.AppendMenuIcon(IDSVNLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 				}
