@@ -125,6 +125,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_nSortedColumn(-1)
 	, m_bHasExternalsFromDifferentRepos(false)
 	, m_sNoPropValueText(MAKEINTRESOURCE(IDS_STATUSLIST_NOPROPVALUE))
+	, m_amend(false)
 {
 	m_FileLoaded=0;
 	m_critSec.Init();
