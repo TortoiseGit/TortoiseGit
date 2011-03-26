@@ -108,8 +108,8 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	}
 	m_rev1 = rev1;
 	m_rev2 = rev2;
-
 }
+
 void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 {
 	if(path!=NULL)
@@ -124,7 +124,8 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	{
 		m_rev1.m_CommitHash.Empty();
 		m_rev1.GetSubject()=_T("Working Copy");
-	}else
+	}
+	else
 	{
 		m_rev1.GetCommit(hash1);
 	}
@@ -135,11 +136,13 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	{
 		m_rev2.m_CommitHash.Empty();
 		m_rev2.GetSubject()=_T("Working Copy");
-	}else
+	}
+	else
 	{
 		m_rev2.GetCommit(hash2);
 	}
 }
+
 void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 {
 	if(path!=NULL)
@@ -152,8 +155,6 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 	m_rev2.GetSubject() = _T("Previous Version");
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
-
-
 }
 
 BOOL CFileDiffDlg::OnInitDialog()
@@ -187,7 +188,6 @@ BOOL CFileDiffDlg::OnInitDialog()
 	int c = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	while (c>=0)
 		m_cFileList.DeleteColumn(c--);
-
 
 	temp.LoadString(IDS_FILEDIFF_FILE);
 	m_cFileList.InsertColumn(0, temp);
@@ -260,7 +260,6 @@ BOOL CFileDiffDlg::OnInitDialog()
 		InterlockedExchange(&m_bLoadingRef, FALSE);
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
-
 
 	this->m_cRev1Btn.AddEntry(_T("RefBrowse"));
 	this->m_cRev1Btn.AddEntry(_T("Log"));
@@ -394,7 +393,6 @@ void CFileDiffDlg::EnableInputControl(bool b)
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 {
-
 	CGitDiff diff;
 	CTGitPath* fd = m_arFilteredList[selIndex];
 	diff.Diff(fd, fd,this->m_rev1.m_CommitHash.ToString(), this->m_rev2.m_CommitHash.ToString(), blame, FALSE);
@@ -842,7 +840,6 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 								LocalFree(lpMsgBuf);
 								return;
 							}
-
 						}
 						else
 						{
@@ -1053,7 +1050,8 @@ void CFileDiffDlg::SetURLLabels(int mask)
 		if(m_rev2.GetCommitterDate() > m_rev1.GetCommitterDate())
 		{
 			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base) (Commit Date New)"));
-		}else
+		}
+		else
 		{
 			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1 (Commit Data New)"));
 		}
@@ -1212,10 +1210,7 @@ bool CFileDiffDlg::SortCompare(const CTGitPath& Data1, const CTGitPath& Data2)
 
 void CFileDiffDlg::OnBnClickedRev1btn()
 {
-
 	ClickRevButton(&this->m_cRev1Btn,&this->m_rev1, &this->m_ctrRev1Edit);
-
-
 }
 
 void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edit)
@@ -1249,7 +1244,8 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 
 			edit->SetWindowText(dlg.GetSelectedHash());
 
-		}else
+		}
+		else
 			return;
 	}
 
@@ -1263,9 +1259,9 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 
 			edit->SetWindowText(dlg.m_SelectedHash);
 
-		}else
+		}
+		else
 			return;
-
 	}
 
 	SetURLLabels();
@@ -1339,7 +1335,6 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 	if( nIDEvent == IDT_FILTER)
 	{
-
 		CString sFilterText;
 		KillTimer(IDT_FILTER);
 		m_cFilter.GetWindowText(sFilterText);
@@ -1367,7 +1362,6 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			this->m_rev1=gitrev;
 			mask |= 0x1;
-
 		}
 
 		this->m_ctrRev2Edit.GetWindowText(str);
@@ -1395,7 +1389,6 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CFileDiffDlg::Filter(CString sFilterText)
 {
-
 	sFilterText.MakeLower();
 
 	m_arFilteredList.clear();
@@ -1413,7 +1406,6 @@ void CFileDiffDlg::Filter(CString sFilterText)
 	{
 		AddEntry(*it);
 	}
-
 }
 
 void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
