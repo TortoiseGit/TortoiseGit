@@ -1,4 +1,4 @@
-= Release 1.6.6.0 =
+= Release 1.7.0.0 =
 == Features ==
  * Fixed issue #724: BrowseRefs: Made branch renaming possible.
  * Use fetch-dialog for "Fetch" in BrowseRefs
@@ -10,7 +10,7 @@
  * Allow to start push dialog from log
  * Show changes to revision before the last commit on amend and perform actions relatively to this revision (old behavior is still possible)
  * Remember (de)selected files in "Commit dialog" after refreshing the list
- * Added checkbox to commit dialog to disable autoselection of submodules
+ * Fixed issue #745: Added checkbox to commit dialog to disable autoselection of submodules
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
@@ -29,12 +29,14 @@
  * Fixed issue #737: Diffing of added files does not work with Shell
  * Fixed issue #738: Lost the commit id on file name when use a external diff tool
  * Fixed issue #714: add "FETCH_HEAD" to reference drop down list
- * Fixed issue #745: Unchanged submodules show up as changed in commit dialog
  * Fixed Issue #548:  tortoisegit use incorrect case sensitive comparison
  * Fixed issue #727: /CloseOnEnd not working for commit
  * Fixed issue #754: Allow to show log for files in "Changes files" dialog
  * Fixed issue #749: Ask before delete files.
  * Fixed issue #125: Export files from revision or range of revisions in "Changes files" dialog.
+ * Fixed issue #512: Git sync lose local commits (remote update, fetch and rebase)
+ * TortoiseGitCache
+   Partly rewritten to fix various issues.
 
 = Release 1.6.5.0 =
 == Bug Fix ==
