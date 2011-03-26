@@ -59,6 +59,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_pThread(NULL)
 	, m_bWholeProject(FALSE)
 	, m_bKeepChangeList(TRUE)
+	, m_bDoNotAutoselectSubmodules(FALSE)
 	, m_itemsCount(0)
 	, m_bSelectFilesForCommit(TRUE)
 	, m_bNoPostActions(FALSE)
@@ -87,6 +88,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
+	DDX_Check(pDX, IDC_NOAUTOSELECTSUBMODULES, m_bDoNotAutoselectSubmodules);
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
 	DDX_Check(pDX,IDC_COMMIT_AMENDDIFF,m_bAmendDiffToLastCommit);
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
@@ -120,6 +122,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_WM_SIZING()
 	ON_NOTIFY(HDN_ITEMCHANGED, 0, &CCommitDlg::OnHdnItemchangedFilelist)
 	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
+	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -149,6 +152,9 @@ BOOL CCommitDlg::OnInitDialog()
 
 	m_regKeepChangelists = CRegDWORD(_T("Software\\TortoiseGit\\KeepChangeLists"), FALSE);
 	m_bKeepChangeList = m_regKeepChangelists;
+
+	m_regDoNotAutoselectSubmodules = CRegDWORD(_T("Software\\TortoiseGit\\DoNotAutoselectSubmodules"), FALSE);
+	m_bDoNotAutoselectSubmodules = m_regDoNotAutoselectSubmodules;
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_COMMITDLG));
 
@@ -269,6 +275,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_TEXT_INFO, TOP_RIGHT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_KEEPLISTS, BOTTOM_LEFT);
+	AddAnchor(IDC_NOAUTOSELECTSUBMODULES, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -834,6 +841,7 @@ void CCommitDlg::OnOK()
 	if (!GetDlgItem(IDC_WHOLE_PROJECT)->IsWindowEnabled())
 		m_bWholeProject = FALSE;
 	m_regKeepChangelists = m_bKeepChangeList;
+	m_regDoNotAutoselectSubmodules = m_bDoNotAutoselectSubmodules;
 	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
 		m_bKeepChangeList = FALSE;
 	InterlockedExchange(&m_bBlock, FALSE);
@@ -885,6 +893,7 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, false);
 	DialogEnableWindow(IDC_WHOLE_PROJECT, false);
 	DialogEnableWindow(IDC_SELECTALL, false);
+	DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, false);
 	GetDlgItem(IDC_EXTERNALWARNING)->ShowWindow(SW_HIDE);
 	DialogEnableWindow(IDC_EXTERNALWARNING, false);
 	// read the list of recent log entries before querying the WC for status
@@ -903,6 +912,7 @@ UINT CCommitDlg::StatusThread()
 	BOOL success;
 	CTGitPathList *pList;
 	m_ListCtrl.m_amend = (m_bCommitAmend==TRUE) && (m_bAmendDiffToLastCommit==FALSE);
+	m_ListCtrl.m_bDoNotAutoselectSubmodules = (m_bDoNotAutoselectSubmodules == TRUE);
 
 	if(m_bWholeProject)
 		pList=NULL;
@@ -985,6 +995,7 @@ UINT CCommitDlg::StatusThread()
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
 		DialogEnableWindow(IDC_WHOLE_PROJECT, true);
 		DialogEnableWindow(IDC_SELECTALL, true);
+		DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
 		if (m_ListCtrl.HasLocks())
@@ -2033,6 +2044,12 @@ int CCommitDlg::CheckHeadDetach()
 }
 
 void CCommitDlg::OnBnClickedCommitAmenddiff()
+{
+	UpdateData();
+	Refresh();
+}
+
+void CCommitDlg::OnBnClickedNoautoselectsubmodules()
 {
 	UpdateData();
 	Refresh();

@@ -126,6 +126,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_bHasExternalsFromDifferentRepos(false)
 	, m_sNoPropValueText(MAKEINTRESOURCE(IDS_STATUSLIST_NOPROPVALUE))
 	, m_amend(false)
+	, m_bDoNotAutoselectSubmodules(false)
 {
 	m_FileLoaded=0;
 	m_critSec.Init();
@@ -614,7 +615,8 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 		}
 		else
 		{
-			if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck)
+			bool autoSelectSubmodules = !(((CTGitPath*)m_arStatusArray[i])->IsDirectory() && m_bDoNotAutoselectSubmodules);
+			if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck && autoSelectSubmodules)
 				((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
 			else
 				((CTGitPath*)m_arStatusArray[i])->m_Checked=false;

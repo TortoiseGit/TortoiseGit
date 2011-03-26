@@ -10,6 +10,7 @@
  * Allow to start push dialog from log
  * Show changes to revision before the last commit on amend and perform actions relatively to this revision (old behavior is still possible)
  * Remember (de)selected files in "Commit dialog" after refreshing the list
+ * Added checkbox to commit dialog to disable autoselection of submodules
 
 == Bug Fix ==
  * Fixed tab indices (activation order)

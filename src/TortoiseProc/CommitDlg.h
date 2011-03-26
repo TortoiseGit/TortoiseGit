@@ -113,6 +113,7 @@ protected:
 public:
 	CString				m_sLogMessage;
 	BOOL				m_bKeepChangeList;
+	BOOL				m_bDoNotAutoselectSubmodules;
 	BOOL				m_bCommitAmend;
 	BOOL				m_bNoPostActions;
 	bool				m_bSelectFilesForCommit;
@@ -149,6 +150,7 @@ private:
 	CToolTips			m_tooltips;
 	CRegDWORD			m_regAddBeforeCommit;
 	CRegDWORD			m_regKeepChangelists;
+	CRegDWORD			m_regDoNotAutoselectSubmodules;
 	ProjectProperties	m_ProjectProperties;
 	CButton				m_SelectAll;
 	CString				m_sWindowTitle;
@@ -178,4 +180,5 @@ protected:
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCommitAmenddiff();
+	afx_msg void OnBnClickedNoautoselectsubmodules();
 };
