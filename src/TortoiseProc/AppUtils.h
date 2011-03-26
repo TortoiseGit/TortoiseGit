@@ -207,7 +207,7 @@ public:
 	static bool Push(bool autoClose = false);
 	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""));
 
-	static bool CreateMultipleDirectory(CString &dir);
+	static bool CreateMultipleDirectory(const CString &dir);
 
 	static void RemoveTrailSlash(CString &path);
 

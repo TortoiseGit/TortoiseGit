@@ -2328,7 +2328,7 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 	return true;
 }
 
-bool CAppUtils::CreateMultipleDirectory(CString& szPath)
+bool CAppUtils::CreateMultipleDirectory(const CString& szPath)
 {
 	CString strDir(szPath);
 	if (strDir.GetAt(strDir.GetLength()-1)!=_T('\\'))
