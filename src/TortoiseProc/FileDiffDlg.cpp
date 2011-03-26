@@ -742,7 +742,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
-					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev2.m_CommitHash.ToString());
+					CAppUtils::LaunchTortoiseBlame(m_arFilteredList[index]->GetWinPathString(), m_rev1.m_CommitHash.ToString());
 				}
 			}
 			break;
@@ -756,7 +756,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
 					cmd += _T(" /command:log");
 					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
-					cmd += _T(" /endrev:")+m_rev2.m_CommitHash.ToString();
+					cmd += _T(" /endrev:")+m_rev1.m_CommitHash.ToString();
 					CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
 				}
 			}
