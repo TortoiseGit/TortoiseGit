@@ -607,11 +607,18 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
 		//set default checkbox status
-		if(!UseStoredCheckStatus)
+		CString path = ((CTGitPath*)m_arStatusArray[i])->GetGitPathString();
+		if (m_mapFilenameToChecked.size()!=0 && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
+		{
+			((CTGitPath*)m_arStatusArray[i])->m_Checked=m_mapFilenameToChecked[path];
+		}
+		else
+		{
 			if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck)
 				((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
 			else
 				((CTGitPath*)m_arStatusArray[i])->m_Checked=false;
+		}
 
 		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
 		{
@@ -1432,6 +1439,7 @@ void CGitStatusListCtrl::CheckEntry(int index, int /*nListItems*/)
 	ASSERT(path != NULL);
 	if (path == NULL)
 		return;
+	m_mapFilenameToChecked[path->GetGitPathString()] = true;
 	SetCheck(index, TRUE);
 	//entry = GetListEntry(index);
 	// if an unversioned item was checked, then we need to check if
@@ -1507,6 +1515,7 @@ void CGitStatusListCtrl::UncheckEntry(int index, int /*nListItems*/)
 	if (path == NULL)
 		return;
 	SetCheck(index, FALSE);
+	m_mapFilenameToChecked[path->GetGitPathString()] = false;
 	//entry = GetListEntry(index);
 	// item was unchecked
 #if 0
