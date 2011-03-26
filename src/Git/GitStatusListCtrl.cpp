@@ -608,23 +608,24 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 	for(int i=0;i<this->m_arStatusArray.size();i++)
 	{
 		//set default checkbox status
-		CString path = ((CTGitPath*)m_arStatusArray[i])->GetGitPathString();
+		CTGitPath* entry = ((CTGitPath*)m_arStatusArray[i]);
+		CString path = entry->GetGitPathString();
 		if (m_mapFilenameToChecked.size()!=0 && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
 		{
-			((CTGitPath*)m_arStatusArray[i])->m_Checked=m_mapFilenameToChecked[path];
+			entry->m_Checked=m_mapFilenameToChecked[path];
 		}
 		else
 		{
-			bool autoSelectSubmodules = !(((CTGitPath*)m_arStatusArray[i])->IsDirectory() && m_bDoNotAutoselectSubmodules);
-			if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwCheck && autoSelectSubmodules)
-				((CTGitPath*)m_arStatusArray[i])->m_Checked=true;
+			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
+			if(entry->m_Action & dwCheck && autoSelectSubmodules)
+				entry->m_Checked=true;
 			else
-				((CTGitPath*)m_arStatusArray[i])->m_Checked=false;
+				entry->m_Checked=false;
 		}
 
-		if(((CTGitPath*)m_arStatusArray[i])->m_Action & dwShow)
+		if(entry->m_Action & dwShow)
 		{
-			AddEntry((CTGitPath*)m_arStatusArray[i],langID,index);
+			AddEntry(entry,langID,index);
 			index++;
 		}
 	}
