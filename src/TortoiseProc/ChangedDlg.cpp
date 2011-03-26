@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,7 +39,7 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
 	, m_bCanceled(false)
 	, m_bShowIgnored(FALSE)
 	, m_bShowExternals(TRUE)
-    , m_bShowUserProps(FALSE)
+	, m_bShowUserProps(FALSE)
 {
 	m_bRemote = FALSE;
 }
@@ -62,7 +63,7 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
 	ON_BN_CLICKED(IDC_SHOWUNMODIFIED, OnBnClickedShowUnmodified)
-//    ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
+//	ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
 	ON_BN_CLICKED(IDC_SHOWIGNORED, &CChangedDlg::OnBnClickedShowignored)
@@ -74,7 +75,7 @@ END_MESSAGE_MAP()
 BOOL CChangedDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-	
+
 	GetWindowText(m_sTitle);
 
 	m_tooltips.Create(this);
@@ -88,12 +89,12 @@ BOOL CChangedDlg::OnInitDialog()
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
 	m_FileListCtrl.SetEmptyString(IDS_REPOSTATUS_EMPTYFILELIST);
-	
+
 	AdjustControlSize(IDC_SHOWUNVERSIONED);
 	AdjustControlSize(IDC_SHOWUNMODIFIED);
 	AdjustControlSize(IDC_SHOWIGNORED);
 //	AdjustControlSize(IDC_SHOWEXTERNALS);
-//    AdjustControlSize(IDC_SHOWUSERPROPS);
+//	AdjustControlSize(IDC_SHOWUSERPROPS);
 
 	AddAnchor(IDC_CHANGEDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SUMMARYTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -112,7 +113,7 @@ BOOL CChangedDlg::OnInitDialog()
 	EnableSaveRestore(_T("ChangedDlg"));
 
 	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
-	
+
 	// first start a thread to obtain the status without
 	// blocking the dialog
 	if (AfxBeginThread(ChangedStatusThreadEntry, this)==NULL)
@@ -131,16 +132,16 @@ UINT CChangedDlg::ChangedStatusThreadEntry(LPVOID pVoid)
 UINT CChangedDlg::ChangedStatusThread()
 {
 	InterlockedExchange(&m_bBlock, TRUE);
-	
+
 	g_Git.RefreshGitIndex();
-	
+
 	m_bCanceled = false;
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 	DialogEnableWindow(IDC_REFRESH, FALSE);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, FALSE);
 	DialogEnableWindow(IDC_SHOWUNMODIFIED, FALSE);
 	DialogEnableWindow(IDC_SHOWIGNORED, FALSE);
-    DialogEnableWindow(IDC_SHOWUSERPROPS, FALSE);
+	DialogEnableWindow(IDC_SHOWUSERPROPS, FALSE);
 	CString temp;
 	m_FileListCtrl.Clear();
 	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE,m_bShowUserProps != FALSE))
@@ -169,7 +170,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, !bSingleFile);
 	//DialogEnableWindow(IDC_SHOWUNMODIFIED, !bSingleFile);
 	//DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
-    DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
+	DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
 	m_bRemote = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\CheckRepo"), FALSE);
@@ -327,7 +328,7 @@ void CChangedDlg::UpdateStatistics()
 	CString temp;
 #if 0
 	LONG lMin, lMax;
-	
+
 	m_FileListCtrl.GetMinMaxRevisions(lMin, lMax, true, false);
 	if (LONG(m_FileListCtrl.m_HeadRev) >= 0)
 	{
