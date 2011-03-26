@@ -565,7 +565,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
+void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool /* UseStoredCheckStatus */)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
