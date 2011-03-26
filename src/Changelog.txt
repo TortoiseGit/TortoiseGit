@@ -32,6 +32,7 @@
  * Fixed issue #727: /CloseOnEnd not working for commit
  * Fixed issue #754: Allow to show log for files in "Changes files" dialog
  * Fixed issue #749: Ask before delete files.
+ * Fixed issue #125: Export files from revision or range of revisions in "Changes files" dialog.
 
 = Release 1.6.5.0 =
 == Bug Fix ==

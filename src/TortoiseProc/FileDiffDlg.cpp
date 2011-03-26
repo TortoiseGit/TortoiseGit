@@ -716,13 +716,12 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
 		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-
+		popup.AppendMenuIcon(ID_EXPORT, IDS_FILEDIFF_POPEXPORT, IDI_EXPORT);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
 		popup.AppendMenuIcon(ID_CLIPBOARD_PATH, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
 		popup.AppendMenuIcon(ID_CLIPBOARD_ALL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 
-		//temp.LoadString(IDS_FILEDIFF_POPEXPORT);
-		//popup.AppendMenu(MF_STRING | MF_ENABLED, ID_EXPORT, temp);
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		m_bCancelled = false;
 		switch (cmd)
@@ -811,7 +810,6 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			break;
 		case ID_EXPORT:
 			{
-#if 0 //this funcation seem no useful
 				// export all changed files to a folder
 				CBrowseFolder browseFolder;
 				browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
@@ -823,8 +821,41 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						int index = m_cFileList.GetNextSelectedItem(pos);
 						CTGitPath* fd = m_arFilteredList[index];
+#if 0
 						m_arSelectedFileList.Add(fd);
+#endif
+						// we cannot export directories or folders
+						if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
+							continue;
+						CAppUtils::CreateMultipleDirectory(m_strExportDir + _T("\\") + fd->GetDirectory().GetWinPathString());
+						CString filename = m_strExportDir + _T("\\") + fd->GetWinPathString();
+						if(m_rev1.m_CommitHash.ToString() == GIT_REV_ZERO)
+						{
+							if(!CopyFile(g_Git.m_CurrentDir + _T("\\") + fd->GetWinPath(), filename, false))
+							{
+								LPVOID lpMsgBuf=NULL;
+								FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+									NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+									(LPTSTR)&lpMsgBuf,
+									0, NULL);
+								CMessageBox::Show(NULL,(TCHAR *)lpMsgBuf, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+								LocalFree(lpMsgBuf);
+								return;
+							}
+
+						}
+						else
+						{
+							if(g_Git.GetOneFile(m_rev1.m_CommitHash, *fd, filename))
+							{
+								CString out;
+								out.Format(_T("Fail checkout one file %s;%s"), m_rev1.m_CommitHash.ToString(), fd->GetWinPath());
+								CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+								return;
+							}
+						}
 					}
+#if 0
 					m_pProgDlg = new CProgressDlg();
 					InterlockedExchange(&m_bThreadRunning, TRUE);
 					if (AfxBeginThread(ExportThreadEntry, this)==NULL)
@@ -832,8 +863,8 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						InterlockedExchange(&m_bThreadRunning, FALSE);
 						CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
+#endif
 				}
-#endif;
 			}
 
 			break;
