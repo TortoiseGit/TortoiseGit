@@ -255,7 +255,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		this->DialogEnableWindow(IDOK,TRUE);
 
 		CString err;
-		err.Format(_T("\r\nFailed 0x%x(git return wrong reture code at sometime )\r\n"),m_GitStatus);
+		err.Format(_T("\r\nFailed 0x%x (git returned a wrong return code at some time)\r\n"),m_GitStatus);
 		if(this->m_GitStatus)
 		{
 			//InsertColorText(this->m_Log,err,RGB(255,0,0));
