@@ -725,7 +725,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if(this->GetShortName(ref,shortname,_T("refs/stash")))
 					{
 						if(CMessageBox::Show(NULL, _T("<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"),
-											   _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 2)
+											   _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
 							cmd.Format(_T("git.exe stash clear"));
 						else
 							return;
