@@ -1,6 +1,7 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -126,10 +127,11 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			{
 				while(file.ReadString(ver))
 				{
+					ver.Trim().MakeLower();
 					int start;
-					while( (start=ver.Find(_T("TortoiseGit-"))) > 0 )
+					while( (start=ver.Find(_T("tortoisegit-"))) > 0 )
 					{
-						ver = ver.Mid(start+CString(_T("TortoiseGit-")).GetLength());
+						ver = ver.Mid(start+CString(_T("tortoisegit-")).GetLength());
 						int x1,x2,x3,x4;
 						x1=_ttoi(ver)&0xFFFF;
 						ver = ver.Mid(ver.Find('.')+1);

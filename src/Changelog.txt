@@ -36,6 +36,7 @@
  * Fixed issue #125: Export files from revision or range of revisions in "Changes files" dialog.
  * Fixed issue #512: Git sync lose local commits (remote update, fetch and rebase)
  * Fixed issue #766: "Switch/Checkout" dialog: "Track" should be disabled when no new branch is created
+ * Fixed issue #765: "Check for Updates" in about box doesn't work
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
