@@ -154,8 +154,8 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 			this->m_bBranch=TRUE;
 
 		this->m_bTrack=TRUE;
-
-	}else
+	}
+	else
 	{
 		m_NewBranch = CString(_T("Branch_"))+this->m_VersionName;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
@@ -175,8 +175,11 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 
 	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
 	GetDlgItem(IDC_CHECK_BRANCHOVERRIDE)->EnableWindow(m_bBranch);
-	if (!m_bBranch) {
+	if (!m_bBranch)
+	{
 		this->m_bBranchOverride=FALSE;
+		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
+		this->m_bTrack=FALSE;
 	}
 	this->UpdateData(FALSE);
 }
