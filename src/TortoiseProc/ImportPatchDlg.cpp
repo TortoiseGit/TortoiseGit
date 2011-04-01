@@ -345,6 +345,7 @@ UINT CImportPatchDlg::PatchThread()
 					break;
 				case 2:
 					cmd=_T("git.exe am --skip");
+					i++;
 					break;
 				case 3:
 					cmd=_T("git.exe am --resolved");
