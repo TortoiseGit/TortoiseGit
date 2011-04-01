@@ -1,3 +1,21 @@
+// TortoiseGit - a Windows shell extension for easy version control
+
+// Copyright (C) 2008-2011 - TortoiseGit
+
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+//
 // ImportPatchDlg.cpp : implementation file
 //
 
@@ -23,6 +41,7 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 
 	m_b3Way = 1; 
 	m_bIgnoreSpace = 1;
+	m_bAddSignedOffBy = FALSE;
 }
 
 CImportPatchDlg::~CImportPatchDlg()
@@ -37,6 +56,7 @@ void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AM_SPLIT, m_wndSplitter);
 	DDX_Check(pDX, IDC_CHECK_3WAY, m_b3Way);
     DDX_Check(pDX, IDC_CHECK_IGNORE_SPACE, m_bIgnoreSpace);
+	DDX_Check(pDX, IDC_SIGN_OFF, m_bAddSignedOffBy);
 }
 
 void CImportPatchDlg::AddAmAnchor()
@@ -326,6 +346,9 @@ UINT CImportPatchDlg::PatchThread()
 
 			cmd=_T("git.exe am ");
 
+			if(this->m_bAddSignedOffBy)
+				cmd+=_T("--signoff ");
+
 			if(this->m_b3Way)
 				cmd+=_T("--3way ");
 
@@ -354,7 +377,7 @@ UINT CImportPatchDlg::PatchThread()
 			
 		}else
 		{
-			AddLogString(CString(_T("Skip Patch:"))+m_cList.GetItemText(i,0));
+			AddLogString(CString(_T("Skip Patch: "))+m_cList.GetItemText(i,0));
 			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
 		}
 
@@ -423,6 +446,7 @@ void CImportPatchDlg::DoSize(int delta)
 	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGN_OFF),0,delta);
 
 	this->AddAmAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from
