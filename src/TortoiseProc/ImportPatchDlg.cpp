@@ -287,7 +287,7 @@ UINT CImportPatchDlg::PatchThread()
 			{
 				int ret = CMessageBox::Show(NULL, _T("<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n\n Do you want to"),
 												  _T("TortoiseGit"),
-												   1,IDI_ERROR ,_T("Abort"), _T("Skip"),_T("Resolved"));
+												   1,IDI_ERROR ,_T("&Abort"), _T("&Skip"),_T("&Resolved"));
 
 				switch(ret)
 				{
@@ -488,17 +488,17 @@ void CImportPatchDlg::UpdateOkCancelText()
 {
 	if( !IsFinish() )
 	{
-		this->GetDlgItem(IDOK)->SetWindowText(_T("Apply"));
+		this->GetDlgItem(IDOK)->SetWindowText(_T("&Apply"));
 	}
 	else
 	{
-		this->GetDlgItem(IDOK)->SetWindowText(_T("Ok"));
+		this->GetDlgItem(IDOK)->SetWindowText(_T("&OK"));
 	}
 
 	if(this->m_bThreadRunning)
-		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Abort"));
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("A&bort"));
 	else	
-		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("Cancel"));
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("&Cancel"));
 
 }
 void CImportPatchDlg::OnBnClickedCancel()
