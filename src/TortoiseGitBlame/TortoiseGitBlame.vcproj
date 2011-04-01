@@ -546,10 +546,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\targetver.h"
-				>
-			</File>
-			<File
 				RelativePath=".\TortoiseGitBlame.h"
 				>
 			</File>

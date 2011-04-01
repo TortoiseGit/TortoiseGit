@@ -6,7 +6,7 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "targetver.h"
+#include "..\targetver.h"
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
