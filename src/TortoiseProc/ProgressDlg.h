@@ -111,6 +111,8 @@ public:
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
+
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 

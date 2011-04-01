@@ -25,6 +25,9 @@
 #include "Git.h"
 #include "atlconv.h"
 #include "UnicodeUtils.h"
+#include "IconMenu.h"
+#include "CommonResource.h"
+
 // CProgressDlg dialog
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
@@ -54,7 +57,6 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG, this->m_Log);
 	DDX_Control(pDX, IDC_PROGRESS_BUTTON1, this->m_ctrlPostCmd);
 }
-
 
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
@@ -619,4 +621,36 @@ LRESULT CProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
+}
+
+BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_CONTEXTMENU || pMsg->message == WM_RBUTTONDOWN)
+	{
+		CWnd * pWnd = (CWnd*) GetDlgItem(IDC_LOG);
+		if (pWnd == GetFocus())
+		{
+			CIconMenu popup;
+			if (popup.CreatePopupMenu())
+			{
+				popup.AppendMenuIcon(WM_COPY, IDS_SCIEDIT_COPY, IDI_COPYCLIP);
+				if (m_Log.GetSelText().IsEmpty())
+					popup.EnableMenuItem(WM_COPY, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+				popup.AppendMenu(MF_SEPARATOR);
+				popup.AppendMenuIcon(EM_SETSEL, IDS_SCIEDIT_SELECTALL);
+				int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, pMsg->pt.x, pMsg->pt.y, this);
+				switch (cmd)
+				{
+					case 0: // no command selected
+						break;
+					case EM_SETSEL:
+					case WM_COPY:
+						::SendMessage(GetDlgItem(IDC_LOG)->GetSafeHwnd(), cmd, 0, -1);
+						break;
+				}
+				return TRUE;
+			}
+		}
+	}
+	return __super::PreTranslateMessage(pMsg);
 }
