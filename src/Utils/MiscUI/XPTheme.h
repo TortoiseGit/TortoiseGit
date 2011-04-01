@@ -4,7 +4,7 @@
 #pragma once
 
 #include <uxtheme.h>
-#include <tmschema.h>
+#include <vssym32.h>
 
 #ifndef WM_THEMECHANGED
 #define WM_THEMECHANGED                 0x031A
