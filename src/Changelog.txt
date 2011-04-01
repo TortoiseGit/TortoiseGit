@@ -11,6 +11,8 @@
  * Show changes to revision before the last commit on amend and perform actions relatively to this revision (old behavior is still possible)
  * Remember (de)selected files in "Commit dialog" after refreshing the list
  * Fixed issue #745: Added checkbox to commit dialog to disable autoselection of submodules
+ * Show status on taskbar button on Windows 7
+ * Allow to add a "Signed-Off-By" line to patches on applying
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
