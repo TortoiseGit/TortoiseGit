@@ -114,7 +114,7 @@
 			IntermediateDirectory="..\..\obj\TortoiseProc\Debug64"
 			ConfigurationType="1"
 			UseOfMFC="2"
-			UseOfATL="0"
+			UseOfATL="1"
 			CharacterSet="1"
 			>
 			<Tool
