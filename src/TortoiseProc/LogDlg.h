@@ -37,6 +37,7 @@
 #include "GitLogList.h"
 #include "GitStatusListCtrl.h"
 #include "HyperLink.h"
+#include "Win7.h"
 
 using namespace std;
 
@@ -124,6 +125,8 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
+	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	afx_msg LRESULT OnClickedInfoIcon(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);

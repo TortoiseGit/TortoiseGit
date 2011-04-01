@@ -79,6 +79,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_COMMIT, &CSyncDlg::OnBnClickedButtonCommit)
 	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
 	ON_WM_TIMER()
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 
@@ -551,6 +552,24 @@ BOOL CSyncDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+		FreeLibrary(hUser);
+	}
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 
 	this->GetDlgItem(IDC_CHECK_PUTTY_KEY)->EnableWindow(CAppUtils::IsSSHPutty());
 
@@ -941,6 +960,11 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	{
 		m_ctrlAnimate.Play(0,-1,-1);
 		this->m_ctrlProgress.SetPos(0);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
+		}
 	}
 
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
@@ -949,6 +973,8 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_ctrlAnimate.Stop();
 		m_ctrlProgress.SetPos(100);
 		//this->DialogEnableWindow(IDOK,TRUE);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
 		//if(wParam == MSG_PROGRESSDLG_END)
 		if(this->m_CurrentCmd == GIT_COMMAND_PUSH )
@@ -1009,7 +1035,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 void CSyncDlg::ParserCmdOutput(char ch)
 {
-	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_LogText,ch);
+	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_hWnd,m_pTaskbarList,m_LogText,ch);
 }
 void CSyncDlg::OnBnClickedButtonCommit()
 {
@@ -1083,4 +1109,11 @@ void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(IDT_INPUT);
 		this->FetchOutList(true);
 	}
+}
+
+LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	return 0;
 }

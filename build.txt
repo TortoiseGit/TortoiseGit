@@ -41,11 +41,11 @@ You only have to do this once.
      available in the VS.NET2008 Professional and higher. 
      This will provide you with a cross-compiler and a suitable 
      command shell. On XP64, there will also be a native compiler.
--# \b Optional but recommended: Install Microsoft SDK for Windows Vista (February 2007 Update)
-   - http://www.microsoft.com/downloads/details.aspx?FamilyID=FF6467E6-5BBA-4BF5-B562-9199BE864D29 .
-     Make sure you install the x64 compiler, header and libraries if you want to build in x64.
+-# \b Install Microsoft SDK for Windows 7
+   - http://www.microsoft.com/downloads/en/details.aspx?familyid=71DEB800-C591-4F97-A900-BEA146E4FAE1.
    - Open "Microsoft Windows SDK", "Visual Studio Registration", "Integrate Windows SDK with Visual Studio 2008"
-     to make sure Visual Studio uses the latest SDK headers and libraries.
+     to make sure Visual Studio uses the latest SDK headers and libraries
+     (for 2008 SP1 see: http://blogs.msdn.com/b/windowssdk/archive/2008/10/06/how-to-get-the-winsdk-configuration-tool-to-work.aspx).
 -# \b Optional: Install the MSDN Library (documentation) from
    http://www.microsoft.com/downloads/details.aspx?familyid=B8704100-0127-4D88-9B5D-896B9B388313
    You can always access it online at http://msdn2.microsoft.com/en-us/Library

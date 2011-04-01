@@ -163,6 +163,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER, &CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
 	ON_MESSAGE(MSG_REFLOG_CHANGED, OnRefLogChanged)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
@@ -188,8 +189,26 @@ BOOL CLogDlg::OnInitDialog()
 	CString temp;
 	CResizableStandAloneDialog::OnInitDialog();
 
-	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_LOGDLG));
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+		FreeLibrary(hUser);
+	}
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 
+	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_LOGDLG));
 
 	// use the state of the "stop on copy/rename" option from the last time
 	UpdateData(FALSE);
@@ -373,6 +392,11 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		// We use a progress bar while getting the logs
 		m_LogProgress.SetRange32(0, 100);
 		m_LogProgress.SetPos(0);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
+		}
 
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
@@ -392,6 +416,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		}
 		UpdateLogInfoLabel();
 
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
 		//if (!m_bShowedAll)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
@@ -423,6 +449,11 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		}
 		UpdateLogInfoLabel();
 		m_LogProgress.SetPos(cur);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, cur, 100);
+		}
 	}
 	return 0;
 }
@@ -3285,5 +3316,12 @@ LRESULT CLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
 	UNREFERENCED_PARAMETER(wParam);
 	UNREFERENCED_PARAMETER(lParam);
 	ShowStartRef();
+	return 0;
+}
+
+LRESULT CLogDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
 }

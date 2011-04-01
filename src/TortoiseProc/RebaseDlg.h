@@ -28,6 +28,8 @@
 #include "Balloon.h"
 #include "GitLogList.h"
 #include "MenuButton.h"
+#include "Win7.h"
+
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
 
@@ -168,4 +170,7 @@ protected:
 	afx_msg void OnBnClickedRebasePostButton();
 	afx_msg void OnBnClickedButtonUp2();
 	afx_msg void OnBnClickedButtonDown2();
+
+	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
 };

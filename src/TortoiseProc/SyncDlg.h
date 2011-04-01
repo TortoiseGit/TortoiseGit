@@ -28,6 +28,7 @@
 #include "Balloon.h"
 #include "BranchCombox.h"
 #include "GitLoglist.h"
+#include "Win7.h"
 
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
@@ -72,6 +73,9 @@ protected:
 	afx_msg void OnBnClickedButtonApply();
 	afx_msg void OnBnClickedButtonEmail();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	int					m_CurrentCmd;
 

@@ -83,6 +83,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
 	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -113,6 +114,25 @@ void CRebaseDlg::AddRebaseAnchor()
 BOOL CRebaseDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+		FreeLibrary(hUser);
+	}
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 
 	CRect rectDummy;
 	//IDC_REBASE_DUMY_TAB
@@ -1121,6 +1141,11 @@ void CRebaseDlg::UpdateProgress()
 
 	m_ProgressBar.SetRange(1,m_CommitList.GetItemCount());
 	m_ProgressBar.SetPos(index);
+	if (m_pTaskbarList)
+	{
+		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+		m_pTaskbarList->SetProgressValue(m_hWnd, index, m_CommitList.GetItemCount());
+	}
 
 	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
 	{
@@ -1327,6 +1352,8 @@ int CRebaseDlg::RebaseThread()
 		{			
 			FinishRebase();
 			m_RebaseStage = REBASE_DONE;
+			if (m_pTaskbarList)
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 			break;
 			
 		}else
@@ -1371,15 +1398,21 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	case REBASE_SQUASH_CONFLICT:
 		ListConflictFile();			
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		break;
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		break;
 	default:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
@@ -1392,6 +1425,9 @@ void CRebaseDlg::OnCancel()
 }
 void CRebaseDlg::OnBnClickedAbort()
 {
+	if (m_pTaskbarList)
+		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+
 	CString cmd,out;
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
@@ -1545,4 +1581,11 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 		m_CommitList.Invalidate();
 		m_CommitList.SetFocus();
 	}
+}
+
+LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	return 0;
 }

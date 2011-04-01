@@ -21,6 +21,7 @@
 #include "StandAloneDlg.h"
 #include "git.h"
 #include "MenuButton.h"
+#include "Win7.h"
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 // CProgressDlg dialog
@@ -32,7 +33,6 @@
 class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
-
 public:
 	CProgressDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CProgressDlg();
@@ -77,6 +77,9 @@ protected:
 
 	LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
+	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
+
 	void		OnCancel();
 
 	CGitByteArray m_Databuf;
@@ -99,7 +102,7 @@ public:
 
 	static int ClearESC(CStringA &str);
 
-	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,
+	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,
 									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
 
 	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);

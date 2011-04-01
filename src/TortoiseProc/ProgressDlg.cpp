@@ -60,11 +60,31 @@ BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_PROGRESS_BUTTON1,&CProgressDlg::OnBnClickedButton1)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+		FreeLibrary(hUser);
+	}
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 
 	AddAnchor(IDC_TITLE_ANIMATE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_RUN_PROGRESS, TOP_LEFT,TOP_RIGHT);
@@ -230,6 +250,11 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_BufStart = 0 ;
 		m_Animate.Play(0,-1,-1);
 		this->DialogEnableWindow(IDOK,FALSE);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
+		}
 	}
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
@@ -258,9 +283,16 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		err.Format(_T("\r\nFailed 0x%x (git returned a wrong return code at some time)\r\n"),m_GitStatus);
 		if(this->m_GitStatus)
 		{
+			if (m_pTaskbarList)
+			{
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+				m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
+			}
 			//InsertColorText(this->m_Log,err,RGB(255,0,0));
 		}
 		else {
+			if (m_pTaskbarList)
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 			InsertColorText(this->m_Log,_T("\r\nSuccess\r\n"),RGB(0,0,255));
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}
@@ -383,13 +415,13 @@ void CProgressDlg::ParserCmdOutput(TCHAR ch)
 
 void CProgressDlg::ParserCmdOutput(char ch)
 {
-	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_LogTextA,ch,&this->m_CurrentWork);
+	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_hWnd,this->m_pTaskbarList,this->m_LogTextA,ch,&this->m_CurrentWork);
 }
 int CProgressDlg::ClearESC(CStringA &str)
 {
 	return str.Replace("\033[K","");
 }
-void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,CStringA &oneline, char ch, CWnd *CurrentWork)
+void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,CStringA &oneline, char ch, CWnd *CurrentWork)
 {
 	//TRACE(_T("%c"),ch);
 	if( ch == ('\r') || ch == ('\n'))
@@ -440,7 +472,14 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 			int pos=FindPercentage(str);
 			TRACE(_T("Pos %d\r\n"),pos);
 			if(pos>0)
+			{
 				progressctrl.SetPos(pos);
+				if (m_pTaskbarList)
+				{
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+					m_pTaskbarList->SetProgressValue(m_hWnd, pos, 100);
+				}
+			}
 		}
 
 		oneline="";
@@ -573,4 +612,11 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	g_Git.StringAppend(&str, (BYTE*)buff+start, CP_ACP,size - start);
 
 	return str;
+}
+
+LRESULT CProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	return 0;
 }

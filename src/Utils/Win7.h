@@ -21,7 +21,11 @@
 // declares and defines stuff which is not available in the Vista SDK or
 // which isn't available in the Win7 SDK but not unless NTDDI_VERSION is
 // set to NTDDI_WIN7
+
 #pragma once
+
+static UINT	WM_TASKBARBTNCREATED = RegisterWindowMessage(_T("TaskbarButtonCreated"));
+
 #if (NTDDI_VERSION < 0x06010000)
 
 /*
