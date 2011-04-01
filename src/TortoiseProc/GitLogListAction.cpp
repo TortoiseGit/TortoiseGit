@@ -45,7 +45,6 @@
 #include "TempFile.h"
 //#include "GitInfo.h"
 //#include "GitDiff.h"
-#include "IconMenu.h"
 //#include "RevisionRangeDlg.h"
 //#include "BrowseFolder.h"
 //#include "BlameDlg.h"
