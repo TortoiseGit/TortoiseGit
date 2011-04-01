@@ -29,6 +29,7 @@
 #include "Balloon.h"
 #include "GitLogList.h"
 #include "MenuButton.h"
+#include "Win7.h"
 
 #define MSG_REBASE_UPDATE_UI	(WM_USER+151)
 
@@ -121,6 +122,9 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 protected:
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
+	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
 public:
 	afx_msg void OnBnClickedCancel();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

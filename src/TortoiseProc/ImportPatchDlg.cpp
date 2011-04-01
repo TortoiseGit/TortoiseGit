@@ -96,7 +96,26 @@ void CImportPatchDlg::SetSplitterRange()
 BOOL CImportPatchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-	
+
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+		FreeLibrary(hUser);
+	}
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+
 	CRect rectDummy;
 
 	GetClientRect(m_DlgOrigRect);
@@ -196,6 +215,7 @@ BEGIN_MESSAGE_MAP(CImportPatchDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDCANCEL, &CImportPatchDlg::OnBnClickedCancel)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATCH, &CImportPatchDlg::OnHdnItemchangedListPatch)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 
@@ -294,6 +314,12 @@ UINT CImportPatchDlg::PatchThread()
 
 	for(i=m_CurrentItem;i<m_cList.GetItemCount();i++)
 	{
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, i+1, m_cList.GetItemCount());
+		}
+
 		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
 
 		if(m_bExitThread)
@@ -305,6 +331,9 @@ UINT CImportPatchDlg::PatchThread()
 
 			while(path.HasRebaseApply())
 			{
+				if (m_pTaskbarList)
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+
 				int ret = CMessageBox::Show(NULL, _T("<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n\n Do you want to"),
 												  _T("TortoiseGit"),
 												   1,IDI_ERROR ,_T("&Abort"), _T("&Skip"),_T("&Resolved"));
@@ -367,6 +396,8 @@ UINT CImportPatchDlg::PatchThread()
 				m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_FAIL|CPatchListCtrl::STATUS_APPLYING);
 				this->AddLogString(output);
 				this->AddLogString(_T("Fail"));
+				if (m_pTaskbarList)
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 				break;
 
 			}else
@@ -392,8 +423,10 @@ UINT CImportPatchDlg::PatchThread()
 		this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
 
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+
 		UpdateOkCancelText();
-		
 	}
 	
 	//in case am fail, need refresh finial item status
@@ -604,4 +637,11 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 			m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
 		}
 	}
+}
+
+LRESULT CImportPatchDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	return 0;
 }
