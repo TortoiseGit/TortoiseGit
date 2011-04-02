@@ -99,7 +99,7 @@ BOOL CProgressDlg::OnInitDialog()
 
 	this->GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_HIDE);
 	m_Animate.Open(IDR_DOWNLOAD);
-	
+
 	CString InitialText;
 	if ( !m_PreText.IsEmpty() )
 	{
@@ -155,7 +155,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	if(pdata)
 		pdata->clear();
-		 
+
 	for(int i=0;i<cmdlist.size();i++)
 	{
 		if(cmdlist[i].IsEmpty())
@@ -205,7 +205,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		CloseHandle(pi.hThread);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
-		
+
 		DWORD status=0;
 		if(!GetExitCodeProcess(pi.hProcess,&status) || *bAbort)
 		{
@@ -231,7 +231,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 UINT CProgressDlg::ProgressThread()
 {
-	
+
 	m_GitCmdList.push_back(m_GitCmd);
 
 	CString *pfilename;
@@ -239,7 +239,7 @@ UINT CProgressDlg::ProgressThread()
 	if(m_LogFile.IsEmpty())
 		pfilename=NULL;
 	else
-		pfilename=&m_LogFile;	
+		pfilename=&m_LogFile;
 
 	m_GitStatus = RunCmdList(this,m_GitCmdList,m_bShowCommand,pfilename,&m_bAbort,&this->m_Databuf);;
 	return 0;
@@ -361,60 +361,6 @@ int CProgressDlg::FindPercentage(CString &log)
 	return _ttol(log.Mid(s2,s1-s2));
 }
 
-#if 0
-void CProgressDlg::ParserCmdOutput(TCHAR ch)
-{
-	TRACE(_T("%c"),ch);
-	if( ch == _T('\r') || ch == _T('\n'))
-	{
-		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
-		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
-
-		int lines=m_Log.GetLineCount();
-
-		if(ch == _T('\r'))
-		{	
-			int start=m_Log.LineIndex(lines-1);
-			int length=m_Log.LineLength(lines-1);
-			m_Log.SetSel( start,start+length);
-			m_Log.ReplaceSel(m_LogText);
-
-		}else
-		{
-			m_Log.SetSel(m_Log.GetWindowTextLength(),
-					     m_Log.GetWindowTextLength());
-			m_Log.ReplaceSel(CString(_T("\r\n"))+m_LogText);
-		}
-		
-		if( lines > 500 ) //limited log length
-		{
-			int end=m_Log.LineIndex(1);
-			m_Log.SetSel(0,end);
-			m_Log.ReplaceSel(_T(""));
-		}
-		m_Log.LineScroll(m_Log.GetLineCount());
-
-		int s1=m_LogText.Find(_T(':'));
-		int s2=m_LogText.Find(_T('%'));
-		if(s1>0 && s2>0)
-		{
-			this->m_CurrentWork.SetWindowTextW(m_LogText.Left(s1));
-			int pos=FindPercentage(m_LogText);
-			TRACE(_T("Pos %d\r\n"),pos);
-			if(pos>0)
-				this->m_Progress.SetPos(pos);
-		}
-
-		m_LogText=_T("");
-
-	}else
-	{
-		m_LogText+=ch;
-	}
-
-}
-#endif
-
 void CProgressDlg::ParserCmdOutput(char ch)
 {
 	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_hWnd,this->m_pTaskbarList,this->m_LogTextA,ch,&this->m_CurrentWork);
@@ -438,28 +384,28 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 			ch = ('\r');
 		}
 
-		int lines=log.GetLineCount();
+		int lines = log.GetLineCount();
 		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
 //		TRACE(_T("%s"), str);
 
 		if(ch == ('\r'))
-		{	
+		{
 			int start=log.LineIndex(lines-1);
 			int length=log.LineLength(lines-1);
-			log.SetSel( start,start+length);			
+			log.SetSel(start, start + length);
 			log.ReplaceSel(str);
-
-		}else
+		}
+		else
 		{
-			log.SetSel(log.GetWindowTextLength(),
-					     log.GetWindowTextLength());
-			if (log.GetWindowTextLength() > 0)
+			int length = log.GetWindowTextLength();
+			log.SetSel(length, length);
+			if (length > 0)
 				log.ReplaceSel(_T("\r\n") + str);
 			else
 				log.ReplaceSel(str);
 		}
-		
-		if( lines > 500 ) //limited log length
+
+		if (lines > 500) //limited log length
 		{
 			int end=log.LineIndex(1);
 			log.SetSel(0,end);
@@ -469,7 +415,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 
 		int s1=oneline.ReverseFind(_T(':'));
 		int s2=oneline.Find(_T('%'));
-		if(s1>0 && s2>0)
+		if (s1 > 0 && s2 > 0)
 		{
 			if(CurrentWork)
 				CurrentWork->SetWindowTextW(str.Left(s1));
@@ -489,11 +435,11 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 
 		oneline="";
 
-	}else
+	}
+	else
 	{
 		oneline+=ch;
 	}
-
 }
 void CProgressDlg::RemoveLastLine(CString &str)
 {
@@ -541,7 +487,7 @@ void CProgressDlg::OnCancel()
 				GetLastError();
 			}
 	}
-	
+
 	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
 	CResizableStandAloneDialog::OnCancel();
 
