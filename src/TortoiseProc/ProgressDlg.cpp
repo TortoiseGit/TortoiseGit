@@ -432,12 +432,12 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 
 //		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
 //		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
-		
+
 		if(ClearESC(oneline))
 		{
 			ch = ('\r');
 		}
-		
+
 		int lines=log.GetLineCount();
 		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
 //		TRACE(_T("%s"), str);
@@ -453,7 +453,10 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		{
 			log.SetSel(log.GetWindowTextLength(),
 					     log.GetWindowTextLength());
-			log.ReplaceSel(CString(_T("\r\n"))+str);
+			if (log.GetWindowTextLength() > 0)
+				log.ReplaceSel(_T("\r\n") + str);
+			else
+				log.ReplaceSel(str);
 		}
 		
 		if( lines > 500 ) //limited log length
