@@ -24,6 +24,7 @@
 #include "Win7.h"
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
+
 // CProgressDlg dialog
 #define MSG_PROGRESSDLG_START 0
 #define MSG_PROGRESSDLG_RUN   50
@@ -34,55 +35,62 @@ class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
 public:
-	CProgressDlg(CWnd* pParent = NULL);   // standard constructor
+	CProgressDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CProgressDlg();
+
+private:
 	virtual BOOL OnInitDialog();
-// Dialog Data
+
+	// Dialog Data
 	enum { IDD = IDD_GITPROGRESS };
-	CString m_GitCmd;
-	std::vector<CString> m_GitCmdList;
-	bool m_bAutoCloseOnSuccess;
-	CStringArray m_PostCmdList;
 
-	CMenuButton m_ctrlPostCmd;
+public:
+	CString					m_Title;
+	CString					m_GitCmd;
+	CStringArray			m_PostCmdList;
+	std::vector<CString>	m_GitCmdList;
+	CString					m_PreText;		// optional text to show in log window before running command
+	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
+	CString					m_LogFile;
+	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit 
+	bool					m_bAutoCloseOnSuccess;
 
-	CString m_LogFile;
+	DWORD					m_GitStatus;
+	CString					m_LogText;
 
-	CProgressCtrl m_Progress;
-	
-	CRichEditCtrl  m_Log;
-	CString m_Title;
-	CAnimateCtrl  m_Animate;
-	CStatic		  m_CurrentWork;
+private:
+	CMenuButton				m_ctrlPostCmd;
+
+	CProgressCtrl			m_Progress;
+
+	CRichEditCtrl			m_Log;
+	CAnimateCtrl			m_Animate;
+	CStatic					m_CurrentWork;
 	CWinThread*				m_pThread;	
 	volatile LONG			m_bThreadRunning;
-	DWORD			  m_GitStatus;
-	bool		  m_bShowCommand;	// whether to display the command in the log window (default true)
-	CString		  m_PreText;		// optional text to show in log window before running command
-	CString		  m_LogText;
 
-	bool			m_bAbort;
-	bool			m_bDone;
-	bool			m_bAltAbortPress;
-	bool			m_bBufferAll;   // Buffer All to improve speed when there are many file add at commit 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	static UINT ProgressThreadEntry(LPVOID pVoid);
-	UINT		ProgressThread();
+	bool					m_bAbort;
+	bool					m_bDone;
+	bool					m_bAltAbortPress;
 
-	CStringA		  m_LogTextA;
+	virtual void			DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	static UINT				ProgressThreadEntry(LPVOID pVoid);
+	UINT					ProgressThread();
 
-	void		ParserCmdOutput(char ch);
-	void        RemoveLastLine(CString &str);
+	CStringA				m_LogTextA;
 
-	LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
+	void					ParserCmdOutput(char ch);
+	void					RemoveLastLine(CString &str);
 
-	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	LRESULT					CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
+
+	afx_msg LRESULT			OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
-	void		OnCancel();
+	void					OnCancel();
+	void					InsertCRLF(); //Insert \r before \n
 
-	CGitByteArray m_Databuf;
+	CGitByteArray			m_Databuf;
 	virtual CString Convert2UnionCode(char *buff, int size=-1)
 	{
 		CString str;
@@ -90,24 +98,23 @@ protected:
 		return str;
 	}
 
-	int			m_BufStart;
-	
-	void InsertCRLF(); //Insert \r before \n
+		int						m_BufStart;
 
 	DECLARE_MESSAGE_MAP()
-public:
 
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
 
-	static int ClearESC(CStringA &str);
+	static int	ClearESC(CStringA &str);
 
+public:
 	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,
 									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
 
-	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
+	static UINT	RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata=NULL);
 
-	static UINT  RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata=NULL);
+private:
+	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
@@ -115,12 +122,12 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
-
 class CCommitProgressDlg:public CProgressDlg
 {
 public:
 	CCommitProgressDlg(CWnd* pParent = NULL):CProgressDlg(pParent)
 	{
 	}
+
 	virtual CString Convert2UnionCode(char *buff, int size=-1);
 };
