@@ -2840,7 +2840,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if (DWORD(CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE)))
 							delList.DeleteAllFiles(true);
 
-						if (g_Git.Revert(targetList))
+						CString revertToCommit = _T("HEAD");
+						if (m_amend)
+							revertToCommit = _T("HEAD~1");
+						if (g_Git.Revert(revertToCommit, targetList))
 						{
 							CMessageBox::Show(this->m_hWnd, _T("Revert Fail"), _T("TortoiseGit"), MB_ICONERROR);
 						}

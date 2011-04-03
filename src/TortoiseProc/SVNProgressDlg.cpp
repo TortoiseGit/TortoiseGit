@@ -2484,7 +2484,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 	for(int i=0;i<m_selectedPaths.GetCount();i++)
 	{
-		if(g_Git.Revert((CTGitPath&)m_selectedPaths[i],true))
+		if(g_Git.Revert(_T("HEAD"), (CTGitPath&)m_selectedPaths[i]))
 		{
 			CMessageBox::Show(NULL,_T("Revert Fail"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			m_bErrorsOccurred=true;

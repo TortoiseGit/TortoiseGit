@@ -1510,18 +1510,18 @@ BOOL CGit::CheckCleanWorkTree()
 
 	return TRUE;
 }
-int CGit::Revert(CTGitPathList &list,bool keep)
+int CGit::Revert(CString commit, CTGitPathList &list,bool keep)
 {
 	int ret;
 	for(int i=0;i<list.GetCount();i++)
 	{
-		ret = Revert((CTGitPath&)list[i]);
+		ret = Revert(commit, (CTGitPath&)list[i]);
 		if(ret)
 			return ret;
 	}
 	return 0;
 }
-int CGit::Revert(CTGitPath &path)
+int CGit::Revert(CString commit, CTGitPath &path)
 {
 	CString cmd, out;
 
@@ -1531,7 +1531,7 @@ int CGit::Revert(CTGitPath &path)
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 
-		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitOldPathString());
+		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 
@@ -1544,7 +1544,7 @@ int CGit::Revert(CTGitPath &path)
 	}
 	else
 	{
-		cmd.Format(_T("git.exe checkout HEAD -f -- \"%s\""),path.GetGitPathString());
+		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 	}
