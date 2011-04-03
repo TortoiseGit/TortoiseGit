@@ -1241,7 +1241,7 @@ int CRebaseDlg::DoRebase()
 		nocommit=_T(" --no-commit ");
 
 	CString log;
-	log.Format(_T("%s %d:%s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());
+	log.Format(_T("%s %d: %s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());
 	AddLogString(log);
 	AddLogString(pRev->GetSubject());
 	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash.ToString());
