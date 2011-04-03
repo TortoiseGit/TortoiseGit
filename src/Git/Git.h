@@ -175,8 +175,8 @@ public:
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
 	int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut);
 	BOOL CheckCleanWorkTree();
-	int Revert(CTGitPath &path,bool keep=true);
-	int Revert(CTGitPathList &list,bool keep=true);
+	int Revert(CTGitPathList &list, bool keep=true);
+	int Revert(CTGitPath &path);
 
 	bool SetCurrentDir(CString path)
 	{

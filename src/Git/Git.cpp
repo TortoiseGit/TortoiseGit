@@ -1515,13 +1515,13 @@ int CGit::Revert(CTGitPathList &list,bool keep)
 	int ret;
 	for(int i=0;i<list.GetCount();i++)
 	{
-		ret = Revert((CTGitPath&)list[i],keep);
+		ret = Revert((CTGitPath&)list[i]);
 		if(ret)
 			return ret;
 	}
 	return 0;
 }
-int CGit::Revert(CTGitPath &path,bool /*keep*/)
+int CGit::Revert(CTGitPath &path)
 {
 	CString cmd, out;
 
