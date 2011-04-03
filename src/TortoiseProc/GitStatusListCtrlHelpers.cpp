@@ -872,7 +872,7 @@ CString ColumnManager::GetColumnOrderString() const
 	return result;
 }
 
-// sorter utility class
+// sorter utility class, only used by GitStatusList!
 
 CSorter::CSorter ( ColumnManager* columnManager
 									, int sortedColumn
@@ -890,62 +890,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 	int result = 0;
 	switch (sortedColumn)
 	{
-	case 18:
-		{
-			if (result == 0)
-			{
-				__int64 writetime1 = entry1->GetLastWriteTime();
-				__int64 writetime2 = entry2->GetLastWriteTime();
-
-				FILETIME* filetime1 = (FILETIME*)(__int64*)&writetime1;
-				FILETIME* filetime2 = (FILETIME*)(__int64*)&writetime2;
-
-				result = CompareFileTime(filetime1,filetime2);
-			}
-		}
-	case 17:
-		{
-			if (result == 0)
-			{
-//				result = entry1->copyfrom_url.CompareNoCase(entry2->copyfrom_url);
-			}
-		}
-	case 16:
-		{
-			if (result == 0)
-			{
-//				result = SGN(entry1->needslock - entry2->needslock);
-			}
-		}
-	case 15:
-		{
-			if (result == 0)
-			{
-//				result = SGN(entry1->last_commit_date - entry2->last_commit_date);
-			}
-		}
-	case 14:
-		{
-			if (result == 0)
-			{
-//				result = entry1->remoterev - entry2->remoterev;
-			}
-		}
-	case 13:
-		{
-			if (result == 0)
-			{
-//				result = entry1->last_commit_rev - entry2->last_commit_rev;
-			}
-		}
-	case 12:
-		{
-			if (result == 0)
-			{
-//				result = entry1->last_commit_author.CompareNoCase(entry2->last_commit_author);
-			}
-		}
-	case 11: //Del Number
+	case 5: //Del Number
 		{
 			if (result == 0)
 			{
@@ -953,7 +898,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 				result = A2L(entry1->m_StatDel)-A2L(entry2->m_StatDel);
 			}
 		}
-	case 10: //Add Number
+	case 4: //Add Number
 		{
 			if (result == 0)
 			{
@@ -961,48 +906,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 				result = A2L(entry1->m_StatAdd)-A2L(entry2->m_StatAdd);
 			}
 		}
-	case 9: //Modification Data
-		{
-			if (result == 0)
-			{
-//				result = entry1->url.CompareNoCase(entry2->url);
-			}
-		}
-	case 8: //Data
-		{
-			if (result == 0)
-			{
-//				result = entry1->remotepropstatus - entry2->remotepropstatus;
-			}
-		}
-	case 7: // Version
-		{
-			if (result == 0)
-			{
-//				result = entry1->remotetextstatus - entry2->remotetextstatus;
-			}
-		}
-	case 6:  // Author
-		{
-			if (result == 0)
-			{
-//				result = entry1->propstatus - entry2->propstatus;
-			}
-		}
-	case 5: //Prop Status
-		{
-			if (result == 0)
-			{
-//				result = entry1->textstatus - entry2->textstatus;
-			}
-		}
-	case 4: //Text Status
-		{
-			if (result == 0)
-			{
-	//			result = entry1->remotestatus - entry2->remotestatus;
-			}
-		}
+
 	case 3: // Status
 		{
 			if (result == 0)

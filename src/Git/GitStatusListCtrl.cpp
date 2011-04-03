@@ -231,6 +231,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
+	// keep CSorter::operator() in sync!!
 	static UINT standardColumnNames[SVNSLC_NUMCOLUMNS]
 			= { IDS_STATUSLIST_COLFILE
 			, IDS_STATUSLIST_COLFILENAME
