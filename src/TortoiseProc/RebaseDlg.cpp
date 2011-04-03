@@ -1244,6 +1244,12 @@ int CRebaseDlg::DoRebase()
 	log.Format(_T("%s %d: %s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());
 	AddLogString(log);
 	AddLogString(pRev->GetSubject());
+	if (pRev->GetSubject().IsEmpty())
+	{
+		CMessageBox::Show(m_hWnd, _T("Found an empty commit message. You have to enter one or rebase cannot proceed."), _T("TortoiseGit"), MB_OK | MB_ICONEXCLAMATION);
+		mode = CTGitPath::LOGACTIONS_REBASE_EDIT;
+	}
+
 	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash.ToString());
 
 	if(g_Git.Run(cmd,&out,CP_UTF8))

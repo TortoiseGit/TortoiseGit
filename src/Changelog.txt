@@ -40,6 +40,7 @@
  * Fixed issue #766: "Switch/Checkout" dialog: "Track" should be disabled when no new branch is created
  * Fixed issue #765: "Check for Updates" in about box doesn't work
  * Fixed issue #731: Git Command Progress Window text box doesn't have a context menu.
+ * Rebase failed at revision with empty commit message.
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
