@@ -1307,7 +1307,6 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 	Show(m_dwShow, 0, m_bShowFolders,false,true);
 
 	m_bBlock = FALSE;
-	return;
 }
 
 void CGitStatusListCtrl::OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
@@ -4864,6 +4863,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			CString cmd;
 			if(!g_Git.IsInitRepos())
 			{
+				// also list staged files which will be in the commit
 				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
 				g_Git.Run(cmd, &cmdout);
 
