@@ -344,6 +344,16 @@ BOOL CCommitDlg::OnInitDialog()
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 	}
 
+	CGitHash hash = g_Git.GetHash(_T("HEAD"));
+	GitRev f;
+	f.GetParentFromHash(hash);
+	if (f.ParentsCount() != 1)
+	{
+		m_bAmendDiffToLastCommit = true;
+		UpdateData(FALSE);
+		GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(FALSE);
+	}
+
 	this->m_ctrlShowPatch.SetURL(CString());
 
 	return FALSE;  // return TRUE unless you set the focus to a control
