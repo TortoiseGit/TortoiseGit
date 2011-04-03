@@ -4895,6 +4895,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			CString cmd;
 			if(!g_Git.IsInitRepos())
 			{
+				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
+				g_Git.Run(cmd, &cmdout);
+
 				if(list == NULL)
 					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z"));
 				else
@@ -4927,14 +4930,6 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 					}
 				}
 
-				//if(list == NULL)
-				//We will list all stage file anyway because commit will commit thats
-				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
-				//else
-				//	cmd.Format(_T("git.exe diff-index  --cached --raw ") + head + _T(" --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
-
-				g_Git.Run(cmd,&cmdout);
-				//out+=cmdout;
 				out.append(cmdout,0);
 			}
 			else // Init Repository
