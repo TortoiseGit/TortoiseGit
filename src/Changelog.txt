@@ -42,6 +42,7 @@
  * Fixed issue #731: Git Command Progress Window text box doesn't have a context menu.
  * Rebase failed at revision with empty commit message.
  * Fixed sorting of columns of file lists (e.g. commit dialog).
+ * Fixed issue #757: TortoiseGit Blame not working from working dir.
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
