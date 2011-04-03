@@ -1955,11 +1955,10 @@ void CCommitDlg::OnStnClickedViewPatch()
 		CRect rect;
 		this->GetWindowRect(&rect);
 
+		m_patchViewdlg.ShowWindow(SW_SHOW);
+
 		m_patchViewdlg.SetWindowPos(NULL,rect.right,rect.top,rect.Width(),rect.Height(),
 				SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-
-		m_patchViewdlg.m_ctrlPatchView.MoveWindow(0,0,rect.Width(),rect.Height());
-		m_patchViewdlg.ShowWindow(SW_SHOW);
 
 		ShowViewPatchText(false);
 		FillPatchView();
