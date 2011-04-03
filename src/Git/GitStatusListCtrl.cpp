@@ -565,7 +565,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool /* UseStoredCheckStatus */)
+void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -614,7 +614,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 		{
 			entry->m_Checked=m_mapFilenameToChecked[path];
 		}
-		else
+		else if (!UseStoredCheckStatus)
 		{
 			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
 			if(entry->m_Action & dwCheck && autoSelectSubmodules)
@@ -1315,7 +1315,6 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 	else
 		m_bAscending = TRUE;
 	m_nSortedColumn = phdr->iItem;
-	m_mapFilenameToChecked.clear();
 	Sort();
 
 	CHeaderCtrl * pHeader = GetHeaderCtrl();
