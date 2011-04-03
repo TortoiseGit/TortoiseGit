@@ -649,7 +649,7 @@ void CCommitDlg::OnOK()
 		progress.m_PreText = out;			// show any output already generated in log window
 		progress.m_bAutoCloseOnSuccess = m_bAutoClose;
 
-		if (!m_bNoPostActions || !m_bAutoClose)
+		if (!m_bNoPostActions && !m_bAutoClose)
 		{
 			progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
 			progress.m_PostCmdList.Add(_T("&ReCommit"));
