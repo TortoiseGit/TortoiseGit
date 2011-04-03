@@ -598,7 +598,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 		}
 	}
 	PrepareGroups();
-	if( m_nSortedColumn )
+	if (m_nSortedColumn >= 0)
 	{
 		CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
 		std::sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
@@ -646,7 +646,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
 		pHeader->SetItem(i, &HeaderItem);
 	}
-	if (m_nSortedColumn)
+	if (m_nSortedColumn >= 0)
 	{
 		pHeader->GetItem(m_nSortedColumn, &HeaderItem);
 		HeaderItem.fmt |= (m_bAscending ? HDF_SORTUP : HDF_SORTDOWN);
@@ -1291,18 +1291,6 @@ bool CGitStatusListCtrl::SetItemGroup(int item, int groupindex)
 	return !!SetItem(&i);
 }
 
-void CGitStatusListCtrl::Sort()
-{
-	Locker lock(m_critSec);
-
-	CSorter predicate (&m_ColumnManager, m_nSortedColumn, m_bAscending);
-
-	std::sort(m_arStatusArray.begin(), m_arStatusArray.end(), predicate);
-	SaveColumnWidths();
-	Show(m_dwShow, 0, m_bShowFolders,false,true);
-
-}
-
 void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
@@ -1315,32 +1303,10 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 	else
 		m_bAscending = TRUE;
 	m_nSortedColumn = phdr->iItem;
-	Sort();
-
-	CHeaderCtrl * pHeader = GetHeaderCtrl();
-	HDITEM HeaderItem = {0};
-	HeaderItem.mask = HDI_FORMAT;
-	for (int i=0; i<pHeader->GetItemCount(); ++i)
-	{
-		pHeader->GetItem(i, &HeaderItem);
-		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
-		pHeader->SetItem(i, &HeaderItem);
-	}
-	pHeader->GetItem(m_nSortedColumn, &HeaderItem);
-	HeaderItem.fmt |= (m_bAscending ? HDF_SORTUP : HDF_SORTDOWN);
-	pHeader->SetItem(m_nSortedColumn, &HeaderItem);
-
-	// the checked state of the list control items must be restored
-
-	for (int i=0; i<GetItemCount(); ++i)
-	{
-		CTGitPath * entry = (CTGitPath*)GetItemData(i);
-		ASSERT(entry);
-		if(entry)
-			SetCheck(i, entry->m_Checked);
-	}
+	Show(m_dwShow, 0, m_bShowFolders,false,true);
 
 	m_bBlock = FALSE;
+	return;
 }
 
 void CGitStatusListCtrl::OnLvnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
