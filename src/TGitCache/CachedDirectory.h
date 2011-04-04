@@ -54,6 +54,10 @@ public:
 	/// Get the current full status of this folder
 	git_wc_status_kind GetCurrentFullStatus() {return m_currentFullStatus;}
 private:
+
+	CStatusCacheEntry GetStatusFromCache(const CTGitPath &path, bool bRecursive);
+	CStatusCacheEntry GetStatusFromGit(const CTGitPath &path);
+
 //	static git_error_t* GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status);
 	static BOOL GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *pUserData);
 	void AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitStatus, DWORD validuntil = 0);

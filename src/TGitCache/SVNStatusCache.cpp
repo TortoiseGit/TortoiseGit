@@ -460,6 +460,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		CCachedDirectory * cachedDir = GetDirectoryCacheEntry(dirpath);
 		if (cachedDir != NULL)
 		{
+			ATLTRACE(_T("GetStatusForMember %d\n"), bFetch);
 			m_mostRecentStatus = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
 			return m_mostRecentStatus;
 		}
@@ -468,6 +469,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	m_mostRecentStatus = CStatusCacheEntry();
 	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasSVNAdminDir(path.GetWinPath(), true))
 	{
+		ATLTRACE(_T("force status %s\n"), path.GetWinPath());
 		m_mostRecentStatus.ForceStatus(git_wc_status_normal);
 	}
 	return m_mostRecentStatus;
