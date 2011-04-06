@@ -873,7 +873,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		CString out =_T("");
 		CString cmd;
-		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash.ToString());
+		cmd.Format(_T("git.exe commit -a -C %s"), curRev->m_CommitHash.ToString());
 
 		AddLogString(cmd);
 
