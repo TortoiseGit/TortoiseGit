@@ -1193,6 +1193,7 @@ void CRebaseDlg::AddLogString(CString str)
 {
 	this->m_wndOutputRebase.SendMessage(SCI_SETREADONLY, FALSE);
 	CStringA sTextA = m_wndOutputRebase.StringForControl(str);//CUnicodeUtils::GetUTF8(str);
+	this->m_wndOutputRebase.SendMessage(SCI_DOCUMENTEND);
 	this->m_wndOutputRebase.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)sTextA);
 	this->m_wndOutputRebase.SendMessage(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n");
 	this->m_wndOutputRebase.SendMessage(SCI_SETREADONLY, TRUE);
