@@ -1148,7 +1148,7 @@ void CRebaseDlg::UpdateProgress()
 	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
 	{
 		CString text;
-		text.Format(_T("Rebasing...(%d/%d)"),index,m_CommitList.GetItemCount());
+		text.Format(_T("Rebasing... (%d/%d)"),index,m_CommitList.GetItemCount());
 		m_CtrlStatusText.SetWindowText(text);
 
 	}
