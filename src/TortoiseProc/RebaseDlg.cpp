@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1567,11 +1568,22 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 	bool changed = false;
+	// use an array to store all selected item indexes; the user won't select too much items
+	int* indexes = NULL;
+	indexes = new int[m_CommitList.GetSelectedCount()];
+	int i = 0;
 	while(pos)
 	{
-		int index=m_CommitList.GetNextSelectedItem(pos);
-		if(index<m_CommitList.GetItemCount()-1)
+		indexes[i++] = m_CommitList.GetNextSelectedItem(pos);
+	}
+	// don't move any item if the last selected item is the last item in the m_CommitList
+	// (that would change the order of the selected items)
+	if(indexes[m_CommitList.GetSelectedCount() - 1] < m_CommitList.GetItemCount() - 1)
+	{
+		// iterate over the indexes backwards in order to correctly move multiselected items
+		for (i = m_CommitList.GetSelectedCount() - 1; i >= 0; i--)
 		{
+			int index = indexes[i];
 			CGitHash old = m_CommitList.m_logEntries[index+1];
 			m_CommitList.m_logEntries[index+1] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
@@ -1580,6 +1592,8 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 			changed = true;
 		}
 	}
+	delete [] indexes;
+	indexes = NULL;
 	if (changed)
 	{
 		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
