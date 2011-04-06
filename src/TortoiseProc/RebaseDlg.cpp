@@ -1120,12 +1120,10 @@ void CRebaseDlg::SetControlEnable()
 	if(m_bThreadRunning)
 	{
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
-		this->GetDlgItem(IDC_REBASE_ABORT)->EnableWindow(FALSE);
 
 	}else
 	{
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
-		this->GetDlgItem(IDC_REBASE_ABORT)->EnableWindow(TRUE);
 	}
 }
 
