@@ -174,21 +174,13 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 int CGitLogListBase::AsyncDiffThread()
 {
-	while(1)
+	while(!m_AsyncThreadExit)
 	{
 		::WaitForSingleObject(m_AsyncDiffEvent, INFINITE);
-		if(m_AsyncThreadExit)
-			break;
 
 		GitRev *pRev = NULL;
-		while(1)
+		while(!m_AsyncThreadExit && m_AsynDiffList.size() > 0)
 		{
-			if(m_AsynDiffList.size() == 0)
-				break;
-
-			if(m_AsyncThreadExit)
-				break;
-
 			m_AysnDiffListLock.Lock();
 			pRev = m_AsynDiffList.back();
 			m_AsynDiffList.pop_back();
