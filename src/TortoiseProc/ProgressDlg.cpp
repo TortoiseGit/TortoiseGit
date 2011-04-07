@@ -386,12 +386,13 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 
 		int lines = log.GetLineCount();
 		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
+		str.Trim();
 //		TRACE(_T("%s"), str);
 
 		if(ch == ('\r'))
 		{
 			int start=log.LineIndex(lines-1);
-			int length=log.LineLength(lines-1);
+			int length=log.LineLength(lines-1)+1;
 			log.SetSel(start, start + length);
 			log.ReplaceSel(str);
 		}
