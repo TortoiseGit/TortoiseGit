@@ -760,6 +760,8 @@ void CLogDlg::SaveSplitterPos()
 
 void CLogDlg::OnCancel()
 {
+	this->ShowWindow(SW_HIDE);
+
 	// canceling means stopping the working thread if it's still running.
 	m_LogList.SafeTerminateAsyncDiffThread();
 	if (this->IsThreadRunning())
