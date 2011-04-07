@@ -43,6 +43,7 @@
  * Rebase failed at revision with empty commit message.
  * Fixed sorting of columns of file lists (e.g. commit dialog).
  * Fixed issue #757: TortoiseGit Blame not working from working dir.
+ * TortoiseProc.exe sometimes didn't exit correctly after closing the log dialog
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
