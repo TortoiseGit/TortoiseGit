@@ -174,15 +174,15 @@ bool CGit::IsBranchNameValid(CString branchname)
 	for(int i=0; i < branchname.GetLength(); i++)
 	{
 		TCHAR c = branchname.GetAt(i);
-		if (c <= ' '  || c == '~' || c == '^' || c == ':' || c == '\\' || c == '?' || c == '[')
+		if (c <= ' ' || c == '~' || c == '^' || c == ':' || c == '\\' || c == '?' || c == '[')
 			return false;
 	}
 
-	if (branchname.Find(L".") == 0 || branchname.Find(L"..") >= 0 || branchname.Find(L"@{") >= 0 || branchname.ReverseFind('*') >= 0 || branchname.ReverseFind('/') >= 0)
+	if (branchname.Find(L".") == 0 || branchname.Find(L"/.") >= 0 || branchname.Find(L"..") >= 0 || branchname.Find(L"@{") >= 0 || branchname.ReverseFind('*') >= 0)
 		return false;
 
 	CString reverseBranchname = branchname.MakeReverse();
-	if (reverseBranchname.Find(L"kcol.") >= 0)
+	if (branchname.Find(L'.') == 0 || branchname.Find(L'/') == 0 || reverseBranchname.Find(L"kcol.") >= 0)
 		return false;
 
 	return true;
