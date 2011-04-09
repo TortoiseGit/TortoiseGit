@@ -24,6 +24,8 @@
 #endif
 #include "TGitPath.h"
 
+class CGitFileName;
+
 #pragma warning (push,1)
 typedef std::basic_string<wchar_t> wide_string;
 #ifdef UNICODE
@@ -206,7 +208,7 @@ public:
 	static int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 	static int GetDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
 	static int EnumDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
-	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CString> &list);
+	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CGitFileName> &list);
 	static bool IsGitReposChanged(const CString &gitdir, const CString &subpaths, int mode=GIT_MODE_ALL);
 	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);

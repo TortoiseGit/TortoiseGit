@@ -397,7 +397,12 @@ public:
 
 };
 
-
+class CGitFileName
+{
+public:
+	CString m_FileName;
+	CString m_CaseFileName;
+};
 
 class CGitIgnoreItem
 {

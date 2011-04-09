@@ -1066,12 +1066,12 @@ int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgno
 	return 0;
 }
 
-static bool SortFileName(CString &Item1, CString &Item2)
+static bool SortFileName(CGitFileName &Item1, CGitFileName &Item2)
 {
-	return Item1.Compare(Item2)<0;
+	return Item1.m_FileName.Compare(Item2.m_FileName)<0;
 }
 
-int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::vector<CString> &list)
+int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::vector<CGitFileName> &list)
 {
 	WIN32_FIND_DATA data;
 	HANDLE handle=::FindFirstFile(gitdir+_T("\\")+subpath+_T("\\*.*"), &data);
@@ -1086,12 +1086,17 @@ int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::v
 		if(_tcscmp(data.cFileName, _T("..")) == 0)
 			continue;
 
+		CGitFileName filename;
+
+		filename.m_CaseFileName = filename.m_FileName = data.cFileName;
+		filename.m_FileName.MakeLower();
+
 		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
-			list.push_back(_tcslwr(data.cFileName));
-			list[list.size()-1]+=_T('/');
-		}else
-			list.push_back(_tcslwr(data.cFileName));
+			filename.m_FileName+=_T('/');
+		}
+
+		list.push_back(filename);
 
 	}while(::FindNextFile(handle, &data));
 
@@ -1116,7 +1121,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 		CString lowcasepath = path;
 		lowcasepath.MakeLower();
 
-		std::vector<CString> filelist;
+		std::vector<CGitFileName> filelist;
 		GetFileList(gitdir, subpath, filelist);
 
 		if(status)
@@ -1139,17 +1144,23 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			if( indexptr.get() == NULL)
 				return -1;		
 	
-			std::vector<CString>::iterator it;
+			std::vector<CGitFileName>::iterator it;
 			CString onepath;
+			CString casepath;
 			for(it = filelist.begin(); it<filelist.end();it++)
 			{
-				onepath = subpath;
+				casepath=onepath = path;
 				if(onepath.IsEmpty())
-					onepath += *it;
+				{
+					onepath += it->m_FileName;
+					casepath += it->m_CaseFileName;
+				}
 				else
 				{
 					onepath += _T('/');
-					onepath += *it;
+					casepath += _T('/');
+					onepath += it->m_FileName;
+					casepath += it->m_CaseFileName;
 				}
 			
 				int pos = SearchInSortVector(*indexptr, onepath.GetBuffer(), onepath.GetLength());
@@ -1179,10 +1190,10 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						continue;
 					}
 
-					if(::g_IgnoreList.CheckIgnoreChanged(gitdir,onepath))
-						g_IgnoreList.LoadAllIgnoreFile(gitdir,onepath);
+					if(::g_IgnoreList.CheckIgnoreChanged(gitdir,casepath))
+						g_IgnoreList.LoadAllIgnoreFile(gitdir,casepath);
 
-					if(g_IgnoreList.IsIgnore(onepath,gitdir))
+					if(g_IgnoreList.IsIgnore(casepath,gitdir))
 						*status = git_wc_status_ignored;
 					else
 						*status = git_wc_status_unversioned;
@@ -1241,7 +1252,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					if(oldstring != filename)
 					{
 						oldstring = filename;
-						if(!binary_search(filelist.begin(),filelist.end(),filename))
+						if(SearchInSortVector(filelist, filename.GetBuffer(), filename.GetLength())<0)
 						{
 							*status = git_wc_status_deleted;
 							if(callback)
@@ -1269,7 +1280,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					if(oldstring != filename)
 					{
 						oldstring = filename;
-						if(!binary_search(filelist.begin(),filelist.end(),filename))
+						if(SearchInSortVector(filelist, filename.GetBuffer(), filename.GetLength())<0)
 						{
 							*status = git_wc_status_deleted;
 							if(callback)

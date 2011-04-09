@@ -502,6 +502,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Git\gitindex.h"
+				>
+			</File>
+			<File
 				RelativePath="..\Git\GitStatus.h"
 				>
 			</File>
