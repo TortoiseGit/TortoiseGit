@@ -381,7 +381,7 @@ public:
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
 						FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,
 						bool isLoaded=false);
-	int CheckHeadUpdate(const CString &gitdir);
+	bool CheckHeadUpdate(const CString &gitdir);
 	int GetHeadHash(const CString &gitdir, CGitHash &hash);
 
 

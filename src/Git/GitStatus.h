@@ -52,6 +52,7 @@ typedef enum type_git_wc_status_kind
 	git_wc_status_added,
 	git_wc_status_conflicted,
 	git_wc_status_obstructed,
+	git_wc_status_unknown,
 
 }git_wc_status_kind;
 
@@ -205,6 +206,7 @@ public:
 	static int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
 	static int GetDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
 	static int EnumDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
+	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CString> &list);
 	static bool IsGitReposChanged(const CString &gitdir, const CString &subpaths, int mode=GIT_MODE_ALL);
 	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths);
 	static int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion);

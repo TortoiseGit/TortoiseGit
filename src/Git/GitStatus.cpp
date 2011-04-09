@@ -1066,6 +1066,39 @@ int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgno
 	return 0;
 }
 
+static bool SortFileName(CString &Item1, CString &Item2)
+{
+	return Item1.Compare(Item2)<0;
+}
+
+int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::vector<CString> &list)
+{
+	WIN32_FIND_DATA data;
+	HANDLE handle=::FindFirstFile(gitdir+_T("\\")+subpath+_T("\\*.*"), &data);
+	do
+	{	
+		if(_tcscmp(data.cFileName, _T(".git")) == 0)
+			continue;
+
+		if(_tcscmp(data.cFileName, _T(".")) == 0)
+			continue;
+
+		if(_tcscmp(data.cFileName, _T("..")) == 0)
+			continue;
+
+		if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			list.push_back(_tcslwr(data.cFileName));
+			list[list.size()-1]+=_T('/');
+		}else
+			list.push_back(_tcslwr(data.cFileName));
+
+	}while(::FindNextFile(handle, &data));
+
+	std::sort(list.begin(), list.end(), SortFileName);
+	return 0;
+}
+
 int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc_status_kind * status,BOOL IsFul,  BOOL IsRecursive, BOOL IsIgnore, FIll_STATUS_CALLBACK callback, void *pData)
 {
 	try
@@ -1083,177 +1116,174 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 		CString lowcasepath = path;
 		lowcasepath.MakeLower();
 
+		std::vector<CString> filelist;
+		GetFileList(gitdir, subpath, filelist);
+
 		if(status)
 		{
 			g_IndexFileMap.CheckAndUpdate(gitdir,true);
 
+			if(g_HeadFileMap.CheckHeadUpdate(gitdir) || g_HeadFileMap.IsHashChanged(gitdir))
+			{
+				SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+				treeptr->ReadHeadHash(gitdir);
+				if(!treeptr->ReadTree())
+				{
+					g_HeadFileMap.SafeSet(gitdir, treeptr);
+				}
+			}
+
 			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+
 			if( indexptr.get() == NULL)
-				return -1;
-
-			int pos;
-
+				return -1;		
+	
+			std::vector<CString>::iterator it;
+			CString onepath;
+			for(it = filelist.begin(); it<filelist.end();it++)
 			{
-				pos=SearchInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
-			}
-
-			if(subpath.IsEmpty() && pos<0)
-			{ // for new init repository
-				*status = git_wc_status_normal;
-				if(callback)
-					callback(gitdir+_T("/")+path, *status, false,pData);
-				return 0;
-			}
-
-			//Not In Version Contorl
-			if(pos<0)
-			{
-				if(!IsIgnore)
+				onepath = subpath;
+				if(onepath.IsEmpty())
+					onepath += *it;
+				else
 				{
-					*status = git_wc_status_unversioned;
-					if(callback)
-						callback(gitdir+_T("/")+path, *status, false,pData);
-					return 0;
+					onepath += _T('/');
+					onepath += *it;
 				}
-				//Check ignore always.
+			
+				int pos = SearchInSortVector(*indexptr, onepath.GetBuffer(), onepath.GetLength());
+				int posintree = SearchInSortVector(*treeptr, onepath.GetBuffer(), onepath.GetLength());
+
+				if(pos <0 && posintree<0)
 				{
-					if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))
-						g_IgnoreList.LoadAllIgnoreFile(gitdir,path);
+					if(onepath.GetLength() ==0)
+						continue;
 
-					if(g_IgnoreList.IsIgnore(path,gitdir))
-						*status = git_wc_status_ignored;
-					else
-						*status = git_wc_status_unversioned;
-
-					g_HeadFileMap.CheckHeadUpdate(gitdir);
-
-					//Check init repository
-					SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+					if(onepath[onepath.GetLength()-1] == _T('/')) /*check if it is directory*/
 					{
-						if(treeptr->m_Head.IsEmpty() && path.IsEmpty())
-							*status = git_wc_status_normal;
-					}
-				}
-
-			}else  // In version control
-			{
-				*status = git_wc_status_normal;
-
-				int start=0;
-				int end=0;
-				if(path.IsEmpty())
-				{
-					start=0;
-					end=indexptr->size()-1;
-				}
-
-				GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos);
-				CGitIndexList::iterator it;
-
-				it = indexptr->begin()+start;
-
-				CString sub, currentPath;
-
-				for(int i=start;i<=end;i++,it++)
-				{
-					if( ((*it).m_Flags & CE_STAGEMASK) !=0)
-					{
-						*status = git_wc_status_conflicted;
-					}
-
-					if( !IsRecursive )
-					{
-						//skip child directory
-						int pos = (*it).m_FileName.Find(_T('/'), path.GetLength());
-
-						if( pos > 0)
-						{
-							currentPath = (*it).m_FileName.Left(pos);
-							if( callback && (sub != currentPath) )
-							{
-								sub = currentPath;
-								ATLTRACE(_T("index subdir %s\n"),sub);
-								if(callback)
-								{
-									callback(gitdir + _T("\\")+sub,	git_wc_status_normal,true, pData);
-								}
-							}
+						if(::PathFileExists(gitdir+onepath+_T("/.git")))
+						{ /* That is git submodule */
+							*status = git_wc_status_unknown;
+							if(callback)
+								callback(gitdir+_T("/")+onepath, *status, false,pData);
 							continue;
 						}
 					}
-
-					git_wc_status_kind filestatus = git_wc_status_none;
-					GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
-					*status = max(filestatus, *status) ;
-				}
-
-				//Check Miss file in index "git rm file"
-				if( IsFul && (*status != git_wc_status_conflicted))
-				{
-					if(g_HeadFileMap.CheckHeadUpdate(gitdir) || g_HeadFileMap.IsHashChanged(gitdir))
+					
+					if(!IsIgnore)
 					{
-						SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
-						treeptr->ReadHeadHash(gitdir);
+						*status = git_wc_status_unversioned;
+						if(callback)
+							callback(gitdir+_T("/")+onepath, *status, false,pData);
+						continue;
+					}
 
-						if(treeptr->ReadTree())
+					if(::g_IgnoreList.CheckIgnoreChanged(gitdir,onepath))
+						g_IgnoreList.LoadAllIgnoreFile(gitdir,onepath);
+
+					if(g_IgnoreList.IsIgnore(onepath,gitdir))
+						*status = git_wc_status_ignored;
+					else
+						*status = git_wc_status_unversioned;
+				
+					if(callback)
+						callback(gitdir+_T("/")+onepath, *status, false,pData);					
+				
+				}else if(pos <0 && posintree>=0) /* check if file delete in index */
+				{
+					*status = git_wc_status_deleted;
+					if(callback)
+						callback(gitdir+_T("/")+onepath, *status, false,pData);
+
+				}else if(pos >=0 && posintree <0) /* Check if file added */
+				{
+					*status = git_wc_status_added;
+					if(callback)
+						callback(gitdir+_T("/")+onepath, *status, false,pData);
+				}else
+				{
+					if(onepath.GetLength() ==0)
+						continue;
+
+					if(onepath[onepath.GetLength()-1] == _T('/'))
+					{
+						*status = git_wc_status_normal;
+						if(callback)
+							callback(gitdir+_T("/")+onepath, *status, false,pData);
+					}
+					else
+					{
+						git_wc_status_kind filestatus;
+						GetFileStatus(gitdir,onepath, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
+					}
+				}
+					
+			}/*End of For*/
+
+			/* Check deleted file in system */
+			int start=0, end=0;
+			int pos=SearchInSortVector(*indexptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
+			GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos);
+			
+			{
+				CGitIndexList::iterator it;
+				CString oldstring;
+
+				for(it = indexptr->begin()+start; it <= indexptr->begin()+end; it++)
+				{
+					int start = lowcasepath.GetLength();
+					int index = (*it).m_FileName.Find(_T('/'), start);
+					if(index<0)
+						index = (*it).m_FileName.GetLength();
+
+					CString filename = (*it).m_FileName.Mid(start, index);
+					if(oldstring != filename)
+					{
+						oldstring = filename;
+						if(!binary_search(filelist.begin(),filelist.end(),filename))
 						{
-							//try again
-							g_Git.SetCurrentDir(gitdir);
-							::GetCurrentDirectory(MAX_PATH,oldpath);
-							::SetCurrentDirectory(g_Git.m_CurrentDir);
-							git_init();
-							treeptr->ReadTree();
+							*status = git_wc_status_deleted;
+							if(callback)
+								callback(gitdir+_T("/")+filename, *status, false,pData);
 						}
 					}
-					//Check Add
-					it = indexptr->begin()+start;
-					SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+				}
+			}
 
+			start = end =0;
+			GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos);
+
+			{
+				CGitHeadFileList::iterator it;
+				CString oldstring;
+
+				for(it = treeptr->begin()+start; it <= treeptr->begin()+end; it++)
+				{
+					int start = lowcasepath.GetLength();
+					int index = (*it).m_FileName.Find(_T('/'), start);
+					if(index<0)
+						index = (*it).m_FileName.GetLength();
+
+					CString filename = (*it).m_FileName.Mid(start, index);
+					if(oldstring != filename)
 					{
-						//Check if new init repository
-						if( treeptr->size() > 0 || treeptr->m_Head.IsEmpty() )
+						oldstring = filename;
+						if(!binary_search(filelist.begin(),filelist.end(),filename))
 						{
-							//Check Delete
-							if( *status == git_wc_status_normal )
-							{
-								pos = SearchInSortVector(*treeptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
-								if(pos <0)
-								{
-									*status =  max(git_wc_status_added, *status) ;
-
-								}else
-								{
-									int hstart,hend;
-									GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&hstart,&hend,pos);
-									CGitHeadFileList::iterator hit;
-									hit = treeptr->begin()+hstart;
-									for(int i=hstart;i<=hend;i++)
-									{
-										if( SearchInSortVector(*indexptr, (*hit).m_FileName.GetBuffer(),-1)  <0 )
-										{
-											*status =max(git_wc_status_deleted, *status);
-											break;
-										}
-										hit++;
-									}
-								}
-							} // endif if( *status == git_wc_status_normal )
-						}// endif if( g_HeadFileMap[gitdir].size() > 0 || g_HeadFileMap[gitdir].m_Head.IsEmpty() )
+							*status = git_wc_status_deleted;
+							if(callback)
+								callback(gitdir+_T("/")+filename, *status, false,pData);
+						}
 					}
 				}
+			}
 
-			}// end inversion control
-			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);
-		}//endi if status
-
-		if(*oldpath!=0)
-			::SetCurrentDirectory(oldpath);
+		}/*End of if status*/
 	}catch(...)
 	{
-		if(status)
-			*status = git_wc_status_none;
+		return -1;
 	}
-
 	return 0;
 
 }
@@ -1363,12 +1393,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 						if(treeptr->ReadTree())
 						{
-							//try again
-							g_Git.SetCurrentDir(gitdir);
-							::GetCurrentDirectory(MAX_PATH,oldpath);
-							::SetCurrentDirectory(g_Git.m_CurrentDir);
-							git_init();
-							treeptr->ReadTree();
+							g_HeadFileMap.SafeSet(gitdir, treeptr);
 						}
 					}
 					//Check Add
@@ -1485,9 +1510,6 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);
 		}
-
-		if(*oldpath!=0)
-			::SetCurrentDirectory(oldpath);
 
 	}catch(...)
 	{

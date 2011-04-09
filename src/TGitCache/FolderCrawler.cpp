@@ -110,7 +110,7 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 		m_foldersToUpdate.push_back(path);
 		m_foldersToUpdate.back().SetCustomData(GetTickCount()+10);
 
-		ATLASSERT(path.IsDirectory() || !path.Exists());
+		//ATLASSERT(path.IsDirectory() || !path.Exists());
 		// set this flag while we are sync'ed
 		// with the worker thread
 		m_bItemsAddedSinceLastCrawl = true;

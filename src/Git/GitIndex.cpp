@@ -1180,8 +1180,12 @@ bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
 
 	str.Replace(_T('\\'),_T('/'));
 
+	if(str.GetLength()>0)
+		if(str[str.GetLength()-1] == _T('/'))
+			str=str.Left(str.GetLength()-1);
+
 	int ret;
-	ret = CheckIgnore(path, projectroot);
+	ret = CheckIgnore(str, projectroot);
 	while(ret < 0)
 	{
 		int start=str.ReverseFind(_T('/'));
@@ -1274,21 +1278,22 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 	return -1;
 }
 
-int CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
+bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 {
 	SHARED_TREE_PTR ptr;
 	ptr = this->SafeGet(gitdir);
 
 	if( ptr.get())
 	{
-		ptr->CheckHeadUpdate();			
+		return ptr->CheckHeadUpdate();			
 	}
 	else
 	{
 		SHARED_TREE_PTR ptr1(new CGitHeadFileList);
 		this->SafeSet(gitdir, ptr1);
+		return true;
 	}
-	return 0;
+	return false;
 }
 
 int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)

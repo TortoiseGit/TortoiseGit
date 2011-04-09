@@ -412,10 +412,12 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	UNREFERENCED_PARAMETER(pStatus);
 	git_wc_status_kind status;
 
-	if(path)
+	if(!path->IsDirectory())
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false,true, GetStatusCallback,this);
 	else
+	{
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
+	}
 
 	m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
