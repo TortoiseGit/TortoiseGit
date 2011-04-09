@@ -1150,19 +1150,9 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			for(it = filelist.begin(); it<filelist.end();it++)
 			{
 				casepath=onepath = path;
-				if(onepath.IsEmpty())
-				{
-					onepath += it->m_FileName;
-					casepath += it->m_CaseFileName;
-				}
-				else
-				{
-					onepath += _T('/');
-					casepath += _T('/');
-					onepath += it->m_FileName;
-					casepath += it->m_CaseFileName;
-				}
-			
+				onepath += it->m_FileName;
+				casepath += it->m_CaseFileName;
+						
 				int pos = SearchInSortVector(*indexptr, onepath.GetBuffer(), onepath.GetLength());
 				int posintree = SearchInSortVector(*treeptr, onepath.GetBuffer(), onepath.GetLength());
 
@@ -1177,7 +1167,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						{ /* That is git submodule */
 							*status = git_wc_status_unknown;
 							if(callback)
-								callback(gitdir+_T("/")+onepath, *status, false,pData);
+								callback(gitdir+_T("/")+casepath, *status, false,pData);
 							continue;
 						}
 					}
@@ -1186,7 +1176,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					{
 						*status = git_wc_status_unversioned;
 						if(callback)
-							callback(gitdir+_T("/")+onepath, *status, false,pData);
+							callback(gitdir+_T("/")+casepath, *status, false,pData);
 						continue;
 					}
 
@@ -1199,19 +1189,19 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						*status = git_wc_status_unversioned;
 				
 					if(callback)
-						callback(gitdir+_T("/")+onepath, *status, false,pData);					
+						callback(gitdir+_T("/")+casepath, *status, false,pData);					
 				
 				}else if(pos <0 && posintree>=0) /* check if file delete in index */
 				{
 					*status = git_wc_status_deleted;
 					if(callback)
-						callback(gitdir+_T("/")+onepath, *status, false,pData);
+						callback(gitdir+_T("/")+casepath, *status, false,pData);
 
 				}else if(pos >=0 && posintree <0) /* Check if file added */
 				{
 					*status = git_wc_status_added;
 					if(callback)
-						callback(gitdir+_T("/")+onepath, *status, false,pData);
+						callback(gitdir+_T("/")+casepath, *status, false,pData);
 				}else
 				{
 					if(onepath.GetLength() ==0)
@@ -1221,7 +1211,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					{
 						*status = git_wc_status_normal;
 						if(callback)
-							callback(gitdir+_T("/")+onepath, *status, false,pData);
+							callback(gitdir+_T("/")+casepath, *status, false,pData);
 					}
 					else
 					{
