@@ -487,7 +487,7 @@ CCachedDirectory::GetCacheKey(const CTGitPath& path)
 {
 	// All we put into the cache as a key is just the end portion of the pathname
 	// There's no point storing the path of the containing directory for every item
-	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength());
+	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).MakeLower();
 }
 
 CString 
@@ -507,11 +507,14 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 
 	CTGitPath gitPath;
 
-
+	
 //	if(status->entry)
 	{
 		//if ((status->text_status != git_wc_status_none)&&(status->text_status != git_wc_status_missing))
-		gitPath.SetFromUnknown(path);
+		CString lowcasepath = path;
+		lowcasepath.MakeLower();
+		gitPath.SetFromUnknown(lowcasepath);
+
 		//status.SetFromGit(path, pFile->nFlags & WGFF_Directory);
 		/*else
 			svnPath.SetFromGit(path);*/

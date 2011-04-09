@@ -932,7 +932,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 			if( st == git_wc_status_normal && IsFull)
 			{
 				{
-					int ret=g_HeadFileMap.CheckHeadUpdate(gitdir);
+					g_HeadFileMap.CheckHeadUpdate(gitdir);
 					bool b=false;
 
 					SHARED_TREE_PTR treeptr;
@@ -941,7 +941,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 
 					b = treeptr->m_Head != treeptr->m_TreeHash;
 					
-					if(ret || b)
+					if(b)
 					{
 						treeptr->ReadHeadHash(gitdir);
 						
@@ -1226,7 +1226,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					else
 					{
 						git_wc_status_kind filestatus;
-						GetFileStatus(gitdir,onepath, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
+						GetFileStatus(gitdir,casepath, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
 					}
 				}
 					
