@@ -460,7 +460,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		CCachedDirectory * cachedDir = GetDirectoryCacheEntry(dirpath);
 		if (cachedDir != NULL)
 		{
-			ATLTRACE(_T("GetStatusForMember %d\n"), bFetch);
+			//ATLTRACE(_T("GetStatusForMember %d\n"), bFetch);
 			m_mostRecentStatus = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
 			return m_mostRecentStatus;
 		}

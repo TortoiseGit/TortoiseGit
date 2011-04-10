@@ -239,6 +239,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 					}
 				}
 			}
+		}else
+		{
+			//All file ignored if under ignore directory
+			if( m_currentFullStatus == git_wc_status_ignored)
+				return CStatusCacheEntry(git_wc_status_ignored);
 		}
 
 		CGitStatusCache::Instance().AddFolderForCrawling(path);
@@ -351,8 +356,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	CString sProjectRoot;
 	const BOOL bIsVersionedPath = path.HasAdminDir(&sProjectRoot);
 
-	ATLTRACE(_T("%d GetStatusForMember for %s\n"),bFetch, path.GetWinPath());
-
 	//If is not version control path
 	if( !bIsVersionedPath)
 	{
@@ -388,6 +391,8 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 		path->HasAdminDir(&sProjectRoot);
 	else
 		m_directoryPath.HasAdminDir(&sProjectRoot);	
+
+	ATLTRACE(_T("EnumFiles %s\n"), path->GetWinPath()); 
 
 	ATLASSERT( !m_directoryPath.IsEmpty() );
 
@@ -451,31 +456,42 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 	}
 	else
 	{
-		if(!(this->m_directoryPath == path.GetContainingDirectory()))
-		{
-			ATLTRACE(_T("parent path miss\n"));
-		}
+		CCachedDirectory * childDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path.GetContainingDirectory());
+		bool bNotified = false;
+
+		if(!childDir)
+			return ;
+
 		CString cachekey = GetCacheKey(path);
-		CacheEntryMap::iterator entry_it = m_entryCache.lower_bound(cachekey);
-		if (entry_it != m_entryCache.end() && entry_it->first == cachekey)
+		CacheEntryMap::iterator entry_it = childDir->m_entryCache.lower_bound(cachekey);
+		if (entry_it != childDir->m_entryCache.end() && entry_it->first == cachekey)
 		{
 			if (pGitStatus)
 			{
 				if (entry_it->second.GetEffectiveStatus() > git_wc_status_none &&
-					entry_it->second.GetEffectiveStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
+					entry_it->second.GetEffectiveStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status)
+				)				
 				{
-					CGitStatusCache::Instance().UpdateShell(path);
-					ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+					bNotified =true;
 				}
 			}
+			
 		}
 		else
 		{
-			entry_it = m_entryCache.insert(entry_it, std::make_pair(cachekey, CStatusCacheEntry()));
+			entry_it = childDir->m_entryCache.insert(entry_it, std::make_pair(cachekey, CStatusCacheEntry()));
+			bNotified = true;		
+			
 		}
 		entry_it->second = CStatusCacheEntry(pGitStatus, path.GetLastWriteTime(), path.IsReadOnly(), validuntil);
 		// TEMP(?): git status doesn't not have "entry" that contains node type, so manually set as file
 		entry_it->second.SetKind(git_node_file);
+
+		if(bNotified)
+		{
+			CGitStatusCache::Instance().UpdateShell(path);
+			ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+		}
 
 		ATLTRACE(_T("Path Entry Add %s %s %s %d\n"), path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
 	}
