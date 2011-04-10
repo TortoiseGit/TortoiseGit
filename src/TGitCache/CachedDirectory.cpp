@@ -565,7 +565,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					// So ask this dir about its recursive status
 					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
 					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[gitPath] = st;
+					//pThis->m_childDirectories[gitPath] = st;
 					ATLTRACE(_T("call 1 Update dir %s %d\n"), gitPath.GetWinPath(), st);
 				}
 				else
@@ -576,7 +576,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					// means the cache will be updated soon.
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
 				
-					pThis->m_childDirectories[gitPath] = s;
+					//pThis->m_childDirectories[gitPath] = s;
 					ATLTRACE(_T("call 2 Update dir %s %d\n"), gitPath.GetWinPath(), s);
 				}
 			}
