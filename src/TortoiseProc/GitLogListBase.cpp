@@ -174,6 +174,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 int CGitLogListBase::AsyncDiffThread()
 {
+	m_AsyncThreadExited = false;
 	while(!m_AsyncThreadExit)
 	{
 		::WaitForSingleObject(m_AsyncDiffEvent, INFINITE);
@@ -248,6 +249,7 @@ int CGitLogListBase::AsyncDiffThread()
 			}
 		}
 	}
+	m_AsyncThreadExited = true;
 	return 0;
 }
 void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
