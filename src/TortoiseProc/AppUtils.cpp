@@ -2261,7 +2261,7 @@ bool CAppUtils::Push(bool autoClose)
 
 		if(dlg.m_bPack)
 			arg +=_T("--thin ");
-		if(dlg.m_bTags)
+		if(dlg.m_bTags && !dlg.m_bPushAllBranches)
 			arg +=_T("--tags ");
 		if(dlg.m_bForce)
 			arg +=_T("--force ");
@@ -2271,14 +2271,22 @@ bool CAppUtils::Push(bool autoClose)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			arg += _T("--progress ");
 
-
-		cmd.Format(_T("git.exe push %s \"%s\" %s"),
-				arg,
-				dlg.m_URL,
-				dlg.m_BranchSourceName);
-		if (!dlg.m_BranchRemoteName.IsEmpty())
+		if (dlg.m_bPushAllBranches)
 		{
-			cmd += _T(":") + dlg.m_BranchRemoteName;
+			cmd.Format(_T("git.exe push --all %s \"%s\""),
+					arg,
+					dlg.m_URL);
+		}
+		else
+		{
+			cmd.Format(_T("git.exe push %s \"%s\" %s"),
+					arg,
+					dlg.m_URL,
+					dlg.m_BranchSourceName);
+			if (!dlg.m_BranchRemoteName.IsEmpty())
+			{
+				cmd += _T(":") + dlg.m_BranchRemoteName;
+			}
 		}
 
 		CProgressDlg progress;

@@ -909,6 +909,7 @@
 #define IDC_UNVERSIONEDITEMS            1481
 #define IDC_CHECK_NOFF                  1481
 #define IDC_SENDMAIL_COMBINE            1481
+#define IDC_PUSHALL                     1481
 #define IDC_CACHEDROPMAXSIZE            1482
 #define IDC_SIGN_OFF                    1482
 #define IDC_SIGNOFF                     1482

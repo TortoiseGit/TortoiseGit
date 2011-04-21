@@ -13,6 +13,7 @@
  * Fixed issue #745: Added checkbox to commit dialog to disable autoselection of submodules
  * Show status on taskbar button on Windows 7
  * Allow to add a "Signed-Off-By" line to patches on applying
+ * Fixed issue #781: Allow to push all branches at once
 
 == Bug Fix ==
  * Fixed tab indices (activation order)

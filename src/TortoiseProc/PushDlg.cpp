@@ -36,6 +36,7 @@ IMPLEMENT_DYNAMIC(CPushDlg, CResizableStandAloneDialog)
 
 CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CPushDlg::IDD, pParent)
+	, m_bPushAllBranches(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
@@ -52,21 +53,21 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REMOTE, this->m_Remote);
 	DDX_Control(pDX, IDC_URL, this->m_RemoteURL);
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
+	DDX_Check(pDX,IDC_PUSHALL,this->m_bPushAllBranches);
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
 	DDX_Check(pDX,IDC_TAGS,this->m_bTags);
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
-
 }
-
 
 BEGIN_MESSAGE_MAP(CPushDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_RD_REMOTE, &CPushDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_RD_URL, &CPushDlg::OnBnClickedRd)
 	ON_CBN_SELCHANGE(IDC_BRANCH_SOURCE, &CPushDlg::OnCbnSelchangeBranchSource)
 	ON_BN_CLICKED(IDOK, &CPushDlg::OnBnClickedOk)
-    ON_BN_CLICKED(IDC_REMOTE_MANAGE, &CPushDlg::OnBnClickedRemoteManage)
+	ON_BN_CLICKED(IDC_REMOTE_MANAGE, &CPushDlg::OnBnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_DEST_BRANCH, &CPushDlg::OnBnClickedButtonBrowseDestBranch)
+	ON_BN_CLICKED(IDC_PUSHALL, &CPushDlg::OnBnClickedPushall)
 END_MESSAGE_MAP()
 
 BOOL CPushDlg::OnInitDialog()
@@ -79,6 +80,7 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_STATIC_REMOTE, TOP_RIGHT);
 	AddAnchor(IDC_STATIC_SOURCE, TOP_LEFT);
 
+	AddAnchor(IDC_PUSHALL, TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_REMOTE, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_BROWSE_DEST_BRANCH, TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_SOURCE, TOP_LEFT);
@@ -242,19 +244,21 @@ void CPushDlg::OnBnClickedOk()
 		m_URL=m_RemoteURL.GetString();
 	}
 
-	this->m_BranchRemoteName=m_BranchRemote.GetString().Trim();
-	this->m_BranchSourceName=m_BranchSource.GetString();
-
-	if(!g_Git.IsBranchNameValid(this->m_BranchRemoteName))
+	if (!m_bPushAllBranches)
 	{
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
-		return;
-	}
+		this->m_BranchRemoteName=m_BranchRemote.GetString().Trim();
+		this->m_BranchSourceName=m_BranchSource.GetString();
 
-	this->m_RemoteURL.SaveHistory();
-	this->m_BranchRemote.SaveHistory();
-	
-	m_RemoteReg = m_Remote.GetString();
+		if(!g_Git.IsBranchNameValid(this->m_BranchRemoteName))
+		{
+			CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+			return;
+		}
+
+		this->m_RemoteURL.SaveHistory();
+		this->m_BranchRemote.SaveHistory();
+		m_RemoteReg = m_Remote.GetString();
+	}
 
 	this->m_regAutoLoad = m_bAutoLoad ;
 
@@ -312,4 +316,19 @@ BOOL CPushDlg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CPushDlg::OnBnClickedPushall()
+{
+	this->UpdateData();
+	this->GetDlgItem(IDC_BRANCH_REMOTE)->EnableWindow(!m_bPushAllBranches);
+	this->GetDlgItem(IDC_BRANCH_SOURCE)->EnableWindow(!m_bPushAllBranches);
+	this->GetDlgItem(IDC_BUTTON_BROWSE_SOURCE_BRANCH)->EnableWindow(!m_bPushAllBranches);
+	this->GetDlgItem(IDC_BUTTON_BROWSE_DEST_BRANCH)->EnableWindow(!m_bPushAllBranches);
+	this->GetDlgItem(IDC_TAGS)->EnableWindow(!m_bPushAllBranches);
+	if (m_bTags && m_bPushAllBranches)
+	{
+		m_bTags = FALSE;
+		UpdateData(FALSE);
+	}
 }

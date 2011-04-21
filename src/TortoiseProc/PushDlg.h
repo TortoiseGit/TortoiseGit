@@ -51,6 +51,7 @@ public:
 	BOOL			m_bForce;
 	BOOL			m_bPack;
 	BOOL			m_bAutoLoad;
+	BOOL			m_bPushAllBranches;
 
 protected:
 	CRegDWORD		m_regAutoLoad;
@@ -67,6 +68,7 @@ protected:
 	afx_msg void OnBnClickedRemoteManage();
 	afx_msg void OnBnClickedButtonBrowseSourceBranch();
 	afx_msg void OnBnClickedButtonBrowseDestBranch();
+	afx_msg void OnBnClickedPushall();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void Refresh();
 };
