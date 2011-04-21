@@ -776,6 +776,8 @@ int CRebaseDlg::FinishRebase()
 	}
 	AddLogString(out);
 
+	m_CtrlStatusText.SetWindowText(_T("Finished rebasing."));
+
 	return 0;
 }
 void CRebaseDlg::OnBnClickedContinue()
