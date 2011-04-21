@@ -2230,7 +2230,6 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 bool CAppUtils::Push(bool autoClose)
 {
 	CPushDlg dlg;
-//	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
 	CTGitPathList list;
@@ -2249,8 +2248,6 @@ bool CAppUtils::Push(bool autoClose)
 
 	if(dlg.DoModal()==IDOK)
 	{
-//		CString dir=dlg.m_Directory;
-//		CString url=dlg.m_URL;
 		CString cmd;
 		CString arg;
 
