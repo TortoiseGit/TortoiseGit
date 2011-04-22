@@ -8,7 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #ifndef APSTUDIO_INVOKED
-#include "targetver.h"
+#include "..\targetver.h"
 #endif
 #include "afxres.h"
 #include "..\TortoiseGitBlame\MenuEncode.h"
