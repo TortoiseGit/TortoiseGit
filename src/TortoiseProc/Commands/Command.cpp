@@ -290,13 +290,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		}
 	}
 
-
-#ifdef DEBUG		
-	if (CRegDWORD(CString(_T("Software\\TortoiseGit\\TortoiseProc\\Debug")), 0) == 1) {
-		CMessageBox::Show(NULL, _T("Attach debugger now."), _T("TortoiseGit"), MB_OK);
-	}
-#endif
-
 	// CBrowseRefsDlg dialog
 	switch (command)
 	{
