@@ -68,7 +68,6 @@ CTortoiseProcApp::CTortoiseProcApp()
 {
 	EnableHtmlHelp();
 //	int argc = 0;
-//	g_version=_T("abc");
 //	const char* const * argv = NULL;
 //	apr_app_initialize(&argc, &argv, NULL);
 //	svn_dso_initialize2();
@@ -78,16 +77,11 @@ CTortoiseProcApp::CTortoiseProcApp()
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
-	//CGit git;
-	//git.GetUserName();
 
-	
 }
 
 CTortoiseProcApp::~CTortoiseProcApp()
 {
-//	sasl_done();
-
 	// global application exit cleanup (after all SSL activity is shutdown)
 	// we have to clean up SSL ourselves, since neon doesn't do that (can't do it)
 	// because those cleanup functions work globally per process.
@@ -115,7 +109,7 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 	//CTGitPath path;
 	//path.SetFromGit(_T("src/gpl.txt"));
 	//map.GetFileStatus(_T("D:\\TortoiseGit"),&path, &status);
-	return g_Git.CheckMsysGitDir();	
+	return g_Git.CheckMsysGitDir();
 }
 CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
 
@@ -241,20 +235,20 @@ BOOL CTortoiseProcApp::InitInstance()
 			langId = 0;
 	} while (langId);
 	setlocale(LC_ALL, "");
-	
+
 	// InitCommonControls() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
-	
-    INITCOMMONCONTROLSEX used = {
-        sizeof(INITCOMMONCONTROLSEX),
+
+	INITCOMMONCONTROLSEX used = {
+		sizeof(INITCOMMONCONTROLSEX),
 			ICC_ANIMATE_CLASS | ICC_BAR_CLASSES | ICC_COOL_CLASSES | ICC_DATE_CLASSES |
 			ICC_HOTKEY_CLASS | ICC_INTERNET_CLASSES | ICC_LISTVIEW_CLASSES |
 			ICC_NATIVEFNTCTL_CLASS | ICC_PAGESCROLLER_CLASS | ICC_PROGRESS_CLASS |
 			ICC_TAB_CLASSES | ICC_TREEVIEW_CLASSES | ICC_UPDOWN_CLASS |
 			ICC_USEREX_CLASSES | ICC_WIN95_CLASSES
-    };
-    InitCommonControlsEx(&used);
+	};
+	InitCommonControlsEx(&used);
 	AfxOleInit();
 	AfxEnableControlContainer();
 	AfxInitRichEdit2();
@@ -303,7 +297,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
 
 	}
-	
+
 	hWndExplorer = NULL;
 	CString sVal = parser.GetVal(_T("hwnd"));
 	if (!sVal.IsEmpty())
@@ -315,7 +309,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		hWndExplorer = NULL;
 	}
-	
+
 	// Subversion sometimes writes temp files to the current directory!
 	// Since TSVN doesn't need a specific CWD anyway, we just set it
 	// to the users temp folder: that way, Subversion is guaranteed to
@@ -334,7 +328,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		TCHAR pathbuf[MAX_PATH];
 		GetTempPath(MAX_PATH, pathbuf);
-		SetCurrentDirectory(pathbuf);		
+		SetCurrentDirectory(pathbuf);
 	}
 
 	// check for newer versions
@@ -382,7 +376,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	// Note that SASL doesn't have to be initialized yet for this to work
 //	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
-	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));	
+	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 	{
 #if 0
 		CString err = Git::CheckConfigFile();
@@ -411,7 +405,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (cmd)
 	{
 		cmd->SetExplorerHwnd(hWndExplorer);
-		
+
 		if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
 		{
 			int i=0;
@@ -425,7 +419,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
-		
+
 		CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
 
 		retSuccess = cmd->Execute();
@@ -469,17 +463,14 @@ BOOL CTortoiseProcApp::InitInstance()
 						::CloseHandle(hFile);
 				}
 			}
-		}	
-		delete[] path;		
+		}
+		delete[] path;
 	}
-
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	// application, rather than start the application's message pump.
 	return FALSE;
 }
-
-
 
 void CTortoiseProcApp::CheckUpgrade()
 {
@@ -488,7 +479,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
 	// we're starting the first time with a new version!
-	
+
 	LONG lVersion = 0;
 	int pos = sVersion.Find(',');
 	if (pos > 0)
@@ -498,7 +489,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		pos = sVersion.Find(',', pos+1);
 		lVersion |= (_ttol(sVersion.Mid(pos+1))<<8);
 	}
-	
+
 	CRegDWORD regval = CRegDWORD(_T("Software\\TortoiseGit\\DontConvertBase"), 999);
 	if ((DWORD)regval != 999)
 	{
@@ -517,7 +508,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		// remove the external cache key
 		CRegDWORD(_T("Software\\TortoiseGit\\ExternalCache")).removeValue();
 	}
-#endif	
+#endif
 	if (lVersion <= 0x01020200)
 	{
 		// upgrade to > 1.2.3 means the doc diff scripts changed from vbs to js
@@ -537,7 +528,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	{
 		CRegStdWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
 	}
-	
+
 	// set the custom diff scripts for every user
 	CString scriptsdir = CPathUtils::GetAppParentDirectory();
 	scriptsdir += _T("Diff-Scripts");
@@ -557,7 +548,7 @@ void CTortoiseProcApp::CheckUpgrade()
 		{
 			kind = _T(" //E:javascript");
 		}
-		
+
 		if (filename.Left(5).CompareNoCase(_T("diff-"))==0)
 		{
 			CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\")+ext);
@@ -584,7 +575,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 
 	// set the current version so we don't come here again until the next update!
-	regVersion = _T(STRPRODUCTVER);	
+	regVersion = _T(STRPRODUCTVER);
 }
 
 void CTortoiseProcApp::EnableCrashHandler()
