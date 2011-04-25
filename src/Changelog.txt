@@ -45,6 +45,7 @@
  * Fixed sorting of columns of file lists (e.g. commit dialog).
  * Fixed issue #757: TortoiseGit Blame not working from working dir.
  * TortoiseProc.exe sometimes didn't exit correctly after closing the log dialog
+ * Fixed issue #761: Settings should correctly deal with backslashes (windows path separators) in entered remote URLs
  * Fixed issue #779: Show correct text in taskbar when rebasing finished.
  * TortoiseGitCache
    Partly rewritten to fix various issues.
