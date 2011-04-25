@@ -249,7 +249,7 @@ void CPushDlg::OnBnClickedOk()
 		this->m_BranchRemoteName=m_BranchRemote.GetString().Trim();
 		this->m_BranchSourceName=m_BranchSource.GetString();
 
-		if(!g_Git.IsBranchNameValid(this->m_BranchRemoteName))
+		if(!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
 		{
 			CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
 			return;

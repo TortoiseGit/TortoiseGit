@@ -48,6 +48,7 @@
  * Fixed issue #761: Settings should correctly deal with backslashes (windows path separators) in entered remote URLs
  * Patch Viewer might display no horizontal scrollbar
  * Fixed issue #779: Show correct text in taskbar when rebasing finished.
+ * Pushing required a remote-branch name
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
