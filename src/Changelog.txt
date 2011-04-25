@@ -4,7 +4,7 @@
  * Use fetch-dialog for "Fetch" in BrowseRefs
  * Allow to edit user signingkey in TortoiseGit->Settings->GitConfig
  * Allow to sign tags (requires GPG and a key without passphrase)
- * Allow to enter CC receipients with MAPI
+ * Allow to enter CC recipients with MAPI
  * Do not add Signed-off-by if already included
  * Do not add another empty line if there are already some Reviewed-by or Signed-off-by lines at the end of the commit message on signing.
  * Allow to start push dialog from log
@@ -46,6 +46,7 @@
  * Fixed issue #757: TortoiseGit Blame not working from working dir.
  * TortoiseProc.exe sometimes didn't exit correctly after closing the log dialog
  * Fixed issue #761: Settings should correctly deal with backslashes (windows path separators) in entered remote URLs
+ * Patch Viewer might display no horizontal scrollbar
  * Fixed issue #779: Show correct text in taskbar when rebasing finished.
  * TortoiseGitCache
    Partly rewritten to fix various issues.
