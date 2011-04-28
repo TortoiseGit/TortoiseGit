@@ -49,6 +49,7 @@
  * Patch Viewer might display no horizontal scrollbar
  * Fixed issue #779: Show correct text in taskbar when rebasing finished.
  * Pushing required a remote-branch name
+ * Fixed issue #790: Add minimize button to progress window
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
