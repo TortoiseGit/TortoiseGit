@@ -1212,6 +1212,8 @@ ApplicationDestinations;
 
 EXTERN_C const CLSID CLSID_EnumerableObjectCollection;
 
+EXTERN_C const CLSID CLSID_ShellLibrary;
+
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("2d3468c1-36a7-43b6-ac24-d3f02fd9607a")
@@ -1231,6 +1233,302 @@ LMD_ALLOWUNINDEXABLENETWORKLOCATIONS	= 0x1
 DEFINE_ENUM_FLAG_OPERATORS(LIBRARYMANAGEDIALOGOPTIONS)
     SHSTDAPI SHShowManageLibraryUI(__in IShellItem *psiLibrary, __in HWND hwndOwner, __in_opt LPCWSTR pszTitle, __in_opt LPCWSTR pszInstruction, __in LIBRARYMANAGEDIALOGOPTIONS lmdOptions);
 SHSTDAPI SHResolveLibrary(__in IShellItem *psiLibrary);
+
+#ifndef __IShellLibrary_INTERFACE_DEFINED__
+#define __IShellLibrary_INTERFACE_DEFINED__
+
+/* interface IShellLibrary */
+/* [unique][object][uuid][helpstring] */ 
+
+typedef /* [v1_enum] */ 
+enum LIBRARYFOLDERFILTER
+    {	LFF_FORCEFILESYSTEM	= 1,
+	LFF_STORAGEITEMS	= 2,
+	LFF_ALLITEMS	= 3
+    } 	LIBRARYFOLDERFILTER;
+
+typedef /* [v1_enum] */ 
+enum LIBRARYOPTIONFLAGS
+    {	LOF_DEFAULT	= 0,
+	LOF_PINNEDTONAVPANE	= 0x1,
+	LOF_MASK_ALL	= 0x1
+    } 	LIBRARYOPTIONFLAGS;
+
+DEFINE_ENUM_FLAG_OPERATORS(LIBRARYOPTIONFLAGS)
+typedef /* [v1_enum] */ 
+enum DEFAULTSAVEFOLDERTYPE
+    {	DSFT_DETECT	= 1,
+	DSFT_PRIVATE	= ( DSFT_DETECT + 1 ) ,
+	DSFT_PUBLIC	= ( DSFT_PRIVATE + 1 ) 
+    } 	DEFAULTSAVEFOLDERTYPE;
+
+typedef /* [v1_enum] */ 
+enum LIBRARYSAVEFLAGS
+    {	LSF_FAILIFTHERE	= 0,
+	LSF_OVERRIDEEXISTING	= 0x1,
+	LSF_MAKEUNIQUENAME	= 0x2
+    } 	LIBRARYSAVEFLAGS;
+
+DEFINE_ENUM_FLAG_OPERATORS(LIBRARYSAVEFLAGS)
+
+EXTERN_C const IID IID_IShellLibrary;
+#endif
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("11a66efa-382e-451a-9234-1e0e12ef3085")
+    IShellLibrary : public IUnknown
+    {
+    public:
+        virtual HRESULT STDMETHODCALLTYPE LoadLibraryFromItem( 
+            /* [in] */ __RPC__in_opt IShellItem *psiLibrary,
+            /* [in] */ DWORD grfMode) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE LoadLibraryFromKnownFolder( 
+            /* [in] */ __RPC__in REFKNOWNFOLDERID kfidLibrary,
+            /* [in] */ DWORD grfMode) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE AddFolder( 
+            /* [in] */ __RPC__in_opt IShellItem *psiLocation) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE RemoveFolder( 
+            /* [in] */ __RPC__in_opt IShellItem *psiLocation) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE GetFolders( 
+            /* [in] */ LIBRARYFOLDERFILTER lff,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [iid_is][out] */ __RPC__deref_out_opt void **ppv) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE ResolveFolder( 
+            /* [in] */ __RPC__in_opt IShellItem *psiFolderToResolve,
+            /* [in] */ DWORD dwTimeout,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [iid_is][out] */ __RPC__deref_out_opt void **ppv) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE GetDefaultSaveFolder( 
+            /* [in] */ DEFAULTSAVEFOLDERTYPE dsft,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [iid_is][out] */ __RPC__deref_out_opt void **ppv) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE SetDefaultSaveFolder( 
+            /* [in] */ DEFAULTSAVEFOLDERTYPE dsft,
+            /* [in] */ __RPC__in_opt IShellItem *psi) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE GetOptions( 
+            /* [out] */ __RPC__out LIBRARYOPTIONFLAGS *plofOptions) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE SetOptions( 
+            /* [in] */ LIBRARYOPTIONFLAGS lofMask,
+            /* [in] */ LIBRARYOPTIONFLAGS lofOptions) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE GetFolderType( 
+            /* [out] */ __RPC__out FOLDERTYPEID *pftid) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE SetFolderType( 
+            /* [in] */ __RPC__in REFFOLDERTYPEID ftid) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE GetIcon( 
+            /* [string][out] */ __RPC__deref_out_opt_string LPWSTR *ppszIcon) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE SetIcon( 
+            /* [string][in] */ __RPC__in_string LPCWSTR pszIcon) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE Commit( void) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE Save( 
+            /* [in] */ __RPC__in_opt IShellItem *psiFolderToSaveIn,
+            /* [string][in] */ __RPC__in_string LPCWSTR pszLibraryName,
+            /* [in] */ LIBRARYSAVEFLAGS lsf,
+            /* [out] */ __RPC__deref_out_opt IShellItem **ppsiSavedTo) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE SaveInKnownFolder( 
+            /* [in] */ __RPC__in REFKNOWNFOLDERID kfidToSaveIn,
+            /* [string][in] */ __RPC__in_string LPCWSTR pszLibraryName,
+            /* [in] */ LIBRARYSAVEFLAGS lsf,
+            /* [out] */ __RPC__deref_out_opt IShellItem **ppsiSavedTo) = 0;
+        
+    };
+    
+#else 	/* C style interface */
+
+    typedef struct IShellLibraryVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            __RPC__deref_out  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            __RPC__in IShellLibrary * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            __RPC__in IShellLibrary * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *LoadLibraryFromItem )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in_opt IShellItem *psiLibrary,
+            /* [in] */ DWORD grfMode);
+        
+        HRESULT ( STDMETHODCALLTYPE *LoadLibraryFromKnownFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in REFKNOWNFOLDERID kfidLibrary,
+            /* [in] */ DWORD grfMode);
+        
+        HRESULT ( STDMETHODCALLTYPE *AddFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in_opt IShellItem *psiLocation);
+        
+        HRESULT ( STDMETHODCALLTYPE *RemoveFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in_opt IShellItem *psiLocation);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetFolders )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ LIBRARYFOLDERFILTER lff,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [iid_is][out] */ __RPC__deref_out_opt void **ppv);
+        
+        HRESULT ( STDMETHODCALLTYPE *ResolveFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in_opt IShellItem *psiFolderToResolve,
+            /* [in] */ DWORD dwTimeout,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [iid_is][out] */ __RPC__deref_out_opt void **ppv);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetDefaultSaveFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ DEFAULTSAVEFOLDERTYPE dsft,
+            /* [in] */ __RPC__in REFIID riid,
+            /* [iid_is][out] */ __RPC__deref_out_opt void **ppv);
+        
+        HRESULT ( STDMETHODCALLTYPE *SetDefaultSaveFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ DEFAULTSAVEFOLDERTYPE dsft,
+            /* [in] */ __RPC__in_opt IShellItem *psi);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetOptions )( 
+            __RPC__in IShellLibrary * This,
+            /* [out] */ __RPC__out LIBRARYOPTIONFLAGS *plofOptions);
+        
+        HRESULT ( STDMETHODCALLTYPE *SetOptions )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ LIBRARYOPTIONFLAGS lofMask,
+            /* [in] */ LIBRARYOPTIONFLAGS lofOptions);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetFolderType )( 
+            __RPC__in IShellLibrary * This,
+            /* [out] */ __RPC__out FOLDERTYPEID *pftid);
+        
+        HRESULT ( STDMETHODCALLTYPE *SetFolderType )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in REFFOLDERTYPEID ftid);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetIcon )( 
+            __RPC__in IShellLibrary * This,
+            /* [string][out] */ __RPC__deref_out_opt_string LPWSTR *ppszIcon);
+        
+        HRESULT ( STDMETHODCALLTYPE *SetIcon )( 
+            __RPC__in IShellLibrary * This,
+            /* [string][in] */ __RPC__in_string LPCWSTR pszIcon);
+        
+        HRESULT ( STDMETHODCALLTYPE *Commit )( 
+            __RPC__in IShellLibrary * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *Save )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in_opt IShellItem *psiFolderToSaveIn,
+            /* [string][in] */ __RPC__in_string LPCWSTR pszLibraryName,
+            /* [in] */ LIBRARYSAVEFLAGS lsf,
+            /* [out] */ __RPC__deref_out_opt IShellItem **ppsiSavedTo);
+        
+        HRESULT ( STDMETHODCALLTYPE *SaveInKnownFolder )( 
+            __RPC__in IShellLibrary * This,
+            /* [in] */ __RPC__in REFKNOWNFOLDERID kfidToSaveIn,
+            /* [string][in] */ __RPC__in_string LPCWSTR pszLibraryName,
+            /* [in] */ LIBRARYSAVEFLAGS lsf,
+            /* [out] */ __RPC__deref_out_opt IShellItem **ppsiSavedTo);
+        
+        END_INTERFACE
+    } IShellLibraryVtbl;
+
+    interface IShellLibrary
+    {
+        CONST_VTBL struct IShellLibraryVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define IShellLibrary_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define IShellLibrary_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define IShellLibrary_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define IShellLibrary_LoadLibraryFromItem(This,psiLibrary,grfMode)	\
+    ( (This)->lpVtbl -> LoadLibraryFromItem(This,psiLibrary,grfMode) ) 
+
+#define IShellLibrary_LoadLibraryFromKnownFolder(This,kfidLibrary,grfMode)	\
+    ( (This)->lpVtbl -> LoadLibraryFromKnownFolder(This,kfidLibrary,grfMode) ) 
+
+#define IShellLibrary_AddFolder(This,psiLocation)	\
+    ( (This)->lpVtbl -> AddFolder(This,psiLocation) ) 
+
+#define IShellLibrary_RemoveFolder(This,psiLocation)	\
+    ( (This)->lpVtbl -> RemoveFolder(This,psiLocation) ) 
+
+#define IShellLibrary_GetFolders(This,lff,riid,ppv)	\
+    ( (This)->lpVtbl -> GetFolders(This,lff,riid,ppv) ) 
+
+#define IShellLibrary_ResolveFolder(This,psiFolderToResolve,dwTimeout,riid,ppv)	\
+    ( (This)->lpVtbl -> ResolveFolder(This,psiFolderToResolve,dwTimeout,riid,ppv) ) 
+
+#define IShellLibrary_GetDefaultSaveFolder(This,dsft,riid,ppv)	\
+    ( (This)->lpVtbl -> GetDefaultSaveFolder(This,dsft,riid,ppv) ) 
+
+#define IShellLibrary_SetDefaultSaveFolder(This,dsft,psi)	\
+    ( (This)->lpVtbl -> SetDefaultSaveFolder(This,dsft,psi) ) 
+
+#define IShellLibrary_GetOptions(This,plofOptions)	\
+    ( (This)->lpVtbl -> GetOptions(This,plofOptions) ) 
+
+#define IShellLibrary_SetOptions(This,lofMask,lofOptions)	\
+    ( (This)->lpVtbl -> SetOptions(This,lofMask,lofOptions) ) 
+
+#define IShellLibrary_GetFolderType(This,pftid)	\
+    ( (This)->lpVtbl -> GetFolderType(This,pftid) ) 
+
+#define IShellLibrary_SetFolderType(This,ftid)	\
+    ( (This)->lpVtbl -> SetFolderType(This,ftid) ) 
+
+#define IShellLibrary_GetIcon(This,ppszIcon)	\
+    ( (This)->lpVtbl -> GetIcon(This,ppszIcon) ) 
+
+#define IShellLibrary_SetIcon(This,pszIcon)	\
+    ( (This)->lpVtbl -> SetIcon(This,pszIcon) ) 
+
+#define IShellLibrary_Commit(This)	\
+    ( (This)->lpVtbl -> Commit(This) ) 
+
+#define IShellLibrary_Save(This,psiFolderToSaveIn,pszLibraryName,lsf,ppsiSavedTo)	\
+    ( (This)->lpVtbl -> Save(This,psiFolderToSaveIn,pszLibraryName,lsf,ppsiSavedTo) ) 
+
+#define IShellLibrary_SaveInKnownFolder(This,kfidToSaveIn,pszLibraryName,lsf,ppsiSavedTo)	\
+    ( (This)->lpVtbl -> SaveInKnownFolder(This,kfidToSaveIn,pszLibraryName,lsf,ppsiSavedTo) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
 
 __inline HRESULT SHCreateLibrary(__in REFIID riid, __deref_out void **ppv)
 {
