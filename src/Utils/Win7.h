@@ -1272,7 +1272,7 @@ enum LIBRARYSAVEFLAGS
 DEFINE_ENUM_FLAG_OPERATORS(LIBRARYSAVEFLAGS)
 
 EXTERN_C const IID IID_IShellLibrary;
-#endif
+
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
     
@@ -1529,6 +1529,8 @@ EXTERN_C const IID IID_IShellLibrary;
 
 
 #endif 	/* C style interface */
+
+#endif /*__IShellLibrary_INTERFACE_DEFINED__*/
 
 __inline HRESULT SHCreateLibrary(__in REFIID riid, __deref_out void **ppv)
 {
