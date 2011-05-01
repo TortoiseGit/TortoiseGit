@@ -51,6 +51,7 @@
  * Fixed issue #779: Show correct text in taskbar when rebasing finished.
  * Pushing required a remote-branch name
  * Fixed issue #790: Add minimize button to progress window
+ * Fixed some optical issues in Rebase-Dialog
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
