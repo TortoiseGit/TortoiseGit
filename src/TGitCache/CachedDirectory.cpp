@@ -203,12 +203,16 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 			else
 			{
 				/* cache have outof date, need crawl again*/
-				AutoLocker lock(dirEntry->m_critSec);
+				
+				/*AutoLocker lock(dirEntry->m_critSec);
 				ChildDirStatus::const_iterator it;
 				for(it = dirEntry->m_childDirectories.begin(); it != dirEntry->m_childDirectories.end(); ++it)
 				{
 					CGitStatusCache::Instance().AddFolderForCrawling(it->first);
-				}
+				}*/
+
+				CGitStatusCache::Instance().AddFolderForCrawling(path);
+
 			}			
 		}
 		else
