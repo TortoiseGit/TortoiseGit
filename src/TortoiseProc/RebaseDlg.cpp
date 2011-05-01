@@ -1309,7 +1309,8 @@ int CRebaseDlg::DoRebase()
 			// let user edit last commmit message
 			this->m_RebaseStage = REBASE_SQUASH_EDIT;
 			return -1;
-		}
+		} else if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+			pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 	}
 	
 	return 0;
