@@ -42,7 +42,7 @@ You only have to do this once.
      This will provide you with a cross-compiler and a suitable 
      command shell. On XP64, there will also be a native compiler.
 -# \b Install Microsoft SDK for Windows 7
-   - http://www.microsoft.com/downloads/en/details.aspx?familyid=71DEB800-C591-4F97-A900-BEA146E4FAE1.
+   - http://www.microsoft.com/downloads/en/details.aspx?FamilyID=35aeda01-421d-4ba5-b44b-543dc8c33a20.
    - Open "Microsoft Windows SDK", "Visual Studio Registration", "Integrate Windows SDK with Visual Studio 2008"
      to make sure Visual Studio uses the latest SDK headers and libraries
      (for 2008 SP1 see: http://blogs.msdn.com/b/windowssdk/archive/2008/10/06/how-to-get-the-winsdk-configuration-tool-to-work.aspx).
