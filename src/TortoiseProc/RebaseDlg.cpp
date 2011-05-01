@@ -1341,7 +1341,8 @@ int CRebaseDlg::RebaseThread()
 
 		}else if( m_RebaseStage == REBASE_CONTINUE )
 		{
-			this->GoNext();	
+			this->GoNext();
+			UpdateCurrentStatus();
 			if(IsEnd())
 			{
 				ret = 0;
