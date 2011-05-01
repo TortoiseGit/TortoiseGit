@@ -161,7 +161,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_AsyncThreadExit = FALSE;
 	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
-	m_AysnDiffListLock.Init();
+	m_AsynDiffListLock.Init();
 
 	m_DiffingThread = AfxBeginThread(AsyncThread, this, THREAD_PRIORITY_BELOW_NORMAL);
 	if (m_DiffingThread ==NULL)
@@ -182,10 +182,10 @@ int CGitLogListBase::AsyncDiffThread()
 		GitRev *pRev = NULL;
 		while(!m_AsyncThreadExit && m_AsynDiffList.size() > 0)
 		{
-			m_AysnDiffListLock.Lock();
+			m_AsynDiffListLock.Lock();
 			pRev = m_AsynDiffList.back();
 			m_AsynDiffList.pop_back();
-			m_AysnDiffListLock.Unlock();
+			m_AsynDiffListLock.Unlock();
 
 			if( pRev->m_CommitHash.IsEmpty() )
 			{

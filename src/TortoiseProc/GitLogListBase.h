@@ -388,7 +388,7 @@ protected:
 	int GetHeadIndex();
 
 	std::vector<GitRev*> m_AsynDiffList;
-	CComCriticalSection m_AysnDiffListLock;
+	CComCriticalSection m_AsynDiffListLock;
 	HANDLE	m_AsyncDiffEvent;
 	volatile LONG m_AsyncThreadExit;
 	CWinThread*			m_DiffingThread;
@@ -398,17 +398,17 @@ protected:
 		ULONGLONG offset=((CGitLogListBase*)data)->m_LogCache.GetOffset(rev->m_CommitHash);
 		if(!offset)
 		{
-			((CGitLogListBase*)data)->m_AysnDiffListLock.Lock();
+			((CGitLogListBase*)data)->m_AsynDiffListLock.Lock();
 			((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
-			((CGitLogListBase*)data)->m_AysnDiffListLock.Unlock();
+			((CGitLogListBase*)data)->m_AsynDiffListLock.Unlock();
 			::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
 		}else
 		{
 			if(((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev,offset))
 			{
-				((CGitLogListBase*)data)->m_AysnDiffListLock.Lock();
+				((CGitLogListBase*)data)->m_AsynDiffListLock.Lock();
 				((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
-				((CGitLogListBase*)data)->m_AysnDiffListLock.Unlock();
+				((CGitLogListBase*)data)->m_AsynDiffListLock.Unlock();
 				::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
 			}
 			InterlockedExchange(&rev->m_IsDiffFiles, TRUE);
