@@ -1150,6 +1150,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			for(it = filelist.begin(); it<filelist.end();it++)
 			{
 				casepath=onepath = path;
+				onepath.MakeLower();
 				onepath += it->m_FileName;
 				casepath += it->m_CaseFileName;
 						
@@ -1229,8 +1230,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			/* Check deleted file in system */
 			int start=0, end=0;
 			int pos=SearchInSortVector(*indexptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
-			GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos);
 			
+			if(pos>=0 && GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos))			
 			{
 				CGitIndexList::iterator it;
 				CString oldstring;
@@ -1242,7 +1243,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					if(index<0)
 						index = (*it).m_FileName.GetLength();
 
-					CString filename = (*it).m_FileName.Mid(start, index);
+					CString filename = (*it).m_FileName.Mid(start, index-start);
 					if(oldstring != filename)
 					{
 						oldstring = filename;
@@ -1257,8 +1258,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			}
 
 			start = end =0;
-
-			if(GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos) == 0)
+			pos=SearchInSortVector(*treeptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
+			if(pos>=0 && GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos) == 0)
 			{
 				CGitHeadFileList::iterator it;
 				CString oldstring;
@@ -1270,7 +1271,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					if(index<0)
 						index = (*it).m_FileName.GetLength();
 
-					CString filename = (*it).m_FileName.Mid(start, index);
+					CString filename = (*it).m_FileName.Mid(start, index-start);
 					if(oldstring != filename)
 					{
 						oldstring = filename;
