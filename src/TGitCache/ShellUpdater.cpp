@@ -73,9 +73,16 @@ void CShellUpdater::Initialise()
 
 void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 {
-	ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
 	{
 		AutoLocker lock(m_critSec);
+		for(int i=0;i<m_pathsToUpdate.size();i++)
+		{
+			if(m_pathsToUpdate[i] == path)
+				return;
+		}
+
+		ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
+
 		m_pathsToUpdate.push_back(path);
 		
 		// set this flag while we are synced 
@@ -152,7 +159,9 @@ void CShellUpdater::WorkerThread()
 				// the folder notification. Since we only know for sure that the subversion admin
 				// dir is present, we send a notification for that folder.
 				CString admindir = workingPath.GetWinPathString() + _T("\\") + g_GitAdminDir.GetAdminDirName();
-				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, NULL);
+				if(::PathFileExists(admindir))
+					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, (LPCTSTR)admindir, NULL);
+
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), NULL);
 				// Sending an UPDATEDIR notification somehow overwrites/deletes the UPDATEITEM message. And without
 				// that message, the folder overlays in the current view don't get updated without hitting F5.
