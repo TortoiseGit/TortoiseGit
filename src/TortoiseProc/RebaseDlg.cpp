@@ -189,7 +189,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
 
-	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
+	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Revision Files"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
 	m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	AddRebaseAnchor();
@@ -896,6 +896,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(CheckRebaseCondition())
 			return ;
 		m_RebaseStage = REBASE_START;
+		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, _T("Conflict Files"));
 	}
 
 	if( m_RebaseStage == REBASE_FINISH )
