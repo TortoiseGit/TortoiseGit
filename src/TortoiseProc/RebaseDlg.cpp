@@ -85,6 +85,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -1667,4 +1668,51 @@ LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
+}
+
+void CRebaseDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+	if(m_CommitList.m_bNoDispUpdates)
+		return;
+	if (pNMLV->iItem >= 0)
+	{
+		this->m_CommitList.m_nSearchIndex = pNMLV->iItem;
+		if (pNMLV->iSubItem != 0)
+			return;
+		if ((pNMLV->iItem == m_CommitList.m_arShownList.GetCount()))
+		{
+			// remove the selected state
+			if (pNMLV->uChanged & LVIF_STATE)
+			{
+				m_CommitList.SetItemState(pNMLV->iItem, 0, LVIS_SELECTED);
+				FillLogMessageCtrl();
+			}
+			return;
+		}
+		if (pNMLV->uChanged & LVIF_STATE)
+		{
+			FillLogMessageCtrl();
+		}
+	}
+	else
+	{
+		FillLogMessageCtrl();
+	}
+}
+
+void CRebaseDlg::FillLogMessageCtrl()
+{
+	int selCount = m_CommitList.GetSelectedCount();
+	if (selCount == 1 && (m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage == CHOOSE_COMMIT_PICK_MODE))
+	{
+		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
+		int selIndex = m_CommitList.GetNextSelectedItem(pos);
+		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_CommitList.m_arShownList.SafeGetAt(selIndex));
+		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
+		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
+		m_FileListCtrl.Show(SVNSLC_SHOWVERSIONED);
+		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + _T("\n") + pLogEntry->GetBody());
+	}
 }
