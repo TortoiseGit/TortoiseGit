@@ -603,7 +603,41 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	{
 		switch (pMsg->wParam)
 		{
-
+		case ' ':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.ShiftSelectedAction();
+				return TRUE;
+			}
+			break;
+		case 'P':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
+				return TRUE;
+			}
+			break;
+		case 'S':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
+				return TRUE;
+			}
+			break;
+		case 'Q':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
+				return TRUE;
+			}
+			break;
+		case 'E':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
+				return TRUE;
+			}
+			break;
 		case VK_F5:
 			{
 				Refresh();
@@ -632,6 +666,17 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
+
+bool CRebaseDlg::LogListHasFocus(HWND hwnd)
+{
+	TCHAR buff[128];
+	::GetClassName(hwnd, buff, 128);
+
+	if(_tcsnicmp(buff, _T("SysListView32"), 128) == 0)
+		return true;
+	return false;
+}
+
 int CRebaseDlg::CheckRebaseCondition()
 {
 	this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);

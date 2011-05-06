@@ -86,6 +86,7 @@ protected:
 	CRect m_DlgOrigRect;
 	CRect m_CommitListOrigRect;
 	BOOL PreTranslateMessage(MSG* pMsg);
+	bool LogListHasFocus(HWND hwnd);
 
 	CSciEdit m_wndOutputRebase;
 	void SetContinueButtonText();

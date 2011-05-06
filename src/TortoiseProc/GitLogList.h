@@ -25,8 +25,11 @@ class CGitLogList : public CGitLogListBase
 {
 	DECLARE_DYNAMIC(CGitLogList)
 
-protected:
+public:
+	void ShiftSelectedAction();
 	void SetSelectedAction(int action);
+
+protected:
 	int	 CherryPickFrom(CString from, CString to);
 	int  RevertSelectedCommits();
 	void CloseHandles();
