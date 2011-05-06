@@ -168,6 +168,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		return FALSE;
 	}
 	m_LogMessageCtrl.Init(0);
+	m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
@@ -1468,16 +1469,19 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
+		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		break;
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
+		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
+		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		break;
@@ -1713,6 +1717,8 @@ void CRebaseDlg::FillLogMessageCtrl()
 		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
 		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
 		m_FileListCtrl.Show(SVNSLC_SHOWVERSIONED);
+		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + _T("\n") + pLogEntry->GetBody());
+		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 	}
 }
