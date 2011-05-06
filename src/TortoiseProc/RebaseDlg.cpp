@@ -638,6 +638,17 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 				return TRUE;
 			}
 			break;
+		case 'A':
+			if(LogListHasFocus(pMsg->hwnd) && GetAsyncKeyState(VK_CONTROL) & 0x8000)
+			{
+				// select all entries
+				for (int i = 0; i < m_CommitList.GetItemCount(); ++i)
+				{
+					m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				}
+				return TRUE;
+			}
+			break;
 		case VK_F5:
 			{
 				Refresh();
