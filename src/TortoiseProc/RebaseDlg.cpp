@@ -895,6 +895,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(CheckRebaseCondition())
 			return ;
 		m_RebaseStage = REBASE_START;
+		m_FileListCtrl.Clear();
 		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, _T("Conflict Files"));
 		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	}
