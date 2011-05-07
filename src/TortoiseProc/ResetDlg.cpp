@@ -66,6 +66,7 @@ BOOL CResetDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDH_HELP,BOTTOM_RIGHT);
 
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
 
