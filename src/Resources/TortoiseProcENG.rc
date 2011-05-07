@@ -1903,14 +1903,14 @@ BEGIN
     PUSHBUTTON      "Restore Default",IDC_RESTORE,211,196,82,14
 END
 
-IDD_RESET DIALOGEX 0, 0, 261, 113
+IDD_RESET DIALOGEX 0, 0, 261, 132
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Reset"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,95,92,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,149,92,50,14
-    PUSHBUTTON      "Help",IDHELP,204,92,50,14
+    DEFPUSHBUTTON   "OK",IDOK,95,111,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,149,111,50,14
+    PUSHBUTTON      "Help",IDHELP,204,111,50,14
     GROUPBOX        "Reset Type",IDC_GROUP_RESET_TYPE,7,25,247,60
     CONTROL         "Soft: Leave working tree and index untouched",IDC_RADIO_RESET_SOFT,
                     "Button",BS_AUTORADIOBUTTON,15,39,165,10
@@ -1919,6 +1919,7 @@ BEGIN
     CONTROL         "Hard: Reset working tree and index (discard all local changes)",IDC_RADIO_RESET_HARD,
                     "Button",BS_AUTORADIOBUTTON,15,65,217,10
     LTEXT           "Reset active branch",IDC_RESET_BRANCH_NAME,8,6,244,18
+    PUSHBUTTON      "Show modified files in working copy",IDC_SHOW_MODIFIED_FILES,7,90,247,14
 END
 
 IDD_REBASE DIALOGEX 0, 0, 380, 237
@@ -3063,7 +3064,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 254
         TOPMARGIN, 7
-        BOTTOMMARGIN, 106
+        BOTTOMMARGIN, 125
     END
 
     IDD_REBASE, DIALOG

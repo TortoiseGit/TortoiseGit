@@ -23,7 +23,7 @@
 #include "TortoiseProc.h"
 #include "ResetDlg.h"
 #include "Git.h"
-
+#include "FileDiffDlg.h"
 
 // CResetDlg dialog
 
@@ -48,6 +48,7 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CResetDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, &CResetDlg::OnBnClickedHelp)
+	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
 END_MESSAGE_MAP()
 
 
@@ -67,6 +68,7 @@ BOOL CResetDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDH_HELP,BOTTOM_RIGHT);
+	AddAnchor(IDC_SHOW_MODIFIED_FILES, TOP_LEFT,TOP_RIGHT);
 
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
 
@@ -82,4 +84,14 @@ void CResetDlg::OnOK()
 void CResetDlg::OnBnClickedHelp()
 {
 	OnHelp();
+}
+
+void CResetDlg::OnBnClickedShowModifiedFiles()
+{
+		CFileDiffDlg dlg;
+
+		dlg.m_strRev1 = _T("0000000000000000000000000000000000000000");
+		dlg.m_strRev2 = _T("HEAD");
+
+		dlg.DoModal();
 }

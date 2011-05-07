@@ -37,6 +37,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnBnClickedHelp();
+	afx_msg void OnBnClickedShowModifiedFiles();
 
 	DECLARE_MESSAGE_MAP()
 public:

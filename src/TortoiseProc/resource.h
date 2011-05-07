@@ -767,6 +767,7 @@
 #define IDC_PROGRESS_BUTTON1            1382
 #define IDC_BUTTON_LOCAL_BRANCH         1382
 #define IDC_EDITGLOBALGITCONFIG         1382
+#define IDC_SHOW_MODIFIED_FILES         1382
 #define IDC_REPOGROUP                   1383
 #define IDC_BUTTON3                     1383
 #define IDC_CLONE_DIR_BROWSE            1383
