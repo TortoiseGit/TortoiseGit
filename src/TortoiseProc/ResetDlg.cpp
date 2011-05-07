@@ -27,10 +27,10 @@
 
 // CResetDlg dialog
 
-IMPLEMENT_DYNAMIC(CResetDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CResetDlg, CStandAloneDialog)
 
 CResetDlg::CResetDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CResetDlg::IDD, pParent)
+	: CStandAloneDialog(CResetDlg::IDD, pParent)
 	, m_ResetType(1)
 {
 
@@ -46,7 +46,7 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CResetDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CResetDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, &CResetDlg::OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
 END_MESSAGE_MAP()
@@ -55,20 +55,12 @@ END_MESSAGE_MAP()
 // CResetDlg message handlers
 BOOL CResetDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	CString resetTo;
 	CString currentBranch = g_Git.GetCurrentBranch();
 	resetTo.Format(IDS_PROC_RESETBRANCH, currentBranch, m_ResetToVersion);
 	GetDlgItem(IDC_RESET_BRANCH_NAME)->SetWindowTextW(resetTo);
-
-	AddAnchor(IDC_RESET_BRANCH_NAME, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_GROUP_RESET_TYPE, TOP_LEFT,TOP_RIGHT);
-
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	AddAnchor(IDH_HELP,BOTTOM_RIGHT);
-	AddAnchor(IDC_SHOW_MODIFIED_FILES, TOP_LEFT,TOP_RIGHT);
 
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
 
@@ -78,7 +70,7 @@ BOOL CResetDlg::OnInitDialog()
 void CResetDlg::OnOK()
 {
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
-	return CResizableStandAloneDialog::OnOK();
+	return CStandAloneDialog::OnOK();
 }
 
 void CResetDlg::OnBnClickedHelp()

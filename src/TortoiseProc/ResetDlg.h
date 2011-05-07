@@ -21,7 +21,7 @@
 #include "StandAloneDlg.h"
 // CResetDlg dialog
 
-class CResetDlg : public CResizableStandAloneDialog
+class CResetDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CResetDlg)
 
