@@ -15,6 +15,7 @@
  * Allow to add a "Signed-Off-By" line to patches on applying
  * Fixed issue #781: Allow to push all branches at once
  * Fixed issue #784: Rebase window should allow easier selection of Pick/Squash/Edit/Skip (keys: space: shifts the state, s: skip, e: edit, p: pick, q: squash)
+ * Fixed issue #785: Rebase window should list the contents of a commit just like Log window does
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
