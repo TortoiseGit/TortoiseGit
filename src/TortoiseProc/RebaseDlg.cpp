@@ -1632,6 +1632,9 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 
 void CRebaseDlg::OnBnClickedButtonDown2()
 {
+	if (m_CommitList.GetSelectedCount() == 0)
+		return;
+
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 	bool changed = false;
