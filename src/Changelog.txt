@@ -54,6 +54,7 @@
  * Pushing required a remote-branch name
  * Fixed issue #790: Add minimize button to progress window
  * Fixed some optical issues in Rebase-Dialog
+ * Fixed issue #791: /CloseOnEnd not working for switch
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 
