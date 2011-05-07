@@ -833,6 +833,8 @@ int CRebaseDlg::FinishRebase()
 	}
 	AddLogString(out);
 
+	m_ctrlTabCtrl.RemoveTab(0);
+	m_ctrlTabCtrl.RemoveTab(0);
 	m_CtrlStatusText.SetWindowText(_T("Finished rebasing."));
 
 	return 0;
