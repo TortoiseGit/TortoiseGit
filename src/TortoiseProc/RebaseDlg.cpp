@@ -191,7 +191,6 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Revision Files"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
-	m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	AddRebaseAnchor();
 
 
@@ -897,6 +896,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return ;
 		m_RebaseStage = REBASE_START;
 		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, _T("Conflict Files"));
+		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	}
 
 	if( m_RebaseStage == REBASE_FINISH )
