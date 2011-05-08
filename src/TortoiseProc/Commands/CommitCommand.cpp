@@ -67,6 +67,11 @@ bool CommitCommand::Execute()
 	}
 #endif
 
+	if (!GitAdminDir().HasAdminDir(g_Git.m_CurrentDir)) {
+		CMessageBox::Show(hwndExplorer, _T("No working directory found."), _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
+
 	bool autoClose = false;
 	if (parser.HasVal(_T("closeonend")))
 		autoClose = !!parser.GetLongVal(_T("closeonend"));
