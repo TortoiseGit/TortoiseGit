@@ -295,7 +295,10 @@ BOOL CTortoiseProcApp::InitInstance()
 		int asterisk = sPathArgument.Find('*');
 		cmdLinePath.SetFromUnknown(asterisk >= 0 ? sPathArgument.Left(asterisk) : sPathArgument);
 		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
+	}
 
+	if (pathList.GetCount() == 0) {
+		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
 
 	hWndExplorer = NULL;
