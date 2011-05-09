@@ -14,6 +14,9 @@
  * Show status on taskbar button on Windows 7
  * Allow to add a "Signed-Off-By" line to patches on applying
  * Fixed issue #781: Allow to push all branches at once
+ * Fixed issue #784: Rebase window should allow easier selection of Pick/Squash/Edit/Skip (keys: space: shifts the state, s: skip, e: edit, p: pick, q: squash)
+ * Fixed issue #785: Rebase window should list the contents of a commit just like Log window does
+ * Fixed issue #768: Display modified files in "Reset" dialog
 
 == Bug Fix ==
  * Fixed tab indices (activation order)
@@ -51,6 +54,8 @@
  * Fixed issue #779: Show correct text in taskbar when rebasing finished.
  * Pushing required a remote-branch name
  * Fixed issue #790: Add minimize button to progress window
+ * Fixed some optical issues in Rebase-Dialog
+ * Fixed issue #791: /CloseOnEnd not working for switch
  * TortoiseGitCache
    Partly rewritten to fix various issues.
 

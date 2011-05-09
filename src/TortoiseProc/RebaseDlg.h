@@ -86,6 +86,7 @@ protected:
 	CRect m_DlgOrigRect;
 	CRect m_CommitListOrigRect;
 	BOOL PreTranslateMessage(MSG* pMsg);
+	bool LogListHasFocus(HWND hwnd);
 
 	CSciEdit m_wndOutputRebase;
 	void SetContinueButtonText();
@@ -125,6 +126,8 @@ protected:
 	afx_msg void OnCbnSelchangeUpstream();
 	afx_msg void OnBnClickedContinue();
 	afx_msg void OnBnClickedAbort();
+	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
+	void FillLogMessageCtrl();
 
 	CProgressCtrl		m_ProgressBar;
 	CStatic				m_CtrlStatusText;

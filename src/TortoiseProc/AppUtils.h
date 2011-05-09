@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -157,7 +157,7 @@ public:
 
 	static bool Export(CString *BashHash=NULL);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
-	static bool Switch(CString *CommitHash, CString initialRefName = CString());
+	static bool Switch(CString *CommitHash, CString initialRefName = CString(), bool autoClose = false);
 
 //	static bool IgnoreFile(CTGitPath &file, bool IsMask);
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);

@@ -85,6 +85,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -167,6 +168,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		return FALSE;
 	}
 	m_LogMessageCtrl.Init(0);
+	m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 
 	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
@@ -187,9 +189,8 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
 
-	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Conflict File"));
+	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Revision Files"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
-	m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	AddRebaseAnchor();
 
 
@@ -603,7 +604,52 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	{
 		switch (pMsg->wParam)
 		{
-
+		case ' ':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.ShiftSelectedAction();
+				return TRUE;
+			}
+			break;
+		case 'P':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
+				return TRUE;
+			}
+			break;
+		case 'S':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
+				return TRUE;
+			}
+			break;
+		case 'Q':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
+				return TRUE;
+			}
+			break;
+		case 'E':
+			if(LogListHasFocus(pMsg->hwnd))
+			{
+				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
+				return TRUE;
+			}
+			break;
+		case 'A':
+			if(LogListHasFocus(pMsg->hwnd) && GetAsyncKeyState(VK_CONTROL) & 0x8000)
+			{
+				// select all entries
+				for (int i = 0; i < m_CommitList.GetItemCount(); ++i)
+				{
+					m_CommitList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				}
+				return TRUE;
+			}
+			break;
 		case VK_F5:
 			{
 				Refresh();
@@ -632,6 +678,17 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 	m_tooltips.RelayEvent(pMsg);
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
+
+bool CRebaseDlg::LogListHasFocus(HWND hwnd)
+{
+	TCHAR buff[128];
+	::GetClassName(hwnd, buff, 128);
+
+	if(_tcsnicmp(buff, _T("SysListView32"), 128) == 0)
+		return true;
+	return false;
+}
+
 int CRebaseDlg::CheckRebaseCondition()
 {
 	this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
@@ -776,6 +833,8 @@ int CRebaseDlg::FinishRebase()
 	}
 	AddLogString(out);
 
+	m_ctrlTabCtrl.RemoveTab(0);
+	m_ctrlTabCtrl.RemoveTab(0);
 	m_CtrlStatusText.SetWindowText(_T("Finished rebasing."));
 
 	return 0;
@@ -838,6 +897,10 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(CheckRebaseCondition())
 			return ;
 		m_RebaseStage = REBASE_START;
+		m_FileListCtrl.Clear();
+		m_FileListCtrl.m_CurrentVersion = L"";
+		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, _T("Conflict Files"));
+		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
 	}
 
 	if( m_RebaseStage == REBASE_FINISH )
@@ -1309,7 +1372,8 @@ int CRebaseDlg::DoRebase()
 			// let user edit last commmit message
 			this->m_RebaseStage = REBASE_SQUASH_EDIT;
 			return -1;
-		}
+		} else if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+			pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
 	}
 	
 	return 0;
@@ -1340,7 +1404,8 @@ int CRebaseDlg::RebaseThread()
 
 		}else if( m_RebaseStage == REBASE_CONTINUE )
 		{
-			this->GoNext();	
+			this->GoNext();
+			UpdateCurrentStatus();
 			if(IsEnd())
 			{
 				ret = 0;
@@ -1409,16 +1474,19 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
+		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		break;
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
+		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
+		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		break;
@@ -1567,6 +1635,9 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 
 void CRebaseDlg::OnBnClickedButtonDown2()
 {
+	if (m_CommitList.GetSelectedCount() == 0)
+		return;
+
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 	bool changed = false;
@@ -1609,4 +1680,53 @@ LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
+}
+
+void CRebaseDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+	if(m_CommitList.m_bNoDispUpdates)
+		return;
+	if (pNMLV->iItem >= 0)
+	{
+		this->m_CommitList.m_nSearchIndex = pNMLV->iItem;
+		if (pNMLV->iSubItem != 0)
+			return;
+		if ((pNMLV->iItem == m_CommitList.m_arShownList.GetCount()))
+		{
+			// remove the selected state
+			if (pNMLV->uChanged & LVIF_STATE)
+			{
+				m_CommitList.SetItemState(pNMLV->iItem, 0, LVIS_SELECTED);
+				FillLogMessageCtrl();
+			}
+			return;
+		}
+		if (pNMLV->uChanged & LVIF_STATE)
+		{
+			FillLogMessageCtrl();
+		}
+	}
+	else
+	{
+		FillLogMessageCtrl();
+	}
+}
+
+void CRebaseDlg::FillLogMessageCtrl()
+{
+	int selCount = m_CommitList.GetSelectedCount();
+	if (selCount == 1 && (m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage == CHOOSE_COMMIT_PICK_MODE))
+	{
+		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
+		int selIndex = m_CommitList.GetNextSelectedItem(pos);
+		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_CommitList.m_arShownList.SafeGetAt(selIndex));
+		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
+		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
+		m_FileListCtrl.Show(SVNSLC_SHOWVERSIONED);
+		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + _T("\n") + pLogEntry->GetBody());
+		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
+	}
 }

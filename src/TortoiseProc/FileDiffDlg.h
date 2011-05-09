@@ -28,6 +28,7 @@
 #include "Colors.h"
 #include "XPImageButton.h"
 #include "FilterEdit.h"
+#include "MessageBox.h"
 #include "Tooltip.h"
 #include "ProgressDlg.h"
 #include "MenuButton.h"

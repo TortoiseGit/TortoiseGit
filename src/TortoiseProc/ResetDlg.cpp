@@ -23,14 +23,14 @@
 #include "TortoiseProc.h"
 #include "ResetDlg.h"
 #include "Git.h"
-
+#include "FileDiffDlg.h"
 
 // CResetDlg dialog
 
-IMPLEMENT_DYNAMIC(CResetDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CResetDlg, CStandAloneDialog)
 
 CResetDlg::CResetDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CResetDlg::IDD, pParent)
+	: CStandAloneDialog(CResetDlg::IDD, pParent)
 	, m_ResetType(1)
 {
 
@@ -46,26 +46,21 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CResetDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CResetDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, &CResetDlg::OnBnClickedHelp)
+	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
 END_MESSAGE_MAP()
 
 
 // CResetDlg message handlers
 BOOL CResetDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 
 	CString resetTo;
 	CString currentBranch = g_Git.GetCurrentBranch();
 	resetTo.Format(IDS_PROC_RESETBRANCH, currentBranch, m_ResetToVersion);
 	GetDlgItem(IDC_RESET_BRANCH_NAME)->SetWindowTextW(resetTo);
-
-	AddAnchor(IDC_RESET_BRANCH_NAME, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_GROUP_RESET_TYPE, TOP_LEFT,TOP_RIGHT);
-
-	AddAnchor(IDOK,BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
 
@@ -75,10 +70,20 @@ BOOL CResetDlg::OnInitDialog()
 void CResetDlg::OnOK()
 {
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
-	return CResizableStandAloneDialog::OnOK();
+	return CStandAloneDialog::OnOK();
 }
 
 void CResetDlg::OnBnClickedHelp()
 {
 	OnHelp();
+}
+
+void CResetDlg::OnBnClickedShowModifiedFiles()
+{
+		CFileDiffDlg dlg;
+
+		dlg.m_strRev1 = _T("0000000000000000000000000000000000000000");
+		dlg.m_strRev2 = _T("HEAD");
+
+		dlg.DoModal();
 }

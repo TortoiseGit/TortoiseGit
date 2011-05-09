@@ -1173,7 +1173,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 	return FALSE;
 }
 
-bool CAppUtils::Switch(CString *CommitHash, CString initialRefName)
+bool CAppUtils::Switch(CString *CommitHash, CString initialRefName, bool autoclose)
 {
 	CGitSwitchDlg dlg;
 	if(CommitHash)
@@ -1208,6 +1208,7 @@ bool CAppUtils::Switch(CString *CommitHash, CString initialRefName)
 			 g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg progress;
+		progress.m_bAutoCloseOnSuccess = autoclose;
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)
 			return TRUE;
