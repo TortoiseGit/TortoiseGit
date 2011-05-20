@@ -1,3 +1,6 @@
+= Release 1.7.1.0 =
+ * Fixed issue #796: plz add code page name "cp949"
+
 = Release 1.7.0.0 =
 == Features ==
  * Fixed issue #724: BrowseRefs: Made branch renaming possible.

@@ -66,6 +66,7 @@ int CUnicodeUtils::GetCPCode(CString &codename)
 		{932, _T("shift_jis")},// ANSI/OEM Japanese; Japanese (Shift-JIS) 
 		{936, _T("gb2312")},// ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312) 
 		{949, _T("ks_c_5601-1987")},// ANSI/OEM Korean (Unified Hangul Code) 
+		{949, _T("cp949")},// ANSI/OEM Korean (Unified Hangul Code)
 		{950, _T("big5")},// ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5) 
 		{1026,_T("IBM1026")},// IBM EBCDIC Turkish (Latin 5) 
 		{1047,_T("IBM01047")},// IBM EBCDIC Latin 1/Open System 
