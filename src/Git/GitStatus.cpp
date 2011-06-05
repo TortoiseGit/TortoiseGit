@@ -1316,15 +1316,15 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 
-			int pos=SearchInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
-
-			if(subpath.IsEmpty() && pos<0)
+            if(subpath.IsEmpty() && (!indexptr.use_count()))
 			{ // for new init repository
 				*status = git_wc_status_normal;
 				if(callback)
 					callback(gitdir+_T("/")+path, *status, false,pData);
 				return 0;
 			}
+
+   			int pos=SearchInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength());
 
 			//Not In Version Contorl
 			if(pos<0)
