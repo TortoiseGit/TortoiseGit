@@ -449,7 +449,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 					if(childDir->GetCurrentFullStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
 					{
 						CGitStatusCache::Instance().UpdateShell(path);
-						ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+						//ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
 						childDir->m_ownStatus.SetStatus(pGitStatus);
 						childDir->m_ownStatus.SetKind(git_node_dir);
 					}
@@ -496,10 +496,10 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		if(bNotified)
 		{
 			CGitStatusCache::Instance().UpdateShell(path);
-			ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+			//ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
 		}
 
-		ATLTRACE(_T("Path Entry Add %s %s %s %d\n"), path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
+		//ATLTRACE(_T("Path Entry Add %s %s %s %d\n"), path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
 	}
 	
 	CCachedDirectory * parent = CGitStatusCache::Instance().GetDirectoryCacheEntry(path.GetContainingDirectory());
@@ -513,7 +513,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 				if(parent->GetCurrentFullStatus() < GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
 				{
 					CGitStatusCache::Instance().UpdateShell(parent->m_directoryPath);
-					ATLTRACE(_T("shell update for %s\n"), parent->m_directoryPath.GetWinPathString());
+					//ATLTRACE(_T("shell update for %s\n"), parent->m_directoryPath.GetWinPathString());
 					parent->m_ownStatus.SetStatus(pGitStatus);
 					parent->m_ownStatus.SetKind(git_node_dir);
 				}

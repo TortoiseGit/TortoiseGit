@@ -227,6 +227,8 @@ void CDirectoryWatcher::WorkerThread()
 	LPOVERLAPPED lpOverlapped;
 	WCHAR buf[READ_DIR_CHANGE_BUFFER_SIZE] = {0};
 	WCHAR * pFound = NULL;
+	CTGitPath path;
+
 	while (m_bRunning)
 	{
 		if (watchedPaths.GetCount())
@@ -340,6 +342,7 @@ void CDirectoryWatcher::WorkerThread()
 					if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 						goto continuewatching;
 					DWORD nOffset = pnotify->NextEntryOffset;
+
 					do
 					{
 						nOffset = pnotify->NextEntryOffset;
@@ -404,6 +407,11 @@ void CDirectoryWatcher::WorkerThread()
 								if( wcsstr(pFound, L".git\\index") == NULL)
 									continue;
 							}
+
+							path.SetFromWin(buf);
+							if(!path.HasAdminDir())
+								continue;
+
 							ATLTRACE(_T("change notification: %s\n"), buf);
 							m_FolderCrawler->AddPathForUpdate(CTGitPath(buf));
 						}

@@ -81,7 +81,7 @@ void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 				return;
 		}
 
-		ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
+		//ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
 
 		m_pathsToUpdate.push_back(path);
 		
