@@ -405,7 +405,10 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 
 						/* Just watch version path */
 						if(isVersion) 
+						{
+							watcher.AddPath(gitdir);
 							watcher.AddPath(path);
+						}
 					}
 					return cdir;		
 				}
