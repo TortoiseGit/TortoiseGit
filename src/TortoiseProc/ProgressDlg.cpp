@@ -163,14 +163,13 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 		if (bShowCommand)
 		{
-			CString str;
-			str+= cmdlist[i].Trim()+_T("\n\n");
+			CStringA str(cmdlist[i].Trim()+_T("\n\n"));
 			for(int j=0;j<str.GetLength();j++)
 			{
 				if(pdata)
 				{
 					pdata->m_critSec.Lock();
-					pdata->push_back(str[j]&0xFF);
+					pdata->push_back(str[j]);
 					pdata->m_critSec.Unlock();
 				}
 				else
