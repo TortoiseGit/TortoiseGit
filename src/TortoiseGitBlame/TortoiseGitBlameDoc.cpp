@@ -122,7 +122,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString());
 	
 		CString cmd;
-		
+
+		if(Rev.IsEmpty())
+			Rev=_T("HEAD");
+
 		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.clear();
 		if(g_Git.Run(cmd,&m_BlameData))
