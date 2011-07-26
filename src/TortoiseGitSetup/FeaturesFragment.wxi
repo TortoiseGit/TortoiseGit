@@ -24,11 +24,23 @@
 			<ComponentRef Id="C__PlainSettingsShortcuts" />
 			<ComponentRef Id="C__PlatformSettingsShortcuts" />
 			<ComponentRef Id="C__shellregistry" />
+			<?if $(var.Platform) = "x64" ?>
+			<ComponentRef Id="C__shellregistry32" />
+			<?endif ?>
 			<ComponentRef Id="C__machineregistry" />
+			<?if $(var.Platform) = "x64" ?>
+			<ComponentRef Id="C__machineregistry32" />
+			<?endif ?>
 <!--			<ComponentRef Id="C__svnprotocoll" />
 -->
 			<ComponentRef Id="C__approveshellcomponents" />
+			<?if $(var.Platform) = "x64" ?>
+			<ComponentRef Id="C__approveshellcomponents32" />
+			<?endif ?>
       <ComponentRef Id="C__win7library" />
+			<?if $(var.Platform) = "x64" ?>
+			<ComponentRef Id="C__win7library32" />
+			<?endif ?>
 			<ComponentRef Id="C__ProgramMenuFolder" />
 			<ComponentRef Id="C__Sounds" />
 			<ComponentRef Id="C__DiffScripts" />

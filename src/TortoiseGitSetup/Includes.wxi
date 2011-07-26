@@ -65,8 +65,11 @@
 	<?define GuidProgramMenuFolder="B776F75C-B019-44b1-957A-3F58D3A225CF"?>
 
 	<?define GuidShellRegistry="9E011A3C-F5D1-47ab-8BE2-443C2FFF9499"?>
+	<?define GuidShellRegistry32="B948CE9A-585F-48ee-96C5-A1667E98077B"?>
 	<?define GuidMachineRegistry="E61BA450-C3DF-4ea5-98D4-240E4B05C9C4"?>
+	<?define GuidMachineRegistry32="ACDC3F06-4976-4a77-A676-378B076F96BE"?>
 	<?define GuidApproveShellComponents="E7E43AE0-DB46-4af9-95EA-2EF7AD3F2119"?>
+	<?define GuidApproveShellComponents32="56A11ACF-3DE2-40f8-A6A8-4CC334E19571"?>
 	<?define GuidSvnProtocol="0AD2B787-A9B3-4ad7-99A5-EC6DFF0EB2B7"?>
 	<?define GuidASPNETHack="C9279E7B-3D81-4c9e-962F-987252011A29"?>
 
@@ -108,6 +111,7 @@
   <?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
 
   <?define GuidWin7Library="D31C1CAE-BBD9-45e2-A487-80653A49C752"?>
+  <?define GuidWin7Library32="1B9EFDE8-3EF0-443a-BE52-E97707B2F789"?>
   <?define GuidFolderTypeGit="{80845F42-7943-4e03-A2E9-58F33DDD348C}"?>
   <?define GuidLibraryTypeGit="{D44311F9-08E5-4bb8-96E3-E3E4F2A1BDD0}"?>
   <?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
