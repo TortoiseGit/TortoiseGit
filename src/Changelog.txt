@@ -2,6 +2,7 @@
 == Bug Fix ==
  * Fixed issue #796: plz add code page name "cp949"
  * Fixed Issue #795: Switch/Checkout Dialog, "Switch To Version" is confusing
+ * Fixed issue #691: 64-bit version should include the 32-bit shell extension too
 
 = Release 1.7.0.0 =
 == Features ==
