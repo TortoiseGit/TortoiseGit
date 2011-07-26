@@ -41,6 +41,8 @@
           <Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\microsoft_vc90_crt_x86.msm' DiskId='1' />
           <Merge Id='MFC32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86.msm' DiskId='1' />
           <Merge Id='MFCLOC32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFCLOC_x86.msm' DiskId='1' />
+          <Merge Id='ATL32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_ATL_x86.msm' DiskId='1' />
+          <Merge Id='ATL32 Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_ATL_x86.msm' DiskId='1' />
           <?endif ?>
 
           <?if $(var.Platform) = "x86" ?>

@@ -59,6 +59,8 @@
 				<MergeRef Id="MFCLOC" />
 				<MergeRef Id="MFCLOC Policy" />
 				<?if $(var.Platform) = "x64" ?>
+				<MergeRef Id="ATL32" />
+				<MergeRef Id="ATL32 Policy" />
 				<MergeRef Id="MFC32" />
 				<MergeRef Id="MFCLOC32" />
 				<?endif ?>
