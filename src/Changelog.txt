@@ -2,6 +2,10 @@
 == Bug Fix ==
  * Fixed issue #796: plz add code page name "cp949"
  * Fixed Issue #795: Switch/Checkout Dialog, "Switch To Version" is confusing
+ * Fixed issue #757: TortoiseGit Blame not working from working dir with autocrlf-enabled.
+ * Updated shipped PuTTY binaries to version 0.61
+ * Updated shipped notepad2 binaries to version 4.2.25 and added x64 version
+ * Updated shipped TortoiseOverlay to version 1.1.3.21564
 
 = Release 1.7.0.0 =
 == Features ==
