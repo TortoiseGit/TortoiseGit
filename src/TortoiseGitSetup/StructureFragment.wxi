@@ -41,12 +41,12 @@
           <?endif ?>
 
           <?if $(var.Platform) = "x86" ?>
-           <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-win32.msm' DiskId='1' />
+           <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.3.21564-win32.msm' DiskId='1' />
          <?endif ?>
 
           <?if $(var.Platform) = "x64" ?>
 
-          <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-x64.msm' DiskId='1' />
+          <Merge Id='Ovlays' Language='0' SourceFile='..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.3.21564-x64.msm' DiskId='1' />
 
           <?endif ?>
 
