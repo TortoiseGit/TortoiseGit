@@ -19,13 +19,17 @@
 	<?if $(var.Platform) = "x64" ?>
 	<?define Win64YesNo="yes" ?>
 	<?define ReleasePath="Release64" ?>
+	<?define ReleasePath32="Release" ?>
 	<?define PlatformPathExtension="x64" ?>
+	<?define PlatformPath32Extension="win32" ?>
 	<?define PackagePlatforms="x64" ?>
 	<?define PlatformUserVisible="(64 bit)" ?>
 	<?else?>
 	<?define Win64YesNo="no" ?>
 	<?define ReleasePath="Release" ?>
+	<?define ReleasePath32="Release" ?>
 	<?define PlatformPathExtension="win32" ?>
+	<?define PlatformPath32Extension="win32" ?>
 	<?define PackagePlatforms="x86" ?>
 	<?define PlatformUserVisible="(32 bit)" ?>
 	<?endif?>

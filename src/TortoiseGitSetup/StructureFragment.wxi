@@ -428,8 +428,12 @@ out everything for now, leaving these enabled as they are would make the install
           <Directory Id="D__Bin" ShortName="BIN" Name="bin" >
 
           <Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
-             <File Id="F__libapr" ShortName="LIBAPR.DLL" Name="libapr_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libapr_tsvn32.dll" KeyPath="yes" />
-             <File Id="F__libaprutil" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libaprutil_tsvn32.dll" />
+             <File Id="F__libapr32" ShortName="LIBAPR.DLL" Name="libapr_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libapr_tsvn32.dll" KeyPath="yes" />
+             <File Id="F__libaprutil32" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libaprutil_tsvn32.dll" />
+             <?if $(var.Platform) = "x64" ?>
+             <File Id="F__libapr" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libapr_tsvn.dll" />
+             <File Id="F__libaprutil" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libaprutil_tsvn.dll" />
+             <?endif ?>
           </Component>
 
           <Component Id="C__touch" Guid="$(var.GuidTouch)" Win64="$(var.Win64YesNo)">
@@ -447,7 +451,10 @@ out everything for now, leaving these enabled as they are would make the install
            </Component>
 -->
             <Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
-              <File Id="F__intl" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
+              <File Id="F__intl32" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPath32Extension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
+              <?if $(var.Platform) = "x64" ?>
+              <File Id="F__intl" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn.dll" />
+              <?endif ?>
             </Component>
 
             <?if $(var.IncludeCrashReportDll) = 1 ?>
@@ -466,15 +473,24 @@ out everything for now, leaving these enabled as they are would make the install
               <File Id="F__wingit" ShortName="IGIT.EXE" Name="igit.exe" DiskId="1" Source="..\..\ext\gitexe\igit.exe" KeyPath="yes" />
 			        <File Id="F__libiconv2" ShortName="LIBICONV.DLL" Name="libiconv2.dll" DiskId="1" Source="..\..\ext\gitexe\libiconv2.dll" />
 -->
-              <File Id="F__gitdll" ShortName="GITDLL.DLL"  Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll32.dll" KeyPath="yes"/>
+              <File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes"/>
+              <?if $(var.Platform) = "x64" ?>
+              <File Id="F__gitdll"  Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" />
+              <?endif ?>
               <File Id="F__tgit" ShortName="TGIT.EXE"  Name="tgit.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgit.exe" />
               <File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
-              <File Id="F__curl" ShortName="libcurl.DLL" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl32.dll" />
+              <File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
+              <?if $(var.Platform) = "x64" ?>
+              <File Id="F__curl" Name="libcurl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl.dll" />
+              <?endif ?>
             </Component>
 
             <Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
               <File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
-              <File Id="F__TortoiseShell" ShortName="TORTGIT.DLL" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit32.dll" />
+              <File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" />
+              <?if $(var.Platform) = "x64" ?>
+              <File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
+              <?endif ?>
 <!--              <File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
 -->
 			  <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
