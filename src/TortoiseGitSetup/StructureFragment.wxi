@@ -482,7 +482,10 @@ out everything for now, leaving these enabled as they are would make the install
               <File Id="F__gitdll"  Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" />
               <?endif ?>
               <File Id="F__tgit" ShortName="TGIT.EXE"  Name="tgit.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgit.exe" />
+              <File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
+              <?if $(var.Platform) = "x64" ?>
               <File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
+              <?endif ?>
               <File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
               <?if $(var.Platform) = "x64" ?>
               <File Id="F__curl" Name="libcurl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl.dll" />
