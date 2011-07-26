@@ -57,6 +57,17 @@
     <Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
 		<Condition Message="[ProductName] requires Windows 2000 SP4 or later."><![CDATA[(VersionNT > 500) OR ((VersionNT = 500) AND (ServicePackLevel >= 4))]]></Condition>
 
+		<?if $(var.Platform) = "x86" ?>
+		<Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseGit instead.">NOT Msix64</Condition>
+		<?endif ?>
+
+		<?if $(var.Platform) = "x64" ?>
+		<Upgrade Id="$(var.UpgradeGuid32)">
+			<UpgradeVersion Minimum="0.0.0.0" OnlyDetect="yes" Property="WIN32TGITFOUND" />
+		</Upgrade>
+		<Condition Message="Please uninstall all 32-bit versions of TortoiseGit before installing [ProductName].">NOT WIN32TGITFOUND</Condition>
+		<?endif ?>
+
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
 		<Property Id="TEXTEDITOR">
 			<DirectorySearch Id="FileSearchTextEditorExe" Path="[WindowsFolder]">

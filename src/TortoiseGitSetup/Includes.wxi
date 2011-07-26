@@ -38,6 +38,7 @@
 
 	<?if $(var.Platform) = "x64" ?>
 	<?define UpgradeGuid="F46D0E11-F71A-48a0-8A7B-FD8669B5080C" ?>
+	<?define UpgradeGuid32="DA0E5440-E13D-4852-AE01-15CD0264D489" ?>
 	<?else?>
 	<?define UpgradeGuid="DA0E5440-E13D-4852-AE01-15CD0264D489" ?>
 	<?endif?>
