@@ -480,7 +480,12 @@ out everything for now, leaving these enabled as they are would make the install
 			  <File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
 			  <File Id="F__PuttyGen"      ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 			  <File Id="F__pageant"       ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
-			  <File Id="F__notepad2"      ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2.exe" />
+<?if $(var.Platform) = "x86" ?>
+			  <File Id="F__notepad2x86"      ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x86.exe" />
+<?endif ?>
+<?if $(var.Platform) = "x64" ?>
+			  <File Id="F__notepad2x64"      ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x64.exe" />
+<?endif ?>
 			  <File Id="F__askpass"       ShortName="askpass.EXE"  Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
 
 
