@@ -7,6 +7,9 @@
  * Updated shipped PuTTY binaries to version 0.61
  * Updated shipped notepad2 binaries to version 4.2.25 and added x64 version
  * Updated shipped TortoiseOverlay to version 1.1.3.21564
+ * Fix crash for init repository
+ * Fix issue #799: Explore crash with empty directory
+ * FIx issue $819: Output in Git Command Progress is broken
 
 = Release 1.7.0.0 =
 == Features ==
