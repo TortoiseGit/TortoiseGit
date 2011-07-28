@@ -964,9 +964,6 @@ UINT CCommitDlg::StatusThread()
 		SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch());
 		m_tooltips.AddTool(GetDlgItem(IDC_STATISTICS), m_ListCtrl.GetStatisticsString());
 	}
-	CString logmsg;
-	GetDlgItemText(IDC_LOGMESSAGE, logmsg);
-	DialogEnableWindow(IDOK, logmsg.GetLength() >= m_ProjectProperties.nMinLogSize);
 	if (!success)
 	{
 		if (!m_ListCtrl.GetLastErrorMessage().IsEmpty())
@@ -1004,6 +1001,7 @@ UINT CCommitDlg::StatusThread()
 		GetAutocompletionList();
 		m_ListCtrl.Block(FALSE, FALSE);
 	}
+	UpdateOKButton();
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
@@ -1770,15 +1768,12 @@ LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 
 void CCommitDlg::UpdateOKButton()
 {
-#if 0
 	BOOL bValidLogSize = FALSE;
 
 	if (m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize)
 		bValidLogSize = !m_bBlock;
 
-	LONG nSelectedItems = m_ListCtrl.GetSelected();
-	DialogEnableWindow(IDOK, bValidLogSize && nSelectedItems>0);
-#endif
+	DialogEnableWindow(IDOK, bValidLogSize);
 }
 
 LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
