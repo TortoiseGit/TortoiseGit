@@ -97,15 +97,6 @@
 			</Feature>
 			<?endif ?>
 
-			<Feature Id="ASPDOTNETHACKFEATURE" Level="1" Title="ASP.NET Hack"
-			Description="Sets the SVN_ASP_DOT_NET_HACK environment variable.
-
-DO NOT INSTALL THIS FEATURE if you don't use VS.NET with Web Projects!!!"
-			TypicalDefault="install" Absent="allow" Display="hidden" InstallDefault="source" >
-				<Condition Level="0">(NOT ASPDOTNETHACK)</Condition>
-				<ComponentRef Id="C__ASPDOTNETHACK" />
-			</Feature>
-
 			<?if $(var.IncludeCrashReportDll) = 1 ?>
 			<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="In official builds, sends crash dumps to the developers."
 			TypicalDefault="install" Display="hidden" InstallDefault="followParent">
