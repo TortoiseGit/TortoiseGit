@@ -6,13 +6,13 @@
 	url = git://git.apache.org/apr.git
 [submodule "ext/tgit"]
 	path = ext/tgit
-	url = git://repo.or.cz/tgit.git
+	url = https://code.google.com/p/tortoisegit.tgit
 [submodule "ext/zlib"]
 	path = ext/zlib
-	url = git://repo.or.cz/zlib.git
+	url = https://code.google.com/p/tortoisegit.zlib
 [submodule "ext/libcurl"]
 	path = ext/libcurl
-	url = git://repo.or.cz/libcurl.git
+	url = https://code.google.com/p/tortoisegit.libcurl
 [submodule "ext/libgit2"]
 	path = ext/libgit2
-	url = git://github.com/lznuaa/libgit2.git
+	url = https://code.google.com/p/tortoisegit.libgit2
