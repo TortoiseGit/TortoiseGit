@@ -1768,12 +1768,13 @@ LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 
 void CCommitDlg::UpdateOKButton()
 {
-	BOOL bValidLogSize = FALSE;
+	if (m_bBlock)
+		return;
 
-	if (m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize)
-		bValidLogSize = !m_bBlock;
+	bool bValidLogSize = m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize && m_cLogMessage.GetText().GetLength() > 0;
+	bool bAmendOrSelectFiles = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit);
 
-	DialogEnableWindow(IDOK, bValidLogSize);
+	DialogEnableWindow(IDOK, bValidLogSize && bAmendOrSelectFiles);
 }
 
 LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
