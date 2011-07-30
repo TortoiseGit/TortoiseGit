@@ -3558,10 +3558,6 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
-		<File
-			RelativePath="README.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
