@@ -244,7 +244,7 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Win32_DLL_Release/zlib.pch"
+				PrecompiledHeaderFile=".\Release\zlib.pch"
 				AssemblerListingLocation="$(IntDir)\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\"
@@ -269,10 +269,10 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
-				ProgramDatabaseFile=".\Win32_DLL_Release/zlib1.pdb"
+				ProgramDatabaseFile="$(SolutionDir)\..\bin\Release\bin\zlib132.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Win32_DLL_Release/zlib1.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\zlib132.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -287,7 +287,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Win32_DLL_Release/zlib.bsc"
+				OutputFile=".\Release\zlib.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -337,7 +337,7 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile="$(IntDir)/zlib.pch"
+				PrecompiledHeaderFile=".\Release64\zlib.pch"
 				AssemblerListingLocation="$(IntDir)\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\zlib.pdb"
@@ -362,10 +362,10 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
-				ProgramDatabaseFile="$(IntDir)\zlib1.pdb"
+				ProgramDatabaseFile="$(SolutionDir)\..\bin\Release64\bin\zlib1.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(IntDir)\zlib1.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\zlib1.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -380,7 +380,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Win32_DLL_Release/zlib.bsc"
+				OutputFile=".\Release64\zlib.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -909,7 +909,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Win32_DLL_Debug/zlib.pch"
+				PrecompiledHeaderFile=".\Debug\zlib.pch"
 				AssemblerListingLocation="$(IntDir)\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\"
@@ -936,10 +936,10 @@
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Win32_DLL_Debug/zlib1d.pdb"
+				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug\bin\zlib1d32.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Win32_DLL_Debug/zlib1d.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Debug\bin\zlib1d32.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -954,7 +954,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Win32_DLL_Debug/zlib.bsc"
+				OutputFile=".\Debug\zlib.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -1003,7 +1003,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Win32_DLL_Debug/zlib.pch"
+				PrecompiledHeaderFile=".\Debug64\zlib.pch"
 				AssemblerListingLocation="$(IntDir)\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\"
@@ -1030,10 +1030,10 @@
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Win32_DLL_Debug/zlib1d.pdb"
+				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug64\bin\zlib1d.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Win32_DLL_Debug/zlib1d.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Debug64\bin\zlib1d.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -1048,7 +1048,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Win32_DLL_Debug/zlib.bsc"
+				OutputFile=".\Debug64\zlib.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
