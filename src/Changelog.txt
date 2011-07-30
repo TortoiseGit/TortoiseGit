@@ -1,3 +1,7 @@
+= Release 1.7.2.0 =
+== Bug Fix ==
+ * Fixed blame crash at XP system.
+
 = Release 1.7.1.0 =
 == Features ==
  * Fixed issue #828: disable the commit button if there's no comment entered

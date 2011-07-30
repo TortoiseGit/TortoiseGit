@@ -826,9 +826,22 @@ LPLOGFONT CBalloon::GetSystemToolTipFont() const
     static LOGFONT LogFont;
 
     NONCLIENTMETRICS ncm;
-    ncm.cbSize = sizeof(NONCLIENTMETRICS);
+	OSVERSIONINFO vers;
+	
+	memset(&vers, 0, sizeof(OSVERSIONINFO));
+	ncm.cbSize = sizeof(NONCLIENTMETRICS);
+	vers.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		
+	if(!GetVersionEx(&vers))
+		return NULL;
+
+	if(vers.dwMajorVersion < 6)
+	{
+		ncm.cbSize -= sizeof(ncm.iPaddedBorderWidth);
+	}
+
     if (!SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0))
-        return FALSE;
+        return NULL;
 
     memcpy(&LogFont, &(ncm.lfStatusFont), sizeof(LOGFONT));
 
@@ -1345,8 +1358,8 @@ BOOL CBalloon::SetFont(LPCTSTR lpszFaceName, int nSizePoints /* = 8 */,
 void CBalloon::SetDefaultFont()
 {
 	LPLOGFONT lpSysFont = GetSystemToolTipFont();
-
-	SetFont(lpSysFont);
+	if(lpSysFont)
+		SetFont(lpSysFont);
 } 
 
 void CBalloon::GetFont(CFont & font) const
