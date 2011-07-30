@@ -13,6 +13,13 @@
 <!--
 	<Fragment Id="StructureFragment">
 -->
+
+<?ifdef env.CommonProgramFiles(x86) ?>
+<?define MergeModules="C:\Program Files (x86)\Common Files\Merge Modules" ?>
+<?else?>
+<?define MergeModules="C:\Program Files\Common Files\Merge Modules" ?>
+<?endif?>
+
 <Include>
    <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="D__ProgramFilesFolder" ShortName="PFiles" Name="Program Files">

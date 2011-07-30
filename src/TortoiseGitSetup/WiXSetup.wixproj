@@ -12,7 +12,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>..\..\bin\setup\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <WixVariables>
     </WixVariables>
     <SuppressSpecificWarnings>
@@ -21,12 +21,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\bin\setup\x86\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <WixVariables>
     </WixVariables>
     <SuppressSpecificWarnings>
@@ -35,7 +35,7 @@
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;MergeModules=C:\Program Files\Common Files\Merge Modules;</DefineConstants>
+    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
     <OutputPath>..\..\bin\setup\x64\</OutputPath>
