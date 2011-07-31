@@ -231,8 +231,6 @@
 				OutputFile="$(SolutionDir)\..\bin\Release\bin\libcurl32.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\libcurl32.lib"
 				TargetMachine="1"
 			/>
@@ -324,8 +322,6 @@
 				OutputFile="$(SolutionDir)\..\bin\Release64\bin\libcurl.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\libcurl.lib"
 				TargetMachine="17"
 			/>
