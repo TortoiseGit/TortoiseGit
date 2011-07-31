@@ -48,7 +48,7 @@
 				AdditionalOptions="/EHsc "
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;..\apr-util\xml\expat\lib&quot;;."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;VERSION=\&quot;expat_1.95.2\&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COMPILED_FROM_DSP;XML_STATIC"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\LibD/xml.pch"
 				AssemblerListingLocation=".\LibD/"
@@ -121,7 +121,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="&quot;..\apr-util\xml\expat\lib&quot;;."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;VERSION=\&quot;expat_1.95.2\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COMPILED_FROM_DSP;XML_STATIC"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -197,7 +197,7 @@
 				AdditionalOptions="/EHsc "
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;..\apr-util\xml\expat\lib&quot;;."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;VERSION=\&quot;expat_1.95.2\&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COMPILED_FROM_DSP;XML_STATIC"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\LibD/xml.pch"
 				AssemblerListingLocation=".\LibD/"
@@ -271,7 +271,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="&quot;..\apr-util\xml\expat\lib&quot;;."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;VERSION=\&quot;expat_1.95.2\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COMPILED_FROM_DSP;XML_STATIC"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -546,15 +546,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\apr-util\xml\expat\lib\config.h"
-				>
-			</File>
-			<File
 				RelativePath="..\apr-util\xml\expat\lib\expat.h"
 				>
 			</File>
 			<File
 				RelativePath="..\apr-util\xml\expat\lib\iasciitab.h"
+				>
+			</File>
+			<File
+				RelativePath="..\apr-util\xml\expat\lib\internal.h"
 				>
 			</File>
 			<File
@@ -585,50 +585,6 @@
 		<Filter
 			Name="Generated Header Files"
 			>
-			<File
-				RelativePath="..\apr-util\xml\expat\lib\expat.h.in"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating expat.h from expat.h.in"
-						CommandLine="type ..\apr-util\xml\expat\lib\expat.h.in &gt; ..\apr-util\xml\expat\lib\expat.h&#x0D;&#x0A;"
-						Outputs="..\apr-util\xml\expat\lib\expat.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating expat.h from expat.h.in"
-						CommandLine="type ..\apr-util\xml\expat\lib\expat.h.in &gt; ..\apr-util\xml\expat\lib\expat.h&#x0D;&#x0A;"
-						Outputs="..\apr-util\xml\expat\lib\expat.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating expat.h from expat.h.in"
-						CommandLine="type ..\apr-util\xml\expat\lib\expat.h.in &gt; ..\apr-util\xml\expat\lib\expat.h&#x0D;&#x0A;"
-						Outputs="..\apr-util\xml\expat\lib\expat.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating expat.h from expat.h.in"
-						CommandLine="type ..\apr-util\xml\expat\lib\expat.h.in &gt; ..\apr-util\xml\expat\lib\expat.h&#x0D;&#x0A;"
-						Outputs="..\apr-util\xml\expat\lib\expat.h"
-					/>
-				</FileConfiguration>
-			</File>
 			<File
 				RelativePath="..\apr-util\xml\expat\lib\winconfig.h"
 				>

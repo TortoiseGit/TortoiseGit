@@ -54,7 +54,7 @@
 				AdditionalOptions="/EHsc "
 				Optimization="0"
 				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
-				PreprocessorDefinitions="_DEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;WIN32;_WINDOWS"
+				PreprocessorDefinitions="_DEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/libaprutil.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -153,7 +153,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
-				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;WIN32;_WINDOWS"
+				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -253,7 +253,7 @@
 				AdditionalOptions="/EHsc "
 				Optimization="0"
 				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
-				PreprocessorDefinitions="_DEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;WIN32;_WINDOWS"
+				PreprocessorDefinitions="_DEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/libaprutil.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -353,7 +353,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
-				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;WIN32;_WINDOWS"
+				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -1548,86 +1548,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\apr-util\dbm\apr_dbm_berkeleydb.c"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\apr-util\dbm\apr_dbm_gdbm.c"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\apr-util\dbm\apr_dbm_sdbm.c"
 					>
 					<FileConfiguration
@@ -1760,136 +1680,8 @@
 				Name="ldap"
 				>
 				<File
-					RelativePath="..\apr-util\ldap\apr_ldap_init.c"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\apr-util\ldap\apr_ldap_option.c"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\apr-util\ldap\apr_ldap_rebind.c"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\apr-util\ldap\apr_ldap_stub.c"
