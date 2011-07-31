@@ -5,6 +5,7 @@
 #include "resource.h"
 #include "RefLogDlg.h"
 #include "git.h"
+#include "AppUtils.h"
 
 // CRefLogDlg dialog
 
@@ -46,6 +47,7 @@ LRESULT CRefLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
 BOOL CRefLogDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);

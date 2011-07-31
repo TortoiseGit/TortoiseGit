@@ -433,6 +433,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\JumpListHelpers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\JumpListHelpers.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LangDll.cpp"
 				>
 			</File>

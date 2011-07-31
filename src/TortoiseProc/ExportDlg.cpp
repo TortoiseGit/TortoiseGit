@@ -69,6 +69,7 @@ END_MESSAGE_MAP()
 BOOL CExportDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_sExportDirOrig = m_strExportDirectory;
 	m_bAutoCreateTargetName = !PathIsDirectoryEmpty(m_sExportDirOrig);

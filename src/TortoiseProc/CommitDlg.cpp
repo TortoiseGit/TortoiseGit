@@ -128,6 +128,7 @@ END_MESSAGE_MAP()
 BOOL CCommitDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CAppUtils::GetCommitTemplate(this->m_sLogMessage);
 

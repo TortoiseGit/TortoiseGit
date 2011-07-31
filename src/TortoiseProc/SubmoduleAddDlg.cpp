@@ -25,6 +25,7 @@
 #include "SubmoduleAddDlg.h"
 #include "BrowseFolder.h"
 #include "MessageBox.h"
+#include "AppUtils.h"
 
 // CSubmoduleAddDlg dialog
 
@@ -64,6 +65,7 @@ END_MESSAGE_MAP()
 BOOL CSubmoduleAddDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);

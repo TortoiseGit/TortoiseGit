@@ -23,7 +23,7 @@
 #include "Git.h"
 #include "TortoiseProc.h"
 #include "GitSwitchDlg.h"
-
+#include "AppUtils.h"
 
 #include "Messagebox.h"
 
@@ -72,6 +72,7 @@ END_MESSAGE_MAP()
 BOOL CGitSwitchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
 

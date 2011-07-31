@@ -22,7 +22,7 @@
 #include "Git.h"
 #include "TortoiseProc.h"
 #include "CreateBranchTagDlg.h"
-
+#include "AppUtils.h"
 #include "Messagebox.h"
 
 // CCreateBranchTagDlg dialog
@@ -76,6 +76,7 @@ BOOL CCreateBranchTagDlg::PreTranslateMessage(MSG* pMsg)
 BOOL CCreateBranchTagDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CHOOSE_VERSION_ADDANCHOR;
 

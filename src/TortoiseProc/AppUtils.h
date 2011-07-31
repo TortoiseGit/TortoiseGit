@@ -224,6 +224,7 @@ public:
 	static void RemoveTempMergeFile(CTGitPath &path);
 	static void EditNote(GitRev *hash);
 	static int GetMsysgitVersion(CString *versionstring=NULL);
+	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);

@@ -20,7 +20,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SVNIgnoreTypeDlg.h"
-
+#include "AppUtils.h"
 
 // CSVNIgnoreTypeDlg dialog
 
@@ -53,6 +53,7 @@ END_MESSAGE_MAP()
 BOOL CSVNIgnoreTypeDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_RADIO_EXCLUDE,  TOP_LEFT);
 	AddAnchor(IDC_RADIO_GITIGNORE,TOP_LEFT);
