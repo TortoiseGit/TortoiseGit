@@ -66,7 +66,6 @@
           <Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
             <File Id="F__changelog" ShortName="CHANGELG.TXT" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
             <File Id="F__tortoisesvnlicense" ShortName="LICENSE.TXT" Name="TortoiseGit License.txt" DiskId="1" Source="..\gpl.txt" />
-            <File Id="F__openssllicense" ShortName="OSSL_LIC.TXT" Name="OpenSSL License.txt" DiskId="1" Source="include\OpenSSL_License.txt" />
             <File Id="F__aprlicense" ShortName="APR_LIC.TXT" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
           </Component>
 
