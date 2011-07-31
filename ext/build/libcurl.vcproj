@@ -6024,6 +6024,90 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libcurl\include\curl\curlbuild.h.dist"
+				>
+				<FileConfiguration
+					Name="LIB Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB Debug|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Release|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Debug|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB Release|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating curlbuild.h from curlbuild.h.dist"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						Outputs="..\libcurl\include\curl\curlbuild.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\libcurl\lib\curlx.h"
 				>
 			</File>
