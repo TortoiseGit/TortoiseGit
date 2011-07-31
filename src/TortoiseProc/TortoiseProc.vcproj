@@ -2302,10 +2302,6 @@
 			RelativePath="TortoiseProc.h"
 			>
 		</File>
-		<File
-			RelativePath=".\TortoiseProcLang.vcproj"
-			>
-		</File>
 	</Files>
 	<Globals>
 		<Global
