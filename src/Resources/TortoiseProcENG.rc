@@ -3537,6 +3537,7 @@ BEGIN
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""
     IDS_LOG_PUSH            "Push..."
     IDS_FILEDIFF_LOG        "Show log"
+    IDS_PROC_TASKS          "Tasks"
 END
 
 STRINGTABLE 

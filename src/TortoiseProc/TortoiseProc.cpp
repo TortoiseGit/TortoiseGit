@@ -43,6 +43,7 @@
 #include "Commands\Command.h"
 #include "CommonResource.h"
 #include "..\version.h"
+#include "JumpListHelpers.h"
 #include "..\Settings\Settings.h"
 #include "gitindex.h"
 
@@ -55,6 +56,7 @@
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
+#define APPID (_T("TGIT.TGIT.1") _T(TSVN_PLATFORM))
 
 BEGIN_MESSAGE_MAP(CTortoiseProcApp, CWinAppEx)
 	ON_COMMAND(ID_HELP, CWinAppEx::OnHelp)
@@ -118,6 +120,7 @@ CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for Torto
 BOOL CTortoiseProcApp::InitInstance()
 {
 	EnableCrashHandler();
+	InitializeJumpList();
 	CheckUpgrade();
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
@@ -611,6 +614,62 @@ void CTortoiseProcApp::EnableCrashHandler()
 	if (timediff.GetDays() > 3*31)
 	{
 //		crasher.Enable(FALSE);
+	}
+}
+
+void CTortoiseProcApp::InitializeJumpList()
+{
+	// for Win7 : use a custom jump list
+	CoInitialize(NULL);
+	SetAppID(APPID);
+	DeleteJumpList(APPID);
+	DoInitializeJumpList();
+	CoUninitialize();
+}
+
+void CTortoiseProcApp::DoInitializeJumpList()
+{
+	ATL::CComPtr<ICustomDestinationList> pcdl;
+	HRESULT hr = pcdl.CoCreateInstance(CLSID_DestinationList, NULL, CLSCTX_INPROC_SERVER);
+	if (FAILED(hr))
+		return;
+
+	hr = pcdl->SetAppID(APPID);
+	if (FAILED(hr))
+		return;
+
+	UINT uMaxSlots;
+	ATL::CComPtr<IObjectArray> poaRemoved;
+	hr = pcdl->BeginList(&uMaxSlots, IID_PPV_ARGS(&poaRemoved));
+	if (FAILED(hr))
+		return;
+
+	ATL::CComPtr<IObjectCollection> poc;
+	hr = poc.CoCreateInstance(CLSID_EnumerableObjectCollection, NULL, CLSCTX_INPROC_SERVER);
+	if (FAILED(hr))
+		return;
+
+	CString sTemp = CString(MAKEINTRESOURCE(IDS_MENUSETTINGS));
+	sTemp.Remove('&');
+
+	ATL::CComPtr<IShellLink> psl;
+	hr = CreateShellLink(_T("/command:settings"), (LPCTSTR)sTemp, 19, &psl);
+	if (SUCCEEDED(hr)) {
+		poc->AddObject(psl);
+	}
+	sTemp = CString(MAKEINTRESOURCE(IDS_MENUHELP));
+	sTemp.Remove('&');
+	psl.Release(); // Need to release the object before calling operator&()
+	hr = CreateShellLink(_T("/command:help"), (LPCTSTR)sTemp, 18, &psl);
+	if (SUCCEEDED(hr)) {
+		poc->AddObject(psl);
+	}
+
+	ATL::CComPtr<IObjectArray> poa;
+	hr = poc.QueryInterface(&poa);
+	if (SUCCEEDED(hr)) {
+		pcdl->AppendCategory((LPCTSTR)CString(MAKEINTRESOURCE(IDS_PROC_TASKS)), poa);
+		pcdl->CommitList();
 	}
 }
 
