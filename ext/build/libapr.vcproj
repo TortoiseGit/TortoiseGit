@@ -2177,6 +2177,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\apr\network_io\unix\socket_util.c"
+					>
+				</File>
+				<File
 					RelativePath="..\apr\network_io\win32\sockets.c"
 					>
 					<FileConfiguration
@@ -2304,6 +2308,18 @@
 			<Filter
 				Name="poll"
 				>
+				<File
+					RelativePath="..\apr\poll\unix\poll.c"
+					>
+				</File>
+				<File
+					RelativePath="..\apr\poll\unix\pollcb.c"
+					>
+				</File>
+				<File
+					RelativePath="..\apr\poll\unix\pollset.c"
+					>
+				</File>
 				<File
 					RelativePath="..\apr\poll\unix\select.c"
 					>
@@ -3008,46 +3024,6 @@
 			<Filter
 				Name="time"
 				>
-				<File
-					RelativePath="..\apr\time\win32\access.c"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
 				<File
 					RelativePath="..\apr\time\win32\time.c"
 					>
