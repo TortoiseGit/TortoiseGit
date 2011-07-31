@@ -23,6 +23,7 @@
 #include "TortoiseProc.h"
 #include "CleanTypeDlg.h"
 #include "git.h"
+#include "AppUtils.h"
 
 // CCleanTypeDlg dialog
 
@@ -62,6 +63,7 @@ END_MESSAGE_MAP()
 BOOL CCleanTypeDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	this->AddAnchor(IDOK,BOTTOM_RIGHT);
 	this->AddAnchor(IDCANCEL,BOTTOM_RIGHT);

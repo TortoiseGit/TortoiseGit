@@ -87,6 +87,7 @@ BOOL CSendMailDlg::PreTranslateMessage(MSG* pMsg)
 BOOL CSendMailDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_SENDMAIL_GROUP,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_SENDMAIL_TO,TOP_LEFT,TOP_RIGHT);

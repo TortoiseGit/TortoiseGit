@@ -26,7 +26,7 @@ HRESULT SetAppID(LPCTSTR appID)
 	HRESULT hRes = S_FALSE;
 	typedef HRESULT STDAPICALLTYPE SetCurrentProcessExplicitAppUserModelIDFN(PCWSTR AppID);
 	HMODULE hShell = ::LoadLibrary(_T("shell32.dll"));
-	f (hShell) {
+	if (hShell) {
 		SetCurrentProcessExplicitAppUserModelIDFN *pfnSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelIDFN*)GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID");
 		if (pfnSetCurrentProcessExplicitAppUserModelID) {
 			hRes = pfnSetCurrentProcessExplicitAppUserModelID(appID);

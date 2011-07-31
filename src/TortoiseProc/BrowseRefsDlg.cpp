@@ -86,6 +86,7 @@ void CBrowseRefsDlg::OnBnClickedOk()
 BOOL CBrowseRefsDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);

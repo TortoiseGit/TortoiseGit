@@ -25,6 +25,7 @@
 #include "git.h"
 #include "LogDlg.h"
 #include "MessageBox.h"
+#include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CRequestPullDlg, CResizableStandAloneDialog)
 
@@ -54,6 +55,7 @@ END_MESSAGE_MAP()
 BOOL CRequestPullDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);

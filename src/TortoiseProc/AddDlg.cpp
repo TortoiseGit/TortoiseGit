@@ -24,6 +24,7 @@
 //#include "SVNConfig.h"
 #include "Registry.h"
 #include "CommonResource.h"
+#include "AppUtils.h"
 
 #define REFRESHTIMER   100
 
@@ -58,6 +59,7 @@ END_MESSAGE_MAP()
 BOOL CAddDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	// initialize the svn status list control
 	m_addListCtrl.Init(SVNSLC_COLEXT, _T("AddDlg"), SVNSLC_POPALL ^ (SVNSLC_POPADD|SVNSLC_POPCOMMIT|SVNSLC_POPCHANGELISTS)); // adding and committing is useless in the add dialog

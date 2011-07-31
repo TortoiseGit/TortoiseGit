@@ -20,6 +20,7 @@
 #include "TortoiseProc.h"
 #include "BlameDlg.h"
 #include "Registry.h"
+#include "AppUtils.h"
 
 //IMPLEMENT_DYNAMIC(CBlameDlg, CStandAloneDialog)
 CBlameDlg::CBlameDlg(CWnd* pParent /*=NULL*/)
@@ -60,6 +61,7 @@ END_MESSAGE_MAP()
 BOOL CBlameDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AdjustControlSize(IDC_USETEXTVIEWER);
 	AdjustControlSize(IDC_IGNOREEOL);

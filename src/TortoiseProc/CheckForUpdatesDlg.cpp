@@ -60,6 +60,7 @@ END_MESSAGE_MAP()
 BOOL CCheckForUpdatesDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CString temp;
 	temp.Format(IDS_CHECKNEWER_YOURVERSION, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD);

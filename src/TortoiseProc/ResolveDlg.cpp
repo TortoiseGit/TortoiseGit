@@ -21,6 +21,7 @@
 #include "messagebox.h"
 #include "ResolveDlg.h"
 #include "CommonResource.h"
+#include "AppUtils.h"
 
 #define REFRESHTIMER   100
 
@@ -55,6 +56,7 @@ END_MESSAGE_MAP()
 BOOL CResolveDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_resolveListCtrl.Init(SVNSLC_COLEXT, _T("ResolveDlg"), SVNSLC_POPALL ^ (SVNSLC_POPIGNORE|SVNSLC_POPADD|SVNSLC_POPCOMMIT));
 	m_resolveListCtrl.SetConfirmButton((CButton*)GetDlgItem(IDOK));

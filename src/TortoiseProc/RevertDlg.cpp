@@ -24,6 +24,7 @@
 #include "Registry.h"
 #include ".\revertdlg.h"
 #include "CommonResource.h"
+#include "AppUtils.h"
 
 #define REFRESHTIMER   100
 
@@ -62,6 +63,7 @@ END_MESSAGE_MAP()
 BOOL CRevertDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_RevertList.Init(0, _T("RevertDlg"));
 	m_RevertList.SetConfirmButton((CButton*)GetDlgItem(IDOK));

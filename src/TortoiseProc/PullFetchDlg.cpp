@@ -67,6 +67,8 @@ END_MESSAGE_MAP()
 BOOL CPullFetchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
 	AddAnchor(IDC_REMOTE_COMBO, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_OTHER, TOP_LEFT,TOP_RIGHT);
 

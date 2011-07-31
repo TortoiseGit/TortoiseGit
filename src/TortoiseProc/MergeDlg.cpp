@@ -25,7 +25,7 @@
 #include "Git.h"
 #include "TortoiseProc.h"
 #include "MergeDlg.h"
-
+#include "AppUtils.h"
 
 #include "Messagebox.h"
 // CMergeDlg dialog
@@ -70,6 +70,7 @@ END_MESSAGE_MAP()
 BOOL CMergeDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CHOOSE_VERSION_ADDANCHOR;
 

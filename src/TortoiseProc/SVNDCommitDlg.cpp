@@ -23,6 +23,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SVNDCommitDlg.h"
+#include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CSVNDCommitDlg, CStandAloneDialog)
 
@@ -53,6 +54,7 @@ END_MESSAGE_MAP()
 BOOL CSVNDCommitDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CheckRadioButton(IDC_RADIO_SVN_COMMIT, IDC_RADIO_GIT_COMMIT, IDC_RADIO_SVN_COMMIT);
 

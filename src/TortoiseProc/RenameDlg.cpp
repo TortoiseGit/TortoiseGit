@@ -23,6 +23,7 @@
 #include "RenameDlg.h"
 #include ".\renamedlg.h"
 #include "CommonResource.h"
+#include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=NULL*/)
@@ -50,6 +51,7 @@ END_MESSAGE_MAP()
 BOOL CRenameDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	SHAutoComplete(GetDlgItem(IDC_NAME)->m_hWnd, SHACF_DEFAULT);
 

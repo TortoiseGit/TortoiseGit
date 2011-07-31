@@ -51,6 +51,7 @@ END_MESSAGE_MAP()
 BOOL CAboutDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	// set the version string
 	CString temp;

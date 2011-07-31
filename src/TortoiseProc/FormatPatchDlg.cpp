@@ -26,6 +26,8 @@
 #include "BrowseFolder.h"
 #include "LogDlg.h"
 #include "BrowseRefsDlg.h"
+#include "AppUtils.h"
+
 // CFormatPatchDlg dialog
 
 IMPLEMENT_DYNAMIC(CFormatPatchDlg, CResizableStandAloneDialog)
@@ -78,7 +80,8 @@ END_MESSAGE_MAP()
 BOOL CFormatPatchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-	
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
 	AddAnchor(IDC_GROUP_DIR, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_DIR,TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_DIR, TOP_RIGHT);

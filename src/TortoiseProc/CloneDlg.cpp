@@ -88,6 +88,8 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 BOOL CCloneDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
 	AddAnchor(IDC_URLCOMBO, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_CLONE_BROWSE_URL, TOP_RIGHT);
 	AddAnchor(IDC_CLONE_DIR, TOP_LEFT,TOP_RIGHT);

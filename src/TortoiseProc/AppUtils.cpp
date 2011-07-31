@@ -56,6 +56,7 @@
 #include "requestpulldlg.h"
 #include "PullFetchDlg.h"
 #include "RebaseDlg.h"
+#include "PropKey.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2685,4 +2686,27 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	regVersion = ver;
 
 	return ver;
+}
+
+void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
+{
+	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
+
+	HMODULE hShell = LoadLibrary(_T("Shell32.dll"));
+
+	if (hShell) {
+		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");
+		if (pfnSHGPSFW) {
+			IPropertyStore *pps;
+			HRESULT hr = pfnSHGPSFW(hWnd, IID_PPV_ARGS(&pps));
+			if (SUCCEEDED(hr)) {
+				PROPVARIANT var;
+				var.vt = VT_BOOL;
+				var.boolVal = VARIANT_TRUE;
+				hr = pps->SetValue(PKEY_AppUserModel_PreventPinning, var);
+				pps->Release();
+			}
+		}
+		FreeLibrary(hShell);
+	}
 }
