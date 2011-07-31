@@ -171,8 +171,8 @@
 		</Configuration>
 		<Configuration
 			Name="DLL Release|Win32"
-			OutputDirectory=".\DLL-Release"
-			IntermediateDirectory=".\DLL-Release"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -210,9 +210,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\DLL-Release/vc6libcurl.pch"
-				AssemblerListingLocation=".\DLL-Release/"
-				ObjectFile=".\DLL-Release/"
-				ProgramDataBaseFileName=".\DLL-Release/"
+				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Release\bin\libcurl.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -235,7 +233,7 @@
 				SuppressStartupBanner="true"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="DLL-Release/libcurl_imp.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\libcurl32.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -264,8 +262,8 @@
 		</Configuration>
 		<Configuration
 			Name="DLL Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)64"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)64"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -328,7 +326,7 @@
 				SuppressStartupBanner="true"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(IntDir)/libcurl_imp.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\libcurl.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -357,8 +355,8 @@
 		</Configuration>
 		<Configuration
 			Name="DLL Debug|Win32"
-			OutputDirectory=".\DLL-Debug"
-			IntermediateDirectory=".\DLL-Debug"
+			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
+			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -395,9 +393,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\DLL-Debug/vc6libcurl.pch"
-				AssemblerListingLocation=".\DLL-Debug/"
-				ObjectFile=".\DLL-Debug/"
-				ProgramDataBaseFileName=".\DLL-Debug/"
+				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Debug\bin\libcurld.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -420,12 +416,12 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\DLL-Debug/libcurld.pdb"
+				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug\bin\libcurld32.pdb"
 				GenerateMapFile="true"
-				MapFileName=".\DLL-Debug/libcurld.map"
+				MapFileName="$(IntDir)\libcurld32.map"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="DLL-Debug/libcurld_imp.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Debug\bin\libcurld32.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -454,8 +450,8 @@
 		</Configuration>
 		<Configuration
 			Name="DLL Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)64"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)64"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -492,9 +488,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\DLL-Debug/vc6libcurl.pch"
-				AssemblerListingLocation=".\DLL-Debug/"
-				ObjectFile=".\DLL-Debug/"
-				ProgramDataBaseFileName=".\DLL-Debug/"
+				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Debug64\bin\libcurld.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -517,12 +511,12 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\DLL-Debug/libcurld.pdb"
+				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug64\bin\libcurl.pdb"
 				GenerateMapFile="true"
-				MapFileName=".\DLL-Debug/libcurld.map"
+				MapFileName="$(IntDir)\libcurld.map"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="DLL-Debug/libcurld_imp.lib"
+				ImportLibrary="$(SolutionDir)\..\bin\Debug64\bin\libcurld.lib"
 				TargetMachine="17"
 			/>
 			<Tool
