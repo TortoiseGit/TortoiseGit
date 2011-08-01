@@ -574,7 +574,25 @@ LRESULT CProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 {
-	if (pMsg->message == WM_CONTEXTMENU || pMsg->message == WM_RBUTTONDOWN)
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_ESCAPE)
+		{
+			// pressing the ESC key should close the dialog. But since we disabled the escape
+			// key (so the user doesn't get the idea that he could simply undo an e.g. update)
+			// this won't work.
+			// So if the user presses the ESC key, change it to VK_RETURN so the dialog gets
+			// the impression that the OK button was pressed.
+			if ((!GetDlgItem(IDCANCEL)->IsWindowEnabled())
+				&&(GetDlgItem(IDOK)->IsWindowEnabled())&&(GetDlgItem(IDOK)->IsWindowVisible()))
+			{
+				// since we convert ESC to RETURN, make sure the OK button has the focus.
+				GetDlgItem(IDOK)->SetFocus();
+				pMsg->wParam = VK_RETURN;
+			}
+		}
+	}
+	else if (pMsg->message == WM_CONTEXTMENU || pMsg->message == WM_RBUTTONDOWN)
 	{
 		CWnd * pWnd = (CWnd*) GetDlgItem(IDC_LOG);
 		if (pWnd == GetFocus())
