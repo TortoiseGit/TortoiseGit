@@ -12,7 +12,7 @@
 	url = https://code.google.com/p/tortoisegit.zlib
 [submodule "ext/libcurl"]
 	path = ext/libcurl
-	url = https://code.google.com/p/tortoisegit.libcurl
+	url = git://github.com/bagder/curl.git
 [submodule "ext/libgit2"]
 	path = ext/libgit2
 	url = https://code.google.com/p/tortoisegit.libgit2

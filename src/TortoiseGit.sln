@@ -132,7 +132,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TGit", "TGit", "{2CB340C3-B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "..\ext\build\zlib.vcproj", "{5C6B6A95-2053-4593-9617-C4F176736D5A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcurl", "..\ext\libcurl\lib\vc6libcurl.vcproj", "{AD0E960B-5DE9-4AC3-8AE0-8ED0FB5F1396}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcurl", "..\ext\build\libcurl.vcproj", "{AD0E960B-5DE9-4AC3-8AE0-8ED0FB5F1396}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "git", "..\ext\tgit\compat\vcbuild\git\git.vcproj", "{E3E30E51-C5AD-407B-AB43-985E4111474A}"
 	ProjectSection(ProjectDependencies) = postProject
