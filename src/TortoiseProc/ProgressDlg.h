@@ -88,6 +88,7 @@ private:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	void					OnCancel();
+	afx_msg void			OnClose();
 	void					InsertCRLF(); //Insert \r before \n
 
 	CGitByteArray			m_Databuf;

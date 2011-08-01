@@ -59,6 +59,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
+	ON_WM_CLOSE()
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_PROGRESS_BUTTON1,&CProgressDlg::OnBnClickedButton1)
@@ -461,6 +462,13 @@ void CProgressDlg::OnBnClickedButton1()
 {
 	this->EndDialog(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry());
 }
+
+void CProgressDlg::OnClose()
+{
+	DialogEnableWindow(IDCANCEL, TRUE);
+	__super::OnClose();	
+}
+
 void CProgressDlg::OnCancel()
 {
 	m_bAbort = true;
