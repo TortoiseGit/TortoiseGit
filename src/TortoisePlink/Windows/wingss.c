@@ -18,10 +18,10 @@ const char *const gsslibnames[3] = {
     "Microsoft SSPI SECUR32.DLL",
     "User-specified GSSAPI DLL",
 };
-const struct keyval gsslibkeywords[] = {
-    { "gssapi32", 0 },
-    { "sspi", 1 },
-    { "custom", 2 },
+const struct keyvalwhere gsslibkeywords[] = {
+    { "gssapi32", 0, -1, -1 },
+    { "sspi", 1, -1, -1 },
+    { "custom", 2, -1, -1 },
 };
 
 DECL_WINDOWS_FUNCTION(static, SECURITY_STATUS,
@@ -91,7 +91,11 @@ struct ssh_gss_liblist *ssh_gss_setup(const Config *cfg)
 	    ret = RegQueryValueEx(regkey, "InstallDir", NULL,
 				  &type, buffer, &size);
 	    if (ret == ERROR_SUCCESS && type == REG_SZ) {
-		strcat(buffer, "\\bin\\gssapi32.dll");
+#ifdef _WIN64
+		strcat(buffer, "\\bin\\gssapi64.dll");
+#else
+        strcat(buffer, "\\bin\\gssapi32.dll");
+#endif
 		module = LoadLibrary(buffer);
 	    }
 	    sfree(buffer);
