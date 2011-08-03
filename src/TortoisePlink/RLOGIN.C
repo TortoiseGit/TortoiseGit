@@ -27,6 +27,11 @@ typedef struct rlogin_tag {
     int cansize;
     int term_width, term_height;
     void *frontend;
+
+    Config cfg;
+
+    /* In case we need to read a username from the terminal before starting */
+    prompts_t *prompt;
 } *Rlogin;
 
 static void rlogin_size(void *handle, int width, int height);
@@ -113,6 +118,27 @@ static void rlogin_sent(Plug plug, int bufsize)
     rlogin->bufsize = bufsize;
 }
 
+static void rlogin_startup(Rlogin rlogin, const char *ruser)
+{
+    char z = 0;
+    char *p;
+    sk_write(rlogin->s, &z, 1);
+    sk_write(rlogin->s, rlogin->cfg.localusername,
+             strlen(rlogin->cfg.localusername));
+    sk_write(rlogin->s, &z, 1);
+    sk_write(rlogin->s, ruser,
+             strlen(ruser));
+    sk_write(rlogin->s, &z, 1);
+    sk_write(rlogin->s, rlogin->cfg.termtype,
+             strlen(rlogin->cfg.termtype));
+    sk_write(rlogin->s, "/", 1);
+    for (p = rlogin->cfg.termspeed; isdigit((unsigned char)*p); p++) continue;
+    sk_write(rlogin->s, rlogin->cfg.termspeed, p - rlogin->cfg.termspeed);
+    rlogin->bufsize = sk_write(rlogin->s, &z, 1);
+
+    rlogin->prompt = NULL;
+}
+
 /*
  * Called to set up the rlogin connection.
  * 
@@ -135,6 +161,7 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
     SockAddr addr;
     const char *err;
     Rlogin rlogin;
+    char ruser[sizeof(cfg->username)];
 
     rlogin = snew(struct rlogin_tag);
     rlogin->fn = &fn_table;
@@ -144,6 +171,8 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
     rlogin->term_height = cfg->height;
     rlogin->firstbyte = 1;
     rlogin->cansize = 0;
+    rlogin->prompt = NULL;
+    rlogin->cfg = *cfg;                /* STRUCTURE COPY */
     *backend_handle = rlogin;
 
     /*
@@ -175,30 +204,6 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
     if ((err = sk_socket_error(rlogin->s)) != NULL)
 	return err;
 
-    /*
-     * Send local username, remote username, terminal/speed
-     */
-
-    {
-	char z = 0;
-	char *p;
-	char ruser[sizeof(cfg->username)];
-	(void) get_remote_username(cfg, ruser, sizeof(ruser));
-	sk_write(rlogin->s, &z, 1);
-	sk_write(rlogin->s, cfg->localusername,
-		 strlen(cfg->localusername));
-	sk_write(rlogin->s, &z, 1);
-	sk_write(rlogin->s, ruser,
-		 strlen(ruser));
-	sk_write(rlogin->s, &z, 1);
-	sk_write(rlogin->s, cfg->termtype,
-		 strlen(cfg->termtype));
-	sk_write(rlogin->s, "/", 1);
-	for (p = cfg->termspeed; isdigit((unsigned char)*p); p++) continue;
-	sk_write(rlogin->s, cfg->termspeed, p - cfg->termspeed);
-	rlogin->bufsize = sk_write(rlogin->s, &z, 1);
-    }
-
     if (*cfg->loghost) {
 	char *colon;
 
@@ -215,6 +220,28 @@ static const char *rlogin_init(void *frontend_handle, void **backend_handle,
 	}
     }
 
+    /*
+     * Send local username, remote username, terminal type and
+     * terminal speed - unless we don't have the remote username yet,
+     * in which case we prompt for it and may end up deferring doing
+     * anything else until the local prompt mechanism returns.
+     */
+    if (get_remote_username(cfg, ruser, sizeof(ruser))) {
+        rlogin_startup(rlogin, ruser);
+    } else {
+        int ret;
+
+        rlogin->prompt = new_prompts(rlogin->frontend);
+        rlogin->prompt->to_server = TRUE;
+        rlogin->prompt->name = dupstr("Rlogin login name");
+        add_prompt(rlogin->prompt, dupstr("rlogin username: "), TRUE,
+                   sizeof(cfg->username)); 
+        ret = get_userpass_input(rlogin->prompt, NULL, 0);
+        if (ret >= 0) {
+            rlogin_startup(rlogin, rlogin->prompt->prompts[0]->result);
+        }
+    }
+
     return NULL;
 }
 
@@ -222,6 +249,8 @@ static void rlogin_free(void *handle)
 {
     Rlogin rlogin = (Rlogin) handle;
 
+    if (rlogin->prompt)
+        free_prompts(rlogin->prompt);
     if (rlogin->s)
 	sk_close(rlogin->s);
     sfree(rlogin);
@@ -244,7 +273,21 @@ static int rlogin_send(void *handle, char *buf, int len)
     if (rlogin->s == NULL)
 	return 0;
 
-    rlogin->bufsize = sk_write(rlogin->s, buf, len);
+    if (rlogin->prompt) {
+        /*
+         * We're still prompting for a username, and aren't talking
+         * directly to the network connection yet.
+         */
+        int ret = get_userpass_input(rlogin->prompt,
+                                     (unsigned char *)buf, len);
+        if (ret >= 0) {
+            rlogin_startup(rlogin, rlogin->prompt->prompts[0]->result);
+            /* that nulls out rlogin->prompt, so then we'll start sending
+             * data down the wire in the obvious way */
+        }
+    } else {
+        rlogin->bufsize = sk_write(rlogin->s, buf, len);
+    }
 
     return rlogin->bufsize;
 }

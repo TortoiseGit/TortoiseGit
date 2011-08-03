@@ -9,21 +9,21 @@
 #include "storage.h"
 
 /* The cipher order given here is the default order. */
-static const struct keyval ciphernames[] = {
-    { "aes",	    CIPHER_AES },
-    { "blowfish",   CIPHER_BLOWFISH },
-    { "3des",	    CIPHER_3DES },
-    { "WARN",	    CIPHER_WARN },
-    { "arcfour",    CIPHER_ARCFOUR },
-    { "des",	    CIPHER_DES }
+static const struct keyvalwhere ciphernames[] = {
+    { "aes",        CIPHER_AES,             -1, -1 },
+    { "blowfish",   CIPHER_BLOWFISH,        -1, -1 },
+    { "3des",       CIPHER_3DES,            -1, -1 },
+    { "WARN",       CIPHER_WARN,            -1, -1 },
+    { "arcfour",    CIPHER_ARCFOUR,         -1, -1 },
+    { "des",        CIPHER_DES,             -1, -1 }
 };
 
-static const struct keyval kexnames[] = {
-    { "dh-gex-sha1",	    KEX_DHGEX },
-    { "dh-group14-sha1",    KEX_DHGROUP14 },
-    { "dh-group1-sha1",	    KEX_DHGROUP1 },
-    { "rsa",		    KEX_RSA },
-    { "WARN",		    KEX_WARN }
+static const struct keyvalwhere kexnames[] = {
+    { "dh-gex-sha1",        KEX_DHGEX,      -1, -1 },
+    { "dh-group14-sha1",    KEX_DHGROUP14,  -1, -1 },
+    { "dh-group1-sha1",     KEX_DHGROUP1,   -1, -1 },
+    { "rsa",                KEX_RSA,        KEX_WARN, -1 },
+    { "WARN",               KEX_WARN,       -1, -1 }
 };
 
 /*
@@ -188,7 +188,8 @@ static void wmap(void *handle, char const *key, char const *value, int len)
     sfree(buf);
 }
 
-static int key2val(const struct keyval *mapping, int nmaps, char *key)
+static int key2val(const struct keyvalwhere *mapping,
+                   int nmaps, char *key)
 {
     int i;
     for (i = 0; i < nmaps; i++)
@@ -196,7 +197,8 @@ static int key2val(const struct keyval *mapping, int nmaps, char *key)
     return -1;
 }
 
-static const char *val2key(const struct keyval *mapping, int nmaps, int val)
+static const char *val2key(const struct keyvalwhere *mapping,
+                           int nmaps, int val)
 {
     int i;
     for (i = 0; i < nmaps; i++)
@@ -211,40 +213,80 @@ static const char *val2key(const struct keyval *mapping, int nmaps, int val)
  * XXX: assumes vals in 'mapping' are small +ve integers
  */
 static void gprefs(void *sesskey, char *name, char *def,
-		   const struct keyval *mapping, int nvals,
+		   const struct keyvalwhere *mapping, int nvals,
 		   int *array)
 {
-    char commalist[80];
-    char *tokarg = commalist;
-    int n;
+    char commalist[256];
+    char *p, *q;
+    int i, j, n, v, pos;
     unsigned long seen = 0;	       /* bitmap for weeding dups etc */
+
+    /*
+     * Fetch the string which we'll parse as a comma-separated list.
+     */
     gpps(sesskey, name, def, commalist, sizeof(commalist));
 
-    /* Grotty parsing of commalist. */
+    /*
+     * Go through that list and convert it into values.
+     */
     n = 0;
-    do {
-	int v;
-	char *key;
-	key = strtok(tokarg, ","); /* sorry */
-	tokarg = NULL;
-	if (!key) break;
-	if (((v = key2val(mapping, nvals, key)) != -1) &&
-	    !(seen & 1<<v)) {
-	    array[n] = v;
-	    n++;
-	    seen |= 1<<v;
+    p = commalist;
+    while (1) {
+        while (*p && *p == ',') p++;
+        if (!*p)
+            break;                     /* no more words */
+
+        q = p;
+        while (*p && *p != ',') p++;
+        if (*p) *p++ = '\0';
+
+        v = key2val(mapping, nvals, q);
+        if (v != -1 && !(seen & (1 << v))) {
+	    seen |= (1 << v);
+	    array[n++] = v;
 	}
-    } while (n < nvals);
-    /* Add any missing values (backward compatibility ect). */
-    {
-	int i;
-	for (i = 0; i < nvals; i++) {
+    }
+
+    /*
+     * Now go through 'mapping' and add values that weren't mentioned
+     * in the list we fetched. We may have to loop over it multiple
+     * times so that we add values before other values whose default
+     * positions depend on them.
+     */
+    while (n < nvals) {
+        for (i = 0; i < nvals; i++) {
 	    assert(mapping[i].v < 32);
-	    if (!(seen & 1<<mapping[i].v)) {
-		array[n] = mapping[i].v;
-		n++;
-	    }
-	}
+
+	    if (!(seen & (1 << mapping[i].v))) {
+                /*
+                 * This element needs adding. But can we add it yet?
+                 */
+                if (mapping[i].vrel != -1 && !(seen & (1 << mapping[i].vrel)))
+                    continue;          /* nope */
+
+                /*
+                 * OK, we can work out where to add this element, so
+                 * do so.
+                 */
+                if (mapping[i].vrel == -1) {
+                    pos = (mapping[i].where < 0 ? n : 0);
+                } else {
+                    for (j = 0; j < n; j++)
+                        if (array[j] == mapping[i].vrel)
+                            break;
+                    assert(j < n);     /* implied by (seen & (1<<vrel)) */
+                    pos = (mapping[i].where < 0 ? j : j+1);
+                }
+
+                /*
+                 * And add it.
+                 */
+                for (j = n-1; j >= pos; j--)
+                    array[j+1] = array[j];
+                array[pos] = mapping[i].v;
+                n++;
+            }
+        }
     }
 }
 
@@ -252,25 +294,34 @@ static void gprefs(void *sesskey, char *name, char *def,
  * Write out a preference list.
  */
 static void wprefs(void *sesskey, char *name,
-		   const struct keyval *mapping, int nvals,
+		   const struct keyvalwhere *mapping, int nvals,
 		   int *array)
 {
-    char buf[80] = "";	/* XXX assumed big enough */
-    int l = sizeof(buf)-1, i;
-    buf[l] = '\0';
-    for (i = 0; l > 0 && i < nvals; i++) {
+    char *buf, *p;
+    int i, maxlen;
+
+    for (maxlen = i = 0; i < nvals; i++) {
 	const char *s = val2key(mapping, nvals, array[i]);
 	if (s) {
-	    int sl = strlen(s);
-	    if (i > 0) {
-		strncat(buf, ",", l);
-		l--;
-	    }
-	    strncat(buf, s, l);
-	    l -= sl;
+            maxlen += 1 + strlen(s);
+        }
+    }
+
+    buf = snewn(maxlen, char);
+    p = buf;
+
+    for (i = 0; i < nvals; i++) {
+	const char *s = val2key(mapping, nvals, array[i]);
+	if (s) {
+            p += sprintf(p, "%s%s", (p > buf ? "," : ""), s);
 	}
     }
+
+    assert(p - buf == maxlen - 1);     /* maxlen counted the NUL */
+
     write_setting_s(sesskey, name, buf);
+
+    sfree(buf);
 }
 
 char *save_settings(char *section, Config * cfg)

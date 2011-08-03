@@ -1691,7 +1691,7 @@ char *get_hostname(void)
 	    hostname = NULL;
 	    break;
 	}
-    } while (strlen(hostname) >= len-1);
+    } while (strlen(hostname) >= (size_t)(len-1));
     return hostname;
 }
 
