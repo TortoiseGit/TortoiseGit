@@ -50,6 +50,7 @@ void CRequestPullDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRequestPullDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CRequestPullDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_LOCAL_BRANCH, &CRequestPullDlg::OnBnClickedButtonLocalBranch)
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CRequestPullDlg::OnInitDialog()
@@ -65,6 +66,10 @@ BOOL CRequestPullDlg::OnInitDialog()
 	AddAnchor(IDC_COMBOBOXEX_LOCAL_BRANCH, TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_URL, TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_REMOTE_BRANCH, TOP_LEFT,TOP_RIGHT);
+
+	RECT rect;
+	GetWindowRect(&rect);
+	m_height = rect.bottom - rect.top;
 
 	EnableSaveRestore(_T("RequestPullDlg"));
 
@@ -149,4 +154,23 @@ void CRequestPullDlg::OnBnClickedButtonLocalBranch()
 		// load into window, do this even if empty so that it is clear that nothing has been selected
 		m_cStartRevision.SetWindowText( selectedHash );
 	}
+}
+
+void CRequestPullDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	// don't allow the dialog to be changed in height
+	switch (fwSide)
+	{
+	case WMSZ_BOTTOM:
+	case WMSZ_BOTTOMLEFT:
+	case WMSZ_BOTTOMRIGHT:
+		pRect->bottom = pRect->top + m_height;
+		break;
+	case WMSZ_TOP:
+	case WMSZ_TOPLEFT:
+	case WMSZ_TOPRIGHT:
+		pRect->top = pRect->bottom - m_height;
+		break;
+	}
+	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

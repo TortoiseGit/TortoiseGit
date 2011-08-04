@@ -71,4 +71,6 @@ protected:
 	afx_msg void OnBnClickedPushall();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void Refresh();
+	int			m_height;
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

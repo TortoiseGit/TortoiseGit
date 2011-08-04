@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CPushDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_DEST_BRANCH, &CPushDlg::OnBnClickedButtonBrowseDestBranch)
 	ON_BN_CLICKED(IDC_PUSHALL, &CPushDlg::OnBnClickedPushall)
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CPushDlg::OnInitDialog()
@@ -106,6 +107,10 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
+
+	RECT rect;
+	GetWindowRect(&rect);
+	m_height = rect.bottom - rect.top;
 
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
 
@@ -332,4 +337,23 @@ void CPushDlg::OnBnClickedPushall()
 		m_bTags = FALSE;
 		UpdateData(FALSE);
 	}
+}
+
+void CPushDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	// don't allow the dialog to be changed in height
+	switch (fwSide)
+	{
+	case WMSZ_BOTTOM:
+	case WMSZ_BOTTOMLEFT:
+	case WMSZ_BOTTOMRIGHT:
+		pRect->bottom = pRect->top + m_height;
+		break;
+	case WMSZ_TOP:
+	case WMSZ_TOPLEFT:
+	case WMSZ_TOPRIGHT:
+		pRect->top = pRect->bottom - m_height;
+		break;
+	}
+	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

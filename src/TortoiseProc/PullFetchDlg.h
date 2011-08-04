@@ -73,4 +73,6 @@ protected:
 	void Refresh();
 	afx_msg void OnStnClickedRemoteManage();
 	afx_msg void OnBnClickedButtonBrowseRef();
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
+	int			m_height;
 };

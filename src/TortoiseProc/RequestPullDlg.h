@@ -50,6 +50,8 @@ protected:
 	CRegString		m_RegStartRevision;
 	CRegString		m_RegRepositoryURL;
 	CRegString		m_RegEndRevision;
+	int			m_height;
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 
 public:
 	CString			m_StartRevision;

@@ -104,6 +104,10 @@ BOOL CCloneDlg::OnInitDialog()
 	AddAnchor(IDC_CLONE_GROUP_SVN,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	RECT rect;
+	GetWindowRect(&rect);
+	m_height = rect.bottom - rect.top;
+
 	m_tooltips.Create(this);
 	CString tt;
 	tt.LoadString(IDS_CLONE_DEPTH_TT);
@@ -162,9 +166,8 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_DEPTH, &CCloneDlg::OnBnClickedCheckDepth)
 	ON_BN_CLICKED(IDC_CHECK_BARE, &CCloneDlg::OnBnClickedCheckBare)
 	ON_BN_CLICKED(IDC_CHECK_USERNAME, &CCloneDlg::OnBnClickedCheckUsername)
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
-
-
 
 // CCloneDlg message handlers
 
@@ -411,4 +414,23 @@ void CCloneDlg::OnBnClickedCheckUsername()
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_CHECK_USERNAME)->EnableWindow(this->m_bSVN);
 	this->GetDlgItem(IDC_EDIT_USERNAME)->EnableWindow(this->m_bSVNUserName && this->m_bSVN);
+}
+
+void CCloneDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	// don't allow the dialog to be changed in height
+	switch (fwSide)
+	{
+	case WMSZ_BOTTOM:
+	case WMSZ_BOTTOMLEFT:
+	case WMSZ_BOTTOMRIGHT:
+		pRect->bottom = pRect->top + m_height;
+		break;
+	case WMSZ_TOP:
+	case WMSZ_TOPLEFT:
+	case WMSZ_TOPRIGHT:
+		pRect->top = pRect->bottom - m_height;
+		break;
+	}
+	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

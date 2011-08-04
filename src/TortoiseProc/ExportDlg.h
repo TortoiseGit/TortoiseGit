@@ -85,4 +85,6 @@ public:
 	CLogDlg	*		m_pLogDlg;
 	//svn_depth_t		m_depth;
 	afx_msg void OnDestroy();
+	int			m_height;
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

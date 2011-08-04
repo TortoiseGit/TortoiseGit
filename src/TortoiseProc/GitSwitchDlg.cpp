@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CGitSwitchDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_WM_DESTROY()
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_VERSION, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CGitSwitchDlg::OnInitDialog()
@@ -81,6 +82,10 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP,BOTTOM_RIGHT);
+
+	RECT rect;
+	GetWindowRect(&rect);
+	m_height = rect.bottom - rect.top;
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
@@ -101,8 +106,6 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
 	return TRUE;
-
-
 }
 // CCreateBranchTagDlg message handlers
 
@@ -199,4 +202,23 @@ void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 void CGitSwitchDlg::OnBnClickedCheckBranch()
 {
 	SetDefaultName(FALSE);
+}
+
+void CGitSwitchDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	// don't allow the dialog to be changed in height
+	switch (fwSide)
+	{
+	case WMSZ_BOTTOM:
+	case WMSZ_BOTTOMLEFT:
+	case WMSZ_BOTTOMRIGHT:
+		pRect->bottom = pRect->top + m_height;
+		break;
+	case WMSZ_TOP:
+	case WMSZ_TOPLEFT:
+	case WMSZ_TOPRIGHT:
+		pRect->top = pRect->bottom - m_height;
+		break;
+	}
+	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

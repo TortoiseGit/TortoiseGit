@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CExportDlg, CResizableStandAloneDialog)
 
 	CHOOSE_VERSION_EVENT
 	ON_WM_DESTROY()
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CExportDlg::OnInitDialog()
@@ -82,6 +83,10 @@ BOOL CExportDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
+	RECT rect;
+	GetWindowRect(&rect);
+	m_height = rect.bottom - rect.top;
 
 	CHOOSE_VERSION_ADDANCHOR;
 	Init();
@@ -250,4 +255,23 @@ void CExportDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
+}
+
+void CExportDlg::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	// don't allow the dialog to be changed in height
+	switch (fwSide)
+	{
+	case WMSZ_BOTTOM:
+	case WMSZ_BOTTOMLEFT:
+	case WMSZ_BOTTOMRIGHT:
+		pRect->bottom = pRect->top + m_height;
+		break;
+	case WMSZ_TOP:
+	case WMSZ_TOPLEFT:
+	case WMSZ_TOPRIGHT:
+		pRect->top = pRect->bottom - m_height;
+		break;
+	}
+	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }
