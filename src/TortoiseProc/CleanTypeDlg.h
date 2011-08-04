@@ -24,7 +24,7 @@
 
 // CCleanTypeDlg dialog
 
-class CCleanTypeDlg : public CResizableStandAloneDialog
+class CCleanTypeDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCleanTypeDlg)
 

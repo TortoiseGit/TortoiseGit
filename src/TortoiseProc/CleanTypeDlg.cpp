@@ -27,10 +27,10 @@
 
 // CCleanTypeDlg dialog
 
-IMPLEMENT_DYNAMIC(CCleanTypeDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CCleanTypeDlg, CStandAloneDialog)
 
 CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CCleanTypeDlg::IDD, pParent)
+	: CStandAloneDialog(CCleanTypeDlg::IDD, pParent)
 	
 {
 	CString WorkingDir=g_Git.m_CurrentDir;
@@ -54,7 +54,7 @@ void CCleanTypeDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CCleanTypeDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CCleanTypeDlg, CStandAloneDialog)
 END_MESSAGE_MAP()
 
 
@@ -62,16 +62,8 @@ END_MESSAGE_MAP()
 
 BOOL CCleanTypeDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
-
-	this->AddAnchor(IDOK,BOTTOM_RIGHT);
-	this->AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	this->AddAnchor(IDHELP,BOTTOM_RIGHT);
-
-	this->AddAnchor(IDC_GROUP_CLEAN_TYPE,TOP_LEFT,TOP_RIGHT);
-
-	this->AddOthersToAnchor();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -84,5 +76,5 @@ void CCleanTypeDlg::OnOK()
 	this->m_regDir = this->m_bDir;
 	this->m_regType = this->m_CleanType ;
 
-	CResizableStandAloneDialog::OnOK();
+	CStandAloneDialog::OnOK();
 }
