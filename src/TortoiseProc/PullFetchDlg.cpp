@@ -37,6 +37,9 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
+	m_bNoFF = false;
+	m_bSquash = false;
+	m_bNoCommit = false;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -50,6 +53,9 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_OTHER, this->m_Other);
 	DDX_Control(pDX, IDC_REMOTE_BRANCH, this->m_RemoteBranch);
 	DDX_Control(pDX,IDC_REMOTE_MANAGE, this->m_RemoteManage);
+	DDX_Check(pDX,IDC_CHECK_NOFF, this->m_bNoFF);
+	DDX_Check(pDX,IDC_CHECK_SQUASH, this->m_bSquash);
+	DDX_Check(pDX,IDC_CHECK_NOCOMMIT, this->m_bNoCommit);
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
 	DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
 	DDX_Check(pDX,IDC_CHECK_PRUNE,m_bPrune);
@@ -77,7 +83,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_GROUPT_REMOTE,TOP_LEFT,TOP_RIGHT);
+	AddAnchor(IDC_GROUP_OPTION,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,BOTTOM_LEFT);
 	AddAnchor(IDC_CHECK_PRUNE,BOTTOM_LEFT);
 	AddAnchor(IDC_CHECK_REBASE,BOTTOM_LEFT);
@@ -124,6 +131,11 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(m_IsPull) {
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
+	} else {
+		this->GetDlgItem(IDC_GROUP_OPTION)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_CHECK_SQUASH)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_CHECK_NOCOMMIT)->EnableWindow(FALSE);
 	}
 
 	m_Other.SetURLHistory(TRUE);
