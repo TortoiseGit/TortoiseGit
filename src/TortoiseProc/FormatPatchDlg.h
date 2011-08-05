@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 #include "Registry.h"
 
 // CFormatPatchDlg dialog
 
-class CFormatPatchDlg : public CResizableStandAloneDialog
+class CFormatPatchDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CFormatPatchDlg)
 

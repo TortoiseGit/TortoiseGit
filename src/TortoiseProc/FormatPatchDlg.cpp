@@ -30,10 +30,10 @@
 
 // CFormatPatchDlg dialog
 
-IMPLEMENT_DYNAMIC(CFormatPatchDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CFormatPatchDlg, CHorizontalResizableStandAloneDialog)
 
 CFormatPatchDlg::CFormatPatchDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent),
+	: CHorizontalResizableStandAloneDialog(CFormatPatchDlg::IDD, pParent),
 	m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\FormatPatch\\SendMail"),0)
 {
 	m_Num=1;
@@ -66,7 +66,7 @@ void CFormatPatchDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CFormatPatchDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CFormatPatchDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DIR, &CFormatPatchDlg::OnBnClickedButtonDir)
 	ON_BN_CLICKED(IDC_BUTTON_FROM, &CFormatPatchDlg::OnBnClickedButtonFrom)
 	ON_BN_CLICKED(IDC_BUTTON_TO, &CFormatPatchDlg::OnBnClickedButtonTo)
@@ -79,7 +79,7 @@ END_MESSAGE_MAP()
 
 BOOL CFormatPatchDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_GROUP_DIR, TOP_LEFT, TOP_RIGHT);
