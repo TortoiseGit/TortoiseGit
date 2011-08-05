@@ -18,14 +18,14 @@
 //
 #pragma once
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
 #include "tooltip.h"
 // CCloneDlg dialog
 
-class CCloneDlg : public CResizableStandAloneDialog
+class CCloneDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNCREATE(CCloneDlg)
 
@@ -97,7 +97,4 @@ protected:
 	CToolTips	m_tooltips;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedCheckUsername();
-
-	int			m_height;
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

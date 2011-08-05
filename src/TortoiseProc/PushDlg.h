@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 #include "registry.h"
 // CPushDlg dialog
 
-class CPushDlg : public CResizableStandAloneDialog
+class CPushDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CPushDlg)
 
@@ -71,6 +71,4 @@ protected:
 	afx_msg void OnBnClickedPushall();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void Refresh();
-	int			m_height;
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

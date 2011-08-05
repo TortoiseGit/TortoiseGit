@@ -29,10 +29,10 @@
 
 // CSubmoduleAddDlg dialog
 
-IMPLEMENT_DYNAMIC(CSubmoduleAddDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CSubmoduleAddDlg, CHorizontalResizableStandAloneDialog)
 
 CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
 	, m_bBranch(FALSE)
 	, m_strBranch(_T(""))
 {
@@ -53,11 +53,10 @@ void CSubmoduleAddDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSubmoduleAddDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CSubmoduleAddDlg, CHorizontalResizableStandAloneDialog)
 	ON_COMMAND(IDC_REP_BROWSE,			OnRepBrowse)
 	ON_COMMAND(IDC_BUTTON_PATH_BROWSE,	OnPathBrowse)
 	ON_COMMAND(IDC_BRANCH_CHECK,		OnBranchCheck)
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 
@@ -65,7 +64,7 @@ END_MESSAGE_MAP()
 
 BOOL CSubmoduleAddDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
@@ -80,10 +79,6 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
 
 	EnableSaveRestore(_T("SubmoduleAddDlg"));
 
@@ -165,23 +160,4 @@ void CSubmoduleAddDlg::OnOK()
 			return ;
 	}
 	__super::OnOK();
-}
-
-void CSubmoduleAddDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

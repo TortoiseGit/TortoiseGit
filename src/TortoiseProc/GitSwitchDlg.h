@@ -18,13 +18,13 @@
 //
 #pragma once
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 
 #include "ChooseVersion.h"
 // CGitSwitchDlg dialog
 
-class CGitSwitchDlg : public CResizableStandAloneDialog,public CChooseVersion
+class CGitSwitchDlg : public CHorizontalResizableStandAloneDialog,public CChooseVersion
 {
 	DECLARE_DYNAMIC(CGitSwitchDlg)
 
@@ -58,6 +58,4 @@ protected:
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	afx_msg void OnDestroy();
 	afx_msg void OnCbnEditchangeComboboxexVersion();
-	int			m_height;
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

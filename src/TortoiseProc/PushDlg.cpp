@@ -32,10 +32,10 @@
 
 // CPushDlg dialog
 
-IMPLEMENT_DYNAMIC(CPushDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CPushDlg, CHorizontalResizableStandAloneDialog)
 
 CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CPushDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CPushDlg::IDD, pParent)
 	, m_bPushAllBranches(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
@@ -47,7 +47,7 @@ CPushDlg::~CPushDlg()
 
 void CPushDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CResizableStandAloneDialog::DoDataExchange(pDX);
+	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BRANCH_REMOTE, this->m_BranchRemote);
 	DDX_Control(pDX, IDC_BRANCH_SOURCE, this->m_BranchSource);
 	DDX_Control(pDX, IDC_REMOTE, this->m_Remote);
@@ -59,7 +59,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
 }
 
-BEGIN_MESSAGE_MAP(CPushDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CPushDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_RD_REMOTE, &CPushDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_RD_URL, &CPushDlg::OnBnClickedRd)
 	ON_CBN_SELCHANGE(IDC_BRANCH_SOURCE, &CPushDlg::OnCbnSelchangeBranchSource)
@@ -68,12 +68,11 @@ BEGIN_MESSAGE_MAP(CPushDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_DEST_BRANCH, &CPushDlg::OnBnClickedButtonBrowseDestBranch)
 	ON_BN_CLICKED(IDC_PUSHALL, &CPushDlg::OnBnClickedPushall)
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CPushDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
@@ -107,10 +106,6 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
 
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
 
@@ -239,7 +234,7 @@ void CPushDlg::OnCbnSelchangeBranchSource()
 
 void CPushDlg::OnBnClickedOk()
 {
-	CResizableStandAloneDialog::UpdateData(TRUE);
+	CHorizontalResizableStandAloneDialog::UpdateData(TRUE);
 
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_REMOTE)
 	{
@@ -268,7 +263,7 @@ void CPushDlg::OnBnClickedOk()
 
 	this->m_regAutoLoad = m_bAutoLoad ;
 
-	CResizableStandAloneDialog::OnOK();
+	CHorizontalResizableStandAloneDialog::OnOK();
 }
 
 void CPushDlg::OnBnClickedRemoteManage()
@@ -321,7 +316,7 @@ BOOL CPushDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 
-	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+	return CHorizontalResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CPushDlg::OnBnClickedPushall()
@@ -337,23 +332,4 @@ void CPushDlg::OnBnClickedPushall()
 		m_bTags = FALSE;
 		UpdateData(FALSE);
 	}
-}
-
-void CPushDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

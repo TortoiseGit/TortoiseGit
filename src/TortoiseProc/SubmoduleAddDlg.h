@@ -19,11 +19,11 @@
 
 #pragma once
 #include "afxcmn.h"
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 // CSubmoduleAddDlg dialog
 
-class CSubmoduleAddDlg : public CResizableStandAloneDialog
+class CSubmoduleAddDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CSubmoduleAddDlg)
 
@@ -41,8 +41,6 @@ protected:
 	void OnBranchCheck();
 	virtual void OnOK();
 	DECLARE_MESSAGE_MAP()
-	int			m_height;
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 public:
 	CHistoryCombo m_Repository;
 public:

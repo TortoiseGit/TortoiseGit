@@ -20,7 +20,7 @@
 #pragma once
 #include "afxwin.h"
 #include "GitRev.h"
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 #include "FileDropEdit.h"
 #include "LogDlg.h"
@@ -32,7 +32,7 @@
  * Prompts the user for required information for an export command. The information
  * is the module name and the repository url. 
  */
-class CExportDlg : public CResizableStandAloneDialog, public CChooseVersion
+class CExportDlg : public CHorizontalResizableStandAloneDialog, public CChooseVersion
 {
 	DECLARE_DYNAMIC(CExportDlg)
 
@@ -85,6 +85,4 @@ public:
 	CLogDlg	*		m_pLogDlg;
 	//svn_depth_t		m_depth;
 	afx_msg void OnDestroy();
-	int			m_height;
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 };

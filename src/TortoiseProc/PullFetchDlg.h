@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
 #include "HyperLink.h"
 #include "registry.h"
 // CPullFetchDlg dialog
 
-class CPullFetchDlg : public CResizableStandAloneDialog
+class CPullFetchDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CPullFetchDlg)
 
@@ -73,6 +73,4 @@ protected:
 	void Refresh();
 	afx_msg void OnStnClickedRemoteManage();
 	afx_msg void OnBnClickedButtonBrowseRef();
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
-	int			m_height;
 };

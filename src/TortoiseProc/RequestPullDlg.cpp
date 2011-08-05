@@ -27,10 +27,10 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 
-IMPLEMENT_DYNAMIC(CRequestPullDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CRequestPullDlg, CHorizontalResizableStandAloneDialog)
 
 CRequestPullDlg::CRequestPullDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CRequestPullDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CRequestPullDlg::IDD, pParent)
 {
 }
 
@@ -40,22 +40,21 @@ CRequestPullDlg::~CRequestPullDlg()
 
 void CRequestPullDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CResizableStandAloneDialog::DoDataExchange(pDX);
+	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBOBOXEX_LOCAL_BRANCH, m_cStartRevision);
 	DDX_Control(pDX, IDC_COMBOBOXEX_URL, m_cRepositoryURL);
 	DDX_Control(pDX, IDC_REMOTE_BRANCH, m_cEndRevision);
 }
 
 
-BEGIN_MESSAGE_MAP(CRequestPullDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CRequestPullDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CRequestPullDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_LOCAL_BRANCH, &CRequestPullDlg::OnBnClickedButtonLocalBranch)
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CRequestPullDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
@@ -66,10 +65,6 @@ BOOL CRequestPullDlg::OnInitDialog()
 	AddAnchor(IDC_COMBOBOXEX_LOCAL_BRANCH, TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_URL, TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_REMOTE_BRANCH, TOP_LEFT,TOP_RIGHT);
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
 
 	EnableSaveRestore(_T("RequestPullDlg"));
 
@@ -115,7 +110,7 @@ BOOL CRequestPullDlg::OnInitDialog()
 
 void CRequestPullDlg::OnBnClickedOk()
 {
-	CResizableStandAloneDialog::UpdateData(TRUE);
+	CHorizontalResizableStandAloneDialog::UpdateData(TRUE);
 
 	m_cRepositoryURL.SaveHistory();
 
@@ -136,7 +131,7 @@ void CRequestPullDlg::OnBnClickedOk()
 	if(m_StartRevision.Find(_T("remotes/")) == 0)
 		m_StartRevision = m_StartRevision.Mid(8);
 
-	CResizableStandAloneDialog::OnOK();
+	CHorizontalResizableStandAloneDialog::OnOK();
 }
 
 void CRequestPullDlg::OnBnClickedButtonLocalBranch()
@@ -154,23 +149,4 @@ void CRequestPullDlg::OnBnClickedButtonLocalBranch()
 		// load into window, do this even if empty so that it is clear that nothing has been selected
 		m_cStartRevision.SetWindowText( selectedHash );
 	}
-}
-
-void CRequestPullDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

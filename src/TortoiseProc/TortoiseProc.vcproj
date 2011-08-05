@@ -472,6 +472,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utils\MiscUI\HorizontalResizableStandAloneDialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\MiscUI\HorizontalResizableStandAloneDialog.h"
+					>
+				</File>
+				<File
 					RelativePath="..\Utils\MiscUI\SciEdit.cpp"
 					>
 				</File>

@@ -28,10 +28,10 @@
 #include "BrowseRefsDlg.h"
 // CPullFetchDlg dialog
 
-IMPLEMENT_DYNAMIC(CPullFetchDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 
 CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
@@ -62,18 +62,17 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CPullFetchDlg,CResizableStandAloneDialog )
+BEGIN_MESSAGE_MAP(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REMOTE_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_OTHER_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDOK, &CPullFetchDlg::OnBnClickedOk)
 	ON_STN_CLICKED(IDC_REMOTE_MANAGE, &CPullFetchDlg::OnStnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CPullFetchDlg::OnBnClickedButtonBrowseRef)
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CPullFetchDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_REMOTE_COMBO, TOP_LEFT, TOP_RIGHT);
@@ -91,10 +90,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AddAnchor(IDC_CHECK_REBASE,BOTTOM_LEFT);
 	AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
@@ -275,23 +270,4 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 	m_RemoteBranch.AddString(remoteBranch);
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
-}
-
-void CPullFetchDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

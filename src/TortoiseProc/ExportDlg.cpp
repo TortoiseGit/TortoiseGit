@@ -27,9 +27,9 @@
 #include "AppUtils.h"
 
 
-IMPLEMENT_DYNAMIC(CExportDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CExportDlg, CHorizontalResizableStandAloneDialog)
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CExportDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CExportDlg::IDD, pParent)
 	, CChooseVersion(this)
 	, m_Revision(_T("HEAD"))
 	, m_strExportDirectory(_T(""))
@@ -47,7 +47,7 @@ CExportDlg::~CExportDlg()
 
 void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CResizableStandAloneDialog::DoDataExchange(pDX);
+	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_CHECKOUTDIRECTORY, m_strExportDirectory);
 	DDX_Control(pDX, IDC_CHECKOUTDIRECTORY, m_cCheckoutEdit);
 
@@ -56,7 +56,7 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CExportDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CExportDlg, CHorizontalResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_REVSELECTED, OnRevSelected)
 	ON_BN_CLICKED(IDC_CHECKOUTDIRECTORY_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
 	ON_EN_CHANGE(IDC_CHECKOUTDIRECTORY, OnEnChangeCheckoutdirectory)
@@ -64,12 +64,11 @@ BEGIN_MESSAGE_MAP(CExportDlg, CResizableStandAloneDialog)
 
 	CHOOSE_VERSION_EVENT
 	ON_WM_DESTROY()
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 BOOL CExportDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_sExportDirOrig = m_strExportDirectory;
@@ -83,10 +82,6 @@ BOOL CExportDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
 
 	CHOOSE_VERSION_ADDANCHOR;
 	Init();
@@ -147,7 +142,7 @@ void CExportDlg::OnOK()
 	}
 
 	UpdateData(FALSE);
-	CResizableStandAloneDialog::OnOK();
+	CHorizontalResizableStandAloneDialog::OnOK();
 }
 
 void CExportDlg::OnBnClickedBrowse()
@@ -180,7 +175,7 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 BOOL CExportDlg::PreTranslateMessage(MSG* pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);
-	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+	return CHorizontalResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CExportDlg::OnEnChangeCheckoutdirectory()
@@ -255,23 +250,4 @@ void CExportDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
-}
-
-void CExportDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

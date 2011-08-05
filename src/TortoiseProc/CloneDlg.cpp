@@ -27,10 +27,10 @@
 #include "AppUtils.h"
 // CCloneDlg dialog
 
-IMPLEMENT_DYNCREATE(CCloneDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNCREATE(CCloneDlg, CHorizontalResizableStandAloneDialog)
 
 CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CCloneDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CCloneDlg::IDD, pParent)
 	, m_Directory(_T(""))
 {
 	m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
@@ -59,7 +59,7 @@ CCloneDlg::~CCloneDlg()
 
 void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CResizableStandAloneDialog::DoDataExchange(pDX);
+	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_URLCOMBO, m_URLCombo);
 	DDX_Control(pDX, IDC_PUTTYKEYFILE, m_PuttyKeyCombo);
 	DDX_Control(pDX, IDC_CLONE_BROWSE_URL, m_BrowseUrl);
@@ -87,7 +87,7 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 
 BOOL CCloneDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_URLCOMBO, TOP_LEFT, TOP_RIGHT);
@@ -103,10 +103,6 @@ BOOL CCloneDlg::OnInitDialog()
 	AddAnchor(IDC_PUTTYKEYFILE,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_CLONE_GROUP_SVN,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
-	RECT rect;
-	GetWindowRect(&rect);
-	m_height = rect.bottom - rect.top;
 
 	m_tooltips.Create(this);
 	CString tt;
@@ -152,7 +148,7 @@ BOOL CCloneDlg::OnInitDialog()
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CCloneDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CLONE_BROWSE_URL, &CCloneDlg::OnBnClickedCloneBrowseUrl)
 	ON_BN_CLICKED(IDC_CLONE_DIR_BROWSE, &CCloneDlg::OnBnClickedCloneDirBrowse)
 	ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, &CCloneDlg::OnBnClickedPuttykeyfileBrowse)
@@ -166,7 +162,6 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_DEPTH, &CCloneDlg::OnBnClickedCheckDepth)
 	ON_BN_CLICKED(IDC_CHECK_BARE, &CCloneDlg::OnBnClickedCheckBare)
 	ON_BN_CLICKED(IDC_CHECK_USERNAME, &CCloneDlg::OnBnClickedCheckUsername)
-	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 // CCloneDlg message handlers
@@ -406,7 +401,7 @@ BOOL CCloneDlg::PreTranslateMessage(MSG* pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);
 
-	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+	return CHorizontalResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CCloneDlg::OnBnClickedCheckUsername()
@@ -414,23 +409,4 @@ void CCloneDlg::OnBnClickedCheckUsername()
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_CHECK_USERNAME)->EnableWindow(this->m_bSVN);
 	this->GetDlgItem(IDC_EDIT_USERNAME)->EnableWindow(this->m_bSVNUserName && this->m_bSVN);
-}
-
-void CCloneDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + m_height;
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - m_height;
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

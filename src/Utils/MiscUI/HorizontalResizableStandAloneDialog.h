@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,43 +16,22 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-
 #pragma once
 
-#include "HorizontalResizableStandAloneDialog.h"
-#include "HistoryCombo.h"
-#include "registry.h"
+#include "StandAloneDlg.h"
 
-class CRequestPullDlg : public CHorizontalResizableStandAloneDialog
+class CHorizontalResizableStandAloneDialog : public CResizableStandAloneDialog
 {
-	DECLARE_DYNAMIC(CRequestPullDlg)
-
 public:
-	CRequestPullDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CRequestPullDlg();
+	CHorizontalResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
 
-	// Dialog Data
-	enum { IDD = IDD_REQUESTPULL };
+private:
+	DECLARE_DYNAMIC(CHorizontalResizableStandAloneDialog)
 
 protected:
 	virtual BOOL OnInitDialog();
-
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	afx_msg void	OnSizing(UINT fwSide, LPRECT pRect);
+	int				m_height;
 
 	DECLARE_MESSAGE_MAP()
-
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedButtonLocalBranch();
-
-	CHistoryCombo	m_cStartRevision;
-	CHistoryCombo	m_cRepositoryURL;
-	CEdit			m_cEndRevision;
-	CRegString		m_RegStartRevision;
-	CRegString		m_RegRepositoryURL;
-	CRegString		m_RegEndRevision;
-
-public:
-	CString			m_StartRevision;
-	CString			m_RepositoryURL;
-	CString			m_EndRevision;
 };
