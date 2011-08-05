@@ -646,7 +646,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			pMsgView->GetWindowText(text);
 			// the rich edit control doesn't count the CR char!
 			// to be exact: CRLF is treated as one char.
-			text.Replace(_T("\r"), _T(""));
+			text.Remove('\r');
 
 			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
 			CAppUtils::FormatTextInRichEditControl(pMsgView);
@@ -785,8 +785,8 @@ CString CLogDlg::MakeShortMessage(const CString& message)
 		sShortMessage = message;
 	}
 	// Remove newlines and tabs 'cause those are not shown nicely in the list control
-	sShortMessage.Replace(_T("\r"), _T(""));
-	sShortMessage.Replace(_T("\t"), _T(" "));
+	sShortMessage.Remove('\r');
+	sShortMessage.Replace(_T('\t'), _T(' '));
 
 	// Suppose the first empty line separates 'summary' from the rest of the message.
 	int found = sShortMessage.Find(_T("\n\n"));
@@ -1514,7 +1514,7 @@ void CLogDlg::EditAuthor(const CLogDataVector& /*logs*/)
 	dlg.m_bUseLogWidth = false;
 	if (dlg.DoModal() == IDOK)
 	{
-		dlg.m_sInputText.Replace(_T("\r"), _T(""));
+		dlg.m_sInputText.Remove('\r');
 
 		LogCache::CCachedLogInfo* toUpdate = GetLogCache (CTGitPath (m_sRepositoryRoot));
 
@@ -1593,7 +1593,7 @@ void CLogDlg::EditLogMessage(int /*index*/)
 	dlg.m_bUseLogWidth = true;
 	if (dlg.DoModal() == IDOK)
 	{
-		dlg.m_sInputText.Replace(_T("\r"), _T(""));
+		dlg.m_sInputText.Remove('\r');
 		if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTGitPath(url), pLogEntry->Rev))
 		{
 			CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);

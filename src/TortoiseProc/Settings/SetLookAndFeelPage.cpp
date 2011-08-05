@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008+2011 - TortoiseSVN
 
@@ -187,7 +187,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 	m_regTopmenuhigh = (m_topmenu >> 32);
 	
 	m_regTopmenu.getErrorString();
-	m_sNoContextPaths.Replace(_T("\r"), _T(""));
+	m_sNoContextPaths.Remove('\r');
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)
 		m_sNoContextPaths += _T("\n");
 

@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseGit
+// Copyright (C) 2003-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -223,7 +223,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 			if ((!bFoundLogTemplate)&&(sPropName.Compare(PROJECTPROPNAME_LOGTEMPLATE)==0))
 			{
 				sLogTemplate = sPropVal;
-				sLogTemplate.Replace(_T("\r"), _T(""));
+				sLogTemplate.Remove('\r');
 				sLogTemplate.Replace(_T("\n"), _T("\r\n"));
 				bFoundLogTemplate = TRUE;
 			}
@@ -881,8 +881,8 @@ CString ProjectProperties::MakeShortMessage(const CString& message)
 		sShortMessage = message;
 	}
 	// Remove newlines and tabs 'cause those are not shown nicely in the list control
-	sShortMessage.Replace(_T("\r"), _T(""));
-	sShortMessage.Replace(_T("\t"), _T(" "));
+	sShortMessage.Remove('\r');
+	sShortMessage.Replace(_T('\t'), _T(' '));
 	
 	// Suppose the first empty line separates 'summary' from the rest of the message.
 	int found = sShortMessage.Find(_T("\n\n"));

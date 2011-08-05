@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -190,7 +190,7 @@ UINT CEditPropertiesDlg::PropsThread()
 				it->second.value = prop_value;
 				CString stemp = value.c_str();
 				stemp.Replace('\n', ' ');
-				stemp.Replace(_T("\r"), _T(""));
+				stemp.Remove('\r');
 				it->second.value_without_newlines = stdstring((LPCTSTR)stemp);
 				it->second.count = 1;
 				it->second.allthesamevalue = true;

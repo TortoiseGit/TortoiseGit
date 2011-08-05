@@ -762,7 +762,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 	pWnd->GetWindowText(sText);
 	// the rich edit control doesn't count the CR char!
 	// to be exact: CRLF is treated as one char.
-	sText.Replace(_T("\r"), _T(""));
+	sText.Remove('\r');
 
 	// style each line separately
 	int offset = 0;

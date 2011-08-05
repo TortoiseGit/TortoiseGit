@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -228,12 +228,12 @@ BOOL CSetOverlayPage::OnApply()
 
 	if (m_sExcludePaths.Compare(CString(m_regExcludePaths)))
 		m_restart = Restart_Cache;
-	m_sExcludePaths.Replace(_T("\r"), _T(""));
+	m_sExcludePaths.Remove('\r');
 	if (m_sExcludePaths.Right(1).Compare(_T("\n"))!=0)
 		m_sExcludePaths += _T("\n");
 	Store (m_sExcludePaths, m_regExcludePaths);
 	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
-	m_sIncludePaths.Replace(_T("\r"), _T(""));
+	m_sIncludePaths.Remove('\r');
 	if (m_sIncludePaths.Right(1).Compare(_T("\n"))!=0)
 		m_sIncludePaths += _T("\n");
 	if (m_sIncludePaths.Compare(CString(m_regIncludePaths)))

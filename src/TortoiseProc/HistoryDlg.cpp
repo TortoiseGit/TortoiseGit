@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ BOOL CHistoryDlg::OnInitDialog()
 	for (size_t i = 0; i < m_history->GetCount(); ++i)
 	{
 		CString sEntry = m_history->GetEntry(i);
-		sEntry.Replace(_T("\r"), _T(""));
+		sEntry.Remove('\r');
 		sEntry.Replace('\n', ' ');
 		m_List.AddString(sEntry);
 		itemExtent = pDC->GetTextExtent(sEntry);

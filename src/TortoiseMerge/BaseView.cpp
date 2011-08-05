@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2009 - TortoiseSVN
+// Copyright (C) 2003-2009,2011 - TortoiseSVN
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -607,14 +607,14 @@ bool CBaseView::IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical)
 	CString other = GetWhitespaceBlock(m_pOtherViewData, min(nLineIndex, m_pOtherViewData->GetCount() - 1));
 	bIdentical = mine == other;
 	
-	mine.Replace(_T(" "), _T(""));
-	mine.Replace(_T("\t"), _T(""));
-	mine.Replace(_T("\r"), _T(""));
-	mine.Replace(_T("\n"), _T(""));
-	other.Replace(_T(" "), _T(""));
-	other.Replace(_T("\t"), _T(""));
-	other.Replace(_T("\r"), _T(""));
-	other.Replace(_T("\n"), _T(""));
+	mine.Remove(' ');
+	mine.Remove('\t');
+	mine.Remove('\r');
+	mine.Remove('\n');
+	other.Remove(' ');
+	other.Remove('\t');
+	other.Remove('\r');
+	other.Remove('\n');
 	
 	return (mine == other) && (!mine.IsEmpty());
 }
