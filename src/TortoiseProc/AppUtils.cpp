@@ -2292,6 +2292,7 @@ bool CAppUtils::Push(bool autoClose)
 		progress.m_bAutoCloseOnSuccess=autoClose;
 		progress.m_GitCmd=cmd;
 		progress.m_PostCmdList.Add(_T("&Request pull"));
+		progress.m_PostCmdList.Add(_T("Re&Push"));
 		int ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
@@ -2310,6 +2311,10 @@ bool CAppUtils::Push(bool autoClose)
 			if(ret == IDC_PROGRESS_BUTTON1)
 			{
 				RequestPull(dlg.m_BranchRemoteName);
+			}
+			else if(ret == IDC_PROGRESS_BUTTON1 + 1)
+			{
+				Push();
 			}
 			return TRUE;
 		}
