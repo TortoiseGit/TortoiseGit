@@ -314,7 +314,7 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	}else
 	{
 		if(m_Directory.GetLength()>0 &&
-			(m_Directory[m_Directory.GetLength()-1] != _T('\\') ||
+			(m_Directory[m_Directory.GetLength()-1] != _T('\\') &&
 			m_Directory[m_Directory.GetLength()-1] != _T('/') ) )
 		{
 			m_Directory+=_T('\\');
