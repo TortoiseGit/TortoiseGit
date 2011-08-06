@@ -40,17 +40,17 @@ bool CloneCommand::Execute()
 		else
 			recursiveStr = _T("");
 
-		CString BareStr;
+		CString bareStr;
 		if(dlg.m_bBare)
-			BareStr = _T("--bare");
+			bareStr = _T("--bare");
 		else
-			BareStr = _T("");
+			bareStr = _T("");
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
 		{
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
 		}
-	
+
 		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
 		CAppUtils::RemoveTrailSlash(dlg.m_URL);
 
@@ -64,36 +64,32 @@ bool CloneCommand::Execute()
 			// this should not be necessary but msysgit does not support the use \ here yet
 			url.Replace( _T('\\'), _T('/'));
 		}
-		
+
 		CString depth; 
 		if (dlg.m_bDepth)
 		{
-			
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
 		CString cmd;
 		CString progressarg; 
-		
+
 		int ver = CAppUtils::GetMsysgitVersion();
-		
+
 		if(ver >= 0x01070002) //above 1.7.0.2
 			progressarg = _T("--progress");
-
 	
 		cmd.Format(_T("git.exe clone %s %s %s -v %s \"%s\" \"%s\""),
 						recursiveStr,
-						BareStr,
+						bareStr,
 						progressarg, 
 						depth,
 						url,
 						dir);
 
-		
 		// Handle Git SVN-clone
 		if(dlg.m_bSVN)
 		{
-
 			//g_Git.m_CurrentDir=dlg.m_Directory;
 			cmd.Format(_T("git.exe svn clone \"%s\"  \"%s\""),
 				url,dlg.m_Directory);
@@ -135,13 +131,11 @@ bool CloneCommand::Execute()
 					CMessageBox::Show(NULL,_T("Fail set config remote.origin.puttykeyfile"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return FALSE;
 				}
-	
 			}
-			
 		}
 		if(ret == IDOK)
 			return TRUE;
-		
+
 	}
 	return FALSE;
 }
