@@ -367,7 +367,7 @@ void CProgressDlg::ParserCmdOutput(char ch)
 }
 int CProgressDlg::ClearESC(CStringA &str)
 {
-	return str.Remove('\033[K');
+	return str.Replace("\033[K", "");
 }
 void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,CStringA &oneline, char ch, CWnd *CurrentWork)
 {
