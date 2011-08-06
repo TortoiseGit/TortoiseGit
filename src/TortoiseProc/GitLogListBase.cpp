@@ -1619,7 +1619,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(branchs.size() == 1)
 					{
 						str+=_T(" ");
-						str+= branchs[0]->Mid(11);
+						str+= _T('"') + branchs[0]->Mid(11) + _T('"');
 						popup.AppendMenuIcon(ID_SWITCHBRANCH,str,IDI_SWITCH);
 
 						popup.SetMenuItemData(ID_SWITCHBRANCH,(ULONG_PTR)branchs[0]);
