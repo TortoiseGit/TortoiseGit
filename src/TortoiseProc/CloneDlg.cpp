@@ -270,6 +270,12 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	old=m_ModuleName;
 
 	url.Replace(_T('\\'),_T('/'));
+
+	// add compatibility for Google Code git urls
+	if (url.GetLength() > 0 && url[url.GetLength()-1] == _T('/')) {
+		url = url.Left(url.GetLength() - 1);
+	}
+
 	int start=url.ReverseFind(_T('/'));
 	if(start<0)
 	{
