@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,6 +34,12 @@ bool CloneCommand::Execute()
 	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
 	if(dlg.DoModal()==IDOK)
 	{
+		CString recursiveStr;
+		if(dlg.m_bRecursive)
+			recursiveStr = _T("--recursive");
+		else
+			recursiveStr = _T("");
+
 		CString BareStr;
 		if(dlg.m_bBare)
 			BareStr = _T("--bare");
@@ -75,7 +81,8 @@ bool CloneCommand::Execute()
 			progressarg = _T("--progress");
 
 	
-		cmd.Format(_T("git.exe clone %s %s -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone %s %s %s -v %s \"%s\" \"%s\""),
+						recursiveStr,
 						BareStr,
 						progressarg, 
 						depth,

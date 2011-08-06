@@ -68,6 +68,7 @@ public:
 	BOOL	m_bDepth;
 	BOOL	m_bSVNUserName;
 	BOOL	m_bBare;
+	BOOL	m_bRecursive;
 
 	int		m_nDepth;
 
@@ -86,6 +87,7 @@ protected:
 	afx_msg void OnBnClickedPuttykeyAutoload();
 	afx_msg void OnCbnEditchangeUrlcombo();
 
+	afx_msg void OnBnClickedCheckRecursive();
 	afx_msg void OnBnClickedCheckBare();
 	afx_msg void OnBnClickedCheckSvn();
 	afx_msg void OnBnClickedCheckSvnTrunk();

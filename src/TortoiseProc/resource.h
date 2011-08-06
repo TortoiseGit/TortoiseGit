@@ -1180,6 +1180,7 @@
 #define IDC_MSYSGIT_EXTERN_PATH         1652
 #define IDC_CHECK_BARE                  1653
 #define IDC_INIT_REPO_DESC              1654
+#define IDC_CHECK_RECURSIVE             1654
 #define IDC_CHECK_IGNORE_WHITE_SPACE    1655
 #define IDC_CHECK_3WAY                  1656
 #define IDC_CHECK_IGNORE_SPACE          1657

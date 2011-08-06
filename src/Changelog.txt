@@ -1,6 +1,7 @@
 = Release 1.7.2.0 =
 == Features ==
  * Added shortcuts to the Windows 7 taskbar jumplist
+ * Allow to clone recursively
  * Fixed issue #841: Pull dialog should have "no fast-forward" option like the merge dialog
 
 == Bug Fix ==
