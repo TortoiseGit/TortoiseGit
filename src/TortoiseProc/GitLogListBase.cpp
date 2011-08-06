@@ -1586,7 +1586,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV))
+				bool thisbranch = false;
+				CString currentBranch = _T("refs/heads/")+g_Git.GetCurrentBranch();
+				for(int i=0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				{
+					if (m_HashMap[pSelLogEntry->m_CommitHash][i] == currentBranch)
+						thisbranch = true;
+						break;
+				}
+
+				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !thisbranch)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
@@ -1616,7 +1625,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString str;
 					str.LoadString(IDS_SWITCH_BRANCH);
 
-					if(branchs.size() == 1)
+					if(branchs.size() == 1 && !thisbranch)
 					{
 						str+=_T(" ");
 						str+= _T('"') + branchs[0]->Mid(11) + _T('"');
@@ -1638,7 +1647,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !thisbranch)
 					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
