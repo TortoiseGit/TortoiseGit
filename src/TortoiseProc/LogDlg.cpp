@@ -2108,6 +2108,8 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 	m_LogList.RemoveFilter();
 
+	Refresh();
+
 	CTime begin,end;
 	m_LogList.GetTimeRange(begin,end);
 	m_DateFrom.SetTime(&begin);
