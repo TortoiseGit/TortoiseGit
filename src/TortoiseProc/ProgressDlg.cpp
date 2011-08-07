@@ -392,8 +392,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		if(ch == ('\r'))
 		{
 			int start=log.LineIndex(lines-1);
-			int length=log.LineLength(lines-1)+1;
-			log.SetSel(start, start + length);
+			log.SetSel(start, log.GetTextLength());
 			log.ReplaceSel(str);
 		}
 		else
