@@ -90,7 +90,7 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 	{
 		if(DialogBox(hInst, MAKEINTRESOURCE(IDD_ASK_PASSWORD), NULL, About) == IDOK)
 		{
-			_tprintf(g_PassWord);
+			_tprintf(_T("%s"), g_PassWord);
 			return 0;
 		}
 		return -1;
