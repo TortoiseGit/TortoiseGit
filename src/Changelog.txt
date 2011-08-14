@@ -1,3 +1,7 @@
+= Release 1.7.3.0 =
+== Bug Fix ==
+ * Fixed issue #833: Password with Percent (%) is not accepted
+
 = Release 1.7.2.0 =
 == Features ==
  * Added shortcuts to the Windows 7 taskbar jumplist
