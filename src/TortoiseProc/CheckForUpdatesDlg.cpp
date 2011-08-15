@@ -120,7 +120,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		{
 			CStdioFile file(tempfile, CFile::modeRead | CFile::shareDenyWrite);
 			CString ver;
-			__int64 major,minor,micro,build;
+			unsigned int major,minor,micro,build;
 			major=minor=micro=build=0;
 			unsigned __int64 version=0;
 
@@ -133,7 +133,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 					while( (start=ver.Find(_T("tortoisegit-"))) > 0 )
 					{
 						ver = ver.Mid(start+CString(_T("tortoisegit-")).GetLength());
-						int x1,x2,x3,x4;
+						unsigned int x1,x2,x3,x4;
 						x1=_ttoi(ver)&0xFFFF;
 						ver = ver.Mid(ver.Find('.')+1);
 						x2=_ttoi(ver)&0xFFFF;
