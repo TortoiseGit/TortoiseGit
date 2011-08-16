@@ -149,7 +149,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 						newversion <<= 16;
 						newversion += x3;
 						newversion <<=16;
-						newversion += build;
+						newversion += x4;
 
 						if(newversion>version)
 						{
@@ -172,7 +172,13 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				micro = _ttoi(vertemp);
 				vertemp = vertemp.Mid(vertemp.Find('.')+1);
 				build = _ttoi(vertemp);
-				version = (major<<48) + (minor<<32) + (micro<<16)+build;
+				version = major;
+				version <<= 16;
+				version += minor;
+				version <<= 16;
+				version += micro;
+				version <<= 16;
+				version += build;
 			}
 
 			{
