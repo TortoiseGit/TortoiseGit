@@ -23,6 +23,7 @@
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
+#include <afxstr.h>
 
 #include <afxdisp.h>        // MFC Automation classes
 #include <Commctrl.h>
