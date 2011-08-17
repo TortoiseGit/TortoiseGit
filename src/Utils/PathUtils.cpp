@@ -237,7 +237,7 @@ CStringA CPathUtils::PathEscape(const CStringA& path)
 	return ret;
 }
 
-#ifdef _MFC_VER
+#ifdef CSTRING_AVAILABLE
 CString CPathUtils::GetFileNameFromPath(CString sPath)
 {
 	CString ret;
@@ -325,29 +325,29 @@ CString CPathUtils::ParsePathInString(const CString& Str)
 	return sToken;
 }
 
-CString CPathUtils::GetAppDirectory()
+CString CPathUtils::GetAppDirectory(HMODULE hMod /* = NULL */)
 {
-	CString path;
-	DWORD len = 0;
-	DWORD bufferlen = MAX_PATH;		// MAX_PATH is not the limit here!
-	path.GetBuffer(bufferlen);
-	do 
-	{
-		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
-		path.ReleaseBuffer(0);
-		len = GetModuleFileName(NULL, path.GetBuffer(bufferlen+1), bufferlen);				
-	} while(len == bufferlen);
-	path.ReleaseBuffer();
-	path = path.Left(path.ReverseFind('\\')+1);
-	return path;
+    CString path;
+    DWORD len = 0;
+    DWORD bufferlen = MAX_PATH;     // MAX_PATH is not the limit here!
+    path.GetBuffer(bufferlen);
+    do
+    {
+        bufferlen += MAX_PATH;      // MAX_PATH is not the limit here!
+        path.ReleaseBuffer(0);
+        len = GetModuleFileName(hMod, path.GetBuffer(bufferlen+1), bufferlen);
+    } while(len == bufferlen);
+    path.ReleaseBuffer();
+    path = path.Left(path.ReverseFind('\\')+1);
+    return path;
 }
 
-CString CPathUtils::GetAppParentDirectory()
+CString CPathUtils::GetAppParentDirectory(HMODULE hMod /* = NULL */)
 {
-	CString path = GetAppDirectory();
-	path = path.Left(path.ReverseFind('\\'));
-	path = path.Left(path.ReverseFind('\\')+1);
-	return path;
+    CString path = GetAppDirectory(hMod);
+    path = path.Left(path.ReverseFind('\\'));
+    path = path.Left(path.ReverseFind('\\')+1);
+    return path;
 }
 
 CString CPathUtils::GetAppDataDirectory()
@@ -396,7 +396,7 @@ CStringW CPathUtils::PathUnescape(const CStringW& path)
 	delete [] bufw;
 	return ret;
 }
-
+#ifdef _MFC_VER
 CString CPathUtils::GetVersionFromFile(const CString & p_strDateiname)
 {
 	struct TRANSARRAY
@@ -448,7 +448,7 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strDateiname)
 
 	return strReturn;
 }
-
+#endif
 CString CPathUtils::PathPatternEscape(const CString& path)
 {
 	CString result = path;

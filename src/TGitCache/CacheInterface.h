@@ -23,17 +23,12 @@
 
 #include "GitStatus.h"
 // The name of the named-pipe for the cache
-#ifdef WIN64
-#define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache64")
-#define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand64")
-#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow64")
-#define TSVN_CACHE_MUTEX_NAME _T("TGitCacheMutex64")
-#else
+
 #define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache")
 #define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand")
 #define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
 #define TSVN_CACHE_MUTEX_NAME _T("TGitCacheMutex")
-#endif
+
 
 CString GetCachePipeName();
 CString GetCacheCommandPipeName();
