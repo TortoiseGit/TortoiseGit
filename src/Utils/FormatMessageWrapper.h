@@ -26,45 +26,45 @@
 class CFormatMessageWrapper
 {
 private:
-	LPTSTR buffer;
-	DWORD result;
-	void release();
-	void obtainMessage() { obtainMessage(::GetLastError()); }
-	void obtainMessage(DWORD errorCode);
+    LPTSTR buffer;
+    DWORD result;
+    void release();
+    void obtainMessage() { obtainMessage(::GetLastError()); }
+    void obtainMessage(DWORD errorCode);
 
 public:
-	CFormatMessageWrapper() : buffer(0), result(0) {obtainMessage();}
-	CFormatMessageWrapper(DWORD lastError) : buffer(0), result(0) {obtainMessage(lastError);}
-	~CFormatMessageWrapper() { release(); }
-	operator LPCTSTR() { return buffer; }
-	operator bool() { return result != 0; }
-	bool operator!() { return result == 0; }
+    CFormatMessageWrapper() : buffer(0), result(0) {obtainMessage();}
+    CFormatMessageWrapper(DWORD lastError) : buffer(0), result(0) {obtainMessage(lastError);}
+    ~CFormatMessageWrapper() { release(); }
+    operator LPCTSTR() { return buffer; }
+    operator bool() { return result != 0; }
+    bool operator!() { return result == 0; }
 };
 
 inline void CFormatMessageWrapper::obtainMessage(DWORD errorCode)
 {
-	// First of all release the buffer to make it possible to call this
-	// method more than once on the same object.
-	release();
-	result = FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		FORMAT_MESSAGE_FROM_SYSTEM |
-		FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
-		errorCode,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-		(LPTSTR) &buffer,
-		0,
-		NULL
-		);
+    // First of all release the buffer to make it possible to call this
+    // method more than once on the same object.
+    release();
+    result = FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                            FORMAT_MESSAGE_FROM_SYSTEM |
+                            FORMAT_MESSAGE_IGNORE_INSERTS,
+                            NULL,
+                            errorCode,
+                            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+                            (LPTSTR) &buffer,
+                            0,
+                            NULL
+                            );
 }
 
 inline void CFormatMessageWrapper::release()
 {
-	if(buffer != 0)
-	{
-		LocalFree(buffer);
-		buffer = 0;
-	}
+    if(buffer != 0)
+    {
+        LocalFree(buffer);
+        buffer = 0;
+    }
 
-	result = 0;
+    result = 0;
 }
