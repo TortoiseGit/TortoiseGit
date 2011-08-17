@@ -5,23 +5,28 @@
 
 #pragma once
 
+#define WINVER 0x0600
 #define _WIN32_IE 0x700
 #define _WIN32_WINNT 0x0601
+#define _WIN32_WINDOWS 0x0410
 
 #include <tchar.h>
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+#define CSTRING_AVAILABLE
 
 #include <WinSock2.h>
 #include <Ws2tcpip.h>
 #include <Wspiapi.h>
 
+#include <windows.h>
+
+#include <Shlobj.h>
+#include <Shlwapi.h>
+
 #include <atlbase.h>
 #include <atlstr.h>
 
 #include <conio.h>
-
-#define CSTRING_AVAILABLE
-
 
 using namespace ATL;
 
