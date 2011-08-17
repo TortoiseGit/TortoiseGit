@@ -25,21 +25,21 @@
  */
 class CNiceTrackbar {
 public:
-	CNiceTrackbar() : m_Window(NULL), m_OrigProc(NULL), m_Dragging(false), m_DragChanged(false) { }
+    CNiceTrackbar() : m_Window(NULL), m_OrigProc(NULL), m_Dragging(false), m_DragChanged(false) { }
 
-	HWND GetWindow() const { return m_Window; }
-	bool IsValid() const { return m_Window != NULL; }
+    HWND GetWindow() const { return m_Window; }
+    bool IsValid() const { return m_Window != NULL; }
 
-	void ConvertTrackbarToNice( HWND window );
-
-private:
-	static LRESULT CALLBACK NiceTrackbarProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
-	void PostMessageToParent (int tbCode) const;
-	bool SetThumb (LPARAM lparamPoint);
+    void ConvertTrackbarToNice( HWND window );
 
 private:
-	HWND m_Window;
-	WNDPROC m_OrigProc;
-	bool m_Dragging;
-	bool m_DragChanged;
+    static LRESULT CALLBACK NiceTrackbarProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+    void PostMessageToParent (int tbCode) const;
+    bool SetThumb (LPARAM lparamPoint);
+
+private:
+    HWND m_Window;
+    WNDPROC m_OrigProc;
+    bool m_Dragging;
+    bool m_DragChanged;
 };

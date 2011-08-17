@@ -784,6 +784,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\Utils\SysInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\TaskbarUUID.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TortoiseIDiff.cpp"
 				>
 			</File>
@@ -847,6 +855,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\SysInfo.h"
 				>
 			</File>
 			<File

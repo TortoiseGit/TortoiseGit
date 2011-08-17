@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2007 - TortoiseSVN
+// Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,27 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+//
 #pragma once
-#include "basedialog.h"
-#include "hyperlink_base.h"
+
 
 /**
- * \ingroup TortoiseIDiff
- * about dialog.
+ * \ingroup Utils
+ * This singleton class handles system information
  */
-class CAboutDlg : public CDialog
+class SysInfo
 {
-public:
-    CAboutDlg(HWND hParent);
-    ~CAboutDlg(void);
-
-    void                    SetHiddenWnd(HWND hWnd) {m_hHiddenWnd = hWnd;}
-protected:
-    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
-    LRESULT                 DoCommand(int id);
-
 private:
-    HWND                    m_hParent;
-    HWND                    m_hHiddenWnd;
-    CHyperLink              m_link;
+    SysInfo(void);
+    ~SysInfo(void);
+public:
+    static const SysInfo& Instance();
+
+    DWORD           GetFullVersion() const {return MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);}
+    bool            IsXP() const {return (GetFullVersion() < 0x0600);} // cover Win5.1 and 5.2 alike
+    bool            IsVista() const {return (GetFullVersion() == 0x0600);}
+    bool            IsVistaOrLater() const {return (GetFullVersion() >= 0x0600);}
+    bool            IsWin7() const {return (GetFullVersion() == 0x0601);}
+    bool            IsWin7OrLater() const {return (GetFullVersion() >= 0x0601);}
+private:
+    OSVERSIONINFOEX         inf;
 };

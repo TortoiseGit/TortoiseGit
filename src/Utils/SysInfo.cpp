@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2007 - TortoiseSVN
+// Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,27 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#pragma once
-#include "basedialog.h"
-#include "hyperlink_base.h"
+//
+#include "StdAfx.h"
+#include "SysInfo.h"
 
-/**
- * \ingroup TortoiseIDiff
- * about dialog.
- */
-class CAboutDlg : public CDialog
+SysInfo::SysInfo(void)
 {
-public:
-    CAboutDlg(HWND hParent);
-    ~CAboutDlg(void);
+    SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
+    inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+    GetVersionEx((OSVERSIONINFO *)&inf);
+}
 
-    void                    SetHiddenWnd(HWND hWnd) {m_hHiddenWnd = hWnd;}
-protected:
-    LRESULT CALLBACK        DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
-    LRESULT                 DoCommand(int id);
+SysInfo::~SysInfo(void)
+{
+}
 
-private:
-    HWND                    m_hParent;
-    HWND                    m_hHiddenWnd;
-    CHyperLink              m_link;
-};
+const SysInfo& SysInfo::Instance()
+{
+    static SysInfo instance;
+    return instance;
+}
+
+
+
