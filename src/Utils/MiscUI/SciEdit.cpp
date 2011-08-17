@@ -125,7 +125,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 
 	if(bLoadSpellCheck)
 	{
-		if ((lLanguage != 0)||(((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE))==FALSE))
+		if ((lLanguage != 0)||(((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Spellchecker"), FALSE))==FALSE))
 		{
 			if (!((lLanguage)&&(!LoadDictionaries(lLanguage))))
 			{

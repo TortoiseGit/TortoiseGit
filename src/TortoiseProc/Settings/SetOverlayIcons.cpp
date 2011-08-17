@@ -106,7 +106,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 			m_cIconSet.SetCurSel(i);
 	}
 #if 0
-	WORD langID = (WORD)(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR statustext[MAX_STATUS_STRING_LENGTH];
 	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_normal, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
 	m_sNormal = statustext;

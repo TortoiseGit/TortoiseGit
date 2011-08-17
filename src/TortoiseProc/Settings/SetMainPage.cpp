@@ -226,7 +226,7 @@ BOOL CSetMainPage::OnApply()
 	if (m_bUseDotNetHack)
 	{
 		asphack_local = _T("*");
-		if (asphack_local.LastError)
+		if (asphack_local.GetLastError())
 			asphack_user = _T("*");
 		if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))
 		{

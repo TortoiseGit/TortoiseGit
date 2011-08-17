@@ -51,7 +51,7 @@ bool CommitCommand::Execute()
 		return false;
 	}
 	CString sLogMsg = LoadLogMessage();
-	bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+	bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
 #if 0
 	DWORD exitcode = 0;
 	CString error;

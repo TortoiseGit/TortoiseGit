@@ -48,25 +48,25 @@ public:
 	};
 	ShellCache()
 	{
-		cachetype = CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
-		showrecursive = CRegStdWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
-		folderoverlay = CRegStdWORD(_T("Software\\TortoiseGit\\FolderOverlay"), TRUE);
-		driveremote = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskRemote"));
-		drivefixed = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskFixed"), TRUE);
-		drivecdrom = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskCDROM"));
-		driveremove = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskRemovable"));
-		drivefloppy = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskFloppy"));
-		driveram = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskRAM"));
-		driveunknown = CRegStdWORD(_T("Software\\TortoiseGit\\DriveMaskUnknown"));
+		cachetype = CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? dll : exe);
+		showrecursive = CRegStdDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
+		folderoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\FolderOverlay"), TRUE);
+		driveremote = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskRemote"));
+		drivefixed = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskFixed"), TRUE);
+		drivecdrom = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskCDROM"));
+		driveremove = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskRemovable"));
+		drivefloppy = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskFloppy"));
+		driveram = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskRAM"));
+		driveunknown = CRegStdDWORD(_T("Software\\TortoiseGit\\DriveMaskUnknown"));
 		excludelist = CRegStdString(_T("Software\\TortoiseGit\\OverlayExcludeList"));
 		includelist = CRegStdString(_T("Software\\TortoiseGit\\OverlayIncludeList"));
-		simplecontext = CRegStdWORD(_T("Software\\TortoiseGit\\SimpleContext"), FALSE);
-		unversionedasmodified = CRegStdWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
+		simplecontext = CRegStdDWORD(_T("Software\\TortoiseGit\\SimpleContext"), FALSE);
+		unversionedasmodified = CRegStdDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
 		hidemenusforunversioneditems = CRegStdDWORD(_T("Software\\TortoiseGit\\HideMenusForUnversionedItems"), FALSE);
-		showunversionedoverlay = CRegStdWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
-		showignoredoverlay = CRegStdWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
-		getlocktop = CRegStdWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
-		excludedasnormal = CRegStdWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
+		showunversionedoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
+		showignoredoverlay = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
+		getlocktop = CRegStdDWORD(_T("Software\\TortoiseGit\\GetLockTop"), TRUE);
+		excludedasnormal = CRegStdDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
 		cachetypeticker = GetTickCount();
 		recursiveticker = cachetypeticker;
 		folderoverlayticker = cachetypeticker;
@@ -88,20 +88,20 @@ public:
 		excontextticker = cachetypeticker;
 
 		unsigned __int64 entries = MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT;
-		menulayoutlow = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
-		menulayouthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), entries>>32);
+		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
+		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), entries>>32);
 
 		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUDELUNVERSIONED|MENUSUBSYNC|MENUCREATEPATCH);
-		menuextlow	= CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
-		menuexthigh = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
+		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
+		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
 
-		menumasklow_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumaskhigh_lm = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
-		menumasklow_cu = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);
-		menumaskhigh_cu = CRegStdWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0);
-		langid = CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
-		blockstatus = CRegStdWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
-		columnseverywhere = CRegStdWORD(_T("Software\\TortoiseGit\\ColumnsEveryWhere"), FALSE);
+		menumasklow_lm = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
+		menumaskhigh_lm = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
+		menumasklow_cu = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);
+		menumaskhigh_cu = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0);
+		langid = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
+		blockstatus = CRegStdDWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
+		columnseverywhere = CRegStdDWORD(_T("Software\\TortoiseGit\\ColumnsEveryWhere"), FALSE);
 		for (int i=0; i<27; i++)
 		{
 			drivetypecache[i] = (UINT)-1;
@@ -623,35 +623,35 @@ private:
 		stdstring sProjectRoot;
 	};
 public:
-	CRegStdWORD cachetype;
-	CRegStdWORD blockstatus;
-	CRegStdWORD langid;
-	CRegStdWORD showrecursive;
-	CRegStdWORD folderoverlay;
-	CRegStdWORD getlocktop;
-	CRegStdWORD driveremote;
-	CRegStdWORD drivefixed;
-	CRegStdWORD drivecdrom;
-	CRegStdWORD driveremove;
-	CRegStdWORD drivefloppy;
-	CRegStdWORD driveram;
-	CRegStdWORD driveunknown;
-	CRegStdWORD menulayoutlow; /* Fist level mask */
-	CRegStdWORD menulayouthigh;
-	CRegStdWORD menuextlow;	   /* ext menu mask */
-	CRegStdWORD menuexthigh;
-	CRegStdWORD simplecontext;
-	CRegStdWORD menumasklow_lm;
-	CRegStdWORD menumaskhigh_lm;
-	CRegStdWORD menumasklow_cu;
-	CRegStdWORD menumaskhigh_cu;
-	CRegStdWORD unversionedasmodified;
-	CRegStdWORD showunversionedoverlay;
-	CRegStdWORD showignoredoverlay;
-	CRegStdWORD excludedasnormal;
+	CRegStdDWORD cachetype;
+	CRegStdDWORD blockstatus;
+	CRegStdDWORD langid;
+	CRegStdDWORD showrecursive;
+	CRegStdDWORD folderoverlay;
+	CRegStdDWORD getlocktop;
+	CRegStdDWORD driveremote;
+	CRegStdDWORD drivefixed;
+	CRegStdDWORD drivecdrom;
+	CRegStdDWORD driveremove;
+	CRegStdDWORD drivefloppy;
+	CRegStdDWORD driveram;
+	CRegStdDWORD driveunknown;
+	CRegStdDWORD menulayoutlow; /* Fist level mask */
+	CRegStdDWORD menulayouthigh;
+	CRegStdDWORD menuextlow;	   /* ext menu mask */
+	CRegStdDWORD menuexthigh;
+	CRegStdDWORD simplecontext;
+	CRegStdDWORD menumasklow_lm;
+	CRegStdDWORD menumaskhigh_lm;
+	CRegStdDWORD menumasklow_cu;
+	CRegStdDWORD menumaskhigh_cu;
+	CRegStdDWORD unversionedasmodified;
+	CRegStdDWORD showunversionedoverlay;
+	CRegStdDWORD showignoredoverlay;
+	CRegStdDWORD excludedasnormal;
 	CRegStdString excludelist;
 	CRegStdDWORD hidemenusforunversioneditems;
-	CRegStdWORD columnseverywhere;
+	CRegStdDWORD columnseverywhere;
 	stdstring excludeliststr;
 	std::vector<stdstring> exvector;
 	CRegStdString includelist;

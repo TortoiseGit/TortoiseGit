@@ -125,7 +125,7 @@ UINT CRevertDlg::RevertThread()
 
 	if (m_RevertList.HasUnversionedItems())
 	{
-		if (DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE)))
+		if (DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE)))
 		{
 			GetDlgItem(IDC_UNVERSIONEDITEMS)->ShowWindow(SW_SHOW);
 		}

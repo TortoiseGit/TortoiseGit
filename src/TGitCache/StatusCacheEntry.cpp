@@ -23,7 +23,7 @@
 #include "CacheInterface.h"
 #include "registry.h"
 
-DWORD cachetimeout = (DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\Cachetimeout"), CACHETIMEOUT);
+DWORD cachetimeout = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Cachetimeout"), CACHETIMEOUT);
 
 CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)

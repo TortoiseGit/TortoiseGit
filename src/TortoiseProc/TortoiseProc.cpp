@@ -532,7 +532,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 	if (lVersion <= 0x01040000)
 	{
-		CRegStdWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
+		CRegStdDWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
 	}
 
 	// set the custom diff scripts for every user

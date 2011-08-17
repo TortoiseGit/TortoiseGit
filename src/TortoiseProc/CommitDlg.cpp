@@ -1523,7 +1523,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 					status = _T("Add");
 
 				//git_wc_status_kind status = entry->status;
-				WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+				WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 				if (m_ProjectProperties.bFileListInEnglish)
 					langID = 1033;
 

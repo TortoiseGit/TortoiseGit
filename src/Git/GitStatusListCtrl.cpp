@@ -573,7 +573,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 		pApp->DoWaitCursor(1);
 
 	Locker lock(m_critSec);
-	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+	WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	//SetItemCount(listIndex);
 	SetRedraw(FALSE);
@@ -831,7 +831,7 @@ void CGitStatusListCtrl::Show(DWORD /*dwShow*/, const CTGitPathList& checkedList
 #if 0
 
 	Locker lock(m_critSec);
-	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+	WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -1723,7 +1723,7 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 {
 
-	//WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+	//WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	bool XPorLater = false;
 	OSVERSIONINFOEX inf;
@@ -3715,7 +3715,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 {
 
 	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned, sRenamed;
-	WORD langID = (WORD)(DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR buf[MAX_STATUS_STRING_LENGTH];
 	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, buf, sizeof(buf)/sizeof(TCHAR), langID);
 	sNormal = buf;
@@ -4419,7 +4419,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
-//	WORD langID = (WORD)CRegStdWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
+//	WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
 	CString sClipboard;
 	CString temp;

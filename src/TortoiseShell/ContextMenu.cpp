@@ -972,7 +972,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	bool bMenuEmpty = true;
 	// insert separator at start
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
-	bool bShowIcons = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
+	bool bShowIcons = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
 	// ?? TSV disabled icons for win2k and earlier, but they work for win2k and should work for win95 and up
 	/*if (fullver <= 0x500)
 		bShowIcons = false;*/

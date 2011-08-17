@@ -71,8 +71,8 @@ public:
 private:
 
 	CToolTips			m_tooltips;
-	CRegStdWORD			m_regExtmenu;
-	CRegStdWORD			m_regExtmenuhigh;
+	CRegStdDWORD			m_regExtmenu;
+	CRegStdDWORD			m_regExtmenuhigh;
 	
 	unsigned __int64	m_extmenu;
 

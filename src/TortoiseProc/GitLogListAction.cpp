@@ -191,7 +191,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CTGitPathList pathlist;
 				CTGitPathList selectedlist;
 				pathlist.AddPath(this->m_Path);
-				bool bSelectFilesForCommit = !!DWORD(CRegStdWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+				bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
 				CString str;
 				CAppUtils::Commit(CString(),false,str,
 								  pathlist,selectedlist,bSelectFilesForCommit);

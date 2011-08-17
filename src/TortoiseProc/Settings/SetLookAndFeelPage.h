@@ -54,8 +54,8 @@ protected:
 
 private:
 	CToolTips			m_tooltips;
-	CRegStdWORD			m_regTopmenu;
-	CRegStdWORD			m_regTopmenuhigh;
+	CRegStdDWORD			m_regTopmenu;
+	CRegStdDWORD			m_regTopmenuhigh;
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;

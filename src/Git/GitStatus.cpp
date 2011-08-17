@@ -231,7 +231,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 	}
 
-	bool isfull = ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
+	bool isfull = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	if(isDir)
@@ -322,7 +322,7 @@ git_revnum_t GitStatus::GetStatus(const CTGitPath& path, bool update /* = false 
 //	hashbaton.exthash = exthash;
 	hashbaton.pThis = this;
 
-	bool isfull = ((DWORD)CRegStdWORD(_T("Software\\TortoiseGit\\CacheType"),
+	bool isfull = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	{
