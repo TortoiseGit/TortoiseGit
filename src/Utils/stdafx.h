@@ -22,6 +22,11 @@
 #include <atlexcept.h>
 #include <atlstr.h>
 
+#include <conio.h>
+
+#define CSTRING_AVAILABLE
+using namespace ATL;
+
 #pragma warning(push)
 #pragma warning(disable: 4702)	// Unreachable code warnings in xtree
 #include <string>
@@ -44,6 +49,9 @@
 #include <afxmt.h>
 #include <afxext.h>         // MFC extensions
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
+
+#include <afxcoll.h>
+#include <afxstr.h>
 
 #include <atlbase.h>
 

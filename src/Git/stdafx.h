@@ -45,4 +45,4 @@
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
 #include <atlbase.h>
-
+#include <afxstr.h>

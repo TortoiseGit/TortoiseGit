@@ -131,7 +131,7 @@ bool CHooks::Save()
 	}
 	CRegString reghooks = CRegString(_T("Software\\TortoiseGit\\hooks"));
 	reghooks = strhooks;
-	if (reghooks.LastError)
+	if (reghooks.GetLastError())
 		return false;
 	return true;
 }
