@@ -175,8 +175,7 @@ int git_parse_commit(GIT_COMMIT *commit)
 			if(pbuf == NULL)
 				return -1;
 
-			while((*pbuf) && (*pbuf == '\n'))
-				pbuf ++;
+			pbuf ++;
 
 			if( strncmp(pbuf, "encoding",8) == 0 )
 			{
@@ -186,9 +185,11 @@ int git_parse_commit(GIT_COMMIT *commit)
 				commit->m_EncodeSize=end -pbuf;
 
 				pbuf = end +1;
-				while((*pbuf) && (*pbuf == '\n'))
-					pbuf ++;
 			}
+
+			while((*pbuf) && (*pbuf == '\n'))
+				pbuf ++;
+
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
 			if( end == 0)
