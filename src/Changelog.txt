@@ -4,6 +4,7 @@
  * Fixed issue #852: Incorrect current version string in Check For Updates dialog on x86
  * Fixed issue #850: 32bit application can't show icon overlay at 64bit system.
  * Fixed issue #864: Show log crashes when commit with "encoding" in comment exists
+ * Fixed Issue #851: Windows Explorer Shell Crashed when empty repository
 
 = Release 1.7.2.0 =
 == Features ==

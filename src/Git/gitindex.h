@@ -257,7 +257,7 @@ public:
 	{
 		CAutoLocker lock(m_critIndexSec);
 		if(this->find(path) == end())
-			return SHARED_INDEX_PTR();
+			return SHARED_INDEX_PTR(new CGitIndexList);
 		else
 			return (*this)[path];
 	}
@@ -367,7 +367,7 @@ public:
 	{
 		CAutoLocker lock(m_critTreeSec);
 		if(this->find(path) == end())
-			return SHARED_TREE_PTR();
+			return SHARED_TREE_PTR(new CGitHeadFileList);
 		else
 			return (*this)[path];
 	}
