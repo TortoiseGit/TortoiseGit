@@ -53,7 +53,7 @@ You only have to do this once.
 \subsection Requirements2 Next you need to install some utilities/programs.
 - WiX(\b 1)                   http://wix.sourceforge.net
 .
-(\b 1) Above 3.0 version
+(\b 1) Above 3.5 version
 
 \section get external source code
 git submodule update --init
