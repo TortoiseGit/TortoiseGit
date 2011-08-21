@@ -234,7 +234,7 @@ public:
 #endif
 
 	CGitIndexList();
-	
+
 	int ReadIndex(CString file);
 	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 protected:
@@ -249,7 +249,7 @@ class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
 {
 public:
 	CComCriticalSection			m_critIndexSec;
-	
+
 	CGitIndexFileMap() { m_critIndexSec.Init(); }
 	~CGitIndexFileMap() { m_critIndexSec.Term(); }
 
@@ -290,9 +290,9 @@ public:
 							FIll_STATUS_CALLBACK callback=NULL,
 							void *pData=NULL,CGitHash *pHash=NULL,
 							bool isLoadUpdatedIndex=true);
-	
-	int IsUnderVersionControl(const CString &gitdir, 
-							  const CString &path, 
+
+	int IsUnderVersionControl(const CString &gitdir,
+							  const CString &path,
 							  bool isDir,
 							  bool *isVersion,
 							  bool isLoadUpdateIndex=true);
@@ -307,7 +307,7 @@ public:
 	int			m_Flags;
 };
 
-/* After object create, never change field agains 
+/* After object create, never change field agains
  * that needn't lock to get field
 */
 class CGitHeadFileList:public std::vector<CGitTreeItem>
@@ -354,7 +354,7 @@ public:
 };
 
 typedef std::tr1::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
-class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR> 
+class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
 {
 public:
 
@@ -465,7 +465,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 
 	if(pos >= vector.size())
 		return -1;
-	
+
 	if( _tcsnccmp(vector[pos].m_FileName, pstr,len) != 0)
 	{
 		for(int i=0;i< vector.size();i++)

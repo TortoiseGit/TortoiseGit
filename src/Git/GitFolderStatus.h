@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2006,2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +28,7 @@
  * stores unique copies of given string values,
  * i.e. for a given value, always the same const char*
  * will be returned.
- * 
+ *
  * The strings returned are owned by the pool!
  */
 class StringPool
@@ -36,24 +37,24 @@ public:
 
 	StringPool() {emptyString[0] = 0;}
 	~StringPool() {clear();}
-	
+
 	/**
 	 * Return a string equal to value from the internal pool.
 	 * If no such string is available, a new one is allocated.
 	 * NULL is valid for value.
 	 */
 	const char* GetString (const char* value);
-	
+
 	/**
 	 * invalidates all strings returned by GetString()
 	 * frees all internal data
 	 */
 	void clear();
-	
+
 private:
 
 	// comparator: compare C-style strings
-	
+
 	struct LessString
 	{
 		bool operator()(const char* lhs, const char* rhs) const
@@ -61,10 +62,10 @@ private:
 			return strcmp (lhs, rhs) < 0;
 		}
 	};
-	
+
 	// store the strings in a map
 	// caution: modifying the map must not modify the string pointers
-	
+
 	typedef std::set<const char*, LessString> pool_type;
 	pool_type pool;
 	char emptyString[1];
@@ -111,7 +112,7 @@ public:
 	const FileStatusCacheEntry *	GetCachedItem(const CTGitPath& filepath);
 
 	FileStatusCacheEntry		invalidstatus;
-	
+
 	GitStatus	m_GitStatus;
 
 private:
@@ -124,7 +125,7 @@ private:
 
 	static CTGitPath	folderpath;
 	void				ClearCache();
-	
+
 	int					m_nCounter;
 	typedef std::map<stdstring, FileStatusCacheEntry> FileStatusMap;
 	FileStatusMap			m_cache;
@@ -136,7 +137,7 @@ private:
 
 	// merging these pools won't save memory
 	// but access will become slower
-	
+
 	StringPool		authors;
 	StringPool		urls;
 	StringPool		owners;
@@ -146,7 +147,7 @@ private:
 
 	HANDLE			m_hInvalidationEvent;
 
-	// The item we most recently supplied status for 
+	// The item we most recently supplied status for
 	CTGitPath		m_mostRecentPath;
 	const FileStatusCacheEntry* m_mostRecentStatus;
 };

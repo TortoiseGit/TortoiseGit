@@ -940,11 +940,11 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 					treeptr=g_HeadFileMap.SafeGet(gitdir);
 
 					b = treeptr->m_Head != treeptr->m_TreeHash;
-					
+
 					if(b)
 					{
 						treeptr->ReadHeadHash(gitdir);
-						
+
 						// Init Repository
 						if( treeptr->m_HeadFile.IsEmpty() )
 						{
@@ -1045,7 +1045,7 @@ int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path,
 
 __int64 GitStatus::GetIndexFileTime(const CString &gitdir)
 {
-	SHARED_INDEX_PTR ptr=g_IndexFileMap.SafeGet(gitdir);	
+	SHARED_INDEX_PTR ptr=g_IndexFileMap.SafeGet(gitdir);
 	if(ptr.get() == NULL)
 		return 0;
 
@@ -1076,7 +1076,7 @@ int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::v
 	WIN32_FIND_DATA data;
 	HANDLE handle=::FindFirstFile(gitdir+_T("\\")+subpath+_T("\\*.*"), &data);
 	do
-	{	
+	{
 		if(_tcscmp(data.cFileName, _T(".git")) == 0)
 			continue;
 
@@ -1144,8 +1144,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
 			if( indexptr.get() == NULL)
-				return -1;		
-	
+				return -1;
+
 			std::vector<CGitFileName>::iterator it;
 			CString onepath;
 			CString casepath;
@@ -1155,7 +1155,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				onepath.MakeLower();
 				onepath += it->m_FileName;
 				casepath += it->m_CaseFileName;
-						
+
 				int pos = SearchInSortVector(*indexptr, onepath.GetBuffer(), onepath.GetLength());
 				int posintree = SearchInSortVector(*treeptr, onepath.GetBuffer(), onepath.GetLength());
 
@@ -1178,7 +1178,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 							continue;
 						}
 					}
-					
+
 					if(!IsIgnore)
 					{
 						*status = git_wc_status_unversioned;
@@ -1194,10 +1194,10 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						*status = git_wc_status_ignored;
 					else
 						*status = git_wc_status_unversioned;
-				
+
 					if(callback)
-						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);					
-				
+						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
+
 				}else if(pos <0 && posintree>=0) /* check if file delete in index */
 				{
 					*status = git_wc_status_deleted;
@@ -1226,14 +1226,14 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						GetFileStatus(gitdir,casepath, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
 					}
 				}
-					
+
 			}/*End of For*/
 
 			/* Check deleted file in system */
 			int start=0, end=0;
 			int pos=SearchInSortVector(*indexptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
-			
-			if(pos>=0 && GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos))			
+
+			if(pos>=0 && GetRangeInSortVector(*indexptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&start,&end,pos))
 			{
 				CGitIndexList::iterator it;
 				CString oldstring;

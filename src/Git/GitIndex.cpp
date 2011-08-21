@@ -186,7 +186,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 
 		int start=SearchInSortVector(*this, ((CString&)path).GetBuffer(),-1);
 		((CString&)path).ReleaseBuffer();
-		
+
 		if( start<0 )
 		{
 			*status = git_wc_status_unversioned;
@@ -350,7 +350,7 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	else
 				{
 		if(isChanged)
-			*isChanged = true;	
+			*isChanged = true;
 				}
 	return 0;
 			}
@@ -365,7 +365,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 			return -1;
 
 		this->SafeSet(gitdir,pIndex);
-				
+
 	}catch(...)
 	{
 		return -1;
@@ -413,7 +413,7 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 		subpath.MakeLower();
 
 		CheckAndUpdate(gitdir, isLoadUpdateIndex);
-		
+
 		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 
 		if(pIndex.get())
@@ -816,7 +816,7 @@ int ReadTreeRecurive(git_tree * tree, CStringA base, int (*CallBack) (const unsi
 				ReadTreeRecurive((git_tree*)object,parent, CallBack,data);
 			}
 		}
-		
+
 	}
 
 	return 0;
@@ -849,12 +849,12 @@ int CGitHeadFileList::ReadTree()
 
 		std::sort(this->begin(), this->end(), SortTree);
 		this->m_TreeHash = (char*)(git_commit_id(commit)->id);
-	
+
 	}while(0);
 
 	if(repository)
 		git_repository_free(repository);
-	
+
 	return ret;
 
 }
@@ -1285,7 +1285,7 @@ bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 
 	if( ptr.get())
 	{
-		return ptr->CheckHeadUpdate();			
+		return ptr->CheckHeadUpdate();
 	}
 	else
 	{
@@ -1300,7 +1300,7 @@ int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 {
 	SHARED_TREE_PTR ptr;
 	ptr = this->SafeGet(gitdir);
-	
+
 	if(ptr.get() == NULL)
 	{
 		SHARED_TREE_PTR ptr1(new CGitHeadFileList());
@@ -1310,7 +1310,7 @@ int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 		hash = ptr1->m_Head;
 
 		this->SafeSet(gitdir, ptr1);
-		
+
 	}else
 	{
 		if(ptr->CheckHeadUpdate())
@@ -1322,7 +1322,7 @@ int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 			hash = ptr1->m_Head;
 			this->SafeSet(gitdir, ptr1);
 	}
-		
+
 		hash = ptr->m_Head;
 	}
 	return 0;

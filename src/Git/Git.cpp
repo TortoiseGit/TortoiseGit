@@ -973,10 +973,10 @@ CString CGit::DerefFetchHead()
 		string::size_type prevPos = 0;
 		string::size_type pos = line.find('\t');
 		if(pos == string::npos)	continue; //invalid line
-		
+
 		string hash = line.substr(0, pos);
 		++pos; prevPos = pos; pos = line.find('\t', pos); if(pos == string::npos) continue;
-		
+
 		bool forMerge = pos == prevPos;
 		++pos; prevPos = pos; pos = line.size(); if(pos == string::npos) continue;
 
