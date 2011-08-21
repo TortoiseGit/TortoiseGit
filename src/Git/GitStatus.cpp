@@ -1100,6 +1100,8 @@ int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::v
 
 	}while(::FindNextFile(handle, &data));
 
+	FindClose(handle);
+
 	std::sort(list.begin(), list.end(), SortFileName);
 	return 0;
 }
