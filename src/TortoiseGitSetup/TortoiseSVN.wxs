@@ -30,6 +30,7 @@
 			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
     </Upgrade>
 
+    <MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
 		<Media Id="1" Cabinet="TSVN.cab" EmbedCab="yes" CompressionLevel="high" />
 
 		<Icon Id="TSVNIcon" SourceFile="..\Resources\Tortoise.ico" />
@@ -117,16 +118,7 @@
 			<AppSearch Sequence="1"></AppSearch>
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
-      <!-- remove existing product after InstallFinalize. See http://support.microsoft.com/kb/905238 why we have to do this (the c-runtime
-           is also installed in the SxS!).
-           Note: registry only components won't get upgraded this way! This is because the keypath is a registry key, and that
-           registry key already exists. So it won't get upgraded. Changing the GUID only makes this worse: the installer detects
-           that the component doesn't exist and installs it, then the 'removeexistingproducts' is run and removes the old component,
-           which has the same registry keys (but maybe different values) - so the whole component is missing after an upgrade. 
-           The only way to overcome this problem is to *not* use registry-only components but always have a keypath pointing
-           to a file with version info. -->
-      <RemoveExistingProducts After="InstallFinalize"><![CDATA[PREVIOUSVERSIONSINSTALLED OR (NOT NEWERVERSIONDETECTED AND OKTODOWNGRADE = 1)]]></RemoveExistingProducts>
-     <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
+      <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
 
 		</InstallExecuteSequence>
 
