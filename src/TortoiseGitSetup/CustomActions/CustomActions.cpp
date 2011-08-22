@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
 
@@ -28,12 +28,7 @@
 #pragma comment(lib, "shlwapi")
 #pragma comment(lib, "shell32")
 
-#ifdef WIN64
-#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow64")
-#else
 #define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
-#endif
-
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
