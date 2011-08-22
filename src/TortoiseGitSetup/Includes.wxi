@@ -53,6 +53,7 @@
 	<?define GuidConflict="475A024D-6157-4e03-8C61-D1FA9806415C"?>
 	<?define GuidIgnored="1B94B098-57C6-4c39-9DC5-8EB00E423D3E"?>
 	<?define GuidUnversioned="18BF1135-6EA2-405f-A71E-16EEE7F71F8B"?>
+
 	<!-- Target specific component GUIDs ............................................. -->
 
 	<?if $(var.Platform) = "x64" ?>
@@ -102,25 +103,25 @@
 	<?define GuidIconsXPStyle="96412A1D-3EE2-4874-8CFC-8EF4D0E36467"?>
 	<?define GuidIconsMarkPhippard="9151E386-6DD8-45a8-8C04-EBEBD9D8E179"?>
 	<?define GuidIconsStraight="669EE534-B358-489e-AD81-544A32172FE7"?>
-  <?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
-  <?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
+	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
+	<?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
 
-  <?define GuidWin7Library="D31C1CAE-BBD9-45e2-A487-80653A49C752"?>
-  <?define GuidWin7Library32="1B9EFDE8-3EF0-443a-BE52-E97707B2F789"?>
-  <?define GuidFolderTypeGit="{80845F42-7943-4e03-A2E9-58F33DDD348C}"?>
-  <?define GuidLibraryTypeGit="{D44311F9-08E5-4bb8-96E3-E3E4F2A1BDD0}"?>
-  <?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
-  <?define GuidTopView1="{A1FA9F0A-CBDE-4f14-968B-B794EAE6F896}"?>
-  <?define GuidTopView2="{C2641083-AA7C-4595-99F2-9F70FC60F3C2}"?>
-  <?define GuidTopView3="{D722E023-1415-444a-A8C9-57E1406E0DFB}"?>
-  <?define GuidTopView4="{128F3BCA-9DD2-4e37-AFBD-D9C0CBB59986}"?>
-  <?define GuidTopView5="{D6FE5156-E527-4523-A164-2DC7CEB451AE}"?>
-  <?define GuidTopView6="{41C46CE9-A680-4a3e-9F96-1985BAD45E67}"?>
-  <?define GuidFolderTypeCmd0="{025AEA90-F150-49d2-861E-1CB1188FDBA1}"?>
-  <?define GuidFolderTypeCmd1="{13732517-1006-43ba-A895-9A4961C94DE1}"?>
-  <?define GuidFolderTypeCmd2="{51826E14-2906-4e3b-9677-4DCF778C9E21}"?>
-  <?define GuidFolderTypeCmd3="{0B9D41AB-361E-4a6f-B72E-D79C69C3A5E4}"?>
-  <?define GuidTouch="{049D92F9-F0FD-4540-A250-0DF9A7BB86B0}"?>
+	<?define GuidWin7Library="D31C1CAE-BBD9-45e2-A487-80653A49C752"?>
+	<?define GuidWin7Library32="1B9EFDE8-3EF0-443a-BE52-E97707B2F789"?>
+	<?define GuidFolderTypeGit="{80845F42-7943-4e03-A2E9-58F33DDD348C}"?>
+	<?define GuidLibraryTypeGit="{D44311F9-08E5-4bb8-96E3-E3E4F2A1BDD0}"?>
+	<?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
+	<?define GuidTopView1="{A1FA9F0A-CBDE-4f14-968B-B794EAE6F896}"?>
+	<?define GuidTopView2="{C2641083-AA7C-4595-99F2-9F70FC60F3C2}"?>
+	<?define GuidTopView3="{D722E023-1415-444a-A8C9-57E1406E0DFB}"?>
+	<?define GuidTopView4="{128F3BCA-9DD2-4e37-AFBD-D9C0CBB59986}"?>
+	<?define GuidTopView5="{D6FE5156-E527-4523-A164-2DC7CEB451AE}"?>
+	<?define GuidTopView6="{41C46CE9-A680-4a3e-9F96-1985BAD45E67}"?>
+	<?define GuidFolderTypeCmd0="{025AEA90-F150-49d2-861E-1CB1188FDBA1}"?>
+	<?define GuidFolderTypeCmd1="{13732517-1006-43ba-A895-9A4961C94DE1}"?>
+	<?define GuidFolderTypeCmd2="{51826E14-2906-4e3b-9677-4DCF778C9E21}"?>
+	<?define GuidFolderTypeCmd3="{0B9D41AB-361E-4a6f-B72E-D79C69C3A5E4}"?>
+	<?define GuidTouch="{049D92F9-F0FD-4540-A250-0DF9A7BB86B0}"?>
 	<?else?>
 
 	<?define GuidInfoFiles="424219CC-2F91-49ad-B0EF-DB6A61575C99"?>
@@ -168,22 +169,21 @@
 	<?define GuidIconsStraight="6176FFF7-3626-4464-8B71-4A5E2551A2B8"?>
 	<?define RegSSHPLINK="112230AA-AB13-4667-AD78-DC8EBEA2ED26"?>
 	<?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
-  
-  <?define GuidWin7Library="DA5F03FD-13B5-42e9-9350-D06C2808EB99"?>
-  <?define GuidFolderTypeGit="{238312A8-C390-4809-BE3E-F0DB99401C58}"?>
-  <?define GuidLibraryTypeGit="{2944F3BB-D880-41d6-A271-721B184684F7}"?>
-  <?define GuidLibraryFolderGit="{37608D23-CCD9-474c-9DFE-E72A83C8666D}"?>
-  <?define GuidTopView1="{E0739170-0866-4d06-8C29-75EE98768196}"?>
-  <?define GuidTopView2="{2086FB3D-74D3-4bc0-A015-F4CB7F8BA5A2}"?>
-  <?define GuidTopView3="{2B70A006-C736-4dc7-91C3-DD1F6CBAB6A6}"?>
-  <?define GuidTopView4="{6F371C39-92A1-46df-A4E2-ACE5C525F822}"?>
-  <?define GuidTopView5="{0AF7B4B9-A466-4634-99BF-1C5DBFEF58A4}"?>
-  <?define GuidTopView6="{86AFD3B7-0E38-4dd1-93BB-07FE7C0DF38F}"?>
-  <?define GuidFolderTypeCmd0="{20B25F22-6433-4a59-B5DB-3D94C0D467CF}"?>
-  <?define GuidFolderTypeCmd1="{A40D37EE-F8C1-42ec-AAAF-05BBD196CCD6}"?>
-  <?define GuidFolderTypeCmd2="{3BC677A5-FBFE-4423-9836-457522019974}"?>
-  <?define GuidFolderTypeCmd3="{65E9EE9F-A9D3-4EAC-82AD-448379A7E4BB}"?>
-  <?define GuidTouch="{ABC9CE77-824F-40b4-AA07-6706E94AEFDD}"?>
-	<?endif?>
 
+	<?define GuidWin7Library="DA5F03FD-13B5-42e9-9350-D06C2808EB99"?>
+	<?define GuidFolderTypeGit="{238312A8-C390-4809-BE3E-F0DB99401C58}"?>
+	<?define GuidLibraryTypeGit="{2944F3BB-D880-41d6-A271-721B184684F7}"?>
+	<?define GuidLibraryFolderGit="{37608D23-CCD9-474c-9DFE-E72A83C8666D}"?>
+	<?define GuidTopView1="{E0739170-0866-4d06-8C29-75EE98768196}"?>
+	<?define GuidTopView2="{2086FB3D-74D3-4bc0-A015-F4CB7F8BA5A2}"?>
+	<?define GuidTopView3="{2B70A006-C736-4dc7-91C3-DD1F6CBAB6A6}"?>
+	<?define GuidTopView4="{6F371C39-92A1-46df-A4E2-ACE5C525F822}"?>
+	<?define GuidTopView5="{0AF7B4B9-A466-4634-99BF-1C5DBFEF58A4}"?>
+	<?define GuidTopView6="{86AFD3B7-0E38-4dd1-93BB-07FE7C0DF38F}"?>
+	<?define GuidFolderTypeCmd0="{20B25F22-6433-4a59-B5DB-3D94C0D467CF}"?>
+	<?define GuidFolderTypeCmd1="{A40D37EE-F8C1-42ec-AAAF-05BBD196CCD6}"?>
+	<?define GuidFolderTypeCmd2="{3BC677A5-FBFE-4423-9836-457522019974}"?>
+	<?define GuidFolderTypeCmd3="{65E9EE9F-A9D3-4EAC-82AD-448379A7E4BB}"?>
+	<?define GuidTouch="{ABC9CE77-824F-40b4-AA07-6706E94AEFDD}"?>
+	<?endif?>
 </Include>

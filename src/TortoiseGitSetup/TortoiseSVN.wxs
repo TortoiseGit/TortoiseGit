@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include Includes.wxi?>
-	<Product
-	UpgradeCode="$(var.UpgradeGuid)"
-	Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)"
-	Id="*"
-	Version="$(var.VersionNumberInternal)"
-	Manufacturer="TortoiseGit"
-	Language="1033"
-	Codepage="1252">
-		<Package
-		Id="*"
-		Keywords="$(var.PackageKeywords)"
-		Description="$(var.PackageDescription)"
-		Comments="$(var.PackageComments)"
-		Manufacturer="$(var.PackageManufacturer)"
-		InstallerVersion="300"
-		Platform="$(var.PackagePlatforms)"
-		Languages="1033"
-		Compressed="yes"
-		SummaryCodepage="1252"
-		InstallPrivileges="elevated" />
+	<Product UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Id="*" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Codepage="1252">
 
-		<Upgrade Id="$(var.UpgradeGuid)" >
+		<Package Id="*" Keywords="$(var.PackageKeywords)" Description="$(var.PackageDescription)" Comments="$(var.PackageComments)" Manufacturer="$(var.PackageManufacturer)" InstallerVersion="300" Platform="$(var.PackagePlatforms)" Languages="1033" Compressed="yes" SummaryCodepage="1252" InstallPrivileges="elevated" />
+		<Upgrade Id="$(var.UpgradeGuid)">
 			<!-- upgrade is flagged if current-install is newer than or equal to package -->
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
 
 			<!-- flag is set if the install will trigger an upgrade of an existing install -->
 			<UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" Maximum="$(var.VersionNumberInternal)" IncludeMaximum="no" MigrateFeatures="yes" />
-    </Upgrade>
+		</Upgrade>
 
-    <MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
+		<MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
 		<Media Id="1" Cabinet="TSVN.cab" EmbedCab="yes" CompressionLevel="high" />
 
 		<Icon Id="TSVNIcon" SourceFile="..\Resources\Tortoise.ico" />
@@ -39,7 +21,7 @@
 
 		<!-- Launch Condition related properties ................................................................................. -->
 		<Property Id="VERSIONIE">
-			<RegistrySearch Id="RegSearchIeVersion" Root="HKLM" Key="SOFTWARE\Microsoft\Internet Explorer" Name="Version" Type="raw" Win64="$(var.Win64YesNo)"/>
+			<RegistrySearch Id="RegSearchIeVersion" Root="HKLM" Key="SOFTWARE\Microsoft\Internet Explorer" Name="Version" Type="raw" Win64="$(var.Win64YesNo)" />
 		</Property>
 		<Condition Message="[ProductName] needs at least Internet Explorer 5">NOT ((VERSIONIE&lt;&lt;"1") OR (VERSIONIE&lt;&lt;"2") OR (VERSIONIE&lt;&lt;"3") OR (VERSIONIE&lt;&lt;"4"))</Condition>
 
@@ -55,7 +37,7 @@
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
 
-    <Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
+		<Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
 		<Condition Message="[ProductName] requires Windows 2000 SP4 or later."><![CDATA[(VersionNT > 500) OR ((VersionNT = 500) AND (ServicePackLevel >= 4))]]></Condition>
 
 		<?if $(var.Platform) = "x86" ?>
@@ -78,9 +60,9 @@
 		<CustomAction Id="Set_ShowChangelog" Property="ShowChangelog" Value="Yes" Return="check" />
 		<CustomAction Id="ShowChangelogAction" Property="TEXTEDITOR" ExeCommand="[INSTALLDIR]changelog.txt" Return="asyncNoWait" />
 
-    <CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
+		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
 
-    <CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
+		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
 		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
 
 		<!-- Unsafe-check properties and custom actions .......................................................................... -->
@@ -91,35 +73,33 @@
 		<?if $(var.Platform) = "x64" ?>
 		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFiles64Folder]$(var.ProductName)" Execute="immediate" />
 		<Property Id="INSTALLDIR">
-			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)"/>
+			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
 		</Property>
 		<?else ?>
 		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFilesFolder]$(var.ProductName)" Execute="immediate" />
 		<Property Id="INSTALLDIR">
-			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)"/>
+      <RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
 		</Property>
 		<?endif ?>
 
-    <?include FeaturesFragment.wxi?>
-    <?include StructureFragment.wxi?>
-    <?include UIFragment.wxi?>
+		<?include FeaturesFragment.wxi?>
+		<?include StructureFragment.wxi?>
+		<?include UIFragment.wxi?>
 
-    <!--
-		<FragmentRef Id="StructureFragment"/>
-
+		<!--
+		<FragmentRef Id="StructureFragment" />
 		<FragmentRef Id="FeaturesFragment" />
-
 		<FragmentRef Id="UIFragment" />
-    -->
+		-->
+
 		<!-- Execute Sequencing ................................................................................................. -->
 		<AdminExecuteSequence />
 		<InstallExecuteSequence>
 			<!-- AppSearch must be done before RemoveExistingProducts and before FindRelatedProducts -->
-			<AppSearch Sequence="1"></AppSearch>
+			<AppSearch Sequence="1" />
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
-      <Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
-
+			<Custom Action="KillCache" After="RemoveExistingProducts">Installed</Custom>
 		</InstallExecuteSequence>
 
 		<!-- UI Sequencing ...................................................................................................... -->
@@ -131,6 +111,7 @@
 			<Show Dialog="AdminWelcomeDlg" After="CostFinalize" />
 			<Show Dialog="ProgressDlg" After="AdminWelcomeDlg" />
 		</AdminUISequence>
+
 		<InstallUISequence>
 			<Show Dialog="FatalErrorDlg" OnExit="error" />
 			<Show Dialog="UserExit" OnExit="cancel" />
@@ -149,5 +130,3 @@
 		</InstallUISequence>
 	</Product>
 </Wix>
-
-

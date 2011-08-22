@@ -1,118 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-		<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow"
-		TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local" >
-			<ComponentRef Id="C__infofiles" />
-			<ComponentRef Id="C__apr" />
-<!--			<ComponentRef Id="C__sasl" />
--->			<ComponentRef Id="C__gettext" />
+	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow" TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local">
+		<ComponentRef Id="C__infofiles" />
+		<ComponentRef Id="C__apr" />
+		<!-- <ComponentRef Id="C__sasl" /> -->
+		<ComponentRef Id="C__gettext" />
 
-			<ComponentRef Id="C__help_en" />
-      <ComponentRef Id="C__wingit" />
-			<ComponentRef Id="C__TortoiseSVN" />
-			<ComponentRef Id="C__TortoiseSVNShortcuts" />
-			<ComponentRef Id="C__TortoiseMerge" />
-			<ComponentRef Id="C__TortoiseMergeShortcuts" />
+		<ComponentRef Id="C__help_en" />
+		<ComponentRef Id="C__wingit" />
+		<ComponentRef Id="C__TortoiseSVN" />
+		<ComponentRef Id="C__TortoiseSVNShortcuts" />
+		<ComponentRef Id="C__TortoiseMerge" />
+		<ComponentRef Id="C__TortoiseMergeShortcuts" />
 
-      <ComponentRef Id="C__TortoiseBlame" />
+		<ComponentRef Id="C__TortoiseBlame" />
 
-      <ComponentRef Id="C__TortoiseIDiff" />
-			<ComponentRef Id="C__TortoiseIDiffShortcuts" />
+		<ComponentRef Id="C__TortoiseIDiff" />
+		<ComponentRef Id="C__TortoiseIDiffShortcuts" />
 
-			<ComponentRef Id="C__TortoiseUDiff" />
+		<ComponentRef Id="C__TortoiseUDiff" />
 
-			<ComponentRef Id="C__PlainSettingsShortcuts" />
-			<ComponentRef Id="C__PlatformSettingsShortcuts" />
-			<ComponentRef Id="C__shellregistry" />
+		<ComponentRef Id="C__PlainSettingsShortcuts" />
+		<ComponentRef Id="C__PlatformSettingsShortcuts" />
+		<ComponentRef Id="C__shellregistry" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__shellregistry32" />
+		<?endif ?>
+		<ComponentRef Id="C__machineregistry" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__machineregistry32" />
+		<?endif ?>
+
+		<!-- <ComponentRef Id="C__svnprotocoll" /> -->
+
+		<ComponentRef Id="C__approveshellcomponents" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__approveshellcomponents32" />
+		<?endif ?>
+
+		<ComponentRef Id="C__win7library" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__win7library32" />
+		<?endif ?>
+
+		<ComponentRef Id="C__ProgramMenuFolder" />
+		<ComponentRef Id="C__Sounds" />
+		<ComponentRef Id="C__DiffScripts" />
+		<ComponentRef Id="C__touch" />
+
+		<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
+			<MergeRef Id="CRT" />
+			<MergeRef Id="CRT Policy" />
 			<?if $(var.Platform) = "x64" ?>
-			<ComponentRef Id="C__shellregistry32" />
+			<MergeRef Id="CRT32" />
 			<?endif ?>
-			<ComponentRef Id="C__machineregistry" />
-			<?if $(var.Platform) = "x64" ?>
-			<ComponentRef Id="C__machineregistry32" />
-			<?endif ?>
-<!--			<ComponentRef Id="C__svnprotocoll" />
--->
-			<ComponentRef Id="C__approveshellcomponents" />
-			<?if $(var.Platform) = "x64" ?>
-			<ComponentRef Id="C__approveshellcomponents32" />
-			<?endif ?>
-      <ComponentRef Id="C__win7library" />
-			<?if $(var.Platform) = "x64" ?>
-			<ComponentRef Id="C__win7library32" />
-			<?endif ?>
-			<ComponentRef Id="C__ProgramMenuFolder" />
-			<ComponentRef Id="C__Sounds" />
-			<ComponentRef Id="C__DiffScripts" />
-      <ComponentRef Id="C__touch"/>
-
-			<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden" >
-				<MergeRef Id="CRT" />
-				<MergeRef Id="CRT Policy" />
-				<?if $(var.Platform) = "x64" ?>
-				<MergeRef Id="CRT32" />
-				<?endif ?>
-			</Feature>
-			<Feature Id="F_MFC" Level="1" Title="MFC 8.0" Description="The MFC 8.0 libs" TypicalDefault="install" Display="hidden" >
-				<MergeRef Id="MFC" />
-				<MergeRef Id="MFC Policy" />
-				<MergeRef Id="MFCLOC" />
-				<MergeRef Id="MFCLOC Policy" />
-				<?if $(var.Platform) = "x64" ?>
-				<MergeRef Id="ATL32" />
-				<MergeRef Id="ATL32 Policy" />
-				<MergeRef Id="MFC32" />
-				<MergeRef Id="MFCLOC32" />
-				<?endif ?>
-        <MergeRef Id="ATL" />
-        <MergeRef Id="ATL Policy" />
-      </Feature>
-			<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden" >
-				<MergeRef Id="Ovlays" />
-				<?if $(var.Platform) = "x64" ?>
-				<MergeRef Id="Ovlays32" />
-				<?endif ?>
-			</Feature>
-
-			<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow">
-				<ComponentRef Id="C__iconscvsclassic" />
-				<ComponentRef Id="C__iconsmodern" />
-				<ComponentRef Id="C__iconsmarkphippard" />
-				<ComponentRef Id="C__iconsstraight" />
-			</Feature>
-
-			<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow">
-				<ComponentRef Id="C__TortoiseUDiffAssoc" />
-			</Feature>
-
-      <?if $(var.DictionaryENGB) = 1 ?>
-			<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow">
-				<ComponentRef Id="C__DictionaryENGB" />
-			</Feature>
-			<?endif ?>
-
-			<?if $(var.DictionaryENUS) = 1 ?>
-			<Feature Id="DictionaryENUS" Level="1" Title="English (US) dictionary" Description="English (US) spell checker dictionary" TypicalDefault="install" Absent="allow">
-				<ComponentRef Id="C__DictionaryENUS" />
-			</Feature>
-			<?endif ?>
-
-			<?if $(var.IncludeCrashReportDll) = 1 ?>
-			<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="In official builds, sends crash dumps to the developers."
-			TypicalDefault="install" Display="hidden" InstallDefault="followParent">
-				<ComponentRef Id="C__crash" />
-			</Feature>
-			<?endif ?>
-
-
-		<Feature  Id="SSHPlink" Level="1" Title="SSH Plink" Description="SSH PLink" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
-				<ComponentRef  Id="C_SSHCLIENT_PLINK"/>
 		</Feature>
 
-
-		<Feature  Id="SSHOpenSSH" Level="1" Title="SSH OpenSSH" Description="SSH OpenSSH" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
-				<ComponentRef  Id="C_SSHCLIENT_OPENSSH"/>
+		<Feature Id="F_MFC" Level="1" Title="MFC 8.0" Description="The MFC 8.0 libs" TypicalDefault="install" Display="hidden">
+			<MergeRef Id="MFC" />
+			<MergeRef Id="MFC Policy" />
+			<MergeRef Id="MFCLOC" />
+			<MergeRef Id="MFCLOC Policy" />
+			<?if $(var.Platform) = "x64" ?>
+			<MergeRef Id="ATL32" />
+			<MergeRef Id="ATL32 Policy" />
+			<MergeRef Id="MFC32" />
+			<MergeRef Id="MFCLOC32" />
+			<?endif ?>
+			<MergeRef Id="ATL" />
+			<MergeRef Id="ATL Policy" />
 		</Feature>
 
+		<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">
+			<MergeRef Id="Ovlays" />
+			<?if $(var.Platform) = "x64" ?>
+			<MergeRef Id="Ovlays32" />
+			<?endif ?>
 		</Feature>
+
+		<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow">
+			<ComponentRef Id="C__iconscvsclassic" />
+			<ComponentRef Id="C__iconsmodern" />
+			<ComponentRef Id="C__iconsmarkphippard" />
+			<ComponentRef Id="C__iconsstraight" />
+		</Feature>
+
+		<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow">
+			<ComponentRef Id="C__TortoiseUDiffAssoc" />
+		</Feature>
+
+		<?if $(var.DictionaryENGB) = 1 ?>
+		<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow">
+			<ComponentRef Id="C__DictionaryENGB" />
+		</Feature>
+		<?endif ?>
+		<?if $(var.DictionaryENUS) = 1 ?>
+		<Feature Id="DictionaryENUS" Level="1" Title="English (US) dictionary" Description="English (US) spell checker dictionary" TypicalDefault="install" Absent="allow">
+			<ComponentRef Id="C__DictionaryENUS" />
+		</Feature>
+		<?endif ?>
+
+		<?if $(var.IncludeCrashReportDll) = 1 ?>
+		<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="In official builds, sends crash dumps to the developers." TypicalDefault="install" Display="hidden" InstallDefault="followParent">
+			<ComponentRef Id="C__crash" />
+		</Feature>
+		<?endif ?>
+
+		<Feature Id="SSHPlink" Level="1" Title="SSH Plink" Description="SSH PLink" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
+			<ComponentRef Id="C_SSHCLIENT_PLINK" />
+		</Feature>
+		<Feature Id="SSHOpenSSH" Level="1" Title="SSH OpenSSH" Description="SSH OpenSSH" TypicalDefault="install" Display="hidden" InstallDefault="followParent">
+			<ComponentRef Id="C_SSHCLIENT_OPENSSH" />
+		</Feature>
+	</Feature>
 </Include>
