@@ -770,6 +770,7 @@
 
 				<Directory Id="D__Bin" ShortName="BIN" Name="bin">
 					<Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
+						<!-- only needed for TortoiseMerge which is shipped 32 or 64 bit-->
 						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__libapr32" ShortName="LIBAPR.DLL" Name="libapr_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libapr_tsvn32.dll" KeyPath="yes" />
 						<File Id="F__libaprutil32" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libaprutil_tsvn32.dll" />
@@ -934,6 +935,7 @@
 						<File Id="F__ENGBSPELLDIC" ShortName="en_GB.dic" Name="en_GB.dic" Source="..\..\..\Common\Spell\en_GB.dic" DiskId="1" />
 					</Component>
 					<?endif ?>
+
 					<?if $(var.DictionaryENUS) = 1 ?>
 					<Component Id="C__DictionaryENUS" Guid="$(var.GuidDictionaryENUS)" Win64="$(var.Win64YesNo)">
 						<File Id="F__ENSPELLAFF" ShortName="en_US.aff" Name="en_US.aff" Source="..\..\Common\Spell\en_US.aff" DiskId="1" />
