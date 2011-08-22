@@ -4,10 +4,23 @@
 		<ComponentRef Id="C__infofiles" />
 		<ComponentRef Id="C__apr" />
 		<ComponentRef Id="C__gettext" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__gettext32" />
+		<?endif ?>
 
 		<ComponentRef Id="C__help_en" />
-		<ComponentRef Id="C__wingit" />
-		<ComponentRef Id="C__TortoiseSVN" />
+		<ComponentRef Id="C__tgit" />
+		<ComponentRef Id="C__gitlibs" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__gitlibs32" />
+		<?endif ?>
+		<ComponentRef Id="C__TortoiseShell" />
+		<?if $(var.Platform) = "x64" ?>
+		<ComponentRef Id="C__TortoiseShell32" />
+		<?endif ?>
+		<ComponentRef Id="C__TortoiseGitTools" />
+		<ComponentRef Id="C__TGitCache" />
+		<ComponentRef Id="C__TortoiseProc" />
 		<ComponentRef Id="C__TortoiseSVNShortcuts" />
 		<ComponentRef Id="C__TortoiseMerge" />
 		<ComponentRef Id="C__TortoiseMergeShortcuts" />

@@ -786,11 +786,18 @@
 					</Component>
 
 					<Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
+						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__intl32" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPath32Extension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
+						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__intl" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn.dll" />
 						<?endif ?>
 					</Component>
+					<?if $(var.Platform) = "x64" ?>
+					<Component Id="C__gettext32" Guid="$(var.GuidGettext32)" Win64="$(var.Win64YesNo)">
+						<File Id="F__intl32" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPath32Extension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
+					</Component>
+					<?endif ?>
 
 					<?if $(var.IncludeCrashReportDll) = 1 ?>
 					<Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
@@ -804,35 +811,31 @@
 						<RemoveFile Id="F__Tortoise_lang" Name="*.chm" On="uninstall" />
 					</Component>
 
-					<Component Id="C__wingit" Guid="$(var.GuidGitLib)" Win64="$(var.Win64YesNo)">
-						<!--
-						<File Id="F__wingit" ShortName="IGIT.EXE" Name="igit.exe" DiskId="1" Source="..\..\ext\gitexe\igit.exe" KeyPath="yes" />
-						<File Id="F__libiconv2" ShortName="LIBICONV.DLL" Name="libiconv2.dll" DiskId="1" Source="..\..\ext\gitexe\libiconv2.dll" />
-						-->
+					<Component Id="C__tgit" Guid="$(var.GuidTGit)" Win64="$(var.Win64YesNo)">
+						<File Id="F__tgit" ShortName="TGIT.EXE" Name="tgit.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgit.exe" KeyPath="yes" />
+					</Component>
+
+					<Component Id="C__gitlibs" Guid="$(var.GuidGitLibs)" Win64="$(var.Win64YesNo)">
+						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
+						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
+						<File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
+						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" />
-						<?endif ?>
-						<File Id="F__tgit" ShortName="TGIT.EXE" Name="tgit.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgit.exe" />
-						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
-						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
-						<?endif ?>
-						<File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
-						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__curl" Name="libcurl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl.dll" />
 						<?endif ?>
 					</Component>
+					<?if $(var.Platform) = "x64" ?>
+					<Component Id="C__gitlibs32" Guid="$(var.GuidGitLibs32)" Win64="$(var.Win64YesNo)">
+						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
+						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
+						<File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
+					</Component>
+					<?endif ?>
 
-					<Component Id="C__TortoiseSVN" Guid="$(var.GuidTortoiseSVN)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
-						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" />
-						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
-						<?endif ?>
-						<!--
-						<File Id="F__TortoiseStub" ShortName="TORTSTB.DLL" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
-						-->
+					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
 						<File Id="F__PuttyGen" ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
@@ -843,11 +846,32 @@
 						<File Id="F__notepad2x64" ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x64.exe" />
 						<?endif ?>
 						<File Id="F__askpass" ShortName="askpass.EXE" Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
-						<File Id="F__TSVNCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
-						<File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
 						<File Id="F__websiteurl" ShortName="WEBSITE.URL" Name="Website.url" Source="include\Website.url" DiskId="1" />
+					</Component>
+
+					<Component Id="C__TGitCache" Guid="$(var.GuidTortoiseGitCache)" Win64="$(var.Win64YesNo)">
+						<File Id="F__TGitCache" ShortName="TGITCACH.EXE" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" />
+					</Component>
+
+					<Component Id="C__TortoiseProc" Guid="$(var.GuidTortoiseProc)" Win64="$(var.Win64YesNo)">
+						<File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
+						<File Id="F__TSVNAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
 						<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
 					</Component>
+
+					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">
+						<?if $(var.Platform) = "x86" ?>
+						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" />
+						<?endif ?>
+						<?if $(var.Platform) = "x64" ?>
+						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
+						<?endif ?>
+					</Component>
+					<?if $(var.Platform) = "x64" ?>
+					<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)" Win64="$(var.Win64YesNo)">
+						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" />
+					</Component>
+					<?endif ?>
 
 					<Component Id="C__TortoiseSVNShortcuts" Guid="$(var.GuidTortoiseSVNShortcuts)" Win64="$(var.Win64YesNo)">
 						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
