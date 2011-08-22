@@ -785,18 +785,6 @@
 						<File Id="F__touch" ShortName="touch.exe" Name="touch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\touch.exe" KeyPath="yes" />
 					</Component>
 
-					<!--
-					<Component Id="C__sasl" Guid="$(var.GuidSASL)" Win64="$(var.Win64YesNo)">
-						<File Id="F__libsasl" ShortName="LIBSASL.DLL" Name="libsasl.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\libsasl.dll" KeyPath="yes" />
-						<File Id="F__saslANONYMOUS" ShortName="saslANON.DLL" Name="saslANONYMOUS.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslANONYMOUS.dll" />
-						<File Id="F__saslCRAMMD5" ShortName="saslCRAM.DLL" Name="saslCRAMMD5.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslCRAMMD5.dll" />
-						<File Id="F__saslDIGESTMD5" ShortName="saslDIGE.DLL" Name="saslDIGESTMD5.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslDIGESTMD5.dll" />
-						<File Id="F__saslLOGIN" ShortName="saslLOGI.DLL" Name="saslLOGIN.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslLOGIN.dll" />
-						<File Id="F__saslNTLM" ShortName="saslNTLM.DLL" Name="saslNTLM.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslNTLM.dll" />
-						<File Id="F__saslPLAIN" ShortName="saslPLAI.DLL" Name="saslPLAIN.dll" DiskId="1" Source="..\..\ext\cyrus-SASL\release_$(var.PlatformPathExtension)\saslPLAIN.dll" />
-					</Component>
-					-->
-
 					<Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
 						<File Id="F__intl32" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPath32Extension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
 						<?if $(var.Platform) = "x64" ?>
