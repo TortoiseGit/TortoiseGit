@@ -1318,6 +1318,9 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 
+			if (indexptr == NULL)
+				return 0;
+
 			if(subpath.IsEmpty() && (!indexptr.use_count()))
 			{ // for new init repository
 				*status = git_wc_status_normal;
