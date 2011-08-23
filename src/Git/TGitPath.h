@@ -359,7 +359,7 @@ public:
 	bool LoadFromFile(const CTGitPath& filename);
 	bool WriteToFile(const CString& sFilename, bool bANSI = false) const;
 	CTGitPath * LookForGitPath(CString path);
-	int	ParserFromLog(BYTE_VECTOR &log);
+	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
 	int FillUnRev(int Action,CTGitPathList *list=NULL);
 	int GetAction();
