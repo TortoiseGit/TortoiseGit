@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2010 - TortoiseGit
-// Copyright (C) 2010 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2010-2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1050,7 +1050,7 @@ int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
 	}
 	return 0;
 }
-int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
+int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 {
 	this->Clear();
 	int pos=0;
@@ -1192,9 +1192,15 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log)
 			}else
 			{
 				//path.SetFromGit(pathname);
-				path.m_StatAdd=StatAdd;
-				path.m_StatDel=StatDel;
-				path.m_Action |= CTGitPath::LOGACTIONS_FORWORD;
+				if (parseDeletes) {
+					path.m_StatAdd=_T("0");
+					path.m_StatDel=_T("0");
+					path.m_Action |= CTGitPath::LOGACTIONS_DELETED;
+				} else {
+					path.m_StatAdd=StatAdd;
+					path.m_StatDel=StatDel;
+					path.m_Action |= CTGitPath::LOGACTIONS_FORWORD;
+				}
 				AddPath(path);
 			}
 

@@ -991,7 +991,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	// relative path
 	CString rename;
 	rename.Format(_T(" (from %s)"),GitPath->GetGitOldPathString());
-	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
+	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && m_CurrentVersion != GIT_REV_ZERO)
 		entryname+=rename;
 
 	InsertItem(index, entryname, icon_idx);
@@ -4949,6 +4949,29 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			}
 		}
 
+		// handle source files of file renames/moves (issue #860)
+		// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
+		for(int i = 0; i < count; i++)
+		{
+			BYTE_VECTOR cmdout;
+			CString cmd;
+
+			if(list == NULL)
+				cmd = _T("git.exe ls-files -d -z");
+			else
+				cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""),(*list)[i].GetGitPathString());
+
+			g_Git.Run(cmd,&cmdout);
+
+			CTGitPathList deletelist;
+			deletelist.ParserFromLog(cmdout, true);
+			for(int i = 0; i < deletelist.GetCount(); i++)
+			{
+				CTGitPath *p = m_StatusFileList.LookForGitPath(deletelist[i].GetGitPathString());
+				if(!p)
+					m_StatusFileList.AddPath(deletelist[i]);
+			}
+		}
 	}else
 	{
 		int count = 0;
