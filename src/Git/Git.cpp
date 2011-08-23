@@ -1525,7 +1525,7 @@ int CGit::Revert(CString commit, CTGitPath &path)
 {
 	CString cmd, out;
 
-	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED )
+	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
 	{
 		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
