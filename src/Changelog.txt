@@ -1,4 +1,7 @@
 = Release 1.7.3.0 =
+== Features ==
+ * Fixed issue #872: 32 shell extension should be made optional on x64 installation
+
 == Bug Fix ==
  * Fixed issue #833: Password with Percent (%) is not accepted
  * Fixed issue #852: Incorrect current version string in Check For Updates dialog on x86
