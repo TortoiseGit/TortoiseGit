@@ -256,9 +256,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 
 }
 
-CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path)
+CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CString sProjectRoot)
 {
-	CString sProjectRoot;
 	CString subpaths = path.GetGitPathString();
 	if(subpaths.GetLength() >= sProjectRoot.GetLength())
 	{		
@@ -381,7 +380,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 
 	if(bFetch)
 	{
-		GetStatusFromGit(path);
+		GetStatusFromGit(path, sProjectRoot);
 		return CStatusCacheEntry();
 	}else
 	{
