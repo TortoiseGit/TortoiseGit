@@ -10,6 +10,7 @@
  * Fixed Issue #851: Windows Explorer Shell Crashed when empty repository
  * Fixed open handles in TGitCache
  * Fixed issue #870: Wrong overlay icons
+ * Fixed issue #793: Context menu for files does not contain "Add to ignore list"
 
 = Release 1.7.2.0 =
 == Features ==
