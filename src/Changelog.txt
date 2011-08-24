@@ -12,6 +12,7 @@
  * Fixed issue #870: Wrong overlay icons
  * Fixed issue #793: Context menu for files does not contain "Add to ignore list"
  * Fixed issue #860: Commit file moves does not properly remove the source file 
+ * Fixed issue #863: Commit and revert gets stuck on repositories with mixed line-endings
 
 = Release 1.7.2.0 =
 == Features ==

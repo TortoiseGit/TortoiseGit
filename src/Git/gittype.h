@@ -58,7 +58,7 @@ public:
 	}
 	int findNextString(int start=0)
 	{
-		unsigned int pos=start;
+		int pos=start;
 		do
 		{
 			pos=find(0,pos);
