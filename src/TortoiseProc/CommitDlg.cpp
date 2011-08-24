@@ -1925,7 +1925,8 @@ void CCommitDlg::OnBnClickedWholeProject()
 		else
 			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
 
-		m_ListCtrl.Show(m_ListCtrl.GetShowFlags());
+		DWORD dwShow = (DWORD)(SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWLOCKS);
+		m_ListCtrl.Show(m_ListCtrl.GetShowFlags(), dwShow & (~CTGitPath::LOGACTIONS_UNVER));
 	}
 
 	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
