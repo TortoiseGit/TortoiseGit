@@ -988,11 +988,13 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	{
 		icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(*GitPath);
 	}
-	// relative path
-	CString rename;
-	rename.Format(_T(" (from %s)"),GitPath->GetGitOldPathString());
-	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && m_CurrentVersion != GIT_REV_ZERO)
-		entryname+=rename;
+	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !GitPath->GetGitOldPathString().IsEmpty())
+	{
+		// relative path
+		CString rename;
+		rename.Format(_T(" (from %s)"), GitPath->GetGitOldPathString());
+		entryname += rename;
+	}
 
 	InsertItem(index, entryname, icon_idx);
 
