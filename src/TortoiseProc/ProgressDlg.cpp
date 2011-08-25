@@ -221,7 +221,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 			CloseHandle(hRead);
 
 			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_FAILED,0);
-			return GIT_ERROR_GET_EXIT_CODE;
+			return TGIT_GIT_ERROR_GET_EXIT_CODE;
 		}
 		ret |= status;
 	}
