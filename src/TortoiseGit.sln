@@ -170,7 +170,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cache", "..\test\Cache\Cach
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "touch", "touch\touch.vcproj", "{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit2", "..\ext\libgit2\libgit2.vcproj", "{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit2", "..\ext\build\libgit2.vcproj", "{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TortoiseGitSetup", "TortoiseGitSetup", "{97449875-7B08-41B1-AF99-1EBE64AD7939}"
 EndProject
