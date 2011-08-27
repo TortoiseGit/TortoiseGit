@@ -1281,7 +1281,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						{
 							*status = git_wc_status_deleted;
 							if(callback)
-								callback(gitdir+_T("/")+filename, *status, false,pData);
+								callback(gitdir+_T("/")+(*it).m_FileName, *status, false,pData);
 						}
 					}
 				}
