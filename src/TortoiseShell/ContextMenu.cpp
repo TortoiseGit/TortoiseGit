@@ -2157,7 +2157,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 			if (hIcon == NULL)
 				return S_OK;
 			DrawIconEx(lpdis->hDC,
-				lpdis->rcItem.left - 16,
+				lpdis->rcItem.left < 16 ? lpdis->rcItem.left : lpdis->rcItem.left - 16,
 				lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - 16) / 2,
 				hIcon, 16, 16,
 				0, NULL, DI_NORMAL);
