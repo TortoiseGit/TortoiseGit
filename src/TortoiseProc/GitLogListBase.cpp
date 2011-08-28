@@ -1461,6 +1461,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	if (popup.CreatePopupMenu())
 	{
+		bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
@@ -1594,7 +1595,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						thisbranch = true;
 						break;
 				}
-				bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
@@ -1751,7 +1751,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 			}
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK)) {
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit) {
 				popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_EXPORT);
 				bAddSeparator = true;
 			}
