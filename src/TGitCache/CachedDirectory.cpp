@@ -27,7 +27,6 @@
 CCachedDirectory::CCachedDirectory(void)
 {
 	m_currentStatusFetchingPathTicks = 0;
-	m_bCurrentFullStatusValid = false;
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
 	m_bRecursive = true;
 	m_indexFileTime = 0;
@@ -45,7 +44,6 @@ CCachedDirectory::CCachedDirectory(const CTGitPath& directoryPath)
 	m_directoryPath = directoryPath;
 
 	m_currentStatusFetchingPathTicks = 0;
-	m_bCurrentFullStatusValid = false;
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
 	m_bRecursive = true;
 }

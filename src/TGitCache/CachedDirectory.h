@@ -105,7 +105,6 @@ private:
 
 	// Our current fully recursive status
 	git_wc_status_kind  m_currentFullStatus;
-	bool m_bCurrentFullStatusValid;
 
 	// The most important status from all our file entries
 	git_wc_status_kind m_mostImportantFileStatus;
