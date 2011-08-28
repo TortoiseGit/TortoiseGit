@@ -607,8 +607,8 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 			// Keep track of the most important status of all the files in this directory
 			// Don't include subdirectories in this figure, because they need to provide their 
 			// own 'most important' value
-			if (status2->text_status == git_wc_status_deleted) {
-				// if just a file in a folder is deleted report back that the folder is modified and not deleted
+			if (status2->text_status == git_wc_status_deleted || status2->text_status == git_wc_status_added) {
+				// if just a file in a folder is deleted or added report back that the folder is modified and not deleted or added
 				pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_modified);
 			} else {
 				pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status2->text_status);
