@@ -208,6 +208,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 
 				CGitStatusCache::Instance().AddFolderForCrawling(path);
 
+				/*Return old status during crawling*/
+				return dirEntry->GetOwnStatus(bRecursive);
 			}			
 		}
 		else
@@ -562,6 +564,14 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_deleted);
 				}
 
+				if ( status <  git_wc_status_normal)
+				{
+					if( ::PathFileExists(path+_T("\\.git")))
+					{ // this is submodule
+						ATLTRACE(_T("skip submodule %s\n"), path);
+						return FALSE;
+					}
+				}
 				if (pThis->m_bRecursive)
 				{
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
@@ -808,7 +818,18 @@ void CCachedDirectory::UpdateCurrentStatus()
 	ATLTRACE(_T("UpdateCurrentStatus %s new:%d old: %d\n"),
 		m_directoryPath.GetWinPath(), 
 		newStatus, m_currentFullStatus);
-	if ((newStatus != m_currentFullStatus)&&(m_ownStatus.IsVersioned()))
+
+	if ( this->m_ownStatus.GetEffectiveStatus() < git_wc_status_normal )
+	{
+		if (::PathFileExists(this->m_directoryPath.GetWinPathString()+_T("\\.git")))
+		{
+			//project root must be normal status at least.
+			ATLTRACE(_T("force update project root directory as normal status\n"));
+			this->m_ownStatus.ForceStatus(git_wc_status_normal);
+		}
+	}
+
+	if ((newStatus != m_currentFullStatus) && m_ownStatus.IsVersioned())
 	{
 		if ((m_currentFullStatus != git_wc_status_none)&&(m_ownStatus.GetEffectiveStatus() != git_wc_status_missing))
 		{
@@ -831,7 +852,8 @@ void CCachedDirectory::UpdateCurrentStatus()
 	{
 		// We have a parent
 		// just version controled directory need to cache.
-		//if(parentPath.HasAdminDir() || )
+		CString root1, root2;
+		if(parentPath.HasAdminDir(&root1) && m_directoryPath.HasAdminDir(&root2) && root1 == root2)
 		{
 			CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(parentPath);
 			if (cachedDir)
