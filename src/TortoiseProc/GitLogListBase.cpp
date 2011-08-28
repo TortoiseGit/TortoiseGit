@@ -1626,7 +1626,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString str;
 					str.LoadString(IDS_SWITCH_BRANCH);
 
-					if(branchs.size() == 1 && !thisbranch)
+					int branchCount = branchs.size();
+					for(int i=0; i<branchs.size(); i++)
+					{
+						if (*branchs[i] == currentBranch)
+						{
+							branchCount--;
+						}
+					}
+
+					if(branchCount == 1)
 					{
 						str+=_T(" ");
 						str+= _T('"') + branchs[0]->Mid(11) + _T('"');
@@ -1635,13 +1644,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.SetMenuItemData(ID_SWITCHBRANCH,(ULONG_PTR)branchs[0]);
 
 					}
-					else if( branchs.size() > 1 )
+					else if(branchCount > 1)
 					{
 						subbranchmenu.CreatePopupMenu();
 						for(int i=0;i<branchs.size();i++)
 						{
-							subbranchmenu.AppendMenuIcon(ID_SWITCHBRANCH+(i<<16), branchs[i]->Mid(11));
-							subbranchmenu.SetMenuItemData(ID_SWITCHBRANCH+(i<<16), (ULONG_PTR) branchs[i]);
+							if (*branchs[i] != currentBranch)
+							{
+								subbranchmenu.AppendMenuIcon(ID_SWITCHBRANCH+(i<<16), branchs[i]->Mid(11));
+								subbranchmenu.SetMenuItemData(ID_SWITCHBRANCH+(i<<16), (ULONG_PTR) branchs[i]);
+							}
 						}
 
 						popup.AppendMenuIcon(ID_SWITCHBRANCH, str, IDI_SWITCH, subbranchmenu.m_hMenu);
