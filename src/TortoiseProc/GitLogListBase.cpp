@@ -1594,8 +1594,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						thisbranch = true;
 						break;
 				}
+				bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !thisbranch)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
