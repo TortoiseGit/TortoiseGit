@@ -79,7 +79,6 @@ private:
 	CComAutoCriticalSection m_critSecPath;
 
 	CTGitPath	m_currentStatusFetchingPath;
-	DWORD		m_currentStatusFetchingPathTicks;
 	// The cache of files and directories within this directory
 	typedef std::map<CString, CStatusCacheEntry> CacheEntryMap; 
 	CacheEntryMap m_entryCache; 
@@ -90,7 +89,6 @@ private:
 
 	// The timestamp of the .git\index file.  For an unversioned directory, this will be zero
 	__int64 m_indexFileTime;
-	bool	m_FullStatusFetched;
 	CGitHash m_Head;
 
 	std::vector<__int64> m_IgnoreFileTimeList;
