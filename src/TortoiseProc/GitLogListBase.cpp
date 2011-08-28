@@ -1648,7 +1648,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !thisbranch)
+				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !isHeadCommit)
 					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
