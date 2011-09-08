@@ -38,6 +38,9 @@ CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPushDlg::IDD, pParent)
 	, m_bPushAllBranches(FALSE)
 	, m_bForce(FALSE)
+	, m_bPack(FALSE)
+	, m_bTags(FALSE)
+	, m_bAutoLoad(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
