@@ -1,3 +1,7 @@
+= Release 1.7.4.0 =
+== Bug Fix ==
+ * Fixed issue #899: Push via Showlog  use Push with force option
+
 = Release 1.7.3.0 =
 == Features ==
  * Fixed issue #872: 32 shell extension should be made optional on x64 installation

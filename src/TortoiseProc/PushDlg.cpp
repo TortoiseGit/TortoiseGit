@@ -37,6 +37,7 @@ IMPLEMENT_DYNAMIC(CPushDlg, CHorizontalResizableStandAloneDialog)
 CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPushDlg::IDD, pParent)
 	, m_bPushAllBranches(FALSE)
+	, m_bForce(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
