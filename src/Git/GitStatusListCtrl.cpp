@@ -2223,8 +2223,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					else
 					{
 						if((filepath->m_ParentNo&(PARENT_MASK|MERGE_MASK)) ==0)
-							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion,
-															*filepath,m_CurrentVersion+_T("~1"));
+							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion+_T("~1"),
+															*filepath,m_CurrentVersion);
 						else
 						{
 							CString str;
