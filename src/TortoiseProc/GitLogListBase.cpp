@@ -2208,6 +2208,15 @@ BOOL CGitLogListBase::PreTranslateMessage(MSG* pMsg)
 		}
 #endif
 	}
+	else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' && GetAsyncKeyState(VK_CONTROL)&0x8000)
+	{
+		// select all entries
+		for (int i=0; i<GetItemCount(); ++i)
+		{
+			SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+		}
+		return TRUE;
+	}
 
 #if 0
 	if (m_hAccel && !bSkipAccelerator)
