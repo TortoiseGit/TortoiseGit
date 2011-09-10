@@ -163,7 +163,7 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>myagi(Georg Fischer) "snowcoder@gmail.com"</term>
+				<term>myagi (Georg Fischer) "snowcoder@gmail.com"</term>
 				<listitem>
 					<para>
 					
@@ -204,7 +204,7 @@
 				<term>Tim Kemp</term>
 				<listitem>
 					<para>
-						for founding the TortoiseSVN project(TortoiseGit come from this project)
+						for founding the TortoiseSVN project (TortoiseGit come from this project)
 					</para>
 				</listitem>
 			</varlistentry>
@@ -212,7 +212,7 @@
 				<term>Stefan Küng</term>
 				<listitem>
 					<para>
-						for the hard work to get TortoiseGit to what it is now
+						for the hard work on TortoiseSVN
 					</para>
 				</listitem>
 			</varlistentry>
@@ -221,7 +221,7 @@
 				<listitem>
 					<para>
 						for the beautiful icons, logo, bug hunting, translating and
-						managing the translations
+						managing the translations on TortoiseSVN
 					</para>
 				</listitem>
 			</varlistentry>
@@ -229,7 +229,7 @@
 				<term>Simon Large</term>
 				<listitem>
 					<para>
-						for helping with the documentation and bug hunting
+						for helping with the documentation and bug hunting on TortoiseSVN
 					</para>
 				</listitem>
 			</varlistentry>
