@@ -1129,18 +1129,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CreateRepoDlg.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CreateRepoDlg.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\CreateRepositoryCommand.h"
-					>
-				</File>
-				<File
 					RelativePath=".\PatchViewDlg.cpp"
 					>
 				</File>
@@ -2154,6 +2142,22 @@
 				</File>
 				<File
 					RelativePath=".\RequestPullDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CreateRepository"
+				>
+				<File
+					RelativePath=".\CreateRepoDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CreateRepoDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\CreateRepositoryCommand.h"
 					>
 				</File>
 			</Filter>
