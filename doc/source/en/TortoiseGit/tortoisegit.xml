@@ -32,9 +32,6 @@
 	<xi:include href="./tsvn_repository/repository.xml"/>
 	-->
 	<xi:include href="./tsvn_dug/dug.xml"/>
-	<!--
-	<xi:include href="./tsvn_subwcrev.xml"/>
-	-->
 	<xi:include href="./tsvn_app_faq.xml"/>
 	<xi:include href="./tsvn_app_howto.xml"/>
 	<xi:include href="./tsvn_app_admins.xml" />
