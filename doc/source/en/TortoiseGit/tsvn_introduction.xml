@@ -121,6 +121,9 @@
 						indicated by small overlay icons. That way you can see
 						right away what the status of your working copy is.
 					</para>
+					<para>
+						The icon overlays are based on TortoiseOverlays (<a href="http://www.tortoisesvn.net">http://www.tortoisesvn.net</a>)
+					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
