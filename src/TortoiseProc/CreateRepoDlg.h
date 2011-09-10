@@ -1,13 +1,12 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-//#include "HistoryCombo.h"
-//#include "MenuButton.h"
 #include "registry.h"
 #include "tooltip.h"
+
 // CCreateRepoDlg dialog
 
-class CCreateRepoDlg : public CResizableStandAloneDialog
+class CCreateRepoDlg : public CStandAloneDialog
 {
 	DECLARE_DYNCREATE(CCreateRepoDlg)
 
