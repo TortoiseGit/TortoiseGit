@@ -1,6 +1,7 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2011 - TortoiseGit
+// Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,14 +20,9 @@
 #pragma once
 #include "Command.h"
 
-#include "MessageBox.h"
-#include "CommonResource.h"
-#include "git.h"
-
-#include "CreateRepoDlg.h"
 /**
  * \ingroup TortoiseProc
- * Creates a repository
+ * Shows the create repository dialog.
  */
 class CreateRepositoryCommand : public Command
 {
@@ -34,34 +30,6 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute()
-	{
-		CCreateRepoDlg dlg;
-		if(dlg.DoModal()==IDOK)
-		{
-			CGit git;
-			git.m_CurrentDir=this->orgCmdLinePath.GetWinPath();
-			CString output;
-			int Ret;
-
-			if (dlg.m_bBare) Ret = git.Run(_T("git.exe init-db --bare"),&output,CP_UTF8);
-			else Ret = git.Run(_T("git.exe init-db"),&output,CP_UTF8);
-
-			if (output.IsEmpty()) output = _T("git.Run() had no output");
-
-			if (Ret)
-			{
-				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
-				return false;
-			}
-			else
-			{
-				CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			}
-			return true;
-		}
-		return false;
-	}
+	virtual bool			Execute();
 };
-
 

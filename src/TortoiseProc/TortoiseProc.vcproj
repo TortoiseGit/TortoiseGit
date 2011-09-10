@@ -2157,6 +2157,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Commands\CreateRepositoryCommand.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\CreateRepositoryCommand.h"
 					>
 				</File>
