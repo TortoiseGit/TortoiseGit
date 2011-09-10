@@ -31,6 +31,14 @@ bool CreateRepositoryCommand::Execute()
 	CCreateRepoDlg dlg;
 	if(dlg.DoModal() == IDOK)
 	{
+		CString folder, message;
+		folder = this->orgCmdLinePath.GetWinPath();
+		message = _T("The folder\"") + folder + _T("\" is not empty. Proceeding might cause loss of data.");
+		if (!PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, _T("A&bort"), _T("&Proceed")) == 1)
+		{
+			return false;
+		}
+
 		CGit git;
 		git.m_CurrentDir = this->orgCmdLinePath.GetWinPath();
 		CString output;

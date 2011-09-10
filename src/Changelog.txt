@@ -2,6 +2,7 @@
 == Bug Fix ==
  * Fixed issue #899: Push via Showlog  use Push with force option
  * Fixed issue #893: "Show Unified Diff" on file entry in "show log" has changes backwards
+ * Fixed issue #881: "Create repository here" should warn if target directory is not empty
 
 = Release 1.7.3.0 =
 == Features ==
