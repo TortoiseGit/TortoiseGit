@@ -18,7 +18,6 @@
 //
 
 #pragma once
-#include "afxcmn.h"
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
 #include "RefLoglist.h"

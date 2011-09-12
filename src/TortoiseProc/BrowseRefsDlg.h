@@ -20,9 +20,7 @@
 
 #include "Git.h"
 #include <map>
-#include "afxcmn.h"
 #include "StandAloneDlg.h"
-
 
 const int gPickRef_Head		= 1;
 const int gPickRef_Tag		= 2;
