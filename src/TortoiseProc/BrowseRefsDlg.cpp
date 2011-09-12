@@ -676,7 +676,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	else if(selectedLeafs.size() == 2)
 	{
 		bAddSeparator = true;
-		popupMenu.AppendMenuIcon(eCmd_Diff, L"Compare These Refs", IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_Diff, L"Compare these Refs", IDI_DIFF);
 	}
 
 	if(!selectedLeafs.empty())
@@ -687,9 +687,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
-				menuItemName = L"Delete Remote Branch";
+				menuItemName = L"Delete remote branch";
 			else
-				menuItemName.Format(L"Delete %d Remote Branches", selectedLeafs.size());
+				menuItemName.Format(L"Delete %d remote branches", selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteRemoteBranch, menuItemName, IDI_DELETE);
 			bAddSeparator = true;
@@ -700,9 +700,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
-				menuItemName = L"Delete Branch";
+				menuItemName = L"Delete branch";
 			else
-				menuItemName.Format(L"Delete %d Branches", selectedLeafs.size());
+				menuItemName.Format(L"Delete %d branches", selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteBranch, menuItemName, IDI_DELETE);
 			bAddSeparator = true;
@@ -713,9 +713,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
-				menuItemName = L"Delete Tag";
+				menuItemName = L"Delete tag";
 			else
-				menuItemName.Format(L"Delete %d Tags", selectedLeafs.size());
+				menuItemName.Format(L"Delete %d tags", selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteTag, menuItemName, IDI_DELETE);
 			bAddSeparator = true;
@@ -750,13 +750,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create Branch", IDI_COPY);
+			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create branch", IDI_COPY);
 		}
 		if(pTree->IsFrom(L"refs/tags"))
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			popupMenu.AppendMenuIcon(eCmd_CreateTag, L"Create Tag", IDI_TAG);
+			popupMenu.AppendMenuIcon(eCmd_CreateTag, L"Create tag", IDI_TAG);
 		}
 	}
 
