@@ -653,14 +653,14 @@ void CTortoiseProcApp::DoInitializeJumpList()
 	sTemp.Remove('&');
 
 	ATL::CComPtr<IShellLink> psl;
-	hr = CreateShellLink(_T("/command:settings"), (LPCTSTR)sTemp, 19, &psl);
+	hr = CreateShellLink(_T("/command:settings"), (LPCTSTR)sTemp, 20, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
 	sTemp = CString(MAKEINTRESOURCE(IDS_MENUHELP));
 	sTemp.Remove('&');
 	psl.Release(); // Need to release the object before calling operator&()
-	hr = CreateShellLink(_T("/command:help"), (LPCTSTR)sTemp, 18, &psl);
+	hr = CreateShellLink(_T("/command:help"), (LPCTSTR)sTemp, 19, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
