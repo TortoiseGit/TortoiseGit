@@ -67,14 +67,10 @@ void CPropertiesWnd::AdjustLayout()
 	CRect rectClient,rectCombo;
 	GetClientRect(rectClient);
 
-	m_wndObjectCombo.GetWindowRect(&rectCombo);
-
-	int cyCmb = rectCombo.Size().cy;
 	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndObjectCombo.SetWindowPos(NULL, rectClient.left, rectClient.top, rectClient.Width(), 200, SWP_NOACTIVATE | SWP_NOZORDER);
-	m_wndToolBar.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
-	m_wndPropList.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() -(cyCmb+cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndToolBar.SetWindowPos(NULL, rectClient.left, rectClient.top, rectClient.Width(), 200, SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndPropList.SetWindowPos(NULL, rectClient.left, rectClient.top + cyTlb, rectClient.Width(), rectClient.Height() - cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -87,17 +83,6 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// Create combo:
 	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-
-	if (!m_wndObjectCombo.Create(dwViewStyle, rectDummy, this, 1))
-	{
-		TRACE0("Failed to create Properties Combo \n");
-		return -1;      // fail to create
-	}
-
-	m_wndObjectCombo.AddString(_T("Application"));
-	m_wndObjectCombo.AddString(_T("Properties Window"));
-	m_wndObjectCombo.SetFont(CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT)));
-	m_wndObjectCombo.SetCurSel(0);
 
 	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2))
 	{
