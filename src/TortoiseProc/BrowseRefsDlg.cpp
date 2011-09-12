@@ -650,15 +650,32 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 											popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
 		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
-		if(bShowFetchOption)				popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
-		if(bShowSwitchOption)				popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
-		if(bShowRenameOption)				popupMenu.AppendMenuIcon(eCmd_Rename, L"Rename", IDI_RENAME);
+		popupMenu.AppendMenu(MF_SEPARATOR);
+		bAddSeparator = false;
+		if(bShowFetchOption)
+		{
+			bAddSeparator = true;
+			popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
+		}
+		if(bShowSwitchOption)
+		{
+			bAddSeparator = true;
+			popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
+		}
+		if(bAddSeparator)
+		{
+			bAddSeparator = false;
+			popupMenu.AppendMenu(MF_SEPARATOR);
+		}
+		if(bShowRenameOption)
+		{
+			bAddSeparator = true;
+			popupMenu.AppendMenuIcon(eCmd_Rename, L"Rename", IDI_RENAME);
+		}
 	}
-
 	else if(selectedLeafs.size() == 2)
 	{
 		bAddSeparator = true;
-		
 		popupMenu.AppendMenuIcon(eCmd_Diff, L"Compare These Refs", IDI_DIFF);
 	}
 
@@ -666,6 +683,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 		if(AreAllFrom(selectedLeafs, L"refs/remotes/"))
 		{
+			if(bAddSeparator)
+				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
 				menuItemName = L"Delete Remote Branch";
@@ -673,10 +692,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				menuItemName.Format(L"Delete %d Remote Branches", selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteRemoteBranch, menuItemName, IDI_DELETE);
+			bAddSeparator = true;
 		}
-
-		if(AreAllFrom(selectedLeafs, L"refs/heads/"))
+		else if(AreAllFrom(selectedLeafs, L"refs/heads/"))
 		{
+			if(bAddSeparator)
+				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
 				menuItemName = L"Delete Branch";
@@ -684,10 +705,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				menuItemName.Format(L"Delete %d Branches", selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteBranch, menuItemName, IDI_DELETE);
+			bAddSeparator = true;
 		}
-
-		if(AreAllFrom(selectedLeafs, L"refs/tags/"))
+		else if(AreAllFrom(selectedLeafs, L"refs/tags/"))
 		{
+			if(bAddSeparator)
+				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
 				menuItemName = L"Delete Tag";
@@ -695,18 +718,20 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				menuItemName.Format(L"Delete %d Tags", selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteTag, menuItemName, IDI_DELETE);
+			bAddSeparator = true;
 		}
 	}
 
-	if(bAddSeparator) popupMenu.AppendMenu(MF_SEPARATOR);
 
 	if(hTreePos!=NULL)
 	{
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreePos);
 		if(pTree->IsFrom(L"refs/remotes"))
 		{
-//			popupMenu.AppendMenu(MF_STRING,eCmd_AddRemote,L"Add Remote");
+			if(bAddSeparator)
+				popupMenu.AppendMenu(MF_SEPARATOR);
 			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, L"Manage Remotes", IDI_SETTINGS);
+			bAddSeparator = true;
 			if(selectedLeafs.empty())
 			{
 				int dummy = 0;//Needed for tokenize
@@ -721,10 +746,18 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				}
 			}
 		}
-		else if(pTree->IsFrom(L"refs/heads"))
+		if(pTree->IsFrom(L"refs/heads"))
+		{
+			if(bAddSeparator)
+				popupMenu.AppendMenu(MF_SEPARATOR);
 			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create Branch", IDI_COPY);
-		else if(pTree->IsFrom(L"refs/tags"))
+		}
+		if(pTree->IsFrom(L"refs/tags"))
+		{
+			if(bAddSeparator)
+				popupMenu.AppendMenu(MF_SEPARATOR);
 			popupMenu.AppendMenuIcon(eCmd_CreateTag, L"Create Tag", IDI_TAG);
+		}
 	}
 
 
