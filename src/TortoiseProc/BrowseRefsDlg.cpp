@@ -650,23 +650,23 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 											popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
 		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
+
 		popupMenu.AppendMenu(MF_SEPARATOR);
 		bAddSeparator = false;
+
 		if(bShowFetchOption)
 		{
 			bAddSeparator = true;
 			popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
 		}
-		if(bShowSwitchOption)
-		{
-			bAddSeparator = true;
-			popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
-		}
+
 		if(bAddSeparator)
-		{
-			bAddSeparator = false;
 			popupMenu.AppendMenu(MF_SEPARATOR);
-		}
+
+		popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
+		bAddSeparator = false;
+		popupMenu.AppendMenu(MF_SEPARATOR);
+
 		if(bShowRenameOption)
 		{
 			bAddSeparator = true;
