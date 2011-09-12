@@ -642,7 +642,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			remoteName = selectedLeafs[0]->GetRefName();
 			remoteName = remoteName.Mid(13);
 			remoteName = remoteName.Tokenize(L"/", dummy);
-			fetchFromCmd.Format(L"Fetch from %s", remoteName);
+			fetchFromCmd.Format(L"Fetch from \"%s\"", remoteName);
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
 		{
