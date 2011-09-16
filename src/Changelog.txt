@@ -3,6 +3,10 @@
  * Fixed issue #899: Push via Showlog  use Push with force option
  * Fixed issue #893: "Show Unified Diff" on file entry in "show log" has changes backwards
  * Fixed issue #881: "Create repository here" should warn if target directory is not empty
+ * Fix wrong contextmenu icon display position when install TSVN 1.7 at XP
+ * TGitCache: Fix sometime project root show as unversioned icon
+ * TGitCache: Fix sometime show "+" at tracked file.
+
 
 = Release 1.7.3.0 =
 == Features ==
