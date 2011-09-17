@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,6 +56,7 @@ protected:
 	afx_msg void OnBnClickedSounds();
 	afx_msg void OnBrowseDir();
 	afx_msg void OnCheck();
+	afx_msg void OnBnClickedButtonShowEnv();
 
 	CString GetVersionFromFile(const CString & p_strDateiname);
 
@@ -73,6 +75,4 @@ private:
 	BOOL			m_bLastCommitTime;
 
 	BOOL			m_bUseDotNetHack;
-public:
-	afx_msg void OnBnClickedButtonShowEnv();
 };

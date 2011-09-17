@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -339,16 +340,12 @@ void CSetMainPage::OnCheck()
 	Store (oldextranpath, m_regMsysGitExtranPath);
 }
 
-
-
 void CSetMainPage::OnBnClickedButtonShowEnv()
 {
-	// TODO: Add your control notification handler code here
 	CString cmd;
 	CString tempfile=::GetTempFile();
-	
+
 	cmd=_T("cmd /c set");
 	g_Git.RunLogFile(cmd,tempfile);
 	CAppUtils::LaunchAlternativeEditor(tempfile);
-
 }
