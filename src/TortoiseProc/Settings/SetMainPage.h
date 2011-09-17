@@ -50,7 +50,6 @@ protected:
 	virtual BOOL OnApply();
 	afx_msg void OnModified();
 	afx_msg void OnMsysGitPathModify();
-	afx_msg void OnASPHACK();
 	afx_msg void OnBnClickedEditconfig();
 	afx_msg void OnBnClickedChecknewerbutton();
 	afx_msg void OnBnClickedSounds();
@@ -73,6 +72,4 @@ private:
 	BOOL			m_bCheckNewer;
 	CRegString		m_regLastCommitTime;
 	BOOL			m_bLastCommitTime;
-
-	BOOL			m_bUseDotNetHack;
 };

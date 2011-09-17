@@ -38,7 +38,6 @@ CSetMainPage::CSetMainPage()
 	, m_sMsysGitPath(_T(""))
 	, m_bCheckNewer(TRUE)
 	, m_bLastCommitTime(FALSE)
-	, m_bUseDotNetHack(FALSE)
 {
 	m_regLanguage = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	CString temp=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);;
@@ -53,10 +52,6 @@ CSetMainPage::CSetMainPage()
 
 	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
 	m_regLastCommitTime = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\use-commit-times"), _T(""));
-	if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))
-		m_bUseDotNetHack = false;
-	else
-		m_bUseDotNetHack = true;
 }
 
 CSetMainPage::~CSetMainPage()
@@ -72,7 +67,6 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MSYSGIT_EXTERN_PATH, m_sMsysGitExtranPath);
 	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
 //	DDX_Check(pDX, IDC_COMMITFILETIMES, m_bLastCommitTime);
-//	DDX_Check(pDX, IDC_ASPDOTNETHACK, m_bUseDotNetHack);
 }
 
 
@@ -84,7 +78,6 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_CHECKNEWERBUTTON, OnBnClickedChecknewerbutton)
 	ON_BN_CLICKED(IDC_COMMITFILETIMES, OnModified)
 	ON_BN_CLICKED(IDC_SOUNDS, OnBnClickedSounds)
-	ON_BN_CLICKED(IDC_ASPDOTNETHACK, OnASPHACK)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
 	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnMsysGitPathModify)
@@ -114,7 +107,6 @@ BOOL CSetMainPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
 	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
 	//m_tooltips.AddTool(IDC_COMMITFILETIMES, IDS_SETTINGS_COMMITFILETIMES_TT);
-	//m_tooltips.AddTool(IDC_ASPDOTNETHACK, IDS_SETTINGS_DOTNETHACK_TT);
 
 	// set up the language selecting combobox
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
@@ -195,20 +187,6 @@ void CSetMainPage::OnMsysGitPathModify()
 	SetModified();
 }
 
-void CSetMainPage::OnASPHACK()
-{
-	if (CMessageBox::Show(m_hWnd, IDS_SETTINGS_ASPHACKWARNING, IDS_APPNAME, MB_ICONWARNING|MB_YESNO) == IDYES)
-	{
-		SetModified();
-	}
-	else
-	{
-		UpdateData();
-		m_bUseDotNetHack = !m_bUseDotNetHack;
-		UpdateData(FALSE);
-	}
-}
-
 BOOL CSetMainPage::OnApply()
 {
 	UpdateData();
@@ -223,31 +201,6 @@ BOOL CSetMainPage::OnApply()
 	Store (m_bCheckNewer, m_regCheckNewer);
 	Store ((m_bLastCommitTime ? _T("yes") : _T("no")), m_regLastCommitTime);
 
-	CRegString asphack_local(_T("System\\CurrentControlSet\\Control\\Session Manager\\Environment\\SVN_ASP_DOT_NET_HACK"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
-	CRegString asphack_user(_T("Environment\\SVN_ASP_DOT_NET_HACK"));
-	if (m_bUseDotNetHack)
-	{
-		asphack_local = _T("*");
-		if (asphack_local.GetLastError())
-			asphack_user = _T("*");
-		if ((GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)==0)&&(GetLastError()==ERROR_ENVVAR_NOT_FOUND))
-		{
-			DWORD_PTR dwRet = 0;
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, (LPARAM)_T("Environment"), SMTO_ABORTIFHUNG, 1000, &dwRet);
-			m_restart = Restart_System;
-		}
-	}
-	else
-	{
-		asphack_local.removeValue();
-		asphack_user.removeValue();
-		if (GetEnvironmentVariable(_T("SVN_ASP_DOT_NET_HACK"), NULL, 0)!=0)
-		{
-			DWORD_PTR dwRet = 0;
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, (LPARAM)_T("Environment"), SMTO_ABORTIFHUNG, 1000, &dwRet);
-			m_restart = Restart_System;
-		}
-	}
 	// only complete if the msysgit directory is ok
 	if(g_Git.CheckMsysGitDir())
 	{
