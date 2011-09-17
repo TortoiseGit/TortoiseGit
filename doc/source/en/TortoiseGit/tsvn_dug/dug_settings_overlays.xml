@@ -60,7 +60,29 @@
 					<para>
 						Disadvantage: the process runs constantly, even if you're not 
 						working on your projects. It also uses around 10-50 MB of RAM 
-						depending on number and size of your working copies.
+						depending on number and size of your working copies. In the
+						current implementation it doesn't check the contents of the files,
+						it just checks the last modification time against the time stored
+						in the git index file.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Shell Extended</term>
+				<listitem>
+					<para>
+						Caching is done directly inside the shell extension
+						dll.
+						Each time you navigate to another folder, the status
+						information is fetched again (recursively).
+					</para>
+					<para>
+						Advantage: can show the status in <emphasis>real time</emphasis>.
+					</para>
+					<para>
+						Disadvantage: only one folder is cached and for big working copies,
+						it can take much more time to show a folder in explorer than
+						with the default cache or with shell mode.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -81,8 +103,7 @@
 						Disadvantage: Since only one folder is cached, the overlays
 						don't show the status recursively. For big working copies,
 						it can take more time to show a folder in explorer than
-						with the default cache. Also the mime-type column is not
-						available.
+						with the default cache.
 					</para>
 				</listitem>
 			</varlistentry>
