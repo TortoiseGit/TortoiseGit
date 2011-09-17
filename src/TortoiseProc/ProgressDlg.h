@@ -90,6 +90,7 @@ private:
 	void					OnCancel();
 	afx_msg void			OnClose();
 	void					InsertCRLF(); //Insert \r before \n
+	void					KillProcessTree(DWORD dwProcessId);
 
 	CGitByteArray			m_Databuf;
 	virtual CString Convert2UnionCode(char *buff, int size=-1)

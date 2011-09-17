@@ -6,6 +6,7 @@
  * Fix wrong contextmenu icon display position when install TSVN 1.7 on WinXP
  * TGitCache: Fix sometime project root show as unversioned icon
  * TGitCache: Fix sometime show "+" at tracked items.
+ * Fixed issue #716: Aborted clone leaves git process running
 
 = Release 1.7.3.0 =
 == Features ==

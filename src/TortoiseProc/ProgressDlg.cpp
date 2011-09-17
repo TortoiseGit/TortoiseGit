@@ -27,6 +27,7 @@
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
 #include "CommonResource.h"
+#include "Tlhelp32.h"
 
 // CProgressDlg dialog
 
@@ -487,17 +488,39 @@ void CProgressDlg::OnCancel()
 			GetLastError();
 		}
 
-		HANDLE	hProcessHandle = ::OpenProcess( PROCESS_TERMINATE, FALSE,g_Git.m_CurrentGitPi.dwProcessId);
-		if( hProcessHandle )
-			if(!::TerminateProcess(hProcessHandle,-1) )
-			{
-				GetLastError();
-			}
+		KillProcessTree(g_Git.m_CurrentGitPi.dwProcessId);
 	}
 
 	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
 	CResizableStandAloneDialog::OnCancel();
+}
 
+void CProgressDlg::KillProcessTree(DWORD dwProcessId)
+{
+	// recursively kills a process tree
+	// This is not optimized, but works and isn't called very often ;)
+	PROCESSENTRY32 pe;
+	memset(&pe, 0, sizeof(PROCESSENTRY32));
+	pe.dwSize = sizeof(PROCESSENTRY32);
+
+	HANDLE hSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+	if (::Process32First(hSnap, &pe))
+	{
+		do
+		{
+			if (pe.th32ParentProcessID == dwProcessId)
+				KillProcessTree(pe.th32ProcessID);
+		} while (::Process32Next(hSnap, &pe));
+
+		HANDLE hProc = ::OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
+		if (hProc)
+		{
+			::TerminateProcess(hProc, 1);
+			::CloseHandle(hProc);
+		}
+	}
+	::CloseHandle(hSnap);
 }
 
 void CProgressDlg::InsertCRLF()
