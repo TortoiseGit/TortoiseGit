@@ -70,6 +70,4 @@ private:
 	DWORD			m_dwLanguage;
 	CRegDWORD		m_regCheckNewer;
 	BOOL			m_bCheckNewer;
-	CRegString		m_regLastCommitTime;
-	BOOL			m_bLastCommitTime;
 };

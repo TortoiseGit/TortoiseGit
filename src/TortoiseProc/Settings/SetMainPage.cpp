@@ -37,7 +37,6 @@ CSetMainPage::CSetMainPage()
 	: ISettingsPropPage(CSetMainPage::IDD)
 	, m_sMsysGitPath(_T(""))
 	, m_bCheckNewer(TRUE)
-	, m_bLastCommitTime(FALSE)
 {
 	m_regLanguage = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	CString temp=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);;
@@ -51,7 +50,6 @@ CSetMainPage::CSetMainPage()
 	m_sMsysGitExtranPath = m_regMsysGitExtranPath;
 
 	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
-	m_regLastCommitTime = CRegString(_T("Software\\Tigris.org\\Subversion\\Config\\miscellany\\use-commit-times"), _T(""));
 }
 
 CSetMainPage::~CSetMainPage()
@@ -66,7 +64,6 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MSYSGIT_PATH, m_sMsysGitPath);
 	DDX_Text(pDX, IDC_MSYSGIT_EXTERN_PATH, m_sMsysGitExtranPath);
 	DDX_Check(pDX, IDC_CHECKNEWERVERSION, m_bCheckNewer);
-//	DDX_Check(pDX, IDC_COMMITFILETIMES, m_bLastCommitTime);
 }
 
 
@@ -76,7 +73,6 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_EDITCONFIG, OnBnClickedEditconfig)
 	ON_BN_CLICKED(IDC_CHECKNEWERVERSION, OnModified)
 	ON_BN_CLICKED(IDC_CHECKNEWERBUTTON, OnBnClickedChecknewerbutton)
-	ON_BN_CLICKED(IDC_COMMITFILETIMES, OnModified)
 	ON_BN_CLICKED(IDC_SOUNDS, OnBnClickedSounds)
 	ON_BN_CLICKED(IDC_MSYSGIT_BROWSE,OnBrowseDir)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
@@ -99,14 +95,9 @@ BOOL CSetMainPage::OnInitDialog()
 	m_dwLanguage = m_regLanguage;
 	m_bCheckNewer = m_regCheckNewer;
 
-	CString temp;
-	temp = m_regLastCommitTime;
-	m_bLastCommitTime = (temp.CompareNoCase(_T("yes"))==0);
-
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
 	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
-	//m_tooltips.AddTool(IDC_COMMITFILETIMES, IDS_SETTINGS_COMMITFILETIMES_TT);
 
 	// set up the language selecting combobox
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
@@ -199,7 +190,6 @@ BOOL CSetMainPage::OnApply()
 		m_restart = Restart_Cache;
 	}
 	Store (m_bCheckNewer, m_regCheckNewer);
-	Store ((m_bLastCommitTime ? _T("yes") : _T("no")), m_regLastCommitTime);
 
 	// only complete if the msysgit directory is ok
 	if(g_Git.CheckMsysGitDir())
