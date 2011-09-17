@@ -73,4 +73,6 @@ private:
 	BOOL			m_bLastCommitTime;
 
 	BOOL			m_bUseDotNetHack;
+public:
+	afx_msg void OnBnClickedButtonShowEnv();
 };

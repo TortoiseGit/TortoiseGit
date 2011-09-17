@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_MSYSGIT_CHECK,OnCheck)
 	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnMsysGitPathModify)
 	ON_EN_CHANGE(IDC_MSYSGIT_EXTERN_PATH, OnModified)
+	ON_BN_CLICKED(IDC_BUTTON_SHOW_ENV, &CSetMainPage::OnBnClickedButtonShowEnv)
 END_MESSAGE_MAP()
 
 BOOL CSetMainPage::OnInitDialog()
@@ -339,3 +340,15 @@ void CSetMainPage::OnCheck()
 }
 
 
+
+void CSetMainPage::OnBnClickedButtonShowEnv()
+{
+	// TODO: Add your control notification handler code here
+	CString cmd;
+	CString tempfile=::GetTempFile();
+	
+	cmd=_T("cmd /c set");
+	g_Git.RunLogFile(cmd,tempfile);
+	CAppUtils::LaunchAlternativeEditor(tempfile);
+
+}

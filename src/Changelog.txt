@@ -1,4 +1,7 @@
 = Release 1.7.4.0 =
+== Features==
+ * Add Show Environment variables at setting dialog to help debug user problem.
+
 == Bug Fix ==
  * Fixed issue #899: Push via Showlog  use Push with force option
  * Fixed issue #893: "Show Unified Diff" on file entry in "show log" has changes backwards
@@ -7,6 +10,7 @@
  * TGitCache: Fix sometime project root show as unversioned icon
  * TGitCache: Fix sometime show "+" at tracked items.
  * Fixed issue #716: Aborted clone leaves git process running
+ * set https_proxy when enable http_proxy
 
 = Release 1.7.3.0 =
 == Features ==
