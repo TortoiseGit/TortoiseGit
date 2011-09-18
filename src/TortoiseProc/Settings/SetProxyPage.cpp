@@ -37,21 +37,15 @@ CSetProxyPage::CSetProxyPage()
 	, m_SSHClient(_T(""))
 	, m_Exceptions(_T(""))
 {
-	m_regServeraddress = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-host"), _T(""));
-	m_regServerport = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-port"), _T(""));
-	m_regUsername = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-username"), _T(""));
-	m_regPassword = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-password"), _T(""));
-	m_regTimeout = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-timeout"), _T(""));
+	m_regServeraddress = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-host"), _T(""));
+	m_regServerport = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port"), _T(""));
+	m_regUsername = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-username"), _T(""));
+	m_regPassword = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password"), _T(""));
+	m_regTimeout = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-timeout"), _T(""));
 	m_regSSHClient = CRegString(_T("Software\\TortoiseGit\\SSH"));
 	m_SSHClient = m_regSSHClient;
-	m_regExceptions = CRegString(_T("Software\\Tigris.org\\Subversion\\Servers\\global\\http-proxy-exceptions"), _T(""));
+	m_regExceptions = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-exceptions"), _T(""));
 
-	m_regServeraddress_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-host"), _T(""));
-	m_regServerport_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-port"), _T(""));
-	m_regUsername_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-username"), _T(""));
-	m_regPassword_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-password"), _T(""));
-	m_regTimeout_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-timeout"), _T(""));
-	m_regExceptions_copy = CRegString(_T("Software\\TortoiseGit\\Servers\\global\\http-proxy-exceptions"), _T(""));
 }
 
 CSetProxyPage::~CSetProxyPage()
@@ -95,6 +89,8 @@ BOOL CSetProxyPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_SERVERADDRESS, IDS_SETTINGS_PROXYSERVER_TT);
 	m_tooltips.AddTool(IDC_EXCEPTIONS, IDS_SETTINGS_PROXYEXCEPTIONS_TT);
 
+	CString proxy=g_Git.GetConfigValue(_T("http.proxy"),CP_ACP);
+
 	m_SSHClient = m_regSSHClient;
 	m_serveraddress = m_regServeraddress;
 	m_serverport = _ttoi((LPCTSTR)(CString)m_regServerport);
@@ -103,36 +99,64 @@ BOOL CSetProxyPage::OnInitDialog()
 	m_Exceptions = m_regExceptions;
 	m_timeout = _ttoi((LPCTSTR)(CString)m_regTimeout);
 
-	if (m_serveraddress.IsEmpty())
+	if (proxy.IsEmpty())
 	{
 		m_isEnabled = FALSE;
 		EnableGroup(FALSE);
-		// now since we already created our registry entries
-		// we delete them here again...
-		m_regServeraddress.removeValue();
-		m_regServerport.removeValue();
-		m_regUsername.removeValue();
-		m_regPassword.removeValue();
-		m_regTimeout.removeValue();
-		m_regExceptions.removeValue();
 	}
 	else
 	{
+		int start=0;
+		start = proxy.Find(_T("://"),start);
+		if(start<0)
+			start =0;
+		else
+			start+=3;
+
+		int at = proxy.Find(_T("@"), 0);
+		int port;
+
+		if(at<0)
+		{
+			m_username=_T("");
+			m_password=_T("");
+			port=proxy.Find(_T(":"),start);
+			if(port<0)
+				m_serveraddress = proxy.Mid(start);
+			else
+				m_serveraddress = proxy.Mid(start, port-start);
+		
+		}else
+		{
+			int username;
+			username = proxy.Find(_T(":"),start);
+			if(username<=0 || username >at)
+			{
+				m_username=proxy.Mid(start, at-start);
+				m_password=_T("");
+			}
+			else if(username < at)
+			{
+				m_username=proxy.Mid(start, username-start);
+				m_password=proxy.Mid(username+1,at - username-1);
+			}
+			
+			port=proxy.Find(_T(":"),at);
+			if(port<0)
+				m_serveraddress = proxy.Mid(at+1);
+			else
+				m_serveraddress = proxy.Mid(at+1, port-at-1);
+		}
+
+		if(port<0)
+		{
+			m_serverport= 0;
+		}else
+			m_serverport = _ttoi(proxy.Mid(port+1));
+
 		m_isEnabled = TRUE;
 		EnableGroup(TRUE);
 	}
-	if (m_serveraddress.IsEmpty())
-		m_serveraddress = m_regServeraddress_copy;
-	if (m_serverport==0)
-		m_serverport = _ttoi((LPCTSTR)(CString)m_regServerport_copy);
-	if (m_username.IsEmpty())
-		m_username = m_regUsername_copy;
-	if (m_password.IsEmpty())
-		m_password = m_regPassword_copy;
-	if (m_Exceptions.IsEmpty())
-		m_Exceptions = m_regExceptions_copy;
-	if (m_timeout == 0)
-		m_timeout = _ttoi((LPCTSTR)(CString)m_regTimeout_copy);
 
 	SHAutoComplete(::GetDlgItem(m_hWnd, IDC_SSHCLIENT), SHACF_FILESYSTEM | SHACF_FILESYS_ONLY);
 
@@ -185,42 +209,52 @@ void CSetProxyPage::OnChange()
 BOOL CSetProxyPage::OnApply()
 {
 	UpdateData();
+
+	CString temp;
+	Store (m_serveraddress, m_regServeraddress);
+	temp.Format(_T("%d"), m_serverport);
+	Store (temp, m_regServerport);
+	Store (m_username, m_regUsername);
+	Store (m_password, m_regPassword);
+	temp.Format(_T("%d"), m_timeout);
+	Store (temp, m_regTimeout);
+	Store (m_Exceptions, m_regExceptions);
+
+
+	CString http_proxy;
+	if(!m_serveraddress.IsEmpty())
+	{
+		if(m_serveraddress.Left(5) != _T("http:"))
+			http_proxy=_T("http://");
+
+
+		if(!m_username.IsEmpty())
+		{
+			http_proxy += m_username;
+			
+			if(!m_password.IsEmpty())
+				http_proxy += _T(":")+m_password;
+
+			http_proxy += _T("@");
+
+		}
+			
+		http_proxy+=m_serveraddress;
+
+		if(m_serverport)
+		{
+			temp.Format(_T("%d"), m_serverport);
+			http_proxy  += _T(":")+temp;
+		}
+	}
+
 	if (m_isEnabled)
 	{
-		CString temp;
-		Store (m_serveraddress, m_regServeraddress);
-		m_regServeraddress_copy = m_serveraddress;
-		temp.Format(_T("%d"), m_serverport);
-		Store (temp, m_regServerport);
-		m_regServerport_copy = temp;
-		Store (m_username, m_regUsername);
-		m_regUsername_copy = m_username;
-		Store (m_password, m_regPassword);
-		m_regPassword_copy = m_password;
-		temp.Format(_T("%d"), m_timeout);
-		Store (temp, m_regTimeout);
-		m_regTimeout_copy = temp;
-		Store (m_Exceptions, m_regExceptions);
-		m_regExceptions_copy = m_Exceptions;
+		g_Git.SetConfigValue(_T("http.proxy"),http_proxy,CONFIG_GLOBAL);
 	}
 	else
 	{
-		m_regServeraddress.removeValue();
-		m_regServerport.removeValue();
-		m_regUsername.removeValue();
-		m_regPassword.removeValue();
-		m_regTimeout.removeValue();
-		m_regExceptions.removeValue();
-
-		CString temp;
-		m_regServeraddress_copy = m_serveraddress;
-		temp.Format(_T("%d"), m_serverport);
-		m_regServerport_copy = temp;
-		m_regUsername_copy = m_username;
-		m_regPassword_copy = m_password;
-		temp.Format(_T("%d"), m_timeout);
-		m_regTimeout_copy = temp;
-		m_regExceptions_copy = m_Exceptions;
+		g_Git.SetConfigValue(_T("http.proxy"),_T(""),CONFIG_GLOBAL);
 	}
 	m_regSSHClient = m_SSHClient;
 	SetModified(FALSE);

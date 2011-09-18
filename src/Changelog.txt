@@ -10,7 +10,7 @@
  * TGitCache: Fix sometime project root show as unversioned icon
  * TGitCache: Fix sometime show "+" at tracked items.
  * Fixed issue #716: Aborted clone leaves git process running
- * set https_proxy when enable http_proxy
+ * Fixed issue #787: Problem of setting proxy for work using HTTPS
 
 = Release 1.7.3.0 =
 == Features ==
