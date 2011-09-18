@@ -64,12 +64,8 @@ private:
 	CRegString		m_regUsername;
 	CString			m_password;
 	CRegString		m_regPassword;
-	UINT			m_timeout;
-	CRegString		m_regTimeout;
 	BOOL			m_isEnabled;
 	CRegString		m_regSSHClient;
 	CString			m_SSHClient;
-	CRegString		m_regExceptions;
-	CString			m_Exceptions;
 	CFileDropEdit	m_cSSHClientEdit;
 };

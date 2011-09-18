@@ -32,19 +32,15 @@ CSetProxyPage::CSetProxyPage()
 	, m_serverport(0)
 	, m_username(_T(""))
 	, m_password(_T(""))
-	, m_timeout(0)
 	, m_isEnabled(FALSE)
 	, m_SSHClient(_T(""))
-	, m_Exceptions(_T(""))
 {
 	m_regServeraddress = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-host"), _T(""));
 	m_regServerport = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port"), _T(""));
 	m_regUsername = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-username"), _T(""));
 	m_regPassword = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password"), _T(""));
-	m_regTimeout = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-timeout"), _T(""));
 	m_regSSHClient = CRegString(_T("Software\\TortoiseGit\\SSH"));
 	m_SSHClient = m_regSSHClient;
-	m_regExceptions = CRegString(_T("Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-exceptions"), _T(""));
 
 }
 
@@ -59,8 +55,6 @@ void CSetProxyPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SERVERPORT, m_serverport);
 	DDX_Text(pDX, IDC_USERNAME, m_username);
 	DDX_Text(pDX, IDC_PASSWORD, m_password);
-	DDX_Text(pDX, IDC_TIMEOUT, m_timeout);
-	DDX_Text(pDX, IDC_EXCEPTIONS, m_Exceptions);
 	DDX_Check(pDX, IDC_ENABLE, m_isEnabled);
 	DDX_Text(pDX, IDC_SSHCLIENT, m_SSHClient);
 	DDX_Control(pDX, IDC_SSHCLIENT, m_cSSHClientEdit);
@@ -87,7 +81,6 @@ BOOL CSetProxyPage::OnInitDialog()
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SERVERADDRESS, IDS_SETTINGS_PROXYSERVER_TT);
-	m_tooltips.AddTool(IDC_EXCEPTIONS, IDS_SETTINGS_PROXYEXCEPTIONS_TT);
 
 	CString proxy=g_Git.GetConfigValue(_T("http.proxy"),CP_ACP);
 
@@ -96,8 +89,6 @@ BOOL CSetProxyPage::OnInitDialog()
 	m_serverport = _ttoi((LPCTSTR)(CString)m_regServerport);
 	m_username = m_regUsername;
 	m_password = m_regPassword;
-	m_Exceptions = m_regExceptions;
-	m_timeout = _ttoi((LPCTSTR)(CString)m_regTimeout);
 
 	if (proxy.IsEmpty())
 	{
@@ -185,13 +176,9 @@ void CSetProxyPage::EnableGroup(BOOL b)
 	GetDlgItem(IDC_SERVERPORT)->EnableWindow(b);
 	GetDlgItem(IDC_USERNAME)->EnableWindow(b);
 	GetDlgItem(IDC_PASSWORD)->EnableWindow(b);
-	GetDlgItem(IDC_TIMEOUT)->EnableWindow(b);
-	GetDlgItem(IDC_EXCEPTIONS)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL1)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL2)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL3)->EnableWindow(b);
-	GetDlgItem(IDC_PROXYLABEL4)->EnableWindow(b);
-	GetDlgItem(IDC_PROXYLABEL5)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL6)->EnableWindow(b);
 }
 
@@ -216,9 +203,6 @@ BOOL CSetProxyPage::OnApply()
 	Store (temp, m_regServerport);
 	Store (m_username, m_regUsername);
 	Store (m_password, m_regPassword);
-	temp.Format(_T("%d"), m_timeout);
-	Store (temp, m_regTimeout);
-	Store (m_Exceptions, m_regExceptions);
 
 
 	CString http_proxy;
