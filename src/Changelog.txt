@@ -43,6 +43,7 @@
  * Updated shipped zlib library to version 1.2.5
  * Fixed issue #783: Git Command Progress window should close with Escape
  * Fixed issue #499: Git Command Progress window does not close from X-closebutton
+ * Fixed issue #844: Git Command Progress window, "Writing Objects" , progress info refresh with glitches.
 
 = Release 1.7.1.0 =
 == Features ==
