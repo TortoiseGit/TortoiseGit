@@ -395,25 +395,38 @@ BOOL CTortoiseProcApp::InitInstance()
 		SetCurrentDirectory(g_Git.m_CurrentDir);
 
 	{
-#if 0
-		CString err = Git::CheckConfigFile();
+		CString err;
+		try
+		{
+			// requires CWD to be set
+			CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
+		}
+		catch (char* msg)
+		{
+			err = CString(msg);
+		}
+
 		if (!err.IsEmpty())
 		{
-			CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit"), MB_ICONERROR);
-			// Normally, we give-up and exit at this point, but there is a trap here
-			// in that the user might need to use the settings dialog to edit the config file.
-			if (CString(parser.GetVal(_T("command"))).Compare(_T("settings"))==0)
+			UINT choice = CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit Error"), 1, IDI_ERROR, _T("&Edit .git/config"), _T("&Edit global .gitconfig"), _T("&Abort"));
+			if (choice == 1)
 			{
-				// just open the config file
-				TCHAR buf[MAX_PATH];
-				SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
-				CString path = buf;
-				path += _T("\\Git\\config");
-				CAppUtils::StartTextViewer(path);
-				return FALSE;
+				// open the config file with alternative editor
+				CString path = g_Git.m_CurrentDir;
+				path += _T("\\.git\\config");
+				CAppUtils::LaunchAlternativeEditor(path);
 			}
+			else if (choice == 2)
+			{
+				// open the global config file with alternative editor
+				TCHAR buf[MAX_PATH];
+				SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, buf);
+				CString path = buf;
+				path += _T("\\.gitconfig");
+				CAppUtils::LaunchAlternativeEditor(path);
+			}
+			return FALSE;
 		}
-#endif
 	}
 
 	// execute the requested command
@@ -425,8 +438,6 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
-
-		CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
 
 		retSuccess = cmd->Execute();
 		delete cmd;
