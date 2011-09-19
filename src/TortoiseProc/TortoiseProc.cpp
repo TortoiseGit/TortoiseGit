@@ -383,6 +383,17 @@ BOOL CTortoiseProcApp::InitInstance()
 //	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
 	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
+	if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
+	{
+		int i=0;
+		for(i=0;i<pathList.GetCount();i++)
+			if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
+				break;
+	}
+
+	if(!g_Git.m_CurrentDir.IsEmpty())
+		SetCurrentDirectory(g_Git.m_CurrentDir);
+
 	{
 #if 0
 		CString err = Git::CheckConfigFile();
@@ -411,17 +422,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (cmd)
 	{
 		cmd->SetExplorerHwnd(hWndExplorer);
-
-		if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
-		{
-			int i=0;
-			for(i=0;i<pathList.GetCount();i++)
-				if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
-					break;
-		}
-
-		if(!g_Git.m_CurrentDir.IsEmpty())
-			SetCurrentDirectory(g_Git.m_CurrentDir);
 
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
