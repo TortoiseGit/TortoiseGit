@@ -383,26 +383,50 @@ BOOL CTortoiseProcApp::InitInstance()
 //	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
 	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
+	if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
 	{
-#if 0
-		CString err = Git::CheckConfigFile();
+		int i=0;
+		for(i=0;i<pathList.GetCount();i++)
+			if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
+				break;
+	}
+
+	if(!g_Git.m_CurrentDir.IsEmpty())
+		SetCurrentDirectory(g_Git.m_CurrentDir);
+
+	{
+		CString err;
+		try
+		{
+			// requires CWD to be set
+			CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
+		}
+		catch (char* msg)
+		{
+			err = CString(msg);
+		}
+
 		if (!err.IsEmpty())
 		{
-			CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit"), MB_ICONERROR);
-			// Normally, we give-up and exit at this point, but there is a trap here
-			// in that the user might need to use the settings dialog to edit the config file.
-			if (CString(parser.GetVal(_T("command"))).Compare(_T("settings"))==0)
+			UINT choice = CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit Error"), 1, IDI_ERROR, _T("&Edit .git/config"), _T("&Edit global .gitconfig"), _T("&Abort"));
+			if (choice == 1)
 			{
-				// just open the config file
-				TCHAR buf[MAX_PATH];
-				SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
-				CString path = buf;
-				path += _T("\\Git\\config");
-				CAppUtils::StartTextViewer(path);
-				return FALSE;
+				// open the config file with alternative editor
+				CString path = g_Git.m_CurrentDir;
+				path += _T("\\.git\\config");
+				CAppUtils::LaunchAlternativeEditor(path);
 			}
+			else if (choice == 2)
+			{
+				// open the global config file with alternative editor
+				TCHAR buf[MAX_PATH];
+				SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, buf);
+				CString path = buf;
+				path += _T("\\.gitconfig");
+				CAppUtils::LaunchAlternativeEditor(path);
+			}
+			return FALSE;
 		}
-#endif
 	}
 
 	// execute the requested command
@@ -412,21 +436,8 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 		cmd->SetExplorerHwnd(hWndExplorer);
 
-		if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
-		{
-			int i=0;
-			for(i=0;i<pathList.GetCount();i++)
-				if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
-					break;
-		}
-
-		if(!g_Git.m_CurrentDir.IsEmpty())
-			SetCurrentDirectory(g_Git.m_CurrentDir);
-
 		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
-
-		CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
 
 		retSuccess = cmd->Execute();
 		delete cmd;
