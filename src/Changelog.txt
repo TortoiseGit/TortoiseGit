@@ -12,6 +12,7 @@
  * Fixed issue #716: Aborted clone leaves git process running
  * Fixed issue #787: Problem of setting proxy for work using HTTPS
  * Fixed issue #908: TortoiseGit crashes if .git/config-file is broken
+ * Fixed issue #909: Cannot amend initial commit
 
 = Release 1.7.3.0 =
 == Features ==

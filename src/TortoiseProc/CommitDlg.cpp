@@ -348,10 +348,6 @@ BOOL CCommitDlg::OnInitDialog()
 	CGitHash hash = g_Git.GetHash(_T("HEAD"));
 	GitRev f;
 	f.GetParentFromHash(hash);
-	if (f.ParentsCount() == 0)
-	{
-		GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
-	}
 	if (f.ParentsCount() != 1)
 	{
 		m_bAmendDiffToLastCommit = true;
