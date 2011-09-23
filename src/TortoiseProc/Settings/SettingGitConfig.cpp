@@ -76,18 +76,18 @@ BOOL CSettingGitConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
-	m_UserName=g_Git.GetUserName();
-	m_UserEmail=g_Git.GetUserEmail();
-	m_UserSigningKey=g_Git.GetConfigValue(_T("user.signingkey"));
+	m_UserName = g_Git.GetUserName();
+	m_UserEmail = g_Git.GetUserEmail();
+	m_UserSigningKey = g_Git.GetConfigValue(_T("user.signingkey"));
 
-	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf,_T("core.autocrlf"));
+	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf, _T("core.autocrlf"));
 	ProjectProperties::GetBOOLProps(this->m_bSafeCrLf, _T("core.safecrlf"));
 
-	CString str=((CSettings*)GetParent())->m_CmdPath.GetWinPath();
+	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	CString proj;
-	if(	g_GitAdminDir.HasAdminDir(str,&proj) )
+	if(g_GitAdminDir.HasAdminDir(str, &proj))
 	{
-		this->SetWindowText(CString(_T("Config - "))+proj);
+		this->SetWindowText(_T("Config - ") + proj);
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);
 	}
@@ -110,19 +110,19 @@ void CSettingGitConfig::OnBnClickedCheckGlobal()
 
 void CSettingGitConfig::OnEnChangeGitUsername()
 {
-	m_ChangeMask|=GIT_NAME;
+	m_ChangeMask |= GIT_NAME;
 	SetModified();
 }
 
 void CSettingGitConfig::OnEnChangeGitUseremail()
 {
-	m_ChangeMask|=GIT_EMAIL;
+	m_ChangeMask |= GIT_EMAIL;
 	SetModified();
 }
 
 void CSettingGitConfig::OnEnChangeGitUserSigningKey()
 {
-	m_ChangeMask|=GIT_SIGNINGKEY;
+	m_ChangeMask |= GIT_SIGNINGKEY;
 	SetModified();
 }
 
@@ -138,14 +138,14 @@ BOOL CSettingGitConfig::OnApply()
 	if(m_ChangeMask&GIT_NAME)
 		if(g_Git.SetConfigValue(_T("user.name"), this->m_UserName,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
 		{
-			CMessageBox::Show(NULL,_T("Fail to save user name"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("Fail to save user name"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
 	
 	if(m_ChangeMask&GIT_EMAIL)
 		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
 		{
-			CMessageBox::Show(NULL,_T("Fail to save user email"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("Fail to save user email"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
 
@@ -157,32 +157,32 @@ BOOL CSettingGitConfig::OnApply()
 		}
 
 	if(m_ChangeMask&GIT_CRLF)
-		if(g_Git.SetConfigValue(_T("core.autocrlf"), this->m_bAutoCrlf?_T("true"):_T("false"),type))
+		if(g_Git.SetConfigValue(_T("core.autocrlf"), this->m_bAutoCrlf?_T("true"):_T("false"), type))
 		{
-			CMessageBox::Show(NULL,_T("Fail to save autocrlf"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("Fail to save autocrlf"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
 
 	if(m_ChangeMask&GIT_SAFECRLF)
-		if(g_Git.SetConfigValue(_T("core.safecrlf"), this->m_bSafeCrLf?_T("true"):_T("false"),type))
+		if(g_Git.SetConfigValue(_T("core.safecrlf"), this->m_bSafeCrLf?_T("true"):_T("false"), type))
 		{
-			CMessageBox::Show(NULL,_T("Fail to save safecrlf"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("Fail to save safecrlf"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
 
-	m_ChangeMask=0;
+	m_ChangeMask = 0;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
 void CSettingGitConfig::OnBnClickedCheckAutocrlf()
 {
-	m_ChangeMask|=GIT_CRLF;
+	m_ChangeMask |= GIT_CRLF;
 	SetModified();
 }
 
 void CSettingGitConfig::OnBnClickedCheckSafecrlf()
 {
-	m_ChangeMask|=GIT_SAFECRLF;
+	m_ChangeMask |= GIT_SAFECRLF;
 	SetModified();
 }
 
