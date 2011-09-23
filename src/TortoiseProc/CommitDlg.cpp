@@ -1858,17 +1858,23 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 	SetSplitterRange();
 }
 
+CString CCommitDlg::GetSignedOffByLine()
+{
+	CString str;
+
+	CString username = g_Git.GetUserName();
+	CString email = g_Git.GetUserEmail();
+	username.Remove(_T('\n'));
+	email.Remove(_T('\n'));
+
+	str.Format(_T("Signed-off-by: %s <%s>"), username, email);
+
+	return str;
+}
 
 void CCommitDlg::OnBnClickedSignOff()
 {
-	CString str;
-	CString username;
-	CString email;
-	username=g_Git.GetUserName();
-	email=g_Git.GetUserEmail();
-	username.Remove(_T('\n'));
-	email.Remove(_T('\n'));
-	str.Format(_T("Signed-off-by: %s <%s>"),username,email);
+	CString str = GetSignedOffByLine();
 
 	if (m_cLogMessage.GetText().Find(str) == -1) {
 		m_cLogMessage.SetText(m_cLogMessage.GetText().TrimRight());
