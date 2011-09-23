@@ -346,9 +346,9 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 
 	CGitHash hash = g_Git.GetHash(_T("HEAD"));
-	GitRev f;
-	f.GetParentFromHash(hash);
-	if (f.ParentsCount() != 1)
+	GitRev headRevision;
+	headRevision.GetParentFromHash(hash);
+	if (headRevision.ParentsCount() != 1)
 	{
 		m_bAmendDiffToLastCommit = true;
 		UpdateData(FALSE);
