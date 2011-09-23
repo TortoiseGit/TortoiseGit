@@ -408,7 +408,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		if (!err.IsEmpty())
 		{
-			UINT choice = CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit Error"), 1, IDI_ERROR, _T("&Edit .git/config"), _T("&Edit global .gitconfig"), _T("&Abort"));
+			UINT choice = CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit Error"), 1, IDI_ERROR, _T("&Edit .git/config"), _T("Edit &global .gitconfig"), _T("&Abort"));
 			if (choice == 1)
 			{
 				// open the config file with alternative editor
