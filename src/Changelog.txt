@@ -1,6 +1,7 @@
 = Release 1.7.4.0 =
 == Features==
  * Add Show Environment variables at setting dialog to help debug user problem.
+ * Allow users to be warned if there is no Signed-Off-By line in a commit message
 
 == Bug Fix ==
  * Fixed issue #899: Push via Showlog  use Push with force option

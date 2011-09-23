@@ -400,6 +400,14 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
+	BOOL bWarnNoSignedOffBy = FALSE;
+	ProjectProperties::GetBOOLProps(bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
+	if (bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
+	{
+		if (CMessageBox::Show(this->m_hWnd, _T("You haven't entered a Signed-Off-By line!\nAre you sure you want to commit without this line?"), _T("TortoiseGit"), MB_YESNO | MB_ICONWARNING) != IDYES)
+			return;
+	}
+
 	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 #if 0
 	CRegDWORD regUnversionedRecurse (_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
@@ -1858,17 +1866,23 @@ void CCommitDlg::OnSize(UINT nType, int cx, int cy)
 	SetSplitterRange();
 }
 
+CString CCommitDlg::GetSignedOffByLine()
+{
+	CString str;
+
+	CString username = g_Git.GetUserName();
+	CString email = g_Git.GetUserEmail();
+	username.Remove(_T('\n'));
+	email.Remove(_T('\n'));
+
+	str.Format(_T("Signed-off-by: %s <%s>"), username, email);
+
+	return str;
+}
 
 void CCommitDlg::OnBnClickedSignOff()
 {
-	CString str;
-	CString username;
-	CString email;
-	username=g_Git.GetUserName();
-	email=g_Git.GetUserEmail();
-	username.Remove(_T('\n'));
-	email.Remove(_T('\n'));
-	str.Format(_T("Signed-off-by: %s <%s>"),username,email);
+	CString str = GetSignedOffByLine();
 
 	if (m_cLogMessage.GetText().Find(str) == -1) {
 		m_cLogMessage.SetText(m_cLogMessage.GetText().TrimRight());

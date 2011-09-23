@@ -49,6 +49,7 @@ protected:
 		GIT_CRLF=0x4,
 		GIT_SAFECRLF=0x8,
 		GIT_SIGNINGKEY=0x10,
+		GIT_WARNNOSIGNEDOFFBY=0x20,
 	};
 	DECLARE_MESSAGE_MAP()
 
@@ -58,12 +59,14 @@ protected:
 	afx_msg void OnEnChangeGitUserSigningKey();
 	afx_msg void OnBnClickedCheckAutocrlf();
 	afx_msg void OnBnClickedCheckSafecrlf();
+	afx_msg void OnBnClickedCheckWarnNoSignedOffBy();
 	afx_msg void OnBnClickedEditglobalgitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
 
 	CString	m_UserName;
 	CString	m_UserEmail;
 	CString	m_UserSigningKey;
+	BOOL	m_bWarnNoSignedOffBy;
 	BOOL	m_bGlobal;
 	BOOL	m_bAutoCrlf;
 	BOOL	m_bSafeCrLf;
