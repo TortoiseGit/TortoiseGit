@@ -404,7 +404,13 @@ void CCommitDlg::OnOK()
 	ProjectProperties::GetBOOLProps(bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
 	if (bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
 	{
-		if (CMessageBox::Show(this->m_hWnd, _T("You haven't entered a Signed-Off-By line!\nAre you sure you want to commit without this line?"), _T("TortoiseGit"), MB_YESNO | MB_ICONWARNING) != IDYES)
+		UINT retval = CMessageBox::Show(this->m_hWnd, _T("You haven't entered your Signed-Off-By line!"), _T("TortoiseGit"), 1, IDI_WARNING, _T("&Add it"), _T("&Commit w/o"), _T("A&bort"));
+		if (retval == 1)
+		{
+			OnBnClickedSignOff();
+			m_sLogMessage = m_cLogMessage.GetText();
+		}
+		else if (retval == 3) 
 			return;
 	}
 
