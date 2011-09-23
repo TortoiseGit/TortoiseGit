@@ -1053,6 +1053,7 @@
 #define IDC_GIT_USERNAME                1566
 #define IDC_CHECK_GLOBAL                1567
 #define IDC_EDIT_URL                    1568
+#define IDC_CHECK_WARN_NO_SIGNED_OFF_BY 1568
 #define IDC_EDIT_PUTTY_KEY              1569
 #define IDS_PROC_CHECKOUTTO             1570
 #define IDC_CHECK_ISAUTOLOADPUTTYKEY    1570

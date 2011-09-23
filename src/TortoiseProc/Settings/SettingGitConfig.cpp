@@ -41,6 +41,7 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_bGlobal(FALSE)
 	, m_bAutoCrlf(FALSE)
 	, m_bSafeCrLf(FALSE)
+	, m_bWarnNoSignedOffBy(FALSE)
 {
 	m_ChangeMask=0;
 }
@@ -58,8 +59,8 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
 	DDX_Check(pDX, IDC_CHECK_SAFECRLF, m_bSafeCrLf);
+	DDX_Check(pDX, IDC_CHECK_WARN_NO_SIGNED_OFF_BY, m_bWarnNoSignedOffBy);
 }
-
 
 BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
@@ -70,6 +71,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_SAFECRLF, &CSettingGitConfig::OnBnClickedCheckSafecrlf)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
+	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitConfig::OnInitDialog()
@@ -82,6 +84,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 
 	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf, _T("core.autocrlf"));
 	ProjectProperties::GetBOOLProps(this->m_bSafeCrLf, _T("core.safecrlf"));
+	ProjectProperties::GetBOOLProps(this->m_bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
 
 	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	CString proj;
@@ -156,6 +159,13 @@ BOOL CSettingGitConfig::OnApply()
 			return FALSE;
 		}
 
+	if(m_ChangeMask&GIT_WARNNOSIGNEDOFFBY)
+		if(g_Git.SetConfigValue(_T("tgit.warnnosignedoffby"), this->m_bWarnNoSignedOffBy?_T("true"):_T("false"), type))
+		{
+			CMessageBox::Show(NULL, _T("Fail to save warnnosignedoffby"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+
 	if(m_ChangeMask&GIT_CRLF)
 		if(g_Git.SetConfigValue(_T("core.autocrlf"), this->m_bAutoCrlf?_T("true"):_T("false"), type))
 		{
@@ -173,6 +183,11 @@ BOOL CSettingGitConfig::OnApply()
 	m_ChangeMask = 0;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
+}
+void CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy()
+{
+	m_ChangeMask |= GIT_WARNNOSIGNEDOFFBY;
+	SetModified();
 }
 void CSettingGitConfig::OnBnClickedCheckAutocrlf()
 {
