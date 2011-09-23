@@ -346,20 +346,12 @@ CString CHistoryCombo::GetString() const
 	sel = GetCurSel();
 	DWORD style=GetStyle();
 	
-	if (sel == CB_ERR)
+	if (sel == CB_ERR ||(m_bURLHistory)||(m_bPathHistory) || (!(style&CBS_SIMPLE)))
 	{
 		GetWindowText(str);
 		return str;
 	}
 
-	if ((m_bURLHistory)||(m_bPathHistory) || (!(style&CBS_SIMPLE)) )
-	{
-		//URL and path history combo boxes are editable, so get
-		//the string directly from the combobox
-		GetLBText(sel, str.GetBuffer(GetLBTextLen(sel)));
-		str.ReleaseBuffer();
-		return str;
-	}
 	return m_arEntries.GetAt(sel);
 }
 
