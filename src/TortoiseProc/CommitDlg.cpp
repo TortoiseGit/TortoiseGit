@@ -400,6 +400,14 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
+	BOOL bWarnNoSignedOffBy = FALSE;
+	ProjectProperties::GetBOOLProps(bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
+	if (bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
+	{
+		if (CMessageBox::Show(this->m_hWnd, _T("You haven't entered a Signed-Off-By line!\nAre you sure you want to commit without this line?"), _T("TortoiseGit"), MB_YESNO | MB_ICONWARNING) != IDYES)
+			return;
+	}
+
 	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 #if 0
 	CRegDWORD regUnversionedRecurse (_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
