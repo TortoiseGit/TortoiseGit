@@ -265,7 +265,7 @@ BOOL CCommitDlg::OnInitDialog()
 //	AddAnchor(IDC_HISTORY, TOP_LEFT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SIGNOFF, TOP_RIGHT);
-	AddAnchor(IDC_VIEW_PATCH,TOP_RIGHT);
+	AddAnchor(IDC_VIEW_PATCH, BOTTOM_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
@@ -1839,7 +1839,6 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	RemoveAnchor(IDC_TEXT_INFO);
-	RemoveAnchor(IDC_VIEW_PATCH);
 
 	CSplitterControl::ChangeHeight(&m_cLogMessage, delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MESSAGEGROUP), delta, CW_TOPALIGN);
@@ -1849,9 +1848,7 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMENDDIFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_VIEW_PATCH),0,delta);
 
-	AddAnchor(IDC_VIEW_PATCH,TOP_RIGHT);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
