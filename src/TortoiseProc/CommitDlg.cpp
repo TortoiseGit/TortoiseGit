@@ -356,6 +356,7 @@ BOOL CCommitDlg::OnInitDialog()
 		CGitHash hash = g_Git.GetHash(_T("HEAD"));
 		GitRev headRevision;
 		headRevision.GetParentFromHash(hash);
+		// do not allow to show diff to "last" revision if it has more that one parent
 		if (headRevision.ParentsCount() != 1)
 		{
 			m_bAmendDiffToLastCommit = true;
