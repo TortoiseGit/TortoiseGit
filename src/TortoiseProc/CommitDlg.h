@@ -168,6 +168,9 @@ private:
 	CPathWatcher		m_pathwatcher;
 	CHyperLink			m_ctrlShowPatch;
 	CPatchViewDlg		m_patchViewdlg;
+	BOOL				m_bSetCommitDateTime;
+	CDateTimeCtrl		m_CommitDate;
+	CDateTimeCtrl		m_CommitTime;
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
@@ -183,4 +186,5 @@ protected:
 	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCommitAmenddiff();
 	afx_msg void OnBnClickedNoautoselectsubmodules();
+	afx_msg void OnBnClickedCommitSetDateTime();
 };

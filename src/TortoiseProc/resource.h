@@ -1040,6 +1040,7 @@
 #define IDC_SOUNDS_TEXT                 1556
 #define IDC_COMMIT_AMENDDIFF            1556
 #define IDC_REBASE_PROGRESS             1557
+#define IDC_COMMIT_SETDATETIME          1557
 #define IDC_REBASE_SHEET                1558
 #define IDC_EDIT_ALL                    1559
 #define IDS_PROC_MULTIRENAME            1560
@@ -1198,7 +1199,9 @@
 #define IDC_ALTERNATIVEEDITORBROWSE     1664
 #define IDC_NOAUTOSELECTSUBMODULES      1669
 #define IDS_REPOBROWSE_MULTIIMPORT      1670
+#define IDC_COMMIT_DATEPICKER           1670
 #define IDS_REPOBROWSE_MULTICOPY        1671
+#define IDC_COMMIT_TIMEPICKER           1671
 #define IDS_REPOBROWSE_MULTIMOVE        1672
 #define IDS_REPOBROWSE_MOVETRUNK        1673
 #define IDS_REPOBROWSE_TT_HEADREV       1680
@@ -1889,7 +1892,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        337
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1670
+#define _APS_NEXT_CONTROL_VALUE         1671
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
