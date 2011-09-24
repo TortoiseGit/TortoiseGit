@@ -339,20 +339,29 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 	err = FALSE;
 
-	if(m_bCommitAmend)
+	if (g_Git.IsInitRepos())
 	{
+		m_bCommitAmend = FALSE;
 		GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
-		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
-	}
-
-	CGitHash hash = g_Git.GetHash(_T("HEAD"));
-	GitRev headRevision;
-	headRevision.GetParentFromHash(hash);
-	if (headRevision.ParentsCount() != 1)
-	{
-		m_bAmendDiffToLastCommit = true;
 		UpdateData(FALSE);
-		GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(FALSE);
+	}
+	else
+	{
+		if(m_bCommitAmend)
+		{
+			GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
+			GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+		}
+
+		CGitHash hash = g_Git.GetHash(_T("HEAD"));
+		GitRev headRevision;
+		headRevision.GetParentFromHash(hash);
+		if (headRevision.ParentsCount() != 1)
+		{
+			m_bAmendDiffToLastCommit = true;
+			UpdateData(FALSE);
+			GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(FALSE);
+		}
 	}
 
 	this->m_ctrlShowPatch.SetURL(CString());
