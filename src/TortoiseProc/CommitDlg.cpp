@@ -1761,10 +1761,10 @@ void CCommitDlg::FillPatchView()
 			CTGitPath * p=(CTGitPath*)m_ListCtrl.GetItemData(nSelect);
 			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
-				CString head;
+				CString head = _T("HEAD");
 				if(m_bCommitAmend==TRUE && m_bAmendDiffToLastCommit==FALSE)
-					head = _T("HEAD~1 ");
-				cmd.Format(_T("git.exe diff %s-- \"%s\""), head, p->GetGitPathString());
+					head = _T("HEAD~1");
+				cmd.Format(_T("git.exe diff %s -- \"%s\""), head, p->GetGitPathString());
 				g_Git.Run(cmd,&out,CP_ACP);
 			}
 		}
