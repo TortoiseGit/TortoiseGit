@@ -64,6 +64,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelectFilesForCommit(TRUE)
 	, m_bNoPostActions(FALSE)
 	, m_bAutoClose(false)
+	, m_bSetCommitDateTime(FALSE)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -83,6 +84,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FILELIST, m_ListCtrl);
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
+	DDX_Check(pDX, IDC_COMMIT_SETDATETIME, m_bSetCommitDateTime);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
 	DDX_Text(pDX, IDC_BUGID, m_sBugID);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
@@ -92,6 +94,8 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
 	DDX_Check(pDX,IDC_COMMIT_AMENDDIFF,m_bAmendDiffToLastCommit);
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
+	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
+	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -123,6 +127,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(HDN_ITEMCHANGED, 0, &CCommitDlg::OnHdnItemchangedFilelist)
 	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
+	ON_BN_CLICKED(IDC_COMMIT_SETDATETIME, &CCommitDlg::OnBnClickedCommitSetDateTime)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -282,6 +287,9 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
@@ -673,7 +681,15 @@ void CCommitDlg::OnOK()
 		{
 			amend=_T("--amend");
 		}
-		cmd.Format(_T("git.exe commit %s -F \"%s\""),amend, tempfile);
+		CString dateTime;
+		if (m_bSetCommitDateTime)
+		{
+			CTime date, time;
+			m_CommitDate.GetTime(date);
+			m_CommitTime.GetTime(time);
+			dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
+		}
+		cmd.Format(_T("git.exe commit %s %s -F \"%s\""), dateTime, amend, tempfile);
 
 		CheckHeadDetach();
 
@@ -1836,6 +1852,9 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_SIGNOFF);
 	RemoveAnchor(IDC_COMMIT_AMEND);
 	RemoveAnchor(IDC_COMMIT_AMENDDIFF);
+	RemoveAnchor(IDC_COMMIT_SETDATETIME);
+	RemoveAnchor(IDC_COMMIT_DATEPICKER);
+	RemoveAnchor(IDC_COMMIT_TIMEPICKER);
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	RemoveAnchor(IDC_TEXT_INFO);
@@ -1847,6 +1866,9 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMENDDIFF),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETDATETIME),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATEPICKER),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_TIMEPICKER),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
 
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
@@ -1857,6 +1879,9 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
 	AddAnchor(IDC_TEXT_INFO,TOP_RIGHT);
 	ArrangeLayout();
 	// adjust the minimum size of the dialog to prevent the resizing from
@@ -1933,6 +1958,9 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		m_cLogMessage.SetText(m_NoAmendStr);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
 	}
+
+	OnBnClickedCommitSetDateTime(); // to update the commit date and time
+
 	Refresh();
 }
 
@@ -2087,4 +2115,31 @@ void CCommitDlg::OnBnClickedNoautoselectsubmodules()
 {
 	UpdateData();
 	Refresh();
+}
+
+void CCommitDlg::OnBnClickedCommitSetDateTime()
+{
+	UpdateData();
+
+	if (m_bSetCommitDateTime)
+	{
+		CTime authordate = CTime::GetCurrentTime();
+		if (m_bCommitAmend)
+		{
+			GitRev headRevision;
+			headRevision.GetCommit(_T("HEAD"));
+			authordate = headRevision.GetAuthorDate();
+		}
+
+		m_CommitDate.SetTime(&authordate);
+		m_CommitTime.SetTime(&authordate);
+
+		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
+	}
 }
