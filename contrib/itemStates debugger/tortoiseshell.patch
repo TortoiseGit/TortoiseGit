@@ -1,0 +1,77 @@
+diff --git a/src/TortoiseShell/ContextMenu.cpp b/src/TortoiseShell/ContextMenu.cpp
+index 1a5c6ec..9290d5f 100644
+--- a/src/TortoiseShell/ContextMenu.cpp
++++ b/src/TortoiseShell/ContextMenu.cpp
+@@ -1042,6 +1042,18 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
+ 	}
+ #endif
+ 
++	CString blup;
++	blup.Format(_T("%d\n"), itemStates);
++	HANDLE file = ::CreateFile (_T("d:\\1.txt"),
++								GENERIC_WRITE, 
++								FILE_SHARE_READ, 
++								0, 
++								CREATE_ALWAYS, 
++								FILE_ATTRIBUTE_TEMPORARY,
++								0);
++	DWORD written = 0;
++	::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++
+ 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
+ 	{
+ 		if (menuInfo[menuIndex].command == ShellSeparator)
+@@ -1058,6 +1070,18 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
+ 			// check the conditions whether to show the menu entry or not
+ 			bool bInsertMenu = false;
+ 
++			blup.Format(_T("menuIndex: %d, %d, %d, %d\n"), menuIndex, menuInfo[menuIndex].menuID, menuInfo[menuIndex].iconID, menuInfo[menuIndex].command);
++			::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++
++			blup.Format(_T("1yes: %d, 1no: %d\n"), menuInfo[menuIndex].firstyes, menuInfo[menuIndex].firstno);
++			::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++			blup.Format(_T("2yes: %d, 2no: %d\n"), menuInfo[menuIndex].secondyes, menuInfo[menuIndex].secondno);
++			::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++			blup.Format(_T("3yes: %d, 3no: %d\n"), menuInfo[menuIndex].thirdyes, menuInfo[menuIndex].thirdno);
++			::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++			blup.Format(_T("4yes: %d, 4no: %d\n"), menuInfo[menuIndex].fourthyes, menuInfo[menuIndex].fourthno);
++			::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++
+ 			if (menuInfo[menuIndex].firstyes && menuInfo[menuIndex].firstno)
+ 			{
+ 				if (((menuInfo[menuIndex].firstyes & itemStates) == menuInfo[menuIndex].firstyes)
+@@ -1106,16 +1130,25 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
+ 			else if ((menuInfo[menuIndex].fourthno)&&((menuInfo[menuIndex].fourthno & (~itemStates)) == menuInfo[menuIndex].fourthno))
+ 				bInsertMenu = true;
+ 
++			blup.Format(_T("insertmenu: %d\n"), bInsertMenu);
++			::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
++
+ 			if (menuInfo[menuIndex].menuID & menuex)
+ 			{
++				blup.Format(_T("is extended\n"));
++				::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
+ 				if( !(itemStates & ITEMIS_EXTENDED) )
+ 				{
+ 					bInsertMenu = false;
+ 				}
++				blup.Format(_T("insertmenu: %d\n"), bInsertMenu);
++				::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
+ 			}
+ 
+ 			if (menuInfo[menuIndex].menuID & (~menumask))
+ 			{
++				blup.Format(_T("is not extended\n"));
++				::WriteFile (file, blup, 2*blup.GetLength(), &written, 0);
+ 				if (bInsertMenu)
+ 				{
+ 					bool bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
+@@ -1164,6 +1197,8 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
+ 		menuIndex++;
+ 	}
+ 
++	::CloseHandle(file);
++
+ 	//add sub menu to main context menu
+ 	//don't use InsertMenu because this will lead to multiple menu entries in the explorer file menu.
+ 	//see http://support.microsoft.com/default.aspx?scid=kb;en-us;214477 for details of that.
