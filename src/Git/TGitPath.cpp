@@ -995,7 +995,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 	}
 	return pos;
 }
-int CTGitPathList::FillUnRev(int action,CTGitPathList *list)
+int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 {
 	int pos=0;
 	this->Clear();

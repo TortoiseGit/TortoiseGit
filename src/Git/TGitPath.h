@@ -361,7 +361,7 @@ public:
 	CTGitPath * LookForGitPath(CString path);
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
-	int FillUnRev(int Action,CTGitPathList *list=NULL);
+	int FillUnRev(unsigned int Action,CTGitPathList *list=NULL);
 	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used
