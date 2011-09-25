@@ -33,6 +33,7 @@ CAddDlg::CAddDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CAddDlg::IDD, pParent)
 	, m_bThreadRunning(FALSE)
 	, m_bCancelled(false)
+	, m_bIncludeIgnored(FALSE)
 {
 }
 
@@ -45,6 +46,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_ADDLIST, m_addListCtrl);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
+	DDX_Check(pDX, IDC_INCLUDE_IGNORED, m_bIncludeIgnored);
 }
 
 BEGIN_MESSAGE_MAP(CAddDlg, CResizableStandAloneDialog)
@@ -53,6 +55,7 @@ BEGIN_MESSAGE_MAP(CAddDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_INCLUDE_IGNORED, &CAddDlg::OnBnClickedIncludeIgnored)
 END_MESSAGE_MAP()
 
 
@@ -76,6 +79,7 @@ BOOL CAddDlg::OnInitDialog()
 
 	AddAnchor(IDC_ADDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
+	AddAnchor(IDC_INCLUDE_IGNORED, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -280,4 +284,10 @@ void CAddDlg::OnTimer(UINT_PTR nIDEvent)
 		break;
 	}
 	__super::OnTimer(nIDEvent);
+}
+
+void CAddDlg::OnBnClickedIncludeIgnored()
+{
+	UpdateData();
+	Refresh();
 }
