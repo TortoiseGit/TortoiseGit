@@ -177,15 +177,7 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 			break;
 		case VK_F5:
 			{
-				if (!m_bThreadRunning)
-				{
-					if(AfxBeginThread(AddThreadEntry, this) == NULL)
-					{
-						CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					}
-					else
-						InterlockedExchange(&m_bThreadRunning, TRUE);
-				}
+				Refresh();
 			}
 			break;
 		}
@@ -254,6 +246,19 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	SetTimer(REFRESHTIMER, 200, NULL);
 	ATLTRACE(_T("Item %s dropped, timer started\n"), path.GetWinPath());
 	return 0;
+}
+
+void CAddDlg::Refresh()
+{
+	if (!m_bThreadRunning)
+	{
+		if(AfxBeginThread(AddThreadEntry, this) == NULL)
+		{
+			CMessageBox::Show(this->m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		}
+		else
+			InterlockedExchange(&m_bThreadRunning, TRUE);
+	}
 }
 
 void CAddDlg::OnTimer(UINT_PTR nIDEvent)

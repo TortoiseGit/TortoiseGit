@@ -47,6 +47,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
+	virtual void Refresh();
 
 private:
 	static UINT AddThreadEntry(LPVOID pVoid);
