@@ -5066,6 +5066,11 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 			UpdateUnRevFileList(List);
 			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
 		}
+		if(mask&CGitStatusListCtrl::FILELIST_IGNORE && (once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_IGNORE))))
+		{
+			UpdateIgnoreFileList(List);
+			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
+		}
 	}
 	return 0;
 }
