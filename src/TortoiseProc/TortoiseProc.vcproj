@@ -1617,7 +1617,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Commands\SetExtMenu.h"
+					RelativePath=".\Settings\SetExtMenu.h"
 					>
 				</File>
 				<File
