@@ -566,7 +566,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
+void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -822,7 +822,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 
 }
 
-void CGitStatusListCtrl::Show(DWORD /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
+void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
 	DeleteAllItems();
 	for(int i=0;i<checkedList.GetCount();i++)

@@ -878,7 +878,7 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 
 	outputlist.ParserFromLsFile(cmdout);
 	for(int i=0;i<outputlist.GetCount();i++)
-		((int)outputlist[i].m_Action) = CTGitPath::LOGACTIONS_ADDED;
+		((unsigned int)outputlist[i].m_Action) = CTGitPath::LOGACTIONS_ADDED;
 
 	return 0;
 }

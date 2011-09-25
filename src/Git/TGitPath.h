@@ -32,7 +32,7 @@ public:
 	int m_Stage;
 	int m_ParentNo;
 public:
-	enum
+	enum : unsigned int
 	{
 		LOGACTIONS_ADDED	= 0x00000001,
 		LOGACTIONS_MODIFIED	= 0x00000002,
@@ -65,7 +65,7 @@ public:
 
 	CString m_StatAdd;
 	CString m_StatDel;
-	int		m_Action;
+	unsigned int		m_Action;
 	bool    m_Checked;
 	int	ParserAction(BYTE action);
 	CString GetActionName();
