@@ -145,12 +145,14 @@ UINT CAddDlg::AddThread()
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 	m_addListCtrl.Clear();
-	if (!m_addListCtrl.GetStatus(&m_pathList,false,false,true,true))
+	if (!m_addListCtrl.GetStatus(&m_pathList, false, m_bIncludeIgnored != FALSE, true, true))
 	{
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());
 	}
-	m_addListCtrl.Show(SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT, 
-						SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT,true,true);
+	unsigned int dwShow = SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT;
+	if (m_bIncludeIgnored)
+		dwShow |= SVNSLC_SHOWIGNORED;
+	m_addListCtrl.Show(dwShow);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	return 0;
