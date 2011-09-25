@@ -1013,7 +1013,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 
 		CString ignored;
 		if(action & CTGitPath::LOGACTIONS_IGNORE)
-			ignored= _T(" --ignored");
+			ignored= _T(" -i");
 
 		if(list==NULL)
 		{
@@ -1022,7 +1022,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 
 		}
 		else
-		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others -z %s-- \"%s\""),
+		{	cmd.Format(_T("git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\""),
 					ignored,
 					(*list)[i].GetWinPathString());
 		}
