@@ -263,7 +263,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	ISettingsPropPage::OnInitDialog();
 
 	m_tooltips.Create(this);
-	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_MENULAYOUT_TT);
+	m_tooltips.AddTool(IDC_MENULIST, IDS_SETTINGS_EXTMENULAYOUT_TT);
 	//m_tooltips.AddTool(IDC_GETLOCKTOP, IDS_SETTINGS_GETLOCKTOP_TT);
 	//m_tooltips.AddTool(IDC_NOCONTEXTPATHS, IDS_SETTINGS_EXCLUDECONTEXTLIST_TT);
 

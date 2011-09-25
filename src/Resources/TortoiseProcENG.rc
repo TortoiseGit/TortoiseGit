@@ -2138,7 +2138,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Set Extend Menu Item"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Move to extern menu (press shift key to show it)",-1,7,7,286,210
+    GROUPBOX        "Move to extended context menu (press shift key to show it)",-1,7,7,286,210
     CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,19,274,198
 END
 
@@ -3820,6 +3820,12 @@ BEGIN
                             "Check those menu entries you want to appear in the top context menu instead of the TortoiseGit submenu"
     IDS_SETTINGS_EXCLUDELIST_TT 
                             "A newline separated list of paths for which no icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\nAn empty list will allow overlays on all paths."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SETTINGS_EXTMENULAYOUT_TT 
+                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
 END
 
 STRINGTABLE 
