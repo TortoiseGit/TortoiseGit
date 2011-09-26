@@ -1467,7 +1467,8 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									GetRangeInSortVector(*treeptr,lowcasepath.GetBuffer(),lowcasepath.GetLength(),&hstart,&hend,pos);
 									CGitHeadFileList::iterator hit;
 									hit = treeptr->begin()+start;
-									for(int i=hstart;i<=hend;i++)
+									CGitHeadFileList::iterator lastElement = treeptr->end();
+									for(int i=hstart; i <= hend && hit != lastElement; i++)
 									{
 										if( SearchInSortVector(*indexptr,(*hit).m_FileName.GetBuffer(),-1) < 0)
 										{
