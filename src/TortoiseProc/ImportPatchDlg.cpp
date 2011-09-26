@@ -273,9 +273,10 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 		if(index >= 1)
 		{
 			CString old = m_cList.GetItemText(index, 0);
+			BOOL oldState = m_cList.GetCheck(index);
 			m_cList.DeleteItem(index);
-
 			m_cList.InsertItem(index - 1, old);
+			m_cList.SetCheck(index - 1, oldState);
 		}
 	}
 
@@ -306,8 +307,10 @@ void CImportPatchDlg::OnBnClickedButtonDown()
 		{
 			int index = indexes[i];
 			CString old = m_cList.GetItemText(index, 0);
+			BOOL oldState = m_cList.GetCheck(index);
 			m_cList.DeleteItem(index);
 			m_cList.InsertItem(index + 1, old);
+			m_cList.SetCheck(index + 1, oldState);
 		}
 	}
 	delete [] indexes;
