@@ -149,7 +149,7 @@ UINT CChangedDlg::ChangedStatusThread()
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());
 	}
-	DWORD dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWSWITCHED | SVNSLC_SHOWINCHANGELIST;
+	unsigned int dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWSWITCHED | SVNSLC_SHOWINCHANGELIST;
 	dwShow |= m_bShowUnversioned ? SVNSLC_SHOWUNVERSIONED : 0;
 	dwShow |= m_iShowUnmodified ? SVNSLC_SHOWNORMAL : 0;
 	dwShow |= m_bShowIgnored ? SVNSLC_SHOWIGNORED : 0;
@@ -169,7 +169,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_REFRESH, TRUE);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, !bSingleFile);
 	//DialogEnableWindow(IDC_SHOWUNMODIFIED, !bSingleFile);
-	//DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
+	DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
 	DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default

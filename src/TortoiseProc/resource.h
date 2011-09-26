@@ -310,6 +310,7 @@
 #define IDC_HINTTEXT                    1065
 #define IDC_SELECTALL                   1067
 #define IDC_SSHCLIENT                   1068
+#define IDC_INCLUDE_IGNORED             1068
 #define IDC_SSHBROWSE                   1069
 #define IDC_REPOS_BAR_CNR               1070
 #define IDC_DEFAULTLOG                  1071

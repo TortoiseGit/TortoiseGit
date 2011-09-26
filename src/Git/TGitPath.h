@@ -32,7 +32,7 @@ public:
 	int m_Stage;
 	int m_ParentNo;
 public:
-	enum
+	enum : unsigned int
 	{
 		LOGACTIONS_ADDED	= 0x00000001,
 		LOGACTIONS_MODIFIED	= 0x00000002,
@@ -65,7 +65,7 @@ public:
 
 	CString m_StatAdd;
 	CString m_StatDel;
-	int		m_Action;
+	unsigned int		m_Action;
 	bool    m_Checked;
 	int	ParserAction(BYTE action);
 	CString GetActionName();
@@ -361,7 +361,7 @@ public:
 	CTGitPath * LookForGitPath(CString path);
 	int	ParserFromLog(BYTE_VECTOR &log, bool parseDeletes = false);
 	int ParserFromLsFile(BYTE_VECTOR &out,bool staged=true);
-	int FillUnRev(int Action,CTGitPathList *list=NULL);
+	int FillUnRev(unsigned int Action,CTGitPathList *list=NULL);
 	int GetAction();
 	/**
 	 * Load from the path argument string, when the 'path' parameter is used

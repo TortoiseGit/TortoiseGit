@@ -566,7 +566,7 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	return 0;
 }
 
-void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
+void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, bool /*bShowFolders*/ /* = true */,BOOL UpdateStatusList,bool UseStoredCheckStatus)
 {
 	CWinApp * pApp = AfxGetApp();
 	if (pApp)
@@ -822,7 +822,7 @@ void CGitStatusListCtrl::Show(DWORD dwShow, DWORD dwCheck /*=0*/, bool /*bShowFo
 
 }
 
-void CGitStatusListCtrl::Show(DWORD /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
+void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
 	DeleteAllItems();
 	for(int i=0;i<checkedList.GetCount();i++)
@@ -2276,7 +2276,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if(path == NULL)
 							continue;
 						CString cmd;
-						cmd.Format(_T("git.exe add -- \"%s\""),path->GetGitPathString());
+						cmd.Format(_T("git.exe add -f -- \"%s\""), path->GetGitPathString());
 						CString output;
 						if(!g_Git.Run(cmd,&output,CP_ACP))
 						{
@@ -5064,6 +5064,11 @@ int CGitStatusListCtrl::UpdateFileList(int mask,bool once,CTGitPathList *List)
 		if(once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_UNVER)))
 		{
 			UpdateUnRevFileList(List);
+			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
+		}
+		if(mask&CGitStatusListCtrl::FILELIST_IGNORE && (once || (!(m_FileLoaded&CGitStatusListCtrl::FILELIST_IGNORE))))
+		{
+			UpdateIgnoreFileList(List);
 			m_FileLoaded|=CGitStatusListCtrl::FILELIST_UNVER;
 		}
 	}

@@ -16,6 +16,7 @@
  * Fixed issue #908: TortoiseGit crashes if .git/config-file is broken
  * Fixed issue #909: Cannot amend initial commit
  * Fixed issue #829: "Remote" combobox in "Push" window updates only after losing focus
+ * Fixed issue #906: Add ability to add files with options -force.
 
 = Release 1.7.3.0 =
 == Features ==

@@ -43,10 +43,12 @@ protected:
 	afx_msg void OnBnClickedHelp();
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedIncludeIgnored();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
+	virtual void Refresh();
 
 private:
 	static UINT AddThreadEntry(LPVOID pVoid);
@@ -65,5 +67,6 @@ private:
 	volatile LONG	m_bThreadRunning;
 	CButton			m_SelectAll;
 	bool			m_bCancelled;
+	BOOL			m_bIncludeIgnored;
 };
 
