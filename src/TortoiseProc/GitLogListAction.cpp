@@ -229,7 +229,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
-					command.Format(_T("git.exe diff-tree %s -r -p --stat %s %s"),merge, r1->m_CommitHash.ToString(), hash2);
+					command.Format(_T("git.exe diff-tree %s -r -p --stat %s %s"), merge, hash2, r1->m_CommitHash.ToString());
 				}else
 					command.Format(_T("git.exe diff -r -p --stat"));
 
