@@ -267,6 +267,13 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 {
 	POSITION pos;
 	pos = m_cList.GetFirstSelectedItemPosition();
+
+	// do nothing if the first selected item is the first item in the list
+	if (m_cList.GetNextSelectedItem(pos) == 0)
+		return;
+
+	pos = m_cList.GetFirstSelectedItemPosition();
+
 	while (pos)
 	{
 		int index = m_cList.GetNextSelectedItem(pos);

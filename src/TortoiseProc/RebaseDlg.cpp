@@ -1612,6 +1612,13 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 {
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
+
+	// do nothing if the first selected item is the first item in the list
+	if (m_CommitList.GetNextSelectedItem(pos) == 0)
+		return;
+
+	pos = m_CommitList.GetFirstSelectedItemPosition();
+
 	bool changed = false;
 	while(pos)
 	{
