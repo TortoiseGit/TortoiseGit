@@ -521,6 +521,7 @@ void CImportPatchDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGN_OFF), 0, delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_KEEP_CR), 0, delta);
 
 	this->AddAmAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from
