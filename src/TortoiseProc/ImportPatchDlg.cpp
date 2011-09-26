@@ -352,7 +352,7 @@ UINT CImportPatchDlg::PatchThread()
 		if (m_pTaskbarList)
 		{
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-			m_pTaskbarList->SetProgressValue(m_hWnd, i+1, m_cList.GetItemCount());
+			m_pTaskbarList->SetProgressValue(m_hWnd, i + 1, m_cList.GetItemCount());
 		}
 
 		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
@@ -376,14 +376,14 @@ UINT CImportPatchDlg::PatchThread()
 				switch(ret)
 				{
 				case 1:
-					cmd=_T("git.exe am --abort");
+					cmd = _T("git.exe am --abort");
 					break;
 				case 2:
-					cmd=_T("git.exe am --skip");
+					cmd = _T("git.exe am --skip");
 					i++;
 					break;
 				case 3:
-					cmd=_T("git.exe am --resolved");
+					cmd = _T("git.exe am --resolved");
 					break;
 				default:
 					cmd.Empty();
@@ -396,11 +396,12 @@ UINT CImportPatchDlg::PatchThread()
 
 				this->AddLogString(cmd);
 				CString output;
-				if(g_Git.Run(cmd,&output,CP_ACP))
+				if(g_Git.Run(cmd, &output, CP_ACP))
 				{
 					this->AddLogString(output);
 					this->AddLogString(_T("Fail"));
-				}else
+				}
+				else
 				{
 					this->AddLogString(_T("Done"));
 				}
@@ -409,23 +410,23 @@ UINT CImportPatchDlg::PatchThread()
 			if(m_bExitThread)
 				break;
 
-			cmd=_T("git.exe am ");
+			cmd = _T("git.exe am ");
 
 			if(this->m_bAddSignedOffBy)
-				cmd+=_T("--signoff ");
+				cmd += _T("--signoff ");
 
 			if(this->m_b3Way)
-				cmd+=_T("--3way ");
+				cmd += _T("--3way ");
 
 			if(this->m_bIgnoreSpace)
-				cmd+=_T("--ignore-space-change ");
+				cmd += _T("--ignore-space-change ");
 
 			if(this->m_bKeepCR)
-				cmd+=_T("--keep-cr ");
+				cmd += _T("--keep-cr ");
 
-			cmd +=_T("\"");
+			cmd += _T("\"");
 			cmd += m_cList.GetItemText(i,0);
-			cmd +=_T("\"");
+			cmd += _T("\"");
 
 			this->AddLogString(cmd);
 			CString output;
@@ -439,7 +440,8 @@ UINT CImportPatchDlg::PatchThread()
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 				break;
 
-			}else
+			}
+			else
 			{
 				m_cList.SetItemData(i,  CPatchListCtrl::STATUS_APPLY_SUCCESS);
 				this->AddLogString(_T("Success"));
@@ -516,9 +518,9 @@ void CImportPatchDlg::DoSize(int delta)
 	//CSplitterControl::ChangeHeight(GetDlgItem(), delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_AM_TAB), -delta, CW_BOTTOMALIGN);
 	//CSplitterControl::ChangeHeight(GetDlgItem(), -delta, CW_BOTTOMALIGN);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGN_OFF),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_3WAY), 0, delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECK_IGNORE_SPACE), 0, delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGN_OFF), 0, delta);
 
 	this->AddAmAnchor();
 	// adjust the minimum size of the dialog to prevent the resizing from
@@ -602,7 +604,8 @@ void CImportPatchDlg::OnBnClickedCancel()
 	if(this->m_bThreadRunning)
 	{
 		InterlockedExchange(&m_bExitThread,TRUE);
-	}else
+	}
+	else
 		OnCancel();
 }
 
@@ -653,7 +656,8 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 		m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
 		m_PatchCtrl.SetText(CString());
 		m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
-	}else
+	}
+	else
 	{
 		CString text;
 
@@ -669,7 +673,8 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 			m_PatchCtrl.LoadFromFile(str);
 			m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
 
-		}else
+		}
+		else
 		{
 			m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
 			m_PatchCtrl.SetText(text);
