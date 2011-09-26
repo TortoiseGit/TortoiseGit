@@ -40,7 +40,7 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 	m_bExitThread = false;
 	m_bThreadRunning =false;
 
-	m_b3Way = 1; 
+	m_b3Way = 1;
 	m_bIgnoreSpace = 1;
 	m_bAddSignedOffBy = FALSE;
 	m_bKeepCR = TRUE;
@@ -57,7 +57,7 @@ void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_PATCH,m_cList);
 	DDX_Control(pDX, IDC_AM_SPLIT, m_wndSplitter);
 	DDX_Check(pDX, IDC_CHECK_3WAY, m_b3Way);
-    DDX_Check(pDX, IDC_CHECK_IGNORE_SPACE, m_bIgnoreSpace);
+	DDX_Check(pDX, IDC_CHECK_IGNORE_SPACE, m_bIgnoreSpace);
 	DDX_Check(pDX, IDC_SIGN_OFF, m_bAddSignedOffBy);
 	DDX_Check(pDX, IDC_KEEP_CR, m_bKeepCR);
 }
@@ -71,7 +71,7 @@ void CImportPatchDlg::AddAmAnchor()
 	AddAnchor(IDC_BUTTON_UP, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_DOWN, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_REMOVE, TOP_RIGHT);
-	
+
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -157,12 +157,12 @@ BOOL CImportPatchDlg::OnInitDialog()
 	}
 	m_wndOutput.Init(0);
 	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
-	
+
 	m_tooltips.Create(this);
-	
+
 	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);
 	m_tooltips.AddTool(IDC_CHECK_IGNORE_SPACE,IDS_AM_IGNORE_SPACE_TT);
-	
+
 	m_ctrlTabCtrl.AddTab(&m_PatchCtrl,_T("Patch"),0);
 	m_ctrlTabCtrl.AddTab(&m_wndOutput,_T("Log"),1);
 
@@ -266,16 +266,16 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 void CImportPatchDlg::OnBnClickedButtonUp()
 {
 	POSITION pos;
-	pos=m_cList.GetFirstSelectedItemPosition();
-	while(pos)
+	pos = m_cList.GetFirstSelectedItemPosition();
+	while (pos)
 	{
-		int index=m_cList.GetNextSelectedItem(pos);
-		if(index>1)
+		int index = m_cList.GetNextSelectedItem(pos);
+		if(index > 1)
 		{
-			CString old=m_cList.GetItemText(index,0);
+			CString old = m_cList.GetItemText(index, 0);
 			m_cList.DeleteItem(index);
 
-			m_cList.InsertItem(index-1,old);
+			m_cList.InsertItem(index - 1, old);
 		}
 	}
 
@@ -284,28 +284,28 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 void CImportPatchDlg::OnBnClickedButtonDown()
 {
 	POSITION pos;
-	pos=m_cList.GetFirstSelectedItemPosition();
-	while(pos)
+	pos = m_cList.GetFirstSelectedItemPosition();
+	while (pos)
 	{
-		int index=m_cList.GetNextSelectedItem(pos);
+		int index = m_cList.GetNextSelectedItem(pos);
 
-		CString old=m_cList.GetItemText(index,0);
+		CString old = m_cList.GetItemText(index, 0);
 		m_cList.DeleteItem(index);
 
-		m_cList.InsertItem(index+1,old);
-		
+		m_cList.InsertItem(index + 1,old);
+
 	}
 }
 
 void CImportPatchDlg::OnBnClickedButtonRemove()
 {
 	POSITION pos;
-	pos=m_cList.GetFirstSelectedItemPosition();
-	while(pos)
+	pos = m_cList.GetFirstSelectedItemPosition();
+	while (pos)
 	{
-		int index=m_cList.GetNextSelectedItem(pos);
+		int index = m_cList.GetNextSelectedItem(pos);
 		m_cList.DeleteItem(index);
-		pos=m_cList.GetFirstSelectedItemPosition();
+		pos = m_cList.GetFirstSelectedItemPosition();
 	}
 }
 
@@ -344,7 +344,7 @@ UINT CImportPatchDlg::PatchThread()
 
 				switch(ret)
 				{
-				case 1: 
+				case 1:
 					cmd=_T("git.exe am --abort");
 					break;
 				case 2:
@@ -412,8 +412,8 @@ UINT CImportPatchDlg::PatchThread()
 			{
 				m_cList.SetItemData(i,  CPatchListCtrl::STATUS_APPLY_SUCCESS);
 				this->AddLogString(_T("Success"));
-			}			
-			
+			}
+
 		}else
 		{
 			AddLogString(CString(_T("Skip Patch: "))+m_cList.GetItemText(i,0));
@@ -423,7 +423,7 @@ UINT CImportPatchDlg::PatchThread()
 		m_cList.SetItemData(m_CurrentItem, (~CPatchListCtrl::STATUS_APPLYING)&m_cList.GetItemData(i));
 		m_CurrentItem++;
 		m_cList.SetItemData(m_CurrentItem, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
-		
+
 		CRect rect;
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
@@ -436,7 +436,7 @@ UINT CImportPatchDlg::PatchThread()
 
 		UpdateOkCancelText();
 	}
-	
+
 	//in case am fail, need refresh finial item status
 	CRect rect;
 	this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
@@ -516,7 +516,7 @@ LRESULT CImportPatchDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lPara
 	switch (message) {
 	case WM_NOTIFY:
 		if (wParam == IDC_AM_SPLIT)
-		{ 
+		{
 			SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
 			DoSize(pHdr->delta);
 		}
@@ -536,9 +536,8 @@ void CImportPatchDlg::SaveSplitterPos()
 		ScreenToClient(&rectSplitter);
 		regPos = rectSplitter.top;
 	}
-	
-}
 
+}
 
 void CImportPatchDlg::EnableInputCtrl(BOOL b)
 {
@@ -562,7 +561,7 @@ void CImportPatchDlg::UpdateOkCancelText()
 
 	if(this->m_bThreadRunning)
 		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("A&bort"));
-	else	
+	else
 		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("&Cancel"));
 
 }
@@ -590,23 +589,23 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		switch (pMsg->wParam)
 		{
-		
+
 		/* Avoid TAB control destroy but dialog exist*/
 		case VK_ESCAPE:
 		case VK_CANCEL:
 			{
 				TCHAR buff[128];
 				::GetClassName(pMsg->hwnd,buff,128);
-				
+
 				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0 ||
 				   _tcsnicmp(buff,_T("Scintilla"),128)==0 ||
 				   _tcsnicmp(buff,_T("SysListView32"),128)==0||
-				   ::GetParent(pMsg->hwnd) == this->m_ctrlTabCtrl.m_hWnd)	
+				   ::GetParent(pMsg->hwnd) == this->m_ctrlTabCtrl.m_hWnd)
 				{
 					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
 					return TRUE;
 				}
-			}		
+			}
 		}
 	}
 	m_tooltips.RelayEvent(pMsg);
@@ -622,14 +621,14 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 		m_PatchCtrl.SendMessage(SCI_SETREADONLY, FALSE);
 		m_PatchCtrl.SetText(CString());
 		m_PatchCtrl.SendMessage(SCI_SETREADONLY, TRUE);
-	}else 
+	}else
 	{
 		CString text;
 
 		POSITION pos;
 		pos = m_cList.GetFirstSelectedItemPosition();
 		int selected = m_cList.GetNextSelectedItem(pos);
-		
+
 		if(selected>=0&& selected< m_cList.GetItemCount())
 		{
 			CString str = m_cList.GetItemText(selected,0);
