@@ -43,6 +43,7 @@ CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 	m_b3Way = 1; 
 	m_bIgnoreSpace = 1;
 	m_bAddSignedOffBy = FALSE;
+	m_bKeepCR = TRUE;
 }
 
 CImportPatchDlg::~CImportPatchDlg()
@@ -58,6 +59,7 @@ void CImportPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_3WAY, m_b3Way);
     DDX_Check(pDX, IDC_CHECK_IGNORE_SPACE, m_bIgnoreSpace);
 	DDX_Check(pDX, IDC_SIGN_OFF, m_bAddSignedOffBy);
+	DDX_Check(pDX, IDC_KEEP_CR, m_bKeepCR);
 }
 
 void CImportPatchDlg::AddAmAnchor()
@@ -386,6 +388,9 @@ UINT CImportPatchDlg::PatchThread()
 
 			if(this->m_bIgnoreSpace)
 				cmd+=_T("--ignore-space-change ");
+
+			if(this->m_bKeepCR)
+				cmd+=_T("--keep-cr ");
 
 			cmd +=_T("\"");
 			cmd += m_cList.GetItemText(i,0);

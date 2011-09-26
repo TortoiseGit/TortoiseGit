@@ -18,6 +18,7 @@
  * Fixed issue #829: "Remote" combobox in "Push" window updates only after losing focus
  * Fixed issue #906: Add ability to add files with options -force.
  * Fixed issue #914: unifiled diff always show wrong changes (base files compare with new files)
+ * Fixed issue #673: Applying a patch does not honour CRLF in files
 
 = Release 1.7.3.0 =
 == Features ==

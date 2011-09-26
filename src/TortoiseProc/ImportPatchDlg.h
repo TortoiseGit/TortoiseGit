@@ -100,6 +100,7 @@ protected:
 	BOOL m_b3Way;
 	BOOL m_bIgnoreSpace;
 	BOOL m_bAddSignedOffBy;
+	BOOL m_bKeepCR;
 
 	BOOL IsFinish()
 	{

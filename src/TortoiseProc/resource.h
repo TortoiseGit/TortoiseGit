@@ -925,6 +925,7 @@
 #define IDC_BUTTON_BROWSE_SOURCE_BRANCH 1483
 #define IDC_BUTTON_BROWSE_REF           1483
 #define IDC_BUTTON_MANAGE               1483
+#define IDC_KEEP_CR                     1483
 #define IDC_SUPPORTAMBIGUOUSUUID        1484
 #define IDC_CLONE_URL                   1484
 #define IDC_BUTTON_BROWSE_SOURCE_BRANCH2 1484
