@@ -277,6 +277,8 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 			m_cList.DeleteItem(index);
 			m_cList.InsertItem(index - 1, old);
 			m_cList.SetCheck(index - 1, oldState);
+			m_cList.SetItemState(index - 1, LVIS_SELECTED, LVIS_SELECTED);
+			m_cList.SetItemState(index, 0, LVIS_SELECTED);
 		}
 	}
 
@@ -311,6 +313,8 @@ void CImportPatchDlg::OnBnClickedButtonDown()
 			m_cList.DeleteItem(index);
 			m_cList.InsertItem(index + 1, old);
 			m_cList.SetCheck(index + 1, oldState);
+			m_cList.SetItemState(index + 1, LVIS_SELECTED, LVIS_SELECTED);
+			m_cList.SetItemState(index, 0, LVIS_SELECTED);
 		}
 	}
 	delete [] indexes;
