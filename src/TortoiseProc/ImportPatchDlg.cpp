@@ -270,7 +270,7 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 	while (pos)
 	{
 		int index = m_cList.GetNextSelectedItem(pos);
-		if(index > 1)
+		if(index >= 1)
 		{
 			CString old = m_cList.GetItemText(index, 0);
 			m_cList.DeleteItem(index);
