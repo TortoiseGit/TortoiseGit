@@ -246,18 +246,19 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT|OFN_ALLOWMULTISELECT,
 					_T("Patch Files(*.patch)|*.patch|Diff Files(*.diff)|*.diff|All Files(*.*)|*.*||"));
-	if(dlg.DoModal()==IDOK)
+	if(dlg.DoModal() == IDOK)
 	{
 		POSITION pos;
-		pos=dlg.GetStartPosition();
-		while(pos)
+		pos = dlg.GetStartPosition();
+		while (pos)
 		{
-			CString file=dlg.GetNextPathName(pos);
+			CString file = dlg.GetNextPathName(pos);
 			file.Trim();
 			if(!file.IsEmpty())
 			{
-				m_cList.InsertItem(0,file);
-				m_cList.SetCheck(0,true);
+				int index = m_cList.InsertItem(m_cList.GetItemCount(), file);
+				if (index >= 0)
+					m_cList.SetCheck(index, true);
 			}
 		}
 	}
