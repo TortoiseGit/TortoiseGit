@@ -283,18 +283,35 @@ void CImportPatchDlg::OnBnClickedButtonUp()
 
 void CImportPatchDlg::OnBnClickedButtonDown()
 {
+	if (m_cList.GetSelectedCount() == 0)
+		return;
+
 	POSITION pos;
 	pos = m_cList.GetFirstSelectedItemPosition();
-	while (pos)
+	// use an array to store all selected item indexes; the user won't select too much items
+	int* indexes = NULL;
+	indexes = new int[m_cList.GetSelectedCount()];
+	int i = 0;
+	while(pos)
 	{
-		int index = m_cList.GetNextSelectedItem(pos);
-
-		CString old = m_cList.GetItemText(index, 0);
-		m_cList.DeleteItem(index);
-
-		m_cList.InsertItem(index + 1,old);
-
+		indexes[i++] = m_cList.GetNextSelectedItem(pos);
 	}
+
+	// don't move any item if the last selected item is the last item in the m_CommitList
+	// (that would change the order of the selected items)
+	if(indexes[m_cList.GetSelectedCount() - 1] < m_cList.GetItemCount() - 1)
+	{
+		// iterate over the indexes backwards in order to correctly move multiselected items
+		for (i = m_cList.GetSelectedCount() - 1; i >= 0; i--)
+		{
+			int index = indexes[i];
+			CString old = m_cList.GetItemText(index, 0);
+			m_cList.DeleteItem(index);
+			m_cList.InsertItem(index + 1, old);
+		}
+	}
+	delete [] indexes;
+	indexes = NULL;
 }
 
 void CImportPatchDlg::OnBnClickedButtonRemove()
@@ -538,6 +555,7 @@ void CImportPatchDlg::SaveSplitterPos()
 	}
 
 }
+
 
 void CImportPatchDlg::EnableInputCtrl(BOOL b)
 {
