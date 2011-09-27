@@ -1711,6 +1711,8 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pNMLV->iItem >= 0)
 	{
 		this->m_LogList.m_nSearchIndex = pNMLV->iItem;
+		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(pNMLV->iItem));
+		m_LogList.lastSelectedHash = pLogEntry->m_CommitHash;
 		if (pNMLV->iSubItem != 0)
 			return;
 		if ((pNMLV->iItem == m_LogList.m_arShownList.GetCount()))
@@ -1733,6 +1735,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	else
 	{
+		m_LogList.lastSelectedHash.Empty();
 		FillLogMessageCtrl();
 		UpdateData(FALSE);
 	}

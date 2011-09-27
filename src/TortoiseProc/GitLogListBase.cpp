@@ -2320,6 +2320,9 @@ UINT CGitLogListBase::LogThread()
 
 	InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
+	// store commit number of the last selected commit/line before the refresh or -1
+	int lastSelectedHashNItem = -1;
+
 	if(!g_Git.IsInitRepos())
 	{
 		g_Git.m_critGitDllSec.Lock();
@@ -2384,6 +2387,9 @@ UINT CGitLogListBase::LogThread()
 			m_arShownList.SafeAdd(pRev);
 			this->m_critSec.Unlock();
 
+			if (hash == lastSelectedHash)
+				lastSelectedHashNItem = m_arShownList.GetCount() - 1;
+
 			t2=GetTickCount();
 
 			if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
@@ -2411,6 +2417,14 @@ UINT CGitLogListBase::LogThread()
 		g_Git.m_critGitDllSec.Unlock();
 
 	}
+
+	// restore last selected item
+	if (lastSelectedHashNItem >= 0)
+	{
+		SetItemState(lastSelectedHashNItem, LVIS_SELECTED, LVIS_SELECTED);
+		EnsureVisible(lastSelectedHashNItem, FALSE);
+	}
+
 	//Update UI;
 	PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
 	::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
