@@ -304,7 +304,7 @@ public:
 
 	CTGitPath			m_Path;
 	int					m_ShowMask;
-	CGitHash			lastSelectedHash;
+	CGitHash			m_lastSelectedHash;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;

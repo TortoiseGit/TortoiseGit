@@ -2387,7 +2387,7 @@ UINT CGitLogListBase::LogThread()
 			m_arShownList.SafeAdd(pRev);
 			this->m_critSec.Unlock();
 
-			if (hash == lastSelectedHash)
+			if (hash == m_lastSelectedHash)
 				lastSelectedHashNItem = m_arShownList.GetCount() - 1;
 
 			t2=GetTickCount();
