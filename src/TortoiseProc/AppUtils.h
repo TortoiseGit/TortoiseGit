@@ -126,6 +126,11 @@ public:
 	static bool LaunchAlternativeEditor(const CString& filename);
 
 	/**
+	* Sets the title of a dialog
+	*/
+	static void SetWindowTitle(HWND hWnd, const CString& urlorpath, const CString& dialogname);
+
+	/**
 	 * Formats text in a rich edit control (version 2).
 	 * text in between * chars is formatted bold
 	 * text in between ^ chars is formatted italic

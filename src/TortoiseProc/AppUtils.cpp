@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011 - TortoiseGit
-// Copyright (C) 2003-2010 - TortoiseSVN
+// Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2714,4 +2714,19 @@ void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 		}
 		FreeLibrary(hShell);
 	}
+}
+
+void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CString& dialogname)
+{
+	ASSERT(dialogname.GetLength() < 70);
+	ASSERT(urlorpath.GetLength() < MAX_PATH);
+	WCHAR pathbuf[MAX_PATH] = {0};
+
+	PathCompactPathEx(pathbuf, urlorpath, 70 - dialogname.GetLength(), 0);
+
+	wcscat_s(pathbuf, L" - ");
+	wcscat_s(pathbuf, dialogname);
+	wcscat_s(pathbuf, L" - ");
+	wcscat_s(pathbuf, CString(MAKEINTRESOURCE(IDS_APPNAME)));
+	SetWindowText(hWnd, pathbuf);
 }
