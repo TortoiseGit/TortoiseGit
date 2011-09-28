@@ -103,9 +103,11 @@ protected:
 			break;
 		case IDC_RADIO_BRANCH:
 			this->m_VersionName=m_ChooseVersioinBranch.GetString();
+			if (this->m_VersionName.Find('/') == -1)
+				this->m_VersionName = L"heads/" + this->m_VersionName;
 			break;
 		case IDC_RADIO_TAGS:
-			this->m_VersionName=m_ChooseVersioinTags.GetString();
+			this->m_VersionName=L"tags/" + m_ChooseVersioinTags.GetString();
 			break;
 		case IDC_RADIO_VERSION:
 			this->m_VersionName=m_ChooseVersioinVersion.GetString();
