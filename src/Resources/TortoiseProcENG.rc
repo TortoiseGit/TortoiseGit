@@ -3396,13 +3396,13 @@ BEGIN
     IDS_PROGRS_ACTION       "Action"
     IDS_PROGRS_PATH         "Path"
     IDS_PROGRS_TITLEFIN     "Finished!"
-    IDS_PROGRS_TITLE_CHECKOUT "Checkout - TortoiseGit"
-    IDS_PROGRS_TITLE_IMPORT "Import - TortoiseGit"
-    IDS_PROGRS_TITLE_UPDATE "Update - TortoiseGit"
-    IDS_PROGRS_TITLE_COMMIT "Commit - TortoiseGit"
-    IDS_PROGRS_TITLE_ADD    "Add - TortoiseGit"
-    IDS_PROGRS_TITLE_REVERT "Revert - TortoiseGit"
-    IDS_PROGRS_TITLE_RESOLVE "Resolve - TortoiseGit"
+    IDS_PROGRS_TITLE_CHECKOUT "Checkout"
+    IDS_PROGRS_TITLE_IMPORT "Import"
+    IDS_PROGRS_TITLE_UPDATE "Update"
+    IDS_PROGRS_TITLE_COMMIT "Commit"
+    IDS_PROGRS_TITLE_ADD    "Add"
+    IDS_PROGRS_TITLE_REVERT "Revert"
+    IDS_PROGRS_TITLE_RESOLVE "Resolve"
 END
 
 STRINGTABLE 
@@ -3426,10 +3426,10 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROGRS_TITLE_SWITCH "Switch - TortoiseGit"
-    IDS_PROGRS_TITLE_EXPORT "Export - TortoiseGit"
-    IDS_PROGRS_TITLE_MERGE  "Merge - TortoiseGit"
-    IDS_PROGRS_TITLE_COPY   "Copy - TortoiseGit"
+    IDS_PROGRS_TITLE_SWITCH "Switch"
+    IDS_PROGRS_TITLE_EXPORT "Export"
+    IDS_PROGRS_TITLE_MERGE  "Merge"
+    IDS_PROGRS_TITLE_COPY   "Copy"
     IDS_PROGRS_MIMETYPE     "Mime type"
     IDS_PROGRS_COPY_WARNING "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
     IDS_PROGRS_COMMITT_TRUNK 
@@ -4060,7 +4060,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROGRS_TITLE_RENAME "Rename/move - TortoiseGit"
+    IDS_PROGRS_TITLE_RENAME "Rename/move"
     IDS_PROGRS_TITLE_LOCK   "Lock"
     IDS_PROGRS_TITLE_UNLOCK "Unlock"
     IDS_PROGRS_TITLE_MERGEREINTEGRATE "Merge Reintegrate"
@@ -4830,7 +4830,7 @@ BEGIN
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
     IDS_ERR_ADDRESS_NO_EMPTY "Email Address To or CC can't empty"
     IDS_SVNACTION_SENDMAIL_START "Sending..."
-    IDS_PROGRS_TITLE_SENDMAIL "Send Patch by Email - TortoiseGit"
+    IDS_PROGRS_TITLE_SENDMAIL "Send Patch by Email"
     IDS_PROGRS_CMD_SENDMAIL "Send Email"
     IDS_SVNACTION_SENDMAIL_ERROR "Error"
     IDS_SVNACTION_SENDMAIL_DONE "Done"
