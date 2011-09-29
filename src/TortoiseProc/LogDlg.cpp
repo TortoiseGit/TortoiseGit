@@ -244,7 +244,6 @@ BOOL CLogDlg::OnInitDialog()
 	m_logcounter = 0;
 	m_sMessageBuf.Preallocate(100000);
 
-	// set the dialog title to "Log - path/to/whatever/we/show/the/log/for"
 	SetDlgTitle();
 
 	m_tooltips.Create(this);
@@ -463,14 +462,14 @@ void CLogDlg::SetDlgTitle()
 	if (m_sTitle.IsEmpty())
 		GetWindowText(m_sTitle);
 
-	if (m_orgPath.IsUrl())
-		SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetUIPathString());
-	else if (m_orgPath.IsEmpty())
-		SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
-	else if (m_orgPath.IsDirectory())
-		SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetWinPathString());
+	if (m_LogList.m_Path.IsEmpty())
+	{
+		CString projectDirectory;
+		m_orgPath.HasAdminDir(&projectDirectory);
+		CAppUtils::SetWindowTitle(m_hWnd, projectDirectory, m_sTitle);
+	}
 	else
-		SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetFilename());
+		CAppUtils::SetWindowTitle(m_hWnd, m_orgPath.GetWinPathString(), m_sTitle);
 }
 
 void CLogDlg::CheckRegexpTooltip()
@@ -3290,14 +3289,14 @@ void CLogDlg::OnBnClickShowWholeProject()
 	if(this->m_bWholeProject)
 	{
 		m_LogList.m_Path.Reset();
-		SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
+		SetDlgTitle();
 	}
 	else
 	{
 		m_LogList.m_Path=m_path;
-		if(!m_path.IsEmpty())
-			SetWindowText(m_sTitle + _T(" - ") + m_path.GetGitPathString());
 	}
+
+	SetDlgTitle();
 
 	OnRefresh();
 
