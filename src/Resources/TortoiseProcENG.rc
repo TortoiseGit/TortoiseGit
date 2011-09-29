@@ -251,7 +251,7 @@ CAPTION "Add"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_ADDLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,230,107
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,119,78,10
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,119,78,10
     CONTROL         "Include &ignored files",IDC_INCLUDE_IGNORED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,89,119,78,10
     DEFPUSHBUTTON   "OK",IDOK,73,133,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,131,133,50,14
@@ -301,7 +301,7 @@ END
 
 IDD_COPY DIALOGEX 0, 0, 300, 291
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Copy (Branch / Tag)"
+CAPTION "Copy (Branch/Tag)"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Repository",IDC_REPOGROUP,7,7,286,122
@@ -318,7 +318,7 @@ BEGIN
     PUSHBUTTON      "...",IDC_BROWSEFROM,254,92,14,14
     GROUPBOX        "Log message",IDC_MSGGROUP,7,132,286,126
     PUSHBUTTON      "&Recent messages",IDC_HISTORY,13,143,121,14
-    LTEXT           "Bug-&ID / Issue-Nr:",IDC_BUGIDLABEL,143,140,87,8,0,WS_EX_RIGHT
+    LTEXT           "Bug-&ID/Issue-Nr:",IDC_BUGIDLABEL,143,140,87,8,0,WS_EX_RIGHT
     EDITTEXT        IDC_BUGID,238,137,49,14,ES_AUTOHSCROLL
     CONTROL         "Scintilla",IDC_LOGMESSAGE,"Scintilla",WS_TABSTOP,13,158,274,95,WS_EX_STATICEDGE
     CONTROL         "Sw&itch working copy to new branch/tag",IDC_DOSWITCH,
@@ -383,7 +383,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Commit to:",IDC_COMMITLABEL,6,7,43,8
     EDITTEXT        IDC_COMMIT_TO,53,7,96,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "Bug-ID / Issue-Nr:",IDC_BUGIDLABEL,149,6,87,8,0,WS_EX_RIGHT
+    LTEXT           "Bug-ID/Issue-Nr:",IDC_BUGIDLABEL,149,6,87,8,0,WS_EX_RIGHT
     PUSHBUTTON      "{BugTraq}",IDC_BUGTRAQBUTTON,215,3,78,14,NOT WS_VISIBLE | WS_DISABLED
     EDITTEXT        IDC_BUGID,244,3,49,14,ES_AUTOHSCROLL
     CONTROL         "Scintilla",IDC_LOGMESSAGE,"Scintilla",WS_TABSTOP,13,32,272,72,WS_EX_STATICEDGE
@@ -397,7 +397,7 @@ BEGIN
     CONTROL         "",IDC_FILELIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,161,272,73
     CONTROL         "Show &Unversioned Files",IDC_SHOWUNVERSIONED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,237,135,10
     LTEXT           "",IDC_STATISTICS,149,235,137,8,0,WS_EX_RIGHT
-    CONTROL         "Select / Deselect &All",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,14,248,78,10
+    CONTROL         "Select/Deselect &All",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,14,248,78,10
     CONTROL         "Do not autoselect submodules",IDC_NOAUTOSELECTSUBMODULES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,106,248,107,10
     LTEXT           "View Patch>>",IDC_VIEW_PATCH,236,250,46,8
@@ -494,7 +494,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Icon Overlays"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Icon Overlays / Status Columns",IDC_STATIC,12,7,274,56
+    GROUPBOX        "Icon Overlays/Status Columns",IDC_STATIC,12,7,274,56
     CONTROL         "Show &overlays and context menu only in explorer",IDC_ONLYEXPLORER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,17,260,10
     CONTROL         "Show overlay for ignored items",IDC_SHOWIGNOREDOVERLAY,
@@ -581,7 +581,7 @@ END
 
 IDD_SWITCH DIALOGEX 0, 0, 300, 148
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Switch To Branch / Tag"
+CAPTION "Switch To Branch/Tag"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Switch:",IDC_SWITCHLABEL,7,7,286,8
@@ -742,7 +742,7 @@ CAPTION "Revert"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_REVERTLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,265,180
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,189,141,17
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,189,141,17
     DEFPUSHBUTTON   "OK",IDOK,101,210,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,161,210,50,14
     PUSHBUTTON      "Help",IDHELP,221,210,50,14
@@ -845,7 +845,7 @@ BEGIN
     LTEXT           "&Enter a message describing why you are locking the file(s).",IDC_LOCKTITLELABEL,7,24,289,8
     CONTROL         "Scintilla",IDC_LOCKMESSAGE,"Scintilla",WS_TABSTOP,7,34,289,39,WS_EX_STATICEDGE
     CONTROL         "",IDC_FILELIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,77,289,85
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,167,289,10
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,167,289,10
     CONTROL         "&Steal the locks",IDC_STEALLOCKS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,178,117,10
     PUSHBUTTON      "OK",IDOK,132,176,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,189,176,50,14
@@ -952,7 +952,7 @@ CAPTION "Resolve"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_RESOLVELIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,275,107
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,119,85,10
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,119,85,10
     DEFPUSHBUTTON   "OK",IDOK,125,133,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,179,133,50,14
     PUSHBUTTON      "Help",IDHELP,232,133,50,14
@@ -985,7 +985,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_PATCHLIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,252,158
     CONTROL         "Show &unversioned files",IDC_SHOWUNVERSIONED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,167,252,10
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,180,252,10
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,180,252,10
     DEFPUSHBUTTON   "OK",IDOK,93,197,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,151,197,50,14
     PUSHBUTTON      "Help",IDHELP,209,197,50,14
@@ -1257,7 +1257,7 @@ CAPTION "Delete Unversioned Items"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_ITEMLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,265,180
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,192,265,10
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,192,265,10
     DEFPUSHBUTTON   "OK",IDOK,163,203,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,222,203,50,14
 END
@@ -1281,7 +1281,7 @@ CAPTION "Unlock"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_UNLOCKLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,230,107
-    CONTROL         "Select / deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,119,230,10
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,7,119,230,10
     DEFPUSHBUTTON   "OK",IDOK,73,134,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,130,134,50,14
     PUSHBUTTON      "Help",IDHELP,187,134,50,14
@@ -1862,11 +1862,11 @@ CAPTION "General::Colors 1"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Status and action colors",IDC_STATIC,7,7,286,103
-    LTEXT           "possible or real conflict / obstructed",IDC_STATIC,14,23,137,8
+    LTEXT           "possible or real conflict/obstructed",IDC_STATIC,14,23,137,8
     LTEXT           "added files",IDC_STATIC,14,40,135,8
-    LTEXT           "missing / deleted / replaced",IDC_STATIC,14,57,137,8
+    LTEXT           "missing/deleted/replaced",IDC_STATIC,14,57,137,8
     LTEXT           "merged",IDC_STATIC,14,74,137,8
-    LTEXT           "modified / copied",IDC_STATIC,14,92,137,8
+    LTEXT           "modified/copied",IDC_STATIC,14,92,137,8
     PUSHBUTTON      "",IDC_CONFLICTCOLOR,158,20,101,14
     PUSHBUTTON      "",IDC_ADDEDCOLOR,158,37,101,14
     PUSHBUTTON      "",IDC_DELETEDCOLOR,158,54,101,14
@@ -3629,7 +3629,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_COPY_SUCCESS    "Branch / tag created successfully!"
+    IDS_LOG_COPY_SUCCESS    "Branch/tag created successfully!"
     IDS_LOG_MESSAGEEDITTITLE "Edit log message"
     IDS_LOG_AUTHOREDITTITLE "Edit author name"
     IDS_LOG_SHOWALL         "Show &All Branch"
