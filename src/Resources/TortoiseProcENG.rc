@@ -3636,7 +3636,6 @@ BEGIN
     IDS_LOG_SHOWRANGE       "Show &Range..."
     IDS_LOG_LOGINFOSTRING   "Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s) selected."
     IDS_LOG_SHOWNEXT        "&Next %ld"
-    IDS_LOG_DLGTITLEOFFLINE "%s (offline) - %s"
     IDS_LOG_SHOW_WHOLE      "Show Whole Project"
 END
 

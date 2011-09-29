@@ -208,7 +208,7 @@ private:
 	void GetChangedPaths(std::vector<CString>& changedpaths, std::vector<LogChangedPath*>& changedlogpaths);
 	void DiffSelectedFile();
 	void DiffSelectedRevWithPrevious();
-	void SetDlgTitle(bool bOffline);
+	void SetDlgTitle();
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);
 
 	/**

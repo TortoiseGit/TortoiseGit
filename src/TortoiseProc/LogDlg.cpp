@@ -245,7 +245,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_sMessageBuf.Preallocate(100000);
 
 	// set the dialog title to "Log - path/to/whatever/we/show/the/log/for"
-	SetDlgTitle(false);
+	SetDlgTitle();
 
 	m_tooltips.Create(this);
 	CheckRegexpTooltip();
@@ -458,33 +458,19 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 	}
 	return 0;
 }
-void CLogDlg::SetDlgTitle(bool bOffline)
+void CLogDlg::SetDlgTitle()
 {
 	if (m_sTitle.IsEmpty())
 		GetWindowText(m_sTitle);
 
-	if (bOffline)
-	{
-		CString sTemp;
-		if (m_orgPath.IsUrl())
-			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_orgPath.GetUIPathString());
-		else if (m_orgPath.IsDirectory())
-			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_orgPath.GetWinPathString());
-		else
-			sTemp.Format(IDS_LOG_DLGTITLEOFFLINE, (LPCTSTR)m_sTitle, (LPCTSTR)m_orgPath.GetFilename());
-		SetWindowText(sTemp);
-	}
+	if (m_orgPath.IsUrl())
+		SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetUIPathString());
+	else if (m_orgPath.IsEmpty())
+		SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
+	else if (m_orgPath.IsDirectory())
+		SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetWinPathString());
 	else
-	{
-		if (m_orgPath.IsUrl())
-			SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetUIPathString());
-		else if (m_orgPath.IsEmpty())
-			SetWindowText(m_sTitle + _T(" - ") + CString(_T("Whole Project")));
-		else if (m_orgPath.IsDirectory())
-			SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetWinPathString());
-		else
-			SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetFilename());
-	}
+		SetWindowText(m_sTitle + _T(" - ") + m_orgPath.GetFilename());
 }
 
 void CLogDlg::CheckRegexpTooltip()
