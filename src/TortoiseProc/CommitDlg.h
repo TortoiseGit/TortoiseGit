@@ -72,7 +72,9 @@ private:
 	UINT StatusThread();
 	void UpdateOKButton();
 	void FillPatchView();
+	void SetDlgTitle();
 	CString GetSignedOffByLine();
+	CString m_sTitle;
 
 // Dialog Data
 	enum { IDD = IDD_COMMITDLG };
