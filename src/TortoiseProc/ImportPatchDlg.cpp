@@ -199,9 +199,10 @@ BOOL CImportPatchDlg::OnInitDialog()
 
 	CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), IDI_IMPORTPATHCES_BKG);
 
-	CString title;
-	this->GetWindowText(title);
-	this->SetWindowText(title+_T(" - ")+g_Git.m_CurrentDir);
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	EnableSaveRestore(_T("ImportDlg"));
 
 	SetSplitterRange();

@@ -1224,7 +1224,6 @@
 #define IDS_LOG_SHOWRANGE               1834
 #define IDS_LOG_LOGINFOSTRING           1835
 #define IDS_LOG_SHOWNEXT                1836
-#define IDS_LOG_DLGTITLEOFFLINE         1837
 #define IDS_LOG_SHOW_WHOLE              1838
 #define IDS_LOG_FILTER_ALL              1850
 #define IDS_LOG_FILTER_PATHS            1851

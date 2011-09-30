@@ -106,19 +106,23 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
+	CString sWindowTitle;
 	if(this->m_bIsTag)
 	{
-		this->SetWindowTextW(_T("Create Tag"));
+		sWindowTitle = _T("Create Tag");
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Tag"));
 		this->GetDlgItem(IDC_CHECK_SIGN)->EnableWindow(!g_Git.GetConfigValue(_T("user.signingkey")).IsEmpty());
 	}
 	else
 	{
-		this->SetWindowTextW(_T("Create Branch"));
+		sWindowTitle = _T("Create Branch");
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
 		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(false);
 		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
 	}
+
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	// show the switch checkbox if we are a create branch dialog
 	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);

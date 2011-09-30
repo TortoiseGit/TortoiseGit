@@ -104,6 +104,10 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	m_cDir.SetPathHistory(TRUE);
 	m_cDir.LoadHistory(_T("Software\\TortoiseGit\\History\\FormatPatchURLS"), _T("path"));
 	m_cDir.AddString(g_Git.m_CurrentDir);

@@ -28,6 +28,7 @@
 #include "IconMenu.h"
 #include "CommonResource.h"
 #include "Tlhelp32.h"
+#include "AppUtils.h"
 
 // CProgressDlg dialog
 
@@ -131,6 +132,10 @@ BOOL CProgressDlg::OnInitDialog()
 
 	if(!m_Title.IsEmpty())
 		this->SetWindowText(m_Title);
+
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	if(m_PostCmdList.GetCount()>0)
 		m_ctrlPostCmd.AddEntries(m_PostCmdList);

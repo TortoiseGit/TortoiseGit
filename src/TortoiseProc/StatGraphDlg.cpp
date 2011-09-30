@@ -169,8 +169,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	// set the dialog title to "Statistics - path/to/whatever/we/show/the/statistics/for"
 	CString sTitle;
 	GetWindowText(sTitle);
-	SetWindowText(sTitle + _T(" - ") +
-		( m_path.IsDirectory() ? m_path.GetWinPathString() : m_path.GetFilename()));
+	CAppUtils::SetWindowTitle(m_hWnd, m_path.GetUIPathString(), sTitle);
 
 	m_btnGraphBar.SetImage((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_GRAPHBAR), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_btnGraphBar.SizeToContent();

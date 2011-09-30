@@ -64,7 +64,6 @@ public:
 
 private:
 	BOOL				m_bSelectAll;
-	CString				m_sWindowTitle;
 	volatile LONG		m_bThreadRunning;
 	CGitStatusListCtrl	m_RevertList;
 	CButton				m_SelectAll;

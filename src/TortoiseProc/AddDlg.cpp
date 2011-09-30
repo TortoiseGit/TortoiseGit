@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,6 +75,10 @@ BOOL CAddDlg::OnInitDialog()
 	m_addListCtrl.SetCancelBool(&m_bCancelled);
 	m_addListCtrl.SetBackgroundImage(IDI_ADD_BKG);
 	m_addListCtrl.EnableFileDrop();
+
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetUIPathString()).TrimRight('\\'), sWindowTitle);
 
 	AdjustControlSize(IDC_SELECTALL);
 

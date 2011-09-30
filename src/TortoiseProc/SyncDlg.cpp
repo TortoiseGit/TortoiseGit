@@ -753,10 +753,9 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPush.SetCurrentEntry(this->m_regPushButton);
 	this->m_ctrlSubmodule.SetCurrentEntry(this->m_regSubmoduleButton);
 
-	CString str;
-	this->GetWindowText(str);
-	str += _T(" - ") + g_Git.m_CurrentDir;
-	this->SetWindowText(str);
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	EnableSaveRestore(_T("SyncDlg"));
 

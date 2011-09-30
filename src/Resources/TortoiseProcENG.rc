@@ -443,7 +443,7 @@ END
 
 IDD_RENAME DIALOGEX 0, 0, 234, 55
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Rename"
+CAPTION "Rename - TortoiseGit"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "New &name:",IDC_LABEL,7,14,67,8
@@ -1522,7 +1522,7 @@ END
 
 IDD_CLONE DIALOGEX 0, 0, 319, 207
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Git clone"
+CAPTION "Git clone - TortoiseGit"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "&Url: ",IDC_STATIC,20,28,14,8
@@ -3397,13 +3397,13 @@ BEGIN
     IDS_PROGRS_ACTION       "Action"
     IDS_PROGRS_PATH         "Path"
     IDS_PROGRS_TITLEFIN     "Finished!"
-    IDS_PROGRS_TITLE_CHECKOUT "Checkout - TortoiseGit"
-    IDS_PROGRS_TITLE_IMPORT "Import - TortoiseGit"
-    IDS_PROGRS_TITLE_UPDATE "Update - TortoiseGit"
-    IDS_PROGRS_TITLE_COMMIT "Commit - TortoiseGit"
-    IDS_PROGRS_TITLE_ADD    "Add - TortoiseGit"
-    IDS_PROGRS_TITLE_REVERT "Revert - TortoiseGit"
-    IDS_PROGRS_TITLE_RESOLVE "Resolve - TortoiseGit"
+    IDS_PROGRS_TITLE_CHECKOUT "Checkout"
+    IDS_PROGRS_TITLE_IMPORT "Import"
+    IDS_PROGRS_TITLE_UPDATE "Update"
+    IDS_PROGRS_TITLE_COMMIT "Commit"
+    IDS_PROGRS_TITLE_ADD    "Add"
+    IDS_PROGRS_TITLE_REVERT "Revert"
+    IDS_PROGRS_TITLE_RESOLVE "Resolve"
 END
 
 STRINGTABLE 
@@ -3427,10 +3427,10 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROGRS_TITLE_SWITCH "Switch - TortoiseGit"
-    IDS_PROGRS_TITLE_EXPORT "Export - TortoiseGit"
-    IDS_PROGRS_TITLE_MERGE  "Merge - TortoiseGit"
-    IDS_PROGRS_TITLE_COPY   "Copy - TortoiseGit"
+    IDS_PROGRS_TITLE_SWITCH "Switch"
+    IDS_PROGRS_TITLE_EXPORT "Export"
+    IDS_PROGRS_TITLE_MERGE  "Merge"
+    IDS_PROGRS_TITLE_COPY   "Copy"
     IDS_PROGRS_MIMETYPE     "Mime type"
     IDS_PROGRS_COPY_WARNING "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
     IDS_PROGRS_COMMITT_TRUNK 
@@ -3637,7 +3637,6 @@ BEGIN
     IDS_LOG_SHOWRANGE       "Show &Range..."
     IDS_LOG_LOGINFOSTRING   "Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s) selected."
     IDS_LOG_SHOWNEXT        "&Next %ld"
-    IDS_LOG_DLGTITLEOFFLINE "%s (offline) - %s"
     IDS_LOG_SHOW_WHOLE      "Show Whole Project"
 END
 
@@ -4061,7 +4060,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROGRS_TITLE_RENAME "Rename/move - TortoiseGit"
+    IDS_PROGRS_TITLE_RENAME "Rename/move"
     IDS_PROGRS_TITLE_LOCK   "Lock"
     IDS_PROGRS_TITLE_UNLOCK "Unlock"
     IDS_PROGRS_TITLE_MERGEREINTEGRATE "Merge Reintegrate"
@@ -4831,7 +4830,7 @@ BEGIN
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
     IDS_ERR_ADDRESS_NO_EMPTY "Email Address To or CC can't empty"
     IDS_SVNACTION_SENDMAIL_START "Sending..."
-    IDS_PROGRS_TITLE_SENDMAIL "Send Patch by Email - TortoiseGit"
+    IDS_PROGRS_TITLE_SENDMAIL "Send Patch by Email"
     IDS_PROGRS_CMD_SENDMAIL "Send Email"
     IDS_SVNACTION_SENDMAIL_ERROR "Error"
     IDS_SVNACTION_SENDMAIL_DONE "Done"

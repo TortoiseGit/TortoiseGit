@@ -20,6 +20,7 @@
 #include "GitRev.h"
 #include "Registry.h"
 #include "StandAloneDlg.h"
+#include "TGitPath.h"
 
 /**
  * \ingroup TortoiseProc
@@ -52,6 +53,7 @@ protected:
 	CRegDWORD m_regTextView;
 
 public:
+	CTGitPath	m_path;
 	CString	StartRev;
 	CString	EndRev;
 	BOOL	m_bTextView;

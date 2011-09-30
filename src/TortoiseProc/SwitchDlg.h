@@ -38,12 +38,6 @@ public:
 	virtual ~CSwitchDlg();
 
 	/**
-	 * Sets the text for the dialog title.
-	 * \remark this method must be called before the dialog is shown!
-	 */
-	void SetDialogTitle(const CString& sTitle);
-
-	/**
 	 * Sets the label in front of the URL combobox.
 	 * \remark this method must be called before the dialog is shown!
 	 */
