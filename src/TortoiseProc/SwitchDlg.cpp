@@ -56,11 +56,6 @@ BEGIN_MESSAGE_MAP(CSwitchDlg, CResizableStandAloneDialog)
 	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
-void CSwitchDlg::SetDialogTitle(const CString& sTitle)
-{
-	m_sTitle = sTitle;
-}
-
 void CSwitchDlg::SetUrlLabel(const CString& sLabel)
 {
 	m_sLabel = sLabel;
@@ -88,9 +83,10 @@ BOOL CSwitchDlg::OnInitDialog()
 //		m_URL = m_path;
 //	}
 
-	if (m_sTitle.IsEmpty())
-		GetWindowText(m_sTitle);
-	SetWindowText(m_sTitle);
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_path, sWindowTitle);
+
 	if (m_sLabel.IsEmpty())
 		GetDlgItemText(IDC_URLLABEL, m_sLabel);
 	SetDlgItemText(IDC_URLLABEL, m_sLabel);
