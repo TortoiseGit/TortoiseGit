@@ -5,7 +5,6 @@
 #define IDI_PULL                        5
 #define IDD_PROPPAGE                    107
 #define IDI_APP                         108
-#define IDS_MENUCHECKOUT                120
 #define IDI_CHECKOUT                    121
 #define IDS_MENUUPDATE                  121
 #define IDS_MENUCOMMIT                  122
@@ -36,7 +35,6 @@
 #define IDI_RENAME                      134
 #define IDS_MENUSUBMENU                 135
 #define IDI_DIFF                        135
-#define IDS_MENUDESCCHECKOUT            136
 #define IDI_LOG                         136
 #define IDS_MENUDESCUPDATE              137
 #define IDI_ABOUT                       137

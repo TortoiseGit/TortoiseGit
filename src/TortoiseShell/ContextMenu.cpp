@@ -1297,14 +1297,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuCheckout:
-				svnCmd += _T("checkout /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuUpdate:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("update /pathfile:\"");

@@ -890,9 +890,6 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Add:
 		bSuccess = CmdAdd(sWindowTitle, localoperation);
 		break;
-	case GitProgress_Checkout:
-		bSuccess = CmdCheckout(sWindowTitle, localoperation);
-		break;
 	case GitProgress_Commit:
 		bSuccess = CmdCommit(sWindowTitle, localoperation);
 		break;
@@ -1855,56 +1852,6 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
 	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
-	return true;
-}
-
-bool CGitProgressDlg::CmdCheckout(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_CHECKOUT);
-	SetBackgroundImage(IDI_CHECKOUT_BKG);
-	CTGitPathList urls;
-	urls.LoadFromAsteriskSeparatedString(m_url.GetSVNPathString());
-	CTGitPath checkoutdir = m_targetPathList[0];
-	for (int i=0; i<urls.GetCount(); ++i)
-	{
-		sWindowTitle = urls[i].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-		SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-		checkoutdir = m_targetPathList[0];
-		if (urls.GetCount() > 1)
-		{
-			CString fileordir = urls[i].GetFileOrDirectoryName();
-			fileordir = CPathUtils::PathUnescape(fileordir);
-			checkoutdir.AppendPathString(fileordir);
-		}
-		CString sCmdInfo;
-		sCmdInfo.Format(IDS_PROGRS_CMD_CHECKOUT,
-			(LPCTSTR)urls[i].GetSVNPathString(), (LPCTSTR)m_Revision.ToString(),
-			(LPCTSTR)SVNStatus::GetDepthString(m_depth),
-			m_options & ProgOptIgnoreExternals ? (LPCTSTR)sExtExcluded : (LPCTSTR)sExtIncluded);
-		ReportCmd(sCmdInfo);
-
-		if (!Checkout(urls[i], checkoutdir, m_Revision, m_Revision, m_depth, m_options & ProgOptIgnoreExternals))
-		{
-			if (m_ProgList.GetItemCount()!=0)
-			{
-				ReportSVNError();
-				return false;
-			}
-			// if the checkout fails with the peg revision set to the checkout revision,
-			// try again with HEAD as the peg revision.
-			else
-			{
-				if (!Checkout(urls[i], checkoutdir, SVNRev::REV_HEAD, m_Revision, m_depth, m_options & ProgOptIgnoreExternals))
-				{
-					ReportSVNError();
-					return false;
-				}
-			}
-		}
-	}
-#endif
 	return true;
 }
 

@@ -142,7 +142,6 @@
 #define IDI_ICON5                       267
 #define IDI_FILTEREDIT                  267
 #define IDD_CONFLICTRESOLVE             268
-#define IDI_CHECKOUT_BKG                269
 #define IDI_COPY_BKG                    270
 #define IDI_EXPORT_BKG                  271
 #define IDI_IMPORT_BKG                  272
@@ -519,7 +518,6 @@
 #define IDS_PROGRS_TITLE_UPDATE         1227
 #define IDC_REPOCHECK                   1227
 #define IDS_PROGRS_TITLE_COMMIT         1228
-#define IDC_SHOW_LOG                    1228
 #define IDS_PROGRS_TITLE_ADD            1229
 #define IDC_HIDEPATHS                   1229
 #define IDS_PROGRS_TITLE_REVERT         1230
@@ -744,9 +742,6 @@
 #define IDC_LIST_REMOTE                 1372
 #define IDC_LIST_REF_LEAFS              1372
 #define IDC_DEPTH                       1373
-#define IDC_GROUPTOP                    1374
-#define IDC_GROUPBOTTOM                 1375
-#define IDC_URLOFREPO                   1376
 #define IDC_GROUPMIDDLE                 1377
 #define IDC_NEWLINESCOLOR               1378
 #define IDC_OLDLINESCOLOR               1380

@@ -969,16 +969,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CAppUtils::LaunchApplication(sCmd, NULL, false);
 			}
 			break;
-		case ID_CHECKOUT:
-			{
-				CString sCmd;
-				CString url = _T("tgit:")+pathURL;
-				sCmd.Format(_T("%s /command:checkout /url:\"%s\" /revision:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)url, (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
 		case ID_VIEWREV:
 			{
 				CString url = m_ProjectProperties.sWebViewerRev;

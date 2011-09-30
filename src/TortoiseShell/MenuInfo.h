@@ -8,7 +8,6 @@ enum GitCommands
 		ShellSubMenuFile,
 		ShellSubMenuLink,
 		ShellSubMenuMultiple,
-		ShellMenuCheckout,
 		ShellMenuUpdate,
 		ShellMenuCommit,
 		ShellMenuAdd,

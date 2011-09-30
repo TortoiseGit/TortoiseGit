@@ -194,7 +194,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENUCHECKOUT        "Switch/Chec&kout..."
     IDS_MENUUPDATE          "Submodule &Update"
     IDS_MENUCOMMIT          "&Commit..."
     IDS_MENUCREATEREPOS     "Create repositor&y here..."
@@ -214,7 +213,6 @@ BEGIN
     IDS_MENUSETTINGS        "&Settings"
     IDS_MENUABOUT           "A&bout"
     IDS_MENUSUBMENU         "&TortoiseGit"
-    IDS_MENUDESCCHECKOUT    "Check out a working copy from a repository"
     IDS_MENUDESCUPDATE      "Updates the working copy to the current revision"
     IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
     IDS_MENUDESCADD         "Adds file(s) to Git control"

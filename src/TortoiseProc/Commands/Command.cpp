@@ -74,11 +74,6 @@
 #if 0
 
 
-
-#include "CheckoutCommand.h"
-
-
-
 #include "CopyCommand.h"
 #include "CrashCommand.h"
 #include "CreatePatchCommand.h"
@@ -123,7 +118,6 @@ typedef enum
 	cmdBlame,
 	cmdBranch,
 	cmdCat,
-	cmdCheckout,
 	cmdCleanup,
 	cmdClone,
 	cmdCommit,
@@ -202,7 +196,6 @@ static const struct CommandInfo
 	{	cmdBlame,			_T("blame")				},
 	{	cmdBranch,			_T("branch")			},
 	{	cmdCat,				_T("cat")				},
-	{	cmdCheckout,		_T("checkout")			},
 	{	cmdCleanup,			_T("cleanup")			},
 	{	cmdClone,			_T("clone")				},
 	{	cmdCommit,			_T("commit")			},
@@ -394,10 +387,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SVNIgnoreCommand;
 
 #if 0
-
-
-	case cmdCheckout:
-		return new CheckoutCommand;
 
 
 
