@@ -808,6 +808,9 @@ int CTGitPath::GetAdminDirMask() const
 
 	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN|ITEMIS_INVERSIONEDFOLDER;
 
+	if (IsDirectory() && IsWCRoot())
+		status |= ITEMIS_WCROOT;
+
 	path=topdir;
 	path += _T("\\");
 	path += g_GitAdminDir.GetAdminDirName();
