@@ -78,7 +78,7 @@ BOOL CAddDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetUIPathString()).TrimRight('\\'), sWindowTitle);
 
 	AdjustControlSize(IDC_SELECTALL);
 

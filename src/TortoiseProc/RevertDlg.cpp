@@ -75,7 +75,7 @@ BOOL CRevertDlg::OnInitDialog()
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	if (m_pathList.GetCount() == 1)
-		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString(), sWindowTitle);
+		CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString()).TrimRight('\\'), sWindowTitle);
 	else
 		CAppUtils::SetWindowTitle(m_hWnd, m_pathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 

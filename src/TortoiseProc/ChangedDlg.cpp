@@ -166,7 +166,7 @@ UINT CChangedDlg::ChangedStatusThread()
 		if (m_pathList[0].IsEmpty())
 			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
 		else 
-			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetWinPathString(), m_sTitle);
+			CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetWinPathString()).TrimRight('\\'), m_sTitle);
 		bIsDirectory = m_pathList[0].IsDirectory() || m_pathList[0].IsEmpty(); // if it is empty it is g_Git.m_CurrentDir which is a directory
 	}
 	else

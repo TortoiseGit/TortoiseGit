@@ -1068,7 +1068,7 @@ void CCommitDlg::SetDlgTitle()
 	else
 	{
 		if (m_pathList.GetCount() == 1)
-			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString(), m_sTitle);
+			CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString()).TrimRight('\\'), m_sTitle);
 		else
 			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_ListCtrl.GetCommonDirectory(false), m_sTitle);
 	}
