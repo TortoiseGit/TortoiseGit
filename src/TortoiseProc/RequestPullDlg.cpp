@@ -68,6 +68,10 @@ BOOL CRequestPullDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("RequestPullDlg"));
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	STRING_VECTOR list;
 	int current;
 	g_Git.GetBranchList(list, &current, CGit::BRANCH_ALL);

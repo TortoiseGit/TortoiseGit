@@ -86,6 +86,10 @@ BOOL CRevertDlg::OnInitDialog()
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("RevertDlg"));
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_pathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
 	if (AfxBeginThread(RevertThreadEntry, this)==0)

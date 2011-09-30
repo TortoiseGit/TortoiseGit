@@ -123,6 +123,9 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 	EnableSaveRestore(L"BrowseRefs");
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	m_ListRefLeafs.SetFocus();
 	return FALSE;

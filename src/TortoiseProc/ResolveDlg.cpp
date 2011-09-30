@@ -65,6 +65,10 @@ BOOL CResolveDlg::OnInitDialog()
 	m_resolveListCtrl.SetBackgroundImage(IDI_RESOLVE_BKG);
 	m_resolveListCtrl.EnableFileDrop();
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_pathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+
 	AdjustControlSize(IDC_SELECTALL);
 
 	AddAnchor(IDC_RESOLVELIST, TOP_LEFT, BOTTOM_RIGHT);

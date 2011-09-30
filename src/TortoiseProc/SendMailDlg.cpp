@@ -103,6 +103,10 @@ BOOL CSendMailDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 	EnableSaveRestore(_T("SendMailDlg"));
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_PathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+
 	CString mailCient;
 	CMailMsg::DetectMailClient(mailCient);
 	if (mailCient.IsEmpty()) {

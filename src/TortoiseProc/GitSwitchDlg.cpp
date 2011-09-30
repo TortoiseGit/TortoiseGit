@@ -87,6 +87,10 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("SwitchDlg"));
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	Init();
 
 	if(m_Base.IsEmpty())
