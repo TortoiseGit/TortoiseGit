@@ -197,7 +197,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		}
 	}
 
-	//CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), nID);
+	CAppUtils::SetListCtrlBackgroundImage(m_cList.GetSafeHwnd(), IDI_IMPORTPATHCES_BKG);
 
 	CString title;
 	this->GetWindowText(title);
