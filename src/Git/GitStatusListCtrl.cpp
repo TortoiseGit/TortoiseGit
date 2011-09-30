@@ -1068,7 +1068,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	}
 	else
 	{
-		GitStatus::GetStatusString(hResourceHandle, entry->status, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		GitStatus::GetStatusString(hResourceHandle, entry->status, buf, _countof(buf), (WORD)langID);
 		if ((entry->copied)&&(_tcslen(buf)>1))
 			_tcscat_s(buf, 100, _T(" (+)"));
 		if ((entry->switched)&&(_tcslen(buf)>1))
@@ -1091,7 +1091,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	else
 	{
 #if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->remotestatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		SVNStatus::GetStatusString(hResourceHandle, entry->remotestatus, buf, _countof(buf), (WORD)langID);
 		if ((entry->copied)&&(_tcslen(buf)>1))
 			_tcscat_s(buf, 100, _T(" (+)"));
 		if ((entry->switched)&&(_tcslen(buf)>1))
@@ -1114,7 +1114,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	else
 	{
 #if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->textstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		SVNStatus::GetStatusString(hResourceHandle, entry->textstatus, buf, _countof(buf), (WORD)langID);
 		if ((entry->copied)&&(_tcslen(buf)>1))
 			_tcscat_s(buf, 100, _T(" (+)"));
 		if ((entry->switched)&&(_tcslen(buf)>1))
@@ -1130,7 +1130,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	else
 	{
 #if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->propstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		SVNStatus::GetStatusString(hResourceHandle, entry->propstatus, buf, _countof(buf), (WORD)langID);
 		if ((entry->copied)&&(_tcslen(buf)>1))
 			_tcscat_s(buf, 100, _T(" (+)"));
 		if ((entry->switched)&&(_tcslen(buf)>1))
@@ -1146,7 +1146,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	else
 	{
 #if 0
-		SVNStatus::GetStatusString(hResourceHandle, entry->remotetextstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+		SVNStatus::GetStatusString(hResourceHandle, entry->remotetextstatus, buf, _countof(buf), (WORD)langID);
 		SetItemText(index, nCol++, buf);
 #endif
 	}
@@ -1157,7 +1157,7 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 	}
 	else
 	{
-//		SVNStatus::GetStatusString(hResourceHandle, entry->remotepropstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+//		SVNStatus::GetStatusString(hResourceHandle, entry->remotepropstatus, buf, _countof(buf), (WORD)langID);
 		SetItemText(index, nCol++, buf);
 	}
 	// SVNSLC_COLURL
@@ -3733,19 +3733,19 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 	CString sNormal, sAdded, sDeleted, sModified, sConflicted, sUnversioned, sRenamed;
 	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR buf[MAX_STATUS_STRING_LENGTH];
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, buf, _countof(buf), langID);
 	sNormal = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_added, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_added, buf, _countof(buf), langID);
 	sAdded = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_deleted, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_deleted, buf, _countof(buf), langID);
 	sDeleted = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_modified, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_modified, buf, _countof(buf), langID);
 	sModified = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_conflicted, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_conflicted, buf, _countof(buf), langID);
 	sConflicted = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_unversioned, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_unversioned, buf, _countof(buf), langID);
 	sUnversioned = buf;
-	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_replaced, buf, sizeof(buf)/sizeof(TCHAR), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_replaced, buf, _countof(buf), langID);
 	sRenamed = buf;
 	CString sToolTip;
 	if(simple)
@@ -4498,7 +4498,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			else
 			{
-				GitStatus::GetStatusString(hResourceHandle, entry->status, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+				GitStatus::GetStatusString(hResourceHandle, entry->status, buf, _countof(buf), (WORD)langID);
 				if ((entry->copied)&&(_tcslen(buf)>1))
 					_tcscat_s(buf, 100, _T(" (+)"));
 				if ((entry->switched)&&(_tcslen(buf)>1))
@@ -4523,7 +4523,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			else
 			{
-				GitStatus::GetStatusString(hResourceHandle, entry->textstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+				GitStatus::GetStatusString(hResourceHandle, entry->textstatus, buf, _countof(buf), (WORD)langID);
 				if ((entry->copied)&&(_tcslen(buf)>1))
 					_tcscat_s(buf, 100, _T(" (+)"));
 				if ((entry->switched)&&(_tcslen(buf)>1))
@@ -4542,7 +4542,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			else
 			{
-				GitStatus::GetStatusString(hResourceHandle, entry->remotestatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+				GitStatus::GetStatusString(hResourceHandle, entry->remotestatus, buf, _countof(buf), (WORD)langID);
 				if ((entry->copied)&&(_tcslen(buf)>1))
 					_tcscat_s(buf, 100, _T(" (+)"));
 				if ((entry->switched)&&(_tcslen(buf)>1))
@@ -4565,7 +4565,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			else
 			{
-				GitStatus::GetStatusString(hResourceHandle, entry->propstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+				GitStatus::GetStatusString(hResourceHandle, entry->propstatus, buf, _countof(buf), (WORD)langID);
 				if ((entry->copied)&&(_tcslen(buf)>1))
 					_tcscat_s(buf, 100, _T(" (+)"));
 				if ((entry->switched)&&(_tcslen(buf)>1))
@@ -4582,7 +4582,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			else
 			{
-				GitStatus::GetStatusString(hResourceHandle, entry->remotetextstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+				GitStatus::GetStatusString(hResourceHandle, entry->remotetextstatus, buf, _countof(buf), (WORD)langID);
 				temp = buf;
 			}
 			sClipboard += _T("\t")+temp;
@@ -4596,7 +4596,7 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 			else
 			{
-				GitStatus::GetStatusString(hResourceHandle, entry->remotepropstatus, buf, sizeof(buf)/sizeof(TCHAR), (WORD)langID);
+				GitStatus::GetStatusString(hResourceHandle, entry->remotepropstatus, buf, _countof(buf), (WORD)langID);
 				temp = buf;
 			}
 			sClipboard += _T("\t")+temp;

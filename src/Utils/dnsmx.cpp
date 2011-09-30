@@ -607,7 +607,7 @@ BOOL GetMX (
 			}
 
 			t_MXHostInfo tMXHostInfo = {0};
-			strncpy ( (char*)tMXHostInfo.szMXHost, name, sizeof(tMXHostInfo.szMXHost)/sizeof(tMXHostInfo.szMXHost[0]) );
+			strncpy ( (char*)tMXHostInfo.szMXHost, name, _countof(tMXHostInfo.szMXHost));
 			tMXHostInfo.N = j;
 			Ary_MXHostInfos.Add ( tMXHostInfo );
 			TRACE ( _T("%s\t%d\r\n"), name, j );

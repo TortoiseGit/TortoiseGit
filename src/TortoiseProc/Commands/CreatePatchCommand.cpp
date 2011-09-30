@@ -77,7 +77,7 @@ bool CreatePatchCommand::CreatePatch(const CTSVNPath& root, const CTSVNPathList&
 		ofn.lStructSize = sizeof(OPENFILENAME);
 		ofn.hwndOwner = hwndExplorer;
 		ofn.lpstrFile = szFile;
-		ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+		ofn.nMaxFile = _countof(szFile);
 		ofn.lpstrInitialDir = root.GetWinPath();
 
 		temp.LoadString(IDS_REPOBROWSE_SAVEAS);

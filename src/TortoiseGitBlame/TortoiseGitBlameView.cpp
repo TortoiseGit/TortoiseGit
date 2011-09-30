@@ -524,14 +524,14 @@ BOOL CTortoiseGitBlameView::OpenFile(const char *fileName)
 	char * lineptr = NULL;
 	char * trimptr = NULL;
 	//ignore the first two lines, they're of no interest to us
-	File.getline(line, sizeof(line)/sizeof(char));
-	File.getline(line, sizeof(line)/sizeof(char));
+	File.getline(line, _countof(line));
+	File.getline(line, _countof(line));
 	m_lowestrev = LONG_MAX;
 	m_highestrev = 0;
 	bool bUTF8 = true;
 	do
 	{
-		File.getline(line, sizeof(line)/sizeof(TCHAR));
+		File.getline(line, _countof(line));
 		if (File.gcount()>139)
 		{
 			mergelines.push_back((line[0] != ' '));

@@ -94,7 +94,7 @@ string CUtility::getSaveFileName()
    ofn.lStructSize = sizeof(OPENFILENAME);
    ofn.hwndOwner = NULL;
    ofn.lpstrFile = szFile;
-   ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+   ofn.nMaxFile = _countof(szFile);
    ofn.Flags = OFN_OVERWRITEPROMPT;
 
    ofn.lpstrFilter = sFilter.c_str();

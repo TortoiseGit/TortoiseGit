@@ -196,9 +196,9 @@ LRESULT CMainWindow::DoCommand(int id)
 			ofn.lStructSize = sizeof(OPENFILENAME);
 			ofn.hwndOwner = *this;
 			ofn.lpstrFile = szFile;
-			ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+			ofn.nMaxFile = _countof(szFile);
 			TCHAR filter[1024];
-			LoadString(hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
+			LoadString(hResource, IDS_PATCHFILEFILTER, filter, _countof(filter));
 			TCHAR * pszFilters = filter;
 			// Replace '|' delimiters with '\0's
 			TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
@@ -214,7 +214,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			ofn.nMaxFileTitle = 0;
 			ofn.lpstrInitialDir = NULL;
 			TCHAR opentitle[1024];
-			LoadString(hResource, IDS_OPENPATCH, opentitle, sizeof(opentitle)/sizeof(TCHAR));
+			LoadString(hResource, IDS_OPENPATCH, opentitle, _countof(opentitle));
 			ofn.lpstrTitle = opentitle;
 			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 			// Display the Open dialog box. 
@@ -232,9 +232,9 @@ LRESULT CMainWindow::DoCommand(int id)
 			ofn.lStructSize = sizeof(OPENFILENAME);
 			ofn.hwndOwner = *this;
 			ofn.lpstrFile = szFile;
-			ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+			ofn.nMaxFile = _countof(szFile);
 			TCHAR filter[1024];
-			LoadString(hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
+			LoadString(hResource, IDS_PATCHFILEFILTER, filter, _countof(filter));
 			TCHAR * pszFilters = filter;
 			// Replace '|' delimiters with '\0's
 			TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
@@ -250,7 +250,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			ofn.nMaxFileTitle = 0;
 			ofn.lpstrInitialDir = NULL;
 			TCHAR savetitle[1024];
-			LoadString(hResource, IDS_SAVEPATCH, savetitle, sizeof(savetitle)/sizeof(TCHAR));
+			LoadString(hResource, IDS_SAVEPATCH, savetitle, _countof(savetitle));
 			ofn.lpstrTitle = savetitle;
 			ofn.Flags = OFN_OVERWRITEPROMPT | OFN_ENABLESIZING | OFN_EXPLORER;
 			// Display the Open dialog box. 

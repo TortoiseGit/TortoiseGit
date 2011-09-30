@@ -44,7 +44,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")) || !parser.HasKey(_T("patchfile")))
 	{
 		TCHAR buf[1024];
-		LoadString(hInstance, IDS_COMMANDLINEHELP, buf, sizeof(buf)/sizeof(TCHAR));
+		LoadString(hInstance, IDS_COMMANDLINEHELP, buf, _countof(buf));
 		MessageBox(NULL, buf, _T("TortoiseUDiff"), MB_ICONINFORMATION);
 		return 0;
 	}

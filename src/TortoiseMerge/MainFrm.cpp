@@ -172,7 +172,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+		  _countof(indicators)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -1156,7 +1156,7 @@ bool CMainFrame::FileSaveAs(bool bCheckResolved /*=true*/)
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = m_hWnd;
 	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+	ofn.nMaxFile = _countof(szFile);
 	CString temp;
 	temp.LoadString(IDS_SAVEASTITLE);
 	if (!temp.IsEmpty())
@@ -1757,10 +1757,10 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 {
 	CRegString placement = CRegString(_T("Software\\TortoiseMerge\\WindowPos"));
-	TCHAR szBuffer[sizeof("-32767")*8 + sizeof("65535")*2];
+	TCHAR szBuffer[_countof("-32767")*8 + sizeof("65535")*2];
 	CString s;
 
-	_stprintf_s(szBuffer, sizeof("-32767")*8 + sizeof("65535")*2, _T("%u,%u,%d,%d,%d,%d,%d,%d,%d,%d"),
+	_stprintf_s(szBuffer, _countof("-32767")*8 + sizeof("65535")*2, _T("%u,%u,%d,%d,%d,%d,%d,%d,%d,%d"),
 			pwp->flags, pwp->showCmd,
 			pwp->ptMinPosition.x, pwp->ptMinPosition.y,
 			pwp->ptMaxPosition.x, pwp->ptMaxPosition.y,
@@ -2052,7 +2052,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		TCHAR szFile[MAX_PATH] = {0};	// buffer for file name
 		ofn.lStructSize = sizeof(OPENFILENAME);
 		ofn.lpstrFile = szFile;
-		ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+		ofn.nMaxFile = _countof(szFile);
 		CString temp;
 		temp.LoadString(IDS_SAVEASTITLE);
 		if (!temp.IsEmpty())

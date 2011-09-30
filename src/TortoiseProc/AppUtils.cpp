@@ -518,7 +518,7 @@ BOOL CAppUtils::StartTextViewer(CString file)
 		ofn.lStructSize = sizeof(OPENFILENAME);
 		ofn.hwndOwner = NULL;
 		ofn.lpstrFile = szFile;
-		ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+		ofn.nMaxFile = _countof(szFile);
 		CString sFilter;
 		sFilter.LoadString(IDS_PROGRAMSFILEFILTER);
 		TCHAR * pszFilters = new TCHAR[sFilter.GetLength()+4];
@@ -876,7 +876,7 @@ bool CAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title, UINT 
 	ofn.hwndOwner = hwndOwner;
 	_tcscpy_s(szFile, MAX_PATH, (LPCTSTR)path);
 	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+	ofn.nMaxFile = _countof(szFile);
 	CString sFilter;
 	TCHAR * pszFilters = NULL;
 	if (filter)
@@ -1797,12 +1797,12 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
 			TCHAR buf[100];
 
 			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf,
-				sizeof(buf)/sizeof(TCHAR)-1);
+				_countof(buf) - 1);
 			datetime = buf;
 			if ( bIncludeTime )
 			{
 				datetime += _T(" ");
-				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, sizeof(buf)/sizeof(TCHAR)-1);
+				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, _countof(buf) - 1);
 				datetime += buf;
 			}
 		}

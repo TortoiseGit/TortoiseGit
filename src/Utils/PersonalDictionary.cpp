@@ -62,7 +62,7 @@ bool CPersonalDictionary::Load()
 	std::vector<std::wstring> entry;
 	do
 	{
-		File.getline(line, sizeof(line)/sizeof(TCHAR));
+		File.getline(line, _countof(line));
 		sWord = line;
 		dict.insert(sWord);
 	} while (File.gcount() > 0);

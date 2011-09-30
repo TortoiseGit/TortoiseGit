@@ -108,19 +108,19 @@ BOOL CSetOverlayIcons::OnInitDialog()
 #if 0
 	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR statustext[MAX_STATUS_STRING_LENGTH];
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_normal, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_normal, statustext, _countof(statustext), langID);
 	m_sNormal = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_modified, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_modified, statustext, _countof(statustext), langID);
 	m_sModified = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_conflicted, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_conflicted, statustext, _countof(statustext), langID);
 	m_sConflicted = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_deleted, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_deleted, statustext, _countof(statustext), langID);
 	m_sDeleted = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_added, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_added, statustext, _countof(statustext), langID);
 	m_sAdded = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_ignored, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_ignored, statustext, _countof(statustext), langID);
 	m_sIgnored = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_unversioned, statustext, sizeof(statustext)/sizeof(TCHAR), langID);
+	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_unversioned, statustext, _countof(statustext), langID);
 	m_sUnversioned = statustext;
 #endif
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);

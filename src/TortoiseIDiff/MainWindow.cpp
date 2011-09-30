@@ -282,7 +282,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
                 mii.cbSize = sizeof(MENUITEMINFO);
                 mii.fMask = MIIM_TYPE;
                 mii.dwTypeData = stringbuf;
-                mii.cch = sizeof(stringbuf)/sizeof(TCHAR);
+                mii.cch = _countof(stringbuf);
                 GetMenuItemInfo(GetMenu(*this), (UINT)lpttt->hdr.idFrom, FALSE, &mii);
                 _tcscpy_s(lpttt->lpszText, 80, stringbuf);
             }

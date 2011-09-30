@@ -108,7 +108,7 @@ void CShellUpdater::WorkerThread()
 
 	for(;;)
 	{
-		DWORD waitResult = WaitForMultipleObjects(sizeof(hWaitHandles)/sizeof(hWaitHandles[0]), hWaitHandles, FALSE, INFINITE);
+		DWORD waitResult = WaitForMultipleObjects(_countof(hWaitHandles), hWaitHandles, FALSE, INFINITE);
 
 		// exit event/working loop if the first event (m_hTerminationEvent)
 		// has been signaled or if one of the events has been abandoned

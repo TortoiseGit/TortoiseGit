@@ -278,7 +278,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 {
 	// Look up the command
 	TGitCommand command = cmdAbout;		// Something harmless as a default
-	for (int nCommand = 0; nCommand < (sizeof(commandInfo)/sizeof(commandInfo[0])); nCommand++)
+	for (int nCommand = 0; nCommand < _countof(commandInfo); nCommand++)
 	{
 		if (sCmd.Compare(commandInfo[nCommand].pCommandName) == 0)
 		{

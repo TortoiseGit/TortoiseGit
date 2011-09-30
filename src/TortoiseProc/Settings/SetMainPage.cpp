@@ -103,7 +103,7 @@ BOOL CSetMainPage::OnInitDialog()
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
 
 	TCHAR buf[MAX_PATH];
-	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, sizeof(buf)/sizeof(TCHAR));
+	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 	m_LanguageCombo.AddString(buf);
 	m_LanguageCombo.SetItemData(0, 1033);
 	CString path = CPathUtils::GetAppParentDirectory();
@@ -124,7 +124,7 @@ BOOL CSetMainPage::OnInitDialog()
 				continue;
 			DWORD loc = _tstoi(filename.Mid(12));
 			TCHAR buf[MAX_PATH];
-			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, sizeof(buf)/sizeof(TCHAR));
+			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 			m_LanguageCombo.AddString(buf);
 			m_LanguageCombo.SetItemData(langcount++, loc);
 		}

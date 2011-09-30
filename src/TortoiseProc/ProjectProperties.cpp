@@ -806,26 +806,26 @@ bool ProjectProperties::AddAutoProps(const CTGitPath& path)
 		bRet = props.Add(BUGTRAQPROPNAME_APPEND, "false") && bRet;
 	if (nLogWidthMarker)
 	{
-		sprintf_s(buf, sizeof(buf), "%ld", nLogWidthMarker);
+		sprintf_s(buf, _countof(buf), "%ld", nLogWidthMarker);
 		bRet = props.Add(PROJECTPROPNAME_LOGWIDTHLINE, buf) && bRet;
 	}
 	if (!sLogTemplate.IsEmpty())
 		bRet = props.Add(PROJECTPROPNAME_LOGTEMPLATE, WideToMultibyte((LPCTSTR)sLogTemplate)) && bRet;
 	if (nMinLogSize)
 	{
-		sprintf_s(buf, sizeof(buf), "%ld", nMinLogSize);
+		sprintf_s(buf, _countof(buf), "%ld", nMinLogSize);
 		bRet = props.Add(PROJECTPROPNAME_LOGMINSIZE, buf) && bRet;
 	}
 	if (nMinLockMsgSize)
 	{
-		sprintf_s(buf, sizeof(buf), "%ld", nMinLockMsgSize);
+		sprintf_s(buf, _countof(buf), "%ld", nMinLockMsgSize);
 		bRet = props.Add(PROJECTPROPNAME_LOCKMSGMINSIZE, buf) && bRet;
 	}
 	if (!bFileListInEnglish)
 		bRet = props.Add(PROJECTPROPNAME_LOGFILELISTLANG, "false") && bRet;
 	if (lProjectLanguage)
 	{
-		sprintf_s(buf, sizeof(buf), "%ld", lProjectLanguage);
+		sprintf_s(buf, _countof(buf), "%ld", lProjectLanguage);
 		bRet = props.Add(PROJECTPROPNAME_PROJECTLANGUAGE, buf) && bRet;
 	}
 	if (!sFPPath.IsEmpty())

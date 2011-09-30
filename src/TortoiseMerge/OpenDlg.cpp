@@ -152,7 +152,7 @@ BOOL COpenDlg::BrowseForFile(CString& filepath, CString title, UINT nFileFilter)
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = this->m_hWnd;
 	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+	ofn.nMaxFile = _countof(szFile);
 	CString sFilter;
 	sFilter.LoadString(nFileFilter);
 	TCHAR * pszFilters = new TCHAR[sFilter.GetLength()+4];

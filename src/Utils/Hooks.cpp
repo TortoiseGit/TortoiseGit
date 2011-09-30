@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
 
@@ -409,8 +409,8 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	TCHAR szTempPath[MAX_PATH];
 	TCHAR szOutput[MAX_PATH];
 	TCHAR szErr[MAX_PATH];
-	GetTempPath(sizeof(szTempPath)/sizeof(TCHAR),szTempPath);
-	GetTempFileName(szTempPath, _T("svn"), 0, szErr);
+	GetTempPath(_countof(szTempPath), szTempPath);
+	GetTempFileName(szTempPath, _T("git"), 0, szErr);
 
 	// setup redirection handles
 	// output handle must be WRITE mode, share READ
@@ -430,7 +430,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		return (DWORD)-1;
 	}
 
-	GetTempFileName(szTempPath, _T("svn"), 0, szOutput);
+	GetTempFileName(szTempPath, _T("git"), 0, szOutput);
 	hOut   = CreateFile(szOutput, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY,	0);
 
 	if (hOut  == INVALID_HANDLE_VALUE) 

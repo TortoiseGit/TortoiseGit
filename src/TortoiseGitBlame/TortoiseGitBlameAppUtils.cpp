@@ -62,12 +62,12 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
 			TCHAR buf[100];
 
 			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf,
-				sizeof(buf)/sizeof(TCHAR)-1);
+				_countof(buf) - 1);
 			datetime = buf;
 			if ( bIncludeTime )
 			{
 				datetime += _T(" ");
-				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, sizeof(buf)/sizeof(TCHAR)-1);
+				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, _countof(buf) - 1);
 				datetime += buf;
 			}
 		}
