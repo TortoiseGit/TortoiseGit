@@ -108,8 +108,6 @@
 #define IDS_DROPCOPYMENU                198
 #define IDS_PROPWAITCANCEL              199
 #define IDS_SETPROPTITLE                200
-#define IDS_MENUREPOBROWSE              201
-#define IDS_MENUDESCREPOBROWSE          202
 #define IDS_MENUBLAME                   203
 #define IDS_STATUSEXTERNAL              204
 #define IDS_MENUDESCBLAME               205

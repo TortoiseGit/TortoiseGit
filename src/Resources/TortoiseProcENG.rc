@@ -426,20 +426,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,177,34,50,14
 END
 
-IDD_REPOSITORY_BROWSER DIALOGEX 0, 0, 415, 279
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Repository Browser"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_REPOS_BAR_CNR,"Static",SS_OWNERDRAW | WS_TABSTOP,7,6,401,16
-    CONTROL         "",IDC_REPOTREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_EDITLABELS | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,22,160,227,WS_EX_CLIENTEDGE
-    CONTROL         "",IDC_REPOLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_EDITLABELS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,170,22,238,227,WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE
-    LTEXT           "Hint: Press F5 to refresh the selected subtree and Ctrl-F5 to load all children too",IDC_F5HINT,7,255,217,17
-    DEFPUSHBUTTON   "OK",IDOK,246,258,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,302,258,50,14
-    PUSHBUTTON      "Help",IDHELP,358,258,50,14
-END
-
 IDD_SETTINGSMAIN DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General"
@@ -2256,18 +2242,6 @@ BEGIN
         BOTTOMMARGIN, 48
     END
 
-    IDD_REPOSITORY_BROWSER, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 408
-        VERTGUIDE, 224
-        VERTGUIDE, 352
-        TOPMARGIN, 6
-        BOTTOMMARGIN, 272
-        HORZGUIDE, 22
-        HORZGUIDE, 249
-    END
-
     IDD_SETTINGSMAIN, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -3265,19 +3239,6 @@ BEGIN
     "F",            ID_VIEW_FILTER,         VIRTKEY, CONTROL, NOINVERT
 END
 
-IDR_ACC_REPOBROWSER ACCELERATORS 
-BEGIN
-    VK_DELETE,      ID_DELETEBROWSERITEM,   VIRTKEY, NOINVERT
-    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_F2,          ID_INLINEEDIT,          VIRTKEY, NOINVERT
-    VK_F5,          ID_REFRESHBROWSER,      VIRTKEY, NOINVERT
-    VK_F5,          ID_REFRESHBROWSER,      VIRTKEY, CONTROL, NOINVERT
-    "D",            ID_URL_FOCUS,           VIRTKEY, ALT, NOINVERT
-    "L",            ID_URL_FOCUS,           VIRTKEY, CONTROL, NOINVERT
-    VK_BACK,        ID_URL_UP,              VIRTKEY, NOINVERT
-END
-
 IDR_ACC_COMMITDLG ACCELERATORS 
 BEGIN
     "M",            ID_FOCUS_MESSAGE,       VIRTKEY, ALT, NOINVERT
@@ -3547,19 +3508,6 @@ BEGIN
     IDS_REPOBROWSE_SAVEAS   "Save &as..."
     IDS_REPOBROWSE_SHOWLOG  "Show &log"
     IDS_REPOBROWSE_OPEN     "&Open"
-    IDS_REPOBROWSE_COPY     "&Copy to..."
-    IDS_REPOBROWSE_DELETE   "&Delete..."
-    IDS_REPOBROWSE_IMPORT   "Add &file..."
-    IDS_REPOBROWSE_RENAME   "&Rename"
-    IDS_REPOBROWSE_MKDIR    "C&reate folder..."
-    IDS_REPOBROWSE_IMPORTFOLDER "A&dd folder..."
-    IDS_REPOBROWSE_REFRESH  "Refresh"
-    IDS_REPOBROWSE_SHOWPROP "Sho&w properties"
-    IDS_REPOBROWSE_COPYTOWC "Copy to working copy..."
-    IDS_REPOBROWSE_URLTOCLIPBOARD "Copy URL to clipboard"
-    IDS_REPOBROWSE_COPYERROR "Copy error message to clipboard"
-    IDS_REPOBROWSE_SHOWDIFF "&Compare URLs"
-    IDS_REPOBROWSE_PREPAREDIFF "Mark for comparison"
 END
 
 STRINGTABLE 
@@ -3661,7 +3609,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_LOG_COMPAREWITHBASE "Compare with b&ase"
-    IDS_LOG_BROWSEREPO      "&Browse repository"
 END
 
 STRINGTABLE 
@@ -3676,12 +3623,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENUREFRESH         "Refresh"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REPO_BROWSEREV      "Revision: "
-    IDS_REPO_BROWSEURL      "URL: "
 END
 
 STRINGTABLE 
@@ -4079,44 +4020,10 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_REPOBROWSE_SAVEASPROGTITLE "Saving files"
-    IDS_REPOBROWSE_SAVEAS_LINE1 "Saving file %s"
-    IDS_REPOBROWSE_SAVEAS_LINE2 "to %s"
-    IDS_REPOBROWSE_COPYTOWCPROGTITLE "Copy to working copy"
-    IDS_REPOBROWSE_COPYTOWC_LINE1 "Copy %s"
-    IDS_REPOBROWSE_COPYTOWC_LINE2 "to %s"
-    IDS_REPOBROWSE_COPYDROP "Copy items to here"
-    IDS_REPOBROWSE_MOVEDROP "Move items to here"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REPOBROWSE_COPYRENAMEDROP "Copy and rename item to here"
-    IDS_REPOBROWSE_MOVERENAMEDROP "Move and rename item to here"
-    IDS_REPOBROWSE_INITWAIT "Please wait while the repository browser is initializing..."
-    IDS_REPOBROWSE_WAIT     "Please wait..."
-END
-
-STRINGTABLE 
-BEGIN
     IDS_REVGRAPH_POPUP_COMPAREREVS "&Compare revisions"
     IDS_REVGRAPH_POPUP_COMPAREHEADS "Compare &HEAD revisions"
     IDS_REVGRAPH_POPUP_UNIDIFFREVS "&Unified diff"
     IDS_REVGRAPH_POPUP_UNIDIFFHEADS "Unified &diff of HEAD revisions"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REPOBROWSE_MULTIIMPORT 
-                            "You dropped more than one file or folder to add to the repository.\nIt's not possible to do that in one step, so TortoiseGit will add each file/folder\nindividually, creating a new revision for every added item.\n\nDo you still want to do this?"
-    IDS_REPOBROWSE_MOVETRUNK 
-                            "You are trying to move the trunk folder!\nAre you absolutely sure that you want to move\nthe trunk folder?"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REPOBROWSE_URLALREADYEXISTS "The target URL\n%s\nalready exists!"
-    IDS_REPOBROWSE_INVALIDDROPDATA "Invalid data object dropped!"
 END
 
 STRINGTABLE 
@@ -4648,12 +4555,6 @@ BEGIN
     IDS_PROPPAGE_NEXT       "&Next >"
     IDS_PROPPAGE_CANCEL     "Cancel"
     IDS_PROPPAGE_HELP       "Help"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REPOBROWSE_TT_HEADREV "Head revision is %s"
-    IDS_REPOBROWSE_TT_UPFOLDER "Up one folder"
 END
 
 STRINGTABLE 

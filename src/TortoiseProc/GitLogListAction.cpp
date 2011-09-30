@@ -928,16 +928,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 
-		case ID_REPOBROWSE:
-			{
-				CString sCmd;
-				sCmd.Format(_T("%s /command:repobrowser /path:\"%s\" /rev:%s"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)pathURL, (LPCTSTR)revSelected.ToString());
-
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
 		case ID_EDITLOG:
 			{
 				EditLogMessage(selIndex);

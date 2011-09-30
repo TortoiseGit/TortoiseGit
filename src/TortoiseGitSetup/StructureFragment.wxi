@@ -747,27 +747,6 @@
 				</Component>
 				<?endif ?>
 
-				<!--
-				shouldn't these be renamed to 'git' protocol etc. don't know what types git would have (git+ssh tgit?) so commenting
-				out everything for now, leaving these enabled as they are would make the installer break an already installed TortoiseSVN
-				<Component Id="C__svnprotocoll" Guid="$(var.GuidSvnProtocol)" Win64="$(var.Win64YesNo)">
-					<Registry Root="HKMU" Key="Software\Classes\svn" KeyPath="yes" Value="URL:SVN Protocol" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\svn" Name="URL Protocol" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\svn\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\svn\shell\open\command" Value="[INSTALLDIR]bin\TortoiseProc.exe /command:repobrowser /path:&quot;%1&quot;" Type="string" />
-
-					<Registry Root="HKMU" Key="Software\Classes\svn+ssh" Value="URL:SVN+SSH Protocol" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\svn+ssh" Name="URL Protocol" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\svn+ssh\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\svn+ssh\shell\open\command" Value="[INSTALLDIR]bin\TortoiseProc.exe /command:repobrowser /path:&quot;%1&quot;" Type="string" />
-
-					<Registry Root="HKMU" Key="Software\Classes\tsvn" Value="URL:TSVN Protocol" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\tsvn" Name="URL Protocol" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\tsvn\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\tsvn\shell\open\command" Value="[INSTALLDIR]bin\TortoiseProc.exe /command:checkout /url:&quot;%1&quot;" Type="string" />
-				</Component>
-				-->
-
 				<Directory Id="D__Bin" ShortName="BIN" Name="bin">
 					<Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
 						<!-- only needed for TortoiseMerge which is shipped 32 or 64 bit-->

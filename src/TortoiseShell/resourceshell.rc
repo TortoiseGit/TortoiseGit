@@ -304,8 +304,6 @@ BEGIN
     IDS_DROPCOPYMENU        "Git Copy versioned item(s) here"
     IDS_PROPWAITCANCEL      "Please wait while cancelling..."
     IDS_SETPROPTITLE        "Setting properties..."
-    IDS_MENUREPOBROWSE      "&Repo-browser"
-    IDS_MENUDESCREPOBROWSE  "Opens the repository browser to tweak the repository online"
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"

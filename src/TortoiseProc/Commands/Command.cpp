@@ -153,7 +153,6 @@ typedef enum
 	cmdRemove,
 	cmdRebase,
 	cmdRename,
-	cmdRepoBrowser,
 	cmdRepoCreate,
 	cmdRepoStatus,
 	cmdResolve,
@@ -231,7 +230,6 @@ static const struct CommandInfo
 	{	cmdRemove,			_T("remove")			},
 	{	cmdRebase,			_T("rebase")			},
 	{	cmdRename,			_T("rename")			},
-	{	cmdRepoBrowser,		_T("repobrowser")		},
 	{	cmdRepoCreate,		_T("repocreate")		},
 	{	cmdRepoStatus,		_T("repostatus")		},
 	{	cmdResolve,			_T("resolve")			},
@@ -417,8 +415,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RebuildIconCacheCommand;
 	case cmdRelocate:
 		return new RelocateCommand;
-	case cmdRepoBrowser:
-		return new RepositoryBrowserCommand;
 	case cmdRevisionGraph:
 		return new RevisionGraphCommand;
 	case cmdShowCompare:

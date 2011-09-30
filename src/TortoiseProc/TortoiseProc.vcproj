@@ -814,10 +814,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\menurepobrowse.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\menuresolve.ico"
 				>
 			</File>
