@@ -1020,12 +1020,7 @@ UINT CCommitDlg::StatusThread()
 		}
 	}
 
-	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
-
-	if(this->m_bWholeProject)
-		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString() + CString(_T(" (Whole Project)")));
-	else
-		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+	SetDlgTitle();
 
 	m_autolist.clear();
 	// we don't have to block the commit dialog while we fetch the
@@ -1059,6 +1054,16 @@ UINT CCommitDlg::StatusThread()
 	RefreshCursor();
 
 	return 0;
+}
+
+void CCommitDlg::SetDlgTitle()
+{
+	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+
+	if(this->m_bWholeProject)
+		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString() + CString(_T(" (Whole Project)")));
+	else
+		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 }
 
 void CCommitDlg::OnCancel()
@@ -1980,13 +1985,7 @@ void CCommitDlg::OnBnClickedWholeProject()
 		m_ListCtrl.Show(m_ListCtrl.GetShowFlags(), dwShow & (~CTGitPath::LOGACTIONS_UNVER|~CTGitPath::LOGACTIONS_IGNORE));
 	}
 
-	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
-
-	if(this->m_bWholeProject)
-		SetWindowText(m_sWindowTitle + _T(" - ") + CString(_T("Whole Project")));
-	else
-		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
-
+	SetDlgTitle();
 }
 
 void CCommitDlg::OnFocusMessage()
