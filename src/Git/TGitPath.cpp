@@ -806,10 +806,15 @@ int CTGitPath::GetAdminDirMask() const
 		return status;
 	}
 
-	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN|ITEMIS_INVERSIONEDFOLDER;
+	// ITEMIS_INSVN will be revoked if necessary in TortoiseShell/ContextMenu.cpp
+	status |= ITEMIS_INSVN|ITEMIS_INVERSIONEDFOLDER;
 
-	if (IsDirectory() && IsWCRoot())
-		status |= ITEMIS_WCROOT;
+	if (IsDirectory())
+	{
+		status |= ITEMIS_FOLDERINSVN;
+		if (IsWCRoot())
+			status |= ITEMIS_WCROOT;
+	}
 
 	path=topdir;
 	path += _T("\\");
