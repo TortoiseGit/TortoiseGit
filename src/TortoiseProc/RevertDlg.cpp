@@ -72,8 +72,13 @@ BOOL CRevertDlg::OnInitDialog()
 	m_RevertList.SetBackgroundImage(IDI_REVERT_BKG);
 	m_RevertList.EnableFileDrop();
 
-	GetWindowText(m_sWindowTitle);
-	
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	if (m_pathList.GetCount() == 1)
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString(), sWindowTitle);
+	else
+		CAppUtils::SetWindowTitle(m_hWnd, m_pathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+
 	AdjustControlSize(IDC_SELECTALL);
 
 	AddAnchor(IDC_REVERTLIST, TOP_LEFT, BOTTOM_RIGHT);
@@ -85,10 +90,6 @@ BOOL CRevertDlg::OnInitDialog()
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("RevertDlg"));
-
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, m_pathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 
 	// first start a thread to obtain the file list with the status without
 	// blocking the dialog
@@ -123,9 +124,6 @@ UINT CRevertDlg::RevertThread()
 	m_RevertList.Show(SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWEXTERNALFROMDIFFERENTREPO, 
 						// do not select all files, only the ones the user has selected directly
 						SVNSLC_SHOWDIRECTFILES|SVNSLC_SHOWADDED);
-
-	CTGitPath commonDir = m_RevertList.GetCommonDirectory(false);
-	SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
 
 	if (m_RevertList.HasUnversionedItems())
 	{
