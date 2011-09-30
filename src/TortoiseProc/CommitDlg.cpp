@@ -173,6 +173,8 @@ BOOL CCommitDlg::OnInitDialog()
 	if(this->m_pathList.GetCount() == 1 && m_pathList[0].IsEmpty())
 		m_bWholeProject =true;
 
+	SetDlgTitle();
+
 	UpdateData(FALSE);
 
 	m_ListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS | SVNSLC_COLADD |SVNSLC_COLDEL, _T("CommitDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT | SVNSLC_POPSAVEAS)));
