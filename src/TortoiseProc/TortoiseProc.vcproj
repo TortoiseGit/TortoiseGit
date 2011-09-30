@@ -1469,14 +1469,6 @@
 				Name="Export"
 				>
 				<File
-					RelativePath=".\Commands\DropExportCommand.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\DropExportCommand.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Commands\ExportCommand.cpp"
 					>
 				</File>

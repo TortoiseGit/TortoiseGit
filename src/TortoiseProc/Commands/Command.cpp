@@ -55,7 +55,6 @@
 #include "DropMoveCommand.h"
 #include "DropCopyAddCommand.h"
 #include "DropCopyCommand.h"
-#include "DropExportCommand.h"
 #include "HelpCommand.h"
 #include "StashCommand.h"
 #include "SubmoduleCommand.h"
@@ -136,7 +135,6 @@ typedef enum
 	cmdDiff,
 	cmdDropCopy,
 	cmdDropCopyAdd,
-	cmdDropExport,
 	cmdDropMove,
 	cmdFetch,
 	cmdFormatPatch,
@@ -216,7 +214,6 @@ static const struct CommandInfo
 	{	cmdDiff,			_T("diff")				},
 	{	cmdDropCopy,		_T("dropcopy")			},
 	{	cmdDropCopyAdd,		_T("dropcopyadd")		},
-	{	cmdDropExport,		_T("dropexport")		},
 	{	cmdDropMove,		_T("dropmove")			},
 	{	cmdFetch,			_T("fetch")				},
 	{	cmdFormatPatch,		_T("formatpatch")		},
@@ -357,8 +354,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DropCopyCommand;
 	case cmdDropCopyAdd:
 		return new DropCopyAddCommand;
-//	case cmdDropExport:
-//		return new DropExportCommand;
 	case cmdHelp:
 		return new HelpCommand;
 	case cmdStashSave:
