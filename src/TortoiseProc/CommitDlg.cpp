@@ -1058,12 +1058,18 @@ UINT CCommitDlg::StatusThread()
 
 void CCommitDlg::SetDlgTitle()
 {
-	CTGitPath commonDir = m_ListCtrl.GetCommonDirectory(false);
+	if (m_sTitle.IsEmpty())
+		GetWindowText(m_sTitle);
 
-	if(this->m_bWholeProject)
-		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString() + CString(_T(" (Whole Project)")));
+	if (m_bWholeProject)
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
 	else
-		SetWindowText(m_sWindowTitle + _T(" - ") + commonDir.GetWinPathString());
+	{
+		if (m_pathList.GetCount() == 1)
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetUIPathString(), m_sTitle);
+		else
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_ListCtrl.GetCommonDirectory(false), m_sTitle);
+	}
 }
 
 void CCommitDlg::OnCancel()
