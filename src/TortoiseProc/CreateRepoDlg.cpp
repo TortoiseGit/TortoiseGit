@@ -52,6 +52,10 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	m_tooltips.Create(this);
 	CString tt;
 	tt.LoadString(IDS_CLONE_DEPTH_TT);
