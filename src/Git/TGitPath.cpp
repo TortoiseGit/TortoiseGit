@@ -38,23 +38,23 @@ using namespace std;
 extern CGit g_Git;
 
 CTGitPath::CTGitPath(void) :
-	m_bDirectoryKnown(false),
-	m_bIsDirectory(false),
-	m_bIsURL(false),
-	m_bURLKnown(false),
-	m_bHasAdminDirKnown(false),
-	m_bHasAdminDir(false),
-	m_bIsValidOnWindowsKnown(false),
-	m_bIsReadOnly(false),
-	m_bIsAdminDirKnown(false),
-	m_bIsAdminDir(false),
-	m_bExists(false),
-	m_bExistsKnown(false),
-	m_bLastWriteTimeKnown(0),
-	m_lastWriteTime(0),
-	m_customData(NULL),
-	m_bIsSpecialDirectoryKnown(false),
-	m_bIsSpecialDirectory(false)
+	m_bDirectoryKnown(false)
+	, m_bIsDirectory(false)
+	, m_bIsURL(false)
+	, m_bURLKnown(false)
+	, m_bHasAdminDirKnown(false)
+	, m_bHasAdminDir(false)
+	, m_bIsValidOnWindowsKnown(false)
+	, m_bIsReadOnly(false)
+	, m_bIsAdminDirKnown(false)
+	, m_bIsAdminDir(false)
+	, m_bExists(false)
+	, m_bExistsKnown(false)
+	, m_bLastWriteTimeKnown(0)
+	, m_lastWriteTime(0)
+	, m_customData(NULL)
+	, m_bIsSpecialDirectoryKnown(false)
+	, m_bIsSpecialDirectory(false)
 {
 	m_Action=0;
 	m_ParentNo=0;
@@ -65,23 +65,23 @@ CTGitPath::~CTGitPath(void)
 }
 // Create a TGitPath object from an unknown path type (same as using SetFromUnknown)
 CTGitPath::CTGitPath(const CString& sUnknownPath) :
-	m_bDirectoryKnown(false),
-	m_bIsDirectory(false),
-	m_bIsURL(false),
-	m_bURLKnown(false),
-	m_bHasAdminDirKnown(false),
-	m_bHasAdminDir(false),
-	m_bIsValidOnWindowsKnown(false),
-	m_bIsReadOnly(false),
-	m_bIsAdminDirKnown(false),
-	m_bIsAdminDir(false),
-	m_bExists(false),
-	m_bExistsKnown(false),
-	m_bLastWriteTimeKnown(0),
-	m_lastWriteTime(0),
-	m_customData(NULL),
-	m_bIsSpecialDirectoryKnown(false),
-	m_bIsSpecialDirectory(false)
+	  m_bDirectoryKnown(false)
+	, m_bIsDirectory(false)
+	, m_bIsURL(false)
+	, m_bURLKnown(false)
+	, m_bHasAdminDirKnown(false)
+	, m_bHasAdminDir(false)
+	, m_bIsValidOnWindowsKnown(false)
+	, m_bIsReadOnly(false)
+	, m_bIsAdminDirKnown(false)
+	, m_bIsAdminDir(false)
+	, m_bExists(false)
+	, m_bExistsKnown(false)
+	, m_bLastWriteTimeKnown(0)
+	, m_lastWriteTime(0)
+	, m_customData(NULL)
+	, m_bIsSpecialDirectoryKnown(false)
+	, m_bIsSpecialDirectory(false)
 {
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
