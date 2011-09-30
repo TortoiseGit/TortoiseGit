@@ -158,19 +158,25 @@ UINT CChangedDlg::ChangedStatusThread()
 	m_FileListCtrl.Show(dwShow);
 	UpdateStatistics();
 
+	bool bIsDirectory = false;
 
 	CTGitPath commonDir = m_FileListCtrl.GetCommonDirectory(false);
-	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
-	if (bSingleFile)
-		CAppUtils::SetWindowTitle(m_hWnd, m_pathList[0].GetWinPathString(), m_sTitle);
+	if (m_pathList.GetCount() == 1)
+	{
+		if (m_pathList[0].IsEmpty())
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
+		else 
+			CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir + _T("\\") + m_pathList[0].GetWinPathString(), m_sTitle);
+		bIsDirectory = m_pathList[0].IsDirectory() || m_pathList[0].IsEmpty(); // if it is empty it is g_Git.m_CurrentDir which is a directory
+	}
 	else
 		CAppUtils::SetWindowTitle(m_hWnd, commonDir.GetWinPathString(), m_sTitle);
 
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)));
 	DialogEnableWindow(IDC_REFRESH, TRUE);
-	DialogEnableWindow(IDC_SHOWUNVERSIONED, !bSingleFile);
-	//DialogEnableWindow(IDC_SHOWUNMODIFIED, !bSingleFile);
-	DialogEnableWindow(IDC_SHOWIGNORED, !bSingleFile);
+	DialogEnableWindow(IDC_SHOWUNVERSIONED, bIsDirectory);
+	//DialogEnableWindow(IDC_SHOWUNMODIFIED, bIsDirectory);
+	DialogEnableWindow(IDC_SHOWIGNORED, bIsDirectory);
 	DialogEnableWindow(IDC_SHOWUSERPROPS, TRUE);
 	InterlockedExchange(&m_bBlock, FALSE);
 	// revert the remote flag back to the default
