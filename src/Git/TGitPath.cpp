@@ -55,6 +55,8 @@ CTGitPath::CTGitPath(void) :
 	, m_customData(NULL)
 	, m_bIsSpecialDirectoryKnown(false)
 	, m_bIsSpecialDirectory(false)
+	, m_bIsWCRootKnown(false)
+	, m_bIsWCRoot(false)
 {
 	m_Action=0;
 	m_ParentNo=0;
@@ -82,6 +84,8 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	, m_customData(NULL)
 	, m_bIsSpecialDirectoryKnown(false)
 	, m_bIsSpecialDirectory(false)
+	, m_bIsWCRootKnown(false)
+	, m_bIsWCRoot(false)
 {
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
@@ -753,6 +757,28 @@ void CTGitPath::AppendPathString(const CString& sAppend)
 	m_sBackslashPath.TrimRight('\\');
 	CString strCopy = m_sBackslashPath + _T("\\") + cleanAppend;
 	SetFromWin(strCopy);
+}
+
+bool CTGitPath::IsWCRoot() const
+{
+	if (m_bIsWCRootKnown)
+		return m_bIsWCRoot;
+
+	m_bIsWCRootKnown = true;
+	m_bIsWCRoot = false;
+
+	CString topDirectory;
+	if (!IsDirectory() || !HasAdminDir(&topDirectory))
+	{
+		return m_bIsWCRoot;
+	}
+
+	if (IsEquivalentToWithoutCase(topDirectory))
+	{
+		m_bIsWCRoot = true;
+	}
+
+	return m_bIsWCRoot;
 }
 
 bool CTGitPath::HasAdminDir() const

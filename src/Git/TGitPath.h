@@ -245,6 +245,8 @@ public:
 	bool HasStashDir() const;
 	bool HasRebaseApply() const;
 
+	bool IsWCRoot() const;
+
 	int  GetAdminDirMask() const;
 
 	/**
@@ -325,6 +327,8 @@ private:
 	mutable bool m_bIsValidOnWindows;
 	mutable bool m_bIsAdminDirKnown;
 	mutable bool m_bIsAdminDir;
+	mutable bool m_bIsWCRootKnown;
+	mutable bool m_bIsWCRoot;
 	mutable bool m_bExists;
 	mutable bool m_bExistsKnown;
 	mutable LPARAM m_customData;
