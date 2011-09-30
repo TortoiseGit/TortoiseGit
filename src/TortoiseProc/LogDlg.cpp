@@ -440,7 +440,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 			m_DateTo.SetTime(&end);
 
 
-	}else
+	}
+	else
 	{
 		if(this->m_LogList.HasText())
 		{

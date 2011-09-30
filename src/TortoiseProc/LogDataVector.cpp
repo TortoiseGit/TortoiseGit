@@ -127,7 +127,8 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 			//file list will wrong if parent rewrite.
 			pRev->SafeFetchFullInfo(&g_Git);
 
-		}else
+		}
+		else
 		{
 			ASSERT(pRev->m_CommitHash == hash);
 			pRev->ParserParentFromCommit(&commit);
@@ -177,7 +178,8 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 			m_pLogCache->m_HashMap[at(i)].m_Ref.Format(_T("%s{%d}"), ref,i);
 		}
 
-	}else
+	}
+	else
 	{
 
 		CString cmd,out;

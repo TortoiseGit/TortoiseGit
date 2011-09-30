@@ -403,7 +403,8 @@ protected:
 			((CGitLogListBase*)data)->m_AsynDiffList.push_back(rev);
 			((CGitLogListBase*)data)->m_AsynDiffListLock.Unlock();
 			::SetEvent(((CGitLogListBase*)data)->m_AsyncDiffEvent);
-		}else
+		}
+		else
 		{
 			if(((CGitLogListBase*)data)->m_LogCache.LoadOneItem(*rev,offset))
 			{

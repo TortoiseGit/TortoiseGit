@@ -235,7 +235,8 @@ void CChangedDlg::OnBnClickedShowunversioned()
 	{
 		m_FileListCtrl.Show(UpdateShowFlags());
 		m_regAddBeforeCommit = m_bShowUnversioned;
-	}else
+	}
+	else
 	{
 		if(m_bShowUnversioned)
 		{

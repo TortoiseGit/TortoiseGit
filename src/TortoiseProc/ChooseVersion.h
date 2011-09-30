@@ -159,7 +159,8 @@ protected:
 			SetDefaultChoose(IDC_RADIO_TAGS);
 			m_ChooseVersioinTags.SetCurSel(
 				m_ChooseVersioinTags.FindStringExact(-1, refName));
-		}else
+		}
+		else
 		{
 			SetDefaultChoose(IDC_RADIO_VERSION);
 			m_ChooseVersioinVersion.AddString(refName);

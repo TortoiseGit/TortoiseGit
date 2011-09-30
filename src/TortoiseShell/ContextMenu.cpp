@@ -403,7 +403,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				itemStates |= ITEMIS_ONLYONE;
 			if (m_State != FileStateDropHandler)
 				itemStates |= itemStatesFolder;
-		}else
+		}
+		else
 		{
 			folder_.clear();
 			status = fetchedstatus;

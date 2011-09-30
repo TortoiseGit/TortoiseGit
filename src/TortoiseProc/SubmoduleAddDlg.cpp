@@ -127,7 +127,8 @@ void CSubmoduleAddDlg::OnBranchCheck()
 	if(this->m_bBranch)
 	{
 		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(TRUE);
-	}else
+	}
+	else
 	{
 		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(FALSE);
 	}

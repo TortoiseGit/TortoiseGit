@@ -412,7 +412,8 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL R
 			return configValue;
 		}
 
-	}else
+	}
+	else
 	{
 		CString cmd;
 		cmd.Format(L"git.exe config %s", name);
@@ -443,7 +444,8 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 
 		return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type, p.GetBuffer());
 
-	}else
+	}
+	else
 	{
 		CString cmd;
 		CString option;
@@ -477,7 +479,8 @@ CString CGit::GetCurrentBranch(void)
 	if(this->GetCurrentBranchFromFile(this->m_CurrentDir,output))
 	{
 		return _T("(no branch)");
-	}else
+	}
+	else
 		return output;
 
 }
@@ -498,7 +501,8 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 				refName = StripRefName(refName);
 		}
 
-	}else
+	}
+	else
 	{
 		CString cmd;
 		cmd.Format(L"git symbolic-ref %s", symbolicRefName);
@@ -722,7 +726,7 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 	if(Filter && isgrep)
 	{
 		if(!Filter->m_IsRegex)
-			param+=_T(" --fixed-strings ");
+			param += _T(" --fixed-strings ");
 
 		param += _T(" --regexp-ignore-case --extended-regexp ");
 	}
@@ -854,7 +858,8 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		}
 		return hash;
 
-	}else
+	}
+	else
 	{
 		CString cmd;
 		CString out;
@@ -893,7 +898,8 @@ int CGit::GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathLis
 			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s"),rev2);
 		else
 			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s"),rev1);
-	}else
+	}
+	else
 	{
 		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s"),rev2,rev1);
 	}
@@ -924,7 +930,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	{
 		return git_for_each_ref_in("refs/tags/",addto_list_each_ref_fn, &list);
 
-	}else
+	}
+	else
 	{
 		CString cmd,output;
 		cmd=_T("git.exe tag -l");
@@ -999,12 +1006,12 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
 	CString cmd,output;
-	cmd=_T("git.exe branch --no-color");
+	cmd = _T("git.exe branch --no-color");
 
 	if((type&BRANCH_ALL) == BRANCH_ALL)
-		cmd+=_T(" -a");
+		cmd += _T(" -a");
 	else if(type&BRANCH_REMOTE)
-		cmd+=_T(" -r");
+		cmd += _T(" -r");
 
 	int i=0;
 	ret=g_Git.Run(cmd,&output,CP_UTF8);
@@ -1061,7 +1068,8 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	{
 		return git_for_each_ref_in("",addto_list_each_ref_fn, &list);
 
-	}else
+	}
+	else
 	{
 		CString cmd,output;
 		cmd=_T("git.exe show-ref -d");
@@ -1113,7 +1121,8 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	{
 		return git_for_each_ref_in("",addto_map_each_ref_fn, &map);
 
-	}else
+	}
+	else
 	{
 		CString cmd,output;
 		cmd=_T("git.exe show-ref -d");
@@ -1185,7 +1194,8 @@ BOOL CGit::CheckMsysGitDir()
 		ssh=CString(_T("\""))+ssh+_T('\"');
 		m_Environment.SetEnv(_T("SVN_SSH"),ssh.GetBuffer());
 
-	}else
+	}
+	else
 	{
 		TCHAR sPlink[MAX_PATH];
 		GetModuleFileName(NULL, sPlink, _countof(sPlink));
@@ -1242,7 +1252,8 @@ BOOL CGit::CheckMsysGitDir()
 
 			return FALSE;
 		}
-	}else
+	}
+	else
 	{
 		CGit::ms_LastMsysGitDir = str;
 	}
@@ -1504,7 +1515,8 @@ int CGit::Revert(CString commit, CTGitPath &path)
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
 
-	}else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
+	}
+	else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{	//To init git repository, there are not HEAD, so we can use git reset command
 		cmd.Format(_T("git.exe rm --cached -- \"%s\""),path.GetGitPathString());
 
@@ -1583,7 +1595,8 @@ int CGit::RefreshGitIndex()
 			return -1;
 		}
 
-	}else
+	}
+	else
 	{
 		CString cmd,output;
 		cmd=_T("git.exe update-index --refresh");
@@ -1609,7 +1622,8 @@ int CGit::GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile
 		{
 			return -1;
 		}
-	}else
+	}
+	else
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe cat-file -p %s:\"%s\""), Refname, path.GetGitPathString());
@@ -1765,7 +1779,8 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 		{
 			path.m_StatAdd=_T("-");
 			path.m_StatDel=_T("-");
-		}else
+		}
+		else
 		{
 			path.m_StatAdd.Format(_T("%d"),inc);
 			path.m_StatDel.Format(_T("%d"),dec);

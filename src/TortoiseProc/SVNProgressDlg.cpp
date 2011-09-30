@@ -2784,7 +2784,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
 					ret = false;
 
-				}else
+				}
+				else
 				{
 					ret = true;
 					break;

@@ -319,7 +319,9 @@ void CTortoiseGitBlameView::OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI)
 	if (m_ID[m_MouseLine] <= 1)
 	{
 		pCmdUI->Enable(false);
-	} else {
+	}
+	else
+	{
 		pCmdUI->Enable(true);
 	}
 }
@@ -329,7 +331,9 @@ void CTortoiseGitBlameView::OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI)
 	if (m_ID[m_MouseLine] <= 1)
 	{
 		pCmdUI->Enable(false);
-	} else {
+	}
+	else
+	{
 		pCmdUI->Enable(true);
 	}
 }
@@ -867,11 +871,11 @@ void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 void CTortoiseGitBlameView::BlamePreviousRevision()
 {
 	CString  procCmd;
-	procCmd+=_T(" /path:\"");
-	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd+=_T("\" ");
-	procCmd+=_T(" /command:blame");
-	procCmd+=_T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
+	procCmd += _T(" /path:\"");
+	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	procCmd += _T("\" ");
+	procCmd += _T(" /command:blame");
+	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
 
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
@@ -890,12 +894,12 @@ void CTortoiseGitBlameView::BlamePreviousRevision()
 void CTortoiseGitBlameView::DiffPreviousRevision()
 {
 	CString  procCmd;
-	procCmd+=_T(" /path:\"");
-	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd+=_T("\" ");
-	procCmd+=_T(" /command:diff");
-	procCmd+=_T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
-	procCmd+=_T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
+	procCmd += _T(" /path:\"");
+	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	procCmd += _T("\" ");
+	procCmd += _T(" /command:diff");
+	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
+	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
 
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
@@ -2527,7 +2531,8 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 				::MessageBox(NULL, _T("Can't get hash"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			}
 
-		}else
+		}
+		else
 			hash.ConvertFromStrA((char*)&data[pos]);
 
 
@@ -2561,7 +2566,8 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 					stra = CUnicodeUtils::GetUTF8(strw);
 
-				}else if(encoding == CP_UTF8)
+				}
+				else if(encoding == CP_UTF8)
 				{
 					stra =  &data[start + 2 + bomoffset ];
 				}
@@ -2690,7 +2696,8 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 				this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
 															LVIS_SELECTED,
 															LVIS_SELECTED);
-			}else
+			}
+			else
 			{
 				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&m_NoListCommit[m_CommitHash[line]]);
 			}
@@ -2763,7 +2770,8 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			{
 				pRev=&this->m_NoListCommit[m_CommitHash[line]];
 
-			}else
+			}
+			else
 			{
 				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
 			}

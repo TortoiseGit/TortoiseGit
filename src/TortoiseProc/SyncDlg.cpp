@@ -195,7 +195,8 @@ void CSyncDlg::OnBnClickedButtonPull()
 		{
 			remotebranch=this->m_strRemoteBranch;
 
-		}else
+		}
+		else
 		{
 			remotebranch.Format(_T("remotes/%s/%s"),
 								m_strURL,m_strRemoteBranch);
@@ -293,7 +294,8 @@ void CSyncDlg::PullComplete()
 		else
 			this->ShowTab(IDC_CMD_LOG);
 
-	}else
+	}
+	else
 	{
 		if(newhash == this->m_oldHash)
 		{
@@ -475,7 +477,8 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_InLogList.ShowText(_T("No commits get from patch"));
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
-		}else
+		}
+		else
 		{
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
@@ -492,7 +495,8 @@ void CSyncDlg::OnBnClickedButtonApply()
 		if(err)
 		{
 			this->ShowTab(IDC_CMD_LOG);
-		}else
+		}
+		else
 		{
 			this->ShowTab(IDC_IN_LOGLIST);
 		}

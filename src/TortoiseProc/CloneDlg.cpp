@@ -311,13 +311,14 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 		m_Directory=m_Directory.Left(dirstart);
 		m_Directory+=m_ModuleName;
 
-	}else
+	}
+	else
 	{
 		if(m_Directory.GetLength()>0 &&
 			(m_Directory[m_Directory.GetLength()-1] != _T('\\') &&
 			m_Directory[m_Directory.GetLength()-1] != _T('/') ) )
 		{
-			m_Directory+=_T('\\');
+			m_Directory += _T('\\');
 		}
 		m_Directory += m_ModuleName;
 	}
@@ -354,7 +355,8 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = FALSE;
 			this->UpdateData(FALSE);
-		}else
+		}
+		else
 		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = TRUE;
 			this->UpdateData(FALSE);

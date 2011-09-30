@@ -436,7 +436,8 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 			m_Data.m_theirFile.SetOutOfUse();
 			m_Data.m_mergedFile.SetOutOfUse();
 		
-		}else
+		}
+		else
 		{
 			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
 			m_Data.m_baseFile.SetFileName(sBaseFile);
@@ -496,7 +497,8 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 			if( Path2)
 			{
 				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(*Path2), (LPCTSTR)m_Data.m_sPatchPatched);
-			}else
+			}
+			else
 				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
 
 			m_Data.m_yourFile.SetDescriptiveName(temp);

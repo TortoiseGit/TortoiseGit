@@ -240,7 +240,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 					}
 				}
 			}
-		}else
+		}
+		else
 		{
 			//All file ignored if under ignore directory
 			if( m_currentFullStatus == git_wc_status_ignored)
@@ -309,7 +310,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 				return dirEntry->m_ownStatus;
 			}
 
-		}else /* path is file */
+		}
+		else /* path is file */
 		{
 			AutoLocker lock(m_critSec);
 			CString strCacheKey = GetCacheKey(path);
@@ -324,14 +326,16 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 					(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 				AddEntry(path, &status2);
 				return m_entryCache[strCacheKey];
-			}else
+			}
+			else
 			{
 				return itMap->second;
 			}
 		}
 		return CStatusCacheEntry();
 
-	}else
+	}
+	else
 	{
 		EnumFiles((CTGitPath*)&path, TRUE);
 		return CStatusCacheEntry(git_wc_status_normal);
@@ -379,7 +383,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	{
 		GetStatusFromGit(path, sProjectRoot);
 		return CStatusCacheEntry();
-	}else
+	}
+	else
 	{
 		return GetStatusFromCache(path, bRecursive);
 	}

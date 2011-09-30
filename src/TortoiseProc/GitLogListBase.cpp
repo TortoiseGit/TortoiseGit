@@ -199,7 +199,8 @@ int CGitLogListBase::AsyncDiffThread()
 				{
 					g_Git.GetInitAddList(pRev->GetFiles(this));
 
-				}else
+				}
+				else
 				{
 					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
 				}
@@ -254,9 +255,12 @@ int CGitLogListBase::AsyncDiffThread()
 }
 void CGitLogListBase::hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow)
 {
-	if (exclusivelyShow) {
+	if (exclusivelyShow)
+	{
 		m_ContextMenuMask &= hideMask;
-	} else {
+	}
+	else
+	{
 		m_ContextMenuMask &= ~hideMask;
 	}
 }
@@ -385,7 +389,9 @@ void CGitLogListBase::InsertGitColumn()
 	{
 		hideColumns |= GIT_LOG_GRAPH;
 		m_dwDefaultColumns |= GIT_LOG_REBASE;
-	} else {
+	}
+	else
+	{
 		hideColumns |= GIT_LOG_REBASE;
 	}
 
@@ -394,13 +400,17 @@ void CGitLogListBase::InsertGitColumn()
 		hideColumns |= GIT_LOG_ACTIONS;
 		m_dwDefaultColumns |= GIT_LOG_ID;
 		m_dwDefaultColumns |= GIT_LOG_HASH;
-	} else {
+	}
+	else
+	{
 		hideColumns |= GIT_LOG_ID;
 	}
 	if(this->m_bShowBugtraqColumn)
 	{
 		m_dwDefaultColumns |= GIT_LOGLIST_BUG;
-	} else {
+	}
+	else
+	{
 		hideColumns |= GIT_LOGLIST_BUG;
 	}
 	SetRedraw(false);
@@ -446,7 +456,8 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 			if (cx < nMinimumWidth)
 			{
 				cx = nMinimumWidth;
-			} else if (cx > nMaximumWidth)
+			}
+			else if (cx > nMaximumWidth)
 			{
 				cx = nMaximumWidth;
 			}
@@ -582,7 +593,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			else
 				colRef = m_Colors.GetColor(CColors::LocalBranch);
 
-		}else if(GetShortName(str,shortname,_T("refs/remotes/")))
+		}
+		else if(GetShortName(str,shortname,_T("refs/remotes/")))
 		{
 			colRef = m_Colors.GetColor(CColors::RemoteBranch);
 		}
@@ -594,7 +606,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		{
 			colRef = m_Colors.GetColor(CColors::Stash);
 			shortname=_T("stash");
-		}else if(GetShortName(str,shortname,_T("refs/bisect/")))
+		}
+		else if(GetShortName(str,shortname,_T("refs/bisect/")))
 		{
 			if(shortname.Find(_T("good")) == 0)
 			{
@@ -662,7 +675,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 					COLORREF clrOld = ::SetTextColor(hdc,clrNew);
 					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc,clrOld);
-				}else
+				}
+				else
 				{
 					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
 				}
@@ -696,7 +710,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			COLORREF clrOld = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));
 			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 			::SetTextColor(hdc,clrOld);
-		}else
+		}
+		else
 		{
 			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 		}
@@ -1044,10 +1059,12 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		UINT col = (  Lanes:: isHead(ln) ||Lanes:: isTail(ln) || Lanes::isJoin(ln)
 					|| ln ==Lanes:: CROSS_EMPTY) ? activeLane : i;
 
-		if (ln == Lanes::CROSS) {
+		if (ln == Lanes::CROSS)
+		{
 			paintGraphLane(hdc, rect.Height(),Lanes::NOT_ACTIVE, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
 			paintGraphLane(hdc, rect.Height(),Lanes::CROSS, x1, x2, m_LineColors[activeLane % Lanes::COLORS_NUM],rect.top);
-		} else
+		}
+		else
 			paintGraphLane(hdc, rect.Height(),ln, x1, x2, m_LineColors[col % Lanes::COLORS_NUM],rect.top);
 	}
 #endif
@@ -1289,7 +1306,8 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		temp.Format(_T("%d"),pItem->iItem+1);
 
-	}else
+	}
+	else
 	{
 		temp.Format(_T("%d"),m_arShownList.GetCount()-pItem->iItem);
 	}
@@ -1494,7 +1512,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					// But until that's implemented, the context menu entry for
 					// this feature is commented out.
 					//popup.AppendMenu(ID_BLAMECOMPARE, IDS_LOG_POPUP_BLAMECOMPARE, IDI_BLAME);
-				}else
+				}
+				else
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMMIT))
 						popup.AppendMenuIcon(ID_COMMIT, IDS_LOG_POPUP_COMMIT, IDI_COMMIT);
@@ -1510,7 +1529,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
 
-					}else
+					}
+					else
 					{
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
@@ -1915,7 +1935,8 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 					(LPCTSTR)sMessage, pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim(),
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
-			}else
+			}
+			else
 			{
 				sClipdata += pLogEntry->m_CommitHash;
 				break;
@@ -2083,7 +2104,8 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 			m_logEntries.GetGitRevAt(m_logEntries.size()-i-1).m_IsFull=TRUE;
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
 
-		}else
+		}
+		else
 		{
 			m_logEntries.GetGitRevAt(i).m_IsFull=TRUE;
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
@@ -2903,7 +2925,8 @@ void CGitLogListBase::RemoveFilter()
 		if(this->m_IsOldFirst)
 		{
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size()-i-1));
-		}else
+		}
+		else
 		{
 			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
 		}
@@ -3102,7 +3125,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 					str+=pLogEntry->GetFiles(this)[i].GetGitOldPathString();
 					str+=_T("\n");
 				}
-			}else
+			}
+			else
 			{
 				if(!pLogEntry->m_IsSimpleListReady)
 					pLogEntry->SafeGetSimpleList(&g_Git);

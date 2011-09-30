@@ -1423,7 +1423,8 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 		{
 			sTextForClipboard += _T("\r\n");
 
-		}else
+		}
+		else
 		{
 			sTextForClipboard += m_cFileList.GetItemText(index, 1);
 			sTextForClipboard += _T("\t");

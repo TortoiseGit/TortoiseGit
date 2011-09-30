@@ -224,7 +224,8 @@ BOOL CRebaseDlg::OnInitDialog()
 	{
 		this->LoadBranchInfo();
 
-	}else
+	}
+	else
 	{
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
@@ -255,7 +256,8 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->SetWindowText(_T("Cherry Pick"));
 		this->m_CommitList.StartFilter();
 
-	}else
+	}
+	else
 	{
 		SetContinueButtonText();
 		m_CommitList.DeleteAllItems();
@@ -710,7 +712,8 @@ int CRebaseDlg::CheckRebaseCondition()
 				return -1;
 			}
 
-		}else
+		}
+		else
 			return -1;
 	}
 	//Todo Check $REBASE_ROOT
@@ -788,7 +791,8 @@ int CRebaseDlg::StartRebase()
 		}
 		this->AddLogString(_T("Start Rebase\r\n"));
 
-	}else
+	}
+	else
 		this->AddLogString(_T("Start Cherry-pick\r\n"));
 
 	return 0;
@@ -1054,7 +1058,8 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 				index++;
 			else
 				index--;
-		}else
+		}
+		else
 			return -1;
 
 	}while(curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP);
@@ -1191,7 +1196,8 @@ void CRebaseDlg::SetControlEnable()
 	{
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 
-	}else
+	}
+	else
 	{
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 	}
@@ -1273,7 +1279,8 @@ int CRebaseDlg::GetCurrentCommitID()
 	{
 		return this->m_CurrentRebaseIndex+1;
 
-	}else
+	}
+	else
 	{
 		return m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
 	}
@@ -1356,7 +1363,8 @@ int CRebaseDlg::DoRebase()
 			m_RebaseStage = REBASE_CONFLICT;
 		return -1;
 
-	}else
+	}
+	else
 	{
 		AddLogString(out);
 		if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
@@ -1407,7 +1415,8 @@ int CRebaseDlg::RebaseThread()
 			}
 			m_RebaseStage = REBASE_CONTINUE;
 
-		}else if( m_RebaseStage == REBASE_CONTINUE )
+		}
+		else if( m_RebaseStage == REBASE_CONTINUE )
 		{
 			this->GoNext();
 			UpdateCurrentStatus();
@@ -1416,7 +1425,8 @@ int CRebaseDlg::RebaseThread()
 				ret = 0;
 				m_RebaseStage = REBASE_FINISH;
 
-			}else
+			}
+			else
 			{
 				ret = DoRebase();
 
@@ -1426,7 +1436,8 @@ int CRebaseDlg::RebaseThread()
 				}
 			}
 
-		}else if( m_RebaseStage == REBASE_FINISH )
+		}
+		else if( m_RebaseStage == REBASE_FINISH )
 		{
 			FinishRebase();
 			m_RebaseStage = REBASE_DONE;
@@ -1434,7 +1445,8 @@ int CRebaseDlg::RebaseThread()
 				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 			break;
 
-		}else
+		}
+		else
 		{
 			break;
 		}

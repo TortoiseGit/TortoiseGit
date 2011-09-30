@@ -43,7 +43,8 @@ bool SVNRebaseCommand::Execute()
 				return false;
 			}
 			isStash = true;
-		}else
+		}
+		else
 		{
 			return false;
 		}
@@ -67,7 +68,8 @@ bool SVNRebaseCommand::Execute()
 
 		start = 0;
 		out=out.Tokenize(_T("\n"),start);
-	}else
+	}
+	else
 	{
 		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return false;
@@ -109,7 +111,8 @@ bool SVNRebaseCommand::Execute()
 		{
 			CMessageBox::Show(NULL,ff,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return false;
-		}else
+		}
+		else
 		{
 			CMessageBox::Show(NULL,CString(_T("Fast Forward: "))+ff,_T("TortoiseGit"),MB_OK);
 			if(isStash)

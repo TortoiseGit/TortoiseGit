@@ -382,7 +382,8 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(m_BaseInfoGroup->GetSubItem(i)->GetValue());
 
-	}else
+	}
+	else
 	{
 		m_CommitHash->SetValue(_T(""));
 		m_AuthorName->SetValue(_T(""));

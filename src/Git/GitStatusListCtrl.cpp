@@ -2230,7 +2230,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							CString str;
 							if(filepath->m_ParentNo & MERGE_MASK)
 							{
-							}else
+							}
+							else
 							{
 								str.Format(_T("%s^%d"),m_CurrentVersion,(filepath->m_ParentNo&PARENT_MASK)+1);
 							}
@@ -2423,7 +2424,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							if(g_Git.Run(gitcmd,&output,CP_ACP))
 							{
 								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
-							}else
+							}
+							else
 							{
 								fentry->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
 								fentry->m_Action &=~CTGitPath::LOGACTIONS_UNMERGED;
@@ -2869,7 +2871,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 											this->m_UnRevFileList.AddPath(*path);
 											//this->m_IgnoreFileList.RemoveItem(*path);
 
-										}else
+										}
+										else
 										{
 											RemoveListEntry(nItem);
 										}
@@ -3498,7 +3501,8 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		CAppUtils::ConflictEdit(*file,false,m_bIsRevertTheirMy);
 
-	}else
+	}
+	else
 	{
 		if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty())) // m_Rev1 twice???
 			StartDiffTwo(pNMLV->iItem);
@@ -3544,7 +3548,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	if(file1.m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY))
 	{
 		file2.SetFromGit(file1.GetGitOldPathString());
-	}else
+	}
+	else
 	{
 		file2=file1;
 	}
@@ -3567,7 +3572,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			CGitDiff::Diff(&file1,&file2,
 					CString(GIT_REV_ZERO),
 					GitRev::GetHead()+fromwhere);
-	}else
+	}
+	else
 	{
 		GitRev rev;
 		CString fromwhere = m_CurrentVersion+_T("~1");
@@ -3577,9 +3583,12 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		{
 			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
 
-		} else if (file1.m_Action == file1.LOGACTIONS_DELETED) {
+		}
+		else if (file1.m_Action == file1.LOGACTIONS_DELETED)
+		{
 			CGitDiff::DiffNull(&file1,fromwhere,false);
-		}else
+		}
+		else
 		{
 			if( file1.m_ParentNo & MERGE_MASK)
 			{
@@ -3611,12 +3620,14 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					{
 						if(m_arStatusArray[i]->m_ParentNo & MERGE_MASK)
 						{
-						}else
+						}
+						else
 						{
 							if(parent1<0)
 							{
 								parent1 = m_arStatusArray[i]->m_ParentNo & PARENT_MASK;
-							}else if (parent2 <0)
+							}
+							else if (parent2 <0)
 							{
 								parent2 = m_arStatusArray[i]->m_ParentNo & PARENT_MASK;
 							}
@@ -3659,7 +3670,8 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 					if(g_Git.Run(cmd,&output, CP_ACP))
 					{
-					}else
+					}
+					else
 					{
 						if(g_Git.GetOneFile(output.Left(40), file1, (CString&)base.GetWinPathString()))
 						{
@@ -3669,13 +3681,15 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				}
 				CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
 
-			}else
+			}
+			else
 			{
 				CString str;
 				if( (file1.m_ParentNo&PARENT_MASK) == 0)
 				{
 					str = _T("~1");
-				}else
+				}
+				else
 				{
 					str.Format(_T("^%d"), (file1.m_ParentNo&PARENT_MASK)+1);
 				}
@@ -3743,7 +3757,8 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 				(LPCTSTR)sDeleted, m_nDeleted,
 				(LPCTSTR)sRenamed, m_nRenamed
 			);
-	}else
+	}
+	else
 	{
 		sToolTip.Format(_T("line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"),
 			this->m_nLineAdded,this->m_nLineDeleted,
@@ -3919,15 +3934,18 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					crText = RGB(128,128,128);
 
-				}else if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+				}
+				else if(entry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 				{
 					crText = m_Colors.GetColor(CColors::Conflict);
 
-				}else if(entry->m_Action & (CTGitPath::LOGACTIONS_MODIFIED))
+				}
+				else if(entry->m_Action & (CTGitPath::LOGACTIONS_MODIFIED))
 				{
 					crText = m_Colors.GetColor(CColors::Modified);
 
-				}else if(entry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
+				}
+				else if(entry->m_Action & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY))
 				{
 					crText = m_Colors.GetColor(CColors::Added);
 				}
@@ -3938,10 +3956,12 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 				{
 					crText = m_Colors.GetColor(CColors::RenamedNode);
-				}else if(entry->m_Action & CTGitPath::LOGACTIONS_MERGED)
+				}
+				else if(entry->m_Action & CTGitPath::LOGACTIONS_MERGED)
 				{
 					crText = m_Colors.GetColor(CColors::Merged);
-				}else
+				}
+				else
 				{
 					crText = GetSysColor(COLOR_WINDOWTEXT);
 				}
@@ -4078,9 +4098,12 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	{
 		int index = GetNextSelectedItem(pos);
 		CTGitPath *file=(CTGitPath*)GetItemData(index);
-		if (file->m_Action == CTGitPath::LOGACTIONS_UNVER) {
+		if (file->m_Action == CTGitPath::LOGACTIONS_UNVER)
+		{
 			OpenFile(file, OPEN);
-		} else {
+		}
+		else
+		{
 			StartDiff(index);
 		}
 	}
@@ -4752,7 +4775,8 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 				grp.uAlign = LVGA_HEADER_LEFT;
 				InsertGroup(i+1, &grp);
 			}
-		}else
+		}
+		else
 		{
 			CString sUnassignedName(_T("Modified File"));
 			_tcsncpy_s(groupname, 1024, (LPCTSTR)sUnassignedName, 1023);
@@ -4884,7 +4908,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 						CMessageBox::Show(NULL,str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 						cmdout.resize(last+1);
 
-					}else
+					}
+					else
 					{
 						cmdout.clear();
 						CString strout;
@@ -4974,7 +4999,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 					m_StatusFileList.AddPath(deletelist[i]);
 			}
 		}
-	}else
+	}
+	else
 	{
 		int count = 0;
 		if(list == NULL)
@@ -5252,7 +5278,8 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 				return;
 			}
 
-		}else
+		}
+		else
 		{
 			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
 			{
@@ -5299,7 +5326,8 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
 	{
 		file= filepath->GetWinPath();
-	}else
+	}
+	else
 	{
 		CString temppath;
 		GetTempPath(temppath);

@@ -93,7 +93,8 @@ BOOL CRefLogDlg::OnInitDialog()
 	{
 		m_CurrentBranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
 		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
-	}else
+	}
+	else
 	{
 		for(int i=0;i<list.size();i++)
 		{

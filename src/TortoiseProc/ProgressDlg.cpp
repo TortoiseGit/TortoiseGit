@@ -204,7 +204,8 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 				if(byte == '\r' || byte == '\n')
 					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
-			}else
+			}
+			else
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,byte);
 		}
 
@@ -343,7 +344,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			}
 			m_Databuf.m_critSec.Unlock();
 
-		}else
+		}
+		else
 			ParserCmdOutput((char)lParam);
 	}
 	return 0;
@@ -488,7 +490,8 @@ void CProgressDlg::OnCancel()
 		if(::GenerateConsoleCtrlEvent(CTRL_C_EVENT,0))
 		{
 			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
-		}else
+		}
+		else
 		{
 			GetLastError();
 		}

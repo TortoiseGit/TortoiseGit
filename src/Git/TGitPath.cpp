@@ -783,21 +783,21 @@ int CTGitPath::GetAdminDirMask() const
 	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN|ITEMIS_INVERSIONEDFOLDER;
 
 	path=topdir;
-	path+=_T("\\");
-	path+=g_GitAdminDir.GetAdminDirName();
-	path+=_T("\\refs\\stash");
+	path += _T("\\");
+	path += g_GitAdminDir.GetAdminDirName();
+	path += _T("\\refs\\stash");
 	if( PathFileExists(path) )
 		status |= ITEMIS_STASH;
 
 	path=topdir;
-	path+=_T("\\");
-	path+=g_GitAdminDir.GetAdminDirName();
-	path+=_T("\\svn");
+	path += _T("\\");
+	path += g_GitAdminDir.GetAdminDirName();
+	path += _T("\\svn");
 	if( PathFileExists(path) )
 		status |= ITEMIS_GITSVN;
 
 	path=topdir;
-	path+=_T("\\.gitmodules");
+	path += _T("\\.gitmodules");
 	if( PathFileExists(path) )
 		status |= ITEMIS_SUBMODULE;
 
@@ -811,9 +811,9 @@ bool CTGitPath::HasStashDir() const
 	{
 		return false;
 	}
-	topdir+=_T("\\");
-	topdir+=g_GitAdminDir.GetAdminDirName();
-	topdir+=_T("\\refs\\stash");
+	topdir += _T("\\");
+	topdir += g_GitAdminDir.GetAdminDirName();
+	topdir += _T("\\refs\\stash");
 	return !!PathFileExists(topdir);
 }
 bool CTGitPath::HasGitSVNDir() const
@@ -823,9 +823,9 @@ bool CTGitPath::HasGitSVNDir() const
 	{
 		return false;
 	}
-	topdir+=_T("\\");
-	topdir+=g_GitAdminDir.GetAdminDirName();
-	topdir+=_T("\\svn");
+	topdir += _T("\\");
+	topdir += g_GitAdminDir.GetAdminDirName();
+	topdir += _T("\\svn");
 	return !!PathFileExists(topdir);
 }
 
@@ -836,9 +836,9 @@ bool CTGitPath::HasRebaseApply() const
 	{
 		return false;
 	}
-	topdir+=_T("\\");
-	topdir+=g_GitAdminDir.GetAdminDirName();
-	topdir+=_T("\\rebase-apply");
+	topdir += _T("\\");
+	topdir += g_GitAdminDir.GetAdminDirName();
+	topdir += _T("\\rebase-apply");
 	return !!PathFileExists(topdir);
 }
 
@@ -1126,7 +1126,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				}
 				m_Action |=GitPath->m_Action;
 
-			}else
+			}
+			else
 			{
 				int ac=path.ParserAction(log[actionstart] );
 				ac |= merged?CTGitPath::LOGACTIONS_MERGED:0;
@@ -1140,7 +1141,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 
 			}
 
-		}else
+		}
+		else
 		{
 			int tabstart=0;
 			path.Reset();
@@ -1178,7 +1180,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				}
 				pos=sec;
 
-			}else
+			}
+			else
 			{
 				g_Git.StringAppend(&file1,&log[pos],CP_ACP);
 			}
@@ -1189,14 +1192,18 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			{
 				GitPath->m_StatAdd=StatAdd;
 				GitPath->m_StatDel=StatDel;
-			}else
+			}
+			else
 			{
 				//path.SetFromGit(pathname);
-				if (parseDeletes) {
+				if (parseDeletes)
+				{
 					path.m_StatAdd=_T("0");
 					path.m_StatDel=_T("0");
 					path.m_Action |= CTGitPath::LOGACTIONS_DELETED;
-				} else {
+				}
+				else
+				{
 					path.m_StatAdd=StatAdd;
 					path.m_StatDel=StatDel;
 					path.m_Action |= CTGitPath::LOGACTIONS_FORWORD;

@@ -154,10 +154,13 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	int nIndex = FindStringExact(-1, combostring);
 	if (nIndex != -1)
 	{
-		if (nIndex > cbei.iItem) {
+		if (nIndex > cbei.iItem)
+		{
 			DeleteItem(nIndex);
 			m_arEntries.RemoveAt(nIndex);
-		} else {
+		}
+		else
+		{
 			if(isSel)
 				SetCurSel(nIndex);
 			return nIndex;

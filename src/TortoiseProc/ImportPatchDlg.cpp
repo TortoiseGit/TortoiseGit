@@ -233,7 +233,8 @@ void CImportPatchDlg::OnLbnSelchangeListPatch()
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(FALSE);
-	}else
+	}
+	else
 	{
 		this->GetDlgItem(IDC_BUTTON_UP)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_BUTTON_DOWN)->EnableWindow(TRUE);
@@ -449,7 +450,8 @@ UINT CImportPatchDlg::PatchThread()
 				this->AddLogString(_T("Success"));
 			}
 
-		}else
+		}
+		else
 		{
 			AddLogString(CString(_T("Skip Patch: "))+m_cList.GetItemText(i,0));
 			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);

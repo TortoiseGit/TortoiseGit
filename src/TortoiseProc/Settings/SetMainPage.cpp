@@ -274,7 +274,8 @@ void CSetMainPage::OnCheck()
 		cmd=_T("git.exe --version");
 		g_Git.Run(cmd,&out,CP_UTF8);
 		this->GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(out);
-	}else
+	}
+	else
 	{
 		CMessageBox::Show(NULL,_T("Msys Git Install Path Error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}

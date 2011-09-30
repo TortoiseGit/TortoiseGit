@@ -38,7 +38,8 @@ bool StashSaveCommand::Execute()
 	if(g_Git.Run(cmd,&out,CP_ACP))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-	}else
+	}
+	else
 	{
  		CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Success</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONINFORMATION);
 		bRet = true;

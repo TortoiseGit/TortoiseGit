@@ -117,7 +117,8 @@ BOOL CSetProxyPage::OnInitDialog()
 			else
 				m_serveraddress = proxy.Mid(start, port-start);
 
-		}else
+		}
+		else
 		{
 			int username;
 			username = proxy.Find(_T(":"),start);
@@ -142,7 +143,8 @@ BOOL CSetProxyPage::OnInitDialog()
 		if(port<0)
 		{
 			m_serverport= 0;
-		}else
+		}
+		else
 			m_serverport = _ttoi(proxy.Mid(port+1));
 
 		m_isEnabled = TRUE;

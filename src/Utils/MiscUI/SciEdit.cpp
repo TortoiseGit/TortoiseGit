@@ -1429,6 +1429,7 @@ int CSciEdit::LoadFromFile(CString &filename)
 				fclose(fp);
 				Call(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
 				return 0;
-	}else
+	}
+	else
 		return -1;
 }

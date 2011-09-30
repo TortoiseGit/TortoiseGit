@@ -118,7 +118,8 @@ bool PullCommand::Execute()
 			dlg.DoModal();
 
 
-		}else if ( ret == IDC_PROGRESS_BUTTON1 +2 )
+		}
+		else if ( ret == IDC_PROGRESS_BUTTON1 +2 )
 		{
 			CChangedDlg dlg;
 			dlg.DoModal();

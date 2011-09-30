@@ -72,7 +72,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	{
 		m_Rev=parser.GetVal(_T("rev"));
 		m_bFirstStartup = false;
-	}else
+	}
+	else
 	{
 		m_Rev.Empty();
 	}
@@ -100,7 +101,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	if(!admindir.HasAdminDir(lpszPathName,&topdir))
 	{
 		CMessageBox::Show(NULL,CString(lpszPathName)+_T(" is not controled by git\nJust Show File Context"),_T("TortoiseGitBlame"),MB_OK);
-	}else
+	}
+	else
 	{
 		m_IsGitFile=TRUE;
 		g_Git.m_CurrentDir=topdir;

@@ -142,7 +142,8 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 						_T("TortoiseGit"), MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2) == IDYES)
 		{
 			m_ChangedMask &= ~REMOTE_NAME;
-		}else
+		}
+		else
 			return;
 	}
 

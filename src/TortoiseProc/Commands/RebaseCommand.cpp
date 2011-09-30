@@ -44,7 +44,8 @@ bool RebaseCommand::Execute()
 				return false;
 			}
 
-		}else
+		}
+		else
 		{
 			return false;
 		}

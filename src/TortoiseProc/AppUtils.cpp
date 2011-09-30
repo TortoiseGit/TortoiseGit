@@ -76,7 +76,8 @@ int	 CAppUtils::StashApply(CString ref)
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 
-	}else
+	}
+	else
 	{
  		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success</ct>\nDo you want to show change?"))
 			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
@@ -99,7 +100,8 @@ int	 CAppUtils::StashPop()
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 
-	}else
+	}
+	else
 	{
  		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash POP Success</ct>\nDo you want to show change?"))
 			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
@@ -659,7 +661,8 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	if( pRemote == NULL)
 	{
 		remote=_T("origin");
-	}else
+	}
+	else
 	{
 		remote=*pRemote;
 	}
@@ -684,12 +687,12 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	CString tempfile = GetTempFile();
 	::DeleteFile(tempfile);
 
-	proc +=_T(" -c \"");
+	proc += _T(" -c \"");
 	proc += CPathUtils::GetAppDirectory();
 	proc += _T("touch.exe\"");
-	proc +=_T(" \"");
-	proc +=tempfile;
-	proc +=_T("\"");
+	proc += _T(" \"");
+	proc += tempfile;
+	proc += _T("\"");
 
 	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true);
 	if(!b)
@@ -1027,7 +1030,8 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 	if(rev1 == GitRev::GetWorkingCopy())
 	{
 		cmd.Format(_T("git.exe diff --stat -p %s "),rev2);
-	}else
+	}
+	else
 	{
 		CString merge;
 		if(bMerge)
@@ -1038,9 +1042,9 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 
 	if( !url1.IsEmpty() )
 	{
-		cmd+=_T(" \"");
-		cmd+=url1.GetGitPathString();
-		cmd+=_T("\" ");
+		cmd += _T(" \"");
+		cmd += url1.GetGitPathString();
+		cmd += _T("\" ");
 	}
 	g_Git.RunLogFile(cmd,tempfile);
 	CAppUtils::StartUnifiedDiffViewer(tempfile,rev1.Left(6)+_T(":")+rev2.Left(6));
@@ -1230,9 +1234,10 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 	{
 		ignorefile+=path.GetCommonRoot().GetDirectory().GetWinPathString()+_T("\\.gitignore");
 
-	}else
+	}
+	else
 	{
-		ignorefile+=_T("\\.gitignore");
+		ignorefile += _T("\\.gitignore");
 	}
 
 	CStdioFile file;
@@ -1254,11 +1259,11 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 			{
 				mask=_T("*")+path[i].GetFileExtension();
 				if(ignorelist.Find(mask)<0)
-					ignorelist+=_T("\n")+mask;
+					ignorelist += _T("\n")+mask;
 			}
 			else
 			{
-				ignorelist+=_T("\n/")+path[i].GetGitPathString();
+				ignorelist += _T("\n/")+path[i].GetGitPathString();
 			}
 		}
 		file.WriteString(ignorelist);
@@ -1482,7 +1487,8 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 			if(dlg.m_bIsDelete)
 			{
 				cmd.Format(_T("git.exe rm -- \"%s\""),merge.GetGitPathString());
-			}else
+			}
+			else
 				cmd.Format(_T("git.exe add -- \"%s\""),merge.GetGitPathString());
 
 			if(g_Git.Run(cmd,&out,CP_ACP))
@@ -2078,7 +2084,8 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 		output=output.Tokenize(_T("\n"),start);
 		return CUnicodeUtils::GetCPCode(output);
 
-	}else
+	}
+	else
 	{
 		output=output.Tokenize(_T("\n"),start);
 		return CUnicodeUtils::GetCPCode(output);
@@ -2265,11 +2272,11 @@ bool CAppUtils::Push(bool autoClose)
 		}
 
 		if(dlg.m_bPack)
-			arg +=_T("--thin ");
+			arg += _T("--thin ");
 		if(dlg.m_bTags && !dlg.m_bPushAllBranches)
-			arg +=_T("--tags ");
+			arg += _T("--tags ");
 		if(dlg.m_bForce)
-			arg +=_T("--force ");
+			arg += _T("--force ");
 
 		int ver = CAppUtils::GetMsysgitVersion();
 
@@ -2414,7 +2421,8 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 			dlg.DoModal();
 			dlg.HandleRestart();
 
-		}else
+		}
+		else
 			return false;
 	}
 
@@ -2528,7 +2536,8 @@ BOOL CAppUtils::SVNDCommit()
 			}
 			IsStash =true;
 
-		}else
+		}
+		else
 		{
 			return false;
 		}
@@ -2593,7 +2602,7 @@ BOOL CAppUtils::Merge(CString *commit)
 
 		if(!dlg.m_strLogMesage.IsEmpty())
 		{
-			msg+=_T("-m \"")+dlg.m_strLogMesage+_T("\"");
+			msg += _T("-m \"")+dlg.m_strLogMesage+_T("\"");
 		}
 		cmd.Format(_T("git.exe merge %s %s %s %s %s"),
 			msg,
@@ -2627,9 +2636,9 @@ void CAppUtils::EditNote(GitRev *rev)
 
 		CString tempfile=::GetTempFile();
 		CAppUtils::SaveCommitUnicodeFile(tempfile,dlg.m_sInputText);
-		cmd+=tempfile;
-		cmd+=_T("\" ");
-		cmd+=rev->m_CommitHash.ToString();
+		cmd += tempfile;
+		cmd += _T("\" ");
+		cmd += rev->m_CommitHash.ToString();
 
 		try
 		{

@@ -41,7 +41,8 @@ bool FormatPatchCommand::Execute()
 		dlg.m_Since=startval;
 		dlg.m_Radio = IDC_RADIO_SINCE;
 
-	}else if( (!endval.IsEmpty()) && (!startval.IsEmpty()))
+	}
+	else if( (!endval.IsEmpty()) && (!startval.IsEmpty()))
 	{
 		dlg.m_From=startval;
 		dlg.m_To=endval;

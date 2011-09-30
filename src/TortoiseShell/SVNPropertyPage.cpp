@@ -316,7 +316,8 @@ void CGitPropertyPage::InitWorkfileView()
 			if(ProjectTopDir[ProjectTopDir.GetLength()-1] == _T('\\'))
 			{
 				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()));
-			}else
+			}
+			else
 			{
 				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
 			}
@@ -355,9 +356,6 @@ void CGitPropertyPage::InitWorkfileView()
 			SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.GetSubject());
 			SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.GetAuthorName());
 			SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
-
-		}else
-		{
 
 		}
 	}catch(...)

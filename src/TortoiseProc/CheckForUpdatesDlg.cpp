@@ -162,7 +162,8 @@ UINT CCheckForUpdatesDlg::CheckThread()
 					}
 				}
 
-			}else if (file.ReadString(ver))
+			}
+			else if (file.ReadString(ver))
 			{
 				CString vertemp = ver;
 				major = _ttoi(vertemp);

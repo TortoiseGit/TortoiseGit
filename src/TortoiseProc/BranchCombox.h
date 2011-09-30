@@ -109,7 +109,8 @@ protected:
 			m_ctrlRemoteBranch.AddString(remoteBranchName);
 			CbnSelchangeRemoteBranch();
 
-		}else
+		}
+		else
 		{
 			if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlRemoteBranch, m_RemoteBranchFilter))
 				CbnSelchangeRemoteBranch();
@@ -171,7 +172,8 @@ protected:
 
 			m_ctrlRemoteBranch.AddString(list);
 
-		}else
+		}
+		else
 		{
 			m_ctrlRemoteBranch.LoadHistory(m_RegKeyRemoteBranch,_T("sync"));
 		}

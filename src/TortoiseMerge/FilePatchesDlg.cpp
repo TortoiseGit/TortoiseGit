@@ -242,7 +242,8 @@ void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		else
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("Rename File:"))+temp+ _T(" > ")+temp2, pGetInfoTip->cchTextMax);	
 
-	}else
+	}
+	else
 		_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax);
 	*pResult = 0;
 }

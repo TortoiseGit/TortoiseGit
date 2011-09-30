@@ -212,10 +212,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if( (cmd&0xFFFF) == 0xFFFF)
 					{
 						merge=_T("-m");
-					} else if((cmd&0xFFFF) == 0xFFFE)
+					}
+					else if((cmd&0xFFFF) == 0xFFFE)
 					{
 						merge=_T("-c");
-					}else
+					}
+					else
 					{
 						if(cmd > r1->m_ParentHash.size())
 						{
@@ -223,14 +225,16 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							str.Format(_T("%d parent does not exist"), cmd);
 							CMessageBox::Show(NULL,str,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 							return;
-						}else
+						}
+						else
 						{
 							if(cmd>0)
 								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
 					command.Format(_T("git.exe diff-tree %s -r -p --stat %s %s"), merge, hash2, r1->m_CommitHash.ToString());
-				}else
+				}
+				else
 					command.Format(_T("git.exe diff -r -p --stat"));
 
 				g_Git.RunLogFile(command,tempfile);
@@ -247,9 +251,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 				if( r1->m_CommitHash.IsEmpty()) {
 					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash.ToString());
-				}else if( r2->m_CommitHash.IsEmpty()) {
+				}
+				else if( r2->m_CommitHash.IsEmpty()) {
 					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash.ToString());
-				}else {
+				}
+				else
+				{
 					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r2->m_CommitHash.ToString(),r1->m_CommitHash.ToString());
 				}
 
@@ -304,7 +311,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 					CGitDiff::DiffCommit(this->m_Path, pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[cmd-1].ToString());
 
-				}else
+				}
+				else
 				{
 					CMessageBox::Show(NULL,_T("No previous version"),_T("TortoiseGit"),MB_OK);
 				}
@@ -577,7 +585,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CMessageBox::Show(NULL,_T("Cherry Pick requires a clean working tree"),_T("TortoiseGit"),MB_OK);
 
-			}else
+			}
+			else
 			{
 				CRebaseDlg dlg;
 				dlg.m_IsCherryPick = TRUE;
@@ -602,7 +611,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CMessageBox::Show(NULL,_T("Rebase requires a clean working tree"),_T("TortoiseGit"),MB_OK);
 
-			}else
+			}
+			else
 			{
 				CRebaseDlg dlg;
 				dlg.m_Upstream = pSelLogEntry->m_CommitHash;
@@ -669,7 +679,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						cmd += _T(" /startrev:")+r1->m_CommitHash.ToString()+_T("~1");
 						cmd += _T(" /endrev:")+r2->m_CommitHash.ToString();
 
-					}else
+					}
+					else
 					{
 						cmd += _T(" /startrev:")+r2->m_CommitHash.ToString()+_T("~1");
 						cmd += _T(" /endrev:")+r1->m_CommitHash.ToString();

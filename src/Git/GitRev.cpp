@@ -287,7 +287,8 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				{
 					path.m_StatAdd=_T("-");
 					path.m_StatDel=_T("-");
-				}else
+				}
+				else
 				{
 					path.m_StatAdd.Format(_T("%d"),inc);
 					path.m_StatDel.Format(_T("%d"),dec);
@@ -436,7 +437,8 @@ int GitRev::AddMergeFiles()
 		if(map.find(m_Files[i].GetGitPathString()) == map.end())
 		{
 			map[m_Files[i].GetGitPathString()]=0;
-		}else
+		}
+		else
 		{
 			map[m_Files[i].GetGitPathString()]++;
 		}

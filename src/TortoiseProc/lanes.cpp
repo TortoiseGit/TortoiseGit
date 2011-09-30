@@ -131,7 +131,8 @@ void Lanes::setMerge(const CGitHashList& parents) {
 			}
 
 			typeVec[idx] = JOIN;
-		} else
+		}
+		else
 			rangeEnd = add(HEAD, *it, rangeEnd + 1);
 	}
 	int& startT = typeVec[rangeStart];

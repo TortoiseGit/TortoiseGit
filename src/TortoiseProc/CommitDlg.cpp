@@ -771,7 +771,8 @@ void CCommitDlg::OnOK()
 			}
 		}
 
-	}else if(bAddSuccess)
+	}
+	else if(bAddSuccess)
 	{
 		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
 		bCloseCommitDlg=false;

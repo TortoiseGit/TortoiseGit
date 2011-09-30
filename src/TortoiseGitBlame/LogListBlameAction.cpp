@@ -55,17 +55,17 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 
 	bool bOpenWith = false;
 
-	procCmd+=_T(" /path:\"");
-	procCmd+=((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd+=_T("\" ");
-	procCmd+=_T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+	procCmd += _T(" /path:\"");
+	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	procCmd += _T("\" ");
+	procCmd += _T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
 
-	procCmd+=_T(" /command:");
+	procCmd += _T(" /command:");
 
 	switch (cmd)
 	{
 		case ID_GNUDIFF1:
-			procCmd+=_T("diff /udiff");
+			procCmd += _T("diff /udiff");
 		break;
 
 #if 0
@@ -140,20 +140,20 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 			}
 			return;
 		case ID_EXPORT:
-			procCmd+=_T("export");
+			procCmd += _T("export");
 			break;
 		case ID_CREATE_BRANCH:
-			procCmd+=_T("branch");
+			procCmd += _T("branch");
 			break;
 		case ID_CREATE_TAG:
-			procCmd+=_T("tag");
+			procCmd += _T("tag");
 			break;
 		case ID_SWITCHTOREV:
-			procCmd+=_T("switch");
+			procCmd += _T("switch");
 			break;
 		case ID_BLAME:
-			procCmd+=_T("blame");
-			procCmd+=_T(" /endrev:") + this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+			procCmd += _T("blame");
+			procCmd += _T(" /endrev:") + this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);

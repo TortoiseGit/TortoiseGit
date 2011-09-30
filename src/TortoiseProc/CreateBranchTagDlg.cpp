@@ -96,7 +96,8 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	{
 		this->SetDefaultChoose(IDC_RADIO_HEAD);
 
-	}else
+	}
+	else
 	{
 		this->SetDefaultChoose(IDC_RADIO_VERSION);
 		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Base);
