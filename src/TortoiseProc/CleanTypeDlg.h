@@ -37,7 +37,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
+
 	CRegDWORD m_regDir;
 	CRegDWORD m_regType;
 

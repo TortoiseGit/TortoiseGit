@@ -111,7 +111,7 @@ UINT CRevertDlg::RevertThread()
 {
 	// get the status of all selected file/folders recursively
 	// and show the ones which can be reverted to the user
-	// in a list control. 
+	// in a list control.
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 
@@ -121,7 +121,7 @@ UINT CRevertDlg::RevertThread()
 	{
 		m_RevertList.SetEmptyString(m_RevertList.GetLastErrorMessage());
 	}
-	m_RevertList.Show(SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWEXTERNALFROMDIFFERENTREPO, 
+	m_RevertList.Show(SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWEXTERNALFROMDIFFERENTREPO,
 						// do not select all files, only the ones the user has selected directly
 						SVNSLC_SHOWDIRECTFILES|SVNSLC_SHOWADDED);
 
@@ -155,7 +155,7 @@ void CRevertDlg::OnOK()
 		{
 			m_bRecursive = FALSE;
 		}
-		else 
+		else
 		{
 			m_selectedPathList.AddPath(*(CTGitPath*)m_RevertList.GetItemData(i));
 #if 0

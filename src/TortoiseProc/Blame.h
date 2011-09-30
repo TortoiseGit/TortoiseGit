@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//	
+//
 
 #pragma once
 #include "Git.h"
@@ -30,7 +30,7 @@ class CTGitPath;
  * \ingroup TortoiseProc
  * Helper class to get the blame information for a file.
  */
-class CBlame  
+class CBlame
 {
 public:
 	CBlame();
@@ -55,9 +55,9 @@ private:
 								const CStringA& line);
 	BOOL		Cancel();
 /*
-	BOOL		Notify(const CTGitPath& path, git_wc_notify_action_t action, 
-						git_node_kind_t kind, const CString& mime_type, 
-						git_wc_notify_state_t content_state, 
+	BOOL		Notify(const CTGitPath& path, git_wc_notify_action_t action,
+						git_node_kind_t kind, const CString& mime_type,
+						git_wc_notify_state_t content_state,
 						git_wc_notify_state_t prop_state, LONG rev,
 						const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
 						git_error_t * err, apr_pool_t * pool);

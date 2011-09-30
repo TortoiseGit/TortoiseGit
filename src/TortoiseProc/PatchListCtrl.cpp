@@ -16,7 +16,7 @@ IMPLEMENT_DYNAMIC(CPatchListCtrl, CListCtrl)
 CPatchListCtrl::CPatchListCtrl()
 {
 	m_ContextMenuMask=0xFFFFFFFF;
-	
+
 	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
 	LOGFONT lf = {0};
 	GetObject(hFont, sizeof(LOGFONT), &lf);
@@ -51,7 +51,7 @@ void CPatchListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	CString path=GetItemText(pNMItemActivate->iItem,0);
 	CTGitPath gitpath;
 	gitpath.SetFromWin(path);
-	
+
 	CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
 
 	*pResult = 0;
@@ -96,7 +96,7 @@ void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				CString path=GetItemText(index,0);
 				CTGitPath gitpath;
 				gitpath.SetFromWin(path);
-	
+
 				CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
 				break;
 			}
@@ -175,7 +175,7 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 	case CDDS_ITEMPREPAINT:
 		{
 			// This is the prepaint stage for an item. Here's where we set the
-			// item's text color. 
+			// item's text color.
 
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;

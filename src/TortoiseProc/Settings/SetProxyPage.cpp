@@ -116,7 +116,7 @@ BOOL CSetProxyPage::OnInitDialog()
 				m_serveraddress = proxy.Mid(start);
 			else
 				m_serveraddress = proxy.Mid(start, port-start);
-		
+
 		}else
 		{
 			int username;
@@ -131,7 +131,7 @@ BOOL CSetProxyPage::OnInitDialog()
 				m_username=proxy.Mid(start, username-start);
 				m_password=proxy.Mid(username+1,at - username-1);
 			}
-			
+
 			port=proxy.Find(_T(":"),at);
 			if(port<0)
 				m_serveraddress = proxy.Mid(at+1);
@@ -215,14 +215,14 @@ BOOL CSetProxyPage::OnApply()
 		if(!m_username.IsEmpty())
 		{
 			http_proxy += m_username;
-			
+
 			if(!m_password.IsEmpty())
 				http_proxy += _T(":")+m_password;
 
 			http_proxy += _T("@");
 
 		}
-			
+
 		http_proxy+=m_serveraddress;
 
 		if(m_serverport)

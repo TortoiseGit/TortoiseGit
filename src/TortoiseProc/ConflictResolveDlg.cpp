@@ -76,16 +76,16 @@ BOOL CConflictResolveDlg::OnInitDialog()
 	{
 	case svn_wc_conflict_action_edit:
 		if (m_pConflictDescription->property_name)
-			sActionText.Format(IDS_EDITCONFLICT_PROP_ACTIONINFO_MODIFY, 
-				(LPCTSTR)CUnicodeUtils::GetUnicode(m_pConflictDescription->property_name), 
+			sActionText.Format(IDS_EDITCONFLICT_PROP_ACTIONINFO_MODIFY,
+				(LPCTSTR)CUnicodeUtils::GetUnicode(m_pConflictDescription->property_name),
 				(LPCTSTR)filename);
 		else
 			sActionText.Format(IDS_EDITCONFLICT_ACTIONINFO_MODIFY, (LPCTSTR)filename);
 		break;
 	case svn_wc_conflict_action_add:
 		if (m_pConflictDescription->property_name)
-			sActionText.Format(IDS_EDITCONFLICT_PROP_ACTIONINFO_ADD, 
-				(LPCTSTR)CUnicodeUtils::GetUnicode(m_pConflictDescription->property_name), 
+			sActionText.Format(IDS_EDITCONFLICT_PROP_ACTIONINFO_ADD,
+				(LPCTSTR)CUnicodeUtils::GetUnicode(m_pConflictDescription->property_name),
 				(LPCTSTR)filename);
 		else
 			sActionText.Format(IDS_EDITCONFLICT_ACTIONINFO_ADD, (LPCTSTR)filename);
@@ -141,7 +141,7 @@ BOOL CConflictResolveDlg::OnInitDialog()
 	GetDlgItem(IDC_RESOLVED)->EnableWindow(FALSE);
 
 	m_bCancelled = false;
-	
+
 	AddAnchor(IDC_INFOLABEL, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_GROUP, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_CHOOSELABEL, BOTTOM_LEFT);
@@ -157,8 +157,7 @@ BOOL CConflictResolveDlg::OnInitDialog()
 	AddAnchor(IDC_RESOLVEALLLATER, BOTTOM_RIGHT);
 	AddAnchor(IDC_ABORT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-	
-	
+
 	return TRUE;
 }
 
@@ -187,7 +186,7 @@ void CConflictResolveDlg::OnBnClickedEditconflict()
 	else
 	{
 		filename = CUnicodeUtils::GetUnicode(m_pConflictDescription->path);
-		filename = CPathUtils::GetFileNameFromPath(filename);		
+		filename = CPathUtils::GetFileNameFromPath(filename);
 		n1.Format(IDS_DIFF_WCNAME, (LPCTSTR)filename);
 		n2.Format(IDS_DIFF_BASENAME, (LPCTSTR)filename);
 		n3.Format(IDS_DIFF_REMOTENAME, (LPCTSTR)filename);

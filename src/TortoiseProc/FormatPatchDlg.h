@@ -56,7 +56,7 @@ public:
 	CString m_To;
 	CString m_Since;
 	int m_Radio;
-    BOOL m_bSendMail;
+	BOOL m_bSendMail;
 
 	afx_msg void OnBnClickedButtonDir();
 	afx_msg void OnBnClickedButtonFrom();

@@ -69,20 +69,24 @@ BOOL CRefLogDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
-	
+
 	AddAnchor(IDC_REFLOG_LIST,TOP_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
 	this->EnableSaveRestore(_T("RefLogDlg"));
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	STRING_VECTOR list;
 	list.push_back(_T("HEAD"));
 	g_Git.GetRefList(list);
-	
+
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 	this->m_ChooseRef.AddString(list);
-	
+
 	this->m_RefList.InsertRefLogColumn();
 	//m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
 	if(this->m_CurrentBranch.IsEmpty())
@@ -100,7 +104,7 @@ BOOL CRefLogDlg::OnInitDialog()
 			}
 		}
 	}
-	
+
 
 	OnCbnSelchangeRef();
 
@@ -151,7 +155,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	{
 		plog->GetGitRevAt(i).m_IsFull=TRUE;
 		this->m_RefList.m_arShownList.Add(&(plog->GetGitRevAt(i)));
-		
+
 	}
 
 	m_RefList.SetRedraw(true);

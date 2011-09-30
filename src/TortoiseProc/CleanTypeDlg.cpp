@@ -31,7 +31,7 @@ IMPLEMENT_DYNAMIC(CCleanTypeDlg, CStandAloneDialog)
 
 CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CCleanTypeDlg::IDD, pParent)
-	
+
 {
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
@@ -72,7 +72,7 @@ BOOL CCleanTypeDlg::OnInitDialog()
 void CCleanTypeDlg::OnOK()
 {
 	this->UpdateData();
-	
+
 	this->m_regDir = this->m_bDir;
 	this->m_regType = this->m_CleanType ;
 

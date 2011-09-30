@@ -52,7 +52,7 @@ protected:
 	afx_msg void			OnBnClickedShowUnmodified();
 	afx_msg void			OnBnClickedShowignored();
 	afx_msg void			OnBnClickedShowexternals();
-    afx_msg void			OnBnClickedShowUserProps();
+	afx_msg void			OnBnClickedShowUserProps();
 	afx_msg LRESULT			OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT			OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 
@@ -64,7 +64,7 @@ private:
 	void					UpdateStatistics();
 	DWORD					UpdateShowFlags();
 
-public: 
+public:
 	CTGitPathList			m_pathList;
 
 private:

@@ -126,7 +126,7 @@ protected:
 	afx_msg void OnSciGetBkColor(NMHDR*, LRESULT*);
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-    afx_msg LRESULT OnFindDialogMessage(WPARAM   wParam,   LPARAM   lParam);
+	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnViewNext();
 	afx_msg void OnViewPrev();
 	afx_msg void OnViewToggleAuthor();
@@ -151,7 +151,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-    static UINT m_FindDialogMessage;
+	static UINT m_FindDialogMessage;
 public:
 
 	void UpdateInfo(int encode = 0);
@@ -192,7 +192,7 @@ public:
 	void SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, CString *face=0);
 
 	void InitialiseEditor();
-    void InitSize();
+	void InitSize();
 	LONG GetBlameWidth();
 	void DrawBlame(HDC hDC);
 	void DrawHeader(HDC hDC);
@@ -278,7 +278,7 @@ protected:
 
 	CGitBlameLogList * GetLogList();
 
-    CFindReplaceDialog		*m_pFindDialog;
+	CFindReplaceDialog		*m_pFindDialog;
 
 	char					*m_Buffer;
 

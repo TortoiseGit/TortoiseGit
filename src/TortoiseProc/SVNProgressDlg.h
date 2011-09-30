@@ -30,7 +30,7 @@
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 
-/** 
+/**
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works
  */
@@ -130,10 +130,10 @@ public:
 	void SetUrl(const CString& url) {m_url.SetFromUnknown(url);}
 	void SetSecondUrl(const CString& url) {m_url2.SetFromUnknown(url);}
 	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
-	
+
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
-	
+
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
 	void SetSendMailOption(CString &TO, CString &CC,CString &Subject,DWORD flags){m_SendMailTO=TO;m_SendMailSubject=Subject; m_SendMailCC=CC;this->m_SendMailFlags = flags;}
 	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
@@ -149,7 +149,7 @@ public:
 	 * accurate progress bar during the operation.
 	 */
 	void SetItemCount(long count) {if(count) m_itemCountTotal = count;}
-	
+
 	bool SetBackgroundImage(UINT nID);
 
 	bool DidErrorsOccur() {return m_bErrorsOccurred;}
@@ -181,7 +181,7 @@ private:
 #endif
 	public:
 		// The text we put into the first column (the Git action for normal items, just text for aux items)
-		CString					sActionColumnText;	
+		CString					sActionColumnText;
 		CTGitPath				path;
 		CTGitPath				basepath;
 		CString					changelistname;
@@ -197,20 +197,20 @@ private:
 		COLORREF				color;
 		CString					owner;						///< lock owner
 		bool					bConflictedActionItem;		// Is this item a conflict?
-		bool					bAuxItem;					// Set if this item is not a true 'Git action' 
-		CString					sPathColumnText;	
+		bool					bAuxItem;					// Set if this item is not a true 'Git action'
+		CString					sPathColumnText;
 
 	};
 protected:
 
 	//Need update in the future implement the virtual methods from Git base class
-	virtual BOOL Notify(const CTGitPath& path, 
+	virtual BOOL Notify(const CTGitPath& path,
 								git_wc_notify_action_t action,
 								int status = 0,
 								CString *strErr =NULL
 		/*
-		git_node_kind_t kind, const CString& mime_type, 
-		git_wc_notify_state_t content_state, 
+		git_node_kind_t kind, const CString& mime_type,
+		git_wc_notify_state_t content_state,
 		git_wc_notify_state_t prop_state, LONG rev,
 		const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
 		const CString& changelistname,

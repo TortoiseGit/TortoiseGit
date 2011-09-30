@@ -22,7 +22,7 @@
  * \ingroup TortoiseShell
  * Represents one entry of the class ItemIDList.
  */
-class PIDL  
+class PIDL
 {
 public:
 	PIDL();

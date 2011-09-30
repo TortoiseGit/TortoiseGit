@@ -93,14 +93,14 @@ BOOL CCopyDlg::OnInitDialog()
 
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
-	
+
 	if (SVN::PathIsURL(path))
 	{
 		DialogEnableWindow(IDC_COPYWC, FALSE);
 		DialogEnableWindow(IDC_DOSWITCH, FALSE);
 		SetDlgItemText(IDC_COPYSTARTLABEL, CString(MAKEINTRESOURCE(IDS_COPYDLG_FROMURL)));
 	}
-	
+
 	m_bFile = !path.IsDirectory();
 	SVN svn;
 	m_wcURL = svn.GetURLFromPath(path);
@@ -236,13 +236,13 @@ void CCopyDlg::OnOK()
 		m_CopyRev = SVNRev(SVNRev::REV_WC);
 	else
 		m_CopyRev = SVNRev(sRevText);
-	
+
 	if (!m_CopyRev.IsValid())
 	{
 		ShowBalloon(IDC_COPYREVTEXT, IDS_ERR_INVALIDREV);
 		return;
 	}
-		
+
 	CString combourl;
 	m_URLCombo.GetWindowText(combourl);
 	if ((m_wcURL.CompareNoCase(combourl)==0)&&(m_CopyRev.IsHead()))
@@ -275,7 +275,7 @@ void CCopyDlg::OnOK()
 			m_sLogMessage += _T("\n") + sBugID + _T("\n");
 		else
 			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
-		UpdateData(FALSE);		
+		UpdateData(FALSE);
 	}
 	CResizableStandAloneDialog::OnOK();
 }
@@ -419,7 +419,7 @@ LPARAM CCopyDlg::OnRevFound(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	if ((!m_bSettingChanged)&&(m_maxrev != 0)&&(!m_bCancelled))
 	{
 		// we only change the setting automatically if the user hasn't done so
-		// already him/herself, if the highest revision is valid. And of course, 
+		// already him/herself, if the highest revision is valid. And of course,
 		// if the thread hasn't been stopped forcefully.
 		if (GetCheckedRadioButton(IDC_COPYHEAD, IDC_COPYREV) == IDC_COPYHEAD)
 		{
@@ -438,7 +438,7 @@ LPARAM CCopyDlg::OnRevFound(WPARAM /*wParam*/, LPARAM /*lParam*/)
 				temp.Format(_T("%ld"), m_maxrev);
 				SetDlgItemText(IDC_COPYREVTEXT, temp);
 				CheckRadioButton(IDC_COPYHEAD, IDC_COPYREV, IDC_COPYREV);
-				DialogEnableWindow(IDC_COPYREVTEXT, TRUE);			
+				DialogEnableWindow(IDC_COPYREVTEXT, TRUE);
 			}
 		}
 	}

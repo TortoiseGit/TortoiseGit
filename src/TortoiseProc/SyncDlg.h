@@ -153,7 +153,7 @@ protected:
 	void ShowInputCtrl(bool bShow=true);
 	void SwitchToRun(){ShowProgressCtrl(true);ShowInputCtrl(false);EnableControlButton(false);}
 	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
-	
+
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
 	void UpdateCombox()

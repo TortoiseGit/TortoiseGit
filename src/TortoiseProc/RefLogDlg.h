@@ -46,7 +46,7 @@ protected:
 
 	CRefLogList		m_RefList;
 
-public:	
+public:
 	CString			m_CurrentBranch;
 	CString			m_SelectedHash;
 };

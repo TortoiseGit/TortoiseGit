@@ -176,12 +176,12 @@ typedef enum
 	cmdUnlock,
 	cmdUpdate,
 	cmdUpdateCheck,
-	cmdUrlDiff,	
-	cmdStashSave,	
+	cmdUrlDiff,
+	cmdStashSave,
 	cmdStashApply,
 	cmdStashPop,
 	cmdStashList,
-	cmdSubAdd,		
+	cmdSubAdd,
 	cmdSubUpdate,
 	cmdSubSync,
 	cmdRefLog,
@@ -197,7 +197,7 @@ static const struct CommandInfo
 {
 	TGitCommand command;
 	LPCTSTR pCommandName;
-} commandInfo[] = 
+} commandInfo[] =
 {
 	{	cmdAbout,			_T("about")				},
 	{	cmdAdd,				_T("add")				},
@@ -294,7 +294,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	switch (command)
 	{
 	case cmdAbout:
-		return new AboutCommand;	
+		return new AboutCommand;
 	case cmdCommit:
 		return new CommitCommand;
 	case cmdLog:
@@ -400,12 +400,12 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 #if 0
 
-	
+
 	case cmdCheckout:
 		return new CheckoutCommand;
 
 
-	
+
 	case cmdCopy:
 		return new CopyCommand;
 	case cmdCrash:

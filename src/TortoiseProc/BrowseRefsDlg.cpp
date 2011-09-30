@@ -215,7 +215,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 {
 //	m_RefMap.clear();
 //	g_Git.GetMapHashToFriendName(m_RefMap);
-		
+
 	if(!selectRef.IsEmpty())
 	{
 		if(selectRef == "HEAD")
@@ -442,13 +442,13 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 		if(leafs.size() == 1)
 		{
 			CString branchToDelete = leafs[0]->GetRefName().Mid(bIsRemoteBranch ? 13 : 11);
-			csTitle.Format(L"Confirm deletion of %sbranch %s", 
-				bIsRemoteBranch? L"remote ": L"", 
+			csTitle.Format(L"Confirm deletion of %sbranch %s",
+				bIsRemoteBranch? L"remote ": L"",
 				branchToDelete);
 
 			csMessage += "the ";
 			if(bIsRemoteBranch)
-				csMessage += L"<ct=0x0000FF><i>remote</i></ct> "; 
+				csMessage += L"<ct=0x0000FF><i>remote</i></ct> ";
 			csMessage += L"branch:\r\n\r\n<b>";
 			csMessage += branchToDelete;
 			csMessage += L"</b>";
@@ -462,7 +462,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			g_Git.Run(cmd,&commonAncestorstr,CP_UTF8);
 
 			commonAncestor=commonAncestorstr;
-			
+
 			if(commonAncestor != branchHash)
 			{
 				csMessage += L"\r\n\r\n<b>Warning:\r\nThis branch is not fully merged into HEAD.</b>";
@@ -484,7 +484,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			csMoreMsgText.Format(L"<b>%d</b> ", leafs.size());
 			csMessage += csMoreMsgText;
 			if(bIsRemoteBranch)
-				csMessage += L"<ct=0x0000FF><i>remote</i></ct> "; 
+				csMessage += L"<ct=0x0000FF><i>remote</i></ct> ";
 			csMessage += L"branches";
 
 			csMessage += L"\r\n\r\n<b>Warning:\r\nIt has not been checked if these branches have been fully merged into HEAD.</b>";
@@ -862,8 +862,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CFileDiffDlg dlg;
 			dlg.SetDiff(
-				NULL, 
-				selectedLeafs[0]->m_csRefHash, 
+				NULL,
+				selectedLeafs[0]->m_csRefHash,
 				selectedLeafs[1]->m_csRefHash);
 			dlg.DoModal();
 		}
@@ -933,7 +933,7 @@ public:
 	int Compare(LPARAM lParam1, LPARAM lParam2)
 	{
 		return Compare(
-			(CShadowTree*)m_pList->GetItemData(lParam1), 
+			(CShadowTree*)m_pList->GetItemData(lParam1),
 			(CShadowTree*)m_pList->GetItemData(lParam2));
 	}
 
@@ -1002,7 +1002,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind)
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
-	
+
 	if(initialRef.IsEmpty())
 		initialRef = L"HEAD";
 	dlg.m_initialRef = initialRef;
@@ -1056,7 +1056,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 
 	if(pDispInfo->item.pszText == NULL)
 		return; //User canceled changing
-	
+
 	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
 
 	if(!pTree->IsFrom(L"refs/heads"))
@@ -1094,9 +1094,9 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	Refresh(newName);
 
 //	CString W_csPopup;W_csPopup.Format8(L"Ref: %s. New name: %s. With path: %s", pTree->GetRefName(), pDispInfo->item.pszText, newName);
-	
+
 //	AfxMessageBox(W_csPopup);
-	
+
 }
 
 void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)

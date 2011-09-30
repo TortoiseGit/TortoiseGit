@@ -49,9 +49,9 @@ protected:
 	CString			m_FindString;
 	CWnd			*m_pParent;
 	STRING_VECTOR	m_RefList;
-	
 
 	void AddToList();
+
 public:
 	CListCtrl m_ctrlRefList;
 	CEdit m_ctrlFilter;

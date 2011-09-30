@@ -122,7 +122,7 @@ void CSetHooks::OnBnClickedRemovebutton()
 			hookkey key;
 			key.htype = CHooks::GetHookType((LPCTSTR)m_cHookList.GetItemText(index, 0));
 			key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
-			CHooks::Instance().Remove(key);		
+			CHooks::Instance().Remove(key);
 			m_cHookList.DeleteItem(index);
 			SetModified();
 		}

@@ -46,7 +46,7 @@ private:
 	std::deque<CTGitPath> m_pathsToUpdate;
 	HANDLE m_hTerminationEvent;
 	HANDLE m_hWakeEvent;
-	
+
 	bool m_bItemsAddedSinceLastUpdate;
 	volatile LONG m_bRunning;
 };

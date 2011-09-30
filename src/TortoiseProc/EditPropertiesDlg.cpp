@@ -199,7 +199,7 @@ UINT CEditPropertiesDlg::PropsThread()
 			}
 		}
 	}
-	
+
 	// fill the property list control with the gathered information
 	int index=0;
 	m_propList.SetRedraw(FALSE);
@@ -460,7 +460,7 @@ void CEditPropertiesDlg::EditProps(bool bAdd /* = false*/)
 				{
 					prog.SetLine(1, m_pathlist[i].GetWinPath(), true);
 					SVNProperties props(m_pathlist[i], m_revision, m_bRevProps);
-					if (!props.Add(sName, dlg.IsBinary() ? dlg.GetPropertyValue() : dlg.GetPropertyValue().c_str(), 
+					if (!props.Add(sName, dlg.IsBinary() ? dlg.GetPropertyValue() : dlg.GetPropertyValue().c_str(),
 						dlg.GetRecursive() ? svn_depth_infinity : svn_depth_empty, sMsg))
 					{
 						CMessageBox::Show(m_hWnd, props.GetLastErrorMsg().c_str(), _T("TortoiseSVN"), MB_ICONERROR);

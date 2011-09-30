@@ -52,12 +52,11 @@ private:
 	CToolTips			m_tooltips;
 	CRegStdDWORD			m_regExtmenu;
 	CRegStdDWORD			m_regExtmenuhigh;
-	
+
 	unsigned __int64	m_extmenu;
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;
 	BOOL				m_bModified;
 	bool				m_bBlock;
-	
 };

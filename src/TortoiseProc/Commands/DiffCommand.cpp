@@ -62,7 +62,7 @@ bool DiffCommand::Execute()
 				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
 			}
 		}
-	} 
+	}
 	else
 		bRet = CAppUtils::StartExtDiff(
 			path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),

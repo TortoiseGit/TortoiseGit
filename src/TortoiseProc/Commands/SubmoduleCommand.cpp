@@ -40,7 +40,7 @@ bool SubmoduleAddCommand::Execute()
 		CString cmd;
 		if(dlg.m_strPath.Left(g_Git.m_CurrentDir.GetLength()) == g_Git.m_CurrentDir)
 			dlg.m_strPath = dlg.m_strPath.Right(dlg.m_strPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
-		
+
 		CString branch;
 		if(dlg.m_bBranch)
 			branch.Format(_T(" -b %s "), dlg.m_strBranch);
@@ -87,7 +87,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	}
 
 	g_Git.m_CurrentDir=super;
-	
+
 	progress.m_Title.Format(_T("Submodule %s - %s"),cmd,super);
 
 	//progress.m_GitCmd.Format(_T("git.exe submodule update --init "));

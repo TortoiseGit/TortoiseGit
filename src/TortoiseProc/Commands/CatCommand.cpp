@@ -38,7 +38,7 @@ bool CatCommand::Execute()
 		CMessageBox::Show(NULL, output, _T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}
-	
+
 	if(output.Find(_T("blob")) == 0)
 	{
 		cmd.Format(_T("git.exe cat-file -p %s"),revision);

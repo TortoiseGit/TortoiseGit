@@ -78,16 +78,16 @@ int git_init()
 	int ret;
 	size_t homesize,size;
 
-	_fmode = _O_BINARY; 
-	_setmode(_fileno(stdin), _O_BINARY); 
-	_setmode(_fileno(stdout), _O_BINARY); 
-	_setmode(_fileno(stderr), _O_BINARY); 
+	_fmode = _O_BINARY;
+	_setmode(_fileno(stdin), _O_BINARY);
+	_setmode(_fileno(stdout), _O_BINARY);
+	_setmode(_fileno(stderr), _O_BINARY);
 
 	// set HOME if not set already
 	getenv_s(&homesize, NULL, 0, "HOME");
 	if (!homesize)
 	{
-		_dupenv_s(&home,&size,"USERPROFILE"); 
+		_dupenv_s(&home,&size,"USERPROFILE");
 		_putenv_s("HOME",home);
 		free(home);
 	}
@@ -215,19 +215,19 @@ int git_parse_commit(GIT_COMMIT *commit)
 int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
 {
 	int ret = 0;
-	
+
 	struct commit *p;
-	
+
 	memset(commit,0,sizeof(GIT_COMMIT));
 
 	commit->m_pGitCommit = p = lookup_commit(hash);
 
 	if(commit == NULL)
 		return -1;
-	
+
 	if(p == NULL)
 		return -1;
-	
+
 	ret = parse_commit(p);
 	if( ret )
 		return ret;
@@ -241,7 +241,7 @@ int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list)
 
 	if(list == NULL)
 		return -1;
-	
+
 	*list = (GIT_COMMIT_LIST*)p->parents;
 	return 0;
 }
@@ -265,7 +265,7 @@ int git_free_commit(GIT_COMMIT *commit)
 	struct commit *p = commit->m_pGitCommit;
 
 	if( p->parents)
-		free_commit_list(p->parents);	
+		free_commit_list(p->parents);
 
 	if( p->buffer )
 	{
@@ -284,7 +284,7 @@ char **strtoargv(char *arg, int *size)
 	int count=0;
 	char *p=arg;
 	char **argv;
-	
+
 	int i=0;
 	while(*p)
 	{
@@ -300,7 +300,7 @@ char **strtoargv(char *arg, int *size)
 			count ++;
 		p++;
 	}
-	
+
 	argv=malloc(strlen(arg)+1 + (count +2)*sizeof(void*));
 	p=(char*)(argv+count+2);
 
@@ -310,7 +310,7 @@ char **strtoargv(char *arg, int *size)
 		{
 			char space=' ';
 			argv[i]=p;
-			
+
 			while(*arg)
 			{
 				if(*arg == '"')
@@ -365,7 +365,7 @@ int git_open_log(GIT_LOG * handle, char * arg)
 
 	init_revisions(p_Rev, g_prefix);
 	p_Rev->diff = 1;
-		
+
 	memset(&opt, 0, sizeof(opt));
 	opt.def = "HEAD";
 
@@ -392,7 +392,7 @@ int git_get_log_estimate_commit_count(GIT_LOG handle)
 int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
 {
 	int ret =0;
-	
+
 	if(commit == NULL)
 		return -1;
 
@@ -401,7 +401,7 @@ int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
 	commit->m_pGitCommit = get_revision(handle);
 	if( commit->m_pGitCommit == NULL)
 		return -2;
-	
+
 	ret=git_parse_commit(commit);
 	if(ret)
 		return ret;
@@ -431,7 +431,7 @@ int git_open_diff(GIT_DIFF *diff, char * arg)
 	struct rev_info *p_Rev;
 	char ** argv=0;
 	int argc=0;
-		
+
 	if(arg != NULL)
 		argv = strtoargv(arg,&argc);
 
@@ -468,7 +468,7 @@ int git_diff_flush(GIT_DIFF diff)
 	struct rev_info *p_Rev;
 	int i;
 	p_Rev = (struct rev_info *)diff;
-	
+
 	if(q->nr == 0)
 		return 0;
 
@@ -528,7 +528,7 @@ int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int
 	int ret;
 	int i;
 	struct diff_queue_struct *q = &diff_queued_diff;
-	
+
 	p_Rev = (struct rev_info *)diff;
 
 	ret = diff_tree_sha1(hash1,hash2,"",&p_Rev->diffopt);
@@ -557,7 +557,7 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 	struct diff_queue_struct *q = &diff_queued_diff;
 	struct rev_info *p_Rev;
 	p_Rev = (struct rev_info *)diff;
-	
+
 	q = (struct diff_queue_struct *)file;
 	if(file == 0)
 		return -1;
@@ -639,7 +639,7 @@ int git_free_exclude_list(EXCLUDE_LIST which)
 {
 	int i=0;
 	struct exclude_list *p = (struct exclude_list *) which;
-	
+
 	for(i=0; i<p->nr;i++)
 	{
 		free(p->excludes[i]);
@@ -663,7 +663,7 @@ int git_get_notes(GIT_HASH hash, char **p_note)
 	strbuf_init(&sb,0);
 	format_display_notes(hash, &sb, "utf-8", 0);
 	*p_note = strbuf_detach(&sb,&size);
-		
+
 	return 0;
 }
 
@@ -815,7 +815,7 @@ static struct cmd_struct commands[] = {
 		{ "show-ref", cmd_show_ref, RUN_SETUP },
 		{ "pack-refs", cmd_pack_refs, RUN_SETUP },
 	};
-	
+
 	git_init();
 
 	for(i=0;i<	sizeof(commands) / sizeof(struct cmd_struct);i++)
@@ -832,7 +832,7 @@ static struct cmd_struct commands[] = {
 				free(argv);
 
 			return ret;
-			
+
 
 		}
 	}
@@ -862,7 +862,7 @@ int git_deref_tag(unsigned char *tagsha1, GIT_HASH refhash)
 	if (!obj)
 		return -1;
 
-	if (obj->type == OBJ_TAG) 
+	if (obj->type == OBJ_TAG)
 	{
 			obj = deref_tag(obj, "", 0);
 			if (!obj)
@@ -881,7 +881,7 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 	struct cache_entry *ce;
 
 	ce = (struct cache_entry *)context;
-	
+
 	if (S_ISDIR(mode))
 		return READ_TREE_RECURSIVE;
 
@@ -890,7 +890,7 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 	memcpy(ce->name + baselen, pathname, strlen(pathname));
 	ce->ce_flags = create_ce_flags(strlen(pathname)+baselen, 0);
 	ce->ce_mode = create_ce_mode(mode);
-	
+
 	return 0;
 }
 
@@ -913,7 +913,7 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 		return -1;
 
 	ce = xcalloc(1, cache_entry_size(strlen(path)));
-	
+
 	match[0] = path;
 	match[1] = NULL;
 	ret = read_tree_recursive(root,"",0,0,match,update_some,ce);
@@ -949,7 +949,7 @@ static int get_config(const char *key_, const char *value_, void *cb)
 	strncpy(buf->buf,value_,buf->size);
 	buf->seen = 1;
 	return 0;
-	
+
 }
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
 {
@@ -961,7 +961,7 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 	buf.key = key;
 
 	local=global=system_wide=NULL;
-	
+
 	//local = config_exclusive_filename;
 	if (!local) {
 		const char *home = getenv("HOME");
@@ -970,7 +970,7 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 
 		local=p= git_pathdup("config");
 		if(git_path&&strlen(git_path))
-		{	
+		{
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
 		}
@@ -1002,17 +1002,17 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 	char *local,*global,*system_wide,*p;
 	int ret;
 	local=global=system_wide=NULL;
-	
+
 	//local = config_exclusive_filename;
 	if (!local) {
 		char *home = getenv("HOME");
-		
+
 		if(!home)
 			home=getenv("USERPROFILE");
 
 		local=p= git_pathdup("config");
 		if(git_path&&strlen(git_path))
-		{	
+		{
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
 		}
@@ -1042,7 +1042,7 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		return -1;
 
 	ret = git_config_set(key, value);
-	
+
 	if(local)
 		free(local);
 	if(global)

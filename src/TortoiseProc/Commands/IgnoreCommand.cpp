@@ -28,7 +28,7 @@
 bool IgnoreCommand::Execute()
 {
 	bool bmask=false;
-	
+
 	if(parser.HasKey(_T("onlymask")))
 	{
 		bmask=true;
@@ -67,7 +67,7 @@ bool IgnoreCommand::Execute()
 		}
 
 		output.Format(_T("%d files removed"),nPath);
-		
+
 		CShellUpdater::Instance().AddPathsForUpdate(pathList);
 
 		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION|MB_OK);

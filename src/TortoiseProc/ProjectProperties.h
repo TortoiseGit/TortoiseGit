@@ -92,19 +92,19 @@ public:
 	 * The \c msg is trimmed off the BugID.
 	 */
 	CString GetBugIDFromLog(CString& msg);
-	
+
 	/**
 	 * Checks if the bug ID is valid. If bugtraq:number is 'true', then the
 	 * functions checks if the bug ID doesn't contain any non-number chars in it.
 	 */
 	BOOL CheckBugID(const CString& sID);
-	
+
 	/**
 	 * Checks if the log message \c sMessage contains a bug ID. This is done by
 	 * using the bugtraq:checkre property.
 	 */
 	BOOL HasBugID(const CString& sMessage);
-	
+
 	/**
 	 * Returns the URL pointing to the Issue in the issue tracker. The URL is
 	 * created from the bugtraq:url property and the BugID found in the log message.
@@ -130,11 +130,11 @@ public:
 	 */
 	CString GetLogSummary(const CString& sMessage);
 
-    /**
-     * Transform the log message using \ref GetLogSummary and post-process it
-     * to be suitable for 1-line controls.
-     */
-    CString MakeShortMessage(const CString& message);
+	/**
+	 * Transform the log message using \ref GetLogSummary and post-process it
+	 * to be suitable for 1-line controls.
+	 */
+	CString MakeShortMessage(const CString& message);
 
 	/**
 	 * Returns the path from which the properties were read.
@@ -146,7 +146,7 @@ public:
 	CString		sLabel;
 
 	/** The message string to add below the log message the user entered.
-	 * It must contain the string "%BUGID%" which gets replaced by the client 
+	 * It must contain the string "%BUGID%" which gets replaced by the client
 	 * with the issue number / bug id the user entered. */
 	CString		sMessage;
 
@@ -156,15 +156,15 @@ public:
 	/** replaces bNumer: a regular expression string to check the validity of
 	  * the entered bug ID. */
 	CString		sCheckRe;
-	
+
 	/** used to extract the bug ID from the string matched by sCheckRe */
 	CString		sBugIDRe;
-	
+
 	/** The url pointing to the issue tracker. If the url contains the string
 	 * "%BUGID% the client has to replace it with the issue number / bug id
 	 * the user entered. */
 	CString		sUrl;
-	
+
 	/** If set to TRUE, show a warning dialog if the user forgot to enter
 	 * an issue number in the commit dialog. */
 	BOOL		bWarnIfNoIssue;
@@ -178,7 +178,7 @@ public:
 	CString		sProviderUuid;
 
 	/** the parameters passed to the COM bugtraq provider which implements the
-	    IBugTraqProvider interface */
+	   IBugTraqProvider interface */
 	CString		sProviderParams;
 
 	/** The number of chars the width marker should be shown at. If the property
@@ -197,7 +197,7 @@ public:
 	/** TRUE if the file list to be inserted in the commit dialog should be in
 	 * English and not in the localized language. Default is TRUE */
 	BOOL		bFileListInEnglish;
-	
+
 	/** The language identifier this project uses for log messages. */
 	LONG		lProjectLanguage;
 

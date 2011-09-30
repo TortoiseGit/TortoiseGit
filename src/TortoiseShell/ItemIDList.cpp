@@ -91,8 +91,8 @@ stdstring ItemIDList::toString()
 		hr = shellFolder->BindToObject(parent_, 0, IID_IShellFolder, (void**) &parentFolder);
 		if (!SUCCEEDED(hr))
 			parentFolder = shellFolder;
-	} 
-	else 
+	}
+	else
 	{
 		parentFolder = shellFolder;
 	}

@@ -119,13 +119,13 @@ BOOL CBlame::Cancel()
 	return m_bCancelled;
 }
 
-CString CBlame::BlameToTempFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev pegrev, 
-								CString& logfile, const CString& options, BOOL includemerge, 
+CString CBlame::BlameToTempFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev pegrev,
+								CString& logfile, const CString& options, BOOL includemerge,
 								BOOL showprogress, BOOL ignoremimetype)
 {
 #if 0
 	// if the user specified to use another tool to show the blames, there's no
-	// need to fetch the log later: only TortoiseBlame uses those logs to give 
+	// need to fetch the log later: only TortoiseBlame uses those logs to give
 	// the user additional information for the blame.
 	BOOL extBlame = CRegDWORD(_T("Software\\TortoiseGit\\TextBlame"), FALSE);
 
@@ -205,9 +205,9 @@ CString CBlame::BlameToTempFile(const CTGitPath& path, GitRev startrev, GitRev e
 	return m_sSavePath;
 }
 #if 0
-BOOL CBlame::Notify(const CTGitPath& /*path*/, svn_wc_notify_action_t /*action*/, 
-					svn_node_kind_t /*kind*/, const CString& /*mime_type*/, 
-					svn_wc_notify_state_t /*content_state*/, 
+BOOL CBlame::Notify(const CTGitPath& /*path*/, svn_wc_notify_action_t /*action*/,
+					svn_node_kind_t /*kind*/, const CString& /*mime_type*/,
+					svn_wc_notify_state_t /*content_state*/,
 					svn_wc_notify_state_t /*prop_state*/, LONG rev,
 					const svn_lock_t * /*lock*/, svn_wc_notify_lock_state_t /*lock_state*/,
 					svn_error_t * /*err*/, apr_pool_t * /*pool*/)
@@ -217,7 +217,7 @@ BOOL CBlame::Notify(const CTGitPath& /*path*/, svn_wc_notify_action_t /*action*/
 	return TRUE;
 }
 #endif
-bool CBlame::BlameToFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev peg, 
+bool CBlame::BlameToFile(const CTGitPath& path, GitRev startrev, GitRev endrev, GitRev peg,
 						 const CTGitPath& tofile, const CString& options, BOOL ignoremimetype, BOOL includemerge)
 {
 	CString temp;

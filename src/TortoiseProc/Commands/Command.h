@@ -37,8 +37,8 @@ public:
 	virtual bool			Execute() = 0;
 
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
-	void					SetPaths(const CTGitPathList& plist, const CTGitPath path) 
-							{	
+	void					SetPaths(const CTGitPathList& plist, const CTGitPath path)
+							{
 								orgCmdLinePath = path;
 								CString WinPath=path.GetWinPath();
 								if(WinPath.Left(g_Git.m_CurrentDir.GetLength())==g_Git.m_CurrentDir)
@@ -51,7 +51,7 @@ public:
 										cmdLinePath.SetFromWin( WinPath.Right(WinPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1));
 									}
 								}
-								orgPathList = plist; 
+								orgPathList = plist;
 								for(int i=0;i<plist.GetCount();i++)
 								{
 									WinPath=plist[i].GetWinPath();

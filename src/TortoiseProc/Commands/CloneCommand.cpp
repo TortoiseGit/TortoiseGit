@@ -57,7 +57,7 @@ bool CloneCommand::Execute()
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
 
-		// is this a windows format UNC path, ie starts with \\ 
+		// is this a windows format UNC path, ie starts with \\
 		if (url.Find(_T("\\\\")) == 0)
 		{
 			// yes, change all \ to /
@@ -65,24 +65,24 @@ bool CloneCommand::Execute()
 			url.Replace( _T('\\'), _T('/'));
 		}
 
-		CString depth; 
+		CString depth;
 		if (dlg.m_bDepth)
 		{
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
 		CString cmd;
-		CString progressarg; 
+		CString progressarg;
 
 		int ver = CAppUtils::GetMsysgitVersion();
 
 		if(ver >= 0x01070002) //above 1.7.0.2
 			progressarg = _T("--progress");
-	
+
 		cmd.Format(_T("git.exe clone %s %s %s -v %s \"%s\" \"%s\""),
 						recursiveStr,
 						bareStr,
-						progressarg, 
+						progressarg,
 						depth,
 						url,
 						dir);

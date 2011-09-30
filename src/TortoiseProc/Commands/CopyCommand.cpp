@@ -46,7 +46,7 @@ bool CopyCommand::Execute()
 	CString logmessage;
 	SVNRev copyRev = SVNRev::REV_HEAD;
 	BOOL doSwitch = FALSE;
-	do 
+	do
 	{
 		repeat = FALSE;
 		dlg.m_URL = url;

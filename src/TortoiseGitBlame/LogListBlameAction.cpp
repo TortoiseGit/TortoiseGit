@@ -43,7 +43,7 @@ void CGitBlameLogList::hideUnimplementedCommands()
 }
 
 void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu)
-{	
+{
 	POSITION pos = GetFirstSelectedItemPosition();
 	int indexNext = GetNextSelectedItem(pos);
 	if (indexNext < 0)
@@ -90,10 +90,10 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				CFileDiffDlg dlg;
 				dlg.SetDiff(NULL,*r1,*r2);
 				dlg.DoModal();
-				
+
 			}
 			break;
-#endif	
+#endif
 #if 0
 		case ID_COMPARE:
 			{
@@ -160,7 +160,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 			return;
 
 #if 0
-	
+
 		case ID_REVERTREV:
 			{
 				// we need an URL to complete this command, so error out if we can't get an URL
@@ -255,9 +255,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				}
 			}
 			break;
-	
 
-	
 		case ID_BLAMECOMPARE:
 			{
 				//user clicked on the menu item "compare with working copy"
@@ -298,7 +296,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
 			}
 			break;
-		
+
 		case ID_OPENWITH:
 			bOpenWith = true;
 		case ID_OPEN:
@@ -399,7 +397,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				else
 				{
 					m_pFindDialog = new CFindReplaceDialog();
-					m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);									
+					m_pFindDialog->Create(TRUE, NULL, NULL, FR_HIDEUPDOWN | FR_HIDEWHOLEWORD, this);
 				}
 			}
 			break;
@@ -434,7 +432,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				dlg.DoModal();
 			}
 			break;
-		
+
 		case ID_EXPORT:
 			{
 				CString sCmd;
@@ -460,7 +458,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				url = GetAbsoluteUrlFromRelativeUrl(url);
 				url.Replace(_T("%REVISION%"), revSelected.ToString());
 				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
+					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
 			}
 			break;
 		case ID_VIEWPATHREV:
@@ -473,7 +471,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				url.Replace(_T("%REVISION%"), revSelected.ToString());
 				url.Replace(_T("%PATH%"), relurl);
 				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);					
+					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
 			}
 			break;
 #endif
@@ -487,7 +485,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 	startup.cb = sizeof(startup);
 	memset(&process, 0, sizeof(process));
 	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-	
+
 	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);

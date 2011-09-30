@@ -129,7 +129,7 @@ void CExportDlg::OnOK()
 //	m_URLCombo.SaveHistory();
 //	m_URL = m_URLCombo.GetString();
 
-	
+
 	if(::PathFileExists(this->m_strExportDirectory))
 	{
 		if(::PathIsDirectory(m_strExportDirectory))
@@ -167,7 +167,7 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 	this->UpdateRevsionName();
 	CFileDialog dlg(FALSE,_T("Zip"),this->m_VersionName,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 						_T("*.Zip"));
-	
+
 	if(dlg.DoModal()==IDOK)
 	{
 		UpdateData(TRUE);

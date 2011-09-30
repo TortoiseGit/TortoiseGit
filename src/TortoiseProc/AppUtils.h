@@ -67,8 +67,8 @@ public:
 	/**
 	 * Starts the external patch program (currently always TortoiseMerge)
 	 */
-	static BOOL StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
-			const CString& sOriginalDescription = CString(), const CString& sPatchedDescription = CString(), 
+	static BOOL StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir,
+			const CString& sOriginalDescription = CString(), const CString& sPatchedDescription = CString(),
 			BOOL bReversed = FALSE, BOOL bWait = FALSE);
 
 	/**
@@ -81,13 +81,13 @@ public:
 	 * Starts the external diff application
 	 */
 	static bool StartExtDiff(
-		const CString& file1, const CString& file2, 
+		const CString& file1, const CString& file2,
 		const CString& sName1, const CString& sName2, const DiffFlags& flags);
 
 	/**
 	 * Starts the external diff application for properties
 	 */
-	static BOOL StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2, 
+	static BOOL StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2,
 			const CString& sName1 = CString(), const CString& sName2 = CString(),
 			BOOL bWait = FALSE, BOOL bReadOnly = FALSE);
 
@@ -151,8 +151,8 @@ public:
 	/**
 	 * Replacement for GitDiff::ShowUnifiedDiff(), but started as a separate process.
 	 */
-	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1,  const git_revnum_t& rev1, 
-												const CTGitPath & url2, const git_revnum_t& rev2, 
+	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1,  const git_revnum_t& rev1,
+												const CTGitPath & url2, const git_revnum_t& rev2,
 
 												//const GitRev& peg = GitRev(), const GitRev& headpeg = GitRev(),
 												bool bAlternateDiff = false,
@@ -175,7 +175,7 @@ public:
 	 *				   cTime - the time
 	 *				   option - DATE_SHORTDATE or DATE_LONGDATE
 	 *				   bIncluedeTime - whether to show time as well as date
-	 *				   bRelative - if true then relative time is shown if reasonable 
+	 *				   bRelative - if true then relative time is shown if reasonable
 	 *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
 	 *				   rather than locale
 	 * RETURN      :   CString containing date/time

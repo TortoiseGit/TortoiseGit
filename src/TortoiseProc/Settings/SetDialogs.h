@@ -34,7 +34,7 @@ class CSetDialogs : public ISettingsPropPage
 public:
 	CSetDialogs();
 	virtual ~CSetDialogs();
-	
+
 	UINT GetIconID() {return IDI_DIALOGS;}
 
 // Dialog Data

@@ -181,7 +181,7 @@ BOOL CSetDialogs::OnInitDialog()
 
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
-	
+
 	UpdateData(FALSE);
 	return TRUE;
 }
@@ -239,7 +239,7 @@ void CSetDialogs::OnBnClickedBrowsecheckoutpath()
 	CBrowseFolder browser;
 	browser.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCheckoutDirectory;
-	if (browser.Show(GetSafeHwnd(), strCheckoutDirectory) == CBrowseFolder::OK) 
+	if (browser.Show(GetSafeHwnd(), strCheckoutDirectory) == CBrowseFolder::OK)
 	{
 		UpdateData(TRUE);
 		m_sDefaultCheckoutPath = strCheckoutDirectory;

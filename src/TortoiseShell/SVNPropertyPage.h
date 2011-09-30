@@ -79,7 +79,7 @@ protected:
 	 */
 	virtual void InitWorkfileView();
 	void Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen);
-	
+
 	struct listproperty
 	{
 		stdstring name;

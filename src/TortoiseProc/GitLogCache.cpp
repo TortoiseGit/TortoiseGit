@@ -61,7 +61,7 @@ void CLogCache::CloseIndexHandles()
 		UnmapViewOfFile(m_pCacheIndex);
 		m_pCacheIndex = NULL;
 	}
-	
+
 	if(m_IndexFileMap)
 	{
 		CloseHandle(m_IndexFileMap);
@@ -78,7 +78,7 @@ void CLogCache::CloseIndexHandles()
 
 }
 CLogCache::~CLogCache()
-{	
+{
 	CloseIndexHandles();
 	CloseDataHandles();
 }
@@ -103,7 +103,7 @@ ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
 
 	if(pData == 0)
 		return 0;
-	
+
 	SLogCacheIndexItem *p=(SLogCacheIndexItem *)bsearch(hash.m_hash,pData->m_Item,
 			pData->m_Header.m_ItemCount,
 			sizeof(SLogCacheIndexItem),
@@ -138,7 +138,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;;
 			}
 		}
-	
+
 		if( m_IndexFileMap == INVALID_HANDLE_VALUE)
 		{
 			m_IndexFileMap = CreateFileMapping(m_IndexFile, NULL, PAGE_READONLY,0,0,NULL);
@@ -148,7 +148,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 			}
 		}
-			
+
 		if( m_pCacheIndex == NULL )
 		{
 			m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_READ,0,0,0);
@@ -158,7 +158,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 			}
 		}
-		
+
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
 		{
 			ret =-1;
@@ -202,7 +202,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 			}
 		}
-		
+
 		if(!CheckHeader( (SLogCacheDataFileHeader*)m_pCacheData))
 		{
 			ret = -1;
@@ -218,22 +218,22 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		::DeleteFile(GitDir+_T("\\.git\\")+DATA_FILE_NAME);
 	}
 	return ret;
-	
+
 }
 
 int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 {
 	if(!Rev.m_IsDiffFiles)
 		return -1;
-	
+
 	SetFilePointer(this->m_DataFile, offset,0, 0);
 
 	SLogCacheRevItemHeader header;
-	
+
 	header.m_Magic=LOG_DATA_ITEM_MAGIC;
 	header.m_Version=LOG_INDEX_VERSION;
 	header.m_FileCount=Rev.m_Files.GetCount();
-	
+
 	DWORD num;
 
 	if(!WriteFile(this->m_DataFile,&header, sizeof(header),&num,0))
@@ -258,7 +258,7 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 		header.m_Add = (stat == _T("-"))? 0xFFFFFFFF:_tstol(stat);
 		stat = Rev.m_Files[i].m_StatDel;
 		header.m_Del = (stat == _T("-"))? 0xFFFFFFFF:_tstol(stat);
-	
+
 		if(!WriteFile(this->m_DataFile,&header, sizeof(header)-sizeof(TCHAR),&num,0))
 			return -1;
 
@@ -272,7 +272,7 @@ int CLogCache::SaveOneItem(GitRev &Rev,ULONGLONG offset)
 			if(!WriteFile(this->m_DataFile,oldname.GetBuffer(), oldname.GetLength()*sizeof(TCHAR),&num,0))
 				return -1;
 		}
-				
+
 	}
 	return 0;
 }
@@ -299,18 +299,18 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		CTGitPath path;
 		CString file,oldfile;
 		path.Reset();
-		
+
 		if(!CheckHeader(fileheader))
 			return -1;
 
 		_tcsncpy(file.GetBufferSetLength(fileheader->m_FileNameSize), fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
 		{
-			_tcsncpy(oldfile.GetBufferSetLength(fileheader->m_OldFileNameSize), 
+			_tcsncpy(oldfile.GetBufferSetLength(fileheader->m_OldFileNameSize),
 					fileheader->m_FileName+fileheader->m_FileNameSize,
 					fileheader->m_OldFileNameSize);
 		}
-		path.SetFromGit(file,&oldfile);		
+		path.SetFromGit(file,&oldfile);
 
 		path.m_ParentNo = fileheader ->m_ParentNo;
 		path.m_Stage = fileheader ->m_Stage;
@@ -337,7 +337,7 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 int CLogCache::RebuildCacheFile()
 {
 	SLogCacheIndexHeader Indexheader;
-		
+
 	Indexheader.m_Magic = LOG_INDEX_MAGIC;
 	Indexheader.m_Version = LOG_INDEX_VERSION;
 	Indexheader.m_ItemCount =0;
@@ -357,7 +357,7 @@ int CLogCache::RebuildCacheFile()
 	SetEndOfFile(this->m_IndexFile);
 	WriteFile(this->m_DataFile,&dataheader,sizeof(SLogCacheDataFileHeader),&num,0);
 	SetEndOfFile(this->m_DataFile);
-	return 0;	
+	return 0;
 }
 int CLogCache::SaveCache()
 {
@@ -369,7 +369,7 @@ int CLogCache::SaveCache()
 
 	if( this->m_GitDir.IsEmpty())
 		return 0;
-	
+
 	SLogCacheIndexFile *pIndex =  NULL;
 	if(this->m_pCacheIndex)
 	{
@@ -378,7 +378,7 @@ int CLogCache::SaveCache()
 		if(pIndex ==NULL)
 			return -1;
 
-		memcpy(pIndex,this->m_pCacheIndex, 
+		memcpy(pIndex,this->m_pCacheIndex,
 			sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) *( m_pCacheIndex->m_Header.m_ItemCount-1)
 			);
 	}
@@ -420,12 +420,12 @@ int CLogCache::SaveCache()
 			break;
 		}
 
-		
+
 		{
-			
+
 			memset(&header,0,sizeof(SLogCacheIndexHeader));
 			DWORD num=0;
-			if((!ReadFile(m_IndexFile,&header, sizeof(SLogCacheIndexHeader),&num,0)) || 
+			if((!ReadFile(m_IndexFile,&header, sizeof(SLogCacheIndexHeader),&num,0)) ||
 				!CheckHeader(&header)
 				)
 			{
@@ -489,7 +489,7 @@ int CLogCache::SaveCache()
 			ret =-1;
 			break;
 		}
-		
+
 		m_pCacheIndex = (SLogCacheIndexFile*)MapViewOfFile(m_IndexFileMap,FILE_MAP_WRITE,0,0,0);
 		if(m_pCacheIndex == NULL)
 		{
@@ -500,7 +500,7 @@ int CLogCache::SaveCache()
 		m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;
 		Sort();
 		FlushViewOfFile(m_pCacheIndex,0);
-		
+
 	}while(0);
 
 	this->CloseDataHandles();

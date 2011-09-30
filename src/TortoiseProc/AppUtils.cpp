@@ -1191,9 +1191,12 @@ bool CAppUtils::Switch(CString *CommitHash, CString initialRefName, bool autoclo
 		CString branch;
 
 		if(dlg.m_bBranch){
-			if (dlg.m_bBranchOverride) {
+			if (dlg.m_bBranchOverride)
+			{
 				branch.Format(_T("-B %s"),dlg.m_NewBranch);
-			} else {
+			}
+			else
+			{
 				branch.Format(_T("-b %s"),dlg.m_NewBranch);
 			}
 		}
@@ -2047,9 +2050,12 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 		path.SetFromWin(one);
 		list.AddPath(path);
 	}
-	if (list.GetCount() > 0) {
+	if (list.GetCount() > 0)
+	{
 		return SendPatchMail(list, autoclose);
-	} else {
+	}
+	else
+	{
 		CMessageBox::Show(NULL, _T("Not patches generated."), _T("TortoiseGit"), MB_ICONINFORMATION);
 		return true;
 	}
@@ -2167,7 +2173,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		CString arg;
 
 		int ver = CAppUtils::GetMsysgitVersion();
-		
+
 		if(ver >= 0x01070203) //above 1.7.0.2
 			arg = _T("--progress ");
 
@@ -2200,7 +2206,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				{
 					return TRUE;
 				}
-				if(response == IDC_REBASE_POST_BUTTON ) 
+				if(response == IDC_REBASE_POST_BUTTON )
 				{
 					CString cmd,out;
 					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
@@ -2216,7 +2222,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 					CAppUtils::SendPatchMail(cmd,out);
 					return TRUE;
 				}
-				
+
 				if(response == IDC_REBASE_POST_BUTTON +1 )
 					continue;
 
@@ -2484,13 +2490,20 @@ BOOL CAppUtils::SVNDCommit()
 	CSVNDCommitDlg dcommitdlg;
 	CString gitSetting = g_Git.GetConfigValue(_T("svn.rmdir"));
 	if (gitSetting == _T("")) {
-		if (dcommitdlg.DoModal() != IDOK) {
+		if (dcommitdlg.DoModal() != IDOK)
+		{
 			return false;
-		} else {
-			if (dcommitdlg.m_remember) {
-				if (dcommitdlg.m_rmdir) {
+		}
+		else
+		{
+			if (dcommitdlg.m_remember)
+			{
+				if (dcommitdlg.m_rmdir)
+				{
 					gitSetting = _T("true");
-				} else {
+				}
+				else
+				{
 					gitSetting = _T("false");
 				}
 				if(g_Git.SetConfigValue(_T("svn.rmdir"),gitSetting))
@@ -2522,9 +2535,12 @@ BOOL CAppUtils::SVNDCommit()
 	}
 
 	CProgressDlg progress;
-	if (dcommitdlg.m_rmdir) {
+	if (dcommitdlg.m_rmdir)
+	{
 		progress.m_GitCmd=_T("git.exe svn dcommit --rmdir");
-	} else {
+	}
+	else
+	{
 		progress.m_GitCmd=_T("git.exe svn dcommit");
 	}
 	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
@@ -2541,7 +2557,8 @@ BOOL CAppUtils::SVNDCommit()
 					return false;
 				}
 
-			}else
+			}
+			else
 			{
 				return false;
 			}

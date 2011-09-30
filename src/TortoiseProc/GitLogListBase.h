@@ -93,18 +93,18 @@ public:
 	{
 		if(m_critSec)
 			m_critSec->Lock();
-		
+
 		if( i<0 || i>=GetCount())
-		{	
+		{
 			if(m_critSec)
 				m_critSec->Unlock();
-			
+
 			return NULL;
 		}
-		
+
 		if(m_critSec)
 			m_critSec->Unlock();
-		
+
 		return GetAt(i);
 	}
 	INT_PTR SafeAdd(void *newElement)

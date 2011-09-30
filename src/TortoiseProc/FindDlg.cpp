@@ -67,7 +67,7 @@ void CFindDlg::OnCancel()
 	m_bTerminating = true;
 
 	CWnd *parent = m_pParent;
-	if(parent == NULL)		
+	if(parent == NULL)
 		parent = GetParent();
 
 	if (parent)
@@ -90,9 +90,9 @@ void CFindDlg::OnOK()
 		return;
 	m_bFindNext = true;
 	m_FindString = m_FindCombo.GetString();
-	
+
 	CWnd *parent = m_pParent;
-	if(parent == NULL)		
+	if(parent == NULL)
 		parent = GetParent();
 
 	if (parent)
@@ -171,7 +171,7 @@ void CFindDlg::OnNMClickListRef(NMHDR *pNMHDR, LRESULT *pResult)
 	this->m_bIsRef =true;
 
 	CWnd *parent = m_pParent;
-	if(parent == NULL)		
+	if(parent == NULL)
 		parent = GetParent();
 
 	if (parent)

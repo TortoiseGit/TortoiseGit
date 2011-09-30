@@ -96,11 +96,11 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_RD_URL, TOP_LEFT);
 
 	AddAnchor(IDC_REMOTE, TOP_LEFT, TOP_RIGHT);
-	
+
 	AddAnchor(IDC_URL, TOP_LEFT,TOP_RIGHT);
 
 	AddAnchor(IDC_OPTION_GROUP, TOP_LEFT,TOP_RIGHT);
-	
+
 	AddAnchor(IDC_FORCE, TOP_LEFT);
 	AddAnchor(IDC_PACK, TOP_LEFT);
 	AddAnchor(IDC_TAGS, TOP_LEFT);
@@ -111,12 +111,16 @@ BOOL CPushDlg::OnInitDialog()
 
 	AddOthersToAnchor();
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
 
 	EnableSaveRestore(_T("PushDlg"));
 
 	m_RemoteURL.SetURLHistory(TRUE);
-	
+
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
 	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
@@ -130,7 +134,7 @@ BOOL CPushDlg::OnInitDialog()
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 
-	this->m_regAutoLoad = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushDlgAutoLoad\\"))+WorkingDir, 
+	this->m_regAutoLoad = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushDlgAutoLoad\\"))+WorkingDir,
 									m_bAutoLoad);
 	m_bAutoLoad = this->m_regAutoLoad;
 	if(!CAppUtils::IsSSHPutty())
@@ -174,14 +178,14 @@ void CPushDlg::Refresh()
 	if( pushBranch.IsEmpty() )
 	{
 		configName.Format(L"branch.%s.merge", currentBranch);
-		pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));		
+		pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
 	}
 
 	STRING_VECTOR list;
 	m_Remote.Reset();
 
 	if(!g_Git.GetRemoteList(list))
-	{	
+	{
 		for(unsigned int i=0;i<list.size();i++)
 		{
 			m_Remote.AddString(list[i]);
@@ -272,7 +276,7 @@ void CPushDlg::OnBnClickedOk()
 
 void CPushDlg::OnBnClickedRemoteManage()
 {
-    CAppUtils::LaunchRemoteSetting();
+	CAppUtils::LaunchRemoteSetting();
 	Refresh();
 }
 

@@ -50,7 +50,7 @@ bool SVNRebaseCommand::Execute()
 	}
 
 	CRebaseDlg dlg;
-	
+
 //	dlg.m_PreCmd=_T("git.exe svn fetch");
 
 	CString cmd,out;
@@ -64,7 +64,7 @@ bool SVNRebaseCommand::Execute()
 
 		if(out.Left(5) == _T(":refs"))
 			out=out.Mid(6);
-		
+
 		start = 0;
 		out=out.Tokenize(_T("\n"),start);
 	}else
@@ -78,7 +78,7 @@ bool SVNRebaseCommand::Execute()
 	CGitHash UpStreamOldHash,HeadHash,UpStreamNewHash;
 	UpStreamOldHash=g_Git.GetHash(out);
 	HeadHash = g_Git.GetHash(_T("HEAD"));
-	CProgressDlg progress; 
+	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn fetch");
 	progress.m_bAutoCloseOnSuccess = true;
 
@@ -87,7 +87,7 @@ bool SVNRebaseCommand::Execute()
 
 	if(progress.m_GitStatus)
 		return false;
-	
+
 	UpStreamNewHash=g_Git.GetHash(out);
 
 	//everything updated
@@ -99,7 +99,7 @@ bool SVNRebaseCommand::Execute()
 
 		return true;
 	}
-	
+
 	//fast forward;
 	CString ff;
 	if(g_Git.IsFastForward(CString(_T("HEAD")),out))

@@ -58,7 +58,7 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	/** holds all the selected files/folders the user wants to add to version 
+	/** holds all the selected files/folders the user wants to add to version
 	 * control on exit */
 	CTGitPathList	m_pathList;
 

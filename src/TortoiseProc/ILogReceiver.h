@@ -61,24 +61,24 @@ class CAutoArray : public CArray<T*,T*>
 {
 public:
 
-    // default and copy construction
+	// default and copy construction
 
-    CAutoArray() 
-    {
-    }
+	CAutoArray() 
+	{
+	}
 
-    CAutoArray (const CAutoArray& rhs)
-    {
-        Copy (rhs);
-    }
+	CAutoArray (const CAutoArray& rhs)
+	{
+		Copy (rhs);
+	}
 
-    // destruction deletes members
+	// destruction deletes members
 
-    ~CAutoArray()
-    {
-	    for (INT_PTR i = 0, count = GetCount(); i < count; ++i)
-		    delete GetAt (i);
-    }
+	~CAutoArray()
+	{
+		for (INT_PTR i = 0, count = GetCount(); i < count; ++i)
+			delete GetAt (i);
+	}
 };
 
 typedef CAutoArray<LogChangedPath> LogChangedPathArray;
@@ -89,9 +89,9 @@ typedef CAutoArray<LogChangedPath> LogChangedPathArray;
 
 struct StandardRevProps
 {
-    CString author;
-//    apr_time_t timeStamp;
-    CString message;
+	CString author;
+//	apr_time_t timeStamp;
+	CString message;
 };
 
 /**
@@ -118,17 +118,17 @@ public:
 
 	/// call-back for every revision found
 	/// (called at most once per revision)
-    ///
-    /// the implementation may modify but not delete()
-    /// the data containers passed to it
-    ///
-    /// any pointer may be NULL
+	///
+	/// the implementation may modify but not delete()
+	/// the data containers passed to it
+	///
+	/// any pointer may be NULL
 	///
 	/// may throw a SVNError to cancel the log
 
 	virtual void ReceiveLog ( LogChangedPathArray* changes
 							, CString rev
-                            , const StandardRevProps* stdRevProps
-                            , UserRevPropArray* userRevProps
-                            , bool mergesFollow) = 0;
+							, const StandardRevProps* stdRevProps
+							, UserRevPropArray* userRevProps
+							, bool mergesFollow) = 0;
 };

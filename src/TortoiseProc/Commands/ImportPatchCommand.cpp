@@ -42,7 +42,7 @@ bool ImportPatchCommand::Execute()
 
 		CTGitPath path;
 		path.SetFromWin(str);
-		
+
 		if(!path.HasAdminDir())
 		{
 			CString format;
@@ -67,6 +67,6 @@ bool ImportPatchCommand::Execute()
 	{
 		return TRUE;
 	}
-	
+
 	return FALSE;
 }

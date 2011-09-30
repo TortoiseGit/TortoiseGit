@@ -52,7 +52,7 @@ public:
 	CString					m_PreText;		// optional text to show in log window before running command
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
 	CString					m_LogFile;
-	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit 
+	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit
 	bool					m_bAutoCloseOnSuccess;
 
 	DWORD					m_GitStatus;
@@ -66,7 +66,7 @@ private:
 	CRichEditCtrl			m_Log;
 	CAnimateCtrl			m_Animate;
 	CStatic					m_CurrentWork;
-	CWinThread*				m_pThread;	
+	CWinThread*				m_pThread;
 	volatile LONG			m_bThreadRunning;
 
 	bool					m_bAbort;

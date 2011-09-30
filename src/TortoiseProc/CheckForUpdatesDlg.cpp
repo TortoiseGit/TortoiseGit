@@ -141,7 +141,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 						x3=_ttoi(ver)&0xFFFF;
 						ver = ver.Mid(ver.Find('.')+1);
 						x4=_ttoi(ver)&0xFFFF;
-						
+
 						unsigned __int64 newversion;
 						newversion = x1;
 						newversion <<= 16;

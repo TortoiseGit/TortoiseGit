@@ -74,10 +74,10 @@ bool FormatPatchCommand::Execute()
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		progress.DoModal();
-		
+
 		CShellUpdater::Instance().AddPathForUpdate(CTGitPath(dlg.m_Dir));
 		CShellUpdater::Instance().Flush();
-		
+
 		if(!progress.m_GitStatus)
 		{
 			if(dlg.m_bSendMail)

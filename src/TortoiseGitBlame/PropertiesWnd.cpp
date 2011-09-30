@@ -141,68 +141,68 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
-	
+
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Basic Info"));
 
-	
+
 	m_CommitHash = new CMFCPropertyGridProperty(
-				_T("Commit Hash"), 
+				_T("Commit Hash"),
 				_T(""),
 				_T("Commit Hash")
 				);
 	pGroup1->AddSubItem(m_CommitHash);
 
 	m_AuthorName = new CMFCPropertyGridProperty(
-				_T("Author"), 
+				_T("Author"),
 				_T(""),
 				_T("Author")
 				);
 	pGroup1->AddSubItem(m_AuthorName);
 
 	m_AuthorDate = new CMFCPropertyGridProperty(
-				_T("Author Date"), 
+				_T("Author Date"),
 				_T(""),
 				_T("Author Date")
 				);
 	pGroup1->AddSubItem(m_AuthorDate);
 
 	m_AuthorEmail= new CMFCPropertyGridProperty(
-				_T("Author Email"), 
+				_T("Author Email"),
 				_T(""),
 				_T("Author Email")
 				);
 	pGroup1->AddSubItem(m_AuthorEmail);
 
 	m_CommitterName = new CMFCPropertyGridProperty(
-				_T("Committer Name"), 
+				_T("Committer Name"),
 				_T(""),
 				_T("Committer Name")
 				);
 	pGroup1->AddSubItem(m_CommitterName);
 
 	m_CommitterEmail =new CMFCPropertyGridProperty(
-				_T("Committer Email"), 
+				_T("Committer Email"),
 				_T(""),
 				_T("Committer Email")
 				);
 	pGroup1->AddSubItem(m_CommitterEmail);
 
 	m_CommitterDate = new CMFCPropertyGridProperty(
-				_T("Committer Date"), 
+				_T("Committer Date"),
 				_T(""),
 				_T("Committer Date")
 				);;
 	pGroup1->AddSubItem(m_CommitterDate);
 
 	m_Subject = new CMFCPropertyGridProperty(
-				_T("Subject"), 
+				_T("Subject"),
 				_T(""),
 				_T("Subject")
 				);;;
 	pGroup1->AddSubItem(m_Subject);
 
 	m_Body = new CMFCPropertyGridProperty(
-				_T("Body"), 
+				_T("Body"),
 				_T(""),
 				_T("Body")
 				);;;;
@@ -225,7 +225,7 @@ void CPropertiesWnd::InitPropList()
 #if 0
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Caption"), (_variant_t) _T("About"), _T("Specifies the text that will be displayed in the window's title bar")));
 
-	
+
 
 	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("Window Size"), 0, TRUE);
 
@@ -326,7 +326,7 @@ void CPropertiesWnd::RemoveParent()
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
 		m_ParentGroup->RemoveSubItem(p);
 	}
-	
+
 }
 void CPropertiesWnd::UpdateProperties(GitRev *rev)
 {
@@ -335,7 +335,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 		m_CommitHash->SetValue(rev->m_CommitHash.ToString());
 		m_AuthorName->SetValue(rev->GetAuthorName());
 		m_AuthorDate->SetValue(rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M")));
-		m_AuthorEmail->SetValue(rev->GetAuthorEmail());	
+		m_AuthorEmail->SetValue(rev->GetAuthorEmail());
 
 		m_CommitterName->SetValue(rev->GetAuthorName());
 		m_CommitterEmail->SetValue(rev->GetCommitterEmail());
@@ -358,7 +358,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 			GitRev *p =NULL;
 
 			if( pLogEntry->m_pLogCache->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
-			{ 
+			{
 				p=NULL;
 			}
 			else
@@ -371,7 +371,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i].ToString(),parentsubject);
 
 			CMFCPropertyGridProperty*pProtery=new CMFCPropertyGridProperty(
-											rev->m_ParentHash[i].ToString().Left(8), 
+											rev->m_ParentHash[i].ToString().Left(8),
 												parentsubject,
 												str
 											);

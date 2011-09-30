@@ -471,7 +471,7 @@ void CProgressDlg::OnBnClickedButton1()
 void CProgressDlg::OnClose()
 {
 	DialogEnableWindow(IDCANCEL, TRUE);
-	__super::OnClose();	
+	__super::OnClose();
 }
 
 void CProgressDlg::OnCancel()

@@ -37,7 +37,7 @@ CAppUtils::~CAppUtils(void)
  *				   cTime - the time
  *				   option - DATE_SHORTDATE or DATE_LONGDATE
  *				   bIncluedeTime - whether to show time as well as date
- *				   bRelative - if true then relative time is shown if reasonable 
+ *				   bRelative - if true then relative time is shown if reasonable
  *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
  *				   rather than locale
  * RETURN      :   CString containing date/time
@@ -58,10 +58,10 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
 			// yes
 			SYSTEMTIME sysTime;
 			cTime.GetAsSystemTime( sysTime );
-			
+
 			TCHAR buf[100];
-			
-			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, 
+
+			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf,
 				sizeof(buf)/sizeof(TCHAR)-1);
 			datetime = buf;
 			if ( bIncludeTime )
@@ -93,7 +93,7 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
  */
 CString CAppUtils::ToRelativeTimeString(CTime time)
 {
-    CString answer;
+	CString answer;
 	// convert to COleDateTime
 	SYSTEMTIME sysTime;
 	time.GetAsSystemTime( sysTime );
@@ -107,11 +107,11 @@ CString CAppUtils::ToRelativeTimeString(CTime time)
  */
 CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
 {
-    CString answer;
+	CString answer;
 	COleDateTimeSpan ts = RelativeTo - time;
-    //years
+	//years
 	if(fabs(ts.GetTotalDays()) >= 3*365)
-    {
+	{
 		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/365, IDS_YEAR_AGO, IDS_YEARS_AGO );
 	}
 	//Months
@@ -146,10 +146,10 @@ CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeT
 	}
 	//seconds
 		answer = ExpandRelativeTime( (int)ts.GetTotalSeconds(), IDS_SECOND_AGO, IDS_SECONDS_AGO );
-    return answer;
+	return answer;
 }
 
-/** 
+/**
  * Passed a value and two resource string ids
  * if count is 1 then FormatString is called with format_1 and the value
  * otherwise format_2 is used

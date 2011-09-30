@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
 
 CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
-	: ISettingsPropPage(CSettingsBugtraqConfig::IDD)	
+	: ISettingsPropPage(CSettingsBugtraqConfig::IDD)
 	, m_URL(_T(""))
 	, m_bNWarningifnoissue(FALSE)
 	, m_Message(_T(""))

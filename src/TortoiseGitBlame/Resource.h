@@ -38,7 +38,7 @@
 #define ID_EDIT_GOTO                    220
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222
-#define IDR_MAINFRAME			223
+#define IDR_MAINFRAME                   223
 #define IDR_BLAME_POPUP                 311
 #define IDS_YEAR_AGO                    9605
 #define IDS_YEARS_AGO                   9606

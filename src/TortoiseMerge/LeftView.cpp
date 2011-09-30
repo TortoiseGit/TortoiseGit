@@ -183,8 +183,8 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 			break;
 		case ID_USEBLOCK:
 			{
-                if ((m_nSelBlockStart == -1)||(m_nSelBlockEnd == -1))
-                    break;
+				if ((m_nSelBlockStart == -1)||(m_nSelBlockEnd == -1))
+					break;
 				if (m_pwndBottom->IsWindowVisible())
 				{
 					for (int i=m_nSelBlockStart; i<=m_nSelBlockEnd; i++)

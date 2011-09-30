@@ -34,7 +34,7 @@ public:
 	typedef std::map<CString,CShadowTree> TShadowTreeMap;
 
 	CShadowTree():m_hTree(NULL),m_pParent(NULL){}
-	
+
 	CShadowTree*	GetNextSub(CString& nameLeft, bool bCreateIfNotExist);
 
 	bool			IsLeaf()const {return m_ShadowTree.empty();}
@@ -158,6 +158,6 @@ private:
 	CString m_pickedRef;
 
 public:
-	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All); 
-	static bool		PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind = gPickRef_All); 
+	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All);
+	static bool		PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind = gPickRef_All);
 };

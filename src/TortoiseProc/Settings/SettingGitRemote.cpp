@@ -145,7 +145,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		}else
 			return;
 	}
-	
+
 	this->OnApply();
 }
 
@@ -176,7 +176,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 		}
 	}
 	SetModified(FALSE);
-	
+
 	CString cmd,output;
 	int index;
 	index = this->m_ctrlRemoteList.GetCurSel();
@@ -307,7 +307,7 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 				CMessageBox::Show(NULL, out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 				return;
 			}
-			
+
 			m_ctrlRemoteList.DeleteString(index);
 			OnLbnSelchangeListRemote();
 		}

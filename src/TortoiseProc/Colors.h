@@ -28,7 +28,7 @@ class CColors
 public:
 	CColors(void);
 	~CColors(void);
-	
+
 	enum Colors
 	{
 		Cmd,
@@ -61,7 +61,7 @@ public:
 		BisectBad,
 		COLOR_END=-1
 	};
-	
+
 	COLORREF GetColor(Colors col, bool bDefault = false);
 	void SetColor(Colors col, COLORREF cr);
 

@@ -106,7 +106,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		g_Git.m_CurrentDir=topdir;
 
 		CString PathName=lpszPathName;
-		if(topdir[topdir.GetLength()-1] == _T('\\') || 
+		if(topdir[topdir.GetLength()-1] == _T('\\') ||
 			topdir[topdir.GetLength()-1] == _T('/'))
 			PathName=PathName.Right(PathName.GetLength()-g_Git.m_CurrentDir.GetLength());
 		else
@@ -117,10 +117,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 		if(!g_Git.m_CurrentDir.IsEmpty())
 			SetCurrentDirectory(g_Git.m_CurrentDir);
-		
+
 		m_GitPath = path;
 		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString());
-	
+
 		CString cmd;
 
 		if(Rev.IsEmpty())
@@ -135,11 +135,11 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			CMessageBox::Show(NULL,CString(_T("Blame Error")) + str,_T("TortoiseGitBlame"),MB_OK);
 
 		}
-		
+
 		if(!m_TempFileName.IsEmpty())
 		{
 			::DeleteFile(m_TempFileName);
-			m_TempFileName.Empty();		
+			m_TempFileName.Empty();
 		}
 
 		m_TempFileName=GetTempFile();

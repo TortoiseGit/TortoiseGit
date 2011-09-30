@@ -30,7 +30,7 @@
 /**
  * \ingroup TortoiseProc
  * Prompts the user for required information for an export command. The information
- * is the module name and the repository url. 
+ * is the module name and the repository url.
  */
 class CExportDlg : public CHorizontalResizableStandAloneDialog, public CChooseVersion
 {

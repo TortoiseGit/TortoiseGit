@@ -114,7 +114,7 @@ UINT CPropDlg::PropThread()
 		val = props.GetItemValue(i).c_str();
 
 		int nFound = -1;
-		do 
+		do
 		{
 			nFound = val.FindOneOf(_T("\r\n"));
 			m_proplist.InsertItem(row, name);

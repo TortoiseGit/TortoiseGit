@@ -57,14 +57,14 @@ BOOL CSettingsColors2::OnInitDialog()
 	m_cLocalBranch.SetColor(m_Colors.GetColor(CColors::LocalBranch));
 	m_cRemoteBranch.SetColor(m_Colors.GetColor(CColors::RemoteBranch));
 	m_cTags.SetColor(m_Colors.GetColor(CColors::Tag));
-	
+
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
 	sCustomText.LoadString(IDS_COLOURPICKER_CUSTOMTEXT);
 
 	m_cCurrentBranch.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::CurrentBranch, true));
 	m_cCurrentBranch.EnableOtherButton(sCustomText);
-	
+
 	m_cLocalBranch.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::LocalBranch, true));
 	m_cLocalBranch.EnableOtherButton(sCustomText);
 

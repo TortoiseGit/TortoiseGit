@@ -29,7 +29,7 @@ bool RevertCommand::Execute()
 	dlg.m_pathList = pathList;
 	if (dlg.DoModal() == IDOK)
 	{
-		
+
 //		g_Git.Revert(dlg.m_selectedPathList,true);
 
 		CGitProgressDlg progDlg;

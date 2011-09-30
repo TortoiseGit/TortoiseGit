@@ -22,7 +22,7 @@
 #include "Globals.h"
 
 MenuInfo menuInfo[] =
-{	
+{
 	{ ShellMenuClone,						MENUCLONE,			IDI_CLONE,				IDS_MENUCLONE,			IDS_MENUDESCCLONE,
 	ITEMIS_FOLDER, ITEMIS_INSVN|ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0, 0 },
 
@@ -42,7 +42,7 @@ MenuInfo menuInfo[] =
 //	{ ShellMenuCheckout,					MENUCHECKOUT,		IDI_CHECKOUT,			IDS_MENUCHECKOUT,			IDS_MENUDESCCHECKOUT,
 //	ITEMIS_FOLDER, ITEMIS_INSVN|ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0, 0 },
 
-//	{ ShellMenuUpdate,					MENUSUBUPDATE,			IDI_UPDATE,				IDS_MENUUPDATE,				IDS_MENUDESCUPDATE,				
+//	{ ShellMenuUpdate,					MENUSUBUPDATE,			IDI_UPDATE,				IDS_MENUUPDATE,				IDS_MENUDESCUPDATE,
 //	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},

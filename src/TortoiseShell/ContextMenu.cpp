@@ -54,9 +54,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	{
 		STGMEDIUM medium;
 		FORMATETC fmte = {(CLIPFORMAT)g_shellidlist,
-			(DVTARGETDEVICE FAR *)NULL, 
-			DVASPECT_CONTENT, 
-			-1, 
+			(DVTARGETDEVICE FAR *)NULL,
+			DVASPECT_CONTENT,
+			-1,
 			TYMED_HGLOBAL};
 		HRESULT hres = pDataObj->GetData(&fmte, &medium);
 
@@ -157,7 +157,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							// TODO: should we really assume any sub-directory to be versioned
 							//       or only if it contains versioned files
 							itemStates |= askedpath.GetAdminDirMask();
-							
+
 							if ((status == git_wc_status_unversioned) || (status == git_wc_status_ignored) || (status == git_wc_status_none))
 								itemStates &= ~ITEMIS_INSVN;
 
@@ -177,7 +177,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				GlobalUnlock ( drop );
 				ReleaseStgMedium ( &stg );
 
-			} // if (m_State == FileStateDropHandler) 
+			} // if (m_State == FileStateDropHandler)
 			else
 			{
 
@@ -241,7 +241,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 										//}
 										//if ((stat.status->entry)&&(stat.status->entry->uuid))
 										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-									}	
+									}
 									else
 									{
 										// sometimes, git_client_status() returns with an error.
@@ -261,8 +261,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 								}
 							}
 
-							itemStates |= strpath.GetAdminDirMask();		
-							
+							itemStates |= strpath.GetAdminDirMask();
+
 							if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
 								itemStates &= ~ITEMIS_INSVN;
 							if (status == git_wc_status_ignored)
@@ -284,7 +284,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 //									}
 //								}
 							}
-					
+
 							if (status == git_wc_status_normal)
 								itemStates |= ITEMIS_NORMAL;
 							if (status == git_wc_status_conflicted)
@@ -306,10 +306,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				UINT cFormatDiff = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 				if (cFormatDiff)
 				{
-					if (IsClipboardFormatAvailable(cFormatDiff)) 
+					if (IsClipboardFormatAvailable(cFormatDiff))
 						itemStates |= ITEMIS_PATCHINCLIPBOARD;
 				}
-				if (IsClipboardFormatAvailable(CF_HDROP)) 
+				if (IsClipboardFormatAvailable(CF_HDROP))
 					itemStates |= ITEMIS_PATHINCLIPBOARD;
 
 			}
@@ -330,9 +330,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		ItemIDList list(pIDFolder);
 		folder_ = list.toString();
 		git_wc_status_kind status = git_wc_status_none;
-		if (IsClipboardFormatAvailable(CF_HDROP)) 
+		if (IsClipboardFormatAvailable(CF_HDROP))
 			itemStatesFolder |= ITEMIS_PATHINCLIPBOARD;
-		
+
 		CTGitPath askedpath;
 		askedpath.SetFromWin(folder_.c_str());
 
@@ -369,7 +369,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 
 					//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-					itemStatesFolder |= askedpath.GetAdminDirMask();							
+					itemStatesFolder |= askedpath.GetAdminDirMask();
 
 					if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
 						itemStates &= ~ITEMIS_INSVN;
@@ -425,7 +425,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				askedpath.SetFromWin(folder_.c_str());
 
 				if (folder_.compare(statuspath)!=0)
-				{				
+				{
 					try
 					{
 						GitStatus stat;
@@ -455,7 +455,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				}
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 				itemStates |= askedpath.GetAdminDirMask();
-				
+
 				if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
 					itemStates &= ~ITEMIS_INSVN;
 
@@ -469,9 +469,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 
 			}
 		}
-	
+
 	}
-	
+
 	return NOERROR;
 }
 
@@ -553,7 +553,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		InsertMenu(menu, pos, MF_BYPOSITION | MF_STRING , id, menutextbuffer);
 		if (icon)
 		{
-			HBITMAP bmp = IconToBitmap(icon); 
+			HBITMAP bmp = IconToBitmap(icon);
 			SetMenuItemBitmaps(menu, pos, MF_BYPOSITION, bmp, bmp);
 		}
 	}
@@ -635,7 +635,7 @@ HBITMAP CShellExt::IconToBitmap(UINT uIcon)
 	if (dst_hdc == NULL)
 	{
 		DestroyIcon(hIcon);
-		::ReleaseDC(desktop, screen_dev); 
+		::ReleaseDC(desktop, screen_dev);
 		return NULL;
 	}
 
@@ -645,7 +645,7 @@ HBITMAP CShellExt::IconToBitmap(UINT uIcon)
 	{
 		DestroyIcon(hIcon);
 		::DeleteDC(dst_hdc);
-		::ReleaseDC(desktop, screen_dev); 
+		::ReleaseDC(desktop, screen_dev);
 		return NULL;
 	}
 
@@ -668,7 +668,7 @@ HBITMAP CShellExt::IconToBitmap(UINT uIcon)
 	// Restore settings
 	::SelectObject(dst_hdc, old_dst_bmp);
 	::DeleteDC(dst_hdc);
-	::ReleaseDC(desktop, screen_dev); 
+	::ReleaseDC(desktop, screen_dev);
 	DestroyIcon(hIcon);
 	if (bmp)
 		bitmaps.insert(bitmap_it, std::make_pair(uIcon, bmp));
@@ -690,10 +690,10 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	tempfile = stdstring(tempFile);
 
 	HANDLE file = ::CreateFile (tempFile,
-		GENERIC_WRITE, 
-		FILE_SHARE_READ, 
-		0, 
-		CREATE_ALWAYS, 
+		GENERIC_WRITE,
+		FILE_SHARE_READ,
+		0,
+		CREATE_ALWAYS,
 		FILE_ATTRIBUTE_TEMPORARY,
 		0);
 
@@ -713,7 +713,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	if(hDrop != NULL)
 	{
 		TCHAR szFileName[MAX_PATH];
-		UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0); 
+		UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 		for(UINT i = 0; i < cFiles; ++i)
 		{
 			DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
@@ -742,12 +742,12 @@ stdstring CShellExt::WriteFileListToTempFile()
 	GetTempPath (pathlength+1, path);
 	GetTempFileName (path, _T("git"), 0, tempFile);
 	stdstring retFilePath = stdstring(tempFile);
-	
+
 	HANDLE file = ::CreateFile (tempFile,
-								GENERIC_WRITE, 
-								FILE_SHARE_READ, 
-								0, 
-								CREATE_ALWAYS, 
+								GENERIC_WRITE,
+								FILE_SHARE_READ,
+								0,
+								CREATE_ALWAYS,
 								FILE_ATTRIBUTE_TEMPORARY,
 								0);
 
@@ -755,7 +755,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 	delete [] tempFile;
 	if (file == INVALID_HANDLE_VALUE)
 		return stdstring();
-		
+
 	DWORD written = 0;
 	if (files_.empty())
 	{
@@ -790,7 +790,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	//the drop handler only has eight commands, but not all are visible at the same time:
 	//if the source file(s) are under version control then those files can be moved
-	//to the new location or they can be moved with a rename, 
+	//to the new location or they can be moved with a rename,
 	//if they are unversioned then they can be added to the working copy
 	//if they are versioned, they also can be exported to an unversioned location
 	UINT idCmd = idCmdFirst;
@@ -837,7 +837,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// separator
 	if (idCmd != idCmdFirst)
-		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); 
+		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
 	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
 }
@@ -850,7 +850,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 {
 	ATLTRACE("Shell :: QueryContextMenu\n");
 	PreserveChdir preserveChdir;
-	
+
 	//first check if our drop handler is called
 	//and then (if true) provide the context menu for the
 	//drop handler
@@ -868,7 +868,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
 		return NOERROR;
 
-	int csidlarray[] = 
+	int csidlarray[] =
 	{
 		CSIDL_BITBUCKET,
 		CSIDL_CDBURN_AREA,
@@ -937,7 +937,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	}
 
 	//check if we already added our menu entry for a folder.
-	//we check that by iterating through all menu entries and check if 
+	//we check that by iterating through all menu entries and check if
 	//the dwItemData member points to our global ID string. That string is set
 	//by our shell extension when the folder menu is inserted.
 	TCHAR menubuf[MAX_PATH];
@@ -1011,7 +1011,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 			if ((fullver < 0x500)||(fullver == 0x500 && !(uFlags&~(CMF_RESERVED|CMF_EXPLORE|CMF_EXTENDEDVERBS))))
 			{
 				InsertMenu(hMenu, pos, MF_DISABLED|MF_GRAYED|MF_BYPOSITION|MF_STRING, id, sBranchName);
-				HBITMAP bmp = IconToBitmap(icon); 
+				HBITMAP bmp = IconToBitmap(icon);
 				SetMenuItemBitmaps(hMenu, pos, MF_BYPOSITION, bmp, bmp);
 			}
 			else
@@ -1124,10 +1124,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 					{
 						bAddSeparator = false;
 						bMenuEntryAdded = false;
-						InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); 
+						InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 						idCmd++;
 					}
-					
+
 					// handle special cases (sub menus)
 					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
 					{
@@ -1685,7 +1685,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				else
 					svnCmd += folder_;
 				svnCmd += _T("\"");
-				break;	
+				break;
 			case ShellMenuRebase:
 				svnCmd += _T("rebase /path:\"");
 				if (files_.size() > 0)
@@ -1798,9 +1798,9 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					// to a temporary file and tell TortoiseMerge to use that one
 					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 					if ((cFormat)&&(OpenClipboard(NULL)))
-					{ 
-						HGLOBAL hglb = GetClipboardData(cFormat); 
-						LPCSTR lpstr = (LPCSTR)GlobalLock(hglb); 
+					{
+						HGLOBAL hglb = GetClipboardData(cFormat);
+						LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 
 						DWORD len = GetTempPath(0, NULL);
 						TCHAR * path = new TCHAR[len+1];
@@ -1825,9 +1825,9 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 							}
 							fclose(outFile);
 						}
-						GlobalUnlock(hglb); 
-						CloseClipboard(); 
-					} 
+						GlobalUnlock(hglb);
+						CloseClipboard();
+					}
 				}
 				if (itemStates & ITEMIS_PATCHFILE)
 				{
@@ -1863,15 +1863,15 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				if (CreateProcess(((stdstring)tortoiseMergePath).c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 				{
 					LPVOID lpMsgBuf;
-					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-						FORMAT_MESSAGE_FROM_SYSTEM | 
+					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+						FORMAT_MESSAGE_FROM_SYSTEM |
 						FORMAT_MESSAGE_IGNORE_INSERTS,
 						NULL,
 						GetLastError(),
 						MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
 						(LPTSTR) &lpMsgBuf,
 						0,
-						NULL 
+						NULL
 						);
 					MessageBox( NULL, (LPCTSTR)lpMsgBuf, _T("TortoiseMerge launch failed"), MB_OK | MB_ICONINFORMATION );
 					LocalFree( lpMsgBuf );
@@ -1961,7 +1961,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			
+
 			case ShellMenuTag:
 				svnCmd += _T("tag /path:\"");
 				if (files_.size() > 0)
@@ -2008,7 +2008,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			default:
 				break;
 				//#endregion
-			} // switch (id_it->second) 
+			} // switch (id_it->second)
 			svnCmd += _T(" /hwnd:");
 			TCHAR buf[30];
 			_stprintf_s(buf, 30, _T("%d"), lpcmi->hwnd);
@@ -2019,15 +2019,15 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 			{
 				LPVOID lpMsgBuf;
-				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-					FORMAT_MESSAGE_FROM_SYSTEM | 
+				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					FORMAT_MESSAGE_FROM_SYSTEM |
 					FORMAT_MESSAGE_IGNORE_INSERTS,
 					NULL,
 					GetLastError(),
 					MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
 					(LPTSTR) &lpMsgBuf,
 					0,
-					NULL 
+					NULL
 					);
 				MessageBox( NULL, (LPCTSTR)lpMsgBuf, _T("TortoiseProc Launch failed"), MB_OK | MB_ICONINFORMATION );
 				LocalFree( lpMsgBuf );
@@ -2035,8 +2035,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			CloseHandle(process.hThread);
 			CloseHandle(process.hProcess);
 			hr = NOERROR;
-		} // if (id_it != myIDMap.end() && id_it->first == idCmd) 
-	} // if ((files_.size() > 0)||(folder_.size() > 0)) 
+		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
+	} // if ((files_.size() > 0)||(folder_.size() > 0))
 	return hr;
 
 }
@@ -2079,14 +2079,14 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 			std::string help = WideToMultibyte(desc);
 			lstrcpynA(pszName, help.c_str(), cchMax);
 			hr = S_OK;
-			break; 
+			break;
 		}
-	case GCS_HELPTEXTW: 
+	case GCS_HELPTEXTW:
 		{
 			wide_string help = desc;
-			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax); 
+			lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
 			hr = S_OK;
-			break; 
+			break;
 		}
 	case GCS_VERBA:
 		{
@@ -2106,7 +2106,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 			{
 				wide_string help = verb_id_it->second;
 				ATLTRACE("verb : %ws\n", help.c_str());
-				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax); 
+				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
 				hr = S_OK;
 			}
 		}
@@ -2267,7 +2267,7 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 				break;
 			default:
 				space = layout & menuInfo[menuIndex].menuID ? 0 : 6;
-				if (layout & (menuInfo[menuIndex].menuID)) 
+				if (layout & (menuInfo[menuIndex].menuID))
 				{
 					_tcscpy_s(textbuf, 255, _T("Git "));
 					_tcscat_s(textbuf, 255, stringtablebuffer);

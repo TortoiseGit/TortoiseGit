@@ -84,9 +84,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWFILELIST, &CMainFrame::OnUpdateViewShowfilelist)
 	ON_COMMAND(ID_VIEW_SHOWFILELIST, &CMainFrame::OnViewShowfilelist)
 	ON_COMMAND(ID_EDIT_USETHEIRBLOCK, &CMainFrame::OnEditUseTheirs)
-    ON_COMMAND(ID_EDIT_USEMYBLOCK, &CMainFrame::OnEditUseMine)
-    ON_COMMAND(ID_EDIT_USETHEIRTHENMYBLOCK, &CMainFrame::OnEditUseTheirsThenMine)
-    ON_COMMAND(ID_EDIT_USEMINETHENTHEIRBLOCK, &CMainFrame::OnEditUseMineThenTheirs)
+	ON_COMMAND(ID_EDIT_USEMYBLOCK, &CMainFrame::OnEditUseMine)
+	ON_COMMAND(ID_EDIT_USETHEIRTHENMYBLOCK, &CMainFrame::OnEditUseTheirsThenMine)
+	ON_COMMAND(ID_EDIT_USEMINETHENTHEIRBLOCK, &CMainFrame::OnEditUseMineThenTheirs)
 	ON_COMMAND(ID_EDIT_UNDO, &CMainFrame::OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CMainFrame::OnUpdateEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_USEMINETHENTHEIRBLOCK, &CMainFrame::OnUpdateEditUseminethentheirblock)
@@ -739,7 +739,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 		
 			m_pwndBottomView->m_pViewData = NULL;
 
-      		if (!m_wndSplitter.IsRowHidden(1))
+	  		if (!m_wndSplitter.IsRowHidden(1))
 				m_wndSplitter.HideRow(1);
 			m_pwndLeftView->SetHidden(FALSE);
 			m_pwndRightView->SetHidden(FALSE);
@@ -1290,7 +1290,7 @@ void CMainFrame::OnClose()
 	}
 	if ((ret == IDNO)||(ret == IDYES))
 	{
-		WINDOWPLACEMENT    wp;
+		WINDOWPLACEMENT wp;
 
 		// before it is destroyed, save the position of the window
 		wp.length = sizeof wp;
@@ -1332,27 +1332,27 @@ void CMainFrame::OnEditFind()
 
 LRESULT CMainFrame::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    ASSERT(m_pFindDialog != NULL);
+	ASSERT(m_pFindDialog != NULL);
 
-    if (m_pFindDialog->IsTerminating())
-    {
-	    // invalidate the handle identifying the dialog box.
-        m_pFindDialog = NULL;
-        return 0;
-    }
+	if (m_pFindDialog->IsTerminating())
+	{
+		// invalidate the handle identifying the dialog box.
+		m_pFindDialog = NULL;
+		return 0;
+	}
 
-    if(m_pFindDialog->FindNext())
-    {
-        //read data from dialog
-        m_sFindText = m_pFindDialog->GetFindString();
-        m_bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
+	if(m_pFindDialog->FindNext())
+	{
+		//read data from dialog
+		m_sFindText = m_pFindDialog->GetFindString();
+		m_bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 		m_bLimitToDiff = m_pFindDialog->LimitToDiffs();
 		m_bWholeWord = m_pFindDialog->WholeWord();
 	
 		OnEditFindnext();
-    }
+	}
 
-    return 0;
+	return 0;
 }
 
 bool CharIsDelimiter(const CString& ch)

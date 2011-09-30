@@ -23,7 +23,7 @@
 #include "GitStatus.h"
 #include "ILogReceiver.h"
 #include "lanes.h"
-#include <set> 
+#include <set>
 #include "GitHash.h"
 #include "GitLogCache.h"
 class CLogDlg;

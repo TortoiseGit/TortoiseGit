@@ -430,7 +430,7 @@ void CCommitDlg::OnOK()
 			OnBnClickedSignOff();
 			m_sLogMessage = m_cLogMessage.GetText();
 		}
-		else if (retval == 3) 
+		else if (retval == 3)
 			return;
 	}
 

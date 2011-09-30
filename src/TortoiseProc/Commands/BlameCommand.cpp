@@ -54,9 +54,9 @@ bool BlameCommand::Execute()
 		CString logfile;
 		if (bShowDialog)
 			options = SVN::GetOptionsString(dlg.m_bIgnoreEOL, dlg.m_IgnoreSpaces);
-		
-		tempfile = blame.BlameToTempFile(cmdLinePath, dlg.StartRev, dlg.EndRev, 
-			cmdLinePath.IsUrl() ? SVNRev() : SVNRev::REV_WC, logfile, 
+
+		tempfile = blame.BlameToTempFile(cmdLinePath, dlg.StartRev, dlg.EndRev,
+			cmdLinePath.IsUrl() ? SVNRev() : SVNRev::REV_WC, logfile,
 			options, dlg.m_bIncludeMerge, TRUE, TRUE);
 		if (!tempfile.IsEmpty())
 		{
@@ -88,7 +88,7 @@ bool BlameCommand::Execute()
 						sVal += _T("/ignoreallspaces ");
 					}
 				}
-				else 
+				else
 				{
 					if (parser.HasKey(_T("ignoreeol")))
 						sVal += _T("/ignoreeol ");

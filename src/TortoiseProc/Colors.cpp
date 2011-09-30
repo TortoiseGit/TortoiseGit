@@ -53,7 +53,7 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 
 };
 
-CColors::CColors(void) 
+CColors::CColors(void)
 {
 }
 
@@ -96,7 +96,7 @@ void CColors::SetColor(Colors col, COLORREF cr)
 		{
 			CRegDWORD reg(m_ColorArray[i].RegKey,m_ColorArray[i].Default);
 			reg=cr;
-			
+
 		}
 		i++;
 	}
@@ -111,7 +111,7 @@ COLORREF CColors::MixColors(COLORREF baseColor, COLORREF newColor, unsigned char
 	colRed	 = ((float)( baseColor&0x000000FF)     -(float)( newColor&0x000000FF)     )*mixFactor/0xFF;//red
 	colGreen = ((float)((baseColor&0x0000FF00)>>8) -(float)((newColor&0x0000FF00)>>8 ))*mixFactor/0xFF;//green
 	colBlue  = ((float)((baseColor&0x00FF0000)>>16)-(float)((newColor&0x00FF0000)>>16))*mixFactor/0xFF;//blue
-	
+
 	colRed   = ( baseColor&0x000000FF)		-colRed;
 	colGreen = ((baseColor&0x0000FF00)>>8)	-colGreen;
 	colBlue  = ((baseColor&0x00FF0000)>>16) -colBlue;

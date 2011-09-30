@@ -63,12 +63,12 @@ BOOL ProjectProperties::GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR)
 	output.Empty();
 
 	output = g_Git.GetConfigValue(key,CP_UTF8,NULL, bRemoveCR);
-	
+
 	if(output.IsEmpty())
 	{
 		return FALSE;
 	}
-	
+
 	prop = output;
 
 	return TRUE;
@@ -140,7 +140,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 
 	if (!path.IsDirectory())
 		path = path.GetContainingDirectory();
-		
+
 	for (;;)
 	{
 		GitProperties props(path, GitRev::REV_WC, false);
@@ -883,10 +883,10 @@ CString ProjectProperties::MakeShortMessage(const CString& message)
 	// Remove newlines and tabs 'cause those are not shown nicely in the list control
 	sShortMessage.Remove('\r');
 	sShortMessage.Replace(_T('\t'), _T(' '));
-	
+
 	// Suppose the first empty line separates 'summary' from the rest of the message.
 	int found = sShortMessage.Find(_T("\n\n"));
-	// To avoid too short 'short' messages 
+	// To avoid too short 'short' messages
 	// (e.g. if the message looks something like "Bugfix:\n\n*done this\n*done that")
 	// only use the empty newline as a separator if it comes after at least 15 chars.
 	if ((!bFoundShort)&&(found >= 15))

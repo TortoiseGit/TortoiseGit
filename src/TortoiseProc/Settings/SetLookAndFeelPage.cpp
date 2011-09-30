@@ -50,7 +50,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 			CString temp;
 			temp.LoadString(menuInfo[i].menuTextID);
 			CStringUtils::RemoveAccelerators(temp);
-		
+
 			int nIndex = list->GetItemCount();
 			list->InsertItem(nIndex,temp,nImage);
 			list->SetItemData(nIndex,i);
@@ -64,7 +64,7 @@ void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask)
 	for(int i=0;i<list->GetItemCount();i++)
 	{
 		int data = list->GetItemData(i);
-		
+
 		list->SetCheck(i,(menuInfo[data].menuID & mask) == menuInfo[data].menuID);
 	}
 }
@@ -74,7 +74,7 @@ unsigned __int64 GetMenuListMask(CListCtrl *list)
 	unsigned __int64 mask = 0;
 
 	for(int i=0;i<list->GetItemCount();i++)
-	{		
+	{
 		if(list->GetCheck(i))
 		{
 			int data = list->GetItemData(i);
@@ -152,7 +152,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_imgList.Create(16, 16, ILC_COLOR16 | ILC_MASK, 4, 1);
 
 	m_bBlock = true;
-	
+
 	InsertMenuItemToList(&m_cMenuList,&m_imgList);
 	SetMenuItemCheck(&m_cMenuList,m_topmenu);
 
@@ -185,7 +185,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 
 	m_regTopmenu = m_topmenu & 0xFFFFFFFF;
 	m_regTopmenuhigh = (m_topmenu >> 32);
-	
+
 	m_regTopmenu.getErrorString();
 	m_sNoContextPaths.Remove('\r');
 	if (m_sNoContextPaths.Right(1).Compare(_T("\n"))!=0)

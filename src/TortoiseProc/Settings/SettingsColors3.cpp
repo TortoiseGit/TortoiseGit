@@ -61,7 +61,7 @@ END_MESSAGE_MAP()
 BOOL CSettingsColors3::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
-	
+
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
 	sCustomText.LoadString(IDS_COLOURPICKER_CUSTOMTEXT);
@@ -89,7 +89,7 @@ BOOL CSettingsColors3::OnApply()
 {
 	for(int i=0;i<8;i++)
 	{
-		m_Colors.SetColor((CColors::Colors)(CColors::BranchLine1+i), 
+		m_Colors.SetColor((CColors::Colors)(CColors::BranchLine1+i),
 			m_cLine[i].GetColor() == -1 ? m_cLine[i].GetAutomaticColor() : m_cLine[i].GetColor());
 	}
 	return ISettingsPropPage::OnApply();

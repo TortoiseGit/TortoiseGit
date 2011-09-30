@@ -24,7 +24,7 @@
 #include "CreateProcessHelper.h"
 #include "PathUtils.h"
 
-CRemoteCacheLink::CRemoteCacheLink(void) 
+CRemoteCacheLink::CRemoteCacheLink(void)
 	: m_hPipe(INVALID_HANDLE_VALUE)
 	, m_hCommandPipe(INVALID_HANDLE_VALUE)
 {
@@ -192,18 +192,18 @@ void CRemoteCacheLink::CloseCommandPipe()
 	if(m_hCommandPipe != INVALID_HANDLE_VALUE)
 	{
 		// now tell the cache we don't need it's command thread anymore
-		DWORD cbWritten; 
+		DWORD cbWritten;
 		TSVNCacheCommand cmd;
 		SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
 		cmd.command = TSVNCACHECOMMAND_END;
-		WriteFile( 
-			m_hCommandPipe,			// handle to pipe 
-			&cmd,			// buffer to write from 
-			sizeof(cmd),	// number of bytes to write 
-			&cbWritten,		// number of bytes written 
-			NULL);			// not overlapped I/O 
-		DisconnectNamedPipe(m_hCommandPipe); 
-		CloseHandle(m_hCommandPipe); 
+		WriteFile(
+			m_hCommandPipe,			// handle to pipe
+			&cmd,			// buffer to write from
+			sizeof(cmd),	// number of bytes to write
+			&cbWritten,		// number of bytes written
+			NULL);			// not overlapped I/O
+		DisconnectNamedPipe(m_hCommandPipe);
+		CloseHandle(m_hCommandPipe);
 		m_hCommandPipe = INVALID_HANDLE_VALUE;
 	}
 }
@@ -347,19 +347,19 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCache
 bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 {
 	EnsureCommandPipeOpen();
-	if (m_hCommandPipe != INVALID_HANDLE_VALUE) 
+	if (m_hCommandPipe != INVALID_HANDLE_VALUE)
 	{
-		DWORD cbWritten; 
+		DWORD cbWritten;
 		TSVNCacheCommand cmd;
 		SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
 		cmd.command = TSVNCACHECOMMAND_RELEASE;
 		wcsncpy_s(cmd.path, MAX_PATH+1, path.GetDirectory().GetWinPath(), MAX_PATH);
-		BOOL fSuccess = WriteFile( 
-			m_hCommandPipe,	// handle to pipe 
-			&cmd,			// buffer to write from 
-			sizeof(cmd),	// number of bytes to write 
-			&cbWritten,		// number of bytes written 
-			NULL);			// not overlapped I/O 
+		BOOL fSuccess = WriteFile(
+			m_hCommandPipe,	// handle to pipe
+			&cmd,			// buffer to write from
+			sizeof(cmd),	// number of bytes to write
+			&cbWritten,		// number of bytes written
+			NULL);			// not overlapped I/O
 		if (! fSuccess || sizeof(cmd) != cbWritten)
 		{
 			CloseCommandPipe();

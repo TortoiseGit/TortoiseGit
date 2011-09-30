@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
 BOOL CSinglePropSheetDlg::OnInitDialog()
 {
 	BOOL bReturn = CTreePropSheet::OnInitDialog();
-	
+
 //	CRect clientRect;
 //	GetClientRect(&clientRect);
 //	clientRect.DeflateRect(10,10,10,10);

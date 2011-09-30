@@ -79,7 +79,7 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_cHookTypeCombo.SetItemData(index, pre_push_hook);
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTPUSH)));
 	m_cHookTypeCombo.SetItemData(index, post_push_hook);
-	
+
 	// preselect the right hook type in the combobox
 	for (int i=0; i<m_cHookTypeCombo.GetCount(); ++i)
 	{
@@ -171,7 +171,7 @@ void CSetHooksAdv::OnBnClickedHookcommandbrowse()
 	CString sCmdLine = m_sCommandLine;
 	if (!PathFileExists(sCmdLine))
 		sCmdLine.Empty();
-	// Display the Open dialog box. 
+	// Display the Open dialog box.
 	if (CAppUtils::FileOpenSave(sCmdLine, NULL, IDS_SETTINGS_HOOKS_SELECTSCRIPTFILE, IDS_COMMONFILEFILTER, true, m_hWnd))
 	{
 		m_sCommandLine = sCmdLine;

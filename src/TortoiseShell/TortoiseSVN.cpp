@@ -127,7 +127,7 @@ STDAPI DllCanUnloadNow(void)
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 {
     *ppvOut = NULL;
-	
+
     FileState state = FileStateInvalid;
     if (IsEqualIID(rclsid, CLSID_Tortoisegit_UPTODATE))
         state = FileStateVersioned;
@@ -151,18 +151,18 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 		state = FileStateIgnoredOverlay;
 	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNVERSIONED))
 		state = FileStateUnversionedOverlay;
-	
+
     if (state != FileStateInvalid)
     {
 //		apr_initialize();
 //		git_dso_initialize2();
 		g_GitAdminDir.Init();
 		g_cAprInit++;
-		
+
 		CShellExtClassFactory *pcf = new CShellExtClassFactory(state);
 		return pcf->QueryInterface(riid, ppvOut);
     }
-	
+
     return CLASS_E_CLASSNOTAVAILABLE;
 
 }

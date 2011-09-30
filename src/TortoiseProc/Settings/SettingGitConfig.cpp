@@ -134,7 +134,7 @@ BOOL CSettingGitConfig::OnApply()
 	CString cmd, out;
 	CONFIG_TYPE type=CONFIG_LOCAL;
 	this->UpdateData(FALSE);
-	
+
 	if(this->m_bGlobal)
 		type = CONFIG_GLOBAL;
 
@@ -144,7 +144,7 @@ BOOL CSettingGitConfig::OnApply()
 			CMessageBox::Show(NULL, _T("Fail to save user name"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
-	
+
 	if(m_ChangeMask&GIT_EMAIL)
 		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
 		{

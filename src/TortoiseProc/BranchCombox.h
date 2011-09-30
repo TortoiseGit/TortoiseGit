@@ -17,7 +17,6 @@ public:
 		m_RemoteBranchFilter = gPickRef_Remote;
 		m_DialogName=_T("sync");
 		m_pTooltip=NULL;
-		
 	}
 protected:
 	CHistoryCombo m_ctrlLocalBranch;
@@ -26,9 +25,9 @@ protected:
 	int m_RemoteBranchFilter;
 
 	CBalloon *m_pTooltip;
-	
+
 	CString m_DialogName;
-	
+
 	CString m_RegKeyRemoteBranch;
 
 	void  CbnSelchangeLocalBranch()
@@ -65,7 +64,7 @@ protected:
 		{
 			m_ctrlRemoteBranch.SetCurSel(-1);
 		}
-		
+
 		this->AddBranchToolTips(&this->m_ctrlLocalBranch,this->m_pTooltip);
 
 		LocalBranchChange();
@@ -79,7 +78,7 @@ protected:
 	}
 	void  BnClickedButtonBrowseLocalBranch()
 	{
-		if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlLocalBranch, m_LocalBranchFilter))	
+		if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlLocalBranch, m_LocalBranchFilter))
 			CbnSelchangeLocalBranch();
 	}
 	void  BnClickedButtonBrowseRemoteBranch()
@@ -112,7 +111,7 @@ protected:
 
 		}else
 		{
-			if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlRemoteBranch, m_RemoteBranchFilter))	
+			if(CBrowseRefsDlg::PickRefForCombo(&m_ctrlRemoteBranch, m_RemoteBranchFilter))
 				CbnSelchangeRemoteBranch();
 		}
 	}
@@ -143,11 +142,11 @@ protected:
 				rev.GetBody());
 
 			pBranch->DisableTooltip();
-			
+
 			tip->AddTool(pBranch->GetComboBoxCtrl(),tooltip);
 		}
 	}
-		
+
 	void LoadBranchInfo()
 	{
 		m_ctrlLocalBranch.SetMaxHistoryItems(0x0FFFFFFF);
@@ -160,16 +159,16 @@ protected:
 		m_ctrlRemoteBranch.Reset();
 
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_LOCAL_F);
-		
+
 		m_ctrlLocalBranch.AddString(list);
 
 		CString currentBranch = g_Git.GetSymbolicRef();
-		
+
 		if(this->m_RegKeyRemoteBranch.IsEmpty())
 		{
 			list.clear();
 			g_Git.GetBranchList(list,&current,CGit::BRANCH_REMOTE);
-		
+
 			m_ctrlRemoteBranch.AddString(list);
 
 		}else
@@ -200,7 +199,7 @@ protected:
 		this->LocalBranchChange();
 		this->RemoteBranchChange();
 	}
-	
+
 public:
 	CString m_strLocalBranch;
 	CString m_strRemoteBranch;
@@ -237,4 +236,3 @@ public:
 	afx_msg void OnCbnSelchangeRemoteBranch(){CbnSelchangeRemoteBranch();}\
 	afx_msg void OnBnClickedButtonBrowseLocalBranch(){BnClickedButtonBrowseLocalBranch();}\
 	afx_msg void OnBnClickedButtonBrowseRemoteBranch(){BnClickedButtonBrowseRemoteBranch();}
-

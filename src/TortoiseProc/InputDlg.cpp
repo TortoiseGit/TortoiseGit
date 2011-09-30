@@ -142,7 +142,7 @@ BOOL CInputDlg::PreTranslateMessage(MSG* pMsg)
 
 void CInputDlg::OnEnChangeLogmessage()
 {
-    CString sTemp = m_cInput.GetText();
+	CString sTemp = m_cInput.GetText();
 	if ((!m_bUseLogWidth)||((m_pProjectProperties==NULL)||(sTemp.GetLength() >= m_pProjectProperties->nMinLogSize)))
 	{
 		DialogEnableWindow(IDOK, TRUE);

@@ -101,7 +101,7 @@ DWORD CCreatePatch::ShowMask()
 {
 	return
 		SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | SVNSLC_SHOWDIRECTFILES |
-		(m_bShowUnversioned ? SVNSLC_SHOWUNVERSIONED : 0); 
+		(m_bShowUnversioned ? SVNSLC_SHOWUNVERSIONED : 0);
 }
 
 UINT CCreatePatch::PatchThread()
@@ -205,7 +205,7 @@ void CCreatePatch::OnOK()
 
 	int nListItems = m_PatchList.GetItemCount();
 	m_filesToRevert.Clear();
-	
+
 	for (int j=0; j<nListItems; j++)
 	{
 		const CSVNStatusListCtrl::FileEntry * entry = m_PatchList.GetListEntry(j);
@@ -231,7 +231,7 @@ void CCreatePatch::OnOK()
 		SVN svn;
 		svn.Add(m_filesToRevert, NULL, svn_depth_empty, false, false, true);
 	}
-	
+
 	//save only the files the user has selected into the path list
 	m_PatchList.WriteCheckedNamesToPathList(m_pathList);
 

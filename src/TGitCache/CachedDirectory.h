@@ -32,7 +32,7 @@
 class CCachedDirectory
 {
 public:
-	typedef std::map<CTGitPath, CCachedDirectory *> CachedDirMap; 
+	typedef std::map<CTGitPath, CCachedDirectory *> CachedDirMap;
 	typedef CachedDirMap::iterator ItDir;
 
 public:
@@ -80,8 +80,8 @@ private:
 
 	CTGitPath	m_currentStatusFetchingPath;
 	// The cache of files and directories within this directory
-	typedef std::map<CString, CStatusCacheEntry> CacheEntryMap; 
-	CacheEntryMap m_entryCache; 
+	typedef std::map<CString, CStatusCacheEntry> CacheEntryMap;
+	CacheEntryMap m_entryCache;
 
 	/// A vector if iterators to child directories - used to put-together recursive status
 	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
@@ -94,7 +94,7 @@ private:
 	std::vector<__int64> m_IgnoreFileTimeList;
 	// The timestamp of the .SVN\props dir.  For an unversioned directory, this will be zero
 //	__int64 m_propsFileTime;
-	
+
 	// The path of the directory with this object looks after
 	CTGitPath	m_directoryPath;
 
@@ -108,6 +108,6 @@ private:
 	git_wc_status_kind m_mostImportantFileStatus;
 
 	bool m_bRecursive;		// used in the status callback
-	friend class CGitStatusCache;		
+	friend class CGitStatusCache;
 };
 

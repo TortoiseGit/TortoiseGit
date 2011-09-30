@@ -38,7 +38,7 @@ bool RenameCommand::Execute()
 	// show the rename dialog until the user either cancels or enters a new
 	// name (one that's different to the original name
 	CString sNewName;
-	do 
+	do
 	{
 		CRenameDlg dlg;
 		dlg.m_name = filename;
@@ -55,7 +55,7 @@ bool RenameCommand::Execute()
 	cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),
 					cmdLinePath.GetGitPathString(),
 					sNewName);
-									
+
 	if(g_Git.Run(cmd,&output,CP_ACP))
 	{
 		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK);

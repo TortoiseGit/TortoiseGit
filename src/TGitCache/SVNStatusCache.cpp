@@ -81,7 +81,7 @@ void CGitStatusCache::Create()
 				LOADVALUEFROMFILE(mapsize);
 				for (int i=0; i<mapsize; ++i)
 				{
-					LOADVALUEFROMFILE2(value);	
+					LOADVALUEFROMFILE2(value);
 					if (value > MAX_PATH)
 						goto error;
 					if (value)
@@ -347,7 +347,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 	itMap = m_directoryCache.find(path);
 	if ((itMap != m_directoryCache.end())&&(itMap->second))
 	{
-		// We've found this directory in the cache 
+		// We've found this directory in the cache
 		return itMap->second;
 	}
 	else
@@ -395,7 +395,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 						bool isVersion = true;
 						CString subpaths;
 						if(subpaths.GetLength() > gitdir.GetLength())
-						{		
+						{
 							if(subpaths[gitdir.GetLength()] == _T('\\'))
 								subpaths=subpaths.Right(subpaths.GetLength() - gitdir.GetLength()-1);
 							else
@@ -404,13 +404,13 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 						CGitStatusCache::Instance().m_GitStatus.IsUnderVersionControl(gitdir, subpaths, true, &isVersion);
 
 						/* Just watch version path */
-						if(isVersion) 
+						if(isVersion)
 						{
 							watcher.AddPath(gitdir);
 							watcher.AddPath(path);
 						}
 					}
-					return cdir;		
+					return cdir;
 				}
 				m_bClearMemory = true;
 			}
@@ -427,7 +427,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 	itMap = m_directoryCache.find(path);
 	if(itMap != m_directoryCache.end())
 	{
-		// We've found this directory in the cache 
+		// We've found this directory in the cache
 		return itMap->second;
 	}
 	return NULL;

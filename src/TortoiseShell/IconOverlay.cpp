@@ -52,7 +52,7 @@ STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR /*pwszIconFile*/, int /*cchMax*/, 
 
 	// we don't have to set the icon file and/or the index here:
 	// the icons are handled by the TortoiseOverlays dll.
-    return S_OK;
+	return S_OK;
 };
 
 STDMETHODIMP CShellExt::GetPriority(int *pPriority)
@@ -84,7 +84,7 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 			*pPriority = 100;
 			return S_FALSE;
 	}
-    return S_OK;
+	return S_OK;
 }
 
 // "Before painting an object's icon, the Shell passes the object's name to
@@ -124,7 +124,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		if (!g_ShellCache.IsPathAllowed(pPath))
 		{
 			int drivenumber = -1;
-			if ((m_State == FileStateVersioned) && g_ShellCache.ShowExcludedAsNormal() && 
+			if ((m_State == FileStateVersioned) && g_ShellCache.ShowExcludedAsNormal() &&
 				((drivenumber=PathGetDriveNumber(pPath))!=0)&&(drivenumber!=1) &&
 				PathIsDirectory(pPath) && g_ShellCache.HasSVNAdminDir(pPath, true))
 			{
@@ -163,7 +163,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		case ShellCache::dll:
 		case ShellCache::dllFull:
 			{
-				// Look in our caches for this item 
+				// Look in our caches for this item
 				const FileStatusCacheEntry * s = m_CachedStatus.GetCachedItem(CTGitPath(pPath));
 				if (s)
 				{
@@ -171,7 +171,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				}
 				else
 				{
-					// No cached status available 
+					// No cached status available
 
 					// since the dwAttrib param of the IsMemberOf() function does not
 					// have the SFGAO_FOLDER flag set at all (it's 0 for files and folders!)
@@ -397,6 +397,6 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 		default:
 			return S_FALSE;
 	} // switch (status)
-    //return S_FALSE;
+	//return S_FALSE;
 }
 

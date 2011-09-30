@@ -78,7 +78,7 @@ class CShellExt : public IContextMenu3,
 							ICopyHookW
 
 // COMPILER ERROR? You need the latest version of the
-// platform SDK which has references to IColumnProvider 
+// platform SDK which has references to IColumnProvider
 // in the header files.  Download it here:
 // http://www.microsoft.com/msdownload/platformsdk/sdkupdate/
 {
@@ -140,7 +140,7 @@ public:
 	CShellExt(FileState state);
 	virtual ~CShellExt();
 
-	/** \name IUnknown 
+	/** \name IUnknown
 	 * IUnknown members
 	 */
 	//@{
@@ -149,7 +149,7 @@ public:
 	STDMETHODIMP_(ULONG) Release();
 	//@}
 
-	/** \name IContextMenu2 
+	/** \name IContextMenu2
 	 * IContextMenu2 members
 	 */
 	//@{
@@ -159,7 +159,7 @@ public:
 	STDMETHODIMP	HandleMenuMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	//@}
 
-    /** \name IContextMenu3 
+	/** \name IContextMenu3
 	 * IContextMenu3 members
 	 */
 	//@{
@@ -182,28 +182,28 @@ public:
 	STDMETHODIMP	Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID);
 	//@}
 
-    /** \name IPersistFile
+	/** \name IPersistFile
 	 * IPersistFile methods
 	 */
 	//@{
-    STDMETHODIMP	GetClassID(CLSID *pclsid);
-    STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode);
-    STDMETHODIMP	IsDirty(void) { return S_OK; };
-    STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/) { return S_OK; };
-    STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) { return S_OK; };
-    STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) { return S_OK; };
+	STDMETHODIMP	GetClassID(CLSID *pclsid);
+	STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode);
+	STDMETHODIMP	IsDirty(void) { return S_OK; };
+	STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/) { return S_OK; };
+	STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) { return S_OK; };
+	STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) { return S_OK; };
 	//@}
 
-	/** \name IShellIconOverlayIdentifier 
+	/** \name IShellIconOverlayIdentifier
 	 * IShellIconOverlayIdentifier methods
 	 */
 	//@{
 	STDMETHODIMP	GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
-	STDMETHODIMP	GetPriority(int *pPriority); 
+	STDMETHODIMP	GetPriority(int *pPriority);
 	STDMETHODIMP	IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib);
 	//@}
 
-	/** \name IShellPropSheetExt 
+	/** \name IShellPropSheetExt
 	 * IShellPropSheetExt methods
 	 */
 	//@{
@@ -211,7 +211,7 @@ public:
 	STDMETHODIMP	ReplacePage (UINT, LPFNADDPROPSHEETPAGE, LPARAM);
 	//@}
 
-	/** \name ICopyHook 
+	/** \name ICopyHook
 	 * ICopyHook members
 	 */
 	//@{

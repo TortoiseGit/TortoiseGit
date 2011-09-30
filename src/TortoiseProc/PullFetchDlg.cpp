@@ -99,7 +99,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase"),WorkingDir,this->m_IsPull);
 	m_regRebase=CRegDWORD(regkey,false);
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\autoload"),WorkingDir,this->m_IsPull);
-	
+
 	m_regAutoLoadPutty = CRegDWORD(regkey,this->m_bAutoLoad);
 	m_bAutoLoad = m_regAutoLoadPutty;
 
@@ -118,7 +118,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	this->UpdateData(FALSE);
 
-    this->AddOthersToAnchor();
+	this->AddOthersToAnchor();
 
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(m_bAutoLoadEnable);
 
@@ -128,10 +128,13 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if(!m_IsPull)
 		m_RemoteBranch.EnableWindow(FALSE);
 
-	if(m_IsPull) {
+	if(m_IsPull)
+	{
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
-	} else {
+	}
+	else
+	{
 		this->GetDlgItem(IDC_GROUP_OPTION)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_SQUASH)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(FALSE);
@@ -149,15 +152,19 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_RemoteBranch.LoadHistory(_T("Software\\TortoiseGit\\History\\PullRemoteBranch"), _T("br"));
 	m_RemoteBranch.SetCurSel(0);
 
+	CString sWindowTitle;
 	if(m_IsPull)
-		this->SetWindowTextW(CString(_T("Pull - ")) + g_Git.m_CurrentDir);
+		sWindowTitle = _T("Pull - ");
 	else
-		this->SetWindowTextW(CString(_T("Fetch - ")) + g_Git.m_CurrentDir);
+		sWindowTitle = _T("Fetch - ");
+
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	Refresh();
 
 	EnableSaveRestore(_T("PullFetchDlg"));
-    this->m_RemoteManage.SetURL(CString());
+	this->m_RemoteManage.SetURL(CString());
 	return TRUE;
 }
 
@@ -183,7 +190,7 @@ void CPullFetchDlg::Refresh()
 	STRING_VECTOR list;
 	int sel=0;
 	if(!g_Git.GetRemoteList(list))
-	{	
+	{
 		for(unsigned int i=0;i<list.size();i++)
 		{
 			m_Remote.AddString(list[i]);
@@ -263,7 +270,7 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 
 	CString remoteName   = selectedRef.Left(ixSlash);
 	CString remoteBranch = selectedRef.Mid(ixSlash + 1);
-	
+
 	int ixFound = m_Remote.FindStringExact(0, remoteName);
 	if(ixFound >= 0)
 		m_Remote.SetCurSel(ixFound);

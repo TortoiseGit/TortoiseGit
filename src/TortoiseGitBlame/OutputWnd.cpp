@@ -192,7 +192,7 @@ int COutputWnd::LoadHistory(CString filename)
 	m_LogList.ReloadHashMap();
 	CTGitPath path;
 	path.SetFromGit(filename);
-	
+
 	m_LogList.Clear();
 	m_LogList.FillGitLog(&path,0/*CGit::LOG_INFO_FOLLOW*/);
 	m_LogList.UpdateProjectProperties();
@@ -209,7 +209,7 @@ void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		if (pNMLV->iSubItem != 0)
 			return;
-		
+
 		if (pNMLV->uNewState & LVIS_SELECTED)
 		{
 			CMainFrame *pMain=DYNAMIC_DOWNCAST(CMainFrame,AfxGetApp()->GetMainWnd());

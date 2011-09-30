@@ -31,11 +31,11 @@
 #define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
-                       LPVOID lpReserved
+					   DWORD  ul_reason_for_call, 
+					   LPVOID lpReserved
 					 )
 {
-    return TRUE;
+	return TRUE;
 }
 
 UINT __stdcall TerminateCache(MSIHANDLE hModule)

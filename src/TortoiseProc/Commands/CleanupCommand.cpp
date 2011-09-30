@@ -34,7 +34,7 @@ bool CleanupCommand::Execute()
 
 	CCleanTypeDlg dlg;
 	if( dlg.DoModal() == IDOK)
-	{	
+	{
 		CProgressDlg progress;
 		CString cmd;
 		cmd.Format(_T("git clean "));
@@ -60,7 +60,7 @@ bool CleanupCommand::Execute()
 				path = pathList[i].GetGitPathString();
 			else
 				path = pathList[i].GetContainingDirectory().GetGitPathString();
-		
+
 			progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
 
 		}
@@ -75,7 +75,7 @@ bool CleanupCommand::Execute()
 	progress.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
 	progress.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO2)));
 	progress.ShowModeless(hwndExplorer);
-	
+
 	CString strSuccessfullPaths, strFailedPaths;
 	for (int i=0; i<pathList.GetCount(); ++i)
 	{
@@ -115,7 +115,7 @@ bool CleanupCommand::Execute()
 		}
 	}
 	progress.Stop();
-	
+
 	CString strMessage;
 	if ( !strSuccessfullPaths.IsEmpty() )
 	{

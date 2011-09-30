@@ -94,7 +94,7 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cRenamedNode.EnableOtherButton(sCustomText);
 	m_cReplacedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::ReplacedNode, true));
 	m_cReplacedNode.EnableOtherButton(sCustomText);
-	
+
 	return TRUE;
 }
 

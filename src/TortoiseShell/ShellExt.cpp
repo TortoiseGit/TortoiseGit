@@ -47,7 +47,7 @@ CShellExt::CShellExt(FileState state)
     g_cRefThisDll++;
 
 	g_exts.insert(this);
-	
+
     INITCOMMONCONTROLSEX used = {
         sizeof(INITCOMMONCONTROLSEX),
 			ICC_LISTVIEW_CLASSES | ICC_WIN95_CLASSES | ICC_BAR_CLASSES | ICC_USEREX_CLASSES
@@ -160,10 +160,10 @@ void LoadLangDll()
 						}
 					}
 					free(pBuffer);
-				} // if (pBuffer != (void*) NULL) 
-			} // if (dwBufferSize > 0) 
+				} // if (pBuffer != (void*) NULL)
+			} // if (dwBufferSize > 0)
 			else
-				versionmatch = FALSE; 
+				versionmatch = FALSE;
 
 			if (versionmatch)
 				hInst = LoadLibrary(langDll);
@@ -183,7 +183,7 @@ void LoadLangDll()
 				}
 				else
 					langId = 0;
-			} 
+			}
 		} while ((hInst == NULL) && (langId != 0));
 		if (hInst == NULL)
 		{
@@ -201,12 +201,12 @@ void LoadLangDll()
 		}
 		else
 			g_langTimeout = 0;
-	} // if (g_langid != g_ShellCache.GetLangID()) 
+	} // if (g_langid != g_ShellCache.GetLangID())
 }
 
 STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
-    *ppv = NULL; 
+    *ppv = NULL;
 
     if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
     {
@@ -232,10 +232,10 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
     {
         *ppv = (LPSHELLPROPSHEETEXT)this;
     }
-	else if (IsEqualIID(riid, IID_IColumnProvider)) 
-	{ 
+	else if (IsEqualIID(riid, IID_IColumnProvider))
+	{
 		*ppv = (IColumnProvider *)this;
-	} 
+	}
 	else if (IsEqualIID(riid, IID_IShellCopyHook))
 	{
 		*ppv = (ICopyHook *)this;
@@ -243,10 +243,10 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
     if (*ppv)
     {
         AddRef();
-		
+
         return NOERROR;
     }
-	
+
     return E_NOINTERFACE;
 }
 
@@ -259,14 +259,14 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 {
     if (--m_cRef)
         return m_cRef;
-	
+
     delete this;
-	
+
     return 0L;
 }
 
 // IPersistFile members
-STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid) 
+STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid)
 {
     *pclsid = CLSID_Tortoisegit_UNCONTROLLED;
     return S_OK;

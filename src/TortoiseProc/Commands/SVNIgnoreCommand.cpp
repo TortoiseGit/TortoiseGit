@@ -32,7 +32,7 @@ bool SVNIgnoreCommand::Execute()
 {
 	CSVNIgnoreTypeDlg dlg;
 	CProgressDlg progress;
-	
+
 	if( dlg.DoModal() == IDOK)
 	{
 		switch (dlg.m_SVNIgnoreType)
@@ -49,10 +49,10 @@ bool SVNIgnoreCommand::Execute()
 		default:
 			CMessageBox::Show(NULL,_T("Unkown SVN Ignore Type"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
-		
+
 		}
 	}
-	
+
 	if(progress.DoModal()==IDOK)
 	{
 		if( dlg.m_SVNIgnoreType == 0 )

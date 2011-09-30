@@ -96,7 +96,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 			}
 		}
 	}
-	
+
 	// find out how many dialog sizes / positions we've stored
 	INT_PTR nResizableDialogs = 0;
 	CRegistryKey regResizable(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState"));

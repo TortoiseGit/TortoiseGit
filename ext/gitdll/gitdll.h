@@ -1,7 +1,7 @@
-// The following ifdef block is the standard way of creating macros which make exporting 
+// The following ifdef block is the standard way of creating macros which make exporting
 // from a DLL simpler. All files within this DLL are compiled with the GITDLL_EXPORTS
 // symbol defined on the command line. this symbol should not be defined on any project
-// that uses this DLL. This way any other project whose source files include this file see 
+// that uses this DLL. This way any other project whose source files include this file see
 // GITDLL_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 #ifndef __GITDLL__
@@ -14,9 +14,9 @@
 #endif
 
 #ifdef GITDLL_EXPORTS
-#define GITDLL_API EXTERN __declspec(dllexport) 
+#define GITDLL_API EXTERN __declspec(dllexport)
 #else
-#define GITDLL_API EXTERN __declspec(dllimport) 
+#define GITDLL_API EXTERN __declspec(dllimport)
 #endif
 
 #if 0
@@ -47,7 +47,7 @@ struct GIT_COMMIT_AUTHOR
 	int	  EmailSize;
 	int	  Date;
 	int   TimeZone;
-	
+
 };
 typedef struct GIT_COMMIT_DATA
 {
@@ -69,19 +69,19 @@ GITDLL_API int ngitdll;
 
 GITDLL_API int fngitdll(void);
 /**
- *	Get Git Last Error string. 
+ *	Get Git Last Error string.
  */
 GITDLL_API char * get_git_last_error();
 /**
- *	Get hash value. 
+ *	Get hash value.
  *	@param	name	[IN] Reference name, such as HEAD, master, ...
  *	@param	sha1	[OUT] char[20] hash value. Caller prepare char[20] buffer.
- *	@return			0	success. 
+ *	@return			0	success.
  */
 GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
 /**
  *	Init git dll
- *  @remark, this function must be call before other function. 
+ *  @remark, this function must be call before other function.
  *	@return			0	success
  */
 GITDLL_API int git_init();
@@ -104,7 +104,7 @@ GITDLL_API int git_close_log(GIT_LOG handle);
 /**
  *	Get Commit information from commit hash
  *	@param  commit	[OUT] output commit information
- *  @param	hash	[in] hash 
+ *  @param	hash	[in] hash
  *	@return		0	success
  */
 GITDLL_API int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash);

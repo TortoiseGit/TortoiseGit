@@ -34,7 +34,7 @@ bool StashSaveCommand::Execute()
 
 	CString cmd,out;
 	cmd=_T("git.exe stash");
-	
+
 	if(g_Git.Run(cmd,&out,CP_ACP))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -52,7 +52,7 @@ bool StashApplyCommand::Execute()
 	if(CAppUtils::StashApply(_T("")))
 		return false;
 	return true;
-	
+
 }
 
 bool StashPopCommand::Execute()
@@ -60,5 +60,5 @@ bool StashPopCommand::Execute()
 	if(CAppUtils::StashPop())
 		return false;
 	return true;
-	
+
 }

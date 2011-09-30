@@ -97,14 +97,14 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	}
 
 	git_get_log_firstcommit(handle);
-		
+
 	GIT_COMMIT commit;
-	
+
 	GitRev rev;
 
 	while( git_get_log_nextcommit(handle,&commit) == 0)
 	{
-	
+
 		CGitHash hash = (char*)commit.m_hash ;
 		rev.Clear();
 
@@ -123,7 +123,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 			pRev->ParserFromCommit(&commit);
 			pRev->ParserParentFromCommit(&commit);
 			git_free_commit(&commit);
-			//Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log. 
+			//Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log.
 			//file list will wrong if parent rewrite.
 			pRev->SafeFetchFullInfo(&g_Git);
 
@@ -133,13 +133,13 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 			pRev->ParserParentFromCommit(&commit);
 			git_free_commit(&commit);
 		}
-		
+
 		this->push_back(pRev->m_CommitHash);
 
-		m_HashMap[rev.m_CommitHash]=size()-1;		
+		m_HashMap[rev.m_CommitHash]=size()-1;
 
 	}
-		
+
 	git_close_log(handle);
 
 	return 0;
@@ -219,18 +219,18 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 	return 0;
 }
 
-void CLogDataVector::setLane(CGitHash& sha) 
+void CLogDataVector::setLane(CGitHash& sha)
 {
 	Lanes* l = &(this->m_Lns);
 	int i = m_FirstFreeLane;
-	
+
 //	QVector<QByteArray> ba;
 //	const ShaString& ss = toPersistentSha(sha, ba);
 //	const ShaVect& shaVec(fh->revOrder);
 
 	for (int cnt = size(); i < cnt; ++i) {
 
-		GitRev* r = & this->GetGitRevAt(i); 
+		GitRev* r = & this->GetGitRevAt(i);
 		CGitHash curSha=r->m_CommitHash;
 
 		if (r->m_Lanes.size() == 0)
@@ -244,7 +244,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 #if 0
 	Lanes* l = &(this->m_Lanes);
 	int i = m_FirstFreeLane;
-	
+
 	QVector<QByteArray> ba;
 	const ShaString& ss = toPersistentSha(sha, ba);
 	const ShaVect& shaVec(fh->revOrder);
@@ -264,7 +264,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 }
 
 
-void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CGitHash &sha) 
+void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CGitHash &sha)
 {
 // we could get third argument from c.sha(), but we are in fast path here
 // and c.sha() involves a deep copy, so we accept a little redundancy
@@ -295,7 +295,7 @@ void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CGitHash &sha)
 	lns.getLanes(c.m_Lanes); // here lanes are snapshotted
 
 	CGitHash nextSha;
-	if( !isInitial) 
+	if( !isInitial)
 		nextSha = c.m_ParentHash[0];
 
 	lns.nextParent(nextSha);

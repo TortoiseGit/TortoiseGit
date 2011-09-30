@@ -32,10 +32,10 @@ const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
 
 // Defines that revision numbers occupy at most MAX_REV_STRING_LEN characters.
 // There are Perforce repositories out there that have several 100,000 revs.
-// So, don't be too restrictive by limiting this to 6 digits + 1 separator, 
-// for instance. 
+// So, don't be too restrictive by limiting this to 6 digits + 1 separator,
+// for instance.
 //
-// Because shorter strings will be extended to have exactly MAX_REV_STRING_LEN 
+// Because shorter strings will be extended to have exactly MAX_REV_STRING_LEN
 // characters, large numbers will produce large strings. These, in turn, will
 // affect column auto sizing. This setting is a reasonable compromise.
 
@@ -111,7 +111,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 	}
 	LoadLangDll();
 	ShellCache::CacheType cachetype = g_ShellCache.GetCacheType();
-	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE) 
+	if (pscid->fmtid == CLSID_Tortoisegit_UPTODATE)
 	{
 		stdstring szInfo;
 		const TCHAR * path = (TCHAR *)pscd->wszFile;
@@ -120,7 +120,7 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 
 		TCHAR buf[MAX_STATUS_STRING_LENGTH+1];
 		SecureZeroMemory(buf, MAX_STATUS_STRING_LENGTH);
-		switch (pscid->pid) 
+		switch (pscid->pid)
 		{
 			case 0:	// Git Status
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
@@ -244,7 +244,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 				itemurl.clear();
 				itemshorturl.clear();
 				owner.clear();
-				return;	
+				return;
 			}
 		}
 		break;
@@ -267,7 +267,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			itemurl.clear();
 			itemshorturl.clear();
 			owner.clear();
-			return;	
+			return;
 		}
 		break;
 	}
@@ -336,7 +336,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			else*/
 				itemshorturl = urlComponents.lpszUrlPath;
 		}
-		else 
+		else
 			itemshorturl = _T(" ");
 	}
 	else

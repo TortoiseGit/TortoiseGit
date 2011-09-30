@@ -75,7 +75,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 		if(start>0)
 			newhash=output.Mid(start+1, 40);
 
-		CGit subgit; 
+		CGit subgit;
 		subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
@@ -199,7 +199,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 			return -1;
 		}
 		newhash = output.Mid(newstart+ CString(_T("+Subproject commit")).GetLength()+1,40);
-		
+
 	}
 	else
 	{
@@ -223,7 +223,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 	CString oldsub;
 	CString newsub;
 
-	CGit subgit; 
+	CGit subgit;
 	subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 
 	if(pPath->HasAdminDir())

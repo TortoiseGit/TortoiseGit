@@ -60,9 +60,9 @@ void CShellUpdater::Initialise()
 	// Don't call Initialize more than once
 	ATLASSERT(m_hThread == INVALID_HANDLE_VALUE);
 
-	// Just start the worker thread. 
+	// Just start the worker thread.
 	// It will wait for event being signaled.
-	// If m_hWakeEvent is already signaled the worker thread 
+	// If m_hWakeEvent is already signaled the worker thread
 	// will behave properly (with normal priority at worst).
 
 	InterlockedExchange(&m_bRunning, TRUE);
@@ -84,8 +84,8 @@ void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 		//ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
 
 		m_pathsToUpdate.push_back(path);
-		
-		// set this flag while we are synced 
+
+		// set this flag while we are synced
 		// with the worker thread
 		m_bItemsAddedSinceLastUpdate = true;
 	}
@@ -103,13 +103,13 @@ unsigned int CShellUpdater::ThreadEntry(void* pContext)
 void CShellUpdater::WorkerThread()
 {
 	HANDLE hWaitHandles[2];
-	hWaitHandles[0] = m_hTerminationEvent;	
+	hWaitHandles[0] = m_hTerminationEvent;
 	hWaitHandles[1] = m_hWakeEvent;
 
 	for(;;)
 	{
 		DWORD waitResult = WaitForMultipleObjects(sizeof(hWaitHandles)/sizeof(hWaitHandles[0]), hWaitHandles, FALSE, INFINITE);
-		
+
 		// exit event/working loop if the first event (m_hTerminationEvent)
 		// has been signaled or if one of the events has been abandoned
 		// (i.e. ~CShellUpdater() is being executed)
@@ -130,7 +130,7 @@ void CShellUpdater::WorkerThread()
 				AutoLocker lock(m_critSec);
 				if(m_pathsToUpdate.empty())
 				{
-					// Nothing left to do 
+					// Nothing left to do
 					break;
 				}
 
@@ -166,7 +166,7 @@ void CShellUpdater::WorkerThread()
 				// Sending an UPDATEDIR notification somehow overwrites/deletes the UPDATEITEM message. And without
 				// that message, the folder overlays in the current view don't get updated without hitting F5.
 				// Drawback is, without UPDATEDIR, the left tree view isn't always updated...
-				
+
 				//SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), NULL);
 			}
 			else

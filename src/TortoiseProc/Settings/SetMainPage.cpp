@@ -43,7 +43,7 @@ CSetMainPage::CSetMainPage()
 	if(!temp.IsEmpty())
 		temp+=_T("bin");
 	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE);
-	
+
 	m_regMsysGitExtranPath =CRegString(REG_MSYSGIT_EXTRA_PATH);
 
 	m_sMsysGitPath = m_regMsysGitPath;
@@ -88,10 +88,10 @@ BOOL CSetMainPage::OnInitDialog()
 	// disable features that have not yet been implemented
 	GetDlgItem(IDC_SOUNDS)->EnableWindow( FALSE );
 	GetDlgItem(IDC_SOUNDS_TEXT)->EnableWindow( FALSE );
-	
+
 	EnableToolTips();
 
-	
+
 	m_dwLanguage = m_regLanguage;
 	m_bCheckNewer = m_regCheckNewer;
 
@@ -129,7 +129,7 @@ BOOL CSetMainPage::OnInitDialog()
 			m_LanguageCombo.SetItemData(langcount++, loc);
 		}
 	}
-	
+
 	for (int i=0; i<m_LanguageCombo.GetCount(); i++)
 	{
 		if (m_LanguageCombo.GetItemData(i) == m_dwLanguage)
@@ -182,7 +182,7 @@ BOOL CSetMainPage::OnApply()
 {
 	UpdateData();
 	Store (m_dwLanguage, m_regLanguage);
-	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) || 
+	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) ||
 		this->m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)))
 	{
 		Store (m_sMsysGitPath, m_regMsysGitPath);
@@ -232,7 +232,7 @@ void CSetMainPage::OnBnClickedSounds()
 	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 	GetVersionEx((OSVERSIONINFO *)&inf);
 	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-	
+
 	if (fullver >= 0x0600)
 		CAppUtils::LaunchApplication(_T("RUNDLL32 Shell32,Control_RunDLL mmsys.cpl,,2"), NULL, false);
 	else
@@ -246,7 +246,7 @@ void CSetMainPage::OnBrowseDir()
 	CString dir;
 	this->UpdateData(TRUE);
 	dir=this->m_sMsysGitPath;
-	if (browseFolder.Show(GetSafeHwnd(), dir) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), dir) == CBrowseFolder::OK)
 	{
 		m_sMsysGitPath=dir;
 		this->UpdateData(FALSE);

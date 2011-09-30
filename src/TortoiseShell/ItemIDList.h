@@ -22,7 +22,7 @@
  * \ingroup TortoiseShell
  * Represents a list of directory elements like folders and files.
  */
-class ItemIDList  
+class ItemIDList
 {
 public:
 	ItemIDList(LPCITEMIDLIST item, LPCITEMIDLIST parent = 0);

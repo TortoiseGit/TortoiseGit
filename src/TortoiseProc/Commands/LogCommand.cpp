@@ -64,7 +64,7 @@ bool LogCommand::Execute()
 		CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\NumberOfLogs"), 100);
 		limit = (int)(LONG)reg;
 	}
-	
+
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	//dlg.SetParams(cmdLinePath);
@@ -73,6 +73,6 @@ bool LogCommand::Execute()
 //	val = parser.GetVal(_T("propspath"));
 //	if (!val.IsEmpty())
 //		dlg.SetProjectPropertiesPath(CTSVNPath(val));
-	dlg.DoModal();			
+	dlg.DoModal();
 	return true;
 }

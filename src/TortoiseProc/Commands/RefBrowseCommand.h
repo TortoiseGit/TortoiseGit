@@ -10,4 +10,4 @@ class RefBrowseCommand : public Command
 		return true;
 	}
 };
-	
+

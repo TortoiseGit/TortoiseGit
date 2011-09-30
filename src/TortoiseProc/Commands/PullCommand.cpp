@@ -44,7 +44,7 @@ bool PullCommand::Execute()
 		{
 			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
 		}
-		
+
 		CString cmd;
 		CString hashOld = g_Git.GetHash(L"HEAD");
 		CString cmdRebase;
@@ -64,7 +64,7 @@ bool PullCommand::Execute()
 			nocommit=_T("--no-commit");
 
 		int ver = CAppUtils::GetMsysgitVersion();
-		
+
 		if(ver >= 0x01070203) //above 1.7.0.2
 			cmdRebase += _T("--progress ");
 
@@ -74,14 +74,14 @@ bool PullCommand::Execute()
 		progress.m_PostCmdList.Add(_T("Pulled Diff"));
 		progress.m_PostCmdList.Add(_T("Pulled Log"));
 		//progress.m_PostCmdList.Add(_T("Show Conflict"));
-		
+
 		if (parser.HasVal(_T("closeonend")))
 			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 
 		int ret = progress.DoModal();
-		
+
 		CString hashNew = g_Git.GetHash(L"HEAD");
-		
+
 		if( ret == IDC_PROGRESS_BUTTON1)
 		{
 			if(hashOld == hashNew)
@@ -108,7 +108,7 @@ bool PullCommand::Execute()
 
 
 			CLogDlg dlg;
-			
+
 			//dlg.SetParams(cmdLinePath);
 			dlg.SetParams(CTGitPath(_T("")),CTGitPath(_T("")),_T(""), hashOld, hashNew, 0);
 			//	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
@@ -117,7 +117,7 @@ bool PullCommand::Execute()
 			//		dlg.SetProjectPropertiesPath(CTSVNPath(val));
 			dlg.DoModal();
 
-			
+
 		}else if ( ret == IDC_PROGRESS_BUTTON1 +2 )
 		{
 			CChangedDlg dlg;
@@ -139,7 +139,7 @@ bool PullCommand::Execute()
 		progress.m_GitCmd=cmd;
 		if(progress.DoModal()==IDOK)
 			return TRUE;
-		
+
 	}
 #endif
 	return FALSE;

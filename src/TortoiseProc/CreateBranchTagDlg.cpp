@@ -81,7 +81,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CHOOSE_VERSION_ADDANCHOR;
 
 	AddAnchor(IDC_GROUP_BRANCH, TOP_LEFT, TOP_RIGHT);
-	
+
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
@@ -95,7 +95,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	if(m_Base.IsEmpty())
 	{
 		this->SetDefaultChoose(IDC_RADIO_HEAD);
-	
+
 	}else
 	{
 		this->SetDefaultChoose(IDC_RADIO_VERSION);
@@ -127,7 +127,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
 	CString HeadText;
-	pHead->GetWindowText( HeadText ); 
+	pHead->GetWindowText( HeadText );
 	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
 	EnableSaveRestore(_T("BranchTagDlg"));
 
@@ -174,14 +174,14 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 	{
 		bool isDefault = false;
 		this->UpdateData();
-		
+
 		CString str = this->m_OldSelectBranch;
 		int start = str.ReverseFind(_T('/'));
 		if(start>=0)
 			str=str.Mid(start+1);
 		if(str == m_BranchTagName)
 			isDefault =true;
-	
+
 		if( m_BranchTagName.IsEmpty() ||  isDefault)
 		{
 			this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);

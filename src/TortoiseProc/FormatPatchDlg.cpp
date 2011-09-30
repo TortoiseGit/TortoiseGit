@@ -61,7 +61,7 @@ void CFormatPatchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMBOBOXEX_SINCE,	m_Since);
 	DDX_Text(pDX, IDC_COMBOBOXEX_FROM,	m_From);
 	DDX_Text(pDX, IDC_COMBOBOXEX_TO,	m_To);
-	
+
 	DDX_Check(pDX, IDC_CHECK_SENDMAIL, m_bSendMail);
 }
 
@@ -133,7 +133,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 		m_cTo.SetWindowText(m_To);
 
 	this->CheckRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE,this->m_Radio);
-	
+
 	OnBnClickedRadio();
 
 	m_spinNum.SetRange32(1, MAXSHORT);
@@ -150,7 +150,7 @@ void CFormatPatchDlg::OnBnClickedButtonDir()
 	CString strCloneDirectory;
 	this->UpdateData(TRUE);
 	strCloneDirectory=m_Dir;
-	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), strCloneDirectory) == CBrowseFolder::OK)
 	{
 		m_Dir=strCloneDirectory;
 		this->UpdateData(FALSE);

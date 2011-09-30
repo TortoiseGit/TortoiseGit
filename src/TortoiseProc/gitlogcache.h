@@ -30,7 +30,7 @@
 #define LOG_INDEX_VERSION   0xF
 
 #pragma pack (1)
-struct SLogCacheIndexHeader 
+struct SLogCacheIndexHeader
 {
 	DWORD m_Magic;
 	DWORD m_Version;
@@ -94,7 +94,7 @@ public:
 class CLogCache
 {
 public:
-	
+
 protected:
 	HANDLE m_IndexFile;
 	HANDLE m_IndexFileMap;
@@ -139,7 +139,7 @@ protected:
 
 		if(header->m_Version != LOG_INDEX_VERSION)
 			return FALSE;
-		
+
 		return TRUE;
 	}
 
@@ -150,12 +150,12 @@ protected:
 
 		if(header->m_Version != LOG_INDEX_VERSION)
 			return FALSE;
-		
+
 		return TRUE;
 	}
 
 	int SaveOneItem(GitRev &Rev,ULONGLONG offset);
-	
+
 	CString m_GitDir;
 	int RebuildCacheFile();
 
@@ -167,7 +167,7 @@ public:
 	ULONGLONG GetOffset(CGitHash &hash, SLogCacheIndexFile *pData =NULL);
 
 	CGitHashMap m_HashMap;
-	
+
 	GitRev * GetCacheData(CGitHash &Rev);
 	int AddCacheEntry(GitRev &Rev);
 	int SaveCache();

@@ -36,7 +36,7 @@ bool RefLogCommand::Execute()
 	CString branch = parser.GetVal(_T("ref"));
 	if ( !branch.IsEmpty() )
 		dlg.m_CurrentBranch = branch;
-	
+
 	dlg.DoModal();
 	return bRet;
 }

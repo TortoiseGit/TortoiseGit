@@ -31,7 +31,7 @@
 bool RebaseCommand::Execute()
 {
 	bool bRet =false;
-	
+
 	if(!g_Git.CheckCleanWorkTree())
 	{
 		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)

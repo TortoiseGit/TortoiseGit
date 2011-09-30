@@ -36,7 +36,7 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	, m_To(_T(""))
 	, m_CC(_T(""))
 	, m_Subject(_T(""))
-	
+
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
 	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
 	, m_regUseMAPI(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"),0)
@@ -137,7 +137,7 @@ BOOL CSendMailDlg::OnInitDialog()
 		m_ctrlList.InsertItem(i,m_PathList[i].GetWinPathString());
 		m_ctrlList.SetCheck(i,true);
 	}
-	
+
 //	m_ctrlCC.AddSearchString(_T("Tortoisegit-dev@google.com"));
 //	m_ctrlTO.AddSearchString(_T("Tortoisegit-dev@google.com"));
 	this->UpdateData(FALSE);
@@ -190,8 +190,8 @@ void CSendMailDlg::OnBnClickedOk()
 		Address=this->m_To.Tokenize(_T(";"),start);
 		m_AddressReg.AddEntry(Address);
 		m_AddressReg.Save();
-	}	
-	
+	}
+
 	this->m_PathList.Clear();
 	for(int i=0;i<m_ctrlList.GetItemCount();i++)
 	{
@@ -238,7 +238,7 @@ void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResul
 {
 	UNREFERENCED_PARAMETER(pNMHDR);
 	UpdateSubject();
-	
+
 	*pResult = 0;
 }
 
@@ -249,7 +249,7 @@ void CSendMailDlg::OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 	CString path=this->m_ctrlList.GetItemText(pNMItemActivate->iItem,0);
 	CTGitPath gitpath;
 	gitpath.SetFromWin(path);
-	
+
 	CAppUtils::StartUnifiedDiffViewer(path,gitpath.GetFilename());
 
 	*pResult = 0;

@@ -73,7 +73,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddAnchor(IDC_COMBOBOXEX_REPOSITORY,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_COMBOBOXEX_PATH,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_REP_BROWSE,TOP_RIGHT);
-	AddAnchor(IDC_BUTTON_PATH_BROWSE,TOP_RIGHT);	
+	AddAnchor(IDC_BUTTON_PATH_BROWSE,TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_CHECK,BOTTOM_LEFT);
 	AddAnchor(IDC_SUBMODULE_BRANCH,BOTTOM_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -95,7 +95,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	m_Repository.SetCurSel(0);
 
 	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(CString(_T("Submodule of Project: "))+m_strProject);
-	
+
 	return TRUE;
 }
 
@@ -105,7 +105,7 @@ void CSubmoduleAddDlg::OnRepBrowse()
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strDirectory;
 	this->m_Repository.GetWindowTextW(strDirectory);
-	if (browseFolder.Show(GetSafeHwnd(), strDirectory) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), strDirectory) == CBrowseFolder::OK)
 	{
 		this->m_Repository.SetWindowTextW(strDirectory);
 	}
@@ -116,7 +116,7 @@ void CSubmoduleAddDlg::OnPathBrowse()
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strDirectory;
 	this->m_PathCtrl.GetWindowTextW(strDirectory);
-	if (browseFolder.Show(GetSafeHwnd(), strDirectory,g_Git.m_CurrentDir) == CBrowseFolder::OK) 
+	if (browseFolder.Show(GetSafeHwnd(), strDirectory,g_Git.m_CurrentDir) == CBrowseFolder::OK)
 	{
 		this->m_PathCtrl.SetWindowTextW(strDirectory);
 	}
@@ -126,10 +126,10 @@ void CSubmoduleAddDlg::OnBranchCheck()
 	this->UpdateData();
 	if(this->m_bBranch)
 	{
-		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(TRUE);		
+		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(TRUE);
 	}else
 	{
-		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(FALSE);		
+		this->GetDlgItem(IDC_SUBMODULE_BRANCH)->ShowWindow(FALSE);
 	}
 }
 

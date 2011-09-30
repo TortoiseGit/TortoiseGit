@@ -29,8 +29,8 @@
 #include <string>
 #include <set>
 #include <map>
-#include <vector> 
-#include <algorithm> 
+#include <vector>
+#include <algorithm>
 #pragma warning(pop)
 
 #pragma warning(push)

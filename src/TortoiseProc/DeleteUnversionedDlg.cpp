@@ -97,7 +97,7 @@ UINT CDeleteUnversionedDlg::StatusThread()
 {
 	// get the status of all selected file/folders recursively
 	// and show the ones which are unversioned/ignored to the user
-	// in a list control. 
+	// in a list control.
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 
@@ -105,7 +105,7 @@ UINT CDeleteUnversionedDlg::StatusThread()
 	{
 		m_StatusList.SetEmptyString(m_StatusList.GetLastErrorMessage());
 	}
-	m_StatusList.Show(SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWIGNORED, 
+	m_StatusList.Show(SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWIGNORED,
 		SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWIGNORED);
 
 	CTSVNPath commonDir = m_StatusList.GetCommonDirectory(false);

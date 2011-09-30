@@ -34,7 +34,7 @@ public:
 	 *				   cTime - the time
 	 *				   option - DATE_SHORTDATE or DATE_LONGDATE
 	 *				   bIncluedeTime - whether to show time as well as date
-	 *				   bRelative - if true then relative time is shown if reasonable 
+	 *				   bRelative - if true then relative time is shown if reasonable
 	 *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
 	 *				   rather than locale
 	 * RETURN      :   CString containing date/time
@@ -47,7 +47,6 @@ public:
 	 */
 	static CString ToRelativeTimeString(CTime time);
 
-	
 private:
 	/**
 	 *	Generates a display string showing the relative time between the two given times as COleDateTimes

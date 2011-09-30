@@ -52,7 +52,7 @@ public:
 //	{
 //	public:
 //		CTGitPath path;
-//		svn_client_diff_summarize_kind_t kind; 
+//		svn_client_diff_summarize_kind_t kind;
 		bool propchanged;
 //		svn_node_kind_t node;
 //	};
@@ -96,9 +96,9 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-//	virtual svn_error_t* DiffSummarizeCallback(const CTGitPath& path, 
-//											svn_client_diff_summarize_kind_t kind, 
-//											bool propchanged, 
+//	virtual svn_error_t* DiffSummarizeCallback(const CTGitPath& path,
+//											svn_client_diff_summarize_kind_t kind,
+//											bool propchanged,
 //											svn_node_kind_t node);
 
 	int					AddEntry(const CTGitPath * fd);
@@ -108,7 +108,7 @@ protected:
 	void				ClearURLabels(int mask);
 	void				Filter(CString sFilterText);
 	void				CopySelectionToClipboard(BOOL isFull=FALSE);
-	
+
 	void				ClickRevButton(CMenuButton *button,GitRev *rev, CACEdit *edit);
 
 	void				EnableInputControl(bool b=true);

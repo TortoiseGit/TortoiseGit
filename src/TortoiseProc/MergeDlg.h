@@ -46,15 +46,15 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	
+
 	CSciEdit			m_cLogMessage;
 	ProjectProperties	m_ProjectProperties;
 
 	TCHAR				* m_pDefaultText;
 	DECLARE_MESSAGE_MAP()
 	CHOOSE_EVENT_RADIO() ;
-public:
 
+public:
 	CString m_strLogMesage;
 
 	afx_msg void OnBnClickedOk();

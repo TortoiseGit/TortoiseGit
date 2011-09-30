@@ -44,7 +44,7 @@ class CDirectoryWatcher
 public:
 	CDirectoryWatcher(void);
 	~CDirectoryWatcher(void);
-	
+
 	/**
 	 * Adds a new path to be watched. The path \b must point to a directory.
 	 * If the path is already watched because a parent of that path is already
@@ -60,17 +60,17 @@ public:
 	 * Checks if a path is watched
 	 */
 	bool IsPathWatched(const CTGitPath& path);
-	
+
 	/**
 	 * Returns the number of recursively watched paths.
 	 */
 	int GetNumberOfWatchedPaths() {return watchedPaths.GetCount();}
-	
+
 	/**
 	 * Sets the CFolderCrawler object which the change notifications are sent to.
 	 */
 	void SetFolderCrawler(CFolderCrawler * crawler);
-	
+
 	/**
 	 * Stops the watching thread.
 	 */
@@ -94,7 +94,7 @@ private:
 	volatile LONG			m_bRunning;
 
 	CFolderCrawler *		m_FolderCrawler;	///< where the change reports go to
-	
+
 	CTGitPathList			watchedPaths;	///< list of watched paths.
 
 	CTGitPath				blockedPath;
@@ -104,7 +104,7 @@ private:
 	 * \ingroup TSVNCache
 	 * Helper class: provides information about watched directories.
 	 */
-	class CDirWatchInfo 
+	class CDirWatchInfo
 	{
 	private:
 		CDirWatchInfo();	// private & not implemented
@@ -127,7 +127,7 @@ private:
 	};
 
 	std::map<HANDLE, CDirWatchInfo *> watchInfoMap;
-	
+
 	HDEVNOTIFY		m_hdev;
 
 };
