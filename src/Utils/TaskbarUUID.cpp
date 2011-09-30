@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011 - TortoiseSVN
 
@@ -26,7 +26,7 @@
 #include "Win7.h"
 
 
-#define APPID (_T("TSVN.TSVN.1"))
+#define APPID (_T("TGIT.TGIT.1"))
 
 
 void SetTaskIDPerUUID()
@@ -47,7 +47,7 @@ void SetTaskIDPerUUID()
 
 std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= NULL */)
 {
-    CRegStdDWORD r = CRegStdDWORD(_T("Software\\TortoiseSVN\\GroupTaskbarIconsPerRepo"), 0);
+    CRegStdDWORD r = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 0);
     std::wstring id = APPID;
     if ((r < 2)||(r == 3))
     {
@@ -82,9 +82,9 @@ extern CString g_sGroupingUUID;
 
 void SetUUIDOverlayIcon( HWND hWnd )
 {
-    if (CRegStdDWORD(_T("Software\\TortoiseSVN\\GroupTaskbarIconsPerRepo"), 0))
+    if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 0))
     {
-        if (CRegStdDWORD(_T("Software\\TortoiseSVN\\GroupTaskbarIconsPerRepoOverlay"), FALSE))
+        if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay"), FALSE))
         {
             std::wstring uuid;
 #ifdef _MFC_VER
@@ -105,7 +105,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
                     do
                     {
                         wchar_t buf[MAX_PATH];
-                        swprintf_s(buf, _countof(buf), L"%s%d", L"Software\\TortoiseSVN\\LastUsedUUIDsForGrouping\\", foundUUIDIndex);
+                        swprintf_s(buf, _countof(buf), L"%s%d", L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\", foundUUIDIndex);
                         CRegStdString r = CRegStdString(buf);
                         std::wstring sr = r;
                         if (sr.empty() || (sr.compare(uuid)==0))
@@ -117,7 +117,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
                     } while (foundUUIDIndex < 20);
                     if (foundUUIDIndex >= 20)
                     {
-                        CRegStdString r = CRegStdString(L"Software\\TortoiseSVN\\LastUsedUUIDsForGrouping\\1");
+                        CRegStdString r = CRegStdString(L"Software\\TortoiseGit\\LastUsedUUIDsForGrouping\\1");
                         r.removeKey();
                     }
 

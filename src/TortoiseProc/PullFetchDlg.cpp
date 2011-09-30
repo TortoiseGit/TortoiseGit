@@ -149,14 +149,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_RemoteBranch.LoadHistory(_T("Software\\TortoiseGit\\History\\PullRemoteBranch"), _T("br"));
 	m_RemoteBranch.SetCurSel(0);
 
-	CString sWindowTitle;
 	if(m_IsPull)
-		sWindowTitle = _T("Pull - ");
+		this->SetWindowTextW(CString(_T("Pull - ")) + g_Git.m_CurrentDir);
 	else
-		sWindowTitle = _T("Fetch - ");
-
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+		this->SetWindowTextW(CString(_T("Fetch - ")) + g_Git.m_CurrentDir);
 
 	Refresh();
 

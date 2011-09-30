@@ -76,10 +76,6 @@ BOOL CRefLogDlg::OnInitDialog()
 	AddOthersToAnchor();
 	this->EnableSaveRestore(_T("RefLogDlg"));
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
-
 	STRING_VECTOR list;
 	list.push_back(_T("HEAD"));
 	g_Git.GetRefList(list);

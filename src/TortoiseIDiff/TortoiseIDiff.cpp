@@ -41,7 +41,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
     SetDllDirectory(L"");
     SetTaskIDPerUUID();
-    CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseSVN\\LanguageID"), 1033);
+    CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
     long langId = loc;
 
     CLangDll langDLL;
@@ -77,7 +77,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     curHandDown = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
     CMainWindow mainWindow(hResource);
-    mainWindow.SetRegistryPath(_T("Software\\TortoiseSVN\\TortoiseIDiffWindowPos"));
+    mainWindow.SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
 
     mainWindow.SetLeft(parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T(""), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
     mainWindow.SetRight(parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T(""), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));

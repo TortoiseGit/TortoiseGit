@@ -36,7 +36,7 @@ public:
 	virtual bool			Execute()
 	{
 		crasher.Enable(!parser.HasKey(_T("nocustom")));
-		CMessageBox::Show(NULL, _T("You are testing the crashhandler.\n<ct=0x0000FF>Do NOT send the crashreport!!!!</ct>"), _T("TortoiseSVN"), MB_ICONINFORMATION);
+		CMessageBox::Show(NULL, _T("You are testing the crashhandler.\n<ct=0x0000FF>Do NOT send the crashreport!!!!</ct>"), _T("TortoiseGit"), MB_ICONINFORMATION);
 		CrashProgram();
 		CMessageBox::Show(NULL, IDS_ERR_NOCOMMAND, IDS_APPNAME, MB_ICONERROR);
 		return true;

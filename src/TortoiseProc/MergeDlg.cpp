@@ -87,10 +87,6 @@ BOOL CMergeDlg::OnInitDialog()
 	CheckRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION,IDC_RADIO_BRANCH);
 	this->SetDefaultChoose(IDC_RADIO_BRANCH);
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
-
 	Init();
 
 	m_ProjectProperties.ReadProps(CTGitPath(g_Git.m_CurrentDir));

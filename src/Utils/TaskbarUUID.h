@@ -23,7 +23,7 @@
 /**
  * Sets the Task ID (Win7) for the process according to settings
  * in the registry:
- * HKCU\\Software\\TortoiseSVN\\GroupTaskbarIconsPerRepo
+ * HKCU\\Software\\TortoiseGit\\GroupTaskbarIconsPerRepo
  * determines how this is done. The Task ID is used by the windows
  * taskbar to determine how the app icons on the taskbar are grouped
  * together.

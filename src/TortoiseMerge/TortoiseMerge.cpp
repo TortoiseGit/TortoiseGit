@@ -56,7 +56,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
 	//set the resource dll for the required language
-	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseSVN\\LanguageID"), 1033);
+	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;
 	CString langDll;
 	HINSTANCE hInst = NULL;

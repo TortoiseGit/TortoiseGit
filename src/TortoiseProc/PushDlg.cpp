@@ -111,10 +111,6 @@ BOOL CPushDlg::OnInitDialog()
 
 	AddOthersToAnchor();
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
-
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
 
 	EnableSaveRestore(_T("PushDlg"));
