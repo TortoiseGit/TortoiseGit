@@ -230,9 +230,10 @@ MenuInfo menuInfo[] =
 //	{ ShellMenuProperties,					MENUPROPERTIES,		IDI_PROPERTIES,			IDS_MENUPROPERTIES,			IDS_MENUDESCPROPERTIES,
 //	ITEMIS_INSVN, 0, ITEMIS_FOLDERINSVN, 0, 0, 0, 0, 0 },
 
-	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
-	{ ShellMenuClipPaste,					MENUCLIPPASTE,		IDI_CLIPPASTE,			IDS_MENUCLIPPASTE,			IDS_MENUDESCCLIPPASTE,
-	ITEMIS_INSVN|ITEMIS_FOLDER|ITEMIS_PATHINCLIPBOARD, 0, 0, 0, 0, 0, 0, 0 },
+// we do not support paste atm
+//	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
+//	{ ShellMenuClipPaste,					MENUCLIPPASTE,		IDI_CLIPPASTE,			IDS_MENUCLIPPASTE,			IDS_MENUDESCCLIPPASTE,
+//	ITEMIS_INSVN|ITEMIS_FOLDER|ITEMIS_PATHINCLIPBOARD, 0, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
