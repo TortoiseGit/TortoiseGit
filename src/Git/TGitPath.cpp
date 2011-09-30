@@ -799,7 +799,7 @@ int CTGitPath::GetAdminDirMask() const
 	path=topdir;
 	path += _T("\\.gitmodules");
 	if( PathFileExists(path) )
-		status |= ITEMIS_SUBMODULE;
+		status |= ITEMIS_SUBMODULECONTAINER;
 
 	return status;
 }
