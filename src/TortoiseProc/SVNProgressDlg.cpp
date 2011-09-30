@@ -1825,10 +1825,9 @@ void CGitProgressDlg::OnSize(UINT nType, int cx, int cy)
 //////////////////////////////////////////////////////////////////////////
 bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 {
-
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_ADD);
-	SetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
@@ -1871,7 +1870,7 @@ bool CGitProgressDlg::CmdCheckout(CString& /*sWindowTitle*/, bool& /*localoperat
 	for (int i=0; i<urls.GetCount(); ++i)
 	{
 		sWindowTitle = urls[i].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-		SetWindowText(sWindowTitle);
+		SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 		checkoutdir = m_targetPathList[0];
 		if (urls.GetCount() > 1)
 		{
@@ -1913,11 +1912,11 @@ bool CGitProgressDlg::CmdCommit(CString& /*sWindowTitle*/, bool& /*localoperatio
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COMMIT);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated
 	SetBackgroundImage(IDI_COMMIT_BKG);
 	if (m_targetPathList.GetCount()==0)
 	{
-		SetWindowText(sWindowTitle);
+		SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 
 		DialogEnableWindow(IDCANCEL, FALSE);
 		DialogEnableWindow(IDOK, TRUE);
@@ -1928,7 +1927,7 @@ bool CGitProgressDlg::CmdCommit(CString& /*sWindowTitle*/, bool& /*localoperatio
 	if (m_targetPathList.GetCount()==1)
 	{
 		sWindowTitle = m_targetPathList[0].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-		SetWindowText(sWindowTitle);
+		SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	}
 	BOOL isTag = FALSE;
 	BOOL bURLFetched = FALSE;
@@ -2046,7 +2045,7 @@ bool CGitProgressDlg::CmdCopy(CString& /*sWindowTitle*/, bool& /*localoperation*
 #if 0
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_COPY);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_COPY_BKG);
 
 	CString sCmdInfo;
@@ -2093,7 +2092,7 @@ bool CGitProgressDlg::CmdExport(CString& /*sWindowTitle*/, bool& /*localoperatio
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_EXPORT);
 	sWindowTitle = m_url.GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_EXPORT_BKG);
 	CString eol;
 	if (m_options & ProgOptEolCRLF)
@@ -2118,7 +2117,7 @@ bool CGitProgressDlg::CmdImport(CString& /*sWindowTitle*/, bool& /*localoperatio
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_IMPORT);
 	sWindowTitle = m_targetPathList[0].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_IMPORT_BKG);
 	CString sCmdInfo;
 	sCmdInfo.Format(IDS_PROGRS_CMD_IMPORT, 
@@ -2138,7 +2137,7 @@ bool CGitProgressDlg::CmdLock(CString& /*sWindowTitle*/, bool& /*localoperation*
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_LOCK);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_LOCK_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_LOCK)));
 	if (!Lock(m_targetPathList, m_options & ProgOptLockForce, m_sMessage))
@@ -2197,7 +2196,7 @@ bool CGitProgressDlg::CmdMerge(CString& /*sWindowTitle*/, bool& /*localoperation
 	{
 		sWindowTitle += _T(" ") + sRecordOnly;
 	}
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 
 	GetDlgItem(IDC_INFOTEXT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
@@ -2272,7 +2271,7 @@ bool CGitProgressDlg::CmdMergeAll(CString& /*sWindowTitle*/, bool& /*localoperat
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGE);
 	SetBackgroundImage(IDI_MERGE_BKG);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 
 	ATLASSERT(m_targetPathList.GetCount() == 1);
 
@@ -2328,7 +2327,7 @@ bool CGitProgressDlg::CmdMergeReintegrate(CString& /*sWindowTitle*/, bool& /*loc
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGEREINTEGRATE);
 	SetBackgroundImage(IDI_MERGE_BKG);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 
 	CString sCmdInfo;
 	sCmdInfo.Format(IDS_PROGRS_CMD_MERGEREINTEGRATE, 
@@ -2363,7 +2362,7 @@ bool CGitProgressDlg::CmdRename(CString& /*sWindowTitle*/, bool& /*localoperatio
 	if ((!m_targetPathList[0].IsUrl())&&(!m_url.IsUrl()))
 		localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_RENAME);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_RENAME_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RENAME)));
 	if (!Move(m_targetPathList, m_url, m_Revision, m_sMessage))
@@ -2381,7 +2380,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	localoperation = true;
 	ASSERT(m_targetPathList.GetCount() == 1);
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_RESOLVE);
-	SetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_RESOLVE_BKG);
 	// check if the file may still have conflict markers in it.
 	//BOOL bMarkers = FALSE;
@@ -2463,7 +2462,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 
 	localoperation = true;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_REVERT);
-	SetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_REVERT_BKG);
 
 	CTGitPathList delList;
@@ -2504,7 +2503,7 @@ bool CGitProgressDlg::CmdSwitch(CString& /*sWindowTitle*/, bool& /*localoperatio
 	ASSERT(m_targetPathList.GetCount() == 1);
 	SVNStatus st;
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_SWITCH);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_SWITCH_BKG);
 	LONG rev = 0;
 	if (st.GetStatus(m_targetPathList[0]) != (-2))
@@ -2543,7 +2542,7 @@ bool CGitProgressDlg::CmdUnlock(CString& /*sWindowTitle*/, bool& /*localoperatio
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UNLOCK);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_UNLOCK_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_UNLOCK)));
 	if (!Unlock(m_targetPathList, m_options & ProgOptLockForce))
@@ -2560,7 +2559,7 @@ bool CGitProgressDlg::CmdUpdate(CString& /*sWindowTitle*/, bool& /*localoperatio
 {
 #if 0
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UPDATE);
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 	SetBackgroundImage(IDI_UPDATE_BKG);
 
 	int targetcount = m_targetPathList.GetCount();
@@ -2613,7 +2612,7 @@ bool CGitProgressDlg::CmdUpdate(CString& /*sWindowTitle*/, bool& /*localoperatio
 		} // if (m_Revision.IsHead()) 
 	} // for(int nItem = 0; nItem < targetcount; nItem++) 
 	sWindowTitle = m_targetPathList.GetCommonRoot().GetWinPathString()+_T(" - ")+sWindowTitle;
-	SetWindowText(sWindowTitle);
+	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
 
 	DWORD exitcode = 0;
 	CString error;
@@ -2732,7 +2731,7 @@ CString CGitProgressDlg::GetPathFromColumnText(const CString& sColumnText)
 bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_SENDMAIL);
-	SetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	//SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
 	bool ret=true;
