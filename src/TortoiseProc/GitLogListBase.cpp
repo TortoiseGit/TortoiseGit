@@ -1617,7 +1617,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
 					{
 						ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
-						if(ref.Find(_T("refs/heads/")) == 0)
+						if(ref.Find(_T("refs/heads/")) == 0 && ref != currentBranch)
 						{
 							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
 						}
@@ -1626,16 +1626,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString str;
 					str.LoadString(IDS_SWITCH_BRANCH);
 
-					int branchCount = branchs.size();
-					for(int i=0; i<branchs.size(); i++)
-					{
-						if (*branchs[i] == currentBranch)
-						{
-							branchCount--;
-						}
-					}
-
-					if(branchCount == 1)
+					if(branchs.size() == 1)
 					{
 						str+=_T(" ");
 						str+= _T('"') + branchs[0]->Mid(11) + _T('"');
@@ -1644,7 +1635,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.SetMenuItemData(ID_SWITCHBRANCH,(ULONG_PTR)branchs[0]);
 
 					}
-					else if(branchCount > 1)
+					else if(branchs.size() > 1)
 					{
 						subbranchmenu.CreatePopupMenu();
 						for(int i=0;i<branchs.size();i++)
