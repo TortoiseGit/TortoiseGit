@@ -45,6 +45,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 
+	SetDllDirectory(L"");
+
 	if(_tcslen(lpCmdLine) == 0)
 		return -1;
 

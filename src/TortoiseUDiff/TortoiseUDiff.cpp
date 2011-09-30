@@ -36,6 +36,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
+	SetDllDirectory(L"");
+
 	MSG msg;
 	HACCEL hAccelTable;
 

@@ -68,6 +68,7 @@ END_MESSAGE_MAP()
 
 CTortoiseProcApp::CTortoiseProcApp()
 {
+	SetDllDirectory(L"");
 	EnableHtmlHelp();
 //	int argc = 0;
 //	const char* const * argv = NULL;

@@ -50,6 +50,7 @@ END_MESSAGE_MAP()
 
 CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 {
+	SetDllDirectory(L"");
 	EnableHtmlHelp();
 
 

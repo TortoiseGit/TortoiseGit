@@ -41,6 +41,7 @@ END_MESSAGE_MAP()
 
 CTortoiseMergeApp::CTortoiseMergeApp()
 {
+	SetDllDirectory(L"");
 	EnableHtmlHelp();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;

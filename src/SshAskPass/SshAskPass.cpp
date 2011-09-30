@@ -49,6 +49,8 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 
+	SetDllDirectory(L"");
+
 	if( _tcslen(lpCmdLine) == 0 )
 	{
 		g_Prompt = g_Promptphrase;
