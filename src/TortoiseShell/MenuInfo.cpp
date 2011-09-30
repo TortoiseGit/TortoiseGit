@@ -189,8 +189,9 @@ MenuInfo menuInfo[] =
     { ShellMenuDeleteIgnoreSub,             MENUIGNORE,         IDI_IGNORE,             IDS_MENUDELETEIGNORE,       IDS_MENUDESCDELETEIGNORE,
     ITEMIS_INVERSIONEDFOLDER|ITEMIS_INSVN, ITEMIS_IGNORED|ITEMIS_WCROOT, 0, 0, 0, 0, 0, 0 },
 
-	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
-	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
+	// no support for this atm since we do not use "ignoredprops"-vector in ContextMenu.cpp
+//	{ ShellMenuUnIgnoreSub,					MENUIGNORE,			IDI_IGNORE,				IDS_MENUUNIGNORE,			IDS_MENUDESCUNIGNORE,
+//	ITEMIS_IGNORED, 0, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
