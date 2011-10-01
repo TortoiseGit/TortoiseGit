@@ -57,7 +57,6 @@ enum GitCommands
 		ShellMenuUnIgnoreCaseSensitive,
 		ShellMenuUnIgnore,
 		ShellMenuProperties,
-		ShellMenuDelUnversioned,
 		ShellMenuClipPaste,
 		ShellMenuPull,
 		ShellMenuPush,

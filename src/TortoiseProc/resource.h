@@ -91,7 +91,6 @@
 #define IDD_SETTINGSHOOKCONFIG          236
 #define IDI_HOOK                        237
 #define IDD_EXPORT                      238
-#define IDD_DELUNVERSIONED              240
 #define IDD_INPUTLOGDLG                 241
 #define IDD_CREATECHANGELIST            243
 #define IDI_REPO_FILE                   244
@@ -110,7 +109,6 @@
 #define IDI_REVERT_BKG                  257
 #define IDI_COMMIT_BKG                  258
 #define IDI_CFM_BKG                     260
-#define IDI_DELUNVERSIONED_BKG          261
 #define IDR_DOWNLOAD                    263
 #define IDI_ICON2                       264
 #define IDI_CANCELNORMAL                264
@@ -663,7 +661,6 @@
 #define IDC_LOGINFO                     1337
 #define IDC_EOLCOMBO                    1341
 #define IDC_EOLLABEL                    1342
-#define IDC_ITEMLIST                    1352
 #define IDC_REV1BTN                     1353
 #define IDC_REV2BTN                     1354
 #define IDC_ACTIONLABEL                 1356

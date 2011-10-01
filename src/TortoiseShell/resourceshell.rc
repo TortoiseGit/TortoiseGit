@@ -63,7 +63,6 @@ IDI_MENUFOLDER          ICON                    "..\\Resources\\tsvnmenufolder.i
 IDI_MENULINK            ICON                    "..\\Resources\\tsvnmenulink.ico"
 IDI_MENUMULTIPLE        ICON                    "..\\Resources\\tsvnmenumultiple.ico"
 IDI_PROPERTIES          ICON                    "..\\Resources\\menuproperties.ico"
-IDI_DELUNVERSIONED      ICON                    "..\\Resources\\menudelunversioned.ico"
 IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ico"
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 IDI_PUSH                ICON                    "..\\resources\\Push.ico"
@@ -372,8 +371,6 @@ BEGIN
     IDS_COLTITLEEOLSTYLE    "Git eol-style"
     IDS_COLDESCEOLSTYLE     "Shows the eol-style property value"
     IDS_PROPBIN             "(binary value)"
-    IDS_MENUDELUNVERSIONED  "Delete unversioned items..."
-    IDS_MENUDESCDELUNVERSIONED "Removes all unversioned and ignored items"
     IDS_MENUREMOVEKEEP      "&Delete (keep local)"
 END
 

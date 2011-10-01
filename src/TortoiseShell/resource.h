@@ -144,8 +144,6 @@
 #define IDS_COLTITLEEOLSTYLE            259
 #define IDS_COLDESCEOLSTYLE             260
 #define IDS_PROPBIN                     263
-#define IDS_MENUDELUNVERSIONED          268
-#define IDS_MENUDESCDELUNVERSIONED      269
 #define IDS_MENUREMOVEKEEP              271
 #define IDS_MENUDESCREMOVEKEEP          272
 #define IDS_YES                         273
@@ -233,7 +231,6 @@
 #define IDI_MENULINK                    5156
 #define IDI_MENUMULTIPLE                5157
 #define IDI_PROPERTIES                  5158
-#define IDI_DELUNVERSIONED              5159
 #define IDI_APPSMALL                    5160
 #define IDI_CLIPPASTE                   5164
 #define IDI_PUSH                        5166

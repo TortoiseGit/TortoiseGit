@@ -1397,11 +1397,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
 				break;
-			case ShellMenuDelUnversioned:
-				svnCmd += _T("delunversioned /path:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuCleanup:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("cleanup /pathfile:\"");
