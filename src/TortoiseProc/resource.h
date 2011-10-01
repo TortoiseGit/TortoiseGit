@@ -131,7 +131,6 @@
 #define IDI_MERGE_BKG                   273
 #define IDI_RENAME_BKG                  274
 #define IDI_SWITCH_BKG                  275
-#define IDD_MERGEALL                    277
 #define IDD_PROPPAGE_LARGE              278
 #define IDD_MERGEWIZARD_REVRANGE        278
 #define IDB_MERGEWIZARDTITLE            278
@@ -1330,7 +1329,6 @@
 #define IDS_PROGRS_CMDINFO              3506
 #define IDS_PROGRS_IGNOREANCESTRY       3507
 #define IDS_PROGRS_RESPECTANCESTRY      3508
-#define IDS_PROGRS_MERGEALLNOSOURCES    3510
 #define IDS_PROGRS_INFOGETTINGINFO      3511
 #define IDS_PROGRS_TITLE_RENAME         3530
 #define IDS_PROGRS_TITLE_LOCK           3531
@@ -1354,7 +1352,6 @@
 #define IDS_PROGRS_CMD_MERGEPEG         3653
 #define IDS_PROGRS_CMD_MERGEURL         3654
 #define IDS_PROGRS_CMD_COPY             3655
-#define IDS_PROGRS_CMD_MERGEALL         3656
 #define IDS_PROGRS_CMD_ADD              3657
 #define IDS_PROGRS_CMD_COMMIT           3658
 #define IDS_PROGRS_CMD_EXPORT           3659

@@ -103,7 +103,6 @@ public:
 		GitProgress_Lock,
 		GitProgress_Merge,
 		GitProgress_MergeReintegrate,
-		GitProgress_MergeAll,
 		GitProgress_Rename,
 		GitProgress_Resolve,
 		GitProgress_Revert,
@@ -279,7 +278,6 @@ private:
 	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
 	bool		CmdLock(CString& sWindowTitle, bool& localoperation);
 	bool		CmdMerge(CString& sWindowTitle, bool& localoperation);
-	bool		CmdMergeAll(CString& sWindowTitle, bool& localoperation);
 	bool		CmdMergeReintegrate(CString& sWindowTitle, bool& localoperation);
 	bool		CmdRename(CString& sWindowTitle, bool& localoperation);
 	bool		CmdResolve(CString& sWindowTitle, bool& localoperation);

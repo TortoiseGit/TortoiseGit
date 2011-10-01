@@ -1073,25 +1073,6 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,245,129,64,14
 END
 
-IDD_MERGEALL DIALOGEX 0, 0, 249, 130
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Merge all"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    GROUPBOX        "Merge options",IDC_STATIC,7,7,235,100
-    LTEXT           "Merge depth:",IDC_STATIC,14,21,88,8
-    COMBOBOX        IDC_DEPTH,109,18,121,70,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Ignore ancestry",IDC_IGNOREANCESTRY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,37,216,10
-    CONTROL         "Ignore line endings",IDC_IGNOREEOL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,52,216,10
-    CONTROL         "Compare whitespaces",IDC_COMPAREWHITESPACES,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,64,216,10
-    CONTROL         "Ignore whitespace changes",IDC_IGNOREWHITESPACECHANGES,
-                    "Button",BS_AUTORADIOBUTTON,14,76,216,10
-    CONTROL         "Ignore all whitespaces",IDC_IGNOREALLWHITESPACES,"Button",BS_AUTORADIOBUTTON,14,88,216,10
-    DEFPUSHBUTTON   "&Merge",IDOK,84,109,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,138,109,50,14
-    PUSHBUTTON      "Help",IDHELP,192,109,50,14
-END
-
 IDD_MERGEWIZARD_START DIALOGEX 0, 0, 322, 191
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Merge"
@@ -2439,16 +2420,6 @@ BEGIN
         HORZGUIDE, 69
         HORZGUIDE, 91
         HORZGUIDE, 113
-    END
-
-    IDD_MERGEALL, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 242
-        VERTGUIDE, 14
-        VERTGUIDE, 230
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 123
     END
 
     IDD_MERGEWIZARD_START, DIALOG
@@ -3927,8 +3898,6 @@ BEGIN
     IDS_PROGRS_CMDINFO      "Command"
     IDS_PROGRS_IGNOREANCESTRY "ignoring ancestry"
     IDS_PROGRS_RESPECTANCESTRY "respecting ancestry"
-    IDS_PROGRS_MERGEALLNOSOURCES 
-                            "Unable to determine merge source for\n%s\nPlease use the main merge dialog."
     IDS_PROGRS_INFOGETTINGINFO "Getting required information..."
 END
 
@@ -3967,7 +3936,6 @@ BEGIN
     IDS_PROGRS_CMD_MERGEPEG "Merging revisions %s of %s into %s, %s%s"
     IDS_PROGRS_CMD_MERGEURL "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
     IDS_PROGRS_CMD_COPY     "Copy %s to %s, Revision %s"
-    IDS_PROGRS_CMD_MERGEALL "Merging %s into %s, %s"
     IDS_PROGRS_CMD_ADD      "Add"
     IDS_PROGRS_CMD_COMMIT   "Commit"
     IDS_PROGRS_CMD_EXPORT   "Export"

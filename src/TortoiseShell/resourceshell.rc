@@ -331,8 +331,6 @@ STRINGTABLE
 BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
     IDS_MENUDESCAPPLYPATCH  "Review unified diff file with TortoiseMerge"
-    IDS_MENUMERGEALL        "Merge reintegrate..."
-    IDS_MENUDESCMERGEALL    "Merges all missing revisions back into the working copy using merge-tracking information"
     IDS_MENUUNDOADD         "Undo Add..."
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"

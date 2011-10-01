@@ -114,8 +114,6 @@
 #define IDS_MENUAPPLYPATCH              207
 #define IDS_MENUDESCCREATEPATCH         208
 #define IDS_MENUDESCAPPLYPATCH          209
-#define IDS_MENUMERGEALL                210
-#define IDS_MENUDESCMERGEALL            211
 #define IDS_MENUUNDOADD                 212
 #define IDS_MENUDESCUNDOADD             213
 #define IDS_MENUPREVDIFF                214

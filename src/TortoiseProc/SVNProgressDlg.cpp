@@ -905,9 +905,6 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Merge:
 		bSuccess = CmdMerge(sWindowTitle, localoperation);
 		break;
-	case GitProgress_MergeAll:
-		bSuccess = CmdMergeAll(sWindowTitle, localoperation);
-		break;
 	case GitProgress_MergeReintegrate:
 		bSuccess = CmdMergeReintegrate(sWindowTitle, localoperation);
 		break;
@@ -2180,62 +2177,6 @@ bool CGitProgressDlg::CmdMerge(CString& /*sWindowTitle*/, bool& /*localoperation
 	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_INFOTEXT)->ShowWindow(SW_SHOW);
 	return !bFailed;
-#endif
-	return true;
-}
-
-bool CGitProgressDlg::CmdMergeAll(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGE);
-	SetBackgroundImage(IDI_MERGE_BKG);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-
-	ATLASSERT(m_targetPathList.GetCount() == 1);
-
-	CString sCmdInfo;
-	sCmdInfo.LoadString(IDS_PROGRS_INFOGETTINGINFO);
-	ReportCmd(sCmdInfo);
-	CTGitPathList suggestedSources;
-	if (!SuggestMergeSources(m_targetPathList[0], m_Revision, suggestedSources))
-	{
-		ReportSVNError();
-		return false;
-	}
-
-	if (suggestedSources.GetCount() == 0)
-	{
-		CString sErr;
-		sErr.Format(IDS_PROGRS_MERGEALLNOSOURCES, m_targetPathList[0].GetWinPath());
-		ReportError(sErr);
-		return false;
-	}
-	sCmdInfo.Format(IDS_PROGRS_CMD_MERGEALL,
-		(LPCTSTR)suggestedSources[0].GetSVNPathString(),
-		m_targetPathList[0].GetWinPath(),
-		m_options & ProgOptIgnoreAncestry ? (LPCTSTR)sIgnoreAncestry : (LPCTSTR)sRespectAncestry);
-	ReportCmd(sCmdInfo);
-
-	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
-	if (DWORD(nonint))
-	{
-		::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_SETCHECK, BST_CHECKED, 0);
-		m_AlwaysConflicted = true;
-	}
-
-	SVNRevRangeArray revarray;
-	if (!PegMerge(suggestedSources[0], revarray,
-		SVNRev::REV_HEAD,
-		m_targetPathList[0], true, m_depth, m_diffoptions, !!(m_options & ProgOptIgnoreAncestry), FALSE))
-	{
-		GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
-		ReportSVNError();
-		return false;
-	}
-
-	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
 #endif
 	return true;
 }

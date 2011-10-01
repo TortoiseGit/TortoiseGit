@@ -21,7 +21,6 @@ enum GitCommands
 		ShellMenuCreateRepos,
 		ShellMenuCopy,
 		ShellMenuMerge,
-		ShellMenuMergeAll,
 		ShellMenuSettings,
 		ShellMenuRemove,
 		ShellMenuRemoveKeep,

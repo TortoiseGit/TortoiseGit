@@ -1458,14 +1458,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuMergeAll:
-				svnCmd += _T("mergeall /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuCopy:
 				svnCmd += _T("copy /path:\"");
 				if (files_.size() > 0)
