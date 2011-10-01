@@ -138,7 +138,6 @@
 #define IDB_MERGEWIZARDTITLE            278
 #define IDD_DIALOG1                     279
 #define IDD_URLDIFF                     279
-#define IDD_GOOFFLINE                   280
 #define IDD_SETTINGSBUGTRAQ             283
 #define IDD_SETTINGSBUGTRAQ_            283
 #define IDD_SETTINGSBUGTRAQ_A           283
@@ -710,7 +709,6 @@
 #define IDC_RESOLVEALLLATER             1382
 #define IDC_DRYRUN                      1382
 #define IDC_ACTIONLOGSHOW               1382
-#define IDC_PERMANENTLYOFFLINE          1382
 #define IDC_EXPORT                      1382
 #define IDC_BUGTRAQEDITBUTTON           1382
 #define IDC_BUGTRAQBUTTON               1382
@@ -788,7 +786,6 @@
 #define IDC_ACTIONLOGCLEAR              1427
 #define IDC_MAXLINES                    1428
 #define IDC_DEFAULTOFFLINE              1431
-#define IDC_ASDEFAULTOFFLINE            1431
 #define IDC_SHOWIGNOREDOVERLAY          1432
 #define IDC_NONINTERACTIVE              1432
 #define IDC_USERECYCLEBIN               1432

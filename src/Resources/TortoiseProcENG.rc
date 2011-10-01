@@ -140,18 +140,6 @@ IDB_BITMAP_REFTYPE      BITMAP                  "..\\resources\\reftype.bmp"
 // Dialog
 //
 
-IDD_GOOFFLINE DIALOGEX 0, 0, 242, 116
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Go offline?"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    LTEXT           "There has been a problem connecting the server.\nDo you want to see the cached data instead?\n\nPlease understand that the cached data may be outdated,\nincomplete or even misleading due to incomplete history.",IDC_STATIC,7,7,222,60
-    CONTROL         "Make this the default",IDC_ASDEFAULTOFFLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,71,226,10
-    DEFPUSHBUTTON   "&Offline for now",IDOK,7,87,72,24,BS_MULTILINE
-    PUSHBUTTON      "&Permanently offline",IDC_PERMANENTLYOFFLINE,85,87,72,24,BS_MULTILINE
-    PUSHBUTTON      "&Don't go offline",IDCANCEL,163,87,72,24,BS_MULTILINE
-END
-
 IDD_ABOUT DIALOGEX 0, 0, 333, 297
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TortoiseGit"
