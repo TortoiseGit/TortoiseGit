@@ -1528,14 +1528,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					svnCmd += _T(" /alternative");
 				break;
-			case ShellMenuUrlDiff:
-				svnCmd += _T("urldiff /path:\"");
-				if (files_.size() == 1)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuDiffTwo:
 				svnCmd += _T("diffcommits /path:\"");
 				if (files_.size() == 1)

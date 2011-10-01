@@ -99,7 +99,6 @@
 
 #include "UnIgnoreCommand.h"
 
-#include "UrlDiffCommand.h"
 #endif
 typedef enum
 {
@@ -150,7 +149,6 @@ typedef enum
 	cmdTag,
 	cmdUnIgnore,
 	cmdUpdateCheck,
-	cmdUrlDiff,
 	cmdStashSave,
 	cmdStashApply,
 	cmdStashPop,
@@ -220,7 +218,6 @@ static const struct CommandInfo
 	{	cmdTag,				_T("tag")				},
 	{	cmdUnIgnore,		_T("unignore")			},
 	{	cmdUpdateCheck,		_T("updatecheck")		},
-	{	cmdUrlDiff,			_T("urldiff")			},
 	{	cmdStashSave,		_T("stashsave")			},
 	{	cmdStashApply,		_T("stashapply")		},
 	{	cmdStashPop,		_T("stashpop")			},
@@ -387,8 +384,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ShowCompareCommand;
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
-	case cmdUrlDiff:
-		return new UrlDiffCommand;
 #endif
 	default:
 		CMessageBox::Show(hWndExplorer, _T("Command not implemented"), _T("TortoiseGit"), MB_ICONERROR);

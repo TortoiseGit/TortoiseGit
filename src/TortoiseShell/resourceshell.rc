@@ -371,8 +371,6 @@ BEGIN
     IDS_MENUDESCPROPERTIES  "Manage Subversion properties"
     IDS_COLTITLEEOLSTYLE    "Git eol-style"
     IDS_COLDESCEOLSTYLE     "Shows the eol-style property value"
-    IDS_MENUURLDIFF         "&Diff with URL"
-    IDS_MENUDESCURLDIFF     "Compares the selected file with a file in the repository"
     IDS_PROPBIN             "(binary value)"
     IDS_MENUDELUNVERSIONED  "Delete unversioned items..."
     IDS_MENUDESCDELUNVERSIONED "Removes all unversioned and ignored items"

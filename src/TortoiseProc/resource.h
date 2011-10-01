@@ -131,7 +131,6 @@
 #define IDD_MERGEWIZARD_REVRANGE        278
 #define IDB_MERGEWIZARDTITLE            278
 #define IDD_DIALOG1                     279
-#define IDD_URLDIFF                     279
 #define IDD_SETTINGSBUGTRAQ             283
 #define IDD_SETTINGSBUGTRAQ_            283
 #define IDD_SETTINGSBUGTRAQ_A           283
@@ -662,7 +661,6 @@
 #define IDC_HOOKWCPATHLABEL             1335
 #define IDC_HOOKCMLABEL                 1336
 #define IDC_LOGINFO                     1337
-
 #define IDC_EOLCOMBO                    1341
 #define IDC_EOLLABEL                    1342
 #define IDC_ITEMLIST                    1352

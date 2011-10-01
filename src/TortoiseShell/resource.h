@@ -143,8 +143,6 @@
 #define IDS_MENUDESCPROPERTIES          258
 #define IDS_COLTITLEEOLSTYLE            259
 #define IDS_COLDESCEOLSTYLE             260
-#define IDS_MENUURLDIFF                 261
-#define IDS_MENUDESCURLDIFF             262
 #define IDS_PROPBIN                     263
 #define IDS_MENUDELUNVERSIONED          268
 #define IDS_MENUDESCDELUNVERSIONED      269

@@ -28,7 +28,6 @@ enum GitCommands
 		ShellMenuUpdateExt,
 		ShellMenuDiff,
 		ShellMenuPrevDiff,
-		ShellMenuUrlDiff,
 		ShellMenuDiffTwo,
 		ShellMenuDropCopyAdd,
 		ShellMenuDropMoveAdd,
