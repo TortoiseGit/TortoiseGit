@@ -1,5 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -105,24 +106,24 @@ BOOL CSetOverlayIcons::OnInitDialog()
 		if (ComboItem.CompareNoCase(m_sOriginalIconSet)==0)
 			m_cIconSet.SetCurSel(i);
 	}
-#if 0
+
 	WORD langID = (WORD)(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 	TCHAR statustext[MAX_STATUS_STRING_LENGTH];
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_normal, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_normal, statustext, _countof(statustext), langID);
 	m_sNormal = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_modified, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_modified, statustext, _countof(statustext), langID);
 	m_sModified = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_conflicted, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_conflicted, statustext, _countof(statustext), langID);
 	m_sConflicted = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_deleted, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_deleted, statustext, _countof(statustext), langID);
 	m_sDeleted = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_added, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_added, statustext, _countof(statustext), langID);
 	m_sAdded = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_ignored, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_ignored, statustext, _countof(statustext), langID);
 	m_sIgnored = statustext;
-	SVNStatus::GetStatusString(AfxGetResourceHandle(), svn_wc_status_unversioned, statustext, _countof(statustext), langID);
+	GitStatus::GetStatusString(AfxGetResourceHandle(), git_wc_status_unversioned, statustext, _countof(statustext), langID);
 	m_sUnversioned = statustext;
-#endif
+
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);
 
