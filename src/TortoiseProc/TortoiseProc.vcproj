@@ -690,6 +690,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\ImportPatchesBackground.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\InSubVersionIcon.ico"
 				>
 			</File>
