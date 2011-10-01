@@ -76,7 +76,6 @@
 
 #include "CopyCommand.h"
 #include "CrashCommand.h"
-#include "CreatePatchCommand.h"
 
 #include "DelUnversionedCommand.h"
 
@@ -124,7 +123,6 @@ typedef enum
 	cmdConflictEditor,
 	cmdCopy,
 	cmdCrash,
-	cmdCreatePatch,
 	cmdDelUnversioned,
 	cmdDiff,
 	cmdDropCopy,
@@ -201,7 +199,6 @@ static const struct CommandInfo
 	{	cmdConflictEditor,	_T("conflicteditor")	},
 	{	cmdCopy,			_T("copy")				},
 	{	cmdCrash,			_T("crash")				},
-	{	cmdCreatePatch,		_T("createpatch")		},
 	{	cmdDelUnversioned,	_T("delunversioned")	},
 	{	cmdDiff,			_T("diff")				},
 	{	cmdDropCopy,		_T("dropcopy")			},
@@ -392,8 +389,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new CopyCommand;
 	case cmdCrash:
 		return new CrashCommand;
-	case cmdCreatePatch:
-		return new CreatePatchCommand;
 	case cmdDelUnversioned:
 		return new DelUnversionedCommand;
 

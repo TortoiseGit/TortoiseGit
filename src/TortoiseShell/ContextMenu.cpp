@@ -1777,13 +1777,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuCreatePatch:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("createpatch /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				break;
 			case ShellMenuApplyPatch:
 				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
 				{

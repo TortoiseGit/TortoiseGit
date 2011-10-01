@@ -307,7 +307,6 @@ BEGIN
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
-    IDS_MENUCREATEPATCH     "Create &patch..."
     IDS_MENUAPPLYPATCH      "Review &patch..."
 END
 

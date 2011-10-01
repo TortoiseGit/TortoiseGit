@@ -55,7 +55,6 @@ enum GitCommands
 		ShellMenuRefBrowse,
 		ShellMenuBlame,
 		ShellMenuApplyPatch,
-		ShellMenuCreatePatch,
 		ShellMenuRevisionGraph,
 		ShellMenuUnIgnoreSub,
 		ShellMenuUnIgnoreCaseSensitive,

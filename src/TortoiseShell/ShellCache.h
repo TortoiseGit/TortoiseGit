@@ -91,7 +91,7 @@ public:
 		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
 		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), entries>>32);
 
-		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUDELUNVERSIONED|MENUSUBSYNC|MENUCREATEPATCH);
+		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUDELUNVERSIONED|MENUSUBSYNC);
 		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
 		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
 

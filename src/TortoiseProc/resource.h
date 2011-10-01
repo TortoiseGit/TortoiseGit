@@ -73,7 +73,6 @@
 #define IDB_CANCELHIGHLIGHT             201
 #define IDB_BITMAP1                     203
 #define IDD_RESOLVE                     207
-#define IDD_CREATEPATCH                 208
 #define IDI_WARNING_GENERAL             210
 #define IDD_HISTORYDLG                  211
 #define IDR_CLEANUPANI                  212
@@ -523,7 +522,6 @@
 #define IDS_PROGRS_TITLE_EXPORT         1233
 #define IDS_PROGRS_TITLE_MERGE          1234
 #define IDS_PROGRS_TITLE_COPY           1235
-#define IDC_PATCHLIST                   1235
 #define IDS_PROGRS_MIMETYPE             1236
 #define IDS_PROGRS_COPY_WARNING         1238
 #define IDC_EXTERNALWARNING             1238

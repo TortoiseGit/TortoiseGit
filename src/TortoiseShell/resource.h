@@ -111,7 +111,6 @@
 #define IDS_MENUBLAME                   203
 #define IDS_STATUSEXTERNAL              204
 #define IDS_MENUDESCBLAME               205
-#define IDS_MENUCREATEPATCH             206
 #define IDS_MENUAPPLYPATCH              207
 #define IDS_MENUDESCCREATEPATCH         208
 #define IDS_MENUDESCAPPLYPATCH          209
