@@ -896,12 +896,6 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Export:
 		bSuccess = CmdExport(sWindowTitle, localoperation);
 		break;
-	case GitProgress_Merge:
-		bSuccess = CmdMerge(sWindowTitle, localoperation);
-		break;
-	case GitProgress_MergeReintegrate:
-		bSuccess = CmdMergeReintegrate(sWindowTitle, localoperation);
-		break;
 	case GitProgress_Rename:
 		bSuccess = CmdRename(sWindowTitle, localoperation);
 		break;
@@ -1904,124 +1898,6 @@ bool CGitProgressDlg::CmdExport(CString& /*sWindowTitle*/, bool& /*localoperatio
 		ReportSVNError();
 		return false;
 	}
-#endif
-	return true;
-}
-
-bool CGitProgressDlg::CmdMerge(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	bool bFailed = false;
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGE);
-	SetBackgroundImage(IDI_MERGE_BKG);
-	if (m_options & ProgOptDryRun)
-	{
-		sWindowTitle += _T(" ") + sDryRun;
-	}
-	if (m_options & ProgOptRecordOnly)
-	{
-		sWindowTitle += _T(" ") + sRecordOnly;
-	}
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-
-	GetDlgItem(IDC_INFOTEXT)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
-	if (DWORD(nonint))
-	{
-		::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_SETCHECK, BST_CHECKED, 0);
-		m_AlwaysConflicted = true;
-	}
-	// we only accept a revision list to merge for peg merges
-	ATLASSERT((m_revisionArray.GetCount()==0) || (m_revisionArray.GetCount() && (m_url.IsEquivalentTo(m_url2))));
-
-	if (m_url.IsEquivalentTo(m_url2))
-	{
-		CString sSuggestedMessage;
-		CString sMergedLogMessage;
-		CString sSeparator = CRegString(_T("Software\\TortoiseGit\\MergeLogSeparator"), _T("........"));
-		CString temp;
-
-		// Merging revisions %s of %s to %s into %s, %s%s
-		CString sCmdInfo;
-		sCmdInfo.Format(IDS_PROGRS_CMD_MERGEPEG,
-			(LPCTSTR)m_revisionArray.ToListString(),
-			(LPCTSTR)m_url.GetSVNPathString(),
-			m_targetPathList[0].GetWinPath(),
-			m_options & ProgOptIgnoreAncestry ? (LPCTSTR)sIgnoreAncestry : (LPCTSTR)sRespectAncestry,
-			m_options & ProgOptDryRun ? ((LPCTSTR)_T(", ") + sDryRun) : _T(""));
-		ReportCmd(sCmdInfo);
-
-		if (!PegMerge(m_url, m_revisionArray,
-			m_pegRev.IsValid() ? m_pegRev : (m_url.IsUrl() ? SVNRev::REV_HEAD : SVNRev(SVNRev::REV_WC)),
-			m_targetPathList[0], true, m_depth, m_diffoptions, !!(m_options & ProgOptIgnoreAncestry), !!(m_options & ProgOptDryRun), !!(m_options & ProgOptRecordOnly)))
-		{
-			// if the merge fails with the peg revision set,
-			// try again with HEAD as the peg revision.
-			if (!PegMerge(m_url, m_revisionArray, SVNRev::REV_HEAD,
-				m_targetPathList[0], true, m_depth, m_diffoptions, !!(m_options & ProgOptIgnoreAncestry), !!(m_options & ProgOptDryRun), !!(m_options & ProgOptRecordOnly)))
-			{
-				ReportSVNError();
-				bFailed = true;
-			}
-		}
-	}
-	else
-	{
-		CString sCmdInfo;
-		sCmdInfo.Format(IDS_PROGRS_CMD_MERGEURL,
-			(LPCTSTR)m_url.GetSVNPathString(), (LPCTSTR)m_Revision.ToString(),
-			(LPCTSTR)m_url2.GetSVNPathString(), (LPCTSTR)m_RevisionEnd.ToString(),
-			m_targetPathList[0].GetWinPath(),
-			m_options & ProgOptIgnoreAncestry ? (LPCTSTR)sIgnoreAncestry : (LPCTSTR)sRespectAncestry,
-			m_options & ProgOptDryRun ? ((LPCTSTR)_T(", ") + sDryRun) : _T(""));
-		ReportCmd(sCmdInfo);
-
-		if (!Merge(m_url, m_Revision, m_url2, m_RevisionEnd, m_targetPathList[0],
-			true, m_depth, m_diffoptions, !!(m_options & ProgOptIgnoreAncestry), !!(m_options & ProgOptDryRun), !!(m_options & ProgOptRecordOnly)))
-		{
-			ReportSVNError();
-			bFailed = true;
-		}
-	}
-	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_INFOTEXT)->ShowWindow(SW_SHOW);
-	return !bFailed;
-#endif
-	return true;
-}
-
-bool CGitProgressDlg::CmdMergeReintegrate(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_MERGEREINTEGRATE);
-	SetBackgroundImage(IDI_MERGE_BKG);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-
-	CString sCmdInfo;
-	sCmdInfo.Format(IDS_PROGRS_CMD_MERGEREINTEGRATE,
-		(LPCTSTR)m_url.GetSVNPathString(),
-		m_targetPathList[0].GetWinPath());
-	ReportCmd(sCmdInfo);
-
-	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_SHOW);
-	CRegDWORD nonint = CRegDWORD(_T("Software\\TortoiseGit\\MergeNonInteractive"), FALSE);
-	if (DWORD(nonint))
-	{
-		::SendMessage(GetDlgItem(IDC_NONINTERACTIVE)->GetSafeHwnd(), BM_SETCHECK, BST_CHECKED, 0);
-		m_AlwaysConflicted = true;
-	}
-
-	if (!MergeReintegrate(m_url, SVNRev::REV_HEAD, m_targetPathList[0], !!(m_options & ProgOptDryRun), m_diffoptions))
-	{
-		ReportSVNError();
-		GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
-		return false;
-	}
-
-	GetDlgItem(IDC_NONINTERACTIVE)->ShowWindow(SW_HIDE);
 #endif
 	return true;
 }

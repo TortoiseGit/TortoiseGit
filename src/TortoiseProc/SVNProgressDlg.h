@@ -99,8 +99,6 @@ public:
 		GitProgress_Checkout,
 		GitProgress_Copy,
 		GitProgress_Export,
-		GitProgress_Merge,
-		GitProgress_MergeReintegrate,
 		GitProgress_Rename,
 		GitProgress_Resolve,
 		GitProgress_Revert,
@@ -272,8 +270,6 @@ private:
 	bool		CmdCheckout(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCopy(CString& sWindowTitle, bool& localoperation);
 	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
-	bool		CmdMerge(CString& sWindowTitle, bool& localoperation);
-	bool		CmdMergeReintegrate(CString& sWindowTitle, bool& localoperation);
 	bool		CmdRename(CString& sWindowTitle, bool& localoperation);
 	bool		CmdResolve(CString& sWindowTitle, bool& localoperation);
 	bool		CmdRevert(CString& sWindowTitle, bool& localoperation);
