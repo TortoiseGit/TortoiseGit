@@ -33,8 +33,6 @@
 #include "SettingsColors2.h"
 #include "SettingsColors3.h"
 #include "SetMisc.h"
-#include "SetLogCache.h"
-#include "SettingsLogCaches.h"
 #include "SetSavedDataPage.h"
 #include "SetHooks.h"
 #include "SetBugTraq.h"

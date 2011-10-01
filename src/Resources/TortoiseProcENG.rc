@@ -86,8 +86,6 @@ IDI_IMPORTPATHCES_BKG   ICON                    "ImportPatchesBackground.ico"
 IDI_MERGE_BKG           ICON                    "MergeBackground.ico"
 IDI_RENAME_BKG          ICON                    "RenameBackground.ico"
 IDI_SWITCH_BKG          ICON                    "SwitchBackground.ico"
-IDI_CACHE               ICON                    "cache.ico"
-IDI_CACHELIST           ICON                    "CacheList.ico"
 IDI_TORTOISEBLAME       ICON                    "..\\TortoiseBlame\\TortoiseBlame.ico"
 IDI_BUGTRAQ             ICON                    "bugtraq.ico"
 IDI_UP                  ICON                    "..\\Resources\\up.ico"
@@ -141,68 +139,6 @@ IDB_BITMAP_REFTYPE      BITMAP                  "..\\resources\\reftype.bmp"
 //
 // Dialog
 //
-
-IDD_LOGCACHESTATISTICS DIALOGEX 0, 0, 298, 282
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Log Cache Statistics"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    LTEXT           "RAM [kB]: ",IDC_STATIC,18,18,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_SIZERAM,90,18,48,8
-    LTEXT           "disk [kB]: ",IDC_STATIC,18,30,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_SIZEDISK,90,30,48,8
-    LTEXT           "connection: ",IDC_STATIC,18,42,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_CONNECTIONSTATE,90,42,48,8
-    GROUPBOX        "Size and status",IDC_STATIC,12,6,132,54
-    LTEXT           "last read: ",IDC_STATIC,162,18,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_LASTREAD,234,18,48,8
-    LTEXT           "last update: ",IDC_STATIC,162,30,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_LASTWRITE,234,30,48,8
-    LTEXT           "last head update: ",IDC_STATIC,162,42,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_LASTHEADUPDATE,234,42,48,8
-    GROUPBOX        "Age",IDC_STATIC,156,6,132,54
-    LTEXT           "authors: ",IDC_STATIC,18,84,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_AUTHORS,90,84,48,8
-    LTEXT           "path elements: ",IDC_STATIC,18,96,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_PATHELEMENTS,90,96,48,8
-    LTEXT           "paths: ",IDC_STATIC,18,108,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_PATHS,90,108,48,8
-    LTEXT           "skip ranges: ",IDC_STATIC,18,120,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_SKIPRANGES,90,120,48,8
-    LTEXT           "word tokens: ",IDC_STATIC,143,84,85,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_WORDTOKENS,234,84,48,8
-    LTEXT           "pair tokens: ",IDC_STATIC,143,96,85,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_PAIRTOKENS,234,96,48,8
-    LTEXT           "text [token count]: ",IDC_STATIC,143,108,85,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_TEXTSIZE,234,108,48,8
-    LTEXT           "words [uncompressed]: ",IDC_STATIC,143,120,85,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_UNCOMPRESSEDSIZE,234,120,48,8
-    GROUPBOX        "Container sizes",IDC_STATIC,12,72,276,66
-    LTEXT           "max revision: ",IDC_STATIC,18,162,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_MAXREVISION,90,162,48,8
-    LTEXT           "revision count: ",IDC_STATIC,18,174,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_REVISIONCOUNT,90,174,48,8
-    LTEXT           "changes total: ",IDC_STATIC,18,204,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_CHANGESTOTAL,90,204,48,8
-    LTEXT           "revisions: ",IDC_STATIC,18,216,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_CHANGEDREVISIONS,90,216,48,8
-    LTEXT           "missing in: ",IDC_STATIC,18,228,66,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_CHANGESMISSING,90,228,48,8
-    LTEXT           "merges total: ",IDC_STATIC,144,162,84,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_MERGESTOTAL,234,162,48,8
-    LTEXT           "revisions: ",IDC_STATIC,144,174,84,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_MERGESREVISIONS,234,174,48,8
-    LTEXT           "missing in: ",IDC_STATIC,144,186,84,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_MERGESMISSING,234,186,48,8
-    LTEXT           "user revprops total: ",IDC_STATIC,144,204,84,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_USERREVPROPSTOTAL,234,204,48,8
-    LTEXT           "revisions: ",IDC_STATIC,144,216,84,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_USERREVPROPSREVISISONS,234,216,48,8
-    LTEXT           "missing in: ",IDC_STATIC,144,228,84,8,0,WS_EX_RIGHT
-    LTEXT           "",IDC_USERREVPROPSMISSING,234,228,48,8
-    GROUPBOX        "Revisions",IDC_STATIC,12,150,276,96
-    DEFPUSHBUTTON   "OK",IDOK,123,258,50,14
-END
 
 IDD_GOOFFLINE DIALOGEX 0, 0, 242, 116
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -948,44 +884,6 @@ BEGIN
     GROUPBOX        "Commit",IDC_COMMITGROUP,7,39,286,109
     GROUPBOX        "Check for modifications",IDC_STATIC,7,152,286,28
     GROUPBOX        "Lock",IDC_STATIC,7,184,286,28,NOT WS_VISIBLE
-END
-
-IDD_SETTINGSLOGCACHE DIALOGEX 0, 0, 300, 217
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Log Caching"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "Global settings",IDC_STATIC,7,7,285,84
-    CONTROL         "&Enable log caching",IDC_ENABLELOGCACHING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,20,270,10
-    CONTROL         "&Allow ambiguous URLs",IDC_SUPPORTAMBIGUOUSURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,32,270,10
-    CONTROL         "Allow ambiguous &UUIDs",IDC_SUPPORTAMBIGUOUSUUID,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,44,270,10
-    LTEXT           "If the repository can not be contacted",IDC_CONNECTIVITYLABEL,14,59,270,8,SS_NOTIFY
-    COMBOBOX        IDC_GOOFFLINESETTING,14,70,270,64,CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX        "Timeouts",IDC_STATIC,7,93,285,64
-    LTEXT           "&Timeout in seconds before updating the HEAD revision",IDC_HEADAGELABEL,14,107,231,8,SS_NOTIFY
-    EDITTEXT        IDC_MAXIMINHEADAGE,252,104,31,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    LTEXT           "&Days of inactivity until small caches get removed",IDC_CACHEDROPAGELABEL,14,123,231,8,SS_NOTIFY
-    EDITTEXT        IDC_CACHEDROPAGE,252,120,31,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    LTEXT           "&Maximum size [kByte] of a removed inactive cache",IDC_CACHEDROPMAXSIZELABEL,14,139,231,8,SS_NOTIFY
-    EDITTEXT        IDC_CACHEDROPMAXSIZE,252,136,31,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    GROUPBOX        "Expert settings",IDC_STATIC,7,159,285,32
-    LTEXT           "Maximum number of tool &failures until cache removal",IDC_MAXFAILURESLABEL,14,173,231,8,SS_NOTIFY
-    EDITTEXT        IDC_MAXFAILUESUNTILDROP,252,170,31,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    PUSHBUTTON      "&Restore defaults",IDC_CACHESTDDEFAULTS,7,202,141,14
-    PUSHBUTTON      "&Power user defaults",IDC_CACHEPOWERDEFAULTS,152,202,141,14
-END
-
-IDD_SETTINGSLOGCACHELIST DIALOGEX 0, 0, 300, 217
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Log Caching::Cached Repositories"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "Cached Repositories",IDC_REPOSITORIESGROUP,7,7,285,203
-    CONTROL         "",IDC_REPOSITORYLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,20,270,164
-    PUSHBUTTON      "D&etails",IDC_CACHEDETAILS,72,190,50,14,WS_DISABLED
-    PUSHBUTTON      "U&pdate",IDC_CACHEUPDATE,126,190,50,14,WS_DISABLED
-    PUSHBUTTON      "E&xport",IDC_CACHEEXPORT,180,190,50,14,WS_DISABLED
-    PUSHBUTTON      "&Delete",IDC_CACHEDELETE,234,190,50,14,WS_DISABLED
 END
 
 IDD_SETTINGSSAVEDDATA DIALOGEX 0, 0, 300, 217
@@ -2053,14 +1951,6 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO 
 BEGIN
-    IDD_LOGCACHESTATISTICS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 291
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 275
-    END
-
     IDD_ADD, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -2450,17 +2340,6 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 293
-        VERTGUIDE, 14
-        VERTGUIDE, 252
-        VERTGUIDE, 284
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 210
-    END
-
-    IDD_SETTINGSLOGCACHE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 292
         VERTGUIDE, 14
         VERTGUIDE, 252
         VERTGUIDE, 284
@@ -3860,10 +3739,6 @@ BEGIN
     IDS_SETTINGS_CONNECTIVITY_OFFLINENOW "Operate from log cache for now only"
     IDS_SETTINGS_CONNECTIVITY_OFFLINEFOREVER 
                             "Never try to contact the repository again"
-    IDS_SETTINGS_LOGCACHE_UPDATETITLE "Updating log cache"
-    IDS_SETTINGS_DELETEDCACHE "URL not known (UUID: %s)"
-    IDS_SETTINGS_CACHEDELETEQUESTION 
-                            "Are you sure you want to remove the cache of the selected %d items?"
     IDS_SETTINGS_MULTIPLEURLSFORUUID "multiple URLs (e.g. %s)"
 END
 
@@ -4040,8 +3915,6 @@ BEGIN
                             "If enabled, working copy folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
     IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT 
                             "Clears cached logs from %ld repositories"
-    IDS_SETTINGS_CACHELOGS_TT 
-                            "Caches the log messages to speed up log fetching"
     IDS_SETTINGS_SELECTFILESONCOMMIT_TT 
                             "When enabled, the versioned items listed in the commit dialog are automatically selected"
     IDS_SETTINGS_DIFFBYDOUBLECLICK_TT 
@@ -4312,98 +4185,6 @@ STRINGTABLE
 BEGIN
     IDS_MERGEWIZARD_OPTIONS_RECORDONLY_TT 
                             "Marks the revisions as merged, without actually doing the merge"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_LOGCACHESTATS_PAIRTOKENS 
-                            "Internal value indicating compression quality"
-    IDS_SETTINGS_LOGCACHESTATS_TEXTSIZE "Size of all cached text information"
-    IDS_SETTINGS_LOGCACHESTATS_UNCOMPRESSEDSIZE 
-                            "Size of the cache if it were not compressed"
-    IDS_SETTINGS_LOGCACHESTATS_MAXREVISION 
-                            "Highest revision number in the cache"
-    IDS_SETTINGS_LOGCACHESTATS_REVISIONCOUNT "Number of cached revisions"
-    IDS_SETTINGS_LOGCACHESTATS_CHANGESTOTAL 
-                            "Total number of changes over all cached revisions"
-    IDS_SETTINGS_LOGCACHESTATS_CHANGEDREVISIONS 
-                            "Number of cached revisions that have a non-empty change list"
-    IDS_SETTINGS_LOGCACHESTATS_CHANGESMISSING 
-                            "Number of cached revisions whose change list is not cached yet"
-    IDS_SETTINGS_LOGCACHESTATS_MERGESTOTAL "Total number of merged revisions"
-    IDS_SETTINGS_LOGCACHESTATS_MERGESREVISIONS 
-                            "Number of cached merged revisions"
-    IDS_SETTINGS_LOGCACHESTATS_MERGESMISSING 
-                            "Number of merged revisions that are not cached yet"
-    IDS_SETTINGS_LOGCACHESTATS_USERREVPROPSTOTAL 
-                            "Total number of user revision properties"
-    IDS_SETTINGS_LOGCACHESTATS_USERREVPROPSREVISIONS 
-                            "Number of cached revisions that have user revision properties"
-    IDS_SETTINGS_LOGCACHESTATS_USERREVPROPSMISSING 
-                            "Number of cached revisions whose user revision properties are not cached yet"
-    IDS_SETTINGS_LOGCACHESTATS_RAM 
-                            "Amount of memory required to load the cache"
-    IDS_SETTINGS_LOGCACHESTATS_DISK "Size of the cache file on disk"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_LOGCACHESTATS_CONNECTION 
-                            "ask repository first if 'online' -\nwork entirely from cache if 'offline'"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_LOGCACHESTATS_LASTREAD "Last time the cache was accessed"
-    IDS_SETTINGS_LOGCACHESTATS_LASTWRITE 
-                            "Last time the cache content was changed"
-    IDS_SETTINGS_LOGCACHESTATS_LASTHEADUPDATE 
-                            "Last time the repository was asked for the HEAD revision number"
-    IDS_SETTINGS_LOGCACHESTATS_AUTHORS "Number of authors in the cache"
-    IDS_SETTINGS_LOGCACHESTATS_PATHELEMENTS 
-                            "Number of path elements. A path element is a folder or file name like 'foo.txt' or 'mybranch'."
-    IDS_SETTINGS_LOGCACHESTATS_PATHS 
-                            "Number of different paths shown in the log dialog, including parent paths"
-    IDS_SETTINGS_LOGCACHESTATS_SKIPRANGES 
-                            "'skip ranges' are used to mark revision ranges that have not been cached yet"
-    IDS_SETTINGS_LOGCACHESTATS_WORDTOKENS 
-                            "Number of different words used in log messages"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_LOGCACHE_ENABLE 
-                            "Enable log caching to speed up log and revision graph dialogs"
-    IDS_SETTINGS_LOGCACHE_GOOFFLINE 
-                            "When connecting to the repository server is not possible,\nTSVN can switch to using cached data only.\nSelect the default behaviour here."
-    IDS_SETTINGS_LOGCACHE_HEADAGE 
-                            "Saves expensive server roundtrips when set to longer than 0 seconds"
-    IDS_SETTINGS_LOGCACHE_CACHELIST 
-                            "List of repositories for which log information has been cached"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_LOGCACHE_DETAILS "Show statistics for the selected log cache"
-    IDS_SETTINGS_LOGCACHE_UPDATE 
-                            "Connect to the repository server and download missing log data"
-    IDS_SETTINGS_LOGCACHE_EXPORT 
-                            "Export the selected cache as a set of Comma Separated Value (CSV) files"
-    IDS_SETTINGS_LOGCACHE_DELETE "Remove the selected cache(s) from disk"
-    IDS_SETTINGS_LOGCACHE_AMBIGUOUSURL 
-                            "Allow different repositories to use the same URL, e.g. http://localhost/myrepos/"
-    IDS_SETTINGS_LOGCACHE_DROPAGE 
-                            "When a small log cache has not been used for the given\nnumber of days, it will be removed automatically."
-    IDS_SETTINGS_LOGCACHE_DROPMAXSIZE 
-                            "Unused log caches will only be removed if the respective\nfile is smaller than the given size in kBytes."
-    IDS_SETTINGS_LOGCACHE_FAILURELIMIT 
-                            "Number of times a log cache can fail to close properly\ndue to crashes etc. until it gets deleted automatically."
-    IDS_SETTINGS_LOGCACHE_AMBIGUOUSUUID 
-                            "Allow different repositories to use the same UUID, e.g. copied repositories"
-    IDS_SETTINGS_LOGCACHE_STDDEFAULT 
-                            "Revert to default settings. Recommended for unexperienced users."
-    IDS_SETTINGS_LOGCACHE_POWERDEFAULT 
-                            "Apply 'Power User' defaults. Those will provide a smoother experience.\nYou should know the meaning of all the settings above."
 END
 
 STRINGTABLE 
