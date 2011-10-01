@@ -84,9 +84,6 @@
 
 
 
-#include "LockCommand.h"
-
-
 #include "PropertiesCommand.h"
 #include "RebuildIconCacheCommand.h"
 #include "RelocateCommand.h"
@@ -101,7 +98,6 @@
 #include "ShowCompareCommand.h"
 
 #include "UnIgnoreCommand.h"
-#include "UnLockCommand.h"
 
 #include "UrlDiffCommand.h"
 #endif
@@ -129,7 +125,6 @@ typedef enum
 	cmdHelp,
 	cmdIgnore,
 	cmdImportPatch,
-	cmdLock,
 	cmdLog,
 	cmdMerge,
 	cmdPasteCopy,
@@ -154,7 +149,6 @@ typedef enum
 	cmdSwitch,
 	cmdTag,
 	cmdUnIgnore,
-	cmdUnlock,
 	cmdUpdateCheck,
 	cmdUrlDiff,
 	cmdStashSave,
@@ -201,7 +195,6 @@ static const struct CommandInfo
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
 	{	cmdImportPatch,		_T("importpatch")		},
-	{	cmdLock,			_T("lock")				},
 	{	cmdLog,				_T("log")				},
 	{	cmdMerge,			_T("merge")				},
 	{	cmdPasteCopy,		_T("pastecopy")			},
@@ -226,7 +219,6 @@ static const struct CommandInfo
 	{	cmdSwitch,			_T("switch")			},
 	{	cmdTag,				_T("tag")				},
 	{	cmdUnIgnore,		_T("unignore")			},
-	{	cmdUnlock,			_T("unlock")			},
 	{	cmdUpdateCheck,		_T("updatecheck")		},
 	{	cmdUrlDiff,			_T("urldiff")			},
 	{	cmdStashSave,		_T("stashsave")			},
@@ -381,8 +373,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 
 
-	case cmdLock:
-		return new LockCommand;
 	case cmdPrevDiff:
 		return new PrevDiffCommand;
 	case cmdProperties:
@@ -397,8 +387,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new ShowCompareCommand;
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
-	case cmdUnlock:
-		return new UnLockCommand;
 	case cmdUrlDiff:
 		return new UrlDiffCommand;
 #endif

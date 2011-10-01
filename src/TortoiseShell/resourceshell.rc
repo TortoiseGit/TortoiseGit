@@ -58,8 +58,6 @@ IDI_REPOBROWSE          ICON                    "..\\Resources\\menurepobrowse.i
 IDI_BLAME               ICON                    "..\\Resources\\menublame.ico"
 IDI_PATCH               ICON                    "..\\Resources\\menupatch.ico"
 IDI_CREATEPATCH         ICON                    "..\\Resources\\menudiff.ico"
-IDI_LOCK                ICON                    "..\\Resources\\menulock.ico"
-IDI_UNLOCK              ICON                    "..\\Resources\\menuunlock.ico"
 IDI_MENUFILE            ICON                    "..\\Resources\\tsvnmenufile.ico"
 IDI_MENUFOLDER          ICON                    "..\\Resources\\tsvnmenufolder.ico"
 IDI_MENULINK            ICON                    "..\\Resources\\tsvnmenulink.ico"
@@ -276,7 +274,6 @@ BEGIN
     IDS_STATUSMERGED        "merged"
     IDS_STATUSCONFLICTED    "conflicted"
     IDS_STATUSOBSTRUCTED    "obstructed"
-    IDS_PROPLOCKED          "locked"
     IDS_PROPPROPERTY        "Property"
     IDS_PROPVALUE           "Value"
     IDS_MENURENAME          "Re&name..."
@@ -384,16 +381,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENU_LOCK           "Get loc&k..."
-    IDS_MENU_UNLOCK         "Release loc&k"
-    IDS_MENUDESC_LOCK       "Locks a file for other users and makes it editable by you."
-    IDS_MENUDESC_UNLOCK     "Releases locks on files so other users can edit them again."
-    IDS_MENU_UNLOCKFORCE    "Break loc&k"
-    IDS_MENUDESC_UNLOCKFORCE 
-                            "Releases locks even if you're not the owner of the locks (breaks them)."
-    IDS_MENU_LOCKFORCE      "Steal loc&k"
-    IDS_COLTITLEOWNER       "Git Local lock owner"
-    IDS_COLDESCOWNER        "The user who owns the lock of the file"
     IDS_DROPCOPYRENAMEMENU  "Git Copy and rename versioned item here"
     IDS_COLTITLEAUTHOR      "Git Author"
     IDS_COLDESCAUTHOR       "The user who did the last commit"

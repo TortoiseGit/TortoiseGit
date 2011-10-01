@@ -70,7 +70,6 @@
 #define IDS_STATUSMERGED                160
 #define IDS_STATUSCONFLICTED            161
 #define IDS_STATUSOBSTRUCTED            162
-#define IDS_PROPLOCKED                  163
 #define IDS_PROPPROPERTY                164
 #define IDS_PROPVALUE                   165
 #define IDS_MENURENAME                  166
@@ -133,15 +132,6 @@
 #define IDS_ERR_PROPNOMULTILINE         232
 #define IDS_MENUUNIGNORE                237
 #define IDS_MENUDESCUNIGNORE            238
-#define IDS_MENU_LOCK                   240
-#define IDS_MENU_UNLOCK                 241
-#define IDS_MENUDESC_LOCK               242
-#define IDS_MENUDESC_UNLOCK             243
-#define IDS_MENU_UNLOCKFORCE            244
-#define IDS_MENUDESC_UNLOCKFORCE        245
-#define IDS_MENU_LOCKFORCE              246
-#define IDS_COLTITLEOWNER               247
-#define IDS_COLDESCOWNER                248
 #define IDS_DROPCOPYRENAMEMENU          250
 #define IDS_COLTITLEAUTHOR              251
 #define IDS_COLDESCAUTHOR               252
@@ -210,7 +200,6 @@
 #define IDS_MENUDESCDELETEIGNORE        354
 #define IDC_REVISION                    1001
 #define IDC_HEAD_HASH                   1001
-#define IDC_LOCKED                      1002
 #define IDC_LAST_HASH                   1002
 #define IDC_REPOURL                     1003
 #define IDC_SHELL_CURRENT_BRANCH        1003
@@ -241,8 +230,6 @@
 #define IDI_BLAME                       5146
 #define IDI_PATCH                       5147
 #define IDI_CREATEPATCH                 5150
-#define IDI_LOCK                        5152
-#define IDI_UNLOCK                      5153
 #define IDI_MENUFILE                    5154
 #define IDI_MENUFOLDER                  5155
 #define IDI_MENULINK                    5156
@@ -262,8 +249,6 @@
 #define IDI_PICK                        5174
 #define IDI_MENUSENDMAIL                5175
 #define IDI_COPYCLIP                    5176
-#define IDC_LOCKOWNER                   11019
-#define IDC_LOCKDATE                    11020
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022

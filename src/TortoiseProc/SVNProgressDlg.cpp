@@ -899,9 +899,6 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Export:
 		bSuccess = CmdExport(sWindowTitle, localoperation);
 		break;
-	case GitProgress_Lock:
-		bSuccess = CmdLock(sWindowTitle, localoperation);
-		break;
 	case GitProgress_Merge:
 		bSuccess = CmdMerge(sWindowTitle, localoperation);
 		break;
@@ -919,9 +916,6 @@ UINT CGitProgressDlg::ProgressThread()
 		break;
 	case GitProgress_Switch:
 		bSuccess = CmdSwitch(sWindowTitle, localoperation);
-		break;
-	case GitProgress_Unlock:
-		bSuccess = CmdUnlock(sWindowTitle, localoperation);
 		break;
 	case GitProgress_SendMail:
 		bSuccess = CmdSendMail(sWindowTitle, localoperation);
@@ -2049,54 +2043,6 @@ bool CGitProgressDlg::CmdExport(CString& /*sWindowTitle*/, bool& /*localoperatio
 	return true;
 }
 
-bool CGitProgressDlg::CmdLock(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_LOCK);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_LOCK_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_LOCK)));
-	if (!Lock(m_targetPathList, m_options & ProgOptLockForce, m_sMessage))
-	{
-		ReportSVNError();
-		return false;
-	}
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
-	if (m_bLockWarning)
-	{
-		// the lock failed, because the file was outdated.
-		// ask the user whether to update the file and try again
-		if (CMessageBox::Show(m_hWnd, IDS_WARN_LOCKOUTDATED, IDS_APPNAME, MB_ICONQUESTION|MB_YESNO)==IDYES)
-		{
-			ReportString(CString(MAKEINTRESOURCE(IDS_SVNPROGRESS_UPDATEANDRETRY)), CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
-			if (!Update(m_targetPathList, SVNRev::REV_HEAD, svn_depth_files, false, true))
-			{
-				ReportSVNError();
-				return false;
-			}
-			if (!Lock(m_targetPathList, m_options & ProgOptLockForce, m_sMessage))
-			{
-				ReportSVNError();
-				return false;
-			}
-		}
-	}
-	if (m_bLockExists)
-	{
-		// the locking failed because there already is a lock.
-		// if the locking-dialog is skipped in the settings, tell the
-		// user how to steal the lock anyway (i.e., how to get the lock
-		// dialog back without changing the settings)
-		if (!DWORD(CRegDWORD(_T("Software\\TortoiseGit\\ShowLockDlg"), TRUE)))
-		{
-			ReportString(CString(MAKEINTRESOURCE(IDS_SVNPROGRESS_LOCKHINT)), CString(MAKEINTRESOURCE(IDS_WARN_NOTE)));
-		}
-		return false;
-	}
-#endif
-	return true;
-}
-
 bool CGitProgressDlg::CmdMerge(CString& /*sWindowTitle*/, bool& /*localoperation*/)
 {
 #if 0
@@ -2394,23 +2340,6 @@ bool CGitProgressDlg::CmdSwitch(CString& /*sWindowTitle*/, bool& /*localoperatio
 	{
 		GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 	}
-#endif
-	return true;
-}
-
-bool CGitProgressDlg::CmdUnlock(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_UNLOCK);
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_UNLOCK_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_UNLOCK)));
-	if (!Unlock(m_targetPathList, m_options & ProgOptLockForce))
-	{
-		ReportSVNError();
-		return false;
-	}
-	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 #endif
 	return true;
 }

@@ -32,7 +32,6 @@ CSetMisc::CSetMisc()
 	, m_bCheckRepo(FALSE)
 	, m_dwMaxHistory(25)
 	, m_bCommitReopen(FALSE)
-	, m_bShowLockDlg(FALSE)
 	, m_bAutoSelect(TRUE)
 {
 	m_regUnversionedRecurse = CRegDWORD(_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
@@ -49,8 +48,6 @@ CSetMisc::CSetMisc()
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
 	m_regCommitReopen = CRegDWORD(_T("Software\\TortoiseGit\\CommitReopen"), FALSE);
 	m_bCommitReopen = (BOOL)(DWORD)m_regCommitReopen;
-	m_regShowLockDlg = CRegDWORD(_T("Software\\TortoiseGit\\ShowLockDlg"), TRUE);
-	m_bShowLockDlg = (BOOL)(DWORD)m_regShowLockDlg;
 	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
 }
@@ -71,7 +68,6 @@ void CSetMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MAXHISTORY, m_dwMaxHistory);
 	DDV_MinMaxUInt(pDX, m_dwMaxHistory, 1, 100);
 	DDX_Check(pDX, IDC_REOPENCOMMIT, m_bCommitReopen);
-	DDX_Check(pDX, IDC_SHOWLOCKDLG, m_bShowLockDlg);
 	DDX_Check(pDX, IDC_SELECTFILESONCOMMIT, m_bAutoSelect);
 }
 
@@ -84,7 +80,6 @@ BEGIN_MESSAGE_MAP(CSetMisc, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_SPELL, &CSetMisc::OnChanged)
 	ON_BN_CLICKED(IDC_REPOCHECK, &CSetMisc::OnChanged)
 	ON_BN_CLICKED(IDC_REOPENCOMMIT, &CSetMisc::OnChanged)
-	ON_BN_CLICKED(IDC_SHOWLOCKDLG, &CSetMisc::OnChanged)
 	ON_BN_CLICKED(IDC_SELECTFILESONCOMMIT, &CSetMisc::OnChanged)
 END_MESSAGE_MAP()
 
@@ -104,7 +99,6 @@ BOOL CSetMisc::OnApply()
 	Store (m_bCheckRepo, m_regCheckRepo);
 	Store (m_dwMaxHistory, m_regMaxHistory);
 	Store (m_bCommitReopen, m_regCommitReopen);
-	Store (m_bShowLockDlg, m_regShowLockDlg);
 	Store (m_bAutoSelect, m_regAutoSelect);
 
     SetModified(FALSE);
@@ -125,8 +119,7 @@ BOOL CSetMisc::OnInitDialog()
 	m_tooltips.AddTool(IDC_REPOCHECK, IDS_SETTINGS_REPOCHECK_TT);
 	m_tooltips.AddTool(IDC_MAXHISTORY, IDS_SETTINGS_MAXHISTORY_TT);
 	m_tooltips.AddTool(IDC_MAXHISTORYLABEL, IDS_SETTINGS_MAXHISTORY_TT);
-	m_tooltips.AddTool(IDC_SHOWLOCKDLG, IDS_SETTINGS_SHOWLOCKDLG_TT);
-	m_tooltips.AddTool(IDC_SELECTFILESONCOMMIT, IDS_SETTINGS_SELECTFILESONCOMMIT_TT);
+		m_tooltips.AddTool(IDC_SELECTFILESONCOMMIT, IDS_SETTINGS_SELECTFILESONCOMMIT_TT);
 	return TRUE;
 }
 

@@ -706,10 +706,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\LockBackground.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\logfilter.ico"
 				>
 			</File>
@@ -786,10 +782,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\menulock.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\menulog.ico"
 				>
 			</File>
@@ -831,10 +823,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\menuswitch.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\menuunlock.ico"
 				>
 			</File>
 			<File
@@ -1051,10 +1039,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\ttf_glyph.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\UnlockBackground.ico"
 				>
 			</File>
 			<File

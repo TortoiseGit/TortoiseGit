@@ -53,7 +53,6 @@
 #define IDD_OVERLAYICONS                184
 #define IDD_SETOVERLAYICONS             184
 #define IDI_SET_OVERLAYS                190
-#define IDD_LOCK                        191
 #define IDD_SETTINGSPROGSDIFF           192
 #define IDD_SETTINGSPROGSMERGE          193
 #define IDD_SETTINGSPROGSUNIDIFF        194
@@ -94,7 +93,6 @@
 #define IDD_EXPORT                      238
 #define IDD_DELUNVERSIONED              240
 #define IDD_INPUTLOGDLG                 241
-#define IDD_UNLOCK                      242
 #define IDD_CREATECHANGELIST            243
 #define IDI_REPO_FILE                   244
 #define IDD_SETTINGSTBLAME              244
@@ -111,10 +109,8 @@
 #define IDI_RESOLVE_BKG                 256
 #define IDI_REVERT_BKG                  257
 #define IDI_COMMIT_BKG                  258
-#define IDI_LOCK_BKG                    259
 #define IDI_CFM_BKG                     260
 #define IDI_DELUNVERSIONED_BKG          261
-#define IDI_UNLOCK_BKG                  262
 #define IDR_DOWNLOAD                    263
 #define IDI_ICON2                       264
 #define IDI_CANCELNORMAL                264
@@ -344,7 +340,6 @@
 #define IDC_CHIST                       1125
 #define IDC_USETEXTVIEWER               1126
 #define IDC_KEEPLISTS                   1126
-#define IDC_SHOWLOCKDLG                 1126
 #define IDC_SHOWEXCLUDEDASNORMAL        1126
 #define IDC_LOG_FIRSTPARENT             1126
 #define IDC_IGNOREEOL                   1126
@@ -444,7 +439,6 @@
 #define IDC_TOLABEL                     1201
 #define IDS_SSL_CLIENTCERTIFICATEFILENAME 1202
 #define IDS_SSL_PEM                     1203
-#define IDC_KEEPLOCK                    1203
 #define IDC_WHOLE_PROJECT               1203
 #define IDS_SSL_PKCS12                  1204
 #define IDS_IMPORT_DEFAULTMSG           1205
@@ -453,9 +447,6 @@
 #define IDC_SHOWWHOLEPROJECT            1208
 #define IDC_SHOWUNMODIFIED              1209
 #define IDS_LOG_REVERT_CONFIRM          1211
-#define IDC_STEALLOCKS                  1211
-#define IDC_LOCKMESSAGE                 1212
-#define IDC_LOCKTITLELABEL              1213
 #define IDC_OLDAPILOGS                  1214
 #define IDC_CHECKNEWERBUTTON            1215
 #define IDS_LOG_POPUP_COPY              1216
@@ -636,7 +627,6 @@
 #define IDC_LOADPROP                    1309
 #define IDS_ERR_NOTHINGTOREVERT         1310
 #define IDC_ADDPROPS                    1310
-#define IDC_LOCKWARNING                 1311
 #define IDS_ERR_NOCOMMONCOPYFROM        1311
 #define IDS_ERR_GDIPLUS_MISSING         1312
 #define IDC_SPLITTER                    1312
@@ -652,7 +642,6 @@
 #define IDS_ERR_NOHOOKPATHSPECIFIED     1318
 #define IDS_ERR_NOHOOKCOMMANDPECIFIED   1319
 #define IDS_ERR_HOOKFAILED              1320
-#define IDS_ERR_NOTHINGTOUNLOCK         1321
 #define IDS_ERR_INVALIDREVRANGE         1322
 #define IDC_HOOKPATH                    1323
 #define IDS_ERR_NOPREVREVISION          1323
@@ -673,7 +662,7 @@
 #define IDC_HOOKWCPATHLABEL             1335
 #define IDC_HOOKCMLABEL                 1336
 #define IDC_LOGINFO                     1337
-#define IDC_GETLOCKTOP                  1338
+
 #define IDC_EOLCOMBO                    1341
 #define IDC_EOLLABEL                    1342
 #define IDC_ITEMLIST                    1352
@@ -686,7 +675,6 @@
 #define IDC_CHECKOUTURL                 1363
 #define IDC_HOOKCOPYBUTTON              1367
 #define IDC_INFOLABEL                   1368
-#define IDC_UNLOCKLIST                  1369
 #define IDC_LIST1                       1372
 #define IDC_BUGTRAQLIST                 1372
 #define IDC_LIST_PATCH                  1372
@@ -756,8 +744,6 @@
 #define IDC_ORLABEL                     1406
 #define IDS_WARN_NOVALIDPATH            1407
 #define IDC_ORLABEL2                    1407
-#define IDS_WARN_LOCKOUTDATED           1408
-#define IDS_WARN_SVNNEEDSLOCK           1409
 #define IDC_PROXYLABEL1                 1409
 #define IDS_WARN_RELOCATEREALLYTITLE    1410
 #define IDC_PROXYLABEL2                 1410
@@ -1242,7 +1228,6 @@
 #define IDS_SETTINGS_CHECKOUTPATH_TT    3135
 #define IDS_SETTINGS_CHECKOUTURL_TT     3136
 #define IDS_SETTINGS_SORTNUMERICAL_TT   3137
-#define IDS_SETTINGS_SHOWLOCKDLG_TT     3137
 #define IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT 3138
 #define IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT 3139
 #define IDS_SETTINGS_SELECTFILESONCOMMIT_TT 3141
@@ -1258,7 +1243,6 @@
 #define IDS_SETTINGS_HOOKS_COMMANDLINECOL 3154
 #define IDS_SETTINGS_HOOKS_WAITCOL      3155
 #define IDS_SETTINGS_HOOKS_SHOWCOL      3156
-#define IDS_SETTINGS_GETLOCKTOP_TT      3157
 #define IDS_SETTINGS_SHOWACTIONLOG_TT   3158
 #define IDS_SETTINGS_CLEARACTIONLOG_TT  3159
 #define IDS_SETTINGS_MAXACTIONLOGLINES_TT 3160
@@ -1283,12 +1267,9 @@
 #define IDS_STATUSLIST_COLREMOTEPROPSTATUS 3306
 #define IDS_STATUSLIST_COLURL           3307
 #define IDS_STATUSLIST_COLEXT           3308
-#define IDS_STATUSLIST_COLLOCK          3309
-#define IDS_STATUSLIST_COLLOCKCOMMENT   3310
 #define IDS_STATUSLIST_COLAUTHOR        3311
 #define IDS_STATUSLIST_COLDATE          3312
 #define IDS_STATUSLIST_COLREVISION      3313
-#define IDS_STATUSLIST_COLSVNLOCK       3314
 #define IDS_STATUSLIST_COLCOPYFROM      3315
 #define IDS_STATUSLIST_COLMODIFICATIONDATE 3316
 #define IDS_STATUSLIST_COLFILENAME      3317
@@ -1310,8 +1291,6 @@
 #define IDS_STATUSLIST_CONTEXT_ADDTOCS  3340
 #define IDS_STATUSLIST_CONTEXT_MOVETOCS 3340
 #define IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE 3341
-#define IDS_STATUSLIST_LOCKBROKEN       3400
-#define IDS_STATUSLIST_LOCKSTOLEN       3401
 #define IDS_STATUSLIST_NESTED           3402
 #define IDS_STATUSLIST_BUSYMSG          3403
 #define IDS_STATUSLIST_EMPTYMSG         3404
@@ -1331,8 +1310,6 @@
 #define IDS_PROGRS_RESPECTANCESTRY      3508
 #define IDS_PROGRS_INFOGETTINGINFO      3511
 #define IDS_PROGRS_TITLE_RENAME         3530
-#define IDS_PROGRS_TITLE_LOCK           3531
-#define IDS_PROGRS_TITLE_UNLOCK         3532
 #define IDS_PROGRS_TITLE_MERGEREINTEGRATE 3533
 #define IDS_PROGRS_CLOSE_MANUAL         3540
 #define IDS_PROGRS_CLOSE_NOERROR        3541
@@ -1355,11 +1332,9 @@
 #define IDS_PROGRS_CMD_ADD              3657
 #define IDS_PROGRS_CMD_COMMIT           3658
 #define IDS_PROGRS_CMD_EXPORT           3659
-#define IDS_PROGRS_CMD_LOCK             3660
 #define IDS_PROGRS_CMD_RENAME           3661
 #define IDS_PROGRS_CMD_RESOLVE          3662
 #define IDS_PROGRS_CMD_REVERT           3663
-#define IDS_PROGRS_CMD_UNLOCK           3664
 #define IDS_PROGRS_CMD_MERGEREINTEGRATE 3666
 #define IDS_SSL_SAVE_CERTPATH           3700
 #define IDS_REPOSTATUS_HEADREV          3800
@@ -1389,18 +1364,12 @@
 #define IDS_SVNERR_CHECKPATHORURL       4000
 #define IDS_SVNERR_RUNCLEANUP           4001
 #define IDS_SVNERR_CLEANUPORFRESHCHECKOUT 4003
-#define IDS_SVNERR_UNLOCKFAILED         4004
-#define IDS_SVNERR_UNLOCKFAILEDNOLOCK   4005
 #define IDS_CLIPBOARD_PROGRESS_DEST     4100
 #define IDS_SVNACTION_SKIPMISSING       4200
 #define IDS_SVNACTION_ADDING            4201
 #define IDS_SVNACTION_DELETING          4202
 #define IDS_SVNACTION_MERGED            4203
 #define IDS_SVNACTION_CONFLICTED        4204
-#define IDS_SVNACTION_UNLOCKED          4205
-#define IDS_SVNACTION_LOCKEDBY          4206
-#define IDS_SVNACTION_FAILEDLOCK        4207
-#define IDS_SVNACTION_FAILEDUNLOCK      4208
 #define IDS_SVNACTION_EXISTS            4209
 #define IDS_SVNACTION_CHANGELISTSET     4210
 #define IDS_SVNACTION_CHANGELISTCLEAR   4211
@@ -1432,7 +1401,6 @@
 #define IDS_SVNPROGRESS_EXPORTING       4530
 #define IDS_SVNPROGRESS_EXPORTINGTO     4531
 #define IDS_SVNPROGRESS_EXPORTINGWAIT   4532
-#define IDS_SVNPROGRESS_LOCKHINT        4540
 #define IDS_SVNPROGRESS_MERGELOGMSGONE  4560
 #define IDS_SVNPROGRESS_MERGELOGRANGE   4560
 #define IDS_SVNPROGRESS_MERGELOGMSGMULTIPLE 4561
@@ -1455,9 +1423,7 @@
 #define IDD_CLEAN                       4572
 #define IDC_REMOTE_STATUS               4573
 #define IDD_SETTINGSEXTMENU             4573
-#define IDS_LOCK_MESSAGEHINT            5000
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
-#define IDS_LOCK_STEALCHECK             5001
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDS_FILEDIFF_FILE               5100
 #define IDS_FILEDIFF_COMMENT            5101
@@ -1518,7 +1484,6 @@
 #define IDS_PROP_TT_EOLSTYLE            9203
 #define IDS_PROP_TT_MIMETYPE            9204
 #define IDS_PROP_TT_EXTERNALS           9205
-#define IDS_PROP_TT_NEEDSLOCK           9206
 #define IDS_PROP_TT_MERGEINFO           9207
 #define IDS_PROP_TT_BQLABEL             9220
 #define IDS_PROP_TT_BQMESSAGE           9221
@@ -1531,7 +1496,6 @@
 #define IDS_PROP_TT_TSVNLOGWIDTHMARKER  9241
 #define IDS_PROP_TT_TSVNLOGMINSIZE      9242
 #define IDS_PROP_TT_TSVNLOGFILELISTENGLISH 9243
-#define IDS_PROP_TT_TSVNLOCKMSGMINSIZE  9244
 #define IDS_PROP_TT_TSVNAUTOPROPS       9245
 #define IDS_PROP_TT_TSVNPROJECTLANGUAGE 9246
 #define IDS_PROP_TT_TSVNLOGSUMMARY      9247
