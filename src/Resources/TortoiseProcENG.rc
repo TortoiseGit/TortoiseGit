@@ -103,7 +103,6 @@ IDI_ACTIONFETCHING      ICON                    "..\\resources\\actionfetching.i
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisesvn_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
-IDB_MERGEWIZARDTITLE    BITMAP                  "MergeWizardTitle.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1012,80 +1011,6 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,245,129,64,14
 END
 
-IDD_MERGEWIZARD_START DIALOGEX 0, 0, 322, 191
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Merge"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "Merge type",IDC_STATIC,7,7,308,177
-    CONTROL         "Merge a range of revisions",IDC_MERGE_REVRANGE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,21,289,10
-    EDITTEXT        IDC_MERGERANGELABEL,28,32,278,38,ES_MULTILINE | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
-    CONTROL         "Reintegrate a branch",IDC_MERGE_REINTEGRATE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,17,73,289,10
-    EDITTEXT        IDC_MERGEREINTEGRATELABEL,28,84,278,36,ES_MULTILINE | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
-    CONTROL         "Merge two different trees",IDC_MERGE_TREE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,17,122,289,10
-    EDITTEXT        IDC_TREELABEL,28,136,278,40,ES_MULTILINE | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
-END
-
-IDD_MERGEWIZARD_TREE DIALOGEX 0, 0, 322, 191
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Merge"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "From: (start URL and revision of the range to merge)",IDC_STATIC,7,7,308,61
-    CONTROL         "",IDC_URLCOMBO,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,13,17,269,100
-    PUSHBUTTON      "...",IDC_BROWSE,287,17,19,14
-    CONTROL         "&HEAD Revision",IDC_REVISION_HEAD1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,36,89,10
-    CONTROL         "&Revision",IDC_REVISION_N1,"Button",BS_AUTORADIOBUTTON,13,49,82,10
-    EDITTEXT        IDC_REVISION_START,102,47,48,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Show &log",IDC_FINDBRANCHSTART,155,47,67,14
-    GROUPBOX        "To: (end URL and revision of the range to merge)",IDC_STATIC,7,71,308,74
-    CONTROL         "",IDC_URLCOMBO2,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,13,85,269,100
-    PUSHBUTTON      "...",IDC_BROWSE2,287,84,19,14
-    CONTROL         "&HEAD Revision",IDC_REVISION_HEAD,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,103,89,10
-    CONTROL         "&Revision",IDC_REVISION_N,"Button",BS_AUTORADIOBUTTON,13,116,81,10
-    EDITTEXT        IDC_REVISION_END,102,114,48,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Show &log",IDC_FINDBRANCHEND,155,114,67,14
-    GROUPBOX        "Working Copy",IDC_STATIC,7,149,308,35
-    EDITTEXT        IDC_WCEDIT,13,162,220,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    PUSHBUTTON      "Show &log",IDC_SHOWLOGWC,239,162,67,14
-END
-
-IDD_MERGEWIZARD_REVRANGE DIALOGEX 0, 0, 322, 191
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Merge"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "URL to merge from",IDC_STATIC,7,7,308,33
-    CONTROL         "",IDC_URLCOMBO,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,13,18,273,141
-    PUSHBUTTON      "...",IDC_BROWSE,289,17,19,14
-    GROUPBOX        "Revision range to merge",IDC_STATIC,7,44,308,102
-    EDITTEXT        IDC_REVISION_RANGE,13,56,219,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Show &log",IDC_SELLOG,241,56,67,14
-    CONTROL         "Reverse merge",IDC_REVERSEMERGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,74,295,10
-    EDITTEXT        IDC_REVRANGELABEL,13,85,295,55,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
-    GROUPBOX        "Working Copy",IDC_STATIC,7,149,308,35
-    EDITTEXT        IDC_WCEDIT,13,162,220,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    PUSHBUTTON      "Show &log",IDC_SHOWLOGWC,241,162,67,14
-END
-
-IDD_MERGEWIZARD_OPTIONS DIALOGEX 0, 0, 322, 191
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Merge"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "Merge options",IDC_STATIC,7,7,308,97
-    LTEXT           "Merge depth:",IDC_STATIC,14,21,147,8
-    COMBOBOX        IDC_DEPTH,183,18,121,70,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Ignore ancestry",IDC_IGNOREANCESTRY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,37,290,10
-    CONTROL         "Ignore line endings",IDC_IGNOREEOL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,50,290,10
-    CONTROL         "Compare whitespaces",IDC_COMPAREWHITESPACES,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,64,290,10
-    CONTROL         "Ignore whitespace changes",IDC_IGNOREWHITESPACECHANGES,
-                    "Button",BS_AUTORADIOBUTTON,14,76,290,10
-    CONTROL         "Ignore all whitespaces",IDC_IGNOREALLWHITESPACES,"Button",BS_AUTORADIOBUTTON,14,88,290,10
-    PUSHBUTTON      "&Test merge",IDC_DRYRUN,254,143,50,14
-    CONTROL         "Only record the merge",IDC_RECORDONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,111,290,10
-END
-
 IDD_CREATECHANGELIST DIALOGEX 0, 0, 186, 66
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Create Changelist"
@@ -1095,20 +1020,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,129,45,50,14
     LTEXT           "Enter a name for the changelist:",IDC_STATIC,7,7,172,8
     EDITTEXT        IDC_NAME,7,20,172,14,ES_AUTOHSCROLL
-END
-
-IDD_MERGEWIZARD_REINTEGRATE DIALOGEX 0, 0, 322, 191
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Merge"
-FONT 8, "MS Shell Dlg", 400, 0, 0x0
-BEGIN
-    GROUPBOX        "From URL:",IDC_STATIC,7,7,308,61
-    CONTROL         "",IDC_URLCOMBO,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,13,17,269,100
-    PUSHBUTTON      "...",IDC_BROWSE,287,17,19,14
-    PUSHBUTTON      "Show &log",IDC_SHOWMERGELOG,239,41,67,14
-    GROUPBOX        "Working Copy",IDC_STATIC,7,79,308,35
-    EDITTEXT        IDC_WCEDIT,13,92,220,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    PUSHBUTTON      "Show &log",IDC_SHOWLOGWC,241,92,67,14
 END
 
 IDD_SETTINGSBUGTRAQ DIALOGEX 0, 0, 300, 217
@@ -2308,64 +2219,12 @@ BEGIN
         HORZGUIDE, 113
     END
 
-    IDD_MERGEWIZARD_START, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 315
-        VERTGUIDE, 17
-        VERTGUIDE, 28
-        VERTGUIDE, 306
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 184
-        HORZGUIDE, 176
-    END
-
-    IDD_MERGEWIZARD_TREE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 315
-        VERTGUIDE, 13
-        VERTGUIDE, 282
-        VERTGUIDE, 306
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 184
-    END
-
-    IDD_MERGEWIZARD_REVRANGE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 315
-        VERTGUIDE, 13
-        VERTGUIDE, 308
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 184
-    END
-
-    IDD_MERGEWIZARD_OPTIONS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 315
-        VERTGUIDE, 14
-        VERTGUIDE, 304
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 184
-    END
-
     IDD_CREATECHANGELIST, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 179
         TOPMARGIN, 7
         BOTTOMMARGIN, 59
-    END
-
-    IDD_MERGEWIZARD_REINTEGRATE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 315
-        VERTGUIDE, 306
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 184
     END
 
     IDD_SETTINGSBUGTRAQ, DIALOG
@@ -3910,30 +3769,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MERGEWIZARD_REVRANGELABEL 
-                            "This method covers the case when you have made one or more revisions to a branch (or to the trunk) and you want to port those changes across to a different branch."
-    IDS_MERGEWIZARD_TREELABEL 
-                            "This method covers the case when you want to merge the differences of two different branches into your working copy."
-    IDS_MERGEWIZARD_REVRANGESTRING 
-                            "Use the log dialog to select the revisions you want to merge, or enter the revisions to merge, separated by commas. A revision range can be specified by a dash.\r\n\r\nExample: 4-7,9,11,15-HEAD\r\n\r\nTo merge all revisions, leave the box empty."
-    IDS_MERGEWIZARD_REINTEGRATELABEL 
-                            "This method covers the case when you have made a feature branch as discussed in the Subversion book. Use this to merge all changes of a branch back to trunk."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_MERGEWIZARD_STARTTITLE "Merge type"
-    IDS_MERGEWIZARD_STARTSUBTITLE "Select the type of merge"
-    IDS_MERGEWIZARD_TREETITLE "Tree merge"
-    IDS_MERGEWIZARD_TREESUBTITLE "Select the URLs for the tree merge"
-    IDS_MERGEWIZARD_REVRANGETITLE "Merge revision range"
-    IDS_MERGEWIZARD_REVRANGESUBTITLE "Select the revisions to merge"
-    IDS_MERGEWIZARD_OPTIONSTITLE "Merge options"
-    IDS_MERGEWIZARD_OPTIONSSUBTITLE "Select the merge options"
-END
-
-STRINGTABLE 
-BEGIN
     IDS_PROPPAGE_BACK       "< &Back"
     IDS_PROPPAGE_NEXT       "&Next >"
     IDS_PROPPAGE_CANCEL     "Cancel"
@@ -3943,12 +3778,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_PROGRS_CMD_MERGEREINTEGRATE "Reintegrate merge %s into %s"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_MERGEWIZARD_OPTIONS_RECORDONLY_TT 
-                            "Marks the revisions as merged, without actually doing the merge"
 END
 
 STRINGTABLE 
