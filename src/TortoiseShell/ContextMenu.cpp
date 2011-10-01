@@ -1618,14 +1618,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuRelocate:
-				svnCmd += _T("relocate /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuGitSVNRebase:
 				svnCmd += _T("svnrebase /path:\"");
 				if (files_.size() > 0)

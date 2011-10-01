@@ -94,8 +94,6 @@
 #define IDS_COLDESCSHORTURL             185
 #define IDS_MENUCONFLICT                186
 #define IDS_MENUDESCCONFLICT            187
-#define IDS_MENURELOCATE                188
-#define IDS_MENUDESCRELOCATE            189
 #define IDS_MENUHELP                    190
 #define IDS_MENUDESCHELP                191
 #define IDS_MENUSHOWCHANGED             192

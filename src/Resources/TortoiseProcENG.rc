@@ -293,21 +293,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,184,33,50,14
 END
 
-IDD_RELOCATE DIALOGEX 0, 0, 300, 89
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Relocate"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_TOURL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,7,44,268,100
-    PUSHBUTTON      "...",IDC_BROWSE,279,43,14,14
-    DEFPUSHBUTTON   "OK",IDOK,129,68,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,187,68,50,14
-    PUSHBUTTON      "Help",IDHELP,243,68,50,14
-    LTEXT           "&From URL:",IDC_STATIC,7,7,120,8
-    EDITTEXT        IDC_FROMURL,7,17,268,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "&To URL:",IDC_STATIC,7,31,120,8
-END
-
 IDD_RENAME DIALOGEX 0, 0, 234, 55
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Rename - TortoiseGit"
@@ -1902,17 +1887,6 @@ BEGIN
         BOTTOMMARGIN, 47
     END
 
-    IDD_RELOCATE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 293
-        VERTGUIDE, 236
-        VERTGUIDE, 275
-        TOPMARGIN, 6
-        BOTTOMMARGIN, 82
-        HORZGUIDE, 56
-    END
-
     IDD_RENAME, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -2931,7 +2905,6 @@ BEGIN
     IDS_PROC_OVERWRITE_CONFIRM 
                             "The file\n%s\nalready exists! Do you want to overwrite it?"
     IDS_PROC_REPOCREATEFINISHED "The repository was successfully created."
-    IDS_PROC_RELOCATEFINISHED "Working copy relocated to\n%s"
     IDS_PROC_MOVING         "Moving..."
     IDS_PROC_RELOCATING     "Relocating..."
     IDS_MSGBOX_DONOTSHOW    "Don't show this message again"
@@ -2988,7 +2961,6 @@ BEGIN
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
     IDS_WARN_SHAREFILEACCESS 
                             "You are trying to access a repository via file:// on\na shared network drive.\nThis could lead to severe repository corruption!\nDo you really want to do that?"
-    IDS_WARN_RELOCATEREALLY "It seems you are trying to <b>relocate</b> your working copy to a different path inside the same repository.\n\nFrom:\t%s\nTo:\t\t%s\n\nA relocate is only needed if the path <b>to</b> a repository has changed.\nChanging to a different path <b>inside</b> a repository is done by a switch operation.\n\nImproper use of relocate <b>will corrupt your working copy!</b>\nIf you are not sure what to do, please refer to our docs on <i>relocate</i>.\nDo you really want to relocate?"
     IDS_WARN_FOLDERNOTEMPTY "The target folder \n%s\nis not empty!\nAre you sure you want to checkout/export into that folder?"
     IDS_WARN_WARNING        "Warning"
     IDS_WARN_NOTE           "Notice"
@@ -3621,7 +3593,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_WARN_RELOCATEREALLYTITLE "Relocate Warning"
     IDS_WARN_COPYHEADWITHLOCALMODS 
                             "Your working copy has local modifications.\nIf you branch/tag from the HEAD revision, your local changes won't\nshow up in the branch/tag!"
 END

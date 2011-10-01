@@ -83,7 +83,6 @@
 
 #include "PropertiesCommand.h"
 #include "RebuildIconCacheCommand.h"
-#include "RelocateCommand.h"
 #include "RemoveCommand.h"
 
 #include "RepositoryBrowserCommand.h"
@@ -130,7 +129,6 @@ typedef enum
 	cmdPush,
 	cmdRTFM,
 	cmdRebuildIconCache,
-	cmdRelocate,
 	cmdRemove,
 	cmdRebase,
 	cmdRename,
@@ -198,7 +196,6 @@ static const struct CommandInfo
 	{	cmdPush,			_T("push")				},
 	{	cmdRTFM,			_T("rtfm")				},
 	{	cmdRebuildIconCache,_T("rebuildiconcache")	},
-	{	cmdRelocate,		_T("relocate")			},
 	{	cmdRemove,			_T("remove")			},
 	{	cmdRebase,			_T("rebase")			},
 	{	cmdRename,			_T("rename")			},
@@ -371,8 +368,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RTFMCommand;
 	case cmdRebuildIconCache:
 		return new RebuildIconCacheCommand;
-	case cmdRelocate:
-		return new RelocateCommand;
 	case cmdShowCompare:
 		return new ShowCompareCommand;
 	case cmdUnIgnore:

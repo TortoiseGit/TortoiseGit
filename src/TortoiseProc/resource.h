@@ -29,7 +29,6 @@
 #define IDR_MOVEANI                     149
 #define IDD_RENAME                      151
 #define IDD_ADD                         155
-#define IDD_RELOCATE                    157
 #define IDD_CHANGEDFILES                158
 #define IDD_SIMPLEPROMPT                160
 #define IDD_INPUTDLG                    161
@@ -204,7 +203,6 @@
 #define IDS_LOG_FILE_LINE_Del           1014
 #define IDS_LOG_FILE_LINE_DEL           1014
 #define IDC_LOGMSG                      1015
-#define IDC_TOURL                       1015
 #define IDC_EXTDIFF                     1015
 #define IDS_ERR_TGITBLAME               1015
 #define IDC_EXTMERGE                    1016
@@ -539,7 +537,6 @@
 #define IDS_PROC_OVERWRITE_CONFIRM      1266
 #define IDS_PROC_REPOCREATEFINISHED     1267
 #define IDC_IGNOREANCESTRY              1267
-#define IDS_PROC_RELOCATEFINISHED       1268
 #define IDC_MAXHISTORY                  1268
 #define IDS_PROC_MOVING                 1269
 #define IDC_CACHEDEFAULT                1269
@@ -728,7 +725,6 @@
 #define IDS_WARN_FOLDERNOTEXIST         1400
 #define IDC_RESOLVED                    1400
 #define IDS_WARN_SHAREFILEACCESS        1401
-#define IDS_WARN_RELOCATEREALLY         1402
 #define IDC_CHOOSELABEL                 1402
 #define IDC_RESOLVELABEL                1403
 #define IDS_WARN_FOLDERNOTEMPTY         1404
@@ -740,7 +736,6 @@
 #define IDS_WARN_NOVALIDPATH            1407
 #define IDC_ORLABEL2                    1407
 #define IDC_PROXYLABEL1                 1409
-#define IDS_WARN_RELOCATEREALLYTITLE    1410
 #define IDC_PROXYLABEL2                 1410
 #define IDS_WARN_COPYHEADWITHLOCALMODS  1411
 #define IDC_PROXYLABEL3                 1411

@@ -39,7 +39,6 @@ enum GitCommands
 		ShellMenuDropExportExtended,
 		ShellMenuLog,
 		ShellMenuConflictEditor,
-		ShellMenuRelocate,
 		ShellMenuHelp,
 		ShellMenuShowChanged,
 		ShellMenuIgnoreSub,

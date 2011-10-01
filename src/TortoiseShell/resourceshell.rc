@@ -317,8 +317,6 @@ BEGIN
     IDS_COLDESCSHORTURL     "Short URL of Git items"
     IDS_MENUCONFLICT        "&Edit conflicts"
     IDS_MENUDESCCONFLICT    "Launches the external diff / merge program to solve the conflicts"
-    IDS_MENURELOCATE        "Relo&cate..."
-    IDS_MENUDESCRELOCATE    "Use this if the URL of the repository has changed"
     IDS_MENUHELP            "&Help"
     IDS_MENUDESCHELP        "Read the 'Daily Use Guide' before you are stuck..."
 END
