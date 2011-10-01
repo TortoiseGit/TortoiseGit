@@ -1318,7 +1318,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += tempfile;
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
-				if(itemStatesFolder&ITEMIS_SUBMODULE)
+				if(itemStatesFolder&ITEMIS_SUBMODULECONTAINER)
 				{
 					svnCmd += _T(" /bkpath:\"");
 					svnCmd += folder_;
@@ -1331,7 +1331,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += tempfile;
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
-				if(itemStatesFolder&ITEMIS_SUBMODULE)
+				if(itemStatesFolder&ITEMIS_SUBMODULECONTAINER)
 				{
 					svnCmd += _T(" /bkpath:\"");
 					svnCmd += folder_;
@@ -2316,7 +2316,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	bool bShowIgnoreMenu = false;
 	TCHAR maskbuf[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
 	TCHAR ignorepath[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
-	if (files_.size() == 0 || (files_.size() == 1 && folder_.length() != 0 && g_GitAdminDir.GetGitTopDir(folder_.c_str()) == folder_.c_str()))
+	if (files_.size() == 0)
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
 

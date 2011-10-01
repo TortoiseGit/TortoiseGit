@@ -38,23 +38,25 @@ using namespace std;
 extern CGit g_Git;
 
 CTGitPath::CTGitPath(void) :
-	m_bDirectoryKnown(false),
-	m_bIsDirectory(false),
-	m_bIsURL(false),
-	m_bURLKnown(false),
-	m_bHasAdminDirKnown(false),
-	m_bHasAdminDir(false),
-	m_bIsValidOnWindowsKnown(false),
-	m_bIsReadOnly(false),
-	m_bIsAdminDirKnown(false),
-	m_bIsAdminDir(false),
-	m_bExists(false),
-	m_bExistsKnown(false),
-	m_bLastWriteTimeKnown(0),
-	m_lastWriteTime(0),
-	m_customData(NULL),
-	m_bIsSpecialDirectoryKnown(false),
-	m_bIsSpecialDirectory(false)
+	m_bDirectoryKnown(false)
+	, m_bIsDirectory(false)
+	, m_bIsURL(false)
+	, m_bURLKnown(false)
+	, m_bHasAdminDirKnown(false)
+	, m_bHasAdminDir(false)
+	, m_bIsValidOnWindowsKnown(false)
+	, m_bIsReadOnly(false)
+	, m_bIsAdminDirKnown(false)
+	, m_bIsAdminDir(false)
+	, m_bExists(false)
+	, m_bExistsKnown(false)
+	, m_bLastWriteTimeKnown(0)
+	, m_lastWriteTime(0)
+	, m_customData(NULL)
+	, m_bIsSpecialDirectoryKnown(false)
+	, m_bIsSpecialDirectory(false)
+	, m_bIsWCRootKnown(false)
+	, m_bIsWCRoot(false)
 {
 	m_Action=0;
 	m_ParentNo=0;
@@ -65,23 +67,25 @@ CTGitPath::~CTGitPath(void)
 }
 // Create a TGitPath object from an unknown path type (same as using SetFromUnknown)
 CTGitPath::CTGitPath(const CString& sUnknownPath) :
-	m_bDirectoryKnown(false),
-	m_bIsDirectory(false),
-	m_bIsURL(false),
-	m_bURLKnown(false),
-	m_bHasAdminDirKnown(false),
-	m_bHasAdminDir(false),
-	m_bIsValidOnWindowsKnown(false),
-	m_bIsReadOnly(false),
-	m_bIsAdminDirKnown(false),
-	m_bIsAdminDir(false),
-	m_bExists(false),
-	m_bExistsKnown(false),
-	m_bLastWriteTimeKnown(0),
-	m_lastWriteTime(0),
-	m_customData(NULL),
-	m_bIsSpecialDirectoryKnown(false),
-	m_bIsSpecialDirectory(false)
+	  m_bDirectoryKnown(false)
+	, m_bIsDirectory(false)
+	, m_bIsURL(false)
+	, m_bURLKnown(false)
+	, m_bHasAdminDirKnown(false)
+	, m_bHasAdminDir(false)
+	, m_bIsValidOnWindowsKnown(false)
+	, m_bIsReadOnly(false)
+	, m_bIsAdminDirKnown(false)
+	, m_bIsAdminDir(false)
+	, m_bExists(false)
+	, m_bExistsKnown(false)
+	, m_bLastWriteTimeKnown(0)
+	, m_lastWriteTime(0)
+	, m_customData(NULL)
+	, m_bIsSpecialDirectoryKnown(false)
+	, m_bIsSpecialDirectory(false)
+	, m_bIsWCRootKnown(false)
+	, m_bIsWCRoot(false)
 {
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
@@ -755,6 +759,28 @@ void CTGitPath::AppendPathString(const CString& sAppend)
 	SetFromWin(strCopy);
 }
 
+bool CTGitPath::IsWCRoot() const
+{
+	if (m_bIsWCRootKnown)
+		return m_bIsWCRoot;
+
+	m_bIsWCRootKnown = true;
+	m_bIsWCRoot = false;
+
+	CString topDirectory;
+	if (!IsDirectory() || !HasAdminDir(&topDirectory))
+	{
+		return m_bIsWCRoot;
+	}
+
+	if (IsEquivalentToWithoutCase(topDirectory))
+	{
+		m_bIsWCRoot = true;
+	}
+
+	return m_bIsWCRoot;
+}
+
 bool CTGitPath::HasAdminDir() const
 {
 	if (m_bHasAdminDirKnown)
@@ -780,7 +806,15 @@ int CTGitPath::GetAdminDirMask() const
 		return status;
 	}
 
-	status |= ITEMIS_INSVN|ITEMIS_FOLDERINSVN|ITEMIS_INVERSIONEDFOLDER;
+	// ITEMIS_INSVN will be revoked if necessary in TortoiseShell/ContextMenu.cpp
+	status |= ITEMIS_INSVN|ITEMIS_INVERSIONEDFOLDER;
+
+	if (IsDirectory())
+	{
+		status |= ITEMIS_FOLDERINSVN;
+		if (IsWCRoot())
+			status |= ITEMIS_WCROOT;
+	}
 
 	path=topdir;
 	path += _T("\\");
@@ -799,7 +833,7 @@ int CTGitPath::GetAdminDirMask() const
 	path=topdir;
 	path += _T("\\.gitmodules");
 	if( PathFileExists(path) )
-		status |= ITEMIS_SUBMODULE;
+		status |= ITEMIS_SUBMODULECONTAINER;
 
 	return status;
 }
