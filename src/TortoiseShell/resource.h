@@ -133,8 +133,6 @@
 #define IDS_ERR_PROPNOTONFILE           230
 #define IDS_MENUIGNOREMULTIPLE          231
 #define IDS_ERR_PROPNOMULTILINE         232
-#define IDS_MENUREVISIONGRAPH           233
-#define IDS_MENUDESCREVISIONGRAPH       234
 #define IDS_MENUUNIGNORE                237
 #define IDS_MENUDESCUNIGNORE            238
 #define IDS_MENU_LOCK                   240
@@ -245,7 +243,6 @@
 #define IDI_BLAME                       5146
 #define IDI_PATCH                       5147
 #define IDI_CREATEPATCH                 5150
-#define IDI_REVISIONGRAPH               5151
 #define IDI_LOCK                        5152
 #define IDI_UNLOCK                      5153
 #define IDI_MENUFILE                    5154

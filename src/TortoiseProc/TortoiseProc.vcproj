@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -138,7 +138,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -224,7 +224,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -316,7 +316,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -822,10 +822,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\menurevisiongraph.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\menusettings.ico"
 				>
 			</File>
@@ -963,10 +959,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\revgraphbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\RevisionGraph.ico"
 				>
 			</File>
 			<File
@@ -1766,14 +1758,6 @@
 				</File>
 				<File
 					RelativePath=".\Settings\SettingsPropPage.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsRevisionGraph.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsRevisionGraph.h"
 					>
 				</File>
 				<File

@@ -58,7 +58,6 @@ IDI_REPOBROWSE          ICON                    "..\\Resources\\menurepobrowse.i
 IDI_BLAME               ICON                    "..\\Resources\\menublame.ico"
 IDI_PATCH               ICON                    "..\\Resources\\menupatch.ico"
 IDI_CREATEPATCH         ICON                    "..\\Resources\\menudiff.ico"
-IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
 IDI_LOCK                ICON                    "..\\Resources\\menulock.ico"
 IDI_UNLOCK              ICON                    "..\\Resources\\menuunlock.ico"
 IDI_MENUFILE            ICON                    "..\\Resources\\tsvnmenufile.ico"
@@ -366,9 +365,6 @@ BEGIN
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
     IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
     IDS_ERR_PROPNOMULTILINE "This property must not have multiple lines. Only one line is allowed."
-    IDS_MENUREVISIONGRAPH   "Revision &graph"
-    IDS_MENUDESCREVISIONGRAPH 
-                            "Shows a graphical representation of copies/tags/branches"
     IDS_MENUUNIGNORE        "Remove from &ignore list"
     IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END

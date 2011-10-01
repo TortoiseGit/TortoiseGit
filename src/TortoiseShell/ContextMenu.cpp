@@ -1866,14 +1866,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				CloseHandle(process.hProcess);
 				return NOERROR;
 				break;
-			case ShellMenuRevisionGraph:
-				svnCmd += _T("revisiongraph /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuProperties:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("properties /pathfile:\"");

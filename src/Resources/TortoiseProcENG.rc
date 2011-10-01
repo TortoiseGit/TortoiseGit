@@ -53,13 +53,6 @@ IDI_ACTIONADDED         ICON                    "actionadded.ico"
 IDI_ACTIONDELETED       ICON                    "actiondeleted.ico"
 IDI_ACTIONMODIFIED      ICON                    "actionmodified.ico"
 IDI_ACTIONREPLACED      ICON                    "actionreplaced.ico"
-IDI_REVGRAPH_ADDED      ICON                    "revgraph_added.ico"
-IDI_REVGRAPH_ADDEDPLUS  ICON                    "revgraph_addedplus.ico"
-IDI_REVGRAPH_DELETED    ICON                    "revgraph_deleted.ico"
-IDI_REVGRAPH_LASTCOMMIT ICON                    "revgraph_lastcommit.ico"
-IDI_REVGRAPH_RENAMED    ICON                    "revgraph_renamed.ico"
-IDI_REVGRAPH_REPLACED   ICON                    "revgraph_replaced.ico"
-IDI_REVGRAPH_TAGGED     ICON                    "revgraph_tag.ico"
 IDI_SAVEDDATA           ICON                    "saveddata.ico"
 IDI_GRAPHBAR            ICON                    "graph-bar.ico"
 IDI_GRAPHBARSTACKED     ICON                    "graph-bar-stacked.ico"
@@ -95,7 +88,6 @@ IDI_RENAME_BKG          ICON                    "RenameBackground.ico"
 IDI_SWITCH_BKG          ICON                    "SwitchBackground.ico"
 IDI_CACHE               ICON                    "cache.ico"
 IDI_CACHELIST           ICON                    "CacheList.ico"
-IDI_SETTINGSREVGRAPH    ICON                    "RevisionGraph.ico"
 IDI_TORTOISEBLAME       ICON                    "..\\TortoiseBlame\\TortoiseBlame.ico"
 IDI_BUGTRAQ             ICON                    "bugtraq.ico"
 IDI_UP                  ICON                    "..\\Resources\\up.ico"
@@ -142,7 +134,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Bitmap
 //
 
-IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
 IDB_GIT                 BITMAP                  "..\\resources\\git.bmp"
 IDB_BITMAP_REFTYPE      BITMAP                  "..\\resources\\reftype.bmp"
 
@@ -759,14 +750,6 @@ BEGIN
     PUSHBUTTON      "Save to clipboard",IDC_PATCH_TO_CLIPBOARD,7,7,108,14
 END
 
-IDD_REVISIONGRAPH DIALOGEX 0, 0, 264, 230
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Revision Graph"
-MENU IDR_REVISIONGRAPH
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-END
-
 IDD_SETOVERLAYICONS DIALOGEX 0, 0, 302, 214
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
 CAPTION "Icon Overlays::Icon Set"
@@ -967,25 +950,6 @@ BEGIN
     GROUPBOX        "Lock",IDC_STATIC,7,184,286,28,NOT WS_VISIBLE
 END
 
-IDD_SETTINGSREVGRAPH DIALOGEX 0, 0, 300, 217
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "General::Revision Graph"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "Classification Patterns",IDC_STATIC,7,7,285,104
-    LTEXT           "&Trunk",IDC_STATIC,14,21,271,8,SS_NOTIFY
-    EDITTEXT        IDC_TRUNKPATTERN,14,32,271,12,ES_AUTOHSCROLL
-    LTEXT           "&Branches",IDC_STATIC,14,49,271,8,SS_NOTIFY
-    EDITTEXT        IDC_BRANCHESPATTERN,14,60,271,12,ES_AUTOHSCROLL
-    LTEXT           "&Tags",IDC_STATIC,14,77,271,8,SS_NOTIFY
-    EDITTEXT        IDC_TAGSPATTERN,14,88,271,12,ES_AUTOHSCROLL
-    GROUPBOX        "Misc",IDC_STATIC,7,115,285,44
-    CONTROL         "&Modify color for trunk copies",IDC_TWEAKTRUNKCOLORS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,128,270,10
-    CONTROL         "&Modify color for tag copies",IDC_TWEAKTAGSCOLORS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,140,270,10
-END
-
 IDD_SETTINGSLOGCACHE DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Log Caching"
@@ -1161,24 +1125,6 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,129,162,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,189,162,48,14
     PUSHBUTTON      "Help",IDHELP,243,162,50,14
-END
-
-IDD_REVGRAPHFILTER DIALOGEX 0, 0, 186, 118
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Revision Graph Filter"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    LTEXT           "Include only the following revision range:",IDC_STATIC,7,7,172,8
-    LTEXT           "From:",IDC_STATIC,7,22,20,8
-    EDITTEXT        IDC_FROMREV,30,19,40,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_FROMSPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_HOTTRACK,73,19,11,14
-    LTEXT           "To:",IDC_STATIC,98,22,12,8
-    EDITTEXT        IDC_TOREV,124,19,40,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_TOSPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_HOTTRACK,168,19,11,14
-    LTEXT           "Filter out the following paths (separate multiple paths with the '*' char):",IDC_STATIC,7,49,172,19
-    EDITTEXT        IDC_PATHFILTER,7,71,172,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,71,97,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,129,97,50,14
 END
 
 IDD_DELUNVERSIONED DIALOGEX 0, 0, 279, 225
@@ -2601,17 +2547,6 @@ BEGIN
         BOTTOMMARGIN, 176
     END
 
-    IDD_REVGRAPHFILTER, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        VERTGUIDE, 84
-        VERTGUIDE, 98
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 111
-        HORZGUIDE, 33
-    END
-
     IDD_DELUNVERSIONED, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -3075,73 +3010,8 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Toolbar
-//
-
-IDR_REVGRAPHBAR TOOLBAR  20, 20
-BEGIN
-    BUTTON      ID_VIEW_ZOOMIN
-    BUTTON      ID_VIEW_ZOOMOUT
-    BUTTON      ID_VIEW_ZOOM100
-    BUTTON      ID_VIEW_ZOOMALL
-    SEPARATOR
-    BUTTON      ID_REVGRAPH_ZOOMCOMBO
-    SEPARATOR
-    BUTTON      ID_VIEW_SHOWALLREVISIONS
-    BUTTON      ID_VIEW_GROUPBRANCHES
-    BUTTON      ID_VIEW_TOPDOWN
-    BUTTON      ID_VIEW_SHOWHEAD
-    BUTTON      ID_VIEW_EXACTCOPYSOURCE
-    BUTTON      ID_VIEW_FOLDTAGS
-    BUTTON      ID_VIEW_REDUCECROSSLINES
-    BUTTON      ID_VIEW_REMOVEDELETEDONES
-    BUTTON      ID_VIEW_SHOWWCREV
-    SEPARATOR
-    BUTTON      ID_VIEW_SHOWOVERVIEW
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Menu
 //
-
-IDR_REVISIONGRAPH MENU 
-BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "&Save graph as...",           ID_FILE_SAVEGRAPHAS
-        MENUITEM SEPARATOR
-        MENUITEM "&Exit",                       ID_MENUEXIT
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "Show &all revisions",         ID_VIEW_SHOWALLREVISIONS
-        MENUITEM "&Group by branch",            ID_VIEW_GROUPBRANCHES, CHECKED
-        MENUITEM "Oldest on to&p",              ID_VIEW_TOPDOWN
-        MENUITEM "&Show HEAD revisions",        ID_VIEW_SHOWHEAD
-        MENUITEM "E&xact copy sources",         ID_VIEW_EXACTCOPYSOURCE
-        MENUITEM "Fold &tags",                  ID_VIEW_FOLDTAGS
-        MENUITEM "Reduce cross-&lines",         ID_VIEW_REDUCECROSSLINES
-        MENUITEM "Hide &deleted paths",         ID_VIEW_REMOVEDELETEDONES
-        MENUITEM "Show &WC revision",           ID_VIEW_SHOWWCREV
-        MENUITEM "&Filter",                     ID_VIEW_FILTER
-        MENUITEM SEPARATOR
-        MENUITEM "Zoom &in\tCtrl-+",            ID_VIEW_ZOOMIN
-        MENUITEM "Zoom &out\tCtrl--",           ID_VIEW_ZOOMOUT
-        MENUITEM SEPARATOR
-        MENUITEM "&Compare revisions",          ID_VIEW_COMPAREREVISIONS, GRAYED
-        MENUITEM "Compare &HEAD revisions",     ID_VIEW_COMPAREHEADREVISIONS, GRAYED
-        MENUITEM "&Unified diff",               ID_VIEW_UNIFIEDDIFF, GRAYED
-        MENUITEM "Unified &diff of HEAD revisions", ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, GRAYED
-        MENUITEM SEPARATOR
-        MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&Help",                       ID_MENUHELP
-    END
-END
 
 IDR_STATGRAPH MENU 
 BEGIN
@@ -3168,27 +3038,6 @@ BEGIN
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, NOINVERT
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, SHIFT, NOINVERT
-END
-
-IDR_ACC_REVISIONGRAPH ACCELERATORS 
-BEGIN
-    VK_ESCAPE,      ID_MENUEXIT,            VIRTKEY, NOINVERT
-    "A",            ID_VIEW_SHOWALLREVISIONS, VIRTKEY, CONTROL, NOINVERT
-    "+",            ID_VIEW_ZOOMIN,         ASCII,  NOINVERT
-    "+",            ID_VIEW_ZOOMIN,         ASCII,  NOINVERT
-    VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, CONTROL, NOINVERT
-    VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, SHIFT, NOINVERT
-    VK_OEM_PLUS,    ID_VIEW_ZOOMIN,         VIRTKEY, CONTROL, NOINVERT
-    VK_OEM_PLUS,    ID_VIEW_ZOOMIN,         VIRTKEY, SHIFT, NOINVERT
-    VK_INSERT,      ID_VIEW_ZOOMOUT,        VIRTKEY, NOINVERT
-    VK_INSERT,      ID_VIEW_ZOOMOUT,        VIRTKEY, NOINVERT
-    VK_OEM_MINUS,   ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
-    VK_OEM_MINUS,   ID_VIEW_ZOOMOUT,        VIRTKEY, SHIFT, NOINVERT
-    VK_OEM_MINUS,   ID_VIEW_ZOOMOUT,        VIRTKEY, SHIFT, CONTROL, NOINVERT
-    VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
-    VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, SHIFT, NOINVERT
-    VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "F",            ID_VIEW_FILTER,         VIRTKEY, CONTROL, NOINVERT
 END
 
 IDR_ACC_COMMITDLG ACCELERATORS 
@@ -3851,35 +3700,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_REVGRAPH_PROGTITLE  "Revision graph"
-    IDS_REVGRAPH_PROGGETREVS "Getting information from repository..."
-    IDS_REVGRAPH_PROGCURRENTREV "Revision %ld"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REVGRAPH_PROGCANCEL "Cancelling operation..."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REVGRAPH_BOXTOOLTIP "Revision: %ld\r\nURL: %s\r\nAuthor: %s\r\nDate: %s\r\n\r\nLogmessage:\r\n%s"
-    IDS_REVGRAPH_STATUSBARURL "Showing graph for %s"
-    IDS_REVGRAPH_STATUSBARNUMNODES "Showing %ld nodes"
-    IDS_REVGRAPH_BOXTOOLTIP_TAGGED 
-                            "Revision: %ld\r\nURL: %s\r\nAuthor: %s\r\nDate: %s\r\n\r\nTags (%d):%s\r\n\r\nLogmessage:\r\n%s"
-    IDS_REVGRAPH_TAG        "%s"
-    IDS_REVGRAPH_TAGALIAS   "alias: %s"
-    IDS_REVGRAPH_TAGDELETED "deleted"
-    IDS_REVGRAPH_TAGMODIFIED "modified"
-    IDS_REVGRAPH_TAGATTRIBUTED "(%s) %s"
-    IDS_REVGRAPH_TAGALIASATTRIBUTED "alias (%s): %s"
     IDS_REVGRAPH_SAVEPIC    "&Save graph as..."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REVGRAPH_DLGTITLEOFFLINE "%s (offline)"
 END
 
 STRINGTABLE 
@@ -3904,7 +3725,6 @@ BEGIN
     IDS_REVGRAPH_ERR_NOBITMAP 
                             "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
     IDS_REVGRAPH_ERR_NOENCODER "No image encoder found for %s."
-    IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
 END
 
 STRINGTABLE 
@@ -3963,14 +3783,6 @@ STRINGTABLE
 BEGIN
     IDS_LOCK_MESSAGEHINT    "Enter a lock message (optional):"
     IDS_LOCK_STEALCHECK     "Steal the lock"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_REVGRAPH_POPUP_COMPAREREVS "&Compare revisions"
-    IDS_REVGRAPH_POPUP_COMPAREHEADS "Compare &HEAD revisions"
-    IDS_REVGRAPH_POPUP_UNIDIFFREVS "&Unified diff"
-    IDS_REVGRAPH_POPUP_UNIDIFFHEADS "Unified &diff of HEAD revisions"
 END
 
 STRINGTABLE 
@@ -4107,15 +3919,6 @@ BEGIN
                             "Prevents most cases in which connection lines cross revision nodes"
     ID_VIEW_REMOVEDELETEDONES "Remove deleted branches and tags"
     ID_VIEW_SHOWWCREV       "Mark current revision of your working copy"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_VIEW_ZOOM100         "Zoom 100%"
-    ID_VIEW_ZOOMALL         "Zoom to fit"
-    ID_VIEW_SHOWOVERVIEW    "Show an overview of the whole graph"
-    ID_VIEW_TOPDOWN         "Show oldest node at top"
-    ID_VIEW_SHOWHEAD        "Show HEAD revision nodes"
 END
 
 STRINGTABLE 

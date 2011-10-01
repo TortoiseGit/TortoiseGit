@@ -99,7 +99,6 @@
 
 
 #include "RevertCommand.h"
-#include "RevisiongraphCommand.h"
 #include "RTFMCommand.h"
 
 #include "ShowCompareCommand.h"
@@ -154,7 +153,6 @@ typedef enum
 	cmdRepoStatus,
 	cmdResolve,
 	cmdRevert,
-	cmdRevisionGraph,
 	cmdSendMail,
 	cmdSettings,
 	cmdShowCompare,
@@ -229,7 +227,6 @@ static const struct CommandInfo
 	{	cmdRepoStatus,		_T("repostatus")		},
 	{	cmdResolve,			_T("resolve")			},
 	{	cmdRevert,			_T("revert")			},
-	{	cmdRevisionGraph,	_T("revisiongraph")		},
 	{	cmdSendMail,		_T("sendmail")			},
 	{	cmdSettings,		_T("settings")			},
 	{	cmdShowCompare,		_T("showcompare")		},
@@ -407,8 +404,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RebuildIconCacheCommand;
 	case cmdRelocate:
 		return new RelocateCommand;
-	case cmdRevisionGraph:
-		return new RevisionGraphCommand;
 	case cmdShowCompare:
 		return new ShowCompareCommand;
 	case cmdUnIgnore:
