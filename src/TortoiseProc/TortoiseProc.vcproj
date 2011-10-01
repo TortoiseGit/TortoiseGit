@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -138,7 +138,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -224,7 +224,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -316,7 +316,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\LogCache;.\RevisionGraph;..\TortoiseShell;..\..\ext\gitdll"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;&quot;..\..\ext\libintl\libintl3-win32\inc&quot;;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -496,14 +496,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="3rd Party"
-				>
-			</Filter>
-			<Filter
-				Name="Graph"
-				>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -583,10 +575,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\checkout.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\CheckoutBackground.ico"
 				>
 			</File>
 			<File
@@ -718,10 +706,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\LockBackground.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\logfilter.ico"
 				>
 			</File>
@@ -798,10 +782,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\menulock.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\menulog.ico"
 				>
 			</File>
@@ -826,19 +806,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\menurepobrowse.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\menuresolve.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\menurevert.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\menurevisiongraph.ico"
 				>
 			</File>
 			<File
@@ -854,19 +826,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\menuunlock.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\menuupdate.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\MergeBackground.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\MergeWizardTitle.bmp"
 				>
 			</File>
 			<File
@@ -982,10 +946,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\RevisionGraph.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>
@@ -1078,19 +1038,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\UnlockBackground.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\up.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\update1.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\UpdateBackground.ico"
 				>
 			</File>
 			<File
@@ -1477,14 +1429,6 @@
 				Name="Export"
 				>
 				<File
-					RelativePath=".\Commands\DropExportCommand.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Commands\DropExportCommand.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Commands\ExportCommand.cpp"
 					>
 				</File>
@@ -1580,10 +1524,6 @@
 					RelativePath=".\Commands\CatCommand.h"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="graph"
-				>
 			</Filter>
 			<Filter
 				Name="setting"
@@ -1798,14 +1738,6 @@
 				</File>
 				<File
 					RelativePath=".\Settings\SettingsPropPage.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsRevisionGraph.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SettingsRevisionGraph.h"
 					>
 				</File>
 				<File

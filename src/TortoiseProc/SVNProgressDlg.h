@@ -97,20 +97,12 @@ public:
 	{
 		GitProgress_Add,
 		GitProgress_Checkout,
-		GitProgress_Commit,
 		GitProgress_Copy,
 		GitProgress_Export,
-		GitProgress_Import,
-		GitProgress_Lock,
-		GitProgress_Merge,
-		GitProgress_MergeReintegrate,
-		GitProgress_MergeAll,
 		GitProgress_Rename,
 		GitProgress_Resolve,
 		GitProgress_Revert,
 		GitProgress_Switch,
-		GitProgress_Unlock,
-		GitProgress_Update,
 		GitProgress_SendMail,
 	} Command;
 
@@ -276,20 +268,12 @@ private:
 	// the commands to execute
 	bool		CmdAdd(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCheckout(CString& sWindowTitle, bool& localoperation);
-	bool		CmdCommit(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCopy(CString& sWindowTitle, bool& localoperation);
 	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
-	bool		CmdImport(CString& sWindowTitle, bool& localoperation);
-	bool		CmdLock(CString& sWindowTitle, bool& localoperation);
-	bool		CmdMerge(CString& sWindowTitle, bool& localoperation);
-	bool		CmdMergeAll(CString& sWindowTitle, bool& localoperation);
-	bool		CmdMergeReintegrate(CString& sWindowTitle, bool& localoperation);
 	bool		CmdRename(CString& sWindowTitle, bool& localoperation);
 	bool		CmdResolve(CString& sWindowTitle, bool& localoperation);
 	bool		CmdRevert(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
-	bool		CmdUnlock(CString& sWindowTitle, bool& localoperation);
-	bool		CmdUpdate(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 
 private:
@@ -342,8 +326,6 @@ private:
 
 	CColors					m_Colors;
 
-	bool					m_bLockWarning;
-	bool					m_bLockExists;
 	bool					m_bFinishedItemAdded;
 	bool					m_bLastVisible;
 

@@ -13,7 +13,6 @@
 #define IDC_TORTOISEUDIFF               109
 #define IDR_MAINFRAME                   128
 #define IDB_CANCELNORMAL                130
-#define IDI_ICON1                       132
 #define IDI_CANCELNORMAL                132
 #define IDD_FINDBAR                     144
 #define IDC_FINDNEXT                    1014

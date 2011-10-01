@@ -23,9 +23,7 @@
 #define IDI_EQUALLINE                   141
 #define IDI_LINEENDINGCR                142
 #define IDI_LINEENDINGCRLF              143
-#define IDI_ICON1                       144
 #define IDI_LINEENDINGLF                144
-#define IDI_ICON2                       145
 #define IDI_CONFLICTEDIGNOREDLINE       145
 #define IDI_LINEEDITED                  146
 #define IDB_LOGOFLIPPED                 168

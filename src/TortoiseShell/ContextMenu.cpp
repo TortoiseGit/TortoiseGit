@@ -1297,14 +1297,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuCheckout:
-				svnCmd += _T("checkout /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuUpdate:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("update /pathfile:\"");
@@ -1405,11 +1397,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\"");
 				svnCmd += _T(" /deletepathfile");
 				break;
-			case ShellMenuDelUnversioned:
-				svnCmd += _T("delunversioned /path:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuCleanup:
 				tempfile = WriteFileListToTempFile();
 				svnCmd += _T("cleanup /pathfile:\"");
@@ -1439,14 +1426,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuImport:
-				svnCmd += _T("import /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuExport:
 				svnCmd += _T("export /path:\"");
 				if (files_.size() > 0)
@@ -1468,14 +1447,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuMerge:
 				svnCmd += _T("merge /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
-			case ShellMenuMergeAll:
-				svnCmd += _T("mergeall /path:\"");
 				if (files_.size() > 0)
 					svnCmd += files_.front();
 				else
@@ -1551,14 +1522,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\"");
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					svnCmd += _T(" /alternative");
-				break;
-			case ShellMenuUrlDiff:
-				svnCmd += _T("urldiff /path:\"");
-				if (files_.size() == 1)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
 				break;
 			case ShellMenuDiffTwo:
 				svnCmd += _T("diffcommits /path:\"");
@@ -1649,14 +1612,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuConflictEditor:
 				svnCmd += _T("conflicteditor /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
-			case ShellMenuRelocate:
-				svnCmd += _T("relocate /path:\"");
 				if (files_.size() > 0)
 					svnCmd += files_.front();
 				else
@@ -1785,13 +1740,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuCreatePatch:
-				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("createpatch /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				break;
 			case ShellMenuApplyPatch:
 				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
 				{
@@ -1880,14 +1828,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				CloseHandle(process.hThread);
 				CloseHandle(process.hProcess);
 				return NOERROR;
-				break;
-			case ShellMenuRevisionGraph:
-				svnCmd += _T("revisiongraph /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
 				break;
 			case ShellMenuProperties:
 				tempfile = WriteFileListToTempFile();

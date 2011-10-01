@@ -33,13 +33,10 @@
 #include "SettingsColors2.h"
 #include "SettingsColors3.h"
 #include "SetMisc.h"
-#include "SetLogCache.h"
-#include "SettingsLogCaches.h"
 #include "SetSavedDataPage.h"
 #include "SetHooks.h"
 #include "SetBugTraq.h"
 #include "SettingsTBlame.h"
-#include "SettingsRevisionGraph.h"
 #include "TreePropSheet/TreePropSheet.h"
 #include "SettingGitConfig.h"
 #include "SettingGitRemote.h"
@@ -82,7 +79,6 @@ private:
 	CSettingsProgsAlternativeEditor *	m_pProgsAlternativeEditor;
 	CSetLookAndFeelPage *				m_pLookAndFeelPage;
 	CSetDialogs *						m_pDialogsPage;
-    CSettingsRevisionGraph*				m_pRevisionGraphPage;
 	CSettingsColors *					m_pColorsPage;
     CSettingsColors2 *					m_pColorsPage2;
     CSettingsColors3 *					m_pColorsPage3;

@@ -55,7 +55,6 @@
 #include "DropMoveCommand.h"
 #include "DropCopyAddCommand.h"
 #include "DropCopyCommand.h"
-#include "DropExportCommand.h"
 #include "HelpCommand.h"
 #include "StashCommand.h"
 #include "SubmoduleCommand.h"
@@ -75,47 +74,27 @@
 #if 0
 
 
-
-#include "CheckoutCommand.h"
-
-
-
 #include "CopyCommand.h"
 #include "CrashCommand.h"
-#include "CreatePatchCommand.h"
-
-#include "DelUnversionedCommand.h"
 
 
 
 
-
-
-#include "ImportCommand.h"
-#include "LockCommand.h"
-
-
-#include "MergeAllCommand.h"
 
 #include "PropertiesCommand.h"
 #include "RebuildIconCacheCommand.h"
-#include "RelocateCommand.h"
 #include "RemoveCommand.h"
 
 #include "RepositoryBrowserCommand.h"
 
 
 #include "RevertCommand.h"
-#include "RevisiongraphCommand.h"
 #include "RTFMCommand.h"
 
 #include "ShowCompareCommand.h"
 
 #include "UnIgnoreCommand.h"
-#include "UnLockCommand.h"
 
-#include "UpdateCommand.h"
-#include "UrlDiffCommand.h"
 #endif
 typedef enum
 {
@@ -124,31 +103,24 @@ typedef enum
 	cmdBlame,
 	cmdBranch,
 	cmdCat,
-	cmdCheckout,
 	cmdCleanup,
 	cmdClone,
 	cmdCommit,
 	cmdConflictEditor,
 	cmdCopy,
 	cmdCrash,
-	cmdCreatePatch,
-	cmdDelUnversioned,
 	cmdDiff,
 	cmdDropCopy,
 	cmdDropCopyAdd,
-	cmdDropExport,
 	cmdDropMove,
 	cmdFetch,
 	cmdFormatPatch,
 	cmdExport,
 	cmdHelp,
 	cmdIgnore,
-	cmdImport,
 	cmdImportPatch,
-	cmdLock,
 	cmdLog,
 	cmdMerge,
-	cmdMergeAll,
 	cmdPasteCopy,
 	cmdPasteMove,
 	cmdPrevDiff,
@@ -157,26 +129,20 @@ typedef enum
 	cmdPush,
 	cmdRTFM,
 	cmdRebuildIconCache,
-	cmdRelocate,
 	cmdRemove,
 	cmdRebase,
 	cmdRename,
-	cmdRepoBrowser,
 	cmdRepoCreate,
 	cmdRepoStatus,
 	cmdResolve,
 	cmdRevert,
-	cmdRevisionGraph,
 	cmdSendMail,
 	cmdSettings,
 	cmdShowCompare,
 	cmdSwitch,
 	cmdTag,
 	cmdUnIgnore,
-	cmdUnlock,
-	cmdUpdate,
 	cmdUpdateCheck,
-	cmdUrlDiff,
 	cmdStashSave,
 	cmdStashApply,
 	cmdStashPop,
@@ -204,31 +170,24 @@ static const struct CommandInfo
 	{	cmdBlame,			_T("blame")				},
 	{	cmdBranch,			_T("branch")			},
 	{	cmdCat,				_T("cat")				},
-	{	cmdCheckout,		_T("checkout")			},
 	{	cmdCleanup,			_T("cleanup")			},
 	{	cmdClone,			_T("clone")				},
 	{	cmdCommit,			_T("commit")			},
 	{	cmdConflictEditor,	_T("conflicteditor")	},
 	{	cmdCopy,			_T("copy")				},
 	{	cmdCrash,			_T("crash")				},
-	{	cmdCreatePatch,		_T("createpatch")		},
-	{	cmdDelUnversioned,	_T("delunversioned")	},
 	{	cmdDiff,			_T("diff")				},
 	{	cmdDropCopy,		_T("dropcopy")			},
 	{	cmdDropCopyAdd,		_T("dropcopyadd")		},
-	{	cmdDropExport,		_T("dropexport")		},
 	{	cmdDropMove,		_T("dropmove")			},
 	{	cmdFetch,			_T("fetch")				},
 	{	cmdFormatPatch,		_T("formatpatch")		},
 	{	cmdExport,			_T("export")			},
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
-	{	cmdImport,			_T("import")			},
 	{	cmdImportPatch,		_T("importpatch")		},
-	{	cmdLock,			_T("lock")				},
 	{	cmdLog,				_T("log")				},
 	{	cmdMerge,			_T("merge")				},
-	{	cmdMergeAll,		_T("mergeall")			},
 	{	cmdPasteCopy,		_T("pastecopy")			},
 	{	cmdPasteMove,		_T("pastemove")			},
 	{	cmdPrevDiff,		_T("prevdiff")			},
@@ -237,26 +196,20 @@ static const struct CommandInfo
 	{	cmdPush,			_T("push")				},
 	{	cmdRTFM,			_T("rtfm")				},
 	{	cmdRebuildIconCache,_T("rebuildiconcache")	},
-	{	cmdRelocate,		_T("relocate")			},
 	{	cmdRemove,			_T("remove")			},
 	{	cmdRebase,			_T("rebase")			},
 	{	cmdRename,			_T("rename")			},
-	{	cmdRepoBrowser,		_T("repobrowser")		},
 	{	cmdRepoCreate,		_T("repocreate")		},
 	{	cmdRepoStatus,		_T("repostatus")		},
 	{	cmdResolve,			_T("resolve")			},
 	{	cmdRevert,			_T("revert")			},
-	{	cmdRevisionGraph,	_T("revisiongraph")		},
 	{	cmdSendMail,		_T("sendmail")			},
 	{	cmdSettings,		_T("settings")			},
 	{	cmdShowCompare,		_T("showcompare")		},
 	{	cmdSwitch,			_T("switch")			},
 	{	cmdTag,				_T("tag")				},
 	{	cmdUnIgnore,		_T("unignore")			},
-	{	cmdUnlock,			_T("unlock")			},
-	{	cmdUpdate,			_T("update")			},
 	{	cmdUpdateCheck,		_T("updatecheck")		},
-	{	cmdUrlDiff,			_T("urldiff")			},
 	{	cmdStashSave,		_T("stashsave")			},
 	{	cmdStashApply,		_T("stashapply")		},
 	{	cmdStashPop,		_T("stashpop")			},
@@ -357,8 +310,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new DropCopyCommand;
 	case cmdDropCopyAdd:
 		return new DropCopyAddCommand;
-//	case cmdDropExport:
-//		return new DropExportCommand;
 	case cmdHelp:
 		return new HelpCommand;
 	case cmdStashSave:
@@ -401,28 +352,14 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 #if 0
 
 
-	case cmdCheckout:
-		return new CheckoutCommand;
-
-
 
 	case cmdCopy:
 		return new CopyCommand;
 	case cmdCrash:
 		return new CrashCommand;
-	case cmdCreatePatch:
-		return new CreatePatchCommand;
-	case cmdDelUnversioned:
-		return new DelUnversionedCommand;
 
 
 
-	case cmdImport:
-		return new ImportCommand;
-	case cmdLock:
-		return new LockCommand;
-	case cmdMergeAll:
-		return new MergeAllCommand;
 	case cmdPrevDiff:
 		return new PrevDiffCommand;
 	case cmdProperties:
@@ -431,22 +368,10 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RTFMCommand;
 	case cmdRebuildIconCache:
 		return new RebuildIconCacheCommand;
-	case cmdRelocate:
-		return new RelocateCommand;
-	case cmdRepoBrowser:
-		return new RepositoryBrowserCommand;
-	case cmdRevisionGraph:
-		return new RevisionGraphCommand;
 	case cmdShowCompare:
 		return new ShowCompareCommand;
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
-	case cmdUnlock:
-		return new UnLockCommand;
-	case cmdUpdate:
-		return new UpdateCommand;
-	case cmdUrlDiff:
-		return new UrlDiffCommand;
 #endif
 	default:
 		CMessageBox::Show(hWndExplorer, _T("Command not implemented"), _T("TortoiseGit"), MB_ICONERROR);

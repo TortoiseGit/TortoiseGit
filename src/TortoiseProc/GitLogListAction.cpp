@@ -928,16 +928,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 
-		case ID_REPOBROWSE:
-			{
-				CString sCmd;
-				sCmd.Format(_T("%s /command:repobrowser /path:\"%s\" /rev:%s"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)pathURL, (LPCTSTR)revSelected.ToString());
-
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
 		case ID_EDITLOG:
 			{
 				EditLogMessage(selIndex);
@@ -966,16 +956,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				sCmd.Format(_T("%s /command:export /path:\"%s\" /revision:%ld"),
 					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
 					(LPCTSTR)pathURL, (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
-		case ID_CHECKOUT:
-			{
-				CString sCmd;
-				CString url = _T("tgit:")+pathURL;
-				sCmd.Format(_T("%s /command:checkout /url:\"%s\" /revision:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)url, (LONG)revSelected);
 				CAppUtils::LaunchApplication(sCmd, NULL, false);
 			}
 			break;

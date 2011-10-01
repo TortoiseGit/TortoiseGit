@@ -58,15 +58,11 @@ IDI_REPOBROWSE          ICON                    "..\\Resources\\menurepobrowse.i
 IDI_BLAME               ICON                    "..\\Resources\\menublame.ico"
 IDI_PATCH               ICON                    "..\\Resources\\menupatch.ico"
 IDI_CREATEPATCH         ICON                    "..\\Resources\\menudiff.ico"
-IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
-IDI_LOCK                ICON                    "..\\Resources\\menulock.ico"
-IDI_UNLOCK              ICON                    "..\\Resources\\menuunlock.ico"
 IDI_MENUFILE            ICON                    "..\\Resources\\tsvnmenufile.ico"
 IDI_MENUFOLDER          ICON                    "..\\Resources\\tsvnmenufolder.ico"
 IDI_MENULINK            ICON                    "..\\Resources\\tsvnmenulink.ico"
 IDI_MENUMULTIPLE        ICON                    "..\\Resources\\tsvnmenumultiple.ico"
 IDI_PROPERTIES          ICON                    "..\\Resources\\menuproperties.ico"
-IDI_DELUNVERSIONED      ICON                    "..\\Resources\\menudelunversioned.ico"
 IDI_APPSMALL            ICON                    "..\\Resources\\TortoiseSmall.ico"
 IDI_CLIPPASTE           ICON                    "..\\Resources\\clippaste.ico"
 IDI_PUSH                ICON                    "..\\resources\\Push.ico"
@@ -194,7 +190,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENUCHECKOUT        "Switch/Chec&kout..."
     IDS_MENUUPDATE          "Submodule &Update"
     IDS_MENUCOMMIT          "&Commit..."
     IDS_MENUCREATEREPOS     "Create repositor&y here..."
@@ -214,8 +209,6 @@ BEGIN
     IDS_MENUSETTINGS        "&Settings"
     IDS_MENUABOUT           "A&bout"
     IDS_MENUSUBMENU         "&TortoiseGit"
-    IDS_MENUDESCCHECKOUT    "Check out a working copy from a repository"
-    IDS_MENUDESCUPDATE      "Updates the working copy to the current revision"
     IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
     IDS_MENUDESCADD         "Adds file(s) to Git control"
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
@@ -280,7 +273,6 @@ BEGIN
     IDS_STATUSMERGED        "merged"
     IDS_STATUSCONFLICTED    "conflicted"
     IDS_STATUSOBSTRUCTED    "obstructed"
-    IDS_PROPLOCKED          "locked"
     IDS_PROPPROPERTY        "Property"
     IDS_PROPVALUE           "Value"
     IDS_MENURENAME          "Re&name..."
@@ -288,7 +280,6 @@ BEGIN
     IDS_MENUREMOVE          "&Delete"
     IDS_MENUDESCREMOVE      "Deletes files / folders from version control"
     IDS_MENUUPDATEEXT       "Submodule &Update"
-    IDS_MENUDESCUPDATEEXT   "Updates the working copy to a specific revision"
     IDS_COLTITLESTATUS      "Git Status"
     IDS_COLDESCSTATUS       "Status of item in Git"
     IDS_COLTITLEREV         "Git Revision"
@@ -306,12 +297,9 @@ BEGIN
     IDS_DROPCOPYMENU        "Git Copy versioned item(s) here"
     IDS_PROPWAITCANCEL      "Please wait while cancelling..."
     IDS_SETPROPTITLE        "Setting properties..."
-    IDS_MENUREPOBROWSE      "&Repo-browser"
-    IDS_MENUDESCREPOBROWSE  "Opens the repository browser to tweak the repository online"
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
-    IDS_MENUCREATEPATCH     "Create &patch..."
     IDS_MENUAPPLYPATCH      "Review &patch..."
 END
 
@@ -329,8 +317,6 @@ BEGIN
     IDS_COLDESCSHORTURL     "Short URL of Git items"
     IDS_MENUCONFLICT        "&Edit conflicts"
     IDS_MENUDESCCONFLICT    "Launches the external diff / merge program to solve the conflicts"
-    IDS_MENURELOCATE        "Relo&cate..."
-    IDS_MENUDESCRELOCATE    "Use this if the URL of the repository has changed"
     IDS_MENUHELP            "&Help"
     IDS_MENUDESCHELP        "Read the 'Daily Use Guide' before you are stuck..."
 END
@@ -339,8 +325,6 @@ STRINGTABLE
 BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
     IDS_MENUDESCAPPLYPATCH  "Review unified diff file with TortoiseMerge"
-    IDS_MENUMERGEALL        "Merge reintegrate..."
-    IDS_MENUDESCMERGEALL    "Merges all missing revisions back into the working copy using merge-tracking information"
     IDS_MENUUNDOADD         "Undo Add..."
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"
@@ -373,9 +357,6 @@ BEGIN
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
     IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
     IDS_ERR_PROPNOMULTILINE "This property must not have multiple lines. Only one line is allowed."
-    IDS_MENUREVISIONGRAPH   "Revision &graph"
-    IDS_MENUDESCREVISIONGRAPH 
-                            "Shows a graphical representation of copies/tags/branches"
     IDS_MENUUNIGNORE        "Remove from &ignore list"
     IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END
@@ -387,26 +368,12 @@ BEGIN
     IDS_MENUDESCPROPERTIES  "Manage Subversion properties"
     IDS_COLTITLEEOLSTYLE    "Git eol-style"
     IDS_COLDESCEOLSTYLE     "Shows the eol-style property value"
-    IDS_MENUURLDIFF         "&Diff with URL"
-    IDS_MENUDESCURLDIFF     "Compares the selected file with a file in the repository"
     IDS_PROPBIN             "(binary value)"
-    IDS_MENUDELUNVERSIONED  "Delete unversioned items..."
-    IDS_MENUDESCDELUNVERSIONED "Removes all unversioned and ignored items"
     IDS_MENUREMOVEKEEP      "&Delete (keep local)"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENU_LOCK           "Get loc&k..."
-    IDS_MENU_UNLOCK         "Release loc&k"
-    IDS_MENUDESC_LOCK       "Locks a file for other users and makes it editable by you."
-    IDS_MENUDESC_UNLOCK     "Releases locks on files so other users can edit them again."
-    IDS_MENU_UNLOCKFORCE    "Break loc&k"
-    IDS_MENUDESC_UNLOCKFORCE 
-                            "Releases locks even if you're not the owner of the locks (breaks them)."
-    IDS_MENU_LOCKFORCE      "Steal loc&k"
-    IDS_COLTITLEOWNER       "Git Local lock owner"
-    IDS_COLDESCOWNER        "The user who owns the lock of the file"
     IDS_DROPCOPYRENAMEMENU  "Git Copy and rename versioned item here"
     IDS_COLTITLEAUTHOR      "Git Author"
     IDS_COLDESCAUTHOR       "The user who did the last commit"
