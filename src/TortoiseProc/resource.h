@@ -109,13 +109,9 @@
 #define IDI_COMMIT_BKG                  258
 #define IDI_CFM_BKG                     260
 #define IDR_DOWNLOAD                    263
-#define IDI_ICON2                       264
 #define IDI_CANCELNORMAL                264
-#define IDI_ICON3                       265
 #define IDI_CANCELPRESSED               265
-#define IDI_ICON4                       266
 #define IDI_LOGFILTER                   266
-#define IDI_ICON5                       267
 #define IDI_FILTEREDIT                  267
 #define IDD_CONFLICTRESOLVE             268
 #define IDI_COPY_BKG                    270
@@ -133,7 +129,6 @@
 #define IDD_SETTINGSBUGTRAQ_A           283
 #define IDI_BUGTRAQ                     284
 #define IDD_SETTINGSBUGTRAQADV          284
-#define IDI_ICON6                       285
 #define IDI_UP                          286
 #define IDI_MKDIR                       289
 #define IDI_REFRESH                     290
