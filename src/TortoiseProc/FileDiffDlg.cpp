@@ -30,7 +30,6 @@
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
-#include "RevisionDlg.h"
 #include ".\filediffdlg.h"
 #include "gitdiff.h"
 #include "CommonResource.h"
@@ -1278,29 +1277,6 @@ void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edi
 void CFileDiffDlg::OnBnClickedRev2btn()
 {
 	ClickRevButton(&this->m_cRev2Btn,&this->m_rev2, &this->m_ctrRev2Edit);
-#if 0
-	if (m_bThreadRunning)
-		return;	// do nothing as long as the thread is still running
-
-	// show a dialog where the user can enter a revision
-	CRevisionDlg dlg(this);
-	dlg.AllowWCRevs(false);
-	*((GitRev*)&dlg) = m_rev2;
-
-	if (dlg.DoModal() == IDOK)
-	{
-		m_rev2 = dlg;
-		m_cRev2Btn.SetWindowText(m_rev2.ToString());
-		m_cFileList.DeleteAllItems();
-		// start a new thread to re-fetch the diff
-		InterlockedExchange(&m_bThreadRunning, TRUE);
-		if (AfxBeginThread(DiffThreadEntry, this)==NULL)
-		{
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-		}
-	}
-#endif
 }
 
 LRESULT CFileDiffDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)

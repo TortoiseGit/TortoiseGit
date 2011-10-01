@@ -39,7 +39,6 @@
 #define IDB_TTF_BMP                     169
 #define IDD_SETTINGSPROGSADV            170
 #define IDD_TOOLASSOC                   171
-#define IDD_REVISION                    173
 #define IDD_CHECKFORUPDATES             174
 #define IDD_REVERT                      175
 #define IDD_PROPERTIES                  177
@@ -75,7 +74,6 @@
 #define IDI_SAVEDDATA                   225
 #define IDD_EDITPROPERTIES              226
 #define IDD_EDITPROPERTYVALUE           227
-#define IDD_REVISIONRANGE               228
 #define IDI_GRAPHBAR                    229
 #define IDI_GRAPHBARSTACKED             230
 #define IDI_GRAPHLINE                   231
@@ -200,7 +198,6 @@
 #define IDC_DIFFVIEWER                  1017
 #define IDS_LOG_PUSH                    1017
 #define IDS_FILEDIFF_LOG                1018
-#define IDC_NEWEST                      1019
 #define IDS_PROC_TASKS                  1019
 #define IDC_EXTDIFFBROWSE               1021
 #define IDC_EXTMERGEBROWSE              1022
@@ -209,11 +206,9 @@
 #define IDC_ENABLE                      1023
 #define IDC_SAVECHECK                   1023
 #define IDC_NAME                        1027
-#define IDC_REVNUM                      1027
 #define IDC_SERVERADDRESS               1027
 #define IDC_REVISON_START               1027
 #define IDC_USEREDIT                    1027
-#define IDC_REVNUM2                     1028
 #define IDC_URLCOMBO                    1029
 #define IDC_FONTNAMES                   1030
 #define IDC_LOGBUTTON                   1031
@@ -223,8 +218,6 @@
 #define IDC_REVISION_HEAD               1032
 #define IDC_REVISION_N                  1033
 #define IDC_REVISION_NUM                1034
-#define IDC_NEWEST2                     1034
-#define IDC_REVISION_N2                 1035
 #define IDC_BROWSE                      1035
 #define IDC_CHECKOUTDIRECTORY_BROWSE    1036
 #define IDC_INCLUDEPATHS                1036
