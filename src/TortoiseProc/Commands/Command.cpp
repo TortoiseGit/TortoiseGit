@@ -107,7 +107,6 @@
 #include "UnIgnoreCommand.h"
 #include "UnLockCommand.h"
 
-#include "UpdateCommand.h"
 #include "UrlDiffCommand.h"
 #endif
 typedef enum
@@ -163,7 +162,6 @@ typedef enum
 	cmdTag,
 	cmdUnIgnore,
 	cmdUnlock,
-	cmdUpdate,
 	cmdUpdateCheck,
 	cmdUrlDiff,
 	cmdStashSave,
@@ -239,7 +237,6 @@ static const struct CommandInfo
 	{	cmdTag,				_T("tag")				},
 	{	cmdUnIgnore,		_T("unignore")			},
 	{	cmdUnlock,			_T("unlock")			},
-	{	cmdUpdate,			_T("update")			},
 	{	cmdUpdateCheck,		_T("updatecheck")		},
 	{	cmdUrlDiff,			_T("urldiff")			},
 	{	cmdStashSave,		_T("stashsave")			},
@@ -418,8 +415,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new UnIgnoreCommand;
 	case cmdUnlock:
 		return new UnLockCommand;
-	case cmdUpdate:
-		return new UpdateCommand;
 	case cmdUrlDiff:
 		return new UrlDiffCommand;
 #endif

@@ -93,7 +93,6 @@ IDI_IMPORTPATHCES_BKG   ICON                    "ImportPatchesBackground.ico"
 IDI_MERGE_BKG           ICON                    "MergeBackground.ico"
 IDI_RENAME_BKG          ICON                    "RenameBackground.ico"
 IDI_SWITCH_BKG          ICON                    "SwitchBackground.ico"
-IDI_UPDATE_BKG          ICON                    "UpdateBackground.ico"
 IDI_CACHE               ICON                    "cache.ico"
 IDI_CACHELIST           ICON                    "CacheList.ico"
 IDI_SETTINGSREVGRAPH    ICON                    "RevisionGraph.ico"
@@ -558,23 +557,6 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,129,127,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,187,127,50,14
     PUSHBUTTON      "Help",IDHELP,243,127,50,14
-END
-
-IDD_UPDATE DIALOGEX 0, 0, 203, 129
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Update"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    GROUPBOX        "Revision",IDC_STATIC,7,7,189,51
-    CONTROL         "&HEAD revision",IDC_NEWEST,"Button",BS_AUTORADIOBUTTON,13,21,90,10
-    CONTROL         "&Revision",IDC_REVISION_N,"Button",BS_AUTORADIOBUTTON,13,37,85,10
-    PUSHBUTTON      "Show &log",IDC_LOG,105,18,84,14
-    EDITTEXT        IDC_REVNUM,105,36,84,14,ES_AUTOHSCROLL
-    CONTROL         "Omit e&xternals",IDC_NOEXTERNALS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,90,183,10
-    DEFPUSHBUTTON   "OK",IDOK,89,108,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,146,108,50,14
-    COMBOBOX        IDC_DEPTH,13,71,175,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Update Depth",IDC_GROUPMIDDLE,7,60,189,44
 END
 
 IDD_SIMPLEPROMPT DIALOGEX 0, 0, 220, 126
@@ -2303,15 +2285,6 @@ BEGIN
         BOTTOMMARGIN, 141
     END
 
-    IDD_UPDATE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 196
-        VERTGUIDE, 139
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-    END
-
     IDD_SIMPLEPROMPT, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -3300,7 +3273,6 @@ BEGIN
     IDS_PROGRS_TITLEFIN     "Finished!"
     IDS_PROGRS_TITLE_CHECKOUT "Checkout"
     IDS_PROGRS_TITLE_IMPORT "Import"
-    IDS_PROGRS_TITLE_UPDATE "Update"
     IDS_PROGRS_TITLE_COMMIT "Commit"
     IDS_PROGRS_TITLE_ADD    "Add"
     IDS_PROGRS_TITLE_REVERT "Revert"
@@ -3460,8 +3432,6 @@ BEGIN
     IDS_WARN_SHAREFILEACCESS 
                             "You are trying to access a repository via file:// on\na shared network drive.\nThis could lead to severe repository corruption!\nDo you really want to do that?"
     IDS_WARN_RELOCATEREALLY "It seems you are trying to <b>relocate</b> your working copy to a different path inside the same repository.\n\nFrom:\t%s\nTo:\t\t%s\n\nA relocate is only needed if the path <b>to</b> a repository has changed.\nChanging to a different path <b>inside</b> a repository is done by a switch operation.\n\nImproper use of relocate <b>will corrupt your working copy!</b>\nIf you are not sure what to do, please refer to our docs on <i>relocate</i>.\nDo you really want to relocate?"
-    IDS_WARN_UPDATETOREV_WITHMODS 
-                            "Your working copy has local modifications!\nNote: updating to another revision won't lose those modifications so the working copy\nwon't look exactly as it was in the revision you're updating to!"
     IDS_WARN_FOLDERNOTEMPTY "The target folder \n%s\nis not empty!\nAre you sure you want to checkout/export into that folder?"
     IDS_WARN_WARNING        "Warning"
     IDS_WARN_NOTE           "Notice"
@@ -3778,7 +3748,6 @@ STRINGTABLE
 BEGIN
     IDS_SVNERR_CHECKPATHORURL "Check the path and/or URL you've entered."
     IDS_SVNERR_RUNCLEANUP   "Please execute the 'Cleanup' command."
-    IDS_SVNERR_UPDATEFIRST  "You have to update your working copy first."
     IDS_SVNERR_CLEANUPORFRESHCHECKOUT 
                             "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
     IDS_SVNERR_UNLOCKFAILED "If you want to break the lock, use the 'Check For Modifications' dialog."
@@ -3825,7 +3794,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_PROGRS_PATHATREV    "%s - at revision: %d"
-    IDS_PROGRS_UPDATEPATH   "Updating %s"
     IDS_PROGRS_TIME         "%ld minute(s) and %ld second(s)"
     IDS_PROGRS_FINALINFO    "%s in %s"
     IDS_PROGRS_EXTERNALSEXCLUDED "Externals excluded"
@@ -4169,11 +4137,6 @@ BEGIN
     IDS_WARN_RELOCATEREALLYTITLE "Relocate Warning"
     IDS_WARN_COPYHEADWITHLOCALMODS 
                             "Your working copy has local modifications.\nIf you branch/tag from the HEAD revision, your local changes won't\nshow up in the branch/tag!"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SVNPROGRESS_UPDATEANDRETRY "Updating and retrying the lock..."
 END
 
 STRINGTABLE 
@@ -4539,7 +4502,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_PROGRS_CMD_UNLOCK   "Unlock"
-    IDS_PROGRS_CMD_UPDATE   "Update"
     IDS_PROGRS_CMD_MERGEREINTEGRATE "Reintegrate merge %s into %s"
 END
 

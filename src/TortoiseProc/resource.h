@@ -29,7 +29,6 @@
 #define IDR_ANIMATION                   148
 #define IDR_MOVEANI                     149
 #define IDD_RENAME                      151
-#define IDD_UPDATE                      152
 #define IDD_ADD                         155
 #define IDD_RELOCATE                    157
 #define IDD_CHANGEDFILES                158
@@ -145,7 +144,6 @@
 #define IDI_MERGE_BKG                   273
 #define IDI_RENAME_BKG                  274
 #define IDI_SWITCH_BKG                  275
-#define IDI_UPDATE_BKG                  276
 #define IDD_MERGEALL                    277
 #define IDD_PROPPAGE_LARGE              278
 #define IDD_MERGEWIZARD_REVRANGE        278
@@ -472,7 +470,6 @@
 #define IDS_SSL_ACCEPTQUESTION          1201
 #define IDC_TOLABEL                     1201
 #define IDS_SSL_CLIENTCERTIFICATEFILENAME 1202
-#define IDC_NOEXTERNALS                 1202
 #define IDS_SSL_PEM                     1203
 #define IDC_KEEPLOCK                    1203
 #define IDC_WHOLE_PROJECT               1203
@@ -732,7 +729,6 @@
 #define IDC_LIST_REMOTE                 1372
 #define IDC_LIST_REF_LEAFS              1372
 #define IDC_DEPTH                       1373
-#define IDC_GROUPMIDDLE                 1377
 #define IDC_NEWLINESCOLOR               1378
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
@@ -788,7 +784,6 @@
 #define IDS_WARN_SHAREFILEACCESS        1401
 #define IDS_WARN_RELOCATEREALLY         1402
 #define IDC_CHOOSELABEL                 1402
-#define IDS_WARN_UPDATETOREV_WITHMODS   1403
 #define IDC_RESOLVELABEL                1403
 #define IDS_WARN_FOLDERNOTEMPTY         1404
 #define IDC_LEAVELABEL                  1404
@@ -1438,7 +1433,6 @@
 #define IDS_PROGRS_CLOSE_LOCAL          3544
 #define IDS_PROGRS_NONRECURSIVEHINT     3580
 #define IDS_PROGRS_PATHATREV            3600
-#define IDS_PROGRS_UPDATEPATH           3601
 #define IDS_PROGRS_TIME                 3602
 #define IDS_PROGRS_FINALINFO            3603
 #define IDS_PROGRS_EXTERNALSEXCLUDED    3604
@@ -1459,7 +1453,6 @@
 #define IDS_PROGRS_CMD_RESOLVE          3662
 #define IDS_PROGRS_CMD_REVERT           3663
 #define IDS_PROGRS_CMD_UNLOCK           3664
-#define IDS_PROGRS_CMD_UPDATE           3665
 #define IDS_PROGRS_CMD_MERGEREINTEGRATE 3666
 #define IDS_SSL_SAVE_CERTPATH           3700
 #define IDS_REPOSTATUS_HEADREV          3800
@@ -1488,7 +1481,6 @@
 #define IDS_LOG_ALLBRANCH_TT            3937
 #define IDS_SVNERR_CHECKPATHORURL       4000
 #define IDS_SVNERR_RUNCLEANUP           4001
-#define IDS_SVNERR_UPDATEFIRST          4002
 #define IDS_SVNERR_CLEANUPORFRESHCHECKOUT 4003
 #define IDS_SVNERR_UNLOCKFAILED         4004
 #define IDS_SVNERR_UNLOCKFAILEDNOLOCK   4005
@@ -1549,7 +1541,6 @@
 #define IDS_SVNPROGRESS_MENUOPENPARENT  4502
 #define IDS_SVNPROGRESS_MENUMARKASRESOLVED 4503
 #define IDS_SVNPROGRESS_RESOLVED        4510
-#define IDS_SVNPROGRESS_UPDATEANDRETRY  4520
 #define IDS_SVNPROGRESS_EXPORTING       4530
 #define IDS_SVNPROGRESS_EXPORTINGTO     4531
 #define IDS_SVNPROGRESS_EXPORTINGWAIT   4532

@@ -110,7 +110,6 @@ public:
 		GitProgress_Revert,
 		GitProgress_Switch,
 		GitProgress_Unlock,
-		GitProgress_Update,
 		GitProgress_SendMail,
 	} Command;
 
@@ -289,7 +288,6 @@ private:
 	bool		CmdRevert(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
 	bool		CmdUnlock(CString& sWindowTitle, bool& localoperation);
-	bool		CmdUpdate(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 
 private:
