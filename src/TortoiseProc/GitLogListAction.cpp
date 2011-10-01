@@ -773,6 +773,8 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_MERGEREV:
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
+				if (m_HashMap[pSelLogEntry->m_CommitHash].size() > 0)
+					str = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 				// we need an URL to complete this command, so error out if we can't get an URL
 				if(CAppUtils::Merge(&str))
 				{
