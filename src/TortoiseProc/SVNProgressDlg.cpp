@@ -899,9 +899,6 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Export:
 		bSuccess = CmdExport(sWindowTitle, localoperation);
 		break;
-	case GitProgress_Import:
-		bSuccess = CmdImport(sWindowTitle, localoperation);
-		break;
 	case GitProgress_Lock:
 		bSuccess = CmdLock(sWindowTitle, localoperation);
 		break;
@@ -2047,28 +2044,6 @@ bool CGitProgressDlg::CmdExport(CString& /*sWindowTitle*/, bool& /*localoperatio
 		eol = _T("CR");
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_EXPORT)));
 	if (!Export(m_url, m_targetPathList[0], m_Revision, m_Revision, TRUE, m_options & ProgOptIgnoreExternals, m_depth, NULL, FALSE, eol))
-	{
-		ReportSVNError();
-		return false;
-	}
-#endif
-	return true;
-}
-
-bool CGitProgressDlg::CmdImport(CString& /*sWindowTitle*/, bool& /*localoperation*/)
-{
-#if 0
-	ASSERT(m_targetPathList.GetCount() == 1);
-	sWindowTitle.LoadString(IDS_PROGRS_TITLE_IMPORT);
-	sWindowTitle = m_targetPathList[0].GetUIFileOrDirectoryName()+_T(" - ")+sWindowTitle;
-	SetWindowText(sWindowTitle); // needs to be updated, see TSVN rev. 21375
-	SetBackgroundImage(IDI_IMPORT_BKG);
-	CString sCmdInfo;
-	sCmdInfo.Format(IDS_PROGRS_CMD_IMPORT,
-		m_targetPathList[0].GetWinPath(), (LPCTSTR)m_url.GetSVNPathString(),
-		m_options & ProgOptIncludeIgnored ? (LPCTSTR)(_T(", ") + sIgnoredIncluded) : _T(""));
-	ReportCmd(sCmdInfo);
-	if (!Import(m_targetPathList[0], m_url, m_sMessage, &m_ProjectProperties, svn_depth_infinity, m_options & ProgOptIncludeIgnored ? true : false, false))
 	{
 		ReportSVNError();
 		return false;

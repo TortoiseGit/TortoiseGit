@@ -100,7 +100,6 @@ public:
 		GitProgress_Commit,
 		GitProgress_Copy,
 		GitProgress_Export,
-		GitProgress_Import,
 		GitProgress_Lock,
 		GitProgress_Merge,
 		GitProgress_MergeReintegrate,
@@ -278,7 +277,6 @@ private:
 	bool		CmdCommit(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCopy(CString& sWindowTitle, bool& localoperation);
 	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
-	bool		CmdImport(CString& sWindowTitle, bool& localoperation);
 	bool		CmdLock(CString& sWindowTitle, bool& localoperation);
 	bool		CmdMerge(CString& sWindowTitle, bool& localoperation);
 	bool		CmdMergeAll(CString& sWindowTitle, bool& localoperation);

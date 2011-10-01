@@ -1431,14 +1431,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					svnCmd += folder_;
 				svnCmd += _T("\"");
 				break;
-			case ShellMenuImport:
-				svnCmd += _T("import /path:\"");
-				if (files_.size() > 0)
-					svnCmd += files_.front();
-				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
-				break;
 			case ShellMenuExport:
 				svnCmd += _T("export /path:\"");
 				if (files_.size() > 0)

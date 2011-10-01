@@ -22,7 +22,6 @@
 #define IDD_SVNPROGRESS                 134
 #define IDD_COMMITDLG                   135
 #define IDI_DIFF                        135
-#define IDD_IMPORT                      139
 #define IDD_SWITCH                      140
 #define IDD_COPY                        142
 #define IDD_SETTINGSMAIN                143
@@ -219,7 +218,6 @@
 #define IDC_EXTMERGE                    1016
 #define IDC_EXTDIFFPROPS                1016
 #define IDS_PROC_RESETBRANCH            1016
-#define IDC_MESSAGE                     1017
 #define IDC_DIFFVIEWER                  1017
 #define IDS_LOG_PUSH                    1017
 #define IDS_FILEDIFF_LOG                1018
@@ -276,9 +274,6 @@
 #define IDC_HINTLABEL                   1052
 #define IDC_REVISION_END                1053
 #define IDC_VERSIONABOUT                1054
-#define IDC_STATIC1                     1055
-#define IDC_STATIC2                     1056
-#define IDC_STATIC4                     1058
 #define IDC_CLEARAUTH                   1059
 #define IDC_UNKNOWN                     1061
 #define IDC_INPUTTEXT                   1064
@@ -555,7 +550,6 @@
 #define IDC_AUTHORSCASESENSITIVE        1265
 #define IDS_SETTINGS_ALTERNATIVEEDITOR_TT 1265
 #define IDS_PROC_OVERWRITE_CONFIRM      1266
-#define IDC_IMPORTIGNORED               1266
 #define IDS_PROC_REPOCREATEFINISHED     1267
 #define IDC_IGNOREANCESTRY              1267
 #define IDS_PROC_RELOCATEFINISHED       1268

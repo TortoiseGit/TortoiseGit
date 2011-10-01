@@ -84,7 +84,6 @@
 
 
 
-#include "ImportCommand.h"
 #include "LockCommand.h"
 
 
@@ -131,7 +130,6 @@ typedef enum
 	cmdExport,
 	cmdHelp,
 	cmdIgnore,
-	cmdImport,
 	cmdImportPatch,
 	cmdLock,
 	cmdLog,
@@ -205,7 +203,6 @@ static const struct CommandInfo
 	{	cmdExport,			_T("export")			},
 	{	cmdHelp,			_T("help")				},
 	{	cmdIgnore,			_T("ignore")			},
-	{	cmdImport,			_T("import")			},
 	{	cmdImportPatch,		_T("importpatch")		},
 	{	cmdLock,			_T("lock")				},
 	{	cmdLog,				_T("log")				},
@@ -388,8 +385,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 
 
 
-	case cmdImport:
-		return new ImportCommand;
 	case cmdLock:
 		return new LockCommand;
 	case cmdMergeAll:

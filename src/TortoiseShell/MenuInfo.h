@@ -16,7 +16,6 @@ enum GitCommands
 		ShellMenuCleanup,
 		ShellMenuResolve,
 		ShellMenuSwitch,
-		ShellMenuImport,
 		ShellMenuExport,
 		ShellMenuAbout,
 		ShellMenuCreateRepos,
