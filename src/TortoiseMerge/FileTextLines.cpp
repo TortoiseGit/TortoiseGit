@@ -24,6 +24,9 @@
 
 
 CFileTextLines::CFileTextLines(void)
+	: m_UnicodeType(CFileTextLines::AUTOTYPE)
+	, m_LineEndings(EOL::EOL_AUTOLINE)
+	, m_bReturnAtEnd(false)
 {
 }
 

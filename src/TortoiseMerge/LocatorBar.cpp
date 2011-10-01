@@ -28,10 +28,11 @@
 
 IMPLEMENT_DYNAMIC(CLocatorBar, CPaneDialog)
 CLocatorBar::CLocatorBar() : CPaneDialog()
+	, m_pMainFrm(NULL)
+	, m_pCacheBitmap(NULL)
+	, m_bMouseWithin(FALSE)
+	, m_nLines(-1)
 {
-	m_pMainFrm = NULL;
-	m_pCacheBitmap = NULL;
-	m_bMouseWithin = FALSE;
 }
 
 CLocatorBar::~CLocatorBar()
@@ -342,6 +343,5 @@ LRESULT CLocatorBar::OnMouseLeave(WPARAM, LPARAM)
 	Invalidate();
 	return 0;
 } 
-
 
 

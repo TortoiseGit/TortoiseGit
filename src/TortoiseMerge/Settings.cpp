@@ -23,12 +23,16 @@
 
 IMPLEMENT_DYNAMIC(CSettings, CPropertySheet)
 CSettings::CSettings(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
-	:CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
+	: CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
+	, m_pMainPage(NULL)
+	, m_pColorPage(NULL)
 {
 }
 
 CSettings::CSettings(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
-	:CPropertySheet(pszCaption, pParentWnd, iSelectPage)
+	: CPropertySheet(pszCaption, pParentWnd, iSelectPage)
+	, m_pMainPage(NULL)
+	, m_pColorPage(NULL)
 {
 	AddPropPages();
 }

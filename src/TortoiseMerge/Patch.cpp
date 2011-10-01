@@ -32,9 +32,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPatch::CPatch(void)
+	: m_nStrip(0)
+	, m_UnicodeType(CFileTextLines::AUTOTYPE)
+	, m_IsGitPatch(false)
 {
-	m_nStrip = 0;
-	m_IsGitPatch = false;
 }
 
 CPatch::~CPatch(void)

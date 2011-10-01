@@ -38,12 +38,11 @@ int CDiffData::abort_on_pool_failure (int /*retcode*/)
 #pragma warning(pop)
 
 CDiffData::CDiffData(void)
+	: m_bBlame(false)
 {
 	apr_initialize();
 	svn_dso_initialize2();
 	g_GitAdminDir.Init();
-
-	m_bBlame = false;
 
 	m_sPatchOriginal = _T(": original");
 	m_sPatchPatched = _T(": patched");

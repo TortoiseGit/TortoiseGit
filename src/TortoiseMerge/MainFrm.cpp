@@ -126,17 +126,24 @@ static UINT indicators[] =
 // CMainFrame construction/destruction
 
 CMainFrame::CMainFrame()
+	: m_pFindDialog(NULL)
+	, m_nSearchIndex(0)
+	, m_bInitSplitter(FALSE)
+	, m_bReversedPatch(FALSE)
+	, m_bHasConflicts(false)
+	, m_bInlineWordDiff(true)
+	, m_bLineDiff(true)
+	, m_bLocatorBar(true)
+	, m_nMoveMovesToIgnore(0)
+	, m_bLimitToDiff(false)
+	, m_bWholeWord(false)
+	, m_pwndLeftView(NULL)
+	, m_pwndRightView(NULL)
+	, m_pwndBottomView(NULL)
+	, m_bReadOnly(false)
+	, m_bBlame(false)
 {
-	m_pFindDialog = NULL;
-	m_nSearchIndex = 0;
-	m_bInitSplitter = FALSE;
 	m_bOneWay = (0 != ((DWORD)CRegDWORD(_T("Software\\TortoiseMerge\\OnePane"))));
-	m_bReversedPatch = FALSE;
-	m_bHasConflicts = false;
-	m_bInlineWordDiff = true;
-	m_bLineDiff = true;
-	m_bLocatorBar = true;
-	m_nMoveMovesToIgnore = 0;
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
 }
 

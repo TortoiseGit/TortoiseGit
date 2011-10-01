@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006,2008 - TortoiseSVN
+// Copyright (C) 2003-2006,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,13 +34,15 @@ static HCURSOR SplitterControl_hCursor1 = NULL;
 static HCURSOR SplitterControl_hCursor2 = NULL;
 
 CSplitterControl::CSplitterControl()
+	: m_bIsPressed(FALSE)
+	, m_nMin(-1)
+	, m_nMax(-1)
+	, m_bMouseOverControl(false)
+	, m_nType(0)
+	, m_nX(0)
+	, m_nY(0)
+	, m_nSavePos(0)
 {
-	// Mouse is pressed down or not ?
-	m_bIsPressed = FALSE;	
-
-	// Min and Max range of the splitter.
-	m_nMin = m_nMax = -1;
-	m_bMouseOverControl = false;
 }
 
 CSplitterControl::~CSplitterControl()

@@ -39,6 +39,7 @@ CEditPropertiesDlg::CEditPropertiesDlg(CWnd* pParent /*=NULL*/)
 	, m_bChanged(false)
 	, m_revision(SVNRev::REV_WC)
 	, m_bRevProps(false)
+	, m_pProjectProperties(NULL)
 {
 }
 

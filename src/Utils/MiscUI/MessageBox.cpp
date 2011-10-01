@@ -23,14 +23,15 @@
 
 
 CMessageBox::CMessageBox(void)
+	: m_hIcon(NULL)
+	, m_uButton1Ret(1)
+	, m_uButton2Ret(2)
+	, m_uButton3Ret(3)
+	, m_uCancelRet(0)
+	, m_bShowCheck(FALSE)
+	, m_bDestroyIcon(FALSE)
+	, m_nDefButton(0)
 {
-	m_hIcon = NULL;
-	m_uButton1Ret = 1;
-	m_uButton2Ret = 2;
-	m_uButton3Ret = 3;
-	m_uCancelRet = 0;
-	m_bShowCheck = FALSE;
-	m_bDestroyIcon = FALSE;
 }
 
 CMessageBox::~CMessageBox(void)
@@ -910,7 +911,6 @@ BOOL CMessageBox::PreTranslateMessage(MSG* pMsg)
 
 	return __super::PreTranslateMessage(pMsg);
 }
-
 
 
 

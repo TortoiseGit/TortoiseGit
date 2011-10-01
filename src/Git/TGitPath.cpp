@@ -37,14 +37,15 @@
 using namespace std;
 extern CGit g_Git;
 
-CTGitPath::CTGitPath(void) :
-	m_bDirectoryKnown(false)
+CTGitPath::CTGitPath(void)
+	: m_bDirectoryKnown(false)
 	, m_bIsDirectory(false)
 	, m_bIsURL(false)
 	, m_bURLKnown(false)
 	, m_bHasAdminDirKnown(false)
 	, m_bHasAdminDir(false)
 	, m_bIsValidOnWindowsKnown(false)
+	, m_bIsValidOnWindows(false)
 	, m_bIsReadOnly(false)
 	, m_bIsAdminDirKnown(false)
 	, m_bIsAdminDir(false)
@@ -74,6 +75,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	, m_bHasAdminDirKnown(false)
 	, m_bHasAdminDir(false)
 	, m_bIsValidOnWindowsKnown(false)
+	, m_bIsValidOnWindows(false)
 	, m_bIsReadOnly(false)
 	, m_bIsAdminDirKnown(false)
 	, m_bIsAdminDir(false)
