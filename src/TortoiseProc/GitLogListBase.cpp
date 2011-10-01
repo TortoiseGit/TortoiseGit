@@ -1541,7 +1541,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						for(int i=0;i<pRev->m_ParentHash.size();i++)
 						{
 							CString str;
-							str.Format(_T("%d parent"), i+1);
+							str.Format(_T("Parent %d"), i+1);
 							gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+((i+1)<<16),str);
 						}
 					}
@@ -1567,7 +1567,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						for(int i=0;i<pRev->m_ParentHash.size();i++)
 						{
 							CString str;
-							str.Format(_T("%d Parent"), i+1);
+							str.Format(_T("Parent %d"), i+1);
 							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS +((i+1)<<16),str);
 						}
 					}

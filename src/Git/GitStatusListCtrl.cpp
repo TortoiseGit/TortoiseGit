@@ -4768,7 +4768,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			for(int i=0;i<=max;i++)
 			{
 				CString str;
-				str.Format(_T("Diff with %d Parent"), i+1);
+				str.Format(_T("Diff with parent %d"), i+1);
 				//_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
 				grp.pszHeader = str.GetBuffer();
 				grp.iGroupId = i;

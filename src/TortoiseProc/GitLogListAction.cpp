@@ -222,7 +222,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if(cmd > r1->m_ParentHash.size())
 						{
 							CString str;
-							str.Format(_T("%d parent does not exist"), cmd);
+							str.Format(_T("Parent %d does not exist"), cmd);
 							CMessageBox::Show(NULL,str,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 							return;
 						}
