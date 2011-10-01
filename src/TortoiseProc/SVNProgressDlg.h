@@ -97,7 +97,6 @@ public:
 	{
 		GitProgress_Add,
 		GitProgress_Checkout,
-		GitProgress_Commit,
 		GitProgress_Copy,
 		GitProgress_Export,
 		GitProgress_Merge,
@@ -271,7 +270,6 @@ private:
 	// the commands to execute
 	bool		CmdAdd(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCheckout(CString& sWindowTitle, bool& localoperation);
-	bool		CmdCommit(CString& sWindowTitle, bool& localoperation);
 	bool		CmdCopy(CString& sWindowTitle, bool& localoperation);
 	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
 	bool		CmdMerge(CString& sWindowTitle, bool& localoperation);
