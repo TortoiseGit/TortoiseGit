@@ -2614,7 +2614,13 @@ BOOL CAppUtils::Merge(CString *commit)
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
 
-		Prodlg.DoModal();
+		if (dlg.m_bNoCommit)
+			Prodlg.m_PostCmdList.Add(_T("Commit"));
+
+		int ret = Prodlg.DoModal();
+
+		if (ret == IDC_PROGRESS_BUTTON1)
+			return Commit(_T(""), TRUE, CString(), CTGitPathList(), CTGitPathList(), true);
 
 		return !Prodlg.m_GitStatus;
 	}
