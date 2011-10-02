@@ -37,8 +37,7 @@
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
 
-		<Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
-		<Condition Message="[ProductName] requires Windows 2000 SP4 or later."><![CDATA[(VersionNT > 500) OR ((VersionNT = 500) AND (ServicePackLevel >= 4))]]></Condition>
+		<Condition Message="[ProductName] requires Windows XP SP3 or later."><![CDATA[(VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3))]]></Condition>
 
 		<?if $(var.Platform) = "x86" ?>
 		<Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseGit instead.">NOT Msix64</Condition>
