@@ -463,11 +463,9 @@ void CLogDlg::SetDlgTitle()
 	if (m_sTitle.IsEmpty())
 		GetWindowText(m_sTitle);
 
-	if (m_LogList.m_Path.IsEmpty())
+	if (m_LogList.m_Path.IsEmpty() || m_orgPath.GetWinPathString().IsEmpty())
 	{
-		CString projectDirectory;
-		m_orgPath.HasAdminDir(&projectDirectory);
-		CAppUtils::SetWindowTitle(m_hWnd, projectDirectory, m_sTitle);
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
 	}
 	else
 		CAppUtils::SetWindowTitle(m_hWnd, m_orgPath.GetWinPathString(), m_sTitle);
