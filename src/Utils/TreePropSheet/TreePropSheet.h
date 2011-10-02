@@ -13,7 +13,7 @@
 * $Author:$
 *
 * Revision History:
-*	$History:$
+*   $History:$
 *
 *********************************************************************/
 
@@ -32,15 +32,15 @@ namespace TreePropSheet
 {
 
 /**
-A property sheet, which can use a tree control instead of a tab 
+A property sheet, which can use a tree control instead of a tab
 control, to give the user access to the different pages.
 
-You can use it exactly the same way, as a CPropertySheet object. 
+You can use it exactly the same way, as a CPropertySheet object.
 Simply create CPropertyPage objects and add them via AddPage() to
 the sheet. If you would like to use the tree view mode (default),
 you can specify the path of the pages in the tree, by their name:
-The names of the pages can contain 
-double colons ("::"), which will specify the path of that page in the 
+The names of the pages can contain
+double colons ("::"), which will specify the path of that page in the
 tree control. I.e. if you have three pages with the following names:
 1. _T("Appearance::Toolbars")
 2. _T("Appearance::Menus")
@@ -55,12 +55,12 @@ Appearance
 
 Directories
 \endverbatim
-If you would like to use a double colon, which should not be 
+If you would like to use a double colon, which should not be
 interpreted as a path seperator, prefix it with a backslash ("\\::").
 
 To disable tree view mode and use the standard tabbed mode, call
 the SetTreeViewMode() method. This also allows you, to enable page
-captions and tree images for tree view mode. If you would like to 
+captions and tree images for tree view mode. If you would like to
 have images in the tree, but not all of your pages specify images or
 there are tree view items, which are not attached to a page (only
 parent items for real page items), you have to set default images
@@ -91,7 +91,7 @@ public:
 	Call this method, if you would like to use a tree control to browse
 	the pages, instead of the tab control.
 
-	This method needs to becalled, before DoModal() or Create(). If the 
+	This method needs to becalled, before DoModal() or Create(). If the
 	window has already been created, the method will fail.
 
 	@param bTreeViewMode
@@ -102,11 +102,11 @@ public:
 		contains the page title and an icon if specified with the page.
 		Ignored if bTreeViewMode is FALSE.
 	@param bTreeImages
-		TRUE if the page icons should be displayed in the page tree, 
+		TRUE if the page icons should be displayed in the page tree,
 		FALSE if there should be no icons in the page tree. Ignored if
 		bTreeViewMode is FALSE. If not all of your pages are containing
 		icons, or if there will be empty pages (parent nodes without a
-		related page, you need to call SetTreeDefaultImages() to avoid 
+		related page, you need to call SetTreeDefaultImages() to avoid
 		display errors.
 
 	@return
@@ -119,11 +119,11 @@ public:
 	view mode. The default value (if this method is not called) is 150
 	pixels.
 
-	This method needs to be called, before DoModeal() or Create(). 
+	This method needs to be called, before DoModeal() or Create().
 	Otherwise it will fail.
 
 	@param nWidth
-		The width in pixels for the page tree. 
+		The width in pixels for the page tree.
 
 	@return
 		TRUE on success, FALSE otherwise (if the window has already been
@@ -133,16 +133,16 @@ public:
 
 	/**
 	Specifies the text to be drawn on empty pages (pages for tree view
-	items, that are not related to a page, because they are only 
+	items, that are not related to a page, because they are only
 	parents for other items). This is only needed in tree view mode.
 
-	The specified text can contains a single "%s" placeholder which 
+	The specified text can contains a single "%s" placeholder which
 	will be replaced with the title of the empty page.
 	*/
 	void SetEmptyPageText(LPCTSTR lpszEmptyPageText);
 
 	/**
-	Allows you to specify, how the empty page message (see 
+	Allows you to specify, how the empty page message (see
 	SetEmptyPageText()) should be drawn.
 
 	@param dwFormat
@@ -166,14 +166,14 @@ public:
 	   page asignd.
 	2. An image that should be used for pages, which are not specifying
 	   any icons.
-	Standard image size is 16x16 Pixels, but if you call this method 
+	Standard image size is 16x16 Pixels, but if you call this method
 	before creating the sheet, the size of image 0 in this list will
 	be assumed as your preferred image size and all other icons must
 	have the same size.
 
 	@param pImages
 		Pointer to an image list with exactly to images, that should be
-		used as default images. The images are copied to an internal 
+		used as default images. The images are copied to an internal
 		list, so that the given list can be deleted after this call.
 	@param unBitmapID
 		Resource identifier for the bitmap, that contains the default
@@ -182,7 +182,7 @@ public:
 		Width of a singe image in pixels.
 	@param crMask
 		Color that should be interpreted as transparent.
-	
+
 	@return
 		TRUE on success, FALSE otherwise.
 	*/
@@ -203,9 +203,9 @@ public:
 	This helper allows you to easily set the icon of a property page.
 
 	This static method does nothing more, than extracting the specified
-	image as an icon from the given image list and assign the 
+	image as an icon from the given image list and assign the
 	icon-handle to the hIcon property of the pages PROPSHEETPAGE
-	structure (m_psp) and modify the structures flags, so that the 
+	structure (m_psp) and modify the structures flags, so that the
 	image will be recognized.
 
 	You need to call this method for a page, before adding the page
@@ -240,13 +240,13 @@ public:
 
 	/**
 	Checks, if the PSP_USEHICON flag is set in the PROPSHEETPAGE struct;
-	If this is the case, the flag will be removed and the icon 
+	If this is the case, the flag will be removed and the icon
 	specified by the hIcon attribute of the PROPSHEETPAGE struct will
 	be destroyed using DestroyIcon().
 
 	@note
 	You only have to call DestroyIcon() for icons, that have been
-	created using CreateIconIndirect() (i.e. used by 
+	created using CreateIconIndirect() (i.e. used by
 	CImageList::ExtractIcon()).
 
 	@return
@@ -261,7 +261,7 @@ protected:
 	Will be called to generate the message, that should be displayed on
 	an empty page, when the sheet is in tree view mode
 
-	This default implementation simply returns lpszEmptyPageMessage 
+	This default implementation simply returns lpszEmptyPageMessage
 	with the optional "%s" placeholder replaced by lpszCaption.
 
 	@param lpszEmptyPageMessage
@@ -301,10 +301,10 @@ protected:
 	Moves all childs by the specified amount of pixels.
 
 	@param nDx
-		Pixels to move the childs in horizontal direction (can be 
+		Pixels to move the childs in horizontal direction (can be
 		negative).
 	@param nDy
-		Pixels to move the childs in vertical direction (can be 
+		Pixels to move the childs in vertical direction (can be
 		negative).
 	*/
 	void MoveChildWindows(int nDx, int nDy);
@@ -321,13 +321,13 @@ protected:
 	@param lpszPath
 		Path of the item to create (see description of this class).
 	@param hParentItem
-		Handle of the item under which the path should be created or 
+		Handle of the item under which the path should be created or
 		TVI_ROOT to start from the root.
 	*/
 	HTREEITEM CreatePageTreeItem(LPCTSTR lpszPath, HTREEITEM hParent = TVI_ROOT);
 
 	/**
-	Splits the given path into the topmost item and the rest. See 
+	Splits the given path into the topmost item and the rest. See
 	description of this class for detailed path information.
 
 	I.e. when given the string "Appearance::Toolbars::Customize", the
@@ -339,7 +339,7 @@ protected:
 	/**
 	Tries to deactivate the current page, and hides it if successfull,
 	so that an empty page becomes visible.
-	
+
 	@return
 		TRUE if the current page has been deactivated successfully,
 		FALSE if the currently active page prevents a page change.
@@ -375,13 +375,13 @@ protected:
 
 	@return
 		TRUE on success, FALSE if no item exists for the currently active
-		page or if it was not possible to get information about the 
+		page or if it was not possible to get information about the
 		currently active page.
 	*/
 	BOOL SelectCurrentPageTreeItem();
 
 	/**
-	Updates the caption for the currently selected page (if the caption 
+	Updates the caption for the currently selected page (if the caption
 	is enabled).
 	*/
 	void UpdateCaption();
@@ -435,8 +435,8 @@ private:
 	/** The frame around the pages */
 	CPropPageFrame *m_pFrame;
 
-	/** 
-	TRUE, if a tree item selection by OnPageTreeSelChanged() is 
+	/**
+	TRUE, if a tree item selection by OnPageTreeSelChanged() is
 	performed currently.
 	*/
 	BOOL m_bPageTreeSelChangedActive;
@@ -453,9 +453,9 @@ private:
 	/** Default images. */
 	CImageList m_DefaultImages;
 
-	/** 
-	Message to be displayed on empty pages. May contain a "%s" 
-	placeholder which will be replaced by the caption of the empty 
+	/**
+	Message to be displayed on empty pages. May contain a "%s"
+	placeholder which will be replaced by the caption of the empty
 	page.
 	*/
 	CString m_strEmptyPageMessage;
