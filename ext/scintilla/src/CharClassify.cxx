@@ -5,9 +5,14 @@
 // Copyright 2006 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
+#include <stdlib.h>
 #include <ctype.h>
 
 #include "CharClassify.h"
+
+#ifdef SCI_NAMESPACE
+using namespace Scintilla;
+#endif
 
 // Shut up annoying Visual C++ warnings:
 #ifdef _MSC_VER

@@ -36,17 +36,8 @@
        Scintilla Bugs
     </h3>
     <p>
-       At the end of italics style runs characters can be chopped off. An example
-       is using Verdana 12 point italics for strings makes an ending double quote
-       half visible and an ending single quote invisible. This is hard to solve
-       completely, may be better to avoid these situations by, for example,
-       choosing a font like Times New Roman for strings. There is a specific kluge
-       for the end of line which adds some room for italics but this does not
-       work elsewhere.
-    </p>
-    <p>
-       Dragging over bold text in some fonts will ripple because of the difference in
-       size between drawing all of a string at once and drawing it in parts.
+       Dragging over text on some platforms (notably OS X) will ripple because Scintilla only measures text in whole pixels.
+       Could be improved by using floating-point coordinates.
     </p>
     <p>
       Automatic scrolling when text dragged near edge of window.
@@ -79,46 +70,20 @@
 	Stream folding which could be used to fold up the contents of HTML elements.
     </p>
     <p>
-	Persisting view state such as current folding into a stream or blob so it is easy
-	to restore.
-    </p>
-    <p>
-	Move line up and move line down keys or move selected lines up / down.
-    </p>
-    <p>
 	Printing of highlight lines and folding margin.
     </p>
     <p>
 	Flow diagrams inside editor similar to
-	<a href="http://www.eng.auburn.edu/grasp/grasp_main.shtml">
-	GRASP</a>.
-    </p>
-    <p>
-	A VCL component wrapper around Scintilla so it can be used with Delphi or
-	Borland C++ Builder.
-	There is <a href="http://www.pnotepad.org/scintilla/">some work</a>
-	on this available.
+	GRASP.
     </p>
     <p>
 	More lexers for other languages.
-    </p>
-    <p>
-	Automatically calculated range for horizontal scrolling.
-    </p>
-    <p>
-	Virtual space at the end of lines so the caret can be moved beyond the end
-	of lines with the cursor keys. May also make rectangular operations easier
-	to perform.
     </p>
     <h3>
 	SciTE To Do
     </h3>
     <p>
 	Good regular expression support through a plugin.
-    </p>
-    <p>
-	Allow tools to transform the selection, performing an operation like
-	indentation or sorting.
     </p>
     <p>
 	Allow file name based selection on all properties rather than just a chosen few.
@@ -141,9 +106,6 @@
     <p>
 	These are features I don't like or don't think are important enough to work on.
 	Implementations are welcome from others though.
-    </p>
-    <p>
-	Automatically saving modified menu shortcuts on exit.
     </p>
     <p>
 	Mouse wheel panning (press the mouse wheel and then move the mouse) on

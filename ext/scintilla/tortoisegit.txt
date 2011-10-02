@@ -1,0 +1,8 @@
+The following folders are not imported:
+bin
+cocoa
+gtk
+macosx
+test
+
+apply backgroundcolors.patch

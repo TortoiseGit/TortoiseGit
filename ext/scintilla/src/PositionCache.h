@@ -2,7 +2,7 @@
 /** @file PositionCache.h
  ** Classes for caching layout information.
  **/
-// Copyright 1998-2007 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2009 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #ifndef POSITIONCACHE_H
@@ -30,11 +30,11 @@ public:
 	enum { wrapWidthInfinite = 0x7ffffff };
 	int maxLineLength;
 	int numCharsInLine;
+	int numCharsBeforeEOL;
 	enum validLevel { llInvalid, llCheckTextAndStyle, llPositions, llLines } validity;
 	int xHighlightGuide;
 	bool highlightColumn;
-	int selStart;
-	int selEnd;
+	Selection *psel;
 	bool containsCaret;
 	int edgeColumn;
 	char *chars;
@@ -51,6 +51,7 @@ public:
 	// Wrapped line support
 	int widthLine;
 	int lines;
+	int wrapIndent; // In pixels
 
 	LineLayout(int maxLineLength_);
 	virtual ~LineLayout();
@@ -62,9 +63,10 @@ public:
 	bool InLine(int offset, int line) const;
 	void SetLineStart(int line, int start);
 	void SetBracesHighlight(Range rangeLine, Position braces[],
-		char bracesMatchStyle, int xHighlight);
-	void RestoreBracesHighlight(Range rangeLine, Position braces[]);
+		char bracesMatchStyle, int xHighlight, bool ignoreStyle);
+	void RestoreBracesHighlight(Range rangeLine, Position braces[], bool ignoreStyle);
 	int FindBefore(int x, int lower, int upper) const;
+	int EndLineStyle() const;
 };
 
 /**
@@ -91,7 +93,7 @@ public:
 	};
 	void Invalidate(LineLayout::validLevel validity_);
 	void SetLevel(int level_);
-	int GetLevel() { return level; }
+	int GetLevel() const { return level; }
 	LineLayout *Retrieve(int lineNumber, int lineCaret, int maxChars, int styleClock_,
 		int linesOnScreen, int linesInDoc);
 	void Dispose(LineLayout *ll);
@@ -108,23 +110,17 @@ public:
 	void Set(unsigned int styleNumber_, const char *s_, unsigned int len_, int *positions_, unsigned int clock);
 	void Clear();
 	bool Retrieve(unsigned int styleNumber_, const char *s_, unsigned int len_, int *positions_) const;
-	static int Hash(unsigned int styleNumber, const char *s, unsigned int len);
-	bool NewerThan(const PositionCacheEntry &other);
+	static int Hash(unsigned int styleNumber_, const char *s, unsigned int len);
+	bool NewerThan(const PositionCacheEntry &other) const;
 	void ResetClock();
 };
 
 // Class to break a line of text into shorter runs at sensible places.
 class BreakFinder {
-	// If a whole run is longer than lengthStartSubdivision then subdivide
-	// into smaller runs at spaces or punctuation.
-	enum { lengthStartSubdivision = 300 };
-	// Try to make each subdivided run lengthEachSubdivision or shorter.
-	enum { lengthEachSubdivision = 100 };
 	LineLayout *ll;
 	int lineStart;
 	int lineEnd;
 	int posLineStart;
-	bool utf8;
 	int nextBreak;
 	int *selAndEdge;
 	unsigned int saeSize;
@@ -132,11 +128,18 @@ class BreakFinder {
 	unsigned int saeCurrentPos;
 	int saeNext;
 	int subBreak;
+	Document *pdoc;
 	void Insert(int val);
 public:
-	BreakFinder(LineLayout *ll_, int lineStart_, int lineEnd_, int posLineStart_, bool utf8_, int xStart);
+	// If a whole run is longer than lengthStartSubdivision then subdivide
+	// into smaller runs at spaces or punctuation.
+	enum { lengthStartSubdivision = 300 };
+	// Try to make each subdivided run lengthEachSubdivision or shorter.
+	enum { lengthEachSubdivision = 100 };
+	BreakFinder(LineLayout *ll_, int lineStart_, int lineEnd_, int posLineStart_,
+		int xStart, bool breakForSelection, Document *pdoc_);
 	~BreakFinder();
-	int First();
+	int First() const;
 	int Next();
 };
 
@@ -150,9 +153,9 @@ public:
 	~PositionCache();
 	void Clear();
 	void SetSize(size_t size_);
-	int GetSize() { return size; }
+	size_t GetSize() const { return size; }
 	void MeasureWidths(Surface *surface, ViewStyle &vstyle, unsigned int styleNumber,
-		const char *s, unsigned int len, int *positions);
+		const char *s, unsigned int len, int *positions, Document *pdoc);
 };
 
 inline bool IsSpaceOrTab(int ch) {
