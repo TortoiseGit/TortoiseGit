@@ -42,8 +42,6 @@ CSetOverlayPage::CSetOverlayPage()
 	, m_bUnversionedAsModified(FALSE)
 	, m_bFloppy(FALSE)
 	, m_bShowExcludedAsNormal(TRUE)
-	, m_bShowIgnoredOverlay(FALSE)
-	, m_bShowUnversionedOverlay(FALSE)
 {
 	m_regOnlyExplorer = CRegDWORD(_T("Software\\TortoiseGit\\LoadDllOnlyInExplorer"), FALSE);
 	m_regDriveMaskRemovable = CRegDWORD(_T("Software\\TortoiseGit\\DriveMaskRemovable"));
@@ -58,8 +56,6 @@ CSetOverlayPage::CSetOverlayPage()
 	m_regCacheType = CRegDWORD(_T("Software\\TortoiseGit\\CacheType"), GetSystemMetrics(SM_REMOTESESSION) ? 2 : 1);
 	m_regUnversionedAsModified = CRegDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE);
 	m_regShowExcludedAsNormal = CRegDWORD(_T("Software\\TortoiseGit\\ShowExcludedAsNormal"), TRUE);
-	m_regShowIgnoredOverlay = CRegDWORD(_T("Software\\TortoiseGit\\ShowIgnoredOverlay"), TRUE);
-	m_regShowUnversionedOverlay = CRegDWORD(_T("Software\\TortoiseGit\\ShowUnversionedOverlay"), TRUE);
 
 	m_bOnlyExplorer = m_regOnlyExplorer;
 	m_bRemovable = m_regDriveMaskRemovable;
@@ -70,8 +66,6 @@ CSetOverlayPage::CSetOverlayPage()
 	m_bRAM = m_regDriveMaskRAM;
 	m_bUnknown = m_regDriveMaskUnknown;
 	m_bUnversionedAsModified = m_regUnversionedAsModified;
-	m_bShowIgnoredOverlay = m_regShowIgnoredOverlay;
-	m_bShowUnversionedOverlay = m_regShowUnversionedOverlay;
 	m_bShowExcludedAsNormal = m_regShowExcludedAsNormal;
 	m_sExcludePaths = m_regExcludePaths;
 	m_sExcludePaths.Replace(_T("\n"), _T("\r\n"));
@@ -99,8 +93,6 @@ void CSetOverlayPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_UNVERSIONEDASMODIFIED, m_bUnversionedAsModified);
 	DDX_Check(pDX, IDC_FLOPPY, m_bFloppy);
 	DDX_Check(pDX, IDC_SHOWEXCLUDEDASNORMAL, m_bShowExcludedAsNormal);
-	DDX_Check(pDX, IDC_SHOWIGNOREDOVERLAY, m_bShowIgnoredOverlay);
-	DDX_Check(pDX, IDC_SHOWUNVERSIONEDOVERLAY, m_bShowUnversionedOverlay);
 }
 
 BEGIN_MESSAGE_MAP(CSetOverlayPage, ISettingsPropPage)
@@ -120,8 +112,6 @@ BEGIN_MESSAGE_MAP(CSetOverlayPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_CACHENONE, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_UNVERSIONEDASMODIFIED, &CSetOverlayPage::OnChange)
 	ON_BN_CLICKED(IDC_SHOWEXCLUDEDASNORMAL, &CSetOverlayPage::OnChange)
-	ON_BN_CLICKED(IDC_SHOWIGNOREDOVERLAY, &CSetOverlayPage::OnChange)
-	ON_BN_CLICKED(IDC_SHOWUNVERSIONEDOVERLAY, &CSetOverlayPage::OnChange)
 END_MESSAGE_MAP()
 
 BOOL CSetOverlayPage::OnInitDialog()
@@ -244,8 +234,6 @@ BOOL CSetOverlayPage::OnApply()
 	if (DWORD(m_regUnversionedAsModified) != DWORD(m_bUnversionedAsModified))
 		m_restart = Restart_Cache;
 	Store (m_bUnversionedAsModified, m_regUnversionedAsModified);
-	Store (m_bShowIgnoredOverlay, m_regShowIgnoredOverlay);
-	Store (m_bShowUnversionedOverlay, m_regShowUnversionedOverlay);
 	if (DWORD(m_regShowExcludedAsNormal) != DWORD(m_bShowExcludedAsNormal))
 		m_restart = Restart_Cache;
 	Store (m_bShowExcludedAsNormal, m_regShowExcludedAsNormal);
@@ -264,7 +252,3 @@ BOOL CSetOverlayPage::OnApply()
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
-
-
-
-

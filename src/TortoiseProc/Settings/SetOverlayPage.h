@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,8 +59,6 @@ private:
 	BOOL			m_bRAM;
 	BOOL			m_bUnknown;
 	BOOL			m_bUnversionedAsModified;
-	BOOL			m_bShowIgnoredOverlay;
-	BOOL			m_bShowUnversionedOverlay;
 	BOOL			m_bShowExcludedAsNormal;
 	CRegDWORD		m_regOnlyExplorer;
 	CRegDWORD		m_regDriveMaskRemovable;
@@ -71,8 +69,6 @@ private:
 	CRegDWORD		m_regDriveMaskRAM;
 	CRegDWORD		m_regDriveMaskUnknown;
 	CRegDWORD		m_regUnversionedAsModified;
-	CRegDWORD		m_regShowIgnoredOverlay;
-	CRegDWORD		m_regShowUnversionedOverlay;
 	CRegDWORD		m_regShowExcludedAsNormal;
 	CToolTips		m_tooltips;
 	CRegString		m_regExcludePaths;
@@ -81,6 +77,4 @@ private:
 	CString			m_sIncludePaths;
 	CRegDWORD		m_regCacheType;
 	DWORD			m_dwCacheType;
-
-	BOOL			m_bModified;
 };

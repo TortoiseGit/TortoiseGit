@@ -167,6 +167,7 @@
 #define IDB_BITMAP2                     336
 #define IDB_BITMAP_REFTYPE              336
 #define IDI_IMPORTPATHCES_BKG           337
+#define IDD_SETTINGSOVERLAYHANDLERS     338
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -833,6 +834,7 @@
 #define IDC_CHECK_SWITCH                1525
 #define IDC_CHECK_BRANCH                1527
 #define IDC_EDIT_BRANCH                 1528
+#define IDC_SHOWLOCKEDOVERLAY           1529
 #define IDC_RADIO_SINCE                 1532
 #define IDC_COMBOBOXEX_SINCE            1533
 #define IDC_RADIO_NUM                   1534
@@ -853,6 +855,9 @@
 #define IDC_COLOR_LINE2                 1547
 #define IDC_COLOR_LINE3                 1548
 #define IDC_COLOR_LINE4                 1549
+#define IDC_SHOWADDEDOVERLAY            1549
+#define IDC_SHOWREADONLYOVERLAY         1550
+#define IDC_SHOWDELETEDOVERLAY          1551
 #define IDC_MSYSGIT_PATH                1550
 #define IDS_PROC_RENAME                 1550
 #define IDC_RADIO_RESET_SOFT            1550
@@ -1569,7 +1574,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        338
+#define _APS_NEXT_RESOURCE_VALUE        339
 #define _APS_NEXT_COMMAND_VALUE         32840
 #define _APS_NEXT_CONTROL_VALUE         1671
 #define _APS_NEXT_SYMED_VALUE           201

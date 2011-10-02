@@ -332,15 +332,11 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Icon Overlays"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Icon Overlays/Status Columns",IDC_STATIC,12,7,274,56
+    GROUPBOX        "Icon Overlays/Status Columns",IDC_STATIC,12,7,274,39
     CONTROL         "Show &overlays and context menu only in explorer",IDC_ONLYEXPLORER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,17,260,10
-    CONTROL         "Show overlay for ignored items",IDC_SHOWIGNOREDOVERLAY,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,28,260,10
-    CONTROL         "Show overlay for unversioned items",IDC_SHOWUNVERSIONEDOVERLAY,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,39,261,10
     CONTROL         "Unversioned files mark parent folder as modified",IDC_UNVERSIONEDASMODIFIED,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,50,259,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,30,259,10
     GROUPBOX        "Status cache",IDC_STATIC,12,65,274,22
     CONTROL         "&Default",IDC_CACHEDEFAULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,74,60,10
     CONTROL         "Shell Extended",IDC_CACHESHELL2,"Button",BS_AUTORADIOBUTTON,83,74,62,10
@@ -360,6 +356,22 @@ BEGIN
     EDITTEXT        IDC_INCLUDEPATHS,117,177,169,22,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
     CONTROL         "Show excluded folders as normal",IDC_SHOWEXCLUDEDASNORMAL,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,200,268,10
+END
+
+IDD_SETTINGSOVERLAYHANDLERS DIALOGEX 0, 0, 300, 217
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Icon Overlays::Overlay Handlers"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        "Enabled Overlay Handlers",IDC_STATIC,7,7,286,203
+    LTEXT           "You can disable specific Overlay handlers here.\nDisabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays.",IDC_STATIC,14,25,270,32
+    LTEXT           "Note: this affects all Tortoise clients, not just TortoiseGit!",IDC_STATIC,14,66,270,8
+    CONTROL         "Ignored",IDC_SHOWIGNOREDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,87,270,10
+    CONTROL         "Unversioned",IDC_SHOWUNVERSIONEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,102,270,10
+    CONTROL         "Added",IDC_SHOWADDEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,116,269,10
+    CONTROL         "Locked",IDC_SHOWLOCKEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,132,270,10
+    CONTROL         "Needs-lock",IDC_SHOWREADONLYOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,147,270,10
+    CONTROL         "Deleted",IDC_SHOWDELETEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,162,270,10
 END
 
 IDD_SETTINGSPROXY DIALOGEX 0, 0, 300, 217
@@ -1800,6 +1812,16 @@ BEGIN
         VERTGUIDE, 117
         VERTGUIDE, 166
         VERTGUIDE, 286
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_SETTINGSOVERLAYHANDLERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        VERTGUIDE, 14
+        VERTGUIDE, 284
         TOPMARGIN, 7
         BOTTOMMARGIN, 210
     END

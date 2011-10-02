@@ -46,6 +46,7 @@ void CSettings::AddPropPages()
 	m_pMainPage = new CSetMainPage();
 	m_pOverlayPage = new CSetOverlayPage();
 	m_pOverlaysPage = new CSetOverlayIcons();
+	m_pOverlayHandlersPage = new CSetOverlayHandlers();
 	m_pProxyPage = new CSetProxyPage();
 	m_pProgsDiffPage = new CSettingsProgsDiff();
 	m_pProgsMergePage = new CSettingsProgsMerge();
@@ -74,6 +75,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pMainPage, m_pMainPage->GetIconID());
 	SetPageIcon(m_pOverlayPage, m_pOverlayPage->GetIconID());
 	SetPageIcon(m_pOverlaysPage, m_pOverlaysPage->GetIconID());
+	SetPageIcon(m_pOverlayHandlersPage, m_pOverlayHandlersPage->GetIconID());
 	SetPageIcon(m_pProxyPage, m_pProxyPage->GetIconID());
 	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
 	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
@@ -98,6 +100,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pMainPage);
 	AddPage(m_pOverlayPage);
 	AddPage(m_pOverlaysPage);
+	AddPage(m_pOverlayHandlersPage);
 	AddPage(m_pProxyPage);
 	AddPage(m_pProgsDiffPage);
 	AddPage(m_pProgsMergePage);
@@ -132,6 +135,7 @@ void CSettings::RemovePropPages()
 	delete m_pMainPage;
 	delete m_pOverlayPage;
 	delete m_pOverlaysPage;
+	delete m_pOverlayHandlersPage;
 	delete m_pProxyPage;
 	delete m_pProgsDiffPage;
 	delete m_pProgsMergePage;
@@ -161,6 +165,7 @@ void CSettings::HandleRestart()
 	restart |= m_pMainPage->GetRestart();
 	restart |= m_pOverlayPage->GetRestart();
 	restart |= m_pOverlaysPage->GetRestart();
+	restart |= m_pOverlayHandlersPage->GetRestart();
 	restart |= m_pProxyPage->GetRestart();
 	restart |= m_pProgsDiffPage->GetRestart();
 	restart |= m_pProgsMergePage->GetRestart();
@@ -294,6 +299,10 @@ BOOL CSettings::OnInitDialog()
 	if(this->m_DefaultPage == _T("overlays"))
 	{
 		this->SetActivePage(this->m_pOverlaysPage);
+	}
+	if(this->m_DefaultPage == _T("overlayshandlers"))
+	{
+		this->SetActivePage(this->m_pOverlayHandlersPage);
 	}
 	if(this->m_DefaultPage == _T("proxy"))
 	{

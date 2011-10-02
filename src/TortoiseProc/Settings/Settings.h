@@ -1,6 +1,7 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2003-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,11 +23,12 @@
 #include "SetMainPage.h"
 #include "SetProxyPage.h"
 #include "SetOverlayPage.h"
+#include "SetOverlayIcons.h"
+#include "SetOverlayHandlers.h"
 #include "SettingsProgsDiff.h"
 #include "SettingsProgsAlternativeEditor.h"
 #include "SettingsProgsMerge.h"
 #include "SettingsProgsUniDiff.h"
-#include "SetOverlayIcons.h"
 #include "SetLookAndFeelPage.h"
 #include "SetDialogs.h"
 #include "SettingsColors.h"
@@ -73,6 +75,7 @@ private:
 	CSetProxyPage *						m_pProxyPage;
 	CSetOverlayPage *					m_pOverlayPage;
 	CSetOverlayIcons *					m_pOverlaysPage;
+	CSetOverlayHandlers *				m_pOverlayHandlersPage;
 	CSettingsProgsDiff*					m_pProgsDiffPage;
 	CSettingsProgsMerge *				m_pProgsMergePage;
 	CSettingsProgsUniDiff *				m_pProgsUniDiffPage;

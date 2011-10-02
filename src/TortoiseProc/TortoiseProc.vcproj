@@ -1605,6 +1605,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Settings\SetOverlayHandlers.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SetOverlayHandlers.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SetOverlayIcons.cpp"
 					>
 				</File>
