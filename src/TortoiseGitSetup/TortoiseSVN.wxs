@@ -20,11 +20,6 @@
 		<Property Id="SSHRadio">Plink</Property>
 
 		<!-- Launch Condition related properties ................................................................................. -->
-		<Property Id="VERSIONIE">
-			<RegistrySearch Id="RegSearchIeVersion" Root="HKLM" Key="SOFTWARE\Microsoft\Internet Explorer" Name="Version" Type="raw" Win64="$(var.Win64YesNo)" />
-		</Property>
-		<Condition Message="[ProductName] needs at least Internet Explorer 5">NOT ((VERSIONIE&lt;&lt;"1") OR (VERSIONIE&lt;&lt;"2") OR (VERSIONIE&lt;&lt;"3") OR (VERSIONIE&lt;&lt;"4"))</Condition>
-
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
 
