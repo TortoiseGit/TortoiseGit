@@ -160,6 +160,10 @@ BOOL CFileDiffDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CString temp;
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	this->m_ctrRev1Edit.Init();
 	this->m_ctrRev2Edit.Init();
 
