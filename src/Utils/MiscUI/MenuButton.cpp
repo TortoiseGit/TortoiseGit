@@ -35,10 +35,12 @@ IMPLEMENT_DYNCREATE(CMenuButton, CMFCMenuButton)
 CMenuButton::CMenuButton(void) : CMFCMenuButton()
 	, m_nDefault(-1)
 	, m_bMarkDefault(TRUE)
+	, m_bRealMenuIsActive(false)
 {
 	m_bOSMenu = TRUE;
 	m_bDefaultClick = TRUE;
 	m_bTransparent = TRUE;
+	m_bMenuIsActive = TRUE;
 
 	m_btnMenu.CreatePopupMenu();
 	m_hMenu = m_btnMenu.GetSafeHmenu();
@@ -65,12 +67,16 @@ void CMenuButton::RemoveAll()
 {
 	m_sEntries.RemoveAll();
 	m_nDefault = m_nMenuResult = -1;
+	m_bMenuIsActive = TRUE;
 }
 
 INT_PTR CMenuButton::AddEntry(const CString& sEntry)
 {
 	INT_PTR ret = m_sEntries.Add(sEntry);
 	m_btnMenu.AppendMenu(MF_STRING | MF_BYCOMMAND, m_sEntries.GetCount(), sEntry);
+	if (m_sEntries.GetCount() == 2)
+		m_bMenuIsActive = FALSE;
+
 	if (ret == 0)
 		SetCurrentEntry(ret);
 	return ret;
@@ -123,4 +129,19 @@ void CMenuButton::OnDestroy()
 	m_sEntries.RemoveAll();
 
 	CMFCMenuButton::OnDestroy();
+}
+
+void CMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
+{
+	if (m_bMenuIsActive && !m_bRealMenuIsActive)
+		CMFCButton::OnDraw(pDC, rect, uiState);
+	else
+		CMFCMenuButton::OnDraw(pDC, rect, uiState);
+}
+
+void CMenuButton::OnShowMenu()
+{
+	m_bRealMenuIsActive = true;
+	CMFCMenuButton::OnShowMenu();
+	m_bRealMenuIsActive = false;
 }

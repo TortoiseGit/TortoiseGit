@@ -78,6 +78,11 @@ public:
 
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	bool	m_bRealMenuIsActive;
+	virtual void OnShowMenu();
+	afx_msg void OnDraw(CDC* pDC, const CRect& rect, UINT uiState);
+
 	afx_msg BOOL OnClicked();
 	afx_msg void OnDestroy();
 
