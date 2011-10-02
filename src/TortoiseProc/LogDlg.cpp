@@ -227,8 +227,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_cHidePaths.SetCheck(BST_INDETERMINATE);
 
 
-	//theme.SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
-	//theme.SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
+	//SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
+	//SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
 	// set up the columns
 	m_LogList.DeleteAllItems();

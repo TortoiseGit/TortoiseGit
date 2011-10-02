@@ -332,8 +332,7 @@ void CGitLogListBase::PreSubclassWindow()
 	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
 	// load the icons for the action columns
 //	m_Theme.Open(m_hWnd, L"ListView");
-	m_Theme.Open(m_hWnd, L"Explorer::ListView;ListView");
-	m_Theme.SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 	CHintListCtrl::PreSubclassWindow();
 }
 
@@ -495,8 +494,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(Index);
 	HBRUSH brush = NULL;
 
-	if (m_Theme.IsAppThemed() && m_bVista)
+	if (IsAppThemed() && m_bVista)
 	{
+		HTHEME hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 		int state = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
 		{
@@ -520,8 +520,8 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 		}
 		else
 		{
-			if (m_Theme.IsBackgroundPartiallyTransparent(LVP_LISTITEM, state))
-				m_Theme.DrawParentBackground(m_hWnd, hdc, &rect);
+			if (IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTITEM, state))
+				DrawThemeParentBackground(m_hWnd, hdc, &rect);
 
 			CRect rectDraw = rect;
 			if(rItem.state & LVIS_SELECTED)
@@ -529,8 +529,9 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 			else
 				rectDraw.InflateRect(1,1);
 
-			m_Theme.DrawBackground(hdc, LVP_LISTITEM, state, rectDraw, &rect);
+			DrawThemeBackground(hTheme, hdc, LVP_LISTITEM, state, rectDraw, &rect);
 		}
+		CloseThemeData(hTheme);
 	}
 	else
 	{
@@ -574,6 +575,10 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 
 	CDC W_Dc;
 	W_Dc.Attach(hdc);
+
+	HTHEME hTheme = NULL;
+	if (IsAppThemed() && m_bVista)
+		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 	for(unsigned int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
 	{
@@ -623,7 +628,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		}
 
 		//When row selected, ajust label color
-		if (!(m_Theme.IsAppThemed() && m_bVista))
+		if (!(IsAppThemed() && m_bVista))
 			if (rItem.state & LVIS_SELECTED)
 				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
 
@@ -658,13 +663,13 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
 
 			//Draw text inside label
-			if (m_Theme.IsAppThemed() && m_bVista)
+			if (IsAppThemed() && m_bVista)
 			{
 				int txtState = LISS_NORMAL;
 				if (rItem.state & LVIS_SELECTED)
 					txtState = LISS_SELECTED;
 
-				m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, 0, &rt);
+				DrawThemeText(hTheme,hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, 0, &rt);
 			}
 			else
 			{
@@ -695,13 +700,13 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	}
 	rt.right=rect.right;
 
-	if (m_Theme.IsAppThemed() && m_bVista)
+	if (IsAppThemed() && m_bVista)
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)
 			txtState = LISS_SELECTED;
 
-		m_Theme.DrawText(hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER, 0, &rt);
+		DrawThemeText(hTheme,hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER, 0, &rt);
 	}
 	else
 	{
@@ -716,6 +721,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 		}
 	}
+
+	if (hTheme)
+		CloseThemeData(hTheme);
 
 	W_Dc.Detach();
 }
@@ -1110,7 +1118,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (data->bCopiedSelf)
 					{
 						// only change the background color if the item is not 'hot' (on vista with m_Themes enabled)
-						if (!m_Theme.IsAppm_Themed() || !m_bVista || ((pLVCD->nmcd.uItemState & CDIS_HOT)==0))
+						if (!IsAppThemed()) || !m_bVista || ((pLVCD->nmcd.uItemState & CDIS_HOT)==0))
 							pLVCD->clrTextBk = GetSysColor(COLOR_MENU);
 					}
 

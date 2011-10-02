@@ -19,7 +19,6 @@
 #include "stdafx.h"
 #include "SetBugTraq.h"
 #include "SetBugTraqAdv.h"
-#include "XPTheme.h"
 
 IMPLEMENT_DYNAMIC(CSetBugTraq, ISettingsPropPage)
 
@@ -72,8 +71,7 @@ BOOL CSetBugTraq::OnInitDialog()
 	temp.LoadString(IDS_SETTINGS_BUGTRAQ_PARAMETERSCOL);
 	m_cBugTraqList.InsertColumn(2, temp);
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_cBugTraqList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	RebuildBugTraqList();
 

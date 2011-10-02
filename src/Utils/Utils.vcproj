@@ -641,10 +641,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MiscUI\OddButton.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MiscUI\Picture.cpp"
 				>
 			</File>
@@ -666,14 +662,6 @@
 			</File>
 			<File
 				RelativePath=".\MiscUI\WaterEffect.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MiscUI\XPImageButton.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MiscUI\XPTheme.cpp"
 				>
 			</File>
 		</Filter>

@@ -21,7 +21,6 @@
 #include "SetHooks.h"
 #include "SetHooksAdv.h"
 #include "Hooks.h"
-#include "XPTheme.h"
 
 IMPLEMENT_DYNAMIC(CSetHooks, ISettingsPropPage)
 
@@ -77,8 +76,7 @@ BOOL CSetHooks::OnInitDialog()
 	temp.LoadString(IDS_SETTINGS_HOOKS_SHOWCOL);
 	m_cHookList.InsertColumn(4, temp);
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_cHookList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	RebuildHookList();
 

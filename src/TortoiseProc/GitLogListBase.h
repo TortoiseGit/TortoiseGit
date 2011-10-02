@@ -21,7 +21,6 @@
 #pragma once
 
 #include "HintListCtrl.h"
-#include "XPTheme.h"
 #include "CommonResource.h"
 #include "Git.h"
 #include "ProjectProperties.h"
@@ -448,8 +447,7 @@ public:
 protected:
 	CComCriticalSection	m_critSec;
 
-	CXPTheme			m_Theme;
-	BOOL				m_bVista;
+	bool				m_bVista;
 
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;

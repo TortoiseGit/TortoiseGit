@@ -313,7 +313,6 @@ private:
 	DWORD				m_maxChild;
 	HACCEL				m_hAccel;
 
-	//CXPTheme			theme;
 	bool				m_bVista;
 };
 static UINT WM_REVSELECTED = RegisterWindowMessage(_T("TORTOISEGit_REVSELECTED_MSG"));

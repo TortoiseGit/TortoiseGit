@@ -26,7 +26,6 @@
 #include "Git.h"
 #include "HintListCtrl.h"
 #include "Colors.h"
-#include "XPImageButton.h"
 #include "FilterEdit.h"
 #include "MessageBox.h"
 #include "Tooltip.h"
@@ -150,8 +149,7 @@ private:
 	CMenuButton			m_cRev2Btn;
 	CFilterEdit			m_cFilter;
 
-	CXPImageButton		m_SwitchButton;
-	HICON				m_hSwitchIcon;
+	CMFCButton			m_SwitchButton;
 	CColors				m_colors;
 	CHintListCtrl		m_cFileList;
 	bool				m_bBlame;
