@@ -1,5 +1,8 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+
+//based on:
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,9 +21,6 @@
 //
 #pragma once
 
-#include "XPTheme.h"
-#include "OddButton.h"
-
 /**
  * \ingroup Utils
  * A button control with a menu to choose from different
@@ -29,7 +29,7 @@
  * part will bring up a menu where the user can choose what
  * action the button should do.
  */
-class CMenuButton : public COddButton
+class CMenuButton : public CMFCMenuButton
 {
 public:
 	DECLARE_DYNCREATE(CMenuButton);
@@ -57,7 +57,7 @@ public:
 	/**
 	 * Returns the currently shown entry index of the button.
 	 */
-	INT_PTR	GetCurrentEntry() const {return m_currentEntry;}
+	INT_PTR	GetCurrentEntry() const { return (m_nMenuResult == 0) ? m_nDefault - 1 : m_nMenuResult - 1; }
 
 	/**
 	 * Sets which of the menu strings should be shown in the
@@ -72,35 +72,19 @@ public:
 	 * the control is drawn with theming support if the underlying
 	 * OS has it enabled and supports it.
 	 */
-	void	UseThemes(bool bUseThemes);
-
 	void	RemoveAll();
 
-public:
-	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+	bool	m_bMarkDefault;
+
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg BOOL OnClicked();
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnNMThemeChanged(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnDestroy();
 
-	void DrawArrow(CDC* pDC, RECT* pRect, COLORREF clrArrow = ::GetSysColor(COLOR_BTNTEXT));
-	bool ShowMenu();
+	CMenu	m_btnMenu;
+	INT_PTR	m_nDefault;
 
 	DECLARE_MESSAGE_MAP()
 
-	bool	m_bMouseOver;
-	bool	m_bUseThemes;
 	CStringArray m_sEntries;
-	int		m_SeparatorX;
-	INT_PTR	m_currentEntry;
-
-	CXPTheme m_xpButton;
-
-private:
-	typedef COddButton _Inherited;
 };
-

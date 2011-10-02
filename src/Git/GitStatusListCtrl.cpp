@@ -51,7 +51,6 @@
 //#include "AddDlg.h"
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
-#include "XPTheme.h"
 #include "CommonResource.h"
 #include "AppUtils.h"
 
@@ -225,8 +224,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetRedraw(false);
 	SetExtendedStyle(exStyle);
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
@@ -4138,7 +4136,7 @@ void CGitStatusListCtrl::PreSubclassWindow()
 {
 	CListCtrl::PreSubclassWindow();
 	EnableToolTips(TRUE);
-	m_Theme.SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(GetSafeHwnd(), L"Explorer", NULL);
 }
 
 INT_PTR CGitStatusListCtrl::OnToolHitTest(CPoint point, TOOLINFO* pTI) const

@@ -3,7 +3,7 @@
 	<?include Includes.wxi?>
 	<Product UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Id="*" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Codepage="1252">
 
-		<Package Id="*" Keywords="$(var.PackageKeywords)" Description="$(var.PackageDescription)" Comments="$(var.PackageComments)" Manufacturer="$(var.PackageManufacturer)" InstallerVersion="300" Platform="$(var.PackagePlatforms)" Languages="1033" Compressed="yes" SummaryCodepage="1252" InstallPrivileges="elevated" />
+		<Package Id="*" Keywords="$(var.PackageKeywords)" Description="$(var.PackageDescription)" Comments="$(var.PackageComments)" Manufacturer="$(var.PackageManufacturer)" InstallerVersion="301" Platform="$(var.PackagePlatforms)" Languages="1033" Compressed="yes" SummaryCodepage="1252" InstallPrivileges="elevated" />
 		<Upgrade Id="$(var.UpgradeGuid)">
 			<!-- upgrade is flagged if current-install is newer than or equal to package -->
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
@@ -20,25 +20,10 @@
 		<Property Id="SSHRadio">Plink</Property>
 
 		<!-- Launch Condition related properties ................................................................................. -->
-		<Property Id="VERSIONIE">
-			<RegistrySearch Id="RegSearchIeVersion" Root="HKLM" Key="SOFTWARE\Microsoft\Internet Explorer" Name="Version" Type="raw" Win64="$(var.Win64YesNo)" />
-		</Property>
-		<Condition Message="[ProductName] needs at least Internet Explorer 5">NOT ((VERSIONIE&lt;&lt;"1") OR (VERSIONIE&lt;&lt;"2") OR (VERSIONIE&lt;&lt;"3") OR (VERSIONIE&lt;&lt;"4"))</Condition>
-
-		<?if $(var.Platform) = "x86" ?>
-		<Property Id="GDIPLUSINSTALLED">
-			<DirectorySearch Id="WND" Path="[SystemFolder]">
-				<FileSearch Name="GDIPlus.dll" />
-			</DirectorySearch>
-		</Property>
-		<Condition Message="You must have GDIPlus installed. Please download it from Microsoft and copy the GDIPlus.dll into your Windows\System32 folder."><![CDATA[((GDIPLUSINSTALLED<>"") OR (VersionNT <> 500))]]></Condition>
-		<?endif ?>
-
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
 
-		<Condition Message="[ProductName] requires a Windows NT based OS (Windows 2000 or later, specifically).">VersionNT</Condition>
-		<Condition Message="[ProductName] requires Windows 2000 SP4 or later."><![CDATA[(VersionNT > 500) OR ((VersionNT = 500) AND (ServicePackLevel >= 4))]]></Condition>
+		<Condition Message="[ProductName] requires Windows XP SP3 or later."><![CDATA[(VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3))]]></Condition>
 
 		<?if $(var.Platform) = "x86" ?>
 		<Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseGit instead.">NOT Msix64</Condition>

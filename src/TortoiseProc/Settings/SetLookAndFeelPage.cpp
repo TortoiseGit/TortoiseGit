@@ -24,7 +24,6 @@
 #include "StringUtils.h"
 #include ".\setlookandfeelpage.h"
 #include "MessageBox.h"
-#include "XPTheme.h"
 #include "MenuInfo.h"
 #include "ShellCache.h"
 
@@ -142,8 +141,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, _T(""));
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	m_cMenuList.SetRedraw(false);
 
@@ -271,8 +269,7 @@ BOOL CSetExtMenu::OnInitDialog()
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, _T(""));
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", NULL);
 
 	m_cMenuList.SetRedraw(false);
 

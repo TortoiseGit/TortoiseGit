@@ -26,7 +26,6 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "ShellUpdater.h"
-#include "XPTheme.h"
 
 IMPLEMENT_DYNAMIC(CSetOverlayIcons, ISettingsPropPage)
 CSetOverlayIcons::CSetOverlayIcons()
@@ -127,8 +126,7 @@ BOOL CSetOverlayIcons::OnInitDialog()
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_cIconList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	ShowIconSet(true);
 

@@ -28,7 +28,6 @@
 #include "StringUtils.h"
 #include "ProgressDlg.h"
 #include "InputLogDlg.h"
-#include "XPTheme.h"
 
 
 IMPLEMENT_DYNAMIC(CEditPropertiesDlg, CResizableStandAloneDialog)
@@ -91,8 +90,7 @@ BOOL CEditPropertiesDlg::OnInitDialog()
 		SetDlgItemText(IDC_PROPPATH, sTemp);
 	}
 
-	CXPTheme theme;
-	theme.SetWindowTheme(m_propList.GetSafeHwnd(), L"Explorer", NULL);
+	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	// initialize the property list control
 	m_propList.DeleteAllItems();

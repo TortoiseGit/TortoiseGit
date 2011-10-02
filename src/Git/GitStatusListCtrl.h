@@ -24,7 +24,6 @@
 #include "GitRev.h"
 #include "GitConfig.h"
 #include "Colors.h"
-#include "XPTheme.h"
 #include "CommonResource.h"
 #include "HintListCtrl.h"
 
@@ -1206,8 +1205,6 @@ public:
 	int m_FileLoaded;
 	git_revnum_t m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
-public:
-	CXPTheme	m_Theme;
 };
 
 #if 0
