@@ -4,3 +4,5 @@ cocoa
 gtk
 macosx
 test
+
+apply backgroundcolors.patch
