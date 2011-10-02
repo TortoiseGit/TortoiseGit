@@ -560,6 +560,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Utils\SysInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Git\TGitPath.cpp"
 				>
 			</File>
@@ -630,6 +634,10 @@
 			</File>
 			<File
 				RelativePath=".\SVNPropertyPage.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\SysInfo.h"
 				>
 			</File>
 			<File

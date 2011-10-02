@@ -553,7 +553,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	if (icon)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
+		menuiteminfo.hbmpItem = (SysInfo::Instance().IsVistaOrLater()) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
 	}
 	menuiteminfo.wID = id;
 	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
@@ -999,7 +999,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 			if (icon)
 			{
 				menuiteminfo.fMask |= MIIM_BITMAP;
-				menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
+				menuiteminfo.hbmpItem = (SysInfo::Instance().IsVistaOrLater()) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
 
 				if (menuiteminfo.hbmpItem == HBMMENU_CALLBACK)
 				{
@@ -1182,7 +1182,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	if (uIcon)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(uIcon) : HBMMENU_CALLBACK;
+		menuiteminfo.hbmpItem = (SysInfo::Instance().IsVistaOrLater()) ? IconToBitmapPARGB32(uIcon) : HBMMENU_CALLBACK;
 	}
 	menuiteminfo.hSubMenu = subMenu;
 	menuiteminfo.wID = idCmd++;
@@ -2380,7 +2380,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		if (icon)
 		{
 			menuiteminfo.fMask |= MIIM_BITMAP;
-			menuiteminfo.hbmpItem = (fullver >= 0x600) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
+			menuiteminfo.hbmpItem = (SysInfo::Instance().IsVistaOrLater()) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
 		}
 		menuiteminfo.fType = MFT_STRING;
 		menuiteminfo.hSubMenu = ignoresubmenu;

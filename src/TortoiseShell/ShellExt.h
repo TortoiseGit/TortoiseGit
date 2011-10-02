@@ -84,7 +84,6 @@ class CShellExt : public IContextMenu3,
 {
 protected:
 
-	WORD fullver;
 	FileState m_State;
 	ULONG	m_cRef;
 	//std::map<int,std::string> verbMap;
