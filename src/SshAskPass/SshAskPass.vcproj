@@ -24,7 +24,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\SshAskPass\$(ConfigurationName)\"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -169,7 +169,7 @@
 			OutputDirectory="..\..\bin\Debug64\bin"
 			IntermediateDirectory="..\..\obj\SshAskPass\Debug64"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
