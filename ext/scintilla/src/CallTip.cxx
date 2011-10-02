@@ -29,6 +29,7 @@ CallTip::CallTip() {
 	rectUp = PRectangle(0,0,0,0);
 	rectDown = PRectangle(0,0,0,0);
 	lineHeight = 1;
+	offsetMain = 0;
 	startHighlight = 0;
 	endHighlight = 0;
 	tabSize = 0;
@@ -45,6 +46,8 @@ CallTip::CallTip() {
 	colourSel.desired = ColourDesired(0, 0, 0x80);
 	colourShade.desired = ColourDesired(0, 0, 0);
 	colourLight.desired = ColourDesired(0xc0, 0xc0, 0xc0);
+	codePage = 0;
+	clickPlace = 0;
 }
 
 CallTip::~CallTip() {
@@ -68,7 +71,7 @@ static bool IsArrowCharacter(char ch) {
 }
 
 // We ignore tabs unless a tab width has been set.
-bool CallTip::IsTabCharacter(char ch) {
+bool CallTip::IsTabCharacter(char ch) const {
 	return (tabSize > 0) && (ch == '\t');
 }
 
@@ -95,9 +98,9 @@ void CallTip::DrawChunk(Surface *surface, int &x, const char *s,
 	int maxEnd = 0;
 	const int numEnds = 10;
 	int ends[numEnds + 2];
-	for (int i=0;i<len;i++) {
+	for (int i=0; i<len; i++) {
 		if ((maxEnd < numEnds) &&
-		        (IsArrowCharacter(s[i]) || IsTabCharacter(s[i])) ) {
+		        (IsArrowCharacter(s[i]) || IsTabCharacter(s[i]))) {
 			if (i > 0)
 				ends[maxEnd++] = i;
 			ends[maxEnd++] = i+1;
@@ -254,11 +257,9 @@ PRectangle CallTip::CallTipStart(int pos, Point pt, const char *defn,
                                  const char *faceName, int size,
                                  int codePage_, int characterSet, Window &wParent) {
 	clickPlace = 0;
-	if (val)
-		delete []val;
+	delete []val;
+	val = 0;
 	val = new char[strlen(defn) + 1];
-	if (!val)
-		return PRectangle();
 	strcpy(val, defn);
 	codePage = codePage_;
 	Surface *surfaceMeasure = Surface::Allocate();

@@ -7,6 +7,9 @@
 
 #include <string.h>
 
+#include <vector>
+#include <map>
+
 #include "Platform.h"
 
 #include "Scintilla.h"
@@ -24,7 +27,7 @@ using namespace Scintilla;
 #endif
 
 MarginStyle::MarginStyle() :
-	style(SC_MARGIN_SYMBOL), width(0), mask(0), sensitive(false) {
+	style(SC_MARGIN_SYMBOL), width(0), mask(0), sensitive(false), cursor(SC_CURSORREVERSEARROW) {
 }
 
 // A list of the fontnames - avoids wasting space in each style
@@ -41,7 +44,7 @@ FontNames::~FontNames() {
 }
 
 void FontNames::Clear() {
-	for (int i=0;i<max;i++) {
+	for (int i=0; i<max; i++) {
 		delete []names[i];
 	}
 	max = 0;
@@ -50,7 +53,7 @@ void FontNames::Clear() {
 const char *FontNames::Save(const char *name) {
 	if (!name)
 		return 0;
-	for (int i=0;i<max;i++) {
+	for (int i=0; i<max; i++) {
 		if (strcmp(names[i], name) == 0) {
 			return names[i];
 		}
@@ -59,7 +62,7 @@ const char *FontNames::Save(const char *name) {
 		// Grow array
 		int sizeNew = size * 2;
 		char **namesNew = new char *[sizeNew];
-		for (int j=0;j<max;j++) {
+		for (int j=0; j<max; j++) {
 			namesNew[j] = names[j];
 		}
 		delete []names;
@@ -72,30 +75,88 @@ const char *FontNames::Save(const char *name) {
 	return names[max-1];
 }
 
+FontRealised::FontRealised(const FontSpecification &fs) {
+	frNext = NULL;
+	(FontSpecification &)(*this) = fs;
+}
+
+FontRealised::~FontRealised() {
+	font.Release();
+	delete frNext;
+	frNext = 0;
+}
+
+void FontRealised::Realise(Surface &surface, int zoomLevel) {
+	PLATFORM_ASSERT(fontName);
+	sizeZoomed = size + zoomLevel;
+	if (sizeZoomed <= 2)	// Hangs if sizeZoomed <= 1
+		sizeZoomed = 2;
+
+	int deviceHeight = surface.DeviceHeightFont(sizeZoomed);
+	font.Create(fontName, characterSet, deviceHeight, bold, italic, extraFontFlag);
+
+	ascent = surface.Ascent(font);
+	descent = surface.Descent(font);
+	externalLeading = surface.ExternalLeading(font);
+	lineHeight = surface.Height(font);
+	aveCharWidth = surface.AverageCharWidth(font);
+	spaceWidth = surface.WidthChar(font, ' ');
+	if (frNext) {
+		frNext->Realise(surface, zoomLevel);
+	}
+}
+
+FontRealised *FontRealised::Find(const FontSpecification &fs) {
+	if (!fs.fontName)
+		return this;
+	FontRealised *fr = this;
+	while (fr) {
+		if (fr->EqualTo(fs))
+			return fr;
+		fr = fr->frNext;
+	}
+	return 0;
+}
+
+void FontRealised::FindMaxAscentDescent(unsigned int &maxAscent, unsigned int &maxDescent) {
+	FontRealised *fr = this;
+	while (fr) {
+		if (maxAscent < fr->ascent)
+			maxAscent = fr->ascent;
+		if (maxDescent < fr->descent)
+			maxDescent = fr->descent;
+		fr = fr->frNext;
+	}
+}
+
 ViewStyle::ViewStyle() {
 	Init();
 }
 
 ViewStyle::ViewStyle(const ViewStyle &source) {
+	frFirst = NULL;
 	Init(source.stylesSize);
-	for (unsigned int sty=0;sty<source.stylesSize;sty++) {
+	for (unsigned int sty=0; sty<source.stylesSize; sty++) {
 		styles[sty] = source.styles[sty];
 		// Can't just copy fontname as its lifetime is relative to its owning ViewStyle
 		styles[sty].fontName = fontNames.Save(source.styles[sty].fontName);
 	}
-	for (int mrk=0;mrk<=MARKER_MAX;mrk++) {
+	for (int mrk=0; mrk<=MARKER_MAX; mrk++) {
 		markers[mrk] = source.markers[mrk];
 	}
-	for (int ind=0;ind<=INDIC_MAX;ind++) {
+	for (int ind=0; ind<=INDIC_MAX; ind++) {
 		indicators[ind] = source.indicators[ind];
 	}
 
 	selforeset = source.selforeset;
 	selforeground.desired = source.selforeground.desired;
+	selAdditionalForeground.desired = source.selAdditionalForeground.desired;
 	selbackset = source.selbackset;
 	selbackground.desired = source.selbackground.desired;
+	selAdditionalBackground.desired = source.selAdditionalBackground.desired;
 	selbackground2.desired = source.selbackground2.desired;
 	selAlpha = source.selAlpha;
+	selAdditionalAlpha = source.selAdditionalAlpha;
 	selEOLFilled = source.selEOLFilled;
 
 	foldmarginColourSet = source.foldmarginColourSet;
@@ -117,6 +178,7 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	selbar.desired = source.selbar.desired;
 	selbarlight.desired = source.selbarlight.desired;
 	caretcolour.desired = source.caretcolour.desired;
+	additionalCaretColour.desired = source.additionalCaretColour.desired;
 	showCaretLineBackground = source.showCaretLineBackground;
 	caretLineBackground.desired = source.caretLineBackground.desired;
 	caretLineAlpha = source.caretLineAlpha;
@@ -125,9 +187,10 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	caretStyle = source.caretStyle;
 	caretWidth = source.caretWidth;
 	someStylesProtected = false;
+	someStylesForceCase = false;
 	leftMarginWidth = source.leftMarginWidth;
 	rightMarginWidth = source.rightMarginWidth;
-	for (int i=0;i < margins; i++) {
+	for (int i=0; i < margins; i++) {
 		ms[i] = source.ms[i];
 	}
 	symbolMargin = source.symbolMargin;
@@ -135,18 +198,31 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	fixedColumnWidth = source.fixedColumnWidth;
 	zoomLevel = source.zoomLevel;
 	viewWhitespace = source.viewWhitespace;
+	whitespaceSize = source.whitespaceSize;
 	viewIndentationGuides = source.viewIndentationGuides;
 	viewEOL = source.viewEOL;
 	showMarkedLines = source.showMarkedLines;
 	extraFontFlag = source.extraFontFlag;
+	extraAscent = source.extraAscent;
+	extraDescent = source.extraDescent;
+	marginStyleOffset = source.marginStyleOffset;
+	annotationVisible = source.annotationVisible;
+	annotationStyleOffset = source.annotationStyleOffset;
+	braceHighlightIndicatorSet = source.braceHighlightIndicatorSet;
+	braceHighlightIndicator = source.braceHighlightIndicator;
+	braceBadLightIndicatorSet = source.braceBadLightIndicatorSet;
+	braceBadLightIndicator = source.braceBadLightIndicator;
 }
 
 ViewStyle::~ViewStyle() {
 	delete []styles;
 	styles = NULL;
+	delete frFirst;
+	frFirst = NULL;
 }
 
 void ViewStyle::Init(size_t stylesSize_) {
+	frFirst = NULL;
 	stylesSize = 0;
 	styles = NULL;
 	AllocStyles(stylesSize_);
@@ -171,10 +247,13 @@ void ViewStyle::Init(size_t stylesSize_) {
 
 	selforeset = false;
 	selforeground.desired = ColourDesired(0xff, 0, 0);
+	selAdditionalForeground.desired = ColourDesired(0xff, 0, 0);
 	selbackset = true;
 	selbackground.desired = ColourDesired(0xc0, 0xc0, 0xc0);
+	selAdditionalBackground.desired = ColourDesired(0xd7, 0xd7, 0xd7);
 	selbackground2.desired = ColourDesired(0xb0, 0xb0, 0xb0);
 	selAlpha = SC_ALPHA_NOALPHA;
+	selAdditionalAlpha = SC_ALPHA_NOALPHA;
 	selEOLFilled = false;
 
 	foldmarginColourSet = false;
@@ -191,6 +270,7 @@ void ViewStyle::Init(size_t stylesSize_) {
 	styles[STYLE_LINENUMBER].fore.desired = ColourDesired(0, 0, 0);
 	styles[STYLE_LINENUMBER].back.desired = Platform::Chrome();
 	caretcolour.desired = ColourDesired(0, 0, 0);
+	additionalCaretColour.desired = ColourDesired(0x7f, 0x7f, 0x7f);
 	showCaretLineBackground = false;
 	caretLineBackground.desired = ColourDesired(0xff, 0xff, 0);
 	caretLineAlpha = SC_ALPHA_NOALPHA;
@@ -199,6 +279,7 @@ void ViewStyle::Init(size_t stylesSize_) {
 	caretStyle = CARETSTYLE_LINE;
 	caretWidth = 1;
 	someStylesProtected = false;
+	someStylesForceCase = false;
 
 	hotspotForegroundSet = false;
 	hotspotForeground.desired = ColourDesired(0, 0, 0xff);
@@ -229,26 +310,38 @@ void ViewStyle::Init(size_t stylesSize_) {
 	}
 	zoomLevel = 0;
 	viewWhitespace = wsInvisible;
+	whitespaceSize = 1;
 	viewIndentationGuides = ivNone;
 	viewEOL = false;
 	showMarkedLines = true;
-	extraFontFlag = false;
+	extraFontFlag = 0;
+	extraAscent = 0;
+	extraDescent = 0;
+	marginStyleOffset = 0;
+	annotationVisible = ANNOTATION_HIDDEN;
+	annotationStyleOffset = 0;
+	braceHighlightIndicatorSet = false;
+	braceHighlightIndicator = 0;
+	braceBadLightIndicatorSet = false;
+	braceBadLightIndicator = 0;
 }
 
 void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
 	unsigned int i;
-	for (i=0;i<stylesSize;i++) {
+	for (i=0; i<stylesSize; i++) {
 		pal.WantFind(styles[i].fore, want);
 		pal.WantFind(styles[i].back, want);
 	}
-	for (i=0;i<(sizeof(indicators)/sizeof(indicators[0]));i++) {
+	for (i=0; i<(sizeof(indicators)/sizeof(indicators[0])); i++) {
 		pal.WantFind(indicators[i].fore, want);
 	}
-	for (i=0;i<(sizeof(markers)/sizeof(markers[0]));i++) {
+	for (i=0; i<(sizeof(markers)/sizeof(markers[0])); i++) {
 		markers[i].RefreshColourPalette(pal, want);
 	}
 	pal.WantFind(selforeground, want);
+	pal.WantFind(selAdditionalForeground, want);
 	pal.WantFind(selbackground, want);
+	pal.WantFind(selAdditionalBackground, want);
 	pal.WantFind(selbackground2, want);
 
 	pal.WantFind(foldmarginColour, want);
@@ -259,33 +352,66 @@ void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
 	pal.WantFind(selbar, want);
 	pal.WantFind(selbarlight, want);
 	pal.WantFind(caretcolour, want);
+	pal.WantFind(additionalCaretColour, want);
 	pal.WantFind(caretLineBackground, want);
 	pal.WantFind(edgecolour, want);
 	pal.WantFind(hotspotForeground, want);
 	pal.WantFind(hotspotBackground, want);
 }
 
+void ViewStyle::CreateFont(const FontSpecification &fs) {
+	if (fs.fontName) {
+		for (FontRealised *cur=frFirst; cur; cur=cur->frNext) {
+			if (cur->EqualTo(fs))
+				return;
+			if (!cur->frNext) {
+				cur->frNext = new FontRealised(fs);
+				return;
+			}
+		}
+		frFirst = new FontRealised(fs);
+	}
+}
+
 void ViewStyle::Refresh(Surface &surface) {
+	delete frFirst;
+	frFirst = NULL;
 	selbar.desired = Platform::Chrome();
 	selbarlight.desired = Platform::ChromeHighlight();
-	styles[STYLE_DEFAULT].Realise(surface, zoomLevel, NULL, extraFontFlag);
-	maxAscent = styles[STYLE_DEFAULT].ascent;
-	maxDescent = styles[STYLE_DEFAULT].descent;
-	someStylesProtected = false;
+
 	for (unsigned int i=0; i<stylesSize; i++) {
-		if (i != STYLE_DEFAULT) {
-			styles[i].Realise(surface, zoomLevel, &styles[STYLE_DEFAULT], extraFontFlag);
-			if (maxAscent < styles[i].ascent)
-				maxAscent = styles[i].ascent;
-			if (maxDescent < styles[i].descent)
-				maxDescent = styles[i].descent;
-		}
-		if (styles[i].IsProtected()) {
+		styles[i].extraFontFlag = extraFontFlag;
+	}
+
+	CreateFont(styles[STYLE_DEFAULT]);
+	for (unsigned int j=0; j<stylesSize; j++) {
+		CreateFont(styles[j]);
+	}
+
+	frFirst->Realise(surface, zoomLevel);
+
+	for (unsigned int k=0; k<stylesSize; k++) {
+		FontRealised *fr = frFirst->Find(styles[k]);
+		styles[k].Copy(fr->font, *fr);
+	}
+	maxAscent = 1;
+	maxDescent = 1;
+	frFirst->FindMaxAscentDescent(maxAscent, maxDescent);
+	maxAscent += extraAscent;
+	maxDescent += extraDescent;
+	lineHeight = maxAscent + maxDescent;
+
+	someStylesProtected = false;
+	someStylesForceCase = false;
+	for (unsigned int l=0; l<stylesSize; l++) {
+		if (styles[l].IsProtected()) {
 			someStylesProtected = true;
+		}
+		if (styles[l].caseForce != Style::caseMixed) {
+			someStylesForceCase = true;
 		}
 	}
 
-	lineHeight = maxAscent + maxDescent;
 	aveCharWidth = styles[STYLE_DEFAULT].aveCharWidth;
 	spaceWidth = styles[STYLE_DEFAULT].spaceWidth;
 
@@ -322,7 +448,7 @@ void ViewStyle::AllocStyles(size_t sizeNew) {
 void ViewStyle::EnsureStyle(size_t index) {
 	if (index >= stylesSize) {
 		size_t sizeNew = stylesSize * 2;
-		while (sizeNew < index)
+		while (sizeNew <= index)
 			sizeNew *= 2;
 		AllocStyles(sizeNew);
 	}
@@ -330,10 +456,10 @@ void ViewStyle::EnsureStyle(size_t index) {
 
 void ViewStyle::ResetDefaultStyle() {
 	styles[STYLE_DEFAULT].Clear(ColourDesired(0,0,0),
-		ColourDesired(0xff,0xff,0xff),
-		Platform::DefaultFontSize(), fontNames.Save(Platform::DefaultFont()),
-		SC_CHARSET_DEFAULT,
-		false, false, false, false, Style::caseMixed, true, true, false);
+	        ColourDesired(0xff,0xff,0xff),
+	        Platform::DefaultFontSize(), fontNames.Save(Platform::DefaultFont()),
+	        SC_CHARSET_DEFAULT,
+	        false, false, false, false, Style::caseMixed, true, true, false);
 }
 
 void ViewStyle::ClearStyles() {
@@ -357,3 +483,8 @@ void ViewStyle::SetStyleFontName(int styleIndex, const char *name) {
 bool ViewStyle::ProtectionActive() const {
 	return someStylesProtected;
 }
+
+bool ViewStyle::ValidStyle(size_t styleIndex) const {
+	return styleIndex < stylesSize;
+}
+

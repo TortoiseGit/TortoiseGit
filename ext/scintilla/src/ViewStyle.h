@@ -20,6 +20,7 @@ public:
 	int width;
 	int mask;
 	bool sensitive;
+	int cursor;
 	MarginStyle();
 };
 
@@ -38,6 +39,20 @@ public:
 	const char *Save(const char *name);
 };
 
+class FontRealised : public FontSpecification, public FontMeasurements {
+	// Private so FontRealised objects can not be copied
+	FontRealised(const FontRealised &);
+	FontRealised &operator=(const FontRealised &);
+public:
+	Font font;
+	FontRealised *frNext;
+	FontRealised(const FontSpecification &fs);
+	virtual ~FontRealised();
+	void Realise(Surface &surface, int zoomLevel);
+	FontRealised *Find(const FontSpecification &fs);
+	void FindMaxAscentDescent(unsigned int &maxAscent, unsigned int &maxDescent);
+};
+
 enum IndentView {ivNone, ivReal, ivLookForward, ivLookBoth};
 
 enum WhiteSpaceVisibility {wsInvisible=0, wsVisibleAlways=1, wsVisibleAfterIndent=2};
@@ -47,6 +62,7 @@ enum WhiteSpaceVisibility {wsInvisible=0, wsVisibleAlways=1, wsVisibleAfterInden
 class ViewStyle {
 public:
 	FontNames fontNames;
+	FontRealised *frFirst;
 	size_t stylesSize;
 	Style *styles;
 	LineMarker markers[MARKER_MAX + 1];
@@ -58,10 +74,13 @@ public:
 	unsigned int spaceWidth;
 	bool selforeset;
 	ColourPair selforeground;
+	ColourPair selAdditionalForeground;
 	bool selbackset;
 	ColourPair selbackground;
+	ColourPair selAdditionalBackground;
 	ColourPair selbackground2;
 	int selAlpha;
+	int selAdditionalAlpha;
 	bool selEOLFilled;
 	bool whitespaceForegroundSet;
 	ColourPair whitespaceForeground;
@@ -89,10 +108,12 @@ public:
 	int fixedColumnWidth;
 	int zoomLevel;
 	WhiteSpaceVisibility viewWhitespace;
+	int whitespaceSize;
 	IndentView viewIndentationGuides;
 	bool viewEOL;
 	bool showMarkedLines;
 	ColourPair caretcolour;
+	ColourPair additionalCaretColour;
 	bool showCaretLineBackground;
 	ColourPair caretLineBackground;
 	int caretLineAlpha;
@@ -101,12 +122,23 @@ public:
 	int caretStyle;
 	int caretWidth;
 	bool someStylesProtected;
-	bool extraFontFlag;
+	bool someStylesForceCase;
+	int extraFontFlag;
+	int extraAscent;
+	int extraDescent;
+	int marginStyleOffset;
+	int annotationVisible;
+	int annotationStyleOffset;
+	bool braceHighlightIndicatorSet;
+	int braceHighlightIndicator;
+	bool braceBadLightIndicatorSet;
+	int braceBadLightIndicator;
 
 	ViewStyle();
 	ViewStyle(const ViewStyle &source);
 	~ViewStyle();
 	void Init(size_t stylesSize_=64);
+	void CreateFont(const FontSpecification &fs);
 	void RefreshColourPalette(Palette &pal, bool want);
 	void Refresh(Surface &surface);
 	void AllocStyles(size_t sizeNew);
@@ -115,6 +147,7 @@ public:
 	void ClearStyles();
 	void SetStyleFontName(int styleIndex, const char *name);
 	bool ProtectionActive() const;
+	bool ValidStyle(size_t styleIndex) const;
 };
 
 #ifdef SCI_NAMESPACE
