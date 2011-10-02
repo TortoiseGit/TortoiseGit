@@ -25,15 +25,6 @@
 		</Property>
 		<Condition Message="[ProductName] needs at least Internet Explorer 5">NOT ((VERSIONIE&lt;&lt;"1") OR (VERSIONIE&lt;&lt;"2") OR (VERSIONIE&lt;&lt;"3") OR (VERSIONIE&lt;&lt;"4"))</Condition>
 
-		<?if $(var.Platform) = "x86" ?>
-		<Property Id="GDIPLUSINSTALLED">
-			<DirectorySearch Id="WND" Path="[SystemFolder]">
-				<FileSearch Name="GDIPlus.dll" />
-			</DirectorySearch>
-		</Property>
-		<Condition Message="You must have GDIPlus installed. Please download it from Microsoft and copy the GDIPlus.dll into your Windows\System32 folder."><![CDATA[((GDIPLUSINSTALLED<>"") OR (VersionNT <> 500))]]></Condition>
-		<?endif ?>
-
 		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS">1</Property>
 
