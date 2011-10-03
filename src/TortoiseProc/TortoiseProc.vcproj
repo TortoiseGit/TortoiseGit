@@ -417,6 +417,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MassiveGitTask.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MassiveGitTask.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Patch.cpp"
 				>
 			</File>
