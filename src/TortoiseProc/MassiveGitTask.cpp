@@ -61,6 +61,7 @@ bool MassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, BOOL &cancel, gi
 bool MassiveGitTask::Execute(BOOL &cancel)
 {
 	assert(m_bUnused);
+	m_pathList.RemoveDuplicates();
 	return ExecuteCommands(cancel);
 }
 
