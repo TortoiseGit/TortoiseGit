@@ -76,7 +76,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_TORTOISE_GIT_BLAME_MAINFRAME ICON                    "..\\Resources\\blameres\\TortoiseGitBlame.ico"
-IDR_MAINFRAME			ICON				    "..\\Resources\\blameres\\TortoiseGitBlame.ico"
+IDR_MAINFRAME           ICON                    "..\\Resources\\blameres\\TortoiseGitBlame.ico"
 IDR_TortoiseGitBlamTYPE ICON                    "..\\Resources\\blameres\\TortoiseGitBlameDoc.ico"
 IDI_OUTPUT_WND          ICON                    "..\\Resources\\blameres\\output_wnd.ico"
 IDI_OUTPUT_WND_HC       ICON                    "..\\Resources\\blameres\\output_wnd_hc.ico"
