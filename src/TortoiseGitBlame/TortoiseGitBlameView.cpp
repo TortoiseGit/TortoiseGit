@@ -2696,6 +2696,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 				this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
 															LVIS_SELECTED,
 															LVIS_SELECTED);
+				this->GetLogList()->EnsureVisible(this->GetLogList()->GetItemCount()-m_ID[line], FALSE);
 			}
 			else
 			{
