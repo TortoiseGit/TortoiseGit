@@ -1031,7 +1031,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 					*current=i;
 				one = one.Mid(2);
 			}
-			list.push_back(one);
+			if (one != _T("(no branch)"))
+				list.push_back(one);
 			i++;
 		}
 	}
