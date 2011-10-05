@@ -324,6 +324,7 @@ BEGIN
     BEGIN
         MENUITEM "Blame previous revision",     ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION
         MENUITEM "Diff previous revision",      ID_BLAMEPOPUP_DIFFPREVIOUS
+        MENUITEM "Show Log",                    ID_BLAMEPOPUP_SHOWLOG
         MENUITEM SEPARATOR
         MENUITEM "Copy hash to clipboard",      ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD
         MENUITEM "Copy log to clipboard",       ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD

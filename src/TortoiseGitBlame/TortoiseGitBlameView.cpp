@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
 	ON_COMMAND(ID_BLAMEPOPUP_DIFFPREVIOUS, DiffPreviousRevision)
+	ON_COMMAND(ID_BLAMEPOPUP_SHOWLOG, ShowLog)
 	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, OnUpdateBlamePopupBlamePrevious)
 	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_DIFFPREVIOUS, OnUpdateBlamePopupDiffPrevious)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
@@ -917,30 +918,25 @@ void CTortoiseGitBlameView::DiffPreviousRevision()
 
 void CTortoiseGitBlameView::ShowLog()
 {
-#if 0
-	char bufRev[20];
-	_stprintf_s(bufRev, 20, _T("%d"), m_selectedorigrev);
+	CString  procCmd;
+	procCmd += _T(" /path:\"");
+	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	procCmd += _T("\" ");
+	procCmd += _T(" /command:log");
+	procCmd += _T(" /rev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
 	memset(&startup, 0, sizeof(startup));
 	startup.cb = sizeof(startup);
 	memset(&process, 0, sizeof(process));
-	stdstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseProc.exe");
-	stdstring svnCmd = _T(" /command:log ");
-	svnCmd += _T(" /path:\"");
-	svnCmd += szOrigPath;
-	svnCmd += _T("\"");
-	svnCmd += _T(" /startrev:");
-	svnCmd += bufRev;
-	svnCmd += _T(" /pegrev:");
-	svnCmd += bufRev;
-	if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+
+	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 	{
 		CloseHandle(process.hThread);
 		CloseHandle(process.hProcess);
 	}
-#endif
 }
 
 void CTortoiseGitBlameView::Notify(SCNotification *notification)
