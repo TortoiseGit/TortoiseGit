@@ -86,7 +86,7 @@ public:
 		FILELIST_PATH
 	};
 
-	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit);
+	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit);
 	void SetIncludeMerge(bool bInclude = true) {m_bIncludeMerges = bInclude;}
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetDialogTitle(const CString& sTitle) {m_sTitle = sTitle;}
@@ -243,7 +243,7 @@ private:
 	CTGitPath			m_path;
 	CTGitPath			m_orgPath;
 	CTGitPath			m_mergePath;
-	CString				m_pegrev;
+	CString				m_hightlightRevision;
 
 	CString				m_LogRevision;
 

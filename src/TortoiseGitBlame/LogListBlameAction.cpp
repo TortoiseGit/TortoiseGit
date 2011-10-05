@@ -39,7 +39,7 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		GetContextMenuBit(ID_CREATE_TAG) |
 		GetContextMenuBit(ID_SWITCHTOREV)
 		, true);
-	m_ContextMenuMask |= GetContextMenuBit(ID_BLAME);
+	m_ContextMenuMask |= GetContextMenuBit(ID_LOG) | GetContextMenuBit(ID_BLAME);
 }
 
 void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu)
@@ -154,6 +154,9 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 		case ID_BLAME:
 			procCmd += _T("blame");
 			procCmd += _T(" /endrev:") + this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+			break;
+		case ID_LOG:
+			procCmd += _T("log");
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);

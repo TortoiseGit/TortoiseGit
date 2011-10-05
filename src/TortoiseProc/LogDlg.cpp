@@ -166,11 +166,11 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
-void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString pegrev, CString startrev, CString endrev, int limit /* = FALSE */)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit /* = FALSE */)
 {
 	m_orgPath = orgPath;
 	m_path = path;
-	m_pegrev = pegrev;
+	m_hightlightRevision = hightlightRevision;
 	this->m_LogList.m_startrev = startrev;
 	m_LogRevision = startrev;
 	this->m_LogList.m_endrev = endrev;
@@ -369,6 +369,9 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tTo = 0;
 	//m_tFrom = (DWORD)-1;
 
+
+	if (!m_hightlightRevision.IsEmpty() && m_hightlightRevision.GetLength() >= GIT_HASH_SIZE)
+		m_LogList.m_lastSelectedHash = m_hightlightRevision;
 
 	m_LogList.FetchLogAsync(this);
 
