@@ -30,6 +30,8 @@
 #include "AppUtils.h"
 #include "LogDlg.h"
 #include "ChangedDlg.h"
+#include "AppUtils.h"
+#include "PathUtils.h"
 
 bool PullCommand::Execute()
 {
@@ -73,6 +75,11 @@ bool PullCommand::Execute()
 		progress.m_GitCmd = cmd;
 		progress.m_PostCmdList.Add(_T("Pulled Diff"));
 		progress.m_PostCmdList.Add(_T("Pulled Log"));
+
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		if (gitPath.HasSubmodules())
+			progress.m_PostCmdList.Add(_T("Update submodules"));
+
 		//progress.m_PostCmdList.Add(_T("Show Conflict"));
 
 		if (parser.HasVal(_T("closeonend")))
@@ -119,10 +126,12 @@ bool PullCommand::Execute()
 
 
 		}
-		else if ( ret == IDC_PROGRESS_BUTTON1 +2 )
+		else if (ret == IDC_PROGRESS_BUTTON1 + 2 && gitPath.HasSubmodules())
 		{
-			CChangedDlg dlg;
-			dlg.DoModal();
+			CString sCmd;
+			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+
+			CAppUtils::LaunchApplication(sCmd, NULL, false);
 		}
 	}
 #if 0
