@@ -744,7 +744,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	}
 
 
-	if(hTreePos!=NULL)
+	if(hTreePos!=NULL && selectedLeafs.empty())
 	{
 		CShadowTree* pTree=(CShadowTree*)m_RefTreeCtrl.GetItemData(hTreePos);
 		if(pTree->IsFrom(L"refs/remotes"))
