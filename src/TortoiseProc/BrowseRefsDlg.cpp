@@ -645,6 +645,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bool bShowFetchOption				= false;
 		bool bShowSwitchOption				= false;
 		bool bShowRenameOption				= false;
+		bool bShowCreateBranchOption		= false;
 
 		CString fetchFromCmd;
 
@@ -658,6 +659,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			bShowReflogOption = true;
 			bShowFetchOption  = true;
+			bShowCreateBranchOption = true;
 
 			int dummy = 0;//Needed for tokenize
 			remoteName = selectedLeafs[0]->GetRefName();
@@ -687,6 +689,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
 		bAddSeparator = false;
 		popupMenu.AppendMenu(MF_SEPARATOR);
+
+		if(bShowCreateBranchOption)
+		{
+			bAddSeparator = true;
+			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create branch", IDI_COPY);
+		}
 
 		if(bShowRenameOption)
 		{
@@ -848,7 +856,10 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_CreateBranch:
 		{
-			CAppUtils::CreateBranchTag(false);
+			CString *commitHash = NULL;
+			if (selectedLeafs.size() == 1)
+				commitHash = &(selectedLeafs[0]->m_csRefHash);
+			CAppUtils::CreateBranchTag(false, commitHash);
 			Refresh();
 		}
 		break;
