@@ -201,7 +201,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	sa.bInheritHandle=TRUE;
 	if(!CreatePipe(&hRead,&hWrite,&sa,0))
 	{
-		return GIT_ERROR_OPEN_PIP;
+		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 
 	if(StdioFile)
@@ -249,7 +249,7 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 						NULL,GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 						(LPTSTR)&lpMsgBuf,
 						0,NULL);
-		return GIT_ERROR_CREATE_PROCESS;
+		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
 	m_CurrentGitPi = pi;
@@ -308,7 +308,7 @@ int CGit::Run(CGitCall* pcall)
 	PROCESS_INFORMATION pi;
 	HANDLE hRead;
 	if(RunAsync(pcall->GetCmd(),&pi,&hRead))
-		return GIT_ERROR_CREATE_PROCESS;
+		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
@@ -330,7 +330,7 @@ int CGit::Run(CGitCall* pcall)
 
 	if(!GetExitCodeProcess(pi.hProcess,&exitcode))
 	{
-		return GIT_ERROR_GET_EXIT_CODE;
+		return TGIT_GIT_ERROR_GET_EXIT_CODE;
 	}
 
 	CloseHandle(pi.hProcess);
@@ -828,7 +828,7 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 						NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 						(LPTSTR)&lpMsgBuf,
 						0,NULL);
-		return GIT_ERROR_CREATE_PROCESS;
+		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
 	WaitForSingleObject(pi.hProcess,INFINITE);
@@ -836,7 +836,7 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 	CloseHandle(pi.hThread);
 	CloseHandle(pi.hProcess);
 	CloseHandle(houtfile);
-	return GIT_SUCCESS;
+	return TGIT_GIT_SUCCESS;
 //	return 0;
 }
 

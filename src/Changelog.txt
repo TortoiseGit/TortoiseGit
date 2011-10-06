@@ -11,7 +11,8 @@
  * Fixed issue #881: "Create repository here" should warn if target directory is not empty
  * Fix wrong contextmenu icon display position when install TSVN 1.7 on WinXP
  * TGitCache: Fix sometime project root show as unversioned icon
- * TGitCache: Fix sometime show "+" at tracked items.
+ * Fixed issues #862, #870: TGitCache: Fix sometime show "+" at tracked items
+ * Upgraded libgit2 to 0.15.0
  * Fixed issue #716: Aborted clone leaves git process running
  * Fixed issue #787: Problem of setting proxy for work using HTTPS
  * Fixed issue #908: TortoiseGit crashes if .git/config-file is broken
