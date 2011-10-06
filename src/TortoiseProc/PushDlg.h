@@ -71,4 +71,5 @@ protected:
 	afx_msg void OnBnClickedPushall();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void Refresh();
+	void GetRemoteBranch(CString currentBranch);
 };

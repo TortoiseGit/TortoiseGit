@@ -2256,9 +2256,10 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 	return FALSE;
 }
 
-bool CAppUtils::Push(bool autoClose)
+bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 {
 	CPushDlg dlg;
+	dlg.m_BranchSourceName = selectLocalBranch;
 	CString error;
 	DWORD exitcode = 0xFFFFFFFF;
 	CTGitPathList list;

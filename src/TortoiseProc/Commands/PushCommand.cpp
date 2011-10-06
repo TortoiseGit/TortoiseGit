@@ -34,5 +34,8 @@ bool PushCommand::Execute()
 	bool autoCloseOnSuccess = false;
 	if (parser.HasVal(_T("closeonend")))
 		autoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
-	return CAppUtils::Push(autoCloseOnSuccess);
+	CString branch;
+	if (parser.HasVal(_T("branch")))
+		branch = parser.GetVal(_T("branch"));
+	return CAppUtils::Push(branch, autoCloseOnSuccess);
 }

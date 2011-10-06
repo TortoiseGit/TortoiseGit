@@ -209,7 +209,7 @@ public:
 	static int  GetLogOutputEncode(CGit *pGit=&g_Git);
 
 	static bool Fetch(CString remoteName = _T(""), bool allowRebase = false, bool autoClose = false);
-	static bool Push(bool autoClose = false);
+	static bool Push(CString selectLocalBranch = CString(), bool autoClose = false);
 	static bool RequestPull(CString endrevision = _T(""), CString repositoryUrl = _T(""));
 
 	static bool CreateMultipleDirectory(const CString &dir);
