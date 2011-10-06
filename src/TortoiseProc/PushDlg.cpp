@@ -194,6 +194,8 @@ void CPushDlg::Refresh()
 		m_BranchSource.SetCurSel(current);
 
 	GetRemoteBranch(m_BranchSource.GetString());
+
+	this->GetDlgItem(IDOK)->EnableWindow(m_BranchSource.GetCount() != 0);
 }
 
 void CPushDlg::GetRemoteBranch(CString currentBranch)
