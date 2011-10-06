@@ -692,8 +692,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		case ID_PUSH:
-			if (CAppUtils::Push())
-				Refresh();
+			{
+				CString guessAssociatedBranch;
+				if (m_HashMap[pSelLogEntry->m_CommitHash].size() > 0)
+					guessAssociatedBranch = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
+				if (CAppUtils::Push(guessAssociatedBranch))
+					Refresh();
+			}
 			break;
 		case ID_DELETE:
 			{
