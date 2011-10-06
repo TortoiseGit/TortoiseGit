@@ -1308,7 +1308,21 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
+
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2)
+			progress.m_PostCmdList.Add(_T("Update Submodules"));
+
+		int ret = progress.DoModal();
+		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
+		{
+			CString sCmd;
+			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+
+			LaunchApplication(sCmd, NULL, false);
+			return TRUE;
+		}
+		else if (ret == IDOK)
 			return TRUE;
 
 	}
