@@ -179,4 +179,6 @@ typedef enum
 
 GITDLL_API int get_set_config(const char *key, char *value, CONFIG_TYPE type, char *git_path);
 
+const char *get_windows_home_directory(void);
+
 #endif

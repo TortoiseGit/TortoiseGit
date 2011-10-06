@@ -23,6 +23,7 @@
  * Fixed issue #914: unifiled diff always show wrong changes (base files compare with new files)
  * Fixed issue #673: Applying a patch does not honour CRLF in files
  * Fixed issue #713: apply serial patch window need to improve
+ * Fixed issue #922: Settings / Git / Config / Edit global .gitconfig uses wrong path
 
 = Release 1.7.3.0 =
 == Features ==

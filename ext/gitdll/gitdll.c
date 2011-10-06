@@ -964,9 +964,7 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 
 	//local = config_exclusive_filename;
 	if (!local) {
-		const char *home = getenv("HOME");
-		if(!home)
-			home=getenv("USERPROFILE");
+		const char *home = get_windows_home_directory();
 
 		local=p= git_pathdup("config");
 		if(git_path&&strlen(git_path))
@@ -997,6 +995,25 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 	return !buf.seen;
 }
 
+// taken from msysgit: compat/mingw.c
+const char *get_windows_home_directory(void)
+{
+	static const char *home_directory = NULL;
+	struct strbuf buf = STRBUF_INIT;
+
+	if (home_directory)
+		return home_directory;
+
+	home_directory = getenv("HOME");
+	if (home_directory && *home_directory)
+		return home_directory;
+
+	strbuf_addf(&buf, "%s/%s", getenv("HOMEDRIVE"), getenv("HOMEPATH"));
+	home_directory = strbuf_detach(&buf, NULL);
+
+	return home_directory;
+}
+
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
 {
 	char *local,*global,*system_wide,*p;
@@ -1005,10 +1022,7 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 
 	//local = config_exclusive_filename;
 	if (!local) {
-		char *home = getenv("HOME");
-
-		if(!home)
-			home=getenv("USERPROFILE");
+		const char *home = get_windows_home_directory();
 
 		local=p= git_pathdup("config");
 		if(git_path&&strlen(git_path))

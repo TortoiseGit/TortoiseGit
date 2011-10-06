@@ -204,11 +204,10 @@ void CSettingGitConfig::OnBnClickedCheckSafecrlf()
 void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 {
 	TCHAR buf[MAX_PATH];
-	SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, buf);
-	CString path = buf;
-	path += _T("\\.gitconfig");
+	ExpandEnvironmentStrings(_T("%HOMEDRIVE%\\%HOMEPATH%\\.gitconfig"), buf, MAX_PATH);
+	CAppUtils::LaunchAlternativeEditor(buf);
 	// use alternative editor because of LineEndings
-	CAppUtils::LaunchAlternativeEditor(path);
+	CAppUtils::LaunchAlternativeEditor(buf);
 }
 
 void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
