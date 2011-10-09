@@ -3268,9 +3268,14 @@ void CLogDlg::SetStartRef(const CString& StartRef)
 {
 	m_LogList.SetStartRef(StartRef);
 
+	if (m_hightlightRevision.IsEmpty())
+	{
+		m_hightlightRevision = g_Git.GetHash(StartRef);
+		m_LogList.m_lastSelectedHash = m_hightlightRevision;
+	}
+
 	ShowStartRef();
 }
-
 
 
 void CLogDlg::OnBnClickedFirstParent()
