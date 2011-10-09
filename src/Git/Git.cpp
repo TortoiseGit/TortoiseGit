@@ -1510,11 +1510,17 @@ int CGit::Revert(CString commit, CTGitPath &path)
 	{
 		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
+		}
 
 		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitOldPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
+		}
 
 	}
 	else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
@@ -1522,13 +1528,19 @@ int CGit::Revert(CString commit, CTGitPath &path)
 		cmd.Format(_T("git.exe rm -f --cached -- \"%s\""),path.GetGitPathString());
 
 		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
+		}
 	}
 	else
 	{
 		cmd.Format(_T("git.exe checkout %s -f -- \"%s\""), commit, path.GetGitPathString());
 		if(g_Git.Run(cmd,&out,CP_ACP))
+		{
+			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
+		}
 	}
 	return 0;
 }
