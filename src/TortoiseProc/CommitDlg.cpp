@@ -572,7 +572,7 @@ void CCommitDlg::OnOK()
 			//uncheckedLists.insert(entry->GetGitPathString());
 			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
 			{	//To init git repository, there are not HEAD, so we can use git reset command
-				cmd.Format(_T("git.exe rm --cache -- \"%s\""),entry->GetGitPathString());
+				cmd.Format(_T("git.exe rm -f --cache -- \"%s\""),entry->GetGitPathString());
 				if(g_Git.Run(cmd,&out,CP_ACP))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);

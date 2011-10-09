@@ -1519,7 +1519,7 @@ int CGit::Revert(CString commit, CTGitPath &path)
 	}
 	else if(path.m_Action & CTGitPath::LOGACTIONS_ADDED)
 	{	//To init git repository, there are not HEAD, so we can use git reset command
-		cmd.Format(_T("git.exe rm --cached -- \"%s\""),path.GetGitPathString());
+		cmd.Format(_T("git.exe rm -f --cached -- \"%s\""),path.GetGitPathString());
 
 		if(g_Git.Run(cmd,&out,CP_ACP))
 			return -1;
