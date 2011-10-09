@@ -84,7 +84,7 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
-			IntermediateDirectory="..\..\obj\libgit2\$(ConfigurationName)"
+			IntermediateDirectory="..\..\obj\libgit2\$(ConfigurationName)64"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
