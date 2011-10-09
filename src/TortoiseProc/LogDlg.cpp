@@ -372,6 +372,8 @@ BOOL CLogDlg::OnInitDialog()
 	// scroll to user selected or current revision
 	if (!m_hightlightRevision.IsEmpty() && m_hightlightRevision.GetLength() >= GIT_HASH_SIZE)
 		m_LogList.m_lastSelectedHash = m_hightlightRevision;
+	else if (!m_LogList.m_endrev.IsEmpty() && m_LogList.m_endrev.GetLength() >= GIT_HASH_SIZE)
+		m_LogList.m_lastSelectedHash = m_hightlightRevision;
 	else
 		m_LogList.m_lastSelectedHash = g_Git.GetHash(_T("HEAD"));
 
