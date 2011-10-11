@@ -1188,40 +1188,49 @@ bool CAppUtils::Switch(CString *CommitHash, CString initialRefName, bool autoclo
 
 	if (dlg.DoModal() == IDOK)
 	{
-		CString cmd;
-		CString track;
-//		CString base;
-		CString force;
 		CString branch;
+		if (dlg.m_bBranch)
+			branch = dlg.m_NewBranch;
 
-		if(dlg.m_bBranch){
-			if (dlg.m_bBranchOverride)
-			{
-				branch.Format(_T("-B %s"),dlg.m_NewBranch);
-			}
-			else
-			{
-				branch.Format(_T("-b %s"),dlg.m_NewBranch);
-			}
-		}
-		if(dlg.m_bForce)
-			force=_T("-f");
-		if(dlg.m_bTrack)
-			track=_T("--track");
-
-		cmd.Format(_T("git.exe checkout %s %s %s %s"),
-			 force,
-			 track,
-			 branch,
-			 g_Git.FixBranchName(dlg.m_VersionName));
-
-		CProgressDlg progress;
-		progress.m_bAutoCloseOnSuccess = autoclose;
-		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-			return TRUE;
-
+		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack == TRUE, autoclose);
 	}
+	return FALSE;
+}
+
+bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, bool bTrack /* false */, bool autoClose /* false */)
+{
+	CString cmd;
+	CString track;
+	CString force;
+	CString branch;
+
+	if(!sNewBranch.IsEmpty()){
+		if (bBranchOverride)
+		{
+			branch.Format(_T("-B %s"), sNewBranch);
+		}
+		else
+		{
+			branch.Format(_T("-b %s"), sNewBranch);
+		}
+	}
+	if (bTrack)
+		track = _T("--track");
+	if (bForce)
+		force = _T("-f");
+
+	cmd.Format(_T("git.exe checkout %s %s %s %s"),
+		 force,
+		 track,
+		 branch,
+		 g_Git.FixBranchName(ref));
+
+	CProgressDlg progress;
+	progress.m_bAutoCloseOnSuccess = autoClose;
+	progress.m_GitCmd = cmd;
+	if(progress.DoModal()==IDOK)
+		return TRUE;
+
 	return FALSE;
 }
 
