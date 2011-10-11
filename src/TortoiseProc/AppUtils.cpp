@@ -1213,9 +1213,9 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		{
 			branch.Format(_T("-b %s"), sNewBranch);
 		}
+		if (bTrack)
+			track = _T("--track");
 	}
-	if (bTrack)
-		track = _T("--track");
 	if (bForce)
 		force = _T("-f");
 
