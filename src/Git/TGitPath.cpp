@@ -821,6 +821,13 @@ int CTGitPath::GetAdminDirMask() const
 	path=topdir;
 	path += _T("\\");
 	path += g_GitAdminDir.GetAdminDirName();
+	path += _T("\\BISECT_START");
+	if (PathFileExists(path))
+		status |= ITEMIS_BISECT;
+
+	path=topdir;
+	path += _T("\\");
+	path += g_GitAdminDir.GetAdminDirName();
 	path += _T("\\refs\\stash");
 	if( PathFileExists(path) )
 		status |= ITEMIS_STASH;
