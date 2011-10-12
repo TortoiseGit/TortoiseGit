@@ -1680,6 +1680,43 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				svnCmd += _T("\" /ref:refs/stash");
 				break;
 
+			case ShellMenuBisectStart:
+				svnCmd += _T("bisect /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\" /start");
+				break;
+
+			case ShellMenuBisectGood:
+				svnCmd += _T("bisect /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\" /good");
+				break;
+
+				
+			case ShellMenuBisectBad:
+				svnCmd += _T("bisect /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\" /bad");
+				break;
+
+			case ShellMenuBisectReset:
+				svnCmd += _T("bisect /path:\"");
+				if (files_.size() > 0)
+					svnCmd += files_.front();
+				else
+					svnCmd += folder_;
+				svnCmd += _T("\" /reset");
+				break;
+
 			case ShellMenuSubAdd:
 				svnCmd += _T("subadd /path:\"");
 				if (files_.size() > 0)
