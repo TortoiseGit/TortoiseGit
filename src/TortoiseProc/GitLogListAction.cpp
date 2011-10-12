@@ -375,16 +375,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
 				if(branch)
 				{
-
-					CProgressDlg progress;
 					CString name;
 					if(branch->Find(_T("refs/heads/")) ==0 )
 						name = branch->Mid(11);
 					else
 						name = *branch;
-
-					progress.m_GitCmd.Format(_T("git.exe checkout %s"), name.GetString());
-					progress.DoModal();
+					
+					CAppUtils::PerformSwitch(name);
 				}
 				ReloadHashMap();
 				Invalidate();
