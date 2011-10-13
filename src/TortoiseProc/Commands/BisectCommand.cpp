@@ -104,11 +104,23 @@ bool BisectCommand::Execute()
 		if (path.HasSubmodules())
 			progress.m_PostCmdList.Add(_T("Update Submodules"));
 
+		int reset = -1;
+		if (!this->parser.HasKey(_T("reset")))
+			reset = progress.m_PostCmdList.Add(_T("Bisect reset"));
+
 		int ret = progress.DoModal();
 		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 		{
 			CString sCmd;
 			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+
+			CAppUtils::LaunchApplication(sCmd, NULL, false);
+			return true;
+		}
+		else if (reset >= 0 && ret == IDC_PROGRESS_BUTTON1 + reset)
+		{
+			CString sCmd;
+			sCmd.Format(_T("\"%s\" /command:bisect /reset"), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")));
 
 			CAppUtils::LaunchApplication(sCmd, NULL, false);
 			return true;
