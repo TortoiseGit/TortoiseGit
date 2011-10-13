@@ -78,6 +78,10 @@ enum GitCommands
 		ShellMenuGitSVNDCommit,
 		ShellMenuGitSVNIgnore,      //import svn ignore
 		ShellMenuSync,
+		ShellMenuBisectStart,
+		ShellMenuBisectGood,
+		ShellMenuBisectBad,
+		ShellMenuBisectReset,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 

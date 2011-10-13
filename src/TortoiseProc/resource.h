@@ -677,6 +677,7 @@
 #define IDC_BUTTON_REMOTE_BRANCH        1383
 #define IDC_EDITLOCALGITCONFIG          1383
 #define IDC_COMMIT                      1383
+#define IDC_BUTTON_BAD                  1383
 #define IDC_TOURLLABEL                  1384
 #define IDC_BUTTON_DIR                  1384
 #define IDC_BUTTON_DOWN                 1384
@@ -1008,6 +1009,8 @@
 #define IDC_NOAUTOSELECTSUBMODULES      1669
 #define IDC_COMMIT_DATEPICKER           1670
 #define IDC_COMMIT_TIMEPICKER           1671
+#define IDC_COMBOBOXEX_GOOD             1671
+#define IDC_BUTTON_GOOD                 1672
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1376,8 +1379,10 @@
 #define IDD_CLEAN                       4572
 #define IDC_REMOTE_STATUS               4573
 #define IDD_SETTINGSEXTMENU             4573
+#define IDD_BISECTSTART                 4574
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
+#define IDC_COMBOBOXEX_BAD              5001
 #define IDS_FILEDIFF_FILE               5100
 #define IDS_FILEDIFF_COMMENT            5101
 #define IDS_FILEDIFF_ACTION             5101
@@ -1576,7 +1581,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        339
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1671
+#define _APS_NEXT_CONTROL_VALUE         1673
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

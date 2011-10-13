@@ -842,6 +842,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\thumb_down.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\thumb_up.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\Tortoise.ico"
 				>
 			</File>

@@ -36,8 +36,10 @@
 #define IDS_MENUSUBMENU                 135
 #define IDI_DIFF                        135
 #define IDI_LOG                         136
+#define IDS_MENUBISECTSTART             136
 #define IDS_MENUDESCUPDATE              137
 #define IDI_ABOUT                       137
+#define IDS_MENUBISECTGOOD              137
 #define IDS_MENUDESCCOMMIT              138
 #define IDI_SETTINGS                    138
 #define IDS_MENUDESCADD                 139
@@ -70,6 +72,7 @@
 #define IDS_STATUSMERGED                160
 #define IDS_STATUSCONFLICTED            161
 #define IDS_STATUSOBSTRUCTED            162
+#define IDS_MENUBISECTBAD               163
 #define IDS_PROPPROPERTY                164
 #define IDS_PROPVALUE                   165
 #define IDS_MENURENAME                  166
@@ -78,6 +81,7 @@
 #define IDS_MENUDESCREMOVE              169
 #define IDS_MENUUPDATEEXT               170
 #define IDS_MENUDESCUPDATEEXT           171
+#define IDS_MENUBISECTRESET             171
 #define IDS_COLTITLESTATUS              172
 #define IDS_COLDESCSTATUS               173
 #define IDS_COLTITLEREV                 174
@@ -94,6 +98,8 @@
 #define IDS_COLDESCSHORTURL             185
 #define IDS_MENUCONFLICT                186
 #define IDS_MENUDESCCONFLICT            187
+#define IDS_MENUDESCBISECTSTART         188
+#define IDS_MENUDESCBISECTGOOD          189
 #define IDS_MENUHELP                    190
 #define IDS_MENUDESCHELP                191
 #define IDS_MENUSHOWCHANGED             192
@@ -105,6 +111,8 @@
 #define IDS_DROPCOPYMENU                198
 #define IDS_PROPWAITCANCEL              199
 #define IDS_SETPROPTITLE                200
+#define IDS_MENUDESCBISECTBAD           201
+#define IDS_MENUDESCBISECTRESET         202
 #define IDS_MENUBLAME                   203
 #define IDS_STATUSEXTERNAL              204
 #define IDS_MENUDESCBLAME               205
@@ -242,6 +250,8 @@
 #define IDI_PICK                        5174
 #define IDI_MENUSENDMAIL                5175
 #define IDI_COPYCLIP                    5176
+#define IDI_THUMB_DOWN                  5178
+#define IDI_THUMB_UP                    5179
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
@@ -259,7 +269,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5177
+#define _APS_NEXT_RESOURCE_VALUE        5180
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11026
 #define _APS_NEXT_SYMED_VALUE           5101
