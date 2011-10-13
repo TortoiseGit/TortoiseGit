@@ -38,8 +38,8 @@ bool BisectCommand::Execute()
 			if (parser.HasVal(_T("closeonend")))
 				progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
 			progress.m_GitCmdList.push_back(_T("git.exe bisect start"));
-			progress.m_GitCmdList.push_back(_T("git.exe good ") + bisectStartDlg.m_LastGoodRevision);
-			progress.m_GitCmdList.push_back(_T("git.exe bad ") + bisectStartDlg.m_FirstBadRevision);
+			progress.m_GitCmdList.push_back(_T("git.exe bisect good ") + bisectStartDlg.m_LastGoodRevision);
+			progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);
 
 			if (path.HasSubmodules())
 				progress.m_PostCmdList.Add(_T("Update Submodules"));
