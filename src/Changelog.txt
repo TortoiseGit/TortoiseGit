@@ -1,3 +1,7 @@
+= Release 1.7.5.0 =
+== Features==
+ * Fixed issue #260: Added support for bisect
+
 = Release 1.7.4.0 =
 == Features==
  * Add Show Environment variables at setting dialog to help debug user problem.
@@ -1095,4 +1099,3 @@
  * Commit change
  * Show Log
  * Create Repository
-
