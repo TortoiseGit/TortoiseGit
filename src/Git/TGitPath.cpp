@@ -871,7 +871,18 @@ bool CTGitPath::HasGitSVNDir() const
 	topdir += _T("\\svn");
 	return !!PathFileExists(topdir);
 }
-
+bool CTGitPath::IsBisectActive() const
+{
+	CString topdir;
+	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	{
+		return false;
+	}
+	topdir += _T("\\");
+	topdir += g_GitAdminDir.GetAdminDirName();
+	topdir += _T("\\BISECT_START");
+	return !!PathFileExists(topdir);
+}
 bool CTGitPath::HasRebaseApply() const
 {
 	CString topdir;
