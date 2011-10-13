@@ -83,6 +83,13 @@ BOOL CBisectStartDlg::OnInitDialog()
 		m_cLastGoodRevision.AddString(list[i]);
 		m_cFirstBadRevision.AddString(list[i]);
 	}
+	list.clear();
+	g_Git.GetTagList(list);
+	for (unsigned int i = 0; i < list.size(); i++)
+	{
+		m_cLastGoodRevision.AddString(list[i]);
+		m_cFirstBadRevision.AddString(list[i]);
+	}
 
 	m_cLastGoodRevision.SetWindowTextW(L"");
 	m_cFirstBadRevision.SetWindowTextW(g_Git.GetCurrentBranch());
