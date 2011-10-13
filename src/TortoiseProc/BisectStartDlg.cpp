@@ -49,6 +49,8 @@ BEGIN_MESSAGE_MAP(CBisectStartDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CBisectStartDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_GOOD, &CBisectStartDlg::OnBnClickedButtonGood)
 	ON_BN_CLICKED(IDC_BUTTON_BAD, &CBisectStartDlg::OnBnClickedButtonBad)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_GOOD, &CBisectStartDlg::OnChangedRevision)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BAD, &CBisectStartDlg::OnChangedRevision)
 END_MESSAGE_MAP()
 
 BOOL CBisectStartDlg::OnInitDialog()
@@ -87,12 +89,17 @@ BOOL CBisectStartDlg::OnInitDialog()
 	return TRUE;
 }
 
+void CBisectStartDlg::OnChangedRevision()
+{
+	this->GetDlgItem(IDOK)->EnableWindow(!(m_cLastGoodRevision.GetString().Trim().IsEmpty() && m_cFirstBadRevision.GetString().Trim().IsEmpty()));
+}
+
 void CBisectStartDlg::OnBnClickedOk()
 {
 	CHorizontalResizableStandAloneDialog::UpdateData(TRUE);
 
-	m_LastGoodRevision = m_cLastGoodRevision.GetString();
-	m_FirstBadRevision = m_cFirstBadRevision.GetString();
+	m_LastGoodRevision = m_cLastGoodRevision.GetString().Trim();
+	m_FirstBadRevision = m_cFirstBadRevision.GetString().Trim();
 
 	if(m_FirstBadRevision.Find(_T("remotes/")) == 0)
 		m_FirstBadRevision = m_FirstBadRevision.Mid(8);
@@ -117,6 +124,7 @@ void CBisectStartDlg::OnBnClickedButtonGood()
 		CString selectedHash = dlg.GetSelectedHash();
 		// load into window, do this even if empty so that it is clear that nothing has been selected
 		m_cLastGoodRevision.SetWindowText(selectedHash);
+		OnChangedRevision();
 	}
 }
 
@@ -134,5 +142,6 @@ void CBisectStartDlg::OnBnClickedButtonBad()
 		CString selectedHash = dlg.GetSelectedHash();
 		// load into window, do this even if empty so that it is clear that nothing has been selected
 		m_cFirstBadRevision.SetWindowText(selectedHash);
+		OnChangedRevision();
 	}
 }

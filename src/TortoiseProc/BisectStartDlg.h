@@ -43,6 +43,7 @@ protected:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButtonGood();
 	afx_msg void OnBnClickedButtonBad();
+	afx_msg void OnChangedRevision();
 
 	CHistoryCombo	m_cLastGoodRevision;
 	CHistoryCombo	m_cFirstBadRevision;
