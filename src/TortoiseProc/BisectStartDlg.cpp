@@ -84,6 +84,9 @@ BOOL CBisectStartDlg::OnInitDialog()
 		m_cFirstBadRevision.AddString(list[i]);
 	}
 
+	m_cLastGoodRevision.SetWindowTextW(L"");
+	m_cFirstBadRevision.SetWindowTextW(g_Git.GetCurrentBranch());
+
 	this->UpdateData(FALSE);
 
 	return TRUE;
