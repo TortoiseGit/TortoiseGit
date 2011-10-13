@@ -23,6 +23,7 @@
 #include "PathUtils.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
+#include "CommonResource.h"
 
 bool BisectCommand::Execute()
 {
@@ -30,6 +31,22 @@ bool BisectCommand::Execute()
 
 	if (this->parser.HasKey(_T("start")) && !path.IsBisectActive())
 	{
+		if(!g_Git.CheckCleanWorkTree())
+		{
+			if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
+			{
+				CString cmd, out;
+				cmd = _T("git.exe stash");
+				if(g_Git.Run(cmd, &out, CP_ACP))
+				{
+					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+					return false;
+				}
+			}
+			else
+				return false;
+		}
+
 		CBisectStartDlg bisectStartDlg;
 		if (bisectStartDlg.DoModal() == IDOK)
 		{
