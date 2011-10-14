@@ -823,6 +823,8 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	if (idCmd != idCmdFirst)
 		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
+	TweakMenu(hMenu);
+
 	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
 }
 
@@ -1191,10 +1193,20 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 	//separator after
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
 
+	TweakMenu(hMenu);
+
 	//return number of menu items added
 	return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
 }
 
+void CShellExt::TweakMenu(HMENU hMenu)
+{
+	MENUINFO MenuInfo = {};
+	MenuInfo.cbSize  = sizeof(MenuInfo);
+	MenuInfo.fMask   = MIM_STYLE | MIM_APPLYTOSUBMENUS;
+	MenuInfo.dwStyle = MNS_CHECKORBMP;
+	SetMenuInfo(hMenu, &MenuInfo);
+}
 
 // This is called when you invoke a command on the menu:
 STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
@@ -2073,9 +2085,8 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 			MEASUREITEMSTRUCT* lpmis = (MEASUREITEMSTRUCT*)lParam;
 			if (lpmis==NULL||lpmis->CtlType!=ODT_MENU)
 				break;
-			lpmis->itemWidth += 2;
-			if (lpmis->itemHeight < 16)
-				lpmis->itemHeight = 16;
+			lpmis->itemWidth = 16;
+			lpmis->itemHeight = 16;
 			*pResult = TRUE;
 		}
 		break;
@@ -2092,7 +2103,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 			if (hIcon == NULL)
 				return S_OK;
 			DrawIconEx(lpdis->hDC,
-				lpdis->rcItem.left < 16 ? lpdis->rcItem.left : lpdis->rcItem.left - 16,
+				lpdis->rcItem.left,
 				lpdis->rcItem.top + (lpdis->rcItem.bottom - lpdis->rcItem.top - 16) / 2,
 				hIcon, 16, 16,
 				0, NULL, DI_NORMAL);
