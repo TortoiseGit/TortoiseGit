@@ -2,6 +2,9 @@
 == Features==
  * Fixed issue #260: Added support for bisect
 
+== Bug Fix ==
+ * Fixed issue #931: TGitCache: Missing NULL check
+
 = Release 1.7.4.0 =
 == Features==
  * Add Show Environment variables at setting dialog to help debug user problem.

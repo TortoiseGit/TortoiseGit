@@ -808,6 +808,8 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 	for (int i = 0; i < count; i++)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
+		if (entry == NULL)
+			continue;
 		int mode = git_tree_entry_attributes(entry);
 		if( CallBack(git_tree_entry_id(entry)->id,
 			base,
@@ -820,8 +822,10 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 		{
 			if(mode&S_IFDIR)
 			{
-				git_object *object;
+				git_object *object = NULL;
 				git_tree_entry_2object(&object, &repo, entry);
+				if (object == NULL)
+					continue;
 				CStringA parent = base;
 				parent += git_tree_entry_name(entry);
 				parent += "/";
