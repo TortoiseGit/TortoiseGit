@@ -1,6 +1,7 @@
 = Release 1.7.5.0 =
 == Features==
  * Fixed issue #260: Added support for bisect
+ * Fixed issue #916: Fixed wrong contextmenu icon display position with installed TSVN 1.7
 
 == Bug Fix ==
  * Fixed issue #931: TGitCache: Missing NULL check
