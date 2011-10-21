@@ -5,6 +5,7 @@
 
 == Bug Fix ==
  * Fixed issue #931: TGitCache: Missing NULL check
+ * Fixed issue #935: TortoiseMerge removes newlines at file end
 
 = Release 1.7.4.0 =
 == Features==
