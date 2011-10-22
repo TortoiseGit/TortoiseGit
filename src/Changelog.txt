@@ -1,9 +1,18 @@
+= Release 1.7.5.0 =
+== Features==
+ * Fixed issue #260: Added support for bisect
+ * Fixed issue #916: Fixed wrong contextmenu icon display position with installed TSVN 1.7
+
+== Bug Fix ==
+ * Fixed issue #931: TGitCache: Missing NULL check
+ * Fixed issue #935: TortoiseMerge removes newlines at file end
+
 = Release 1.7.4.0 =
 == Features==
  * Add Show Environment variables at setting dialog to help debug user problem.
  * Allow users to be warned if there is no Signed-Off-By line in a commit message
  * Fixed issue #375: Implement --date/time option gui interface in the commit dialog
- * Remember last selected commit/line on log filtering
+ * Fixed issue #814: Remember last selected commit/line on log filtering
  * Allow to "Update submodules" after pull or hard reset
 
 == Bug Fix ==
@@ -1095,4 +1104,3 @@
  * Commit change
  * Show Log
  * Create Repository
-

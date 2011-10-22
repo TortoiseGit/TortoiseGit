@@ -2109,6 +2109,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="bisect"
+				>
+				<File
+					RelativePath=".\Commands\BisectCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\BisectCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\BisectStartDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\BisectStartDlg.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"

@@ -163,6 +163,7 @@ public:
 	static bool Export(CString *BashHash=NULL);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
 	static bool Switch(CString *CommitHash, CString initialRefName = CString(), bool autoClose = false);
+	static bool PerformSwitch(CString ref, bool bForce = false, CString sNewBranch = CString(), bool bBranchOverride = false, bool bTrack = false, bool autoClose = false);
 
 //	static bool IgnoreFile(CTGitPath &file, bool IsMask);
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);

@@ -242,6 +242,7 @@ public:
 	bool HasAdminDir(CString *ProjectTopDir) const;
 	bool HasSubmodules() const;
 	bool HasGitSVNDir() const;
+	bool IsBisectActive() const;
 	bool HasStashDir() const;
 	bool HasRebaseApply() const;
 

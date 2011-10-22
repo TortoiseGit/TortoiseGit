@@ -76,6 +76,8 @@ IDI_EDIT                ICON                    "..\\resources\\menuedit.ico"
 IDI_PICK                ICON                    "..\\resources\\menupick.ico"
 IDI_MENUSYNC            ICON                    "..\\resources\\menusync.ico"
 IDI_COPYCLIP            ICON                    "..\\Resources\\copy.ico"
+IDI_THUMB_DOWN          ICON                    "..\\Resources\\thumb_down.ico"
+IDI_THUMB_UP            ICON                    "..\\Resources\\thumb_up.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -209,6 +211,8 @@ BEGIN
     IDS_MENUSETTINGS        "&Settings"
     IDS_MENUABOUT           "A&bout"
     IDS_MENUSUBMENU         "&TortoiseGit"
+    IDS_MENUBISECTSTART     "Bisect start"
+    IDS_MENUBISECTGOOD      "Bisect good"
     IDS_MENUDESCCOMMIT      "Commits your changes to the repository"
     IDS_MENUDESCADD         "Adds file(s) to Git control"
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
@@ -246,7 +250,6 @@ BEGIN
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
     IDS_MENUCHERRYPICK      "Cherry Pick..."
     IDS_MENUFETCH           "Fetch..."
-    IDS_MENUDESCFETCH       "Fetch"
     IDS_MENUREBASE          "*Rebase..."
     IDS_MENUSTASHSAVE       "Stash Save"
     IDS_MENUSTASHAPPLY      "Stash Apply"
@@ -259,13 +262,32 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_MENUSVNREBASE_DESC  "Git SVN Rebase"
+    IDS_MENUSVNDCOMMIT      "SVN DCommit..."
+    IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
+    IDS_MENUSYNC            "Sync..."
+    IDS_MENUDESCSYNC        "Sync Remote Repository, include pull, push, email patch and so on"
+    IDS_MENUSTASHPOP        "Stash Pop"
+    IDS_MENUSVNIGNORE       "Import SVN Ignore ..."
+    IDS_MENUSVNIGNORE_DESC  "Import SVN Ignore"
+    IDS_MENUDIFFTWO         "Diff Two Commits"
+    IDS_MENUDESCDIFFTWO     "Diffs two any commits"
+    IDS_MENUDESCIMPORTPATCH "Apply a series of patches from a mailbox"
+    IDS_MENUDESCPULL        "Pull"
+    IDS_MENUDESCPUSH        "Push"
+    IDS_MENUDESCCLONE       "Clone a repository"
+    IDS_MENUDESCFETCH       "Fetch"
+    IDS_MENUDELETEIGNOREMULTIPLE "Delete and &ignore %d items by name"
+END
+
+STRINGTABLE 
+BEGIN
     IDS_REFLOG_DEL          "Delete Ref..."
     IDS_MENUSENDMAIL        "Send Mail..."
     IDS_MENUDESSENDMAIL     "Send Patch by Email"
     IDS_MENUREFBROWSE       "Browse Reference"
     IDS_MENUDESCREFBROWSE   "Browse reference"
     IDS_MENUSVNREBASE       "SVN Rebase..."
-	IDS_MENUDESCIMPORTPATCH	"Apply a series of patches from a mailbox"
 END
 
 STRINGTABLE 
@@ -273,6 +295,7 @@ BEGIN
     IDS_STATUSMERGED        "merged"
     IDS_STATUSCONFLICTED    "conflicted"
     IDS_STATUSOBSTRUCTED    "obstructed"
+    IDS_MENUBISECTBAD       "Bisect bad"
     IDS_PROPPROPERTY        "Property"
     IDS_PROPVALUE           "Value"
     IDS_MENURENAME          "Re&name..."
@@ -280,6 +303,7 @@ BEGIN
     IDS_MENUREMOVE          "&Delete"
     IDS_MENUDESCREMOVE      "Deletes files / folders from version control"
     IDS_MENUUPDATEEXT       "Submodule &Update"
+    IDS_MENUBISECTRESET     "Bisect reset"
     IDS_COLTITLESTATUS      "Git Status"
     IDS_COLDESCSTATUS       "Status of item in Git"
     IDS_COLTITLEREV         "Git Revision"
@@ -297,6 +321,8 @@ BEGIN
     IDS_DROPCOPYMENU        "Git Copy versioned item(s) here"
     IDS_PROPWAITCANCEL      "Please wait while cancelling..."
     IDS_SETPROPTITLE        "Setting properties..."
+    IDS_MENUDESCBISECTBAD   "Marks revision as bad"
+    IDS_MENUDESCBISECTRESET "Stops bisect mode"
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
@@ -317,6 +343,8 @@ BEGIN
     IDS_COLDESCSHORTURL     "Short URL of Git items"
     IDS_MENUCONFLICT        "&Edit conflicts"
     IDS_MENUDESCCONFLICT    "Launches the external diff / merge program to solve the conflicts"
+    IDS_MENUDESCBISECTSTART "Start bisect mode..."
+    IDS_MENUDESCBISECTGOOD  "Marks revision as good"
     IDS_MENUHELP            "&Help"
     IDS_MENUDESCHELP        "Read the 'Daily Use Guide' before you are stuck..."
 END
@@ -328,30 +356,28 @@ BEGIN
     IDS_MENUUNDOADD         "Undo Add..."
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"
-	IDS_MENUDIFFTWO			"Diff Two Commits"
-	IDS_MENUDESCDIFFTWO		"Diffs two any commits"
     IDS_MENUDESCPREVDIFF    "Diffs the working copy file with the one before the last commit"
     IDS_COLTITLEMIMETYPE    "Git mime-type"
     IDS_COLDESCMIMETYPE     "Shows the mime type of the versioned file"
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"
-    IDS_MENUDELETEIGNOREMULTIPLE "Delete and &ignore %d items by name"
-    IDS_MENUDELETEIGNOREMULTIPLEMASK 
-                            "Delete and ignore %d items by &extension"
-    IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
     IDS_MENUPULL            "Pull..."
-    IDS_MENUDESCPULL        "Pull"
     IDS_MENUPUSH            "Push..."
-    IDS_MENUDESCPUSH        "Push"
     IDS_MENUCLONE           "Clone..."
-    IDS_MENUDESCCLONE       "Clone a repository"
 END
 
 STRINGTABLE 
 BEGIN
+    IDS_MENUDELETEIGNOREMULTIPLEMASK 
+                            "Delete and ignore %d items by &extension"
+    IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
     IDS_MENUDESCDELETEIGNORE 
                             "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
+END
+
+STRINGTABLE 
+BEGIN
     IDS_MENUCLIPPASTE       "&Paste"
     IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
@@ -397,19 +423,7 @@ BEGIN
     IDS_git_DEPTH_EMPTY     "Only this item"
 END
 
-STRINGTABLE 
-BEGIN
-    IDS_MENUSVNREBASE_DESC  "Git SVN Rebase"
-    IDS_MENUSVNDCOMMIT      "SVN DCommit..."
-    IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
-    IDS_MENUSYNC            "Sync..."
-    IDS_MENUDESCSYNC        "Sync Remote Repository, include pull, push, email patch and so on"
-    IDS_MENUSTASHPOP        "Stash Pop"
-    IDS_MENUSVNIGNORE       "Import SVN Ignore ..."
-    IDS_MENUSVNIGNORE_DESC  "Import SVN Ignore"
-END
-
-#endif    // English (U.S.) resources
+#endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -425,4 +439,3 @@ LANGUAGE 9, 1
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-

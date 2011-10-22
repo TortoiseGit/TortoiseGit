@@ -481,19 +481,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\src\transport-http.c"
-				>
-			</File>
-			<File
 				RelativePath="..\libgit2\src\transport.c"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\src\transport_git.c"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\src\transport_local.c"
 				>
 			</File>
 			<File
@@ -541,6 +529,22 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\src\win32\utf8-conv.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="transports"
+				>
+				<File
+					RelativePath="..\libgit2\src\transports\git.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\transports\http.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\transports\local.c"
 					>
 				</File>
 			</Filter>
