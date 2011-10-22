@@ -799,11 +799,13 @@
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
 						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
 						<File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
+						<File Id="F__libgit232" Name="libgit232.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232.dll" />
 						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" />
 						<File Id="F__zlib" ShortName="ZLIB1.DLL" Name="zlib1.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1.dll" />
 						<File Id="F__curl" Name="libcurl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libcurl.dll" />
+						<File Id="F__libgit2" Name="libgit2.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2.dll" />
 						<?endif ?>
 					</Component>
 					<?if $(var.Platform) = "x64" ?>
@@ -811,6 +813,7 @@
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
 						<File Id="F__zlib32" ShortName="ZLIB132.DLL" Name="zlib132.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132.dll" />
 						<File Id="F__curl32" Name="libcurl32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libcurl32.dll" />
+						<File Id="F__libgit232" Name="libgit232.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232.dll" />
 					</Component>
 					<?endif ?>
 
