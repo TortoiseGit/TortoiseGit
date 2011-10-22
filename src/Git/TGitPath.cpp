@@ -796,7 +796,14 @@ bool CTGitPath::HasAdminDir() const
 
 bool CTGitPath::HasSubmodules() const
 {
-	return !g_GitAdminDir.GetSuperProjectRoot(GetWinPathString()).IsEmpty();
+	if (HasAdminDir())
+	{
+		CString path = m_sProjectRoot;
+		path += _T("\\.gitmodules");
+		if( PathFileExists(path) )
+			return true;
+	}
+	return false;
 }
 
 int CTGitPath::GetAdminDirMask() const
