@@ -243,6 +243,7 @@ public:
 	bool HasSubmodules() const;
 	bool HasGitSVNDir() const;
 	bool IsBisectActive() const;
+	bool IsMergeActive() const;
 	bool HasStashDir() const;
 	bool HasRebaseApply() const;
 

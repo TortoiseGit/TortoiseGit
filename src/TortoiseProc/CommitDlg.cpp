@@ -1823,9 +1823,9 @@ void CCommitDlg::UpdateOKButton()
 		return;
 
 	bool bValidLogSize = m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize && m_cLogMessage.GetText().GetLength() > 0;
-	bool bAmendOrSelectFiles = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit);
+	bool bAmendOrSelectFilesOrMerge = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit) || CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 
-	DialogEnableWindow(IDOK, bValidLogSize && bAmendOrSelectFiles);
+	DialogEnableWindow(IDOK, bValidLogSize && bAmendOrSelectFilesOrMerge);
 }
 
 LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)

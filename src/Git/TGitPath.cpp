@@ -890,6 +890,18 @@ bool CTGitPath::IsBisectActive() const
 	topdir += _T("\\BISECT_START");
 	return !!PathFileExists(topdir);
 }
+bool CTGitPath::IsMergeActive() const
+{
+	CString topdir;
+	if(!g_GitAdminDir.HasAdminDir(GetWinPathString(),&topdir))
+	{
+		return false;
+	}
+	topdir += _T("\\");
+	topdir += g_GitAdminDir.GetAdminDirName();
+	topdir += _T("\\MERGE_HEAD");
+	return !!PathFileExists(topdir);
+}
 bool CTGitPath::HasRebaseApply() const
 {
 	CString topdir;
