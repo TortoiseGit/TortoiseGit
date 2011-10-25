@@ -1302,6 +1302,9 @@ bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 	else
 	{
 		SHARED_TREE_PTR ptr1(new CGitHeadFileList);
+		if(ptr1->CheckHeadUpdate())
+			ptr1->ReadHeadHash(gitdir);
+
 		this->SafeSet(gitdir, ptr1);
 		return true;
 	}
