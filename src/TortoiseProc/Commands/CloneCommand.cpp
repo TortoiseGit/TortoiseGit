@@ -62,7 +62,15 @@ bool CloneCommand::Execute()
 		{
 			// yes, change all \ to /
 			// this should not be necessary but msysgit does not support the use \ here yet
-			url.Replace( _T('\\'), _T('/'));
+			int atSign = url.Find(_T('@'));
+			if (atSign > 0)
+			{
+				CString path = url.Mid(atSign);
+				path.Replace(_T('\\'), _T('/'));
+				url = url.Mid(0, atSign) + path;
+			}
+			else
+				url.Replace( _T('\\'), _T('/'));
 		}
 
 		CString depth;

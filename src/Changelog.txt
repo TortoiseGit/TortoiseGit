@@ -8,6 +8,7 @@
  * Fixed issue #935: TortoiseMerge removes newlines at file end
  * Fixed issue #931: libgit2 had problems with big pack files
  * Fixed issue #486: Resolving conflicts can result in nothing to commit and branch merge not concluded
+ * Fixed issue #938: *Backlash* between user name and domain name is incorrectly replaced by *Slash*
 
 = Release 1.7.4.0 =
 == Features==
