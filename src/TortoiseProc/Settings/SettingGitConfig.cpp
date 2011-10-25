@@ -205,7 +205,6 @@ void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 {
 	TCHAR buf[MAX_PATH];
 	ExpandEnvironmentStrings(_T("%HOMEDRIVE%\\%HOMEPATH%\\.gitconfig"), buf, MAX_PATH);
-	CAppUtils::LaunchAlternativeEditor(buf);
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(buf);
 }
