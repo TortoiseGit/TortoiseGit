@@ -138,6 +138,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	CStdioFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
 	//file.WriteString();
 	file.Close();
+	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 
 	CAppUtils::DiffFlags flags;
 
@@ -284,7 +285,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 				pPath->GetFileExtension());
 		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
 		g_Git.GetOneFile(rev1,*pPath,file1);
-
+		::SetFileAttributes(file1, FILE_ATTRIBUTE_READONLY);
 	}
 	else
 	{
@@ -309,6 +310,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 				pPath2->GetFileExtension());
 		title2 = pPath2->GetFileOrDirectoryName()+_T(":")+rev2.Left(6);
 		g_Git.GetOneFile(rev2,*pPath2,file2);
+		::SetFileAttributes(file2, FILE_ATTRIBUTE_READONLY);
 	}
 	else
 	{

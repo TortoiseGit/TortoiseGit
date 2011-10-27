@@ -10,6 +10,7 @@
  * Fixed issue #486: Resolving conflicts can result in nothing to commit and branch merge not concluded
  * Fixed issue #938: *Backlash* between user name and domain name is incorrectly replaced by *Slash*
  * Fixed issue #941: Performing diff on an unchanged file behaves like a diff with an added file
+ * Fixed issue #928: Mark diff-tempfiles as read-only
 
 = Release 1.7.4.0 =
 == Features==
