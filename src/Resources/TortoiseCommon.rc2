@@ -82,6 +82,7 @@ BEGIN
 	IDS_RESET_TO_THIS_FORMAT	"Reset ""%s"" to this..."
 	IDS_COMBINE_TO_ONE			"*Combine to one commit"
 	IDS_CHERRY_PICK_VERSION		"Cherry Pick this commit..."
+	IDS_CHERRY_PICK_VERSIONS	"Cherry Pick selected commits..."
 	IDS_COPY_COMMIT_HASH		"Copy Commit Hash"
 	IDS_CREATE_PATCH			"Format Patch..."
 	IDS_DELETE_BRANCHTAG		"Delele branch/tag"
