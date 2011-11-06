@@ -34,4 +34,7 @@
 			all untracked files <emphasis>without</emphasis> using the recycle bin!
 		</para>
 	</caution>
+	<para>
+		You can find more information at <xref linkend="git-clean(1)"/>
+	</para>
 </sect1>
