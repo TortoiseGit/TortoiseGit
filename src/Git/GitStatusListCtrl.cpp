@@ -3592,7 +3592,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion== GIT_REV_ZERO)
 	{
 		CString fromwhere;
-		if(m_amend && m_CurrentVersion != GIT_REV_ZERO)
+		if(m_amend && (file1.m_Action & CTGitPath::LOGACTIONS_ADDED) == 0)
 			fromwhere = _T("~1");
 		if( g_Git.IsInitRepos())
 			CGitDiff::DiffNull((CTGitPath*)GetItemData(fileindex),
