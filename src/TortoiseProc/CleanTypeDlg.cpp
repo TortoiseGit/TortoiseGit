@@ -55,6 +55,7 @@ void CCleanTypeDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CCleanTypeDlg, CStandAloneDialog)
+	ON_BN_CLICKED(IDHELP, &CCleanTypeDlg::OnBnClickedHelp)
 END_MESSAGE_MAP()
 
 
@@ -81,4 +82,9 @@ void CCleanTypeDlg::OnOK()
 	this->m_regType = this->m_CleanType ;
 
 	CStandAloneDialog::OnOK();
+}
+
+void CCleanTypeDlg::OnBnClickedHelp()
+{
+	OnHelp();
 }
