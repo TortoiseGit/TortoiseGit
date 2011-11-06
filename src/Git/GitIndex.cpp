@@ -498,11 +498,11 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			CString hash;
 			CString ref;
 
-			for(DWORD i=0;i<filesize;i++)
+			for(DWORD i=0;i<filesize;)
 			{
 				hash.Empty();
 				ref.Empty();
-				if (buff[i] == '#')
+				if (buff[i] == '#' || buff[i] == '^')
 				{
 					while (buff[i] != '\n')
 					{
@@ -513,7 +513,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 					i++;
 				}
 
-				if (i == filesize)
+				if (i >= filesize)
 					break;
 
 				while (buff[i] != ' ')
@@ -525,7 +525,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				}
 
 				i++;
-				if (i == filesize)
+				if (i >= filesize)
 					break;
 
 				while (buff[i] != '\n')
@@ -536,14 +536,17 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 						break;
 				}
 
-				i++;
-
 				if (!ref.IsEmpty() )
 				{
 					this->m_PackRefMap[ref] = hash;
 				}
 
-
+				while (buff[i] == '\n')
+				{
+					i++;
+					if (i == filesize)
+						break;
+				}
 			}
 
 			delete buff;
