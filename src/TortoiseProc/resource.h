@@ -200,6 +200,7 @@
 #define IDS_LOG_PUSH                    1017
 #define IDS_FILEDIFF_LOG                1018
 #define IDS_PROC_TASKS                  1019
+#define IDS_STATUSLIST_CONTEXT_COMPARETWOFILES 1020
 #define IDC_EXTDIFFBROWSE               1021
 #define IDC_EXTMERGEBROWSE              1022
 #define IDC_EXTDIFFPROPSBROWSE          1022

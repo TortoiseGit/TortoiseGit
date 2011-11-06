@@ -1886,9 +1886,31 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			///Select Multi item
-			//if (GetSelectedCount() > 0)
-			//{
+			//Select Multi item
+			if (GetSelectedCount() > 0)
+			{
+				if ((GetSelectedCount() == 2) && (m_dwContextMenus & this->GetContextMenuBit(SVNSLC_POPCOMPARETWOFILES)))
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index = GetNextSelectedItem(pos);
+					if (index >= 0)
+					{
+						CTGitPath * entry2 = NULL;
+						bool bothItemsAreFiles = true;
+						entry2 = (CTGitPath * )GetItemData(index);
+						if (entry2)
+							bothItemsAreFiles = !entry2->IsDirectory();
+						index = GetNextSelectedItem(pos);
+						if (index >= 0)
+						{
+							entry2 = (CTGitPath * )GetItemData(index);
+							if (entry2)
+								bothItemsAreFiles = bothItemsAreFiles && !entry2->IsDirectory();
+							if (bothItemsAreFiles)
+								popup.AppendMenuIcon(IDSVNLC_COMPARETWOFILES, IDS_STATUSLIST_CONTEXT_COMPARETWOFILES, IDI_DIFF);
+						}
+					}
+				}
 			//	if ((GetSelectedCount() == 2)&&(m_dwContextMenus & SVNSLC_POPREPAIRMOVE))
 			//	{
 			//		POSITION pos = GetFirstSelectedItemPosition();
@@ -1932,7 +1954,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//			popup.AppendMenuIcon(IDSVNLC_UPDATE, IDS_MENUUPDATE, IDI_UPDATE);
 			//		}
 			//	}
-			//}
+			}
 
 			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)))
 			{
@@ -2200,6 +2222,21 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						int index = GetNextSelectedItem(pos);
 						StartDiffTwo(index);
 					}
+				}
+				break;
+			case IDSVNLC_COMPARETWOFILES:
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					CTGitPath * firstfilepath, * secondfilepath;
+					if (pos)
+					{
+						firstfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+						secondfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+					}
+					ASSERT(firstfilepath != NULL && secondfilepath != NULL);
+					CString sCmd;
+					sCmd.Format(_T("\"%s\" /command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
+					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
 				break;
 			case IDSVNLC_GNUDIFF1:

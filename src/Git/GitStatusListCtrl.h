@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -127,6 +127,7 @@ SVNSLC_SHOWINCOMPLETE|SVNSLC_SHOWEXTERNAL|SVNSLC_SHOWINEXTERNALS)
 #define SVNSLC_POPCHANGELISTS			CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_CHECKGROUP)
 #define SVNSLC_POPBLAME					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_BLAME)
 #define SVNSLC_POPSAVEAS				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_SAVEAS)
+#define SVNSLC_POPCOMPARETWOFILES		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDSVNLC_COMPARETWO)
 
 #define SVNSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 
@@ -566,6 +567,7 @@ public:
 		IDSVNLC_FINDENTRY       ,
 		IDSVNLC_COMPARETWO		,
 		IDSVNLC_GNUDIFF2		,
+		IDSVNLC_COMPARETWOFILES	,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDSVNLC_MOVETOCS		,

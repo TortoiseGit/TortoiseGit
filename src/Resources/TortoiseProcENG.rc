@@ -2817,6 +2817,7 @@ BEGIN
     IDS_LOG_PUSH            "Push..."
     IDS_FILEDIFF_LOG        "Show log"
     IDS_PROC_TASKS          "Tasks"
+    IDS_STATUSLIST_CONTEXT_COMPARETWOFILES "Compare two files"
 END
 
 STRINGTABLE 
