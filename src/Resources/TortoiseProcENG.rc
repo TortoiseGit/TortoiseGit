@@ -1651,7 +1651,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,81,104,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,142,104,50,14
     PUSHBUTTON      "Help",IDHELP,204,104,50,14
-    LTEXT           "Attention: This does not use the recycle bin! You might loose uncommitted data.",IDC_STATIC,14,83,222,20
+    LTEXT           "Attention: This command affects the whole working copy and will delete all untracked files without using the recycle bin!",IDC_STATIC,14,83,222,20
 END
 
 IDD_PATCH_VIEW DIALOGEX 0, 0, 248, 195

@@ -27,6 +27,11 @@
 	<para>
 		<guilabel>Remove Untracked Directory</guilabel>
 	</para>
-	
-	
+	<caution>
+		<title>Attention</title>
+		<para>
+			This command affects the <emphasis>whole</emphasis> working copy and will delete
+			all untracked files <emphasis>without</emphasis> using the recycle bin!
+		</para>
+	</caution>
 </sect1>
