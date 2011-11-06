@@ -154,11 +154,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	if(m_IsPull)
-		sWindowTitle = _T("Pull - ");
+		sWindowTitle = _T("Pull");
 	else
-		sWindowTitle = _T("Fetch - ");
+		sWindowTitle = _T("Fetch");
 
-	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	Refresh();
