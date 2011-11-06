@@ -30,7 +30,7 @@
 	</para>
 	<para>
 		Git is very powerfull at branch and tag. It is very easy to create branch
-		and tag. 
+		and tag.
 	</para>
 	<sect2 id="tsvn-dug-branch-1">
 		<title>Creating a Branch or Tag</title>
@@ -46,6 +46,9 @@
 			</figure>
 		</para>
 		<para>
+			<guilabel>Branch:</guilabel> input your branch name. 
+		</para>
+		<para>
 			Creating a tag is very simple:
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
@@ -59,16 +62,12 @@
 			
 		</para>
 		<para>
-			<guilabel>Branch:</guilabel> input your branch name. 
-		</para>
-		<para>
 			<guilabel>Tag:</guilabel> input your tag name. 
 		</para>
 		<para>
 			You can choose one commit that base on. 
 			<xi:include href="./dug_chooseversion.xml"/> 
 		</para>
-		
 		<para>
 			If you want your working copy to be switched to the newly created
 			branch automatically, use the
@@ -76,6 +75,10 @@
 			But if you do that, first make sure that your working copy does not
 			contain modifications. If it does, those changes will be merged into
 			the branch WC when you switch.
+		</para>
+		<para>
+			Check <guilabel>Sign</guilabel> to create a signed tag. This requires GPG
+			and a key <emphasis>without</emphasis> a passphrase.
 		</para>
 		<para>
 			Press <guibutton>OK</guibutton> to create branch or tag at  
