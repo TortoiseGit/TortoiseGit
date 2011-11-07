@@ -398,6 +398,7 @@ void CDirectoryWatcher::WorkerThread()
 									break;
 								continue;
 							}
+							bool isIndex = false;
 							if ((pFound = wcsstr(buf, L".git"))!=NULL)
 							{
 								// omit repository data change except .git/index
@@ -406,10 +407,12 @@ void CDirectoryWatcher::WorkerThread()
 
 								if( wcsstr(pFound, L".git\\index") == NULL)
 									continue;
+								else
+									isIndex = true;
 							}
 
 							path.SetFromWin(buf);
-							if(!path.HasAdminDir())
+							if(!path.HasAdminDir() && !isIndex)
 								continue;
 
 							ATLTRACE(_T("change notification: %s\n"), buf);
