@@ -14,6 +14,7 @@
  * Fixed issue #928: Mark diff-tempfiles as read-only
  * Fixed issue #951: Alt+S conflict for sign and set date
  * Fixed issue #949: TortoiseMerge does not allow copying to the clipboard via Ctrl+Insert
+ * Fixed issue #950: avoid possible crash if .git/packed-refs contains annotated tags
 
 = Release 1.7.4.0 =
 == Features==
