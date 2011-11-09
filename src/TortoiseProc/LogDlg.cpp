@@ -430,7 +430,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
 
 		//DialogEnableWindow(IDC_GETALL, TRUE);
-		DialogEnableWindow(IDC_STATBUTTON, TRUE);
+		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
 
@@ -1879,8 +1879,8 @@ void CLogDlg::OnBnClickedStatbutton()
 {
 	if (this->IsThreadRunning())
 		return;
-	if (m_LogList.m_arShownList.IsEmpty())
-		return;		// nothing is shown, so no statistics.
+	if (m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1)
+		return;		// nothing or just the working copy changes are shown, so no statistics.
 	// the statistics dialog expects the log entries to be sorted by date
 	SortByColumn(3, false);
 	CThreadSafePtrArray shownlist(NULL);
@@ -2211,7 +2211,7 @@ void CLogDlg::OnTimer(UINT_PTR nIDEvent)
 		UpdateLogInfoLabel();
 #endif
 	} // if (nIDEvent == LOGFILTER_TIMER)
-	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty()))));
+	DialogEnableWindow(IDC_STATBUTTON, !(((this->IsThreadRunning())||(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1))));
 	__super::OnTimer(nIDEvent);
 }
 
