@@ -971,14 +971,14 @@ static int get_config(const char *key_, const char *value_, void *cb)
 }
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
 {
-	char *local,*global,*system_wide,*p;
+	char *local,*global,*p;
 	struct config_buf buf;
 	buf.buf=buffer;
 	buf.size=size;
 	buf.seen = 0;
 	buf.key = key;
 
-	local=global=system_wide=NULL;
+	local=global=NULL;
 
 	//local = config_exclusive_filename;
 	if (!local) {
@@ -990,18 +990,14 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
 		}
-		if (git_config_global() && home)
+		if (home)
 			global = xstrdup(mkpath("%s/.gitconfig", home));
-		if (git_config_system())
-			system_wide = git_etc_gitconfig();
 	}
 
 	if ( !buf.seen)
 		git_config_from_file(get_config, local, &buf);
 	if (!buf.seen && global)
 		git_config_from_file(get_config, global, &buf);
-	if (!buf.seen && system_wide)
-		git_config_from_file(get_config, system_wide, &buf);
 
 	if(local)
 		free(local);
@@ -1048,10 +1044,8 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
 		}
-		if (git_config_global() && home)
+		if (home)
 			global = xstrdup(mkpath("%s/.gitconfig", home));
-		if (git_config_system())
-			system_wide = git_etc_gitconfig();
 	}
 
 	switch(type)
@@ -1061,9 +1055,6 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		break;
 	case CONFIG_GLOBAL:
 		config_exclusive_filename = global;
-		break;
-	case CONFIG_SYSTEM:
-		config_exclusive_filename = system_wide;
 		break;
 	default:
 		config_exclusive_filename = NULL;
@@ -1079,8 +1070,6 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		free(local);
 	if(global)
 		free(global);
-	//if(system_wide)
-	//	free(system_wide);
 
 	return ret;
 }
