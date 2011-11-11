@@ -919,7 +919,8 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	GIT_HASH sha1;
 	struct tree * root;
 	struct checkout state;
-	char *match[2];
+	struct pathspec pathspec;
+	const char *match[2];
 	ret = get_sha1(ref, sha1);
 	if(ret)
 		return ret;
@@ -934,7 +935,11 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 
 	match[0] = path;
 	match[1] = NULL;
-	ret = read_tree_recursive(root,"",0,0,match,update_some,ce);
+
+	init_pathspec(&pathspec, match);
+	pathspec.items[0].use_wildcard = 0;
+	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
+	free_pathspec(&pathspec);
 
 	if(ret)
 	{
