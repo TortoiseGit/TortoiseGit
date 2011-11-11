@@ -501,7 +501,7 @@ int git_diff_flush(GIT_DIFF diff)
 	}
 
 	if (p_Rev->diffopt.close_file)
-		fclose(p_Rev->diffopt.close_file);
+		fclose(p_Rev->diffopt.file);
 
 	free_diffstat_info(&p_Rev->diffstat);
 	return 0;
@@ -873,7 +873,7 @@ int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_dat
 	return for_each_reflog_ent(ref,fn,cb_data);
 }
 
-int git_deref_tag(unsigned char *tagsha1, GIT_HASH refhash)
+int git_deref_tag(const unsigned char *tagsha1, GIT_HASH refhash)
 {
 	struct object *obj = NULL;
 	obj = parse_object(tagsha1);
@@ -919,7 +919,8 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	GIT_HASH sha1;
 	struct tree * root;
 	struct checkout state;
-	char *match[2];
+	struct pathspec pathspec;
+	const char *match[2];
 	ret = get_sha1(ref, sha1);
 	if(ret)
 		return ret;
@@ -934,7 +935,11 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 
 	match[0] = path;
 	match[1] = NULL;
-	ret = read_tree_recursive(root,"",0,0,match,update_some,ce);
+
+	init_pathspec(&pathspec, match);
+	pathspec.items[0].use_wildcard = 0;
+	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
+	free_pathspec(&pathspec);
 
 	if(ret)
 	{
@@ -971,14 +976,14 @@ static int get_config(const char *key_, const char *value_, void *cb)
 }
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
 {
-	char *local,*global,*system_wide,*p;
+	char *local,*global,*p;
 	struct config_buf buf;
 	buf.buf=buffer;
 	buf.size=size;
 	buf.seen = 0;
 	buf.key = key;
 
-	local=global=system_wide=NULL;
+	local=global=NULL;
 
 	//local = config_exclusive_filename;
 	if (!local) {
@@ -990,18 +995,14 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
 		}
-		if (git_config_global() && home)
+		if (home)
 			global = xstrdup(mkpath("%s/.gitconfig", home));
-		if (git_config_system())
-			system_wide = git_etc_gitconfig();
 	}
 
 	if ( !buf.seen)
 		git_config_from_file(get_config, local, &buf);
 	if (!buf.seen && global)
 		git_config_from_file(get_config, global, &buf);
-	if (!buf.seen && system_wide)
-		git_config_from_file(get_config, system_wide, &buf);
 
 	if(local)
 		free(local);
@@ -1048,10 +1049,8 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 			local=xstrdup(mkpath("%s/%s", git_path, p));
 			free(p);
 		}
-		if (git_config_global() && home)
+		if (home)
 			global = xstrdup(mkpath("%s/.gitconfig", home));
-		if (git_config_system())
-			system_wide = git_etc_gitconfig();
 	}
 
 	switch(type)
@@ -1061,9 +1060,6 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		break;
 	case CONFIG_GLOBAL:
 		config_exclusive_filename = global;
-		break;
-	case CONFIG_SYSTEM:
-		config_exclusive_filename = system_wide;
 		break;
 	default:
 		config_exclusive_filename = NULL;
@@ -1079,8 +1075,6 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		free(local);
 	if(global)
 		free(global);
-	//if(system_wide)
-	//	free(system_wide);
 
 	return ret;
 }
