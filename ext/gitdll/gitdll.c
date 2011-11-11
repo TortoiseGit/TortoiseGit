@@ -501,7 +501,7 @@ int git_diff_flush(GIT_DIFF diff)
 	}
 
 	if (p_Rev->diffopt.close_file)
-		fclose(p_Rev->diffopt.close_file);
+		fclose(p_Rev->diffopt.file);
 
 	free_diffstat_info(&p_Rev->diffstat);
 	return 0;
