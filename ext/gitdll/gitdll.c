@@ -873,7 +873,7 @@ int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_dat
 	return for_each_reflog_ent(ref,fn,cb_data);
 }
 
-int git_deref_tag(unsigned char *tagsha1, GIT_HASH refhash)
+int git_deref_tag(const unsigned char *tagsha1, GIT_HASH refhash)
 {
 	struct object *obj = NULL;
 	obj = parse_object(tagsha1);
