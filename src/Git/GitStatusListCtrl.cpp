@@ -52,7 +52,6 @@
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
 #include "CommonResource.h"
-#include "AppUtils.h"
 
 const UINT CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
