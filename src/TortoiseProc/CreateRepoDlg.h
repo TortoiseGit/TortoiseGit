@@ -48,6 +48,7 @@ protected:
 
 public:
 	BOOL	m_bBare;
+	CString	m_folder;
 
 protected:
 	afx_msg void OnBnClickedCheckBare();

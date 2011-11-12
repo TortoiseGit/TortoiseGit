@@ -54,7 +54,7 @@ BOOL CCreateRepoDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_folder, sWindowTitle);
 
 	m_tooltips.Create(this);
 	CString tt;
