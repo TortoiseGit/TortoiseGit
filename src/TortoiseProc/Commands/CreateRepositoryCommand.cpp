@@ -34,7 +34,7 @@ bool CreateRepositoryCommand::Execute()
 	if(dlg.DoModal() == IDOK)
 	{
 		CString message;
-		message = _T("The folder\"") + folder + _T("\" is not empty. Proceeding might cause loss of data.");
+		message = _T("The folder \"") + folder + _T("\" is not empty. Proceeding might cause loss of data.");
 		if (!PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, _T("A&bort"), _T("&Proceed")) == 1)
 		{
 			return false;
