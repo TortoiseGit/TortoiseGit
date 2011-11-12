@@ -628,12 +628,23 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 		case ID_REFLOG_DEL:
 			{
+				CString ref = pSelLogEntry->m_Ref;
+				if (ref.Find(_T("refs/")) == 0)
+					ref = ref.Mid(5);
+				int pos = ref.ReverseFind('{');
+				if (pos > 0 && ref.Mid(pos, 2) != _T("@{"))
+					ref = ref.Left(pos) + _T("@")+ ref.Mid(pos);
 				CString str;
-				str.Format(_T("Warning: %s will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"),pSelLogEntry->m_Ref);
+				str.Format(_T("Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"), ref);
 				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"), 1, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
 				{
 					CString cmd,out;
-					cmd.Format(_T("git.exe reflog delete %s"),pSelLogEntry->m_Ref);
+					if (ref.Find(_T("stash")) == 0)
+					{
+						cmd.Format(_T("git.exe stash drop %s"), ref);
+					}
+					else
+						cmd.Format(_T("git.exe reflog delete %s"), ref);
 					if(g_Git.Run(cmd,&out,CP_ACP))
 					{
 						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
