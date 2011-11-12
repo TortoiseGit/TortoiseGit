@@ -12,6 +12,7 @@
 // Version
 //
 #include "..\..\src\version.h"
+#include "..\tgit\compat\msvc.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
  PRODUCTVERSION PRODUCTVER
@@ -30,10 +31,10 @@ BEGIN
         BLOCK "040004e4"
         BEGIN
 			VALUE "CompanyName", "http://code.google.com/p/tortoisegit\0"
-            VALUE "FileDescription", "git dll\0"
+            VALUE "FileDescription", "libgit (based on git version " GIT_VERSION ") implementation for TortoiseGit\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "gitdll.dll\0"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2010 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2011 - TortoiseGit, Copyright (C) 2005-2011 - Git developers\0"
             VALUE "OriginalFilename", "gitdll.dll\0"
             VALUE "ProductName", "TortoiseGit\0"
             VALUE "ProductVersion", STRPRODUCTVER
