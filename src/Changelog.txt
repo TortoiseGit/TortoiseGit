@@ -4,6 +4,7 @@
  * Fixed issue #808: Less: file viewer stop work when use show-low
  * Fixed issue #948: TortoiseProc crashes when repo contains huge files (on x86)
    Upgraded gitdll, libgit and tgit.exe to 1.7.7.2
+ * Fixed issue #936: Applying a stash from the list fails
 
 = Release 1.7.5.0 =
 == Features==

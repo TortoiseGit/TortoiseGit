@@ -69,13 +69,16 @@ CAppUtils::~CAppUtils(void)
 int	 CAppUtils::StashApply(CString ref)
 {
 	CString cmd,out;
-	cmd=_T("git.exe stash apply ");
-	cmd+=ref;
+	cmd = _T("git.exe stash apply ");
+	if (ref.Find(_T("refs/")) == 0)
+		ref = ref.Mid(5);
+	if (ref.Find(_T("stash{")) == 0)
+		ref = _T("stash@") + ref.Mid(5);
+	cmd += ref;
 
 	if(g_Git.Run(cmd,&out,CP_ACP))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-
 	}
 	else
 	{
