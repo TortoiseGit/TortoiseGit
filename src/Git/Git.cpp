@@ -404,18 +404,15 @@ int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
 }
 int CGit::Run(CString cmd, CString* output, int code)
 {
-	BYTE_VECTOR vector, vectorErr;
+	CString err;
 	int ret;
-	ret = Run(cmd, &vector, &vectorErr);
+	ret = Run(cmd, output, &err, code);
 
-	vector.push_back(0);
-	StringAppend(output, &(vector[0]), code);
-
-	if (vectorErr.size() > 0)
+	if (output && !err.IsEmpty())
 	{
-		*output += _T("\n");
-		vectorErr.push_back(0);
-		StringAppend(output, &(vectorErr[0]), code);
+		if (!output->IsEmpty())
+			*output += _T("\n");
+		*output += err;
 	}
 
 	return ret;
