@@ -738,7 +738,10 @@ int CRebaseDlg::StartRebase()
 		this->AddLogString(cmd);
 
 		if(g_Git.Run(cmd,&out,CP_UTF8))
+		{
+			this->AddLogString(out);
 			return -1;
+		}
 
 		this->AddLogString(out);
 	}
@@ -1411,6 +1414,7 @@ int CRebaseDlg::RebaseThread()
 			{
 				InterlockedExchange(&m_bThreadRunning, FALSE);
 				ret = -1;
+				this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 				break;
 			}
 			m_RebaseStage = REBASE_CONTINUE;
