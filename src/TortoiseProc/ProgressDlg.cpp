@@ -570,11 +570,11 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 {
 	CString str;
 
-	CString cmd, output, err;
+	CString cmd, output;
 	int cp=CP_UTF8;
 
 	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if(g_Git.Run(cmd, &output, &err, CP_ACP))
+	if(g_Git.Run(cmd, &output, NULL, CP_ACP))
 		cp=CP_UTF8;
 
 	int start=0;

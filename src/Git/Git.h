@@ -155,7 +155,7 @@ public:
 
 	int Run(CString cmd, CString* output, int code);
 	int Run(CString cmd, CString* output, CString* outputErr, int code);
-	int Run(CString cmd, BYTE_VECTOR *byte_array, BYTE_VECTOR *byte_arrayErr);
+	int Run(CString cmd, BYTE_VECTOR *byte_array, BYTE_VECTOR *byte_arrayErr = NULL);
 	int Run(CGitCall* pcall);
 
 private:

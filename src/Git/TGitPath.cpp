@@ -1100,9 +1100,9 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 					(*list)[i].GetWinPathString());
 		}
 
-		BYTE_VECTOR out, err;
+		BYTE_VECTOR out;
 		out.clear();
-		g_Git.Run(cmd, &out, &err);
+		g_Git.Run(cmd, &out);
 
 		pos=0;
 		CString one;

@@ -2312,8 +2312,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							continue;
 						CString cmd;
 						cmd.Format(_T("git.exe add -f -- \"%s\""), path->GetGitPathString());
-						CString output, err;
-						if (!g_Git.Run(cmd, &output, &err, CP_ACP))
+						CString output;
+						if (!g_Git.Run(cmd, &output, NULL, CP_ACP))
 						{
 							path->m_Action = CTGitPath::LOGACTIONS_ADDED;
 							SetEntryCheck(path,index,true);
@@ -3698,11 +3698,11 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 				if(parent1>=0 && parent2>=0)
 				{
-					CString cmd, output, err;
+					CString cmd, output;
 					cmd.Format(_T("git.exe merge-base %s^%d %s^%d"), this->m_CurrentVersion, parent1+1,
 						this->m_CurrentVersion,parent2+1);
 
-					if(g_Git.Run(cmd, &output, &err, CP_ACP))
+					if(g_Git.Run(cmd, &output, NULL, CP_ACP))
 					{
 					}
 					else
@@ -4918,21 +4918,21 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 	{
 		for(int i=0;i<count;i++)
 		{
-			BYTE_VECTOR cmdout, cmdErr;
+			BYTE_VECTOR cmdout;
 			cmdout.clear();
 			CString cmd;
 			if(!g_Git.IsInitRepos())
 			{
 				// also list staged files which will be in the commit
 				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
-				g_Git.Run(cmd, &cmdout, &cmdErr);
+				g_Git.Run(cmd, &cmdout);
 
 				if(list == NULL)
 					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z"));
 				else
 					cmd.Format(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 
-				cmdErr.clear();
+				BYTE_VECTOR cmdErr;
 				if(g_Git.Run(cmd, &cmdout, &cmdErr))
 				{
 					int last = cmdErr.RevertFind(0,-1);
@@ -4969,7 +4969,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				//else
 				//	cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
 
-				g_Git.Run(cmd, &cmdout, &cmdErr);
+				g_Git.Run(cmd, &cmdout);
 				//out+=cmdout;
 				out.append(cmdout,0);
 			}
@@ -4987,7 +4987,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 		//handle delete conflict case, when remote : modified, local : deleted.
 		for(int i=0;i<count;i++)
 		{
-			BYTE_VECTOR cmdout, err;
+			BYTE_VECTOR cmdout;
 			CString cmd;
 
 			if(list == NULL)
@@ -4995,7 +4995,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			else
 				cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),(*list)[i].GetGitPathString());
 
-			g_Git.Run(cmd, &cmdout, &err);
+			g_Git.Run(cmd, &cmdout);
 
 			CTGitPathList conflictlist;
 			conflictlist.ParserFromLog(cmdout);
@@ -5013,7 +5013,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 		// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
 		for(int i = 0; i < count; i++)
 		{
-			BYTE_VECTOR cmdout, err;
+			BYTE_VECTOR cmdout;
 			CString cmd;
 
 			if(list == NULL)
@@ -5021,7 +5021,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			else
 				cmd.Format(_T("git.exe ls-files -d -z -- \"%s\""),(*list)[i].GetGitPathString());
 
-			g_Git.Run(cmd, &cmdout, &err);
+			g_Git.Run(cmd, &cmdout);
 
 			CTGitPathList deletelist;
 			deletelist.ParserFromLog(cmdout, true);
@@ -5043,14 +5043,14 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 		for(int i=0;i<count;i++)
 		{
-			BYTE_VECTOR cmdout, cmdErr;
+			BYTE_VECTOR cmdout;
 			CString cmd;
 			if(list == NULL)
 				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M -z %s"),hash);
 			else
 				cmd.Format(_T("git.exe diff-tree --raw  --numstat -C -M %s -z -- \"%s\""),hash,(*list)[i].GetGitPathString());
 
-			g_Git.Run(cmd, &cmdout, &cmdErr);
+			g_Git.Run(cmd, &cmdout, NULL);
 
 			out.append(cmdout);
 		}

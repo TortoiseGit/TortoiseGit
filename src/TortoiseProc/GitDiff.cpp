@@ -40,8 +40,8 @@ int CGitDiff::Parser(git_revnum_t &rev)
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe rev-parse %s"),rev);
-		CString output, err;
-		if (!g_Git.Run(cmd, &output, &err, CP_UTF8))
+		CString output;
+		if (!g_Git.Run(cmd, &output, NULL, CP_UTF8))
 		{
 			//int start=output.Find(_T('\n'));
 			rev=output.Left(40);

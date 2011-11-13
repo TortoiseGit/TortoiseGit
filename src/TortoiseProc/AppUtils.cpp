@@ -1420,12 +1420,12 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	//if (stat.status == NULL)
 	//	return false;
 
-	BYTE_VECTOR vector, vectorErr;
+	BYTE_VECTOR vector;
 
 	CString cmd;
 	cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),merge.GetGitPathString());
 
-	if (g_Git.Run(cmd, &vector, &vectorErr))
+	if (g_Git.Run(cmd, &vector))
 	{
 		return FALSE;
 	}
