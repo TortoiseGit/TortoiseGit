@@ -1102,7 +1102,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 
 		BYTE_VECTOR out;
 		out.clear();
-		g_Git.Run(cmd,&out);
+		g_Git.Run(cmd, &out);
 
 		pos=0;
 		CString one;

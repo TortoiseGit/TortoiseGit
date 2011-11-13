@@ -244,7 +244,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			  L"%(subject)%04"
 			  L"%(authorname)%04"
 			  L"%(authordate:iso8601)%03",
-			  &allRefs,CP_UTF8);
+			  &allRefs, NULL, CP_UTF8);
 
 	int linePos=0;
 	CString singleRef;
@@ -459,7 +459,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			CString commonAncestorstr;
 			CString cmd;
 			cmd.Format(L"git.exe merge-base HEAD %s", leafs[0]->GetRefName());
-			g_Git.Run(cmd,&commonAncestorstr,CP_UTF8);
+			g_Git.Run(cmd, &commonAncestorstr, NULL, CP_UTF8);
 
 			commonAncestor=commonAncestorstr;
 

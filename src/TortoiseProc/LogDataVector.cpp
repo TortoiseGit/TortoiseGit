@@ -182,10 +182,10 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 	else
 	{
 
-		CString cmd,out;
+		CString cmd, out;
 		GitRev rev;
 		cmd.Format(_T("git.exe reflog show %s"),ref);
-		if(g_Git.Run(cmd,&out,CP_UTF8))
+		if (g_Git.Run(cmd, &out, NULL, CP_UTF8))
 			return -1;
 
 		int pos=0;

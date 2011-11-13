@@ -337,14 +337,14 @@ void CSyncDlg::FetchComplete()
 
 		if(response == IDC_REBASE_POST_BUTTON)
 		{
-			CString cmd,out;
+			CString cmd, out, err;
 			cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
 					g_Git.FixBranchName(dlg.m_Upstream),
 					g_Git.FixBranchName(dlg.m_Branch));
-			if(g_Git.Run(cmd,&out,CP_ACP))
+			if(g_Git.Run(cmd, &out, &err, CP_ACP))
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 				return ;
 			}
 
@@ -505,7 +505,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 
 void CSyncDlg::OnBnClickedButtonEmail()
 {
-	CString cmd,out;
+	CString cmd, out, err;
 
 	this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
 	this->m_ctrlRemoteBranch.GetWindowText(this->m_strRemoteBranch);
@@ -517,9 +517,9 @@ void CSyncDlg::OnBnClickedButtonEmail()
 					g_Git.m_CurrentDir,
 					m_strURL+_T('/')+m_strRemoteBranch,g_Git.FixBranchName(m_strLocalBranch));
 
-	if(g_Git.Run(cmd,&out,CP_ACP))
+	if (g_Git.Run(cmd, &out, &err, CP_ACP))
 	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return ;
 	}
 

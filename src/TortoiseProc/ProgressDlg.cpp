@@ -186,7 +186,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
-		g_Git.RunAsync(cmdlist[i].Trim(),&pi, &hRead,pfilename);
+		g_Git.RunAsync(cmdlist[i].Trim(),&pi, &hRead, NULL, pfilename);
 
 		DWORD readnumber;
 		char byte;
@@ -570,11 +570,11 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 {
 	CString str;
 
-	CString cmd,output;
+	CString cmd, output;
 	int cp=CP_UTF8;
 
 	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if(g_Git.Run(cmd,&output,CP_ACP))
+	if(g_Git.Run(cmd, &output, NULL, CP_ACP))
 		cp=CP_UTF8;
 
 	int start=0;
