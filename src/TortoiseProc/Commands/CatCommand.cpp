@@ -30,12 +30,12 @@ bool CatCommand::Execute()
 	CString revision = parser.GetVal(_T("revision"));
 	CString pegrevision = parser.GetVal(_T("pegrevision"));
 
-	CString cmd,output;
+	CString cmd, output, err;
 	cmd.Format(_T("git.exe cat-file -t %s"),revision);
 
-	if( g_Git.Run(cmd,&output,CP_ACP) )
+	if (g_Git.Run(cmd, &output, &err, CP_ACP))
 	{
-		CMessageBox::Show(NULL, output, _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}
 

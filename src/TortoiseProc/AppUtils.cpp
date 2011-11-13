@@ -1420,12 +1420,12 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	//if (stat.status == NULL)
 	//	return false;
 
-	BYTE_VECTOR vector;
+	BYTE_VECTOR vector, vectorErr;
 
 	CString cmd;
 	cmd.Format(_T("git.exe ls-files -u -t -z -- \"%s\""),merge.GetGitPathString());
 
-	if(g_Git.Run(cmd,&vector))
+	if (g_Git.Run(cmd, &vector, &vectorErr))
 	{
 		return FALSE;
 	}
@@ -1486,9 +1486,9 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 			b_remote = true;
 			outfile = theirs.GetWinPathString();
 		}
-		CString output;
+		CString output, err;
 		if(!outfile.IsEmpty())
-			if(!g_Git.Run(cmd,&output,CP_ACP))
+			if (!g_Git.Run(cmd, &output, &err, CP_ACP))
 			{
 				CString file;
 				int start =0 ;
@@ -1497,7 +1497,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 			}
 			else
 			{
-				CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			}
 	}
 
@@ -2255,14 +2255,14 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				}
 				if(response == IDC_REBASE_POST_BUTTON )
 				{
-					CString cmd,out;
+					CString cmd, out, err;
 					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
 						g_Git.m_CurrentDir,
 						g_Git.FixBranchName(dlg.m_Upstream),
 						g_Git.FixBranchName(dlg.m_Branch));
-					if(g_Git.Run(cmd,&out,CP_ACP))
+					if (g_Git.Run(cmd, &out, &err, CP_ACP))
 					{
-						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 						return FALSE;
 					}
 
@@ -2731,10 +2731,11 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 		version = *versionstr;
 	else
 	{
+		CString err;
 		cmd = _T("git.exe --version");
-		if(g_Git.Run(cmd, &version, CP_ACP))
+		if(g_Git.Run(cmd, &version, &err, CP_ACP))
 		{
-			CMessageBox::Show(NULL,_T("git have not installed"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("git have not installed (") + err + _T(")"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return false;
 		}
 	}

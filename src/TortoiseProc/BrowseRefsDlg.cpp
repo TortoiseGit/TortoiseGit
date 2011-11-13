@@ -236,7 +236,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"Refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
-	CString allRefs;
+	CString allRefs, err;
 	g_Git.Run(L"git for-each-ref --format="
 			  L"%(refname)%04"
 			  L"%(objectname)%04"
@@ -244,7 +244,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			  L"%(subject)%04"
 			  L"%(authorname)%04"
 			  L"%(authordate:iso8601)%03",
-			  &allRefs,CP_UTF8);
+			  &allRefs, &err, CP_UTF8);
 
 	int linePos=0;
 	CString singleRef;
@@ -456,10 +456,10 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			//Check if branch is fully merged in HEAD
 			CGitHash branchHash = g_Git.GetHash(leafs[0]->GetRefName());
 			CGitHash commonAncestor;
-			CString commonAncestorstr;
+			CString commonAncestorstr, err;
 			CString cmd;
 			cmd.Format(L"git.exe merge-base HEAD %s", leafs[0]->GetRefName());
-			g_Git.Run(cmd,&commonAncestorstr,CP_UTF8);
+			g_Git.Run(cmd, &commonAncestorstr, &err, CP_UTF8);
 
 			commonAncestor=commonAncestorstr;
 

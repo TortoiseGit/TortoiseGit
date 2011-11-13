@@ -40,8 +40,8 @@ int CGitDiff::Parser(git_revnum_t &rev)
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe rev-parse %s"),rev);
-		CString output;
-		if(!g_Git.Run(cmd,&output,CP_UTF8))
+		CString output, err;
+		if (!g_Git.Run(cmd, &output, &err, CP_UTF8))
 		{
 			//int start=output.Find(_T('\n'));
 			rev=output.Left(40);
@@ -60,10 +60,10 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 
 	CString cmd;
 	cmd.Format(_T("git.exe ls-tree  HEAD -- \"%s\""), pPath->GetGitPathString());
-	CString output;
-	if(g_Git.Run(cmd,&output,CP_ACP))
+	CString output, err;
+	if(g_Git.Run(cmd, &output, &err, CP_ACP))
 	{
-		CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return -1;
 	}
 
@@ -159,7 +159,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 {
 	CString oldhash;
 	CString newhash;
-	CString cmd,err;
+	CString cmd;
 	CString workingcopy;
 
 	if( rev2 == GIT_REV_ZERO || rev1 == GIT_REV_ZERO )
@@ -178,10 +178,10 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		cmd.Format(_T("git.exe diff %s -- \"%s\""),
 		rev,pPath->GetGitPathString());
 
-		CString output;
-		if(g_Git.Run(cmd,&output,CP_ACP))
+		CString output, err;
+		if (g_Git.Run(cmd, &output, &err, CP_ACP))
 		{
-			CMessageBox::Show(NULL,output,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
 		}
 		int start =0;
@@ -207,11 +207,11 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		cmd.Format(_T("git.exe diff-tree -r -z %s %s -- \"%s\""),
 		rev2,rev1,pPath->GetGitPathString());
 
-		BYTE_VECTOR bytes;
-		if(g_Git.Run(cmd,&bytes))
+		BYTE_VECTOR bytes, errBytes;
+		if(g_Git.Run(cmd, &bytes, &errBytes))
 		{
 			CString err;
-			g_Git.StringAppend(&err,&bytes[0],CP_ACP);
+			g_Git.StringAppend(&err,&errBytes[0],CP_ACP);
 			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return -1;
 		}

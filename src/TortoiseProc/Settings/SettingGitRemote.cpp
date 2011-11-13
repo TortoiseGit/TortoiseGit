@@ -77,11 +77,11 @@ BOOL CSettingGitRemote::OnInitDialog()
 		this->SetWindowText(CString(_T("Config - "))+proj);
 	}
 
-	CString cmd,out;
+	CString cmd, out, err;
 	cmd=_T("git.exe remote");
-	if(g_Git.Run(cmd,&out,CP_ACP))
+	if(g_Git.Run(cmd, &out, &err, CP_ACP))
 	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return FALSE;
 	}
 	int start =0;

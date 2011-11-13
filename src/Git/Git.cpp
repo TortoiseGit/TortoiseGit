@@ -190,10 +190,10 @@ bool CGit::IsBranchNameValid(CString branchname)
 
 static char g_Buffer[4096];
 
-int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CString *StdioFile)
+int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
 {
 	SECURITY_ATTRIBUTES sa;
-	HANDLE hRead, hWrite;
+	HANDLE hRead, hWrite, hReadErr, hWriteErr;
 	HANDLE hStdioFile = NULL;
 
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -203,6 +203,8 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	{
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
+	if (hErrReadOut && !CreatePipe(&hReadErr, &hWriteErr, &sa, 0))
+		return TGIT_GIT_ERROR_OPEN_PIP;
 
 	if(StdioFile)
 	{
@@ -215,7 +217,10 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	si.cb=sizeof(STARTUPINFO);
 	GetStartupInfo(&si);
 
-	si.hStdError=hWrite;
+	if (hErrReadOut)
+		si.hStdError = hWriteErr;
+	else
+		si.hStdError = hWrite;
 	if(StdioFile)
 		si.hStdOutput=hStdioFile;
 	else
@@ -255,11 +260,14 @@ int CGit::RunAsync(CString cmd,PROCESS_INFORMATION *piOut,HANDLE *hReadOut,CStri
 	m_CurrentGitPi = pi;
 
 	CloseHandle(hWrite);
+	if (hErrReadOut)
+		CloseHandle(hWriteErr);
 	if(piOut)
 		*piOut=pi;
 	if(hReadOut)
 		*hReadOut=hRead;
-
+	if(hErrReadOut)
+		*hErrReadOut = hReadErr;
 	return 0;
 
 }
@@ -303,12 +311,35 @@ BOOL CGit::IsInitRepos()
 
 	return FALSE;
 }
+
+DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
+{
+	PASYNCREADSTDERRTHREADARGS pDataArray;
+	pDataArray = (PASYNCREADSTDERRTHREADARGS)lpParam;
+
+	DWORD readnumber;
+	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
+	while (ReadFile(pDataArray->fileHandle, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, NULL))
+	{
+		if (pDataArray->pcall->OnOutputErrData(data,readnumber))
+			break;
+	}
+
+	return 0;
+}
+
 int CGit::Run(CGitCall* pcall)
 {
 	PROCESS_INFORMATION pi;
-	HANDLE hRead;
-	if(RunAsync(pcall->GetCmd(),&pi,&hRead))
+	HANDLE hRead, hReadErr;
+	if(RunAsync(pcall->GetCmd(),&pi,&hRead, &hReadErr))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
+
+	HANDLE thread;
+	ASYNCREADSTDERRTHREADARGS threadArguments;
+	threadArguments.fileHandle = hReadErr;
+	threadArguments.pcall = pcall;
+	thread = CreateThread(NULL, 0, AsyncReadStdErrThread, &threadArguments, 0, NULL);
 
 	DWORD readnumber;
 	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
@@ -323,6 +354,9 @@ int CGit::Run(CGitCall* pcall)
 	if(!bAborted)
 		pcall->OnEnd();
 
+	if (thread)
+		WaitForSingleObject(thread, INFINITE);
+
 	CloseHandle(pi.hThread);
 
 	WaitForSingleObject(pi.hProcess, INFINITE);
@@ -336,12 +370,13 @@ int CGit::Run(CGitCall* pcall)
 	CloseHandle(pi.hProcess);
 
 	CloseHandle(hRead);
+	CloseHandle(hReadErr);
 	return exitcode;
 }
 class CGitCall_ByteVector : public CGitCall
 {
 public:
-	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector):CGitCall(cmd),m_pvector(pvector){}
+	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr):CGitCall(cmd),m_pvector(pvector),m_pvectorErr(pvectorErr){}
 	virtual bool OnOutputData(const BYTE* data, size_t size)
 	{
 		size_t oldsize=m_pvector->size();
@@ -349,23 +384,52 @@ public:
 		memcpy(&*(m_pvector->begin()+oldsize),data,size);
 		return false;
 	}
+	virtual bool OnOutputErrData(const BYTE* data, size_t size)
+	{
+		size_t oldsize = m_pvectorErr->size();
+		m_pvectorErr->resize(m_pvectorErr->size() + size);
+		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
+		return false;
+	}
 	BYTE_VECTOR* m_pvector;
+	BYTE_VECTOR* m_pvectorErr;
 
 };
-int CGit::Run(CString cmd,BYTE_VECTOR *vector)
+int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
 {
-	CGitCall_ByteVector call(cmd,vector);
+	CGitCall_ByteVector call(cmd, vector, vectorErr);
 	return Run(&call);
 }
-int CGit::Run(CString cmd, CString* output,int code)
+int CGit::Run(CString cmd, CString* output, int code)
 {
-	BYTE_VECTOR vector;
+	BYTE_VECTOR vector, vectorErr;
 	int ret;
-	ret=Run(cmd,&vector);
+	ret = Run(cmd, &vector, &vectorErr);
 
 	vector.push_back(0);
+	StringAppend(output, &(vector[0]), code);
 
-	StringAppend(output,&(vector[0]),code);
+	if (vectorErr.size() > 0)
+	{
+		*output += _T("\n");
+		vectorErr.push_back(0);
+		StringAppend(output, &(vectorErr[0]), code);
+	}
+
+	return ret;
+}
+int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
+{
+	BYTE_VECTOR vector, vectorErr;
+	int ret;
+	ret = Run(cmd, &vector, &vectorErr);
+
+	vector.push_back(0);
+	StringAppend(output, &(vector[0]), code);
+
+	vectorErr.push_back(0);
+	StringAppend(outputErr, &(vectorErr[0]), code);
+
 	return ret;
 }
 
@@ -415,9 +479,9 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL R
 	}
 	else
 	{
-		CString cmd;
+		CString cmd, err;
 		cmd.Format(L"git.exe config %s", name);
-		Run(cmd,&configValue,encoding);
+		Run(cmd, &configValue, &err, encoding);
 		if(RemoveCR)
 			return configValue.Tokenize(_T("\n"),start);
 		return configValue;
@@ -461,8 +525,8 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 			break;
 		}
 		cmd.Format(_T("git.exe config %s %s \"%s\""), option, key, value);
-		CString out;
-		if(Run(cmd,&out,encoding))
+		CString out, err;
+		if (Run(cmd, &out, &err, encoding))
 		{
 			return -1;
 		}
@@ -504,9 +568,9 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	}
 	else
 	{
-		CString cmd;
+		CString cmd, err;
 		cmd.Format(L"git symbolic-ref %s", symbolicRefName);
-		if(Run(cmd, &refName, CP_UTF8) != 0)
+		if (Run(cmd, &refName, &err, CP_UTF8) != 0)
 			return CString();//Error
 		int iStart = 0;
 		refName = refName.Tokenize(L"\n", iStart);
@@ -519,9 +583,9 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 CString CGit::GetFullRefName(CString shortRefName)
 {
 	CString refName;
-	CString cmd;
+	CString cmd, err;
 	cmd.Format(L"git rev-parse --symbolic-full-name %s", shortRefName);
-	if(Run(cmd, &refName, CP_UTF8) != 0)
+	if (Run(cmd, &refName, &err, CP_UTF8) != 0)
 		return CString();//Error
 	int iStart = 0;
 	return refName.Tokenize(L"\n", iStart);
@@ -623,7 +687,8 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 
 int CGit::GetLog(BYTE_VECTOR& logOut, const CString &hash,  CTGitPath *path ,int count,int mask,CString *from,CString *to)
 {
-	CGitCall_ByteVector gitCall(CString(),&logOut);
+	BYTE_VECTOR errOut;
+	CGitCall_ByteVector gitCall(CString(), &logOut, &errOut);
 	return GetLog(&gitCall,hash,path,count,mask,from,to);
 }
 
@@ -862,9 +927,9 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 	else
 	{
 		CString cmd;
-		CString out;
+		CString out, err;
 		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
-		Run(cmd,&out,CP_UTF8);
+		Run(cmd, &out, &err, CP_UTF8);
 	//	int pos=out.ReverseFind(_T('\n'));
 		out.FindOneOf(_T("\r\n"));
 		return CGitHash(out);
@@ -874,11 +939,11 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 int CGit::GetInitAddList(CTGitPathList &outputlist)
 {
 	CString cmd;
-	BYTE_VECTOR cmdout;
+	BYTE_VECTOR cmdout, cmdErr;
 
 	cmd=_T("git.exe ls-files -s -t -z");
 	outputlist.Clear();
-	if(g_Git.Run(cmd,&cmdout))
+	if (g_Git.Run(cmd, &cmdout, &cmdErr))
 		return -1;
 
 	outputlist.ParserFromLsFile(cmdout);
@@ -904,8 +969,8 @@ int CGit::GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathLis
 		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s"),rev2,rev1);
 	}
 
-	BYTE_VECTOR out;
-	if(g_Git.Run(cmd,&out))
+	BYTE_VECTOR out, err;
+	if (g_Git.Run(cmd, &out, &err))
 		return -1;
 
 	outputlist.ParserFromLog(out);
@@ -933,10 +998,10 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	}
 	else
 	{
-		CString cmd,output;
+		CString cmd, output, err;
 		cmd=_T("git.exe tag -l");
 		int i=0;
-		ret=g_Git.Run(cmd,&output,CP_UTF8);
+		ret = g_Git.Run(cmd, &output, &err, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1005,7 +1070,7 @@ CString CGit::DerefFetchHead()
 int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
-	CString cmd,output;
+	CString cmd, output, err;
 	cmd = _T("git.exe branch --no-color");
 
 	if((type&BRANCH_ALL) == BRANCH_ALL)
@@ -1014,7 +1079,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 		cmd += _T(" -r");
 
 	int i=0;
-	ret=g_Git.Run(cmd,&output,CP_UTF8);
+	ret = g_Git.Run(cmd, &output, &err, CP_UTF8);
 	if(!ret)
 	{
 		int pos=0;
@@ -1046,9 +1111,9 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 int CGit::GetRemoteList(STRING_VECTOR &list)
 {
 	int ret;
-	CString cmd,output;
+	CString cmd, output, err;
 	cmd=_T("git.exe remote");
-	ret=g_Git.Run(cmd,&output,CP_UTF8);
+	ret = g_Git.Run(cmd, &output, &err, CP_UTF8);
 	if(!ret)
 	{
 		int pos=0;
@@ -1072,9 +1137,9 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	}
 	else
 	{
-		CString cmd,output;
+		CString cmd, output, err;
 		cmd=_T("git.exe show-ref -d");
-		ret=g_Git.Run(cmd,&output,CP_UTF8);
+		ret = g_Git.Run(cmd, &output, &err, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1125,9 +1190,9 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	}
 	else
 	{
-		CString cmd,output;
+		CString cmd, output, err;
 		cmd=_T("git.exe show-ref -d");
-		ret=g_Git.Run(cmd,&output,CP_UTF8);
+		ret = g_Git.Run(cmd, &output, &err, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1301,6 +1366,11 @@ public:
 	void *			m_pUserData;
 
 	BYTE_VECTOR		m_DataCollector;
+
+	virtual bool	OnOutputErrData(const BYTE* data, size_t size)
+	{
+		return false; //ignore error data
+	}
 
 	virtual bool	OnOutputData(const BYTE* data, size_t size)
 	{
@@ -1547,7 +1617,7 @@ int CGit::Revert(CString commit, CTGitPath &path)
 
 int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 {
-	BYTE_VECTOR vector;
+	BYTE_VECTOR vector, vectorErr;
 
 	CString cmd;
 	if(path)
@@ -1555,7 +1625,7 @@ int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 	else
 		cmd=_T("git.exe ls-files -u -t -z");
 
-	if(g_Git.Run(cmd,&vector))
+	if (g_Git.Run(cmd, &vector, &vectorErr))
 	{
 		return -1;
 	}
@@ -1569,10 +1639,10 @@ bool CGit::IsFastForward(const CString &from, const CString &to)
 {
 	CString base;
 	CGitHash basehash,hash;
-	CString cmd;
+	CString cmd, err;
 	cmd.Format(_T("git.exe merge-base %s %s"), FixBranchName(to), FixBranchName(from));
 
-	if(g_Git.Run(cmd,&base,CP_ACP))
+	if (g_Git.Run(cmd, &base, &err, CP_ACP))
 	{
 		//CMessageBox::Show(NULL,base,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 		return false;

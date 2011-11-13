@@ -53,6 +53,7 @@ public:
 	//When this function returns 'true' the git command should be aborted.
 	//This behavior is not implemented yet.
 	virtual bool	OnOutputData(const BYTE* data, size_t size)=0;
+	virtual bool	OnOutputErrData(const BYTE* data, size_t size)=0;
 	virtual void	OnEnd(){}
 
 private:
@@ -152,11 +153,21 @@ public:
 	CGit(void);
 	~CGit(void);
 
-	int Run(CString cmd, CString* output,int code);
-	int Run(CString cmd, BYTE_VECTOR *byte_array);
+	int Run(CString cmd, CString* output, int code);
+	int Run(CString cmd, CString* output, CString* outputErr, int code);
+	int Run(CString cmd, BYTE_VECTOR *byte_array, BYTE_VECTOR *byte_arrayErr);
 	int Run(CGitCall* pcall);
 
-	int RunAsync(CString cmd,PROCESS_INFORMATION *pi, HANDLE* hRead, CString *StdioFile=NULL);
+private:
+	static DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam);
+	typedef struct AsyncReadStdErrThreadArguments
+	{
+		HANDLE fileHandle;
+		CGitCall* pcall;
+	} ASYNCREADSTDERRTHREADARGS, *PASYNCREADSTDERRTHREADARGS;
+
+public:
+	int RunAsync(CString cmd, PROCESS_INFORMATION *pi, HANDLE* hRead, HANDLE *hErrReadOut, CString *StdioFile = NULL);
 	int RunLogFile(CString cmd, const CString &filename);
 
 	int GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2, char *arg=NULL);

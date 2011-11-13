@@ -529,8 +529,8 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 					continue;
 
 				cmd.Format(_T("git.exe cat-file	tag %s"), tag);
-
-				if(g_Git.Run(cmd, &output, CP_UTF8) == 0 )
+				CString err;
+				if(g_Git.Run(cmd, &output, &err, CP_UTF8) == 0 )
 					output+=_T("\n");
 			}
 		}
@@ -3248,8 +3248,9 @@ void CLogDlg::ShowStartRef()
 	CString showStartRef = m_LogList.GetStartRef();
 	if(showStartRef.IsEmpty())
 	{
+		CString err;
 		//Ref name is HEAD
-		if( g_Git.Run(L"git symbolic-ref HEAD",&showStartRef,CP_UTF8) )
+		if (g_Git.Run(L"git symbolic-ref HEAD", &showStartRef, &err, CP_UTF8))
 			showStartRef = _T("<No branch>");
 		showStartRef.Trim(L"\r\n\t ");
 	}

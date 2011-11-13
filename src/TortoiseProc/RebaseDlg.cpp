@@ -477,14 +477,14 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 void CRebaseDlg::FetchLogList()
 {
 	CGitHash base,hash;
-	CString basestr;
+	CString basestr, err;
 	CString cmd;
 	m_IsFastForward=FALSE;
 	cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()),
 											   g_Git.FixBranchName(m_BranchCtrl.GetString()));
-	if(g_Git.Run(cmd,&basestr,CP_ACP))
+	if (g_Git.Run(cmd, &basestr, &err, CP_ACP))
 	{
-		CMessageBox::Show(NULL,basestr,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, basestr + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return;
 	}
 	base=basestr;

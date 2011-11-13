@@ -54,10 +54,10 @@ bool SVNRebaseCommand::Execute()
 
 //	dlg.m_PreCmd=_T("git.exe svn fetch");
 
-	CString cmd,out;
+	CString cmd, out, err;
 	cmd = _T("git.exe config svn-remote.svn.fetch");
 
-	if(!g_Git.Run(cmd,&out,CP_ACP))
+	if (!g_Git.Run(cmd, &out, &err, CP_ACP))
 	{
 		int start = out.Find(_T(':'));
 		if( start >=0 )
@@ -71,7 +71,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	else
 	{
-		CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return false;
 	}
 
