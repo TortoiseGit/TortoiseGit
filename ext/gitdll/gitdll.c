@@ -90,11 +90,11 @@ static int convert_slash(char * path)
 
 int git_init()
 {
-	char *home;
+	const char *home;
 	char path[MAX_PATH+1];
 	char *prefix;
 	int ret;
-	size_t homesize,size;
+	size_t homesize;
 
 	_fmode = _O_BINARY;
 	_setmode(_fileno(stdin), _O_BINARY);
@@ -105,9 +105,8 @@ int git_init()
 	getenv_s(&homesize, NULL, 0, "HOME");
 	if (!homesize)
 	{
-		_dupenv_s(&home,&size,"USERPROFILE");
+		home = get_windows_home_directory();
 		_putenv_s("HOME",home);
-		free(home);
 	}
 	GetModuleFileName(NULL, path, MAX_PATH);
 	convert_slash(path);
