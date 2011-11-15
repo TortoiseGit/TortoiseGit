@@ -1034,9 +1034,9 @@ const char *get_windows_home_directory(void)
 
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
 {
-	char *local,*global,*system_wide,*p;
+	char *local,*global,*p;
 	int ret;
-	local=global=system_wide=NULL;
+	local=global=NULL;
 
 	//local = config_exclusive_filename;
 	if (!local) {
