@@ -123,11 +123,13 @@ bool RemoveCommand::Execute()
 	//if(key == IDCANCEL)
 	int key;
 
-	CString format;
+	CString format, keepLocal;
+	if(parser.HasKey(_T("keep")))
+		keepLocal = _T(" from the index");
 	if (pathList.GetCount() > 1)
-		format.Format(_T("Do you really want to remove the %d selected files/directories?"), pathList.GetCount());
+		format.Format(_T("Do you really want to remove the %d selected files/directories%s?"), pathList.GetCount(), keepLocal);
 	else
-		format.Format(_T("Do you really want to remove \"%s\"?"), pathList[0].GetGitPathString());
+		format.Format(_T("Do you really want to remove \"%s\"%s?"), pathList[0].GetGitPathString(), keepLocal);
 	if (CMessageBox::Show(hwndExplorer, format, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Remove"), _T("&Abort")) == 2) {
 		return false;
 	}
