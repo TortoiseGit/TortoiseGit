@@ -770,6 +770,9 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
 		return NOERROR;
 
+	if (itemStatesFolder & ITEMIS_FOLDER) // we do not support folders atm, see issue #963
+		return NOERROR;
+
 	bool bSourceAndTargetFromSameRepository = (uuidSource.compare(uuidTarget) == 0) || uuidSource.empty() || uuidTarget.empty();
 
 	//the drop handler only has eight commands, but not all are visible at the same time:
