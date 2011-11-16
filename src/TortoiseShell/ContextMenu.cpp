@@ -806,13 +806,13 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// Git export here
 	// available if source is versioned and a folder
-	if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
-		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTMENU, 0, idCmdFirst, ShellMenuDropExport, uFlags);
+	//if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
+	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTMENU, 0, idCmdFirst, ShellMenuDropExport, uFlags);
 
 	// Git export all here
 	// available if source is versioned and a folder
-	if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
-		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTEXTENDEDMENU, 0, idCmdFirst, ShellMenuDropExportExtended, uFlags);
+	//if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
+	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTEXTENDEDMENU, 0, idCmdFirst, ShellMenuDropExportExtended, uFlags);
 
 	// apply patch
 	// available if source is a patchfile
