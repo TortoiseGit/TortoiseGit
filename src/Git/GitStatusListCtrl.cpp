@@ -2454,7 +2454,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						output.Empty();
 						if ( fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 						{
-							gitcmd.Format(_T("git.exe add -- \"%s\""),fentry->GetGitPathString());
+							gitcmd.Format(_T("git.exe add -f -- \"%s\""),fentry->GetGitPathString());
 							if(g_Git.Run(gitcmd,&output,CP_ACP))
 							{
 								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);

@@ -6,6 +6,7 @@
    Upgraded gitdll, libgit and tgit.exe to 1.7.7.2
  * Fixed issue #936: Applying a stash from the list fails
  * Fixed issue #962: git_init in gitdll.c uses USERPROFILE for creating home
+ * Fixed issue #964: Can't mark conflict as resolved
 
 = Release 1.7.5.0 =
 == Features==
