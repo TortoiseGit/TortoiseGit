@@ -125,15 +125,9 @@ bool RemoveCommand::Execute()
 
 	CString format;
 	if (pathList.GetCount() > 1)
-	{
-		format = _T("Do you really want to remove the %d selected files/directories?");
-		format.Format(format, pathList.GetCount());
-	}
+		format.Format(_T("Do you really want to remove the %d selected files/directories?"), pathList.GetCount());
 	else
-	{
-		format = _T("Do you really want to remove \"%s\"?");
-		format.Format(format, pathList[0].GetGitPathString());
-	}
+		format.Format(_T("Do you really want to remove \"%s\"?"), pathList[0].GetGitPathString());
 	if (CMessageBox::Show(hwndExplorer, format, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Remove"), _T("&Abort")) == 2) {
 		return false;
 	}
