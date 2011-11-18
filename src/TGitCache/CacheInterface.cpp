@@ -22,17 +22,17 @@
 
 CString GetCachePipeName()
 {
-	return TSVN_CACHE_PIPE_NAME + GetCacheID();
+	return TGIT_CACHE_PIPE_NAME + GetCacheID();
 }
 
 CString GetCacheCommandPipeName()
 {
-	return TSVN_CACHE_COMMANDPIPE_NAME + GetCacheID();
+	return TGIT_CACHE_COMMANDPIPE_NAME + GetCacheID();
 }
 
 CString GetCacheMutexName()
 {
-	return TSVN_CACHE_MUTEX_NAME + GetCacheID();
+	return TGIT_CACHE_MUTEX_NAME + GetCacheID();
 }
 CString GetCacheID()
 {

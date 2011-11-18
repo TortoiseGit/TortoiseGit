@@ -222,9 +222,9 @@ void CSettings::HandleRestart()
 				NULL))    // don't set maximum time
 			{
 				DWORD cbWritten;
-				TSVNCacheCommand cmd;
-				SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
-				cmd.command = TSVNCACHECOMMAND_REFRESHALL;
+				TGITCacheCommand cmd;
+				SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+				cmd.command = TGITCACHECOMMAND_REFRESHALL;
 				BOOL fSuccess = WriteFile(
 					hPipe,			// handle to pipe
 					&cmd,			// buffer to write from
@@ -242,9 +242,9 @@ void CSettings::HandleRestart()
 				{
 					// now tell the cache we don't need it's command thread anymore
 					DWORD cbWritten;
-					TSVNCacheCommand cmd;
-					SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
-					cmd.command = TSVNCACHECOMMAND_END;
+					TGITCacheCommand cmd;
+					SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+					cmd.command = TGITCACHECOMMAND_END;
 					WriteFile(
 						hPipe,			// handle to pipe
 						&cmd,			// buffer to write from

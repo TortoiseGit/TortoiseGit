@@ -53,8 +53,8 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
-	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
-	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ADDFILE, OnFileDropped)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ADDFILE, OnFileDropped)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_INCLUDE_IGNORED, &CAddDlg::OnBnClickedIncludeIgnored)
 END_MESSAGE_MAP()
@@ -66,7 +66,7 @@ BOOL CAddDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	// initialize the svn status list control
-	m_addListCtrl.Init(SVNSLC_COLEXT, _T("AddDlg"), SVNSLC_POPALL ^ (SVNSLC_POPADD|SVNSLC_POPCOMMIT|SVNSLC_POPCHANGELISTS)); // adding and committing is useless in the add dialog
+	m_addListCtrl.Init(GITSLC_COLEXT, _T("AddDlg"), GITSLC_POPALL ^ (GITSLC_POPADD|GITSLC_POPCOMMIT|GITSLC_POPCHANGELISTS)); // adding and committing is useless in the add dialog
 	m_addListCtrl.SetIgnoreRemoveOnly();	// when ignoring, don't add the parent folder since we're in the add dialog
 	m_addListCtrl.SetUnversionedRecurse(true);	// recurse into unversioned folders - user might want to add those too
 	m_addListCtrl.SetSelectButton(&m_SelectAll);
@@ -154,9 +154,9 @@ UINT CAddDlg::AddThread()
 	{
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());
 	}
-	unsigned int dwShow = SVNSLC_SHOWUNVERSIONED | SVNSLC_SHOWDIRECTFILES | SVNSLC_SHOWREMOVEDANDPRESENT;
+	unsigned int dwShow = GITSLC_SHOWUNVERSIONED | GITSLC_SHOWDIRECTFILES | GITSLC_SHOWREMOVEDANDPRESENT;
 	if (m_bIncludeIgnored)
-		dwShow |= SVNSLC_SHOWIGNORED;
+		dwShow |= GITSLC_SHOWIGNORED;
 	m_addListCtrl.Show(dwShow);
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);

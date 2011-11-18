@@ -53,15 +53,15 @@
 //#include "CreateChangelistDlg.h"
 #include "CommonResource.h"
 
-const UINT CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED
+const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
-const UINT CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH
+const UINT CGitStatusListCtrl::GITSLNM_NEEDSREFRESH
 					= ::RegisterWindowMessage(_T("GITSLNM_NEEDSREFRESH"));
-const UINT CGitStatusListCtrl::SVNSLNM_ADDFILE
+const UINT CGitStatusListCtrl::GITSLNM_ADDFILE
 					= ::RegisterWindowMessage(_T("GITSLNM_ADDFILE"));
-const UINT CGitStatusListCtrl::SVNSLNM_CHECKCHANGED
+const UINT CGitStatusListCtrl::GITSLNM_CHECKCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_CHECKCHANGED"));
-const UINT CGitStatusListCtrl::SVNSLNM_ITEMCHANGED
+const UINT CGitStatusListCtrl::GITSLNM_ITEMCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCHANGED"));
 
 
@@ -229,7 +229,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
 	// keep CSorter::operator() in sync!!
-	static UINT standardColumnNames[SVNSLC_NUMCOLUMNS]
+	static UINT standardColumnNames[GITSLC_NUMCOLUMNS]
 			= { IDS_STATUSLIST_COLFILE
 			, IDS_STATUSLIST_COLFILENAME
 			, IDS_STATUSLIST_COLEXT
@@ -238,8 +238,8 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 			, IDS_STATUSLIST_COLDEL
 			};
 
-	m_ColumnManager.SetNames(standardColumnNames,SVNSLC_NUMCOLUMNS);
-	m_ColumnManager.ReadSettings (m_dwDefaultColumns, 0, sColumnInfoContainer, SVNSLC_NUMCOLUMNS);
+	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
+	m_ColumnManager.ReadSettings (m_dwDefaultColumns, 0, sColumnInfoContainer, GITSLC_NUMCOLUMNS);
 
 	// enable file drops
 #if 0
@@ -528,33 +528,33 @@ DWORD CGitStatusListCtrl::GetShowFlagsFromGitStatus(git_wc_status_kind status)
 	{
 	case git_wc_status_none:
 	case git_wc_status_unversioned:
-		return SVNSLC_SHOWUNVERSIONED;
+		return GITSLC_SHOWUNVERSIONED;
 	case git_wc_status_ignored:
 		if (!m_bShowIgnores)
-			return SVNSLC_SHOWDIRECTS;
-		return SVNSLC_SHOWDIRECTS|SVNSLC_SHOWIGNORED;
+			return GITSLC_SHOWDIRECTS;
+		return GITSLC_SHOWDIRECTS|GITSLC_SHOWIGNORED;
 	case git_wc_status_incomplete:
-		return SVNSLC_SHOWINCOMPLETE;
+		return GITSLC_SHOWINCOMPLETE;
 	case git_wc_status_normal:
-		return SVNSLC_SHOWNORMAL;
+		return GITSLC_SHOWNORMAL;
 	case git_wc_status_external:
-		return SVNSLC_SHOWEXTERNAL;
+		return GITSLC_SHOWEXTERNAL;
 	case git_wc_status_added:
-		return SVNSLC_SHOWADDED;
+		return GITSLC_SHOWADDED;
 	case git_wc_status_missing:
-		return SVNSLC_SHOWMISSING;
+		return GITSLC_SHOWMISSING;
 	case git_wc_status_deleted:
-		return SVNSLC_SHOWREMOVED;
+		return GITSLC_SHOWREMOVED;
 	case git_wc_status_replaced:
-		return SVNSLC_SHOWREPLACED;
+		return GITSLC_SHOWREPLACED;
 	case git_wc_status_modified:
-		return SVNSLC_SHOWMODIFIED;
+		return GITSLC_SHOWMODIFIED;
 	case git_wc_status_merged:
-		return SVNSLC_SHOWMERGED;
+		return GITSLC_SHOWMERGED;
 	case git_wc_status_conflicted:
-		return SVNSLC_SHOWCONFLICTED;
+		return GITSLC_SHOWCONFLICTED;
 	case git_wc_status_obstructed:
-		return SVNSLC_SHOWOBSTRUCTED;
+		return GITSLC_SHOWOBSTRUCTED;
 	default:
 		// we should NEVER get here!
 		ASSERT(FALSE);
@@ -722,7 +722,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		if (!entry->changelist.IsEmpty())
 			showFlags |= SVNSLC_SHOWINCHANGELIST;
 #endif
-		bool bAllowCheck = ((entry->changelist.Compare(SVNSLC_IGNORECHANGELIST) != 0)
+		bool bAllowCheck = ((entry->changelist.Compare(GITSLC_IGNORECHANGELIST) != 0)
 			&& (m_bCheckIfGroupsExist || (m_changelists.size()==0 || (m_changelists.size()==1 && m_bHasIgnoreGroup))));
 
 		// status_ignored is a special case - we must have the 'direct' flag set to add a status_ignored item
@@ -1003,8 +1003,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	// SVNSLC_COLSTATUS
 	SetItemText(index, nCol++, GitPath->GetActionName());
 
-	SetItemText(index, GetColumnIndex(SVNSLC_COLADD),GitPath->m_StatAdd);
-	SetItemText(index, GetColumnIndex(SVNSLC_COLDEL),GitPath->m_StatDel);
+	SetItemText(index, GetColumnIndex(GITSLC_COLADD),GitPath->m_StatAdd);
+	SetItemText(index, GetColumnIndex(GITSLC_COLDEL),GitPath->m_StatDel);
 
 
 	SetCheck(index, GitPath->m_Checked);
@@ -1330,7 +1330,7 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 	CWnd* pParent = GetParent();
 	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 	{
-		pParent->SendMessage(SVNSLNM_ITEMCHANGED, pNMLV->iItem);
+		pParent->SendMessage(GITSLNM_ITEMCHANGED, pNMLV->iItem);
 	}
 
 	if ((pNMLV->uNewState==0)||(pNMLV->uNewState & LVIS_SELECTED)||(pNMLV->uNewState & LVIS_FOCUSED))
@@ -1667,17 +1667,17 @@ void CGitStatusListCtrl::OnContextMenuGroup(CWnd * /*pWnd*/, CPoint point)
 		{
 			CString temp;
 			temp.LoadString(IDS_STATUSLIST_CHECKGROUP);
-			popup.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_CHECKGROUP, temp);
+			popup.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_CHECKGROUP, temp);
 			temp.LoadString(IDS_STATUSLIST_UNCHECKGROUP);
-			popup.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_UNCHECKGROUP, temp);
+			popup.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_UNCHECKGROUP, temp);
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 			bool bCheck = false;
 			switch (cmd)
 			{
-			case IDSVNLC_CHECKGROUP:
+			case IDGITLC_CHECKGROUP:
 				bCheck = true;
 				// fall through here
-			case IDSVNLC_UNCHECKGROUP:
+			case IDGITLC_UNCHECKGROUP:
 				{
 					int group = GetGroupFromPoint(&clientpoint);
 					// go through all items and check/uncheck those assigned to the group
@@ -1772,27 +1772,27 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
 			{
-				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
+				if ((m_dwContextMenus & GITSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
-					popup.AppendMenuIcon(IDSVNLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
+					popup.AppendMenuIcon(IDGITLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
 				}
-				if (m_dwContextMenus & SVNSLC_POPRESOLVE)
+				if (m_dwContextMenus & GITSLC_POPRESOLVE)
 				{
-					popup.AppendMenuIcon(IDSVNLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
+					popup.AppendMenuIcon(IDGITLC_RESOLVECONFLICT, IDS_STATUSLIST_CONTEXT_RESOLVED, IDI_RESOLVE);
 				}
-				if ((m_dwContextMenus & SVNSLC_POPRESOLVE)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
+				if ((m_dwContextMenus & GITSLC_POPRESOLVE)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
-					popup.AppendMenuIcon(IDSVNLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
-					popup.AppendMenuIcon(IDSVNLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
+					popup.AppendMenuIcon(IDGITLC_RESOLVETHEIRS, IDS_SVNPROGRESS_MENUUSETHEIRS, IDI_RESOLVE);
+					popup.AppendMenuIcon(IDGITLC_RESOLVEMINE, IDS_SVNPROGRESS_MENUUSEMINE, IDI_RESOLVE);
 				}
-				if ((m_dwContextMenus & SVNSLC_POPCONFLICT)||(m_dwContextMenus & SVNSLC_POPRESOLVE))
+				if ((m_dwContextMenus & GITSLC_POPCONFLICT)||(m_dwContextMenus & GITSLC_POPRESOLVE))
 					popup.AppendMenu(MF_SEPARATOR);
 			}
 
 			if (GetSelectedCount() > 0)
 			{
 				if (wcStatus & CTGitPath::LOGACTIONS_UNVER)
-					if (m_dwContextMenus & SVNSLC_POPADD)
+					if (m_dwContextMenus & GITSLC_POPADD)
 					{
 						//if ( entry->IsFolder() )
 						//{
@@ -1800,27 +1800,27 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						//}
 						//else
 						{
-							popup.AppendMenuIcon(IDSVNLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
+							popup.AppendMenuIcon(IDGITLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
 						}
 					}
 			}
 
 			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
 			{
-				if ( (m_dwContextMenus & SVNSLC_POPCOMPAREWITHBASE) && GetSelectedCount()>0)
+				if ( (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE) && GetSelectedCount()>0)
 				{
 					if(filepath->m_ParentNo & MERGE_MASK)
-						popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_TREE_DIFF, IDI_DIFF);
+						popup.AppendMenuIcon(IDGITLC_COMPARE, IDS_TREE_DIFF, IDI_DIFF);
 					else
-						popup.AppendMenuIcon(IDSVNLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
+						popup.AppendMenuIcon(IDGITLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
 
-					popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
+					popup.SetDefaultItem(IDGITLC_COMPARE, FALSE);
 				}
 
-				if ((m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPAREWC)) && GetSelectedCount()>0)
+				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && GetSelectedCount()>0)
 				{
 					if( (!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
-						popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+						popup.AppendMenuIcon(IDGITLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 				}
 				//Select one items
 				if (GetSelectedCount() == 1)
@@ -1832,9 +1832,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					//	{
 					//		if ((m_dwContextMenus & SVNSLC_POPGNUDIFF)&&(wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing))
 					//		{
-					if(!g_Git.IsInitRepos() && (m_dwContextMenus&SVNSLC_POPGNUDIFF))
+					if(!g_Git.IsInitRepos() && (m_dwContextMenus&GITSLC_POPGNUDIFF))
 					{
-						popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+						popup.AppendMenuIcon(IDGITLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 
 						bEntryAdded = true;
 					}
@@ -1873,14 +1873,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			{
 				if(GetSelectedCount() == 1)
 				{
-					if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_COMPARETWO))
+					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPARETWO))
 					{
-						popup.AppendMenuIcon(IDSVNLC_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
-						popup.SetDefaultItem(IDSVNLC_COMPARETWO, FALSE);
+						popup.AppendMenuIcon(IDGITLC_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
+						popup.SetDefaultItem(IDGITLC_COMPARETWO, FALSE);
 					}
-					if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_GNUDIFF2))
+					if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_GNUDIFF2))
 					{
-						popup.AppendMenuIcon(IDSVNLC_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+						popup.AppendMenuIcon(IDGITLC_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 					}
 				}
 			}
@@ -1888,7 +1888,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//Select Multi item
 			if (GetSelectedCount() > 0)
 			{
-				if ((GetSelectedCount() == 2) && (m_dwContextMenus & this->GetContextMenuBit(SVNSLC_POPCOMPARETWOFILES)))
+				if ((GetSelectedCount() == 2) && (m_dwContextMenus & this->GetContextMenuBit(GITSLC_POPCOMPARETWOFILES)))
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index = GetNextSelectedItem(pos);
@@ -1906,7 +1906,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							if (entry2)
 								bothItemsAreFiles = bothItemsAreFiles && !entry2->IsDirectory();
 							if (bothItemsAreFiles)
-								popup.AppendMenuIcon(IDSVNLC_COMPARETWOFILES, IDS_STATUSLIST_CONTEXT_COMPARETWOFILES, IDI_DIFF);
+								popup.AppendMenuIcon(IDGITLC_COMPARETWOFILES, IDS_STATUSLIST_CONTEXT_COMPARETWOFILES, IDI_DIFF);
 						}
 					}
 				}
@@ -1957,51 +1957,51 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)))
 			{
-				if ((m_dwContextMenus & SVNSLC_POPREVERT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
+				if ((m_dwContextMenus & GITSLC_POPREVERT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
 				{
-					popup.AppendMenuIcon(IDSVNLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
+					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
 				}
 
-				if ((m_dwContextMenus & GetContextMenuBit(IDSVNLC_REVERTTOREV)) && ( !this->m_CurrentVersion.IsEmpty() )
+				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOREV)) && ( !this->m_CurrentVersion.IsEmpty() )
 					&& this->m_CurrentVersion != GIT_REV_ZERO && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
-					popup.AppendMenuIcon(IDSVNLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
+					popup.AppendMenuIcon(IDGITLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 				}
 			}
 
 			if ((GetSelectedCount() == 1)&&(!(wcStatus & CTGitPath::LOGACTIONS_UNVER))
 				&&(!(wcStatus & CTGitPath::LOGACTIONS_IGNORE)))
 			{
-				if (m_dwContextMenus & SVNSLC_POPSHOWLOG)
+				if (m_dwContextMenus & GITSLC_POPSHOWLOG)
 				{
-					popup.AppendMenuIcon(IDSVNLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
+					popup.AppendMenuIcon(IDGITLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
-				if (m_dwContextMenus & SVNSLC_POPBLAME && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if (m_dwContextMenus & GITSLC_POPBLAME && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
-					popup.AppendMenuIcon(IDSVNLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
+					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 				}
 			}
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
 			if ( (GetSelectedCount() == 1) )
 			{
-				if (m_dwContextMenus & this->GetContextMenuBit(IDSVNLC_SAVEAS) && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if (m_dwContextMenus & this->GetContextMenuBit(IDGITLC_SAVEAS) && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
-					popup.AppendMenuIcon(IDSVNLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
+					popup.AppendMenuIcon(IDGITLC_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
 				}
 
-				if (m_dwContextMenus & SVNSLC_POPOPEN && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if (m_dwContextMenus & GITSLC_POPOPEN && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
-					popup.AppendMenuIcon(IDSVNLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
-					popup.AppendMenuIcon(IDSVNLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
-					popup.AppendMenuIcon(IDSVNLC_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+					popup.AppendMenuIcon(IDGITLC_VIEWREV, IDS_LOG_POPUP_VIEWREV);
+					popup.AppendMenuIcon(IDGITLC_OPEN, IDS_REPOBROWSE_OPEN, IDI_OPEN);
+					popup.AppendMenuIcon(IDGITLC_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 					if (wcStatus &CTGitPath::LOGACTIONS_UNVER) {
-						popup.SetDefaultItem(IDSVNLC_OPEN, FALSE);
+						popup.SetDefaultItem(IDGITLC_OPEN, FALSE);
 					}
 				}
 
-				if (m_dwContextMenus & SVNSLC_POPEXPLORE && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+				if (m_dwContextMenus & GITSLC_POPEXPLORE && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
-					popup.AppendMenuIcon(IDSVNLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
+					popup.AppendMenuIcon(IDGITLC_EXPLORE, IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 				}
 
 			}
@@ -2020,14 +2020,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 //				}
 				if ((wcStatus & CTGitPath::LOGACTIONS_UNVER)/*||(wcStatus == git_wc_status_deleted)*/)
 				{
-					if (m_dwContextMenus & SVNSLC_POPDELETE)
+					if (m_dwContextMenus & GITSLC_POPDELETE)
 					{
-						popup.AppendMenuIcon(IDSVNLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
+						popup.AppendMenuIcon(IDGITLC_DELETE, IDS_MENUREMOVE, IDI_DELETE);
 					}
 				}
 				if ( (wcStatus & CTGitPath::LOGACTIONS_UNVER || wcStatus & CTGitPath::LOGACTIONS_DELETED) )
 				{
-					if (m_dwContextMenus & SVNSLC_POPIGNORE)
+					if (m_dwContextMenus & GITSLC_POPIGNORE)
 					{
 
 						CTGitPathList ignorelist;
@@ -2051,9 +2051,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 									ignorepath = ignorelist[0].GetFileOrDirectoryName();
 								else
 									ignorepath.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
-								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_IGNORE, ignorepath);
+								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNORE, ignorepath);
 								ignorepath = _T("*")+sExt;
-								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_IGNOREMASK, ignorepath);
+								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREMASK, ignorepath);
 								CString temp;
 								temp.LoadString(IDS_MENUIGNORE);
 								popup.InsertMenu((UINT)-1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)ignoreSubMenu.m_hMenu, temp);
@@ -2070,7 +2070,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							{
 								temp.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
 							}
-							popup.AppendMenuIcon(IDSVNLC_IGNORE, temp, IDI_IGNORE);
+							popup.AppendMenuIcon(IDGITLC_IGNORE, temp, IDI_IGNORE);
 						}
 					}
 				}
@@ -2117,8 +2117,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 #endif
 				popup.AppendMenu(MF_SEPARATOR);
-				popup.AppendMenuIcon(IDSVNLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
-				popup.AppendMenuIcon(IDSVNLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
+				popup.AppendMenuIcon(IDGITLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
+				popup.AppendMenuIcon(IDGITLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 #if 0
 				if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS)&&(XPorLater)
 					&&(wcStatus != git_wc_status_unversioned)&&(wcStatus != git_wc_status_none))
@@ -2176,23 +2176,23 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//bool bForce = false;
 			switch (cmd)
 			{
-			case IDSVNLC_VIEWREV:
+			case IDGITLC_VIEWREV:
 				OpenFile(filepath, ALTERNATIVEEDITOR);
 				break;
-			case IDSVNLC_OPEN:
+			case IDGITLC_OPEN:
 				OpenFile(filepath,OPEN);
 				break;
-			case IDSVNLC_OPENWITH:
+			case IDGITLC_OPENWITH:
 				OpenFile(filepath,OPEN_WITH);
 				break;
-			case IDSVNLC_EXPLORE:
+			case IDGITLC_EXPLORE:
 				{
 					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
 				}
 				break;
 
 			// Compare current version and work copy.
-			case IDSVNLC_COMPAREWC:
+			case IDGITLC_COMPAREWC:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
@@ -2203,7 +2203,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 			// Compare with base version. when current version is zero, compare workcopy and HEAD.
-			case IDSVNLC_COMPARE:
+			case IDGITLC_COMPARE:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
@@ -2213,7 +2213,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-			case IDSVNLC_COMPARETWO:
+			case IDGITLC_COMPARETWO:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
@@ -2223,7 +2223,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-			case IDSVNLC_COMPARETWOFILES:
+			case IDGITLC_COMPARETWOFILES:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					CTGitPath * firstfilepath, * secondfilepath;
@@ -2238,7 +2238,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
 				break;
-			case IDSVNLC_GNUDIFF1:
+			case IDGITLC_GNUDIFF1:
 				{
 				//	SVNDiff diff(NULL, this->m_hWnd, true);
 				//
@@ -2277,7 +2277,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
-			case IDSVNLC_GNUDIFF2:
+			case IDGITLC_GNUDIFF2:
 				{
 				//	SVNDiff diff(NULL, this->m_hWnd, true);
 				//
@@ -2291,7 +2291,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDSVNLC_ADD:
+			case IDGITLC_ADD:
 				{	// The add went ok, but we now need to run through the selected items again
 					// and update their status
 					std::vector<int> selectIndex;
@@ -2330,7 +2330,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDSVNLC_DELETE:
+			case IDGITLC_DELETE:
 				{
 					//Collect paths
 					std::vector<int> selectIndex;
@@ -2391,13 +2391,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDSVNLC_BLAME:
+			case IDGITLC_BLAME:
 				{
 					CAppUtils::LaunchTortoiseBlame(g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath(), m_CurrentVersion);
 				}
 				break;
 
-			case IDSVNLC_LOG:
+			case IDGITLC_LOG:
 				{
 					CString sCmd;
 					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
@@ -2407,14 +2407,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDSVNLC_EDITCONFLICT:
+			case IDGITLC_EDITCONFLICT:
 			{
 				CAppUtils::ConflictEdit(*filepath,false,this->m_bIsRevertTheirMy);
 				break;
 			}
-			case IDSVNLC_RESOLVETHEIRS: //follow up
-			case IDSVNLC_RESOLVEMINE:   //follow up
-			case IDSVNLC_RESOLVECONFLICT:
+			case IDGITLC_RESOLVETHEIRS: //follow up
+			case IDGITLC_RESOLVEMINE:   //follow up
+			case IDGITLC_RESOLVECONFLICT:
 			{
 				if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
 				{
@@ -2429,8 +2429,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString gitcmd,output;
 						output.Empty();
 
-						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) ||
-							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) )
+						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) ||
+							 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) )
 						{
 							gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""),fentry->GetGitPathString());
 							if(g_Git.Run(gitcmd,&output,CP_ACP))
@@ -2440,8 +2440,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 						}
 						output.Empty();
-						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVEMINE) ||
-							 ((this->m_bIsRevertTheirMy)&&cmd == IDSVNLC_RESOLVETHEIRS) )
+						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) ||
+							 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) )
 						{
 							gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""),fentry->GetGitPathString());
 							if(g_Git.Run(gitcmd,&output,CP_ACP))
@@ -2474,7 +2474,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			}
 			break;
 
-			case IDSVNLC_IGNORE:
+			case IDGITLC_IGNORE:
 			{
 				CTGitPathList ignorelist;
 				//std::vector<CString> toremove;
@@ -2648,7 +2648,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 #endif
 				break;
-			case IDSVNLC_IGNOREMASK:
+			case IDGITLC_IGNOREMASK:
 				{
 					CString common;
 					CString ext=filepath->GetFileExtension();
@@ -2678,7 +2678,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CWnd* pParent = GetParent();
 					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 					{
-						pParent->SendMessage(SVNSLNM_NEEDSREFRESH);
+						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 					}
 
 					SetRedraw(TRUE);
@@ -2828,7 +2828,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 #endif
 				break;
 
-				case IDSVNLC_REVERT:
+				case IDGITLC_REVERT:
 				{
 					// If at least one item is not in the status "added"
 					// we ask for a confirmation
@@ -2923,18 +2923,18 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-			case IDSVNLC_COPY:
+			case IDGITLC_COPY:
 				CopySelectedEntriesToClipboard(0);
 				break;
-			case IDSVNLC_COPYEXT:
+			case IDGITLC_COPYEXT:
 				CopySelectedEntriesToClipboard((DWORD)-1);
 				break;
 
-			case IDSVNLC_SAVEAS:
+			case IDGITLC_SAVEAS:
 				FileSaveAs(filepath);
 				break;
 
-			case IDSVNLC_REVERTTOREV:
+			case IDGITLC_REVERTTOREV:
 				RevertSelectedItemToVersion();
 				break;
 #if 0
@@ -4460,7 +4460,7 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 				{
 					// copy all selected paths to the clipboard
 					if (GetAsyncKeyState(VK_SHIFT)&0x8000)
-						CopySelectedEntriesToClipboard(SVNSLC_COLSTATUS);
+						CopySelectedEntriesToClipboard(GITSLC_COLSTATUS);
 					else
 						CopySelectedEntriesToClipboard(0);
 					return TRUE;
@@ -4514,16 +4514,16 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			continue;
 
 		sClipboard += entry->GetWinPathString();
-		if (selection & SVNSLC_COLFILENAME)
+		if (selection & GITSLC_COLFILENAME)
 		{
 			sClipboard += _T("\t")+entry->GetFileOrDirectoryName();
 		}
-		if (selection & SVNSLC_COLEXT)
+		if (selection & GITSLC_COLEXT)
 		{
 			sClipboard += _T("\t")+entry->GetFileExtension();
 		}
 
-		if (selection & SVNSLC_COLSTATUS)
+		if (selection & GITSLC_COLSTATUS)
 		{
 #if 0
 			if (entry->isNested)
@@ -4723,11 +4723,11 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 			}
 		}
 #endif
-		if (selection & SVNSLC_COLADD)
+		if (selection & GITSLC_COLADD)
 		{
 			sClipboard += _T("\t")+entry->m_StatAdd;
 		}
-		if (selection & SVNSLC_COLDEL)
+		if (selection & GITSLC_COLDEL)
 		{
 			sClipboard += _T("\t")+entry->m_StatDel;
 		}
@@ -4894,7 +4894,7 @@ void CGitStatusListCtrl::NotifyCheck()
 	CWnd* pParent = GetParent();
 	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 	{
-		pParent->SendMessage(SVNSLNM_CHECKCHANGED, m_nSelected);
+		pParent->SendMessage(GITSLNM_CHECKCHANGED, m_nSelected);
 	}
 }
 

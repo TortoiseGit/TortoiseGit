@@ -63,7 +63,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CString temp;
-	temp.Format(IDS_CHECKNEWER_YOURVERSION, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD);
+	temp.Format(IDS_CHECKNEWER_YOURVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 	SetDlgItemText(IDC_YOURVERSION, temp);
 
 	DialogEnableWindow(IDOK, FALSE);
@@ -184,13 +184,13 @@ UINT CCheckForUpdatesDlg::CheckThread()
 
 			{
 				BOOL bNewer = FALSE;
-				if (major > TSVN_VERMAJOR)
+				if (major > TGIT_VERMAJOR)
 					bNewer = TRUE;
-				else if ((minor > TSVN_VERMINOR)&&(major == TSVN_VERMAJOR))
+				else if ((minor > TGIT_VERMINOR)&&(major == TGIT_VERMAJOR))
 					bNewer = TRUE;
-				else if ((micro > TSVN_VERMICRO)&&(minor == TSVN_VERMINOR)&&(major == TSVN_VERMAJOR))
+				else if ((micro > TGIT_VERMICRO)&&(minor == TGIT_VERMINOR)&&(major == TGIT_VERMAJOR))
 					bNewer = TRUE;
-				else if ((build > TSVN_VERBUILD)&&(micro == TSVN_VERMICRO)&&(minor == TSVN_VERMINOR)&&(major == TSVN_VERMAJOR))
+				else if ((build > TGIT_VERBUILD)&&(micro == TGIT_VERMICRO)&&(minor == TGIT_VERMINOR)&&(major == TGIT_VERMAJOR))
 					bNewer = TRUE;
 
 				if (version != 0)
@@ -198,7 +198,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 					ver.Format(_T("%d.%d.%d.%d"),major,minor,micro,build);
 					temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)ver);
 					SetDlgItemText(IDC_CURRENTVERSION, temp);
-					temp.Format(_T("%d.%d.%d.%d"), TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD);
+					temp.Format(_T("%d.%d.%d.%d"), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 				}
 
 				if (version == 0)

@@ -188,7 +188,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 
 
-	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("RebaseDlg"),(SVNSLC_POPALL ^ SVNSLC_POPCOMMIT),false);
+	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("RebaseDlg"),(GITSLC_POPALL ^ GITSLC_POPCOMMIT),false);
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Revision Files"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
@@ -1752,7 +1752,7 @@ void CRebaseDlg::FillLogMessageCtrl()
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_CommitList.m_arShownList.SafeGetAt(selIndex));
 		m_FileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_CommitList));
 		m_FileListCtrl.m_CurrentVersion = pLogEntry->m_CommitHash;
-		m_FileListCtrl.Show(SVNSLC_SHOWVERSIONED);
+		m_FileListCtrl.Show(GITSLC_SHOWVERSIONED);
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + _T("\n") + pLogEntry->GetBody());
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);

@@ -20,7 +20,7 @@
 #include "stdafx.h"
 
 #include "ShellExt.h"
-#include "svnpropertypage.h"
+#include "gitpropertypage.h"
 #include "UnicodeUtils.h"
 #include "PathUtils.h"
 #include "GitStatus.h"
@@ -121,11 +121,11 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						startup.cb = sizeof(startup);
 						memset(&process, 0, sizeof(process));
 						CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-						stdstring svnCmd = _T(" /command:");
-						svnCmd += _T("log /path:\"");
-						svnCmd += filenames.front().c_str();
-						svnCmd += _T("\"");
-						if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+						stdstring gitCmd = _T(" /command:");
+						gitCmd += _T("log /path:\"");
+						gitCmd += filenames.front().c_str();
+						gitCmd += _T("\"");
+						if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 						{
 							CloseHandle(process.hThread);
 							CloseHandle(process.hProcess);
@@ -137,7 +137,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						TCHAR * path = new TCHAR[pathlength+1];
 						TCHAR * tempFile = new TCHAR[pathlength + 100];
 						GetTempPath (pathlength+1, path);
-						GetTempFileName (path, _T("svn"), 0, tempFile);
+						GetTempFileName (path, _T("git"), 0, tempFile);
 						stdstring retFilePath = stdstring(tempFile);
 
 						HANDLE file = ::CreateFile (tempFile,
@@ -166,12 +166,12 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							startup.cb = sizeof(startup);
 							memset(&process, 0, sizeof(process));
 							CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-							stdstring svnCmd = _T(" /command:");
-							svnCmd += _T("properties /pathfile:\"");
-							svnCmd += retFilePath.c_str();
-							svnCmd += _T("\"");
-							svnCmd += _T(" /deletepathfile");
-							if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+							stdstring gitCmd = _T(" /command:");
+							gitCmd += _T("properties /pathfile:\"");
+							gitCmd += retFilePath.c_str();
+							gitCmd += _T("\"");
+							gitCmd += _T(" /deletepathfile");
+							if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 							{
 								CloseHandle(process.hThread);
 								CloseHandle(process.hProcess);

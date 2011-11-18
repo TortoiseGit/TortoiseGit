@@ -247,7 +247,7 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 		startup.cb = sizeof(startup);
 		memset(&process, 0, sizeof(process));
 
-		CString sCachePath = _T("TSVNCache.exe");
+		CString sCachePath = _T("TGitCache.exe");
 		if (CreateProcess(sCachePath.GetBuffer(sCachePath.GetLength()+1), _T(""), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 		{
 			// It's not appropriate to do a message box here, because there may be hundreds of calls
@@ -270,11 +270,11 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 
 
 	DWORD nBytesRead;
-	TSVNCacheRequest request;
-	request.flags = TSVNCACHE_FLAGS_NONOTIFICATIONS;
+	TGITCacheRequest request;
+	request.flags = TGITCACHE_FLAGS_NONOTIFICATIONS;
 	if(bRecursive)
 	{
-		request.flags |= TSVNCACHE_FLAGS_RECUSIVE_STATUS;
+		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
 	}
 	wcsncpy(request.path, Path.GetWinPath(), MAX_PATH);
 	ZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
@@ -291,7 +291,7 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 	// so that users still recognize that something might be wrong and
 	// report back to us so we can investigate further.
 
-	TSVNCacheResponse ReturnedStatus;
+	TGITCacheResponse ReturnedStatus;
 	BOOL fSuccess = TransactNamedPipe(m_hPipe,
 		&request, sizeof(request),
 		&ReturnedStatus, sizeof(ReturnedStatus),
@@ -349,8 +349,8 @@ void CCacheDlg::RemoveFromCache(const CString& path)
 			NULL))    // don't set maximum time 
 		{
 			DWORD cbWritten; 
-			TSVNCacheCommand cmd;
-			cmd.command = TSVNCACHECOMMAND_CRAWL;
+			TGITCacheCommand cmd;
+			cmd.command = TGITCACHECOMMAND_CRAWL;
 			wcsncpy(cmd.path, path, MAX_PATH);
 			BOOL fSuccess = WriteFile( 
 				hPipe,			// handle to pipe 
@@ -369,8 +369,8 @@ void CCacheDlg::RemoveFromCache(const CString& path)
 			{
 				// now tell the cache we don't need it's command thread anymore
 				DWORD cbWritten; 
-				TSVNCacheCommand cmd;
-				cmd.command = TSVNCACHECOMMAND_END;
+				TGITCacheCommand cmd;
+				cmd.command = TGITCACHECOMMAND_END;
 				WriteFile( 
 					hPipe,			// handle to pipe 
 					&cmd,			// buffer to write from 

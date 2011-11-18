@@ -19,7 +19,7 @@
 #include "StdAfx.h"
 #include "DropCopyAddCommand.h"
 
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "MessageBox.h"
 
 bool DropCopyAddCommand::Execute()

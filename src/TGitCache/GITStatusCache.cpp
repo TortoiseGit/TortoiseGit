@@ -437,7 +437,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 /* Fetch is false, means fetch status from cache */
 CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags,  bool bFetch /* = true */)
 {
-	bool bRecursive = !!(flags & TSVNCACHE_FLAGS_RECUSIVE_STATUS);
+	bool bRecursive = !!(flags & TGITCACHE_FLAGS_RECUSIVE_STATUS);
 
 	// Check a very short-lived 'mini-cache' of the last thing we were asked for.
 	long now = (long)GetTickCount();
@@ -470,7 +470,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 	}
 	ATLTRACE(_T("ignored no good path %s\n"), path.GetWinPath());
 	m_mostRecentStatus = CStatusCacheEntry();
-	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasSVNAdminDir(path.GetWinPath(), true))
+	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasGITAdminDir(path.GetWinPath(), true))
 	{
 		ATLTRACE(_T("force status %s\n"), path.GetWinPath());
 		m_mostRecentStatus.ForceStatus(git_wc_status_normal);

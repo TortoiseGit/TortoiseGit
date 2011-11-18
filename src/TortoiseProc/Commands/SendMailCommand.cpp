@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "SendMailCommand.h"
 #include "SendMailDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "AppUtils.h"
 
 bool SendMailCommand::Execute()

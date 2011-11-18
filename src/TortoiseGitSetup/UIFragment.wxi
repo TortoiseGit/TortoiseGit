@@ -4,11 +4,11 @@
 		<!-- Add/Remove Programs (ARP) related properties ................................ -->
 		<Property Id="ARPCOMMENTS">$(var.PackageComments)</Property>
 		<Property Id="ARPCONTACT">$(var.PackageManufacturer)</Property>
-		<Property Id="ARPHELPLINK">$(var.TortoiseSvnOrg)</Property>
-		<Property Id="ARPPRODUCTICON">TSVNIcon</Property>
+		<Property Id="ARPHELPLINK">$(var.TortoiseGitOrg)</Property>
+		<Property Id="ARPPRODUCTICON">TGITIcon</Property>
 		<Property Id="ARPNOMODIFY">1</Property>
 		<Property Id="ARPNOREPAIR">1</Property>
-		<Property Id="ARPURLINFOABOUT">$(var.TortoiseSvnOrg)</Property>
+		<Property Id="ARPURLINFOABOUT">$(var.TortoiseGitOrg)</Property>
 
 		<!-- UI Button Texts ............................................................. -->
 		<Property Id="ButtonText_Back"><![CDATA[< &Back]]></Property>
@@ -496,7 +496,7 @@
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
 			</Control>
 			<Control Id="AgreementText" Type="ScrollableText" X="5" Y="60" Width="360" Height="160" Sunken="yes" TabSkip="no">
-				<Text SourceFile="include\TSVN_eula.rtf" />
+				<Text SourceFile="include\TGIT_eula.rtf" />
 			</Control>
 			<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="[BannerBitmap]" />
 			<Control Id="Title" Type="Text" X="155" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">

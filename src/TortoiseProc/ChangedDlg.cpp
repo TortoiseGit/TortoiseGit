@@ -65,8 +65,8 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
 	ON_BN_CLICKED(IDC_SHOWUNMODIFIED, OnBnClickedShowUnmodified)
 //	ON_BN_CLICKED(IDC_SHOWUSERPROPS, OnBnClickedShowUserProps)
-	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
-	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::SVNSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED, OnSVNStatusListCtrlItemCountChanged)
 	ON_BN_CLICKED(IDC_SHOWIGNORED, &CChangedDlg::OnBnClickedShowignored)
 	ON_BN_CLICKED(IDC_REFRESH, &CChangedDlg::OnBnClickedRefresh)
 //	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
@@ -85,8 +85,8 @@ BOOL CChangedDlg::OnInitDialog()
 	m_bShowUnversioned = m_regAddBeforeCommit;
 	UpdateData(FALSE);
 
-	m_FileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS, _T("ChangedDlg"),
-						(SVNSLC_POPALL ^ SVNSLC_POPSAVEAS), false);
+	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS, _T("ChangedDlg"),
+						(GITSLC_POPALL ^ GITSLC_POPSAVEAS), false);
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
 	m_FileListCtrl.SetEmptyString(IDS_REPOSTATUS_EMPTYFILELIST);
@@ -150,11 +150,11 @@ UINT CChangedDlg::ChangedStatusThread()
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());
 	}
-	unsigned int dwShow = SVNSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALS | SVNSLC_SHOWLOCKS | SVNSLC_SHOWSWITCHED | SVNSLC_SHOWINCHANGELIST;
-	dwShow |= m_bShowUnversioned ? SVNSLC_SHOWUNVERSIONED : 0;
-	dwShow |= m_iShowUnmodified ? SVNSLC_SHOWNORMAL : 0;
-	dwShow |= m_bShowIgnored ? SVNSLC_SHOWIGNORED : 0;
-	dwShow |= m_bShowExternals ? SVNSLC_SHOWEXTERNAL | SVNSLC_SHOWINEXTERNALS | SVNSLC_SHOWEXTERNALFROMDIFFERENTREPO : 0;
+	unsigned int dwShow = GITSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALS | GITSLC_SHOWLOCKS | GITSLC_SHOWSWITCHED | GITSLC_SHOWINCHANGELIST;
+	dwShow |= m_bShowUnversioned ? GITSLC_SHOWUNVERSIONED : 0;
+	dwShow |= m_iShowUnmodified ? GITSLC_SHOWNORMAL : 0;
+	dwShow |= m_bShowIgnored ? GITSLC_SHOWIGNORED : 0;
+	dwShow |= m_bShowExternals ? GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO : 0;
 	m_FileListCtrl.Show(dwShow);
 	UpdateStatistics();
 
@@ -209,21 +209,21 @@ DWORD CChangedDlg::UpdateShowFlags()
 {
 	DWORD dwShow = m_FileListCtrl.GetShowFlags();
 	if (m_bShowUnversioned)
-		dwShow |= SVNSLC_SHOWUNVERSIONED;
+		dwShow |= GITSLC_SHOWUNVERSIONED;
 	else
-		dwShow &= ~SVNSLC_SHOWUNVERSIONED;
+		dwShow &= ~GITSLC_SHOWUNVERSIONED;
 	if (m_iShowUnmodified)
-		dwShow |= SVNSLC_SHOWNORMAL;
+		dwShow |= GITSLC_SHOWNORMAL;
 	else
-		dwShow &= ~SVNSLC_SHOWNORMAL;
+		dwShow &= ~GITSLC_SHOWNORMAL;
 	if (m_bShowIgnored)
-		dwShow |= SVNSLC_SHOWIGNORED;
+		dwShow |= GITSLC_SHOWIGNORED;
 	else
-		dwShow &= ~SVNSLC_SHOWIGNORED;
+		dwShow &= ~GITSLC_SHOWIGNORED;
 	if (m_bShowExternals)
-		dwShow |= SVNSLC_SHOWEXTERNAL | SVNSLC_SHOWINEXTERNALS | SVNSLC_SHOWEXTERNALFROMDIFFERENTREPO;
+		dwShow |= GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO;
 	else
-		dwShow &= ~(SVNSLC_SHOWEXTERNAL | SVNSLC_SHOWINEXTERNALS | SVNSLC_SHOWEXTERNALFROMDIFFERENTREPO);
+		dwShow &= ~(GITSLC_SHOWEXTERNAL | GITSLC_SHOWINEXTERNALS | GITSLC_SHOWEXTERNALFROMDIFFERENTREPO);
 
 	return dwShow;
 }

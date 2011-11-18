@@ -235,7 +235,7 @@ bool CStatusCacheEntry::HasExpired(long now) const
 	return m_discardAtTime != 0 && (now - m_discardAtTime) >= 0;
 }
 
-void CStatusCacheEntry::BuildCacheResponse(TSVNCacheResponse& response, DWORD& responseLength) const
+void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& responseLength) const
 {
 	SecureZeroMemory(&response, sizeof(response));
 	if(m_bSVNEntryFieldSet)

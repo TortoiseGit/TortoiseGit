@@ -28,7 +28,7 @@
 //#include "..\version.h"
 //#include "libintl.h"
 #undef swprintf
-#include "SVNPropertyPage.h"
+#include "GitPropertyPage.h"
 
 std::set<CShellExt *> g_exts;
 

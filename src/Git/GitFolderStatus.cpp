@@ -321,7 +321,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& fil
 	const FileStatusCacheEntry * ret = NULL;
 
 	CString sProjectRoot;
-	BOOL bHasAdminDir = g_ShellCache.HasSVNAdminDir(filepath.GetWinPath(), bIsFolder, &sProjectRoot);
+	BOOL bHasAdminDir = g_ShellCache.HasGITAdminDir(filepath.GetWinPath(), bIsFolder, &sProjectRoot);
 
 	//no overlay for unversioned folders
 	if ((!bColumnProvider)&&(!bHasAdminDir))

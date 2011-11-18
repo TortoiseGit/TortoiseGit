@@ -22,7 +22,7 @@
 #include "cursor.h"
 #include "InputDlg.h"
 #include "PropDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "ProgressDlg.h"
 //#include "RepositoryBrowser.h"
 //#include "CopyDlg.h"
@@ -237,7 +237,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.m_bShowWC = true;
 	m_LogList.InsertGitColumn();
 
-	m_ChangedFileListCtrl.Init(SVNSLC_COLEXT | SVNSLC_COLSTATUS |SVNSLC_COLADD|SVNSLC_COLDEL , _T("LogDlg"),(SVNSLC_POPALL ^ (SVNSLC_POPCOMMIT|SVNSLC_POPIGNORE)),false);
+	m_ChangedFileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("LogDlg"),(GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPIGNORE)),false);
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 
@@ -664,7 +664,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
-			m_ChangedFileListCtrl.Show(SVNSLC_SHOWVERSIONED);
+			m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED);
 
 			m_ChangedFileListCtrl.SetBusyString(_T("Fetch Changed File..."));
 

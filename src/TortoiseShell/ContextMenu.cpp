@@ -130,7 +130,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 									{
 										itemStates |= ITEMIS_FOLDER;
 										if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-											itemStates |= ITEMIS_FOLDERINSVN;
+											itemStates |= ITEMIS_FOLDERINGIT;
 									}
 									//if ((stat.status->entry)&&(stat.status->entry->present_props))
 									//{
@@ -159,7 +159,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							itemStates |= askedpath.GetAdminDirMask();
 
 							if ((status == git_wc_status_unversioned) || (status == git_wc_status_ignored) || (status == git_wc_status_none))
-								itemStates &= ~ITEMIS_INSVN;
+								itemStates &= ~ITEMIS_INGIT;
 
 							if (status == git_wc_status_ignored)
 								itemStates |= ITEMIS_IGNORED;
@@ -229,7 +229,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 										{
 											itemStates |= ITEMIS_FOLDER;
 											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-												itemStates |= ITEMIS_FOLDERINSVN;
+												itemStates |= ITEMIS_FOLDERINGIT;
 										}
 										// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
 										if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
@@ -264,7 +264,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 							itemStates |= strpath.GetAdminDirMask();
 
 							if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
-								itemStates &= ~ITEMIS_INSVN;
+								itemStates &= ~ITEMIS_INGIT;
 							if (status == git_wc_status_ignored)
 							{
 								itemStates |= ITEMIS_IGNORED;
@@ -297,7 +297,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					}
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
-				if (g_ShellCache.HasSVNAdminDir(child.toString().c_str(), FALSE))
+				if (g_ShellCache.HasGITAdminDir(child.toString().c_str(), FALSE))
 					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 				GlobalUnlock(medium.hGlobal);
 
@@ -372,7 +372,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 					itemStatesFolder |= askedpath.GetAdminDirMask();
 
 					if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
-						itemStates &= ~ITEMIS_INSVN;
+						itemStates &= ~ITEMIS_INGIT;
 
 					if (status == git_wc_status_normal)
 						itemStatesFolder |= ITEMIS_NORMAL;
@@ -458,7 +458,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				itemStates |= askedpath.GetAdminDirMask();
 
 				if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
-					itemStates &= ~ITEMIS_INSVN;
+					itemStates &= ~ITEMIS_INGIT;
 
 				if (status == git_wc_status_ignored)
 					itemStates |= ITEMIS_IGNORED;
@@ -784,37 +784,37 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// Git move here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&((itemStates & ITEMIS_INSVN)&&((~itemStates) & ITEMIS_ADDED)))
+	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&((itemStates & ITEMIS_INGIT)&&((~itemStates) & ITEMIS_ADDED)))
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVEMENU, 0, idCmdFirst, ShellMenuDropMove, uFlags);
 
 	// Git move and rename here
 	// available if source is a single, versioned but not added item, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&(itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
+	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&(itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPMOVERENAMEMENU, 0, idCmdFirst, ShellMenuDropMoveRename, uFlags);
 
 	// Git copy here
 	// available if source is versioned but not added, target is versioned, source and target from same repository or target folder is added
-	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&(itemStates & ITEMIS_INSVN)&&((~itemStates) & ITEMIS_ADDED))
+	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&(itemStates & ITEMIS_INGIT)&&((~itemStates) & ITEMIS_ADDED))
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYMENU, 0, idCmdFirst, ShellMenuDropCopy, uFlags);
 
 	// Git copy and rename here, source and target from same repository
 	// available if source is a single, versioned but not added item, target is versioned or target folder is added
-	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINSVN)&&(itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
+	if ((bSourceAndTargetFromSameRepository||(itemStatesFolder & ITEMIS_ADDED))&&(itemStatesFolder & ITEMIS_FOLDERINGIT)&&(itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_ONLYONE)&&((~itemStates) & ITEMIS_ADDED))
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYRENAMEMENU, 0, idCmdFirst, ShellMenuDropCopyRename, uFlags);
 
 	// Git add here
 	// available if target is versioned and source is either unversioned or from another repository
-	if ((itemStatesFolder & ITEMIS_FOLDERINSVN)&&(((~itemStates) & ITEMIS_INSVN)||!bSourceAndTargetFromSameRepository))
+	if ((itemStatesFolder & ITEMIS_FOLDERINGIT)&&(((~itemStates) & ITEMIS_INGIT)||!bSourceAndTargetFromSameRepository))
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
 
 	// Git export here
 	// available if source is versioned and a folder
-	//if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
+	//if ((itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_FOLDER))
 	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTMENU, 0, idCmdFirst, ShellMenuDropExport, uFlags);
 
 	// Git export all here
 	// available if source is versioned and a folder
-	//if ((itemStates & ITEMIS_INSVN)&&(itemStates & ITEMIS_FOLDER))
+	//if ((itemStates & ITEMIS_INGIT)&&(itemStates & ITEMIS_FOLDER))
 	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPEXPORTEXTENDEDMENU, 0, idCmdFirst, ShellMenuDropExportExtended, uFlags);
 
 	// apply patch
@@ -900,7 +900,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 
 	if (((uFlags & CMF_EXTENDEDVERBS) == 0) && g_ShellCache.HideMenusForUnversionedItems())
 	{
-		if ((itemStates & (ITEMIS_INSVN|ITEMIS_INVERSIONEDFOLDER|ITEMIS_FOLDERINSVN))==0)
+		if ((itemStates & (ITEMIS_INGIT|ITEMIS_INVERSIONEDFOLDER|ITEMIS_FOLDERINGIT))==0)
 			return S_OK;
 	}
 
@@ -1256,498 +1256,498 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			//
 			//* path is a path to a single file/directory for commands which only act on single items (log, checkout, ...)
 			//* pathfile is a path to a temporary file which contains a list of file paths
-			stdstring svnCmd = _T(" /command:");
+			stdstring gitCmd = _T(" /command:");
 			stdstring tempfile;
 			switch (id_it->second)
 			{
 				//#region case
 			case ShellMenuSync:
-				svnCmd += _T("sync /path:\"");
+				gitCmd += _T("sync /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuUpdate:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("update /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("update /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuSubSync:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("subsync /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("subsync /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				if(itemStatesFolder&ITEMIS_SUBMODULECONTAINER)
 				{
-					svnCmd += _T(" /bkpath:\"");
-					svnCmd += folder_;
-					svnCmd += _T("\"");
+					gitCmd += _T(" /bkpath:\"");
+					gitCmd += folder_;
+					gitCmd += _T("\"");
 				}
 				break;
 			case ShellMenuUpdateExt:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("subupdate /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("subupdate /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				if(itemStatesFolder&ITEMIS_SUBMODULECONTAINER)
 				{
-					svnCmd += _T(" /bkpath:\"");
-					svnCmd += folder_;
-					svnCmd += _T("\"");
+					gitCmd += _T(" /bkpath:\"");
+					gitCmd += folder_;
+					gitCmd += _T("\"");
 				}
 				break;
 			case ShellMenuCommit:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("commit /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("commit /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuAdd:
 			case ShellMenuAddAsReplacement:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("add /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("add /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuIgnore:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("ignore /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("ignore /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuIgnoreCaseSensitive:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("ignore /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /onlymask");
+				gitCmd += _T("ignore /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /onlymask");
 				break;
 			case ShellMenuDeleteIgnore:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("ignore /delete /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("ignore /delete /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuDeleteIgnoreCaseSensitive:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("ignore /delete /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /onlymask");
+				gitCmd += _T("ignore /delete /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /onlymask");
 				break;
 			case ShellMenuUnIgnore:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("unignore /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("unignore /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuUnIgnoreCaseSensitive:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("unignore /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /onlymask");
+				gitCmd += _T("unignore /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /onlymask");
 				break;
 			case ShellMenuRevert:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("revert /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("revert /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuCleanup:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("cleanup /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("cleanup /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuSendMail:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("sendmail /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("sendmail /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuResolve:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("resolve /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("resolve /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuSwitch:
-				svnCmd += _T("switch /path:\"");
+				gitCmd += _T("switch /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuExport:
-				svnCmd += _T("export /path:\"");
+				gitCmd += _T("export /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuAbout:
-				svnCmd += _T("about");
+				gitCmd += _T("about");
 				break;
 			case ShellMenuCreateRepos:
-				svnCmd += _T("repocreate /path:\"");
+				gitCmd += _T("repocreate /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuMerge:
-				svnCmd += _T("merge /path:\"");
+				gitCmd += _T("merge /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuCopy:
-				svnCmd += _T("copy /path:\"");
+				gitCmd += _T("copy /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuSettings:
-				svnCmd += _T("settings /path:\"");
+				gitCmd += _T("settings /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuHelp:
-				svnCmd += _T("help");
+				gitCmd += _T("help");
 				break;
 			case ShellMenuRename:
-				svnCmd += _T("rename /path:\"");
+				gitCmd += _T("rename /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuRemove:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("remove /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("remove /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuRemoveKeep:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("remove /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /keep");
+				gitCmd += _T("remove /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /keep");
 				break;
 			case ShellMenuDiff:
-				svnCmd += _T("diff /path:\"");
+				gitCmd += _T("diff /path:\"");
 				if (files_.size() == 1)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else if (files_.size() == 2)
 				{
 					std::vector<stdstring>::iterator I = files_.begin();
-					svnCmd += *I;
+					gitCmd += *I;
 					I++;
-					svnCmd += _T("\" /path2:\"");
-					svnCmd += *I;
+					gitCmd += _T("\" /path2:\"");
+					gitCmd += *I;
 				}
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					svnCmd += _T(" /alternative");
+					gitCmd += _T(" /alternative");
 				break;
 			case ShellMenuPrevDiff:
-				svnCmd += _T("prevdiff /path:\"");
+				gitCmd += _T("prevdiff /path:\"");
 				if (files_.size() == 1)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					svnCmd += _T(" /alternative");
+					gitCmd += _T(" /alternative");
 				break;
 			case ShellMenuDiffTwo:
-				svnCmd += _T("diffcommits /path:\"");
+				gitCmd += _T("diffcommits /path:\"");
 				if (files_.size() == 1)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuDropCopyAdd:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropcopyadd /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"";)
+				gitCmd += _T("dropcopyadd /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\"";)
 					break;
 			case ShellMenuDropCopy:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropcopy /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"";)
+				gitCmd += _T("dropcopy /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\"";)
 					break;
 			case ShellMenuDropCopyRename:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropcopy /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\" /rename";)
+				gitCmd += _T("dropcopy /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\" /rename";)
 					break;
 			case ShellMenuDropMove:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropmove /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"");
+				gitCmd += _T("dropmove /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuDropMoveRename:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropmove /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\" /rename";)
+				gitCmd += _T("dropmove /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\" /rename";)
 				break;
 			case ShellMenuDropExport:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropexport /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"");
+				gitCmd += _T("dropexport /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuDropExportExtended:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("dropexport /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
-				svnCmd += _T(" /droptarget:\"");
-				svnCmd += folder_;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /extended");
+				gitCmd += _T("dropexport /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
+				gitCmd += _T(" /droptarget:\"");
+				gitCmd += folder_;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /extended");
 				break;
 			case ShellMenuLog:
-				svnCmd += _T("log /path:\"");
+				gitCmd += _T("log /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuConflictEditor:
-				svnCmd += _T("conflicteditor /path:\"");
+				gitCmd += _T("conflicteditor /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuGitSVNRebase:
-				svnCmd += _T("svnrebase /path:\"");
+				gitCmd += _T("svnrebase /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuGitSVNDCommit:
-				svnCmd += _T("svndcommit /path:\"");
+				gitCmd += _T("svndcommit /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuGitSVNIgnore:
-				svnCmd += _T("svnignore /path:\"");
+				gitCmd += _T("svnignore /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuRebase:
-				svnCmd += _T("rebase /path:\"");
+				gitCmd += _T("rebase /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuShowChanged:
 				if (files_.size() > 1)
                 {
 				    tempfile = WriteFileListToTempFile();
-				    svnCmd += _T("repostatus /pathfile:\"");
-				    svnCmd += tempfile;
-    				svnCmd += _T("\"");
-    				svnCmd += _T(" /deletepathfile");
+				    gitCmd += _T("repostatus /pathfile:\"");
+				    gitCmd += tempfile;
+    				gitCmd += _T("\"");
+    				gitCmd += _T(" /deletepathfile");
                 }
                 else
                 {
-                    svnCmd += _T("repostatus /path:\"");
+                    gitCmd += _T("repostatus /path:\"");
 				    if (files_.size() > 0)
-					    svnCmd += files_.front();
+					    gitCmd += files_.front();
 				    else
-					    svnCmd += folder_;
-    				svnCmd += _T("\"");
+					    gitCmd += folder_;
+    				gitCmd += _T("\"");
                 }
 				break;
 			case ShellMenuRefBrowse:
-				svnCmd += _T("refbrowse /path:\"");
+				gitCmd += _T("refbrowse /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuRefLog:
-				svnCmd += _T("reflog /path:\"");
+				gitCmd += _T("reflog /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuStashSave:
-				svnCmd += _T("stashsave /path:\"");
+				gitCmd += _T("stashsave /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuStashApply:
-				svnCmd += _T("stashapply /path:\"");
+				gitCmd += _T("stashapply /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuStashPop:
-				svnCmd += _T("stashpop /path:\"");
+				gitCmd += _T("stashpop /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 
 			case ShellMenuStashList:
-				svnCmd += _T("reflog /path:\"");
+				gitCmd += _T("reflog /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\" /ref:refs/stash");
+					gitCmd += folder_;
+				gitCmd += _T("\" /ref:refs/stash");
 				break;
 
 			case ShellMenuBisectStart:
-				svnCmd += _T("bisect /path:\"");
+				gitCmd += _T("bisect /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\" /start");
+					gitCmd += folder_;
+				gitCmd += _T("\" /start");
 				break;
 
 			case ShellMenuBisectGood:
-				svnCmd += _T("bisect /path:\"");
+				gitCmd += _T("bisect /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\" /good");
+					gitCmd += folder_;
+				gitCmd += _T("\" /good");
 				break;
 
 				
 			case ShellMenuBisectBad:
-				svnCmd += _T("bisect /path:\"");
+				gitCmd += _T("bisect /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\" /bad");
+					gitCmd += folder_;
+				gitCmd += _T("\" /bad");
 				break;
 
 			case ShellMenuBisectReset:
-				svnCmd += _T("bisect /path:\"");
+				gitCmd += _T("bisect /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\" /reset");
+					gitCmd += folder_;
+				gitCmd += _T("\" /reset");
 				break;
 
 			case ShellMenuSubAdd:
-				svnCmd += _T("subadd /path:\"");
+				gitCmd += _T("subadd /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuBlame:
-				svnCmd += _T("blame /path:\"");
+				gitCmd += _T("blame /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuApplyPatch:
 				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
@@ -1789,36 +1789,36 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				}
 				if (itemStates & ITEMIS_PATCHFILE)
 				{
-					svnCmd = _T(" /diff:\"");
+					gitCmd = _T(" /diff:\"");
 					if (files_.size() > 0)
 					{
-						svnCmd += files_.front();
-						if (itemStatesFolder & ITEMIS_FOLDERINSVN)
+						gitCmd += files_.front();
+						if (itemStatesFolder & ITEMIS_FOLDERINGIT)
 						{
-							svnCmd += _T("\" /patchpath:\"");
-							svnCmd += folder_;
+							gitCmd += _T("\" /patchpath:\"");
+							gitCmd += folder_;
 						}
 					}
 					else
-						svnCmd += folder_;
+						gitCmd += folder_;
 					if (itemStates & ITEMIS_INVERSIONEDFOLDER)
-						svnCmd += _T("\" /wc");
+						gitCmd += _T("\" /wc");
 					else
-						svnCmd += _T("\"");
+						gitCmd += _T("\"");
 				}
 				else
 				{
-					svnCmd = _T(" /patchpath:\"");
+					gitCmd = _T(" /patchpath:\"");
 					if (files_.size() > 0)
-						svnCmd += files_.front();
+						gitCmd += files_.front();
 					else
-						svnCmd += folder_;
-					svnCmd += _T("\"");
+						gitCmd += folder_;
+					gitCmd += _T("\"");
 				}
 				myIDMap.clear();
 				myVerbsIDMap.clear();
 				myVerbsMap.clear();
-				if (CreateProcess(((stdstring)tortoiseMergePath).c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
+				if (CreateProcess(((stdstring)tortoiseMergePath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 				{
 					LPVOID lpMsgBuf;
 					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -1840,10 +1840,10 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuProperties:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("properties /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("properties /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 			case ShellMenuClipPaste:
 				if (WriteClipboardPathsToTempFile(tempfile))
@@ -1867,106 +1867,106 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					}
 
 					if (bCopy)
-						svnCmd += _T("pastecopy /pathfile:\"");
+						gitCmd += _T("pastecopy /pathfile:\"");
 					else
-						svnCmd += _T("pastemove /pathfile:\"");
-					svnCmd += tempfile;
-					svnCmd += _T("\"");
-					svnCmd += _T(" /deletepathfile");
-					svnCmd += _T(" /droptarget:\"");
-					svnCmd += folder_;
-					svnCmd += _T("\"");
+						gitCmd += _T("pastemove /pathfile:\"");
+					gitCmd += tempfile;
+					gitCmd += _T("\"");
+					gitCmd += _T(" /deletepathfile");
+					gitCmd += _T(" /droptarget:\"");
+					gitCmd += folder_;
+					gitCmd += _T("\"");
 				}
 				else return NOERROR;
 				break;
 			case ShellMenuClone:
-				svnCmd += _T("clone /path:\"");
+				gitCmd += _T("clone /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuPull:
-				svnCmd += _T("pull /path:\"");
+				gitCmd += _T("pull /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuPush:
-				svnCmd += _T("push /path:\"");
+				gitCmd += _T("push /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuBranch:
-				svnCmd += _T("branch /path:\"");
+				gitCmd += _T("branch /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuTag:
-				svnCmd += _T("tag /path:\"");
+				gitCmd += _T("tag /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuFormatPatch:
-				svnCmd += _T("formatpatch /path:\"");
+				gitCmd += _T("formatpatch /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			case ShellMenuImportPatch:
 				tempfile = WriteFileListToTempFile();
-				svnCmd += _T("importpatch /pathfile:\"");
-				svnCmd += tempfile;
-				svnCmd += _T("\"");
-				svnCmd += _T(" /deletepathfile");
+				gitCmd += _T("importpatch /pathfile:\"");
+				gitCmd += tempfile;
+				gitCmd += _T("\"");
+				gitCmd += _T(" /deletepathfile");
 				break;
 
 			case ShellMenuCherryPick:
-				svnCmd += _T("cherrypick /path:\"");
+				gitCmd += _T("cherrypick /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 			case ShellMenuFetch:
-				svnCmd += _T("fetch /path:\"");
+				gitCmd += _T("fetch /path:\"");
 				if (files_.size() > 0)
-					svnCmd += files_.front();
+					gitCmd += files_.front();
 				else
-					svnCmd += folder_;
-				svnCmd += _T("\"");
+					gitCmd += folder_;
+				gitCmd += _T("\"");
 				break;
 
 			default:
 				break;
 				//#endregion
 			} // switch (id_it->second)
-			svnCmd += _T(" /hwnd:");
+			gitCmd += _T(" /hwnd:");
 			TCHAR buf[30];
 			_stprintf_s(buf, 30, _T("%d"), lpcmi->hwnd);
-			svnCmd += buf;
+			gitCmd += buf;
 			myIDMap.clear();
 			myVerbsIDMap.clear();
 			myVerbsMap.clear();
-			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(svnCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
+			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 			{
 				LPVOID lpMsgBuf;
 				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -2328,7 +2328,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		ignoresubmenu = CreateMenu();
 		if (itemStates & ITEMIS_ONLYONE)
 		{
-			if (itemStates & ITEMIS_INSVN)
+			if (itemStates & ITEMIS_INGIT)
 			{
 				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
 				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
@@ -2371,7 +2371,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		}
 		else
 		{
-			if (itemStates & ITEMIS_INSVN)
+			if (itemStates & ITEMIS_INGIT)
 			{
 				MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLE);
 				_stprintf_s(ignorepath, MAX_PATH, stringtablebuffer, files_.size());
@@ -2439,7 +2439,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		SecureZeroMemory(stringtablebuffer, sizeof(stringtablebuffer));
 		if (itemStates & ITEMIS_IGNORED)
 			GetMenuTextFromResource(ShellMenuUnIgnoreSub);
-		else if (itemStates & ITEMIS_INSVN)
+		else if (itemStates & ITEMIS_INGIT)
 			GetMenuTextFromResource(ShellMenuDeleteIgnoreSub);
 		else
 			GetMenuTextFromResource(ShellMenuIgnoreSub);

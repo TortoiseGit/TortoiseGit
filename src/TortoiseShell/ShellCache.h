@@ -470,7 +470,7 @@ public:
 		}
 		return &columnrevformat;
 	}
-	BOOL HasSVNAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
+	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
 	{
 		size_t len = _tcslen(path);
 		TCHAR * buf = new TCHAR[len+1];

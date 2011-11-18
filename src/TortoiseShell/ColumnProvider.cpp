@@ -207,7 +207,7 @@ STDMETHODIMP CShellExt::Initialize(LPCSHCOLUMNINIT psci)
 	std::wstring path = psci->wszFolder;
 	if (!path.empty())
 	{
-		if (! g_ShellCache.HasSVNAdminDir(path.c_str(), TRUE))
+		if (! g_ShellCache.HasGITAdminDir(path.c_str(), TRUE))
 			return E_FAIL;
 	}
 	columnfilepath = _T("");
@@ -222,7 +222,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 	LoadLangDll();
 	columnfilepath = path;
 	const FileStatusCacheEntry * status = NULL;
-	TSVNCacheResponse itemStatus;
+	TGITCacheResponse itemStatus;
 	ShellCache::CacheType t = ShellCache::exe;
 	AutoLocker lock(g_csGlobalCOMGuard);
 	t = g_ShellCache.GetCacheType();
@@ -258,7 +258,7 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 	default:
 	case ShellCache::none:
 		{
-			if (g_ShellCache.HasSVNAdminDir(path, bIsDir))
+			if (g_ShellCache.HasGITAdminDir(path, bIsDir))
 				filestatus = git_wc_status_normal;
 			else
 				filestatus = git_wc_status_none;

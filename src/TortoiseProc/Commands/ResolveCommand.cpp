@@ -20,7 +20,7 @@
 #include "ResolveCommand.h"
 
 #include "ResolveDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 
 bool ResolveCommand::Execute()
 {

@@ -464,6 +464,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GITPropertyPage.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Git\GitRev.cpp"
 				>
 			</File>
@@ -556,10 +560,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\SVNPropertyPage.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\Utils\SysInfo.cpp"
 				>
 			</File>
@@ -568,7 +568,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TortoiseSVN.cpp"
+				RelativePath=".\TortoiseGIT.cpp"
 				>
 			</File>
 			<File
@@ -580,6 +580,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
+			<File
+				RelativePath=".\GITPropertyPage.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Globals.h"
 				>
@@ -630,10 +634,6 @@
 			</File>
 			<File
 				RelativePath="stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SVNPropertyPage.h"
 				>
 			</File>
 			<File

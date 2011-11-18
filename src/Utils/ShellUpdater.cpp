@@ -125,8 +125,8 @@ void CShellUpdater::UpdateShell()
 					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.GetWinPath(), NULL);
 				}
 				DWORD cbWritten; 
-				TSVNCacheCommand cmd;
-				cmd.command = TSVNCACHECOMMAND_CRAWL;
+				TGITCacheCommand cmd;
+				cmd.command = TGITCACHECOMMAND_CRAWL;
 				wcsncpy_s(cmd.path, MAX_PATH+1, path.GetDirectory().GetWinPath(), MAX_PATH);
 				BOOL fSuccess = WriteFile( 
 					hPipe,			// handle to pipe 
@@ -147,8 +147,8 @@ void CShellUpdater::UpdateShell()
 			{
 				// now tell the cache we don't need it's command thread anymore
 				DWORD cbWritten; 
-				TSVNCacheCommand cmd;
-				cmd.command = TSVNCACHECOMMAND_END;
+				TGITCacheCommand cmd;
+				cmd.command = TGITCACHECOMMAND_END;
 				WriteFile( 
 					hPipe,			// handle to pipe 
 					&cmd,			// buffer to write from 

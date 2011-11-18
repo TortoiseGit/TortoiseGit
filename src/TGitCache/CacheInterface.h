@@ -24,10 +24,10 @@
 #include "GitStatus.h"
 // The name of the named-pipe for the cache
 
-#define TSVN_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache")
-#define TSVN_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand")
-#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
-#define TSVN_CACHE_MUTEX_NAME _T("TGitCacheMutex")
+#define TGIT_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache")
+#define TGIT_CACHE_COMMANDPIPE_NAME _T("\\\\.\\pipe\\TGitCacheCommand")
+#define TGIT_CACHE_WINDOW_NAME _T("TGitCacheWindow")
+#define TGIT_CACHE_MUTEX_NAME _T("TGitCacheMutex")
 
 
 CString GetCachePipeName();
@@ -51,7 +51,7 @@ typedef enum git_node_kind_t
  * \ingroup TSVNCache
  * A structure passed as a request from the shell (or other client) to the external cache
  */ 
-struct TSVNCacheRequest
+struct TGITCacheRequest
 {
 	DWORD flags;
 	WCHAR path[MAX_PATH+1];
@@ -65,7 +65,7 @@ struct TSVNCacheRequest
  * \ingroup TSVNCache
  * The structure returned as a response
  */
-struct TSVNCacheResponse
+struct TGITCacheResponse
 {
 	git_wc_status2_t m_status;
 	git_wc_entry_t m_entry;
@@ -83,23 +83,23 @@ struct TSVNCacheResponse
  * \ingroup TSVNCache
  * a cache command
  */
-struct TSVNCacheCommand
+struct TGITCacheCommand
 {
 	BYTE command;				///< the command to execute
 	WCHAR path[MAX_PATH+1];		///< path to do the command for
 };
 
-#define		TSVNCACHECOMMAND_END		0		///< ends the thread handling the pipe communication
-#define		TSVNCACHECOMMAND_CRAWL		1		///< start crawling the specified path for changes
-#define		TSVNCACHECOMMAND_REFRESHALL	2		///< Refreshes the whole cache, usually necessary after the "treat unversioned files as modified" option changed.
-#define		TSVNCACHECOMMAND_RELEASE	3		///< Releases all open handles for the specified path and all paths below
+#define		TGITCACHECOMMAND_END		0		///< ends the thread handling the pipe communication
+#define		TGITCACHECOMMAND_CRAWL		1		///< start crawling the specified path for changes
+#define		TGITCACHECOMMAND_REFRESHALL	2		///< Refreshes the whole cache, usually necessary after the "treat unversioned files as modified" option changed.
+#define		TGITCACHECOMMAND_RELEASE	3		///< Releases all open handles for the specified path and all paths below
 
 
 /// Set this flag if you already know whether or not the item is a folder
-#define TSVNCACHE_FLAGS_FOLDERISKNOWN		0x01
+#define TGITCACHE_FLAGS_FOLDERISKNOWN		0x01
 /// Set this flag if the item is a folder
-#define TSVNCACHE_FLAGS_ISFOLDER			0x02
+#define TGITCACHE_FLAGS_ISFOLDER			0x02
 /// Set this flag if you want recursive folder status (safely ignored for file paths)
-#define TSVNCACHE_FLAGS_RECUSIVE_STATUS		0x04
+#define TGITCACHE_FLAGS_RECUSIVE_STATUS		0x04
 /// Set this flag if notifications to the shell are not allowed
-#define TSVNCACHE_FLAGS_NONOTIFICATIONS		0x08
+#define TGITCACHE_FLAGS_NONOTIFICATIONS		0x08
