@@ -21,7 +21,7 @@
 #include "SetMainPage.h"
 #include "AppUtils.h"
 #include "DirFileEnum.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "..\version.h"
 #include ".\setdialogs.h"
 #include "Git.h"

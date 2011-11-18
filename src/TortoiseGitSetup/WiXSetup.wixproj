@@ -51,7 +51,7 @@
 	</Target>
 	-->
   <ItemGroup>
-    <Compile Include="TortoiseSVN.wxs" />
+    <Compile Include="TortoiseGIT.wxs" />
     <Compile Include="WixUI_Simplest.wxs" />
   </ItemGroup>
   <ItemGroup>

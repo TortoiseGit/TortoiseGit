@@ -65,7 +65,7 @@ BOOL CAboutDlg::OnInitDialog()
 
 	CAppUtils::GetMsysgitVersion(&out);
 
-	temp.Format(IDS_ABOUTVERSION, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD,out);
+	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD,out);
 #if 0
 	const svn_version_t * svnver = svn_client_version();
 

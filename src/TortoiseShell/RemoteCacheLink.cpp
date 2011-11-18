@@ -193,9 +193,9 @@ void CRemoteCacheLink::CloseCommandPipe()
 	{
 		// now tell the cache we don't need it's command thread anymore
 		DWORD cbWritten;
-		TSVNCacheCommand cmd;
-		SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
-		cmd.command = TSVNCACHECOMMAND_END;
+		TGITCacheCommand cmd;
+		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		cmd.command = TGITCACHECOMMAND_END;
 		WriteFile(
 			m_hCommandPipe,			// handle to pipe
 			&cmd,			// buffer to write from
@@ -208,7 +208,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 	}
 }
 
-bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCacheResponse* pReturnedStatus, bool bRecursive)
+bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCacheResponse* pReturnedStatus, bool bRecursive)
 {
 	if(!EnsurePipeOpen())
 	{
@@ -242,9 +242,9 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCache
 			}
 			if (bIsWow64)
 			{
-				CRegString tsvninstalled64 = CRegString(_T("Software\\TortoiseGit\\CachePath"), _T(""), false, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
-				if (!CString(tsvninstalled64).IsEmpty())
-					sCachePath = tsvninstalled64;
+				CRegString tgitinstalled64 = CRegString(_T("Software\\TortoiseGit\\CachePath"), _T(""), false, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
+				if (!CString(tgitinstalled64).IsEmpty())
+					sCachePath = tgitinstalled64;
 			}
 		}
 		if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, NULL))
@@ -285,11 +285,11 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TSVNCache
 	AutoLocker lock(m_critSec);
 
 	DWORD nBytesRead;
-	TSVNCacheRequest request;
-	request.flags = TSVNCACHE_FLAGS_NONOTIFICATIONS;
+	TGITCacheRequest request;
+	request.flags = TGITCACHE_FLAGS_NONOTIFICATIONS;
 	if(bRecursive)
 	{
-		request.flags |= TSVNCACHE_FLAGS_RECUSIVE_STATUS;
+		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
 	}
 	wcsncpy_s(request.path, MAX_PATH+1, Path.GetWinPath(), MAX_PATH);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
@@ -350,9 +350,9 @@ bool CRemoteCacheLink::ReleaseLockForPath(const CTGitPath& path)
 	if (m_hCommandPipe != INVALID_HANDLE_VALUE)
 	{
 		DWORD cbWritten;
-		TSVNCacheCommand cmd;
-		SecureZeroMemory(&cmd, sizeof(TSVNCacheCommand));
-		cmd.command = TSVNCACHECOMMAND_RELEASE;
+		TGITCacheCommand cmd;
+		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		cmd.command = TGITCACHECOMMAND_RELEASE;
 		wcsncpy_s(cmd.path, MAX_PATH+1, path.GetDirectory().GetWinPath(), MAX_PATH);
 		BOOL fSuccess = WriteFile(
 			m_hCommandPipe,	// handle to pipe

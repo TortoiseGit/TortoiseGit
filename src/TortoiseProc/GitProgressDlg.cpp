@@ -20,7 +20,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "messagebox.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "LogDlg.h"
 #include "TGitPath.h"
 #include "Registry.h"
@@ -51,7 +51,7 @@ int		CGitProgressDlg::m_nSortedColumn = -1;
 #define TRANSFERTIMER	100
 #define VISIBLETIMER	101
 
-enum SVNProgressDlgContextMenuCommands
+enum GITProgressDlgContextMenuCommands
 {
 	// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
 	ID_COMPARE = 1,
@@ -789,7 +789,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 	//SetPromptParentWindow(this->m_hWnd);
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
-	EnableSaveRestore(_T("SVNProgressDlg"));
+	EnableSaveRestore(_T("GITProgressDlg"));
 	return TRUE;
 }
 

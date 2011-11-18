@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Include Id="TsvnInclude">
+<Include Id="TgitInclude">
 	<?include VersionNumberInclude.wxi ?>
 
 	<!-- General ..................................................................... -->
@@ -11,7 +11,7 @@
 	<?define PackageDescription="Git Client" ?>
 	<?define PackageComments="Windows Shell Integration For Git Source Control, v$(var.VersionNumberUserVisible)" ?>
 	<?define PackageManufacturer="Frank Li" ?>
-	<?define TortoiseSvnOrg="http://code.google.com/p/TortoiseGit/"?>
+	<?define TortoiseGitOrg="http://code.google.com/p/TortoiseGit/"?>
 
 	<!-- Platform specifics ........................................................... -->
 
@@ -66,7 +66,7 @@
 	<?define GuidMachineRegistry32="ACDC3F06-4976-4a77-A676-378B076F96BE"?>
 	<?define GuidApproveShellComponents="E7E43AE0-DB46-4af9-95EA-2EF7AD3F2119"?>
 	<?define GuidApproveShellComponents32="56A11ACF-3DE2-40f8-A6A8-4CC334E19571"?>
-	<?define GuidSvnProtocol="0AD2B787-A9B3-4ad7-99A5-EC6DFF0EB2B7"?>
+	<?define GuidGitProtocol="0AD2B787-A9B3-4ad7-99A5-EC6DFF0EB2B7"?>
 
 	<?define GuidLibSSL="CB2A61D8-AE23-4b9b-AC7D-473E2610367E"?>
 	<?define GuidAPR="72EB77A1-E5CD-4cdb-BFC2-77FDCFD04ACF"?>
@@ -84,7 +84,7 @@
 	<?define GuidTortoiseShell32="572EBB6E-09C5-4199-B3B7-173ED1FFC531"?>
 	<?define GuidTortoiseGitTools="0403B84B-0884-41ae-AECC-69283CAE3512"?>
 	<?define GuidTortoiseGitCache="49C37E2C-9E20-4792-A780-24761CFBDDD6"?>
-	<?define GuidTortoiseSVNShortcuts="BFF1875C-D7A8-49cf-BD30-C2B76C5576CF"?>
+	<?define GuidTortoiseGITShortcuts="BFF1875C-D7A8-49cf-BD30-C2B76C5576CF"?>
 	<?define GuidTortoiseMerge="8D5CCE58-8F79-4ff1-A25A-E40D41357D45"?>
 	<?define GuidTortoiseMergeShortcuts="659A37E6-CE9A-4a30-AFF5-6FA1A077AA33"?>
 	<?define GuidSounds="504B02AA-9C6E-4639-99BC-8F5A885BACBD"?>
@@ -134,7 +134,7 @@
 	<?define GuidShellRegistry="EED2630A-E3DA-4046-B642-6296C23DEC2A"?>
 	<?define GuidMachineRegistry="27FA9458-F68B-4a26-A36B-D452FD9EABBA"?>
 	<?define GuidApproveShellComponents="E3B982F9-7B17-457f-A72F-2F47E9DB1719"?>
-	<?define GuidSvnProtocol="508DD925-273C-4170-9D81-55222E2E36AB"?>
+	<?define GuidGitProtocol="508DD925-273C-4170-9D81-55222E2E36AB"?>
 
 	<?define GuidLibSSL="BD9DD138-AEA4-4cf3-982D-8B5EB2A510D9"?>
 	<?define GuidAPR="DFBE3185-5272-4880-9ED3-F50F21EA9BE7"?>
@@ -149,7 +149,7 @@
 	<?define GuidTortoiseGitTools="041528E1-2216-44d2-B960-E93719EDC78B"?>
 	<?define GuidTortoiseGitCache="528E15B0-9F9E-4498-8614-2E4368208CB1"?>
 	<?define GuidTortoiseShell="3F973B52-C295-4dc8-B4A7-5867F5AFE93C"?>
-	<?define GuidTortoiseSVNShortcuts="664008F0-5BF8-4c11-AAA4-A5DD9C237BBF"?>
+	<?define GuidTortoiseGITShortcuts="664008F0-5BF8-4c11-AAA4-A5DD9C237BBF"?>
 	<?define GuidTortoiseMerge="F97E61D9-AECD-4160-AB31-5E5C78ADDD9F"?>
 	<?define GuidTortoiseMergeShortcuts="C22CF21D-57F0-471b-80AE-E8C101AA27CA"?>
 	<?define GuidSounds="0DD7EE86-517F-49a1-AA47-69EA7F171050"?>

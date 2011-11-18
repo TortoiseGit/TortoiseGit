@@ -242,7 +242,7 @@ BOOL CSetOverlayPage::OnApply()
 	if (m_dwCacheType != 1)
 	{
 		// close the possible running cache process
-		HWND hWnd = ::FindWindow(TSVN_CACHE_WINDOW_NAME, TSVN_CACHE_WINDOW_NAME);
+		HWND hWnd = ::FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 		if (hWnd)
 		{
 			::PostMessage(hWnd, WM_CLOSE, NULL, NULL);

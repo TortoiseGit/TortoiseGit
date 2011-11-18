@@ -30,7 +30,7 @@
 #include "cursor.h"
 #include "InputDlg.h"
 #include "PropDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "ProgressDlg.h"
 //#include "RepositoryBrowser.h"
 //#include "CopyDlg.h"

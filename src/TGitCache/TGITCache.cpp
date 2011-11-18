@@ -20,7 +20,7 @@
 
 #include "stdafx.h"
 #include "shellapi.h"
-#include "TSVNCache.h"
+#include "TGITCache.h"
 #include "GitStatusCache.h"
 #include "CacheInterface.h"
 #include "Resource.h"
@@ -155,7 +155,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 	HANDLE hPipeThread; 
 	HANDLE hCommandWaitThread;
 	MSG msg;
-	TCHAR szWindowClass[] = {TSVN_CACHE_WINDOW_NAME};
+	TCHAR szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
 
 	// create a hidden window to receive window messages.
 	WNDCLASSEX wcex;
@@ -172,7 +172,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 	wcex.lpszClassName	= szWindowClass;
 	wcex.hIconSm		= 0;
 	RegisterClassEx(&wcex);
-	hWnd = CreateWindow(TSVN_CACHE_WINDOW_NAME, TSVN_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, NULL, 0, hInstance, 0);
+	hWnd = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, NULL, 0, hInstance, 0);
 	hTrayWnd = hWnd;
 	if (hWnd == NULL)
 	{
@@ -478,13 +478,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 //////////////////////////////////////////////////////////////////////////
 
-VOID GetAnswerToRequest(const TSVNCacheRequest* pRequest, TSVNCacheResponse* pReply, DWORD* pResponseLength)
+VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pReply, DWORD* pResponseLength)
 {
 	CTGitPath path;
 	*pResponseLength = 0;
-	if(pRequest->flags & TSVNCACHE_FLAGS_FOLDERISKNOWN)
+	if(pRequest->flags & TGITCACHE_FLAGS_FOLDERISKNOWN)
 	{
-		path.SetFromWin(pRequest->path, !!(pRequest->flags & TSVNCACHE_FLAGS_ISFOLDER));
+		path.SetFromWin(pRequest->path, !!(pRequest->flags & TGITCACHE_FLAGS_ISFOLDER));
 	}
 	else
 	{
@@ -666,7 +666,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 DWORD WINAPI InstanceThread(LPVOID lpvParam) 
 { 
 	ATLTRACE("InstanceThread started\n");
-	TSVNCacheResponse response; 
+	TGITCacheResponse response; 
 	DWORD cbBytesRead, cbWritten; 
 	BOOL fSuccess; 
 	HANDLE hPipe; 
@@ -678,7 +678,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 	while (bRun) 
 	{ 
 		// Read client requests from the pipe. 
-		TSVNCacheRequest request;
+		TGITCacheRequest request;
 		fSuccess = ReadFile( 
 			hPipe,        // handle to pipe 
 			&request,    // buffer to receive data 
@@ -748,7 +748,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 	while (bRun) 
 	{ 
 		// Read client requests from the pipe. 
-		TSVNCacheCommand command;
+		TGITCacheCommand command;
 		fSuccess = ReadFile( 
 			hPipe,				// handle to pipe 
 			&command,			// buffer to receive data 
@@ -766,13 +766,13 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 		
 		switch (command.command)
 		{
-			case TSVNCACHECOMMAND_END:
+			case TGITCACHECOMMAND_END:
 				FlushFileBuffers(hPipe); 
 				DisconnectNamedPipe(hPipe); 
 				CloseHandle(hPipe); 
 				ATLTRACE("Command thread exited\n");
 				return 0;
-			case TSVNCACHECOMMAND_CRAWL:
+			case TGITCACHECOMMAND_CRAWL:
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(CString(command.path), true);
@@ -783,12 +783,12 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 					CGitStatusCache::Instance().AddFolderForCrawling(changedpath.GetDirectory());
 				}
 				break;
-			case TSVNCACHECOMMAND_REFRESHALL:
+			case TGITCACHECOMMAND_REFRESHALL:
 				CGitStatusCache::Instance().WaitToWrite();
 				CGitStatusCache::Instance().Refresh();
 				CGitStatusCache::Instance().Done();
 				break;
-			case TSVNCACHECOMMAND_RELEASE:
+			case TGITCACHECOMMAND_RELEASE:
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(CString(command.path), true);

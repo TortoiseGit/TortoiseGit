@@ -1018,7 +1018,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\tortoisesvn_logoflipped.bmp"
+				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
 				>
 			</File>
 			<File
@@ -2158,6 +2158,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GitProgressDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GitProgressDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\InputDlg.cpp"
 				>
 			</File>
@@ -2179,14 +2187,6 @@
 			</File>
 			<File
 				RelativePath=".\ResetDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SVNProgressDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SVNProgressDlg.h"
 				>
 			</File>
 		</Filter>

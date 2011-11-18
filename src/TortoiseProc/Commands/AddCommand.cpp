@@ -20,7 +20,7 @@
 #include "AddCommand.h"
 
 #include "AddDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "ShellUpdater.h"
 #include "messagebox.h"
 

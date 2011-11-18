@@ -257,7 +257,7 @@ bool ColumnManager::IsUserProp (int column) const
 	size_t index = static_cast<size_t>(column);
 	assert (columns.size() > index);
 
-	return columns[index].index >= SVNSLC_USERPROPCOLOFFSET;
+	return columns[index].index >= GITSLC_USERPROPCOLOFFSET;
 }
 
 int ColumnManager::SetNames(UINT* buffer, int size)
@@ -376,8 +376,8 @@ void ColumnManager::ColumnResized (int column)
 	columns[index].width = width;
 
 	int propertyIndex = columns[index].index;
-	if (propertyIndex >= SVNSLC_USERPROPCOLOFFSET)
-		userProps[propertyIndex - SVNSLC_USERPROPCOLOFFSET].width = width;
+	if (propertyIndex >= GITSLC_USERPROPCOLOFFSET)
+		userProps[propertyIndex - GITSLC_USERPROPCOLOFFSET].width = width;
 
 	control->Invalidate  (FALSE);
 }
@@ -526,7 +526,7 @@ void ColumnManager::RemoveUnusedProps()
 	// map them onto new IDs (we may delete some IDs in between)
 
 	std::map<int, int> validIndices;
-	int userPropID = SVNSLC_USERPROPCOLOFFSET;
+	int userPropID = GITSLC_USERPROPCOLOFFSET;
 
 	for (size_t i = 0, count = columns.size(); i < count; ++i)
 	{
@@ -534,9 +534,9 @@ void ColumnManager::RemoveUnusedProps()
 
 		if (itemProps.find (GetName((int)i)) != itemProps.end()
 			|| columns[i].visible
-			|| index < SVNSLC_USERPROPCOLOFFSET)
+			|| index < GITSLC_USERPROPCOLOFFSET)
 		{
-			validIndices[index] = index < SVNSLC_USERPROPCOLOFFSET
+			validIndices[index] = index < GITSLC_USERPROPCOLOFFSET
 								? index
 								: userPropID++;
 		}
@@ -567,7 +567,7 @@ void ColumnManager::RemoveUnusedProps()
 
 	for (size_t i = userProps.size(); i > 0; --i)
 	{
-		int index = static_cast<int>(i)-1 + SVNSLC_USERPROPCOLOFFSET;
+		int index = static_cast<int>(i)-1 + GITSLC_USERPROPCOLOFFSET;
 		if (validIndices.find (index) == validIndices.end())
 			userProps.erase (userProps.begin() + i-1);
 	}
@@ -657,7 +657,7 @@ void ColumnManager::ParseUserPropSettings(const CString& userPropList, const CSt
 			newColumn.visible = true;
 			newColumn.relevant = true;
 			newColumn.index = static_cast<int>(userProps.size())
-							+ SVNSLC_USERPROPCOLOFFSET - 1;
+							+ GITSLC_USERPROPCOLOFFSET - 1;
 
 			columns.push_back (newColumn);
 		}
@@ -677,11 +677,11 @@ void ColumnManager::ParseWidths (const CString& widths)
 
 			columns[i].width = width;
 		}
-		else if (i >= SVNSLC_USERPROPCOLOFFSET)
+		else if (i >= GITSLC_USERPROPCOLOFFSET)
 		{
 			// a user-prop column
 
-			size_t index = static_cast<size_t>(i - SVNSLC_USERPROPCOLOFFSET);
+			size_t index = static_cast<size_t>(i - GITSLC_USERPROPCOLOFFSET);
 			assert (index < userProps.size());
 			userProps[index].width = width;
 
@@ -716,12 +716,12 @@ void ColumnManager::ParseColumnOrder
 
 	// place columns according to valid entries in orderString
 
-	int limit = static_cast<int>(SVNSLC_USERPROPCOLOFFSET + userProps.size());
+	int limit = static_cast<int>(GITSLC_USERPROPCOLOFFSET + userProps.size());
 	for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
 	{
 		int index = _tcstol (widths.Mid (i*2, 2), NULL, 16);
 		if ((index < itemName.size())
-			|| ((index >= SVNSLC_USERPROPCOLOFFSET) && (index < limit)))
+			|| ((index >= GITSLC_USERPROPCOLOFFSET) && (index < limit)))
 		{
 			alreadyPlaced.insert (index);
 			columnOrder.push_back (index);
@@ -734,7 +734,7 @@ void ColumnManager::ParseColumnOrder
 		if (alreadyPlaced.find (i) == alreadyPlaced.end())
 			columnOrder.push_back (i);
 
-	for (int i = SVNSLC_USERPROPCOLOFFSET; i < limit; ++i)
+	for (int i = GITSLC_USERPROPCOLOFFSET; i < limit; ++i)
 		if (alreadyPlaced.find (i) == alreadyPlaced.end())
 			columnOrder.push_back (i);
 }
@@ -747,7 +747,7 @@ std::vector<int> ColumnManager::GetGridColumnOrder()
 	// extract order of used columns from order of all columns
 
 	std::vector<int> result;
-	result.reserve (SVNSLC_MAXCOLUMNCOUNT+1);
+	result.reserve (GITSLC_MAXCOLUMNCOUNT+1);
 
 	size_t colCount = columns.size();
 	bool visible = false;
@@ -778,7 +778,7 @@ void ColumnManager::ApplyColumnOrder()
 {
 	// extract order of used columns from order of all columns
 
-	int order[SVNSLC_MAXCOLUMNCOUNT+1];
+	int order[GITSLC_MAXCOLUMNCOUNT+1];
 	SecureZeroMemory (order, sizeof (order));
 
 	std::vector<int> gridColumnOrder = GetGridColumnOrder();
@@ -822,8 +822,8 @@ CString ColumnManager::GetShownUserProps() const
 	for (size_t i = 0, count = columns.size(); i < count; ++i)
 	{
 		size_t index = static_cast<size_t>(columns[i].index);
-		if (columns[i].visible && (index >= SVNSLC_USERPROPCOLOFFSET))
-			result += userProps[index - SVNSLC_USERPROPCOLOFFSET].name
+		if (columns[i].visible && (index >= GITSLC_USERPROPCOLOFFSET))
+			result += userProps[index - GITSLC_USERPROPCOLOFFSET].name
 					+ _T(' ');
 	}
 
@@ -845,7 +845,7 @@ CString ColumnManager::GetWidthString() const
 
 	// range with no column IDs
 
-	result += CString ('0', 8 * (SVNSLC_USERPROPCOLOFFSET - itemName.size()));
+	result += CString ('0', 8 * (GITSLC_USERPROPCOLOFFSET - itemName.size()));
 
 	// user-prop columns
 

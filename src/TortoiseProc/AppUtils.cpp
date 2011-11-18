@@ -45,7 +45,7 @@
 #include "DeleteConflictDlg.h"
 #include "ChangedDlg.h"
 #include "SendMailDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "PushDlg.h"
 #include "CommitDlg.h"
 #include "MergeDlg.h"

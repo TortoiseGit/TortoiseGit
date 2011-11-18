@@ -23,7 +23,7 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "..\version.h"
 #include ".\setmainpage.h"
 #include "Git.h"

@@ -20,7 +20,7 @@
 #include "RevertCommand.h"
 
 #include "RevertDlg.h"
-#include "SVNProgressDlg.h"
+#include "GITProgressDlg.h"
 #include "MessageBox.h"
 
 bool RevertCommand::Execute()

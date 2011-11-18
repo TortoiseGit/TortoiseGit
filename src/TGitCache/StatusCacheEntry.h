@@ -19,7 +19,7 @@
 //
 #pragma once
 
-struct TSVNCacheResponse;
+struct TGITCacheResponse;
 #define CACHETIMEOUT	0x7FFFFFFF
 extern DWORD cachetimeout;
 
@@ -36,7 +36,7 @@ public:
 	CStatusCacheEntry(const git_wc_status_kind status);
 	CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil = 0);
 	bool HasExpired(long now) const;
-	void BuildCacheResponse(TSVNCacheResponse& response, DWORD& responseLength) const;
+	void BuildCacheResponse(TGITCacheResponse& response, DWORD& responseLength) const;
 	bool IsVersioned() const;
 	bool DoesFileTimeMatch(__int64 testTime) const;
 	bool ForceStatus(git_wc_status_kind forcedStatus);

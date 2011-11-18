@@ -22,7 +22,7 @@
 #include ".\foldercrawler.h"
 #include "GitStatusCache.h"
 #include "registry.h"
-#include "TSVNCache.h"
+#include "TGitCache.h"
 #include "shlobj.h"
 
 
@@ -362,9 +362,9 @@ void CFolderCrawler::WorkerThread()
 					}
 					InvalidateRect(hWnd, NULL, FALSE);
 					// HasAdminDir() already checks if the path points to a dir
-					DWORD flags = TSVNCACHE_FLAGS_FOLDERISKNOWN;
-					flags |= (workingPath.IsDirectory() ? TSVNCACHE_FLAGS_ISFOLDER : 0);
-					flags |= (bRecursive ? TSVNCACHE_FLAGS_RECUSIVE_STATUS : 0);
+					DWORD flags = TGITCACHE_FLAGS_FOLDERISKNOWN;
+					flags |= (workingPath.IsDirectory() ? TGITCACHE_FLAGS_ISFOLDER : 0);
+					flags |= (bRecursive ? TGITCACHE_FLAGS_RECUSIVE_STATUS : 0);
 					CGitStatusCache::Instance().WaitToRead();
 					// Invalidate the cache of folders manually. The cache of files is invalidated
 					// automatically if the status is asked for it and the file times don't match

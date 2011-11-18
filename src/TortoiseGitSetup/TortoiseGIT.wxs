@@ -13,9 +13,9 @@
 		</Upgrade>
 
 		<MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
-		<Media Id="1" Cabinet="TSVN.cab" EmbedCab="yes" CompressionLevel="high" />
+		<Media Id="1" Cabinet="TGIT.cab" EmbedCab="yes" CompressionLevel="high" />
 
-		<Icon Id="TSVNIcon" SourceFile="..\Resources\Tortoise.ico" />
+		<Icon Id="TGITIcon" SourceFile="..\Resources\Tortoise.ico" />
 
 		<Property Id="SSHRadio">Plink</Property>
 

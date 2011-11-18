@@ -28,7 +28,7 @@
 #pragma comment(lib, "shlwapi")
 #pragma comment(lib, "shell32")
 
-#define TSVN_CACHE_WINDOW_NAME _T("TGitCacheWindow")
+#define TGIT_CACHE_WINDOW_NAME _T("TGitCacheWindow")
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
 					   DWORD  ul_reason_for_call, 
@@ -40,7 +40,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 UINT __stdcall TerminateCache(MSIHANDLE hModule)
 {
-	HWND hWnd = FindWindow(TSVN_CACHE_WINDOW_NAME, TSVN_CACHE_WINDOW_NAME);
+	HWND hWnd = FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 	if (hWnd)
 	{
 		PostMessage(hWnd, WM_CLOSE, NULL, NULL);

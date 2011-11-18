@@ -400,6 +400,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GITStatusCache.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\PathUtils.cpp"
 				>
 			</File>
@@ -460,15 +464,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\SVNStatusCache.cpp"
+				RelativePath=".\TGITCache.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\Git\TGitPath.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TSVNCache.cpp"
 				>
 			</File>
 			<File
