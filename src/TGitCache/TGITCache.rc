@@ -28,7 +28,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_TSVNCACHE           ICON                    "..\\Resources\\TortoiseCache.ico"
+IDI_TGITCACHE           ICON                    "..\\Resources\\TortoiseCache.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +62,7 @@ END
 3 TEXTINCLUDE 
 BEGIN
     "\r\n"
-    "#include ""TSVNCache.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""TGITCache.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "\0"
 END
 
@@ -79,7 +79,7 @@ END
 // Generated from the TEXTINCLUDE 3 resource.
 //
 
-#include "TSVNCache.rc2"  // non-Microsoft Visual C++ edited resources
+#include "TGITCache.rc2"  // non-Microsoft Visual C++ edited resources
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

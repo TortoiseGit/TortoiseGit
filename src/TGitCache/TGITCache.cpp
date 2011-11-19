@@ -198,7 +198,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 		// load the icon
 		niData.hIcon =
 			(HICON)LoadImage(hInstance,
-			MAKEINTRESOURCE(IDI_TSVNCACHE),
+			MAKEINTRESOURCE(IDI_TGITCACHE),
 			IMAGE_ICON,
 			GetSystemMetrics(SM_CXSMICON),
 			GetSystemMetrics(SM_CYSMICON),

@@ -4,7 +4,7 @@
 	Version="9.00"
 	Name="TGitCache"
 	ProjectGUID="{A00D2EDC-B4F5-4B41-94BA-13961DE5D296}"
-	RootNamespace="TSVNCache"
+	RootNamespace="TGitCache"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -164,7 +164,7 @@
 				LinkIncremental="2"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TSVNCache.pdb"
+				ProgramDatabaseFile="$(OutDir)/TGitCache.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -550,7 +550,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TSVNCache.h"
+				RelativePath=".\TGitCache.h"
 				>
 			</File>
 			<File
@@ -572,7 +572,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TSVNCache.rc"
+				RelativePath=".\TGitCache.rc"
 				>
 			</File>
 		</Filter>
