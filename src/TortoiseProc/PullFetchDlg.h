@@ -55,6 +55,7 @@ public:
 	BOOL		m_bPrune;
 	BOOL		m_bSquash;
 	BOOL		m_bNoFF;
+	BOOL		m_bFFonly;
 	BOOL		m_bNoCommit;
 	BOOL		m_bAutoLoadEnable;
 	CString		m_PreSelectRemote;

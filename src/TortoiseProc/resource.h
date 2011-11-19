@@ -771,6 +771,7 @@
 #define IDC_CLONE_URL                   1484
 #define IDC_BUTTON_BROWSE_SOURCE_BRANCH2 1484
 #define IDC_BUTTON_BROWSE_DEST_BRANCH   1484
+#define IDC_CHECK_FFONLY                1484
 #define IDC_TITLE_ANIMATE               1485
 #define IDC_RUN_PROGRESS                1486
 #define IDC_CURRENT                     1487
@@ -859,10 +860,10 @@
 #define IDC_COLOR_LINE4                 1549
 #define IDC_SHOWADDEDOVERLAY            1549
 #define IDC_SHOWREADONLYOVERLAY         1550
-#define IDC_SHOWDELETEDOVERLAY          1551
 #define IDC_MSYSGIT_PATH                1550
 #define IDS_PROC_RENAME                 1550
 #define IDC_RADIO_RESET_SOFT            1550
+#define IDC_SHOWDELETEDOVERLAY          1551
 #define IDC_MSYSGIT_BROWSE              1551
 #define IDS_PROC_NEWNAME                1551
 #define IDC_RADIO_RESET_MIXED           1551

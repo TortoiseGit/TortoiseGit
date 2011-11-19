@@ -40,6 +40,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bNoFF = false;
 	m_bSquash = false;
 	m_bNoCommit = false;
+	m_bFFonly = false;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -59,6 +60,7 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,m_bAutoLoad);
 	DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
 	DDX_Check(pDX,IDC_CHECK_PRUNE,m_bPrune);
+	DDX_Check(pDX, IDC_CHECK_FFONLY, m_bFFonly);
 }
 
 
@@ -138,6 +140,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		this->GetDlgItem(IDC_GROUP_OPTION)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_SQUASH)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_NOFF)->EnableWindow(FALSE);
+		this->GetDlgItem(IDC_CHECK_FFONLY)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_NOCOMMIT)->EnableWindow(FALSE);
 	}
 

@@ -1,4 +1,7 @@
 = Release 1.7.6.0 =
+== Features==
+ * Fixed issue #972: Add "fast forward only" checkbox in pull dialog
+
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing
  * Fixed issue #808: Less: file viewer stop work when use show-low
