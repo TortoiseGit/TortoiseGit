@@ -1904,7 +1904,7 @@ void CLogDlg::OnBnClickedStatbutton()
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
 		m_arAuthorsFiltered.Add(strAuthor);
-		m_arDatesFiltered.Add(pLogEntry->GetAuthorDate().GetTime());
+		m_arDatesFiltered.Add(pLogEntry->GetCommitterDate().GetTime());
 		m_arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
 	}
 
