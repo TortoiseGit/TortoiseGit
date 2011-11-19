@@ -1282,7 +1282,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				gitCmd += tempfile;
 				gitCmd += _T("\"");
 				gitCmd += _T(" /deletepathfile");
-				if(itemStatesFolder&ITEMIS_SUBMODULECONTAINER)
+				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
 				{
 					gitCmd += _T(" /bkpath:\"");
 					gitCmd += folder_;
@@ -1295,7 +1295,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				gitCmd += tempfile;
 				gitCmd += _T("\"");
 				gitCmd += _T(" /deletepathfile");
-				if(itemStatesFolder&ITEMIS_SUBMODULECONTAINER)
+				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
 				{
 					gitCmd += _T(" /bkpath:\"");
 					gitCmd += folder_;
