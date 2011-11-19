@@ -1433,7 +1433,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 								if(pos < 0)
 								{
-									*status = *status = max(git_wc_status_added, *status) ;
+									*status = max(git_wc_status_modified, *status); // added file found
 									if(callback)
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
@@ -1447,7 +1447,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 								if( pos>=0 && treeptr->at(pos).m_Hash != (*it).m_IndexHash)
 								{
-									*status = *status = max(git_wc_status_modified, *status) ;
+									*status = max(git_wc_status_modified, *status); // modified file found
 									if(callback)
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
@@ -1468,7 +1468,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 								pos = SearchInSortVector(*treeptr, lowcasepath.GetBuffer(), lowcasepath.GetLength());
 								if(pos <0)
 								{
-									*status = git_wc_status_added;
+									*status = max(git_wc_status_modified, *status); // added file found
 
 								}
 								else
@@ -1482,7 +1482,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									{
 										if( SearchInSortVector(*indexptr,(*hit).m_FileName.GetBuffer(),-1) < 0)
 										{
-											*status = git_wc_status_deleted;
+											*status = max(git_wc_status_modified, *status); // deleted file found
 											break;
 										}
 										hit++;
@@ -1527,7 +1527,8 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 							GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
 
-							*status = max(filestatus, *status) ;
+							if (filestatus > git_wc_status_normal && filestatus != git_wc_status_conflicted)
+								*status = git_wc_status_modified; // folders can only be modified or conflicted
 						}
 					}
 				}
