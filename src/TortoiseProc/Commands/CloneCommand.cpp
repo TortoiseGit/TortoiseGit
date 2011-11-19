@@ -79,6 +79,8 @@ bool CloneCommand::Execute()
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
+		g_Git.m_CurrentDir = this->orgCmdLinePath.GetWinPathString();
+
 		CString cmd;
 		CString progressarg;
 
