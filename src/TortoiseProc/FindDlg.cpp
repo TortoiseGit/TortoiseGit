@@ -1,4 +1,4 @@
-// TortoiseProc - a Diff/Patch program
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2006 - Stefan Kueng
 

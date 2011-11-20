@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
 
