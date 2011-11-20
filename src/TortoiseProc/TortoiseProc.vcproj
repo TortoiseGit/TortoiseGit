@@ -1124,14 +1124,6 @@
 					RelativePath=".\Commands\BlameCommand.h"
 					>
 				</File>
-				<File
-					RelativePath=".\BlameDlg.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\BlameDlg.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Log"
@@ -2219,14 +2211,6 @@
 			</File>
 			<File
 				RelativePath=".\PatchListCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchDlg.h"
 				>
 			</File>
 		</Filter>

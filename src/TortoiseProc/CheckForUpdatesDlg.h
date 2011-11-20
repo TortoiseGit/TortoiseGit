@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - Stefan Kueng
 

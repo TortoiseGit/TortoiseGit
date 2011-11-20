@@ -57,7 +57,6 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CExportDlg, CHorizontalResizableStandAloneDialog)
-	ON_REGISTERED_MESSAGE(WM_REVSELECTED, OnRevSelected)
 	ON_BN_CLICKED(IDC_CHECKOUTDIRECTORY_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
 	ON_EN_CHANGE(IDC_CHECKOUTDIRECTORY, OnEnChangeCheckoutdirectory)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
@@ -120,7 +119,7 @@ void CExportDlg::OnOK()
 
 	if (m_VersionName.IsEmpty())
 	{
-		ShowBalloon(IDC_REVISION_NUM, IDS_ERR_INVALIDREV);
+		ShowBalloon(IDC_COMBOBOXEX_VERSION, IDS_ERR_INVALIDREV);
 		return;
 	}
 
@@ -199,39 +198,8 @@ void CExportDlg::OnBnClickedShowlog()
 
 }
 
-LPARAM CExportDlg::OnRevSelected(WPARAM /*wParam*/, LPARAM lParam)
-{
-	CString temp;
-	temp.Format(_T("%ld"), lParam);
-	SetDlgItemText(IDC_REVISION_NUM, temp);
-	CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
-	return 0;
-}
-
-void CExportDlg::OnEnChangeRevisionNum()
-{
-	UpdateData();
-	if (m_sRevision.IsEmpty())
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_HEAD);
-	else
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
-}
-
 void CExportDlg::OnCbnSelchangeEolcombo()
 {
-}
-
-void CExportDlg::SetRevision(const CString& rev)
-{
-	if (rev==_T("HEAD"))
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_HEAD);
-	else
-	{
-		CheckRadioButton(IDC_REVISION_HEAD, IDC_REVISION_N, IDC_REVISION_N);
-		CString sRev;
-		sRev.Format(_T("%s"), rev);
-		SetDlgItemText(IDC_REVISION_NUM, sRev);
-	}
 }
 
 void CExportDlg::OnCbnEditchangeUrlcombo()

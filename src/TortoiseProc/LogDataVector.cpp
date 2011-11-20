@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
 
@@ -34,7 +34,6 @@
 // CGitLogList
 #include "cursor.h"
 #include "InputDlg.h"
-#include "PropDlg.h"
 #include "GITProgressDlg.h"
 #include "ProgressDlg.h"
 //#include "RepositoryBrowser.h"

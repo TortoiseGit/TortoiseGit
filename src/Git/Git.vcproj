@@ -298,6 +298,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GitFolderStatus.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GitIndex.cpp"
 				>
 			</File>
@@ -384,6 +388,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GitHash.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gitindex.h"
 				>
 			</File>
@@ -397,6 +405,10 @@
 			</File>
 			<File
 				RelativePath=".\gittype.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SharedMutex.h"
 				>
 			</File>
 			<File
