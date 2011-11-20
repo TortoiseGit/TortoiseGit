@@ -28,7 +28,6 @@
 // CGitLogList
 #include "cursor.h"
 #include "InputDlg.h"
-#include "PropDlg.h"
 #include "GITProgressDlg.h"
 #include "ProgressDlg.h"
 #include "SysProgressDlg.h"

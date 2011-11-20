@@ -40,7 +40,6 @@
 #define IDD_TOOLASSOC                   171
 #define IDD_CHECKFORUPDATES             174
 #define IDD_REVERT                      175
-#define IDD_PROPERTIES                  177
 #define IDD_STATGRAPH                   179
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDD_OVERLAYICONS                184
@@ -225,7 +224,6 @@
 #define IDC_CHANGEDLIST                 1043
 #define IDC_MENULIST                    1043
 #define IDC_REVERTLIST                  1043
-#define IDC_PROPERTYLIST                1043
 #define IDC_LANGUAGECOMBO               1044
 #define IDC_FROMURL                     1045
 #define IDC_COMMIT_TO                   1046
