@@ -2221,14 +2221,6 @@
 				RelativePath=".\PatchListCtrl.h"
 				>
 			</File>
-			<File
-				RelativePath=".\SwitchDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwitchDlg.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath="Resource.h"

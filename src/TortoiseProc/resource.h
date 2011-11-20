@@ -18,7 +18,6 @@
 #define IDD_SVNPROGRESS                 134
 #define IDD_COMMITDLG                   135
 #define IDI_DIFF                        135
-#define IDD_SWITCH                      140
 #define IDD_COPY                        142
 #define IDD_SETTINGSMAIN                143
 #define IDR_ANIMATION                   148
@@ -219,7 +218,6 @@
 #define IDC_UPDATE                      1031
 #define IDC_REVISION_HEAD               1032
 #define IDC_REVISION_N                  1033
-#define IDC_REVISION_NUM                1034
 #define IDC_BROWSE                      1035
 #define IDC_CHECKOUTDIRECTORY_BROWSE    1036
 #define IDC_INCLUDEPATHS                1036
@@ -585,9 +583,7 @@
 #define IDS_ERR_INVALIDREV              1304
 #define IDC_DIFFSTATIC2                 1304
 #define IDS_ERR_EMPTYDIFF               1305
-#define IDC_URLLABEL                    1305
 #define IDS_ERR_NOTHINGTOADD            1306
-#define IDC_REVGROUP                    1306
 #define IDS_ERR_ERROR                   1307
 #define IDC_SWITCHLEFTRIGHT             1307
 #define IDS_ERR_NOVALIDPATH             1308
@@ -730,7 +726,6 @@
 #define IDC_LINK                        1466
 #define IDC_LINK_CHANGE_LOG             1467
 #define IDC_EDIT1                       1469
-#define IDC_SWITCHPATH                  1469
 #define IDC_BUGTRAQPARAMETERS           1469
 #define IDC_CLONE_DIR                   1469
 #define IDC_BUGTRAQREMOVEBUTTON         1470
@@ -749,7 +744,6 @@
 #define IDC_BUGTRAQPROVIDERLABEL        1475
 #define IDC_BUGTRAQPROVIDERCOMBO        1476
 #define IDC_BUGTRAQPARAMETERSLABEL      1477
-#define IDC_SWITCHLABEL                 1479
 #define IDC_CHECK1                      1480
 #define IDC_INCLUDEMERGEINFO            1480
 #define IDC_SHOWEXTERNALS               1480
