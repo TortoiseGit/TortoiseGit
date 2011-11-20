@@ -87,6 +87,7 @@ BOOL CExportDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	CHOOSE_VERSION_ADDANCHOR;
+	this->AddOthersToAnchor();
 	Init();
 	if(this->m_Revision.IsEmpty())
 	{
