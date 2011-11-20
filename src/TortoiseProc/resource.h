@@ -134,7 +134,6 @@
 #define IDD_PUSH                        303
 #define IDD_GITSWITCH                   304
 #define IDD_SWITCH_REMOTEL_BRANCH       305
-#define IDD_SWITCH_LOCAL_BRANCH         306
 #define IDD_SWITCH_VERSION              307
 #define IDD_SWITCH_TAG1                 308
 #define IDD_NEW_BRANCH_TAG              309
