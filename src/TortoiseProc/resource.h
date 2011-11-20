@@ -134,7 +134,6 @@
 #define IDD_PUSH                        303
 #define IDD_GITSWITCH                   304
 #define IDD_SWITCH_VERSION              307
-#define IDD_SWITCH_TAG1                 308
 #define IDD_NEW_BRANCH_TAG              309
 #define IDD_APPLY_PATCH_LIST            311
 #define IDD_FORMAT_PATCH                312
@@ -769,7 +768,6 @@
 #define IDC_COMBOBOXEX1                 1489
 #define IDC_REMOTE_COMBO                1489
 #define IDC_BRANCH_REMOTE               1489
-#define IDC_BRANCH                      1489
 #define IDC_COMBOBOXEX_BRANCH           1489
 #define IDC_COMBOBOXEX_FROM             1489
 #define IDC_REMOTE_RD                   1490
