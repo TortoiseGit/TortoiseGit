@@ -143,6 +143,11 @@ void CExportDlg::OnOK()
 			return ;
 		}
 	}
+	else if (m_strExportDirectory.IsEmpty())
+	{
+		CMessageBox::Show(NULL,_T("You must select a filename for the zip-file!"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		return;
+	}
 
 	UpdateData(FALSE);
 	CHorizontalResizableStandAloneDialog::OnOK();
