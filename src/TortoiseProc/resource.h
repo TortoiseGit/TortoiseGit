@@ -133,7 +133,6 @@
 #define IDD_PULLFETCH                   302
 #define IDD_PUSH                        303
 #define IDD_GITSWITCH                   304
-#define IDD_SWITCH_VERSION              307
 #define IDD_NEW_BRANCH_TAG              309
 #define IDD_APPLY_PATCH_LIST            311
 #define IDD_FORMAT_PATCH                312
@@ -795,8 +794,6 @@
 #define IDC_STATIC_SOURCE               1504
 #define IDS_EXPORT_TT_EOL               1505
 #define IDC_PUTTYKEY_AUTOLOAD           1505
-#define IDC_CHECK2                      1508
-#define IDC_EDIT2                       1509
 #define IDS_IMPORT_TT_MODULENAMECHECK   1510
 #define IDC_LIST2                       1510
 #define IDC_SENDMAIL_SUBJECT            1510
