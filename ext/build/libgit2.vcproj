@@ -369,6 +369,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\global.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\hash.c"
 				>
 			</File>
@@ -528,7 +532,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\libgit2\src\win32\utf8-conv.c"
+					RelativePath="..\libgit2\src\win32\utf-conv.c"
 					>
 				</File>
 			</Filter>
@@ -604,6 +608,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\fileops.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\global.h"
 				>
 			</File>
 			<File
@@ -738,7 +746,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\libgit2\src\win32\utf8-conv.h"
+					RelativePath="..\libgit2\src\win32\utf-conv.h"
 					>
 				</File>
 			</Filter>

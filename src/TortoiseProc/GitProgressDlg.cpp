@@ -42,6 +42,7 @@
 #include "IconMenu.h"
 #include "BugTraqAssociations.h"
 #include "patch.h"
+#include "git2.h"
 
 static UINT WM_GITPROGRESS = RegisterWindowMessage(_T("TORTOISEGIT_GITPROGRESS_MSG"));
 
@@ -798,12 +799,10 @@ bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 	return CAppUtils::SetListCtrlBackgroundImage(m_ProgList.GetSafeHwnd(), nID);
 }
 
-#if 0
-void CGitProgressDlg::ReportSVNError()
+void CGitProgressDlg::ReportGitError()
 {
-	ReportError(GetLastErrorMessage());
+	ReportError(CString(git_lasterror()));
 }
-#endif
 
 void CGitProgressDlg::ReportError(const CString& sError)
 {
@@ -1804,26 +1803,53 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
+	git_repository *repo = NULL;
+	git_index *index;
+
+	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString() + _T("/.git"), CP_ACP);
+	if (git_repository_open(&repo, gitdir.GetBuffer()))
+	{
+		ReportGitError();
+		return false;
+	}
+	if (git_repository_index(&index, repo))
+	{
+		ReportGitError();
+		git_repository_free(repo);
+		return false;
+	}
+	if (git_index_read(index))
+	{
+		ReportGitError();
+		git_index_free(index);
+		git_repository_free(repo);
+		return false;
+	}
+
 	for(int i=0;i<m_targetPathList.GetCount();i++)
 	{
-		CString cmd,out;
-		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if (git_index_add(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_ACP)).GetBuffer(), 0))
 		{
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			m_bErrorsOccurred=true;
+			ReportGitError();
+			git_index_free(index);
+			git_repository_free(repo);
 			return false;
 		}
 		Notify(m_targetPathList[i],git_wc_notify_add);
 	}
-#if 0
-	if (!Add(m_targetPathList, &m_ProjectProperties, svn_depth_empty, FALSE, TRUE, TRUE))
+
+	if (git_index_write(index))
 	{
-		ReportSVNError();
+		ReportGitError();
+		git_index_free(index);
+		git_repository_free(repo);
 		return false;
 	}
-#endif
-	//CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
+
+	git_index_free(index);
+	git_repository_free(repo);
+
+	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 	m_bErrorsOccurred=false;
 
 	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
