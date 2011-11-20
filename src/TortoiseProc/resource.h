@@ -27,7 +27,6 @@
 #define IDD_CHANGEDFILES                158
 #define IDD_SIMPLEPROMPT                160
 #define IDD_INPUTDLG                    161
-#define IDD_BLAME                       162
 #define IDR_SEARCH                      163
 #define IDI_DRIVES                      164
 #define IDD_URL                         164
@@ -201,7 +200,6 @@
 #define IDC_SAVECHECK                   1023
 #define IDC_NAME                        1027
 #define IDC_SERVERADDRESS               1027
-#define IDC_REVISON_START               1027
 #define IDC_USEREDIT                    1027
 #define IDC_URLCOMBO                    1029
 #define IDC_FONTNAMES                   1030
@@ -209,8 +207,6 @@
 #define IDC_GETALL                      1031
 #define IDC_EDITCONFIG                  1031
 #define IDC_UPDATE                      1031
-#define IDC_REVISION_HEAD               1032
-#define IDC_REVISION_N                  1033
 #define IDC_BROWSE                      1035
 #define IDC_CHECKOUTDIRECTORY_BROWSE    1036
 #define IDC_INCLUDEPATHS                1036
@@ -232,7 +228,6 @@
 #define IDC_FIXED                       1050
 #define IDC_CDROM                       1051
 #define IDC_HINTLABEL                   1052
-#define IDC_REVISION_END                1053
 #define IDC_VERSIONABOUT                1054
 #define IDC_CLEARAUTH                   1059
 #define IDC_UNKNOWN                     1061
@@ -299,13 +294,11 @@
 #define IDC_OLDLOGS                     1124
 #define IDC_ICONSETCOMBO                1124
 #define IDC_CHIST                       1125
-#define IDC_USETEXTVIEWER               1126
 #define IDC_KEEPLISTS                   1126
 #define IDC_SHOWEXCLUDEDASNORMAL        1126
 #define IDC_LOG_FIRSTPARENT             1126
 #define IDC_IGNOREEOL                   1126
 #define IDC_SORTBYCOMMITCOUNT           1126
-#define IDC_IGNOREEOL2                  1127
 #define IDC_DIFFBYDOUBLECLICK           1127
 #define IDC_CHECK_STOPONCOPY            1130
 #define IDC_GRAPH                       1131
@@ -665,9 +658,6 @@
 #define IDC_BUTTON_DOWN2                1385
 #define IDC_MSGGROUP                    1386
 #define IDC_FILTER                      1387
-#define IDC_COMPAREWHITESPACES          1390
-#define IDC_IGNOREWHITESPACECHANGES     1391
-#define IDC_IGNOREALLWHITESPACES        1392
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394
 #define IDC_EDITCONFLICT                1399
@@ -722,7 +712,6 @@
 #define IDC_BUGTRAQPROVIDERLABEL        1475
 #define IDC_BUGTRAQPROVIDERCOMBO        1476
 #define IDC_BUGTRAQPARAMETERSLABEL      1477
-#define IDC_INCLUDEMERGEINFO            1480
 #define IDC_SHOWEXTERNALS               1480
 #define IDC_FORCE                       1480
 #define IDC_UNVERSIONEDITEMS            1481
