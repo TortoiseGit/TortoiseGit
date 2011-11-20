@@ -131,7 +131,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\gitdll;..\..\ext\apr\include;&quot;..\..\ext\apr-util\include&quot;;..\..\ext\SubVersion\subversion\include;..\..\ext\SubVersion\subversion\libsvn_diff;..\Utils;..\Utils\NewMenu;..\Utils\ColourPickerXP;..\TortoiseMerge;..\crashrpt;..\;..\SVN;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;&quot;..\..\ext\apr-util\include&quot;;..\..\ext\SubVersion\subversion\include;.\libsvn_diff;..\Utils;..\Utils\NewMenu;..\Utils\ColourPickerXP;..\TortoiseMerge;..\crashrpt;..\;..\SVN;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -156,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../ext/Subversion\debug_x64\libsvn_diff-nonet.lib ../../ext/Subversion\debug_x64\libsvn_subr-nonet.lib ../../ext/Subversion\debug_x64\libsvn_client-nonet.lib ../../ext/apr\debug_x64\libapr_tsvn.lib ../../ext/apr-util\debug_x64\libaprutil_tsvn.lib ../../ext/libintl/libintl3-x64/lib/intl3_tsvn.lib ../../ext/Subversion\debug_x64\libsvn_wc-nonet.lib ../../ext/Subversion\debug_x64\libsvn_delta-nonet.lib ../../ext/apr-util\xml\expat\lib\debug_x64\xml.lib"
+				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin/release64/bin/libapr_tsvn.lib ../../bin/release64/bin/libaprutil_tsvn.lib ../../ext/libintl/libintl3-x64/lib/intl3_tsvn.lib ../../bin/release64/bin/xml.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"

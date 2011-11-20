@@ -373,7 +373,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:X86"
 				AdditionalDependencies="ws2_32.lib mswsock.lib rpcrt4.lib"
 				OutputFile="$(OutDir)\libapr_tsvn.dll"
 				LinkIncremental="1"
