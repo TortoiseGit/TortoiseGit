@@ -133,7 +133,6 @@
 #define IDD_PULLFETCH                   302
 #define IDD_PUSH                        303
 #define IDD_GITSWITCH                   304
-#define IDD_SWITCH_REMOTEL_BRANCH       305
 #define IDD_SWITCH_VERSION              307
 #define IDD_SWITCH_TAG1                 308
 #define IDD_NEW_BRANCH_TAG              309
@@ -743,7 +742,6 @@
 #define IDC_BUGTRAQPROVIDERLABEL        1475
 #define IDC_BUGTRAQPROVIDERCOMBO        1476
 #define IDC_BUGTRAQPARAMETERSLABEL      1477
-#define IDC_CHECK1                      1480
 #define IDC_INCLUDEMERGEINFO            1480
 #define IDC_SHOWEXTERNALS               1480
 #define IDC_FORCE                       1480
