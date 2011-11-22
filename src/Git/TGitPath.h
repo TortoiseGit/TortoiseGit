@@ -32,6 +32,8 @@ public:
 	int m_Stage;
 	int m_ParentNo;
 public:
+#pragma warning(push)
+#pragma warning(disable: 4480)	// nonstandard extension used: specifying underlying type for enum 'enum'
 	enum : unsigned int
 	{
 		LOGACTIONS_ADDED	= 0x00000001,
@@ -60,8 +62,8 @@ public:
 		LOGACTIONS_REBASE_SKIP    = 0x00400000,
 		LOGACTIONS_REBASE_MASK	  = 0x0FC00000,
 		LOGACTIONS_REBASE_MODE_MASK=0x07C00000,
-
 	};
+#pragma warning(pop)
 
 	CString m_StatAdd;
 	CString m_StatDel;
