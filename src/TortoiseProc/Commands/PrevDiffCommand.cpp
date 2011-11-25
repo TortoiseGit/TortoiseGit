@@ -36,6 +36,7 @@ bool PrevDiffCommand::Execute()
 
 		dlg.m_strRev1 = GIT_REV_ZERO;
 		dlg.m_strRev2 = _T("HEAD~1");
+		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();
 
 		//dlg.m_pathList = CTGitPathList(cmdLinePath);
 		dlg.DoModal();
