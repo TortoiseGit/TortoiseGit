@@ -103,6 +103,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	{
 		m_path1 = *path;
 		m_path2 = *path;
+		m_sFilter = path->GetGitPathString();
 	}
 	m_rev1 = rev1;
 	m_rev2 = rev2;
@@ -114,6 +115,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	{
 		m_path1 = *path;
 		m_path2 = *path;
+		m_sFilter = path->GetGitPathString();
 	}
 
 	BYTE_VECTOR logout;
@@ -147,6 +149,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 	{
 		m_path1 = *path;
 		m_path2 = *path;
+		m_sFilter = path->GetGitPathString();
 	}
 	m_rev1 = rev1;
 	m_rev2.m_CommitHash.Empty();
@@ -186,6 +189,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 	temp.LoadString(IDS_FILEDIFF_FILTERCUE);
 	temp = _T("   ")+temp;
 	m_cFilter.SetCueBanner(temp);
+	if (!m_sFilter.IsEmpty())
+		m_cFilter.SetWindowText(m_sFilter);
 
 	int c = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	while (c>=0)

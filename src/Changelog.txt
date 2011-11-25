@@ -1,6 +1,7 @@
 = Release 1.7.6.0 =
 == Features==
  * Fixed issue #972: Add "fast forward only" checkbox in pull dialog
+ * Fixed issue #976: Compare Revisions should inherit path filter
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing

@@ -190,6 +190,7 @@ private:
 public:
 	CString				m_strRev1;
 	CString				m_strRev2;
+	CString				m_sFilter;
 
 public:
 	virtual BOOL DestroyWindow();
