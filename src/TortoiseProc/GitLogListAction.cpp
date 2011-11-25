@@ -198,7 +198,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				this->GetParent()->PostMessage(WM_COMMAND,ID_LOGDLG_REFRESH,0);
 			}
 			break;
-			case ID_GNUDIFF1:
+			case ID_GNUDIFF1: // compare with WC, unified
 			{
 				CString tempfile=GetTempFile();
 				CString command;
@@ -241,7 +241,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 
-			case ID_GNUDIFF2:
+			case ID_GNUDIFF2: // compare two revisions, unified
 			{
 				CString tempfile=GetTempFile();
 				CString cmd;
@@ -265,7 +265,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 
-		case ID_COMPARETWO:
+		case ID_COMPARETWO: // compare two revisions
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
@@ -274,7 +274,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 
-		case ID_COMPARE:
+		case ID_COMPARE: // compare revision with WC
 			{
 				GitRev * r1 = &m_wcRev;
 				GitRev * r2 = pSelLogEntry;
