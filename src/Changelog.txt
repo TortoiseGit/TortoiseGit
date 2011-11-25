@@ -12,6 +12,7 @@
  * Fixed issue #962: git_init in gitdll.c uses USERPROFILE for creating home
  * Fixed issue #964: Can't mark conflict as resolved
  * Fixed issue #867: Add should not run a new Git process for each file
+ * Fixed issue #981: After Aborting a Rebase a different Commit is checked out
 
 = Release 1.7.5.0 =
 == Features==

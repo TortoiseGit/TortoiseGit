@@ -252,6 +252,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	{
 		this->m_BranchCtrl.SetCurSel(-1);
 		this->m_BranchCtrl.EnableWindow(FALSE);
+		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		this->SetWindowText(_T("Cherry Pick"));
 		this->m_CommitList.StartFilter();
@@ -1526,6 +1527,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
 	CString cmd,out;
+	CString pron = m_OrigUpstreamHash.ToString();
 	if(m_OrigUpstreamHash.IsEmpty())
 	{
 		__super::OnCancel();
