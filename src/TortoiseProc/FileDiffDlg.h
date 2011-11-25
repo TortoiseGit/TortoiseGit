@@ -148,6 +148,7 @@ private:
 	CMenuButton			m_cRev1Btn;
 	CMenuButton			m_cRev2Btn;
 	CFilterEdit			m_cFilter;
+	CString				m_sFilter;
 
 	CMFCButton			m_SwitchButton;
 	CColors				m_colors;
