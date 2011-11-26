@@ -1770,7 +1770,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		{
 			//Add Menu for version controlled file
 
-			if (wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
+			if (GetSelectedCount() > 0 && wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
 			{
 				if ((m_dwContextMenus & GITSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
