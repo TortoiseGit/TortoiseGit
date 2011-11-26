@@ -2,6 +2,7 @@
 == Features==
  * Fixed issue #972: Add "fast forward only" checkbox in pull dialog
  * Fixed issue #976: Compare Revisions should inherit path filter
+ * Fixed issue #869: TortoiseProc CloneCommand is ignoring "url" command line parameter
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing

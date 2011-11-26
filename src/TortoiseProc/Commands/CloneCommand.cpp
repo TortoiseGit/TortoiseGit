@@ -32,6 +32,10 @@ bool CloneCommand::Execute()
 {
 	CCloneDlg dlg;
 	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
+
+	if (parser.HasKey(_T("url")))
+		dlg.m_URL = parser.GetVal(_T("url"));
+
 	if(dlg.DoModal()==IDOK)
 	{
 		CString recursiveStr;
