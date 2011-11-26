@@ -6,7 +6,7 @@
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing
  * Fixed issue #808: Less: file viewer stop work when use show-low
- * Fixed issue #948: TortoiseProc crashes when repo contains huge files (on x86)
+ * Fixed issues #931, #934 ,#948: TortoiseProc crashes when repo contains huge files (on x86)
    Upgraded gitdll, libgit and tgit.exe to 1.7.7.2
  * Fixed issue #936: Applying a stash from the list fails
  * Fixed issue #962: git_init in gitdll.c uses USERPROFILE for creating home
@@ -40,6 +40,7 @@
  * Fixed issue #375: Implement --date/time option gui interface in the commit dialog
  * Fixed issue #814: Remember last selected commit/line on log filtering
  * Allow to "Update submodules" after pull or hard reset
+ * Fixed issue #780: "Merge to [branch]..." should pre-select the chosen commit's branch or tag name
 
 == Bug Fix ==
  * Fixed issue #899: Push via Showlog  use Push with force option
@@ -71,6 +72,7 @@
  * Fixed issue #864: Show log crashes when commit with "encoding" in comment exists
  * Fixed issue #851: Windows Explorer Shell Crashed when empty repository
  * Fixed open handles in TGitCache
+   Fixed issues #497, #623, #892: TortoiseGit locks repository folders so that the user can't delete them
  * Fixed issue #870: Wrong overlay icons
  * Fixed issue #793: Context menu for files does not contain "Add to ignore list"
  * Fixed issue #860: Commit file moves does not properly remove the source file 
@@ -169,6 +171,7 @@
  * Fixed issue #791: /CloseOnEnd not working for switch
  * TortoiseGitCache
    Partly rewritten to fix various issues.
+ * Fixed issue #415: Fix the Settings/General/Context menu/Apply operation (missing LF trimming)
 
 = Release 1.6.5.0 =
 == Bug Fix ==
@@ -437,7 +440,7 @@
  * Fixed issue #454: Fix "check Now" can't work at setting dialog
  * Fixed issue #457: Git copy versioned item(s) here adds all unversioned files
  * put pull, push and fetch to external manual.
- * Fixed issue #460: ¡°Show changes as unified diff¡± compares files in reverse order.
+ * Fixed issue #460: "Show changes as unified diff" compares files in reverse order.
  * Fix history combobox show twice item
 
 = Release 1.5.1.0 =
