@@ -76,6 +76,7 @@ enum GitCommands
 		ShellMenuSendMail,
 		ShellMenuGitSVNRebase,
 		ShellMenuGitSVNDCommit,
+		ShellMenuGitSVNDFetch,
 		ShellMenuGitSVNIgnore,      //import svn ignore
 		ShellMenuSync,
 		ShellMenuBisectStart,

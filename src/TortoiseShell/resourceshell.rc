@@ -326,6 +326,7 @@ BEGIN
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
+    IDS_MENUSVNFETCH        "SVN Fetch"
     IDS_MENUAPPLYPATCH      "Review &patch..."
 END
 
@@ -353,6 +354,7 @@ STRINGTABLE
 BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
     IDS_MENUDESCAPPLYPATCH  "Review unified diff file with TortoiseMerge"
+    IDS_MENUDESCSVNFETCH    "Fetch from SVN repository"
     IDS_MENUUNDOADD         "Undo Add..."
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"

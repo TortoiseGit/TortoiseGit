@@ -1606,6 +1606,14 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					gitCmd += folder_;
 				gitCmd += _T("\"");
 				break;
+			case ShellMenuGitSVNDFetch:
+				gitCmd += _T("svnfetch /path:\"");
+				if (files_.size() > 0)
+					gitCmd += files_.front();
+				else
+					gitCmd += folder_;
+				gitCmd += _T("\"");
+				break;
 			case ShellMenuGitSVNIgnore:
 				gitCmd += _T("svnignore /path:\"");
 				if (files_.size() > 0)
