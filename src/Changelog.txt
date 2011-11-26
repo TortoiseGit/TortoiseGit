@@ -44,6 +44,7 @@
  * Fixed issue #814: Remember last selected commit/line on log filtering
  * Allow to "Update submodules" after pull or hard reset
  * Fixed issue #780: "Merge to [branch]..." should pre-select the chosen commit's branch or tag name
+ * Fixed issue #459: Implement more talkative name than just 'Revert fail'
 
 == Bug Fix ==
  * Fixed issue #899: Push via Showlog  use Push with force option

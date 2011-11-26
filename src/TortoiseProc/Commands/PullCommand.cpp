@@ -29,7 +29,6 @@
 #include "FileDiffDlg.h"
 #include "AppUtils.h"
 #include "LogDlg.h"
-#include "ChangedDlg.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 
