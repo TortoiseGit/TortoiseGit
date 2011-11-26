@@ -1768,7 +1768,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		CMenu ignoreSubMenu;
 		if (popup.CreatePopupMenu())
 		{
-			//Add Menu for verion controled file
+			//Add Menu for version controlled file
 
 			if (wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
 			{
