@@ -2233,6 +2233,8 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 
 		progress.m_bAutoCloseOnSuccess = autoClose;
 
+		progress.m_PostCmdList.Add(_T("Show Log"));
+
 		if(!dlg.m_bRebase)
 		{
 			progress.m_PostCmdList.Add(_T("&Rebase"));
@@ -2241,7 +2243,16 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		progress.m_GitCmd=cmd;
 		int userResponse=progress.DoModal();
 
-		if( (userResponse==IDC_PROGRESS_BUTTON1) || ( progress.m_GitStatus ==0 && dlg.m_bRebase) )
+		if (userResponse == IDC_PROGRESS_BUTTON1)
+		{
+			CString cmd;
+			cmd = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+			cmd += _T(" /command:log");
+			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			CAppUtils::LaunchApplication(cmd, IDS_ERR_PROC, false);
+			return TRUE;
+		}
+		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 1) || (progress.m_GitStatus == 0 && dlg.m_bRebase))
 		{
 			while(1)
 			{
