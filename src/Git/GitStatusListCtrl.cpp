@@ -1772,7 +1772,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (GetSelectedCount() > 0 && wcStatus & CTGitPath::LOGACTIONS_UNMERGED)
 			{
-				if ((m_dwContextMenus & GITSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
+				if (GetSelectedCount() == 1 && (m_dwContextMenus & GITSLC_POPCONFLICT)/*&&(entry->textstatus == git_wc_status_conflicted)*/)
 				{
 					popup.AppendMenuIcon(IDGITLC_EDITCONFLICT, IDS_MENUCONFLICT, IDI_CONFLICT);
 				}

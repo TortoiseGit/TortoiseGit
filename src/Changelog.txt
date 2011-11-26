@@ -5,6 +5,7 @@
  * Fixed issue #869: TortoiseProc CloneCommand is ignoring "url" command line parameter
  * Fixed issue #820: Missing menu item for "git svn fetch"
  * Fixed issue #792: Fetch progress window should have a "Log" button
+ * Fixed issue #451: rebase (maybe be for any conflicts) select multiple files to mark
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing
