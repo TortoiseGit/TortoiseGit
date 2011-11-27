@@ -20,6 +20,7 @@
  * Fixed issue #670: Cannot delete/apply individual stash entries
  * Fixed issue #863: Commit and revert gets stuck on repositories with mixed line-endings
  * Fixed issue #378: CRLF/LF conversion causes commit dialog to freeze
+ * Fixed issue #858: Tortoise Git Client crash when showing the log dialog
 
 = Release 1.7.5.0 =
 == Features==
