@@ -61,4 +61,8 @@
     <Content Include="UIFragment.wxi" />
     <Content Include="VersionNumberInclude.wxi" />
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>if exist "$(SolutionDir)..\sign-$(PlatformName).bat" "$(SolutionDir)..\sign-$(PlatformName).bat" msi</PostBuildEvent>
+    <PreBuildEvent>if exist "$(SolutionDir)..\sign-$(PlatformName).bat" "$(SolutionDir)..\sign-$(PlatformName).bat"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

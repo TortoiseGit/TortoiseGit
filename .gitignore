@@ -38,3 +38,5 @@ bin-*
 /doc/source/en/pubdate.xml
 /doc/source/en/version.xml
 /doc/Aspell/aspell.bat
+/sign-x64.bat
+/sign-x86.bat
