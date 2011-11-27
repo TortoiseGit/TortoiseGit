@@ -17,6 +17,9 @@
  * Fixed issue #964: Can't mark conflict as resolved
  * Fixed issue #867: Add should not run a new Git process for each file
  * Fixed issue #981: After Aborting a Rebase a different Commit is checked out
+ * Fixed issue #670: Cannot delete/apply individual stash entries
+ * Fixed issue #863: Commit and revert gets stuck on repositories with mixed line-endings
+ * Fixed issue #378: CRLF/LF conversion causes commit dialog to freeze
 
 = Release 1.7.5.0 =
 == Features==
@@ -81,7 +84,6 @@
  * Fixed issue #870: Wrong overlay icons
  * Fixed issue #793: Context menu for files does not contain "Add to ignore list"
  * Fixed issue #860: Commit file moves does not properly remove the source file 
- * Fixed issue #863: Commit and revert gets stuck on repositories with mixed line-endings
  * Fixed issue #386: Commit dialog does not preserve selection when toggling "Whole project"
 
 = Release 1.7.2.0 =
