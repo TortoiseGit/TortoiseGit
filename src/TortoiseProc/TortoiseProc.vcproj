@@ -1985,11 +1985,11 @@
 					>
 				</File>
 				<File
-					RelativePath="D:\TortoiseGit\src\TortoiseProc\Commands\SVNFetchCommand.cpp"
+					RelativePath=".\Commands\SVNFetchCommand.cpp"
 					>
 				</File>
 				<File
-					RelativePath="D:\TortoiseGit\src\TortoiseProc\Commands\SVNFetchCommand.h"
+					RelativePath=".\Commands\SVNFetchCommand.h"
 					>
 				</File>
 				<File
