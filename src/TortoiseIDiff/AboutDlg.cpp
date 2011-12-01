@@ -29,7 +29,7 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, _T("http://tortoisesvn.net"));
             TCHAR verbuf[1024] = {0};
             TCHAR maskbuf[1024] = {0};
-            if (!::LoadString (hResource, IDS_VERSION, maskbuf, 1024))
+            if (!::LoadString (hResource, IDS_VERSION, maskbuf, _countof(maskbuf)))
             {
                 SecureZeroMemory(maskbuf, sizeof(maskbuf));
             }

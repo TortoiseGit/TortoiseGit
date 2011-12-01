@@ -18,6 +18,7 @@
 #define IDS_DIMENSIONSANDFRAMES         110
 #define IDS_IMAGEINFOTT                 111
 #define IDS_DUALIMAGEINFOTT             112
+#define IDS_ALPHABUTTONTT               113
 #define IDD_OPEN                        130
 #define IDR_TORTOISEIDIFF               131
 #define IDI_OVERLAP                     134

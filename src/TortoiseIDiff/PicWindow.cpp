@@ -43,7 +43,7 @@ bool CPicWindow::RegisterAndCreateWindow(HWND hParent)
     wcx.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEIDIFF);
     wcx.hIconSm = LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
-	RegisterWindow(&wcx);
+    RegisterWindow(&wcx);
     if (CreateEx(WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE, WS_CHILD | WS_HSCROLL | WS_VSCROLL | WS_VISIBLE, hParent))
     {
         ShowWindow(m_hwnd, SW_SHOW);
@@ -442,13 +442,28 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             LPNMHDR pNMHDR = (LPNMHDR)lParam;
             if (pNMHDR->code == TTN_GETDISPINFO)
             {
-                if ((HWND)wParam == m_AlphaSlider.GetWindow())
+                if (pNMHDR->hwndFrom == m_AlphaSlider.GetWindow())
                 {
                     LPTOOLTIPTEXT lpttt = (LPTOOLTIPTEXT) lParam;
                     lpttt->hinst = hResource;
                     TCHAR stringbuf[MAX_PATH] = {0};
                     _stprintf_s(stringbuf, _T("%i%% alpha"), (int)(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS,0,0)/16.0f*100.0f));
                     _tcscpy_s(lpttt->lpszText, 80, stringbuf);
+                }
+                else if (pNMHDR->idFrom == (UINT_PTR)hwndAlphaToggleBtn)
+                {
+                    _stprintf_s(m_wszTip, (TCHAR const *)ResString(hResource, IDS_ALPHABUTTONTT), (int)(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS,0,0)/16.0f*100.0f));
+                    if (pNMHDR->code == TTN_NEEDTEXTW)
+                    {
+                        NMTTDISPINFOW* pTTTW = (NMTTDISPINFOW*)pNMHDR;
+                        pTTTW->lpszText = m_wszTip;
+                    }
+                    else
+                    {
+                        NMTTDISPINFOA* pTTTA = (NMTTDISPINFOA*)pNMHDR;
+                        pTTTA->lpszText = m_szTip;
+                        ::WideCharToMultiByte(CP_ACP, 0, m_wszTip, -1, m_szTip, 8192, NULL, NULL);
+                    }
                 }
                 else
                 {
@@ -898,6 +913,7 @@ void CPicWindow::SetZoom(double dZoom, bool centermouse)
 {
     // Set the interpolation mode depending on zoom
     double oldPicscale = picscale;
+    double oldOtherPicscale = picscale;
     if (dZoom < 1.0)
     {   // Zoomed out, use high quality bicubic
         picture.SetInterpolationMode(InterpolationModeHighQualityBicubic);
@@ -926,7 +942,8 @@ void CPicWindow::SetZoom(double dZoom, bool centermouse)
         height = double(picture.m_Height)*dZoom;
         zoomWidth = width/double(pTheOtherPic->GetPic()->m_Width);
         zoomHeight = height/double(pTheOtherPic->GetPic()->m_Height);
-        pTheOtherPic->SetZoom(min(zoomWidth, zoomHeight), centermouse);
+        oldOtherPicscale = pTheOtherPic->GetZoom();
+        pTheOtherPic->SetZoom(min(zoomWidth, zoomHeight), false);
     }
 
     // adjust the scrollbar positions according to the new zoom and the
@@ -944,11 +961,23 @@ void CPicWindow::SetZoom(double dZoom, bool centermouse)
         // the mouse pointer is over our window
         nHScrollPos = int(double(nHScrollPos + cpos.x)*(dZoom/oldPicscale))-cpos.x;
         nVScrollPos = int(double(nVScrollPos + cpos.y)*(dZoom/oldPicscale))-cpos.y;
+        if (pTheOtherPic && bMainPic)
+        {
+            double otherzoom = pTheOtherPic->GetZoom();
+            nHSecondScrollPos = int(double(nHSecondScrollPos + cpos.x)*(otherzoom/oldOtherPicscale))-cpos.x;
+            nVSecondScrollPos = int(double(nVSecondScrollPos + cpos.y)*(otherzoom/oldOtherPicscale))-cpos.y;
+        }
     }
     else
     {
         nHScrollPos = int(double(nHScrollPos + ((clientrect.right-clientrect.left)/2))*(dZoom/oldPicscale))-((clientrect.right-clientrect.left)/2);
         nVScrollPos = int(double(nVScrollPos + ((clientrect.bottom-clientrect.top)/2))*(dZoom/oldPicscale))-((clientrect.bottom-clientrect.top)/2);
+        if (pTheOtherPic && bMainPic)
+        {
+            double otherzoom = pTheOtherPic->GetZoom();
+            nHSecondScrollPos = int(double(nHSecondScrollPos + ((clientrect.right-clientrect.left)/2))*(otherzoom/oldOtherPicscale))-((clientrect.right-clientrect.left)/2);
+            nVSecondScrollPos = int(double(nVSecondScrollPos + ((clientrect.bottom-clientrect.top)/2))*(otherzoom/oldOtherPicscale))-((clientrect.bottom-clientrect.top)/2);
+        }
     }
 
     SetupScrollBars();
@@ -1094,11 +1123,6 @@ void CPicWindow::FitSizes(bool bFit)
 {
     bFitSizes = bFit;
 
-    if (bFitSizes)
-    {
-        nHSecondScrollPos = 0;
-        nVSecondScrollPos = 0;
-    }
     SetZoom(GetZoom(), false);
 }
 
@@ -1356,6 +1380,20 @@ bool CPicWindow::CreateButtons()
         return false;
     hAlphaToggle = (HICON)LoadImage(hResource, MAKEINTRESOURCE(IDI_ALPHATOGGLE), IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT);
     SendMessage(hwndAlphaToggleBtn, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hAlphaToggle);
+
+    TOOLINFO ti = {0};
+    ti.cbSize = sizeof(TOOLINFO);
+    ti.uFlags = TTF_IDISHWND|TTF_SUBCLASS;
+    ti.hwnd = *this;
+    ti.hinst = hResource;
+    ti.uId = (UINT_PTR)hwndAlphaToggleBtn;
+    ti.lpszText = LPSTR_TEXTCALLBACK;
+    // ToolTip control will cover the whole window
+    ti.rect.left = 0;
+    ti.rect.top = 0;
+    ti.rect.right = 0;
+    ti.rect.bottom = 0;
+    SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
 
     return true;
 }

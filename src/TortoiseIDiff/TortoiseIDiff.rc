@@ -115,18 +115,18 @@ BEGIN
     POPUP "&View"
     BEGIN
         MENUITEM "&Overlay images",             ID_VIEW_OVERLAPIMAGES
-        MENUITEM "Blend Alpha",                 ID_VIEW_BLENDALPHA
+        MENUITEM "Blend alpha",                 ID_VIEW_BLENDALPHA
         MENUITEM "&Link image positions",       ID_VIEW_LINKIMAGESTOGETHER, CHECKED
         MENUITEM "Fit image &sizes",            ID_VIEW_FITTOGETHER
-        MENUITEM "&Fit Images in window",       ID_VIEW_FITIMAGESINWINDOW
+        MENUITEM "&Fit images in window",       ID_VIEW_FITIMAGESINWINDOW
         MENUITEM "Ori&ginal size",              ID_VIEW_ORININALSIZE
         MENUITEM "Transparent &color...",       ID_VIEW_TRANSPARENTCOLOR
         MENUITEM SEPARATOR
         MENUITEM "Zoo&m out",                   ID_VIEW_ZOOMOUT
         MENUITEM "Zoom i&n",                    ID_VIEW_ZOOMIN
         MENUITEM SEPARATOR
-        MENUITEM "&Image Info",                 ID_VIEW_IMAGEINFO
-        MENUITEM "Arrange &Vertical",           ID_VIEW_ARRANGEVERTICAL
+        MENUITEM "&Image info",                 ID_VIEW_IMAGEINFO
+        MENUITEM "Arrange &vertical",           ID_VIEW_ARRANGEVERTICAL
     END
     MENUITEM "?",                           ID_ABOUT
 END
@@ -159,9 +159,9 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,201,65,50,14
     ICON            IDI_TORTOISEIDIFF,IDC_STATIC,15,15,21,20
-    LTEXT           "TortoiseIDiff - An image diff tool, part of TortoiseSVN",IDC_STATIC,53,15,198,21
+    LTEXT           "TortoiseIDiff - An image diff tool, part of TortoiseGit",IDC_STATIC,53,15,198,21
     LTEXT           "Version",IDC_ABOUTVERSION,53,42,198,8
-    LTEXT           "http://tortoisesvn.net",IDC_WEBLINK,53,71,140,8
+    LTEXT           "Based on TortoiseIDiff of TortoiseSVN",IDC_WEBLINK,53,71,140,8
 END
 
 
@@ -245,6 +245,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_DUALIMAGEINFOTT     "File size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%\n\nFile size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+    IDS_ALPHABUTTONTT       "%i%% alpha\nclick to toggle alpha\ndouble click to automatically toggle alpha"
 END
 
 #endif    // English (U.S.) resources

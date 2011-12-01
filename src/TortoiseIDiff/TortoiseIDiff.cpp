@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "MainWindow.h"
+#include "mainWindow.h"
 #include "CmdLineParser.h"
 #include "registry.h"
 #include "LangDll.h"
@@ -78,8 +78,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
     CMainWindow mainWindow(hResource);
     mainWindow.SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
-
-    mainWindow.SetLeft(parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T(""), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
+    std::wstring leftfile = parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T("");
+    if ((leftfile.size() == 0)&&(lpCmdLine[0] != 0))
+    {
+        leftfile = lpCmdLine;
+    }
+    mainWindow.SetLeft(leftfile.c_str(), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
     mainWindow.SetRight(parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T(""), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
     if (mainWindow.RegisterAndCreateWindow())
     {
