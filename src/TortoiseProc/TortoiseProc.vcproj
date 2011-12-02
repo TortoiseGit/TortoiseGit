@@ -1006,6 +1006,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\TortoiseMerge.ico"
 				>
 			</File>
@@ -1015,10 +1019,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\TortoiseSmall.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
 				>
 			</File>
 			<File
