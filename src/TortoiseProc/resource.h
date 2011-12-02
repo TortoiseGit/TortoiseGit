@@ -733,6 +733,7 @@
 #define IDC_BUTTON_BROWSE_DEST_BRANCH   1484
 #define IDC_CHECK_FFONLY                1484
 #define IDC_TITLE_ANIMATE               1485
+#define IDC_CHECK_FETCHTAGS             1485
 #define IDC_RUN_PROGRESS                1486
 #define IDC_CURRENT                     1487
 #define IDC_COMBOBOXEX1                 1489

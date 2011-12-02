@@ -41,6 +41,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bSquash = false;
 	m_bNoCommit = false;
 	m_bFFonly = false;
+	m_bFetchTags = false;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -61,6 +62,7 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_REBASE,m_bRebase);
 	DDX_Check(pDX,IDC_CHECK_PRUNE,m_bPrune);
 	DDX_Check(pDX, IDC_CHECK_FFONLY, m_bFFonly);
+	DDX_Check(pDX, IDC_CHECK_FETCHTAGS, m_bFetchTags);
 }
 
 
@@ -134,6 +136,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	{
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CHECK_FETCHTAGS)->EnableWindow(FALSE);
 	}
 	else
 	{

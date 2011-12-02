@@ -2228,6 +2228,10 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			arg += _T("--prune ");
 		}
 
+		if (dlg.m_bFetchTags) {
+			arg += _T("--tags ");
+		}
+
 		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 
