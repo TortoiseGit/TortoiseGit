@@ -377,6 +377,11 @@ BOOL CCommitDlg::OnInitDialog()
 
 	this->m_ctrlShowPatch.SetURL(CString());
 
+	BOOL viewPatchEnabled = FALSE;
+	m_ProjectProperties.GetBOOLProps(viewPatchEnabled, _T("tgit.commitshowpatch"));
+	if (viewPatchEnabled)
+		OnStnClickedViewPatch();
+
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -2022,6 +2027,10 @@ void CCommitDlg::OnStnClickedViewPatch()
 	m_patchViewdlg.m_ParentCommitDlg = this;
 	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
+		BOOL viewPatchEnabled = FALSE;
+		m_ProjectProperties.GetBOOLProps(viewPatchEnabled, _T("tgit.commitshowpatch"));
+		if (viewPatchEnabled == FALSE)
+			g_Git.SetConfigValue(_T("tgit.showpatch"), _T("true"));
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
 		CRect rect;
 		this->GetWindowRect(&rect);
@@ -2036,6 +2045,7 @@ void CCommitDlg::OnStnClickedViewPatch()
 	}
 	else
 	{
+		g_Git.SetConfigValue(_T("tgit.commitshowpatch"), _T("false"));
 		m_patchViewdlg.ShowWindow(SW_HIDE);
 		m_patchViewdlg.DestroyWindow();
 		ShowViewPatchText(true);

@@ -7,6 +7,7 @@
  * Fixed issue #792: Fetch progress window should have a "Log" button
  * Fixed issue #451: rebase (maybe be for any conflicts) select multiple files to mark
  * Fixed issue #894: Make images "open with" TortoiseIDiff
+ * Fixed issue #985: Store status for view patch in commit dialog
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing
