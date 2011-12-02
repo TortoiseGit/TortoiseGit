@@ -57,6 +57,7 @@
 #include "PullFetchDlg.h"
 #include "RebaseDlg.h"
 #include "PropKey.h"
+#include "StashSave.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -68,21 +69,31 @@ CAppUtils::~CAppUtils(void)
 
 bool CAppUtils::StashSave()
 {
-	bool bRet = false;
+	CStashSaveDlg dlg;
 
-	CString cmd,out;
-	cmd=_T("git.exe stash");
+	if (dlg.DoModal() == IDOK)
+	{
+		CString cmd, out;
+		cmd = _T("git.exe stash save");
 
-	if(g_Git.Run(cmd,&out,CP_ACP))
-	{
-		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		if (!dlg.m_sMessage.IsEmpty())
+		{
+			CString message = dlg.m_sMessage;
+			message.Replace(_T("\""), _T("\"\""));
+			cmd += _T(" \"") + message + _T("\"");
+		}
+
+		if (g_Git.Run(cmd, &out, CP_ACP))
+		{
+			CMessageBox::Show(NULL, CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n")) + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		}
+		else
+		{
+ 			CMessageBox::Show(NULL, CString(_T("<ct=0xff0000>Stash Success</ct>\n")) + out, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			return true;
+		}
 	}
-	else
-	{
- 		CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Success</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONINFORMATION);
-		bRet = true;
-	}
-	return bRet;
+	return false;
 }
 
 int	 CAppUtils::StashApply(CString ref)

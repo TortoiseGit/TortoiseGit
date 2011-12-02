@@ -1948,6 +1948,14 @@
 					RelativePath=".\Commands\StashCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\StashSave.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\StashSave.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="RefBrowse"
