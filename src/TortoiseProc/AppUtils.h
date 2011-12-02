@@ -190,6 +190,7 @@ public:
 	static CString ToRelativeTimeString(CTime time);
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
+	static bool	StashSave();
 	static int	StashApply(CString ref);
 	static int	StashPop();
 

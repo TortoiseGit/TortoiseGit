@@ -66,6 +66,25 @@ CAppUtils::~CAppUtils(void)
 {
 }
 
+bool CAppUtils::StashSave()
+{
+	bool bRet = false;
+
+	CString cmd,out;
+	cmd=_T("git.exe stash");
+
+	if(g_Git.Run(cmd,&out,CP_ACP))
+	{
+		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+	}
+	else
+	{
+ 		CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Success</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONINFORMATION);
+		bRet = true;
+	}
+	return bRet;
+}
+
 int	 CAppUtils::StashApply(CString ref)
 {
 	CString cmd,out;
