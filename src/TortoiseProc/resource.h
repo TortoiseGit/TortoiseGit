@@ -301,6 +301,7 @@
 #define IDC_SORTBYCOMMITCOUNT           1126
 #define IDC_DIFFBYDOUBLECLICK           1127
 #define IDC_CHECK_STOPONCOPY            1130
+#define IDC_CHECK_UNTRACKED             1130
 #define IDC_GRAPH                       1131
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132
@@ -971,6 +972,8 @@
 #define IDC_COMMIT_TIMEPICKER           1671
 #define IDC_COMBOBOXEX_GOOD             1671
 #define IDC_BUTTON_GOOD                 1672
+#define IDC_GROUP_STASHMESSAGE          1673
+#define IDC_STASHMESSAGE                1674
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1340,6 +1343,7 @@
 #define IDC_REMOTE_STATUS               4573
 #define IDD_SETTINGSEXTMENU             4573
 #define IDD_BISECTSTART                 4574
+#define IDD_STASH                       4575
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1541,7 +1545,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        339
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1673
+#define _APS_NEXT_CONTROL_VALUE         1675
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

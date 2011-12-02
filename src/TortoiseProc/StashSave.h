@@ -1,6 +1,9 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2011 Sven Strickroth, <email@cs-ware.de>
+//
+// Based on PushDlg.cpp
+// Copyright (C) 2003-2008 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,36 +19,32 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "StdAfx.h"
-#include "StashCommand.h"
 
-#include "MessageBox.h"
-#include "RenameDlg.h"
-#include "InputLogDlg.h"
-#include "Git.h"
-#include "DirFileEnum.h"
-#include "ShellUpdater.h"
+#pragma once
 
-#include "AppUtils.h"
+#include "HorizontalResizableStandAloneDialog.h"
 
-bool StashSaveCommand::Execute()
+class CStashSaveDlg : public CHorizontalResizableStandAloneDialog
 {
-	return CAppUtils::StashSave();
-}
+	DECLARE_DYNAMIC(CStashSaveDlg)
 
+public:
+	CStashSaveDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CStashSaveDlg();
 
-bool StashApplyCommand::Execute()
-{
-	if(CAppUtils::StashApply(_T("")))
-		return false;
-	return true;
+// Dialog Data
+	enum { IDD = IDD_STASH };
 
-}
+protected:
+	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-bool StashPopCommand::Execute()
-{
-	if(CAppUtils::StashPop())
-		return false;
-	return true;
+	DECLARE_MESSAGE_MAP()
 
-}
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedHelp();
+
+public:
+	CString	m_sMessage;
+	BOOL	m_bIncludeUntracked;
+};

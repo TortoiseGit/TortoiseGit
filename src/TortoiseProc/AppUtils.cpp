@@ -57,6 +57,7 @@
 #include "PullFetchDlg.h"
 #include "RebaseDlg.h"
 #include "PropKey.h"
+#include "StashSave.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -64,6 +65,38 @@ CAppUtils::CAppUtils(void)
 
 CAppUtils::~CAppUtils(void)
 {
+}
+
+bool CAppUtils::StashSave()
+{
+	CStashSaveDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		CString cmd, out;
+		cmd = _T("git.exe stash save");
+
+		if (dlg.m_bIncludeUntracked && CAppUtils::GetMsysgitVersion() >= 0x01070700)
+			cmd += _T(" --include-untracked");
+
+		if (!dlg.m_sMessage.IsEmpty())
+		{
+			CString message = dlg.m_sMessage;
+			message.Replace(_T("\""), _T("\"\""));
+			cmd += _T(" \"") + message + _T("\"");
+		}
+
+		if (g_Git.Run(cmd, &out, CP_ACP))
+		{
+			CMessageBox::Show(NULL, CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n")) + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		}
+		else
+		{
+ 			CMessageBox::Show(NULL, CString(_T("<ct=0xff0000>Stash Success</ct>\n")) + out, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			return true;
+		}
+	}
+	return false;
 }
 
 int	 CAppUtils::StashApply(CString ref)

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-stash">
+	<?dbhh topicname="HIDD_STASH"?>
+	<title>Stash Changes</title>
+	<indexterm>
+		<primary>stash</primary>
+	</indexterm>
+	<para>
+		When you want to record the current state of the working directory and the index,
+		but want to go back to a clean working directory,
+		<action>right click</action> on a folder to pop up the context menu and then select
+		the command
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Stash Save</guimenuitem>
+		</menuchoice>
+		A dialog will pop up where you can optionally enter a message for this state.
+	</para>
+	<para>
+		You can find more information at <xref linkend="git-stash(1)"/>
+	</para>
+</sect1>
