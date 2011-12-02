@@ -46,4 +46,5 @@ protected:
 
 public:
 	CString	m_sMessage;
+	BOOL	m_bIncludeUntracked;
 };

@@ -301,6 +301,7 @@
 #define IDC_SORTBYCOMMITCOUNT           1126
 #define IDC_DIFFBYDOUBLECLICK           1127
 #define IDC_CHECK_STOPONCOPY            1130
+#define IDC_CHECK_UNTRACKED             1130
 #define IDC_GRAPH                       1131
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132

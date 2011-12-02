@@ -10,6 +10,7 @@
  * Fixed issue #985: Store status for view patch in commit dialog
  * Fixed issue #977: Fetch does not have an option to fetch tags
  * Fixed issue #801: Be able to enter a custom stash message
+ * Fixed issue #933: implement git stash --include-untracked
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing
