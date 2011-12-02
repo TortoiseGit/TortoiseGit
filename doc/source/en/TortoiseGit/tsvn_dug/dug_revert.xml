@@ -36,7 +36,7 @@
 		the context menu as
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Undo add...</guimenuitem>
+			<guimenuitem>Delete (keep local)</guimenuitem>
 		</menuchoice>.
 		This is really a revert as well, but the name has been changed
 		to make it more obvious.
