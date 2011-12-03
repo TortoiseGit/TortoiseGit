@@ -2620,6 +2620,9 @@ BEGIN
     IDS_FILEDIFF_LOG        "Show log"
     IDS_PROC_TASKS          "Tasks"
     IDS_STATUSLIST_CONTEXT_COMPARETWOFILES "Compare two files"
+    IDS_B_T_INVALID         "Branch/Tag name is invalid."
+    IDS_B_T_LOCALEMPTY      "The local branch/tag name is empty. This results in a remote removal.\r\nContinue?"
+    IDS_B_T_BOTHEMPTY       "The local branch name and the remote branch name are empty.\nContinue?"
 END
 
 STRINGTABLE 

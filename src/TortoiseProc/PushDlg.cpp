@@ -175,11 +175,13 @@ void CPushDlg::Refresh()
 	int current=0;
 	list.clear();
 	m_BranchSource.Reset();
+	m_BranchSource.AddString(_T(" ")); // empty string does not work, for removal of remote branches/tags
 	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
 	if(!g_Git.GetBranchList(list,&current))
 	{
 		for(unsigned int i=0;i<list.size();i++)
 			m_BranchSource.AddString(list[i]);
+		current++; // shift for " "
 	}
 	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
@@ -202,6 +204,9 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 {
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'), _T('_'));
+
+	if (currentBranch.IsEmpty())
+		return;
 
 	CString configName;
 
@@ -272,17 +277,30 @@ void CPushDlg::OnBnClickedOk()
 	if (!m_bPushAllBranches)
 	{
 		this->m_BranchRemoteName=m_BranchRemote.GetString().Trim();
-		this->m_BranchSourceName=m_BranchSource.GetString();
+		this->m_BranchSourceName=m_BranchSource.GetString().Trim();
 
-		if(!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
+		if (m_BranchSourceName.IsEmpty() && m_BranchRemoteName.IsEmpty())
 		{
-			CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+			if (CMessageBox::Show(NULL, IDS_B_T_BOTHEMPTY, IDS_TORTOISEGIT, MB_ICONQUESTION | MB_YESNO) == IDNO)
+				return;
+		}
+		if (m_BranchSourceName.IsEmpty() && !m_BranchRemoteName.IsEmpty())
+		{
+			if (CMessageBox::Show(NULL, IDS_B_T_LOCALEMPTY, IDS_TORTOISEGIT, MB_ICONEXCLAMATION | MB_YESNO) == IDNO)
+				return;
+		}
+		else if (!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
+		{
+			CMessageBox::Show(NULL, IDS_B_T_INVALID, IDS_TORTOISEGIT, MB_OK);
 			return;
 		}
-
-		this->m_RemoteURL.SaveHistory();
-		this->m_BranchRemote.SaveHistory();
-		m_RemoteReg = m_Remote.GetString();
+		else
+		{
+			// do not store branch names on removal
+			this->m_RemoteURL.SaveHistory();
+			this->m_BranchRemote.SaveHistory();
+			m_RemoteReg = m_Remote.GetString();
+		}
 	}
 
 	this->m_regAutoLoad = m_bAutoLoad ;

@@ -193,11 +193,14 @@
 #define IDS_PROC_TASKS                  1019
 #define IDS_STATUSLIST_CONTEXT_COMPARETWOFILES 1020
 #define IDC_EXTDIFFBROWSE               1021
+#define IDS_B_T_INVALID                 1021
 #define IDC_EXTMERGEBROWSE              1022
 #define IDC_EXTDIFFPROPSBROWSE          1022
+#define IDS_B_T_LOCALEMPTY              1022
 #define IDC_CHANGEDDIRS                 1023
 #define IDC_ENABLE                      1023
 #define IDC_SAVECHECK                   1023
+#define IDS_B_T_BOTHEMPTY               1023
 #define IDC_NAME                        1027
 #define IDC_SERVERADDRESS               1027
 #define IDC_USEREDIT                    1027
