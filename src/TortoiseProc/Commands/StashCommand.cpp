@@ -36,7 +36,7 @@ bool StashSaveCommand::Execute()
 
 bool StashApplyCommand::Execute()
 {
-	if(CAppUtils::StashApply(_T("")))
+	if(CAppUtils::StashApply(_T("")), true)
 		return false;
 	return true;
 
@@ -44,7 +44,7 @@ bool StashApplyCommand::Execute()
 
 bool StashPopCommand::Execute()
 {
-	if(CAppUtils::StashPop())
+	if(CAppUtils::StashPop(true))
 		return false;
 	return true;
 
