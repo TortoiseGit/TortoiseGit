@@ -231,6 +231,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_RefTreeCtrl.DeleteAllItems();
 	m_ListRefLeafs.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
+	m_TreeRoot.m_csRefName = "refs";
 	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"Refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
@@ -397,7 +398,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 {
 	if(pTree->IsLeaf())
 	{
-		if (!pTree->m_csRefName.IsEmpty())
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL))
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
