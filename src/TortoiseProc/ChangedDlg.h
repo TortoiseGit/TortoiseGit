@@ -48,6 +48,7 @@ protected:
 	virtual BOOL			PreTranslateMessage(MSG* pMsg);
 	afx_msg void			OnBnClickedRefresh();
 	afx_msg void			OnBnClickedCommit();
+	afx_msg void			OnBnClickedStash();
 	afx_msg void			OnBnClickedShowunversioned();
 	afx_msg void			OnBnClickedShowUnmodified();
 	afx_msg void			OnBnClickedShowignored();
@@ -59,10 +60,20 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	CButton					m_ctrlStash;
 	static UINT				ChangedStatusThreadEntry(LPVOID pVoid);
 	UINT					ChangedStatusThread();
 	void					UpdateStatistics();
 	DWORD					UpdateShowFlags();
+
+	enum
+	{
+		// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
+		ID_STASH_SAVE = 1,
+		ID_STASH_POP,
+		ID_STASH_APPLY,
+		ID_STASH_LIST,
+	};
 
 public:
 	CTGitPathList			m_pathList;

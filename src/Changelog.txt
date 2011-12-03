@@ -11,6 +11,7 @@
  * Fixed issue #977: Fetch does not have an option to fetch tags
  * Fixed issue #801: Be able to enter a custom stash message
  * Fixed issue #933: implement git stash --include-untracked
+ * Fixed issue #987: Add Stash save/pop to "Working Dir Changes" dialog
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing

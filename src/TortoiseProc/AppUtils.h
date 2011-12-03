@@ -191,8 +191,8 @@ public:
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
 	static bool	StashSave();
-	static int	StashApply(CString ref);
-	static int	StashPop();
+	static int	StashApply(CString ref, bool showChanges = false);
+	static int	StashPop(bool showChanges = false);
 
 	static bool IsSSHPutty();
 

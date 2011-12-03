@@ -99,7 +99,7 @@ bool CAppUtils::StashSave()
 	return false;
 }
 
-int	 CAppUtils::StashApply(CString ref)
+int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 {
 	CString cmd,out;
 	cmd = _T("git.exe stash apply ");
@@ -113,7 +113,7 @@ int	 CAppUtils::StashApply(CString ref)
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
-	else
+	else if (showChanges)
 	{
  		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success</ct>\nDo you want to show change?"))
 			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
@@ -124,10 +124,15 @@ int	 CAppUtils::StashApply(CString ref)
 		}
 		return 0;
 	}
+	else
+	{
+		CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash Apply Success</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+		return 0;
+	}
 	return -1;
 }
 
-int	 CAppUtils::StashPop()
+int	 CAppUtils::StashPop(bool showChanges /* true */)
 {
 	CString cmd,out;
 	cmd=_T("git.exe stash pop ");
@@ -137,7 +142,7 @@ int	 CAppUtils::StashPop()
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 
 	}
-	else
+	else if (showChanges)
 	{
  		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash POP Success</ct>\nDo you want to show change?"))
 			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
@@ -146,6 +151,11 @@ int	 CAppUtils::StashPop()
 			dlg.m_pathList.AddPath(CTGitPath());
 			dlg.DoModal();
 		}
+		return 0;
+	}
+	else
+	{
+		CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash POP Success</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		return 0;
 	}
 	return -1;

@@ -25,11 +25,12 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include ".\changeddlg.h"
+#include "IconMenu.h"
+#include "RefLogDlg.h"
 
 #include "GitStatusListCtrl.h"
 
 #include "CommonResource.h"
-#include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
 CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
@@ -53,6 +54,7 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHANGEDLIST, m_FileListCtrl);
+	DDX_Control(pDX, IDC_BUTTON_STASH, m_ctrlStash);
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_SHOWUNMODIFIED, m_iShowUnmodified);
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
@@ -71,6 +73,7 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CChangedDlg::OnBnClickedRefresh)
 //	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
 	ON_BN_CLICKED(IDC_COMMIT, &CChangedDlg::OnBnClickedCommit)
+	ON_BN_CLICKED(IDC_BUTTON_STASH, &CChangedDlg::OnBnClickedStash)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -105,6 +108,7 @@ BOOL CChangedDlg::OnInitDialog()
 //	AddAnchor(IDC_SHOWEXTERNALS, BOTTOM_LEFT);
 //	AddAnchor(IDC_SHOWUSERPROPS, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
+	AddAnchor(IDC_BUTTON_STASH, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REFRESH, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -368,4 +372,49 @@ void CChangedDlg::OnBnClickedCommit()
 		proc += m_FileListCtrl.GetCommonDirectory(false);
 
 	CAppUtils::LaunchApplication(proc, IDS_ERROR_CANNON_FIND_TORTOISEPROC, false);
+}
+
+void CChangedDlg::OnBnClickedStash()
+{
+	CIconMenu popup;
+
+	if (popup.CreatePopupMenu())
+	{
+		popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
+
+		CTGitPath root = g_Git.m_CurrentDir;
+		if (root.HasStashDir())
+		{
+			popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
+			popup.AppendMenuIcon(ID_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
+			popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
+		}
+
+		POINT cursorPos;
+		GetCursorPos(&cursorPos);
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, cursorPos.x, cursorPos.y, this, 0);
+
+		switch (cmd & 0xFFFF)
+		{
+		case ID_STASH_SAVE:
+			CAppUtils::StashSave();
+			break;
+		case ID_STASH_POP:
+			CAppUtils::StashPop(false);
+			return;
+		case ID_STASH_APPLY:
+			CAppUtils::StashApply(_T(""), false);
+			break;
+		case ID_STASH_LIST:
+			{
+				CRefLogDlg dlg;
+				dlg.m_CurrentBranch = _T("refs/stash");
+				dlg.DoModal();
+			}
+			break;
+		default:
+			return;
+		}
+		OnBnClickedRefresh();
+	}
 }
