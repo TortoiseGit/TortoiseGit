@@ -109,7 +109,8 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 		ref = _T("stash@") + ref.Mid(5);
 	cmd += ref;
 
-	if(g_Git.Run(cmd,&out,CP_ACP))
+	int ret = g_Git.Run(cmd, &out, CP_ACP);
+	if (ret && !(ret == 1 && out.Find(_T("CONFLICT"))))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
@@ -137,7 +138,8 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 	CString cmd,out;
 	cmd=_T("git.exe stash pop ");
 
-	if(g_Git.Run(cmd,&out,CP_ACP))
+	int ret = g_Git.Run(cmd, &out, CP_ACP);
+	if (ret && !(ret == 1 && out.Find(_T("CONFLICT"))))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 
