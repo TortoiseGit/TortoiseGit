@@ -61,6 +61,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
 	ON_COMMAND(ID_VIEW_SHOWAUTHOR, OnViewToggleAuthor)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
+	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
@@ -126,6 +128,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
 	m_bShowDate=false;
+	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 	m_pFindDialog = NULL;
@@ -2889,6 +2892,29 @@ void CTortoiseGitBlameView::OnViewToggleAuthor()
 void CTortoiseGitBlameView::OnUpdateViewToggleAuthor(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bShowAuthor);
+}
+
+void CTortoiseGitBlameView::OnViewToggleFollowRenames()
+{
+	m_bFollowRenames = ! m_bFollowRenames;
+
+	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames);
+
+	UINT uCheck = MF_BYCOMMAND;
+	uCheck |= m_bFollowRenames ? MF_CHECKED : MF_UNCHECKED;
+	CheckMenuItem(GetMenu()->m_hMenu, ID_VIEW_FOLLOWRENAMES, uCheck);
+
+	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	if (!document->m_CurrentFileName.IsEmpty())
+	{
+		theApp.m_pDocManager->OnFileNew();
+		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
+	}
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bFollowRenames);
 }
 
 int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)

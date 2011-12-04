@@ -187,14 +187,14 @@ void COutputWnd::FillFindWindow()
 //	m_wndOutputFind.AddString(_T("but you can change the way it is displayed as you wish..."));
 }
 
-int COutputWnd::LoadHistory(CString filename)
+int COutputWnd::LoadHistory(CString filename, bool follow)
 {
 	m_LogList.ReloadHashMap();
 	CTGitPath path;
 	path.SetFromGit(filename);
 
 	m_LogList.Clear();
-	m_LogList.FillGitLog(&path,0/*CGit::LOG_INFO_FOLLOW*/);
+	m_LogList.FillGitLog(&path, follow ? CGit::LOG_INFO_FOLLOW : 0);
 	m_LogList.UpdateProjectProperties();
 	return 0;
 

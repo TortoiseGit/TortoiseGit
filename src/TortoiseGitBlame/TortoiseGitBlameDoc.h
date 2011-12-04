@@ -40,6 +40,7 @@ public:
 	BYTE_VECTOR m_BlameData;
 	CString m_CurrentFileName;
 	CString m_TempFileName;
+	CString m_Rev;
 
 // Operations
 	BOOL m_IsGitFile;
@@ -64,7 +65,6 @@ public:
 	}
 
 protected:
-	CString m_Rev;
 // Generated message map functions
 	DECLARE_MESSAGE_MAP()
 };
