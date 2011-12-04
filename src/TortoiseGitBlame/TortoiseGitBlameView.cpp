@@ -2558,13 +2558,15 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 				if(encoding == 1200)
 				{
 					CString strw;
+					// the first bomoffset is 2, after that it's 1 (see issue #920)
+					if (bomoffset == 0)
+						bomoffset = 1;
 					int size = ((current - start -2 - bomoffset)/2);
 					TCHAR *buffer = strw.GetBuffer(size);
 					memcpy(buffer, &data[start + 2 + bomoffset],sizeof(TCHAR)*size);
 					strw.ReleaseBuffer();
 
 					stra = CUnicodeUtils::GetUTF8(strw);
-
 				}
 				else if(encoding == CP_UTF8)
 				{
