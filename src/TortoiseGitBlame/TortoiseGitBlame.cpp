@@ -24,6 +24,7 @@
 #include "afxwinappex.h"
 #include "TortoiseGitBlame.h"
 #include "MainFrm.h"
+#include "../version.h"
 
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
@@ -150,9 +151,9 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	BOOL OnInitDialog();
 
 // Implementation
-protected:
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -167,6 +168,22 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
+
+BOOL CAboutDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	TCHAR verbuf[1024] = {0};
+	TCHAR maskbuf[1024] = {0};
+	if (!::LoadString(GetModuleHandle(NULL), IDS_VERSION, maskbuf, _countof(maskbuf)))
+	{
+		SecureZeroMemory(maskbuf, sizeof(maskbuf));
+	}
+	_stprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
+	SetDlgItemText(IDC_VERSION, verbuf);
+
+	return FALSE;
+}
 
 // App command to run the dialog
 void CTortoiseGitBlameApp::OnAppAbout()

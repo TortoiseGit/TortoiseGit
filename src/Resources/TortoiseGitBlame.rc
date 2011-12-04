@@ -361,17 +361,17 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 230, 85
+IDD_ABOUTBOX DIALOGEX 0, 0, 230, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TortoiseGitBlame"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_TORTOISE_GIT_BLAME_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "TortoiseGitBlame, Version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2009 TortoiseGit",IDC_STATIC,42,26,114,8
-    DEFPUSHBUTTON   "OK",IDOK,173,63,50,14,WS_GROUP
-    LTEXT           "Author: Frank Li (lznuaa@gmail.com)",IDC_STATIC,42,37,138,8
-    LTEXT           "Part of code come from TortoiseSVN Blame",IDC_STATIC,42,48,138,8
+    LTEXT           "TortoiseGitBlame",IDC_VERSION,42,14,138,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2009-2011 TortoiseGit",IDC_COPYRIGHT,42,26,156,8
+    DEFPUSHBUTTON   "OK",IDOK,173,69,50,14,WS_GROUP
+    LTEXT           "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)",IDC_STATIC,42,37,174,18
+    LTEXT           "Part of code come from TortoiseSVN Blame",IDC_STATIC,42,55,138,8
 END
 
 IDD_GOTODLG DIALOGEX 0, 0, 127, 52
@@ -399,7 +399,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 223
         TOPMARGIN, 7
-        BOTTOMMARGIN, 77
+        BOTTOMMARGIN, 82
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -419,6 +419,7 @@ STRINGTABLE
 BEGIN
     IDR_TORTOISE_GIT_BLAME_MAINFRAME 
                             "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+    IDS_VERSION             "TortoiseGitBlame, Version %d.%d.%d.%d"
 END
 
 STRINGTABLE 
