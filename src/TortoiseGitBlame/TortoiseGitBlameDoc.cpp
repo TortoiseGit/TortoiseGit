@@ -121,7 +121,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			SetCurrentDirectory(g_Git.m_CurrentDir);
 
 		m_GitPath = path;
-		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString());
+		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), (theApp.GetInt(_T("FollowRenames"), 0) == 1));
 
 		CString cmd;
 

@@ -2361,7 +2361,7 @@ UINT CGitLogListBase::LogThread()
 		while( ret== 0)
 		{
 			g_Git.m_critGitDllSec.Lock();
-			ret=git_get_log_nextcommit(this->m_DllGitLog,&commit);
+			ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, 0);
 			g_Git.m_critGitDllSec.Unlock();
 
 			if(ret)

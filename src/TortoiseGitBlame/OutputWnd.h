@@ -86,7 +86,7 @@ private:
 public:
 	virtual ~COutputWnd();
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	int	LoadHistory(CString filename);
+	int	LoadHistory(CString filename, bool follow);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

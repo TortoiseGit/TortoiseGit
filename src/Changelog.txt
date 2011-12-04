@@ -14,6 +14,7 @@
  * Fixed issue #987: Add Stash save/pop to "Working Dir Changes" dialog
  * Fixed issue #988: Stash pop/apply fail should have a button for viewing conflicts
  * Fixed issue #676: Add remove remote tag ability
+ * Fixed issue #678: TortoiseGitBlame log incomplete (integrated --follow into TortoiseGitBlame)
 
 == Bug Fix ==
  * Fixed issue #747: TortoiseProc & less process not closing

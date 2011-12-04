@@ -131,6 +131,8 @@ protected:
 	afx_msg void OnViewPrev();
 	afx_msg void OnViewToggleAuthor();
 	afx_msg void OnUpdateViewToggleAuthor(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleFollowRenames();
+	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void CopyHashToClipboard();
 	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
@@ -176,7 +178,7 @@ public:
 
 	BOOL m_bShowAuthor;
 	BOOL m_bShowDate;
-
+	BOOL m_bFollowRenames;
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);
 

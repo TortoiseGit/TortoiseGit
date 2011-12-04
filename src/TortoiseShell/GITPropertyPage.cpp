@@ -338,7 +338,7 @@ void CGitPropertyPage::InitWorkfileView()
 						break;
 
 					GIT_COMMIT commit;
-					if(git_get_log_nextcommit(handle,&commit))
+					if (git_get_log_nextcommit(handle, &commit, 0))
 						break;
 
 					git_close_log(handle);

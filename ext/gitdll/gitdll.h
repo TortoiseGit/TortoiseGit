@@ -81,6 +81,7 @@ typedef struct GIT_COMMIT_DATA
 	void *   m_pGitCommit; /** internal used */
 	char *   m_Encode;
 	int		 m_EncodeSize;
+	int		 m_ignore;
 
 } GIT_COMMIT;
 
@@ -117,7 +118,7 @@ GITDLL_API int git_get_log_estimate_commit_count(GIT_LOG handle);
  *  @return			0	success
  *	@remark			Caller need call git_free_commit to free internal buffer after use it;
  */
-GITDLL_API int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit);
+GITDLL_API int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow);
 
 GITDLL_API int git_close_log(GIT_LOG handle);
 

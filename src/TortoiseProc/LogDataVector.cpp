@@ -81,6 +81,10 @@ void CLogDataVector::ClearAll()
 //CLogDataVector Class
 int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CString *from,CString *to)
 {
+	// only enable --follow on files
+	if (path->IsDirectory() && (infomask & CGit::LOG_INFO_FOLLOW))
+		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
+
 	CString hash;
 	CString cmd=g_Git.GetLogCmd(hash,path,count,infomask,from,to,true);
 
@@ -101,8 +105,13 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 
 	GitRev rev;
 
-	while( git_get_log_nextcommit(handle,&commit) == 0)
+	while (git_get_log_nextcommit(handle, &commit, infomask & CGit::LOG_INFO_FOLLOW) == 0)
 	{
+		if (commit.m_ignore == 1)
+		{
+			git_free_commit(&commit);
+			continue;
+		}
 
 		CGitHash hash = (char*)commit.m_hash ;
 		rev.Clear();

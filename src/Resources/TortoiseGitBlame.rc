@@ -290,6 +290,7 @@ BEGIN
             END
         END
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
+        MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
     END
     POPUP "&Help"
     BEGIN
