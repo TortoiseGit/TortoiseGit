@@ -25,9 +25,9 @@
 #include "CommonResource.h"
 #include "AppUtils.h"
 
-IMPLEMENT_DYNAMIC(CRenameDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CRenameDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CRenameDlg::IDD, pParent)
 	, m_name(_T(""))
 {
 }
@@ -38,19 +38,19 @@ CRenameDlg::~CRenameDlg()
 
 void CRenameDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CResizableStandAloneDialog::DoDataExchange(pDX);
+	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_NAME, m_name);
 }
 
 
-BEGIN_MESSAGE_MAP(CRenameDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CRenameDlg, CHorizontalResizableStandAloneDialog)
 	ON_WM_SIZING()
 	ON_EN_CHANGE(IDC_NAME, OnEnChangeName)
 END_MESSAGE_MAP()
 
 BOOL CRenameDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	SHAutoComplete(GetDlgItem(IDC_NAME)->m_hWnd, SHACF_DEFAULT);
@@ -80,28 +80,7 @@ void CRenameDlg::OnOK()
 		if (CMessageBox::Show(GetSafeHwnd(), IDS_WARN_NOVALIDPATH, IDS_APPNAME, MB_ICONWARNING | MB_OKCANCEL)==IDCANCEL)
 			return;
 	}
-	CResizableDialog::OnOK();
-}
-
-void CRenameDlg::OnSizing(UINT fwSide, LPRECT pRect)
-{
-	// don't allow the dialog to be changed in height
-	CRect rcWindowRect;
-	GetWindowRect(&rcWindowRect);
-	switch (fwSide)
-	{
-	case WMSZ_BOTTOM:
-	case WMSZ_BOTTOMLEFT:
-	case WMSZ_BOTTOMRIGHT:
-		pRect->bottom = pRect->top + rcWindowRect.Height();
-		break;
-	case WMSZ_TOP:
-	case WMSZ_TOPLEFT:
-	case WMSZ_TOPRIGHT:
-		pRect->top = pRect->bottom - rcWindowRect.Height();
-		break;
-	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
+	CHorizontalResizableStandAloneDialog::OnOK();
 }
 
 void CRenameDlg::OnEnChangeName()
