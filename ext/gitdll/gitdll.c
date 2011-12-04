@@ -406,7 +406,7 @@ int git_get_log_estimate_commit_count(GIT_LOG handle)
 	return estimate_commit_count(p_Rev, p_Rev->commits);
 }
 
-int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
+int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow)
 {
 	int ret =0;
 
@@ -418,6 +418,13 @@ int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit)
 	commit->m_pGitCommit = get_revision(handle);
 	if( commit->m_pGitCommit == NULL)
 		return -2;
+
+	if (follow && !log_tree_commit(handle, commit->m_pGitCommit))
+	{
+		commit->m_ignore = 1;
+		return 0;
+	}
+	commit->m_ignore = 0;
 
 	ret=git_parse_commit(commit);
 	if(ret)
