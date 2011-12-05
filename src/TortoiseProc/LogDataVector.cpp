@@ -82,7 +82,7 @@ void CLogDataVector::ClearAll()
 int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CString *from,CString *to)
 {
 	// only enable --follow on files
-	if (path->IsDirectory() && (infomask & CGit::LOG_INFO_FOLLOW))
+	if ((path == NULL || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
 
 	CString hash;
