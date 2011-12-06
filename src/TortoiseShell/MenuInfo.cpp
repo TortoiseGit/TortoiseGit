@@ -96,7 +96,7 @@ MenuInfo menuInfo[] =
 	{ ShellMenuStashPop,				    MENUSTASHPOP,	    IDI_RELOCATE,			IDS_MENUSTASHPOP,				IDS_MENUSTASHPOP,
 	ITEMIS_FOLDERINGIT|ITEMIS_STASH, 0, 0, 0, 0, 0, 0, 0 },
 	{ ShellMenuStashList,				    MENUSTASHLIST,	    IDI_LOG,				IDS_MENUSTASHLIST,				IDS_MENUSTASHLIST,
-	ITEMIS_FOLDERINGIT, 0, 0, 0, 0, 0, 0, 0 },
+	ITEMIS_FOLDERINGIT|ITEMIS_STASH, 0, 0, 0, 0, 0, 0, 0 },
 
 	{ ShellSeparator, 0, 0, 0, 0, 0, 0, 0, 0},
 
