@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "DeleteConflictDlg.h"
-
+#include "AppUtils.h"
 
 // CDeleteConflictDlg dialog
 
@@ -47,10 +47,10 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	else
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(_T("Created"));
 
-	CString title;
-	this->GetWindowText(title);
-	title +=_T(" - ") +this->m_File;
-	this->SetWindowText(title);
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, this->m_File, sWindowTitle);
+
 	return TRUE;
 }
 // CDeleteConflictDlg message handlers
