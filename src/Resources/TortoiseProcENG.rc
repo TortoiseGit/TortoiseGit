@@ -882,6 +882,7 @@ BEGIN
     LTEXT           "Tab size:",IDC_STATIC,14,132,92,8
     EDITTEXT        IDC_TABSIZE,253,130,31,12,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "Note: the font settings also affect the TortoiseUDiff viewer",IDC_STATIC,15,156,269,21
+    CONTROL         "Follow renames",IDC_FOLLOWRENAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,185,148,8
 END
 
 IDD_CONFLICTRESOLVE DIALOGEX 0, 0, 316, 150
@@ -1601,6 +1602,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,154,76,50,14
     PUSHBUTTON      "Help",IDHELP,210,76,50,14
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -62,4 +62,6 @@ private:
 	CString				m_sFontName;
 	DWORD				m_dwTabSize;
 	CRegDWORD			m_regTabSize;
+	BOOL				m_bFollowRenames;
+	CRegDWORD			m_regFollowRenames;
 };

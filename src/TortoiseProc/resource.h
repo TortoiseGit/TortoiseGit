@@ -978,6 +978,7 @@
 #define IDC_BUTTON_GOOD                 1672
 #define IDC_GROUP_STASHMESSAGE          1673
 #define IDC_STASHMESSAGE                1674
+#define IDC_FOLLOWRENAMES               1675
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1549,7 +1550,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        339
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1675
+#define _APS_NEXT_CONTROL_VALUE         1676
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
