@@ -145,7 +145,6 @@
 #define IDD_DIALOG_BROWSE_REFS          322
 #define IDD_ADD_REMOTE                  323
 #define IDD_DIALOG2                     324
-#define IDD_DIALOG_DELETE_REF           324
 #define IDR_ACC_COMMITDLG               325
 #define IDD_SYNC                        326
 #define IDD_PATCH_VIEW                  328
@@ -895,7 +894,6 @@
 #define IDD_SUBMODULE_ADD               1589
 #define IDC_EDIT_NAME                   1589
 #define IDC_CHECK_FORSE                 1590
-#define IDC_STATIC_MESSAGE              1591
 #define IDC_STATIC_BRANCH               1592
 #define IDC_BUGTRAQ_WARNINGIFNOISSUE_TRUE 1593
 #define IDC_BUGTRAQ_WARNINGIFNOISSUE_FALSE 1594
