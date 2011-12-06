@@ -8,10 +8,10 @@
 
 // CDeleteConflictDlg dialog
 
-IMPLEMENT_DYNAMIC(CDeleteConflictDlg, CResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CDeleteConflictDlg, CStandAloneDialog)
 
 CDeleteConflictDlg::CDeleteConflictDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CDeleteConflictDlg::IDD, pParent)
+	: CStandAloneDialog(CDeleteConflictDlg::IDD, pParent)
 
 	, m_LocalStatus(_T(""))
 	, m_RemoteStatus(_T(""))
@@ -32,7 +32,7 @@ void CDeleteConflictDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CDeleteConflictDlg, CResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CDeleteConflictDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_DELETE, &CDeleteConflictDlg::OnBnClickedDelete)
 	ON_BN_CLICKED(IDC_MODIFY, &CDeleteConflictDlg::OnBnClickedModify)
 END_MESSAGE_MAP()
@@ -40,11 +40,7 @@ END_MESSAGE_MAP()
 
 BOOL CDeleteConflictDlg::OnInitDialog()
 {
-	CResizableStandAloneDialog::OnInitDialog();
-	AddAnchor(IDC_DEL_GROUP, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_DELETE, BOTTOM_RIGHT);
-	AddAnchor(IDC_MODIFY, BOTTOM_RIGHT);
-	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+	CStandAloneDialog::OnInitDialog();
 
 	if(this->m_bShowModifiedButton )
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(_T("Modified"));

@@ -3,7 +3,7 @@
 #include "StandAloneDlg.h"
 // CDeleteConflictDlg dialog
 
-class CDeleteConflictDlg : public CResizableStandAloneDialog
+class CDeleteConflictDlg : public CStandAloneDialog
 {
 	DECLARE_DYNAMIC(CDeleteConflictDlg)
 
