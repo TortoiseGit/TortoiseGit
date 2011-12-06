@@ -34,18 +34,15 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	afx_msg void OnBnClickedDelete();
+	afx_msg void OnBnClickedModify();
 	BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 
 public:
 	CString m_LocalStatus;
-public:
 	CString m_RemoteStatus;
 	BOOL	m_bShowModifiedButton;
 	CString m_File;
 	BOOL	m_bIsDelete;
-public:
-	afx_msg void OnBnClickedDelete();
-public:
-	afx_msg void OnBnClickedModify();
 };
