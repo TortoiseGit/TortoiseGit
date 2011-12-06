@@ -83,7 +83,7 @@
 		before you commit using
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Undo add...</guimenuitem>
+			<guimenuitem>Delete (keep local)...</guimenuitem>
 		</menuchoice>.
 	</para>
 </sect1>
