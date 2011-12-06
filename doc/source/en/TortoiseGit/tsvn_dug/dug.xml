@@ -82,6 +82,7 @@
 	<xi:include href="./dug_cleanup.xml"/>
 	<xi:include href="./dug_reset.xml"/>
 	<xi:include href="./dug_stash.xml"/>
+	<xi:include href="./dug_bisect.xml"/>
 	<!--
 	<xi:include href="./dug_propertypage.xml"/>
 	-->

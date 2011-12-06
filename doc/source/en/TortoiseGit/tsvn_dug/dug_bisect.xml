@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-bisect">
+	<?dbhh topicname="HIDD_BISECTSTART"?>
+	<title>Bisect</title>
+	<indexterm>
+		<primary>Bisect</primary>
+	</indexterm>
+	<para>
+		if you want to find out which revision introduced a bug, you can use the bisect functionality.
+		<action>Right click</action> on a folder to pop up the context menu and then select
+		the command
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Bisect start</guimenuitem>
+		</menuchoice>.
+		A dialog will pop up:
+		<figure id="tsvn-dug-bisect-dia-1">
+			<title>Bisect start</title>
+			<graphic fileref="../images/bisect.png"/>
+		</figure>
+		Enter the last known good revision and the first or one known bad (this is normally HEAD).
+	</para>
+	<para>
+		After hitting <guibutton>OK</guibutton>, GIT will perform a binary search for the first faulty revision: Git
+		switches to a revision in the middle. Now you can test this revision.
+	</para>
+	<para>
+		TortoiseGit now provides three new options in the context menu:
+		<figure id="tsvn-dug-bisect-dia-2">
+			<title>Bisect options</title>
+			<graphic fileref="../images/ContextMenuBisect.png"/>
+		</figure>
+		If this revision is OK, hit
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Bisect good</guimenuitem>
+		</menuchoice>
+		, otherwise hit
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Bisect bad</guimenuitem>.
+		</menuchoice>
+		Git will proceed with the binary search and switches to the "next" revision, so that you can test it.
+		This goes on until the faulty revision is found or you abort this operation by clicking on
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Bisect reset</guimenuitem>
+		</menuchoice>
+		(this will reset the bisect process and switch out your previous branch/HEAD).
+	</para>
+	<tip>
+		<title>Selecting revisions</title>
+		<para>
+			If a revision cannot be tested, or you want to go on with a different one, you can easily go to the log and
+			(hard) reset the current HEAD to a revision you like.
+		</para>
+	</tip>
+	<para>
+		You can find more information at <xref linkend="git-bisect(1)"/>
+	</para>
+</sect1>
