@@ -105,10 +105,12 @@
 			file. This is useful for including build information in your projects.
 		</para>
 		-->
+		<!--
 		<para>
 			The <xref linkend="tsvn-howto"/> section answers some common questions
 			about performing tasks which are not explicitly covered elsewhere.
 		</para>
+		-->
 		<para>
 			The section on <xref linkend="tsvn-automation"/> shows how the
 			TortoiseGit GUI dialogs can be called from the command line. This is useful
