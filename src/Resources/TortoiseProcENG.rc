@@ -659,33 +659,22 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Dialogs 1"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Log messages",IDC_STATIC,7,7,286,79
-    LTEXT           "Default &number of log messages",IDC_STATIC,14,20,204,8
-    EDITTEXT        IDC_DEFAULTLOG,229,17,55,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    LTEXT           "&Font for log messages:",IDC_STATIC,14,29,92,23,SS_CENTERIMAGE
-    COMBOBOX        IDC_FONTNAMES,107,34,136,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_FONTSIZES,253,34,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Log messages",IDC_STATIC,7,7,286,62
+    LTEXT           "&Font for log messages:",IDC_STATIC,14,17,92,13,SS_CENTERIMAGE
+    COMBOBOX        IDC_FONTNAMES,107,17,136,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FONTSIZES,253,17,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Short &date/time format in log messages",IDC_SHORTDATEFORMAT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,50,150,10
-    CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,50,120,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,33,150,10
+    CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,33,120,10
     CONTROL         "Use system locale for date/time",IDC_SYSTEMLOCALEFORDATES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,61,270,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,44,270,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,72,270,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,55,270,10
     GROUPBOX        "Misc",IDC_STATIC,7,88,286,47
-    LTEXT           "&Autoclose:",IDC_STATIC,14,97,85,16,SS_CENTERIMAGE
-    COMBOBOX        IDC_AUTOCLOSECOMBO,107,100,177,75,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Autoclose:",IDC_STATIC,14,97,85,16,SS_CENTERIMAGE | NOT WS_VISIBLE
+    COMBOBOX        IDC_AUTOCLOSECOMBO,107,100,177,75,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Use recycle bin when reverting",IDC_USERECYCLEBIN,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,118,270,10
-    GROUPBOX        "Merge",IDC_STATIC,7,138,286,25,NOT WS_VISIBLE
-    CONTROL         "Use URL of &WC as the default ""From:"" URL",IDC_WCURLFROM,
-                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,13,148,271,10
-    GROUPBOX        "Checkout",IDC_STATIC,7,166,286,45,NOT WS_VISIBLE
-    LTEXT           "Default path:",IDC_STATIC,13,179,85,8,NOT WS_VISIBLE
-    EDITTEXT        IDC_CHECKOUTPATH,107,176,161,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
-    PUSHBUTTON      "...",IDC_BROWSECHECKOUTPATH,271,176,12,14,NOT WS_VISIBLE
-    LTEXT           "Default URL:",IDC_STATIC,13,195,85,8,NOT WS_VISIBLE
-    EDITTEXT        IDC_CHECKOUTURL,107,193,161,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -742,25 +731,15 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Dialogs 2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    CONTROL         "Recurse into unversioned folders",IDC_UNVERSIONEDRECURSE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,19,269,10
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,50,271,10
-    LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,67,231,8,SS_NOTIFY
-    EDITTEXT        IDC_AUTOCOMPLETIONTIMEOUT,252,65,31,12,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    CONTROL         "Only use s&pellchecker when tsvn:projectlanguage is set",IDC_SPELL,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,83,271,10
-    LTEXT           "Max. items to keep in the log message history",IDC_MAXHISTORYLABEL,14,100,226,8,SS_NOTIFY
-    EDITTEXT        IDC_MAXHISTORY,252,96,31,14,ES_AUTOHSCROLL
-    CONTROL         "&Reopen commit and branch/tag dialog after a commit failed",IDC_REOPENCOMMIT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,114,271,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,18,271,10
+    LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,35,231,8,SS_NOTIFY
+    EDITTEXT        IDC_AUTOCOMPLETIONTIMEOUT,252,33,31,12,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    LTEXT           "Max. items to keep in the log message history",IDC_MAXHISTORYLABEL,14,50,226,8,SS_NOTIFY
+    EDITTEXT        IDC_MAXHISTORY,252,46,31,14,ES_AUTOHSCROLL
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,130,238,10
-    CONTROL         "&Contact the repository on startup",IDC_REPOCHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,164,271,10
-    GROUPBOX        "Status",IDC_STATIC,7,7,286,28
-    GROUPBOX        "Commit",IDC_COMMITGROUP,7,39,286,109
-    GROUPBOX        "Check for modifications",IDC_STATIC,7,152,286,28
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,63,238,10
+    GROUPBOX        "Commit",IDC_COMMITGROUP,7,7,286,71
 END
 
 IDD_SETTINGSSAVEDDATA DIALOGEX 0, 0, 300, 217

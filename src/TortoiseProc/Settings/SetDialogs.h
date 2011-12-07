@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -64,8 +65,6 @@ private:
 	CRegDWORD			m_regUseSystemLocaleForDates;
 	CRegDWORD			m_regAutoClose;
 	DWORD_PTR			m_dwAutoClose;
-	CRegDWORD			m_regDefaultLogs;
-	CString				m_sDefaultLogs;
 	CMFCFontComboBox	m_cFontNames;
 	CComboBox			m_cFontSizes;
 	CRegDWORD			m_regFontSize;
@@ -73,12 +72,6 @@ private:
 	CRegString			m_regFontName;
 	CString				m_sFontName;
 	CComboBox			m_cAutoClose;
-	CRegDWORD			m_regUseWCURL;
-	BOOL				m_bUseWCURL;
-	CRegString			m_regDefaultCheckoutPath;
-	CString				m_sDefaultCheckoutPath;
-	CRegString			m_regDefaultCheckoutUrl;
-	CString				m_sDefaultCheckoutUrl;
 	CRegDWORD			m_regDiffByDoubleClick;
 	BOOL				m_bDiffByDoubleClick;
 	CRegDWORD			m_regUseRecycleBin;

@@ -103,7 +103,6 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_pConfirmButton(NULL)
 	, m_bBusy(false)
 	, m_bEmpty(false)
-	, m_bUnversionedRecurse(true)
 	, m_bShowIgnores(false)
 	, m_pDropTarget(NULL)
 	, m_bIgnoreRemoveOnly(false)
@@ -258,8 +257,6 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 #endif
 
 	SetRedraw(true);
-
-	m_bUnversionedRecurse = !!((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE));
 }
 
 bool CGitStatusListCtrl::SetBackgroundImage(UINT nID)

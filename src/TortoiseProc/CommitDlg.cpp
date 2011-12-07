@@ -440,25 +440,6 @@ void CCommitDlg::OnOK()
 	}
 
 	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
-#if 0
-	CRegDWORD regUnversionedRecurse (_T("Software\\TortoiseGit\\UnversionedRecurse"), TRUE);
-	if (!(DWORD)regUnversionedRecurse)
-	{
-		// Find unversioned directories which are marked for commit. The user might expect them
-		// to be added recursively since he cannot the the files. Let's ask the user if he knows
-		// what he is doing.
-		int nListItems = m_ListCtrl.GetItemCount();
-		for (int j=0; j<nListItems; j++)
-		{
-			const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
-			if (entry->IsChecked() && (entry->status == Git_wc_status_unversioned) && entry->IsFolder() )
-			{
-				if (CMessageBox::Show(this->m_hWnd, IDS_COMMITDLG_UNVERSIONEDFOLDERWARNING, IDS_APPNAME, MB_YESNO | MB_ICONWARNING)!=IDYES)
-					return;
-			}
-		}
-	}
-#endif
 	m_pathwatcher.Stop();
 	InterlockedExchange(&m_bBlock, TRUE);
 	CDWordArray arDeleted;

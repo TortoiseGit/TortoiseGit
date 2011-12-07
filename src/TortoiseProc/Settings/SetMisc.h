@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,20 +51,12 @@ protected:
 private:
 	CToolTips		m_tooltips;
 
-	CRegDWORD		m_regUnversionedRecurse;
-	BOOL			m_bUnversionedRecurse;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;
 	DWORD			m_dwAutocompletionTimeout;
-	CRegDWORD		m_regSpell;
-	BOOL			m_bSpell;
-	CRegDWORD		m_regCheckRepo;
-	BOOL			m_bCheckRepo;
 	CRegDWORD		m_regMaxHistory;
 	DWORD			m_dwMaxHistory;
-	CRegDWORD		m_regCommitReopen;
-	BOOL			m_bCommitReopen;
 	CRegDWORD		m_regAutoSelect;
 	BOOL			m_bAutoSelect;
 };

@@ -937,16 +937,6 @@ public:
 	void SetEmptyString(UINT id) {m_sEmpty.LoadString(id);}
 
 	/**
-	 * Determines if the control should recurse into unversioned folders
-	 * when fetching the status. The default behavior is defined by the
-	 * registry key HKCU\Software\TortoiseGit\UnversionedRecurse, which
-	 * is read in the Init() method.
-	 * If you want to change the behavior, call this method *after*
-	 * calling Init().
-	 */
-	void SetUnversionedRecurse(bool bUnversionedRecurse) {m_bUnversionedRecurse = bUnversionedRecurse;}
-
-	/**
 	 * Returns the number of selected items
 	 */
 	LONG GetSelected(){return m_nSelected;};
@@ -1175,8 +1165,6 @@ private:
 	CString						m_sEmpty;
 	CString						m_sBusy;
 	CString						m_sNoPropValueText;
-
-	bool						m_bUnversionedRecurse;
 
 	bool						m_bCheckChildrenWithParent;
 	CGitStatusListCtrlDropTarget * m_pDropTarget;
