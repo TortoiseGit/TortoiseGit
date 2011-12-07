@@ -10,8 +10,8 @@
     <primary>Repository</primary>
   </indexterm>
   <para>
-    This section talks about how to clone a git repository from other repository.
-    Clone git repository is very simple. At none git repository directory, 
+    This section talks about how to clone a git repository from an existing repository.
+    Cloning a git repository is very simple. At an empty directory, 
     just use the explorer context menu and select
     <menuchoice>
       <guimenu>Git Clone...
