@@ -42,8 +42,9 @@
 	<xi:include href="./tsvn_app_cli.xml"/>
 	-->
 	<xi:include href="./tsvn_app_internals.xml"/>
-	
+	<!--
 	<xi:include href="./tsvn_app_ssh.xml"/>
+	-->
 
 	<xi:include href="./git_doc/git-doc.xml"/>
 
