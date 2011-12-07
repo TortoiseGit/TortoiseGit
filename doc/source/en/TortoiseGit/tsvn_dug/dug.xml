@@ -68,6 +68,7 @@
   <xi:include href="./dug_push.xml"/>
   <xi:include href="./dug_sync.xml"/>
   <xi:include href="./dug_browseref.xml"/>
+  <xi:include href="./dug_submodules.xml"/>
 	<!--
 	<xi:include href="./dug_changelist.xml"/>
 	-->
