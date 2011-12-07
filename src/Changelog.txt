@@ -493,11 +493,11 @@
 
 
 == Bug Fix ==
- * Fixed issue #401: TGitCache.exe keeps open pack-xxx.idx on git repo*
- * Fix issue review patch fail when there are new FilePatchesDlg.cpp*
- * Fix all file show "+" icon after run git gc*
- * Fixed issue #449: Files not in the Commit dialog are committed if in index*
- * Fixed issue #450: Log Messages file list wrong when choose children dir firstly.*
+ * Fixed issue #401: TGitCache.exe keeps open pack-xxx.idx on git repo
+ * Fix issue review patch fail when there are new FilePatchesDlg.cpp
+ * Fix all file show "+" icon after run git gc
+ * Fixed issue #449: Files not in the Commit dialog are committed if in index
+ * Fixed issue #450: Log Messages file list wrong when choose children dir firstly.
  * Fixed issue #387: "Automatically check for newer versions every week" remains disabled
  * Show correct file when Add new file at tortoisemerge
  * Fixed issue #381: About screen of TortoiseMerge shows invalid build information
