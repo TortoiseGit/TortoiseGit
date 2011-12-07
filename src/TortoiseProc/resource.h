@@ -64,7 +64,6 @@
 #define IDD_SETTINGSCOLORS              212
 #define IDD_SETTINGSCOLORS_2            212
 #define IDI_ACTIONADDED                 213
-#define IDD_SETTINGSMISC                213
 #define IDI_ACTIONDELETED               214
 #define IDI_ACTIONMODIFIED              215
 #define IDI_ACTIONREPLACED              216

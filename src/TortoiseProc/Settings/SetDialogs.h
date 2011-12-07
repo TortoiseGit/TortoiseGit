@@ -76,4 +76,12 @@ private:
 	BOOL				m_bDiffByDoubleClick;
 	CRegDWORD			m_regUseRecycleBin;
 	BOOL				m_bUseRecycleBin;
+	CRegDWORD		m_regAutocompletion;
+	BOOL			m_bAutocompletion;
+	CRegDWORD		m_regAutocompletionTimeout;
+	DWORD			m_dwAutocompletionTimeout;
+	CRegDWORD		m_regMaxHistory;
+	DWORD			m_dwMaxHistory;
+	CRegDWORD		m_regAutoSelect;
+	BOOL			m_bAutoSelect;
 };

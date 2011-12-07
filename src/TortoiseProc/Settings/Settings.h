@@ -34,7 +34,6 @@
 #include "SettingsColors.h"
 #include "SettingsColors2.h"
 #include "SettingsColors3.h"
-#include "SetMisc.h"
 #include "SetSavedDataPage.h"
 #include "SetHooks.h"
 #include "SetBugTraq.h"
@@ -85,7 +84,6 @@ private:
 	CSettingsColors *					m_pColorsPage;
     CSettingsColors2 *					m_pColorsPage2;
     CSettingsColors3 *					m_pColorsPage3;
-	CSetMisc *							m_pMiscPage;
 	CSetSavedDataPage *					m_pSavedPage;
 	CSetHooks *							m_pHooksPage;
 	CSetBugTraq *						m_pBugTraqPage;
