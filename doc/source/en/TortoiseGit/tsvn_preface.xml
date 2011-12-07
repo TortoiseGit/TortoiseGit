@@ -83,14 +83,6 @@
 			for administrators.
 		</para>
     -->
-    <!--
-		<para>
-			The chapter on <xref linkend="tsvn-repository"/> explains how to set up
-			a local repository, which is useful for testing Git and TortoiseGit
-			using a single PC. It also explains a bit about repository administration
-			which is also relevant to repositories located on a server.
-		</para>
-    -->
 		<para>
 			The <xref linkend="tsvn-dug"/> is the most important section as
 			it explains all the main features of TortoiseGit and how to use them.
@@ -105,10 +97,12 @@
 			file. This is useful for including build information in your projects.
 		</para>
 		-->
+		<!--
 		<para>
 			The <xref linkend="tsvn-howto"/> section answers some common questions
 			about performing tasks which are not explicitly covered elsewhere.
 		</para>
+		-->
 		<para>
 			The section on <xref linkend="tsvn-automation"/> shows how the
 			TortoiseGit GUI dialogs can be called from the command line. This is useful

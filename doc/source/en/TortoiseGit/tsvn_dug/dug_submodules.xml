@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-submodules">
+	<?dbhh topicname="HIDD_SUBMODULE_ADD"?>
+	<title>Submodules</title>
+	<para>
+		When you want to embedd foreign repositories into a working copy/git repository, this is called a submodule.
+		Here using the
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Submodules Add</guimenuitem>
+		</menuchoice>
+		option a foreign repository can be embedded into a dedicated subdirectory of the source tree.
+		When selecting this option, a dialog pops up:
+		<figure id="tsvn-dug-submodules-dia-1">
+			<title>The add submodule dialog</title>
+			<graphic fileref="../images/GitSubModuleAdd.png"/>
+		</figure>
+		Here you can enter the location/URL of the <guilabel>Repository</guilabel> you want to embedd
+		into the directory <guilabel>Path</guilabel>. <guilabel>Path</guilabel> can be entered as a relative
+		path within the active source tree, but can also be an absolute path (pointing to the active source tree).
+		The folder should be empty or non existent.
+		If you don't want to integrate the HEAD of the <guilabel>Repository</guilabel>, you can enter a differend
+		<guilabel>Branch</guilabel>.
+		By pressing <guibutton>OK</guibutton>, the entered <guilabel>Repository</guilabel> is cloned and integrated
+		into the current source tree.
+	</para>
+	<para>
+		If a working copy contains submodules, two new context menu entries are available:
+		<figure id="tsvn-dug-submodules-dia-2">
+			<title>Submodule context menu entries</title>
+			<graphic fileref="../images/ContextMenuSubmodules.png"/>
+		</figure>
+	</para>
+	<para>
+		<guimenuitem>Submodule Update</guimenuitem>: Initialize the submodules and/or update the registered submodules, i.e. clone missing submodules and checkout the commit specified in the index of the containing repository.
+	</para>
+	<para>
+		<guimenuitem>Submodule Sync</guimenuitem>: Synchronizes submodules' remote URL configuration setting to the value specified in .gitmodules. This is useful when submodule URLs change upstream and you need to update your local repositories accordingly. 
+	</para>
+	<para>
+		Also if a working copy contains submodules, <xref linkend="tsvn-dug-checkout"/> and <xref linkend="tsvn-dug-reset"/> contain a button for updating submodules:
+		<figure id="tsvn-dug-submodules-dia-3">
+			<title>Button for updating submodules in progress dialog</title>
+			<graphic fileref="../images/CheckoutSubmodules.png"/>
+		</figure>
+	</para>
+	<para>
+		You can find more information at <xref linkend="git-submodule(1)"/>
+	</para>
+</sect1>

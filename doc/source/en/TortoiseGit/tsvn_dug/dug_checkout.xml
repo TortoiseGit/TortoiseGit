@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-checkout">
-	<title>Checking Out A Working Copy(Switch to version)</title>
+	<title>Checking Out A Working Copy (Switch to commit)</title>
 	<indexterm>
 		<primary>checkout</primary>
 	</indexterm>

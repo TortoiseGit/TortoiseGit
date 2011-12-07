@@ -15,7 +15,24 @@
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Stash Save</guimenuitem>
 		</menuchoice>
-		A dialog will pop up where you can optionally enter a message for this state.
+		A dialog will pop up where you can optionally enter a message for this state:
+		<figure id="tsvn-dug-stash-dia-1">
+			<title>Stash save dialog</title>
+			<graphic fileref="../images/stash.png"/>
+		</figure>
+		You can also select <guilabel>include untracked</guilabel>, to stash untracked files away, too.
+	</para>
+	<para>
+		When TortoiseGit detects that a stashed changes exist, the context menu will be extended:
+		<figure id="tsvn-dug-stash-dia-2">
+			<title>(un)stash options</title>
+			<graphic fileref="../images/ContextMenuStash.png"/>
+		</figure>
+		The stash is implemented as a stack. <guimenuitem>Stash Apply</guimenuitem> will apply the changes of the latest stash
+		to your working copy. <guimenuitem>Stash Pop</guimenuitem> does the same, but will remove the latest stash from the stack
+		after applying it. <guimenuitem>Stash Save</guimenuitem> is still possible and will stash the current changes of the working
+		copy to the top of the stack. <guimenuitem>Stash List</guimenuitem> provides an overview of all the whole stash stack. You
+		can also remove and view the stashed changes there (similarly to the <xref linkend="tsvn-dug-showlog"/> and <xref linkend="tsvn-dug-update"/>).
 	</para>
 	<para>
 		You can find more information at <xref linkend="git-stash(1)"/>

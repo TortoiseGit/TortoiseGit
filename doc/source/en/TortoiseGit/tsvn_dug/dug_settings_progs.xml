@@ -3,14 +3,9 @@
 <sect2 id="tsvn-dug-settings-progs">
 	<title>External Program Settings</title>
 	<para>
-		<figure id="tsvn-dug-settings-dia-5">
-			<title>The Settings Dialog, Diff Viewer Page</title>
-			<?dbhh topicname="HIDD_SETTINGSPROGSDIFF"?>
-			<graphic fileref="../images/SettingsProgs.png"/>
-		</figure>
-		Here you can define your own diff/merge programs that TortoiseGit
-		should use. The default setting is to use TortoiseMerge
-		which is installed alongside TortoiseGit.
+		Here you can define your own programs that TortoiseGit
+		should use. The default setting is to use tools
+		which are installed alongside TortoiseGit.
 	</para>
 	<para>
 		Read <xref linkend="tsvn-dug-diff-tools"/> for a list of some of the
@@ -19,6 +14,10 @@
 	<sect3 id="tsvn-dug-settings-Diff">
 		<title>Diff Viewer</title>
 		<?dbhh topicname="HIDD_SETTINGSPROGSDIFF"?>
+		<figure id="tsvn-dug-settings-dia-5">
+			<title>The Settings Dialog, Diff Viewer Page</title>
+			<graphic fileref="../images/SettingsProgs.png"/>
+		</figure>
 		<para>
 			An external diff program may be used for comparing different
 			revisions of files. The external program will need to
@@ -94,20 +93,6 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 </screen>
 		</para>
 		<para>
-			If you use the <literal>svn:keywords</literal> property to
-			expand keywords, and in particular the <emphasis>revision</emphasis>
-			of a file, then there may be a difference between files which
-			is purely due to the current value of the keyword. Also if you use
-			<literal>svn:eol-style = native</literal> the BASE file will have
-			pure <literal>LF</literal> line endings whereas your file will
-			have <literal>CR-LF</literal> line endings. TortoiseGit will normally hide
-			these differences automatically by first parsing the BASE file to
-			expand keywords and line endings before doing the diff operation.
-			However, this can take a long time with large files. If
-			<guilabel>Convert files when diffing against BASE</guilabel>
-			is unchecked then TortoiseGit will skip pre-processing the files.
-		</para>
-		<para>
 			You can also specify a different diff tool to use on Git
 			properties. Since these tend to be short simple text strings, you
 			may want to use a simpler more compact viewer.
@@ -132,6 +117,10 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 	<sect3 id="tsvn-dug-settings-Merge">
 		<title>Merge Tool</title>
 		<?dbhh topicname="HIDD_SETTINGSPROGSMERGE"?>
+		<figure id="tsvn-dug-settings-dia-5a">
+			<title>The Settings Dialog, Merge Tool Page</title>
+			<graphic fileref="../images/SettingsMergeTool.png"/>
+		</figure>
 		<para>
 			An external merge program used to resolve conflicted
 			files. Parameter substitution is used in the same way
@@ -251,6 +240,10 @@ C:\Path-To\WinMerge.exe %merged
 	<sect3 id="tsvn-dug-settings-Patch">
 		<title>Unified Diff Viewer</title>
 		<?dbhh topicname="HIDD_SETTINGSPROGSUNIDIFF"?>
+		<figure id="tsvn-dug-settings-dia-6">
+			<title>The Settings Dialog, Unified Diff Viewer Page</title>
+			<graphic fileref="../images/SettingsUnifiedDiff.png"/>
+		</figure>
 		<para>
 			A viewer program for unified-diff files (patch files).
 			No parameters are required.
@@ -265,12 +258,31 @@ C:\Path-To\WinMerge.exe %merged
 			well on files which do not have standard CR-LF
 			line-endings. Since most unified diff files have pure
 			LF line-endings, they do not view well in NotePad.
-			However, you can download a free NotePad replacement
+			However, you can use a free NotePad replacement
+			<ulink url="http://www.flos-freeware.ch/notepad2.html">
+				<citetitle>Notepad2</citetitle>
+			</ulink> (this is also shipped with TortoiseGit)
+			which not only displays the line-endings correctly,
+			but also colour codes the added and removed lines.
+		</para>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-alternativeeditor">
+		<title>Alternative editor</title>
+		<?dbhh topicname="HIDD_SETTINGSPROGSALTERNATIVEEDITOR"?>
+		<figure id="tsvn-dug-settings-dia-6b">
+			<title>The Settings Dialog, Alternative editor Page</title>
+			<graphic fileref="../images/SettingsAlternativeEditor.png"/>
+		</figure>
+		<para>
+			The original Windows NotePad program does not behave
+			well on files which do not have standard CR-LF
+			line-endings. However, a lot of git configuration files do not have
+			a standard CR-LF line-ending. Because of this TortoiseGit uses a free
+			(shipped) NotePad replacement
 			<ulink url="http://www.flos-freeware.ch/notepad2.html">
 				<citetitle>Notepad2</citetitle>
 			</ulink>
-			which not only displays the line-endings correctly,
-			but also colour codes the added and removed lines.
+			which displays the line-endings correctly by default.
 		</para>
 	</sect3>
 </sect2>

@@ -26,45 +26,6 @@
     code merged from repository
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; revision
 </screen>
-<!--
-		Also, for every conflicted file Git places three
-		additional files in your directory:
-		<variablelist>
-			<varlistentry>
-				<term>filename.ext.mine</term>
-				<listitem>
-					<para>
-						This is your file as it existed in your
-						working copy before you updated your working copy
-						- that is, without conflict markers. This file has
-						your latest changes in it and nothing else.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>filename.ext.rOLDREV</term>
-				<listitem>
-					<para>
-						This is the file that was the BASE
-						revision before you updated your working copy. That is,
-						it the file that you checked out before you made
-						your latest edits.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>filename.ext.rNEWREV</term>
-				<listitem>
-					<para>
-						This is the file that your Git
-						client just received from the server when you updated
-						your working copy. This file corresponds to the HEAD
-						revision of the repository.
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
--->
 	</para>
 	<para>
 		You can launch an external merge tool / conflict
@@ -76,6 +37,43 @@
 		or you can use any other editor to manually
 		resolve the conflict. You should decide what the code
 		should look like, do the necessary changes and save the file.
+
+		For this, Git places three additional files in your directory for the selected conflicted file:
+		<variablelist>
+			<varlistentry>
+				<term>filename.ext.LOCAL.ext</term>
+				<listitem>
+					<para>
+						This is your file as it existed in your
+						working copy before you updated your working copy
+						- that is, without conflict markers. This file has
+						your latest changes in it and nothing else.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>filename.ext.BASE.ext</term>
+				<listitem>
+					<para>
+						This is the file that was the BASE
+						revision before you updated your working copy. That is,
+						it the file that you checked out before you made
+						your latest edits.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>filename.ext.REMOTE.ext</term>
+				<listitem>
+					<para>
+						This is the file that your Git
+						client just received from the server when you updated
+						your working copy. This file corresponds to the HEAD
+						revision of the repository.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
 	</para>
 	<para>
 		Afterwards execute the command
@@ -86,26 +84,25 @@
 		and commit your modifications to the repository.
 		Please note that the Resolve command does not really
 		resolve the conflict. 
-		<!--
-		It just removes the
-		<filename>filename.ext.mine</filename> and
-		<filename>filename.ext.r*</filename> files,
-		-->
-		I use "git add" to mark file status as resolved
-		to allow you to commit your changes.
+		It uses "git add" to mark file status as resolved
+		to allow you to commit your changes
+		and it removes the
+		<filename>filename.ext.BASE.ext</filename>,
+		<filename>filename.ext.LOCAL.ext</filename> and
+		<filename>filename.ext.REMOTE.ext</filename> files.
 	</para>
 	<para>
 		If you have conflicts with binary files, Git does
 		not attempt to merge the files itself. The local file remains
 		unchanged (exactly as you last changed it) and you have
-		<filename>filename.ext.r*</filename> files.
+		<filename>filename.ext.BASE|LOCAL|REMOTE.ext</filename> files.
 		If you want to discard your changes and keep the repository
 		version, just use the Revert command. If you want to keep
 		your version and overwrite the repository version, use the
-		Resolved command, then commit your version.
+		<guimenuitem>Resolved</guimenuitem> command, then commit your version.
 	</para>
 	<para>
-		You can use the Resolved command for multiple files
+		You can use the <guimenuitem>Resolved</guimenuitem> command for multiple files
 		if you right click on the parent folder and select
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -114,5 +111,9 @@
 		This will bring up a dialog listing all conflicted files
 		in that folder, and you can select which ones to mark
 		as resolved.
+		<figure id="tsvn-dug-conflicts-dia-1">
+			<title>The resolve conflicts dialog</title>
+			<graphic fileref="../images/ResolveConflict.png"/>
+		</figure>
 	</para>
 </sect1>

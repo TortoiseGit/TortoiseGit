@@ -1,6 +1,6 @@
 @echo off & setlocal enableextensions enabledelayedexpansion
 :: ============================================================ 
-:: $Id: adjustimages.bat 15164 2009-01-22 22:22:30Z simonlarge $
+:: $Id: adjustimages.bat 22184 2011-10-25 15:02:18Z luebbe.tortoisesvn $
 :: ============================================================ 
 :: This script verifies all .png images to see if they fit
 :: in the PDF version of the documentation. The FOP version we
@@ -31,14 +31,7 @@ for %%? in (%1) do Call :ProcAdjustFile %%?
 endlocal & goto:EOF
 ::
 :DoDefault
-for %%? in (de\*.png) do Call :ProcAdjustFile %%?
 for %%? in (en\*.png) do Call :ProcAdjustFile %%?
-for %%? in (es\*.png) do Call :ProcAdjustFile %%?
-for %%? in (fi\*.png) do Call :ProcAdjustFile %%?
-for %%? in (fr\*.png) do Call :ProcAdjustFile %%?
-for %%? in (id\*.png) do Call :ProcAdjustFile %%?
-for %%? in (ja\*.png) do Call :ProcAdjustFile %%?
-for %%? in (ru\*.png) do Call :ProcAdjustFile %%?
 :: Cleanup
 for %%? in (f_info.txt) do if exist %%? del %%?
 endlocal & goto :EOF
@@ -51,6 +44,7 @@ nconvert.exe -info %1>f_info.txt
 :: Extract image width, height and dpi
 :: Width   = 3rd word on 10th line
 :: Height  = 3rd word on 11th line
+:: Channel = 5th word on 12th line
 :: XDPI    = 3rd word on 19th line
 :: YDPI    = 3rd word on 20th line
 :: Do the test. Get the third word of the tenth line.
@@ -58,12 +52,15 @@ call :ProcGetLine f_info.txt 10 getLine
 for /f "tokens=3" %%? in ("%getLine%") do set /a w_image = %%?
 call :ProcGetLine f_info.txt 11 getLine
 for /f "tokens=3" %%? in ("%getLine%") do set /a h_image = %%?
+call :ProcGetLine f_info.txt 12 getLine
+for /f "tokens=5" %%? in ("%getLine%") do set /a channels = %%?
 call :ProcGetLine f_info.txt 19 getLine
 for /f "tokens=3" %%? in ("%getLine%") do set /a xdpi = %%?
 call :ProcGetLine f_info.txt 20 getLine
 for /f "tokens=3" %%? in ("%getLine%") do set /a ydpi = %%?
 :: Set default dpi if no dpi was found
 set /a must_convert = 0
+set /a must_channel = 0
 if %xdpi% equ 0 (
    set /a xdpi = 96
    set /a must_convert = 1
@@ -71,6 +68,11 @@ if %xdpi% equ 0 (
 if %ydpi% equ 0 (
    set /a ydpi = 96
    set /a must_convert = 1
+)
+if %channels% geq 4 (
+    echo %1: alpha channel detected
+    set /a must_channel = 1
+    set /a must_convert = 1
 )
 ::
 :: Calculate image width and height (factor 1000 is used because
@@ -121,8 +123,12 @@ if %w_delta% geq 0 (
 :: Make sure the dpi is large enough (integer arithmetic truncates)
 set /a new_dpi = new_dpi + 1
 echo adjust dpi to %new_dpi%
-nconvert.exe -dpi %new_dpi% %1 >nul
+nconvert.exe -o %1 -dpi %new_dpi% %1 >nul
 :Done
+if %must_channel% equ 1 (
+    nconvert.exe -o %1 -ctype rgb %1 >nul
+)
+optipng.exe -o7 -quiet %1
 endlocal & goto :EOF
 ::===============================================================
 :ProcGetLine FileName LineNro returnText

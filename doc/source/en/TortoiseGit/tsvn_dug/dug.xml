@@ -59,9 +59,6 @@
 	<!-- ================================================================= -->
 	<!-- include external entity refs -->
 	<xi:include href="./dug_general.xml"/>
-	<!--
-	<xi:include href="./dug_import.xml"/>
-	-->
   <xi:include href="./dug_create.xml"/>
   <xi:include href="./dug_clone.xml"/>
   <xi:include href="./dug_checkout.xml"/>
@@ -71,10 +68,7 @@
   <xi:include href="./dug_push.xml"/>
   <xi:include href="./dug_sync.xml"/>
   <xi:include href="./dug_browseref.xml"/>
-	<!--
-	<xi:include href="./dug_update.xml"/>
-	-->
-	
+  <xi:include href="./dug_submodules.xml"/>
 	<!--
 	<xi:include href="./dug_changelist.xml"/>
 	-->
@@ -89,6 +83,7 @@
 	<xi:include href="./dug_cleanup.xml"/>
 	<xi:include href="./dug_reset.xml"/>
 	<xi:include href="./dug_stash.xml"/>
+	<xi:include href="./dug_bisect.xml"/>
 	<!--
 	<xi:include href="./dug_propertypage.xml"/>
 	-->
@@ -97,25 +92,10 @@
     <xi:include href="./dug_rebase.xml"/>
     <xi:include href="./dug_conflicts.xml"/>
 
-	<!--
-	<xi:include href="./dug_locking.xml"/>
-	-->
 	<xi:include href="./dug_patch.xml"/>
 	<xi:include href="./dug_blame.xml"/>
-	<!--
-	<xi:include href="./dug_repobrowser.xml"/>
-	-->
-	<!--
-	<xi:include href="./dug_revgraph.xml"/>
-	-->
 	<xi:include href="./dug_export.xml"/>
-	<!--
-	<xi:include href="./dug_relocate.xml"/>
-	-->
 	<xi:include href="./dug_bugtracker.xml"/>
-	<!--
-	<xi:include href="./dug_repoviewer.xml"/>
-	-->
 	<xi:include href="./dug_settings.xml"/>
 	<xi:include href="./dug_gitsvn.xml"/>
 	<sect1 id="tsvn-dug-donate">
