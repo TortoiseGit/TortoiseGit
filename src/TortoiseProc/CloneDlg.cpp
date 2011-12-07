@@ -354,16 +354,20 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		if(str.GetLength()>=5 && (str.Right(5).MakeLower() == _T("trunk") ))
 		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = FALSE;
-			this->UpdateData(FALSE);
 		}
 		else
 		{
 			this->m_bSVNBranch=this->m_bSVNTags=this->m_bSVNTrunk = TRUE;
-			this->UpdateData(FALSE);
 		}
-
+		m_bDepth = false;
+		m_bBare = false;
+		m_bRecursive = false;
+		this->UpdateData(FALSE);
+		OnBnClickedCheckDepth();
 	}
-
+	this->GetDlgItem(IDC_CHECK_DEPTH)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_CHECK_BARE)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(!m_bSVN);
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
