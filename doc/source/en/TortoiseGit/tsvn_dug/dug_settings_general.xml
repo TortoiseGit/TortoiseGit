@@ -115,33 +115,17 @@
 	</sect3>
 	
 	<sect3 id="tsvn-dug-settings-dialogs">
-		<title>TortoiseGit Dialog Settings 1</title>
+		<title>TortoiseGit Dialog Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS"?>
 		<para>
 			<figure id="tsvn-dug-settings-dia-dialogs">
-				<title>The Settings Dialog, Dialogs 1 Page</title>
+				<title>The Settings Dialog, Dialogs Page</title>
 				<graphic fileref="../images/SettingsDialog.png"/>
 			</figure>
 			This dialog allows you to configure some of TortoiseGit's
 			dialogs the way you like them.
 		</para>
 		<variablelist>
-			<varlistentry>
-				<term>Default number of log messages</term>
-				<listitem>
-					<para>
-						Limits the number of log messages that TortoiseGit
-						fetches when you first select
-						<menuchoice>
-							<guimenu>TortoiseGit</guimenu>
-							<guimenuitem>Show Log</guimenuitem>
-						</menuchoice>
-						Useful for slow server connections. You can always use
-						<guibutton>Show All</guibutton> or
-						<guibutton>Next 100</guibutton> to get more messages.
-					</para>
-				</listitem>
-			</varlistentry>
 			<varlistentry>
 				<term>Font for log messages</term>
 				<listitem>
@@ -175,6 +159,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+<!--
 			<varlistentry>
 				<term>Progress Dialog</term>
 				<listitem>
@@ -223,6 +208,7 @@
 					</para>
 				</listitem>
 			</varlistentry>
+-->
 			<varlistentry>
 				<term>Use recycle bin when reverting</term>
 				<listitem>
@@ -232,70 +218,6 @@
 						sending the modified file to the recycle bin before
 						bringing back the pristine copy. If you prefer to
 						skip the recycle bin, uncheck this option.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Use URL of WC as the default <quote>From:</quote> URL</term>
-				<listitem>
-					<para>
-						In the merge dialog, the default behaviour is for the
-						<guilabel>From:</guilabel> URL to be remembered between
-						merges. However, some people like to perform merges from
-						many different points in their hierarchy, and find it easier
-						to start out with the URL of the current working copy.
-						This can then be edited to refer to a parallel path on
-						another branch.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Default checkout path</term>
-				<listitem>
-					<para>
-						You can specify the default path for checkouts. If you keep all
-						your checkouts in one place, it is useful to have the drive
-						and folder pre-filled so you only have to add the new folder name
-						to the end.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Default checkout URL</term>
-				<listitem>
-					<para>
-						You can also specify the default URL for checkouts. If you often
-						checkout sub-projects of some very large project, it can be useful
-						to have the URL pre-filled so you only have to add the sub-project
-						name to the end.
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-	</sect3>
-	<sect3 id="tsvn-dug-settings-dialogs-2">
-		<title>TortoiseGit Dialog Settings 2</title>
-		<?dbhh topicname="HIDD_SETTINGSMISC"?>
-		<para>
-			<figure id="tsvn-dug-settings-dia-dialogs-2">
-				<title>The Settings Dialog, Dialogs 2 Page</title>
-				<graphic fileref="../images/SettingsDialog2.png"/>
-			</figure>
-		</para>
-		<variablelist>
-			<varlistentry>
-				<term>Recurse into unversioned folders</term>
-				<listitem>
-					<para>
-						If this box is checked (default state), then whenever
-						the status of an unversioned folder is shown in the
-						<guilabel>Add</guilabel>,
-						<guilabel>Commit</guilabel> or
-						<guilabel>Check for Modifications</guilabel> dialog,
-						every child file and folder is also shown.
-						If you uncheck this box, only the unversioned parent is shown.
-						Unchecking reduces clutter in these dialogs. In that case if you
-						select an unversioned folder for Add, it is added recursively.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -340,19 +262,6 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Re-open commit and branch/tag dialog after a commit failed</term>
-				<listitem>
-					<para>
-						When a commit fails for some reason (working copy needs updating,
-						pre-commit hook rejects commit, network error, etc), you can select
-						this option to keep the commit dialog open ready to try again.
-						However, you should be aware that this can lead to problems.
-						If the failure means you need to update your working copy, and
-						that update leads to conflicts you must resolve those first.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
 				<term>Select items automatically</term>
 				<listitem>
 					<para>
@@ -360,18 +269,6 @@
 						(versioned) items to be selected for commit automatically.
 						If you prefer to start with nothing selected and pick the
 						items for commit manually, uncheck this box.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Contact the repository on startup</term>
-				<listitem>
-					<para>
-						The Check for Modifications dialog checks the working copy
-						by default, and only contacts the repository when you click
-						<guibutton>Check repository</guibutton>. If you always want
-						to check the repository, you can use this setting to make that
-						action happen automatically.
 					</para>
 				</listitem>
 			</varlistentry>

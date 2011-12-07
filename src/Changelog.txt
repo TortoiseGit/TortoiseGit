@@ -31,6 +31,7 @@
  * Fixed issue #378: CRLF/LF conversion causes commit dialog to freeze
  * Fixed issue #858: Tortoise Git Client crash when showing the log dialog
  * Fixed issue #920: TortoiseGitBlame and UTF-16 LE
+ * updated documentation
 
 = Release 1.7.5.0 =
 == Features==
