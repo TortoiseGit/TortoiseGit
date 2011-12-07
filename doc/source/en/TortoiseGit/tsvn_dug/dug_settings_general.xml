@@ -65,118 +65,6 @@
 				</para>
 			</listitem>
 		</varlistentry>
-		<varlistentry>
-			<term>Global ignore pattern</term>
-			<listitem>
-				<indexterm>
-					<primary>exclude pattern</primary>
-				</indexterm>
-				<indexterm>
-					<primary>global ignore</primary>
-				</indexterm>
-				<para>
-					Global ignore patterns are used to prevent unversioned files from
-					showing up e.g. in the commit dialog. Files matching the
-					patterns are also ignored by an import.
-					Ignore files or directories by typing in the names or extensions.
-					Patterns are separated by spaces e.g.
-					<literal>bin obj *.bak *.~?? *.jar *.[Tt]mp</literal>.
-					These patterns should not include any path separators. Note also
-					that there is no way to differentiate between files and directories.
-					Read <xref linkend="tsvn-dug-ignore-glob"/> for more information
-					on the pattern-matching syntax.
-				</para>
-				<para>
-					Note that the ignore patterns you specify here will also
-					affect other Git clients running on your PC, including
-					the command line client.
-				</para>
-				<caution>
-					<para>
-					If you use the Git configuration file to set
-					a <literal>global-ignores</literal> pattern, it will
-					override the settings you make here. The Git
-					configuration file is accessed using the
-					<guibutton>Edit</guibutton> as described below.
-					</para>
-				</caution>
-				<para>
-					This ignore pattern will affect all your projects.
-					It is not versioned, so it will not affect other users.
-					By contrast you can also use the versioned
-					<literal>svn:ignore</literal> property to exclude
-					files or directories from version control. Read
-					<xref linkend="tsvn-dug-ignore"/>
-					for more information.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
-			<term>Set file dates to the <quote>last commit time</quote></term>
-			<listitem>
-				<para>
-					This option tells TortoiseGit to set the file dates to
-					the last commit time when doing a checkout or an update.
-					Otherwise TortoiseGit will use the current date.
-					If you are developing software it is generally best
-					to use the current date because build systems normally
-					look at the date stamps to decide which files need
-					compiling. If you use <quote>last commit time</quote> and revert
-					to an older file revision, your project may not compile
-					as you expect it to.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
-			<term>Git configuration file</term>
-			<listitem>
-				<para>
-					Use <guibutton>Edit</guibutton> to edit the 
-					Git configuration file directly.
-					Some settings cannot be modified directly by 
-					TortoiseGit, and need to be set here instead.
-					For more information about the Git 
-					<filename>config</filename> file see the 
-					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html">
-						<citetitle>Runtime Configuration Area</citetitle>
-					</ulink>.
-					The section on 
-					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.props.html#svn.advanced.props.auto">
-						<citetitle>Automatic Property Setting</citetitle>
-					</ulink>
-					is of particular interest, and that is configured here.
-					Note that Git can read configuration information
-					from several places, and you need to know which one
-					takes priority. Refer to 
-					<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html#svn.advanced.confarea.windows-registry">
-						<citetitle>Configuration and the Windows Registry</citetitle>
-					</ulink> to find out more.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
-			<term>Use <filename>_svn</filename> instead of <filename>.svn</filename> directories</term>
-			<listitem>
-				<para>
-					VS.NET when used with web projects can't handle the <literal>.svn</literal>
-					folders that Git uses to store its internal information.
-					This is not a bug in Git. The bug is in VS.NET and the frontpage
-					extensions it uses. Read <xref linkend="tsvn-dug-settings-asp-dot-net"/>
-					to find out more about this issue.
-				</para>
-				<para>
-					If you want to change the behaviour of Git and TortoiseGit,
-					you can use this checkbox to set the environment variable which
-					controls this.
-				</para>
-				<para>
-					You should note that changing this option will not automatically
-					convert existing working copies to use the new admin directory.
-					You will have to do that yourself using a script (See our FAQ)
-					or simply check out a fresh working copy.
-				</para>
-			</listitem>
-		</varlistentry>
 	</variablelist>
 	<sect3 id="tsvn-dug-settings-look-feel">
 		<title>Context Menu Settings</title>
@@ -192,14 +80,15 @@
 			appear in the submenu.
 		</para>
 		<para>
-			There is a special case for <guilabel>Get Lock</guilabel>. You can of
-			course promote it to the top level using the list above, but as most
-			files don't need locking this just adds clutter. However, a file with
-			the <literal>svn:needs-lock</literal> property needs this action every
-			time it is edited, so in that case it is very useful to have at the top
-			level. Checking the box here means that when a file is selected which has
-			the <literal>svn:needs-lock</literal> property set,
-			<guilabel>Get Lock</guilabel> will always appear at the top level.
+			Most of the time, you won't need the TortoiseGit context menu, apart
+			for folders that are under version control by Git. For non-
+			versioned folders, you only really need the context menu when you
+			want to do a checkout. If you check the option <literal>Hide menus
+			for unversioned paths</literal>, TortoiseGit will not add its entries
+			to the context menu for unversioned folders. But the entries are
+			added for all items and paths in a versioned folder. And you can
+			get the entries back for unversioned folders by holding the 
+			<keycap>Shift</keycap> key down while showing the context menu.
 		</para>
 		<para>
 			If there are some paths on your computer where you just don't want
@@ -217,7 +106,8 @@
 				<graphic fileref="../images/SettingsExtendMenu.png"/>
 			</figure>
 			This page allows you to specify which of the TortoiseGit context menu
-			entries will show up in the extend context menu(press shift to show it), 
+			entries will show up in the extend context menu (press <keycap>Shift</keycap>
+			key on <action>right click</action>), 
 			and which will appear in the normal context menu. 
 			This config will help reduce the context menu number at normal usage case
 			according to your usage module. 
@@ -433,16 +323,6 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Only use spellchecker when <literal>tsvn:projectlanguage</literal> is set</term>
-				<listitem>
-					<para>
-						If you don't wish to use the spellchecker for all commits,
-						check this box. The spellchecker will still be enabled where
-						the project properties require it.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
 				<term>Max. items to keep in the log message history</term>
 				<listitem>
 					<para>
@@ -492,33 +372,6 @@
 						<guibutton>Check repository</guibutton>. If you always want
 						to check the repository, you can use this setting to make that
 						action happen automatically.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Show Lock dialog before locking files</term>
-				<listitem>
-					<para>
-						When you select one or more files and then use
-						<menuchoice>
-							<guimenu>TortoiseGit</guimenu>
-							<guimenuitem>Lock</guimenuitem>
-						</menuchoice>
-						to take out a lock on those files, on some projects it is
-						customary to write a lock message explaining why you have
-						locked the files. If you do not use lock messages, you can
-						uncheck this box to skip that dialog and lock the files
-						immediately.
-					</para>
-					<para>
-						If you use the lock command on a folder, you are always
-						presented with the lock dialog as that also gives you the
-						option to select files for locking.
-					</para>
-					<para>
-						If your project is using the <literal>tsvn:lockmsgminsize</literal>
-						property, you will see the lock dialog regardless of this setting
-						because the project <emphasis>requires</emphasis> lock messages.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -642,8 +495,8 @@
 				<title>The Settings Dialog, Colours Page</title>
 				<graphic fileref="../images/SettingsColors3.png"/>
 			</figure>
-			This dialog allows you to configure the text colours
-			used in TortoiseGit's dialogs the way you like them.
+			This dialog allows you to configure the line colours
+			in the graph column used in TortoiseGit's log dialog the way you like them.
 		</para>
 	</sect3>
 </sect2>
