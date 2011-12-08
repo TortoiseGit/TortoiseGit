@@ -235,8 +235,8 @@
 		<sect2>
 			<title>System requirements</title>
 			<para>
-				TortoiseGit runs on Windows 2000 SP2, Windows XP or higher.
-				Windows 98, Windows ME and Windows NT4 are no longer supported.
+				TortoiseGit runs on Windows XP SP3 or higher.
+				Windows 98, Windows ME, Windows NT4 and Windows 2000 are no longer supported.
 			</para>
 			<para>
 				If you encounter any problems during or after installing
@@ -262,13 +262,18 @@
 			</important>
 		</sect2>
 		<sect2 id="tsvn-intro-install-lang">
-			<title>Language Packs(not start)</title>
+			<title>Language Packs</title>
 			<indexterm>
 				<primary>language packs</primary>
 			</indexterm>
 			<indexterm>
 				<primary>translations</primary>
 			</indexterm>
+			<para>
+				The TortoiseGit user interface has not yet been translated into many
+				different languages.
+			</para>
+<!--
 			<para>
 				The TortoiseGit user interface has been translated into many
 				different languages, so you may be able to download a language
@@ -285,6 +290,7 @@
 				Just run the install program and follow the instructions.
 				Next time you restart, the translation will be available.
 			</para>
+-->
 		</sect2>
 		<sect2 id="tsvn-intro-instalsl-spell">
 			<title>Spellchecker</title>
@@ -309,11 +315,13 @@
 			</para>
 			<para>
 				The installer automatically adds the US and UK English dictionaries.
+<!--
 				If you want other languages, the easiest option is simply to
 				install one of TortoiseGit's language packs. This will install
 				the appropriate dictionary files as well as the TortoiseGit local
 				user interface.
 				Next time you restart, the dictionary will be available too.
+-->
 			</para>
 			<para>
 				Or you can install the dictionaries yourself. If you have OpenOffice or
@@ -354,6 +362,7 @@
 				If you install multiple dictionaries, TortoiseGit uses these rules
 				to select which one to use.
 				<orderedlist>
+<!--
 					<listitem>
 						<para>
 						Check the <literal>tsvn:projectlanguage</literal> setting.
@@ -361,6 +370,7 @@
 						about setting project properties.
 						</para>
 					</listitem>
+-->
 					<listitem>
 						<para>
 						If no project language is set, or that language is not

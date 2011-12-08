@@ -56,14 +56,8 @@
 			lower right corner to show whether the menu entry is for a file,
 			a folder, a shortcut or for multiple selected items.
 		</para>
-		<para>
-			If you are using Windows 2000 you will find that the context menus are
-			shown as plain text, without the menu icons shown above. We are aware that
-			this was working in previous versions, but Microsoft has changed the way
-			its icon handlers work for Vista, requiring us to use a different display
-			method which unfortunately does not work on Windows 2000.
-		</para>
 	</sect2>
+<!--
 	<sect2 id="tsvn-dug-general-drag">
 		<title>Drag and Drop</title>
 		<indexterm>
@@ -86,6 +80,7 @@
 			which is under version control.
 		</para>
 	</sect2>
+-->
 	<sect2 id="tsvn-dug-general-shortcuts">
 		<title>Common Shortcuts</title>
 		<para>
