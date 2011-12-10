@@ -1231,22 +1231,18 @@ BOOL CGit::CheckMsysGitDir()
 	this->m_Environment.clear();
 	m_Environment.CopyProcessEnvironment();
 
-	TCHAR *oldpath,*home;
+	TCHAR *oldpath;
 	size_t homesize,size,httpsize;
 
 	// set HOME if not set already
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
 	if (!homesize)
 	{
-		if (   (!_tdupenv_s(&home,&size,_T("USERPROFILE"))) && (home != NULL)  )
-		{
-			m_Environment.SetEnv(_T("HOME"),home);
-			free(home);
-		}
-		else
-		{
-			ATLTRACE("CGit::CheckMsysGitDir Unable to SetEnv HOME\n");
-		}
+		char charBuf[MAX_PATH];
+		TCHAR buf[MAX_PATH];
+		strcpy_s(charBuf, MAX_PATH, get_windows_home_directory());
+		_tcscpy_s(buf, MAX_PATH, CA2CT(charBuf));
+		m_Environment.SetEnv(_T("HOME"), buf);
 	}
 	CString str;
 
