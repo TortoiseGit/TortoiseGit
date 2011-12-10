@@ -33,6 +33,7 @@
  * Fixed issue #920: TortoiseGitBlame and UTF-16 LE
  * updated documentation
  * Fixed issue #994: Git clone from SVN - Depth field is useless
+ * Fixed issue #996: Compare with Working Copy error on renamed files
 
 = Release 1.7.5.0 =
 == Features==

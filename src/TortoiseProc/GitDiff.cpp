@@ -302,14 +302,18 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		CString temp(szTempName);
 		DeleteFile(szTempName);
 		CreateDirectory(szTempName, NULL);
+		CTGitPath fileName = *pPath2;
+		if (rev1 == GIT_REV_ZERO && pPath2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+			fileName = CTGitPath(pPath2->GetGitOldPathString());
+
 		// use original file extension, an external diff tool might need it
 		file2.Format(_T("%s\\%s-%s-left%s"),
 				temp,
-				pPath2->GetBaseFilename(),
+				fileName.GetBaseFilename(),
 				rev2.Left(6),
-				pPath2->GetFileExtension());
-		title2 = pPath2->GetFileOrDirectoryName()+_T(":")+rev2.Left(6);
-		g_Git.GetOneFile(rev2,*pPath2,file2);
+				fileName.GetFileExtension());
+		title2 = fileName.GetFileOrDirectoryName() + _T(":") + rev2.Left(6);
+		g_Git.GetOneFile(rev2, fileName, file2);
 		::SetFileAttributes(file2, FILE_ATTRIBUTE_READONLY);
 	}
 	else
