@@ -110,25 +110,32 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 	cmd += ref;
 
 	int ret = g_Git.Run(cmd, &out, CP_ACP);
-	if (ret && !(ret == 1 && out.Find(_T("CONFLICT"))))
+	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
+	if (ret && !(ret == 1 && hasConflicts))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
-	else if (showChanges)
-	{
- 		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success</ct>\nDo you want to show change?"))
-			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
-		{
-			CChangedDlg dlg;
-			dlg.m_pathList.AddPath(CTGitPath());
-			dlg.DoModal();
-		}
-		return 0;
-	}
 	else
 	{
-		CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash Apply Success</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-		return 0;
+		CString withConflicts;
+		if (hasConflicts)
+			withConflicts = _T(" with conflicts");
+		if (showChanges)
+		{
+ 			if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success") + withConflicts + _T("</ct>\nDo you want to show change?"))
+				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
+			{
+				CChangedDlg dlg;
+				dlg.m_pathList.AddPath(CTGitPath());
+				dlg.DoModal();
+			}
+			return 0;
+		}
+		else
+		{
+			CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash Apply Success") + withConflicts + _T("</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			return 0;
+		}
 	}
 	return -1;
 }
@@ -139,26 +146,32 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 	cmd=_T("git.exe stash pop ");
 
 	int ret = g_Git.Run(cmd, &out, CP_ACP);
-	if (ret && !(ret == 1 && out.Find(_T("CONFLICT"))))
+	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
+	if (ret && !(ret == 1 && hasConflicts))
 	{
 		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-
-	}
-	else if (showChanges)
-	{
- 		if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash POP Success</ct>\nDo you want to show change?"))
-			,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
-		{
-			CChangedDlg dlg;
-			dlg.m_pathList.AddPath(CTGitPath());
-			dlg.DoModal();
-		}
-		return 0;
 	}
 	else
 	{
-		CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash POP Success</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-		return 0;
+		CString message = _T("<ct=0xff0000>Stash POP Success</ct>");
+		if (hasConflicts)
+			message = _T("<ct=0x000000ff>Stash POP Failed, there are conflicts</ct>");
+		if (showChanges)
+		{
+ 			if(CMessageBox::Show(NULL,CString(message + _T("\nDo you want to show change?"))
+				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
+			{
+				CChangedDlg dlg;
+				dlg.m_pathList.AddPath(CTGitPath());
+				dlg.DoModal();
+			}
+			return 0;
+		}
+		else
+		{
+			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			return 0;
+		}
 	}
 	return -1;
 }
