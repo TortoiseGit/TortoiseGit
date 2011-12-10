@@ -1589,14 +1589,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Settings\SetMisc.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Settings\SetMisc.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Settings\SetOverlayHandlers.cpp"
 					>
 				</File>
