@@ -12,7 +12,6 @@
 #include "storage.h"
 #include "tree234.h"
 
-#include "LoginDialog.h"
 #define WM_AGENT_CALLBACK (WM_APP + 4)
 
 struct agent_callback {
@@ -33,6 +32,10 @@ void fatalbox(char *p, ...)
 	sprintf(morestuff, "%.70s Fatal Error", appname);
 	MessageBox(GetParentHwnd(), stuff, morestuff, MB_ICONERROR | MB_OK);
 	sfree(stuff);
+    if (logctx) {
+        log_free(logctx);
+        logctx = NULL;
+    }
 	cleanup_exit(1);
 }
 void modalfatalbox(char *p, ...)
@@ -47,6 +50,10 @@ void modalfatalbox(char *p, ...)
 	MessageBox(GetParentHwnd(), stuff, morestuff,
 		MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
 	sfree(stuff);
+    if (logctx) {
+        log_free(logctx);
+        logctx = NULL;
+    }
 	cleanup_exit(1);
 }
 void connection_fatal(void *frontend, char *p, ...)
@@ -61,6 +68,10 @@ void connection_fatal(void *frontend, char *p, ...)
 	MessageBox(GetParentHwnd(), stuff, morestuff,
 		MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
 	sfree(stuff);
+    if (logctx) {
+        log_free(logctx);
+        logctx = NULL;
+    }
 	cleanup_exit(1);
 }
 void cmdline_error(char *p, ...)
@@ -74,7 +85,7 @@ void cmdline_error(char *p, ...)
 	sprintf(morestuff, "%.70s Command Line Error", appname);
 	MessageBox(GetParentHwnd(), stuff, morestuff, MB_ICONERROR | MB_OK);
 	sfree(stuff);
-	exit(1);
+    exit(1);
 }
 
 HANDLE inhandle, outhandle, errhandle;
@@ -277,7 +288,6 @@ void stdouterr_sent(struct handle *h, int new_backlog)
 				      handle_backlog(stderr_handle)));
     }
 }
-
 
 int main(int argc, char **argv)
 {
