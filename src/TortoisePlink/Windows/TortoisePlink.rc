@@ -70,14 +70,14 @@ BEGIN
         BLOCK "080904b0"
         BEGIN
             VALUE "Comments", "Adapted from PuTTY plink (http://www.chiark.greenend.org.uk/~sgtatham/putty/)"
-            VALUE "CompanyName", "tortoisesvn.net"
+            VALUE "CompanyName", "TortoiseGit team and TortoiseSVN team"
             VALUE "FileDescription", "TortoisePlink"
-            VALUE "FileVersion", "Release 0.61"
+            VALUE "FileVersion", "Release 0.62"
             VALUE "InternalName", "TortoisePlink"
             VALUE "LegalCopyright", "Copyright © 2003-2011"
             VALUE "OriginalFilename", "TortoisePlink.exe"
-            VALUE "ProductName", "TortoiseSVN TortoisePlink"
-            VALUE "ProductVersion", "Release 0.61"
+            VALUE "ProductName", "TortoiseGit TortoisePlink"
+            VALUE "ProductVersion", "Release 0.62"
         END
     END
     BLOCK "VarFileInfo"

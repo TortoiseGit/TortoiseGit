@@ -303,11 +303,11 @@ static void wprefs(void *sesskey, char *name,
     for (maxlen = i = 0; i < nvals; i++) {
 	const char *s = val2key(mapping, nvals, array[i]);
 	if (s) {
-            maxlen += 1 + strlen(s);
+            maxlen += (maxlen > 0 ? 1 : 0) + strlen(s);
         }
     }
 
-    buf = snewn(maxlen, char);
+    buf = snewn(maxlen + 1, char);
     p = buf;
 
     for (i = 0; i < nvals; i++) {
@@ -317,7 +317,8 @@ static void wprefs(void *sesskey, char *name,
 	}
     }
 
-    assert(p - buf == maxlen - 1);     /* maxlen counted the NUL */
+    assert(p - buf == maxlen);
+    *p = '\0';
 
     write_setting_s(sesskey, name, buf);
 
