@@ -1565,7 +1565,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(pRev->m_ParentHash.size()<=1)
 					{
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
-
+						if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+							popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
 					}
 					else
 					{
@@ -1576,6 +1577,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							CString str;
 							str.Format(_T("Parent %d"), i+1);
 							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS +((i+1)<<16),str);
+							if (i == 0 && CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+							{
+								popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
+								diffmenu.SetDefaultItem(ID_COMPAREWITHPREVIOUS +((i+1)<<16), FALSE);
+							}
 						}
 					}
 				}
