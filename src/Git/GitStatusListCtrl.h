@@ -303,15 +303,6 @@ public:
 	}
 	void OnContextMenuHeader(CWnd * pWnd, CPoint point, bool isGroundEnable=false)
 	{
-		bool XPorLater = false;
-		OSVERSIONINFOEX inf;
-		SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-		inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-		GetVersionEx((OSVERSIONINFO *)&inf);
-		WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-		if (fullver >= 0x0501)
-			XPorLater = true;
-
 		CHeaderCtrl * pHeaderCtrl = (CHeaderCtrl *)pWnd;
 		if ((point.x == -1) && (point.y == -1))
 		{
@@ -332,11 +323,8 @@ public:
 
 			// build control menu
 
-			if (XPorLater)
-			{
-				//temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
-				//popup.AppendMenu(isGroundEnable? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
-			}
+			//temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
+			//popup.AppendMenu(isGroundEnable? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
 
 			if (AnyUnusedProperties())
 			{

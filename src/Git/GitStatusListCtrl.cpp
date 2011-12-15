@@ -1721,14 +1721,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 	//WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
-	bool XPorLater = false;
-	OSVERSIONINFOEX inf;
-	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&inf);
-	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-	if (fullver >= 0x0501)
-		XPorLater = true;
 	//bool bShift = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CTGitPath * filepath;
 
@@ -1740,7 +1732,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 		ClientToScreen(&rect);
 		point = rect.CenterPoint();
 	}
-	if ((GetSelectedCount() == 0)&&(XPorLater)&&(m_bHasCheckboxes))
+	if ((GetSelectedCount() == 0) && (m_bHasCheckboxes))
 	{
 		// nothing selected could mean the context menu is requested for
 		// a group header
@@ -2117,7 +2109,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				popup.AppendMenuIcon(IDGITLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
 				popup.AppendMenuIcon(IDGITLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 #if 0
-				if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS)&&(XPorLater)
+				if ((m_dwContextMenus & SVNSLC_POPCHANGELISTS))
 					&&(wcStatus != git_wc_status_unversioned)&&(wcStatus != git_wc_status_none))
 				{
 					popup.AppendMenu(MF_SEPARATOR);
