@@ -58,6 +58,7 @@
 #include "FileDiffDlg.h"
 #include "..\\TortoiseShell\\Resource.h"
 #include "FindDlg.h"
+#include "SysInfo.h"
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
 
@@ -71,7 +72,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bStrictStopped(false)
 	, m_pStoreSelection(NULL)
 	, m_nSelectedFilter(LOGFILTER_ALL)
-	, m_bVista(false)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
 	, m_pFindDialog(NULL)
@@ -148,13 +148,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_LOG);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAME);
-
-	OSVERSIONINFOEX inf;
-	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&inf);
-	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-	m_bVista = (fullver >= 0x0600);
 
 	m_ColumnRegKey=_T("log");
 
@@ -493,7 +486,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(Index);
 	HBRUSH brush = NULL;
 
-	if (IsAppThemed() && m_bVista)
+	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 	{
 		HTHEME hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 		int state = LISS_NORMAL;
@@ -576,7 +569,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	W_Dc.Attach(hdc);
 
 	HTHEME hTheme = NULL;
-	if (IsAppThemed() && m_bVista)
+	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
 	for(unsigned int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
@@ -627,7 +620,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		}
 
 		//When row selected, ajust label color
-		if (!(IsAppThemed() && m_bVista))
+		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
 			if (rItem.state & LVIS_SELECTED)
 				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
 
@@ -662,7 +655,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
 
 			//Draw text inside label
-			if (IsAppThemed() && m_bVista)
+			if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 			{
 				int txtState = LISS_NORMAL;
 				if (rItem.state & LVIS_SELECTED)
@@ -699,7 +692,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	}
 	rt.right=rect.right;
 
-	if (IsAppThemed() && m_bVista)
+	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 	{
 		int txtState = LISS_NORMAL;
 		if (rItem.state & LVIS_SELECTED)

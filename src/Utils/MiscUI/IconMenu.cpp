@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,19 +19,14 @@
 //
 #include "StdAfx.h"
 #include "IconMenu.h"
+#include "SysInfo.h"
 
 CIconMenu::CIconMenu(void) : CMenu()
 	, pfnBeginBufferedPaint(NULL)
 	, pfnEndBufferedPaint(NULL)
 	, pfnGetBufferedPaintBits(NULL)
 {
-	OSVERSIONINFOEX inf;
-	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&inf);
-	winVersion = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-
-	if (winVersion >= 0x0600)
+	if (SysInfo::Instance().IsVistaOrLater())
 	{
 		HMODULE hUxTheme = ::GetModuleHandle (_T("UXTHEME.DLL"));
 
@@ -72,7 +68,7 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 	
 	info.wID = nIDNewItem;
 	info.dwTypeData = menutextbuffer;
-	if (winVersion >= 0x600)
+	if (SysInfo::Instance().IsVistaOrLater())
 	{
 		info.fMask |= MIIM_BITMAP;
 		info.hbmpItem = IconToBitmapPARGB32(uIcon);

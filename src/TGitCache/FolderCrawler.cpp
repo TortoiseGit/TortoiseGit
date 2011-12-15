@@ -24,6 +24,7 @@
 #include "registry.h"
 #include "TGitCache.h"
 #include "shlobj.h"
+#include "SysInfo.h"
 
 
 CFolderCrawler::CFolderCrawler(void)
@@ -155,18 +156,11 @@ void CFolderCrawler::WorkerThread()
 	bool bFirstRunAfterWakeup = false;
 	DWORD currentTicks = 0;
 
-	// Quick check if we're on Vista
-	OSVERSIONINFOEX inf;
-	SecureZeroMemory(&inf, sizeof(OSVERSIONINFOEX));
-	inf.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	GetVersionEx((OSVERSIONINFO *)&inf);
-	WORD fullver = MAKEWORD(inf.dwMinorVersion, inf.dwMajorVersion);
-
 	for(;;)
 	{
 		bool bRecursive = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay"), TRUE);
 
-		if (fullver >= 0x0600)
+		if (SysInfo::Instance().IsVistaOrLater())
 		{
 			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
 		}
@@ -181,7 +175,7 @@ void CFolderCrawler::WorkerThread()
 			break;
 		}
 
-		if (fullver >= 0x0600)
+		if (SysInfo::Instance().IsVistaOrLater())
 		{
 			SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN);
 		}

@@ -447,8 +447,6 @@ public:
 protected:
 	CComCriticalSection	m_critSec;
 
-	bool				m_bVista;
-
 	HICON				m_hModifiedIcon;
 	HICON				m_hReplacedIcon;
 	HICON				m_hAddedIcon;

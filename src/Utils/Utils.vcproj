@@ -545,6 +545,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SysInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SysInfo.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TempFile.cpp"
 				>
 			</File>
