@@ -285,6 +285,7 @@ protected:
 	char					*m_Buffer;
 
 	DWORD					m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
+	bool					m_bRelativeTimes;	// Show relative times
 
 	CString					m_sRev;
 	CString					m_sAuthor;

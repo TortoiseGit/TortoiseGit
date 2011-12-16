@@ -141,6 +141,9 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	{
 		m_DateFormat = DATE_LONGDATE;
 	}
+	// get relative time display setting from registry
+	DWORD regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
+	m_bRelativeTimes = (regRelativeTimes != 0);
 
 	m_sRev.LoadString(IDS_LOG_REVISION);
 	m_sAuthor.LoadString(IDS_LOG_AUTHOR);
@@ -2783,7 +2786,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			CString str;
 			str.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
 																	m_sAuthor, pRev->GetAuthorName(),
-																	m_sDate, CAppUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat),
+																	m_sDate, CAppUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
 																	pRev->GetBody());
 
