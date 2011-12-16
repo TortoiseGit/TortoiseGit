@@ -2215,7 +2215,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_COMPARETWOFILES:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
-					CTGitPath * firstfilepath, * secondfilepath;
+					CTGitPath * firstfilepath = NULL, * secondfilepath = NULL;
 					if (pos)
 					{
 						firstfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));

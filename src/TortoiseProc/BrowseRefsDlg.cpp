@@ -305,7 +305,7 @@ bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
 			refName = newRefName;
 		//else refName is not a valid ref. Try to select as good as possible.
 	}
-	if(wcsnicmp(refName,L"refs/",5)!=0)
+	if(_wcsnicmp(refName, L"refs/", 5) != 0)
 		return false; // Not a ref name
 
 	CShadowTree& treeLeafHead=GetTreeNode(refName,NULL,false);
@@ -339,7 +339,7 @@ CShadowTree& CBrowseRefsDlg::GetTreeNode(CString refName, CShadowTree* pTreePos,
 {
 	if(pTreePos==NULL)
 	{
-		if(wcsnicmp(refName,L"refs/",5)==0)
+		if(_wcsnicmp(refName, L"refs/", 5) == 0)
 			refName=refName.Mid(5);
 		pTreePos=&m_TreeRoot;
 	}
