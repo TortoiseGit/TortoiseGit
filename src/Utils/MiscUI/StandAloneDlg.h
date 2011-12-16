@@ -19,7 +19,6 @@
 #pragma once
 
 #include "ResizableDialog.h"
-#include "Balloon.h"
 
 #pragma comment(lib, "htmlhelp.lib")
 
@@ -158,11 +157,22 @@ protected:
 	}
 
 	/**
-	 * Display a balloon with close button, anchored at a given control on this dialog.
+	 * Display a balloon with close button, anchored at a given edit control on this dialog.
 	 */
-	void ShowBalloon(UINT nIdControl, UINT nIdText, LPCTSTR szIcon = IDI_EXCLAMATION)
+	void ShowEditBalloon(UINT nIdControl, UINT nIdText, UINT nIdTitle, int nIcon = TTI_WARNING)
 	{
-		CBalloon::ShowBalloon(this, CBalloon::GetCtrlCentre(this, nIdControl), nIdText, TRUE, szIcon);
+		CString text(MAKEINTRESOURCE(nIdText));
+		CString title(MAKEINTRESOURCE(nIdTitle));
+		ShowEditBalloon(nIdControl, text, title, nIcon);
+	}
+	void ShowEditBalloon(UINT nIdControl, const CString& text, const CString& title, int nIcon = TTI_WARNING)
+	{
+		EDITBALLOONTIP bt;
+		bt.cbStruct = sizeof(bt);
+		bt.pszText  = text;
+		bt.pszTitle = title;
+		bt.ttiIcon = nIcon;
+		SendDlgItemMessage(nIdControl, EM_SHOWBALLOONTIP, 0, (LPARAM)&bt);
 	}
 
 	/**

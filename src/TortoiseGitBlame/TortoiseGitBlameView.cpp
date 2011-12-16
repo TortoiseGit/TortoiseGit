@@ -29,7 +29,6 @@
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "MainFrm.h"
-#include "Balloon.h"
 #include "EditGotoDlg.h"
 #include "TortoiseGitBlameAppUtils.h"
 #include "FileTextLines.h"
@@ -239,7 +238,6 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	CreateFont();
 	InitialiseEditor();
 	m_ToolTip.Create(this->GetParent());
-	m_ToolTip.AddTool(this,_T("Test"));
 
 	::AfxGetApp()->GetMainWnd();
 	return CView::OnCreate(lpcs);
@@ -2757,7 +2755,6 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 
 void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 {
-
 	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
 	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
 	line = line + (point.y/height);
@@ -2778,29 +2775,21 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
 			}
 
-			this->ClientToScreen(&point);
-
 			CString str;
-			str.Format(_T("%s\n<b>%s</b>\n%s %s\n%s"),pRev->m_CommitHash.ToString(),
+			str.Format(_T("%s\n%s\n%s %s\n%s"),pRev->m_CommitHash.ToString(),
 														pRev->GetSubject(),
 														pRev->GetAuthorName(),
 														CAppUtils::FormatDateAndTime( pRev->GetAuthorDate(), m_DateFormat ),
 														pRev->GetBody());
-			m_ToolTip.AddTool(this,str);
-			m_ToolTip.DisplayToolTip(&point);
 
+			m_ToolTip.Pop();
+			m_ToolTip.AddTool(this, str);
 			CRect rect;
-			this->ScreenToClient(&point);
 			rect.left=LOCATOR_WIDTH;
 			rect.right=this->m_blamewidth+rect.left;
 			rect.top=point.y-height;
 			rect.bottom=point.y+height;
 			this->InvalidateRect(rect);
-
-		}
-		else
-		{
-			m_MouseLine=-1;
 		}
 	}
 }

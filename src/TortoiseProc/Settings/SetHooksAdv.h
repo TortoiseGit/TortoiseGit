@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 #pragma once
 #include "Hooks.h"
 #include "StandAloneDlg.h"
+#include "Tooltip.h"
 
 /**
  * \ingroup TortoiseProc
@@ -41,6 +42,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnOK();
 	afx_msg void OnBnClickedHookbrowse();
 	afx_msg void OnBnClickedHookcommandbrowse();
@@ -53,4 +55,5 @@ protected:
 	BOOL			m_bWait;
 	BOOL			m_bHide;
 	CComboBox		m_cHookTypeCombo;
+	CToolTips		m_tooltips;
 };

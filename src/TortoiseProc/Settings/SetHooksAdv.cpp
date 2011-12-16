@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -97,6 +97,7 @@ BOOL CSetHooksAdv::OnInitDialog()
 	m_sCommandLine = cmd.commandline;
 	m_bWait = cmd.bWait;
 	m_bHide = !cmd.bShow;
+	m_tooltips.Create(this);
 	UpdateData(FALSE);
 
 	AddAnchor(IDC_HOOKTYPELABEL, TOP_LEFT, TOP_RIGHT);
@@ -132,17 +133,17 @@ void CSetHooksAdv::OnOK()
 	}
 	if (key.htype == unknown_hook)
 	{
-		ShowBalloon(IDC_HOOKTYPECOMBO, IDS_ERR_NOHOOKTYPESPECIFIED);
+		m_tooltips.ShowBalloon(IDC_HOOKTYPECOMBO, IDS_ERR_NOHOOKTYPESPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 	if (key.path.IsEmpty())
 	{
-		ShowBalloon(IDC_HOOKPATH, IDS_ERR_NOHOOKPATHSPECIFIED);
+		ShowEditBalloon(IDC_HOOKPATH, IDS_ERR_NOHOOKPATHSPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 	if (cmd.commandline.IsEmpty())
 	{
-		ShowBalloon(IDC_HOOKCOMMANDLINE, IDS_ERR_NOHOOKCOMMANDPECIFIED);
+		ShowEditBalloon(IDC_HOOKCOMMANDLINE, IDS_ERR_NOHOOKCOMMANDPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 
@@ -182,4 +183,10 @@ void CSetHooksAdv::OnBnClickedHookcommandbrowse()
 void CSetHooksAdv::OnBnClickedHelp()
 {
 	OnHelp();
+}
+
+BOOL CSetHooksAdv::PreTranslateMessage(MSG* pMsg)
+{
+	m_tooltips.RelayEvent(pMsg);
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

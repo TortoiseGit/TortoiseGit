@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008 - TortoiseSVN
+// Copyright (C) 2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,6 +91,7 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 		}
 	}
 
+	m_tooltips.Create(this);
 	UpdateData(FALSE);
 	CheckHasOptions();
 
@@ -135,14 +136,14 @@ void CSetBugTraqAdv::OnOK()
 
 	if (FAILED(hr))
 	{
-		ShowBalloon(IDC_BUGTRAQPROVIDERCOMBO, IDS_ERR_MISSING_PROVIDER);
+		m_tooltips.ShowBalloon(IDC_BUGTRAQPROVIDERCOMBO, IDS_ERR_MISSING_PROVIDER, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 
 	VARIANT_BOOL valid;
 	if (FAILED(hr = pProvider->ValidateParameters(GetSafeHwnd(), m_sParameters.AllocSysString(), &valid)))
 	{
-		ShowBalloon(IDC_BUGTRAQPARAMETERS, IDS_ERR_PROVIDER_VALIDATE_FAILED);
+		ShowEditBalloon(IDC_BUGTRAQPARAMETERS, IDS_ERR_PROVIDER_VALIDATE_FAILED, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 
@@ -236,4 +237,10 @@ void CSetBugTraqAdv::OnBnClickedOptions()
 		}
 		SysFreeString(temp);
 	}
+}
+
+BOOL CSetBugTraqAdv::PreTranslateMessage(MSG* pMsg)
+{
+	m_tooltips.RelayEvent(pMsg);
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }

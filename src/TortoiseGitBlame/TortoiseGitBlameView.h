@@ -31,7 +31,7 @@
 #include "SciEdit.h"
 
 #include "GitBlameLogList.h"
-#include "Balloon.h"
+#include "Tooltip.h"
 
 const COLORREF black = RGB(0,0,0);
 const COLORREF white = RGB(0xff,0xff,0xff);
@@ -160,7 +160,7 @@ public:
 	void FocusOn(GitRev *pRev);
 
 	CSciEditBlame		m_TextView;
-	CBalloon			m_ToolTip;
+	CToolTips			m_ToolTip;
 
 	HINSTANCE hInstance;
 	HINSTANCE hResource;

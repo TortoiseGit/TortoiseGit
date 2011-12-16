@@ -409,7 +409,7 @@ void CCommitDlg::OnOK()
 	GetDlgItemText(IDC_BUGID, id);
 	if (!m_ProjectProperties.CheckBugID(id))
 	{
-		ShowBalloon(IDC_BUGID, IDS_COMMITDLG_ONLYNUMBERS, IDI_EXCLAMATION);
+		ShowEditBalloon(IDC_BUGID, IDS_COMMITDLG_ONLYNUMBERS, TTI_ERROR);
 		return;
 	}
 	m_sLogMessage = m_cLogMessage.GetText();

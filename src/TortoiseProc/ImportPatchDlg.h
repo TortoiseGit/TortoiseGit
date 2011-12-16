@@ -26,7 +26,6 @@
 #include "SciEdit.h"
 #include "SplitterControl.h"
 #include "HistoryCombo.h"
-#include "Balloon.h"
 #include "GitLogList.h"
 #include "MenuButton.h"
 #include "Win7.h"

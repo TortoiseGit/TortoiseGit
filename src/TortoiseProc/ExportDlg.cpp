@@ -120,7 +120,7 @@ void CExportDlg::OnOK()
 
 	if (m_VersionName.IsEmpty())
 	{
-		ShowBalloon(IDC_COMBOBOXEX_VERSION, IDS_ERR_INVALIDREV);
+		m_tooltips.ShowBalloon(IDC_COMBOBOXEX_VERSION, IDS_ERR_INVALIDREV, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
 

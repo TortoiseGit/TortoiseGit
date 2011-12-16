@@ -25,10 +25,10 @@
 #include "SciEdit.h"
 #include "SplitterControl.h"
 #include "HistoryCombo.h"
-#include "Balloon.h"
 #include "GitLogList.h"
 #include "MenuButton.h"
 #include "Win7.h"
+#include "Tooltip.h"
 
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000
@@ -131,7 +131,7 @@ protected:
 
 	CProgressCtrl		m_ProgressBar;
 	CStatic				m_CtrlStatusText;
-	CBalloon			m_tooltips;
+	CToolTips			m_tooltips;
 
 	CString				m_PreCmd;
 

@@ -25,7 +25,6 @@
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
-#include "Balloon.h"
 #include "BranchCombox.h"
 #include "GitLoglist.h"
 #include "Win7.h"
@@ -86,7 +85,7 @@ protected:
 
 	CMFCTabCtrl			m_ctrlTabCtrl;
 
-	CBalloon			m_tooltips;
+	CToolTips		m_tooltips;
 
 	BOOL				m_bInited;
 
