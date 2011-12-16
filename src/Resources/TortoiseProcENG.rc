@@ -3647,6 +3647,11 @@ BEGIN
     IDS_STATGRAPH_COMMITSBYDATEXDAY "day"
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_LOG_FILTER_SUBJECT  "Subject"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -2041,6 +2041,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 
+		temp.LoadString(IDS_LOG_FILTER_SUBJECT);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_SUBJECT), LOGFILTER_SUBJECT, temp);
+
 		temp.LoadString(IDS_LOG_FILTER_MESSAGES);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_MESSAGES), LOGFILTER_MESSAGES, temp);
 
@@ -2125,6 +2128,9 @@ void CLogDlg::SetFilterCueText()
 	{
 	case LOGFILTER_ALL:
 		temp.LoadString(IDS_LOG_FILTER_ALL);
+		break;
+	case LOGFILTER_SUBJECT:
+		temp.LoadString(IDS_LOG_FILTER_SUBJECT);
 		break;
 	case LOGFILTER_MESSAGES:
 		temp.LoadString(IDS_LOG_FILTER_MESSAGES);

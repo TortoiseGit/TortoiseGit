@@ -2526,14 +2526,17 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"), pRev->GetSubject());
 			if (regex_search(wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
 			{
 				return TRUE;
 			}
+		}
 
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		{
 			ATLTRACE(_T("messge = \"%s\"\n"),pRev->GetBody());
 			if (regex_search(wstring((LPCTSTR)pRev->GetBody()), pat, flags))
 			{
@@ -2615,7 +2618,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 		{
 			CString msg = pRev->GetSubject();
 
@@ -2624,8 +2627,11 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			{
 				return TRUE;
 			}
+		}
 
-			msg = pRev->GetBody();
+		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		{
+			CString msg = pRev->GetBody();
 
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
@@ -2723,7 +2729,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				}
 			}
 #endif
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 			{
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).GetSubject());
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetSubject()), pat, flags)&&IsEntryInDateRange(i))
@@ -2731,7 +2737,9 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
-
+			}
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			{
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).GetBody());
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetBody()), pat, flags)&&IsEntryInDateRange(i))
 				{
@@ -2802,7 +2810,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				}
 			}
 #endif
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetSubject();
 
@@ -2812,7 +2820,10 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
 				}
-				msg = m_logEntries.GetGitRevAt(i).GetBody();
+			}
+			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			{
+				CString msg = m_logEntries.GetGitRevAt(i).GetBody();
 
 				msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))

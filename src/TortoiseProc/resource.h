@@ -199,6 +199,7 @@
 #define IDC_ENABLE                      1023
 #define IDC_SAVECHECK                   1023
 #define IDS_B_T_BOTHEMPTY               1023
+#define IDS_LOG_FILTER_SUBJECT          1024
 #define IDC_NAME                        1027
 #define IDC_SERVERADDRESS               1027
 #define IDC_USEREDIT                    1027

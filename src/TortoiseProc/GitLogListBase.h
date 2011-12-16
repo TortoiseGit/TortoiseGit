@@ -76,6 +76,7 @@ enum LISTITEMSTATES_MINE {
 #define LOGFILTER_REVS		5
 #define LOGFILTER_REGEX		6
 #define LOGFILTER_BUGID		7
+#define LOGFILTER_SUBJECT	8
 
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)
