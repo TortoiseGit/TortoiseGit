@@ -142,6 +142,11 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 		m_DateFormat = DATE_LONGDATE;
 	}
 
+	m_sRev.LoadString(IDS_LOG_REVISION);
+	m_sAuthor.LoadString(IDS_LOG_AUTHOR);
+	m_sDate.LoadString(IDS_LOG_DATE);
+	m_sMessage.LoadString(IDS_LOG_MESSAGE);
+
 	m_Buffer = NULL;
 }
 
@@ -2776,14 +2781,15 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			}
 
 			CString str;
-			str.Format(_T("%s\n%s\n%s %s\n%s"),pRev->m_CommitHash.ToString(),
-														pRev->GetSubject(),
-														pRev->GetAuthorName(),
-														CAppUtils::FormatDateAndTime( pRev->GetAuthorDate(), m_DateFormat ),
-														pRev->GetBody());
+			str.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
+																	m_sAuthor, pRev->GetAuthorName(),
+																	m_sDate, CAppUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat),
+																	m_sMessage, pRev->GetSubject(),
+																	pRev->GetBody());
 
 			m_ToolTip.Pop();
 			m_ToolTip.AddTool(this, str);
+
 			CRect rect;
 			rect.left=LOCATOR_WIDTH;
 			rect.right=this->m_blamewidth+rect.left;

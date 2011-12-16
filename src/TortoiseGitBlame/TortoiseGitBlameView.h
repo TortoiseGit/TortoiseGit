@@ -285,6 +285,11 @@ protected:
 	char					*m_Buffer;
 
 	DWORD					m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
+
+	CString					m_sRev;
+	CString					m_sAuthor;
+	CString					m_sDate;
+	CString					m_sMessage;
 };
 
 #ifndef _DEBUG  // debug version in TortoiseGitBlameView.cpp
