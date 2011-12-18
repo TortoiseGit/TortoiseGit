@@ -444,6 +444,7 @@ int git_close_log(GIT_LOG handle)
 			free(p_Rev->pPrivate);
 		free(handle);
 	}
+	free_all_pack();
 
 	free_notes(*display_notes_trees);
 	display_notes_trees = 0;
@@ -557,7 +558,10 @@ int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int
 
 	ret = diff_tree_sha1(hash1,hash2,"",&p_Rev->diffopt);
 	if( ret )
+	{
+		free_all_pack();
 		return ret;
+	}
 
 	if(isstat)
 	{
@@ -569,6 +573,7 @@ int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int
 			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
 		}
 	}
+	free_all_pack();
 	if(file)
 		*file = q;
 	if(count)
@@ -855,6 +860,8 @@ static struct cmd_struct commands[] = {
 			if(argv)
 				free(argv);
 
+			free_all_pack();
+
 			return ret;
 
 
@@ -865,8 +872,12 @@ static struct cmd_struct commands[] = {
 
 int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
 {
+	int ret;
 	invalidate_cached_refs();
 	return for_each_ref_in(refname, fn, data);
+	ret = for_each_ref_in(refname, fn, data);
+	free_all_pack();
+	return ret;
 }
 
 const char *git_resolve_ref(const char *ref, unsigned char *sha1, int reading, int *flag)
@@ -935,7 +946,10 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	root = parse_tree_indirect(sha1);
 
 	if(!root)
+	{
+		free_all_pack();
 		return -1;
+	}
 
 	ce = xcalloc(1, cache_entry_size(strlen(path)));
 
@@ -949,6 +963,7 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 
 	if(ret)
 	{
+		free_all_pack();
 		free(ce);
 		return ret;
 	}
@@ -957,6 +972,7 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	state.refresh_cache = 0;
 
 	ret = write_entry(ce, outputpath, &state, 0);
+	free_all_pack();
 	free(ce);
 	return ret;
 }
