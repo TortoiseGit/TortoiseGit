@@ -1,5 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
+// Copyright (C) 2009-2011 - TortoiseGit
 // Copyright (C) 2004-2009,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -142,6 +143,8 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 					{
 						chunks->sFilePath = chunks->sFilePath.Left(chunks->sFilePath.Find('\t'));
 					}
+					if (chunks->sFilePath.Find(_T('"')) == 0 && chunks->sFilePath.ReverseFind(_T('"')) == chunks->sFilePath.GetLength() - 1)
+						chunks->sFilePath=chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 2);
 					if( chunks->sFilePath.Find(_T("a/")) == 0 )
 						chunks->sFilePath=chunks->sFilePath.Mid(2);
 
@@ -175,6 +178,8 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 					{
 						chunks->sFilePath2 = chunks->sFilePath2.Left(chunks->sFilePath2.Find('\t'));
 					}
+					if (chunks->sFilePath2.Find(_T('"')) == 0 && chunks->sFilePath2.ReverseFind(_T('"')) == chunks->sFilePath2.GetLength() - 1)
+						chunks->sFilePath2=chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 2);
 					if( chunks->sFilePath2.Find(_T("a/")) == 0 )
 						chunks->sFilePath2=chunks->sFilePath2.Mid(2);
 
