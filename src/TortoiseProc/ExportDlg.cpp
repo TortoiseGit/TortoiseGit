@@ -134,11 +134,11 @@ void CExportDlg::OnOK()
 	{
 		if(::PathIsDirectory(m_strExportDirectory))
 		{
-			CMessageBox::Show(NULL,_T("The folder is invalidate\r\n Export file must be a zip file\r\n"),
+			CMessageBox::Show(NULL, _T("You selected a folder.\r\nExports are only possible to a (zip) file."),
 				_T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return;
 		}
-		if( CMessageBox::Show(NULL,m_strExportDirectory+_T(" is exist\r\nDo you want to overwire it?"),
+		if (CMessageBox::Show(NULL, _T("\"") + m_strExportDirectory + _T("\" already exists.\r\nDo you want to overwrite it?"),
 				_T("TortoiseGit"), MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2) != IDYES)
 		{
 			return ;
