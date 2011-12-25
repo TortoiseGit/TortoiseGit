@@ -78,7 +78,7 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 
 	if(bYesNo)
 	{
-		if(::MessageBox(NULL,lpCmdLine,_T("OpenSSH"),MB_YESNO|MB_ICONQUESTION) == IDYES)
+		if (::MessageBox(NULL, lpCmdLine, _T("TortoiseGit - git CLI stdin wrapper"), MB_YESNO|MB_ICONQUESTION) == IDYES)
 		{
 			_tprintf(_T("yes"));
 		}
