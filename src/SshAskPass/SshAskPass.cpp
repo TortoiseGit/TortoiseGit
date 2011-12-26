@@ -23,6 +23,8 @@
 #include "stdafx.h"
 #include "SshAskPass.h"
 #include <stdio.h>
+#include "propsys.h"
+#include "PropKey.h"
 
 #define MAX_LOADSTRING 100
 
@@ -96,6 +98,29 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 	return (int) 0;
 }
 
+void MarkWindowAsUnpinnable(HWND hWnd)
+{
+	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
+
+	HMODULE hShell = LoadLibrary(_T("Shell32.dll"));
+
+	if (hShell) {
+		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");
+		if (pfnSHGPSFW) {
+			IPropertyStore *pps;
+			HRESULT hr = pfnSHGPSFW(hWnd, IID_PPV_ARGS(&pps));
+			if (SUCCEEDED(hr)) {
+				PROPVARIANT var;
+				var.vt = VT_BOOL;
+				var.boolVal = VARIANT_TRUE;
+				hr = pps->SetValue(PKEY_AppUserModel_PreventPinning, var);
+				pps->Release();
+			}
+		}
+		FreeLibrary(hShell);
+	}
+}
+
 // Message handler for password box.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -104,6 +129,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_INITDIALOG:
 		{
+			MarkWindowAsUnpinnable(hDlg);
 			RECT rect;
 			::GetWindowRect(hDlg,&rect);
 			DWORD dwWidth = GetSystemMetrics(SM_CXSCREEN);
