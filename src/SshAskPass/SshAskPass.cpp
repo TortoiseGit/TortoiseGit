@@ -60,7 +60,7 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 	_tcslwr(lpCmdLine); //low case
 
 	TCHAR *yesno=_T("(yes/no)");
-	int lens=_tcslen(yesno);
+	size_t lens = _tcslen(yesno);
 	TCHAR *p = lpCmdLine;
 	BOOL bYesNo=FALSE;
 
