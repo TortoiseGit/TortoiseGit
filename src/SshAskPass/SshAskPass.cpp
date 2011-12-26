@@ -141,8 +141,23 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 			::MoveWindow(hDlg,x,y,rect.right-rect.left,rect.bottom-rect.top,TRUE);
 			HWND title=::GetDlgItem(hDlg,IDC_STATIC_TITLE);
-			if(g_Prompt)
-				::SetWindowText(title,g_Prompt);
+			::SetWindowText(title,g_Prompt);
+
+			TCHAR *pass =_T("pass");
+			size_t passlens = _tcslen(pass);
+			TCHAR *p = g_Prompt;
+			bool password = false;
+			while (*p)
+			{
+				if (_tcsncicmp(p, pass, passlens) == 0)
+				{
+					password = true;
+					break;
+				}
+				p++;
+			}
+			if (!password)
+				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);
 		}
 		return (INT_PTR)TRUE;
 
