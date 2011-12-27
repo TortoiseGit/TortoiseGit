@@ -2297,7 +2297,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 
 		progress.m_PostCmdList.Add(_T("Show Log"));
 
-		if(!dlg.m_bRebase)
+		if(!dlg.m_bRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		{
 			progress.m_PostCmdList.Add(_T("&Rebase"));
 		}
