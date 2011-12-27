@@ -37,8 +37,8 @@ private:
 	int		GetDataTotal() const;
 	void	SetTipRegion(int nGroup, const CRect& rc);
 	void	SetTipRegion(int nGroup, CRgn* prgn);
-	INT_PTR	HitTest(const CPoint& pt, int searchStart) const;
-	CString	GetTipText(int nGroup) const;
+	int		HitTest(const CPoint& pt, int searchStart) const;
+	CString GetTipText(int nGroup, const CString &unitString) const;
 
 // Data.
 private:
@@ -101,8 +101,8 @@ private:
 
 	INT_PTR	OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 
-	CPoint	WedgeEndFromDegrees(int nDegrees, const CPoint& ptCenter,
-					int nRadius) const;
+	CPoint  WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
+					double radius) const;
 
 	static UINT			SpinTheMessageLoop(bool bNoDrawing = false,
 								bool bOnlyDrawing = false,

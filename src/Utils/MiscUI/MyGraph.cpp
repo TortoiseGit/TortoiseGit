@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 #define GAP_PIXELS								  6			// Better if an even value.
 #define LEGEND_COLOR_BAR_WIDTH_PIXELS			 50			// Width of color bar.
 #define LEGEND_COLOR_BAR_GAP_PIXELS				  1			// Space between color bars.
-#define Y_AXIS_MAX_TICK_COUNT					  5			// How many ticks on y axis.
+#define Y_AXIS_TICK_COUNT_TARGET				  5			// How many ticks should be there on the y axis.
 #define MIN_FONT_SIZE							 70			// The minimum font-size in pt*10.
 #define LEGEND_VISIBILITY_THRESHOLD				300			// The width of the graph in pixels when the legend gets hidden.
 
@@ -194,7 +194,7 @@ int MyGraphSeries::GetDataTotal() const
 }
 
 // Returns which group (if any) the sent point lies within in this series.
-INT_PTR MyGraphSeries::HitTest(const CPoint& pt, int searchStart = 0) const
+int MyGraphSeries::HitTest(const CPoint& pt, int searchStart = 0) const
 {
 	VALIDATE;
 
@@ -211,7 +211,7 @@ INT_PTR MyGraphSeries::HitTest(const CPoint& pt, int searchStart = 0) const
 }
 
 // Get the series portion of the tip for this group in this series.
-CString MyGraphSeries::GetTipText(int nGroup) const
+CString MyGraphSeries::GetTipText(int nGroup, const CString &unitString) const
 {
 	VALIDATE;
 	_ASSERTE(0 <= nGroup);
@@ -219,7 +219,8 @@ CString MyGraphSeries::GetTipText(int nGroup) const
 	
 	CString sTip;
 
-	sTip.Format(_T("%d (%d%%)"), m_dwaValues.GetAt(nGroup), 
+	sTip.Format(_T("%d %s (%d%%)"), m_dwaValues.GetAt(nGroup),
+		unitString,
 		GetDataTotal() ? (int) (100.0 * (double) m_dwaValues.GetAt(nGroup) / 
 		(double) GetDataTotal()) : 0);
 
@@ -296,17 +297,17 @@ BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult)
 
 #ifndef _UNICODE	
 		if (TTN_NEEDTEXTA == pNMHDR->code) {
-			lstrcpyn(pTTTA->szText, sTipText, sizeof(pTTTA->szText));
+			lstrcpyn(pTTTA->szText, sTipText, _countof(pTTTA->szText));
 		}
 		else {
-			_mbstowcsz(pTTTW->szText, sTipText, sizeof(pTTTA->szText));
+			_mbstowcsz(pTTTW->szText, sTipText, _countof(pTTTA->szText));
 		}
 #else
 		if (pNMHDR->code == TTN_NEEDTEXTA) {
-			_wcstombsz(pTTTA->szText, sTipText, sizeof(pTTTA->szText));
+			_wcstombsz(pTTTA->szText, sTipText, _countof(pTTTA->szText));
 		}
 		else {
-			lstrcpyn(pTTTW->szText, sTipText, sizeof(pTTTA->szText));
+			lstrcpyn(pTTTW->szText, sTipText, _countof(pTTTA->szText));
 		}
 #endif
  
@@ -340,7 +341,7 @@ INT_PTR MyGraph::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 			bTipPopped = true;
 
 			pTI->hwnd = m_hWnd;
-			pTI->uId = (UINT) m_hWnd;
+			pTI->uId = (UINT_PTR) m_hWnd;
 			pTI->lpszText = LPSTR_TEXTCALLBACK;
 
 			CRect rcWnd;
@@ -385,7 +386,7 @@ CString MyGraph::GetTipText() const
 			MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 			ASSERT_VALID(pSeries);
 
-			INT_PTR nGroup(0);
+			int nGroup(0);
 			do{
 				nGroup = pSeries->HitTest(pt,nGroup);
 
@@ -394,7 +395,7 @@ CString MyGraph::GetTipText() const
 						sTip += _T(", ");
 					}
 					sTip += m_saLegendLabels.GetAt(nGroup) + _T(": ");
-					sTip += pSeries->GetTipText(nGroup);
+					sTip += pSeries->GetTipText(nGroup, m_sYAxisLabel);
 					nGroup++;
 				}
 			}while(-1 != nGroup);
@@ -473,7 +474,7 @@ int MyGraph::GetMaxSeriesSize() const
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
-		nMax = max(nMax, pSeries->m_dwaValues.GetSize());
+		nMax = max(nMax, (int)pSeries->m_dwaValues.GetSize());
 	}
 
 	return nMax;
@@ -593,7 +594,7 @@ int MyGraph::AppendGroup(const CString& sLabel)
 	VALIDATE;
 
 	// Add the group.
-	int nGroup(m_saLegendLabels.GetSize());
+	int nGroup((int)m_saLegendLabels.GetSize());
 	SetLegend(nGroup, sLabel);
 
 	// Make sure that all series have this element.
@@ -647,6 +648,7 @@ void MyGraph::DrawGraph(CDC& dc)
 		int diffColorL = 60;
 		DWORD backgroundColor = ::GetSysColor(COLOR_WINDOW);
 		// If graph is a non-stacked line graph, use darker colors if system window color is light.
+#if 0
 		if (m_eGraphType == MyGraph::Line && !m_bStackedGraph) {
 			int backgroundLuma = (GetRValue(backgroundColor) + GetGValue(backgroundColor) + GetBValue(backgroundColor)) / 3;
 			if (backgroundLuma > 128) {
@@ -654,7 +656,7 @@ void MyGraph::DrawGraph(CDC& dc)
 				diffColorL = 50;
 			}
 		}
-		
+#endif
 		for (WORD nGroup = 0; nGroup < GetMaxSeriesSize(); ++nGroup) {
 			WORD colorH = (WORD)(nColorsDelta * nGroup);
 			WORD colorL = (WORD)(baseColorL+(diffColorL*(nGroup%2)));
@@ -974,23 +976,35 @@ void MyGraph::DrawAxes(CDC& dc) const
 	VERIFY(dc.TextOut(m_ptOrigin.x + (m_nXAxisWidth - sizXLabel.cx) / 2,
 		m_rcGraph.bottom - GAP_PIXELS - sizXLabel.cy, m_sXAxisLabel));
 
+	// chose suitable tick step (1, 2, 5, 10, 20, 50, etc.)
+	int nMaxDataValue(GetMaxDataValue());
+		int nTickStep = 1;
+	while (10 * nTickStep * Y_AXIS_TICK_COUNT_TARGET <= nMaxDataValue)
+		nTickStep *= 10;
+
+	if (5 * nTickStep * Y_AXIS_TICK_COUNT_TARGET <= nMaxDataValue)
+		nTickStep *= 5;
+	if (2 * nTickStep * Y_AXIS_TICK_COUNT_TARGET <= nMaxDataValue)
+		nTickStep *= 2;
+
 	// We hardwire TITLE_DIVISOR y-axis ticks here for simplicity.
-	int nTickCount(min(Y_AXIS_MAX_TICK_COUNT, GetMaxDataValue()));
-	int nTickSpace(m_nYAxisHeight / nTickCount);
+	int nTickCount(nMaxDataValue / nTickStep);
+	double tickSpace = (double)m_nYAxisHeight * nTickStep / (double)nMaxDataValue;
 
 	// create tick label font and set it in the device context
 	CFont fontTickLabels;
 	VERIFY(fontTickLabels.CreatePointFont(m_nAxisTickLabelHeight, _T("Arial"), &dc));
 	VERIFY(dc.SelectObject(&fontTickLabels));
 
-	for (int nTick = 0; nTick < nTickCount; ++nTick) {
-		int nTickYLocation(m_ptOrigin.y - (nTickSpace * (nTick + 1)));
+	for (int nTick = 0; nTick < nTickCount; ++nTick)
+	{
+		int nTickYLocation = static_cast<int>(m_ptOrigin.y - tickSpace * (nTick + 1) + 0.5);
 		dc.MoveTo(m_ptOrigin.x - TICK_PIXELS, nTickYLocation);
 		VERIFY(dc.LineTo(m_ptOrigin.x + TICK_PIXELS, nTickYLocation));
 
 		// Draw tick label.
 		CString sTickLabel;
-		sTickLabel.Format(_T("%d"), (GetMaxDataValue() * (nTick + 1)) / nTickCount);
+		sTickLabel.Format(_T("%d"), nTickStep * (nTick+1));
 		CSize sizTickLabel(dc.GetTextExtent(sTickLabel));
 		
 		VERIFY(dc.TextOut(m_ptOrigin.x - GAP_PIXELS - sizTickLabel.cx - TICK_PIXELS,
@@ -1019,11 +1033,11 @@ void MyGraph::DrawAxes(CDC& dc) const
 				nSeriesSpace =
 					(m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)) /
 					(m_eGraphType == MyGraph::Bar ?
-					GetNonZeroSeriesCount() : m_olMyGraphSeries.GetCount());
+					GetNonZeroSeriesCount() : (int)m_olMyGraphSeries.GetCount());
 			}
 			else {
 				nSeriesSpace = m_nXAxisWidth / (m_eGraphType == MyGraph::Bar ?
-					GetNonZeroSeriesCount() : m_olMyGraphSeries.GetCount());
+					GetNonZeroSeriesCount() : (int)m_olMyGraphSeries.GetCount());
 			}
 
 			int nTickXLocation(m_ptOrigin.x + ((nSeries + 1) * nSeriesSpace) -
@@ -1057,34 +1071,29 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 
 	// How much space does each series get (includes inter series space)?
 	// We ignore series whose members are all zero.
-	int nSeriesSpace(0);
+	double availableSpace = m_saLegendLabels.GetSize()
+		? m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)
+		: m_nXAxisWidth;
 
-	if (m_saLegendLabels.GetSize()) {
+	double seriesSpace = availableSpace / (double)GetNonZeroSeriesCount();
 
-		nSeriesSpace = (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)) /
-			GetNonZeroSeriesCount();
-	}
-	else {
-		nSeriesSpace = m_nXAxisWidth / GetNonZeroSeriesCount();
-	}
-
-	// Determine width of bars.  Data points with a value of zero are assumed 
+	// Determine width of bars.  Data points with a value of zero are assumed
 	// to be empty.  This is a bad assumption.
-	int nBarWidth(0);
+	double barWidth(0.0);
 
 	// This is the width of the largest series (no inter series space).
-	int nMaxSeriesPlotSize(0);
+	double maxSeriesPlotSize(0.0);
 
 	if(!m_bStackedGraph){
-		nBarWidth = nSeriesSpace / GetMaxNonZeroSeriesSize();
+		barWidth = seriesSpace / GetMaxNonZeroSeriesSize();
 		if (1 < GetNonZeroSeriesCount()) {
-			nBarWidth = (int) ((double) nBarWidth * INTERSERIES_PERCENT_USED);
+			barWidth *= INTERSERIES_PERCENT_USED;
 		}
-		nMaxSeriesPlotSize = GetMaxNonZeroSeriesSize() * nBarWidth;
+		maxSeriesPlotSize = GetMaxNonZeroSeriesSize() * barWidth;
 	}
 	else{
-		nBarWidth = (int) ((double) nSeriesSpace * INTERSERIES_PERCENT_USED);
-		nMaxSeriesPlotSize = nBarWidth;
+		barWidth = seriesSpace * INTERSERIES_PERCENT_USED;
+		maxSeriesPlotSize = barWidth;
 	}
 
 	// Iterate the series.
@@ -1100,25 +1109,27 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 		if (0 < pSeries->GetNonZeroElementCount()) {
 
 			// Draw each bar; empty bars are not drawn.
-			int nRunningLeft(m_ptOrigin.x + ((nSeries + 1) * nSeriesSpace) - 
-				nMaxSeriesPlotSize);
+			double runningLeft(m_ptOrigin.x + (nSeries + 1) * seriesSpace -
+				maxSeriesPlotSize);
 
-			int stackAccumulator(0);
+		double stackAccumulator(0.0);
 
 			for (int nGroup = 0; nGroup < GetMaxSeriesSize(); ++nGroup) {
 
 				if (pSeries->GetData(nGroup)) {
 
+					double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
+						pSeries->GetData(nGroup) / (double)GetMaxDataValue() - stackAccumulator;
+
 					CRect rcBar;
-					rcBar.left = nRunningLeft; 
-					rcBar.top = (m_ptOrigin.y - (m_nYAxisHeight *
-						pSeries->GetData(nGroup)) / GetMaxDataValue()) - stackAccumulator;
+					rcBar.left = (int)runningLeft;
+					rcBar.top = (int)barTop;
 					// Make adjacent bar borders overlap, so there's only one pixel border line between them.
-					rcBar.right = rcBar.left + nBarWidth + 1;
-					rcBar.bottom = m_ptOrigin.y - stackAccumulator + 1;
+					rcBar.right = (int)(runningLeft + barWidth) + 1;
+					rcBar.bottom = (int)((double)m_ptOrigin.y - stackAccumulator) + 1;
 
 					if(m_bStackedGraph){
-						stackAccumulator = (m_ptOrigin.y - rcBar.top);
+						stackAccumulator = (double)m_ptOrigin.y - barTop;
 					}
 
 					pSeries->SetTipRegion(nGroup, rcBar);
@@ -1133,7 +1144,7 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 					br.DeleteObject();
 
 					if(!m_bStackedGraph){
-						nRunningLeft += nBarWidth;
+						runningLeft += barWidth;
 					}
 				}
 			}
@@ -1162,10 +1173,10 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 		if (m_saLegendLabels.GetSize()) {
 
 			nSeriesSpace = (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)) /
-				m_olMyGraphSeries.GetCount();
+				(int)m_olMyGraphSeries.GetCount();
 		}
 		else {
-			nSeriesSpace = m_nXAxisWidth / m_olMyGraphSeries.GetCount();
+			nSeriesSpace = m_nXAxisWidth / (int)m_olMyGraphSeries.GetCount();
 		}
 
 		// Determine width of bars.
@@ -1242,30 +1253,27 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 	ASSERT_VALID(&dc);
 	_ASSERTE(m_bStackedGraph);
 
+	int nSeriesCount = (int)m_olMyGraphSeries.GetCount();
+
 	CArray<int> stackAccumulator;
-	stackAccumulator.SetSize(m_olMyGraphSeries.GetCount());
+	stackAccumulator.SetSize(nSeriesCount);
 
 	CArray<CPoint> polygon;
-	polygon.SetSize(m_olMyGraphSeries.GetCount() * 2);
+	// Special case: if we only have single series, make polygon
+	// a bar instead of one pixel line.
+	polygon.SetSize(nSeriesCount==1 ? 4 : nSeriesCount * 2);
 
-	// How much space does each series get (includes inter series space)?
+	// How much space does each series get?
 	int nSeriesSpace(0);
 	if (m_saLegendLabels.GetSize()) {
 		nSeriesSpace = (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)) /
-			m_olMyGraphSeries.GetCount();
+			nSeriesCount;
 	}
 	else {
-		nSeriesSpace = m_nXAxisWidth / m_olMyGraphSeries.GetCount();
-	}
-
-	// Determine width of bars.
-	int nBarWidth(nSeriesSpace / GetMaxSeriesSize());
-	if (1 < m_olMyGraphSeries.GetCount()) {
-		nBarWidth = (int) ((double) nBarWidth * INTERSERIES_PERCENT_USED);
+		nSeriesSpace = m_nXAxisWidth / nSeriesCount;
 	}
 
 	double dYScaling = double(m_nYAxisHeight) / GetMaxDataValue();
-	int nSeriesCount = m_olMyGraphSeries.GetCount();
 
 	// Iterate the groups.
 	for (int nGroup = 0; nGroup < GetMaxSeriesSize(); nGroup++) {
@@ -1291,7 +1299,14 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 			ptLoc.x = m_ptOrigin.x + (((nPolyBottom + 1) * nSeriesSpace) - (nSeriesSpace / 2));
 			double dLineHeight((stackAccumulator[nPolyBottom]) * dYScaling);
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
-			polygon[nSeriesCount-nPolyBottom-1] = ptLoc;
+
+			if (nSeriesCount > 1) {
+				polygon[nSeriesCount-nPolyBottom-1] = ptLoc;
+			} else {
+				// special case: when there's one series, make polygon a bar
+				polygon[0] = CPoint(ptLoc.x-GAP_PIXELS/2, ptLoc.y);
+				polygon[1] = CPoint(ptLoc.x+GAP_PIXELS/2, ptLoc.y);
+			}
 		}
 
 		// Iterate the series, construct upper part of polygon and upadte stack accumulator
@@ -1306,13 +1321,19 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 				(nSeriesSpace / 2));
 			double dLineHeight((pSeries->GetData(nGroup) + stackAccumulator[nSeries]) * dYScaling);			
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
-			polygon[nSeriesCount+nSeries] = ptLoc;
+			if (nSeriesCount > 1) {
+				polygon[nSeriesCount+nSeries] = ptLoc;
+			} else {
+				// special case: when there's one series, make polygon a bar
+				polygon[2] = CPoint(ptLoc.x+GAP_PIXELS/2, ptLoc.y);
+				polygon[3] = CPoint(ptLoc.x-GAP_PIXELS/2, ptLoc.y);
+			}
 
 			stackAccumulator[nSeries] += pSeries->GetData(nGroup);
 		}
 
 		// Draw polygon
-		VERIFY(dc.Polygon(polygon.GetData(), polygon.GetSize()));
+		VERIFY(dc.Polygon(polygon.GetData(), (int)polygon.GetSize()));
 
 		VERIFY(dc.SelectObject(pPenOld));
 		penLine.DeleteObject();
@@ -1331,15 +1352,18 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 	// Determine width of pie display area (pie and space).
 	int nSeriesSpace(0);
 
+	int seriesCount = GetNonZeroSeriesCount();
+	int horizontalSpace(0);
+
 	if (m_saLegendLabels.GetSize()) {
-		
-		int nPieAndSpaceWidth((m_nXAxisWidth - m_rcLegend.Width() - 
-			(GAP_PIXELS * 2)) / GetNonZeroSeriesCount());
+		// With legend box.
+
+		horizontalSpace = m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2);
+				int nPieAndSpaceWidth(horizontalSpace / seriesCount);
 
 		// Height is limiting factor.
 		if (nPieAndSpaceWidth > m_nYAxisHeight - (GAP_PIXELS * 2)) {
-			nSeriesSpace = (m_nYAxisHeight - (GAP_PIXELS * 2)) /
-				GetNonZeroSeriesCount();
+			nSeriesSpace = (m_nYAxisHeight - (GAP_PIXELS * 2));
 		}
 		else {
 			// Width is limiting factor.
@@ -1349,15 +1373,20 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 	else {
 		// No legend box.
 
+		horizontalSpace = m_nXAxisWidth;
+
 		// Height is limiting factor.
-		if (m_nXAxisWidth > m_nYAxisHeight) {
-			nSeriesSpace = m_nYAxisHeight / GetNonZeroSeriesCount();
+		if (m_nXAxisWidth > m_nYAxisHeight * seriesCount) {
+			nSeriesSpace = m_nYAxisHeight;
 		}
 		else {
 			// Width is limiting factor.
-			nSeriesSpace = m_nXAxisWidth / GetNonZeroSeriesCount();
+			nSeriesSpace = m_nXAxisWidth / seriesCount;
 		}
 	}
+
+	// Make pies be centered horizontally
+	int xOrigin = m_ptOrigin.x + GAP_PIXELS + (horizontalSpace - nSeriesSpace * seriesCount) / 2;
 
 	// Create font for labels.
 	CFont fontLabels;
@@ -1380,19 +1409,20 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 		if (0 < pSeries->GetNonZeroElementCount()) {
 
 			// Locate this pie.
-			CRect rcPie;
-			rcPie.left = m_ptOrigin.x + GAP_PIXELS + (nSeriesSpace * nPie);
-			rcPie.right = rcPie.left + (2 * nRadius);
-			rcPie.top = (m_nYAxisHeight / 2) - nRadius;
-			rcPie.bottom = (m_nYAxisHeight / 2) + nRadius;
+			CPoint ptCenter;
+			ptCenter.x = xOrigin + (nSeriesSpace * nPie) + nSeriesSpace / 2;
+			ptCenter.y = m_ptOrigin.y - m_nYAxisHeight / 2;
 
-			CPoint ptCenter((rcPie.left + rcPie.right) / 2,
-				(rcPie.top + rcPie.bottom) / 2);
+			CRect rcPie;
+			rcPie.left = ptCenter.x - nRadius;
+			rcPie.right = ptCenter.x + nRadius;
+			rcPie.top = ptCenter.y - nRadius;
+			rcPie.bottom = ptCenter.y + nRadius;
 
 			// Draw series label.
 			CSize sizPieLabel(dc.GetTextExtent(pSeries->GetLabel()));
-			
-			VERIFY(dc.TextOut((rcPie.left + nRadius) - (sizPieLabel.cx / 2),
+
+			VERIFY(dc.TextOut(ptCenter.x - (sizPieLabel.cx / 2),
 			  ptCenter.y + nRadius + GAP_PIXELS, pSeries->GetLabel()));
 			
 			// How much do the wedges total to?
@@ -1410,20 +1440,27 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 					// Get the degrees of this wedge.
 					dRunningWedgeTotal += pSeries->GetData(nGroup);
 					double dPercent(dRunningWedgeTotal * 100.0 / dPieTotal);
-					int nDegrees((int) (360.0 * dPercent / 100.0));
+					double degrees(360.0 * dPercent / 100.0);
 
 					// Find the location of the wedge's endpoint.
-					CPoint ptEnd(WedgeEndFromDegrees(nDegrees, ptCenter, nRadius));
+					CPoint ptEnd(WedgeEndFromDegrees(degrees, ptCenter, nRadius));
 
 					// Special case: a wedge that takes up the whole pie would
 					// otherwise be confused with an empty wedge.
+					bool drawEmptyWedges = false;
 					if (1 == pSeries->GetNonZeroElementCount()) {
-						_ASSERTE(360 == nDegrees  &&  ptStart == ptEnd  &&  "This is the problem we're correcting");
+						_ASSERTE(360 == (int)degrees  &&  ptStart == ptEnd  &&  "This is the problem we're correcting");
 						--ptEnd.y;
+						drawEmptyWedges = true;
 					}
 
-					// If the wedge is of zero size, don't paint it!
-					if (ptStart != ptEnd) {
+					// If the wedge is zero size or very narrow, don't paint it.
+					// If pie is small, and wedge data is small, we might get a wedges
+					// where center and both endpoints lie on the same coordinate,
+					// and endpoints differ only in one pixel. GDI draws such pie as whole pie,
+					// so we just skip them instead.
+					int distance = abs(ptStart.x-ptEnd.x) + abs(ptStart.y-ptEnd.y);
+					if (drawEmptyWedges || distance > 1) {
 
 						// Draw wedge.
 						COLORREF crWedge(m_dwaColors.GetAt(nGroup));
@@ -1452,28 +1489,29 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 		}
 	}
 
-	// Draw X axis title after we know how many pies we actually have
+	// Draw X axis title
 	CSize sizXLabel(dc.GetTextExtent(m_sXAxisLabel));
-	int nTotalSpaceOfPies = nSeriesSpace * nPie - (nSeriesSpace - nRadius*2);
-	VERIFY(dc.TextOut(m_ptOrigin.x + GAP_PIXELS + (nTotalSpaceOfPies - sizXLabel.cx)/2,
-		m_nYAxisHeight/2 + nRadius + GAP_PIXELS*2 + sizXLabel.cy, m_sXAxisLabel));
+	VERIFY(dc.TextOut(xOrigin + (nSeriesSpace * nPie - sizXLabel.cx)/2,
+		m_ptOrigin.y - m_nYAxisHeight/2 + nRadius + GAP_PIXELS*2 + sizXLabel.cy, m_sXAxisLabel));
 
 	VERIFY(dc.SelectObject(pFontOld));
 	fontLabels.DeleteObject();
 }
 
 // Convert degrees to x and y coords.
-CPoint MyGraph::WedgeEndFromDegrees(int nDegrees, const CPoint& ptCenter,
-												int nRadius) const
+CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
+												double radius) const
 {
 	VALIDATE;
 
 	CPoint pt;
 
-	pt.x = (int) ((double) nRadius * cos((double) nDegrees / 360.0 * PI * 2.0));
+	double radians = degrees / 360.0 * PI * 2.0;
+
+	pt.x = (int) (radius * cos(radians));
 	pt.x = ptCenter.x - pt.x;
 
-	pt.y = (int) ((double) nRadius * sin((double) nDegrees / 360.0 * PI * 2.0));
+	pt.y = (int) (radius * sin(radians));
 	pt.y = ptCenter.y + pt.y;
 
 	return pt;

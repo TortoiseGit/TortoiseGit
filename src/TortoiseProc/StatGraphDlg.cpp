@@ -283,9 +283,9 @@ BOOL CStatGraphDlg::OnInitDialog()
 		default : return TRUE;
 	}
 
-	LCID m_locale = MAKELCID((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
+	LCID m_locale = MAKELCID((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
 
-	bool bUseSystemLocale = !!(DWORD)CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
+	bool bUseSystemLocale = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
 	TCHAR l = 0;
@@ -1182,7 +1182,7 @@ void CStatGraphDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 {
 	TOOLTIPTEXT* pttt = (TOOLTIPTEXT*) pnmh;
-	if (pttt->hdr.idFrom == (UINT) m_Skipper.GetSafeHwnd())
+	if (pttt->hdr.idFrom == (UINT_PTR) m_Skipper.GetSafeHwnd())
 	{
 		size_t included_authors_count = m_Skipper.GetPos();
 		// if we only leave out one author, still include him with his name
@@ -1199,7 +1199,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 
 		CString string;
 		int percentage = int(min_commits*100.0/(m_nTotalCommits ? m_nTotalCommits : 1));
-		string.Format(IDS_STATGRAPH_AUTHORSLIDER_TT, m_Skipper.GetPos(), min_commits, percentage);
+		string.FormatMessage(IDS_STATGRAPH_AUTHORSLIDER_TT, m_Skipper.GetPos(), min_commits, percentage);
 		::lstrcpy(pttt->szText, (LPCTSTR) string);
 	}
 }
