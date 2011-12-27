@@ -1103,7 +1103,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 
 	if( !url1.IsEmpty() )
 	{
-		cmd += _T(" \"");
+		cmd += _T(" -- \"");
 		cmd += url1.GetGitPathString();
 		cmd += _T("\" ");
 	}

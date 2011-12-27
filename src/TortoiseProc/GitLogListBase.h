@@ -218,15 +218,15 @@ public:
 	enum
 	{
 	// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
-	ID_COMPARE = 1,
+	ID_COMPARE = 1, // compare revision with WC
 	ID_SAVEAS,
-	ID_COMPARETWO,
+	ID_COMPARETWO, // compare two revisions
 	ID_UPDATE,
 	ID_COPY,
 	ID_REVERTREV,
 	ID_MERGEREV,
-	ID_GNUDIFF1,
-	ID_GNUDIFF2,
+	ID_GNUDIFF1, // compare with WC, unified
+	ID_GNUDIFF2, // compare two revisions, unified
 	ID_FINDENTRY,
 	ID_OPEN,
 	ID_BLAME,
