@@ -4925,27 +4925,9 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				if(g_Git.Run(cmd, &cmdout, &cmdErr))
 				{
 					int last = cmdErr.RevertFind(0,-1);
-					if(last > 0)
-					{
-						CString str;
-						g_Git.StringAppend(&str, &cmdErr[last+1], CP_ACP, cmdErr.size() - last -1);
-						CMessageBox::Show(NULL,str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-					}
-					else
-					{
-						cmdout.clear();
-						CString strout, err;
-						if (g_Git.Run(_T("git.exe rev-parse --revs-only ") + head, &strout, &err, CP_UTF8))
-						{
-							CMessageBox::Show(NULL, strout + L"\n" + err, _T("TortoiseGit"), MB_OK);
-							return -1;
-						}
-						if(strout.IsEmpty() && err.IsEmpty())
-							break; //this is initial repository, there are no any history
-
-						CMessageBox::Show(NULL, strout + L"\n" + err, _T("TortoiseGit"), MB_OK);
-						return -1;
-					}
+					CString str;
+					g_Git.StringAppend(&str, &cmdErr[last + 1], CP_ACP, cmdErr.size() - last -1);
+					CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 				}
 
 				out.append(cmdout, 0);
