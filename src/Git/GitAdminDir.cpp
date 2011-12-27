@@ -193,3 +193,19 @@ bool GitAdminDir::IsAdminDirPath(const CString& path) const
 	return bIsAdminDir;
 }
 
+bool GitAdminDir::IsBareRepo(const CString& path) const
+{
+	if (path.IsEmpty())
+		return false;
+
+	if (IsAdminDirPath(path))
+		return false;
+
+	if (!PathFileExists(path + _T("\\HEAD")) || !PathFileExists(path + _T("\\config")))
+		return false;
+
+	if (!PathFileExists(path + _T("\\objects\\")) || !PathFileExists(path + _T("\\refs\\")))
+		return false;
+
+	return true;
+}

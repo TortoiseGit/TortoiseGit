@@ -43,6 +43,9 @@ public:
 	/// Returns true if the path points to or below an admin directory
 	bool IsAdminDirPath(const CString& path) const;
 
+	/// Returns true if the path points is a bare repository
+	bool IsBareRepo(const CString& path) const;
+
 	/// Returns true if the path (file or folder) has an admin directory
 	/// associated, i.e. if the path is in a working copy.
 	bool HasAdminDir(const CString& path) const;
