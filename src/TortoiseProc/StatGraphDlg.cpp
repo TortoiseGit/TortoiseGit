@@ -247,8 +247,14 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	// open last viewed statistics page as first page
 	int graphtype = lastStatsPage / 10;
-	graphtype = max(1, min(3, graphtype));
-	m_cGraphType.SetCurSel(graphtype-1);
+	for (int i = 0; i < m_cGraphType.GetCount(); i++)
+	{
+		if (m_cGraphType.GetItemData(i) == graphtype)
+		{
+			m_cGraphType.SetCurSel(i);
+			break;
+		}
+	}
 
 	OnCbnSelchangeGraphcombo();
 
