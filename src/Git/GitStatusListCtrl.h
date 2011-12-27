@@ -740,8 +740,9 @@ public:
 	 * \param dwContextMenus mask of context menus to be active, not all make sense for every use of this control.
 	 *                       Use the GitSLC_POPxxx defines.
 	 * \param bHasCheckboxes TRUE if the control should show check boxes on the left of each file entry.
+	 * \param bHasWC TRUE if the reporisty is not a bare repository (hides wc related items on the contextmenu)
 	 */
-	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = (GITSLC_POPALL ^ GITSLC_POPCOMMIT), bool bHasCheckboxes = true);
+	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = (GITSLC_POPALL ^ GITSLC_POPCOMMIT), bool bHasCheckboxes = true, bool bHasWC = true);
 	/**
 	 * Sets a background image for the list control.
 	 * The image is shown in the right bottom corner.
@@ -1097,6 +1098,7 @@ private:
 	bool					    m_bAscending;		///< sort direction
 	int					        m_nSortedColumn;	///< which column to sort
 	bool						m_bHasCheckboxes;
+	bool						m_bHasWC;
 	bool						m_bUnversionedLast;
 	bool						m_bHasExternalsFromDifferentRepos;
 	bool						m_bHasExternals;
