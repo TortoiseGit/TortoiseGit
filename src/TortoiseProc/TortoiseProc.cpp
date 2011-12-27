@@ -414,7 +414,9 @@ BOOL CTortoiseProcApp::InitInstance()
 			{
 				// open the config file with alternative editor
 				CString path = g_Git.m_CurrentDir;
-				path += _T("\\.git\\config");
+				if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+					path += _T("\\.git");
+				path += _T("\\config");
 				CAppUtils::LaunchAlternativeEditor(path);
 			}
 			else if (choice == 2)

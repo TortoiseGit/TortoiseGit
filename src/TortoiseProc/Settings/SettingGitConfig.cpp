@@ -87,8 +87,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 	ProjectProperties::GetBOOLProps(this->m_bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
 
 	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
+	bool isBareRepo = g_GitAdminDir.IsBareRepo(str);
 	CString proj;
-	if(g_GitAdminDir.HasAdminDir(str, &proj))
+	if (g_GitAdminDir.HasAdminDir(str, &proj) || isBareRepo)
 	{
 		this->SetWindowText(_T("Config - ") + proj);
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(TRUE);
@@ -100,6 +101,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
 	}
+
+	if (isBareRepo)
+		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(_T("Edit local git config"));
 
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -215,7 +219,9 @@ void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 {
 	CString path = g_Git.m_CurrentDir;
-	path += _T("\\.git\\config");
+	if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+		path += _T("\\.git");
+	path += _T("\\config");
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(path);
 }
