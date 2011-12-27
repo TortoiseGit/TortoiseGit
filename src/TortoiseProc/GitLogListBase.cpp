@@ -78,6 +78,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_ColumnManager(this)
 	, m_dwDefaultColumns(0)
 	, m_arShownList(&m_critSec)
+	, m_hasWC(true)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -1503,7 +1504,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if( !pSelLogEntry->m_CommitHash.IsEmpty())
 				{
-					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE))
+					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE) && m_hasWC) // compare revision with WC
 						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 					// TODO:
 					// TortoiseMerge could be improved to take a /blame switch
@@ -1518,7 +1519,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMMIT))
 						popup.AppendMenuIcon(ID_COMMIT, IDS_LOG_POPUP_COMMIT, IDI_COMMIT);
 				}
-				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1) && m_hasWC) // compare with WC, unified
 				{
 					GitRev *pRev=pSelLogEntry;
 					if(pSelLogEntry->m_ParentHash.size()==0)
@@ -1622,19 +1623,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						break;
 				}
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_RESET))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC)
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
 
 				// Add Switch Branch express Menu
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end()
-					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH))
+					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH) && m_hasWC)
 					)
 				{
 					std::vector<CString *> branchs;
@@ -1677,7 +1678,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !isHeadCommit)
+				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !isHeadCommit && m_hasWC)
 					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
@@ -1689,14 +1690,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_REBASE_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if(pSelLogEntry->m_CommitHash != m_HeadHash)
+				if(pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
 						popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
+				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC)
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_EDITNOTE))
@@ -1719,14 +1720,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			bool bAddSeparator = false;
 			if (IsSelectionContinuous() || (GetSelectedCount() == 2))
 			{
-				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARETWO)) // compare two revisions
 					popup.AppendMenuIcon(ID_COMPARETWO, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 			}
 
 			if (GetSelectedCount() == 2)
 			{
 				//popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
-				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2) && m_hasWC) // compare two revisions, unified
 					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 				bAddSeparator = true;
 			}
@@ -1739,7 +1740,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
-			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV))
+			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC)
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
 
 			if (bAddSeparator)
@@ -1751,7 +1752,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			bool bAddSeparator = false;
 			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
 			{
-				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT))
+				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT) && m_hasWC)
 				{
 					CString head;
 					int headindex;
@@ -1768,7 +1769,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 			}
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit) {
+			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC) {
 				if (GetSelectedCount() >= 2)
 					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_EXPORT);
 				else
