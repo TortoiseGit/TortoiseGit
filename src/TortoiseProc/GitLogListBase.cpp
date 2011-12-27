@@ -476,7 +476,6 @@ BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefi
 
 void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 {
-//	HBRUSH brush;
 	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
@@ -487,46 +486,14 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 	GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(Index);
 	HBRUSH brush = NULL;
 
-	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+	if (!(rItem.state & LVIS_SELECTED))
 	{
-		HTHEME hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
-		int state = LISS_NORMAL;
-		if (rItem.state & LVIS_SELECTED)
-		{
-			if (::GetFocus() == m_hWnd)
-				state |= LISS_SELECTED;
-			else
-				state |= LISS_SELECTEDNOTFOCUS;
-		}
-		else
-		{
-			if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_SQUASH)
-				brush = ::CreateSolidBrush(RGB(156,156,156));
-			else if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_EDIT)
-				brush = ::CreateSolidBrush(RGB(200,200,128));
-		}
-
-		if (brush != NULL)
-		{
-			::FillRect(hdc, &rect, brush);
-			::DeleteObject(brush);
-		}
-		else
-		{
-			if (IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTITEM, state))
-				DrawThemeParentBackground(m_hWnd, hdc, &rect);
-
-			CRect rectDraw = rect;
-			if(rItem.state & LVIS_SELECTED)
-				rectDraw.InflateRect(1,0);
-			else
-				rectDraw.InflateRect(1,1);
-
-			DrawThemeBackground(hTheme, hdc, LVP_LISTITEM, state, rectDraw, &rect);
-		}
-		CloseThemeData(hTheme);
+		if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+			brush = ::CreateSolidBrush(RGB(156,156,156));
+		else if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_EDIT)
+			brush = ::CreateSolidBrush(RGB(200,200,128));
 	}
-	else
+	else if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
 	{
 		if (rItem.state & LVIS_SELECTED)
 		{
@@ -535,21 +502,10 @@ void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
 			else
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
 		}
-		else
-		{
-			//if (pLogEntry->bCopiedSelf)
-			//	brush = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
-			//else
-			if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_SQUASH)
-				brush = ::CreateSolidBrush(RGB(156,156,156));
-			else if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_EDIT)
-				brush = ::CreateSolidBrush(RGB(200,200,128));
-			else
-				brush = ::CreateSolidBrush(::GetSysColor(COLOR_WINDOW));
-		}
-		if (brush == NULL)
-			return;
+	}
 
+	if (brush != NULL)
+	{
 		::FillRect(hdc, &rect, brush);
 		::DeleteObject(brush);
 	}
@@ -1241,7 +1197,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				// Get the selected state of the
 				// item being drawn.
 
-				// Fill the background
+				// Fill the background if necessary
 				FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
 
 				// Draw the icon(s) into the compatible DC
