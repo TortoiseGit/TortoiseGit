@@ -147,6 +147,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 		this->GetDlgItem(IDC_CHECK_NOCOMMIT)->EnableWindow(FALSE);
 	}
 
+	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
+
 	m_Other.SetURLHistory(TRUE);
 	m_Other.LoadHistory(_T("Software\\TortoiseGit\\History\\PullURLS"), _T("url"));
 	CString clippath=CAppUtils::GetClipboardLink();
