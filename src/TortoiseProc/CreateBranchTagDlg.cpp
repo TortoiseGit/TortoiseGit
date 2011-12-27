@@ -125,7 +125,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	// show the switch checkbox if we are a create branch dialog
-	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag );
+	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow( !m_bIsTag && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir));
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
 	CString HeadText;
 	pHead->GetWindowText( HeadText );

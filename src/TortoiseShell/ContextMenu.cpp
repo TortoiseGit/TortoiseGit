@@ -299,6 +299,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
 				if (g_ShellCache.HasGITAdminDir(child.toString().c_str(), FALSE))
 					itemStates |= ITEMIS_INVERSIONEDFOLDER;
+
+				if (itemStates == 0 && g_GitAdminDir.IsBareRepo(child.toString().c_str()))
+					itemStates = ITEMIS_BAREREPO;
+
 				GlobalUnlock(medium.hGlobal);
 
 				// if the item is a versioned folder, check if there's a patch file
@@ -900,7 +904,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 
 	if (((uFlags & CMF_EXTENDEDVERBS) == 0) && g_ShellCache.HideMenusForUnversionedItems())
 	{
-		if ((itemStates & (ITEMIS_INGIT|ITEMIS_INVERSIONEDFOLDER|ITEMIS_FOLDERINGIT))==0)
+		if ((itemStates & (ITEMIS_INGIT|ITEMIS_INVERSIONEDFOLDER|ITEMIS_FOLDERINGIT|ITEMIS_BAREREPO))==0)
 			return S_OK;
 	}
 

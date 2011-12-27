@@ -114,13 +114,13 @@ void CSettings::AddPropPages()
 
 	AddPage(m_pGitConfig);
 
-	if(	g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) )
+	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
 	{
 		AddPage(m_pGitRemote);
 	}
 	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
-	if(	g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) )
+	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()))
 	{
 		AddPage(m_pBugtraqConfig);
 	}

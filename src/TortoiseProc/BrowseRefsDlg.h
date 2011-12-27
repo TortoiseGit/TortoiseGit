@@ -128,6 +128,8 @@ protected:
 	CString			GetFullRefName(CString partialRefName);
 
 private:
+	bool			m_bHasWC;
+
 	CString			m_cmdPath;
 
 	CShadowTree		m_TreeRoot;

@@ -84,6 +84,8 @@ BOOL CRefLogDlg::OnInitDialog()
 	list.push_back(_T("HEAD"));
 	g_Git.GetRefList(list);
 
+	m_RefList.m_hasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
+
 	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 	this->m_ChooseRef.AddString(list);
 
