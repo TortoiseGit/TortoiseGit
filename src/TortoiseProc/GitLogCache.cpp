@@ -118,12 +118,14 @@ ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
 int CLogCache::FetchCacheIndex(CString GitDir)
 {
 	int ret=0;
-	this->m_GitDir = GitDir;
+	m_GitDir = GitDir + _T("\\");
+	if (!g_GitAdminDir.IsBareRepo(GitDir))
+		m_GitDir += _T(".git\\");
 	do
 	{
 		if( m_IndexFile == INVALID_HANDLE_VALUE)
 		{
-			CString file = GitDir+_T("\\.git\\")+INDEX_FILE_NAME;
+			CString file = m_GitDir + INDEX_FILE_NAME;
 			m_IndexFile = CreateFile(file,
 						GENERIC_READ,
 						FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
@@ -167,7 +169,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 		if(	m_DataFile == INVALID_HANDLE_VALUE )
 		{
-			CString file = GitDir+_T("\\.git\\")+DATA_FILE_NAME;
+			CString file = m_GitDir + DATA_FILE_NAME;
 			m_DataFile = CreateFile(file,
 						GENERIC_READ,
 						FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
@@ -214,8 +216,8 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 	if(ret)
 	{
 		CloseIndexHandles();
-		::DeleteFile(GitDir+_T("\\.git\\")+INDEX_FILE_NAME);
-		::DeleteFile(GitDir+_T("\\.git\\")+DATA_FILE_NAME);
+		::DeleteFile(m_GitDir + INDEX_FILE_NAME);
+		::DeleteFile(m_GitDir + DATA_FILE_NAME);
 	}
 	return ret;
 
@@ -390,7 +392,7 @@ int CLogCache::SaveCache()
 	this->CloseIndexHandles();
 
 	SLogCacheIndexHeader header;
-	CString file = this->m_GitDir +_T("\\.git\\")+INDEX_FILE_NAME;
+	CString file = this->m_GitDir + INDEX_FILE_NAME;
 	do
 	{
 		m_IndexFile = CreateFile(file,
@@ -407,7 +409,7 @@ int CLogCache::SaveCache()
 			break;
 		}
 
-		file = m_GitDir+_T("\\.git\\")+DATA_FILE_NAME;
+		file = m_GitDir + DATA_FILE_NAME;
 
 		m_DataFile = CreateFile(file,
 						GENERIC_READ|GENERIC_WRITE,
