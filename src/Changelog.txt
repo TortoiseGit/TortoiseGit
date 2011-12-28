@@ -7,6 +7,7 @@
  * Updated shipped PuTTY binaries to version 0.62
  * Fixed issue #1000: Git commit doesn't work
  * Fixed issue #587: Log entries with tag/branch/head marker don't highlight correctly
+ * Fixed issue #1004: git svn fetch/rebase/clone return an error for ssh authorization
 
 = Release 1.7.6.0 =
 == Features==

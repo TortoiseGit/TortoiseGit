@@ -1251,15 +1251,8 @@ BOOL CGit::CheckMsysGitDir()
 
 	if(!sshclient.IsEmpty())
 	{
-		m_Environment.SetEnv(_T("GIT_SSH"),sshclient.GetBuffer());
-
-		//Setup SVN_SSH
-		CString ssh=sshclient;
-		ssh.Replace(_T("/"),_T("\\"));
-		ssh.Replace(_T("\\"),_T("\\\\"));
-		ssh=CString(_T("\""))+ssh+_T('\"');
-		m_Environment.SetEnv(_T("SVN_SSH"),ssh.GetBuffer());
-
+		m_Environment.SetEnv(_T("GIT_SSH"), sshclient.GetBuffer());
+		m_Environment.SetEnv(_T("SVN_SSH"), sshclient.GetBuffer());
 	}
 	else
 	{
@@ -1269,13 +1262,7 @@ BOOL CGit::CheckMsysGitDir()
 		if (ptr) {
 			_tcscpy(ptr + 1, _T("TortoisePlink.exe"));
 			m_Environment.SetEnv(_T("GIT_SSH"), sPlink);
-
-			//Setup SVN_SSH
-			CString ssh=sPlink;
-			ssh.Replace(_T("/"),_T("\\"));
-			ssh.Replace(_T("\\"),_T("\\\\"));
-			ssh=CString(_T("\""))+ssh+_T('\"');
-			m_Environment.SetEnv(_T("SVN_SSH"),ssh.GetBuffer());
+			m_Environment.SetEnv(_T("SVN_SSH"), sPlink);
 		}
 	}
 
