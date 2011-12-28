@@ -81,8 +81,8 @@ BOOL ProjectProperties::GetBOOLProps(BOOL &b,TCHAR *key)
 	if(!GetStringProps(str,key))
 		return FALSE;
 
-	low=str.MakeLower();
-	if(low == _T("true"))
+	low = str.MakeLower().Trim();
+	if(low == _T("true") || low == _T("on") || low == _T("yes") || StrToInt(low) != 0)
 		b=true;
 	else
 		b=false;
