@@ -40,7 +40,6 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_UserSigningKey(_T(""))
 	, m_bGlobal(FALSE)
 	, m_bAutoCrlf(FALSE)
-	, m_bSafeCrLf(FALSE)
 	, m_bWarnNoSignedOffBy(FALSE)
 {
 	m_ChangeMask=0;
@@ -58,7 +57,7 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
 	DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
-	DDX_Check(pDX, IDC_CHECK_SAFECRLF, m_bSafeCrLf);
+	DDX_Control(pDX, IDC_COMBO_SAFECRLF, m_cSafeCrLf);
 	DDX_Check(pDX, IDC_CHECK_WARN_NO_SIGNED_OFF_BY, m_bWarnNoSignedOffBy);
 }
 
@@ -68,7 +67,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
 	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnEnChangeGitUserSigningKey)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
-	ON_BN_CLICKED(IDC_CHECK_SAFECRLF, &CSettingGitConfig::OnBnClickedCheckSafecrlf)
+	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnCbnSelchangeSafeCrLf)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
@@ -78,12 +77,29 @@ BOOL CSettingGitConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	m_cSafeCrLf.AddString(_T("false"));
+	m_cSafeCrLf.AddString(_T("true"));
+	m_cSafeCrLf.AddString(_T("warn"));
+
 	m_UserName = g_Git.GetUserName();
 	m_UserEmail = g_Git.GetUserEmail();
 	m_UserSigningKey = g_Git.GetConfigValue(_T("user.signingkey"));
 
 	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf, _T("core.autocrlf"));
-	ProjectProperties::GetBOOLProps(this->m_bSafeCrLf, _T("core.safecrlf"));
+	BOOL bSafeCrLf = FALSE;
+	ProjectProperties::GetBOOLProps(bSafeCrLf, _T("core.safecrlf"));
+	if (bSafeCrLf)
+		m_cSafeCrLf.SetCurSel(1);
+	else
+	{
+		CString sSafeCrLf;
+		ProjectProperties::GetStringProps(sSafeCrLf, _T("core.safecrlf"));
+		sSafeCrLf = sSafeCrLf.MakeLower().Trim();
+		if (sSafeCrLf == _T("warn"))
+			m_cSafeCrLf.SetCurSel(2);
+		else
+			m_cSafeCrLf.SetCurSel(0);
+	}
 	ProjectProperties::GetBOOLProps(this->m_bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
 
 	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
@@ -178,11 +194,15 @@ BOOL CSettingGitConfig::OnApply()
 		}
 
 	if(m_ChangeMask&GIT_SAFECRLF)
-		if(g_Git.SetConfigValue(_T("core.safecrlf"), this->m_bSafeCrLf?_T("true"):_T("false"), type))
+	{
+		CString safecrlf;
+		this->m_cSafeCrLf.GetWindowText(safecrlf);
+		if(g_Git.SetConfigValue(_T("core.safecrlf"), safecrlf, type))
 		{
 			CMessageBox::Show(NULL, _T("Fail to save safecrlf"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return FALSE;
 		}
+	}
 
 	m_ChangeMask = 0;
 	SetModified(FALSE);
@@ -199,7 +219,7 @@ void CSettingGitConfig::OnBnClickedCheckAutocrlf()
 	SetModified();
 }
 
-void CSettingGitConfig::OnBnClickedCheckSafecrlf()
+void CSettingGitConfig::OnCbnSelchangeSafeCrLf()
 {
 	m_ChangeMask |= GIT_SAFECRLF;
 	SetModified();

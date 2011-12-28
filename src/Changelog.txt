@@ -2,6 +2,7 @@
 == Features==
  * Fixed issue #758: Make the log of a bare repository available
  * Fixed issue #880: Allow sync / fetch / push on bare repository
+ * Fixed issue #818: SafeCRLF = warn should be available
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62

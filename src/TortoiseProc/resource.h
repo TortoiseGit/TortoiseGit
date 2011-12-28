@@ -935,7 +935,7 @@
 #define IDC_RADIO_CLEAN_IGNORE          1629
 #define IDC_GROUP_CLEAN_TYPE            1630
 #define IDC_CHECK_AUTOCRLF              1631
-#define IDC_CHECK_SAFECRLF              1632
+#define IDC_COMBO_SAFECRLF              1632
 #define IDC_CHECK4                      1634
 #define IDC_CHECK_AUTORETRY             1634
 #define IDC_STATIC_MERGE_MESSAGE        1635

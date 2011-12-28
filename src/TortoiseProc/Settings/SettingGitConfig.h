@@ -58,7 +58,7 @@ protected:
 	afx_msg void OnEnChangeGitUseremail();
 	afx_msg void OnEnChangeGitUserSigningKey();
 	afx_msg void OnBnClickedCheckAutocrlf();
-	afx_msg void OnBnClickedCheckSafecrlf();
+	afx_msg void OnCbnSelchangeSafeCrLf();
 	afx_msg void OnBnClickedCheckWarnNoSignedOffBy();
 	afx_msg void OnBnClickedEditglobalgitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
@@ -69,5 +69,5 @@ protected:
 	BOOL	m_bWarnNoSignedOffBy;
 	BOOL	m_bGlobal;
 	BOOL	m_bAutoCrlf;
-	BOOL	m_bSafeCrLf;
+	CComboBox m_cSafeCrLf;
 };
