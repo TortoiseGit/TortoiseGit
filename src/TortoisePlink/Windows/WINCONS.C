@@ -121,11 +121,15 @@ int verify_ssh_host_key(void *frontend, char *host, int port, char *keytype,
 	message = dupprintf(wrongmsg, appname, keytype, fingerprint, appname);
 	title = dupprintf(mbtitle, appname);
 
-	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING|MB_YESNO);
+	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
 	sfree(message);
 	sfree(title);
 	if (mbret == IDYES) {
 		store_host_key(host, port, keytype, keystr);
+		return 1;
+	}
+	else if (mbret == IDNO) 
+	{
 		return 1;
 	}
 	else
@@ -138,12 +142,16 @@ int verify_ssh_host_key(void *frontend, char *host, int port, char *keytype,
 	message = dupprintf(absentmsg, keytype, fingerprint, appname);
 	title = dupprintf(mbtitle, appname);
 	mbret = MessageBox(GetParentHwnd(), message, title,
-		MB_ICONWARNING | MB_YESNO);
+		MB_ICONWARNING | MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
 	sfree(message);
 	sfree(title);
 	if (mbret == IDYES)
 	{
 		store_host_key(host, port, keytype, keystr);
+		return 1;
+	}
+	else if (mbret == IDNO)
+	{
 		return 1;
 	}
 	else
