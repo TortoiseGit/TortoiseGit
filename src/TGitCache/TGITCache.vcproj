@@ -464,6 +464,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\Utils\SysInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TGITCache.cpp"
 				>
 			</File>
@@ -546,11 +550,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Git\TGitPath.h"
+				RelativePath="..\Utils\SysInfo.h"
 				>
 			</File>
 			<File
 				RelativePath=".\TGitCache.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Git\TGitPath.h"
 				>
 			</File>
 			<File
