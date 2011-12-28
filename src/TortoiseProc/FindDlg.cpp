@@ -105,7 +105,7 @@ BOOL CFindDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
-	m_FindCombo.LoadHistory(_T("Software\\TortoiseProc\\History\\Find"), _T("Search"));
+	m_FindCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\Find"), _T("Search"));
 
 	m_FindCombo.SetFocus();
 
