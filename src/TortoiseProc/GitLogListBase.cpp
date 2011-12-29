@@ -1667,7 +1667,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if(!pSelLogEntry->m_Ref.IsEmpty() && GetSelectedCount() == 1)
 		{
 			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
-			popup.AppendMenuIcon(ID_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
+			if (pSelLogEntry->m_Ref.Find(_T("refs/stash")) == 0)
+				popup.AppendMenuIcon(ID_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
