@@ -53,7 +53,7 @@ bool BisectCommand::Execute()
 			CProgressDlg progress;
 			theApp.m_pMainWnd = &progress;
 			if (parser.HasVal(_T("closeonend")))
-				progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+				progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 			progress.m_GitCmdList.push_back(_T("git.exe bisect start"));
 			progress.m_GitCmdList.push_back(_T("git.exe bisect good ") + bisectStartDlg.m_LastGoodRevision);
 			progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);
@@ -98,7 +98,7 @@ bool BisectCommand::Execute()
 		CProgressDlg progress;
 		theApp.m_pMainWnd = &progress;
 		if (parser.HasVal(_T("closeonend")))
-			progress.m_bAutoCloseOnSuccess = parser.GetLongVal(_T("closeonend"));
+			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 		progress.m_GitCmd = cmd;
 
 		if (path.HasSubmodules())

@@ -1232,7 +1232,7 @@ BOOL CGit::CheckMsysGitDir()
 	m_Environment.CopyProcessEnvironment();
 
 	TCHAR *oldpath;
-	size_t homesize,size,httpsize;
+	size_t homesize,size;
 
 	// set HOME if not set already
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));

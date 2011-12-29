@@ -61,7 +61,7 @@ bool CloneCommand::Execute()
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
 
-		// is this a windows format UNC path, ie starts with \\
+		// is this a windows format UNC path, ie starts with \\?
 		if (url.Find(_T("\\\\")) == 0)
 		{
 			// yes, change all \ to /
