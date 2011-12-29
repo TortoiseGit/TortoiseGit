@@ -3,6 +3,7 @@
  * Fixed issue #758: Make the log of a bare repository available
  * Fixed issue #880: Allow sync / fetch / push on bare repository
  * Fixed issue #818: SafeCRLF = warn should be available
+ * Fixed issue #855: moved up Git page in settings dialog
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62
