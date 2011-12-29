@@ -85,13 +85,6 @@ public:
 		const CString& sName1, const CString& sName2, const DiffFlags& flags);
 
 	/**
-	 * Starts the external diff application for properties
-	 */
-	static BOOL StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2,
-			const CString& sName1 = CString(), const CString& sName2 = CString(),
-			BOOL bWait = FALSE, BOOL bReadOnly = FALSE);
-
-	/**
 	 * Launches the standard text viewer/editor application which is associated
 	 * with txt files.
 	 * \return TRUE if the program could be started.

@@ -183,7 +183,6 @@
 #define IDC_EXTDIFF                     1015
 #define IDS_ERR_TGITBLAME               1015
 #define IDC_EXTMERGE                    1016
-#define IDC_EXTDIFFPROPS                1016
 #define IDS_PROC_RESETBRANCH            1016
 #define IDC_DIFFVIEWER                  1017
 #define IDS_LOG_PUSH                    1017
@@ -193,7 +192,6 @@
 #define IDC_EXTDIFFBROWSE               1021
 #define IDS_B_T_INVALID                 1021
 #define IDC_EXTMERGEBROWSE              1022
-#define IDC_EXTDIFFPROPSBROWSE          1022
 #define IDS_B_T_LOCALEMPTY              1022
 #define IDC_CHANGEDDIRS                 1023
 #define IDC_ENABLE                      1023
@@ -241,7 +239,6 @@
 #define IDC_SSHBROWSE                   1069
 #define IDC_DEFAULTLOG                  1071
 #define IDC_RELATIVETIMES               1072
-#define IDC_DONTCONVERT                 1073
 #define IDC_RAM                         1073
 #define IDC_CHECKNEWERVERSION           1073
 #define IDC_SHOWUNVERSIONED             1073
@@ -267,9 +264,7 @@
 #define IDC_EXTDIFF_OFF                 1091
 #define IDC_EXTDIFF_ON                  1092
 #define IDC_EXTMERGEADVANCED            1093
-#define IDC_EXTDIFFPROPS_OFF            1093
 #define IDC_EXTMERGE_OFF                1094
-#define IDC_EXTDIFFPROPS_ON             1094
 #define IDC_EXTMERGE_ON                 1095
 #define IDC_DIFFVIEWER_OFF              1096
 #define IDC_DIFFVIEWER_ON               1097
@@ -473,7 +468,6 @@
 #define IDC_MODIFIEDCOLOR               1253
 #define IDS_UTILS_SELECTTEXTVIEWER      1254
 #define IDC_RESTORE                     1254
-#define IDS_SETTINGS_CONVERTBASE_TT     1255
 #define IDC_DELETEDNODECOLOR            1255
 #define IDS_PROC_WARNREVERT             1256
 #define IDC_ADDEDNODECOLOR              1256

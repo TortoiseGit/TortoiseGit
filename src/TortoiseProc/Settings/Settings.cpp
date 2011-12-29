@@ -96,17 +96,6 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
 
 	AddPage(m_pMainPage);
-	AddPage(m_pGitConfig);
-	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
-	{
-		AddPage(m_pGitRemote);
-	}
-	AddPage(m_pHooksPage);
-	AddPage(m_pBugTraqPage);
-	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()))
-	{
-		AddPage(m_pBugtraqConfig);
-	}
 	AddPage(m_pOverlayPage);
 	AddPage(m_pOverlaysPage);
 	AddPage(m_pOverlayHandlersPage);
@@ -122,6 +111,19 @@ void CSettings::AddPropPages()
 	AddPage(m_pColorsPage3);
 	AddPage(m_pProgsAlternativeEditor);
 	AddPage(m_pSavedPage);
+
+	AddPage(m_pGitConfig);
+
+	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
+	{
+		AddPage(m_pGitRemote);
+	}
+	AddPage(m_pHooksPage);
+	AddPage(m_pBugTraqPage);
+	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()))
+	{
+		AddPage(m_pBugtraqConfig);
+	}
 	AddPage(m_pTBlamePage);
 }
 

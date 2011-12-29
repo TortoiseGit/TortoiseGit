@@ -511,23 +511,15 @@ void CTortoiseProcApp::CheckUpgrade()
 		lVersion |= (_ttol(sVersion.Mid(pos+1))<<8);
 	}
 
-	CRegDWORD regval = CRegDWORD(_T("Software\\TortoiseGit\\DontConvertBase"), 999);
-	if ((DWORD)regval != 999)
+	if (lVersion <= 0x01070600)
 	{
-		// there's a leftover registry setting we have to convert and then delete it
-		CRegDWORD newregval = CRegDWORD(_T("Software\\TortoiseGit\\ConvertBase"));
-		newregval = !regval;
-		regval.removeValue();
+		CRegStdDWORD(_T("Software\\TortoiseGit\\ConvertBase")).removeValue();
+		CRegStdDWORD(_T("Software\\TortoiseGit\\DiffProps")).removeValue();
 	}
 #if 0
 	if (lVersion <= 0x01010300)
 	{
 		CSoundUtils::RegisterTSVNSounds();
-		// remove all saved dialog positions
-		CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\")).removeKey();
-		CRegDWORD(_T("Software\\TortoiseGit\\RecursiveOverlay")).removeValue();
-		// remove the external cache key
-		CRegDWORD(_T("Software\\TortoiseGit\\ExternalCache")).removeValue();
 	}
 #endif
 	if (lVersion <= 0x01020200)
@@ -584,15 +576,6 @@ void CTortoiseProcApp::CheckUpgrade()
 			if ((diffregstring.IsEmpty()) || (diffregstring.Find(filename)>=0))
 				diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
 		}
-	}
-
-	// Initialize "Software\\TortoiseGit\\DiffProps" once with the same value as "Software\\TortoiseGit\\Diff"
-	CRegString regDiffPropsPath = CRegString(_T("Software\\TortoiseGit\\DiffProps"),_T("non-existant"));
-	CString strDiffPropsPath = regDiffPropsPath;
-	if ( strDiffPropsPath==_T("non-existant") )
-	{
-		CString strDiffPath = CRegString(_T("Software\\TortoiseGit\\Diff"));
-		regDiffPropsPath = strDiffPath;
 	}
 
 	// set the current version so we don't come here again until the next update!

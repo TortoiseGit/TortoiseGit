@@ -464,56 +464,6 @@ bool CAppUtils::StartExtDiff(
 	return LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, flags.bWait);
 }
 
-BOOL CAppUtils::StartExtDiffProps(const CTGitPath& file1, const CTGitPath& file2, const CString& sName1, const CString& sName2, BOOL bWait, BOOL bReadOnly)
-{
-	CRegString diffpropsexe(_T("Software\\TortoiseGit\\DiffProps"));
-	CString viewer = diffpropsexe;
-	bool bInternal = false;
-	if (viewer.IsEmpty()||(viewer.Left(1).Compare(_T("#"))==0))
-	{
-		//no registry entry (or commented out) for a diff program
-		//use TortoiseMerge
-		bInternal = true;
-		viewer = CPathUtils::GetAppDirectory();
-		viewer += _T("TortoiseMerge.exe");
-		viewer = _T("\"") + viewer + _T("\"");
-		viewer = viewer + _T(" /base:%base /mine:%mine /basename:%bname /minename:%yname");
-	}
-	// check if the params are set. If not, just add the files to the command line
-	if ((viewer.Find(_T("%base"))<0)&&(viewer.Find(_T("%mine"))<0))
-	{
-		viewer += _T(" \"")+file1.GetWinPathString()+_T("\"");
-		viewer += _T(" \"")+file2.GetWinPathString()+_T("\"");
-	}
-	if (viewer.Find(_T("%base")) >= 0)
-	{
-		viewer.Replace(_T("%base"),  _T("\"")+file1.GetWinPathString()+_T("\""));
-	}
-	if (viewer.Find(_T("%mine")) >= 0)
-	{
-		viewer.Replace(_T("%mine"),  _T("\"")+file2.GetWinPathString()+_T("\""));
-	}
-
-	if (sName1.IsEmpty())
-		viewer.Replace(_T("%bname"), _T("\"") + file1.GetUIFileOrDirectoryName() + _T("\""));
-	else
-		viewer.Replace(_T("%bname"), _T("\"") + sName1 + _T("\""));
-
-	if (sName2.IsEmpty())
-		viewer.Replace(_T("%yname"), _T("\"") + file2.GetUIFileOrDirectoryName() + _T("\""));
-	else
-		viewer.Replace(_T("%yname"), _T("\"") + sName2 + _T("\""));
-
-	if ((bReadOnly)&&(bInternal))
-		viewer += _T(" /readonly");
-
-	if(!LaunchApplication(viewer, IDS_ERR_EXTDIFFSTART, !!bWait))
-	{
-		return FALSE;
-	}
-	return TRUE;
-}
-
 BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait)
 {
 	CString viewer;
