@@ -597,7 +597,7 @@ END
 
 IDD_SETTINGSPROGSDIFF DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "External Programs::Diff Viewer"
+CAPTION "Diff Viewer"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Configure the program used for comparing different revisions of files",IDC_STATIC,7,7,286,87
@@ -618,7 +618,7 @@ END
 
 IDD_SETTINGSPROGSMERGE DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "External Programs::Merge Tool"
+CAPTION "Diff Viewer::Merge Tool"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Configure the program used to resolve conflicted files.",IDC_STATIC,7,7,251,8
@@ -632,7 +632,7 @@ END
 
 IDD_SETTINGSPROGSUNIDIFF DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "External Programs::Unified Diff Viewer"
+CAPTION "Diff Viewer::Unified Diff Viewer"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Configure viewer program for GNU diff files (patch files).",IDC_STATIC,7,7,286,8
@@ -1381,7 +1381,7 @@ END
 
 IDD_SETTINGIT_CONFIG DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Git::Config"
+CAPTION "Git"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "User Info",IDC_STATIC,7,7,286,68
@@ -1536,7 +1536,7 @@ END
 
 IDD_SETTINGSPROGSALTERNATIVEEDITOR DIALOGEX 0, 0, 300, 217
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "External Programs::Alternative editor"
+CAPTION "General::Alternative editor"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Configure alternative editor. Preferably one which can handle *nix file endings.",IDC_STATIC,7,7,286,8

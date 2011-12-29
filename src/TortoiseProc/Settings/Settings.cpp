@@ -103,13 +103,13 @@ void CSettings::AddPropPages()
 	AddPage(m_pProgsDiffPage);
 	AddPage(m_pProgsMergePage);
 	AddPage(m_pProgsUniDiffPage);
-	AddPage(m_pProgsAlternativeEditor);
 	AddPage(m_pLookAndFeelPage);
 	AddPage(m_pExtMenu);
 	AddPage(m_pDialogsPage);
 	AddPage(m_pColorsPage);
 	AddPage(m_pColorsPage2);
 	AddPage(m_pColorsPage3);
+	AddPage(m_pProgsAlternativeEditor);
 	AddPage(m_pSavedPage);
 
 	AddPage(m_pGitConfig);
