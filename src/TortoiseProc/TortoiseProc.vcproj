@@ -1725,10 +1725,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Settings\SettingsProgsUniDiff.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Settings\SettingsPropPage.cpp"
 					>
 				</File>

@@ -50,7 +50,6 @@ void CSettings::AddPropPages()
 	m_pProxyPage = new CSetProxyPage();
 	m_pProgsDiffPage = new CSettingsProgsDiff();
 	m_pProgsMergePage = new CSettingsProgsMerge();
-	m_pProgsUniDiffPage = new CSettingsProgsUniDiff();
 	m_pProgsAlternativeEditor = new CSettingsProgsAlternativeEditor();
 	m_pLookAndFeelPage = new CSetLookAndFeelPage();
 
@@ -79,7 +78,6 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
 	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
 	SetPageIcon(m_pProgsAlternativeEditor, m_pProgsAlternativeEditor->GetIconID());
-	SetPageIcon(m_pProgsUniDiffPage, m_pProgsUniDiffPage->GetIconID());
 	SetPageIcon(m_pLookAndFeelPage, m_pLookAndFeelPage->GetIconID());
 	SetPageIcon(m_pDialogsPage, m_pDialogsPage->GetIconID());
 	SetPageIcon(m_pColorsPage, m_pColorsPage->GetIconID());
@@ -102,7 +100,6 @@ void CSettings::AddPropPages()
 	AddPage(m_pProxyPage);
 	AddPage(m_pProgsDiffPage);
 	AddPage(m_pProgsMergePage);
-	AddPage(m_pProgsUniDiffPage);
 	AddPage(m_pLookAndFeelPage);
 	AddPage(m_pExtMenu);
 	AddPage(m_pDialogsPage);
@@ -136,7 +133,6 @@ void CSettings::RemovePropPages()
 	delete m_pProxyPage;
 	delete m_pProgsDiffPage;
 	delete m_pProgsMergePage;
-	delete m_pProgsUniDiffPage;
 	delete m_pProgsAlternativeEditor;
 	delete m_pLookAndFeelPage;
 	delete m_pDialogsPage;
@@ -165,7 +161,6 @@ void CSettings::HandleRestart()
 	restart |= m_pProxyPage->GetRestart();
 	restart |= m_pProgsDiffPage->GetRestart();
 	restart |= m_pProgsMergePage->GetRestart();
-	restart |= m_pProgsUniDiffPage->GetRestart();
 	restart |= m_pProgsAlternativeEditor->GetRestart();
 	restart |= m_pLookAndFeelPage->GetRestart();
 	restart |= m_pDialogsPage->GetRestart();
@@ -311,10 +306,6 @@ BOOL CSettings::OnInitDialog()
 	if(this->m_DefaultPage == _T("merge"))
 	{
 		this->SetActivePage(this->m_pProgsMergePage);
-	}
-	if(this->m_DefaultPage == _T("unidiff"))
-	{
-		this->SetActivePage(this->m_pProgsUniDiffPage);
 	}
 	if(this->m_DefaultPage == _T("alternativeeditor"))
 	{

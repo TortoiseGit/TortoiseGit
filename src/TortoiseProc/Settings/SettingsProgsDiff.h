@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,6 +53,11 @@ protected:
 	afx_msg void OnBnClickedExtdiffbrowse();
 	afx_msg void OnBnClickedExtdiffadvanced();
 	afx_msg void OnEnChangeExtdiff();
+	afx_msg void OnEnChangeExtdiffprops();
+	afx_msg void OnBnClickedDiffviewerOff();
+	afx_msg void OnBnClickedDiffviewerOn();
+	afx_msg void OnBnClickedDiffviewerbrowse();
+	afx_msg void OnEnChangeDiffviewer();
 
 	bool IsExternal(const CString& path) const { return !path.IsEmpty() && path.Left(1) != _T("#"); }
 	void CheckProgComment();
@@ -61,9 +66,13 @@ protected:
 private:
 	CString			m_sDiffPath;
 	CRegString		m_regDiffPath;
-	int             m_iExtDiff;
+	int				m_iExtDiff;
 	CSetProgsAdvDlg m_dlgAdvDiff;
 	CToolTips		m_tooltips;
+	CString			m_sDiffViewerPath;
+	CRegString		m_regDiffViewerPath;
+	int				m_iDiffViewer;
 
 	CFileDropEdit	m_cDiffEdit;
+	CFileDropEdit	m_cUnifiedDiffEdit;
 };

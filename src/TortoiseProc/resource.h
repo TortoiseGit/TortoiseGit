@@ -46,7 +46,6 @@
 #define IDI_SET_OVERLAYS                190
 #define IDD_SETTINGSPROGSDIFF           192
 #define IDD_SETTINGSPROGSMERGE          193
-#define IDD_SETTINGSPROGSUNIDIFF        194
 #define IDD_SETTINGSLOOKANDFEEL         195
 #define IDI_GENERAL                     195
 #define IDD_SETTINGSDIALOGS             196
