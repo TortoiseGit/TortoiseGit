@@ -1570,15 +1570,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				bool thisbranch = false;
-				CString currentBranch = _T("refs/heads/")+g_Git.GetCurrentBranch();
-				for(int i=0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
-				{
-					if (m_HashMap[pSelLogEntry->m_CommitHash][i] == currentBranch)
-						thisbranch = true;
-						break;
-				}
-
 				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
@@ -1595,6 +1586,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					)
 				{
 					std::vector<CString *> branchs;
+					CString currentBranch = _T("refs/heads/")+g_Git.GetCurrentBranch();
 					CString ref;
 
 					for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
