@@ -2474,7 +2474,6 @@ BEGIN
                             "A viewer program for GNU diff files (patch files).\r\nIf you don't have one use NotePad."
     IDS_SETTINGS_AUTOCLOSE_TT 
                             "Select the behaviour of the progress dialog at the end of the operation."
-    IDS_UTILS_SELECTTEXTVIEWER "Select text editor application"
     IDS_PROC_WARNREVERT     "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes since the last update!"
     IDS_PROC_CLEANUPFINISHED 
                             "Cleanup has successfully processed the following paths:\n%s"

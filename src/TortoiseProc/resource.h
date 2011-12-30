@@ -465,7 +465,6 @@
 #define IDC_MERGEDCOLOR                 1252
 #define IDS_SETTINGS_AUTOCLOSE_TT       1253
 #define IDC_MODIFIEDCOLOR               1253
-#define IDS_UTILS_SELECTTEXTVIEWER      1254
 #define IDC_RESTORE                     1254
 #define IDC_DELETEDNODECOLOR            1255
 #define IDS_PROC_WARNREVERT             1256
