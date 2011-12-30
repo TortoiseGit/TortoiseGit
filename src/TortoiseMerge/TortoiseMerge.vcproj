@@ -785,7 +785,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Utils\MiscUI\ProgressDlg.cpp"
+				RelativePath="..\Utils\MiscUI\SysProgressDlg.cpp"
 				>
 			</File>
 			<File
