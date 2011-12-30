@@ -1437,6 +1437,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (popup.CreatePopupMenu())
 	{
 		bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
+		CString currentBranch = _T("refs/heads/") + g_Git.GetCurrentBranch();
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
@@ -1586,7 +1587,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					)
 				{
 					std::vector<CString *> branchs;
-					CString currentBranch = _T("refs/heads/")+g_Git.GetCurrentBranch();
 					for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
 					{
 						CString ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
@@ -1770,22 +1770,28 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
 				{
+					std::vector<CString *> branchs;
+					for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+					{
+						if(m_HashMap[pSelLogEntry->m_CommitHash][i] != currentBranch)
+							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
+					}
 					CString str;
-					if( m_HashMap[pSelLogEntry->m_CommitHash].size() == 1 )
+					if (branchs.size() == 1)
 					{
 						str.LoadString(IDS_DELETE_BRANCHTAG_SHORT);
 						str+=_T(" ");
-						str+=m_HashMap[pSelLogEntry->m_CommitHash].at(0);
+						str += *branchs[0];
 						popup.AppendMenuIcon(ID_DELETE, str, IDI_DELETE);
 						bAddSeparator = true;
 					}
-					else if( m_HashMap[pSelLogEntry->m_CommitHash].size() > 1 )
+					else if (branchs.size() > 1)
 					{
 						str.LoadString(IDS_DELETE_BRANCHTAG);
 						submenu.CreatePopupMenu();
-						for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
+						for (int i = 0; i < branchs.size(); i++)
 						{
-							submenu.AppendMenuIcon(ID_DELETE+(i<<16),m_HashMap[pSelLogEntry->m_CommitHash][i]);
+							submenu.AppendMenuIcon(ID_DELETE + (i << 16), *branchs[i]);
 						}
 
 						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);
