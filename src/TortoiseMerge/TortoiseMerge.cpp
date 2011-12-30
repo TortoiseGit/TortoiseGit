@@ -41,7 +41,6 @@ END_MESSAGE_MAP()
 
 CTortoiseMergeApp::CTortoiseMergeApp()
 {
-	SetDllDirectory(L"");
 	EnableHtmlHelp();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
@@ -54,6 +53,8 @@ CCrashReport g_crasher("tortoisesvn@gmail.com", "Crash Report for TortoiseMerge 
 // CTortoiseMergeApp initialization
 BOOL CTortoiseMergeApp::InitInstance()
 {
+	SetDllDirectory(L"");
+
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
 	//set the resource dll for the required language
