@@ -355,7 +355,7 @@ UINT CImportPatchDlg::PatchThread()
 		if (m_pTaskbarList)
 		{
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-			m_pTaskbarList->SetProgressValue(m_hWnd, i + 1, m_cList.GetItemCount());
+			m_pTaskbarList->SetProgressValue(m_hWnd, i, m_cList.GetItemCount());
 		}
 
 		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
@@ -467,9 +467,6 @@ UINT CImportPatchDlg::PatchThread()
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
 
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
-
 		UpdateOkCancelText();
 	}
 
@@ -480,6 +477,15 @@ UINT CImportPatchDlg::PatchThread()
 
 	this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
 	this->m_cList.InvalidateRect(rect);
+
+	if (m_pTaskbarList)
+	{
+		m_pTaskbarList->SetProgressValue(m_hWnd, m_CurrentItem, m_cList.GetItemCount());
+		if (m_bExitThread && m_CurrentItem != m_cList.GetItemCount())
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
+		else if (!m_bExitThread && m_CurrentItem == m_cList.GetItemCount())
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+	}
 
 	EnableInputCtrl(true);
 	InterlockedExchange(&m_bThreadRunning, FALSE);
