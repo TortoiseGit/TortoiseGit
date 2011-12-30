@@ -1587,11 +1587,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					std::vector<CString *> branchs;
 					CString currentBranch = _T("refs/heads/")+g_Git.GetCurrentBranch();
-					CString ref;
-
 					for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
 					{
-						ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
+						CString ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
 						if(ref.Find(_T("refs/heads/")) == 0 && ref != currentBranch)
 						{
 							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
