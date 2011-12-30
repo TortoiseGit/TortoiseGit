@@ -611,7 +611,18 @@ void CImportPatchDlg::OnBnClickedCancel()
 		InterlockedExchange(&m_bExitThread,TRUE);
 	}
 	else
+	{
+		CTGitPath path;
+		path.SetFromWin(g_Git.m_CurrentDir);
+		if(path.HasRebaseApply())
+			if(MessageBox(_T("\"git am\" is still in apply mode.\nDo you want to abort?"), _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+			{
+				CString output;
+				if(g_Git.Run(_T("git.exe am --abort"), &output, CP_ACP))
+					MessageBox(output, _T("TortoiseGit error"), MB_OK);
+			}
 		OnCancel();
+	}
 }
 
 void CImportPatchDlg::AddLogString(CString str)
