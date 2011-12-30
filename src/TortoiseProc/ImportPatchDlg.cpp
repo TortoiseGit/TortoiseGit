@@ -349,7 +349,7 @@ UINT CImportPatchDlg::PatchThread()
 	path.SetFromWin(g_Git.m_CurrentDir);
 
 	int i=0;
-
+	UpdateOkCancelText();
 	for(i=m_CurrentItem;i<m_cList.GetItemCount();i++)
 	{
 		if (m_pTaskbarList)
@@ -594,20 +594,20 @@ void CImportPatchDlg::EnableInputCtrl(BOOL b)
 
 void CImportPatchDlg::UpdateOkCancelText()
 {
-	if( !IsFinish() )
+	if (this->m_bThreadRunning && !IsFinish())
 	{
-		this->GetDlgItem(IDOK)->SetWindowText(_T("&Apply"));
+		this->GetDlgItem(IDOK)->EnableWindow(FALSE);
+		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("A&bort"));
+	}
+	else if (!IsFinish())
+	{
+		this->GetDlgItem(IDOK)->EnableWindow(TRUE);
 	}
 	else
 	{
+		this->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDOK)->SetWindowText(_T("&OK"));
 	}
-
-	if(this->m_bThreadRunning)
-		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("A&bort"));
-	else
-		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("&Cancel"));
-
 }
 void CImportPatchDlg::OnBnClickedCancel()
 {
