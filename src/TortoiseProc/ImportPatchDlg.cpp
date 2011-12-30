@@ -360,6 +360,10 @@ UINT CImportPatchDlg::PatchThread()
 
 		m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
 
+		CRect rect;
+		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
+		this->m_cList.InvalidateRect(rect);
+
 		if(m_bExitThread)
 			break;
 
@@ -459,13 +463,8 @@ UINT CImportPatchDlg::PatchThread()
 
 		m_cList.SetItemData(m_CurrentItem, (~CPatchListCtrl::STATUS_APPLYING)&m_cList.GetItemData(i));
 		m_CurrentItem++;
-		m_cList.SetItemData(m_CurrentItem, CPatchListCtrl::STATUS_APPLYING|m_cList.GetItemData(i));
 
-		CRect rect;
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
-		this->m_cList.InvalidateRect(rect);
-
-		this->m_cList.GetItemRect(m_CurrentItem,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
 
 		if (m_pTaskbarList)
