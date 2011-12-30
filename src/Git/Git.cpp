@@ -193,7 +193,7 @@ static char g_Buffer[4096];
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HANDLE *hErrReadOut, CString *StdioFile)
 {
 	SECURITY_ATTRIBUTES sa;
-	HANDLE hRead, hWrite, hReadErr, hWriteErr;
+	HANDLE hRead, hWrite, hReadErr = NULL, hWriteErr = NULL;
 	HANDLE hStdioFile = NULL;
 
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -1354,7 +1354,7 @@ public:
 
 	BYTE_VECTOR		m_DataCollector;
 
-	virtual bool	OnOutputErrData(const BYTE* data, size_t size)
+	virtual bool	OnOutputErrData(const BYTE*, size_t)
 	{
 		return false; //ignore error data
 	}
@@ -1548,7 +1548,7 @@ BOOL CGit::CheckCleanWorkTree()
 
 	return TRUE;
 }
-int CGit::Revert(CString commit, CTGitPathList &list,bool keep)
+int CGit::Revert(CString commit, CTGitPathList &list, bool)
 {
 	int ret;
 	for(int i=0;i<list.GetCount();i++)
