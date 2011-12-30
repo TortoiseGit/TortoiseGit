@@ -23,7 +23,6 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "TempFile.h"
-#include "ProgressDlg.h"
 #include "SysImageList.h"
 #include "IconMenu.h"
 //#include "GitProperties.h"
@@ -614,15 +613,11 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 				if (browseFolder.Show(GetSafeHwnd(), m_strExportDir) == CBrowseFolder::OK)
 				{
-					m_arSelectedFileList.RemoveAll();
 					POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 					while (pos)
 					{
 						int index = m_cFileList.GetNextSelectedItem(pos);
 						CTGitPath* fd = m_arFilteredList[index];
-#if 0
-						m_arSelectedFileList.Add(fd);
-#endif
 						// we cannot export directories or folders
 						if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
 							continue;
@@ -653,15 +648,6 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							}
 						}
 					}
-#if 0
-					m_pProgDlg = new CProgressDlg();
-					InterlockedExchange(&m_bThreadRunning, TRUE);
-					if (AfxBeginThread(ExportThreadEntry, this)==NULL)
-					{
-						InterlockedExchange(&m_bThreadRunning, FALSE);
-						CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-					}
-#endif
 				}
 			}
 
@@ -669,87 +655,6 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		}
 	}
-}
-
-UINT CFileDiffDlg::ExportThreadEntry(LPVOID pVoid)
-{
-	return ((CFileDiffDlg*)pVoid)->ExportThread();
-}
-
-UINT CFileDiffDlg::ExportThread()
-{
-#if 0
-	RefreshCursor();
-//	if (m_pProgDlg == NULL)
-//		return 1;
-	long count = 0;
-//	SetAndClearProgressInfo(m_pProgDlg, false);
-	m_pProgDlg->SetTitle(IDS_PROGRESSWAIT);
-	m_pProgDlg->SetAnimation(AfxGetResourceHandle(), IDR_DOWNLOAD);
-	m_pProgDlg->ShowModeless(this);
-	for (INT_PTR i=0; (i<m_arSelectedFileList.GetCount())&&(!m_pProgDlg->HasUserCancelled()); ++i)
-	{
-		CTGitPath* fd = m_arSelectedFileList[i];
-//		CTGitPath url1 = CTGitPath(m_path1.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
-//		CTGitPath url2 = m_bDoPegDiff ? url1 : CTGitPath(m_path2.GetGitPathString() + _T("/") + fd.path.GetGitPathString());
-//		if ((fd.node == svn_node_dir)&&(fd.kind != svn_client_diff_summarize_kind_added))
-//		{
-			// just create the directory
-//			CreateDirectoryEx(NULL, m_strExportDir+_T("\\")+CPathUtils::PathUnescape(fd.path.GetWinPathString()), NULL);
-//			continue;
-//		}
-
-		CString sTemp;
-		m_pProgDlg->FormatPathLine(1, IDS_PROGRESSGETFILE, (LPCTSTR)url1.GetGitPathString());
-
-		CTGitPath savepath = CTGitPath(m_strExportDir);
-		savepath.AppendPathString(_T("\\") + CPathUtils::PathUnescape(fd.path.GetWinPathString()));
-		CPathUtils::MakeSureDirectoryPathExists(fd.node == svn_node_file ? savepath.GetContainingDirectory().GetWinPath() : savepath.GetDirectory().GetWinPath());
-		if (fd.node == svn_node_dir)
-		{
-			// exporting a folder requires calling Git::Export() so we also export all
-			// children of that added folder.
-			if ((fd.kind == svn_client_diff_summarize_kind_added)&&(!Export(url2, savepath, m_bDoPegDiff ? m_peg : m_rev2, m_rev2, true, true)))
-			{
-				if ((!m_bDoPegDiff)||(!Export(url2, savepath, m_rev2, m_rev2, true, true)))
-				{
-					delete m_pProgDlg;
-					m_pProgDlg = NULL;
-					CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					InterlockedExchange(&m_bThreadRunning, FALSE);
-					RefreshCursor();
-					return 1;
-				}
-			}
-		}
-		else
-		{
-			// exporting a file requires calling Git::Cat(), since Git::Export() only works
-			// with folders.
-			if ((fd.kind != svn_client_diff_summarize_kind_deleted)&&(!Cat(url2, m_bDoPegDiff ? m_peg : m_rev2, m_rev2, savepath)))
-			{
-				if ((!m_bDoPegDiff)||(!Cat(url2, m_rev2, m_rev2, savepath)))
-				{
-					delete m_pProgDlg;
-					m_pProgDlg = NULL;
-					CMessageBox::Show(NULL, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					InterlockedExchange(&m_bThreadRunning, FALSE);
-					RefreshCursor();
-					return 1;
-				}
-			}
-		}
-		count++;
-		m_pProgDlg->SetProgress (count, static_cast<DWORD>(m_arSelectedFileList.GetCount()));
-	}
-	m_pProgDlg->Stop();
-	SetAndClearProgressInfo(NULL, false);
-	delete m_pProgDlg;
-	m_pProgDlg = NULL;
-	InterlockedExchange(&m_bThreadRunning, FALSE);
-	RefreshCursor();
-#endif
-	return 0;
 }
 
 BOOL CFileDiffDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
@@ -940,7 +845,6 @@ void CFileDiffDlg::OnHdnItemclickFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	else
 		m_bAscending = TRUE;
 	m_nSortedColumn = phdr->iItem;
-	m_arSelectedFileList.RemoveAll();
 	Sort();
 
 	CString temp;

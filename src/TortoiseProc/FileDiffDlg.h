@@ -129,8 +129,6 @@ protected:
 private:
 	static UINT			DiffThreadEntry(LPVOID pVoid);
 	UINT				DiffThread();
-	static UINT			ExportThreadEntry(LPVOID pVoid);
-	UINT				ExportThread();
 
 	static UINT			LoadRefThreadEntry(LPVOID pVoid)
 	{
@@ -153,10 +151,8 @@ private:
 	CColors				m_colors;
 	CHintListCtrl		m_cFileList;
 	bool				m_bBlame;
-//	CBlame				m_blamer;
 	CTGitPathList		m_arFileList;
 	std::vector<CTGitPath*> m_arFilteredList;
-	CArray<CTGitPath*, CTGitPath*> m_arSelectedFileList;
 
 	CString				m_strExportDir;
 	CProgressDlg *		m_pProgDlg;
