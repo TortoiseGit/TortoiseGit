@@ -25,6 +25,7 @@
 //#include "GitProperties.h"
 #include "GitStatus.h"
 #include "TGitPath.h"
+#include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
@@ -1246,11 +1247,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			STARTUPINFO startup;
-			PROCESS_INFORMATION process;
-			memset(&startup, 0, sizeof(startup));
-			startup.cb = sizeof(startup);
-			memset(&process, 0, sizeof(process));
 			CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
 			CRegStdString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T("TortoiseMerge.exe"), false, HKEY_LOCAL_MACHINE);
 
@@ -1831,12 +1827,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				myIDMap.clear();
 				myVerbsIDMap.clear();
 				myVerbsMap.clear();
-				if (CreateProcess(((stdstring)tortoiseMergePath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
-				{
-					MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseMerge launch failed"), MB_OK | MB_ICONINFORMATION );
-				}
-				CloseHandle(process.hThread);
-				CloseHandle(process.hProcess);
+				RunCommand(tortoiseMergePath, gitCmd, _T("TortoiseMerge launch failed"));
 				return NOERROR;
 				break;
 			case ShellMenuProperties:
@@ -1967,12 +1958,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			myIDMap.clear();
 			myVerbsIDMap.clear();
 			myVerbsMap.clear();
-			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
-			{
-				MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseProc Launch failed"), MB_OK | MB_ICONINFORMATION );
-			}
-			CloseHandle(process.hThread);
-			CloseHandle(process.hProcess);
+			RunCommand(tortoiseProcPath, gitCmd, _T("TortoiseProc launch failed"));
 			hr = NOERROR;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
 	} // if ((files_.size() > 0)||(folder_.size() > 0))
@@ -2636,3 +2622,13 @@ HRESULT CShellExt::ConvertToPARGB32(HDC hdc, __inout ARGB *pargb, HBITMAP hbmp, 
 	return hr;
 }
 
+void CShellExt::RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage)
+{
+	if (CCreateProcessHelper::CreateProcessDetached(path.c_str(), const_cast<TCHAR*>(command.c_str())))
+	{
+		// process started - exit
+		return;
+	}
+
+	MessageBox(NULL, CFormatMessageWrapper(), errorMessage, MB_OK | MB_ICONINFORMATION);
+}
