@@ -1,5 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
+// Copyright (C) 2011 - TortoiseGit
 // Copyright (C) 2006-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -110,29 +111,17 @@ BOOL COpenDlg::OnInitDialog()
 
 void COpenDlg::OnBnClickedBasefilebrowse()
 {
-	CString temp;
-	UpdateData();
-	temp.LoadString(IDS_SELECTFILE);
-	BrowseForFile(m_sBaseFile, temp);
-	UpdateData(FALSE);
+	OnBrowseForFile(m_sBaseFile);
 }
 
 void COpenDlg::OnBnClickedTheirfilebrowse()
 {
-	CString temp;
-	UpdateData();
-	temp.LoadString(IDS_SELECTFILE);
-	BrowseForFile(m_sTheirFile, temp);
-	UpdateData(FALSE);
+	OnBrowseForFile(m_sTheirFile);
 }
 
 void COpenDlg::OnBnClickedYourfilebrowse()
 {
-	CString temp;
-	UpdateData();
-	temp.LoadString(IDS_SELECTFILE);
-	BrowseForFile(m_sYourFile, temp);
-	UpdateData(FALSE);
+	OnBrowseForFile(m_sYourFile);
 }
 
 void COpenDlg::OnBnClickedHelp()
@@ -140,8 +129,9 @@ void COpenDlg::OnBnClickedHelp()
 	this->OnHelp();
 }
 
-BOOL COpenDlg::BrowseForFile(CString& filepath, CString title, UINT nFileFilter)
+void COpenDlg::OnBrowseForFile(CString& filepath, UINT nFileFilter)
 {
+	UpdateData();
 	OPENFILENAME ofn = {0};			// common dialog box structure
 	TCHAR szFile[MAX_PATH] = {0};	// buffer for file name
 	if (!filepath.IsEmpty())
@@ -170,6 +160,8 @@ BOOL COpenDlg::BrowseForFile(CString& filepath, CString title, UINT nFileFilter)
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = NULL;
+	CString title;
+	title.LoadString(IDS_SELECTFILE);
 	ofn.lpstrTitle = title;
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
 
@@ -178,20 +170,14 @@ BOOL COpenDlg::BrowseForFile(CString& filepath, CString title, UINT nFileFilter)
 	if (GetOpenFileName(&ofn)==TRUE)
 	{
 		filepath = CString(ofn.lpstrFile);
-		delete [] pszFilters;
-		return TRUE;
 	}
 	delete [] pszFilters;
-	return FALSE;			//user canceled the dialog
+	UpdateData(FALSE);
 }
 
 void COpenDlg::OnBnClickedDifffilebrowse()
 {
-	CString temp;
-	UpdateData();
-	temp.LoadString(IDS_SELECTFILE);
-	BrowseForFile(m_sUnifiedDiffFile, temp, IDS_PATCHFILEFILTER);
-	UpdateData(FALSE);
+	OnBrowseForFile(m_sUnifiedDiffFile);
 }
 
 void COpenDlg::OnBnClickedDirectorybrowse()
