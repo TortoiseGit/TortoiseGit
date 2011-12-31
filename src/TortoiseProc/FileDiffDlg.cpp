@@ -36,6 +36,7 @@
 #include "LogDlg.h"
 #include "RefLogDlg.h"
 #include "GitStatusListCtrl.h"
+#include "FormatMessageWrapper.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -627,13 +628,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						{
 							if(!CopyFile(g_Git.m_CurrentDir + _T("\\") + fd->GetWinPath(), filename, false))
 							{
-								LPVOID lpMsgBuf=NULL;
-								FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-									NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-									(LPTSTR)&lpMsgBuf,
-									0, NULL);
-								CMessageBox::Show(NULL,(TCHAR *)lpMsgBuf, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-								LocalFree(lpMsgBuf);
+								MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 								return;
 							}
 						}

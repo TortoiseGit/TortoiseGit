@@ -52,6 +52,7 @@
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
 #include "CommonResource.h"
+#include "FormatMessageWrapper.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
@@ -5274,13 +5275,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		{
 			if(!CopyFile(g_Git.m_CurrentDir +_T("\\") + path->GetWinPath(),filename,false))
 			{
-				LPVOID lpMsgBuf=NULL;
-				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-					NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-					(LPTSTR)&lpMsgBuf,
-					0,NULL);
-				CMessageBox::Show(NULL,(TCHAR *)lpMsgBuf,_T("TortoiseGit"),MB_OK);
-				LocalFree(lpMsgBuf);
+				MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return;
 			}
 

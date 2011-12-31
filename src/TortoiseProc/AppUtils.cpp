@@ -58,6 +58,7 @@
 #include "RebaseDlg.h"
 #include "PropKey.h"
 #include "StashSave.h"
+#include "FormatMessageWrapper.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -596,21 +597,9 @@ bool CAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessage
 	{
 		if(idErrMessageFormat != 0)
 		{
-			LPVOID lpMsgBuf;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-				FORMAT_MESSAGE_FROM_SYSTEM |
-				FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL,
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-				(LPTSTR) &lpMsgBuf,
-				0,
-				NULL
-				);
 			CString temp;
-			temp.Format(idErrMessageFormat, lpMsgBuf);
-			CMessageBox::Show(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			LocalFree( lpMsgBuf );
+			temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+			MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		}
 		return false;
 	}

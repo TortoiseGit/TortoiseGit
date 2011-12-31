@@ -25,6 +25,7 @@
 //#include "GitProperties.h"
 #include "GitStatus.h"
 #include "TGitPath.h"
+#include "FormatMessageWrapper.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
 #define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
@@ -1832,19 +1833,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				myVerbsMap.clear();
 				if (CreateProcess(((stdstring)tortoiseMergePath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 				{
-					LPVOID lpMsgBuf;
-					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-						FORMAT_MESSAGE_FROM_SYSTEM |
-						FORMAT_MESSAGE_IGNORE_INSERTS,
-						NULL,
-						GetLastError(),
-						MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-						(LPTSTR) &lpMsgBuf,
-						0,
-						NULL
-						);
-					MessageBox( NULL, (LPCTSTR)lpMsgBuf, _T("TortoiseMerge launch failed"), MB_OK | MB_ICONINFORMATION );
-					LocalFree( lpMsgBuf );
+					MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseMerge launch failed"), MB_OK | MB_ICONINFORMATION );
 				}
 				CloseHandle(process.hThread);
 				CloseHandle(process.hProcess);
@@ -1980,19 +1969,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			myVerbsMap.clear();
 			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 			{
-				LPVOID lpMsgBuf;
-				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-					FORMAT_MESSAGE_FROM_SYSTEM |
-					FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL,
-					GetLastError(),
-					MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-					(LPTSTR) &lpMsgBuf,
-					0,
-					NULL
-					);
-				MessageBox( NULL, (LPCTSTR)lpMsgBuf, _T("TortoiseProc Launch failed"), MB_OK | MB_ICONINFORMATION );
-				LocalFree( lpMsgBuf );
+				MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseProc Launch failed"), MB_OK | MB_ICONINFORMATION );
 			}
 			CloseHandle(process.hThread);
 			CloseHandle(process.hProcess);

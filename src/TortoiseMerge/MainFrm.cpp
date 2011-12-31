@@ -31,10 +31,11 @@
 #include "BottomView.h"
 #include "DiffColors.h"
 #include ".\mainfrm.h"
+#include "FormatMessageWrapper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
-#endif						 
+#endif
 
 
 // CMainFrame
@@ -1114,19 +1115,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 		if (CreateProcess(NULL, buf, NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
 		{
 			delete [] buf;
-			LPVOID lpMsgBuf;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-				FORMAT_MESSAGE_FROM_SYSTEM | 
-				FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL,
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-				(LPTSTR) &lpMsgBuf,
-				0,
-				NULL 
-				);
-			MessageBox((LPCTSTR)lpMsgBuf, _T("TortoiseMerge"), MB_OK | MB_ICONINFORMATION);
-			LocalFree( lpMsgBuf );
+			MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return FALSE;
 		}
 		delete [] buf;

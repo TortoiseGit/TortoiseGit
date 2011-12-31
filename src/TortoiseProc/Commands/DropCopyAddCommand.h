@@ -30,6 +30,9 @@ public:
 	 * Executes the command.
 	 */
 	virtual bool			Execute();
+
+private:
+	void ShowErrorMessage();
 };
 
 

@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2011 - TortoiseGit
+// Copyright (C) 2007-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +19,7 @@
 //
 #include "StdAfx.h"
 #include "DropCopyAddCommand.h"
-
+#include "FormatMessageWrapper.h"
 #include "GITProgressDlg.h"
 #include "MessageBox.h"
 
@@ -51,21 +52,7 @@ bool DropCopyAddCommand::Execute()
 					if (!::CopyFile(orgPathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
 					{
 						//the copy operation failed! Get out of here!
-						LPVOID lpMsgBuf;
-						FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-							FORMAT_MESSAGE_FROM_SYSTEM | 
-							FORMAT_MESSAGE_IGNORE_INSERTS,
-							NULL,
-							GetLastError(),
-							MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-							(LPTSTR) &lpMsgBuf,
-							0,
-							NULL 
-							);
-						CString strMessage;
-						strMessage.Format(IDS_ERR_COPYFILES, (LPTSTR)lpMsgBuf);
-						CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-						LocalFree( lpMsgBuf );
+						ShowErrorMessage();
 						return FALSE;
 					}
 				}
@@ -77,21 +64,7 @@ bool DropCopyAddCommand::Execute()
 			else if (!CopyFile(orgPathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
 			{
 				//the copy operation failed! Get out of here!
-				LPVOID lpMsgBuf;
-				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-					FORMAT_MESSAGE_FROM_SYSTEM | 
-					FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL,
-					GetLastError(),
-					MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-					(LPTSTR) &lpMsgBuf,
-					0,
-					NULL 
-					);
-				CString strMessage;
-				strMessage.Format(IDS_ERR_COPYFILES, lpMsgBuf);
-				CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-				LocalFree( lpMsgBuf );
+				ShowErrorMessage();
 				return FALSE;
 			}
 			copiedFiles.AddPath(CTGitPath(droppath+_T("\\")+name));		//add the new filepath
@@ -111,4 +84,11 @@ bool DropCopyAddCommand::Execute()
 	bRet = !progDlg.DidErrorsOccur();
 
 	return bRet;
+}
+
+void DropCopyAddCommand::ShowErrorMessage()
+{
+	CString strMessage;
+	strMessage.Format(IDS_ERR_COPYFILES, CFormatMessageWrapper());
+	MessageBox(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 }
