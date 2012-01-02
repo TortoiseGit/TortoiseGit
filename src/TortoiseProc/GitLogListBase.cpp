@@ -1,8 +1,8 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
-// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1783,6 +1783,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						str+=_T(" ");
 						str += *branchs[0];
 						popup.AppendMenuIcon(ID_DELETE, str, IDI_DELETE);
+						popup.SetMenuItemData(ID_DELETE, (ULONG_PTR)branchs[0]);
 						bAddSeparator = true;
 					}
 					else if (branchs.size() > 1)
@@ -1792,6 +1793,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						for (int i = 0; i < branchs.size(); i++)
 						{
 							submenu.AppendMenuIcon(ID_DELETE + (i << 16), *branchs[i]);
+							submenu.SetMenuItemData(ID_DELETE + (i << 16), (ULONG_PTR)branchs[i]);
 						}
 
 						popup.AppendMenuIcon(ID_DELETE,str, IDI_DELETE, submenu.m_hMenu);

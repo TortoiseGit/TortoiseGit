@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -709,42 +709,35 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_DELETE:
 			{
-				int index = cmd>>16;
-				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) == m_HashMap.end() )
+				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
+				if (!branch)
 				{
 					CMessageBox::Show(NULL,IDS_ERROR_NOREF,IDS_APPNAME,MB_OK|MB_ICONERROR);
 					return;
 				}
-				if( index >= m_HashMap[pSelLogEntry->m_CommitHash].size())
-				{
-					CMessageBox::Show(NULL,IDS_ERROR_INDEX,IDS_APPNAME,MB_OK|MB_ICONERROR);
-					return;
-				}
-				CString ref,msg;
-				ref=m_HashMap[pSelLogEntry->m_CommitHash][index];
-
-				msg=CString(_T("Do you really want to <ct=0x0000FF>delete</ct> <b>"))+ref;
+				CString msg;
+				msg=CString(_T("Do you really want to <ct=0x0000FF>delete</ct> <b>")) + *branch;
 				msg+=_T("</b>?");
 				if( CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1 )
 				{
 					CString shortname;
 					CString cmd;
-					if(this->GetShortName(ref,shortname,_T("refs/heads/")))
+					if(this->GetShortName(*branch,shortname,_T("refs/heads/")))
 					{
 						cmd.Format(_T("git.exe branch -D -- %s"),shortname);
 					}
 
-					if(this->GetShortName(ref,shortname,_T("refs/remotes/")))
+					if(this->GetShortName(*branch,shortname,_T("refs/remotes/")))
 					{
 						cmd.Format(_T("git.exe branch -r -D -- %s"),shortname);
 					}
 
-					if(this->GetShortName(ref,shortname,_T("refs/tags/")))
+					if(this->GetShortName(*branch,shortname,_T("refs/tags/")))
 					{
 						cmd.Format(_T("git.exe tag -d -- %s"),shortname);
 					}
 
-					if(this->GetShortName(ref,shortname,_T("refs/stash")))
+					if(this->GetShortName(*branch,shortname,_T("refs/stash")))
 					{
 						if(CMessageBox::Show(NULL, _T("<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"),
 											   _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
