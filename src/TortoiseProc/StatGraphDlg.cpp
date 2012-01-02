@@ -1199,7 +1199,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 
 		CString string;
 		int percentage = int(min_commits*100.0/(m_nTotalCommits ? m_nTotalCommits : 1));
-		string.FormatMessage(IDS_STATGRAPH_AUTHORSLIDER_TT, m_Skipper.GetPos(), min_commits, percentage);
+		string.Format(IDS_STATGRAPH_AUTHORSLIDER_TT, m_Skipper.GetPos(), min_commits, percentage);
 		::lstrcpy(pttt->szText, (LPCTSTR) string);
 	}
 }
