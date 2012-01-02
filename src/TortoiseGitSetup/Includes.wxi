@@ -10,7 +10,7 @@
 	<?define PackageKeywords="Sourcecontrol;Git;TortoiseGit;Shell" ?>
 	<?define PackageDescription="Git Client" ?>
 	<?define PackageComments="Windows Shell Integration For Git Source Control, v$(var.VersionNumberUserVisible)" ?>
-	<?define PackageManufacturer="Frank Li" ?>
+	<?define PackageManufacturer="TortoiseGit team" ?>
 	<?define TortoiseGitOrg="http://code.google.com/p/TortoiseGit/"?>
 
 	<!-- Platform specifics ........................................................... -->
