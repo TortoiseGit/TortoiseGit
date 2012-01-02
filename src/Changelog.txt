@@ -4,6 +4,7 @@
  * Fixed issue #880: Allow sync / fetch / push on bare repository
  * Fixed issue #818: SafeCRLF = warn should be available
  * Fixed issue #855: moved up Git page in settings dialog
+ * Fixed issue #999: Added "Diff submodule" dialog
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62

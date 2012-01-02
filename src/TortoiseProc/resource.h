@@ -549,6 +549,7 @@
 #define IDC_FIRSTURL                    1301
 #define IDS_ERR_SSL_EXPIRED             1302
 #define IDC_DIFFSTATIC1                 1302
+#define IDC_SUBMODULEDIFFTITLE          1302
 #define IDS_ERR_COPYITSELF              1303
 #define IDC_SECONDURL                   1303
 #define IDS_ERR_INVALIDREV              1304
@@ -969,6 +970,11 @@
 #define IDC_GROUP_STASHMESSAGE          1673
 #define IDC_STASHMESSAGE                1674
 #define IDC_FOLLOWRENAMES               1675
+#define IDC_TOGROUP                     1676
+#define IDC_FROMHASH                    1677
+#define IDC_FROMSUBJECT                 1678
+#define IDC_TOHASH                      1679
+#define IDC_TOSUBJECT                   1680
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1339,6 +1345,7 @@
 #define IDD_SETTINGSEXTMENU             4573
 #define IDD_BISECTSTART                 4574
 #define IDD_STASH                       4575
+#define IDD_DIFFSUBMODULE               4576
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1540,7 +1547,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        339
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1676
+#define _APS_NEXT_CONTROL_VALUE         1681
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

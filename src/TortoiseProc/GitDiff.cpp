@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "resource.h"
 #include "MessageBox.h"
 #include "FileDiffDlg.h"
+#include "SubmoduleDiffDlg.h"
 
 CGitDiff::CGitDiff(void)
 {
@@ -56,7 +57,6 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 	CString oldsub ;
 	CString newsub;
 	CString newhash;
-	CString workingcopy;
 
 	CString cmd;
 	cmd.Format(_T("git.exe ls-tree  HEAD -- \"%s\""), pPath->GetGitPathString());
@@ -82,15 +82,10 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s"),newhash);
 		subgit.Run(cmd,&newsub,encode);
 
-		CString msg;
-		msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
-				pPath->GetWinPath(),
-				oldhash,
-				oldsub ,
-				workingcopy,
-				newhash,
-				newsub);
-		CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
+		CSubmoduleDiffDlg submoduleDiffDlg;
+		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, newhash, newsub);
+		submoduleDiffDlg.DoModal();
+
 		return 0;
 	}
 
@@ -160,8 +155,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 	CString oldhash;
 	CString newhash;
 	CString cmd;
-	CString workingcopy;
-
+	bool isWorkingCopy = false;
 	if( rev2 == GIT_REV_ZERO || rev1 == GIT_REV_ZERO )
 	{
 		oldhash = GIT_REV_ZERO;
@@ -173,7 +167,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		if( rev1 != GIT_REV_ZERO )
 			rev = rev1;
 
-		workingcopy = _T(" (Work Copy)");
+		isWorkingCopy = true;
 
 		cmd.Format(_T("git.exe diff %s -- \"%s\""),
 		rev,pPath->GetGitPathString());
@@ -242,15 +236,10 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 			subgit.Run(cmd,&newsub,encode);
 		}
 	}
-	CString msg;
-	msg.Format(_T("Submodule <b>%s</b> Change\r\n\r\n<b>From:</b> %s\r\n\t%s\r\n\r\n<b>To%s:</b>     %s\r\n\t\t%s"),
-				pPath->GetWinPath(),
-				oldhash,
-				oldsub ,
-				workingcopy,
-				newhash,
-				newsub);
-	CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK);
+
+	CSubmoduleDiffDlg submoduleDiffDlg;
+	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, newhash, newsub);
+	submoduleDiffDlg.DoModal();
 
 	return 0;
 }

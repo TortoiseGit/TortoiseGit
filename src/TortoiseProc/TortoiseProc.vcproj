@@ -2185,6 +2185,14 @@
 				RelativePath=".\ResetDlg.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SubmoduleDiffDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SubmoduleDiffDlg.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Git"
