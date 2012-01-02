@@ -241,6 +241,7 @@
 #define IDC_RAM                         1073
 #define IDC_CHECKNEWERVERSION           1073
 #define IDC_SHOWUNVERSIONED             1073
+#define IDC_TOPOORDER                   1073
 #define IDC_EXPORT_CHECKOUTDIR          1074
 #define IDC_VERSIONBOX                  1075
 #define IDC_LABEL                       1076
