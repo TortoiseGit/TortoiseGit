@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -289,7 +289,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		this->DialogEnableWindow(IDOK,TRUE);
 
 		CString err;
-		err.Format(_T("\r\nFailed 0x%x (git returned a wrong return code at some time)\r\n"),m_GitStatus);
+		err.Format(_T("\r\n\r\ngit did not exit cleanly (exit code %d)\r\n"), m_GitStatus);
 		if(this->m_GitStatus)
 		{
 			if (m_pTaskbarList)
@@ -297,7 +297,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 				m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
 			}
-			//InsertColorText(this->m_Log,err,RGB(255,0,0));
+			InsertColorText(this->m_Log,err,RGB(255,0,0));
 		}
 		else {
 			if (m_pTaskbarList)
