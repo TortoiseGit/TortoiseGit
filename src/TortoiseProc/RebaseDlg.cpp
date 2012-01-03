@@ -1495,20 +1495,20 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_CONFLICT);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		break;
 	case REBASE_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
-		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetText(curRev->GetSubject()+_T("\n")+curRev->GetBody());
 		break;
 	case REBASE_SQUASH_EDIT:
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_MESSAGE);
-		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
 		this->m_LogMessageCtrl.Call(SCI_SETREADONLY, FALSE);
+		this->m_LogMessageCtrl.SetText(this->m_SquashMessage);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
 		break;
