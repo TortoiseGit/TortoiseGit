@@ -653,7 +653,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,33,150,10
     CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,33,120,10
     CONTROL         "Use system locale for date/time",IDC_SYSTEMLOCALEFORDATES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,44,270,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,44,150,10
+    CONTROL         "apply --topo-order",IDC_TOPOORDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,44,120,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,55,270,10
     GROUPBOX        "Misc",IDC_STATIC,7,73,286,47

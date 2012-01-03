@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -799,6 +799,9 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 
 		param += _T(" --regexp-ignore-case --extended-regexp ");
 	}
+
+	if (CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE))
+		param += _T(" --topo-order");
 
 	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
 		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), num, param);
