@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -136,6 +136,7 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_GETDISPINFO, IDC_SVNPROGRESS, &CGitProgressDlg::OnLvnGetdispinfoSvnprogress)
 	ON_BN_CLICKED(IDC_NONINTERACTIVE, &CGitProgressDlg::OnBnClickedNoninteractive)
 	ON_MESSAGE(WM_SHOWCONFLICTRESOLVER, OnShowConflictResolver)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 BOOL CGitProgressDlg::Cancel()
@@ -151,6 +152,10 @@ LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM /*lPar
 	if (description)
 	{
 		dlg.SetConflictDescription(description);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_PAUSED);
+		}
 		if (dlg.DoModal() == IDOK)
 		{
 			if (dlg.GetResult() == svn_wc_conflict_choose_postpone)
@@ -163,6 +168,8 @@ LRESULT CGitProgressDlg::OnShowConflictResolver(WPARAM /*wParam*/, LPARAM /*lPar
 		}
 		m_mergedfile = dlg.GetMergedFile();
 		m_bCancelled = dlg.IsCancelled();
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
 		return dlg.GetResult();
 	}
 
@@ -534,6 +541,11 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 				progControl->ShowWindow(SW_SHOW);
 				progControl->SetPos(m_itemCountTotal - m_itemCount);
 				progControl->SetRange32(0, m_itemCountTotal);
+				if (m_pTaskbarList)
+				{
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCountTotal-m_itemCount, m_itemCountTotal);
+				}
 			}
 		}
 		//if ((action == svn_wc_notify_commit_postfix_txdelta)&&(bSecondResized == FALSE))
@@ -746,6 +758,25 @@ BOOL CGitProgressDlg::OnInitDialog()
 {
 	__super::OnInitDialog();
 
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+		FreeLibrary(hUser);
+	}
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+
 	m_ProgList.SetExtendedStyle (LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
 	m_ProgList.DeleteAllItems();
@@ -884,6 +915,10 @@ UINT CGitProgressDlg::ProgressThread()
 	bSecondResized = FALSE;
 	m_bFinishedItemAdded = false;
 	CTime startTime = CTime::GetCurrentTime();
+
+	if (m_pTaskbarList)
+		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
+
 	switch (m_Command)
 	{
 	case GitProgress_Add:
@@ -920,6 +955,17 @@ UINT CGitProgressDlg::ProgressThread()
 
 	KillTimer(TRANSFERTIMER);
 	KillTimer(VISIBLETIMER);
+
+	if (m_pTaskbarList)
+	{
+		if (DidErrorsOccur())
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+			m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
+		}
+		else
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+	}
 
 	DialogEnableWindow(IDCANCEL, FALSE);
 	DialogEnableWindow(IDOK, TRUE);
@@ -1234,10 +1280,14 @@ LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	if ((pProgressData->total > 1000)&&(!progControl->IsWindowVisible()))
 	{
 		progControl->ShowWindow(SW_SHOW);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 	}
 	if (((pProgressData->total < 0)&&(pProgressData->progress > 1000)&&(progControl->IsWindowVisible()))&&(m_itemCountTotal<0))
 	{
 		progControl->ShowWindow(SW_HIDE);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
 	}
 	if (!GetDlgItem(IDC_PROGRESSLABEL)->IsWindowVisible())
 		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_SHOW);
@@ -1246,6 +1296,11 @@ LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		progControl->SetPos((int)pProgressData->progress);
 		progControl->SetRange32(0, (int)pProgressData->total);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, pProgressData->progress, pProgressData->total);
+		}
 	}
 	CString progText;
 	if (pProgressData->overall_total < 1024)
@@ -2206,4 +2261,11 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 		}
 	}
 	return ret;
+}
+
+LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+    m_pTaskbarList.Release();
+    m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+    return 0;
 }
