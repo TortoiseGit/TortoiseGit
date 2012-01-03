@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,6 +39,7 @@
 #include "PatchViewDlg.h"
 #include "COMError.h"
 #include "Globals.h"
+#include "SysProgressDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -501,10 +502,26 @@ void CCommitDlg::OnOK()
 	bool bAddSuccess=true;
 	bool bCloseCommitDlg=false;
 
+	CSysProgressDlg sysProgressDlg;
+	if (nListItems >= 10  && sysProgressDlg.IsValid())
+	{
+		sysProgressDlg.SetTitle(_T("Preparing commit..."));
+		sysProgressDlg.SetLine(1, _T("Updating index"));
+		sysProgressDlg.SetTime(true);
+		sysProgressDlg.SetShowProgressBar(true);
+		sysProgressDlg.ShowModal(this, true);
+	}
+
 	for (int j=0; j<nListItems; j++)
 	{
-		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
 		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
+		if (sysProgressDlg.IsValid())
+		{
+			sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
+			sysProgressDlg.SetProgress(j, nListItems);
+			AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing
+		}
+		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
 		if (entry->m_Checked)
 		{
 #if 0
@@ -619,8 +636,17 @@ void CCommitDlg::OnOK()
 #endif
 		}
 
+		if (sysProgressDlg.IsValid() && sysProgressDlg.HasUserCancelled())
+		{
+			bAddSuccess = false;
+			break;
+		}
+
 		CShellUpdater::Instance().AddPathForUpdate(*entry);
 	}
+
+	if (sysProgressDlg.IsValid())
+		sysProgressDlg.Stop();
 
 	//if(uncheckedfiles.GetLength()>0)
 	//{

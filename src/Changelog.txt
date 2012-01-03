@@ -13,6 +13,7 @@
  * Fixed issue #587: Log entries with tag/branch/head marker don't highlight correctly
  * Fixed issue #1004: git svn fetch/rebase/clone return an error for ssh authorization
  * Reenbled --topo-order for log. Users who do not want this, can disable it on settings dialog
+ * Fixed issue #1024: commit freezes after click on ok with a lot of files
 
 = Release 1.7.6.0 =
 == Features==
