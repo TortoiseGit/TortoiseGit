@@ -56,7 +56,7 @@ CSetDialogs::CSetDialogs()
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
 	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
-	m_regTopoOrder = CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), FALSE);
+	m_regTopoOrder = CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE);
 	m_bTopoOrder = (BOOL)(DWORD)m_regTopoOrder;
 }
 

@@ -800,7 +800,7 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 		param += _T(" --regexp-ignore-case --extended-regexp ");
 	}
 
-	if (CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), FALSE))
+	if (CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE))
 		param += _T(" --topo-order");
 
 	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
