@@ -1007,7 +1007,8 @@ static int get_config(const char *key_, const char *value_, void *cb)
 }
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
 {
-	char *local,*global,*p;
+	char *local, *global;
+	const char *home;
 	struct config_buf buf;
 	buf.buf=buffer;
 	buf.size=size;
@@ -1016,19 +1017,11 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 
 	local=global=NULL;
 
-	//local = config_exclusive_filename;
-	if (!local) {
-		const char *home = get_windows_home_directory();
+	home = get_windows_home_directory();
+	if (home)
+		global = xstrdup(mkpath("%s/.gitconfig", home));
 
-		local=p= git_pathdup("config");
-		if(git_path&&strlen(git_path))
-		{
-			local=xstrdup(mkpath("%s/%s", git_path, p));
-			free(p);
-		}
-		if (home)
-			global = xstrdup(mkpath("%s/.gitconfig", home));
-	}
+	local = git_pathdup("config");
 
 	if ( !buf.seen)
 		git_config_from_file(get_config, local, &buf);
@@ -1039,8 +1032,6 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 		free(local);
 	if(global)
 		free(global);
-	//if(system_wide)
-	//	free(system_wide);
 
 	return !buf.seen;
 }
@@ -1066,31 +1057,20 @@ const char *get_windows_home_directory(void)
 
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
 {
-	char *local,*global,*p;
-	int ret;
-	local=global=NULL;
-
-	//local = config_exclusive_filename;
-	if (!local) {
-		const char *home = get_windows_home_directory();
-
-		local=p= git_pathdup("config");
-		if(git_path&&strlen(git_path))
-		{
-			local=xstrdup(mkpath("%s/%s", git_path, p));
-			free(p);
-		}
-		if (home)
-			global = xstrdup(mkpath("%s/.gitconfig", home));
-	}
-
 	switch(type)
 	{
 	case CONFIG_LOCAL:
-		config_exclusive_filename  = local;
+		config_exclusive_filename  = git_pathdup("config");
 		break;
 	case CONFIG_GLOBAL:
-		config_exclusive_filename = global;
+		{
+			const char *home = get_windows_home_directory();
+			if (home)
+			{
+				config_exclusive_filename = xstrdup(mkpath("%s/.gitconfig", home));
+				free(home);
+			}
+		}
 		break;
 	default:
 		config_exclusive_filename = NULL;
@@ -1100,12 +1080,5 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 	if(!config_exclusive_filename)
 		return -1;
 
-	ret = git_config_set(key, value);
-
-	if(local)
-		free(local);
-	if(global)
-		free(global);
-
-	return ret;
+	return git_config_set(key, value);
 }

@@ -14,6 +14,7 @@
  * Fixed issue #1004: git svn fetch/rebase/clone return an error for ssh authorization
  * Reenbled --topo-order for log. Users who do not want this, can disable it on settings dialog
  * Fixed issue #1024: commit freezes after click on ok with a lot of files
+ * Fixed issue #1026: Cannot configure (and autoload) putty key for submodules with new mSysGit.
 
 = Release 1.7.6.0 =
 == Features==
