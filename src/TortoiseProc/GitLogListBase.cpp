@@ -1126,7 +1126,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
 			}
 
-			if (pLVCD->iSubItem == LOGLIST_GRAPH)
+			if (pLVCD->iSubItem == LOGLIST_GRAPH && m_sFilterText.IsEmpty())
 			{
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{

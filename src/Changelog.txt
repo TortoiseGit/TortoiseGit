@@ -15,6 +15,7 @@
  * Reenbled --topo-order for log. Users who do not want this, can disable it on settings dialog
  * Fixed issue #1024: commit freezes after click on ok with a lot of files
  * Fixed issue #1026: Cannot configure (and autoload) putty key for submodules with new mSysGit.
+ * Fixed issue #849: Searching in log breaks graph/branch-line
 
 = Release 1.7.6.0 =
 == Features==
