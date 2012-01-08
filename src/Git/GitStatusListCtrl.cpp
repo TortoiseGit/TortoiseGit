@@ -1968,6 +1968,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDGITLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
+				if (m_dwContextMenus & GITSLC_POPSHOWLOGOLDNAME && (wcStatus & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !filepath->GetGitOldPathString().IsEmpty()))
+				{
+					popup.AppendMenuIcon(IDGITLC_LOGOLDNAME, IDS_STATUSLIST_SHOWLOGOLDNAME, IDI_LOG);
+				}
 				if (m_dwContextMenus & GITSLC_POPBLAME && ! filepath->IsDirectory() && !(wcStatus & CTGitPath::LOGACTIONS_DELETED) && m_bHasWC)
 				{
 					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
@@ -2398,6 +2402,18 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
 				break;
+
+			case IDGITLC_LOGOLDNAME:
+				{
+					CTGitPath oldName(filepath->GetGitOldPathString());
+					CString sCmd;
+					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
+						(LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), g_Git.m_CurrentDir + _T("\\") + oldName.GetWinPath());
+
+					CAppUtils::LaunchApplication(sCmd, NULL, false);
+				}
+				break;
+
 
 			case IDGITLC_EDITCONFLICT:
 			{

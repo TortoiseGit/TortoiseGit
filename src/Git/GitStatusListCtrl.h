@@ -111,6 +111,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_POPREVERT				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_REVERT)
 #define GITSLC_POPUPDATE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_UPDATE)
 #define GITSLC_POPSHOWLOG				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_LOG)
+#define GITSLC_POPSHOWLOGOLDNAME		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_LOGOLDNAME)
 #define GITSLC_POPOPEN					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_OPEN)
 #define GITSLC_POPDELETE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_DELETE)
 #define GITSLC_POPADD					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_ADD)
@@ -523,6 +524,7 @@ public:
 		IDGITLC_GNUDIFF1		 ,
 		IDGITLC_UPDATE          ,
 		IDGITLC_LOG              ,
+		IDGITLC_LOGOLDNAME,
 		IDGITLC_EDITCONFLICT     ,
 		IDGITLC_IGNOREMASK	    ,
 		IDGITLC_ADD			    ,

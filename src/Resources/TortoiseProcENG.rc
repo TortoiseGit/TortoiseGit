@@ -3654,6 +3654,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_LOG_FILTER_SUBJECT  "Subject"
+    IDS_STATUSLIST_SHOWLOGOLDNAME "Show log &before rename/copy"
 END
 
 #endif    // English (U.S.) resources
