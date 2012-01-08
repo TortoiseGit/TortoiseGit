@@ -138,10 +138,12 @@ BOOL CCommitDlg::OnInitDialog()
 
 	CAppUtils::GetCommitTemplate(this->m_sLogMessage);
 
-	if(PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_MSG")))
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	if(PathFileExists(dotGitPath + _T("MERGE_MSG")))
 	{
 		CStdioFile file;
-		if(file.Open(g_Git.m_CurrentDir+_T("\\.git\\MERGE_MSG"), CFile::modeRead))
+		if(file.Open(dotGitPath + _T("MERGE_MSG"), CFile::modeRead))
 		{
 			CString str;
 			while(file.ReadString(str))
@@ -668,7 +670,10 @@ void CCommitDlg::OnOK()
 	}
 
 	BOOL bIsMerge=false;
-	if(PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_HEAD")))
+	//
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	if(PathFileExists(dotGitPath + _T("MERGE_HEAD")))
 	{
 		bIsMerge=true;
 	}
@@ -1022,6 +1027,7 @@ UINT CCommitDlg::StatusThread()
 			m_ListCtrl.SetEmptyString(m_ListCtrl.GetLastErrorMessage());
 		m_ListCtrl.Show(dwShow);
 	}
+	//
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
 		 && !PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_HEAD")))
 	{

@@ -165,6 +165,51 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 	return false;
 
 }
+/**
+ * Returns the .git-path (if .git is a file, read the repository path and return it)
+ * adminDir always ends with "\"
+ */
+bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDir) const
+{
+	if (IsBareRepo(projectTopDir))
+	{
+		adminDir = projectTopDir;
+		adminDir.TrimRight('\\');
+		adminDir.Append(_T("\\"));
+		return true;
+	}
+
+	CString sDotGitPath = projectTopDir + _T("\\") + g_GitAdminDir.GetAdminDirName();
+	if (CTGitPath(sDotGitPath).IsDirectory())
+	{
+		sDotGitPath.TrimRight('\\');
+		sDotGitPath.Append(_T("\\"));
+		adminDir = sDotGitPath;
+		return true;
+	}
+	else
+	{
+		FILE *pFile;
+		_tfopen_s(&pFile, sDotGitPath, _T("r"));
+
+		if (!pFile)
+			return false;
+
+		char s[MAX_PATH + 8] = {0};
+		fgets(s, sizeof(s), pFile);
+
+		fclose(pFile);
+		CString gitPath(s);
+		if (gitPath.Find(L"gitdir: ") != 0)
+			return -1;
+		gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
+		gitPath.Replace('/', '\\');
+		gitPath.TrimRight('\\');
+		gitPath.Append(_T("\\"));
+		adminDir = gitPath;
+		return true;
+	}
+}
 
 bool GitAdminDir::IsAdminDirPath(const CString& path) const
 {

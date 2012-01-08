@@ -118,9 +118,9 @@ ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
 int CLogCache::FetchCacheIndex(CString GitDir)
 {
 	int ret=0;
-	m_GitDir = GitDir + _T("\\");
-	if (!g_GitAdminDir.IsBareRepo(GitDir))
-		m_GitDir += _T(".git\\");
+	if (!g_GitAdminDir.GetAdminDirPath(GitDir, m_GitDir))
+		return -1;
+
 	do
 	{
 		if( m_IndexFile == INVALID_HANDLE_VALUE)

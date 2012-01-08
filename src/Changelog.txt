@@ -7,6 +7,7 @@
  * Fixed issue #999: Added "Diff submodule" dialog
  * Fixed issue #1019: better indicate errors to user on progress dialog
  * Added "Show Log before rename/copy" on log dialog file list
+ * Added basic support for separate-git-dir (Overlays are not working yet)
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62
@@ -18,6 +19,8 @@
  * Fixed issue #1026: Cannot configure (and autoload) putty key for submodules with new mSysGit.
  * Fixed issue #849: Searching in log breaks graph/branch-line
  * Fixed issue #1030: Does not close handle after export to zip
+ * Fixed issue #1025: branch is not recognized correctly with separate-git-dir
+ * Fixed issue #1022: Cannot add files to submodules with-separate-git-dir
 
 = Release 1.7.6.0 =
 == Features==
