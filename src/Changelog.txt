@@ -14,7 +14,7 @@
  * Fixed issue #1000: Git commit doesn't work
  * Fixed issue #587: Log entries with tag/branch/head marker don't highlight correctly
  * Fixed issue #1004: git svn fetch/rebase/clone return an error for ssh authorization
- * Reenbled --topo-order for log. Users who do not want this, can disable it on settings dialog
+ * Reenabled --topo-order for log. Users who do not want this, can disable it on settings dialog
  * Fixed issue #1024: commit freezes after click on ok with a lot of files
  * Fixed issue #1026: Cannot configure (and autoload) putty key for submodules with new mSysGit.
  * Fixed issue #849: Searching in log breaks graph/branch-line
