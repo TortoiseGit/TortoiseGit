@@ -1046,7 +1046,9 @@ CString	CGit::FixBranchName(const CString& branchName)
 CString CGit::DerefFetchHead()
 {
 	using namespace std;
-	ifstream fetchHeadFile((m_CurrentDir + L"\\.git\\FETCH_HEAD").GetString(), ios::in | ios::binary);
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(m_CurrentDir, dotGitPath);
+	ifstream fetchHeadFile((dotGitPath + L"FETCH_HEAD").GetString(), ios::in | ios::binary);
 	int forMergeLineCount = 0;
 	string line;
 	string hashToReturn;
