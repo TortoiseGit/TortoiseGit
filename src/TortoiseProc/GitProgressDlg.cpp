@@ -1025,7 +1025,8 @@ UINT CGitProgressDlg::ProgressThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	RefreshCursor();
 
-	DWORD dwAutoClose = CRegStdDWORD(_T("Software\\TortoiseGit\\AutoClose"));
+#if 0
+	DWORD dwAutoClose = CRegStdDWORD(_T("Software\\TortoiseGit\\AutoClose"), CLOSE_MANUAL);
 	if (m_options & ProgOptDryRun)
 		dwAutoClose = 0;		// dry run means progress dialog doesn't auto close at all
 	if (!m_bLastVisible)
@@ -1040,6 +1041,7 @@ UINT CGitProgressDlg::ProgressThread()
 		PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
 	if ((dwAutoClose == CLOSE_LOCAL)&&(!m_bErrorsOccurred)&&(m_nConflicts==0)&&(localoperation))
 		PostMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDOK)->m_hWnd);
+#endif
 
 	//Don't do anything here which might cause messages to be sent to the window
 	//The window thread is probably now blocked in OnOK if we've done an auto close
