@@ -1319,7 +1319,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case this->LOGLIST_BUG: //Bug ID
 		if(pLogEntry)
-			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject()), pItem->cchTextMax);
+			lstrcpyn(pItem->pszText, (LPCTSTR)this->m_ProjectProperties.FindBugID(pLogEntry->GetSubject() + _T("\r\n\r\n") + pLogEntry->GetBody()), pItem->cchTextMax);
 		break;
 
 	default:
@@ -2459,7 +2459,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject());
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
 
 				ATLTRACE(_T("bugID = \"%s\"\n"), sBugIds);
 				if (regex_search(wstring(sBugIds), pat, flags))
@@ -2551,7 +2551,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
-				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject());
+				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
 
 				sBugIds.MakeLower();
 				if ((sBugIds.Find(find) >= 0))
