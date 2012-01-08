@@ -18,6 +18,7 @@
  * Fixed issue #849: Searching in log breaks graph/branch-line
  * Fixed issue #1030: Does not close handle after export to zip
  * Fixed issue #1025: branch is not recognized correctly with separate-git-dir
+ * Fixed issue #1022: Cannot add files to submodules with-separate-git-dir
 
 = Release 1.7.6.0 =
 == Features==

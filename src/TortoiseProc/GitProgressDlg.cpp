@@ -1856,51 +1856,70 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
-	git_repository *repo = NULL;
-	git_index *index;
+	// HACK for separate-git-dir, libgit2 doesn't support it atm
+	if (CTGitPath(g_Git.m_CurrentDir + _T("/.git")).IsDirectory())
+	{
+		git_repository *repo = NULL;
+		git_index *index;
 
-	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString() + _T("/.git"), CP_ACP);
-	if (git_repository_open(&repo, gitdir.GetBuffer()))
-	{
-		ReportGitError();
-		return false;
-	}
-	if (git_repository_index(&index, repo))
-	{
-		ReportGitError();
-		git_repository_free(repo);
-		return false;
-	}
-	if (git_index_read(index))
-	{
-		ReportGitError();
-		git_index_free(index);
-		git_repository_free(repo);
-		return false;
-	}
-
-	for(int i=0;i<m_targetPathList.GetCount();i++)
-	{
-		if (git_index_add(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_ACP)).GetBuffer(), 0))
+		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString() + _T("/.git"), CP_ACP);
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			ReportGitError();
+			return false;
+		}
+		if (git_repository_index(&index, repo))
+		{
+			ReportGitError();
+			git_repository_free(repo);
+			return false;
+		}
+		if (git_index_read(index))
 		{
 			ReportGitError();
 			git_index_free(index);
 			git_repository_free(repo);
 			return false;
 		}
-		Notify(m_targetPathList[i],git_wc_notify_add);
-	}
 
-	if (git_index_write(index))
-	{
-		ReportGitError();
+		for(int i=0;i<m_targetPathList.GetCount();i++)
+		{
+			if (git_index_add(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_ACP)).GetBuffer(), 0))
+			{
+				ReportGitError();
+				git_index_free(index);
+				git_repository_free(repo);
+				return false;
+			}
+			Notify(m_targetPathList[i],git_wc_notify_add);
+		}
+
+		if (git_index_write(index))
+		{
+			ReportGitError();
+			git_index_free(index);
+			git_repository_free(repo);
+			return false;
+		}
+
 		git_index_free(index);
 		git_repository_free(repo);
-		return false;
 	}
-
-	git_index_free(index);
-	git_repository_free(repo);
+	else
+	{
+		for(int i = 0; i < m_targetPathList.GetCount(); i++)
+		{
+			CString	cmd, out;
+			cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
+			if(g_Git.Run(cmd, &out, CP_ACP))
+			{
+				MessageBox(out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+				m_bErrorsOccurred = true;
+				return false;
+			}
+			Notify(m_targetPathList[i], git_wc_notify_add);
+		}
+	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 	m_bErrorsOccurred=false;
