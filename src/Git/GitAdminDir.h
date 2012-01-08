@@ -55,14 +55,9 @@ public:
 
 	CString GetGitTopDir(const CString& path);
 
-	/// Returns true if the admin dir name is set to "_svn".
-	bool IsVSNETHackActive() const {return m_bVSNETHack;}
-
 	CString GetAdminDirName() const {return _T(".git");}
-	CString GetVSNETAdminDirName() const {return _T("_git");}
 
 private:
-	bool m_bVSNETHack;
 	int m_nInit;
 
 };
