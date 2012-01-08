@@ -1038,8 +1038,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (m_bNoDispUpdates)
 		return;
 
-
-
 	switch (pLVCD->nmcd.dwDrawStage)
 	{
 	case CDDS_PREPAINT:
@@ -1063,17 +1061,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 				if (data)
 				{
-#if 0
-					if (data->bCopiedSelf)
-					{
-						// only change the background color if the item is not 'hot' (on vista with m_Themes enabled)
-						if (!IsAppThemed()) || !m_bVista || ((pLVCD->nmcd.uItemState & CDIS_HOT)==0))
-							pLVCD->clrTextBk = GetSysColor(COLOR_MENU);
-					}
-
-					if (data->bCopies)
-						crText = m_Colors.GetColor(CColors::Modified);
-#endif
 					if (data->GetAction(this)& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) )
 						crText = RGB(128,128,128);
 
