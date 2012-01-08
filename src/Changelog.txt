@@ -16,6 +16,7 @@
  * Fixed issue #1024: commit freezes after click on ok with a lot of files
  * Fixed issue #1026: Cannot configure (and autoload) putty key for submodules with new mSysGit.
  * Fixed issue #849: Searching in log breaks graph/branch-line
+ * Fixed issue #1030: Does not close handle after export to zip
 
 = Release 1.7.6.0 =
 == Features==

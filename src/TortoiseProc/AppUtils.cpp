@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1056,13 +1056,11 @@ bool CAppUtils::Export(CString *BashHash)
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
-		cmd.Format(_T("git.exe archive --format=zip --verbose %s"),
-					g_Git.FixBranchName(dlg.m_VersionName));
+		cmd.Format(_T("git.exe archive --output=\"%s\" --format=zip --verbose %s"),
+					dlg.m_strExportDirectory, g_Git.FixBranchName(dlg.m_VersionName));
 
-		//g_Git.RunLogFile(cmd,dlg.m_strExportDirectory);
 		CProgressDlg pro;
 		pro.m_GitCmd=cmd;
-		pro.m_LogFile=dlg.m_strExportDirectory;
 		pro.DoModal();
 		return TRUE;
 	}
