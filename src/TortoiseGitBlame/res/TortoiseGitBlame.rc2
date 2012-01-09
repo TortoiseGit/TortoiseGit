@@ -44,7 +44,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGitBlame\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitBlame.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2009-2011 - TortoiseGit, based on work of Copyright (C) 2003-2008 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2012 - TortoiseGit, based on work of Copyright (C) 2003-2008 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseGitBlame.exe\0"
             VALUE "ProductName", "TortoiseGitBlame\0"
             VALUE "ProductVersion", STRPRODUCTVER
