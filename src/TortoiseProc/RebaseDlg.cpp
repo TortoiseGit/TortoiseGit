@@ -1105,7 +1105,7 @@ void CRebaseDlg::SetContinueButtonText()
 		if(this->m_IsFastForward)
 			Text = _T("Start (FastFwd)");
 		else
-			Text = _T("Start");
+			Text = _T("Start Rebase");
 		break;
 
 	case REBASE_START:
