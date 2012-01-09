@@ -1103,7 +1103,7 @@ void CRebaseDlg::SetContinueButtonText()
 	case CHOOSE_BRANCH:
 	case CHOOSE_COMMIT_PICK_MODE:
 		if(this->m_IsFastForward)
-			Text = _T("Start(FastFwd)");
+			Text = _T("Start (FastFwd)");
 		else
 			Text = _T("Start");
 		break;
