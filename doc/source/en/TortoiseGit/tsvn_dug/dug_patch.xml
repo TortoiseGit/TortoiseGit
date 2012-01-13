@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-patch">
-	<title>Creating and Applying Patches</title>
+	<title>Creating and Applying Patches and Pull Requests</title>
 	<indexterm>
 		<primary>patch</primary>
 	</indexterm>
@@ -11,38 +11,51 @@
 	<indexterm>
 		<primary>unified diff</primary>
 	</indexterm>
+	<indexterm>
+		<primary>pull request</primary>
+	</indexterm>
+	<indexterm>
+		<primary>request pull</primary>
+	</indexterm>
 	<?dbhh topicname="HIDD_FORMAT_PATCH"?>
 	<?dbhh topicname="HIDD_APPLY_PATCH_LIST"?>
 	<?dbhh topicname="HIDD_CREATEPATCH"?>
+	<?dbhh topicname="HIDD_REQUESTPULL"?>
 	<para>
 		For open source projects (like this one) everyone has read
-		access to the repository, and anyone can make a contribution
+		access to the (main/public) repository, and anyone can make a contribution
 		to the project. So how are those contributions controlled?
-		If just anyone could commit changes, the project would be permanently
+		If just anyone could commit changes this this central repository, the project would be permanently
 		unstable and probably permanently broken. In this situation the
-		change is managed by submitting a <firstterm>patch</firstterm> file
+		change is managed by submitting a <firstterm>patch</firstterm> file or a <firstterm>pull request</firstterm>
 		to the development team, who do have write access.
-		They can review the patch first, and then either submit it to the
-		repository or reject it back to the author.
+		They can review the changes first, and then either submit it to the
+		main repository or reject it back to the author.
 	</para>
 	<para>
 		Patch files are simply Unified-Diff files showing the differences
 		between your working copy and the base revision.
 	</para>
+	<para>
+		A pull request is an request to another repository owner to <link linkend="tsvn-dug-pull">pull</link>
+		changes from your repository. I.e. you must have access to a public repository where you can
+		<link linkend="tsvn-dug-push">push</link> your changes (normally a special branch).
+	</para>
 	<sect2 id="tsvn-dug-patch-1">
-		<title>Creating a Patch File</title>
+		<title>Creating a Patch Serial</title>
 		<para>
 			First you need to make <emphasis>and test</emphasis> your changes.
-			Then instead of using
+			Then you commit your changes via
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Commit...</guimenuitem>
 			</menuchoice>
-			on the parent folder, you select
+			on the parent folder, enter a good commit message. After that select
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Create Patch Serial...</guimenuitem>
 			</menuchoice>
+			and choose the correct options to include your changes/commits.
 		</para>
 		<figure id="tsvn-dug-patch-dia-1">
 			<title>The Create Patch dialog</title>
@@ -67,9 +80,18 @@
 		<para>
 			<guilabel>Send Mail after create</guilabel> launch send mail dialog after patches created.
 		</para>
+		<para>
+			You can find more information at <xref linkend="git-format-patch(1)"/>.
+		</para>
+		<important>
+			<para>
+				This is different to TortoiseSVN: In TortoiseSVN you directly create a patch instead of committing
+				your changes and create a patch of the commits afterwards.
+			</para>
+		</important>
 	</sect2>
 	<sect2 id="tsvn-dug-patch-2">
-		<title>Applying a Patch File</title>
+		<title>Applying a single Patch File</title>
 		<para>
 			Patch files are applied to your working copy. This should be done
 			from the same folder level as was used to create the patch.
@@ -84,17 +106,29 @@
 			pick the wrong folder level, TortoiseGit will notice and suggest the
 			correct level.
 		</para>
-		<!--
 		<para>
-			In order to apply a patch file to your working copy, you need
-			to have at least read access to the repository.
-			The reason for this is that the merge program must
-			reference the changes back to the revision against
-			which they were made by the remote developer.
+			From the context menu for a patch file (<filename>.patch</filename>
+			or <filename>.diff</filename> extension), click on
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Review/apply single patch...</guimenuitem>
+			</menuchoice>
+			You might be prompted to enter a working copy location:
+			<figure id="tsvn-dug-choose-repository">
+				<title>The Choose Repository Dialog</title>
+				<graphic fileref="../images/ChooseRepository.png"/>
+			</figure>
+			If the working copy is found, TortoiseMerge is launched to show and apply differences.
 		</para>
-		-->
+	</sect2>
+	<sect2 id="tsvn-dug-patch-3">
+		<title>Applying a Patch Serial</title>
 		<para>
-			From the context menu for that folder, click on
+			Patch files are applied to your working copy. For this copy the patch (or mbox)
+			files to the root of your working copy.
+		</para>
+		<para>
+			From the context menu for that folder (or all marked patch files), click on
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Apply Patch Serial...</guimenuitem>
@@ -106,33 +140,84 @@
 		</para>
 		
 		<para>
-			<guibutton>Add</guibutton> insert patch
+			<guibutton>Add</guibutton> Insert patch
 		</para>
 		<para>
 			<guibutton>Up</guibutton> Move chosen patch up.
 		</para>
 		<para>
-			<guibutton>Down</guibutton> Move Chosen patch down.
+			<guibutton>Down</guibutton> Move chosen patch down.
 		</para>
 		<para>
-			<guibutton>Remove</guibutton> Remove Chosen patch.
+			<guibutton>Remove</guibutton> Remove the chosen patch.
 		</para>
 		<para>
-			<guibutton>Apply</guibutton> start apply patch one by one
+			<guibutton>Apply</guibutton> Start applying the patches one by one.
 		</para>
 		<para>
-			Alternatively, if the patch file has a <filename>.patch</filename>
-			or <filename>.diff</filename> extension, you can right click on it
-			directly and select
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Review Patch...</guimenuitem>
-			</menuchoice>.
-			In this case you will be prompted to enter a working copy location. then launch Tortoisemerge to show difference.
-			<figure id="tsvn-dug-choose-repository">
-				<title>The Choose Repository Dialog</title>
-				<graphic fileref="../images/ChooseRepository.png"/>
+			You can find more information at <xref linkend="git-am(1)"/>.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-patch-4">
+		<title>Creating a pull request</title>
+		<para>
+			Apart from sending patches (or patch serials) to other developers,
+			there are two ways to ask other people to integrate your changes
+			into their repositories.
+		</para>
+		<para>
+			<emphasis>First:</emphasis> After pushing your changes to a (public)
+			repository, you just provide other people the URL of your repository
+			and the name of the branch or the revision id.
+			E.g.: <literal>git://example.com/repo.git BRANCHNAME</literal>
+		</para>
+		<para>
+			<emphasis>Second:</emphasis> After pushing your changes to a (public)
+			repository, you can create a standardized (quite formal) request for other
+			people to pull your changes and integrate them into their repository.
+			The format pull request consists of a list of all commits and provides
+			some statistics about changed files, so that other people can can a quick overview.
+		</para>
+		<para>
+			Select <guibutton>Request pull</guibutton> on the progress dialog after pushing your changes.
+			<figure id="tsvn-dug-request-pull">
+				<title>The Request Pull Dialog</title>
+				<graphic fileref="../images/RequestPull.png"/>
 			</figure>
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term><guilabel>Start</guilabel></term>
+				<listitem>
+					<para>
+						This should be the revision on which your changes are based on.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><guilabel>URL</guilabel></term>
+				<listitem>
+					<para>
+						The public URL to your repository, which can be access
+						by the people who shall pull your changes.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><guilabel>End</guilabel></term>
+				<listitem>
+					<para>
+						This should be the branch name or revision id of the end of your commits.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			After clicking on <guibutton>OK</guibutton> the pull request is created. Just copy it
+			and pass it to other people who you want to pull your changes.
+		</para>
+		<para>
+			You can find more information at <xref linkend="git-request-pull(1)"/>.
 		</para>
 	</sect2>
 </sect1>
