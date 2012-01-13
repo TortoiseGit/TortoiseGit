@@ -669,16 +669,8 @@ void CCommitDlg::OnOK()
 			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
 	}
 
-	BOOL bIsMerge=false;
-	//
-	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
-	if(PathFileExists(dotGitPath + _T("MERGE_HEAD")))
-	{
-		bIsMerge=true;
-	}
 	//if(checkedfiles.GetLength()>0)
-	if( bAddSuccess && (nchecked||m_bCommitAmend||bIsMerge) )
+	if (bAddSuccess && (nchecked || m_bCommitAmend ||  CTGitPath(g_Git.m_CurrentDir).IsMergeActive()))
 	{
 	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
 	//	g_Git.Run(cmd,&out);
