@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-patch">
-	<title>Creating and Applying Patches</title>
+	<title>Creating and Applying Patches and Pull Requests</title>
 	<indexterm>
 		<primary>patch</primary>
 	</indexterm>
@@ -10,6 +10,12 @@
 	</indexterm>
 	<indexterm>
 		<primary>unified diff</primary>
+	</indexterm>
+	<indexterm>
+		<primary>pull request</primary>
+	</indexterm>
+	<indexterm>
+		<primary>request pull</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_FORMAT_PATCH"?>
 	<?dbhh topicname="HIDD_APPLY_PATCH_LIST"?>
@@ -150,6 +156,68 @@
 		</para>
 		<para>
 			You can find more information at <xref linkend="git-am(1)"/>.
+		</para>
+	</sect2>
+	<sect2 id="tsvn-dug-patch-4">
+		<title>Creating a pull request</title>
+		<para>
+			Apart from sending patches (or patch serials) to other developers,
+			there are two ways to ask other people to integrate your changes
+			into their repositories.
+		</para>
+		<para>
+			<emphasis>First:</emphasis> After pushing your changes to a (public)
+			repository, you just provide other people the URL of your repository
+			and the name of the branch or the revision id.
+			E.g.: <literal>git://example.com/repo.git BRANCHNAME</literal>
+		</para>
+		<para>
+			<emphasis>Second:</emphasis> After pushing your changes to a (public)
+			repository, you can create a standardized (quite formal) request for other
+			people to pull your changes and integrate them into their repository.
+			The format pull request consists of a list of all commits and provides
+			some statistics about changed files, so that other people can can a quick overview.
+		</para>
+		<para>
+			Select <guibutton>Request pull</guibutton> on the progress dialog after pushing your changes.
+			<figure id="tsvn-dug-request-pull">
+				<title>The Request Pull Dialog</title>
+				<graphic fileref="../images/RequestPull.png"/>
+			</figure>
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term><guilabel>Start</guilabel></term>
+				<listitem>
+					<para>
+						This should be the revision on which your changes are based on.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><guilabel>URL</guilabel></term>
+				<listitem>
+					<para>
+						The public URL to your repository, which can be access
+						by the people who shall pull your changes.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><guilabel>End</guilabel></term>
+				<listitem>
+					<para>
+						This should be the branch name or revision id of the end of your commits.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			After clicking on <guibutton>OK</guibutton> the pull request is created. Just copy it
+			and pass it to other people who you want to pull your changes.
+		</para>
+		<para>
+			You can find more information at <xref linkend="git-request-pull(1)"/>.
 		</para>
 	</sect2>
 </sect1>
