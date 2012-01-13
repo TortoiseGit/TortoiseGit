@@ -874,7 +874,6 @@ int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
 {
 	int ret;
 	invalidate_cached_refs();
-	return for_each_ref_in(refname, fn, data);
 	ret = for_each_ref_in(refname, fn, data);
 	free_all_pack();
 	return ret;
