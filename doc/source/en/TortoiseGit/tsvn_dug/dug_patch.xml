@@ -14,6 +14,7 @@
 	<?dbhh topicname="HIDD_FORMAT_PATCH"?>
 	<?dbhh topicname="HIDD_APPLY_PATCH_LIST"?>
 	<?dbhh topicname="HIDD_CREATEPATCH"?>
+	<?dbhh topicname="HIDD_REQUESTPULL"?>
 	<para>
 		For open source projects (like this one) everyone has read
 		access to the repository, and anyone can make a contribution
