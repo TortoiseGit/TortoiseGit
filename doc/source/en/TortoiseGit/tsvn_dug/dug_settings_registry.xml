@@ -12,17 +12,6 @@
 	</para>
 	<variablelist>
 		<varlistentry>
-			<term>Configuration</term>
-			<listitem>
-				<para>
-					You can specify a different location for the Git
-					configuration file using registry location
-					<literal>HKCU\Software\TortoiseGit\ConfigDir</literal>.
-					This will affect all TortoiseGit operations.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
 			<term>Cache tray icon</term>
 			<listitem>
 				<para>
@@ -70,6 +59,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
+<!--
 		<varlistentry>
 			<term>Update Check URL</term>
 			<listitem>
@@ -84,6 +74,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
+-->
 		<varlistentry>
 			<term>Filenames without extensions in auto-completion list</term>
 			<listitem>
@@ -109,21 +100,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
-		<varlistentry>
-			<term>Merge log separator</term>
-			<listitem>
-				<para>
-					When you merge revisions from another branch, and merge tracking
-					information is available, the log messages from the revisions
-					you merge will be collected to make up a commit log message.
-					A pre-defined string is used to separate the individual log
-					messages of the merged revisions. If you prefer, you can create
-					a <literal>SZ</literal> key at
-					<literal>HKCU\Software\TortoiseGit\MergeLogSeparator</literal>
-					containing a separator string of your choice.
-				</para>
-			</listitem>
-		</varlistentry>
+<!--
 		<varlistentry>
 			<term>Always blame changes with TortoiseMerge</term>
 			<listitem>
@@ -137,6 +114,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
+-->
 		<varlistentry>
 			<term>Current revision highlighting for folders in log dialog</term>
 			<listitem>
@@ -156,6 +134,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
+<!--
 		<varlistentry>
 			<term>Make checkout fail if an item of the same name exists</term>
 			<listitem>
@@ -175,5 +154,6 @@
 				</para>
 			</listitem>
 		</varlistentry>
+-->
 	</variablelist>
 </sect2>

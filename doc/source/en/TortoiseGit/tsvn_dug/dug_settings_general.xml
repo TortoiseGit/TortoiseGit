@@ -147,6 +147,18 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>apply --topo-order</term>
+				<listitem>
+					<para>
+						Normally log entries/commits are ordered in descending order of the commit date.
+						'--topo-order' makes the commits appear in topological order (i.e. descendant
+						commits are shown before their parents). Not using this option, might break
+						the graph in the log dialog. However, this option is slower, because all
+						log entries have to be processed before displaying them.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>Can double-click in log list to compare with previous revision</term>
 				<listitem>
 					<para>

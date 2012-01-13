@@ -346,33 +346,6 @@
 			your user name on the issue tracker so that the plugin can
 			query for issues which are assigned to you.
 		</para>
-		<para>
-			If you want all users to use the same COM plugin for your project, you
-			can specify the plugin also with the properties <literal>bugtraq:provideruuid</literal>
-			and <literal>bugtraq:providerparams</literal>.
-
-			<variablelist>
-				<varlistentry>
-					<term condition="pot">bugtraq:provideruuid</term>
-					<listitem>
-						<para>
-							This property specifies the COM UUID of the IBugTraqProvider,
-							for example <literal>{91974081-2DC7-4FB1-B3BE-0DE1C8D6CE4E}</literal>.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term condition="pot">bugtraq:providerparams</term>
-					<listitem>
-						<para>
-							This property specifies the parameters passed to the IBugTraqProvider.
-						</para>
-					</listitem>
-				</varlistentry>
-			</variablelist>
-			Please check the documentation of your IBugTraqProvider plugin to find out what
-			to specify in these two properties.
-		</para>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-hooks-issuetracker-config">
 	<title>Config</title>

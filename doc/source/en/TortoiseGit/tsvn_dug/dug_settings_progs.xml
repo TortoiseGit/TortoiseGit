@@ -113,6 +113,27 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 			</menuchoice>
 			uses the secondary diff tool.
 		</para>
+		<para>
+			A viewer program for unified-diff files (GNU diff or patch files).
+			No parameters are required.
+			The <guilabel>Default</guilabel> option is to check for
+			a file association for <filename>.diff</filename> files,
+			and then for <filename>.txt</filename> files.
+			If you don't have a viewer for <filename>.diff</filename>
+			files, you will most likely get NotePad.
+		</para>
+		<para>
+			The original Windows NotePad program does not behave
+			well on files which do not have standard CR-LF
+			line-endings. Since most unified diff files have pure
+			LF line-endings, they do not view well in NotePad.
+			However, you can use a free NotePad replacement
+			<ulink url="http://www.flos-freeware.ch/notepad2.html">
+				<citetitle>Notepad2</citetitle>
+			</ulink> (this is also shipped with TortoiseGit)
+			which not only displays the line-endings correctly,
+			but also colour codes the added and removed lines.
+		</para>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-Merge">
 		<title>Merge Tool</title>
@@ -226,44 +247,10 @@ C:\Path-To\WinMerge.exe %merged
 			In the advanced settings, you can define a different diff and merge
 			program for every file extension. For instance you could associate
 			Photoshop as the <quote>Diff</quote> Program for <filename>.jpg</filename> files :-)
-			You can also associate the <literal>svn:mime-type</literal> property
-			with a diff or merge program.
 		</para>
 		<para>
 			To associate using a file extension, you need to specify the extension.
 			Use <literal>.bmp</literal> to describe Windows bitmap files.
-			To associate using the <literal>svn:mime-type</literal> property, specify
-			the mime type, including a slash, for example
-			<literal>text/xml</literal>.
-		</para>
-	</sect3>
-	<sect3 id="tsvn-dug-settings-Patch">
-		<title>Unified Diff Viewer</title>
-		<?dbhh topicname="HIDD_SETTINGSPROGSUNIDIFF"?>
-		<figure id="tsvn-dug-settings-dia-6">
-			<title>The Settings Dialog, Unified Diff Viewer Page</title>
-			<graphic fileref="../images/SettingsUnifiedDiff.png"/>
-		</figure>
-		<para>
-			A viewer program for unified-diff files (patch files).
-			No parameters are required.
-			The <guilabel>Default</guilabel> option is to check for
-			a file association for <filename>.diff</filename> files,
-			and then for <filename>.txt</filename> files.
-			If you don't have a viewer for <filename>.diff</filename>
-			files, you will most likely get NotePad.
-		</para>
-		<para>
-			The original Windows NotePad program does not behave
-			well on files which do not have standard CR-LF
-			line-endings. Since most unified diff files have pure
-			LF line-endings, they do not view well in NotePad.
-			However, you can use a free NotePad replacement
-			<ulink url="http://www.flos-freeware.ch/notepad2.html">
-				<citetitle>Notepad2</citetitle>
-			</ulink> (this is also shipped with TortoiseGit)
-			which not only displays the line-endings correctly,
-			but also colour codes the added and removed lines.
 		</para>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-alternativeeditor">

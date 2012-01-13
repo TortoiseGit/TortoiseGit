@@ -43,5 +43,15 @@
 				</para>
 			</listitem>
 		</varlistentry>
+		<varlistentry>
+			<term>Follow renames</term>
+			<listitem>
+				<para>
+					Defines if the log should follow renames, i.e. if the log does not
+					stop when a file was renamed in the past, but include all changes
+					before the rename.
+				</para>
+			</listitem>
+		</varlistentry>
 	</variablelist>
 </sect2>

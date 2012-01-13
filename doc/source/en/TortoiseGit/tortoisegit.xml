@@ -19,6 +19,10 @@
 				<firstname>Frank</firstname>
 				<surname>Li</surname>
 			</author>
+			<author>
+				<firstname>Sven</firstname>
+				<surname>Strickroth</surname>
+			</author>
 		</authorgroup>
 		<xi:include href="../pubdate.xml"/>
 	</bookinfo>
