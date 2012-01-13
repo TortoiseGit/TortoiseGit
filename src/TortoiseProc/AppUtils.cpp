@@ -2626,11 +2626,24 @@ BOOL CAppUtils::Merge(CString *commit)
 
 		if (dlg.m_bNoCommit)
 			Prodlg.m_PostCmdList.Add(_T("Commit"));
+		else if (dlg.m_bIsBranch)
+			Prodlg.m_PostCmdList.Add(_T("Remove branch"));
 
 		int ret = Prodlg.DoModal();
 
 		if (ret == IDC_PROGRESS_BUTTON1)
-			return Commit(_T(""), TRUE, CString(), CTGitPathList(), CTGitPathList(), true);
+			if (dlg.m_bNoCommit)
+				return Commit(_T(""), TRUE, CString(), CTGitPathList(), CTGitPathList(), true);
+			else if (dlg.m_bIsBranch)
+			{
+				if (CMessageBox::Show(NULL, _T("Do you really want to <ct=0x0000FF>delete</ct> <b>") + dlg.m_VersionName + _T("</b>?"), _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
+				{
+					CString cmd, out;
+					cmd.Format(_T("git.exe branch -D -- %s"), dlg.m_VersionName);
+					if (g_Git.Run(cmd, &out, CP_UTF8))
+						MessageBox(NULL, out, _T("TortoiseGit"), MB_OK);
+				}
+			}
 
 		return !Prodlg.m_GitStatus;
 	}

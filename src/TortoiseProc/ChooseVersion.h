@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,6 +53,7 @@ protected:
 		this->m_ChooseVersioinVersion.EnableWindow(FALSE);
 		m_pWin->GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
 		m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(FALSE);
+		m_bIsBranch = false;
 		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
 		switch (radio)
 		{
@@ -61,6 +62,7 @@ protected:
 		case IDC_RADIO_BRANCH:
 			this->m_ChooseVersioinBranch.EnableWindow(TRUE);
 			m_pWin->GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(TRUE);
+			m_bIsBranch = true;
 			break;
 		case IDC_RADIO_TAGS:
 			this->m_ChooseVersioinTags.EnableWindow(TRUE);
@@ -199,6 +201,7 @@ protected:
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
 
+		m_bIsBranch = false;
 		m_RadioBranch.EnableWindow(FALSE);
 		m_RadioTag.EnableWindow(FALSE);
 
@@ -221,6 +224,7 @@ protected:
 	}
 public:
 	CString m_VersionName;
+	bool	m_bIsBranch;
 	CChooseVersion(CWnd *win)
 	{
 		m_pWin=win;
