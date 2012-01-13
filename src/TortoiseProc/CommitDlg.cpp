@@ -66,6 +66,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bNoPostActions(FALSE)
 	, m_bAutoClose(false)
 	, m_bSetCommitDateTime(FALSE)
+	, m_bCreateNewBranch(FALSE)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -86,6 +87,8 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_COMMIT_SETDATETIME, m_bSetCommitDateTime);
+	DDX_Check(pDX, IDC_CHECK_NEWBRANCH, m_bCreateNewBranch);
+	DDX_Text(pDX, IDC_NEWBRANCH, m_sCreateNewBranch);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
 	DDX_Text(pDX, IDC_BUGID, m_sBugID);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
@@ -129,6 +132,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
 	ON_BN_CLICKED(IDC_COMMIT_SETDATETIME, &CCommitDlg::OnBnClickedCommitSetDateTime)
+	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -154,6 +158,10 @@ BOOL CCommitDlg::OnInitDialog()
 			}
 		}
 	}
+
+	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
+		DialogEnableWindow(IDC_CHECK_NEWBRANCH, FALSE);
+
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
 
@@ -271,6 +279,8 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_BUGID, TOP_RIGHT);
 	AddAnchor(IDC_BUGTRAQBUTTON, TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_TO, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_CHECK_NEWBRANCH, TOP_RIGHT);
+	AddAnchor(IDC_NEWBRANCH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_MESSAGEGROUP, TOP_LEFT, TOP_RIGHT);
 //	AddAnchor(IDC_HISTORY, TOP_LEFT);
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
@@ -649,6 +659,20 @@ void CCommitDlg::OnOK()
 
 	if (sysProgressDlg.IsValid())
 		sysProgressDlg.Stop();
+
+	if (m_bCreateNewBranch)
+	{
+		if (g_Git.Run(_T("git branch ") + m_sCreateNewBranch, &out, CP_ACP))
+		{
+			MessageBox(_T("Creating branch failed:\n") + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			bAddSuccess = false;
+		}
+		if (g_Git.Run(_T("git checkout ") + m_sCreateNewBranch, &out, CP_ACP))
+		{
+			MessageBox(_T("Switching to new branch failed:\n") + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			bAddSuccess = false;
+		}
+	}
 
 	//if(uncheckedfiles.GetLength()>0)
 	//{
@@ -2164,5 +2188,25 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 	{
 		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
+	}
+}
+
+void CCommitDlg::OnBnClickedCheckNewBranch()
+{
+	UpdateData();
+	if (m_bCreateNewBranch)
+	{
+		if (m_sCreateNewBranch.IsEmpty())
+		{
+			GetDlgItemText(IDC_COMMIT_TO, m_sCreateNewBranch);
+			UpdateData(FALSE);
+		}
+		GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
 	}
 }

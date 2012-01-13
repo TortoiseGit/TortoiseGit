@@ -703,6 +703,7 @@
 #define IDC_EDIT_SVN_FROM               1470
 #define IDC_VER2EDIT                    1470
 #define IDC_REV2EDIT                    1470
+#define IDC_NEWBRANCH                   1470
 #define IDC_BUGTRAQCOPYBUTTON           1471
 #define IDC_GIT_USERESINGNINGKEY        1471
 #define IDC_BUGTRAQWCPATHLABEL          1472
@@ -977,6 +978,7 @@
 #define IDC_FROMSUBJECT                 1678
 #define IDC_TOHASH                      1679
 #define IDC_TOSUBJECT                   1680
+#define IDC_CHECK_NEWBRANCH             1681
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1549,7 +1551,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        339
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1681
+#define _APS_NEXT_CONTROL_VALUE         1682
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

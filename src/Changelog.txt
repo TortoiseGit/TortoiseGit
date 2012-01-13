@@ -9,6 +9,7 @@
  * Added "Show Log before rename/copy" on log dialog file list
  * Added basic support for separate-git-dir (Overlays are not working yet)
  * Fixed issue #1042: Allow to delete branch after successful merge
+ * Fixed issue #1040: Commit to new branch
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62
