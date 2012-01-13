@@ -827,7 +827,7 @@ int CTGitPath::GetAdminDirMask() const
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
 
 	if (PathFileExists(dotGitPath + _T("BISECT_START")))
 		status |= ITEMIS_BISECT;
