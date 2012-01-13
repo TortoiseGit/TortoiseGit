@@ -61,12 +61,12 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("SubmoduleDiffDlg"));
 
-	if (m_bFromIsWorkingCopy)
+	if (m_bToIsWorkingCopy)
 	{
-		CString fromGroup;
-		GetDlgItem(IDC_FROMGROUP)->GetWindowText(fromGroup);
-		fromGroup += _T(" (Working Copy)");
-		GetDlgItem(IDC_FROMGROUP)->SetWindowText(fromGroup);
+		CString toGroup;
+		GetDlgItem(IDC_TOGROUP)->GetWindowText(toGroup);
+		toGroup += _T(" (Working Copy)");
+		GetDlgItem(IDC_TOGROUP)->SetWindowText(toGroup);
 	}
 
 	CString title = _T("Submodule \"") + m_sPath + _T("\"");
@@ -77,9 +77,9 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	return FALSE;
 }
 
-void CSubmoduleDiffDlg::SetDiff(CString path, bool fromIsWorkingCopy, CString fromHash, CString fromSubject, CString toHash, CString toSubject)
+void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, CString toHash, CString toSubject)
 {
-	m_bFromIsWorkingCopy = fromIsWorkingCopy;
+	m_bToIsWorkingCopy = toIsWorkingCopy;
 
 	m_sPath = path;
 
