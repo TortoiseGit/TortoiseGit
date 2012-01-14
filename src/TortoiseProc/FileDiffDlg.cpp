@@ -31,7 +31,7 @@
 #include "BrowseFolder.h"
 #include ".\filediffdlg.h"
 #include "gitdiff.h"
-#include "CommonResource.h"
+#include "LoglistCommonResource.h"
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
 #include "RefLogDlg.h"

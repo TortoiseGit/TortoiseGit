@@ -1,4 +1,3 @@
-
 #define IDS_LOG_GRAPH                   20000
 #define IDS_LOG_ACTIONS                 20001
 #define IDS_LOG_MESSAGE                 20002
