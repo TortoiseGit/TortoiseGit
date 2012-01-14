@@ -177,7 +177,7 @@ void COpenDlg::OnBrowseForFile(CString& filepath, UINT nFileFilter)
 
 void COpenDlg::OnBnClickedDifffilebrowse()
 {
-	OnBrowseForFile(m_sUnifiedDiffFile);
+	OnBrowseForFile(m_sUnifiedDiffFile, IDS_PATCHFILEFILTER);
 }
 
 void COpenDlg::OnBnClickedDirectorybrowse()
