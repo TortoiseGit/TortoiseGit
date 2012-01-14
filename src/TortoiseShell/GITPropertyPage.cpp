@@ -110,31 +110,34 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			return TRUE;
 
 		case WM_COMMAND:
-			switch (HIWORD(wParam))
-			{
-				case BN_CLICKED:
-					if (LOWORD(wParam) == IDC_SHOWLOG)
-					{
-						STARTUPINFO startup;
-						PROCESS_INFORMATION process;
-						memset(&startup, 0, sizeof(startup));
-						startup.cb = sizeof(startup);
-						memset(&process, 0, sizeof(process));
-						CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-						stdstring gitCmd = _T(" /command:");
-						gitCmd += _T("log /path:\"");
-						gitCmd += filenames.front().c_str();
-						gitCmd += _T("\"");
-						if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-						{
-							CloseHandle(process.hThread);
-							CloseHandle(process.hProcess);
-						}
-					}
-					break;
-			} // switch (HIWORD(wParam))
+		PageProcOnCommand(wParam);
+		break;
 	} // switch (uMessage)
 	return FALSE;
+}
+void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
+{
+	if(HIWORD(wParam) != BN_CLICKED)
+		return;
+
+	if (LOWORD(wParam) == IDC_SHOWLOG)
+	{
+		STARTUPINFO startup;
+		PROCESS_INFORMATION process;
+		memset(&startup, 0, sizeof(startup));
+		startup.cb = sizeof(startup);
+		memset(&process, 0, sizeof(process));
+		CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+		stdstring gitCmd = _T(" /command:");
+		gitCmd += _T("log /path:\"");
+		gitCmd += filenames.front().c_str();
+		gitCmd += _T("\"");
+		if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+		{
+			CloseHandle(process.hThread);
+			CloseHandle(process.hProcess);
+		}
+	}
 }
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
 {
