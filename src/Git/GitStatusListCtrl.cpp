@@ -2225,12 +2225,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (pos)
 					{
 						firstfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+						ASSERT(firstfilepath != NULL);
+						if (firstfilepath == NULL)
+							break;
+
 						secondfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+						ASSERT(secondfilepath != NULL);
+						if (secondfilepath == NULL)
+							break;
+
+						CString sCmd;
+						sCmd.Format(_T("\"%s\" /command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
+						CAppUtils::LaunchApplication(sCmd, NULL, false);
 					}
-					ASSERT(firstfilepath != NULL && secondfilepath != NULL);
-					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
 				break;
 			case IDGITLC_GNUDIFF1:
