@@ -2590,7 +2590,6 @@ BEGIN
     IDS_FILEDIFF_STATADD    "Add"
     IDS_FILEDIFF_STATDEL    "Del"
     IDS_LOG_FILE_LINE_ADD   "Add"
-    1014                    "Del"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""
     IDS_LOG_PUSH            "Push..."
