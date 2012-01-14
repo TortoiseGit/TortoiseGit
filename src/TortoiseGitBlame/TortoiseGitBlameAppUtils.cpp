@@ -18,7 +18,7 @@
 //
 #include "StdAfx.h"
 #include "math.h"
-#include "resource.h"
+#include "..\Resources\LoglistCommonResource.h"
 #include "TortoiseGitBlameAppUtils.h"
 #include "Registry.h"
 

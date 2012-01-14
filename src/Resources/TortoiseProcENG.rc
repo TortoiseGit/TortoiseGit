@@ -2903,17 +2903,6 @@ BEGIN
     IDS_CONNECTIONSTATE_OFFLINE "offline"
     IDS_STATUSLIST_COLADD   "Add"
     IDS_STATUSLIST_COLDEL   "Del"
-    IDS_YEAR_AGO            "%1!d! Year ago"
-    IDS_YEARS_AGO           "%1!d! Years ago"
-    IDS_MONTH_AGO           "%1!d! Month ago"
-    IDS_MONTHS_AGO          "%1!d! Months ago"
-    IDS_WEEK_AGO            "%1!d! Week ago"
-    IDS_WEEKS_AGO           "%1!d! Weeks ago"
-    IDS_DAY_AGO             "%1!d! Day ago"
-    IDS_DAYS_AGO            "%1!d! Days ago"
-    IDS_HOUR_AGO            "%1!d! Hour ago"
-    IDS_HOURS_AGO           "%1!d! Hours ago"
-    IDS_MINUTE_AGO          "%1!d! Minute ago"
 END
 
 STRINGTABLE 
@@ -3588,9 +3577,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MINUTES_AGO         "%1!d! minutes ago"
-    IDS_SECOND_AGO          "%1!d! Second ago"
-    IDS_SECONDS_AGO         "%1!d! Seconds ago"
     IDS_B_T_NOTEMPTY        "Branch/Tag name must not be empty or is invalid."
     IDS_CHOOSE_REPOSITORY   "Choose Repository"
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
