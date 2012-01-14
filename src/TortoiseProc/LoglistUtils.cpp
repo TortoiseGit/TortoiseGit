@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,14 +20,14 @@
 #include "StdAfx.h"
 #include "math.h"
 #include "..\Resources\LoglistCommonResource.h"
-#include "TortoiseGitBlameAppUtils.h"
+#include "LoglistUtils.h"
 #include "Registry.h"
 
-CAppUtils::CAppUtils(void)
+CLoglistUtils::CLoglistUtils(void)
 {
 }
 
-CAppUtils::~CAppUtils(void)
+CLoglistUtils::~CLoglistUtils(void)
 {
 }
 
@@ -42,7 +43,7 @@ CAppUtils::~CAppUtils(void)
  *				   rather than locale
  * RETURN      :   CString containing date/time
  */
-CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/,
+CString CLoglistUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/,
 	bool bRelative /*=false*/)
 {
 	CString datetime;
@@ -91,7 +92,7 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
  *	Converts a given time to a relative display string (relative to current time)
  *	Given time must be in local timezone
  */
-CString CAppUtils::ToRelativeTimeString(CTime time)
+CString CLoglistUtils::ToRelativeTimeString(CTime time)
 {
 	CString answer;
 	// convert to COleDateTime
@@ -105,7 +106,7 @@ CString CAppUtils::ToRelativeTimeString(CTime time)
 /**
  *	Generates a display string showing the relative time between the two given times as COleDateTimes
  */
-CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
+CString CLoglistUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
 {
 	CString answer;
 	COleDateTimeSpan ts = RelativeTo - time;
@@ -155,7 +156,7 @@ CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeT
  * otherwise format_2 is used
  * the formatted string is returned
 */
-CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
+CString CLoglistUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
 {
 	CString answer;
 	if ( count == 1 )
@@ -168,4 +169,3 @@ CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
 	}
 	return answer;
 }
-

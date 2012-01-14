@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,15 +18,16 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+
 /**
- * \ingroup TortoiseGitBlame
- * An utility class with static functions.
+ * \ingroup TortoiseProc
+ * An utility class with static functions for GitLoglist.
  */
-class CAppUtils
+class CLoglistUtils
 {
 public:
-	CAppUtils(void);
-	~CAppUtils(void);
+	CLoglistUtils(void);
+	~CLoglistUtils(void);
 
 	/**
 	 * FUNCTION    :   FormatDateAndTime

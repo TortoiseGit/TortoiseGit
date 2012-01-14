@@ -25,6 +25,7 @@
 #include "TortoiseProc.h"
 #include "RebaseDlg.h"
 #include "AppUtils.h"
+#include "LoglistUtils.h"
 #include "MessageBox.h"
 #include "UnicodeUtils.h"
 #include "BrowseRefsDlg.h"
@@ -596,7 +597,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
 			rev.m_CommitHash.ToString(),
 			rev.GetAuthorName(),
-			CAppUtils::FormatDateAndTime(rev.GetAuthorDate(),DATE_LONGDATE),
+			CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
 			rev.GetSubject(),
 			rev.GetBody());
 

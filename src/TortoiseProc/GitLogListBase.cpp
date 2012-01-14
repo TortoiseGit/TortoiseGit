@@ -37,7 +37,7 @@
 #include "Logdlg.h"
 #include "MessageBox.h"
 #include "Registry.h"
-#include "AppUtils.h"
+#include "LoglistUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
@@ -1292,7 +1292,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_DATE: //Date
 		if ( pLogEntry && (!pLogEntry->m_CommitHash.IsEmpty()) )
 			lstrcpyn(pItem->pszText,
-				CAppUtils::FormatDateAndTime( pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes ),
+				CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 				pItem->cchTextMax);
 		break;
 
@@ -1314,7 +1314,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case this->LOGLIST_COMMIT_DATE: //Commit Date
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText,
-				CAppUtils::FormatDateAndTime( pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes ),
+				CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes),
 				pItem->cchTextMax);
 		break;
 	case this->LOGLIST_BUG: //Bug ID
@@ -1883,7 +1883,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 					(LPCTSTR)sRev, pLogEntry->m_CommitHash.ToString(),
 					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(),
 					(LPCTSTR)sDate,
-					(LPCTSTR)CAppUtils::FormatDateAndTime( pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes ),
+					(LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 					(LPCTSTR)sMessage, pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim(),
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
