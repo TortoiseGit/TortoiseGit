@@ -24,7 +24,6 @@
 #include "SyncDlg.h"
 //#include "SVNConfig.h"
 #include "Registry.h"
-#include "CommonResource.h"
 #include "SyncCommand.h"
 
 bool SyncCommand::Execute()

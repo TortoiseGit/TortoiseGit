@@ -420,6 +420,7 @@ BEGIN
     IDR_TORTOISE_GIT_BLAME_MAINFRAME 
                             "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
     IDS_VERSION             "TortoiseGitBlame, Version %d.%d.%d.%d"
+    IDS_APPNAME             "TortoiseGitBlame"
 END
 
 STRINGTABLE 

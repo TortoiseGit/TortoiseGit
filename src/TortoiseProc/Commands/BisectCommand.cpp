@@ -23,7 +23,6 @@
 #include "PathUtils.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
-#include "CommonResource.h"
 
 bool BisectCommand::Execute()
 {

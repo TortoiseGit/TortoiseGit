@@ -21,7 +21,6 @@
 #pragma once
 
 #include "HintListCtrl.h"
-#include "CommonResource.h"
 #include "Git.h"
 #include "ProjectProperties.h"
 #include "TGitPath.h"

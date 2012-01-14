@@ -41,7 +41,6 @@
 //#include <openssl/err.h>
 
 #include "Commands\Command.h"
-#include "CommonResource.h"
 #include "..\version.h"
 #include "JumpListHelpers.h"
 #include "..\Settings\Settings.h"

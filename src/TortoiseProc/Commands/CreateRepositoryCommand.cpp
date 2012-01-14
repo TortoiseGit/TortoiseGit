@@ -21,7 +21,6 @@
 #include "CreateRepositoryCommand.h"
 
 #include "MessageBox.h"
-#include "CommonResource.h"
 #include "git.h"
 
 #include "CreateRepoDlg.h"

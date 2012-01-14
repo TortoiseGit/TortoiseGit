@@ -22,7 +22,6 @@
 #include "TGitPath.h"
 #include "RenameDlg.h"
 #include ".\renamedlg.h"
-#include "CommonResource.h"
 #include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)

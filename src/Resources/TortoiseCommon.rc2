@@ -117,7 +117,6 @@ BEGIN
     IDS_SPELLEDIT_CORRECTIONS "Corrections"
     IDS_SPELLEDIT_NOCORRECTIONS "No spell corrections"
     IDS_SPELLEDIT_NOTHESAURUS "No thesaurus suggestions"
-    IDS_APPNAME             "TortoiseGit"
     IDS_STATUSLIST_SHOWGROUPS "Group changelists"
     IDS_STATUSLIST_REMOVEUNUSEDPROPS "Shorten property list"
     IDS_STATUSLIST_RESETCOLUMNORDER "Reset columns"

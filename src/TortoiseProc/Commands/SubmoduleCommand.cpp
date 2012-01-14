@@ -18,7 +18,6 @@
 //
 #include "StdAfx.h"
 #include "SubmoduleCommand.h"
-#include "commonresource.h"
 
 #include "MessageBox.h"
 #include "RenameDlg.h"

@@ -5,6 +5,7 @@
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME 1
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 2
 #define IDS_VERSION                     2
+#define IDS_APPNAME                     3
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define ID_STATUSBAR_PANE1              120

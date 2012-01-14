@@ -198,6 +198,7 @@
 #define IDS_B_T_BOTHEMPTY               1023
 #define IDS_LOG_FILTER_SUBJECT          1024
 #define IDS_STATUSLIST_SHOWLOGOLDNAME   1025
+#define IDS_APPNAME                     1026
 #define IDC_NAME                        1027
 #define IDC_SERVERADDRESS               1027
 #define IDC_USEREDIT                    1027
