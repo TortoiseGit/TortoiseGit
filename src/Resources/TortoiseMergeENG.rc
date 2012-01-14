@@ -732,7 +732,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_COMMONFILEFILTER    "All Files (*.*)|*.*||"
-    IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All (*.*)|*.*||"
+    IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
 END
 
 STRINGTABLE 
