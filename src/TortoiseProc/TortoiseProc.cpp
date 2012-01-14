@@ -102,6 +102,7 @@ CTortoiseProcApp::~CTortoiseProcApp()
 
 // The one and only CTortoiseProcApp object
 CTortoiseProcApp theApp;
+CString sOrigCWD;
 HWND hWndExplorer;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
@@ -327,8 +328,8 @@ BOOL CTortoiseProcApp::InitInstance()
 			TCHAR * originalCurrentDirectory = new TCHAR[len];
 			if (GetCurrentDirectory(len, originalCurrentDirectory))
 			{
-				//sOrigCWD = originalCurrentDirectory;
-				//sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
+				sOrigCWD = originalCurrentDirectory;
+				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 			delete [] originalCurrentDirectory;
 		}
@@ -392,7 +393,10 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	if(!g_Git.m_CurrentDir.IsEmpty())
+	{
+		sOrigCWD = g_Git.m_CurrentDir;
 		SetCurrentDirectory(g_Git.m_CurrentDir);
+	}
 
 	{
 		CString err;

@@ -105,7 +105,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	else
 	{
 		m_IsGitFile=TRUE;
-		g_Git.m_CurrentDir=topdir;
+		sOrigCWD = g_Git.m_CurrentDir = topdir;
 
 		CString PathName=lpszPathName;
 		if(topdir[topdir.GetLength()-1] == _T('\\') ||

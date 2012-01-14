@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CommonAppUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CSmtp.cpp"
 				>
 				<FileConfiguration

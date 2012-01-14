@@ -1108,6 +1108,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utils\CommonAppUtils.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\Utils\MiscUI\DIB.cpp"
 					>
 				</File>
@@ -1245,6 +1249,10 @@
 				</File>
 				<File
 					RelativePath="..\Utils\CmdLineParser.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\CommonAppUtils.h"
 					>
 				</File>
 				<File

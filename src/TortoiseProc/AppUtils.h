@@ -20,6 +20,7 @@
 #pragma once
 #include "HistoryCombo.h"
 #include "GitRev.h"
+#include "CommonAppUtils.h"
 
 class CTGitPath;
 
@@ -32,7 +33,7 @@ enum GIT_POST_CMD
  * \ingroup TortoiseProc
  * An utility class with static functions.
  */
-class CAppUtils
+class CAppUtils : public CCommonAppUtils
 {
 public:
 	/**
@@ -103,11 +104,6 @@ public:
 	static void CreateFontForLogs(CFont& fontToCreate);
 
 	/**
-	* Launch an external application (usually the diff viewer)
-	*/
-	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup);
-
-	/**
 	* Launch the external blame viewer
 	*/
 	static bool LaunchTortoiseBlame(
@@ -131,10 +127,6 @@ public:
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
 	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
-
-	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
-
-	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 
 	/**
 	 * guesses a name of the project from a repository URL
