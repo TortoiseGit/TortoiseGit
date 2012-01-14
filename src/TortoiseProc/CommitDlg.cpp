@@ -418,6 +418,12 @@ void CCommitDlg::OnOK()
 	}
 	this->UpdateData();
 
+	if (m_bCreateNewBranch && !g_Git.IsBranchNameValid(m_sCreateNewBranch))
+	{
+		ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
+		return;
+	}
+
 	CString id;
 	GetDlgItemText(IDC_BUGID, id);
 	if (!m_ProjectProperties.CheckBugID(id))
