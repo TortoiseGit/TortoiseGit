@@ -2202,11 +2202,6 @@ void CCommitDlg::OnBnClickedCheckNewBranch()
 	UpdateData();
 	if (m_bCreateNewBranch)
 	{
-		if (m_sCreateNewBranch.IsEmpty())
-		{
-			GetDlgItemText(IDC_COMMIT_TO, m_sCreateNewBranch);
-			UpdateData(FALSE);
-		}
 		GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_SHOW);
 	}
