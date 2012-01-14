@@ -1474,7 +1474,6 @@
 #define IDS_MENU_VIEWWITHMERGE          9634
 #define IDS_MENU_APPLY                  9635
 #define IDS_MENU_SENDMAIL               9636
-#define IDS_ERR_PROC                    9637
 #define IDS_ERROR_NOREF                 9638
 #define IDS_ERROR_INDEX                 9639
 #define IDS_ERROR_HEAD                  9640
@@ -1485,7 +1484,6 @@
 #define IDS_REBASE_UPTODATE_FMT         9645
 #define IDS_REBASE_FORCE_TT             9646
 #define IDS_REBASE_ABORT_TT             9647
-#define IDS_ERROR_CANNON_FIND_TORTOISEPROC 9648
 #define IDS_REBASE_FASTFORWARD_FMT      9649
 #define IDS_REBASE_EQUAL_FMT            9650
 #define IDS_CLONE_DEPTH_TT              9651

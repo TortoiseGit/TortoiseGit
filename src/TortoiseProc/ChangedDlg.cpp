@@ -360,16 +360,14 @@ void CChangedDlg::UpdateStatistics()
 
 void CChangedDlg::OnBnClickedCommit()
 {
-	CString proc = CPathUtils::GetAppDirectory();
-	proc += _T("TortoiseProc.exe /command:commit");
-	proc += _T(" /path:\"");
+	CString cmd = _T("/path:\"");
 	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
 	if (bSingleFile)
-		proc += m_pathList[0].GetWinPathString();
+		cmd += m_pathList[0].GetWinPathString();
 	else
-		proc += m_FileListCtrl.GetCommonDirectory(false);
+		cmd += m_FileListCtrl.GetCommonDirectory(false);
 
-	CAppUtils::LaunchApplication(proc, IDS_ERROR_CANNON_FIND_TORTOISEPROC, false);
+	CAppUtils::RunTortoiseProc(cmd);
 }
 
 void CChangedDlg::OnBnClickedStash()

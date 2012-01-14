@@ -24,7 +24,7 @@
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "MainFrm.h"
-#include "PathUtils.h"
+#include "CommonAppUtils.h"
 
 IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 
@@ -55,7 +55,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 
 	bool bOpenWith = false;
 
-	procCmd += _T(" /path:\"");
+	procCmd += _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
 	procCmd += _T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
@@ -471,17 +471,5 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 
 		} // switch (cmd)
 
-
-	STARTUPINFO startup;
-	PROCESS_INFORMATION process;
-	memset(&startup, 0, sizeof(startup));
-	startup.cb = sizeof(startup);
-	memset(&process, 0, sizeof(process));
-	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-
-	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-	{
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
-	}
+		CCommonAppUtils::RunTortoiseProc(procCmd);
 }

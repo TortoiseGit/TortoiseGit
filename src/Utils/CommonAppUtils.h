@@ -32,11 +32,13 @@ public:
 	*/
 	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup);
 
+	static bool RunTortoiseProc(const CString& sCommandLine);
+
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 
 	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
 
 protected:
-    CCommonAppUtils(void){};
-    ~CCommonAppUtils(void){};
+	CCommonAppUtils(void){};
+	~CCommonAppUtils(void){};
 };

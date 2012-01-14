@@ -27,7 +27,6 @@
 #include "progressdlg.h"
 #include "MessageBox.h"
 #include "ImportPatchDlg.h"
-#include "PathUtils.h"
 #include "RebaseDlg.h"
 #include "hooks.h"
 
@@ -1045,12 +1044,12 @@ void CSyncDlg::ParserCmdOutput(char ch)
 }
 void CSyncDlg::OnBnClickedButtonCommit()
 {
-	CString proc=CPathUtils::GetAppDirectory();
-	proc += _T("TortoiseProc.exe /command:commit");
-	proc += _T(" /path:\"");
-	proc += g_Git.m_CurrentDir;
+	CString cmd = _T("/command:commit");
+	cmd += _T(" /path:\"");
+	cmd += g_Git.m_CurrentDir;
+	cmd += _T("\"");
 
-	CAppUtils::LaunchApplication(proc,IDS_ERROR_CANNON_FIND_TORTOISEPROC,false);
+	CAppUtils::RunTortoiseProc(cmd);
 }
 
 void CSyncDlg::OnOK()

@@ -1038,9 +1038,9 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	if (gitPath.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 	{
 		CString sCmd;
-		sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+		sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-		LaunchApplication(sCmd, NULL, false);
+		RunTortoiseProc(sCmd);
 		return TRUE;
 	}
 	else if (ret == IDOK)
@@ -1141,9 +1141,9 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
 		{
 			CString sCmd;
-			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			LaunchApplication(sCmd, NULL, false);
+			RunTortoiseProc(sCmd);
 			return TRUE;
 		}
 		else if (ret == IDOK)
@@ -1908,11 +1908,9 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 
 		if (userResponse == IDC_PROGRESS_BUTTON1)
 		{
-			CString cmd;
-			cmd = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-			cmd += _T(" /command:log");
+			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			CAppUtils::LaunchApplication(cmd, IDS_ERR_PROC, false);
+			RunTortoiseProc(cmd);
 			return TRUE;
 		}
 		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 1) || (progress.m_GitStatus == 0 && dlg.m_bRebase))

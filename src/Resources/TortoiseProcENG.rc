@@ -3595,7 +3595,6 @@ BEGIN
     IDS_MENU_VIEWWITHMERGE  "Review Path with TortoiseMerge"
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
-    IDS_ERR_PROC            "Can't open TortoiseProc"
     IDS_ERROR_NOREF         "No reference found"
     IDS_ERROR_INDEX         "Out of ref array"
     IDS_ERROR_HEAD          "Can't delete ""HEAD"""
@@ -3610,7 +3609,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERROR_CANNON_FIND_TORTOISEPROC "Can't found application TortoiseProc"
     IDS_REBASE_FASTFORWARD_FMT 
                             "Branch %s behind %s\r\n%s will fastforward to %s"
     IDS_REBASE_EQUAL_FMT    "Nothing need rebase\r\n%s equal %s"

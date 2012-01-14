@@ -1055,13 +1055,10 @@ void CGitProgressDlg::OnBnClickedLogbutton()
 	case GitProgress_Add:
 	case GitProgress_Resolve:
 		{
-			CString cmd;
-			cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
-			cmd += _T(" /command:commit");
-
+			CString cmd = _T(" /command:commit");
 			cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\"");
 
-			CAppUtils::LaunchApplication(cmd,NULL,false);
+			CAppUtils::RunTortoiseProc(cmd);
 			this->EndDialog(IDOK);
 			break;
 		}
@@ -2286,7 +2283,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 
 LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    m_pTaskbarList.Release();
-    m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
-    return 0;
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	return 0;
 }

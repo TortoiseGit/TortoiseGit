@@ -58,6 +58,21 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	return true;
 }
 
+bool CCommonAppUtils::RunTortoiseProc(const CString& sCommandLine)
+{
+	CString pathToExecutable = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+	CString sCmd;
+	sCmd.Format(_T("\"%s\" %s"), (LPCTSTR)pathToExecutable, (LPCTSTR)sCommandLine);
+	if (AfxGetMainWnd()->GetSafeHwnd() && (sCommandLine.Find(L"/hwnd:") < 0))
+	{
+		CString sCmdLine;
+		sCmdLine.Format(L"%s /hwnd:%ld", (LPCTSTR)sCommandLine, AfxGetMainWnd()->GetSafeHwnd());
+		sCmd.Format(_T("\"%s\" %s"), (LPCTSTR)pathToExecutable, (LPCTSTR)sCmdLine);
+	}
+
+	return LaunchApplication(sCmd, NULL, false);
+}
+
 bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width /* = 128 */, int height /* = 128 */)
 {
 	ListView_SetTextBkColor(hListCtrl, CLR_NONE);

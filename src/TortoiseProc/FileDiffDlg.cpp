@@ -552,12 +552,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				while (pos)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
-					CString cmd;
-					cmd = CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe");
-					cmd += _T(" /command:log");
+					CString cmd = _T("/command:log");
 					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
 					cmd += _T(" /endrev:")+m_rev1.m_CommitHash.ToString();
-					CAppUtils::LaunchApplication(cmd,IDS_ERR_PROC,false);
+					CAppUtils::RunTortoiseProc(cmd);
 				}
 			}
 			break;
