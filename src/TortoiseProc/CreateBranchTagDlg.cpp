@@ -155,14 +155,14 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 
 	if(this->m_bSign && this->m_Message.IsEmpty())
 	{
-		CMessageBox::Show(NULL, IDS_COMMITDLG_NOMESSAGE, IDS_TORTOISEGIT, MB_OK);
+		CMessageBox::Show(NULL, IDS_COMMITDLG_NOMESSAGE, IDS_APPNAME, MB_OK);
 		return;
 	}
 
 	this->m_BranchTagName.Trim();
 	if(!g_Git.IsBranchNameValid(this->m_BranchTagName))
 	{
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
 		return;
 	}
 	this->UpdateRevsionName();

@@ -128,7 +128,7 @@ void CGitSwitchDlg::OnBnClickedOk()
 	if ( m_bBranch && (!g_Git.IsBranchNameValid(m_NewBranch)))
 	{
 		// new branch requested but name is empty or contains spaces
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
 	}
 	else
 	{

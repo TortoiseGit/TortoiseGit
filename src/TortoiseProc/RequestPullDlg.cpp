@@ -128,7 +128,7 @@ void CRequestPullDlg::OnBnClickedOk()
 
 	if(!g_Git.IsBranchNameValid(m_EndRevision))
 	{
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_TORTOISEGIT, MB_OK);
+		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
 		return;
 	}
 

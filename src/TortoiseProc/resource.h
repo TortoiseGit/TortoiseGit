@@ -1474,7 +1474,6 @@
 #define IDS_SECOND_AGO                  9617
 #define IDS_SECONDS_AGO                 9618
 #define IDS_B_T_NOTEMPTY                9619
-#define IDS_TORTOISEGIT                 9620
 #define IDS_CHOOSE_REPOSITORY           9621
 #define IDS_ERR_NOT_REPOSITORY          9622
 #define IDS_ERR_ADDRESS_NO_EMPTY        9623

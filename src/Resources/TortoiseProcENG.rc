@@ -3592,7 +3592,6 @@ BEGIN
     IDS_SECOND_AGO          "%1!d! Second ago"
     IDS_SECONDS_AGO         "%1!d! Seconds ago"
     IDS_B_T_NOTEMPTY        "Branch/Tag name must not be empty or is invalid."
-    IDS_TORTOISEGIT         "TortoiseGit"
     IDS_CHOOSE_REPOSITORY   "Choose Repository"
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
     IDS_ERR_ADDRESS_NO_EMPTY "Email Address To or CC can't empty"
