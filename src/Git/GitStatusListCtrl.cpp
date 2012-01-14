@@ -51,7 +51,6 @@
 //#include "AddDlg.h"
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
-#include "CommonResource.h"
 #include "FormatMessageWrapper.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED

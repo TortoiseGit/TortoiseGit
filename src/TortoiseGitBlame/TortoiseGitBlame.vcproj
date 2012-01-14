@@ -428,6 +428,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\TortoiseProc\LoglistUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MainFrm.cpp"
 				>
 			</File>
@@ -496,10 +500,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TortoiseGitBlameAppUtils.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\TortoiseGitBlameDoc.cpp"
 				>
 			</File>
@@ -519,6 +519,10 @@
 			</File>
 			<File
 				RelativePath="..\TortoiseMerge\FileTextLines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\LoglistUtils.h"
 				>
 			</File>
 			<File

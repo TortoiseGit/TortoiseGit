@@ -26,7 +26,7 @@
 #include "atlconv.h"
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
-#include "CommonResource.h"
+#include "LoglistCommonResource.h"
 #include "Tlhelp32.h"
 #include "AppUtils.h"
 

@@ -4,7 +4,7 @@
 #include "BrowseRefsDlg.h"
 #include "HistoryCombo.h"
 #include "HistoryCombo.h"
-#include "AppUtils.h"
+#include "LoglistUtils.h"
 #include "UnicodeUtils.h"
 #include "Tooltip.h"
 
@@ -138,7 +138,7 @@ protected:
 			tooltip.Format(_T("CommitHash: %s\nCommit by: %s\nDate:%s\n%s\n%s"),
 				rev.m_CommitHash.ToString(),
 				rev.GetAuthorName(),
-				CAppUtils::FormatDateAndTime(rev.GetAuthorDate(),DATE_LONGDATE),
+				CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
 				rev.GetSubject(),
 				rev.GetBody());
 

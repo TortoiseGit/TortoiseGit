@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,15 +19,15 @@
 //
 #include "StdAfx.h"
 #include "math.h"
-#include "resource.h"
-#include "TortoiseGitBlameAppUtils.h"
+#include "..\Resources\LoglistCommonResource.h"
+#include "LoglistUtils.h"
 #include "Registry.h"
 
-CAppUtils::CAppUtils(void)
+CLoglistUtils::CLoglistUtils(void)
 {
 }
 
-CAppUtils::~CAppUtils(void)
+CLoglistUtils::~CLoglistUtils(void)
 {
 }
 
@@ -42,13 +43,11 @@ CAppUtils::~CAppUtils(void)
  *				   rather than locale
  * RETURN      :   CString containing date/time
  */
-CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/,
-	bool bRelative /*=false*/)
+CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/, bool bRelative /*=false*/)
 {
-	CString datetime;
-	if ( bRelative )
+	if (bRelative)
 	{
-		datetime = ToRelativeTimeString( cTime );
+		return ToRelativeTimeString(cTime);
 	}
 	else
 	{
@@ -57,96 +56,81 @@ CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIn
 		{
 			// yes
 			SYSTEMTIME sysTime;
-			cTime.GetAsSystemTime( sysTime );
+			cTime.GetAsSystemTime(sysTime);
 
 			TCHAR buf[100];
 
-			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf,
-				_countof(buf) - 1);
-			datetime = buf;
-			if ( bIncludeTime )
+			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf, _countof(buf) - 1);
+			CString datetime = buf;
+			if (bIncludeTime)
 			{
 				datetime += _T(" ");
 				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, _countof(buf) - 1);
 				datetime += buf;
 			}
+			return datetime;
 		}
 		else
 		{
 			// no, so fixed format
-			if ( bIncludeTime )
+			if (bIncludeTime)
 			{
-				datetime = cTime.Format(_T("%Y-%m-%d %H:%M:%S"));
+				return cTime.Format(_T("%Y-%m-%d %H:%M:%S"));
 			}
 			else
 			{
-				datetime = cTime.Format(_T("%Y-%m-%d"));
+				return cTime.Format(_T("%Y-%m-%d"));
 			}
 		}
 	}
-	return datetime;
 }
 
 /**
  *	Converts a given time to a relative display string (relative to current time)
  *	Given time must be in local timezone
  */
-CString CAppUtils::ToRelativeTimeString(CTime time)
+CString CLoglistUtils::ToRelativeTimeString(CTime time)
 {
-	CString answer;
 	// convert to COleDateTime
 	SYSTEMTIME sysTime;
-	time.GetAsSystemTime( sysTime );
-	COleDateTime oleTime( sysTime );
-	answer = ToRelativeTimeString(oleTime, COleDateTime::GetCurrentTime());
-	return answer;
+	time.GetAsSystemTime(sysTime);
+	COleDateTime oleTime(sysTime);
+	return ToRelativeTimeString(oleTime, COleDateTime::GetCurrentTime());
 }
 
 /**
  *	Generates a display string showing the relative time between the two given times as COleDateTimes
  */
-CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
+CString CLoglistUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
 {
-	CString answer;
 	COleDateTimeSpan ts = RelativeTo - time;
+
 	//years
-	if(fabs(ts.GetTotalDays()) >= 3*365)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/365, IDS_YEAR_AGO, IDS_YEARS_AGO );
-	}
+	if(fabs(ts.GetTotalDays()) >= 3 * 365)
+		return ExpandRelativeTime((int)ts.GetTotalDays()/365, IDS_YEAR_AGO, IDS_YEARS_AGO);
+
 	//Months
 	if(fabs(ts.GetTotalDays()) >= 60)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/30, IDS_MONTH_AGO, IDS_MONTHS_AGO );
-		return answer;
-	}
+		return ExpandRelativeTime((int)ts.GetTotalDays()/30, IDS_MONTH_AGO, IDS_MONTHS_AGO);
+
 	//Weeks
 	if(fabs(ts.GetTotalDays()) >= 14)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/7, IDS_WEEK_AGO, IDS_WEEKS_AGO );
-		return answer;
-	}
+		return ExpandRelativeTime((int)ts.GetTotalDays()/7, IDS_WEEK_AGO, IDS_WEEKS_AGO);
+
 	//Days
 	if(fabs(ts.GetTotalDays()) >= 2)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays(), IDS_DAY_AGO, IDS_DAYS_AGO );
-		return answer;
-	}
+		return ExpandRelativeTime((int)ts.GetTotalDays(), IDS_DAY_AGO, IDS_DAYS_AGO);
+
 	//hours
 	if(fabs(ts.GetTotalHours()) >= 2)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalHours(), IDS_HOUR_AGO, IDS_HOURS_AGO );
-		return answer;
-	}
+		return ExpandRelativeTime((int)ts.GetTotalHours(), IDS_HOUR_AGO, IDS_HOURS_AGO);
+
 	//minutes
 	if(fabs(ts.GetTotalMinutes()) >= 2)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalMinutes(), IDS_MINUTE_AGO, IDS_MINUTES_AGO );
-		return answer;
-	}
+		return ExpandRelativeTime((int)ts.GetTotalMinutes(), IDS_MINUTE_AGO, IDS_MINUTES_AGO);
+
 	//seconds
-		answer = ExpandRelativeTime( (int)ts.GetTotalSeconds(), IDS_SECOND_AGO, IDS_SECONDS_AGO );
-	return answer;
+	return ExpandRelativeTime((int)ts.GetTotalSeconds(), IDS_SECOND_AGO, IDS_SECONDS_AGO);
 }
 
 /**
@@ -155,17 +139,13 @@ CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeT
  * otherwise format_2 is used
  * the formatted string is returned
 */
-CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
+CString CLoglistUtils::ExpandRelativeTime(int count, UINT format_1, UINT format_n)
 {
 	CString answer;
-	if ( count == 1 )
-	{
-		answer.FormatMessage( format_1, count );
-	}
+	if (count == 1)
+		answer.FormatMessage(format_1, count);
 	else
-	{
-		answer.FormatMessage( format_n, count );
-	}
+		answer.FormatMessage(format_n, count);
+
 	return answer;
 }
-

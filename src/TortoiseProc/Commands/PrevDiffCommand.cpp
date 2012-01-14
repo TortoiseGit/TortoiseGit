@@ -24,7 +24,6 @@
 #include "MessageBox.h"
 #include "ChangedDlg.h"
 #include "LogDlgHelper.h"
-#include "CommonResource.h"
 #include "FileDiffDlg.h"
 
 bool PrevDiffCommand::Execute()

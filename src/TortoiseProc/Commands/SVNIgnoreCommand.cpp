@@ -25,7 +25,6 @@
 #include "RenameDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"
-#include "CommonResource.h"
 #include "SVNIgnoreTypeDlg.h"
 
 bool SVNIgnoreCommand::Execute()

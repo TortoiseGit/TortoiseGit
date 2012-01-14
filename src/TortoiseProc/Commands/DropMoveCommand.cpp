@@ -24,7 +24,6 @@
 #include "Git.h"
 #include "RenameDlg.h"
 #include "ShellUpdater.h"
-#include "commonresource.h"
 
 bool DropMoveCommand::Execute()
 {

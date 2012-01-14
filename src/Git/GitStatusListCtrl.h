@@ -24,7 +24,7 @@
 #include "GitRev.h"
 #include "GitConfig.h"
 #include "Colors.h"
-#include "CommonResource.h"
+#include "LoglistCommonResource.h"
 #include "HintListCtrl.h"
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)

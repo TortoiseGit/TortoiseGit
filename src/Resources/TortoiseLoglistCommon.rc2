@@ -11,7 +11,7 @@
 // Add manually edited resources here...
 
 /////////////////////////////////////////////////////////////////////////////
-#include "..\Resources\CommonResource.h"
+#include "..\Resources\LoglistCommonResource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 STRINGTABLE 
@@ -117,12 +117,36 @@ BEGIN
     IDS_SPELLEDIT_CORRECTIONS "Corrections"
     IDS_SPELLEDIT_NOCORRECTIONS "No spell corrections"
     IDS_SPELLEDIT_NOTHESAURUS "No thesaurus suggestions"
-    IDS_APPNAME             "TortoiseGit"
     IDS_STATUSLIST_SHOWGROUPS "Group changelists"
     IDS_STATUSLIST_REMOVEUNUSEDPROPS "Shorten property list"
     IDS_STATUSLIST_RESETCOLUMNORDER "Reset columns"
 	IDS_LOG_POPUP_LOG	"Show log..."
 END
+
+
+STRINGTABLE 
+BEGIN
+    IDS_YEAR_AGO            "%1!d! Year ago"
+    IDS_YEARS_AGO           "%1!d! Years ago"
+    IDS_MONTH_AGO           "%1!d! Month ago"
+    IDS_MONTHS_AGO          "%1!d! Months ago"
+    IDS_WEEK_AGO            "%1!d! Week ago"
+    IDS_WEEKS_AGO           "%1!d! Weeks ago"
+    IDS_DAY_AGO             "%1!d! Day ago"
+    IDS_DAYS_AGO            "%1!d! Days ago"
+    IDS_HOUR_AGO            "%1!d! Hour ago"
+    IDS_HOURS_AGO           "%1!d! Hours ago"
+    IDS_MINUTE_AGO          "%1!d! Minute ago"
+END
+
+
+STRINGTABLE 
+BEGIN
+    IDS_MINUTES_AGO         "%1!d! minutes ago"
+    IDS_SECOND_AGO          "%1!d! Second ago"
+    IDS_SECONDS_AGO         "%1!d! Seconds ago"
+END
+
 
 IDD_FIND DIALOGEX 0, 0, 287, 209
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU

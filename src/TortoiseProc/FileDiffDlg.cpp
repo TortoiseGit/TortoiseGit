@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,7 +31,8 @@
 #include "BrowseFolder.h"
 #include ".\filediffdlg.h"
 #include "gitdiff.h"
-#include "CommonResource.h"
+#include "LoglistCommonResource.h"
+#include "LoglistUtils.h"
 #include "BrowseRefsDlg.h"
 #include "LogDlg.h"
 #include "RefLogDlg.h"
@@ -732,7 +733,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	{
 		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev1.GetSubject());
 		m_tooltips.AddTool(IDC_FIRSTURL,
-			CAppUtils::FormatDateAndTime( m_rev1.GetAuthorDate(), DATE_SHORTDATE, false )+_T("  ")+m_rev1.GetAuthorName());
+			CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE, false) + _T("  ") + m_rev1.GetAuthorName());
 
 	}
 
@@ -741,7 +742,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 		SetDlgItemText(IDC_SECONDURL,m_rev2.m_CommitHash.ToString().Left(8)+_T(": ")+m_rev2.GetSubject());
 
 		m_tooltips.AddTool(IDC_SECONDURL,
-			CAppUtils::FormatDateAndTime( m_rev2.GetAuthorDate(), DATE_SHORTDATE, false )+_T("  ")+m_rev2.GetAuthorName());
+			CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE, false) + _T("  ") + m_rev2.GetAuthorName());
 	}
 
 	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base)"));

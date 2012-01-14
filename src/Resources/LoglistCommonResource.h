@@ -1,3 +1,17 @@
+#define IDS_YEAR_AGO                    9605
+#define IDS_YEARS_AGO                   9606
+#define IDS_MONTH_AGO                   9607
+#define IDS_MONTHS_AGO                  9608
+#define IDS_WEEK_AGO                    9609
+#define IDS_WEEKS_AGO                   9610
+#define IDS_DAY_AGO                     9611
+#define IDS_DAYS_AGO                    9612
+#define IDS_HOUR_AGO                    9613
+#define IDS_HOURS_AGO                   9614
+#define IDS_MINUTE_AGO                  9615
+#define IDS_MINUTES_AGO                 9616
+#define IDS_SECOND_AGO                  9617
+#define IDS_SECONDS_AGO                 9618
 
 #define IDS_LOG_GRAPH                   20000
 #define IDS_LOG_ACTIONS                 20001
@@ -39,8 +53,6 @@
 #define IDS_SCIEDIT_SPLITLINES			20041
 #define IDS_SPELLEDIT_THESAURUS			20042
 #define IDS_SPELLEDIT_NOTHESAURUS		20043
-
-#define IDS_APPNAME						20044
 
 #define IDS_LOG_REVISION				20045
 

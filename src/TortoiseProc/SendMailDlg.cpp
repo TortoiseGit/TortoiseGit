@@ -23,7 +23,6 @@
 #include "TortoiseProc.h"
 #include "SendMailDlg.h"
 #include "MessageBox.h"
-#include "commonresource.h"
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
 #include "MailMsg.h"

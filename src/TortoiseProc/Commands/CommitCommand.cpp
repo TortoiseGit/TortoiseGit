@@ -19,7 +19,6 @@
 //
 #include "StdAfx.h"
 #include "CommitCommand.h"
-#include "CommonResource.h"
 #include "CommitDlg.h"
 //#include "SVNProgressDlg.h"
 #include "StringUtils.h"
