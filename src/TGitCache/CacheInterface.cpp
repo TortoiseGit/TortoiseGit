@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2007 - TortoiseSVN
+// External Cache Copyright (C) 2007,2011 - TortoiseSVN
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 //
 #include "stdafx.h"
 #include "CacheInterface.h"
+#include "SmartHandle.h"
 
 CString GetCachePipeName()
 {
@@ -36,9 +37,9 @@ CString GetCacheMutexName()
 }
 CString GetCacheID()
 {
-	HANDLE token;
+	CAutoGeneralHandle token;
 	DWORD len;
-	BOOL result = OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token);
+	BOOL result = OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, token.GetPointer());
 	if(result)
 	{
 		GetTokenInformation(token, TokenStatistics, NULL, 0, &len);
@@ -48,7 +49,6 @@ CString GetCacheID()
 		delete [ ] data;
 		CString t;
 		t.Format(_T("-%08x%08x"), uid.HighPart, uid.LowPart);
-		CloseHandle(token);
 		return t;
 	}
 	return _T("");

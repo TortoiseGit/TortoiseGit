@@ -19,6 +19,7 @@
 #pragma once
 
 #include "TGitPath.h"
+#include "SmartHandle.h"
 
 /**
  * \ingroup TSVNCache
@@ -42,10 +43,10 @@ private:
 
 private:
 	CComAutoCriticalSection m_critSec;
-	HANDLE m_hThread;
+	CAutoGeneralHandle m_hThread;
 	std::deque<CTGitPath> m_pathsToUpdate;
-	HANDLE m_hTerminationEvent;
-	HANDLE m_hWakeEvent;
+	CAutoGeneralHandle m_hTerminationEvent;
+	CAutoGeneralHandle m_hWakeEvent;
 
 	bool m_bItemsAddedSinceLastUpdate;
 	volatile LONG m_bRunning;

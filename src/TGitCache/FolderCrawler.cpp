@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2008 - TortoiseSVN
+// External Cache Copyright (C) 2005-2008,2011 - TortoiseSVN
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 //
 
 #include "StdAfx.h"
-#include ".\foldercrawler.h"
+#include "foldercrawler.h"
 #include "GitStatusCache.h"
 #include "registry.h"
 #include "TGitCache.h"
@@ -31,7 +31,6 @@ CFolderCrawler::CFolderCrawler(void)
 {
 	m_hWakeEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	m_hTerminationEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
-	m_hThread = INVALID_HANDLE_VALUE;
 	m_lCrawlInhibitSet = 0;
 	m_crawlHoldoffReleasesAt = (long)GetTickCount();
 	m_bRun = false;
@@ -47,26 +46,23 @@ CFolderCrawler::~CFolderCrawler(void)
 void CFolderCrawler::Stop()
 {
 	m_bRun = false;
-	if (m_hTerminationEvent != INVALID_HANDLE_VALUE)
+	if (m_hTerminationEvent)
 	{
 		SetEvent(m_hTerminationEvent);
 		if(WaitForSingleObject(m_hThread, 4000) != WAIT_OBJECT_0)
 		{
 			ATLTRACE("Error terminating crawler thread\n");
 		}
-		CloseHandle(m_hThread);
-		m_hThread = INVALID_HANDLE_VALUE;
-		CloseHandle(m_hTerminationEvent);
-		m_hTerminationEvent = INVALID_HANDLE_VALUE;
-		CloseHandle(m_hWakeEvent);
-		m_hWakeEvent = INVALID_HANDLE_VALUE;
 	}
+	m_hThread.CloseHandle();
+	m_hTerminationEvent.CloseHandle();
+	m_hWakeEvent.CloseHandle();
 }
 
 void CFolderCrawler::Initialise()
 {
 	// Don't call Initialize more than once
-	ATLASSERT(m_hThread == INVALID_HANDLE_VALUE);
+	ATLASSERT(!m_hThread);
 
 	// Just start the worker thread.
 	// It will wait for event being signaled.

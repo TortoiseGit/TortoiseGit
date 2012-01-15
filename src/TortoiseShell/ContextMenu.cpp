@@ -679,7 +679,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	GetTempFileName (path, _T("git"), 0, tempFile);
 	tempfile = stdstring(tempFile);
 
-	HANDLE file = ::CreateFile (tempFile,
+	CAutoFile file = ::CreateFile (tempFile,
 		GENERIC_WRITE,
 		FILE_SHARE_READ,
 		0,
@@ -689,7 +689,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 
 	delete [] path;
 	delete [] tempFile;
-	if (file == INVALID_HANDLE_VALUE)
+	if (!file)
 		return false;
 
 	if (!IsClipboardFormatAvailable(CF_HDROP))
@@ -717,7 +717,6 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	GlobalUnlock(hglb);
 
 	CloseClipboard();
-	::CloseHandle(file);
 
 	return bRet;
 }
@@ -733,7 +732,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 	GetTempFileName (path, _T("git"), 0, tempFile);
 	stdstring retFilePath = stdstring(tempFile);
 
-	HANDLE file = ::CreateFile (tempFile,
+	CAutoFile file = ::CreateFile (tempFile,
 								GENERIC_WRITE,
 								FILE_SHARE_READ,
 								0,
@@ -743,7 +742,7 @@ stdstring CShellExt::WriteFileListToTempFile()
 
 	delete [] path;
 	delete [] tempFile;
-	if (file == INVALID_HANDLE_VALUE)
+	if (!file)
 		return stdstring();
 
 	DWORD written = 0;
@@ -758,7 +757,6 @@ stdstring CShellExt::WriteFileListToTempFile()
 		::WriteFile (file, I->c_str(), I->size()*sizeof(TCHAR), &written, 0);
 		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
-	::CloseHandle(file);
 	return retFilePath;
 }
 

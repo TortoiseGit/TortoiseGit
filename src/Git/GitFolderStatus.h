@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011 - TortoiseGit
-// Copyright (C) 2003-2006,2008 - Stefan Kueng
+// Copyright (C) 2003-2006,2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 
 #include "GitStatus.h"
 #include "TGitPath.h"
+#include "SmartHandle.h"
 
 /**
  * \ingroup TortoiseShell
@@ -145,7 +146,7 @@ private:
 
 	stdstring		sCacheKey;
 
-	HANDLE			m_hInvalidationEvent;
+	CAutoGeneralHandle	m_hInvalidationEvent;
 
 	// The item we most recently supplied status for
 	CTGitPath		m_mostRecentPath;

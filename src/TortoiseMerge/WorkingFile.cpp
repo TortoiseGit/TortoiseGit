@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007 - TortoiseSVN
+// Copyright (C) 2006-2007,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "resource.h"
+#include "SmartHandle.h"
 
 CWorkingFile::CWorkingFile(void)
 {
@@ -56,8 +57,7 @@ CString CWorkingFile::GetDescriptiveName()
 // Make an empty file with this name
 void CWorkingFile::CreateEmptyFile()
 {
-	HANDLE hFile = CreateFile(m_sFilename, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	CloseHandle(hFile);
+	CAutoFile hFile = CreateFile(m_sFilename, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 }
 
 // Move the details of the specified file to the current one, and then mark the specified file

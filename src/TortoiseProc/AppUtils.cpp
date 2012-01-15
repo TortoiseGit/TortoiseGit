@@ -59,6 +59,7 @@
 #include "PropKey.h"
 #include "StashSave.h"
 #include "FormatMessageWrapper.h"
+#include "SmartHandle.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -550,11 +551,10 @@ BOOL CAppUtils::StartTextViewer(CString file)
 BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 {
 	DWORD length = 0;
-	HANDLE hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE)
+	CAutoFile hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
+	if (!hFile)
 		return TRUE;
 	length = ::GetFileSize(hFile, NULL);
-	::CloseHandle(hFile);
 	if (length < 4)
 		return TRUE;
 	return FALSE;
@@ -2456,9 +2456,9 @@ void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 {
 	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
 
-	HMODULE hShell = LoadLibrary(_T("Shell32.dll"));
+	CAutoLibrary hShell = LoadLibrary(_T("Shell32.dll"));
 
-	if (hShell) {
+	if (hShell.IsValid()) {
 		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");
 		if (pfnSHGPSFW) {
 			IPropertyStore *pps;
@@ -2471,7 +2471,6 @@ void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 				pps->Release();
 			}
 		}
-		FreeLibrary(hShell);
 	}
 }
 

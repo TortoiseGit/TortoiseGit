@@ -39,7 +39,7 @@
 //#include "svn_dso.h"
 //#include <openssl/ssl.h>
 //#include <openssl/err.h>
-
+#include "SmartHandle.h"
 #include "Commands\Command.h"
 #include "..\version.h"
 #include "JumpListHelpers.h"
@@ -383,7 +383,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	// Note that SASL doesn't have to be initialized yet for this to work
 //	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
-	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
+	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 	if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
 	{
 		int i=0;
@@ -448,9 +448,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		retSuccess = cmd->Execute();
 		delete cmd;
 	}
-
-	if (TSVNMutex)
-		::CloseHandle(TSVNMutex);
 
 	// Look for temporary files left around by TortoiseSVN and
 	// remove them. But only delete 'old' files because some

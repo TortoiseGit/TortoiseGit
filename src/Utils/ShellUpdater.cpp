@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +22,7 @@
 #include "../TGitCache/CacheInterface.h"
 #include "Registry.h"
 #include "git.h"
+#include "SmartHandle.h"
 
 CShellUpdater::CShellUpdater(void)
 {
@@ -91,7 +93,7 @@ void CShellUpdater::UpdateShell()
 
 	// if we use the external cache, we tell the cache directly that something
 	// has changed, without the detour via the shell.
-	HANDLE hPipe = CreateFile( 
+	CAutoFile hPipe = CreateFile( 
 		GetCacheCommandPipeName(),		// pipe name 
 		GENERIC_READ |					// read and write access 
 		GENERIC_WRITE, 
@@ -102,7 +104,7 @@ void CShellUpdater::UpdateShell()
 		NULL);							// no template file 
 
 
-	if (hPipe != INVALID_HANDLE_VALUE) 
+	if (!hPipe) 
 	{
 		// The pipe connected; change to message-read mode. 
 		DWORD dwMode; 
@@ -138,12 +140,10 @@ void CShellUpdater::UpdateShell()
 				if (! fSuccess || sizeof(cmd) != cbWritten)
 				{
 					DisconnectNamedPipe(hPipe); 
-					CloseHandle(hPipe); 
-					hPipe = INVALID_HANDLE_VALUE;
-					break;
+					return;
 				}
 			}
-			if (hPipe != INVALID_HANDLE_VALUE)
+			if (!hPipe)
 			{
 				// now tell the cache we don't need it's command thread anymore
 				DWORD cbWritten; 
@@ -156,14 +156,11 @@ void CShellUpdater::UpdateShell()
 					&cbWritten,		// number of bytes written 
 					NULL);			// not overlapped I/O 
 				DisconnectNamedPipe(hPipe); 
-				CloseHandle(hPipe); 
-				hPipe = INVALID_HANDLE_VALUE;
 			}
 		}
 		else
 		{
 			ATLTRACE("SetNamedPipeHandleState failed"); 
-			CloseHandle(hPipe);
 		}
 	}
 }

@@ -542,6 +542,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Utils\SmartHandle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\StatusCacheEntry.h"
 				>
 			</File>

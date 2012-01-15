@@ -24,7 +24,7 @@
 
 #include <Shobjidl.h>
 #include "Win7.h"
-
+#include "SmartHandle.h"
 
 #define APPID (_T("TGIT.TGIT.1"))
 
@@ -32,7 +32,7 @@
 void SetTaskIDPerUUID()
 {
     typedef HRESULT STDAPICALLTYPE SetCurrentProcessExplicitAppUserModelIDFN(PCWSTR AppID);
-    HMODULE hShell = ::LoadLibrary(_T("shell32.dll"));
+    CAutoLibrary hShell = ::LoadLibrary(_T("shell32.dll"));
     if (hShell)
     {
         SetCurrentProcessExplicitAppUserModelIDFN *pfnSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelIDFN*)GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID");
@@ -41,7 +41,6 @@ void SetTaskIDPerUUID()
             std::wstring id = GetTaskIDPerUUID();
             pfnSetCurrentProcessExplicitAppUserModelID(id.c_str());
         }
-        ::FreeLibrary(hShell);
     }
 }
 

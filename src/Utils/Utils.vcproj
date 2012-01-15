@@ -489,6 +489,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SmartHandle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SoundUtils.cpp"
 				>
 			</File>

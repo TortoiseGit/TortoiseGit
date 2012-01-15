@@ -1300,6 +1300,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utils\SmartHandle.h"
+					>
+				</File>
+				<File
 					RelativePath="..\Utils\StringUtils.h"
 					>
 				</File>

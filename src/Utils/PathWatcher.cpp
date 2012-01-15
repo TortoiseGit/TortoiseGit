@@ -31,8 +31,8 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 
 	for (int i=0; i<(sizeof(arPrivelegeNames)/sizeof(LPCTSTR)); ++i)
 	{
-		HANDLE hToken;
-		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
+		CAutoGeneralHandle hToken;
+		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, hToken.GetPointer()))
 		{
 			TOKEN_PRIVILEGES tp = { 1 };
 
@@ -42,7 +42,6 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 
 				AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL);
 			}
-			CloseHandle(hToken);
 		}
 	}
 
@@ -53,11 +52,7 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 CPathWatcher::~CPathWatcher(void)
 {
 	InterlockedExchange(&m_bRunning, FALSE);
-	if (m_hThread != INVALID_HANDLE_VALUE)
-	{
-		CloseHandle(m_hThread);
-		m_hThread = INVALID_HANDLE_VALUE;
-	}
+	m_hThread.CloseHandle();
 	AutoLocker lock(m_critSec);
 	ClearInfoMap();
 }
@@ -65,21 +60,20 @@ CPathWatcher::~CPathWatcher(void)
 void CPathWatcher::Stop()
 {
 	InterlockedExchange(&m_bRunning, FALSE);
-	if (m_hCompPort != INVALID_HANDLE_VALUE)
+	if (m_hCompPort)
 	{
 		PostQueuedCompletionStatus(m_hCompPort, 0, NULL, NULL);
+		m_hCompPort.CloseHandle();
 	}
 
-	if (m_hThread != INVALID_HANDLE_VALUE)
+	if (m_hThread)
 	{
 		if( WaitForSingleObject(m_hThread, 1000) != WAIT_OBJECT_0 )
 		{
 			TerminateThread(m_hThread, (DWORD)-1);
 		}
-		CloseHandle(m_hThread);
+		m_hThread.CloseHandle();
 	}
-	m_hThread = INVALID_HANDLE_VALUE;
-	m_hCompPort = INVALID_HANDLE_VALUE;
 }
 
 bool CPathWatcher::RemovePathAndChildren(const CTGitPath& path)
@@ -171,12 +165,12 @@ bool CPathWatcher::AddPath(const CTGitPath& path)
 		ATLTRACE(_T("add path to watch %s\n"), newroot.GetWinPath());
 		watchedPaths.AddPath(newroot);
 		watchedPaths.RemoveChildren();
-		m_hCompPort = INVALID_HANDLE_VALUE;
+		m_hCompPort.CloseHandle();
 		return true;
 	}
 	ATLTRACE(_T("add path to watch %s\n"), path.GetWinPath());
 	watchedPaths.AddPath(path);
-	m_hCompPort = INVALID_HANDLE_VALUE;
+	m_hCompPort.CloseHandle();
 	return true;
 }
 
@@ -212,10 +206,9 @@ void CPathWatcher::WorkerThread()
 					ClearInfoMap();
 				}
 				DWORD lasterr = GetLastError();
-				if ((m_hCompPort != INVALID_HANDLE_VALUE)&&(lasterr!=ERROR_SUCCESS)&&(lasterr!=ERROR_INVALID_HANDLE))
+				if ((m_hCompPort)&&(lasterr!=ERROR_SUCCESS)&&(lasterr!=ERROR_INVALID_HANDLE))
 				{
-					CloseHandle(m_hCompPort);
-					m_hCompPort = INVALID_HANDLE_VALUE;
+					m_hCompPort.CloseHandle();
 				}
 				// Since we pass m_hCompPort to CreateIoCompletionPort, we
 				// have to set this to NULL to have that API create a new
@@ -223,7 +216,7 @@ void CPathWatcher::WorkerThread()
 				m_hCompPort = NULL;
 				for (int i=0; i<watchedPaths.GetCount(); ++i)
 				{
-					HANDLE hDir = CreateFile(watchedPaths[i].GetWinPath(),
+					CAutoFile hDir = CreateFile(watchedPaths[i].GetWinPath(),
 											FILE_LIST_DIRECTORY,
 											FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
 											NULL, //security attributes
@@ -231,11 +224,10 @@ void CPathWatcher::WorkerThread()
 											FILE_FLAG_BACKUP_SEMANTICS | //required privileges: SE_BACKUP_NAME and SE_RESTORE_NAME.
 											FILE_FLAG_OVERLAPPED,
 											NULL);
-					if (hDir == INVALID_HANDLE_VALUE)
+					if (!hDir)
 					{
 						// this could happen if a watched folder has been removed/renamed
-						CloseHandle(m_hCompPort);
-						m_hCompPort = INVALID_HANDLE_VALUE;
+						m_hCompPort.CloseHandle();
 						AutoLocker lock(m_critSec);
 						watchedPaths.RemovePath(watchedPaths[i]);
 						i--; if (i<0) i=0;
@@ -243,7 +235,8 @@ void CPathWatcher::WorkerThread()
 					}
 
 					CDirWatchInfo * pDirInfo = new CDirWatchInfo(hDir, watchedPaths[i]);
-					m_hCompPort = CreateIoCompletionPort(hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
+					hDir.Detach();  // the new CDirWatchInfo object owns the handle now
+					m_hCompPort = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
 					if (m_hCompPort == NULL)
 					{
 						AutoLocker lock(m_critSec);
@@ -350,17 +343,15 @@ void CPathWatcher::ClearInfoMap()
 		}
 	}
 	watchInfoMap.clear();
-	if (m_hCompPort != INVALID_HANDLE_VALUE)
-		CloseHandle(m_hCompPort);
-	m_hCompPort = INVALID_HANDLE_VALUE;
+	m_hCompPort.CloseHandle();
 }
 
 CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName) :
 	m_hDir(hDir),
 	m_DirName(DirectoryName)
 {
-	ATLASSERT( hDir != INVALID_HANDLE_VALUE
-		&& !DirectoryName.IsEmpty());
+	ATLASSERT( hDir && !DirectoryName.IsEmpty());
+	m_Buffer[0] = 0;
 	memset(&m_Overlapped, 0, sizeof(m_Overlapped));
 	m_DirPath = m_DirName.GetWinPathString();
 	if (m_DirPath.GetAt(m_DirPath.GetLength()-1) != '\\')
@@ -374,12 +365,6 @@ CPathWatcher::CDirWatchInfo::~CDirWatchInfo()
 
 bool CPathWatcher::CDirWatchInfo::CloseDirectoryHandle()
 {
-	bool b = TRUE;
-	if( m_hDir != INVALID_HANDLE_VALUE )
-	{
-		b = !!CloseHandle(m_hDir);
-		m_hDir = INVALID_HANDLE_VALUE;
-	}
-	return b;
+	return m_hDir.CloseHandle();
 }
 
