@@ -279,9 +279,9 @@ void CHyperLink::SetDefaultCursor()
 		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
 		HMODULE hModule = LoadLibrary(strWndDir);
 		if (hModule) {
-			HCURSOR hHandCursor = (HCURSOR)::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
-			if (hHandCursor)
-				m_hLinkCursor = CopyCursor(hHandCursor);
+			HCURSOR hHandCursor2 = (HCURSOR)::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
+			if (hHandCursor2)
+				m_hLinkCursor = CopyCursor(hHandCursor2);
 		}
 		FreeLibrary(hModule);
 	}
