@@ -576,15 +576,15 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\TGitCache.rc"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\Tortoise.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\Resources\TortoiseCache.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\TGitCache.rc"
 				>
 			</File>
 		</Filter>

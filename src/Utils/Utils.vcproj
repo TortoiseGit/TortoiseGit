@@ -657,15 +657,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MiscUI\SysProgressDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MiscUI\ScrollTool.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MiscUI\SplitterControl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MiscUI\SysProgressDlg.cpp"
 				>
 			</File>
 			<File

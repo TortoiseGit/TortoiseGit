@@ -785,10 +785,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Utils\MiscUI\SysProgressDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\RightView.cpp"
 				>
 			</File>
@@ -871,6 +867,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Utils\MiscUI\SysProgressDlg.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\TortoiseMerge.cpp"
@@ -1065,6 +1065,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\TortoiseMerge.ico"
 				>
 			</File>
@@ -1078,10 +1082,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\TortoiseMergeENG.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
 				>
 			</File>
 			<File
