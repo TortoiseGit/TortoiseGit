@@ -50,10 +50,9 @@
   <para>
     <guilabel>Manage Remotes</guilabel> to add or modify remote configuration.
   </para>
-  <para> <!-- FIXME command git-choose-ssh does not exist -->
-    Git clone supports http, git and ssh protocol. <xref linkend="git-choose-ssh"/> shows how to choose SSH client.
-    OpenSSH, PLink or TortoisePlink. 
-  </para>
+  <tip>
+    <para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tsvn-ssh-howto"/>.</para>
+  </tip>
   <para>
     You can find more information at <xref linkend="git-fetch(1)"/> and <xref linkend="git-pull(1)"/>.
   </para>
