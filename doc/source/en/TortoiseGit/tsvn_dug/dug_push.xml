@@ -49,6 +49,9 @@
 	</para>
 	<para>Autoload Putty Key
 	</para>
+	<tip>
+		<para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tsvn-ssh-howto"/>.</para>
+	</tip>
   </sect2>
   <para>
     You can find more information at <xref linkend="git-push(1)"/>
