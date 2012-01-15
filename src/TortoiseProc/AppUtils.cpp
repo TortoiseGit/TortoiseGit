@@ -2059,9 +2059,13 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 		CString cmd;
 		cmd.Format(_T("git.exe request-pull %s \"%s\" %s"), dlg.m_StartRevision, dlg.m_RepositoryURL, dlg.m_EndRevision);
 
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		progress.DoModal();
+		CString tempFileName = GetTempFile();
+		if (g_Git.RunLogFile(cmd, tempFileName))
+		{
+			MessageBox(NULL, _T("Failed to create pull-request."), _T("TortoiseGit"), MB_OK);
+			return false;
+		}
+		CAppUtils::LaunchAlternativeEditor(tempFileName);
 	}
 	return true;
 }
