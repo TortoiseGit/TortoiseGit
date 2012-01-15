@@ -29,6 +29,7 @@
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "CmdLineParser.h"
+#include "PathUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -54,6 +55,18 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 	SetDllDirectory(L"");
 	EnableHtmlHelp();
 
+	{
+		DWORD len = GetCurrentDirectory(0, NULL);
+		if (len)
+		{
+			auto_buffer<TCHAR> originalCurrentDirectory(len);
+			if (GetCurrentDirectory(len, originalCurrentDirectory))
+			{
+				sOrigCWD = originalCurrentDirectory;
+				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
+			}
+		}
+	}
 
 	m_bHiColorIcons = TRUE;
 }
@@ -61,7 +74,7 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 // The one and only CTortoiseGitBlameApp object
 
 CTortoiseGitBlameApp theApp;
-
+CString sOrigCWD;
 
 // CTortoiseGitBlameApp initialization
 

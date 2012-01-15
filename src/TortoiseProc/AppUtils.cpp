@@ -59,6 +59,7 @@
 #include "PropKey.h"
 #include "StashSave.h"
 #include "FormatMessageWrapper.h"
+#include "SmartHandle.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -550,11 +551,10 @@ BOOL CAppUtils::StartTextViewer(CString file)
 BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
 {
 	DWORD length = 0;
-	HANDLE hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE)
+	CAutoFile hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
+	if (!hFile)
 		return TRUE;
 	length = ::GetFileSize(hFile, NULL);
-	::CloseHandle(hFile);
 	if (length < 4)
 		return TRUE;
 	return FALSE;
@@ -583,36 +583,6 @@ void CAppUtils::CreateFontForLogs(CFont& fontToCreate)
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }
 
-bool CAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup)
-{
-	STARTUPINFO startup;
-	PROCESS_INFORMATION process;
-	memset(&startup, 0, sizeof(startup));
-	startup.cb = sizeof(startup);
-	memset(&process, 0, sizeof(process));
-
-	CString cleanCommandLine(sCommandLine);
-
-	if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, g_Git.m_CurrentDir, &startup, &process)==0)
-	{
-		if(idErrMessageFormat != 0)
-		{
-			CString temp;
-			temp.Format(idErrMessageFormat, CFormatMessageWrapper());
-			MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-		}
-		return false;
-	}
-
-	if (bWaitForStartup)
-	{
-		WaitForInputIdle(process.hProcess, 10000);
-	}
-
-	CloseHandle(process.hThread);
-	CloseHandle(process.hProcess);
-	return true;
-}
 bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 {
 	CString key,remote;
@@ -825,132 +795,6 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 		i++;
 	}
 	return bFoundMarker;
-}
-
-bool CAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner)
-{
-	OPENFILENAME ofn = {0};				// common dialog box structure
-	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name. Explorer can't handle paths longer than MAX_PATH.
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = hwndOwner;
-	_tcscpy_s(szFile, MAX_PATH, (LPCTSTR)path);
-	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = _countof(szFile);
-	CString sFilter;
-	TCHAR * pszFilters = NULL;
-	if (filter)
-	{
-		sFilter.LoadString(filter);
-		pszFilters = new TCHAR[sFilter.GetLength()+4];
-		_tcscpy_s (pszFilters, sFilter.GetLength()+4, sFilter);
-		// Replace '|' delimiters with '\0's
-		TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-		while (ptr != pszFilters)
-		{
-			if (*ptr == '|')
-				*ptr = '\0';
-			ptr--;
-		}
-		ofn.lpstrFilter = pszFilters;
-	}
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
-	CString temp;
-	if (title)
-	{
-		temp.LoadString(title);
-		CStringUtils::RemoveAccelerators(temp);
-	}
-	ofn.lpstrTitle = temp;
-	if (bOpen)
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
-	else
-		ofn.Flags = OFN_OVERWRITEPROMPT | OFN_EXPLORER;
-
-
-	// Display the Open dialog box.
-	bool bRet = false;
-	if (bOpen)
-	{
-		bRet = !!GetOpenFileName(&ofn);
-	}
-	else
-	{
-		bRet = !!GetSaveFileName(&ofn);
-	}
-	if (bRet)
-	{
-		if (pszFilters)
-			delete [] pszFilters;
-		path = CString(ofn.lpstrFile);
-		if (filterindex)
-			*filterindex = ofn.nFilterIndex;
-		return true;
-	}
-	if (pszFilters)
-		delete [] pszFilters;
-	return false;
-}
-
-bool CAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width /* = 128 */, int height /* = 128 */)
-{
-	ListView_SetTextBkColor(hListCtrl, CLR_NONE);
-	COLORREF bkColor = ListView_GetBkColor(hListCtrl);
-	// create a bitmap from the icon
-	HICON hIcon = (HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(nID), IMAGE_ICON, width, height, LR_DEFAULTCOLOR);
-	if (!hIcon)
-		return false;
-
-	RECT rect = {0};
-	rect.right = width;
-	rect.bottom = height;
-	HBITMAP bmp = NULL;
-
-	HWND desktop = ::GetDesktopWindow();
-	if (desktop)
-	{
-		HDC screen_dev = ::GetDC(desktop);
-		if (screen_dev)
-		{
-			// Create a compatible DC
-			HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
-			if (dst_hdc)
-			{
-				// Create a new bitmap of icon size
-				bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
-				if (bmp)
-				{
-					// Select it into the compatible DC
-					HBITMAP old_dst_bmp = (HBITMAP)::SelectObject(dst_hdc, bmp);
-					// Fill the background of the compatible DC with the given color
-					::SetBkColor(dst_hdc, bkColor);
-					::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
-
-					// Draw the icon into the compatible DC
-					::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, NULL, DI_NORMAL);
-					::SelectObject(dst_hdc, old_dst_bmp);
-				}
-				::DeleteDC(dst_hdc);
-			}
-		}
-		::ReleaseDC(desktop, screen_dev);
-	}
-
-	// Restore settings
-	DestroyIcon(hIcon);
-
-	if (bmp == NULL)
-		return false;
-
-	LVBKIMAGE lv;
-	lv.ulFlags = LVBKIF_TYPE_WATERMARK;
-	lv.hbm = bmp;
-	lv.xOffsetPercent = 100;
-	lv.yOffsetPercent = 100;
-	ListView_SetBkImage(hListCtrl, &lv);
-	return true;
 }
 
 CString CAppUtils::GetProjectNameFromURL(CString url)
@@ -1194,9 +1038,9 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	if (gitPath.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 	{
 		CString sCmd;
-		sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+		sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-		LaunchApplication(sCmd, NULL, false);
+		RunTortoiseProc(sCmd);
 		return TRUE;
 	}
 	else if (ret == IDOK)
@@ -1297,9 +1141,9 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
 		{
 			CString sCmd;
-			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			LaunchApplication(sCmd, NULL, false);
+			RunTortoiseProc(sCmd);
 			return TRUE;
 		}
 		else if (ret == IDOK)
@@ -1759,145 +1603,6 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	return bRet;
 }
 
-/**
- * FUNCTION    :   FormatDateAndTime
- * DESCRIPTION :   Generates a displayable string from a CTime object in
- *                 system short or long format  or as a relative value
- *				   cTime - the time
- *				   option - DATE_SHORTDATE or DATE_LONGDATE
- *				   bIncluedeTime - whether to show time as well as date
- *				   bRelative - if true then relative time is shown if reasonable
- *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
- *				   rather than locale
- * RETURN      :   CString containing date/time
- */
-CString CAppUtils::FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime /*=true*/,
-	bool bRelative /*=false*/)
-{
-	CString datetime;
-	if ( bRelative )
-	{
-		datetime = ToRelativeTimeString( cTime );
-	}
-	else
-	{
-		// should we use the locale settings for formatting the date/time?
-		if (CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE))
-		{
-			// yes
-			SYSTEMTIME sysTime;
-			cTime.GetAsSystemTime( sysTime );
-
-			TCHAR buf[100];
-
-			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, NULL, buf,
-				_countof(buf) - 1);
-			datetime = buf;
-			if ( bIncludeTime )
-			{
-				datetime += _T(" ");
-				GetTimeFormat(LOCALE_USER_DEFAULT, 0, &sysTime, NULL, buf, _countof(buf) - 1);
-				datetime += buf;
-			}
-		}
-		else
-		{
-			// no, so fixed format
-			if ( bIncludeTime )
-			{
-				datetime = cTime.Format(_T("%Y-%m-%d %H:%M:%S"));
-			}
-			else
-			{
-				datetime = cTime.Format(_T("%Y-%m-%d"));
-			}
-		}
-	}
-	return datetime;
-}
-
-/**
- *	Converts a given time to a relative display string (relative to current time)
- *	Given time must be in local timezone
- */
-CString CAppUtils::ToRelativeTimeString(CTime time)
-{
-	CString answer;
-	// convert to COleDateTime
-	SYSTEMTIME sysTime;
-	time.GetAsSystemTime( sysTime );
-	COleDateTime oleTime( sysTime );
-	answer = ToRelativeTimeString(oleTime, COleDateTime::GetCurrentTime());
-	return answer;
-}
-
-/**
- *	Generates a display string showing the relative time between the two given times as COleDateTimes
- */
-CString CAppUtils::ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo)
-{
-	CString answer;
-	COleDateTimeSpan ts = RelativeTo - time;
-	//years
-	if(fabs(ts.GetTotalDays()) >= 3*365)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/365, IDS_YEAR_AGO, IDS_YEARS_AGO );
-	}
-	//Months
-	if(fabs(ts.GetTotalDays()) >= 60)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/30, IDS_MONTH_AGO, IDS_MONTHS_AGO );
-		return answer;
-	}
-	//Weeks
-	if(fabs(ts.GetTotalDays()) >= 14)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays()/7, IDS_WEEK_AGO, IDS_WEEKS_AGO );
-		return answer;
-	}
-	//Days
-	if(fabs(ts.GetTotalDays()) >= 2)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalDays(), IDS_DAY_AGO, IDS_DAYS_AGO );
-		return answer;
-	}
-	//hours
-	if(fabs(ts.GetTotalHours()) >= 2)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalHours(), IDS_HOUR_AGO, IDS_HOURS_AGO );
-		return answer;
-	}
-	//minutes
-	if(fabs(ts.GetTotalMinutes()) >= 2)
-	{
-		answer = ExpandRelativeTime( (int)ts.GetTotalMinutes(), IDS_MINUTE_AGO, IDS_MINUTES_AGO );
-		return answer;
-	}
-	//seconds
-		answer = ExpandRelativeTime( (int)ts.GetTotalSeconds(), IDS_SECOND_AGO, IDS_SECONDS_AGO );
-	return answer;
-}
-
-/**
- * Passed a value and two resource string ids
- * if count is 1 then FormatString is called with format_1 and the value
- * otherwise format_2 is used
- * the formatted string is returned
-*/
-CString CAppUtils::ExpandRelativeTime( int count, UINT format_1, UINT format_n )
-{
-	CString answer;
-	if ( count == 1 )
-	{
-		answer.FormatMessage( format_1, count );
-	}
-	else
-	{
-		answer.FormatMessage( format_n, count );
-	}
-	return answer;
-}
-
 bool CAppUtils::IsSSHPutty()
 {
 	CString sshclient=g_Git.m_Environment.GetEnv(_T("GIT_SSH"));
@@ -2203,11 +1908,9 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 
 		if (userResponse == IDC_PROGRESS_BUTTON1)
 		{
-			CString cmd;
-			cmd = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-			cmd += _T(" /command:log");
+			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			CAppUtils::LaunchApplication(cmd, IDS_ERR_PROC, false);
+			RunTortoiseProc(cmd);
 			return TRUE;
 		}
 		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 1) || (progress.m_GitStatus == 0 && dlg.m_bRebase))
@@ -2753,9 +2456,9 @@ void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 {
 	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
 
-	HMODULE hShell = LoadLibrary(_T("Shell32.dll"));
+	CAutoLibrary hShell = LoadLibrary(_T("Shell32.dll"));
 
-	if (hShell) {
+	if (hShell.IsValid()) {
 		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");
 		if (pfnSHGPSFW) {
 			IPropertyStore *pps;
@@ -2768,7 +2471,6 @@ void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 				pps->Release();
 			}
 		}
-		FreeLibrary(hShell);
 	}
 }
 

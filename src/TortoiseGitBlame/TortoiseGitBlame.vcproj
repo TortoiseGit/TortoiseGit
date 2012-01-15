@@ -368,6 +368,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Utils\CommonAppUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\EditGotoDlg.cpp"
 				>
 			</File>
@@ -425,6 +429,10 @@
 			</File>
 			<File
 				RelativePath=".\LogListBlameAction.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\LoglistUtils.cpp"
 				>
 			</File>
 			<File
@@ -496,10 +504,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TortoiseGitBlameAppUtils.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\TortoiseGitBlameDoc.cpp"
 				>
 			</File>
@@ -514,11 +518,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\Utils\CommonAppUtils.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EditGotoDlg.h"
 				>
 			</File>
 			<File
 				RelativePath="..\TortoiseMerge\FileTextLines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\TortoiseProc\LoglistUtils.h"
 				>
 			</File>
 			<File
@@ -568,15 +580,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\output_wnd.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\output_wnd.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\res\output_wnd_hc.ico"
 				>
 			</File>
 			<File
@@ -588,27 +592,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\properties.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\properties_hc.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\properties_hc.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\properties_wnd.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\res\properties_wnd.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\res\properties_wnd_hc.ico"
 				>
 			</File>
 			<File
@@ -620,19 +608,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\Toolbar.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\blameres\Toolbar256.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\Toolbar256.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\TortoiseGitBlame.ico"
 				>
 			</File>
 			<File
@@ -677,14 +653,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\res\TortoiseGitBlameDoc.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\UserImages.bmp"
 				>
 			</File>
 		</Filter>

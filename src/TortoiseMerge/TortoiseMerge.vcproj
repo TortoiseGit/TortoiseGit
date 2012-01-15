@@ -47,7 +47,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\TortoiseMerge;..\crashrpt;..\;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -131,7 +131,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;&quot;..\..\ext\apr-util\include&quot;;..\..\ext\SubVersion\subversion\include;.\libsvn_diff;..\Utils;..\Utils\NewMenu;..\Utils\ColourPickerXP;..\TortoiseMerge;..\crashrpt;..\;..\SVN;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -218,7 +218,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;&quot;..\..\ext\apr-util\include&quot;;..\..\ext\SubVersion\subversion\include;.\libsvn_diff;..\Utils;..\Utils\NewMenu;..\Utils\ColourPickerXP;..\TortoiseMerge;..\crashrpt;..\;..\SVN;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -305,7 +305,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;&quot;..\..\ext\apr-util\include&quot;;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -785,10 +785,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Utils\MiscUI\SysProgressDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\RightView.cpp"
 				>
 			</File>
@@ -871,6 +867,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Utils\MiscUI\SysProgressDlg.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\TortoiseMerge.cpp"
@@ -1065,6 +1065,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\TortoiseMerge.ico"
 				>
 			</File>
@@ -1078,10 +1082,6 @@
 			</File>
 			<File
 				RelativePath="..\Resources\TortoiseMergeENG.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
 				>
 			</File>
 			<File
@@ -1105,6 +1105,10 @@
 				</File>
 				<File
 					RelativePath="..\Utils\CmdLineParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\CommonAppUtils.cpp"
 					>
 				</File>
 				<File
@@ -1248,6 +1252,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utils\CommonAppUtils.h"
+					>
+				</File>
+				<File
 					RelativePath="..\Utils\MiscUI\DIB.h"
 					>
 				</File>
@@ -1289,6 +1297,10 @@
 				</File>
 				<File
 					RelativePath="..\Utils\MiscUI\ScrollTool.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\SmartHandle.h"
 					>
 				</File>
 				<File

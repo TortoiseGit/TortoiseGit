@@ -24,7 +24,6 @@
 #include "AddDlg.h"
 //#include "SVNConfig.h"
 #include "Registry.h"
-#include "CommonResource.h"
 #include "AppUtils.h"
 
 #define REFRESHTIMER   100

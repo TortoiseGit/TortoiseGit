@@ -198,6 +198,7 @@
 #define IDS_B_T_BOTHEMPTY               1023
 #define IDS_LOG_FILTER_SUBJECT          1024
 #define IDS_STATUSLIST_SHOWLOGOLDNAME   1025
+#define IDS_APPNAME                     1026
 #define IDC_NAME                        1027
 #define IDC_SERVERADDRESS               1027
 #define IDC_USEREDIT                    1027
@@ -1458,22 +1459,7 @@
 #define IDS_CONNECTIONSTATE_OFFLINE     9602
 #define IDS_STATUSLIST_COLADD           9603
 #define IDS_STATUSLIST_COLDEL           9604
-#define IDS_YEAR_AGO                    9605
-#define IDS_YEARS_AGO                   9606
-#define IDS_MONTH_AGO                   9607
-#define IDS_MONTHS_AGO                  9608
-#define IDS_WEEK_AGO                    9609
-#define IDS_WEEKS_AGO                   9610
-#define IDS_DAY_AGO                     9611
-#define IDS_DAYS_AGO                    9612
-#define IDS_HOUR_AGO                    9613
-#define IDS_HOURS_AGO                   9614
-#define IDS_MINUTE_AGO                  9615
-#define IDS_MINUTES_AGO                 9616
-#define IDS_SECOND_AGO                  9617
-#define IDS_SECONDS_AGO                 9618
 #define IDS_B_T_NOTEMPTY                9619
-#define IDS_TORTOISEGIT                 9620
 #define IDS_CHOOSE_REPOSITORY           9621
 #define IDS_ERR_NOT_REPOSITORY          9622
 #define IDS_ERR_ADDRESS_NO_EMPTY        9623
@@ -1488,7 +1474,6 @@
 #define IDS_MENU_VIEWWITHMERGE          9634
 #define IDS_MENU_APPLY                  9635
 #define IDS_MENU_SENDMAIL               9636
-#define IDS_ERR_PROC                    9637
 #define IDS_ERROR_NOREF                 9638
 #define IDS_ERROR_INDEX                 9639
 #define IDS_ERROR_HEAD                  9640
@@ -1499,7 +1484,6 @@
 #define IDS_REBASE_UPTODATE_FMT         9645
 #define IDS_REBASE_FORCE_TT             9646
 #define IDS_REBASE_ABORT_TT             9647
-#define IDS_ERROR_CANNON_FIND_TORTOISEPROC 9648
 #define IDS_REBASE_FASTFORWARD_FMT      9649
 #define IDS_REBASE_EQUAL_FMT            9650
 #define IDS_CLONE_DEPTH_TT              9651

@@ -30,7 +30,6 @@
 #include "AppUtils.h"
 #include "LogDlg.h"
 #include "AppUtils.h"
-#include "PathUtils.h"
 
 bool PullCommand::Execute()
 {
@@ -132,9 +131,9 @@ bool PullCommand::Execute()
 		else if (ret == IDC_PROGRESS_BUTTON1 + 2 && gitPath.HasSubmodules())
 		{
 			CString sCmd;
-			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			CAppUtils::LaunchApplication(sCmd, NULL, false);
+			CAppUtils::RunTortoiseProc(sCmd);
 		}
 	}
 #if 0

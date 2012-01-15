@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2011 - TortoiseGit
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2006-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "TortoiseMerge.h"
 #include "BrowseFolder.h"
+#include "CommonAppUtils.h"
 #include ".\opendlg.h"
 
 
@@ -132,46 +133,7 @@ void COpenDlg::OnBnClickedHelp()
 void COpenDlg::OnBrowseForFile(CString& filepath, UINT nFileFilter)
 {
 	UpdateData();
-	OPENFILENAME ofn = {0};			// common dialog box structure
-	TCHAR szFile[MAX_PATH] = {0};	// buffer for file name
-	if (!filepath.IsEmpty())
-	{
-		_tcscpy_s(szFile, filepath);
-	}
-	// Initialize OPENFILENAME
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = this->m_hWnd;
-	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = _countof(szFile);
-	CString sFilter;
-	sFilter.LoadString(nFileFilter);
-	TCHAR * pszFilters = new TCHAR[sFilter.GetLength()+4];
-	_tcscpy_s (pszFilters, sFilter.GetLength()+4, sFilter);
-	// Replace '|' delimiters with '\0's
-	TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-	while (ptr != pszFilters)
-	{
-		if (*ptr == '|')
-			*ptr = '\0';
-		ptr--;
-	}
-	ofn.lpstrFilter = pszFilters;
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
-	CString title;
-	title.LoadString(IDS_SELECTFILE);
-	ofn.lpstrTitle = title;
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-
-	// Display the Open dialog box. 
-
-	if (GetOpenFileName(&ofn)==TRUE)
-	{
-		filepath = CString(ofn.lpstrFile);
-	}
-	delete [] pszFilters;
+	CCommonAppUtils::FileOpenSave(filepath, NULL, IDS_SELECTFILE, nFileFilter, true, this->m_hWnd);
 	UpdateData(FALSE);
 }
 

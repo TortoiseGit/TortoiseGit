@@ -20,7 +20,7 @@
 #include "StdAfx.h"
 #include "Dbt.h"
 #include "GitStatusCache.h"
-#include ".\directorywatcher.h"
+#include "directorywatcher.h"
 
 extern HWND hWnd;
 

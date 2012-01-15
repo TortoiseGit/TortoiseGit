@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 #pragma once
 #include "HistoryCombo.h"
 #include "GitRev.h"
+#include "CommonAppUtils.h"
 
 class CTGitPath;
 
@@ -32,7 +33,7 @@ enum GIT_POST_CMD
  * \ingroup TortoiseProc
  * An utility class with static functions.
  */
-class CAppUtils
+class CAppUtils : public CCommonAppUtils
 {
 public:
 	/**
@@ -103,11 +104,6 @@ public:
 	static void CreateFontForLogs(CFont& fontToCreate);
 
 	/**
-	* Launch an external application (usually the diff viewer)
-	*/
-	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup);
-
-	/**
 	* Launch the external blame viewer
 	*/
 	static bool LaunchTortoiseBlame(
@@ -131,10 +127,6 @@ public:
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
 	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
-
-	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
-
-	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 
 	/**
 	 * guesses a name of the project from a repository URL
@@ -162,25 +154,6 @@ public:
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
 	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false,bool revertTheirMy=false);
-	/**
-	 * FUNCTION    :   FormatDateAndTime
-	 * DESCRIPTION :   Generates a displayable string from a CTime object in
-	 *                 system short or long format  or as a relative value
-	 *				   cTime - the time
-	 *				   option - DATE_SHORTDATE or DATE_LONGDATE
-	 *				   bIncluedeTime - whether to show time as well as date
-	 *				   bRelative - if true then relative time is shown if reasonable
-	 *				   If HKCU\Software\TortoiseGit\UseSystemLocaleForDates is 0 then use fixed format
-	 *				   rather than locale
-	 * RETURN      :   CString containing date/time
-	 */
-	static CString FormatDateAndTime( const CTime& cTime, DWORD option, bool bIncludeTime=true,
-		bool bRelative=false );
-	/**
-	 *	Converts a given time to a relative display string (relative to current time)
-	 *	Given time must be in local timezone
-	 */
-	static CString ToRelativeTimeString(CTime time);
 
 	static CString GetMergeTempFile(CString str,CTGitPath &merge);
 	static bool	StashSave();
@@ -229,11 +202,6 @@ public:
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
-	/**
-	 *	Generates a display string showing the relative time between the two given times as COleDateTimes
-	 */
-	static CString ToRelativeTimeString(COleDateTime time,COleDateTime RelativeTo);
-	static CString ExpandRelativeTime( int count, UINT format_1, UINT format_n );
 
 	static void DescribeFile(bool mode, bool base,CString &descript);
 };

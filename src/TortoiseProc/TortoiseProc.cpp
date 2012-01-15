@@ -39,9 +39,8 @@
 //#include "svn_dso.h"
 //#include <openssl/ssl.h>
 //#include <openssl/err.h>
-
+#include "SmartHandle.h"
 #include "Commands\Command.h"
-#include "CommonResource.h"
 #include "..\version.h"
 #include "JumpListHelpers.h"
 #include "..\Settings\Settings.h"
@@ -103,6 +102,7 @@ CTortoiseProcApp::~CTortoiseProcApp()
 
 // The one and only CTortoiseProcApp object
 CTortoiseProcApp theApp;
+CString sOrigCWD;
 HWND hWndExplorer;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
@@ -328,8 +328,8 @@ BOOL CTortoiseProcApp::InitInstance()
 			TCHAR * originalCurrentDirectory = new TCHAR[len];
 			if (GetCurrentDirectory(len, originalCurrentDirectory))
 			{
-				//sOrigCWD = originalCurrentDirectory;
-				//sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
+				sOrigCWD = originalCurrentDirectory;
+				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 			delete [] originalCurrentDirectory;
 		}
@@ -383,7 +383,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	// Note that SASL doesn't have to be initialized yet for this to work
 //	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
-	HANDLE TSVNMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
+	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 	if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))
 	{
 		int i=0;
@@ -393,7 +393,10 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	if(!g_Git.m_CurrentDir.IsEmpty())
+	{
+		sOrigCWD = g_Git.m_CurrentDir;
 		SetCurrentDirectory(g_Git.m_CurrentDir);
+	}
 
 	{
 		CString err;
@@ -445,9 +448,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		retSuccess = cmd->Execute();
 		delete cmd;
 	}
-
-	if (TSVNMutex)
-		::CloseHandle(TSVNMutex);
 
 	// Look for temporary files left around by TortoiseSVN and
 	// remove them. But only delete 'old' files because some

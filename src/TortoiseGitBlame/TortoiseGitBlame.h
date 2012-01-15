@@ -58,3 +58,4 @@ public:
 };
 
 extern CTortoiseGitBlameApp theApp;
+extern CString sOrigCWD;

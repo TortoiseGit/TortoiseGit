@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CommonAppUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CSmtp.cpp"
 				>
 				<FileConfiguration
@@ -482,6 +486,10 @@
 			</File>
 			<File
 				RelativePath=".\ShellUpdater.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SmartHandle.h"
 				>
 			</File>
 			<File
@@ -649,15 +657,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MiscUI\SysProgressDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MiscUI\ScrollTool.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MiscUI\SplitterControl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MiscUI\SysProgressDlg.cpp"
 				>
 			</File>
 			<File

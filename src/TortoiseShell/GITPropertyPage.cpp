@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2003-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,78 +110,34 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			return TRUE;
 
 		case WM_COMMAND:
-			switch (HIWORD(wParam))
-			{
-				case BN_CLICKED:
-					if (LOWORD(wParam) == IDC_SHOWLOG)
-					{
-						STARTUPINFO startup;
-						PROCESS_INFORMATION process;
-						memset(&startup, 0, sizeof(startup));
-						startup.cb = sizeof(startup);
-						memset(&process, 0, sizeof(process));
-						CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-						stdstring gitCmd = _T(" /command:");
-						gitCmd += _T("log /path:\"");
-						gitCmd += filenames.front().c_str();
-						gitCmd += _T("\"");
-						if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-						{
-							CloseHandle(process.hThread);
-							CloseHandle(process.hProcess);
-						}
-					}
-					if (LOWORD(wParam) == IDC_EDITPROPERTIES)
-					{
-						DWORD pathlength = GetTempPath(0, NULL);
-						TCHAR * path = new TCHAR[pathlength+1];
-						TCHAR * tempFile = new TCHAR[pathlength + 100];
-						GetTempPath (pathlength+1, path);
-						GetTempFileName (path, _T("git"), 0, tempFile);
-						stdstring retFilePath = stdstring(tempFile);
-
-						HANDLE file = ::CreateFile (tempFile,
-							GENERIC_WRITE,
-							FILE_SHARE_READ,
-							0,
-							CREATE_ALWAYS,
-							FILE_ATTRIBUTE_TEMPORARY,
-							0);
-
-						delete [] path;
-						delete [] tempFile;
-						if (file != INVALID_HANDLE_VALUE)
-						{
-							DWORD written = 0;
-							for (std::vector<stdstring>::iterator I = filenames.begin(); I != filenames.end(); ++I)
-							{
-								::WriteFile (file, I->c_str(), I->size()*sizeof(TCHAR), &written, 0);
-								::WriteFile (file, _T("\n"), 2, &written, 0);
-							}
-							::CloseHandle(file);
-
-							STARTUPINFO startup;
-							PROCESS_INFORMATION process;
-							memset(&startup, 0, sizeof(startup));
-							startup.cb = sizeof(startup);
-							memset(&process, 0, sizeof(process));
-							CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-							stdstring gitCmd = _T(" /command:");
-							gitCmd += _T("properties /pathfile:\"");
-							gitCmd += retFilePath.c_str();
-							gitCmd += _T("\"");
-							gitCmd += _T(" /deletepathfile");
-							if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-							{
-								CloseHandle(process.hThread);
-								CloseHandle(process.hProcess);
-							}
-						}
-					}
-					break;
-			} // switch (HIWORD(wParam))
+		PageProcOnCommand(wParam);
+		break;
 	} // switch (uMessage)
 	return FALSE;
+}
+void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
+{
+	if(HIWORD(wParam) != BN_CLICKED)
+		return;
+
+	if (LOWORD(wParam) == IDC_SHOWLOG)
+	{
+		STARTUPINFO startup;
+		PROCESS_INFORMATION process;
+		memset(&startup, 0, sizeof(startup));
+		startup.cb = sizeof(startup);
+		memset(&process, 0, sizeof(process));
+		CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+		stdstring gitCmd = _T(" /command:");
+		gitCmd += _T("log /path:\"");
+		gitCmd += filenames.front().c_str();
+		gitCmd += _T("\"");
+		if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+		{
+			CloseHandle(process.hThread);
+			CloseHandle(process.hProcess);
+		}
+	}
 }
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
 {

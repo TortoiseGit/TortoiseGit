@@ -20,10 +20,8 @@
 #include "BisectCommand.h"
 #include "BisectStartDlg.h"
 #include "AppUtils.h"
-#include "PathUtils.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
-#include "CommonResource.h"
 
 bool BisectCommand::Execute()
 {
@@ -65,9 +63,9 @@ bool BisectCommand::Execute()
 			if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 			{
 				CString sCmd;
-				sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
+				CAppUtils::RunTortoiseProc(sCmd);
 				return true;
 			}
 			else if (ret == IDOK)
@@ -112,17 +110,14 @@ bool BisectCommand::Execute()
 		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 		{
 			CString sCmd;
-			sCmd.Format(_T("\"%s\" /command:subupdate /bkpath:\"%s\""), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), (LPCTSTR)g_Git.m_CurrentDir);
+			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			CAppUtils::LaunchApplication(sCmd, NULL, false);
+			CAppUtils::RunTortoiseProc(sCmd);
 			return true;
 		}
 		else if (reset >= 0 && ret == IDC_PROGRESS_BUTTON1 + reset)
 		{
-			CString sCmd;
-			sCmd.Format(_T("\"%s\" /command:bisect /reset"), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")));
-
-			CAppUtils::LaunchApplication(sCmd, NULL, false);
+			CAppUtils::RunTortoiseProc(_T("/command:bisect /reset"));
 			return true;
 		}
 		else if (ret == IDOK)

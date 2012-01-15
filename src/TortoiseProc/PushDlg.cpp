@@ -281,17 +281,17 @@ void CPushDlg::OnBnClickedOk()
 
 		if (m_BranchSourceName.IsEmpty() && m_BranchRemoteName.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, IDS_B_T_BOTHEMPTY, IDS_TORTOISEGIT, MB_ICONQUESTION | MB_YESNO) == IDNO)
+			if (CMessageBox::Show(NULL, IDS_B_T_BOTHEMPTY, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDNO)
 				return;
 		}
 		if (m_BranchSourceName.IsEmpty() && !m_BranchRemoteName.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, IDS_B_T_LOCALEMPTY, IDS_TORTOISEGIT, MB_ICONEXCLAMATION | MB_YESNO) == IDNO)
+			if (CMessageBox::Show(NULL, IDS_B_T_LOCALEMPTY, IDS_APPNAME, MB_ICONEXCLAMATION | MB_YESNO) == IDNO)
 				return;
 		}
 		else if (!m_BranchRemoteName.IsEmpty() && !g_Git.IsBranchNameValid(this->m_BranchRemoteName))
 		{
-			CMessageBox::Show(NULL, IDS_B_T_INVALID, IDS_TORTOISEGIT, MB_OK);
+			CMessageBox::Show(NULL, IDS_B_T_INVALID, IDS_APPNAME, MB_OK);
 			return;
 		}
 		else

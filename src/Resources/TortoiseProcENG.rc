@@ -2590,7 +2590,6 @@ BEGIN
     IDS_FILEDIFF_STATADD    "Add"
     IDS_FILEDIFF_STATDEL    "Del"
     IDS_LOG_FILE_LINE_ADD   "Add"
-    1014                    "Del"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""
     IDS_LOG_PUSH            "Push..."
@@ -2903,17 +2902,6 @@ BEGIN
     IDS_CONNECTIONSTATE_OFFLINE "offline"
     IDS_STATUSLIST_COLADD   "Add"
     IDS_STATUSLIST_COLDEL   "Del"
-    IDS_YEAR_AGO            "%1!d! Year ago"
-    IDS_YEARS_AGO           "%1!d! Years ago"
-    IDS_MONTH_AGO           "%1!d! Month ago"
-    IDS_MONTHS_AGO          "%1!d! Months ago"
-    IDS_WEEK_AGO            "%1!d! Week ago"
-    IDS_WEEKS_AGO           "%1!d! Weeks ago"
-    IDS_DAY_AGO             "%1!d! Day ago"
-    IDS_DAYS_AGO            "%1!d! Days ago"
-    IDS_HOUR_AGO            "%1!d! Hour ago"
-    IDS_HOURS_AGO           "%1!d! Hours ago"
-    IDS_MINUTE_AGO          "%1!d! Minute ago"
 END
 
 STRINGTABLE 
@@ -3588,11 +3576,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MINUTES_AGO         "%1!d! minutes ago"
-    IDS_SECOND_AGO          "%1!d! Second ago"
-    IDS_SECONDS_AGO         "%1!d! Seconds ago"
     IDS_B_T_NOTEMPTY        "Branch/Tag name must not be empty or is invalid."
-    IDS_TORTOISEGIT         "TortoiseGit"
     IDS_CHOOSE_REPOSITORY   "Choose Repository"
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
     IDS_ERR_ADDRESS_NO_EMPTY "Email Address To or CC can't empty"
@@ -3611,7 +3595,6 @@ BEGIN
     IDS_MENU_VIEWWITHMERGE  "Review Path with TortoiseMerge"
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
-    IDS_ERR_PROC            "Can't open TortoiseProc"
     IDS_ERROR_NOREF         "No reference found"
     IDS_ERROR_INDEX         "Out of ref array"
     IDS_ERROR_HEAD          "Can't delete ""HEAD"""
@@ -3626,7 +3609,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERROR_CANNON_FIND_TORTOISEPROC "Can't found application TortoiseProc"
     IDS_REBASE_FASTFORWARD_FMT 
                             "Branch %s behind %s\r\n%s will fastforward to %s"
     IDS_REBASE_EQUAL_FMT    "Nothing need rebase\r\n%s equal %s"
@@ -3657,6 +3639,7 @@ STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_SUBJECT  "Subject"
     IDS_STATUSLIST_SHOWLOGOLDNAME "Show log &before rename/copy"
+    IDS_APPNAME             "TortoiseGit"
 END
 
 #endif    // English (U.S.) resources

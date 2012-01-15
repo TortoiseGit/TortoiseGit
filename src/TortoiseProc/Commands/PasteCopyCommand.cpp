@@ -27,7 +27,6 @@
 #include "GitStatus.h"
 #include "ShellUpdater.h"
 #include "ProjectProperties.h"
-#include "CommonResource.h"
 
 bool PasteCopyCommand::Execute()
 {

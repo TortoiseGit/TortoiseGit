@@ -21,6 +21,7 @@
 #include "registry.h"
 #include "StringUtils.h"
 #include "TempFile.h"
+#include "SmartHandle.h"
 
 CHooks* CHooks::m_pInstance;
 
@@ -398,9 +399,9 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	sa.nLength = sizeof(sa);
 	sa.bInheritHandle = TRUE;
 
-	HANDLE hOut   = INVALID_HANDLE_VALUE;
-	HANDLE hRedir = INVALID_HANDLE_VALUE;
-	HANDLE hErr   = INVALID_HANDLE_VALUE;
+	CAutoFile hOut ;
+	CAutoFile hRedir;
+	CAutoFile hErr;
 
 	// clear the error string
 	error.Empty();
@@ -417,28 +418,19 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	// redirect handle must be READ mode, share WRITE
 	hErr   = CreateFile(szErr, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY,	0);
 
-	if (hErr  == INVALID_HANDLE_VALUE) 
-	{
+	if (!hErr)
 		return (DWORD)-1;
-	}
 
 	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
 
-	if (hRedir  == INVALID_HANDLE_VALUE) 
-	{
-		CloseHandle(hErr);
+	if (!hRedir)
 		return (DWORD)-1;
-	}
 
 	GetTempFileName(szTempPath, _T("git"), 0, szOutput);
 	hOut   = CreateFile(szOutput, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY,	0);
 
-	if (hOut  == INVALID_HANDLE_VALUE) 
-	{
-		CloseHandle(hErr);
-		CloseHandle(hRedir);
+	if (!hOut)
 		return (DWORD)-1;
-	}
 
 	// setup startup info, set std out/err handles
 	// hide window
@@ -461,11 +453,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	if (!CreateProcess(NULL, cmd.GetBuffer(), NULL, NULL, TRUE, dwFlags, NULL, currentDir, &si, &pi)) 
 	{
 			int err = GetLastError();  // preserve the CreateProcess error
-			if (hErr != INVALID_HANDLE_VALUE) 
-			{
-				CloseHandle(hErr);
-				CloseHandle(hRedir);
-			}
+			error = CFormatMessageWrapper(err);
 			SetLastError(err);
 			cmd.ReleaseBuffer();
 			return (DWORD)-1;
@@ -505,9 +493,6 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		GetExitCodeProcess(pi.hProcess, &exitcode);
 	}
 	CloseHandle(pi.hProcess);
-	CloseHandle(hErr);
-	CloseHandle(hOut);
-	CloseHandle(hRedir);
 	DeleteFile(szOutput);
 	DeleteFile(szErr);
 

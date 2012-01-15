@@ -19,7 +19,7 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "CommonResource.h"
+#include "LoglistCommonResource.h"
 #include "..\version.h"
 #include "MessageBox.h"
 #include ".\checkforupdatesdlg.h"

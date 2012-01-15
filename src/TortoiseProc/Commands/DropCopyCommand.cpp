@@ -25,7 +25,6 @@
 #include "RenameDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"
-#include "CommonResource.h"
 
 bool DropCopyCommand::Execute()
 {

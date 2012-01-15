@@ -51,7 +51,6 @@
 //#include "AddDlg.h"
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
-#include "CommonResource.h"
 #include "FormatMessageWrapper.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
@@ -2226,12 +2225,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (pos)
 					{
 						firstfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+						ASSERT(firstfilepath != NULL);
+						if (firstfilepath == NULL)
+							break;
+
 						secondfilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+						ASSERT(secondfilepath != NULL);
+						if (secondfilepath == NULL)
+							break;
+
+						CString sCmd;
+						sCmd.Format(_T("/command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
+						CAppUtils::RunTortoiseProc(sCmd);
 					}
-					ASSERT(firstfilepath != NULL && secondfilepath != NULL);
-					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), (LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
 				}
 				break;
 			case IDGITLC_GNUDIFF1:
@@ -2396,10 +2402,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_LOG:
 				{
 					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), g_Git.m_CurrentDir+_T("\\")+filepath->GetWinPath());
-
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
+					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath());
+					CAppUtils::RunTortoiseProc(sCmd);
 				}
 				break;
 
@@ -2407,10 +2411,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
-					sCmd.Format(_T("\"%s\" /command:log /path:\"%s\""),
-						(LPCTSTR)(CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe")), g_Git.m_CurrentDir + _T("\\") + oldName.GetWinPath());
-
-					CAppUtils::LaunchApplication(sCmd, NULL, false);
+					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + oldName.GetWinPath());
+					CAppUtils::RunTortoiseProc(sCmd);
 				}
 				break;
 

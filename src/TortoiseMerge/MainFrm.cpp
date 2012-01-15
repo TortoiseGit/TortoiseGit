@@ -1,5 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2004-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1102,25 +1103,9 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	if (bDoesNotExist)
 	{
 		// call TortoiseProc to add the new file to version control
-		CString cmd = _T("\"") + CPathUtils::GetAppDirectory();
-		cmd += _T("TortoiseProc.exe\" /command:add /noui /path:\"");
+		CString cmd = _T("/command:add /noui /path:\"");
 		cmd += m_Data.m_mergedFile.GetFilename() + _T("\"");
-		TCHAR * buf = new TCHAR[cmd.GetLength()+1];
-		_tcscpy_s(buf, cmd.GetLength()+1, cmd);
-		STARTUPINFO startup;
-		PROCESS_INFORMATION process;
-		memset(&startup, 0, sizeof(startup));
-		startup.cb = sizeof(startup);
-		memset(&process, 0, sizeof(process));
-		if (CreateProcess(NULL, buf, NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
-		{
-			delete [] buf;
-			MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			return FALSE;
-		}
-		delete [] buf;
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
+		CAppUtils::RunTortoiseProc(cmd);
 	}
 	return true;
 }
@@ -1815,43 +1800,15 @@ BOOL CMainFrame::MarkAsResolved()
 {
 	if (m_bReadOnly)
 		return FALSE;
-	if ((m_pwndBottomView)&&(m_pwndBottomView->IsWindowVisible()))
-	{
-		TCHAR buf[MAX_PATH*3];
-		GetModuleFileName(NULL, buf, MAX_PATH);
-		TCHAR * end = _tcsrchr(buf, '\\');
-		end++;
-		(*end) = 0;
-		_tcscat_s(buf, MAX_PATH*3, _T("TortoiseProc.exe /command:resolve /path:\""));
-		_tcscat_s(buf, MAX_PATH*3, m_Data.m_mergedFile.GetFilename());
-		_tcscat_s(buf, MAX_PATH*3, _T("\" /closeonend:1 /noquestion /skipcheck"));
-		STARTUPINFO startup;
-		PROCESS_INFORMATION process;
-		memset(&startup, 0, sizeof(startup));
-		startup.cb = sizeof(startup);
-		memset(&process, 0, sizeof(process));
-		if (CreateProcess(NULL, buf, NULL, NULL, FALSE, 0, 0, 0, &startup, &process)==0)
-		{
-			LPVOID lpMsgBuf;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-				FORMAT_MESSAGE_FROM_SYSTEM | 
-				FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL,
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-				(LPTSTR) &lpMsgBuf,
-				0,
-				NULL 
-				);
-			MessageBox((LPCTSTR)lpMsgBuf, _T("TortoiseMerge"), MB_OK | MB_ICONINFORMATION);
-			LocalFree( lpMsgBuf );
-			return FALSE;
-		}
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
-	}
-	else
+	if (!((m_pwndBottomView) && (m_pwndBottomView->IsWindowVisible())))
 		return FALSE;
+
+	CString cmd = _T("/command:resolve /path:\"");
+	cmd += m_Data.m_mergedFile.GetFilename();
+	cmd += _T("\" /closeonend:1 /noquestion /skipcheck");
+	if (!CAppUtils::RunTortoiseProc(cmd))
+		return FALSE;
+
 	return TRUE;
 }
 

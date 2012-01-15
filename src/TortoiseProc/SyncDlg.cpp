@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,12 +23,13 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SyncDlg.h"
+#include "AppUtils.h"
 #include "progressdlg.h"
 #include "MessageBox.h"
 #include "ImportPatchDlg.h"
-#include "PathUtils.h"
 #include "RebaseDlg.h"
 #include "hooks.h"
+#include "SmartHandle.h"
 
 // CSyncDlg dialog
 
@@ -563,7 +564,7 @@ BOOL CSyncDlg::OnInitDialog()
 	// not elevated, this is a no-op.
 	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
 	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
-	HMODULE hUser = ::LoadLibrary(_T("user32.dll"));
+	CAutoLibrary hUser = ::LoadLibrary(_T("user32.dll"));
 	if (hUser)
 	{
 		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
@@ -571,7 +572,6 @@ BOOL CSyncDlg::OnInitDialog()
 		{
 			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
 		}
-		FreeLibrary(hUser);
 	}
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
@@ -1044,12 +1044,12 @@ void CSyncDlg::ParserCmdOutput(char ch)
 }
 void CSyncDlg::OnBnClickedButtonCommit()
 {
-	CString proc=CPathUtils::GetAppDirectory();
-	proc += _T("TortoiseProc.exe /command:commit");
-	proc += _T(" /path:\"");
-	proc += g_Git.m_CurrentDir;
+	CString cmd = _T("/command:commit");
+	cmd += _T(" /path:\"");
+	cmd += g_Git.m_CurrentDir;
+	cmd += _T("\"");
 
-	CAppUtils::LaunchApplication(proc,IDS_ERROR_CANNON_FIND_TORTOISEPROC,false);
+	CAppUtils::RunTortoiseProc(cmd);
 }
 
 void CSyncDlg::OnOK()

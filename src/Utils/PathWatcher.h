@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "TGitPath.h"
+#include "SmartHandle.h"
 
 #define READ_DIR_CHANGE_BUFFER_SIZE 4096
 
@@ -86,8 +87,8 @@ private:
 
 private:
 	CComAutoCriticalSection	m_critSec;
-	HANDLE					m_hThread;
-	HANDLE					m_hCompPort;
+	CAutoGeneralHandle		m_hThread;
+	CAutoGeneralHandle		m_hCompPort;
 	volatile LONG			m_bRunning;
 	
 	CTGitPathList			watchedPaths;	///< list of watched paths.
@@ -109,7 +110,7 @@ private:
 	public:
 		bool		CloseDirectoryHandle();
 
-		HANDLE		m_hDir;			///< handle to the directory that we're watching
+		CAutoFile	m_hDir;			///< handle to the directory that we're watching
 		CTGitPath	m_DirName;		///< the directory that we're watching
 		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
 		DWORD		m_dwBufLength;	///< length or returned data from ReadDirectoryChangesW -- ignored?...

@@ -7,7 +7,6 @@
 #include "iconmenu.h"
 #include "AppUtils.h"
 #include "git.h"
-#include "PathUtils.h"
 #include "AppUtils.h"
 // CPatchListCtrl
 
@@ -146,14 +145,11 @@ int CPatchListCtrl::LaunchProc(const CString& command)
 
 	file.Close();
 
-	CString cmd;
-	cmd = CPathUtils::GetAppDirectory();
-	cmd += _T("TortoiseProc.exe /command:");
-	cmd += command;
+	CString cmd = command;
 	cmd +=_T(" /pathfile:\"");
 	cmd += tempfile;
 	cmd += _T("\" /deletepathfile");
-	CAppUtils::LaunchApplication(cmd, IDS_ERR_PROC,false);
+	CAppUtils::RunTortoiseProc(cmd);
 	return 0;
 }
 

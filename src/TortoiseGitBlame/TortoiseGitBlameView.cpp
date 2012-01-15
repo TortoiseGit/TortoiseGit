@@ -25,17 +25,16 @@
 
 #include "stdafx.h"
 #include "TortoiseGitBlame.h"
-
+#include "CommonAppUtils.h"
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "MainFrm.h"
 #include "EditGotoDlg.h"
-#include "TortoiseGitBlameAppUtils.h"
+#include "LoglistUtils.h"
 #include "FileTextLines.h"
 #include "UniCodeUtils.h"
 #include "MenuEncode.h"
 #include "gitdll.h"
-#include "PathUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -880,72 +879,36 @@ void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 
 void CTortoiseGitBlameView::BlamePreviousRevision()
 {
-	CString  procCmd;
-	procCmd += _T(" /path:\"");
+	CString procCmd = _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
 	procCmd += _T(" /command:blame");
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
 
-	STARTUPINFO startup;
-	PROCESS_INFORMATION process;
-	memset(&startup, 0, sizeof(startup));
-	startup.cb = sizeof(startup);
-	memset(&process, 0, sizeof(process));
-	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-
-	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-	{
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
-	}
+	CCommonAppUtils::RunTortoiseProc(procCmd);
 }
 
 void CTortoiseGitBlameView::DiffPreviousRevision()
 {
-	CString  procCmd;
-	procCmd += _T(" /path:\"");
+	CString procCmd = _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
 	procCmd += _T(" /command:diff");
 	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
 
-	STARTUPINFO startup;
-	PROCESS_INFORMATION process;
-	memset(&startup, 0, sizeof(startup));
-	startup.cb = sizeof(startup);
-	memset(&process, 0, sizeof(process));
-	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-
-	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-	{
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
-	}
+	CCommonAppUtils::RunTortoiseProc(procCmd);
 }
 
 void CTortoiseGitBlameView::ShowLog()
 {
-	CString  procCmd;
-	procCmd += _T(" /path:\"");
+	CString procCmd = _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
 	procCmd += _T(" /command:log");
 	procCmd += _T(" /rev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 
-	STARTUPINFO startup;
-	PROCESS_INFORMATION process;
-	memset(&startup, 0, sizeof(startup));
-	startup.cb = sizeof(startup);
-	memset(&process, 0, sizeof(process));
-	CString tortoiseProcPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
-
-	if (CreateProcess(tortoiseProcPath, procCmd.GetBuffer(), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-	{
-		CloseHandle(process.hThread);
-		CloseHandle(process.hProcess);
-	}
+	CCommonAppUtils::RunTortoiseProc(procCmd);
 }
 
 void CTortoiseGitBlameView::Notify(SCNotification *notification)
@@ -2786,7 +2749,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			CString str;
 			str.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
 																	m_sAuthor, pRev->GetAuthorName(),
-																	m_sDate, CAppUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
+																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
 																	pRev->GetBody());
 

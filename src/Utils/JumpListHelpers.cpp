@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2010 - TortoiseSVN
+// Copyright (C) 2009-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
+#include "SmartHandle.h"
 #include "JumpListHelpers.h"
 #include "propvarutil.h"
 #include "propsys.h"
@@ -25,13 +26,12 @@ HRESULT SetAppID(LPCTSTR appID)
 {
 	HRESULT hRes = S_FALSE;
 	typedef HRESULT STDAPICALLTYPE SetCurrentProcessExplicitAppUserModelIDFN(PCWSTR AppID);
-	HMODULE hShell = ::LoadLibrary(_T("shell32.dll"));
-	if (hShell) {
+	CAutoLibrary hShell = ::LoadLibrary(_T("shell32.dll"));
+	if (hShell)
+	{
 		SetCurrentProcessExplicitAppUserModelIDFN *pfnSetCurrentProcessExplicitAppUserModelID = (SetCurrentProcessExplicitAppUserModelIDFN*)GetProcAddress(hShell, "SetCurrentProcessExplicitAppUserModelID");
-		if (pfnSetCurrentProcessExplicitAppUserModelID) {
+		if (pfnSetCurrentProcessExplicitAppUserModelID)
 			hRes = pfnSetCurrentProcessExplicitAppUserModelID(appID);
-		}
-		FreeLibrary(hShell);
 	}
 	return hRes;
 }

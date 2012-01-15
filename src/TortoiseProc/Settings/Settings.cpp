@@ -21,7 +21,6 @@
 #include "Settings.h"
 #include "MessageBox.h"
 #include "..\..\TGitCache\CacheInterface.h"
-#include "CommonResource.h"
 #include "GitAdminDir.h"
 #include "AppUtils.h"
 

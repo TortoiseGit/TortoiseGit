@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -108,7 +108,6 @@ GitFolderStatus::GitFolderStatus(void)
 GitFolderStatus::~GitFolderStatus(void)
 {
 	//svn_pool_destroy(rootpool);
-	CloseHandle(m_hInvalidationEvent);
 }
 
 const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepath, const CString& sProjectRoot, BOOL bIsFolder, BOOL bDirectFolder)
@@ -124,16 +123,14 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	//access of the .git directory).
 	if (g_ShellCache.BlockStatus())
 	{
-		HANDLE TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
+		CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 		if (TGitMutex != NULL)
 		{
 			if (::GetLastError() == ERROR_ALREADY_EXISTS)
 			{
-				::CloseHandle(TGitMutex);
 				return &invalidstatus;
 			}
 		}
-		::CloseHandle(TGitMutex);
 	}
 
 //	pool = svn_pool_create (rootpool);				// create the memory pool

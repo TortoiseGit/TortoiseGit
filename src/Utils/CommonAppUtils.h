@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
+// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,38 +19,26 @@
 //
 #pragma once
 
-#include "TGitPath.h"
-#include "SmartHandle.h"
-
 /**
- * \ingroup TSVNCache
- * Handles notifications to the shell about status changes. This is done
- * in a separate thread to avoid deadlocks.
+ * \ingroup TortoiseProc
+ * An utility class with static functions.
  */
-class CShellUpdater
+class CCommonAppUtils
 {
 public:
-	CShellUpdater(void);
-	~CShellUpdater(void);
 
-public:
-	void Initialise();
-	void AddPathForUpdate(const CTGitPath& path);
-	void Stop();
+	/**
+	* Launch an external application (usually the diff viewer)
+	*/
+	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup);
 
-private:
-	static unsigned int __stdcall ThreadEntry(void* pContext);
-	void WorkerThread();
+	static bool RunTortoiseProc(const CString& sCommandLine);
 
-private:
-	CComAutoCriticalSection m_critSec;
-	CAutoGeneralHandle m_hThread;
-	std::deque<CTGitPath> m_pathsToUpdate;
-	CAutoGeneralHandle m_hTerminationEvent;
-	CAutoGeneralHandle m_hWakeEvent;
+	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 
-	bool m_bItemsAddedSinceLastUpdate;
-	volatile LONG m_bRunning;
+	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
+
+protected:
+	CCommonAppUtils(void){};
+	~CCommonAppUtils(void){};
 };
-
-

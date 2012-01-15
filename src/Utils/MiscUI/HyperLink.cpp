@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006,2008 - Stefan Kueng
+// Copyright (C) 2003-2006,2008, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "HyperLink.h"
+#include "SmartHandle.h"
 #include "atlconv.h"
 
 #ifdef _DEBUG
@@ -277,13 +278,12 @@ void CHyperLink::SetDefaultCursor()
 
 		strWndDir += _T("\\winhlp32.exe");
 		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
-		HMODULE hModule = LoadLibrary(strWndDir);
+		CAutoLibrary hModule = LoadLibrary(strWndDir);
 		if (hModule) {
-			HCURSOR hHandCursor = (HCURSOR)::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
-			if (hHandCursor)
-				m_hLinkCursor = CopyCursor(hHandCursor);
+			HCURSOR hHandCursor2 = (HCURSOR)::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
+			if (hHandCursor2)
+				m_hLinkCursor = CopyCursor(hHandCursor2);
 		}
-		FreeLibrary(hModule);
 	}
 }
 

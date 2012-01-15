@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 #include "StdAfx.h"
 #include "UnicodeUtils.h"
 #include "stringutils.h"
+#include "SmartHandle.h"
 
 int strwildcmp(const char *wild, const char *string)
 {
@@ -416,8 +417,8 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::wstring& text, bool bUTF8 /* = true */)
 {
 	DWORD dwWritten = 0;
-	HANDLE hFile = CreateFile(path.c_str(), GENERIC_WRITE, FILE_SHARE_DELETE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE)
+	CAutoFile hFile = CreateFile(path.c_str(), GENERIC_WRITE, FILE_SHARE_DELETE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (!hFile)
 		return false;
 
 	if (bUTF8)
@@ -425,7 +426,6 @@ bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::ws
 		std::string buf = CUnicodeUtils::StdGetUTF8(text);
 		if (!WriteFile(hFile, buf.c_str(), buf.length(), &dwWritten, NULL))
 		{
-			CloseHandle(hFile);
 			return false;
 		}
 	}
@@ -433,11 +433,9 @@ bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::ws
 	{
 		if (!WriteFile(hFile, text.c_str(), text.length(), &dwWritten, NULL))
 		{
-			CloseHandle(hFile);
 			return false;
 		}
 	}
-	CloseHandle(hFile);
 	return true;
 }
 

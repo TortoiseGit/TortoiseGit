@@ -31,7 +31,6 @@
 #include "GitStatus.h"
 #include "HistoryDlg.h"
 #include "Hooks.h"
-#include "CommonResource.h"
 #include "UnicodeUtils.h"
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
