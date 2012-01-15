@@ -1,354 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tsvn-ssh-howto">
-	<title>Securing Svnserve using SSH</title>
-	<simplesect>
+	<title>Tips and tricks for SSH/PuTTY</title>
+
+	<sect1 id="tsvn-ssh-introduction">
+		<title>Introduction</title>
 		<para>
-			This section provides a step-by-step guide to setting up
-			Git and TortoiseGit to use the <literal>svn+ssh</literal>
-			protocol. If you already use authenticated SSH connections to login
-			to your server, then you are already there and you can find more detail
-			in the Git book. If you are not using SSH but would like to do
-			so to protect your Git installation, this guide gives a simple
-			method which does not involve creating a separate SSH user account
-			on the server for every Git user.
+			PuTTY comes with a great session management, where you can save attributes of connections (e.g. ssh key, username, port). This page describes how to make use of it - partly in form of a FAQ. For this to work, you need the <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY.exe-application</ulink>.
 		</para>
-		<para>
-			In this implementation we create a single SSH user account for
-			all Git users, and use different authentication keys to
-			differentiate between the real Git users.
-		</para>
-		<para>
-			In this appendix we assume that you already have the Git tools
-			installed, and that you have created a repository as detailed elsewhere
-			in this manual. Note that you should <emphasis>not</emphasis> start
-			svnserve as a service or daemon when used with SSH.
-		</para>
-		<para>
-			Much of the information here comes from a tutorial
-			provided by Marc Logemann, which can be found at
-			<ulink url="http://www.logemann.org/2007/03/13/Git-TortoiseGit-ssh-howto/">
-				<citetitle>www.logemann.org</citetitle>
-			</ulink>
-			Additional information on setting up a Windows server was
-			provided by Thorsten Müller. Thanks guys!
-		</para>
-	</simplesect>
-	<sect1 id="tsvn-ssh-linux-server">
-		<title>Setting Up a Linux Server</title>
-		<para>
-			You need to have SSH enabled on the server, and here we assume
-			that you will be using OpenSSH. On most distributions this will
-			already be installed. To find out, type:
-<screen>
-ps xa | grep sshd
-</screen>
-			and look for ssh jobs.
-		</para>
-		<para>
-			One point to note is that if you build Git from source and
-			do not provide any argument to <filename>./configure</filename>,
-			Git creates a <filename>bin</filename> directory under
-			<filename>/usr/local</filename> and places its binaries there.
-			If you want to use tunneling mode with SSH, you have to be aware
-			that the user logging in via SSH needs to execute the svnserve program 
-			and some other binaries. For this reason, either place 
-			<filename>/usr/local/bin</filename> into the <literal>PATH</literal> variable 
-			or create symbolic links of your binaries to the <filename>/usr/sbin</filename>
-			directory, or to any other directory which is commonly in the
-			<literal>PATH</literal>.
-		</para>
-		<para>
-			To check that everything is OK, login in as the target user with SSH
-			and type:
-<screen>
-which svnserve
-</screen>
-			This command should tell you if svnserve is reachable.
-		</para>
-		<para>
-			Create a new user which we will use to access the svn repository:
-<screen>
-useradd -m svnuser
-</screen>
-			Be sure to give this user full access rights to the repository.
-		</para>
-	</sect1>
-	<sect1 id="tsvn-ssh-windows-server">
-		<title>Setting Up a Windows Server</title>
-		<para>
-			Install Cygwin SSH daemon as described here: 
-			<ulink url="http://pigtail.net/LRP/printsrv/cygwin-sshd.html">
-				<citetitle>http://pigtail.net/LRP/printsrv/cygwin-sshd.html</citetitle>
-			</ulink>
-		</para>
-		<para>
-			Create a new Windows user account <literal>svnuser</literal> which
-			we will use to access the repository.
-			Be sure to give this user full access rights to the repository.
-		</para>
-		<para>
-			If there is no password file yet then create one from the Cygwin console using:
-<screen>
-mkpasswd -l > /etc/passwd
-</screen>
-		</para>
-	</sect1>
-	<sect1 id="tsvn-ssh-client-tools">
-		<title>SSH Client Tools for use with TortoiseGit</title>
-		<para>
-			Grab the tools we need for using SSH on the windows client from this site:
-			<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">
-				<citetitle>http://www.chiark.greenend.org.uk/~sgtatham/putty/</citetitle>
-			</ulink>
-			Just go to the download section and get
-			<filename>Putty</filename>,
-			<filename>Plink</filename>,
-			<filename>Pageant</filename> and
-			<filename>Puttygen</filename>.
-		</para>
-	</sect1>
-	<sect1 id="tsvn-ssh-create-keys">
-		<title>Creating OpenSSH Certificates</title>
-		<para>
-			The next step is to create a key pair for authentication.
-			There are two possible ways to create keys. The first is to 
-			create the keys with PuTTYgen on the client, upload the public
-			key to your server and use the private key with PuTTY.
-			The other is to create the key pair with the OpenSSH tool
-			ssh-keygen, download the private key to your client and
-			convert the private key to a PuTTY-style private key.
-		</para>
-		<sect2 id="tsvn-ssh-create-ssh-keygen">
-			<title>Create Keys using ssh-keygen</title>
+		<sect2 id="tsvn-ssh-introduction-sessions-howto">
+			<title>How to use sessions</title>
 			<para>
-				Login to the server as <literal>root</literal> or
-				<literal>svnuser</literal> and type:
-<screen>
-ssh-keygen -b 1024 -t dsa -N passphrase -f keyfile
-</screen>
-				substituting a real pass-phrase (which only you know) and key file.
-				We just created a SSH2 DSA key with 1024 bit key-phrase.
-				If you type
-<screen>
-ls -l keyfile*
-</screen>
-				you will see two files, <filename>keyfile</filename> and
-				<filename>keyfile.pub</filename>. As you might guess, the
-				<filename>.pub</filename> file is the public key file, the
-				other is the private one.
+				One special "session" is the <literal>Default Settings</literal> session, where you can set default values for all new connections (e.g. a key, a default username, enable compression, force SSH version 2 or change the default port and so on).
 			</para>
 			<para>
-				Append the public key to those in the <filename>.ssh</filename>
-				folder within the <literal>svnuser</literal> home directory:
-<screen>
-cat keyfile.pub &gt;&gt; /home/svnuser/.ssh/authorized_keys
-</screen>
+				You can also save settings for (single) ssh connections as sessions. Take one server where the ssh server only listens on a different port, then you can set up all settings and save it to e.g. "SERVERNAME". Now you can access this saved settings by starting PuTTY and double clicking "SERVERNAME" in the saved sessions list <emphasis>OR</emphasis>, when using TortoiseGit, plink or other putty applications, the entered servername (e.g. git@<emphasis>SERVERNAME</emphasis>:/test.git) will be matched against the saved sessions list and if found, the settings of the saved session are used.
 			</para>
 			<para>
-				In order to use the private key we generated, we have to
-				convert it to a putty format. This is because the private
-				key file format is not specified by a standards body.
-				After you download the private key file to your client PC,
-				start PuTTYgen and use
-				<menuchoice>
-					<guimenu>Conversions</guimenu>
-					<guimenuitem>Import key</guimenuitem>
-				</menuchoice>.
-				Browse to your file <filename>keyfile</filename> which you got
-				from the server the passphrase you used when creating the key.
-				Finally click on <guibutton>Save private key</guibutton> and
-				save the file as <filename>keyfile.PPK</filename>.
-			</para>
-		</sect2>
-		<sect2 id="tsvn-ssh-create-puttygen">
-			<title>Create Keys using PuTTYgen</title>
-			<para>
-				Use PuTTYgen to generate a public-key/private-key pair and
-				save it. Copy the public key to the server and append it to
-				those in the <filename>.ssh</filename> folder within the
-				<literal>svnuser</literal> home directory:
-<screen>
-cat keyfile.pub &gt;&gt; /home/svnuser/.ssh/authorized_keys
-</screen>
+				Many people like to use Pageant for storing all their keys.
+				Because a PuTTY session is capable of storing a key, you don't
+				always need Pageant. But imagine you want to store different keys for several 
+				different servers; in that case you would have to edit the
+				PuTTY session over and over again, depending on the server you are 
+				trying to connect with. In this situation Pageant makes perfect sense,
+				because when PuTTY, Plink, TortoisePlink or any other PuTTY-based tool
+				is trying to connect to an SSH server, it checks all private keys that
+				Pageant holds to initiate the connection.
 			</para>
 		</sect2>
 	</sect1>
-	<sect1 id="tsvn-ssh-test-putty">
-		<title>Test using PuTTY</title>
+	<tip>
 		<para>
-			To test the connection we will use PuTTY. Start the program and
-			on the <guilabel>Session</guilabel> tab set the hostname to
-			the name or IP address of your server, the protocol to SSH and
-			save the session as <literal>SvnConnection</literal> or whatever
-			name you prefer. On the <guilabel>SSH</guilabel> tab set the
-			preferred SSH protocol version to 2 and from <guilabel>Auth</guilabel>
-			set the full path to the <literal>.PPK</literal> private key file you
-			converted earlier.
-			Go back to the <guilabel>Sessions</guilabel> tab and hit the
-			<guilabel>Save</guilabel> button. You will now see
-			<literal>SvnConnection</literal> in the list of saved sessions.
+			The latest version (with comments) of this FAQ/chapter is available <ulink url="http://code.google.com/p/tortoisegit/wiki/UsingPuTTY">here</ulink>.
+		</para>
+	</tip>
+	<sect1 id="tsvn-ssh-faq">
+		<title>FAQ and examples section</title>
+		<para>
+			This section is based on the descriptions above and will bring some examples for the usage with TortoiseGit (and plink).
 		</para>
 		<para>
-			Click on <guilabel>Open</guilabel> and you should see a telnet
-			style login prompt. Use <literal>svnuser</literal> as the user name
-			and if all is well you should connect directly without being
-			prompted for a password.
+			The examples assume that you want to clone <literal>git@example.com:/test.git</literal>. 
 		</para>
-		<para>
-			You may need to edit <filename>/etc/sshd_config</filename> on the
-			server. Edit lines as follows and restart the SSH service afterwards.
-<screen>
-PubkeyAuthentication yes
-PasswordAuthentication no
-PermitEmptyPasswords no
-ChallengeResponseAuthentication no
-</screen>
-		</para>
-	</sect1>
-	<sect1 id="tsvn-ssh-testing-tsvn">
-		<title>Testing SSH with TortoiseGit</title>
-		<para>
-			So far we have only tested that you can login using SSH. Now we need
-			to make sure that the SSH connection can actually run svnserve.
-			On the server modify <filename>/home/svnuser/.ssh/authorized_keys</filename>
-			as follows to allow many Git authors to use the same system account,
-			<literal>svnuser</literal>. Note that every Git author uses the same
-			login but a different authentication key, thus you have to add one line for
-			every author.
-		</para>
-		<para>
-			Note: This is all on one very long line.
-<screen>
-command="svnserve -t -r &lt;ReposRootPath&gt; --tunnel-user=&lt;author&gt;",
-            no-port-forwarding,no-agent-forwarding,no-X11-forwarding,
-            no-pty ssh-rsa &lt;PublicKey&gt; &lt;Comment&gt;
-</screen>
-			There are several values that you need to set according to your setup.
-		</para>
-		<para>
-			<literal>&lt;ReposRootPath&gt;</literal> should be replaced with the
-			path to the directory containing your repositories. This avoids the
-			need to specify full server paths within URLs. Note that you must use
-			forward slashes even on a Windows server, e.g.
-			<filename>c:/svn/reposroot</filename>. In the examples below we assume
-			that you have a repository folder within the repository root called
-			<filename>repos</filename>.
-		</para>
-		<para>
-			<literal>&lt;author&gt;</literal> should be replaced with the svn author
-			that you want to be stored on commit. This also allows svnserve to use
-			its own access rights within <filename>svnserve.conf</filename>.
-		</para>
-		<para>
-			<literal>&lt;PublicKey&gt;</literal> should be replaced with the 
-			public key that you generated earlier.
-		</para>
-		<para>
-			<literal>&lt;Comment&gt;</literal> can be any comment you like, but it is
-			useful for mapping an svn author name to the person's real name.
-		</para>
-		<para>
-			Right click on any folder in Windows Explorer and select
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Repo-Browser</guimenuitem>
-			</menuchoice>.
-			You will be prompted to enter a URL, so enter one in this form:
-<screen>
-svn+ssh://svnuser@SvnConnection/repos
-</screen>
-			What does this URL mean? The Schema name is <literal>svn+ssh</literal>
-			which tells TortoiseGit how to handle the requests to the server. 
-			After the double slash, you specify the user to connect to the server,
-			in our case <literal>svnuser</literal>. After the <literal>@</literal>
-			we supply our PuTTY session name. 
-			This session name contains all details like where to find 
-			the private key and the server's IP or DNS. Lastly we have to 
-			provide the path to the repository, relative to the repository root
-			on the server, as specified in the <filename>authorized_keys</filename> file.
-		</para>
-		<para>
-			Click on <guibutton>OK</guibutton> and you should be able to browse
-			the repository content. If so you now have a running SSH tunnel in 
-			conjunction with TortoiseGit.
-		</para>
-		<para>
-			Note that by default TortoiseGit uses its own version of Plink to
-			connect. This avoids a console window popping up for every authentication
-			attempt, but it also means that there is nowhere for error messages to
-			appear. If you receive the error <quote>Unable to write to standard output</quote>,
-			you can try specifying Plink as the client in TortoiseGit's network settings.
-			This will allow you to see the real error message generated by Plink.
-		</para>
-	</sect1>
-	<sect1 id="tsvn-ssh-configvariants">
-		<title>SSH Configuration Variants</title>
-		<para>
-			One way to simplify the URL in TortoiseGit is to set the 
-			user inside the PuTTY session. For this you have to load 
-			your already defined session <literal>SvnConnection</literal>
-			in PuTTY and in the <guilabel>Connection</guilabel> tab set
-			<guilabel>Auto login user</guilabel> to the user name, e.g.
-			<literal>svnuser</literal>. Save your PuTTY session as before
-			and try the following URL inside TortoiseGit:
-<screen>
-svn+ssh://SvnConnection/repos
-</screen>
-			This time we only provide the PuTTY session <literal>SvnConnection</literal>
-			to the SSH client TortoiseGit uses (TortoisePlink.exe). 
-			This client will check the session for all necessary details.
-		</para>
-		<para>
-			At the time of writing PuTTY does not check all saved configurations,
-			so if you have multiple configurations with the same server name, it
-			will pick the first one which matches. Also, if you edit the default
-			configuration and save it, the auto login user name is
-			<emphasis>not</emphasis> saved.
-		</para>
-		<para>
-			Many people like to use Pageant for storing all their keys.
-			Because a PuTTY session is capable of storing a key, you don't
-			always need Pageant. But imagine you want to store keys for several 
-			different servers; in that case you would have to edit the
-			PuTTY session over and over again, depending on the server you are 
-			trying to connect with. In this situation Pageant makes perfect sense,
-			because when PuTTY, Plink, TortoisePlink or any other PuTTY-based tool
-			is trying to connect to an SSH server, it checks all private keys that
-			Pageant holds to initiate the connection.
-		</para>
-		<para>
-			For this task, simply run Pageant and add the private key. It should
-			be the same private key you defined in the PuTTY session above.
-			If you use Pageant for private key storage, you can delete the reference
-			to the private key file in your saved PuTTY session.
-			You can add more keys for other servers, or other users of course.
-		</para>
-		<para>
-			If you don't want to repeat this procedure after every reboot of your 
-			client, you should place Pageant in the auto-start group of your
-			Windows installation. You can append the keys with 
-			complete paths as command line arguments to Pageant.exe
-		</para>
-		<para>
-			The last way to connect to an SSH server is simply by using this URL
-			inside TortoiseGit:
-<screen>
-svn+ssh://svnuser@100.101.102.103/repos
-svn+ssh://svnuser@mydomain.com/repos
-</screen>
-			As you can see, we don't use a saved PuTTY session but an IP address
-			(or domain name) as the connection target. We also supply the user, 
-			but you might ask how the private key file will be found. 
-			Because TortoisePlink.exe is just a modified version of the standard
-			Plink tool from the PuTTY suite, TortoiseGit will also try all the keys
-			stored in Pageant.
-		</para>
-		<para>
-			If you use this last method, be sure you do not have a default username
-			set in PuTTY. We have had reports of a bug in PuTTY causing connections
-			to close in this case. To remove the default user, simply clear
-			<filename>HKEY_CURRENT_USER\Software\SimonTatham\Putty\Sessions\Default%20Settings\HostName</filename>
-		</para>
+		<sect2 id="tsvn-ssh-faq-defaultkey">
+			<title>How to use a default key for all SSH connections</title>
+			<para>
+				Start PuTTY, go to <guilabel>Connection</guilabel>-><guilabel>SSH</guilabel>-><guilabel>Auth</guilabel> and select your key. Then go to <guilabel>Session</guilabel>, select <guilabel>Default Settings</guilabel> and hit <guibutton>Save</guibutton>.
+			</para>
+			<para>
+				Now PuTTY (TortoiseGit and plink) will try to use this key for all new connections (no need to configure it in TortoiseGit). If the PuTTY agent is running, putty and plink try to use an already loaded key, but will ask for the password themselves (as a fallback).
+			</para>
+		</sect2>
+
+		<sect2 id="tsvn-ssh-faq-differentport">
+			<title>How to connect to a SSH server on a different port</title>
+			<sect3 id="tsvn-ssh-faq-differentport-wholeserver">
+				<title>All connections to a server should use the different port</title>
+				<para>
+					Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and into the <guilabel>Saved Sessions</guilabel> field. Change the port number to the number you need and click on <guibutton>Save</guibutton>. Now, when TortoiseGit/plink uses this servername the port is automatically loaded from the session.
+				</para>
+			</sect3>
+			<sect3 id="tsvn-ssh-faq-differentport-onesession">
+				<title>One a special connection should use a different port</title>
+				<para>
+					Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Change the port number to the number you need and click on <guibutton>Save</guibutton>.
+				</para>
+				<para>
+					Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and port from the session. 
+				</para>
+				<para>
+					You can create several sessions for a server with different session names, but make sure you do not use the servername (<emphasis>example.com</emphasis> here) as the exact session name, otherwise these settings will be the default ones if you try to connect to the server (<emphasis>example.com</emphasis>). 
+				</para>
+			</sect3>
+		</sect2>
+
+		<sect2 id="tsvn-ssh-faq-differentkeys">
+			<title>How to use two different ssh keys for the same user on the same host</title>
+			<para>
+				Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Go to <guilabel>Connection</guilabel>-><guilabel>SSH</guilabel>-><guilabel>Auth</guilabel> and select the key which should be used for this connection. Now go back to <guilabel>Session</guilabel> and hit <guibutton>Save</guibutton>.
+			</para>
+			<para>
+				Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and ssh key from the session. 
+			</para>
+		</sect2>
 	</sect1>
 </appendix>
