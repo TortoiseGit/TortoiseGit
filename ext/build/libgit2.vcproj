@@ -325,6 +325,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\libgit2\src\attr.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\attr_file.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\blob.c"
 				>
 			</File>
@@ -434,6 +442,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\pqueue.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\protocol.c"
 				>
 			</File>
 			<File
@@ -559,6 +571,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\libgit2\src\attr_file.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\blob.h"
 				>
 			</File>
@@ -663,6 +679,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\protocol.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\reflog.h"
 				>
 			</File>
@@ -754,6 +774,10 @@
 		<Filter
 			Name="Public Header Files"
 			>
+			<File
+				RelativePath="..\libgit2\include\git2\attr.h"
+				>
+			</File>
 			<File
 				RelativePath="..\libgit2\include\git2\blob.h"
 				>

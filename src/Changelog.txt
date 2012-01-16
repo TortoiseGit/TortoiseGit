@@ -24,6 +24,7 @@
  * Fixed issue #1025: branch is not recognized correctly with separate-git-dir
  * Fixed issue #1022: Cannot add files to submodules with-separate-git-dir
  * Fixed issue #1008: Bug Id not displayed in Log Messages (multiline comment)
+ * Fixed issue #1020: Incorrect Overlays on large repos (> 2 GiB), upgraded libgit2
 
 = Release 1.7.6.0 =
 == Features==
