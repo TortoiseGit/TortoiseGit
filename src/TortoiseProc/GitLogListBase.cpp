@@ -1529,6 +1529,23 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
+
+				if (pSelLogEntry->m_CommitHash.IsEmpty())
+				{
+					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
+						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
+
+					if (CTGitPath(g_Git.m_CurrentDir).HasStashDir())
+					{
+						if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
+							popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
+
+						if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_LIST))
+							popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
+					}
+
+					popup.AppendMenu(MF_SEPARATOR, NULL);
+				}
 			}
 
 //			if (!m_ProjectProperties.sWebViewerRev.IsEmpty())
@@ -1645,7 +1662,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			popup.AppendMenuIcon(ID_REFLOG_DEL, IDS_REFLOG_DEL, IDI_DELETE);
 			if (pSelLogEntry->m_Ref.Find(_T("refs/stash")) == 0)
-				popup.AppendMenuIcon(ID_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
+				popup.AppendMenuIcon(ID_REFLOG_STASH_APPLY, IDS_MENUSTASHAPPLY, IDI_RELOCATE);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
