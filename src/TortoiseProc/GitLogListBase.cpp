@@ -1529,6 +1529,23 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
+
+				if (pSelLogEntry->m_CommitHash.IsEmpty())
+				{
+					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
+						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
+
+					if (CTGitPath(g_Git.m_CurrentDir).HasStashDir())
+					{
+						if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
+							popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
+
+						if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_LIST))
+							popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
+					}
+
+					popup.AppendMenu(MF_SEPARATOR, NULL);
+				}
 			}
 
 //			if (!m_ProjectProperties.sWebViewerRev.IsEmpty())

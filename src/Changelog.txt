@@ -10,6 +10,7 @@
  * Added basic support for separate-git-dir (Overlays are not working yet)
  * Fixed issue #1042: Allow to delete branch after successful merge
  * Fixed issue #1040: Commit to new branch
+ * Fixed issue #1043: Add 'Stash' to 'Working dir changes' context menu in log dialog
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62
