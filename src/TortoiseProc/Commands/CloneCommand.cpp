@@ -139,6 +139,7 @@ bool CloneCommand::Execute()
 			if(dlg.m_bAutoloadPuttyKeyFile)
 			{
 				g_Git.m_CurrentDir = dlg.m_Directory;
+				SetCurrentDirectory(g_Git.m_CurrentDir);
 
 				if(g_Git.SetConfigValue(_T("remote.origin.puttykeyfile"),dlg.m_strPuttyKeyFile, CONFIG_LOCAL,CP_ACP,&dlg.m_Directory))
 				{
