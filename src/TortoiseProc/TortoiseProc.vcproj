@@ -1677,6 +1677,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Settings\SettingsAdvanced.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Settings\SettingsAdvanced.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Settings\SettingsBugtraqConfig.cpp"
 					>
 				</File>

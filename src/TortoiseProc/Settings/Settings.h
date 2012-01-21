@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
-// Copyright (C) 2003-2010 - TortoiseSVN
+// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,6 +42,7 @@
 #include "SettingGitRemote.h"
 #include "SettingsBugtraqConfig.h"
 #include "SetExtMenu.h"
+#include "SettingsAdvanced.h"
 
 using namespace TreePropSheet;
 
@@ -91,6 +92,7 @@ private:
 	CSettingsBugtraqConfig *			m_pBugtraqConfig;
 
 	CSetExtMenu	*						m_pExtMenu;
+	CSettingsAdvanced *					m_pAdvanced;
 
 	HICON								m_hIcon;
 

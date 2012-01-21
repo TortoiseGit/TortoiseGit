@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,7 +66,7 @@ void CSettings::AddPropPages()
 	m_pGitConfig = new CSettingGitConfig();
 	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
 	m_pBugtraqConfig = new CSettingsBugtraqConfig(m_CmdPath.GetWinPath());
-
+	m_pAdvanced = new CSettingsAdvanced();
 
 	SetPageIcon(m_pExtMenu,m_pExtMenu->GetIconID());
 
@@ -91,6 +92,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
 	SetPageIcon(m_pBugtraqConfig, m_pBugtraqConfig->GetIconID());
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
+	SetPageIcon(m_pAdvanced, m_pAdvanced->GetIconID());
 
 	AddPage(m_pMainPage);
 	AddPage(m_pOverlayPage);
@@ -121,6 +123,7 @@ void CSettings::AddPropPages()
 		AddPage(m_pBugtraqConfig);
 	}
 	AddPage(m_pTBlamePage);
+	AddPage(m_pAdvanced);
 }
 
 void CSettings::RemovePropPages()
@@ -147,6 +150,7 @@ void CSettings::RemovePropPages()
 	delete m_pGitRemote;
 	delete m_pBugtraqConfig;
 	delete m_pExtMenu;
+	delete m_pAdvanced;
 
 }
 
@@ -175,6 +179,7 @@ void CSettings::HandleRestart()
 	restart |= m_pGitRemote->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
 	restart |= m_pExtMenu->GetRestart();
+	restart |= m_pAdvanced->GetRestart();
 
 	if (restart & ISettingsPropPage::Restart_System)
 	{
@@ -334,7 +339,10 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pSavedPage);
 	}
-
+	if(this->m_DefaultPage == _T("advanced"))
+	{
+		this->SetActivePage(this->m_pAdvanced);
+	}
 	return bResult;
 }
 

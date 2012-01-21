@@ -157,6 +157,7 @@
 #define IDI_IMPORTPATHCES_BKG           337
 #define IDD_SETTINGSOVERLAYHANDLERS     338
 #define IDI_LIBRARY                     339
+#define IDD_SETTINGS_CONFIG             340
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -657,6 +658,7 @@
 #define IDC_FROMGROUP                   1385
 #define IDC_BUTTON_REMOVE               1385
 #define IDC_BUTTON_DOWN2                1385
+#define IDC_CONFIG                      1385
 #define IDC_MSGGROUP                    1386
 #define IDC_FILTER                      1387
 #define IDC_REVISIONGROUP               1393
@@ -1386,6 +1388,8 @@
 #define IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED 5704
 #define IDS_SVN_PROGRESS_BYTES_SEC      5705
 #define IDS_SVN_PROGRESS_KBYTES_SEC     5706
+#define IDS_SETTINGS_CONF_NAMECOL       5707
+#define IDS_SETTINGS_CONF_VALUECOL      5708
 #define IDS_COLOURPICKER_CUSTOMTEXT     7000
 #define IDS_COLOURPICKER_DEFAULTTEXT    7001
 #define IDS_COPYDLG_FROMURL             8000
@@ -1534,7 +1538,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        340
+#define _APS_NEXT_RESOURCE_VALUE        341
 #define _APS_NEXT_COMMAND_VALUE         32840
 #define _APS_NEXT_CONTROL_VALUE         1682
 #define _APS_NEXT_SYMED_VALUE           201
