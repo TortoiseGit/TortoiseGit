@@ -702,6 +702,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\Library.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\lineadded.ico"
 				>
 			</File>
