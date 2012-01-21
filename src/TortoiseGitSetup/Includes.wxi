@@ -111,8 +111,7 @@
 	<?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
 
 	<?define GuidWin7Library="D31C1CAE-BBD9-45e2-A487-80653A49C752"?>
-	<?define GuidWin7Library32="1B9EFDE8-3EF0-443a-BE52-E97707B2F789"?>
-	<?define GuidFolderTypeGit="{80845F42-7943-4e03-A2E9-58F33DDD348C}"?>
+	<?define GuidFolderTypeGit="{DC9E616B-7611-461c-9D37-730FDD4CE278}"?>
 	<?define GuidLibraryTypeGit="{D44311F9-08E5-4bb8-96E3-E3E4F2A1BDD0}"?>
 	<?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
 	<?define GuidTopView1="{A1FA9F0A-CBDE-4f14-968B-B794EAE6F896}"?>
@@ -125,6 +124,9 @@
 	<?define GuidFolderTypeCmd1="{13732517-1006-43ba-A895-9A4961C94DE1}"?>
 	<?define GuidFolderTypeCmd2="{51826E14-2906-4e3b-9677-4DCF778C9E21}"?>
 	<?define GuidFolderTypeCmd3="{0B9D41AB-361E-4a6f-B72E-D79C69C3A5E4}"?>
+	<?define GuidFolderTypeCmd4="{FEB5544C-AC53-4D75-9242-B2B2A875687A}"?>
+	<?define GuidFolderTypeCmd5="{1751A73B-8AD8-4905-B1FD-DC3A98C4FBF1}"?>
+
 	<?define GuidTouch="{049D92F9-F0FD-4540-A250-0DF9A7BB86B0}"?>
 	<?else?>
 
@@ -176,7 +178,7 @@
 	<?define RegSSHOpen="0E21B3B2-FA54-411b-9AF3-BB275F169A27"?>
 
 	<?define GuidWin7Library="DA5F03FD-13B5-42e9-9350-D06C2808EB99"?>
-	<?define GuidFolderTypeGit="{238312A8-C390-4809-BE3E-F0DB99401C58}"?>
+	<?define GuidFolderTypeGit="{B118C031-A977-4a67-9344-47F057388105}"?>
 	<?define GuidLibraryTypeGit="{2944F3BB-D880-41d6-A271-721B184684F7}"?>
 	<?define GuidLibraryFolderGit="{37608D23-CCD9-474c-9DFE-E72A83C8666D}"?>
 	<?define GuidTopView1="{E0739170-0866-4d06-8C29-75EE98768196}"?>
@@ -189,6 +191,9 @@
 	<?define GuidFolderTypeCmd1="{A40D37EE-F8C1-42ec-AAAF-05BBD196CCD6}"?>
 	<?define GuidFolderTypeCmd2="{3BC677A5-FBFE-4423-9836-457522019974}"?>
 	<?define GuidFolderTypeCmd3="{65E9EE9F-A9D3-4EAC-82AD-448379A7E4BB}"?>
+	<?define GuidFolderTypeCmd4="{BB7C278C-989A-49AE-9C43-B43ABA4C6D86}"?>
+	<?define GuidFolderTypeCmd5="{FFB2B3FB-66E3-49F0-B713-4A1B0ECE2CBB}"?>
+
 	<?define GuidTouch="{ABC9CE77-824F-40b4-AA07-6706E94AEFDD}"?>
 	<?endif?>
 </Include>

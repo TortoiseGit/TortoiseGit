@@ -31,7 +31,7 @@ public:
 	LPCSHITEMID get(int index) const;
 	virtual ~ItemIDList();
 
-	stdstring toString();
+	stdstring toString(bool resolveLibraries = true);
 
 	LPCITEMIDLIST operator& ();
 private:

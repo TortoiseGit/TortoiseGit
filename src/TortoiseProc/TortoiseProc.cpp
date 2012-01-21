@@ -45,6 +45,7 @@
 #include "JumpListHelpers.h"
 #include "..\Settings\Settings.h"
 #include "gitindex.h"
+#include "Libraries.h"
 
 #define STRUCT_IOVEC_DEFINED
 //#include "sasl.h"
@@ -121,7 +122,6 @@ CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for Torto
 BOOL CTortoiseProcApp::InitInstance()
 {
 	EnableCrashHandler();
-	InitializeJumpList();
 	CheckUpgrade();
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
@@ -261,6 +261,18 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 
+	hWndExplorer = NULL;
+	CString sVal = parser.GetVal(_T("hwnd"));
+	if (!sVal.IsEmpty())
+		hWndExplorer = (HWND)_ttoi64(sVal);
+
+	while (GetParent(hWndExplorer)!=NULL)
+		hWndExplorer = GetParent(hWndExplorer);
+	if (!IsWindow(hWndExplorer))
+	{
+		hWndExplorer = NULL;
+	}
+
 	// if HKCU\Software\TortoiseGit\Debug is not 0, show our command line
 	// in a message box
 	if (CRegDWORD(_T("Software\\TortoiseGit\\Debug"), FALSE)==TRUE)
@@ -296,6 +308,47 @@ BOOL CTortoiseProcApp::InitInstance()
 	{
 
 		CString sPathArgument = CPathUtils::GetLongPathname(parser.GetVal(_T("path")));
+		if (parser.HasKey(_T("expaths")))
+		{
+			// an /expaths param means we're started via the buttons in our Win7 library
+			// and that means the value of /expaths is the current directory, and
+			// the selected paths are then added as additional parameters but without a key, only a value
+
+			// because of the "strange treatment of quotation marks and backslashes by CommandLineToArgvW"
+			// we have to escape the backslashes first. Since we're only dealing with paths here, that's
+			// a save bet.
+			// Without this, a command line like:
+			// /command:commit /expaths:"D:\" "D:\Utils"
+			// would fail because the "D:\" is treated as the backslash being the escape char for the quotation
+			// mark and we'd end up with:
+			// argv[1] = /command:commit
+			// argv[2] = /expaths:D:" D:\Utils
+			// See here for more details: http://blogs.msdn.com/b/oldnewthing/archive/2010/09/17/10063629.aspx
+			CString cmdLine = GetCommandLineW();
+			cmdLine.Replace(L"\\", L"\\\\");
+			int nArgs = 0;
+			LPWSTR *szArglist = CommandLineToArgvW(cmdLine, &nArgs);
+			if (szArglist)
+			{
+				// argument 0 is the process path, so start with 1
+				for (int i=1; i<nArgs; i++)
+				{
+					if (szArglist[i][0] != '/')
+					{
+						if (!sPathArgument.IsEmpty())
+							sPathArgument += '*';
+						sPathArgument += szArglist[i];
+					}
+				}
+				sPathArgument.Replace(L"\\\\", L"\\");
+			}
+			LocalFree(szArglist);
+		}
+		if (sPathArgument.IsEmpty() && parser.HasKey(L"path"))
+		{
+			CMessageBox::Show(hWndExplorer, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
+			return FALSE;
+		}
 		int asterisk = sPathArgument.Find('*');
 		cmdLinePath.SetFromUnknown(asterisk >= 0 ? sPathArgument.Left(asterisk) : sPathArgument);
 		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
@@ -305,17 +358,8 @@ BOOL CTortoiseProcApp::InitInstance()
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
 
-	hWndExplorer = NULL;
-	CString sVal = parser.GetVal(_T("hwnd"));
-	if (!sVal.IsEmpty())
-		hWndExplorer = (HWND)_ttoi64(sVal);
-
-	while (GetParent(hWndExplorer)!=NULL)
-		hWndExplorer = GetParent(hWndExplorer);
-	if (!IsWindow(hWndExplorer))
-	{
-		hWndExplorer = NULL;
-	}
+	InitializeJumpList();
+	EnsureGitLibrary(false);
 
 	// Subversion sometimes writes temp files to the current directory!
 	// Since TSVN doesn't need a specific CWD anyway, we just set it
@@ -512,6 +556,9 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	if (lVersion <= 0x01070600)
 	{
+		CoInitialize(NULL);
+		EnsureGitLibrary();
+		CoUninitialize();
 		CRegStdDWORD(_T("Software\\TortoiseGit\\ConvertBase")).removeValue();
 		CRegStdDWORD(_T("Software\\TortoiseGit\\DiffProps")).removeValue();
 	}

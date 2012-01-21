@@ -65,7 +65,6 @@
 			<ComponentRef Id="C__shellregistry32" />
 			<ComponentRef Id="C__machineregistry32" />
 			<ComponentRef Id="C__approveshellcomponents32" />
-			<ComponentRef Id="C__win7library32" />
 
 			<Feature Id="F_OVL32" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">
 				<MergeRef Id="Ovlays32" />
