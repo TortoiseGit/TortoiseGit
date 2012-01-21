@@ -840,7 +840,7 @@
 			<Control Id="DialogDescription" Type="Text" X="135" Y="90" Width="220" Height="40" Transparent="yes" NoPrefix="yes">
 				<Text>The [Wizard] will install [ProductName] on your computer. Click Next to continue or Cancel to exit the [Wizard].</Text>
 			</Control>
-			<Control Id="ConfirmDowngradeText" Type="Text" X="135" Y="180" Width="220" Height="40" TabSkip="no">
+			<Control Id="ConfirmDowngradeText" Type="Text" X="135" Y="180" Width="220" Height="40" TabSkip="no" Transparent="yes">
 				<Text>[DlgFontBold8]NOTE: The package you are currently installing is older than the one you already have installed.  If you continue, you will downgrade your installation.</Text>
 				<Condition Action="hide">NOT NEWERVERSIONDETECTED</Condition>
 			</Control>
