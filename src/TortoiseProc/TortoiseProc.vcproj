@@ -405,6 +405,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Utils\Libraries.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LogFile.cpp"
 				>
 			</File>

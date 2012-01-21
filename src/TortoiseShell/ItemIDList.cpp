@@ -74,7 +74,7 @@ LPCSHITEMID ItemIDList::get(int index) const
 	return ptr;
 
 }
-stdstring ItemIDList::toString()
+stdstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 {
 	IShellFolder *shellFolder = NULL;
 	IShellFolder *parentFolder = NULL;
@@ -113,14 +113,56 @@ stdstring ItemIDList::toString()
 	if (szDisplayName == NULL)
 	{
 		CoTaskMemFree(szDisplayName);
-		return ret;			//to avoid a crash!
+		return ret;
 	}
 	ret = szDisplayName;
 	CoTaskMemFree(szDisplayName);
+	if ((resolveLibraries) &&
+		(_tcsncmp(ret.c_str(), _T("::{"), 3)==0))
+	{
+		CComPtr<IShellLibrary> plib;
+		HRESULT hr = CoCreateInstance(CLSID_ShellLibrary, 
+									  NULL, 
+									  CLSCTX_INPROC_SERVER, 
+									  IID_PPV_ARGS(&plib));
+		if (SUCCEEDED(hr))
+		{
+			typedef HRESULT STDAPICALLTYPE SHCreateItemFromParsingNameFN(__in PCWSTR pszPath, __in_opt IBindCtx *pbc, __in REFIID riid, __deref_out void **ppv);
+			CAutoLibrary hShell = ::LoadLibrary(_T("shell32.dll"));
+			if (hShell)
+			{
+				SHCreateItemFromParsingNameFN *pfnSHCreateItemFromParsingName = (SHCreateItemFromParsingNameFN*)GetProcAddress(hShell, "SHCreateItemFromParsingName");
+				if (pfnSHCreateItemFromParsingName)
+				{
+					CComPtr<IShellItem> psiLibrary;
+					hr = pfnSHCreateItemFromParsingName(ret.c_str(), NULL, IID_PPV_ARGS(&psiLibrary));
+					if (SUCCEEDED(hr))
+					{
+						hr = plib->LoadLibraryFromItem(psiLibrary, STGM_READ|STGM_SHARE_DENY_NONE);
+						if (SUCCEEDED(hr))
+						{
+							CComPtr<IShellItem> psiSaveLocation;
+							hr = plib->GetDefaultSaveFolder(DSFT_DETECT, IID_PPV_ARGS(&psiSaveLocation));
+							if (SUCCEEDED(hr))
+							{
+								PWSTR pszName = NULL;
+								hr = psiSaveLocation->GetDisplayName(SIGDN_FILESYSPATH, &pszName);
+								if (SUCCEEDED(hr))
+								{
+									ret = pszName;
+									CoTaskMemFree(pszName);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	return ret;
 }
 
 LPCITEMIDLIST ItemIDList::operator& ()
 {
-    return item_;
+	return item_;
 }

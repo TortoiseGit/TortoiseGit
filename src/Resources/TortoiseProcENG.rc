@@ -95,6 +95,7 @@ IDI_OPEN                ICON                    "open.ico"
 IDI_GITCONFIG           ICON                    "gitconfig.ico"
 IDI_GITREMOTE           ICON                    "gitremote.ico"
 IDI_ACTIONFETCHING      ICON                    "..\\resources\\actionfetching.ico"
+IDI_LIBRARY             ICON                    "Library.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

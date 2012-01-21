@@ -27,9 +27,12 @@
 #define INITGUID
 
 #ifdef _WIN64
-DEFINE_GUID(FOLDERTYPEID_GITWC,       0xcacb1c79, 0xeafd, 0x4a4c, 0x94, 0x38, 0x38, 0xc0, 0x23, 0x95, 0x2d, 0x97));
+// {DC9E616B-7611-461c-9D37-730FDD4CE278}
+DEFINE_GUID(FOLDERTYPEID_GITWC,       0xdc9e616b, 0x7611, 0x461c, 0x9d, 0x37, 0x73, 0xf, 0xdd, 0x4c, 0xe2, 0x78);
+// {B118C031-A977-4a67-9344-47F057388105}
+DEFINE_GUID(FOLDERTYPEID_GITWC32,     0xb118c031, 0xa977, 0x4a67, 0x93, 0x44, 0x47, 0xf0, 0x57, 0x38, 0x81, 0x5);
 #else
-DEFINE_GUID(FOLDERTYPEID_GITWC,       0xd1d4f493, 0x832d, 0x4847, 0x8e, 0xfd, 0xf0, 0x6c, 0x4c, 0x75, 0xd0, 0xd2);
+DEFINE_GUID(FOLDERTYPEID_GITWC,       0xb118c031, 0xa977, 0x4a67, 0x93, 0x44, 0x47, 0xf0, 0x57, 0x38, 0x81, 0x5);
 #endif
 
 #endif /* (NTDDI_VERSION < NTDDI_WIN7) */
@@ -45,17 +48,27 @@ DEFINE_GUID(FOLDERTYPEID_GITWC,       0xd1d4f493, 0x832d, 0x4847, 0x8e, 0xfd, 0x
  * If the library already exists, the template is set.
  * If the library doesn't exist, it is created.
  */
-void EnsureSVNLibrary()
+void EnsureGitLibrary(bool bCreate /* = true*/)
 {
+    // when running the 32-bit version of TortoiseProc on x64 OS,
+    // we must not create the library! This would break
+    // the library in the x64 explorer.
+    BOOL bIsWow64 = FALSE;
+    IsWow64Process(GetCurrentProcess(), &bIsWow64);
+    if (bIsWow64)
+        return;
+
     CComPtr<IShellLibrary> pLibrary = NULL;
-    if (FAILED(OpenShellLibrary(L"Subversion", &pLibrary)))
+    if (FAILED(OpenShellLibrary(L"Git", &pLibrary)))
     {
+        if (!bCreate)
+            return;
         if (FAILED(SHCreateLibrary(IID_PPV_ARGS(&pLibrary))))
             return;
 
         // Save the new library under the user's Libraries folder.
         CComPtr<IShellItem> pSavedTo = NULL;
-        if (FAILED(pLibrary->SaveInKnownFolder(FOLDERID_UsersLibraries, L"Subversion", LSF_OVERRIDEEXISTING, &pSavedTo)))
+        if (FAILED(pLibrary->SaveInKnownFolder(FOLDERID_UsersLibraries, L"Git", LSF_OVERRIDEEXISTING, &pSavedTo)))
             return;
     }
 
@@ -77,16 +90,16 @@ void EnsureSVNLibrary()
 }
 
 /**
- * Open the shell library under the user's Libraries folder according to the 
+ * Open the shell library under the user's Libraries folder according to the
  * specified library name with both read and write permissions.
- * 
+ *
  * \param pwszLibraryName
  * The name of the shell library to be opened.
- * 
+ *
  * \param ppShellLib
- * If the open operation succeeds, ppShellLib outputs the IShellLibrary 
+ * If the open operation succeeds, ppShellLib outputs the IShellLibrary
  * interface of the shell library object. The caller is responsible for calling
- * Release on the shell library. If the function fails, NULL is returned from 
+ * Release on the shell library. If the function fails, NULL is returned from
  * *ppShellLib.
  */
 HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
@@ -109,14 +122,14 @@ HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib)
 
 /**
  * Get the shell item that represents the library.
- * 
+ *
  * \param pwszLibraryName
  * The name of the shell library
- * 
+ *
  * \param ppShellItem
- * If the operation succeeds, ppShellItem outputs the IShellItem2 interface  
- * that represents the library. The caller is responsible for calling 
- * Release on the shell item. If the function fails, NULL is returned from 
+ * If the operation succeeds, ppShellItem outputs the IShellItem2 interface
+ * that represents the library. The caller is responsible for calling
+ * Release on the shell item. If the function fails, NULL is returned from
  * *ppShellItem.
  */
 HRESULT GetShellLibraryItem(LPWSTR pwszLibraryName, IShellItem2** ppShellItem)
@@ -126,7 +139,7 @@ HRESULT GetShellLibraryItem(LPWSTR pwszLibraryName, IShellItem2** ppShellItem)
 
     // Create the real library file name
     WCHAR wszRealLibraryName[MAX_PATH];
-    swprintf_s(wszRealLibraryName, MAX_PATH, L"%s%s", pwszLibraryName, L".library-ms");
+    swprintf_s(wszRealLibraryName, L"%s%s", pwszLibraryName, L".library-ms");
 
     typedef HRESULT STDAPICALLTYPE SHCreateItemInKnownFolderFN(REFKNOWNFOLDERID kfid, DWORD dwKFFlags, __in_opt PCWSTR pszItem, REFIID riid, __deref_out void **ppv);
     CAutoLibrary hShell = ::LoadLibrary(_T("shell32.dll"));

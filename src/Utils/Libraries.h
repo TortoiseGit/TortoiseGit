@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010 - TortoiseSVN
+// Copyright (C) 2010-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,9 +24,9 @@
 #pragma once
 #include "Win7.h"
 
-void    EnsureSVNLibrary();
-HRESULT GetShellLibraryItem(LPWSTR pwszLibraryName, IShellItem2** ppShellItem);
-HRESULT OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib);
+void	EnsureGitLibrary(bool bCreate = true);
+HRESULT	GetShellLibraryItem(LPWSTR pwszLibraryName, IShellItem2** ppShellItem);
+HRESULT	OpenShellLibrary(LPWSTR pwszLibraryName, IShellLibrary** ppShellLib);
 
 EXTERN_C const CLSID FOLDERTYPEID_GITWC;
 
