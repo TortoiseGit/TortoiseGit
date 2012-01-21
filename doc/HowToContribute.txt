@@ -1,0 +1,171 @@
+Checklist (and a short version for the impatient):
+
+	Commits:
+
+	- make commits of (small) logical units
+	- check for unnecessary whitespace with "git diff --check"
+	  before committing
+	- do not check in commented out code or unneeded files
+	- the first line of the commit message should be a short
+	  description and should skip the full stop. If it is about a
+	  bugreport/issue, prepend "Fixed issue #NUMBER: " to the subject.
+	- the body should provide a meaningful commit message, which:
+	  . explains the problem the change tries to solve, iow, what
+	    is wrong with the current code without the change.
+	  . justifies the way the change solves the problem, iow, why
+	    the result with the change is better.
+	  . alternate solutions considered but discarded, if any.
+	- describe changes in imperative mood, e.g. "make xyzzy do frotz"
+	  instead of "[This patch] makes xyzzy do frotz" or "[I] changed
+	  xyzzy to do frotz", as if you are giving orders to the codebase
+	  to change its behaviour.
+	- try to make sure your explanation can be understood without
+	  external resources. Instead of giving a URL to a mailing list
+	  archive, summarize the relevant points of the discussion.
+	- add a "Signed-off-by: Your Name <you@example.com>" line to the
+	  commit message (or just use the option "-s" when committing)
+	  to confirm that you agree to the Developer's Certificate of Origin
+
+	Submission:
+	
+	- open an issue on http://code.google.com/p/tortoisegit/ or go to an
+	  issue you want to fix. Then you have one of the following options:
+	  . attach a patch there
+	  . provide a link to a branch you want the maintainers to pull from
+	  . open a github pull request and put the link into the issue
+
+Longer version:
+
+(0) Make separate commits for logically separate changes.
+
+Unless your patch is really trivial, you should not be sending
+out a patch that was generated between your working tree and
+your commit head.  Instead, always make a commit with complete
+commit message and generate a series of patches from your
+repository.
+
+Give an explanation for the change(s) that is detailed enough so
+that people can judge if it is good thing to do, without reading
+the actual patch text to determine how well the code does what
+the explanation promises to do.
+
+If your description starts to get too long, that's a sign that you
+probably need to split up your commit to finer grained pieces.
+That being said, patches which plainly describe the things that
+help reviewers check the patch, and future maintainers understand
+the code, are the most beautiful patches.  Descriptions that summarise
+the point in the subject well, and describe the motivation for the
+change, the approach taken by the change, and if relevant how this
+differs substantially from the prior version, are all good things
+to have.
+
+Oh, another thing. We are picky about whitespaces. To help ensure this
+does not happen, run git diff --check on your changes before you commit.
+
+
+(1a) Generate your patch using git tools out of your commits (Patch serial)
+
+git based diff tools generate unidiff which is the preferred format.
+
+Please make sure your patch does not include any extra files
+which do not belong in a patch submission.  Make sure to review
+your patch after generating it, to ensure accuracy.  Before
+sending out, please make sure it cleanly applies to the "master"
+branch head.
+
+
+(1b) Create a pull request
+
+Push your changes to a public repository. Use a brief branch name
+describing your changes.
+
+Please make sure your pull request does not include any extra files
+which do not belong in a submission.  Make sure to review your patch
+after generating it, to ensure accuracy.
+
+There is no need to generate a "formal" pull request. The URL and
+branchname is necessary - or create a github pull request
+(https://github.com/TortoiseGit).
+
+
+(2) Sign your work
+
+To improve tracking of who did what, we've borrowed the
+"sign-off" procedure from the Linux kernel project on patches
+that are being emailed around.  Although TortoiseGit is a lot
+smaller project it is a good discipline to follow it.
+
+The sign-off is a simple line at the end of the explanation for
+the patch, which certifies that you wrote it or otherwise have
+the right to pass it on as a open-source patch.  The rules are
+pretty simple: if you can certify the below:
+
+        Developer's Certificate of Origin 1.1
+
+        By making a contribution to this project, I certify that:
+
+        (a) The contribution was created in whole or in part by me and I
+            have the right to submit it under the open source license
+            indicated in the file; or
+
+        (b) The contribution is based upon previous work that, to the best
+            of my knowledge, is covered under an appropriate open source
+            license and I have the right under that license to submit that
+            work with modifications, whether created in whole or in part
+            by me, under the same open source license (unless I am
+            permitted to submit under a different license), as indicated
+            in the file; or
+
+        (c) The contribution was provided directly to me by some other
+            person who certified (a), (b) or (c) and I have not modified
+            it.
+
+	(d) I understand and agree that this project and the contribution
+	    are public and that a record of the contribution (including all
+	    personal information I submit with it, including my sign-off) is
+	    maintained indefinitely and may be redistributed consistent with
+	    this project or the open source license(s) involved.
+
+then you just add a line saying
+
+	Signed-off-by: Random J Developer <random@developer.example.org>
+
+This line can be automatically added by Git and TortoiseGit.
+
+Also notice that a real name is used in the Signed-off-by: line. Please
+don't hide your real name.
+
+If you like, you can put extra tags at the end:
+
+1. "Reported-by:" is used to credit someone who found the bug that
+   the patch attempts to fix.
+2. "Acked-by:" says that the person who is more familiar with the area
+   the patch attempts to modify liked the patch.
+3. "Reviewed-by:", unlike the other tags, can only be offered by the
+   reviewer and means that she is completely satisfied that the patch
+   is ready for application.  It is usually offered only after a
+   detailed review.
+4. "Tested-by:" is used to indicate that the person applied the patch
+   and found it to have the desired effect.
+
+You can also create your own tag or use one that's in common usage
+such as "Thanks-to:", "Based-on-patch-by:", or "Mentored-by:".
+
+------------------------------------------------
+An ideal patch flow
+
+Here is an ideal patch flow for this project the current maintainer
+suggests to the contributors:
+
+ (0) You come up with an itch.  You code it up.
+
+ (1) Open an issue on http://code.google.com/p/tortoisegit/ or attach
+     your changes to another already reported issue. Attach the patches
+     or provide a pull request (URL branch) there.
+
+ (2) You get comments and suggestions for improvements.  You may
+     even get them in a "on top of your change" patch form.
+
+ (3) Polish, refine, and re-send.  Go back to step (2).
+
+ (4) The patch will be applied to master.
