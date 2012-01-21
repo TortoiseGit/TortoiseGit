@@ -479,6 +479,10 @@
 				RelativePath="..\Utils\UnicodeUtils.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\Utils\UniqueQueue.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -567,6 +571,10 @@
 			</File>
 			<File
 				RelativePath="..\Utils\UnicodeUtils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\UniqueQueue.h"
 				>
 			</File>
 		</Filter>

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -102,10 +102,7 @@ void CFolderCrawler::AddDirectoryForUpdate(const CTGitPath& path)
 
 		AutoLocker lock(m_critSec);
 
-		RemoveDuplicate(m_foldersToUpdate, path);
-
-		m_foldersToUpdate.push_back(path);
-		m_foldersToUpdate.back().SetCustomData(GetTickCount()+10);
+		m_foldersToUpdate.Push(path);
 
 		//ATLASSERT(path.IsDirectory() || !path.Exists());
 		// set this flag while we are sync'ed
@@ -128,9 +125,7 @@ void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 	{
 		AutoLocker lock(m_critSec);
 
-		RemoveDuplicate(m_pathsToUpdate, path);
-		m_pathsToUpdate.push_back(path);
-		m_pathsToUpdate.back().SetCustomData(GetTickCount()+1000);
+		m_pathsToUpdate.Push(path);
 		m_bPathsAddedSinceLastCrawl = true;
 	}
 	//if (SetHoldoff())
@@ -212,28 +207,24 @@ void CFolderCrawler::WorkerThread()
 				m_blockedPath.Reset();
 			}
 
-			if ((m_foldersToUpdate.empty())&&(m_pathsToUpdate.empty()))
+			if ((m_foldersToUpdate.size() == 0) && (m_pathsToUpdate.size() == 0))
 			{
 				// Nothing left to do
 				break;
 			}
 			currentTicks = GetTickCount();
-			if (!m_pathsToUpdate.empty())
+			if (m_pathsToUpdate.size())
 			{
 				{
 					AutoLocker lock(m_critSec);
 
 					m_bPathsAddedSinceLastCrawl = false;
 
-					workingPath = m_pathsToUpdate.front();
-					//m_pathsToUpdateUnique.erase (workingPath);
-					m_pathsToUpdate.pop_front();
-					if ((DWORD(workingPath.GetCustomData()) >= currentTicks) ||
-						((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath))))
+					workingPath = m_pathsToUpdate.Pop();
+					if ((!m_blockedPath.IsEmpty()) && (m_blockedPath.IsAncestorOf(workingPath)))
 					{
 						// move the path to the end of the list
-						//m_pathsToUpdateUnique.insert (workingPath);
-						m_pathsToUpdate.push_back(workingPath);
+						m_pathsToUpdate.Push(workingPath);
 						if (m_pathsToUpdate.size() < 3)
 							Sleep(50);
 						continue;
@@ -329,7 +320,7 @@ void CFolderCrawler::WorkerThread()
 					//a notification about that in the directory watcher,
 					//remove that here again - this is to prevent an endless loop
 					AutoLocker lock(m_critSec);
-					m_pathsToUpdate.erase(std::remove(m_pathsToUpdate.begin(), m_pathsToUpdate.end(), workingPath), m_pathsToUpdate.end());
+					m_pathsToUpdate.erase(workingPath);
 				}
 				else if (workingPath.HasAdminDir())
 				{
@@ -373,7 +364,7 @@ void CFolderCrawler::WorkerThread()
 					}
 					CGitStatusCache::Instance().Done();
 					AutoLocker lock(m_critSec);
-					m_pathsToUpdate.erase(std::remove(m_pathsToUpdate.begin(), m_pathsToUpdate.end(), workingPath), m_pathsToUpdate.end());
+					m_pathsToUpdate.erase(workingPath);
 				}
 				else
 				{
@@ -385,7 +376,7 @@ void CFolderCrawler::WorkerThread()
 					}
 				}
 			}
-			else if (!m_foldersToUpdate.empty())
+			else if (m_foldersToUpdate.size())
 			{
 				{
 					AutoLocker lock(m_critSec);
@@ -394,16 +385,12 @@ void CFolderCrawler::WorkerThread()
 					// create a new CTSVNPath object to make sure the cached flags are requested again.
 					// without this, a missing file/folder is still treated as missing even if it is available
 					// now when crawling.
-					CTGitPath& folderToUpdate = m_foldersToUpdate.front();
-					workingPath = CTGitPath(folderToUpdate.GetWinPath());
-					workingPath.SetCustomData(folderToUpdate.GetCustomData());
-					m_foldersToUpdate.pop_front();
+					workingPath = CTGitPath(m_foldersToUpdate.Pop().GetWinPath());
 
-					if ((DWORD(workingPath.GetCustomData()) >= currentTicks) ||
-						((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath))))
+					if ((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath)))
 					{
 						// move the path to the end of the list
-						m_foldersToUpdate.push_back (workingPath);
+						m_foldersToUpdate.Push(workingPath);
 						if (m_foldersToUpdate.size() < 3)
 							Sleep(50);
 						continue;
@@ -459,11 +446,7 @@ void CFolderCrawler::WorkerThread()
 				AutoLocker lock(m_critSec);
 				if (m_bItemsAddedSinceLastCrawl)
 				{
-					if (m_foldersToUpdate.back().IsEquivalentToWithoutCase(workingPath))
-					{
-						m_foldersToUpdate.pop_back();
-						m_bItemsAddedSinceLastCrawl = false;
-					}
+					m_foldersToUpdate.erase(workingPath);
 				}
 #endif
 				CGitStatusCache::Instance().Done();
