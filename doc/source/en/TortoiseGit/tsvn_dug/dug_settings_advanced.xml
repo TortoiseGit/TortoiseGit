@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tsvn-dug-settings-registry">
+    <?dbhh topicname="HIDD_SETTINGS_CONFIG"?>
+    <title>Advanced Settings</title>
+    <indexterm>
+        <primary>registry</primary>
+    </indexterm>
+    <para>
+        A few infrequently used settings are available only in the advanced
+        page of the settings dialog. These settings modify the registry directly
+        and you have to know what each of these settings is used for and what
+        it does. Do not modify these settings unless you are sure you need to
+        change them.
+    </para>
+    <variablelist>
+        <varlistentry>
+            <term condition="pot">AutocompleteRemovesExtensions</term>
+            <listitem>
+                <para>
+                    The auto-completion list shown in the commit message editor
+                    displays the names of files listed for commit.
+                    To also include these names with extensions removed,
+                    set this value to <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">BlockStatus</term>
+            <listitem>
+                <para>
+                    If you don't want the explorer to update the status overlays
+                    while another TortoiseGit command is running
+                    (e.g. Update, Commit, ...) then set this value to
+                    <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">CacheTrayIcon</term>
+            <listitem>
+                <para>
+                    To add a cache tray icon for the TSVNCache program, set
+                    this value to <literal>true</literal>.
+                    This is really only useful for developers as it allows
+                    you to terminate the program gracefully.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">ColumnsEveryWhere</term>
+            <listitem>
+                <para>
+                    The extra columns the TortoiseGit adds to the details view
+                    in Windows Explorer are normally only active in a working
+                    copy. If you want those to be accessible everywhere, not
+                    just in working copies, set this value to
+                    <literal>true</literal>.
+                    Note that the extra columns are only available in XP.
+                    Vista and later doesn't support that feature any more.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">Debug</term>
+            <listitem>
+                <para>
+                    Set this to <literal>true</literal> if you want a dialog to
+                    pop up for every command showing the command line used to
+                    start TortoiseProc.exe.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">DiffBlamesWithTortoiseMerge</term>
+            <listitem>
+                <para>
+                    TortoiseGit allows you to assign an external diff viewer.
+                    Most such viewers, however, are not suited for change blaming
+                    (<xref linkend="tsvn-dug-blame-diffs"/>),
+                    so you might wish to fall back to TortoiseMerge in this case.
+                    To do so, set this value to <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">FullRowSelect</term>
+            <listitem>
+                <para>
+                    The status list control which is used in various dialogs
+                    (e.g., commit, check-for-modifications, add, revert, ...)
+                    uses full row selection (i.e., if you select an entry, the
+                    full row is selected, not just the first column).
+                    This is fine, but the selected row then also covers the
+                    background image on the bottom right, which can look ugly.
+                    To disable full row select, set this value to
+                    <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">ShowContextMenuIcons</term>
+            <listitem>
+                <para>
+                    This can be useful if you use something other than the windows explorer
+                    or if you get problems with the context menu displaying incorrectly.
+                    Set this value to <literal>false</literal>
+                    if you don't want TortoiseGit to show icons for the
+                    shell context menu items.
+                    Set this value to <literal>true</literal> to show the icons again.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term condition="pot">VersionCheck</term>
+            <listitem>
+                <para>
+                    TortoiseGit checks whether there's a new version available
+                    about once a week. If you don't want TortoiseGit to do this
+                    check, set this value to <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
+</sect2>
