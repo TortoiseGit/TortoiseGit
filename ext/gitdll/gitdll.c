@@ -1067,7 +1067,6 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 			if (home)
 			{
 				config_exclusive_filename = xstrdup(mkpath("%s/.gitconfig", home));
-				free(home);
 			}
 		}
 		break;
