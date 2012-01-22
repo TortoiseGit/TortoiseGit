@@ -778,12 +778,7 @@ bool
 CCachedDirectory::IsOwnStatusValid() const
 {
 	return m_ownStatus.HasBeenSet() &&
-		   !m_ownStatus.HasExpired(GetTickCount()) &&
-		   // 'external' isn't a valid status. That just
-		   // means the folder is not part of the current working
-		   // copy but it still has its own 'real' status
-		   m_ownStatus.GetEffectiveStatus()!=git_wc_status_external &&
-		   m_ownStatus.IsKindKnown();
+		   !m_ownStatus.HasExpired(GetTickCount());
 }
 
 void CCachedDirectory::Invalidate()
