@@ -382,39 +382,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		SetCurrentDirectory(pathbuf);
 	}
 
-	// check for newer versions
-	if (CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) != FALSE)
-	{
-		time_t now;
-		struct tm ptm;
-
-		time(&now);
-		if ((now != 0) && (localtime_s(&ptm, &now)==0))
-		{
-			int week = 0;
-			// we don't calculate the real 'week of the year' here
-			// because just to decide if we should check for an update
-			// that's not needed.
-			week = ptm.tm_yday / 7;
-
-			CRegDWORD oldweek = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeek"), (DWORD)-1);
-			if (((DWORD)oldweek) == -1)
-				oldweek = week;		// first start of TortoiseProc, no update check needed
-			else
-			{
-				if ((DWORD)week != oldweek)
-				{
-					oldweek = week;
-
-					TCHAR com[MAX_PATH+100];
-					GetModuleFileName(NULL, com, MAX_PATH);
-					_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck"));
-
-					CAppUtils::LaunchApplication(com, 0, false);
-				}
-			}
-		}
-	}
+	CheckForNewerVersion();
 
 	if (parser.HasVal(_T("configdir")))
 	{
@@ -725,4 +693,41 @@ int CTortoiseProcApp::ExitInstance()
 	if (retSuccess)
 		return 0;
 	return -1;
+}
+
+void CTortoiseProcApp::CheckForNewerVersion()
+{
+	// check for newer versions
+	if (CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) != FALSE)
+	{
+		time_t now;
+		struct tm ptm;
+
+		time(&now);
+		if ((now != 0) && (localtime_s(&ptm, &now)==0))
+		{
+			int week = 0;
+			// we don't calculate the real 'week of the year' here
+			// because just to decide if we should check for an update
+			// that's not needed.
+			week = ptm.tm_yday / 7;
+
+			CRegDWORD oldweek = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerWeek"), (DWORD)-1);
+			if (((DWORD)oldweek) == -1)
+				oldweek = week;		// first start of TortoiseProc, no update check needed
+			else
+			{
+				if ((DWORD)week != oldweek)
+				{
+					oldweek = week;
+
+					TCHAR com[MAX_PATH+100];
+					GetModuleFileName(NULL, com, MAX_PATH);
+					_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck"));
+
+					CAppUtils::LaunchApplication(com, 0, false);
+				}
+			}
+		}
+	}
 }

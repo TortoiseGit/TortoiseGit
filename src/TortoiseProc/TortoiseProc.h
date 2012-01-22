@@ -59,6 +59,7 @@ public:
 	BOOL CheckMsysGitDir();
 
 	void CheckUpgrade();
+	void CheckForNewerVersion();
 	void EnableCrashHandler();
 	void InitializeJumpList();
 	void DoInitializeJumpList();
