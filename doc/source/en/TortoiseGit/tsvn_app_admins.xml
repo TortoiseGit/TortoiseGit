@@ -49,6 +49,7 @@
 			computer you want to install TortoiseGit as per user.
 		</para>
 	</sect1>
+<!--
 	<sect1 id="tsvn-admins-upgradecheck">
 		<title>Redirect the upgrade check</title>
 		<indexterm>
@@ -97,36 +98,6 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 			The URL is opened with the default web browser, so if you specify a web page,
 			that page is opened and shown to the user. If you specify the MSI package,
 			the browser will ask the user to save the MSI file locally.
-		</para>
-	</sect1>
-<!--
-	<sect1 id="tsvn-admins-aspdotnethack">
-		<title>Setting the <literal>SVN_ASP_DOT_NET_HACK</literal> environment variable</title>
-		<indexterm>
-			<primary>SVN_ASP_DOT_NET_HACK</primary>
-		</indexterm>
-		<indexterm>
-			<primary>VS2003</primary>
-		</indexterm>
-		<indexterm>
-			<primary>ASP projects</primary>
-		</indexterm>
-		<para>
-			As of version 1.4.0 and later, the TortoiseGit installer doesn't provide
-			the user with the option to set the <literal>SVN_ASP_DOT_NET_HACK</literal>
-			environment variable
-			anymore, since that caused many problems and confusions with users which
-			always install <emphasis>everything</emphasis> no matter if they know
-			what it is for.
-		</para>
-		<para>
-			But that option is only hidden for the user. You still can force the
-			TortoiseGit installer to set that environment variable by setting the
-			<literal>ASPDOTNETHACK</literal>
-			property to TRUE. For example, you can start the installer like this:
-<screen>
-msiexec /i TortoiseGit-1.4.0.msi ASPDOTNETHACK=TRUE
-</screen>
 		</para>
 	</sect1>
 -->
