@@ -426,12 +426,11 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false,true, GetStatusCallback,this);
 	else
 	{
-		m_mostImportantFileStatus = git_wc_status_unknown;
+		m_mostImportantFileStatus = git_wc_status_normal;
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
-	}
 
-	if (this->m_directoryPath.HasAdminDir())
 		m_ownStatus = git_wc_status_normal;
+	}
 
 	m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
 
