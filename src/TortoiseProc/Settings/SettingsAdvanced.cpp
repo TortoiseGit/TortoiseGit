@@ -34,9 +34,17 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
+	settings[i].sName	= L"BlockStatus";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
+
 	settings[i].sName	= L"CacheTrayIcon";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
+
+	settings[i].sName	= L"CheckNewer";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
 
 	settings[i].sName	= L"ColumnsEveryWhere";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
