@@ -42,10 +42,6 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
-	settings[i].sName	= L"CheckNewer";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
 	settings[i].sName	= L"ColumnsEveryWhere";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
@@ -63,6 +59,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i++].def.b	= true;
 
 	settings[i].sName	= L"ShowContextMenuIcons";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
+
+	settings[i].sName	= L"VersionCheck";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 

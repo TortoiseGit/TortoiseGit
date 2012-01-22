@@ -529,6 +529,9 @@ void CTortoiseProcApp::CheckUpgrade()
 		CoUninitialize();
 		CRegStdDWORD(_T("Software\\TortoiseGit\\ConvertBase")).removeValue();
 		CRegStdDWORD(_T("Software\\TortoiseGit\\DiffProps")).removeValue();
+		if (CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) == FALSE)
+			CRegStdDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
+		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
 	}
 #if 0
 	if (lVersion <= 0x01010300)
@@ -698,7 +701,7 @@ int CTortoiseProcApp::ExitInstance()
 void CTortoiseProcApp::CheckForNewerVersion()
 {
 	// check for newer versions
-	if (CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) != FALSE)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE) != FALSE)
 	{
 		time_t now;
 		struct tm ptm;
