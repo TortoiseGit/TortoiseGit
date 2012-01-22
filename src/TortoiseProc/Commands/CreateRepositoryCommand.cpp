@@ -19,7 +19,7 @@
 #include "StdAfx.h"
 #include "Command.h"
 #include "CreateRepositoryCommand.h"
-
+#include "ShellUpdater.h"
 #include "MessageBox.h"
 #include "git.h"
 
@@ -58,6 +58,8 @@ bool CreateRepositoryCommand::Execute()
 		}
 		else
 		{
+			if (!dlg.m_bBare)
+				CShellUpdater::Instance().AddPathForUpdate(orgCmdLinePath);
 			CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		}
 		return true;
