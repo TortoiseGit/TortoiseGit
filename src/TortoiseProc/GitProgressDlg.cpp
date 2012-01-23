@@ -42,6 +42,7 @@
 #include "IconMenu.h"
 #include "BugTraqAssociations.h"
 #include "patch.h"
+#include "MassiveGitTask.h"
 #include "git2.h"
 #include "SmartHandle.h"
 
@@ -1906,18 +1907,8 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	}
 	else
 	{
-		for(int i = 0; i < m_targetPathList.GetCount(); i++)
-		{
-			CString	cmd, out;
-			cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
-			if(g_Git.Run(cmd, &out, CP_ACP))
-			{
-				MessageBox(out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-				m_bErrorsOccurred = true;
-				return false;
-			}
-			Notify(m_targetPathList[i], git_wc_notify_add);
-		}
+		MassiveGitTask mgt(L"add -f");
+		mgt.ExecuteWithNotify(&m_targetPathList, m_bCancelled, git_wc_notify_add, this, &CGitProgressDlg::Notify);
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
