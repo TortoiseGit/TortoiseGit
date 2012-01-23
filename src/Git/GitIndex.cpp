@@ -817,6 +817,7 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 				parent += git_tree_entry_name(entry);
 				parent += "/";
 				ReadTreeRecursive(repo, (git_tree*)object, parent, CallBack, data);
+				git_object_free(object);
 			}
 		}
 
@@ -854,6 +855,12 @@ int CGitHeadFileList::ReadTree()
 		this->m_TreeHash = (char*)(git_commit_id(commit)->id);
 
 	} while(0);
+
+	if (tree)
+		git_tree_free(tree);
+
+	if (commit)
+		git_commit_free(commit);
 
 	if (repository)
 		git_repository_free(repository);
