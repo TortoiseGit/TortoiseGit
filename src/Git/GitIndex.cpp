@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "git2.h"
-
+#include "SmartHandle.h"
 
 #define FILL_DATA() \
 	m_FileName.Empty();\
@@ -81,8 +81,6 @@ static bool SortTree(CGitTreeItem &Item1, CGitTreeItem &Item2)
 
 int CGitIndexList::ReadIndex(CString IndexFile)
 {
-	HANDLE hfile = INVALID_HANDLE_VALUE;
-	HANDLE hmap = INVALID_HANDLE_VALUE;
 	int ret=0;
 	BYTE *buffer = NULL, *p;
 	CGitIndex GitIndex;
@@ -97,7 +95,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 		{
 			this->clear();
 
-			hfile = CreateFile(IndexFile,
+			CAutoFile hfile = CreateFile(IndexFile,
 									GENERIC_READ,
 									FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 									NULL,
@@ -106,14 +104,14 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 									NULL);
 
 
-			if (hfile == INVALID_HANDLE_VALUE)
+			if (!hfile)
 			{
 				ret = -1 ;
 				break;
 			}
 
-			hmap = CreateFileMapping(hfile, NULL, PAGE_READONLY, 0, 0, NULL);
-			if (hmap == INVALID_HANDLE_VALUE)
+			CAutoFile hmap = CreateFileMapping(hfile, NULL, PAGE_READONLY, 0, 0, NULL);
+			if (!hmap)
 			{
 				ret =-1;
 				break;
@@ -169,12 +167,6 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 
 	if (buffer)
 		UnmapViewOfFile(buffer);
-
-	if (hmap != INVALID_HANDLE_VALUE)
-		CloseHandle(hmap);
-
-	if (hfile != INVALID_HANDLE_VALUE)
-		CloseHandle(hfile);
 
 	return ret;
 }
@@ -450,12 +442,10 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		this->m_PackRefFile.Empty();
 		this->m_PackRefMap.clear();
 		return 0;
-
 	}
 	else if(mtime == m_LastModifyTimePackRef)
 	{
 		return 0;
-
 	}
 	else
 	{
@@ -467,7 +457,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	{
 		this->m_PackRefMap.clear();
 
-		HANDLE hfile = CreateFile(PackRef,
+		CAutoFile hfile = CreateFile(PackRef,
 			GENERIC_READ,
 			FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 			NULL,
@@ -476,7 +466,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			NULL);
 		do
 		{
-			if(hfile == INVALID_HANDLE_VALUE)
+			if (!hfile)
 			{
 				ret = -1;
 				break;
@@ -552,9 +542,6 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			delete buff;
 
 		} while(0);
-
-		if(hfile != INVALID_HANDLE_VALUE)
-			CloseHandle(hfile);
 	}
 	return ret;
 
@@ -563,10 +550,6 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
 	CString HeadFile = gitdir;
 	HeadFile += _T("\\.git\\HEAD");
-
-
-	HANDLE hfile=INVALID_HANDLE_VALUE;
-	HANDLE href = INVALID_HANDLE_VALUE;
 
 	int ret = 0;
 	m_Gitdir = gitdir;
@@ -580,7 +563,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	{
 		do
 		{
-			hfile = CreateFile(HeadFile,
+			CAutoFile hfile = CreateFile(HeadFile,
 				GENERIC_READ,
 				FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 				NULL,
@@ -588,7 +571,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 				FILE_ATTRIBUTE_NORMAL,
 				NULL);
 
-			if(hfile == INVALID_HANDLE_VALUE)
+			if (!hfile)
 			{
 				ret = -1;
 				break;
@@ -640,7 +623,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 					break;
 				}
 
-				href = CreateFile(m_HeadRefFile,
+				CAutoFile href = CreateFile(m_HeadRefFile,
 					GENERIC_READ,
 					FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 					NULL,
@@ -648,7 +631,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 					FILE_ATTRIBUTE_NORMAL,
 					NULL);
 
-				if (href == INVALID_HANDLE_VALUE)
+				if (!href)
 				{
 					m_HeadRefFile.Empty();
 
@@ -696,11 +679,6 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	{
 		ret = -1;
 	}
-
-	if (hfile != INVALID_HANDLE_VALUE)
-		CloseHandle(hfile);
-	if (href != INVALID_HANDLE_VALUE)
-		CloseHandle(href);
 
 	return ret;
 }
@@ -917,7 +895,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			return -1;
 
 
-		HANDLE hfile = CreateFile(file,
+		CAutoFile hfile = CreateFile(file,
 			GENERIC_READ,
 			FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 			NULL,
@@ -926,36 +904,23 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			NULL);
 
 
-		if(hfile == INVALID_HANDLE_VALUE)
-		{
+		if (!hfile)
 			return -1 ;
-		}
 
 		DWORD size=0,filesize=0;
 
 		filesize=GetFileSize(hfile, NULL);
 
 		if(filesize == INVALID_FILE_SIZE)
-		{
-			CloseHandle(hfile);
 			return -1;
-		}
 
 		BYTE *buffer = new BYTE[filesize + 1];
 
 		if(buffer == NULL)
-		{
-			CloseHandle(hfile);
 			return -1;
-		}
 
 		if(! ReadFile(hfile, buffer,filesize,&size,NULL))
-		{
-			CloseHandle(hfile);
 			return GetLastError();
-		}
-
-		CloseHandle(hfile);
 
 		BYTE *p = buffer;
 		for (int i = 0; i < size; i++)
