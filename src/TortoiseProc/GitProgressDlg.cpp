@@ -1856,7 +1856,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
 	// HACK for separate-git-dir, libgit2 doesn't support it atm
-	if (CTGitPath(g_Git.m_CurrentDir + _T("/.git")).IsDirectory())
+	if (CTGitPath(g_Git.m_CurrentDir + _T("/.git")).IsDirectory() && CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), FALSE) == TRUE)
 	{
 		git_repository *repo = NULL;
 		git_index *index;

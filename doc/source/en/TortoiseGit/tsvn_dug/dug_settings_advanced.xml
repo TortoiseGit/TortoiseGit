@@ -112,6 +112,17 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">UseLibgit2</term>
+            <listitem>
+                <para>
+                    This makes TortoiseGit to use libgit2 as much as possible (e.g. for
+                    adding files to the index). It's disabled by default, since libgit2
+                    has some limitations ATM (UTF8 filename problems, doesn't support AutoCRLF and separate-git-dir).
+                    If you t want TortoiseGit to use libgit2, set this value to <literal>true</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">VersionCheck</term>
             <listitem>
                 <para>
