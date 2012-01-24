@@ -716,7 +716,7 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	// in an empty repo HEAD points to refs/heads/master, but this ref doesn't exist.
 	// So we need to retry again and again until the ref exists - otherwise we will never notice
-	if (this->m_HeadRefFile.IsEmpty() && this->m_PackRefFile.IsEmpty())
+	if (this->m_Head.IsEmpty() && this->m_HeadRefFile.IsEmpty() && this->m_PackRefFile.IsEmpty())
 		return true;
 
 	return false;
