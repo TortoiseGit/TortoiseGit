@@ -2721,6 +2721,8 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		sLine.Insert(m_ptCaretPos.x, (wchar_t)nChar);
 		m_pViewData->SetLine(m_ptCaretPos.y, sLine);
 		m_pViewData->SetState(m_ptCaretPos.y, DIFFSTATE_EDITED);
+		if (m_pViewData->GetLineEnding(m_ptCaretPos.y) == EOL_NOENDING && m_pViewData->GetCount() - 1 != m_ptCaretPos.y)
+			m_pViewData->SetLineEnding(m_ptCaretPos.y, lineendings);
 		m_ptCaretPos.x++;
 		UpdateGoalPos();
 	}
