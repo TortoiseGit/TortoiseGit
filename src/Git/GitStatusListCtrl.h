@@ -129,6 +129,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_POPBLAME					CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_BLAME)
 #define GITSLC_POPSAVEAS				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_SAVEAS)
 #define GITSLC_POPCOMPARETWOFILES		CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)
+#define GITSLC_POPRESTORE				CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_POPRESTORE)
 
 #define GITSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 
@@ -140,6 +141,8 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_USERPROPCOLOFFSET        0x40
 #define GITSLC_USERPROPCOLLIMIT         0xff
 #define GITSLC_MAXCOLUMNCOUNT           0xff
+
+#define OVL_RESTORE			1
 
 // Supporting extreamly long user props makes no sense here --
 // especially for binary properties. CString uses a pool allocator
@@ -558,6 +561,9 @@ public:
 		IDGITLC_COMPARETWO		,
 		IDGITLC_GNUDIFF2		,
 		IDGITLC_COMPARETWOFILES	,
+		IDGITLC_POPRESTORE		,
+		IDGITLC_CREATERESTORE	,
+		IDGITLC_RESTOREPATH		,
 // the IDSVNLC_MOVETOCS *must* be the last index, because it contains a dynamic submenu where
 // the submenu items get command ID's sequent to this number
 		IDGITLC_MOVETOCS		,
@@ -744,7 +750,7 @@ public:
 	 * \param bHasCheckboxes TRUE if the control should show check boxes on the left of each file entry.
 	 * \param bHasWC TRUE if the reporisty is not a bare repository (hides wc related items on the contextmenu)
 	 */
-	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = (GITSLC_POPALL ^ GITSLC_POPCOMMIT), bool bHasCheckboxes = true, bool bHasWC = true);
+	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = ((GITSLC_POPALL ^ GITSLC_POPCOMMIT) ^ GITSLC_POPRESTORE), bool bHasCheckboxes = true, bool bHasWC = true);
 	/**
 	 * Sets a background image for the list control.
 	 * The image is shown in the right bottom corner.
@@ -960,6 +966,7 @@ public:
 	 * Returns the currently used show flags passed to the Show() method.
 	 */
 	DWORD GetShowFlags() {return m_dwShow;}
+
 public:
 	CString GetLastErrorMessage() {return m_sLastError;}
 
@@ -1148,6 +1155,7 @@ private:
 	bool						m_bOwnDrag;
 
 	int							m_nIconFolder;
+	int							m_nRestoreOvl;
 
 	CWnd *						m_pStatLabel;
 	CButton *					m_pSelectButton;
@@ -1187,6 +1195,7 @@ public:
 	int m_FileLoaded;
 	git_revnum_t m_CurrentVersion;
 	bool m_bDoNotAutoselectSubmodules;
+	std::map<CString, CString>	m_restorepaths;
 };
 
 #if 0

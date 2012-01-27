@@ -922,6 +922,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\restore.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\restoreovl.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\RevertBackground.ico"
 				>
 			</File>

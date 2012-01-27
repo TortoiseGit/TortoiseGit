@@ -216,6 +216,32 @@
 		</para>
 	</sect2>
 	-->
+	<sect2 id="tsvn-dug-commit-restore">
+		<title>Commit only parts of files</title>
+		<para>
+			Sometimes you want to only commit parts of the changes
+			you made to a file. Such a situation usually happens when
+			you're working on something but then an urgent fix needs
+			to be committed, and that fix happens to be in the same file
+			you're working on.
+		</para>
+		<para>
+			<action>right click</action> on the file and use
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Restore after commit</guimenuitem>
+			</menuchoice>.
+			This will create a copy of the file as it is. Then you
+			can edit the file, e.g. in TortoiseMerge and undo all
+			the changes you don't want to commit. After saving those
+			changes you can commit the file.
+		</para>
+		<para>
+			After the commit is done, the copy of the file is restored
+			automatically, and you have the file with all your modifications
+			that were not committed back.
+		</para>
+	</sect2>
 	<sect2 id="tsvn-dug-commit-log">
 		<title>Commit Log Messages</title>
 		<para>

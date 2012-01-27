@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006,2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ class CTGitPath;
  *
  * \note This class is implemented as a singleton.
  * The singleton instance is created when first accessed. See SYS_IMAGE_LIST() function
- * easy access of the singleton instance. All 
+ * easy access of the singleton instance. All
  */
 class CSysImageList : public CImageList
 {
@@ -69,16 +69,24 @@ public:
 	int GetFileIconIndex(const CString& file) const;
 
 	/**
-	 * Get the index for a Git-style path file.  
+	 * Get the index for a Git-style path file.
 	 * Uses a cache to speed things up
 	 */
 	int GetPathIconIndex(const CTGitPath& file) const;
+
+	/**
+	 * Adds an icon to the image list and returns the index of the
+	 * added icon (or -1 if adding the icon fails)
+	 */
+	int AddIcon(const HICON hIcon);
 
 private:
 	static CSysImageList *instance;
 
 	typedef std::map<CString, int> IconIndexMap;
 	mutable IconIndexMap m_indexCache;
+
+	int GetFileIcon(LPCTSTR file, DWORD attributes, UINT extraFlags) const;
 };
 
 

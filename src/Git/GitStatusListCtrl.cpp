@@ -227,6 +227,8 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetWindowTheme(m_hWnd, L"Explorer", NULL);
 
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
+	m_nRestoreOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_RESTOREOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	SYS_IMAGE_LIST().SetOverlayImage(m_nRestoreOvl, OVL_RESTORE);
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
 	// keep CSorter::operator() in sync!!
@@ -993,6 +995,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	}
 
 	InsertItem(index, entryname, icon_idx);
+	if (m_restorepaths.find(GitPath->GetWinPathString()) != m_restorepaths.end())
+		SetItemState(index, INDEXTOOVERLAYMASK(OVL_RESTORE), TVIS_OVERLAYMASK);
 
 	this->SetItemData(index, (DWORD_PTR)GitPath);
 	// SVNSLC_COLFILENAME
@@ -1953,6 +1957,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
 				}
 
+				if (m_dwContextMenus & GITSLC_POPRESTORE && !filepath->IsDirectory())
+				{
+					if (m_restorepaths.find(filepath->GetWinPathString()) == m_restorepaths.end())
+						popup.AppendMenuIcon(IDGITLC_CREATERESTORE, IDS_MENUCREATERESTORE, IDI_RESTORE);
+					else
+						popup.AppendMenuIcon(IDGITLC_RESTOREPATH, IDS_MENURESTORE, IDI_RESTORE);
+				}
+
 				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOREV)) && ( !this->m_CurrentVersion.IsEmpty() )
 					&& this->m_CurrentVersion != GIT_REV_ZERO && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 				{
@@ -2185,7 +2197,51 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
 				}
 				break;
-
+			case IDGITLC_CREATERESTORE:
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					while (pos)
+					{
+						int index = GetNextSelectedItem(pos);
+						CTGitPath * entry2 = (CTGitPath * )GetItemData(index);
+						ASSERT(entry2 != NULL);
+						if (entry2 == NULL)
+							continue;
+						if (m_restorepaths.find(entry2->GetWinPathString()) != m_restorepaths.end())
+							continue;
+						CTGitPath tempFile = CTempFiles::Instance().GetTempFilePath(false);
+						if (CopyFile(g_Git.m_CurrentDir + _T("\\") + entry2->GetWinPathString(), tempFile.GetWinPath(), FALSE))
+						{
+							m_restorepaths[entry2->GetWinPathString()] = tempFile.GetWinPathString();
+							SetItemState(index, INDEXTOOVERLAYMASK(OVL_RESTORE), LVIS_OVERLAYMASK);
+						}
+					}
+					Invalidate();
+				}
+				break;
+			case IDGITLC_RESTOREPATH:
+				{
+					if (CMessageBox::Show(m_hWnd, _T("Do you really want to restore the copy? You will loose all changes that you have done after creating the copy."), _T("TortoiseGit"), 2, IDI_QUESTION, _T("Restore"), _T("Abort")) == 2)
+						break;
+					POSITION pos = GetFirstSelectedItemPosition();
+					while (pos)
+					{
+						int index = GetNextSelectedItem(pos);
+						CTGitPath * entry2 = (CTGitPath * )GetItemData(index);
+						ASSERT(entry2 != NULL);
+						if (entry2 == NULL)
+							continue;
+						if (m_restorepaths.find(entry2->GetWinPathString()) == m_restorepaths.end())
+							continue;
+						if (CopyFile(m_restorepaths[entry2->GetWinPathString()], g_Git.m_CurrentDir + _T("\\") + entry2->GetWinPathString(), FALSE))
+						{
+							m_restorepaths.erase(entry2->GetWinPathString());
+							SetItemState(index, 0, LVIS_OVERLAYMASK);
+						}
+					}
+					Invalidate();
+				}
+				break;
 			// Compare current version and work copy.
 			case IDGITLC_COMPAREWC:
 				{

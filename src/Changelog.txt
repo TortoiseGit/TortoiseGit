@@ -12,6 +12,7 @@
  * Fixed issue #1040: Commit to new branch
  * Fixed issue #1043: Add 'Stash' to 'Working dir changes' context menu in log dialog
  * Added support for Windows 7 libraries
+ * Fixed issue 222: support partially committing a file
 
 == Bug Fix ==
  * Updated shipped PuTTY binaries to version 0.62

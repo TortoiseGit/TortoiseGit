@@ -811,7 +811,7 @@ void CCommitDlg::OnOK()
 				SysFreeString(temp);
 			}
 		}
-
+		RestoreFiles(progress.m_GitStatus == 0);
 	}
 	else if(bAddSuccess)
 	{
@@ -1154,6 +1154,7 @@ void CCommitDlg::OnCancel()
 	if (m_ProjectProperties.sLogTemplate.Compare(m_sLogMessage) != 0)
 		m_History.AddEntry(m_sLogMessage);
 	m_History.Save();
+	RestoreFiles();
 	SaveSplitterPos();
 	CResizableStandAloneDialog::OnCancel();
 }
@@ -2211,5 +2212,15 @@ void CCommitDlg::OnBnClickedCheckNewBranch()
 	{
 		GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
+	}
+}
+
+void CCommitDlg::RestoreFiles(bool doNotAsk)
+{
+	if (m_ListCtrl.m_restorepaths.size() && (doNotAsk || CMessageBox::Show(m_hWnd, _T("You marked some files as \"Restore after commit\".\nDo you want to restore them now? You might loose all changes to this file after marking it."), _T("TortoiseGit"), 2, IDI_QUESTION, _T("Restore old state"), _T("Keep current state")) == 1))
+	{
+		for (std::map<CString, CString>::iterator it = m_ListCtrl.m_restorepaths.begin(); it != m_ListCtrl.m_restorepaths.end(); ++it)
+			CopyFile(it->second, g_Git.m_CurrentDir + _T("\\") + it->first, FALSE);
+		m_ListCtrl.m_restorepaths.clear();
 	}
 }

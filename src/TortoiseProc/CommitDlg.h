@@ -178,6 +178,7 @@ private:
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
+	void				RestoreFiles(bool doNotAsk = false);
 
 protected:
 	afx_msg void OnBnClickedSignOff();

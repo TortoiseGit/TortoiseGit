@@ -158,6 +158,8 @@
 #define IDD_SETTINGSOVERLAYHANDLERS     338
 #define IDI_LIBRARY                     339
 #define IDD_SETTINGS_CONFIG             340
+#define IDI_RESTORE                     341
+#define IDI_RESTOREOVL                  342
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -180,6 +182,7 @@
 #define IDC_LOGMESSAGE                  1014
 #define IDS_LOG_FILE_LINE_Del           1014
 #define IDS_LOG_FILE_LINE_DEL           1014
+#define IDS_MENURESTORE                 1014
 #define IDC_LOGMSG                      1015
 #define IDC_EXTDIFF                     1015
 #define IDS_ERR_TGITBLAME               1015
@@ -204,6 +207,7 @@
 #define IDC_NAME                        1027
 #define IDC_SERVERADDRESS               1027
 #define IDC_USEREDIT                    1027
+#define IDS_MENUCREATERESTORE           1027
 #define IDC_URLCOMBO                    1029
 #define IDC_FONTNAMES                   1030
 #define IDC_LOGBUTTON                   1031
@@ -1538,7 +1542,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        341
+#define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
 #define _APS_NEXT_CONTROL_VALUE         1682
 #define _APS_NEXT_SYMED_VALUE           201

@@ -96,6 +96,8 @@ IDI_GITCONFIG           ICON                    "gitconfig.ico"
 IDI_GITREMOTE           ICON                    "gitremote.ico"
 IDI_ACTIONFETCHING      ICON                    "..\\resources\\actionfetching.ico"
 IDI_LIBRARY             ICON                    "Library.ico"
+IDI_RESTORE             ICON                    "restore.ico"
+IDI_RESTOREOVL          ICON                    "restoreovl.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2607,6 +2609,7 @@ BEGIN
     IDS_FILEDIFF_STATADD    "Add"
     IDS_FILEDIFF_STATDEL    "Del"
     IDS_LOG_FILE_LINE_ADD   "Add"
+    IDS_MENURESTORE         "Restore"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""
     IDS_LOG_PUSH            "Push..."
@@ -3659,6 +3662,7 @@ BEGIN
     IDS_LOG_FILTER_SUBJECT  "Subject"
     IDS_STATUSLIST_SHOWLOGOLDNAME "Show log &before rename/copy"
     IDS_APPNAME             "TortoiseGit"
+    IDS_MENUCREATERESTORE   "Restore after commit"
 END
 
 #endif    // English (U.S.) resources
