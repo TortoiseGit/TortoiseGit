@@ -641,27 +641,34 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 		case ID_REFLOG_DEL:
 			{
-				CString ref = pSelLogEntry->m_Ref;
-				if (ref.Find(_T("refs/")) == 0)
-					ref = ref.Mid(5);
-				int pos = ref.ReverseFind('{');
-				if (pos > 0 && ref.Mid(pos, 2) != _T("@{"))
-					ref = ref.Left(pos) + _T("@")+ ref.Mid(pos);
 				CString str;
-				str.Format(_T("Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"), ref);
-				if(CMessageBox::Show(NULL, str, _T("TortoiseGit"), 1, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
+				if (GetSelectedCount() > 1)
+					str.Format(_T("Do you really want to permanently delete the %d selected refs? It can <ct=0x0000FF><b>NOT</b></ct> be recovered!"), GetSelectedCount());
+				else
+					str.Format(_T("Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"), pSelLogEntry->m_Ref);
+
+				if (CMessageBox::Show(NULL, str, _T("TortoiseGit"), 1, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 2)
+					return;
+
+				POSITION pos = GetFirstSelectedItemPosition();
+				while (pos)
 				{
-					CString cmd,out;
+					CString ref = ((GitRev *)m_arShownList[GetNextSelectedItem(pos)])->m_Ref;
+					if (ref.Find(_T("refs/")) == 0)
+						ref = ref.Mid(5);
+					int refpos = ref.ReverseFind('{');
+					if (refpos > 0 && ref.Mid(refpos, 2) != _T("@{"))
+						ref = ref.Left(refpos) + _T("@")+ ref.Mid(refpos);
+
+					CString cmd, out;
 					if (ref.Find(_T("stash")) == 0)
-					{
 						cmd.Format(_T("git.exe stash drop %s"), ref);
-					}
 					else
 						cmd.Format(_T("git.exe reflog delete %s"), ref);
+
 					if(g_Git.Run(cmd,&out,CP_ACP))
-					{
 						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
-					}
+
 					::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
 				}
 			}
