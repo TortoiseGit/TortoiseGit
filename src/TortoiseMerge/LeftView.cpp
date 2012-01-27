@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2009 - TortoiseSVN
+// Copyright (C) 2006-2009,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -193,7 +193,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 						m_pwndBottom->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
 						bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 						m_pwndBottom->m_pViewData->SetState(i, m_pViewData->GetState(i));
-						m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+						m_pwndBottom->m_pViewData->SetLineEnding(i, lineendings);
 						if (m_pwndBottom->IsLineConflicted(i))
 						{
 							if (m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -210,7 +210,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 					{
 						rightstate.difflines[i] = m_pwndRight->m_pViewData->GetLine(i);
 						m_pwndRight->m_pViewData->SetLine(i, m_pViewData->GetLine(i));
-						m_pwndRight->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+						m_pwndRight->m_pViewData->SetLineEnding(i, lineendings);
 						DiffStates state2 = m_pViewData->GetState(i);
 						switch (state2)
 						{

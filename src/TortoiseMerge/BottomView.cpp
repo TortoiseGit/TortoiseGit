@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2009 - TortoiseSVN
+// Copyright (C) 2006-2009,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -137,7 +137,7 @@ void CBottomView::UseTheirTextBlock()
 		m_pViewData->SetLine(i, m_pwndLeft->m_pViewData->GetLine(i));
 		bottomstate.linestates[i] = m_pViewData->GetState(i);
 		m_pViewData->SetState(i, m_pwndLeft->m_pViewData->GetState(i));
-		m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+		m_pViewData->SetLineEnding(i, lineendings);
 		if (IsLineConflicted(i))
 		{
 			if (m_pwndLeft->m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -165,8 +165,7 @@ void CBottomView::UseMyTextBlock()
 		m_pViewData->SetLine(i, m_pwndRight->m_pViewData->GetLine(i));
 		bottomstate.linestates[i] = m_pViewData->GetState(i);
 		m_pViewData->SetState(i, m_pwndRight->m_pViewData->GetState(i));
-		m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
-		m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+		m_pViewData->SetLineEnding(i, lineendings);
 		{
 			if (m_pwndRight->m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
 				m_pViewData->SetState(i, DIFFSTATE_CONFLICTRESOLVEDEMPTY);

@@ -2428,7 +2428,7 @@ void CBaseView::UseTheirAndYourBlock(viewstate &rightstate, viewstate &bottomsta
 		m_pwndBottom->m_pViewData->SetLine(i, m_pwndLeft->m_pViewData->GetLine(i));
 		bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 		m_pwndBottom->m_pViewData->SetState(i, m_pwndLeft->m_pViewData->GetState(i));
-		m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+		m_pwndBottom->m_pViewData->SetLineEnding(i, m_pwndBottom->lineendings);
 		if (m_pwndBottom->IsLineConflicted(i))
 		{
 			if (m_pwndLeft->m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -2488,7 +2488,7 @@ void CBaseView::UseYourAndTheirBlock(viewstate &rightstate, viewstate &bottomsta
 		bottomstate.linestates[i] = m_pwndBottom->m_pViewData->GetState(i);
 		m_pwndBottom->m_pViewData->SetState(i, m_pwndRight->m_pViewData->GetState(i));
 		rightstate.linestates[i] = m_pwndRight->m_pViewData->GetState(i);
-		m_pwndBottom->m_pViewData->SetLineEnding(i, EOL_AUTOLINE);
+		m_pwndBottom->m_pViewData->SetLineEnding(i, m_pwndBottom->lineendings);
 		if (m_pwndBottom->IsLineConflicted(i))
 		{
 			if (m_pwndRight->m_pViewData->GetState(i) == DIFFSTATE_CONFLICTEMPTY)
@@ -2736,7 +2736,7 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 				newEOL = EOL_LF;
 				break;
 			case EOL_LF:
-				newEOL = EOL_CRLF;
+				newEOL = (m_pViewData->GetCount() - 1 == m_ptCaretPos.y && !m_pViewData->GetLine(m_ptCaretPos.y).IsEmpty()) ? EOL_NOENDING : EOL_CRLF;
 				break;
 		}
 		m_pViewData->SetLineEnding(m_ptCaretPos.y, newEOL);
@@ -2748,9 +2748,14 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		// insert a new, fresh and empty line below the cursor
 		RemoveSelectedText();
 		AddUndoLine(m_ptCaretPos.y, true);
+		EOL eOriginalEnding = m_pViewData->GetLineEnding(m_ptCaretPos.y);
+		if (m_pViewData->GetCount() - 2 == m_ptCaretPos.y && eOriginalEnding == EOL_NOENDING)
+			m_pViewData->SetLineEnding(m_ptCaretPos.y, lineendings);
 		// move the cursor to the new line
 		m_ptCaretPos.y++;
 		m_ptCaretPos.x = 0;
+		if (m_pViewData->GetCount() - 1 == m_ptCaretPos.y)
+			m_pViewData->SetLineEnding(m_ptCaretPos.y, eOriginalEnding);
 		UpdateGoalPos();
 	}
 	else
@@ -2782,10 +2787,10 @@ void CBaseView::AddEmptyLine(int nLineIndex)
 		CString sPartLine = GetLineChars(nLineIndex);
 		m_pViewData->SetLine(nLineIndex, sPartLine.Left(m_ptCaretPos.x));
 		sPartLine = sPartLine.Mid(m_ptCaretPos.x);
-		m_pViewData->InsertData(nLineIndex+1, sPartLine, DIFFSTATE_EDITED, -1, m_pViewData->GetLineEnding(nLineIndex));
+		m_pViewData->InsertData(nLineIndex+1, sPartLine, DIFFSTATE_EDITED, -1, lineendings);
 	}
 	else
-		m_pViewData->InsertData(nLineIndex+1, _T(""), DIFFSTATE_EDITED, -1, m_pViewData->GetLineEnding(nLineIndex));
+		m_pViewData->InsertData(nLineIndex+1, _T(""), DIFFSTATE_EDITED, -1, lineendings);
 	Invalidate(FALSE);
 }
 
