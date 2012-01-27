@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2007,2011 - TortoiseSVN
+// External Cache Copyright (C) 2007,2010-2011 - TortoiseSVN
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -52,4 +52,99 @@ CString GetCacheID()
 		return t;
 	}
 	return _T("");
+}
+
+bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
+{
+	int retrycount = 2;
+	CAutoFile hPipe;
+	do
+	{
+		hPipe = CreateFile(
+			GetCacheCommandPipeName(),		// pipe name
+			GENERIC_READ |					// read and write access
+			GENERIC_WRITE,
+			0,								// no sharing
+			NULL,							// default security attributes
+			OPEN_EXISTING,					// opens existing pipe
+			FILE_FLAG_OVERLAPPED,			// default attributes
+			NULL);							// no template file
+		retrycount--;
+		if (!hPipe)
+			Sleep(10);
+	} while ((!hPipe) && (retrycount));
+
+	if (!hPipe)
+	{
+		//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not connect to pipe\n");
+		return false;
+	}
+
+	// The pipe connected; change to message-read mode.
+	DWORD dwMode = PIPE_READMODE_MESSAGE;
+	if (SetNamedPipeHandleState(
+		hPipe,		// pipe handle
+		&dwMode,	// new pipe mode
+		NULL,		// don't set maximum bytes
+		NULL))		// don't set maximum time
+	{
+		DWORD cbWritten;
+		TGITCacheCommand cmd;
+		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		cmd.command = command;
+		if (path)
+			_tcsncpy_s(cmd.path, path, _TRUNCATE);
+
+		retrycount = 2;
+		BOOL fSuccess = FALSE;
+		do
+		{
+			fSuccess = WriteFile(
+				hPipe,			// handle to pipe
+				&cmd,			// buffer to write from
+				sizeof(cmd),	// number of bytes to write
+				&cbWritten,		// number of bytes written
+				NULL);			// not overlapped I/O
+			retrycount--;
+			if (! fSuccess || sizeof(cmd) != cbWritten)
+				Sleep(10);
+		} while ((retrycount) && (! fSuccess || sizeof(cmd) != cbWritten));
+
+		if (! fSuccess || sizeof(cmd) != cbWritten)
+		{
+			//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not write to pipe\n");
+			DisconnectNamedPipe(hPipe);
+			return false;
+		}
+		// now tell the cache we don't need it's command thread anymore
+		SecureZeroMemory(&cmd, sizeof(TGITCacheCommand));
+		cmd.command = TGITCACHECOMMAND_END;
+		WriteFile(
+			hPipe,			// handle to pipe
+			&cmd,			// buffer to write from
+			sizeof(cmd),	// number of bytes to write
+			&cbWritten,		// number of bytes written
+			NULL);			// not overlapped I/O
+		DisconnectNamedPipe(hPipe);
+	}
+	else
+	{
+		//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+		return false;
+	}
+
+	return true;
+}
+
+CBlockCacheForPath::CBlockCacheForPath(const WCHAR * aPath)
+{
+	wcsncpy(path, aPath, MAX_PATH);
+	path[MAX_PATH] = 0;
+
+	SendCacheCommand (TGITCACHECOMMAND_BLOCK, path);
+}
+
+CBlockCacheForPath::~CBlockCacheForPath()
+{
+	SendCacheCommand (TGITCACHECOMMAND_UNBLOCK, path);
 }

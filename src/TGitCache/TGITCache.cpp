@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
+// External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -788,9 +788,24 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 					CGitStatusCache::Instance().Done();
 				}
 				break;
-
+			case TGITCACHECOMMAND_BLOCK:
+				{
+					CTGitPath changedpath;
+					changedpath.SetFromWin(CString(command.path));
+					ATLTRACE(_T("block path %s\n"), changedpath.GetWinPath());
+					CGitStatusCache::Instance().BlockPath(changedpath);
+				}
+				break;
+			case TGITCACHECOMMAND_UNBLOCK:
+				{
+					CTGitPath changedpath;
+					changedpath.SetFromWin(CString(command.path));
+					ATLTRACE(_T("block path %s\n"), changedpath.GetWinPath());
+					CGitStatusCache::Instance().UnBlockPath(changedpath);
+				}
+				break;
 		}
-	} 
+	}
 
 	// Flush the pipe to allow the client to read the pipe's contents 
 	// before disconnecting. Then disconnect the pipe, and close the 

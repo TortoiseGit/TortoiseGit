@@ -206,6 +206,7 @@ void CFolderCrawler::WorkerThread()
 				ATLTRACE(_T("Crawl stop blocking path %s\n"), m_blockedPath.GetWinPath());
 				m_blockedPath.Reset();
 			}
+			CGitStatusCache::Instance().RemoveTimedoutBlocks();
 
 			if ((m_foldersToUpdate.size() == 0) && (m_pathsToUpdate.size() == 0))
 			{
@@ -233,6 +234,8 @@ void CFolderCrawler::WorkerThread()
 
 				// don't crawl paths that are excluded
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
+					continue;
+				if (!CGitStatusCache::Instance().IsPathGood(workingPath))
 					continue;
 				// check if the changed path is inside an .git folder
 				CString projectroot;
@@ -404,6 +407,8 @@ void CFolderCrawler::WorkerThread()
 				if ((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath)))
 					continue;
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
+					continue;
+				if (!CGitStatusCache::Instance().IsPathGood(workingPath))
 					continue;
 
 				ATLTRACE(_T("Crawling folder: %s\n"), workingPath.GetWinPath());

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2006,2008 - TortoiseSVN
+// External Cache Copyright (C) 2005-2006,2008,2010 - TortoiseSVN
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,9 @@
 #include "shlobj.h"
 
 //////////////////////////////////////////////////////////////////////////
+
+#define BLOCK_PATH_DEFAULT_TIMEOUT	600		// 10 minutes
+#define BLOCK_PATH_MAX_TIMEOUT		1200	// 20 minutes
 
 CGitStatusCache* CGitStatusCache::m_pInstance;
 
@@ -224,17 +227,19 @@ void CGitStatusCache::Init()
 
 CGitStatusCache::CGitStatusCache(void)
 {
+	#define forever DWORD(-1)
+	AutoLocker lock(m_NoWatchPathCritSec);
 	TCHAR path[MAX_PATH];
 	SHGetFolderPath(NULL, CSIDL_COOKIES, NULL, 0, path);
-	m_NoWatchPaths.insert(CTGitPath(CString(path)));
+	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
 	SHGetFolderPath(NULL, CSIDL_HISTORY, NULL, 0, path);
-	m_NoWatchPaths.insert(CTGitPath(CString(path)));
+	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
 	SHGetFolderPath(NULL, CSIDL_INTERNET_CACHE, NULL, 0, path);
-	m_NoWatchPaths.insert(CTGitPath(CString(path)));
+	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
 	SHGetFolderPath(NULL, CSIDL_SYSTEM, NULL, 0, path);
-	m_NoWatchPaths.insert(CTGitPath(CString(path)));
+	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
 	SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, path);
-	m_NoWatchPaths.insert(CTGitPath(CString(path)));
+	m_NoWatchPaths[CTGitPath(CString(path))] = forever;
 	m_bClearMemory = false;
 	m_mostRecentExpiresAt = 0;
 }
@@ -272,12 +277,72 @@ void CGitStatusCache::Refresh()
 
 bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 {
-	for (std::set<CTGitPath>::iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
+	AutoLocker lock(m_NoWatchPathCritSec);
+	for (std::map<CTGitPath, DWORD>::const_iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
 	{
-		if (it->IsAncestorOf(path))
+		if (it->first.IsAncestorOf(path))
+		{
+			ATLTRACE(_T("path not good: %s\n"), it->first.GetWinPath());
 			return false;
+		}
 	}
 	return true;
+}
+
+bool CGitStatusCache::BlockPath(const CTGitPath& path, DWORD timeout /* = 0 */)
+{
+	if (timeout == 0)
+		timeout = BLOCK_PATH_DEFAULT_TIMEOUT;
+
+	if (timeout > BLOCK_PATH_MAX_TIMEOUT)
+		timeout = BLOCK_PATH_MAX_TIMEOUT;
+
+	timeout = GetTickCount() + (timeout * 1000);	// timeout is in seconds, but we need the milliseconds
+
+	AutoLocker lock(m_NoWatchPathCritSec);
+	m_NoWatchPaths[path.GetDirectory()] = timeout;
+
+	return true;
+}
+
+bool CGitStatusCache::UnBlockPath(const CTGitPath& path)
+{
+	bool ret = false;
+	AutoLocker lock(m_NoWatchPathCritSec);
+	std::map<CTGitPath, DWORD>::iterator it = m_NoWatchPaths.find(path.GetDirectory());
+	if (it != m_NoWatchPaths.end())
+	{
+		ATLTRACE(_T("path removed from no good: %s\n"), it->first.GetWinPath());
+		m_NoWatchPaths.erase(it);
+		ret = true;
+	}
+	AddFolderForCrawling(path.GetDirectory());
+
+	return ret;
+}
+
+bool CGitStatusCache::RemoveTimedoutBlocks()
+{
+	bool ret = false;
+	DWORD currentTicks = GetTickCount();
+	AutoLocker lock(m_NoWatchPathCritSec);
+	std::vector<CTGitPath> toRemove;
+	for (std::map<CTGitPath, DWORD>::const_iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
+	{
+		if (currentTicks > it->second)
+		{
+			toRemove.push_back(it->first);
+		}
+	}
+	if (toRemove.size())
+	{
+		for (std::vector<CTGitPath>::const_iterator it = toRemove.begin(); it != toRemove.end(); ++it)
+		{
+			ret = ret || UnBlockPath(*it);
+		}
+	}
+
+	return ret;
 }
 
 void CGitStatusCache::UpdateShell(const CTGitPath& path)
