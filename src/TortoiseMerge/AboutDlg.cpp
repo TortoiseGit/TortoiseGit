@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007 - TortoiseSVN
+// Copyright (C) 2006-2007, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,11 +27,10 @@
 
 // CAboutDlg dialog
 
-IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
+IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CAboutDlg::IDD, pParent)
+	: CStandAloneDialog(CAboutDlg::IDD, pParent)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 CAboutDlg::~CAboutDlg()
@@ -40,59 +39,22 @@ CAboutDlg::~CAboutDlg()
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_WEBLINK, m_cWebLink);
 	DDX_Control(pDX, IDC_SUPPORTLINK, m_cSupportLink);
 }
 
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
+BEGIN_MESSAGE_MAP(CAboutDlg, CStandAloneDialog)
 	ON_WM_TIMER()
 	ON_WM_MOUSEMOVE()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
-void CAboutDlg::OnPaint() 
-{
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialog::OnPaint();
-	}
-}
-
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
-HCURSOR CAboutDlg::OnQueryDragIcon()
-{
-	return static_cast<HCURSOR>(m_hIcon);
-}
-
 BOOL CAboutDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+	CStandAloneDialog::OnInitDialog();
 
 	//set the version string
 	CString temp, boxtitle;
@@ -140,7 +102,7 @@ void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 		r.bottom = r.top + m_renderSrc.GetHeight();
 		m_waterEffect.Blob(random(r.left,r.right), random(r.top, r.bottom), 2, 400, m_waterEffect.m_iHpage);
 	}
-	CDialog::OnTimer(nIDEvent);
+	CStandAloneDialog::OnTimer(nIDEvent);
 }
 
 void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
@@ -164,6 +126,12 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 	}
 
+	CStandAloneDialog::OnMouseMove(nFlags, point);
+}
 
-	CDialog::OnMouseMove(nFlags, point);
+void CAboutDlg::OnClose()
+{
+	KillTimer(ID_EFFECTTIMER);
+	KillTimer(ID_DROPTIMER);
+	CStandAloneDialog::OnClose();
 }

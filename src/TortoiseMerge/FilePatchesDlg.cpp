@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2008 - Stefan Kueng
+// Copyright (C) 2006, 2008, 2010-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,9 +25,9 @@
 #include "SysProgressDlg.h"
 
 
-IMPLEMENT_DYNAMIC(CFilePatchesDlg, CDialog)
+IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)
 CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CFilePatchesDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CFilePatchesDlg::IDD, pParent)
 	, m_bMinimized(FALSE)
 	, m_pPatch(NULL)
 	, m_pCallBack(NULL)
@@ -43,7 +43,7 @@ CFilePatchesDlg::~CFilePatchesDlg()
 
 void CFilePatchesDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_FILELIST, m_cFileList);
 }
 
@@ -79,6 +79,20 @@ CString CFilePatchesDlg::GetFullPath(int nIndex,int fileno)
 	return temp;
 }
 
+BOOL CFilePatchesDlg::OnInitDialog()
+{
+	CResizableStandAloneDialog::OnInitDialog();
+
+	// hide the grip since it would overlap with the "path all" button
+//	m_wndGrip.ShowWindow(SW_HIDE); m_nShowCount = -100;
+
+	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_PATCHSELECTEDBUTTON, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_PATCHALLBUTTON, BOTTOM_LEFT, BOTTOM_RIGHT);
+
+	return TRUE;
+}
+
 BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent)
 {
 	if ((pCallBack==NULL)||(pPatch==NULL))
@@ -97,14 +111,9 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 	}
 	else
 	{
-		CString title;
-		title.LoadString(IDS_PATCH_TITLE);
-		title += _T("  ") + m_sPath;
 		CRect rect;
 		GetClientRect(&rect);
-		PathCompactPath(GetDC()->m_hDC, title.GetBuffer(), rect.Width());
-		title.ReleaseBuffer();
-		SetWindowText(title);
+		SetTitleWithPath(rect.Width());
 		if (m_sPath.Right(1).Compare(_T("\\"))==0)
 			m_sPath = m_sPath.Left(m_sPath.GetLength()-1);
 
@@ -202,7 +211,7 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 	return TRUE;
 }
 
-BEGIN_MESSAGE_MAP(CFilePatchesDlg, CDialog)
+BEGIN_MESSAGE_MAP(CFilePatchesDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_NOTIFY(LVN_GETINFOTIP, IDC_FILELIST, OnLvnGetInfoTipFilelist)
 	ON_NOTIFY(NM_DBLCLK, IDC_FILELIST, OnNMDblclkFilelist)
@@ -210,24 +219,19 @@ BEGIN_MESSAGE_MAP(CFilePatchesDlg, CDialog)
 	ON_NOTIFY(NM_RCLICK, IDC_FILELIST, OnNMRclickFilelist)
 	ON_WM_NCLBUTTONDBLCLK()
 	ON_WM_MOVING()
+	ON_BN_CLICKED(IDC_PATCHSELECTEDBUTTON, &CFilePatchesDlg::OnBnClickedPatchselectedbutton)
+	ON_BN_CLICKED(IDC_PATCHALLBUTTON, &CFilePatchesDlg::OnBnClickedPatchallbutton)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_FILELIST, &CFilePatchesDlg::OnLvnItemchangedFilelist)
 END_MESSAGE_MAP()
 
 void CFilePatchesDlg::OnSize(UINT nType, int cx, int cy)
 {
-	CDialog::OnSize(nType, cx, cy);
+	CResizableStandAloneDialog::OnSize(nType, cx, cy);
 	if (this->IsWindowVisible())
 	{
-		CRect rect;
-		GetClientRect(rect);
-		GetDlgItem(IDC_FILELIST)->MoveWindow(rect.left, rect.top, cx, cy);
-		m_cFileList.SetColumnWidth(0, cx);
+		m_cFileList.SetColumnWidth(0, LVSCW_AUTOSIZE);
 	}
-	CString title;
-	title.LoadString(IDS_PATCH_TITLE);
-	title += _T("  ") + m_sPath;
-	PathCompactPath(GetDC()->m_hDC, title.GetBuffer(), cx);
-	title.ReleaseBuffer();
-	SetWindowText(title);
+	SetTitleWithPath(cx);
 }
 
 void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -342,111 +346,62 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	DWORD ptW = GetMessagePos();
 	point.x = GET_X_LPARAM(ptW);
 	point.y = GET_Y_LPARAM(ptW);
-	if (popup.CreatePopupMenu())
+	if (!popup.CreatePopupMenu())
+		return;
+
+	UINT nFlags = MF_STRING | (m_cFileList.GetSelectedCount() == 1 ? MF_ENABLED : MF_DISABLED | MF_GRAYED);
+
+	temp.LoadString(IDS_PATCH_REVIEW);
+	popup.AppendMenu(nFlags, ID_PATCH_REVIEW, temp);
+	popup.SetDefaultItem(ID_PATCH_REVIEW, FALSE);
+
+	temp.LoadString(IDS_PATCH_PREVIEW);
+	popup.AppendMenu(nFlags, ID_PATCHPREVIEW, temp);
+
+	temp.LoadString(IDS_PATCH_ALL);
+	popup.AppendMenu(MF_STRING | MF_ENABLED, ID_PATCHALL, temp);
+
+	nFlags = MF_STRING | (m_cFileList.GetSelectedCount() > 0 ? MF_ENABLED : MF_DISABLED | MF_GRAYED);
+	temp.LoadString(IDS_PATCH_SELECTED);
+	popup.AppendMenu(nFlags, ID_PATCHSELECTED, temp);
+
+	// if the context menu is invoked through the keyboard, we have to use
+	// a calculated position on where to anchor the menu on
+	if ((point.x == -1) && (point.y == -1))
 	{
-		UINT nFlags;
-		
-		nFlags = MF_STRING | (m_cFileList.GetSelectedCount()==1 ? MF_ENABLED : MF_DISABLED | MF_GRAYED);
+		CRect rect;
+		GetWindowRect(&rect);
+		point = rect.CenterPoint();
+	}
 
-		temp.LoadString(IDS_PATCH_REVIEW);
-		popup.AppendMenu(nFlags, ID_PATCH_REVIEW, temp);
-		popup.SetDefaultItem(ID_PATCH_REVIEW, FALSE);
+	bool bReview=false;
 
-		temp.LoadString(IDS_PATCH_PREVIEW);
-		popup.AppendMenu(nFlags, ID_PATCHPREVIEW, temp);		
-
-		temp.LoadString(IDS_PATCH_ALL);
-		popup.AppendMenu(MF_STRING | MF_ENABLED, ID_PATCHALL, temp);
-		
-		nFlags = MF_STRING | (m_cFileList.GetSelectedCount()>0 ? MF_ENABLED : MF_DISABLED | MF_GRAYED);
-		temp.LoadString(IDS_PATCH_SELECTED);
-		popup.AppendMenu(nFlags, ID_PATCHSELECTED, temp);
-		
-		// if the context menu is invoked through the keyboard, we have to use
-		// a calculated position on where to anchor the menu on
-		if ((point.x == -1) && (point.y == -1))
+	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+	switch (cmd)
+	{
+	case ID_PATCH_REVIEW:
+		bReview = true;
+		//go through case
+	case ID_PATCHPREVIEW:
 		{
-			CRect rect;
-			GetWindowRect(&rect);
-			point = rect.CenterPoint();
-		}
-
-		bool bReview=false;
-
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
-		switch (cmd)
-		{
-		case ID_PATCH_REVIEW:
-			bReview = true;
-			//go through case
-		case ID_PATCHPREVIEW:
+			if (m_pCallBack)
 			{
-				if (m_pCallBack)
+				int nIndex = m_cFileList.GetSelectionMark();
+				if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
 				{
-					int nIndex = m_cFileList.GetSelectionMark();
-					if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
-					{
-						m_pCallBack->PatchFile(GetFullPath(nIndex), m_pPatch->GetRevision(nIndex),false,bReview);
-					}
+					m_pCallBack->PatchFile(GetFullPath(nIndex), m_pPatch->GetRevision(nIndex),false,bReview);
 				}
 			}
-			break;
-		case ID_PATCHALL:
-			{
-				if (m_pCallBack)
-				{
-					CSysProgressDlg progDlg;
-					progDlg.SetTitle(IDR_MAINFRAME);
-					progDlg.SetShowProgressBar(true);
-					progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_ALL)));
-					progDlg.ShowModeless(m_hWnd);
-
-					for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled(); i++)
-					{
-						if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
-						{
-							progDlg.SetLine(2, GetFullPath(i), true);
-							m_pCallBack->PatchFile(GetFullPath(i), m_pPatch->GetRevision(i), TRUE);
-						}
-						progDlg.SetProgress64(i, m_arFileStates.GetCount());
-					}
-					progDlg.Stop();
-				}
-			} 
-			break;
-		case ID_PATCHSELECTED:
-			{
-				if (m_pCallBack)
-				{
-					CSysProgressDlg progDlg;
-					progDlg.SetTitle(IDR_MAINFRAME);
-					progDlg.SetShowProgressBar(true);
-					progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_SELECTED)));
-					progDlg.ShowModeless(m_hWnd);
-
-					// The list cannot be sorted by user, so the order of the
-					// items in the list is identical to the order in the array
-					// m_arFileStates.
-					int selCount = m_cFileList.GetSelectedCount();
-					int count = 1;
-					POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
-					int index;
-					while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()))
-					{
-						if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
-						{
-							progDlg.SetLine(2, GetFullPath(index), true);
-							m_pCallBack->PatchFile(GetFullPath(index), m_pPatch->GetRevision(index), TRUE);
-						}
-						progDlg.SetProgress64(count++, selCount);
-					}
-					progDlg.Stop();
-				}
-			} 
-			break;
-		default:
-			break;
 		}
+		break;
+	case ID_PATCHALL:
+		PatchAll();
+		break;
+	case ID_PATCHSELECTED:
+		PatchSelected();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -470,24 +425,106 @@ void CFilePatchesDlg::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
 		MoveWindow(windowrect.left, windowrect.top, windowrect.right - windowrect.left, m_nWindowHeight);
 	}
 	m_bMinimized = !m_bMinimized;
-	CDialog::OnNcLButtonDblClk(nHitTest, point);
+	CResizableStandAloneDialog::OnNcLButtonDblClk(nHitTest, point);
 }
 
 void CFilePatchesDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
-#define STICKYSIZE 5
 	RECT parentRect;
 	m_pMainFrame->GetWindowRect(&parentRect);
-	if (abs(parentRect.left - pRect->right) < STICKYSIZE)
+	const int stickySize = 5;
+	if (abs(parentRect.left - pRect->right) < stickySize)
 	{
 		int width = pRect->right - pRect->left;
 		pRect->right = parentRect.left;
 		pRect->left = pRect->right - width;
 	}
-	CDialog::OnMoving(fwSide, pRect);
+	CResizableStandAloneDialog::OnMoving(fwSide, pRect);
 }
 
 void CFilePatchesDlg::OnOK()
 {
 	return;
 }
+
+void CFilePatchesDlg::SetTitleWithPath(int width)
+{
+	CString title;
+	title.LoadString(IDS_PATCH_TITLE);
+	title += _T("  ") + m_sPath;
+	title = title.Left(MAX_PATH-1);
+	PathCompactPath(GetDC()->m_hDC, title.GetBuffer(), width);
+	title.ReleaseBuffer();
+	SetWindowText(title);
+}
+
+void CFilePatchesDlg::OnBnClickedPatchselectedbutton()
+{
+	PatchSelected();
+}
+
+void CFilePatchesDlg::OnBnClickedPatchallbutton()
+{
+	PatchAll();
+}
+
+void CFilePatchesDlg::PatchAll()
+{
+	if (m_pCallBack)
+	{
+		CSysProgressDlg progDlg;
+		progDlg.SetTitle(IDR_MAINFRAME);
+		progDlg.SetShowProgressBar(true);
+		progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_ALL)));
+		progDlg.ShowModeless(m_hWnd);
+
+		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled(); i++)
+		{
+			if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
+			{
+				progDlg.SetLine(2, GetFullPath(i), true);
+				m_pCallBack->PatchFile(GetFullPath(i), m_pPatch->GetRevision(i), TRUE);
+			}
+			progDlg.SetProgress64(i, m_arFileStates.GetCount());
+		}
+		progDlg.Stop();
+	}
+}
+
+void CFilePatchesDlg::PatchSelected()
+{
+	if (m_pCallBack)
+	{
+		CSysProgressDlg progDlg;
+		progDlg.SetTitle(IDR_MAINFRAME);
+		progDlg.SetShowProgressBar(true);
+		progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_SELECTED)));
+		progDlg.ShowModeless(m_hWnd);
+
+		// The list cannot be sorted by user, so the order of the
+		// items in the list is identical to the order in the array
+		// m_arFileStates.
+		int selCount = m_cFileList.GetSelectedCount();
+		int count = 1;
+		POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
+		int index;
+		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()))
+		{
+			if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
+			{
+				progDlg.SetLine(2, GetFullPath(index), true);
+				m_pCallBack->PatchFile(GetFullPath(index), m_pPatch->GetRevision(index), TRUE);
+			}
+			progDlg.SetProgress64(count++, selCount);
+		}
+		progDlg.Stop();
+	}
+}
+
+void CFilePatchesDlg::OnLvnItemchangedFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
+{
+	DialogEnableWindow(IDC_PATCHSELECTEDBUTTON, m_cFileList.GetSelectedCount() > 0);
+
+	*pResult = 0;
+}
+

@@ -37,7 +37,6 @@
 #define IDS_ERR_PATCH_NOREMOVEFILELINE  1002
 #define IDC_THEIRFILEBROWSE             1003
 #define IDS_ERR_PATCH_NOADDFILELINE     1003
-#define IDC_HELPBUTTON                  1004
 #define IDS_ERR_PATCH_RENAMINGNOTSUPPORTED 1004
 #define IDC_VERSIONSTRING               1005
 #define IDS_ERR_PATCH_CHUNKSTARTNOTFOUND 1005
@@ -128,9 +127,12 @@
 #define IDC_CHECK4                      1068
 #define IDC_USEBDIFF                    1068
 #define IDC_SEARCHTEXT                  1070
-#define IDC_BUTTON1                     1071
 #define IDC_BKMODIFIED                  1071
+#define IDC_UNIDIFFGROUP                1072
+#define IDC_MERGEGROUP                  1073
 #define IDC_VERSIONBOX                  1075
+#define IDC_PATCHSELECTEDBUTTON         1075
+#define IDC_PATCHALLBUTTON              1076
 #define IDS_ERR_DIFF_DIFF               1080
 #define IDS_ERR_DIFF_NEWLINES           1081
 #define IDC_WEBLINK                     1084
