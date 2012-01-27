@@ -247,13 +247,14 @@
 #define ID_EDIT_USEBLOCKFROMRI          32858
 #define ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT 32859
 #define ID_EDIT_TEST                    32862
+#define ID_EDIT_SELECTALL               32883
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        147
-#define _APS_NEXT_COMMAND_VALUE         32870
+#define _APS_NEXT_COMMAND_VALUE         32884
 #define _APS_NEXT_CONTROL_VALUE         1072
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

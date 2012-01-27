@@ -136,6 +136,7 @@ protected:
 	afx_msg void	OnCaretWordright();
 	afx_msg void	OnEditCut();
 	afx_msg void	OnEditPaste();
+	afx_msg void	OnEditSelectall();
 
 	DECLARE_MESSAGE_MAP()
 
