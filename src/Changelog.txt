@@ -28,6 +28,9 @@
  * Fixed issue #1008: Bug Id not displayed in Log Messages (multiline comment)
  * Fixed issue #1020: Incorrect Overlays on large repos (> 2 GiB), upgraded libgit2
  * Fixed issue #1005: Tortoisegit overlay icons are not correctly shown for new create local repo
+ * Fixed issue #1051: Adding files using the add files dialog doesn't normalize line endings
+ * Fixed issue #956, issue #973, issue #980, issue #1016: 100% CPU and icons blinking bugs in TGitCache
+ * Fixed issue #1044: Add file to index with special character (ei – "dash") or accent fail without any message
 
 = Release 1.7.6.0 =
 == Features==
@@ -84,6 +87,7 @@
  * Fixed issue #949: TortoiseMerge does not allow copying to the clipboard via Ctrl+Insert
  * Fixed issue #950: avoid possible crash if .git/packed-refs contains annotated tags
  * Fixed issue #915: TortoiseProc memory corruption on empty repo
+ * Fixed issue #959: Overlay icons are not updated immediately
 
 = Release 1.7.4.0 =
 == Features==
