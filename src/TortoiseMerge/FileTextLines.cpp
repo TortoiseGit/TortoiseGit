@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2009,2011 - TortoiseSVN
+// Copyright (C) 2007-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 CFileTextLines::CFileTextLines(void)
 	: m_UnicodeType(CFileTextLines::AUTOTYPE)
 	, m_LineEndings(EOL_AUTOLINE)
-	, m_bReturnAtEnd(true)
+	, m_bReturnAtEnd(false)
 {
 }
 
@@ -39,71 +39,71 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 {
 	if (cb < 2)
 		return CFileTextLines::ASCII;
-	UINT16 * pVal = (UINT16 *)pBuffer;
-	UINT8 * pVal2 = (UINT8 *)(pVal+1);
+	UINT16 * pVal16 = (UINT16 *)pBuffer;
+	UINT8 * pVal8 = (UINT8 *)(pVal16+1);
 	// scan the whole buffer for a 0x0000 sequence
 	// if found, we assume a binary file
 	for (int i=0; i<(cb-2); i=i+2)
 	{
-		if (0x0000 == *pVal++)
+		if (0x0000 == *pVal16++)
 			return CFileTextLines::BINARY;
 	}
-	pVal = (UINT16 *)pBuffer;
-	if (*pVal == 0xFEFF)
+	pVal16 = (UINT16 *)pBuffer;
+	if (*pVal16 == 0xFEFF)
 		return CFileTextLines::UNICODE_LE;
 	if (cb < 3)
 		return ASCII;
-	if (*pVal == 0xBBEF)
+	if (*pVal16 == 0xBBEF)
 	{
-		if (*pVal2 == 0xBF)
+		if (*pVal8 == 0xBF)
 			return CFileTextLines::UTF8BOM;
 	}
 	// check for illegal UTF8 chars
-	pVal2 = (UINT8 *)pBuffer;
+	pVal8 = (UINT8 *)pBuffer;
 	for (int i=0; i<cb; ++i)
 	{
-		if ((*pVal2 == 0xC0)||(*pVal2 == 0xC1)||(*pVal2 >= 0xF5))
+		if ((*pVal8 == 0xC0)||(*pVal8 == 0xC1)||(*pVal8 >= 0xF5))
 			return CFileTextLines::ASCII;
-		pVal2++;
+		pVal8++;
 	}
-	pVal2 = (UINT8 *)pBuffer;
+	pVal8 = (UINT8 *)pBuffer;
 	bool bUTF8 = false;
 	bool bNonANSI = false;
 	for (int i=0; i<(cb-3); ++i)
 	{
-		if (*pVal2 > 127)
+		if (*pVal8 > 127)
 			bNonANSI = true;
-		if ((*pVal2 & 0xE0)==0xC0)
+		if ((*pVal8 & 0xE0)==0xC0)
 		{
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return CFileTextLines::ASCII;
 			bUTF8 = true;
 		}
-		if ((*pVal2 & 0xF0)==0xE0)
+		if ((*pVal8 & 0xF0)==0xE0)
 		{
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return CFileTextLines::ASCII;
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return CFileTextLines::ASCII;
 			bUTF8 = true;
 		}
-		if ((*pVal2 & 0xF8)==0xF0)
+		if ((*pVal8 & 0xF8)==0xF0)
 		{
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return CFileTextLines::ASCII;
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return CFileTextLines::ASCII;
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return CFileTextLines::ASCII;
 			bUTF8 = true;
 		}
-		pVal2++;
+		pVal8++;
 	}
 	if (bUTF8)
 		return CFileTextLines::UTF8;
@@ -180,8 +180,8 @@ EOL CFileTextLines::CheckLineEndings(LPVOID pBuffer, int cb)
 			retval = EOL_CR;
 			break;
 		}
-	} 
-	return retval;	
+	}
+	return retval;
 }
 
 BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
@@ -194,13 +194,13 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	{
 		Reserve(lengthHint);
 	}
-	
+
 	if (PathIsDirectory(sFilePath))
 	{
 		m_sErrorString.Format(IDS_ERR_FILE_NOTAFILE, (LPCTSTR)sFilePath);
 		return FALSE;
 	}
-	
+
 	if (!PathFileExists(sFilePath))
 	{
 		//file does not exist, so just return SUCCESS
@@ -227,10 +227,14 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 		return FALSE;
 	}
 
-	LPVOID pFileBuf = new BYTE[fsize.LowPart];
+	// If new[] was done for type T delete[] must be called on a pointer of type T*,
+	// otherwise the behavior is undefined.
+	// +1 is to address possible truncation when integer division is done
+	wchar_t* pFileBuf = new wchar_t[fsize.LowPart/sizeof(wchar_t) + 1];
 	DWORD dwReadBytes = 0;
 	if (!ReadFile(hFile, pFileBuf, fsize.LowPart, &dwReadBytes, NULL))
 	{
+		delete [] pFileBuf;
 		SetErrorString();
 		return FALSE;
 	}
@@ -262,7 +266,8 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 			delete [] pFileBuf;
 			pFileBuf = pWideBuf;
 			dwReadBytes = ret2;
-		}
+		} else
+			delete [] pWideBuf;
 	}
 	else if (m_UnicodeType == ASCII)
 	{
@@ -275,21 +280,23 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 			pFileBuf = pWideBuf;
 			dwReadBytes = ret2;
 		}
+		else
+			delete [] pWideBuf;
 	}
 	// fill in the lines into the array
-	wchar_t * pTextBuf = (wchar_t *)pFileBuf;
-	wchar_t * pLineStart = (wchar_t *)pFileBuf;
-	if (m_UnicodeType == UNICODE_LE) 
+	wchar_t * pTextBuf = pFileBuf;
+	wchar_t * pLineStart = pFileBuf;
+	if (m_UnicodeType == UNICODE_LE)
 	{
 		// UTF16 have two bytes per char
-		dwReadBytes/=2; 
+		dwReadBytes/=2;
 	}
 	if ((m_UnicodeType == UTF8BOM)||(m_UnicodeType == UNICODE_LE))
 	{
 		// ignore the BOM
-		++pTextBuf; 
+		++pTextBuf;
 		++pLineStart;
-		--dwReadBytes; 
+		--dwReadBytes;
 	}
 
 	for (DWORD i = 0; i<dwReadBytes; ++i)
@@ -301,7 +308,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 				if (*(pTextBuf+1) == '\n')
 				{
 					// crlf line ending
-					CString line(pLineStart, pTextBuf-pLineStart);
+					CString line(pLineStart, (int)(pTextBuf-pLineStart));
 					Add(line, EOL_CRLF);
 					pLineStart = pTextBuf+2;
 					++pTextBuf;
@@ -310,7 +317,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 				else
 				{
 					// cr line ending
-					CString line(pLineStart, pTextBuf-pLineStart);
+					CString line(pLineStart, (int)(pTextBuf-pLineStart));
 					Add(line, EOL_CR);
 					pLineStart =pTextBuf+1;
 				}
@@ -319,7 +326,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 		else if (*pTextBuf == '\n')
 		{
 			// lf line ending
-			CString line(pLineStart, pTextBuf-pLineStart);
+			CString line(pLineStart, (int)(pTextBuf-pLineStart));
 			Add(line, EOL_LF);
 			pLineStart =pTextBuf+1;
 		}
@@ -327,15 +334,14 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	}
 	if (pLineStart < pTextBuf)
 	{
-		CString line(pLineStart, pTextBuf-pLineStart);
+		CString line(pLineStart, (int)(pTextBuf-pLineStart));
 		Add(line, EOL_NOENDING);
-		m_bReturnAtEnd = false;		
+		m_bReturnAtEnd = false;
 	}
 	else
 		m_bReturnAtEnd = true;
 
 	delete [] pFileBuf;
-
 
 	return TRUE;
 }
@@ -353,7 +359,7 @@ void CFileTextLines::StripWhiteSpace(CString& sLine,DWORD dwIgnoreWhitespaces, b
 		// Compare whitespaces
 		// do nothing
 		break;
-	case 1: 
+	case 1:
 		// Ignore all whitespaces
 		sLine.TrimLeft(_T(" \t"));
 		sLine.TrimRight(_T(" \t"));
@@ -433,7 +439,7 @@ BOOL CFileTextLines::Save(const CString& sFilePath, bool bSaveAsUTF8, DWORD dwIg
 			}
 			ind = destPath.Find('\\', ind)+1;
 		}
-		
+
 		CStdioFile file;			// Hugely faster than CFile for big file writes - because it uses buffering
 		if (!file.Open(sFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary))
 		{
@@ -469,6 +475,9 @@ BOOL CFileTextLines::Save(const CString& sFilePath, bool bSaveAsUTF8, DWORD dwIg
 					break;
 				case EOL_LFCR:
 					sLine = _T("\x0a\x0d");
+					break;
+				default:
+					sLine.Empty();
 					break;
 				}
 				if ((m_bReturnAtEnd)||(i != GetCount()-1))
@@ -576,10 +585,6 @@ void CFileTextLines::CopySettings(CFileTextLines * pFileToCopySettingsTo)
 	{
 		pFileToCopySettingsTo->m_UnicodeType = m_UnicodeType;
 		pFileToCopySettingsTo->m_LineEndings = m_LineEndings;
+		pFileToCopySettingsTo->m_bReturnAtEnd = m_bReturnAtEnd;
 	}
 }
-
-
-
-
-

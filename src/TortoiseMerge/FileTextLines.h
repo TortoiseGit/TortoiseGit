@@ -94,23 +94,23 @@ public:
 
 	EOL			GetLineEnding(int index) {return m_endings[index];}
 	void		SetLineEnding(int index, EOL ending) {m_endings[index] = ending;}
-	
+
 	void		RemoveAll() {CStdCStringArray::RemoveAll(); m_endings.clear();}
 
+	/**
+	 * Checks the Unicode type in a text buffer
+	 * \param pBuffer pointer to the buffer containing text
+	 * \param cd size of the text buffer in bytes
+	 */
 	CFileTextLines::UnicodeType CheckUnicodeType(LPVOID pBuffer, int cb);
+
 private:
 	/**
 	 * Checks the line endings in a text buffer
 	 * \param pBuffer pointer to the buffer containing text
 	 * \param cd size of the text buffer in bytes
 	 */
-	EOL CheckLineEndings(LPVOID pBuffer, int cb); 
-	/**
-	 * Checks the Unicode type in a text buffer
-	 * \param pBuffer pointer to the buffer containing text
-	 * \param cd size of the text buffer in bytes
-	 */
-	 
+	EOL CheckLineEndings(LPVOID pBuffer, int cb);
 
 	void		SetErrorString();
 
