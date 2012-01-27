@@ -32,6 +32,7 @@
 #include "HistoryDlg.h"
 #include "Hooks.h"
 #include "UnicodeUtils.h"
+#include "../TGitCache/CacheInterface.h"
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
 #include "Commands/PushCommand.h"
@@ -528,6 +529,8 @@ void CCommitDlg::OnOK()
 		sysProgressDlg.SetShowProgressBar(true);
 		sysProgressDlg.ShowModal(this, true);
 	}
+
+	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
 	for (int j=0; j<nListItems; j++)
 	{

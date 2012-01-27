@@ -28,7 +28,6 @@ CCachedDirectory::CCachedDirectory(void)
 {
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
 	m_bRecursive = true;
-	m_indexFileTime = 0;
 }
 
 CCachedDirectory::~CCachedDirectory(void)
@@ -83,8 +82,6 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 			WRITEVALUETOFILE(status);
 		}
 	}
-	WRITEVALUETOFILE(m_indexFileTime);
-	WRITEVALUETOFILE(m_Head.m_hash);
 //	WRITEVALUETOFILE(m_propsFileTime);
 	value = m_directoryPath.GetWinPathString().GetLength();
 	WRITEVALUETOFILE(value);
@@ -152,9 +149,6 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				m_childDirectories[CTGitPath(sPath)] = status;
 			}
 		}
-		LOADVALUEFROMFILE(m_indexFileTime);
-		LOADVALUEFROMFILE(m_Head.m_hash);
-//		LOADVALUEFROMFILE(m_propsFileTime);
 		LOADVALUEFROMFILE(value);
 		if (value > MAX_PATH)
 			return false;

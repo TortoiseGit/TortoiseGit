@@ -31,6 +31,8 @@
 #include "BrowseRefsDlg.h"
 #include "ProgressDlg.h"
 #include "SmartHandle.h"
+#include "../TGitCache/CacheInterface.h"
+
 // CRebaseDlg dialog
 
 IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
@@ -1407,6 +1409,8 @@ BOOL CRebaseDlg::IsEnd()
 
 int CRebaseDlg::RebaseThread()
 {
+	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
+
 	int ret=0;
 	while(1)
 	{

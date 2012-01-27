@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -274,88 +274,14 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 
 	if (t == ShellCache::exe)
 	{
-		columnauthor = UTF8ToWide(itemStatus.m_author);
 		columnrev = itemStatus.m_entry.cmt_rev;
-		itemurl = UTF8ToWide(itemStatus.m_url);
-		owner = UTF8ToWide(itemStatus.m_owner);
 	}
 	else
 	{
 		if (status)
 		{
-			columnauthor = UTF8ToWide(status->author);
 			columnrev = status->rev;
-			itemurl = UTF8ToWide(status->url);
-			owner = UTF8ToWide(status->owner);
 		}
 	}
-#if 0
-	TCHAR urlpath[INTERNET_MAX_URL_LENGTH+1];
-
-	URL_COMPONENTS urlComponents;
-	memset(&urlComponents, 0, sizeof(URL_COMPONENTS));
-	urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
-	urlComponents.dwUrlPathLength = INTERNET_MAX_URL_LENGTH;
-	urlComponents.lpszUrlPath = urlpath;
-	if (InternetCrackUrl(itemurl.c_str(), 0, ICU_DECODE, &urlComponents))
-	{
-		// since the short url is shown as an additional column where the
-		// file/foldername is shown too, we strip that name from the url
-		// to make the url even shorter.
-		TCHAR * ptr = _tcsrchr(urlComponents.lpszUrlPath, '/');
-		if (ptr == NULL)
-			ptr = _tcsrchr(urlComponents.lpszUrlPath, '\\');
-		if (ptr)
-		{
-			*ptr = '\0';
-			// to shorten the url even more, we check for 'trunk', 'branches' and 'tags'
-			// and simply assume that these are the folders attached to the repository
-			// root. If we find those, we strip the whole path before those folders too.
-			// Note: this will strip too much if such a folder is *below* the repository
-			// root - but it's called 'short url' and we're free to shorten it the way we
-			// like :)
-			/*ptr = _tcsstr(urlComponents.lpszUrlPath, _T("/trunk"));
-			if (ptr == NULL)
-				ptr = _tcsstr(urlComponents.lpszUrlPath, _T("\\trunk"));
-			if ((ptr == NULL)||((*(ptr+6) != 0)&&(*(ptr+6) != '/')&&(*(ptr+6) != '\\')))
-			{
-				ptr = _tcsstr(urlComponents.lpszUrlPath, _T("/branches"));
-				if (ptr == NULL)
-					ptr = _tcsstr(urlComponents.lpszUrlPath, _T("\\branches"));
-				if ((ptr == NULL)||((*(ptr+9) != 0)&&(*(ptr+9) != '/')&&(*(ptr+9) != '\\')))
-				{
-					ptr = _tcsstr(urlComponents.lpszUrlPath, _T("/tags"));
-					if (ptr == NULL)
-						ptr = _tcsstr(urlComponents.lpszUrlPath, _T("\\tags"));
-					if ((ptr)&&(*(ptr+5) != 0)&&(*(ptr+5) != '/')&&(*(ptr+5) != '\\'))
-						ptr = NULL;
-				}
-			}
-			if (ptr)
-				itemshorturl = ptr;
-			else*/
-				itemshorturl = urlComponents.lpszUrlPath;
-		}
-		else
-			itemshorturl = _T(" ");
-	}
-	else
-		itemshorturl = _T(" ");
-
-	if (status)
-	{
-		char url[INTERNET_MAX_URL_LENGTH];
-		strcpy_s(url, INTERNET_MAX_URL_LENGTH, status->url);
-		CPathUtils::Unescape(url);
-		itemurl = UTF8ToWide(url);
-	}
-	else if (t == ShellCache::exe)
-	{
-		char url[INTERNET_MAX_URL_LENGTH];
-		strcpy_s(url, INTERNET_MAX_URL_LENGTH, itemStatus.m_url);
-		CPathUtils::Unescape(url);
-		itemurl = UTF8ToWide(url);
-	}
-#endif
 }
 

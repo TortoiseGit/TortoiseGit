@@ -30,6 +30,7 @@
 #include "Tlhelp32.h"
 #include "AppUtils.h"
 #include "SmartHandle.h"
+#include "../TGitCache/CacheInterface.h"
 
 // CProgressDlg dialog
 
@@ -157,6 +158,8 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 	HANDLE hRead = 0;
 
 	memset(&pi,0,sizeof(PROCESS_INFORMATION));
+
+	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
 	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
 

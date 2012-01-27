@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
+// External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
 // Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -105,6 +105,9 @@ public:
 	bool IsPathGood(const CTGitPath& path);
 	bool IsPathWatched(const CTGitPath& path) {return watcher.IsPathWatched(path);}
 	bool AddPathToWatch(const CTGitPath& path) {return watcher.AddPath(path);}
+	bool BlockPath(const CTGitPath& path, DWORD timeout = 0);
+	bool UnBlockPath(const CTGitPath& path);
+	bool RemoveTimedoutBlocks();
 
 	bool m_bClearMemory;
 private:
@@ -112,7 +115,8 @@ private:
 	CRWSection m_rwSection;
 	CAtlList<CString> m_askedList;
 	CCachedDirectory::CachedDirMap m_directoryCache;
-	std::set<CTGitPath> m_NoWatchPaths;
+	CComAutoCriticalSection m_NoWatchPathCritSec;
+	std::map<CTGitPath, DWORD> m_NoWatchPaths;	///< paths to block from getting crawled, and the time in ms until they're unblocked
 //	SVNHelper m_svnHelp;
 	ShellCache	m_shellCache;
 
