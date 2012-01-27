@@ -58,6 +58,7 @@
 #include "CommitDlg.h"
 #include "RebaseDlg.h"
 #include "GitDiff.h"
+#include "../TGitCache/CacheInterface.h"
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
@@ -81,6 +82,8 @@ int CGitLogList::RevertSelectedCommits()
 		progress.SetTime(true);
 		progress.ShowModeless(this);
 	}
+
+	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
 	POSITION pos = GetFirstSelectedItemPosition();
 	int i=0;
@@ -145,6 +148,8 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 		progress.SetTime(true);
 		progress.ShowModeless(this);
 	}
+
+	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
 	for(int i=logs.size()-1;i>=0;i--)
 	{
