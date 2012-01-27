@@ -52,6 +52,7 @@
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
 #include "FormatMessageWrapper.h"
+#include "MassiveGitTask.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
@@ -2356,35 +2357,24 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index;
+					MassiveGitTask mgt(L"add -f");
 					while ((index = GetNextSelectedItem(pos)) >= 0)
 					{
-						selectIndex.push_back(index);
-					}
-					for(int i=0;i<selectIndex.size();i++)
-					{
-						index=selectIndex[i];
-
-						CTGitPath * path=(CTGitPath*)GetItemData(index);
+						CTGitPath * path = (CTGitPath *)GetItemData(index);
 						ASSERT(path);
 						if(path == NULL)
 							continue;
-						CString cmd;
-						cmd.Format(_T("git.exe add -f -- \"%s\""), path->GetGitPathString());
-						CString output;
-						if (!g_Git.Run(cmd, &output, NULL, CP_ACP))
-						{
-							path->m_Action = CTGitPath::LOGACTIONS_ADDED;
-							SetEntryCheck(path,index,true);
 
-							SetItemGroup(index,0);
-							this->m_StatusFileList.AddPath(*path);
-							this->m_UnRevFileList.RemoveItem(*path);
-							this->m_IgnoreFileList.RemoveItem(*path);
-
-							Show(this->m_dwShow,0,true,true,true);
-						}
+						selectIndex.push_back(index);
+						mgt.AddFile(*path);
 					}
+					BOOL cancel = FALSE;
+					mgt.Execute(cancel);
 
+					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
+						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+
+					SetRedraw(TRUE);
 				}
 				break;
 
