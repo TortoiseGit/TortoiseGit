@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,12 +83,6 @@ struct TGITCacheResponse
 {
 	git_wc_status2_t m_status;
 	git_wc_entry_t m_entry;
-	git_node_kind_t m_kind;
-	char m_url[INTERNET_MAX_URL_LENGTH+1];
-	char m_owner[255];		///< owner of the lock
-	char m_author[255];
-	bool m_readonly;		///< whether the file is write protected or not
-	bool m_needslock;		///< whether the file has the svn:needs-lock property set or not (only works with the new working copy version)
 };
 
 //#endif // SVN_WC_H
@@ -108,7 +102,7 @@ struct TGITCacheCommand
 #define		TGITCACHECOMMAND_REFRESHALL	2		///< Refreshes the whole cache, usually necessary after the "treat unversioned files as modified" option changed.
 #define		TGITCACHECOMMAND_RELEASE	3		///< Releases all open handles for the specified path and all paths below
 #define		TGITCACHECOMMAND_BLOCK		4		///< Blocks a path from getting crawled for a specific amount of time or until the TSVNCACHECOMMAND_UNBLOCK command is sent for that path
-#define		TGITCACHECOMMAND_UNBLOCK	5		///< Removes a path from the list of paths blocked from getting crawled
+#define		TGITCACHECOMMAND_UNBLOCK		5		///< Removes a path from the list of paths blocked from getting crawled
 
 
 /// Set this flag if you already know whether or not the item is a folder

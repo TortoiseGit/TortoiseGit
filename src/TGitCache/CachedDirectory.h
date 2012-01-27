@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006, 2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -86,14 +86,6 @@ private:
 	/// A vector if iterators to child directories - used to put-together recursive status
 	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
 	ChildDirStatus m_childDirectories;
-
-	// The timestamp of the .git\index file.  For an unversioned directory, this will be zero
-	__int64 m_indexFileTime;
-	CGitHash m_Head;
-
-	std::vector<__int64> m_IgnoreFileTimeList;
-	// The timestamp of the .SVN\props dir.  For an unversioned directory, this will be zero
-//	__int64 m_propsFileTime;
 
 	// The path of the directory with this object looks after
 	CTGitPath	m_directoryPath;

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -247,22 +247,7 @@ void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& r
 		// the process which will be using the data.
 		// The process which receives this response (generally the TSVN Shell Extension)
 		// must fix-up these pointers when it gets them
-//		response.m_status.entry = NULL;
-//		response.m_entry.url = NULL;
-
-		response.m_kind = m_kind;
-		response.m_readonly = m_bReadOnly;
-
-		if (m_sPresentProps.Find("svn:needs-lock")>=0)
-		{
-			response.m_needslock = true;
-		}
-		else
-			response.m_needslock = false;
 		// The whole of response has been zeroed, so this will copy safely 
-		strncat_s(response.m_url, INTERNET_MAX_URL_LENGTH, m_sUrl, _TRUNCATE);
-		strncat_s(response.m_owner, 255, m_sOwner, _TRUNCATE);
-		strncat_s(response.m_author, 255, m_sAuthor, _TRUNCATE);
 		responseLength = sizeof(response);
 	}
 	else
