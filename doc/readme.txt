@@ -2,7 +2,7 @@ HowTo build the docs
 ====================
 
 Since you are already reading this, I assume that you have succeeded in checking 
-out the TortoiseSVN or just the doc sources.
+out the TortoiseGit.
 
 Tools needed:
 =============
@@ -17,8 +17,8 @@ tools\xsl\		- the docbook xsl files from sourceforge
 tools\			- xsl processor, hhc.exe, ...
 
 you can download all the required tools as a zip package from our website:
-http://groups.google.com/group/tortoisegit-dev/files/
-tools.z01 tools.z02 tools.zip. Use winzip extract to \TortotiseGit\Tools
+http://code.google.com/p/tortoisesvn/downloads/list
+tools-*.7z. Use 7-zip extract to \TortotiseGit\Tools
 
 
 Please note that having spaces in your directory path will (for the time being)
@@ -91,6 +91,3 @@ Place localized screenshots in images\fr. The file "screenshots.txt" contains so
 instructions on how/where the images have been captured. 
 
 Now go ahead and translate the rest.
-
-Cheers
--Lübbe
