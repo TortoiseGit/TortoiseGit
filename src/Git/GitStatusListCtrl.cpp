@@ -3676,6 +3676,9 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		}
 		else if (file1.m_Action == file1.LOGACTIONS_DELETED)
 		{
+			if (file1.m_ParentNo > 0)
+				fromwhere.Format(_T("%s^%d"), m_CurrentVersion, file1.m_ParentNo + 1);
+
 			CGitDiff::DiffNull(&file1,fromwhere,false);
 		}
 		else
