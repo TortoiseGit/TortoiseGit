@@ -191,7 +191,7 @@ BOOL CRebaseDlg::OnInitDialog()
 
 
 
-	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("RebaseDlg"),(GITSLC_POPALL ^ GITSLC_POPCOMMIT),false);
+	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("RebaseDlg"),(GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPRESTORE)),false);
 
 	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Revision Files"));
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);

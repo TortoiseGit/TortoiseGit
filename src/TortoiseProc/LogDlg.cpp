@@ -235,7 +235,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_LogList.m_hasWC = m_LogList.m_bShowWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
 	m_LogList.InsertGitColumn();
 
-	m_ChangedFileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL, _T("LogDlg"), (GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPIGNORE)), false, m_LogList.m_hasWC);
+	m_ChangedFileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL, _T("LogDlg"), (GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPIGNORE|GITSLC_POPRESTORE)), false, m_LogList.m_hasWC);
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 

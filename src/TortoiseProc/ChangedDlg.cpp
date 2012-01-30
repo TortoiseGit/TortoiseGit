@@ -87,7 +87,7 @@ BOOL CChangedDlg::OnInitDialog()
 	UpdateData(FALSE);
 
 	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS, _T("ChangedDlg"),
-						(GITSLC_POPALL ^ GITSLC_POPSAVEAS), false);
+						(GITSLC_POPALL ^ (GITSLC_POPSAVEAS|GITSLC_POPRESTORE)), false);
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
 	m_FileListCtrl.SetEmptyString(IDS_REPOSTATUS_EMPTYFILELIST);
