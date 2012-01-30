@@ -369,13 +369,12 @@ BOOL CTortoiseProcApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)
 		{
-			TCHAR * originalCurrentDirectory = new TCHAR[len];
+			auto_buffer<TCHAR> originalCurrentDirectory(len);
 			if (GetCurrentDirectory(len, originalCurrentDirectory))
 			{
 				sOrigCWD = originalCurrentDirectory;
 				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
-			delete [] originalCurrentDirectory;
 		}
 		TCHAR pathbuf[MAX_PATH];
 		GetTempPath(MAX_PATH, pathbuf);
