@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,8 +73,8 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 
 // The one and only CTortoiseGitBlameApp object
 
-CTortoiseGitBlameApp theApp;
 CString sOrigCWD;
+CTortoiseGitBlameApp theApp;
 
 // CTortoiseGitBlameApp initialization
 
