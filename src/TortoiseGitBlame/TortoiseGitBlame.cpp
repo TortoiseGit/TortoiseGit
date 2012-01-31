@@ -55,6 +55,17 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 	SetDllDirectory(L"");
 	EnableHtmlHelp();
 
+	m_bHiColorIcons = TRUE;
+}
+
+// The one and only CTortoiseGitBlameApp object
+CTortoiseGitBlameApp theApp;
+CString sOrigCWD;
+
+// CTortoiseGitBlameApp initialization
+
+BOOL CTortoiseGitBlameApp::InitInstance()
+{
 	{
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)
@@ -68,18 +79,6 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 		}
 	}
 
-	m_bHiColorIcons = TRUE;
-}
-
-// The one and only CTortoiseGitBlameApp object
-
-CString sOrigCWD;
-CTortoiseGitBlameApp theApp;
-
-// CTortoiseGitBlameApp initialization
-
-BOOL CTortoiseGitBlameApp::InitInstance()
-{
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
