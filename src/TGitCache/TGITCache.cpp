@@ -225,7 +225,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 		//DebugOutputLastError();
 		return 0;
 	}
-	else CloseHandle(hPipeThread); 
+	else hPipeThread.CloseHandle();
 
 	// Create a thread which waits for incoming pipe connections 
 	CAutoGeneralHandle hCommandWaitThread = CreateThread( 
@@ -632,7 +632,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 				//OutputDebugStringA("TSVNCache: Could not create Command thread\n");
 				//DebugOutputLastError();
 				DisconnectNamedPipe(hPipe);
-				CloseHandle(hPipe);
+				hPipe.CloseHandle();
 				// since we're now closing this thread, we also have to close the whole application!
 				// otherwise the thread is dead, but the app is still running, refusing new instances
 				// but no pipe will be available anymore.
