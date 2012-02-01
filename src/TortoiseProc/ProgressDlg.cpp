@@ -223,7 +223,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 			CloseHandle(hRead);
 
-			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_FAILED,0);
+			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
 			return TGIT_GIT_ERROR_GET_EXIT_CODE;
 		}
 		ret |= status;
@@ -233,7 +233,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	CloseHandle(hRead);
 
-	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_END,0);
+	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_END, ret);
 
 	return ret;
 
@@ -290,6 +290,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Animate.Stop();
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
+
+		m_GitStatus = lParam;
 
 		CString err;
 		err.Format(_T("\r\n\r\ngit did not exit cleanly (exit code %d)\r\n"), m_GitStatus);
