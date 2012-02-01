@@ -87,7 +87,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 
 	g_Git.m_CurrentDir=super;
 
-	progress.m_Title.Format(_T("Submodule %s - %s"),cmd,super);
+	progress.m_Title.Format(_T("Submodule %s"),cmd);
 
 	//progress.m_GitCmd.Format(_T("git.exe submodule update --init "));
 
