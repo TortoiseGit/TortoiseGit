@@ -834,6 +834,7 @@ int CGitHeadFileList::ReadTree()
 	git_commit *commit = NULL;
 	git_tree * tree = NULL;
 	int ret = 0;
+	this->clear(); // hack to avoid duplicates in the head list, which are introduced in GitStatus::GetFileStatus when this method is called
 	do
 	{
 		ret = git_repository_open(&repository, gitdir.GetBuffer());
