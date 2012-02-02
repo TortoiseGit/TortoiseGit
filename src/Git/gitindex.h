@@ -255,17 +255,21 @@ public:
 
 	SHARED_INDEX_PTR SafeGet(const CString &path)
 	{
+		CString thePath = path;
+		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
-		if(this->find(path) == end())
+		if(this->find(thePath) == end())
 			return SHARED_INDEX_PTR();
 		else
-			return (*this)[path];
+			return (*this)[thePath];
 	}
 
 	void SafeSet(const CString &path, SHARED_INDEX_PTR ptr)
 	{
+		CString thePath = path;
+		thePath.MakeLower();
 		CAutoLocker lock(m_critIndexSec);
-		(*this)[path] = ptr;
+		(*this)[thePath] = ptr;
 	}
 
 	int Check(const CString &gitdir, bool *isChanged);
@@ -365,17 +369,21 @@ public:
 
 	SHARED_TREE_PTR SafeGet(const CString &path)
 	{
+		CString thePath = path;
+		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
-		if(this->find(path) == end())
+		if(this->find(thePath) == end())
 			return SHARED_TREE_PTR();
 		else
-			return (*this)[path];
+			return (*this)[thePath];
 	}
 
 	void SafeSet(const CString &path, SHARED_TREE_PTR ptr)
 	{
+		CString thePath = path;
+		thePath.MakeLower();
 		CAutoLocker lock(m_critTreeSec);
-		(*this)[path] = ptr;
+		(*this)[thePath] = ptr;
 	}
 
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
