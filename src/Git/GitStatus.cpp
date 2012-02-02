@@ -1203,7 +1203,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				}
 				else if(pos <0 && posintree>=0) /* check if file delete in index */
 				{
-					*status = git_wc_status_deleted;
+					*status = git_wc_status_modified;
 					if(callback)
 						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
 
@@ -1284,7 +1284,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						oldstring = filename;
 						if(SearchInSortVector(filelist, filename.GetBuffer(), filename.GetLength())<0)
 						{
-							*status = git_wc_status_deleted;
+							*status = git_wc_status_modified;
 							if(callback)
 								callback(gitdir+_T("/")+(*it).m_FileName, *status, false,pData);
 						}
