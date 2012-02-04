@@ -280,7 +280,9 @@ bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 	AutoLocker lock(m_NoWatchPathCritSec);
 	for (std::map<CTGitPath, DWORD>::const_iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
 	{
-		if (it->first.IsAncestorOf(path))
+		// the ticks check is necessary here, because RemoveTimedoutBlocks is only called within the FolderCrawler loop
+		// and we might miss miss update calls
+		if (GetTickCount() < it->second && it->first.IsAncestorOf(path))
 		{
 			ATLTRACE(_T("path not good: %s\n"), it->first.GetWinPath());
 			return false;

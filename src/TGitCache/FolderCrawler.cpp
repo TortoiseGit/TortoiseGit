@@ -119,9 +119,6 @@ void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 	if( GitStatus::IsExistIndexLockFile((CString&)path.GetWinPathString()))
 		return;
 
-	if (!CGitStatusCache::Instance().IsPathGood(path))
-		return;
-
 	{
 		AutoLocker lock(m_critSec);
 
@@ -235,8 +232,6 @@ void CFolderCrawler::WorkerThread()
 				// don't crawl paths that are excluded
 				if (!CGitStatusCache::Instance().IsPathAllowed(workingPath))
 					continue;
-				if (!CGitStatusCache::Instance().IsPathGood(workingPath))
-					continue;
 				// check if the changed path is inside an .git folder
 				CString projectroot;
 				if ((workingPath.HasAdminDir(&projectroot)&&workingPath.IsDirectory()) || workingPath.IsAdminDir())
@@ -267,6 +262,11 @@ void CFolderCrawler::WorkerThread()
 
 						//if (lowerpath.Find(_T("\\lock"))>0)
 						//	continue;
+						// only go back to wc root if we are in .git-dir
+						do
+						{
+							workingPath = workingPath.GetContainingDirectory();
+						} while(workingPath.IsAdminDir());
 					}
 					else if (!workingPath.Exists())
 					{
@@ -276,10 +276,17 @@ void CFolderCrawler::WorkerThread()
 						continue;
 					}
 
-					do
+					if (!CGitStatusCache::Instance().IsPathGood(workingPath))
 					{
-						workingPath = workingPath.GetContainingDirectory();
-					} while(workingPath.IsAdminDir());
+						// move the path, the root of the repository, to the end of the list
+						if (projectroot.IsEmpty())
+							m_pathsToUpdate.Push(workingPath);
+						else
+							m_pathsToUpdate.Push(CTGitPath(projectroot));
+						if (m_pathsToUpdate.size() < 3)
+							Sleep(50);
+						continue;
+					}
 
 					ATLTRACE(_T("Invalidating and refreshing folder: %s\n"), workingPath.GetWinPath());
 					{
