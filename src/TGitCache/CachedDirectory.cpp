@@ -383,6 +383,17 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	}
 }
 
+CStatusCacheEntry CCachedDirectory::GetCacheStatusForMember(const CTGitPath& path)
+{
+	// no disk access!
+	AutoLocker lock(m_critSec);
+	CacheEntryMap::iterator itMap = m_entryCache.find(GetCacheKey(path));
+	if(itMap != m_entryCache.end())
+		return itMap->second;
+
+	return CStatusCacheEntry();
+}
+
 int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 {
 	CString sProjectRoot;

@@ -535,6 +535,30 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 			return m_mostRecentStatus;
 		}
 	}
+	else
+	{
+		// path is blocked for some reason: return the cached status if we have one
+		// we do here only a cache search, absolutely no disk access is allowed!
+		CCachedDirectory::ItDir itMap = m_directoryCache.find(path.GetDirectory());
+		if ((itMap != m_directoryCache.end())&&(itMap->second))
+		{
+			if (path.IsDirectory())
+			{
+				m_mostRecentStatus = itMap->second->GetOwnStatus(false);
+				return m_mostRecentStatus;
+			}
+			else
+			{
+				// We've found this directory in the cache
+				CCachedDirectory * cachedDir = itMap->second;
+				CStatusCacheEntry entry = cachedDir->GetCacheStatusForMember(path);
+				{
+					m_mostRecentStatus = entry;
+					return m_mostRecentStatus;
+				}
+			}
+		}
+	}
 	ATLTRACE(_T("ignored no good path %s\n"), path.GetWinPath());
 	m_mostRecentStatus = CStatusCacheEntry();
 	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasGITAdminDir(path.GetWinPath(), true))

@@ -41,6 +41,7 @@ public:
 	CCachedDirectory(const CTGitPath& directoryPath);
 	~CCachedDirectory(void);
 	CStatusCacheEntry GetStatusForMember(const CTGitPath& path, bool bRecursive, bool bFetch = true);
+	CStatusCacheEntry GetCacheStatusForMember(const CTGitPath& path);
 
 	// If path is not emtpy, means fetch special file status.
 	int EnumFiles(CTGitPath *path = NULL, bool isFull=true);
