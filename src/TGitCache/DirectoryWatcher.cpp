@@ -410,7 +410,7 @@ void CDirectoryWatcher::WorkerThread()
 									CGitStatusCache::Instance().BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory());
 									continue;
 								}
-								else if ((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED)
+								else if (((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED) || ((wcsstr(pFound, L"index") != NULL || wcsstr(pFound, L"HEAD") != NULL) && pnotify->Action == FILE_ACTION_MODIFIED))
 								{
 									isIndex = true;
 									CGitStatusCache::Instance().BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory(), 1);
