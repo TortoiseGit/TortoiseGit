@@ -451,7 +451,6 @@ void CFolderCrawler::WorkerThread()
 				if (cachedDir)
 					cachedDir->RefreshStatus(bRecursive);
 
-#if 0
 				// While refreshing the status, we could get another crawl request for the same folder.
 				// This can happen if the crawled folder has a lower status than one of the child folders
 				// (recursively). To avoid double crawlings, remove such a crawl request here
@@ -460,7 +459,7 @@ void CFolderCrawler::WorkerThread()
 				{
 					m_foldersToUpdate.erase(workingPath);
 				}
-#endif
+
 				CGitStatusCache::Instance().Done();
 			}
 		}
