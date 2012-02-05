@@ -40,7 +40,7 @@
 				<listitem>
 					<para>
 						Caches all status information in a separate process
-						(<filename>TSVNCache.exe</filename>). That process
+						(<filename>TGitCache.exe</filename>). That process
 						watches all drives for changes and fetches the status
 						again if files inside a working copy get modified.
 						The process runs with the least possible priority so
@@ -82,7 +82,11 @@
 					<para>
 						Disadvantage: only one folder is cached and for big working copies,
 						it can take much more time to show a folder in explorer than
-						with the default cache or with shell mode.
+						with the default cache or with shell mode. The Shell variant only shows
+						differences of the filesystem to the git index (does not include revision
+						specific information, e.g. if you remove a file from the index the file will
+						show up as unversioned, but with TGitCache the file will show up as deleted
+						until you commit this change).
 					</para>
 				</listitem>
 			</varlistentry>
@@ -103,7 +107,11 @@
 						Disadvantage: Since only one folder is cached, the overlays
 						don't show the status recursively. For big working copies,
 						it can take more time to show a folder in explorer than
-						with the default cache.
+						with the default cache. The Shell variant only shows
+						differences of the filesystem to the git index (does not include revision
+						specific information, e.g. if you remove a file from the index the file will
+						show up as unversioned, but with TGitCache the file will show up as deleted
+						until you commit this change).
 					</para>
 				</listitem>
 			</varlistentry>
@@ -183,7 +191,7 @@ if (path is allowed drive type) AND (path is not in exclude list)
 		<emphasis>unless</emphasis> the path is excluded.
 	</para>
 	<para>
-		TSVNCache.exe also uses these paths to restrict its scanning. If you
+		TGitCache.exe also uses these paths to restrict its scanning. If you
 		want it to look only in particular folders, disable all drive types
 		and include only the folders you specifically want to be scanned.
 	</para>
@@ -199,7 +207,7 @@ if (path is allowed drive type) AND (path is not in exclude list)
 subst T: C:\TortoiseGit\trunk\doc
 </screen>
 			However this can cause the overlays not to update, as
-			<literal>TSVNCache</literal> will only receive one notification when
+			<literal>TGitCache</literal> will only receive one notification when
 			a file changes, and that is normally for the original path. This means
 			that your overlays on the <literal>subst</literal> path may never
 			be updated.
@@ -212,7 +220,7 @@ subst T: C:\TortoiseGit\trunk\doc
 	</tip>
 	<para>
 		Sometimes you will exclude areas that contain working copies,
-		which saves TSVNCache from scanning and monitoring for changes,
+		which saves TGitCache from scanning and monitoring for changes,
 		but you still want a visual indication that such folders are versioned.
 		The <guilabel>Show excluded folders as 'normal'</guilabel> checkbox
 		allows you to do this. With this option, versioned folders in any
