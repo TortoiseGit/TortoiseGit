@@ -623,10 +623,6 @@
 						<RemoveFile Id="F__Tortoise_lang" Name="*.chm" On="uninstall" />
 					</Component>
 
-					<Component Id="C__tgit" Guid="$(var.GuidTGit)" Win64="$(var.Win64YesNo)">
-						<File Id="F__tgit" ShortName="TGIT.EXE" Name="tgit.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgit.exe" KeyPath="yes" />
-					</Component>
-
 					<Component Id="C__gitlibs" Guid="$(var.GuidGitLibs)" Win64="$(var.Win64YesNo)">
 						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />

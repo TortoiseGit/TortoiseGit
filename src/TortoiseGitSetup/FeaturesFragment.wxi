@@ -6,7 +6,6 @@
 		<ComponentRef Id="C__gettext" />
 
 		<ComponentRef Id="C__help_en" />
-		<ComponentRef Id="C__tgit" />
 		<ComponentRef Id="C__gitlibs" />
 		<ComponentRef Id="C__TortoiseShell" />
 		<ComponentRef Id="C__TortoiseGitTools" />
