@@ -278,6 +278,7 @@ void CFolderCrawler::WorkerThread()
 
 					if (!CGitStatusCache::Instance().IsPathGood(workingPath))
 					{
+						AutoLocker lock(m_critSec);
 						// move the path, the root of the repository, to the end of the list
 						if (projectroot.IsEmpty())
 							m_pathsToUpdate.Push(workingPath);
