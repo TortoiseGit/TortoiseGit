@@ -956,11 +956,6 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	}
 }
 
-void CCachedDirectory::UpdateParentsStatus(const CTGitPath& path, git_wc_status_kind childStatus)
-{
-	return ;
-}
-
 void CCachedDirectory::RefreshMostImportant()
 {
 	CacheEntryMap::iterator itMembers;
