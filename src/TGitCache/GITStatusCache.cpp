@@ -280,7 +280,10 @@ bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 	AutoLocker lock(m_NoWatchPathCritSec);
 	for (std::map<CTGitPath, DWORD>::const_iterator it = m_NoWatchPaths.begin(); it != m_NoWatchPaths.end(); ++it)
 	{
-		if (it->first.IsAncestorOf(path))
+		// the ticks check is necessary here, because RemoveTimedoutBlocks is only called within the FolderCrawler loop
+		// and we might miss update calls
+		// TODO: maybe we also need to check if index.lock and HEAD.lock still exists after a specific timeout (if we miss update notifications for these files too often)
+		if (GetTickCount() < it->second && it->first.IsAncestorOf(path))
 		{
 			ATLTRACE(_T("path not good: %s\n"), it->first.GetWinPath());
 			return false;
@@ -531,6 +534,30 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 			//ATLTRACE(_T("GetStatusForMember %d\n"), bFetch);
 			m_mostRecentStatus = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
 			return m_mostRecentStatus;
+		}
+	}
+	else
+	{
+		// path is blocked for some reason: return the cached status if we have one
+		// we do here only a cache search, absolutely no disk access is allowed!
+		CCachedDirectory::ItDir itMap = m_directoryCache.find(path.GetDirectory());
+		if ((itMap != m_directoryCache.end())&&(itMap->second))
+		{
+			if (path.IsDirectory())
+			{
+				m_mostRecentStatus = itMap->second->GetOwnStatus(false);
+				return m_mostRecentStatus;
+			}
+			else
+			{
+				// We've found this directory in the cache
+				CCachedDirectory * cachedDir = itMap->second;
+				CStatusCacheEntry entry = cachedDir->GetCacheStatusForMember(path);
+				{
+					m_mostRecentStatus = entry;
+					return m_mostRecentStatus;
+				}
+			}
 		}
 	}
 	ATLTRACE(_T("ignored no good path %s\n"), path.GetWinPath());

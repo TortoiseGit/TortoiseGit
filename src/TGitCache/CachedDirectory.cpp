@@ -332,7 +332,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	else
 	{
 		EnumFiles((CTGitPath*)&path, TRUE);
-		return CStatusCacheEntry(git_wc_status_normal);
+		UpdateCurrentStatus();
+		return CStatusCacheEntry(m_ownStatus);
 	}
 
 }
@@ -381,6 +382,17 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	{
 		return GetStatusFromCache(path, bRecursive);
 	}
+}
+
+CStatusCacheEntry CCachedDirectory::GetCacheStatusForMember(const CTGitPath& path)
+{
+	// no disk access!
+	AutoLocker lock(m_critSec);
+	CacheEntryMap::iterator itMap = m_entryCache.find(GetCacheKey(path));
+	if(itMap != m_entryCache.end())
+		return itMap->second;
+
+	return CStatusCacheEntry();
 }
 
 int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)

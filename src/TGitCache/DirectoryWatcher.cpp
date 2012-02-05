@@ -405,15 +405,15 @@ void CDirectoryWatcher::WorkerThread()
 								if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 									break;
 
-								if ((wcsstr(pFound, L"index.lock") != NULL && wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_ADDED)
+								if ((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_ADDED)
 								{
-									m_FolderCrawler->BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory()); // optimize here, and use general BlockPath with priorities
+									CGitStatusCache::Instance().BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory());
 									continue;
 								}
-								else if ((wcsstr(pFound, L"index.lock") != NULL && wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED)
+								else if (((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED) || ((wcsstr(pFound, L"index") != NULL || wcsstr(pFound, L"HEAD") != NULL) && pnotify->Action == FILE_ACTION_MODIFIED))
 								{
 									isIndex = true;
-									m_FolderCrawler->BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory(), 1);
+									CGitStatusCache::Instance().BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory(), 1);
 								}
 								else
 								{
