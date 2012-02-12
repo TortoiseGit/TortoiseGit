@@ -9,7 +9,7 @@
     <meta name="keywords" content="Scintilla, SciTE, Editing Component, Text Editor" />
     <meta name="Description"
     content="www.scintilla.org is the home of the Scintilla editing component and SciTE text editor application." />
-    <meta name="Date.Modified" content="20110916" />
+    <meta name="Date.Modified" content="20120128" />
     <style type="text/css">
         #versionlist {
             margin: 0;
@@ -55,8 +55,8 @@
           GTK+</font>
         </td>
         <td width="40%" align="right">
-          <font color="#FFCC99" size="3"> Release version 2.29<br />
-           Site last modified September 16 2011</font>
+          <font color="#FFCC99" size="3"> Release version 3.0.3<br />
+           Site last modified January 28 2012</font>
         </td>
         <td width="20%">
           &nbsp;
@@ -71,12 +71,17 @@
       </tr>
     </table>
     <ul id="versionlist">
-      <li>Version 2.29 always draws with Cairo on GTK+.</li>
+      <li>Version 3.0.3 uses fractional positioning in more situations.</li>
+      <li>Version 3.0.2 fixes bugs.</li>
+      <li>Version 3.0.1 fixes bugs, most notably display bugs on Windows.</li>
+      <li>Version 3.0.0 has changed the platforms supported.
+      For OS X, Cocoa must be used instead of Carbon.
+      For recent versions of Windows, Direct2D and DirectWrite can be used.
+      For GTK+ all drawing is performed with Cairo as GDK drawing removed.
+      Palette support removed.
+      Font size and weight can be specified with more precision.</li>
       <li>Version 2.28 allows translucent images in RGBA format to be used for margin markers and in autocompletion lists.</li>
       <li>Version 2.27 fixes incorrect colours on some versions of GTK+.</li>
-      <li>Version 2.26 can highlight folding margin symbols for the current folding block. Experimental support for GTK+ 3.</li>
-      <li>Version 2.25 improves ability of lexers to remember complex state between lines.</li>
-      <li>Version 2.24 fixes a memory leak on GTK+ with Cairo.</li>
     </ul>
     <ul id="menu">
       <li id="remote1"><a href="http://www.scintilla.org/SciTEImage.html">Screenshot</a></li>

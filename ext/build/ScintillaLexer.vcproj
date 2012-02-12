@@ -639,6 +639,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\scintilla\lexers\LexAVS.cxx"
+				>
+			</File>
+			<File
 				RelativePath="..\scintilla\lexers\LexBaan.cxx"
 				>
 			</File>
@@ -668,6 +672,10 @@
 			</File>
 			<File
 				RelativePath="..\scintilla\lexers\LexCOBOL.cxx"
+				>
+			</File>
+			<File
+				RelativePath="..\scintilla\lexers\LexCoffeeScript.cxx"
 				>
 			</File>
 			<File
@@ -900,6 +908,10 @@
 			</File>
 			<File
 				RelativePath="..\scintilla\lexers\LexTCL.cxx"
+				>
+			</File>
+			<File
+				RelativePath="..\scintilla\lexers\LexTCMD.cxx"
 				>
 			</File>
 			<File

@@ -92,7 +92,6 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETTABWIDTH 2121
 #define SC_CP_UTF8 65001
 #define SCI_SETCODEPAGE 2037
-#define SCI_SETUSEPALETTE 2039
 #define MARKER_MAX 31
 #define SC_MARK_CIRCLE 0
 #define SC_MARK_ROUNDRECT 1
@@ -221,6 +220,14 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_STYLEGETCHANGEABLE 2492
 #define SCI_STYLEGETHOTSPOT 2493
 #define SCI_STYLESETCASE 2060
+#define SC_FONT_SIZE_MULTIPLIER 100
+#define SCI_STYLESETSIZEFRACTIONAL 2061
+#define SCI_STYLEGETSIZEFRACTIONAL 2062
+#define SC_WEIGHT_NORMAL 400
+#define SC_WEIGHT_SEMIBOLD 600
+#define SC_WEIGHT_BOLD 700
+#define SCI_STYLESETWEIGHT 2063
+#define SCI_STYLEGETWEIGHT 2064
 #define SCI_STYLESETCHARACTERSET 2066
 #define SCI_STYLESETHOTSPOT 2409
 #define SCI_SETSELFORE 2067
@@ -316,6 +323,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETLINEINDENTATION 2127
 #define SCI_GETLINEINDENTPOSITION 2128
 #define SCI_GETCOLUMN 2129
+#define SCI_COUNTCHARACTERS 2633
 #define SCI_SETHSCROLLBAR 2130
 #define SCI_GETHSCROLLBAR 2131
 #define SC_IV_NONE 0
@@ -329,7 +337,6 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETLINEENDPOSITION 2136
 #define SCI_GETCODEPAGE 2137
 #define SCI_GETCARETFORE 2138
-#define SCI_GETUSEPALETTE 2139
 #define SCI_GETREADONLY 2140
 #define SCI_SETCURRENTPOS 2141
 #define SCI_SETSELECTIONSTART 2142
@@ -409,6 +416,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_CALLTIPSETFORE 2206
 #define SCI_CALLTIPSETFOREHLT 2207
 #define SCI_CALLTIPUSESTYLE 2212
+#define SCI_CALLTIPSETPOSITION 2213
 #define SCI_VISIBLEFROMDOCLINE 2220
 #define SCI_DOCLINEFROMVISIBLE 2221
 #define SCI_WRAPCOUNT 2235
@@ -423,6 +431,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SHOWLINES 2226
 #define SCI_HIDELINES 2227
 #define SCI_GETLINEVISIBLE 2228
+#define SCI_GETALLLINESVISIBLE 2236
 #define SCI_SETFOLDEXPANDED 2229
 #define SCI_GETFOLDEXPANDED 2230
 #define SCI_TOGGLEFOLD 2231
@@ -819,6 +828,11 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_REGISTERRGBAIMAGE 2627
 #define SCI_SCROLLTOSTART 2628
 #define SCI_SCROLLTOEND 2629
+#define SC_TECHNOLOGY_DEFAULT 0
+#define SC_TECHNOLOGY_DIRECTWRITE 1
+#define SCI_SETTECHNOLOGY 2630
+#define SCI_GETTECHNOLOGY 2631
+#define SCI_CREATELOADER 2632
 #define SCI_STARTRECORD 3001
 #define SCI_STOPRECORD 3002
 #define SCI_SETLEXER 4001
@@ -1031,6 +1045,8 @@ struct SCNotification {
 #ifdef INCLUDE_DEPRECATED_FEATURES
 
 #define SC_CP_DBCS 1
+#define SCI_SETUSEPALETTE 2039
+#define SCI_GETUSEPALETTE 2139
 
 #endif
 

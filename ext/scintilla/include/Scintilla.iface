@@ -228,10 +228,6 @@ val SC_CP_UTF8=65001
 # The SC_CP_UTF8 value can be used to enter Unicode mode.
 set void SetCodePage=2037(int codePage,)
 
-# In palette mode, Scintilla uses the environment's palette calls to display
-# more colours. This may lead to ugly displays.
-set void SetUsePalette=2039(bool usePalette,)
-
 enu MarkerSymbol=SC_MARK_
 val MARKER_MAX=31
 val SC_MARK_CIRCLE=0
@@ -481,6 +477,25 @@ get bool StyleGetHotSpot=2493(int style,)
 
 # Set a style to be mixed case, or to force upper or lower case.
 set void StyleSetCase=2060(int style, int caseForce)
+
+val SC_FONT_SIZE_MULTIPLIER=100
+
+# Set the size of characters of a style. Size is in points multiplied by 100.
+set void StyleSetSizeFractional=2061(int style, int caseForce)
+
+# Get the size of characters of a style in points multiplied by 100
+get int StyleGetSizeFractional=2062(int style,)
+
+enu FontWeight=SC_WEIGHT_
+val SC_WEIGHT_NORMAL=400
+val SC_WEIGHT_SEMIBOLD=600
+val SC_WEIGHT_BOLD=700
+
+# Set the weight of characters of a style.
+set void StyleSetWeight=2063(int style, int weight)
+
+# Get the weight of characters of a style.
+get int StyleGetWeight=2064(int style,)
 
 # Set the character set of the font in a style.
 set void StyleSetCharacterSet=2066(int style, int characterSet)
@@ -748,9 +763,11 @@ get position GetLineIndentPosition=2128(int line,)
 # Retrieve the column number of a position, taking tab width into account.
 get int GetColumn=2129(position pos,)
 
+# Count characters between two positions.
+fun int CountCharacters=2633(int startPos, int endPos)
+
 # Show or hide the horizontal scroll bar.
 set void SetHScrollBar=2130(bool show,)
-
 # Is the horizontal scroll bar visible?
 get bool GetHScrollBar=2131(,)
 
@@ -781,9 +798,6 @@ get int GetCodePage=2137(,)
 
 # Get the foreground colour of the caret.
 get colour GetCaretFore=2138(,)
-
-# In palette mode?
-get bool GetUsePalette=2139(,)
 
 # In read-only mode?
 get bool GetReadOnly=2140(,)
@@ -1027,6 +1041,9 @@ set void CallTipSetForeHlt=2207(colour fore,)
 # Enable use of STYLE_CALLTIP and set call tip tab size in pixels.
 set void CallTipUseStyle=2212(int tabSize,)
 
+# Set position of calltip, above or below text.
+set void CallTipSetPosition=2213(bool above,)
+
 # Find the display line of a document line taking hidden lines into account.
 fun int VisibleFromDocLine=2220(int line,)
 
@@ -1064,6 +1081,9 @@ fun void HideLines=2227(int lineStart, int lineEnd)
 
 # Is a line visible?
 get bool GetLineVisible=2228(int line,)
+
+# Are all lines visible?
+get bool GetAllLinesVisible=2236(,)
 
 # Show the children of a header line.
 set void SetFoldExpanded=2229(int line, bool expanded)
@@ -2175,6 +2195,18 @@ fun void ScrollToStart=2628(,)
 # Scroll to end of document.
 fun void ScrollToEnd=2629(,)
 
+val SC_TECHNOLOGY_DEFAULT=0
+val SC_TECHNOLOGY_DIRECTWRITE=1
+
+# Set the technolgy used.
+set void SetTechnology=2630(int technology,)
+
+# Get the tech.
+get int GetTechnology=2631(,)
+
+# Create an ILoader*.
+fun int CreateLoader=2632(int bytes,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 
@@ -2421,6 +2453,9 @@ val SCLEX_MARKDOWN=98
 val SCLEX_TXT2TAGS=99
 val SCLEX_A68K=100
 val SCLEX_MODULA=101
+val SCLEX_COFFEESCRIPT=102
+val SCLEX_TCMD=103
+val SCLEX_AVS=104
 
 # When a lexer specifies its language as SCLEX_AUTOMATIC it receives a
 # value assigned in sequence from SCLEX_AUTOMATIC+1.
@@ -2469,6 +2504,7 @@ val SCE_C_COMMENTDOCKEYWORDERROR=18
 val SCE_C_GLOBALCLASS=19
 val SCE_C_STRINGRAW=20
 val SCE_C_TRIPLEVERBATIM=21
+val SCE_C_HASHQUOTEDSTRING=22
 # Lexical states for SCLEX_D
 lex D=SCLEX_D SCE_D_
 val SCE_D_DEFAULT=0
@@ -2832,6 +2868,19 @@ val SCE_BAT_HIDE=4
 val SCE_BAT_COMMAND=5
 val SCE_BAT_IDENTIFIER=6
 val SCE_BAT_OPERATOR=7
+# Lexical states for SCLEX_TCMD
+lex TCMD=SCLEX_TCMD SCE_TCMD_
+val SCE_TCMD_DEFAULT=0
+val SCE_TCMD_COMMENT=1
+val SCE_TCMD_WORD=2
+val SCE_TCMD_LABEL=3
+val SCE_TCMD_HIDE=4
+val SCE_TCMD_COMMAND=5
+val SCE_TCMD_IDENTIFIER=6
+val SCE_TCMD_OPERATOR=7
+val SCE_TCMD_ENVIRONMENT=8
+val SCE_TCMD_EXPANSION=9
+val SCE_TCMD_CLABEL=10
 # Lexical states for SCLEX_MAKEFILE
 lex MakeFile=SCLEX_MAKEFILE SCE_MAKE_
 val SCE_MAKE_DEFAULT=0
@@ -3051,6 +3100,7 @@ val SCE_CSS_EXTENDED_IDENTIFIER=19
 val SCE_CSS_EXTENDED_PSEUDOCLASS=20
 val SCE_CSS_EXTENDED_PSEUDOELEMENT=21
 val SCE_CSS_MEDIA=22
+val SCE_CSS_VARIABLE=23
 # Lexical states for SCLEX_POV
 lex POV=SCLEX_POV SCE_POV_
 val SCE_POV_DEFAULT=0
@@ -3968,6 +4018,51 @@ val SCE_MODULA_PRAGMA=14
 val SCE_MODULA_PRGKEY=15
 val SCE_MODULA_OPERATOR=16
 val SCE_MODULA_BADSTR=17
+# Lexical states for SCLEX_COFFEESCRIPT
+lex CoffeeScript=SCLEX_COFFEESCRIPT SCE_COFFEESCRIPT_
+val SCE_COFFEESCRIPT_DEFAULT=0
+val SCE_COFFEESCRIPT_COMMENT=1
+val SCE_COFFEESCRIPT_COMMENTLINE=2
+val SCE_COFFEESCRIPT_COMMENTDOC=3
+val SCE_COFFEESCRIPT_NUMBER=4
+val SCE_COFFEESCRIPT_WORD=5
+val SCE_COFFEESCRIPT_STRING=6
+val SCE_COFFEESCRIPT_CHARACTER=7
+val SCE_COFFEESCRIPT_UUID=8
+val SCE_COFFEESCRIPT_PREPROCESSOR=9
+val SCE_COFFEESCRIPT_OPERATOR=10
+val SCE_COFFEESCRIPT_IDENTIFIER=11
+val SCE_COFFEESCRIPT_STRINGEOL=12
+val SCE_COFFEESCRIPT_VERBATIM=13
+val SCE_COFFEESCRIPT_REGEX=14
+val SCE_COFFEESCRIPT_COMMENTLINEDOC=15
+val SCE_COFFEESCRIPT_WORD2=16
+val SCE_COFFEESCRIPT_COMMENTDOCKEYWORD=17
+val SCE_COFFEESCRIPT_COMMENTDOCKEYWORDERROR=18
+val SCE_COFFEESCRIPT_GLOBALCLASS=19
+val SCE_COFFEESCRIPT_STRINGRAW=20
+val SCE_COFFEESCRIPT_TRIPLEVERBATIM=21
+val SCE_COFFEESCRIPT_HASHQUOTEDSTRING=22
+val SCE_COFFEESCRIPT_COMMENTBLOCK=22
+val SCE_COFFEESCRIPT_VERBOSE_REGEX=23
+val SCE_COFFEESCRIPT_VERBOSE_REGEX_COMMENT=24
+# Lexical states for SCLEX_AVS
+lex AVS=SCLEX_AVS SCE_AVS_
+val SCE_AVS_DEFAULT=0
+val SCE_AVS_COMMENTBLOCK=1
+val SCE_AVS_COMMENTBLOCKN=2
+val SCE_AVS_COMMENTLINE=3
+val SCE_AVS_NUMBER=4
+val SCE_AVS_OPERATOR=5
+val SCE_AVS_IDENTIFIER=6
+val SCE_AVS_STRING=7
+val SCE_AVS_TRIPLESTRING=8
+val SCE_AVS_KEYWORD=9
+val SCE_AVS_FILTER=10
+val SCE_AVS_PLUGIN=11
+val SCE_AVS_FUNCTION=12
+val SCE_AVS_CLIPPROP=13
+val SCE_AVS_USERDFN=14
 
 # Events
 
@@ -4005,3 +4100,12 @@ cat Deprecated
 # Deprecated in 2.21
 # The SC_CP_DBCS value can be used to indicate a DBCS mode for GTK+.
 val SC_CP_DBCS=1
+
+# Deprecated in 2.30
+
+# In palette mode?
+get bool GetUsePalette=2139(,)
+
+# In palette mode, Scintilla uses the environment's palette calls to display
+# more colours. This may lead to ugly displays.
+set void SetUsePalette=2039(bool usePalette,)

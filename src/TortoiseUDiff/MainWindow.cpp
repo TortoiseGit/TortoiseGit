@@ -19,6 +19,7 @@
 #include "StdAfx.h"
 #include "MainWindow.h"
 #include "UnicodeUtils.h"
+#include "SysInfo.h"
 
 CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/) 
 	: CWindow(hInst, wcx)
@@ -390,6 +391,12 @@ bool CMainWindow::Initialize()
 	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+	if (SysInfo::Instance().IsWin7OrLater())
+	{
+		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
+		SendEditor(SCI_SETBUFFEREDDRAW, 0);
+	}
+	SendEditor(SCI_SETFONTQUALITY, SC_EFF_QUALITY_LCD_OPTIMIZED);
 
 	return true;
 }

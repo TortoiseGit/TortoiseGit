@@ -35,6 +35,7 @@
 #include "UniCodeUtils.h"
 #include "MenuEncode.h"
 #include "gitdll.h"
+#include "SysInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -730,6 +731,12 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
 	m_regOldLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
 	m_regNewLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
+	if (SysInfo::Instance().IsWin7OrLater())
+	{
+		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
+		SendEditor(SCI_SETBUFFEREDDRAW, 0);
+	}
+	SendEditor(SCI_SETFONTQUALITY, SC_EFF_QUALITY_LCD_OPTIMIZED);
 
 	this->m_TextView.Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
 

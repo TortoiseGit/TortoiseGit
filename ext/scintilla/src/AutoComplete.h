@@ -40,7 +40,7 @@ public:
 
 	/// Display the auto completion list positioned to be near a character position
 	void Start(Window &parent, int ctrlID, int position, Point location,
-		int startLen_, int lineHeight, bool unicodeMode);
+		int startLen_, int lineHeight, bool unicodeMode, int technology);
 
 	/// The stop chars are characters which, when typed, cause the auto completion list to disappear
 	void SetStopChars(const char *stopChars_);

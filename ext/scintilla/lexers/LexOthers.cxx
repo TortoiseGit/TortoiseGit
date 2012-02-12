@@ -1015,7 +1015,7 @@ static int RecogniseErrorListLine(const char *lineBuffer, unsigned int lengthLin
 		bool initialTab = (lineBuffer[0] == '\t');
 		bool initialColonPart = false;
 		enum { stInitial,
-			stGccStart, stGccDigit, stGcc,
+			stGccStart, stGccDigit, stGccColumn, stGcc,
 			stMsStart, stMsDigit, stMsBracket, stMsVc, stMsDigitComma, stMsDotNet,
 			stCtagsStart, stCtagsStartString, stCtagsStringDollar, stCtags,
 			stUnrecognized
@@ -1047,11 +1047,17 @@ static int RecogniseErrorListLine(const char *lineBuffer, unsigned int lengthLin
 				state = Is1To9(ch) ? stGccDigit : stUnrecognized;
 			} else if (state == stGccDigit) {	// <filename>:<line>
 				if (ch == ':') {
-					state = stGcc;	// :9.*: is GCC
+					state = stGccColumn;	// :9.*: is GCC
 					startValue = i + 1;
-					break;
 				} else if (!Is0To9(ch)) {
 					state = stUnrecognized;
+				}
+			} else if (state == stGccColumn) {	// <filename>:<line>:<column>
+				if (!Is0To9(ch)) {
+					state = stGcc;
+					if (ch == ':')
+						startValue = i + 1;
+					break;
 				}
 			} else if (state == stMsStart) {	// <filename>(
 				state = Is0To9(ch) ? stMsDigit : stUnrecognized;
