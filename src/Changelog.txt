@@ -1,3 +1,7 @@
+= Release 1.7.8.0 =
+== Features==
+ * Updated shipped zlib library to version 1.2.6
+
 = Release 1.7.7.0 =
 == Features==
  * Fixed issue #758: Make the log of a bare repository available
