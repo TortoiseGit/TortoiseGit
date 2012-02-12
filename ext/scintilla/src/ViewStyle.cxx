@@ -86,14 +86,15 @@ FontRealised::~FontRealised() {
 	frNext = 0;
 }
 
-void FontRealised::Realise(Surface &surface, int zoomLevel) {
+void FontRealised::Realise(Surface &surface, int zoomLevel, int technology) {
 	PLATFORM_ASSERT(fontName);
-	sizeZoomed = size + zoomLevel;
-	if (sizeZoomed <= 2)	// Hangs if sizeZoomed <= 1
-		sizeZoomed = 2;
+	sizeZoomed = size + zoomLevel * SC_FONT_SIZE_MULTIPLIER;
+	if (sizeZoomed <= 2 * SC_FONT_SIZE_MULTIPLIER)	// Hangs if sizeZoomed <= 1
+		sizeZoomed = 2 * SC_FONT_SIZE_MULTIPLIER;
 
-	int deviceHeight = surface.DeviceHeightFont(sizeZoomed);
-	font.Create(fontName, characterSet, deviceHeight, bold, italic, extraFontFlag);
+	float deviceHeight = surface.DeviceHeightFont(sizeZoomed);
+	FontParameters fp(fontName, deviceHeight / SC_FONT_SIZE_MULTIPLIER, weight, italic, extraFontFlag, technology, characterSet);
+	font.Create(fp);
 
 	ascent = surface.Ascent(font);
 	descent = surface.Descent(font);
@@ -102,7 +103,7 @@ void FontRealised::Realise(Surface &surface, int zoomLevel) {
 	aveCharWidth = surface.AverageCharWidth(font);
 	spaceWidth = surface.WidthChar(font, ' ');
 	if (frNext) {
-		frNext->Realise(surface, zoomLevel);
+		frNext->Realise(surface, zoomLevel, technology);
 	}
 }
 
@@ -149,40 +150,40 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	}
 
 	selforeset = source.selforeset;
-	selforeground.desired = source.selforeground.desired;
-	selAdditionalForeground.desired = source.selAdditionalForeground.desired;
+	selforeground = source.selforeground;
+	selAdditionalForeground = source.selAdditionalForeground;
 	selbackset = source.selbackset;
-	selbackground.desired = source.selbackground.desired;
-	selAdditionalBackground.desired = source.selAdditionalBackground.desired;
-	selbackground2.desired = source.selbackground2.desired;
+	selbackground = source.selbackground;
+	selAdditionalBackground = source.selAdditionalBackground;
+	selbackground2 = source.selbackground2;
 	selAlpha = source.selAlpha;
 	selAdditionalAlpha = source.selAdditionalAlpha;
 	selEOLFilled = source.selEOLFilled;
 
 	foldmarginColourSet = source.foldmarginColourSet;
-	foldmarginColour.desired = source.foldmarginColour.desired;
+	foldmarginColour = source.foldmarginColour;
 	foldmarginHighlightColourSet = source.foldmarginHighlightColourSet;
-	foldmarginHighlightColour.desired = source.foldmarginHighlightColour.desired;
+	foldmarginHighlightColour = source.foldmarginHighlightColour;
 
 	hotspotForegroundSet = source.hotspotForegroundSet;
-	hotspotForeground.desired = source.hotspotForeground.desired;
+	hotspotForeground = source.hotspotForeground;
 	hotspotBackgroundSet = source.hotspotBackgroundSet;
-	hotspotBackground.desired = source.hotspotBackground.desired;
+	hotspotBackground = source.hotspotBackground;
 	hotspotUnderline = source.hotspotUnderline;
 	hotspotSingleLine = source.hotspotSingleLine;
 
 	whitespaceForegroundSet = source.whitespaceForegroundSet;
-	whitespaceForeground.desired = source.whitespaceForeground.desired;
+	whitespaceForeground = source.whitespaceForeground;
 	whitespaceBackgroundSet = source.whitespaceBackgroundSet;
-	whitespaceBackground.desired = source.whitespaceBackground.desired;
-	selbar.desired = source.selbar.desired;
-	selbarlight.desired = source.selbarlight.desired;
-	caretcolour.desired = source.caretcolour.desired;
-	additionalCaretColour.desired = source.additionalCaretColour.desired;
+	whitespaceBackground = source.whitespaceBackground;
+	selbar = source.selbar;
+	selbarlight = source.selbarlight;
+	caretcolour = source.caretcolour;
+	additionalCaretColour = source.additionalCaretColour;
 	showCaretLineBackground = source.showCaretLineBackground;
-	caretLineBackground.desired = source.caretLineBackground.desired;
+	caretLineBackground = source.caretLineBackground;
 	caretLineAlpha = source.caretLineAlpha;
-	edgecolour.desired = source.edgecolour.desired;
+	edgecolour = source.edgecolour;
 	edgeState = source.edgeState;
 	caretStyle = source.caretStyle;
 	caretWidth = source.caretWidth;
@@ -239,6 +240,7 @@ void ViewStyle::Init(size_t stylesSize_) {
 	indicators[2].under = false;
 	indicators[2].fore = ColourDesired(0xff, 0, 0);
 
+	technology = SC_TECHNOLOGY_DEFAULT;
 	lineHeight = 1;
 	maxAscent = 1;
 	maxDescent = 1;
@@ -246,35 +248,35 @@ void ViewStyle::Init(size_t stylesSize_) {
 	spaceWidth = 8;
 
 	selforeset = false;
-	selforeground.desired = ColourDesired(0xff, 0, 0);
-	selAdditionalForeground.desired = ColourDesired(0xff, 0, 0);
+	selforeground = ColourDesired(0xff, 0, 0);
+	selAdditionalForeground = ColourDesired(0xff, 0, 0);
 	selbackset = true;
-	selbackground.desired = ColourDesired(0xc0, 0xc0, 0xc0);
-	selAdditionalBackground.desired = ColourDesired(0xd7, 0xd7, 0xd7);
-	selbackground2.desired = ColourDesired(0xb0, 0xb0, 0xb0);
+	selbackground = ColourDesired(0xc0, 0xc0, 0xc0);
+	selAdditionalBackground = ColourDesired(0xd7, 0xd7, 0xd7);
+	selbackground2 = ColourDesired(0xb0, 0xb0, 0xb0);
 	selAlpha = SC_ALPHA_NOALPHA;
 	selAdditionalAlpha = SC_ALPHA_NOALPHA;
 	selEOLFilled = false;
 
 	foldmarginColourSet = false;
-	foldmarginColour.desired = ColourDesired(0xff, 0, 0);
+	foldmarginColour = ColourDesired(0xff, 0, 0);
 	foldmarginHighlightColourSet = false;
-	foldmarginHighlightColour.desired = ColourDesired(0xc0, 0xc0, 0xc0);
+	foldmarginHighlightColour = ColourDesired(0xc0, 0xc0, 0xc0);
 
 	whitespaceForegroundSet = false;
-	whitespaceForeground.desired = ColourDesired(0, 0, 0);
+	whitespaceForeground = ColourDesired(0, 0, 0);
 	whitespaceBackgroundSet = false;
-	whitespaceBackground.desired = ColourDesired(0xff, 0xff, 0xff);
-	selbar.desired = Platform::Chrome();
-	selbarlight.desired = Platform::ChromeHighlight();
-	styles[STYLE_LINENUMBER].fore.desired = ColourDesired(0, 0, 0);
-	styles[STYLE_LINENUMBER].back.desired = Platform::Chrome();
-	caretcolour.desired = ColourDesired(0, 0, 0);
-	additionalCaretColour.desired = ColourDesired(0x7f, 0x7f, 0x7f);
+	whitespaceBackground = ColourDesired(0xff, 0xff, 0xff);
+	selbar = Platform::Chrome();
+	selbarlight = Platform::ChromeHighlight();
+	styles[STYLE_LINENUMBER].fore = ColourDesired(0, 0, 0);
+	styles[STYLE_LINENUMBER].back = Platform::Chrome();
+	caretcolour = ColourDesired(0, 0, 0);
+	additionalCaretColour = ColourDesired(0x7f, 0x7f, 0x7f);
 	showCaretLineBackground = false;
-	caretLineBackground.desired = ColourDesired(0xff, 0xff, 0);
+	caretLineBackground = ColourDesired(0xff, 0xff, 0);
 	caretLineAlpha = SC_ALPHA_NOALPHA;
-	edgecolour.desired = ColourDesired(0xc0, 0xc0, 0xc0);
+	edgecolour = ColourDesired(0xc0, 0xc0, 0xc0);
 	edgeState = EDGE_NONE;
 	caretStyle = CARETSTYLE_LINE;
 	caretWidth = 1;
@@ -282,9 +284,9 @@ void ViewStyle::Init(size_t stylesSize_) {
 	someStylesForceCase = false;
 
 	hotspotForegroundSet = false;
-	hotspotForeground.desired = ColourDesired(0, 0, 0xff);
+	hotspotForeground = ColourDesired(0, 0, 0xff);
 	hotspotBackgroundSet = false;
-	hotspotBackground.desired = ColourDesired(0xff, 0xff, 0xff);
+	hotspotBackground = ColourDesired(0xff, 0xff, 0xff);
 	hotspotUnderline = true;
 	hotspotSingleLine = true;
 
@@ -326,39 +328,6 @@ void ViewStyle::Init(size_t stylesSize_) {
 	braceBadLightIndicator = 0;
 }
 
-void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
-	unsigned int i;
-	for (i=0; i<stylesSize; i++) {
-		pal.WantFind(styles[i].fore, want);
-		pal.WantFind(styles[i].back, want);
-	}
-	for (i=0; i<(sizeof(indicators)/sizeof(indicators[0])); i++) {
-		pal.WantFind(indicators[i].fore, want);
-	}
-	for (i=0; i<(sizeof(markers)/sizeof(markers[0])); i++) {
-		markers[i].RefreshColourPalette(pal, want);
-	}
-	pal.WantFind(selforeground, want);
-	pal.WantFind(selAdditionalForeground, want);
-	pal.WantFind(selbackground, want);
-	pal.WantFind(selAdditionalBackground, want);
-	pal.WantFind(selbackground2, want);
-
-	pal.WantFind(foldmarginColour, want);
-	pal.WantFind(foldmarginHighlightColour, want);
-
-	pal.WantFind(whitespaceForeground, want);
-	pal.WantFind(whitespaceBackground, want);
-	pal.WantFind(selbar, want);
-	pal.WantFind(selbarlight, want);
-	pal.WantFind(caretcolour, want);
-	pal.WantFind(additionalCaretColour, want);
-	pal.WantFind(caretLineBackground, want);
-	pal.WantFind(edgecolour, want);
-	pal.WantFind(hotspotForeground, want);
-	pal.WantFind(hotspotBackground, want);
-}
-
 void ViewStyle::CreateFont(const FontSpecification &fs) {
 	if (fs.fontName) {
 		for (FontRealised *cur=frFirst; cur; cur=cur->frNext) {
@@ -376,8 +345,8 @@ void ViewStyle::CreateFont(const FontSpecification &fs) {
 void ViewStyle::Refresh(Surface &surface) {
 	delete frFirst;
 	frFirst = NULL;
-	selbar.desired = Platform::Chrome();
-	selbarlight.desired = Platform::ChromeHighlight();
+	selbar = Platform::Chrome();
+	selbarlight = Platform::ChromeHighlight();
 
 	for (unsigned int i=0; i<stylesSize; i++) {
 		styles[i].extraFontFlag = extraFontFlag;
@@ -388,7 +357,7 @@ void ViewStyle::Refresh(Surface &surface) {
 		CreateFont(styles[j]);
 	}
 
-	frFirst->Realise(surface, zoomLevel);
+	frFirst->Realise(surface, zoomLevel, technology);
 
 	for (unsigned int k=0; k<stylesSize; k++) {
 		FontRealised *fr = frFirst->Find(styles[k]);
@@ -457,9 +426,9 @@ void ViewStyle::EnsureStyle(size_t index) {
 void ViewStyle::ResetDefaultStyle() {
 	styles[STYLE_DEFAULT].Clear(ColourDesired(0,0,0),
 	        ColourDesired(0xff,0xff,0xff),
-	        Platform::DefaultFontSize(), fontNames.Save(Platform::DefaultFont()),
+	        Platform::DefaultFontSize() * SC_FONT_SIZE_MULTIPLIER, fontNames.Save(Platform::DefaultFont()),
 	        SC_CHARSET_DEFAULT,
-	        false, false, false, false, Style::caseMixed, true, true, false);
+	        SC_WEIGHT_NORMAL, false, false, false, Style::caseMixed, true, true, false);
 }
 
 void ViewStyle::ClearStyles() {
@@ -469,11 +438,11 @@ void ViewStyle::ClearStyles() {
 			styles[i].ClearTo(styles[STYLE_DEFAULT]);
 		}
 	}
-	styles[STYLE_LINENUMBER].back.desired = Platform::Chrome();
+	styles[STYLE_LINENUMBER].back = Platform::Chrome();
 
 	// Set call tip fore/back to match the values previously set for call tips
-	styles[STYLE_CALLTIP].back.desired = ColourDesired(0xff, 0xff, 0xff);
-	styles[STYLE_CALLTIP].fore.desired = ColourDesired(0x80, 0x80, 0x80);
+	styles[STYLE_CALLTIP].back = ColourDesired(0xff, 0xff, 0xff);
+	styles[STYLE_CALLTIP].fore = ColourDesired(0x80, 0x80, 0x80);
 }
 
 void ViewStyle::SetStyleFontName(int styleIndex, const char *name) {

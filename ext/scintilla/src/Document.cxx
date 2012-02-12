@@ -169,7 +169,7 @@ int Document::AddRef() {
 
 // Decrease reference count and return its previous value.
 // Delete the document if reference count reaches zero.
-int Document::Release() {
+int SCI_METHOD Document::Release() {
 	int curRefCount = --refCount;
 	if (curRefCount == 0)
 		delete this;
@@ -183,6 +183,10 @@ void Document::SetSavePoint() {
 
 int Document::GetMark(int line) {
 	return static_cast<LineMarkers *>(perLineData[ldMarkers])->MarkValue(line);
+}
+
+int Document::MarkerNext(int lineStart, int mask) const {
+	return static_cast<LineMarkers *>(perLineData[ldMarkers])->MarkerNext(lineStart, mask);
 }
 
 int Document::AddMark(int line, int markerNum) {
@@ -821,6 +825,22 @@ bool Document::InsertString(int position, const char *s, int insertLength) {
 	return !cb.IsReadOnly();
 }
 
+int SCI_METHOD Document::AddData(char *data, int length) {
+	try {
+		int position = Length();
+		InsertString(position,data, length);
+	} catch (std::bad_alloc &) {
+		return SC_STATUS_BADALLOC;
+	} catch (...) {
+		return SC_STATUS_FAILURE;
+	}
+	return 0;
+}
+
+void * SCI_METHOD Document::ConvertToDocument() {
+	return this;
+}
+
 int Document::Undo() {
 	int newPos = -1;
 	CheckReadOnly();
@@ -1072,6 +1092,20 @@ int Document::GetColumn(int pos) {
 		}
 	}
 	return column;
+}
+
+int Document::CountCharacters(int startPos, int endPos) {
+	startPos = MovePositionOutsideChar(startPos, 1, false);
+	endPos = MovePositionOutsideChar(endPos, -1, false);
+	int count = 0;
+	int i = startPos;
+	while (i < endPos) {
+		count++;
+		if (IsCrLf(i))
+			i++;
+		i = NextPosition(i, 1);
+	}
+	return count;
 }
 
 int Document::FindColumn(int line, int column) {
@@ -1427,7 +1461,7 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 		const int endPos = MovePositionOutsideChar(maxPos, increment, false);
 
 		// Compute actual search ranges needed
-		const int lengthFind = (*length == -1) ? static_cast<int>(strlen(search)) : *length;
+		const int lengthFind = *length;
 
 		//Platform::DebugPrintf("Find %d %d %s %d\n", startPos, endPos, ft->lpstrText, lengthFind);
 		const int limitPos = Platform::Maximum(startPos, endPos);
