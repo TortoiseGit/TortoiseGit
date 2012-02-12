@@ -61,6 +61,7 @@ struct loc_map enc2locale[] = {
 	{"20866","KOI8-R"},
 	{"21866","KOI8-U"},
 	{"1251","microsoft-cp1251"},
+	{"65001","UTF-8"},
 	};
 
 
