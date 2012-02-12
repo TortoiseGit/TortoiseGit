@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include <string>
 #include "..\registry.h"
 #include ".\sciedit.h"
+#include "SysInfo.h"
 
 using namespace std;
 
@@ -152,6 +153,12 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 	Call(SCI_ASSIGNCMDKEY, SCK_END + (SCMOD_SHIFT << 16), SCI_LINEENDWRAPEXTEND);
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME, SCI_HOMEWRAP);
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME + (SCMOD_SHIFT << 16), SCI_HOMEWRAPEXTEND);
+	if (SysInfo::Instance().IsWin7OrLater())
+	{
+		Call(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
+		Call(SCI_SETBUFFEREDDRAW, 0);
+	}
+	Call(SCI_SETFONTQUALITY, SC_EFF_QUALITY_LCD_OPTIMIZED);
 }
 
 

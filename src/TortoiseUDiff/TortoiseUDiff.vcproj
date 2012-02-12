@@ -390,6 +390,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\Utils\SysInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TortoiseUDiff.cpp"
 				>
 			</File>
@@ -433,6 +437,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\SysInfo.h"
 				>
 			</File>
 			<File
