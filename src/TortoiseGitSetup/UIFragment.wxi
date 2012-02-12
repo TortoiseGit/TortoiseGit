@@ -135,6 +135,8 @@
 			<Control Id="PathEdit" Type="PathEdit" X="25" Y="93" Width="320" Height="18" Property="TARGETDIR" />
 			<Control Id="Browse" Type="PushButton" X="289" Y="119" Width="56" Height="17" Text="[ButtonText_Browse]">
 				<Publish Event="SpawnDialog" Value="AdminBrowseDlg">1</Publish>
+				<Condition Action="hide">Installed</Condition>
+				<Condition Action="disable">Installed</Condition>
 			</Control>
 			<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="[BannerBitmap]" />
 			<Control Id="Title" Type="Text" X="155" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
