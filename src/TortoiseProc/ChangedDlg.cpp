@@ -366,7 +366,7 @@ void CChangedDlg::OnBnClickedCommit()
 		cmd += m_pathList[0].GetWinPathString();
 	else
 		cmd += m_FileListCtrl.GetCommonDirectory(false);
-
+	cmd += _T("\"");
 	CAppUtils::RunTortoiseProc(cmd);
 }
 
