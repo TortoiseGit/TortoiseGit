@@ -539,7 +539,8 @@ void CCommitDlg::OnOK()
 		{
 			sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
 			sysProgressDlg.SetProgress(j, nListItems);
-			AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing
+			if (j % 25 == 0 || j == nListItems - 1)
+				AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
 		}
 		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
 		if (entry->m_Checked)
