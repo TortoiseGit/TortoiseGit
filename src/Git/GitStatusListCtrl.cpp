@@ -2357,7 +2357,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index;
-					MassiveGitTask mgt(L"add -f");
+					CMassiveGitTask mgt(L"add -f");
 					while ((index = GetNextSelectedItem(pos)) >= 0)
 					{
 						CTGitPath * path = (CTGitPath *)GetItemData(index);

@@ -1907,7 +1907,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	}
 	else
 	{
-		MassiveGitTask mgt(L"add -f");
+		CMassiveGitTask mgt(L"add -f");
 		mgt.ExecuteWithNotify(&m_targetPathList, m_bCancelled, git_wc_notify_add, this, &CGitProgressDlg::Notify);
 	}
 

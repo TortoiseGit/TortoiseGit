@@ -25,11 +25,11 @@
 
 typedef BOOL (CGitProgressDlg::*NOTIFY_CALLBACK)(const CTGitPath& path, git_wc_notify_action_t action, int status, CString *strErr);
 
-class MassiveGitTask
+class CMassiveGitTask
 {
 public:
-	MassiveGitTask(CString params);
-	~MassiveGitTask(void);
+	CMassiveGitTask(CString params);
+	~CMassiveGitTask(void);
 
 	void					AddFile(CString filename);
 	void					AddFile(CTGitPath filename);

@@ -22,7 +22,7 @@
 #include "MassiveGitTask.h"
 #include "MessageBox.h"
 
-MassiveGitTask::MassiveGitTask(CString gitParameters)
+CMassiveGitTask::CMassiveGitTask(CString gitParameters)
 	: m_bUnused(true)
 	, m_NotifyCallbackInstance(NULL)
 	, m_NotifyCallbackMethod(NULL)
@@ -30,23 +30,23 @@ MassiveGitTask::MassiveGitTask(CString gitParameters)
 	m_sParams = gitParameters;
 }
 
-MassiveGitTask::~MassiveGitTask(void)
+CMassiveGitTask::~CMassiveGitTask(void)
 {
 }
 
-void MassiveGitTask::AddFile(CString filename)
-{
-	assert(m_bUnused);
-	m_pathList.AddPath(filename);
-}
-
-void MassiveGitTask::AddFile(CTGitPath filename)
+void CMassiveGitTask::AddFile(CString filename)
 {
 	assert(m_bUnused);
 	m_pathList.AddPath(filename);
 }
 
-bool MassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, BOOL &cancel, git_wc_notify_action_t action, CGitProgressDlg * instance, NOTIFY_CALLBACK notifyMethod)
+void CMassiveGitTask::AddFile(CTGitPath filename)
+{
+	assert(m_bUnused);
+	m_pathList.AddPath(filename);
+}
+
+bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, BOOL &cancel, git_wc_notify_action_t action, CGitProgressDlg * instance, NOTIFY_CALLBACK notifyMethod)
 {
 	assert(m_bUnused);
 	m_bUnused = false;
@@ -58,14 +58,14 @@ bool MassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, BOOL &cancel, gi
 	return ExecuteCommands(cancel);
 }
 
-bool MassiveGitTask::Execute(BOOL &cancel)
+bool CMassiveGitTask::Execute(BOOL &cancel)
 {
 	assert(m_bUnused);
 	m_pathList.RemoveDuplicates();
 	return ExecuteCommands(cancel);
 }
 
-bool MassiveGitTask::ExecuteCommands(BOOL &cancel)
+bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 {
 	m_bUnused = false;
 
