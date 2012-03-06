@@ -85,8 +85,8 @@ BEGIN
 	IDS_CHERRY_PICK_VERSIONS	"Cherry Pick selected commits..."
 	IDS_COPY_COMMIT_HASH		"Copy Commit Hash"
 	IDS_CREATE_PATCH			"Format Patch..."
-	IDS_DELETE_BRANCHTAG		"Delele branch/tag"
-	IDS_DELETE_BRANCHTAG_SHORT	"Delele"
+	IDS_DELETE_BRANCHTAG		"Delete branch/tag"
+	IDS_DELETE_BRANCHTAG_SHORT	"Delete"
 	IDS_LOG_POPUP_COMMIT		"Commit..."
 	IDS_SWITCH_BRANCH		"Switch/Checkout to"
 END 
