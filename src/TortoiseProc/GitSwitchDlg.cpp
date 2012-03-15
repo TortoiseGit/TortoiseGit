@@ -144,12 +144,15 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 
 	CString version = m_VersionName;
 	
-	if((version.Left(7)==_T("origin/") || version.Left(8)==_T("remotes/")))
+	int start = -1;
+	if (version.Left(7)==_T("origin/"))
+		start = version.Find(_T('/'), 8);
+	else if (version.Left(8)==_T("remotes/"))
+		start = version.Find(_T('/'), 9);
+
+	if (start >= 0)
 	{
-		int start=0;
-		start = version.ReverseFind(_T('/'));
-		if(start>=0)
-			version = version.Mid(start+1);
+		version = version.Mid(start + 1);
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
 		this->m_NewBranch=version;
 		
