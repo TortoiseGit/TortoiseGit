@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,6 +76,9 @@ void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 		CRect rect;
 		GetClientRect(rect);
 		GetDlgItem(IDC_PATCH)->MoveWindow(0, 0, cx, cy);
+		CRect rect2;
+		m_ctrlPatchView.GetClientRect(rect);
+		m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, rect.Width() - 4);
 	}
 }
 

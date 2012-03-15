@@ -1846,6 +1846,9 @@ void CCommitDlg::FillPatchView()
 		m_patchViewdlg.m_ctrlPatchView.SetText(out);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETREADONLY, TRUE);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_GOTOPOS, 0);
+		CRect rect;
+		m_patchViewdlg.m_ctrlPatchView.GetClientRect(rect);
+		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTH, rect.Width() - 4);
 	}
 }
 LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
@@ -2071,6 +2074,7 @@ void CCommitDlg::OnStnClickedViewPatch()
 		if (viewPatchEnabled == FALSE)
 			g_Git.SetConfigValue(_T("tgit.showpatch"), _T("true"));
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
+		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 		CRect rect;
 		this->GetWindowRect(&rect);
 
