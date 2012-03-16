@@ -6,6 +6,7 @@
  * Fixed issue #1085: Small commit with lots of unversioned and not ignored files takes very long
  * Fixed issue #1098: 'In ChangeList' is cleared when you click a table header
  * Fixed issue #1073: Correct default name in Switch/Checkout dialog
+ * Fixed issue #1110: Tracking branches when you don't want to/incorrectly
 
 = Release 1.7.7.0 =
 == Features==

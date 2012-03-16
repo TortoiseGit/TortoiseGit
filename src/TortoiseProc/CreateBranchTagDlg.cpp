@@ -35,7 +35,7 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
 {
 	m_bIsTag=0;
 	m_bSwitch = 0;	// default switch to checkbox not selected
-	m_bTrack=0;
+	m_bTrack=2;
 	m_bSign=0;
 }
 
@@ -141,6 +141,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	{
 		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), _T("Force creationg of branch/tag - even if already exists."));
 		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_SIGN), _T("Requires GPG and a key without passphrase."));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_TRACK), _T("If checked --track is passed to git, if unchecked --no-track is passed to git, else neither --track nor --no-track is passed to git (see help)."));
 		m_ToolTip.Activate(TRUE);
 	}
 

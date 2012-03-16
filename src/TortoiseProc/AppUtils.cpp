@@ -925,8 +925,10 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 		CString cmd;
 		CString force;
 		CString track;
-		if(dlg.m_bTrack)
+		if(dlg.m_bTrack == TRUE)
 			track=_T(" --track ");
+		else if(dlg.m_bTrack == FALSE)
+			track=_T(" --no-track");
 
 		if(dlg.m_bForce)
 			force=_T(" -f ");

@@ -77,6 +77,14 @@
 			the branch WC when you switch.
 		</para>
 		<para>
+			<guilabel>track</guilabel> is a checkbox with three values. If it is checked
+			<literal>--track</literal> is passed to git on <guilabel>OK</guilabel>, if it is
+			unchecked <literal>--no-track</literal> is passed to git on <guilabel>OK</guilabel>.
+			The third state indicates, that neither <literal>--track</literal> nor <literal>--no-track</literal>
+			is passed to git on <guilabel>OK</guilabel> - see branch.autosetupmerge configuration variable
+			(<xref linkend="git-config(1)"/>) and --track parameter documentation for <xref linkend="git-branch(1)"/>.
+		</para>
+		<para>
 			Check <guilabel>Sign</guilabel> to create a signed tag. This requires GPG
 			and a key <emphasis>without</emphasis> a passphrase.
 		</para>
