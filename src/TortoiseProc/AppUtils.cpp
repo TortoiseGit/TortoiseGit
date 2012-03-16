@@ -937,8 +937,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 			if(dlg.m_bSign)
 				sign=_T("-s");
 
-			cmd.Format(_T("git.exe tag %s %s %s %s %s"),
-				track,
+			cmd.Format(_T("git.exe tag %s %s %s %s"),
 				force,
 				sign,
 				dlg.m_BranchTagName,
