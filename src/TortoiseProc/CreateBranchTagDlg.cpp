@@ -184,10 +184,10 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 		if(str == m_BranchTagName)
 			isDefault =true;
 
+		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
+
 		if( m_BranchTagName.IsEmpty() ||  isDefault)
 		{
-			this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
-
 			m_BranchTagName= m_ChooseVersioinBranch.GetString();
 			int start =0;
 			start = m_BranchTagName.ReverseFind(_T('/'));
