@@ -255,6 +255,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	{
 		this->m_BranchCtrl.SetCurSel(-1);
 		this->m_BranchCtrl.EnableWindow(FALSE);
+		GetDlgItem(IDC_REBASE_CHECK_FORCE)->ShowWindow(SW_HIDE);
 		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		this->SetWindowText(_T("Cherry Pick"));
