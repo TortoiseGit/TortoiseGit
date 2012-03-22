@@ -683,6 +683,9 @@ void CCommitDlg::OnOK()
 		}
 	}
 
+	if (bAddSuccess && CheckHeadDetach())
+		bAddSuccess = false;
+
 	//if(uncheckedfiles.GetLength()>0)
 	//{
 	//	cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
@@ -734,8 +737,6 @@ void CCommitDlg::OnOK()
 			dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
 		}
 		cmd.Format(_T("git.exe commit %s %s -F \"%s\""), dateTime, amend, tempfile);
-
-		CheckHeadDetach();
 
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added.
@@ -2157,11 +2158,13 @@ int CCommitDlg::CheckHeadDetach()
 	CString output;
 	if(g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir,output))
 	{
-		if(CMessageBox::Show(NULL,_T("<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch)\nDo you want create branch now?"),
-						_T("TortoiseGit"),MB_YESNO|MB_ICONWARNING) == IDYES)
+		int retval = CMessageBox::Show(NULL,_T("<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch)\nDo you want create branch now?"), _T("TortoiseGit"), MB_YESNOCANCEL | MB_ICONWARNING);
+		if(retval == IDYES)
 		{
 			CAppUtils::CreateBranchTag(FALSE,NULL,true);
 		}
+		else if (retval == IDCANCEL)
+			return 1;
 	}
 	return 0;
 }
