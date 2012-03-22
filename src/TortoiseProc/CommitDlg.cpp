@@ -2162,7 +2162,8 @@ int CCommitDlg::CheckHeadDetach()
 						_T("TortoiseGit"),MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
-			CAppUtils::CreateBranchTag(FALSE,NULL,true);
+			if (CAppUtils::CreateBranchTag(FALSE, NULL, true) == FALSE)
+				return 1;
 		}
 		else if (retval == IDCANCEL)
 			return 1;
