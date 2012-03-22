@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -187,7 +187,10 @@ void CPullFetchDlg::Refresh()
 	//Select pull-branch from current branch
 	configName.Format(L"branch.%s.merge", currentBranch);
 	CString pullBranch = m_configPullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
-	m_RemoteBranch.AddString(pullBranch);
+	if (pullBranch.IsEmpty())
+		m_RemoteBranch.AddString(currentBranch);
+	else
+		m_RemoteBranch.AddString(pullBranch);
 
 	if(pullRemote.IsEmpty())
 		pullRemote = m_RemoteReg;
