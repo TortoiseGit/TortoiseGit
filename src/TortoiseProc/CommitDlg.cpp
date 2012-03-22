@@ -669,7 +669,7 @@ void CCommitDlg::OnOK()
 	if (sysProgressDlg.IsValid())
 		sysProgressDlg.Stop();
 
-	if (m_bCreateNewBranch)
+	if (bAddSuccess && m_bCreateNewBranch)
 	{
 		if (g_Git.Run(_T("git branch ") + m_sCreateNewBranch, &out, CP_ACP))
 		{
@@ -2158,7 +2158,8 @@ int CCommitDlg::CheckHeadDetach()
 	CString output;
 	if(g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir,output))
 	{
-		int retval = CMessageBox::Show(NULL,_T("<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch)\nDo you want create branch now?"), _T("TortoiseGit"), MB_YESNOCANCEL | MB_ICONWARNING);
+		int retval = CMessageBox::Show(NULL,_T("<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch)\nDo you want create branch now?"),
+						_T("TortoiseGit"),MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
 			CAppUtils::CreateBranchTag(FALSE,NULL,true);
