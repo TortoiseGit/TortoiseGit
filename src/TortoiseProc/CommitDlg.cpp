@@ -2073,7 +2073,7 @@ void CCommitDlg::OnStnClickedViewPatch()
 		BOOL viewPatchEnabled = FALSE;
 		m_ProjectProperties.GetBOOLProps(viewPatchEnabled, _T("tgit.commitshowpatch"));
 		if (viewPatchEnabled == FALSE)
-			g_Git.SetConfigValue(_T("tgit.showpatch"), _T("true"));
+			g_Git.SetConfigValue(_T("tgit.commitshowpatch"), _T("true"));
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
 		m_patchViewdlg.m_ctrlPatchView.Call(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 		CRect rect;

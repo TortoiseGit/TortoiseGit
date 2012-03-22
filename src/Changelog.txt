@@ -8,6 +8,7 @@
  * Fixed issue #1073: Correct default name in Switch/Checkout dialog
  * Fixed issue #1110: Tracking branches when you don't want to/incorrectly
  * Fixed issue #1115: Detached HEAD message has no cancel/abort option
+ * Fixed issue #985: Correctly store status for view patch in commit dialog
 
 = Release 1.7.7.0 =
 == Features==
