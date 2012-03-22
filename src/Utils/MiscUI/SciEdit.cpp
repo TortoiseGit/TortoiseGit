@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2012 - TortoiseSVN
+// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -768,6 +769,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		bool bCanRedo = !!Call(SCI_CANREDO);
 		bool bHasSelection = (selend-selstart > 0);
 		bool bCanPaste = !!Call(SCI_CANPASTE);
+		bool bIsReadOnly = !!Call(SCI_GETREADONLY);
 		UINT uEnabledMenu = MF_STRING | MF_ENABLED;
 		UINT uDisabledMenu = MF_STRING | MF_GRAYED;
 
@@ -790,7 +792,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		int nCorrections = 1;
 		bool bSpellAdded = false;
 		// check if the word under the cursor is spelled wrong
-		if ((pChecker)&&(!worda.IsEmpty()))
+		if ((pChecker)&&(!worda.IsEmpty()) && !bIsReadOnly)
 		{
 			char ** wlst;
 			// get the spell suggestions
@@ -815,7 +817,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		// also allow the user to add the word to the custom dictionary so
 		// it won't show up as misspelled anymore
 		if ((sWord.GetLength()<PDICT_MAX_WORD_LENGTH)&&((pChecker)&&(m_autolist.find(sWord) == m_autolist.end())&&(!pChecker->spell(worda)))&&
-			(!_istdigit(sWord.GetAt(0)))&&(!m_personalDict.FindWord(sWord)))
+			(!_istdigit(sWord.GetAt(0)))&&(!m_personalDict.FindWord(sWord)) && !bIsReadOnly)
 		{
 			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, sWord);
 			popup.AppendMenu(uEnabledMenu, SCI_ADDWORD, sMenuItemText);
