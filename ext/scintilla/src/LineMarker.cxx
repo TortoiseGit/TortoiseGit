@@ -68,7 +68,7 @@ static void DrawMinus(Surface *surface, int centreX, int centreY, int armSize, C
 	surface->FillRectangle(rcH, fore);
 }
 
-void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharacter, typeOfFold tFold) {
+void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharacter, typeOfFold tFold, int marginStyle) {
 	ColourDesired head = back;
 	ColourDesired body = back;
 	ColourDesired tail = back;
@@ -92,13 +92,18 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 		break;
 	}
 
-
 	if ((markType == SC_MARK_PIXMAP) && (pxpm)) {
 		pxpm->Draw(surface, rcWhole);
 		return;
 	}
 	if ((markType == SC_MARK_RGBAIMAGE) && (image)) {
-		surface->DrawRGBAImage(rcWhole, image->GetWidth(), image->GetHeight(), image->Pixels());
+		// Make rectangle just large enough to fit image centred on centre of rcWhole
+		PRectangle rcImage;
+		rcImage.top = static_cast<int>(((rcWhole.top + rcWhole.bottom) - image->GetHeight()) / 2);
+		rcImage.bottom = rcImage.top + image->GetHeight();
+		rcImage.left = static_cast<int>(((rcWhole.left + rcWhole.right) - image->GetWidth()) / 2);
+		rcImage.right = rcImage.left + image->GetWidth();
+		surface->DrawRGBAImage(rcImage, image->GetWidth(), image->GetHeight(), image->Pixels());
 		return;
 	}
 	// Restrict most shapes a bit
@@ -113,8 +118,8 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	int dimOn4 = minDim / 4;
 	int blobSize = dimOn2-1;
 	int armSize = dimOn2-2;
-	if (rc.Width() > (rc.Height() * 2)) {
-		// Wide column is line number so move to left to try to avoid overlapping number
+	if (marginStyle == SC_MARGIN_NUMBER || marginStyle == SC_MARGIN_TEXT || marginStyle == SC_MARGIN_RTEXT) {
+		// On textual margins move marker to the left to try to avoid overlapping the text
 		centreX = rc.left + dimOn2 + 1;
 	}
 	if (markType == SC_MARK_ROUNDRECT) {
@@ -195,17 +200,17 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	} else if (markType == SC_MARK_LCORNER) {
 		surface->PenColour(tail);
 		surface->MoveTo(centreX, rcWhole.top);
-		surface->LineTo(centreX, rc.top + dimOn2);
-		surface->LineTo(rc.right - 2, rc.top + dimOn2);
+		surface->LineTo(centreX, centreY);
+		surface->LineTo(rc.right - 1, centreY);
 
 	} else if (markType == SC_MARK_TCORNER) {
 		surface->PenColour(tail);
-		surface->MoveTo(centreX, rc.top + dimOn2);
-		surface->LineTo(rc.right - 2, rc.top + dimOn2);
+		surface->MoveTo(centreX, centreY);
+		surface->LineTo(rc.right - 1, centreY);
 
 		surface->PenColour(body);
 		surface->MoveTo(centreX, rcWhole.top);
-		surface->LineTo(centreX, rc.top + dimOn2 + 1);
+		surface->LineTo(centreX, centreY + 1);
 
 		surface->PenColour(head);
 		surface->LineTo(centreX, rcWhole.bottom);
@@ -213,19 +218,19 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	} else if (markType == SC_MARK_LCORNERCURVE) {
 		surface->PenColour(tail);
 		surface->MoveTo(centreX, rcWhole.top);
-		surface->LineTo(centreX, rc.top + dimOn2-3);
-		surface->LineTo(centreX+3, rc.top + dimOn2);
-		surface->LineTo(rc.right - 1, rc.top + dimOn2);
+		surface->LineTo(centreX, centreY-3);
+		surface->LineTo(centreX+3, centreY);
+		surface->LineTo(rc.right - 1, centreY);
 
 	} else if (markType == SC_MARK_TCORNERCURVE) {
 		surface->PenColour(tail);
-		surface->MoveTo(centreX, rc.top + dimOn2-3);
-		surface->LineTo(centreX+3, rc.top + dimOn2);
-		surface->LineTo(rc.right - 1, rc.top + dimOn2);
+		surface->MoveTo(centreX, centreY-3);
+		surface->LineTo(centreX+3, centreY);
+		surface->LineTo(rc.right - 1, centreY);
 
 		surface->PenColour(body);
 		surface->MoveTo(centreX, rcWhole.top);
-		surface->LineTo(centreX, rc.top + dimOn2-2);
+		surface->LineTo(centreX, centreY-2);
 
 		surface->PenColour(head);
 		surface->LineTo(centreX, rcWhole.bottom);
@@ -333,7 +338,7 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	} else if (markType >= SC_MARK_CHARACTER) {
 		char character[1];
 		character[0] = static_cast<char>(markType - SC_MARK_CHARACTER);
-		int width = surface->WidthText(fontForCharacter, character, 1);
+		XYPOSITION width = surface->WidthText(fontForCharacter, character, 1);
 		rc.left += (rc.Width() - width) / 2;
 		rc.right = rc.left + width;
 		surface->DrawTextClipped(rc, fontForCharacter, rc.bottom - 2,

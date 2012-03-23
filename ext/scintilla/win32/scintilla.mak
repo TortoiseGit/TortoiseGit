@@ -108,6 +108,7 @@ LEXOBJS=\
 	$(DIR_O)\LexCsound.obj \
 	$(DIR_O)\LexCSS.obj \
 	$(DIR_O)\LexD.obj \
+	$(DIR_O)\LexECL.obj \
 	$(DIR_O)\LexEiffel.obj \
 	$(DIR_O)\LexErlang.obj \
 	$(DIR_O)\LexEScript.obj \
@@ -332,6 +333,8 @@ $(DIR_O)\LexCsound.obj: ..\lexers\LexCsound.cxx $(LEX_HEADERS)
 $(DIR_O)\LexCSS.obj: ..\lexers\LexCSS.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexD.obj: ..\lexers\LexD.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexECL.obj: ..\lexers\LexECL.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexEiffel.obj: ..\lexers\LexEiffel.cxx $(LEX_HEADERS)
 

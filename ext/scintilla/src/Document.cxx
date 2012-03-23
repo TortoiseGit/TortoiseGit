@@ -976,7 +976,7 @@ bool Document::InsertChar(int pos, char ch) {
  * Insert a null terminated string.
  */
 bool Document::InsertCString(int position, const char *s) {
-	return InsertString(position, s, static_cast<int>(strlen(s)));
+	return InsertString(position, s, static_cast<int>(s ? strlen(s) : 0));
 }
 
 void Document::ChangeChar(int pos, char ch) {

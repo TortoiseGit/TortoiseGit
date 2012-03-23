@@ -161,16 +161,17 @@ struct FormatAndMetrics {
 	int extraFontFlag;
 	FLOAT yAscent;
 	FLOAT yDescent;
+	FLOAT yInternalLeading;
 	FormatAndMetrics(HFONT hfont_, int extraFontFlag_) : 
 		technology(SCWIN_TECH_GDI), hfont(hfont_), 
 #if defined(USE_D2D)
 		pTextFormat(0),
 #endif
-		extraFontFlag(extraFontFlag_), yAscent(2), yDescent(1) {
+		extraFontFlag(extraFontFlag_), yAscent(2), yDescent(1), yInternalLeading(0) {
 	}
 #if defined(USE_D2D)
-	FormatAndMetrics(IDWriteTextFormat *pTextFormat_, int extraFontFlag_, FLOAT yAscent_, FLOAT yDescent_) : 
-		technology(SCWIN_TECH_DIRECTWRITE), hfont(0), pTextFormat(pTextFormat_), extraFontFlag(extraFontFlag_), yAscent(yAscent_), yDescent(yDescent_) {
+	FormatAndMetrics(IDWriteTextFormat *pTextFormat_, int extraFontFlag_, FLOAT yAscent_, FLOAT yDescent_, FLOAT yInternalLeading_) : 
+		technology(SCWIN_TECH_DIRECTWRITE), hfont(0), pTextFormat(pTextFormat_), extraFontFlag(extraFontFlag_), yAscent(yAscent_), yDescent(yDescent_), yInternalLeading(yInternalLeading_) {
 	}
 #endif
 	~FormatAndMetrics() {
@@ -184,6 +185,7 @@ struct FormatAndMetrics {
 		extraFontFlag = 0;
 		yAscent = 2;
 		yDescent = 1;
+		yInternalLeading = 0;
 	}
 	HFONT HFont();
 };
@@ -329,6 +331,7 @@ FontCached::FontCached(const FontParameters &fp) :
 			UINT32 lineCount = 0;
 			FLOAT yAscent = 1.0f;
 			FLOAT yDescent = 1.0f;
+			FLOAT yInternalLeading = 0.0f;
 			IDWriteTextLayout *pTextLayout = 0;
 			hr = pIDWriteFactory->CreateTextLayout(L"X", 1, pTextFormat,
 					100.0f, 100.0f, &pTextLayout);
@@ -337,10 +340,16 @@ FontCached::FontCached(const FontParameters &fp) :
 				if (SUCCEEDED(hr)) {
 					yAscent = lineMetrics[0].baseline;
 					yDescent = lineMetrics[0].height - lineMetrics[0].baseline;
+
+					FLOAT emHeight;
+					hr = pTextLayout->GetFontSize(0, &emHeight);
+					if (SUCCEEDED(hr)) {
+						yInternalLeading = lineMetrics[0].height - emHeight;
+					}
 				}
 				pTextLayout->Release();
 			}
-			fid = reinterpret_cast<void *>(new FormatAndMetrics(pTextFormat, fp.extraFontFlag, yAscent, yDescent));
+			fid = reinterpret_cast<void *>(new FormatAndMetrics(pTextFormat, fp.extraFontFlag, yAscent, yDescent, yInternalLeading));
 		}
 #endif
 	}
@@ -812,10 +821,10 @@ void SurfaceGDI::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 	if (AlphaBlendFn && rc.Width() > 0) {
 		HDC hMemDC = ::CreateCompatibleDC(reinterpret_cast<HDC>(hdc));
 		if (rc.Width() > width)
-			rc.left += (rc.Width() - width) / 2;
+			rc.left += static_cast<int>((rc.Width() - width) / 2);
 		rc.right = rc.left + width;
 		if (rc.Height() > height)
-			rc.top += (rc.Height() - height) / 2;
+			rc.top += static_cast<int>((rc.Height() - height) / 2);
 		rc.bottom = rc.top + height;
 
 		BITMAPINFO bpih = {sizeof(BITMAPINFOHEADER), width, height, 1, 32, BI_RGB, 0, 0, 0, 0, 0};
@@ -1125,6 +1134,7 @@ class SurfaceD2D : public Surface {
 	IDWriteTextFormat *pTextFormat;
 	FLOAT yAscent;
 	FLOAT yDescent;
+	FLOAT yInternalLeading;
 
 	ID2D1SolidColorBrush *pBrush;
 
@@ -1207,6 +1217,7 @@ SurfaceD2D::SurfaceD2D() :
 	pTextFormat = NULL;
 	yAscent = 2;
 	yDescent = 1;
+	yInternalLeading = 0;
 
 	pBrush = NULL;
 
@@ -1260,7 +1271,7 @@ void SurfaceD2D::Init(WindowID /* wid */) {
 void SurfaceD2D::Init(SurfaceID sid, WindowID) {
 	Release();
 	SetScale();
-	pRenderTarget = reinterpret_cast<ID2D1HwndRenderTarget *>(sid);
+	pRenderTarget = reinterpret_cast<ID2D1RenderTarget *>(sid);
 }
 
 void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) {
@@ -1268,8 +1279,11 @@ void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) 
 	SetScale();
 	SurfaceD2D *psurfOther = static_cast<SurfaceD2D *>(surface_);
 	ID2D1BitmapRenderTarget *pCompatibleRenderTarget = NULL;
+	D2D1_SIZE_F desiredSize = D2D1::SizeF(width, height);
+	D2D1_PIXEL_FORMAT desiredFormat = psurfOther->pRenderTarget->GetPixelFormat();
+	desiredFormat.alphaMode = D2D1_ALPHA_MODE_IGNORE;
 	HRESULT hr = psurfOther->pRenderTarget->CreateCompatibleRenderTarget(
-		D2D1::SizeF(width, height), &pCompatibleRenderTarget);
+		&desiredSize, NULL, &desiredFormat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &pCompatibleRenderTarget);
 	if (SUCCEEDED(hr)) {
 		pRenderTarget = pCompatibleRenderTarget;
 		pRenderTarget->BeginDraw();
@@ -1306,6 +1320,7 @@ void SurfaceD2D::SetFont(Font &font_) {
 	pTextFormat = pfm->pTextFormat;
 	yAscent = pfm->yAscent;
 	yDescent = pfm->yDescent;
+	yInternalLeading = pfm->yInternalLeading;
 	if (pRenderTarget) {
 		pRenderTarget->SetTextAntialiasMode(DWriteMapFontQuality(pfm->extraFontFlag));
 	}
@@ -1398,7 +1413,6 @@ void SurfaceD2D::Polygon(Point *pts, int npts, ColourDesired fore, ColourDesired
 
 void SurfaceD2D::RectangleDraw(PRectangle rc, ColourDesired fore, ColourDesired back) {
 	if (pRenderTarget) {
-		D2DPenColour(back);
 		D2D1_RECT_F rectangle1 = D2D1::RectF(RoundFloat(rc.left) + 0.5, rc.top+0.5, RoundFloat(rc.right) - 0.5, rc.bottom-0.5);
 		D2DPenColour(back);
 		pRenderTarget->FillRectangle(&rectangle1, pBrush);
@@ -1458,27 +1472,38 @@ void SurfaceD2D::RoundedRectangle(PRectangle rc, ColourDesired fore, ColourDesir
 void SurfaceD2D::AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fill, int alphaFill,
 		ColourDesired outline, int alphaOutline, int /* flags*/ ) {
 	if (pRenderTarget) {
-		D2D1_ROUNDED_RECT roundedRectFill = D2D1::RoundedRect(
-			D2D1::RectF(rc.left+1.0, rc.top+1.0, rc.right-1.0, rc.bottom-1.0),
-			cornerSize, cornerSize);
-		D2DPenColour(fill, alphaFill);
-		pRenderTarget->FillRoundedRectangle(roundedRectFill, pBrush);
+		if (cornerSize == 0) {
+			// When corner size is zero, draw square rectangle to prevent blurry pixels at corners
+			D2D1_RECT_F rectFill = D2D1::RectF(RoundFloat(rc.left) + 1.0, rc.top + 1.0, RoundFloat(rc.right) - 1.0, rc.bottom - 1.0);
+			D2DPenColour(fill, alphaFill);
+			pRenderTarget->FillRectangle(rectFill, pBrush);
 
-		D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(
-			D2D1::RectF(rc.left + 0.5, rc.top+0.5, rc.right - 0.5, rc.bottom-0.5),
-			cornerSize, cornerSize);
-		D2DPenColour(outline, alphaOutline);
-		pRenderTarget->DrawRoundedRectangle(roundedRect, pBrush);
+			D2D1_RECT_F rectOutline = D2D1::RectF(RoundFloat(rc.left) + 0.5, rc.top + 0.5, RoundFloat(rc.right) - 0.5, rc.bottom - 0.5);
+			D2DPenColour(outline, alphaOutline);
+			pRenderTarget->DrawRectangle(rectOutline, pBrush);
+		} else {
+			D2D1_ROUNDED_RECT roundedRectFill = D2D1::RoundedRect(
+				D2D1::RectF(RoundFloat(rc.left) + 1.0, rc.top + 1.0, RoundFloat(rc.right) - 1.0, rc.bottom - 1.0),
+				cornerSize, cornerSize);
+			D2DPenColour(fill, alphaFill);
+			pRenderTarget->FillRoundedRectangle(roundedRectFill, pBrush);
+
+			D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(
+				D2D1::RectF(RoundFloat(rc.left) + 0.5, rc.top + 0.5, RoundFloat(rc.right) - 0.5, rc.bottom - 0.5),
+				cornerSize, cornerSize);
+			D2DPenColour(outline, alphaOutline);
+			pRenderTarget->DrawRoundedRectangle(roundedRect, pBrush);
+		}
 	}
 }
 
 void SurfaceD2D::DrawRGBAImage(PRectangle rc, int width, int height, const unsigned char *pixelsImage) {
 	if (pRenderTarget) {
 		if (rc.Width() > width)
-			rc.left += (rc.Width() - width) / 2;
+			rc.left += static_cast<int>((rc.Width() - width) / 2);
 		rc.right = rc.left + width;
 		if (rc.Height() > height)
-			rc.top += (rc.Height() - height) / 2;
+			rc.top += static_cast<int>((rc.Height() - height) / 2);
 		rc.bottom = rc.top + height;
 
 		std::vector<unsigned char> image(height * width * 4);
@@ -1612,7 +1637,7 @@ XYPOSITION SurfaceD2D::WidthText(Font &font_, const char *s, int len) {
 			pTextLayout->Release();
 		}
 	}
-	return int(width + 0.5);
+	return width;
 }
 
 void SurfaceD2D::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *positions) {
@@ -1727,11 +1752,13 @@ XYPOSITION SurfaceD2D::Descent(Font &font_) {
 	return ceil(yDescent);
 }
 
-XYPOSITION SurfaceD2D::InternalLeading(Font &) {
-	return 0;
+XYPOSITION SurfaceD2D::InternalLeading(Font &font_) {
+	SetFont(font_);
+	return floor(yInternalLeading);
 }
 
 XYPOSITION SurfaceD2D::ExternalLeading(Font &) {
+	// Not implemented, always return one
 	return 1;
 }
 
@@ -1755,7 +1782,7 @@ XYPOSITION SurfaceD2D::AverageCharWidth(Font &font_) {
 			pTextLayout->Release();
 		}
 	}
-	return int(width + 0.5);
+	return width;
 }
 
 void SurfaceD2D::SetClip(PRectangle rc) {
