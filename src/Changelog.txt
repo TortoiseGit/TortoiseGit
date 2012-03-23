@@ -10,6 +10,7 @@
  * Fixed issue #1073: Correct default name in Switch/Checkout dialog
  * Fixed issue #1110: Tracking branches when you don't want to/incorrectly
  * Fixed issue #1115: Detached HEAD message has no cancel/abort option
+ * Fixed issue #1112: Rebase corrupt commit message (ignores windows codepage and converts everything to utf-8)
  * Fixed issue #985: Correctly store status for view patch in commit dialog
  * Fixed issue #1116: Make remote branch in pull dialog default to the current branch (or remote tracking branch)
 

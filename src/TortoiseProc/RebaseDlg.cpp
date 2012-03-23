@@ -999,11 +999,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		CString tempfile=::GetTempFile();
-		CFile file(tempfile,CFile::modeReadWrite|CFile::modeCreate );
-		CStringA log=CUnicodeUtils::GetUTF8( str);
-		file.Write(log,log.GetLength());
-		//file.WriteString(m_sLogMessage);
-		file.Close();
+		CAppUtils::SaveCommitUnicodeFile(tempfile, str);
 
 		CString out,cmd;
 
