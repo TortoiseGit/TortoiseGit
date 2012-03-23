@@ -2,6 +2,7 @@
 == Features==
  * Updated shipped zlib library to version 1.2.6
  * Updated shipped apr library to version 1.4.6
+ * Updated shipped libgit2 to version 0.16.0
 
 == Bug Fix ==
  * Fixed issue #1085: Small commit with lots of unversioned and not ignored files takes very long

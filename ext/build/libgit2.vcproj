@@ -389,6 +389,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\ignore.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\index.c"
 				>
 			</File>
@@ -636,6 +640,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\hashtable.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\ignore.h"
 				>
 			</File>
 			<File
