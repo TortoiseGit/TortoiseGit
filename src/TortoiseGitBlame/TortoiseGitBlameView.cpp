@@ -2033,7 +2033,6 @@ void CTortoiseGitBlameView::SetupLexer(CString filename)
 		line=ext.GetBuffer();
 
 		if ((_tcscmp(line, _T("py"))==0)||
-			(_tcscmp(line, _T("pyw"))==0)||
 			(_tcscmp(line, _T("pyw"))==0))
 		{
 			SendEditor(SCI_SETLEXER, SCLEX_PYTHON);
