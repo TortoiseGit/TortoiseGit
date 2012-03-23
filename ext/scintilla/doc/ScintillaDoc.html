@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 24/January/2012 NH</p>
+    <p>Last edited 6/March/2012 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -3064,9 +3064,9 @@ struct Sci_TextToFind {
     The technology property allows choosing between different drawing APIs and options.
     On most platforms, the only choice is <code>SC_TECHNOLOGY_DEFAULT</code> (0).
     On Windows Vista or later, <code>SC_TECHNOLOGY_DIRECTWRITE</code> (1)
-    can be chosen to use the Direct2D and DirectWrite APIs for higher quality antialiased drawing.</p>
-    <p>Since Direct2D buffers drawing, Scintilla's buffering should be turned off with
-    <code>SCI_SETBUFFEREDDRAW(0);</code>. This causes DirectWrite to use better quality antialiasing.</p>
+    can be chosen to use the Direct2D and DirectWrite APIs for higher quality antialiased drawing.
+    Since Direct2D buffers drawing, Scintilla's buffering can be turned off with
+    <code>SCI_SETBUFFEREDDRAW(0)</code>.</p>
 
     <p><b id="SCI_SETFONTQUALITY">SCI_SETFONTQUALITY(int fontQuality)</b><br />
      <b id="SCI_GETFONTQUALITY">SCI_GETFONTQUALITY</b><br />
@@ -4015,7 +4015,7 @@ struct Sci_TextToFind {
      <b id="SCI_AUTOCGETCANCELATSTART">SCI_AUTOCGETCANCELATSTART</b><br />
      The default behavior is for the list to be cancelled if the caret moves to the location it
     was at when the list was displayed. By calling this message with a <code>false</code> argument,
-    the list is not cancelled until the caret moves before the first character of the word being
+    the list is not cancelled until the caret moves at least one character before the word being
     completed.</p>
 
     <p><b id="SCI_AUTOCSETFILLUPS">SCI_AUTOCSETFILLUPS(&lt;unused&gt;, const char *chars)</b><br />

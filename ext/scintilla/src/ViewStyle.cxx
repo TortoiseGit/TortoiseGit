@@ -98,8 +98,6 @@ void FontRealised::Realise(Surface &surface, int zoomLevel, int technology) {
 
 	ascent = surface.Ascent(font);
 	descent = surface.Descent(font);
-	externalLeading = surface.ExternalLeading(font);
-	lineHeight = surface.Height(font);
 	aveCharWidth = surface.AverageCharWidth(font);
 	spaceWidth = surface.WidthChar(font, ' ');
 	if (frNext) {
@@ -145,6 +143,7 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	for (int mrk=0; mrk<=MARKER_MAX; mrk++) {
 		markers[mrk] = source.markers[mrk];
 	}
+	CalcLargestMarkerHeight();
 	for (int ind=0; ind<=INDIC_MAX; ind++) {
 		indicators[ind] = source.indicators[ind];
 	}
@@ -194,7 +193,6 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	for (int i=0; i < margins; i++) {
 		ms[i] = source.ms[i];
 	}
-	symbolMargin = source.symbolMargin;
 	maskInLine = source.maskInLine;
 	fixedColumnWidth = source.fixedColumnWidth;
 	zoomLevel = source.zoomLevel;
@@ -229,6 +227,9 @@ void ViewStyle::Init(size_t stylesSize_) {
 	AllocStyles(stylesSize_);
 	fontNames.Clear();
 	ResetDefaultStyle();
+
+	// There are no image markers by default, so no need for calling CalcLargestMarkerHeight()
+	largestMarkerHeight = 0;
 
 	indicators[0].style = INDIC_SQUIGGLE;
 	indicators[0].under = false;
@@ -302,11 +303,9 @@ void ViewStyle::Init(size_t stylesSize_) {
 	ms[2].width = 0;
 	ms[2].mask = 0;
 	fixedColumnWidth = leftMarginWidth;
-	symbolMargin = false;
 	maskInLine = 0xffffffff;
 	for (int margin=0; margin < margins; margin++) {
 		fixedColumnWidth += ms[margin].width;
-		symbolMargin = symbolMargin || (ms[margin].style != SC_MARGIN_NUMBER);
 		if (ms[margin].width > 0)
 			maskInLine &= ~ms[margin].mask;
 	}
@@ -385,11 +384,9 @@ void ViewStyle::Refresh(Surface &surface) {
 	spaceWidth = styles[STYLE_DEFAULT].spaceWidth;
 
 	fixedColumnWidth = leftMarginWidth;
-	symbolMargin = false;
 	maskInLine = 0xffffffff;
 	for (int margin=0; margin < margins; margin++) {
 		fixedColumnWidth += ms[margin].width;
-		symbolMargin = symbolMargin || (ms[margin].style != SC_MARGIN_NUMBER);
 		if (ms[margin].width > 0)
 			maskInLine &= ~ms[margin].mask;
 	}
@@ -455,5 +452,21 @@ bool ViewStyle::ProtectionActive() const {
 
 bool ViewStyle::ValidStyle(size_t styleIndex) const {
 	return styleIndex < stylesSize;
+}
+
+void ViewStyle::CalcLargestMarkerHeight() {
+	largestMarkerHeight = 0;
+	for (int m = 0; m <= MARKER_MAX; ++m) {
+		switch (markers[m].markType) {
+		case SC_MARK_PIXMAP:
+			if (markers[m].pxpm->GetHeight() > largestMarkerHeight)
+				largestMarkerHeight = markers[m].pxpm->GetHeight();
+			break;
+		case SC_MARK_RGBAIMAGE:
+			if (markers[m].image->GetHeight() > largestMarkerHeight)
+				largestMarkerHeight = markers[m].image->GetHeight();
+			break;
+		}
+	}
 }
 

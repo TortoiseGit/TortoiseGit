@@ -47,14 +47,6 @@ ColourDesired XPM::ColourDesiredFromCode(int ch) const {
 
 ColourDesired XPM::ColourFromCode(int ch) const {
 	return *colourCodeTable[ch];
-#ifdef SLOW
-	for (int i=0; i<nColours; i++) {
-		if (codes[i] == ch) {
-			return colours[i].allocated;
-		}
-	}
-	return colours[0].allocated;
-#endif
 }
 
 void XPM::FillRun(Surface *surface, int code, int startX, int y, int x) {

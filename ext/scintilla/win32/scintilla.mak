@@ -21,7 +21,7 @@ CC=cl
 RC=rc
 LD=link
 
-CXXFLAGS=-Zi -TP -W0 -EHsc -Zc:forScope -Zc:wchar_t -D_CRT_SECURE_NO_DEPRECATE=1
+CXXFLAGS=-Zi -TP -W4 -EHsc -Zc:forScope -Zc:wchar_t -D_CRT_SECURE_NO_DEPRECATE=1
 # For something scary:-Wp64
 CXXDEBUG=-Od -MTd -DDEBUG
 CXXNDEBUG=-O1 -MT -DNDEBUG -GL
@@ -108,6 +108,7 @@ LEXOBJS=\
 	$(DIR_O)\LexCsound.obj \
 	$(DIR_O)\LexCSS.obj \
 	$(DIR_O)\LexD.obj \
+	$(DIR_O)\LexECL.obj \
 	$(DIR_O)\LexEiffel.obj \
 	$(DIR_O)\LexErlang.obj \
 	$(DIR_O)\LexEScript.obj \
@@ -332,6 +333,8 @@ $(DIR_O)\LexCsound.obj: ..\lexers\LexCsound.cxx $(LEX_HEADERS)
 $(DIR_O)\LexCSS.obj: ..\lexers\LexCSS.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexD.obj: ..\lexers\LexD.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexECL.obj: ..\lexers\LexECL.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexEiffel.obj: ..\lexers\LexEiffel.cxx $(LEX_HEADERS)
 
