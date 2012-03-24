@@ -271,6 +271,7 @@
 				ProgramDataBaseFileName="..\..\obj\TortoiseShell\Release/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -373,6 +374,7 @@
 				ProgramDataBaseFileName="..\..\obj\TortoiseShell\Release64/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 				CompileAs="2"
 			/>
 			<Tool
