@@ -61,6 +61,7 @@
 			<option>/configdir:"path\to\config\directory"</option>.
 			This will override the default path, including any registry setting.
 		</para>
+<!--
 		<para>
 			To close the progress dialog at the end of a command automatically without
 			using the permanent setting you can pass the <option>/closeonend</option>
@@ -94,6 +95,7 @@
 				</listitem>
 			</itemizedlist>
 		</para>
+-->
 		<para>
 			The table below lists all the commands which can be accessed
 			using the TortoiseProc.exe command line. As described above,
@@ -188,11 +190,9 @@ Don't touch these lines:
 							</entry>
 						</row>
 						<row>
-							<entry condition="pot">:checkout</entry>
+							<entry condition="pot">:clone</entry>
 							<entry>
-								Opens the checkout dialog. The <option>/path</option>
-								specifies the working directory and the <option>/rev</option>
-								specifies the commit to checkout from.
+								Opens the clone dialog.
 							</entry>
 						</row>
 						<!--
@@ -267,14 +267,12 @@ Don't touch these lines:
 								should be done.
 							</entry>
 						</row>
-						<!--
 						<row>
 							<entry condition="pot">:repocreate</entry>
 							<entry>
 								Creates a repository in <option>/path</option>
 							</entry>
 						</row>
-						-->
 						<row>
 							<entry condition="pot">:switch</entry>
 							<entry>
@@ -296,6 +294,7 @@ Don't touch these lines:
 							<entry>
 								Opens the merge dialog. The <option>/path</option> specifies the
 								target directory.
+<!--
 								For merging a revision range, the following options are available:
 								<option>/fromurl:URL</option>,
 								<option>/revrange:string</option>.
@@ -305,17 +304,9 @@ Don't touch these lines:
 								<option>/fromrev:xxx</option> and 
 								<option>/torev:xxx</option>.
 								These pre-fill the relevant fields in the merge dialog.
+-->
 							</entry>
 						</row>
-						<!--
-						<row>
-							<entry condition="pot">:mergeall</entry>
-							<entry>
-								Opens the merge all dialog. The <option>/path</option> specifies the
-								target directory.
-							</entry>
-						</row>
-						-->
 						<!--
 						<row>
 							<entry condition="pot">:copy</entry>
@@ -419,7 +410,6 @@ Don't touch these lines:
 								Opens the help file.
 							</entry>
 						</row>
-						<!--
 						<row>
 							<entry condition="pot">:repostatus</entry>
 							<entry>
@@ -427,7 +417,6 @@ Don't touch these lines:
 								specifies the working copy directory.
 							</entry>
 						</row>
-						-->
 						<!--
 						<row>
 							<entry condition="pot">:repobrowser</entry>
@@ -462,22 +451,16 @@ Don't touch these lines:
 								in <option>/path</option>.
 								</para>
 								<para>
-								If the options <option>/startrev</option> and
-								<option>/endrev</option> are set, then the dialog
-								asking for the blame range is not shown but
-								the revision values of those options are used
-								instead.
+								If the option <option>/endrev</option> is set TortoiseGitBlame
+								ends at that revision.
 								</para>
+<!--
 								<para>
 								If the option <option>/line:nnn</option> is set,
 								TortoiseBlame will open with the specified line
 								number showing.
 								</para>
-								<para>
-								The options <option>/ignoreeol</option>, 
-								<option>/ignorespaces</option> and
-								<option>/ignoreallspaces</option> are also supported.
-								</para>
+-->
 							</entry>
 						</row>
 						<row>
@@ -490,6 +473,7 @@ Don't touch these lines:
 								be used to get a file with a specific revision.
 							</entry>
 						</row>
+<!--
 						<row>
 							<entry condition="pot">:createpatch</entry>
 							<entry>
@@ -497,6 +481,7 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+-->
 						<row>
 							<entry condition="pot">:pull</entry>
 							<entry>
@@ -577,26 +562,6 @@ Don't touch these lines:
 						-->
 						<!--
 						<row>
-							<entry condition="pot">:lock</entry>
-							<entry>
-								Locks a file or all files in a directory given in
-								<option>/path</option>.
-								The 'lock' dialog is shown so the
-								user can enter a comment for the lock.
-							</entry>
-						</row>
-						-->
-						<!--
-						<row>
-							<entry condition="pot">:unlock</entry>
-							<entry>
-								Unlocks a file or all files in a directory given in
-								<option>/path</option>.
-							</entry>
-						</row>
-						-->
-						<!--
-						<row>
 							<entry condition="pot">:rebuildiconcache</entry>
 							<entry>
 								Rebuilds the windows icon cache. Only use this in
@@ -604,13 +569,6 @@ Don't touch these lines:
 								of this (which can't be avoided) is that the icons
 								on the desktop get rearranged.
 								To suppress the message box, pass <option>/noquestion</option>.
-							</entry>
-						</row>
-						<row>
-							<entry condition="pot">:properties</entry>
-							<entry>
-								Shows the properties dialog for the path given in
-								<option>/path</option>.
 							</entry>
 						</row>
 						-->
