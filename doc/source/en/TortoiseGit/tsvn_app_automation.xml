@@ -137,6 +137,7 @@ Don't touch these lines:
 								Opens the log dialog. The <option>/path</option> specifies the
 								file or folder for which the log should be shown.
 								Additional options can be set:
+								<option>/rev:"SHA1"</option> highlights and automatically scrolls to the specified revision,
 								<option>/findstring:"filterstring"</option> fills in the filter text,
 								<option>/findtext</option> forces the filter to use text, not regex, or
 								<option>/findregex</option> forces the filter to use regex, not simple text search, and
