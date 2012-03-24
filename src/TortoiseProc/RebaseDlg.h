@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -140,6 +140,7 @@ protected:
 	BOOL				m_bEditAll;
 
 	BOOL				m_bForce;
+	BOOL				m_bAddCherryPickedFrom;
 
 public:
 	CStringArray		m_PostButtonTexts;
@@ -170,6 +171,7 @@ protected:
 	int GoNext();
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedRebaseCheckForce();
+	afx_msg void OnBnClickedCheckCherryPickedFrom();
 	afx_msg void OnBnClickedRebasePostButton();
 	afx_msg void OnBnClickedButtonUp2();
 	afx_msg void OnBnClickedButtonDown2();

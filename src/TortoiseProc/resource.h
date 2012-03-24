@@ -987,6 +987,7 @@
 #define IDC_TOHASH                      1679
 #define IDC_TOSUBJECT                   1680
 #define IDC_CHECK_NEWBRANCH             1681
+#define IDC_CHECK_CHERRYPICKED_FROM     1682
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1544,7 +1545,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1682
+#define _APS_NEXT_CONTROL_VALUE         1683
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

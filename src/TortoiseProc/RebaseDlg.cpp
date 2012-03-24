@@ -42,6 +42,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bPickAll(FALSE)
 	, m_bSquashAll(FALSE)
 	, m_bEditAll(FALSE)
+	, m_bAddCherryPickedFrom(FALSE)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -68,6 +69,7 @@ void CRebaseDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_BRANCH, this->m_BranchCtrl);
 	DDX_Control(pDX,IDC_REBASE_COMBOXEX_UPSTREAM,   this->m_UpstreamCtrl);
 	DDX_Check(pDX, IDC_REBASE_CHECK_FORCE,m_bForce);
+	DDX_Check(pDX, IDC_CHECK_CHERRYPICKED_FROM, m_bAddCherryPickedFrom);
 	DDX_Control(pDX,IDC_REBASE_POST_BUTTON,m_PostButton);
 }
 
@@ -85,6 +87,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
+	ON_BN_CLICKED(IDC_CHECK_CHERRYPICKED_FROM, &CRebaseDlg::OnBnClickedCheckCherryPickedFrom)
 	ON_BN_CLICKED(IDC_REBASE_POST_BUTTON, &CRebaseDlg::OnBnClickedRebasePostButton)
 	ON_BN_CLICKED(IDC_BUTTON_UP2, &CRebaseDlg::OnBnClickedButtonUp2)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
@@ -112,6 +115,7 @@ void CRebaseDlg::AddRebaseAnchor()
 	AddAnchor(IDC_REBASE_STATIC_BRANCH,TOP_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_REBASE_CHECK_FORCE,TOP_RIGHT);
+	AddAnchor(IDC_CHECK_CHERRYPICKED_FROM, TOP_RIGHT);
 	AddAnchor(IDC_REBASE_POST_BUTTON,BOTTOM_LEFT);
 
 	this->AddOthersToAnchor();
@@ -261,10 +265,10 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, _T("Cherry Pick"));
 		this->m_CommitList.StartFilter();
-
 	}
 	else
 	{
+		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
 		SetContinueButtonText();
 		m_CommitList.DeleteAllItems();
 		FetchLogList();
@@ -1331,7 +1335,11 @@ int CRebaseDlg::DoRebase()
 		mode = CTGitPath::LOGACTIONS_REBASE_EDIT;
 	}
 
-	cmd.Format(_T("git.exe cherry-pick %s %s"),nocommit,pRev->m_CommitHash.ToString());
+	CString cherryPickedFrom;
+	if (m_bAddCherryPickedFrom)
+		cherryPickedFrom = _T("-x ");
+
+	cmd.Format(_T("git.exe cherry-pick %s%s %s"), cherryPickedFrom, nocommit, pRev->m_CommitHash.ToString());
 
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
@@ -1762,4 +1770,8 @@ void CRebaseDlg::FillLogMessageCtrl()
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + _T("\n") + pLogEntry->GetBody());
 		m_LogMessageCtrl.Call(SCI_SETREADONLY, TRUE);
 	}
+}
+void CRebaseDlg::OnBnClickedCheckCherryPickedFrom()
+{
+	UpdateData();
 }
