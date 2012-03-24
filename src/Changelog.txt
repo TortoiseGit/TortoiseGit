@@ -18,6 +18,7 @@
  * Fixed issue #1116: Make remote branch in pull dialog default to the current branch (or remote tracking branch)
  * Fixed issue #1060: tgit rebase process can get stuck
  * Fixed issue #1107: Wrong font used in MessageBoxes on Windows XP
+ * Fixed issue #1105: Wrong status for missing files
 
 = Release 1.7.7.0 =
 == Features==

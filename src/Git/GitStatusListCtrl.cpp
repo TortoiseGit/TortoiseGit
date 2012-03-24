@@ -5071,6 +5071,14 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				CTGitPath *p = m_StatusFileList.LookForGitPath(deletelist[i].GetGitPathString());
 				if(!p)
 					m_StatusFileList.AddPath(deletelist[i]);
+				else if ((p->m_Action == CTGitPath::LOGACTIONS_ADDED || p->m_Action == CTGitPath::LOGACTIONS_REPLACED) && !p->Exists())
+				{
+					if (CMessageBox::Show(m_hWnd, _T("TortoiseGit detected that the file \"") + p->GetWinPathString() +_T("\" does not exist, but is staged as \"Added\".\nThe commit dialog cannot handle this.\n\nDo you want to remove it from the index?"), _T("TortoiseGit"), 1, IDI_EXCLAMATION, _T("&Remove file from index"), _T("&Ignore")) == 1)
+					{
+						g_Git.Run(_T("git.exe rm -f --cache -- \"") + p->GetWinPathString() + _T("\""), &cmdout);
+						m_StatusFileList.RemoveItem(*p);
+					}
+				}
 			}
 		}
 	}
