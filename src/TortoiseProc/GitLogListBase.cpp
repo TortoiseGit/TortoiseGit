@@ -71,7 +71,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bThreadRunning(FALSE)
 	, m_bStrictStopped(false)
 	, m_pStoreSelection(NULL)
-	, m_nSelectedFilter(LOGFILTER_ALL)
+	, m_SelectedFilters(LOGFILTER_ALL)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
 	, m_pFindDialog(NULL)
@@ -2472,7 +2472,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 
 	if ((bRegex)&&(m_bFilterWithRegex))
 	{
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+		if (m_SelectedFilters & LOGFILTER_BUGID)
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
@@ -2486,7 +2486,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"), pRev->GetSubject());
 			if (regex_search(wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
@@ -2495,7 +2495,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		if (m_SelectedFilters & LOGFILTER_MESSAGES)
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"),pRev->GetBody());
 			if (regex_search(wstring((LPCTSTR)pRev->GetBody()), pat, flags))
@@ -2504,7 +2504,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+		if (m_SelectedFilters & LOGFILTER_AUTHORS)
 		{
 			if (regex_search(wstring(pRev->GetAuthorName()), pat, flags))
 			{
@@ -2517,7 +2517,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
 			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
 			if (regex_search(wstring((LPCTSTR)sRev), pat, flags))
@@ -2526,7 +2526,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+		if (m_SelectedFilters & LOGFILTER_PATHS)
 		{
 			CTGitPathList *pathList=NULL;
 			if( pRev->m_IsDiffFiles)
@@ -2564,7 +2564,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		CString find = m_sFilterText;
 		find.MakeLower();
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
+		if (m_SelectedFilters & LOGFILTER_BUGID)
 		{
 			if(this->m_bShowBugtraqColumn)
 			{
@@ -2578,7 +2578,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 		{
 			CString msg = pRev->GetSubject();
 
@@ -2589,7 +2589,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+		if (m_SelectedFilters & LOGFILTER_MESSAGES)
 		{
 			CString msg = pRev->GetBody();
 
@@ -2600,7 +2600,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+		if (m_SelectedFilters & LOGFILTER_AUTHORS)
 		{
 			CString msg = pRev->GetAuthorName();
 			msg = msg.MakeLower();
@@ -2610,7 +2610,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
 			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
 			if ((sRev.Find(find) >= 0))
@@ -2619,7 +2619,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
-		if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+		if (m_SelectedFilters & LOGFILTER_PATHS)
 		{
 			CTGitPathList *pathList=NULL;
 			if( pRev->m_IsDiffFiles)
@@ -2689,7 +2689,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				}
 			}
 #endif
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 			{
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).GetSubject());
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetSubject()), pat, flags)&&IsEntryInDateRange(i))
@@ -2698,7 +2698,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			if (m_SelectedFilters & LOGFILTER_MESSAGES)
 			{
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).GetBody());
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetBody()), pat, flags)&&IsEntryInDateRange(i))
@@ -2707,7 +2707,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+			if (m_SelectedFilters & LOGFILTER_PATHS)
 			{
 				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).GetFiles(this);
 
@@ -2735,7 +2735,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					}
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+			if (m_SelectedFilters & LOGFILTER_AUTHORS)
 			{
 				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetAuthorName()), pat, flags)&&IsEntryInDateRange(i))
 				{
@@ -2743,7 +2743,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+			if (m_SelectedFilters & LOGFILTER_REVS)
 			{
 				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
 				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
@@ -2770,7 +2770,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				}
 			}
 #endif
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_SUBJECT)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetSubject();
 
@@ -2781,7 +2781,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_MESSAGES))
+			if (m_SelectedFilters & LOGFILTER_MESSAGES)
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetBody();
 
@@ -2792,7 +2792,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_PATHS))
+			if (m_SelectedFilters & LOGFILTER_PATHS)
 			{
 				CTGitPathList pathList = m_logEntries.GetGitRevAt(i).GetFiles(this);
 
@@ -2826,7 +2826,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					}
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_AUTHORS))
+			if (m_SelectedFilters & LOGFILTER_AUTHORS)
 			{
 				CString msg = m_logEntries.GetGitRevAt(i).GetAuthorName();
 				msg = msg.MakeLower();
@@ -2836,7 +2836,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
-			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_REVS))
+			if (m_SelectedFilters & LOGFILTER_REVS)
 			{
 				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
 				if ((sRev.Find(find) >= 0)&&(IsEntryInDateRange(i)))

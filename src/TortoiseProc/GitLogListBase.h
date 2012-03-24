@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,14 +68,14 @@ enum LISTITEMSTATES_MINE {
 #define GITLOG_START_ALL 1
 #define GITLOG_END   100
 
-#define LOGFILTER_ALL		1
-#define LOGFILTER_MESSAGES	2
-#define LOGFILTER_PATHS		3
-#define LOGFILTER_AUTHORS	4
-#define LOGFILTER_REVS		5
-#define LOGFILTER_REGEX		6
-#define LOGFILTER_BUGID		7
-#define LOGFILTER_SUBJECT	8
+#define LOGFILTER_ALL			0xFFFF
+#define LOGFILTER_MESSAGES		0x0001
+#define LOGFILTER_PATHS			0x0002
+#define LOGFILTER_AUTHORS		0x0004
+#define LOGFILTER_REVS			0x0008
+#define LOGFILTER_REGEX			0x0010
+#define LOGFILTER_BUGID			0x0020
+#define LOGFILTER_SUBJECT		0x0040
 
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)
@@ -292,7 +292,7 @@ public:
 	void RecalculateShownList(CThreadSafePtrArray * pShownlist);
 	void Clear();
 
-	int					m_nSelectedFilter;
+	DWORD				m_SelectedFilters;
 	bool				m_bFilterWithRegex;
 	CLogDataVector		m_logEntries;
 	void RemoveFilter();

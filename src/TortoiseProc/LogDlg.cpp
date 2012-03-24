@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2031,15 +2031,10 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 	CPoint point;
 	CString temp;
 	point = CPoint(rect->left, rect->bottom);
-#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_LogList.m_nSelectedFilter == x ? MF_CHECKED : MF_UNCHECKED))
+#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_LogList.m_SelectedFilters & x ? MF_CHECKED : MF_UNCHECKED))
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
-		temp.LoadString(IDS_LOG_FILTER_ALL);
-		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_ALL), LOGFILTER_ALL, temp);
-
-		popup.AppendMenu(MF_SEPARATOR, NULL);
-
 		temp.LoadString(IDS_LOG_FILTER_SUBJECT);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_SUBJECT), LOGFILTER_SUBJECT, temp);
 
@@ -2081,7 +2076,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 			}
 			else
 			{
-				m_LogList.m_nSelectedFilter = selection;
+				m_LogList.m_SelectedFilters ^= selection;
 				SetFilterCueText();
 			}
 			SetTimer(LOGFILTER_TIMER, 1000, NULL);
@@ -2122,31 +2117,52 @@ LRESULT CLogDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 void CLogDlg::SetFilterCueText()
 {
-	CString temp;
-	switch (m_LogList.m_nSelectedFilter)
+	CString temp(MAKEINTRESOURCE(IDS_LOG_FILTER_BY));
+	temp += _T(" ");
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_SUBJECT)
 	{
-	case LOGFILTER_ALL:
-		temp.LoadString(IDS_LOG_FILTER_ALL);
-		break;
-	case LOGFILTER_SUBJECT:
-		temp.LoadString(IDS_LOG_FILTER_SUBJECT);
-		break;
-	case LOGFILTER_MESSAGES:
-		temp.LoadString(IDS_LOG_FILTER_MESSAGES);
-		break;
-	case LOGFILTER_PATHS:
-		temp.LoadString(IDS_LOG_FILTER_PATHS);
-		break;
-	case LOGFILTER_AUTHORS:
-		temp.LoadString(IDS_LOG_FILTER_AUTHORS);
-		break;
-	case LOGFILTER_REVS:
-		temp.LoadString(IDS_LOG_FILTER_REVS);
-		break;
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_SUBJECT));
 	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_MESSAGES)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_MESSAGES));
+	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_PATHS)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_PATHS));
+	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_AUTHORS)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_AUTHORS));
+	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_REVS)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REVS));
+	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_BUGIDS));
+	}
+
 	// to make the cue banner text appear more to the right of the edit control
 	temp = _T("   ")+temp;
-	m_cFilter.SetCueBanner(temp);
+	m_cFilter.SetCueBanner(temp.TrimRight());
 }
 
 bool CLogDlg::Validate(LPCTSTR string)

@@ -1004,7 +1004,7 @@
 #define IDS_LOG_LOGINFOSTRING           1835
 #define IDS_LOG_SHOWNEXT                1836
 #define IDS_LOG_SHOW_WHOLE              1838
-#define IDS_LOG_FILTER_ALL              1850
+#define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
 #define IDS_LOG_FILTER_MESSAGES         1853
