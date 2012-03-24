@@ -70,10 +70,19 @@ bool LogCommand::Execute()
 		limit = (int)(LONG)reg;
 	}
 
+	CString findStr = parser.GetVal(_T("findstring"));
+	LONG findType = parser.GetLongVal(_T("findtype"));
+	bool findRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), FALSE);
+	if (parser.HasKey(_T("findtext")))
+		findRegex = false;
+	if (parser.HasKey(_T("findregex")))
+		findRegex = true;
+
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	//dlg.SetParams(cmdLinePath);
 	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, revstart, revend, limit);
+	dlg.SetFilter(findStr, findType, findRegex);
 //	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
 //	val = parser.GetVal(_T("propspath"));
 //	if (!val.IsEmpty())

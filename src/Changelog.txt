@@ -5,6 +5,7 @@
  * Updated shipped libgit2 to version 0.16.0
  * When deleting remote branch on log dialog one can also delete branch in remote repository now.
  * Fixed issue #1103: cherrypick option to indicate original commit
+ * Fixed issue #1094: Support filter command line options for log
 
 == Bug Fix ==
  * Fixed issue #1085: Small commit with lots of unversioned and not ignored files takes very long

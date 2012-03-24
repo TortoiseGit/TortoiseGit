@@ -183,6 +183,14 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 		UpdateData(FALSE);
 }
 
+void CLogDlg::SetFilter(const CString& findstr, LONG findtype, bool findregex)
+{
+	m_LogList.m_sFilterText = findstr;
+	if (findtype)
+		m_LogList.m_SelectedFilters = findtype;
+	m_LogList.m_bFilterWithRegex = m_bFilterWithRegex = findregex;
+}
+
 BOOL CLogDlg::OnInitDialog()
 {
 	CString temp;

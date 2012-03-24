@@ -136,9 +136,54 @@ Don't touch these lines:
 							<entry>
 								Opens the log dialog. The <option>/path</option> specifies the
 								file or folder for which the log should be shown.
-								Three additional options can be set:
-								<option>/startrev:xxx</option>, 
-								<option>/endrev:xxx</option> 
+								Additional options can be set:
+								<option>/findstring:"filterstring"</option> fills in the filter text,
+								<option>/findtext</option> forces the filter to use text, not regex, or
+								<option>/findregex</option> forces the filter to use regex, not simple text search, and
+								<option>/findtype:X</option> with X being a number between 0 and 127. The numbers
+								are the sum of the following options:
+								<itemizedlist>
+									<listitem>
+										<para>
+											<option>/findtype:0</option> filter by everything
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:1</option> filter by messages
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:2</option> filter by path
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:4</option> filter by authors
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:8</option> filter by revisions
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:16</option> not used
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:32</option> filter by bug ID
+										</para>
+									</listitem>
+									<listitem>
+										<para>
+											<option>/findtype:64</option> filter by subject
+										</para>
+									</listitem>
+								</itemizedlist>
 							</entry>
 						</row>
 						<row>
