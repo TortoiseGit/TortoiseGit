@@ -256,6 +256,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_BranchCtrl.SetCurSel(-1);
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		GetDlgItem(IDC_REBASE_CHECK_FORCE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
 		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, _T("Cherry Pick"));
