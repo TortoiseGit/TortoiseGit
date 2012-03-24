@@ -1891,17 +1891,17 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (index >= 0)
 					{
 						CTGitPath * entry2 = NULL;
-						bool bothItemsAreFiles = true;
+						bool bothItemsAreExistingFiles = true;
 						entry2 = (CTGitPath * )GetItemData(index);
 						if (entry2)
-							bothItemsAreFiles = !entry2->IsDirectory();
+							bothItemsAreExistingFiles = !entry2->IsDirectory() && entry2->Exists();
 						index = GetNextSelectedItem(pos);
 						if (index >= 0)
 						{
 							entry2 = (CTGitPath * )GetItemData(index);
 							if (entry2)
-								bothItemsAreFiles = bothItemsAreFiles && !entry2->IsDirectory();
-							if (bothItemsAreFiles)
+								bothItemsAreExistingFiles = bothItemsAreExistingFiles && !entry2->IsDirectory() && entry2->Exists();
+							if (bothItemsAreExistingFiles)
 								popup.AppendMenuIcon(IDGITLC_COMPARETWOFILES, IDS_STATUSLIST_CONTEXT_COMPARETWOFILES, IDI_DIFF);
 						}
 					}
