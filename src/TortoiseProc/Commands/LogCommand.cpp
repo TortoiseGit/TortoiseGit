@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2008,2011 - TortoiseSVN
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +19,7 @@
 //
 #include "StdAfx.h"
 #include "LogCommand.h"
-
+#include "StringUtils.h"
 #include "LogDlg.h"
 
 bool LogCommand::Execute()
@@ -88,5 +89,10 @@ bool LogCommand::Execute()
 //	if (!val.IsEmpty())
 //		dlg.SetProjectPropertiesPath(CTSVNPath(val));
 	dlg.DoModal();
+	if (parser.HasVal(_T("outfile")))
+	{
+		CString sText = dlg.GetSelectedHash();
+		CStringUtils::WriteStringToTextFile(parser.GetVal(L"outfile"), (LPCTSTR)sText, true);
+	}
 	return true;
 }

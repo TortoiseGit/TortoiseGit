@@ -187,6 +187,9 @@ Don't touch these lines:
 										</para>
 									</listitem>
 								</itemizedlist>
+								If <option>/outfile:path\to\file</option> is specified,
+								the selected revision is written to that file when
+								the log dialog is closed.
 							</entry>
 						</row>
 						<row>
