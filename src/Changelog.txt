@@ -15,6 +15,7 @@
  * Fixed issue #1112: Rebase corrupt commit message (ignores windows codepage and converts everything to utf-8)
  * Fixed issue #985: Correctly store status for view patch in commit dialog
  * Fixed issue #1116: Make remote branch in pull dialog default to the current branch (or remote tracking branch)
+ * Fixed issue #1060: tgit rebase process can get stuck
 
 = Release 1.7.7.0 =
 == Features==

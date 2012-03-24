@@ -1558,7 +1558,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			AddLogString(out);
-			return ;
+			::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
 		}
 		__super::OnCancel();
 		return;
@@ -1567,14 +1567,18 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
-		return ;
+		::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
+		__super::OnCancel();
+		return;
 	}
 
 	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.ToString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
-		return ;
+		::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
+		__super::OnCancel();
+		return;
 	}
 
 	if(this->m_IsCherryPick) //there are not "branch" at cherry pick mode
@@ -1587,14 +1591,16 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
-		return ;
+		::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
+		__super::OnCancel();
+		return;
 	}
 
 	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.ToString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
-		return ;
+		::MessageBox(this->m_hWnd, _T("Unrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_ICONERROR);
 	}
 	__super::OnCancel();
 }
