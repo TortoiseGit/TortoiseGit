@@ -757,6 +757,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					else
 						return;
 				}
+				else if (this->GetShortName(*branch, shortname, _T("refs/stash")))
+				{
+					if (CMessageBox::Show(NULL, _T("<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"), _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
+						cmd.Format(_T("git.exe stash clear"));
+					else
+						return;
+				}
 				else if (CMessageBox::Show(NULL, _T("Do you really want to <ct=0x0000FF>delete</ct> <b>") + *branch + _T("</b>?"), _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
 				{
 					if(this->GetShortName(*branch,shortname,_T("refs/heads/")))
@@ -767,15 +774,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if(this->GetShortName(*branch,shortname,_T("refs/tags/")))
 					{
 						cmd.Format(_T("git.exe tag -d -- %s"),shortname);
-					}
-
-					if(this->GetShortName(*branch,shortname,_T("refs/stash")))
-					{
-						if(CMessageBox::Show(NULL, _T("<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"),
-											   _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
-							cmd.Format(_T("git.exe stash clear"));
-						else
-							return;
 					}
 				}
 				if (!cmd.IsEmpty())
