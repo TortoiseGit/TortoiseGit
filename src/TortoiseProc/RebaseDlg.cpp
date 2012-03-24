@@ -258,7 +258,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		GetDlgItem(IDC_REBASE_CHECK_FORCE)->ShowWindow(SW_HIDE);
 		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
-		this->SetWindowText(_T("Cherry Pick"));
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, _T("Cherry Pick"));
 		this->m_CommitList.StartFilter();
 
 	}
