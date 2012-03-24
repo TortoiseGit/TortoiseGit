@@ -736,21 +736,32 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					CMessageBox::Show(NULL,IDS_ERROR_NOREF,IDS_APPNAME,MB_OK|MB_ICONERROR);
 					return;
 				}
-				CString msg;
-				msg=CString(_T("Do you really want to <ct=0x0000FF>delete</ct> <b>")) + *branch;
-				msg+=_T("</b>?");
-				if( CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1 )
+				CString shortname;
+				CString cmd;
+				if (this->GetShortName(*branch, shortname, _T("refs/remotes/")))
 				{
-					CString shortname;
-					CString cmd;
+					CString msg = _T("The branch \"") + *branch + _T("\" is a <i>remote</i> branch.\n\n");
+					msg += _T("Do you really want to <ct=0x0000FF>delete</ct> it?");
+					int result = CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 3, IDI_QUESTION, _T("&Delete remote && local"), _T("Delete &local"), _T("&Abort"));
+					if (result == 1)
+					{
+						CString remoteName = shortname.Left(shortname.Find('/'));
+						shortname = shortname.Mid(shortname.Find('/') + 1);
+						if(CAppUtils::IsSSHPutty())
+							CAppUtils::LaunchPAgent(NULL, &remoteName);
+
+						cmd.Format(L"git.exe push \"%s\" :%s", remoteName, shortname);
+					}
+					else if (result == 2)
+						cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);
+					else
+						return;
+				}
+				else if (CMessageBox::Show(NULL, _T("Do you really want to <ct=0x0000FF>delete</ct> <b>") + *branch + _T("</b>?"), _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
+				{
 					if(this->GetShortName(*branch,shortname,_T("refs/heads/")))
 					{
 						cmd.Format(_T("git.exe branch -D -- %s"),shortname);
-					}
-
-					if(this->GetShortName(*branch,shortname,_T("refs/remotes/")))
-					{
-						cmd.Format(_T("git.exe branch -r -D -- %s"),shortname);
 					}
 
 					if(this->GetShortName(*branch,shortname,_T("refs/tags/")))
@@ -766,7 +777,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						else
 							return;
 					}
-
+				}
+				if (!cmd.IsEmpty())
+				{
 					CString out;
 					if(g_Git.Run(cmd,&out,CP_UTF8))
 					{

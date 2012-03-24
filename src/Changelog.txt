@@ -3,6 +3,7 @@
  * Updated shipped zlib library to version 1.2.6
  * Updated shipped apr library to version 1.4.6
  * Updated shipped libgit2 to version 0.16.0
+ * When deleting remote branch on log dialog one can also delete branch in remote repository now.
 
 == Bug Fix ==
  * Fixed issue #1085: Small commit with lots of unversioned and not ignored files takes very long
