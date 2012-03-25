@@ -146,23 +146,6 @@ bool PullCommand::Execute()
 			CAppUtils::RunTortoiseProc(sCmd);
 		}
 	}
-#if 0
-	CCloneDlg dlg;
-	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
-	if(dlg.DoModal()==IDOK)
-	{
-		CString dir=dlg.m_Directory;
-		CString url=dlg.m_URL;
-		CString cmd;
-		cmd.Format(_T("git.exe clone %s %s"),
-						url,
-						dir);
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-		if(progress.DoModal()==IDOK)
-			return TRUE;
 
-	}
-#endif
 	return FALSE;
 }
