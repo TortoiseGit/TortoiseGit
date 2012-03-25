@@ -115,7 +115,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	CString GetFullPath(int nIndex, int fileno=0);
 	void SetTitleWithPath(int width);
 	void PatchAll();
 	void PatchSelected();

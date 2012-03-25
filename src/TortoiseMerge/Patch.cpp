@@ -1082,6 +1082,23 @@ CString	CPatch::Strip(const CString& filename)
 	return s;
 }
 
+CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*/)
+{
+	CString temp;
+	if (fileno == 0)
+		temp = GetFilename(nIndex);
+	else
+		temp = GetFilename2(nIndex);
+
+	temp.Replace('/', '\\');
+	if(temp == _T("NUL"))
+		return temp;
+
+	if (PathIsRelative(temp))
+		temp = sPath + temp;
+	return temp;
+}
+
 CString CPatch::RemoveUnicodeBOM(const CString& str)
 {
 	if (str.GetLength()==0)
