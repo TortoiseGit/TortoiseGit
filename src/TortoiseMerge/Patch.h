@@ -38,7 +38,7 @@ public:
 	~CPatch(void);
 
 	BOOL		OpenUnifiedDiffFile(const CString& filename);
-	BOOL		PatchFile(const int nIndex, const CString& sPath, const CString& sSavePath = _T(""), const CString& sBaseFile = _T(""));
+	BOOL		PatchFile(const int nIndex, const CString& sPath, const CString& sSavePath = _T(""), const CString& sBaseFile = _T(""), const bool force = false);
 	int			GetNumberOfFiles() const  {return m_arFileDiffs.GetCount();}
 	CString		GetFilename(int nIndex);
 	CString		GetRevision(int nIndex);

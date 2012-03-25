@@ -402,37 +402,46 @@ BOOL CMainFrame::PatchFile(int nIndex, bool bAutoPatch, bool bIsReview)
 		//base file from version control and try
 		//again...
 		CString sVersion = m_Patch.GetRevision(nIndex);
-		CString sTemp;
-		CSysProgressDlg progDlg;
-		sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sVersion);
-		progDlg.SetLine(1, sTemp, true);
-		progDlg.SetLine(2, sFilePath, true);
-		sTemp.LoadString(IDS_GETVERSIONOFFILETITLE);
-		progDlg.SetTitle(sTemp);
-		progDlg.SetShowProgressBar(false);
-		progDlg.SetAnimation(IDR_DOWNLOAD);
-		progDlg.SetTime(FALSE);
 
-		if(!m_Patch.m_IsGitPatch)
-			progDlg.ShowModeless(this);
-
-		CString sBaseFile = m_TempFiles.GetTempFilePath();
-		if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, &progDlg, m_hWnd))
+		CString sBaseFile;
+		if (sVersion == _T("0000000") || sFilePath == _T("NUL"))
+			sBaseFile = m_TempFiles.GetTempFilePath();
+		else
 		{
+			CSysProgressDlg progDlg;
+			CString sTemp;
+			sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sVersion);
+			progDlg.SetLine(1, sTemp, true);
+			progDlg.SetLine(2, sFilePath, true);
+			sTemp.LoadString(IDS_GETVERSIONOFFILETITLE);
+			progDlg.SetTitle(sTemp);
+			progDlg.SetShowProgressBar(false);
+			progDlg.SetAnimation(IDR_DOWNLOAD);
+			progDlg.SetTime(FALSE);
+
+			if(!m_Patch.m_IsGitPatch)
+				progDlg.ShowModeless(this);
+
+			sBaseFile = m_TempFiles.GetTempFilePath();
+			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, &progDlg, m_hWnd))
+			{
+				progDlg.Stop();
+				CString sErrMsg;
+				sErrMsg.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
+				MessageBox(sErrMsg, NULL, MB_ICONERROR);
+				return FALSE;
+			}
+
 			progDlg.Stop();
-			CString sErrMsg;
-			sErrMsg.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
-			MessageBox(sErrMsg, NULL, MB_ICONERROR);
-			return FALSE;
 		}
-		progDlg.Stop();
+
 		CString sTempFile = m_TempFiles.GetTempFilePath();
-		if (!m_Patch.PatchFile(nIndex, m_Data.m_sPatchPath, sTempFile, sBaseFile)) // recheck
+		if (!m_Patch.PatchFile(nIndex, m_Data.m_sPatchPath, sTempFile, sBaseFile, true))
 		{
 			MessageBox(m_Patch.GetErrorMessage(), NULL, MB_ICONERROR);
 			return FALSE;
 		}
-		
+
 		CString temp;
 		temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
 		m_Data.m_baseFile.SetFileName(sBaseFile);
@@ -442,7 +451,20 @@ BOOL CMainFrame::PatchFile(int nIndex, bool bAutoPatch, bool bIsReview)
 		else
 			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
 
-		if(bIsReview)
+		if (sVersion == _T("0000000") || sFilePath == _T("NUL"))
+		{
+			m_Data.m_baseFile.SetFileName(Path2);
+			m_Data.m_yourFile.SetFileName(Path2);
+			m_Data.m_theirFile.SetFileName(sTempFile);
+			m_Data.m_theirFile.SetDescriptiveName(CPathUtils::GetFileNameFromPath(Path2));
+			m_Data.m_mergedFile.SetFileName(Path2);
+			if (!bIsReview)
+			{
+				LoadViews();
+				return FALSE;
+			}
+		}
+		else if (bIsReview)
 		{
 			m_Data.m_yourFile.SetFileName(sTempFile);
 			m_Data.m_yourFile.SetDescriptiveName(temp);
