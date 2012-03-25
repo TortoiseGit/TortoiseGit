@@ -37,7 +37,7 @@ public:
 	 * \param sVersion the revision number of the file to patch
 	 * \return TRUE if patching was successful
 	 */
-	virtual BOOL PatchFile(int nIndex, BOOL bAutoPatch = FALSE, BOOL bIsReview = FALSE) = 0;
+	virtual BOOL PatchFile(int nIndex, bool bAutoPatch = false, bool bIsReview = true) = 0;
 	
 	/**
 	 * Callback function. Called when the user double clicks on a

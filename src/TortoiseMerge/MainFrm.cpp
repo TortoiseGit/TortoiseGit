@@ -391,7 +391,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 }
 
 // Callback function
-BOOL CMainFrame::PatchFile(int nIndex, BOOL bAutoPatch, BOOL bIsReview)
+BOOL CMainFrame::PatchFile(int nIndex, bool bAutoPatch, bool bIsReview)
 {
 	CString Path2 = m_Patch.GetFullPath(m_Data.m_sPatchPath, nIndex, 1);
 	CString sFilePath = m_Patch.GetFullPath(m_Data.m_sPatchPath, nIndex);
