@@ -458,12 +458,13 @@ void CFilePatchesDlg::PatchAll()
 		progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_ALL)));
 		progDlg.ShowModeless(m_hWnd);
 
-		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled(); i++)
+		BOOL ret = TRUE;
+		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled() && ret == TRUE; i++)
 		{
 			if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, m_pPatch->GetFullPath(m_sPath, i), true);
-				m_pCallBack->PatchFile(i, true, false);
+				ret = m_pCallBack->PatchFile(i, true, false);
 			}
 			progDlg.SetProgress64(i, m_arFileStates.GetCount());
 		}
@@ -488,12 +489,13 @@ void CFilePatchesDlg::PatchSelected()
 		int count = 1;
 		POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 		int index;
-		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()))
+		BOOL ret = TRUE;
+		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()) && ret == TRUE)
 		{
 			if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, m_pPatch->GetFullPath(m_sPath, index), true);
-				m_pCallBack->PatchFile(index, true, false);
+				ret = m_pCallBack->PatchFile(index, true, false);
 			}
 			progDlg.SetProgress64(count++, selCount);
 		}
