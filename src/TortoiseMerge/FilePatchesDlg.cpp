@@ -247,9 +247,6 @@ void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("New file: ") + temp2, pGetInfoTip->cchTextMax);	
 		else if(temp2 == _T("NUL"))
 			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("Delete file: ") + temp, pGetInfoTip->cchTextMax);	
-		else
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("Rename File:"))+temp+ _T(" > ")+temp2, pGetInfoTip->cchTextMax);	
-
 	}
 	else
 		_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax);
