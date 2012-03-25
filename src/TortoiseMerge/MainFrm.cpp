@@ -506,13 +506,16 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 			if( Path2)
 			{
 				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(*Path2), (LPCTSTR)m_Data.m_sPatchPatched);
+				m_Data.m_mergedFile.SetFileName(*Path2);
 			}
 			else
+			{
 				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+				m_Data.m_mergedFile.SetFileName(sFilePath);
+			}
 
 			m_Data.m_yourFile.SetDescriptiveName(temp);
 			m_Data.m_theirFile.SetOutOfUse();
-			m_Data.m_mergedFile.SetFileName(sFilePath);
 		}
 		TRACE(_T("comparing %s\nwith the patched result %s\n"), (LPCTSTR)sFilePath, (LPCTSTR)sTempFile);
 	}

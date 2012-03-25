@@ -1,6 +1,7 @@
 // TortoiseMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2011 - TortoiseSVN
+// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -480,7 +481,7 @@ void CFilePatchesDlg::PatchAll()
 			if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, GetFullPath(i), true);
-				m_pCallBack->PatchFile(GetFullPath(i), m_pPatch->GetRevision(i), TRUE);
+				m_pCallBack->PatchFile(GetFullPath(i), m_pPatch->GetRevision(i), TRUE, FALSE, &m_pPatch->GetFilename2(i));
 			}
 			progDlg.SetProgress64(i, m_arFileStates.GetCount());
 		}
@@ -510,7 +511,7 @@ void CFilePatchesDlg::PatchSelected()
 			if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, GetFullPath(index), true);
-				m_pCallBack->PatchFile(GetFullPath(index), m_pPatch->GetRevision(index), TRUE);
+				m_pCallBack->PatchFile(GetFullPath(index), m_pPatch->GetRevision(index), TRUE, FALSE, &m_pPatch->GetFilename2(i));
 			}
 			progDlg.SetProgress64(count++, selCount);
 		}
