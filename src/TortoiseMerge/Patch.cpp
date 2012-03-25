@@ -1,6 +1,7 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2011 - TortoiseGit
+// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -154,7 +155,7 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 
 					chunks->sFilePath.Replace(_T('/'),_T('\\'));
 
-					if(chunks->sFilePath == _T("\\dev\\null"))
+					if (chunks->sFilePath == _T("\\dev\\null") || chunks->sFilePath == _T("/dev/null"))
 						chunks->sFilePath  = _T("NUL");
 				}
 				
@@ -188,7 +189,7 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 
 					chunks->sFilePath2.Replace(_T('/'),_T('\\'));
 
-					if(chunks->sFilePath2 == _T("\\dev\\null"))
+					if (chunks->sFilePath2 == _T("\\dev\\null") || chunks->sFilePath2 == _T("/dev/null"))
 						chunks->sFilePath2  = _T("NUL");
 				}
 				
@@ -782,48 +783,25 @@ CString CPatch::GetRevision2(int nIndex)
 	return 0;
 }
 
-BOOL CPatch::PatchFile(const CString& sPath, const CString& sSavePath, const CString& sBaseFile)
+int CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile, const bool force)
 {
+	CString sPath = GetFullPath(sPatchPath, nIndex);
 	if (PathIsDirectory(sPath))
 	{
 		m_sErrorMessage.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, (LPCTSTR)sPath);
 		return FALSE;
-	}
-	// find the entry in the patch file which matches the full path given in sPath.
-	int nIndex = -1;
-	// use the longest path that matches
-	int nMaxMatch = 0;
-	for (int i=0; i<GetNumberOfFiles(); i++)
-	{
-		CString temppath = sPath;
-		CString temp = GetFilename(i);
-		temppath.Replace('/', '\\');
-		temp.Replace('/', '\\');
-		if (temppath.Mid(temppath.GetLength()-temp.GetLength()-1, 1).CompareNoCase(_T("\\"))==0)
-		{
-			temppath = temppath.Right(temp.GetLength());
-			if ((temp.CompareNoCase(temppath)==0))
-			{
-				if (nMaxMatch < temp.GetLength())
-				{
-					nMaxMatch = temp.GetLength();
-					nIndex = i;
-				}
-			}
-		}
-		else if (temppath.CompareNoCase(temp)==0)
-		{
-			if ((nIndex < 0)&&(! temp.IsEmpty()))
-			{
-				nIndex = i;
-			}
-		}
 	}
 	if (nIndex < 0)
 	{
 		m_sErrorMessage.Format(IDS_ERR_PATCH_FILENOTINPATCH, (LPCTSTR)sPath);
 		return FALSE;
 	}
+
+	if (!force && sPath == _T("NUL") && PathFileExists(GetFullPath(sPatchPath, nIndex, 1)))
+		return FALSE;
+
+	if (GetFullPath(sPatchPath, nIndex, 1) == _T("NUL") && !PathFileExists(sPath))
+		return 2;
 
 	CString sLine;
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
@@ -1079,6 +1057,29 @@ CString	CPatch::Strip(const CString& filename)
 		}
 	}
 	return s;
+}
+
+CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*/)
+{
+	CString temp;
+	if (fileno == 0)
+		temp = GetFilename(nIndex);
+	else
+		temp = GetFilename2(nIndex);
+
+	temp.Replace('/', '\\');
+	if(temp == _T("NUL"))
+		return temp;
+
+	if (PathIsRelative(temp))
+	{
+		if (sPath.Right(1).Compare(_T("\\")) != 0)
+			temp = sPath + _T("\\") + temp;
+		else
+			temp = sPath + temp;
+	}
+
+	return temp;
 }
 
 CString CPatch::RemoveUnicodeBOM(const CString& str)

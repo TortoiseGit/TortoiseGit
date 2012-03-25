@@ -1,6 +1,7 @@
 // TortoiseMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2011 - TortoiseSVN
+// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,7 +52,7 @@ BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
 {
 	for (int i=0; i<m_arFileStates.GetCount(); i++)
 	{
-		if (sPath.CompareNoCase(GetFullPath(i))==0)
+		if (sPath.CompareNoCase(m_pPatch->GetFullPath(m_sPath, i)) == 0 || sPath.CompareNoCase(m_pPatch->GetFullPath(m_sPath, i, 1)) == 0)
 		{
 			m_arFileStates.SetAt(i, FPDLG_FILESTATE_PATCHED);
 			Invalidate();
@@ -59,24 +60,6 @@ BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
 		}
 	}
 	return FALSE;
-}
-
-CString CFilePatchesDlg::GetFullPath(int nIndex,int fileno)
-{
-	CString temp;
-	if( fileno == 0)
-		temp= m_pPatch->GetFilename(nIndex);
-	else
-		temp= m_pPatch->GetFilename2(nIndex);
-
-	temp.Replace('/', '\\');
-	//temp = temp.Mid(temp.Find('\\')+1);
-	if(temp == _T("NUL"))
-		return temp;
-
-	if (PathIsRelative(temp))
-		temp = m_sPath + temp;
-	return temp;
 }
 
 BOOL CFilePatchesDlg::OnInitDialog()
@@ -155,7 +138,10 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 					state = FPDLG_FILESTATE_RENAME;
 			}
 
-			if (m_pPatch->PatchFile(GetFullPath(i)))
+			int doesApply = m_pPatch->PatchFile(i, m_sPath);
+			if (doesApply == 2)
+				state = FPDLG_FILESTATE_PATCHED;
+			else if (doesApply)
 			{
 				if(state != FPDLG_FILESTATE_NEW &&
 				   state != FPDLG_FILESTATE_RENAME &&
@@ -168,7 +154,7 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 		m_arFileStates.Add(state);
 		SHFILEINFO    sfi;
 		SHGetFileInfo(
-			GetFullPath(i), 
+			m_pPatch->GetFullPath(m_sPath, i), 
 			FILE_ATTRIBUTE_NORMAL,
 			&sfi, 
 			sizeof(SHFILEINFO), 
@@ -238,18 +224,15 @@ void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
 
-	CString temp = GetFullPath(pGetInfoTip->iItem);
-	CString temp2 = GetFullPath(pGetInfoTip->iItem, 1);
+	CString temp = m_pPatch->GetFullPath(m_sPath, pGetInfoTip->iItem);
+	CString temp2 = m_pPatch->GetFullPath(m_sPath, pGetInfoTip->iItem, 1);
 
 	if(temp != temp2)
 	{
 		if(temp == _T("NUL"))
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("New File:"))+temp2, pGetInfoTip->cchTextMax);	
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("New file: ") + temp2, pGetInfoTip->cchTextMax);	
 		else if(temp2 == _T("NUL"))
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("Del File:"))+temp, pGetInfoTip->cchTextMax);	
-		else
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, CString(_T("Rename File:"))+temp+ _T(" > ")+temp2, pGetInfoTip->cchTextMax);	
-
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("Delete file: ") + temp, pGetInfoTip->cchTextMax);	
 	}
 	else
 		_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax);
@@ -266,14 +249,14 @@ void CFilePatchesDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (m_sPath.IsEmpty())
 	{
-		m_pCallBack->DiffFiles(GetFullPath(pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),
+		m_pCallBack->DiffFiles(m_pPatch->GetFullPath(m_sPath, pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),
 							   m_pPatch->GetFilename2(pNMLV->iItem), m_pPatch->GetRevision2(pNMLV->iItem));
 	}
 	else
 	{
 		if (m_arFileStates.GetAt(pNMLV->iItem)!=FPDLG_FILESTATE_PATCHED)
 		{
-			m_pCallBack->PatchFile(GetFullPath(pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),false,true,&m_pPatch->GetFilename2(pNMLV->iItem));
+			m_pCallBack->PatchFile(pNMLV->iItem, false, true);
 		}
 	}
 }
@@ -389,7 +372,7 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 				int nIndex = m_cFileList.GetSelectionMark();
 				if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
 				{
-					m_pCallBack->PatchFile(GetFullPath(nIndex), m_pPatch->GetRevision(nIndex),false,bReview);
+					m_pCallBack->PatchFile(nIndex, false, bReview);
 				}
 			}
 		}
@@ -478,12 +461,13 @@ void CFilePatchesDlg::PatchAll()
 		progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PATCH_ALL)));
 		progDlg.ShowModeless(m_hWnd);
 
-		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled(); i++)
+		BOOL ret = TRUE;
+		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled() && ret == TRUE; i++)
 		{
 			if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
 			{
-				progDlg.SetLine(2, GetFullPath(i), true);
-				m_pCallBack->PatchFile(GetFullPath(i), m_pPatch->GetRevision(i), TRUE);
+				progDlg.SetLine(2, m_pPatch->GetFullPath(m_sPath, i), true);
+				ret = m_pCallBack->PatchFile(i, true, false);
 			}
 			progDlg.SetProgress64(i, m_arFileStates.GetCount());
 		}
@@ -508,12 +492,13 @@ void CFilePatchesDlg::PatchSelected()
 		int count = 1;
 		POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 		int index;
-		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()))
+		BOOL ret = TRUE;
+		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()) && ret == TRUE)
 		{
 			if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
 			{
-				progDlg.SetLine(2, GetFullPath(index), true);
-				m_pCallBack->PatchFile(GetFullPath(index), m_pPatch->GetRevision(index), TRUE);
+				progDlg.SetLine(2, m_pPatch->GetFullPath(m_sPath, index), true);
+				ret = m_pCallBack->PatchFile(index, true, false);
 			}
 			progDlg.SetProgress64(count++, selCount);
 		}

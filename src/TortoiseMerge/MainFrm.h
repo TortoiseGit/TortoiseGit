@@ -119,7 +119,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 protected:
 	void			UpdateLayout();
-	virtual BOOL	PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,BOOL bIsReview, CString *Path2=NULL);
+	virtual BOOL	PatchFile(const int nIndex, bool bAutoPatch, bool bIsReview);
 	virtual BOOL	DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2);
 	int				CheckResolved();
 	BOOL			MarkAsResolved();
