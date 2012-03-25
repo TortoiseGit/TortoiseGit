@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 #include "AppUtils.h"
 #include "LogDlg.h"
 #include "AppUtils.h"
+#include "ChangedDlg.h"
 
 bool PullCommand::Execute()
 {
@@ -88,6 +89,15 @@ bool PullCommand::Execute()
 			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 
 		int ret = progress.DoModal();
+
+		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, _T("Do you want to open changes?"), _T("TortoiseGit"), MB_YESNO | MB_ICONINFORMATION) == IDYES)
+		{
+			CChangedDlg dlg;
+			dlg.m_pathList.AddPath(CTGitPath());
+			dlg.DoModal();
+
+			return FALSE;
+		}
 
 		CString hashNew = g_Git.GetHash(L"HEAD");
 

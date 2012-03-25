@@ -20,6 +20,7 @@
  * Fixed issue #1107: Wrong font used in MessageBoxes on Windows XP
  * Fixed issue #1105: Wrong status for missing files
  * Fixed some TortoiseMerge patch apply issues (includes issue #1117)
+ * Fixed issue #718: When pulling it should be possible to directly open the modifications window for editing conflicts
 
 = Release 1.7.7.0 =
 == Features==
