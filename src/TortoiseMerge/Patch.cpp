@@ -1095,7 +1095,13 @@ CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*
 		return temp;
 
 	if (PathIsRelative(temp))
-		temp = sPath + temp;
+	{
+		if (sPath.Right(1).Compare(_T("\\")) != 0)
+			temp = sPath + _T("\\") + temp;
+		else
+			temp = sPath + temp;
+	}
+
 	return temp;
 }
 
