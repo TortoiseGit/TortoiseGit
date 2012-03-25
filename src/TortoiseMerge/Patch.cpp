@@ -783,42 +783,13 @@ CString CPatch::GetRevision2(int nIndex)
 	return 0;
 }
 
-BOOL CPatch::PatchFile(const CString& sPath, const CString& sSavePath, const CString& sBaseFile)
+BOOL CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile)
 {
+	CString sPath = GetFullPath(sPatchPath, nIndex);
 	if (PathIsDirectory(sPath))
 	{
 		m_sErrorMessage.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, (LPCTSTR)sPath);
 		return FALSE;
-	}
-	// find the entry in the patch file which matches the full path given in sPath.
-	int nIndex = -1;
-	// use the longest path that matches
-	int nMaxMatch = 0;
-	for (int i=0; i<GetNumberOfFiles(); i++)
-	{
-		CString temppath = sPath;
-		CString temp = GetFilename(i);
-		temppath.Replace('/', '\\');
-		temp.Replace('/', '\\');
-		if (temppath.Mid(temppath.GetLength()-temp.GetLength()-1, 1).CompareNoCase(_T("\\"))==0)
-		{
-			temppath = temppath.Right(temp.GetLength());
-			if ((temp.CompareNoCase(temppath)==0))
-			{
-				if (nMaxMatch < temp.GetLength())
-				{
-					nMaxMatch = temp.GetLength();
-					nIndex = i;
-				}
-			}
-		}
-		else if (temppath.CompareNoCase(temp)==0)
-		{
-			if ((nIndex < 0)&&(! temp.IsEmpty()))
-			{
-				nIndex = i;
-			}
-		}
 	}
 	if (nIndex < 0)
 	{

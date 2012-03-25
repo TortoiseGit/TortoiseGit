@@ -1,6 +1,7 @@
 // TortoiseMerge - a Diff/Patch program
 
 // Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -390,14 +391,17 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 }
 
 // Callback function
-BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,BOOL bIsReview,CString *Path2)
+BOOL CMainFrame::PatchFile(int nIndex, BOOL bAutoPatch, BOOL bIsReview)
 {
+	CString Path2 = m_Patch.GetFullPath(m_Data.m_sPatchPath, nIndex, 1);
+	CString sFilePath = m_Patch.GetFullPath(m_Data.m_sPatchPath, nIndex);
 	//first, do a "dry run" of patching...
-	if (!m_Patch.PatchFile(sFilePath))
+	if (!m_Patch.PatchFile(nIndex, m_Data.m_sPatchPath))
 	{
 		//patching not successful, so retrieve the
 		//base file from version control and try
 		//again...
+		CString sVersion = m_Patch.GetRevision(nIndex);
 		CString sTemp;
 		CSysProgressDlg progDlg;
 		sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sVersion);
@@ -423,7 +427,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 		}
 		progDlg.Stop();
 		CString sTempFile = m_TempFiles.GetTempFilePath();
-		if (!m_Patch.PatchFile(sFilePath, sTempFile, sBaseFile))
+		if (!m_Patch.PatchFile(nIndex, m_Data.m_sPatchPath, sTempFile, sBaseFile)) // recheck
 		{
 			MessageBox(m_Patch.GetErrorMessage(), NULL, MB_ICONERROR);
 			return FALSE;
@@ -436,8 +440,8 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
 			m_Data.m_baseFile.SetFileName(sBaseFile);
 			m_Data.m_baseFile.SetDescriptiveName(temp);
-			if( Path2)
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(*Path2), (LPCTSTR)m_Data.m_sPatchPatched);
+			if(!Path2.IsEmpty())
+				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(Path2), (LPCTSTR)m_Data.m_sPatchPatched);
 			else
 				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
 			m_Data.m_yourFile.SetFileName(sTempFile);
@@ -451,8 +455,8 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
 			m_Data.m_baseFile.SetFileName(sBaseFile);
 			m_Data.m_baseFile.SetDescriptiveName(temp);
-			if( Path2)
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(*Path2), (LPCTSTR)m_Data.m_sPatchPatched);
+			if(!Path2.IsEmpty())
+				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(Path2), (LPCTSTR)m_Data.m_sPatchPatched);
 			else
 				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
 			m_Data.m_theirFile.SetFileName(sTempFile);
@@ -470,7 +474,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 	{
 		//"dry run" was successful, so save the patched file somewhere...
 		CString sTempFile = m_TempFiles.GetTempFilePath();
-		if (!m_Patch.PatchFile(sFilePath, sTempFile))
+		if (!m_Patch.PatchFile(nIndex, m_Data.m_sPatchPath, sTempFile))
 		{
 			MessageBox(m_Patch.GetErrorMessage(), NULL, MB_ICONERROR);
 			return FALSE;
@@ -503,10 +507,10 @@ BOOL CMainFrame::PatchFile(CString sFilePath, CString sVersion, BOOL bAutoPatch,
 			m_Data.m_baseFile.SetDescriptiveName(sDescription);
 			m_Data.m_yourFile.SetFileName(sTempFile);
 			CString temp;
-			if( Path2)
+			if (!Path2.IsEmpty())
 			{
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(*Path2), (LPCTSTR)m_Data.m_sPatchPatched);
-				m_Data.m_mergedFile.SetFileName(*Path2);
+				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(Path2), (LPCTSTR)m_Data.m_sPatchPatched);
+				m_Data.m_mergedFile.SetFileName(Path2);
 			}
 			else
 			{

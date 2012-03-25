@@ -138,7 +138,7 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 					state = FPDLG_FILESTATE_RENAME;
 			}
 
-			if (m_pPatch->PatchFile(m_pPatch->GetFullPath(m_sPath, i)))
+			if (m_pPatch->PatchFile(i, m_sPath))
 			{
 				if(state != FPDLG_FILESTATE_NEW &&
 				   state != FPDLG_FILESTATE_RENAME &&
@@ -253,7 +253,7 @@ void CFilePatchesDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	{
 		if (m_arFileStates.GetAt(pNMLV->iItem)!=FPDLG_FILESTATE_PATCHED)
 		{
-			m_pCallBack->PatchFile(m_pPatch->GetFullPath(m_sPath, pNMLV->iItem), m_pPatch->GetRevision(pNMLV->iItem),false,true,&m_pPatch->GetFilename2(pNMLV->iItem));
+			m_pCallBack->PatchFile(pNMLV->iItem, false, true);
 		}
 	}
 }
@@ -369,7 +369,7 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 				int nIndex = m_cFileList.GetSelectionMark();
 				if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
 				{
-					m_pCallBack->PatchFile(m_pPatch->GetFullPath(m_sPath, nIndex), m_pPatch->GetRevision(nIndex),false,bReview);
+					m_pCallBack->PatchFile(nIndex, false, bReview);
 				}
 			}
 		}
@@ -463,7 +463,7 @@ void CFilePatchesDlg::PatchAll()
 			if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, m_pPatch->GetFullPath(m_sPath, i), true);
-				m_pCallBack->PatchFile(m_pPatch->GetFullPath(m_sPath, i), m_pPatch->GetRevision(i), TRUE, FALSE, &m_pPatch->GetFilename2(i));
+				m_pCallBack->PatchFile(i, true, false);
 			}
 			progDlg.SetProgress64(i, m_arFileStates.GetCount());
 		}
@@ -493,7 +493,7 @@ void CFilePatchesDlg::PatchSelected()
 			if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, m_pPatch->GetFullPath(m_sPath, index), true);
-				m_pCallBack->PatchFile(m_pPatch->GetFullPath(m_sPath, index), m_pPatch->GetRevision(index), TRUE, FALSE, &m_pPatch->GetFilename2(i));
+				m_pCallBack->PatchFile(index, true, false);
 			}
 			progDlg.SetProgress64(count++, selCount);
 		}
