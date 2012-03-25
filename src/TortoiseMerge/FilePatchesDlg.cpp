@@ -52,7 +52,7 @@ BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
 {
 	for (int i=0; i<m_arFileStates.GetCount(); i++)
 	{
-		if (sPath.CompareNoCase(m_pPatch->GetFullPath(m_sPath, i))==0)
+		if (sPath.CompareNoCase(m_pPatch->GetFullPath(m_sPath, i)) == 0 || sPath.CompareNoCase(m_pPatch->GetFullPath(m_sPath, i, 1)) == 0)
 		{
 			m_arFileStates.SetAt(i, FPDLG_FILESTATE_PATCHED);
 			Invalidate();
