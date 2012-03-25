@@ -1,6 +1,7 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2011 - TortoiseGit
+// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -154,7 +155,7 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 
 					chunks->sFilePath.Replace(_T('/'),_T('\\'));
 
-					if(chunks->sFilePath == _T("\\dev\\null"))
+					if (chunks->sFilePath == _T("\\dev\\null") || chunks->sFilePath == _T("/dev/null"))
 						chunks->sFilePath  = _T("NUL");
 				}
 				
@@ -188,7 +189,7 @@ BOOL CPatch::ParserGitPatch(CFileTextLines &PatchLines,int nIndex)
 
 					chunks->sFilePath2.Replace(_T('/'),_T('\\'));
 
-					if(chunks->sFilePath2 == _T("\\dev\\null"))
+					if (chunks->sFilePath2 == _T("\\dev\\null") || chunks->sFilePath2 == _T("/dev/null"))
 						chunks->sFilePath2  = _T("NUL");
 				}
 				
