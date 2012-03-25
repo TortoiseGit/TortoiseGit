@@ -434,31 +434,23 @@ BOOL CMainFrame::PatchFile(int nIndex, bool bAutoPatch, bool bIsReview)
 		}
 		
 		CString temp;
+		temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
+		m_Data.m_baseFile.SetFileName(sBaseFile);
+		m_Data.m_baseFile.SetDescriptiveName(temp);
+		if(!Path2.IsEmpty() && Path2 != _T("NUL"))
+			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(Path2), (LPCTSTR)m_Data.m_sPatchPatched);
+		else
+			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+
 		if(bIsReview)
 		{
-			
-			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
-			m_Data.m_baseFile.SetFileName(sBaseFile);
-			m_Data.m_baseFile.SetDescriptiveName(temp);
-			if(!Path2.IsEmpty() && Path2 != _T("NUL"))
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(Path2), (LPCTSTR)m_Data.m_sPatchPatched);
-			else
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
 			m_Data.m_yourFile.SetFileName(sTempFile);
 			m_Data.m_yourFile.SetDescriptiveName(temp);
 			m_Data.m_theirFile.SetOutOfUse();
 			m_Data.m_mergedFile.SetOutOfUse();
-		
 		}
 		else
 		{
-			temp.Format(_T("%s Revision %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)sVersion);
-			m_Data.m_baseFile.SetFileName(sBaseFile);
-			m_Data.m_baseFile.SetDescriptiveName(temp);
-			if(!Path2.IsEmpty() && Path2 != _T("NUL"))
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(Path2), (LPCTSTR)m_Data.m_sPatchPatched);
-			else
-				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
 			m_Data.m_theirFile.SetFileName(sTempFile);
 			m_Data.m_theirFile.SetDescriptiveName(temp);
 			m_Data.m_yourFile.SetFileName(sFilePath);
