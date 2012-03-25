@@ -783,7 +783,7 @@ CString CPatch::GetRevision2(int nIndex)
 	return 0;
 }
 
-BOOL CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile, const bool force)
+int CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile, const bool force)
 {
 	CString sPath = GetFullPath(sPatchPath, nIndex);
 	if (PathIsDirectory(sPath))
@@ -799,6 +799,9 @@ BOOL CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSa
 
 	if (!force && sPath == _T("NUL") && PathFileExists(GetFullPath(sPatchPath, nIndex, 1)))
 		return FALSE;
+
+	if (GetFullPath(sPatchPath, nIndex, 1) == _T("NUL") && !PathFileExists(sPath))
+		return 2;
 
 	CString sLine;
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;

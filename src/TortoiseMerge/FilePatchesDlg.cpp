@@ -138,7 +138,10 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 					state = FPDLG_FILESTATE_RENAME;
 			}
 
-			if (m_pPatch->PatchFile(i, m_sPath))
+			int doesApply = m_pPatch->PatchFile(i, m_sPath);
+			if (doesApply == 2)
+				state = FPDLG_FILESTATE_PATCHED;
+			else if (doesApply)
 			{
 				if(state != FPDLG_FILESTATE_NEW &&
 				   state != FPDLG_FILESTATE_RENAME &&
