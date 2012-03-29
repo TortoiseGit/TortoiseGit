@@ -22,6 +22,7 @@
  * Fixed some TortoiseMerge patch apply issues (includes issue #1117)
  * Fixed issue #718: When pulling it should be possible to directly open the modifications window for editing conflicts
  * Fixed issue #982: TortoiseGit messes up TortoiseSVN and TortoiseCVS menu icons on WinXP
+ * Fixed issue #1118: Exporting from Changed Files dialog stops on checkout failure
 
 = Release 1.7.7.0 =
 == Features==

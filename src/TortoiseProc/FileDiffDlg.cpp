@@ -636,9 +636,9 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							if(g_Git.GetOneFile(m_rev1.m_CommitHash, *fd, filename))
 							{
 								CString out;
-								out.Format(_T("Fail checkout one file %s;%s"), m_rev1.m_CommitHash.ToString(), fd->GetWinPath());
-								CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
-								return;
+								out.Format(_T("Fail checkout one file: %s;%s\nDo you want to abort the export process?"), m_rev1.m_CommitHash.ToString(), fd->GetWinPath());
+								if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, _T("&Proceed"), _T("&Abort")) == 2)
+									return;
 							}
 						}
 					}
