@@ -561,7 +561,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		menuiteminfo.fMask |= MIIM_BITMAP;
 		menuiteminfo.hbmpItem = (SysInfo::Instance().IsVistaOrLater()) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
 	}
-	menuiteminfo.wID = id;
+	menuiteminfo.wID = (UINT)id;
 	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
 
 	if (istop)
@@ -708,7 +708,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 		{
 			DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
 			stdstring filename = szFileName;
-			::WriteFile (file, filename.c_str(), filename.size()*sizeof(TCHAR), &written, 0);
+			::WriteFile (file, filename.c_str(), (DWORD)filename.size()*sizeof(TCHAR), &written, 0);
 			::WriteFile (file, _T("\n"), 2, &written, 0);
 		}
 		GlobalUnlock(hDrop);
@@ -748,13 +748,13 @@ stdstring CShellExt::WriteFileListToTempFile()
 	DWORD written = 0;
 	if (files_.empty())
 	{
-		::WriteFile (file, folder_.c_str(), folder_.size()*sizeof(TCHAR), &written, 0);
+		::WriteFile (file, folder_.c_str(), (DWORD)folder_.size()*sizeof(TCHAR), &written, 0);
 		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
 
 	for (std::vector<stdstring>::iterator I = files_.begin(); I != files_.end(); ++I)
 	{
-		::WriteFile (file, I->c_str(), I->size()*sizeof(TCHAR), &written, 0);
+		::WriteFile (file, I->c_str(), (DWORD)I->size()*sizeof(TCHAR), &written, 0);
 		::WriteFile (file, _T("\n"), 2, &written, 0);
 	}
 	return retFilePath;
@@ -1229,7 +1229,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 
 	if ((files_.size() > 0)||(folder_.size() > 0))
 	{
-		UINT idCmd = LOWORD(lpcmi->lpVerb);
+		UINT_PTR idCmd = LOWORD(lpcmi->lpVerb);
 
 		if (HIWORD(lpcmi->lpVerb))
 		{
@@ -2072,7 +2072,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 			DRAWITEMSTRUCT* lpdis = (DRAWITEMSTRUCT*)lParam;
 			if ((lpdis==NULL)||(lpdis->CtlType != ODT_MENU))
 				return S_OK;		//not for a menu
-			resource = GetMenuTextFromResource(myIDMap[lpdis->itemID]);
+			resource = GetMenuTextFromResource((int)myIDMap[lpdis->itemID]);
 			if (resource == NULL)
 				return S_OK;
 			HICON hIcon = (HICON)LoadImage(g_hResInst, resource, IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
@@ -2098,10 +2098,10 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 				nChar = tolower(nChar);
 			// we have the char the user pressed, now search that char in all our
 			// menu items
-			std::vector<int> accmenus;
+			std::vector<UINT_PTR> accmenus;
 			for (std::map<UINT_PTR, UINT_PTR>::iterator It = mySubMenuMap.begin(); It != mySubMenuMap.end(); ++It)
 			{
-				resource = GetMenuTextFromResource(mySubMenuMap[It->first]);
+				resource = GetMenuTextFromResource((int)mySubMenuMap[It->first]);
 				if (resource == NULL)
 					continue;
 				szItem = stringtablebuffer;
@@ -2139,9 +2139,9 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 				MENUITEMINFO mif;
 				mif.cbSize = sizeof(MENUITEMINFO);
 				mif.fMask = MIIM_STATE;
-				for (std::vector<int>::iterator it = accmenus.begin(); it != accmenus.end(); ++it)
+				for (std::vector<UINT_PTR>::iterator it = accmenus.begin(); it != accmenus.end(); ++it)
 				{
-					GetMenuItemInfo((HMENU)lParam, *it, TRUE, &mif);
+					GetMenuItemInfo((HMENU)lParam, (UINT)*it, TRUE, &mif);
 					if (mif.fState == MFS_HILITE)
 					{
 						// this is the selected item, so select the next one
