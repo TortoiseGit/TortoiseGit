@@ -334,19 +334,19 @@ STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
 		/*
 		GitStatus svn = GitStatus();
 		if (svn.GetStatus(CTGitPath(I->c_str())) == (-2))
-			return NOERROR;			// file/directory not under version control
+			return S_OK;			// file/directory not under version control
 
 		if (svn.status->entry == NULL)
-			return NOERROR;
+			return S_OK;
 		*/
 		if( CTGitPath(I->c_str()).HasAdminDir(&ProjectTopDir))
 			break;
 		else
-			return NOERROR;
+			return S_OK;
 	}
 
 	if (files_.size() == 0)
-		return NOERROR;
+		return S_OK;
 
 	LoadLangDll();
 	PROPSHEETPAGE psp;
@@ -376,7 +376,7 @@ STDMETHODIMP CShellExt::AddPages (LPFNADDPROPSHEETPAGE lpfnAddPage,
 		}
 	}
 
-	return NOERROR;
+	return S_OK;
 }
 
 STDMETHODIMP CShellExt::ReplacePage (UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lpfnReplaceWith*/, LPARAM /*lParam*/)
