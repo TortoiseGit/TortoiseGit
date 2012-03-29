@@ -2059,7 +2059,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	case WM_MEASUREITEM:
 		{
 			MEASUREITEMSTRUCT* lpmis = (MEASUREITEMSTRUCT*)lParam;
-			if (lpmis==NULL||lpmis->CtlType!=ODT_MENU)
+			if (lpmis==NULL)
 				break;
 			lpmis->itemWidth = 16;
 			lpmis->itemHeight = 16;
