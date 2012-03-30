@@ -365,7 +365,7 @@ void CChangedDlg::OnBnClickedCommit()
 	if (bSingleFile)
 		cmd += m_pathList[0].GetWinPathString();
 	else
-		cmd += m_FileListCtrl.GetCommonDirectory(false);
+		cmd += g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetDirectory().GetWinPath();
 	cmd += _T("\"");
 	CAppUtils::RunTortoiseProc(cmd);
 }
