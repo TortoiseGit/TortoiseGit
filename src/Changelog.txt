@@ -23,6 +23,7 @@
  * Fixed issue #718: When pulling it should be possible to directly open the modifications window for editing conflicts
  * Fixed issue #982: TortoiseGit messes up TortoiseSVN and TortoiseCVS menu icons on WinXP
  * Fixed issue #1118: Exporting from Changed Files dialog stops on checkout failure
+ * Fixed issue #1108: Allow users to disable the "show unversioned files" messagebox in commit dialog
 
 = Release 1.7.7.0 =
 == Features==

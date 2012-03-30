@@ -67,7 +67,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 #ifdef XMESSAGEBOX_APPREGPATH
 	path = XMESSAGEBOX_APPREGPATH;
 #else
-	path = "Software\\";
+	path = "Software\\TortoiseGit\\";
 	path += AfxGetAppName();
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
@@ -167,7 +167,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 #ifdef XMESSAGEBOX_APPREGPATH
 	path = XMESSAGEBOX_APPREGPATH;
 #else
-	path = "Software\\";
+	path = "Software\\TortoiseGit\\";
 	path += AfxGetAppName();
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
@@ -492,7 +492,7 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 #ifdef XMESSAGEBOX_APPREGPATH
 	path = XMESSAGEBOX_APPREGPATH;
 #else
-	path = "Software\\";
+	path = "Software\\TortoiseGit\\";
 	path += AfxGetAppName();
 #endif
 	DWORD disp;
