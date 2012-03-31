@@ -49,6 +49,7 @@ protected:
 	afx_msg void			OnBnClickedRefresh();
 	afx_msg void			OnBnClickedCommit();
 	afx_msg void			OnBnClickedStash();
+	afx_msg void			OnBnClickedButtonUnifieddiff();
 	afx_msg void			OnBnClickedShowunversioned();
 	afx_msg void			OnBnClickedShowUnmodified();
 	afx_msg void			OnBnClickedShowignored();

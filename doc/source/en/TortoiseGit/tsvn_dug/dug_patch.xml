@@ -85,8 +85,9 @@
 		</para>
 		<important>
 			<para>
-				This is different to TortoiseSVN: In TortoiseSVN you directly create a patch instead of committing
-				your changes and create a patch of the commits afterwards.
+				Here is different to TortoiseSVN: In TortoiseSVN you directly create a patch instead of committing
+				your changes and create a patch of the commits afterwards. To generate a patch containing the uncommitted,
+				but staged, changes click on <guibutton>Save unified diff since HEAD</guibutton>.
 			</para>
 		</important>
 	</sect2>

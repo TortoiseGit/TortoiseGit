@@ -663,6 +663,7 @@
 #define IDC_BUTTON_REMOVE               1385
 #define IDC_BUTTON_DOWN2                1385
 #define IDC_CONFIG                      1385
+#define IDC_BUTTON_UNIFIEDDIFF          1385
 #define IDC_MSGGROUP                    1386
 #define IDC_FILTER                      1387
 #define IDC_REVISIONGROUP               1393

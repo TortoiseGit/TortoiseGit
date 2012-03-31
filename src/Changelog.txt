@@ -6,6 +6,7 @@
  * When deleting remote branch on log dialog one can also delete branch in remote repository now.
  * Fixed issue #1103: cherrypick option to indicate original commit
  * Fixed issue #1094: Support filter command line options for log
+ * Fixed issue #435, issue #1102: Feature: "Save as patch" from Diff window
 
 == Bug Fix ==
  * Fixed issue #1085: Small commit with lots of unversioned and not ignored files takes very long

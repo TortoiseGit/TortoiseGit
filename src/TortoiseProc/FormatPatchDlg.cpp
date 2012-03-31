@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CFormatPatchDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_RADIO_NUM, &CFormatPatchDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_RADIO_RANGE, &CFormatPatchDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_BUTTON_REF, &CFormatPatchDlg::OnBnClickedButtonRef)
+	ON_BN_CLICKED(IDC_BUTTON_UNIFIEDDIFF, &CFormatPatchDlg::OnBnClickedButtonUnifieddiff)
 END_MESSAGE_MAP()
 
 BOOL CFormatPatchDlg::OnInitDialog()
@@ -240,4 +241,9 @@ void CFormatPatchDlg::OnBnClickedButtonRef()
 		CheckRadioButton(IDC_RADIO_SINCE, IDC_RADIO_RANGE, IDC_RADIO_SINCE);
 		OnBnClickedRadio();
 	}
+}
+void CFormatPatchDlg::OnBnClickedButtonUnifieddiff()
+{
+	CTGitPath commonDirectory = CTGitPath(g_Git.m_CurrentDir);
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GIT_REV_ZERO, commonDirectory, _T("HEAD"));
 }

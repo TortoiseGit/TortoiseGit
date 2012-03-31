@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 //	ON_BN_CLICKED(IDC_SHOWEXTERNALS, &CChangedDlg::OnBnClickedShowexternals)
 	ON_BN_CLICKED(IDC_COMMIT, &CChangedDlg::OnBnClickedCommit)
 	ON_BN_CLICKED(IDC_BUTTON_STASH, &CChangedDlg::OnBnClickedStash)
+	ON_BN_CLICKED(IDC_BUTTON_UNIFIEDDIFF, &CChangedDlg::OnBnClickedButtonUnifieddiff)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -107,6 +108,7 @@ BOOL CChangedDlg::OnInitDialog()
 //	AddAnchor(IDC_SHOWUSERPROPS, BOTTOM_LEFT);
 	AddAnchor(IDC_INFOLABEL, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_STASH, BOTTOM_RIGHT);
+	AddAnchor(IDC_BUTTON_UNIFIEDDIFF, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT, BOTTOM_RIGHT);
 	AddAnchor(IDC_REFRESH, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -413,4 +415,13 @@ void CChangedDlg::OnBnClickedStash()
 		}
 		OnBnClickedRefresh();
 	}
+}
+
+void CChangedDlg::OnBnClickedButtonUnifieddiff()
+{
+	CTGitPath commonDirectory = m_pathList.GetCommonRoot().GetDirectory();
+	bool bSingleFile = ((m_pathList.GetCount()==1)&&(!m_pathList[0].IsEmpty())&&(!m_pathList[0].IsDirectory()));
+	if (bSingleFile)
+		commonDirectory = m_pathList[0];
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, commonDirectory, GIT_REV_ZERO, commonDirectory, _T("HEAD"));
 }

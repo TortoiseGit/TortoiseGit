@@ -46,6 +46,7 @@ protected:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedRadio();
 	afx_msg void OnBnClickedButtonRef();
+	afx_msg void OnBnClickedButtonUnifieddiff();
 
 	CHistoryCombo m_cDir;
 	CHistoryCombo m_cSince;
