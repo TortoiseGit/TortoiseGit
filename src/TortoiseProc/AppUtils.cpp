@@ -850,7 +850,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 		cmd += _T("\" ");
 	}
 	g_Git.RunLogFile(cmd,tempfile);
-	CAppUtils::StartUnifiedDiffViewer(tempfile,rev1.Left(6)+_T(":")+rev2.Left(6));
+	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + _T(":") + rev2);
 
 
 #if 0
