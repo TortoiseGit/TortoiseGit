@@ -830,9 +830,9 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 
 	CString tempfile=GetTempFile();
 	CString cmd;
-	if(rev1 == GitRev::GetWorkingCopy())
+	if(rev2 == GitRev::GetWorkingCopy())
 	{
-		cmd.Format(_T("git.exe diff --stat -p %s "),rev2);
+		cmd.Format(_T("git.exe diff --stat -p %s "), rev1);
 	}
 	else
 	{

@@ -2310,8 +2310,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString fromwhere;
 						if(m_amend)
 							fromwhere = _T("~1");
-						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetWorkingCopy(),
-															*filepath,GitRev::GetHead()+fromwhere);
+						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetHead()+fromwhere,
+															*filepath,GitRev::GetWorkingCopy());
 					}
 					else
 					{
