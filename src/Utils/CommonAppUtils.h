@@ -30,7 +30,7 @@ public:
 	/**
 	* Launch an external application (usually the diff viewer)
 	*/
-	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup);
+	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd = NULL);
 
 	static bool RunTortoiseProc(const CString& sCommandLine);
 

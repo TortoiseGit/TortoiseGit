@@ -27,7 +27,7 @@
 
 extern CString sOrigCWD;
 
-bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup)
+bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd)
 {
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
@@ -37,7 +37,11 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 
 	CString cleanCommandLine(sCommandLine);
 
-	if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, sOrigCWD, &startup, &process)==0)
+	CString theCWD = sOrigCWD;
+	if (cwd != NULL)
+		theCWD = *cwd;
+
+	if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, theCWD, &startup, &process)==0)
 	{
 		if(idErrMessageFormat != 0)
 		{
