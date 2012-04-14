@@ -2125,7 +2125,7 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 {
 	bool bFailed = true;
 
-	while(g_Git.GetUserName().IsEmpty() || g_Git.GetConfigValue(_T("user.email")).IsEmpty())
+	while(g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty())
 	{
 		if(CMessageBox::Show(NULL,_T("User name and email must be set before commit.\r\n Do you want to set these now?\r\n"),
 							_T("TortoiseGit"),MB_YESNO| MB_ICONERROR) == IDYES)
