@@ -440,10 +440,21 @@ int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
 
 CString CGit::GetUserName(void)
 {
+	CEnvironment env;
+	env.CopyProcessEnvironment();
+	CString envname = env.GetEnv(_T("GIT_AUTHOR_NAME"));
+	if (!envname.IsEmpty())
+		return envname;
 	return GetConfigValue(L"user.name", this->GetGitEncode(L"i18n.commitencoding"));
 }
 CString CGit::GetUserEmail(void)
 {
+	CEnvironment env;
+	env.CopyProcessEnvironment();
+	CString envmail = env.GetEnv(_T("GIT_AUTHOR_EMAIL"));
+	if (!envmail.IsEmpty())
+		return envmail;
+
 	return GetConfigValue(L"user.email");
 }
 
