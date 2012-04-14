@@ -170,6 +170,12 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_orgPath = orgPath;
 	m_path = path;
 	m_hightlightRevision = hightlightRevision;
+
+	if (startrev == GIT_REV_ZERO)
+		startrev.Empty();
+	if (endrev == GIT_REV_ZERO)
+		endrev.Empty();
+
 	this->m_LogList.m_startrev = startrev;
 	m_LogRevision = startrev;
 	this->m_LogList.m_endrev = endrev;

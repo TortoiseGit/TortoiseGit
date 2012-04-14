@@ -52,11 +52,6 @@ bool LogCommand::Execute()
 
 	CString rev = val;
 
-	if (revstart == GIT_REV_ZERO)
-		revstart.Empty();
-	if (revend == GIT_REV_ZERO)
-		revend.Empty();
-
 #if 0
 	SVNRev pegrev = val.IsEmpty() ? SVNRev() : SVNRev(val);
 	if (!revstart.IsValid())
