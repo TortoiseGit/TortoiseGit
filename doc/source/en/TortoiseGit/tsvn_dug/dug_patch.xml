@@ -21,6 +21,7 @@
 	<?dbhh topicname="HIDD_APPLY_PATCH_LIST"?>
 	<?dbhh topicname="HIDD_CREATEPATCH"?>
 	<?dbhh topicname="HIDD_REQUESTPULL"?>
+	<?dbhh topicname="HIDD_SENDMAIL"?>
 	<para>
 		For open source projects (like this one) everyone has read
 		access to the (main/public) repository, and anyone can make a contribution
@@ -41,7 +42,7 @@
 		changes from your repository. I.e. you must have access to a public repository where you can
 		<link linkend="tsvn-dug-push">push</link> your changes (normally a special branch).
 	</para>
-	<sect2 id="tsvn-dug-patch-1">
+	<sect2 id="tsvn-dug-patch-createpatchserial">
 		<title>Creating a Patch Serial</title>
 		<para>
 			First you need to make <emphasis>and test</emphasis> your changes.
@@ -78,7 +79,7 @@
 			log dialog to choose commit.
 		</para>
 		<para>
-			<guilabel>Send Mail after create</guilabel> launch send mail dialog after patches created.
+			<guilabel>Send Mail after create</guilabel> launch send mail dialog after patches created (see <xref linkend="tsvn-dug-patch-sendpatches"/>).
 		</para>
 		<para>
 			You can find more information at <xref linkend="git-format-patch(1)"/>.
@@ -91,7 +92,47 @@
 			</para>
 		</important>
 	</sect2>
-	<sect2 id="tsvn-dug-patch-2">
+	<sect2 id="tsvn-dug-patch-sendpatches">
+		<title>Sending patches by mail</title>
+		<para>
+			In order to send patches to the upstream authors, select the patch files and then right click on them and select
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Send Mail...</guimenuitem>
+			</menuchoice>
+		</para>
+		<para>
+			<figure id="tsvn-dug-patch-dia-sendpatches">
+				<title>The Send Patches Dialog</title>
+				<graphic fileref="../images/SendPatch.png"/>
+			</figure>
+		</para>
+		<para>
+			First you need to enter the receipient(s) (<guilabel>To</guilabel> and/or <guilabel>CC</guilabel>).
+		</para>
+		<para>
+			Depending on the mail type (<guilabel>Patch as attachment</guilabel> or <guilabel>Combine One Mail</guilabel>)
+			you have to enter a <guilabel>Subject</guilabel> for the mail.
+		</para>
+		<para>
+			<guilabel>Patch as attachment</guilabel> adds the patch(es) as attachment(s) to the mail(s) instead of inlining them.
+		</para>
+		<para>
+			<guilabel>Combine One Mail</guilabel> adds all patches to one mail. You have to enter a <guilabel>Subject</guilabel>
+			for the mail in this case.
+		</para>
+		<para>
+			<guilabel>Use MAPI</guilabel> uses the Windows MAPI interface for sending the mails. This requires a MUA to be configured on your system.
+		</para>
+		<important>
+			<para>
+				If you do not select <guilabel>Use MAPI</guilabel> mails are delivered via SMTP directly to the destination MTA.
+				This might be problematic if your ISP blocks outgoing SMTP connections (port 25) or you have a dialup internet connection.
+				In the ladder case the destination MTA might not accept your mails or marks them as SPAM.
+			</para>
+		</important>
+	</sect2>
+	<sect2 id="tsvn-dug-patch-applysinglepatch">
 		<title>Applying a single Patch File</title>
 		<para>
 			Patch files are applied to your working copy. This should be done
@@ -122,7 +163,7 @@
 			If the working copy is found, TortoiseMerge is launched to show and apply differences.
 		</para>
 	</sect2>
-	<sect2 id="tsvn-dug-patch-3">
+	<sect2 id="tsvn-dug-patch-applaypatchserial">
 		<title>Applying a Patch Serial</title>
 		<para>
 			Patch files are applied to your working copy. For this copy the patch (or mbox)
@@ -159,7 +200,7 @@
 			You can find more information at <xref linkend="git-am(1)"/>.
 		</para>
 	</sect2>
-	<sect2 id="tsvn-dug-patch-4">
+	<sect2 id="tsvn-dug-patch-pullrequest">
 		<title>Creating a pull request</title>
 		<para>
 			Apart from sending patches (or patch serials) to other developers,
