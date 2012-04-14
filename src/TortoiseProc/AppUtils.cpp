@@ -623,7 +623,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	proc += tempfile;
 	proc += _T("\"");
 
-	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true);
+	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true, &CPathUtils::GetAppDirectory());
 	if(!b)
 		return b;
 
