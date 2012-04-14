@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -248,6 +248,9 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT|OFN_ALLOWMULTISELECT,
 					_T("Patch Files(*.patch)|*.patch|Diff Files(*.diff)|*.diff|All Files(*.*)|*.*||"));
+	dlg.m_ofn.nMaxFile = 65536;
+	auto_buffer<TCHAR> path(dlg.m_ofn.nMaxFile);
+	dlg.m_ofn.lpstrFile = path;
 	if(dlg.DoModal() == IDOK)
 	{
 		POSITION pos;
