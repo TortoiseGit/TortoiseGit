@@ -1536,7 +1536,7 @@ CString CEnvironment::GetEnv(TCHAR *name)
 		CString sname = str.Tokenize(_T("="),start);
 		if(sname.CompareNoCase(name) == 0)
 		{
-			return &(*this)[i+start+1];
+			return &(*this)[i+start];
 		}
 		i+=str.GetLength();
 	}
