@@ -1,4 +1,7 @@
 = Release 1.7.9.0 =
+== Features==
+ * Allow to fetch from log dialog
+
 == Bug Fix ==
  * Fixed issue #1123: Apply patch serial does not correctly add patches to list if >3 patches are selected
  * Fixed issue #1061: Enviroment variables ignored: GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL

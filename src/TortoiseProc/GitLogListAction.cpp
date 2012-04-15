@@ -728,6 +728,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					Refresh();
 			}
 			break;
+		case ID_FETCH:
+			{
+				if (CAppUtils::Fetch(_T(""), true))
+					Refresh();
+			}
+			break;
 		case ID_DELETE:
 			{
 				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);

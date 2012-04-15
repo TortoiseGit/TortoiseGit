@@ -1951,6 +1951,8 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			}
 			return TRUE;
 		}
+		else if (userResponse != IDCANCEL)
+			return TRUE;
 	}
 	return FALSE;
 }

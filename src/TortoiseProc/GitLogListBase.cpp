@@ -1545,6 +1545,11 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 
 					popup.AppendMenu(MF_SEPARATOR, NULL);
+
+					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
+						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
+
+					popup.AppendMenu(MF_SEPARATOR, NULL);
 				}
 			}
 
