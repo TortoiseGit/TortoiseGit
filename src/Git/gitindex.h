@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -578,3 +578,67 @@ public:
 };
 
 #endif
+
+class CGitAdminDirMap:public std::map<CString, CString>
+{
+public:
+	CComCriticalSection			m_critIndexSec;
+	std::map<CString, CString>	m_reverseLookup;
+
+	CGitAdminDirMap() { m_critIndexSec.Init(); }
+	~CGitAdminDirMap() { m_critIndexSec.Term(); }
+
+	CString GetAdminDir(const CString &path)
+	{
+		CString thePath = path;
+		thePath.MakeLower();
+		CAutoLocker lock(m_critIndexSec);
+		if(this->find(thePath) == end())
+		{
+			if (PathIsDirectory(thePath + _T("\\.git")))
+			{
+				(*this)[thePath] = thePath + _T("\\.git\\");
+				m_reverseLookup[thePath + _T("\\.git")] = thePath;
+				return (*this)[thePath];
+			}
+			else
+			{
+				FILE * pFile = _tfsopen(thePath + _T("\\.git"), _T("r"), SH_DENYWR);
+				if (pFile)
+				{
+					int size = 65536;
+					auto_buffer<char> buffer(size);
+					if (fread(buffer, sizeof(char), size, pFile))
+					{
+						fclose(pFile);
+						CString str = CString(buffer);
+						if (str.Left(8) == _T("gitdir: "))
+						{
+							str.Replace(_T("/"), _T("\\"));
+							str.TrimRight();
+							str.TrimRight(_T("\\"));
+							(*this)[thePath] = str.Mid(8) + _T("\\");
+							m_reverseLookup[str.Mid(8).MakeLower()] = path;
+							return (*this)[thePath];
+						}
+					}
+					fclose(pFile);
+				}
+				return thePath + _T("\\.git\\"); // in case of an error stick to old behavior
+			}
+		}
+		else
+			return (*this)[thePath];
+	}
+
+	CString GetWorkingCopy(const CString &gitDir)
+	{
+		CString path = gitDir;
+		path.MakeLower();
+		CAutoLocker lock(m_critIndexSec);
+		if (m_reverseLookup.find(path) == m_reverseLookup.end())
+			return gitDir;
+		else
+			return m_reverseLookup[path];
+	}
+};

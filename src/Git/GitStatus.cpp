@@ -37,6 +37,7 @@
 #include "gitindex.h"
 #include "shellcache.h"
 
+extern CGitAdminDirMap g_AdminDirMap;
 CGitIndexFileMap g_IndexFileMap;
 CGitHeadFileMap g_HeadFileMap;
 CGitIgnoreList  g_IgnoreList;
@@ -1555,7 +1556,7 @@ bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 	{
 		if(PathFileExists(sDirName + _T("\\.git")))
 		{
-			if(PathFileExists(sDirName + _T("\\.git\\index.lock")))
+			if(PathFileExists(g_AdminDirMap.GetAdminDir(gitdir) + _T("index.lock")))
 				return true;
 			else
 				return false;
