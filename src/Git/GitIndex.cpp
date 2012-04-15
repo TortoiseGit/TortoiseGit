@@ -879,11 +879,12 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 	}
 
 	this->m_BaseDir.Empty();
-	if (projectroot.GetLength() < file.GetLength())
+	CString gitDir = g_AdminDirMap.GetAdminDir(projectroot);
+	if (gitDir.GetLength() < file.GetLength())
 	{
-		CString base = file.Mid(projectroot.GetLength() + 1);
+		CString base = file.Mid(gitDir.GetLength());
 		base.Replace(_T('\\'), _T('/'));
-		if (base != _T(".git/info/exclude"))
+		if (base != _T("info/exclude"))
 		{
 			int start = base.ReverseFind(_T('/'));
 			if(start >= 0)
@@ -1005,6 +1006,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir,const CString &pat
 
 	while(!temp.IsEmpty())
 	{
+		CString tempOrig = temp;
 		temp += _T("\\.git");
 
 		if (CGit::GitPathFileExists(temp))
@@ -1014,9 +1016,8 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir,const CString &pat
 			if (CheckFileChanged(gitignore))
 				return true;
 
-			temp += _T("\\info\\exclude");
-
-			if (CheckFileChanged(temp))
+			CString wcglobalgitignore = g_AdminDirMap.GetAdminDir(tempOrig) + _T("info\\exclude");
+			if (CheckFileChanged(wcglobalgitignore))
 				return true;
 			else
 				return false;
@@ -1077,6 +1078,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
 
 	while (!temp.IsEmpty())
 	{
+		CString tempOrig = temp;
 		temp += _T("\\.git");
 
 		if (CGit::GitPathFileExists(temp))
@@ -1088,11 +1090,10 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
 				FetchIgnoreFile(gitdir, gitignore);
 			}
 
-			temp += _T("\\info\\exclude");
-
-			if (CheckFileChanged(temp))
+			CString wcglobalgitignore = g_AdminDirMap.GetAdminDir(tempOrig) + _T("info\\exclude");
+			if (CheckFileChanged(wcglobalgitignore))
 			{
-				return FetchIgnoreFile(gitdir, temp);
+				return FetchIgnoreFile(gitdir, wcglobalgitignore);
 			}
 
 			return 0;
@@ -1143,9 +1144,7 @@ int CGitIgnoreList::GetIgnoreFileChangeTimeList(const CString &path, std::vector
 			timelist.push_back(itMap->second.m_LastModifyTime);
 		}
 
-		ignore = temp;
-		ignore += _T("\\.git\\info\\exclude");
-
+		ignore = g_AdminDirMap.GetAdminDir(temp) + _T("info\\exclude");
 		itMap = m_Map.find(ignore);
 		if (itMap == m_Map.end())
 		{
@@ -1248,8 +1247,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 				return 0;
 		}
 
-		temp = temp.Left(temp.GetLength()-11);
-		temp +=_T("\\.git\\info\\exclude");
+		temp = g_AdminDirMap.GetAdminDir(temp.Left(temp.GetLength() - 11)) + _T("info\\exclude");
 
 		if(this->m_Map.find(temp) != m_Map.end())
 		{
