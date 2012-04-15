@@ -32,6 +32,8 @@
 #include "git2.h"
 #include "SmartHandle.h"
 
+CGitAdminDirMap g_AdminDirMap;
+
 #define FILL_DATA() \
 	m_FileName.Empty();\
 	g_Git.StringAppend(&m_FileName, (BYTE*)entry->name, CP_ACP, Big2lit(entry->flags)&CE_NAMEMASK);\
@@ -322,13 +324,13 @@ int CGitIndexFileMap::Check(const CString &gitdir, bool *isChanged)
 	__int64 time;
 	int result;
 
-		CString IndexFile;
-		IndexFile = gitdir + _T("\\.git\\index");
-		/* Get data associated with "crt_stat.c": */
-		result = g_Git.GetFileModifyTime(IndexFile, &time);
+	CString IndexFile = g_AdminDirMap.GetAdminDir(gitdir) + _T("index");
 
-		if (result)
-			return result;
+	/* Get data associated with "crt_stat.c": */
+	result = g_Git.GetFileModifyTime(IndexFile, &time);
+
+	if (result)
+		return result;
 
 	SHARED_INDEX_PTR pIndex;
 	pIndex = this->SafeGet(gitdir);
@@ -359,7 +361,9 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	{
 		SHARED_INDEX_PTR pIndex(new CGitIndexList);
 
-		if(pIndex->ReadIndex(gitdir + _T("\\.git\\index")))
+		CString IndexFile = g_AdminDirMap.GetAdminDir(gitdir) + _T("index");
+
+		if(pIndex->ReadIndex(IndexFile))
 			return -1;
 
 		this->SafeSet(gitdir, pIndex);
@@ -432,8 +436,7 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 
 int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {
-	CString PackRef = gitdir;
-	PackRef += _T("\\.git\\packed-refs");
+	CString PackRef = g_AdminDirMap.GetAdminDir(gitdir) + _T("packed-refs");
 
 	__int64 mtime;
 	if (g_Git.GetFileModifyTime(PackRef, &mtime))
@@ -548,13 +551,10 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 }
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
-	CString HeadFile = gitdir;
-	HeadFile += _T("\\.git\\HEAD");
-
 	int ret = 0;
-	m_Gitdir = gitdir;
+	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
 
-	m_HeadFile = HeadFile;
+	m_HeadFile = m_Gitdir + _T("HEAD");
 
 	if( g_Git.GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead))
 		return -1;
@@ -563,7 +563,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 	{
 		do
 		{
-			CAutoFile hfile = CreateFile(HeadFile,
+			CAutoFile hfile = CreateFile(m_HeadFile,
 				GENERIC_READ,
 				FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
 				NULL,
@@ -601,7 +601,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 				int start = 0;
 				ref = ref.Tokenize(_T("\n"), start);
 				free(p);
-				m_HeadRefFile=gitdir+_T("\\.git\\") + m_HeadRefFile.Trim();
+				m_HeadRefFile = m_Gitdir + m_HeadRefFile.Trim();
 				m_HeadRefFile.Replace(_T('/'),_T('\\'));
 
 				__int64 time;
@@ -828,8 +828,7 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 
 int CGitHeadFileList::ReadTree()
 {
-	CStringA gitdir = CUnicodeUtils::GetMulti(m_Gitdir,CP_ACP) ;
-	gitdir += "\\.git";
+	CStringA gitdir = CUnicodeUtils::GetMulti(m_Gitdir, CP_ACP);
 	git_repository *repository = NULL;
 	git_commit *commit = NULL;
 	git_tree * tree = NULL;
