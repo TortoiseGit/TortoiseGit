@@ -108,7 +108,7 @@ HWND hWndExplorer;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
 {
-	CGitIndexFileMap map;
+	//CGitIndexFileMap map;
 	//int status;
 	//CTGitPath path;
 	//path.SetFromGit(_T("src/gpl.txt"));
