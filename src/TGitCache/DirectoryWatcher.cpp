@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2007 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,8 +21,10 @@
 #include "Dbt.h"
 #include "GitStatusCache.h"
 #include "directorywatcher.h"
+#include "GitIndex.h"
 
 extern HWND hWnd;
+extern CGitAdminDirMap g_AdminDirMap;
 
 CDirectoryWatcher::CDirectoryWatcher(void) : m_hCompPort(NULL)
 	, m_bRunning(TRUE)
@@ -405,28 +407,31 @@ void CDirectoryWatcher::WorkerThread()
 								if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 									break;
 
+								path = g_AdminDirMap.GetWorkingCopy(CTGitPath(buf).GetContainingDirectory().GetWinPathString());
+
 								if ((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_ADDED)
 								{
-									CGitStatusCache::Instance().BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory());
+									CGitStatusCache::Instance().BlockPath(path);
 									continue;
 								}
 								else if (((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED) || ((wcsstr(pFound, L"index") != NULL || wcsstr(pFound, L"HEAD") != NULL) && pnotify->Action == FILE_ACTION_MODIFIED))
 								{
 									isIndex = true;
-									CGitStatusCache::Instance().BlockPath(CTGitPath(buf).GetContainingDirectory().GetContainingDirectory(), 1);
+									CGitStatusCache::Instance().BlockPath(path, 1);
 								}
 								else
 								{
 									continue;
 								}
 							}
+							else
+								path.SetFromWin(buf);
 
-							path.SetFromWin(buf);
 							if(!path.HasAdminDir() && !isIndex)
 								continue;
 
 							ATLTRACE(_T("change notification: %s\n"), buf);
-							m_FolderCrawler->AddPathForUpdate(CTGitPath(buf));
+							m_FolderCrawler->AddPathForUpdate(path);
 						}
 						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
 							break;

@@ -583,6 +583,7 @@ class CGitAdminDirMap:public std::map<CString, CString>
 {
 public:
 	CComCriticalSection			m_critIndexSec;
+	std::map<CString, CString>	m_reverseLookup;
 
 	CGitAdminDirMap() { m_critIndexSec.Init(); }
 	~CGitAdminDirMap() { m_critIndexSec.Term(); }
@@ -597,6 +598,7 @@ public:
 			if (PathIsDirectory(thePath + _T("\\.git")))
 			{
 				(*this)[thePath] = thePath + _T("\\.git\\");
+				m_reverseLookup[thePath + _T("\\.git")] = thePath;
 				return (*this)[thePath];
 			}
 			else
@@ -616,6 +618,7 @@ public:
 							str.TrimRight();
 							str.TrimRight(_T("\\"));
 							(*this)[thePath] = str.Mid(8) + _T("\\");
+							m_reverseLookup[str.Mid(8).MakeLower()] = path;
 							return (*this)[thePath];
 						}
 					}
@@ -626,5 +629,16 @@ public:
 		}
 		else
 			return (*this)[thePath];
+	}
+
+	CString GetWorkingCopy(const CString &gitDir)
+	{
+		CString path = gitDir;
+		path.MakeLower();
+		CAutoLocker lock(m_critIndexSec);
+		if (m_reverseLookup.find(path) == m_reverseLookup.end())
+			return gitDir;
+		else
+			return m_reverseLookup[path];
 	}
 };
