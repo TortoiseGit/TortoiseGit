@@ -521,7 +521,7 @@ void CCommitDlg::OnOK()
 	bool bCloseCommitDlg=false;
 
 	CSysProgressDlg sysProgressDlg;
-	if (nListItems >= 10  && sysProgressDlg.IsValid())
+	if (nListItems >= 25 && sysProgressDlg.IsValid())
 	{
 		sysProgressDlg.SetTitle(_T("Preparing commit..."));
 		sysProgressDlg.SetLine(1, _T("Updating index"));
@@ -531,16 +531,20 @@ void CCommitDlg::OnOK()
 	}
 
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
+	DWORD currentTicks = GetTickCount();
 
 	for (int j=0; j<nListItems; j++)
 	{
 		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
 		if (sysProgressDlg.IsValid())
 		{
-			sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
-			sysProgressDlg.SetProgress(j, nListItems);
-			if (j % 25 == 0 || j == nListItems - 1)
+			if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
+			{
+				sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
+				sysProgressDlg.SetProgress(j, nListItems);
 				AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
+				currentTicks = GetTickCount();
+			}
 		}
 		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
 		if (entry->m_Checked)
