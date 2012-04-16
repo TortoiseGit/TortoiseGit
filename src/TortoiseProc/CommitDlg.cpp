@@ -1272,7 +1272,7 @@ void CCommitDlg::OnBnClickedShowunversioned()
 			else
 				m_ListCtrl.GetStatus(&this->m_pathList,false,false,true);
 		}
-		m_ListCtrl.Show(dwShow,0,true,0,true);
+		m_ListCtrl.Show(dwShow, 0, true, dwShow & ~(CTGitPath::LOGACTIONS_UNVER), true);
 	}
 }
 
@@ -2044,8 +2044,13 @@ void CCommitDlg::OnBnClickedWholeProject()
 		else
 			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
 
-		DWORD dwShow = (DWORD)(GITSLC_SHOWVERSIONEDBUTNORMALANDEXTERNALSFROMDIFFERENTREPOS | GITSLC_SHOWUNVERSIONED | GITSLC_SHOWLOCKS);
-		m_ListCtrl.Show(m_ListCtrl.GetShowFlags(), dwShow & (~CTGitPath::LOGACTIONS_UNVER|~CTGitPath::LOGACTIONS_IGNORE));
+		DWORD dwShow = m_ListCtrl.GetShowFlags();
+		if (DWORD(m_regAddBeforeCommit))
+			dwShow |= GITSLC_SHOWUNVERSIONED;
+		else
+			dwShow &= ~GITSLC_SHOWUNVERSIONED;
+
+		m_ListCtrl.Show(dwShow, dwShow & ~(CTGitPath::LOGACTIONS_UNVER), true);
 	}
 
 	SetDlgTitle();

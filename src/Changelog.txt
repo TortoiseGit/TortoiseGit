@@ -6,6 +6,7 @@
  * Fixed issue #1123: Apply patch serial does not correctly add patches to list if >3 patches are selected
  * Fixed issue #1061: Enviroment variables ignored: GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL
  * Fixed issue #1028: overlays with separate-git-dir (e.g. .git\modules\... for submodules) not working
+ * Fixed issue #1131: "Whole project" checkbox in commit dialog selects all files
 
 = Release 1.7.8.0 =
 == Features==
