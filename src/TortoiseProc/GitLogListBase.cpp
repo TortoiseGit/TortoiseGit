@@ -1312,7 +1312,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 
 	case this->LOGLIST_COMMIT_DATE: //Commit Date
-		if (pLogEntry)
+		if (pLogEntry && (!pLogEntry->m_CommitHash.IsEmpty()))
 			lstrcpyn(pItem->pszText,
 				CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes),
 				pItem->cchTextMax);
