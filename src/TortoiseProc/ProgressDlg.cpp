@@ -394,7 +394,8 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 
 		if(ClearESC(oneline))
 		{
-			ch = ('\r');
+			// do not erase line; commenting this out fixes issue #1027 and hopefully does not break anything else
+			//ch = ('\r');
 		}
 
 		int lines = log.GetLineCount();
