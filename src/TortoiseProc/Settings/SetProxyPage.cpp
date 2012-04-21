@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2010-2012 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -240,7 +241,7 @@ BOOL CSetProxyPage::OnApply()
 	}
 	else
 	{
-		g_Git.SetConfigValue(_T("http.proxy"),_T(""),CONFIG_GLOBAL);
+		g_Git.UnsetConfigValue(_T("http.proxy"), CONFIG_GLOBAL);
 	}
 	m_regSSHClient = m_SSHClient;
 	SetModified(FALSE);
