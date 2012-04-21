@@ -9,6 +9,7 @@
  * Fixed issue #1131: "Whole project" checkbox in commit dialog selects all files
  * Fixed issue #1065: Explorer crashes when rendering a file conflict icon
  * Fixed issue #1027: When post-receive hook contains more than 1 echo bash command, only the LAST echo is displayed in dialog
+ * Fixed issue #1136: Proxy password with @ symbol not parsed/saved correctly
 
 = Release 1.7.8.0 =
 == Features==
