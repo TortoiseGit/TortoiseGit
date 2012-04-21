@@ -736,6 +736,7 @@ void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
 	m_limit = 0;
 	m_LogList.Refresh(clearfilter);
+	ShowStartRef();
 	FillLogMessageCtrl(false);
 }
 
@@ -3140,7 +3141,6 @@ void CLogDlg::OnSize(UINT nType, int cx, int cy)
 void CLogDlg::OnRefresh()
 {
 	//if (GetDlgItem(IDC_GETALL)->IsWindowEnabled())
-	ShowStartRef();
 	{
 		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
