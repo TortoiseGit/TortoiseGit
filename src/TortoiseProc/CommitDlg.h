@@ -130,6 +130,7 @@ public:
 	CTGitPathList		m_updatedPathList;
 	int					m_PostCmd;
 	BOOL				m_bPushAfterCommit;
+	BOOL				m_bCreateTagAfterCommit;
 	BOOL				m_bAmendDiffToLastCommit;
 
 protected:

@@ -1,6 +1,7 @@
 = Release 1.7.9.0 =
 == Features==
  * Allow to fetch from log dialog
+ * Fixed issue #1058: Allow to create tag after commit
 
 == Bug Fix ==
  * Fixed issue #1123: Apply patch serial does not correctly add patches to list if >3 patches are selected

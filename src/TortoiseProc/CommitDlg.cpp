@@ -67,6 +67,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bAutoClose(false)
 	, m_bSetCommitDateTime(FALSE)
 	, m_bCreateNewBranch(FALSE)
+	, m_bCreateTagAfterCommit(FALSE)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -753,6 +754,7 @@ void CCommitDlg::OnOK()
 		{
 			progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
 			progress.m_PostCmdList.Add(_T("&ReCommit"));
+			progress.m_PostCmdList.Add(_T("Create &Tag"));
 		}
 
 		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
@@ -769,6 +771,10 @@ void CCommitDlg::OnOK()
 			}
 
 			this->Refresh();
+		}
+		else if(userResponse == IDC_PROGRESS_BUTTON1 + 2)
+		{
+			m_bCreateTagAfterCommit=true;
 		}
 		else if(userResponse == IDC_PROGRESS_BUTTON1)
 		{

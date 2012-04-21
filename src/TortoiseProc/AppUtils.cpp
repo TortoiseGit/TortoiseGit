@@ -2187,6 +2187,11 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CAppUtils::Push();
 				}
 			}
+			else if (dlg.m_bCreateTagAfterCommit)
+			{
+				CAppUtils::CreateBranchTag(TRUE);
+			}
+
 //			CGitProgressDlg progDlg;
 //			progDlg.SetChangeList(dlg.m_sChangeList, !!dlg.m_bKeepChangeList);
 //			if (parser.HasVal(_T("closeonend")))
