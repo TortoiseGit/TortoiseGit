@@ -178,6 +178,7 @@ public:
 	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL,BOOL RemoveCR=TRUE);
 
 	int SetConfigValue(CString key, CString value, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
+	int UnsetConfigValue(CString key, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
 
 	CString GetUserName(void);
 	CString GetUserEmail(void);

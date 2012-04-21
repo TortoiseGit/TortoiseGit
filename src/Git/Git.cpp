@@ -550,6 +550,48 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 	return 0;
 }
 
+int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding, CString *GitPath)
+{
+	if(this->m_IsUseGitDLL)
+	{
+		try
+		{
+			CheckAndInitDll();
+		}catch(...)
+		{
+		}
+		CStringA keya;
+		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
+		CStringA p;
+		if(GitPath)
+			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
+
+		return get_set_config(keya.GetBuffer(), NULL, type, p.GetBuffer());
+	}
+	else
+	{
+		CString cmd;
+		CString option;
+		switch(type)
+		{
+		case CONFIG_GLOBAL:
+			option = _T("--global");
+			break;
+		case CONFIG_SYSTEM:
+			option = _T("--system");
+			break;
+		default:
+			break;
+		}
+		cmd.Format(_T("git.exe config %s --unset %s"), option, key);
+		CString out;
+		if (Run(cmd, &out, NULL, encoding))
+		{
+			return -1;
+		}
+	}
+	return 0;
+}
 
 CString CGit::GetCurrentBranch(void)
 {
