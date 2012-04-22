@@ -564,7 +564,7 @@ BOOL CHwSMTP::SendBody()
 		csTemp.Format ( _T("--%s\r\n"), m_csPartBoundary );
 		csBody += csTemp;
 
-		csTemp.Format ( _T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: 7Bit\r\n\r\n"),
+		csTemp.Format ( _T("Content-Type: text/plain\r\n%sContent-Transfer-Encoding: UTF-8\r\n\r\n"),
 			m_csCharSet );
 		csBody += csTemp;
 	}
@@ -845,7 +845,7 @@ CMultiByteString::CMultiByteString( LPCTSTR lpszOrg, int nOrgStringEncodeType/*=
 
 	if ( bOrgIsUnicode )
 	{
-		m_nCharactersNumber = WideCharToMultiByte ( CP_ACP, 0, (LPCWSTR)lpszOrg, m_nCharactersNumber, (LPSTR)m_pszData, m_nDataSize/sizeof(char)-1, NULL, NULL );
+		m_nCharactersNumber = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)lpszOrg, m_nCharactersNumber, (LPSTR)m_pszData, m_nDataSize / sizeof(char) - 1, NULL, NULL);
 		if ( m_nCharactersNumber < 1 ) m_nCharactersNumber = (int)strlen ( m_pszData );
 	}
 	else
@@ -896,7 +896,7 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 		WCHAR *wchar = new WCHAR[nWideCount];
 		if ( !wchar ) return _T("");
 		memset ( wchar, 0, nWideCount*sizeof(WCHAR) );
-		::MultiByteToWideChar(CP_ACP, 0, (LPCSTR)lpszOrg, nOrgLength, wchar, nWideCount);
+		::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)lpszOrg, nOrgLength, wchar, nWideCount);
 		CString csRet = wchar;
 		delete[] wchar;
 		return csRet;
@@ -925,7 +925,7 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 		char *szMultiByte = new char[nMultiByteCount];
 		if ( !szMultiByte ) return _T("");
 		memset ( szMultiByte, 0, nMultiByteCount*sizeof(char) );
-		::WideCharToMultiByte ( CP_ACP, 0, (LPCWSTR)lpszOrg, nOrgLength, (LPSTR)szMultiByte, nMultiByteCount, NULL, NULL );
+		::WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)lpszOrg, nOrgLength, (LPSTR)szMultiByte, nMultiByteCount, NULL, NULL);
 		CString csRet = szMultiByte;
 		delete[] szMultiByte;
 		return csRet;

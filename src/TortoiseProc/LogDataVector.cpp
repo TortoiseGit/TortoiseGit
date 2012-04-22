@@ -94,7 +94,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	git_init();
 
 	GIT_LOG handle;
-	if(git_open_log(&handle,CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
+	if (git_open_log(&handle,CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 	{
 		return -1;
 	}

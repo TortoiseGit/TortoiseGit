@@ -88,7 +88,7 @@ bool CAppUtils::StashSave()
 			cmd += _T(" \"") + message + _T("\"");
 		}
 
-		if (g_Git.Run(cmd, &out, CP_ACP))
+		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(NULL, CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n")) + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		}
@@ -111,7 +111,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 		ref = _T("stash@") + ref.Mid(5);
 	cmd += ref;
 
-	int ret = g_Git.Run(cmd, &out, CP_ACP);
+	int ret = g_Git.Run(cmd, &out, CP_UTF8);
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 	{
@@ -147,7 +147,7 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 	CString cmd,out;
 	cmd=_T("git.exe stash pop ");
 
-	int ret = g_Git.Run(cmd, &out, CP_ACP);
+	int ret = g_Git.Run(cmd, &out, CP_UTF8);
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 	{
@@ -1287,7 +1287,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 		}
 		CString output, err;
 		if(!outfile.IsEmpty())
-			if (!g_Git.Run(cmd, &output, &err, CP_ACP))
+			if (!g_Git.Run(cmd, &output, &err, CP_UTF8))
 			{
 				CString file;
 				int start =0 ;
@@ -1330,7 +1330,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 			else
 				cmd.Format(_T("git.exe add -- \"%s\""),merge.GetGitPathString());
 
-			if(g_Git.Run(cmd,&out,CP_ACP))
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return FALSE;
@@ -1795,7 +1795,7 @@ int CAppUtils::GetCommitTemplate(CString &temp)
 {
 	CString cmd,output;
 
-	output= g_Git.GetConfigValue(_T("commit.template"),CP_ACP);
+	output = g_Git.GetConfigValue(_T("commit.template"), CP_UTF8);
 	if( output.IsEmpty() )
 		return -1;
 
@@ -1933,7 +1933,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 						g_Git.m_CurrentDir,
 						g_Git.FixBranchName(dlg.m_Upstream),
 						g_Git.FixBranchName(dlg.m_Branch));
-					if (g_Git.Run(cmd, &out, &err, CP_ACP))
+					if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 					{
 						CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 						return FALSE;
@@ -2254,7 +2254,7 @@ BOOL CAppUtils::SVNDCommit()
 		{
 			CString cmd,out;
 			cmd=_T("git.exe stash");
-			if(g_Git.Run(cmd,&out,CP_ACP))
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
@@ -2285,7 +2285,7 @@ BOOL CAppUtils::SVNDCommit()
 			{
 				CString cmd,out;
 				cmd=_T("git.exe stash pop");
-				if(g_Git.Run(cmd,&out,CP_ACP))
+				if (g_Git.Run(cmd, &out, CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					return false;
@@ -2386,7 +2386,7 @@ void CAppUtils::EditNote(GitRev *rev)
 
 		try
 		{
-			if(git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
+			if (git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 			{
 				CMessageBox::Show(NULL,_T("Edit Note Fail"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
 
@@ -2430,7 +2430,7 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	{
 		CString err;
 		cmd = _T("git.exe --version");
-		if(g_Git.Run(cmd, &version, &err, CP_ACP))
+		if (g_Git.Run(cmd, &version, &err, CP_UTF8))
 		{
 			CMessageBox::Show(NULL, _T("git have not installed (") + err + _T(")"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return false;

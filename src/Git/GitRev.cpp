@@ -208,7 +208,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 				git_get_diff_file(git->GetGitSimpleListDiff(),file,j,&newname,&oldname,
 						&mode,&IsBin,&inc,&dec);
 
-				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
+				git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
 
 				m_SimpleFileList.push_back(strnewname);
 
@@ -274,8 +274,8 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				git_get_diff_file(git->GetGitDiff(),file,j,&newname,&oldname,
 						&mode,&IsBin,&inc,&dec);
 
-				git->StringAppend(&strnewname,(BYTE*)newname,CP_ACP);
-				git->StringAppend(&stroldname,(BYTE*)oldname,CP_ACP);
+				git->StringAppend(&strnewname, (BYTE*)newname, CP_UTF8);
+				git->StringAppend(&stroldname, (BYTE*)oldname, CP_UTF8);
 
 				path.SetFromGit(strnewname,&stroldname);
 				path.ParserAction((BYTE)mode);

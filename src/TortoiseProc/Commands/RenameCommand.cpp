@@ -56,7 +56,7 @@ bool RenameCommand::Execute()
 					cmdLinePath.GetGitPathString(),
 					sNewName);
 
-	if(g_Git.Run(cmd,&output,CP_ACP))
+	if (g_Git.Run(cmd, &output, CP_UTF8))
 	{
 		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK);
 	}

@@ -105,7 +105,7 @@ int CGitLogList::RevertSelectedCommits()
 
 		CString cmd, output;
 		cmd.Format(_T("git.exe revert --no-edit --no-commit %s"), r1->m_CommitHash.ToString());
-		if(g_Git.Run(cmd, &output, CP_ACP))
+		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
 			CString str;
 			str=_T("Revert fail\n");
@@ -475,7 +475,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_ADDED)
 					{
 						cmd.Format(_T("git.exe add -- \"%s\""), PathList[i].GetGitPathString());
-						if(g_Git.Run(cmd,&out,CP_ACP))
+						if (g_Git.Run(cmd, &out, CP_UTF8))
 						{
 							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not add new file aborting...\r\n\r\n")+out));
@@ -485,7 +485,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_DELETED)
 					{
 						cmd.Format(_T("git.exe rm -- \"%s\""), PathList[i].GetGitPathString());
-						if(g_Git.Run(cmd,&out,CP_ACP))
+						if (g_Git.Run(cmd, &out, CP_UTF8))
 						{
 							CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not rm file aborting...\r\n\r\n")+out));
@@ -671,7 +671,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					else
 						cmd.Format(_T("git.exe reflog delete %s"), ref);
 
-					if(g_Git.Run(cmd,&out,CP_ACP))
+					if (g_Git.Run(cmd, &out, CP_UTF8))
 						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 
 					::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
