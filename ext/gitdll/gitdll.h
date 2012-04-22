@@ -202,4 +202,6 @@ GITDLL_API int get_set_config(const char *key, char *value, CONFIG_TYPE type, ch
 
 GITDLL_API const char *get_windows_home_directory(void);
 
+GITDLL_API const char *get_msysgit_etc(void);
+
 #endif

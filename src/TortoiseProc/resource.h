@@ -659,6 +659,7 @@
 #define IDC_BUTTON_SHOW2                1384
 #define IDC_BUTTON_UP2                  1384
 #define IDC_BUTTON_STASH                1384
+#define IDC_EDITSYSTEMGITCONFIG         1384
 #define IDC_FROMGROUP                   1385
 #define IDC_BUTTON_REMOVE               1385
 #define IDC_BUTTON_DOWN2                1385

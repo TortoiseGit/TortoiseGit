@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
+	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitConfig::OnInitDialog()
@@ -243,4 +244,18 @@ void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 	path += _T("config");
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(path);
+}
+
+void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
+{
+	TCHAR buf[MAX_PATH];
+	const char * systemdir = get_msysgit_etc();
+	if (!systemdir)
+	{
+		::MessageBox(NULL, _T("MSysGit directory not set (see \"General\" settings page)."), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
+	_tcscpy_s(buf, MAX_PATH, CA2CT(systemdir));
+	// use alternative editor because of LineEndings
+	CAppUtils::LaunchAlternativeEditor(buf);
 }
