@@ -492,11 +492,8 @@ void CRebaseDlg::FetchLogList()
 	m_IsFastForward=FALSE;
 	cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()),
 											   g_Git.FixBranchName(m_BranchCtrl.GetString()));
-	if (g_Git.Run(cmd, &basestr, &err, CP_ACP))
-	{
-		CMessageBox::Show(NULL, basestr + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-		return;
-	}
+	g_Git.Run(cmd, &basestr, &err, CP_ACP);
+
 	base=basestr;
 
 	hash=g_Git.GetHash(m_BranchCtrl.GetString());
