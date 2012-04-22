@@ -1403,8 +1403,9 @@ BEGIN
     CONTROL         "&Warn on missing Signed-Off-By on commit",IDC_CHECK_WARN_NO_SIGNED_OFF_BY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,120,149,10
     CONTROL         "Save as &Global",IDC_CHECK_GLOBAL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,136,63,10
-    PUSHBUTTON      "Edit gl&obal .gitconfig",IDC_EDITGLOBALGITCONFIG,14,152,136,14
-    PUSHBUTTON      "Edit &local .git/config",IDC_EDITLOCALGITCONFIG,157,152,136,14
+    PUSHBUTTON      "Edit &local .git/config",IDC_EDITLOCALGITCONFIG,14,152,90,14
+    PUSHBUTTON      "Edit gl&obal .gitconfig",IDC_EDITGLOBALGITCONFIG,109,152,90,14
+    PUSHBUTTON      "Edit s&ystemwide gitconfig",IDC_EDITSYSTEMGITCONFIG,203,152,90,14
 END
 
 IDD_SETTINREMOTE DIALOGEX 0, 0, 300, 217
@@ -2236,8 +2237,6 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 293
         VERTGUIDE, 14
-        VERTGUIDE, 150
-        VERTGUIDE, 158
         VERTGUIDE, 259
         TOPMARGIN, 7
         BOTTOMMARGIN, 210
