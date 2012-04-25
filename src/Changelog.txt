@@ -14,6 +14,7 @@
  * Fixed issue #1135: branch name does not get updated in show log
  * Fixed issue #153: Empty error messagebox when starting rebase dialog
  * Fixed issue #1140: Settings page does not inherit msysgit system-wide config
+ * Fixed issue #1146: Add hotkey for option "All Branches" in log dialog
 
 = Release 1.7.8.0 =
 == Features==
