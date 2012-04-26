@@ -113,7 +113,7 @@ bool DropCopyCommand::Execute()
 				cmd +=_T('\"');
 
 				CString output;
-				if(g_Git.Run(cmd,&output,CP_ACP))
+				if (g_Git.Run(cmd, &output, CP_UTF8))
 				{
 					CMessageBox::Show(NULL, output, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 				}else

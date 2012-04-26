@@ -492,7 +492,7 @@ void CRebaseDlg::FetchLogList()
 	m_IsFastForward=FALSE;
 	cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()),
 											   g_Git.FixBranchName(m_BranchCtrl.GetString()));
-	g_Git.Run(cmd, &basestr, &err, CP_ACP);
+	g_Git.Run(cmd, &basestr, &err, CP_UTF8);
 
 	base=basestr;
 
@@ -713,7 +713,7 @@ int CRebaseDlg::CheckRebaseCondition()
 			CString cmd,out;
 			cmd=_T("git.exe stash");
 			this->AddLogString(cmd);
-			if(g_Git.Run(cmd,&out,CP_ACP))
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return -1;
@@ -873,7 +873,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		{
 			cmd.Format(_T("git.exe checkout %s"),m_BranchCtrl.GetString());
 			AddLogString(cmd);
-			if( g_Git.Run(cmd,&out,CP_ACP) )
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 				AddLogString(out);
@@ -897,7 +897,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		AddLogString(cmd);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			AddLogString(_T("Fail"));
 			AddLogString(out);

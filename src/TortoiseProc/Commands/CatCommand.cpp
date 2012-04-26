@@ -33,7 +33,7 @@ bool CatCommand::Execute()
 	CString cmd, output, err;
 	cmd.Format(_T("git.exe cat-file -t %s"),revision);
 
-	if (g_Git.Run(cmd, &output, &err, CP_ACP))
+	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
 		CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_ICONERROR);
 		return false;

@@ -111,7 +111,7 @@ BOOL CSetProxyPage::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_SERVERADDRESS, IDS_SETTINGS_PROXYSERVER_TT);
 
-	CString proxy=g_Git.GetConfigValue(_T("http.proxy"),CP_ACP);
+	CString proxy = g_Git.GetConfigValue(_T("http.proxy"), CP_UTF8);
 
 	m_SSHClient = m_regSSHClient;
 	m_serveraddress = m_regServeraddress;

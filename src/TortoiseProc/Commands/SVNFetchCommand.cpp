@@ -35,7 +35,7 @@ bool SVNFetchCommand::Execute()
 	CString cmd, out, err;
 	cmd = _T("git.exe config svn-remote.svn.fetch");
 
-	if (!g_Git.Run(cmd, &out, &err, CP_ACP))
+	if (!g_Git.Run(cmd, &out, &err, CP_UTF8))
 	{
 		int start = out.Find(_T(':'));
 		if( start >=0 )

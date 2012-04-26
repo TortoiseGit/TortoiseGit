@@ -44,14 +44,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser"
-				PreprocessorDefinitions="WIN32;_DEBUG"
+				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
+				PreprocessorDefinitions="_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -120,14 +121,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser"
-				PreprocessorDefinitions="GIT_WIN32;_DEBUG"
+				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
+				PreprocessorDefinitions="_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -195,13 +197,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser"
-				PreprocessorDefinitions="WIN32;NDEBUG"
+				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
+				PreprocessorDefinitions="NDEBUG"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -270,13 +273,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser"
-				PreprocessorDefinitions="GIT_WIN32;NDEBUG"
+				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
+				PreprocessorDefinitions="NDEBUG"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -353,11 +357,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\config_cache.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\config_file.c"
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\crlf.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\delta-apply.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\diff.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\diff_output.c"
 				>
 			</File>
 			<File
@@ -374,6 +394,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\fileops.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\filter.c"
 				>
 			</File>
 			<File
@@ -401,11 +425,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\iterator.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\mwindow.c"
 				>
 			</File>
 			<File
 				RelativePath="..\libgit2\src\netops.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\notes.c"
 				>
 			</File>
 			<File
@@ -568,12 +600,48 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="xdiff"
+				>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xdiffi.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xemit.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xhistogram.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xmerge.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xpatience.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xprepare.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\xdiff\xutils.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\libgit2\src\attr.h"
+				>
+			</File>
 			<File
 				RelativePath="..\libgit2\src\attr_file.h"
 				>
@@ -615,7 +683,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\src\dir.h"
+				RelativePath="..\libgit2\src\diff.h"
 				>
 			</File>
 			<File
@@ -628,6 +696,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\fileops.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\filter.h"
 				>
 			</File>
 			<File
@@ -651,6 +723,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\iterator.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\map.h"
 				>
 			</File>
@@ -660,6 +736,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\netops.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\notes.h"
 				>
 			</File>
 			<File
@@ -766,6 +846,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\tgit\compat\win32\poll.h"
+					>
+				</File>
+				<File
 					RelativePath="..\libgit2\src\win32\posix.h"
 					>
 				</File>
@@ -807,11 +891,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\include\git2\errors.h"
+				RelativePath="..\libgit2\include\git2\diff.h"
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\include\git2.h"
+				RelativePath="..\libgit2\include\git2\errors.h"
 				>
 			</File>
 			<File
@@ -828,6 +912,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\include\git2\net.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\include\git2\notes.h"
 				>
 			</File>
 			<File
@@ -887,11 +975,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\include\git2\thread-utils.h"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\include\git2\transport.h"
+				RelativePath="..\libgit2\include\git2\threads.h"
 				>
 			</File>
 			<File
@@ -903,7 +987,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\include\git2\zlib.h"
+				RelativePath="..\libgit2\include\git2\version.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\include\git2\windows.h"
 				>
 			</File>
 		</Filter>
@@ -919,6 +1007,22 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\deps\http-parser\http_parser.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="regex"
+				>
+				<File
+					RelativePath="..\libgit2\deps\regex\config.h"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\deps\regex\regex.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\deps\regex\regex.h"
 					>
 				</File>
 			</Filter>

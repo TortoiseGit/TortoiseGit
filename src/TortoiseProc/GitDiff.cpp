@@ -61,7 +61,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 	CString cmd;
 	cmd.Format(_T("git.exe ls-tree  HEAD -- \"%s\""), pPath->GetGitPathString());
 	CString output, err;
-	if(g_Git.Run(cmd, &output, &err, CP_ACP))
+	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
 		CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return -1;
@@ -173,7 +173,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		rev,pPath->GetGitPathString());
 
 		CString output, err;
-		if (g_Git.Run(cmd, &output, &err, CP_ACP))
+		if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 		{
 			CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
@@ -205,13 +205,13 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		if(g_Git.Run(cmd, &bytes, &errBytes))
 		{
 			CString err;
-			g_Git.StringAppend(&err,&errBytes[0],CP_ACP);
+			g_Git.StringAppend(&err, &errBytes[0], CP_UTF8);
 			CMessageBox::Show(NULL,err,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return -1;
 		}
 
-		g_Git.StringAppend(&oldhash,&bytes[15],CP_ACP,40);
-		g_Git.StringAppend(&newhash,&bytes[15+41],CP_ACP,40);
+		g_Git.StringAppend(&oldhash, &bytes[15], CP_UTF8, 40);
+		g_Git.StringAppend(&newhash, &bytes[15+41], CP_UTF8, 40);
 
 	}
 

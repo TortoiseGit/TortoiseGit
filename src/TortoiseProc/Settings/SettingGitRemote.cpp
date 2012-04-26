@@ -79,7 +79,7 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	CString cmd, out, err;
 	cmd=_T("git.exe remote");
-	if(g_Git.Run(cmd, &out, &err, CP_ACP))
+	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 	{
 		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return FALSE;
@@ -195,11 +195,11 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	cmd.Format(_T("remote.%s.url"),remote);
 	m_strUrl.Empty();
-	m_strUrl = g_Git.GetConfigValue(cmd,CP_ACP);
+	m_strUrl = g_Git.GetConfigValue(cmd, CP_UTF8);
 
 	cmd.Format(_T("remote.%s.puttykeyfile"),remote);
 
-	this->m_strPuttyKeyfile=g_Git.GetConfigValue(cmd,CP_ACP);
+	this->m_strPuttyKeyfile = g_Git.GetConfigValue(cmd, CP_UTF8);
 
 	m_ChangedMask=0;
 
@@ -246,7 +246,7 @@ void CSettingGitRemote::Save(CString key,CString value)
 	CString cmd,out;
 
 	cmd.Format(_T("remote.%s.%s"),this->m_strRemote,key);
-	if(g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL, CP_ACP, &g_Git.m_CurrentDir))
+	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL, CP_UTF8, &g_Git.m_CurrentDir))
 	{
 		CMessageBox::Show(NULL,_T("Fail to save config"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
@@ -265,7 +265,7 @@ BOOL CSettingGitRemote::OnApply()
 		}
 		CString cmd,out;
 		cmd.Format(_T("git.exe remote add \"%s\" \"%s\""),m_strRemote,m_strUrl);
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(NULL,out,_T("TorotiseGit"),MB_OK|MB_ICONERROR);
 			return FALSE;
@@ -303,7 +303,7 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 		{
 			CString cmd,out;
 			cmd.Format(_T("git.exe remote rm %s"),str);
-			if(g_Git.Run(cmd, &out, CP_ACP))
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL, out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 				return;

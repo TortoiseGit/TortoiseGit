@@ -82,7 +82,7 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 
 			CString cmd, out;
 			cmd.Format(_T("git.exe %s --%s"), m_sParams, add);
-			if(g_Git.Run(cmd, &out, CP_ACP))
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 				bErrorsOccurred = true;

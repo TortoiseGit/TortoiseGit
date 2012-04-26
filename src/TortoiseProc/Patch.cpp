@@ -85,7 +85,7 @@ int CPatch::SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CSt
 		}
 		else
 		{
-			g_Git.StringAppend(&body,(BYTE*)patch.m_Body.GetBuffer(),CP_ACP,patch.m_Body.GetLength());
+			g_Git.StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
 		}
 
 	}
@@ -181,19 +181,19 @@ int CPatch::Parser(CString &pathfile)
 
 	one=m_Body.Tokenize("\n",start);
 	if(one.GetLength()>6)
-		g_Git.StringAppend(&m_Author,(BYTE*)one.GetBuffer()+6,CP_ACP,one.GetLength()-6);
+		g_Git.StringAppend(&m_Author, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
 
 	one=m_Body.Tokenize("\n",start);
 	if(one.GetLength()>6)
-		g_Git.StringAppend(&m_Date,(BYTE*)one.GetBuffer()+6,CP_ACP,one.GetLength()-6);
+		g_Git.StringAppend(&m_Date, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
 
 	one=m_Body.Tokenize("\n",start);
 	if(one.GetLength()>9)
-		g_Git.StringAppend(&m_Subject,(BYTE*)one.GetBuffer()+9,CP_ACP,one.GetLength()-9);
+		g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
 
 	//one=m_Body.Tokenize("\n",start);
 
-	g_Git.StringAppend(&m_strBody,(BYTE*)m_Body.GetBuffer()+start+1,CP_ACP,m_Body.GetLength()-start-1);
+	g_Git.StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
 
 	return 0;
 }

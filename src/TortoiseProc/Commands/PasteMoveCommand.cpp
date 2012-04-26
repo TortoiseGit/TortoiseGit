@@ -80,7 +80,7 @@ bool PasteMoveCommand::Execute()
 			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());
 			CString cmd,output;
 			cmd.Format(_T("git.exe add \"%s\""),destPath.GetWinPath());
-			if(g_Git.Run(cmd,&output,CP_ACP))
+			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
 				TRACE(_T("%s\n"), output);
@@ -93,7 +93,7 @@ bool PasteMoveCommand::Execute()
 		{
 			CString cmd,output;
 			cmd.Format(_T("git.exe mv \"%s\" \"%s\""),orgPathList[nPath].GetGitPathString(),destPath.GetGitPathString());
-			if(g_Git.Run(cmd,&output,CP_ACP))
+			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Move(CTGitorgPathList(orgPathList[nPath]), destPath, FALSE))
 			{
 #if 0

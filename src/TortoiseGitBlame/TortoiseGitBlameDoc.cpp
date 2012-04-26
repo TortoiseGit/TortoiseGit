@@ -135,9 +135,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		{
 			CString str;
 			if (m_BlameData.size() > 0)
-				g_Git.StringAppend(&str, &m_BlameData[0], CP_ACP);
+				g_Git.StringAppend(&str, &m_BlameData[0], CP_UTF8);
 			if (err.size() > 0)
-				g_Git.StringAppend(&str, &err[0], CP_ACP);
+				g_Git.StringAppend(&str, &err[0], CP_UTF8);
 			CMessageBox::Show(NULL,CString(_T("Blame Error:\n\n")) + str,_T("TortoiseGitBlame"),MB_OK);
 
 		}

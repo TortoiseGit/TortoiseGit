@@ -406,7 +406,7 @@ UINT CImportPatchDlg::PatchThread()
 
 				this->AddLogString(cmd);
 				CString output;
-				if(g_Git.Run(cmd, &output, CP_ACP))
+				if (g_Git.Run(cmd, &output, CP_UTF8))
 				{
 					this->AddLogString(output);
 					this->AddLogString(_T("Fail"));
@@ -440,7 +440,7 @@ UINT CImportPatchDlg::PatchThread()
 
 			this->AddLogString(cmd);
 			CString output;
-			if(g_Git.Run(cmd,&output,CP_ACP))
+			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				//keep STATUS_APPLYING to let user retry failed patch
 				m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_FAIL|CPatchListCtrl::STATUS_APPLYING);
@@ -626,7 +626,7 @@ void CImportPatchDlg::OnBnClickedCancel()
 			if(MessageBox(_T("\"git am\" is still in apply mode.\nDo you want to abort?"), _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 			{
 				CString output;
-				if(g_Git.Run(_T("git.exe am --abort"), &output, CP_ACP))
+				if (g_Git.Run(_T("git.exe am --abort"), &output, CP_UTF8))
 					MessageBox(output, _T("TortoiseGit error"), MB_OK);
 			}
 		OnCancel();

@@ -2167,7 +2167,7 @@ int CGitLogListBase::BeginFetchLog()
 	if(g_Git.IsInitRepos())
 		return 0;
 
-	if(git_open_log(&m_DllGitLog,CUnicodeUtils::GetMulti(cmd,CP_ACP).GetBuffer()))
+	if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 	{
 		return -1;
 	}

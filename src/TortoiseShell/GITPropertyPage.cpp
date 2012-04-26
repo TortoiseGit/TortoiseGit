@@ -189,19 +189,19 @@ void CGitPropertyPage::InitWorkfileView()
 
 	git.SetCurrentDir(ProjectTopDir);
 	//can't git.exe when create process
-	git.Run(_T("git.exe config user.name"),&username,CP_ACP);
+	git.Run(_T("git.exe config user.name"), &username, CP_UTF8);
 	CString useremail;
-	git.Run(_T("git.exe config user.email"),&useremail,CP_ACP);
+	git.Run(_T("git.exe config user.email"), &useremail, CP_UTF8);
 	CString autocrlf;
-	git.Run(_T("git.exe config core.autocrlf"),&autocrlf,CP_ACP);
+	git.Run(_T("git.exe config core.autocrlf"), &autocrlf, CP_UTF8);
 	CString safecrlf;
-	git.Run(_T("git.exe config core.safecrlf"),&safecrlf,CP_ACP);
+	git.Run(_T("git.exe config core.safecrlf"), &safecrlf, CP_UTF8);
 
 	CString branch;
 	CString headhash;
 	CString remotebranch;
 
-	git.Run(_T("git.exe symbolic-ref HEAD"),&branch,CP_ACP);
+	git.Run(_T("git.exe symbolic-ref HEAD"), &branch, CP_UTF8);
 	CString cmd,log;
 
 	if(!branch.IsEmpty())
@@ -215,9 +215,9 @@ void CGitPropertyPage::InitWorkfileView()
 			start=0;
 			branch=branch.Tokenize(_T("\r"),start);
 			cmd.Format(_T("git.exe config branch.%s.merge"),branch);
-			git.Run(cmd,&remotebranch,CP_ACP);
+			git.Run(cmd, &remotebranch, CP_UTF8);
 			cmd.Format(_T("git.exe config branch.%s.remote"),branch);
-			git.Run(cmd,&remote,CP_ACP);
+			git.Run(cmd, &remote, CP_UTF8);
 			if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
 			{
 				remotebranch=remotebranch.Mid(11);

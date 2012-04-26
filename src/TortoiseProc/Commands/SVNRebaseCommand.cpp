@@ -37,7 +37,7 @@ bool SVNRebaseCommand::Execute()
 		{
 			CString cmd,out;
 			cmd=_T("git.exe stash");
-			if(g_Git.Run(cmd,&out,CP_ACP))
+			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
@@ -57,7 +57,7 @@ bool SVNRebaseCommand::Execute()
 	CString cmd, out, err;
 	cmd = _T("git.exe config svn-remote.svn.fetch");
 
-	if (!g_Git.Run(cmd, &out, &err, CP_ACP))
+	if (!g_Git.Run(cmd, &out, &err, CP_UTF8))
 	{
 		int start = out.Find(_T(':'));
 		if( start >=0 )
@@ -107,7 +107,7 @@ bool SVNRebaseCommand::Execute()
 	if(g_Git.IsFastForward(CString(_T("HEAD")),out))
 	{
 		cmd.Format(_T("git.exe reset --hard %s"),out);
-		if(g_Git.Run(cmd,&ff,CP_ACP))
+		if (g_Git.Run(cmd, &ff, CP_UTF8))
 		{
 			CMessageBox::Show(NULL,ff,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 			return false;
@@ -136,7 +136,7 @@ void SVNRebaseCommand::askIfUserWantsToStashPop()
 	{
 		CString cmd,out;
 		cmd=_T("git.exe stash pop");
-		if(g_Git.Run(cmd,&out,CP_ACP))
+		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"), MB_OK);
 		}

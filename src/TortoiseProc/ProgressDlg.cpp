@@ -173,7 +173,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 		if (bShowCommand)
 		{
-			CStringA str(cmdlist[i].Trim()+_T("\n\n"));
+			CStringA str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + _T("\n\n"), CP_UTF8);
 			for(int j=0;j<str.GetLength();j++)
 			{
 				if(pdata)
@@ -399,7 +399,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 		}
 
 		int lines = log.GetLineCount();
-		g_Git.StringAppend(&str,(BYTE*)oneline.GetBuffer(),CP_ACP);
+		g_Git.StringAppend(&str, (BYTE*)oneline.GetBuffer(), CP_UTF8);
 		str.Trim();
 //		TRACE(_T("%s"), str);
 
@@ -580,7 +580,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	int cp=CP_UTF8;
 
 	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if(g_Git.Run(cmd, &output, NULL, CP_ACP))
+	if (g_Git.Run(cmd, &output, NULL, CP_UTF8))
 		cp=CP_UTF8;
 
 	int start=0;
@@ -604,7 +604,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 
 	str.Empty();
 	g_Git.StringAppend(&str, (BYTE*)buff, cp, start);
-	g_Git.StringAppend(&str, (BYTE*)buff+start, CP_ACP,size - start);
+	g_Git.StringAppend(&str, (BYTE*)buff + start, CP_UTF8, size - start);
 
 	return str;
 }
