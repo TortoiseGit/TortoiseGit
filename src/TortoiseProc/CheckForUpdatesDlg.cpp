@@ -110,7 +110,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	{
 		sCheckURL = checkurlmachine;
 		if (sCheckURL.IsEmpty())
-			sCheckURL = _T("http://code.google.com/p/tortoisegit/downloads/list");
+			sCheckURL = _T("http://code.google.com/p/tortoisegit/downloads/list?q=label%3AFeatured");
 	}
 	CoInitialize(NULL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
