@@ -3,7 +3,8 @@
  * Allow to fetch from log dialog
  * Fixed issue #1058: Allow to create tag after commit
  * Fixed issue #101: UTF-8 support
-   This makes TortoiseGit msysgit 1.7.10 compatible. If you have non-ascii chars in filenames in your repository you should consider rewriting your history.
+   This makes TortoiseGit msysgit 1.7.10 compatible. If you have non-ascii chars in filenames in your repository you should consider rewriting your history
+   (see https://github.com/kblees/git/wiki#wiki-Migrating_old_Git_for_Windows_repositories).
 
 == Bug Fix ==
  * Fixed issue #1123: Apply patch serial does not correctly add patches to list if >3 patches are selected
