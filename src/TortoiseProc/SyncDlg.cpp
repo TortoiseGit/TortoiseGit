@@ -255,6 +255,28 @@ void CSyncDlg::OnBnClickedButtonPull()
 			m_pThread->ResumeThread();
 		}
 	}
+
+	///Cleanup stale remote banches
+	if(CurrentEntry == 4)
+	{
+		m_CurrentCmd = GIT_COMMAND_REMOTE;
+		cmd.Format(_T("git.exe remote prune \"%s\""), m_strURL);
+		m_GitCmdList.push_back(cmd);
+
+		InterlockedExchange(&m_bBlock, TRUE);
+
+		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
+		if (m_pThread==NULL)
+		{
+		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+			InterlockedExchange(&m_bBlock, FALSE);
+		}
+		else
+		{
+			m_pThread->m_bAutoDelete = TRUE;
+			m_pThread->ResumeThread();
+		}
+	}
 }
 
 void CSyncDlg::PullComplete()
@@ -738,6 +760,7 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlPull.AddEntry(CString(_T("Fetc&h")));
 	this->m_ctrlPull.AddEntry(CString(_T("Fetch&&Re&base")));
 	this->m_ctrlPull.AddEntry(CString(_T("Remote Update")));
+	this->m_ctrlPull.AddEntry(CString(_T("Cleanup stale remote banches")));
 
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Update")));
 	this->m_ctrlSubmodule.AddEntry(CString(_T("Submodule Init")));

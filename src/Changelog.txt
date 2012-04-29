@@ -5,6 +5,7 @@
  * Fixed issue #101: UTF-8 support
    This makes TortoiseGit msysgit 1.7.10 compatible. If you have non-ascii chars in filenames in your repository you should consider rewriting your history
    (see https://github.com/kblees/git/wiki#wiki-Migrating_old_Git_for_Windows_repositories).
+ * Added "prune/cleanup stale remote tracking branches" option to sync dialog
 
 == Bug Fix ==
  * Fixed issue #1123: Apply patch serial does not correctly add patches to list if >3 patches are selected
