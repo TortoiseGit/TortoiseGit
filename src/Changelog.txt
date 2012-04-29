@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #1140: Settings page does not inherit msysgit system-wide config
  * Fixed issue #1146: Add hotkey for option "All Branches" in log dialog
  * Fixed issue #1141: Sync dialog local branch combo box too short
+ * Fixed issue #1130: Sync dialog forgets the remote branch every time
 
 = Release 1.7.8.0 =
 Released: 2012-04-01
