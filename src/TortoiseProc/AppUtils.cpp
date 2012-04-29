@@ -1888,8 +1888,13 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			arg += _T("--prune ");
 		}
 
-		if (dlg.m_bFetchTags) {
+		if (dlg.m_bFetchTags == 1)
+		{
 			arg += _T("--tags ");
+		}
+		else if (dlg.m_bFetchTags == 0)
+		{
+			arg += _T("--no-tags ");
 		}
 
 		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);

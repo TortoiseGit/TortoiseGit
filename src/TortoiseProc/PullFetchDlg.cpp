@@ -41,7 +41,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bSquash = false;
 	m_bNoCommit = false;
 	m_bFFonly = false;
-	m_bFetchTags = false;
+	m_bFetchTags = 2;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
