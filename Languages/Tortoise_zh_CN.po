@@ -1128,7 +1128,7 @@ msgstr "*变基 \"%s\" 到这..."
 
 #. Resource IDs: (20)
 msgid "*Rebase..."
-msgstr "×变基(rebase)"
+msgstr "×变基(rebase)..."
 
 #. Resource IDs: (188)
 #, c-format
