@@ -181,6 +181,11 @@ msgstr ""
 msgid "%d most active author(s) with at least %d commits each (%d %%)"
 msgstr ""
 
+#. Resource IDs: (8)
+#, c-format
+msgid "%i%% alpha\nclick to toggle alpha\ndouble click to automatically toggle alpha"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "%ld Bytes/s"
@@ -189,6 +194,11 @@ msgstr ""
 #. Resource IDs: (226)
 #, c-format
 msgid "%ld minute(s) and %ld second(s)"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "%ld of %ld"
 msgstr ""
 
 #. Resource IDs: (563)
@@ -533,6 +543,10 @@ msgstr ""
 msgid "&Find"
 msgstr ""
 
+#. Resource IDs: (32778)
+msgid "&Fit images in window"
+msgstr ""
+
 #. Resource IDs: (1050)
 msgid "&Fixed drives"
 msgstr ""
@@ -618,6 +632,10 @@ msgstr ""
 msgid "&Image"
 msgstr ""
 
+#. Resource IDs: (32790)
+msgid "&Image info"
+msgstr ""
+
 #. Resource IDs: (16505)
 msgid "&Image only"
 msgstr ""
@@ -656,6 +674,10 @@ msgstr ""
 
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
+msgstr ""
+
+#. Resource IDs: (32797)
+msgid "&Link image positions"
 msgstr ""
 
 #. Resource IDs: (1172)
@@ -765,6 +787,10 @@ msgstr ""
 
 #. Resource IDs: (1382)
 msgid "&Options"
+msgstr ""
+
+#. Resource IDs: (32772)
+msgid "&Overlay images"
 msgstr ""
 
 #. Resource IDs: (1411, 65535)
@@ -1179,6 +1205,10 @@ msgstr ""
 msgid "<new changelist>"
 msgstr ""
 
+#. Resource IDs: (32814)
+msgid "?"
+msgstr ""
+
 #. Resource IDs: (579)
 msgid "A list of user defined properties for files to show in the combo box"
 msgstr ""
@@ -1499,6 +1529,10 @@ msgstr ""
 msgid "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes since the last update!"
 msgstr ""
 
+#. Resource IDs: (32793)
+msgid "Arrange &vertical"
+msgstr ""
+
 #. Resource IDs: (199)
 msgid "Ask user"
 msgstr ""
@@ -1656,6 +1690,10 @@ msgstr ""
 msgid "Base file:"
 msgstr ""
 
+#. Resource IDs: (1005)
+msgid "Based on TortoiseIDiff of TortoiseSVN"
+msgstr ""
+
 #. Resource IDs: (11)
 msgid "Bisect bad"
 msgstr ""
@@ -1686,6 +1724,10 @@ msgstr ""
 
 #. Resource IDs: (13)
 msgid "Blames each line of a file on an author"
+msgstr ""
+
+#. Resource IDs: (32812)
+msgid "Blend alpha"
 msgstr ""
 
 #. Resource IDs: (83)
@@ -3404,6 +3446,26 @@ msgstr ""
 msgid "File patches"
 msgstr ""
 
+#. Resource IDs: (7)
+#, c-format
+msgid "File size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (8)
+#, c-format
+msgid "File size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%\n\nFile size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "File size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
+#. Resource IDs: (7)
+#, c-format
+msgid "File size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%\n\nFile size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
+msgstr ""
+
 #. Resource IDs: (208)
 msgid "Filename"
 msgstr ""
@@ -3446,6 +3508,10 @@ msgstr ""
 
 #. Resource IDs: (1617)
 msgid "First known &bad:"
+msgstr ""
+
+#. Resource IDs: (32810)
+msgid "Fit image &sizes"
 msgstr ""
 
 #. Resource IDs: (1315)
@@ -3843,6 +3909,14 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32772; '&Overlay images'
+msgid "ID:32772:V   +O"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32773; '&Open'
+msgid "ID:32773:V C +O"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32774; '&Whitespaces'
 msgid "ID:32774:V C +T"
 msgstr ""
@@ -3851,8 +3925,24 @@ msgstr ""
 msgid "ID:32775:V C +D"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32778; '&Fit images in window'
+msgid "ID:32778:V   +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
+msgid "ID:32779:V   +S"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
+msgid "ID:32793:V C +V"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32794; 'Reload'
 msgid "ID:32794:V C +R"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
+msgid "ID:32810:V   +T"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32822; ''
@@ -4228,6 +4318,10 @@ msgstr ""
 msgid "Left View: "
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Left image"
+msgstr ""
+
 #. Resource IDs: (246)
 msgid "Line Graph"
 msgstr ""
@@ -4255,6 +4349,10 @@ msgstr ""
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
+msgstr ""
+
+#. Resource IDs: (130)
+msgid "Load Images"
 msgstr ""
 
 #. Resource IDs: (1505)
@@ -4918,6 +5016,10 @@ msgstr ""
 msgid "Open from clipboard"
 msgstr ""
 
+#. Resource IDs: (7)
+msgid "Open image file..."
+msgstr ""
+
 #. Resource IDs: (282)
 msgid "Open parent folder"
 msgstr ""
@@ -4940,6 +5042,10 @@ msgstr ""
 
 #. Resource IDs: (16137)
 msgid "Options"
+msgstr ""
+
+#. Resource IDs: (32779)
+msgid "Ori&ginal size"
 msgstr ""
 
 #. Resource IDs: (1065)
@@ -5873,6 +5979,10 @@ msgstr ""
 msgid "Right View: "
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Right image"
+msgstr ""
+
 #. Resource IDs: (1070)
 #, c-format
 msgid "Row %d of %d"
@@ -6735,6 +6845,10 @@ msgstr ""
 msgid "System registry entries have been removed and the INI file (if any) was deleted."
 msgstr ""
 
+#. Resource IDs: (7)
+msgid "TORTOISEIDIFF"
+msgstr ""
+
 #. Resource IDs: (1513)
 msgid "Ta&gs"
 msgstr ""
@@ -6853,6 +6967,10 @@ msgstr ""
 #. Resource IDs: (83)
 #, c-format
 msgid "The hook script returned an error:\n%s"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "The image can not be shown."
 msgstr ""
 
 #. Resource IDs: (63)
@@ -7118,6 +7236,18 @@ msgstr ""
 msgid "TortoiseGitBlame"
 msgstr ""
 
+#. Resource IDs: (7, 153)
+msgid "TortoiseIDiff"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "TortoiseIDiff - An image diff tool, part of TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (7)
+msgid "TortoiseIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:\"path to left picture\"\n/lefttitle:\"title to show for the left picture\"\n/right:\"path to right picture\"\n/righttitle:\"title to show for the right picture\"\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
+msgstr ""
+
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseMerge"
 msgstr ""
@@ -7155,6 +7285,10 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
+msgstr ""
+
+#. Resource IDs: (32816)
+msgid "Transparent &color..."
 msgstr ""
 
 #. Resource IDs: (251)
@@ -7494,6 +7628,11 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
+#. Resource IDs: (7)
+#, c-format
+msgid "Version %d.%d.%d.%d"
+msgstr ""
+
 #. Resource IDs: (1644)
 msgid "Version 1"
 msgstr ""
@@ -7711,6 +7850,10 @@ msgstr ""
 msgid "Zip File"
 msgstr ""
 
+#. Resource IDs: (32783)
+msgid "Zoo&m out"
+msgstr ""
+
 #. Resource IDs: (1069)
 msgid "Zoom"
 msgstr ""
@@ -7729,6 +7872,10 @@ msgstr ""
 
 #. Resource IDs: (3633)
 msgid "Zoom Out\nZoom Out"
+msgstr ""
+
+#. Resource IDs: (32784)
+msgid "Zoom i&n"
 msgstr ""
 
 #. Resource IDs: (2049)
