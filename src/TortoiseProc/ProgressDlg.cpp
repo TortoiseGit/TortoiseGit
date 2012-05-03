@@ -293,6 +293,15 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 		m_GitStatus = lParam;
 
+		// detect crashes of perl when performing git svn actions
+		if (m_GitStatus == 0 && m_GitCmd.Find(_T(" svn ")) > 1)
+		{
+			CString log;
+			m_Log.GetWindowText(log);
+			if (log.GetLength() > 18 && log.Mid(log.GetLength() - 18) == _T("perl.exe.stackdump"))
+				m_GitStatus = -1;
+		}
+
 		CString err;
 		err.Format(_T("\r\n\r\ngit did not exit cleanly (exit code %d)\r\n"), m_GitStatus);
 		if(this->m_GitStatus)
