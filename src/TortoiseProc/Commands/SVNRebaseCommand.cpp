@@ -106,12 +106,13 @@ bool SVNRebaseCommand::Execute()
 	CString ff;
 	if(g_Git.IsFastForward(CString(_T("HEAD")),out))
 	{
-		cmd.Format(_T("git.exe reset --hard %s"),out);
-		if (g_Git.Run(cmd, &ff, CP_UTF8))
-		{
-			CMessageBox::Show(NULL,ff,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CProgressDlg progressReset;
+		cmd.Format(_T("git.exe reset --hard %s"), out);
+		progressReset.m_GitCmd = cmd;
+		progressReset.m_bAutoCloseOnSuccess = true;
+
+		if (progressReset.DoModal() != IDOK)
 			return false;
-		}
 		else
 		{
 			CMessageBox::Show(NULL,CString(_T("Fast Forward: "))+ff,_T("TortoiseGit"),MB_OK);

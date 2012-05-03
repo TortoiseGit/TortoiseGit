@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #1141: Sync dialog local branch combo box too short
  * Fixed issue #1130: Sync dialog forgets the remote branch every time
  * Fixed issue #1144: Cancel button on commit dialog works very slow
+ * Fixed issue #1155: TortoiseGit SVN rebase finish dialog produces very big dialog box
 
 = Release 1.7.8.0 =
 Released: 2012-04-01
