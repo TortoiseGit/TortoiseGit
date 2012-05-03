@@ -1055,7 +1055,7 @@ msgstr "查看(&V):"
 
 #. Resource IDs: (1568)
 msgid "&Warn on missing Signed-Off-By on commit"
-msgstr "警告:在提交日志中缺少Signed-Off-By"
+msgstr "在提交日志中缺少Signed-Off-By时给出警告"
 
 #. Resource IDs: (32774)
 msgid "&Whitespaces"
@@ -1658,7 +1658,7 @@ msgstr "自动改名"
 
 #. Resource IDs: (1631)
 msgid "Auto&Crlf"
-msgstr "自动DOS\\UNIX换行符转化(&C)"
+msgstr "自动换行符转化(&C)"
 
 #. Resource IDs: (222)
 msgid "Auto-close for local operations"
@@ -3761,31 +3761,31 @@ msgstr "常规设置"
 
 #. Resource IDs: (333)
 msgid "General::Alternative editor"
-msgstr "常规::编辑器"
+msgstr "常规设置::编辑器"
 
 #. Resource IDs: (315)
 msgid "General::Colors 1"
-msgstr "常用::颜色1"
+msgstr "常规设置::颜色1"
 
 #. Resource IDs: (212)
 msgid "General::Colors 2"
-msgstr "常用::颜色2"
+msgstr "常规设置::颜色2"
 
 #. Resource IDs: (316)
 msgid "General::Colors 3"
-msgstr "常用::颜色3"
+msgstr "常规设置::颜色3"
 
 #. Resource IDs: (195)
 msgid "General::Context Menu"
-msgstr "常规::上下文菜单"
+msgstr "常规设置::上下文菜单"
 
 #. Resource IDs: (196)
 msgid "General::Dialogs"
-msgstr "常规::对话框"
+msgstr "常规设置::对话框"
 
 #. Resource IDs: (4573)
 msgid "General::Set Extend Menu Item"
-msgstr "常规::扩展菜单"
+msgstr "常规设置::扩展菜单"
 
 #. Resource IDs: (144)
 msgid "Generating patchfile..."
