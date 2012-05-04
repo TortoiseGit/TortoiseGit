@@ -556,6 +556,7 @@ bool CDirectoryWatcher::CDirWatchInfo::CloseDirectoryHandle()
 	if (m_hDevNotify != INVALID_HANDLE_VALUE)
 	{
 		UnregisterDeviceNotification(m_hDevNotify);
+		m_hDevNotify = INVALID_HANDLE_VALUE;
 	}
 	return b;
 }
