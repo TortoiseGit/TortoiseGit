@@ -191,7 +191,7 @@ void CPathWatcher::WorkerThread()
 	{
 		if (watchedPaths.GetCount())
 		{
-			if (!GetQueuedCompletionStatus(m_hCompPort,
+			if (!m_hCompPort || !GetQueuedCompletionStatus(m_hCompPort,
 											&numBytes,
 											(PULONG_PTR) &pdi,
 											&lpOverlapped,
