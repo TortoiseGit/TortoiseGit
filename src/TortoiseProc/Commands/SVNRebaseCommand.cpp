@@ -103,7 +103,6 @@ bool SVNRebaseCommand::Execute()
 	}
 
 	//fast forward;
-	CString ff;
 	if(g_Git.IsFastForward(CString(_T("HEAD")),out))
 	{
 		CProgressDlg progressReset;
@@ -115,7 +114,7 @@ bool SVNRebaseCommand::Execute()
 			return false;
 		else
 		{
-			CMessageBox::Show(NULL,CString(_T("Fast Forward: "))+ff,_T("TortoiseGit"),MB_OK);
+			MessageBox(NULL, _T("Fast Forward:\n") + progressReset.m_LogText, _T("TortoiseGit"), MB_OK);
 			if(isStash)
 				askIfUserWantsToStashPop();
 
