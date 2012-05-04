@@ -1,5 +1,5 @@
 = Release 1.7.9.0 =
-Released: unreleased
+Released: 2012-05-05
 
 == Features==
  * Allow to fetch from log dialog
