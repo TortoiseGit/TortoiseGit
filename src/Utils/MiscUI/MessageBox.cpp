@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 //#include "resource.h"			//if you defined some IDS_MSGBOX_xxxx this include is needed!
 #include "messagebox.h"
 #include ".\messagebox.h"
-
+#include "ClipboardHelper.h"
 
 CMessageBox::CMessageBox(void)
 	: m_hIcon(NULL)
@@ -885,18 +885,17 @@ BOOL CMessageBox::PreTranslateMessage(MSG* pMsg)
 			{
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
-					CStringA sClipboard = CStringA(m_sMessage);
-					if (OpenClipboard())
+					CClipboardHelper clipboardHelper;
+					if(clipboardHelper.Open(GetSafeHwnd()))
 					{
 						EmptyClipboard();
-						HGLOBAL hClipboardData;
-						hClipboardData = GlobalAlloc(GMEM_DDESHARE, sClipboard.GetLength()+1);
-						char * pchData;
-						pchData = (char*)GlobalLock(hClipboardData);
-						strcpy_s(pchData, sClipboard.GetLength()+1, (LPCSTR)sClipboard);
+						CStringA sClipboard = CStringA(m_sMessage);
+						HGLOBAL hClipboardData = CClipboardHelper::GlobalAlloc(sClipboard.GetLength()+1);
+						char * pchData = (char*)GlobalLock(hClipboardData);
+						if (pchData)
+							strcpy_s(pchData, sClipboard.GetLength()+1, (LPCSTR)sClipboard);
 						GlobalUnlock(hClipboardData);
 						SetClipboardData(CF_TEXT,hClipboardData);
-						CloseClipboard();
 					}
 					return TRUE;
 				}
