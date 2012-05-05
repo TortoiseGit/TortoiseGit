@@ -4,6 +4,7 @@ Released: unreleased
 == Features==
  * Updated shipped zlib library to version 1.2.7
  * Synced TortoiseIDiff with TortoiseSVN
+ * Synced TortoiseUDiff with TortoiseSVN
 
 = Release 1.7.9.0 =
 Released: 2012-05-05

@@ -21,10 +21,8 @@
 // Neutral resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
-#ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -39,13 +37,11 @@ IDI_CANCELNORMAL        ICON                    "..\\Resources\\cancel-normal.ic
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -61,13 +57,15 @@ IDI_TORTOISEUDIFF       ICON                    "TortoiseUDiff.ico"
 // Accelerator
 //
 
-IDC_TORTOISEUDIFF ACCELERATORS 
+IDC_TORTOISEUDIFF ACCELERATORS
 BEGIN
+    "W",            ID_FILE_EXIT,           VIRTKEY, CONTROL, NOINVERT
     VK_ESCAPE,      IDM_FINDEXIT,           VIRTKEY, NOINVERT
     VK_F3,          IDM_FINDNEXT,           VIRTKEY, NOINVERT
     VK_F3,          IDM_FINDPREV,           VIRTKEY, SHIFT, NOINVERT
     "F",            IDM_SHOWFINDBAR,        VIRTKEY, CONTROL, NOINVERT
-    "W",            ID_FILE_EXIT,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVEAS,         VIRTKEY, SHIFT, CONTROL, NOINVERT
 END
 
 
@@ -76,12 +74,15 @@ END
 // Menu
 //
 
-IDC_TORTOISEUDIFF MENU 
+IDC_TORTOISEUDIFF MENU
 BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "&Open",                       ID_FILE_OPEN
-        MENUITEM "&Save as",                    ID_FILE_SAVEAS
+        MENUITEM "&Save",                       ID_FILE_SAVE
+        MENUITEM "Save &as",                    ID_FILE_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "Se&ttings",                   ID_FILE_SETTINGS
         MENUITEM SEPARATOR
         MENUITEM "&Exit",                       ID_FILE_EXIT
     END
@@ -111,17 +112,17 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "TortoiseUDiff"
-    IDS_COMMANDLINEHELP     "TortoiseUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer"""
+    IDS_COMMANDLINEHELP     "TortoiseUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer""\n/?  - this help dialog\n/p  - read diff input from console pipe"
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All (*.*)|*.*||"
     IDS_OPENPATCH           "Open patch file"
     IDS_SAVEPATCH           "Save patch file"
     IDC_TORTOISEUDIFF       "TORTOISEUDIFF"
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -129,10 +130,8 @@ END
 // German (Switzerland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
-#ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -158,7 +157,8 @@ END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\r\n\0"
+    "\r\n"
+    "\0"
 END
 
 #endif    // APSTUDIO_INVOKED

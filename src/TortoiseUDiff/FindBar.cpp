@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - Stefan Kueng
+// Copyright (C) 2003-2007, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,16 +54,17 @@ LRESULT CFindBar::DlgFunc(HWND /*hwndDlg*/, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 LRESULT CFindBar::DoCommand(int id, int msg)
 {
-    bool bFindPrev = false;
+	bool bFindPrev = false;
 	switch (id)
 	{
-    case IDC_FINDPREV:
-        bFindPrev = true;
-    case IDC_FINDNEXT:
-        {
+	case IDC_FINDPREV:
+		bFindPrev = true;
+		// fallthrough
+	case IDC_FINDNEXT:
+		{
 			DoFind(bFindPrev);
-        }
-        break;
+		}
+		break;
 	case IDC_FINDEXIT:
 		{
 			::SendMessage(m_hParent, COMMITMONITOR_FINDEXIT, 0, 0);
@@ -89,9 +90,7 @@ void CFindBar::DoFind(bool bFindPrev)
 	::GetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findtext, len+1);
 	wstring ft = wstring(findtext);
 	delete [] findtext;
-	bool bCaseSensitive = !!SendMessage(GetDlgItem(*this, IDC_MATCHCASECHECK), BM_GETCHECK, 0, NULL);
-	if (bFindPrev)
-		::SendMessage(m_hParent, COMMITMONITOR_FINDMSGPREV, (WPARAM)bCaseSensitive, (LPARAM)ft.c_str());
-	else
-		::SendMessage(m_hParent, COMMITMONITOR_FINDMSGNEXT, (WPARAM)bCaseSensitive, (LPARAM)ft.c_str());
+	const bool bCaseSensitive = !!SendMessage(GetDlgItem(*this, IDC_MATCHCASECHECK), BM_GETCHECK, 0, NULL);
+	const UINT message = bFindPrev ? COMMITMONITOR_FINDMSGPREV : COMMITMONITOR_FINDMSGNEXT;
+	::SendMessage(m_hParent, message, (WPARAM)bCaseSensitive, (LPARAM)ft.c_str());
 }

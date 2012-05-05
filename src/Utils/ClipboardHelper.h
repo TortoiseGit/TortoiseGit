@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007 - TortoiseSVN
+// Copyright (C) 2003-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,29 +16,33 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
-#include "basedialog.h"
 
-
-/**
- * \ingroup TortoiseUDiff
- * FindBar.
- * A search bar similar to the one found in FireFox
- */
-class CFindBar : public CDialog
+class CClipboardHelper
 {
 public:
-	CFindBar();
-	~CFindBar(void);
-
-	void					SetParent(HWND hParent) {m_hParent = hParent;}
-protected:
-	LRESULT CALLBACK		DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	LRESULT					DoCommand(int id, int msg);
-
-	void					DoFind(bool bFindPrev);
-
+	CClipboardHelper() : bClipBoardOpen(false) {}
+	~CClipboardHelper();
+	bool Open(HWND hOwningWnd);
+	static HGLOBAL GlobalAlloc(SIZE_T dwBytes);
 private:
-	HWND					m_hParent;
-	HICON					m_hIcon;
+	bool bClipBoardOpen;
 };
+
+inline CClipboardHelper::~CClipboardHelper()
+{
+	if (bClipBoardOpen)
+		CloseClipboard();
+}
+
+inline bool CClipboardHelper::Open(HWND hOwningWnd)
+{
+	bClipBoardOpen = (OpenClipboard(hOwningWnd) != 0);
+	    return bClipBoardOpen;
+}
+
+inline HGLOBAL CClipboardHelper::GlobalAlloc(SIZE_T dwBytes)
+{
+	return ::GlobalAlloc(GMEM_MOVEABLE, dwBytes);
+}

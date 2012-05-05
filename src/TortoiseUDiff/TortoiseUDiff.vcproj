@@ -390,7 +390,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\Utils\StringUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\SysInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\TaskbarUUID.cpp"
 				>
 			</File>
 			<File

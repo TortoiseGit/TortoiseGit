@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007,2009 - TortoiseUDiff
+// Copyright (C) 2007,2009-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,34 +42,42 @@ public:
 	/**
 	* Registers the window class and creates the window.
 	*/
-	bool				RegisterAndCreateWindow();
+	bool                RegisterAndCreateWindow();
 
-	LRESULT				SendEditor(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0);
-	HWND				GetHWNDEdit() { return m_hWndEdit; }
-	bool				LoadFile(LPCTSTR filename);
-	bool				SaveFile(LPCTSTR filename);
-	void				SetTitle(LPCTSTR title);
+	LRESULT             SendEditor(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0);
+	HWND                GetHWNDEdit() { return m_hWndEdit; }
+	bool                LoadFile(LPCTSTR filename);
+	bool                LoadFile(HANDLE hFile);
+	bool                SaveFile(LPCTSTR filename);
+	void                SetTitle(LPCTSTR title);
+	std::wstring        GetAppDirectory();
+	void                RunCommand(const std::wstring& command);
 
 protected:
 	/// the message handler for this window
-	LRESULT CALLBACK	WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	/// Handles all the WM_COMMAND window messages (e.g. menu commands)
-	LRESULT				DoCommand(int id);
+	LRESULT             DoCommand(int id);
 
-	bool				Initialize();
+	bool                Initialize();
 
 private:
-	void				SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, const char *face=0);
+	void                SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, const char *face=0);
 	bool                IsUTF8(LPVOID pBuffer, size_t cb);
+	void                InitEditor();
+	void                SetupWindow(bool bUTF8);
 
 private:
-	LRESULT				m_directFunction;
-	LRESULT				m_directPointer;
+	LRESULT             m_directFunction;
+	LRESULT             m_directPointer;
 
-	HWND				m_hWndEdit;
+	HWND                m_hWndEdit;
 
 	CFindBar            m_FindBar;
-	bool				m_bShowFindBar;
-	bool				m_bMatchCase;
-	wstring				m_findtext;
+	bool                m_bShowFindBar;
+	bool                m_bMatchCase;
+	wstring             m_findtext;
+	wstring             m_filename;
+
+	void loadOrSaveFile( bool doLoad, const wstring& filename = L"" );
 };

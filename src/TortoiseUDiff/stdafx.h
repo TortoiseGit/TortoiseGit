@@ -19,6 +19,7 @@
 
 #include <windows.h>
 #include <Commdlg.h>
+#include <emmintrin.h>
 
 #define COMMITMONITOR_FINDMSGPREV		(WM_APP+1)
 #define COMMITMONITOR_FINDMSGNEXT		(WM_APP+2)

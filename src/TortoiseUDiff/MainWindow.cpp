@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2009 - TortoiseSVN
+// Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,8 +20,13 @@
 #include "MainWindow.h"
 #include "UnicodeUtils.h"
 #include "SysInfo.h"
+#include "StringUtils.h"
+#include "TaskbarUUID.h"
+#include "CreateProcessHelper.h"
 
-CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/) 
+const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
+
+CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/)
 	: CWindow(hInst, wcx)
 	, m_bShowFindBar(false)
 {
@@ -34,9 +39,9 @@ CMainWindow::~CMainWindow(void)
 
 bool CMainWindow::RegisterAndCreateWindow()
 {
-	WNDCLASSEX wcx; 
+	WNDCLASSEX wcx;
 
-	// Fill in the window class structure with default parameters 
+	// Fill in the window class structure with default parameters
 	wcx.cbSize = sizeof(WNDCLASSEX);
 	wcx.style = CS_HREDRAW | CS_VREDRAW;
 	wcx.lpfnWndProc = CWindow::stWinMsgHandler;
@@ -48,14 +53,13 @@ bool CMainWindow::RegisterAndCreateWindow()
 	wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
 	wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEUDIFF);
-	wcx.hIconSm	= LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
+	wcx.hIconSm = LoadIcon(wcx.hInstance, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	if (RegisterWindow(&wcx))
 	{
 		if (Create(WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_SIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN, NULL))
 		{
 			m_FindBar.SetParent(*this);
 			m_FindBar.Create(hResource, IDD_FINDBAR, *this);
-			ShowWindow(*this, SW_SHOW);
 			UpdateWindow(*this);
 			return true;
 		}
@@ -65,6 +69,10 @@ bool CMainWindow::RegisterAndCreateWindow()
 
 LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (uMsg == TaskBarButtonCreated)
+	{
+		SetUUIDOverlayIcon(hwnd);
+	}
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -95,7 +103,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 			GetClientRect(*this, &rect);
 			if (m_bShowFindBar)
 			{
-				::SetWindowPos(m_hWndEdit, HWND_TOP, 
+				::SetWindowPos(m_hWndEdit, HWND_TOP,
 					rect.left, rect.top,
 					rect.right-rect.left, rect.bottom-rect.top-30,
 					SWP_SHOWWINDOW);
@@ -106,7 +114,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 			}
 			else
 			{
-				::SetWindowPos(m_hWndEdit, HWND_TOP, 
+				::SetWindowPos(m_hWndEdit, HWND_TOP,
 					rect.left, rect.top,
 					rect.right-rect.left, rect.bottom-rect.top,
 					SWP_SHOWWINDOW);
@@ -126,17 +134,6 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		PostQuitMessage(0);
 		break;
 	case WM_CLOSE:
-		{
-			CRegStdDWORD w = CRegStdDWORD(_T("Software\\TortoiseGit\\UDiffViewerWidth"), (DWORD)CW_USEDEFAULT);
-			CRegStdDWORD h = CRegStdDWORD(_T("Software\\TortoiseGit\\UDiffViewerHeight"), (DWORD)CW_USEDEFAULT);
-			CRegStdDWORD p = CRegStdDWORD(_T("Software\\TortoiseGit\\UDiffViewerPos"), 0);
-
-			RECT rect;
-			::GetWindowRect(*this, &rect);
-			w = rect.right-rect.left;
-			h = rect.bottom-rect.top;
-			p = MAKELONG(rect.left, rect.top);
-		}
 		::DestroyWindow(m_hwnd);
 		break;
 	case WM_SETFOCUS:
@@ -167,7 +164,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 			GetClientRect(*this, &rect);
 			m_bShowFindBar = false;
 			::ShowWindow(m_FindBar, SW_HIDE);
-			::SetWindowPos(m_hWndEdit, HWND_TOP, 
+			::SetWindowPos(m_hWndEdit, HWND_TOP,
 				rect.left, rect.top,
 				rect.right-rect.left, rect.bottom-rect.top,
 				SWP_SHOWWINDOW);
@@ -187,79 +184,16 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 
 LRESULT CMainWindow::DoCommand(int id)
 {
-	switch (id) 
+	switch (id)
 	{
 	case ID_FILE_OPEN:
-		{
-			OPENFILENAME ofn = {0};				// common dialog box structure
-			TCHAR szFile[MAX_PATH] = {0};		// buffer for file name
-			// Initialize OPENFILENAME
-			ofn.lStructSize = sizeof(OPENFILENAME);
-			ofn.hwndOwner = *this;
-			ofn.lpstrFile = szFile;
-			ofn.nMaxFile = _countof(szFile);
-			TCHAR filter[1024];
-			LoadString(hResource, IDS_PATCHFILEFILTER, filter, _countof(filter));
-			TCHAR * pszFilters = filter;
-			// Replace '|' delimiters with '\0's
-			TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-			while (ptr != pszFilters)
-			{
-				if (*ptr == '|')
-					*ptr = '\0';
-				ptr--;
-			}
-			ofn.lpstrFilter = pszFilters;
-			ofn.nFilterIndex = 1;
-			ofn.lpstrFileTitle = NULL;
-			ofn.nMaxFileTitle = 0;
-			ofn.lpstrInitialDir = NULL;
-			TCHAR opentitle[1024];
-			LoadString(hResource, IDS_OPENPATCH, opentitle, _countof(opentitle));
-			ofn.lpstrTitle = opentitle;
-			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
-			// Display the Open dialog box. 
-			if (GetOpenFileName(&ofn)==TRUE)
-			{
-				LoadFile(ofn.lpstrFile);
-			}
-		}
+		loadOrSaveFile(true);
 		break;
 	case ID_FILE_SAVEAS:
-		{
-			OPENFILENAME ofn = {0};				// common dialog box structure
-			TCHAR szFile[MAX_PATH] = {0};		// buffer for file name
-			// Initialize OPENFILENAME
-			ofn.lStructSize = sizeof(OPENFILENAME);
-			ofn.hwndOwner = *this;
-			ofn.lpstrFile = szFile;
-			ofn.nMaxFile = _countof(szFile);
-			TCHAR filter[1024];
-			LoadString(hResource, IDS_PATCHFILEFILTER, filter, _countof(filter));
-			TCHAR * pszFilters = filter;
-			// Replace '|' delimiters with '\0's
-			TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-			while (ptr != pszFilters)
-			{
-				if (*ptr == '|')
-					*ptr = '\0';
-				ptr--;
-			}
-			ofn.lpstrFilter = pszFilters;
-			ofn.nFilterIndex = 1;
-			ofn.lpstrFileTitle = NULL;
-			ofn.nMaxFileTitle = 0;
-			ofn.lpstrInitialDir = NULL;
-			TCHAR savetitle[1024];
-			LoadString(hResource, IDS_SAVEPATCH, savetitle, _countof(savetitle));
-			ofn.lpstrTitle = savetitle;
-			ofn.Flags = OFN_OVERWRITEPROMPT | OFN_ENABLESIZING | OFN_EXPLORER;
-			// Display the Open dialog box. 
-			if (GetSaveFileName(&ofn)==TRUE)
-			{
-				SaveFile(ofn.lpstrFile);
-			}
-		}
+		loadOrSaveFile(false);
+		break;
+	case ID_FILE_SAVE:
+		loadOrSaveFile(false, m_filename);
 		break;
 	case ID_FILE_EXIT:
 		::PostQuitMessage(0);
@@ -270,7 +204,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			::ShowWindow(m_FindBar, SW_SHOW);
 			RECT rect;
 			GetClientRect(*this, &rect);
-			::SetWindowPos(m_hWndEdit, HWND_TOP, 
+			::SetWindowPos(m_hWndEdit, HWND_TOP,
 				rect.left, rect.top,
 				rect.right-rect.left, rect.bottom-rect.top-30,
 				SWP_SHOWWINDOW);
@@ -296,20 +230,24 @@ LRESULT CMainWindow::DoCommand(int id)
 		SendEditor(SCI_SCROLLCARET);
 		break;
 	case IDM_FINDEXIT:
+		if (IsWindowVisible(m_FindBar))
 		{
-			if (IsWindowVisible(m_FindBar))
-			{
-				RECT rect;
-				GetClientRect(*this, &rect);
-				m_bShowFindBar = false;
-				::ShowWindow(m_FindBar, SW_HIDE);
-				::SetWindowPos(m_hWndEdit, HWND_TOP, 
-					rect.left, rect.top,
-					rect.right-rect.left, rect.bottom-rect.top,
-					SWP_SHOWWINDOW);
-			}
-			else
-				PostQuitMessage(0);
+			RECT rect;
+			GetClientRect(*this, &rect);
+			m_bShowFindBar = false;
+			::ShowWindow(m_FindBar, SW_HIDE);
+			::SetWindowPos(m_hWndEdit, HWND_TOP,
+				rect.left, rect.top,
+				rect.right-rect.left, rect.bottom-rect.top,
+				SWP_SHOWWINDOW);
+		}
+		else
+			PostQuitMessage(0);
+		break;
+	case ID_FILE_SETTINGS:
+		{
+			tstring gitCmd = _T(" /command:settings /page:blame");
+			RunCommand(gitCmd);
 		}
 		break;
 	default:
@@ -318,6 +256,29 @@ LRESULT CMainWindow::DoCommand(int id)
 	return 1;
 }
 
+std::wstring CMainWindow::GetAppDirectory()
+{
+	std::wstring path;
+	DWORD len = 0;
+	DWORD bufferlen = MAX_PATH;		// MAX_PATH is not the limit here!
+	do
+	{
+		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
+		TCHAR * pBuf = new TCHAR[bufferlen];
+		len = GetModuleFileName(NULL, pBuf, bufferlen);
+		path = pBuf;
+		delete [] pBuf;
+	} while(len == bufferlen);
+
+	path = path.substr(0, path.rfind('\\') + 1);
+	return path;
+}
+
+void CMainWindow::RunCommand(const std::wstring& command)
+{
+	tstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseProc.exe");
+	CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), const_cast<TCHAR*>(command.c_str()));
+}
 
 LRESULT CMainWindow::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
 {
@@ -325,30 +286,11 @@ LRESULT CMainWindow::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam)
 	{
 		return ((SciFnDirect) m_directFunction)(m_directPointer, Msg, wParam, lParam);
 	}
-	return ::SendMessage(m_hWndEdit, Msg, wParam, lParam);	
+	return ::SendMessage(m_hWndEdit, Msg, wParam, lParam);
 }
 
 bool CMainWindow::Initialize()
 {
-	CRegStdDWORD pos(_T("Software\\TortoiseGit\\UDiffViewerPos"), 0);
-	CRegStdDWORD width(_T("Software\\TortoiseGit\\UDiffViewerWidth"), (DWORD)640);
-	CRegStdDWORD height(_T("Software\\TortoiseGit\\UDiffViewerHeight"), (DWORD)480);
-	if (DWORD(pos) && DWORD(width) && DWORD(height))
-	{
-		RECT rc;
-		rc.left = LOWORD(DWORD(pos));
-		rc.top = HIWORD(DWORD(pos));
-		rc.right = rc.left + DWORD(width);
-		rc.bottom = rc.top + DWORD(height);
-		HMONITOR hMon = MonitorFromRect(&rc, MONITOR_DEFAULTTONULL);
-		if (hMon)
-		{
-			// only restore the window position if the monitor is valid
-			MoveWindow(*this, LOWORD(DWORD(pos)), HIWORD(DWORD(pos)),
-				DWORD(width), DWORD(height), FALSE);
-		}
-	}
-
 	m_hWndEdit = ::CreateWindow(
 		_T("Scintilla"),
 		_T("Source"),
@@ -364,7 +306,7 @@ bool CMainWindow::Initialize()
 
 	RECT rect;
 	GetClientRect(*this, &rect);
-	::SetWindowPos(m_hWndEdit, HWND_TOP, 
+	::SetWindowPos(m_hWndEdit, HWND_TOP,
 		rect.left, rect.top,
 		rect.right-rect.left, rect.bottom-rect.top,
 		SWP_SHOWWINDOW);
@@ -378,7 +320,7 @@ bool CMainWindow::Initialize()
 		// pane in TortoiseSVN's Settings dialog, while there is no such
 		// pane for TortoiseUDiff.
 		CRegStdDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
-		WideToMultibyte(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str());
+		CUnicodeUtils::StdGetUTF8(CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str());
 	SendEditor(SCI_SETTABWIDTH, 4);
 	SendEditor(SCI_SETREADONLY, TRUE);
 	LRESULT pix = SendEditor(SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)"_99999");
@@ -401,7 +343,49 @@ bool CMainWindow::Initialize()
 	return true;
 }
 
+bool CMainWindow::LoadFile(HANDLE hFile)
+{
+	InitEditor();
+	char data[4096];
+	DWORD dwRead = 0;
+
+	BOOL bRet = ReadFile(hFile, data, sizeof(data), &dwRead, NULL);
+	bool bUTF8 = IsUTF8(data, dwRead);
+	while ((dwRead > 0) && (bRet))
+	{
+		SendEditor(SCI_ADDTEXT, dwRead,
+			reinterpret_cast<LPARAM>(static_cast<char *>(data)));
+		bRet = ReadFile(hFile, data, sizeof(data), &dwRead, NULL);
+	}
+	SetupWindow(bUTF8);
+	return true;
+}
+
 bool CMainWindow::LoadFile(LPCTSTR filename)
+{
+	InitEditor();
+	FILE *fp = NULL;
+	_tfopen_s(&fp, filename, _T("rb"));
+	if (!fp)
+		return false;
+
+	//SetTitle();
+	char data[4096];
+	size_t lenFile = fread(data, 1, sizeof(data), fp);
+	bool bUTF8 = IsUTF8(data, lenFile);
+	while (lenFile > 0)
+	{
+		SendEditor(SCI_ADDTEXT, lenFile,
+			reinterpret_cast<LPARAM>(static_cast<char *>(data)));
+		lenFile = fread(data, 1, sizeof(data), fp);
+	}
+	fclose(fp);
+	SetupWindow(bUTF8);
+	m_filename = filename;
+	return true;
+}
+
+void CMainWindow::InitEditor()
 {
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
@@ -409,28 +393,11 @@ bool CMainWindow::LoadFile(LPCTSTR filename)
 	SendEditor(SCI_SETSAVEPOINT);
 	SendEditor(SCI_CANCEL);
 	SendEditor(SCI_SETUNDOCOLLECTION, 0);
+}
 
-	FILE *fp = NULL;
-	_tfopen_s(&fp, filename, _T("rb"));
-	if (fp) 
-	{
-		//SetTitle();
-		char data[4096];
-		size_t lenFile = fread(data, 1, sizeof(data), fp);
-		bool bUTF8 = IsUTF8(data, lenFile);
-		while (lenFile > 0) 
-		{
-			SendEditor(SCI_ADDTEXT, lenFile,
-				reinterpret_cast<LPARAM>(static_cast<char *>(data)));
-			lenFile = fread(data, 1, sizeof(data), fp);
-		}
-		fclose(fp);
-		SendEditor(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
-	}
-	else 
-	{
-		return false;
-	}
+void CMainWindow::SetupWindow(bool bUTF8)
+{
+	SendEditor(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
 
 	SendEditor(SCI_SETUNDOCOLLECTION, 1);
 	::SetFocus(m_hWndEdit);
@@ -454,25 +421,20 @@ bool CMainWindow::LoadFile(LPCTSTR filename)
 	SendEditor(SCI_SETKEYWORDS, 0, (LPARAM)"revision");
 	SendEditor(SCI_COLOURISE, 0, -1);
 	::ShowWindow(m_hWndEdit, SW_SHOW);
-	return true;
 }
 
 bool CMainWindow::SaveFile(LPCTSTR filename)
 {
 	FILE *fp = NULL;
 	_tfopen_s(&fp, filename, _T("w+b"));
-	if (fp) 
-	{
-		int len = SendEditor(SCI_GETTEXT, 0, 0);
-		char * data = new char[len+1];
-		SendEditor(SCI_GETTEXT, len, (LPARAM)data);
-		fwrite(data, sizeof(char), len-1, fp);
-		fclose(fp);
-	}
-	else 
-	{
+	if (!fp)
 		return false;
-	}
+
+	int len = SendEditor(SCI_GETTEXT, 0, 0);
+	char * data = new char[len+1];
+	SendEditor(SCI_GETTEXT, len, (LPARAM)data);
+	fwrite(data, sizeof(char), len-1, fp);
+	fclose(fp);
 
 	SendEditor(SCI_SETSAVEPOINT);
 	::ShowWindow(m_hWndEdit, SW_SHOW);
@@ -488,13 +450,13 @@ void CMainWindow::SetTitle(LPCTSTR title)
 	delete [] pBuf;
 }
 
-void CMainWindow::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face) 
+void CMainWindow::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face)
 {
 	SendEditor(SCI_STYLESETFORE, style, fore);
 	SendEditor(SCI_STYLESETBACK, style, back);
 	if (size >= 1)
 		SendEditor(SCI_STYLESETSIZE, style, size);
-	if (face) 
+	if (face)
 		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
 }
 
@@ -502,70 +464,117 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 {
 	if (cb < 2)
 		return true;
-	UINT16 * pVal = (UINT16 *)pBuffer;
-	UINT8 * pVal2 = (UINT8 *)(pVal+1);
+	UINT16 * pVal16 = (UINT16 *)pBuffer;
+	UINT8 * pVal8 = (UINT8 *)(pVal16+1);
 	// scan the whole buffer for a 0x0000 sequence
 	// if found, we assume a binary file
 	for (size_t i=0; i<(cb-2); i=i+2)
 	{
-		if (0x0000 == *pVal++)
+		if (0x0000 == *pVal16++)
 			return false;
 	}
-	pVal = (UINT16 *)pBuffer;
-	if (*pVal == 0xFEFF)
+	pVal16 = (UINT16 *)pBuffer;
+	if (*pVal16 == 0xFEFF)
 		return false;
 	if (cb < 3)
 		return false;
-	if (*pVal == 0xBBEF)
+	if (*pVal16 == 0xBBEF)
 	{
-		if (*pVal2 == 0xBF)
+		if (*pVal8 == 0xBF)
 			return true;
 	}
 	// check for illegal UTF8 chars
-	pVal2 = (UINT8 *)pBuffer;
+	pVal8 = (UINT8 *)pBuffer;
 	for (size_t i=0; i<cb; ++i)
 	{
-		if ((*pVal2 == 0xC0)||(*pVal2 == 0xC1)||(*pVal2 >= 0xF5))
+		if ((*pVal8 == 0xC0)||(*pVal8 == 0xC1)||(*pVal8 >= 0xF5))
 			return false;
-		pVal2++;
+		pVal8++;
 	}
-	pVal2 = (UINT8 *)pBuffer;
+	pVal8 = (UINT8 *)pBuffer;
 	bool bUTF8 = false;
 	for (size_t i=0; i<(cb-3); ++i)
 	{
-		if ((*pVal2 & 0xE0)==0xC0)
+		if ((*pVal8 & 0xE0)==0xC0)
 		{
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return false;
 			bUTF8 = true;
 		}
-		if ((*pVal2 & 0xF0)==0xE0)
+		if ((*pVal8 & 0xF0)==0xE0)
 		{
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return false;
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return false;
 			bUTF8 = true;
 		}
-		if ((*pVal2 & 0xF8)==0xF0)
+		if ((*pVal8 & 0xF8)==0xF0)
 		{
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return false;
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return false;
-			pVal2++;i++;
-			if ((*pVal2 & 0xC0)!=0x80)
+			pVal8++;i++;
+			if ((*pVal8 & 0xC0)!=0x80)
 				return false;
 			bUTF8 = true;
 		}
-		pVal2++;
+		pVal8++;
 	}
 	if (bUTF8)
 		return true;
 	return false;
+}
+
+void CMainWindow::loadOrSaveFile(bool doLoad, const wstring& filename /* = L"" */)
+{
+	OPENFILENAME ofn = {0};				// common dialog box structure
+	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name
+	// Initialize OPENFILENAME
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = *this;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
+	TCHAR filter[1024];
+	LoadString(hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
+	CStringUtils::PipesToNulls(filter);
+	ofn.lpstrFilter = filter;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	TCHAR fileTitle[1024];
+	LoadString(hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle)/sizeof(TCHAR));
+	ofn.lpstrTitle = fileTitle;
+	ofn.Flags = OFN_ENABLESIZING | OFN_EXPLORER;
+	if(doLoad)
+		ofn.Flags |= OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	else
+		ofn.Flags |= OFN_OVERWRITEPROMPT;
+	// Display the Open dialog box.
+	if( doLoad )
+	{
+		if (GetOpenFileName(&ofn)==TRUE)
+		{
+			LoadFile(ofn.lpstrFile);
+		}
+	}
+	else
+	{
+		if (filename.empty())
+		{
+			if (GetSaveFileName(&ofn)==TRUE)
+			{
+				SaveFile(ofn.lpstrFile);
+			}
+		}
+		else
+			SaveFile(filename.c_str());
+	}
 }
