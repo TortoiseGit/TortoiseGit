@@ -1028,17 +1028,23 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 					{
 						last++;
 					} while((last<pViewData->GetCount()) && ((pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED)));
-					file.Add(_T("<<<<<<< .mine"), EOL_NOENDING);
+					file.Add(_T("<<<<<<< .mine"), m_pwndRightView->lineendings);
 					for (int j=first; j<last; j++)
 					{
-						file.Add(m_pwndRightView->m_pViewData->GetLine(j), m_pwndRightView->m_pViewData->GetLineEnding(j));
+						EOL lineending = m_pwndRightView->m_pViewData->GetLineEnding(j);
+						if (lineending == EOL_NOENDING)
+							lineending = m_pwndRightView->lineendings;
+						file.Add(m_pwndRightView->m_pViewData->GetLine(j), lineending);
 					}
-					file.Add(_T("======="), EOL_NOENDING);
+					file.Add(_T("======="), m_pwndRightView->lineendings);
 					for (int j=first; j<last; j++)
 					{
-						file.Add(m_pwndLeftView->m_pViewData->GetLine(j), m_pwndLeftView->m_pViewData->GetLineEnding(j));
+						EOL lineending = m_pwndLeftView->m_pViewData->GetLineEnding(j);
+						if (lineending == EOL_NOENDING)
+							lineending = m_pwndLeftView->lineendings;
+						file.Add(m_pwndLeftView->m_pViewData->GetLine(j), lineending);
 					}
-					file.Add(_T(">>>>>>> .theirs"), EOL_NOENDING);
+					file.Add(_T(">>>>>>> .theirs"), m_pwndRightView->lineendings);
 					i = last-1;
 				}
 				break;
