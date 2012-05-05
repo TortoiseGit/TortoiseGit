@@ -343,6 +343,10 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pAdvanced);
 	}
+	if(this->m_DefaultPage == _T("blame"))
+	{
+		this->SetActivePage(this->m_pTBlamePage);
+	}
 	return bResult;
 }
 

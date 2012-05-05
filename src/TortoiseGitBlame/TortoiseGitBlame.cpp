@@ -30,6 +30,7 @@
 #include "TortoiseGitBlameView.h"
 #include "CmdLineParser.h"
 #include "PathUtils.h"
+#include "CommonAppUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,6 +44,7 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameApp, CWinAppEx)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	ON_COMMAND(ID_FILE_SETTINGS, &CTortoiseGitBlameApp::OnFileSettings)
 	// Standard print setup command
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
@@ -202,6 +204,11 @@ void CTortoiseGitBlameApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
+}
+
+void CTortoiseGitBlameApp::OnFileSettings()
+{
+	CCommonAppUtils::RunTortoiseProc(_T(" /command:settings /page:blame"));
 }
 
 // CTortoiseGitBlameApp customization load/save methods
