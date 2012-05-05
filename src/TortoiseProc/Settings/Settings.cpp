@@ -274,76 +274,75 @@ BOOL CSettings::OnInitDialog()
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
 
-	if(this->m_DefaultPage == _T("gitremote"))
+	if (this->m_DefaultPage == _T("gitremote"))
 	{
 		this->SetActivePage(this->m_pGitRemote);
 	}
-	if(this->m_DefaultPage == _T("gitconfig"))
+	else if (this->m_DefaultPage == _T("gitconfig"))
 	{
 		this->SetActivePage(this->m_pGitConfig);
 	}
-	if(this->m_DefaultPage == _T("main"))
+	else if (this->m_DefaultPage == _T("main"))
 	{
 		this->SetActivePage(this->m_pMainPage);
 	}
-	if(this->m_DefaultPage == _T("overlay"))
+	else if (this->m_DefaultPage == _T("overlay"))
 	{
 		this->SetActivePage(this->m_pOverlayPage);
 	}
-	if(this->m_DefaultPage == _T("overlays"))
+	else if (this->m_DefaultPage == _T("overlays"))
 	{
 		this->SetActivePage(this->m_pOverlaysPage);
 	}
-	if(this->m_DefaultPage == _T("overlayshandlers"))
+	else if (this->m_DefaultPage == _T("overlayshandlers"))
 	{
 		this->SetActivePage(this->m_pOverlayHandlersPage);
 	}
-	if(this->m_DefaultPage == _T("proxy"))
+	else if (this->m_DefaultPage == _T("proxy"))
 	{
 		this->SetActivePage(this->m_pProxyPage);
 	}
-
-	if(this->m_DefaultPage == _T("diff"))
+	else if (this->m_DefaultPage == _T("diff"))
 	{
 		this->SetActivePage(this->m_pProgsDiffPage);
 	}
-	if(this->m_DefaultPage == _T("merge"))
+	else if (this->m_DefaultPage == _T("merge"))
 	{
 		this->SetActivePage(this->m_pProgsMergePage);
 	}
-	if(this->m_DefaultPage == _T("alternativeeditor"))
+	else if (this->m_DefaultPage == _T("alternativeeditor"))
 	{
 		this->SetActivePage(this->m_pProgsAlternativeEditor);
 	}
-	if(this->m_DefaultPage == _T("look"))
+	else if (this->m_DefaultPage == _T("look"))
 	{
 		this->SetActivePage(this->m_pLookAndFeelPage);
 	}
-	if(this->m_DefaultPage == _T("dialog"))
+	else if (this->m_DefaultPage == _T("dialog"))
 	{
 		this->SetActivePage(this->m_pDialogsPage);
 	}
-	if(this->m_DefaultPage == _T("color1"))
+	else if (this->m_DefaultPage == _T("color1"))
 	{
 		this->SetActivePage(this->m_pColorsPage);
 	}
-	if(this->m_DefaultPage == _T("color2"))
+	else if (this->m_DefaultPage == _T("color2"))
 	{
 		this->SetActivePage(this->m_pColorsPage2);
 	}
-	if(this->m_DefaultPage == _T("color3"))
+	else if (this->m_DefaultPage == _T("color3"))
 	{
 		this->SetActivePage(this->m_pColorsPage3);
 	}
-	if(this->m_DefaultPage == _T("save"))
+	else if (this->m_DefaultPage == _T("save"))
 	{
 		this->SetActivePage(this->m_pSavedPage);
 	}
-	if(this->m_DefaultPage == _T("advanced"))
+	else if (this->m_DefaultPage == _T("advanced"))
 	{
 		this->SetActivePage(this->m_pAdvanced);
 	}
-	if(this->m_DefaultPage == _T("blame"))
+	else if (this->m_DefaultPage == _T("blame"))
 	{
 		this->SetActivePage(this->m_pTBlamePage);
 	}
