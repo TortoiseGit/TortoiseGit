@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2011 - TortoiseSVN
+// Copyright (C) 2006-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -778,6 +778,7 @@ void CPicWindow::OnVScroll(UINT nSBCode, UINT nPos)
     if (pSecondPic)
     {
         height = max(height, LONG(double(pSecondPic->GetHeight())*picscale));
+        nVSecondScrollPos = nVScrollPos;
     }
     SetupScrollBars();
     PositionChildren();
@@ -822,6 +823,7 @@ void CPicWindow::OnHScroll(UINT nSBCode, UINT nPos)
     if (pSecondPic)
     {
         width = max(width, LONG(double(pSecondPic->GetWidth())*picscale));
+        nHSecondScrollPos = nHScrollPos;
     }
     SetupScrollBars();
     PositionChildren();
@@ -863,7 +865,7 @@ void CPicWindow::OnMouseWheel(short fwKeys, short zDelta)
     {
         // control means adjusting the scale factor
         Zoom(zDelta>0, true);
-        if ((!bFitSizes)&&(pTheOtherPic)&&(!bOverlap))
+        if ((bFitSizes)&&(pTheOtherPic)&&(!bOverlap))
             pTheOtherPic->Zoom(zDelta>0, true);
         PositionChildren();
         InvalidateRect(*this, NULL, FALSE);
@@ -1111,10 +1113,12 @@ void CPicWindow::CenterImage()
     if (!bPicWidthBigger)
     {
         nHScrollPos = -((rect.right-rect.left+4)-int(width))/2;
+        nHSecondScrollPos = nHScrollPos;
     }
     if (!bPicHeightBigger)
     {
         nVScrollPos = -((rect.bottom-rect.top+4)-int(height))/2;
+        nVSecondScrollPos = nVScrollPos;
     }
     SetupScrollBars();
 }
@@ -1300,6 +1304,20 @@ void CPicWindow::Paint(HWND hwnd)
             ::ExtTextOut(memDC, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
             SIZE stringsize;
             ResString str = ResString(hResource, IDS_INVALIDIMAGEINFO);
+
+            // set the font
+            NONCLIENTMETRICS metrics = {0};
+            metrics.cbSize = sizeof(NONCLIENTMETRICS);
+#if (WINVER >= 0x600)
+            if (!SysInfo::Instance().IsVistaOrLater())
+            {
+                metrics.cbSize -= sizeof(int);  // subtract the size of the iPaddedBorderWidth member which is not available on XP
+            }
+#endif
+            SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
+            HFONT hFont = CreateFontIndirect(&metrics.lfStatusFont);
+            HFONT hFontOld = (HFONT)SelectObject(memDC, (HGDIOBJ)hFont);
+
             if (GetTextExtentPoint32(memDC, str, (int)_tcslen(str), &stringsize))
             {
                 int nStringLength = stringsize.cx;
@@ -1313,6 +1331,8 @@ void CPicWindow::Paint(HWND hwnd)
                     (UINT)_tcslen(str),
                     NULL);
             }
+            SelectObject(memDC, (HGDIOBJ)hFontOld);
+            DeleteObject(hFont);
         }
         DrawViewTitle(memDC, &fullrect);
     }

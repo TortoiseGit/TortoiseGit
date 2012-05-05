@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseIDiff\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseIDiff.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2006-2011 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2006-2012 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseIDiff.exe\0"
             VALUE "ProductName", "TortoiseIDiff\0"
             VALUE "ProductVersion", STRPRODUCTVER

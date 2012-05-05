@@ -1,4 +1,4 @@
-// TortoiseIDiff - an image diff viewer in TortoiseSVN
+// TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
 // Copyright (C) 2006 - 2007, 2010-2011 - TortoiseSVN
 

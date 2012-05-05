@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007,2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,33 +23,28 @@
 #include <GdiPlus.h>
 
 using namespace Gdiplus;
-#ifdef UNICODE
-#	define stdstring std::wstring
-#else
-#	define stdstring std::string
-#endif
 
 /**
  * \ingroup Utils
- * Class for showing picture files. 
+ * Class for showing picture files.
  * Use this class to show pictures of different file formats: BMP, DIB, EMF, GIF, ICO, JPG, WMF
  * If Gdi+ is installed (default on XP and later, optional on Win2k), other image formats can
  * be shown too: png, tiff.
  * The class uses the IPicture interface, the same way as internet explorer does.
- * 
+ *
  * Example of usage:
  * \code
  * CPicture m_picture;
  * //load picture data into the IPicture interface
  * m_picture.Load("Test.jpg");	//load from a file
  * m_picture.Load(IDR_TEST, "JPG");	//load from a resource
- * 
+ *
  * //when using in a dialog based application (CPaintDC dc(this);)
  * m_picture.UpdateSizeOnDC(&dc);	//get picture dimensions in pixels
  * m_picture.Show(&dc, CPoint(0,0), CPoint(m_picture.m_Width, m_picture.m_Height), 0, 0);
  * m_picture.Show(&dc, CRect(0,0,100,100)); //change original dimensions
  * m_picture.ShowBitmapResource(&dc, IDB_TEST, CPoint(0,0));	//show bitmap resource
- * 
+ *
  * //when using in a regular mfc application (CDC* pDC)
  * m_picture.UpdateSizeOnDC(pDC);	//get picture dimensions in pixels
  * m_picture.Show(pDC, CPoint(0,0), CPoint(m_picture.m_Width, m_picture.m_Height), 0, 0);
@@ -59,7 +54,7 @@ using namespace Gdiplus;
  * //to show picture information
  * std::string s;
  * s.Format("Size = %4d\nWidth = %4d\nHeight = %4d\nWeight = %4d\n",
- *				m_picture.m_Weigth, m_picture.m_Width, m_picture.m_Height, m_picture.m_Weight);
+ *              m_picture.m_Weigth, m_picture.m_Width, m_picture.m_Height, m_picture.m_Weight);
  * AfxMessageBox(s);
  * \endcode
  * \remark GDI+ is only used if it is installed. If you link with gdiplus.lib and mark the gdiplus.dll
@@ -75,7 +70,7 @@ public:
 	 * \param sFilePathName the path of the picture file
 	 * \return TRUE if succeeded.
 	 */
-	bool Load(stdstring sFilePathName);
+	bool Load(tstring sFilePathName);
 	/**
 	 * draws the loaded picture directly to the given device context.
 	 * \note
@@ -159,7 +154,7 @@ public:
 	long SetActiveFrame(UINT frame);
 
 	DWORD GetFileSize() {return m_nSize;}
-	stdstring GetFileSizeAsText(bool bAbbrev = true);
+	tstring GetFileSizeAsText(bool bAbbrev = true);
 	CPicture();
 	virtual ~CPicture();
 
@@ -172,7 +167,7 @@ public:
 	LONG		m_Width;	///< Width (in pixels)
 	BYTE		m_ColorDepth;///< the color depth
 	LONG		m_Weight;	///< Size Of The Image Object In Bytes (File OR Resource)
-	stdstring	m_Name;		///< The FileName of the Picture as used in Load()
+	tstring m_Name;			///< The FileName of the Picture as used in Load()
 
 protected:
 	/**
@@ -191,11 +186,12 @@ protected:
 
 private:
 	GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR           gdiplusToken;
+	ULONG_PTR			gdiplusToken;
 	Bitmap *			pBitmap;
 	bool				bHaveGDIPlus;
 	InterpolationMode	m_ip;
 	bool				bIsIcon;
+	bool				bIsTiff;
 	UINT				nCurrentIcon;
 	BYTE *				lpIcons;
 	HICON *				hIcons;
@@ -214,7 +210,7 @@ private:
 		DWORD	dwBytesInRes;         // how many bytes in this resource?
 		DWORD	dwImageOffset;        // where in the file is this image
 	} ICONDIRENTRY, *LPICONDIRENTRY;
-	typedef struct 
+	typedef struct
 	{
 		WORD			idReserved;   // Reserved
 		WORD			idType;       // resource type (1 for icons)

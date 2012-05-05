@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006 - 2011 - TortoiseSVN
+// Copyright (C) 2006-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -379,9 +379,14 @@ LRESULT CMainWindow::DoCommand(int id)
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_ARRANGEVERTICAL, (LPARAM)&tbi);
 
             if (bOverlap)
-                tbi.fsState = 0;
+            {
+                bLinkedPositions = true;
+                picWindow1.LinkPositions(bLinkedPositions);
+                picWindow2.LinkPositions(bLinkedPositions);
+                tbi.fsState = TBSTATE_CHECKED;
+            }
             else
-                tbi.fsState = bVertical ? TBSTATE_ENABLED | TBSTATE_CHECKED : TBSTATE_ENABLED;
+                tbi.fsState = bLinkedPositions ? TBSTATE_ENABLED | TBSTATE_CHECKED : TBSTATE_ENABLED;
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_LINKIMAGESTOGETHER, (LPARAM)&tbi);
 
             ShowWindow(picWindow2, bOverlap ? SW_HIDE : SW_SHOW);
@@ -503,14 +508,14 @@ LRESULT CMainWindow::DoCommand(int id)
         break;
     case ID_VIEW_FITIMAGESINWINDOW:
         {
-            picWindow1.FitImageInWindow();
             picWindow2.FitImageInWindow();
+            picWindow1.FitImageInWindow();
         }
         break;
     case ID_VIEW_ORININALSIZE:
         {
-            picWindow1.SetZoom(1.0, false);
             picWindow2.SetZoom(1.0, false);
+            picWindow1.SetZoom(1.0, false);
         }
         break;
     case ID_VIEW_ZOOMIN:

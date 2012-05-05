@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,6 +42,7 @@ CPicture::CPicture()
 	lpIcons = NULL;
 	nCurrentIcon = 0;
 	bIsIcon = false;
+	bIsTiff = false;
 	m_nSize = 0;
 	m_ColorDepth = 0;
 }
@@ -49,8 +50,7 @@ CPicture::CPicture()
 CPicture::~CPicture()
 {
 	FreePictureData(); // Important - Avoid Leaks...
-	if (pBitmap)
-		delete (pBitmap);
+	delete pBitmap;
 	if (bHaveGDIPlus)
 		GdiplusShutdown(gdiplusToken);
 }
@@ -80,8 +80,7 @@ void CPicture::FreePictureData()
 		delete [] hIcons;
 		hIcons = NULL;
 	}
-	if (lpIcons)
-		delete [] lpIcons;
+	delete [] lpIcons;
 }
 
 // Util function to ease loading of FreeImage library
@@ -100,25 +99,24 @@ static FARPROC s_GetProcAddressEx(HMODULE hDll, const char* procName, bool& vali
 	return proc;
 }
 
-stdstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
+tstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
 {
 	TCHAR buf[100] = {0};
 	if (bAbbrev)
-		StrFormatByteSize(m_nSize, buf, 100);
+		StrFormatByteSize(m_nSize, buf, _countof(buf));
 	else
 		_stprintf_s(buf, _T("%ld Bytes"), m_nSize);
 
-	return stdstring(buf);
+	return tstring(buf);
 }
 
-bool CPicture::Load(stdstring sFilePathName)
+bool CPicture::Load(tstring sFilePathName)
 {
 	bool bResult = false;
 	bIsIcon = false;
 	lpIcons = NULL;
 	//CFile PictureFile;
 	//CFileException e;
-	int	nSize = 0;
 	FreePictureData(); // Important - Avoid Leaks...
 
 	// No-op if no file specified
@@ -163,6 +161,7 @@ bool CPicture::Load(stdstring sFilePathName)
 		// file extension for ".ico".
 		std::transform(sFilePathName.begin(), sFilePathName.end(), sFilePathName.begin(), ::tolower);
 		bIsIcon = (guid == ImageFormatIcon) || (_tcsstr(sFilePathName.c_str(), _T(".ico")) != NULL);
+		bIsTiff = (guid == ImageFormatTIFF) || (_tcsstr(sFilePathName.c_str(), _T(".tiff")) != NULL);
 
 		if (bIsIcon)
 		{
@@ -175,8 +174,8 @@ bool CPicture::Load(stdstring sFilePathName)
 				bIsIcon = true;
 			}
 
-			CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-			if (!hFile)
+			CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			if (hFile)
 			{
 				BY_HANDLE_FILE_INFORMATION fileinfo;
 				if (GetFileInformationByHandle(hFile, &fileinfo))
@@ -188,19 +187,25 @@ bool CPicture::Load(stdstring sFilePathName)
 						// we have the icon. Now gather the information we need later
 						if (readbytes >= sizeof(ICONDIR))
 						{
-							nCurrentIcon = 0;
+							// we are going to open same file second time so we have to close the file now
+							hFile.CloseHandle();
+
 							LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
-							hIcons = new HICON[lpIconDir->idCount];
-							m_Width = lpIconDir->idEntries[0].bWidth;
-							m_Height = lpIconDir->idEntries[0].bHeight;
-							for (int i=0; i<lpIconDir->idCount; ++i)
+							if (lpIconDir->idCount * sizeof(ICONDIR) <= fileinfo.nFileIndexLow)
 							{
-								hIcons[i] = (HICON)LoadImage(NULL, sFilePathName.c_str(), IMAGE_ICON, 
-									lpIconDir->idEntries[i].bWidth,
-									lpIconDir->idEntries[i].bHeight,
-									LR_LOADFROMFILE);
+								nCurrentIcon = 0;
+								hIcons = new HICON[lpIconDir->idCount];
+								m_Width = lpIconDir->idEntries[0].bWidth;
+								m_Height = lpIconDir->idEntries[0].bHeight;
+								for (int i=0; i<lpIconDir->idCount; ++i)
+								{
+									hIcons[i] = (HICON)LoadImage(NULL, sFilePathName.c_str(), IMAGE_ICON,
+										lpIconDir->idEntries[i].bWidth,
+										lpIconDir->idEntries[i].bHeight,
+										LR_LOADFROMFILE);
+								}
+								bResult = true;
 							}
-							bResult = true;
 						}
 						else
 						{
@@ -302,8 +307,6 @@ bool CPicture::Load(stdstring sFilePathName)
 
 							if (pBitmap && pBitmap->GetLastStatus() == Ok)
 							{
-								void* imageData = NULL;
-
 								// Write & convert the loaded data into the GDI+ Bitmap
 								Rect rect(0, 0, width, height);
 								BitmapData bitmapData;
@@ -325,11 +328,8 @@ bool CPicture::Load(stdstring sFilePathName)
 							}
 							else	// Bitmap allocation failed
 							{
-								if (pBitmap)
-								{
-									delete pBitmap;
-									pBitmap = NULL;
-								}
+								delete pBitmap;
+								pBitmap = NULL;
 							}
 
 							FreeImage_Unload(dib);
@@ -345,9 +345,10 @@ bool CPicture::Load(stdstring sFilePathName)
 	}
 	else	// GDI+ Unavailable...
 	{
+		int nSize = 0;
 		pBitmap = NULL;
 		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_HIDDEN, NULL);
-		if (!hFile)
+		if (hFile)
 		{
 			BY_HANDLE_FILE_INFORMATION fileinfo;
 			if (GetFileInformationByHandle(hFile, &fileinfo))
@@ -372,7 +373,7 @@ bool CPicture::Load(stdstring sFilePathName)
 		m_Weight = nSize; // Update Picture Size Info...
 
 		if(m_IPicture != NULL) // Do Not Try To Read From Memory That Does Not Exist...
-		{ 
+		{
 			m_IPicture->get_Height(&m_Height);
 			m_IPicture->get_Width(&m_Width);
 			// Calculate Its Size On a "Standard" (96 DPI) Device Context
@@ -390,7 +391,7 @@ bool CPicture::Load(stdstring sFilePathName)
 	if ((bResult)&&(m_nSize == 0))
 	{
 		CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_HIDDEN, NULL);
-		if (!hFile)
+		if (hFile)
 		{
 			BY_HANDLE_FILE_INFORMATION fileinfo;
 			if (GetFileInformationByHandle(hFile, &fileinfo))
@@ -426,17 +427,11 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 
 	if ((CreateStreamOnHGlobal(hGlobal, true, &pStream) == S_OK)&&(pStream))
 	{
-		HRESULT hr;
-		if((hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, (LPVOID *)&m_IPicture)) == S_OK)
-		{
-			pStream->Release();
-			pStream = NULL;
-			bResult = true;
-		}
-		else
-		{
-			return false;
-		}
+		HRESULT hr = OleLoadPicture(pStream, nSize, false, IID_IPicture, (LPVOID *)&m_IPicture);
+		pStream->Release();
+		pStream = NULL;
+
+		bResult = hr == S_OK;
 	}
 
 	FreeResource(hGlobal); // 16Bit Windows Needs This (32Bit - Automatic Release)
@@ -446,7 +441,7 @@ bool CPicture::LoadPictureData(BYTE *pBuffer, int nSize)
 
 bool CPicture::Show(HDC hDC, RECT DrawRect)
 {
-	if (hDC == NULL) 
+	if (hDC == NULL)
 		return false;
 	if (bIsIcon && lpIcons)
 	{
@@ -463,9 +458,7 @@ bool CPicture::Show(HDC hDC, RECT DrawRect)
 		m_IPicture->get_Width(&Width);
 		m_IPicture->get_Height(&Height);
 
-		HRESULT hrP = NULL;
-
-		hrP = m_IPicture->Render(hDC,
+		HRESULT hr = m_IPicture->Render(hDC,
 			DrawRect.left,                  // Left
 			DrawRect.top,                   // Top
 			DrawRect.right - DrawRect.left, // Right
@@ -476,7 +469,7 @@ bool CPicture::Show(HDC hDC, RECT DrawRect)
 			-Height,
 			&DrawRect);
 
-		if (SUCCEEDED(hrP)) 
+		if (SUCCEEDED(hr))
 			return(true);
 	}
 	else if (pBitmap)
@@ -554,8 +547,7 @@ UINT CPicture::GetNumberOfFrames(int dimension)
 	}
 	if (pBitmap == NULL)
 		return 0;
-	UINT count = 0;
-	count = pBitmap->GetFrameDimensionsCount();
+	UINT count = pBitmap->GetFrameDimensionsCount();
 	GUID* pDimensionIDs = (GUID*)malloc(sizeof(GUID)*count);
 
 	pBitmap->GetFrameDimensionsList(pDimensionIDs, count);
@@ -601,6 +593,8 @@ long CPicture::SetActiveFrame(UINT frame)
 		return 0;
 
 	GUID pageGuid = FrameDimensionTime;
+	if (bIsTiff)
+		pageGuid = FrameDimensionPage;
 	pBitmap->SelectActiveFrame(&pageGuid, frame);
 
 	// Assume that the image has a property item of type PropertyItemEquipMake.
@@ -610,13 +604,16 @@ long CPicture::SetActiveFrame(UINT frame)
 	// Allocate a buffer to receive the property item.
 	PropertyItem* pPropertyItem = (PropertyItem*) malloc(nSize);
 
-	pBitmap->GetPropertyItem(PropertyTagFrameDelay, nSize, pPropertyItem);
+	Status s = pBitmap->GetPropertyItem(PropertyTagFrameDelay, nSize, pPropertyItem);
 
 	UINT prevframe = frame;
-	prevframe--;
-	if (prevframe < 0)
-		prevframe = 0;
-	long delay = ((long*)pPropertyItem->value)[prevframe] * 10;
+	if (prevframe > 0)
+		prevframe--;
+	long delay = 0;
+	if (s == Ok)
+	{
+		delay = ((long*)pPropertyItem->value)[prevframe] * 10;
+	}
 	free(pPropertyItem);
 	m_Height = GetHeight();
 	m_Width = GetWidth();
