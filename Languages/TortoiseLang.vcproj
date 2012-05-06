@@ -40,9 +40,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
+			Name="Debug|x64"
 			OutputDirectory="../bin/$(ConfigurationName)/bin"
-			IntermediateDirectory="../obj/lang/$(ConfigurationName)/"
+			IntermediateDirectory="../obj/lang/$(ConfigurationName)64/"
 			ConfigurationType="0"
 			>
 			<Tool
@@ -60,9 +60,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|x64"
+			Name="Release|Win32"
 			OutputDirectory="../bin/$(ConfigurationName)/bin"
-			IntermediateDirectory="../obj/lang/$(ConfigurationName)64/"
+			IntermediateDirectory="../obj/lang/$(ConfigurationName)/"
 			ConfigurationType="0"
 			>
 			<Tool
@@ -87,9 +87,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="adfad"
-				ReBuildCommandLine=""
-				CleanCommandLine=""
+				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
+				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
+				CleanCommandLine="nmake /f Makefile clean "
 				Output="TortoiseLangs.exe"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
