@@ -21,10 +21,10 @@ Getting started
 If you want to implement a new language for TortoiseGIT do the following.
 
 1) Use TortoiseGIT (or any other GIT client) to clone:
-   git clone http://repo.or.cz/r/TortoiseGit.git
+   git clone https://code.google.com/p/tortoisegit/ 
    (You will get more than one file)
    or point your browser to:
-   http://repo.or.cz/w/TortoiseGit.git/tree/HEAD:/Languages
+   http://code.google.com/p/tortoisegit/source/browse/#git%2FLanguages
    right-click on Tortoise.pot and save this file to your local harddisk.
    Tortoise.pot is the portable object template (hence .pot) for the
    translation.
@@ -63,7 +63,7 @@ If you want to implement a new language for TortoiseGIT do the following.
    # bogus        ungültig
    # checkout     auschecken (denglisch, ich weiß, aber akzeptabel)
    # client       Client, des Client
-   # commit       übertragen
+   # commit       eintragen
    # item         Objekt
    # label        Marke / Markierung
 
@@ -113,7 +113,7 @@ them, you need four things:
 
 - The "raw" resource dlls for your version of TortoiseGIT. Other dlls
   won't work. Take a look at:
-  http://tortoisesvn.tigris.org/servlets/ProjectDocumentList?folderID=1847
+  TO BE DONE
   and pick your language dlls e.g. Languages_1.0.8.zip for TortoiseSVN 1.0.8.
 - The pot file for your version of TortoiseGIT e.g:
   http://tortoisesvn.tigris.org/svn/tortoisesvn/tags/version_1.0.8/...
@@ -121,12 +121,14 @@ them, you need four things:
   po file from trunk
 - The ResText utility that is used to insert the data from the po file
   into your resource dlls:
-  http://tortoisesvn.tigris.org/files/documents/406/14560/ResText.zip
+  http://code.google.com/p/tortoisesvn/downloads/list
 
 Once you finished your installation, you run:
 
 restext apply TortoiseProcLang.dll ..\bin\TortoiseProcNNNN.dll Tortoise_CC.po
 restext apply TortoiseMergeLang.dll ..\bin\TortoiseMergeNNNN.dll Tortoise_CC.po
+restext apply TortoiseIDiffLang.dll ..\bin\TortoiseIDiffNNNN.dll Tortoise_CC.po
+restext apply TortoiseGitBlameLang.dll ..\bin\TortoiseGitBlameNNNN.dll Tortoise_CC.po
 
 where NNNN is your four digit country code (1031 for germany)
 and CC is your 2 letter country code (de for germany)
