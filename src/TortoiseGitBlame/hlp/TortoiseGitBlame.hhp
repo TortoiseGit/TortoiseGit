@@ -1,7 +1,7 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=TortoiseGitBlame.chm
+Compiled file=TortoiseGitBlame_en.chm
 Contents file=TortoiseGitBlame.hhc
 Index file=TortoiseGitBlame.hhk
 Default topic=main_index.htm

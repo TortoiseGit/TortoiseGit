@@ -39,7 +39,7 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#ifndef APSTUDIO_INVOKED\r\n"
-    "#include ""targetver.h""\r\n"
+    "#include ""..\targetver.h""\r\n"
     "#endif\r\n"
     "#include ""afxres.h""\r\n"
     "#include ""..\\TortoiseGitBlame\\MenuEncode.h""\r\n"
@@ -579,6 +579,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
+#define _AFX_NO_SPLITTER_RESOURCES
 #define _AFX_NO_OLE_RESOURCES
 #define _AFX_NO_TRACKER_RESOURCES
 #define _AFX_NO_PROPERTY_RESOURCES

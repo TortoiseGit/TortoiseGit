@@ -81,6 +81,87 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		}
 	}
 
+	//set the resource dll for the required language
+	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
+	long langId = loc;
+	CString langDll;
+	HINSTANCE hInst = NULL;
+	do
+	{
+		langDll.Format(_T("%sLanguages\\TortoiseGitBlame%d.dll"), (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
+
+		hInst = LoadLibrary(langDll);
+		CString sVer = _T(STRPRODUCTVER);
+		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
+		if (sFileVer.Compare(sVer)!=0)
+		{
+			FreeLibrary(hInst);
+			hInst = NULL;
+		}
+		if (hInst != NULL)
+			AfxSetResourceHandle(hInst);
+		else
+		{
+			DWORD lid = SUBLANGID(langId);
+			lid--;
+			if (lid > 0)
+			{
+				langId = MAKELANGID(PRIMARYLANGID(langId), lid);
+			}
+			else
+				langId = 0;
+		}
+	} while ((hInst == NULL) && (langId != 0));
+	TCHAR buf[6];
+	_tcscpy_s(buf, _T("en"));
+	langId = loc;
+	CString sHelppath;
+	sHelppath = this->m_pszHelpFilePath;
+	sHelppath = sHelppath.MakeLower();
+	sHelppath.Replace(_T(".chm"), _T("_en.chm"));
+	free((void*)m_pszHelpFilePath);
+	m_pszHelpFilePath=_tcsdup(sHelppath);
+	sHelppath = CPathUtils::GetAppParentDirectory() + _T("Languages\\TortoiseGitBlame_en.chm");
+	do
+	{
+		GetLocaleInfo(MAKELCID(langId, SORT_DEFAULT), LOCALE_SISO639LANGNAME, buf, _countof(buf));
+		CString sLang = _T("_");
+		sLang += buf;
+		sHelppath.Replace(_T("_en"), sLang);
+		if (PathFileExists(sHelppath))
+		{
+			free((void*)m_pszHelpFilePath);
+			m_pszHelpFilePath=_tcsdup(sHelppath);
+			break;
+		}
+		sHelppath.Replace(sLang, _T("_en"));
+		GetLocaleInfo(MAKELCID(langId, SORT_DEFAULT), LOCALE_SISO3166CTRYNAME, buf, _countof(buf));
+		sLang += _T("_");
+		sLang += buf;
+		sHelppath.Replace(_T("_en"), sLang);
+		if (PathFileExists(sHelppath))
+		{
+			free((void*)m_pszHelpFilePath);
+			m_pszHelpFilePath=_tcsdup(sHelppath);
+			break;
+		}
+		sHelppath.Replace(sLang, _T("_en"));
+
+		DWORD lid = SUBLANGID(langId);
+		lid--;
+		if (lid > 0)
+		{
+			langId = MAKELANGID(PRIMARYLANGID(langId), lid);
+		}
+		else
+			langId = 0;
+	} while (langId);
+	setlocale(LC_ALL, ""); 
+	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
+	// The problems occures when the language of OS differs from the regional settings
+	// See the details here: http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=100887
+	SetThreadLocale(LOCALE_SYSTEM_DEFAULT);
+
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.

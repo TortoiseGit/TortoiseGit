@@ -616,7 +616,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\TortoiseGitBlame.rc"
+				RelativePath="..\Resources\TortoiseGitBlameENG.rc"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1047,7 +1047,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Making help file..."
-						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame.chm&quot; &quot;$(OutDir)\TortoiseGitBlame.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
+						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame_en.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame_en.chm&quot; &quot;$(OutDir)\TortoiseGitBlame_en.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
 						AdditionalDependencies="hlp\HTMLDefines.h"
 						Outputs="$(OutDir)\$(ProjectName).chm"
 					/>
@@ -1058,7 +1058,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Making help file..."
-						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame.chm&quot; &quot;$(OutDir)\TortoiseGitBlame.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
+						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame_en.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame_en.chm&quot; &quot;$(OutDir)\TortoiseGitBlame_en.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
 						AdditionalDependencies="hlp\HTMLDefines.h"
 						Outputs="$(OutDir)\$(ProjectName).chm"
 					/>
@@ -1069,7 +1069,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Making help file..."
-						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame.chm&quot; &quot;$(OutDir)\TortoiseGitBlame.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
+						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame_en.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame_en.chm&quot; &quot;$(OutDir)\TortoiseGitBlame_en.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
 						AdditionalDependencies="hlp\HTMLDefines.h"
 						Outputs="$(OutDir)\$(ProjectName).chm"
 					/>
@@ -1080,7 +1080,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Making help file..."
-						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame.chm&quot; &quot;$(OutDir)\TortoiseGitBlame.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
+						CommandLine="start /wait hhc &quot;hlp\TortoiseGitBlame.hhp&quot;&#x0D;&#x0A;if not exist &quot;hlp\TortoiseGitBlame_en.chm&quot; goto :HelpError&#x0D;&#x0A;copy &quot;hlp\TortoiseGitBlame_en.chm&quot; &quot;$(OutDir)\TortoiseGitBlame_en.chm&quot;&#x0D;&#x0A;goto :HelpDone&#x0D;&#x0A;:HelpError&#x0D;&#x0A;echo hlp\TortoiseGitBlame.hhp(1) : error:Problem encountered creating help file&#x0D;&#x0A;echo.&#x0D;&#x0A;:HelpDone&#x0D;&#x0A;echo.&#x0D;&#x0A;"
 						AdditionalDependencies="hlp\HTMLDefines.h"
 						Outputs="$(OutDir)\$(ProjectName).chm"
 					/>
@@ -1091,7 +1091,7 @@
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="\build\x64\TortoiseGit\src\Resources\TortoiseGitBlame.rc"
+			Value="..\resources\TortoiseGitBlameENG.rc"
 		/>
 	</Globals>
 </VisualStudioProject>
