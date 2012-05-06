@@ -6,9 +6,16 @@
 
 RESTEXT		=..\bin\$(ConfigurationName)\bin\ResText.exe
 APPLY		=apply
-LANGDLLS	=$(outdir)/TortoiseProcLang2052.dll
+LANGDLLS	=$(outdir)/TortoiseProc2052.dll   \
+           $(outdir)/TortoiseMerge2052.dll  \
+           $(outdir)/TortoiseIdiff2052.dll  \
+           
+           
 all:$(LANGDLLS)
 	
-$(outdir)/TortoiseProcLang2052.dll:Tortoise_zh_CN.po
-	$(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $(outdir)\TortoiseProcLang2052.dll Tortoise_zh_CN.po
-
+$(outdir)/TortoiseProc2052.dll:Tortoise_zh_CN.po
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ $?
+$(outdir)/TortoiseMerge2052.dll:Tortoise_zh_CN.po
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ $?
+$(outdir)/TortoiseIdiff2052.dll:Tortoise_zh_CN.po
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ $?
