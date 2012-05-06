@@ -323,7 +323,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
 			if(m_bAutoCloseOnSuccess)
+			{
+				m_Log.GetWindowText(this->m_LogText);
 				EndDialog(IDOK);
+			}
 
 			if(m_PostCmdList.GetCount() > 0)
 			{
