@@ -100,9 +100,15 @@ void LoadLangDll()
 		strcat_s(langdirA, MAX_PATH, "\\Languages");
 //		bindtextdomain ("subversion", langdirA);
 
+		BOOL bIsWow = FALSE;
+		IsWow64Process(GetCurrentProcess(), &bIsWow);
+
 		do
 		{
-			_stprintf_s(langDll, MAX_PATH*4, _T("%s\\Languages\\TortoiseProc%d.dll"), langdir, langId);
+			if (bIsWow)
+				_stprintf_s(langDll, _T("%s\\Languages\\TortoiseProc32%d.dll"), langdir, langId);
+			else
+				_stprintf_s(langDll, _T("%s\\Languages\\TortoiseProc%d.dll"), langdir, langId);
 			BOOL versionmatch = TRUE;
 
 			struct TRANSARRAY
