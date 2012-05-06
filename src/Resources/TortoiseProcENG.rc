@@ -2799,7 +2799,7 @@ BEGIN
     IDS_COMMONFILEFILTER    "All Files (*.*)|*.*||"
     IDS_PROGRAMSFILEFILTER  "Programs (*.exe)|*.exe|All Files (*.*)|*.*||"
     IDS_CERTIFICATESFILEFILTER "Certificates|*.p12;*.pkcs12;*.pfx|All|*.*||"
-    IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All (*.*)|*.*||"
+    IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
     IDS_PICTUREFILEFILTER   "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
     IDS_PROPSFILEFILTER     "Properties (*.svnprops)|*.svnprops|All Files (*.*)|*.*||"
 END
