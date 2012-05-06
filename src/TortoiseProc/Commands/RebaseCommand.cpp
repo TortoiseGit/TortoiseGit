@@ -54,7 +54,7 @@ bool RebaseCommand::Execute()
 	while(1)
 	{
 		CRebaseDlg dlg;
-		dlg.m_PostButtonTexts.Add(_T("Restart Rebase"));
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESTARTREBASE)));
 		int ret = dlg.DoModal();
 		if( ret == IDOK)
 		{

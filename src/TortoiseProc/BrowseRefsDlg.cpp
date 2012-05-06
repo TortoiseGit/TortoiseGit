@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011 - TortoiseGit
+// Copyright (C) 2009-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -112,10 +112,15 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
-	m_ListRefLeafs.InsertColumn(eCol_Name,	L"Name",0,150);
-	m_ListRefLeafs.InsertColumn(eCol_Date,	L"Date Last Commit",0,100);
-	m_ListRefLeafs.InsertColumn(eCol_Msg,	L"Last Commit",0,300);
-	m_ListRefLeafs.InsertColumn(eCol_Hash,	L"Hash",0,80);
+	CString temp;
+	temp.LoadString(IDS_BRANCHNAME);
+	m_ListRefLeafs.InsertColumn(eCol_Name, temp, 0, 150);
+	temp.LoadString(IDS_DATELASTCOMMIT);
+	m_ListRefLeafs.InsertColumn(eCol_Date, temp, 0, 100);
+	temp.LoadString(IDS_LASTCOMMIT);
+	m_ListRefLeafs.InsertColumn(eCol_Msg, temp, 0, 300);
+	temp.LoadString(IDS_HASH);
+	m_ListRefLeafs.InsertColumn(eCol_Hash, temp, 0, 80);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -676,8 +681,14 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 		}
 
-											popupMenu.AppendMenuIcon(eCmd_ViewLog, L"Show Log", IDI_LOG);
-		if(bShowReflogOption)				popupMenu.AppendMenuIcon(eCmd_ShowReflog, L"Show Reflog", IDI_LOG);
+		CString temp;
+		temp.LoadString(IDS_MENULOG);
+		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
+		if(bShowReflogOption)
+		{
+			temp.LoadString(IDS_MENUREFLOG);
+			popupMenu.AppendMenuIcon(eCmd_ShowReflog, temp, IDI_LOG);
+		}
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
 		bAddSeparator = false;
@@ -701,7 +712,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(bShowCreateBranchOption)
 		{
 			bAddSeparator = true;
-			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create branch", IDI_COPY);
+			temp.LoadString(IDS_MENUBRANCH);
+			popupMenu.AppendMenuIcon(eCmd_CreateBranch, temp, IDI_COPY);
 		}
 
 		if(bShowRenameOption)
@@ -787,13 +799,17 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			popupMenu.AppendMenuIcon(eCmd_CreateBranch, L"Create branch", IDI_COPY);
+			CString temp;
+			temp.LoadString(IDS_MENUBRANCH);
+			popupMenu.AppendMenuIcon(eCmd_CreateBranch, temp, IDI_COPY);
 		}
 		if(pTree->IsFrom(L"refs/tags"))
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			popupMenu.AppendMenuIcon(eCmd_CreateTag, L"Create tag", IDI_TAG);
+			CString temp;
+			temp.LoadString(IDS_MENUTAG);
+			popupMenu.AppendMenuIcon(eCmd_CreateTag, temp, IDI_TAG);
 		}
 	}
 

@@ -163,9 +163,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	if(m_IsPull)
-		sWindowTitle = _T("Pull");
+		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_PULL));
 	else
-		sWindowTitle = _T("Fetch");
+		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH));
 
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 

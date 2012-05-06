@@ -2222,7 +2222,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 			case IDGITLC_RESTOREPATH:
 				{
-					if (CMessageBox::Show(m_hWnd, _T("Do you really want to restore the copy? You will loose all changes that you have done after creating the copy."), _T("TortoiseGit"), 2, IDI_QUESTION, _T("Restore"), _T("Abort")) == 2)
+					if (CMessageBox::Show(m_hWnd, IDS_STATUSLIST_RESTOREPATH, IDS_APPNAME, 2, IDI_QUESTION, IDS_RESTOREBUTTON, IDS_ABORTBUTTON) == 2)
 						break;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while (pos)
@@ -3730,7 +3730,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 				if(g_Git.GetOneFile(m_CurrentVersion, file1, (CString&)merge.GetWinPathString()))
 				{
-					CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 				}
 
 				if(parent1>=0)
@@ -3740,7 +3740,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 					if(g_Git.GetOneFile(str, file1, (CString&)mine.GetWinPathString()))
 					{
-						CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
 
@@ -3751,7 +3751,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 
 					if(g_Git.GetOneFile(str, file1, (CString&)theirs.GetWinPathString()))
 					{
-						CMessageBox::Show(NULL, _T("Fail to get merge file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+						CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETMERGEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 					}
 				}
 
@@ -3768,7 +3768,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 					{
 						if(g_Git.GetOneFile(output.Left(40), file1, (CString&)base.GetWinPathString()))
 						{
-							CMessageBox::Show(NULL, _T("Fail to get base file"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+							CMessageBox::Show(NULL, IDS_STATUSLIST_FAILEDGETBASEFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 						}
 					}
 				}
@@ -3843,7 +3843,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 	CString sToolTip;
 	if(simple)
 	{
-		sToolTip.Format(_T("line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d"),
+		sToolTip.Format(IDS_STATUSLIST_STATUSLINE1,
 			this->m_nLineAdded,this->m_nLineDeleted,
 				(LPCTSTR)sModified, m_nModified,
 				(LPCTSTR)sAdded, m_nAdded,
@@ -3853,7 +3853,7 @@ CString CGitStatusListCtrl::GetStatisticsString(bool simple)
 	}
 	else
 	{
-		sToolTip.Format(_T("line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"),
+		sToolTip.Format(IDS_STATUSLIST_STATUSLINE2,
 			this->m_nLineAdded,this->m_nLineDeleted,
 				(LPCTSTR)sNormal, m_nNormal,
 				(LPCTSTR)sUnversioned, m_nUnversioned,
@@ -5359,7 +5359,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 		{
 			if(g_Git.GetOneFile(m_CurrentVersion,*path,filename))
 			{
-				out.Format(_T("Fail checkout one file %s;%s"),m_CurrentVersion, path->GetWinPath());
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), m_CurrentVersion, filename);
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return;
 			}
@@ -5391,7 +5391,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 		count++;
 	}
 
-	out.Format(_T("%d files revert to %s"),count,m_CurrentVersion.Left(6));
+	out.Format(IDS_STATUSLIST_FILESREVERTED, count, m_CurrentVersion);
 	CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 	return 0;
 }
@@ -5415,7 +5415,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		CString cmd,out;
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))
 		{
-			out.Format(_T("Fail checkout file %s to %s\n"), filepath->GetGitPathString(), file);
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, filepath->GetGitPathString(), m_CurrentVersion, file);
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 			return;
 		}

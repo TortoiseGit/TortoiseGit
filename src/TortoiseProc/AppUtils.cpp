@@ -1033,7 +1033,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 
 	CTGitPath gitPath = g_Git.m_CurrentDir;
 	if (gitPath.HasSubmodules())
-		progress.m_PostCmdList.Add(_T("Update Submodules"));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
 	int ret = progress.DoModal();
 	if (gitPath.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)

@@ -244,7 +244,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_git_DEPTH_UNKNOWN   "Unknown depth"
-    IDS_git_DEPTH_WORKING   "Working copy"
+    IDS_git_DEPTH_WORKING   "Working Copy"
     IDS_MENUTAG             "Create Tag..."
     IDS_MENUFORMATPATCH     "Create Patch Serial..."
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."

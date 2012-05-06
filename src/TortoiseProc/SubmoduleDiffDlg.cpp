@@ -65,7 +65,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	{
 		CString toGroup;
 		GetDlgItem(IDC_TOGROUP)->GetWindowText(toGroup);
-		toGroup += _T(" (Working Copy)");
+		toGroup += _T(" (") + CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING)) +  _T(")");
 		GetDlgItem(IDC_TOGROUP)->SetWindowText(toGroup);
 	}
 

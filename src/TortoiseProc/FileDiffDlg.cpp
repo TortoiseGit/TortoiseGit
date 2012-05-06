@@ -124,7 +124,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	if(hash1 == GIT_REV_ZERO)
 	{
 		m_rev1.m_CommitHash.Empty();
-		m_rev1.GetSubject()=_T("Working Copy");
+		m_rev1.GetSubject() = CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING));
 	}
 	else
 	{
@@ -136,7 +136,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
 	if(hash2 == GIT_REV_ZERO)
 	{
 		m_rev2.m_CommitHash.Empty();
-		m_rev2.GetSubject()=_T("Working Copy");
+		m_rev2.GetSubject() = CString(MAKEINTRESOURCE(IDS_git_DEPTH_WORKING));
 	}
 	else
 	{
@@ -269,13 +269,13 @@ BOOL CFileDiffDlg::OnInitDialog()
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 
-	this->m_cRev1Btn.AddEntry(_T("RefBrowse"));
-	this->m_cRev1Btn.AddEntry(_T("Log"));
-	this->m_cRev1Btn.AddEntry(_T("RefLog"));
+	this->m_cRev1Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_REFBROWSE)));
+	this->m_cRev1Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_LOG)));
+	this->m_cRev1Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));
 
-	this->m_cRev2Btn.AddEntry(_T("RefBrowse"));
-	this->m_cRev2Btn.AddEntry(_T("Log"));
-	this->m_cRev2Btn.AddEntry(_T("RefLog"));
+	this->m_cRev2Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_REFBROWSE)));
+	this->m_cRev2Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_LOG)));
+	this->m_cRev2Btn.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));
 
 	// Start with focus on file list
 	GetDlgItem(IDC_FILELIST)->SetFocus();
@@ -636,7 +636,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							if(g_Git.GetOneFile(m_rev1.m_CommitHash, *fd, filename))
 							{
 								CString out;
-								out.Format(_T("Fail checkout one file: %s;%s\nDo you want to abort the export process?"), m_rev1.m_CommitHash.ToString(), fd->GetWinPath());
+								out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, fd->GetGitPathString(), m_rev1.m_CommitHash.ToString(), filename);
 								if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, _T("&Proceed"), _T("&Abort")) == 2)
 									return;
 							}

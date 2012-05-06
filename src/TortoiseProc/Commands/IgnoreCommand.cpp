@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2012 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +43,7 @@ bool IgnoreCommand::Execute()
 
 		CString format;
 
-		if(CMessageBox::Show(hwndExplorer, _T("Keep file locally?"), _T("TortoiseGit"), MB_ICONERROR|MB_YESNO) == IDYES)
+		if(CMessageBox::Show(hwndExplorer, IDS_PROC_KEEPFILELOCAL, IDS_APPNAME, MB_ICONERROR|MB_YESNO) == IDYES)
 		{
 			format= _T("git.exe update-index --force-remove -- \"%s\"");
 		}
@@ -60,18 +61,18 @@ bool IgnoreCommand::Execute()
 			cmd.Format(format,pathList[nPath].GetGitPathString());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
-				key=CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR|MB_OKCANCEL);
+				key = MessageBox(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR | MB_OKCANCEL);
 				if(key == IDCANCEL)
 					return FALSE;
 
 			}
 		}
 
-		output.Format(_T("%d files removed"),nPath);
+		output.Format(IDS_PROC_FILESREMOVED, nPath);
 
 		CShellUpdater::Instance().AddPathsForUpdate(pathList);
 
-		CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION|MB_OK);
+		MessageBox(hwndExplorer, output, _T("TortoiseGit"), MB_ICONINFORMATION | MB_OK);
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(orgPathList);

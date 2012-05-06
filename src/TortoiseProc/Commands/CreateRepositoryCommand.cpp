@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ bool CreateRepositoryCommand::Execute()
 	if(dlg.DoModal() == IDOK)
 	{
 		CString message;
-		message = _T("The folder \"") + folder + _T("\" is not empty. Proceeding might cause loss of data.");
+		message.Format(IDS_WARN_FOLDERNOTEMPTY, folder);
 		if (!PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, _T("A&bort"), _T("&Proceed")) == 1)
 		{
 			return false;

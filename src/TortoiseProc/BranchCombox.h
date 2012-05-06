@@ -156,7 +156,7 @@ protected:
 				return;
 			}
 
-			tooltip.Format(_T("CommitHash: %s\nCommit by: %s\nDate:%s\n%s\n%s"),
+			tooltip.Format(IDS_PROC_REVISIONTOOLTIP,
 				rev.m_CommitHash.ToString(),
 				rev.GetAuthorName(),
 				CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),

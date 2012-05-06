@@ -150,7 +150,7 @@ BOOL CSendMailDlg::OnInitDialog()
 	else
 	{
 		m_ToolTip.SetMaxTipWidth(1024*8); // make multiline tooltips possible
-		m_ToolTip.AddTool(GetDlgItem(IDC_SENDMAIL_MAPI), _T("Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."));
+		m_ToolTip.AddTool(GetDlgItem(IDC_SENDMAIL_MAPI), CString(MAKEINTRESOURCE(IDS_PROC_SENDMAIL_WRAPTOOLTIP)));
 		m_ToolTip.Activate(TRUE);
 	}
 

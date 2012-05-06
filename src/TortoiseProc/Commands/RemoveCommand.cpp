@@ -157,7 +157,7 @@ bool RemoveCommand::Execute()
 		}
 	}
 
-	output.Format(_T("%d files removed"),nPath);
+	output.Format(IDS_PROC_FILESREMOVED, nPath);
 
 	CShellUpdater::Instance().AddPathsForUpdate(pathList);
 

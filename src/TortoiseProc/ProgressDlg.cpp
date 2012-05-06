@@ -302,8 +302,6 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_GitStatus = -1;
 		}
 
-		CString err;
-		err.Format(_T("\r\n\r\ngit did not exit cleanly (exit code %d)\r\n"), m_GitStatus);
 		if(this->m_GitStatus)
 		{
 			if (m_pTaskbarList)
@@ -311,12 +309,20 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 				m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
 			}
-			InsertColorText(this->m_Log,err,RGB(255,0,0));
+			CString log;
+			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
+			CString err;
+			err.Format(_T("\r\n\r\n%s\r\n"), log);
+			InsertColorText(this->m_Log, err, RGB(255,0,0));
 		}
 		else {
 			if (m_pTaskbarList)
 				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
-			InsertColorText(this->m_Log,_T("\r\nSuccess\r\n"),RGB(0,0,255));
+			CString temp;
+			temp.LoadString(IDS_SUCCESS);
+			CString log;
+			log.Format(_T("\r\n%s\r\n"), temp);
+			InsertColorText(this->m_Log, log, RGB(0,0,255));
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}
 

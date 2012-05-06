@@ -197,8 +197,8 @@ BOOL CRebaseDlg::OnInitDialog()
 
 	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("RebaseDlg"),(GITSLC_POPALL ^ (GITSLC_POPCOMMIT|GITSLC_POPRESTORE)),false);
 
-	m_ctrlTabCtrl.AddTab(&m_FileListCtrl,_T("Revision Files"));
-	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl,_T("Commit Message"),1);
+	m_ctrlTabCtrl.AddTab(&m_FileListCtrl, CString(MAKEINTRESOURCE(IDS_PROC_REVISIONFILES)));
+	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl, CString(MAKEINTRESOURCE(IDS_PROC_COMMITMESSAGE)), 1);
 	AddRebaseAnchor();
 
 	CString sWindowTitle;
@@ -263,7 +263,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
 		this->m_UpstreamCtrl.AddString(_T("HEAD"));
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
-		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, _T("Cherry Pick"));
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
 		this->m_CommitList.StartFilter();
 	}
 	else
@@ -554,7 +554,7 @@ void CRebaseDlg::FetchLogList()
 	this->m_CommitList.FillGitLog(NULL,0,&from,&to);
 
 	if( m_CommitList.GetItemCount() == 0 )
-		m_CommitList.ShowText(_T("Nothing to Rebase"));
+		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_PROC_NOTHINGTOREBASE)));
 
 	hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
 
@@ -599,7 +599,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		GitRev rev;
 		rev.GetCommit(text);
 
-		tooltip.Format(_T("CommitHash:%s\nCommit by: %s  %s\n <b>%s</b> \n %s"),
+		tooltip.Format(IDS_PROC_REVISIONTOOLTIP,
 			rev.m_CommitHash.ToString(),
 			rev.GetAuthorName(),
 			CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
@@ -756,7 +756,7 @@ int CRebaseDlg::StartRebase()
 	cmd=_T("git.exe rev-parse --verify HEAD");
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
-		AddLogString(_T("No Head"));
+		AddLogString(CString(MAKEINTRESOURCE(IDS_PROC_NOHEAD)));
 		return -1;
 	}
 	//Todo
@@ -791,6 +791,7 @@ int CRebaseDlg::StartRebase()
 		}
 	}
 
+	CString log;
 	if( !this->m_IsCherryPick )
 	{
 		m_OrigBranchHash = g_Git.GetHash(this->m_BranchCtrl.GetString());
@@ -799,12 +800,12 @@ int CRebaseDlg::StartRebase()
 			this->AddLogString(m_OrigBranchHash.ToString());
 			return -1;
 		}
-		this->AddLogString(_T("Start Rebase\r\n"));
-
+		log.Format(_T("%s\r\n"), CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTREBASE)));
 	}
 	else
-		this->AddLogString(_T("Start Cherry-pick\r\n"));
+		log.Format(_T("%s\r\n"), CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTCHERRYPICK)));
 
+	this->AddLogString(log);
 	return 0;
 }
 int CRebaseDlg::VerifyNoConflict()
@@ -817,7 +818,7 @@ int CRebaseDlg::VerifyNoConflict()
 	}
 	if( list.GetCount() != 0 )
 	{
-		CMessageBox::Show(NULL,_T("There are conflict file, you should mark it resolve"),_T("TortoiseGit"),MB_OK);
+		CMessageBox::Show(NULL, IDS_PROGRS_CONFLICTSOCCURED, IDS_APPNAME, MB_OK);
 		return -1;
 	}
 	return 0;
@@ -853,7 +854,7 @@ int CRebaseDlg::FinishRebase()
 
 	m_ctrlTabCtrl.RemoveTab(0);
 	m_ctrlTabCtrl.RemoveTab(0);
-	m_CtrlStatusText.SetWindowText(_T("Finished rebasing."));
+	m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED)));
 
 	return 0;
 }
@@ -888,23 +889,25 @@ void CRebaseDlg::OnBnClickedContinue()
 		if(!g_Git.IsFastForward(this->m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString()))
 		{
 			this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
-			AddLogString(_T("No fast forward\r\nMaybe repository changed"));
+			AddLogString(_T("No fast forward possible.\r\nMaybe repository changed"));
 			return;
 		}
 
 		cmd.Format(_T("git.exe reset --hard %s"),g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
-		this->AddLogString(CString(_T("Fast forward to "))+m_UpstreamCtrl.GetString());
+		CString log;
+		log.Format(IDS_PROC_REBASE_FFTO, m_UpstreamCtrl.GetString());
+		this->AddLogString(log);
 
 		AddLogString(cmd);
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			AddLogString(_T("Fail"));
+			AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
 			AddLogString(out);
 			return;
 		}
 		AddLogString(out);
-		AddLogString(_T("Done"));
+		AddLogString(CString(MAKEINTRESOURCE(IDS_DONE)));
 		m_RebaseStage = REBASE_DONE;
 		UpdateCurrentStatus();
 		return;
@@ -917,8 +920,8 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = REBASE_START;
 		m_FileListCtrl.Clear();
 		m_FileListCtrl.m_CurrentVersion = L"";
-		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, _T("Conflict Files"));
-		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase,_T("Log"),2);
+		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, CString(MAKEINTRESOURCE(IDS_PROC_CONFLICTFILES)));
+		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase, CString(MAKEINTRESOURCE(IDS_LOG)), 2);
 	}
 
 	if( m_RebaseStage == REBASE_FINISH )
@@ -996,7 +999,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		str=this->m_LogMessageCtrl.GetText();
 		if(str.Trim().IsEmpty())
 		{
-			CMessageBox::Show(NULL,_T("Commit Message Is Empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
 				return;
 		}
 
@@ -1105,35 +1108,35 @@ void CRebaseDlg::SetContinueButtonText()
 	case CHOOSE_BRANCH:
 	case CHOOSE_COMMIT_PICK_MODE:
 		if(this->m_IsFastForward)
-			Text = _T("Start (FastFwd)");
+			Text.LoadString(IDS_PROC_STARTREBASEFFBUTTON);
 		else
-			Text = _T("Start Rebase");
+			Text.LoadString(IDS_PROC_STARTREBASEBUTTON);
 		break;
 
 	case REBASE_START:
 	case REBASE_CONTINUE:
 	case REBASE_SQUASH_CONFLICT:
-		Text = _T("Continue");
+		Text.LoadString(IDS_CONTINUEBUTTON);
 		break;
 
 	case REBASE_CONFLICT:
-		Text = _T("Commit");
+		Text.LoadString(IDS_COMMITBUTTON);
 		break;
 	case REBASE_EDIT:
-		Text = _T("Amend");
+		Text.LoadString(IDS_AMENDBUTTON);
 		break;
 
 	case REBASE_SQUASH_EDIT:
-		Text = _T("Commit");
+		Text.LoadString(IDS_COMMITBUTTON);
 		break;
 
 	case REBASE_ABORT:
 	case REBASE_FINISH:
-		Text = _T("Finish");
+		Text.LoadString(IDS_FINISHBUTTON);
 		break;
 
 	case REBASE_DONE:
-		Text = _T("Done");
+		Text.LoadString(IDS_DONE);
 		break;
 	}
 	this->GetDlgItem(IDC_REBASE_CONTINUE)->SetWindowText(Text);
@@ -1230,7 +1233,7 @@ void CRebaseDlg::UpdateProgress()
 	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
 	{
 		CString text;
-		text.Format(_T("Rebasing... (%d/%d)"),index,m_CommitList.GetItemCount());
+		text.Format(IDS_PROC_REBASING_PROGRESS, index, m_CommitList.GetItemCount());
 		m_CtrlStatusText.SetWindowText(text);
 
 	}
@@ -1328,7 +1331,7 @@ int CRebaseDlg::DoRebase()
 	AddLogString(pRev->GetSubject());
 	if (pRev->GetSubject().IsEmpty())
 	{
-		CMessageBox::Show(m_hWnd, _T("Found an empty commit message. You have to enter one or rebase cannot proceed."), _T("TortoiseGit"), MB_OK | MB_ICONEXCLAMATION);
+		CMessageBox::Show(m_hWnd, IDS_PROC_REBASE_EMPTYCOMMITMSG, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
 		mode = CTGitPath::LOGACTIONS_REBASE_EDIT;
 	}
 
@@ -1546,7 +1549,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return;
 	}
 
-	if(CMessageBox::Show(NULL,_T("Are you sure you want to abort the rebase process?"),_T("TortoiseGit"),MB_YESNO) != IDYES)
+	if(CMessageBox::Show(NULL, IDS_PROC_REBASE_ABORT, IDS_APPNAME, MB_YESNO) != IDYES)
 		return;
 
 	if(this->m_IsFastForward)

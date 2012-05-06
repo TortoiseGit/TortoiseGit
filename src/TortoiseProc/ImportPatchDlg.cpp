@@ -163,8 +163,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	m_tooltips.AddTool(IDC_CHECK_3WAY,IDS_AM_3WAY_TT);
 	m_tooltips.AddTool(IDC_CHECK_IGNORE_SPACE,IDS_AM_IGNORE_SPACE_TT);
 
-	m_ctrlTabCtrl.AddTab(&m_PatchCtrl,_T("Patch"),0);
-	m_ctrlTabCtrl.AddTab(&m_wndOutput,_T("Log"),1);
+	m_ctrlTabCtrl.AddTab(&m_PatchCtrl, CString(MAKEINTRESOURCE(IDS_PATCH)), 0);
+	m_ctrlTabCtrl.AddTab(&m_wndOutput, CString(MAKEINTRESOURCE(IDS_LOG)), 1);
 
 	AddAmAnchor();
 
@@ -247,7 +247,7 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 	CFileDialog dlg(TRUE,NULL,
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT|OFN_ALLOWMULTISELECT,
-					_T("Patch Files(*.patch)|*.patch|Diff Files(*.diff)|*.diff|All Files(*.*)|*.*||"));
+					CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
 	dlg.m_ofn.nMaxFile = 65536;
 	auto_buffer<TCHAR> path(dlg.m_ofn.nMaxFile);
 	dlg.m_ofn.lpstrFile = path;
@@ -379,9 +379,9 @@ UINT CImportPatchDlg::PatchThread()
 				if (m_pTaskbarList)
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 
-				int ret = CMessageBox::Show(NULL, _T("<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n\n Do you want to"),
-												  _T("TortoiseGit"),
-												   1,IDI_ERROR ,_T("&Abort"), _T("&Skip"),_T("&Resolved"));
+				int ret = CMessageBox::Show(NULL, IDS_PROC_APPLYPATCH_REBASEDIRFOUND,
+												  IDS_APPNAME,
+												   1, IDI_ERROR, IDS_ABORTBUTTON, IDS_SKIPBUTTON, IDS_RESOLVEDBUTTON);
 
 				switch(ret)
 				{
@@ -409,11 +409,11 @@ UINT CImportPatchDlg::PatchThread()
 				if (g_Git.Run(cmd, &output, CP_UTF8))
 				{
 					this->AddLogString(output);
-					this->AddLogString(_T("Fail"));
+					this->AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
 				}
 				else
 				{
-					this->AddLogString(_T("Done"));
+					this->AddLogString(CString(MAKEINTRESOURCE(IDS_DONE)));
 				}
 			}
 
@@ -445,7 +445,7 @@ UINT CImportPatchDlg::PatchThread()
 				//keep STATUS_APPLYING to let user retry failed patch
 				m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_FAIL|CPatchListCtrl::STATUS_APPLYING);
 				this->AddLogString(output);
-				this->AddLogString(_T("Fail"));
+				this->AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
 				if (m_pTaskbarList)
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 				break;
@@ -454,13 +454,15 @@ UINT CImportPatchDlg::PatchThread()
 			else
 			{
 				m_cList.SetItemData(i,  CPatchListCtrl::STATUS_APPLY_SUCCESS);
-				this->AddLogString(_T("Success"));
+				this->AddLogString(CString(MAKEINTRESOURCE(IDS_SUCCESS)));
 			}
 
 		}
 		else
 		{
-			AddLogString(CString(_T("Skip Patch: "))+m_cList.GetItemText(i,0));
+			CString sMessage;
+			sMessage.Format(IDS_PROC_SKIPPATCH, m_cList.GetItemText(i,0));
+			AddLogString(sMessage);
 			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
 		}
 
@@ -600,7 +602,7 @@ void CImportPatchDlg::UpdateOkCancelText()
 	if (this->m_bThreadRunning && !IsFinish())
 	{
 		this->GetDlgItem(IDOK)->EnableWindow(FALSE);
-		this->GetDlgItem(IDCANCEL)->SetWindowText(_T("A&bort"));
+		this->GetDlgItem(IDCANCEL)->SetWindowText(CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 	}
 	else if (!IsFinish())
 	{
@@ -609,7 +611,7 @@ void CImportPatchDlg::UpdateOkCancelText()
 	else
 	{
 		this->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
-		this->GetDlgItem(IDOK)->SetWindowText(_T("&OK"));
+		this->GetDlgItem(IDOK)->SetWindowText(CString(MAKEINTRESOURCE(IDS_OKBUTTON)));
 	}
 }
 void CImportPatchDlg::OnBnClickedCancel()
@@ -623,11 +625,11 @@ void CImportPatchDlg::OnBnClickedCancel()
 		CTGitPath path;
 		path.SetFromWin(g_Git.m_CurrentDir);
 		if(path.HasRebaseApply())
-			if(MessageBox(_T("\"git am\" is still in apply mode.\nDo you want to abort?"), _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+			if(CMessageBox::Show(NULL, IDS_PROC_APPLYPATCH_GITAMACTIVE, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
 			{
 				CString output;
 				if (g_Git.Run(_T("git.exe am --abort"), &output, CP_UTF8))
-					MessageBox(output, _T("TortoiseGit error"), MB_OK);
+					MessageBox(output, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			}
 		OnCancel();
 	}

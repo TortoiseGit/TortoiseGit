@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "AppUtils.h"
 #include "ProgressDlg.h"
 #include "MessageBox.h"
+#include "resource.h"
 
 bool BisectCommand::Execute()
 {
@@ -57,7 +58,7 @@ bool BisectCommand::Execute()
 			progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);
 
 			if (path.HasSubmodules())
-				progress.m_PostCmdList.Add(_T("Update Submodules"));
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
 			int ret = progress.DoModal();
 			if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
@@ -100,7 +101,7 @@ bool BisectCommand::Execute()
 		progress.m_GitCmd = cmd;
 
 		if (path.HasSubmodules())
-			progress.m_PostCmdList.Add(_T("Update Submodules"));
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
 		int reset = -1;
 		if (!this->parser.HasKey(_T("reset")))

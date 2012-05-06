@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -134,19 +134,19 @@ void CExportDlg::OnOK()
 	{
 		if(::PathIsDirectory(m_strExportDirectory))
 		{
-			CMessageBox::Show(NULL, _T("You selected a folder.\r\nExports are only possible to a (zip) file."),
-				_T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, IDS_PROCEXPORTERRFOLDER, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
 		}
-		if (CMessageBox::Show(NULL, _T("\"") + m_strExportDirectory + _T("\" already exists.\r\nDo you want to overwrite it?"),
-				_T("TortoiseGit"), MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2) != IDYES)
+		CString sMessage;
+		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, m_strExportDirectory);
+		if (CMessageBox::Show(NULL, sMessage, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
 		{
 			return ;
 		}
 	}
 	else if (m_strExportDirectory.IsEmpty())
 	{
-		CMessageBox::Show(NULL,_T("You must select a filename for the zip-file!"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, IDS_PROC_NOZIPFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -170,8 +170,7 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 	// dialog controls.
 	//
 	this->UpdateRevsionName();
-	CFileDialog dlg(FALSE,_T("Zip"),this->m_VersionName,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-						_T("*.Zip"));
+	CFileDialog dlg(FALSE, _T("zip"), this->m_VersionName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("*.zip"));
 
 	if(dlg.DoModal()==IDOK)
 	{

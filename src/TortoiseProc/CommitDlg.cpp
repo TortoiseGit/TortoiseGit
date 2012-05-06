@@ -449,7 +449,7 @@ void CCommitDlg::OnOK()
 	ProjectProperties::GetBOOLProps(bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
 	if (bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
 	{
-		UINT retval = CMessageBox::Show(this->m_hWnd, _T("You haven't entered your Signed-Off-By line!"), _T("TortoiseGit"), 1, IDI_WARNING, _T("&Add it"), _T("&Commit w/o"), _T("A&bort"));
+		UINT retval = CMessageBox::Show(this->m_hWnd, IDS_PROC_COMMIT_NOSIGNOFFLINE, IDS_APPNAME, 1, IDI_WARNING, IDS_PROC_COMMIT_ADDSIGNOFFBUTTON, IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON, IDS_ABORTBUTTON);
 		if (retval == 1)
 		{
 			OnBnClickedSignOff();
@@ -524,8 +524,8 @@ void CCommitDlg::OnOK()
 	CSysProgressDlg sysProgressDlg;
 	if (nListItems >= 25 && sysProgressDlg.IsValid())
 	{
-		sysProgressDlg.SetTitle(_T("Preparing commit..."));
-		sysProgressDlg.SetLine(1, _T("Updating index"));
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PREPARECOMMIT)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_UPDATEINDEX)));
 		sysProgressDlg.SetTime(true);
 		sysProgressDlg.SetShowProgressBar(true);
 		sysProgressDlg.ShowModal(this, true);
@@ -752,9 +752,9 @@ void CCommitDlg::OnOK()
 
 		if (!m_bNoPostActions && !m_bAutoClose)
 		{
-			progress.m_PostCmdList.Add( IsGitSVN? _T("&DCommit"): _T("&Push"));
+			progress.m_PostCmdList.Add( IsGitSVN? CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)): CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 			progress.m_PostCmdList.Add(_T("&ReCommit"));
-			progress.m_PostCmdList.Add(_T("Create &Tag"));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
 		}
 
 		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
@@ -2172,8 +2172,7 @@ int CCommitDlg::CheckHeadDetach()
 	CString output;
 	if(g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir,output))
 	{
-		int retval = CMessageBox::Show(NULL,_T("<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch)\nDo you want create branch now?"),
-						_T("TortoiseGit"),MB_YESNOCANCEL | MB_ICONWARNING);
+		int retval = CMessageBox::Show(NULL, IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
 			if (CAppUtils::CreateBranchTag(FALSE, NULL, true) == FALSE)
@@ -2241,7 +2240,7 @@ void CCommitDlg::OnBnClickedCheckNewBranch()
 
 void CCommitDlg::RestoreFiles(bool doNotAsk)
 {
-	if (m_ListCtrl.m_restorepaths.size() && (doNotAsk || CMessageBox::Show(m_hWnd, _T("You marked some files as \"Restore after commit\".\nDo you want to restore them now? You might loose all changes to this file after marking it."), _T("TortoiseGit"), 2, IDI_QUESTION, _T("Restore old state"), _T("Keep current state")) == 1))
+	if (m_ListCtrl.m_restorepaths.size() && (doNotAsk || CMessageBox::Show(m_hWnd, IDS_PROC_COMMIT_RESTOREFILES, IDS_APPNAME, 2, IDI_QUESTION, IDS_PROC_COMMIT_RESTOREFILES_RESTORE, IDS_PROC_COMMIT_RESTOREFILES_KEEP) == 1))
 	{
 		for (std::map<CString, CString>::iterator it = m_ListCtrl.m_restorepaths.begin(); it != m_ListCtrl.m_restorepaths.end(); ++it)
 			CopyFile(it->second, g_Git.m_CurrentDir + _T("\\") + it->first, FALSE);

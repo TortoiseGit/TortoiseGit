@@ -76,12 +76,12 @@ bool PullCommand::Execute()
 		cmd.Format(_T("git.exe pull -v %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
-		progress.m_PostCmdList.Add(_T("Pulled Diff"));
-		progress.m_PostCmdList.Add(_T("Pulled Log"));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_LOG)));
 
 		CTGitPath gitPath = g_Git.m_CurrentDir;
 		if (gitPath.HasSubmodules())
-			progress.m_PostCmdList.Add(_T("Update submodules"));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
 		//progress.m_PostCmdList.Add(_T("Show Conflict"));
 
@@ -90,7 +90,7 @@ bool PullCommand::Execute()
 
 		int ret = progress.DoModal();
 
-		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, _T("Do you want to open changes?"), _T("TortoiseGit"), MB_YESNO | MB_ICONINFORMATION) == IDYES)
+		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 		{
 			CChangedDlg dlg;
 			dlg.m_pathList.AddPath(CTGitPath());
@@ -106,7 +106,7 @@ bool PullCommand::Execute()
 			if(hashOld == hashNew)
 			{
 				if(progress.m_GitStatus == 0)
-					CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
+					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
 				return TRUE;
 			}
 
@@ -121,7 +121,7 @@ bool PullCommand::Execute()
 			if(hashOld == hashNew)
 			{
 				if(progress.m_GitStatus == 0)
-					CMessageBox::Show(NULL, L"Already up to date.", L"Pull", MB_OK | MB_ICONINFORMATION);
+					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
 				return TRUE;
 			}
 
