@@ -1397,6 +1397,7 @@ Global
 		{1B3C273E-6DDF-4FBE-BA31-F9F39C6DAC99}.Release|Mixed Platforms.ActiveCfg = Release|x64
 		{1B3C273E-6DDF-4FBE-BA31-F9F39C6DAC99}.Release|Mixed Platforms.Build.0 = Release|x64
 		{1B3C273E-6DDF-4FBE-BA31-F9F39C6DAC99}.Release|Win32.ActiveCfg = Release|Win32
+		{1B3C273E-6DDF-4FBE-BA31-F9F39C6DAC99}.Release|Win32.Build.0 = Release|Win32
 		{1B3C273E-6DDF-4FBE-BA31-F9F39C6DAC99}.Release|x64.ActiveCfg = Release|x64
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6}.debug_static|Mixed Platforms.ActiveCfg = Debug|x64
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6}.debug_static|Mixed Platforms.Build.0 = Debug|x64
@@ -2465,9 +2466,7 @@ Global
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.Debug|Win32.ActiveCfg = Debug|Win32
-		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.Debug|Win32.Build.0 = Debug|Win32
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.Debug|x64.ActiveCfg = Debug|x64
-		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.Debug|x64.Build.0 = Debug|x64
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.DLL ASM Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.DLL ASM Debug|Mixed Platforms.Build.0 = Debug|x64
 		{1B3C273E-6DDF-4FBE-BA31-FCF39C6DBCF9}.DLL ASM Debug|Win32.ActiveCfg = Debug|Win32
@@ -2535,9 +2534,7 @@ Global
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.Debug|Win32.ActiveCfg = Debug|Win32
-		{56016512-D578-46FD-85E0-9EDCD37433AC}.Debug|Win32.Build.0 = Debug|Win32
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.Debug|x64.ActiveCfg = Debug|x64
-		{56016512-D578-46FD-85E0-9EDCD37433AC}.Debug|x64.Build.0 = Debug|x64
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.DLL ASM Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.DLL ASM Debug|Mixed Platforms.Build.0 = Debug|x64
 		{56016512-D578-46FD-85E0-9EDCD37433AC}.DLL ASM Debug|Win32.ActiveCfg = Debug|Win32
