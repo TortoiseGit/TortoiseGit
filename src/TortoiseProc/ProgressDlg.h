@@ -107,7 +107,7 @@ private:
 	//Share with Sync Dailog
 	static int	FindPercentage(CString &log);
 
-	static int	ClearESC(CStringA &str);
+	static void	ClearESC(CString &str);
 
 public:
 	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,

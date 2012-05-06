@@ -5,6 +5,7 @@ Released: unreleased
  * Updated shipped zlib library to version 1.2.7
  * Synced TortoiseIDiff with TortoiseSVN
  * Synced TortoiseUDiff with TortoiseSVN
+ * Fixed issue #1150: Add support for ANSI Color Codes in log Outputs
 
 = Release 1.7.9.0 =
 Released: 2012-05-05

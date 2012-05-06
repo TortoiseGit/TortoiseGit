@@ -387,9 +387,44 @@ void CProgressDlg::ParserCmdOutput(char ch)
 {
 	ParserCmdOutput(this->m_Log,this->m_Progress,this->m_hWnd,this->m_pTaskbarList,this->m_LogTextA,ch,&this->m_CurrentWork);
 }
-int CProgressDlg::ClearESC(CStringA &str)
+void CProgressDlg::ClearESC(CString &str)
 {
-	return str.Replace("\033[K", "");
+	// see http://ascii-table.com/ansi-escape-sequences.php and http://tldp.org/HOWTO/Bash-Prompt-HOWTO/c327.html
+	str.Replace(_T("\033[K"), _T("")); // erase until end of line; no need to care for this, because we always clear the whole line
+
+	// drop colors
+	while (true)
+	{
+		int escapePosition = str.Find(_T('\033'));
+		if (escapePosition >= 0 && str.GetLength() >= escapePosition + 3)
+		{
+			if (str.Mid(escapePosition, 2) == _T("\033["))
+			{
+				int colorEnd = str.Find(_T('m'), escapePosition + 2);
+				if (colorEnd > 0)
+				{
+					bool found = true;
+					for (int i = escapePosition + 2; i < colorEnd; i++)
+					{
+						if (str[i] != _T(';') && (str[i] < _T('0') && str[i] > _T('9')))
+						{
+							found = false;
+							break;
+						}
+					}
+					if (found)
+					{
+						if (escapePosition > 0)
+							str = str.Left(escapePosition) + str.Mid(colorEnd + 1);
+						else
+							str = str.Mid(colorEnd);
+						continue;
+					}
+				}
+			}
+		}
+		break;
+	}
 }
 void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,CStringA &oneline, char ch, CWnd *CurrentWork)
 {
@@ -401,16 +436,12 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctr
 //		TRACE(_T("End Char %s \r\n"),ch==_T('\r')?_T("lf"):_T(""));
 //		TRACE(_T("End Char %s \r\n"),ch==_T('\n')?_T("cr"):_T(""));
 
-		if(ClearESC(oneline))
-		{
-			// do not erase line; commenting this out fixes issue #1027 and hopefully does not break anything else
-			//ch = ('\r');
-		}
-
 		int lines = log.GetLineCount();
 		g_Git.StringAppend(&str, (BYTE*)oneline.GetBuffer(), CP_UTF8);
 		str.Trim();
 //		TRACE(_T("%s"), str);
+
+		ClearESC(str);
 
 		if(ch == ('\r'))
 		{
@@ -614,6 +645,8 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	str.Empty();
 	g_Git.StringAppend(&str, (BYTE*)buff, cp, start);
 	g_Git.StringAppend(&str, (BYTE*)buff + start, CP_UTF8, size - start);
+
+	ClearESC(str);
 
 	return str;
 }
