@@ -3468,79 +3468,11 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROP_TT_IGNORE      "svn:ignore\r\nA newline separated list of file patterns to ignore."
-    IDS_PROP_TT_KEYWORDS    "svn:keywords\r\nKeywords to be expanded. Valid keywords are:\r\nURL, HeadURL : The URL for the head revision of the object.\r\nAuthor, LastChangedBy : The last person to modify the file.\r\nDate, LastChangedDate : The date/time the object was last modified.\r\nRev, LastChangedRevision : The last revision the object changed.\r\nId : A compressed summary of the previous 4 keywords."
-    IDS_PROP_TT_EXECUTABLE  "svn:executable\r\nIf present, make the file executable. This property cannot be set on a directory.\r\nA non-recursive attempt will fail, and a recursive attempt will set the property only on the file children of the directory."
-    IDS_PROP_TT_EOLSTYLE    "svn:eol-style\r\nOne of 'native', 'LF', 'CR', 'CRLF'."
-    IDS_PROP_TT_MIMETYPE    "svn:mime-type\r\nThe mime type of the file. Used to determine whether to merge the file, and how to serve it from Apache.\r\nA mime type beginning with 'text/' (or an absent mime type) is treated as text.\r\nAnything else is treated as binary."
-    IDS_PROP_TT_EXTERNALS   "svn:externals\r\nA newline separated list of module specifiers, each of which consists of\r\nan optional revision, an URL and a relative directory path. For example\r\nhttp://example.com/repos/zig foo\r\n-r 1234 http://example.com/repos/zag foo/bar\r\n\r\nThe URLs can either be full URLs or relative. The format for\r\nthe relative URLs is:\r\n../ relative to the parent directory of the external\r\n^/ relative to the repository root\r\n// relative to the URL scheme\r\n/ relative to the server's hostname"
-    IDS_PROP_TT_MERGEINFO   "svn:mergeinfo\r\nA newline separated list of merge tracking info. Each line consists of an absolute\r\npath followed by a colon and a list of comma separated revision numbers.\r\nFor example\r\n/trunk:123-125,129"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROP_TT_BQLABEL     "bugtraq:label\r\nLabel text to show for the edit box where the user enters the issue number."
-    IDS_PROP_TT_BQMESSAGE   "bugtraq:message\r\nString which is appended to a log message when an issue number is entered.\r\nThe string must contain '%BUGID%' which gets replaced with the issue number."
-    IDS_PROP_TT_BQNUMBER    "bugtraq:number\r\nSet to 'false' if your bugtracking system has issues which are referenced not by numbers."
-    IDS_PROP_TT_BQURL       "bugtraq:url\r\nURL pointing to the issue tracker. It must contain '%BUGID%' which\r\ngets replaced with the issue number."
-    IDS_PROP_TT_BQWARNNOISSUE 
-                            "tsvn:warnifnoissue\r\nSet to 'yes' if a warning shall be shown when no issue is entered in the commit dialog."
-    IDS_PROP_TT_BQAPPEND    "bugtraq:append\r\nSet to 'false' if you want the bugtracking ID to be inserted at the top of the\r\nlog message. The default is 'true' which means the bugtracking ID\r\nis appended to the log message."
-    IDS_PROP_TT_BQLOGREGEX  "bugtraq:logregex\r\ntwo regular expressions separated by a newline.\r\nThe first expression is used to find a string referring to an issue,\r\nthe second expression is used to extract the bare bug ID from that string."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROP_TT_TSVNLOGTEMPLATE 
-                            "tsvn:logtemplate\r\nString which is inserted in the log message boxes in the commit dialogs.\r\nUse this as a log message template for users to fill in."
-    IDS_PROP_TT_TSVNLOGWIDTHMARKER 
-                            "tsvn:logwidthmarker\r\nSet this to the number of chars the log message should not exceed its width.\r\nA faded line is shown in the commit dialogs at that position. The default is 80 chars."
-    IDS_PROP_TT_TSVNLOGMINSIZE 
-                            "tsvn:logminsize\r\nMinimum size in chars a log message must have before a commit is allowed."
-    IDS_PROP_TT_TSVNLOGFILELISTENGLISH 
-                            "tsvn:logfilelistenglish\r\nSet to 'false' if you don't want the list of changed files to be pasted in English\r\nin the commit dialog."
-    IDS_PROP_TT_TSVNAUTOPROPS 
-                            "tsvn:autoprops\r\nA list of properties separated by newlines which get applied automatically when adding/importing files.\r\nFormat: <filemask> = property=value;property=value\r\nExample: *.xml = svn:eol-style=native;svn:mime-type=text/xml"
-    IDS_PROP_TT_TSVNPROJECTLANGUAGE 
-                            "tsvn:projectlanguage\r\nSet this to the language number you want your log messages written in.\r\nTortoiseGit will then load the appropriate spell checker module if available."
-    IDS_PROP_TT_TSVNLOGSUMMARY 
-                            "tsvn:logsummary\r\nA regex string which extracts a summary from a log message in its first group."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROP_TT_TSVNUSERFILEPROPERTIES 
-                            "A list of user defined properties for files to show in the combo box"
-    IDS_PROP_TT_TSVNUSERFOLDERPROPERTIES 
-                            "A list of user defined properties for folders to show in the combo box"
-    IDS_PROP_TT_WEBVIEWERREVISION 
-                            "webviewer:revision\r\nURL pointing to the web viewer for the repository for a specific revision.\r\nThe string %REVISION% in that URL is replaced with the revision number."
-    IDS_PROP_TT_WEBVIEWERPATHREVISION 
-                            "webviewer:pathrevision\r\nURL pointing to the web viewer for the repository for a specific file and revision.\r\nThe string %REVISION% in the URL is replaced with the revision number,\r\nthe string %PATH% is replaced with the path to the file relative to the repository root."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROP_TT_USERFILEPROPERTIES 
-                            "tsvn:userfileproperties\r\nNewline separated list of user defined properties for files which will\r\nbe shown in the property dialog to choose from."
-    IDS_PROP_TT_USERFOLDERPROPERTIES 
-                            "tsvn:userfolderproperties\r\nNewline separated list of user defined properties for folders which will\r\nbe shown in the property dialog to choose from."
-    IDS_PROP_TT_RECURSIVE   "Applies the properties recursively to all files/folders.\r\nbugtraq:, tsvn: and webviewer: properties are only applied to folders."
-    IDS_PROP_TT_IMPORT      "Import a previously saved set of properties from a file"
-    IDS_PROP_TT_EXPORT      "Exports a set of properties to a file"
-    IDS_PROP_TT_SAVE        "Saves the selected property value to a file"
-    IDS_PROP_TT_REMOVE      "Removes the selected properties"
-    IDS_PROP_TT_EDIT        "Edits the selected property value"
-END
-
-STRINGTABLE 
-BEGIN
     IDS_FILEDIFF_FILTERCUE  "Filter paths"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROP_TT_ADD         "Adds a new property"
     IDS_EDITCONFLICT_ACTIONINFO_ADD "Could not add '%s' because"
     IDS_EDITCONFLICT_ACTIONINFO_MODIFY "Could not merge '%s' because"
     IDS_EDITCONFLICT_ACTIONINFO_DELETE "Could not delete '%s' because"
