@@ -1527,6 +1527,7 @@ int SuggestMgr::commoncharacterpositions(char * s1, const char * s2, int * is_sw
     w_char su2[MAXSWL];
     int l1 = u8_u16(su1, MAXSWL, s1);
     int l2 = u8_u16(su2, MAXSWL, s2);
+    if (!l2 || (l1==-1) || (l2==-1)) return 0;
     // decapitalize dictionary word
     if (complexprefixes) {
       mkallsmall_utf(su2+l2-1, 1, pAMgr->get_langnum());

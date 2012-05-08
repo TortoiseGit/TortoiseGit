@@ -1,4 +1,4 @@
-ï»¿#include "license.hunspell"
+#include "license.hunspell"
 #include "license.myspell"
 
 #ifndef MOZILLA_CLIENT
@@ -306,18 +306,18 @@ char * Hunspell::sharps_u8_l1(char * dest, char * source) {
     *p = *source;
     for (p++, source++; *(source - 1); p++, source++) {
         *p = *source;
-        if (*source == '?') *--p = '?';
+        if (*source == 'Ÿ') *--p = 'ß';
     }
     return dest;
 }
 
-// recursive search for right ss-?permutations
+// recursive search for right ss-ß permutations
 hentry * Hunspell::spellsharps(char * base, char * pos, int n,
         int repnum, char * tmp, int * info, char **root) {
     pos = strstr(pos, "ss");
     if (pos && (n < MAXSHARPS)) {
-        *pos = '?';
-        *(pos + 1) = '?';
+        *pos = 'Ã';
+        *(pos + 1) = 'Ÿ';
         hentry * h = spellsharps(base, pos + 2, n + 1, repnum + 1, tmp, info, root);
         if (h) return h;
         *pos = 's';
@@ -391,7 +391,7 @@ int Hunspell::spell(const char * word, int * info, char ** root)
 
   // LANG_hu section: number(s) + (percent or degree) with suffixes
   if (langnum == LANG_hu) {
-    if ((nstate == NNUM) && ((cw[i] == '%') || (cw[i] == '?'))
+    if ((nstate == NNUM) && ((cw[i] == '%') || (cw[i] == '°'))
         && checkword(cw + i, info, root)) return 1;
   }
   // END of LANG_hu section
@@ -447,10 +447,10 @@ int Hunspell::spell(const char * word, int * info, char ** root)
                      memcpy(wspace,cw,(wl+1));                     
                      rv = checkword(wspace, info, root);
                      if (!rv || (is_keepcase(rv) && !((captype == INITCAP) &&
-                           // if CHECKSHARPS: KEEPCASE words with ?are allowed
+                           // if CHECKSHARPS: KEEPCASE words with ß are allowed
                            // in INITCAP form, too.
-                           pAMgr->get_checksharps() && ((utf8 && strstr(wspace, "è„½")) || 
-                            (!utf8 && strchr(wspace, '?')))))) {
+                           pAMgr->get_checksharps() && ((utf8 && strstr(wspace, "ÃŸ")) || 
+                            (!utf8 && strchr(wspace, 'ß')))))) {
                         wl2 = mkinitcap2(cw, unicw, nc);
                         rv = checkword(cw, info, root);
                         if (rv && (captype == ALLCAP) && is_keepcase(rv)) rv = NULL;
@@ -499,15 +499,15 @@ int Hunspell::spell(const char * word, int * info, char ** root)
     char * dash;
     int result = 0;
     // n-dash
-    dash = (char *) strstr(cw,"-");
+    dash = (char *) strstr(cw,"â€“");
     if (dash && !wordbreak) {
         *dash = '\0';
         // examine 2 sides of the dash
         if (spell(cw) && spell(dash + 3)) {
-            *dash = '?';
+            *dash = 'â';
             return 1;
         }
-        *dash = '?';
+        *dash = 'â';
     }
     dash = (char *) strchr(cw,'-');
     if (dash) {
@@ -569,6 +569,7 @@ struct hentry * Hunspell::checkword(const char * w, int * info, char ** root)
         remove_ignored_chars(w2,ignoredchars);
      }
      word = w2;
+     free(ignoredchars);
   } else word = w;
 
   // word reversing wrapper for complex prefixes
@@ -745,18 +746,18 @@ int Hunspell::suggest(char*** slst, const char * word)
                         if (pAMgr && pAMgr->get_checksharps()) {
                             char * pos;
                             if (utf8) {
-                                pos = strstr((*slst)[j], "è„½");
+                                pos = strstr((*slst)[j], "ÃŸ");
                                 while (pos) {
                                     *pos = 'S';
                                     *(pos+1) = 'S';
-                                    pos = strstr(pos+2, "è„½");
+                                    pos = strstr(pos+2, "ÃŸ");
                                 }
                             } else {
-                                pos = strchr((*slst)[j], '?');
+                                pos = strchr((*slst)[j], 'ß');
                                 while (pos) {
                                     (*slst)[j] = (char *) realloc((*slst)[j], strlen((*slst)[j]) + 2);
-                                    mystrrep((*slst)[j], "?", "SS");
-                                    pos = strchr((*slst)[j], '?');
+                                    mystrrep((*slst)[j], "ß", "SS");
+                                    pos = strchr((*slst)[j], 'ß');
                                 }
                             }
                         }
@@ -1277,7 +1278,7 @@ char * Hunspell::morph(const char * word)
   }
 
   if ((n == wl) && (n3 > 0) && (n - n3 > 3)) return NULL;
-  if ((n == wl) || ((n>0) && ((cw[n]=='%') || (cw[n]=='?)) && checkword(cw+n, NULL, NULL))) {
+  if ((n == wl) || ((n>0) && ((cw[n]=='%') || (cw[n]=='°')) && checkword(cw+n, NULL, NULL))) {
         strcat(result, cw);
         result[n - 1] = '\0';
         if (n == wl) {

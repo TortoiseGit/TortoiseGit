@@ -253,24 +253,34 @@ int HashMgr::load_tables(const char * tpath)
 
   // first read the first line of file to get hash table size */
   char ts[MAXDELEN];
-  if (! fgets(ts, MAXDELEN-1,rawdict)) return 2;
+  if (! fgets(ts, MAXDELEN-1,rawdict)) {
+    fclose(rawdict);
+    return 2;
+  }
   mychomp(ts);
   
   /* remove byte order mark */
-  if (strncmp(ts,"",3) == 0) {
+  if (strncmp(ts,"﻿",3) == 0) {
     memmove(ts, ts+3, strlen(ts+3)+1);
     HUNSPELL_WARNING(stderr, "warning: dic file begins with byte order mark: possible incompatibility with old Hunspell versions\n");
   }
   
   if ((*ts < '1') || (*ts > '9')) HUNSPELL_WARNING(stderr, "error - missing word count in dictionary file\n");
   tablesize = atoi(ts);
-  if (!tablesize) return 4; 
+  if (!tablesize) {
+    fclose(rawdict);
+    return 4; 
+  }
   tablesize = tablesize + 5 + USERWORD;
   if ((tablesize %2) == 0) tablesize++;
 
   // allocate the hash table
   tableptr = (struct hentry *) calloc(tablesize, sizeof(struct hentry));
-  if (! tableptr) return 3;
+  if (!tableptr) {
+    fclose(rawdict);
+    return 3;
+  }
+
   for (int i=0; i<tablesize; i++) tableptr[i].word = NULL;
 
   // loop through all words on much list and add to hash
@@ -466,7 +476,7 @@ int  HashMgr::load_config(const char * affpath)
        /* remove byte order mark */
        if (firstline) {
          firstline = 0;
-		 if (strncmp(line,"",3) == 0) memmove(line, line+3, strlen(line+3)+1);
+         if (strncmp(line,"﻿",3) == 0) memmove(line, line+3, strlen(line+3)+1);
        }
 
         /* parse in the try string */
@@ -547,6 +557,7 @@ int  HashMgr::parse_aliasf(char * line, FILE * af)
                           if (aliasflen) free(aliasflen);
                           aliasf = NULL;
                           aliasflen = NULL;
+                          free(piece);
                           return 1;
                        }
                        np++;

@@ -6,7 +6,7 @@
 #include "suggestmgr.hxx"
 #include "csutil.hxx"
 #include "langnum.hxx"
-//#include "config.h"
+#include "config.h"
 
 #define  SPELL_COMPOUND  (1 << 0)
 #define  SPELL_FORBIDDEN (1 << 1)
