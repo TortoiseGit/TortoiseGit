@@ -99,9 +99,9 @@ BOOL CSetMainPage::OnInitDialog()
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
 	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
 
-	// set up the language selecting combobox
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
 
+	// set up the language selecting combobox
 	TCHAR buf[MAX_PATH];
 	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 	m_LanguageCombo.AddString(buf);
@@ -122,10 +122,21 @@ BOOL CSetMainPage::OnInitDialog()
 			sFileVer = sFileVer.Left(sFileVer.ReverseFind(','));
 			if (sFileVer.Compare(sVer)!=0)
 				continue;
+			CString sLoc = filename.Mid(12);
+			sLoc = sLoc.Left(sLoc.GetLength()-4); // cut off ".dll"
+			if ((sLoc.Left(2) == L"32")&&(sLoc.GetLength() > 5))
+				continue;
 			DWORD loc = _tstoi(filename.Mid(12));
-			TCHAR buf[MAX_PATH];
 			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-			m_LanguageCombo.AddString(buf);
+			CString sLang = buf;
+			GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
+			if (buf[0])
+			{
+				sLang += _T(" (");
+				sLang += buf;
+				sLang += _T(")");
+			}
+			m_LanguageCombo.AddString(sLang);
 			m_LanguageCombo.SetItemData(langcount++, loc);
 		}
 	}
