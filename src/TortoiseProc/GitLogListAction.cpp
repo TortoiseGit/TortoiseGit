@@ -143,7 +143,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	CSysProgressDlg progress;
 	if (progress.IsValid())
 	{
-		progress.SetTitle(_T("Cherry Pick"));
+		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
 		progress.SetAnimation(IDR_MOVEANI);
 		progress.SetTime(true);
 		progress.ShowModeless(this);

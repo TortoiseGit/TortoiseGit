@@ -95,7 +95,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	this->m_critSec.Init();
 	m_wcRev.m_CommitHash.Empty();
-	m_wcRev.GetSubject()=_T("Working dir changes");
+	m_wcRev.GetSubject() = CString(MAKEINTRESOURCE(IDS_LOG_WORKINGDIRCHANGES));
 	m_wcRev.m_ParentHash.clear();
 	m_wcRev.m_Mark=_T('-');
 	m_wcRev.m_IsUpdateing=FALSE;
@@ -205,7 +205,7 @@ int CGitLogListBase::AsyncDiffThread()
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
 				InterlockedExchange(&pRev->m_IsFull, TRUE);
 
-				pRev->GetBody().Format(_T("%d files changed"),pRev->GetFiles(this).GetCount());
+				pRev->GetBody().Format(IDS_FILESCHANGES, pRev->GetFiles(this).GetCount());
 				::PostMessage(m_hWnd,MSG_LOADED,(WPARAM)0,0);
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
@@ -1480,13 +1480,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
 
-						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+(0xFFFF<<16),_T("All Parents"));
-						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+(0xFFFE<<16),_T("Only Merged Files"));
+						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1 + (0xFFFF << 16), CString(MAKEINTRESOURCE(IDS_ALLPARENTS)));
+						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1 + (0xFFFE << 16), CString(MAKEINTRESOURCE(IDS_ONLYMERGEDFILES)));
 
 						for(int i=0;i<pRev->m_ParentHash.size();i++)
 						{
 							CString str;
-							str.Format(_T("Parent %d"), i+1);
+							str.Format(IDS_PARENT, i + 1);
 							gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+((i+1)<<16),str);
 						}
 					}
@@ -1513,7 +1513,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						for(int i=0;i<pRev->m_ParentHash.size();i++)
 						{
 							CString str;
-							str.Format(_T("Parent %d"), i+1);
+							str.Format(IDS_PARENT, i + 1);
 							diffmenu.AppendMenuIcon(ID_COMPAREWITHPREVIOUS +((i+1)<<16),str);
 							if (i == 0 && CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 							{

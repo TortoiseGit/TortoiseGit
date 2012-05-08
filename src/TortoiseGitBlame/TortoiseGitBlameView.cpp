@@ -819,7 +819,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	}
 	else
 	{
-		::MessageBox(wMain, what+_T(" not found"), _T("CTortoiseGitBlameView"), MB_ICONINFORMATION);
+		::MessageBox(wMain, _T("\"") + what + _T("\"") + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), _T("TortoiseGitBlame"), MB_ICONINFORMATION);
 	}
 
 	return true;

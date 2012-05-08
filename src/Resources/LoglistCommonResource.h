@@ -53,7 +53,7 @@
 #define IDS_SCIEDIT_SPLITLINES			20041
 #define IDS_SPELLEDIT_THESAURUS			20042
 #define IDS_SPELLEDIT_NOTHESAURUS		20043
-
+#define IDS_LOG_WORKINGDIRCHANGES		20044
 #define IDS_LOG_REVISION				20045
 
 #define IDS_LOG_POPUP_SAVE				20046
@@ -96,11 +96,16 @@
 #define IDS_LOG_POPUP_GNUDIFF_PARENT    20081
 #define IDS_LOG_POPUP_LOG				20082
 
+#define IDS_FILESCHANGES				20083
 #define IDC_FINDCOMBO                   20083
+#define IDS_ALLPARENTS					20084
 #define IDC_MATCHCASE                   20084
 #define IDC_WHOLEWORD                   20085
+#define IDS_ONLYMERGEDFILES				20085
 #define IDC_STATIC_FIND                 20086
+#define IDS_PARENT						20086
 #define IDC_STATIC_GROUP_REF			20087
+#define IDS_NOTFOUND					20087
 #define IDC_LIST_REF                    20089
 #define IDC_STATIC_FILTER               20090
 #define IDC_EDIT_FILTER                 20091
