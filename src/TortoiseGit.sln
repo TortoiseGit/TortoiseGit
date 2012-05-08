@@ -3201,7 +3201,7 @@ Global
 		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|Win32.ActiveCfg = Release|x86
-		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|x64.ActiveCfg = Release|x86
+		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|x64.ActiveCfg = Release|x64
 		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|x86.ActiveCfg = Release|x86
 		{B0E79916-B2B5-464D-AB25-8269B0F40F4A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection

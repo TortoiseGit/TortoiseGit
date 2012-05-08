@@ -41,7 +41,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="../bin/$(ConfigurationName)/bin"
+			OutputDirectory="../bin/$(ConfigurationName)64/bin"
 			IntermediateDirectory="../obj/lang/$(ConfigurationName)64/"
 			ConfigurationType="0"
 			>
@@ -81,7 +81,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="../bin/$(ConfigurationName)/bin"
+			OutputDirectory="../bin/$(ConfigurationName)64/bin"
 			IntermediateDirectory="../obj/lang/$(ConfigurationName)64/"
 			ConfigurationType="0"
 			>

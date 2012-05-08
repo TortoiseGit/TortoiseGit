@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <?include .../src/TortoiseGitSetup/Includes.wxi?>
-  
+  <?include ../src/TortoiseGitSetup/Includes.wxi?>
+
   <Product
   UpgradeCode="9ECED698-D4D9-42fd-946D-51CC049D1F6F"
   Name='$(var.LANGNATIVE) Languagepack for TortoiseGit'
@@ -14,9 +14,9 @@
     <Package Id='*' Keywords='Installer'
       Description="$LANGUI$ language pack for TortoiseGit"
       Comments='http://code.google.com/p/tortoisegit' 
-      Manufacturer="Frank Li,Sven Strickroth" 
+      Manufacturer="Frank Li, Sven Strickroth" 
       Platform="$(var.PackagePlatforms)"  
-      InstallerVersion='200' 
+      InstallerVersion='301' 
       Languages='1033' 
       Compressed='yes' 
       SummaryCodepage='1252' />
@@ -32,7 +32,7 @@
     <Condition Message="TortoiseGit is not installed. Please install TortoiseGit before installing the language pack">INSTALLDIR</Condition>
 
     <Directory Id='TARGETDIR' Name='SourceDir'>
-      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+      <Directory Id='D__ProgramFilesFolder' ShortName="PFiles" Name="Program Files">
         <Directory Id='INSTALLDIR' Name='TortoiseGit'>
           <Directory Id='LanguagesFolder' Name='Languages'>
             <Component Id='Main' Guid='9D004446-94B4-4b9d-8C95-0BD46008A2A5'>
