@@ -51,6 +51,10 @@
               <File Id='BLAMDLL' Name='TortoiseGitBlame$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame$(var.COUNTRYID).dll' Vital='yes'></File>
               <File Id='IDIFDLL' Name='TortoiseIDiff$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\bin\TortoiseIDiff$(var.COUNTRYID).dll' Vital='yes'></File>
 
+              <?if $(var.Platform) = "x64" ?>
+                <File Id='PROCDLL32' Name='TortoiseProc32$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath32)\bin\TortoiseProc$(var.COUNTRYID).dll' Vital='yes'></File>
+              <?endif ?>
+              
             </Component>
             <?if $(var.TSVNMoFile) = "$COUNTRYCODE$" ?>
             <Directory Id='SVNLANG' Name='$COUNTRYCODE$' >
