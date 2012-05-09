@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -92,7 +92,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	// (SDI documents will reuse this document)
 	if(!g_Git.CheckMsysGitDir())
 	{
-		CMessageBox::Show(NULL,_T("MsysGit have not install or config fail"),_T("TortoiseGitBlame"),MB_OK);
+		CCommonAppUtils::RunTortoiseProc(_T(" /command:settings"));
 		return FALSE;
 	}
 
