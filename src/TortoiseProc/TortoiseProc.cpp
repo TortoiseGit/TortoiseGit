@@ -129,42 +129,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	Gdiplus::GdiplusStartup(&m_gdiplusToken,&gdiplusStartupInput,NULL);
 
-	if(!CheckMsysGitDir())
-	{
-		UINT ret = CMessageBox::Show(NULL,_T("MSysGit (http://code.google.com/p/msysgit/) not found."),
-									_T("TortoiseGit"), 3, IDI_HAND, _T("&Set MSysGit path"), _T("&Goto WebSite"), _T("&Abort"));
-		if(ret == 2)
-		{
-			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
-		}
-		else if(ret == 1)
-		{
-			// open settings dialog
-			CSettings dlg(IDS_PROC_SETTINGS_TITLE);
-			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-			dlg.SetTreeWidth(220);
-
-			dlg.DoModal();
-			dlg.HandleRestart();
-		}
-		return FALSE;
-	}
-	if (CAppUtils::GetMsysgitVersion() < 0x01070a00)
-	{
-		int ret = CMessageBox::ShowCheck(NULL, _T("You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."), _T("TortoiseGit"), 1, IDI_EXCLAMATION, _T("&Open msysGit WebSite"), _T("&Abort"), _T("&Ignore"), _T("OldMsysgitVersionWarning"), _T("Do &not show me this warning again (if Ignore is selected)"));
-		if (ret == 1)
-		{
-			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
-			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
-			return FALSE;
-		}
-		else if (ret == 2)
-		{
-			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
-			return FALSE;
-		}
-	}
-
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;
@@ -254,6 +218,42 @@ BOOL CTortoiseProcApp::InitInstance()
 			langId = 0;
 	} while (langId);
 	setlocale(LC_ALL, "");
+
+	if(!CheckMsysGitDir())
+	{
+		UINT ret = CMessageBox::Show(NULL, _T("MSysGit (http://code.google.com/p/msysgit/) not found."),
+									_T("TortoiseGit"), 3, IDI_HAND, _T("&Set MSysGit path"), _T("&Goto WebSite"), _T("&Abort"));
+		if(ret == 2)
+		{
+			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
+		}
+		else if(ret == 1)
+		{
+			// open settings dialog
+			CSettings dlg(IDS_PROC_SETTINGS_TITLE);
+			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
+			dlg.SetTreeWidth(220);
+
+			dlg.DoModal();
+			dlg.HandleRestart();
+		}
+		return FALSE;
+	}
+	if (CAppUtils::GetMsysgitVersion() < 0x01070a00)
+	{
+		int ret = CMessageBox::ShowCheck(NULL, _T("You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."), _T("TortoiseGit"), 1, IDI_EXCLAMATION, _T("&Open msysGit WebSite"), _T("&Abort"), _T("&Ignore"), _T("OldMsysgitVersionWarning"), _T("Do &not show me this warning again (if Ignore is selected)"));
+		if (ret == 1)
+		{
+			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
+			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
+			return FALSE;
+		}
+		else if (ret == 2)
+		{
+			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
+			return FALSE;
+		}
+	}
 
 	// InitCommonControls() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
