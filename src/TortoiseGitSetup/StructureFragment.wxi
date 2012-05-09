@@ -597,20 +597,6 @@
 						<File Id="F__touch" ShortName="touch.exe" Name="touch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\touch.exe" KeyPath="yes" />
 					</Component>
 
-					<Component Id="C__gettext" Guid="$(var.GuidGettext)" Win64="$(var.Win64YesNo)">
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__intl32" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPath32Extension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__intl" Name="intl3_tsvn.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPathExtension)\bin\intl3_tsvn.dll" />
-						<?endif ?>
-					</Component>
-					<?if $(var.Platform) = "x64" ?>
-					<Component Id="C__gettext32" Guid="$(var.GuidGettext32)" Win64="$(var.Win64YesNo)">
-						<File Id="F__intl32" Name="intl3_tsvn32.dll" DiskId="1" Source="..\..\ext\libintl\libintl3-$(var.PlatformPath32Extension)\bin\intl3_tsvn32.dll" KeyPath="yes" />
-					</Component>
-					<?endif ?>
-
 					<?if $(var.IncludeCrashReportDll) = 1 ?>
 					<Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
 						<File Id="F__crashrpt" ShortName="CRASHRPT.DLL" Name="CrashRpt.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\CrashRpt.dll" KeyPath="yes" />

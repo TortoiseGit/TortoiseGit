@@ -3,7 +3,6 @@
 	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow" TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local">
 		<ComponentRef Id="C__infofiles" />
 		<ComponentRef Id="C__apr" />
-		<ComponentRef Id="C__gettext" />
 
 		<ComponentRef Id="C__help_en" />
 		<ComponentRef Id="C__gitlibs" />
@@ -58,7 +57,6 @@
 
 		<?if $(var.Platform) = "x64" ?>
 		<Feature Id="F_TSHELL32" Level="1" Title="32-bit TortoiseGit Shell-Extension" Description="The TortoiseGit Shell-Extension for 32-bit applications." TypicalDefault="install" Absent="allow">
-			<ComponentRef Id="C__gettext32" />
 			<ComponentRef Id="C__gitlibs32" />
 			<ComponentRef Id="C__TortoiseShell32" />
 			<ComponentRef Id="C__shellregistry32" />
