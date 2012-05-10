@@ -160,54 +160,48 @@ BOOL CSettingGitConfig::OnApply()
 		type = CONFIG_GLOBAL;
 
 	if(m_ChangeMask&GIT_NAME)
-		if(g_Git.SetConfigValue(_T("user.name"), this->m_UserName,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
-		{
-			CMessageBox::Show(NULL, _T("Fail to save user name"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Save(_T("user.name"), this->m_UserName, type))
 			return FALSE;
-		}
 
 	if(m_ChangeMask&GIT_EMAIL)
-		if(g_Git.SetConfigValue(_T("user.email"), this->m_UserEmail,type, g_Git.GetGitEncode(L"i18n.commitencoding")))
-		{
-			CMessageBox::Show(NULL, _T("Fail to save user email"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Save(_T("user.email"), this->m_UserEmail,type))
 			return FALSE;
-		}
 
 	if(m_ChangeMask&GIT_SIGNINGKEY)
-		if(g_Git.SetConfigValue(_T("user.signingkey"), this->m_UserSigningKey, type, g_Git.GetGitEncode(L"i18n.commitencoding")))
-		{
-			CMessageBox::Show(NULL,_T("Fail to save user signingkey"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		if (Save(_T("user.signingkey"), this->m_UserSigningKey, type))
 			return FALSE;
-		}
 
 	if(m_ChangeMask&GIT_WARNNOSIGNEDOFFBY)
-		if(g_Git.SetConfigValue(_T("tgit.warnnosignedoffby"), this->m_bWarnNoSignedOffBy?_T("true"):_T("false"), type))
-		{
-			CMessageBox::Show(NULL, _T("Fail to save warnnosignedoffby"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Save(_T("tgit.warnnosignedoffby"), this->m_bWarnNoSignedOffBy ? _T("true") : _T("false"), type))
 			return FALSE;
-		}
 
 	if(m_ChangeMask&GIT_CRLF)
-		if(g_Git.SetConfigValue(_T("core.autocrlf"), this->m_bAutoCrlf?_T("true"):_T("false"), type))
-		{
-			CMessageBox::Show(NULL, _T("Fail to save autocrlf"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Save(_T("core.autocrlf"), this->m_bAutoCrlf ? _T("true") : _T("false"), type))
 			return FALSE;
-		}
 
 	if(m_ChangeMask&GIT_SAFECRLF)
 	{
 		CString safecrlf;
 		this->m_cSafeCrLf.GetWindowText(safecrlf);
-		if(g_Git.SetConfigValue(_T("core.safecrlf"), safecrlf, type))
-		{
-			CMessageBox::Show(NULL, _T("Fail to save safecrlf"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		if (Save(_T("core.safecrlf"), safecrlf, type))
 			return FALSE;
-		}
 	}
 
 	m_ChangeMask = 0;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
+}
+bool CSettingGitConfig::Save(CString key, CString value, CONFIG_TYPE type)
+{
+	CString out;
+	if (g_Git.SetConfigValue(key, value, type, g_Git.GetGitEncode(L"i18n.commitencoding"), &g_Git.m_CurrentDir))
+	{
+		CString msg;
+		msg.Format(IDS_PROC_SAVECONFIGFAILED, key, value);
+		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return false;
+	}
+	return true;
 }
 void CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy()
 {

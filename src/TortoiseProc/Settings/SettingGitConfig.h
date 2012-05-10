@@ -22,6 +22,7 @@
 #include "Tooltip.h"
 #include "registry.h"
 #include "afxwin.h"
+#include "Git.h"
 
 // CSettingGitConfig dialog
 
@@ -40,6 +41,8 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
 	BOOL OnApply();
+
+	bool Save(CString key, CString value, CONFIG_TYPE type);
 
 	int m_ChangeMask;
 	enum
