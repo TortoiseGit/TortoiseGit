@@ -90,11 +90,11 @@ bool CAppUtils::StashSave()
 
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			CMessageBox::Show(NULL, CString(_T("<ct=0x0000FF>Stash Fail!!!</ct>\n")) + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		}
 		else
 		{
- 			CMessageBox::Show(NULL, CString(_T("<ct=0xff0000>Stash Success</ct>\n")) + out, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+ 			CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHSUCCESS)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return true;
 		}
 	}
@@ -115,7 +115,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 	{
-		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash Apply Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED))+ _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 	else
 	{
@@ -124,7 +124,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 			withConflicts = _T(" with conflicts");
 		if (showChanges)
 		{
- 			if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply Success") + withConflicts + _T("</ct>\nDo you want to show change?"))
+			if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply successful") + withConflicts + _T("</ct>") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))))
 				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
@@ -135,7 +135,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 		}
 		else
 		{
-			CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash Apply Success") + withConflicts + _T("</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash Apply successful") + withConflicts + _T("</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return 0;
 		}
 	}
@@ -151,16 +151,16 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 	{
-		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP Fail!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP failed!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 	}
 	else
 	{
-		CString message = _T("<ct=0xff0000>Stash POP Success</ct>");
+		CString message = _T("<ct=0xff0000>Stash POP successful</ct>");
 		if (hasConflicts)
 			message = _T("<ct=0x000000ff>Stash POP Failed, there are conflicts</ct>");
 		if (showChanges)
 		{
- 			if(CMessageBox::Show(NULL,CString(message + _T("\nDo you want to show change?"))
+ 			if(CMessageBox::Show(NULL,CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))))
 				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
@@ -2134,8 +2134,7 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 
 	while(g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty())
 	{
-		if(CMessageBox::Show(NULL,_T("User name and email must be set before commit.\r\n Do you want to set these now?\r\n"),
-							_T("TortoiseGit"),MB_YESNO| MB_ICONERROR) == IDYES)
+		if(CMessageBox::Show(NULL, IDS_PROC_NOUSERDATA, IDS_APPNAME, MB_YESNO| MB_ICONERROR) == IDYES)
 		{
 			CTGitPath path(g_Git.m_CurrentDir);
 			CSettings dlg(IDS_PROC_SETTINGS_TITLE,&path);

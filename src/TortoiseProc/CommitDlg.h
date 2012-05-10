@@ -61,9 +61,9 @@ public:
 	void ShowViewPatchText(bool b=true)
 	{
 		if(b)
-			this->m_ctrlShowPatch.SetWindowText(_T("View Patch>>"));
+			this->m_ctrlShowPatch.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_SHOWPATCH)));
 		else
-			this->m_ctrlShowPatch.SetWindowText(_T("Hide Patch<<"));
+			this->m_ctrlShowPatch.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDEPATCH)));
 
 		m_ctrlShowPatch.Invalidate();
 	}

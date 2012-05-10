@@ -599,10 +599,14 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		GitRev rev;
 		rev.GetCommit(text);
 
-		tooltip.Format(IDS_PROC_REVISIONTOOLTIP,
+		tooltip.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n<b>%s</b>\n%s"),
+			CString(MAKEINTRESOURCE(IDS_LOG_REVISION)),
 			rev.m_CommitHash.ToString(),
+			CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
 			rev.GetAuthorName(),
+			CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
 			CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
+			CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),
 			rev.GetSubject(),
 			rev.GetBody());
 

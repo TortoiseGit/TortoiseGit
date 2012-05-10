@@ -423,6 +423,9 @@ BEGIN
                             "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
     IDS_VERSION             "TortoiseGitBlame, Version %d.%d.%d.%d"
     IDS_APPNAME             "TortoiseGitBlame"
+    IDS_CANNOTBLAMENOGIT    "Cannot show blame. ""%s"" is not under version control by git."
+    IDS_BLAMEERROR          "Blame error"
+    IDS_CHECKOUTFAILED      "Failed to checkout file ""%s"""
 END
 
 STRINGTABLE 

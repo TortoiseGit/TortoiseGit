@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,7 +74,9 @@ BOOL CSettingGitRemote::OnInitDialog()
 	CString proj;
 	if(	g_GitAdminDir.HasAdminDir(m_cmdPath,&proj) )
 	{
-		this->SetWindowText(CString(_T("Config - "))+proj);
+		CString title;
+		this->GetWindowText(title);
+		this->SetWindowText(title + _T(" - ") + proj);
 	}
 
 	CString cmd, out, err;
@@ -106,7 +108,7 @@ void CSettingGitRemote::OnBnClickedButtonBrowse()
 	CFileDialog dlg(TRUE,NULL,
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-					_T("Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"));
+					CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
 
 	this->UpdateData();
 	if(dlg.DoModal()==IDOK)
@@ -123,12 +125,12 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 
 	if(m_strRemote.IsEmpty())
 	{
-		CMessageBox::Show(NULL, _T("Remote name can't empty"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK |  MB_ICONERROR);
 		return;
 	}
 	if(m_strUrl.IsEmpty())
 	{
-		CMessageBox::Show(NULL, _T("Remote URL can't empty"),_T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -138,8 +140,9 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 	m_ChangedMask = REMOTE_NAME	|REMOTE_URL	|REMOTE_PUTTYKEY;
 	if(IsRemoteExist(m_strRemote))
 	{
-		if(CMessageBox::Show(NULL, m_strRemote + _T(" is existed\n Do you want to overwrite it"),
-						_T("TortoiseGit"), MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2) == IDYES)
+		CString msg;
+		msg.Format(IDS_PROC_GITCONFIG_OVERWRITEREMOTE, m_strRemote);
+		if(CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
 		{
 			m_ChangedMask &= ~REMOTE_NAME;
 		}
@@ -170,11 +173,8 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	if(m_ChangedMask)
 	{
-		if(CMessageBox::Show(NULL,_T("Remote Config Changed\nDo you want to save change now or discard change"),
-								 _T("TortoiseGit"),1,NULL,_T("Save"),_T("Discard")) == 1)
-		{
+		if(CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_SAVEREMOTE, IDS_APPNAME, 1, IDI_QUESTION, IDS_SAVEBUTTON, IDS_DISCARDBUTTON) == 1)
 			OnApply();
-		}
 	}
 	SetModified(FALSE);
 
@@ -248,7 +248,9 @@ void CSettingGitRemote::Save(CString key,CString value)
 	cmd.Format(_T("remote.%s.%s"),this->m_strRemote,key);
 	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL, CP_UTF8, &g_Git.m_CurrentDir))
 	{
-		CMessageBox::Show(NULL,_T("Fail to save config"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CString msg;
+		msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
+		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 }
 BOOL CSettingGitRemote::OnApply()
@@ -258,9 +260,14 @@ BOOL CSettingGitRemote::OnApply()
 	if(m_ChangedMask & REMOTE_NAME)
 	{
 		//Add Remote
-		if( this->m_strRemote.IsEmpty() || this->m_strUrl.IsEmpty() )
+		if(m_strRemote.IsEmpty())
 		{
-			CMessageBox::Show(NULL,_T("Remote Name and URL can't be Empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK |  MB_ICONERROR);
+			return FALSE;
+		}
+		if(m_strUrl.IsEmpty())
+		{
+			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
 		CString cmd,out;
@@ -298,8 +305,9 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 	{
 		CString str;
 		m_ctrlRemoteList.GetText(index,str);
-		if(CMessageBox::Show(NULL,str + _T(" will be removed\n Are you sure?"),_T("TortoiseGit"),
-						MB_YESNO|MB_ICONQUESTION) == IDYES)
+		CString msg;
+		msg.Format(IDS_PROC_GITCONFIG_DELETEREMOTE, str);
+		if(CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CString cmd,out;
 			cmd.Format(_T("git.exe remote rm %s"),str);

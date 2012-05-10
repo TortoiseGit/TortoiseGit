@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -131,8 +131,8 @@ BOOL CCloneDlg::OnInitDialog()
 	if(window)
 		SHAutoComplete(window->m_hWnd, SHACF_FILESYSTEM);
 
-	this->m_BrowseUrl.AddEntry(CString(_T("Dir...")));
-	this->m_BrowseUrl.AddEntry(CString(_T("Web")));
+	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_CLONE_DIR)));
+	this->m_BrowseUrl.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_CLONE_WEB)));
 	m_BrowseUrl.SetCurrentEntry(m_regBrowseUrl);
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
@@ -176,7 +176,7 @@ void CCloneDlg::OnOK()
 	UpdateData(TRUE);
 	if(m_URL.IsEmpty() || m_Directory.IsEmpty())
 	{
-		CMessageBox::Show(NULL, _T("URL or Directory can't be empty"), _T("TortoiseGit"), MB_OK);
+		CMessageBox::Show(NULL, IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_OK);
 		return;
 	}
 
@@ -235,7 +235,7 @@ void CCloneDlg::OnBnClickedPuttykeyfileBrowse()
 	CFileDialog dlg(TRUE,NULL,
 					NULL,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-					_T("Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"));
+					CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
 
 	this->UpdateData();
 	if(dlg.DoModal()==IDOK)

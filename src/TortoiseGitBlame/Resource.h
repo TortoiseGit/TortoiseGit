@@ -1,11 +1,14 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by d:\TortoiseGit\src\Resources\TortoiseGitBlame.rc
+// Used by d:\TortoiseGit\src\Resources\TortoiseGitBlameENG.rc
 //
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME 1
 #define IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 2
 #define IDS_VERSION                     2
 #define IDS_APPNAME                     3
+#define IDS_CANNOTBLAMENOGIT            4
+#define IDS_BLAMEERROR                  5
+#define IDS_CHECKOUTFAILED              6
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define ID_STATUSBAR_PANE1              120

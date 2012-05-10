@@ -32,6 +32,7 @@
 #include "TGitPath.h"
 #include "TortoiseGitBlameView.h"
 #include "CmdLineParser.h"
+#include "CommonAppUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -100,7 +101,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 	CString topdir;
 	if(!admindir.HasAdminDir(lpszPathName,&topdir))
 	{
-		CMessageBox::Show(NULL,CString(lpszPathName)+_T(" is not controled by git\nJust Show File Context"),_T("TortoiseGitBlame"),MB_OK);
+		CString temp;
+		temp.Format(IDS_CANNOTBLAMENOGIT, CString(lpszPathName));
+		CMessageBox::Show(NULL, temp, _T("TortoiseGitBlame"), MB_OK);
 	}
 	else
 	{
@@ -138,7 +141,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 				g_Git.StringAppend(&str, &m_BlameData[0], CP_UTF8);
 			if (err.size() > 0)
 				g_Git.StringAppend(&str, &err[0], CP_UTF8);
-			CMessageBox::Show(NULL,CString(_T("Blame Error:\n\n")) + str,_T("TortoiseGitBlame"),MB_OK);
+			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK);
 
 		}
 
@@ -158,8 +161,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
 		{
 			CString str;
-			str.Format(_T("Fail get file %s"), path.GetGitPathString());
-			CMessageBox::Show(NULL,CString(_T("Blame Error")) + str,_T("TortoiseGitBlame"),MB_OK);
+			str.Format(IDS_CHECKOUTFAILED, path.GetGitPathString());
+			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK);
 		}
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());

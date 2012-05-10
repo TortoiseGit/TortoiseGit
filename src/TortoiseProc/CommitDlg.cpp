@@ -678,12 +678,12 @@ void CCommitDlg::OnOK()
 	{
 		if (g_Git.Run(_T("git branch ") + m_sCreateNewBranch, &out, CP_UTF8))
 		{
-			MessageBox(_T("Creating branch failed:\n") + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			MessageBox(_T("Creating new branch failed:\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			bAddSuccess = false;
 		}
 		if (g_Git.Run(_T("git checkout ") + m_sCreateNewBranch, &out, CP_UTF8))
 		{
-			MessageBox(_T("Switching to new branch failed:\n") + out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			MessageBox(_T("Switching to new branch failed:\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			bAddSuccess = false;
 		}
 	}
@@ -753,7 +753,7 @@ void CCommitDlg::OnOK()
 		if (!m_bNoPostActions && !m_bAutoClose)
 		{
 			progress.m_PostCmdList.Add( IsGitSVN? CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)): CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-			progress.m_PostCmdList.Add(_T("&ReCommit"));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
 			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
 		}
 
@@ -1624,7 +1624,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 				CString line;
 				CString status = entry->GetActionName();
 				if(entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
-					status = _T("Add");
+					status = _T("Add"); // I18N TODO
 
 				//git_wc_status_kind status = entry->status;
 				WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());

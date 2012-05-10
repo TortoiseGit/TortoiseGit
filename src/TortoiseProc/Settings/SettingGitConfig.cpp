@@ -108,7 +108,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 	CString proj;
 	if (g_GitAdminDir.HasAdminDir(str, &proj) || isBareRepo)
 	{
-		this->SetWindowText(_T("Config - ") + proj);
+		CString title;
+		this->GetWindowText(title);
+		this->SetWindowText(title + _T(" - ") + proj);
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);
 	}
@@ -120,7 +122,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 	}
 
 	if (isBareRepo)
-		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(_T("Edit local git config"));
+		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)));
 
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -246,7 +248,7 @@ void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 	const char * systemdir = get_msysgit_etc();
 	if (!systemdir)
 	{
-		::MessageBox(NULL, _T("MSysGit directory not set (see \"General\" settings page)."), _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 		return;
 	}
 	_tcscpy_s(buf, MAX_PATH, CA2CT(systemdir));
