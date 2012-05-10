@@ -7,6 +7,9 @@ Released: unreleased
  * Synced TortoiseUDiff with TortoiseSVN
  * Fixed issue #1150: Add support for ANSI Color Codes in log Outputs
 
+== Bug Fix ==
+ * Fixed issue #1162: Sync dialog should use same font as progress dialog (use log font for both)
+
 = Release 1.7.9.0 =
 Released: 2012-05-05
 

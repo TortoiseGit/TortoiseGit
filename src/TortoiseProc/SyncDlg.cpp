@@ -630,13 +630,11 @@ BOOL CSyncDlg::OnInitDialog()
 		return FALSE;      // fail to create
 	}
 
-	CHARFORMAT m_Format;
-	memset(&m_Format, 0, sizeof(CHARFORMAT));
-	m_Format.cbSize = sizeof(CHARFORMAT);
-	m_Format.dwMask = CFM_FACE | CFM_BOLD;
-	wcsncpy(m_Format.szFaceName, L"Courier New", LF_FACESIZE - 1);
-	m_ctrlCmdOut.SetDefaultCharFormat(m_Format);
-
+	// set the font to use in the log message view, configured in the settings dialog
+	CFont m_logFont;
+	CAppUtils::CreateFontForLogs(m_logFont);
+	//GetDlgItem(IDC_CMD_LOG)->SetFont(&m_logFont);
+	m_ctrlCmdOut.SetFont(&m_logFont);
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut,_T("Log"),-1);
 
 	//m_ctrlCmdOut.ReplaceSel(_T("Hello"));

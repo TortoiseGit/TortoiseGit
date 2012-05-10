@@ -104,6 +104,11 @@ BOOL CProgressDlg::OnInitDialog()
 	this->GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_HIDE);
 	m_Animate.Open(IDR_DOWNLOAD);
 
+	CFont m_logFont;
+	CAppUtils::CreateFontForLogs(m_logFont);
+	//GetDlgItem(IDC_CMD_LOG)->SetFont(&m_logFont);
+	m_Log.SetFont(&m_logFont);
+
 	CString InitialText;
 	if ( !m_PreText.IsEmpty() )
 	{
