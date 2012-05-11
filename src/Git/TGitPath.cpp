@@ -26,6 +26,7 @@
 #include <regex>
 #include "git.h"
 #include "Globals.h"
+#include "../Resources/LoglistCommonResource.h"
 
 #if defined(_MFC_VER)
 //#include "MessageBox.h"
@@ -2075,34 +2076,34 @@ CTGitPath * CTGitPathList::LookForGitPath(CString path)
 CString CTGitPath::GetActionName(int action)
 {
 	if(action  & CTGitPath::LOGACTIONS_UNMERGED)
-		return _T("Conflict");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_CONFLICT);
 	if(action  & CTGitPath::LOGACTIONS_ADDED)
-		return _T("Added");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_ADD);
 	if(action  & CTGitPath::LOGACTIONS_DELETED)
-		return _T("Deleted");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_DELETE);
 	if(action  & CTGitPath::LOGACTIONS_MERGED )
-		return _T("Merged");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_MERGED);
 
 	if(action  & CTGitPath::LOGACTIONS_MODIFIED)
-		return _T("Modified");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_MODIFIED);
 	if(action  & CTGitPath::LOGACTIONS_REPLACED)
-		return _T("Rename");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_RENAME);
 	if(action  & CTGitPath::LOGACTIONS_COPY)
-		return _T("Copy");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_COPY);
 
 	if(action  & CTGitPath::LOGACTIONS_FORWORD )
-		return _T("Forward");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_FORWARD);
 
 	if(action & CTGitPath::LOGACTIONS_REBASE_EDIT)
-		return _T("Edit");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_EDIT);
 	if(action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
-		return _T("Squash");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_SQUASH);
 	if(action & CTGitPath::LOGACTIONS_REBASE_PICK)
-		return _T("Pick");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_PICK);
 	if(action & CTGitPath::LOGACTIONS_REBASE_SKIP)
-		return _T("Skip");
+		return MAKEINTRESOURCE(IDS_PATHACTIONS_SKIP);
 
-	return _T("Unknown");
+	return MAKEINTRESOURCE(IDS_PATHACTIONS_UNKNOWN);
 }
 CString CTGitPath::GetActionName()
 {

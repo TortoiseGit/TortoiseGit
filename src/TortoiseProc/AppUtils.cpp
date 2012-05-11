@@ -119,12 +119,13 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 	}
 	else
 	{
-		CString withConflicts;
+		CString message;
+		message.LoadString(IDS_PROC_STASHAPPLYSUCCESS);
 		if (hasConflicts)
-			withConflicts = _T(" with conflicts");
+			message.LoadString(IDS_PROC_STASHAPPLYFAILEDCONFLICTS);
 		if (showChanges)
 		{
-			if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply successful") + withConflicts + _T("</ct>") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)))
+			if(CMessageBox::Show(NULL,message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))
 				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
@@ -135,7 +136,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 		}
 		else
 		{
-			CMessageBox::Show(NULL, _T("<ct=0xff0000>Stash Apply successful") + withConflicts + _T("</ct>") ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return 0;
 		}
 	}
@@ -151,13 +152,14 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 	{
-		CMessageBox::Show(NULL,CString(_T("<ct=0x0000FF>Stash POP failed!!!</ct>\n"))+out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL,CString(MAKEINTRESOURCE(IDS_PROC_STASHPOPFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 	else
 	{
-		CString message = _T("<ct=0xff0000>Stash POP successful</ct>");
+		CString message;
+		message.LoadString(IDS_PROC_STASHPOPSUCCESS);
 		if (hasConflicts)
-			message = _T("<ct=0x000000ff>Stash POP Failed, there are conflicts</ct>");
+			message.LoadString(IDS_PROC_STASHPOPFAILEDCONFLICTS);
 		if (showChanges)
 		{
  			if(CMessageBox::Show(NULL,CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)))
@@ -1166,7 +1168,7 @@ void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
 		descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_MODIFIED));
 		return;
 	}
-	descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_ADD));
+	descript = CString(MAKEINTRESOURCE(IDS_PROC_CREATED));
 	return;
 }
 

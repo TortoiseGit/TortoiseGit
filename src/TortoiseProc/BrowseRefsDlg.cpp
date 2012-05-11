@@ -437,10 +437,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 	ASSERT(!leafs.empty());
 
 	CString csMessage;
-	CString csTitle;
-
 	UINT mbIcon=MB_ICONQUESTION;
-	csMessage = L"Are you sure you want to delete ";
 
 	bool bIsRemoteBranch = false;
 	bool bIsBranch = false;
@@ -452,16 +449,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 		if(leafs.size() == 1)
 		{
 			CString branchToDelete = leafs[0]->GetRefName().Mid(bIsRemoteBranch ? 13 : 11);
-			csTitle.Format(L"Confirm deletion of %sbranch %s",
-				bIsRemoteBranch? L"remote ": L"",
-				branchToDelete);
-
-			csMessage += "the ";
-			if(bIsRemoteBranch)
-				csMessage += L"<ct=0x0000FF><i>remote</i></ct> ";
-			csMessage += L"branch:\r\n\r\n<b>";
-			csMessage += branchToDelete;
-			csMessage += L"</b>";
+			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, branchToDelete);
 
 			//Check if branch is fully merged in HEAD
 			CGitHash branchHash = g_Git.GetHash(leafs[0]->GetRefName());
@@ -475,34 +463,30 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 
 			if(commonAncestor != branchHash)
 			{
-				csMessage += L"\r\n\r\n<b>Warning:\r\nThis branch is not fully merged into HEAD.</b>";
+				csMessage += L"\r\n\r\n";
+				csMessage += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGUNMERGED));
 				mbIcon = MB_ICONWARNING;
 			}
+
 			if(bIsRemoteBranch)
 			{
-				csMessage += L"\r\n\r\n<b>Warning:\r\nThis action will remove the branch on the remote.</b>";
+				csMessage += L"\r\n\r\n";
+				csMessage += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES));
 				mbIcon = MB_ICONWARNING;
 			}
 		}
 		else
 		{
-			csTitle.Format(L"Confirm deletion of %d %sbranches",
-				leafs.size(),
-				bIsRemoteBranch? L"remote ": L"");
+			csMessage.Format(IDS_PROC_DELETENREFS, leafs.size());
 
-			CString csMoreMsgText;
-			csMoreMsgText.Format(L"<b>%d</b> ", leafs.size());
-			csMessage += csMoreMsgText;
-			if(bIsRemoteBranch)
-				csMessage += L"<ct=0x0000FF><i>remote</i></ct> ";
-			csMessage += L"branches";
-
-			csMessage += L"\r\n\r\n<b>Warning:\r\nIt has not been checked if these branches have been fully merged into HEAD.</b>";
+			csMessage += L"\r\n\r\n";
+			csMessage += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK));
 			mbIcon = MB_ICONWARNING;
 
 			if(bIsRemoteBranch)
 			{
-				csMessage += L"\r\n\r\n<b>Warning:\r\nThis action will remove the branches on the remote.</b>";
+				csMessage += L"\r\n\r\n";
+				csMessage += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES));
 				mbIcon = MB_ICONWARNING;
 			}
 		}
@@ -513,23 +497,15 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 		if(leafs.size() == 1)
 		{
 			CString tagToDelete = leafs[0]->GetRefName().Mid(10);
-			csTitle.Format(L"Confirm deletion of tag %s", tagToDelete);
-			csMessage += "the tag:\r\n\r\n<b>";
-			csMessage += tagToDelete;
-			csMessage += "</b>";
+			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, tagToDelete);
 		}
 		else
 		{
-			CString tagToDelete = leafs[0]->GetRefName().Mid(10);
-			csTitle.Format(L"Confirm deletion of %d tags", leafs.size());
-			CString csMoreMsgText;
-			csMoreMsgText.Format(L"<b>%d</b> ", leafs.size());
-			csMessage += csMoreMsgText;
-			csMessage += L"tags";
+			csMessage.Format(IDS_PROC_DELETENREFS, leafs.size());
 		}
 	}
 
-	return CMessageBox::Show(m_hWnd,csMessage,csTitle,MB_YESNO|mbIcon)==IDYES;
+	return CMessageBox::Show(m_hWnd, csMessage, _T("TortoiseGit"), MB_YESNO | mbIcon) == IDYES;
 
 }
 
@@ -569,12 +545,10 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 		}
 		else
 			cmd.Format(L"git.exe branch -%c -- %s",bForce?L'D':L'd',branchToDelete);
-		CString resultDummy;
-		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
+		CString errorMsg;
+		if(g_Git.Run(cmd,&errorMsg,CP_UTF8)!=0)
 		{
-			CString errorMsg;
-			errorMsg.Format(L"Could not delete branch %s. Message from git:\r\n\r\n%s",branchToDelete,resultDummy);
-			CMessageBox::Show(m_hWnd,errorMsg,L"Error deleting branch",MB_OK|MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 	}
@@ -583,12 +557,10 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 		CString tagToDelete = completeRefName.Mid(10);
 		CString cmd;
 		cmd.Format(L"git.exe tag -d -- %s",tagToDelete);
-		CString resultDummy;
-		if(g_Git.Run(cmd,&resultDummy,CP_UTF8)!=0)
+		CString errorMsg;
+		if(g_Git.Run(cmd,&errorMsg,CP_UTF8)!=0)
 		{
-			CString errorMsg;
-			errorMsg.Format(L"Could not delete tag %s. Message from git:\r\n\r\n%s",tagToDelete,resultDummy);
-			CMessageBox::Show(m_hWnd,errorMsg,L"Error deleting tag",MB_OK|MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 	}
@@ -675,7 +647,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			remoteName = selectedLeafs[0]->GetRefName();
 			remoteName = remoteName.Mid(13);
 			remoteName = remoteName.Tokenize(L"/", dummy);
-			fetchFromCmd.Format(L"Fetch from \"%s\"", remoteName);
+			fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
 		{
@@ -705,7 +677,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bAddSeparator = false;
 		if (m_bHasWC)
 		{
-			popupMenu.AppendMenuIcon(eCmd_Switch, L"Switch to this Ref", IDI_SWITCH);
+			popupMenu.AppendMenuIcon(eCmd_Switch, CString(MAKEINTRESOURCE(IDS_SWITCH_TO_THIS)), IDI_SWITCH);
 			popupMenu.AppendMenu(MF_SEPARATOR);
 		}
 
@@ -719,13 +691,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(bShowRenameOption)
 		{
 			bAddSeparator = true;
-			popupMenu.AppendMenuIcon(eCmd_Rename, L"Rename", IDI_RENAME);
+			popupMenu.AppendMenuIcon(eCmd_Rename, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_RENAME)), IDI_RENAME);
 		}
 	}
 	else if(selectedLeafs.size() == 2)
 	{
 		bAddSeparator = true;
-		popupMenu.AppendMenuIcon(eCmd_Diff, L"Compare these Refs", IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_Diff, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_COMPAREREFS)), IDI_DIFF);
 	}
 
 	if(!selectedLeafs.empty())
@@ -736,9 +708,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
-				menuItemName = L"Delete remote branch";
+				menuItemName.LoadString(IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH);
 			else
-				menuItemName.Format(L"Delete %d remote branches", selectedLeafs.size());
+				menuItemName.Format(IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCHES, selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteRemoteBranch, menuItemName, IDI_DELETE);
 			bAddSeparator = true;
@@ -749,9 +721,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
-				menuItemName = L"Delete branch";
+				menuItemName.LoadString(IDS_PROC_BROWSEREFS_DELETEBRANCH);
 			else
-				menuItemName.Format(L"Delete %d branches", selectedLeafs.size());
+				menuItemName.Format(IDS_PROC_BROWSEREFS_DELETEBRANCHES, selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteBranch, menuItemName, IDI_DELETE);
 			bAddSeparator = true;
@@ -762,9 +734,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				popupMenu.AppendMenu(MF_SEPARATOR);
 			CString menuItemName;
 			if(selectedLeafs.size() == 1)
-				menuItemName = L"Delete tag";
+				menuItemName.LoadString(IDS_PROC_BROWSEREFS_DELETETAG);
 			else
-				menuItemName.Format(L"Delete %d tags", selectedLeafs.size());
+				menuItemName.Format(IDS_PROC_BROWSEREFS_DELETETAGS, selectedLeafs.size());
 
 			popupMenu.AppendMenuIcon(eCmd_DeleteTag, menuItemName, IDI_DELETE);
 			bAddSeparator = true;
@@ -779,7 +751,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			if(bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
-			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, L"Manage Remotes", IDI_SETTINGS);
+			popupMenu.AppendMenuIcon(eCmd_ManageRemotes, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_MANAGEREMOTES)), IDI_SETTINGS);
 			bAddSeparator = true;
 			if(selectedLeafs.empty())
 			{
@@ -790,7 +762,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				if(!remoteName.IsEmpty())
 				{
 					CString fetchFromCmd;
-					fetchFromCmd.Format(L"Fetch from %s", remoteName);
+					fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
 					popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
 				}
 			}
@@ -872,7 +844,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_ManageRemotes:
 		{
-			CSinglePropSheetDlg(L"Git Remote Settings",new CSettingGitRemote(g_Git.m_CurrentDir),this).DoModal();
+			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROCS_TITLE_GITREMOTESETTINGS)), new CSettingGitRemote(g_Git.m_CurrentDir), this).DoModal();
 //			CSettingGitRemote W_Remotes(m_cmdPath);
 //			W_Remotes.DoModal();
 			Refresh();
@@ -1096,7 +1068,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 
 	if(!pTree->IsFrom(L"refs/heads"))
 	{
-		CMessageBox::Show(m_hWnd, L"At the moment, you can only rename branches.", L"Cannot Rename This Ref",MB_OK|MB_ICONERROR);
+		CMessageBox::Show(m_hWnd, IDS_PROC_BROWSEREFS_RENAMEONLYBRANCHES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -1109,18 +1081,16 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 
 	if(wcsncmp(newName,L"refs/heads/",11)!=0)
 	{
-		CMessageBox::Show(m_hWnd, L"You cannot change the type of this ref with a rename.", L"Cannot Change Ref Type",MB_OK|MB_ICONERROR);
+		CMessageBox::Show(m_hWnd, IDS_PROC_BROWSEREFS_NOCHANGEOFTYPE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
 	CString newNameTrunced = newName.Mid(11);
 
-	CString result;
-	if(g_Git.Run(L"git branch -m \"" + origName + L"\" \"" + newNameTrunced + L"\"", &result, CP_UTF8) != 0)
+	CString errorMsg;
+	if(g_Git.Run(L"git branch -m \"" + origName + L"\" \"" + newNameTrunced + L"\"", &errorMsg, CP_UTF8) != 0)
 	{
-		CString errorMsg;
-		errorMsg.Format(L"Could not rename branch %s. Message from git:\r\n\r\n%s",origName,result);
-		CMessageBox::Show(m_hWnd,errorMsg,L"Error Renaming Branch",MB_OK|MB_ICONERROR);
+		CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return;
 	}
 	//Do as if it failed to rename. Let Refresh() do the job.

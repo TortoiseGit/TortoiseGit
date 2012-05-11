@@ -2526,11 +2526,13 @@ BEGIN
     IDS_SETTINGS_SELECTSSH  "Select SSH client"
     IDS_SETTINGS_EXTDIFF_TT "An external diff program used\r\nfor comparing different revisions of files\r\n\r\nYou can specify the following parameters to the path:\r\n%base : the base file\r\n%mine : the modified file"
     IDS_SETTINGS_EXTDIFFBROWSE_TT "Browse for the external diff program"
+    IDS_PROC_BROWSEREFS_FETCHFROM "Fetch from ""%s"""
 END
 
 STRINGTABLE 
 BEGIN
     IDS_MSYSGIT_PATH_TT     "MsysGit Install Path"
+    IDS_PROC_BROWSEREFS_COMPAREREFS "Compare selected refs"
     IDS_SETTINGS_EXTMERGE_TT 
                             "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged : the conflicted file, where to save\r\n%theirs : the file as it is in the repository\r\n%mine : your own file, with your changes\r\n%base : the original file without your changes"
     IDS_SETTINGS_PROXYSERVER_TT "Either the name or IP of the proxy server"
@@ -2538,6 +2540,8 @@ BEGIN
                             "A viewer program for GNU diff files (patch files).\r\nIf you don't have one use NotePad."
     IDS_SETTINGS_AUTOCLOSE_TT 
                             "Select the behaviour of the progress dialog at the end of the operation."
+    IDS_PROC_BROWSEREFS_RENAME "Rename"
+    IDS_PROC_BROWSEREFS_MANAGEREMOTES "Manage Remotes"
     IDS_PROC_WARNREVERT     "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes since the last update!"
     IDS_PROC_CLEANUPFINISHED 
                             "Cleanup has successfully processed the following paths:\n%s"
@@ -2562,6 +2566,7 @@ BEGIN
                             "Please enter a path where to apply the hook script to."
     IDS_ERR_NOHOOKCOMMANDPECIFIED "Please enter a hook script to execute."
     IDS_ERR_HOOKFAILED      "The hook script returned an error:\n%s"
+    IDS_PROC_BROWSEREFS_DELETETAG "Delete tag"
     IDS_ERR_INVALIDREVRANGE "Invalid revision range!\nValid revisions are numbers and HEAD, separated by commas.\nA range can be specified with a dash.\nExample: 2-5,7,10,44-70,300-HEAD"
     IDS_ERR_NOPREVREVISION  "Could not determine the last committed revision!"
     IDS_PROC_CLEANUPFINISHED_FAILED 
@@ -2580,14 +2585,17 @@ BEGIN
     IDS_PROC_OVERWRITE_CONFIRM 
                             "The file\n%s\nalready exists! Do you want to overwrite it?"
     IDS_PROC_REPOCREATEFINISHED "The repository was successfully created."
+    IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH "Delete remote branch"
     IDS_PROC_MOVING         "Moving..."
     IDS_PROC_RELOCATING     "Relocating..."
+    IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCHES "Delete %d remote branches"
     IDS_MSGBOX_DONOTSHOW    "Don't show this message again"
     IDS_PROC_COPYING        "Copying..."
     IDS_PROC_COPYINGPROG    "Copying %s"
     IDS_PROC_MOVINGPROG     "Moving %s"
     IDS_PROC_CPYMVPROG2     "to %s"
     IDS_PROC_ENTERURL       "Enter URL"
+    IDS_PROC_BROWSEREFS_DELETEBRANCH "Delete branch"
     IDS_SETTINGS_SHORTDATEFORMAT_TT 
                             "Check to use a less verbose date and time format in log messages"
 END
@@ -2596,6 +2604,7 @@ STRINGTABLE
 BEGIN
     IDS_SETTINGS_RELATIVETIMES_TT 
                             "Check to show relative times in log messages"
+    IDS_PROC_BROWSEREFS_DELETEBRANCHES "Delete %d branches"
     IDS_ERR_EXTDIFFSTART    "Could not start external diff program!\n<hr=100%%>\n%s"
     IDS_ERR_NOCOMMAND       "No command specified!\n<hr=100%>\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
     IDS_ERR_NOCOMMANDVALUE  "No command value specified!"
@@ -3298,7 +3307,7 @@ BEGIN
                             "Could not reset to last commit (second step). Aborting..."
     IDS_REG_ERROR           "Error while reading/writing the registry key %s\n%s"
     IDS_PROC_COMBINE_ERRORRESETHEAD "Could not reset to original HEAD."
-    IDS_PROC_DELETENREFS    """Do you really want to permanently delete the %d selected refs? It can <ct=0x0000FF><b>NOT</b></ct> be recovered!"
+    IDS_PROC_DELETENREFS    "Do you really want to permanently delete the %d selected refs? It can <ct=0x0000FF><b>NOT</b></ct> be recovered!"
     IDS_PROC_DELETEREF      "Warning: ""%s"" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n\r\nDo you really want to continue?"
     IDS_DELETEBUTTON        "&Delete"
     IDS_PROC_DELETEREMOTEBRANCH 
@@ -3792,6 +3801,42 @@ BEGIN
     IDS_PROC_SYNC_OUTCOMMITS "Out Commits"
     IDS_PROC_SYNC_OUTCHANGELIST "Out ChangeList"
     IDS_PROC_SYNC_PUSH      "Pus&h"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROC_BROWSEREFS_DELETETAGS "Delete %d tags"
+    IDS_PROCS_TITLE_GITREMOTESETTINGS "Git Remote Settings"
+    IDS_PROC_BROWSEREFS_RENAMEONLYBRANCHES 
+                            "At the moment, you can only rename branches."
+    IDS_PROC_BROWSEREFS_NOCHANGEOFTYPE 
+                            "You cannot change the type of this ref with a rename."
+    IDS_PROC_BROWSEREFS_WARNINGUNMERGED 
+                            "<b>Warning:</b> This branch is not fully merged into HEAD."
+    IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK 
+                            "<b>Warning:</b> It has not been checked if these branches have been fully merged into HEAD."
+    IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES 
+                            "<b>Warning:</b> This action will remove the branches on the remote."
+    IDS_PROC_NOMSYSGIT      "MSysGit (http://code.google.com/p/msysgit/) not found."
+    IDS_PROC_SETMSYSGITPATH "&Set MSysGit path"
+    IDS_PROC_GOTOMSYSGITWEBSITE "&Open msysGit WebSite"
+    IDS_PROC_OLDMSYSGIT     "You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+    IDS_PROC_NOTSHOWAGAINIGNORE 
+                            "Do &not show me this warning again (if Ignore is selected)"
+    IDS_PROC_EDITLOCALGITCONFIG "&Edit .git/config"
+    IDS_PROC_EDITGLOBALGITCONFIG "Edit &global .gitconfig"
+    IDS_PROC_STASHPOPSUCCESS "<ct=0xff0000>Stash POP successful</ct>"
+    IDS_PROC_STASHAPPLYSUCCESS "<ct=0xff0000>Stash Apply successful</ct>"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROC_STASHPOPFAILED "<ct=0x0000FF>Stash POP failed!!!</ct>"
+    IDS_PROC_STASHPOPFAILEDCONFLICTS 
+                            "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
+    IDS_PROC_STASHAPPLYFAILEDCONFLICTS 
+                            "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
+    IDS_PROC_CREATED        "Created"
 END
 
 #endif    // Englisch (USA) resources

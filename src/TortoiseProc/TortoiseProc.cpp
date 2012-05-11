@@ -221,8 +221,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if(!CheckMsysGitDir())
 	{
-		UINT ret = CMessageBox::Show(NULL, _T("MSysGit (http://code.google.com/p/msysgit/) not found."),
-									_T("TortoiseGit"), 3, IDI_HAND, _T("&Set MSysGit path"), _T("&Goto WebSite"), _T("&Abort"));
+		UINT ret = CMessageBox::Show(NULL, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
 		if(ret == 2)
 		{
 			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
@@ -241,7 +240,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 	if (CAppUtils::GetMsysgitVersion() < 0x01070a00)
 	{
-		int ret = CMessageBox::ShowCheck(NULL, _T("You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."), _T("TortoiseGit"), 1, IDI_EXCLAMATION, _T("&Open msysGit WebSite"), _T("&Abort"), _T("&Ignore"), _T("OldMsysgitVersionWarning"), _T("Do &not show me this warning again (if Ignore is selected)"));
+		int ret = CMessageBox::ShowCheck(NULL, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, _T("OldMsysgitVersionWarning"), IDS_PROC_NOTSHOWAGAINIGNORE);
 		if (ret == 1)
 		{
 			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
@@ -438,7 +437,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		if (!err.IsEmpty())
 		{
-			UINT choice = CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit Error"), 1, IDI_ERROR, _T("&Edit .git/config"), _T("Edit &global .gitconfig"), _T("&Abort"));
+			UINT choice = CMessageBox::Show(hWndExplorer, err, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_PROC_EDITLOCALGITCONFIG)), CString(MAKEINTRESOURCE(IDS_PROC_EDITGLOBALGITCONFIG)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 			if (choice == 1)
 			{
 				// open the config file with alternative editor
