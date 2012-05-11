@@ -591,6 +591,7 @@
 #define IDS_PROGRS_TITLE_MERGE          1234
 #define IDS_PROGRS_TITLE_COPY           1235
 #define IDS_PROGRS_MIMETYPE             1236
+#define IDS_ERR_MISSINGVALUE            1237
 #define IDS_PROGRS_COPY_WARNING         1238
 #define IDC_EXTERNALWARNING             1238
 #define IDS_PROGRS_COMMITT_TRUNK        1239

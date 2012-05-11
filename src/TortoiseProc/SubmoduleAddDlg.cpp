@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -96,6 +96,8 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 
 	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(CString(_T("Submodule of Project: "))+m_strProject);
 
+	m_tooltips.Create(this);
+
 	return TRUE;
 }
 
@@ -142,8 +144,8 @@ void CSubmoduleAddDlg::OnOK()
 		m_strBranch.Trim();
 		if(m_strBranch.IsEmpty())
 		{
-			CMessageBox::Show(NULL,_T("Branch can't be empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return ;
+			m_tooltips.ShowBalloon(IDC_SUBMODULE_BRANCH, IDS_ERR_MISSINGVALUE, IDS_ERR_ERROR, TTI_ERROR);
+			return;
 		}
 	}
 	m_Repository.SaveHistory();
@@ -156,13 +158,13 @@ void CSubmoduleAddDlg::OnOK()
 	m_strRepos.Trim();
 	if(m_strPath.IsEmpty())
 	{
-		CMessageBox::Show(NULL,_T("Path can't be empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return ;
+		m_tooltips.ShowBalloon(IDC_COMBOBOXEX_PATH, IDS_ERR_MISSINGVALUE, IDS_ERR_ERROR, TTI_ERROR);
+		return;
 	}
 	if(m_strRepos.IsEmpty())
 	{
-		CMessageBox::Show(NULL,_T("Repository can't be empty"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-			return ;
+		m_tooltips.ShowBalloon(IDC_COMBOBOXEX_REPOSITORY, IDS_ERR_MISSINGVALUE, IDS_ERR_ERROR, TTI_ERROR);
+		return;
 	}
 	__super::OnOK();
 }

@@ -21,6 +21,7 @@
 #include "afxcmn.h"
 #include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
+#include "ToolTip.h"
 // CSubmoduleAddDlg dialog
 
 class CSubmoduleAddDlg : public CHorizontalResizableStandAloneDialog
@@ -40,14 +41,12 @@ protected:
 	void OnPathBrowse();
 	void OnBranchCheck();
 	virtual void OnOK();
+	CToolTips m_tooltips;
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_Repository;
-public:
 	CHistoryCombo m_PathCtrl;
-public:
 	BOOL m_bBranch;
-public:
 	CString m_strBranch;
 	CString m_strPath;
 	CString m_strRepos;

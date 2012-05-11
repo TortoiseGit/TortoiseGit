@@ -2514,6 +2514,7 @@ BEGIN
     IDS_PROGRS_TITLE_MERGE  "Merge"
     IDS_PROGRS_TITLE_COPY   "Copy"
     IDS_PROGRS_MIMETYPE     "Mime type"
+    IDS_ERR_MISSINGVALUE    "This field is required and must not be empty."
     IDS_PROGRS_COPY_WARNING "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
     IDS_PROGRS_COMMITT_TRUNK 
                             "Your working copy appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
