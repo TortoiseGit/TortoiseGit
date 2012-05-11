@@ -154,7 +154,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
 	}
 	m_rev1 = rev1;
 	m_rev2.m_CommitHash.Empty();
-	m_rev2.GetSubject() = _T("Previous Version");
+	m_rev2.GetSubject() = CString(MAKEINTRESOURCE(IDS_PROC_PREVIOUSVERSION));
 
 	//this->GetDlgItem()->EnableWindow(FALSE);
 }
@@ -238,7 +238,11 @@ BOOL CFileDiffDlg::OnInitDialog()
 	else
 	{
 		if(m_rev1.GetCommit(this->m_strRev1))
-			this->m_FileListText+=this->m_strRev1 + _T(" is wrong");
+		{
+			CString msg;
+			msg.Format(IDS_PROC_REFINVALID, this->m_strRev1);
+			this->m_FileListText += msg;
+		}
 
 		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
 	}
@@ -248,7 +252,11 @@ BOOL CFileDiffDlg::OnInitDialog()
 	else
 	{
 		if(m_rev2.GetCommit(this->m_strRev2))
-			this->m_FileListText+=this->m_strRev2 + _T(" is wrong");
+		{
+			CString msg;
+			msg.Format(IDS_PROC_REFINVALID, this->m_strRev2);
+			this->m_FileListText += msg;
+		}
 
 		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
 	}
@@ -637,7 +645,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							{
 								CString out;
 								out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, fd->GetGitPathString(), m_rev1.m_CommitHash.ToString(), filename);
-								if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, _T("&Proceed"), _T("&Abort")) == 2)
+								if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 									return;
 							}
 						}
@@ -743,17 +751,17 @@ void CFileDiffDlg::SetURLLabels(int mask)
 			CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE, false) + _T("  ") + m_rev2.GetAuthorName());
 	}
 
-	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base)"));
-	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1"));
+	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASE)));
+	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1)));
 
 	if( (mask&0x3) == 0x3)
 		if(m_rev2.GetCommitterDate() > m_rev1.GetCommitterDate())
 		{
-			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(_T("Version 2 (Base) (Commit Date New)"));
+			this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2BASENEWER)));
 		}
 		else
 		{
-			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(_T("Version 1 (Commit Data New)"));
+			this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1NEWER)));
 		}
 }
 

@@ -95,7 +95,7 @@ bool SVNRebaseCommand::Execute()
 	//everything updated
 	if(UpStreamNewHash==HeadHash)
 	{
-		CMessageBox::Show(NULL,_T("Everything Updated"),_T("TortoiseGit"),MB_OK);
+		CMessageBox::Show(NULL, IDS_PROC_EVERYTHINGUPDATED, IDS_APPNAME, MB_OK);
 		if(isStash)
 			askIfUserWantsToStashPop();
 
@@ -114,7 +114,7 @@ bool SVNRebaseCommand::Execute()
 			return false;
 		else
 		{
-			MessageBox(NULL, _T("Fast Forward:\n") + progressReset.m_LogText, _T("TortoiseGit"), MB_OK);
+			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_PROC_FASTFORWARD)) + _T(":\n") + progressReset.m_LogText, _T("TortoiseGit"), MB_OK);
 			if(isStash)
 				askIfUserWantsToStashPop();
 

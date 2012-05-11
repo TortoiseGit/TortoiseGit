@@ -638,7 +638,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 
 	if( i== 10*60*5)
 	{
-		CMessageBox::Show(NULL, _T("Fail wait for pageant finish load key"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		CMessageBox::Show(NULL, IDS_ERR_PAEGENTTIMEOUT, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
 	::DeleteFile(tempfile);
 	return true;
@@ -1136,7 +1136,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 
 		CTGitPath gitPath = g_Git.m_CurrentDir;
 		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2)
-			progress.m_PostCmdList.Add(_T("Update Submodules"));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
 		int ret = progress.DoModal();
 		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
@@ -1158,15 +1158,15 @@ void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
 {
 	if(mode == FALSE)
 	{
-		descript=_T("Deleted");
+		descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_DELETE));
 		return;
 	}
 	if(base)
 	{
-		descript=_T("Modified");
+		descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_MODIFIED));
 		return;
 	}
-	descript=_T("Created");
+	descript = CString(MAKEINTRESOURCE(IDS_SVNACTION_ADD));
 	return;
 }
 
@@ -1762,7 +1762,7 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 	}
 	else
 	{
-		CMessageBox::Show(NULL, _T("Not patches generated."), _T("TortoiseGit"), MB_ICONINFORMATION);
+		CMessageBox::Show(NULL, IDS_ERR_NOPATCHES, IDS_APPNAME, MB_ICONINFORMATION);
 		return true;
 	}
 }
@@ -1902,11 +1902,11 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 
 		progress.m_bAutoCloseOnSuccess = autoClose;
 
-		progress.m_PostCmdList.Add(_T("Show Log"));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 
 		if(!dlg.m_bRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		{
-			progress.m_PostCmdList.Add(_T("&Rebase"));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
 		}
 
 		progress.m_GitCmd=cmd;
@@ -1924,8 +1924,8 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			while(1)
 			{
 				CRebaseDlg dlg;
-				dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
-				dlg.m_PostButtonTexts.Add(_T("Restart Rebase"));
+				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
+				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
 				int response = dlg.DoModal();
 				if(response == IDOK)
 				{
@@ -2025,8 +2025,8 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 		CProgressDlg progress;
 		progress.m_bAutoCloseOnSuccess=autoClose;
 		progress.m_GitCmd=cmd;
-		progress.m_PostCmdList.Add(_T("&Request pull"));
-		progress.m_PostCmdList.Add(_T("Re&Push"));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 		int ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
@@ -2070,7 +2070,7 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 		CString tempFileName = GetTempFile();
 		if (g_Git.RunLogFile(cmd, tempFileName))
 		{
-			MessageBox(NULL, _T("Failed to create pull-request."), _T("TortoiseGit"), MB_OK);
+			CMessageBox::Show(NULL, IDS_ERR_PULLREUQESTFAILED, IDS_APPNAME, MB_OK);
 			return false;
 		}
 		CAppUtils::LaunchAlternativeEditor(tempFileName);
@@ -2245,7 +2245,9 @@ BOOL CAppUtils::SVNDCommit()
 				}
 				if(g_Git.SetConfigValue(_T("svn.rmdir"),gitSetting))
 				{
-					CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
+					CString msg;
+					msg.Format(IDS_PROC_SAVECONFIGFAILED, _T("svn.rmdir"), gitSetting);
+					CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				}
 			}
 		}
@@ -2344,9 +2346,9 @@ BOOL CAppUtils::Merge(CString *commit)
 		Prodlg.m_GitCmd = cmd;
 
 		if (dlg.m_bNoCommit)
-			Prodlg.m_PostCmdList.Add(_T("Commit"));
+			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUCOMMIT)));
 		else if (dlg.m_bIsBranch)
-			Prodlg.m_PostCmdList.Add(_T("Remove branch"));
+			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
 
 		int ret = Prodlg.DoModal();
 
@@ -2355,7 +2357,9 @@ BOOL CAppUtils::Merge(CString *commit)
 				return Commit(_T(""), TRUE, CString(), CTGitPathList(), CTGitPathList(), true);
 			else if (dlg.m_bIsBranch)
 			{
-				if (CMessageBox::Show(NULL, _T("Do you really want to <ct=0x0000FF>delete</ct> <b>") + dlg.m_VersionName + _T("</b>?"), _T("TortoiseGit"), 2, IDI_QUESTION, _T("&Delete"), _T("&Abort")) == 1)
+				CString msg;
+				msg.Format(IDS_PROC_DELETEBRANCHTAG, dlg.m_VersionName);
+				if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 				{
 					CString cmd, out;
 					cmd.Format(_T("git.exe branch -D -- %s"), dlg.m_VersionName);
@@ -2372,9 +2376,9 @@ BOOL CAppUtils::Merge(CString *commit)
 void CAppUtils::EditNote(GitRev *rev)
 {
 	CInputDlg dlg;
-	dlg.m_sHintText=_T("Edit Notes");
+	dlg.m_sHintText = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
 	dlg.m_sInputText = rev->m_Notes;
-	dlg.m_sTitle=_T("Edit Notes");
+	dlg.m_sTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
 	//dlg.m_pProjectProperties = &m_ProjectProperties;
 	dlg.m_bUseLogWidth = true;
 	if(dlg.DoModal() == IDOK)
@@ -2392,7 +2396,7 @@ void CAppUtils::EditNote(GitRev *rev)
 		{
 			if (git_run_cmd("notes", CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 			{
-				CMessageBox::Show(NULL,_T("Edit Note Fail"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+				CMessageBox::Show(NULL, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 
 			}
 			else
@@ -2401,7 +2405,7 @@ void CAppUtils::EditNote(GitRev *rev)
 			}
 		}catch(...)
 		{
-			CMessageBox::Show(NULL,_T("Edit Note Fail"), _T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, IDS_PROC_FAILEDSAVINGNOTES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		}
 		CFile::Remove(tempfile);
 

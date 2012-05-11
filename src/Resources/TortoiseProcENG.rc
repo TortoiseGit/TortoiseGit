@@ -2451,7 +2451,15 @@ BEGIN
     IDS_SSL_PKCS12          "PKCS12"
     IDS_IMPORT_DEFAULTMSG   "Initial import"
     IDS_LOG_COPYFROM        "Copy from path"
+    IDS_PROC_SYNC_PUSHTAGS  "Push ta&gs"
+    IDS_PROC_SYNC_PULL      "&Pull"
+    IDS_PROC_SYNC_FETCH     "Fetc&h"
+    IDS_PROC_SYNC_FETCHREBASE "Fetch&&Re&base"
     IDS_LOG_REVERT_CONFIRM  "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working copy."
+    IDS_PROC_SYNC_REMOTEUPDATE "Remote Update"
+    IDS_PROC_SYNC_CLEANUPSTALEBRANCHES "Cleanup stale remote banches"
+    IDS_PROC_SYNC_SUBKODULEUPDATE "Submodule Update"
+    IDS_PROC_SYNC_SUBKODULEINIT "Submodule Init"
 END
 
 STRINGTABLE 
@@ -2473,6 +2481,7 @@ BEGIN
     IDS_PROGRS_TITLEFIN     "Finished!"
     IDS_PROGRS_TITLE_CHECKOUT "Checkout"
     IDS_PROGRS_TITLE_IMPORT "Import"
+    IDS_PROC_SYNC_SUBKODULESYNC "Submodule Sync"
     IDS_PROGRS_TITLE_COMMIT "Commit"
     IDS_PROGRS_TITLE_ADD    "Add"
     IDS_PROGRS_TITLE_REVERT "Revert"
@@ -3747,6 +3756,41 @@ BEGIN
     IDS_PROC_STASHFAILED    "<ct=0x0000FF>Stash failed!!!</ct>"
     IDS_PROC_STASHSUCCESS   "<ct=0xff0000>Stash Success</ct>"
     IDS_PROC_NOUSERDATA     "User name and email must be set before commit.\r\n Do you want to set these now?"
+    IDS_PROC_PREVIOUSVERSION "Previous Version"
+    IDS_PROC_REFINVALID     """%"" is invalid."
+    IDS_IGNOREBUTTON        "&Ignore"
+    IDS_PROC_STASHAPPLYFAILED "<ct=0x0000FF>Stash Apply failed!!!</ct>"
+    IDS_PROC_FILEDIFF_VERSION2BASE "Version 2 (Base)"
+    IDS_PROC_FILEDIFF_VERSION1 "Version 1"
+    IDS_PROC_FILEDIFF_VERSION1NEWER "Version 1 (Commit Data New)"
+    IDS_PROC_FILEDIFF_VERSION2BASENEWER "Version 2 (Base) (Commit Date New)"
+    IDS_ERR_PAEGENTTIMEOUT  "Failed waiting for pageant to finish loading key."
+    IDS_ERR_NOPATCHES       "Not patches generated."
+    IDS_PROC_REQUESTPULL    "Create pull &request"
+    IDS_ERR_PULLREUQESTFAILED "Failed to create pull-request."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROC_REMOVEBRANCH   "Remove &branch"
+    IDS_PROGS_TITLE_EDITNOTES "Edit Notes"
+    IDS_PROC_FAILEDSAVINGNOTES "Saving notes failed."
+    IDS_PROC_FASTFORWARD    "Fast Forward"
+    IDS_PROC_EVERYTHINGUPDATED "Everything updated."
+    IDS_PROC_SYNC_PULLWRONGBRANCH 
+                            "Pull requires the selected local branch to be the current branch."
+    IDS_PROC_SYNC_REFRESHING "Refreshing..."
+    IDS_PROC_SYNC_COMMITSAHEAD "%d commits ahead ""%s"""
+    IDS_PROC_SYNC_WAINTINPUT "Waiting for input"
+    IDS_PROC_SYNC_PUSH_UNKNOWN 
+                            "Don't know what will push because you enter URL"
+    IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH 
+                            "Don't know what will push because unknown branch ""%s"""
+    IDS_PROC_SYNC_INCOMMITS "In Commits"
+    IDS_PROC_SYNC_INCHANGELIST "In ChangeList"
+    IDS_PROC_SYNC_OUTCOMMITS "Out Commits"
+    IDS_PROC_SYNC_OUTCHANGELIST "Out ChangeList"
+    IDS_PROC_SYNC_PUSH      "Pus&h"
 END
 
 #endif    // Englisch (USA) resources
