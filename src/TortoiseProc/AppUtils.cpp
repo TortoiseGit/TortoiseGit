@@ -115,7 +115,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 	{
-		CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED))+ _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	}
 	else
 	{
@@ -124,7 +124,7 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 			withConflicts = _T(" with conflicts");
 		if (showChanges)
 		{
-			if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply successful") + withConflicts + _T("</ct>") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))))
+			if(CMessageBox::Show(NULL,CString(_T("<ct=0xff0000>Stash Apply successful") + withConflicts + _T("</ct>") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)))
 				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;
@@ -160,7 +160,7 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 			message = _T("<ct=0x000000ff>Stash POP Failed, there are conflicts</ct>");
 		if (showChanges)
 		{
- 			if(CMessageBox::Show(NULL,CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES))))
+ 			if(CMessageBox::Show(NULL,CString(message + _T("\n") + CString(MAKEINTRESOURCE(IDS_SEECHANGES)))
 				,_T("TortoiseGit"),MB_YESNO|MB_ICONINFORMATION) == IDYES)
 			{
 				CChangedDlg dlg;

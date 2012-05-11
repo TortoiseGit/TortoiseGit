@@ -284,7 +284,7 @@ STRINGTABLE
 BEGIN
     IDS_REFLOG_DEL          "Delete Ref..."
     IDS_MENUSENDMAIL        "Send Mail..."
-    IDS_MENUDESSENDMAIL     "Send Patch by Email"
+    IDS_MENUDESSENDMAIL     "Send Patch(es) by eMail"
     IDS_MENUREFBROWSE       "Browse Reference"
     IDS_MENUDESCREFBROWSE   "Browse reference"
     IDS_MENUSVNREBASE       "SVN Rebase..."
