@@ -52,7 +52,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;&quot;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL"
 				BasicRuntimeChecks="1"
 				RuntimeLibrary="3"
@@ -158,7 +158,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="0"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;&quot;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN64;_DEBUG;_WINDOWS;_USRDLL;"
 				BasicRuntimeChecks="1"
 				RuntimeLibrary="3"
@@ -259,7 +259,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;&quot;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"

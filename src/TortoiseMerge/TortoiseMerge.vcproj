@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin\debug\bin\libapr_tsvn.lib ../../bin\debug\bin\libaprutil_tsvn.lib ../../ext/libintl/libintl3-win32/lib/intl3_tsvn.lib ../../bin\debug\bin\xml.lib libcpmt.lib"
+				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin\debug\bin\libapr_tsvn.lib ../../bin\debug\bin\libaprutil_tsvn.lib ../../bin\debug\bin\xml.lib libcpmt.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -156,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin/release64/bin/libapr_tsvn.lib ../../bin/release64/bin/libaprutil_tsvn.lib ../../ext/libintl/libintl3-x64/lib/intl3_tsvn.lib ../../bin/release64/bin/xml.lib"
+				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin/release64/bin/libapr_tsvn.lib ../../bin/release64/bin/libaprutil_tsvn.lib ../../bin/release64/bin/xml.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -242,7 +242,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin\release\bin\libapr_tsvn.lib ../../bin\release\bin\libaprutil_tsvn.lib ../../ext/libintl/libintl3-win32/lib/intl3_tsvn.lib ../../bin\release\bin\xml.lib libcpmt.lib"
+				AdditionalDependencies="Crypt32.lib shlwapi.lib Version.lib ../../bin\release\bin\libapr_tsvn.lib ../../bin\release\bin\libaprutil_tsvn.lib ../../bin\release\bin\xml.lib libcpmt.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
