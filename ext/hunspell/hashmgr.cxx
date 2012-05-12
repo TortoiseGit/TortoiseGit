@@ -260,7 +260,7 @@ int HashMgr::load_tables(const char * tpath)
   mychomp(ts);
   
   /* remove byte order mark */
-  if (strncmp(ts,"﻿",3) == 0) {
+  if (strncmp(ts,"?",3) == 0) {
     memmove(ts, ts+3, strlen(ts+3)+1);
     HUNSPELL_WARNING(stderr, "warning: dic file begins with byte order mark: possible incompatibility with old Hunspell versions\n");
   }
@@ -476,7 +476,7 @@ int  HashMgr::load_config(const char * affpath)
        /* remove byte order mark */
        if (firstline) {
          firstline = 0;
-         if (strncmp(line,"﻿",3) == 0) memmove(line, line+3, strlen(line+3)+1);
+		 if (strncmp(line,"",3) == 0) memmove(line, line+3, strlen(line+3)+1);
        }
 
         /* parse in the try string */
