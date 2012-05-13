@@ -231,21 +231,6 @@ msgstr ""
 msgid "%s - at revision: %d"
 msgstr ""
 
-#. Resource IDs: (151)
-#, c-format
-msgid "%s : Remote file"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "%s : Working Base"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "%s : Working Copy"
-msgstr ""
-
 #. Resource IDs: (226)
 #, c-format
 msgid "%s in %s"
@@ -254,6 +239,21 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "%s, at %s"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "%s: Remote file"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "%s: Working Base"
+msgstr ""
+
+#. Resource IDs: (151)
+#, c-format
+msgid "%s: Working Copy"
 msgstr ""
 
 #. Resource IDs: (145)
@@ -1136,15 +1136,11 @@ msgid "&Up"
 msgstr ""
 
 #. Resource IDs: (4567)
-msgid "&UpStream: "
+msgid "&UpStream:"
 msgstr ""
 
 #. Resource IDs: (76)
 msgid "&Update item to revision"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "&Url: "
 msgstr ""
 
 #. Resource IDs: (1184)
@@ -1607,12 +1603,12 @@ msgstr ""
 
 #. Resource IDs: (78)
 #, c-format
-msgid "An external diff program used\r\nfor comparing different revisions of files\r\n\r\nYou can specify the following parameters to the path:\r\n%base : the base file\r\n%mine : the modified file"
+msgid "An external diff program used\r\nfor comparing different revisions of files\r\n\r\nYou can specify the following parameters to the path:\r\n%base: the base file\r\n%mine: the modified file"
 msgstr ""
 
 #. Resource IDs: (79)
 #, c-format
-msgid "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged : the conflicted file, where to save\r\n%theirs : the file as it is in the repository\r\n%mine : your own file, with your changes\r\n%base : the original file without your changes"
+msgid "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged: the conflicted file, where to save\r\n%theirs: the file as it is in the repository\r\n%mine: your own file, with your changes\r\n%base: the original file without your changes"
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -2598,8 +2594,8 @@ msgstr ""
 msgid "Copy (Branch/Tag)"
 msgstr ""
 
-#. Resource IDs: (1255)
-msgid "Copy Commit Hash"
+#. Resource IDs: (1255, 32778)
+msgid "Copy SHA-1 to clipboard"
 msgstr ""
 
 #. Resource IDs: (1057)
@@ -2612,10 +2608,6 @@ msgstr ""
 
 #. Resource IDs: (146)
 msgid "Copy and rename"
-msgstr ""
-
-#. Resource IDs: (32778)
-msgid "Copy hash to clipboard"
 msgstr ""
 
 #. Resource IDs: (32777)
@@ -4189,10 +4181,6 @@ msgstr ""
 msgid "H&ue:"
 msgstr ""
 
-#. Resource IDs: (1251)
-msgid "HASH"
-msgstr ""
-
 #. Resource IDs: (1353, 1354, 1511)
 msgid "HEAD"
 msgstr ""
@@ -4203,10 +4191,6 @@ msgstr ""
 
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
-msgstr ""
-
-#. Resource IDs: (604)
-msgid "Hash"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -5406,11 +5390,11 @@ msgid "OEM 858"
 msgstr ""
 
 #. Resource IDs: (5053)
-msgid "OEM 860 : Portuguese"
+msgid "OEM 860: Portuguese"
 msgstr ""
 
 #. Resource IDs: (5054)
-msgid "OEM 861 : Icelandic"
+msgid "OEM 861: Icelandic"
 msgstr ""
 
 #. Resource IDs: (5055)
@@ -5418,11 +5402,11 @@ msgid "OEM 862"
 msgstr ""
 
 #. Resource IDs: (5056)
-msgid "OEM 863 : French"
+msgid "OEM 863: French"
 msgstr ""
 
 #. Resource IDs: (5057)
-msgid "OEM 865 : Nordic"
+msgid "OEM 865: Nordic"
 msgstr ""
 
 #. Resource IDs: (5058)
@@ -5895,27 +5879,27 @@ msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "Property %s : Revision %s"
+msgid "Property %s: Revision %s"
 msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "Property %s : Working Base, Revision %ld"
+msgid "Property %s: Working Base, Revision %ld"
 msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "Property %s : remote"
+msgid "Property %s: remote"
 msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "Property %s : working base"
+msgid "Property %s: working base"
 msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "Property %s : working copy"
+msgid "Property %s: working copy"
 msgstr ""
 
 #. Resource IDs: (107)
@@ -6200,14 +6184,6 @@ msgstr ""
 msgid "Remote:"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Remote: "
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Remote:                        "
-msgstr ""
-
 #. Resource IDs: (1332, 1470)
 msgid "Remove"
 msgstr ""
@@ -6321,7 +6297,7 @@ msgid "Repository &URL"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Repository: "
+msgid "Repository:"
 msgstr ""
 
 #. Resource IDs: (334)
@@ -6574,12 +6550,16 @@ msgstr ""
 msgid "SCRL"
 msgstr ""
 
+#. Resource IDs: (604, 1251)
+msgid "SHA-1"
+msgstr ""
+
 #. Resource IDs: (1585)
 msgid "SMTP Server require authentication"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "SMTP Server: "
+msgid "SMTP Server:"
 msgstr ""
 
 #. Resource IDs: (1081)
@@ -7785,10 +7765,6 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "To: "
-msgstr ""
-
 #. Resource IDs: (3633)
 msgid "Toggle One/Two Pages display\nToggle One/Two Pages display"
 msgstr ""
@@ -7949,7 +7925,7 @@ msgid "URL or directory must not be empty."
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "URL:            "
+msgid "URL:"
 msgstr ""
 
 #. Resource IDs: (3866)
@@ -8054,10 +8030,6 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Updating index"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Url:"
 msgstr ""
 
 #. Resource IDs: (16530)

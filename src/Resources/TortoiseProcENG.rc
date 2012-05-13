@@ -414,7 +414,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,56,129,10
     EDITTEXT        IDC_SMTP_USER,92,73,193,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_SMTP_PASSWORD,92,93,193,14,ES_PASSWORD | ES_AUTOHSCROLL
-    LTEXT           "SMTP Server: ",IDC_STATIC,8,14,56,8
+    LTEXT           "SMTP Server:",IDC_STATIC,8,14,56,8
     LTEXT           "Port:",IDC_STATIC,223,15,19,8
     LTEXT           "Login:",IDC_STATIC,51,76,20,8
     LTEXT           "Password:",IDC_STATIC,50,95,34,8
@@ -951,7 +951,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFR
 CAPTION "Git clone - TortoiseGit"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "&Url: ",IDC_STATIC,20,28,14,8
+    LTEXT           "&URL:",IDC_STATIC,20,28,14,8
     CONTROL         "",IDC_URLCOMBO,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,54,25,192,164
     PUSHBUTTON      "&Browse Dir",IDC_CLONE_BROWSE_URL,253,25,50,15
     LTEXT           "&Directory:",IDC_STATIC,19,49,33,8
@@ -1316,7 +1316,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "&Branch:",IDC_REBASE_STATIC_BRANCH,10,10,26,8
     CONTROL         "",IDC_REBASE_COMBOXEX_BRANCH,"ComboBoxEx32",CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP,41,8,107,63
-    LTEXT           "&UpStream: ",IDC_REBASE_STATIC_UPSTREAM,162,9,37,8
+    LTEXT           "&UpStream:",IDC_REBASE_STATIC_UPSTREAM,162,9,37,8
     CONTROL         "",IDC_REBASE_COMBOXEX_UPSTREAM,"ComboBoxEx32",CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP,201,7,145,57
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE,353,6,19,15
     CONTROL         "",IDC_COMMIT_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,25,365,85
@@ -1372,7 +1372,7 @@ CAPTION "Submodule Add"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Submodule Info",IDC_GROUP_SUBMODULE,7,7,257,62
-    LTEXT           "Repository: ",IDC_STATIC,15,24,40,8
+    LTEXT           "Repository:",IDC_STATIC,15,24,40,8
     CONTROL         "",IDC_COMBOBOXEX_REPOSITORY,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,61,22,171,70
     PUSHBUTTON      "...",IDC_REP_BROWSE,237,22,20,14
     LTEXT           "Path:",IDC_STATIC,15,47,18,8
@@ -1415,15 +1415,15 @@ CAPTION "Git::Remote"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LISTBOX         IDC_LIST_REMOTE,7,23,79,187,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Remote: ",IDC_STATIC,101,29,30,8
+    LTEXT           "Remote:",IDC_STATIC,101,29,30,8
     EDITTEXT        IDC_EDIT_REMOTE,137,27,139,12,ES_AUTOHSCROLL
-    LTEXT           "URL:            ",IDC_STATIC,101,47,40,8
+    LTEXT           "URL:",IDC_STATIC,101,47,40,8
     EDITTEXT        IDC_EDIT_URL,138,44,139,12,ES_AUTOHSCROLL
     LTEXT           "Putty Key:",IDC_STATIC,101,65,35,8
     EDITTEXT        IDC_EDIT_PUTTY_KEY,138,64,139,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE,277,64,16,14
     PUSHBUTTON      "&Add New/Save",IDC_BUTTON_ADD,100,107,58,14
-    LTEXT           "Remote:                        ",IDC_STATIC,7,10,76,8
+    LTEXT           "Remote:",IDC_STATIC,7,10,76,8
     PUSHBUTTON      "&Remove",IDC_BUTTON_REMOVE,100,129,58,14
 END
 
@@ -1433,7 +1433,7 @@ CAPTION "Send Patch"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Mail",IDC_SENDMAIL_GROUP,7,7,364,75
-    LTEXT           "To: ",IDC_STATIC,16,19,38,8
+    LTEXT           "To:",IDC_STATIC,16,19,38,8
     EDITTEXT        IDC_SENDMAIL_TO,64,17,300,14,ES_AUTOHSCROLL
     LTEXT           "CC:",IDC_STATIC,17,39,32,8
     EDITTEXT        IDC_SENDMAIL_CC,64,36,300,14,ES_AUTOHSCROLL
@@ -2521,7 +2521,7 @@ BEGIN
     IDS_SETTINGS_SELECTDIFFVIEWER "Select viewer for diff-files"
     IDS_SETTINGS_SELECTMERGE "Select merge application"
     IDS_SETTINGS_SELECTSSH  "Select SSH client"
-    IDS_SETTINGS_EXTDIFF_TT "An external diff program used\r\nfor comparing different revisions of files\r\n\r\nYou can specify the following parameters to the path:\r\n%base : the base file\r\n%mine : the modified file"
+    IDS_SETTINGS_EXTDIFF_TT "An external diff program used\r\nfor comparing different revisions of files\r\n\r\nYou can specify the following parameters to the path:\r\n%base: the base file\r\n%mine: the modified file"
     IDS_SETTINGS_EXTDIFFBROWSE_TT "Browse for the external diff program"
     IDS_PROC_BROWSEREFS_FETCHFROM "Fetch from ""%s"""
 END
@@ -2531,7 +2531,7 @@ BEGIN
     IDS_MSYSGIT_PATH_TT     "MsysGit Install Path"
     IDS_PROC_BROWSEREFS_COMPAREREFS "Compare selected refs"
     IDS_SETTINGS_EXTMERGE_TT 
-                            "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged : the conflicted file, where to save\r\n%theirs : the file as it is in the repository\r\n%mine : your own file, with your changes\r\n%base : the original file without your changes"
+                            "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged: the conflicted file, where to save\r\n%theirs: the file as it is in the repository\r\n%mine: your own file, with your changes\r\n%base: the original file without your changes"
     IDS_SETTINGS_PROXYSERVER_TT "Either the name or IP of the proxy server"
     IDS_SETTINGS_DIFFVIEWER_TT 
                             "A viewer program for GNU diff files (patch files).\r\nIf you don't have one use NotePad."
@@ -2755,17 +2755,17 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_DIFF_WCNAME         "%s : Working Copy"
-    IDS_DIFF_BASENAME       "%s : Working Base"
+    IDS_DIFF_WCNAME         "%s: Working Copy"
+    IDS_DIFF_BASENAME       "%s: Working Base"
     IDS_DIFF_WORKINGCOPY    ": working copy"
     IDS_DIFF_REVISIONPATCHED ": Revision %d"
-    IDS_DIFF_REMOTENAME     "%s : Remote file"
+    IDS_DIFF_REMOTENAME     "%s: Remote file"
     IDS_DIFF_WORKINGBASE    ": working base"
-    IDS_DIFF_PROP_WCNAME    "Property %s : working copy"
-    IDS_DIFF_PROP_BASENAME  "Property %s : working base"
-    IDS_DIFF_PROP_REMOTENAME "Property %s : remote"
-    IDS_DIFF_PROP_REVISIONNAME "Property %s : Revision %s"
-    IDS_DIFF_PROP_BASENAMEREV "Property %s : Working Base, Revision %ld"
+    IDS_DIFF_PROP_WCNAME    "Property %s: working copy"
+    IDS_DIFF_PROP_BASENAME  "Property %s: working base"
+    IDS_DIFF_PROP_REMOTENAME "Property %s: remote"
+    IDS_DIFF_PROP_REVISIONNAME "Property %s: Revision %s"
+    IDS_DIFF_PROP_BASENAMEREV "Property %s: Working Base, Revision %ld"
 END
 
 STRINGTABLE 
@@ -3442,7 +3442,7 @@ BEGIN
     IDS_HOOKTYPE_PREPUSH    "Pre-Push Hook"
     IDS_HOOKTYPE_POSTPUSH   "Post-Push Hook"
     IDS_DCOMMIT_STASH_POP   "You need to stash changes before you can use DCommit.\r\n Do you want to stash pop now?\r\n"
-    IDS_HASH                "Hash"
+    IDS_HASH                "SHA-1"
     IDS_REF                 "Ref"
     IDS_ACTION              "Action"
     IDS_MESSAGE             "Message"
@@ -3663,7 +3663,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Name:",IDC_STATIC,16,22,22,8
     EDITTEXT        IDC_EDIT_NAME,44,20,249,14,ES_AUTOHSCROLL
-    LTEXT           "Url:",IDC_STATIC,26,40,12,8
+    LTEXT           "URL:",IDC_STATIC,26,40,12,8
     EDITTEXT        IDC_EDIT_URL,44,38,249,14,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,113,63,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,178,63,50,14
