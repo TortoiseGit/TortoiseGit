@@ -1517,7 +1517,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Alternative editor"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    LTEXT           "Configure alternative editor. Preferably one which can handle *nix file endings.",IDC_STATIC,7,7,286,8
+    LTEXT           "Configure alternative editor. Preferably one which can handle *nix line endings.",IDC_STATIC,7,7,286,8
     CONTROL         "&Notepad2",IDC_ALTERNATIVEEDITOR_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,23,74,10
     CONTROL         "&Custom",IDC_ALTERNATIVEEDITOR_ON,"Button",BS_AUTORADIOBUTTON,89,23,74,10
     EDITTEXT        IDC_ALTERNATIVEEDITOR,7,41,266,14,ES_AUTOHSCROLL | WS_GROUP
