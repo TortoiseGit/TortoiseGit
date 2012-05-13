@@ -2444,13 +2444,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_SSL_CERTIFICATETYPE "Please specify the certificate type"
-    IDS_SSL_ACCEPTQUESTION  "Do you want to proceed?"
-    IDS_SSL_CLIENTCERTIFICATEFILENAME "Open client certificate file"
-    IDS_SSL_PEM             "PEM"
-    IDS_SSL_PKCS12          "PKCS12"
     IDS_IMPORT_DEFAULTMSG   "Initial import"
-    IDS_LOG_COPYFROM        "Copy from path"
     IDS_PROC_SYNC_PUSHTAGS  "Push ta&gs"
     IDS_PROC_SYNC_PULL      "&Pull"
     IDS_PROC_SYNC_FETCH     "Fetc&h"
@@ -2617,8 +2611,6 @@ BEGIN
     IDS_ERR_NOTUPTODATE     "The working copy is not up to date!\nPlease Update first."
     IDS_ERR_FAILEDIGNOREPROPERTY "Could not add %s to the ignore list!"
     IDS_ERR_DIFFVIEWSTART   "Could not start diff viewer!\n<hr=100%%>\n%s"
-    IDS_ERR_SSL_VALIDATE    "Error validating server certificate for %s:"
-    IDS_ERR_SSL_UNKNOWNCA   "Unknown certificate issuer.\n  Fingerprint: %s\n  Distinguished name: %s"
 END
 
 STRINGTABLE 
@@ -2647,8 +2639,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
-    IDS_WARN_SHAREFILEACCESS 
-                            "You are trying to access a repository via file:// on\na shared network drive.\nThis could lead to severe repository corruption!\nDo you really want to do that?"
     IDS_WARN_FOLDERNOTEMPTY "The target folder \n%s\nis not empty!\nAre you sure you want to clone/export into that folder?"
     IDS_WARN_WARNING        "Warning"
     IDS_WARN_NOTE           "Notice"
@@ -2659,14 +2649,6 @@ STRINGTABLE
 BEGIN
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_EXPORT_TT_EOL       "Override the svn:eol-style property setting.\nFiles which don't have this property set are not affected."
-    IDS_IMPORT_TT_MODULENAMECHECK 
-                            "If checked then a new folder is created in the repository.\nIf not checked then the import goes directly to the specified URL."
-    IDS_IMPORT_TT_TEMPFILES "Check the files which you want to\ndelete before importing."
 END
 
 STRINGTABLE 
@@ -2698,8 +2680,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_EDITPROPS_ERRIMPORTFORMAT 
-                            "Unrecognized or invalid property file format!"
     IDS_ERR_NOTFOUND_SUPER_PRJECT "Can't find Super-project"
 END
 
@@ -2742,13 +2722,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERR_SSL_CNMISMATCH  "Hostname mismatch (%s)"
-    IDS_ERR_SSL_EXPIREDORNOTYETVALID "Certificate expired or not yet valid"
-    IDS_SSL_ACCEPTALWAYS    "Accept permanently"
-    IDS_SSL_ACCEPTTEMP      "Accept once"
-    IDS_SSL_REJECT          "Reject"
-    IDS_ERR_SSL_NOTYETVALID "Certificate not yet valid. Valid from: %s"
-    IDS_ERR_SSL_EXPIRED     "Certificate expired. Valid until: %s"
     IDS_ERR_COPYITSELF      "Can't copy \n%s\nto\n%s"
     IDS_ERR_INVALIDREV      "Invalid revision number! Valid revisions are:\nHEAD, BASE, PREV, COMMITTED, WC,\npositive decimal numbers,\ndates in one of the following example forms:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{""2002-02-17 15:30""}\n{""2002-02-17 15:30 +0230""}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
     IDS_ERR_EMPTYDIFF       "No differences found!"
@@ -2763,46 +2736,13 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_INPUT_ENTERLOG      "Enter log message:"
-    IDS_INPUT_LOGTITLE      "Log"
-    IDS_INPUT_REMOVELOGMSG  "Removed file/folder"
-    IDS_INPUT_ADDLOGMSG     "Added a file remotely"
-    IDS_INPUT_COPYLOGMSG    "Copied remotely"
-    IDS_INPUT_MKDIRLOGMSG   "Created folder remotely"
-    IDS_INPUT_MOVELOGMSG    "Moved remotely"
-    IDS_INPUT_ADDFOLDERLOGMSG "Added a folder remotely"
-    IDS_INPUT_ADDFILEFOLDERMSG "Added items remotely"
-    IDS_INPUT_RENAMELOGMSG  "Renamed remotely"
-    IDS_INPUT_IMPORTFOLDER  "Import folder %s\r\nto %s"
-    IDS_INPUT_IMPORTFILE    "Import file to\r\n%s"
-    IDS_INPUT_COPY          "Copy %s\r\nto %s"
-    IDS_INPUT_MKDIR         "Create new directory:\r\n%s"
     IDS_INPUT_REMOVEONE     "Remove %s"
     IDS_INPUT_REMOVEMORE    "Remove %ld items"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_BLAME_PROGRESSTITLE "Blame - TortoiseGit"
-    IDS_BLAME_PROGRESSINFO  "Please wait - this can take several minutes. Seriously!"
-    IDS_BLAME_PROGRESSCANCEL "Cancelling TortoiseGit Blame..."
-    IDS_BLAME_PROGRESSINFO2 "Processing revision %d of %d..."
-    IDS_BLAME_PROGRESSINFOSTART "Getting file info..."
-    IDS_BLAME_PROGRESSLOGSTART "Getting log info..."
-END
-
-STRINGTABLE 
-BEGIN
     IDS_LOG_COMPAREWITHBASE "Compare with b&ase"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROC_ENTERURLLABEL  "URL:"
-    IDS_PROC_PATCHTITLE     "Generating patchfile..."
-    IDS_PROC_SAVEPATCHTO    "Saving patchfile to:"
-    IDS_PROC_REPOCREATESHAREWARN 
-                            "You are creating a repository on a network share.\nThis is safe, but once the repository is created you must access it by some other means.\nAccessing a repository via file:// on a network share may corrupt your data!\nCreate the repository anyway?"
 END
 
 STRINGTABLE 
@@ -2822,7 +2762,6 @@ BEGIN
     IDS_DIFF_PROP_BASENAME  "Property %s : working base"
     IDS_DIFF_PROP_REMOTENAME "Property %s : remote"
     IDS_DIFF_PROP_REVISIONNAME "Property %s : Revision %s"
-    IDS_DIFF_BASENAMEREV    "%s : Working Base, Revision %ld"
     IDS_DIFF_PROP_BASENAMEREV "Property %s : Working Base, Revision %ld"
 END
 
@@ -2836,10 +2775,9 @@ STRINGTABLE
 BEGIN
     IDS_COMMONFILEFILTER    "All Files (*.*)|*.*||"
     IDS_PROGRAMSFILEFILTER  "Programs (*.exe)|*.exe|All Files (*.*)|*.*||"
-    IDS_CERTIFICATESFILEFILTER "Certificates|*.p12;*.pkcs12;*.pfx|All|*.*||"
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
     IDS_PICTUREFILEFILTER   "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
-    IDS_PROPSFILEFILTER     "Properties (*.svnprops)|*.svnprops|All Files (*.*)|*.*||"
+    IDS_PUTTYKEYFILEFILTER  "Putty Private Key (*.ppk)|*.ppk|All Files(*.*)|*.*||"
 END
 
 STRINGTABLE 
@@ -2891,7 +2829,6 @@ BEGIN
     IDS_PROC_UNIGNORESUCCESS 
                             "Removed the file pattern(s)\n%s\nfrom the ignore list."
     IDS_PROC_FORCEMOVE      "Do you really want to move this file or folder?"
-    IDS_PROC_OMMITEXTERNALS "Omit externals"
     IDS_PROC_ICONCACHEREBUILT "Shell Icon Cache was rebuilt!"
     IDS_PROC_ICONCACHENOTREBUILT "Error rebuilding Shell Icon Cache!"
     IDS_PROC_EXPORTFOLDERNAME "%s\\Export of %s"
@@ -2982,7 +2919,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_SVNERR_CHECKPATHORURL "Check the path and/or URL you've entered."
-    IDS_SVNERR_RUNCLEANUP   "Please execute the 'Cleanup' command."
     IDS_SVNERR_CLEANUPORFRESHCHECKOUT 
                             "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 END
@@ -2993,12 +2929,8 @@ BEGIN
                             "A newline separated list of paths for which icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
     IDS_SETTINGS_CLEARAUTH_TT 
                             "Clears the stored authentication.\r\nYou will have to enter your username/password again for all repositories."
-    IDS_SETTINGS_COMMITFILETIMES_TT 
-                            "If set, TortoiseGit will set the filetimes to the time they\r\nwere last committed. If not set, TortoiseGit uses the current time."
     IDS_SETTINGS_ICONSETCHANGED 
                             "You've changed the icon set from <i>%s</i> to <i>%s</i>.\nThat change won't take effect until you restart your computer or logoff and logon again!"
-    IDS_SETTINGS_PROXYEXCEPTIONS_TT 
-                            "Use '*' as a wildcard character when specifying an exception.\r\nTo separate multiple exceptions, use commas (',').\r\nExample: *.mylan.com, *.company.com"
     IDS_SETTINGS_READONLYNAME "readonly"
     IDS_SETTINGS_LOCKEDNAME "locked"
     IDS_SETTINGS_AUTOCOMPLETION_TT 
@@ -3007,12 +2939,8 @@ BEGIN
                             "The time in seconds after which the parsing of the selected files stops.\r\nA lower value will make the auto-completion list available sooner,\r\nbut maybe not scan all files."
     IDS_SETTINGS_RECURSIVE_TT 
                             "Disable this option if you have really big working copies and experience\r\ntoo much disk access when browsing the working copy."
-    IDS_SETTINGS_USEWCURL_TT 
-                            "If enabled, the Merge dialog initializes the 'From:' URL with the URL of the selected working copy\r\ninstead of the last used URL."
     IDS_SETTINGS_SPELLCHECKER_TT 
                             "Enables the spellchecker only if the\ntsvn:projectlanguage property is set."
-    IDS_SETTINGS_REPOCHECK_TT 
-                            "If enabled, the repository is contacted when the dialog starts up.\r\nYou don't have to click on 'Check Repository' anymore."
 END
 
 STRINGTABLE 
@@ -3031,11 +2959,6 @@ BEGIN
     IDS_PROGRS_EXTERNALSEXCLUDED "Externals excluded"
     IDS_PROGRS_EXTERNALSINCLUDED "Externals included"
     IDS_PROGRS_IGNOREDINCLUDED "Ignored items included"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SSL_SAVE_CERTPATH   "Save client certificate path"
 END
 
 STRINGTABLE 
@@ -3089,7 +3012,6 @@ BEGIN
     IDS_STATUSLIST_CONTEXT_EXPLORE "Explore to"
     IDS_STATUSLIST_CONTEXT_RESOLVED "Resolved"
     IDS_STATUSLIST_CONTEXT_COMMIT "Commit..."
-    IDS_STATUSLIST_CONTEXT_PROPERTIES "Properties..."
     IDS_STATUSLIST_CONTEXT_COPY "Copy paths to clipboard"
     IDS_STATUSLIST_CONTEXT_COPYEXT "Copy all information to clipboard"
     IDS_STATUSLIST_CONTEXT_REPAIRMOVE "Repair move"
@@ -3209,29 +3131,12 @@ BEGIN
                             "Clears the stored sizes and positions of %ld dialogs"
     IDS_SETTINGS_SAVEDDATA_AUTH_TT 
                             "Clears %ld username/password pairs, %ld ssl certificates and %ld usernames"
-    IDS_SETTINGS_DOTNETHACK_TT 
-                            "Enable this only if you're working with web projects on VS.NET2003!\r\nYou must restart the system for this setting to take effect."
     IDS_SETTINGS_RESTARTSYSTEM 
                             "You must restart your system for the changes to take effect."
-    IDS_SETTINGS_ASPHACKWARNING 
-                            "If you change this value, your existing working copies won't be recognized anymore!\nYou must check out your working copies again.\nIf you're not sure about this, then please read the docs.\nAre you absolutely sure you want to do this?"
     IDS_SETTINGS_UNVERSIONEDASMODIFIED_TT 
                             "If set, then unversioned files will mark the status of the parent directory as modified\r\ni.e. they get the modified overlay icon."
     IDS_SETTINGS_COMMITREOPEN_TT 
                             "If checked, the commit dialog will be started again automatically after an error,\r\nwhile preserving your last selection and log message."
-    IDS_SETTINGS_CHECKOUTPATH_TT 
-                            "The default path to checkout to if nothing else is specified"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_REPOSITORY_URL "Repository URL"
-    IDS_SETTINGS_REPOSITORY_SIZE "Cache size [kB]"
-    IDS_SETTINGS_CONNECTIVITY_ASKUSER "Ask user"
-    IDS_SETTINGS_CONNECTIVITY_OFFLINENOW "Operate from log cache for now only"
-    IDS_SETTINGS_CONNECTIVITY_OFFLINEFOREVER 
-                            "Never try to contact the repository again"
-    IDS_SETTINGS_MULTIPLEURLSFORUUID "multiple URLs (e.g. %s)"
 END
 
 STRINGTABLE 
@@ -3253,46 +3158,6 @@ STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_BUGIDS   "Bug-IDs"
     IDS_LOG_FILTER_REGEX_TT "Regular expressions filter:\r\n.   : any character\r\nc+   : match character c one or more times\r\nc*   : match character c zero or more times\r\n^   : start of line\r\n$   : end of line\r\n(string){n} : match string n times\r\n(abcd)   : subexpression\r\n[aei0-9]   : match a,e,i and 0..9\r\n[^aei0-9] : anything but a,e,i and 0..9\r\n\r\n\\w   : matches a-z,A-Z,0-9 and _\r\n\\W   : any non-alphanumeric character\r\n\\d   : digits 0-9\r\n\\s   : whitespaces"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_COPYDLG_FROMURL     "&From URL:"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_VIEW_SHOWALLREVISIONS 
-                            "Shows all revisions where changes were made to this item"
-    ID_VIEW_GROUPBRANCHES   "Group by branch"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_VIEW_EXACTCOPYSOURCE "Branch at copy-from-rev even if there was no change in that revision"
-    ID_VIEW_FOLDTAGS        "Show tags on the copy source, not as separate nodes"
-    ID_VIEW_REDUCECROSSLINES 
-                            "Prevents most cases in which connection lines cross revision nodes"
-    ID_VIEW_REMOVEDELETEDONES "Remove deleted branches and tags"
-    ID_VIEW_SHOWWCREV       "Mark current revision of your working copy"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_EDITPROPS_NUMPATHS  "%ld paths"
-    IDS_EDITPROPS_DIFFERENTPROPVALUES "values are different"
-    IDS_EDITPROPS_RECURSIVEREMOVEQUESTION 
-                            "Do you want to remove the property %s recursively?"
-    IDS_EDITPROPS_RECURSIVE "Recursive"
-    IDS_EDITPROPS_NOTRECURSIVE "Not recursive"
-    IDS_EDITPROPS_CANCEL    "Cancel"
-    IDS_EDITPROPS_ADDTITLE  "Add Properties"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_WARN_COPYHEADWITHLOCALMODS 
-                            "Your working copy has local modifications.\nIf you branch/tag from the HEAD revision, your local changes won't\nshow up in the branch/tag!"
 END
 
 STRINGTABLE 
@@ -3327,42 +3192,14 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROGRS_NONRECURSIVEHINT 
-                            "To commit recursively and work around this error,\nmake sure that all child items of a checked folder\nare also checked in the commit dialog.\nOtherwise, TortoiseGit must do a non-recursive commit\nwhich does not allow directory deletion."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROC_DIFFTITLE      "Diff with URL"
-    IDS_PROC_DIFFLABEL      "With URL:"
     IDS_PROC_CLEANUP_INFO1  "Cleaning up."
     IDS_PROC_CLEANUP_INFO2  "Please wait..."
-    IDS_PROC_UNVERSION      "Unversion"
     IDS_PROC_COPYRENAME     "Copy and rename"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_FILEDIFF_SWITCHLEFTRIGHT_TT "Switches the comparison left<<->right"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_EDITPROPS_EDITTITLE "Edit Properties"
-    IDS_EDITPROPS_BINVALUE  "(binary value)"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROC_CHECKOUTTO     "Select directory to check out to"
-    IDS_PROC_CHECKOUTTOPONLY "Only check out the &top folder"
-    IDS_PROC_CHECKOUTNOEXTERNALS "Omit e&xternals"
-    IDS_PROC_OVERWRITEEXPORT "The folder\n%s\nalready exists!"
-    IDS_PROC_OVERWRITEEXPORT_OVERWRITE "Overwrite"
-    IDS_PROC_OVERWRITEEXPORT_RENAME "Auto Rename"
-    IDS_PROC_OVERWRITEEXPORT_CANCEL "Cancel"
-    IDS_PROC_EXPORTUNVERSION 
-                            "Do you want to make this working copy unversioned?\nThis will remove all Subversion admin directories from\n%s!"
 END
 
 STRINGTABLE 
@@ -3404,8 +3241,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_SETTINGS_CHECKOUTURL_TT 
-                            "The default URL to checkout from if nothing else is specified"
     IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT 
                             "If enabled, working copy folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
     IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT 
@@ -3440,19 +3275,6 @@ BEGIN
                             "The maximum number of action log lines to keep.\nAny lines added over this limit will remove the oldest lines from the file."
     IDS_SETTINGS_HIDEMENUS_TT 
                             "When activated, hold down the SHIFT key when right-clicking to get the TortoiseGit menus added to the context menu"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_INPUT_IMPORTFILEFULL "Import file %s\r\nto %s"
-    IDS_INPUT_IMPORTFILES   "Import %ld items"
-    IDS_INPUT_RENAME        "Rename item from %s\r\nto %s"
-    IDS_INPUT_MOVE          "Move %s\r\nto %s"
-    IDS_INPUT_COPYMORE      "Copy %ld items to\r\n%s"
-    IDS_INPUT_MOVEMORE      "Move %ld items to\r\n%s"
-    IDS_INPUT_EDITPROP      "Edit property '%s' on\r\n%s"
-    IDS_INPUT_REMOVEPROP    "Remove property '%s' from\r\n%s"
-    IDS_INPUT_SETPROP       "Set property '%s' on\r\n%s"
 END
 
 STRINGTABLE 
@@ -3512,14 +3334,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_SVNDIFF_ONEURL      "revisions %s-%s, %s"
-    IDS_SVNDIFF_TWOURLS     "revision %s-%s, revision %s-%s"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SVNPROGRESS_MERGELOGRANGE "Merged revision(s) %s from %s:\n"
-    IDS_SVNPROGRESS_MERGELOGMSG "%s\nr%s | %s\n\n%s\n"
     IDS_SVNPROGRESS_UNVERSION "Unversioning %s"
 END
 
@@ -3559,34 +3373,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROPPAGE_BACK       "< &Back"
-    IDS_PROPPAGE_NEXT       "&Next >"
-    IDS_PROPPAGE_CANCEL     "Cancel"
-    IDS_PROPPAGE_HELP       "Help"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROGRS_CMD_MERGEREINTEGRATE "Reintegrate merge %s into %s"
-END
-
-STRINGTABLE 
-BEGIN
     IDS_PROC_MOVERENAME     "Move and rename"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_TRUNKPATTERN 
-                            "If an element (part between two '/') of a given path matches one\nof these patterns, it is considered a 'trunk'.\n\nPatterns are lower-case.\nAllowed wildcards are '?' and '*'.\nSeparate patterns by ';'."
-    IDS_SETTINGS_BRANCHESPATTERN 
-                            "If an element (part between two '/') of a given path matches one\nof these patterns, it is considered a 'branch'.\n\nPatterns are lower-case.\nAllowed wildcards are '?' and '*'.\nSeparate patterns by ';'."
-    IDS_SETTINGS_TAGSPATTERN 
-                            "If an element (part between two '/') of a given path matches one\nof these patterns, it is considered a 'tag'.\n\nPatterns are lower-case.\nAllowed wildcards are '?' and '*'.\nSeparate patterns by ';'."
-    IDS_SETTINGS_TWEAKTRUNKCOLORS 
-                            "The color of creation, copy and rename nodes of the trunk will be shifted towards green."
-    IDS_SETTINGS_TWEAKTAGSCOLORS 
-                            "The color of creation, copy and rename nodes of tags will be shifted towards yellow."
 END
 
 STRINGTABLE 
@@ -3605,19 +3392,17 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERR_PAGEANT         "Can't open pageant program"
+    IDS_ERR_PAGEANT         "Can't start pageant program."
     IDS_MENU_VIEWPATCH      "View Patch"
     IDS_MENU_VIEWWITHMERGE  "Review Path with TortoiseMerge"
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
     IDS_ERROR_NOREF         "No reference found"
-    IDS_ERROR_INDEX         "Out of ref array"
-    IDS_ERROR_HEAD          "Can't delete ""HEAD"""
     IDS_ERROR_NOCLEAN_STASH "Current Working Copy is not clear\r\n Do you want to stash change?"
     IDS_ERROR_NOTHING_COMMIT "Nothing to commit"
     IDS_COMMIT_FINISH       "Commit Finish"
     IDS_COMMITDLG_POPUP_LOGHISTORY "Paste Recent Message..."
-    IDS_REBASE_UPTODATE_FMT "Current branch %s is up to date\r\n\r\n If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below ""Force Rebase""  checkbox"
+    IDS_REBASE_UPTODATE_FMT "Current branch %s is up to date\r\n\r\n If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below ""Force Rebase"" checkbox."
     IDS_REBASE_FORCE_TT     "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message ""Current branch is up to date"" in such a situation. "
     IDS_REBASE_ABORT_TT     "Recover to the status before rebase"
 END
@@ -3738,7 +3523,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PUTTYKEYFILEFILTER  "Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"
     IDS_PROC_GITCONFIG_REMOTEEMPTY "Remote name must not be empty."
     IDS_PROC_GITCONFIG_URLEMPTY "Remote URL must not be empty."
     IDS_PROC_GITCONFIG_OVERWRITEREMOTE 

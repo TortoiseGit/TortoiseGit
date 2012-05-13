@@ -108,7 +108,6 @@
 #define IDC_BKYOURSADDED                1058
 #define IDC_FGYOURSADDED                1059
 #define IDC_BKYOURSREMOVED              1060
-#define IDC_BUTTON22                    1061
 #define IDC_FGYOURSREMOVED              1061
 #define IDC_LANGUAGECOMBO               1062
 #define IDC_LINENUMBERS                 1063

@@ -2088,42 +2088,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (GetSelectedCount() > 0)
 			{
-#if 0
-				if ((!entry->IsFolder())&&(wcStatus >= git_wc_status_normal)
-					&&(wcStatus!=git_wc_status_missing)&&(wcStatus!=git_wc_status_deleted)
-					&&(wcStatus!=git_wc_status_added))
-				{
-					popup.AppendMenu(MF_SEPARATOR);
-					if ((entry->lock_token.IsEmpty())&&(!entry->IsFolder()))
-					{
-						if (m_dwContextMenus & SVNSLC_POPLOCK)
-						{
-							popup.AppendMenuIcon(IDSVNLC_LOCK, IDS_MENU_LOCK, IDI_LOCK);
-						}
-					}
-					if ((!entry->lock_token.IsEmpty())&&(!entry->IsFolder()))
-					{
-						if (m_dwContextMenus & SVNSLC_POPUNLOCK)
-						{
-							popup.AppendMenuIcon(IDSVNLC_UNLOCK, IDS_MENU_UNLOCK, IDI_UNLOCK);
-						}
-					}
-				}
-
-				if ((!entry->IsFolder())&&((!entry->lock_token.IsEmpty())||(!entry->lock_remotetoken.IsEmpty())))
-				{
-					if (m_dwContextMenus & SVNSLC_POPUNLOCKFORCE)
-					{
-						popup.AppendMenuIcon(IDSVNLC_UNLOCKFORCE, IDS_MENU_UNLOCKFORCE, IDI_UNLOCK);
-					}
-				}
-
-				if (wcStatus != git_wc_status_missing && wcStatus != git_wc_status_deleted &&wcStatus!=git_wc_status_unversioned)
-				{
-					popup.AppendMenu(MF_SEPARATOR);
-					popup.AppendMenuIcon(IDSVNLC_PROPERTIES, IDS_STATUSLIST_CONTEXT_PROPERTIES, IDI_PROPERTIES);
-				}
-#endif
 				popup.AppendMenu(MF_SEPARATOR);
 				popup.AppendMenuIcon(IDGITLC_COPY, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
 				popup.AppendMenuIcon(IDGITLC_COPYEXT, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
