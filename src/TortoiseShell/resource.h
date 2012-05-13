@@ -125,8 +125,6 @@
 #define IDS_MENUDESCUNDOADD             213
 #define IDS_MENUPREVDIFF                214
 #define IDS_MENUDESCPREVDIFF            215
-#define IDS_COLTITLEMIMETYPE            216
-#define IDS_COLDESCMIMETYPE             217
 #define IDS_DROPEXPORTMENU              218
 #define IDS_DROPEXPORTEXTENDEDMENU      219
 #define IDS_MENUIGNOREMULTIPLEMASK      220
@@ -137,7 +135,6 @@
 #define IDS_MENUDESCCLIPPASTE           226
 #define IDS_ERR_PROPNOTONFILE           230
 #define IDS_MENUIGNOREMULTIPLE          231
-#define IDS_ERR_PROPNOMULTILINE         232
 #define IDS_MENUUNIGNORE                237
 #define IDS_MENUDESCUNIGNORE            238
 #define IDS_DROPCOPYRENAMEMENU          250
@@ -147,11 +144,6 @@
 #define IDS_PROPSNOTSAVED               254
 #define IDS_MENUADDASREPLACEMENT        255
 #define IDS_DROPMOVERENAMEMENU          256
-#define IDS_MENUPROPERTIES              257
-#define IDS_MENUDESCPROPERTIES          258
-#define IDS_COLTITLEEOLSTYLE            259
-#define IDS_COLDESCEOLSTYLE             260
-#define IDS_PROPBIN                     263
 #define IDS_MENUREMOVEKEEP              271
 #define IDS_MENUDESCREMOVEKEEP          272
 #define IDS_YES                         273

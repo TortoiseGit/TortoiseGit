@@ -1161,10 +1161,6 @@ msgstr ""
 msgid "&ignore space change"
 msgstr ""
 
-#. Resource IDs: (17, 564)
-msgid "(binary value)"
-msgstr ""
-
 #. Resource IDs: (208)
 msgid "(multiple targets selected)"
 msgstr ""
@@ -1904,10 +1900,6 @@ msgstr ""
 
 #. Resource IDs: (78)
 msgid "Browse for the external diff program"
-msgstr ""
-
-#. Resource IDs: (21)
-msgid "Browse reference"
 msgstr ""
 
 #. Resource IDs: (322)
@@ -2764,7 +2756,7 @@ msgid "Created"
 msgstr ""
 
 #. Resource IDs: (10)
-msgid "Creates a 'cheap' copy inside the repository used for branches or tagging"
+msgid "Creates a branch or tag"
 msgstr ""
 
 #. Resource IDs: (2052)
@@ -2971,11 +2963,11 @@ msgid "Deletes and adds the selected file(s) or the filemask to the 'ignore' lis
 msgstr ""
 
 #. Resource IDs: (11)
-msgid "Deletes files / folders from version control"
+msgid "Deletes files/folders from version control"
 msgstr ""
 
 #. Resource IDs: (18)
-msgid "Deletes files / folders from version control but keeps the file"
+msgid "Deletes files/folders from version control but keeps the file"
 msgstr ""
 
 #. Resource IDs: (198)
@@ -4012,14 +4004,6 @@ msgstr ""
 msgid "Git clone - TortoiseGit"
 msgstr ""
 
-#. Resource IDs: (17)
-msgid "Git eol-style"
-msgstr ""
-
-#. Resource IDs: (14)
-msgid "Git mime-type"
-msgstr ""
-
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
 msgstr ""
@@ -4606,7 +4590,7 @@ msgid "Last saved revision of item"
 msgstr ""
 
 #. Resource IDs: (12)
-msgid "Launches the external diff / merge program to solve the conflicts"
+msgid "Launches the external diff/merge program to solve the conflicts"
 msgstr ""
 
 #. Resource IDs: (1137)
@@ -4776,10 +4760,6 @@ msgstr ""
 msgid "Manage Remotes"
 msgstr ""
 
-#. Resource IDs: (17)
-msgid "Manage Subversion properties"
-msgstr ""
-
 #. Resource IDs: (32808)
 msgid "Mark as &resolved"
 msgstr ""
@@ -4858,7 +4838,7 @@ msgid "Merged"
 msgstr ""
 
 #. Resource IDs: (10)
-msgid "Merges a branch into the main trunk"
+msgid "Merges another branch"
 msgstr ""
 
 #. Resource IDs: (1073)
@@ -5760,10 +5740,6 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#. Resource IDs: (17, 177, 226)
-msgid "Properties"
-msgstr ""
-
 #. Resource IDs: (11)
 msgid "Property"
 msgstr ""
@@ -6131,7 +6107,7 @@ msgid "Renamed node"
 msgstr ""
 
 #. Resource IDs: (11)
-msgid "Renames files / folders inside version control"
+msgid "Renames files/folders inside version control"
 msgstr ""
 
 #. Resource IDs: (209)
@@ -6967,16 +6943,8 @@ msgstr ""
 msgid "Shows the action log file in the default text editor"
 msgstr ""
 
-#. Resource IDs: (17)
-msgid "Shows the eol-style property value"
-msgstr ""
-
 #. Resource IDs: (12)
-msgid "Shows the log for the selected file / folder"
-msgstr ""
-
-#. Resource IDs: (14)
-msgid "Shows the mime type of the versioned file"
+msgid "Shows the log for the selected file/folder"
 msgstr ""
 
 #. Resource IDs: (1532)
@@ -7247,7 +7215,7 @@ msgid "Switch/Checkout to this..."
 msgstr ""
 
 #. Resource IDs: (9)
-msgid "Switch/Checkout working copy to another branch / tag"
+msgid "Switch/Checkout working copy to another branch/tag"
 msgstr ""
 
 #. Resource IDs: (325)
@@ -7255,7 +7223,7 @@ msgid "Switches the comparison left<<->right"
 msgstr ""
 
 #. Resource IDs: (22)
-msgid "Sync Remote Repository, include pull, push, email patch and so on"
+msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
 
 #. Resource IDs: (22)
@@ -7573,10 +7541,6 @@ msgstr ""
 
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
-msgstr ""
-
-#. Resource IDs: (15)
-msgid "This property must not have multiple lines. Only one line is allowed."
 msgstr ""
 
 #. Resource IDs: (67)

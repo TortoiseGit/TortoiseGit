@@ -77,9 +77,6 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 			MAKESTRING(IDS_COLDESCAUTHOR);
 			lstrcpynW(psci->wszDescription, stringtablebuffer, MAX_COLUMN_DESC_LEN);
 			break;
-		case 5:	// SVN eol-style
-			GetColumnInfo(dwIndex, psci, 30, IDS_COLTITLEEOLSTYLE, IDS_COLDESCEOLSTYLE);
-			break;
 		default:
 			return S_FALSE;
 	}
@@ -145,23 +142,6 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 			case 3:	// Git Short Url
 				GetColumnStatus(path, pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				szInfo = itemshorturl;
-				break;
-			case 5:	// Git eol-style
-#if 0
-				if (cachetype == ShellCache::none)
-					return S_FALSE;
-				if (g_ShellCache.IsPathAllowed(path))
-				{
-					SVNProperties props = SVNProperties(CTSVNPath(path), false);
-					for (int i=0; i<props.GetCount(); i++)
-					{
-						if (props.GetItemName(i).compare(_T("svn:eol-style"))==0)
-						{
-							szInfo = MultibyteToWide((char *)props.GetItemValue(i).c_str());
-						}
-					}
-				}
-#endif
 				break;
 			default:
 				return S_FALSE;

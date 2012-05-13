@@ -218,7 +218,7 @@ BEGIN
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
     IDS_MENUDESCCLEANUP     "Remove untracked files from the working tree, ..."
     IDS_MENUDESCRESOLVE     "Resolves conflicted files"
-    IDS_MENUDESCSWITCH      "Switch/Checkout working copy to another branch / tag"
+    IDS_MENUDESCSWITCH      "Switch/Checkout working copy to another branch/tag"
 END
 
 STRINGTABLE 
@@ -227,8 +227,8 @@ BEGIN
     IDS_MENUDESCEXPORT      "Exports a repository to a clean working copy without the git administrative folders"
     IDS_MENUDESCABOUT       "Shows information about TortoiseGit"
     IDS_MENUDESCCREATEREPOS "Creates a repository database at the current location"
-    IDS_MENUDESCCOPY        "Creates a 'cheap' copy inside the repository used for branches or tagging"
-    IDS_MENUDESCMERGE       "Merges a branch into the main trunk"
+    IDS_MENUDESCCOPY        "Creates a branch or tag"
+    IDS_MENUDESCMERGE       "Merges another branch"
     IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
     IDS_MENUDESCDEFAULT     "no description for this command is available"
     IDS_STATUSNONE          " "
@@ -266,7 +266,7 @@ BEGIN
     IDS_MENUSVNDCOMMIT      "SVN DCommit..."
     IDS_MENUSVNDCOMMIT_DESC "Git SVN DCommit"
     IDS_MENUSYNC            "Sync..."
-    IDS_MENUDESCSYNC        "Sync Remote Repository, include pull, push, email patch and so on"
+    IDS_MENUDESCSYNC        "Sync Remote Repositories, including pull, push, email patch and so on"
     IDS_MENUSTASHPOP        "Stash Pop"
     IDS_MENUSVNIGNORE       "Import SVN Ignore ..."
     IDS_MENUSVNIGNORE_DESC  "Import SVN Ignore"
@@ -286,7 +286,7 @@ BEGIN
     IDS_MENUSENDMAIL        "Send Mail..."
     IDS_MENUDESSENDMAIL     "Send Patch(es) by eMail"
     IDS_MENUREFBROWSE       "Browse Reference"
-    IDS_MENUDESCREFBROWSE   "Browse reference"
+    IDS_MENUDESCREFBROWSE   "Browse Reference"
     IDS_MENUSVNREBASE       "SVN Rebase..."
 END
 
@@ -299,9 +299,9 @@ BEGIN
     IDS_PROPPROPERTY        "Property"
     IDS_PROPVALUE           "Value"
     IDS_MENURENAME          "Re&name..."
-    IDS_MENUDESCRENAME      "Renames files / folders inside version control"
+    IDS_MENUDESCRENAME      "Renames files/folders inside version control"
     IDS_MENUREMOVE          "&Delete"
-    IDS_MENUDESCREMOVE      "Deletes files / folders from version control"
+    IDS_MENUDESCREMOVE      "Deletes files/folders from version control"
     IDS_MENUUPDATEEXT       "Submodule &Update"
     IDS_MENUBISECTRESET     "Bisect reset"
     IDS_COLTITLESTATUS      "Git Status"
@@ -337,13 +337,13 @@ BEGIN
     IDS_DROPCOPYADDMENU     "Git Copy and add files to this WC"
     IDS_DROPMOVEMENU        "Git Move versioned item(s) here"
     IDS_MENULOG             "Show &log"
-    IDS_MENUDESCLOG         "Shows the log for the selected file / folder"
+    IDS_MENUDESCLOG         "Shows the log for the selected file/folder"
     IDS_COLTITLEURL         "Git URL"
     IDS_COLDESCURL          "URL of Git items"
     IDS_COLTITLESHORTURL    "Git short URL"
     IDS_COLDESCSHORTURL     "Short URL of Git items"
     IDS_MENUCONFLICT        "&Edit conflicts"
-    IDS_MENUDESCCONFLICT    "Launches the external diff / merge program to solve the conflicts"
+    IDS_MENUDESCCONFLICT    "Launches the external diff/merge program to solve the conflicts"
     IDS_MENUDESCBISECTSTART "Start bisect mode..."
     IDS_MENUDESCBISECTGOOD  "Marks revision as good"
     IDS_MENUHELP            "&Help"
@@ -359,8 +359,6 @@ BEGIN
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"
     IDS_MENUDESCPREVDIFF    "Diffs the working copy file with the one before the last commit"
-    IDS_COLTITLEMIMETYPE    "Git mime-type"
-    IDS_COLDESCMIMETYPE     "Shows the mime type of the versioned file"
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"
@@ -384,7 +382,6 @@ BEGIN
     IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
     IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
-    IDS_ERR_PROPNOMULTILINE "This property must not have multiple lines. Only one line is allowed."
     IDS_MENUUNIGNORE        "Remove from &ignore list"
     IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END
@@ -392,11 +389,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_DROPMOVERENAMEMENU  "Git Move and rename versioned item here"
-    IDS_MENUPROPERTIES      "Properties"
-    IDS_MENUDESCPROPERTIES  "Manage Subversion properties"
-    IDS_COLTITLEEOLSTYLE    "Git eol-style"
-    IDS_COLDESCEOLSTYLE     "Shows the eol-style property value"
-    IDS_PROPBIN             "(binary value)"
     IDS_MENUREMOVEKEEP      "&Delete (keep local)"
 END
 
@@ -412,7 +404,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENUDESCREMOVEKEEP  "Deletes files / folders from version control but keeps the file"
+    IDS_MENUDESCREMOVEKEEP  "Deletes files/folders from version control but keeps the file"
     IDS_YES                 "yes"
     IDS_NO                  "no"
 END
