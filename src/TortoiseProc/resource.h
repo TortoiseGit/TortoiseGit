@@ -3,8 +3,6 @@
 // Used by d:\TortoiseGit\src\Resources\TortoiseProcENG.rc
 //
 #define IDR_MAINFRAME                   1
-#define IDC_USELOCAL                    3
-#define IDC_USEREPO                     4
 #define IDD_SETTINGSPROXY               102
 #define IDD_SETTINGSHOOKS               103
 #define IDD_SETTINGSOVERLAY             106
@@ -99,7 +97,6 @@
 #define IDI_CANCELPRESSED               265
 #define IDI_LOGFILTER                   266
 #define IDI_FILTEREDIT                  267
-#define IDD_CONFLICTRESOLVE             268
 #define IDI_COPY_BKG                    270
 #define IDI_EXPORT_BKG                  271
 #define IDI_IMPORT_BKG                  272
@@ -671,7 +668,6 @@
 #define IDS_ERR_NOSTATUS                1285
 #define IDS_ERR_CLEANUP                 1286
 #define IDS_ERR_NOURLOFFILE             1287
-#define IDC_GROUP                       1287
 #define IDS_ERR_WCCHANGED               1288
 #define IDS_ERR_COPYFILES               1289
 #define IDS_ERR_EXTMERGESTART           1290
@@ -774,7 +770,6 @@
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
 #define IDC_REFRESH                     1382
-#define IDC_RESOLVEALLLATER             1382
 #define IDC_ACTIONLOGSHOW               1382
 #define IDC_BUGTRAQEDITBUTTON           1382
 #define IDC_BUGTRAQBUTTON               1382
@@ -813,19 +808,12 @@
 #define IDC_FILTER                      1387
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394
-#define IDC_EDITCONFLICT                1399
 #define IDS_WARN_FOLDERNOTEXIST         1400
-#define IDC_RESOLVED                    1400
-#define IDC_CHOOSELABEL                 1402
-#define IDC_RESOLVELABEL                1403
 #define IDS_WARN_FOLDERNOTEMPTY         1404
-#define IDC_LEAVELABEL                  1404
 #define IDS_WARN_WARNING                1405
 #define IDC_SELECTFILESONCOMMIT         1405
 #define IDS_WARN_NOTE                   1406
-#define IDC_ORLABEL                     1406
 #define IDS_WARN_NOVALIDPATH            1407
-#define IDC_ORLABEL2                    1407
 #define IDC_PROXYLABEL1                 1409
 #define IDC_PROXYLABEL2                 1410
 #define IDC_PROXYLABEL3                 1411
@@ -841,7 +829,6 @@
 #define IDC_USERECYCLEBIN               1432
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
-#define IDC_ABORT                       1465
 #define IDC_LINK                        1466
 #define IDC_LINK_CHANGE_LOG             1467
 #define IDC_EDIT1                       1469
@@ -1189,16 +1176,6 @@
 #define IDS_PROC_COPYRENAME             2335
 #define IDS_PROC_MOVERENAME             2336
 #define IDS_DIFF_WCNAME                 2400
-#define IDS_DIFF_BASENAME               2401
-#define IDS_DIFF_WORKINGCOPY            2402
-#define IDS_DIFF_REVISIONPATCHED        2403
-#define IDS_DIFF_REMOTENAME             2404
-#define IDS_DIFF_WORKINGBASE            2405
-#define IDS_DIFF_PROP_WCNAME            2406
-#define IDS_DIFF_PROP_BASENAME          2407
-#define IDS_DIFF_PROP_REMOTENAME        2408
-#define IDS_DIFF_PROP_REVISIONNAME      2409
-#define IDS_DIFF_PROP_BASENAMEREV       2411
 #define IDS_COMMONFILEFILTER            2500
 #define IDS_PROGRAMSFILEFILTER          2501
 #define IDS_PATCHFILEFILTER             2503
@@ -1462,18 +1439,6 @@
 #define IDS_HOOKTYPE_PREUPDATE          9104
 #define IDS_HOOKTYPE_POSTUPDATE         9105
 #define IDS_TT_RECURSIVE                9290
-#define IDS_EDITCONFLICT_ACTIONINFO_ADD 9300
-#define IDS_EDITCONFLICT_ACTIONINFO_MODIFY 9301
-#define IDS_EDITCONFLICT_ACTIONINFO_DELETE 9302
-#define IDS_EDITCONFLICT_PROP_ACTIONINFO_ADD 9303
-#define IDS_EDITCONFLICT_PROP_ACTIONINFO_MODIFY 9304
-#define IDS_EDITCONFLICT_ACTIONINFO_DELETE2 9305
-#define IDS_EDITCONFLICT_PROP_ACTIONINFO_DELETE 9305
-#define IDS_EDITCONFLICT_REASONINFO_EDITED 9320
-#define IDS_EDITCONFLICT_REASONINFO_OBSTRUCTED 9321
-#define IDS_EDITCONFLICT_REASONINFO_DELETED 9322
-#define IDS_EDITCONFLICT_REASONINFO_MISSING 9323
-#define IDS_EDITCONFLICT_REASONINFO_UNVERSIONED 9324
 #define IDS_CONNECTIONSTATE_ONLINE      9600
 #define IDS_CONNECTIONSTATE_TEMPOFFLINE 9601
 #define IDS_CONNECTIONSTATE_OFFLINE     9602

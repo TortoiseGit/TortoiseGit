@@ -821,28 +821,6 @@ BEGIN
     CONTROL         "Follow renames",IDC_FOLLOWRENAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,185,148,8
 END
 
-IDD_CONFLICTRESOLVE DIALOGEX 0, 0, 316, 150
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Resolve Conflict"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    LTEXT           "",IDC_INFOLABEL,7,7,302,25
-    GROUPBOX        "Please resolve the conflict by choosing one of the following options:",IDC_GROUP,7,41,302,83
-    LTEXT           "Choose item:",IDC_CHOOSELABEL,15,57,76,8
-    PUSHBUTTON      "Use local",IDC_USELOCAL,100,55,96,14
-    PUSHBUTTON      "Use repository",IDC_USEREPO,204,55,96,14
-    LTEXT           "Resolve conflict:",IDC_RESOLVELABEL,15,79,76,8
-    PUSHBUTTON      "Edit conflict",IDC_EDITCONFLICT,100,77,96,14
-    PUSHBUTTON      "Resolved",IDC_RESOLVED,204,77,96,14
-    LTEXT           "Leave conflicted:",IDC_LEAVELABEL,15,101,76,8
-    DEFPUSHBUTTON   "Resolve later",IDCANCEL,100,99,96,14
-    PUSHBUTTON      "Resolve all later",IDC_RESOLVEALLLATER,204,99,96,14
-    LTEXT           "or",IDC_ORLABEL,15,68,40,8
-    LTEXT           "or",IDC_ORLABEL2,15,90,40,8
-    PUSHBUTTON      "Abort &Merge",IDC_ABORT,121,129,119,14
-    PUSHBUTTON      "Help",IDHELP,245,129,64,14
-END
-
 IDD_CREATECHANGELIST DIALOGEX 0, 0, 186, 66
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Create Changelist"
@@ -1960,21 +1938,6 @@ BEGIN
         BOTTOMMARGIN, 210
     END
 
-    IDD_CONFLICTRESOLVE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 309
-        VERTGUIDE, 15
-        VERTGUIDE, 91
-        VERTGUIDE, 100
-        VERTGUIDE, 204
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 143
-        HORZGUIDE, 69
-        HORZGUIDE, 91
-        HORZGUIDE, 113
-    END
-
     IDD_CREATECHANGELIST, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -2715,16 +2678,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_DIFF_WCNAME         "%s: Working Copy"
-    IDS_DIFF_BASENAME       "%s: Working Base"
-    IDS_DIFF_WORKINGCOPY    ": working copy"
-    IDS_DIFF_REVISIONPATCHED ": Revision %d"
-    IDS_DIFF_REMOTENAME     "%s: Remote file"
-    IDS_DIFF_WORKINGBASE    ": working base"
-    IDS_DIFF_PROP_WCNAME    "Property %s: working copy"
-    IDS_DIFF_PROP_BASENAME  "Property %s: working base"
-    IDS_DIFF_PROP_REMOTENAME "Property %s: remote"
-    IDS_DIFF_PROP_REVISIONNAME "Property %s: Revision %s"
-    IDS_DIFF_PROP_BASENAMEREV "Property %s: Working Base, Revision %ld"
 END
 
 STRINGTABLE 
@@ -3325,29 +3278,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILEDIFF_FILTERCUE  "Filter paths"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_EDITCONFLICT_ACTIONINFO_ADD "Could not add '%s' because"
-    IDS_EDITCONFLICT_ACTIONINFO_MODIFY "Could not merge '%s' because"
-    IDS_EDITCONFLICT_ACTIONINFO_DELETE "Could not delete '%s' because"
-    IDS_EDITCONFLICT_PROP_ACTIONINFO_ADD 
-                            "Could not add property '%s' on '%s' because"
-    IDS_EDITCONFLICT_PROP_ACTIONINFO_MODIFY 
-                            "Could not merge property '%s' on '%s' because"
-    IDS_EDITCONFLICT_PROP_ACTIONINFO_DELETE 
-                            "Could not delete property '%s' on '%s' because"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_EDITCONFLICT_REASONINFO_EDITED "there are conflicting modifications."
-    IDS_EDITCONFLICT_REASONINFO_OBSTRUCTED 
-                            "another item already exists in its place."
-    IDS_EDITCONFLICT_REASONINFO_DELETED "it is already deleted."
-    IDS_EDITCONFLICT_REASONINFO_MISSING "it does not exist."
-    IDS_EDITCONFLICT_REASONINFO_UNVERSIONED "it is unversioned."
 END
 
 STRINGTABLE 
