@@ -529,7 +529,10 @@
 #define IDC_DATEFROM                    1199
 #define IDS_PROC_SYNC_PUSH              1199
 #define IDC_FROMLABEL                   1200
+#define IDS_PROC_LOG_STATS              1200
 #define IDC_TOLABEL                     1201
+#define IDS_PROC_LOG_ALLBRANCHES        1201
+#define IDS_PROC_LOG_NOBRANCH           1202
 #define IDC_WHOLE_PROJECT               1203
 #define IDS_IMPORT_DEFAULTMSG           1205
 #define IDC_CHECKBOX                    1207

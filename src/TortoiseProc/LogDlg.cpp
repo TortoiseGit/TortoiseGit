@@ -2560,7 +2560,7 @@ void CLogDlg::UpdateLogInfoLabel()
 		selectedrevs = m_LogList.GetSelectedCount();
 	}
 	CString sTemp;
-	sTemp.Format(_T("Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"),
+	sTemp.Format(IDS_PROC_LOG_STATS,
 		count - start,
 		rev2.ToString().Left(6), rev1.ToString().Left(6), selectedrevs);
 
@@ -3274,7 +3274,7 @@ void CLogDlg::ShowStartRef()
 		return;
 	if(m_bAllBranch)
 	{
-		m_staticRef.SetWindowText(L"<All Branches>");
+		m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_ALLBRANCHES)));
 		m_staticRef.Invalidate(TRUE);
 		return;
 	}
@@ -3284,7 +3284,7 @@ void CLogDlg::ShowStartRef()
 	{
 		//Ref name is HEAD
 		if (g_Git.Run(L"git symbolic-ref HEAD", &showStartRef, NULL, CP_UTF8))
-			showStartRef = _T("<No branch>");
+			showStartRef = CString(MAKEINTRESOURCE(IDS_PROC_LOG_NOBRANCH));
 		showStartRef.Trim(L"\r\n\t ");
 	}
 

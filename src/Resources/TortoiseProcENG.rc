@@ -2444,6 +2444,9 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_PROC_LOG_STATS      "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
+    IDS_PROC_LOG_ALLBRANCHES "<All Branches>"
+    IDS_PROC_LOG_NOBRANCH   "<No branch>"
     IDS_IMPORT_DEFAULTMSG   "Initial import"
     IDS_PROC_SYNC_PUSHTAGS  "Push ta&gs"
     IDS_PROC_SYNC_PULL      "&Pull"
