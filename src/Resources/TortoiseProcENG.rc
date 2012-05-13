@@ -2680,7 +2680,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERR_NOTFOUND_SUPER_PRJECT "Can't find Super-project"
+    IDS_ERR_NOTFOUND_SUPER_PRJECT "Could not find Super-project"
 END
 
 STRINGTABLE 
@@ -2777,7 +2777,30 @@ BEGIN
     IDS_PROGRAMSFILEFILTER  "Programs (*.exe)|*.exe|All Files (*.*)|*.*||"
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
     IDS_PICTUREFILEFILTER   "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
-    IDS_PUTTYKEYFILEFILTER  "Putty Private Key (*.ppk)|*.ppk|All Files(*.*)|*.*||"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PUTTYKEYFILEFILTER  "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
+    IDS_PROC_GITCONFIG_REMOTEEMPTY "Remote name must not be empty."
+    IDS_PROC_GITCONFIG_URLEMPTY "Remote URL must not be empty."
+    IDS_PROC_GITCONFIG_OVERWRITEREMOTE 
+                            "The remote ""%s"" already exists.\nDo you want to overwrite it?"
+    IDS_PROC_GITCONFIG_SAVEREMOTE 
+                            "The Remote Config was changed.\nDo you want to save now or discard changes?"
+    IDS_SAVEBUTTON          "&Save"
+    IDS_DISCARDBUTTON       "&Discard"
+    IDS_PROC_SAVECONFIGFAILED 
+                            "Saving config failed (key: ""%s"", value: ""%s"")."
+    IDS_PROC_GITCONFIG_DELETEREMOTE "Do you really want to remove ""%s""?"
+    IDS_PROC_GITCONFIG_EDITLOCALGONCFIG "Edit local git config"
+    IDS_PROC_GITCONFIG_NOMSYSGIT 
+                            "MSysGit directory not set (see ""General"" settings page)."
+    IDS_PROC_CLONE_DIR      "Dir..."
+    IDS_PROC_CLONE_WEB      "Web"
+    IDS_PROC_CLONE_URLDIREMPTY "URL or directory must not be empty."
+    IDS_PROC_COMMIT_SHOWPATCH "View Patch>>"
+    IDS_PROC_COMMIT_HIDEPATCH "Hide Patch<<"
 END
 
 STRINGTABLE 
@@ -3381,7 +3404,7 @@ BEGIN
     IDS_B_T_NOTEMPTY        "Branch/Tag name must not be empty or is invalid."
     IDS_CHOOSE_REPOSITORY   "Choose Repository"
     IDS_ERR_NOT_REPOSITORY  """%s"" is not git repository"
-    IDS_ERR_ADDRESS_NO_EMPTY "Email Address To or CC can't empty"
+    IDS_ERR_ADDRESS_NO_EMPTY "Email Address To and CC can't empty."
     IDS_SVNACTION_SENDMAIL_START "Sending..."
     IDS_PROGRS_TITLE_SENDMAIL "Send Patch by Email"
     IDS_PROGRS_CMD_SENDMAIL "Send Email"
@@ -3392,7 +3415,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERR_PAGEANT         "Can't start pageant program."
+    IDS_ERR_PAGEANT         "Could not start pageant program."
     IDS_MENU_VIEWPATCH      "View Patch"
     IDS_MENU_VIEWWITHMERGE  "Review Path with TortoiseMerge"
     IDS_MENU_APPLY          "Apply Patch..."
@@ -3519,29 +3542,6 @@ BEGIN
                             "You marked some files as ""Restore after commit"".\nDo you want to restore them now? You might loose all changes to this file after marking it."
     IDS_PROC_COMMIT_RESTOREFILES_RESTORE "&Restore old state"
     IDS_PROC_COMMIT_RESTOREFILES_KEEP "&Keep current state"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PROC_GITCONFIG_REMOTEEMPTY "Remote name must not be empty."
-    IDS_PROC_GITCONFIG_URLEMPTY "Remote URL must not be empty."
-    IDS_PROC_GITCONFIG_OVERWRITEREMOTE 
-                            "The remote ""%s"" already exists.\nDo you want to overwrite it?"
-    IDS_PROC_GITCONFIG_SAVEREMOTE 
-                            "The Remote Config was changed.\nDo you want to save now or discard changes?"
-    IDS_SAVEBUTTON          "&Save"
-    IDS_DISCARDBUTTON       "&Discard"
-    IDS_PROC_SAVECONFIGFAILED 
-                            "Saving config failed (key: ""%s"", value: ""%s"")."
-    IDS_PROC_GITCONFIG_DELETEREMOTE "Do you really want to remove ""%s""?"
-    IDS_PROC_GITCONFIG_EDITLOCALGONCFIG "Edit local git config"
-    IDS_PROC_GITCONFIG_NOMSYSGIT 
-                            "MSysGit directory not set (see ""General"" settings page)."
-    IDS_PROC_CLONE_DIR      "Dir..."
-    IDS_PROC_CLONE_WEB      "Web"
-    IDS_PROC_CLONE_URLDIREMPTY "URL or directory must not be empty."
-    IDS_PROC_COMMIT_SHOWPATCH "View Patch>>"
-    IDS_PROC_COMMIT_HIDEPATCH "Hide Patch<<"
 END
 
 STRINGTABLE 
